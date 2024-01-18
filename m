@@ -2,111 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB2D831DD9
+	by mail.lfdr.de (Postfix) with ESMTPS id 1712D831DD7
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 17:51:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQVat-00037p-Jz; Thu, 18 Jan 2024 11:50:19 -0500
+	id 1rQVat-00037t-Vo; Thu, 18 Jan 2024 11:50:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQVam-00036D-R2
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQVam-00036E-Rj
  for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:50:13 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQVai-0000Sm-4V
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:50:10 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQVaj-0000To-H6
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:50:12 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 72F7D1F7A5;
- Thu, 18 Jan 2024 16:49:59 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3FE5521F04;
+ Thu, 18 Jan 2024 16:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705596599; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705596602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l+sCC+B8QDcMrKHoSD3qNEEMMX/efPzqMI5o9Yc1ySI=;
- b=PbfQc6uu4B3OF6pyTuAO5X68lyuIqqMa89CfNxEPbwQo/5SUCCrQmwcxfkm65/noBw+oEZ
- tuJhbjoXndqtYdZGKBgPaoefsyLDnS/JRnd9tSlBGZBCNWO+LqI1mzwzUxPReSyUSIW7yG
- dJE6xEnl9M/tES50PAHKeoT0d3CdUpc=
+ bh=W2JBt0/WlpCTdPl1eTsJA7poEMuw26v6B8Sz54F1+Gs=;
+ b=I1uJrB44jj5+2JGfeewPuanwAplB7aVsThwZqU3xUaYCXICERIsxuy4jugwBCMyxre+3ta
+ p2/vZSAOtNX1SukrWtrqG3vOABXZNOaPoou7yGNnDTMpEsdxXh0RKVIQm3Fi/oypqU4uEF
+ +GYyQkIoAnr78d3/PQ1cWEdn00RVpao=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705596599;
+ s=susede2_ed25519; t=1705596602;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l+sCC+B8QDcMrKHoSD3qNEEMMX/efPzqMI5o9Yc1ySI=;
- b=FPy41cKSZWDrDvChNZ3/FwVEANzwHaHr/M8+tF6gmijNQUOqzdPyqjdopgmTktIiyWtXkS
- CnViR3FjNc/E2AAw==
+ bh=W2JBt0/WlpCTdPl1eTsJA7poEMuw26v6B8Sz54F1+Gs=;
+ b=Ixl/Znju5EyfvdkueolFrD3kch8KatqtsdKP3Smyxse4A454XB/pmq0ZG9zYlfPvUe0udH
+ WEiptfDrTeaquqAw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705596599; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705596602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l+sCC+B8QDcMrKHoSD3qNEEMMX/efPzqMI5o9Yc1ySI=;
- b=PbfQc6uu4B3OF6pyTuAO5X68lyuIqqMa89CfNxEPbwQo/5SUCCrQmwcxfkm65/noBw+oEZ
- tuJhbjoXndqtYdZGKBgPaoefsyLDnS/JRnd9tSlBGZBCNWO+LqI1mzwzUxPReSyUSIW7yG
- dJE6xEnl9M/tES50PAHKeoT0d3CdUpc=
+ bh=W2JBt0/WlpCTdPl1eTsJA7poEMuw26v6B8Sz54F1+Gs=;
+ b=I1uJrB44jj5+2JGfeewPuanwAplB7aVsThwZqU3xUaYCXICERIsxuy4jugwBCMyxre+3ta
+ p2/vZSAOtNX1SukrWtrqG3vOABXZNOaPoou7yGNnDTMpEsdxXh0RKVIQm3Fi/oypqU4uEF
+ +GYyQkIoAnr78d3/PQ1cWEdn00RVpao=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705596599;
+ s=susede2_ed25519; t=1705596602;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l+sCC+B8QDcMrKHoSD3qNEEMMX/efPzqMI5o9Yc1ySI=;
- b=FPy41cKSZWDrDvChNZ3/FwVEANzwHaHr/M8+tF6gmijNQUOqzdPyqjdopgmTktIiyWtXkS
- CnViR3FjNc/E2AAw==
+ bh=W2JBt0/WlpCTdPl1eTsJA7poEMuw26v6B8Sz54F1+Gs=;
+ b=Ixl/Znju5EyfvdkueolFrD3kch8KatqtsdKP3Smyxse4A454XB/pmq0ZG9zYlfPvUe0udH
+ WEiptfDrTeaquqAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20862136F5;
- Thu, 18 Jan 2024 16:49:56 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E4266136F5;
+ Thu, 18 Jan 2024 16:49:59 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id iC7wNbRWqWUdSgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 18 Jan 2024 16:49:56 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eFAXKrdWqWUdSgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 18 Jan 2024 16:49:59 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 1/3] tests/qtest/migration: Don't use -cpu max for aarch64
-Date: Thu, 18 Jan 2024 13:49:49 -0300
-Message-Id: <20240118164951.30350-2-farosas@suse.de>
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH v4 2/3] ci: Add a migration compatibility test job
+Date: Thu, 18 Jan 2024 13:49:50 -0300
+Message-Id: <20240118164951.30350-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240118164951.30350-1-farosas@suse.de>
 References: <20240118164951.30350-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PbfQc6uu;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FPy41cKS
-X-Spamd-Result: default: False [-1.81 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain];
- DWL_DNSWL_HI(-3.50)[suse.de:dkim]; BROKEN_CONTENT_TYPE(1.50)[];
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ NEURAL_HAM_SHORT(-0.20)[-0.996]; RCPT_COUNT_SEVEN(0.00)[8];
+ MID_CONTAINS_FROM(1.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
  BAYES_HAM(-3.00)[100.00%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 72F7D1F7A5
-X-Spam-Score: -1.81
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -129,38 +124,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'max' cpu is not expected to be stable in terms of features across
-QEMU versions, so it should not be expected to migrate.
+The migration tests have support for being passed two QEMU binaries to
+test migration compatibility.
 
-While the tests currently all pass with -cpu max, that is only because
-we're not testing across QEMU versions, which is the more common
-use-case for migration.
+Add a CI job that builds the lastest release of QEMU and another job
+that uses that version plus an already present build of the current
+version and run the migration tests with the two, both as source and
+destination. I.e.:
 
-We've recently introduced compatibility tests that use two different
-QEMU versions and the tests are now failing for aarch64. The next
-patch adds those tests to CI, so we cannot use the 'max' cpu
-anymore. Replace it with the 'neoverse-n1', which has a fixed set of
-features.
+ old QEMU (n-1) -> current QEMU (development tree)
+ current QEMU (development tree) -> old QEMU (n-1)
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+The purpose of this CI job is to ensure the code we're about to merge
+will not cause a migration compatibility problem when migrating the
+next release (which will contain that code) to/from the previous
+release.
+
+The version of migration-test used will be the one matching the older
+QEMU. That way we can avoid special-casing new tests that wouldn't be
+compatible with the older QEMU.
+
+Note: for user forks, the version tags need to be pushed to gitlab
+otherwise it won't be able to checkout a different version.
+
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .gitlab-ci.d/buildtest.yml | 60 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index d3066e119f..b2390656f0 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -820,7 +820,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         memory_size = "150M";
-         machine_alias = "virt";
-         machine_opts = "gic-version=max";
--        arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-+        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-     } else {
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index e1c7801598..f0b0edc634 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -167,6 +167,66 @@ build-system-centos:
+       x86_64-softmmu rx-softmmu sh4-softmmu nios2-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
++# Previous QEMU release. Used for cross-version migration tests.
++build-previous-qemu:
++  extends: .native_build_job_template
++  artifacts:
++    when: on_success
++    expire_in: 2 days
++    paths:
++      - build-previous
++    exclude:
++      - build-previous/**/*.p
++      - build-previous/**/*.a.p
++      - build-previous/**/*.fa.p
++      - build-previous/**/*.c.o
++      - build-previous/**/*.c.o.d
++      - build-previous/**/*.fa
++  needs:
++    job: amd64-opensuse-leap-container
++  variables:
++    IMAGE: opensuse-leap
++    TARGETS: x86_64-softmmu aarch64-softmmu
++  before_script:
++    - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
++    - git checkout $QEMU_PREV_VERSION
++  after_script:
++    - mv build build-previous
++
++.migration-compat-common:
++  extends: .common_test_job_template
++  needs:
++    - job: build-previous-qemu
++    - job: build-system-opensuse
++  # The old QEMU could have bugs unrelated to migration that are
++  # already fixed in the current development branch, so this test
++  # might fail.
++  allow_failure: true
++  variables:
++    IMAGE: opensuse-leap
++    MAKE_CHECK_ARGS: check-build
++  script:
++    # Use the migration-tests from the older QEMU tree. This avoids
++    # testing an old QEMU against new features/tests that it is not
++    # compatible with.
++    - cd build-previous
++    # old to new
++    - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
++          QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
++    # new to old
++    - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
++          QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
++
++migration-compat-aarch64:
++  extends: .migration-compat-common
++  variables:
++    TARGET: aarch64
++
++migration-compat-x86_64:
++  extends: .migration-compat-common
++  variables:
++    TARGET: x86_64
++
+ check-system-centos:
+   extends: .native_test_job_template
+   needs:
 -- 
 2.35.3
 
