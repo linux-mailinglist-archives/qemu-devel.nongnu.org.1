@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303A8831C16
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:13:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB96831C1F
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 16:14:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQU26-0002ww-SS; Thu, 18 Jan 2024 10:10:19 -0500
+	id 1rQU2O-00046u-VJ; Thu, 18 Jan 2024 10:10:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQU0B-0000BQ-1l; Thu, 18 Jan 2024 10:08:21 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rQU0H-0000Cm-Qj; Thu, 18 Jan 2024 10:08:27 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQU09-00088p-1R; Thu, 18 Jan 2024 10:08:18 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d542701796so72054445ad.1; 
- Thu, 18 Jan 2024 07:08:16 -0800 (PST)
+ id 1rQU0E-00089G-MO; Thu, 18 Jan 2024 10:08:25 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d70b0e521eso4106805ad.1; 
+ Thu, 18 Jan 2024 07:08:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705590495; x=1706195295; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705590499; x=1706195299; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HH7VWjQz/3wxOiP6K+9y/bLbtKHHaMcLKtq7W5EtwIE=;
- b=JmZ/ldpUG5T1LsiSSwyzysx8cnYq0+XN/a86G3D63baLeqDo8Jqi6GjN0nrnPhQH1z
- fcBhm9+1HZEMHxtfWuoqQNrQ4PvVXvpDM7QLLxPpTKA+Bh7z6P3Q64u3DPNOTpS9IS33
- jkido795yqF0ixbXiGuUc6Ez5dnFEg/xGm6XiIBn2SnJl8EorVXclo+X/c2wHrBJPId6
- d3vcWN1fN68EmI2PVridHl8i3IBqcYNikKAugmzMiSHMuh+ehclXCGHteZS/o3SQUINK
- XIA2hWR2wBUvfpMl7nh81qwRHUl7hVWX7kNAtLM49E9/1JmS1BxpjlImHiLqmqb0ougf
- 67eQ==
+ bh=Rk+uoSRvrBIH9TvmGVZBjV+QTWZEk05mSjA1QL8Ws5A=;
+ b=nNq8eeLhHh7kd5e71vm5aztsdC+492F1+0tcjtIBKNc1JtmKG5hSo2C2F9L2I3/7vl
+ dq69y0771tqesbfecvgGp9WVw8BcR9J4wBfgBKhTJZDEorld8B70vibOkYyuMJeosoVz
+ Dy5oYOroONnzik6gbrPt1mlzBcvpXXExqvaQg7171JOOK+XKywvkoGdx+G6hnhzgD+f+
+ PKWMZ1YCByFclBAZhQhLiDkTk7IZeiDts4C9HLtBz8wFwLAkkZHKSSqEwY5M2kbDQ2QH
+ AOpAA5BjwPFS/XR90CeVRDa8zrjkO+sgUmf1ciqE7fnQhEf104Yz2+10Yrs2Fa/pmS8K
+ iqfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705590495; x=1706195295;
+ d=1e100.net; s=20230601; t=1705590499; x=1706195299;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HH7VWjQz/3wxOiP6K+9y/bLbtKHHaMcLKtq7W5EtwIE=;
- b=aEf86S8G4/X0XX2ORXeb87CiTq6NEP98xZvsZLXepnF/JNEcqOqhvzCaQ8RL+lMjP7
- ycRV6T3OgKfqhBUSxfUhLgDV3kMauCRk8JDSgx4QHgW+JrN68CwhSINuBE47IpYINIGH
- ik2WcSh//ulcwfI8u9dWtwhkJuJLEoZVCH9ux1eYZz7y/a8Y2gZ4uFepAakQsmmq/I5D
- NFtlLUYu+wxsBGwQLE1a3LxTdHS9kUURPz3GINeqX7Tas8EMEVGmCfgz2MJhfpfiQH+T
- l05htk3T/HEZS0FBzYA2RHhm/zGdlO99VGo8Xy2lEHSN5LZsCBhLACpXJXu3htMEFZwb
- v48w==
-X-Gm-Message-State: AOJu0YzqTFHvlOtdpwryyn0P3WtLW2Rp6g8kG1Sd1qgGCrrzFmyVs4Zy
- Z/EctVj/M+Tv6ZaHbp2L7AABrP7V8J3MABNLCMV4XMU7roLIRCvjXJMUi3qP
-X-Google-Smtp-Source: AGHT+IGkVZQ41m9Fq8Ghs8LdENDlP7/+rUjdguDDvPuIkNyeLLieGfDyNPE439sTSl+hiP+IG7w3Mg==
-X-Received: by 2002:a17:903:249:b0:1d5:e85e:816e with SMTP id
- j9-20020a170903024900b001d5e85e816emr864371plh.10.1705590494919; 
- Thu, 18 Jan 2024 07:08:14 -0800 (PST)
+ bh=Rk+uoSRvrBIH9TvmGVZBjV+QTWZEk05mSjA1QL8Ws5A=;
+ b=LqVC8k0WfCFAu9gOOecdRL0Fnh/qmlfA34BoeLJ1YP9YLaQUrUcyxBNuVWMGONzOqI
+ vrOhPcq9Cqa0V0xZHtgrq6B5+xvMljspe5HVkEdJPa13DqlmBev1KHCHqpo05PGn531o
+ 9UO42Mc8br8XgUAw3ZMln8iRsy92IpwpXyf/a+lN4ngPubT/bW+p1cTSTHus4a/SE1f+
+ q4kBxGkJTr+CgAPVChhCZ3ddJAY/J1iM4AWjc4Fjk6BOxHeIu65aSKf2aTiPGQQ3dwPd
+ y7d4hnzDzvnsiiOSlRc0n83RWRL9DecsbhNRDMNp9fpV6Dy44FbaDQqfhFloo7/fO09t
+ T4Pg==
+X-Gm-Message-State: AOJu0YybHZ/9S8NDrowUus+lpivXNx1JscU/4pOjZvEBvdkmLiUaZYVt
+ 0RjVlmPLtQV/Y1YbnR7i5c6FfuaIRUrZggkjVL1sfiH5iARH0Pju2iCUHDJF
+X-Google-Smtp-Source: AGHT+IGmAlbjeyOCE26DNjxxnMb/YzBtMAYQ2d3amMFvXSpznKDr66norf5cTtaLjZD8SP+xtRuwjw==
+X-Received: by 2002:a17:902:b211:b0:1d5:e89a:cd90 with SMTP id
+ t17-20020a170902b21100b001d5e89acd90mr932908plr.137.1705590499062; 
+ Thu, 18 Jan 2024 07:08:19 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- e17-20020a170902cf5100b001d052d1aaf2sm1509401plg.101.2024.01.18.07.08.10
+ e17-20020a170902cf5100b001d052d1aaf2sm1509401plg.101.2024.01.18.07.08.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 07:08:14 -0800 (PST)
+ Thu, 18 Jan 2024 07:08:18 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,18 +61,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org,
- Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PATCH 17/26] target/ppc: Add migration support for BHRB
-Date: Fri, 19 Jan 2024 01:06:35 +1000
-Message-ID: <20240118150644.177371-18-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
+Subject: [PATCH 18/26] target/ppc: BookE DECAR SPR is 32-bit
+Date: Fri, 19 Jan 2024 01:06:36 +1000
+Message-ID: <20240118150644.177371-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240118150644.177371-1-npiggin@gmail.com>
 References: <20240118150644.177371-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,55 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+The DECAR SPR is 32-bits width.
 
-Adds migration support for Branch History Rolling
-Buffer (BHRB) internal state.
-
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/machine.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ target/ppc/cpu_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 6b6c31d903..731dd8df35 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -711,6 +711,26 @@ static const VMStateDescription vmstate_reservation = {
-     }
- };
- 
-+#ifdef TARGET_PPC64
-+static bool bhrb_needed(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-+}
-+
-+static const VMStateDescription vmstate_bhrb = {
-+    .name = "cpu/bhrb",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = bhrb_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-+        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -756,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu = {
- #ifdef TARGET_PPC64
-         &vmstate_tm,
-         &vmstate_slb,
-+        &vmstate_bhrb,
- #endif /* TARGET_PPC64 */
-         &vmstate_tlb6xx,
-         &vmstate_tlbemb,
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 421900cd11..8287494c39 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -792,7 +792,7 @@ static void register_BookE_sprs(CPUPPCState *env, uint64_t ivor_mask)
+                  0x00000000);
+     spr_register(env, SPR_BOOKE_DECAR, "DECAR",
+                  SPR_NOACCESS, SPR_NOACCESS,
+-                 SPR_NOACCESS, &spr_write_generic,
++                 SPR_NOACCESS, &spr_write_generic32,
+                  0x00000000);
+     /* SPRGs */
+     spr_register(env, SPR_USPRG0, "USPRG0",
 -- 
 2.42.0
 
