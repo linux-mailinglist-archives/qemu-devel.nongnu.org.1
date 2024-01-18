@@ -2,135 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9C083130E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635A3831315
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:25:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQMgd-0004K7-Hb; Thu, 18 Jan 2024 02:19:39 -0500
+	id 1rQMlf-0005Ve-9X; Thu, 18 Jan 2024 02:24:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMgb-0004JT-VK
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:19:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQMlb-0005VQ-1r
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:24:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQMga-0007jb-F7
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:19:37 -0500
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rQMlZ-0002b5-Er
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 02:24:46 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705562375;
+ s=mimecast20190719; t=1705562684;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=X78Fuu6eZUJ0Hqco+loS01zRC594BzVrTpV2QvqB/dU=;
- b=QpxbpSx/pEVhRg9kmwqLqK5YLy5TnFH2fFoA2IE4lgw6HlxeY7LgJfgYND96MfqmDgBTwd
- Y26WTxfczrEk4WMDctEX0c0sSWqXO7GDxCHg44ZHo1YQv05x5rVsV1ZvqbUtQCa71eJRkJ
- +PcllTSTW/n3ktcIiHdYY3fhn5gQydE=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=b/gdp2wY5yZWT7alu8PK6Y2qThHVlmQYxqjYh45jLbM=;
+ b=gz2MrVyZeFFlkaS+TUsrlhyml8Nbwd+bG33+E/mH8vYNpSg+mP/7pMrzvjBob4WbzuujIt
+ CxeAoiepLhOAwvK0oi2dAmJJOZ82SVS0twcuWoqY0mg1S+VscZlsfVaSkj4+NCBnTKAwfY
+ DR/cHQN+Ajn3z0RaLR+6bzQB6lDGWjE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-7vvtTJYVNQeDPnRK6phQMw-1; Thu, 18 Jan 2024 02:19:33 -0500
-X-MC-Unique: 7vvtTJYVNQeDPnRK6phQMw-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3bd9425714cso1778048b6e.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 23:19:33 -0800 (PST)
+ us-mta-618-GftN28e5OGCeTwQjGAAdaw-1; Thu, 18 Jan 2024 02:24:42 -0500
+X-MC-Unique: GftN28e5OGCeTwQjGAAdaw-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-429d186ef21so85528341cf.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 23:24:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705562373; x=1706167173;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705562682; x=1706167482;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X78Fuu6eZUJ0Hqco+loS01zRC594BzVrTpV2QvqB/dU=;
- b=KRFJp/VQIITg9dLwmy4gYYGE64oWb/pVD+pV/GXrTIC6wCgozhSmu2JbvAn2Ijw0gl
- 8jFAX5JxPUKSvkzhSzQQlnoZPc7ppMuLA/lyFw7UAdoP+8XJaUtwhAQnOUihe9pQeFHp
- ZPUyKgvzDSMZDf8ZjrPysL68d/XJheMOuWX4KHFy2uhdE2lq2Uu6as8zJVW/ZnY2nGZS
- 1JEWYitsE53ITz8dgfGphIazcTPr/xflW1QubtSQUuR0FmxQTZHEgbiIpNX804JIOjX8
- j11ixyFXOHCBgiEjSMrcR+CArHTlGUJdNzKbU2MfYQ1ly6IYu2qlaB7qJk9i5g9xPXoR
- GI7w==
-X-Gm-Message-State: AOJu0Yy4GlqJZZ6SChoxNXU1PTystRjGqoPzEOwOn7mU09RrjHPh8Fk9
- nT/adBTN6UP4g3LinMhRmBN2l8Hueyz+8lnWKfTJSqbduJh7LVGBoENckWPjEEQgytAZ5jJ6Sej
- 7JglsiMtjbbAYKxOUHeRZDS5dEXRKaEfLwkd6QCZbZ1pugppH6STS
-X-Received: by 2002:a05:6808:2383:b0:3bd:9d23:4906 with SMTP id
- bp3-20020a056808238300b003bd9d234906mr401593oib.55.1705562373149; 
- Wed, 17 Jan 2024 23:19:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWM5Fs8E5TDCqiB4n4CIi0vBXw/urUglHZ1FYmudqhbi3CMRum+ohu7/ZRDoqsAYVVuN3v/g==
-X-Received: by 2002:a05:6808:2383:b0:3bd:9d23:4906 with SMTP id
- bp3-20020a056808238300b003bd9d234906mr401584oib.55.1705562372938; 
- Wed, 17 Jan 2024 23:19:32 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
- [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
- a22-20020a05620a103600b0078314f2144bsm5117744qkk.44.2024.01.17.23.19.30
+ bh=b/gdp2wY5yZWT7alu8PK6Y2qThHVlmQYxqjYh45jLbM=;
+ b=Uu9YuR+2pDAnZtP8kRaCeIm+qqY8OlzF+llXx6sN1GmQf8bKfvL2ndawUQbV8MqEET
+ ZJbSxNWBMXIT9/K+sapCICqIBpuhknJpaNVwCfN5wcT1r1x7A0rQEYe6CA2Uu/EetY64
+ Ff8NB//EUrt9zyU+LzI3D5Myjk7+j4whVUu/FoxJoFXST9iKr3/og+AFoxYGQUDEQyBX
+ +01DBfAMz700cC/hY193SxRuOX2uhuYGe+KTE5/bbE0TtM5ZaYfuMdC3+sSVgWxbIwcO
+ USZhZi965EzFWjnIgVh+GszC7nK4hHpXtcvHpCZg8uCzsDd28vlNJlNGZ5NYT+ndFRwg
+ hoWQ==
+X-Gm-Message-State: AOJu0YzrU9WkyqgQVfrkwlrnTrpAMtleKf3I09SA6M3lLo9/CasIcccr
+ pPl0W2C/aeR5fJAwh0bCU9JNwpXRwPUo1wIteUm9z+DoX3DCD8+RaFMZoAXAFXFv/ADrQbk9e9l
+ c0OtZt95Z/6woO8Vp4GxUgQuy37aKdKKfSeTMRsn5MAJpdgm028A3
+X-Received: by 2002:a05:622a:1014:b0:429:7412:a30b with SMTP id
+ d20-20020a05622a101400b004297412a30bmr453081qte.6.1705562682247; 
+ Wed, 17 Jan 2024 23:24:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFH4KoG5mJPyNMWuSQ9uaKO8WDF4L1CwGoDLDCYovHHkKeaphElWHsGGVy9v99VYx9uJ9TbrA==
+X-Received: by 2002:a05:622a:1014:b0:429:7412:a30b with SMTP id
+ d20-20020a05622a101400b004297412a30bmr453076qte.6.1705562682035; 
+ Wed, 17 Jan 2024 23:24:42 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ b12-20020a05620a118c00b007834879d667sm4586199qkk.11.2024.01.17.23.24.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Jan 2024 23:19:32 -0800 (PST)
-Message-ID: <7a3966d1-7b82-472d-b168-c5c0d36208a8@redhat.com>
-Date: Thu, 18 Jan 2024 08:19:30 +0100
+ Wed, 17 Jan 2024 23:24:41 -0800 (PST)
+Message-ID: <5a325626-f131-42c7-a6b9-96a191d2e24d@redhat.com>
+Date: Thu, 18 Jan 2024 08:24:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] s390x/pci: fix ISM reset
+Subject: Re: [PATCH] vfio: use matching sizeof type
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, Matthew Rosato
- <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, clg@redhat.com, frankja@linux.ibm.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org
-References: <20240116223157.73752-1-mjrosato@linux.ibm.com>
- <b6559efc-1a83-4a38-b446-354991b30a63@tls.msk.ru>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <b6559efc-1a83-4a38-b446-354991b30a63@tls.msk.ru>
+To: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20240117160344.175872-1-pbonzini@redhat.com>
+ <ZaiyfDX2-hUUynhp@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <ZaiyfDX2-hUUynhp@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 9
-X-Spam_score: 0.9
-X-Spam_bar: /
-X-Spam_report: (0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,36 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/01/2024 07.03, Michael Tokarev wrote:
-> 17.01.2024 01:31, Matthew Rosato:
->> Commit ef1535901a0 (re-)introduced an issue where passthrough ISM devices
->> on s390x would enter an error state after reboot.  This was previously fixed
->> by 03451953c79e, using device reset callbacks, however the change in
->> ef1535901a0 effectively triggers a cold reset of the pci bus before the
->> device reset callbacks are triggered.
+On 1/18/24 06:09, Peter Xu wrote:
+> On Wed, Jan 17, 2024 at 05:03:44PM +0100, Paolo Bonzini wrote:
+>> Do not use uint64_t for the type of the declaration and __u64 when
+>> computing the number of elements in the array.
 >>
->> To resolve this, this series proposes to remove the use of the reset callback
->> for ISM cleanup and instead trigger ISM reset from subsystem_reset before
->> triggering bus resets.  This has to happen before the bus resets because the
->> reset of s390-pcihost will trigger reset of the PCI bus followed by the
->> s390-pci bus, and the former will trigger vfio-pci reset / the aperture-wide
->> unmap that ISM gets upset about.
->>    /s390-pcihost (s390-pcihost)
->>      /pci.0 (PCI)
->>      /s390-pcibus.0 (s390-pcibus)
->> While fixing this, it was also noted that kernel warnings could be seen that
->> indicate a guest ISC reference count error.  That's because in some reset
->> cases we were not bothering to disable AIF, but would again re-enable it 
->> after
->> the reset (causing the reference count to grow erroneously).  This was a base
->> issue that went unnoticed because the kernel previously did not detect and
->> issue a warning for this scenario.
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>>   hw/vfio/common.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 0b3352f2a9d..0da4003ecf5 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1118,7 +1118,7 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+>>   {
+>>       uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
+>>                           sizeof(struct vfio_device_feature_dma_logging_report),
+>> -                        sizeof(__u64))] = {};
+>> +                        sizeof(uint64_t))] = {};
+>>       struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
+>>       struct vfio_device_feature_dma_logging_report *report =
+>>           (struct vfio_device_feature_dma_logging_report *)feature->data;
 > 
-> Is it a -stable material, or not worth picking up for stable?
+> There seem to have other places in the sme file that reference __u64.  Are
+> we going to remove all __u64 references?  Or maybe something else?
 
-It's definitely stable material, but IIUC there will be a v2 with some minor 
-fixes.
+AFAIUI, this change is to match the types of the 'buf' array and
+the one used by sizeof.
+  
+> Copy Alex/Cedric to make sure this won't get lost..
 
-  Thomas
+Applied to vfio-next.
+
+Thanks,
+
+C.
 
 
