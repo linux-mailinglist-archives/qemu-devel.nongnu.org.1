@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA5D831B32
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E91831B33
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:15:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTAR-0003PF-5N; Thu, 18 Jan 2024 09:14:51 -0500
+	id 1rQTAT-0003T8-Ih; Thu, 18 Jan 2024 09:14:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQTA9-0003MN-UL; Thu, 18 Jan 2024 09:14:35 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rQTAE-0003Nc-5O; Thu, 18 Jan 2024 09:14:38 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rQTA8-0002Qb-1l; Thu, 18 Jan 2024 09:14:33 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1d70c150632so3907065ad.0; 
- Thu, 18 Jan 2024 06:14:31 -0800 (PST)
+ id 1rQTAB-0002Qs-Hs; Thu, 18 Jan 2024 09:14:37 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d6ed1ad986so12260405ad.3; 
+ Thu, 18 Jan 2024 06:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705587269; x=1706192069; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RzJ+FSkCBBpmxypiuqZS3Cj4/KzTzXAtpNL7NtarXAc=;
- b=E0Zep+rL4TP5THOXVyu+KkUvhk8UrcI3vYpBMm39IDFNagFY530zp2FiYY7mUhxT6A
- CBFBUpUSDvVc2h6Qk7wgVzYN49MV12YzyjoH1JZoPwRse+4m1j8ZY1BUyOIoUURFkMQQ
- OQccHfC/8/4qMGO+mP2jyAZJq8xR92niRJrtTT/U0h6oe42TwuqiCjhgTgEunDRL95JT
- VGdLYiQidLDi4le8YyhoLZaXfAL2Dz5JmHUFWC8rx8OxSDubqMV8DyTKgj/Kck40uVDy
- zYW0/skfoBqtPCchm6BecQ8+C3onT3Ma3v5Ifo8EYZKzOnx37DhWa1ZSR834F32+oGa5
- 4zaw==
+ d=gmail.com; s=20230601; t=1705587273; x=1706192073; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RNusOvjYfuLg8yHgiTdJsvx8h4MinrBOkyF4f+pOACI=;
+ b=VsqQTcS+aFUTq+8xjJusoS8WNv9MDng7t9DQjoAMDzusMx1PI7nuqumgkZpj6tyq6i
+ g8xitTQYADCR3CiKox8PuiMxf5mOuPuQUa33EWoiYduXgJw+/tjvDcZNVW1YDhP2wWK0
+ HWTPIbwTc+NCw8JH4rIYcZsUrHRcifS6BPhtZ9SBdHBngYb3Ksv80hd8R0U5IqpPhSLC
+ 5iAUnM7zzUcXCZH6PZ/r2GklgyGk00OwPFNLr2Ew3N4Gxs7MaGIjQljfAjWJlkrQ3QMz
+ LXNLMVMDqmOfjPZhTJ+nAybQ2ZC1OpRUethyQO0yegS14mmoM7eNQPxFb8v/ypH1jYAz
+ 2eUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705587269; x=1706192069;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RzJ+FSkCBBpmxypiuqZS3Cj4/KzTzXAtpNL7NtarXAc=;
- b=n5BFazGV++eLjs/kv7CgZ/Moyy7Unr9NeDg8bSugMjza+WbOz89egCxaZWHJyaZs71
- HKBnF7TvpI/2zJ3NmltLir8PjwT4FS+lPWL41Man7h7F/1oD+OGUJYkeRluvlzv8T4OZ
- jgxG77s/PtqilgNQDDEXSax6PIAMiPutW39KwB/ZvRSSaVULMTFQFtxVBaNTfZXQrxY3
- NPoQDZduHSLEES06zotZ0IyGLmdgF+Dk7P0TVnH+8VlsrMu0Eu60P8S7bO6xSNd+xqkK
- tMOtoCwsPREgmLHtESbu8EhOwXDBTX1voZUL48ONCJan0jHircBPAWQNzqNmkLKTKE/8
- YPHA==
-X-Gm-Message-State: AOJu0YyVnWds6trXQEGPnN0BUBFmMCaTh4pM1lzke/zY3UjtccCAAeIb
- 9P4cBJBKXMYxjDyjJDmfTP0B3UHysMrKSWOJnIO6vNCtaFGjEH6/jZbfToUS
-X-Google-Smtp-Source: AGHT+IET5mbNcAfxZVOgJ4JDN9+qgMqeGYr3iWGgAyHoLme+GBYaaDXwQaODmrrliXvMq1TtOezFug==
-X-Received: by 2002:a17:902:6bcc:b0:1d6:f25d:43b with SMTP id
- m12-20020a1709026bcc00b001d6f25d043bmr877182plt.15.1705587269232; 
- Thu, 18 Jan 2024 06:14:29 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705587273; x=1706192073;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RNusOvjYfuLg8yHgiTdJsvx8h4MinrBOkyF4f+pOACI=;
+ b=D0IUMdjntqZU+KO0eq1oNXH4lHxZgGACR0pdcZ4R0moC7Rf1Y14jjsEnxL+FDa5Ov0
+ vW/AB7H6+4CCS5lmqVGoGt18jR8nN3vgobW/fMJrjcGxDs4QTNDk1kW1HQCn4H+JgIlU
+ i3tFhdO5qL0d16bWpgf3cNmBihquUEuXZNzFUuy8fhEJR5HRhZ2D3nGQWjlP94Osle9d
+ pVcpYQlf4LLLYDD+47flzZ+neCXbvl5tgIda7g16jHY1lRBE6hLoVk967Vu/y69ZSMed
+ r0mB2vKVFVX9sq0JZnUW44z7ReUUbffTNaYN6T0kXqzafHfP2wQ9vwGp0qOad+z1rhyv
+ pj6A==
+X-Gm-Message-State: AOJu0Yx6DmjsO+10OEq2/wEn37XLCbK9qLAWbjIk8XtmzQ+JtA6NJDhU
+ RTOWRtPOM+ZCMmEUthyHnnlC+MoMvuNsbtkg5TNt8D8aO3mCqYwXuBvjCoIV
+X-Google-Smtp-Source: AGHT+IGn0YyUZFHpKZp7Z+CmaDw/hqClvXmIZGKLjLadPN2uD5HOy3WxqWBo0OetP00/4PlYfOIaeA==
+X-Received: by 2002:a17:902:bb97:b0:1d4:55e0:bd0e with SMTP id
+ m23-20020a170902bb9700b001d455e0bd0emr919583pls.18.1705587273353; 
+ Thu, 18 Jan 2024 06:14:33 -0800 (PST)
 Received: from wheely.local0.net (124-171-76-150.tpgi.com.au. [124.171.76.150])
  by smtp.gmail.com with ESMTPSA id
- k15-20020a170902760f00b001d4be72802esm1434781pll.150.2024.01.18.06.14.23
+ k15-20020a170902760f00b001d4be72802esm1434781pll.150.2024.01.18.06.14.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jan 2024 06:14:28 -0800 (PST)
+ Thu, 18 Jan 2024 06:14:33 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -61,14 +62,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: [PATCH 0/2] ppc: really change defaults
-Date: Fri, 19 Jan 2024 00:14:16 +1000
-Message-ID: <20240118141418.165107-1-npiggin@gmail.com>
+Subject: [PATCH 1/2] ppc/spapr: change pseries machine default to POWER10 CPU
+Date: Fri, 19 Jan 2024 00:14:17 +1000
+Message-ID: <20240118141418.165107-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240118141418.165107-1-npiggin@gmail.com>
+References: <20240118141418.165107-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,19 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Oops, these two should be with the previous series too.
+POWER10 is the latest pseries CPU.
 
-Thanks,
-Nick
-
-Nicholas Piggin (2):
-  ppc/spapr: change pseries machine default to POWER10 CPU
-  ppc/pnv: Change powernv default to powernv10
-
- hw/ppc/pnv.c   | 4 ++--
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
  hw/ppc/spapr.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index e8dabc8614..021b1a00e1 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4675,7 +4675,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+ 
+     smc->dr_lmb_enabled = true;
+     smc->update_dt_enabled = true;
+-    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
++    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     mc->has_hotpluggable_cpus = true;
+     mc->nvdimm_supported = true;
+     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
 -- 
 2.42.0
 
