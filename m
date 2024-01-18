@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F206E8311C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 04:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB6A83123E
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 05:58:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQJ1j-0004G7-4w; Wed, 17 Jan 2024 22:25:11 -0500
+	id 1rQKSn-0006Dk-L8; Wed, 17 Jan 2024 23:57:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rQJ1Y-00042V-Vs
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:25:01 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rQJ1X-0003Nu-CB
- for qemu-devel@nongnu.org; Wed, 17 Jan 2024 22:25:00 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-337cf4ac600so138287f8f.3
- for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 19:24:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705548291; x=1706153091; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+unRKaCSDZUa7wMcF5VMrkBGXnAvyrlpB3hgAdHK8PY=;
- b=QthVr5L/3rgKmJxTYz75EZDpeU+dLr0d1/PtCF7YUznvW3jDp6oCJXyJsMA9LG9VUh
- sMAXozJyAqbd2zjG1RSf8IuuyXdyiJiGY126MW7vQCrsWf6xx4qqvvESQlZK9AQu9Coh
- pzrI5GggKb+176XMObIsqd4W99i1UEQrD50xz5VEPGI4uN0dCE2ckBC3fTTF0rZMTFUy
- qzt528FYD5IZeC4zdPnATsacx79uuMwZz9dsaHf59uFGWHWpFor14tNU+PsisZ93VGUV
- olehHEfyOx5vVan+QyItkDVwTcQHlbrpEj87Sor7zzbIbLq2eMUYUc15tvZl8rGv0K4B
- qXGA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQKSl-0006Db-Es
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 23:57:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQKSk-0002No-27
+ for qemu-devel@nongnu.org; Wed, 17 Jan 2024 23:57:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705553829;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yHM45heQvvrXuElPkC5VxLz0v4NfQiClg1sVzV3llWA=;
+ b=Es1Oe0CUD9nL8ppMfNh8Eo7gklW+D7Um20q3QGzy2lLaFOPSShf4Bz87Axk0zw79Td/7Wr
+ OdiyIkDZj5UiANhT+EkdIFiZvMbBif/1uQAB+RO29YbYuRW+PxgR5dJIkGxR38AGrHnNed
+ HtDzIf7WwKqBnMviuXrTPw9ji5Dyb/0=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-76-uUOHVCHeOiGa40QDHlnWIQ-1; Wed, 17 Jan 2024 23:57:02 -0500
+X-MC-Unique: uUOHVCHeOiGa40QDHlnWIQ-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d99cdbeb9dso2876572b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Jan 2024 20:57:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705548291; x=1706153091;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+unRKaCSDZUa7wMcF5VMrkBGXnAvyrlpB3hgAdHK8PY=;
- b=ExKSn4bCHhQyFYf/eAS6xk4VhEywMcv9nZzTfPvKTWhRFQ2AK3VOQY3xcPxpXrBHeE
- qisjubwQyJABPiXBlxJGIlN7gEDodX61Z7LYnUoUv7HLw4UGq0sh8PwPFwdYKD/WDZcd
- d3DzLBElEWVCIebsbfRyPBaopSl4zlYTQ/BC3vdF+f239PON5Hs27hu4q/o8vJlMdv3O
- f3Lw1C3+C7yedtgARS3sN9SIvUtHjrrAwC2QXCkRsE0RH5JBnrUae+fpvsXd6NLSexD+
- kWMqhodGhw8hrvAvdXUKhJHRyvi7m4LThBiyhl8dJBNcwQu8fblW/dR+UT2qHpzfLBao
- Z9cA==
-X-Gm-Message-State: AOJu0YwBprz5wf06OzyTSmG1e/iuaZ4ke3Z7wIFLIM0J1vsm/lpVxl7u
- qwbzh45jEUEqGIshXi7J20jJndk5rAmiBA8OPNwzFCQ25L07nUyWzqfhI4fMJWYCyWsdvDMvc5e
- C1bQ=
-X-Google-Smtp-Source: AGHT+IFV0Em1wRTe1Kx+/W8PvRT4YiCDXPR49XTYRGqIJy5thoHK+AUPqqsQ6hGk51MA2bKDnqe9eg==
-X-Received: by 2002:adf:fa8a:0:b0:337:9953:5183 with SMTP id
- h10-20020adffa8a000000b0033799535183mr76562wrr.64.1705548291695; 
- Wed, 17 Jan 2024 19:24:51 -0800 (PST)
-Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- i2-20020adff302000000b0033788e357e1sm2894292wro.108.2024.01.17.19.24.49
+ d=1e100.net; s=20230601; t=1705553821; x=1706158621;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yHM45heQvvrXuElPkC5VxLz0v4NfQiClg1sVzV3llWA=;
+ b=xF4pb6XJSQ4rWnT87RdbujwgvAo2tjduZ5seUvtCQUcnkh/ldNiBkTQFOnR3Xj3oZv
+ 5jUfSAUgfFC+2cezoi+C7mfgwPC4SGi//JxnawjkbrUo9PVXqGsjZ5D7Jg6gD2+06/Ju
+ C+lnpweebwALSZQsRIr2QJJvHSKa0logNzC0wE1WFAna4jEvpWh59eXdAdeIse+P4kg2
+ Kkl3XF68C9HOL8PDTSoUNeByRvV4BgjHtnoilrCI3fTaGgtYM718OK0c07uwtJ+uV6yS
+ 4i5kFK/80Xm+cmNI0uUeHgAqnTWula/nA1s5RgPHp2wFIw/3N5TLscDex2FpfsdUQhXy
+ 9PCQ==
+X-Gm-Message-State: AOJu0Yzmq0sBbDbUN2dwBAvQTw3/Q3x5xJKpeUNJ0jROYMD9VaGO5+vM
+ 548O9Xr5RUIlxyKyYRqvgKjJjB6zaMUPmQZ4Fv9a1T7t6k4YZjv4+nqlQ62L+boaKamZGJYyiPK
+ Lq9H9Oi6hHyrqfNI2n5jlTUIcCvnqtO9faW17Bslgh2SWTsC459ew
+X-Received: by 2002:a05:6a20:2d2c:b0:19a:e0cc:dd46 with SMTP id
+ g44-20020a056a202d2c00b0019ae0ccdd46mr576267pzl.4.1705553821177; 
+ Wed, 17 Jan 2024 20:57:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGUf6hmoG9RPgRDW+kz5GRrsApBX2KSD2wYKngA2DdN8dW9Oz2wsowC1hyNaJ8pF8CW8h9uIQ==
+X-Received: by 2002:a05:6a20:2d2c:b0:19a:e0cc:dd46 with SMTP id
+ g44-20020a056a202d2c00b0019ae0ccdd46mr576259pzl.4.1705553820809; 
+ Wed, 17 Jan 2024 20:57:00 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ i9-20020a17090332c900b001d5ee6cb899sm467306plr.201.2024.01.17.20.56.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 17 Jan 2024 19:24:51 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>
-Subject: [PATCH v2 14/14] contrib/plugins/execlog: fix new warnings
-Date: Thu, 18 Jan 2024 07:23:59 +0400
-Message-ID: <20240118032400.3762658-15-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118032400.3762658-1-pierrick.bouvier@linaro.org>
-References: <20240118032400.3762658-1-pierrick.bouvier@linaro.org>
+ Wed, 17 Jan 2024 20:57:00 -0800 (PST)
+Date: Thu, 18 Jan 2024 12:56:58 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH] userfaultfd: use 1ULL to build ioctl masks
+Message-ID: <Zaivmghj_1kB0Arb@x1n>
+References: <20240117160313.175609-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240117160313.175609-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,42 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-‘g_pattern_match_string’ is deprecated,
-Use 'g_pattern_spec_match_string' instead.
+On Wed, Jan 17, 2024 at 05:03:13PM +0100, Paolo Bonzini wrote:
+> There is no need to use the Linux-internal __u64 type, 1ULL is
+> guaranteed to be wide enough.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-passing argument 2 of ‘g_ptr_array_add’ discards ‘const’ qualifier from
-pointer target type
+queued in staging, thanks.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- contrib/plugins/execlog.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
-index 5a4de1c93be..d12137ce5c0 100644
---- a/contrib/plugins/execlog.c
-+++ b/contrib/plugins/execlog.c
-@@ -336,8 +336,8 @@ static void registers_init(int vcpu_index)
-             for (int p = 0; p < rmatches->len; p++) {
-                 g_autoptr(GPatternSpec) pat = g_pattern_spec_new(rmatches->pdata[p]);
-                 g_autofree gchar *rd_lower = g_utf8_strdown(rd->name, -1);
--                if (g_pattern_match_string(pat, rd->name) ||
--                    g_pattern_match_string(pat, rd_lower)) {
-+                if (g_pattern_spec_match_string(pat, rd->name) ||
-+                    g_pattern_spec_match_string(pat, rd_lower)) {
-                     Register *reg = init_vcpu_register(vcpu_index, rd);
-                     g_ptr_array_add(registers, reg);
- 
-@@ -345,7 +345,7 @@ static void registers_init(int vcpu_index)
-                     if (disas_assist) {
-                         g_mutex_lock(&add_reg_name_lock);
-                         if (!g_ptr_array_find(all_reg_names, reg->name, NULL)) {
--                            g_ptr_array_add(all_reg_names, reg->name);
-+                            g_ptr_array_add(all_reg_names, (gpointer)reg->name);
-                         }
-                         g_mutex_unlock(&add_reg_name_lock);
-                     }
 -- 
-2.43.0
+Peter Xu
 
 
