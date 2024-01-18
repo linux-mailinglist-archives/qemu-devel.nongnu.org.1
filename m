@@ -2,107 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C2C83194F
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C0A831956
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 13:43:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQRhZ-0005K2-Ue; Thu, 18 Jan 2024 07:40:57 -0500
+	id 1rQRjR-0007pX-8D; Thu, 18 Jan 2024 07:42:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQRhY-0005Ji-LM
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:40:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rQRjP-0007na-Nb
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:42:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rQRhW-00033V-5C
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:40:56 -0500
+ id 1rQRjN-0003Ez-Il
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 07:42:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705581653;
+ s=mimecast20190719; t=1705581769;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jOAzZiJEHmKGMfUWMGO33XYEqMnbN+Ta0XJaY2wjvMY=;
- b=OHBGU4SRsp8xupL58uyRHw1/RrhBqOXUh6aAUkUCIR1fjTDm7Fbi1NnlF5aX1pEjQltDWu
- IcMS+nMwY/IbBgoB/9cieaY0wz3X+WxoxxnxoGR9DT/jj6gGrZ1zP1YFfOXbtHoyu2sAxv
- 9lIt8TGyFGWGl8Wt2/d2iTniWRvozzU=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Nmy/FmslpayADQrOliIvES+9OsND42okfKZwWFcVfx0=;
+ b=MdJ7dgKsOmy1oJPDuYp0p4WPBN9gr11KpuxxOXJN3K9/zfe7FgwqY60+FVSls1ME4v7os3
+ cBXexmjsR5HJ3q0oDPjS0w3WrPaQQgkQCXWSyfB7PcQAtc2soEBkACaYpOJNumWmMwxsJd
+ 7ALMc7K2xIsJgASb57UziaFRzrAfurk=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-gPJwOPRaPpGyedeqIIaIQg-1; Thu, 18 Jan 2024 07:40:46 -0500
-X-MC-Unique: gPJwOPRaPpGyedeqIIaIQg-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-5e6f42b1482so184638517b3.3
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:40:46 -0800 (PST)
+ us-mta-425-5Mdb2H8pMF6CrJ3Dc2BiyQ-1; Thu, 18 Jan 2024 07:42:47 -0500
+X-MC-Unique: 5Mdb2H8pMF6CrJ3Dc2BiyQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7833761135dso1213390385a.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 04:42:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705581646; x=1706186446;
+ d=1e100.net; s=20230601; t=1705581767; x=1706186567;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jOAzZiJEHmKGMfUWMGO33XYEqMnbN+Ta0XJaY2wjvMY=;
- b=XB9Qsx5w+A7MCHHjtNrDucrhgPMb2MzxshbCW3wDsLgTUHVQ5HMI6yAbrlS8rf156z
- f8VoNIoQZ+rl42iEWZpT6aGwkJulsiKaPKeVRZH11MQnGD+0uK49JMhjcolCRtodzmaZ
- 7iL34U5odWXhsjNE+15Jb2m4jun3IXEm50AnWFkbD4hhslETr1gPB6a+dUgh42l5TS1q
- kH4yNyGJP5XyVIngxVCj83j5bjqrZGAtiDKlZ7F4dtERC+qmIfGP6GES9/k6kTudefsp
- m9Zfv4gz3c7gfy4y+D2T+dbaKKBqYi2CGeyq7y1kC1QQdVcNkQK3gFq7HwPUYlAqKrWP
- 6V4Q==
-X-Gm-Message-State: AOJu0YzD9Ppg1elclDyp0JA3Jd/7de2IAyVWTMi8mrH2baRlV7LSMqeu
- SDy1cZ4NwYkCMfHFo0sA0EaMsJv2PI1EMUJKQgk2HHg8VsQ5uQERxF9N+FKNLoKHG7HggqAQq4Q
- vmMii0GooRcugI6NYrCAHD023yeNZXPILKfp54Sh/nn3JBR/SGAX3
-X-Received: by 2002:a25:c7c5:0:b0:dbe:ac6b:7266 with SMTP id
- w188-20020a25c7c5000000b00dbeac6b7266mr590384ybe.12.1705581646006; 
- Thu, 18 Jan 2024 04:40:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH8RBloWqolocMy2gGZ3HFEGWGUDQhLO7qBFrNe+6CimxxP5/yj4ZQullQSYuHFaJi2WrgK0A==
-X-Received: by 2002:a25:c7c5:0:b0:dbe:ac6b:7266 with SMTP id
- w188-20020a25c7c5000000b00dbeac6b7266mr590371ybe.12.1705581645696; 
- Thu, 18 Jan 2024 04:40:45 -0800 (PST)
+ bh=Nmy/FmslpayADQrOliIvES+9OsND42okfKZwWFcVfx0=;
+ b=p74zZA58VECTEb2wjYwEAIznOh7HfV7xbc76xw75niQtHnR31XIvpmpJbQ0I+2HBrB
+ +h/B+BrLrO1A71iUCPEt0qj1LueqFD3j35dj0M1Mm6PwMDiZReeGXkS6AfaS7lD/XbkO
+ 2FhQmhj0LS+m1CtYNHiRNAlp1Nsf4FPB+5GvH1OyUW6GblvXArXg8M50UiadD7yuI2lM
+ oh3wi2Qjy2ToZXf7WPkgxBNis+QWG+0icKRO1HV94Ptdr70CnPExT+a5gNaiU/uoUVYv
+ /JwPSuKR4YuHKGkofUwfeIFNYofaEeAQIFx16xY4zctwp61aJVz90G343pPBRCHTc8gL
+ ltIQ==
+X-Gm-Message-State: AOJu0YztH9IBu7IJ0n85Wn8Tm0isJoyDGXpTHPuzvHETEVnfDSH59LsZ
+ vB4Hq0OSsvuCc70Bo8VPY87uOLMpdMMeUlN7O4qVMYTudFXEp7w5iprhOa+v5X+TzCPq5neIPz/
+ hxBVxtuLx9fTH+iOPOB8uWzUhvPeUjpDj7zQIMlqHiUEndZJ6ifO7
+X-Received: by 2002:a05:620a:4608:b0:783:4e8a:6b19 with SMTP id
+ br8-20020a05620a460800b007834e8a6b19mr819130qkb.14.1705581766867; 
+ Thu, 18 Jan 2024 04:42:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHbb/685dJPVh7lLcMdvgy3UFP/vlqSMPCiuNzD0TIj4nU/Q1ITUIxQ8idDv/U9rmzWQjsCcQ==
+X-Received: by 2002:a05:620a:4608:b0:783:4e8a:6b19 with SMTP id
+ br8-20020a05620a460800b007834e8a6b19mr819110qkb.14.1705581766594; 
+ Thu, 18 Jan 2024 04:42:46 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- lx6-20020a0562145f0600b006818736f748sm896010qvb.29.2024.01.18.04.40.42
+ sq11-20020a05620a4acb00b007815c55cdf9sm5236946qkn.105.2024.01.18.04.42.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Jan 2024 04:40:45 -0800 (PST)
-Message-ID: <6148ee77-676d-4fba-966f-5440797dddd5@redhat.com>
-Date: Thu, 18 Jan 2024 13:40:40 +0100
+ Thu, 18 Jan 2024 04:42:46 -0800 (PST)
+Message-ID: <180a39fb-aa2b-4dca-9f01-adb4f392b846@redhat.com>
+Date: Thu, 18 Jan 2024 13:42:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv1 6/6] intel_iommu: add a framework to check and sync
- host IOMMU cap/ecap
+Subject: Re: [PATCH rfcv1 1/6] backends/iommufd_device: introduce IOMMUFDDevice
 Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
 References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-7-zhenzhong.duan@intel.com>
- <cf7ee2c4-6dcd-40f1-8d39-2efdc15c00d9@redhat.com>
- <SJ0PR11MB6744AC771797D3C7634817BC92712@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20240115101313.131139-2-zhenzhong.duan@intel.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744AC771797D3C7634817BC92712@SJ0PR11MB6744.namprd11.prod.outlook.com>
+In-Reply-To: <20240115101313.131139-2-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -123,277 +111,161 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 1/18/24 10:30, Duan, Zhenzhong wrote:
-> Hi Eric,
+On 1/15/24 11:13, Zhenzhong Duan wrote:
+> IOMMUFDDevice represents a device in iommufd and can be used as
+> a communication interface between devices (i.e., VFIO, VDPA) and
+> vIOMMU.
 >
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Subject: Re: [PATCH rfcv1 6/6] intel_iommu: add a framework to check and
->> sync host IOMMU cap/ecap
->>
->> Hi Zhenzhong,
->>
->> On 1/15/24 11:13, Zhenzhong Duan wrote:
->>> From: Yi Liu <yi.l.liu@intel.com>
->>>
->>> Add a framework to check and synchronize host IOMMU cap/ecap with
->>> vIOMMU cap/ecap.
->>>
->>> Currently only stage-2 translation is supported which is backed by
->>> shadow page table on host side. So we don't need exact matching of
->>> each bit of cap/ecap between vIOMMU and host. However, we can still
->>> utilize this framework to ensure compatibility of host and vIOMMU's
->>> address width at least, i.e., vIOMMU's aw_bits <= host aw_bits,
->>> which is missed before.
->>>
->>> When stage-1 translation is supported in future, a.k.a. scalable
->>> modern mode, we need to ensure compatibility of each bits. Some
->>> bits are user controllable, they should be checked with host side
->>> to ensure compatibility. Other bits are not, they should be synced
->>> into vIOMMU cap/ecap for compatibility.
->>>
->>> The sequence will be:
->>>
->>> vtd_cap_init() initializes iommu->cap/ecap. ---- vtd_cap_init()
->>> iommu->host_cap/ecap is initialized as iommu->cap/ecap.  ---- vtd_init()
->>> iommu->host_cap/ecap is checked and updated some bits with host
->> cap/ecap. ---- vtd_sync_hw_info()
->>> iommu->cap/ecap is finalized as iommu->host_cap/ecap.  ----
->> vtd_machine_done_hook()
->>> iommu->host_cap/ecap is a temporary storage to hold intermediate value
->>> when synthesize host cap/ecap and vIOMMU's initial configured cap/ecap.
->>>
->>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>  include/hw/i386/intel_iommu.h |  4 ++
->>>  hw/i386/intel_iommu.c         | 78
->> +++++++++++++++++++++++++++++++----
->>>  2 files changed, 75 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/include/hw/i386/intel_iommu.h
->> b/include/hw/i386/intel_iommu.h
->>> index c65fdde56f..b8abbcce12 100644
->>> --- a/include/hw/i386/intel_iommu.h
->>> +++ b/include/hw/i386/intel_iommu.h
->>> @@ -292,6 +292,9 @@ struct IntelIOMMUState {
->>>      uint64_t cap;                   /* The value of capability reg */
->>>      uint64_t ecap;                  /* The value of extended capability reg */
->>>
->>> +    uint64_t host_cap;              /* The value of host capability reg */
->>> +    uint64_t host_ecap;             /* The value of host ext-capability reg */
->>> +
->>>      uint32_t context_cache_gen;     /* Should be in [1,MAX] */
->>>      GHashTable *iotlb;              /* IOTLB */
->>>
->>> @@ -314,6 +317,7 @@ struct IntelIOMMUState {
->>>      bool dma_translation;           /* Whether DMA translation supported */
->>>      bool pasid;                     /* Whether to support PASID */
->>>
->>> +    bool cap_finalized;             /* Whether VTD capability finalized */
->>>      /*
->>>       * Protects IOMMU states in general.  Currently it protects the
->>>       * per-IOMMU IOTLB cache, and context entry cache in
->> VTDAddressSpace.
->>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->>> index 4c1d058ebd..be03fcbf52 100644
->>> --- a/hw/i386/intel_iommu.c
->>> +++ b/hw/i386/intel_iommu.c
->>> @@ -3819,6 +3819,47 @@ VTDAddressSpace
->> *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
->>>      return vtd_dev_as;
->>>  }
->>>
->>> +static bool vtd_sync_hw_info(IntelIOMMUState *s, struct
->> iommu_hw_info_vtd *vtd,
->>> +                             Error **errp)
->>> +{
->>> +    uint64_t addr_width;
->>> +
->>> +    addr_width = (vtd->cap_reg >> 16) & 0x3fULL;
->>> +    if (s->aw_bits > addr_width) {
->>> +        error_setg(errp, "User aw-bits: %u > host address width: %lu",
->>> +                   s->aw_bits, addr_width);
->>> +        return false;
->>> +    }
->>> +
->>> +    /* TODO: check and sync host cap/ecap into vIOMMU cap/ecap */
->>> +
->>> +    return true;
->>> +}
->>> +
->>> +/*
->>> + * virtual VT-d which wants nested needs to check the host IOMMU
->>> + * nesting cap info behind the assigned devices. Thus that vIOMMU
->>> + * could bind guest page table to host.
->>> + */
->>> +static bool vtd_check_idev(IntelIOMMUState *s, IOMMUFDDevice *idev,
->>> +                           Error **errp)
->>> +{
->>> +    struct iommu_hw_info_vtd vtd;
->>> +    enum iommu_hw_info_type type =
->> IOMMU_HW_INFO_TYPE_INTEL_VTD;
->>> +
->>> +    if (iommufd_device_get_info(idev, &type, sizeof(vtd), &vtd)) {
->>> +        error_setg(errp, "Failed to get IOMMU capability!!!");
->>> +        return false;
->>> +    }
->>> +
->>> +    if (type != IOMMU_HW_INFO_TYPE_INTEL_VTD) {
->>> +        error_setg(errp, "IOMMU hardware is not compatible!!!");
->>> +        return false;
->>> +    }
->>> +
->>> +    return vtd_sync_hw_info(s, &vtd, errp);
->>> +}
->>> +
->>>  static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int32_t
->> devfn,
->>>                                      IOMMUFDDevice *idev, Error **errp)
->>>  {
->>> @@ -3837,6 +3878,10 @@ static int vtd_dev_set_iommu_device(PCIBus
->> *bus, void *opaque, int32_t devfn,
->>>          return 0;
->>>      }
->>>
->>> +    if (!vtd_check_idev(s, idev, errp)) {In
->> In
->> [RFC 0/7] VIRTIO-IOMMU/VFIO: Fix host iommu geometry handling for
->> hotplugged devices
->> https://lore.kernel.org/all/20240117080414.316890-1-
->> eric.auger@redhat.com/
->>
->> I also attempt to pass host iommu info to the virtio-iommu but with
->> legacy BE.
-> I think your patch works with iommufd BE too😊 Because iommufd BE
-> also fills bcontainer->iova_ranges in iommufd_cdev_get_info_iova_range().
-correct. I wanted to emphasize that we also have the need to pass host
-iommu info in legacy mode for instance. In this series you introduce an
-object that works with the iommufd backed but I think if we go this way
-we would need another one for the legacy device. So maybe introducing a
-base object derived into 2 ones may be the most appropriate? Maybe,
-given the assumption that we will use iommufd for new use cases this
-legacy object will implement much fewer interfaces but still.
+> Currently it includes iommufd handler and device id information
+> which could be used by vIOMMU to get hw IOMMU information.
 >
->> In my case I want to pass the reserved memory regions which
->> also model the aw.
->> So this is a pretty similar use case.
-> Yes.
+> In future nested translation support, vIOMMU is going to have
+> more iommufd related operations like allocate hwpt for a device,
+> attach/detach hwpt, etc. So IOMMUFDDevice will be further expanded.
 >
->> Why don't we pass the pointer to an opaque iommu_hw_info instead,
->> through the PCIIOMMUOps?
-> Passing iommu_hw_info is ok for this series, but we want more from
-> IOMMUFDDevice in nesting series. I.e., allocate/free ioas/hwpt,
-> attach/detach from hwpt, get dirty bitmap, etc. It's more flexible to
-> let vIOMMU get what it want itself.
-OK, would be interesting to define the class for this object. Worth to
-be introduced either in the cover letter or in the 1st patch
+> IOMMUFDDevice is willingly not a QOM object because we don't want
+> it to be visible from the user interface.
+>
+> Introduce a helper iommufd_device_init to initialize IOMMUFDDevice.
+>
+> Originally-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  MAINTAINERS                     |  4 +--
+>  include/sysemu/iommufd_device.h | 31 ++++++++++++++++++++
+>  backends/iommufd_device.c       | 50 +++++++++++++++++++++++++++++++++
+Maybe it is still time to move the iommufd files in a sepate dir, under
+hw at the same level as vfio.
+
+Thoughts?
 
 Eric
+>  backends/meson.build            |  2 +-
+>  4 files changed, 84 insertions(+), 3 deletions(-)
+>  create mode 100644 include/sysemu/iommufd_device.h
+>  create mode 100644 backends/iommufd_device.c
 >
->>
->>
->>> +        return -1;
->>> +    }
->>> +
->>>      vtd_iommu_lock(s);
->>>
->>>      vtd_idev = g_hash_table_lookup(s->vtd_iommufd_dev, &key);
->>> @@ -4071,10 +4116,11 @@ static void vtd_init(IntelIOMMUState *s)
->>>  {
->>>      X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
->>>
->>> -    memset(s->csr, 0, DMAR_REG_SIZE);
->>> -    memset(s->wmask, 0, DMAR_REG_SIZE);
->>> -    memset(s->w1cmask, 0, DMAR_REG_SIZE);
->>> -    memset(s->womask, 0, DMAR_REG_SIZE);
->>> +    /* CAP/ECAP are initialized in machine create done stage */
->>> +    memset(s->csr + DMAR_GCMD_REG, 0, DMAR_REG_SIZE -
->> DMAR_GCMD_REG);
->>> +    memset(s->wmask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE -
->> DMAR_GCMD_REG);
->>> +    memset(s->w1cmask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE -
->> DMAR_GCMD_REG);
->>> +    memset(s->womask + DMAR_GCMD_REG, 0, DMAR_REG_SIZE -
->> DMAR_GCMD_REG);
->> This change is not documented in the commit msg.
->> Sorry I don't get why this is needed?
-> I'll doc it. Above we have one line to explain when cap/ecap are initialized.
-> vtd_init() is called in qemu init and guest reset. In qemu init,
-> Cap/ecap is finalized, after that we don't want cap/ecap to be changed.
-> So we bypass change to cap/ecap here.
->
->>>      s->root = 0;
->>>      s->root_scalable = false;
->>> @@ -4110,13 +4156,16 @@ static void vtd_init(IntelIOMMUState *s)
->>>          vtd_spte_rsvd_large[3] &= ~VTD_SPTE_SNP;
->>>      }
->>>
->>> -    vtd_cap_init(s);
->>> +    if (!s->cap_finalized) {
->>> +        vtd_cap_init(s);
->>> +        s->host_cap = s->cap;
->>> +        s->host_ecap = s->ecap;
->>> +    }
->>> +
->>>      vtd_reset_caches(s);
->>>
->>>      /* Define registers with default values and bit semantics */
->>>      vtd_define_long(s, DMAR_VER_REG, 0x10UL, 0, 0);
->>> -    vtd_define_quad(s, DMAR_CAP_REG, s->cap, 0, 0);
->>> -    vtd_define_quad(s, DMAR_ECAP_REG, s->ecap, 0, 0);
->>>      vtd_define_long(s, DMAR_GCMD_REG, 0, 0xff800000UL, 0);
->>>      vtd_define_long_wo(s, DMAR_GCMD_REG, 0xff800000UL);
->>>      vtd_define_long(s, DMAR_GSTS_REG, 0, 0, 0);
->>> @@ -4241,6 +4290,12 @@ static bool
->> vtd_decide_config(IntelIOMMUState *s, Error **errp)
->>>      return true;
->>>  }
->>>
->>> +static void vtd_setup_capability_reg(IntelIOMMUState *s)
->>> +{
->>> +    vtd_define_quad(s, DMAR_CAP_REG, s->cap, 0, 0);
->>> +    vtd_define_quad(s, DMAR_ECAP_REG, s->ecap, 0, 0);
->>> +}
->>> +
->>>  static int vtd_machine_done_notify_one(Object *child, void *unused)
->>>  {
->>>      IntelIOMMUState *iommu =
->> INTEL_IOMMU_DEVICE(x86_iommu_get_default());
->>> @@ -4259,6 +4314,14 @@ static int
->> vtd_machine_done_notify_one(Object *child, void *unused)
->>>  static void vtd_machine_done_hook(Notifier *notifier, void *unused)
->>>  {
->>> +    IntelIOMMUState *iommu =
->> INTEL_IOMMU_DEVICE(x86_iommu_get_default());
->>> +
->>> +    iommu->cap = iommu->host_cap;
->>> +    iommu->ecap = iommu->host_ecap;
->>> +    iommu->cap_finalized = true;
->> I don't think you can change the defaults like this without taking care
->> of compats (migration).
-> Will bump vtd_vmstate .version_id works?
->
-> Thanks
-> Zhenzhong
->
->> Thanks
->>
->> Eric
->>> +
->>> +    vtd_setup_capability_reg(iommu);
->>> +
->>>      object_child_foreach_recursive(object_get_root(),
->>>                                     vtd_machine_done_notify_one, NULL);
->>>  }
->>> @@ -4292,6 +4355,7 @@ static void vtd_realize(DeviceState *dev, Error
->> **errp)
->>>      QLIST_INIT(&s->vtd_as_with_notifiers);
->>>      qemu_mutex_init(&s->iommu_lock);
->>> +    s->cap_finalized = false;
->>>      memory_region_init_io(&s->csrmem, OBJECT(s), &vtd_mem_ops, s,
->>>                            "intel_iommu", DMAR_REG_SIZE);
->>>      memory_region_add_subregion(get_system_memory(),
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 00ec1f7eca..606dfeb2b1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2171,8 +2171,8 @@ M: Yi Liu <yi.l.liu@intel.com>
+>  M: Eric Auger <eric.auger@redhat.com>
+>  M: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>  S: Supported
+> -F: backends/iommufd.c
+> -F: include/sysemu/iommufd.h
+> +F: backends/iommufd*.c
+> +F: include/sysemu/iommufd*.h
+>  F: include/qemu/chardev_open.h
+>  F: util/chardev_open.c
+>  F: docs/devel/vfio-iommufd.rst
+> diff --git a/include/sysemu/iommufd_device.h b/include/sysemu/iommufd_device.h
+> new file mode 100644
+> index 0000000000..795630324b
+> --- /dev/null
+> +++ b/include/sysemu/iommufd_device.h
+> @@ -0,0 +1,31 @@
+> +/*
+> + * IOMMUFD Device
+> + *
+> + * Copyright (C) 2024 Intel Corporation.
+> + *
+> + * Authors: Yi Liu <yi.l.liu@intel.com>
+> + *          Zhenzhong Duan <zhenzhong.duan@intel.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef SYSEMU_IOMMUFD_DEVICE_H
+> +#define SYSEMU_IOMMUFD_DEVICE_H
+> +
+> +#include <linux/iommufd.h>
+> +#include "sysemu/iommufd.h"
+> +
+> +typedef struct IOMMUFDDevice IOMMUFDDevice;
+> +
+> +/* This is an abstraction of host IOMMUFD device */
+> +struct IOMMUFDDevice {
+> +    IOMMUFDBackend *iommufd;
+> +    uint32_t dev_id;
+> +};
+> +
+> +int iommufd_device_get_info(IOMMUFDDevice *idev,
+> +                            enum iommu_hw_info_type *type,
+> +                            uint32_t len, void *data);
+> +void iommufd_device_init(void *_idev, size_t instance_size,
+> +                         IOMMUFDBackend *iommufd, uint32_t dev_id);
+> +#endif
+> diff --git a/backends/iommufd_device.c b/backends/iommufd_device.c
+> new file mode 100644
+> index 0000000000..f6e7ca1dbf
+> --- /dev/null
+> +++ b/backends/iommufd_device.c
+> @@ -0,0 +1,50 @@
+> +/*
+> + * QEMU abstract of Host IOMMU
+> + *
+> + * Copyright (C) 2024 Intel Corporation.
+> + *
+> + * Authors: Yi Liu <yi.l.liu@intel.com>
+> + *          Zhenzhong Duan <zhenzhong.duan@intel.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <sys/ioctl.h>
+> +#include "qemu/osdep.h"
+> +#include "qemu/error-report.h"
+> +#include "sysemu/iommufd_device.h"
+> +
+> +int iommufd_device_get_info(IOMMUFDDevice *idev,
+> +                            enum iommu_hw_info_type *type,
+> +                            uint32_t len, void *data)
+> +{
+> +    struct iommu_hw_info info = {
+> +        .size = sizeof(info),
+> +        .flags = 0,
+> +        .dev_id = idev->dev_id,
+> +        .data_len = len,
+> +        .__reserved = 0,
+> +        .data_uptr = (uintptr_t)data,
+> +    };
+> +    int ret;
+> +
+> +    ret = ioctl(idev->iommufd->fd, IOMMU_GET_HW_INFO, &info);
+> +    if (ret) {
+> +        error_report("Failed to get info %m");
+> +    } else {
+> +        *type = info.out_data_type;
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+> +void iommufd_device_init(void *_idev, size_t instance_size,
+> +                         IOMMUFDBackend *iommufd, uint32_t dev_id)
+> +{
+> +    IOMMUFDDevice *idev = (IOMMUFDDevice *)_idev;
+> +
+> +    g_assert(sizeof(IOMMUFDDevice) <= instance_size);
+> +
+> +    idev->iommufd = iommufd;
+> +    idev->dev_id = dev_id;
+> +}
+> diff --git a/backends/meson.build b/backends/meson.build
+> index 8b2b111497..c437cdb363 100644
+> --- a/backends/meson.build
+> +++ b/backends/meson.build
+> @@ -24,7 +24,7 @@ if have_vhost_user
+>    system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('vhost-user.c'))
+>  endif
+>  system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost.c'))
+> -system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c'))
+> +system_ss.add(when: 'CONFIG_IOMMUFD', if_true: files('iommufd.c', 'iommufd_device.c'))
+>  if have_vhost_user_crypto
+>    system_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('cryptodev-vhost-user.c'))
+>  endif
 
 
