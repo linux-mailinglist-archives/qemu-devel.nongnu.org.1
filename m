@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683AE831365
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAF3831364
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:55:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNF9-0001ZR-GL; Thu, 18 Jan 2024 02:55:19 -0500
+	id 1rQNFA-0001ck-WD; Thu, 18 Jan 2024 02:55:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNF7-0001X4-7s; Thu, 18 Jan 2024 02:55:17 -0500
+ id 1rQNF7-0001XL-KC; Thu, 18 Jan 2024 02:55:17 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNF5-0007cg-9A; Thu, 18 Jan 2024 02:55:16 -0500
+ id 1rQNF5-0007cr-LC; Thu, 18 Jan 2024 02:55:17 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EB9B34503B;
- Thu, 18 Jan 2024 10:54:35 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 07E1E4503C;
+ Thu, 18 Jan 2024 10:54:36 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 20B97661A4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 32CA0661A5;
  Thu, 18 Jan 2024 10:54:06 +0300 (MSK)
-Received: (nullmailer pid 2381679 invoked by uid 1000);
+Received: (nullmailer pid 2381682 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Natanael Copa <ncopa@alpinelinux.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 17/38] tcg/ppc: Use new registers for LQ destination
-Date: Thu, 18 Jan 2024 10:52:44 +0300
-Message-Id: <20240118075404.2381519-17-mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 18/38] util: fix build with musl libc on ppc64le
+Date: Thu, 18 Jan 2024 10:52:45 +0300
+Message-Id: <20240118075404.2381519-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,143 +60,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Natanael Copa <ncopa@alpinelinux.org>
 
-LQ has a constraint that RTp != RA, else SIGILL.
-Therefore, force the destination of INDEX_op_qemu_*_ld128 to be a
-new register pair, so that it cannot overlap the input address.
-
-This requires new support in process_op_defs and tcg_reg_alloc_op.
+Use PPC_FEATURE2_ISEL and PPC_FEATURE2_VEC_CRYPTO from linux headers
+instead of the GNU specific PPC_FEATURE2_HAS_ISEL and
+PPC_FEATURE2_HAS_VEC_CRYPTO. This fixes build with musl libc.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 526cd4ec01f ("tcg/ppc: Support 128-bit load/store")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240102013456.131846-1-richard.henderson@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1861
+Signed-off-by: Natanael Copa <ncopa@alpinelinux.org>
+Fixes: 63922f467a ("tcg/ppc: Replace HAVE_ISEL macro with a variable")
+Fixes: 68f340d4cd ("tcg/ppc: Enable Altivec detection")
+Message-Id: <20231219105236.7059-1-ncopa@alpinelinux.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit ca5bed07d0e7e0530c2cafbc134c4f74e582ac50)
+(cherry picked from commit 1d513e06d96697f44de4a1b85c6ff627c443e306)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/ppc/tcg-target-con-set.h b/tcg/ppc/tcg-target-con-set.h
-index bbd7b21247..cb47b29452 100644
---- a/tcg/ppc/tcg-target-con-set.h
-+++ b/tcg/ppc/tcg-target-con-set.h
-@@ -35,7 +35,7 @@ C_O1_I3(v, v, v, v)
- C_O1_I4(r, r, ri, rZ, rZ)
- C_O1_I4(r, r, r, ri, ri)
- C_O2_I1(r, r, r)
--C_O2_I1(o, m, r)
-+C_N1O1_I1(o, m, r)
- C_O2_I2(r, r, r, r)
- C_O2_I4(r, r, rI, rZM, r, r)
- C_O2_I4(r, r, r, r, rI, rZM)
-diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 856c3b18f5..54816967bc 100644
---- a/tcg/ppc/tcg-target.c.inc
-+++ b/tcg/ppc/tcg-target.c.inc
-@@ -2595,6 +2595,7 @@ static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg datalo, TCGReg datahi,
-         tcg_debug_assert(!need_bswap);
-         tcg_debug_assert(datalo & 1);
-         tcg_debug_assert(datahi == datalo - 1);
-+        tcg_debug_assert(!is_ld || datahi != index);
-         insn = is_ld ? LQ : STQ;
-         tcg_out32(s, insn | TAI(datahi, index, 0));
-     } else {
-@@ -4071,7 +4072,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+diff --git a/util/cpuinfo-ppc.c b/util/cpuinfo-ppc.c
+index 1ea3db0ac8..b2d8893a06 100644
+--- a/util/cpuinfo-ppc.c
++++ b/util/cpuinfo-ppc.c
+@@ -6,10 +6,10 @@
+ #include "qemu/osdep.h"
+ #include "host/cpuinfo.h"
  
-     case INDEX_op_qemu_ld_a32_i128:
-     case INDEX_op_qemu_ld_a64_i128:
--        return C_O2_I1(o, m, r);
-+        return C_N1O1_I1(o, m, r);
-     case INDEX_op_qemu_st_a32_i128:
-     case INDEX_op_qemu_st_a64_i128:
-         return C_O0_I3(o, m, r);
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 896a36caeb..e2c38f6d11 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -653,6 +653,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
- #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4),
++#include <asm/cputable.h>
+ #ifdef CONFIG_GETAUXVAL
+ # include <sys/auxv.h>
+ #else
+-# include <asm/cputable.h>
+ # include "elf.h"
+ #endif
  
- #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2),
-+#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1),
- #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1),
+@@ -40,7 +40,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         info |= CPUINFO_V2_06;
+     }
  
- #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1),
-@@ -676,6 +677,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
- #undef C_O1_I3
- #undef C_O1_I4
- #undef C_N1_I2
-+#undef C_N1O1_I1
- #undef C_N2_I1
- #undef C_O2_I1
- #undef C_O2_I2
-@@ -696,6 +698,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
- #define C_O1_I4(O1, I1, I2, I3, I4)     { .args_ct_str = { #O1, #I1, #I2, #I3, #I4 } },
- 
- #define C_N1_I2(O1, I1, I2)             { .args_ct_str = { "&" #O1, #I1, #I2 } },
-+#define C_N1O1_I1(O1, O2, I1)           { .args_ct_str = { "&" #O1, #O2, #I1 } },
- #define C_N2_I1(O1, O2, I1)             { .args_ct_str = { "&" #O1, "&" #O2, #I1 } },
- 
- #define C_O2_I1(O1, O2, I1)             { .args_ct_str = { #O1, #O2, #I1 } },
-@@ -718,6 +721,7 @@ static const TCGTargetOpDef constraint_sets[] = {
- #undef C_O1_I3
- #undef C_O1_I4
- #undef C_N1_I2
-+#undef C_N1O1_I1
- #undef C_N2_I1
- #undef C_O2_I1
- #undef C_O2_I2
-@@ -738,6 +742,7 @@ static const TCGTargetOpDef constraint_sets[] = {
- #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4)
- 
- #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2)
-+#define C_N1O1_I1(O1, O2, I1)           C_PFX3(c_n1o1_i1_, O1, O2, I1)
- #define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1)
- 
- #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1)
-@@ -2988,6 +2993,7 @@ static void process_op_defs(TCGContext *s)
-                     .pair = 2,
-                     .pair_index = o,
-                     .regs = def->args_ct[o].regs << 1,
-+                    .newreg = def->args_ct[o].newreg,
-                 };
-                 def->args_ct[o].pair = 1;
-                 def->args_ct[o].pair_index = i;
-@@ -3004,6 +3010,7 @@ static void process_op_defs(TCGContext *s)
-                     .pair = 1,
-                     .pair_index = o,
-                     .regs = def->args_ct[o].regs >> 1,
-+                    .newreg = def->args_ct[o].newreg,
-                 };
-                 def->args_ct[o].pair = 2;
-                 def->args_ct[o].pair_index = i;
-@@ -5036,17 +5043,21 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
-                 break;
- 
-             case 1: /* first of pair */
--                tcg_debug_assert(!arg_ct->newreg);
-                 if (arg_ct->oalias) {
-                     reg = new_args[arg_ct->alias_index];
--                    break;
-+                } else if (arg_ct->newreg) {
-+                    reg = tcg_reg_alloc_pair(s, arg_ct->regs,
-+                                             i_allocated_regs | o_allocated_regs,
-+                                             output_pref(op, k),
-+                                             ts->indirect_base);
-+                } else {
-+                    reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
-+                                             output_pref(op, k),
-+                                             ts->indirect_base);
-                 }
--                reg = tcg_reg_alloc_pair(s, arg_ct->regs, o_allocated_regs,
--                                         output_pref(op, k), ts->indirect_base);
-                 break;
- 
-             case 2: /* second of pair */
--                tcg_debug_assert(!arg_ct->newreg);
-                 if (arg_ct->oalias) {
-                     reg = new_args[arg_ct->alias_index];
-                 } else {
+-    if (hwcap2 & PPC_FEATURE2_HAS_ISEL) {
++    if (hwcap2 & PPC_FEATURE2_ISEL) {
+         info |= CPUINFO_ISEL;
+     }
+     if (hwcap & PPC_FEATURE_HAS_ALTIVEC) {
+@@ -53,7 +53,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+              * always have both anyway, since VSX came with Power7
+              * and crypto came with Power8.
+              */
+-            if (hwcap2 & PPC_FEATURE2_HAS_VEC_CRYPTO) {
++            if (hwcap2 & PPC_FEATURE2_VEC_CRYPTO) {
+                 info |= CPUINFO_CRYPTO;
+             }
+         }
 -- 
 2.39.2
 
