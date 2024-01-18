@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45C8831375
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C2B831396
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 08:59:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQNHF-0001zJ-Sl; Thu, 18 Jan 2024 02:57:30 -0500
+	id 1rQNHH-0002Nf-7L; Thu, 18 Jan 2024 02:57:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGv-0001p0-Vy; Thu, 18 Jan 2024 02:57:10 -0500
+ id 1rQNH0-0001wF-6J; Thu, 18 Jan 2024 02:57:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQNGu-00080r-9n; Thu, 18 Jan 2024 02:57:09 -0500
+ id 1rQNGy-000817-36; Thu, 18 Jan 2024 02:57:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 22E4C4504D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 345C34504E;
  Thu, 18 Jan 2024 10:54:37 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4C7CA661B5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5F164661B6;
  Thu, 18 Jan 2024 10:54:07 +0300 (MSK)
-Received: (nullmailer pid 2381732 invoked by uid 1000);
+Received: (nullmailer pid 2381735 invoked by uid 1000);
  Thu, 18 Jan 2024 07:54:05 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
- Bruno Haible <bruno@clisp.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 34/38] target/hppa: Avoid accessing %gr0 when raising
- exception
-Date: Thu, 18 Jan 2024 10:53:01 +0300
-Message-Id: <20240118075404.2381519-34-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 35/38] target/hppa: Export function
+ hppa_set_ior_and_isr()
+Date: Thu, 18 Jan 2024 10:53:02 +0300
+Message-Id: <20240118075404.2381519-35-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240118102508@cover.tls.msk.ru>
@@ -63,30 +63,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The value of unwind_breg may reference register %r0, but we need to avoid
-accessing gr0 directly and use the value 0 instead.
-
-At runtime I've seen unwind_breg being zero with the Linux kernel when
-rfi is used to jump to smp_callin().
+Move functionality to set IOR and ISR on fault into own
+function. This will be used by follow-up patches.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Bruno Haible <bruno@clisp.org>
-(cherry picked from commit 5915b67013eb8c3a84e3ef05e6ba4eae55ccd173)
+(cherry picked from commit 3824e0d643f34ee09e0cc75190c0c4b60928b78c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 8be45c69c9..9556e95fab 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -385,6 +385,7 @@ void hppa_cpu_dump_state(CPUState *cs, FILE *f, int);
+ #ifndef CONFIG_USER_ONLY
+ void hppa_ptlbe(CPUHPPAState *env);
+ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr);
++void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled);
+ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                        MMUAccessType access_type, int mmu_idx,
+                        bool probe, uintptr_t retaddr);
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 4c28c58ee9..1387f4a64b 100644
+index 1387f4a64b..4fcc612754 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -341,7 +341,7 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
+@@ -305,14 +305,8 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     return excp == EXCP_DTLB_MISS ? -1 : phys;
+ }
  
-                 cpu_restore_state(cs, retaddr);
+-G_NORETURN static void
+-raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
+-                         vaddr addr, bool mmu_disabled)
++void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled)
+ {
+-    CPUState *cs = env_cpu(env);
+-
+-    cs->exception_index = excp;
+-
+     if (env->psw & PSW_Q) {
+         /*
+          * For pa1.x, the offset and space never overlap, and so we
+@@ -339,16 +333,23 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
+                  */
+                 uint64_t b;
  
--                b = env->gr[env->unwind_breg];
-+                b = env->unwind_breg ? env->gr[env->unwind_breg] : 0;
+-                cpu_restore_state(cs, retaddr);
+-
+                 b = env->unwind_breg ? env->gr[env->unwind_breg] : 0;
                  b >>= (env->psw & PSW_W ? 62 : 30);
                  env->cr[CR_IOR] |= b << 62;
+-
+-                cpu_loop_exit(cs);
+             }
+         }
+     }
++}
++
++G_NORETURN static void
++raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
++                         vaddr addr, bool mmu_disabled)
++{
++    CPUState *cs = env_cpu(env);
++
++    cs->exception_index = excp;
++    hppa_set_ior_and_isr(env, addr, mmu_disabled);
++
+     cpu_loop_exit_restore(cs, retaddr);
+ }
  
 -- 
 2.39.2
