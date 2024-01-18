@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E610F831B8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3203831B83
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:38:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTX0-00052t-TJ; Thu, 18 Jan 2024 09:38:10 -0500
+	id 1rQTWv-0004z7-Pf; Thu, 18 Jan 2024 09:38:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWi-0004xx-R8
+ id 1rQTWi-0004xy-SF
  for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:58 -0500
 Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rQTWc-0004TI-VI
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:49 -0500
+ id 1rQTWe-0004Sm-4I
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:37:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705588667; x=1737124667;
+ t=1705588668; x=1737124668;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=raK/CZUO9BGxPhxaK6FT5X9pHU+bYuQa1Xhf/KvW4Sk=;
- b=h/yOhP5D5Hxl7z6Zb2/vJQbfnCuQHIlL41qxDMgRVR5/kyIXYk5/yKvv
- N3/jRfZo9YE9BLxH08YLrS+k3CKbXy9aHxGKsZlkNa9lwjVHQQOWXtyMe
- T+p1fcKfVJbPtD96S2Czaoda4dNKABAQ8NJGnUHlwcT+0kjjVN2wvCFQx
- 3PT2b/g/8nQBQMobHNN5CmovfeI0viEsXCjwp6xKYhJbp9SCpquKL3GkD
- YoeAF2xLrT12T35Zjvtb1cSQfyZ5qF6IRh1UFkjqPH+P5L9dtfa4S8DRG
- Dsl6ryxvEYZgPVJCFMqYSF43dcUNScAXsluwDsNh502shPcztMRiD9wQH w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057100"
-X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057100"
+ bh=1SWHqFeXzNGnco53f5tEtcR6EUCJeAlBwzP8tS2mFJo=;
+ b=fEb1BFh61P3IFd21l2VkHinrIJnnRKhxLUQTvMCRLIajazOwHtUHnfcc
+ rDYI4hTk/U5idfk2w9oGUz0ZmFGAz2oC+4eQj3uriGuAwnlB7CTo9RL5k
+ P5XTPYDXqX3ryadOdOeU2Z9s7LCt7MeeIi2iIuxGqvQjx1lnDQaGGahtE
+ /au5bs3okGZiGKhummgX62zyyOe/e2dx/IF4MBsRLY5eMBa4AiDobEfFw
+ lCkii7zDTAQX7WHQlamUh96eyiKKdCAHb2/pcxyKZbl5KYgeyVQzqXBAo
+ Cf9xuAcufHVaKrk4hUPip7E3ti8y7MS923E/kB6fsg4gnLqXkfHOljdaX Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="19057150"
+X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; d="scan'208";a="19057150"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 06:36:12 -0800
+ 18 Jan 2024 06:36:15 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,203,1701158400"; 
-   d="scan'208";a="329281"
+   d="scan'208";a="329305"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:10 -0800
+ by orviesa005.jf.intel.com with ESMTP; 18 Jan 2024 06:36:12 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -47,9 +47,10 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  Yanan Wang <wangyanan55@huawei.com>
 Cc: qemu-devel@nongnu.org, Xiaoling Song <xiaoling.song@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/8] tests/unit/test-smp-parse.c: Bump max_cpus to 4096
-Date: Thu, 18 Jan 2024 22:48:51 +0800
-Message-Id: <20240118144857.2124034-3-zhao1.liu@linux.intel.com>
+Subject: [PATCH 3/8] tests/unit/test-smp-parse.c: Make test cases aware of the
+ book/drawer
+Date: Thu, 18 Jan 2024 22:48:52 +0800
+Message-Id: <20240118144857.2124034-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
 References: <20240118144857.2124034-1-zhao1.liu@linux.intel.com>
@@ -80,51 +81,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-PC mahine is trying to support up to 4096 vCPUs [1], so it's necessary
-to bump max_cpus in test-smp-parse to 4096 to cover the topological
-needs of future machines.
+Currently, -smp supports 2 more new levels: book and drawer.
 
-[1]: https://lore.kernel.org/qemu-devel/20231208122611.32311-1-anisinha@redhat.com/
+It is necessary to consider the effects of book and drawer in the test
+cases to ensure that the calculations are correct. This is also the
+preparation to add new book and drawer test cases.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- tests/unit/test-smp-parse.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tests/unit/test-smp-parse.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 20c663a006b3..55ba13bf7d15 100644
+index 55ba13bf7d15..a8eb3bbb35ed 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -20,8 +20,8 @@
- #define T true
- #define F false
+@@ -384,6 +384,8 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+     return g_strdup_printf(
+         "(SMPConfiguration) {\n"
+         "    .has_cpus     = %5s, cpus     = %" PRId64 ",\n"
++        "    .has_drawers  = %5s, drawers  = %" PRId64 ",\n"
++        "    .has_books    = %5s, books    = %" PRId64 ",\n"
+         "    .has_sockets  = %5s, sockets  = %" PRId64 ",\n"
+         "    .has_dies     = %5s, dies     = %" PRId64 ",\n"
+         "    .has_clusters = %5s, clusters = %" PRId64 ",\n"
+@@ -392,6 +394,8 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         "    .has_maxcpus  = %5s, maxcpus  = %" PRId64 ",\n"
+         "}",
+         config->has_cpus ? "true" : "false", config->cpus,
++        config->has_drawers ? "true" : "false", config->drawers,
++        config->has_books ? "true" : "false", config->books,
+         config->has_sockets ? "true" : "false", config->sockets,
+         config->has_dies ? "true" : "false", config->dies,
+         config->has_clusters ? "true" : "false", config->clusters,
+@@ -404,10 +408,10 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+ static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
+ {
+     /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
+-    if (!topo->sockets) {
++    if (!topo->drawers || !topo->books || !topo->sockets) {
+         return 0;
+     } else {
+-        return topo->max_cpus / topo->sockets;
++        return topo->max_cpus / topo->drawers / topo->books / topo->sockets;
+     }
+ }
  
--#define MIN_CPUS 1   /* set the min CPUs supported by the machine as 1 */
--#define MAX_CPUS 512 /* set the max CPUs supported by the machine as 512 */
-+#define MIN_CPUS 1    /* set the min CPUs supported by the machine as 1 */
-+#define MAX_CPUS 4096 /* set the max CPUs supported by the machine as 4096 */
+@@ -429,6 +433,8 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+     return g_strdup_printf(
+         "(CpuTopology) {\n"
+         "    .cpus               = %u,\n"
++        "    .drawers            = %u,\n"
++        "    .books              = %u,\n"
+         "    .sockets            = %u,\n"
+         "    .dies               = %u,\n"
+         "    .clusters           = %u,\n"
+@@ -438,7 +444,8 @@ static char *cpu_topology_to_string(const CpuTopology *topo,
+         "    .threads_per_socket = %u,\n"
+         "    .cores_per_socket   = %u,\n"
+         "}",
+-        topo->cpus, topo->sockets, topo->dies, topo->clusters,
++        topo->cpus, topo->drawers, topo->books,
++        topo->sockets, topo->dies, topo->clusters,
+         topo->cores, topo->threads, topo->max_cpus,
+         threads_per_socket, cores_per_socket);
+ }
+@@ -473,6 +480,8 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+     if (is_valid) {
+         if ((err == NULL) &&
+             (ms->smp.cpus == expect_topo->cpus) &&
++            (ms->smp.drawers == expect_topo->drawers) &&
++            (ms->smp.books == expect_topo->books) &&
+             (ms->smp.sockets == expect_topo->sockets) &&
+             (ms->smp.dies == expect_topo->dies) &&
+             (ms->smp.clusters == expect_topo->clusters) &&
+@@ -564,6 +573,16 @@ static void unsupported_params_init(const MachineClass *mc, SMPTestData *data)
+         data->expect_prefer_sockets.clusters = 1;
+         data->expect_prefer_cores.clusters = 1;
+     }
++
++    if (!mc->smp_props.books_supported) {
++        data->expect_prefer_sockets.books = 1;
++        data->expect_prefer_cores.books = 1;
++    }
++
++    if (!mc->smp_props.drawers_supported) {
++        data->expect_prefer_sockets.drawers = 1;
++        data->expect_prefer_cores.drawers = 1;
++    }
+ }
  
- #define SMP_MACHINE_NAME "TEST-SMP"
- 
-@@ -333,13 +333,13 @@ static const struct SMPTestData data_generic_invalid[] = {
-                         "by machine '" SMP_MACHINE_NAME "' is 2",
-     }, {
-         /*
--         * config: -smp 512
-+         * config: -smp 4096
-          * The test machine should tweak the supported max CPUs to
--         * 511 (MAX_CPUS - 1) for testing.
-+         * 4095 (MAX_CPUS - 1) for testing.
-          */
--        .config = SMP_CONFIG_GENERIC(T, MAX_CPUS, F, 0, F, 0, F, 0, F, 0),
--        .expect_error = "Invalid SMP CPUs 512. The max CPUs supported "
--                        "by machine '" SMP_MACHINE_NAME "' is 511",
-+        .config = SMP_CONFIG_GENERIC(T, 4096, F, 0, F, 0, F, 0, F, 0),
-+        .expect_error = "Invalid SMP CPUs 4096. The max CPUs supported "
-+                        "by machine '" SMP_MACHINE_NAME "' is 4095",
-     },
- };
- 
+ static void machine_base_class_init(ObjectClass *oc, void *data)
 -- 
 2.34.1
 
