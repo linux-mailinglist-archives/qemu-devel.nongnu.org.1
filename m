@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F48E831D26
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 17:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDC7831D30
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 17:04:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQUrJ-0001P8-MJ; Thu, 18 Jan 2024 11:03:13 -0500
+	id 1rQUsQ-0002o2-0h; Thu, 18 Jan 2024 11:04:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rQUrA-0001Jn-5J
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:03:04 -0500
-Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ id 1rQUsC-0002lm-4E
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:04:08 -0500
+Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rQUr8-0005Cn-7k
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:03:03 -0500
-Received: by mail-io1-xd34.google.com with SMTP id
- ca18e2360f4ac-7ba9f1cfe94so19493539f.1
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 08:03:01 -0800 (PST)
+ id 1rQUs9-0005VS-Ls
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 11:04:07 -0500
+Received: by mail-io1-xd33.google.com with SMTP id
+ ca18e2360f4ac-7bee8858a8aso297650039f.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 08:04:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705593781; x=1706198581; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705593844; x=1706198644; darn=nongnu.org;
  h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
  :date:message-id:reply-to;
- bh=pHLx0RWDrMD/U0a4mVTOtedBh+Y/pXU8iVfMzavoMiI=;
- b=ZAfAYVXBwwP0j0qVG+Rd38Xk5uA+EXBzoHAGgcQw9Yq/GHvQJH59m8J0YomLbRxBmb
- d8lshtVGNNKOcNuOTcJw8nJGvKBt9H5I5BXULSqPshWAXE1dZsxm/FuXXDibwa9Zgvr0
- IVH76IsvYF+ZeDC5Ywp2RWaV/UqXVAdcZPxJ2f8kSFIemMIFU2qKo/mwlrOK7KOTHvA2
- +ebz8t6No0t769z9McPn4DnHWfO8FCqDj8pYtmtg7Jus5WLoNwF31Z8UIPwcPmTCvdFx
- 9HuW2RrpEuO2H/EQKKYKRk5FoRQBLyiu4q5hqF6rYc/DrIKxaar2aoIEbELlIe3tJeS8
- lwOQ==
+ bh=6cjpotfiriIAMF1zsQzKyT06v91ATIBjlMrjLwqyqwg=;
+ b=GjbI9IQYOFlck1+LS1tDN+tztEAO92iKzOuWirvzJmw+WY5c1oFhONE20vKAE2aSFC
+ ey8jHTO50doDp4RVrEB+Uv3d5PJTMs3PZ6MAHRflF3lNWISTjn5z7xJ7XI6gjMJUi0HY
+ rutwOReteYKNT7a3iYeIgvplYNbX3EIL88zobFsT/FeOEc1xIGjI7kDSjIExlzmRqiVr
+ x8dmLE06YBVZ1l0vQiwHvlW3IyFYNCTMx5Eqrgzjb+akpNQ7OKH22NW6a5pqjoUpzyiM
+ CQRHDqvnEZm7hFovpBLsbu+LWqlV7FDRC8Gmc6VoMhJPrDIzb41K9QDuDKdfeMGcoWj1
+ PC+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705593781; x=1706198581;
+ d=1e100.net; s=20230601; t=1705593844; x=1706198644;
  h=to:subject:message-id:date:from:mime-version:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pHLx0RWDrMD/U0a4mVTOtedBh+Y/pXU8iVfMzavoMiI=;
- b=kKIoVOCu61M1XBgKeSGZfqe0ECQT+6J+aoELeqTwZ8KpixxpUT9k+NAPtAKDnmr8PP
- xNQrakTt1VPCmoyUpW5YqykJtziF4Bm0RIoyol585gleX2mv6ZBmQ5meg9hmaUJBLzSs
- 5CD42GAvo/p8rlCAM8qbFr/zDpjROFnlp9TOdt/j1ibyzzUEeJaTNZUNbt98P7St6Xdq
- FfRwkAGGo1y+QhR3M8hLdLsehswPFP0Occ/B56ePwU0LC4n9wcrHABiLNsgyPVQ6yF8E
- 4dVt2fcb7PFcdJxDQNpdP7sTfDtYxNiL/+oPUCDBgQopPT635V28/pbrMa8d5CP3Uvsv
- na4w==
-X-Gm-Message-State: AOJu0YwhMh9+MPEH0xOJ6MVR3DA5OUY7ha1jaRZTFslen1pw6SbX46VW
- lWyLHJDAUHLDvmBRho45oHATlGZissfbVU7p0/aoAssiOeqIq3bxt+ENlZB5Ph++XrxrYG10NLg
- ysH1MGwdPJBfsKqfhCAhixhIQkcQNfXZZvps=
-X-Google-Smtp-Source: AGHT+IEsKWDRu6dSKlUlhhFeMYkFXRao3Jj+CLkL5e9Fs5BQyaYPV/wwXf1uoNEUQp9Ptd6eGp/JTrOGDB4FWDwxD/k=
-X-Received: by 2002:a92:b09:0:b0:360:73de:be5e with SMTP id
- b9-20020a920b09000000b0036073debe5emr827934ilf.14.1705593780915; Thu, 18 Jan
- 2024 08:03:00 -0800 (PST)
+ bh=6cjpotfiriIAMF1zsQzKyT06v91ATIBjlMrjLwqyqwg=;
+ b=XAqWzCPfe3CPB4yclUwy2uBsEDTfB3WXst6X6e2+xFZDideYhsiEdzP6JjNZ60R5Dk
+ Sj/ZzEXbYrGLp/cWjFnGxnLcUt2Q+n6fpwr7j6xnL8zx5xUwvQea2esO2WRJZwI/gjQv
+ pY+C1wAdv2ftHcfBCjQw2CpnoeBl7oJtaf/4eYnZVsBBs20yXFgnEafw9DGdmdQ2Fy0p
+ 9ZvNkITFYoJAqrB8fasm2C8Cg+BV4NBM4DWgTh45yVoCEnNmFt+Zgk7Ha3wLW3dfyH//
+ JUSium6Q0JDeh3WGnb38Tt4VrN+27LIaoVPky6H7j9JKf1cdrq6kZLLF6WKYvo55Xtc7
+ zftw==
+X-Gm-Message-State: AOJu0YztgsnL4hFb1O/ttmwjd8GeDT/SbojYlzJKhAo5JwqKjD794/4r
+ 5OS9Bx6aqA/Xcrdi102hXmkg4REcoJQcUR7ze5TkdBDbWnniTJFH5jQU4J1NZNNdKe2GSWDke4e
+ K/bVYM3PolW8TqmygL/0CLq3VeCjZGy3W3Dw=
+X-Google-Smtp-Source: AGHT+IFOzqzClBE2jCpFi1RizYkmTyZ2dIjIif6CiNX6HzaapsvecDtXbpv/dev8XzwS55W7npUw8irPu8uwFRig0bo=
+X-Received: by 2002:a92:8743:0:b0:360:7828:c653 with SMTP id
+ d3-20020a928743000000b003607828c653mr1103018ilm.1.1705593844617; Thu, 18 Jan
+ 2024 08:04:04 -0800 (PST)
 MIME-Version: 1.0
 From: Manolo de Medici <manolodemedici@gmail.com>
-Date: Thu, 18 Jan 2024 17:02:55 +0100
-Message-ID: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
-Subject: [PATCH v2 2/4] Avoid conflicting types for 'copy_file_range'
+Date: Thu, 18 Jan 2024 17:03:59 +0100
+Message-ID: <CAHP40mkKDyvxXaK6L3RcfhSY6JKXV4qSu677TDkr-KCBJ+oquA@mail.gmail.com>
+Subject: [PATCH v2 3/4] Add the GNU/Hurd as a target host
 To: qemu-devel@nongnu.org, bug-hurd@gnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
- envelope-from=manolodemedici@gmail.com; helo=mail-io1-xd34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
+ envelope-from=manolodemedici@gmail.com; helo=mail-io1-xd33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -81,41 +81,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Compilation fails on systems where copy_file_range is already defined as a
-stub.
-
-The prototype of copy_file_range in glibc returns an ssize_t, not an off_t.
-
-The function currently only exists on linux and freebsd, and in both cases
-the return type is ssize_t
-
 Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
 ---
- block/file-posix.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ configure | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..f744b35642 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -2000,12 +2000,13 @@ static int handle_aiocb_write_zeroes_unmap(void *opaque)
- }
-
- #ifndef HAVE_COPY_FILE_RANGE
--static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
--                             off_t *out_off, size_t len, unsigned int flags)
-+ssize_t copy_file_range (int infd, off_t *pinoff,
-+                         int outfd, off_t *poutoff,
-+                         size_t length, unsigned int flags)
- {
- #ifdef __NR_copy_file_range
--    return syscall(__NR_copy_file_range, in_fd, in_off, out_fd,
--                   out_off, len, flags);
-+    return (ssize_t)syscall(__NR_copy_file_range, infd, pinoff, outfd,
-+                            poutoff, length, flags);
- #else
-     errno = ENOSYS;
-     return -1;
+diff --git a/configure b/configure
+index 21ab9a64e9..fb11ede5b2 100755
+--- a/configure
++++ b/configure
+@@ -353,6 +353,8 @@ elif check_define __NetBSD__; then
+   host_os=netbsd
+ elif check_define __APPLE__; then
+   host_os=darwin
++elif check_define __GNU__; then
++  host_os=hurd
+ else
+   # This is a fatal error, but don't report it yet, because we
+   # might be going to just print the --help text, or it might
 --
 2.43.0
 
