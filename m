@@ -2,81 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6CF8319DC
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 14:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A778831AF9
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 14:59:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQS1B-0006gF-PP; Thu, 18 Jan 2024 08:01:13 -0500
+	id 1rQSuQ-0006jg-6B; Thu, 18 Jan 2024 08:58:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQS0r-0006Xw-3k
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 08:00:55 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQS0p-0003LX-Gn
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 08:00:52 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40d6b4e2945so135653945e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 05:00:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705582850; x=1706187650; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mDqZwb3UEO+RXGZ+g4OR8B9MVa8ldm+T6m/dWc0XCXc=;
- b=bc5FXvlVcvvraYybZwplfn85tfC5Cnv6UGp/ooQaMTH18VBKjPvW8zUboMVPoQcumJ
- NpBizpx51gIrEyiWUbaOY1hthmrUVS/bkW5CctXD/ykUZ3Bx5lIWBymxVVJ5WBIV2CZS
- RdOUqaanj+ZFVECpnprLwi2TXgQDxt+HRTwI8Nk2U1fMoXaCejQYJgsiPxW3wNxwhssK
- ZVwF5Q2zC9hz7Pi/4UoX3xu3DNmITQrdsR8vc/a8mA5Ui45pSSMGH9AfQvra6ltc0VoB
- btbMl6C1m5YC/8Fuxe8klHivLQvq1nXpB1DEeXttKbRxBYVQS1kSPaexRBS6IGoYiKop
- IpXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705582850; x=1706187650;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mDqZwb3UEO+RXGZ+g4OR8B9MVa8ldm+T6m/dWc0XCXc=;
- b=oZ9q7F68r2FF0tP3rYCHho3PSxh5sTlr49zQuXBekWo5EG56T4KbI5au+r4p4pCcXk
- 3i9VgPg2LBI5EwcZKaVK+bOrogxcec3Yvtd1Rf+uzukNBtOotuupjezcj9hBhWrAS24r
- /UbjmCDng07EwRWdx0tf2v27w/N6+DUhb5kkOsLFKCKQgHRN5LnlJkkmBlg2NJ3w+c7S
- 5uH+2Ps6pNWJNWUpi7bhRR5jZx1acIReuKXmeh2xdVoG4lBWrE783so+yY68wNPU3gSA
- UNC6ZSBlGULvfhsyDnjsmL4P53toTFsNxFJP1eFK/5x7Y/1eAFSgoSM5TDLLF1+t2e1/
- VzVg==
-X-Gm-Message-State: AOJu0YyzdrCtpxW2IOQoCVo/bcm1Hxzdk7sA1GXgS0lqPvsdPe4jCuGx
- rdgOrDqP3h4DyCzrbVQ7UUg2KoNZD/+8rTjFLkPJ7zvgKFeXITEMA6wY7MkndhHO0CpmF50PtQd
- rZCHZcMFk2DmvqJs6MQJK7jLi5A0K569RlR1Ryw==
-X-Google-Smtp-Source: AGHT+IFNgnMuJY4Ym9aLe71f3v+fX4Ws2k2UP9S45tTTikpmNda7qzola+CCSS3gp44j8BCUwF4/5NbYbeWaQkjsaRM=
-X-Received: by 2002:a05:600c:4313:b0:40d:94da:ff40 with SMTP id
- p19-20020a05600c431300b0040d94daff40mr316737wme.195.1705582849724; Thu, 18
- Jan 2024 05:00:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <timgmurphy99@hotmail.com>)
+ id 1rQOfK-0006te-3Q
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 04:26:26 -0500
+Received: from mail-db8eur05olkn2053.outbound.protection.outlook.com
+ ([40.92.89.53] helo=EUR05-DB8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <timgmurphy99@hotmail.com>)
+ id 1rQOfH-0004gu-MF
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 04:26:25 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=H/aOe/XITbH3jB8ZZXlYXVOOX1Gyl3YtfBf4kobWJP8CeL2O4yVPtkCKQBM8FsNX+4bLncGMG6UeEE6HjNxgOK7ARBcl2TLWHQctSFBL9e1XX+mvqyzTKtpIdiQQBYcxCB2pguPa8CwN9UyaEdAzFyDJwJDzMma0L4eS8/EJhfQMHWQKyRcCCmMQgjv0yCb7yTJNRv8Zoj0PXOHE+K0rUb33knLxQ78BJqRXSto3vzuu2wy6ARDcM/ItZmhF1ANrHMeIAOlOrgQ97lgulPYMKLHR2r6yjXcXI3c8u+pJzBSCqUZxOxoawGHyVRkmafOmq8u5wR4JoRL4VNLI3Arzsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OOLbOmCNn+j02lLjYwnJfjUerFxSk3/5pHjxEf3+SZ4=;
+ b=fem+s5rgO9LkH3zwHKa/as8GgjjJQDsOSBrRVhS+3BMc0jD1J1F3efVIcGNOGCiuVYGROAoZpSi/3x5y5T8valakhDbSkFq89js0CGQIGh3Nz2GCAUyMJtBlu+NCbiS66Ho8RCC2OorkKPaLPPBSoHVCTOpuBhwuoyTl/+CaIuf7YHMJqKhhYHFA/WFjsTH2TvI6MDUVMBtuSApGaEG3SBCPfIawi7BdrdFJdLXTEavdGHUKNNDPhi9OLnM1xDWOqgcQsso2TBchxDheIIs0kkGjMO0gGrL1nrvXRyEXYS6aYANqR3okyWEkrfSIZhAKyLYomScIe+B7yxgcEocpmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OOLbOmCNn+j02lLjYwnJfjUerFxSk3/5pHjxEf3+SZ4=;
+ b=d1Wb4ON5hbD6tQhikd5gBUNuruikWwBU5cPIQIvZBNVT+vBifIvk20NMhv9wPzlI0aIjO2Uo9byia+b9F+5SG8ooVRzaGL6uQAbMhsFqOuKHuAgZzHW1gEJn7w+3vWIaFsjy0AITfkEZGDhCW4kg9CVENRipK5VkB+OA651xeB++t6cSHBhj+91QphcUyjwIXCsGm43Q9o3PpQ4Ca9MoXgpIHJTELEc5tCNdf8CxB7so2i9PxaYnh52B6OQ9EqMjm9qnuO1uzDNkoVE6kqDkZoyAqdct0np9sAFwETRzSyvs3qgEbzMpS95AaJTyHmYsvexmdSgqdqTbFK/TABM7rg==
+Received: from AS2PR02MB8862.eurprd02.prod.outlook.com (2603:10a6:20b:555::19)
+ by DU0PR02MB9372.eurprd02.prod.outlook.com (2603:10a6:10:418::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24; Thu, 18 Jan
+ 2024 09:21:16 +0000
+Received: from AS2PR02MB8862.eurprd02.prod.outlook.com
+ ([fe80::f63f:903:c45:bff5]) by AS2PR02MB8862.eurprd02.prod.outlook.com
+ ([fe80::f63f:903:c45:bff5%7]) with mapi id 15.20.7202.020; Thu, 18 Jan 2024
+ 09:21:16 +0000
+From: Tim Murphy <timgmurphy99@hotmail.com>
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Qemu on mac os question
+Thread-Topic: Qemu on mac os question
+Thread-Index: AQHaSewY3t//AW1aOk6H+iV0Uninyw==
+Date: Thu, 18 Jan 2024 09:21:16 +0000
+Message-ID: <AS2PR02MB8862F2AAFB0D1BCC265A7B71D3712@AS2PR02MB8862.eurprd02.prod.outlook.com>
+Accept-Language: en-GB, en-IE, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [zCe5+U057s6o1sftsJlTR9GhAKA49CyRMi28uDyevpQ=]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS2PR02MB8862:EE_|DU0PR02MB9372:EE_
+x-ms-office365-filtering-correlation-id: 32b5ee39-9081-44cb-b0e9-08dc1806d2ee
+x-ms-exchange-slblob-mailprops: qdrM8TqeFBvsUWKZ4ajrmp9BfLFoTiCJL89KfKUWj1kVwwjY5rCuuyyZzNRqkn/OZkQpVyHGeaen3uGWGFNDhvzhy4cn5v++id8caWlbYX4fEanQZk6NItIknaz8OT+XrkEMrzON2ar2tVS4V+8XidR2+sV17meQN1N0PBtcfu/gzhLxm4/uA+i9rK2E0db5vIqNYklY2eOBU01HAeMiaVH7DYb8JFxP4YCcNwK5j+lP906awlMgXHDrBgVzCHJqLj6F4wdra/8tQjD2YREvluN6jgfD/se29QPk2uOWLiHQDuvHNVmlRuu1G3Gm5zWH4XM7KgBHa8xQBRq/aNdqNX5nIuna3W5z+DTHXOPf4K36/NQZgGcxKX09tOM1SpepsEPW/R0XiInrYZj0wez49prv/A/LFJKFVDQF/vaNRROrNx8W+VOSTdMAuApY2zytY59g3j3haMXpk2R2PexK55RZ6dqZ+Xhe+iMix2atyXXVRw/km7qeJSU4Zp6Fxn2X8pV6xJeFFMTvLIzangcbJHDYF+gQCjF+Xy2du2Zuw6dXyqhWa4yyTLi0lxNwUL9jGaFnwi1RQIAC7EkEuv6Xh73eBBl7RIR5u7arOi9ObcfY7mChOwHAAUcYJvvvOOK1izZF81l/t+wHMBp+1EU+BMgH/bOuD9RUKkjdg/GOKpQibxEi0mM0pk9wOsdFBEAZN+VHaz0mlzPzPYbkq0zxVuGZMQ8qLpcinMmDlP3I4lnX1PVyt5WzskJ33h/LOywTvQngpDhIVevl5D/ASwEA1CHG4s0LPFFP
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PArpaOrufsaxXerCCIciT2CN6O5stPHe7d7yX4nXgQY835L1zzee0hHWlgIx5ycx2I1++etJRiZGySV10AWbWHNwD8vYVlrTbiWvlb82CGtD2t1AIWPrM3/JHoCCDd8X2yNJmI5DBFVWm/sQWq27+eBO3s2lsqN7HT3PXiJDQif7ANmcyYMsBMZLLPbu9rMTGrK60VcIOAI0R8E0GqFjmzIOIOLkw+zMKECmPnUEFUpKoWNElignhkF4eySYfeGWCjoFEssPLUY8LW3Nsza/2wtq9yRxMY91/UBqJVHYeW6Sw50/dTL0snKb4YIV2qo6zCQuznp6zT7ambi5jix4JFPu5zjPUHZ6BMch46q4EGGxE5NIIFR7CQU1j76hPgtA6BNZFjJPmsnFDICSnGNi3o9w8sipVONJ5ZU39OFgBgkFlNNL400IqAdQ2VGXF+Zz2bzWiWS01Hsz6SSeX7mDmMs236PdBiTephpYxKZOMIIUMT2XK6d3s/R02iejsGSRIKOChLxREZ4/mKYRTfNjYQszXQW8xd3D1fuB/T0stfVnY464xB34wkiWIkup9JLRecCM91Yb/Wcm+j83tLdzdHCOluwN1duMb0C8FJWadVvUK5ChBVVGNbSB5ZtHlHa3MqPu8+8hyFAGnqteQ9iiLw==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SlVpRUZOOFhWTWdGY0YyWFFRNy8xeG9EVGV4YklBbE9ubzlGMnBCWUJBSFMr?=
+ =?utf-8?B?bktwM2ErMi9nR2tRWXRyc1Vra2xjMXRPOG5JOUdVOExiZGc3UjFDVmxXUE5J?=
+ =?utf-8?B?bUdlSXozS1Fvb3kyQi92Q1UzYS91enFtZUN3SGdCaWxHQXVJZkR4a0luU0M4?=
+ =?utf-8?B?dkx1aEpGMUxaUndObzhpRTI2bExaeGVwY1NvL2kyaHBDVHY0SGVqOGZleC83?=
+ =?utf-8?B?ZUVmZzBUTlZTdDZmQUhmZ285UlR1QUNub3Q5WjNKalU5WmxFUmtKQlZ6Wk1F?=
+ =?utf-8?B?c3FFelJ1RmtiaEhEZGx0MmhVaC9idGM4RW1NcjZmU2ZlVTdsMlM3Ti9XNEI1?=
+ =?utf-8?B?TUZIRllwekhNMkhZTi9mSm1zdHd1Q0Vob2lMbWlmSzBqZmRtYUZsUjRWdUJk?=
+ =?utf-8?B?T0ZCeHVxTnNsMGIrdkhXTHI1MGg0TDkvSGV4M3F4WDExam5YQXREaHN5RWx6?=
+ =?utf-8?B?NWd6SUpGTXZXaDlTczB3Nkk2UEdLd3pQTldyR1FTZDErOG5yVzF1WXJ2eFdK?=
+ =?utf-8?B?MVFBUzgzZE9laDhodXVVTytwOTB4SlNadFJvV2lKZnVsL1lUd3ZMdEJiVDJp?=
+ =?utf-8?B?b1pOb0F4bi9PVnl5L25GU3dxc1hBTlNERU5aeWprZFNVNjdDRjJZdGJzZUJw?=
+ =?utf-8?B?ejBvdGdxS3dSRm1acVdoZjhtYUwrRGpDUXh1eU4vK25vdzAxQU9KRUFxMXMv?=
+ =?utf-8?B?MDh6Z0o1M0IzamEvOGF3WUtjcW1tRHZhNC94bk9nQWZSdWpIdW1ZNURRWkt4?=
+ =?utf-8?B?a2YxalVUT3lIREYxVWpQaUk3SVJ2SDZZTm52Z28zOEJXWUJUYVBYbElkVFEv?=
+ =?utf-8?B?emVESXova0J3and4V1cwRFByTjBvZmdCN1AzbldPK1lZek52Ym5hampLemxv?=
+ =?utf-8?B?cjZPek1uK05HTXFUcFVOWktzQitIT2F5RXk1TE43RTNUTUVORlB4ZTZpSVlK?=
+ =?utf-8?B?MitNcS80S0lDSjRhaU1DR0h1RWNoNmJWS3Bwc3haWG84ZkM0aEVpNG1ZUWla?=
+ =?utf-8?B?bXRCM1BzSVZnVzQyVnYxQWdsY2RqazU4dk9YN2Z6YkZhc0J1MXJLWVdCYkd2?=
+ =?utf-8?B?ekZUbGxYQjVMVzlMWU1IdXRCTUZXOGVpSmk3L0dLcGp5dTlLL0RvY0VyT1VC?=
+ =?utf-8?B?VUo4NTBsdllsNlhlSVhhNU95U0JDUVFKbDJZVTcwUFN4eXpJNkh4SkdKbGtz?=
+ =?utf-8?B?R0pHMGtFdkRld1Nhc3NmblFKY2xJMXRtY2ZrakpMYjhsN3l2YmExZFJ4aXgr?=
+ =?utf-8?B?bGc3T0J5UFhUcFFlQkpBYmk4b3JidFR2RjdOaGRtUlYwZ0d1WmJKaU81TlpP?=
+ =?utf-8?B?ZEZIVHlDcjJuYnljYmF1NnFmQzBMWW5GSnl3cFZpQ3BRbEJ5c2NkMllwcVRm?=
+ =?utf-8?B?ZGdUVlBGK2xNT0p4WXB5UlZDdlpIUmlIdytDL01PbnZST256d3ptaE1scVNo?=
+ =?utf-8?B?VUhFeENLMmhOeXR5TjNGU1krR1drcXphSDkxTzVMcHh4RGpRUlI5bHRQcXJM?=
+ =?utf-8?B?S1ZKSDBRZk1LdE8wRDBUN3dlRDB0WEIvZWdKZGV3bXI5a3BROUxvM01WR1hL?=
+ =?utf-8?B?YitwL09GQzZYY3g3OG5leE1EZGpNV2ZObE9FbnlqalB0aUo4WmRZVWU4Y1A5?=
+ =?utf-8?B?VmxuQWFuQ0hib3Bka1lBR1dHZ25UM0E9PQ==?=
+Content-Type: multipart/alternative;
+ boundary="_000_AS2PR02MB8862F2AAFB0D1BCC265A7B71D3712AS2PR02MB8862eurp_"
 MIME-Version: 1.0
-References: <20240111110505.1563291-1-peter.maydell@linaro.org>
- <20240111110505.1563291-9-peter.maydell@linaro.org> <877ck7d56n.fsf@suse.de>
- <CAFEAcA-FW-CZga48B-id=uxmxjF7_rZiO+2jJRsZmT9or+_77g@mail.gmail.com>
- <87wms6er3e.fsf@suse.de>
-In-Reply-To: <87wms6er3e.fsf@suse.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 Jan 2024 13:00:38 +0000
-Message-ID: <CAFEAcA_ybiFZVFjqgK8t35UTJ5awT+C9n64fGN3ip11NfWBQSQ@mail.gmail.com>
-Subject: Re: [PULL 08/41] target/arm: Set CTR_EL0.{IDC,DIC} for the 'max' CPU
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-ab7de.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS2PR02MB8862.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32b5ee39-9081-44cb-b0e9-08dc1806d2ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jan 2024 09:21:16.7115 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR02MB9372
+Received-SPF: pass client-ip=40.92.89.53;
+ envelope-from=timgmurphy99@hotmail.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 18 Jan 2024 08:58:10 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,33 +131,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 at 12:58, Fabiano Rosas <farosas@suse.de> wrote:
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Wed, 17 Jan 2024 at 21:24, Fabiano Rosas <farosas@suse.de> wrote:
-> >> Peter Maydell <peter.maydell@linaro.org> writes:
-> > The "max" CPU is a moving target, so you shouldn't expect
-> > to be able to migrate across QEMU versions using it:
-> > it can have different features and thus different ID
-> > register values between versions (as well as potentially
-> > different actual-register-state if the added feature adds
-> > new state).
->
-> We're adding a test for migrating across QEMU versions to stop these
-> sort of breakages happening. If 'max' is not suitable for that scenario,
-> would there be another cpu you recommend to use? Otherwise aarch64 will
-> have to remain uncovered for migration across QEMU versions.
->
-> There's no clear statement on what kinds of combinations we support for
-> migration, but anything that's actually tested is more likely to be
-> considered supported.
+--_000_AS2PR02MB8862F2AAFB0D1BCC265A7B71D3712AS2PR02MB8862eurp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Any fixed defined CPU is a reasonable choice. I suggest neoverse-n1.
+SGkgLA0KSSBnb3QgdGhpcyBlbWFpbCBhZGRyZXNzIGZyb20gdGhlIFFFTVUgLyBRRU1VIMK3IEdp
+dExhYjxodHRwczovL2dpdGxhYi5jb20vcWVtdS1wcm9qZWN0L3FlbXU+IHBhZ2UuDQpJJ20gZmFp
+cmx5IG5ldyB0byB0aGUgbWFjIG9zIGFuZCBJJ20gc3RpbGwgZmluZGluZyBteSB3YXkgYXJvdW5k
+IGhvdyB0byB1c2UgaG9tZWJyZXcgYW5kIG90aGVyIHBhY2thZ2VzLg0KSSB1c2UgcG9kbWFuIHdo
+aWNoIGluIHR1cm4gdXNlcyBxZW11LiBJIGluc3RhbGxlZCBpdCBhbmQgc2V0IGl0IHVwIGluIFNl
+cHRlbWJlci4gSXQgdXNlZCB0aGUgbGF0ZXN0IHZlcnNpb24gb2YgcWVtdSBhdCB0aGUgdGltZSA4
+LjEuM18yLiBJdCB3b3JrZWQgbGlrZSBhIGRyZWFtLg0KVHdvIG9mIG15IG1hdGVzIHN0YXJ0ZWQg
+dG8gc2V0dXAgcG9kbWFuIHJlY2VudGx5IGJ1dCBpdCBkaWQgbm90IHdvcmsuIEl0IGhhbmdzIGFz
+IGl0IHRyaWVzIHRvIHN0YXJ0LiBJIGhlbHBlZCBsb2NhdGUgdGhlIHByb2JhYmxlIGNhdXNlIHll
+c3RlcmRheSAoUWVtdSkuIEkgdXNlZCBob21lYnJldyB0byAocmUpaW5zdGFsbCBxZW11LiBJdCBp
+bnN0YWxsZWQgdGhlIGxhdGVzdCB2ZXJzaW9uIDguMi4wLiBJIGNoZWNrZWQgdGhlIHZlcnNpb24g
+bXkgMiBtYXRlcyB1c2VkIGFuZCBpdCB3YXMgOC4yLiBhbHNvLiBNeSBwb2RtYW4gaGFuZ3Mgbm93
+IHRvbyAoanVzdCBsaWtlIHRoZWlycykuDQoNClN0YXJ0aW5nIG1hY2hpbmUgInBvZG1hbi1tYWNo
+aW5lLWRlZmF1bHQiDQoNCldhaXRpbmcgZm9yIFZNIC4uLg0KDQpFcnJvcjogcWVtdSBleGl0ZWQg
+dW5leHBlY3RlZGx5IHdpdGggZXhpdCBjb2RlIDEsIHN0ZGVycjogcWVtdS1zeXN0ZW0tYWFyY2g2
+NDogLWRyaXZlIGlmPXZpcnRpbyxmaWxlPS9Vc2Vycy9uMTY1NDMzMy8ubG9jYWwvc2hhcmUvY29u
+dGFpbmVycy9wb2RtYW4vbWFjaGluZS9xZW11L3BvZG1hbi1tYWNoaW5lLWRlZmF1bHRfZmVkb3Jh
+LWNvcmVvcy0zOS4yMDI0MDEwNC4yLjAtcWVtdS5hYXJjaDY0LnFjb3cyOiBDb3VsZCBub3Qgb3Bl
+biAnL1VzZXJzL24xNjU0MzMzLy5sb2NhbC9zaGFyZS9jb250YWluZXJzL3BvZG1hbi9tYWNoaW5l
+L3FlbXUvcG9kbWFuLW1hY2hpbmUtZGVmYXVsdF9mZWRvcmEtY29yZW9zLTM5LjIwMjQwMTA0LjIu
+MC1xZW11LmFhcmNoNjQucWNvdzInOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5DQoNCg0KSSBw
+cmVzdW1lIEkgY2FuIHF1aWNrbHkgcmVzb2x2ZSB0aGUgaXNzdWUgYnkgcmV2ZXJ0aW5nIHRvIHRo
+ZSBvbGRlciB2ZXJzaW9uIG9mIHFlbXUgYnV0IEkgY2FuJ3QgZmluZCBhIHdheSB0byBnZXQgdGhp
+cyB0byBpaW5zdGFsbCB1c2luZyBob21lYnJldy4gQ2FuIHlvdSBhZHZpc2U/IEkgc2VlIHlvdXIg
+d2ViIHBhZ2UgbGlzdHMgOC4xLjQgYXMgdGhlIHByZXZpb3VzIHN1cHBvcnRlZCB2ZXJzaW9uLiBS
+dW5uaW5nICdicmV3IGluc3RhbGwgcWVtdUA4LjEuNCcgZG9lc24ndCB3b3JrIHJldHVybmluZy4u
+Lg0KDQrigILigILigILigILigILigIJFcnJvcjogTm8gZm9ybXVsYWUgb3IgY2Fza3MgZm91bmQg
+Zm9yIHFlbXVAOC4xLjQuDQoNCkknZCBiZSBncmF0ZWZ1bCBmb3IgYW55IGhlbHAvZGlyZWN0aW9u
+IHlvdSBjYW4gZ2l2ZS4NCg0KVGhhbmtzLA0KVGltDQoNCg==
 
-I don't think 'max' is expected to migrate cross-version on
-any CPU architecture; this isn't Arm-specific.
+--_000_AS2PR02MB8862F2AAFB0D1BCC265A7B71D3712AS2PR02MB8862eurp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-thanks
--- PMM
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyIgc3R5bGU9
+ImRpc3BsYXk6bm9uZTsiPiBQIHttYXJnaW4tdG9wOjA7bWFyZ2luLWJvdHRvbTowO30gPC9zdHls
+ZT4NCjwvaGVhZD4NCjxib2R5IGRpcj0ibHRyIj4NCjxkaXYgY2xhc3M9ImVsZW1lbnRUb1Byb29m
+IiBzdHlsZT0iZm9udC1mYW1pbHk6IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9u
+dC1zaXplOiAxMnB0OyBjb2xvcjogcmdiKDAsIDAsIDApOyI+DQpIaSAsPC9kaXY+DQo8ZGl2IGNs
+YXNzPSJlbGVtZW50VG9Qcm9vZiI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBDYWxpYnJpLCBI
+ZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IHJnYigwLCAwLCAw
+KTsiPkkgZ290IHRoaXMgZW1haWwgYWRkcmVzcyBmcm9tIHRoZQ0KPGEgaHJlZj0iaHR0cHM6Ly9n
+aXRsYWIuY29tL3FlbXUtcHJvamVjdC9xZW11IiBpZD0iT1dBOGQ4ZTVmNTMtYWVhYi1hY2FhLWI4
+NTQtOGU3M2ZkOGEyMzBkIiBjbGFzcz0iT1dBQXV0b0xpbmsiPg0KUUVNVSAvIFFFTVUgwrcgR2l0
+TGFiPC9hPiZuYnNwO3BhZ2UuPC9zcGFuPjwvZGl2Pg0KPGRpdiBjbGFzcz0iZWxlbWVudFRvUHJv
+b2YiPjxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNl
+cmlmOyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiByZ2IoMCwgMCwgMCk7Ij5JJ20gZmFpcmx5IG5l
+dyB0byB0aGUgbWFjIG9zIGFuZCBJJ20gc3RpbGwgZmluZGluZyBteSB3YXkgYXJvdW5kIGhvdyB0
+byB1c2UgaG9tZWJyZXcgYW5kIG90aGVyIHBhY2thZ2VzLjwvc3Bhbj48L2Rpdj4NCjxkaXYgY2xh
+c3M9ImVsZW1lbnRUb1Byb29mIj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IENhbGlicmksIEhl
+bHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogcmdiKDAsIDAsIDAp
+OyI+SSB1c2UgcG9kbWFuIHdoaWNoIGluIHR1cm4gdXNlcyBxZW11LiBJIGluc3RhbGxlZCBpdCBh
+bmQgc2V0IGl0IHVwIGluIFNlcHRlbWJlci4gSXQgdXNlZCB0aGUgbGF0ZXN0IHZlcnNpb24gb2Yg
+cWVtdSBhdCB0aGUgdGltZSA4LjEuM18yLg0KIEl0IHdvcmtlZCBsaWtlIGEgZHJlYW0uPC9zcGFu
+PjwvZGl2Pg0KPGRpdiBjbGFzcz0iZWxlbWVudFRvUHJvb2YiPjxzcGFuIHN0eWxlPSJmb250LWZh
+bWlseTogQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNv
+bG9yOiByZ2IoMCwgMCwgMCk7Ij5Ud28gb2YgbXkgbWF0ZXMgc3RhcnRlZCB0byBzZXR1cCBwb2Rt
+YW4gcmVjZW50bHkgYnV0IGl0IGRpZCBub3Qgd29yay4gSXQgaGFuZ3MgYXMgaXQgdHJpZXMgdG8g
+c3RhcnQuIEkgaGVscGVkIGxvY2F0ZSB0aGUgcHJvYmFibGUgY2F1c2UNCiB5ZXN0ZXJkYXkgKFFl
+bXUpLiBJIHVzZWQgaG9tZWJyZXcgdG8gKHJlKWluc3RhbGwgcWVtdS4gSXQgaW5zdGFsbGVkIHRo
+ZSBsYXRlc3QgdmVyc2lvbiA4LjIuMC4gSSBjaGVja2VkIHRoZSB2ZXJzaW9uIG15IDIgbWF0ZXMg
+dXNlZCBhbmQgaXQgd2FzIDguMi4gYWxzby4gTXkgcG9kbWFuIGhhbmdzIG5vdyB0b28gKGp1c3Qg
+bGlrZSB0aGVpcnMpLjwvc3Bhbj48L2Rpdj4NCjxwIGNsYXNzPSJlbGVtZW50VG9Qcm9vZiIgc3R5
+bGU9Im1hcmdpbjogMHB4IDQwcHg7Ij48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IENhbGlicmks
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogcmdiKDExOCwg
+NjIsIDE1NSk7Ij48aT5TdGFydGluZyBtYWNoaW5lICZxdW90O3BvZG1hbi1tYWNoaW5lLWRlZmF1
+bHQmcXVvdDs8L2k+PC9zcGFuPjwvcD4NCjxwIHN0eWxlPSJtYXJnaW4tcmlnaHQ6IDQwcHg7IG1h
+cmdpbi1sZWZ0OiA0MHB4OyI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBDYWxpYnJpLCBIZWx2
+ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IHJnYigxMTgsIDYyLCAx
+NTUpOyI+PGk+V2FpdGluZyBmb3IgVk0gLi4uPC9pPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iZWxl
+bWVudFRvUHJvb2YiIHN0eWxlPSJtYXJnaW4tcmlnaHQ6IDQwcHg7IG1hcmdpbi1sZWZ0OiA0MHB4
+OyI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
+aWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IHJnYigxMTgsIDYyLCAxNTUpOyI+PGk+RXJyb3I6
+IHFlbXUgZXhpdGVkIHVuZXhwZWN0ZWRseSB3aXRoIGV4aXQgY29kZSAxLCBzdGRlcnI6IHFlbXUt
+c3lzdGVtLWFhcmNoNjQ6DQogLWRyaXZlIGlmPXZpcnRpbyxmaWxlPS9Vc2Vycy9uMTY1NDMzMy8u
+bG9jYWwvc2hhcmUvY29udGFpbmVycy9wb2RtYW4vbWFjaGluZS9xZW11L3BvZG1hbi1tYWNoaW5l
+LWRlZmF1bHRfZmVkb3JhLWNvcmVvcy0zOS4yMDI0MDEwNC4yLjAtcWVtdS5hYXJjaDY0LnFjb3cy
+OiBDb3VsZCBub3Qgb3BlbiAnL1VzZXJzL24xNjU0MzMzLy5sb2NhbC9zaGFyZS9jb250YWluZXJz
+L3BvZG1hbi9tYWNoaW5lL3FlbXUvcG9kbWFuLW1hY2hpbmUtZGVmYXVsdF9mZWRvcmEtY29yZW9z
+LTM5LjIwMjQwMTA0LjIuMC1xZW11LmFhcmNoNjQucWNvdzInOg0KIE5vIHN1Y2ggZmlsZSBvciBk
+aXJlY3Rvcnk8L2k+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJlbGVtZW50VG9Qcm9vZiIgc3R5bGU9
+Im1hcmdpbi1yaWdodDogNDBweDsgbWFyZ2luLWxlZnQ6IDQwcHg7Ij48c3BhbiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0
+OyBjb2xvcjogcmdiKDAsIDAsIDApOyI+PGJyPg0KPC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJlbGVt
+ZW50VG9Qcm9vZiIgc3R5bGU9Im1hcmdpbi1yaWdodDogNDBweDsgbWFyZ2luLWxlZnQ6IDBweDsi
+PjxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
+OyBmb250LXNpemU6IDEycHQ7IGNvbG9yOiByZ2IoMCwgMCwgMCk7Ij5JIHByZXN1bWUgSSBjYW4g
+cXVpY2tseSByZXNvbHZlIHRoZSBpc3N1ZSBieSByZXZlcnRpbmcgdG8gdGhlIG9sZGVyIHZlcnNp
+b24gb2YgcWVtdSBidXQNCiBJIGNhbid0IGZpbmQgYSB3YXkgdG8gZ2V0IHRoaXMgdG8gaWluc3Rh
+bGwgdXNpbmcgaG9tZWJyZXcuIENhbiB5b3UgYWR2aXNlPyBJIHNlZSB5b3VyIHdlYiBwYWdlIGxp
+c3RzIDguMS40IGFzIHRoZSBwcmV2aW91cyBzdXBwb3J0ZWQgdmVyc2lvbi4gUnVubmluZyAnYnJl
+dyBpbnN0YWxsIHFlbXVAOC4xLjQnIGRvZXNuJ3Qgd29yayByZXR1cm5pbmcuLi48L3NwYW4+PC9w
+Pg0KPHAgY2xhc3M9ImVsZW1lbnRUb1Byb29mIiBzdHlsZT0ibWFyZ2luLXJpZ2h0OiA0MHB4OyBt
+YXJnaW4tbGVmdDogMHB4OyI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBNZW5sbzsgZm9udC1z
+aXplOiAxMXB4OyBjb2xvcjogcmdiKDE4MCwgMzYsIDI1KTsiPuKAguKAguKAguKAguKAguKAgkVy
+cm9yOjwvc3Bhbj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IE1lbmxvOyBmb250LXNpemU6IDEx
+cHg7IGNvbG9yOiByZ2IoMCwgMCwgMCk7Ij4mbmJzcDtObyBmb3JtdWxhZSBvciBjYXNrcw0KIGZv
+dW5kIGZvciBxZW11QDguMS40Ljwvc3Bhbj48L3A+DQo8ZGl2PjxzcGFuIHN0eWxlPSJmb250LWZh
+bWlseTogQ2FsaWJyaSwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDEycHQ7IGNv
+bG9yOiByZ2IoMCwgMCwgMCk7IiBjbGFzcz0iZWxlbWVudFRvUHJvb2YiPjxicj4NCjwvc3Bhbj48
+L2Rpdj4NCjxkaXY+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBDYWxpYnJpLCBIZWx2ZXRpY2Es
+IHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6IHJnYigwLCAwLCAwKTsiIGNsYXNz
+PSJlbGVtZW50VG9Qcm9vZiI+SSdkIGJlIGdyYXRlZnVsIGZvciBhbnkgaGVscC9kaXJlY3Rpb24g
+eW91IGNhbiBnaXZlLjwvc3Bhbj48L2Rpdj4NCjxkaXY+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5
+OiBDYWxpYnJpLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogMTJwdDsgY29sb3I6
+IHJnYigwLCAwLCAwKTsiIGNsYXNzPSJlbGVtZW50VG9Qcm9vZiI+PGJyPg0KPC9zcGFuPjwvZGl2
+Pg0KPGRpdj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IENhbGlicmksIEhlbHZldGljYSwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxMnB0OyBjb2xvcjogcmdiKDAsIDAsIDApOyIgY2xhc3M9ImVs
+ZW1lbnRUb1Byb29mIj5UaGFua3MsPC9zcGFuPjwvZGl2Pg0KPGRpdj48c3BhbiBzdHlsZT0iZm9u
+dC1mYW1pbHk6IENhbGlicmksIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxMnB0
+OyBjb2xvcjogcmdiKDAsIDAsIDApOyIgY2xhc3M9ImVsZW1lbnRUb1Byb29mIj5UaW08YnI+DQo8
+YnI+DQo8L3NwYW4+PC9kaXY+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+
+--_000_AS2PR02MB8862F2AAFB0D1BCC265A7B71D3712AS2PR02MB8862eurp_--
 
