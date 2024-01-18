@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB839831BB5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA48831BC5
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 15:50:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQTfK-0004qc-94; Thu, 18 Jan 2024 09:46:46 -0500
+	id 1rQThL-00061L-Cw; Thu, 18 Jan 2024 09:48:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQTew-0004oC-8I; Thu, 18 Jan 2024 09:46:22 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rQTh7-0005vq-3b
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:48:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rQTet-0007fE-Cf; Thu, 18 Jan 2024 09:46:22 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5F1854537B;
- Thu, 18 Jan 2024 17:46:43 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D91BE66B25;
- Thu, 18 Jan 2024 17:46:12 +0300 (MSK)
-Message-ID: <38989879-544b-4ca7-abbe-44c9be04b670@tls.msk.ru>
-Date: Thu, 18 Jan 2024 17:46:12 +0300
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rQTh3-0008Hv-2v
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 09:48:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705589310;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=L/IJu9Rtz1IbKP9qMg/crjm3mjcGXPwsSBSE4rPyN3A=;
+ b=XPunrUZhrpkS6JaAkKJnYtjob/kowRBCJifQQcxwxknwpyXRNfsoPlSYbeUKLV0b9udueD
+ qPceqiHXiqQU++1pSUnjARe24aFMDwQEZkuDTu1dqHODkxKcYiECwmlFPEaNC6D5k3vSt3
+ aNw5PEig0Jni7KAeHqhR8qvnflWnwUc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-eP7QAM9NPEKT0Oqvz_lDXA-1; Thu, 18 Jan 2024 09:48:27 -0500
+X-MC-Unique: eP7QAM9NPEKT0Oqvz_lDXA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3437887E53;
+ Thu, 18 Jan 2024 14:48:25 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.126])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 53903112131D;
+ Thu, 18 Jan 2024 14:48:25 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
+ <qemu-stable@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH v2 0/3] monitor: only run coroutine commands in
+ qemu_aio_context
+Date: Thu, 18 Jan 2024 09:48:20 -0500
+Message-ID: <20240118144823.1497953-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] qemu-docs: Update options for graphical frontends
-Content-Language: en-US
-To: Yihuan Pan <xun794@gmail.com>, qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20240118063930.190918-1-xun794@gmail.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240118063930.190918-1-xun794@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,50 +82,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.01.2024 09:39, Yihuan Pan :
-> The command line options `-ctrl-grab` and `-alt-grab` have been removed
-> in QEMU 7.1. Instead, use the `-display sdl,grab-mod=<modifiers>` option
-> to specify the grab modifiers.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2103
-> Signed-off-by: Yihuan Pan <xun794@gmail.com>
-> ---
->   docs/system/keys.rst.inc | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-> index bd9b8e5f6f..44698e301e 100644
-> --- a/docs/system/keys.rst.inc
-> +++ b/docs/system/keys.rst.inc
-> @@ -1,7 +1,8 @@
->   During the graphical emulation, you can use special key combinations to
->   change modes. The default key mappings are shown below, but if you use
-> -``-alt-grab`` then the modifier is Ctrl-Alt-Shift (instead of Ctrl-Alt)
-> -and if you use ``-ctrl-grab`` then the modifier is the right Ctrl key
-> +``-display sdl,grab-mod=lshift-lctrl-lalt`` then the modifier is
-> +Ctrl-Alt-Shift(instead of Ctrl-Alt) and if you use
-> +``-display sdl,grab-mod=rctrl`` then the modifier is the right Ctrl key
->   (instead of Ctrl-Alt):
+v2:
+- Filter image format in 141 test output [Kevin]
+- Fix pylint and mypy errors in 141 [Kevin]
 
-A nitpick: please add space before "(instead".
+Several bugs have been reported related to how QMP commands are rescheduled in
+qemu_aio_context:
+- https://gitlab.com/qemu-project/qemu/-/issues/1933
+- https://issues.redhat.com/browse/RHEL-17369
+- https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+- https://bugzilla.redhat.com/show_bug.cgi?id=2214985
 
-But the whole sentence wants some refinement, or else it is awkward at
-best.  How about something like,
+The first instance of the bug interacted with drain_call_rcu() temporarily
+dropping the BQL and resulted in vCPU threads entering device emulation code
+simultaneously (something that should never happen). I set out to make
+drain_call_rcu() safe to use in this environment, but Paolo and Kevin discussed
+the possibility of avoiding rescheduling the monitor_qmp_dispatcher_co()
+coroutine for non-coroutine commands. This would prevent monitor commands from
+running during vCPU thread aio_poll() entirely and addresses the root cause.
 
-    During the graphical emulation, you can use special key combinations from
-    the following table to change modes. By default the modifier is Ctrl-Alt
-    (used in the table below), which can be changed with ``-display`` suboption
-    ``mod=`` where appropriate.  For example, ``-display sdl,grab-mod=lshift-lctrl-lalt``
-    changes the modifier key to Ctrl-Alt-Shift, while ``-display sdl, grab-mod=rctrl``
-    changes it to the right Ctrl key.
+This patch series implements this idea. qemu-iotests is sensitive to the exact
+order in which QMP events and responses are emitted. Running QMP handlers in
+the iohandler AioContext causes some QMP events to be ordered differently than
+before. It is therefore necessary to adjust the reference output in many test
+cases. The actual QMP code change is small and everything else is just to make
+qemu-iotests happy.
 
-?
+If you have bugs related to the same issue, please retest them with these
+patches. Thanks!
 
-Thanks,
+Stefan Hajnoczi (3):
+  iotests: add filter_qmp_generated_node_ids()
+  iotests: port 141 to Python for reliable QMP testing
+  monitor: only run coroutine commands in qemu_aio_context
 
-/mjt
+ monitor/qmp.c                                 |  17 -
+ qapi/qmp-dispatch.c                           |  24 +-
+ tests/qemu-iotests/060.out                    |   4 +-
+ tests/qemu-iotests/071.out                    |   4 +-
+ tests/qemu-iotests/081.out                    |  16 +-
+ tests/qemu-iotests/087.out                    |  12 +-
+ tests/qemu-iotests/108.out                    |   2 +-
+ tests/qemu-iotests/109                        |   4 +-
+ tests/qemu-iotests/109.out                    |  78 ++---
+ tests/qemu-iotests/117.out                    |   2 +-
+ tests/qemu-iotests/120.out                    |   2 +-
+ tests/qemu-iotests/127.out                    |   2 +-
+ tests/qemu-iotests/140.out                    |   2 +-
+ tests/qemu-iotests/141                        | 307 ++++++++----------
+ tests/qemu-iotests/141.out                    | 190 +++--------
+ tests/qemu-iotests/143.out                    |   2 +-
+ tests/qemu-iotests/156.out                    |   2 +-
+ tests/qemu-iotests/176.out                    |  16 +-
+ tests/qemu-iotests/182.out                    |   2 +-
+ tests/qemu-iotests/183.out                    |   4 +-
+ tests/qemu-iotests/184.out                    |  32 +-
+ tests/qemu-iotests/185                        |   6 +-
+ tests/qemu-iotests/185.out                    |  45 ++-
+ tests/qemu-iotests/191.out                    |  16 +-
+ tests/qemu-iotests/195.out                    |  16 +-
+ tests/qemu-iotests/223.out                    |  16 +-
+ tests/qemu-iotests/227.out                    |  32 +-
+ tests/qemu-iotests/247.out                    |   2 +-
+ tests/qemu-iotests/273.out                    |   8 +-
+ tests/qemu-iotests/308                        |   4 +-
+ tests/qemu-iotests/308.out                    |   4 +-
+ tests/qemu-iotests/iotests.py                 |   7 +
+ tests/qemu-iotests/tests/file-io-error        |   5 +-
+ tests/qemu-iotests/tests/iothreads-resize.out |   2 +-
+ tests/qemu-iotests/tests/qsd-jobs.out         |   4 +-
+ 35 files changed, 385 insertions(+), 506 deletions(-)
 
->   
->   Ctrl-Alt-f
+-- 
+2.43.0
 
 
