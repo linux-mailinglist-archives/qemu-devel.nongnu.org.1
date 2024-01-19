@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78BA832B76
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B62C1832B89
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:45:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq3G-0005zb-99; Fri, 19 Jan 2024 09:41:00 -0500
+	id 1rQq30-0005tb-Ro; Fri, 19 Jan 2024 09:40:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2v-0005rj-D3
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:37 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2y-0005sf-5w
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:40 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2t-0003uT-03
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:37 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2t-0003uY-02
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=7u9VyN4IWJDW4L+YlnL9qhFEj6bIw/XZHxFRRzxfNDM=; b=opKPk52AsnufKXvmihxXBmbEtw
- zXx4oQawEcITa1/4H8edkVrXhxKvrdYVnX+3BY0XYn06KIMlS3f221K6aU0Bch3THnNMnMxwiMvUg
- 4TRDnI1DIN3+/phRhOQdJOiE8+S/ECJbASRLAajbwincwYt0EDMoxZvklWcW65H0a2zY=;
+ bh=c8YrpOnC/ViRjytubyRutImESdm/xHs6EGrFUTrS4Ck=; b=ADMOA5w5iICB/+VgO7ZUD+eB4Q
+ aWIf/LAWaEuUZzPPWoOV83CbwROUqFFXOzgYc6HFkgdQ3SnV4VLfTCcUF2G2I/CFdD+01nL3wgpmh
+ 51vtMRI4b0SVkyHFxjQvf0Oo9yjiFpaGS5OlMDrfQm9fHaOzNtl4BGdEVDmbw6MUZukY=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 21/34] accel/tcg: [CPUTLB] Use tcg_ctx->tlb_dyn_max_bits
-Date: Fri, 19 Jan 2024 15:40:11 +0100
-Message-ID: <20240119144024.14289-22-anjo@rev.ng>
+Subject: [RFC PATCH 22/34] accel/tcg: [CPUTLB] Move CPU_TLB_DYN_[DEFAULT|MIN]*
+ to cputlb.c
+Date: Fri, 19 Jan 2024 15:40:12 +0100
+Message-ID: <20240119144024.14289-23-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,27 +61,43 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPU_TLB_DYN_MAX_BITS depends on TARGET_VIRT_ADDR_SPACE_BITS on 64-bit
-hosts, and is not yet target independent.
+These macros are only used for softmmu targets and only used in
+cputlb.c, move definitions there.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/cputlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/exec/cpu-defs.h | 3 ---
+ accel/tcg/cputlb.c      | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index e8ccbe4bef..4b369e39b0 100644
+--- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -55,9 +55,6 @@
+ #include "exec/target_long.h"
+ 
+ #if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+-#define CPU_TLB_DYN_MIN_BITS 6
+-#define CPU_TLB_DYN_DEFAULT_BITS 8
+-
+ # if HOST_LONG_BITS == 32
+ /* Make sure we do not require a double-word shift for the TLB load */
+ #  define CPU_TLB_DYN_MAX_BITS (32 - TARGET_PAGE_BITS)
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 967d5da6d4..42be5b6289 100644
+index 42be5b6289..a75a52d141 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -172,7 +172,7 @@ static void tlb_mmu_resize_locked(CPUTLBDesc *desc, CPUTLBDescFast *fast,
-     rate = desc->window_max_entries * 100 / old_size;
+@@ -43,6 +43,9 @@
+ #include "tcg/tcg-ldst.h"
+ #include "tcg-target-reg-bits.h"
  
-     if (rate > 70) {
--        new_size = MIN(old_size << 1, 1 << CPU_TLB_DYN_MAX_BITS);
-+        new_size = MIN(old_size << 1, 1 << tcg_ctx->tlb_dyn_max_bits);
-     } else if (rate < 30 && window_expired) {
-         size_t ceil = pow2ceil(desc->window_max_entries);
-         size_t expected_rate = desc->window_max_entries * 100 / ceil;
++#define CPU_TLB_DYN_MIN_BITS 6
++#define CPU_TLB_DYN_DEFAULT_BITS 8
++
+ /* DEBUG defines, enable DEBUG_TLB_LOG to log to the CPU_LOG_MMU target */
+ /* #define DEBUG_TLB */
+ /* #define DEBUG_TLB_LOG */
 -- 
 2.43.0
 
