@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715BC832905
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CB8832908
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:41:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQnA2-0001vp-Pg; Fri, 19 Jan 2024 06:35:46 -0500
+	id 1rQnA7-00022B-US; Fri, 19 Jan 2024 06:35:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnA1-0001te-2W
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:45 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnA5-0001zo-7t
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:49 -0500
 Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQn9y-0008TJ-5f
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:44 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnA2-0000J4-J5
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:48 -0500
 Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40e779f0273so7103175e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:35:41 -0800 (PST)
+ 5b1f17b1804b1-40e800461baso7220485e9.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:35:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705664140; x=1706268940; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705664145; x=1706268945; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1kHSnHH1cspbXUMLrjnX00ivshEejOmgJvy2gqACDDE=;
- b=Pmp2M1qFgKdzOe+yvdLB+GLMLhJAEBXba31E0fg38K7BDaV7/XKG2Gb5/tIWAxD3ok
- Mje+5NNxEoTEs+bDhNUbm6f8/cW88JgYAIc3H8rz/WWFurqdqO91tVgNC1RI8V6LT5rC
- am+E28XQ4lKzciIwl4eFZStciQsncCpRMWkajWsfygrtB5RvffQEyJcrUTf9catzjPPJ
- A+AxmNdhgzlJTQU7L8Kr9V6jNoULC88EM4KDrfu/Xr2OnFn7GcsU8+S4Lj1ZLp5lP2oR
- KhRqyykkKVQPtSvXEE7KIcNnq5bfpEO5NmYAq3BRpYtbwdGQUskqnUxEHwCEB8twWfNe
- g1Vw==
+ bh=PRuBRVEWPg8k5cL0C9qDEuFeMVHGZcEBcpFoyN0cEVQ=;
+ b=EMVAxAMrrzUnjsnO7ApWlfOIu7VNaPwPDdRXqzgzqvcoRUYR2UMjH/dU9JDn5o3tB2
+ g4sPh+YrgMNowicgedvP/qPWXRDTJeB0mQurnCO2bBAUROZwOh18nksK2ZfsfD1cT6j5
+ pB42Hh4d1+usxIxhOaTkSnzG1mBnu9xD/LEUO+65bmGlUXtfgwgrkot5T/bzfkEctact
+ 7z5N8TIYa8AOpxVWyWRgXhnc5G4JjeNNUna2QJUho23GrzfWr3dW5pOb0/UI9gFqa3rN
+ op4PS+HMsB0neOKJgtyPbp0njObQjitiAJixKF4AgFpGh4eyPS+ZRE4ApmY8+yJ0ezRC
+ RFoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705664140; x=1706268940;
+ d=1e100.net; s=20230601; t=1705664145; x=1706268945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1kHSnHH1cspbXUMLrjnX00ivshEejOmgJvy2gqACDDE=;
- b=q4XGYEoi+FB1MrOloYDK7/f3w+mVLpOKZfzvKDdGDbijXW+9GJs3ZZXIvmCHQFGbnY
- 0eSOHWb8OLgy2fk/JsOTrghSTiiKwt6DzyqRui0NVrBBGOcis+D4x5DM+FRH7qidPOYS
- oiP3x0Ad3mBeIKKbPE3lDRMZ1pBbSx/8PrBTMgD9CYTLA2loZQvVDJzSrh1s3xmNqaHE
- kwJTTR44fIDJDrbgWNFAYk0cRm7p/e81dJ3e+ekGvmWRal57d3qz+4mlH4uKgBOhvglI
- 92fHuFPH/Ny2oKX4yn0qEo5e6Mz3A+4MMcxvCwDcjm2cLBaEd7moYYCNB3C3AEkBR7Ap
- STzA==
-X-Gm-Message-State: AOJu0YzM3Sb4he6bHY1gzlpkUAG1g4S2LiW4ADARw7MxKMfRHj5VQoPo
- DxD4NNMWs5rvLzTT8oLI2YrPy/vn3Ad6RJe67p1UrQKVTC+m9Bw7q6Zzgnz/E3cTe0WIjGANuem
- udzSk5g==
-X-Google-Smtp-Source: AGHT+IGJRu1XgVnB9Ylwm3JyAE8TGGlwu04tg0/YpG7a7bsAayXDLAxIljEsNv2FsqsIZd7rDBWqFg==
-X-Received: by 2002:a05:600c:5697:b0:40e:9d7f:d00f with SMTP id
- jt23-20020a05600c569700b0040e9d7fd00fmr501059wmb.122.1705664140557; 
- Fri, 19 Jan 2024 03:35:40 -0800 (PST)
+ bh=PRuBRVEWPg8k5cL0C9qDEuFeMVHGZcEBcpFoyN0cEVQ=;
+ b=g3E+KPHib0zbGDUMHRUYapmt6wCbglh3zfW6G+X4hjGlenIF1BJDnvxInqStxhkG30
+ qoK7+PqONT2yLm4uKWwjJWvGTgugX2y9ly3VkXW2FZj4gHr4RgAB6TE9QKqy26YlDrt+
+ kN68W0oun/6COtwgOh7OrZGFoV+EWEclErterx62oTMY1Hgtqx4qDJGgOsM4geocR0Mx
+ IzYRmaoASgpaYI1NOOLaWKdiyKD8HNWjhmPgHUm3yoU6wUJicTQYZvPcgLEVlnMZDMHb
+ HgsZ1OlkbPhPx5PVibbfTmVUe4vzMYTmGKagouFj2tnElIQJci2ZnPjHr8xAhwZdol0G
+ OuGw==
+X-Gm-Message-State: AOJu0Yz4GvMzua+g6DRaCuF1StKe02KUu773CcuIgFwqdDpHBrnGHH+3
+ 9wYlkTgILwUEheZD3KCAu+18zio0HyCKGW9hGO9fV0vUh6yL7A5m8QMn1bi+q1oRu+gEssRtuA+
+ vOtjazg==
+X-Google-Smtp-Source: AGHT+IF798xCajTRjCTkS072PtElk6PHFEgZ7W5QaajSvhfp1HsTQ3Ae0P1hWFiKJ3OnCfiVTr8f7A==
+X-Received: by 2002:a7b:c4d4:0:b0:40e:7611:e52f with SMTP id
+ g20-20020a7bc4d4000000b0040e7611e52fmr568136wmk.315.1705664144965; 
+ Fri, 19 Jan 2024 03:35:44 -0800 (PST)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- r7-20020a05600c35c700b0040d1bd0e716sm28955617wmq.9.2024.01.19.03.35.39
+ r19-20020a05600c459300b0040e42391a12sm28532667wmo.13.2024.01.19.03.35.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 03:35:40 -0800 (PST)
+ Fri, 19 Jan 2024 03:35:44 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
@@ -62,9 +62,10 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 07/36] accel/tcg: Remove unused tb_invalidate_phys_addr()
-Date: Fri, 19 Jan 2024 12:34:36 +0100
-Message-ID: <20240119113507.31951-8-philmd@linaro.org>
+Subject: [PULL 08/36] accel/tcg: Remove tb_invalidate_phys_page() from system
+ emulation
+Date: Fri, 19 Jan 2024 12:34:37 +0100
+Message-ID: <20240119113507.31951-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240119113507.31951-1-philmd@linaro.org>
 References: <20240119113507.31951-1-philmd@linaro.org>
@@ -95,78 +96,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e3f7c801f1 introduced the TCGCPUOps::debug_check_breakpoint()
-handler, and commit 10c37828b2 "moved breakpoint recognition outside
-of translation", so "we no longer need to flush any TBs when changing
-BPs".
-
-The last target using tb_invalidate_phys_addr() was converted to the
-debug_check_breakpoint(), so this function is now unused. Remove it.
+Since previous commit, tb_invalidate_phys_page() is not used
+anymore in system emulation. Make it static for user emulation
+and remove its public declaration in "exec/translate-all.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20231130205600.35727-1-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231130203241.31099-1-philmd@linaro.org>
 ---
- include/exec/exec-all.h |  5 -----
- cpu-target.c            | 29 -----------------------------
- 2 files changed, 34 deletions(-)
+ include/exec/translate-all.h |  1 -
+ accel/tcg/tb-maint.c         | 24 +-----------------------
+ 2 files changed, 1 insertion(+), 24 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index ee90ef122b..df3d93a2e2 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -518,11 +518,6 @@ static inline void tb_set_page_addr1(TranslationBlock *tb,
- uint32_t curr_cflags(CPUState *cpu);
+diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
+index 88602ae8d8..85c9460c7c 100644
+--- a/include/exec/translate-all.h
++++ b/include/exec/translate-all.h
+@@ -23,7 +23,6 @@
  
- /* TranslationBlock invalidate API */
--#if defined(CONFIG_USER_ONLY)
--void tb_invalidate_phys_addr(hwaddr addr);
--#else
--void tb_invalidate_phys_addr(AddressSpace *as, hwaddr addr, MemTxAttrs attrs);
--#endif
- void tb_phys_invalidate(TranslationBlock *tb, tb_page_addr_t page_addr);
- void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last);
- void tb_set_jmp_target(TranslationBlock *tb, int n, uintptr_t addr);
-diff --git a/cpu-target.c b/cpu-target.c
-index 5eecd7ea2d..d51adfd7e3 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -314,35 +314,6 @@ void list_cpus(void)
-     cpu_list();
+ 
+ /* translate-all.c */
+-void tb_invalidate_phys_page(tb_page_addr_t addr);
+ void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+ 
+ #ifdef CONFIG_USER_ONLY
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 3d2a896220..da39a43bd8 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -1021,7 +1021,7 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
+  * Called with mmap_lock held for user-mode emulation
+  * NOTE: this function must not be called while a TB is running.
+  */
+-void tb_invalidate_phys_page(tb_page_addr_t addr)
++static void tb_invalidate_phys_page(tb_page_addr_t addr)
+ {
+     tb_page_addr_t start, last;
+ 
+@@ -1160,28 +1160,6 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
+ #endif
  }
  
--#if defined(CONFIG_USER_ONLY)
--void tb_invalidate_phys_addr(hwaddr addr)
+-/*
+- * Invalidate all TBs which intersect with the target physical
+- * address page @addr.
+- */
+-void tb_invalidate_phys_page(tb_page_addr_t addr)
 -{
--    mmap_lock();
--    tb_invalidate_phys_page(addr);
--    mmap_unlock();
--}
--#else
--void tb_invalidate_phys_addr(AddressSpace *as, hwaddr addr, MemTxAttrs attrs)
--{
--    ram_addr_t ram_addr;
--    MemoryRegion *mr;
--    hwaddr l = 1;
+-    struct page_collection *pages;
+-    tb_page_addr_t start, last;
+-    PageDesc *p;
 -
--    if (!tcg_enabled()) {
+-    p = page_find(addr >> TARGET_PAGE_BITS);
+-    if (p == NULL) {
 -        return;
 -    }
 -
--    RCU_READ_LOCK_GUARD();
--    mr = address_space_translate(as, addr, &addr, &l, false, attrs);
--    if (!(memory_region_is_ram(mr)
--          || memory_region_is_romd(mr))) {
--        return;
--    }
--    ram_addr = memory_region_get_ram_addr(mr) + addr;
--    tb_invalidate_phys_page(ram_addr);
+-    start = addr & TARGET_PAGE_MASK;
+-    last = addr | ~TARGET_PAGE_MASK;
+-    pages = page_collection_lock(start, last);
+-    tb_invalidate_phys_page_range__locked(pages, p, start, last, 0);
+-    page_collection_unlock(pages);
 -}
--#endif
 -
- /* enable or disable single step mode. EXCP_DEBUG is returned by the
-    CPU loop after each instruction */
- void cpu_single_step(CPUState *cpu, int enabled)
+ /*
+  * Invalidate all TBs which intersect with the target physical address range
+  * [start;last]. NOTE: start and end may refer to *different* physical pages.
 -- 
 2.41.0
 
