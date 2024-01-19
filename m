@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE298330E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAFF833102
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:55:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQxeS-00061Y-Im; Fri, 19 Jan 2024 17:47:52 -0500
+	id 1rQxkb-0008Iq-3p; Fri, 19 Jan 2024 17:54:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQxeQ-00061L-CK
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:47:50 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1rQxkZ-0008Ib-1Q
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:54:11 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQxeK-000810-Ux
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:47:50 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3366e78d872so1090893f8f.3
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:47:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1rQxkX-00032n-Do
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:54:10 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a28fb463a28so130148466b.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:54:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705704463; x=1706309263; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=chromium.org; s=google; t=1705704847; x=1706309647; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0i49bfX5EKeDHdiiMATpVEET9ukdc5btc9PSeKgXkWY=;
- b=N4kJLnJ2iz/KHtLYyu4fu5iS+qKem3beIuBd/LsOru1Lj9U9Oe3gYbZenp4nPyiSoE
- l+hXAo0hHnaNlh/UsS4co17bK9at9W5PadtMSBHJwZxhDNhahiI1P0cNpKmaIZyB/iLu
- IqB9drLphee4gj3B3lGLojs23GVEdJlXdzGd5Sb9xI7WT4A1MXJ13T14gKwciavlPtqT
- itqHCaX/OLS9UyAqZuojMm3mnZ+ytpKYGnYblIXv3CT23X0suLQi3zvdKxatty5mhXdS
- HMzqvBqZ7oScVevDzDQjuldZfFJO5OWOcY2WPHaatSBWsq3x24wYhHJjWTu7G3lmv2hx
- 5iYQ==
+ bh=joD87CEJTxTSqpnu6obhzuVqEcLBoJCcPLOOrv/3Ah8=;
+ b=FhlLCnyA9Q/xEiDND5ER6qEs6sD4TQZtYCmGPKNQOi3cYcfxD6+xxBolOhaKSUohGN
+ K/2PzvULJzv4QiK47TOQrWBendRBNHVwrmIfPG1bSbSWqP+y/fSRumH1K4t9puLyfzp4
+ O9JFZnQi3VZy12wzxt5VBiECtr3ig3yxbpKbU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705704463; x=1706309263;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705704847; x=1706309647;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0i49bfX5EKeDHdiiMATpVEET9ukdc5btc9PSeKgXkWY=;
- b=j9pQxSnEhz//n0wZFQS+MJGzBZHCFgv/2cF8Cytn6C1BbQFkcCH6sr3fkv4gBMuQav
- t5M+eYJHmH9ikpsnJs3aOYDicWMzH2BH+NTZnOjS/xFarDWHjIn8T3QFCMN5bwqVkMJo
- Ov9ThtuCcuJDeT9NQTJTTNjYh+6q9mPpAHYi60WSV0liXC4uZiEPn9fD+H8wPomNVYrV
- r/FWkwNt2na4wX1/SIwuhimSoxOziKMNSYilZ92PPLC43CU5PA5u2leHK3R9K/5s4Lo1
- 61yFuznZJ0tfKM4IcyZu0aFG0XAN5DoyPkIKzSDY9iWFBMkpHR6IpBTi+PHrplPI9Vx+
- HoZQ==
-X-Gm-Message-State: AOJu0YzdWnNkiRawx0ZqdOAWKK5lQVDchRXxPm9lJE5cVsC/9fh7COJs
- Sr1dJZCBhqejOmaqnXPkuCJWIpLDsBDek8MK8NXTuX3CLasZTUFc3OQQUV+4VXAEpH+c+m87F4c
- g
-X-Google-Smtp-Source: AGHT+IHbaemPeogzxKKHNoymkQ4K9O20jw1B47xzZOltKV3A/0zCa06aI9JV7NvoY0CIbvgEajm0ww==
-X-Received: by 2002:a7b:c389:0:b0:40e:76f4:8cc8 with SMTP id
- s9-20020a7bc389000000b0040e76f48cc8mr132652wmj.287.1705704463129; 
- Fri, 19 Jan 2024 14:47:43 -0800 (PST)
-Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
- [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- p37-20020a05600c1da500b0040ea22b51cbsm911964wms.34.2024.01.19.14.47.42
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 14:47:42 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 18/38 2/2] tcg/aarch64: Generate TBZ, TBNZ
-Date: Fri, 19 Jan 2024 23:47:37 +0100
-Message-ID: <20240119224737.48943-2-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240110224408.10444-19-richard.henderson@linaro.org>
-References: <20240110224408.10444-19-richard.henderson@linaro.org>
+ bh=joD87CEJTxTSqpnu6obhzuVqEcLBoJCcPLOOrv/3Ah8=;
+ b=TC1bsxVwhc9/4Qq8/Ey1eIboNJLdBL20vQFaMmmbadvQGuFX/zlYyNyga5KiGRFMe3
+ mzCpry2KNhq7QM22JoXFbevM6fqkrv8ZYPunhMn0nlUfUJl91U/cbcV5OiYLbV/SPKWv
+ jRt/UOawYYY/RIHIn7a+lYggnGhYfU3KkwgUM05UHZeVoXNSpCmnbnuBzT3jZQXAHsnZ
+ elc9P51eIGzcG1yXWL1RGR6J6lcuabaIkSvS19jWftGU62UIQDrBgDbCA8YKkYtkWlr+
+ f8eErUZ43mKAGufvA0TxAQr0KzAxi4MPl+C6YsU0THkAo6mVVhtyR20ddr2ma8xZIE0k
+ M2CA==
+X-Gm-Message-State: AOJu0Yy6fIO5x5Oxx6XxukxwOS3gBVLBaYQOkcm+c7okuboREOiyZvrL
+ 2HQJjEPLv4joUG2fmuYqBF0NpAxAC9Kt4t6Vs1KsxeEMAB5cgKRr8lNAIvaj7VLVqgbzEpG38cY
+ UXQ==
+X-Google-Smtp-Source: AGHT+IGDx7RoIBeQfOZaJrlmaF7FkrB/q/mOYxPjzi06KkYIX7C+Tf3KKn1LPLtUdOo1iykxfsKdGQ==
+X-Received: by 2002:a17:906:3ad8:b0:a2c:551e:6278 with SMTP id
+ z24-20020a1709063ad800b00a2c551e6278mr246165ejd.9.1705704847102; 
+ Fri, 19 Jan 2024 14:54:07 -0800 (PST)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com.
+ [209.85.208.50]) by smtp.gmail.com with ESMTPSA id
+ o19-20020a17090608d300b00a2adc93e308sm10734293eje.222.2024.01.19.14.54.05
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 Jan 2024 14:54:05 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id
+ 4fb4d7f45d1cf-553e36acfbaso4233a12.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:54:05 -0800 (PST)
+X-Received: by 2002:a05:6402:370:b0:55a:7d4e:c075 with SMTP id
+ s16-20020a056402037000b0055a7d4ec075mr65121edw.2.1705704845239; Fri, 19 Jan
+ 2024 14:54:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+References: <20231003204500.518-1-gurchetansingh@chromium.org>
+ <87wms9d0fi.fsf@alyssa.is>
+ <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
+ <87cytxni1n.fsf@alyssa.is>
+In-Reply-To: <87cytxni1n.fsf@alyssa.is>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Fri, 19 Jan 2024 14:53:52 -0800
+X-Gmail-Original-Message-ID: <CAAfnVBmV3m0-Kh5gcrxzQXotEQ9ktXfEhJr92XAMKi6rXXkuOg@mail.gmail.com>
+Message-ID: <CAAfnVBmV3m0-Kh5gcrxzQXotEQ9ktXfEhJr92XAMKi6rXXkuOg@mail.gmail.com>
+Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
+To: Alyssa Ross <hi@alyssa.is>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, 
+ akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org, 
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org, 
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,148 +103,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On Fri, Jan 19, 2024 at 1:13=E2=80=AFPM Alyssa Ross <hi@alyssa.is> wrote:
+>
+> Hi Gurchetan,
+>
+> > Thanks for the reminder.  I did make a request to create the release
+> > tags, but changes were requested by Fedora packaging effort:
+> >
+> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2242058
+> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2241701
+> >
+> > So the request was canceled, but never re-requested.  I'll fire off
+> > another request, with:
+> >
+> > gfxstream: 23d05703b94035ac045df60823fb1fc4be0fdf1c ("gfxstream:
+> > manually add debug logic")
+> > AEMU: dd8b929c247ce9872c775e0e5ddc4300011d0e82 ("aemu: improve licensin=
+g")
+> >
+> > as the commits.  These match the Fedora requests, and the AEMU one has
+> > been merged into Fedora already it seems.
+>
+> These revisions have the problem I mentioned in my previous message:
+>
+> >> The gfxstream ref mentioned here isn't compatible with
+> >> v0.1.2-rutabaga-release, because it no longer provides logging_base.pc=
+,
+>
+> rutabaga was not fixed to use the new AEMU package names until after the
+> v0.1.2-rutabaga-release tag, in commit 5dfd74a06.  So will there be a
+> new Rutabaga release that's compatible with these release versions of
+> gfxstream and AEMU?
 
-Test the sign bit for LT/GE vs 0, and TSTNE/EQ vs a power of 2.
+Good catch.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- tcg/aarch64/tcg-target.c.inc | 71 ++++++++++++++++++++++++++++++------
- 1 file changed, 59 insertions(+), 12 deletions(-)
+One possible workaround is to build gfxstream as a shared library.  I
+think that would avoid rutabaga looking for AEMU package config files.
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index a19158f4ea..55225313ad 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -105,6 +105,18 @@ static bool reloc_pc19(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-     return false;
- }
- 
-+static bool reloc_pc14(tcg_insn_unit *src_rw, const tcg_insn_unit *target)
-+{
-+    const tcg_insn_unit *src_rx = tcg_splitwx_to_rx(src_rw);
-+    ptrdiff_t offset = target - src_rx;
-+
-+    if (offset == sextract64(offset, 0, 14)) {
-+        *src_rw = deposit32(*src_rw, 5, 14, offset);
-+        return true;
-+    }
-+    return false;
-+}
-+
- static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-                         intptr_t value, intptr_t addend)
- {
-@@ -115,6 +127,8 @@ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
-         return reloc_pc26(code_ptr, (const tcg_insn_unit *)value);
-     case R_AARCH64_CONDBR19:
-         return reloc_pc19(code_ptr, (const tcg_insn_unit *)value);
-+    case R_AARCH64_TSTBR14:
-+        return reloc_pc14(code_ptr, (const tcg_insn_unit *)value);
-     default:
-         g_assert_not_reached();
-     }
-@@ -380,6 +394,10 @@ typedef enum {
-     /* Conditional branch (immediate).  */
-     I3202_B_C       = 0x54000000,
- 
-+    /* Test and branch (immediate).  */
-+    I3205_TBZ       = 0x36000000,
-+    I3205_TBNZ      = 0x37000000,
-+
-     /* Unconditional branch (immediate).  */
-     I3206_B         = 0x14000000,
-     I3206_BL        = 0x94000000,
-@@ -660,6 +678,14 @@ static void tcg_out_insn_3202(TCGContext *s, AArch64Insn insn,
-     tcg_out32(s, insn | tcg_cond_to_aarch64[c] | (imm19 & 0x7ffff) << 5);
- }
- 
-+static void tcg_out_insn_3205(TCGContext *s, AArch64Insn insn,
-+                              TCGReg rt, int imm6, int imm14)
-+{
-+    insn |= (imm6 & 0x20) << (31 - 5);
-+    insn |= (imm6 & 0x1f) << 19;
-+    tcg_out32(s, insn | (imm14 & 0x3fff) << 5 | rt);
-+}
-+
- static void tcg_out_insn_3206(TCGContext *s, AArch64Insn insn, int imm26)
- {
-     tcg_out32(s, insn | (imm26 & 0x03ffffff));
-@@ -1415,7 +1441,7 @@ static inline void tcg_out_goto_label(TCGContext *s, TCGLabel *l)
- static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
-                            TCGArg b, bool b_const, TCGLabel *l)
- {
--    intptr_t offset;
-+    int tbit = -1;
-     bool need_cmp = true;
- 
-     switch (c) {
-@@ -1425,31 +1451,52 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
-             need_cmp = false;
-         }
-         break;
-+    case TCG_COND_LT:
-+    case TCG_COND_GE:
-+        if (b_const && b == 0) {
-+            c = (c == TCG_COND_LT ? TCG_COND_TSTNE : TCG_COND_TSTEQ);
-+            tbit = ext ? 63 : 31;
-+            need_cmp = false;
-+        }
-+        break;
-+    case TCG_COND_TSTEQ:
-+    case TCG_COND_TSTNE:
-+        if (b_const && is_power_of_2(b)) {
-+            tbit = ctz64(b);
-+            need_cmp = false;
-+        }
-+        break;
-     default:
-         break;
-     }
- 
-     if (need_cmp) {
-         tcg_out_cmp(s, ext, c, a, b, b_const);
--    }
--
--    if (!l->has_value) {
-         tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
--        offset = tcg_in32(s) >> 5;
--    } else {
--        offset = tcg_pcrel_diff(s, l->u.value_ptr) >> 2;
--        tcg_debug_assert(offset == sextract64(offset, 0, 19));
-+        tcg_out_insn(s, 3202, B_C, c, 0);
-+        return;
-     }
- 
--    if (need_cmp) {
--        tcg_out_insn(s, 3202, B_C, c, offset);
-+    if (tbit >= 0) {
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_TSTBR14, l, 0);
-+        switch (c) {
-+        case TCG_COND_TSTEQ:
-+            tcg_out_insn(s, 3205, TBZ, a, tbit, 0);
-+            break;
-+        case TCG_COND_TSTNE:
-+            tcg_out_insn(s, 3205, TBNZ, a, tbit, 0);
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-     } else {
-+        tcg_out_reloc(s, s->code_ptr, R_AARCH64_CONDBR19, l, 0);
-         switch (c) {
-         case TCG_COND_EQ:
--            tcg_out_insn(s, 3201, CBZ, ext, a, offset);
-+            tcg_out_insn(s, 3201, CBZ, ext, a, 0);
-             break;
-         case TCG_COND_NE:
--            tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
-+            tcg_out_insn(s, 3201, CBNZ, ext, a, 0);
-             break;
-         default:
-             g_assert_not_reached();
--- 
-2.41.0
-
+But if another rutabaga release is desired with support for a static
+library, then we can make that happen too.
 
