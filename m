@@ -2,79 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61759832E53
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:47:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D384832E5B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:48:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQsxH-0001aa-2R; Fri, 19 Jan 2024 12:46:59 -0500
+	id 1rQsy2-0001s0-5r; Fri, 19 Jan 2024 12:47:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQsxE-0001aO-M7
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:46:56 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rQsxD-0002Xv-0Z
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:46:56 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5578485fc0eso1093398a12.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:46:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705686412; x=1706291212; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4DPUS/85mH1IUR8PZOdL+FrwMo1NGzgrtCBUZEAw+W0=;
- b=bTxi+/OBTNcef5zkiXigQlvqnpqeRi3ythEfoNmqtPBAOLNUnwmySJVfZCwruygaaQ
- NqYQA3qs47gLlqjjklvp5EvSObJMNqZt+nYz3SyopNVfbzq9XJkgXo0rokFYoHHuFyaJ
- RJEqKv4eRdL31J1neDgJ/GxfUKcnC4ZKaB/hWR8HyP/pptY5oKbTyQKTW2AnkeZmhlis
- PLun9mbWfvHjo8hOAIn03pFf5qv/PpknvWu9PGI5/U83QF46rCon4+dhyALkoW4A3f1U
- vqKU5jLzChoPsfEUCNV5szGK0jUwrsgX8dZ4oG33L5wNgg7ebozOazu1UxxI5iPmF/A8
- dKDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705686412; x=1706291212;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4DPUS/85mH1IUR8PZOdL+FrwMo1NGzgrtCBUZEAw+W0=;
- b=UIumYm1/egqP/7YBcHNYvG+/x4tnRYdUPUyGNwld3p9W8wgA+880iXTSQSLPhuAaBk
- 6RXCE3eZaznq1zA/4DkHpRU/K+1g6H4MS5dQ4JtrODi5j5cqUrasm5A5Z/O76b2wO9cv
- en2U93G0RQFgu0o3IKCWStv7KXZJd2Y7gUqtTkg4dgmhlCfwa8dojkC4aHPSb0ZmTyQQ
- pmnSQgyro4rYJztOB9qxYFXvkI7vQgjg/9avJtCHSifyDo93rnDT8VsT4vOD2q9ZMhMS
- JlyuF4fyDILqzrGwoFMJ+qsDOez3hhhNMn288Q7QUxpr0Sd6yaLYwPiHg0MI0fWB4ekM
- zKEQ==
-X-Gm-Message-State: AOJu0YzPASjF/2tod1R8gZVrzrDeDtCgZzDcFfV91BJr2gQQZpJ3CV/P
- i4urMnRLrNxD16XyRfzu5lcP5006C7vaoOgoI0rIFUgC25v0opWaAmdplGXcjZBM6lolBSDo2UQ
- Zbo8fLqGwcXyK201SDy92fENrYqlh4OYpTWDPWg==
-X-Google-Smtp-Source: AGHT+IG0B7aNIVkKCWeCZQ0WuDTG7erEJghhYfTdLnHBH1JoO0bJBldhGglLEnZRfDjL4S3kCb4zPBrHc1m515c5pCU=
-X-Received: by 2002:a05:6402:30a7:b0:559:f5dc:d8c1 with SMTP id
- df7-20020a05640230a700b00559f5dcd8c1mr64092edb.76.1705686412561; Fri, 19 Jan
- 2024 09:46:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsxz-0001rH-LN
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:47:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsxv-0002pB-3f
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:47:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705686457;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7ycOGw+ownpgUzMGvWMdKxUPFl0FrgBPZH5QjVks0Rg=;
+ b=GInP989TNUiKm4G6Kypk+uPBii2B+m3m6Aznwrtv+wE4bnn+o55ac1EjUy+sAKDcTJ2hhr
+ 9WO2HqQOlwjF5vHPNmE9WkmgM7TDCvPdu+8vIo0IMaB5w8JlEKpaRyFIym32iqady7vOuG
+ mE1gY5LPEla/xRq5GXWsOmWpDFYVXLg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-QdltjCszOF2LcA8h3DenbQ-1; Fri, 19 Jan 2024 12:47:36 -0500
+X-MC-Unique: QdltjCszOF2LcA8h3DenbQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0751C8E4144;
+ Fri, 19 Jan 2024 17:47:36 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 52FC251D5;
+ Fri, 19 Jan 2024 17:47:35 +0000 (UTC)
+Date: Fri, 19 Jan 2024 18:47:34 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Ari Sundholm <ari@tuxera.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v3] block/blklogwrites: Protect mutable driver state with
+ a mutex.
+Message-ID: <Zaq1tkw1E2RFZm1n@redhat.com>
+References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
+ <20240119162913.2620245-1-ari@tuxera.com>
 MIME-Version: 1.0
-References: <20240115043431.3900922-1-bin.meng@windriver.com>
- <20240115043431.3900922-4-bin.meng@windriver.com>
- <CAFEAcA9Z_9Mg_R2ToEo=++UAdq789-q2S8CjHLT6fyp_zXrh-A@mail.gmail.com>
- <ba16062e-e2c9-95b8-8b35-c388f348e126@redhat.com>
-In-Reply-To: <ba16062e-e2c9-95b8-8b35-c388f348e126@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 Jan 2024 17:46:41 +0000
-Message-ID: <CAFEAcA8pSQ15zxhO2pFWS8h+xJHqcLt+CSJ78En2SG1m--izWQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] tests/acpi: Update virt/SSDT.memhp
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: Bin Meng <bin.meng@windriver.com>, qemu-devel@nongnu.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240119162913.2620245-1-ari@tuxera.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,69 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Jan 2024 at 17:19, Laszlo Ersek <lersek@redhat.com> wrote:
->
-> On 1/19/24 15:29, Peter Maydell wrote:
-> > On Mon, 15 Jan 2024 at 04:35, Bin Meng <bin.meng@windriver.com> wrote:
-> >>
-> >> The Arm dtb changes caused an address change:
-> >>
-> >>  DefinitionBlock ("", "SSDT", 1, "BOCHS ", "NVDIMM", 0x00000001)
-> >>  {
-> >>      [ ... ]
-> >> -    Name (MEMA, 0x43C80000)
-> >> +    Name (MEMA, 0x43D80000)
-> >>  }
-> >>
-> >> Signed-off-by: Bin Meng <bin.meng@windriver.com>
-> >>
-> >> ---
-> >
-> > You should follow up (with Laszlo?) to make sure we understand
-> > why reducing the size of the generated dtb has caused this
-> > change in the ACPI tables. In particular, if we made the
-> > dtb *smaller* why has the allocated address here got *larger*?
->
-> As a very roughly stated trait (i.e., I'm not claiming this is an exact,
-> hard rule), the UEFI memory allocator hands out chunks top-down. An
-> earlier allocation (such as the DTB's) shrinking is consistent with
-> further allocations being serviced at higher addresses.
->
-> >
-> > This particular bit of the ACPI tables does seem to be
-> > annoyingly unstable, though -- for instance commit 55abfc1ffbe54c0
-> > we had to change this figure when we updated to a newer EDK2
-> > version, and similarly commit 5f88dd43d0 for the same reason.
-> > I wonder if we can or should make our data-check be more
-> > loose about the address reported here, given what Laszlo
-> > says about how we're basically looking at the address of some
-> > memory the guest allocated. (cc'd the bios-tables-test
-> > maintainers for their opinion.)
->
-> Right, the allocation address is generally unpredictable. (That's why
-> the ACPI linker/loader "language" had to be extended with an extra
-> command, for the sake of the vmgenid device -- so that the firmware
-> could send the allocation GPA back to QEMU in an "architected" way.)
->
-> >
-> > I'm also a little concerned that if the ACPI generated
-> > tables care about the dtb size then we're now going to
-> > have a situation where any patch we make to the virt board
-> > that changes the generated dtb at all will result in the
-> > ACPI tables changing. That would be annoying.
->
-> This is generally inevitable, it's just how the ACPI linker/loader
-> works. The guest allocator can only work with the memory map it gets
-> from QEMU. The same effect is triggered BTW if you don't change the DTB
-> but change (on the QEMU command line) the guest RAM size. The ACPI
-> tables will be allocated at different addresses than before, and so the
-> pointer fields in other tables, to those tables, will also change.
+Am 19.01.2024 um 17:29 hat Ari Sundholm geschrieben:
+> During the review of a fix for a concurrency issue in blklogwrites,
+> it was found that the driver needs an additional fix when enabling
+> multiqueue, which is a new feature introduced in QEMU 9.0, as the
+> driver state may be read and written by multiple threads at the same
+> time, which was not the case when the driver was originally written.
+> 
+> Fix the multi-threaded scenario by introducing a mutex to protect the
+> mutable fields in the driver state, and always having the mutex locked
+> by the current thread when accessing them. Also use the mutex and a
+> CoQueue to ensure that the super block is not being written to by
+> multiple threads concurrently and updates are properly serialized.
+> 
+> Additionally, add the const qualifier to a few BDRVBlkLogWritesState
+> pointer targets in contexts where the driver state is not written to.
+> 
+> Signed-off-by: Ari Sundholm <ari@tuxera.com>
+> 
+> v1->v2: Ensure that the super block is not written to concurrently.
+> v2->v3: Use a CoQueue instead of a condition variable, as the latter
+> does not make the currently executing coroutine yield on entering a
+> wait.
+> ---
+>  block/blklogwrites.c | 85 +++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 77 insertions(+), 8 deletions(-)
 
-Mmm, but previously we weren't packing the dtb we created,
-so it would always be the same 1MB regardless of what and
-how much we put into it. After this patchset it will be packed
-down to its "real" size, so the size will be much more variable.
+For your next series, please put the changelog between versions below
+the "---" marker so that git am doesn't consider it part of the commit
+message.
 
-thanks
--- PMM
+Thanks, applied to the block branch.
+
+Kevin
+
 
