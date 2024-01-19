@@ -2,80 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AA1832974
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 13:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 939678329CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 13:57:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQnva-0004XR-UD; Fri, 19 Jan 2024 07:24:54 -0500
+	id 1rQoPW-0005Xz-25; Fri, 19 Jan 2024 07:55:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rQnvY-0004X8-9d
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 07:24:52 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQoPR-0005Uc-L5
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 07:55:46 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rQnvW-0005iD-67
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 07:24:52 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6d9b37f4804so1190707b3a.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 04:24:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQoPO-00069u-AG
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 07:55:44 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-55a064e54a7so1389533a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 04:55:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705667089; x=1706271889; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=70cCuI9dQ9Ifp0rRicDUuHMay2HNrHoMkAoC3IqJVIc=;
- b=Nw1DISYxKz9TVAdiItTlgwi3t8E/pq1SYeeWSmtZGZ16q+lMBRdNtwQMHURZafZrC8
- KUZ5tVpcktxEZepcPGALmuntErAam4JohIq5ieR2+SZHG4ix2XiRWHBS+E7p5ip0mk40
- tPG9d8geuS9wF1huZ5O4nqBNZlB//hYR75q12goiUslFcHsE5Iw0aQp2I1bdxpIKeC9s
- Znkxo+sP983dVhHoKhXMzTPwI5CNJ4OeTn6Ra0Sc0Im2r85bkojvRv3qLCou/yeZwi1c
- PoG79YQtLy+Xd0slQCWJ72vrFwV1zZD6RozICp9PfUK6lNjaUL8t63Vak91JM+zEn7Sy
- oUlw==
+ d=linaro.org; s=google; t=1705668940; x=1706273740; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=UUp6XHOe5NjO/w1VOs0GzPXzwC8wYapn1Sl/UgtrtBQ=;
+ b=XUbl5+NYz4HNzdg/qJJjwWTSbZso+nhnLeP4qoADWpCQFUXzDcP58tfry6QCUmX3rY
+ 20NYEBuToSlyz6cTgIhFnELHYlzO6xjqC+uwYdSHL1mFhwHpFuG8arx6Vmn6JKajFSP9
+ QxOc6dsCuIjLt2ha4yU77yXXRpbtcR8p6uMyVjfOvY3ePgtiCbPHEy6UHMa2E2RkPC30
+ o8ul1Mgbh0GS1IJVNc+Ukpi/qEkeNE1dSX2QThRJE5rF0hN7RtYIep9Zrcis4iiClRxd
+ gJoPCySfXRw6ezU5BH9ZpmkRhE3P+zG07l1G1usknYbaiGr7ebv2ShOPNZyWx1GIvPqY
+ E1Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705667089; x=1706271889;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=70cCuI9dQ9Ifp0rRicDUuHMay2HNrHoMkAoC3IqJVIc=;
- b=EYiGwodATxGtEFezAewiuWLb23kiiEPntxC8dxrIbupzuOKaU3XdLpbYqlAaDOWGYw
- a4mEPvKA5tfQu9DgGrBVMm7Nn+ckSPMmyifHrbgssGvwxKosQQv07+YqulEBEubZ6752
- GPCGCCooaCBAtmmpD9+CCoMv1vsvWaJPM7ta3Conj8AnHg2kq+ERkw9F/H2Z2pBjSIW5
- 2naeqqKLwpz25wco4oSeobuE3MiXaa4/Worzu0fmosRW9nyDACfkJGbjrBcjoivb+0mi
- lREKgw4qc9o3Ni96akSgTPa9UM+b5JmBDv9YawehAgdLWSUwaCeQ+raR8VXU8h7I7wv4
- iczg==
-X-Gm-Message-State: AOJu0Yy078mt+KeWbMJjaZ+c8LByQJ5qISvajw5JARewbXd6saRq3V6I
- nHaEY5CQxbE0AELwc48oFSEDNhMw3tQJ/XI3zXW5Lvlb0rBV2yChDPIZwhdkNjPIFpKq2VM7dww
- o
-X-Google-Smtp-Source: AGHT+IF83JlFLgC/a0W2LnaO+R507J9DsHMVxUjbWgXtI2t3aI7eAeU/jILAO24WUR/gSVBOvw3H1w==
-X-Received: by 2002:a05:6a20:6709:b0:19a:9973:2b22 with SMTP id
- q9-20020a056a20670900b0019a99732b22mr1052376pzh.40.1705667088763; 
- Fri, 19 Jan 2024 04:24:48 -0800 (PST)
-Received: from [192.168.68.110] ([189.38.141.140])
- by smtp.gmail.com with ESMTPSA id
- d8-20020a62f808000000b006d9ce7d3258sm4894988pfh.204.2024.01.19.04.24.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 04:24:48 -0800 (PST)
-Message-ID: <1f898244-3106-40be-adc0-395661c6b904@ventanamicro.com>
-Date: Fri, 19 Jan 2024 09:24:45 -0300
+ d=1e100.net; s=20230601; t=1705668940; x=1706273740;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=UUp6XHOe5NjO/w1VOs0GzPXzwC8wYapn1Sl/UgtrtBQ=;
+ b=bKj4Wfu/tTQ9rUQtUNIrPCs/tPxrcOp7CB7Injq7dR744AC7DP/j9Nsfp/L3PkYCUq
+ BhE7G6U67DGcLW1gquupU4ql1FZDMgTytG6XFU2Si6GEl6myw4ayFvRYLbsYhAruH3KP
+ BN8cGKgpVwWjIoTsChI9zbR4lY1tD/ngoaN1mwqHcGXwbVefjmj3pfFQVX303UUWZtOG
+ DlOauA/DVFtuGxNxmwjFuMF/N8u/zgtcFwzetFJ2j0G/ufWijZYmonNBUgAi+HIyncxx
+ Kzf+y8E0e6BOMIbguJHg+mtCuNYABR+mHjXlXPWLkXeRUHERCsI/F4F4J1yrBvce/mnB
+ ZpqQ==
+X-Gm-Message-State: AOJu0Yz1clqQ7Ho3rMlnx5nv3/L3Y68YLJqXFZQheoMgPGP+WOGpcedE
+ t/ahRLQ0L2+pn4Hal/3OQmWyQvI4jSpIhkoG7Zl5z2e0dvcK1xXNvddJgCBaNbH7+Phq976IxJC
+ WGZIHGxiHXYI2Yk0RT9kGhlYXLr66eAKtR7VpFVZ+3XEZ2APB
+X-Google-Smtp-Source: AGHT+IEIh1Ry7F0I1xU2oyfm99ghT0gBKUaAXkfbbEjpmQIOjIuErh0L23R/cSVTKZuin8qKEVJSPv21JTx7srdmmls=
+X-Received: by 2002:a05:6402:1ca8:b0:55a:ea3:9c02 with SMTP id
+ cz8-20020a0564021ca800b0055a0ea39c02mr1042004edb.18.1705668940324; Fri, 19
+ Jan 2024 04:55:40 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] target/riscv: Check 'A' and split extensions for
- atomic instructions
-Content-Language: en-US
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-References: <20240119112129.20067-1-rbradford@rivosinc.com>
- <20240119112129.20067-3-rbradford@rivosinc.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240119112129.20067-3-rbradford@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Jan 2024 12:55:29 +0000
+Message-ID: <CAFEAcA_7s=scvgYfG8kGmJ==5cKmvvA-ZqVkpt4M9jV6eS1Zow@mail.gmail.com>
+Subject: how do the iotests pick a machine model to run on ?
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Qemu-block <qemu-block@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,208 +83,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+If you build QEMU with support for the sh4 target only
+(configure --target-list=sh4-softmmu) then 'make check' fails
+in the iotests, because some iotests, including for instance 040,
+try to create a machine with a virtio-scsi device, but they don't
+do anything to ensure that the machine they create actually
+has a PCI bus to plug the virtio-scsi device into, and so the test
+fails:
 
++Traceback (most recent call last):
++  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/qemu-iotests/040",
+line 94, in setUp
++    self.vm.launch()
++  File "/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/python/qemu/machine/machine.py",
+line 455, in launch
++    raise VMLaunchFailure(
++qemu.machine.machine.VMLaunchFailure: ConnectError: Failed to
+establish session: EOFError
++       Exit code: 1
++       Command:
+/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/sh4/qemu-system-sh4
+-display none -vga none -chardev socket,id=mon,fd=5 -mon
+chardev=mon,mode=control -chardev socket,id=qtest,fd=3 -qtest
+chardev:qtest -accel qtest -nodefaults -display none -accel qtest
+-drive if=none,id=drive0,file=/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/sh4/scratch/qcow2-file-040/test.img,format=qcow2,cache=writeback,aio=threads,node-name=top,backing.node-name=mid,backing.backing.node-name=base
+-device virtio-scsi -device scsi-hd,id=scsi0,drive=drive0
++       Output: [I 0.000000] OPENED
++qemu-system-sh4: -device virtio-scsi: No 'PCI' bus found for device
+'virtio-scsi-pci'
 
-On 1/19/24 08:21, Rob Bradford wrote:
-> Following the pattern for 'M' and Zmmul check if either the 'A'
-> extension is enabled or the appropriate split extension for the
-> instruction.
-> 
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
+(It happens that the default machine type for 'sh4'
+does not have a PCI bus.)
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+How are the iotests supposed to select a machine model to run
+on, and how are they intended to mark themselves as requiring
+particular facilities, like PCI? Presumably some of the tests
+are missing the appropriate annotations to ensure they're
+skipped when the facilities required aren't present.
 
->   target/riscv/insn_trans/trans_rva.c.inc | 56 +++++++++++++++----------
->   1 file changed, 34 insertions(+), 22 deletions(-)
-> 
-> diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
-> index f0368de3e4..267930e5bc 100644
-> --- a/target/riscv/insn_trans/trans_rva.c.inc
-> +++ b/target/riscv/insn_trans/trans_rva.c.inc
-> @@ -18,6 +18,18 @@
->    * this program.  If not, see <http://www.gnu.org/licenses/>.
->    */
->   
-> +#define REQUIRE_A_OR_ZAAMO(ctx) do {                      \
-> +    if (!ctx->cfg_ptr->ext_zaamo && !has_ext(ctx, RVA)) { \
-> +        return false;                                     \
-> +    }                                                     \
-> +} while (0)
-> +
-> +#define REQUIRE_A_OR_ZALRSC(ctx) do {                      \
-> +    if (!ctx->cfg_ptr->ext_zalrsc && !has_ext(ctx, RVA)) { \
-> +        return false;                                     \
-> +    }                                                     \
-> +} while (0)
-> +
->   static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
->   {
->       TCGv src1;
-> @@ -96,143 +108,143 @@ static bool gen_amo(DisasContext *ctx, arg_atomic *a,
->   
->   static bool trans_lr_w(DisasContext *ctx, arg_lr_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZALRSC(ctx);
->       return gen_lr(ctx, a, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_sc_w(DisasContext *ctx, arg_sc_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZALRSC(ctx);
->       return gen_sc(ctx, a, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amoswap_w(DisasContext *ctx, arg_amoswap_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amoadd_w(DisasContext *ctx, arg_amoadd_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amoxor_w(DisasContext *ctx, arg_amoxor_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amoand_w(DisasContext *ctx, arg_amoand_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amoor_w(DisasContext *ctx, arg_amoor_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amomin_w(DisasContext *ctx, arg_amomin_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amomax_w(DisasContext *ctx, arg_amomax_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amominu_w(DisasContext *ctx, arg_amominu_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_amomaxu_w(DisasContext *ctx, arg_amomaxu_w *a)
->   {
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TESL));
->   }
->   
->   static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZALRSC(ctx);
->       return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
->   }
->   
->   static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZALRSC(ctx);
->       return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TEUQ));
->   }
->   
->   static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
->   {
->       REQUIRE_64BIT(ctx);
-> -    REQUIRE_EXT(ctx, RVA);
-> +    REQUIRE_A_OR_ZAAMO(ctx);
->       return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TEUQ));
->   }
+thanks
+-- PMM
 
