@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C740832B69
+	by mail.lfdr.de (Postfix) with ESMTPS id EB058832B6C
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq35-0005xQ-2z; Fri, 19 Jan 2024 09:40:48 -0500
+	id 1rQq32-0005ur-Gq; Fri, 19 Jan 2024 09:40:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2z-0005tE-Ex
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2z-0005tF-GG
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:41 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2w-0003vI-BD
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2w-0003vR-BD
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=ZOKCnodekcL5jtYtIT72SfARPKQf/ff0v9m3k4jhn4c=; b=pQXf67VX6mcrwQMcXQ6+JxqdnP
- AVBj+8WBEyy7WI/FlkXQW6fCPkSCIDQheGb/NvwX93YlVT0A3logYQi7hjs9OmFykKtOjwS3eYx8+
- 2j7yqcPZNjVlEsNKaArGQwW0Fy15frzwPpVUugwtpGWQ9kcLgBaZ2BcpFh6i8akXJWM8=;
+ bh=ALkBXryuWDH1ZwpPT9bKXKuItIExb1fOyUeK84V/X94=; b=f+Bj+DJ1HIUm7u5Zuf5TOBQTYF
+ nDKZQL3qa231IohstFwJPP9jRchzqj5vjZcv7WWLjyI74HupIjcSpCZdzoSNPJ3gofGVUyvn1VxYl
+ zee0rpva+B0tB8s94g5uzHhxAaCj+27BktQhUOIkm7gRHfILInDaIkQ4oXIsB/BZB1KI=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 25/34] accel/tcg: [CPUTLB] Use tcg_ctx->mo_te instead of
- MO_TE
-Date: Fri, 19 Jan 2024 15:40:15 +0100
-Message-ID: <20240119144024.14289-26-anjo@rev.ng>
+Subject: [RFC PATCH 26/34] Wrap target macros in functions
+Date: Fri, 19 Jan 2024 15:40:16 +0100
+Message-ID: <20240119144024.14289-27-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,43 +60,126 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes *_code() memory access functions target independent.
+Adds wrapper functions around common target specific macros required by
+accel/tcg.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/cputlb.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/hw/core/cpu.h |  9 +++++++
+ cpu-target.c          | 62 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index a75a52d141..bfbbfd0fdb 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2988,19 +2988,22 @@ uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr addr)
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 57d100c203..a2d65c1d7a 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -26,6 +26,7 @@
+ #include "exec/vaddr.h"
+ #include "exec/memattrs.h"
+ #include "exec/tlb-common.h"
++#include "exec/memop.h"
+ #include "qapi/qapi-types-run-state.h"
+ #include "qemu/bitmap.h"
+ #include "qemu/rcu_queue.h"
+@@ -1164,6 +1165,14 @@ void cpu_exec_unrealizefn(CPUState *cpu);
+  * what you are doing!
+  */
+ bool target_words_bigendian(void);
++bool target_supports_mttcg(void);
++bool target_has_precise_smc(void);
++int target_long_bits(void);
++int target_phys_addr_space_bits(void);
++uint8_t target_insn_start_words(void);
++uint8_t target_default_memory_order(void);
++uint8_t target_tlb_dyn_max_bits(void);
++MemOp target_endian_memory_order(void);
  
- uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr)
- {
--    MemOpIdx oi = make_memop_idx(MO_TEUW, cpu_mmu_index(env, true));
-+    MemOpIdx oi = make_memop_idx(tcg_ctx->mo_te | MO_UW,
-+                                 cpu_mmu_index(env, true));
-     return do_ld2_mmu(env_cpu(env), addr, oi, 0, MMU_INST_FETCH);
+ const char *target_name(void);
+ 
+diff --git a/cpu-target.c b/cpu-target.c
+index 1a8e730bed..6b67af7a51 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -39,10 +39,13 @@
+ #include "exec/tb-flush.h"
+ #include "exec/translate-all.h"
+ #include "exec/log.h"
++#include "exec/cpu-defs.h"
+ #include "hw/core/accel-cpu.h"
+ #include "trace/trace-root.h"
+ #include "qemu/accel.h"
+ #include "qemu/plugin.h"
++#include "tcg/tcg-mo.h"
++#include "tcg/insn-start-words.h"
+ 
+ uintptr_t qemu_host_page_size;
+ intptr_t qemu_host_page_mask;
+@@ -416,6 +419,65 @@ bool target_words_bigendian(void)
+     return TARGET_BIG_ENDIAN;
  }
  
- uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr)
++bool target_supports_mttcg(void)
++{
++#ifdef TARGET_SUPPORTS_MTTCG
++# ifndef TCG_GUEST_DEFAULT_MO
++#  error "TARGET_SUPPORTS_MTTCG without TCG_GUEST_DEFAULT_MO"
++# endif
++    return true;
++#else
++    return false;
++#endif
++}
++
++bool target_has_precise_smc(void)
++{
++#ifdef TARGET_HAS_PRECISE_SMC
++    return true;
++#else
++    return false;
++#endif
++}
++
++int target_long_bits(void)
++{
++    return TARGET_LONG_BITS;
++}
++
++int target_phys_addr_space_bits(void)
++{
++    return TARGET_PHYS_ADDR_SPACE_BITS;
++}
++
++uint8_t target_insn_start_words(void)
++{
++    return TARGET_INSN_START_WORDS;
++}
++
++uint8_t target_default_memory_order(void)
++{
++#ifdef TCG_GUEST_DEFAULT_MO
++    return TCG_GUEST_DEFAULT_MO;
++#else
++    return TCG_MO_ALL;
++#endif
++}
++
++MemOp target_endian_memory_order(void)
++{
++    return MO_TE;
++}
++
++uint8_t target_tlb_dyn_max_bits(void)
++{
++#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
++    return CPU_TLB_DYN_MAX_BITS;
++#else
++    return 0;
++#endif
++}
++
+ const char *target_name(void)
  {
--    MemOpIdx oi = make_memop_idx(MO_TEUL, cpu_mmu_index(env, true));
-+    MemOpIdx oi = make_memop_idx(tcg_ctx->mo_te | MO_UL,
-+                                 cpu_mmu_index(env, true));
-     return do_ld4_mmu(env_cpu(env), addr, oi, 0, MMU_INST_FETCH);
- }
- 
- uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
- {
--    MemOpIdx oi = make_memop_idx(MO_TEUQ, cpu_mmu_index(env, true));
-+    MemOpIdx oi = make_memop_idx(tcg_ctx->mo_te | MO_UQ,
-+                                 cpu_mmu_index(env, true));
-     return do_ld8_mmu(env_cpu(env), addr, oi, 0, MMU_INST_FETCH);
- }
- 
+     return TARGET_NAME;
 -- 
 2.43.0
 
