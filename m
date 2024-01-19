@@ -2,136 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9301E832CFB
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 17:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86E3832D04
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 17:19:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQrVA-0001qQ-Rw; Fri, 19 Jan 2024 11:13:53 -0500
+	id 1rQrZS-0003pS-Uo; Fri, 19 Jan 2024 11:18:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQrUv-0001pu-2F
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 11:13:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQrUt-0001Lp-B9
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 11:13:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705680814;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=/D8C7Bwsl1YkC1ZagOApFugrNMHw0vxYuiQvBwCRkEs=;
- b=CTcV3BN3i9DgL0XbXWB87ObQYYz3jI/tXgj11D0x6JOzI9BIZFeB7Ox4HPD3o0zd2uciv0
- QsagJbHZ42ZOsnLrGXEpHRf+7Jexi5uvzypaYR3Cirf5CzVPEO0Tog233zNKF5Gvc6CiVl
- HXwviNgm7uh5hiyNwQEGH7KiAnZKwtU=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-1YOErJc3NyidDlQOHk6EiA-1; Fri, 19 Jan 2024 11:13:31 -0500
-X-MC-Unique: 1YOErJc3NyidDlQOHk6EiA-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3bd3eb9643dso1663120b6e.3
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 08:13:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQrZQ-0003l0-OR
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 11:18:16 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQrZO-0005Yt-PD
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 11:18:16 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-55a45a453eeso1155655a12.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 08:18:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705681093; x=1706285893; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=x1i0j3gxZF6H+vFapCDBKtOnqYLkTVaTO13055cI39w=;
+ b=Adwz1dAYi03KjCu0cppvFZ6V/jN8tNzgWa/NcZU7sZiSN6nSKe5YT79QULeqT+CdBC
+ RoXuf9SLh6DR9QOzG3b7gjgvQ8VCSkcQtjDU7ogBLB7a/RSMMJ7EZ/6dtdW6saWmXW1Z
+ LjVK2IFOoYQqxG1ba91jKOhoQ6+YAViao7gKEXE3yOFDd2npEsn6ntII69gqqKA0gQ4v
+ xfUkFJg1gJBc8mI7ZabaJ3L2FdzYnXWcE0Xocjf5CSQZ02AffzohEHJCpjtmUfvLHvWP
+ WyhG440OA3H91rMdc2SQVCqZDgZwgcHGdWk90bHJd+jFyDq1HLaUvRLl3MfHcZAc1wX8
+ EXVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705680810; x=1706285610;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/D8C7Bwsl1YkC1ZagOApFugrNMHw0vxYuiQvBwCRkEs=;
- b=ZBxH58t+BF7zRK3Cl4ukNpFDfz9GJAiZk7rg6EPKTtpBWRLCEM04Wbo6s/mn70B8+2
- rpqKRe4O1yAivz5027RrRZWJKwIH9zkUwwXEGvXHWJlQzzEpoFwdQZig3DdTcOAu/d+u
- sYagoUgcZ9AzattzN2HLKSw3ZOlWj3gHVjDgncLvJpwWPYXUUA+YVwX9wr1o9ryOwFDs
- GSHoA0RrMZyRGUOTouffATOxZMet27HnSSDoPogBJ3JFTwbzRbpVefgnw1nemaHrQUh+
- CrPT/IlYNa/H2ReW+8SJ3mGEibjqWQAQInt+R74u9iH7Nz1xzWvCdr81RRSBQOWcJAtz
- xufw==
-X-Gm-Message-State: AOJu0YxmmDQRJwJ+xaj/sj+JXrVi2j1c7zlZCCPttQ9c91OvLhqbIubD
- u1/ozkclYuIp21JhQ77x+ojPOXwToGxCy53Qdb2SZ6g5CdFT19y8E3x+8itFtk7WirLaYBA5vHB
- 17h0/Tg+FCuUNFc3dfOWmuBMNuiFuuur8ywnPwmTjtiW/ZQK7Zrvt
-X-Received: by 2002:a05:6808:1184:b0:3bd:90c3:20e9 with SMTP id
- j4-20020a056808118400b003bd90c320e9mr2631666oil.106.1705680810312; 
- Fri, 19 Jan 2024 08:13:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFtLqzT5Qm1IdB9LAXOFcyTU1viZIj324AmjhYK0/uG/oD2aRmX0TC7jjKRGXC5FVboSNC1wg==
-X-Received: by 2002:a05:6808:1184:b0:3bd:90c3:20e9 with SMTP id
- j4-20020a056808118400b003bd90c320e9mr2631661oil.106.1705680810057; 
- Fri, 19 Jan 2024 08:13:30 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
- [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
- h27-20020a05620a10bb00b0076db5b792basm6152900qkk.75.2024.01.19.08.13.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 08:13:29 -0800 (PST)
-Message-ID: <b851a8f8-228f-45db-a636-5321f6a41f1e@redhat.com>
-Date: Fri, 19 Jan 2024 17:13:25 +0100
+ d=1e100.net; s=20230601; t=1705681093; x=1706285893;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x1i0j3gxZF6H+vFapCDBKtOnqYLkTVaTO13055cI39w=;
+ b=v8BX6WJ0hYW/cfRq3/RUhCSkbROHhhhPIvsglCWq3wZlQSj0ZOX7/KU6PPeYD7vjFe
+ fS3uw6LSagSq+cF5fptjRPYS3Jmqxtv57g9NYx54nqilZFhKpkTjRCtKUxH2n7d5KnP0
+ Pqkff/EijlEqW8XoKajIhQcAHWaBcBm1vZKGCDSj7YIvGajtEfT3vIMifQfpAQhRZOXy
+ YioMcRxdDotrVk0mb30pmVRmJvKDIzBFuA12nI6tRN2XebYVDA1Uk0x+NqHnXBkRFAUX
+ a4IKJs7kBxCNXcj4058kjSOWN/9VuEQBrisGpTvPl8IXybur3LvwhoF0b/e/TAiv+Ola
+ yUbw==
+X-Gm-Message-State: AOJu0Yx6Fw+PD2f4jxesiMp47NLNNXioXn9B8a/61eLbQ2GWpXquT/F6
+ WaNNtZxHcPRFB0J8dPCt0rz5SPTb72PLI75n/BjxuBXxuVDynHJvlg9JRI+WSka9klAiMlmMo7P
+ jNgn2VC1GiDZ68utsrs8AMEvavBearVNE/lVC6A==
+X-Google-Smtp-Source: AGHT+IGhmvf04M8VZS7HAei4Ib7xKy66YF/sOY9m/Gp2xg8xDIotxn8op5m4+LllpxS+WNAWBomJ7lf5S0TCru6gn4U=
+X-Received: by 2002:a05:6402:3c2:b0:55a:26a9:6e93 with SMTP id
+ t2-20020a05640203c200b0055a26a96e93mr1401423edw.52.1705681093005; Fri, 19 Jan
+ 2024 08:18:13 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: QEMU's tests/unit/test-iov times out on NetBSD and OpenBSD
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <th.huth@posteo.de>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Michael Tokarev
- <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Reinoud Zandijk <reinoud@netbsd.org>, Ryo ONODERA <ryoon@netbsd.org>,
- Brad Smith <brad@comstyle.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <f4bug@amsat.org>
-References: <4e802a6d-fb97-4e49-ab78-2a75371e464d@posteo.de>
- <ZaqeLbJ1YQIhuvJH@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <ZaqeLbJ1YQIhuvJH@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <CAFEAcA_7s=scvgYfG8kGmJ==5cKmvvA-ZqVkpt4M9jV6eS1Zow@mail.gmail.com>
+ <ZaqCA5uYWFSgK6F-@redhat.com>
+ <CAFEAcA_n-pgzd-bne7VvHk5a3Q9ofpxWsmWTshtV=nKfZd9ESA@mail.gmail.com>
+In-Reply-To: <CAFEAcA_n-pgzd-bne7VvHk5a3Q9ofpxWsmWTshtV=nKfZd9ESA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Jan 2024 16:18:01 +0000
+Message-ID: <CAFEAcA-PKwFOj6=H+v=8B-xMg0=vUPf0gE8-=3N2N1XY1TLDog@mail.gmail.com>
+Subject: Re: how do the iotests pick a machine model to run on ?
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>, 
+ Qemu-block <qemu-block@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -148,45 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/01/2024 17.07, Daniel P. Berrangé wrote:
-> On Fri, Jan 19, 2024 at 03:55:49PM +0000, Thomas Huth wrote:
->>
->>   Hi,
->>
->> since we recently introduced test timouts in QEMU's meson set up, I noticed
->> that the tests/unit/test-iov times out when doing "make vm-build-netbsd
->> BUILD_TARGET=check-unit" (or vm-build-openbsd).
->>
->> And indeed, when increasing the timeout, you can see that the test-iov runs
->> for multiple minutes on these BSDs while it finishes within few seconds on
->> Linux.
->>
->> I had a closer look at the test, and the problem seems to be the
->>
->>   usleep(g_test_rand_int_range(0, 30));
->>
->> in the test_io() function. If I get that right, the usleep() seems to be
->> more or less precise on (modern) Linux, but it seems like it sleeps for
->> multiple milliseconds (not microseconds) on the BSDs. Since it is used in a
->> nested loop, these milliseconds add up to a long time in total during the
->> test.
->>
->> Does anybody have an idea how to fix that? Is there a more precise (but stil
->> portable) way to sleep less long here? Or could we maybe remove the usleep()
->> here completely (it does not seem to have a real benefit for testing as far
->> as I can see)?
-> 
-> 'g_usleep' has the same API contract, but is implemented in terms
-> of 'nanosleep' on *NIX. So as a quick test, try switching usleep
-> to g_usleep and see if we get lucky.
+On Fri, 19 Jan 2024 at 15:26, Peter Maydell <peter.maydell@linaro.org> wrote:
+> (Also, we should probably put an entry for sh4 in machine_map,
+> because the default board type (shix) is about to be deprecated,
+> and the r2d board type is thus a better choice.)
 
-No, that seems to behave the same way, unfortunately.
+The good news is if we add r2d to the machine_map, then
+only 3 iotests fail:
 
-Do you see a reason why we'd really need the usleep() here at all? 
-Otherwise, I think I'll send a patch to simply remove it...
+ 191 -- not sure exactly what's going on. QEMU complains
+        "machine type does not support if=ide,bus=0,unit=1".
+        Side note: the test harness seems to throw away the
+        stderr from QEMU with this error message, leaving the
+        test failure log rather uninformative. I had to
+        run everything under strace to get hold of it.
+ 203 -- this wants a machine type that can be migrated;
+        sh4 CPUs don't support migration, so the test
+        fails because the 'migrate' command returns the error
+        {"error": {"class": "GenericError", "desc": "State blocked by
+non-migratable device 'cpu'"}}
+ 267 -- similarly, wants a machine that supports snapshots,
+        so fails when the loadvm/savevm get the error
+        Error: State blocked by non-migratable device 'cpu'
 
-  Thomas
+How should a test indicate "I need a machine type that
+supports migration" ?
 
-
-
+thanks
+-- PMM
 
