@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DA28328B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:25:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F67832917
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:43:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQmzP-0006uF-0T; Fri, 19 Jan 2024 06:24:47 -0500
+	id 1rQn9X-0001La-P6; Fri, 19 Jan 2024 06:35:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQmzM-0006td-6K
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:24:44 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQn9W-0001Ko-Hp
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:14 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rQmzK-0001KV-LS
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:24:43 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e72a567eeso7337885e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:24:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQn9T-0007Pl-2O
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:14 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-337c5bcf79fso601522f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:35:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705663481; x=1706268281; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ceRoHLSpu6njO5KXwFRSZTbsHghvaqyS8HbxepJdf/s=;
- b=vmPooluPjBGMfveZiZabRCTyLc2XC31O7wlpZXc9IEoNZAPl1sSQQI+s8Rk70mlXKa
- rJIa7idpOwPmAkvuJd+LMKAzNaNktrWdeuABqA8darG2fUAMkz2LjEdtKvUPcw2jr0yU
- icUp91EBKGL0lB8ddT4+Gb+ZGPNqQ6emQKAM0duqn8pscYU1wppayqFMyKeNsO6nnGf4
- 4MlyfC+PgRfij8rutK3NTBrel+OR3IGzpZDVsoJVhxSDlc+v5uBRdgKbNmpdxqlsUKhE
- KOcoLBnmxAXHEM+6/kW4kSLzlz/JLNTq9mvxZWbMvNTt8gLeMSIuMWQNg9wxyg754vu+
- ONEQ==
+ d=linaro.org; s=google; t=1705664109; x=1706268909; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FiTFj1k6iws3Fa/IOpt1AOvFogP9Al8X3pBEue7+AFk=;
+ b=ToZNhl91hD/r2AYQF2OvcKd/0mbNaIGfcHEQFyl5WmF3z+baPR6DDxJmGTnRVPzeu7
+ kBmt5UsIeVMZ7ZZR/eHPUzkeZyrh/40kVo/v3uRssN5v76jb68UxXnMWyad1L6L5BjLP
+ fERvnZYYRdf7yMW5YrO/P7Wg972aD2gcl/i59RMhjgUHwJjn11ITMb/YEX15oMkchVLz
+ pqj59UtjZBMbxxJnzrkpFmvJYMIUUlB94DTUh61VkRtI2RKO59cx9gyW6qYHsTck4JwQ
+ HiyHoA65HoYSD2v/0u3EFsZk+9bvXclgDkbcbv5kspjUPADyg3hCYsiKzTi8CDBAecw1
+ bdSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705663481; x=1706268281;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ceRoHLSpu6njO5KXwFRSZTbsHghvaqyS8HbxepJdf/s=;
- b=e0e2l/YjFpPR00U4aeWnpxyDYSYHIWg7pLIgyYZwP2OZQF9oSLbgAn5TjrdsstRbEF
- yy7B+dxvwc2S/4rmp3NbtrY4pzgqhW/Xr+I0M4DS+OWaUVoGxRWbAA6eBl7dedU40DuU
- lQQyirj88SyM5dieF2F2GmU1aI9WLvEY4xSeE5mxWJqDVrHEfzU1snirP7DfV6p5gHSP
- LGZVdYQFhfFN/npz42rVzcrFxUwE3gI7mf/HbiGCUdv9qrKtifwKp8rAYV1Am6q1o5bj
- xzPrsdn4TgCeoga4EoLaZbF3mG4OlRLzhT19W4FSPLmxtITo6EpwNov55c1b4G+xph8Q
- Ukng==
-X-Gm-Message-State: AOJu0Yw41id32kZTYcmX+CwdZ8LdPgbg78PXvnRlrDLJ6TezEOO9PvlV
- nmawSijXFnvVWKhz002ZllK6LqcKz+VI5Ak2qa5QhhvpYenVbkqlbsJ5AQB7orHO8mx/hnKShyg
- V
-X-Google-Smtp-Source: AGHT+IEk5QFTiccLnyb3mBfY1SGPwPuztQn40/Ulht9/53dxQanYE9fUg20LwhHzaUip3ckK/3CGcQ==
-X-Received: by 2002:a7b:ce96:0:b0:40e:864e:48a2 with SMTP id
- q22-20020a7bce96000000b0040e864e48a2mr718890wmj.23.1705663480652; 
- Fri, 19 Jan 2024 03:24:40 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- g21-20020a05600c311500b0040d30af488asm32646679wmo.40.2024.01.19.03.24.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jan 2024 03:24:40 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id D04B85F8C8;
- Fri, 19 Jan 2024 11:24:39 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org,  Jan Kiszka
- <jan.kiszka@web.de>
-Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-In-Reply-To: <20231103182750.855577-1-peter.maydell@linaro.org> (Peter
- Maydell's message of "Fri, 3 Nov 2023 18:27:50 +0000")
-References: <20231103182750.855577-1-peter.maydell@linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Fri, 19 Jan 2024 11:24:39 +0000
-Message-ID: <871qadh8g8.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1705664109; x=1706268909;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FiTFj1k6iws3Fa/IOpt1AOvFogP9Al8X3pBEue7+AFk=;
+ b=NPQjVLtB+rrvCAe4K7Ha6mx5KDVGjv2tdXzhcfIQKc6XPNUiMNgS/ATh64moWy81T5
+ jkHsVSS5ZHqFYXGvKPU3ieO/7LLSya2GgGdK6JTDjc4FmwYZ9b9LofWAl7AsjThAqvB7
+ EDf5BB79hHi/exkWImIvDVrKXmhGNEipGcrlo/n1H7PCQo5HtHsIhtbU52PqNj78zB0E
+ oUgP58oqw18LxuBIVS6HxEwPM0c17DtSWeKXAjUQwaDjndi7MUxle/DRI9n710gCKdO2
+ HlI+UrdCHh8K31rp0h8Pw+oTS1b+4eEcLzMoDZbU5I8k//GdztfqE4iYmadMIouikqey
+ SqvQ==
+X-Gm-Message-State: AOJu0Yyn7eXrPk7lk8yZGZdNm7bXf3drkMcbfeyglBJ6j8zo5KwJ88Te
+ hYFKTEb6Ab/+ipyxfa8LGBlOUzsr2WBBuZKtt9IBC8G72zG8IO4KZdFLLII5w23Xz9kVL+g/0dg
+ WMl6IKw==
+X-Google-Smtp-Source: AGHT+IELXcbsrLmEacJWTC2CZtIBLjvDglWcytdwubS+EqUhUmFits+S35tXVn5lMV5l598UDILr2w==
+X-Received: by 2002:a5d:64cf:0:b0:336:e369:cef with SMTP id
+ f15-20020a5d64cf000000b00336e3690cefmr1860158wri.130.1705664109128; 
+ Fri, 19 Jan 2024 03:35:09 -0800 (PST)
+Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
+ [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
+ h2-20020a5d5042000000b00337d941604bsm2070554wrt.98.2024.01.19.03.35.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 Jan 2024 03:35:08 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
+ qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/36] HW core patches for 2024-01-19
+Date: Fri, 19 Jan 2024 12:34:29 +0100
+Message-ID: <20240119113507.31951-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: 4
+X-Spam_score: 0.4
+X-Spam_bar: /
+X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, SUSPICIOUS_RECIPS=2.51,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,31 +90,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+The following changes since commit 88cf5fec91e50cd34bc002b633b4116228db0bc8:
 
-> Convert the musicpal key input device to use
-> qemu_add_kbd_event_handler().  This lets us simplify it because we no
-> longer need to track whether we're in the middle of a PS/2 multibyte
-> key sequence.
->
-> In the conversion we move the keyboard handler registration from init
-> to realize, because devices shouldn't disturb the state of the
-> simulation by doing things like registering input handlers until
-> they're realized, so that device objects can be introspected
-> safely.
->
-> The behaviour where key-repeat is permitted for the arrow-keys only
-> is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
-> and add a comment to that effect.
+  Merge tag 'pull-target-arm-20240118' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-01-18 12:48:17 +0000)
 
-Well the key input all works as intended and looks good to me. I'm a
-little disappointed I couldn't get audio working on the musicpal machine
-but that is not a problem for this patch.
+are available in the Git repository at:
 
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+  https://github.com/philmd/qemu.git tags/hw-cpus-20240119
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+for you to fetch changes up to 7ec5d7d91215815e885d2b38e62256e8fd8e2bce:
+
+  configure: Add linux header compile support for LoongArch (2024-01-19 12:28:59 +0100)
+
+----------------------------------------------------------------
+HW core patch queue
+
+. Deprecate unmaintained SH-4 models (Samuel)
+. HPET: Convert DPRINTF calls to trace events (Daniel)
+. Implement buffered block writes in Intel PFlash (Gerd)
+. Ignore ELF loadable segments with zero size (Bin)
+. ESP/NCR53C9x: PCI DMA fixes (Mark)
+. PIIX: Simplify Xen PCI IRQ routing (Bernhard)
+. Restrict CPU 'start-powered-off' property to sysemu (Phil)
+
+. target/alpha: Only build sys_helper.c on system emulation (Phil)
+. target/xtensa: Use generic instruction breakpoint API & add test (Max)
+. Restrict icount to system emulation (Phil)
+. Do not set CPUState TCG-specific flags in non-TCG accels (Phil)
+. Cleanup TCG tb_invalidate API (Phil)
+. Correct LoongArch/KVM include path (Bibo)
+. Do not ignore throttle errors in crypto backends (Phil)
+
+. MAINTAINERS updates (Raphael, Zhao)
+
+Note the following checkpatch error is deliberately ignored:
+
+  ERROR: space prohibited after that '&&' (ctx:ExW)
+  #143: FILE: accel/tcg/watchpoint.c:119:
+  +                && cc->tcg_ops->debug_check_watchpoint
+                   ^
+----------------------------------------------------------------
+
+Bernhard Beschow (1):
+  hw/i386/pc_piix: Make piix_intx_routing_notifier_xen() more device
+    independent
+
+Bibo Mao (1):
+  configure: Add linux header compile support for LoongArch
+
+Bin Meng (1):
+  hw/elf_ops: Ignore loadable segments with zero size
+
+Daniel Hoffman (1):
+  hw/timer/hpet: Convert DPRINTF to trace events
+
+Gerd Hoffmann (3):
+  hw/pflash: refactor pflash_data_write()
+  hw/pflash: use ldn_{be,le}_p and stn_{be,le}_p
+  hw/pflash: implement update buffer for block writes
+
+Mark Cave-Ayland (4):
+  hw/scsi/esp-pci: use correct address register for PCI DMA transfers
+  hw/scsi/esp-pci: generate PCI interrupt from separate ESP and PCI
+    sources
+  hw/scsi/esp-pci: synchronise setting of DMA_STAT_DONE with ESP
+    completion interrupt
+  hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST command issued
+
+Max Filippov (2):
+  target/xtensa: use generic instruction breakpoint infrastructure
+  tests/tcg/xtensa: add icount/ibreak priority test
+
+Philippe Mathieu-Daudé (19):
+  backends/cryptodev: Do not ignore throttle/backends Errors
+  accel: Do not set CPUState::tcg_cflags in non-TCG accels
+  accel: Do not set CPUState::can_do_io in non-TCG accels
+  accel/tcg: Remove unused tb_invalidate_phys_addr()
+  accel/tcg: Remove tb_invalidate_phys_page() from system emulation
+  target/alpha: Extract clk_helper.c from sys_helper.c
+  target/alpha: Only build sys_helper.c on system emulation
+  system/cpu-timers: Have icount_configure() return a boolean
+  system/cpu-timers: Introduce ICountMode enumerator
+  target/arm: Ensure icount is enabled when emulating INST_RETIRED
+  util/async: Only call icount_notify_exit() if icount is enabled
+  system/replay: Restrict icount to system emulation
+  system/watchpoint: Move TCG specific code to accel/tcg/
+  cpus: Restrict 'start-powered-off' property to system emulation
+  accel: Rename accel_init_ops_interfaces() to include 'system'
+  hw/core/cpu: Rename cpu_class_init() to include 'common'
+  hw/s390x: Rename cpu_class_init() to include 'sclp'
+  target/i386: Rename tcg_cpu_FOO() to include 'x86'
+  target/riscv: Rename tcg_cpu_FOO() to include 'riscv'
+
+Raphael Norwitz (1):
+  MAINTAINERS: Update Raphael Norwitz email
+
+Samuel Tardieu (2):
+  target/sh4: Deprecate the shix machine
+  hw/block: Deprecate the TC58128 block device
+
+Zhao Liu (1):
+  MAINTAINERS: Update hw/core/cpu.c entry
+
+ MAINTAINERS                   |   5 +-
+ docs/about/deprecated.rst     |   5 +
+ configure                     |   1 +
+ accel/accel-system.h          |   2 +-
+ include/exec/exec-all.h       |   5 -
+ include/exec/translate-all.h  |   1 -
+ include/hw/elf_ops.h          |  71 +++++++-------
+ include/sysemu/cpu-timers.h   |  32 +++++--
+ include/sysemu/replay.h       |  11 ++-
+ target/xtensa/cpu.h           |   4 +
+ accel/accel-system.c          |   2 +-
+ accel/accel-target.c          |   2 +-
+ accel/dummy-cpus.c            |   1 -
+ accel/hvf/hvf-accel-ops.c     |   1 -
+ accel/kvm/kvm-accel-ops.c     |   1 -
+ accel/tcg/icount-common.c     |  36 +++----
+ accel/tcg/tb-maint.c          |  24 +----
+ accel/tcg/watchpoint.c        | 143 ++++++++++++++++++++++++++++
+ backends/cryptodev.c          |  10 ++
+ cpu-target.c                  |  36 ++-----
+ hw/block/pflash_cfi01.c       | 171 ++++++++++++++++++----------------
+ hw/block/pflash_cfi02.c       |   2 +-
+ hw/block/tc58128.c            |   1 +
+ hw/core/cpu-common.c          |   4 +-
+ hw/i386/pc_piix.c             |   9 +-
+ hw/s390x/sclpcpu.c            |   4 +-
+ hw/scsi/esp-pci.c             |  61 ++++++++----
+ hw/sh4/shix.c                 |   1 +
+ hw/timer/hpet.c               |  55 +++++------
+ stubs/icount.c                |  27 +-----
+ system/cpu-timers.c           |   2 +-
+ system/vl.c                   |   3 +-
+ system/watchpoint.c           | 124 ------------------------
+ target/alpha/clk_helper.c     |  32 +++++++
+ target/alpha/sys_helper.c     |  18 ----
+ target/arm/cpu.c              |   2 +-
+ target/arm/helper.c           |   5 +-
+ target/i386/cpu.c             |   2 +-
+ target/i386/tcg/tcg-cpu.c     |  32 +++----
+ target/riscv/tcg/tcg-cpu.c    |  28 +++---
+ target/xtensa/cpu.c           |   1 +
+ target/xtensa/dbg_helper.c    |  46 +++++----
+ target/xtensa/helper.c        |  12 +++
+ target/xtensa/translate.c     |  17 ----
+ util/async.c                  |  16 ++--
+ accel/tcg/meson.build         |   1 +
+ hw/block/trace-events         |   7 +-
+ hw/timer/trace-events         |  15 +++
+ target/alpha/meson.build      |   7 +-
+ tests/tcg/xtensa/test_break.S |  25 ++++-
+ 50 files changed, 603 insertions(+), 520 deletions(-)
+ create mode 100644 accel/tcg/watchpoint.c
+ create mode 100644 target/alpha/clk_helper.c
+
+-- 
+2.41.0
+
 
