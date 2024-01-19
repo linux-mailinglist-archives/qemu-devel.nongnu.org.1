@@ -2,85 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195D3832DAE
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:06:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94964832E02
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:19:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQsIL-0001mF-I1; Fri, 19 Jan 2024 12:04:41 -0500
+	id 1rQsUq-0005is-MJ; Fri, 19 Jan 2024 12:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQsIE-0001lM-OW
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:04:36 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQsID-0006ED-24
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:04:34 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-337c5bcf79fso908963f8f.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:04:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705683871; x=1706288671; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Qc2Peb2JtOjy+B1gVthMdZe/szYQ6eQYqtZctt3o1nc=;
- b=lNS+VttqYQ5HIDcFniUzxe+kC5P+DjqKsmU+v7+JIi/otOxE9foTJlXIV9GiEM7M7S
- WsJjnA3oABHZZTxHmfNxZTlnPBtqTu+B8qi1fjFpZZeTZSCmv9ToUqw8JixDXy4LOXNs
- 4vToF2Tcvg1WY3XtTmZuuE88Rsr0R8vulqLH26cu19Sw80A5iQKdsul0XoiIVc/SO6xG
- 4V69r5jbiWkswoVYYQ+LQvPHETf7kF4LXBsbNfi5u2lA1Glgo7WaNVNxvJxanZfpcb+P
- A6QdQovzP/buhlEl3PrrBbMKh17g3YGW9abI7GlvasBbolQSVhWxAIIAPGL6mJs+h8f9
- +SuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705683871; x=1706288671;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Qc2Peb2JtOjy+B1gVthMdZe/szYQ6eQYqtZctt3o1nc=;
- b=pAuD6Ywvymwc06ff/0YQ8CD/T4Ob7EsiCizs6GlA0n8ehxMnI43Sn5gE+3MNo/ndHg
- yg0jSawYIOjb4KIqJki7nDFIPTmmAHauCo+Eb71ICWch6u86Hlt7h8Hb7c5TwzDuCNoU
- 2NfNL+L+9RjBXTgAHekWHCbz8K2dd3Th3hRMKGxDWf3mqqk9Qz1PlDjioIiDS7MJlDYn
- BHaB6PHZ7OBgQL6y2/h6aDaZieApH96fAJpccU9P3ekJdYJgyw/IFcw15kTHMsuvDUQA
- TL8MH2Y/qVPaPedoeMqzkl1sArznt1C8vxYyfct4RNFB5iBdNMZ2rbOF/yPNd3/A26Yj
- FvwA==
-X-Gm-Message-State: AOJu0YxSjaqZ+LjNO/juVofE9q/4DrRK+Dz1hxsD/GB49vz5ms1W+cZ9
- 4UPrTMe2vO/Lf2tCpA5q5wKFpoc5BVmyHdfcUqT7mTqMTUt06TEfd4fNCUcSPYo=
-X-Google-Smtp-Source: AGHT+IEDul5qUywMEJN+jSpZ6HXwnoasyUWK6xBsr0YM5aaNwbaNPCRkpy+8DrtQEvcE2bjVbOg8uw==
-X-Received: by 2002:a5d:654d:0:b0:337:a7fb:90d6 with SMTP id
- z13-20020a5d654d000000b00337a7fb90d6mr5721wrv.79.1705683871090; 
- Fri, 19 Jan 2024 09:04:31 -0800 (PST)
-Received: from [192.168.1.67] ([78.196.4.158])
- by smtp.gmail.com with ESMTPSA id
- o9-20020adfe809000000b00337bf81e06bsm6914635wrm.48.2024.01.19.09.04.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 09:04:30 -0800 (PST)
-Message-ID: <e25f2ede-1264-4c74-bc10-df7d9f874d47@linaro.org>
-Date: Fri, 19 Jan 2024 18:04:28 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsUg-0005gB-Q9
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:17:26 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsUf-0005LU-BQ
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:17:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705684644;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=CP3zW31LeUzifZwANgeY1Bl3gVqlDqSPiILzMFXza+4=;
+ b=RwqyAvluMtK5DuU+1jaVx+l/puLA62WVojGlCcIpEBFXiXis6NI6s78yOoxxXFm3bJcm2A
+ YacTciRP6cPA7D0jH6PcT/2/KsAmPB5yJxYy8S9p4NRUpSwrvE9rSGHu4U+18rnCwW53g6
+ cqhcdTb7z2ftK+cmW8zS818LXwBKsdw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-CzzJqa_BMwmv8GqFrWySfw-1; Fri, 19 Jan 2024 12:17:20 -0500
+X-MC-Unique: CzzJqa_BMwmv8GqFrWySfw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9291889106E;
+ Fri, 19 Jan 2024 17:17:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DB6F81121306;
+ Fri, 19 Jan 2024 17:17:18 +0000 (UTC)
+Date: Fri, 19 Jan 2024 18:17:12 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH 0/6] virtio-blk: iothread-vq-mapping cleanups
+Message-ID: <ZaqumG_cpdSprI1U@redhat.com>
+References: <20240119135748.270944-1-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] hw/xen: convert stderr prints to error/warn reports
-Content-Language: en-US
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org
-References: <cover.1705670342.git.manos.pitsidianakis@linaro.org>
- <bf5504369023dc115f0d7a756c4c5254fa9cd10d.1705670342.git.manos.pitsidianakis@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <bf5504369023dc115f0d7a756c4c5254fa9cd10d.1705670342.git.manos.pitsidianakis@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240119135748.270944-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,24 +83,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/1/24 14:24, Manos Pitsidianakis wrote:
-> According to the QEMU Coding Style document:
+Am 19.01.2024 um 14:57 hat Stefan Hajnoczi geschrieben:
+> Kevin Wolf identified some issues with the virtio-blk iothread-vq-mapping patch
+> series that was merged at the end of 2023:
+> 1. s->rq is restarted from one AioContext and races with the other
+>    iothread-vq-mapping AioContexts.
+> 2. Failure to set the AioContext is no longer fatal since the IO_CODE APIs can
+>    be called from any thread. We can relax the error handling behavior.
+> 3. Starting dataplane must self-trigger the ioeventfd even in a drained
+>    section. Failure to do so could lead to an unresponsive virtio-blk device.
 > 
->> Do not use printf(), fprintf() or monitor_printf(). Instead, use
->> error_report() or error_vreport() from error-report.h. This ensures the
->> error is reported in the right place (current monitor or stderr), and in
->> a uniform format.
->> Use error_printf() & friends to print additional information.
-> 
-> This commit changes fprintfs that report warnings and errors to the
-> appropriate report functions.
-> 
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> ---
->   hw/xen/xen-hvm-common.c | 12 ++++++------
->   hw/xen/xen-mapcache.c   |  5 ++---
->   2 files changed, 8 insertions(+), 9 deletions(-)
+> This patch series addresses these issues. The first few patches merge the
+> hw/block/dataplane/virtio-blk.c code into hw/block/virtio-blk.c so that s->rq
+> can easily be restarted in the correct AioContexts.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks, applied to the block branch.
+
+Kevin
 
 
