@@ -2,176 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA9383250E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:32:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAED9832540
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:48:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQjMD-0002p0-Jv; Fri, 19 Jan 2024 02:32:05 -0500
+	id 1rQjac-0000i7-EZ; Fri, 19 Jan 2024 02:46:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rQjM9-0002oj-M2
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:32:01 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rQjaX-0000hp-TT
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:46:54 -0500
+Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rQjM7-00017V-GJ
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:32:01 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rQjaU-0006bu-ON
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:46:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705649519; x=1737185519;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=u7sZcXsEHcRG/C3B0xGlQ7ohSCa21n03bPdCgWxRkg0=;
- b=byfzy8EIa8u4xhRHTGETWYE5YsxHdCFPIqM/1mrZ37KbOJAmWu4awq80
- 8iHVQXZAAufGHPR49QXw5tU5Gq6gnGd+92tVhE2CNm2kotyb87aKEtvYb
- xu94aZMmtDbmgJrbOg30ANaWS/Tq7NDi96n+5lTik2SwNbe21lelsn3g0
- 65HVFGk47UQNAAO72ClsVzeCeyo8QKUDi0gp+6SJCThxTBuT9Vv4H5piP
- 52kTJwXOxvmsNhDWwntU2jNXcEX7DKnAthmH1rPqaJWCMvU5YgjpmMKpg
- mAuuyWQRWQ0O5we4EpXMCuYJUMHnsnctqtB7NUuCmcyf0VR2WNeaMulf6 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="14040894"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="14040894"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 23:31:57 -0800
+ t=1705650410; x=1737186410;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nw8T8YsTHQO8TrDnw5AKLntPcymRhZNXdvcQyoyoedc=;
+ b=LbhCoZMOniuLQKsO54nUZhiapneNkNCio1hG9KYZq3ilo1O5k4Ozj3g/
+ QkPeneLxSCKpqKR6pRLa1W9Cm5phXsIEMNNEqsfMBsKG97TTab0IfrvCy
+ WN8f73m1hm+GnITW33xNwhypP7XCDnWx6ahcwzoEWsaI3ZHzl00zrUT5Z
+ jjkaOTnd8ua5inWAwlEGiiJzwLZ5osHX92+H2F3xX7WFIU0d8GZvjv6Mh
+ f15son4ZtrgQOY1OkmRzeMcUFaIaP1b8NOiJ/AAWFgQjjywGuTpslnY7p
+ 3x7mM7A5eDOvSAQey6TFGRDupnuqLmsk60TFewGfKxJECuj4gmSKgE9Cn g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="399556196"
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="399556196"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2024 23:46:43 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="875304151"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="875304151"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Jan 2024 23:31:56 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Jan 2024 23:31:56 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 18 Jan 2024 23:31:55 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 18 Jan 2024 23:31:55 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.40) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Jan 2024 23:31:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YFX6Vn3EKGO1WANg0qU7kJJJrkmE48PwJNf2lehdHfotxrwijMGtiARh8+kN1700y6kBu0Dg3b5jCNry1bAGqwUbA5S0mGcgx0PWmh7li7klFSGdp7E67JXA9jIz+lJBfGYTsuWHeCx33PWSOwJcbo1UcWai7HbuvdxdgvB6Vo1wWx9FVe5oFEZPYP6LzZTqqkYNXmEodYTKl6NY/zr+7ZaaF/NOdWaXQJGLCXxyyeX668AKObuNFrChqjob/jKQsCiajyAA/nrki9FiuCoynZ5YG/mXhTAXSX/qKyMQIE3TMhQGaO0UjuOyZmqX1jXSbaOzOAgXvY03Wa3hSQHR+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u7sZcXsEHcRG/C3B0xGlQ7ohSCa21n03bPdCgWxRkg0=;
- b=ed2CqUMtv6IrwA3bzJbnoT77o/hxZIrA0WwSVSpNm5ts90PaIXthfIMLEzs8iByx+Qm4BVyMsfdbSbnXslhVgVcg3CvFxmukG1o/yTcHGyfpI7giWN7vvn9MiCmeqrIfxRGDgHXit+nRmA9Jmu9qSlN5OtsxULcv8qvKKuIjsCX80UTomPpwOvgDLdIoBWgXbHUKdCvc3c4S7FF9huTlrcqCx3yI88mqgiUexn9flMhuxj9Fh/OFyBjh1FQHe5DlCWMbL+EU3o7aZ7SpcK7G4coqAFAOSVz/8hpDuW9UzCRy1WBGjY7vcTmSaUuSvQ6025vAEU4kQ07JP45tKGbKmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CH3PR11MB8384.namprd11.prod.outlook.com (2603:10b6:610:176::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.26; Fri, 19 Jan
- 2024 07:31:54 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::88e9:5716:274c:5ace%5]) with mapi id 15.20.7202.024; Fri, 19 Jan 2024
- 07:31:54 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi
- L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>
-Subject: RE: [PATCH rfcv1 1/6] backends/iommufd_device: introduce IOMMUFDDevice
-Thread-Topic: [PATCH rfcv1 1/6] backends/iommufd_device: introduce
- IOMMUFDDevice
-Thread-Index: AQHaR5vs9PoNqR9b3kO5arx2FhNKM7DfiG6AgAE6r8A=
-Date: Fri, 19 Jan 2024 07:31:53 +0000
-Message-ID: <SJ0PR11MB6744950843CB68DB485FF03792702@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-2-zhenzhong.duan@intel.com>
- <180a39fb-aa2b-4dca-9f01-adb4f392b846@redhat.com>
-In-Reply-To: <180a39fb-aa2b-4dca-9f01-adb4f392b846@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CH3PR11MB8384:EE_
-x-ms-office365-filtering-correlation-id: e85ed37a-052b-4ee4-4d11-08dc18c0b5a9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: YjA6zialIa45+2Se/SLJjglzmXiFATnmPEjmgzulr2AJK7HwMDm5ge2Ia1xdQ8lOhV9gq7LSMA0PRfYo1D6FS1u8TrY2vIL4agp0zg/I6Jvb1DygfppN1c6QtKyBxMIUgM0MAa4kxFzJH1A8apYWaE80fqnC2QIBWJCyFc3rcEVEEzeqV+gUB8DTNvo0LpPSijJ+P4xSm+I1QqJLZ2CDjP+6gwBRcFjd5EjYe1CwmApg9iMqLYHqCkchTBPwm4bbpC9A8IZr49bCsywwlIl8DblHJmCYdrVmLyMWA8CgpnMFjNsyBtyttdYONSk/o8bzma2gYasPBtLUzbBUVzZgFwooWPK+hPRmupnwZlWlRDj1hvoMEmfre5UgA9iYMC0iFgGcmGRvfDHI/qcCJFqsHEPwb6E1EiXMuhCSweTUZJ1oxGmYzGHCswH0IFix+BQYZdoT9PG4wXI919auqM426AF7QyQuzpkzcKx+Z95si0peWHqqIG5DWGOQbc3P0dYmwf331Mp0f8tiTeL8HBl8AoRaN6xvm6JLEr0L5OVfcuPYwDFTwyJbQ4a09gRfPA4dgKKMARhgIUD24NcQubpsTruFl4a1N0OlohPi1vI/QYOPJuOpoXkaIDeraTSBikdD
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(39860400002)(346002)(376002)(366004)(396003)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(26005)(6506007)(7696005)(71200400001)(9686003)(83380400001)(7416002)(5660300002)(2906002)(52536014)(41300700001)(478600001)(110136005)(4326008)(8676002)(8936002)(66446008)(66476007)(66556008)(66946007)(76116006)(64756008)(54906003)(316002)(82960400001)(33656002)(86362001)(38100700002)(122000001)(38070700009)(55016003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eU5ROWN6QUpYRGxweUEwZzB1MllhRDJWdmgzTy9JcjJiNkM0MWpWeVJXdW84?=
- =?utf-8?B?bE5Qa1NzY3J3NGQ2NGEwczE4dEw0VGFYNVgxRUpPRWlxWWF3aHUxYlh5ZzdJ?=
- =?utf-8?B?Q1F2T3lrYjM4SWlNeGVhbUFQYm8zVndQcS9HQUpick1sc0JUY013bDlnZDBi?=
- =?utf-8?B?c2draU9OUVBwMkFqaENQVUkydnhJQmRUakZ6UFp0QnpIUXk0aDd6cTl2ZW1B?=
- =?utf-8?B?cGlSUTQ5Z2tTL1I0Tmh0QnFVV1ZQbEFxWFpYRkpIZnhmRGtxd2E1dExIdUJa?=
- =?utf-8?B?TUI1UE04ZnFqcEREQ1loTkcyU2k2MkpCdzdHODNDNk13citpaHFPM0ZWOVZF?=
- =?utf-8?B?bzJSeENOM2ZYaE52blNuRFQ2amdnOGJmeVpKRSt4U1ptOHpoQVNhWjdDWkMz?=
- =?utf-8?B?c3IyaXoyemxXcmlManE3RExueVlSZ2I5MSt1cmNvQnlSRm9JaUFWM3l5S0JK?=
- =?utf-8?B?OVhFc1FyVmpIeG9YS3FQS096a0ZlYmFxUVRZT1U0c0dIUDV5YmIwdDBNSFZN?=
- =?utf-8?B?QmJXU1lEVFJhRGNPTk1vWmZrM3lCR3djWXhnMlBCSzVEUXd5bi93UlY4aDFI?=
- =?utf-8?B?Z0xKY3E3bUJqNTNpaHJwUWdsa2RQSFZoZGpuMkJsOWxyRHFTbmVsaWhpc25j?=
- =?utf-8?B?ZzZ4czNzc0I3cVpvTDUzak84eEduRjNKSHJTTGlZNHFmclJsLy85WnZyL1hV?=
- =?utf-8?B?eExpTFJrTHRGNnI2NERNbndtdlVDRkZyZ2J0blp5N3pNMjBjTUVKTlhQOGdV?=
- =?utf-8?B?ZUR4R2twZjNMUVc1cEJBUkJ4R21zcm5BV3FseUd1TS9pNVF0Z3JaNUZYV0Jz?=
- =?utf-8?B?NHFJNVdxZ0ozYSt5UEkrR2QzbDdEMk5BMjNyUVdwcGtrL3lzT25IdmxhWkd4?=
- =?utf-8?B?YmUwZXJzVXhIL0ppWHVkWnk5UjNXbHRxRmQwUmFQNEhtSlVTY0xLSndJOXhG?=
- =?utf-8?B?ZkhyNmlXaFJKbGZCSEZPTUFNdTZmK0QxNWI4b3ExRGMwRWNsWEJ1RkZwWTZY?=
- =?utf-8?B?ZXVLRHVnZTZDSkxsNi9vUlZCdHZaY3J6dUx1YTBDRWpoZzlwaU9mSmZTQ1c2?=
- =?utf-8?B?akMyWS9yMVh3d2tVb3FYMkVBWk1UV3B6cHNZZi9XWkc2UGZaamFJQTFBd2ow?=
- =?utf-8?B?cTQvd1NlaU9yemJpbW1VMEtyWk5ldWNSWkNYWHdOQVpraVNqRy9iTnBQbWhi?=
- =?utf-8?B?MmlsdmRnYzEyN0NONm1KNFRiWU9MT0NZR0RPblZOVmdmWFlEWHJlRy9qZnpV?=
- =?utf-8?B?MDJNNDQ1ZjBDNXdwTmk4c0s0MkZQQmlvWVV6aWc5SXpzallxQzRmZnBMTDlE?=
- =?utf-8?B?dnZUZWQ4eTRQdmtLcFBETE1BN1NTUmdzS2R1VDNSaWlQZVUvQUltYXZ6Y1Jr?=
- =?utf-8?B?YlBlK3NtdEhJaXNTb1ViOFZtME0zdm5Ya25NMldtRG5Hb1BYZUJyWnVObGZj?=
- =?utf-8?B?YUZoMjczSXJhRVAxZllVclI0bUdFbld1dmlQY2p6ZDdaWGhadW92S3k5ZWsv?=
- =?utf-8?B?MUI0WlVNS3dWOWtBaG5LWThIU200anFHelNobVFQVkJMeTBqbDFmeCs0Wis4?=
- =?utf-8?B?enhHRmhVa3hoVEMxOVBTK3BvNHRUYTlFR1hzeWRta2xxQmJGdXpBZEdOa3lT?=
- =?utf-8?B?WXhaOG56em5GTnRCKzBDMk13bG5wekRhZ244ZytCc081ZUNBdTVrd2Vhd0Jy?=
- =?utf-8?B?eC92N1lhUXIwUEFyM1hKVW5qODJTK0FIa05SWEpSVFlRRjQ3Y0JxOC8va2ZX?=
- =?utf-8?B?Yk9hajRPNkVSVTRHK1VOWEhOL0h0d1d5a202elJZNElrYzlrUFpEc01aSmVp?=
- =?utf-8?B?Z0Q1MXVNaWNYVUVwZW1ydnpLb21ldVYvYmc4MDhLLzNBdVBoUGpkTFJNWVFK?=
- =?utf-8?B?ZWZYU3JFRGR3TWcxVjNBdDF1WEZQRVIwTUVhYmMrMWpTdG83anpnb1pNblVH?=
- =?utf-8?B?RTBRLzJwcmd2TlFmSnVHa3U3MFJiRlF2ZlY0YVYvTkdiRUQxY29tU2ZKSkUz?=
- =?utf-8?B?Tm1sOC81S21HVGo0T3pHekI1VExxaXcrVnlWekRyajM5U3pGa1IycXNvZHBm?=
- =?utf-8?B?TFZ4MXYrKyt4aDVWd3UxNUs1cDI3cXRKaGNTYjdCQnZDOWRqOTJEOXBGNHJ6?=
- =?utf-8?Q?yKlslEUs0n4x2I4xY9r0vG731?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="33328251"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 18 Jan 2024 23:46:38 -0800
+Date: Fri, 19 Jan 2024 15:59:37 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+Message-ID: <Zaor6d1Vl/RLbqMk@intel.com>
+References: <ZaTJyea4KMMk6x/m@intel.com>
+ <1c58dd98-d4f6-4226-9a17-8b89c3ed632e@intel.com>
+ <ZaVMq3v6yPoFARsF@intel.com>
+ <f9f675c2-9e53-4673-a232-89b72150f092@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e85ed37a-052b-4ee4-4d11-08dc18c0b5a9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jan 2024 07:31:54.0111 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IByQ78sHJ5kyILU5Ypir8uJiDWjV1VKxSnFmGvRGeMeMtzalbh9UUt+c5//5JKbmeqtr5GUCrNUfmoWQJ4N8EBr/tcRUesNHqKInPwRO3Vo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8384
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.10;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9f675c2-9e53-4673-a232-89b72150f092@intel.com>
+Received-SPF: none client-ip=192.55.52.120;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -188,32 +89,325 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEVyaWMgQXVnZXIgPGVyaWMu
-YXVnZXJAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHJmY3YxIDEvNl0gYmFja2Vu
-ZHMvaW9tbXVmZF9kZXZpY2U6IGludHJvZHVjZQ0KPklPTU1VRkREZXZpY2UNCj4NCj4NCj4NCj5P
-biAxLzE1LzI0IDExOjEzLCBaaGVuemhvbmcgRHVhbiB3cm90ZToNCj4+IElPTU1VRkREZXZpY2Ug
-cmVwcmVzZW50cyBhIGRldmljZSBpbiBpb21tdWZkIGFuZCBjYW4gYmUgdXNlZCBhcw0KPj4gYSBj
-b21tdW5pY2F0aW9uIGludGVyZmFjZSBiZXR3ZWVuIGRldmljZXMgKGkuZS4sIFZGSU8sIFZEUEEp
-IGFuZA0KPj4gdklPTU1VLg0KPj4NCj4+IEN1cnJlbnRseSBpdCBpbmNsdWRlcyBpb21tdWZkIGhh
-bmRsZXIgYW5kIGRldmljZSBpZCBpbmZvcm1hdGlvbg0KPj4gd2hpY2ggY291bGQgYmUgdXNlZCBi
-eSB2SU9NTVUgdG8gZ2V0IGh3IElPTU1VIGluZm9ybWF0aW9uLg0KPj4NCj4+IEluIGZ1dHVyZSBu
-ZXN0ZWQgdHJhbnNsYXRpb24gc3VwcG9ydCwgdklPTU1VIGlzIGdvaW5nIHRvIGhhdmUNCj4+IG1v
-cmUgaW9tbXVmZCByZWxhdGVkIG9wZXJhdGlvbnMgbGlrZSBhbGxvY2F0ZSBod3B0IGZvciBhIGRl
-dmljZSwNCj4+IGF0dGFjaC9kZXRhY2ggaHdwdCwgZXRjLiBTbyBJT01NVUZERGV2aWNlIHdpbGwg
-YmUgZnVydGhlciBleHBhbmRlZC4NCj4+DQo+PiBJT01NVUZERGV2aWNlIGlzIHdpbGxpbmdseSBu
-b3QgYSBRT00gb2JqZWN0IGJlY2F1c2Ugd2UgZG9uJ3Qgd2FudA0KPj4gaXQgdG8gYmUgdmlzaWJs
-ZSBmcm9tIHRoZSB1c2VyIGludGVyZmFjZS4NCj4+DQo+PiBJbnRyb2R1Y2UgYSBoZWxwZXIgaW9t
-bXVmZF9kZXZpY2VfaW5pdCB0byBpbml0aWFsaXplIElPTU1VRkREZXZpY2UuDQo+Pg0KPj4gT3Jp
-Z2luYWxseS1ieTogWWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+PiBTaWduZWQtb2ZmLWJ5
-OiBZaSBTdW4gPHlpLnkuc3VuQGxpbnV4LmludGVsLmNvbT4NCj4+IFNpZ25lZC1vZmYtYnk6IFpo
-ZW56aG9uZyBEdWFuIDx6aGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQo+PiAtLS0NCj4+ICBNQUlO
-VEFJTkVSUyAgICAgICAgICAgICAgICAgICAgIHwgIDQgKy0tDQo+PiAgaW5jbHVkZS9zeXNlbXUv
-aW9tbXVmZF9kZXZpY2UuaCB8IDMxICsrKysrKysrKysrKysrKysrKysrDQo+PiAgYmFja2VuZHMv
-aW9tbXVmZF9kZXZpY2UuYyAgICAgICB8IDUwDQo+KysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrDQo+TWF5YmUgaXQgaXMgc3RpbGwgdGltZSB0byBtb3ZlIHRoZSBpb21tdWZkIGZpbGVz
-IGluIGEgc2VwYXRlIGRpciwgdW5kZXINCj5odyBhdCB0aGUgc2FtZSBsZXZlbCBhcyB2ZmlvLg0K
-Pg0KPlRob3VnaHRzPw0KDQpBbnkgcmVhc29uIGZvciB0aGUgbW92ZW1lbnQ/IEh3IGRpciBjb250
-YWlucyBlbnRyaWVzIHRvIGVtdWxhdGUgZGlmZmVyZW50DQpEZXZpY2VzLiBJb21tdWZkIGlzIG5v
-dCBhIHJlYWwgZGV2aWNlLiBJdCdzIG1vcmUgYSBiYWNrZW5kLg0KDQpUaGFua3MNClpoZW56aG9u
-Zw0K
+On Wed, Jan 17, 2024 at 12:40:12AM +0800, Xiaoyao Li wrote:
+> Date: Wed, 17 Jan 2024 00:40:12 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> 
+> On 1/15/2024 11:18 PM, Zhao Liu wrote:
+> > Hi Xiaoyao,
+> > 
+> > On Mon, Jan 15, 2024 at 03:45:58PM +0800, Xiaoyao Li wrote:
+> > > Date: Mon, 15 Jan 2024 15:45:58 +0800
+> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> > > 
+> > > On 1/15/2024 1:59 PM, Zhao Liu wrote:
+> > > > (Also cc "machine core" maintainers.)
+> > > > u
+> > > > Hi Xiaoyao,
+> > > > 
+> > > > On Mon, Jan 15, 2024 at 12:18:17PM +0800, Xiaoyao Li wrote:
+> > > > > Date: Mon, 15 Jan 2024 12:18:17 +0800
+> > > > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > > > Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> > > > > 
+> > > > > On 1/15/2024 11:27 AM, Zhao Liu wrote:
+> > > > > > On Sun, Jan 14, 2024 at 09:49:18PM +0800, Xiaoyao Li wrote:
+> > > > > > > Date: Sun, 14 Jan 2024 21:49:18 +0800
+> > > > > > > From: Xiaoyao Li <xiaoyao.li@intel.com>
+> > > > > > > Subject: Re: [PATCH v7 10/16] i386/cpu: Introduce cluster-id to X86CPU
+> > > > > > > 
+> > > > > > > On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> > > > > > > > From: Zhuocheng Ding <zhuocheng.ding@intel.com>
+> > > > > > > > 
+> > > > > > > > Introduce cluster-id other than module-id to be consistent with
+> > > > > > > > CpuInstanceProperties.cluster-id, and this avoids the confusion
+> > > > > > > > of parameter names when hotplugging.
+> > > > > > > 
+> > > > > > > I don't think reusing 'cluster' from arm for x86's 'module' is a good idea.
+> > > > > > > It introduces confusion around the code.
+> > > > > > 
+> > > > > > There is a precedent: generic "socket" v.s. i386 "package".
+> > > > > 
+> > > > > It's not the same thing. "socket" vs "package" is just software people and
+> > > > > hardware people chose different name. It's just different naming issue.
+> > > > 
+> > > > No, it's a similar issue. Same physical device, different name only.
+> > > > 
+> > > > Furthermore, the topology was introduced for resource layout and silicon
+> > > > fabrication, and similar design ideas and fabrication processes are fairly
+> > > > consistent across common current arches. Therefore, it is possible to
+> > > > abstract similar topological hierarchies for different arches.
+> > > > 
+> > > > > 
+> > > > > however, here it's reusing name issue while 'cluster' has been defined for
+> > > > > x86. It does introduce confusion.
+> > > > 
+> > > > There's nothing fundamentally different between the x86 module and the
+> > > > generic cluster, is there? This is the reason that I don't agree with
+> > > > introducing "modules" in -smp.
+> > > 
+> > > generic cluster just means the cluster of processors, i.e, a group of
+> > > cpus/lps. It is just a middle level between die and core.
+> > 
+> > Not sure if you mean the "cluster" device for TCG GDB? "cluster" device
+> > is different with "cluster" option in -smp.
+> 
+> No, I just mean the word 'cluster'. And I thought what you called "generic
+> cluster" means "a cluster of logical processors"
+> 
+> Below I quote the description of Yanan's commit 864c3b5c32f0:
+> 
+>     A cluster generally means a group of CPU cores which share L2 cache
+>     or other mid-level resources, and it is the shared resources that
+>     is used to improve scheduler's behavior. From the point of view of
+>     the size range, it's between CPU die and CPU core. For example, on
+>     some ARM64 Kunpeng servers, we have 6 clusters in each NUMA node,
+>     and 4 CPU cores in each cluster. The 4 CPU cores share a separate
+>     L2 cache and a L3 cache tag, which brings cache affinity advantage.
+> 
+> What I get from it, is, cluster is just a middle level between CPU die and
+> CPU core.
+
+Here the words "a group of CPU" is not the software concept, but a hardware
+topology.
+
+> The cpu cores inside one cluster shares some mid-level resource.
+> L2 cache is just one example of the shared mid-level resource. So it can be
+> either module level, or tile level in x86, or even the diegrp level you
+> mentioned below.
+
+In actual hardware design, ARM's cluster is close to intel's module.
+
+I'm not seeing any examples of clusters being similar to tile or diegrp.
+Even within intel, the hardware architects have agreed definitions for each
+level.
+
+> 
+> > When Yanan introduced the "cluster" option in -smp, he mentioned that it
+> > is for sharing L2 and L3 tags, which roughly corresponds to our module.
+> > 
+> > > 
+> > > It can be the module level in intel, or tile level. Further, if per die lp
+> > > number increases in the future, there might be more middle levels in intel
+> > > between die and core. Then at that time, how to decide what level should
+> > > cluster be mapped to?
+> > 
+> > Currently, there're 3 levels defined in SDM which are between die and
+> > core: diegrp, tile and module. In our products, L2 is just sharing on the
+> > module, so the intel's module and the general cluster are the best match.
+> 
+> you said 'generic cluster' a lot of times. But from my point of view, you
+> are referring to current ARM's cluster instead of *generic* cluster.
+
+No, I'm always talking about the "cluster" in -smp, not ARM specific
+cluster. ARM just maps its arch-specific cluster to the general one.
+
+> 
+> Anyway, cluster is just a mid-level between die and core. We should not
+> associate it any specific resource. A resource is shared in what level can
+> change, e.g., initially L3 cache is shared in a physical package. When
+> multi-die got supported, L3 cache is shared in one die. Now, on AMD product,
+> L3 cache is shared in one complex, and one die can have 2 complexs thus 2
+> separate L3 cache in one die.
+> It doesn't matter calling it cluster, or module, or xyz. It is just a name
+> to represent a cpu topology level between die and core.
+
+In the case of more complex topologies, QEMU may consider supporting
+aliasing.
+
+Vender can support topology aliases for its own arch, but there is no
+possibility of discarding QEMU's unified topology hierarchy in favor of
+building arch-specific hierarchies.
+
+> What matters is,
+> once it gets accepted, it becomes formal ABI for users that 'cluster' means
+> 'module' for x86 users. This is definitely a big confusion for people. Maybe
+> people try to figure out why, and find the reason is that 'cluster' means
+> the level at which L2 cache is shared and that's just the module level in
+> x86 shares L2 cache. Maybe in the future, "L2 is shared in module" get
+> changed just like the example I give for L3 above.
+
+My decision to map modules to clusters is based on existing and
+future product topology characteristics, which are supported by hardware
+practices. Of course, in the upcoming our cache topology patch series,
+users can customize the cache topology hierarchy.
+
+> Then, that's really the big confusion,
+
+I don't think this will confuse the user. All details can be explained
+clearly by document.
+
+> and all this become the "historic reason" that cluster is
+> chosen to represent module in x86.
+> 
+> > There are no commercially available machines for the other levels yet,
+> > so there's no way to ensure exactly what the future holds, but we should
+> > try to avoid fragmentation of the topology hierarchy and try to maintain
+> > the uniform and common topology hierarchies for QEMU.
+> > 
+> > Unless a new level for -smp is introduced in the future when an unsolvable
+> > problem is raised.
+> > 
+> > > 
+> > > > > 
+> > > > > > The direct definition of cluster is the level that is above the "core"
+> > > > > > and shares the hardware resources including L2. In this sense, arm's
+> > > > > > cluster is the same as x86's module.
+> > > > > 
+> > > > > then, what about intel implements tile level in the future? why ARM's
+> > > > > 'cluster' is mapped to 'module', but not 'tile' ?
+> > > > 
+> > > > This depends on the actual need.
+> > > > 
+> > > > Module (for x86) and cluster (in general) are similar, and tile (for x86)
+> > > > is used for L3 in practice, so I use module rather than tile to map
+> > > > generic cluster.
+> > > > 
+> > > > And, it should be noted that x86 module is mapped to the generic cluster,
+> > > > not to ARM's. It's just that currently only ARM is using the clusters
+> > > > option in -smp.
+> > > > 
+> > > > I believe QEMU provides the abstract and unified topology hierarchies in
+> > > > -smp, not the arch-specific hierarchies.
+> > > > 
+> > > > > 
+> > > > > reusing 'cluster' for 'module' is just a bad idea.
+> > > > > 
+> > > > > > Though different arches have different naming styles, but QEMU's generic
+> > > > > > code still need the uniform topology hierarchy.
+> > > > > 
+> > > > > generic code can provide as many topology levels as it can. each ARCH can
+> > > > > choose to use the ones it supports.
+> > > > > 
+> > > > > e.g.,
+> > > > > 
+> > > > > in qapi/machine.json, it says,
+> > > > > 
+> > > > > # The ordering from highest/coarsest to lowest/finest is:
+> > > > > # @drawers, @books, @sockets, @dies, @clusters, @cores, @threads.
+> > > > 
+> > > > This ordering is well-defined...
+> > > > 
+> > > > > #
+> > > > > # Different architectures support different subsets of topology
+> > > > > # containers.
+> > > > > #
+> > > > > # For example, s390x does not have clusters and dies, and the socket
+> > > > > # is the parent container of cores.
+> > > > > 
+> > > > > we can update it to
+> > > > > 
+> > > > > # The ordering from highest/coarsest to lowest/finest is:
+> > > > > # @drawers, @books, @sockets, @dies, @clusters, @module, @cores,
+> > > > > # @threads.
+> > > > 
+> > > > ...but here it's impossible to figure out why cluster is above module,
+> > > > and even I can't come up with the difference between cluster and module.
+> > > > 
+> > > > > #
+> > > > > # Different architectures support different subsets of topology
+> > > > > # containers.
+> > > > > #
+> > > > > # For example, s390x does not have clusters and dies, and the socket
+> > > > > # is the parent container of cores.
+> > > > > #
+> > > > > # For example, x86 does not have drawers and books, and does not support
+> > > > > # cluster.
+> > > > > 
+> > > > > even if cluster of x86 is supported someday in the future, we can remove the
+> > > > > ordering requirement from above description.
+> > > > 
+> > > > x86's cluster is above the package.
+> > > > 
+> > > > To reserve this name for x86, we can't have the well-defined topology
+> > > > ordering.
+> > > > 
+> > > > But topology ordering is necessary in generic code, and many
+> > > > calculations depend on the topology ordering.
+> > > 
+> > > could you point me to the code?
+> > 
+> > Yes, e.g., there're 2 helpers: machine_topo_get_cores_per_socket() and
+> > machine_topo_get_threads_per_socket().
+> 
+> I see. these two helpers are fragile, that they need to be updated every
+> time new level between core and socket is introduced.
+> 
+> Anyway, we can ensure the order for each ARCH, that the valid levels for any
+> ARCH are ordered. e.g., we have
+> 
+> @drawers, @books, @sockets, @dies, @clusters, @module, @cores, @threads
+
+Sorry to repeat my previous objection: the order why cluster is above the
+module can't be well-defined. This is more confusing. It is not possible
+to add a new level without clearly defining the hierarchical relationship.
+
+Different venders have their different names, there is no reason or
+possibility to cram all the names of all the vender into this arrangement,
+and it is not maintainable.
+
+> 
+> defined,
+> 
+> for s390, the valid levels are
+> 
+>  @drawers, @books, @sockets, @cores, @threads
+> 
+> for arm, the valid levels are
+> 
+>  @sockets, @dies, @clusters, @cores, @threads
+>  (I'm not sure if die is supported for ARM?)
+> 
+> for x86, the valid levels are
+> 
+>  @sockets, @dies, @module, @cores, @threads
+> 
+> All of them are ordered. those unsupported level in each ARCH just get value
+> 1. It won't have any issue in the calculation for the default value, but you
+> provided two functions may not be lucky. anyway, they can be fixed at the
+> time when we really go this approach.
+> 
+> > > 
+> > > > > 
+> > > > > > > 
+> > > > > > > s390 just added 'drawer' and 'book' in cpu topology[1]. I think we can also
+> > > > > > > add a module level for x86 instead of reusing cluster.
+> > > > > > > 
+> > > > > > > (This is also what I want to reply to the cover letter.)
+> > > > > > > 
+> > > > > > > [1] https://lore.kernel.org/qemu-devel/20231016183925.2384704-1-nsg@linux.ibm.com/
+> > > > > > 
+> > > > > > These two new levels have the clear topological hierarchy relationship
+> > > > > > and don't duplicate existing ones.
+> > > > > > 
+> > > > > > "book" or "drawer" may correspond to intel's "cluster".
+> > > > > > 
+> > > > > > Maybe, in the future, we could support for arch-specific alias topologies
+> > > > > > in -smp.
+> > > > > 
+> > > > > I don't think we need alias, reusing 'cluster' for 'module' doesn't gain any
+> > > > > benefit except avoid adding a new field in SMPconfiguration. All the other
+> > > > > cluster code is ARM specific and x86 cannot share.
+> > > > 
+> > > > The point is that there is no difference between intel module and general
+> > > > cluster...Considering only the naming issue, even AMD has the "complex" to
+> > > > correspond to the Intel's "module".
+> > > 
+> > > does complex of AMD really match with intel module? L3 cache is shared in
+> > > one complex, while L2 cache is shared in one module for now.
+> > 
+> > If then it could correspond to intel's tile, which is after all a level
+> > below die.
+> 
+> So if AMD wants to add complex in smp topology, where should complex level
+> get put? between die and cluster?
+
+That's just an example, and just showed that AMD and intel have naming
+differences, even if they are both x86. We can't be happy with everyone.
+
+Thanks,
+Zhao
+
 
