@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2EA832B7F
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F51832B81
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:44:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2y-0005sc-LQ; Fri, 19 Jan 2024 09:40:40 -0500
+	id 1rQq2y-0005se-LJ; Fri, 19 Jan 2024 09:40:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005mv-1m
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:24 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005my-3K
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:26 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003j9-JD
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2c-0003jp-Uq
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=9odshd6cnNtmtj3iaUrnIF7sAejUiH24FOWHPx/ofJo=; b=Wy6l8KJNaoPKIFhEk5ApVnJOin
- +57vDmqhFGgpDCPIWJkBkaq22/eAHTB8umjjXUNk48rcBix0eVoazSajl3AVffKFAP6GUlzoNlIAf
- x+iPsngwdEzhaU5ootA63jCVTZhtUWNph+1D2hHRoVx50MLJ1ChgKc+YyHklxk1ehHl8=;
+ bh=rW6sRB4eCsSZkO9YFs9s1AVEkogjjwAKpHsPA+2vclM=; b=iK8SAis8/+IYqPJxpDdvBJI1bb
+ UNqK2qDWS6MmAlhNJTzUsTuv4Jh6guvS9FKoUwgwtXu5e3FVbmiibHj9SjU55dK0DGBExjZkv6eb3
+ kQkOPpwH/wNgxTl+Wb6mmJNg9nrD1iDs98e4gkAw8ifRaL2Gl5CXjUeIP5op+YZCe1is=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 09/34] exec: [VADDR] Use vaddr in DisasContextBase for
- virtual addresses
-Date: Fri, 19 Jan 2024 15:39:59 +0100
-Message-ID: <20240119144024.14289-10-anjo@rev.ng>
+Subject: [RFC PATCH 10/34] exec: [VADDR] typedef abi_ptr to vaddr
+Date: Fri, 19 Jan 2024 15:40:00 +0100
+Message-ID: <20240119144024.14289-11-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,120 +60,26 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Updates target/ QEMU_LOG macros to use VADDR_PRIx for printing updated
-DisasContextBase fields.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/translator.h   |  6 +++---
- target/mips/tcg/translate.h |  3 ++-
- target/hexagon/translate.c  |  3 ++-
- target/m68k/translate.c     |  2 +-
- target/mips/tcg/translate.c | 12 ++++++------
- 5 files changed, 14 insertions(+), 12 deletions(-)
+ include/exec/cpu_ldst.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 2ab8f58bea..c4b46ec8aa 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -77,8 +77,8 @@ typedef enum DisasJumpType {
-  */
- typedef struct DisasContextBase {
-     TranslationBlock *tb;
--    target_ulong pc_first;
--    target_ulong pc_next;
-+    vaddr pc_first;
-+    vaddr pc_next;
-     DisasJumpType is_jmp;
-     int num_insns;
-     int max_insns;
-@@ -231,7 +231,7 @@ void translator_fake_ldb(uint8_t insn8, abi_ptr pc);
-  * Translators can use this to enforce the rule that only single-insn
-  * translation blocks are allowed to cross page boundaries.
-  */
--static inline bool is_same_page(const DisasContextBase *db, target_ulong addr)
-+static inline bool is_same_page(const DisasContextBase *db, vaddr addr)
- {
-     return ((addr ^ db->pc_first) & TARGET_PAGE_MASK) == 0;
- }
-diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index cffcfeab8c..93a78b8121 100644
---- a/target/mips/tcg/translate.h
-+++ b/target/mips/tcg/translate.h
-@@ -202,7 +202,8 @@ extern TCGv bcond;
-     do {                                                                      \
-         if (MIPS_DEBUG_DISAS) {                                               \
-             qemu_log_mask(CPU_LOG_TB_IN_ASM,                                  \
--                          TARGET_FMT_lx ": %08x Invalid %s %03x %03x %03x\n", \
-+                          "%016" VADDR_PRIx                                   \
-+                          ": %08x Invalid %s %03x %03x %03x\n",               \
-                           ctx->base.pc_next, ctx->opcode, op,                 \
-                           ctx->opcode >> 26, ctx->opcode & 0x3F,              \
-                           ((ctx->opcode >> 16) & 0x1F));                      \
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 2ef6a89622..7988e54f7d 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -234,7 +234,8 @@ static int read_packet_words(CPUHexagonState *env, DisasContext *ctx,
-         g_assert(ctx->base.num_insns == 1);
-     }
- 
--    HEX_DEBUG_LOG("decode_packet: pc = 0x%x\n", ctx->base.pc_next);
-+    HEX_DEBUG_LOG("decode_packet: pc = 0x%" VADDR_PRIx "\n",
-+                  ctx->base.pc_next);
-     HEX_DEBUG_LOG("    words = { ");
-     for (int i = 0; i < nwords; i++) {
-         HEX_DEBUG_LOG("0x%x, ", words[i]);
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 3408385fa1..a51fdef32a 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -1474,7 +1474,7 @@ DISAS_INSN(undef)
-      * for the 680x0 series, as well as those that are implemented
-      * but actually illegal for CPU32 or pre-68020.
-      */
--    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %08x\n",
-+    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %" VADDR_PRIx "\n",
-                   insn, s->base.pc_next);
-     gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
- }
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 2cc4945793..c5a7378dee 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -4585,8 +4585,8 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc,
- 
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x"
--                  TARGET_FMT_lx "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 6061e33ac9..eb8f3f0595 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -121,8 +121,8 @@ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+     h2g_nocheck(x); \
+ })
+ #else
+-typedef target_ulong abi_ptr;
+-#define TARGET_ABI_FMT_ptr TARGET_FMT_lx
++typedef vaddr abi_ptr;
++#define TARGET_ABI_FMT_ptr VADDR_PRIx
  #endif
-         gen_reserved_instruction(ctx);
-         goto out;
-@@ -9061,8 +9061,8 @@ static void gen_compute_branch1_r6(DisasContext *ctx, uint32_t op,
  
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
--                  "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
- #endif
-         gen_reserved_instruction(ctx);
-         return;
-@@ -11275,8 +11275,8 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
- 
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
--                  "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
- #endif
-         gen_reserved_instruction(ctx);
-         return;
+ uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
 -- 
 2.43.0
 
