@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F202D832B73
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3073D832B8E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:46:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq31-0005uT-VY; Fri, 19 Jan 2024 09:40:44 -0500
+	id 1rQq31-0005td-BC; Fri, 19 Jan 2024 09:40:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0005pu-7F
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0005q5-S9
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:34 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2m-0003tI-DS
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:31 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2m-0003tM-Ty
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=8UPiTZaevh6h/4URf5FGXZIx3hFxs8x0lkausVGDJfE=; b=Se2A+UURowq+fFZ9DJ/JvvVWrs
- JOjpujG/A5PBTaKsr0J8+jPXbi2xwLeucxJTQwM2CEIpui29KRE5zdTFYCX7MF/lA7des6DJhGX8l
- 2MDKQ62z7Fz4QHu5w6MKi9N5v2f43I30PrnN+mJmRpVJsE7bH0uq7EXUadRn6CM3hiTM=;
+ bh=na16a3kkbbDiLaCoxLNStnzoqPivBaqVHjAABny5AW8=; b=wBtvCYVIMYuSebIS6/omyghrtp
+ gBXa74s7midl/DiGwBoREI5CYN1FIhogfkWJEtHDFkzrImB01LD4MCQGxMHzGU+JTFGG4q5lU09Bg
+ nDeJW3tVCjrTVSRARXf53+vL8VmQ/H+9npJDlf6TekMahDyZHN4OYVw8dxMtL2v/cL6I=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 16/34] exec: [CPUTLB] Move cpu_*()/cpu_env() to common
- header
-Date: Fri, 19 Jan 2024 15:40:06 +0100
-Message-ID: <20240119144024.14289-17-anjo@rev.ng>
+Subject: [RFC PATCH 17/34] hw/core: [CPUTLB] Move target specifics to end of
+ TCGCPUOps
+Date: Fri, 19 Jan 2024 15:40:07 +0100
+Message-ID: <20240119144024.14289-18-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,86 +61,70 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Functions are target independent.
+TCGCPUOps contains an extra function pointer when included with
+NEED_CPU_H, these are moved from the middle to the end of the struct. As
+such offsets to target independent function pointers don't vary in
+target specific and independent code.
+
+[Move target specfic fields to separate struct?]
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu-all.h    | 25 -------------------------
- include/exec/cpu-common.h | 25 +++++++++++++++++++++++++
- 2 files changed, 25 insertions(+), 25 deletions(-)
+ include/hw/core/tcg-cpu-ops.h | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 968fbd4d16..4778976c4b 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -295,33 +295,8 @@ CPUArchState *cpu_copy(CPUArchState *env);
-      | CPU_INTERRUPT_TGT_EXT_3   \
-      | CPU_INTERRUPT_TGT_EXT_4)
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 479713a36e..feb849051f 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -49,21 +49,6 @@ struct TCGCPUOps {
+     /** @debug_excp_handler: Callback for handling debug exceptions */
+     void (*debug_excp_handler)(CPUState *cpu);
  
--/* accel/tcg/cpu-exec.c */
--int cpu_exec(CPUState *cpu);
--
- /* Validate correct placement of CPUArchState. */
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+-#ifdef NEED_CPU_H
+-#if defined(CONFIG_USER_ONLY) && defined(TARGET_I386)
+-    /**
+-     * @fake_user_interrupt: Callback for 'fake exception' handling.
+-     *
+-     * Simulate 'fake exception' which will be handled outside the
+-     * cpu execution loop (hack for x86 user mode).
+-     */
+-    void (*fake_user_interrupt)(CPUState *cpu);
+-#else
+-    /**
+-     * @do_interrupt: Callback for interrupt handling.
+-     */
+-    void (*do_interrupt)(CPUState *cpu);
+-#endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
+ #ifdef CONFIG_USER_ONLY
+     /**
+      * record_sigsegv:
+@@ -171,8 +156,25 @@ struct TCGCPUOps {
+     bool (*io_recompile_replay_branch)(CPUState *cpu,
+                                        const TranslationBlock *tb);
+ #endif /* !CONFIG_USER_ONLY */
++
++#ifdef NEED_CPU_H
++#if defined(CONFIG_USER_ONLY) && defined(TARGET_I386)
++    /**
++     * @fake_user_interrupt: Callback for 'fake exception' handling.
++     *
++     * Simulate 'fake exception' which will be handled outside the
++     * cpu execution loop (hack for x86 user mode).
++     */
++    void (*fake_user_interrupt)(CPUState *cpu);
++#else
++    /**
++     * @do_interrupt: Callback for interrupt handling.
++     */
++    void (*do_interrupt)(CPUState *cpu);
++#endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
+ #endif /* NEED_CPU_H */
  
--/**
-- * env_archcpu(env)
-- * @env: The architecture environment
-- *
-- * Return the ArchCPU associated with the environment.
-- */
--static inline ArchCPU *env_archcpu(CPUArchState *env)
--{
--    return (void *)env - sizeof(CPUState);
--}
--
--/**
-- * env_cpu(env)
-- * @env: The architecture environment
-- *
-- * Return the CPUState associated with the environment.
-- */
--static inline CPUState *env_cpu(CPUArchState *env)
--{
--    return (void *)env - sizeof(CPUState);
--}
--
- #endif /* CPU_ALL_H */
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index d3c8b2cf55..25e50aaa37 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -347,4 +347,29 @@ G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
-  */
- #define PAGE_PASSTHROUGH 0x0800
++
+ };
  
-+/* accel/tcg/cpu-exec.c */
-+int cpu_exec(CPUState *cpu);
-+
-+/**
-+ * env_archcpu(env)
-+ * @env: The architecture environment
-+ *
-+ * Return the ArchCPU associated with the environment.
-+ */
-+static inline ArchCPU *env_archcpu(CPUArchState *env)
-+{
-+    return (void *)env - sizeof(CPUState);
-+}
-+
-+/**
-+ * env_cpu(env)
-+ * @env: The architecture environment
-+ *
-+ * Return the CPUState associated with the environment.
-+ */
-+static inline CPUState *env_cpu(CPUArchState *env)
-+{
-+    return (void *)env - sizeof(CPUState);
-+}
-+
- #endif /* CPU_COMMON_H */
+ #if defined(CONFIG_USER_ONLY)
 -- 
 2.43.0
 
