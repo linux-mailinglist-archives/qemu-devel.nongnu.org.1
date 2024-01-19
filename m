@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5449B832B84
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:44:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2A1832B78
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq32-0005uY-1t; Fri, 19 Jan 2024 09:40:44 -0500
+	id 1rQq3A-0005y7-L7; Fri, 19 Jan 2024 09:40:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0005q4-SZ
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:35 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0005pt-7R
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:34 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2i-0003sd-T4
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:32 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2k-0003sh-1t
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=RJp3FDw6CrSCzKk75aUjlDvdhLiCJ8PHaUBmcDm9HLw=; b=WLkoLfZAgtmqctR5iZtWLTMUde
- jbOOfVaqcf0VJgQgbUCqMGWoHiL8e7bqwUyzpuEgPMXqAiPePT03Hq3pekaenn9Epunp/1bCQekoQ
- M7vuBp2mFEOY5lNULsOBWwPwt90QOzbOGFo41mNkCbCtVVD86bme9xEhPVxGyFmw+ikQ=;
+ bh=8VbSSJ+elwAUh/3IBh5c6unmBtljyQ3plo6LsH7WdK4=; b=FITrlALjFaKVMHTJ9yP75JbGb1
+ do4NHneJlsothXci4kF3y4HhYLcb8lgMYQMCEqerOYJsvFmFSCdWSgYVQf8MPho6y8fvfoaSL8oPg
+ xAUm+1FrABt1w0SDwHw6NzO4UKUxrJpzZ0Ex2EX3yNHmlUnPwuOiHNTDLxxECrUxleYA=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 12/34] target: Uninline cpu_mmu_index()
-Date: Fri, 19 Jan 2024 15:40:02 +0100
-Message-ID: <20240119144024.14289-13-anjo@rev.ng>
+Subject: [RFC PATCH 13/34] target: Uninline cpu_get_tb_cpu_state()
+Date: Fri, 19 Jan 2024 15:40:03 +0100
+Message-ID: <20240119144024.14289-14-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,976 +60,1200 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Uninlines the target-defined cpu_mmu_index() function by moving its
-definition to target/*/cpu.c.  This allows for compiling memory access
-functions in accel/tcg/cputlb.c without having to know target specifics.
+Required to compile accel/tcg/translate-all.c once for softmmu targets.
+The function gets quite big for some targets so uninlining makes sense.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu-common.h | 10 ++++++++++
- target/alpha/cpu.h        |  9 ---------
- target/arm/cpu.h          | 13 -------------
- target/avr/cpu.h          |  6 ------
- target/cris/cpu.h         |  4 ----
- target/hexagon/cpu.h      |  9 ---------
- target/hppa/cpu.h         | 12 ------------
- target/i386/cpu.h         |  7 -------
- target/loongarch/cpu.h    | 12 ------------
- target/m68k/cpu.h         |  4 ----
- target/microblaze/cpu.h   | 15 ---------------
- target/mips/cpu.h         | 14 +-------------
- target/nios2/cpu.h        |  6 ------
- target/openrisc/cpu.h     | 12 ------------
- target/ppc/cpu.h          |  8 --------
- target/riscv/cpu.h        |  2 --
- target/rx/cpu.h           |  5 -----
- target/s390x/cpu.h        | 31 -------------------------------
- target/sh4/cpu.h          | 10 ----------
- target/sparc/cpu.h        | 28 ----------------------------
- target/tricore/cpu.h      |  5 -----
- target/xtensa/cpu.h       |  5 -----
- target/alpha/cpu.c        |  8 ++++++++
- target/arm/cpu.c          |  5 +++++
- target/avr/cpu.c          |  5 +++++
- target/cris/cpu.c         |  4 ++++
- target/hexagon/cpu.c      |  9 +++++++++
- target/hppa/cpu.c         | 12 ++++++++++++
- target/i386/cpu.c         |  7 +++++++
- target/loongarch/cpu.c    | 12 ++++++++++++
- target/m68k/cpu.c         |  5 +++++
- target/microblaze/cpu.c   | 16 ++++++++++++++++
- target/mips/cpu.c         | 14 ++++++++++++++
- target/nios2/cpu.c        |  6 ++++++
- target/openrisc/cpu.c     | 12 ++++++++++++
- target/ppc/cpu.c          |  9 +++++++++
- target/riscv/cpu_helper.c |  2 +-
- target/rx/cpu.c           |  5 +++++
- target/s390x/cpu.c        | 31 +++++++++++++++++++++++++++++++
- target/sh4/cpu.c          | 13 +++++++++++++
- target/sparc/cpu.c        | 28 ++++++++++++++++++++++++++++
- target/tricore/cpu.c      |  5 +++++
- target/xtensa/cpu.c       |  4 ++++
- 43 files changed, 222 insertions(+), 217 deletions(-)
+ include/exec/cpu-common.h |  4 +++
+ target/alpha/cpu.h        | 11 -------
+ target/arm/cpu.h          |  3 --
+ target/avr/cpu.h          | 18 -----------
+ target/cris/cpu.h         | 10 ------
+ target/hexagon/cpu.h      | 12 -------
+ target/hppa/cpu.h         | 43 -------------------------
+ target/i386/cpu.h         |  9 ------
+ target/loongarch/cpu.h    | 11 -------
+ target/m68k/cpu.h         | 16 ---------
+ target/microblaze/cpu.h   |  8 -----
+ target/mips/cpu.h         |  9 ------
+ target/nios2/cpu.h        | 12 -------
+ target/openrisc/cpu.h     | 10 ------
+ target/ppc/cpu.h          | 13 --------
+ target/riscv/cpu.h        |  3 --
+ target/rx/cpu.h           |  9 ------
+ target/s390x/cpu.h        | 22 -------------
+ target/sh4/cpu.h          | 15 ---------
+ target/sparc/cpu.h        | 35 --------------------
+ target/tricore/cpu.h      | 12 -------
+ target/xtensa/cpu.h       | 68 ---------------------------------------
+ target/alpha/cpu.c        | 11 +++++++
+ target/avr/cpu.c          | 18 +++++++++++
+ target/cris/cpu.c         | 10 ++++++
+ target/hexagon/cpu.c      | 12 +++++++
+ target/hppa/cpu.c         | 47 +++++++++++++++++++++++++++
+ target/i386/cpu.c         |  9 ++++++
+ target/loongarch/cpu.c    | 11 +++++++
+ target/m68k/cpu.c         | 16 +++++++++
+ target/microblaze/cpu.c   |  7 ++++
+ target/mips/cpu.c         |  9 ++++++
+ target/nios2/cpu.c        | 12 +++++++
+ target/openrisc/cpu.c     | 10 ++++++
+ target/ppc/cpu.c          | 11 +++++++
+ target/rx/cpu.c           |  9 ++++++
+ target/s390x/cpu.c        | 24 ++++++++++++++
+ target/sh4/cpu.c          | 15 +++++++++
+ target/sparc/cpu.c        | 35 ++++++++++++++++++++
+ target/tricore/cpu.c      | 12 +++++++
+ target/xtensa/cpu.c       | 68 +++++++++++++++++++++++++++++++++++++++
+ 41 files changed, 350 insertions(+), 349 deletions(-)
 
 diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 2eb6589764..12952c481c 100644
+index 12952c481c..b5dae4a9d6 100644
 --- a/include/exec/cpu-common.h
 +++ b/include/exec/cpu-common.h
-@@ -60,6 +60,16 @@ void cpu_list_lock(void);
- void cpu_list_unlock(void);
- unsigned int cpu_list_generation_id_get(void);
+@@ -70,6 +70,10 @@ unsigned int cpu_list_generation_id_get(void);
+  */
+ int cpu_mmu_index(CPUArchState *env, bool ifetch);
  
-+/**
-+ * cpu_mmu_index:
-+ * @env: The cpu environment
-+ * @ifetch: True for code access, false for data access.
-+ *
-+ * Return the core mmu index for the current translation regime.
-+ * This function is used by generic TCG code paths.
-+ */
-+int cpu_mmu_index(CPUArchState *env, bool ifetch);
++void cpu_get_tb_cpu_state(CPUArchState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags);
++
 +
  void tcg_flush_softmmu_tlb(CPUState *cs);
  void tcg_flush_jmp_cache(CPUState *cs);
  
 diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index e2a467ec17..e93186d50e 100644
+index e93186d50e..09937b32a2 100644
 --- a/target/alpha/cpu.h
 +++ b/target/alpha/cpu.h
-@@ -380,15 +380,6 @@ enum {
+@@ -452,17 +452,6 @@ void alpha_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+                                      MemTxResult response, uintptr_t retaddr);
+ #endif
  
- #define TB_FLAG_UNALIGN       (1u << 1)
- 
--static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUAlphaState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
 -{
--    int ret = env->flags & ENV_FLAG_PS_USER ? MMU_USER_IDX : MMU_KERNEL_IDX;
--    if (env->flags & ENV_FLAG_PAL_MODE) {
--        ret = MMU_KERNEL_IDX;
--    }
--    return ret;
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *pflags = env->flags & ENV_FLAG_TB_MASK;
+-#ifdef CONFIG_USER_ONLY
+-    *pflags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
+-#endif
 -}
 -
- enum {
-     IR_V0   = 0,
-     IR_T0   = 1,
+ #ifdef CONFIG_USER_ONLY
+ /* Copied from linux ieee_swcr_to_fpcr.  */
+ static inline uint64_t alpha_ieee_swcr_to_fpcr(uint64_t swcr)
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 51963b6545..3dfca8f3ae 100644
+index 3dfca8f3ae..9732c836b2 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -3167,19 +3167,6 @@ FIELD(TBFLAG_A64, NAA, 30, 1)
- #define EX_TBFLAG_M32(IN, WHICH)   FIELD_EX32(IN.flags2, TBFLAG_M32, WHICH)
- #define EX_TBFLAG_AM32(IN, WHICH)  FIELD_EX32(IN.flags2, TBFLAG_AM32, WHICH)
+@@ -3212,9 +3212,6 @@ static inline bool arm_cpu_bswap_data(CPUARMState *env)
+ }
+ #endif
  
--/**
-- * cpu_mmu_index:
-- * @env: The cpu environment
-- * @ifetch: True for code access, false for data access.
-- *
-- * Return the core mmu index for the current translation regime.
-- * This function is used by generic TCG code paths.
-- */
--static inline int cpu_mmu_index(CPUARMState *env, bool ifetch)
--{
--    return EX_TBFLAG_ANY(env->hflags, MMUIDX);
--}
+-void cpu_get_tb_cpu_state(CPUARMState *env, vaddr *pc,
+-                          uint64_t *cs_base, uint32_t *flags);
 -
- /**
-  * sve_vq
-  * @env: the cpu context
+ enum {
+     QEMU_PSCI_CONDUIT_DISABLED = 0,
+     QEMU_PSCI_CONDUIT_SMC = 1,
 diff --git a/target/avr/cpu.h b/target/avr/cpu.h
-index 4ce22d8e4f..581ba54aae 100644
+index 581ba54aae..e454f3ac3c 100644
 --- a/target/avr/cpu.h
 +++ b/target/avr/cpu.h
-@@ -172,12 +172,6 @@ static inline void set_avr_feature(CPUAVRState *env, int feature)
- }
+@@ -183,24 +183,6 @@ enum {
+     TB_FLAGS_SKIP = 2,
+ };
  
- #define cpu_list avr_cpu_list
--#define cpu_mmu_index avr_cpu_mmu_index
--
--static inline int avr_cpu_mmu_index(CPUAVRState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUAVRState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
 -{
--    return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
+-    uint32_t flags = 0;
+-
+-    *pc = env->pc_w * 2;
+-    *cs_base = 0;
+-
+-    if (env->fullacc) {
+-        flags |= TB_FLAGS_FULL_ACCESS;
+-    }
+-    if (env->skip) {
+-        flags |= TB_FLAGS_SKIP;
+-    }
+-
+-    *pflags = flags;
 -}
- 
- void avr_cpu_tcg_init(void);
- 
+-
+ static inline int cpu_interrupts_enabled(CPUAVRState *env)
+ {
+     return env->sregI != 0;
 diff --git a/target/cris/cpu.h b/target/cris/cpu.h
-index 676b8e93ca..9587a2a229 100644
+index 9587a2a229..1312a719b7 100644
 --- a/target/cris/cpu.h
 +++ b/target/cris/cpu.h
-@@ -248,10 +248,6 @@ enum {
+@@ -261,16 +261,6 @@ enum {
  
- /* MMU modes definitions */
- #define MMU_USER_IDX 1
--static inline int cpu_mmu_index (CPUCRISState *env, bool ifetch)
+ #include "exec/cpu-all.h"
+ 
+-static inline void cpu_get_tb_cpu_state(CPUCRISState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--	return !!(env->pregs[PR_CCS] & U_FLAG);
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = env->dslot |
+-            (env->pregs[PR_CCS] & (S_FLAG | P_FLAG | U_FLAG
+-				     | X_FLAG | PFIX_FLAG));
 -}
+-
+ #define cpu_list cris_cpu_list
+ void cris_cpu_list(void);
  
- /* Support function regs.  */
- #define SFR_RW_GC_CFG      0][0
 diff --git a/target/hexagon/cpu.h b/target/hexagon/cpu.h
-index 10cd1efd57..562b5c7095 100644
+index 562b5c7095..8e0b7704ef 100644
 --- a/target/hexagon/cpu.h
 +++ b/target/hexagon/cpu.h
-@@ -165,15 +165,6 @@ static inline void cpu_get_tb_cpu_state(CPUHexagonState *env, vaddr *pc,
-     *flags = hex_flags;
- }
+@@ -153,18 +153,6 @@ struct ArchCPU {
  
--static inline int cpu_mmu_index(CPUHexagonState *env, bool ifetch)
+ FIELD(TB_FLAGS, IS_TIGHT_LOOP, 0, 1)
+ 
+-static inline void cpu_get_tb_cpu_state(CPUHexagonState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--#ifdef CONFIG_USER_ONLY
--    return MMU_USER_IDX;
--#else
--#error System mode not supported on Hexagon yet
--#endif
+-    uint32_t hex_flags = 0;
+-    *pc = env->gpr[HEX_REG_PC];
+-    *cs_base = 0;
+-    if (*pc == env->gpr[HEX_REG_SA0]) {
+-        hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, IS_TIGHT_LOOP, 1);
+-    }
+-    *flags = hex_flags;
 -}
 -
  typedef HexagonCPU ArchCPU;
  
  void hexagon_translate_init(void);
 diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 7557f884b5..3da91d41d4 100644
+index 3da91d41d4..088692db90 100644
 --- a/target/hppa/cpu.h
 +++ b/target/hppa/cpu.h
-@@ -237,18 +237,6 @@ struct ArchCPU {
+@@ -267,49 +267,6 @@ static inline target_ulong hppa_form_gva(CPUHPPAState *env, uint64_t spc,
+ #define TB_FLAG_PRIV_SHIFT  8
+ #define TB_FLAG_UNALIGN     0x400
  
- #include "exec/cpu-all.h"
- 
--static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
 -{
+-    uint32_t flags = env->psw_n * PSW_N;
+-
+-    /* TB lookup assumes that PC contains the complete virtual address.
+-       If we leave space+offset separate, we'll get ITLB misses to an
+-       incomplete virtual address.  This also means that we must separate
+-       out current cpu privilege from the low bits of IAOQ_F.  */
 -#ifdef CONFIG_USER_ONLY
--    return MMU_USER_IDX;
+-    *pc = env->iaoq_f & -4;
+-    *cs_base = env->iaoq_b & -4;
+-    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
 -#else
--    if (env->psw & (ifetch ? PSW_C : PSW_D)) {
--        return PRIV_TO_MMU_IDX(env->iaoq_f & 3);
+-    /* ??? E, T, H, L, B, P bits need to be here, when implemented.  */
+-    flags |= env->psw & (PSW_W | PSW_C | PSW_D);
+-    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
+-
+-    *pc = (env->psw & PSW_C
+-           ? hppa_form_gva_psw(env->psw, env->iasq_f, env->iaoq_f & -4)
+-           : env->iaoq_f & -4);
+-    *cs_base = env->iasq_f;
+-
+-    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
+-       low 32-bits of CS_BASE.  This will succeed for all direct branches,
+-       which is the primary case we care about -- using goto_tb within a page.
+-       Failure is indicated by a zero difference.  */
+-    if (env->iasq_f == env->iasq_b) {
+-        target_sreg diff = env->iaoq_b - env->iaoq_f;
+-        if (TARGET_REGISTER_BITS == 32 || diff == (int32_t)diff) {
+-            *cs_base |= (uint32_t)diff;
+-        }
 -    }
--    return MMU_PHYS_IDX;  /* mmu disabled */
+-    if ((env->sr[4] == env->sr[5])
+-        & (env->sr[4] == env->sr[6])
+-        & (env->sr[4] == env->sr[7])) {
+-        flags |= TB_FLAG_SR_SAME;
+-    }
 -#endif
+-
+-    *pflags = flags;
 -}
 -
- void hppa_translate_init(void);
- 
- #define CPU_RESOLVING_TYPE TYPE_HPPA_CPU
+ target_ureg cpu_hppa_get_psw(CPUHPPAState *env);
+ void cpu_hppa_put_psw(CPUHPPAState *env, target_ureg);
+ void cpu_hppa_loaded_fr0(CPUHPPAState *env);
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index e1b41c29f0..7de2bad701 100644
+index 7de2bad701..5e938fdac3 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -2259,13 +2259,6 @@ uint64_t cpu_get_tsc(CPUX86State *env);
- #define MMU_NESTED_IDX  3
- #define MMU_PHYS_IDX    4
+@@ -2278,15 +2278,6 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
+ #include "hw/i386/apic.h"
+ #endif
  
--static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
--        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
--        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
+-    *cs_base = env->segs[R_CS].base;
+-    *pc = *cs_base + env->eip;
+-    *flags = env->hflags |
+-        (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
 -}
 -
- static inline int cpu_mmu_index_kernel(CPUX86State *env)
- {
-     return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
+ void do_cpu_init(X86CPU *cpu);
+ 
+ #define MCE_INJECT_BROADCAST    1
 diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 3b5ec51928..d85103c28d 100644
+index d85103c28d..ce9bdedbf0 100644
 --- a/target/loongarch/cpu.h
 +++ b/target/loongarch/cpu.h
-@@ -415,18 +415,6 @@ struct LoongArchCPUClass {
- #define MMU_IDX_USER     MMU_PLV_USER
- #define MMU_IDX_DA       4
+@@ -449,17 +449,6 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
+ #define HW_FLAGS_EUEN_SXE   0x08
+ #define HW_FLAGS_VA32       0x20
  
--static inline int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--#ifdef CONFIG_USER_ONLY
--    return MMU_IDX_USER;
--#else
--    if (FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG)) {
--        return FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
--    }
--    return MMU_IDX_DA;
--#endif
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
+-    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
+-    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
+-    *flags |= is_va32(env) * HW_FLAGS_VA32;
 -}
 -
- static inline bool is_la64(CPULoongArchState *env)
- {
-     return FIELD_EX32(env->cpucfg[1], CPUCFG1, ARCH) == CPUCFG1_ARCH_LA64;
+ void loongarch_cpu_list(void);
+ 
+ #define cpu_list loongarch_cpu_list
 diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index 20afb0c94d..da13111fd8 100644
+index da13111fd8..21c37e2267 100644
 --- a/target/m68k/cpu.h
 +++ b/target/m68k/cpu.h
-@@ -572,10 +572,6 @@ enum {
- /* MMU modes definitions */
- #define MMU_KERNEL_IDX 0
- #define MMU_USER_IDX 1
--static inline int cpu_mmu_index (CPUM68KState *env, bool ifetch)
--{
--    return (env->sr & SR_S) == 0 ? 1 : 0;
--}
+@@ -596,22 +596,6 @@ void m68k_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
+ #define TB_FLAGS_TRACE          16
+ #define TB_FLAGS_TRACE_BIT      (1 << TB_FLAGS_TRACE)
  
- bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
+-static inline void cpu_get_tb_cpu_state(CPUM68KState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
+-{
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = (env->macsr >> 4) & TB_FLAGS_MACSR;
+-    if (env->sr & SR_S) {
+-        *flags |= TB_FLAGS_MSR_S;
+-        *flags |= (env->sfc << (TB_FLAGS_SFC_S_BIT - 2)) & TB_FLAGS_SFC_S;
+-        *flags |= (env->dfc << (TB_FLAGS_DFC_S_BIT - 2)) & TB_FLAGS_DFC_S;
+-    }
+-    if (M68K_SR_TRACE(env->sr) == M68K_SR_TRACE_ANY_INS) {
+-        *flags |= TB_FLAGS_TRACE;
+-    }
+-}
+-
+ void dump_mmu(CPUM68KState *env);
+ 
+ #endif
 diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index e43c49d4af..8f8b4f55d4 100644
+index 8f8b4f55d4..bdbbf2751b 100644
 --- a/target/microblaze/cpu.h
 +++ b/target/microblaze/cpu.h
-@@ -423,21 +423,6 @@ void mb_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
-                                MemTxResult response, uintptr_t retaddr);
- #endif
+@@ -404,14 +404,6 @@ void mb_tcg_init(void);
+ /* Ensure there is no overlap between the two masks. */
+ QEMU_BUILD_BUG_ON(MSR_TB_MASK & IFLAGS_TB_MASK);
  
--static inline int cpu_mmu_index(CPUMBState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUMBState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    MicroBlazeCPU *cpu = env_archcpu(env);
--
--    /* Are we in nommu mode?.  */
--    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
--        return MMU_NOMMU_IDX;
--    }
--
--    if (env->msr & MSR_UM) {
--        return MMU_USER_IDX;
--    }
--    return MMU_KERNEL_IDX;
+-    *pc = env->pc;
+-    *flags = (env->iflags & IFLAGS_TB_MASK) | (env->msr & MSR_TB_MASK);
+-    *cs_base = (*flags & IMM_FLAG ? env->imm : 0);
 -}
 -
- #ifndef CONFIG_USER_ONLY
- extern const VMStateDescription vmstate_mb_cpu;
- #endif
+ #if !defined(CONFIG_USER_ONLY)
+ bool mb_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                      MMUAccessType access_type, int mmu_idx,
 diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index 67f8e8b988..49915af09d 100644
+index 49915af09d..6d9f95be18 100644
 --- a/target/mips/cpu.h
 +++ b/target/mips/cpu.h
-@@ -1233,19 +1233,7 @@ uint32_t cpu_rddsp(uint32_t mask_num, CPUMIPSState *env);
-  */
- #define MMU_USER_IDX 2
+@@ -1344,15 +1344,6 @@ void itc_reconfigure(struct MIPSITUState *tag);
+ /* helper.c */
+ target_ulong exception_resume_pc(CPUMIPSState *env);
  
--static inline int hflags_mmu_index(uint32_t hflags)
+-static inline void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    if (hflags & MIPS_HFLAG_ERL) {
--        return 3; /* ERL */
--    } else {
--        return hflags & MIPS_HFLAG_KSU;
--    }
+-    *pc = env->active_tc.PC;
+-    *cs_base = 0;
+-    *flags = env->hflags & (MIPS_HFLAG_TMASK | MIPS_HFLAG_BMASK |
+-                            MIPS_HFLAG_HWRENA_ULR);
 -}
 -
--static inline int cpu_mmu_index(CPUMIPSState *env, bool ifetch)
--{
--    return hflags_mmu_index(env->hflags);
--}
-+int hflags_mmu_index(uint32_t hflags);
- 
- #include "exec/cpu-all.h"
- 
+ /**
+  * mips_cpu_create_with_clock:
+  * @typename: a MIPS CPU type.
 diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
-index 70b6377a4f..c1d4fc6542 100644
+index c1d4fc6542..890d91d901 100644
 --- a/target/nios2/cpu.h
 +++ b/target/nios2/cpu.h
-@@ -279,12 +279,6 @@ void do_nios2_semihosting(CPUNios2State *env);
- #define MMU_SUPERVISOR_IDX  0
- #define MMU_USER_IDX        1
+@@ -295,16 +295,4 @@ FIELD(TBFLAGS, CRS0, 0, 1)  /* Set if CRS == 0. */
+ FIELD(TBFLAGS, U, 1, 1)     /* Overlaps CR_STATUS_U */
+ FIELD(TBFLAGS, R0_0, 2, 1)  /* Set if R0 == 0. */
  
--static inline int cpu_mmu_index(CPUNios2State *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUNios2State *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    return (env->ctrl[CR_STATUS] & CR_STATUS_U) ? MMU_USER_IDX :
--                                                  MMU_SUPERVISOR_IDX;
+-    unsigned crs = FIELD_EX32(env->ctrl[CR_STATUS], CR_STATUS, CRS);
+-
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = (env->ctrl[CR_STATUS] & CR_STATUS_U)
+-           | (crs ? 0 : R_TBFLAGS_CRS0_MASK)
+-           | (env->regs[0] ? 0 : R_TBFLAGS_R0_0_MASK);
 -}
 -
- #ifndef CONFIG_USER_ONLY
- hwaddr nios2_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
- bool nios2_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ #endif /* NIOS2_CPU_H */
 diff --git a/target/openrisc/cpu.h b/target/openrisc/cpu.h
-index 334997e9a1..d57f820743 100644
+index d57f820743..bfa3d6fba6 100644
 --- a/target/openrisc/cpu.h
 +++ b/target/openrisc/cpu.h
-@@ -376,18 +376,6 @@ static inline void cpu_get_tb_cpu_state(CPUOpenRISCState *env, vaddr *pc,
-            | (env->sr & (SR_SM | SR_DME | SR_IME | SR_OVE));
+@@ -366,16 +366,6 @@ static inline void cpu_set_gpr(CPUOpenRISCState *env, int i, uint32_t val)
+     env->shadow_gpr[0][i] = val;
  }
  
--static inline int cpu_mmu_index(CPUOpenRISCState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUOpenRISCState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    int ret = MMU_NOMMU_IDX;  /* mmu is disabled */
--
--    if (env->sr & (ifetch ? SR_IME : SR_DME)) {
--        /* The mmu is enabled; test supervisor state.  */
--        ret = env->sr & SR_SM ? MMU_SUPERVISOR_IDX : MMU_USER_IDX;
--    }
--
--    return ret;
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = (env->dflag ? TB_FLAGS_DFLAG : 0)
+-           | (cpu_get_gpr(env, 0) ? 0 : TB_FLAGS_R0_0)
+-           | (env->sr & (SR_SM | SR_DME | SR_IME | SR_OVE));
 -}
 -
  static inline uint32_t cpu_get_sr(const CPUOpenRISCState *env)
  {
      return (env->sr
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index f5027616fa..faba987dc0 100644
+index faba987dc0..46eeb78c33 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1483,14 +1483,6 @@ int ppc_dcr_write(ppc_dcr_t *dcr_env, int dcrn, uint32_t val);
+@@ -2511,19 +2511,6 @@ void cpu_write_xer(CPUPPCState *env, target_ulong xer);
+  */
+ #define is_book3s_arch2x(ctx) (!!((ctx)->insns_flags & PPC_SEGMENT_64B))
  
- /* MMU modes definitions */
- #define MMU_USER_IDX 0
--static inline int cpu_mmu_index(CPUPPCState *env, bool ifetch)
--{
--#ifdef CONFIG_USER_ONLY
--    return MMU_USER_IDX;
+-#ifdef CONFIG_DEBUG_TCG
+-void cpu_get_tb_cpu_state(CPUPPCState *env, vaddr *pc,
+-                          uint64_t *cs_base, uint32_t *flags);
 -#else
--    return (env->hflags >> (ifetch ? HFLAGS_IMMU_IDX : HFLAGS_DMMU_IDX)) & 7;
--#endif
+-static inline void cpu_get_tb_cpu_state(CPUPPCState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
+-{
+-    *pc = env->nip;
+-    *cs_base = 0;
+-    *flags = env->hflags;
 -}
- 
- /* Compatibility modes */
- #if defined(TARGET_PPC64)
+-#endif
+-
+ G_NORETURN void raise_exception(CPUPPCState *env, uint32_t exception);
+ G_NORETURN void raise_exception_ra(CPUPPCState *env, uint32_t exception,
+                                    uintptr_t raddr);
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index ef9cf21c0c..9b0590c7d9 100644
+index 9b0590c7d9..58ed6700de 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -434,7 +434,6 @@ target_ulong riscv_cpu_get_geilen(CPURISCVState *env);
- void riscv_cpu_set_geilen(CPURISCVState *env, target_ulong geilen);
- bool riscv_cpu_vector_enabled(CPURISCVState *env);
- void riscv_cpu_set_virt_enabled(CPURISCVState *env, bool enable);
--int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch);
- G_NORETURN void  riscv_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                                MMUAccessType access_type,
-                                                int mmu_idx, uintptr_t retaddr);
-@@ -446,7 +445,6 @@ void riscv_cpu_list(void);
- void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
- 
- #define cpu_list riscv_cpu_list
--#define cpu_mmu_index riscv_cpu_mmu_index
- 
- #ifndef CONFIG_USER_ONLY
- void riscv_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-diff --git a/target/rx/cpu.h b/target/rx/cpu.h
-index f66754eb8a..3f5b501acf 100644
---- a/target/rx/cpu.h
-+++ b/target/rx/cpu.h
-@@ -151,11 +151,6 @@ static inline void cpu_get_tb_cpu_state(CPURXState *env, vaddr *pc,
-     *flags = FIELD_DP32(*flags, PSW, U, env->psw_u);
+@@ -627,9 +627,6 @@ static inline uint32_t vext_get_vlmax(RISCVCPU *cpu, target_ulong vtype)
+     return cpu->cfg.vlen >> (sew + 3 - lmul);
  }
  
--static inline int cpu_mmu_index(CPURXState *env, bool ifetch)
+-void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+-                          uint64_t *cs_base, uint32_t *pflags);
+-
+ void riscv_cpu_update_mask(CPURISCVState *env);
+ 
+ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+diff --git a/target/rx/cpu.h b/target/rx/cpu.h
+index 3f5b501acf..33290e2c47 100644
+--- a/target/rx/cpu.h
++++ b/target/rx/cpu.h
+@@ -142,15 +142,6 @@ void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte);
+ #define RX_CPU_IRQ 0
+ #define RX_CPU_FIR 1
+ 
+-static inline void cpu_get_tb_cpu_state(CPURXState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    return 0;
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = FIELD_DP32(0, PSW, PM, env->psw_pm);
+-    *flags = FIELD_DP32(*flags, PSW, U, env->psw_u);
 -}
 -
  static inline uint32_t rx_cpu_pack_psw(CPURXState *env)
  {
      uint32_t psw = 0;
 diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index 7bea7075e1..5c646cafaa 100644
+index 5c646cafaa..eeb10d10bd 100644
 --- a/target/s390x/cpu.h
 +++ b/target/s390x/cpu.h
-@@ -348,37 +348,6 @@ extern const VMStateDescription vmstate_s390_cpu;
+@@ -348,28 +348,6 @@ extern const VMStateDescription vmstate_s390_cpu;
  #define MMU_HOME_IDX            2
  #define MMU_REAL_IDX            3
  
--static inline int cpu_mmu_index(CPUS390XState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--#ifdef CONFIG_USER_ONLY
--    return MMU_USER_IDX;
--#else
--    if (!(env->psw.mask & PSW_MASK_DAT)) {
--        return MMU_REAL_IDX;
+-    if (env->psw.addr & 1) {
+-        /*
+-         * Instructions must be at even addresses.
+-         * This needs to be checked before address translation.
+-         */
+-        env->int_pgm_ilen = 2; /* see s390_cpu_tlb_fill() */
+-        tcg_s390_program_interrupt(env, PGM_SPECIFICATION, 0);
 -    }
--
--    if (ifetch) {
--        if ((env->psw.mask & PSW_MASK_ASC) == PSW_ASC_HOME) {
--            return MMU_HOME_IDX;
--        }
--        return MMU_PRIMARY_IDX;
+-    *pc = env->psw.addr;
+-    *cs_base = env->ex_value;
+-    *flags = (env->psw.mask >> FLAG_MASK_PSW_SHIFT) & FLAG_MASK_PSW;
+-    if (env->cregs[0] & CR0_AFP) {
+-        *flags |= FLAG_MASK_AFP;
 -    }
--
--    switch (env->psw.mask & PSW_MASK_ASC) {
--    case PSW_ASC_PRIMARY:
--        return MMU_PRIMARY_IDX;
--    case PSW_ASC_SECONDARY:
--        return MMU_SECONDARY_IDX;
--    case PSW_ASC_HOME:
--        return MMU_HOME_IDX;
--    case PSW_ASC_ACCREG:
--        /* Fallthrough: access register mode is not yet supported */
--    default:
--        abort();
+-    if (env->cregs[0] & CR0_VECTOR) {
+-        *flags |= FLAG_MASK_VECTOR;
 -    }
--#endif
 -}
 -
- static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
- {
+ /* PER bits from control register 9 */
+ #define PER_CR9_EVENT_BRANCH           0x80000000
+ #define PER_CR9_EVENT_IFETCH           0x40000000
 diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
-index f75a235973..218ba24333 100644
+index 218ba24333..818810769f 100644
 --- a/target/sh4/cpu.h
 +++ b/target/sh4/cpu.h
-@@ -260,16 +260,6 @@ void cpu_load_tlb(CPUSH4State * env);
- 
- /* MMU modes definitions */
- #define MMU_USER_IDX 1
--static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
--{
--    /* The instruction in a RTE delay slot is fetched in privileged
--       mode, but executed in user mode.  */
--    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
--        return 0;
--    } else {
--        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
--    }
--}
- 
- #include "exec/cpu-all.h"
- 
-diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-index b3a98f1d74..bd24cd578c 100644
---- a/target/sparc/cpu.h
-+++ b/target/sparc/cpu.h
-@@ -692,34 +692,6 @@ static inline int cpu_supervisor_mode(CPUSPARCState *env1)
+@@ -357,19 +357,4 @@ static inline void cpu_write_sr(CPUSH4State *env, target_ulong sr)
+     env->sr = sr & ~((1u << SR_M) | (1u << SR_Q) | (1u << SR_T));
  }
- #endif
  
--static inline int cpu_mmu_index(CPUSPARCState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUSH4State *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--#if defined(CONFIG_USER_ONLY)
--    return MMU_USER_IDX;
--#elif !defined(TARGET_SPARC64)
--    if ((env->mmuregs[0] & MMU_E) == 0) { /* MMU disabled */
--        return MMU_PHYS_IDX;
--    } else {
--        return env->psrs;
--    }
--#else
--    /* IMMU or DMMU disabled.  */
--    if (ifetch
--        ? (env->lsu & IMMU_E) == 0 || (env->pstate & PS_RED) != 0
--        : (env->lsu & DMMU_E) == 0) {
--        return MMU_PHYS_IDX;
--    } else if (cpu_hypervisor_mode(env)) {
--        return MMU_PHYS_IDX;
--    } else if (env->tl > 0) {
--        return MMU_NUCLEUS_IDX;
--    } else if (cpu_supervisor_mode(env)) {
--        return MMU_KERNEL_IDX;
--    } else {
--        return MMU_USER_IDX;
--    }
+-    *pc = env->pc;
+-    /* For a gUSA region, notice the end of the region.  */
+-    *cs_base = env->flags & TB_FLAG_GUSA_MASK ? env->gregs[0] : 0;
+-    *flags = env->flags
+-            | (env->fpscr & TB_FLAG_FPSCR_MASK)
+-            | (env->sr & TB_FLAG_SR_MASK)
+-            | (env->movcal_backup ? TB_FLAG_PENDING_MOVCA : 0); /* Bit 3 */
+-#ifdef CONFIG_USER_ONLY
+-    *flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
 -#endif
 -}
 -
- static inline int cpu_interrupts_enabled(CPUSPARCState *env1)
+ #endif /* SH4_CPU_H */
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index bd24cd578c..33338f8846 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -733,41 +733,6 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
+ #define TB_FLAG_HYPER        (1 << 7)
+ #define TB_FLAG_ASI_SHIFT    24
+ 
+-static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *pflags)
+-{
+-    uint32_t flags;
+-    *pc = env->pc;
+-    *cs_base = env->npc;
+-    flags = cpu_mmu_index(env, false);
+-#ifndef CONFIG_USER_ONLY
+-    if (cpu_supervisor_mode(env)) {
+-        flags |= TB_FLAG_SUPER;
+-    }
+-#endif
+-#ifdef TARGET_SPARC64
+-#ifndef CONFIG_USER_ONLY
+-    if (cpu_hypervisor_mode(env)) {
+-        flags |= TB_FLAG_HYPER;
+-    }
+-#endif
+-    if (env->pstate & PS_AM) {
+-        flags |= TB_FLAG_AM_ENABLED;
+-    }
+-    if ((env->def.features & CPU_FEATURE_FLOAT)
+-        && (env->pstate & PS_PEF)
+-        && (env->fprs & FPRS_FEF)) {
+-        flags |= TB_FLAG_FPU_ENABLED;
+-    }
+-    flags |= env->asi << TB_FLAG_ASI_SHIFT;
+-#else
+-    if ((env->def.features & CPU_FEATURE_FLOAT) && env->psref) {
+-        flags |= TB_FLAG_FPU_ENABLED;
+-    }
+-#endif
+-    *pflags = flags;
+-}
+-
+ static inline bool tb_fpu_enabled(int tb_flags)
  {
- #if !defined (TARGET_SPARC64)
+ #if defined(CONFIG_USER_ONLY)
 diff --git a/target/tricore/cpu.h b/target/tricore/cpu.h
-index 217937bbf6..9454b0adcd 100644
+index 9454b0adcd..43604f00ca 100644
 --- a/target/tricore/cpu.h
 +++ b/target/tricore/cpu.h
-@@ -371,11 +371,6 @@ void tricore_cpu_list(void);
+@@ -378,18 +378,6 @@ FIELD(TB_FLAGS, PRIV, 0, 2)
+ void cpu_state_reset(CPUTriCoreState *s);
+ void tricore_tcg_init(void);
  
- #define cpu_list tricore_cpu_list
- 
--static inline int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
+-static inline void cpu_get_tb_cpu_state(CPUTriCoreState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    return 0;
+-    uint32_t new_flags = 0;
+-    *pc = env->PC;
+-    *cs_base = 0;
+-
+-    new_flags |= FIELD_DP32(new_flags, TB_FLAGS, PRIV,
+-            extract32(env->PSW, 10, 2));
+-    *flags = new_flags;
 -}
 -
- #include "exec/cpu-all.h"
- 
- FIELD(TB_FLAGS, PRIV, 0, 2)
+ #define TRICORE_CPU_TYPE_SUFFIX "-" TYPE_TRICORE_CPU
+ #define TRICORE_CPU_TYPE_NAME(model) model TRICORE_CPU_TYPE_SUFFIX
+ #define CPU_RESOLVING_TYPE TYPE_TRICORE_CPU
 diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-index c6bbef1e5d..89d6b690af 100644
+index 89d6b690af..0c51d2b0ec 100644
 --- a/target/xtensa/cpu.h
 +++ b/target/xtensa/cpu.h
-@@ -700,11 +700,6 @@ static inline uint32_t xtensa_replicate_windowstart(CPUXtensaState *env)
- /* MMU modes definitions */
- #define MMU_USER_IDX 3
+@@ -721,74 +721,6 @@ static inline uint32_t xtensa_replicate_windowstart(CPUXtensaState *env)
  
--static inline int cpu_mmu_index(CPUXtensaState *env, bool ifetch)
+ #include "exec/cpu-all.h"
+ 
+-static inline void cpu_get_tb_cpu_state(CPUXtensaState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    return xtensa_get_cring(env);
+-    *pc = env->pc;
+-    *cs_base = 0;
+-    *flags = 0;
+-    *flags |= xtensa_get_ring(env);
+-    if (env->sregs[PS] & PS_EXCM) {
+-        *flags |= XTENSA_TBFLAG_EXCM;
+-    } else if (xtensa_option_enabled(env->config, XTENSA_OPTION_LOOP)) {
+-        target_ulong lend_dist =
+-            env->sregs[LEND] - (env->pc & -(1u << TARGET_PAGE_BITS));
+-
+-        /*
+-         * 0 in the csbase_lend field means that there may not be a loopback
+-         * for any instruction that starts inside this page. Any other value
+-         * means that an instruction that ends at this offset from the page
+-         * start may loop back and will need loopback code to be generated.
+-         *
+-         * lend_dist is 0 when LEND points to the start of the page, but
+-         * no instruction that starts inside this page may end at offset 0,
+-         * so it's still correct.
+-         *
+-         * When an instruction ends at a page boundary it may only start in
+-         * the previous page. lend_dist will be encoded as TARGET_PAGE_SIZE
+-         * for the TB that contains this instruction.
+-         */
+-        if (lend_dist < (1u << TARGET_PAGE_BITS) + env->config->max_insn_size) {
+-            target_ulong lbeg_off = env->sregs[LEND] - env->sregs[LBEG];
+-
+-            *cs_base = lend_dist;
+-            if (lbeg_off < 256) {
+-                *cs_base |= lbeg_off << XTENSA_CSBASE_LBEG_OFF_SHIFT;
+-            }
+-        }
+-    }
+-    if (xtensa_option_enabled(env->config, XTENSA_OPTION_EXTENDED_L32R) &&
+-            (env->sregs[LITBASE] & 1)) {
+-        *flags |= XTENSA_TBFLAG_LITBASE;
+-    }
+-    if (xtensa_option_enabled(env->config, XTENSA_OPTION_DEBUG)) {
+-        if (xtensa_get_cintlevel(env) < env->config->debug_level) {
+-            *flags |= XTENSA_TBFLAG_DEBUG;
+-        }
+-        if (xtensa_get_cintlevel(env) < env->sregs[ICOUNTLEVEL]) {
+-            *flags |= XTENSA_TBFLAG_ICOUNT;
+-        }
+-    }
+-    if (xtensa_option_enabled(env->config, XTENSA_OPTION_COPROCESSOR)) {
+-        *flags |= env->sregs[CPENABLE] << XTENSA_TBFLAG_CPENABLE_SHIFT;
+-    }
+-    if (xtensa_option_enabled(env->config, XTENSA_OPTION_WINDOWED_REGISTER) &&
+-        (env->sregs[PS] & (PS_WOE | PS_EXCM)) == PS_WOE) {
+-        uint32_t windowstart = xtensa_replicate_windowstart(env) >>
+-            (env->sregs[WINDOW_BASE] + 1);
+-        uint32_t w = ctz32(windowstart | 0x8);
+-
+-        *flags |= (w << XTENSA_TBFLAG_WINDOW_SHIFT) | XTENSA_TBFLAG_CWOE;
+-        *flags |= extract32(env->sregs[PS], PS_CALLINC_SHIFT,
+-                            PS_CALLINC_LEN) << XTENSA_TBFLAG_CALLINC_SHIFT;
+-    } else {
+-        *flags |= 3 << XTENSA_TBFLAG_WINDOW_SHIFT;
+-    }
+-    if (env->yield_needed) {
+-        *flags |= XTENSA_TBFLAG_YIELD;
+-    }
 -}
 -
- #define XTENSA_TBFLAG_RING_MASK 0x3
- #define XTENSA_TBFLAG_EXCM 0x4
- #define XTENSA_TBFLAG_LITBASE 0x8
+ XtensaCPU *xtensa_cpu_create_with_clock(const char *cpu_type,
+                                         Clock *cpu_refclk);
+ 
 diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 51b7d8d1bf..2559ce38ee 100644
+index 2559ce38ee..5e468d4605 100644
 --- a/target/alpha/cpu.c
 +++ b/target/alpha/cpu.c
-@@ -25,6 +25,14 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
+@@ -34,6 +34,17 @@ int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
+     return ret;
+ }
  
-+int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUAlphaState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags)
 +{
-+    int ret = env->flags & ENV_FLAG_PS_USER ? MMU_USER_IDX : MMU_KERNEL_IDX;
-+    if (env->flags & ENV_FLAG_PAL_MODE) {
-+        ret = MMU_KERNEL_IDX;
-+    }
-+    return ret;
-+}
- 
- static void alpha_cpu_set_pc(CPUState *cs, vaddr value)
- {
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 374ef523da..6f640b0e78 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -49,6 +49,11 @@
- #include "fpu/softfloat.h"
- #include "cpregs.h"
- 
-+int cpu_mmu_index(CPUARMState *env, bool ifetch)
-+{
-+    return EX_TBFLAG_ANY(env->hflags, MMUIDX);
++    *pc = env->pc;
++    *cs_base = 0;
++    *pflags = env->flags & ENV_FLAG_TB_MASK;
++#ifdef CONFIG_USER_ONLY
++    *pflags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
++#endif
 +}
 +
- static void arm_cpu_set_pc(CPUState *cs, vaddr value)
+ static void alpha_cpu_set_pc(CPUState *cs, vaddr value)
  {
-     ARMCPU *cpu = ARM_CPU(cs);
+     AlphaCPU *cpu = ALPHA_CPU(cs);
 diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 14d8b9d1f0..38263d07dd 100644
+index 38263d07dd..351e127fea 100644
 --- a/target/avr/cpu.c
 +++ b/target/avr/cpu.c
-@@ -26,6 +26,11 @@
- #include "disas/dis-asm.h"
- #include "tcg/debug-assert.h"
+@@ -31,6 +31,24 @@ int cpu_mmu_index(CPUAVRState *env, bool ifetch)
+     return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
+ }
  
-+int cpu_mmu_index(CPUAVRState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUAVRState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags)
 +{
-+    return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
++    uint32_t flags = 0;
++
++    *pc = env->pc_w * 2;
++    *cs_base = 0;
++
++    if (env->fullacc) {
++        flags |= TB_FLAGS_FULL_ACCESS;
++    }
++    if (env->skip) {
++        flags |= TB_FLAGS_SKIP;
++    }
++
++    *pflags = flags;
 +}
 +
  static void avr_cpu_set_pc(CPUState *cs, vaddr value)
  {
      AVRCPU *cpu = AVR_CPU(cs);
 diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-index be4a44c218..553742a068 100644
+index 553742a068..8880e94a8e 100644
 --- a/target/cris/cpu.c
 +++ b/target/cris/cpu.c
-@@ -27,6 +27,10 @@
- #include "cpu.h"
- #include "mmu.h"
+@@ -32,6 +32,16 @@ int cpu_mmu_index(CPUCRISState *env, bool ifetch)
+     return !!(env->pregs[PR_CCS] & U_FLAG);
+ }
  
-+int cpu_mmu_index(CPUCRISState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUCRISState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return !!(env->pregs[PR_CCS] & U_FLAG);
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = env->dslot |
++            (env->pregs[PR_CCS] & (S_FLAG | P_FLAG | U_FLAG
++                                   | X_FLAG | PFIX_FLAG));
 +}
- 
++
  static void cris_cpu_set_pc(CPUState *cs, vaddr value)
  {
+     CRISCPU *cpu = CRIS_CPU(cs);
 diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index 1adc11b713..bf7c901705 100644
+index bf7c901705..68b6e1a31f 100644
 --- a/target/hexagon/cpu.c
 +++ b/target/hexagon/cpu.c
-@@ -26,6 +26,15 @@
- #include "tcg/tcg.h"
- #include "exec/gdbstub.h"
+@@ -35,6 +35,18 @@ int cpu_mmu_index(CPUHexagonState *env, bool ifetch)
+ #endif
+ }
  
-+int cpu_mmu_index(CPUHexagonState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUHexagonState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return MMU_USER_IDX;
-+#else
-+#error System mode not supported on Hexagon yet
-+#endif
++    uint32_t hex_flags = 0;
++    *pc = env->gpr[HEX_REG_PC];
++    *cs_base = 0;
++    if (*pc == env->gpr[HEX_REG_SA0]) {
++        hex_flags = FIELD_DP32(hex_flags, TB_FLAGS, IS_TIGHT_LOOP, 1);
++    }
++    *flags = hex_flags;
 +}
 +
  static void hexagon_v67_cpu_init(Object *obj) { }
  static void hexagon_v68_cpu_init(Object *obj) { }
  static void hexagon_v69_cpu_init(Object *obj) { }
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 1644297bf8..22f031758e 100644
+index 22f031758e..0103e0429b 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -28,6 +28,18 @@
- #include "fpu/softfloat.h"
- #include "tcg/tcg.h"
+@@ -40,6 +40,53 @@ int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
+ #endif
+ }
  
-+int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags)
 +{
++    uint32_t flags = env->psw_n * PSW_N;
++
++    /*
++     * TB lookup assumes that PC contains the complete virtual address.
++     * If we leave space+offset separate, we'll get ITLB misses to an
++     * incomplete virtual address.  This also means that we must separate
++     * out current cpu privilege from the low bits of IAOQ_F.
++     */
 +#ifdef CONFIG_USER_ONLY
-+    return MMU_USER_IDX;
++    *pc = env->iaoq_f & -4;
++    *cs_base = env->iaoq_b & -4;
++    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
 +#else
-+    if (env->psw & (ifetch ? PSW_C : PSW_D)) {
-+        return PRIV_TO_MMU_IDX(env->iaoq_f & 3);
++    /* ??? E, T, H, L, B, P bits need to be here, when implemented.  */
++    flags |= env->psw & (PSW_W | PSW_C | PSW_D);
++    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
++
++    *pc = (env->psw & PSW_C
++           ? hppa_form_gva_psw(env->psw, env->iasq_f, env->iaoq_f & -4)
++           : env->iaoq_f & -4);
++    *cs_base = env->iasq_f;
++
++    /*
++     * Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
++     * low 32-bits of CS_BASE.  This will succeed for all direct branches,
++     * which is the primary case we care about -- using goto_tb within a page.
++     * Failure is indicated by a zero difference.
++     */
++    if (env->iasq_f == env->iasq_b) {
++        target_sreg diff = env->iaoq_b - env->iaoq_f;
++        if (TARGET_REGISTER_BITS == 32 || diff == (int32_t)diff) {
++            *cs_base |= (uint32_t)diff;
++        }
 +    }
-+    return MMU_PHYS_IDX;  /* mmu disabled */
++    if ((env->sr[4] == env->sr[5])
++        & (env->sr[4] == env->sr[6])
++        & (env->sr[4] == env->sr[7])) {
++        flags |= TB_FLAG_SR_SAME;
++    }
 +#endif
++
++    *pflags = flags;
 +}
 +
  static void hppa_cpu_set_pc(CPUState *cs, vaddr value)
  {
      HPPACPU *cpu = HPPA_CPU(cs);
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 66ab092628..3327ecf6db 100644
+index 3327ecf6db..7baf74fb9a 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -45,6 +45,13 @@
- #include "disas/capstone.h"
- #include "cpu-internal.h"
+@@ -52,6 +52,15 @@ int cpu_mmu_index(CPUX86State *env, bool ifetch)
+         ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
+ }
  
-+int cpu_mmu_index(CPUX86State *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
-+        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
-+        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
++    *cs_base = env->segs[R_CS].base;
++    *pc = *cs_base + env->eip;
++    *flags = env->hflags |
++        (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
 +}
 +
  static void x86_cpu_realizefn(DeviceState *dev, Error **errp);
  
  /* Helpers for building CPUID[2] descriptors: */
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index e70773c22e..c6c2760e46 100644
+index c6c2760e46..cc53a7e51a 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -20,6 +20,18 @@
- #include "sysemu/reset.h"
- #include "tcg/tcg.h"
+@@ -32,6 +32,17 @@ int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
+ #endif
+ }
  
-+int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return MMU_IDX_USER;
-+#else
-+    if (FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG)) {
-+        return FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
-+    }
-+    return MMU_IDX_DA;
-+#endif
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = env->CSR_CRMD & (R_CSR_CRMD_PLV_MASK | R_CSR_CRMD_PG_MASK);
++    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, FPE) * HW_FLAGS_EUEN_FPE;
++    *flags |= FIELD_EX64(env->CSR_EUEN, CSR_EUEN, SXE) * HW_FLAGS_EUEN_SXE;
++    *flags |= is_va32(env) * HW_FLAGS_VA32;
 +}
 +
  const char * const regnames[32] = {
      "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
      "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
 diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 538d9473c2..74da87f07e 100644
+index 74da87f07e..9c664cb9a8 100644
 --- a/target/m68k/cpu.c
 +++ b/target/m68k/cpu.c
-@@ -24,6 +24,11 @@
- #include "migration/vmstate.h"
- #include "fpu/softfloat.h"
+@@ -29,6 +29,22 @@ int cpu_mmu_index(CPUM68KState *env, bool ifetch)
+     return (env->sr & SR_S) == 0 ? 1 : 0;
+ }
  
-+int cpu_mmu_index(CPUM68KState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUM68KState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return (env->sr & SR_S) == 0 ? 1 : 0;
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = (env->macsr >> 4) & TB_FLAGS_MACSR;
++    if (env->sr & SR_S) {
++        *flags |= TB_FLAGS_MSR_S;
++        *flags |= (env->sfc << (TB_FLAGS_SFC_S_BIT - 2)) & TB_FLAGS_SFC_S;
++        *flags |= (env->dfc << (TB_FLAGS_DFC_S_BIT - 2)) & TB_FLAGS_DFC_S;
++    }
++    if (M68K_SR_TRACE(env->sr) == M68K_SR_TRACE_ANY_INS) {
++        *flags |= TB_FLAGS_TRACE;
++    }
 +}
 +
  static void m68k_cpu_set_pc(CPUState *cs, vaddr value)
  {
      M68kCPU *cpu = M68K_CPU(cs);
 diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index bbb3335cad..f8891de41e 100644
+index f8891de41e..4c270e941f 100644
 --- a/target/microblaze/cpu.c
 +++ b/target/microblaze/cpu.c
-@@ -32,6 +32,22 @@
- #include "fpu/softfloat-helpers.h"
- #include "tcg/tcg.h"
+@@ -47,6 +47,13 @@ int cpu_mmu_index(CPUMBState *env, bool ifetch)
+     return MMU_KERNEL_IDX;
+ }
  
-+int cpu_mmu_index(CPUMBState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUMBState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    MicroBlazeCPU *cpu = env_archcpu(env);
-+
-+    /* Are we in nommu mode?.  */
-+    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
-+        return MMU_NOMMU_IDX;
-+    }
-+
-+    if (env->msr & MSR_UM) {
-+        return MMU_USER_IDX;
-+    }
-+    return MMU_KERNEL_IDX;
++    *pc = env->pc;
++    *flags = (env->iflags & IFLAGS_TB_MASK) | (env->msr & MSR_TB_MASK);
++    *cs_base = (*flags & IMM_FLAG ? env->imm : 0);
 +}
-+
-+
+ 
  static const struct {
      const char *name;
-     uint8_t version_id;
 diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index a0023edd43..1b5994e9a7 100644
+index 1b5994e9a7..fe93acf28f 100644
 --- a/target/mips/cpu.c
 +++ b/target/mips/cpu.c
-@@ -35,6 +35,20 @@
- #include "semihosting/semihost.h"
- #include "fpu_helper.h"
+@@ -49,6 +49,15 @@ int cpu_mmu_index(CPUMIPSState *env, bool ifetch)
+     return hflags_mmu_index(env->hflags);
+ }
  
-+int hflags_mmu_index(uint32_t hflags)
++void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    if (hflags & MIPS_HFLAG_ERL) {
-+        return 3; /* ERL */
-+    } else {
-+        return hflags & MIPS_HFLAG_KSU;
-+    }
-+}
-+
-+int cpu_mmu_index(CPUMIPSState *env, bool ifetch)
-+{
-+    return hflags_mmu_index(env->hflags);
++    *pc = env->active_tc.PC;
++    *cs_base = 0;
++    *flags = env->hflags & (MIPS_HFLAG_TMASK | MIPS_HFLAG_BMASK |
++                            MIPS_HFLAG_HWRENA_ULR);
 +}
 +
  const char regnames[32][3] = {
      "r0", "at", "v0", "v1", "a0", "a1", "a2", "a3",
      "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
 diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
-index 15e499f828..887a9bf786 100644
+index 887a9bf786..868d75b165 100644
 --- a/target/nios2/cpu.c
 +++ b/target/nios2/cpu.c
-@@ -26,6 +26,12 @@
- #include "gdbstub/helpers.h"
- #include "hw/qdev-properties.h"
+@@ -32,6 +32,18 @@ int cpu_mmu_index(CPUNios2State *env, bool ifetch)
+                                                   MMU_SUPERVISOR_IDX;
+ }
  
-+int cpu_mmu_index(CPUNios2State *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUNios2State *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return (env->ctrl[CR_STATUS] & CR_STATUS_U) ? MMU_USER_IDX :
-+                                                  MMU_SUPERVISOR_IDX;
++    unsigned crs = FIELD_EX32(env->ctrl[CR_STATUS], CR_STATUS, CRS);
++
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = (env->ctrl[CR_STATUS] & CR_STATUS_U)
++           | (crs ? 0 : R_TBFLAGS_CRS0_MASK)
++           | (env->regs[0] ? 0 : R_TBFLAGS_R0_0_MASK);
 +}
 +
  static void nios2_cpu_set_pc(CPUState *cs, vaddr value)
  {
      Nios2CPU *cpu = NIOS2_CPU(cs);
 diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index f5a3d5273b..5938d66da3 100644
+index 5938d66da3..36d97d249d 100644
 --- a/target/openrisc/cpu.c
 +++ b/target/openrisc/cpu.c
-@@ -25,6 +25,18 @@
- #include "fpu/softfloat-helpers.h"
- #include "tcg/tcg.h"
+@@ -37,6 +37,16 @@ int cpu_mmu_index(CPUOpenRISCState *env, bool ifetch)
+     return ret;
+ }
  
-+int cpu_mmu_index(CPUOpenRISCState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUOpenRISCState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    int ret = MMU_NOMMU_IDX;  /* mmu is disabled */
-+
-+    if (env->sr & (ifetch ? SR_IME : SR_DME)) {
-+        /* The mmu is enabled; test supervisor state.  */
-+        ret = env->sr & SR_SM ? MMU_SUPERVISOR_IDX : MMU_USER_IDX;
-+    }
-+
-+    return ret;
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = (env->dflag ? TB_FLAGS_DFLAG : 0)
++           | (cpu_get_gpr(env, 0) ? 0 : TB_FLAGS_R0_0)
++           | (env->sr & (SR_SM | SR_DME | SR_IME | SR_OVE));
 +}
 +
  static void openrisc_cpu_set_pc(CPUState *cs, vaddr value)
  {
      OpenRISCCPU *cpu = OPENRISC_CPU(cs);
 diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
-index e3ad8e0c27..53f1d5c370 100644
+index 53f1d5c370..046732857b 100644
 --- a/target/ppc/cpu.c
 +++ b/target/ppc/cpu.c
-@@ -27,6 +27,15 @@
- #include "helper_regs.h"
- #include "sysemu/tcg.h"
+@@ -36,6 +36,17 @@ int cpu_mmu_index(CPUPPCState *env, bool ifetch)
+ #endif
+ }
  
-+int cpu_mmu_index(CPUPPCState *env, bool ifetch)
++/* debug version defined in helper_hregs */
++#ifndef CONFIG_DEBUG_TCG
++void cpu_get_tb_cpu_state(CPUPPCState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return MMU_USER_IDX;
-+#else
-+    return (env->hflags >> (ifetch ? HFLAGS_IMMU_IDX : HFLAGS_DMMU_IDX)) & 7;
-+#endif
++    *pc = env->nip;
++    *cs_base = 0;
++    *flags = env->hflags;
 +}
++#endif
 +
  target_ulong cpu_read_xer(const CPUPPCState *env)
  {
      if (is_isa300(env)) {
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 3a02079290..537a56ed27 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -33,7 +33,7 @@
- #include "debug.h"
- #include "tcg/oversized-guest.h"
- 
--int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
-+int cpu_mmu_index(CPURISCVState *env, bool ifetch)
- {
- #ifdef CONFIG_USER_ONLY
-     return 0;
 diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 4d0d3a0c8c..1ce1da0a6b 100644
+index 1ce1da0a6b..688a70b707 100644
 --- a/target/rx/cpu.c
 +++ b/target/rx/cpu.c
-@@ -26,6 +26,11 @@
- #include "fpu/softfloat.h"
- #include "tcg/debug-assert.h"
+@@ -31,6 +31,15 @@ int cpu_mmu_index(CPURXState *env, bool ifetch)
+     return 0;
+ }
  
-+int cpu_mmu_index(CPURXState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPURXState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return 0;
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = FIELD_DP32(0, PSW, PM, env->psw_pm);
++    *flags = FIELD_DP32(*flags, PSW, U, env->psw_u);
 +}
 +
  static void rx_cpu_set_pc(CPUState *cs, vaddr value)
  {
      RXCPU *cpu = RX_CPU(cs);
 diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 4f7599d72c..aa574807f1 100644
+index aa574807f1..51c707ea12 100644
 --- a/target/s390x/cpu.c
 +++ b/target/s390x/cpu.c
-@@ -41,6 +41,37 @@
- #define CR0_RESET       0xE0UL
- #define CR14_RESET      0xC2000000UL;
+@@ -72,6 +72,30 @@ int cpu_mmu_index(CPUS390XState *env, bool ifetch)
+ #endif
+ }
  
-+int cpu_mmu_index(CPUS390XState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    return MMU_USER_IDX;
-+#else
-+    if (!(env->psw.mask & PSW_MASK_DAT)) {
-+        return MMU_REAL_IDX;
-+    }
-+
-+    if (ifetch) {
-+        if ((env->psw.mask & PSW_MASK_ASC) == PSW_ASC_HOME) {
-+            return MMU_HOME_IDX;
-+        }
-+        return MMU_PRIMARY_IDX;
-+    }
-+
-+    switch (env->psw.mask & PSW_MASK_ASC) {
-+    case PSW_ASC_PRIMARY:
-+        return MMU_PRIMARY_IDX;
-+    case PSW_ASC_SECONDARY:
-+        return MMU_SECONDARY_IDX;
-+    case PSW_ASC_HOME:
-+        return MMU_HOME_IDX;
-+    case PSW_ASC_ACCREG:
-+        /* Fallthrough: access register mode is not yet supported */
-+    default:
-+        abort();
-+    }
++    if (env->psw.addr & 1) {
++        /*
++         * Instructions must be at even addresses.
++         * This needs to be checked before address translation.
++         */
++        env->int_pgm_ilen = 2; /* see s390_cpu_tlb_fill() */
++#ifdef CONFIG_TCG
++        tcg_s390_program_interrupt(env, PGM_SPECIFICATION, 0);
 +#endif
++    }
++    *pc = env->psw.addr;
++    *cs_base = env->ex_value;
++    *flags = (env->psw.mask >> FLAG_MASK_PSW_SHIFT) & FLAG_MASK_PSW;
++    if (env->cregs[0] & CR0_AFP) {
++        *flags |= FLAG_MASK_AFP;
++    }
++    if (env->cregs[0] & CR0_VECTOR) {
++        *flags |= FLAG_MASK_VECTOR;
++    }
 +}
 +
  #ifndef CONFIG_USER_ONLY
  static bool is_early_exception_psw(uint64_t mask, uint64_t addr)
  {
 diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 788e41fea6..6bffe52c04 100644
+index 6bffe52c04..ea7f13612e 100644
 --- a/target/sh4/cpu.c
 +++ b/target/sh4/cpu.c
-@@ -28,6 +28,19 @@
- #include "fpu/softfloat-helpers.h"
- #include "tcg/tcg.h"
+@@ -41,6 +41,21 @@ int cpu_mmu_index(CPUSH4State *env, bool ifetch)
+     }
+ }
  
-+int cpu_mmu_index(CPUSH4State *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUSH4State *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    /*
-+     * The instruction in a RTE delay slot is fetched in privileged
-+     * mode, but executed in user mode.
-+     */
-+    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
-+        return 0;
-+    } else {
-+        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
-+    }
++    *pc = env->pc;
++    /* For a gUSA region, notice the end of the region.  */
++    *cs_base = env->flags & TB_FLAG_GUSA_MASK ? env->gregs[0] : 0;
++    *flags = env->flags
++            | (env->fpscr & TB_FLAG_FPSCR_MASK)
++            | (env->sr & TB_FLAG_SR_MASK)
++            | (env->movcal_backup ? TB_FLAG_PENDING_MOVCA : 0); /* Bit 3 */
++#ifdef CONFIG_USER_ONLY
++    *flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
++#endif
 +}
 +
  static void superh_cpu_set_pc(CPUState *cs, vaddr value)
  {
      SuperHCPU *cpu = SUPERH_CPU(cs);
 diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 8ba96ae225..256ba2be88 100644
+index 256ba2be88..a6af3fd9ee 100644
 --- a/target/sparc/cpu.c
 +++ b/target/sparc/cpu.c
-@@ -29,6 +29,34 @@
+@@ -57,6 +57,41 @@ int cpu_mmu_index(CPUSPARCState *env, bool ifetch)
+ #endif
+ }
  
- //#define DEBUG_FEATURES
- 
-+int cpu_mmu_index(CPUSPARCState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *pflags)
 +{
-+#if defined(CONFIG_USER_ONLY)
-+    return MMU_USER_IDX;
-+#elif !defined(TARGET_SPARC64)
-+    if ((env->mmuregs[0] & MMU_E) == 0) { /* MMU disabled */
-+        return MMU_PHYS_IDX;
-+    } else {
-+        return env->psrs;
-+    }
-+#else
-+    /* IMMU or DMMU disabled.  */
-+    if (ifetch
-+        ? (env->lsu & IMMU_E) == 0 || (env->pstate & PS_RED) != 0
-+        : (env->lsu & DMMU_E) == 0) {
-+        return MMU_PHYS_IDX;
-+    } else if (cpu_hypervisor_mode(env)) {
-+        return MMU_PHYS_IDX;
-+    } else if (env->tl > 0) {
-+        return MMU_NUCLEUS_IDX;
-+    } else if (cpu_supervisor_mode(env)) {
-+        return MMU_KERNEL_IDX;
-+    } else {
-+        return MMU_USER_IDX;
++    uint32_t flags;
++    *pc = env->pc;
++    *cs_base = env->npc;
++    flags = cpu_mmu_index(env, false);
++#ifndef CONFIG_USER_ONLY
++    if (cpu_supervisor_mode(env)) {
++        flags |= TB_FLAG_SUPER;
 +    }
 +#endif
++#ifdef TARGET_SPARC64
++#ifndef CONFIG_USER_ONLY
++    if (cpu_hypervisor_mode(env)) {
++        flags |= TB_FLAG_HYPER;
++    }
++#endif
++    if (env->pstate & PS_AM) {
++        flags |= TB_FLAG_AM_ENABLED;
++    }
++    if ((env->def.features & CPU_FEATURE_FLOAT)
++        && (env->pstate & PS_PEF)
++        && (env->fprs & FPRS_FEF)) {
++        flags |= TB_FLAG_FPU_ENABLED;
++    }
++    flags |= env->asi << TB_FLAG_ASI_SHIFT;
++#else
++    if ((env->def.features & CPU_FEATURE_FLOAT) && env->psref) {
++        flags |= TB_FLAG_FPU_ENABLED;
++    }
++#endif
++    *pflags = flags;
 +}
 +
  static void sparc_cpu_reset_hold(Object *obj)
  {
      CPUState *s = CPU(obj);
 diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index d1477622e6..a81f37e3e4 100644
+index a81f37e3e4..f8bf10569a 100644
 --- a/target/tricore/cpu.c
 +++ b/target/tricore/cpu.c
-@@ -24,6 +24,11 @@
- #include "qemu/error-report.h"
- #include "tcg/debug-assert.h"
+@@ -29,6 +29,18 @@ int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
+     return 0;
+ }
  
-+int cpu_mmu_index(CPUTriCoreState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUTriCoreState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return 0;
++    uint32_t new_flags = 0;
++    *pc = env->PC;
++    *cs_base = 0;
++
++    new_flags |= FIELD_DP32(new_flags, TB_FLAGS, PRIV,
++            extract32(env->PSW, 10, 2));
++    *flags = new_flags;
 +}
 +
  static inline void set_feature(CPUTriCoreState *env, int feature)
  {
      env->features |= 1ULL << feature;
 diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index ea1dae7390..769b3c9305 100644
+index 769b3c9305..2c76ba86cd 100644
 --- a/target/xtensa/cpu.c
 +++ b/target/xtensa/cpu.c
-@@ -39,6 +39,10 @@
- #include "exec/memory.h"
- #endif
+@@ -44,6 +44,74 @@ int cpu_mmu_index(CPUXtensaState *env, bool ifetch)
+     return xtensa_get_cring(env);
+ }
  
-+int cpu_mmu_index(CPUXtensaState *env, bool ifetch)
++void cpu_get_tb_cpu_state(CPUXtensaState *env, vaddr *pc,
++                          uint64_t *cs_base, uint32_t *flags)
 +{
-+    return xtensa_get_cring(env);
++    *pc = env->pc;
++    *cs_base = 0;
++    *flags = 0;
++    *flags |= xtensa_get_ring(env);
++    if (env->sregs[PS] & PS_EXCM) {
++        *flags |= XTENSA_TBFLAG_EXCM;
++    } else if (xtensa_option_enabled(env->config, XTENSA_OPTION_LOOP)) {
++        target_ulong lend_dist =
++            env->sregs[LEND] - (env->pc & -(1u << TARGET_PAGE_BITS));
++
++        /*
++         * 0 in the csbase_lend field means that there may not be a loopback
++         * for any instruction that starts inside this page. Any other value
++         * means that an instruction that ends at this offset from the page
++         * start may loop back and will need loopback code to be generated.
++         *
++         * lend_dist is 0 when LEND points to the start of the page, but
++         * no instruction that starts inside this page may end at offset 0,
++         * so it's still correct.
++         *
++         * When an instruction ends at a page boundary it may only start in
++         * the previous page. lend_dist will be encoded as TARGET_PAGE_SIZE
++         * for the TB that contains this instruction.
++         */
++        if (lend_dist < (1u << TARGET_PAGE_BITS) + env->config->max_insn_size) {
++            target_ulong lbeg_off = env->sregs[LEND] - env->sregs[LBEG];
++
++            *cs_base = lend_dist;
++            if (lbeg_off < 256) {
++                *cs_base |= lbeg_off << XTENSA_CSBASE_LBEG_OFF_SHIFT;
++            }
++        }
++    }
++    if (xtensa_option_enabled(env->config, XTENSA_OPTION_EXTENDED_L32R) &&
++            (env->sregs[LITBASE] & 1)) {
++        *flags |= XTENSA_TBFLAG_LITBASE;
++    }
++    if (xtensa_option_enabled(env->config, XTENSA_OPTION_DEBUG)) {
++        if (xtensa_get_cintlevel(env) < env->config->debug_level) {
++            *flags |= XTENSA_TBFLAG_DEBUG;
++        }
++        if (xtensa_get_cintlevel(env) < env->sregs[ICOUNTLEVEL]) {
++            *flags |= XTENSA_TBFLAG_ICOUNT;
++        }
++    }
++    if (xtensa_option_enabled(env->config, XTENSA_OPTION_COPROCESSOR)) {
++        *flags |= env->sregs[CPENABLE] << XTENSA_TBFLAG_CPENABLE_SHIFT;
++    }
++    if (xtensa_option_enabled(env->config, XTENSA_OPTION_WINDOWED_REGISTER) &&
++        (env->sregs[PS] & (PS_WOE | PS_EXCM)) == PS_WOE) {
++        uint32_t windowstart = xtensa_replicate_windowstart(env) >>
++            (env->sregs[WINDOW_BASE] + 1);
++        uint32_t w = ctz32(windowstart | 0x8);
++
++        *flags |= (w << XTENSA_TBFLAG_WINDOW_SHIFT) | XTENSA_TBFLAG_CWOE;
++        *flags |= extract32(env->sregs[PS], PS_CALLINC_SHIFT,
++                            PS_CALLINC_LEN) << XTENSA_TBFLAG_CALLINC_SHIFT;
++    } else {
++        *flags |= 3 << XTENSA_TBFLAG_WINDOW_SHIFT;
++    }
++    if (env->yield_needed) {
++        *flags |= XTENSA_TBFLAG_YIELD;
++    }
 +}
- 
++
  static void xtensa_cpu_set_pc(CPUState *cs, vaddr value)
  {
+     XtensaCPU *cpu = XTENSA_CPU(cs);
 -- 
 2.43.0
 
