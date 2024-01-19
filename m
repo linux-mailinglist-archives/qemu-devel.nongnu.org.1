@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8C48331A3
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 00:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD7F8331A0
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 00:41:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQySV-0001yP-TT; Fri, 19 Jan 2024 18:39:35 -0500
+	id 1rQySa-000235-IA; Fri, 19 Jan 2024 18:39:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQyST-0001wk-Ey
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:39:33 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQySY-000217-Na
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:39:38 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQySR-0001zB-Qd
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:39:33 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQyST-0001zp-94
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:39:38 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8938221C1A;
- Fri, 19 Jan 2024 23:39:30 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E281E1F825;
+ Fri, 19 Jan 2024 23:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705707570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705707572; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XhVc2dXR8NXJ392xyDYZUM9zULcApz5F7NwouJvgobQ=;
- b=d0RfwWxq7B+rqJRrUqe7l9vQ5fq73fKIumss6KeRAeZgLIWKCbbBxy8PPbtrjYzPpFt+z2
- MYI0oFnwUq8nq4hBckcfQfFmFY3XdiB1yf2tOC2LVfrFpkoebxBU/sXQhdxPqUum6BTnvK
- 6T40IqTG1KU1K2si53mwZ+wi1GXdLmc=
+ bh=0XQTyt/2YjP2TRQqmcfI1a7NiC92TEF2AK8VliVRkI4=;
+ b=mfFP+mVIKYYBD20OK3AwMh1fV+Z8iIlRRiwOJpmPQAtC5UWSwizwIksEFqcSCfVvmo4B/c
+ +Z0k4mrMYBjHI6ZFdr0Eslseoyj6ZAEzwZFBZNx7BLqPGh9jn3zWDTCSY0rXIEQsOWSl5r
+ 2/8pXSHP8r3/Hbuljk6YhKNwGlBvoVE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705707570;
+ s=susede2_ed25519; t=1705707572;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XhVc2dXR8NXJ392xyDYZUM9zULcApz5F7NwouJvgobQ=;
- b=+XGHBB2JMYGFGQmFGH34j2PWbeSs5zIPzzCOW/dOihMUK6PigTSvuqq8uVE+2GnfH56nqE
- 310yDLYwY9lbNkDw==
+ bh=0XQTyt/2YjP2TRQqmcfI1a7NiC92TEF2AK8VliVRkI4=;
+ b=h7jDT+TUQOgTwhk9K0Ikfj3b//g9AhH9CvC/RkgUHLuLr9CJ0CCgnBFdEDtOV6h4vQshXO
+ bTz7eBb9++dISAAw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705707570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705707571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XhVc2dXR8NXJ392xyDYZUM9zULcApz5F7NwouJvgobQ=;
- b=d0RfwWxq7B+rqJRrUqe7l9vQ5fq73fKIumss6KeRAeZgLIWKCbbBxy8PPbtrjYzPpFt+z2
- MYI0oFnwUq8nq4hBckcfQfFmFY3XdiB1yf2tOC2LVfrFpkoebxBU/sXQhdxPqUum6BTnvK
- 6T40IqTG1KU1K2si53mwZ+wi1GXdLmc=
+ bh=0XQTyt/2YjP2TRQqmcfI1a7NiC92TEF2AK8VliVRkI4=;
+ b=OZIIXJgrpTKBTxQnx1HIQuCGtf3OgKrVrXm5qlmBUTuVq+xggt25ebOEBc3oXi7NxwHp4O
+ pb2WvEEM41nOh44x3q91IhWEcfOQC22936QD9IefL73lQPyQutf4IrUuSPQALyL/8IMrg/
+ 5sZsC8kg5zbCeKRiKLmnWsx8SpykKSU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705707570;
+ s=susede2_ed25519; t=1705707571;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XhVc2dXR8NXJ392xyDYZUM9zULcApz5F7NwouJvgobQ=;
- b=+XGHBB2JMYGFGQmFGH34j2PWbeSs5zIPzzCOW/dOihMUK6PigTSvuqq8uVE+2GnfH56nqE
- 310yDLYwY9lbNkDw==
+ bh=0XQTyt/2YjP2TRQqmcfI1a7NiC92TEF2AK8VliVRkI4=;
+ b=lwFbaowjwDeMH9nEVMyLal1ggKju+5bPg/LOpIsT0RBWKk0Iq+DbM14TR0I0sqFw83i/Zw
+ IobyV2weB6DIouDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EBA21375D;
- Fri, 19 Jan 2024 23:39:29 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F1A8C1375D;
+ Fri, 19 Jan 2024 23:39:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2LIFFTEIq2VxVAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 19 Jan 2024 23:39:29 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8CkdLTIIq2VxVAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 19 Jan 2024 23:39:30 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH 3/5] migration: Reference migration state around
- loadvm_postcopy_handle_run_bh
-Date: Fri, 19 Jan 2024 20:39:20 -0300
-Message-Id: <20240119233922.32588-4-farosas@suse.de>
+Subject: [PATCH 4/5] migration: Add a wrapper to qemu_bh_schedule
+Date: Fri, 19 Jan 2024 20:39:21 -0300
+Message-Id: <20240119233922.32588-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240119233922.32588-1-farosas@suse.de>
 References: <20240119233922.32588-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=d0RfwWxq;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+XGHBB2J
+X-Spamd-Bar: /
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OZIIXJgr;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lwFbaowj
 X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [3.47 / 50.00]; ARC_NA(0.00)[];
+X-Spamd-Result: default: False [0.84 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
@@ -98,11 +97,11 @@ X-Spamd-Result: default: False [3.47 / 50.00]; ARC_NA(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-0.02)[54.90%]
-X-Spam-Score: 3.47
-X-Rspamd-Queue-Id: 8938221C1A
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-2.65)[98.47%]
+X-Spam-Score: 0.84
+X-Rspamd-Queue-Id: E281E1F825
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -125,36 +124,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need to hold a reference to the current_migration object around
-async calls to avoid it been freed while still in use. Even on this
-load-side function, we might still use the MigrationState, e.g to
-check for capabilities.
+Wrap qemu_bh_schedule() to ensure we always hold a reference to the
+current_migration object.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/savevm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ migration/migration.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 6410705ebe..93387350c7 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2174,6 +2174,7 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
-     qemu_bh_delete(mis->bh);
- 
-     trace_vmstate_downtime_checkpoint("dst-postcopy-bh-vm-started");
-+    object_unref(OBJECT(migration_get_current()));
+diff --git a/migration/migration.c b/migration/migration.c
+index b1213b59ce..0e7f101d64 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -199,6 +199,16 @@ void migration_object_init(void)
+     dirty_bitmap_mig_init();
  }
  
- /* After all discards we can start running and asking for pages */
-@@ -2189,6 +2190,7 @@ static int loadvm_postcopy_handle_run(MigrationIncomingState *mis)
++static void migration_bh_schedule(MigrationState *s, QEMUBH *bh)
++{
++    /*
++     * Ref the state for bh, because it may be called when
++     * there're already no other refs
++     */
++    object_ref(OBJECT(s));
++    qemu_bh_schedule(bh);
++}
++
+ void migration_cancel(const Error *error)
+ {
+     if (error) {
+@@ -714,8 +724,7 @@ process_incoming_migration_co(void *opaque)
+     }
  
-     postcopy_state_set(POSTCOPY_INCOMING_RUNNING);
-     mis->bh = qemu_bh_new(loadvm_postcopy_handle_run_bh, mis);
-+    object_ref(OBJECT(migration_get_current()));
-     qemu_bh_schedule(mis->bh);
+     mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
+-    object_ref(OBJECT(migrate_get_current()));
+-    qemu_bh_schedule(mis->bh);
++    migration_bh_schedule(migrate_get_current(), mis->bh);
+     return;
+ fail:
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+@@ -1332,16 +1341,6 @@ static void migrate_fd_cleanup(MigrationState *s)
+     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+ }
  
-     /* We need to finish reading the stream from the package
+-static void migrate_fd_cleanup_schedule(MigrationState *s)
+-{
+-    /*
+-     * Ref the state for bh, because it may be called when
+-     * there're already no other refs
+-     */
+-    object_ref(OBJECT(s));
+-    qemu_bh_schedule(s->cleanup_bh);
+-}
+-
+ static void migrate_fd_cleanup_bh(void *opaque)
+ {
+     MigrationState *s = opaque;
+@@ -3140,7 +3139,7 @@ static void migration_iteration_finish(MigrationState *s)
+         error_report("%s: Unknown ending state %d", __func__, s->state);
+         break;
+     }
+-    migrate_fd_cleanup_schedule(s);
++    migration_bh_schedule(s, s->cleanup_bh);
+     bql_unlock();
+ }
+ 
+@@ -3171,7 +3170,7 @@ static void bg_migration_iteration_finish(MigrationState *s)
+         break;
+     }
+ 
+-    migrate_fd_cleanup_schedule(s);
++    migration_bh_schedule(s, s->cleanup_bh);
+     bql_unlock();
+ }
+ 
+@@ -3487,9 +3486,7 @@ static void *bg_migration_thread(void *opaque)
+      * writes to virtio VQs memory which is in write-protected region.
+      */
+     s->vm_start_bh = qemu_bh_new(bg_migration_vm_start_bh, s);
+-    object_ref(OBJECT(s));
+-    qemu_bh_schedule(s->vm_start_bh);
+-
++    migration_bh_schedule(s, s->vm_start_bh);
+     bql_unlock();
+ 
+     while (migration_is_active(s)) {
 -- 
 2.35.3
 
