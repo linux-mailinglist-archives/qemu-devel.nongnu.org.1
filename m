@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F1283291C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD602832918
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:43:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQnBn-0007Nj-Sx; Fri, 19 Jan 2024 06:37:35 -0500
+	id 1rQnBr-0007RX-M8; Fri, 19 Jan 2024 06:37:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnBl-0007H9-4w
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:37:33 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnBo-0007PJ-Ru
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:37:36 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnBh-00034w-Sz
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:37:32 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3376555b756so389741f8f.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:37:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnBm-00037H-4Z
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:37:36 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e779f030aso4023025e9.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:37:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705664248; x=1706269048; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705664252; x=1706269052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ODpPk4V4L74xrCSwXIUijjl6fJH0n8xXoj2+PFNQbhs=;
- b=eIXZ1Tks3W8nIRyoK4sHzQw0RHEZji/9FUeQC8Qsy/N4NAp9hCQOp/w05MccHJ+bZo
- g8TnlT/q8GFE+LwuEWlQAPYX+svvvoa1iohVpBTIgiqMOfTbY93S3NnYLPJX2Av8/pUF
- W1GRN/b5qkuGXmlzBE+zo927o7ij/RfxmjX8dnXfia0NDa0NuCcJtcb6qMOTWPfMUx1y
- cJ+92ucdBkVXxKoSZUNSEeSvoWBVSJrYRn0oB+1KrpH44Pl2R54Ecdg1XqQGVfiNGS5R
- Xzg5wIvP6KSX9cwZ2dFz5JoAWJoJ9h4pfXQUsq/1dirfqxaYGdAUfDH6ThhvUKV2IcW2
- JEpg==
+ bh=8IaNDObNAqYNxlZ9PNSQWTtp9Qeox0bgAC84EDezcoU=;
+ b=zk7EHrNrHwfkJ05cCktdOV2Es7vmqZ6eSiF9Bv5eyosrcE+eZRp86WzGl5kt1cp7QM
+ IxJCCw4q4vnfe4nrMZo+SDRYMtaUO57aA5Kq0wYhk2mu1lzml/weaXP2u1EMvUaoxAtK
+ P2a9CtyIQq9R8YyaBhe+VbhlMgbKcRlT721PKoVyCdoWJQ1/Hnp0pQo4aVzwVk/NGZ6q
+ k7xXktBh8e6fN1Eict/W9HYJcWPo+HJwrCdqRiY4Yj69UUrJ6aL73dXUY67LNz2dN20w
+ rRt0XEE1pihrlicjJGU4f8GGv/VKOBDlq7SE8IM3aI++nJXvoCEHa/USFNPFYOZWSOZG
+ COdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705664248; x=1706269048;
+ d=1e100.net; s=20230601; t=1705664252; x=1706269052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ODpPk4V4L74xrCSwXIUijjl6fJH0n8xXoj2+PFNQbhs=;
- b=cTPcVpKfyhpEn7EFFEJiD/+GJAO9Otv0BZcQjWTZ58UksJby4m9eanSGXDWVvq1msY
- vYztOGMnCQnRW9tSliRtelWlTPoLhcjj/aOCMp2Ttkg8Bc13uPcuvrgBFbe1lH8/5BBq
- CN1jHFS5CRQ5wA3AX6EKO8f2iGQP/6XQl309tFihZpV8/Vy9dqghL2+LYKRxsm+0NEk4
- xv7zaSqEkRdkAxzOhQgnKtICFz+TJItr51FYuPLijM1jqJKvJ59GoTZzJ6EBByxksSz/
- /WTXb2FlcKuFEfBMsccu3Xl7POOZcdEc4MF6zEczK5NXpZCfVYk0j32d0zWdoGlQPTQR
- HwDQ==
-X-Gm-Message-State: AOJu0Yyh2k9x1a2GwYwl+k1LhQkhlY28FKdzKCRtK7wAGpVOR/ypbPmP
- c6LBf5ncHm5lcuFxpc/zjXrQqpehIahekKRXcAzDGvuZ/xQArDrKOEHVZ+vIDHaY0/L7i/j8j0l
- iLDI+/g==
-X-Google-Smtp-Source: AGHT+IEIrX/z6IwaxDIYnTkkVa92cOwMdnkJU9aX6lQnqOf1mTPLbyTPg1auGFz61Q1hUZ14flsswQ==
-X-Received: by 2002:a5d:698b:0:b0:336:8b2f:2ae5 with SMTP id
- g11-20020a5d698b000000b003368b2f2ae5mr589450wru.24.1705664248288; 
- Fri, 19 Jan 2024 03:37:28 -0800 (PST)
+ bh=8IaNDObNAqYNxlZ9PNSQWTtp9Qeox0bgAC84EDezcoU=;
+ b=Wm7moZ/drzqPtooDL884GizOK8oJZfBtp6q8jWx31ZYpBbOD03Ppp7fijkvXDUAgNR
+ 9q/N9JXydO1MhRpF0MGgjlPRWoc/nFVTNtm8Yg50ibOTWMrYHXwYmB4AwUIJtDzjVnBn
+ dCr6e0xd05G7mLbHb7wSoebqGXfGIYYgKJlNZYl185oYtbjWg5F8PPLL0jCHtbueT5zh
+ 0/WijJYsSJuo7jfZnuCdCnCZK2xohWf5tKzdcWWHA0okm/EwChb52MbS9ox3/G0w8CeQ
+ U8Eh/0oNbrypIKPOpkU66Hcu09T1cDj8mTQwXKyfWy79IPTWvcgRJg5wPeWzCLuwqUHy
+ sBug==
+X-Gm-Message-State: AOJu0Yy65XrE3fvrsGNImuHzmmJ7tVAY/ZLqEaOo0/HfJ6hrCaSLroeA
+ XlR8nWonM0Y67LJi9hQgDpEXIsD7TRBiuewfFV5sxjtySCExKKuSvNB//o92MEXSom3M2w4GvR2
+ KKOCFZQ==
+X-Google-Smtp-Source: AGHT+IGME/CrHYUSCjWLKv9N7hUwo8xb1T01fsrIIY9PgyaLVNdwLW0/psrKAa/3cpDKhot/jlQmvg==
+X-Received: by 2002:a05:600c:1388:b0:40e:43ba:cf3f with SMTP id
+ u8-20020a05600c138800b0040e43bacf3fmr505422wmf.1.1705664252716; 
+ Fri, 19 Jan 2024 03:37:32 -0800 (PST)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- n13-20020a5d51cd000000b0033673ddd81csm6238840wrv.112.2024.01.19.03.37.27
+ j6-20020adfb306000000b00339208ecb30sm1294065wrd.68.2024.01.19.03.37.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 03:37:27 -0800 (PST)
+ Fri, 19 Jan 2024 03:37:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
@@ -62,18 +62,18 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  Guenter Roeck <linux@roeck-us.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 31/36] hw/scsi/esp-pci: synchronise setting of DMA_STAT_DONE
- with ESP completion interrupt
-Date: Fri, 19 Jan 2024 12:35:00 +0100
-Message-ID: <20240119113507.31951-32-philmd@linaro.org>
+Subject: [PULL 32/36] hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST command
+ issued
+Date: Fri, 19 Jan 2024 12:35:01 +0100
+Message-ID: <20240119113507.31951-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240119113507.31951-1-philmd@linaro.org>
 References: <20240119113507.31951-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,92 +98,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The setting of DMA_STAT_DONE at the end of a DMA transfer can be configured to
-generate an interrupt, however the Linux driver manually checks for DMA_STAT_DONE
-being set and if it is, considers that a DMA transfer has completed.
+Even though the BLAST command isn't fully implemented in QEMU, the DMA_STAT_BCMBLT
+bit should be set after the command has been issued to indicate that the command
+has completed.
 
-If DMA_STAT_DONE is set but the ESP device isn't indicating an interrupt then
-the Linux driver considers this to be a spurious interrupt. However this can
-occur in QEMU as there is a delay between the end of DMA transfer where
-DMA_STAT_DONE is set, and the ESP device raising its completion interrupt.
-
-This appears to be an incorrect assumption in the Linux driver as the ESP and
-PCI DMA interrupt sources are separate (and may not be raised exactly
-together), however we can work around this by synchronising the setting of
-DMA_STAT_DONE at the end of a DMA transfer with the ESP completion interrupt.
-
-In conjunction with the previous commit Linux is now able to correctly boot
-from an am53c974 PCI SCSI device on the hppa C3700 machine without emitting
-"iget: checksum invalid" and "Spurious irq, sreg=10" errors.
+This fixes an issue with the DC390 DOS driver which issues the BLAST command as
+part of its normal error recovery routine at startup, and otherwise sits in a
+tight loop waiting for DMA_STAT_BCMBLT to be set before continuing.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <20240112131529.515642-4-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20240112131529.515642-5-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/esp-pci.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ hw/scsi/esp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index 15dc3c004d..875a49199d 100644
+index 875a49199d..42d9d2e483 100644
 --- a/hw/scsi/esp-pci.c
 +++ b/hw/scsi/esp-pci.c
-@@ -93,6 +93,18 @@ static void esp_irq_handler(void *opaque, int irq_num, int level)
- 
-     if (level) {
-         pci->dma_regs[DMA_STAT] |= DMA_STAT_SCSIINT;
-+
-+        /*
-+         * If raising the ESP IRQ to indicate end of DMA transfer, set
-+         * DMA_STAT_DONE at the same time. In theory this should be done in
-+         * esp_pci_dma_memory_rw(), however there is a delay between setting
-+         * DMA_STAT_DONE and the ESP IRQ arriving which is visible to the
-+         * guest that can cause confusion e.g. Linux
-+         */
-+        if ((pci->dma_regs[DMA_CMD] & DMA_CMD_MASK) == 0x3 &&
-+            pci->dma_regs[DMA_WBC] == 0) {
-+                pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
-+        }
-     } else {
-         pci->dma_regs[DMA_STAT] &= ~DMA_STAT_SCSIINT;
-     }
-@@ -306,9 +318,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
-     /* update status registers */
-     pci->dma_regs[DMA_WBC] -= len;
-     pci->dma_regs[DMA_WAC] += len;
--    if (pci->dma_regs[DMA_WBC] == 0) {
--        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
--    }
+@@ -124,6 +124,7 @@ static void esp_pci_handle_blast(PCIESPState *pci, uint32_t val)
+ {
+     trace_esp_pci_dma_blast(val);
+     qemu_log_mask(LOG_UNIMP, "am53c974: cmd BLAST not implemented\n");
++    pci->dma_regs[DMA_STAT] |= DMA_STAT_BCMBLT;
  }
  
- static void esp_pci_dma_memory_read(void *opaque, uint8_t *buf, int len)
-@@ -363,24 +372,13 @@ static const VMStateDescription vmstate_esp_pci_scsi = {
-     }
- };
- 
--static void esp_pci_command_complete(SCSIRequest *req, size_t resid)
--{
--    ESPState *s = req->hba_private;
--    PCIESPState *pci = container_of(s, PCIESPState, esp);
--
--    esp_command_complete(req, resid);
--    pci->dma_regs[DMA_WBC] = 0;
--    pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
--    esp_pci_update_irq(pci);
--}
--
- static const struct SCSIBusInfo esp_pci_scsi_info = {
-     .tcq = false,
-     .max_target = ESP_MAX_DEVS,
-     .max_lun = 7,
- 
-     .transfer_data = esp_transfer_data,
--    .complete = esp_pci_command_complete,
-+    .complete = esp_command_complete,
-     .cancel = esp_request_cancelled,
- };
- 
+ static void esp_pci_handle_abort(PCIESPState *pci, uint32_t val)
 -- 
 2.41.0
 
