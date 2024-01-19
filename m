@@ -2,36 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B37832B7C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13277832B6E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2z-0005tB-GZ; Fri, 19 Jan 2024 09:40:41 -0500
+	id 1rQq2w-0005oz-Cu; Fri, 19 Jan 2024 09:40:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005mx-29
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:26 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005mw-1h
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:24 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003HW-C3
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:22 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003I9-G7
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:
- To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+ Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=XInRH6k1NBqTHuqJ4vJb3SCtary7tmu+6a7idnszLRU=; b=Phwx/sng1BCUW7NVEqe/lXaP/K
- y0pvQ0dP/dsoHUIBJn+m+KB/N3inK8tJf+ksehs562vLOxiGVhT9GcPBMQjI4Ao0hq8L/W9ddiN1X
- f5h9P/SpVUp/NT5UKF9Z6v8O5ESbzKBMO2Sr683zaj9iRK6+GNWjI3okcEtcnBH4VHVQ=;
+ bh=0b7t76vK6gdZs+kbUmPzuyVEzX6X7fA1qtYiQNVWzGM=; b=SFvA/LGkI8kYxFpzqP7C68XlSw
+ Lph4Kcj4sZM9dUcsigWPQKcQflhLEAdk2htW9sC6uCrpIkQJ2gmVqHsXUiQwda8LyjLAeZhHBwy+2
+ apK8TzWmn4EO6m4t5IUalW1n4IOK+qOv55pkJwrnCA6BpThN7sjgQlvXvGKsiwu/HpHY=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 00/34] Compile accel/tcg once (partially)
-Date: Fri, 19 Jan 2024 15:39:50 +0100
-Message-ID: <20240119144024.14289-1-anjo@rev.ng>
+Subject: [RFC PATCH 01/34] target: [PAGE_VARY] Use PAGE_VARY for all softmmu
+ targets
+Date: Fri, 19 Jan 2024 15:39:51 +0100
+Message-ID: <20240119144024.14289-2-anjo@rev.ng>
+In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
+References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
@@ -58,218 +61,396 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on an older version of rth/tcg-next and some patches by me, Philippe,
-and Richard (most of which have since been merged), base branch here
+Allows for future commits to use TargetPageBits to access page bits and
+mask, thus making TARGET_PAGE_* independent of softmmu target.
 
-  https://gitlab.com/AntonJohansson/qemu/-/tree/feature/accel-tcg-once-base
+In the future, this will also be important fo allowing heterogeneous CPUs
+on the same board.
 
-Rebase is in the works, but should not affect the larger parts of this
-patchset that I'm looking for feedback on.
+Signed-off-by: Anton Johansson <anjo@rev.ng>
+---
+ target/alpha/cpu-param.h      |  6 ++++++
+ target/avr/cpu-param.h        |  6 ++++++
+ target/cris/cpu-param.h       |  7 +++++++
+ target/hppa/cpu-param.h       |  6 ++++++
+ target/i386/cpu-param.h       |  6 ++++++
+ target/loongarch/cpu-param.h  |  5 +++++
+ target/m68k/cpu-param.h       |  6 ++++++
+ target/microblaze/cpu-param.h |  6 ++++--
+ target/nios2/cpu-param.h      |  5 ++++-
+ target/openrisc/cpu-param.h   |  8 +++++++-
+ target/ppc/cpu-param.h        |  6 ++++++
+ target/riscv/cpu-param.h      |  7 +++++++
+ target/rx/cpu-param.h         |  8 +++++++-
+ target/s390x/cpu-param.h      |  8 +++++++-
+ target/sh4/cpu-param.h        |  4 +++-
+ target/sparc/cpu-param.h      | 17 +++++++++++++++--
+ target/tricore/cpu-param.h    |  8 +++++++-
+ target/xtensa/cpu-param.h     |  8 +++++---
+ 18 files changed, 114 insertions(+), 13 deletions(-)
 
-This patchset moves forward with the single binary/compile once work and
-tries to compile translation units in accel/tcg/ once for system mode.
-The following files are compiled once in this patchset
-
-  cputlb.c
-  tcg-all.c
-  tcg-runtime.c
-  tcg-runtime-gvec.c
-  tb-maint.c
-  plugin-gen.c
-  translate-all.c
-
-and debuginfo.c is also moved to common_ss as it doesn't contain any
-target specifics.  Work still remains for 
-
-  cpu-exec.c     (TARGET_I386 ifdefs)
-  translator.c   (tswap(), ldl_p() and friends)
-
-Brackets [...] in patch names are temporary and indicate patches that
-"belong" together and can be split out easier.
-
-Major changes which I'm looking for feedback on:
-
-    - [PAGE_VARY] patches:
-
-        Switches to variable page sizes as a default for all system
-        mode targets, meaning TARGET_PAGE_* and TLB_* become target
-        independent.
-
-    - "Uninline cpu_mmu_index()"/"Uninline cpu_get_tb_cpu_state()":
-
-        Uninlines cpu_mmu_index() (used by cputlb.c) and
-        cpu_get_tb_cpu_state() (used by translate-all.c) so they can be
-        called from accel/tcg without pulling in target specifics.
-
-    - "Wrap target macros in functions":
-
-        Introduces wrapper functions in cpu-target.c around target
-        macros that I'm not sure how to deal with.
-
-Anton Johansson (34):
-  target: [PAGE_VARY] Use PAGE_VARY for all softmmu targets
-  target: [PAGE_VARY] Move TARGET_PAGE_BITS_MIN to TargetPageBits
-  exec: [PAGE_VARY] Move TARGET_PAGE_BITS_VARY to common header
-  exec: [PAGE_VARY] Unpoison TARGET_PAGE_* macros for system mode
-  target/tricore: [VADDR] Use target_ulong for EA
-  exec: [VADDR] Move vaddr defines to separate file
-  hw/core: [VADDR] Include vaddr.h from cpu.h
-  target: [VADDR] Use vaddr in gen_intermediate_code
-  exec: [VADDR] Use vaddr in DisasContextBase for virtual addresses
-  exec: [VADDR] typedef abi_ptr to vaddr
-  [IGNORE] Squash of header code shuffling
-  target: Uninline cpu_mmu_index()
-  target: Uninline cpu_get_tb_cpu_state()
-  exec: [CPUTLB] Move PAGE_* macros to common header
-  exec: [CPUTLB] Move TLB_*/tlb_*() to common header
-  exec: [CPUTLB] Move cpu_*()/cpu_env() to common header
-  hw/core: [CPUTLB] Move target specifics to end of TCGCPUOps
-  accel/stubs: [CPUTLB] Move xen.h stubs to xen-stub.c
-  accel/tcg: [CPUTLB] Use TCGContext.addr_type instead of
-    TARGET_LONG_BITS
-  accel/tcg: [CPUTLB] Use TCGContext.guest_mo for memory ordering
-  accel/tcg: [CPUTLB] Use tcg_ctx->tlb_dyn_max_bits
-  accel/tcg: [CPUTLB] Move CPU_TLB_DYN_[DEFAULT|MIN]* to cputlb.c
-  tcg: [CPUTLB] Add `mo_te` field to TCGContext
-  accel/tcg: [CPUTLB] Set mo_te in TCGContext
-  accel/tcg: [CPUTLB] Use tcg_ctx->mo_te instead of MO_TE
-  Wrap target macros in functions
-  accel/tcg: Make translate-all.c target independent
-  accel/tcg: Make plugin-gen.c target independent
-  accel/tcg: Make tb-maint.c target indpendent
-  accel/tcg: Make tcg-all.c target indpendent
-  accel/tcg: Make tcg-runtime-gvec.c target independent
-  accel/tcg: Make tcg-runtime.c target independent
-  accel/tcg: Make translator.c (partially) target independent
-  accel/tcg: Compile (a few files) once for system-mode
-
- accel/tcg/internal-target.h    |  11 +-
- accel/tcg/tb-hash.h            |   4 +-
- hw/s390x/s390-virtio-hcall.h   |   2 +
- include/exec/cpu-all.h         | 156 +-------------
- include/exec/cpu-common.h      | 185 ++++++++++++++++-
- include/exec/cpu-defs.h        |   7 +-
- include/exec/cpu_ldst-target.h |  52 +++++
- include/exec/cpu_ldst.h        |  95 +++------
- include/exec/exec-all.h        | 347 +------------------------------
- include/exec/exec-common.h     | 367 +++++++++++++++++++++++++++++++++
- include/exec/memory-internal.h |   2 +-
- include/exec/page-vary.h       |   1 +
- include/exec/poison.h          |   2 +
- include/exec/ram_addr.h        |   3 +-
- include/exec/translator.h      |   8 +-
- include/exec/vaddr.h           |  18 ++
- include/hw/core/cpu.h          |  11 +-
- include/hw/core/tcg-cpu-ops.h  |  32 +--
- include/qemu/plugin-memory.h   |   1 -
- include/sysemu/xen.h           |  27 ---
- include/tcg/tcg.h              |   1 +
- target/alpha/cpu-param.h       |   6 +
- target/alpha/cpu.h             |  20 --
- target/arm/cpu-param.h         |   2 +-
- target/arm/cpu.h               |  16 --
- target/avr/cpu-param.h         |   6 +
- target/avr/cpu.h               |  24 ---
- target/cris/cpu-param.h        |   7 +
- target/cris/cpu.h              |  14 --
- target/hexagon/cpu.h           |  21 --
- target/hppa/cpu-param.h        |   6 +
- target/hppa/cpu.h              |  55 -----
- target/i386/cpu-param.h        |   6 +
- target/i386/cpu.h              |  16 --
- target/loongarch/cpu-param.h   |   5 +
- target/loongarch/cpu.h         |  23 ---
- target/m68k/cpu-param.h        |   6 +
- target/m68k/cpu.h              |  20 --
- target/microblaze/cpu-param.h  |   6 +-
- target/microblaze/cpu.h        |  23 ---
- target/mips/cpu-param.h        |   2 +-
- target/mips/cpu.h              |  23 +--
- target/mips/tcg/translate.h    |   3 +-
- target/nios2/cpu-param.h       |   5 +-
- target/nios2/cpu.h             |  18 --
- target/openrisc/cpu-param.h    |   8 +-
- target/openrisc/cpu.h          |  22 --
- target/ppc/cpu-param.h         |   6 +
- target/ppc/cpu.h               |  21 --
- target/riscv/cpu-param.h       |   7 +
- target/riscv/cpu.h             |   5 -
- target/rx/cpu-param.h          |   8 +-
- target/rx/cpu.h                |  14 --
- target/s390x/cpu-param.h       |   8 +-
- target/s390x/cpu.h             |  53 -----
- target/sh4/cpu-param.h         |   4 +-
- target/sh4/cpu.h               |  25 ---
- target/sparc/cpu-param.h       |  17 +-
- target/sparc/cpu.h             |  63 ------
- target/tricore/cpu-param.h     |   8 +-
- target/tricore/cpu.h           |  17 --
- target/xtensa/cpu-param.h      |   8 +-
- target/xtensa/cpu.h            |  73 -------
- accel/stubs/xen-stub.c         |  12 ++
- accel/tcg/cpu-exec.c           |   1 +
- accel/tcg/cputlb.c             |  51 +++--
- accel/tcg/plugin-gen.c         |  15 +-
- accel/tcg/tb-maint.c           |  47 +++--
- accel/tcg/tcg-all.c            |  25 +--
- accel/tcg/tcg-runtime-gvec.c   |   2 +-
- accel/tcg/tcg-runtime.c        |   2 +-
- accel/tcg/translate-all.c      |  40 ++--
- accel/tcg/translator.c         |  16 +-
- cpu-target.c                   |  62 ++++++
- page-vary-common.c             |   1 +
- page-vary-target.c             |   4 +-
- plugins/core.c                 |   1 +
- target/alpha/cpu.c             |  19 ++
- target/alpha/translate.c       |   2 +-
- target/arm/cpu.c               |   6 +
- target/arm/tcg/translate.c     |   6 +-
- target/avr/cpu.c               |  23 +++
- target/avr/translate.c         |   2 +-
- target/cris/cpu.c              |  14 ++
- target/cris/translate.c        |   2 +-
- target/hexagon/cpu.c           |  21 ++
- target/hexagon/translate.c     |   5 +-
- target/hppa/cpu.c              |  59 ++++++
- target/hppa/translate.c        |   2 +-
- target/i386/cpu.c              |  16 ++
- target/i386/tcg/translate.c    |   2 +-
- target/loongarch/cpu.c         |  23 +++
- target/loongarch/translate.c   |   2 +-
- target/m68k/cpu.c              |  21 ++
- target/m68k/translate.c        |   4 +-
- target/microblaze/cpu.c        |  23 +++
- target/microblaze/translate.c  |   2 +-
- target/mips/cpu.c              |  23 +++
- target/mips/tcg/translate.c    |  14 +-
- target/nios2/cpu.c             |  18 ++
- target/nios2/translate.c       |   2 +-
- target/openrisc/cpu.c          |  22 ++
- target/openrisc/translate.c    |   2 +-
- target/ppc/cpu.c               |  20 ++
- target/ppc/translate.c         |   2 +-
- target/riscv/cpu_helper.c      |   2 +-
- target/riscv/translate.c       |   2 +-
- target/rx/cpu.c                |  14 ++
- target/rx/translate.c          |   2 +-
- target/s390x/cpu.c             |  55 +++++
- target/s390x/tcg/translate.c   |   2 +-
- target/sh4/cpu.c               |  28 +++
- target/sh4/translate.c         |   2 +-
- target/sparc/cpu.c             |  63 ++++++
- target/sparc/gdbstub.c         |   3 +
- target/sparc/translate.c       |   2 +-
- target/tricore/cpu.c           |  17 ++
- target/tricore/op_helper.c     |   8 +-
- target/tricore/translate.c     |   2 +-
- target/xtensa/cpu.c            |  72 +++++++
- target/xtensa/translate.c      |   2 +-
- accel/tcg/meson.build          |  57 +++--
- 122 files changed, 1656 insertions(+), 1345 deletions(-)
- create mode 100644 include/exec/cpu_ldst-target.h
- create mode 100644 include/exec/exec-common.h
- create mode 100644 include/exec/vaddr.h
-
+diff --git a/target/alpha/cpu-param.h b/target/alpha/cpu-param.h
+index 68c46f7998..dc9da45bdf 100644
+--- a/target/alpha/cpu-param.h
++++ b/target/alpha/cpu-param.h
+@@ -9,7 +9,13 @@
+ #define ALPHA_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 64
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 13
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 13
++#endif
+ 
+ /* ??? EV4 has 34 phys addr bits, EV5 has 40, EV6 has 44.  */
+ #define TARGET_PHYS_ADDR_SPACE_BITS  44
+diff --git a/target/avr/cpu-param.h b/target/avr/cpu-param.h
+index 9a92bc74fc..87142069fe 100644
+--- a/target/avr/cpu-param.h
++++ b/target/avr/cpu-param.h
+@@ -28,7 +28,13 @@
+  *     should be implemented as a device and not memory
+  * 2.  SRAM starts at the address 0x0100
+  */
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 8
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 8
++#endif
++
+ #define TARGET_PHYS_ADDR_SPACE_BITS 24
+ #define TARGET_VIRT_ADDR_SPACE_BITS 24
+ 
+diff --git a/target/cris/cpu-param.h b/target/cris/cpu-param.h
+index b31b742c0d..9c66ca9e66 100644
+--- a/target/cris/cpu-param.h
++++ b/target/cris/cpu-param.h
+@@ -9,7 +9,14 @@
+ #define CRIS_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 13
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 13
++#endif
++
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
+diff --git a/target/hppa/cpu-param.h b/target/hppa/cpu-param.h
+index c2791ae5f2..781dbc17d3 100644
+--- a/target/hppa/cpu-param.h
++++ b/target/hppa/cpu-param.h
+@@ -28,6 +28,12 @@
+ # define TARGET_VIRT_ADDR_SPACE_BITS  64
+ # define TARGET_PHYS_ADDR_SPACE_BITS  32
+ #endif
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
+ 
+ #endif
+diff --git a/target/i386/cpu-param.h b/target/i386/cpu-param.h
+index 911b4cd51b..d09d0eb2ed 100644
+--- a/target/i386/cpu-param.h
++++ b/target/i386/cpu-param.h
+@@ -22,6 +22,12 @@
+ # define TARGET_PHYS_ADDR_SPACE_BITS  36
+ # define TARGET_VIRT_ADDR_SPACE_BITS  32
+ #endif
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
+ 
+ #endif
+diff --git a/target/loongarch/cpu-param.h b/target/loongarch/cpu-param.h
+index 1265dc7cb5..f537c53ec4 100644
+--- a/target/loongarch/cpu-param.h
++++ b/target/loongarch/cpu-param.h
+@@ -12,6 +12,11 @@
+ #define TARGET_PHYS_ADDR_SPACE_BITS 48
+ #define TARGET_VIRT_ADDR_SPACE_BITS 48
+ 
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 14
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 14
++#endif
+ 
+ #endif
+diff --git a/target/m68k/cpu-param.h b/target/m68k/cpu-param.h
+index 39dcbcece8..92706969c7 100644
+--- a/target/m68k/cpu-param.h
++++ b/target/m68k/cpu-param.h
+@@ -14,7 +14,13 @@
+  * and m68k linux uses 4k pages
+  * use the smallest one
+  */
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
++
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
+diff --git a/target/microblaze/cpu-param.h b/target/microblaze/cpu-param.h
+index 9770b0eb52..51987d330d 100644
+--- a/target/microblaze/cpu-param.h
++++ b/target/microblaze/cpu-param.h
+@@ -20,13 +20,15 @@
+ #define TARGET_LONG_BITS 32
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
++/* FIXME: MB uses variable pages down to 1K but linux only uses 4k.  */
++#define TARGET_PAGE_BITS 12
+ #else
+ #define TARGET_LONG_BITS 64
+ #define TARGET_PHYS_ADDR_SPACE_BITS 64
+ #define TARGET_VIRT_ADDR_SPACE_BITS 64
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
+ #endif
+ 
+-/* FIXME: MB uses variable pages down to 1K but linux only uses 4k.  */
+-#define TARGET_PAGE_BITS 12
+ 
+ #endif
+diff --git a/target/nios2/cpu-param.h b/target/nios2/cpu-param.h
+index 767bba4b7b..40af6aef68 100644
+--- a/target/nios2/cpu-param.h
++++ b/target/nios2/cpu-param.h
+@@ -9,12 +9,15 @@
+ #define NIOS2_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 12
++
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #ifdef CONFIG_USER_ONLY
+ # define TARGET_VIRT_ADDR_SPACE_BITS 31
++# define TARGET_PAGE_BITS 12
+ #else
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
++# define TARGET_PAGE_BITS_VARY
++# define TARGET_PAGE_BITS_MIN 12
+ #endif
+ 
+ #endif
+diff --git a/target/openrisc/cpu-param.h b/target/openrisc/cpu-param.h
+index 3f08207485..10c52edf76 100644
+--- a/target/openrisc/cpu-param.h
++++ b/target/openrisc/cpu-param.h
+@@ -9,8 +9,14 @@
+ #define OPENRISC_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 13
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
++#ifdef CONFIG_USER_ONLY
++#define TARGET_PAGE_BITS 13
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 13
++#endif
++
+ #endif
+diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
+index 0a0416e0a8..597dd39a6b 100644
+--- a/target/ppc/cpu-param.h
++++ b/target/ppc/cpu-param.h
+@@ -31,6 +31,12 @@
+ # define TARGET_PHYS_ADDR_SPACE_BITS 36
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
+ #endif
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
+ 
+ #endif
+diff --git a/target/riscv/cpu-param.h b/target/riscv/cpu-param.h
+index b2a9396dec..80ba169e2b 100644
+--- a/target/riscv/cpu-param.h
++++ b/target/riscv/cpu-param.h
+@@ -17,7 +17,14 @@
+ # define TARGET_PHYS_ADDR_SPACE_BITS 34 /* 22-bit PPN */
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32 /* sv32 */
+ #endif
++
++#ifdef CONFIG_USER_ONLY
+ #define TARGET_PAGE_BITS 12 /* 4 KiB Pages */
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12 /* 4 KiB Pages */
++#endif
++
+ /*
+  * The current MMU Modes are:
+  *  - U mode 0b000
+diff --git a/target/rx/cpu-param.h b/target/rx/cpu-param.h
+index 521d669bdf..f05a28456a 100644
+--- a/target/rx/cpu-param.h
++++ b/target/rx/cpu-param.h
+@@ -20,9 +20,15 @@
+ #define RX_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 12
+ 
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
++#ifdef CONFIG_USER_ONLY
++#define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
++
+ #endif
+diff --git a/target/s390x/cpu-param.h b/target/s390x/cpu-param.h
+index 84ca08626b..23d4345812 100644
+--- a/target/s390x/cpu-param.h
++++ b/target/s390x/cpu-param.h
+@@ -9,8 +9,14 @@
+ #define S390_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 64
+-#define TARGET_PAGE_BITS 12
+ #define TARGET_PHYS_ADDR_SPACE_BITS 64
+ #define TARGET_VIRT_ADDR_SPACE_BITS 64
+ 
++#ifdef CONFIG_USER_ONLY
++#define TARGET_PAGE_BITS 12
++#else
++#define TARGET_PAGE_BITS_VARY
++#define TARGET_PAGE_BITS_MIN 12
++#endif
++
+ #endif
+diff --git a/target/sh4/cpu-param.h b/target/sh4/cpu-param.h
+index a7cdb7edb6..03354f1342 100644
+--- a/target/sh4/cpu-param.h
++++ b/target/sh4/cpu-param.h
+@@ -9,12 +9,14 @@
+ #define SH4_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 12  /* 4k */
+ #define TARGET_PHYS_ADDR_SPACE_BITS  32
+ #ifdef CONFIG_USER_ONLY
+ # define TARGET_VIRT_ADDR_SPACE_BITS 31
++# define TARGET_PAGE_BITS 12  /* 4k */
+ #else
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
++# define TARGET_PAGE_BITS_VARY
++# define TARGET_PAGE_BITS_MIN 12  /* 4k */
+ #endif
+ 
+ #endif
+diff --git a/target/sparc/cpu-param.h b/target/sparc/cpu-param.h
+index cb11980404..19b53ebea6 100644
+--- a/target/sparc/cpu-param.h
++++ b/target/sparc/cpu-param.h
+@@ -9,7 +9,6 @@
+ 
+ #ifdef TARGET_SPARC64
+ # define TARGET_LONG_BITS 64
+-# define TARGET_PAGE_BITS 13 /* 8k */
+ # define TARGET_PHYS_ADDR_SPACE_BITS  41
+ # ifdef TARGET_ABI32
+ #  define TARGET_VIRT_ADDR_SPACE_BITS 32
+@@ -18,9 +17,23 @@
+ # endif
+ #else
+ # define TARGET_LONG_BITS 32
+-# define TARGET_PAGE_BITS 12 /* 4k */
+ # define TARGET_PHYS_ADDR_SPACE_BITS 36
+ # define TARGET_VIRT_ADDR_SPACE_BITS 32
+ #endif
+ 
++#ifdef CONFIG_USER_ONLY
++# ifdef TARGET_SPARC64
++#  define TARGET_PAGE_BITS 13 /* 8k */
++# else
++#  define TARGET_PAGE_BITS 12 /* 4k */
++# endif
++#else
++# define TARGET_PAGE_BITS_VARY
++# ifdef TARGET_SPARC64
++#  define TARGET_PAGE_BITS_MIN 13 /* 8k */
++# else
++#  define TARGET_PAGE_BITS_MIN 12 /* 4k */
++# endif
++#endif
++
+ #endif
+diff --git a/target/tricore/cpu-param.h b/target/tricore/cpu-param.h
+index e29d551dd6..6eff65ac54 100644
+--- a/target/tricore/cpu-param.h
++++ b/target/tricore/cpu-param.h
+@@ -9,8 +9,14 @@
+ #define TRICORE_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 14
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #define TARGET_VIRT_ADDR_SPACE_BITS 32
+ 
++#ifdef CONFIG_USER_ONLY
++# define TARGET_PAGE_BITS 14
++#else
++# define TARGET_PAGE_BITS_VARY
++# define TARGET_PAGE_BITS_MIN 14
++#endif
++
+ #endif
+diff --git a/target/xtensa/cpu-param.h b/target/xtensa/cpu-param.h
+index b1da0555de..1c18855626 100644
+--- a/target/xtensa/cpu-param.h
++++ b/target/xtensa/cpu-param.h
+@@ -9,12 +9,14 @@
+ #define XTENSA_CPU_PARAM_H
+ 
+ #define TARGET_LONG_BITS 32
+-#define TARGET_PAGE_BITS 12
+ #define TARGET_PHYS_ADDR_SPACE_BITS 32
+ #ifdef CONFIG_USER_ONLY
+-#define TARGET_VIRT_ADDR_SPACE_BITS 30
++# define TARGET_VIRT_ADDR_SPACE_BITS 30
++# define TARGET_PAGE_BITS 12
+ #else
+-#define TARGET_VIRT_ADDR_SPACE_BITS 32
++# define TARGET_VIRT_ADDR_SPACE_BITS 32
++# define TARGET_PAGE_BITS_VARY
++# define TARGET_PAGE_BITS_MIN 12
+ #endif
+ 
+ #endif
 -- 
 2.43.0
 
