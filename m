@@ -2,97 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5948B8327A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 11:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 368A28327C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 11:42:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQm5o-0006Uc-U1; Fri, 19 Jan 2024 05:27:20 -0500
+	id 1rQmJ4-0003aV-GR; Fri, 19 Jan 2024 05:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rQm5l-0006UC-Hj
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 05:27:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rQmJ1-0003Zm-1g; Fri, 19 Jan 2024 05:40:59 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rQm5i-0004en-V8
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 05:27:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705660029;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mGModt5VnP84Ku4gAp6JzfVTT/lRgMcN1yiZhC5kbXw=;
- b=R6SbF5/0jUDgQeEmubRgQqyJ2pwYT9ToDjYCZGXF4NjJCCuAWU9BUl3jzE43pYP6Ux00It
- jcdl3izNHBlJJagXOBZ1vXuvTRpP0d+D/M5jJx/4nDlR+Agm/seBRZU2EX92pjnwpHQiK7
- suoBqOEAnByP6PgQER36CU7DF4G+0rw=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-1ZgE3D_pOzSvcjh4mJzWQA-1; Fri, 19 Jan 2024 05:27:06 -0500
-X-MC-Unique: 1ZgE3D_pOzSvcjh4mJzWQA-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-dc21b7f41a1so944110276.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 02:27:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705660025; x=1706264825;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mGModt5VnP84Ku4gAp6JzfVTT/lRgMcN1yiZhC5kbXw=;
- b=b25gEQVaqjRyT/nNNh7+zJogyO0iD+l6kbtBjonyWl3vDQFSBGAvfYillfJBVEK+G4
- tJfZswQ5l/Guvz/pAWVVlbQELOov1UYHevlqrg4xVVFoi6ZJYBCsn/NofDF8EaP1Px1Y
- YjC+qILxGH25Y0SgAdnoMoYuqZc3UP31rfSAyLNm41T/Ha05hhLyKeWdKEQfDkW2xPrz
- ZBSKANWRIUuggo1nIe/zoZ7417zP+btgl+zjBBuZEtv/zDF1Z/eNryh/2NEQhwFjexdc
- 8UfvWf87/1S4aWNMZ4tE6Cq2kqyIKwkj/5tNuKHft/j8aK/TC33HDXhjkc+L8mVq+M8f
- pWbw==
-X-Gm-Message-State: AOJu0Yx6HX/AWrPKc7M2eAwqfpSJGezbmolLk3lxO3zkVyXJbibXRIH6
- JXS19S8ujXGjzeZ/1RXcAsXvNCVuD02lExhQm/kfy09/ynNnZYfuqMcpWXKVRmNa+T6LzyMG+44
- /C5WYPKIZ7HxjO/p1CYUSpxibMOiV1nQWCM1wHY2uAI/6CSLl6HezI8sY1OIsJTtylcbJJr7OBU
- egeGAozpMo66IEi19qwPjDq5dLcS8=
-X-Received: by 2002:a25:b289:0:b0:dc2:2ae7:8899 with SMTP id
- k9-20020a25b289000000b00dc22ae78899mr1879813ybj.10.1705660025564; 
- Fri, 19 Jan 2024 02:27:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHuMT5sMNw+4a4VYMyhLhwMeTXW3JIL5me3MrkORm9Gr84+0TkvegUV6QiEQ9BNaI7e9Cjl+Tf4shNfyl/ju50=
-X-Received: by 2002:a25:b289:0:b0:dc2:2ae7:8899 with SMTP id
- k9-20020a25b289000000b00dc22ae78899mr1879805ybj.10.1705660025255; Fri, 19 Jan
- 2024 02:27:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rQmIy-0002UE-Hx; Fri, 19 Jan 2024 05:40:58 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40JAW5di001839; Fri, 19 Jan 2024 10:40:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=ZnczHaR4Meb4W0IyB1OyiLgbGc1nhMHaay8I8gS1uV4=;
+ b=ihqC0Mz/AfDfDzD7ja8MInldQdzEysJxNqt8zkkj01USqZu5O5TsQyR03PY94pJ8ZL3w
+ eoyd/1lZx/UdWEgDPsbyYCr8CHkwGduFQA+oJ0gMi5QLVi3eikUdB44Ro6M3pD8USqLB
+ leb7BqOKgRpAWNlWuf/uIf7B6auB2ayAPsJgbP2J0LIUr7mlQaBiuYnnhsUnURKr1Y8m
+ DfdAzdPFiYBV58KxGOsaesgtAaJrsySKgfVqrM4Zsdn2T7uRokE6grdk6YWBEr87sZJd
+ I7b1UCXPBBUCStC055vWlN1ogbbn75lW+dgiOwcWmbNLMp1i/dxshROEhvo8xXhyla/4 VA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vqqdpg6p8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jan 2024 10:40:50 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40JAbJif016548;
+ Fri, 19 Jan 2024 10:40:49 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vqqdpg6ng-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jan 2024 10:40:49 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40JARoBu011009; Fri, 19 Jan 2024 10:40:48 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm58017p3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 19 Jan 2024 10:40:48 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40JAekm014287574
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 19 Jan 2024 10:40:46 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 440292004D;
+ Fri, 19 Jan 2024 10:40:46 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6F1720040;
+ Fri, 19 Jan 2024 10:40:45 +0000 (GMT)
+Received: from heavy (unknown [9.171.83.169])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 19 Jan 2024 10:40:45 +0000 (GMT)
+Date: Fri, 19 Jan 2024 11:40:44 +0100
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, Ido Plat <Ido.Plat@ibm.com>
+Subject: Re: Re: [PATCH 1/2] target/s390x: Emulate CVDG
+Message-ID: <bqwzxucfiod52ef43ocn3j57bx6fnincuhyvdns5hwzi2ux6dr@d5xhi4fdxl4s>
+References: <20240115202308.1930675-1-iii@linux.ibm.com>
+ <20240115202308.1930675-2-iii@linux.ibm.com>
+ <6d82413f-3729-4e6e-837b-996038ebaa63@linaro.org>
 MIME-Version: 1.0
-References: <SN4PR13MB5727A538887598415C5A37D28681A@SN4PR13MB5727.namprd13.prod.outlook.com>
- <SN4PR13MB5727D7B4E7CC91345135A5058661A@SN4PR13MB5727.namprd13.prod.outlook.com>
- <CACGkMEvwanHfheCMo-gDjzx1DrX51AMtoaYJ9PcE0yYmZdA+Uw@mail.gmail.com>
- <SN4PR13MB5727A90B141E383127F1E25D8661A@SN4PR13MB5727.namprd13.prod.outlook.com>
- <SN4PR13MB572773EF8D25A2E2C5AE48608661A@SN4PR13MB5727.namprd13.prod.outlook.com>
- <SN4PR13MB57274870E6BBFC76749E8D96866F2@SN4PR13MB5727.namprd13.prod.outlook.com>
- <CACGkMEu6X2L-eawwsy_pE1mVVDU7V=Qe_51YrK16W-kKu4BGxA@mail.gmail.com>
- <SN4PR13MB572738F10FAE449DDBD735D686732@SN4PR13MB5727.namprd13.prod.outlook.com>
- <CACGkMEtHQHmhBAF6WguUSHr+iFMmOjvTshqpGzkvE=QtkgVVPA@mail.gmail.com>
- <SN4PR13MB5727AF7CB6E6CF563B618F1386732@SN4PR13MB5727.namprd13.prod.outlook.com>
- <SN4PR13MB5727D5A7AD34F7169E2A236F86702@SN4PR13MB5727.namprd13.prod.outlook.com>
-In-Reply-To: <SN4PR13MB5727D5A7AD34F7169E2A236F86702@SN4PR13MB5727.namprd13.prod.outlook.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 19 Jan 2024 11:26:29 +0100
-Message-ID: <CAJaqyWc2P6iHrG9dR2X9YC=P7dw4=Y2RwRkr5H81hkj6ej_5hA@mail.gmail.com>
-Subject: Re: FW: [PATCH] vhost-user: add VIRTIO_F_IN_ORDER and
- VIRTIO_F_NOTIFICATION_DATA feature
-To: Wentao Jia <wentao.jia@nephogine.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>, 
- Rick Zhong <zhaoyong.zhong@nephogine.com>, Jason Wang <jasowang@redhat.com>, 
- Peter Xu <peterx@redhat.com>, Guo Zhi <qtxuning1999@sjtu.edu.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6d82413f-3729-4e6e-837b-996038ebaa63@linaro.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SwMo5vpx9TL5qscwrqsiqFSEx_NUG2Gr
+X-Proofpoint-ORIG-GUID: nBWoB7ontq5w7fsDwd7Bc-PY9typo-b6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-19_05,2024-01-19_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=590
+ clxscore=1015 suspectscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 impostorscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401190048
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,131 +112,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 7:42=E2=80=AFAM Wentao Jia <wentao.jia@nephogine.co=
-m> wrote:
->
->
-> VIRTIO_F_IN_ORDER and VIRTIO_F_NOTIFICATION_DATA feature are important fe=
-ature
-> for dpdk vdpa packets transmitting performance, add the 2 features at vho=
-st-user
-> front-end to negotiation with backend.
->
-> Signed-off-by: Kyle Xu <zhenbing.xu@corigine.com>
-> Signed-off-by: Wentao Jia <wentao.jia@corigine.com>
-> Reviewed-by:   Xinying Yu <xinying.yu@corigine.com>
-> Reviewed-by:   Shujing Dong <shujing.dong@corigine.com>
-> Reviewed-by:   Rick Zhong <zhaoyong.zhong@corigine.com>
-> ---
->  hw/core/machine.c   | 2 ++
->  hw/net/vhost_net.c  | 2 ++
->  hw/net/virtio-net.c | 4 ++++
->  3 files changed, 8 insertions(+)
->
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index fb5afdcae4..e620f5e7d0 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -40,6 +40,7 @@ GlobalProperty hw_compat_8_1[] =3D {
->      { "ramfb", "x-migrate", "off" },
->      { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
->      { "igb", "x-pcie-flr-init", "off" },
-> +    { TYPE_VIRTIO_NET, "notification_data", "off"},
->  };
+On Fri, Jan 19, 2024 at 08:12:18AM +1100, Richard Henderson wrote:
+> On 1/16/24 07:21, Ilya Leoshkevich wrote:
+> > CVDG is the same as CVD, except that it converts 64 bits into 128,
+> > rather than 32 into 64. Use larger data types in the CVD helper and
+> > reuse it.
+> > 
+> > Reported-by: Ido Plat <Ido.Plat@ibm.com>
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> >   target/s390x/helper.h            |  1 +
+> >   target/s390x/tcg/insn-data.h.inc |  1 +
+> >   target/s390x/tcg/int_helper.c    | 11 ++++++++---
+> >   target/s390x/tcg/translate.c     |  8 ++++++++
+> >   4 files changed, 18 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/target/s390x/helper.h b/target/s390x/helper.h
+> > index 05102578fc9..332a9a9c632 100644
+> > --- a/target/s390x/helper.h
+> > +++ b/target/s390x/helper.h
+> > @@ -89,6 +89,7 @@ DEF_HELPER_FLAGS_2(sqeb, TCG_CALL_NO_WG, i64, env, i64)
+> >   DEF_HELPER_FLAGS_2(sqdb, TCG_CALL_NO_WG, i64, env, i64)
+> >   DEF_HELPER_FLAGS_2(sqxb, TCG_CALL_NO_WG, i128, env, i128)
+> >   DEF_HELPER_FLAGS_1(cvd, TCG_CALL_NO_RWG_SE, i64, s32)
+> > +DEF_HELPER_FLAGS_1(cvdg, TCG_CALL_NO_RWG_SE, i128, s64)
+> >   DEF_HELPER_FLAGS_4(pack, TCG_CALL_NO_WG, void, env, i32, i64, i64)
+> >   DEF_HELPER_FLAGS_4(pka, TCG_CALL_NO_WG, void, env, i64, i64, i32)
+> >   DEF_HELPER_FLAGS_4(pku, TCG_CALL_NO_WG, void, env, i64, i64, i32)
+> > diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
+> > index 2f07f39d9cb..388dcb8dbbc 100644
+> > --- a/target/s390x/tcg/insn-data.h.inc
+> > +++ b/target/s390x/tcg/insn-data.h.inc
+> > @@ -296,6 +296,7 @@
+> >   /* CONVERT TO DECIMAL */
+> >       C(0x4e00, CVD,     RX_a,  Z,   r1_o, a2, 0, 0, cvd, 0)
+> >       C(0xe326, CVDY,    RXY_a, LD,  r1_o, a2, 0, 0, cvd, 0)
+> > +    C(0xe32e, CVDG,    RXY_a, Z,   r1_o, a2, 0, 0, cvdg, 0)
+> >   /* CONVERT TO FIXED */
+> >       F(0xb398, CFEBR,   RRF_e, Z,   0, e2, new, r1_32, cfeb, 0, IF_BFP)
+> >       F(0xb399, CFDBR,   RRF_e, Z,   0, f2, new, r1_32, cfdb, 0, IF_BFP)
+> > diff --git a/target/s390x/tcg/int_helper.c b/target/s390x/tcg/int_helper.c
+> > index eb8e6dd1b57..defb8fc7681 100644
+> > --- a/target/s390x/tcg/int_helper.c
+> > +++ b/target/s390x/tcg/int_helper.c
+> > @@ -99,10 +99,15 @@ Int128 HELPER(divu64)(CPUS390XState *env, uint64_t ah, uint64_t al, uint64_t b)
+> >   }
+> >   uint64_t HELPER(cvd)(int32_t reg)
+> > +{
+> > +    return helper_cvdg(reg);
+> > +}
+> > +
+> > +Int128 HELPER(cvdg)(int64_t reg)
+> >   {
+> >       /* positive 0 */
+> > -    uint64_t dec = 0x0c;
+> > -    int64_t bin = reg;
+> > +    Int128 dec = 0x0c;
+> > +    Int128 bin = reg;
+> >       int shift;
+> >       if (bin < 0) {
+> > @@ -110,7 +115,7 @@ uint64_t HELPER(cvd)(int32_t reg)
+> >           dec = 0x0d;
+> >       }
+> > -    for (shift = 4; (shift < 64) && bin; shift += 4) {
+> > +    for (shift = 4; (shift < 128) && bin; shift += 4) {
+> >           dec |= (bin % 10) << shift;
+> >           bin /= 10;
+> >       }
+> 
+> None of this will work with the struct version of Int128 -- you need to use
+> the int128_* functions for initialization and arithmetic.
+> 
+> I suggest you don't try to share code with CVD.
+> 
+> 
+> r~
 
-Assuming the default "true" in
-hw/net/virtio-net.c:virtio_net_properties is valid, this needs to be
-appended to the array of the QEMU version that introduced the property
-in the virtio_net_properties array, not the one that imported the
-macro from the kernel. This allows QEMU to know that old versions have
-these features disabled although the default set in
-hw/net/virtio-net.c:virtio_net_properties is true when migrating from
-/ to these versions.
+Hi,
 
-You can check that this is added properly by migrating from / to a
-previous version of QEMU, with the combinations of true and false.
+I see, --cross-prefix=i686-linux-gnu- is very broken with this patch.
+I will send a v2.
 
-You have an example in [1] with blk devices multiqueue. CCing Peter Xu
-as he knows more than me about this.
-
-This is very easy to miss when adding new features. Somebody who knows
-perl should add a test in checkpath.pl similar to the warning "added,
-moved or deleted file(s), does MAINTAINERS need updating?" when virtio
-properties are modified :).
-
->  const size_t hw_compat_8_1_len =3D G_N_ELEMENTS(hw_compat_8_1);
->
-> @@ -65,6 +66,7 @@ GlobalProperty hw_compat_7_1[] =3D {
->      { "virtio-rng-pci", "vectors", "0" },
->      { "virtio-rng-pci-transitional", "vectors", "0" },
->      { "virtio-rng-pci-non-transitional", "vectors", "0" },
-> +    { TYPE_VIRTIO_NET, "in_order", "off"},
->  };
->  const size_t hw_compat_7_1_len =3D G_N_ELEMENTS(hw_compat_7_1);
->
-> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-> index e8e1661646..211ca859a6 100644
-> --- a/hw/net/vhost_net.c
-> +++ b/hw/net/vhost_net.c
-> @@ -76,6 +76,8 @@ static const int user_feature_bits[] =3D {
->      VIRTIO_F_IOMMU_PLATFORM,
->      VIRTIO_F_RING_PACKED,
->      VIRTIO_F_RING_RESET,
-> +    VIRTIO_F_IN_ORDER,
-> +    VIRTIO_F_NOTIFICATION_DATA,
->      VIRTIO_NET_F_RSS,
->      VIRTIO_NET_F_HASH_REPORT,
->      VIRTIO_NET_F_GUEST_USO4,
-> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> index 7a2846fa1c..dc0a028934 100644
-> --- a/hw/net/virtio-net.c
-> +++ b/hw/net/virtio-net.c
-> @@ -3949,6 +3949,10 @@ static Property virtio_net_properties[] =3D {
->                        VIRTIO_NET_F_GUEST_USO6, true),
->      DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
->                        VIRTIO_NET_F_HOST_USO, true),
-> +    DEFINE_PROP_BIT64("in_order", VirtIONet, host_features,
-> +                      VIRTIO_F_IN_ORDER, true),
-> +    DEFINE_PROP_BIT64("notification_data", VirtIONet, host_features,
-> +                      VIRTIO_F_NOTIFICATION_DATA, true),
-
-This default=3Dtrue is wrong, and makes emulated devices show these
-features as available when they're not. You can test it by running
-qemu with the parameters:
-
--netdev tap,id=3Dhostnet0,vhost=3Doff -device virtio-net-pci,netdev=3Dhostn=
-et0,...
-
-The emulated device must support both features before making them tunnables=
-.
-
-On the other hand, all kinds of virtio devices can use in_order and
-notification_data, so they should be in
-include/hw/virtio/virtio.h:DEFINE_VIRTIO_COMMON_FEATURES. But not all
-of them benefit from in_order. One example of this is virtio-blk. It
-is usual that requests are completed out of order by the backend
-device, so my impression is that in_order will hurt its performance.
-I've never profiled it though, so I may be wrong :).
-
-Long story short: Maybe in_order should be false by default, and
-enabled just in virtio-net?
-
-You can see previous attempts of implementing this feature in qemu in
-[2]. CCing Guo too, as I don't know if he plans to continue this work
-soon.
-
-Please let me know if you need any help with these!
-
-Thanks!
-
-[1] https://www.qemu.org/docs/master/devel/migration/compatibility.html#how=
--backwards-compatibility-works
-[2] https://lists.gnu.org/archive/html/qemu-devel/2022-08/msg02772.html
-
->      DEFINE_PROP_END_OF_LIST(),
->  };
->
-> --
->
-
+Best regards,
+Ilya
 
