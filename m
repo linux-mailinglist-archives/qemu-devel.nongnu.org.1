@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A769832B71
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E26A832B75
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2z-0005t8-23; Fri, 19 Jan 2024 09:40:41 -0500
+	id 1rQq2l-0005mN-2X; Fri, 19 Jan 2024 09:40:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2f-0005mU-1I
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:22 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2d-0005m3-Nn
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:19 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003Sq-K0
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003TG-Dr
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=bGElSCUlpgiXi9G6rlQ4CqjB/wCRk8+IhyTwx+6S/MQ=; b=grwOX/lE+ffToN3IjaUdqQm2iG
- R8c3tBQ5vC5ty0ptbVtUhuaJz36DfZSEg4rxKXM/7OLHBgOXp00zG/+7t9OTJ8t8V1h0UcB7DbYw+
- ab0y3tDw+2S5o7pRn+mZGfMxNZH7ccDETNAe9PelZ60yfO1vq+lRxdZ8/P05Z8PHMKE8=;
+ bh=HGHmcwrFsDedpDfs3+LaapRdnSkQbjFoJJJVWFRxpII=; b=a9ZpVltxm+1/D5ON2xjzmtkekB
+ EMaTOu+5+RvJ+5bgNesO0WP54KIIzxLh6VdwdDK+0p0CAuFEDsM5gUcBeO0JaX6S2EqZdv9t5iXom
+ Eg2fsWf+3L8fgKTQ0tCIMYRYtBMRjLQ6VodYUXKxnL+oKScTzoQfbv6JOAq/K7xSJDgI=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 04/34] exec: [PAGE_VARY] Unpoison TARGET_PAGE_* macros for
- system mode
-Date: Fri, 19 Jan 2024 15:39:54 +0100
-Message-ID: <20240119144024.14289-5-anjo@rev.ng>
+Subject: [RFC PATCH 05/34] target/tricore: [VADDR] Use target_ulong for EA
+Date: Fri, 19 Jan 2024 15:39:55 +0100
+Message-ID: <20240119144024.14289-6-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,31 +60,56 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TARGET_PAGE_* are now target-independent for softmmu targets, and can
-safely be accessed common code.
+Prepares target for typedef'ing abi_ptr to vaddr.  Fixes sign extension
+bug that would result from abi_ptr being unsigned in the future.
+
+Necessary to make memory access function signatures target agnostic.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/poison.h | 2 ++
- 1 file changed, 2 insertions(+)
+ target/tricore/op_helper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index 1ea5633eb3..6d87954a91 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -46,10 +46,12 @@
- #pragma GCC poison TARGET_FMT_ld
- #pragma GCC poison TARGET_FMT_lu
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 89be1ed648..f57bb39d1f 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -2395,7 +2395,7 @@ static bool cdc_zero(target_ulong *psw)
+     return count == 0;
+ }
  
-+#ifdef CONFIG_USER_ONLY
- #pragma GCC poison TARGET_PAGE_SIZE
- #pragma GCC poison TARGET_PAGE_MASK
- #pragma GCC poison TARGET_PAGE_BITS
- #pragma GCC poison TARGET_PAGE_ALIGN
-+#endif
+-static void save_context_upper(CPUTriCoreState *env, int ea)
++static void save_context_upper(CPUTriCoreState *env, target_ulong ea)
+ {
+     cpu_stl_data(env, ea, env->PCXI);
+     cpu_stl_data(env, ea+4, psw_read(env));
+@@ -2415,7 +2415,7 @@ static void save_context_upper(CPUTriCoreState *env, int ea)
+     cpu_stl_data(env, ea+60, env->gpr_d[15]);
+ }
  
- #pragma GCC poison CPU_INTERRUPT_HARD
- #pragma GCC poison CPU_INTERRUPT_EXITTB
+-static void save_context_lower(CPUTriCoreState *env, int ea)
++static void save_context_lower(CPUTriCoreState *env, target_ulong ea)
+ {
+     cpu_stl_data(env, ea, env->PCXI);
+     cpu_stl_data(env, ea+4, env->gpr_a[11]);
+@@ -2435,7 +2435,7 @@ static void save_context_lower(CPUTriCoreState *env, int ea)
+     cpu_stl_data(env, ea+60, env->gpr_d[7]);
+ }
+ 
+-static void restore_context_upper(CPUTriCoreState *env, int ea,
++static void restore_context_upper(CPUTriCoreState *env, target_ulong ea,
+                                   target_ulong *new_PCXI, target_ulong *new_PSW)
+ {
+     *new_PCXI = cpu_ldl_data(env, ea);
+@@ -2456,7 +2456,7 @@ static void restore_context_upper(CPUTriCoreState *env, int ea,
+     env->gpr_d[15] = cpu_ldl_data(env, ea+60);
+ }
+ 
+-static void restore_context_lower(CPUTriCoreState *env, int ea,
++static void restore_context_lower(CPUTriCoreState *env, target_ulong ea,
+                                   target_ulong *ra, target_ulong *pcxi)
+ {
+     *pcxi = cpu_ldl_data(env, ea);
 -- 
 2.43.0
 
