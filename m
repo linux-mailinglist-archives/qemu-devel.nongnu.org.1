@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE54832922
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:44:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7786F832901
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:41:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQnAv-0003ai-LZ; Fri, 19 Jan 2024 06:36:41 -0500
+	id 1rQnB0-0003lZ-4h; Fri, 19 Jan 2024 06:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAt-0003ZV-Ik
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:39 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAx-0003fM-0j
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:43 -0500
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAq-0002om-QM
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:39 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-337c5bcf79fso602782f8f.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:36:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAu-0002pq-IN
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:42 -0500
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40e7065b7bdso7085905e9.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:36:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705664194; x=1706268994; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705664199; x=1706268999; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XRUeXWyyJ392ZohYjYrcHzpfLxHyioAU0c9SeFp2B+4=;
- b=U8SlidXbM8Y2dQEorClOwMLGiJs+pXPpw6EGVS1qq8ORi+ImOMGHZamC+MRDYO+jGI
- N1sd7Ndd2QUt0jYauMwXKT1wt0ppuxLuwXvIQ+lQHkb9KLtQ8oIKKT7o9BTvZZ9oHu8U
- PLPUpZwqsJ4djhBgmW5vLoY1eq0tJ1l9P8/u0oAN65ga9HrLO7NnHU+esySc5FMyz8T4
- zpq22KCSjXEuIZqzyTXBmXDTJHyc32UfjHH96lbAym3pNJ6zBgv0qWxdH2i/R3gB2ucI
- VUeAz7yCSPu1GwjaM3JlmtrE7IYJp5VIjCmN3ElJ0xjEfzwjEkLKE/43O7DAaTQ25q46
- aUdQ==
+ bh=1bDfprnFlfsfXltzGvRi/dALsYabn5U/Cj2d9HyuVIo=;
+ b=h8Cubpe3S+tE5+65/G+uhpZUJZLKVVUWbQtT7wwtTUQU8OABdqnMF21STV8TgzMTpB
+ rBu0Yw70GRw+koXNthMmD0slIs2cpNk1bx1Z6piK+XnCu7QVOkePmoZDtD1Y/yITHeP5
+ WGg9hyDWmxdZ4xp4OK4kvEUukDAFbULe0TaB+ZKRk/97DYW4mtzUt1g9vDdUEFrIamVD
+ N6ZFAg21BybvJr4vYURmHTc+q60KpAPaaPJ4Luu/Wp7EtXNkU8DrF08eMF+F0wYKAdGb
+ U3MIzOUkzMgjAyiqli23ybmxb8XpJ5K0GtbCn/raYcz5YQCwPkLTkvTGNW2iWdvDY2VK
+ Pf1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705664194; x=1706268994;
+ d=1e100.net; s=20230601; t=1705664199; x=1706268999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XRUeXWyyJ392ZohYjYrcHzpfLxHyioAU0c9SeFp2B+4=;
- b=IIoxR9Vlf10m5EC8XeegzjFB1+s/mALZG4J6511ZyJns8QuJqLoEMu9xBcNuY2v4qr
- sJGDdz6PFV6IJw/SpiFBrXM2/nc0JKgRL3BP9qS2o1uyVGokYcwAdZ6+u7Mi98RY3Rt3
- JxvnmBXVjOhZ3cB5rB4JUk7W4OJXDZldretoP4ok/HulOrzhLN+SGRjVjQFcPI51K8iR
- /pdMiGIvtZD3stCni7fZXLGNW8/ngnGbDlBQ7C/YlkeqfVfE5tq5xaInSFeEGOvKWfOE
- /0Q7j1rvogsBxuWNhfT+6txnsyUP0vPJWD6HQjsBqpltGC2Yc5ltGiDuW16E6K8uX1B6
- jSgw==
-X-Gm-Message-State: AOJu0YxKyz1xideED9UMoEQhKukPKN7gWkmm5kbMax4GTqgCfgcILc0J
- Ose1jhBrJCKK0oyx618IGh6VDhUdE9Sew6Io+UhvkOk48sGegtahlrMIMuhUJsAn3VD/KyVkLxA
- jiPqAJg==
-X-Google-Smtp-Source: AGHT+IGj75N26ZT3ZOq7omXVoZFMqbnYR23Hs+dWcYwTne9hE7wDiuiR0snF9EPNVkl2lhYt9iYgSQ==
-X-Received: by 2002:a7b:c3d4:0:b0:40e:89a4:27dc with SMTP id
- t20-20020a7bc3d4000000b0040e89a427dcmr1430853wmj.106.1705664194508; 
- Fri, 19 Jan 2024 03:36:34 -0800 (PST)
+ bh=1bDfprnFlfsfXltzGvRi/dALsYabn5U/Cj2d9HyuVIo=;
+ b=pLJORAzt24QFsxUMoTbHvb2VO/jF7LotldOwt1UQwcykoMi1tmT1d8PPQhEBMlbjdu
+ hrE3g+aB60KHfUBIJ5ECkMy/SWC9jlhRHjN7KCLPn3jPMDsFg009E4QTuvTmw29PWQd9
+ PL9yYlydZ754c5d2/TCX/Fw3LZFiUDj2IpUkulSyIyu3ZFjpQ4GwShEMfJkIA3oOKkZN
+ g/14EGXKA8KSjYh5W4IpGdkbl7GrRQRnJ5AHa5D/2VtkR9KytlYnCyyGfW1koWk48ehE
+ 3iGFHGDVSYIZsImsaLpIKmLcpdnLJ4y5auanNkENbNnbMpe1x5NnIxT+iLuf8gAZ3TLy
+ gp+Q==
+X-Gm-Message-State: AOJu0Yxv2Hktgyz2Rl9lhn53MxjB29FNMi/ngpR3ySutGV7FsuJSMPZH
+ QD9GFi2c/u1j/oLDpGc033VvjKXrnfu0YP8zO+4/w2Rjq0eCgIXhIK9iXSE14IhBTZCjR0Nyeci
+ dxX+1yg==
+X-Google-Smtp-Source: AGHT+IG4O5u9L95Ke2IEnxuqTvJvjGgz+CBHCwnqrlxnxyZLRADIJlXsXZawf3rRKA6P8+NHKR2xZw==
+X-Received: by 2002:a05:600c:4313:b0:40d:94da:ff40 with SMTP id
+ p19-20020a05600c431300b0040d94daff40mr912937wme.195.1705664198876; 
+ Fri, 19 Jan 2024 03:36:38 -0800 (PST)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- r20-20020a05600c35d400b0040d8eca092esm32803585wmq.47.2024.01.19.03.36.33
+ h5-20020a05600c314500b0040e5e21cd7bsm28384501wmo.11.2024.01.19.03.36.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 03:36:34 -0800 (PST)
+ Fri, 19 Jan 2024 03:36:38 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PULL 19/36] hw/pflash: use ldn_{be,le}_p and stn_{be,le}_p
-Date: Fri, 19 Jan 2024 12:34:48 +0100
-Message-ID: <20240119113507.31951-20-philmd@linaro.org>
+Subject: [PULL 20/36] hw/pflash: implement update buffer for block writes
+Date: Fri, 19 Jan 2024 12:34:49 +0100
+Message-ID: <20240119113507.31951-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240119113507.31951-1-philmd@linaro.org>
 References: <20240119113507.31951-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,100 +96,262 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gerd Hoffmann <kraxel@redhat.com>
 
-Use the helper functions we have to read/write multi-byte values
-in correct byte order.
+Add an update buffer where all block updates are staged.
+Flush or discard updates properly, so we should never see
+half-completed block writes in pflash storage.
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Drop a bunch of FIXME comments ;)
+
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240108160900.104835-3-kraxel@redhat.com>
+Message-ID: <20240108160900.104835-4-kraxel@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/pflash_cfi01.c | 63 ++++++-----------------------------------
- 1 file changed, 8 insertions(+), 55 deletions(-)
+ hw/block/pflash_cfi01.c | 110 ++++++++++++++++++++++++++++++----------
+ hw/block/pflash_cfi02.c |   2 +-
+ hw/block/trace-events   |   7 ++-
+ 3 files changed, 89 insertions(+), 30 deletions(-)
 
 diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index 67f1c9773a..8434a45cab 100644
+index 8434a45cab..f956f8bcf7 100644
 --- a/hw/block/pflash_cfi01.c
 +++ b/hw/block/pflash_cfi01.c
-@@ -225,34 +225,10 @@ static uint32_t pflash_data_read(PFlashCFI01 *pfl, hwaddr offset,
-     uint32_t ret;
+@@ -80,16 +80,39 @@ struct PFlashCFI01 {
+     uint16_t ident3;
+     uint8_t cfi_table[0x52];
+     uint64_t counter;
+-    unsigned int writeblock_size;
++    uint32_t writeblock_size;
+     MemoryRegion mem;
+     char *name;
+     void *storage;
+     VMChangeStateEntry *vmstate;
+     bool old_multiple_chip_handling;
++
++    /* block update buffer */
++    unsigned char *blk_bytes;
++    uint32_t blk_offset;
+ };
  
-     p = pfl->storage;
--    switch (width) {
--    case 1:
--        ret = p[offset];
--        break;
--    case 2:
--        if (be) {
--            ret = p[offset] << 8;
--            ret |= p[offset + 1];
--        } else {
--            ret = p[offset];
--            ret |= p[offset + 1] << 8;
--        }
--        break;
--    case 4:
--        if (be) {
--            ret = p[offset] << 24;
--            ret |= p[offset + 1] << 16;
--            ret |= p[offset + 2] << 8;
--            ret |= p[offset + 3];
--        } else {
--            ret = p[offset];
--            ret |= p[offset + 1] << 8;
--            ret |= p[offset + 2] << 16;
--            ret |= p[offset + 3] << 24;
--        }
--        break;
--    default:
--        abort();
-+    if (be) {
-+        ret = ldn_be_p(p + offset, width);
-+    } else {
-+        ret = ldn_le_p(p + offset, width);
-     }
-     trace_pflash_data_read(pfl->name, offset, width, ret);
-     return ret;
-@@ -408,34 +384,11 @@ static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
-     trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
-     p = pfl->storage + offset;
+ static int pflash_post_load(void *opaque, int version_id);
  
--    switch (width) {
--    case 1:
--        p[0] = value;
--        break;
--    case 2:
--        if (be) {
--            p[0] = value >> 8;
--            p[1] = value;
--        } else {
--            p[0] = value;
--            p[1] = value >> 8;
--        }
--        break;
--    case 4:
--        if (be) {
--            p[0] = value >> 24;
--            p[1] = value >> 16;
--            p[2] = value >> 8;
--            p[3] = value;
--        } else {
--            p[0] = value;
--            p[1] = value >> 8;
--            p[2] = value >> 16;
--            p[3] = value >> 24;
--        }
--        break;
-+    if (be) {
-+        stn_be_p(p, width, value);
-+    } else {
-+        stn_le_p(p, width, value);
++static bool pflash_blk_write_state_needed(void *opaque)
++{
++    PFlashCFI01 *pfl = opaque;
++
++    return (pfl->blk_offset != -1);
++}
++
++static const VMStateDescription vmstate_pflash_blk_write = {
++    .name = "pflash_cfi01_blk_write",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = pflash_blk_write_state_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_VBUFFER_UINT32(blk_bytes, PFlashCFI01, 0, NULL, writeblock_size),
++        VMSTATE_UINT32(blk_offset, PFlashCFI01),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_pflash = {
+     .name = "pflash_cfi01",
+     .version_id = 1,
+@@ -101,6 +124,10 @@ static const VMStateDescription vmstate_pflash = {
+         VMSTATE_UINT8(status, PFlashCFI01),
+         VMSTATE_UINT64(counter, PFlashCFI01),
+         VMSTATE_END_OF_LIST()
++    },
++    .subsections = (const VMStateDescription * const []) {
++        &vmstate_pflash_blk_write,
++        NULL
      }
--
+ };
+ 
+@@ -376,13 +403,55 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
+     }
  }
  
- static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
++/* copy current flash content to block update buffer */
++static void pflash_blk_write_start(PFlashCFI01 *pfl, hwaddr offset)
++{
++    hwaddr mask = ~(pfl->writeblock_size - 1);
++
++    trace_pflash_write_block_start(pfl->name, pfl->counter);
++    pfl->blk_offset = offset & mask;
++    memcpy(pfl->blk_bytes, pfl->storage + pfl->blk_offset,
++           pfl->writeblock_size);
++}
++
++/* commit block update buffer changes */
++static void pflash_blk_write_flush(PFlashCFI01 *pfl)
++{
++    g_assert(pfl->blk_offset != -1);
++    trace_pflash_write_block_flush(pfl->name);
++    memcpy(pfl->storage + pfl->blk_offset, pfl->blk_bytes,
++           pfl->writeblock_size);
++    pflash_update(pfl, pfl->blk_offset, pfl->writeblock_size);
++    pfl->blk_offset = -1;
++}
++
++/* discard block update buffer changes */
++static void pflash_blk_write_abort(PFlashCFI01 *pfl)
++{
++    trace_pflash_write_block_abort(pfl->name);
++    pfl->blk_offset = -1;
++}
++
+ static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
+                                      uint32_t value, int width, int be)
+ {
+     uint8_t *p;
+ 
+-    trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
+-    p = pfl->storage + offset;
++    if (pfl->blk_offset != -1) {
++        /* block write: redirect writes to block update buffer */
++        if ((offset < pfl->blk_offset) ||
++            (offset + width > pfl->blk_offset + pfl->writeblock_size)) {
++            pfl->status |= 0x10; /* Programming error */
++            return;
++        }
++        trace_pflash_data_write_block(pfl->name, offset, width, value,
++                                      pfl->counter);
++        p = pfl->blk_bytes + (offset - pfl->blk_offset);
++    } else {
++        /* write directly to storage */
++        trace_pflash_data_write(pfl->name, offset, width, value);
++        p = pfl->storage + offset;
++    }
+ 
+     if (be) {
+         stn_be_p(p, width, value);
+@@ -503,9 +572,9 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+             } else {
+                 value = extract32(value, 0, pfl->bank_width * 8);
+             }
+-            trace_pflash_write_block(pfl->name, value);
+             pfl->counter = value;
+             pfl->wcycle++;
++            pflash_blk_write_start(pfl, offset);
+             break;
+         case 0x60:
+             if (cmd == 0xd0) {
+@@ -536,12 +605,7 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+         switch (pfl->cmd) {
+         case 0xe8: /* Block write */
+             /* FIXME check @offset, @width */
+-            if (!pfl->ro) {
+-                /*
+-                 * FIXME writing straight to memory is *wrong*.  We
+-                 * should write to a buffer, and flush it to memory
+-                 * only on confirm command (see below).
+-                 */
++            if (!pfl->ro && (pfl->blk_offset != -1)) {
+                 pflash_data_write(pfl, offset, value, width, be);
+             } else {
+                 pfl->status |= 0x10; /* Programming error */
+@@ -550,18 +614,8 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+             pfl->status |= 0x80;
+ 
+             if (!pfl->counter) {
+-                hwaddr mask = pfl->writeblock_size - 1;
+-                mask = ~mask;
+-
+                 trace_pflash_write(pfl->name, "block write finished");
+                 pfl->wcycle++;
+-                if (!pfl->ro) {
+-                    /* Flush the entire write buffer onto backing storage.  */
+-                    /* FIXME premature! */
+-                    pflash_update(pfl, offset & mask, pfl->writeblock_size);
+-                } else {
+-                    pfl->status |= 0x10; /* Programming error */
+-                }
+             }
+ 
+             pfl->counter--;
+@@ -573,20 +627,17 @@ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
+     case 3: /* Confirm mode */
+         switch (pfl->cmd) {
+         case 0xe8: /* Block write */
+-            if (cmd == 0xd0) {
+-                /* FIXME this is where we should write out the buffer */
++            if ((cmd == 0xd0) && !(pfl->status & 0x10)) {
++                pflash_blk_write_flush(pfl);
+                 pfl->wcycle = 0;
+                 pfl->status |= 0x80;
+             } else {
+-                qemu_log_mask(LOG_UNIMP,
+-                    "%s: Aborting write to buffer not implemented,"
+-                    " the data is already written to storage!\n"
+-                    "Flash device reset into READ mode.\n",
+-                    __func__);
++                pflash_blk_write_abort(pfl);
+                 goto mode_read_array;
+             }
+             break;
+         default:
++            pflash_blk_write_abort(pfl);
+             goto error_flash;
+         }
+         break;
+@@ -820,6 +871,9 @@ static void pflash_cfi01_realize(DeviceState *dev, Error **errp)
+     pfl->cmd = 0x00;
+     pfl->status = 0x80; /* WSM ready */
+     pflash_cfi01_fill_cfi_table(pfl);
++
++    pfl->blk_bytes = g_malloc(pfl->writeblock_size);
++    pfl->blk_offset = -1;
+ }
+ 
+ static void pflash_cfi01_system_reset(DeviceState *dev)
+@@ -839,6 +893,8 @@ static void pflash_cfi01_system_reset(DeviceState *dev)
+      * This model deliberately ignores this delay.
+      */
+     pfl->status = 0x80;
++
++    pfl->blk_offset = -1;
+ }
+ 
+ static Property pflash_cfi01_properties[] = {
+diff --git a/hw/block/pflash_cfi02.c b/hw/block/pflash_cfi02.c
+index 2a99b286b0..6fa56f14c0 100644
+--- a/hw/block/pflash_cfi02.c
++++ b/hw/block/pflash_cfi02.c
+@@ -546,7 +546,7 @@ static void pflash_write(void *opaque, hwaddr offset, uint64_t value,
+                 }
+                 goto reset_flash;
+             }
+-            trace_pflash_data_write(pfl->name, offset, width, value, 0);
++            trace_pflash_data_write(pfl->name, offset, width, value);
+             if (!pfl->ro) {
+                 p = (uint8_t *)pfl->storage + offset;
+                 if (pfl->be) {
+diff --git a/hw/block/trace-events b/hw/block/trace-events
+index bab21d3a1c..cc9a9f2460 100644
+--- a/hw/block/trace-events
++++ b/hw/block/trace-events
+@@ -12,7 +12,8 @@ fdctrl_tc_pulse(int level) "TC pulse: %u"
+ pflash_chip_erase_invalid(const char *name, uint64_t offset) "%s: chip erase: invalid address 0x%" PRIx64
+ pflash_chip_erase_start(const char *name) "%s: start chip erase"
+ pflash_data_read(const char *name, uint64_t offset, unsigned size, uint32_t value) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x"
+-pflash_data_write(const char *name, uint64_t offset, unsigned size, uint32_t value, uint64_t counter) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x counter:0x%016"PRIx64
++pflash_data_write(const char *name, uint64_t offset, unsigned size, uint32_t value) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x"
++pflash_data_write_block(const char *name, uint64_t offset, unsigned size, uint32_t value, uint64_t counter) "%s: data offset:0x%04"PRIx64" size:%u value:0x%04x counter:0x%016"PRIx64
+ pflash_device_id(const char *name, uint16_t id) "%s: read device ID: 0x%04x"
+ pflash_device_info(const char *name, uint64_t offset) "%s: read device information offset:0x%04" PRIx64
+ pflash_erase_complete(const char *name) "%s: sector erase complete"
+@@ -32,7 +33,9 @@ pflash_unlock0_failed(const char *name, uint64_t offset, uint8_t cmd, uint16_t a
+ pflash_unlock1_failed(const char *name, uint64_t offset, uint8_t cmd) "%s: unlock0 failed 0x%" PRIx64 " 0x%02x"
+ pflash_unsupported_device_configuration(const char *name, uint8_t width, uint8_t max) "%s: unsupported device configuration: device_width:%d max_device_width:%d"
+ pflash_write(const char *name, const char *str) "%s: %s"
+-pflash_write_block(const char *name, uint32_t value) "%s: block write: bytes:0x%x"
++pflash_write_block_start(const char *name, uint32_t value) "%s: block write start: bytes:0x%x"
++pflash_write_block_flush(const char *name) "%s: block write flush"
++pflash_write_block_abort(const char *name) "%s: block write abort"
+ pflash_write_block_erase(const char *name, uint64_t offset, uint64_t len) "%s: block erase offset:0x%" PRIx64 " bytes:0x%" PRIx64
+ pflash_write_failed(const char *name, uint64_t offset, uint8_t cmd) "%s: command failed 0x%" PRIx64 " 0x%02x"
+ pflash_write_invalid(const char *name, uint8_t cmd) "%s: invalid write for command 0x%02x"
 -- 
 2.41.0
 
