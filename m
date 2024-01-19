@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8347B8328A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4A983289F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:15:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQmpj-0007aI-Bo; Fri, 19 Jan 2024 06:14:47 -0500
+	id 1rQmpi-0007Zs-E3; Fri, 19 Jan 2024 06:14:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rQmpa-0007Wq-Rq
+ id 1rQmpa-0007Wu-UN
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:14:40 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rQmpU-0007Ju-Ko
+ id 1rQmpW-0007KC-F6
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:14:37 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a2c375d2430so71724466b.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:14:31 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-55817a12ad8so776988a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:14:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705662870; x=1706267670; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705662871; x=1706267671; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=axwu9OirAAbfzNHj3iKrYWOaH6e1S20UxGk7oz9UvVY=;
- b=w2mbi0dv13ztU+bxrBMwatv5EXYcDuW4HQILSS/RCKWZqfqa0Icu6gkIrZC8FUTdY8
- +nlo9Kw1GrZXYd9ujl/5XCwAPV3HQqN6+p1R8UsoiXZgbRyKzcYHq88pxhD4GCWXuID/
- h8doPxrnXKUG1t+wnE1N419e2+CD/WTCw7l2pKG2FvWDJ0Fum8pxYH1tNxsLRqztBlyR
- GDBwgP4hP5r1Q8SwOJ3grDxJsPo/G7NOVohI8hkIf4bxyvTwNBnxN8w6Fphaq8MCIZaj
- s2iRUdj2J5zqO0qL/nMimF7jjy/OVDU4CHveAMb6YJrA8fA70oECdY87Dtk3rl8Ez4JH
- aNGw==
+ bh=dRdxU4Ux/WYb9oau9qsh6pPUNLeWhKGZpVjne6FmQCA=;
+ b=OWqPsV4J+vXld/gHwUir8zxMW+2QsCxk2FP0bsQngAO1bnQUZORT8Yp2yWYl8J1TYk
+ f952ZOnAMC2Bsl4ruki5ADtoD5UhpCkMgMo/UATgmH+iu8gX3TNFO1BXJ3xIpUHToteS
+ ciFWhjfuyt8tg2iRc5EMl7QAElEkoN6LEloDAhdulqVU+Ba7XzVEvLTZS3fcR8eiQIUG
+ JBUgRZQ0LQl+ZikkPy96ETlPy/D45LUob3WyoW6BuVHuk4GYdTHMQj20oizmTIRvpq2G
+ HTpIk1ux0dwVlQ+ePLPbQ5OkxWegSuFlh82XfgtjIFgI4hwu1s+sZf9phRqKw0sjwTLL
+ joCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705662870; x=1706267670;
+ d=1e100.net; s=20230601; t=1705662871; x=1706267671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=axwu9OirAAbfzNHj3iKrYWOaH6e1S20UxGk7oz9UvVY=;
- b=QwVNj9saBKMyvY5QfeG5k3Ee+mBidL6USlQu4VeC9GGJMpGAUDOuWrg302rHMFHRgY
- mSytz/kHdIv1SiLZSqCWzhDAxJ2ksgtCa0PdrP30bdZqcpwzhXTW+e1JD4Um9vJG5JIb
- vbK5/bjVPCh1O2L8jVs8txV0hs5m5S2/CGWZ3OQurW95Peeooo6lnoFTP+E4aWT6LtqE
- j4pHDk7L8pQBboRkWbxTZuLKoP8+bgNHSy38a1HqPy7YKGlt1RdzAGvSWyMKUPPUdly7
- aRNbUm4Rk0R/hv0UeelupoH9sY0WXaL3NW/KbZ/KzvDJisjC4j9+0uOqPZ/HvxDanF+b
- TnlA==
-X-Gm-Message-State: AOJu0YyDkuF3smg+BYul1Ash5V+YmA2VGKZHpaTflB8bhkKCaAQOM0bC
- eFqM9ftsDvIDg+YFy4RuuHxAdmfYz+/TH2IldsX3WN1PArzi4HVT+SxKERKm6Ksg4vI4QRnDHEe
- RWbc=
-X-Google-Smtp-Source: AGHT+IHARoneApKjgPLy58+Put03cP3Oze0dmwhxjxb5Lpeq9M94R8OhG7zIpSvJ9lel5kPZR1bh1g==
-X-Received: by 2002:a17:907:d510:b0:a2f:3f0f:964c with SMTP id
- wb16-20020a170907d51000b00a2f3f0f964cmr950846ejc.98.1705662870043; 
- Fri, 19 Jan 2024 03:14:30 -0800 (PST)
+ bh=dRdxU4Ux/WYb9oau9qsh6pPUNLeWhKGZpVjne6FmQCA=;
+ b=S2bwR7VTK7l22KEOlOY4tM55dq0MIpRA3BBLLS3YD1fP1g43cibBqWIvcKMwXMxbDl
+ jeNPLu9ZNREu920pB6h0otVl17ISJSdgG3pcFvBfkBmJtT5HjIaRGh/OBWjyWqgXSH+f
+ s2+f7sPmFQQPt9nM97IIlZNcLE0FQUaBJT8zbeC/WtvvsM9QA7Sb/iZnccm/7BvawdMM
+ IxGr+67gC7m4rrzYynfsFKq/1t0LOARswmMedbEpztu6s4/SihLZ6YW9CMD0r+WwxE6h
+ pZ/sWsJayoZAOnpV92FdMjPpqXJYAcW77JMfDVxbkTw5VKkUWXecencThiIG1+5Zrxbg
+ N0CQ==
+X-Gm-Message-State: AOJu0YyQZtRnAeNYYfDIInVCCzTTVEdKZJp+0ndPCdrGHVouXDwAAOhL
+ eqcHm0KLz4cOkLBqj0UhrC36UxAmJCXwDBn48h4FSuzOhyR3Qlic5USsLJzSATg2z5VxQ3mbnOL
+ yEBY=
+X-Google-Smtp-Source: AGHT+IF+7XPCWKeLDrzf6iHr4qRyOyhOD+FEWclxYKDEEIwHcmnG5F2DBjnw5UTyO1yybUu3tkl6kw==
+X-Received: by 2002:a17:906:f190:b0:a26:ea22:e62b with SMTP id
+ gs16-20020a170906f19000b00a26ea22e62bmr1295323ejb.43.1705662871389; 
+ Fri, 19 Jan 2024 03:14:31 -0800 (PST)
 Received: from localhost.localdomain (adsl-114.109.242.227.tellas.gr.
  [109.242.227.114]) by smtp.gmail.com with ESMTPSA id
- vq9-20020a170907a4c900b00a2ca97242d5sm9283321ejc.120.2024.01.19.03.14.28
+ vq9-20020a170907a4c900b00a2ca97242d5sm9283321ejc.120.2024.01.19.03.14.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jan 2024 03:14:29 -0800 (PST)
+ Fri, 19 Jan 2024 03:14:31 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 2/6] hw/arm/strongarm.c: convert DPRINTF to tracepoints
-Date: Fri, 19 Jan 2024 13:14:20 +0200
-Message-Id: <3c6fbd73a14fdf120a6b0c1e168e5469acd00306.1705662313.git.manos.pitsidianakis@linaro.org>
+Subject: [PATCH 3/6] hw/arm/xen_arm.c: convert DPRINTF to tracepoints
+Date: Fri, 19 Jan 2024 13:14:21 +0200
+Message-Id: <49905a0d22aa80956645d6dd74e9bc098c56555b.1705662313.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1705662313.git.manos.pitsidianakis@linaro.org>
 References: <cover.1705662313.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,215 +104,109 @@ into tracepoints.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/arm/strongarm.c  | 49 +++++++++++++++++++--------------------------
- hw/arm/trace-events | 18 +++++++++++++++++
- 2 files changed, 39 insertions(+), 28 deletions(-)
+ hw/arm/trace-events |  7 +++++++
+ hw/arm/xen_arm.c    | 26 +++++++++++++++-----------
+ 2 files changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/hw/arm/strongarm.c b/hw/arm/strongarm.c
-index fef3638aca..3ff748e826 100644
---- a/hw/arm/strongarm.c
-+++ b/hw/arm/strongarm.c
-@@ -46,8 +46,7 @@
- #include "qemu/cutils.h"
- #include "qemu/log.h"
- #include "qom/object.h"
--
--//#define DEBUG
-+#include "trace.h"
- 
- /*
-  TODO
-@@ -66,12 +65,6 @@
-  - Enhance UART with modem signals
-  */
- 
--#ifdef DEBUG
--# define DPRINTF(format, ...) printf(format , ## __VA_ARGS__)
--#else
--# define DPRINTF(format, ...) do { } while (0)
--#endif
--
- static struct {
-     hwaddr io_base;
-     int irq;
-@@ -151,8 +144,7 @@ static uint64_t strongarm_pic_mem_read(void *opaque, hwaddr offset,
-     case ICPR:
-         return s->pending;
-     default:
--        printf("%s: Bad register offset 0x" HWADDR_FMT_plx "\n",
--                        __func__, offset);
-+        trace_strongarm_pic_mem_read(offset);
-         return 0;
-     }
- }
-@@ -173,8 +165,7 @@ static void strongarm_pic_mem_write(void *opaque, hwaddr offset,
-         s->int_idle = (value & 1) ? 0 : ~0;
-         break;
-     default:
--        printf("%s: Bad register offset 0x" HWADDR_FMT_plx "\n",
--                        __func__, offset);
-+        trace_strongarm_pic_mem_write(offset);
-         break;
-     }
-     strongarm_pic_update(s);
-@@ -333,7 +324,7 @@ static uint64_t strongarm_rtc_read(void *opaque, hwaddr addr,
-                 ((qemu_clock_get_ms(rtc_clock) - s->last_hz) << 15) /
-                 (1000 * ((s->rttr & 0xffff) + 1));
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_rtc_read(addr);
-         return 0;
-     }
- }
-@@ -375,7 +366,7 @@ static void strongarm_rtc_write(void *opaque, hwaddr addr,
-         break;
- 
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_rtc_write(addr);
-     }
- }
- 
-@@ -581,7 +572,7 @@ static uint64_t strongarm_gpio_read(void *opaque, hwaddr offset,
-         return s->status;
- 
-     default:
--        printf("%s: Bad offset 0x" HWADDR_FMT_plx "\n", __func__, offset);
-+        trace_strongarm_gpio_read(offset);
-     }
- 
-     return 0;
-@@ -626,7 +617,7 @@ static void strongarm_gpio_write(void *opaque, hwaddr offset,
-         break;
- 
-     default:
--        printf("%s: Bad offset 0x" HWADDR_FMT_plx "\n", __func__, offset);
-+        trace_strongarm_gpio_write(offset);
-     }
- }
- 
-@@ -782,7 +773,7 @@ static uint64_t strongarm_ppc_read(void *opaque, hwaddr offset,
-         return s->ppfr | ~0x7f001;
- 
-     default:
--        printf("%s: Bad offset 0x" HWADDR_FMT_plx "\n", __func__, offset);
-+        trace_strongarm_ppc_read(offset);
-     }
- 
-     return 0;
-@@ -817,7 +808,7 @@ static void strongarm_ppc_write(void *opaque, hwaddr offset,
-         break;
- 
-     default:
--        printf("%s: Bad offset 0x" HWADDR_FMT_plx "\n", __func__, offset);
-+        trace_strongarm_ppc_write(offset);
-     }
- }
- 
-@@ -1029,8 +1020,11 @@ static void strongarm_uart_update_parameters(StrongARMUARTState *s)
-     s->char_transmit_time =  (NANOSECONDS_PER_SECOND / speed) * frame_size;
-     qemu_chr_fe_ioctl(&s->chr, CHR_IOCTL_SERIAL_SET_PARAMS, &ssp);
- 
--    DPRINTF(stderr, "%s speed=%d parity=%c data=%d stop=%d\n", s->chr->label,
--            speed, parity, data_bits, stop_bits);
-+    trace_strongarm_uart_update_parameters(s->chr.chr->label?:"NULL",
-+                                           speed,
-+                                           parity,
-+                                           data_bits,
-+                                           stop_bits);
- }
- 
- static void strongarm_uart_rx_to(void *opaque)
-@@ -1164,7 +1158,7 @@ static uint64_t strongarm_uart_read(void *opaque, hwaddr addr,
-         return s->utsr1;
- 
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_uart_read_bad_register(addr);
-         return 0;
-     }
- }
-@@ -1221,7 +1215,7 @@ static void strongarm_uart_write(void *opaque, hwaddr addr,
-         break;
- 
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_uart_write_bad_register(addr);
-     }
- }
- 
-@@ -1434,7 +1428,7 @@ static uint64_t strongarm_ssp_read(void *opaque, hwaddr addr,
-             return 0xffffffff;
-         }
-         if (s->rx_level < 1) {
--            printf("%s: SSP Rx Underrun\n", __func__);
-+            trace_strongarm_ssp_read_underrun();
-             return 0xffffffff;
-         }
-         s->rx_level--;
-@@ -1443,7 +1437,7 @@ static uint64_t strongarm_ssp_read(void *opaque, hwaddr addr,
-         strongarm_ssp_fifo_update(s);
-         return retval;
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_ssp_read(addr);
-         break;
-     }
-     return 0;
-@@ -1458,8 +1452,7 @@ static void strongarm_ssp_write(void *opaque, hwaddr addr,
-     case SSCR0:
-         s->sscr[0] = value & 0xffbf;
-         if ((s->sscr[0] & SSCR0_SSE) && SSCR0_DSS(value) < 4) {
--            printf("%s: Wrong data size: %i bits\n", __func__,
--                   (int)SSCR0_DSS(value));
-+            trace_strongarm_ssp_write_wrong_data_size((int)SSCR0_DSS(value));
-         }
-         if (!(value & SSCR0_SSE)) {
-             s->sssr = 0;
-@@ -1471,7 +1464,7 @@ static void strongarm_ssp_write(void *opaque, hwaddr addr,
-     case SSCR1:
-         s->sscr[1] = value & 0x2f;
-         if (value & SSCR1_LBM) {
--            printf("%s: Attempt to use SSP LBM mode\n", __func__);
-+            trace_strongarm_ssp_write_wrong_data_size_invalid();
-         }
-         strongarm_ssp_fifo_update(s);
-         break;
-@@ -1509,7 +1502,7 @@ static void strongarm_ssp_write(void *opaque, hwaddr addr,
-         break;
- 
-     default:
--        printf("%s: Bad register 0x" HWADDR_FMT_plx "\n", __func__, addr);
-+        trace_strongarm_ssp_write_bad_register(addr);
-         break;
-     }
- }
 diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-index a262ad2e6a..a6a67d5f16 100644
+index a6a67d5f16..e3f5d677d7 100644
 --- a/hw/arm/trace-events
 +++ b/hw/arm/trace-events
-@@ -63,3 +63,21 @@ z2_lcd_invalid_command(uint8_t value) "0x%x"
- z2_aer915_send_too_log(int8_t msg) "message too long (%i bytes)"
- z2_aer915_send(uint8_t reg, uint8_t value) "reg %d value 0x%02x"
- z2_aer915_i2c_start_recv(uint16_t len) "I2C_START_RECV: short message with len %d"
+@@ -81,3 +81,10 @@ strongarm_ssp_read(uint64_t addr) "Bad register 0x%zu"
+ strongarm_ssp_write_wrong_data_size(int v) "Wrong data size: %i bits"
+ strongarm_ssp_write_wrong_data_size_invalid(void) "Attempt to use SSP LBM mode"
+ strongarm_ssp_write_bad_register(uint64_t addr) "Bad register 0x%zu"
 +
-+# strongarm.c
-+strongarm_uart_update_parameters(const char *label, int speed, char parity, int data_bits, int stop_bits) "%s speed=%d parity=%c data=%d stop=%d"
-+strongarm_uart_read_bad_register(uint64_t addr) "Bad uart register 0x%zu"
-+strongarm_uart_write_bad_register(uint64_t addr) "Bad uart register 0x%zu"
-+strongarm_pic_mem_read(uint64_t offset) "Bad pic mem register read offset 0x%zu"
-+strongarm_pic_mem_write(uint64_t offset) "Bad pic mem register write offset 0x%zu"
-+strongarm_rtc_read(uint64_t addr) "Bad rtc register read 0x%zu"
-+strongarm_rtc_write(uint64_t addr) "Bad rtc register write 0x%zu"
-+strongarm_gpio_read(uint64_t offset) "Bad gpio read offset 0x%zu"
-+strongarm_gpio_write(uint64_t offset) "Bad gpio write offset 0x%zu"
-+strongarm_ppc_write(uint64_t offset) "Bad ppc write offset 0x%zu"
-+strongarm_ppc_read(uint64_t offset) "Bad ppc write offset 0x%zu"
-+strongarm_ssp_read_underrun(void) "SSP Rx Underrun"
-+strongarm_ssp_read(uint64_t addr) "Bad register 0x%zu"
-+strongarm_ssp_write_wrong_data_size(int v) "Wrong data size: %i bits"
-+strongarm_ssp_write_wrong_data_size_invalid(void) "Attempt to use SSP LBM mode"
-+strongarm_ssp_write_bad_register(uint64_t addr) "Bad register 0x%zu"
++# xen_arm.c
++xen_create_virtio_mmio_devices(int i, int irq, uint64_t base) "Created virtio-mmio device %d: irq %d base 0x%lx"
++xen_init_ram(const char *hi_xor_low, uint64_t base, uint64_t size) "Initialized region xen.ram.%s: base 0x%lx size 0x%lx"
++xen_enable_tpm_not_found(void) "Couldn't find tmp0 backend"
++xen_enable_tpm(uint64_t addr) "Connected tpmdev at address 0x%lx"
++xen_arm_init(const char *msg) "%s"
+diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
+index a5631529d0..a024117d22 100644
+--- a/hw/arm/xen_arm.c
++++ b/hw/arm/xen_arm.c
+@@ -34,6 +34,7 @@
+ #include "hw/xen/xen-hvm-common.h"
+ #include "sysemu/tpm.h"
+ #include "hw/xen/arch_hvm.h"
++#include "trace.h"
+ 
+ #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
+ OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
+@@ -91,8 +92,9 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
+ 
+         sysbus_create_simple("virtio-mmio", base, irq);
+ 
+-        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
+-                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
++        trace_xen_create_virtio_mmio_devices(i,
++                                             GUEST_VIRTIO_MMIO_SPI_FIRST + i,
++                                             base);
+     }
+ }
+ 
+@@ -117,15 +119,13 @@ static void xen_init_ram(MachineState *machine)
+     memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
+                              GUEST_RAM0_BASE, ram_size[0]);
+     memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
+-    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
+-            GUEST_RAM0_BASE, ram_size[0]);
++    trace_xen_init_ram("lo", GUEST_RAM0_BASE, ram_size[0]);
+ 
+     if (ram_size[1] > 0) {
+         memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
+                                  GUEST_RAM1_BASE, ram_size[1]);
+         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
+-        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
+-                GUEST_RAM1_BASE, ram_size[1]);
++        trace_xen_init_ram("hi", GUEST_RAM1_BASE, ram_size[1]);
+     }
+ }
+ 
+@@ -158,7 +158,7 @@ static void xen_enable_tpm(XenArmState *xam)
+ 
+     TPMBackend *be = qemu_find_tpm_be("tpm0");
+     if (be == NULL) {
+-        DPRINTF("Couldn't fine the backend for tpm0\n");
++        trace_xen_enable_tpm_not_found();
+         return;
+     }
+     dev = qdev_new(TYPE_TPM_TIS_SYSBUS);
+@@ -168,7 +168,7 @@ static void xen_enable_tpm(XenArmState *xam)
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, xam->cfg.tpm_base_addr);
+ 
+-    DPRINTF("Connected tpmdev at address 0x%lx\n", xam->cfg.tpm_base_addr);
++    trace_xen_enable_tpm(xam->cfg.tpm_base_addr);
+ }
+ #endif
+ 
+@@ -179,8 +179,11 @@ static void xen_arm_init(MachineState *machine)
+     xam->state =  g_new0(XenIOState, 1);
+ 
+     if (machine->ram_size == 0) {
+-        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
+-                "(no emulated devices including Virtio)\n");
++        trace_xen_arm_init("ram_size not specified. "
++                           "QEMU machine started "
++                           "without IOREQ "
++                           "(no emulated devices"
++                           "including Virtio)");
+         return;
+     }
+ 
+@@ -194,7 +197,8 @@ static void xen_arm_init(MachineState *machine)
+     if (xam->cfg.tpm_base_addr) {
+         xen_enable_tpm(xam);
+     } else {
+-        DPRINTF("tpm-base-addr is not provided. TPM will not be enabled\n");
++        trace_xen_arm_init("tpm-base-addr is not provided."
++                           "TPM will not be enabled");
+     }
+ #endif
+ }
 -- 
 γαῖα πυρί μιχθήτω
 
