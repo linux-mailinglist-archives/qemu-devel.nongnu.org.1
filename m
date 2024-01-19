@@ -2,95 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A9883301E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 22:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7938330CE
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:41:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQwBE-0007Rt-JN; Fri, 19 Jan 2024 16:13:36 -0500
+	id 1rQxXU-0001nM-O3; Fri, 19 Jan 2024 17:40:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rQwBB-0007Rh-8P
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:13:33 -0500
-Received: from out2-smtp.messagingengine.com ([66.111.4.26])
+ (Exim 4.90_1) (envelope-from <jan.kloetzke@kernkonzept.com>)
+ id 1rQwR5-0003hc-K7
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:29:59 -0500
+Received: from serv1.kernkonzept.com ([2a01:4f8:1c1c:b490::2]
+ helo=mx.kernkonzept.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rQwB4-00081g-KP
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:13:32 -0500
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 7AC7F5C01CA;
- Fri, 19 Jan 2024 16:13:21 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute5.internal (MEProxy); Fri, 19 Jan 2024 16:13:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm2; t=1705698801; x=1705785201; bh=JdzgbrxKb6
- j20zlK8ja15pbzl7ZjuJOeNkYCKEiy19Y=; b=IJN6NN05aOpUox3owEm6YxH477
- Yx2hkyFtjPqZ0RPkdoafBfVlrJZaE8HsR1vjii6AczFaqHhrJWNcLhlEzkLHrZ/k
- pt/PQ+KBvQhVlIbw3lsCG8MN9FhcKdyIGWbDE507HZ6hV9o4U4VcYA3bN3Xc7Nid
- lPzCYBTlHI5ggjSq/6qgKfkdUZD8Y5CiKxZTiJGjj6LWx+IOM8IecNPlTsrzLBss
- aDtxSzP1uhLhh70fcLGN+zyAo0j/JI7N/eVXJ30Y3+pluQ5HyiCMXtkqrTAPd7lC
- RSsymXyXwLxqq/UkF53HIL1G7KyUEouCzljzOYekkFQhsUujTO1i/BxkK1YA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1705698801; x=1705785201; bh=JdzgbrxKb6j20zlK8ja15pbzl7Zj
- uJOeNkYCKEiy19Y=; b=lq9JPO98FKLLsIWZhCRdU3BR6E4q031A+YleKClMyYa7
- sU+XPqUNZiNXAsHPRfPCp8MY7Poxanfn4M88WmK+4kmVQDe/gMS+L1mdgndFASSz
- AVLTd1Fjw7MFsM35IsS1zUJOIX0LORVnmeEbKSpg8gNN/E4RHFfow4qZ9fXlb+bY
- VvcAFUry3+usqZcMigeCxBKUgTZTA3Zw7l+mCEs2l16eBSfhVkv/H3A3IAIgvs8y
- 2gSkyHFAcCVSH/hprMUYAtIacb4d0ghPh09HMXiBGtxUAJ+KLTQSKLQYGOuIz9Pq
- d69XzILPZAPTnfVI91ydA0rr6ijVdrMdFxP+JFgf0g==
-X-ME-Sender: <xms:8eWqZblnhuJglOLfliOfTxOm2O1pnvbUOJKdzFJQ4kNbz17kmwj7kA>
- <xme:8eWqZe177IiznMm6rndYQumVTT6d2Inf3ugMZM4mmaHDyx48Kprhz6a49VPS9CFHz
- JxnCVgyqPeH-deIYQ>
-X-ME-Received: <xmr:8eWqZRoK5H9GNScLPG3MBc0nWoYRPWDneER04WkAx5e7v5D4s--Tgy92Eb0w7cZdhp2AohhQR8_0TYdA-bzcvRdaPoSQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdektddgudeggecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttdenucfhrhhomheptehlhihs
- shgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhephf
- egffejtdeffefgtdeihfefuddtgfeiteeuffeivdehfeejvddugeektdeivddtnecuffho
- mhgrihhnpehrvgguhhgrthdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
- grmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
-X-ME-Proxy: <xmx:8eWqZTkVB3ZrzmZ2waTPsBKrMZ9LvkUhYp9ZW_a-9r5Wsvv3kqBmpA>
- <xmx:8eWqZZ0D5djXBwXjAoZE_w9JsNkXhop9xI6ByqtIrdAjc332JUKMBA>
- <xmx:8eWqZSs0ZBafmfJEjGI8bjqAaVdPH3hwMKLxnMQ3uJn0pk5DHm2JlQ>
- <xmx:8eWqZTz23yCydPyCerdCKTvqLvhdJVDk9qs4TEdjqT1UQPHsOaPFVQ>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Jan 2024 16:13:20 -0500 (EST)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
- id 59316C019; Fri, 19 Jan 2024 22:13:18 +0100 (CET)
-From: Alyssa Ross <hi@alyssa.is>
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
- akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
- mark.cave-ayland@ilande.co.uk, thuth@redhat.com
-Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
-In-Reply-To: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
-References: <20231003204500.518-1-gurchetansingh@chromium.org>
- <87wms9d0fi.fsf@alyssa.is>
- <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
-Date: Fri, 19 Jan 2024 22:13:08 +0100
-Message-ID: <87cytxni1n.fsf@alyssa.is>
+ (Exim 4.90_1) (envelope-from <jan.kloetzke@kernkonzept.com>)
+ id 1rQwR3-0001pY-0j
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:29:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=kernkonzept.com; s=mx1; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:References:In-Reply-To:
+ Reply-To:Content-ID:Content-Description;
+ bh=D52YVx8j+ZeyzuPrKqpnYYepjkrsS3E7FsEF80Ju8pw=; b=C16ffXUlNeiovCMyWmx0UgJvZd
+ VK8MVu9usoqE2aqRCdlaM8ZbLdmhafwVE4KL9EvDrpu8dgp6FUNh3xuvmZDjXKD46RIPJEg53AEXj
+ sVbTTBHhPS1FFkaiakzq4Y3CcFn/bjyZOpA/MfoEhcdYADCrTiM5WBcx19JKZoCGHQNvQWSNXn27o
+ tqoC/Ih5hpe3wfjwRMFGbq63stR0eb6mWn3YrN/wmcuRhjohXCpxjmb3+Mev8H9sv6ohh/cD5D6kr
+ f2mEoYDVZiXzd+wclcvCH9ofXssrmjVxk0hYZdCNXAhZzmJVTJRS/epAi/TVwCle8wvh9TbfoNh2b
+ JjBYf0ng==;
+Received: from p5dd489e8.dip0.t-ipconnect.de ([93.212.137.232]
+ helo=shark.dd1.int.kernkonzept.com)
+ by mx.kernkonzept.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
+ id 1rQwQy-001Gps-1K; Fri, 19 Jan 2024 22:29:52 +0100
+From: =?UTF-8?q?Jan=20Kl=C3=B6tzke?= <jan.kloetzke@kernkonzept.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Jan=20Kl=C3=B6tzke?= <jan.kloetzke@kernkonzept.com>
+Subject: [PATCH] target/arm: fix exception syndrome for AArch32 bkpt insn
+Date: Fri, 19 Jan 2024 22:29:45 +0100
+Message-Id: <20240119212945.2440655-1-jan.kloetzke@kernkonzept.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
- micalg=pgp-sha256; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=66.111.4.26; envelope-from=hi@alyssa.is;
- helo=out2-smtp.messagingengine.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a01:4f8:1c1c:b490::2;
+ envelope-from=jan.kloetzke@kernkonzept.com; helo=mx.kernkonzept.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 19 Jan 2024 17:40:38 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,55 +68,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
+Debug exceptions that target AArch32 Hyp mode are reported differently
+than on AAarch64. Internally, Qemu uses the AArch64 syndromes. Therefore
+such exceptions need to be either converted to a prefetch abort
+(breakpoints, vector catch) or a data abort (watchpoints).
 
-Hi Gurchetan,
+Signed-off-by: Jan Klötzke <jan.kloetzke@kernkonzept.com>
+---
+ target/arm/helper.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-> Thanks for the reminder.  I did make a request to create the release
-> tags, but changes were requested by Fedora packaging effort:
->
-> https://bugzilla.redhat.com/show_bug.cgi?id=2242058
-> https://bugzilla.redhat.com/show_bug.cgi?id=2241701
->
-> So the request was canceled, but never re-requested.  I'll fire off
-> another request, with:
->
-> gfxstream: 23d05703b94035ac045df60823fb1fc4be0fdf1c ("gfxstream:
-> manually add debug logic")
-> AEMU: dd8b929c247ce9872c775e0e5ddc4300011d0e82 ("aemu: improve licensing")
->
-> as the commits.  These match the Fedora requests, and the AEMU one has
-> been merged into Fedora already it seems.
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index e068d35383..71dd60ad2d 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -11013,6 +11013,26 @@ static void arm_cpu_do_interrupt_aarch32(CPUState *cs)
+     }
+ 
+     if (env->exception.target_el == 2) {
++        /* Debug exceptions are reported differently on AARCH32 */
++        switch (syn_get_ec(env->exception.syndrome)) {
++        case EC_BREAKPOINT:
++        case EC_BREAKPOINT_SAME_EL:
++        case EC_AA32_BKPT:
++        case EC_VECTORCATCH:
++            env->exception.syndrome = syn_insn_abort(arm_current_el(env) == 2,
++                                                     0, 0, 0x22);
++            break;
++        case EC_WATCHPOINT:
++        case EC_WATCHPOINT_SAME_EL:
++            /*
++             * ISS is compatible between Watchpoints and Data Aborts. Also
++             * retain the lowest EC bit as it signals the originating EL.
++             */
++            env->exception.syndrome &= (1U << (ARM_EL_EC_SHIFT + 1)) - 1U;
++            env->exception.syndrome |= (EC_DATAABORT << ARM_EL_EC_SHIFT)
++                                       | ARM_EL_ISV;
++            break;
++        }
+         arm_cpu_do_interrupt_aarch32_hyp(cs);
+         return;
+     }
+-- 
+2.39.2
 
-These revisions have the problem I mentioned in my previous message:
-
->> The gfxstream ref mentioned here isn't compatible with
->> v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
-
-rutabaga was not fixed to use the new AEMU package names until after the
-v0.1.2-rutabaga-release tag, in commit 5dfd74a06.  So will there be a
-new Rutabaga release that's compatible with these release versions of
-gfxstream and AEMU?
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmWq5eQACgkQ+dvtSFmy
-ccCt4Q//UQr+nH1j0d7ULAajmQ5VQoItYeH5Y858UamGlRYwSK8VB2InHQULNTEs
-iv7mkQdsHXUVKJQBwjk6vhNWPtU569OE6XOXg88usi5Vg0MdKwToW2dpX70Z3t9Z
-gTMMwvjVuzjSWH7os2liJEedw8FYVbwjG8XacV2ULqt6wms822TPDBYoYInEvnpV
-qPxmaWKwVdd4mO9sh5l3Ii+MkRihUkbwMbnq9WnP3FLemuOvvD1G0pkFaygqudGN
-SLmh/m8lf8ARpW+4kbaTHAidIHQXulD7+f0s9fsqFEnPyGt0/I2wmI7dPqxdoFaY
-4POaqwGndMJEUQ9k1txldJvMARQuJyr1IrGXFru7OoeFNacFB+ZrlkzpQfvR970u
-yTqYQqWqxVPAiEBJmxmhVlrjpsFFiaZSi3/wad7kG6l7MfopZ9dQRV9TBE97vDtp
-I559GZoUitqO2ZFItX/lnbg98ygIG6AsnQ6256c0wje+F98GPmJbdO3dgvvfxcpH
-8CNm9CTZfXuZM7NJIiga/nzSlr7lo9e+vpY6LHic5LS4GywCIWbdPa8/U/6qzhZj
-ZP8pK4YJeUbLU+UdffF9X4XpOJs89TAMkOmSYk0yDYVcwfUVfX4Sr8+KU3LT2pxM
-e4MHFIaDZ2A8Zvf0KJ9k3aX4iks1baXWx7bkKELEAo+zQg6zj6I=
-=qOC4
------END PGP SIGNATURE-----
---=-=-=--
 
