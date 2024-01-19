@@ -2,88 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A565C832E64
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFCC832EA4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQt3L-0003Hp-DV; Fri, 19 Jan 2024 12:53:15 -0500
+	id 1rQtJE-0007ZF-Gj; Fri, 19 Jan 2024 13:09:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1rQt3I-0003He-3W
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:53:12 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQtJ9-0007Yp-Dk
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:09:35 -0500
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1rQt3G-0004Tk-BB
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:53:11 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e76626170so11058645e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:53:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQtJ7-0006W2-R0
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:09:35 -0500
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-55a34e08775so3046607a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 10:09:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1705686787; x=1706291587; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705687772; x=1706292572; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=axyLgFdo3SkFiBQBMs8p0RGIUChbsdr7UT58XJRSXHs=;
- b=VWquy3SzPibxq2LbZZv1h6PBG4AJBbvNH4DsoWn8aQia4FhDKsLf1pQHQmYM4H6+S8
- FgEXQIyX6fG8PuZPFVcddJ9O5NIt9+l/veqp0EFEkcBrdl2H8/FJUpxenqrHtjREBnY2
- DRCWUasH81VqiUEvRFNy3sxTOetvx4zBvJE40=
+ bh=ka+tZ98I4RebCKjSaYFNELphOPWKiUktZA8UV6N1nR4=;
+ b=NjUf133k9tdnn2NbFKTisVXKBiRsi/Zv99Kd2ZuOM2RfrowLXPPVQaa0D93dpOzgek
+ un0+y5K50kCSG3w/Ge6Ondcvwi56iwljp7kUzEL/7OdLGrI2Z2TwY3VS3MCgCwGKlTdM
+ OZaQRlbi1YrzVO89S7SOPf2IiWmgOyKllz3lJsNBLMPblcSyfskvd2fAJwv2Ey8bDhs/
+ yf3lG+6XigLOIjHLgLTWFzErqMq2znuB1A4YqAZmcysq34SmCbt1+6ttQW8s8IrfpbK+
+ kYSTx84gtvsUnLLlq2TTc5dPwmGhZcFeNxxIyK0P+KfILpjeK18QJKIT8td8WaieIp1D
+ EXNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705686787; x=1706291587;
+ d=1e100.net; s=20230601; t=1705687772; x=1706292572;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=axyLgFdo3SkFiBQBMs8p0RGIUChbsdr7UT58XJRSXHs=;
- b=coRl4m3tRltErgy3Gv1RcitPHJGkwb2uL2l5jLHfOETyxxhDF340oilwFah7x3aOUb
- qajtwllX1XMJzEaCEPFNQJhvpKr2lYyFjv9FSPD3fGmd9QvlZ7D0i25fY+19xaNzYMrX
- 2bz9fW6Ipg4hPMvKodLJXxX+ZQb5kO9VTzs7HEHhM+iybJaYbJlsD5+Tc8U/gE0ixFLW
- FQ/fp0btGiRFLOiXacriaYJSGrRKy+d7eud2NjkbZJjh3IbHKEzlEsx8RYPE5OGUvU9h
- ab5T4qdoFB05f4KdVfRm0O4OHNI+XRTchpU9qmUpqVrZdGfWtALzR2HHs58FkgRhsmOI
- EWEw==
-X-Gm-Message-State: AOJu0YylHTxl6nluOf3PollqxUOMf0JthCp2yssWWFIgHJFxIxotvSEQ
- wFPY7afcqkSjBJ+58pyO41ZJoXu7d3rHJY4jq5y4kzEJQd5Z+yFDRM17oVkWm3xAbmbSXhLcKkS
- 54g==
-X-Google-Smtp-Source: AGHT+IGJ9k7Y3LjG3criYldcau8k3PAnlmxH8QoSWTi6/kclAd3uANJ7HRQzkHkvBkSjEk+z/164sw==
-X-Received: by 2002:a05:600c:46d3:b0:40e:74fd:51f2 with SMTP id
- q19-20020a05600c46d300b0040e74fd51f2mr68636wmo.23.1705686787259; 
- Fri, 19 Jan 2024 09:53:07 -0800 (PST)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com.
- [209.85.208.52]) by smtp.gmail.com with ESMTPSA id
- 7-20020a0564021f4700b00557de30e1f1sm10877595edz.74.2024.01.19.09.53.06
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 09:53:06 -0800 (PST)
-Received: by mail-ed1-f52.google.com with SMTP id
- 4fb4d7f45d1cf-55a62fad701so111a12.1
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:53:06 -0800 (PST)
-X-Received: by 2002:a05:6402:3126:b0:55a:465a:45a5 with SMTP id
- dd6-20020a056402312600b0055a465a45a5mr2699edb.4.1705686786702; Fri, 19 Jan
- 2024 09:53:06 -0800 (PST)
+ bh=ka+tZ98I4RebCKjSaYFNELphOPWKiUktZA8UV6N1nR4=;
+ b=KXdaU2ylalRVgvJlb2cLDkGLyszjGj3ZokFI3nQx5hjIzln6cFqlFi44M03dYrTQuL
+ 5fl1M/ao8b0U8xOoWM7Gt16hIyDzznrfyqEyIFWVjwfPh6R17UK3Qmhj6a84GlReW4+7
+ LRQ8nhg9Oig/VSAkXQYII9DItjydjjuOso03QBuKc1LFldSdEOqrzJT/bWqkuS0aTbhm
+ iFhWF4VwqTpvO0Z+gdBC6OruF6Lpdgi0xNN8Ehxc9LasMS80WvmP0euEscG/AdsMbSVN
+ NXgJrTo7epp8R0pkEpbamJ6q2QOrqfQ0EmKumz/dRsseQSmRMnC0nZ9Lka7BQ1OkUqi0
+ CR8g==
+X-Gm-Message-State: AOJu0YwmeFyceGN+V4441ywVZhEh+4hCynj4oB/FIEZ4ytDKhgSoxSk4
+ A7kxSW/t8MplzTQUUdvTX68KPVMcUcNbQydt5Csamscm3mNRDYrx5ZZaukZkFdtdLW7t2iWxDFp
+ XuiWWEE6Q6TPq3FPP1D7AHpaHTdYeRlzJ4LEgUQ==
+X-Google-Smtp-Source: AGHT+IH6YCYWaUoOMDt7utojgTHGk9T2jLCxk9qdIrGqALHUenS/OCV61NvN4WF17TmlRNIUHK2XlkjcdCmhWASsuu0=
+X-Received: by 2002:aa7:da43:0:b0:558:f2db:1ce7 with SMTP id
+ w3-20020aa7da43000000b00558f2db1ce7mr1586459eds.12.1705687772017; Fri, 19 Jan
+ 2024 10:09:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20231003204500.518-1-gurchetansingh@chromium.org>
- <87wms9d0fi.fsf@alyssa.is>
-In-Reply-To: <87wms9d0fi.fsf@alyssa.is>
-From: Gurchetan Singh <gurchetansingh@chromium.org>
-Date: Fri, 19 Jan 2024 09:52:53 -0800
-X-Gmail-Original-Message-ID: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
-Message-ID: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
-Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
-To: Alyssa Ross <hi@alyssa.is>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, 
- akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org, 
- shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org, 
- mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+References: <20240118200643.29037-1-philmd@linaro.org>
+In-Reply-To: <20240118200643.29037-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Jan 2024 18:09:20 +0000
+Message-ID: <CAFEAcA93c0aq3wN8zXG9C8tb8JdDVOwxjQaFcs8MxPtGRDE=Rg@mail.gmail.com>
+Subject: Re: [PATCH 00/20] arm: Rework target/ headers to build various hw/
+ files once
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Igor Mitsyanko <i.mitsyanko@gmail.com>,
+ qemu-arm@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Eric Auger <eric.auger@redhat.com>, Niek Linnenbank <nieklinnenbank@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jan Kiszka <jan.kiszka@web.de>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, 
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Shannon Zhao <shannon.zhaosl@gmail.com>, Tyrone Ting <kfting@nuvoton.com>, 
+ Beniamino Galvani <b.galvani@gmail.com>, Alexander Graf <agraf@csgraf.de>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Ani Sinha <anisinha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>, Joel Stanley <joel@jms.id.au>, 
+ Hao Wu <wuhaotsh@google.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=gurchetansingh@chromium.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,49 +105,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 16, 2024 at 2:42=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrote:
+On Thu, 18 Jan 2024 at 20:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
 >
-> Hi Gurchetan,
+> Hi,
 >
-> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+> In order to fix a bug noticed [*] by C=C3=A9dric and Fabiano in my
+> "Remove one use of qemu_get_cpu() in A7/A15 MPCore priv" series,
+> I ended reusing commits from other branches and it grew quite
+> a lot. This is the first "cleanup" part, unrelated on MPCorePriv.
 >
-> > - As mentioned in v14:
-> >     * AEMU: d6e6b99 "Delete VpxFrameParser.cpp"
-> >     * gfxstream: 2131f78d Merge "gfxstream: add egl & gles deps.."
-> >
-> > are the proposed v.0.1.2 release points.  If those commits are sufficie=
-nt
-> > for packaging AEMU + gfxstream, let me know and I'll have official rele=
-ase
-> > tags made.  If additional changes are required for packaging, let me kn=
-ow
-> > as well.
->
-> Were these releases ever made?
+> Please review,
 
-Thanks for the reminder.  I did make a request to create the release
-tags, but changes were requested by Fedora packaging effort:
+Applied to target-arm.next, thanks.
 
-https://bugzilla.redhat.com/show_bug.cgi?id=3D2242058
-https://bugzilla.redhat.com/show_bug.cgi?id=3D2241701
-
-So the request was canceled, but never re-requested.  I'll fire off
-another request, with:
-
-gfxstream: 23d05703b94035ac045df60823fb1fc4be0fdf1c ("gfxstream:
-manually add debug logic")
-AEMU: dd8b929c247ce9872c775e0e5ddc4300011d0e82 ("aemu: improve licensing")
-
-as the commits.  These match the Fedora requests, and the AEMU one has
-been merged into Fedora already it seems.
-
->
->
-> The gfxstream ref mentioned here isn't compatible with
-> v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
-> and this email is the last mention I can find of these releases.
->
-> In Nixpkgs, I've gone for packaging gfxstream and aemu with your initial
-> proposed release points, which works fine, but it would be great to have
-> this clearer upstream.
+-- PMM
 
