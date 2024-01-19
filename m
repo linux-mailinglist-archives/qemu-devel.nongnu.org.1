@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AE2833170
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 00:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E618833178
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 00:27:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQyCw-0000as-Su; Fri, 19 Jan 2024 18:23:30 -0500
+	id 1rQyGl-0004eV-NI; Fri, 19 Jan 2024 18:27:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQyCv-0000a6-3I
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:23:29 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQyGj-0004eH-Oz
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:27:25 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQyCt-0008Ir-Gy
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:23:28 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40ea34df934so1926735e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 15:23:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQyGi-0002DD-3a
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:27:25 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e8801221cso11682645e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 15:27:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705706606; x=1706311406; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vIz5d9b5T7LFW05WUUJ9h1myyFYL4h2BqUyq/mWZyYE=;
- b=ARmT+CX6lA5xohdQUMVcmHbVZfaZiMSfUmZGGWRt+EFmWCUwLOcXGgeODyR1SOSUda
- rqJ8taiE6zuXCxc0FWQZy5Txl9a3znHVbF0r8nR3p5IAH3Zqpn1e9RPloBcb0gLcUOLK
- y6G/NgDv3nlTVrxgX2NONBeE5aN/xjwFuF+hPxsjswiGbgfpCxW3Ts+AWTBU5Qv4mkRp
- QoWVqlzEUlo6zvFAmq85U/20C1OYOfvzZQBVY57uXL3FoknSouXuH58rVZfEaKTa3Q4n
- gQuyMD1hPypqczHPlhL1b/gbZV7nk6pEL4097flh3RzbU0sK0iDfX0VJgr64orPChn77
- FE3w==
+ d=linaro.org; s=google; t=1705706842; x=1706311642; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TADdEPYzJyA7RSXJ4MYwgfhq0+VV7lM9qaUA69UZ6VE=;
+ b=Ea214u3U4I7MqfWeLdmdN7fM2v4T2LCB8tN1G3wqgctzKCvcyh7JvC1Ue3tmY4SJGd
+ PMbQExt8Myu46W7T4iBkX3mOXdn8F3R4nQZjBeihSmCRkjB5LwlN3DofVHnpIXD/mRb1
+ FTczRrL04p7lsaxE/RbEITXQcxT4XPrg4SI8qEnv75xWFM/XIcJhZ2mX5ckp6S8p7NGN
+ Ec14Uyy+o108wOdtiIbF6+adsZlhm/TBRTOSzw+f5HYX6m42v82PJaJ4el6Oam4YcQwU
+ kf4HCBRAZuWT7xuZQFaNrDJawnX2QgsNIFzJlNaixNdMq06hd4b0CM1HK6WwPzUsw3Aa
+ Ih0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705706606; x=1706311406;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vIz5d9b5T7LFW05WUUJ9h1myyFYL4h2BqUyq/mWZyYE=;
- b=PX/QTeKS5Jn5n+/t4lqPmXWJiXzMxiM1PxurjNbOb7Z+T5VOzNTA9Znyaxth2zSckG
- UwWUs5MoEFYlqM3CB3pzc6hp9LLHgUV/4hyZ6419XmLE6ubVPS5pgTjuY7zmK7rslm7X
- ++Pc9TZc3HCTGLensVGuHEu/mslOdzrGIkk+TJQIyzevGrnQe4YYM9kKlgyswN122jsI
- yiSf7WH8dBB7D6mrrsAg55IEdaKPH+XYZyw++B8L+z+5GeV+2agtcwl+15kJ4M5h0/aJ
- wx/49gGyZQlsOGZdtsrIk9z/BRIuHJ41Wqz5KLaviKvvYoTBMxEK39eNaEzzNIR1zCHs
- ZR/w==
-X-Gm-Message-State: AOJu0Yz9MlQ69Z0autRTXqMtOw6ww6bOccwkK6HRQooHQFfU4ue7WtUK
- EnJl2Le3NWweCMj8hDWLfolhCCgqGxaaUzzN8+aO8XQ734ECDHJkHPhvo74TZer2pLC5hmejvoH
- J
-X-Google-Smtp-Source: AGHT+IFVxd8YvHhj4sgjJle9cy1pelY/JRV52XNDP7yR6DYD/xDEfLyxsY2VAQSnGnUhMQ3oTeRpDw==
-X-Received: by 2002:a05:600c:3553:b0:40e:5a80:7e7c with SMTP id
- i19-20020a05600c355300b0040e5a807e7cmr269027wmq.7.1705706606004; 
- Fri, 19 Jan 2024 15:23:26 -0800 (PST)
-Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
- [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- je14-20020a05600c1f8e00b0040e3635ca65sm34333850wmb.2.2024.01.19.15.23.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 15:23:25 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 15/38 6/6] target/s390x: Improve general case of disas_jcc
-Date: Sat, 20 Jan 2024 00:23:02 +0100
-Message-ID: <20240119232302.50393-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240110224408.10444-16-richard.henderson@linaro.org>
-References: <20240110224408.10444-16-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1705706842; x=1706311642;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TADdEPYzJyA7RSXJ4MYwgfhq0+VV7lM9qaUA69UZ6VE=;
+ b=HZ+kG3blSh65L+znYzUjy8h+x8THOYDBFiU7XOqGxgO0J6hnZXS9eYUtLRUmZKI49P
+ GtmbBxFo/IoZcNIjlbgcgDD77lgBS5J8Pgw7if/xZzbxuNFCuNXMu6SflX96cnKePN6O
+ gJEzxnUkEZkMLx/mPwp9jKPZro65qbjN1CKE6vgMm4g5fkxEKmejCeBdHiLXOK2o7sM9
+ U5trTWGzbmVLDVm6sMk+lZXkW9s7wBFbIwxDf1F1nSxV7y1LJy5mwf0/Zlg/kuleUp+e
+ jIwesrw6kEwd5a2hYu8Wo4EDAQwCXBe9XU3jPNPPlfEJZJz8yFUTQXOrGeH+hHy4CVyx
+ r6WA==
+X-Gm-Message-State: AOJu0YwvLzfsYNxDE1zK5NxeopZ1HSh2IcdivOJJv0z0RmDADUZ3EvDL
+ 7Iq9I+KmN8WzeDCeniso/VrwGdyk/dbo+U2kKWQMRbGyWOIqnNujq8QVjsVABeieEN5qJeuZqyj
+ s
+X-Google-Smtp-Source: AGHT+IGlyfkreLlyyXwTG25gch6187cfbXQ6F2U1/Omvc5KkbTSGEVApjpIdOF7T6SIH3dWV6I4XRw==
+X-Received: by 2002:a05:600c:310f:b0:40e:4cc6:b4b4 with SMTP id
+ g15-20020a05600c310f00b0040e4cc6b4b4mr253188wmo.36.1705706842312; 
+ Fri, 19 Jan 2024 15:27:22 -0800 (PST)
+Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
+ by smtp.gmail.com with ESMTPSA id
+ j21-20020a05600c1c1500b0040e9f7308f4sm2912581wms.10.2024.01.19.15.27.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 Jan 2024 15:27:22 -0800 (PST)
+Message-ID: <4573f3e6-14f4-408b-922e-b4ecbe5a7ce8@linaro.org>
+Date: Sat, 20 Jan 2024 00:27:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/38] target/s390x: Improve general case of disas_jcc
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20240110224408.10444-1-richard.henderson@linaro.org>
+ <20240110224408.10444-16-richard.henderson@linaro.org>
+ <b6a05a23-9f83-4a62-9f60-1ac5234cde31@linaro.org>
+ <38b4bb14-3846-458e-871f-6a60cc69719b@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <38b4bb14-3846-458e-871f-6a60cc69719b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,108 +95,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+On 17/1/24 04:19, Richard Henderson wrote:
+> On 1/17/24 09:19, Philippe Mathieu-Daudé wrote:
+>>> +        case 0x4 | 0x1: /* cc == 1 || cc == 3 => (cc & 1) != 0 */
+>>> +            cond = TCG_COND_TSTNE;
+>>> +            c->u.s32.b = tcg_constant_i32(1);
+>>
+>> Don't we need to AND?
+>>
+>>                c->u.s32.a = tcg_temp_new_i32();
+>>                tcg_gen_andi_i32(c->u.s32.a, cc_op, 1);
+> 
+> No, that's the TSTNE cond there.
 
-Avoid code duplication by handling 7 of the 14 cases
-by inverting the test for the other 7 cases.
+This patch as is was too complex for me so I split it in very
+dumb steps to get a trivial patch:
+https://lore.kernel.org/qemu-devel/20240119232302.50393-6-philmd@linaro.org/.
 
-Use TCG_COND_TSTNE for cc in {1,3}.
-Use (cc - 1) <= 1 for cc in {1,2}.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/s390x/tcg/translate.c | 52 +++++++++++-------------------------
- 1 file changed, 15 insertions(+), 37 deletions(-)
-
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 93c64db33e..030c026699 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -885,67 +885,45 @@ static void disas_jcc(DisasContext *s, DisasCompare *c, uint32_t mask)
-     case CC_OP_STATIC:
-         c->is_64 = false;
-         c->u.s32.a = cc_op;
--        switch (mask) {
-+
-+        /* Fold half of the cases using bit 3 to invert. */
-+        switch (mask & 8 ? mask ^ 0xf : mask) {
-         case 0x1: /* cc == 3 */
-             cond = TCG_COND_EQ;
-             c->u.s32.b = tcg_constant_i32(3);
-             break;
--        case 0x8 | 0x4 | 0x2: /* cc != 3 */
--            cond = TCG_COND_NE;
--            c->u.s32.b = tcg_constant_i32(3);
--            break;
-         case 0x2: /* cc == 2 */
-             cond = TCG_COND_EQ;
-             c->u.s32.b = tcg_constant_i32(2);
-             break;
--        case 0x8 | 0x4 | 0x1: /* cc != 2 */
--            cond = TCG_COND_NE;
--            c->u.s32.b = tcg_constant_i32(2);
--            break;
-         case 0x4: /* cc == 1 */
-             cond = TCG_COND_EQ;
-             c->u.s32.b = tcg_constant_i32(1);
-             break;
--        case 0x8 | 0x2 | 0x1: /* cc != 1 */
--            cond = TCG_COND_NE;
--            c->u.s32.b = tcg_constant_i32(1);
--            break;
--        case 0x8 | 0x4: /* cc < 2 */
--            cond = TCG_COND_LTU;
--            c->u.s32.b = tcg_constant_i32(2);
--            break;
--        case 0x2 | 0x1: /* cc > 1 */
-+        case 0x2 | 0x1: /* cc == 2 || cc == 3 => cc > 1 */
-             cond = TCG_COND_GTU;
-             c->u.s32.b = tcg_constant_i32(1);
-             break;
-         case 0x4 | 0x1: /* cc == 1 || cc == 3 => (cc & 1) != 0 */
--            cond = TCG_COND_NE;
--            c->u.s32.a = tcg_temp_new_i32();
--            c->u.s32.b = tcg_constant_i32(0);
--            tcg_gen_andi_i32(c->u.s32.a, cc_op, 1);
-+            cond = TCG_COND_TSTNE;
-+            c->u.s32.b = tcg_constant_i32(1);
-             break;
--        case 0x8 | 0x2: /* cc == 0 || cc == 2 => (cc & 1) == 0 */
--            cond = TCG_COND_EQ;
-+        case 0x4 | 0x2: /* cc == 1 || cc == 2 => (cc - 1) <= 1 */
-+            cond = TCG_COND_LEU;
-             c->u.s32.a = tcg_temp_new_i32();
--            c->u.s32.b = tcg_constant_i32(0);
--            tcg_gen_andi_i32(c->u.s32.a, cc_op, 1);
-+            c->u.s32.b = tcg_constant_i32(1);
-+            tcg_gen_addi_i32(c->u.s32.a, cc_op, -1);
-             break;
-         case 0x4 | 0x2 | 0x1: /* cc != 0 */
-             cond = TCG_COND_NE;
-             c->u.s32.b = tcg_constant_i32(0);
-             break;
--        case 0x8: /* cc == 0 */
--            cond = TCG_COND_EQ;
--            c->u.s32.b = tcg_constant_i32(0);
--            break;
-         default:
--            /* CC is masked by something else: (8 >> cc) & mask.  */
--            cond = TCG_COND_NE;
--            c->u.s32.a = tcg_temp_new_i32();
--            c->u.s32.b = tcg_constant_i32(0);
--            tcg_gen_shr_i32(c->u.s32.a, tcg_constant_i32(8), cc_op);
--            tcg_gen_andi_i32(c->u.s32.a, c->u.s32.a, mask);
--            break;
-+            /* case 0: never, handled above. */
-+            g_assert_not_reached();
-+        }
-+        if (mask & 8) {
-+            cond = tcg_invert_cond(cond);
-         }
-         break;
- 
--- 
-2.41.0
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
