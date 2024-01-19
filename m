@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1365A8330CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2EE8330E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:49:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQxTI-0006ux-A8; Fri, 19 Jan 2024 17:36:20 -0500
+	id 1rQxeN-000606-4R; Fri, 19 Jan 2024 17:47:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rQxTG-0006uf-M8
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:36:18 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQxeJ-0005y4-HX
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:47:44 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <groeck7@gmail.com>) id 1rQxTF-0004IF-5u
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:36:18 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d71e24845aso10523575ad.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:36:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQxeG-0007es-JL
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:47:41 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3367a304091so1167756f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705703775; x=1706308575; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
- :reply-to; bh=m75TI09f+WE6k8fdsxyb/k61apLxHUAbIu/tHybpsEI=;
- b=T4cKshqDedRWBwaov+yju4X873D2nQzgshJ1gShS6Nn+AKgJRpFYfHEVywlpx/8FFq
- m60SGA2afx54Np0g2QwenDoOQuX+HzLFqmQlYAcLFAM8nlOOHOL1/jr06+XwCHlNLvBe
- h1iVXd3lE6uP1h5ImGw8aECFfimDKNx+zXtB0Z5mVRkQZ84m4M8DH2bK8arXuR5Onwpd
- eV8oLcNv+ofTspqpNxUEIC+4odkFdf7Zy7lRCeOOwGBpDjFJi0ls6HpdratvYHefhd8J
- E/pYkAzyVSYaVn8Z59jYiAdBqi2GSmBbYG3vvFHcZF9BFtiRSaYJjkBU2H6AY2NgdS2M
- JG/A==
+ d=linaro.org; s=google; t=1705704459; x=1706309259; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RlF5tx7xWYSxTMVLwpyAF8EB6pJi/TUpAYiS0HlHtDM=;
+ b=DOSYHa64G0b28VBRLJfF5T+VycvLItk5q+drKduqvZZ0EAUP8CqkWv4qsuIHmM7Sax
+ N4ldTBS/wwjB7bRwi2WWE//WIFp579AUm2YydPbB6C61kXXiZZg4ZIbSE7oo8044uer8
+ nQhdbwXF4UbHQn6Wn6Fb/pdEJllX/ERgFSaX9/nkjxbu3lNW/IsbRbpRKbP2kig9LR9c
+ 5BIL79/qmqnn67snkc2inia3mB6U+9aNuIcZAmKg+35Xom374Ly/8LQJ7DTIMlYJ+FC3
+ 2JYcutTecEdTJHBQRvKWncW9YE/0ITqBxq7dnZYR9+tU/oAnBBndYVBpqw6eO3E62+GE
+ Br8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705703775; x=1706308575;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1705704459; x=1706309259;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m75TI09f+WE6k8fdsxyb/k61apLxHUAbIu/tHybpsEI=;
- b=VQr+RRUUapQ21kQuM4IBYd0pyvJjsaufYmyP//J2UEYrrTLYVz8VSAdy7RJtV0xyST
- tf2p8A/tHz/LQU7uMvDM5tt/zbNfS0oeqe9Z7JBZPR9sAT0NuwcpbOWUtz5LI4DlSHGK
- d7xPXI4hDRwdPjqw2Ieaoczvacl3yfS1Op2siwm7KdnMoZCKBCkHt1DNT/8AHgXA5fwV
- bueY07WSL8Z8mUgNZVPDizxFYYvk433rkulB1/1yv4/OqGbO9U5otHPAVxmeyaI/RQQL
- 75QZpw6F4QqmgfqF+qtmW+r819ke1lHVLsgqJvSTqCLNeqONdFyScwfBqSDQntW9vkVw
- 5OoA==
-X-Gm-Message-State: AOJu0Yz1KquX73Nzh75SmLpzWa+HcILuA0BZMLLa3oEiXMHCW82scehQ
- Hng//4tDIAcapHxEYoBu9LhJ/zHF1lJeoicLmkJXamO7tUNDUNFY
-X-Google-Smtp-Source: AGHT+IEqtNwMTm8WyN+/9yGfibEMI+Tiro0/rMwR5DSwsH/DJvkv0QCgyXUyLO/uLu86RkDNXEZQYA==
-X-Received: by 2002:a17:902:ceca:b0:1d6:ff69:2546 with SMTP id
- d10-20020a170902ceca00b001d6ff692546mr640118plg.58.1705703775587; 
- Fri, 19 Jan 2024 14:36:15 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- g7-20020a170902f74700b001cfca7b8ee7sm3525882plw.99.2024.01.19.14.36.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jan 2024 14:36:15 -0800 (PST)
-Date: Fri, 19 Jan 2024 14:36:14 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 39/41] hw/net/cadence_gem: use FIELD to describe PHYMNTNC
- register fields
-Message-ID: <5d0a387c-507d-466d-8f58-bb39a4fb34f7@roeck-us.net>
-References: <20231027143942.3413881-1-peter.maydell@linaro.org>
- <20231027143942.3413881-40-peter.maydell@linaro.org>
- <ce54b95a-13da-4788-aa51-2dd21a2aa5fb@roeck-us.net>
+ bh=RlF5tx7xWYSxTMVLwpyAF8EB6pJi/TUpAYiS0HlHtDM=;
+ b=i+fEG2cCqaa1e9AetwRObk3D7T5qwp9Rb1kp20CrezNRRW166gHDo5NLkJG3054rD1
+ Y8ip/XxrPGZG7zhjlF8JRBzouN8YJqdY7TEhX9BZtU7zrKAmkjP8qA+HoabYVSRxuqgY
+ OFOaXUNiS9ZLykwDDRxY2FPY2clRD9AvrsV5qXzzd4Ni2Xa6GWU4MDe2z1yEsFTSNKK0
+ syWtdiJSJWBoJS3aA3Ti5sOFdjLWT+yRLT53Wz9C+vRHwbfA4jquAd1k56JgTrHos+fO
+ lb09LArrVzc8dsdwHNS04+2OgDH9i1fo8UG0QkwLKgYwsamAw3AiNmtzNGge93bqLvzg
+ NBpg==
+X-Gm-Message-State: AOJu0YyAeM8ZfNnS4QN8icssCYHZ+9ytdxi3R0qYfGqwEH0hBUL8sEqw
+ zxz8WxA+KXVsTd5Ov3xl2m7Turu43zw4ONQN+gC6z2ZmkZgylGhho/+HPH3zC4iTkFKst7VDL8p
+ O
+X-Google-Smtp-Source: AGHT+IFH/BmdGoxuCHeD5TvubLJls0k4xvUqb9e1QPTFjVMOZRbZuGJwuTD3n0onH8yrumqJ1SWSuQ==
+X-Received: by 2002:a05:600c:2259:b0:40e:81f8:2f8f with SMTP id
+ a25-20020a05600c225900b0040e81f82f8fmr171262wmm.110.1705704458757; 
+ Fri, 19 Jan 2024 14:47:38 -0800 (PST)
+Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
+ [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
+ m11-20020a05600c4f4b00b0040e86a4c0b3sm11853619wmq.11.2024.01.19.14.47.37
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 Jan 2024 14:47:38 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 18/38 1/2] tcg/aarch64: Massage tcg_out_brcond()
+Date: Fri, 19 Jan 2024 23:47:36 +0100
+Message-ID: <20240119224737.48943-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240110224408.10444-19-richard.henderson@linaro.org>
+References: <20240110224408.10444-19-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ce54b95a-13da-4788-aa51-2dd21a2aa5fb@roeck-us.net>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=groeck7@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,32 +92,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 02:32:47PM -0800, Guenter Roeck wrote:
-> Hi,
-> 
-> On Fri, Oct 27, 2023 at 03:39:40PM +0100, Peter Maydell wrote:
-> > From: Luc Michel <luc.michel@amd.com>
-> > 
-> > Use the FIELD macro to describe the PHYMNTNC register fields.
-> > 
-> > Signed-off-by: Luc Michel <luc.michel@amd.com>
-> > Reviewed-by: sai.pavan.boddu@amd.com
-> > Message-id: 20231017194422.4124691-10-luc.michel@amd.com
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> 
-> With qemu v8.2.0 and this patch in place, I get the following error when trying
-> to enable the network interface on the xilinx-zynq-a9 emulation.
-> 
-> macb e000b000.ethernet eth0: validation of  with support 00,00000000,00005000,00006000 and advertisement 00,00000000,00000000,00000000 failed: -EINVAL
-> macb e000b000.ethernet eth0: Could not attach PHY (-22)
-> 
-> The problem is gone after reverting this patch. Note that I also had
-> to revert "hw/net/cadence_gem: perform PHY access on write only", but
-> that alone did not fix the problem.
-> 
+In order to ease next commit review, modify tcg_out_brcond()
+to switch over TCGCond. No logical change intended.
 
-Never mind, it looks like the problem was fixed with commit 0c7ffc977195c1.
-Sorry for the noise.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tcg/aarch64/tcg-target.c.inc | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-Guenter
+diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
+index 70df250c04..a19158f4ea 100644
+--- a/tcg/aarch64/tcg-target.c.inc
++++ b/tcg/aarch64/tcg-target.c.inc
+@@ -1416,12 +1416,20 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
+                            TCGArg b, bool b_const, TCGLabel *l)
+ {
+     intptr_t offset;
+-    bool need_cmp;
++    bool need_cmp = true;
+ 
+-    if (b_const && b == 0 && (c == TCG_COND_EQ || c == TCG_COND_NE)) {
+-        need_cmp = false;
+-    } else {
+-        need_cmp = true;
++    switch (c) {
++    case TCG_COND_EQ:
++    case TCG_COND_NE:
++        if (b_const && b == 0) {
++            need_cmp = false;
++        }
++        break;
++    default:
++        break;
++    }
++
++    if (need_cmp) {
+         tcg_out_cmp(s, ext, c, a, b, b_const);
+     }
+ 
+@@ -1435,10 +1443,17 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
+ 
+     if (need_cmp) {
+         tcg_out_insn(s, 3202, B_C, c, offset);
+-    } else if (c == TCG_COND_EQ) {
+-        tcg_out_insn(s, 3201, CBZ, ext, a, offset);
+     } else {
+-        tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
++        switch (c) {
++        case TCG_COND_EQ:
++            tcg_out_insn(s, 3201, CBZ, ext, a, offset);
++            break;
++        case TCG_COND_NE:
++            tcg_out_insn(s, 3201, CBNZ, ext, a, offset);
++            break;
++        default:
++            g_assert_not_reached();
++        }
+     }
+ }
+ 
+-- 
+2.41.0
+
 
