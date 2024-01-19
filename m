@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51608832EBE
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:16:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F31832EB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:14:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQtNK-0001gl-NX; Fri, 19 Jan 2024 13:13:54 -0500
+	id 1rQtNJ-0001fY-Sq; Fri, 19 Jan 2024 13:13:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtN8-0001cw-KY
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:43 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtN9-0001cy-OE
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:44 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtN5-0007aG-V7
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:42 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtN5-0007bK-Vk
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705688018;
+ s=mimecast20190719; t=1705688019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5sC1mg7x2fL1b69hJeYewTvKHdoYdK1EgellCnZKA5s=;
- b=b9Khme8vVosBQgx2NEdlqAnml7nu47Knu1aorgxjDZCagKKrWgZwq1V3JCS1hJGoeRRhvK
- M0iOiRu3iPtdCU0JbI3LCj/08muXLtCZ68tiSBDejLU8Aubr6hfdv/jTaktMz3aJwVHDsc
- gcLVYt6oKwMq5cF5l0czAVZ21cq7hDw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-DgXMf4ZdM8u35VRvKTx3Dw-1; Fri,
- 19 Jan 2024 13:13:35 -0500
-X-MC-Unique: DgXMf4ZdM8u35VRvKTx3Dw-1
+ bh=YirToRa5ScB2Piwjcv0ToWz+Q4DVNA0SLcAoOpyrkZc=;
+ b=eNKsLiHtorjY+z+loQ6hnZk8OVYPPURZC6Ht1/e75owzL7N/UDHknIe1O3EdnyE5/O7Z+m
+ JzLNLa2K1ZvSf1R1t3rPxMJbU85E6wUH8DL4kHqpo5HGQwwHnFR+LGK5JpcCjJvh1z+yv8
+ p+89XeJ3wYdN9r48E+Zhl+1Y20+0qnA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-DCFs0OuLOViN9ztCO4iQWA-1; Fri, 19 Jan 2024 13:13:35 -0500
+X-MC-Unique: DCFs0OuLOViN9ztCO4iQWA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8DA003C11CDF;
- Fri, 19 Jan 2024 18:13:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D2C886794C;
+ Fri, 19 Jan 2024 18:13:35 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.86])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F2727494;
- Fri, 19 Jan 2024 18:13:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C3B56494;
+ Fri, 19 Jan 2024 18:13:34 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 02/14] string-output-visitor: Fix (pseudo) struct handling
-Date: Fri, 19 Jan 2024 19:13:15 +0100
-Message-ID: <20240119181327.236745-3-kwolf@redhat.com>
+Subject: [PULL 03/14] commit: Allow users to request only format driver names
+ in backing file format
+Date: Fri, 19 Jan 2024 19:13:16 +0100
+Message-ID: <20240119181327.236745-4-kwolf@redhat.com>
 In-Reply-To: <20240119181327.236745-1-kwolf@redhat.com>
 References: <20240119181327.236745-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -78,179 +79,287 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit ff32bb53 tried to get minimal struct support into the string
-output visitor by just making it return "<omitted>". Unfortunately, it
-forgot that the caller will still make more visitor calls for the
-content of the struct.
+From: Peter Krempa <pkrempa@redhat.com>
 
-If the struct is contained in a list, such as IOThreadVirtQueueMapping,
-in the better case its fields show up as separate list entries. In the
-worse case, it contains another list, and the string output visitor
-doesn't support nested lists and asserts that this doesn't happen. So as
-soon as the optional "vqs" field in IOThreadVirtQueueMapping is
-specified, we get a crash.
+Introduce a new flag 'backing-mask-protocol' for the block-commit QMP
+command which instructs the internals to use 'raw' instead of the
+protocol driver in case when a image is used without a dummy 'raw'
+wrapper.
 
-This can be reproduced with the following command line:
+The flag is designed such that it can be always asserted by management
+tools even when there isn't any update to backing files.
 
-  echo "info qtree" | ./qemu-system-x86_64 \
-    -object iothread,id=t0 \
-    -blockdev null-co,node-name=disk \
-    -device '{"driver": "virtio-blk-pci", "drive": "disk",
-              "iothread-vq-mapping": [{"iothread": "t0", "vqs": [0]}]}' \
-    -monitor stdio
+The flag will be used by libvirt so that the backing images still
+reference the proper format even when libvirt will stop using the dummy
+raw driver (raw driver with no other config). Libvirt needs this so that
+the images stay compatible with older libvirt versions which didn't
+expect that a protocol driver name can appear in the backing file format
+field.
 
-Fix the problem by counting the nesting level of structs and ignoring
-any visitor calls for values (apart from start/end_struct) while we're
-not on the top level.
-
-Lists nested directly within lists remain unimplemented, as we don't
-currently have a use case for them.
-
-Fixes: ff32bb53476539d352653f4ed56372dced73a388
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2069
-Reported-by: Aihua Liang <aliang@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240109181717.42493-1-kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <2cb46e37093ce793ea1604abc8bbb90f4c8e434b.1701796348.git.pkrempa@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- qapi/string-output-visitor.c | 46 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ qapi/block-core.json                   |  8 +++++-
+ include/block/block-global-state.h     |  3 ++-
+ include/block/block_int-common.h       |  4 ++-
+ include/block/block_int-global-state.h |  3 +++
+ block.c                                | 37 +++++++++++++++++++++-----
+ block/commit.c                         |  6 ++++-
+ blockdev.c                             |  6 +++++
+ tests/unit/test-bdrv-drain.c           |  3 ++-
+ 8 files changed, 58 insertions(+), 12 deletions(-)
 
-diff --git a/qapi/string-output-visitor.c b/qapi/string-output-visitor.c
-index f0c1dea89e..5115536b15 100644
---- a/qapi/string-output-visitor.c
-+++ b/qapi/string-output-visitor.c
-@@ -65,6 +65,7 @@ struct StringOutputVisitor
-     } range_start, range_end;
-     GList *ranges;
-     void *list; /* Only needed for sanity checking the caller */
-+    unsigned int struct_nesting;
- };
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ca390c5700..726145ec8a 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1810,6 +1810,11 @@
+ #     Care should be taken when specifying the string, to specify a
+ #     valid filename or protocol.  (Since 2.1)
+ #
++# @backing-mask-protocol: If true, replace any protocol mentioned in the
++#     'backing file format' with 'raw', rather than storing the protocol
++#     name as the backing format.  Can be used even when no image header
++#     will be updated (default false; since 9.0).
++#
+ # @speed: the maximum speed, in bytes per second
+ #
+ # @on-error: the action to take on an error.  'ignore' means that the
+@@ -1856,7 +1861,8 @@
+             '*base': { 'type': 'str', 'features': [ 'deprecated' ] },
+             '*top-node': 'str',
+             '*top': { 'type': 'str', 'features': [ 'deprecated' ] },
+-            '*backing-file': 'str', '*speed': 'int',
++            '*backing-file': 'str', '*backing-mask-protocol': 'bool',
++            '*speed': 'int',
+             '*on-error': 'BlockdevOnError',
+             '*filter-node-name': 'str',
+             '*auto-finalize': 'bool', '*auto-dismiss': 'bool' },
+diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
+index 4ec0b217f0..bd7cecd1cf 100644
+--- a/include/block/block-global-state.h
++++ b/include/block/block-global-state.h
+@@ -144,7 +144,8 @@ int GRAPH_RDLOCK bdrv_make_empty(BdrvChild *c, Error **errp);
  
- static StringOutputVisitor *to_sov(Visitor *v)
-@@ -144,6 +145,10 @@ static bool print_type_int64(Visitor *v, const char *name, int64_t *obj,
-     StringOutputVisitor *sov = to_sov(v);
-     GList *l;
+ void bdrv_register(BlockDriver *bdrv);
+ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+-                           const char *backing_file_str);
++                           const char *backing_file_str,
++                           bool backing_mask_protocol);
  
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     switch (sov->list_mode) {
-     case LM_NONE:
-         string_output_append(sov, *obj);
-@@ -231,6 +236,10 @@ static bool print_type_size(Visitor *v, const char *name, uint64_t *obj,
-     uint64_t val;
-     char *out, *psize;
+ BlockDriverState * GRAPH_RDLOCK
+ bdrv_find_overlay(BlockDriverState *active, BlockDriverState *bs);
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 151279d481..761276127e 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -985,7 +985,9 @@ struct BdrvChildClass {
+      * can update its reference.
+      */
+     int (*update_filename)(BdrvChild *child, BlockDriverState *new_base,
+-                           const char *filename, Error **errp);
++                           const char *filename,
++                           bool backing_mask_protocol,
++                           Error **errp);
  
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (!sov->human) {
-         out = g_strdup_printf("%"PRIu64, *obj);
-         string_output_set(sov, out);
-@@ -250,6 +259,11 @@ static bool print_type_bool(Visitor *v, const char *name, bool *obj,
-                             Error **errp)
- {
-     StringOutputVisitor *sov = to_sov(v);
-+
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     string_output_set(sov, g_strdup(*obj ? "true" : "false"));
-     return true;
- }
-@@ -260,6 +274,10 @@ static bool print_type_str(Visitor *v, const char *name, char **obj,
-     StringOutputVisitor *sov = to_sov(v);
-     char *out;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (sov->human) {
-         out = *obj ? g_strdup_printf("\"%s\"", *obj) : g_strdup("<null>");
-     } else {
-@@ -273,6 +291,11 @@ static bool print_type_number(Visitor *v, const char *name, double *obj,
-                               Error **errp)
- {
-     StringOutputVisitor *sov = to_sov(v);
-+
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     string_output_set(sov, g_strdup_printf("%.17g", *obj));
-     return true;
- }
-@@ -283,6 +306,10 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
-     StringOutputVisitor *sov = to_sov(v);
-     char *out;
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     if (sov->human) {
-         out = g_strdup("<null>");
-     } else {
-@@ -295,6 +322,9 @@ static bool print_type_null(Visitor *v, const char *name, QNull **obj,
- static bool start_struct(Visitor *v, const char *name, void **obj,
-                          size_t size, Error **errp)
- {
-+    StringOutputVisitor *sov = to_sov(v);
-+
-+    sov->struct_nesting++;
-     return true;
+     bool (*change_aio_ctx)(BdrvChild *child, AioContext *ctx,
+                            GHashTable *visited, Transaction *tran,
+diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
+index ef31c58bb3..2162269df6 100644
+--- a/include/block/block_int-global-state.h
++++ b/include/block/block_int-global-state.h
+@@ -82,6 +82,8 @@ void stream_start(const char *job_id, BlockDriverState *bs,
+  * @speed: The maximum speed, in bytes per second, or 0 for unlimited.
+  * @on_error: The action to take upon error.
+  * @backing_file_str: String to use as the backing file in @top's overlay
++ * @backing_mask_protocol: Replace potential protocol name with 'raw' in
++ *                         'backing file format' header
+  * @filter_node_name: The node name that should be assigned to the filter
+  * driver that the commit job inserts into the graph above @top. NULL means
+  * that a node name should be autogenerated.
+@@ -92,6 +94,7 @@ void commit_start(const char *job_id, BlockDriverState *bs,
+                   BlockDriverState *base, BlockDriverState *top,
+                   int creation_flags, int64_t speed,
+                   BlockdevOnError on_error, const char *backing_file_str,
++                  bool backing_mask_protocol,
+                   const char *filter_node_name, Error **errp);
+ /**
+  * commit_active_start:
+diff --git a/block.c b/block.c
+index a097772238..30afdcbba6 100644
+--- a/block.c
++++ b/block.c
+@@ -1309,11 +1309,14 @@ static void bdrv_backing_detach(BdrvChild *c)
  }
  
-@@ -302,6 +332,10 @@ static void end_struct(Visitor *v, void **obj)
+ static int bdrv_backing_update_filename(BdrvChild *c, BlockDriverState *base,
+-                                        const char *filename, Error **errp)
++                                        const char *filename,
++                                        bool backing_mask_protocol,
++                                        Error **errp)
  {
-     StringOutputVisitor *sov = to_sov(v);
+     BlockDriverState *parent = c->opaque;
+     bool read_only = bdrv_is_read_only(parent);
+     int ret;
++    const char *format_name;
+     GLOBAL_STATE_CODE();
  
-+    if (--sov->struct_nesting) {
-+        return;
-+    }
-+
-     /* TODO actually print struct fields */
-     string_output_set(sov, g_strdup("<omitted>"));
- }
-@@ -312,6 +346,10 @@ start_list(Visitor *v, const char *name, GenericList **list, size_t size,
- {
-     StringOutputVisitor *sov = to_sov(v);
- 
-+    if (sov->struct_nesting) {
-+        return true;
-+    }
-+
-     /* we can't traverse a list in a list */
-     assert(sov->list_mode == LM_NONE);
-     /* We don't support visits without a list */
-@@ -329,6 +367,10 @@ static GenericList *next_list(Visitor *v, GenericList *tail, size_t size)
-     StringOutputVisitor *sov = to_sov(v);
-     GenericList *ret = tail->next;
- 
-+    if (sov->struct_nesting) {
-+        return ret;
-+    }
-+
-     if (ret && !ret->next) {
-         sov->list_mode = LM_END;
+     if (read_only) {
+@@ -1323,9 +1326,23 @@ static int bdrv_backing_update_filename(BdrvChild *c, BlockDriverState *base,
+         }
      }
-@@ -339,6 +381,10 @@ static void end_list(Visitor *v, void **obj)
- {
-     StringOutputVisitor *sov = to_sov(v);
  
-+    if (sov->struct_nesting) {
-+        return;
+-    ret = bdrv_change_backing_file(parent, filename,
+-                                   base->drv ? base->drv->format_name : "",
+-                                   false);
++    if (base->drv) {
++        /*
++         * If the new base image doesn't have a format driver layer, which we
++         * detect by the fact that @base is a protocol driver, we record
++         * 'raw' as the format instead of putting the protocol name as the
++         * backing format
++         */
++        if (backing_mask_protocol && base->drv->protocol_name) {
++            format_name = "raw";
++        } else {
++            format_name = base->drv->format_name;
++        }
++    } else {
++        format_name = "";
 +    }
 +
-     assert(sov->list == obj);
-     assert(sov->list_mode == LM_STARTED ||
-            sov->list_mode == LM_END ||
++    ret = bdrv_change_backing_file(parent, filename, format_name, false);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not update backing file link");
+     }
+@@ -1479,10 +1496,14 @@ static void GRAPH_WRLOCK bdrv_child_cb_detach(BdrvChild *child)
+ }
+ 
+ static int bdrv_child_cb_update_filename(BdrvChild *c, BlockDriverState *base,
+-                                         const char *filename, Error **errp)
++                                         const char *filename,
++                                         bool backing_mask_protocol,
++                                         Error **errp)
+ {
+     if (c->role & BDRV_CHILD_COW) {
+-        return bdrv_backing_update_filename(c, base, filename, errp);
++        return bdrv_backing_update_filename(c, base, filename,
++                                            backing_mask_protocol,
++                                            errp);
+     }
+     return 0;
+ }
+@@ -5803,7 +5824,8 @@ void bdrv_unfreeze_backing_chain(BlockDriverState *bs, BlockDriverState *base)
+  *
+  */
+ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+-                           const char *backing_file_str)
++                           const char *backing_file_str,
++                           bool backing_mask_protocol)
+ {
+     BlockDriverState *explicit_top = top;
+     bool update_inherits_from;
+@@ -5869,6 +5891,7 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
+ 
+         if (c->klass->update_filename) {
+             ret = c->klass->update_filename(c, base, backing_file_str,
++                                            backing_mask_protocol,
+                                             &local_err);
+             if (ret < 0) {
+                 /*
+diff --git a/block/commit.c b/block/commit.c
+index 1dd7a65ffb..7c3fdcb0ca 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -42,6 +42,7 @@ typedef struct CommitBlockJob {
+     bool base_read_only;
+     bool chain_frozen;
+     char *backing_file_str;
++    bool backing_mask_protocol;
+ } CommitBlockJob;
+ 
+ static int commit_prepare(Job *job)
+@@ -61,7 +62,8 @@ static int commit_prepare(Job *job)
+     /* FIXME: bdrv_drop_intermediate treats total failures and partial failures
+      * identically. Further work is needed to disambiguate these cases. */
+     return bdrv_drop_intermediate(s->commit_top_bs, s->base_bs,
+-                                  s->backing_file_str);
++                                  s->backing_file_str,
++                                  s->backing_mask_protocol);
+ }
+ 
+ static void commit_abort(Job *job)
+@@ -254,6 +256,7 @@ void commit_start(const char *job_id, BlockDriverState *bs,
+                   BlockDriverState *base, BlockDriverState *top,
+                   int creation_flags, int64_t speed,
+                   BlockdevOnError on_error, const char *backing_file_str,
++                  bool backing_mask_protocol,
+                   const char *filter_node_name, Error **errp)
+ {
+     CommitBlockJob *s;
+@@ -408,6 +411,7 @@ void commit_start(const char *job_id, BlockDriverState *bs,
+     blk_set_disable_request_queuing(s->top, true);
+ 
+     s->backing_file_str = g_strdup(backing_file_str);
++    s->backing_mask_protocol = backing_mask_protocol;
+     s->on_error = on_error;
+ 
+     trace_commit_start(bs, base, top, s);
+diff --git a/blockdev.c b/blockdev.c
+index 3a5e7222ec..292c8af3f9 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2420,6 +2420,8 @@ void qmp_block_commit(const char *job_id, const char *device,
+                       const char *top_node,
+                       const char *top,
+                       const char *backing_file,
++                      bool has_backing_mask_protocol,
++                      bool backing_mask_protocol,
+                       bool has_speed, int64_t speed,
+                       bool has_on_error, BlockdevOnError on_error,
+                       const char *filter_node_name,
+@@ -2450,6 +2452,9 @@ void qmp_block_commit(const char *job_id, const char *device,
+     if (has_auto_dismiss && !auto_dismiss) {
+         job_flags |= JOB_MANUAL_DISMISS;
+     }
++    if (!has_backing_mask_protocol) {
++        backing_mask_protocol = false;
++    }
+ 
+     /* Important Note:
+      *  libvirt relies on the DeviceNotFound error class in order to probe for
+@@ -2591,6 +2596,7 @@ void qmp_block_commit(const char *job_id, const char *device,
+         }
+         commit_start(job_id, bs, base_bs, top_bs, job_flags,
+                      speed, on_error, backing_file,
++                     backing_mask_protocol,
+                      filter_node_name, &local_err);
+     }
+     if (local_err != NULL) {
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index 17830a69c1..666880472b 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -1591,6 +1591,7 @@ static const BlockJobDriver test_simple_job_driver = {
+ static int drop_intermediate_poll_update_filename(BdrvChild *child,
+                                                   BlockDriverState *new_base,
+                                                   const char *filename,
++                                                  bool backing_mask_protocol,
+                                                   Error **errp)
+ {
+     /*
+@@ -1702,7 +1703,7 @@ static void test_drop_intermediate_poll(void)
+     job->should_complete = true;
+ 
+     g_assert(!job_has_completed);
+-    ret = bdrv_drop_intermediate(chain[1], chain[0], NULL);
++    ret = bdrv_drop_intermediate(chain[1], chain[0], NULL, false);
+     aio_poll(qemu_get_aio_context(), false);
+     g_assert(ret == 0);
+     g_assert(job_has_completed);
 -- 
 2.43.0
 
