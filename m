@@ -2,67 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF3F832C58
+	by mail.lfdr.de (Postfix) with ESMTPS id 505D1832C5A
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 16:27:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQqkR-0002Oh-NL; Fri, 19 Jan 2024 10:25:35 -0500
+	id 1rQqm8-0007K8-4N; Fri, 19 Jan 2024 10:27:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqkP-0002Ny-0i
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqkM-0001Dh-Gb
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705677930;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GGb21HYInozYXJNipOznPib30aAvVfHgn1KFXusDCJU=;
- b=GTCLaTufWEbA3nKqtdACOiCzVVlycOpwqX7QcoHDF/sxArhIvjb/7xuJnOBpjDd7EROZcO
- MJU+ST6UtGd56jZfzyQ3wopMw27dJ7/LFDy/GUZtLue3O6JkrWWywzs/InMtvQ4Git+Mjp
- 11qy7yxDA0FpjS/NaKOJcjm1ACPtDMA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-yjWcmwqAMuW7FCBCzeBbmw-1; Fri, 19 Jan 2024 10:25:26 -0500
-X-MC-Unique: yjWcmwqAMuW7FCBCzeBbmw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A62A68C46C3;
- Fri, 19 Jan 2024 15:25:25 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.235])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6153040C95AD;
- Fri, 19 Jan 2024 15:25:24 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/11] tests/vm/netbsd: Remove missing py311-expat package
-Date: Fri, 19 Jan 2024 16:25:07 +0100
-Message-ID: <20240119152507.55182-12-thuth@redhat.com>
-In-Reply-To: <20240119152507.55182-1-thuth@redhat.com>
-References: <20240119152507.55182-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQqm4-0007GN-9r
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:27:16 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQqm2-0001PJ-Ia
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:27:15 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-55a3a2fec1bso982870a12.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 07:27:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705678033; x=1706282833; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=nVAKVz/Pdq592yhS5/KmVaVARjy5Rg/AG1d3vJ7LVgY=;
+ b=nKXCeHGN3BSkX8/BBe7qd3flgBE7jgL8MgoSWGiuIJxBFqwOebJBpGI4W9My8xZhDf
+ y0yBcMu/zgv4k75KaLyUoEz/T9WlRK8XDz1/Zz4citpwbk13SjjFkpLuBjwqKH+vKY4Z
+ eBhAfgLrq5tSuIsrShzaIJpTWJift/xuJbT6h9YAn5WrSr1uq3QmabQcrQ2HKabEkDrP
+ Z4k4gFH8fIpgaXFofWc6p4ZjhtHDJqD1RoRuhHrc+qJOVc3zjL06snHRLciJu7jSz4II
+ rMTo+XYBB0tQ3zXvRHrgU55chStsPVKpfKfb+0TxNjt7m0r9ZTLaoBeuU0kzdTjL9eG0
+ h5bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705678033; x=1706282833;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nVAKVz/Pdq592yhS5/KmVaVARjy5Rg/AG1d3vJ7LVgY=;
+ b=QSrs0JpeY83X9xqvuC25m/05QpQhGUspe9FOsIsWDazyuxyuHnS8SFLfx54oOH9wXt
+ IGkL4TI96HzWf7Q6G2dVe+eZyWEJgRQv+IF9EsabKaChFtlPbYMcImNYXN1hpKyo76TR
+ yBShQ94HhCGM6OXHPwG2t5adBDzz1XvifiF3NR6Nv/tcfWfmYwJpANy7rJOMG0FKUWM0
+ Z9dgCBAxAR24p2pp+VrMIF78CFxh530l4mCBwk2gGiVDTlhHPqAtKs2Y+h8L7G2cS/Fq
+ IxLIjn62CbQM3TgzEx3YwET9OdwooZ1nolpRnRGGQNDXvKMMXlaD7YpUaFPdWBWU00ju
+ CCwA==
+X-Gm-Message-State: AOJu0YwroIIiBJvDVnMQQUFRsLZ1s/Ayj0ZFUc2gBoETksxoX/7A3+J7
+ nn6KOpuh8eyVt8ZdV85KG41wFik5exyfpHpNSF90hO1ZL7FvLveu0/YlDN5zBeCJnxwkTAFltmg
+ gksH0zR4cTggx2LRE0th3iEAoFRptdDKi0SNfyA==
+X-Google-Smtp-Source: AGHT+IEFRhn80qAqVKIM3gtmi/vEOFwOSCXus3QsKpNmWzt/2fOeK/IrgTHWeSzMvxkHonXyd2Tx37NPWr3crjvJRjE=
+X-Received: by 2002:aa7:c156:0:b0:558:874e:b42d with SMTP id
+ r22-20020aa7c156000000b00558874eb42dmr844237edp.144.1705678032877; Fri, 19
+ Jan 2024 07:27:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <CAFEAcA_7s=scvgYfG8kGmJ==5cKmvvA-ZqVkpt4M9jV6eS1Zow@mail.gmail.com>
+ <ZaqCA5uYWFSgK6F-@redhat.com>
+In-Reply-To: <ZaqCA5uYWFSgK6F-@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Jan 2024 15:26:58 +0000
+Message-ID: <CAFEAcA_n-pgzd-bne7VvHk5a3Q9ofpxWsmWTshtV=nKfZd9ESA@mail.gmail.com>
+Subject: Re: how do the iotests pick a machine model to run on ?
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Hanna Reitz <hreitz@redhat.com>, 
+ Qemu-block <qemu-block@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,58 +87,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, 19 Jan 2024 at 14:07, Kevin Wolf <kwolf@redhat.com> wrote:
+>
+> Am 19.01.2024 um 13:55 hat Peter Maydell geschrieben:
+> > How are the iotests supposed to select a machine model to run
+> > on, and how are they intended to mark themselves as requiring
+> > particular facilities, like PCI? Presumably some of the tests
+> > are missing the appropriate annotations to ensure they're
+> > skipped when the facilities required aren't present.
+>
+> Probably next to nobody builds only sh4 and then runs 'make check'...
+>
+> I think the following patch should fix this test case (but as nobody
+> ever tested it, I fully expect other cases to fail, too). The fix could
+> of course be a lot more fine grained and skip only some individual tests
+> instead of all of them. I doubt we care, though, as long as it passes.
 
-Since the pkgsrc-2023Q3 release [*], the py-expat package has been
-merged into the base 'python' package:
+> iotests use machine_map in tests/qemu-iotests/testenv.py to decide which
+> machine to use for which target (unless the individual test case
+> overrides that). If the target isn't the list, it gets the default
+> machine type.
 
- - Several packages have been folded into base packages.  While the
-   result is simpler, those updating may need to force-remove the
-   secondary packages, depending on the update method.  When doing
-   make replace, one has to pkg_delete -f the secondary packages.
-   pkgin handles at least the python packages correctly, removing the
-   split package when updating python.  Specific packages and the
-   former packages now included:
+Thanks. Unfortunately your suggested fix doesn't work.
 
-     * cairo: cairo-gobject
-     * python: py-cElementTree py-curses py-cursespanel py-expat
-       py-readline py-sqlite3
+Looking at the definition of  verify_virtio_scsi_pci_or_ccw():
 
-Remove py311-expat from the package list in order to avoid:
+def verify_virtio_scsi_pci_or_ccw() -> None:
+    out = qemu_pipe('-M', 'none', '-device', 'help')
+    if 'virtio-scsi-pci' not in out and 'virtio-scsi-ccw' not in out:
+        notrun('Missing virtio-scsi-pci or virtio-scsi-ccw in QEMU binary')
 
-  ### Installing packages ...
-  processing remote summary (http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All)...
-  database for http://cdn.NetBSD.org/pub/pkgsrc/packages/NetBSD/amd64/9.3/All is up-to-date
-  py311-expat is not available in the repository
-  ...
-  calculating dependencies.../py311-expat is not available in the repository
-  pkg_install error log can be found in /var/db/pkgin/pkg_install-err.log
+this doesn't look to me like it's testing the right thing.
+You want to know "will one of these devices work on the
+machine type I am going to run", not "is this built in to
+the binary at all". The -device help output for qemu-system-sh4
+does include virtio-scsi-pci because there is a different
+non-default machine type that has PCI; but the machine the
+040 test actually runs doesn't have PCI.
 
-[*] https://mail-index.netbsd.org/netbsd-announce/2024/01/01/msg000360.html
+(Also, we should probably put an entry for sh4 in machine_map,
+because the default board type (shix) is about to be deprecated,
+and the r2d board type is thus a better choice.)
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2109
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240117140746.23511-1-philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/vm/netbsd | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/tests/vm/netbsd b/tests/vm/netbsd
-index 649fcad353..a3f6dd6b3c 100755
---- a/tests/vm/netbsd
-+++ b/tests/vm/netbsd
-@@ -31,7 +31,6 @@ class NetBSDVM(basevm.BaseVM):
-         "pkgconf",
-         "xz",
-         "python311",
--        "py311-expat",
-         "ninja-build",
- 
-         # gnu tools
--- 
-2.43.0
-
+-- PMM
 
