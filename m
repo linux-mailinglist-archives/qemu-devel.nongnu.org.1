@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D1E832B72
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE9E832B6F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2y-0005qA-9h; Fri, 19 Jan 2024 09:40:40 -0500
+	id 1rQq2q-0005nv-6V; Fri, 19 Jan 2024 09:40:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2e-0005mQ-P3
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2d-0005m2-Ht
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:19 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003TL-Gq
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003WE-GG
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=qXOq/h6phsa/tEESVpy5xNTXbPzc//D/ihwH2veRNU8=; b=EWahrOkuQ1I7Hi3RtRzClONnGs
- hFDhsMo4OCCj9XR8NNDfTG+RiTFtaFnwtvocWFUv1LMWxpNcmDeHnhwIVl3T56jBYV2hSZKhLxeEF
- aOlVTHILN0E2PhwVB0saFt/Y7pNekvmq6CpaVWm+BK8Vg5+quAUPjnf+y9gjJ5grcHtE=;
+ bh=hxBMwD1GCaiuF899/iFCMKGKTUOtgix0iEaqjEpTw1E=; b=Eb97r8ZhNvzpzZQSvs7DsXTwPH
+ HhCfnrYpAWZAvddYDNth0wLzHHSNdaJEPIF0Y5kgQU7h7eUms7oi+3xWmfjcBQQcYJR9As1NGLsHT
+ Af++NltcGRR/AR7laH1aJt+YEVAw8YKeqX2kjINj8smZSIWHa5WEeCt2UcJ5Hf4gkubw=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 06/34] exec: [VADDR] Move vaddr defines to separate file
-Date: Fri, 19 Jan 2024 15:39:56 +0100
-Message-ID: <20240119144024.14289-7-anjo@rev.ng>
+Subject: [RFC PATCH 07/34] hw/core: [VADDR] Include vaddr.h from cpu.h
+Date: Fri, 19 Jan 2024 15:39:57 +0100
+Message-ID: <20240119144024.14289-8-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,67 +60,27 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Needed to work around circular includes. vaddr is currently defined in
-cpu-common.h and needed by hw/core/cpu.h, but cpu-common.h also need
-cpu.h to know the size of the CPUState.
-
-[Maybe we can instead move parts of cpu-common.h w. hw/core/cpu.h to
-sort out the circular inclusion.]
+cpu-common.h is only needed for vaddr
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu-common.h | 12 ------------
- include/exec/vaddr.h      | 18 ++++++++++++++++++
- 2 files changed, 18 insertions(+), 12 deletions(-)
- create mode 100644 include/exec/vaddr.h
+ include/hw/core/cpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index df53252d51..c071f1a003 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -14,18 +14,6 @@
- #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
- #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index f25d53ee90..57d100c203 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -22,8 +22,8 @@
  
--/**
-- * vaddr:
-- * Type wide enough to contain any #target_ulong virtual address.
-- */
--typedef uint64_t vaddr;
--#define VADDR_PRId PRId64
--#define VADDR_PRIu PRIu64
--#define VADDR_PRIo PRIo64
--#define VADDR_PRIx PRIx64
--#define VADDR_PRIX PRIX64
--#define VADDR_MAX UINT64_MAX
--
- /**
-  * Variable page size macros
-  *
-diff --git a/include/exec/vaddr.h b/include/exec/vaddr.h
-new file mode 100644
-index 0000000000..db48bb16bc
---- /dev/null
-+++ b/include/exec/vaddr.h
-@@ -0,0 +1,18 @@
-+/* Define vaddr if it exists.  */
-+
-+#ifndef VADDR_H
-+#define VADDR_H
-+
-+/**
-+ * vaddr:
-+ * Type wide enough to contain any #target_ulong virtual address.
-+ */
-+typedef uint64_t vaddr;
-+#define VADDR_PRId PRId64
-+#define VADDR_PRIu PRIu64
-+#define VADDR_PRIo PRIo64
-+#define VADDR_PRIx PRIx64
-+#define VADDR_PRIX PRIX64
-+#define VADDR_MAX UINT64_MAX
-+
-+#endif
+ #include "hw/qdev-core.h"
+ #include "disas/dis-asm.h"
+-#include "exec/cpu-common.h"
+ #include "exec/hwaddr.h"
++#include "exec/vaddr.h"
+ #include "exec/memattrs.h"
+ #include "exec/tlb-common.h"
+ #include "qapi/qapi-types-run-state.h"
 -- 
 2.43.0
 
