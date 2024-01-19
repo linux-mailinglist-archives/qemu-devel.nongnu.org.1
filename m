@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4468321A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Jan 2024 23:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3663283229B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 01:22:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQb3n-0003Ow-6U; Thu, 18 Jan 2024 17:40:31 -0500
+	id 1rQcd5-00010F-CG; Thu, 18 Jan 2024 19:21:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1rQb3k-0003OQ-N6
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 17:40:28 -0500
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
- id 1rQb3j-0001kR-0Y
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 17:40:28 -0500
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-5ed10316e22so1360827b3.3
- for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 14:40:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705617625; x=1706222425;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7Ax+R6EbI+a1jnNIwSZ04wxLUysLiBkhsAMXiU7HmZY=;
- b=O6BKnazs9g9fgEXISO4Rd3VV9tqecBSl6/fuy5H0vNgdd1jbiyRchihTH30mqUxt/W
- GGZHjRkc0+bmAfocJnoQPan7rSJKivJji+qQhijPAf9dqgpd0qu273aH1UN8jvVFRX+r
- jIPqQrCybL3YP3lAYjsoTpX78/r7hnWBtxdZDt/VWJ0x9Js6ALBkTY3rrpflFgmDLcVB
- YG4GHB5w8wwf0VagTiPQLZ9sk0HB5fC6EY3uRY7NUmP6CH1A/pEYcs+YS+xx1rSXOyd6
- jfUQOiXE2U+KxhpWKodjBQvSetZpfe8s4ZPkwAr8nyhMDjsQA4AkKH0F+32ASfqlWa1Y
- rRdg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQcd1-0000y4-24
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 19:20:59 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQccy-0004zq-2r
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 19:20:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705623654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ci4+G/SjmV6q8yaNPgBdSEhpSYcjQn/qYvQaeBlP+YA=;
+ b=YkObkiimvxUftYMmm68jHq1/TNzkJ3hxplEEhJL+4uU5g5/UPl+3ydKDLuUlsK/J2Scrm7
+ Dekwod6Z/97wZTetv9HDPDXRg1ki35nUA5XK8ooTq1VJayhO4i0TTyfnuln8PrN2TwyQ0R
+ CD3+JEeNa5gaGBoLvmDQTJs4FaxQsZM=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-288-hwRT3GtMMWanvdliUPgiLA-1; Thu, 18 Jan 2024 19:20:53 -0500
+X-MC-Unique: hwRT3GtMMWanvdliUPgiLA-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-59948b0899cso41325eaf.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 16:20:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705617625; x=1706222425;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7Ax+R6EbI+a1jnNIwSZ04wxLUysLiBkhsAMXiU7HmZY=;
- b=AoqwhGIBC8zeqh6sWqe6rehUS0D+DtITo1cohXI/VeP70DqyhEry3Bz5x8TgsgrgmV
- lfNe0uFSga9E0FKvui40JNQccHp4CnPBZ2kEm1Og5lbu7whTXdtwSFemu4MSlENHrP0T
- wvhxreM28WMZ0lLpXsaeWZtH6EfOq2XfiEMIhRTKgn8lxzPjKR+alLc5NGPEK1SPq0eD
- WyCKtnBY1hqh+zSEAd3ARaGyXtW+HekYjElXGZmqWvQaF2jypTd6nNCb2Gay2JaWOoUd
- Yw+azJFDuZtzwuypRS7K8e5FYM6Axj5bd/5oZ8/30BxzSsplWq/yIwaj4JJIn4xP+RNu
- xilw==
-X-Gm-Message-State: AOJu0YwmygCLkbMxxLtv+SemOOT6nQpfLvDXqZKWhq1L1bzRL50orh2i
- oRbwB9b5kykYO6otcJWgYWsRVvC+PZ9lCmg0c1oRX2DjaCxwlrGvYjEc3h6zjJ/znOppBtGsG8R
- ze0KFMr/G9tgON6gBKZAC1bS5d//9LHeDDRDyJA==
-X-Google-Smtp-Source: AGHT+IHhFFplzhvq72mJqar8oTkdG+XMDN/NxvBHGYupx3hiJHpMRBs+hfgF/aUrhAA87UcBMGQPCXxn+CyfJMtpRSw=
-X-Received: by 2002:a25:aa8d:0:b0:dc2:4e83:e6a4 with SMTP id
- t13-20020a25aa8d000000b00dc24e83e6a4mr1294879ybi.3.1705617625638; Thu, 18 Jan
- 2024 14:40:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705623652; x=1706228452;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ci4+G/SjmV6q8yaNPgBdSEhpSYcjQn/qYvQaeBlP+YA=;
+ b=LwBULFMPR2UZ9YQSC+M6dOYdGtKUEGM3o7YmWQymzjhzYp95sb6J6Rl5x58A4TYFtj
+ Ji2et8FOP8rLFWiAsKdDBAoqaPIkvQ40p1JSMc5H074OnDMW2DcruFw3G2fdYssGxXt0
+ iQ/+eGjWPoFXCvDLHj/NJG7Y5NoM7n83J8gzLqj1gFhuFmJzaqQneQk0FP9BdiXWQu+1
+ kJ3y9aMUT6i9R8cyGSCxiQX3WYstnzClSUZgFbqEJOt17c342S+VZeRqxO/x9o9wpNsH
+ mh2Rh2rEkWYKBQHDA0QX8gekaEf+un7g8jjn+uzkRX+u0TvPXn388jNgscCSVDzFtRSP
+ swWQ==
+X-Gm-Message-State: AOJu0YzWJH4KTEnJ4iTpHp0pocnbLqoMnta3vFUGNCknkECjuUEqNCS+
+ ckbvki8RlzKnU+o+xAkT4qk5xIsotpdmQ+CgMUXUdFlZAAbv+p9HqKJ2j3Fs+DdeLQ2WtiSurrk
+ hqKj7yMx6uYxBQEmWUeydACxWFAhGHZe2VdANjw0iAresOuct4SG7
+X-Received: by 2002:a05:6359:4c1b:b0:176:28fd:7ae8 with SMTP id
+ kj27-20020a0563594c1b00b0017628fd7ae8mr827336rwc.2.1705623651970; 
+ Thu, 18 Jan 2024 16:20:51 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJ8pLNVrLGKmgDkCx1KQ2DqFtmq4suoS5/ugCnpu02LHu3iLe/8vPGPxeCI+EhT1Tg4nroCQ==
+X-Received: by 2002:a05:6359:4c1b:b0:176:28fd:7ae8 with SMTP id
+ kj27-20020a0563594c1b00b0017628fd7ae8mr827297rwc.2.1705623651303; 
+ Thu, 18 Jan 2024 16:20:51 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ y4-20020a636404000000b005cd8ada89e5sm2212586pgb.70.2024.01.18.16.20.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Jan 2024 16:20:50 -0800 (PST)
+Date: Fri, 19 Jan 2024 08:20:43 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 18/30] migration/multifd: Allow receiving pages
+ without packets
+Message-ID: <ZanAW8sdXpGmTjHs@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-19-farosas@suse.de> <ZaY6E4tefb5DGEp9@x1n>
+ <87wms9f2lc.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-4-me@deliversmonkey.space>
- <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
- <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
-In-Reply-To: <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 18 Jan 2024 14:40:14 -0800
-Message-ID: <CAKC1njRXPi1Roch=T+NwQk-TOzN=gSjmPh2KCVsemKdex9CamA@mail.gmail.com>
-Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
- current number of masked bits for pointer masking
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Alexey Baturo <baturo.alexey@gmail.com>, zhiwei_liu@linux.alibaba.com, 
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=debug@rivosinc.com; helo=mail-yw1-x112d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87wms9f2lc.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,67 +100,593 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 18, 2024 at 12:50=E2=80=AFPM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 1/19/24 04:21, Deepak Gupta wrote:
-> > On Tue, Jan 9, 2024 at 2:31=E2=80=AFAM Alexey Baturo <baturo.alexey@gma=
-il.com> wrote:
-> >>
-> >> From: Alexey Baturo <baturo.alexey@gmail.com>
-> >>
-> >> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
+On Tue, Jan 16, 2024 at 05:25:03PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Mon, Nov 27, 2023 at 05:26:00PM -0300, Fabiano Rosas wrote:
+> >> Currently multifd does not need to have knowledge of pages on the
+> >> receiving side because all the information needed is within the
+> >> packets that come in the stream.
+> >> 
+> >> We're about to add support to fixed-ram migration, which cannot use
+> >> packets because it expects the ramblock section in the migration file
+> >> to contain only the guest pages data.
+> >> 
+> >> Add a data structure to transfer pages between the ram migration code
+> >> and the multifd receiving threads.
+> >> 
+> >> We don't want to reuse MultiFDPages_t for two reasons:
+> >> 
+> >> a) multifd threads don't really need to know about the data they're
+> >>    receiving.
+> >> 
+> >> b) the receiving side has to be stopped to load the pages, which means
+> >>    we can experiment with larger granularities than page size when
+> >>    transferring data.
+> >> 
+> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > >> ---
+> >> - stopped using MultiFDPages_t and added a new structure which can
+> >>   take offset + size
+> >> ---
+> >>  migration/multifd.c | 122 ++++++++++++++++++++++++++++++++++++++++++--
+> >>  migration/multifd.h |  20 ++++++++
+> >>  2 files changed, 138 insertions(+), 4 deletions(-)
+> >> 
+> >> diff --git a/migration/multifd.c b/migration/multifd.c
+> >> index c1381bdc21..7dfab2367a 100644
+> >> --- a/migration/multifd.c
+> >> +++ b/migration/multifd.c
+> >> @@ -142,17 +142,36 @@ static void nocomp_recv_cleanup(MultiFDRecvParams *p)
+> >>  static int nocomp_recv_data(MultiFDRecvParams *p, Error **errp)
+> >>  {
+> >>      uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+> >> +    ERRP_GUARD();
+> >>  
+> >>      if (flags != MULTIFD_FLAG_NOCOMP) {
+> >>          error_setg(errp, "multifd %u: flags received %x flags expected %x",
+> >>                     p->id, flags, MULTIFD_FLAG_NOCOMP);
+> >>          return -1;
+> >>      }
+> >> -    for (int i = 0; i < p->normal_num; i++) {
+> >> -        p->iov[i].iov_base = p->host + p->normal[i];
+> >> -        p->iov[i].iov_len = p->page_size;
+> >> +
+> >> +    if (!migrate_multifd_packets()) {
+> >> +        MultiFDRecvData *data = p->data;
+> >> +        size_t ret;
+> >> +
+> >> +        ret = qio_channel_pread(p->c, (char *) data->opaque,
+> >> +                                data->size, data->file_offset, errp);
+> >> +        if (ret != data->size) {
+> >> +            error_prepend(errp,
+> >> +                          "multifd recv (%u): read 0x%zx, expected 0x%zx",
+> >> +                          p->id, ret, data->size);
+> >> +            return -1;
+> >> +        }
+> >> +
+> >> +        return 0;
+> >> +    } else {
+> >> +        for (int i = 0; i < p->normal_num; i++) {
+> >> +            p->iov[i].iov_base = p->host + p->normal[i];
+> >> +            p->iov[i].iov_len = p->page_size;
+> >> +        }
+> >> +
+> >> +        return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+> >>      }
+> >
+> > I guess you managed to squash the file loads into "no compression" handler
+> > of multifd, but IMHO it's not as clean.
+> >
+> > Firstly, if to do so, we'd better make sure multifd-compression is not
+> > enabled anywhere together with fixed-ram.  I didn't yet see such protection
+> > in the series.  I think if it happens we should expect crashes because
+> > they'll go into zlib/zstd paths for the file.
+> 
+> Yes, we need some checks around this.
+> 
+> >
+> > IMHO the only model fixed-ram can share with multifd is the task management
+> > part, mutexes, semaphores, etc..
+> 
+> AFAIU, that's what multifd *is*. Compression would just be another
+> client of this task management code. This "nocomp" thing always felt off
+> to me.
+> 
+> > IIRC I used to mention that it'll be nice
+> > if we have simply a pool of threads so we can enqueue tasks.
+> 
+> Right, I don't disagree. However I don't think we can just show up with
+> a thread pool and start moving stuff into it. I think the safest way to
+> do this is to:
+> 
+> 1- Adapt multifd so that the client code is the sole responsible for the
+>    data being sent. No data knowledge by the multifd thread.
+> 
+>    With this, nothing should need to touch multifd threads code
+>    anymore. New clients just define their methods and prepare the data
+>    as they please.
+> 
+> 2- Move everything that is left into multifd. Zero pages, postcopy, etc.
+> 
+> With 1 and 2 we'd have a pretty good picture of what kinds of operations
+> we need to do and what are the requirements for the thread
+> infrastructure.
+> 
+> 3- Try to use existing abstractions within QEMU to replace
+>    multifd. Write from scratch if none are suitable.
+> 
+> What do you think? We could put an action plan in place and start
+> picking at it. My main concern is about what sorts of hidden assumptions
+> are present in the current code that we'd start discovering if we just
+> replaced it with something new.
+
+You plan sounds good.  Generalization (3) can happen even before (2), IMHO.
+
+I suppose you already have the wiki account working now, would you please
+add an entry into the todo page, with all these thoughts?
+
+https://wiki.qemu.org/ToDo/LiveMigration
+
+You can also mention you plan to look into it if you're taking the lead,
+then people know it's in progress.
+
+It can be under "cleanups" I assume.
+
+> 
+> > If that's too
+> > far away, would something like below closer to that?  What I'm thinking:
+> >
+> >   - patch 1: rename MultiFDMethods to MultiFDCompressMethods, this can
+> >     replace the other patch to do s/recv_pages/recv_data/
+> >
+> >   - patch 2: introduce MultiFDMethods (on top of MultiFDCompressMethods),
+> >     refactor the current code to provide the socket version of MultiFDMethods.
+> >
+> >   - patch 3: add the fixed-ram "file" version of MultiFDMethods
+> 
+> We also have zero page moving to multifd and compression accelerators
+> being developed. We need to take those into account. We might need an
+> ops structure that accounts for the current "phases" (setup, prepare,
+> recv, cleanup)[1], but within those also allow for composing arbitrary
+> data transformations.
+> 
+>  (1)- there's no equivalent to send_prepare on dst and no equivalent to
+>  recv_pages on src. We might need to add a recv_prepare and a send_pages
+>  hook. The fixed-ram migration for instance would benefit from being able
+>  to choose a different IO function to send data.
+> 
+> I'll send the patches moving zero pages to multifd once I find some
+> time, but another question I had was whether we should add zero page
+> detection as a new phase: setup - zero page detection - prepare - send -
+> cleanup.
+
+As you know I haven't yet followed those threads, only a rough memory on
+the zero page movement but that can be obsolete and I'll need to read what
+you have.  I agree all these are multifd-relevant, and we should consider
+them.
+
+Now the question is even if we will have a good thread model for multifd,
+whether file operations should be put into the compression layer (what you
+already did in this patch) or move it out.  Libvirt supports compression on
+images so I assume file operations shouldn't need to rely on compression,
+from that pov I think maybe it's better we leave all compression stuff
+along from file: perspective.
+
+> 
+> > MultiFDCompressMethods doesn't need to be used at all for "file" version of
+> > MultiFDMethods.
+> >
+> > Would that work?
+> 
+> We definitely need _something_ to help us stop adding code to the middle
+> of multifd_send_thread every time there's a new feature.
+> 
+> >
+> >> -    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
+> >>  }
+> >>  
+> >>  static MultiFDMethods multifd_nocomp_ops = {
+> >> @@ -989,6 +1008,7 @@ int multifd_save_setup(Error **errp)
+> >>  
+> >>  struct {
+> >>      MultiFDRecvParams *params;
+> >> +    MultiFDRecvData *data;
+> >
+> > (If above would work, maybe we can split MultiFDRecvParams into two chunks,
+> >  one commonly used for both, one only for sockets?)
+> >
+> 
+> If we assume the use of packets in multifd is coupled to the socket
+> channel usage then yes. However, I suspect that what we might want is a
+> streaming migration vs. non-streaming migration abstraction. Because we
+> can still use packets with file migration after all.
+> 
+> >>      /* number of created threads */
+> >>      int count;
+> >>      /* syncs main thread and channels */
+> >> @@ -999,6 +1019,49 @@ struct {
+> >>      MultiFDMethods *ops;
+> >>  } *multifd_recv_state;
+> >>  
+> >> +int multifd_recv(void)
+> >> +{
+> >> +    int i;
+> >> +    static int next_recv_channel;
+> >> +    MultiFDRecvParams *p = NULL;
+> >> +    MultiFDRecvData *data = multifd_recv_state->data;
+> >> +
+> >> +    /*
+> >> +     * next_channel can remain from a previous migration that was
+> >> +     * using more channels, so ensure it doesn't overflow if the
+> >> +     * limit is lower now.
+> >> +     */
+> >> +    next_recv_channel %= migrate_multifd_channels();
+> >> +    for (i = next_recv_channel;; i = (i + 1) % migrate_multifd_channels()) {
+> >> +        p = &multifd_recv_state->params[i];
+> >> +
+> >> +        qemu_mutex_lock(&p->mutex);
+> >> +        if (p->quit) {
+> >> +            error_report("%s: channel %d has already quit!", __func__, i);
+> >> +            qemu_mutex_unlock(&p->mutex);
+> >> +            return -1;
+> >> +        }
+> >> +        if (!p->pending_job) {
+> >> +            p->pending_job++;
+> >> +            next_recv_channel = (i + 1) % migrate_multifd_channels();
+> >> +            break;
+> >> +        }
+> >> +        qemu_mutex_unlock(&p->mutex);
+> >> +    }
+> >> +    assert(p->data->size == 0);
+> >> +    multifd_recv_state->data = p->data;
+> >> +    p->data = data;
+> >> +    qemu_mutex_unlock(&p->mutex);
+> >> +    qemu_sem_post(&p->sem);
+> >> +
+> >> +    return 1;
+> >> +}
+> >
+> > PS: so if we have the pool model we can already mostly merge above code
+> > with multifd_send_pages().. because this will be a common helper to enqueue
+> > a task to a pool, no matter it's for writting (to file/socket) or reading
+> > (only from file).
 > >
 > >> +
-> >> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
+> >> +MultiFDRecvData *multifd_get_recv_data(void)
 > >> +{
-> >> +    bool virt_mem_en =3D false;
-> >> +#ifndef CONFIG_USER_ONLY
-> >> +    int satp_mode =3D 0;
-> >> +    int priv_mode =3D cpu_address_mode(env);
-> >> +    /* Get current PMM field */
-> >> +    if (riscv_cpu_mxl(env) =3D=3D MXL_RV32) {
-> >> +        satp_mode =3D get_field(env->satp, SATP32_MODE);
-> >> +    } else {
-> >> +        satp_mode =3D get_field(env->satp, SATP64_MODE);
-> >> +    }
-> >> +    virt_mem_en =3D ((satp_mode !=3D VM_1_10_MBARE) && (priv_mode !=
-=3D PRV_M));
-> >> +#endif
-> >> +    return virt_mem_en;
+> >> +    return multifd_recv_state->data;
+> >> +}
+> >> +
+> >>  static void multifd_recv_terminate_threads(Error *err)
+> >>  {
+> >>      int i;
+> >> @@ -1020,6 +1083,7 @@ static void multifd_recv_terminate_threads(Error *err)
+> >>  
+> >>          qemu_mutex_lock(&p->mutex);
+> >>          p->quit = true;
+> >> +        qemu_sem_post(&p->sem);
+> >>          /*
+> >>           * We could arrive here for two reasons:
+> >>           *  - normal quit, i.e. everything went fine, just finished
+> >> @@ -1069,6 +1133,7 @@ void multifd_load_cleanup(void)
+> >>          p->c = NULL;
+> >>          qemu_mutex_destroy(&p->mutex);
+> >>          qemu_sem_destroy(&p->sem_sync);
+> >> +        qemu_sem_destroy(&p->sem);
+> >>          g_free(p->name);
+> >>          p->name = NULL;
+> >>          p->packet_len = 0;
+> >> @@ -1083,6 +1148,8 @@ void multifd_load_cleanup(void)
+> >>      qemu_sem_destroy(&multifd_recv_state->sem_sync);
+> >>      g_free(multifd_recv_state->params);
+> >>      multifd_recv_state->params = NULL;
+> >> +    g_free(multifd_recv_state->data);
+> >> +    multifd_recv_state->data = NULL;
+> >>      g_free(multifd_recv_state);
+> >>      multifd_recv_state = NULL;
+> >>  }
+> >> @@ -1094,6 +1161,21 @@ void multifd_recv_sync_main(void)
+> >>      if (!migrate_multifd() || !migrate_multifd_packets()) {
 > >
-> > Obsessing a little bit on how to test PM enabled binaries with qemu-use=
-r.
-> > If we return false above then we're not allowed to test binaries with
-> > pointer masking enabled with qemu-user.
-> > That use case is not required?
->
-> In a previous round I suggested that the ifdefs are not necessary.
-> But for now it will always be off for qemu-user.
->
-> At some point pointer masking will be in hardware, and the kernel will ga=
-in support for
-> it, and there will likely be a prctl() added for it.  At the point the ke=
-rnel finalizes
-> the API, you will be able to enable pointer masking for qemu-user.
+> > [1]
+> >
+> >>          return;
+> >>      }
+> >> +
+> >> +    if (!migrate_multifd_packets()) {
+> >
+> > Hmm, isn't this checked already above at [1]?  Could this path ever trigger
+> > then?  Maybe we need to drop the one at [1]?
+> 
+> That was a rebase mistake.
+> 
+> >
+> > IIUC what you wanted to do here is relying on the last RAM_SAVE_FLAG_EOS in
+> > the image file to do a full flush to make sure all pages are loaded.
+> >
+> 
+> Bear with me if I take it slow with everything below here. The practical
+> effect of changing any of these is causing the threads to go off-sync
+> and that results in a time dependent bug where memory is not properly
+> migrated, which just comes up as an assert in check_guests_ram() in the
+> tests. It gets hard to reproduce and has taken me whole weeks to debug
+> before.
 
-I am sure I am missing some important detail here, BUT...
+Per-iteration sync_main is needed for file, but only on sender side, IIUC.
 
-How is it different from aarch64 "top byte ignore".
-I think commit: 16c8497 enables top byte ignore for user pointers and
-by default for qemu-user for aarch64 target.
+Actually it's not needed for your use case at all to move the VM to file,
+because in that case we could already stop the VM first.  Now to be
+compatible with Libvirt's sake on live snapshot on Windows, we assume VM
+can run, then yes sync_main is needed at least on src, because otherwise
+the same page can be queued >1 times on different threads, and it's not
+guaranteed that the latest page will always land last.
 
-IIRC, user <--> kernel abi is only needed for pointers that are passed
-to the kernel.
+Said that, I don't think it's needed on recver side?  Because for both use
+cases (either "move to file", or "take a snapshot"), the loader is actually
+the same process where we read data from the file and relaunch the VM.  In
+that case there's no need to sync.
 
-And in the case of qemu-user, we are talking about the host kernel.
-Since arm64 had TBI enabled for qemu-user for a while and I imagine it
-works on x86 host kernel
-(assuming qemu-user is sanitizing pointers)
-Same should work for risc-v qemu-user, right?
+For socket-based multifd, the sync_main on recver side is only triggered
+when RAM_SAVE_FLAG_MULTIFD_FLUSH packet is received on 9.0 machine type.
+And then you'll also notice you don't even have that for file: URI multifd
+migrations, isn't it?
 
->
->
-> r~
+When you said you hit a bug, did you have the sender side sync_main
+available, or you missed both?  I would expect that bug triggered because
+you missed the sync_main on src, not on dest.  For dest, IMHO we only need
+a last phase sync to make sure all RAM loaded before we relaunch the VM.
+
+> 
+> > You may want to be careful on the side effect of flush_after_each_section
+> > parameter:
+> >
+> >         case RAM_SAVE_FLAG_EOS:
+> >             /* normal exit */
+> >             if (migrate_multifd() &&
+> >                 migrate_multifd_flush_after_each_section()) {
+> >                 multifd_recv_sync_main();
+> >             }
+> >
+> > You may want to flush always for file?
+> 
+> Next patch restricts the setting of flush_after_each_section.
+> 
+> >
+> >> +        for (i = 0; i < migrate_multifd_channels(); i++) {
+> >> +            MultiFDRecvParams *p = &multifd_recv_state->params[i];
+> >> +
+> >> +            qemu_sem_post(&p->sem);
+> >> +            qemu_sem_wait(&p->sem_sync);
+> >> +
+> >> +            qemu_mutex_lock(&p->mutex);
+> >> +            assert(!p->pending_job || p->quit);
+> >> +            qemu_mutex_unlock(&p->mutex);
+> >> +        }
+> >> +        return;
+> >
+> > Btw, how does this kick off all the recv threads?  Is it because you did a
+> > sem_post(&sem) with p->pending_job==false this time?
+> 
+> Yes, when the last piece of memory is received, the thread will loop
+> around and hang at qemu_sem_wait(&p->sem):
+> 
+>         } else {
+>             /*
+>              * No packets, so we need to wait for the vmstate code to
+>              * give us work.
+>              */
+>             qemu_sem_wait(&p->sem);
+>             qemu_mutex_lock(&p->mutex);
+>             if (!p->pending_job) {
+>                 qemu_mutex_unlock(&p->mutex);
+>                 break;
+>             }
+>             has_data = !!p->data->size;
+>         }
+> 
+> So here we release the p->sem one last time so the thread can see
+> p->pending_job = false and proceed to inform it has finished:
+> 
+>     if (!use_packets) {
+>         qemu_sem_post(&p->sem_sync);
+>     }
+
+(see below)
+
+> 
+> > Maybe it's clearer to just set p->quit (or a global quite knob) somewhere?
+> > That'll be clear that this is a one-shot thing, only needed at the end of
+> > the file incoming migration.
+> >
+> 
+> Maybe I'm not following you, but the thread needs to check
+> p->pending_job before it knows there's no more work. And it can only do
+> that if the migration thread releases p->sem. Do you mean setting
+> p->quit on the thread instead of posting sem_sync? That's racy I think.
+
+I want to make the quit event not rely on pending_job.  I think we should
+allow pending_job==false and the thread should just sleep again.
+
+That should also match recver side with sender, I remember we just reworked
+that so as to reference to the global "quit" flag:
+
+multifd_send_thread():
+        ...
+        qemu_sem_wait(&p->sem);
+        if (qatomic_read(&multifd_send_state->exiting)) {
+            break;
+        }
+        ...
+
+Something like that.
+
+> 
+> >> +    }
+> >> +
+> >>      for (i = 0; i < migrate_multifd_channels(); i++) {
+> >>          MultiFDRecvParams *p = &multifd_recv_state->params[i];
+> >>  
+> >> @@ -1156,6 +1238,18 @@ static void *multifd_recv_thread(void *opaque)
+> >>  
+> >>              p->total_normal_pages += p->normal_num;
+> >>              has_data = !!p->normal_num;
+> >> +        } else {
+> >> +            /*
+> >> +             * No packets, so we need to wait for the vmstate code to
+> >> +             * give us work.
+> >> +             */
+> >> +            qemu_sem_wait(&p->sem);
+> >> +            qemu_mutex_lock(&p->mutex);
+> >> +            if (!p->pending_job) {
+> >> +                qemu_mutex_unlock(&p->mutex);
+> >> +                break;
+> >> +            }
+> >> +            has_data = !!p->data->size;
+> >>          }
+> >>  
+> >>          qemu_mutex_unlock(&p->mutex);
+> >> @@ -1171,6 +1265,17 @@ static void *multifd_recv_thread(void *opaque)
+> >>              qemu_sem_post(&multifd_recv_state->sem_sync);
+> >>              qemu_sem_wait(&p->sem_sync);
+> >>          }
+> >> +
+> >> +        if (!use_packets) {
+> >> +            qemu_mutex_lock(&p->mutex);
+> >> +            p->data->size = 0;
+> >> +            p->pending_job--;
+> >> +            qemu_mutex_unlock(&p->mutex);
+> >> +        }
+> >> +    }
+> >> +
+> >> +    if (!use_packets) {
+> >> +        qemu_sem_post(&p->sem_sync);
+> >
+> > Currently sem_sync is only posted with MULTIFD_FLAG_SYNC flag.  We'd better
+> > be careful on reusing it.
+> >
+> > Maybe add some comment above recv_state->sem_sync?
+> >
+> >   /*
+> >    * For sockets: this is posted once for each MULTIFD_FLAG_SYNC flag.
+> >    *
+> >    * For files: this is only posted at the end of the file load to mark
+> >    *            completion of the load process.
+> >    */
+> >
+> 
+> Sure. I would rename it to sem_done if I could, but we already went
+> through that.
+> 
+> >>      }
+> >>  
+> >>      if (local_err) {
+> >> @@ -1205,6 +1310,10 @@ int multifd_load_setup(Error **errp)
+> >>      thread_count = migrate_multifd_channels();
+> >>      multifd_recv_state = g_malloc0(sizeof(*multifd_recv_state));
+> >>      multifd_recv_state->params = g_new0(MultiFDRecvParams, thread_count);
+> >> +
+> >> +    multifd_recv_state->data = g_new0(MultiFDRecvData, 1);
+> >> +    multifd_recv_state->data->size = 0;
+> >> +
+> >>      qatomic_set(&multifd_recv_state->count, 0);
+> >>      qemu_sem_init(&multifd_recv_state->sem_sync, 0);
+> >>      multifd_recv_state->ops = multifd_ops[migrate_multifd_compression()];
+> >> @@ -1214,9 +1323,14 @@ int multifd_load_setup(Error **errp)
+> >>  
+> >>          qemu_mutex_init(&p->mutex);
+> >>          qemu_sem_init(&p->sem_sync, 0);
+> >> +        qemu_sem_init(&p->sem, 0);
+> >>          p->quit = false;
+> >> +        p->pending_job = 0;
+> >>          p->id = i;
+> >>  
+> >> +        p->data = g_new0(MultiFDRecvData, 1);
+> >> +        p->data->size = 0;
+> >> +
+> >>          if (use_packets) {
+> >>              p->packet_len = sizeof(MultiFDPacket_t)
+> >>                  + sizeof(uint64_t) * page_count;
+> >> diff --git a/migration/multifd.h b/migration/multifd.h
+> >> index 406d42dbae..abaf16c3f2 100644
+> >> --- a/migration/multifd.h
+> >> +++ b/migration/multifd.h
+> >> @@ -13,6 +13,8 @@
+> >>  #ifndef QEMU_MIGRATION_MULTIFD_H
+> >>  #define QEMU_MIGRATION_MULTIFD_H
+> >>  
+> >> +typedef struct MultiFDRecvData MultiFDRecvData;
+> >> +
+> >>  int multifd_save_setup(Error **errp);
+> >>  void multifd_save_cleanup(void);
+> >>  int multifd_load_setup(Error **errp);
+> >> @@ -24,6 +26,8 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+> >>  void multifd_recv_sync_main(void);
+> >>  int multifd_send_sync_main(QEMUFile *f);
+> >>  int multifd_queue_page(QEMUFile *f, RAMBlock *block, ram_addr_t offset);
+> >> +int multifd_recv(void);
+> >> +MultiFDRecvData *multifd_get_recv_data(void);
+> >>  
+> >>  /* Multifd Compression flags */
+> >>  #define MULTIFD_FLAG_SYNC (1 << 0)
+> >> @@ -66,6 +70,13 @@ typedef struct {
+> >>      RAMBlock *block;
+> >>  } MultiFDPages_t;
+> >>  
+> >> +struct MultiFDRecvData {
+> >> +    void *opaque;
+> >> +    size_t size;
+> >> +    /* for preadv */
+> >> +    off_t file_offset;
+> >> +};
+> >> +
+> >>  typedef struct {
+> >>      /* Fields are only written at creating/deletion time */
+> >>      /* No lock required for them, they are read only */
+> >> @@ -156,6 +167,8 @@ typedef struct {
+> >>  
+> >>      /* syncs main thread and channels */
+> >>      QemuSemaphore sem_sync;
+> >> +    /* sem where to wait for more work */
+> >> +    QemuSemaphore sem;
+> >>  
+> >>      /* this mutex protects the following parameters */
+> >>      QemuMutex mutex;
+> >> @@ -167,6 +180,13 @@ typedef struct {
+> >>      uint32_t flags;
+> >>      /* global number of generated multifd packets */
+> >>      uint64_t packet_num;
+> >> +    int pending_job;
+> >> +    /*
+> >> +     * The owner of 'data' depends of 'pending_job' value:
+> >> +     * pending_job == 0 -> migration_thread can use it.
+> >> +     * pending_job != 0 -> multifd_channel can use it.
+> >> +     */
+> >> +    MultiFDRecvData *data;
+> >
+> > Right after the main thread assigns a chunk of memory to load for a recv
+> > thread, the main thread job done, afaict.  I don't see how a race could
+> > happen here.
+> >
+> > I'm not sure, but I _think_ if we rely on p->quite or something similar to
+> > quite all recv threads, then this can be dropped?
+> >
+> 
+> We still need to know whether a channel is in use so we can skip to the
+> next.
+
+Oh, yes.
+
+> 
+> >>  
+> >>      /* thread local variables. No locking required */
+> >>  
+> >> -- 
+> >> 2.35.3
+> >> 
+> 
+
+-- 
+Peter Xu
+
 
