@@ -2,106 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D302833015
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 22:09:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A9883301E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 22:14:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQw5k-0002x5-3B; Fri, 19 Jan 2024 16:07:56 -0500
+	id 1rQwBE-0007Rt-JN; Fri, 19 Jan 2024 16:13:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rQw5h-0002pS-Th; Fri, 19 Jan 2024 16:07:53 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rQwBB-0007Rh-8P
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:13:33 -0500
+Received: from out2-smtp.messagingengine.com ([66.111.4.26])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rQw5f-0006jh-NC; Fri, 19 Jan 2024 16:07:53 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40JK26iE012230; Fri, 19 Jan 2024 21:07:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=zpcLgHwOmSZdP54mgjuNpifae+z/iCv/TYkAJAMpR3U=;
- b=fgOcCBvaon7eUZxv+vv9j7FYQfq7uaYTgzAch+sGN06sV4qp1dm28lCKudX8P4sTaxmc
- CQfDLBoasxq7CNKwNg2occWergjoo0sxkheqAOt7sypVLGi+npCx4PaD69XmuT9smhnM
- JMB1S3v85y3fEUUpj5aOKbQ1lINyh2rVlhKKzAiy5j6aDwAgqtiOAVhvmElD4Z9S9Lm0
- kEgAr5K6pM9uDc+HyU2Zm6jsqXGJsfEe413XEwYFJTfQHBq1xRX0StlFvukCOzBM156E
- 8P6m1XZwArHmYogJZbQP68eoMVTlU+6uFI2MykS+WTqJQdG8tcwRAIqyY+5YdNInVL0E Ng== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vqyrt1hvs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jan 2024 21:07:46 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40JKJ61s029344;
- Fri, 19 Jan 2024 21:07:46 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vqyrt1hvc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jan 2024 21:07:46 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40JHmduK030441; Fri, 19 Jan 2024 21:07:45 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm72kkcsh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 19 Jan 2024 21:07:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40JL7g3D27525760
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 19 Jan 2024 21:07:42 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0FACD2004B;
- Fri, 19 Jan 2024 21:07:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 47A1C20040;
- Fri, 19 Jan 2024 21:07:41 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.179.31.192])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
- Fri, 19 Jan 2024 21:07:41 +0000 (GMT)
-Date: Fri, 19 Jan 2024 22:07:39 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, farman@linux.ibm.com, thuth@redhat.com,
- clg@redhat.com, frankja@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org, Halil Pasic
- <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2 3/3] s390x/pci: drive ISM reset from subsystem reset
-Message-ID: <20240119220739.0f5739b3.pasic@linux.ibm.com>
-In-Reply-To: <20240118185151.265329-4-mjrosato@linux.ibm.com>
-References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
- <20240118185151.265329-4-mjrosato@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1rQwB4-00081g-KP
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:13:32 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.nyi.internal (Postfix) with ESMTP id 7AC7F5C01CA;
+ Fri, 19 Jan 2024 16:13:21 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Fri, 19 Jan 2024 16:13:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm2; t=1705698801; x=1705785201; bh=JdzgbrxKb6
+ j20zlK8ja15pbzl7ZjuJOeNkYCKEiy19Y=; b=IJN6NN05aOpUox3owEm6YxH477
+ Yx2hkyFtjPqZ0RPkdoafBfVlrJZaE8HsR1vjii6AczFaqHhrJWNcLhlEzkLHrZ/k
+ pt/PQ+KBvQhVlIbw3lsCG8MN9FhcKdyIGWbDE507HZ6hV9o4U4VcYA3bN3Xc7Nid
+ lPzCYBTlHI5ggjSq/6qgKfkdUZD8Y5CiKxZTiJGjj6LWx+IOM8IecNPlTsrzLBss
+ aDtxSzP1uhLhh70fcLGN+zyAo0j/JI7N/eVXJ30Y3+pluQ5HyiCMXtkqrTAPd7lC
+ RSsymXyXwLxqq/UkF53HIL1G7KyUEouCzljzOYekkFQhsUujTO1i/BxkK1YA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; t=1705698801; x=1705785201; bh=JdzgbrxKb6j20zlK8ja15pbzl7Zj
+ uJOeNkYCKEiy19Y=; b=lq9JPO98FKLLsIWZhCRdU3BR6E4q031A+YleKClMyYa7
+ sU+XPqUNZiNXAsHPRfPCp8MY7Poxanfn4M88WmK+4kmVQDe/gMS+L1mdgndFASSz
+ AVLTd1Fjw7MFsM35IsS1zUJOIX0LORVnmeEbKSpg8gNN/E4RHFfow4qZ9fXlb+bY
+ VvcAFUry3+usqZcMigeCxBKUgTZTA3Zw7l+mCEs2l16eBSfhVkv/H3A3IAIgvs8y
+ 2gSkyHFAcCVSH/hprMUYAtIacb4d0ghPh09HMXiBGtxUAJ+KLTQSKLQYGOuIz9Pq
+ d69XzILPZAPTnfVI91ydA0rr6ijVdrMdFxP+JFgf0g==
+X-ME-Sender: <xms:8eWqZblnhuJglOLfliOfTxOm2O1pnvbUOJKdzFJQ4kNbz17kmwj7kA>
+ <xme:8eWqZe177IiznMm6rndYQumVTT6d2Inf3ugMZM4mmaHDyx48Kprhz6a49VPS9CFHz
+ JxnCVgyqPeH-deIYQ>
+X-ME-Received: <xmr:8eWqZRoK5H9GNScLPG3MBc0nWoYRPWDneER04WkAx5e7v5D4s--Tgy92Eb0w7cZdhp2AohhQR8_0TYdA-bzcvRdaPoSQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdektddgudeggecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttdenucfhrhhomheptehlhihs
+ shgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhephf
+ egffejtdeffefgtdeihfefuddtgfeiteeuffeivdehfeejvddugeektdeivddtnecuffho
+ mhgrihhnpehrvgguhhgrthdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+ grmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
+X-ME-Proxy: <xmx:8eWqZTkVB3ZrzmZ2waTPsBKrMZ9LvkUhYp9ZW_a-9r5Wsvv3kqBmpA>
+ <xmx:8eWqZZ0D5djXBwXjAoZE_w9JsNkXhop9xI6ByqtIrdAjc332JUKMBA>
+ <xmx:8eWqZSs0ZBafmfJEjGI8bjqAaVdPH3hwMKLxnMQ3uJn0pk5DHm2JlQ>
+ <xmx:8eWqZTz23yCydPyCerdCKTvqLvhdJVDk9qs4TEdjqT1UQPHsOaPFVQ>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 19 Jan 2024 16:13:20 -0500 (EST)
+Received: by mbp.qyliss.net (Postfix, from userid 1000)
+ id 59316C019; Fri, 19 Jan 2024 22:13:18 +0100 (CET)
+From: Alyssa Ross <hi@alyssa.is>
+To: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
+ akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
+In-Reply-To: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
+References: <20231003204500.518-1-gurchetansingh@chromium.org>
+ <87wms9d0fi.fsf@alyssa.is>
+ <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
+Date: Fri, 19 Jan 2024 22:13:08 +0100
+Message-ID: <87cytxni1n.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 52MgXaMiLHEyxCliT04c7s5M3vV7LAFa
-X-Proofpoint-GUID: 1ckJqL22NwhRwSRu9BxSNBD-SklCSXwl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-19_12,2024-01-19_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0 clxscore=1011
- bulkscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401190127
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=pasic@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=66.111.4.26; envelope-from=hi@alyssa.is;
+ helo=out2-smtp.messagingengine.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,48 +105,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 13:51:51 -0500
-Matthew Rosato <mjrosato@linux.ibm.com> wrote:
+--=-=-=
+Content-Type: text/plain
 
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index eaf61d3640..c99682b07d 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -118,6 +118,14 @@ static void subsystem_reset(void)
->      DeviceState *dev;
->      int i;
->  
-> +    /*
-> +     * ISM firmware is sensitive to unexpected changes to the IOMMU, which can
-> +     * occur during reset of the vfio-pci device (unmap of entire aperture).
-> +     * Ensure any passthrough ISM devices are reset now, while CPUs are paused
-> +     * but before vfio-pci cleanup occurs.
-> +     */
-> +    s390_pci_ism_reset();
+Hi Gurchetan,
 
-Hm I'm not sure about special casing ISM in here. In my opinion the loop
-below shall take care of all the reset.
+> Thanks for the reminder.  I did make a request to create the release
+> tags, but changes were requested by Fedora packaging effort:
+>
+> https://bugzilla.redhat.com/show_bug.cgi?id=2242058
+> https://bugzilla.redhat.com/show_bug.cgi?id=2241701
+>
+> So the request was canceled, but never re-requested.  I'll fire off
+> another request, with:
+>
+> gfxstream: 23d05703b94035ac045df60823fb1fc4be0fdf1c ("gfxstream:
+> manually add debug logic")
+> AEMU: dd8b929c247ce9872c775e0e5ddc4300011d0e82 ("aemu: improve licensing")
+>
+> as the commits.  These match the Fedora requests, and the AEMU one has
+> been merged into Fedora already it seems.
 
-For TYPE_AP_BRIDGE and TYPE_VIRTUAL_CSS_BRIDGE AFAIU a
-device_cold_reset() on all objects of those types results in the resets
-of objects that hang below these buses.
+These revisions have the problem I mentioned in my previous message:
 
-I guess this also happens for the S390PCIBusDevices, but not for the
-actual PCI devices.
+>> The gfxstream ref mentioned here isn't compatible with
+>> v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
 
-My understanding is that the entire PCI subsystem is to be reset when
-a subsystem reset is performed.
+rutabaga was not fixed to use the new AEMU package names until after the
+v0.1.2-rutabaga-release tag, in commit 5dfd74a06.  So will there be a
+new Rutabaga release that's compatible with these release versions of
+gfxstream and AEMU?
 
-I'm not familiar enough with our PCI emulation to know if a reset
-to the TYPE_S390_PCI_HOST_BRIDGE is supposed to be sufficient to
-accomplish that.
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I have the feeling, I am missing something... Can you help me understand
-this please?
+-----BEGIN PGP SIGNATURE-----
 
-
-> +
->      for (i = 0; i < ARRAY_SIZE(reset_dev_types); i++) {
->          dev = DEVICE(object_resolve_path_type("", reset_dev_types[i], NULL));
->          if (dev) 
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmWq5eQACgkQ+dvtSFmy
+ccCt4Q//UQr+nH1j0d7ULAajmQ5VQoItYeH5Y858UamGlRYwSK8VB2InHQULNTEs
+iv7mkQdsHXUVKJQBwjk6vhNWPtU569OE6XOXg88usi5Vg0MdKwToW2dpX70Z3t9Z
+gTMMwvjVuzjSWH7os2liJEedw8FYVbwjG8XacV2ULqt6wms822TPDBYoYInEvnpV
+qPxmaWKwVdd4mO9sh5l3Ii+MkRihUkbwMbnq9WnP3FLemuOvvD1G0pkFaygqudGN
+SLmh/m8lf8ARpW+4kbaTHAidIHQXulD7+f0s9fsqFEnPyGt0/I2wmI7dPqxdoFaY
+4POaqwGndMJEUQ9k1txldJvMARQuJyr1IrGXFru7OoeFNacFB+ZrlkzpQfvR970u
+yTqYQqWqxVPAiEBJmxmhVlrjpsFFiaZSi3/wad7kG6l7MfopZ9dQRV9TBE97vDtp
+I559GZoUitqO2ZFItX/lnbg98ygIG6AsnQ6256c0wje+F98GPmJbdO3dgvvfxcpH
+8CNm9CTZfXuZM7NJIiga/nzSlr7lo9e+vpY6LHic5LS4GywCIWbdPa8/U/6qzhZj
+ZP8pK4YJeUbLU+UdffF9X4XpOJs89TAMkOmSYk0yDYVcwfUVfX4Sr8+KU3LT2pxM
+e4MHFIaDZ2A8Zvf0KJ9k3aX4iks1baXWx7bkKELEAo+zQg6zj6I=
+=qOC4
+-----END PGP SIGNATURE-----
+--=-=-=--
 
