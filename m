@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7018A832EB4
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:14:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680AA832EB6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:15:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQtNO-0001kS-Jk; Fri, 19 Jan 2024 13:13:58 -0500
+	id 1rQtNM-0001jS-TZ; Fri, 19 Jan 2024 13:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNF-0001eK-4D
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNF-0001eM-O5
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtN9-0007dk-Fd
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:48 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNA-0007eX-Jn
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705688022;
+ s=mimecast20190719; t=1705688023;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=s7qkNK5Ps/JlBaH+DYs59T5dlAG9O0lKVhHokbMulWY=;
- b=L7rjR7g5VxxmPZUnj+v05tKdPjzgtxlWhtmc9PoBZ6PhWRtfmsZRmh5GiyFzgK6uXG3N48
- gnJwXKC9XPIu0W5Z0DiAfNLN03I5oDAjie+sK4/zhgi8uOGzFIHbonidABkggZ14/bvKsp
- apvLVB0n/AUu9lxEH+cHV9P23cjcFTU=
+ bh=Nbl/qqCJEWa0LP2TGqKJo8vlByfV4ij/WjG/uLcE6Cc=;
+ b=K8WW/pJ6nfizwfqfwgvFxH/j8Z0u4n4QBomCPfEinq6Ioy4400Wdc2550LMAmXq1rMPgzm
+ Axd10NWPh4dDOoaPJTm1GQXujqmixg5BW1rbLNksMlo8EjULP1tj01nu/N+VKbhIWN8cn0
+ Ma0bE/5U//KQnwwdOyZQ5ZuGcCvffJY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-WwosFf_MOFKrbJh3vAcicg-1; Fri, 19 Jan 2024 13:13:41 -0500
-X-MC-Unique: WwosFf_MOFKrbJh3vAcicg-1
+ us-mta-613-zh1ObvJAMk2j-cXokxe19Q-1; Fri, 19 Jan 2024 13:13:41 -0500
+X-MC-Unique: zh1ObvJAMk2j-cXokxe19Q-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B661910665A6;
- Fri, 19 Jan 2024 18:13:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 88ABB185A784;
+ Fri, 19 Jan 2024 18:13:41 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.86])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 24E06494;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EEEF4494;
  Fri, 19 Jan 2024 18:13:40 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 09/14] virtio-blk: rename dataplane create/destroy functions
-Date: Fri, 19 Jan 2024 19:13:22 +0100
-Message-ID: <20240119181327.236745-10-kwolf@redhat.com>
+Subject: [PULL 10/14] virtio-blk: rename dataplane to ioeventfd
+Date: Fri, 19 Jan 2024 19:13:23 +0100
+Message-ID: <20240119181327.236745-11-kwolf@redhat.com>
 In-Reply-To: <20240119181327.236745-1-kwolf@redhat.com>
 References: <20240119181327.236745-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -80,106 +80,296 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-virtio_blk_data_plane_create() and virtio_blk_data_plane_destroy() are
-actually about s->vq_aio_context[] rather than managing
-dataplane-specific state.
-
-As a prerequisite to using s->vq_aio_context[] in all code paths (even
-when dataplane is not used), rename these functions to reflect that they
-just manage s->vq_aio_context and call them regardless of whether or not
-dataplane is in use.
-
-Note that virtio-blk supports running with -device
-virtio-blk-pci,ioevent=off where the vCPU thread enters the device
-emulation code. In this mode ioeventfd is not used for virtqueue
-processing. However, we still want to initialize s->vq_aio_context[] to
-qemu_aio_context in that case since I/O completion callbacks will be
-invoked in the main loop thread.
+The dataplane code is really about using ioeventfd. It's used both for
+IOThreads (what we think of as dataplane) and for the core virtio-pci
+code's ioeventfd feature (which is enabled by default and used when no
+IOThread has been specified). Rename the code to reflect this.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240119135748.270944-3-stefanha@redhat.com>
+Message-ID: <20240119135748.270944-4-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/block/virtio-blk.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ include/hw/virtio/virtio-blk.h |  8 ++--
+ hw/block/virtio-blk.c          | 78 +++++++++++++++++-----------------
+ 2 files changed, 43 insertions(+), 43 deletions(-)
 
+diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+index fecffdc303..833a9a344f 100644
+--- a/include/hw/virtio/virtio-blk.h
++++ b/include/hw/virtio/virtio-blk.h
+@@ -60,10 +60,10 @@ struct VirtIOBlock {
+     unsigned short sector_mask;
+     bool original_wce;
+     VMChangeStateEntry *change;
+-    bool dataplane_disabled;
+-    bool dataplane_started;
+-    bool dataplane_starting;
+-    bool dataplane_stopping;
++    bool ioeventfd_disabled;
++    bool ioeventfd_started;
++    bool ioeventfd_starting;
++    bool ioeventfd_stopping;
+ 
+     /*
+      * The AioContext for each virtqueue. The BlockDriverState will use the
 diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 510cb4248d..47494ebadd 100644
+index 47494ebadd..e342cb2cfb 100644
 --- a/hw/block/virtio-blk.c
 +++ b/hw/block/virtio-blk.c
-@@ -1608,7 +1608,7 @@ apply_vq_mapping(IOThreadVirtQueueMappingList *iothread_vq_mapping_list,
-         IOThread *iothread = iothread_by_id(node->value->iothread);
-         AioContext *ctx = iothread_get_aio_context(iothread);
+@@ -64,7 +64,7 @@ static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
+     iov_discard_undo(&req->inhdr_undo);
+     iov_discard_undo(&req->outhdr_undo);
+     virtqueue_push(req->vq, &req->elem, req->in_len);
+-    if (s->dataplane_started && !s->dataplane_disabled) {
++    if (s->ioeventfd_started && !s->ioeventfd_disabled) {
+         virtio_notify_irqfd(vdev, req->vq);
+     } else {
+         virtio_notify(vdev, req->vq);
+@@ -1141,12 +1141,12 @@ static void virtio_blk_handle_output(VirtIODevice *vdev, VirtQueue *vq)
+ {
+     VirtIOBlock *s = (VirtIOBlock *)vdev;
  
--        /* Released in virtio_blk_data_plane_destroy() */
-+        /* Released in virtio_blk_vq_aio_context_cleanup() */
-         object_ref(OBJECT(iothread));
+-    if (!s->dataplane_disabled && !s->dataplane_started) {
++    if (!s->ioeventfd_disabled && !s->ioeventfd_started) {
+         /* Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so start
+-         * dataplane here instead of waiting for .set_status().
++         * ioeventfd here instead of waiting for .set_status().
+          */
+         virtio_device_start_ioeventfd(vdev);
+-        if (!s->dataplane_disabled) {
++        if (!s->ioeventfd_disabled) {
+             return;
+         }
+     }
+@@ -1213,7 +1213,7 @@ static void virtio_blk_reset(VirtIODevice *vdev)
+     VirtIOBlockReq *req;
  
-         if (node->value->vqs) {
-@@ -1631,7 +1631,7 @@ apply_vq_mapping(IOThreadVirtQueueMappingList *iothread_vq_mapping_list,
+     /* Dataplane has stopped... */
+-    assert(!s->dataplane_started);
++    assert(!s->ioeventfd_started);
+ 
+     /* ...but requests may still be in flight. */
+     blk_drain(s->blk);
+@@ -1380,7 +1380,7 @@ static void virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
+     VirtIOBlock *s = VIRTIO_BLK(vdev);
+ 
+     if (!(status & (VIRTIO_CONFIG_S_DRIVER | VIRTIO_CONFIG_S_DRIVER_OK))) {
+-        assert(!s->dataplane_started);
++        assert(!s->ioeventfd_started);
+     }
+ 
+     if (!(status & VIRTIO_CONFIG_S_DRIVER_OK)) {
+@@ -1545,7 +1545,7 @@ static void virtio_blk_resize(void *opaque)
+     aio_bh_schedule_oneshot(qemu_get_aio_context(), virtio_resize_cb, vdev);
  }
  
- /* Context: BQL held */
--static bool virtio_blk_data_plane_create(VirtIOBlock *s, Error **errp)
-+static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
+-static void virtio_blk_data_plane_detach(VirtIOBlock *s)
++static void virtio_blk_ioeventfd_detach(VirtIOBlock *s)
  {
      VirtIODevice *vdev = VIRTIO_DEVICE(s);
-     VirtIOBlkConf *conf = &s->conf;
-@@ -1659,11 +1659,6 @@ static bool virtio_blk_data_plane_create(VirtIOBlock *s, Error **errp)
+ 
+@@ -1555,7 +1555,7 @@ static void virtio_blk_data_plane_detach(VirtIOBlock *s)
+     }
+ }
+ 
+-static void virtio_blk_data_plane_attach(VirtIOBlock *s)
++static void virtio_blk_ioeventfd_attach(VirtIOBlock *s)
+ {
+     VirtIODevice *vdev = VIRTIO_DEVICE(s);
+ 
+@@ -1570,8 +1570,8 @@ static void virtio_blk_drained_begin(void *opaque)
+ {
+     VirtIOBlock *s = opaque;
+ 
+-    if (s->dataplane_started) {
+-        virtio_blk_data_plane_detach(s);
++    if (s->ioeventfd_started) {
++        virtio_blk_ioeventfd_detach(s);
+     }
+ }
+ 
+@@ -1580,8 +1580,8 @@ static void virtio_blk_drained_end(void *opaque)
+ {
+     VirtIOBlock *s = opaque;
+ 
+-    if (s->dataplane_started) {
+-        virtio_blk_data_plane_attach(s);
++    if (s->ioeventfd_started) {
++        virtio_blk_ioeventfd_attach(s);
+     }
+ }
+ 
+@@ -1651,11 +1651,11 @@ static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
+         }
+ 
+         /*
+-         * If dataplane is (re-)enabled while the guest is running there could
++         * If ioeventfd is (re-)enabled while the guest is running there could
+          * be block jobs that can conflict.
+          */
+         if (blk_op_is_blocked(conf->conf.blk, BLOCK_OP_TYPE_DATAPLANE, errp)) {
+-            error_prepend(errp, "cannot start virtio-blk dataplane: ");
++            error_prepend(errp, "cannot start virtio-blk ioeventfd: ");
              return false;
          }
      }
--    /* Don't try if transport does not support notifiers. */
--    if (!virtio_device_ioeventfd_enabled(vdev)) {
--        s->dataplane_disabled = true;
--        return false;
--    }
- 
-     s->vq_aio_context = g_new(AioContext *, conf->num_queues);
- 
-@@ -1676,7 +1671,7 @@ static bool virtio_blk_data_plane_create(VirtIOBlock *s, Error **errp)
-             s->vq_aio_context[i] = ctx;
-         }
- 
--        /* Released in virtio_blk_data_plane_destroy() */
-+        /* Released in virtio_blk_vq_aio_context_cleanup() */
-         object_ref(OBJECT(conf->iothread));
-     } else {
-         AioContext *ctx = qemu_get_aio_context();
-@@ -1689,7 +1684,7 @@ static bool virtio_blk_data_plane_create(VirtIOBlock *s, Error **errp)
- }
- 
- /* Context: BQL held */
--static void virtio_blk_data_plane_destroy(VirtIOBlock *s)
-+static void virtio_blk_vq_aio_context_cleanup(VirtIOBlock *s)
+@@ -1688,7 +1688,7 @@ static void virtio_blk_vq_aio_context_cleanup(VirtIOBlock *s)
  {
      VirtIOBlkConf *conf = &s->conf;
  
-@@ -2015,7 +2010,13 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
-         virtio_add_queue(vdev, conf->queue_size, virtio_blk_handle_output);
+-    assert(!s->dataplane_started);
++    assert(!s->ioeventfd_started);
+ 
+     if (conf->iothread_vq_mapping_list) {
+         IOThreadVirtQueueMappingList *node;
+@@ -1708,7 +1708,7 @@ static void virtio_blk_vq_aio_context_cleanup(VirtIOBlock *s)
+ }
+ 
+ /* Context: BQL held */
+-static int virtio_blk_data_plane_start(VirtIODevice *vdev)
++static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
+ {
+     VirtIOBlock *s = VIRTIO_BLK(vdev);
+     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(s)));
+@@ -1718,11 +1718,11 @@ static int virtio_blk_data_plane_start(VirtIODevice *vdev)
+     Error *local_err = NULL;
+     int r;
+ 
+-    if (s->dataplane_started || s->dataplane_starting) {
++    if (s->ioeventfd_started || s->ioeventfd_starting) {
+         return 0;
+     }
+ 
+-    s->dataplane_starting = true;
++    s->ioeventfd_starting = true;
+ 
+     /* Set up guest notifier (irq) */
+     r = k->set_guest_notifiers(qbus->parent, nvqs, true);
+@@ -1773,14 +1773,14 @@ static int virtio_blk_data_plane_start(VirtIODevice *vdev)
+ 
+     /*
+      * These fields must be visible to the IOThread when it processes the
+-     * virtqueue, otherwise it will think dataplane has not started yet.
++     * virtqueue, otherwise it will think ioeventfd has not started yet.
+      *
+-     * Make sure ->dataplane_started is false when blk_set_aio_context() is
++     * Make sure ->ioeventfd_started is false when blk_set_aio_context() is
+      * called above so that draining does not cause the host notifier to be
+      * detached/attached prematurely.
+      */
+-    s->dataplane_starting = false;
+-    s->dataplane_started = true;
++    s->ioeventfd_starting = false;
++    s->ioeventfd_started = true;
+     smp_wmb(); /* paired with aio_notify_accept() on the read side */
+ 
+     /* Get this show started by hooking up our callbacks */
+@@ -1812,8 +1812,8 @@ static int virtio_blk_data_plane_start(VirtIODevice *vdev)
+   fail_host_notifiers:
+     k->set_guest_notifiers(qbus->parent, nvqs, false);
+   fail_guest_notifiers:
+-    s->dataplane_disabled = true;
+-    s->dataplane_starting = false;
++    s->ioeventfd_disabled = true;
++    s->ioeventfd_starting = false;
+     return -ENOSYS;
+ }
+ 
+@@ -1821,7 +1821,7 @@ static int virtio_blk_data_plane_start(VirtIODevice *vdev)
+  *
+  * Context: BH in IOThread
+  */
+-static void virtio_blk_data_plane_stop_vq_bh(void *opaque)
++static void virtio_blk_ioeventfd_stop_vq_bh(void *opaque)
+ {
+     VirtQueue *vq = opaque;
+     EventNotifier *host_notifier = virtio_queue_get_host_notifier(vq);
+@@ -1836,7 +1836,7 @@ static void virtio_blk_data_plane_stop_vq_bh(void *opaque)
+ }
+ 
+ /* Context: BQL held */
+-static void virtio_blk_data_plane_stop(VirtIODevice *vdev)
++static void virtio_blk_stop_ioeventfd(VirtIODevice *vdev)
+ {
+     VirtIOBlock *s = VIRTIO_BLK(vdev);
+     BusState *qbus = qdev_get_parent_bus(DEVICE(s));
+@@ -1844,24 +1844,24 @@ static void virtio_blk_data_plane_stop(VirtIODevice *vdev)
+     unsigned i;
+     unsigned nvqs = s->conf.num_queues;
+ 
+-    if (!s->dataplane_started || s->dataplane_stopping) {
++    if (!s->ioeventfd_started || s->ioeventfd_stopping) {
+         return;
+     }
+ 
+     /* Better luck next time. */
+-    if (s->dataplane_disabled) {
+-        s->dataplane_disabled = false;
+-        s->dataplane_started = false;
++    if (s->ioeventfd_disabled) {
++        s->ioeventfd_disabled = false;
++        s->ioeventfd_started = false;
+         return;
+     }
+-    s->dataplane_stopping = true;
++    s->ioeventfd_stopping = true;
+ 
+     if (!blk_in_drain(s->conf.conf.blk)) {
+         for (i = 0; i < nvqs; i++) {
+             VirtQueue *vq = virtio_get_queue(vdev, i);
+             AioContext *ctx = s->vq_aio_context[i];
+ 
+-            aio_wait_bh_oneshot(ctx, virtio_blk_data_plane_stop_vq_bh, vq);
++            aio_wait_bh_oneshot(ctx, virtio_blk_ioeventfd_stop_vq_bh, vq);
+         }
+     }
+ 
+@@ -1886,10 +1886,10 @@ static void virtio_blk_data_plane_stop(VirtIODevice *vdev)
+     }
+ 
+     /*
+-     * Set ->dataplane_started to false before draining so that host notifiers
++     * Set ->ioeventfd_started to false before draining so that host notifiers
+      * are not detached/attached anymore.
+      */
+-    s->dataplane_started = false;
++    s->ioeventfd_started = false;
+ 
+     /* Wait for virtio_blk_dma_restart_bh() and in flight I/O to complete */
+     blk_drain(s->conf.conf.blk);
+@@ -1903,7 +1903,7 @@ static void virtio_blk_data_plane_stop(VirtIODevice *vdev)
+     /* Clean up guest notifier (irq) */
+     k->set_guest_notifiers(qbus->parent, nvqs, false);
+ 
+-    s->dataplane_stopping = false;
++    s->ioeventfd_stopping = false;
+ }
+ 
+ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
+@@ -2011,9 +2011,9 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
      }
      qemu_coroutine_inc_pool_size(conf->num_queues * conf->queue_size / 2);
--    virtio_blk_data_plane_create(s, &err);
-+
-+    /* Don't start dataplane if transport does not support notifiers. */
-+    if (!virtio_device_ioeventfd_enabled(vdev)) {
-+        s->dataplane_disabled = true;
-+    }
-+
-+    virtio_blk_vq_aio_context_init(s, &err);
-     if (err != NULL) {
-         error_propagate(errp, err);
-         for (i = 0; i < conf->num_queues; i++) {
-@@ -2052,7 +2053,7 @@ static void virtio_blk_device_unrealize(DeviceState *dev)
  
-     blk_drain(s->blk);
-     del_boot_device_lchs(dev, "/disk@0,0");
--    virtio_blk_data_plane_destroy(s);
-+    virtio_blk_vq_aio_context_cleanup(s);
-     for (i = 0; i < conf->num_queues; i++) {
-         virtio_del_queue(vdev, i);
+-    /* Don't start dataplane if transport does not support notifiers. */
++    /* Don't start ioeventfd if transport does not support notifiers. */
+     if (!virtio_device_ioeventfd_enabled(vdev)) {
+-        s->dataplane_disabled = true;
++        s->ioeventfd_disabled = true;
      }
+ 
+     virtio_blk_vq_aio_context_init(s, &err);
+@@ -2137,8 +2137,8 @@ static void virtio_blk_class_init(ObjectClass *klass, void *data)
+     vdc->reset = virtio_blk_reset;
+     vdc->save = virtio_blk_save_device;
+     vdc->load = virtio_blk_load_device;
+-    vdc->start_ioeventfd = virtio_blk_data_plane_start;
+-    vdc->stop_ioeventfd = virtio_blk_data_plane_stop;
++    vdc->start_ioeventfd = virtio_blk_start_ioeventfd;
++    vdc->stop_ioeventfd = virtio_blk_stop_ioeventfd;
+ }
+ 
+ static const TypeInfo virtio_blk_info = {
 -- 
 2.43.0
 
