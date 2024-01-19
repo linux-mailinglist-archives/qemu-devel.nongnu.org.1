@@ -2,109 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34351832AE7
+	by mail.lfdr.de (Postfix) with ESMTPS id 8316C832AE9
 	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:04:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQpTB-0002z2-7j; Fri, 19 Jan 2024 09:03:41 -0500
+	id 1rQpTD-0002z4-Vw; Fri, 19 Jan 2024 09:03:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xtec@trimaso.com.mx>)
- id 1rQcWI-0000A0-VU
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 19:14:03 -0500
-Received: from poodle.tulip.relay.mailchannels.net ([23.83.218.249])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xtec@trimaso.com.mx>)
- id 1rQcWH-0001MF-1w
- for qemu-devel@nongnu.org; Thu, 18 Jan 2024 19:14:02 -0500
-X-Sender-Id: spamcontrol26|x-authuser|xtec@trimaso.com.mx
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 8F334C2D9E;
- Fri, 19 Jan 2024 00:13:17 +0000 (UTC)
-Received: from single-9040.banahosting.com (unknown [127.0.0.6])
- (Authenticated sender: spamcontrol26)
- by relay.mailchannels.net (Postfix) with ESMTPA id D9CA5C34D6;
- Fri, 19 Jan 2024 00:13:16 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1705623197; a=rsa-sha256;
- cv=none;
- b=Y2t72XyU/gB2a7vrNI1OmBBCL5PUeQ2Nj1ZcVHuFaTV3v7VFCJWMZ0coGi1FM8QILZdZl2
- 0VBmDrnVg/aG0uBZ9o1pmyD0gORfYXJ3VCljWXUyY2Hq6yj623gBjuM75rjDPeS/nt9oHD
- c8M2jrm21qVNSjM0ZYfFhC4inqPZ17MdeJXU/x1H1Zqfytcq76uD1ajE/APNDEXwT5kl2z
- z1baEKWurRR4fhVouS1FSqmbARIKThm8ZvCOpyX38G7ot/aiS2ztTf7PvyyaN0VUB/jpO/
- FyuhL+VNiuL8gmOJBIaDlQF5pUm4pVnQEYi389dDMBo0IIBsg2DrL4LNN8O7Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1705623197;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=kmS5V8hmQvCcZta6GCub6Bhp5wRlpsZqxeeWxUDFdBs=;
- b=0ZWlVwxZYp5h6GlnF3WZAaWTKTcUS4Zta3c650ECbocMd0yrApdlnzFfL3oF1mUyTVCm90
- ZQc9vWXwdbF8GbxIrhzhsIn8dRCjKj8AohCPE18V1dsJxQpaTYxKppbABZEh8sVaMLKmt8
- rGuy/SDyklkq/tWWu6Xzz8Zde6C+KAaS/BVvAAOaVd49QcPHf6X0GPn2Qgc2G190BWxVXx
- r2hfGbm4jd0S2M9LjDxXyE1bFAEeZ0JyEVKM9aZMas174m1+okoxTzsXQXizhQTfNU3AuR
- e1RYH7yR7VLxEGia9OpV2VA/9ZKl5iAslAvXLo+/zrTwhCTBibM9EwfjOYq8Uw==
-ARC-Authentication-Results: i=1; rspamd-568947cb6c-w8h7p;
- auth=pass smtp.auth=spamcontrol26 smtp.mailfrom=xtec@trimaso.com.mx
-X-Sender-Id: spamcontrol26|x-authuser|xtec@trimaso.com.mx
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: spamcontrol26|x-authuser|xtec@trimaso.com.mx
-X-MailChannels-Auth-Id: spamcontrol26
-X-Trail-White: 03ead1ff56ea5bc5_1705623197279_2925745587
-X-MC-Loop-Signature: 1705623197279:826321964
-X-MC-Ingress-Time: 1705623197279
-Received: from single-9040.banahosting.com (single-9040.banahosting.com
- [66.225.201.226])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384)
- by 100.123.135.9 (trex/6.9.2); Fri, 19 Jan 2024 00:13:17 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=trimaso.com.mx; s=default; h=Content-Transfer-Encoding:Content-Type:
- Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=kmS5V8hmQvCcZta6GCub6Bhp5wRlpsZqxeeWxUDFdBs=; b=HYA3Xk0RwRPD3We1YyqTGZ5Xcs
- QVmkTTKw+HhGZsuclERadX7E5TYbd57ZW/BQc5rZmj7D3dVxHuhH6NIsmijTh2oTxjoFBRM2WqO2A
- AkyS1nPfmoYoRWgVVI1Xh2nh4Wj1nwZovzjIS5QU1uSakRqaGnFFkXoXObdJ0WZ0VPFByLQ3Z1ZbS
- ALpr6zzBBvNsOZ07i4L0Z/EWiNAHMOn9gasgfz4gPyynTNwKciovPvm8kPjSobHzPCpuQN8SPeQx2
- 9cjZuDNQOzBBO8Tnq1isyg4YPup3g3N4IKAAMI3cAXDZTuGTP32kO/7FP+8WNKBR7NLl3O+r4OgZ7
- EHKRsDdQ==;
-Received: from [::1] (port=52354 helo=single-9040.banahosting.com)
- by single-9040.banahosting.com with esmtpa (Exim 4.96.2)
- (envelope-from <xtec@trimaso.com.mx>) id 1rQcVP-0002nF-28;
- Thu, 18 Jan 2024 19:13:14 -0500
+ (Exim 4.90_1) (envelope-from <owl129@126.com>) id 1rQgx3-0000cS-HQ
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 23:57:57 -0500
+Received: from m16.mail.126.com ([220.197.31.6])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <owl129@126.com>) id 1rQgwz-0007PS-0J
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 23:57:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=TjhDT
+ 4UHFmeijIXUxU99iOjtLtwZOPs1edx/bLXnLUg=; b=Bavp8C6ZjroVCkldXpgrb
+ ZMpmRmF8f808OoIQYLGUsSSSdS+vsWsoY9QFvXYho1AR8omQ/iisEWGrnoQyxs8+
+ RbnR+9h7d+/O5qKVUoQcCR+ttxZZbRVpORTQJOmvhJ8X8M1qH3mTlppR2N0gDXGe
+ 7Io+524uDoKQbAkrxL9EVI=
+Received: from owl-server.corp.qihoo.net (unknown [218.30.116.113])
+ by gzga-smtp-mta-g0-3 (Coremail) with SMTP id _____wD3f4IIAapl_faxAQ--.14017S2;
+ Fri, 19 Jan 2024 12:56:41 +0800 (CST)
+From: owl129@126.com
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org,
+	owl <owl129@126.com>
+Subject: [PATCH] This patch implements several Octeon +/II instructions.
+Date: Fri, 19 Jan 2024 04:56:27 +0000
+Message-Id: <20240119045626.9698-1-owl129@126.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Date: Thu, 18 Jan 2024 18:13:09 -0600
-From: xtec@trimaso.com.mx
-To: Qemu Devel <qemu-devel@nongnu.org>
-Cc: pbonzini@redhat.com
-Subject: Re: Qemu setting "-cpu host" seems broken with Windows vms
-In-Reply-To: <CABgObfbr3kF44ACA0didBCiBgQ87wgJS_H2fAPwyf==CAD3d2g@mail.gmail.com>
-References: <8cceee40e32dab3e1913e50c221475ea@trimaso.com.mx>
- <CAJSP0QX-5ZxxiNejwEUoPE6Gnn=2=tfOb4MpAJNz5j6FYoNGzQ@mail.gmail.com>
- <CABgObfbr3kF44ACA0didBCiBgQ87wgJS_H2fAPwyf==CAD3d2g@mail.gmail.com>
-User-Agent: Roundcube Webmail/1.6.0
-Message-ID: <e2f135de3c1370b4f6db9fb80ac63945@trimaso.com.mx>
-X-Sender: xtec@trimaso.com.mx
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-cPanel-MailScanner-Information: Please contact the ISP for more information
-X-cPanel-MailScanner-ID: 1rQcVP-0002nF-28
-X-cPanel-MailScanner: Found to be clean
-X-cPanel-MailScanner-SpamCheck: 
-X-cPanel-MailScanner-From: xtec@trimaso.com.mx
-X-AuthUser: xtec@trimaso.com.mx
-Received-SPF: softfail client-ip=23.83.218.249;
- envelope-from=xtec@trimaso.com.mx; helo=poodle.tulip.relay.mailchannels.net
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+X-CM-TRANSID: _____wD3f4IIAapl_faxAQ--.14017S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Kw1UCF48Gr1DZFWUJF18Zrb_yoWDKFW8pr
+ 10yF18uF48XF17Xr92y3WY9Fs8JF1xAayUK3sIya1rKF48JFs8XwnFqrWYyrW7WF9agr1a
+ yFs8AFWDuFy5t3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi2-e7UUUUU=
+X-Originating-IP: [218.30.116.113]
+X-CM-SenderInfo: przoijaz6rjloofrz/1tbiEAFqV2VLZhGbpgABsJ
+Received-SPF: pass client-ip=220.197.31.6; envelope-from=owl129@126.com;
+ helo=m16.mail.126.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Fri, 19 Jan 2024 09:03:38 -0500
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,136 +67,375 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So finally tested with this:
--cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time,-vmx
-The used hyper-v enhancements are the ones generally recommended for 
-Windows vms.
-
-Overall it seemed to really work: the performance was like bare metal, 
-and the BSOD second problem was also gone (for this I had to test by 
-installing another Win11 23h2 vm from scratch and run windows updates).
-
-Also, unlike before, the Windows "suspend" functions also appeared; and 
-most surprising: the actually worked.
-Tried suspending, worked. Even tried enabling the infamous "fast boot" 
-and shutting down vm. Result, it took a little more to shut down, but 
-when powering on vm again, it did restore.
-Though did each test only once...
-
-Did these last tests because in many QEMU/KVM guides around internet I 
-had read that, at least with Windows vms, it was very important to 
-disable fast boot because QEMU/KVM did not support it and lead to ugly 
-buggy functionalities.
-So, did this change over time?
-
-This could apparently imply that the culprit was the "vmx" CPU bit, 
-which as already explained it's the one enabling nested virtualization 
-inside the vm.
-Overall, what would you think? Could this qualify as kind of a bug? Is 
-nested virtualization often used in QEMU/KVM vms?
-Could it be that Win11 23h2 has problems with this CPU bit?
-
-Oh, and based on the results, I have few additional doubts:
-
-If wanted to do live migration, would it be a matter of just switching 
-"host" for "Skylake" or any other "fixed" QEMU CPU model, then just 
-checking vm still boots correctly?
-
-When trying "-cpu host,hv-passthrough", I did notice a considerable 
-improvement in overall performance than when using 
-"hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time"; yet still noticeably 
-not like bare metal. Why was this?
-
-In another forum, I read a guy did not have problems updating from Win11 
-22h2 to 23h2 on QEMU/KVM; though he used libvirt.
-Among his CPU settings, he did not use the CPU passthrough, but a QEMU 
-CPU model, which cannot remember which was except that it was a Xeon 
-server model. Moreover, among the used CPU bits, there was vmx=on.
-If the culprit here was apparently this vmx bit, how it is that for 
-others it bore no consequence? The only difference was using a "server" 
-CPU model instead of a "client" one. Though they did not talk about 
-performance...
-
-Thanks.
+From: owl <owl129@126.com>
 
 
-El 2024-01-16 11:56, Paolo Bonzini escribió:
-> One possibility is that you have Hyper-V enabled with -cpu host but
-> not with other CPU models. That's because "-cpu host" enables nested
-> virtualization.
-> 
-> Try "-cpu host,-vmx" and it should be clear if that's the case.
-> 
-> Based on the pastie that you prepared, that's the main difference
-> between -cpu host and -cpu Broadwell-noTSX-IBRS. Nothing else (see
-> list below) should have any substantial performance impact; even less
-> so should they make things worse.
-> 
-> Paolo
-> 
->                "avx512-vp2intersect": true,
->                "avx512-vpopcntdq": true,
->                "avx512bitalg": true,
->                "avx512bw": true,
->                "avx512cd": true,
->                "avx512dq": true,
->                "avx512f": true,
->                "avx512ifma": true,
->                "avx512vbmi": true,
->                "avx512vbmi2": true,
->                "avx512vl": true,
->                "avx512vnni": true,
->                "full-width-write": true,
->                "gfni": true,
->                "vaes": true,
->                "vpclmulqdq": true,
-> 
->                "clflushopt": true,
->                "clwb": true,
-> 
->                "fsrm": true,
-> 
->                "host-cache-info": false,
->                "host-phys-bits": true,
-> 
->                "amd-ssbd": true,
->                "amd-stibp": true,
->                "arch-capabilities": true,
->                "ibpb": true,
->                "ibrs": true,
->                "ibrs-all": true,
->                "ssbd": true,
->                "stibp": true,
-> 
->                "kvm-pv-ipi": true,
->                "kvm-pv-sched-yield": true,
->                "kvm-pv-tlb-flush": true,
->                "kvm-pv-unhalt": true,
-> 
->                "lmce": true,
->                "md-clear": true,
->                "mds-no": true,
->                "movdir64b": true,
->                "movdiri": true,
->                "pdcm": true,
->                "pdpe1gb": true,
-> 
->                "pdcm": false,
->                "pdpe1gb": false,
->                "pku": true,
->                "pmu": true,
->                "pschange-mc-no": true,
->                "rdctl-no": true,
->                "rdpid": true,
->                "sha-ni": true,
->                "ss": true,
->                "tsc-adjust": true,
->                "umip": true,
->                "vmx": true,
->                "xgetbv1": true,
->                "xsavec": true,
->                "xsaves": true,
-> 
-> (skipped everything vmx-related, since they don't matter with vmx
-> itself being false)
+Octeon+ 
+- SAA 
+- SAAD
+
+Octeon2
+- LAI
+- LAID
+- LAD
+- LADD
+- LAS
+- LASD
+- LAC
+- LACD
+- LAA
+- LAAD
+- LAW
+- LAWD
+
+- LWX
+- LHX
+- LDX
+- LBUX
+- LWUX
+- LHUX
+- LBX
+
+Signed-off-by: owl <owl129@126.com>
+---
+ target/mips/tcg/octeon.decode      |  35 ++++
+ target/mips/tcg/octeon_translate.c | 281 +++++++++++++++++++++++++++++
+ 2 files changed, 316 insertions(+)
+
+diff --git a/target/mips/tcg/octeon.decode b/target/mips/tcg/octeon.decode
+index 0c787cb498..980ed619d0 100644
+--- a/target/mips/tcg/octeon.decode
++++ b/target/mips/tcg/octeon.decode
+@@ -39,3 +39,38 @@ CINS         011100 ..... ..... ..... ..... 11001 . @bitfield
+ POP          011100 rs:5 00000 rd:5 00000 10110 dw:1
+ SEQNE        011100 rs:5 rt:5 rd:5 00000 10101 ne:1
+ SEQNEI       011100 rs:5 rt:5 imm:s10 10111 ne:1
++
++
++# SAA rt, (base)
++# SAAD rt, (base)
++SAA         011100 base:5 rt:5 00000 00000 011000
++SAAD        011100 base:5 rt:5 00000 00000 011001
++
++LAI         011100 ..... ..... ..... 00010 011111 @r3
++LAID        011100 ..... ..... ..... 00011 011111 @r3
++LAD         011100 ..... ..... ..... 00110 011111 @r3
++LADD        011100 ..... ..... ..... 00111 011111 @r3
++LAS         011100 ..... ..... ..... 01010 011111 @r3
++LASD        011100 ..... ..... ..... 01011 011111 @r3
++LAC         011100 ..... ..... ..... 01110 011111 @r3
++LACD        011100 ..... ..... ..... 01111 011111 @r3
++LAA         011100 ..... ..... ..... 10010 011111 @r3
++LAAD        011100 ..... ..... ..... 10011 011111 @r3
++LAW         011100 ..... ..... ..... 10110 011111 @r3
++LAWD        011100 ..... ..... ..... 10111 011111 @r3
++
++
++# LWX
++# LHX
++# LDX
++# LBUX
++# LWUX
++# LHUX
++# LBX
++LWX         011111 ..... ..... ..... 00000 001010 @r3
++LHX         011111 ..... ..... ..... 00100 001010 @r3
++LDX         011111 ..... ..... ..... 01000 001010 @r3
++LBUX        011111 ..... ..... ..... 00110 001010 @r3
++LWUX        011111 ..... ..... ..... 10000 001010 @r3
++LHUX        011111 ..... ..... ..... 10100 001010 @r3
++LBX         011111 ..... ..... ..... 10110 001010 @r3
+\ No newline at end of file
+diff --git a/target/mips/tcg/octeon_translate.c b/target/mips/tcg/octeon_translate.c
+index e25c4cbaa0..e9ec372ad3 100644
+--- a/target/mips/tcg/octeon_translate.c
++++ b/target/mips/tcg/octeon_translate.c
+@@ -174,3 +174,284 @@ static bool trans_SEQNEI(DisasContext *ctx, arg_SEQNEI *a)
+     }
+     return true;
+ }
++
++/*
++ * Octeon+
++ *  https://sourceware.org/legacy-ml/binutils/2011-11/msg00085.html
++ */
++static bool trans_SAA(DisasContext *ctx, arg_SAA *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->base], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    tcg_gen_add_tl(t0, t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->base], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++static bool trans_SAAD(DisasContext *ctx, arg_SAAD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->base], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    tcg_gen_add_tl(t0, t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->base], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++/*
++ *  Octeon2
++ *   https://chromium.googlesource.com/chromiumos/third_party/gdb/+/refs/heads/master/opcodes/mips-opc.c
++ *   https://github.com/MarvellEmbeddedProcessors/Octeon-Toolchain
++ *   https://bugs.kde.org/show_bug.cgi?id=326444
++ *   https://gcc.gnu.org/legacy-ml/gcc-patches/2011-12/msg01134.html
++ */
++static bool trans_LAI(DisasContext *ctx, arg_LAI *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_addi_tl(t0, t0, 1);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++static bool trans_LAID(DisasContext *ctx, arg_LAID *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_addi_tl(t0, t0, 1);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++static bool trans_LAD(DisasContext *ctx, arg_LAD *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_subi_tl(t0, t0, 1);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++static bool trans_LADD(DisasContext *ctx, arg_LADD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_subi_tl(t0, t0, 1);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++/* Load Atomic Set Word - LAS; Cavium OCTEON2 */
++static bool trans_LAS(DisasContext *ctx, arg_LAS *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_movi_tl(t0, 0xffffffff);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++
++    return true;
++}
++/* Load Atomic Set Doubleword - LASD; Cavium OCTEON2 */
++static bool trans_LASD(DisasContext *ctx, arg_LASD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_movi_tl(t0, 0xffffffffffffffffULL);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++/* Load Atomic Clear Word - LAC; Cavium OCTEON2 */
++static bool trans_LAC(DisasContext *ctx, arg_LAC *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_movi_tl(t0, 0);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++/* Load Atomic Clear Doubleword - LACD; Cavium OCTEON2 */
++static bool trans_LACD(DisasContext *ctx, arg_LACD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_movi_tl(t0, 0xffffffffffffffffULL);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++/* Load Atomic Add Word - LAA; Cavium OCTEON2 */
++static bool trans_LAA(DisasContext *ctx, arg_LAA *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_add_tl(t0, t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++/* Load Atomic Add Doubleword - LAAD; Cavium OCTEON2 */
++static bool trans_LAAD(DisasContext *ctx, arg_LAAD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_add_tl(t0, t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++/* Load Atomic Swap Word - LAW; Cavium OCTEON2 */
++static bool trans_LAW(DisasContext *ctx, arg_LAW *a)
++{
++    TCGv t0 = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_mov_tl(t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++static bool trans_LAWD(DisasContext *ctx, arg_LAWD *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    gen_store_gpr(t0, a->rd);
++    tcg_gen_mov_tl(t0, cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_st_tl(t0, cpu_gpr[a->rs], ctx->mem_idx, MO_TEUQ |
++                           ctx->default_tcg_memop_mask);
++    return true;
++}
++
++
++static bool trans_LWX(DisasContext *ctx, arg_LWX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_TESL |
++                           ctx->default_tcg_memop_mask);
++
++    /* on mips64, 32 extend to 64 */
++    tcg_gen_ext32s_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
++
++static bool trans_LHX(DisasContext *ctx, arg_LHX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_TESW |
++                           ctx->default_tcg_memop_mask);
++
++    /* 16 extend to 32/64 */
++    tcg_gen_ext16s_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
++
++static bool trans_LDX(DisasContext *ctx, arg_LDX *a)
++{
++    TCGv_i64 t0 = tcg_temp_new_i64();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_TESQ |
++                           ctx->default_tcg_memop_mask);
++    /* not extend */
++    gen_store_gpr(t0, a->rd);
++    return true;
++}
++
++static bool trans_LBUX(DisasContext *ctx, arg_LBUX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_UB |
++                           ctx->default_tcg_memop_mask);
++
++    tcg_gen_ext8u_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
++
++static bool trans_LWUX(DisasContext *ctx, arg_LWUX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_TEUL |
++                           ctx->default_tcg_memop_mask);
++
++    tcg_gen_ext32u_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
++
++static bool trans_LHUX(DisasContext *ctx, arg_LHUX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_TEUW |
++                           ctx->default_tcg_memop_mask);
++
++    tcg_gen_ext16u_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
++
++static bool trans_LBX(DisasContext *ctx, arg_LBX *a)
++{
++    TCGv t0 = tcg_temp_new();
++    gen_op_addr_add(ctx, t0, cpu_gpr[a->rs], cpu_gpr[a->rt]);
++
++    tcg_gen_qemu_ld_tl(t0, t0, ctx->mem_idx, MO_SB |
++                           ctx->default_tcg_memop_mask);
++
++    tcg_gen_ext8s_tl(cpu_gpr[a->rd], t0);
++    return true;
++}
+-- 
+2.34.1
+
 
