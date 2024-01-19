@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3073D832B8E
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:46:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A4F832B86
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:44:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq31-0005td-BC; Fri, 19 Jan 2024 09:40:43 -0500
+	id 1rQq30-0005tM-5t; Fri, 19 Jan 2024 09:40:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0005q5-S9
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:34 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2r-0005q6-1K
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:35 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2m-0003tM-Ty
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2o-0003tr-La
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=na16a3kkbbDiLaCoxLNStnzoqPivBaqVHjAABny5AW8=; b=wBtvCYVIMYuSebIS6/omyghrtp
- gBXa74s7midl/DiGwBoREI5CYN1FIhogfkWJEtHDFkzrImB01LD4MCQGxMHzGU+JTFGG4q5lU09Bg
- nDeJW3tVCjrTVSRARXf53+vL8VmQ/H+9npJDlf6TekMahDyZHN4OYVw8dxMtL2v/cL6I=;
+ bh=6AVkUode0/nFErUFeXqxbWUts2uWARq/IxNNk6oJatw=; b=RhvwCsMCzhEtIQ8fyEh8bpOIps
+ kfOC4idAY8mF4Eizmz0oGyEFNr7lOo1ffnEIkqL8i1Kh+dqvjJdupkUsoBmGKT5dTfXHOWIcmKRfV
+ ZyCK9FaMN9c2UuCyVGDUeh+bE9Icg8TQmn2TfGMxpw82WmqA/1jMjRPTNqoUq5+KNIdg=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 17/34] hw/core: [CPUTLB] Move target specifics to end of
- TCGCPUOps
-Date: Fri, 19 Jan 2024 15:40:07 +0100
-Message-ID: <20240119144024.14289-18-anjo@rev.ng>
+Subject: [RFC PATCH 18/34] accel/stubs: [CPUTLB] Move xen.h stubs to xen-stub.c
+Date: Fri, 19 Jan 2024 15:40:08 +0100
+Message-ID: <20240119144024.14289-19-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,70 +60,81 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCGCPUOps contains an extra function pointer when included with
-NEED_CPU_H, these are moved from the middle to the end of the struct. As
-such offsets to target independent function pointers don't vary in
-target specific and independent code.
+Makes xen.h header independent of softmmu target.  Note:
+CONFIG_XEN_IS_POSSIBLE is only used define stubs in xen.h and optimize
+xen_enabled().
 
-[Move target specfic fields to separate struct?]
+Required by cpu_physical_memory_set_dirty_range() in ram_addr.h.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/hw/core/tcg-cpu-ops.h | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ include/sysemu/xen.h   | 27 ---------------------------
+ accel/stubs/xen-stub.c | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 27 deletions(-)
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index 479713a36e..feb849051f 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -49,21 +49,6 @@ struct TCGCPUOps {
-     /** @debug_excp_handler: Callback for handling debug exceptions */
-     void (*debug_excp_handler)(CPUState *cpu);
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index bc13ad5692..838bb5a003 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -12,16 +12,6 @@
+ 
+ #include "exec/cpu-common.h"
  
 -#ifdef NEED_CPU_H
--#if defined(CONFIG_USER_ONLY) && defined(TARGET_I386)
--    /**
--     * @fake_user_interrupt: Callback for 'fake exception' handling.
--     *
--     * Simulate 'fake exception' which will be handled outside the
--     * cpu execution loop (hack for x86 user mode).
--     */
--    void (*fake_user_interrupt)(CPUState *cpu);
+-# ifdef CONFIG_XEN
+-#  define CONFIG_XEN_IS_POSSIBLE
+-# endif
 -#else
--    /**
--     * @do_interrupt: Callback for interrupt handling.
--     */
--    void (*do_interrupt)(CPUState *cpu);
--#endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
- #ifdef CONFIG_USER_ONLY
-     /**
-      * record_sigsegv:
-@@ -171,8 +156,25 @@ struct TCGCPUOps {
-     bool (*io_recompile_replay_branch)(CPUState *cpu,
-                                        const TranslationBlock *tb);
- #endif /* !CONFIG_USER_ONLY */
-+
-+#ifdef NEED_CPU_H
-+#if defined(CONFIG_USER_ONLY) && defined(TARGET_I386)
-+    /**
-+     * @fake_user_interrupt: Callback for 'fake exception' handling.
-+     *
-+     * Simulate 'fake exception' which will be handled outside the
-+     * cpu execution loop (hack for x86 user mode).
-+     */
-+    void (*fake_user_interrupt)(CPUState *cpu);
-+#else
-+    /**
-+     * @do_interrupt: Callback for interrupt handling.
-+     */
-+    void (*do_interrupt)(CPUState *cpu);
-+#endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
- #endif /* NEED_CPU_H */
+-# define CONFIG_XEN_IS_POSSIBLE
+-#endif
+-
+-#ifdef CONFIG_XEN_IS_POSSIBLE
+-
+ extern bool xen_allowed;
  
-+
- };
+ #define xen_enabled()           (xen_allowed)
+@@ -32,21 +22,4 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+                    struct MemoryRegion *mr, Error **errp);
+ #endif
  
- #if defined(CONFIG_USER_ONLY)
+-#else /* !CONFIG_XEN_IS_POSSIBLE */
+-
+-#define xen_enabled() 0
+-#ifndef CONFIG_USER_ONLY
+-static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
+-{
+-    /* nothing */
+-}
+-static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+-                                 MemoryRegion *mr, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-#endif
+-
+-#endif /* CONFIG_XEN_IS_POSSIBLE */
+-
+ #endif
+diff --git a/accel/stubs/xen-stub.c b/accel/stubs/xen-stub.c
+index 7054965c48..73cfa2d291 100644
+--- a/accel/stubs/xen-stub.c
++++ b/accel/stubs/xen-stub.c
+@@ -14,3 +14,15 @@ bool xen_allowed;
+ void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
+ {
+ }
++
++#ifndef CONFIG_USER_ONLY
++void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
++{
++    /* nothing */
++}
++void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
++                   MemoryRegion *mr, Error **errp)
++{
++    g_assert_not_reached();
++}
++#endif
 -- 
 2.43.0
 
