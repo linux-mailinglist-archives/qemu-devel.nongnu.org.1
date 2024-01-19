@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67659832656
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 10:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BF08326C8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 10:34:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQkuk-0001FL-56; Fri, 19 Jan 2024 04:11:50 -0500
+	id 1rQlFr-0005XF-Ky; Fri, 19 Jan 2024 04:33:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQkuh-0001Bj-Pk
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 04:11:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1rQlFn-0005Vk-4v
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 04:33:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQkug-0007pX-37
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 04:11:47 -0500
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1rQlFl-0004IJ-Fk
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 04:33:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705655504;
+ s=mimecast20190719; t=1705656811;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6ouz5VBT6zrBAsovHr1OLvq7DapDzo98Y9+vm2mI+xQ=;
- b=VgTmRIP3EoQeb1KWcTk/TPiSzC4NIdzCu6Q+zxEDZDLcn76T6m/0OvrORUce8Tv0S04JQt
- BkOL8TAhRHXaKg6bhEJba3UbKV7pERyXAhALLxIx066rr+ppqWLzF7Mu620zuopDm0BnY5
- qLsudEFoIFndePoJJlluHHPHlL98MIE=
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
- [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h0XaQp9gl6RniiiOsmsfC5uDV2i6ClQWKZDfAJZnZsI=;
+ b=QXpyZZzIvGNTNPwOL0LKcGrk7KE9bQ1dJW676xG8lBXRNM/1zPw4a4dyRmaanGZ4dn6udJ
+ bAIA8BuPFnX5jmT5Tlupn1A9vczj7LllUHfDy4bJpgqUJAAYgeE26OdrXPlKrKiKGVr9ir
+ +8cSlr7Mg3squ4iisQgqrb9nPCjSY3E=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-qZNcu_kgOyy9UpLRZp5x2A-1; Fri, 19 Jan 2024 04:11:40 -0500
-X-MC-Unique: qZNcu_kgOyy9UpLRZp5x2A-1
-Received: by mail-oo1-f69.google.com with SMTP id
- 006d021491bc7-599263d15feso134794eaf.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 01:11:40 -0800 (PST)
+ us-mta-680-4WcAQunYPca9_99jk2f-dg-1; Fri, 19 Jan 2024 04:33:29 -0500
+X-MC-Unique: 4WcAQunYPca9_99jk2f-dg-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-429d02a63baso6501521cf.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 01:33:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705655500; x=1706260300;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6ouz5VBT6zrBAsovHr1OLvq7DapDzo98Y9+vm2mI+xQ=;
- b=pkBn6AVbWwtg0dAvzRuPlXBK0NHZoD2TjIwu1yNu/AOGYFCzN1nFIZLml6rLqqfDY1
- bcd6EWbKPZcCENbREaoTRBafgcLEZfIqsAafHl4/eDH9zWPrXzfY7jXY/Ry5jYexDexS
- /rXypZ1Z9nVImp/BOVSZp+xWIIbiA+HeHbNaM+usnm7bfm51ATOxxEQBD4c27Q8ckB6j
- SFgYtkgIz4j4oKMfmOErGZr4MBHuhzhNIvkRp3aWj/EAL41X0Vge6kU0ZgEqtMR5rVIB
- 0twloQsSiokTuUv0YFo8dPS6jU3hO3ovsqy8lrz2bFC5n21stmCXxL6blUNQuhjzh7U+
- awIQ==
-X-Gm-Message-State: AOJu0YxtTJI6X+O14vCB5wSH52aj12Vv7KkawFlIsnfclhV+cKqnp5xh
- 6qOL0vIS5g3BTqiwEHHzg/xaZVzIODSvgxYsSx4Km3HOOf6F9Km29EZ/TjHKOwEltvn5KVx+KRl
- 47ln4OpXJCdlBuvfpowgukjmfG02YMrMqYcFGNIRv7wmAM2f8j8+I
-X-Received: by 2002:a05:6359:4c1b:b0:176:28fd:7ae8 with SMTP id
- kj27-20020a0563594c1b00b0017628fd7ae8mr1844352rwc.2.1705655499988; 
- Fri, 19 Jan 2024 01:11:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF9+6ET7ErGvfsPa75sRWwAgINpIPc8Rj7uKPVtILIcFwvnpkPFtN30nnhqXyq6OUpfPgt+fQ==
-X-Received: by 2002:a05:6359:4c1b:b0:176:28fd:7ae8 with SMTP id
- kj27-20020a0563594c1b00b0017628fd7ae8mr1844338rwc.2.1705655499573; 
- Fri, 19 Jan 2024 01:11:39 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- fa18-20020a056a002d1200b006d996ce80a6sm4575375pfb.0.2024.01.19.01.11.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jan 2024 01:11:39 -0800 (PST)
-Date: Fri, 19 Jan 2024 17:11:30 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v4 0/3] migration & CI: Add a CI job for migration compat
- testing
-Message-ID: <Zao8whp3WCWOPb-9@x1n>
-References: <20240118164951.30350-1-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1705656809; x=1706261609;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=h0XaQp9gl6RniiiOsmsfC5uDV2i6ClQWKZDfAJZnZsI=;
+ b=BfRHTzaIhAOYoY/PJBZmcQqkGMKODRauR4MKHMiqxQsXHoAruHLjFYYy9HORHiTUhL
+ UVUVRgxEXaSKZQfZKHcWPqauSaL2cVL4a9q542b/I4FSqIdRHuLBLbeMX5NcdE648Pkg
+ EHRtO/d2huOmxnLKslgx2cxVrY4/i1aKQu0L/JO9ygqMMWpfEnbikzm+9qfaT/tiKllw
+ lbV86k7zVLdqLEtKsj8Fs7oNk2bD9XzM6bHlFhNXrs9Ylx2FPb6UmKUlPZ9V0HQ+21+S
+ cCiIqfuRL6VrkzMyR8VXvxHXwuzeZ/ZefnLPrD/PKxByU7NVG0L8jnuO5bcf0gvTk8mw
+ obUw==
+X-Gm-Message-State: AOJu0Yx44qckepHPjDxE+Yrr52tCN5qSJfcXH6ZAxdq9NU1CY8QPPBLQ
+ I/z3n4OypoxzEqMlCl6mSXFE6pJKSCMEmn8BNhWIt8eEUIv0ZHGmyhk1rKm3a6IzvPZ8VWtOLpr
+ bb1TdUHQUs6ClMYzEBWbyRQ0LkQkp1j7spaW+yYTv3jBcKr0zQAeEYlgxs1Liimy33lsD31yQ14
+ KJWWzE8p8WnCKbFvAs9ZkozsoD0R0=
+X-Received: by 2002:ac8:5796:0:b0:42a:296e:5bdf with SMTP id
+ v22-20020ac85796000000b0042a296e5bdfmr168622qta.104.1705656809106; 
+ Fri, 19 Jan 2024 01:33:29 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERtkGwVRd5rQmTgmFlpYIMtNS2S/L2mZCmNDZ7u6wzLYvNzoDCzy8hZgalegysR9eiNZJlpLRNeeVmNub4noQ=
+X-Received: by 2002:ac8:5796:0:b0:42a:296e:5bdf with SMTP id
+ v22-20020ac85796000000b0042a296e5bdfmr168618qta.104.1705656808800; Fri, 19
+ Jan 2024 01:33:28 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 19 Jan 2024 01:33:27 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20240117164227.32143-1-farosas@suse.de>
+ <98f6648c-59ce-42db-9afa-04f0a5521cba@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240118164951.30350-1-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <98f6648c-59ce-42db-9afa-04f0a5521cba@tls.msk.ru>
+Date: Fri, 19 Jan 2024 01:33:27 -0800
+Message-ID: <CABJz62NhxaGBEjC8kAPPzeWFsbcDSfhpmvP0K65CyuOdGhNqjQ@mail.gmail.com>
+Subject: Re: Re: [PATCH v2] tests/docker: Add sqlite3 module to openSUSE Leap
+ container
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,65 +103,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano,
+On Fri, Jan 19, 2024 at 10:12:37AM +0300, Michael Tokarev wrote:
+> 17.01.2024 19:42, Fabiano Rosas :
+> > Avocado needs sqlite3:
+>
+> > --- a/tests/docker/dockerfiles/opensuse-leap.docker
+> > +++ b/tests/docker/dockerfiles/opensuse-leap.docker
+> > @@ -90,6 +90,7 @@ RUN zypper update -y && \
+> >              pcre-devel-static \
+> >              pipewire-devel \
+> >              pkgconfig \
+> > +           python311 \
+> >              python311-base \
+> >              python311-pip \
+>
+> Isn't python311 already pulls in python311-base?
 
-On Thu, Jan 18, 2024 at 01:49:48PM -0300, Fabiano Rosas wrote:
-> Here's the second half of adding a migration compatibility test to CI.
-> 
-> We've already added support for running the full set of migration
-> tests with two QEMU binaries since commit 5050ad2a380
-> ("tests/qtest/migration: Support more than one QEMU binary"), now
-> what's left is adding it to the CI.
-> 
-> changes since v3:
-> 
-> - Removed all the 'since' logic and started using the n-1 version of
->   the tests.
-> 
-> - New patch to fix the aarch64 cpu. We shouldn't have been using
->   'max'.
-> 
-> - New patch to disable aarch64 tests while the fix^ doesn't reach a
->   released version.
-> 
-> v3:
-> https://lore.kernel.org/r/20240105180449.11562-1-farosas@suse.de
-> v2:
-> https://lore.kernel.org/r/20240104171857.20108-1-farosas@suse.de
-> v1:
-> https://lore.kernel.org/r/20231207155809.25673-1-farosas@suse.de
+Yes, but lcitool doesn't know that :)
 
-I gave it a try but build-previous-qemu somehow failed..
+The information that is provided to the tool is:
 
-  https://gitlab.com/peterx/qemu/-/jobs/5965634871
+  * the python3 interpreter is in the python311-base package;
+  * the venv module is also in the python311-base package;
+  * the sqlite3 module is in the python311 package;
 
-You normally attach a "CI run" which I wanted to reference, but it's gone
-in this v4 unfortunately.  The error:
+(via tests/lcitool/mappings.yml), as well as:
 
-  error: pathspec 'v8.2.0' did not match any file(s) known to git
+  * QEMU needs the python3 interpreter plus the venv and sqlite3
+    packages to build;
 
-is pretty weird, and I had a feeling it was something wrong before that.
-Maybe it's because I tried to run this specific test multiple times (and
-all failed), somehow the wrong thing was cached, so the real error (of the
-1st run when there is no cache) could have got lost.  Not sure.
+(via tests/lcitool/projects/qemu.yml).
 
-Please have a look when you have time, thanks.
+Based on that, it concludes that the python311-base and python311
+package need to be installed.
 
-> 
-> Fabiano Rosas (3):
->   tests/qtest/migration: Don't use -cpu max for aarch64
->   ci: Add a migration compatibility test job
->   ci: Disable migration compatibility tests for aarch64
-> 
->  .gitlab-ci.d/buildtest.yml   | 64 ++++++++++++++++++++++++++++++++++++
->  tests/qtest/migration-test.c |  2 +-
->  2 files changed, 65 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 2.35.3
-> 
+Notice how the former shows up only once in the Dockerfile, despite
+being mentioned twice in the list of dependencies for the project,
+because some basic deduplication is applied.
+
+Of course the extra line doesn't matter at all in practice:
+
+  # zypper install python311
+  The following 4 NEW packages are going to be installed:
+    libexpat1 libpython3_11-1_0 python311 python311-base
+
+  4 new packages to install.
+  Overall download size: 12.8 MiB. Already cached: 0 B.
+  After the operation, additional 50.4 MiB will be used.
+
+  # zypper install python311 python311-base
+  The following 4 NEW packages are going to be installed:
+    libexpat1 libpython3_11-1_0 python311 python311-base
+
+  4 new packages to install.
+  Overall download size: 12.8 MiB. Already cached: 0 B.
+  After the operation, additional 50.4 MiB will be used.
+
+This is the main reason why we never really bothered trying to avoid
+it.
+
+Hope this helps!
 
 -- 
-Peter Xu
+Andrea Bolognani / Red Hat / Virtualization
 
 
