@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FCD832909
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D6483291B
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 12:43:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQnAH-0002GT-9D; Fri, 19 Jan 2024 06:36:01 -0500
+	id 1rQnAL-0002My-CL; Fri, 19 Jan 2024 06:36:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAE-0002Ay-I0
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:58 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAJ-0002Km-8K
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:03 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAB-00013j-Ti
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:35:58 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50e72e3d435so615703e87.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:35:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQnAG-0001FX-6q
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 06:36:02 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-337d90030bfso493493f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 03:35:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705664154; x=1706268954; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705664158; x=1706268958; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DBo2Z7Ku5vyeXLs2uqKJ4IlgAVFUCbWhBp53AWDvWSA=;
- b=RVkbTjHpw6HYCktUCLrc06V6zdfSUu+vDrCtMdt0c1ZgkbIsnQmv1PQrwMUZmKnG2H
- 6TmYvnvXI5KK3E+SEkmPiJxvHy1z6yY8iv61qiU77xTKqbklQLqY7LfDPabn6R/bJ/FF
- CAEccApMIYmqp1UrVvWmF5PD8YsKJqdQ88rOa9rHagzEqgYeSv0F0/5lOhThe4SOR1km
- iVV+ujEwRZ19Nc3e7UKRLMbLRAfIZxmSGVodB8iQn1c2AYJgVnSj5rbe9POKKyga5P/7
- 757l+01IaQfLkApH44ZgRODMzqKvSorVEj/K7PYDgF2oh830r9gONZs6lin3AbT7OI0f
- wj+Q==
+ bh=bZ2ofuMw9l9dRlR/wStloN7Wq3xL/x8gLMvQvh8dxdA=;
+ b=LpMWM1zy9VO8qoemsrs20TrHnsp4ZCXikcGvz2AyjXunvTLzBTGyoH458RQ8brPgaE
+ uCCO64PIMXuD9ZMUsqlK82BJQ7S3Sk7YH5ELpgzY0k2ma59EJawLCHKRFsYC1FQlIqHD
+ 9zxv1rvfrueabvOHrAmOvpriNdZgzMz4Ai/CpliIeJl9zRLbbtb2IgSzGSzpiel7UBCz
+ 1YdXBbgjc40XEvJWYVBdfbgTU9bOC54w7HAkJS7WjQkF9hJX859A6+yhO+uDlOF2bv8A
+ adfE3EQ0ZkUmzsv7BpmSBp2Eo4deh38+J2mJCa/ptdII/jG0P81os8c4C3pXEKt50kj0
+ Z4qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705664154; x=1706268954;
+ d=1e100.net; s=20230601; t=1705664158; x=1706268958;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DBo2Z7Ku5vyeXLs2uqKJ4IlgAVFUCbWhBp53AWDvWSA=;
- b=NPqsPaoFx/pjNWchByuN4WrlhVor3/AF0fEZpSltx/INS/XyNLLsLPX+ZsIvv/SBtz
- vXQ8GXbenWnfoXpbwfm15V6IzmPgw5kvahPw+uZWTrfuNe4Fd7zpz9q24wkhh7bdR9sC
- JKJBElE85B5khbVvQ4VDe/1wTWDhTP1gNO/34vttzbhiz/zRG07G2wgrrQXtH1MZQWvy
- 9qpxpkqo14a+mlikfJ8SMGySTkrBTKGg5tBsntFF2xRJ7GX0Mz+h68r1VStK0kwdZr+Y
- EaTlwOWo4Ylrzpuuo0BTXlYSCHdYpDXOfcGbA7O8/ZSiel0wkKubRNwHK6aaEIPYeAA6
- DbEw==
-X-Gm-Message-State: AOJu0YwxaYdrD//HR2/RUmc92WFojjEIwbKNvRyZbJSwXNA1lc3hxq9L
- xi0zDR+p0H7pMhXxJx9Otzdsns1U98JTru984N15wq6WCdVrzHzs4q1jHz1FKW6eTOrKaF4XH1r
- 8nxhDBw==
-X-Google-Smtp-Source: AGHT+IElNn9L8/6jJL90/vu5QXCwBLnWT2dEk/3zGBtfEOKQ1NZdjm7pScda0EC8IVQvZUfZ4vn5jg==
-X-Received: by 2002:ac2:4e81:0:b0:50e:b945:fc98 with SMTP id
- o1-20020ac24e81000000b0050eb945fc98mr325094lfr.170.1705664153935; 
- Fri, 19 Jan 2024 03:35:53 -0800 (PST)
+ bh=bZ2ofuMw9l9dRlR/wStloN7Wq3xL/x8gLMvQvh8dxdA=;
+ b=KEkQrXsOdntHpW1rDeadJvE2A9vqJTpmo2S8H4vOXREG0hdaYinxxsGBoHzQ/Mh9KR
+ 5zmjVFmQZGxjSb1iZLiHUoiueN3X8P44HpPPj6tRXIbc5GKoe25OWdHCOjfPKk0XrD13
+ cz+zuQ/2hvybJVCDXbBP+hVS6aQIelxHeZs3s4DFt1Zl3Sp+QsxfClcFsLFuhQ/q02dx
+ Fu8SfrGcJ3tBSt9WBfmj+c4mDPf0zsjaw5si/LNv3t0gSdV2qASPscRbEM1W3QbMVGu+
+ 6naBdsIMiJniTf6sEaB79/8xUq3LTwVOp0V1ZIWaKXxaCZZgl0ytWPDHkkg7GLh595E/
+ CtpA==
+X-Gm-Message-State: AOJu0YxN/ULik7l963VodL3dgNBEXMY0XBsbF7x+5BmkoCDBPZjIGbhA
+ GSc2N9MYcCAIZRhAiUCMC5y5GG5leCM2oi7Zey/+OYp4MjaGh9dA5RnpgOVkQqAUGRrD1YlvN4N
+ YH2WyWg==
+X-Google-Smtp-Source: AGHT+IFCZdo0qSPmQt9VZFKlu/dy0lEiNjnCqeipku6/pKAveRyM3ECmqcXFOKwOdrmUMbv0AEghhw==
+X-Received: by 2002:a05:600c:4394:b0:40d:5a5a:a10 with SMTP id
+ e20-20020a05600c439400b0040d5a5a0a10mr604581wmn.139.1705664158381; 
+ Fri, 19 Jan 2024 03:35:58 -0800 (PST)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- o2-20020a5d4a82000000b00338ca0ada22sm1400094wrq.111.2024.01.19.03.35.53
+ m10-20020adffa0a000000b003392172fd60sm1114421wrr.51.2024.01.19.03.35.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 19 Jan 2024 03:35:53 -0800 (PST)
+ Fri, 19 Jan 2024 03:35:58 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, qemu-block@nongnu.org,
  qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/36] target/alpha: Only build sys_helper.c on system emulation
-Date: Fri, 19 Jan 2024 12:34:39 +0100
-Message-ID: <20240119113507.31951-11-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 11/36] system/cpu-timers: Have icount_configure() return a
+ boolean
+Date: Fri, 19 Jan 2024 12:34:40 +0100
+Message-ID: <20240119113507.31951-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240119113507.31951-1-philmd@linaro.org>
 References: <20240119113507.31951-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,54 +96,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231207105426.49339-3-philmd@linaro.org>
----
- target/alpha/sys_helper.c | 3 ---
- target/alpha/meson.build  | 6 ++++--
- 2 files changed, 4 insertions(+), 5 deletions(-)
+Following the example documented since commit e3fe3988d7 ("error:
+Document Error API usage rules"), have icount_configure()
+return a boolean indicating whether an error is set or not.
 
-diff --git a/target/alpha/sys_helper.c b/target/alpha/sys_helper.c
-index 98d9a0fff7..768116ef32 100644
---- a/target/alpha/sys_helper.c
-+++ b/target/alpha/sys_helper.c
-@@ -28,7 +28,6 @@
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231208113529.74067-2-philmd@linaro.org>
+---
+ include/sysemu/cpu-timers.h | 10 ++++++++--
+ accel/tcg/icount-common.c   | 16 +++++++++-------
+ stubs/icount.c              |  4 +++-
+ system/vl.c                 |  3 +--
+ 4 files changed, 21 insertions(+), 12 deletions(-)
+
+diff --git a/include/sysemu/cpu-timers.h b/include/sysemu/cpu-timers.h
+index 2e786fe7fb..b70dc7692d 100644
+--- a/include/sysemu/cpu-timers.h
++++ b/include/sysemu/cpu-timers.h
+@@ -50,8 +50,14 @@ int64_t icount_get(void);
+  */
+ int64_t icount_to_ns(int64_t icount);
  
+-/* configure the icount options, including "shift" */
+-void icount_configure(QemuOpts *opts, Error **errp);
++/**
++ * icount_configure: configure the icount options, including "shift"
++ * @opts: Options to parse
++ * @errp: pointer to a NULL-initialized error object
++ *
++ * Return: true on success, else false setting @errp with error
++ */
++bool icount_configure(QemuOpts *opts, Error **errp);
  
- /* PALcode support special instructions */
--#ifndef CONFIG_USER_ONLY
- void helper_tbia(CPUAlphaState *env)
- {
-     tlb_flush(env_cpu(env));
-@@ -74,5 +73,3 @@ void helper_set_alarm(CPUAlphaState *env, uint64_t expire)
-         timer_del(cpu->alarm_timer);
-     }
+ /* used by tcg vcpu thread to calc icount budget */
+ int64_t icount_round(int64_t count);
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index ec57192be8..dc69d6a4c6 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -419,7 +419,7 @@ void icount_account_warp_timer(void)
+     icount_warp_rt();
  }
--
--#endif /* CONFIG_USER_ONLY */
-diff --git a/target/alpha/meson.build b/target/alpha/meson.build
-index ea252c99a5..7dbbd55717 100644
---- a/target/alpha/meson.build
-+++ b/target/alpha/meson.build
-@@ -7,13 +7,15 @@ alpha_ss.add(files(
-   'clk_helper.c',
-   'int_helper.c',
-   'mem_helper.c',
--  'sys_helper.c',
-   'translate.c',
-   'vax_helper.c',
- ))
  
- alpha_system_ss = ss.source_set()
--alpha_system_ss.add(files('machine.c'))
-+alpha_system_ss.add(files(
-+  'machine.c',
-+  'sys_helper.c',
-+))
+-void icount_configure(QemuOpts *opts, Error **errp)
++bool icount_configure(QemuOpts *opts, Error **errp)
+ {
+     const char *option = qemu_opt_get(opts, "shift");
+     bool sleep = qemu_opt_get_bool(opts, "sleep", true);
+@@ -429,27 +429,28 @@ void icount_configure(QemuOpts *opts, Error **errp)
+     if (!option) {
+         if (qemu_opt_get(opts, "align") != NULL) {
+             error_setg(errp, "Please specify shift option when using align");
++            return false;
+         }
+-        return;
++        return true;
+     }
  
- target_arch += {'alpha': alpha_ss}
- target_system_arch += {'alpha': alpha_system_ss}
+     if (align && !sleep) {
+         error_setg(errp, "align=on and sleep=off are incompatible");
+-        return;
++        return false;
+     }
+ 
+     if (strcmp(option, "auto") != 0) {
+         if (qemu_strtol(option, NULL, 0, &time_shift) < 0
+             || time_shift < 0 || time_shift > MAX_ICOUNT_SHIFT) {
+             error_setg(errp, "icount: Invalid shift value");
+-            return;
++            return false;
+         }
+     } else if (icount_align_option) {
+         error_setg(errp, "shift=auto and align=on are incompatible");
+-        return;
++        return false;
+     } else if (!icount_sleep) {
+         error_setg(errp, "shift=auto and sleep=off are incompatible");
+-        return;
++        return false;
+     }
+ 
+     icount_sleep = sleep;
+@@ -463,7 +464,7 @@ void icount_configure(QemuOpts *opts, Error **errp)
+     if (time_shift >= 0) {
+         timers_state.icount_time_shift = time_shift;
+         icount_enable_precise();
+-        return;
++        return true;
+     }
+ 
+     icount_enable_adaptive();
+@@ -491,6 +492,7 @@ void icount_configure(QemuOpts *opts, Error **errp)
+     timer_mod(timers_state.icount_vm_timer,
+                    qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) +
+                    NANOSECONDS_PER_SECOND / 10);
++    return true;
+ }
+ 
+ void icount_notify_exit(void)
+diff --git a/stubs/icount.c b/stubs/icount.c
+index 6df8c2bf7d..85c381a0ea 100644
+--- a/stubs/icount.c
++++ b/stubs/icount.c
+@@ -10,10 +10,12 @@ void icount_update(CPUState *cpu)
+ {
+     abort();
+ }
+-void icount_configure(QemuOpts *opts, Error **errp)
++bool icount_configure(QemuOpts *opts, Error **errp)
+ {
+     /* signal error */
+     error_setg(errp, "cannot configure icount, TCG support not available");
++
++    return false;
+ }
+ int64_t icount_get_raw(void)
+ {
+diff --git a/system/vl.c b/system/vl.c
+index 53850a1daf..404e7cf87a 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2270,8 +2270,7 @@ static void user_register_global_props(void)
+ 
+ static int do_configure_icount(void *opaque, QemuOpts *opts, Error **errp)
+ {
+-    icount_configure(opts, errp);
+-    return 0;
++    return !icount_configure(opts, errp);
+ }
+ 
+ static int accelerator_set_property(void *opaque,
 -- 
 2.41.0
 
