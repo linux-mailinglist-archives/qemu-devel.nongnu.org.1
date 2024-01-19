@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D64832E4D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:43:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61759832E53
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:47:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQssP-0008Ho-Ml; Fri, 19 Jan 2024 12:41:57 -0500
+	id 1rQsxH-0001aa-2R; Fri, 19 Jan 2024 12:46:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQssK-0008H5-O7
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:41:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQssI-0006Gz-Q3
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:41:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705686109;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CyCaLkpTGlIIivlKFsevSuubNtfAJorE8hi2Hf1TMu8=;
- b=OMUgNzki3yx6qWROhb6Hk4xCHRM1yG7JLxC0Ekge7BcNEDQhSgch8IB3jjZdJOAYoD1zsw
- EFXP4XOZR0+/88TKrF7wW0I+zz1o+6qL8X9YBS7brMZdI97MzDw8SdkhqQpPiU6N/cxO6L
- eiO6ILZjuS8g1Ax9UDbXyFojHkhKPqs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-417-tmonjf9LMMWfHT6mXJR1og-1; Fri,
- 19 Jan 2024 12:41:47 -0500
-X-MC-Unique: tmonjf9LMMWfHT6mXJR1og-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 935083CBE322;
- Fri, 19 Jan 2024 17:41:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B9B621C05E0E;
- Fri, 19 Jan 2024 17:41:46 +0000 (UTC)
-Date: Fri, 19 Jan 2024 18:41:45 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Ari Sundholm <ari@tuxera.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: Re: [PATCH v2] block/blklogwrites: Protect mutable driver state with
- a mutex.
-Message-ID: <Zaq0WQoqe_Q3Q2Ao@redhat.com>
-References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
- <20240111163238.1346482-1-ari@tuxera.com>
- <Zal5kCm23APYc68D@redhat.com>
- <2a910fa3-47b6-af14-af7d-fb49f0a225d4@tuxera.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQsxE-0001aO-M7
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:46:56 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rQsxD-0002Xv-0Z
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:46:56 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5578485fc0eso1093398a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:46:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705686412; x=1706291212; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=4DPUS/85mH1IUR8PZOdL+FrwMo1NGzgrtCBUZEAw+W0=;
+ b=bTxi+/OBTNcef5zkiXigQlvqnpqeRi3ythEfoNmqtPBAOLNUnwmySJVfZCwruygaaQ
+ NqYQA3qs47gLlqjjklvp5EvSObJMNqZt+nYz3SyopNVfbzq9XJkgXo0rokFYoHHuFyaJ
+ RJEqKv4eRdL31J1neDgJ/GxfUKcnC4ZKaB/hWR8HyP/pptY5oKbTyQKTW2AnkeZmhlis
+ PLun9mbWfvHjo8hOAIn03pFf5qv/PpknvWu9PGI5/U83QF46rCon4+dhyALkoW4A3f1U
+ vqKU5jLzChoPsfEUCNV5szGK0jUwrsgX8dZ4oG33L5wNgg7ebozOazu1UxxI5iPmF/A8
+ dKDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705686412; x=1706291212;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4DPUS/85mH1IUR8PZOdL+FrwMo1NGzgrtCBUZEAw+W0=;
+ b=UIumYm1/egqP/7YBcHNYvG+/x4tnRYdUPUyGNwld3p9W8wgA+880iXTSQSLPhuAaBk
+ 6RXCE3eZaznq1zA/4DkHpRU/K+1g6H4MS5dQ4JtrODi5j5cqUrasm5A5Z/O76b2wO9cv
+ en2U93G0RQFgu0o3IKCWStv7KXZJd2Y7gUqtTkg4dgmhlCfwa8dojkC4aHPSb0ZmTyQQ
+ pmnSQgyro4rYJztOB9qxYFXvkI7vQgjg/9avJtCHSifyDo93rnDT8VsT4vOD2q9ZMhMS
+ JlyuF4fyDILqzrGwoFMJ+qsDOez3hhhNMn288Q7QUxpr0Sd6yaLYwPiHg0MI0fWB4ekM
+ zKEQ==
+X-Gm-Message-State: AOJu0YzPASjF/2tod1R8gZVrzrDeDtCgZzDcFfV91BJr2gQQZpJ3CV/P
+ i4urMnRLrNxD16XyRfzu5lcP5006C7vaoOgoI0rIFUgC25v0opWaAmdplGXcjZBM6lolBSDo2UQ
+ Zbo8fLqGwcXyK201SDy92fENrYqlh4OYpTWDPWg==
+X-Google-Smtp-Source: AGHT+IG0B7aNIVkKCWeCZQ0WuDTG7erEJghhYfTdLnHBH1JoO0bJBldhGglLEnZRfDjL4S3kCb4zPBrHc1m515c5pCU=
+X-Received: by 2002:a05:6402:30a7:b0:559:f5dc:d8c1 with SMTP id
+ df7-20020a05640230a700b00559f5dcd8c1mr64092edb.76.1705686412561; Fri, 19 Jan
+ 2024 09:46:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2a910fa3-47b6-af14-af7d-fb49f0a225d4@tuxera.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240115043431.3900922-1-bin.meng@windriver.com>
+ <20240115043431.3900922-4-bin.meng@windriver.com>
+ <CAFEAcA9Z_9Mg_R2ToEo=++UAdq789-q2S8CjHLT6fyp_zXrh-A@mail.gmail.com>
+ <ba16062e-e2c9-95b8-8b35-c388f348e126@redhat.com>
+In-Reply-To: <ba16062e-e2c9-95b8-8b35-c388f348e126@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Jan 2024 17:46:41 +0000
+Message-ID: <CAFEAcA8pSQ15zxhO2pFWS8h+xJHqcLt+CSJ78En2SG1m--izWQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] tests/acpi: Update virt/SSDT.memhp
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: Bin Meng <bin.meng@windriver.com>, qemu-devel@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,218 +90,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.01.2024 um 17:55 hat Ari Sundholm geschrieben:
-> On 1/18/24 21:18, Kevin Wolf wrote:
-> > Am 11.01.2024 um 17:32 hat Ari Sundholm geschrieben:
-> > > During the review of a fix for a concurrency issue in blklogwrites,
-> > > it was found that the driver needs an additional fix when enabling
-> > > multiqueue, which is a new feature introduced in QEMU 9.0, as the
-> > > driver state may be read and written by multiple threads at the same
-> > > time, which was not the case when the driver was originally written.
-> > > 
-> > > Fix the multi-threaded scenario by introducing a mutex to protect the
-> > > mutable fields in the driver state, and always having the mutex locked
-> > > by the current thread when accessing them. Also use the mutex and a
-> > > condition variable to ensure that the super block is not being written
-> > > to by multiple threads concurrently.
-> > > 
-> > > Additionally, add the const qualifier to a few BDRVBlkLogWritesState
-> > > pointer targets in contexts where the driver state is not written to.
-> > > 
-> > > Signed-off-by: Ari Sundholm <ari@tuxera.com>
-> > > 
-> > > v1->v2: Ensure that the super block is not written to concurrently.
-> > > ---
-> > >   block/blklogwrites.c | 77 +++++++++++++++++++++++++++++++++++++++-----
-> > >   1 file changed, 69 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/block/blklogwrites.c b/block/blklogwrites.c
-> > > index ba717dab4d..f8bec7c863 100644
-> > > --- a/block/blklogwrites.c
-> > > +++ b/block/blklogwrites.c
-> > > @@ -3,7 +3,7 @@
-> > >    *
-> > >    * Copyright (c) 2017 Tuomas Tynkkynen <tuomas@tuxera.com>
-> > >    * Copyright (c) 2018 Aapo Vienamo <aapo@tuxera.com>
-> > > - * Copyright (c) 2018 Ari Sundholm <ari@tuxera.com>
-> > > + * Copyright (c) 2018-2024 Ari Sundholm <ari@tuxera.com>
-> > >    *
-> > >    * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> > >    * See the COPYING file in the top-level directory.
-> > > @@ -55,9 +55,34 @@ typedef struct {
-> > >       BdrvChild *log_file;
-> > >       uint32_t sectorsize;
-> > >       uint32_t sectorbits;
-> > > +    uint64_t update_interval;
-> > > +
-> > > +    /*
-> > > +     * The mutable state of the driver, consisting of the current log sector
-> > > +     * and the number of log entries.
-> > > +     *
-> > > +     * May be read and/or written from multiple threads, and the mutex must be
-> > > +     * held when accessing these fields.
-> > > +     */
-> > >       uint64_t cur_log_sector;
-> > >       uint64_t nr_entries;
-> > > -    uint64_t update_interval;
-> > > +    QemuMutex mutex;
-> > > +
-> > > +    /*
-> > > +     * The super block sequence number. Non-zero if a super block update is in
-> > > +     * progress.
-> > > +     *
-> > > +     * The mutex must be held when accessing this field.
-> > > +     */
-> > > +    uint64_t super_update_seq;
-> > > +
-> > > +    /*
-> > > +     * A condition variable to wait for and signal finished superblock updates.
-> > > +     *
-> > > +     * Used with the mutex to ensure that only one thread be updating the super
-> > > +     * block at a time.
-> > > +     */
-> > > +    QemuCond super_updated;
-> > >   } BDRVBlkLogWritesState;
-> > >   static QemuOptsList runtime_opts = {
-> > > @@ -169,6 +194,9 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
-> > >           goto fail;
-> > >       }
-> > > +    qemu_mutex_init(&s->mutex);
-> > > +    qemu_cond_init(&s->super_updated);
-> > > +
-> > >       log_append = qemu_opt_get_bool(opts, "log-append", false);
-> > >       if (log_append) {
-> > > @@ -231,6 +259,8 @@ static int blk_log_writes_open(BlockDriverState *bs, QDict *options, int flags,
-> > >           s->nr_entries = 0;
-> > >       }
-> > > +    s->super_update_seq = 0;
-> > > +
-> > >       if (!blk_log_writes_sector_size_valid(log_sector_size)) {
-> > >           ret = -EINVAL;
-> > >           error_setg(errp, "Invalid log sector size %"PRIu64, log_sector_size);
-> > > @@ -255,6 +285,8 @@ fail_log:
-> > >           bdrv_unref_child(bs, s->log_file);
-> > >           bdrv_graph_wrunlock();
-> > >           s->log_file = NULL;
-> > > +        qemu_cond_destroy(&s->super_updated);
-> > > +        qemu_mutex_destroy(&s->mutex);
-> > >       }
-> > >   fail:
-> > >       qemu_opts_del(opts);
-> > > @@ -269,6 +301,8 @@ static void blk_log_writes_close(BlockDriverState *bs)
-> > >       bdrv_unref_child(bs, s->log_file);
-> > >       s->log_file = NULL;
-> > >       bdrv_graph_wrunlock();
-> > > +    qemu_cond_destroy(&s->super_updated);
-> > > +    qemu_mutex_destroy(&s->mutex);
-> > >   }
-> > >   static int64_t coroutine_fn GRAPH_RDLOCK
-> > > @@ -295,7 +329,7 @@ static void blk_log_writes_child_perm(BlockDriverState *bs, BdrvChild *c,
-> > >   static void blk_log_writes_refresh_limits(BlockDriverState *bs, Error **errp)
-> > >   {
-> > > -    BDRVBlkLogWritesState *s = bs->opaque;
-> > > +    const BDRVBlkLogWritesState *s = bs->opaque;
-> > >       bs->bl.request_alignment = s->sectorsize;
-> > >   }
-> > > @@ -338,15 +372,18 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
-> > >        * driver may be modified by other driver operations while waiting for the
-> > >        * I/O to complete.
-> > >        */
-> > > +    qemu_mutex_lock(&s->mutex);
-> > >       const uint64_t entry_start_sector = s->cur_log_sector;
-> > >       const uint64_t entry_offset = entry_start_sector << s->sectorbits;
-> > >       const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
-> > >       const uint64_t entry_aligned_size = qiov_aligned_size +
-> > >           ROUND_UP(lr->zero_size, s->sectorsize);
-> > >       const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
-> > > +    const uint64_t entry_seq = s->nr_entries + 1;
-> > > -    s->nr_entries++;
-> > > +    s->nr_entries = entry_seq;
-> > >       s->cur_log_sector += entry_nr_sectors;
-> > > +    qemu_mutex_unlock(&s->mutex);
-> > >       /*
-> > >        * Write the log entry. Note that if this is a "write zeroes" operation,
-> > > @@ -366,17 +403,34 @@ blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
-> > >       /* Update super block on flush or every update interval */
-> > >       if (lr->log_ret == 0 && ((lr->entry.flags & LOG_FLUSH_FLAG)
-> > > -        || (s->nr_entries % s->update_interval == 0)))
-> > > +        || (entry_seq % s->update_interval == 0)))
-> > >       {
-> > >           struct log_write_super super = {
-> > >               .magic      = cpu_to_le64(WRITE_LOG_MAGIC),
-> > >               .version    = cpu_to_le64(WRITE_LOG_VERSION),
-> > > -            .nr_entries = cpu_to_le64(s->nr_entries),
-> > > +            .nr_entries = const_le64(0),
-> > >               .sectorsize = cpu_to_le32(s->sectorsize),
-> > >           };
-> > > -        void *zeroes = g_malloc0(s->sectorsize - sizeof(super));
-> > > +        void *zeroes;
-> > >           QEMUIOVector qiov;
-> > > +        /*
-> > > +         * Wait if a super block update is already in progress.
-> > > +         * Bail out if a newer update got its turn before us.
-> > > +         */
-> > > +        WITH_QEMU_LOCK_GUARD(&s->mutex) {
-> > > +            while (s->super_update_seq) {
-> > > +                if (entry_seq < s->super_update_seq) {
-> > > +                    return;
-> > > +                }
-> > > +                qemu_cond_wait(&s->super_updated, &s->mutex);
-> > 
-> > This will block, which is exactly what you want if another thread is
-> > writing the super block.
-> > 
-> > However, in a single-threaded case where it's just the previous request
-> > coroutine that is still writing its super block (i.e. bdrv_co_pwritev()
-> > below has yielded), this will deadlock because we'll never switch back
-> > and actually complete the previous super block write.
-> > 
-> > So unless I'm missing a reason why this won't happen, I think you need a
-> > coroutine aware mechanism here. The obvious options would be using a
-> > CoMutex in the first place and holding it across the I/O operation or
-> > keeping the cheaper QemuMutex and replacing the condition variable with
-> > a CoQueue.
-> > 
-> 
-> Yup. Indeed, you are right. It took me a while to see why. Thanks for
-> pointing this out. I had not properly considered the fact that QemuCond does
-> not yield on entering a wait in coroutine context.
+On Fri, 19 Jan 2024 at 17:19, Laszlo Ersek <lersek@redhat.com> wrote:
+>
+> On 1/19/24 15:29, Peter Maydell wrote:
+> > On Mon, 15 Jan 2024 at 04:35, Bin Meng <bin.meng@windriver.com> wrote:
+> >>
+> >> The Arm dtb changes caused an address change:
+> >>
+> >>  DefinitionBlock ("", "SSDT", 1, "BOCHS ", "NVDIMM", 0x00000001)
+> >>  {
+> >>      [ ... ]
+> >> -    Name (MEMA, 0x43C80000)
+> >> +    Name (MEMA, 0x43D80000)
+> >>  }
+> >>
+> >> Signed-off-by: Bin Meng <bin.meng@windriver.com>
+> >>
+> >> ---
+> >
+> > You should follow up (with Laszlo?) to make sure we understand
+> > why reducing the size of the generated dtb has caused this
+> > change in the ACPI tables. In particular, if we made the
+> > dtb *smaller* why has the allocated address here got *larger*?
+>
+> As a very roughly stated trait (i.e., I'm not claiming this is an exact,
+> hard rule), the UEFI memory allocator hands out chunks top-down. An
+> earlier allocation (such as the DTB's) shrinking is consistent with
+> further allocations being serviced at higher addresses.
+>
+> >
+> > This particular bit of the ACPI tables does seem to be
+> > annoyingly unstable, though -- for instance commit 55abfc1ffbe54c0
+> > we had to change this figure when we updated to a newer EDK2
+> > version, and similarly commit 5f88dd43d0 for the same reason.
+> > I wonder if we can or should make our data-check be more
+> > loose about the address reported here, given what Laszlo
+> > says about how we're basically looking at the address of some
+> > memory the guest allocated. (cc'd the bios-tables-test
+> > maintainers for their opinion.)
+>
+> Right, the allocation address is generally unpredictable. (That's why
+> the ACPI linker/loader "language" had to be extended with an extra
+> command, for the sake of the vmgenid device -- so that the firmware
+> could send the allocation GPA back to QEMU in an "architected" way.)
+>
+> >
+> > I'm also a little concerned that if the ACPI generated
+> > tables care about the dtb size then we're now going to
+> > have a situation where any patch we make to the virt board
+> > that changes the generated dtb at all will result in the
+> > ACPI tables changing. That would be annoying.
+>
+> This is generally inevitable, it's just how the ACPI linker/loader
+> works. The guest allocator can only work with the memory map it gets
+> from QEMU. The same effect is triggered BTW if you don't change the DTB
+> but change (on the QEMU command line) the guest RAM size. The ACPI
+> tables will be allocated at different addresses than before, and so the
+> pointer fields in other tables, to those tables, will also change.
 
-Yes, exactly.
+Mmm, but previously we weren't packing the dtb we created,
+so it would always be the same 1MB regardless of what and
+how much we put into it. After this patchset it will be packed
+down to its "real" size, so the size will be much more variable.
 
-> Posted v3, where the condition variable has been substituted with a CoQueue.
-> Hopefully I did it right this time.
-
-Looks good at the first sight, but I'll properly review it now.
-
-> If I am reading the CoQueue implementation correctly, this should have an
-> additional bonus of fairness among the pending super block updates due to
-> the execution order imposed
-
-Yes, though I'm not sure how much of a bonus this really is here. If you
-process the latest update first, you wouldn't have to do any I/O for the
-earlier requests any more. But completely without it, you could indeed
-get starvation.
-
-Probably not worth worrying too much about.
-
-> and it also appears that spurious wakeups might not be an issue like
-> they would be with pthread condvars? I am not relying on these
-> properties in the v3 patch, though.
-
-I think in your case you can get spurious wakeups because you only go
-through the queue if someone is already updating the super block.
-aio_co_wake() doesn't immediately enter the coroutine that is woken up,
-but it just schedules it to run when the current one yields or
-terminates. So another thread could start updating the super block in
-between. Maybe it can happen even in the single threaded case that
-another request coroutine can be scheduled first, I'm not sure about
-this.
-
-It would be possible to avoid this by resetting super_update_seq to 0
-only in the woken up coroutine or if the queue is empty. Not sure if
-this would be any better in practice, though.
-
-Kevin
-
+thanks
+-- PMM
 
