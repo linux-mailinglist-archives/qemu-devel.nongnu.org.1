@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BAF832B83
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A769832B71
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq34-0005xL-Jl; Fri, 19 Jan 2024 09:40:46 -0500
+	id 1rQq2z-0005t8-23; Fri, 19 Jan 2024 09:40:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005mz-34
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:24 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2f-0005mU-1I
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:22 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003Sj-GP
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003Sq-K0
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,17 +22,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=0CWT5ojr77Q9zixDwJBU6wGjiRCwORiOck1FGfPbW1Y=; b=OVlUSVoxOxK3Z0TL40W0u8xHZD
- qvEFTrnRYfJSEC1AiNr97BQypr9QRJaDsW7Fy4CMwkTgWT2ed5G4nLtbqSUZBKl7/sxxKb3GakMkt
- qjiiTnCVi94JFutnz6LYFK6s3YjZuRxmE4MrFyvEgthUn1cEkBTnbEhQQ11JSwWvrq4Y=;
+ bh=bGElSCUlpgiXi9G6rlQ4CqjB/wCRk8+IhyTwx+6S/MQ=; b=grwOX/lE+ffToN3IjaUdqQm2iG
+ R8c3tBQ5vC5ty0ptbVtUhuaJz36DfZSEg4rxKXM/7OLHBgOXp00zG/+7t9OTJ8t8V1h0UcB7DbYw+
+ ab0y3tDw+2S5o7pRn+mZGfMxNZH7ccDETNAe9PelZ60yfO1vq+lRxdZ8/P05Z8PHMKE8=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 03/34] exec: [PAGE_VARY] Move TARGET_PAGE_BITS_VARY to
- common header
-Date: Fri, 19 Jan 2024 15:39:53 +0100
-Message-ID: <20240119144024.14289-4-anjo@rev.ng>
+Subject: [RFC PATCH 04/34] exec: [PAGE_VARY] Unpoison TARGET_PAGE_* macros for
+ system mode
+Date: Fri, 19 Jan 2024 15:39:54 +0100
+Message-ID: <20240119144024.14289-5-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,96 +61,31 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need to be able access the variable TARGET_PAGE_* macros in a
-target-independent manner.
+TARGET_PAGE_* are now target-independent for softmmu targets, and can
+safely be accessed common code.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu-all.h    | 29 ++++++++++-------------------
- include/exec/cpu-common.h | 25 +++++++++++++++++++++++++
- 2 files changed, 35 insertions(+), 19 deletions(-)
+ include/exec/poison.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index a1e4dee6a2..83165b1ce4 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -149,30 +149,21 @@ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val
- #include "exec/memory_ldst_phys.h.inc"
- #endif
+diff --git a/include/exec/poison.h b/include/exec/poison.h
+index 1ea5633eb3..6d87954a91 100644
+--- a/include/exec/poison.h
++++ b/include/exec/poison.h
+@@ -46,10 +46,12 @@
+ #pragma GCC poison TARGET_FMT_ld
+ #pragma GCC poison TARGET_FMT_lu
  
--/* page related stuff */
--
--#ifdef TARGET_PAGE_BITS_VARY
--# include "exec/page-vary.h"
--extern const TargetPageBits target_page;
--#ifdef CONFIG_DEBUG_TCG
--#define TARGET_PAGE_BITS_MIN ({ assert(target_page.decided); \
--                                target_page.bits_min; })
--#define TARGET_PAGE_BITS   ({ assert(target_page.decided); target_page.bits; })
--#define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
--                              (target_long)target_page.mask; })
--#else
--#define TARGET_PAGE_BITS_MIN target_page.bits_min
--#define TARGET_PAGE_BITS     target_page.bits
--#define TARGET_PAGE_MASK     ((target_long)target_page.mask)
--#endif
--#define TARGET_PAGE_SIZE   (-(int)TARGET_PAGE_MASK)
--#else
-+/* Non-variable page size macros */
-+#ifndef TARGET_PAGE_BITS_VARY
- #define TARGET_PAGE_BITS_MIN TARGET_PAGE_BITS
- #define TARGET_PAGE_SIZE   (1 << TARGET_PAGE_BITS)
- #define TARGET_PAGE_MASK   ((target_long)-1 << TARGET_PAGE_BITS)
-+#define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
- #endif
- 
--#define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
-+/*
-+ * Check that softmmu targets are using variable page sizes, we need this
-+ * for the TARGET_PAGE_* macros to be target independent.
-+ */
-+#if !defined(CONFIG_USER_ONLY) && !defined(TARGET_PAGE_BITS_VARY)
-+# error Need to use TARGET_PAGE_BITS_VARY on system mode
++#ifdef CONFIG_USER_ONLY
+ #pragma GCC poison TARGET_PAGE_SIZE
+ #pragma GCC poison TARGET_PAGE_MASK
+ #pragma GCC poison TARGET_PAGE_BITS
+ #pragma GCC poison TARGET_PAGE_ALIGN
 +#endif
  
- /* same as PROT_xxx */
- #define PAGE_READ      0x0001
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 605b160a7e..df53252d51 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -26,6 +26,31 @@ typedef uint64_t vaddr;
- #define VADDR_PRIX PRIX64
- #define VADDR_MAX UINT64_MAX
- 
-+/**
-+ * Variable page size macros
-+ *
-+ * TARGET_PAGE_BITS_VARY is assumed for softmmu targets so
-+ * these macros are target independent.  This is checked in
-+ * cpu-all.h.
-+ */
-+#ifndef CONFIG_USER_ONLY
-+# include "exec/page-vary.h"
-+extern const TargetPageBits target_page;
-+#ifdef CONFIG_DEBUG_TCG
-+#define TARGET_PAGE_BITS_MIN ({ assert(target_page.decided); \
-+                                target_page.bits_min; })
-+#define TARGET_PAGE_BITS   ({ assert(target_page.decided); target_page.bits; })
-+#define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
-+                              (int)target_page.mask; })
-+#else
-+#define TARGET_PAGE_BITS_MIN target_page.bits_min
-+#define TARGET_PAGE_BITS     target_page.bits
-+#define TARGET_PAGE_MASK     ((int)target_page.mask)
-+#endif
-+#define TARGET_PAGE_SIZE   (-(int)TARGET_PAGE_MASK)
-+#define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
-+#endif
-+
- void cpu_exec_init_all(void);
- void cpu_exec_step_atomic(CPUState *cpu);
- 
+ #pragma GCC poison CPU_INTERRUPT_HARD
+ #pragma GCC poison CPU_INTERRUPT_EXITTB
 -- 
 2.43.0
 
