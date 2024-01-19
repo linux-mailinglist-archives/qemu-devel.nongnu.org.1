@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8CC833068
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 22:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA50D83307A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 22:52:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQwcx-00027o-Bj; Fri, 19 Jan 2024 16:42:15 -0500
+	id 1rQwlp-0003tH-7b; Fri, 19 Jan 2024 16:51:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwcv-00027e-76
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:42:13 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwld-0003sR-2p
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:51:13 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwct-0005Mj-Id
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:42:12 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40ea34df934so1265525e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 13:42:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwla-0005P8-Uj
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:51:12 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-337b38d6568so1109726f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 13:51:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705700530; x=1706305330; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8QDoutmiDhXwa+QXDbekozFTGuseQkJNNMOuMJ7vhww=;
- b=VtYImeYYea6emgq705FaV1qjJmv/Ukzu7hlUwdkOdMucH3D+21dSdU7aQKlkmnzh34
- t/OkMrH77kY/JXFzaht/BhhkjgiurxlcyUxPlWENZtaDb0tI7Wq3CJM38s67B02f2ZYR
- CUXi1GnjPy1FCjMTUo0l7d2TALoeoa3/uI7Ke7oimIyP1OUwBiB1ZhMvpC5kpQKtXQrl
- YrWQBglVvpT7L/kenzWA+xzTWDtEJJ1tSiAomvPU9enVPLdwen1PzMNbbsodd73GfKBS
- vP13uT4LHvqNyphb+/q7kw8uNZnLPF36qWQzLD7rpJw6p2tzvbFcXfYglMdx+H7fPW3f
- dReg==
+ d=linaro.org; s=google; t=1705701069; x=1706305869; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=O1PQjWgpBW2NJ+Bq1GU0NZb12Y8zCOGxZ2+frvV8uYQ=;
+ b=L+avwftcYxBOcwsV4pzlK4Ln5EFY9PWoEXGK9UpgacInvlAtiUKKP5+7pELtSxBTzy
+ Kbc9oi8qPpCNXMclri4af8MxMT7LZs1HCnCkXU+CNQjTMHqO53Id0+Gz/Fs5jy1noMNt
+ zJbEKR/tULQshC3FFWt8HnHlwsicvZhvRjKPaKS2Y1pGDbVHPbQ0tMWXr0WgtOqahmgp
+ MqeseyigGiisdWGZ+4b45sg071cA0iMpUmF/eI+dWaou0lW0ANqdlb4AAJc9hm8Wvlv/
+ F4sqoqQDgxgahEUixKMjmicgUtbEQuXLSM+i33Bof3OKS7VdG5WzRfj2ncrHAC+3skoK
+ Zfnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705700530; x=1706305330;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8QDoutmiDhXwa+QXDbekozFTGuseQkJNNMOuMJ7vhww=;
- b=r/H0RWcOAZq2yKK1F8Nw6XgXLuNDPKK1f1nk3eIrhPwyKJa0dZUqZbHc6wo6O8wwf9
- 4sOOtmIKVEKHmmMbU/iVv99QyWKO/31AkBYUCV66mFD+m/qbohdh4Olt9pR9UK5gH+AO
- XbTt0lJEpzYUwbV3zv+6iEL834lUAvlb+ug8aLQ2KBAtUpnerVqCceL4dNuu/HXteaUf
- srd0wA7DzAmees+Pe73L2ANvCwYFKfi6bZwNjy57JGyVr4sWTzLyJmfA1XR9vDmzuJcJ
- txb3qEhtRIRX9TQcGYA+fdFIHilfY66ekTN762v0aMBwxModSmWYqsmo9hihKoxTApEY
- i2Qg==
-X-Gm-Message-State: AOJu0YwHWC39AAwqrKAk1dDAooUlLRzwPPVdcmAFRuX6Or2LQP1fQESP
- EREB9Nw0N73Wo0DobdUV6pjfMneyUQsfiZF+EDZg/kDLIjHOnix4DpCBU61FMLE=
-X-Google-Smtp-Source: AGHT+IErSjqNqTZPYVqbGqbRL7jsf90LNXZpAjW/CHr5zqswyMulOJ7NxBCEdDf7dA9DTKQWD/acig==
-X-Received: by 2002:a05:600c:4689:b0:40e:714a:dff5 with SMTP id
- p9-20020a05600c468900b0040e714adff5mr199228wmo.27.1705700529429; 
- Fri, 19 Jan 2024 13:42:09 -0800 (PST)
-Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
- by smtp.gmail.com with ESMTPSA id
- ay41-20020a05600c1e2900b0040e9e03160bsm3190015wmb.16.2024.01.19.13.42.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 13:42:08 -0800 (PST)
-Message-ID: <fbfadb69-27e5-4d8d-a269-f641cad9cb43@linaro.org>
-Date: Fri, 19 Jan 2024 22:42:08 +0100
+ d=1e100.net; s=20230601; t=1705701069; x=1706305869;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=O1PQjWgpBW2NJ+Bq1GU0NZb12Y8zCOGxZ2+frvV8uYQ=;
+ b=PNSPRqNeyyqPqIFmh3j4MzkQzfKldSKtqxfUFSXuN9tWsEcV4MRGCGcau4i7ewfpLv
+ qGQEMdg5VFZ2Dw4nKywbVt1FQZ2efmpX73Ia+cN7ec9gjcIbWYF0eFPCHqZDaLNiFGWO
+ xNCs8V2Zg3fAAdl0KK4eanXXi0MgDkpxOr/7cs/QfP2KywJpfurrMAPYgUjD3buZdJOq
+ c3sWbHph8AMkEiWrJphIG8j71YTlYOUi+xNgZhG10PBnJcnJvfz64GgZH3i3KyQZ2LHQ
+ hcUkmnigbMFl2o0VVJ8FsyMS+5OmIZx3X/6XYuStyCtbS5Qi92CoTmhy/06p1n0qsubQ
+ 4gUA==
+X-Gm-Message-State: AOJu0YybG10Q3/VxVdSnZT8saGTUvoGjA50zNxvbzxtiZllHPjUhCM0k
+ vtpkd/1YmfNVih3e8ca2NY0Hu0+oYy0J28Z8vurYUh0+Zva7t9nZLrPBHvl5hqNVQHkALSvjFBh
+ B
+X-Google-Smtp-Source: AGHT+IH50/FqvaWYWaBwlrQyt1aj9z/s6qNC8br9Sj+lVvlglg6ujA71ZEUfspEyndTXori3dpfkYQ==
+X-Received: by 2002:a5d:4208:0:b0:337:4219:3e8d with SMTP id
+ n8-20020a5d4208000000b0033742193e8dmr235290wrq.15.1705701068819; 
+ Fri, 19 Jan 2024 13:51:08 -0800 (PST)
+Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
+ [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
+ a16-20020a056000101000b00337cd6b1890sm4886383wrx.80.2024.01.19.13.51.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 19 Jan 2024 13:51:08 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Beniamino Galvani <b.galvani@gmail.com>, qemu-arm@nongnu.org,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/2] hw/arm: Unconditionally map MMIO-based USB host
+ controllers
+Date: Fri, 19 Jan 2024 22:51:04 +0100
+Message-ID: <20240119215106.45776-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Drop myself as VT-d maintainers
-Content-Language: en-US
-To: peterx@redhat.com, qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, eric.auger@redhat.com,
- Alex Williamson <alex.williamson@redhat.com>, zhenzhong.duan@intel.com,
- "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20240118091035.48178-1-peterx@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240118091035.48178-1-peterx@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,43 +92,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/1/24 10:10, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
-> 
-> Due to my own limitation on bandwidth, I noticed that unfortunately I won't
-> have time to review VT-d patches at least in the near future.  Meanwhile I
-> expect a lot of possibilities could actually happen in this area in the
-> near future.
-> 
-> To reflect that reality, I decided to drop myself from the VT-d role.  It
-> shouldn't affect much since we still have Jason around like usual, and
-> Michael on top.  But I assume it'll always be good if anyone would like to
-> fill this role up.
-> 
-> I'll still work on QEMU.  So I suppose anyone can still copy me if one
-> thinks essential.
-> 
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->   MAINTAINERS | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b406fb20c0..1c85b4bdad 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3606,7 +3606,6 @@ F: tests/uefi-test-tools/
->   
->   VT-d Emulation
->   M: Michael S. Tsirkin <mst@redhat.com>
-> -M: Peter Xu <peterx@redhat.com>
->   R: Jason Wang <jasowang@redhat.com>
+When a chipset contain a USB controller, we can not simply
+remove it. We could disable it, but that requires more changes
+this series isn't aiming for. For more context:
+https://lore.kernel.org/qemu-devel/56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net/
 
-Not my area, but noticing the recent changes in the complex migration
-subsystem, and as you mentioned VT-d is well coverage, it is cautious
-to unburden you, so:
+Since v1:
+- Mention migration compat break (Peter)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Philippe Mathieu-Daudé (2):
+  hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
+  hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
+
+ hw/arm/allwinner-a10.c | 49 +++++++++++++++++-------------------------
+ hw/arm/nseries.c       |  4 +---
+ 2 files changed, 21 insertions(+), 32 deletions(-)
+
+-- 
+2.41.0
+
 
