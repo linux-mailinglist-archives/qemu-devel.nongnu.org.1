@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41922832EB1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:14:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BC7832EB8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 19:15:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQtNS-0001nH-PK; Fri, 19 Jan 2024 13:14:02 -0500
+	id 1rQtNa-0001on-49; Fri, 19 Jan 2024 13:14:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNI-0001ff-Md
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:52 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNY-0001oO-8L
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:14:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNE-0007fn-97
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:13:52 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQtNW-0007jq-DO
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 13:14:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705688026;
+ s=mimecast20190719; t=1705688045;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g9K903/Yegnn9dUEU+6nFxa0MGx2PhUv24bahJVyoCo=;
- b=hnZ9UIngvyN+6TvORixpWKhVCdM49PcAfCU62QsJALcs8AGDh/R4vd8X86R/F3/OZvICmG
- IGaDiqrypEJ4TSmnKptLLi2Zq/MBeAOtxdxDXRj8g7hbiYIuyNNYwJdjmfFBeM0gsWSHCy
- +FibfUo2cAsC6UVIMoe/+n0aC72H+R8=
+ bh=8S/6JmKhF1sJKzjwL9n1KQwB67QmH+PBjRC6YVJgQIk=;
+ b=O8YJzDOIZNLuq9Mdj4XzsD4c/k9wrOSC/ClVIVXeceBNx0eJVXx6wFIT9vlC5eAQ/OEmez
+ ouGnZzL+Hsyz/RfodBcachKwr8xQDM+GeL7LNd3KGEqYb6a07d+x6W9/1r9yyjjRMSUWj8
+ hfa2ZEFWAdlBKBm3ybYQitjYfeP0J7o=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-mRG-4jmUNH29YzEVrS2e9g-1; Fri, 19 Jan 2024 13:13:43 -0500
-X-MC-Unique: mRG-4jmUNH29YzEVrS2e9g-1
+ us-mta-345-HC7_So04N7qJ8bJyOMWNZw-1; Fri, 19 Jan 2024 13:13:59 -0500
+X-MC-Unique: HC7_So04N7qJ8bJyOMWNZw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3592685A58C;
- Fri, 19 Jan 2024 18:13:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04A02185A784;
+ Fri, 19 Jan 2024 18:13:44 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.194.86])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8DBD0494;
- Fri, 19 Jan 2024 18:13:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6A887900;
+ Fri, 19 Jan 2024 18:13:43 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 12/14] virtio-blk: tolerate failure to set BlockBackend
- AioContext
-Date: Fri, 19 Jan 2024 19:13:25 +0100
-Message-ID: <20240119181327.236745-13-kwolf@redhat.com>
+Subject: [PULL 13/14] virtio-blk: always set ioeventfd during startup
+Date: Fri, 19 Jan 2024 19:13:26 +0100
+Message-ID: <20240119181327.236745-14-kwolf@redhat.com>
 In-Reply-To: <20240119181327.236745-1-kwolf@redhat.com>
 References: <20240119181327.236745-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -63,7 +62,7 @@ X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,60 +80,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-We no longer rely on setting the AioContext since the block layer
-IO_CODE APIs can be called from any thread. Now it's just a hint to help
-block jobs and other operations co-locate themselves in a thread with
-the guest I/O requests. Keep going if setting the AioContext fails.
+When starting ioeventfd it is common practice to set the event notifier
+so that the ioeventfd handler is triggered to run immediately. There may
+be no requests waiting to be processed, but the idea is that if a
+request snuck in then we guarantee that it will be detected.
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
+One scenario where self-triggering the ioeventfd is necessary is when
+virtio_blk_handle_output() is called from a vCPU thread before the
+VIRTIO Device Status transitions to DRIVER_OK. In that case we need to
+self-trigger the ioeventfd so that the kick handled by the vCPU thread
+causes the vq AioContext thread to take over handling the request(s).
+
+Fixes: b6948ab01df0 ("virtio-blk: add iothread-vq-mapping parameter")
+Reported-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240119135748.270944-6-stefanha@redhat.com>
+Message-ID: <20240119135748.270944-7-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/block/virtio-blk.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ hw/block/virtio-blk.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 4525988d92..73248d15c8 100644
+index 73248d15c8..227d83569f 100644
 --- a/hw/block/virtio-blk.c
 +++ b/hw/block/virtio-blk.c
-@@ -1786,11 +1786,14 @@ static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
+@@ -1809,14 +1809,14 @@ static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
+     smp_wmb(); /* paired with aio_notify_accept() on the read side */
  
-     memory_region_transaction_commit();
+     /* Get this show started by hooking up our callbacks */
+-    if (!blk_in_drain(s->conf.conf.blk)) {
+-        for (i = 0; i < nvqs; i++) {
+-            VirtQueue *vq = virtio_get_queue(vdev, i);
+-            AioContext *ctx = s->vq_aio_context[i];
++    for (i = 0; i < nvqs; i++) {
++        VirtQueue *vq = virtio_get_queue(vdev, i);
++        AioContext *ctx = s->vq_aio_context[i];
  
-+    /*
-+     * Try to change the AioContext so that block jobs and other operations can
-+     * co-locate their activity in the same AioContext. If it fails, nevermind.
-+     */
-     r = blk_set_aio_context(s->conf.conf.blk, s->vq_aio_context[0],
-                             &local_err);
-     if (r < 0) {
--        error_report_err(local_err);
--        goto fail_aio_context;
-+        warn_report_err(local_err);
+-            /* Kick right away to begin processing requests already in vring */
+-            event_notifier_set(virtio_queue_get_host_notifier(vq));
++        /* Kick right away to begin processing requests already in vring */
++        event_notifier_set(virtio_queue_get_host_notifier(vq));
+ 
++        if (!blk_in_drain(s->conf.conf.blk)) {
+             virtio_queue_aio_attach_host_notifier(vq, ctx);
+         }
      }
- 
-     /*
-@@ -1819,18 +1822,6 @@ static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
-     }
-     return 0;
- 
--  fail_aio_context:
--    memory_region_transaction_begin();
--
--    for (i = 0; i < nvqs; i++) {
--        virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), i, false);
--    }
--
--    memory_region_transaction_commit();
--
--    for (i = 0; i < nvqs; i++) {
--        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), i);
--    }
-   fail_host_notifiers:
-     k->set_guest_notifiers(qbus->parent, nvqs, false);
-   fail_guest_notifiers:
 -- 
 2.43.0
 
