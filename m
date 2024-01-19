@@ -2,50 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40772832C4F
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 16:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44DD832C4E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 16:26:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQqkA-0002Gu-8C; Fri, 19 Jan 2024 10:25:18 -0500
+	id 1rQqkB-0002HG-El; Fri, 19 Jan 2024 10:25:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqk7-0002GY-PW
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:15 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqk9-0002Gl-Cm
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqk6-000189-5c
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:15 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rQqk7-00018W-M1
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 10:25:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705677912;
+ s=mimecast20190719; t=1705677914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=eQHKLjnVlLEnlcruFPdaQRx7JmpacccafU7KQG4HgsE=;
- b=L8IS49Rp2zId1AXJ4+yglQ1loQ5vRVMWPqyidkR3q5LKvmbL1uvSEluQp/rPCPj8Kw4iLu
- QyTZr2ijbAhNwoFtJ+gWYZNBKvDssRYoy60+2RfU8HS6ZPpK+zW/tIED1ez3I5O8lx7C4L
- QrlfLXstWjaLd+INbRD+/j1VPpLHWfw=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NKLvOD11JrYTwE+r/+i24Roob614JvuQWcM+pDlJsLI=;
+ b=RvTiqoY9NqYf/mHcEZXXLj8ELsSWf5kXWEedwsTJczefQmiCjZjsqUGayKmy2DsCFkNmRk
+ 64DpjplbKEJnWh+u3fkm9T6JFF3m4wz3S5f1aW+vjWtPBHX2auM+px8+tAoK9NrFeURaM9
+ P1zHpvRjFHdTVJR6mLBzmfI69MYPFws=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-Cj2O_9FaOHuCpV5w2lU4Fg-1; Fri,
- 19 Jan 2024 10:25:09 -0500
-X-MC-Unique: Cj2O_9FaOHuCpV5w2lU4Fg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-ybEAZrPbOUWFd94WCiSn0A-1; Fri,
+ 19 Jan 2024 10:25:11 -0500
+X-MC-Unique: ybEAZrPbOUWFd94WCiSn0A-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BA7A285F9B6;
- Fri, 19 Jan 2024 15:25:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF9D5383CD80;
+ Fri, 19 Jan 2024 15:25:10 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.235])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6377440C95AD;
- Fri, 19 Jan 2024 15:25:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 97C8740C95AD;
+ Fri, 19 Jan 2024 15:25:09 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/11] s390x fixes, removal of deprecated options, netbsd VM fix
-Date: Fri, 19 Jan 2024 16:24:56 +0100
-Message-ID: <20240119152507.55182-1-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 01/11] s390x/pci: avoid double enable/disable of aif
+Date: Fri, 19 Jan 2024 16:24:57 +0100
+Message-ID: <20240119152507.55182-2-thuth@redhat.com>
+In-Reply-To: <20240119152507.55182-1-thuth@redhat.com>
+References: <20240119152507.55182-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -75,64 +81,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 88cf5fec91e50cd34bc002b633b4116228db0bc8:
+From: Matthew Rosato <mjrosato@linux.ibm.com>
 
-  Merge tag 'pull-target-arm-20240118' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-01-18 12:48:17 +0000)
+Use a flag to keep track of whether AIF is currently enabled.  This can be
+used to avoid enabling/disabling AIF multiple times as well as to determine
+whether or not it should be disabled during reset processing.
 
-are available in the Git repository at:
+Fixes: d0bc7091c2 ("s390x/pci: enable adapter event notification for interpreted devices")
+Reported-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Message-ID: <20240118185151.265329-2-mjrosato@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ include/hw/s390x/s390-pci-bus.h |  1 +
+ hw/s390x/s390-pci-kvm.c         | 25 +++++++++++++++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-01-19
-
-for you to fetch changes up to 4a27d97c80b90215b33a092a1c3a5efcc987b582:
-
-  tests/vm/netbsd: Remove missing py311-expat package (2024-01-19 11:38:32 +0100)
-
-----------------------------------------------------------------
-- Fix s390x ISM reset
-- Remove deprecated CLI options -no-hpet, -no-acpi, -async-teardown,
-  -chroot and -singlestep
-- Fix installation of the netbsd VM
-
-----------------------------------------------------------------
-Matthew Rosato (3):
-      s390x/pci: avoid double enable/disable of aif
-      s390x/pci: refresh fh before disabling aif
-      s390x/pci: drive ISM reset from subsystem reset
-
-Philippe Mathieu-Daudé (4):
-      qapi: Remove deprecated 'singlestep' member of StatusInfo
-      hmp: Remove deprecated 'singlestep' command
-      cli: Remove deprecated '-singlestep' command line option
-      tests/vm/netbsd: Remove missing py311-expat package
-
-Thomas Huth (4):
-      qemu-options: Remove the deprecated -no-hpet option
-      qemu-options: Remove the deprecated -no-acpi option
-      qemu-options: Remove the deprecated -async-teardown option
-      qemu-options: Remove the deprecated -chroot option
-
- docs/about/deprecated.rst       | 62 -----------------------------------------
- docs/about/removed-features.rst | 47 +++++++++++++++++++++++++++++++
- docs/specs/tpm.rst              |  4 +--
- docs/user/main.rst              |  6 ----
- qapi/run-state.json             | 11 --------
- include/hw/s390x/s390-pci-bus.h |  2 ++
- bsd-user/main.c                 |  3 +-
- hw/i386/pc.c                    |  4 +--
- hw/s390x/s390-pci-bus.c         | 26 +++++++++++------
- hw/s390x/s390-pci-kvm.c         | 34 ++++++++++++++++++++--
- hw/s390x/s390-virtio-ccw.c      |  8 ++++++
- linux-user/main.c               |  2 --
- system/runstate.c               |  8 ------
- system/vl.c                     | 37 +-----------------------
- tests/qtest/test-hmp.c          |  1 -
- hmp-commands.hx                 | 13 ---------
- qemu-options.hx                 | 46 ------------------------------
- tests/qemu-iotests/183.out      |  4 +--
- tests/qemu-iotests/234.out      |  8 +++---
- tests/qemu-iotests/262.out      |  4 +--
- tests/qemu-iotests/280.out      |  2 +-
- tests/vm/netbsd                 |  1 -
- 22 files changed, 121 insertions(+), 212 deletions(-)
+diff --git a/include/hw/s390x/s390-pci-bus.h b/include/hw/s390x/s390-pci-bus.h
+index b1bdbeaeb5..435e788867 100644
+--- a/include/hw/s390x/s390-pci-bus.h
++++ b/include/hw/s390x/s390-pci-bus.h
+@@ -361,6 +361,7 @@ struct S390PCIBusDevice {
+     bool unplug_requested;
+     bool interp;
+     bool forwarding_assist;
++    bool aif;
+     QTAILQ_ENTRY(S390PCIBusDevice) link;
+ };
+ 
+diff --git a/hw/s390x/s390-pci-kvm.c b/hw/s390x/s390-pci-kvm.c
+index ff41e4106d..1ee510436c 100644
+--- a/hw/s390x/s390-pci-kvm.c
++++ b/hw/s390x/s390-pci-kvm.c
+@@ -27,6 +27,7 @@ bool s390_pci_kvm_interp_allowed(void)
+ 
+ int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib, bool assist)
+ {
++    int rc;
+     struct kvm_s390_zpci_op args = {
+         .fh = pbdev->fh,
+         .op = KVM_S390_ZPCIOP_REG_AEN,
+@@ -38,15 +39,35 @@ int s390_pci_kvm_aif_enable(S390PCIBusDevice *pbdev, ZpciFib *fib, bool assist)
+         .u.reg_aen.flags = (assist) ? 0 : KVM_S390_ZPCIOP_REGAEN_HOST
+     };
+ 
+-    return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
++    if (pbdev->aif) {
++        return -EINVAL;
++    }
++
++    rc = kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
++    if (rc == 0) {
++        pbdev->aif = true;
++    }
++
++    return rc;
+ }
+ 
+ int s390_pci_kvm_aif_disable(S390PCIBusDevice *pbdev)
+ {
++    int rc;
++
+     struct kvm_s390_zpci_op args = {
+         .fh = pbdev->fh,
+         .op = KVM_S390_ZPCIOP_DEREG_AEN
+     };
+ 
+-    return kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
++    if (!pbdev->aif) {
++        return -EINVAL;
++    }
++
++    rc = kvm_vm_ioctl(kvm_state, KVM_S390_ZPCI_OP, &args);
++    if (rc == 0) {
++        pbdev->aif = false;
++    }
++
++    return rc;
+ }
+-- 
+2.43.0
 
 
