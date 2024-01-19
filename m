@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5FA832FF9
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 21:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E3D832FFA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 21:47:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQvl9-0006W6-JB; Fri, 19 Jan 2024 15:46:39 -0500
+	id 1rQvl8-0006U2-VG; Fri, 19 Jan 2024 15:46:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rQvl1-0006TQ-UQ
+ id 1rQvl1-0006TP-UE
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 15:46:31 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rQvkx-0001kn-Ss
+ id 1rQvkz-0001ks-NW
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 15:46:31 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6d9a79a1ad4so1088438b3a.2
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5ce07cf1e5dso808600a12.2
  for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 12:46:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=gmail.com; s=20230601; t=1705697186; x=1706301986; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VggEMRQ7OJ5+pdMKaWAUCmt82lLv964s7yWUKSDIYdI=;
- b=bV0xSIj5QHSabVFT8x8ZIE9RB34guN8ab4RfXCSZ4tNlT0/9pNsGYSnndvMV+w5FNK
- MUpZKdpSnd2pgmzZ6mMCQhokIvR8om510tvftmsBY9t84t+beJvwha/nkrPn0/oAq9vt
- LSh0CcRaerbZp/y/1nRX17cwdFOEit1p1ikRj2kpABzTUr3h0TlwGAhvgPa7o0a6buMQ
- x0t/fRm+XrqvbdmeMvqOGMplhkCavM7Pwaqr4kyDSQbCV8XZ/T37qaKjSuEiRPkaLtbb
- dmZwLoINlttFzKyvN/pvGPDefY6IahHtkKpCfNrFI4R3QHjtCtdqmFBmRanQ+/QgVXVH
- YIzg==
+ bh=BnKS2tclZ5bJf53FKgdfNiEv7tdESOK/QA8q3wd0prg=;
+ b=C4gGc+uRowkfZdBkv3FU5lvCAnAaCQGda2t6nV9yE9kaWp1nwXPsRR5KqlmLL7h7ot
+ Tue5Ngd9uFfnriSSxK2PzOkzevqDpFNl9pTo+zw1tm5UMExulos1TgEPu+b1Ta8L1ISC
+ bz+YNJiT5+Msf/I5Wld/A6PlId94MD53DkxkR4sZ9c2BMGBpFkprRqQW7S9/0Zq8Od34
+ ytmJij4ygubDYma7ZTELdRh3B3lp6SQOBFxW1DWaNppI+F69Sl4Ow9hTiyrayikC+LFZ
+ JdKCk0M+ZCgLYI6/o5cb3of+bljGY5NaZwg5D8eW6kFnjj7EZMcdcwrAMqnGX7Qt1Ql1
+ tCHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1705697186; x=1706301986;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VggEMRQ7OJ5+pdMKaWAUCmt82lLv964s7yWUKSDIYdI=;
- b=iuNbw9m5lrblO9Y/Zg56UA5ScVazqITRY2UnVxbH5xXzH1jdAF+yi5QAVgt4sEvtpJ
- y/JEgbBJPoc4DlcLLAH7gN4TrDi/SOOeKeKr0MtW97qkxd443/ulsXu2FvYS4JRkHWKH
- MTKfO+2pYKraBcvgSFlh942L+FG+tugImot6rXVbTtWPEYiSQODH1pAxLRLVHTMnsMDA
- hhzHAumRBtjp3Ya4FHFefdTuwJc7s0mi3i9dXTAZIsopU+SBN+fxv9O4vsOZzM+L7Ygg
- +ee+rZeAqo2tM8Noll3hATNv0m9tzd9f7H/PQj/KsVX4G4UH6PGvtO0WD3/3umgr/X73
- 73yA==
-X-Gm-Message-State: AOJu0YzlFH/dBBMmFRzrS+XbYXBX8eYnj7gL+U+9dOpkiQC8o4xNI25E
- unmXMby/w+lp0akLBScQSLzp21hYRlIwuBD4uATSLUa7tMYes88NqyiHgi6R
-X-Google-Smtp-Source: AGHT+IEN/eJNtyHnH2raJN7D03ji1hUFuR1m3K9KcqJFXnq1w6mqeI52Yo4jBUDbAyHpTek+oBptvg==
-X-Received: by 2002:a05:6a00:ad1:b0:6da:e711:7836 with SMTP id
- c17-20020a056a000ad100b006dae7117836mr569262pfl.54.1705697185671; 
- Fri, 19 Jan 2024 12:46:25 -0800 (PST)
+ bh=BnKS2tclZ5bJf53FKgdfNiEv7tdESOK/QA8q3wd0prg=;
+ b=thnwPYHLPsvL0qGRz4LuMhJL5PqS4MWLJKuUysjuEWFI27ttPugy18Z+HQENN5ME1v
+ FwlVPbCNZ+0/Cjp28PMOjXvVk+lZSs1gh8vJ/28oKu34vbzxvStoMvozn5/wzm4GOVdr
+ cRFNoUy3zwa3bmOjBPj+2+Lc/4guq2mUePKTTUzOfPi+IjucsEGp3hUvP/Ha0qv4NP1P
+ ErSdPsT3pVLkhm7jm27QF3nXFez1YHzEwH6MptzGLp+13vV/mw7A7Y09Xwkb7ZCXqjJ3
+ kuuhIO+vjtY3TpmSTRtkXxpe7h3WDIA2XUkq3qlw0kMrRzlPVwgg2hEdO2DlE5dJgpMM
+ vUsA==
+X-Gm-Message-State: AOJu0YwsJ/5ygtE5tlP5Ij5MLwU3NOSOkRlDBsZiWTHlEJ03Fk7UEu92
+ cpwMpiyFuqS6fXc064YQHU7es9ASteNSdqzBm2u7R4LGRGcb7wmvXupi3Dl/
+X-Google-Smtp-Source: AGHT+IEiR6RKbc7yoVRsZoHTEBAMYV+3NT1RUGDYEJotS76b1wK5KvtpzIrXvy9EIIsWsQ4C7CcN+Q==
+X-Received: by 2002:a05:6a20:4323:b0:19b:21cb:cee4 with SMTP id
+ h35-20020a056a20432300b0019b21cbcee4mr455266pzk.116.1705697186615; 
+ Fri, 19 Jan 2024 12:46:26 -0800 (PST)
 Received: from octofox.hsd1.ca.comcast.net
  (c-73-63-239-93.hsd1.ca.comcast.net. [73.63.239.93])
  by smtp.gmail.com with ESMTPSA id
- kq9-20020a056a004b0900b006db85b12036sm5535228pfb.137.2024.01.19.12.46.24
+ kq9-20020a056a004b0900b006db85b12036sm5535228pfb.137.2024.01.19.12.46.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Jan 2024 12:46:25 -0800 (PST)
+ Fri, 19 Jan 2024 12:46:26 -0800 (PST)
 From: Max Filippov <jcmvbkbc@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 1/2] target/xtensa: wrap MMU and MPU state into structures
-Date: Fri, 19 Jan 2024 12:46:07 -0800
-Message-Id: <20240119204608.779541-2-jcmvbkbc@gmail.com>
+Subject: [PATCH 2/2] target/xtensa: tidy TLB way variability logic
+Date: Fri, 19 Jan 2024 12:46:08 -0800
+Message-Id: <20240119204608.779541-3-jcmvbkbc@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240119204608.779541-1-jcmvbkbc@gmail.com>
 References: <20240119204608.779541-1-jcmvbkbc@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: 4
 X-Spam_score: 0.4
 X-Spam_bar: /
@@ -93,188 +93,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make separation of alternative xtensa memory management options state
-explicit.
+Whether TLB ways 5 and 6 are variable is not a property of the TLB
+instance or a TLB entry instance, it's a property of the xtensa core
+configuration.
+Remove 'varway56' field from the xtensa_tlb structure and remove
+'variable' field from the xtensa_tlb_entry structure. Add
+'tlb_variable_way' array to the XtensaConfig and use it instead of
+removed fields.
 
 Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
- target/xtensa/cpu.h        | 18 +++++++++++++----
- target/xtensa/mmu_helper.c | 40 +++++++++++++++++++-------------------
- 2 files changed, 34 insertions(+), 24 deletions(-)
+ target/xtensa/cpu.h          |  3 +--
+ target/xtensa/mmu_helper.c   | 38 ++++++++++--------------------------
+ target/xtensa/overlay_tool.h | 15 ++++++++++++--
+ 3 files changed, 24 insertions(+), 32 deletions(-)
 
 diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-index 8a423706d8c0..497325466397 100644
+index 497325466397..24d3f15ea1bf 100644
 --- a/target/xtensa/cpu.h
 +++ b/target/xtensa/cpu.h
-@@ -326,11 +326,21 @@ typedef struct xtensa_tlb {
+@@ -316,13 +316,11 @@ typedef struct xtensa_tlb_entry {
+     uint32_t paddr;
+     uint8_t asid;
+     uint8_t attr;
+-    bool variable;
+ } xtensa_tlb_entry;
+ 
+ typedef struct xtensa_tlb {
+     unsigned nways;
+     const unsigned way_size[10];
+-    bool varway56;
      unsigned nrefillentries;
  } xtensa_tlb;
  
-+typedef struct XtensaMMU {
-+    xtensa_tlb_entry itlb[7][MAX_TLB_WAY_SIZE];
-+    xtensa_tlb_entry dtlb[10][MAX_TLB_WAY_SIZE];
-+    unsigned autorefill_idx;
-+} XtensaMMU;
-+
- typedef struct xtensa_mpu_entry {
-     uint32_t vaddr;
-     uint32_t attr;
- } xtensa_mpu_entry;
+@@ -493,6 +491,7 @@ typedef struct XtensaConfig {
  
-+typedef struct XtensaMPU {
-+    xtensa_mpu_entry fg[MAX_MPU_FOREGROUND_SEGMENTS];
-+} XtensaMPU;
-+
- typedef struct XtensaGdbReg {
-     int targno;
-     unsigned flags;
-@@ -526,10 +536,10 @@ struct CPUArchState {
-     uint32_t exclusive_val;
+     xtensa_tlb itlb;
+     xtensa_tlb dtlb;
++    bool tlb_variable_way[16];
  
- #ifndef CONFIG_USER_ONLY
--    xtensa_tlb_entry itlb[7][MAX_TLB_WAY_SIZE];
--    xtensa_tlb_entry dtlb[10][MAX_TLB_WAY_SIZE];
--    xtensa_mpu_entry mpu_fg[MAX_MPU_FOREGROUND_SEGMENTS];
--    unsigned autorefill_idx;
-+    union {
-+        XtensaMMU mmu;
-+        XtensaMPU mpu;
-+    };
-     bool runstall;
-     AddressSpace *address_space_er;
-     MemoryRegion *system_er;
+     uint32_t mpu_align;
+     unsigned n_mpu_fg_segments;
 diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
-index 2fda4e887cce..d9f845e7fb6f 100644
+index d9f845e7fb6f..414c2f5ef669 100644
 --- a/target/xtensa/mmu_helper.c
 +++ b/target/xtensa/mmu_helper.c
-@@ -250,8 +250,8 @@ static xtensa_tlb_entry *xtensa_tlb_get_entry(CPUXtensaState *env, bool dtlb,
+@@ -105,23 +105,19 @@ static uint32_t xtensa_tlb_get_addr_mask(const CPUXtensaState *env,
+                                          bool dtlb, uint32_t way)
+ {
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+-        bool varway56 = dtlb ?
+-            env->config->dtlb.varway56 :
+-            env->config->itlb.varway56;
+-
+         switch (way) {
+         case 4:
+             return 0xfff00000 << get_page_size(env, dtlb, way) * 2;
  
-     assert(wi < tlb->nways && ei < tlb->way_size[wi]);
-     return dtlb ?
--        env->dtlb[wi] + ei :
--        env->itlb[wi] + ei;
-+        env->mmu.dtlb[wi] + ei :
-+        env->mmu.itlb[wi] + ei;
+         case 5:
+-            if (varway56) {
++            if (env->config->tlb_variable_way[5]) {
+                 return 0xf8000000 << get_page_size(env, dtlb, way);
+             } else {
+                 return 0xf8000000;
+             }
+ 
+         case 6:
+-            if (varway56) {
++            if (env->config->tlb_variable_way[6]) {
+                 return 0xf0000000 << (1 - get_page_size(env, dtlb, way));
+             } else {
+                 return 0xf0000000;
+@@ -150,11 +146,8 @@ static uint32_t get_vpn_mask(const CPUXtensaState *env, bool dtlb, uint32_t way)
+         return xtensa_tlb_get_addr_mask(env, dtlb, way) << 2;
+     } else if (way <= 6) {
+         uint32_t mask = xtensa_tlb_get_addr_mask(env, dtlb, way);
+-        bool varway56 = dtlb ?
+-            env->config->dtlb.varway56 :
+-            env->config->itlb.varway56;
+ 
+-        if (varway56) {
++        if (env->config->tlb_variable_way[5]) {
+             return mask << (way == 5 ? 2 : 3);
+         } else {
+             return mask << 1;
+@@ -172,10 +165,6 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
+                                      bool dtlb, uint32_t *vpn,
+                                      uint32_t wi, uint32_t *ei)
+ {
+-    bool varway56 = dtlb ?
+-        env->config->dtlb.varway56 :
+-        env->config->itlb.varway56;
+-
+     if (!dtlb) {
+         wi &= 7;
+     }
+@@ -195,7 +184,7 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
+             break;
+ 
+         case 5:
+-            if (varway56) {
++            if (env->config->tlb_variable_way[5]) {
+                 uint32_t eibase = 27 + get_page_size(env, dtlb, wi);
+                 *ei = (v >> eibase) & 0x3;
+             } else {
+@@ -204,7 +193,7 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
+             break;
+ 
+         case 6:
+-            if (varway56) {
++            if (env->config->tlb_variable_way[6]) {
+                 uint32_t eibase = 29 - get_page_size(env, dtlb, wi);
+                 *ei = (v >> eibase) & 0x7;
+             } else {
+@@ -290,7 +279,7 @@ static void xtensa_tlb_set_entry(CPUXtensaState *env, bool dtlb,
+     xtensa_tlb_entry *entry = xtensa_tlb_get_entry(env, dtlb, wi, ei);
+ 
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+-        if (entry->variable) {
++        if (env->config->tlb_variable_way[wi]) {
+             if (entry->asid) {
+                 tlb_flush_page(cs, entry->vaddr);
+             }
+@@ -338,29 +327,25 @@ static void reset_tlb_mmu_all_ways(CPUXtensaState *env,
+     for (wi = 0; wi < tlb->nways; ++wi) {
+         for (ei = 0; ei < tlb->way_size[wi]; ++ei) {
+             entry[wi][ei].asid = 0;
+-            entry[wi][ei].variable = true;
+         }
+     }
  }
  
- static xtensa_tlb_entry *get_tlb_entry(CPUXtensaState *env,
-@@ -411,11 +411,11 @@ void reset_mmu(CPUXtensaState *env)
-         env->sregs[RASID] = 0x04030201;
-         env->sregs[ITLBCFG] = 0;
-         env->sregs[DTLBCFG] = 0;
--        env->autorefill_idx = 0;
--        reset_tlb_mmu_all_ways(env, &env->config->itlb, env->itlb);
--        reset_tlb_mmu_all_ways(env, &env->config->dtlb, env->dtlb);
--        reset_tlb_mmu_ways56(env, &env->config->itlb, env->itlb);
--        reset_tlb_mmu_ways56(env, &env->config->dtlb, env->dtlb);
-+        env->mmu.autorefill_idx = 0;
-+        reset_tlb_mmu_all_ways(env, &env->config->itlb, env->mmu.itlb);
-+        reset_tlb_mmu_all_ways(env, &env->config->dtlb, env->mmu.dtlb);
-+        reset_tlb_mmu_ways56(env, &env->config->itlb, env->mmu.itlb);
-+        reset_tlb_mmu_ways56(env, &env->config->dtlb, env->mmu.dtlb);
+ static void reset_tlb_mmu_ways56(CPUXtensaState *env,
+-                                 const xtensa_tlb *tlb,
+                                  xtensa_tlb_entry entry[][MAX_TLB_WAY_SIZE])
+ {
+-    if (!tlb->varway56) {
++    if (!env->config->tlb_variable_way[5]) {
+         static const xtensa_tlb_entry way5[] = {
+             {
+                 .vaddr = 0xd0000000,
+                 .paddr = 0,
+                 .asid = 1,
+                 .attr = 7,
+-                .variable = false,
+             }, {
+                 .vaddr = 0xd8000000,
+                 .paddr = 0,
+                 .asid = 1,
+                 .attr = 3,
+-                .variable = false,
+             }
+         };
+         static const xtensa_tlb_entry way6[] = {
+@@ -369,13 +354,11 @@ static void reset_tlb_mmu_ways56(CPUXtensaState *env,
+                 .paddr = 0xf0000000,
+                 .asid = 1,
+                 .attr = 7,
+-                .variable = false,
+             }, {
+                 .vaddr = 0xf0000000,
+                 .paddr = 0xf0000000,
+                 .asid = 1,
+                 .attr = 3,
+-                .variable = false,
+             }
+         };
+         memcpy(entry[5], way5, sizeof(way5));
+@@ -401,7 +384,6 @@ static void reset_tlb_region_way0(CPUXtensaState *env,
+         entry[0][ei].paddr = ei << 29;
+         entry[0][ei].asid = 1;
+         entry[0][ei].attr = 2;
+-        entry[0][ei].variable = true;
+     }
+ }
+ 
+@@ -414,8 +396,8 @@ void reset_mmu(CPUXtensaState *env)
+         env->mmu.autorefill_idx = 0;
+         reset_tlb_mmu_all_ways(env, &env->config->itlb, env->mmu.itlb);
+         reset_tlb_mmu_all_ways(env, &env->config->dtlb, env->mmu.dtlb);
+-        reset_tlb_mmu_ways56(env, &env->config->itlb, env->mmu.itlb);
+-        reset_tlb_mmu_ways56(env, &env->config->dtlb, env->mmu.dtlb);
++        reset_tlb_mmu_ways56(env, env->mmu.itlb);
++        reset_tlb_mmu_ways56(env, env->mmu.dtlb);
      } else if (xtensa_option_enabled(env->config, XTENSA_OPTION_MPU)) {
          unsigned i;
  
-@@ -430,8 +430,8 @@ void reset_mmu(CPUXtensaState *env)
+@@ -521,7 +503,7 @@ void HELPER(itlb)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+         uint32_t wi;
+         xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, &wi);
+-        if (entry && entry->variable && entry->asid) {
++        if (entry && env->config->tlb_variable_way[wi] && entry->asid) {
+             tlb_flush_page(env_cpu(env), entry->vaddr);
+             entry->asid = 0;
          }
-     } else {
-         env->sregs[CACHEATTR] = 0x22222222;
--        reset_tlb_region_way0(env, env->itlb);
--        reset_tlb_region_way0(env, env->dtlb);
-+        reset_tlb_region_way0(env, env->mmu.itlb);
-+        reset_tlb_region_way0(env, env->mmu.dtlb);
+diff --git a/target/xtensa/overlay_tool.h b/target/xtensa/overlay_tool.h
+index 701c00eed20a..268a7fe1823f 100644
+--- a/target/xtensa/overlay_tool.h
++++ b/target/xtensa/overlay_tool.h
+@@ -351,7 +351,6 @@
+             (refill_way_size), (refill_way_size), \
+             4, (way56) ? 4 : 2, (way56) ? 8 : 2, 1, 1, 1, \
+         }, \
+-        .varway56 = (way56), \
+         .nrefillentries = (refill_way_size) * 4, \
      }
- }
  
-@@ -462,7 +462,7 @@ static int xtensa_tlb_lookup(const CPUXtensaState *env,
-     const xtensa_tlb *tlb = dtlb ?
-         &env->config->dtlb : &env->config->itlb;
-     const xtensa_tlb_entry (*entry)[MAX_TLB_WAY_SIZE] = dtlb ?
--        env->dtlb : env->itlb;
-+        env->mmu.dtlb : env->mmu.itlb;
+@@ -363,7 +362,19 @@
  
-     int nhits = 0;
-     unsigned wi;
-@@ -821,7 +821,7 @@ static int get_physical_addr_mmu(CPUXtensaState *env, bool update_tlb,
-         split_tlb_entry_spec_way(env, vaddr, dtlb, &vpn, wi, &ei);
+ #define TLB_SECTION \
+     .itlb = ITLB(XCHAL_HAVE_SPANNING_WAY), \
+-    .dtlb = DTLB(XCHAL_HAVE_SPANNING_WAY)
++    .dtlb = DTLB(XCHAL_HAVE_SPANNING_WAY), \
++    .tlb_variable_way = { \
++        true, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU && XCHAL_HAVE_SPANNING_WAY, \
++        XCHAL_HAVE_PTP_MMU && XCHAL_HAVE_SPANNING_WAY, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU, \
++        XCHAL_HAVE_PTP_MMU, \
++    }
  
-         if (update_tlb) {
--            wi = ++env->autorefill_idx & 0x3;
-+            wi = ++env->mmu.autorefill_idx & 0x3;
-             xtensa_tlb_set_entry(env, dtlb, wi, ei, vpn, pte);
-             env->sregs[EXCVADDR] = vaddr;
-             qemu_log_mask(CPU_LOG_MMU, "%s: autorefill(%08x): %08x -> %08x\n",
-@@ -957,8 +957,8 @@ void HELPER(wptlb)(CPUXtensaState *env, uint32_t p, uint32_t v)
-     unsigned segment = p & XTENSA_MPU_SEGMENT_MASK;
- 
-     if (segment < env->config->n_mpu_fg_segments) {
--        env->mpu_fg[segment].vaddr = v & -env->config->mpu_align;
--        env->mpu_fg[segment].attr = p & XTENSA_MPU_ATTR_MASK;
-+        env->mpu.fg[segment].vaddr = v & -env->config->mpu_align;
-+        env->mpu.fg[segment].attr = p & XTENSA_MPU_ATTR_MASK;
-         env->sregs[MPUENB] = deposit32(env->sregs[MPUENB], segment, 1, v);
-         tlb_flush(env_cpu(env));
-     }
-@@ -969,7 +969,7 @@ uint32_t HELPER(rptlb0)(CPUXtensaState *env, uint32_t s)
-     unsigned segment = s & XTENSA_MPU_SEGMENT_MASK;
- 
-     if (segment < env->config->n_mpu_fg_segments) {
--        return env->mpu_fg[segment].vaddr |
-+        return env->mpu.fg[segment].vaddr |
-             extract32(env->sregs[MPUENB], segment, 1);
-     } else {
-         return 0;
-@@ -981,7 +981,7 @@ uint32_t HELPER(rptlb1)(CPUXtensaState *env, uint32_t s)
-     unsigned segment = s & XTENSA_MPU_SEGMENT_MASK;
- 
-     if (segment < env->config->n_mpu_fg_segments) {
--        return env->mpu_fg[segment].attr;
-+        return env->mpu.fg[segment].attr;
-     } else {
-         return 0;
-     }
-@@ -993,13 +993,13 @@ uint32_t HELPER(pptlb)(CPUXtensaState *env, uint32_t v)
-     unsigned segment = XTENSA_MPU_PROBE_B;
-     unsigned bg_segment;
- 
--    nhits = xtensa_mpu_lookup(env->mpu_fg, env->config->n_mpu_fg_segments,
-+    nhits = xtensa_mpu_lookup(env->mpu.fg, env->config->n_mpu_fg_segments,
-                               v, &segment);
-     if (nhits > 1) {
-         HELPER(exception_cause_vaddr)(env, env->pc,
-                                       LOAD_STORE_TLB_MULTI_HIT_CAUSE, v);
-     } else if (nhits == 1 && (env->sregs[MPUENB] & (1u << segment))) {
--        return env->mpu_fg[segment].attr | segment | XTENSA_MPU_PROBE_V;
-+        return env->mpu.fg[segment].attr | segment | XTENSA_MPU_PROBE_V;
-     } else {
-         xtensa_mpu_lookup(env->config->mpu_bg,
-                           env->config->n_mpu_bg_segments,
-@@ -1017,14 +1017,14 @@ static int get_physical_addr_mpu(CPUXtensaState *env,
-     unsigned segment;
-     uint32_t attr;
- 
--    nhits = xtensa_mpu_lookup(env->mpu_fg, env->config->n_mpu_fg_segments,
-+    nhits = xtensa_mpu_lookup(env->mpu.fg, env->config->n_mpu_fg_segments,
-                               vaddr, &segment);
-     if (nhits > 1) {
-         return is_write < 2 ?
-             LOAD_STORE_TLB_MULTI_HIT_CAUSE :
-             INST_TLB_MULTI_HIT_CAUSE;
-     } else if (nhits == 1 && (env->sregs[MPUENB] & (1u << segment))) {
--        attr = env->mpu_fg[segment].attr;
-+        attr = env->mpu.fg[segment].attr;
-     } else {
-         xtensa_mpu_lookup(env->config->mpu_bg,
-                           env->config->n_mpu_bg_segments,
-@@ -1205,7 +1205,7 @@ void dump_mmu(CPUXtensaState *env)
-         dump_tlb(env, true);
-     } else if (xtensa_option_enabled(env->config, XTENSA_OPTION_MPU)) {
-         qemu_printf("Foreground map:\n");
--        dump_mpu(env, env->mpu_fg, env->config->n_mpu_fg_segments);
-+        dump_mpu(env, env->mpu.fg, env->config->n_mpu_fg_segments);
-         qemu_printf("\nBackground map:\n");
-         dump_mpu(NULL, env->config->mpu_bg, env->config->n_mpu_bg_segments);
-     } else {
+ #ifndef XCHAL_SYSROM0_PADDR
+ #define XCHAL_SYSROM0_PADDR 0xfe000000
 -- 
 2.39.2
 
