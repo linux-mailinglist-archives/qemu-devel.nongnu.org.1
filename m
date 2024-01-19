@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBE2832B9B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED31832B99
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:49:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQqB1-0002Hp-AG; Fri, 19 Jan 2024 09:48:59 -0500
+	id 1rQqAx-0002HD-NM; Fri, 19 Jan 2024 09:48:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQqAx-0002HQ-N5
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:48:55 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQqAu-0002Gl-Cx
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:48:54 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQqAw-00083G-Ba
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:48:55 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQqAq-0007me-3d
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:48:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=X7sNZ16xM/rGRC0Fl2PyYpAxqTIz8x8cc5VBtkT4zbA=; b=kE/YliNO7Clq+UOCIpcOyc7hFd
- XVoFqk6dFMbUabehokuVYbyGvzU3XhH4pa+Fu/xH51JoY1PbWn2nm7fa2rlwDbwZHt07MpHfXS85F
- 1bxcFwFoyZjmoqfDgGgDDIxWC5khH4vAutG6zuLyR42k0iwoJE+qMVenAoNpJogjE24g=;
+ bh=QKCN+pjZ4XQPs3wyUDnH+MXvsD7/sLfzvDEV9EBbK2s=; b=je/YjabjUjA20YRkWW7y4+ZTxX
+ i2zAQ9NXwE7wfXIvtzq19eEGqJokubfsFC96soiMEvie6Vb2m6aF3+6YGy8YvRQ0oZnHByjEEhmMb
+ qpshBgPOqednmHLBWsQ3IvBnvw5PMpt7eJ4i1koyikhLT8pMgx7h27LCfkHMRh5V5Iyo=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 33/34] accel/tcg: Make translator.c (partially) target
- independent
-Date: Fri, 19 Jan 2024 15:40:23 +0100
-Message-ID: <20240119144024.14289-34-anjo@rev.ng>
+Subject: [RFC PATCH 34/34] accel/tcg: Compile (a few files) once for
+ system-mode
+Date: Fri, 19 Jan 2024 15:40:24 +0100
+Message-ID: <20240119144024.14289-35-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,63 +61,91 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make CPUState offset calculations target independent by using that
-CPUState and CPUArchState are statically guaranteed to lie next to each
-other in memory.
+Build a common static library for a few softmmu files.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/translator.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ accel/tcg/meson.build | 57 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 45 insertions(+), 12 deletions(-)
 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 65219b52eb..43303577d7 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -19,8 +19,8 @@
- static void gen_io_start(void)
- {
-     tcg_gen_st_i32(tcg_constant_i32(1), tcg_env,
--                   offsetof(ArchCPU, parent_obj.neg.can_do_io) -
--                   offsetof(ArchCPU, env));
-+                   offsetof(CPUState, neg.can_do_io) -
-+                   sizeof(CPUState));
- }
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index 8783edd06e..420050bdbf 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -1,28 +1,61 @@
+-tcg_ss = ss.source_set()
++tcg_specific_ss = ss.source_set()
++tcg_user_ss = ss.source_set()
+ common_ss.add(when: 'CONFIG_TCG', if_true: files(
+   'cpu-exec-common.c',
+ ))
+-tcg_ss.add(files(
+-  'tcg-all.c',
++common_ss.add(when: libdw, if_true: files('debuginfo.c'))
++
++tcg_specific_ss.add(files(
+   'cpu-exec.c',
++  'translator.c',
++))
++
++tcg_user_ss.add(files(
++  'user-exec.c',
++  'translate-all.c',
+   'tb-maint.c',
+   'tcg-runtime-gvec.c',
+   'tcg-runtime.c',
+-  'translate-all.c',
+-  'translator.c',
++  'tcg-all.c',
+ ))
+-tcg_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+-tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
+ if get_option('plugins')
+-  tcg_ss.add(files('plugin-gen.c'))
++  tcg_user_ss.add(files('plugin-gen.c'))
+ endif
+-tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
+-tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
+-specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
++tcg_specific_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: tcg_user_ss)
++tcg_specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files(
++  'user-exec-stub.c'
++))
++tcg_specific_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
++specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
  
- bool translator_io_start(DisasContextBase *db)
-@@ -53,8 +53,8 @@ static TCGOp *gen_tb_start(uint32_t cflags)
-     TCGOp *icount_start_insn = NULL;
+-specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
++have_tcg = get_option('tcg').allowed()
++tcg_softmmu_ss = ss.source_set()
++tcg_softmmu_ss.add(files(
+   'cputlb.c',
++  'translate-all.c',
++  'tb-maint.c',
++  'tcg-runtime-gvec.c',
++  'tcg-runtime.c',
++  'tcg-all.c',
+ ))
++if get_option('plugins')
++  tcg_softmmu_ss.add(files('plugin-gen.c'))
++endif
++tcg_softmmu_ss = tcg_softmmu_ss.apply(config_targetos, strict: false)
++
++libacceltcg_softmmu = static_library('acceltcg_softmmu',
++                                     tcg_softmmu_ss.sources() + genh,
++                                     name_suffix: 'fa',
++                                     c_args: '-DCONFIG_SOFTMMU',
++                                     build_by_default: have_system and
++                                                       have_tcg)
++
++if not get_option('tcg').allowed()
++   subdir_done()
++endif
++tcg_softmmu = declare_dependency(link_with: libacceltcg_softmmu,
++                                 dependencies: tcg_softmmu_ss.dependencies())
++system_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: tcg_softmmu)
  
-     tcg_gen_ld_i32(count, tcg_env,
--                   offsetof(ArchCPU, parent_obj.neg.icount_decr.u32)
--                   - offsetof(ArchCPU, env));
-+                   offsetof(CPUState, neg.icount_decr.u32) -
-+                   sizeof(CPUState));
- 
-     if (cflags & CF_USE_ICOUNT) {
-         /*
-@@ -82,8 +82,8 @@ static TCGOp *gen_tb_start(uint32_t cflags)
- 
-     if (cflags & CF_USE_ICOUNT) {
-         tcg_gen_st16_i32(count, tcg_env,
--                         offsetof(ArchCPU, parent_obj.neg.icount_decr.u16.low)
--                         - offsetof(ArchCPU, env));
-+                         offsetof(CPUState, neg.icount_decr.u16.low) -
-+                         sizeof(CPUState));
-         /*
-          * cpu->can_do_io is cleared automatically here at the beginning of
-          * each translation block.  The cost is minimal and only paid for
-@@ -92,8 +92,8 @@ static TCGOp *gen_tb_start(uint32_t cflags)
-          * go with gen_io_start().
-          */
-         tcg_gen_st_i32(tcg_constant_i32(0), tcg_env,
--                       offsetof(ArchCPU, parent_obj.neg.can_do_io) -
--                       offsetof(ArchCPU, env));
-+                       offsetof(CPUState, neg.can_do_io) -
-+                       sizeof(CPUState));
-     }
- 
-     return icount_start_insn;
+ system_ss.add(when: ['CONFIG_TCG'], if_true: files(
+   'icount-common.c',
 -- 
 2.43.0
 
