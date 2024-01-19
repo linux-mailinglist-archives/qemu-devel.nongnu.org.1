@@ -2,98 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C87832A11
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 14:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD86832A4F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 14:25:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQoYU-0003RZ-Hq; Fri, 19 Jan 2024 08:05:06 -0500
+	id 1rQoqn-0004WG-67; Fri, 19 Jan 2024 08:24:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQoYS-0003Qr-4o
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 08:05:04 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQoqi-0004Vh-Ey
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 08:23:56 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQoYQ-0003mJ-8G
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 08:05:03 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQoqg-0004mt-K7
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 08:23:55 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E02C31FD17;
- Fri, 19 Jan 2024 13:04:59 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 2C1D11F7F1;
+ Fri, 19 Jan 2024 13:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705669500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705670632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Wljbv8pXNnEWRU4IbJZudcpIu0eR3Lgd40IiX3Mo+ss=;
- b=bAy/me0a/0EGG7wMjHNcNP6yKrPRBfMED1EwUVtseH2rUoyQ1Zg7R+60Ezia1FJzuB2ZZL
- 1EPk3o/5ehi/+Wjp+lbbGhCS+vX/e+bU5QSIHarZmmF5qyyw25XSMcuug225+n01U1soga
- XnpqAvDX6hsKMBm3Wd8xToY6qcDzV8A=
+ bh=1imNTgn8PIBGgMLJ5JAwaaSK/xyzO/pVVLWPexHfCes=;
+ b=fHatrXBI1wpninIVc/vg1er0vlf+JB9iwv9/Nf+KaINb3LGIr7K5J1yMTRAvaOaNsFwOVU
+ wjPQIg8C05D1x0qeqJyZdHYvC0iB4b/lwuIhELgE1+0b+Kida7gTqvL5Be7SbsKwYNw3ET
+ 1IW1e2Xyn2XUKujy/yhtIyggjWRn42o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705669500;
+ s=susede2_ed25519; t=1705670632;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Wljbv8pXNnEWRU4IbJZudcpIu0eR3Lgd40IiX3Mo+ss=;
- b=N+aue9M0HjswDICmHYAAdaCcsnA2tiTuCamByyHaw8DBXR2AwjFLVI3U86nTC6H4E5V6vp
- eM9Z5db9+FU9pRAw==
+ bh=1imNTgn8PIBGgMLJ5JAwaaSK/xyzO/pVVLWPexHfCes=;
+ b=CUU7jXlKdWuZjAs4a1NN5LdCKUv680S3BKU3IW+6i55MKjodgVPLX3EzBxHM03TjUolS3G
+ 9Kw+tPFFv9tcSrDw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705669499; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1705670632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Wljbv8pXNnEWRU4IbJZudcpIu0eR3Lgd40IiX3Mo+ss=;
- b=QXxdxiEN7ov19ntFSXDbnl87/iO9rjSmOwUsvc7djxICf5u+mw+3Svv8LZAkOIIwI9qfG1
- d6KjwfWOEx2+Oi2tJOdps+yM5cMQ1DF8GXc+C/hwnqzmW9/du3RpgikprtQj4jzSCuHpkM
- 1/jrSRpai54G8bfizA7CRUIpNIehiUk=
+ bh=1imNTgn8PIBGgMLJ5JAwaaSK/xyzO/pVVLWPexHfCes=;
+ b=fHatrXBI1wpninIVc/vg1er0vlf+JB9iwv9/Nf+KaINb3LGIr7K5J1yMTRAvaOaNsFwOVU
+ wjPQIg8C05D1x0qeqJyZdHYvC0iB4b/lwuIhELgE1+0b+Kida7gTqvL5Be7SbsKwYNw3ET
+ 1IW1e2Xyn2XUKujy/yhtIyggjWRn42o=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705669499;
+ s=susede2_ed25519; t=1705670632;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Wljbv8pXNnEWRU4IbJZudcpIu0eR3Lgd40IiX3Mo+ss=;
- b=UG6c2eaP3R1ng6b+lAa3ewRtDHjdla57pMk80OQR+IaHJtTy5Sxy7ywWxED9t89ZmDt7wD
- zovR0KiPr1wUxQDg==
+ bh=1imNTgn8PIBGgMLJ5JAwaaSK/xyzO/pVVLWPexHfCes=;
+ b=CUU7jXlKdWuZjAs4a1NN5LdCKUv680S3BKU3IW+6i55MKjodgVPLX3EzBxHM03TjUolS3G
+ 9Kw+tPFFv9tcSrDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 683DD13894;
- Fri, 19 Jan 2024 13:04:59 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9F6451388C;
+ Fri, 19 Jan 2024 13:23:51 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id wlYDDHtzqmWLFgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 19 Jan 2024 13:04:59 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id t1NVGed3qmV/HAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 19 Jan 2024 13:23:51 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos
- Santos Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v4 3/3] ci: Disable migration compatibility tests for
- aarch64
-In-Reply-To: <Zan0EOYX1pEEzlFz@x1n>
-References: <20240118164951.30350-1-farosas@suse.de>
- <20240118164951.30350-4-farosas@suse.de> <Zan0EOYX1pEEzlFz@x1n>
-Date: Fri, 19 Jan 2024 10:04:56 -0300
-Message-ID: <87sf2tzd6v.fsf@suse.de>
+To: peterx@redhat.com, qemu-devel@nongnu.org
+Cc: Prasad Pandit <ppandit@redhat.com>, peterx@redhat.com, Bandan Das
+ <bdas@redhat.com>, Julia Suvorova <jusual@redhat.com>
+Subject: Re: [PATCH 3/3] analyze-migration.py: Remove trick on parsing
+ ramblocks
+In-Reply-To: <20240117075848.139045-4-peterx@redhat.com>
+References: <20240117075848.139045-1-peterx@redhat.com>
+ <20240117075848.139045-4-peterx@redhat.com>
+Date: Fri, 19 Jan 2024 10:23:49 -0300
+Message-ID: <87plxxzcbe.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
 Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fHatrXBI;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CUU7jXlK
+X-Spamd-Result: default: False [-3.23 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ BAYES_HAM(-2.92)[99.66%]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[6];
  RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_SEVEN(0.00)[8];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
  MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 2C1D11F7F1
+X-Spam-Score: -3.23
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -118,73 +120,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+peterx@redhat.com writes:
 
-> On Thu, Jan 18, 2024 at 01:49:51PM -0300, Fabiano Rosas wrote:
->> Until 9.0 is out, we need to keep the aarch64 job disabled because the
->> tests always use the n-1 version of migration-test. That happens to be
->> broken for aarch64 in 8.2. Once 9.0 is out, it will become the n-1
->> version and it will bring the fixed tests.
->> 
->> We can revert this patch when 9.0 releases.
->> 
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  .gitlab-ci.d/buildtest.yml | 4 ++++
->>  1 file changed, 4 insertions(+)
->> 
->> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
->> index f0b0edc634..b344a4685f 100644
->> --- a/.gitlab-ci.d/buildtest.yml
->> +++ b/.gitlab-ci.d/buildtest.yml
->> @@ -217,10 +217,14 @@ build-previous-qemu:
->>      - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
->>            QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
->>  
->> +# This job is disabled until we release 9.0. The existing
->> +# migration-test in 8.2 is broken on aarch64. The fix was already
->> +# commited, but it will only take effect once 9.0 is out.
->>  migration-compat-aarch64:
->>    extends: .migration-compat-common
->>    variables:
->>      TARGET: aarch64
->> +    QEMU_JOB_OPTIONAL: 1
+> From: Peter Xu <peterx@redhat.com>
 >
-> Optionally you can move the whole migration-compat-aarch64 from previous
-> patch to here, then even if someone kicks off CI for previous commit it
-> won't fail.
+> RAM_SAVE_FLAG_MEM_SIZE contains the total length of ramblock idstr to know
+> whether scanning of ramblocks is complete.  Drop the trick.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-I want to avoid having to think about this when 9.0 is out. This way
-it'll be just a revert of this patch.
-
->
-> Would QEMU_JOB_SKIPPED suits more here?
->
->         https://www.qemu.org/docs/master/devel/ci.html
->
->         QEMU_JOB_OPTIONAL
->
->         The job is expected to be successful in general, but is not run by
->         default due to need to conserve limited CI resources. It is
->         available to be started manually by the contributor in the CI
->         pipelines UI.
->
->         QEMU_JOB_SKIPPED
->
->         The job is not reliably successsful in general, so is not currently
->         suitable to be run by default. Ideally this should be a temporary
->         marker until the problems can be addressed, or the job permanently
->         removed.
->
-> I suppose they all fall into "manual trigger" as a result, but just in case
-> it'll behave differently in the future.
->
-Ok, we can use SKIPPED.
-
->>  
->>  migration-compat-x86_64:
->>    extends: .migration-compat-common
->> -- 
->> 2.35.3
->> 
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
