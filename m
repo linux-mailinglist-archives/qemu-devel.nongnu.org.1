@@ -2,64 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE668324F5
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0664A8324DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:13:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQj5U-00061r-FJ; Fri, 19 Jan 2024 02:14:49 -0500
+	id 1rQj2Y-0003rK-J5; Fri, 19 Jan 2024 02:11:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1rQj5P-000617-E6
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:14:43 -0500
-Received: from mgamail.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj2V-0003rB-H1
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:11:43 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
- id 1rQj5N-0005vD-0q
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:14:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705648481; x=1737184481;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Q2RsoZ5sut/6sKdNf/dswKdVutnk42DHWPtbb8F/cvE=;
- b=Lmb/g+ZN8ItnN5+tiHXSYUae42ZDgVN0twb3hYiisBexfZ/sgARYw/Fs
- F0ZWlQYDzQjqobA8vz3qXbjOyAD0lp4/v6WOWVYxdd/hTsMckzFURxulI
- 8gPo85j2FOVosSQdJU7EW+tTULtwdRMUVtvWmLYhGYkO1PbQkStXL2CUF
- 9pjIk6riaMFXiaXZ1eTVkDrl6tJ8hlK4mWVds8V1gAIlQ7ALKTRr+60Fc
- ocWuX4GMtMTUwC3Bob6dQRMVxY4Acu4F8DNOjXWeFH2ZnS1BVeQjelu+j
- jIrK+v/zAFESNd6bAC8zJkxbeb6lPOJPMESEzp+t071A5RceLglJQKEYv g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="431851369"
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="431851369"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 23:14:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,204,1701158400"; d="scan'208";a="26697502"
-Received: from linux.bj.intel.com ([10.238.157.71])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2024 23:14:35 -0800
-Date: Fri, 19 Jan 2024 15:11:33 +0800
-From: Tao Su <tao1.su@linux.intel.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, imammedo@redhat.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH] target/i386: Add new CPU model SierraForest
-Message-ID: <ZaogpRnP0LSqIhn2@linux.bj.intel.com>
-References: <20231206131923.1192066-1-tao1.su@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj2T-0000rn-B0
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:11:42 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5E00545605;
+ Fri, 19 Jan 2024 10:12:08 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7836267004;
+ Fri, 19 Jan 2024 10:11:36 +0300 (MSK)
+Message-ID: <d00fb6fc-ea3e-470f-90ba-ea7067447667@tls.msk.ru>
+Date: Fri, 19 Jan 2024 10:11:36 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231206131923.1192066-1-tao1.su@linux.intel.com>
-Received-SPF: none client-ip=192.55.52.88;
- envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tests/docker: Add sqlite3 module to openSUSE Leap
+ container
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Andrea Bolognani <abologna@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20240117164227.32143-1-farosas@suse.de>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240117164227.32143-1-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
 X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,8 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kindly ping for any comments.
 
-Thanks,
-Tao
+
+>              python311-setuptools \
+> diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+> index 0b908882f1..407c03301b 100644
+> --- a/tests/lcitool/mappings.yml
+> +++ b/tests/lcitool/mappings.yml
+> @@ -59,6 +59,10 @@ mappings:
+>       CentOSStream8:
+>       OpenSUSELeap15:
+>   
+> +  python3-sqlite3:
+> +    CentOSStream8: python38
+> +    OpenSUSELeap15: python311
+> +
+>     python3-tomli:
+>       # test using tomllib
+>       apk:
+> diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+> index 82092c9f17..149b15de57 100644
+> --- a/tests/lcitool/projects/qemu.yml
+> +++ b/tests/lcitool/projects/qemu.yml
+> @@ -97,6 +97,7 @@ packages:
+>    - python3-pip
+>    - python3-sphinx
+>    - python3-sphinx-rtd-theme
+> + - python3-sqlite3
+>    - python3-tomli
+>    - python3-venv
+>    - rpm2cpio
+
 
