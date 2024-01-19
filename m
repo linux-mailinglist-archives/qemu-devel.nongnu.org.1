@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E26A832B75
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D1E832B72
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:42:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2l-0005mN-2X; Fri, 19 Jan 2024 09:40:28 -0500
+	id 1rQq2y-0005qA-9h; Fri, 19 Jan 2024 09:40:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2d-0005m3-Nn
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:19 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2e-0005mQ-P3
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003TG-Dr
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:18 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003TL-Gq
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=HGHmcwrFsDedpDfs3+LaapRdnSkQbjFoJJJVWFRxpII=; b=a9ZpVltxm+1/D5ON2xjzmtkekB
- EMaTOu+5+RvJ+5bgNesO0WP54KIIzxLh6VdwdDK+0p0CAuFEDsM5gUcBeO0JaX6S2EqZdv9t5iXom
- Eg2fsWf+3L8fgKTQ0tCIMYRYtBMRjLQ6VodYUXKxnL+oKScTzoQfbv6JOAq/K7xSJDgI=;
+ bh=qXOq/h6phsa/tEESVpy5xNTXbPzc//D/ihwH2veRNU8=; b=EWahrOkuQ1I7Hi3RtRzClONnGs
+ hFDhsMo4OCCj9XR8NNDfTG+RiTFtaFnwtvocWFUv1LMWxpNcmDeHnhwIVl3T56jBYV2hSZKhLxeEF
+ aOlVTHILN0E2PhwVB0saFt/Y7pNekvmq6CpaVWm+BK8Vg5+quAUPjnf+y9gjJ5grcHtE=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 05/34] target/tricore: [VADDR] Use target_ulong for EA
-Date: Fri, 19 Jan 2024 15:39:55 +0100
-Message-ID: <20240119144024.14289-6-anjo@rev.ng>
+Subject: [RFC PATCH 06/34] exec: [VADDR] Move vaddr defines to separate file
+Date: Fri, 19 Jan 2024 15:39:56 +0100
+Message-ID: <20240119144024.14289-7-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,56 +60,67 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prepares target for typedef'ing abi_ptr to vaddr.  Fixes sign extension
-bug that would result from abi_ptr being unsigned in the future.
+Needed to work around circular includes. vaddr is currently defined in
+cpu-common.h and needed by hw/core/cpu.h, but cpu-common.h also need
+cpu.h to know the size of the CPUState.
 
-Necessary to make memory access function signatures target agnostic.
+[Maybe we can instead move parts of cpu-common.h w. hw/core/cpu.h to
+sort out the circular inclusion.]
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/tricore/op_helper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/exec/cpu-common.h | 12 ------------
+ include/exec/vaddr.h      | 18 ++++++++++++++++++
+ 2 files changed, 18 insertions(+), 12 deletions(-)
+ create mode 100644 include/exec/vaddr.h
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 89be1ed648..f57bb39d1f 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2395,7 +2395,7 @@ static bool cdc_zero(target_ulong *psw)
-     return count == 0;
- }
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index df53252d51..c071f1a003 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -14,18 +14,6 @@
+ #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
+ #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
  
--static void save_context_upper(CPUTriCoreState *env, int ea)
-+static void save_context_upper(CPUTriCoreState *env, target_ulong ea)
- {
-     cpu_stl_data(env, ea, env->PCXI);
-     cpu_stl_data(env, ea+4, psw_read(env));
-@@ -2415,7 +2415,7 @@ static void save_context_upper(CPUTriCoreState *env, int ea)
-     cpu_stl_data(env, ea+60, env->gpr_d[15]);
- }
- 
--static void save_context_lower(CPUTriCoreState *env, int ea)
-+static void save_context_lower(CPUTriCoreState *env, target_ulong ea)
- {
-     cpu_stl_data(env, ea, env->PCXI);
-     cpu_stl_data(env, ea+4, env->gpr_a[11]);
-@@ -2435,7 +2435,7 @@ static void save_context_lower(CPUTriCoreState *env, int ea)
-     cpu_stl_data(env, ea+60, env->gpr_d[7]);
- }
- 
--static void restore_context_upper(CPUTriCoreState *env, int ea,
-+static void restore_context_upper(CPUTriCoreState *env, target_ulong ea,
-                                   target_ulong *new_PCXI, target_ulong *new_PSW)
- {
-     *new_PCXI = cpu_ldl_data(env, ea);
-@@ -2456,7 +2456,7 @@ static void restore_context_upper(CPUTriCoreState *env, int ea,
-     env->gpr_d[15] = cpu_ldl_data(env, ea+60);
- }
- 
--static void restore_context_lower(CPUTriCoreState *env, int ea,
-+static void restore_context_lower(CPUTriCoreState *env, target_ulong ea,
-                                   target_ulong *ra, target_ulong *pcxi)
- {
-     *pcxi = cpu_ldl_data(env, ea);
+-/**
+- * vaddr:
+- * Type wide enough to contain any #target_ulong virtual address.
+- */
+-typedef uint64_t vaddr;
+-#define VADDR_PRId PRId64
+-#define VADDR_PRIu PRIu64
+-#define VADDR_PRIo PRIo64
+-#define VADDR_PRIx PRIx64
+-#define VADDR_PRIX PRIX64
+-#define VADDR_MAX UINT64_MAX
+-
+ /**
+  * Variable page size macros
+  *
+diff --git a/include/exec/vaddr.h b/include/exec/vaddr.h
+new file mode 100644
+index 0000000000..db48bb16bc
+--- /dev/null
++++ b/include/exec/vaddr.h
+@@ -0,0 +1,18 @@
++/* Define vaddr if it exists.  */
++
++#ifndef VADDR_H
++#define VADDR_H
++
++/**
++ * vaddr:
++ * Type wide enough to contain any #target_ulong virtual address.
++ */
++typedef uint64_t vaddr;
++#define VADDR_PRId PRId64
++#define VADDR_PRIu PRIu64
++#define VADDR_PRIo PRIo64
++#define VADDR_PRIx PRIx64
++#define VADDR_PRIX PRIX64
++#define VADDR_MAX UINT64_MAX
++
++#endif
 -- 
 2.43.0
 
