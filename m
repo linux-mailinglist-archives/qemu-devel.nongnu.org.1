@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0664A8324DD
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A05C8324DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 08:13:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQj2Y-0003rK-J5; Fri, 19 Jan 2024 02:11:46 -0500
+	id 1rQj3U-0004Qy-NI; Fri, 19 Jan 2024 02:12:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj2V-0003rB-H1
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:11:43 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj3R-0004Kc-Jr
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:12:41 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj2T-0000rn-B0
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:11:42 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rQj3P-00032H-O3
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 02:12:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E00545605;
- Fri, 19 Jan 2024 10:12:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1DF4645607;
+ Fri, 19 Jan 2024 10:13:09 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7836267004;
- Fri, 19 Jan 2024 10:11:36 +0300 (MSK)
-Message-ID: <d00fb6fc-ea3e-470f-90ba-ea7067447667@tls.msk.ru>
-Date: Fri, 19 Jan 2024 10:11:36 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3E1AB67005;
+ Fri, 19 Jan 2024 10:12:37 +0300 (MSK)
+Message-ID: <98f6648c-59ce-42db-9afa-04f0a5521cba@tls.msk.ru>
+Date: Fri, 19 Jan 2024 10:12:37 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] tests/docker: Add sqlite3 module to openSUSE Leap
@@ -89,35 +89,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Sorry for the previous dummy post, - hit the wrong button :)
 
+17.01.2024 19:42, Fabiano Rosas :
+> Avocado needs sqlite3:
 
->              python311-setuptools \
-> diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-> index 0b908882f1..407c03301b 100644
-> --- a/tests/lcitool/mappings.yml
-> +++ b/tests/lcitool/mappings.yml
-> @@ -59,6 +59,10 @@ mappings:
->       CentOSStream8:
->       OpenSUSELeap15:
->   
-> +  python3-sqlite3:
-> +    CentOSStream8: python38
-> +    OpenSUSELeap15: python311
-> +
->     python3-tomli:
->       # test using tomllib
->       apk:
-> diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-> index 82092c9f17..149b15de57 100644
-> --- a/tests/lcitool/projects/qemu.yml
-> +++ b/tests/lcitool/projects/qemu.yml
-> @@ -97,6 +97,7 @@ packages:
->    - python3-pip
->    - python3-sphinx
->    - python3-sphinx-rtd-theme
-> + - python3-sqlite3
->    - python3-tomli
->    - python3-venv
->    - rpm2cpio
+> --- a/tests/docker/dockerfiles/opensuse-leap.docker
+> +++ b/tests/docker/dockerfiles/opensuse-leap.docker
+> @@ -90,6 +90,7 @@ RUN zypper update -y && \
+>              pcre-devel-static \
+>              pipewire-devel \
+>              pkgconfig \
+> +           python311 \
+>              python311-base \
+>              python311-pip \
 
+Isn't python311 already pulls in python311-base?
+
+/mjt
 
