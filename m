@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359CA832B7D
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4860832B7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq33-0005vN-3Q; Fri, 19 Jan 2024 09:40:45 -0500
+	id 1rQq33-0005vd-3h; Fri, 19 Jan 2024 09:40:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2t-0005qQ-98
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2s-0005qB-8I
  for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:35 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0003u6-Lp
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:34 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2q-0003uI-M2
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=OSL2GHUkDheOlsFtGxY+LT4CIeg4LkaX7rfcHlxNROE=; b=JoZcvFDL4p5l0ahQQ5aRsQqT37
- cp4yUEEiaMeGy/5bpX5P1urEM380w4LN9H17fuZ9jPXyU6MWTxzdJUlmcFnGx5ZWHZdpgyKHXvnOn
- 1lPi/LOSULuipkBFPR3EbNKlmcaaCo2P2znVOANiNjQe3+6FEhrLLdexclazGK3Os5mQ=;
+ bh=YJQzwu19OPpvIidAvu7G/e2Vj48Qe6oY7CMLaKgxcJk=; b=gsJOzcWSu04HVvEh2TvJSsa+7/
+ pQBHVj/IlD/ihQ9KUpUElPhueBPHYK/dumOoUA7NEYEyMfpTEQ9ZxibRySIp7KrEpo+ZvmIZoqFD7
+ AN+yJ3JyV6ti8ZUW1KZsBWD59Rk/Ltu0+x0cnfzo1eHutFxjzdDZKbDJcT2k1EORh5Nc=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 19/34] accel/tcg: [CPUTLB] Use TCGContext.addr_type
- instead of TARGET_LONG_BITS
-Date: Fri, 19 Jan 2024 15:40:09 +0100
-Message-ID: <20240119144024.14289-20-anjo@rev.ng>
+Subject: [RFC PATCH 20/34] accel/tcg: [CPUTLB] Use TCGContext.guest_mo for
+ memory ordering
+Date: Fri, 19 Jan 2024 15:40:10 +0100
+Message-ID: <20240119144024.14289-21-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,151 +61,41 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[NOTE: We could also use target_long_bits(), which is introduced later]
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/cpu_ldst.h | 31 ++++++++++++++++---------------
- accel/tcg/cputlb.c      | 34 ++++++++++++++++++++--------------
- 2 files changed, 36 insertions(+), 29 deletions(-)
+ accel/tcg/internal-target.h | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 24fe322d72..553e0119f9 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -340,7 +340,7 @@ static inline void clear_helper_retaddr(void)
+diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+index 4e36cf858e..3bcd1bbc84 100644
+--- a/accel/tcg/internal-target.h
++++ b/accel/tcg/internal-target.h
+@@ -9,8 +9,9 @@
+ #ifndef ACCEL_TCG_INTERNAL_TARGET_H
+ #define ACCEL_TCG_INTERNAL_TARGET_H
  
- #else
+-#include "exec/exec-all.h"
++#include "exec/exec-common.h"
+ #include "exec/translate-all.h"
++#include "tcg/tcg.h"
  
--#include "tcg/oversized-guest.h"
-+#include "tcg-target-reg-bits.h"
- 
- static inline uint64_t tlb_read_idx(const CPUTLBEntry *entry,
-                                     MMUAccessType access_type)
-@@ -353,20 +353,21 @@ static inline uint64_t tlb_read_idx(const CPUTLBEntry *entry,
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_code) !=
-                       MMU_INST_FETCH * sizeof(uint64_t));
- 
--#if TARGET_LONG_BITS == 32
--    /* Use qatomic_read, in case of addr_write; only care about low bits. */
--    const uint32_t *ptr = (uint32_t *)&entry->addr_idx[access_type];
--    ptr += HOST_BIG_ENDIAN;
--    return qatomic_read(ptr);
+ /*
+  * Access to the various translations structures need to be serialised
+@@ -108,12 +109,8 @@ extern bool one_insn_per_tb;
+  *
+  * This is a macro so that it's constant even without optimization.
+  */
+-#ifdef TCG_GUEST_DEFAULT_MO
+-# define tcg_req_mo(type) \
+-    ((type) & TCG_GUEST_DEFAULT_MO & ~TCG_TARGET_DEFAULT_MO)
 -#else
--    const uint64_t *ptr = &entry->addr_idx[access_type];
--# if TCG_OVERSIZED_GUEST
--    return *ptr;
--# else
--    /* ofs might correspond to .addr_write, so use qatomic_read */
--    return qatomic_read(ptr);
--# endif
+-# define tcg_req_mo(type) ((type) & ~TCG_TARGET_DEFAULT_MO)
 -#endif
-+    if (tcg_ctx->addr_type == TCG_TYPE_I32) {
-+        /* Use qatomic_read, in case of addr_write; only care about low bits. */
-+        const uint32_t *ptr = (uint32_t *)&entry->addr_idx[access_type];
-+        ptr += HOST_BIG_ENDIAN;
-+        return qatomic_read(ptr);
-+    } else {
-+        const uint64_t *ptr = &entry->addr_idx[access_type];
-+        if (TCG_TARGET_REG_BITS == 32) {
-+            /* Oversized guest */
-+            return *ptr;
-+        } else {
-+            /* ofs might correspond to .addr_write, so use qatomic_read */
-+            return qatomic_read(ptr);
-+        }
-+    }
- }
++#define tcg_req_mo(type) \
++    ((type) & tcg_ctx->guest_mo & ~TCG_TARGET_DEFAULT_MO)
  
- static inline uint64_t tlb_addr_write(const CPUTLBEntry *entry)
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 449c86301e..967d5da6d4 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -41,7 +41,7 @@
- #include "qemu/plugin-memory.h"
- #endif
- #include "tcg/tcg-ldst.h"
--#include "tcg/oversized-guest.h"
-+#include "tcg-target-reg-bits.h"
- 
- /* DEBUG defines, enable DEBUG_TLB_LOG to log to the CPU_LOG_MMU target */
- /* #define DEBUG_TLB */
-@@ -815,12 +815,13 @@ void tlb_flush_range_by_mmuidx(CPUState *cpu, vaddr addr,
-                                unsigned bits)
- {
-     TLBFlushRangeData d;
-+    const unsigned long_bits = (tcg_ctx->addr_type == TCG_TYPE_I32) ? 32 : 64;
- 
-     /*
-      * If all bits are significant, and len is small,
-      * this devolves to tlb_flush_page.
-      */
--    if (bits >= TARGET_LONG_BITS && len <= TARGET_PAGE_SIZE) {
-+    if (bits >= long_bits && len <= TARGET_PAGE_SIZE) {
-         tlb_flush_page_by_mmuidx(cpu, addr, idxmap);
-         return;
-     }
-@@ -858,12 +859,13 @@ void tlb_flush_range_by_mmuidx_all_cpus(CPUState *src_cpu,
- {
-     TLBFlushRangeData d;
-     CPUState *dst_cpu;
-+    const unsigned long_bits = (tcg_ctx->addr_type == TCG_TYPE_I32) ? 32 : 64;
- 
-     /*
-      * If all bits are significant, and len is small,
-      * this devolves to tlb_flush_page.
-      */
--    if (bits >= TARGET_LONG_BITS && len <= TARGET_PAGE_SIZE) {
-+    if (bits >= long_bits && len <= TARGET_PAGE_SIZE) {
-         tlb_flush_page_by_mmuidx_all_cpus(src_cpu, addr, idxmap);
-         return;
-     }
-@@ -908,12 +910,13 @@ void tlb_flush_range_by_mmuidx_all_cpus_synced(CPUState *src_cpu,
- {
-     TLBFlushRangeData d, *p;
-     CPUState *dst_cpu;
-+    const unsigned long_bits = (tcg_ctx->addr_type == TCG_TYPE_I32) ? 32 : 64;
- 
-     /*
-      * If all bits are significant, and len is small,
-      * this devolves to tlb_flush_page.
-      */
--    if (bits >= TARGET_LONG_BITS && len <= TARGET_PAGE_SIZE) {
-+    if (bits >= long_bits && len <= TARGET_PAGE_SIZE) {
-         tlb_flush_page_by_mmuidx_all_cpus_synced(src_cpu, addr, idxmap);
-         return;
-     }
-@@ -995,16 +998,19 @@ static void tlb_reset_dirty_range_locked(CPUTLBEntry *tlb_entry,
-         addr &= TARGET_PAGE_MASK;
-         addr += tlb_entry->addend;
-         if ((addr - start) < length) {
--#if TARGET_LONG_BITS == 32
--            uint32_t *ptr_write = (uint32_t *)&tlb_entry->addr_write;
--            ptr_write += HOST_BIG_ENDIAN;
--            qatomic_set(ptr_write, *ptr_write | TLB_NOTDIRTY);
--#elif TCG_OVERSIZED_GUEST
--            tlb_entry->addr_write |= TLB_NOTDIRTY;
--#else
--            qatomic_set(&tlb_entry->addr_write,
--                        tlb_entry->addr_write | TLB_NOTDIRTY);
--#endif
-+            if (tcg_ctx->addr_type == TCG_TYPE_I32) {
-+                /* 32-bit */
-+                uint32_t *ptr_write = (uint32_t *)&tlb_entry->addr_write;
-+                ptr_write += HOST_BIG_ENDIAN;
-+                qatomic_set(ptr_write, *ptr_write | TLB_NOTDIRTY);
-+            } else if (TCG_TARGET_REG_BITS == 32) {
-+                /* Oversized guest */
-+                tlb_entry->addr_write |= TLB_NOTDIRTY;
-+            } else {
-+                /* 64-bit */
-+                qatomic_set(&tlb_entry->addr_write,
-+                            tlb_entry->addr_write | TLB_NOTDIRTY);
-+            }
-         }
-     }
- }
+ /**
+  * cpu_req_mo:
 -- 
 2.43.0
 
