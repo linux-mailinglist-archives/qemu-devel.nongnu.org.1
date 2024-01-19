@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A39D832B7B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2EA832B7F
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 15:43:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQq2z-0005tD-RG; Fri, 19 Jan 2024 09:40:41 -0500
+	id 1rQq2y-0005sc-LQ; Fri, 19 Jan 2024 09:40:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2m-0005nu-JL
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:29 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0005mv-1m
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:24 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2h-0003j6-4g
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:26 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rQq2b-0003j9-JD
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 09:40:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=G5Bw0OiXVj933CF1Eo5sz9jzaJ/fZkwsa8JFV6dXuEY=; b=NvncDpb4+/gZSTAzZ2oUZUy32U
- W+74mn0SqDIQfOqRAYFjWnQW1ETFpCGbzmAjVGEFYD4EP6aee+e5P1qrbOiRF7fheCo+HAk+NvXw4
- HiULYd8cbnwAV2PL9k+QioD1+Xpx/2KKAKDpabgh/4dc/XW6SYa+qxBz3x0J6bMwZduo=;
+ bh=9odshd6cnNtmtj3iaUrnIF7sAejUiH24FOWHPx/ofJo=; b=Wy6l8KJNaoPKIFhEk5ApVnJOin
+ +57vDmqhFGgpDCPIWJkBkaq22/eAHTB8umjjXUNk48rcBix0eVoazSajl3AVffKFAP6GUlzoNlIAf
+ x+iPsngwdEzhaU5ootA63jCVTZhtUWNph+1D2hHRoVx50MLJ1ChgKc+YyHklxk1ehHl8=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	richard.henderson@linaro.org,
 	philmd@linaro.org
-Subject: [RFC PATCH 08/34] target: [VADDR] Use vaddr in gen_intermediate_code
-Date: Fri, 19 Jan 2024 15:39:58 +0100
-Message-ID: <20240119144024.14289-9-anjo@rev.ng>
+Subject: [RFC PATCH 09/34] exec: [VADDR] Use vaddr in DisasContextBase for
+ virtual addresses
+Date: Fri, 19 Jan 2024 15:39:59 +0100
+Message-ID: <20240119144024.14289-10-anjo@rev.ng>
 In-Reply-To: <20240119144024.14289-1-anjo@rev.ng>
 References: <20240119144024.14289-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -60,321 +61,120 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Makes gen_intermediate_code() signature target agnostic so the function
-can be called from accel/tcg/translate-all.c without target specifics.
+Updates target/ QEMU_LOG macros to use VADDR_PRIx for printing updated
+DisasContextBase fields.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/exec/translator.h     | 2 +-
- target/alpha/translate.c      | 2 +-
- target/arm/tcg/translate.c    | 2 +-
- target/avr/translate.c        | 2 +-
- target/cris/translate.c       | 2 +-
- target/hexagon/translate.c    | 2 +-
- target/hppa/translate.c       | 2 +-
- target/i386/tcg/translate.c   | 2 +-
- target/loongarch/translate.c  | 2 +-
- target/m68k/translate.c       | 2 +-
- target/microblaze/translate.c | 2 +-
- target/mips/tcg/translate.c   | 2 +-
- target/nios2/translate.c      | 2 +-
- target/openrisc/translate.c   | 2 +-
- target/ppc/translate.c        | 2 +-
- target/riscv/translate.c      | 2 +-
- target/rx/translate.c         | 2 +-
- target/s390x/tcg/translate.c  | 2 +-
- target/sh4/translate.c        | 2 +-
- target/sparc/translate.c      | 2 +-
- target/tricore/translate.c    | 2 +-
- target/xtensa/translate.c     | 2 +-
- 22 files changed, 22 insertions(+), 22 deletions(-)
+ include/exec/translator.h   |  6 +++---
+ target/mips/tcg/translate.h |  3 ++-
+ target/hexagon/translate.c  |  3 ++-
+ target/m68k/translate.c     |  2 +-
+ target/mips/tcg/translate.c | 12 ++++++------
+ 5 files changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 4e17c4f401..2ab8f58bea 100644
+index 2ab8f58bea..c4b46ec8aa 100644
 --- a/include/exec/translator.h
 +++ b/include/exec/translator.h
-@@ -33,7 +33,7 @@
-  * the target-specific DisasContext, and then invoke translator_loop.
+@@ -77,8 +77,8 @@ typedef enum DisasJumpType {
   */
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc);
-+                           vaddr pc, void *host_pc);
- 
- /**
-  * DisasJumpType:
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 32333081d8..134eb7225b 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2971,7 +2971,7 @@ static const TranslatorOps alpha_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
+ typedef struct DisasContextBase {
+     TranslationBlock *tb;
+-    target_ulong pc_first;
+-    target_ulong pc_next;
++    vaddr pc_first;
++    vaddr pc_next;
+     DisasJumpType is_jmp;
+     int num_insns;
+     int max_insns;
+@@ -231,7 +231,7 @@ void translator_fake_ldb(uint8_t insn8, abi_ptr pc);
+  * Translators can use this to enforce the rule that only single-insn
+  * translation blocks are allowed to cross page boundaries.
+  */
+-static inline bool is_same_page(const DisasContextBase *db, target_ulong addr)
++static inline bool is_same_page(const DisasContextBase *db, vaddr addr)
  {
-     DisasContext dc;
-     translator_loop(cpu, tb, max_insns, pc, host_pc, &alpha_tr_ops, &dc.base);
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index bdcb8a6555..0877cb1ce5 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -9682,7 +9682,7 @@ static const TranslatorOps thumb_translator_ops = {
- 
- /* generate intermediate code for basic block 'tb'.  */
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc = { };
-     const TranslatorOps *ops = &arm_translator_ops;
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index cdffa04519..e5dd057799 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -2805,7 +2805,7 @@ static const TranslatorOps avr_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc = { };
-     translator_loop(cs, tb, max_insns, pc, host_pc, &avr_tr_ops, &dc.base);
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index b3974ba0bb..ee1402a9a3 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -3172,7 +3172,7 @@ static const TranslatorOps cris_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
-     translator_loop(cs, tb, max_insns, pc, host_pc, &cris_tr_ops, &dc.base);
+     return ((addr ^ db->pc_first) & TARGET_PAGE_MASK) == 0;
+ }
+diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
+index cffcfeab8c..93a78b8121 100644
+--- a/target/mips/tcg/translate.h
++++ b/target/mips/tcg/translate.h
+@@ -202,7 +202,8 @@ extern TCGv bcond;
+     do {                                                                      \
+         if (MIPS_DEBUG_DISAS) {                                               \
+             qemu_log_mask(CPU_LOG_TB_IN_ASM,                                  \
+-                          TARGET_FMT_lx ": %08x Invalid %s %03x %03x %03x\n", \
++                          "%016" VADDR_PRIx                                   \
++                          ": %08x Invalid %s %03x %03x %03x\n",               \
+                           ctx->base.pc_next, ctx->opcode, op,                 \
+                           ctx->opcode >> 26, ctx->opcode & 0x3F,              \
+                           ((ctx->opcode >> 16) & 0x1F));                      \
 diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 663b7bbc3a..2ef6a89622 100644
+index 2ef6a89622..7988e54f7d 100644
 --- a/target/hexagon/translate.c
 +++ b/target/hexagon/translate.c
-@@ -1154,7 +1154,7 @@ static const TranslatorOps hexagon_tr_ops = {
- };
+@@ -234,7 +234,8 @@ static int read_packet_words(CPUHexagonState *env, DisasContext *ctx,
+         g_assert(ctx->base.num_insns == 1);
+     }
  
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 902cd642ae..f22ec3aeb3 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4273,7 +4273,7 @@ static const TranslatorOps hppa_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
-     translator_loop(cs, tb, max_insns, pc, host_pc, &hppa_tr_ops, &ctx.base);
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c6894d66b1..c97d1e3da8 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -7084,7 +7084,7 @@ static const TranslatorOps i386_tr_ops = {
- 
- /* generate intermediate code for basic block 'tb'.  */
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
- 
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index a75fed1d98..d80a9a3d86 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -326,7 +326,7 @@ static const TranslatorOps loongarch_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
+-    HEX_DEBUG_LOG("decode_packet: pc = 0x%x\n", ctx->base.pc_next);
++    HEX_DEBUG_LOG("decode_packet: pc = 0x%" VADDR_PRIx "\n",
++                  ctx->base.pc_next);
+     HEX_DEBUG_LOG("    words = { ");
+     for (int i = 0; i < nwords; i++) {
+         HEX_DEBUG_LOG("0x%x, ", words[i]);
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index d22df2a8dc..3408385fa1 100644
+index 3408385fa1..a51fdef32a 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -6105,7 +6105,7 @@ static const TranslatorOps m68k_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
-     translator_loop(cpu, tb, max_insns, pc, host_pc, &m68k_tr_ops, &dc.base);
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 49bfb4a0ea..2e628647d1 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -1792,7 +1792,7 @@ static const TranslatorOps mb_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
-     translator_loop(cpu, tb, max_insns, pc, host_pc, &mb_tr_ops, &dc.base);
+@@ -1474,7 +1474,7 @@ DISAS_INSN(undef)
+      * for the 680x0 series, as well as those that are implemented
+      * but actually illegal for CPU32 or pre-68020.
+      */
+-    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %08x\n",
++    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %" VADDR_PRIx "\n",
+                   insn, s->base.pc_next);
+     gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
+ }
 diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index adbdcb1472..2cc4945793 100644
+index 2cc4945793..c5a7378dee 100644
 --- a/target/mips/tcg/translate.c
 +++ b/target/mips/tcg/translate.c
-@@ -15555,7 +15555,7 @@ static const TranslatorOps mips_tr_ops = {
- };
+@@ -4585,8 +4585,8 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc,
  
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
+     if (ctx->hflags & MIPS_HFLAG_BMASK) {
+ #ifdef MIPS_DEBUG_DISAS
+-        LOG_DISAS("Branch in delay / forbidden slot at PC 0x"
+-                  TARGET_FMT_lx "\n", ctx->base.pc_next);
++        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
++                  VADDR_PRIx "\n", ctx->base.pc_next);
+ #endif
+         gen_reserved_instruction(ctx);
+         goto out;
+@@ -9061,8 +9061,8 @@ static void gen_compute_branch1_r6(DisasContext *ctx, uint32_t op,
  
-diff --git a/target/nios2/translate.c b/target/nios2/translate.c
-index e806623594..3078372b36 100644
---- a/target/nios2/translate.c
-+++ b/target/nios2/translate.c
-@@ -1036,7 +1036,7 @@ static const TranslatorOps nios2_tr_ops = {
- };
+     if (ctx->hflags & MIPS_HFLAG_BMASK) {
+ #ifdef MIPS_DEBUG_DISAS
+-        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
+-                  "\n", ctx->base.pc_next);
++        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
++                  VADDR_PRIx "\n", ctx->base.pc_next);
+ #endif
+         gen_reserved_instruction(ctx);
+         return;
+@@ -11275,8 +11275,8 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
  
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
-     translator_loop(cs, tb, max_insns, pc, host_pc, &nios2_tr_ops, &dc.base);
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index ecff4412b7..d4cbc5eaea 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -1658,7 +1658,7 @@ static const TranslatorOps openrisc_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 329da4d518..049f636927 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -7518,7 +7518,7 @@ static const TranslatorOps ppc_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index f0be79bb16..6341e4aab0 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1286,7 +1286,7 @@ static const TranslatorOps riscv_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index f8860830ae..dd3b396946 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -2271,7 +2271,7 @@ static const TranslatorOps rx_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
- 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 4bae1509f5..f35999ffc0 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -6528,7 +6528,7 @@ static const TranslatorOps s390x_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc;
- 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index cbd8dfc02f..a48aef2cbe 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -2300,7 +2300,7 @@ static const TranslatorOps sh4_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
- 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index f92ff80ac8..28cd3510e1 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -5709,7 +5709,7 @@ static const TranslatorOps sparc_tr_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc = {};
- 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 1b625629bb..b26aa8098f 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -8448,7 +8448,7 @@ static const TranslatorOps tricore_tr_ops = {
- 
- 
- void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext ctx;
-     translator_loop(cs, tb, max_insns, pc, host_pc,
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index 54bee7ddba..47f321a720 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -1256,7 +1256,7 @@ static const TranslatorOps xtensa_translator_ops = {
- };
- 
- void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
--                           target_ulong pc, void *host_pc)
-+                           vaddr pc, void *host_pc)
- {
-     DisasContext dc = {};
-     translator_loop(cpu, tb, max_insns, pc, host_pc,
+     if (ctx->hflags & MIPS_HFLAG_BMASK) {
+ #ifdef MIPS_DEBUG_DISAS
+-        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
+-                  "\n", ctx->base.pc_next);
++        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
++                  VADDR_PRIx "\n", ctx->base.pc_next);
+ #endif
+         gen_reserved_instruction(ctx);
+         return;
 -- 
 2.43.0
 
