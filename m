@@ -2,69 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D384832E5B
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A565C832E64
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 18:53:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQsy2-0001s0-5r; Fri, 19 Jan 2024 12:47:46 -0500
+	id 1rQt3L-0003Hp-DV; Fri, 19 Jan 2024 12:53:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsxz-0001rH-LN
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:47:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rQsxv-0002pB-3f
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:47:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705686457;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7ycOGw+ownpgUzMGvWMdKxUPFl0FrgBPZH5QjVks0Rg=;
- b=GInP989TNUiKm4G6Kypk+uPBii2B+m3m6Aznwrtv+wE4bnn+o55ac1EjUy+sAKDcTJ2hhr
- 9WO2HqQOlwjF5vHPNmE9WkmgM7TDCvPdu+8vIo0IMaB5w8JlEKpaRyFIym32iqady7vOuG
- mE1gY5LPEla/xRq5GXWsOmWpDFYVXLg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-QdltjCszOF2LcA8h3DenbQ-1; Fri, 19 Jan 2024 12:47:36 -0500
-X-MC-Unique: QdltjCszOF2LcA8h3DenbQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0751C8E4144;
- Fri, 19 Jan 2024 17:47:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 52FC251D5;
- Fri, 19 Jan 2024 17:47:35 +0000 (UTC)
-Date: Fri, 19 Jan 2024 18:47:34 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Ari Sundholm <ari@tuxera.com>
-Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: Re: [PATCH v3] block/blklogwrites: Protect mutable driver state with
- a mutex.
-Message-ID: <Zaq1tkw1E2RFZm1n@redhat.com>
-References: <f1960d8d-352e-4e1b-4d28-7a110e272356@tuxera.com>
- <20240119162913.2620245-1-ari@tuxera.com>
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1rQt3I-0003He-3W
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:53:12 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1rQt3G-0004Tk-BB
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 12:53:11 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e76626170so11058645e9.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1705686787; x=1706291587; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=axyLgFdo3SkFiBQBMs8p0RGIUChbsdr7UT58XJRSXHs=;
+ b=VWquy3SzPibxq2LbZZv1h6PBG4AJBbvNH4DsoWn8aQia4FhDKsLf1pQHQmYM4H6+S8
+ FgEXQIyX6fG8PuZPFVcddJ9O5NIt9+l/veqp0EFEkcBrdl2H8/FJUpxenqrHtjREBnY2
+ DRCWUasH81VqiUEvRFNy3sxTOetvx4zBvJE40=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705686787; x=1706291587;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=axyLgFdo3SkFiBQBMs8p0RGIUChbsdr7UT58XJRSXHs=;
+ b=coRl4m3tRltErgy3Gv1RcitPHJGkwb2uL2l5jLHfOETyxxhDF340oilwFah7x3aOUb
+ qajtwllX1XMJzEaCEPFNQJhvpKr2lYyFjv9FSPD3fGmd9QvlZ7D0i25fY+19xaNzYMrX
+ 2bz9fW6Ipg4hPMvKodLJXxX+ZQb5kO9VTzs7HEHhM+iybJaYbJlsD5+Tc8U/gE0ixFLW
+ FQ/fp0btGiRFLOiXacriaYJSGrRKy+d7eud2NjkbZJjh3IbHKEzlEsx8RYPE5OGUvU9h
+ ab5T4qdoFB05f4KdVfRm0O4OHNI+XRTchpU9qmUpqVrZdGfWtALzR2HHs58FkgRhsmOI
+ EWEw==
+X-Gm-Message-State: AOJu0YylHTxl6nluOf3PollqxUOMf0JthCp2yssWWFIgHJFxIxotvSEQ
+ wFPY7afcqkSjBJ+58pyO41ZJoXu7d3rHJY4jq5y4kzEJQd5Z+yFDRM17oVkWm3xAbmbSXhLcKkS
+ 54g==
+X-Google-Smtp-Source: AGHT+IGJ9k7Y3LjG3criYldcau8k3PAnlmxH8QoSWTi6/kclAd3uANJ7HRQzkHkvBkSjEk+z/164sw==
+X-Received: by 2002:a05:600c:46d3:b0:40e:74fd:51f2 with SMTP id
+ q19-20020a05600c46d300b0040e74fd51f2mr68636wmo.23.1705686787259; 
+ Fri, 19 Jan 2024 09:53:07 -0800 (PST)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com.
+ [209.85.208.52]) by smtp.gmail.com with ESMTPSA id
+ 7-20020a0564021f4700b00557de30e1f1sm10877595edz.74.2024.01.19.09.53.06
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 19 Jan 2024 09:53:06 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id
+ 4fb4d7f45d1cf-55a62fad701so111a12.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 09:53:06 -0800 (PST)
+X-Received: by 2002:a05:6402:3126:b0:55a:465a:45a5 with SMTP id
+ dd6-20020a056402312600b0055a465a45a5mr2699edb.4.1705686786702; Fri, 19 Jan
+ 2024 09:53:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240119162913.2620245-1-ari@tuxera.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20231003204500.518-1-gurchetansingh@chromium.org>
+ <87wms9d0fi.fsf@alyssa.is>
+In-Reply-To: <87wms9d0fi.fsf@alyssa.is>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Fri, 19 Jan 2024 09:52:53 -0800
+X-Gmail-Original-Message-ID: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
+Message-ID: <CAAfnVBmiaesEQkZOk4zf08JTh-WM3tqNT8RoyaL=49Lm--5HSQ@mail.gmail.com>
+Subject: Re: [PATCH v15 0/9] rutabaga_gfx + gfxstream
+To: Alyssa Ross <hi@alyssa.is>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, 
+ akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org, 
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org, 
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
 X-Spam_bar: ----
 X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,38 +101,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.01.2024 um 17:29 hat Ari Sundholm geschrieben:
-> During the review of a fix for a concurrency issue in blklogwrites,
-> it was found that the driver needs an additional fix when enabling
-> multiqueue, which is a new feature introduced in QEMU 9.0, as the
-> driver state may be read and written by multiple threads at the same
-> time, which was not the case when the driver was originally written.
-> 
-> Fix the multi-threaded scenario by introducing a mutex to protect the
-> mutable fields in the driver state, and always having the mutex locked
-> by the current thread when accessing them. Also use the mutex and a
-> CoQueue to ensure that the super block is not being written to by
-> multiple threads concurrently and updates are properly serialized.
-> 
-> Additionally, add the const qualifier to a few BDRVBlkLogWritesState
-> pointer targets in contexts where the driver state is not written to.
-> 
-> Signed-off-by: Ari Sundholm <ari@tuxera.com>
-> 
-> v1->v2: Ensure that the super block is not written to concurrently.
-> v2->v3: Use a CoQueue instead of a condition variable, as the latter
-> does not make the currently executing coroutine yield on entering a
-> wait.
-> ---
->  block/blklogwrites.c | 85 +++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 77 insertions(+), 8 deletions(-)
+On Tue, Jan 16, 2024 at 2:42=E2=80=AFAM Alyssa Ross <hi@alyssa.is> wrote:
+>
+> Hi Gurchetan,
+>
+> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+>
+> > - As mentioned in v14:
+> >     * AEMU: d6e6b99 "Delete VpxFrameParser.cpp"
+> >     * gfxstream: 2131f78d Merge "gfxstream: add egl & gles deps.."
+> >
+> > are the proposed v.0.1.2 release points.  If those commits are sufficie=
+nt
+> > for packaging AEMU + gfxstream, let me know and I'll have official rele=
+ase
+> > tags made.  If additional changes are required for packaging, let me kn=
+ow
+> > as well.
+>
+> Were these releases ever made?
 
-For your next series, please put the changelog between versions below
-the "---" marker so that git am doesn't consider it part of the commit
-message.
+Thanks for the reminder.  I did make a request to create the release
+tags, but changes were requested by Fedora packaging effort:
 
-Thanks, applied to the block branch.
+https://bugzilla.redhat.com/show_bug.cgi?id=3D2242058
+https://bugzilla.redhat.com/show_bug.cgi?id=3D2241701
 
-Kevin
+So the request was canceled, but never re-requested.  I'll fire off
+another request, with:
 
+gfxstream: 23d05703b94035ac045df60823fb1fc4be0fdf1c ("gfxstream:
+manually add debug logic")
+AEMU: dd8b929c247ce9872c775e0e5ddc4300011d0e82 ("aemu: improve licensing")
+
+as the commits.  These match the Fedora requests, and the AEMU one has
+been merged into Fedora already it seems.
+
+>
+>
+> The gfxstream ref mentioned here isn't compatible with
+> v0.1.2-rutabaga-release, because it no longer provides logging_base.pc,
+> and this email is the last mention I can find of these releases.
+>
+> In Nixpkgs, I've gone for packaging gfxstream and aemu with your initial
+> proposed release points, which works fine, but it would be great to have
+> this clearer upstream.
 
