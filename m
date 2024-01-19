@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0490B8330AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BACF8330B0
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQx0x-0004PK-DI; Fri, 19 Jan 2024 17:07:03 -0500
+	id 1rQx3V-0006K2-6N; Fri, 19 Jan 2024 17:09:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx0u-0004P1-Vr
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:07:00 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx3R-0006I5-IH
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:09:37 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx0s-0003lF-Lv
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:07:00 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40e586a62f7so14376715e9.2
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:06:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx3O-0004BB-9j
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:09:36 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-337b583453bso1190539f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:09:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705702016; x=1706306816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705702172; x=1706306972; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Svj6rBdujdVK5IvwDYFsEMyWWvimTiYPtbnJDAnh4to=;
- b=Z+RwWy40KK85synkstM+YnAtEIn4HmfnP0+8z2zqOs3QtATBHX9LiHaIUY1XVnPAEG
- jv4zZUxzqm600mk1SDpml8UO2pAXDqCuzn8TTto6CALnsDwUvTVwggq1IumPE2wpNZGa
- NJKWTNvXQ065We3HJT9085OVg9I6k60HR6BKNFmdhXCeEUdFgf7/pSVuoWVVmLx1vJ/u
- ZCrskVU+XqgeNngCAosprnqYTaiEh/10/8ise358hwovVGoT545MDvBhCNAnk9AB7sfK
- yCQovmHRJXBVrKQey/f5NBct4kSY+VyvHHFQGcsib7OfNKT3v/v2qAZo2o6MjPlpxWju
- GrEQ==
+ bh=2kWvwYum0VJeUadMbcb0UAEo5a7kX9/EZDRsw8Xkk9I=;
+ b=Yvn7ksCEJ852n4pQ82kH4PeXBGfk9XRBkJNWp/+7Hf5B8l89pBuR0UVa/cdbRNiHaC
+ RHh1luh0kLfAqU2ArMxnaHHXebcQapEnat9ldg4FbHR0hzO1BATlkd5D2TldwTDGkiO6
+ wkoQI6OnclO1GH8mK/Dk6QcU+o1BMBpYBfhUGZrCX5bcqNswmZUNq9Ol5qATawHnsfNC
+ YV1NSRPiI4t/pjI6kXitk9zjbPE3qnxN+mzHQMD9K1kMwv9UxmIpQaydlMjcglg7h52Z
+ lrOvCjdcgrNPF2svfjGMAa22jdJDyhfG+ioHHyfTsZSkfOBzJvhTEICIgjQIf4NuV2Gm
+ R59A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705702016; x=1706306816;
+ d=1e100.net; s=20230601; t=1705702172; x=1706306972;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Svj6rBdujdVK5IvwDYFsEMyWWvimTiYPtbnJDAnh4to=;
- b=ZpjBeAcyDSHxENPzcx6IL/P+jl8RYzawrEYzvLJIMOs/a9tpmMRm9CQv1MG23PoTc2
- Wxk/As1OOZxnA5noOk/G4U0dizHH0YzgbTKJkRuEAvRhtpDpfbc11fMCkNHMHHaOHMB+
- g+a1ccAX2k8Ig7w5vCcqD1Oc00JdmiD74iNlWdgZn9QVD5I7NuYFIFSfyeLHBvXiDrvj
- m8ytVgFbNIDKw5O4OIxsT6zt9fL7Dkm/WokdJVdMtdX1SDEZhBNX3PTxMoAMIkXv+Idf
- IW4U97avqB9igqPtMtUHpZr0qn/0XArQXlqkxR2szxqeb7iQbO6T5zeiLRtqRkZ8vw2f
- RI+Q==
-X-Gm-Message-State: AOJu0Yw6+pjcZj5GwTi+NAuOTREc1er32AQPX1foDzux13MaUE0WrR/9
- n5umIuUz+H0b/tC9NCUe1Mha3LwUx8gHrgIVNIeszufoQw6Cu+S//I9rc5Hv4Ug=
-X-Google-Smtp-Source: AGHT+IEBdy9RGp0dIJ9xH037QQAjcjsi3gyuC6/bNBZOMEeci++CE89cQJUxWm6YyAIFl7ipw1EZfQ==
-X-Received: by 2002:a05:600c:4ecc:b0:40e:779f:416 with SMTP id
- g12-20020a05600c4ecc00b0040e779f0416mr292750wmq.2.1705702016520; 
- Fri, 19 Jan 2024 14:06:56 -0800 (PST)
+ bh=2kWvwYum0VJeUadMbcb0UAEo5a7kX9/EZDRsw8Xkk9I=;
+ b=dGrsBU6aqFal0bsUbL6uIcv/Dqj17c9QCnSlxsF1WkGla1U//sqhmZqMCz+5YoZ1vK
+ JjLEDI/D4eAOJ0HndTfSj0xPLMCHgfFkCkJaovr+m0dqle88W73apQ2cI0PYWgt7pmiU
+ ouF9QzA5nlQWMbLwDlvmCMCf1W0d4kAvhbfkn9hynPrQg6uNudgxswyABQlaCr6relwc
+ zZ1cFgSZyL0Zo95NL49xwW5y0jgT3TH/p8oN4sVjaSW4nYI+tM7BNCdk6PT9y103g7ZN
+ uxdeEY8ZnlsFBUhI/v+23GfzQVL5zh1TnMZQ2RDWgH9ERi5TmPZz9KI7OlsYEvjb/TMG
+ /hAg==
+X-Gm-Message-State: AOJu0YxWqt1Y2SnVTdaTVNTi3WpOKYpIOfalo/nOhi0IdEiWRqdEsCv9
+ RNd/rgUeaOaN+weya3hKqihvLg5EVuV6nPsH02Pb4waxJIoJL4lRheNjkZnnwECDNm2SN2SA5A8
+ B
+X-Google-Smtp-Source: AGHT+IFD5V+u0iFuL7FlxxmIx7JPNCFWntR5H31Kd7BIxUUn1FZq6Z0lVx4d1D0ESmTxO63svhWipA==
+X-Received: by 2002:a7b:cbc7:0:b0:40e:4919:e2f0 with SMTP id
+ n7-20020a7bcbc7000000b0040e4919e2f0mr164859wmi.232.1705702172645; 
+ Fri, 19 Jan 2024 14:09:32 -0800 (PST)
 Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
  by smtp.gmail.com with ESMTPSA id
- q7-20020adffec7000000b0033926505eafsm350322wrs.32.2024.01.19.14.06.55
+ h6-20020a05600c350600b0040c6d559490sm30475433wmq.3.2024.01.19.14.09.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 14:06:56 -0800 (PST)
-Message-ID: <ae955912-8a77-4c96-8525-500dc6e7c357@linaro.org>
-Date: Fri, 19 Jan 2024 23:06:55 +0100
+ Fri, 19 Jan 2024 14:09:32 -0800 (PST)
+Message-ID: <15d41678-1b41-4d26-a029-bc8bcdf1d933@linaro.org>
+Date: Fri, 19 Jan 2024 23:09:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] hw/arm: Unconditionally map MMIO-based USB host
- controllers
+Subject: Re: [PATCH v3 17/38] tcg/aarch64: Support TCG_COND_TST{EQ,NE}
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
- qemu-arm@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
-References: <20240115165615.78323-1-philmd@linaro.org>
- <CAFEAcA9abVk_BvWYE6ctcsLrk0CP=aqy38ncgxNrooNroe_1mA@mail.gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com
+References: <20240110224408.10444-1-richard.henderson@linaro.org>
+ <20240110224408.10444-18-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9abVk_BvWYE6ctcsLrk0CP=aqy38ncgxNrooNroe_1mA@mail.gmail.com>
+In-Reply-To: <20240110224408.10444-18-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,25 +93,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/1/24 17:51, Peter Maydell wrote:
-> On Mon, 15 Jan 2024 at 16:56, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> When a chipset contain a USB controller, we can not simply
->> remove it. We could disable it, but that requires more changes
->> this series isn't aiming for. For more context:
->> https://lore.kernel.org/qemu-devel/56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net/
->>
->> Philippe Mathieu-Daudé (2):
->>    hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
->>    hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
->>
-> 
-> 
-> 
-> Applied to target-arm.next, thanks.
+On 10/1/24 23:43, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/aarch64/tcg-target-con-set.h |  5 +--
+>   tcg/aarch64/tcg-target-con-str.h |  1 +
+>   tcg/aarch64/tcg-target.h         |  2 +-
+>   tcg/aarch64/tcg-target.c.inc     | 56 ++++++++++++++++++++++----------
+>   4 files changed, 44 insertions(+), 20 deletions(-)
 
-Thanks! I posted a v2 with the requested changes (mention
-migration compat break):
-https://lore.kernel.org/qemu-devel/20240119215106.45776-1-philmd@linaro.org/
+To the best of my Aarch64 knowledge:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
