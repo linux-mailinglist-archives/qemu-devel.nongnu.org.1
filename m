@@ -2,58 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF1F8322A0
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 01:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D85B18322FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 02:34:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQcim-0002aU-6m; Thu, 18 Jan 2024 19:26:56 -0500
+	id 1rQdlG-0001r7-51; Thu, 18 Jan 2024 20:33:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1rQcig-0002Zv-5x; Thu, 18 Jan 2024 19:26:50 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQdlD-0001qg-RY
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 20:33:31 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
- id 1rQcic-0007wI-5u; Thu, 18 Jan 2024 19:26:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gibson.dropbear.id.au; s=202312; t=1705623993;
- bh=E5vRK98821mixwQn5/gcb+pipGyCgafkNBbklm2VjqE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=f+ZEM+2iCByMlzk0VqeKKXlpIVhjynWdE9ti3X5UuBcogEoDvn3ilGVRXwlRBNgAs
- WGlvdWElpUIDDGwuCPT6kjw9lHOdJuyEzNtbLZVsmXqAEw/Dh5/aLgvSK0RZoRNAnL
- TOu+Zx+UwwLQenD1vfQ/db/+n81OsghAqVjb6LOE4gqtqwjhlWD99p53dp45UiQymQ
- K8c7rTmmY9vIgRCTbLx81/lRl11KTCLx03+7rGY91k3Z+yFchDJ1o+CAH1ik6C/OMK
- TdB/wrQxHwx49EWq+YmjSBKfopp4cwShRYxIq6qliFFshmsP4ytFhRCgZX8u2F/i2X
- jazqNu3HvbvrA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
- id 4TGL5P6fcFz4xPy; Fri, 19 Jan 2024 11:26:33 +1100 (AEDT)
-Date: Fri, 19 Jan 2024 11:23:22 +1100
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- =?iso-8859-1?Q?Fr=E9d=E9ric?= Barrat <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/8] ppc/spapr|pnv: Remove SAO from pa-features when
- running MTTCG
-Message-ID: <ZanA-usH_Ec0uqie@zatzit>
-References: <20240118140942.164319-1-npiggin@gmail.com>
- <20240118140942.164319-3-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rQdlC-0001Bt-79
+ for qemu-devel@nongnu.org; Thu, 18 Jan 2024 20:33:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705628009;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9gLQFJ2rXGHD53e2/0wegQRH+iKPbk+pOGpcvu5oxvI=;
+ b=G/it/uECO2q+zAatcFwePvJA95BoQLdC55FrTeiUdkfBJLaM45RGkfVwBbjm7xHV66XCGf
+ PLg19NH2XlHnaVcFmZQQFKlMHJnRS3C2oJb4Q67a1ntLdmI+4PPBk3VCe3VrcXhq//vjXO
+ T9FGlfybTIU+i8/yVn6hezGwfhiSvFo=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-220-Hk8XWcJEPp6Kovt2yfBSjw-1; Thu, 18 Jan 2024 20:33:22 -0500
+X-MC-Unique: Hk8XWcJEPp6Kovt2yfBSjw-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-29028fd04c9so84359a91.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Jan 2024 17:33:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705628001; x=1706232801;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9gLQFJ2rXGHD53e2/0wegQRH+iKPbk+pOGpcvu5oxvI=;
+ b=CTn4dHEwE9mszWN9nGjfmaGobeq5NMTKTrbDHsJ25LPLLfWjRMi+ERr9nMHRzGls2v
+ jXlRkNI/aLUwuU5BQGdzNUnEHsK9PhH7DF0fFrSlLE+xAeEU/PndQ67MCzyxlhh/n6gS
+ dZgYSOkQRuAyq7QoNxa3nhVXX5hbzOyVO0ruTddIrFJa7SbmSy+kE5k+GjNmVq7IKsgk
+ 0FOumsr8Pxm87kM0WrMPR+pg27RNHvyFzElrLPHy374fNTt7C7mTjUdFjSjtB03p0qVg
+ 6OUbkL6x05qRnaTeAJLC/Ngwf+7YZ44AD1kVX0mX4E7JS+jjNGHP6JV5vlVux/LFFb3Q
+ HUGw==
+X-Gm-Message-State: AOJu0Yw3AKMDiI6SG+vPq0vLRkz6GZpSHlABKeY4w358VTXUjSabEOhd
+ QIQGr79ZOud0S2tM5oQupB+LGcXJw0d4nW+NVmzyN0T3Bk8QgkWUVAx1gmRv6R4b8aPmuCF55S+
+ H35bNWc54TFxBOmg6H/ltznTyll2ow0TRt5saRVp2VbVABYyBwokA
+X-Received: by 2002:a17:90b:238d:b0:290:172f:3b1a with SMTP id
+ mr13-20020a17090b238d00b00290172f3b1amr853006pjb.3.1705628001590; 
+ Thu, 18 Jan 2024 17:33:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPx8Cs6IMKV1DUHSdH6sx5uvfj6cKVEuoNxtS6CYQ+u/G7KX8j3bnrjxjHYzXcp7A2NZaO7g==
+X-Received: by 2002:a17:90b:238d:b0:290:172f:3b1a with SMTP id
+ mr13-20020a17090b238d00b00290172f3b1amr852991pjb.3.1705628001254; 
+ Thu, 18 Jan 2024 17:33:21 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ px7-20020a17090b270700b0028ffc524086sm2614919pjb.24.2024.01.18.17.33.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Jan 2024 17:33:20 -0800 (PST)
+Date: Fri, 19 Jan 2024 09:33:12 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com,
+ Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v3 19/30] migration/ram: Ignore multifd flush when
+ doing fixed-ram migration
+Message-ID: <ZanRWFw1kvm051rB@x1n>
+References: <20231127202612.23012-1-farosas@suse.de>
+ <20231127202612.23012-20-farosas@suse.de> <ZaY9Bl4GOD9BbumD@x1n>
+ <87a5p3de0v.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="J3Jry2VAgZW4Ykea"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240118140942.164319-3-npiggin@gmail.com>
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=dgibson@gandalf.ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+In-Reply-To: <87a5p3de0v.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.806,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,102 +100,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Jan 17, 2024 at 03:13:20PM -0300, Fabiano Rosas wrote:
+> >> @@ -3242,8 +3243,11 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+> >>  out:
+> >>      if (ret >= 0
+> >>          && migration_is_setup_or_active(migrate_get_current()->state)) {
+> >> -        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+> >> -            ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
+> >> +        if (migrate_multifd() &&
+> >> +            (migrate_multifd_flush_after_each_section() ||
+> >> +             migrate_fixed_ram())) {
+> >> +            ret = multifd_send_sync_main(
+> >> +                rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
+> >
+> > Why you want this one?  ram_save_iterate() can be called tens for each
+> > second iiuc.
+> >
+> 
+> AIUI, this is a requirement for live migration, so that we're not
+> sending the new version of the page while the old version is still in
+> transit.
+> 
+> > There's one more?  ram_save_complete():
+> >
+> >     if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
+> >         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+> >     }
+> >
+> > IIUC that's the one you referred to at [1] above, not sure why you modified
+> > the code in ram_save_iterate() instead.
+> >
+> 
+> I mentioned it in the commit message as well:
+> 
+> " - between iterations, to avoid a slow channel being overrun by a fast
+>  channel in the subsequent iteration;"
 
---J3Jry2VAgZW4Ykea
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+IMHO you only need to flush all threads in find_dirty_block(). That's when
+the "real iteration" happens (IOW, when the "real iteration" is defined to
+be a full walk across all guest memories, rather than one single call to
+ram_save_iterate()).
 
-On Fri, Jan 19, 2024 at 12:09:36AM +1000, Nicholas Piggin wrote:
-> SAO is a page table attribute that strengthens the memory ordering of
-> accesses. QEMU with MTTCG does not implement this, so clear it in
-> ibm,pa-features. There is a complication with spapr migration that is
-> addressed with comments, it is not a new problem here.
->=20
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  hw/ppc/pnv.c   |  5 +++++
->  hw/ppc/spapr.c | 15 +++++++++++++++
->  2 files changed, 20 insertions(+)
->=20
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index b949398689..4969fbdb05 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -158,6 +158,11 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, =
-void *fdt)
->      char *nodename;
->      int cpus_offset =3D get_cpus_node(fdt);
-> =20
-> +    if (qemu_tcg_mttcg_enabled()) {
-> +        /* SSO (SAO) ordering is not supported under MTTCG. */
-> +        pa_features[4 + 2] &=3D ~0x80;
-> +    }
-> +
->      nodename =3D g_strdup_printf("%s@%x", dc->fw_name, pc->pir);
->      offset =3D fdt_add_subnode(fdt, cpus_offset, nodename);
->      _FDT(offset);
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 021b1a00e1..1c79d5670d 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -284,6 +284,21 @@ static void spapr_dt_pa_features(SpaprMachineState *=
-spapr,
->          return;
->      }
-> =20
-> +    if (qemu_tcg_mttcg_enabled()) {
-> +        /*
-> +         * SSO (SAO) ordering is not supported under MTTCG, so disable i=
-t.
-> +         * There is no cap for this, so there is a migration bug here.
-> +         * However don't disable it entirely, to allow it to be used und=
-er
-> +         * KVM. This is a minor concern because:
-> +         * - SAO is an obscure an rarely (if ever) used feature.
-> +         * - SAO is removed from POWER10 / v3.1, so there is already a
-> +         *   migration problem today.
-> +         * - Linux does not test this pa-features bit today anyway, so i=
-t's
-> +         *   academic.
-> +         */
-> +        pa_features[4 + 2] &=3D ~0x80;
+Multifd used to do too many flushes, and that's why we had the new
+migrate_multifd_flush_after_each_section() and it's a bit of a mess if you
+see..
 
-Oof.. I see the reasoning but modifying guest visible parameters based
-on host capabilities without a cap really worries me nonetheless.
+To be super safe, you can also flush at ram_save_complete(), but I doubt
+its necessity, and this same question applies to generic multifd: the
+multifd_send_sync_main() in the ram_save_complete() can be redundant,
+afaiu.  However we can leave that for later to not add even more dependency
+to fixed-ram.  If that is justified, we can remove the sync_main for both
+socket / file then.
 
-> +    }
-> +
->      if (ppc_hash64_has(cpu, PPC_HASH64_CI_LARGEPAGE)) {
->          /*
->           * Note: we keep CI large pages off by default because a 64K cap=
-able
+-- 
+Peter Xu
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---J3Jry2VAgZW4Ykea
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmWpwPkACgkQzQJF27ox
-2GfW1RAAijs4z6eTB2nCcNvgy1jMuKfPgcM614xksj05W7DRZcyX4hla1DOSPZvK
-e3TJGWWqZGn0FZrakAdk/52A+Vx47G+KIvTAlhZAVks0nDzTssLR3wTE/Mem0EJ5
-4ubAVzxBPMRqPg+8ehDrKIN1Pj/zeFxD5AqapvmLpLHSFNGb9saxeY9ed/Qeu7MV
-TnTbB0pO6PlB20ubcz62zG74J9zh8uZqBhFVS7fSImMWe4T5u4/RTvVCCVJA14fp
-rO2dbTBNU6rDgexSrgXNh1X8eqWxQvheBvdseZnnEJN7jqUSMydT/8lnQopv2Fy3
-zbkNd+T5W0U64hmnB7zj4ztho7LlQXuD1mjgIszbx8ptgMjoqfpinrwO8HCjSBr1
-OYNCYJqTeUykoeQVmRrpKKV5LieVgsyy1/Av2F1AP8FUHPufFH/PMKxwWN3JiENp
-3xXefp7JoCT1kWi3//n8S5iLmFxHHLjOHAwKW2jmmunvpJhXzK3qp4w6tMhsJHWd
-tiC84UYHAweO+RpB+xXQMMdAsRClrSYUeqoyrrlGsmjoZ7jamTWC9ybbtuPmi2ex
-5ZlSIuR3fAmvsRYprkyFDoAlnKBk3ZxGTsh4I2gHQt7VDjjAyHI6l/Fjo4yreVq2
-70EhGAk1lYY5uZkQviHsr7MI2luk5YiaKYOuF99rV+6k4EKCVdg=
-=J3eO
------END PGP SIGNATURE-----
-
---J3Jry2VAgZW4Ykea--
 
