@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AF4833096
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0490B8330AE
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Jan 2024 23:08:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQwtz-0008OP-15; Fri, 19 Jan 2024 16:59:51 -0500
+	id 1rQx0x-0004PK-DI; Fri, 19 Jan 2024 17:07:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwtr-0008Ns-Bu
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:59:44 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx0u-0004P1-Vr
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:07:00 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQwtj-0006fF-PQ
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 16:59:40 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40e884de7b9so15559755e9.0
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 13:59:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rQx0s-0003lF-Lv
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 17:07:00 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-40e586a62f7so14376715e9.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 14:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705701573; x=1706306373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705702016; x=1706306816; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Kl1Aj3Nba/TDVWXooCBmkMuMhPrC7ydl0q22iuI5fDI=;
- b=mbKXQMFnakysvl6kgqaBlF306tvkNCz6IRQDZX7eiubBuHNiAvj5X3Nzpi3/llxPxS
- qQaMhfRNSXWr88wH/+Tydf85zsiiLWVIuEgyKIYiGfp5HGWgDCF4hHNdAEdMv40tgo2q
- og9Fbcz8dKVRrwJ1WHFeuy5Q7UAMANmsU7UcgAozY4yoXrWBtQ7ydq8IPzrGoy/Vlt3W
- BpnJF7y1Vnnvv2QrlQBoIseOf38DAFdPokT0unU7shFVCH1Lmc5iJ75I5YvH1koeLjkH
- DADn2RT7i9epyfKvElDB+vIQC4M1WS+EVXnrL69t6rJQbDJutmR6fhHb0DdaD119pZ6i
- ezog==
+ bh=Svj6rBdujdVK5IvwDYFsEMyWWvimTiYPtbnJDAnh4to=;
+ b=Z+RwWy40KK85synkstM+YnAtEIn4HmfnP0+8z2zqOs3QtATBHX9LiHaIUY1XVnPAEG
+ jv4zZUxzqm600mk1SDpml8UO2pAXDqCuzn8TTto6CALnsDwUvTVwggq1IumPE2wpNZGa
+ NJKWTNvXQ065We3HJT9085OVg9I6k60HR6BKNFmdhXCeEUdFgf7/pSVuoWVVmLx1vJ/u
+ ZCrskVU+XqgeNngCAosprnqYTaiEh/10/8ise358hwovVGoT545MDvBhCNAnk9AB7sfK
+ yCQovmHRJXBVrKQey/f5NBct4kSY+VyvHHFQGcsib7OfNKT3v/v2qAZo2o6MjPlpxWju
+ GrEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705701573; x=1706306373;
+ d=1e100.net; s=20230601; t=1705702016; x=1706306816;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Kl1Aj3Nba/TDVWXooCBmkMuMhPrC7ydl0q22iuI5fDI=;
- b=OHjHsQwvtXifgp4yoy/vTFZBJAFT4LqbNcnDaxZy2brP9UPppvceud9xjwy2x8rZA0
- gsjMBbrnQXm50vAWAxQdJTON3X+DDl+3Wzq1Yqnkntb31pWyweMzDVahZSwsXbj5kKeQ
- ua2Ta6QzKc6vCgN0Aj41eDo775cb5b9ND3zwOGxnqZpoz0XG6iqHdkD3MuXzrI+7Utnx
- +8Pdg6vKIOVeHOjiKUJm0wonDed6TiKLk7IyEFMC2JtFwPUowKGDqtTuP5Vo7BDxKb35
- uW6Id6qdhDcZ3x1PTRmOqPDTFIrOaeHPeUcPswt+dOfWv4IHZCv8L0afZ7uBbjbKTPep
- VGSw==
-X-Gm-Message-State: AOJu0YzLep4UXC/px4fDF0qZSas070sk7ymDfdcC5YdWhAE+exBEDqmY
- iFfChkWV6MmoUFJlQAxFX9ISwMBKD31nwlo09l1mxpz2uCBPkmcU201bDd/Swtk=
-X-Google-Smtp-Source: AGHT+IHuKiptYd6oVoKQcQxgUb0ihObkNMi3b5MMF9+ilpsmFNQE86HdRdEy3BGfynJwNmhEhKjXRg==
-X-Received: by 2002:a05:600c:4191:b0:40e:8d64:d9c5 with SMTP id
- p17-20020a05600c419100b0040e8d64d9c5mr221195wmh.83.1705701573274; 
- Fri, 19 Jan 2024 13:59:33 -0800 (PST)
+ bh=Svj6rBdujdVK5IvwDYFsEMyWWvimTiYPtbnJDAnh4to=;
+ b=ZpjBeAcyDSHxENPzcx6IL/P+jl8RYzawrEYzvLJIMOs/a9tpmMRm9CQv1MG23PoTc2
+ Wxk/As1OOZxnA5noOk/G4U0dizHH0YzgbTKJkRuEAvRhtpDpfbc11fMCkNHMHHaOHMB+
+ g+a1ccAX2k8Ig7w5vCcqD1Oc00JdmiD74iNlWdgZn9QVD5I7NuYFIFSfyeLHBvXiDrvj
+ m8ytVgFbNIDKw5O4OIxsT6zt9fL7Dkm/WokdJVdMtdX1SDEZhBNX3PTxMoAMIkXv+Idf
+ IW4U97avqB9igqPtMtUHpZr0qn/0XArQXlqkxR2szxqeb7iQbO6T5zeiLRtqRkZ8vw2f
+ RI+Q==
+X-Gm-Message-State: AOJu0Yw6+pjcZj5GwTi+NAuOTREc1er32AQPX1foDzux13MaUE0WrR/9
+ n5umIuUz+H0b/tC9NCUe1Mha3LwUx8gHrgIVNIeszufoQw6Cu+S//I9rc5Hv4Ug=
+X-Google-Smtp-Source: AGHT+IEBdy9RGp0dIJ9xH037QQAjcjsi3gyuC6/bNBZOMEeci++CE89cQJUxWm6YyAIFl7ipw1EZfQ==
+X-Received: by 2002:a05:600c:4ecc:b0:40e:779f:416 with SMTP id
+ g12-20020a05600c4ecc00b0040e779f0416mr292750wmq.2.1705702016520; 
+ Fri, 19 Jan 2024 14:06:56 -0800 (PST)
 Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
  by smtp.gmail.com with ESMTPSA id
- fk4-20020a05600c0cc400b0040e7efb1ff2sm16173025wmb.37.2024.01.19.13.59.32
+ q7-20020adffec7000000b0033926505eafsm350322wrs.32.2024.01.19.14.06.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 13:59:32 -0800 (PST)
-Message-ID: <fdb51ece-8520-45f0-aec4-f6c1c7388168@linaro.org>
-Date: Fri, 19 Jan 2024 22:59:32 +0100
+ Fri, 19 Jan 2024 14:06:56 -0800 (PST)
+Message-ID: <ae955912-8a77-4c96-8525-500dc6e7c357@linaro.org>
+Date: Fri, 19 Jan 2024 23:06:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/38] target/s390x: Use TCG_COND_TSTNE for
- CC_OP_{TM,ICM}
+Subject: Re: [PATCH 0/2] hw/arm: Unconditionally map MMIO-based USB host
+ controllers
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, qemu-s390x <qemu-s390x@nongnu.org>
-References: <20240110224408.10444-1-richard.henderson@linaro.org>
- <20240110224408.10444-15-richard.henderson@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Beniamino Galvani <b.galvani@gmail.com>,
+ qemu-arm@nongnu.org, Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
+References: <20240115165615.78323-1-philmd@linaro.org>
+ <CAFEAcA9abVk_BvWYE6ctcsLrk0CP=aqy38ncgxNrooNroe_1mA@mail.gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240110224408.10444-15-richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA9abVk_BvWYE6ctcsLrk0CP=aqy38ncgxNrooNroe_1mA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,70 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/24 23:43, Richard Henderson wrote:
-> These are all test-and-compare type instructions.
+On 19/1/24 17:51, Peter Maydell wrote:
+> On Mon, 15 Jan 2024 at 16:56, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> When a chipset contain a USB controller, we can not simply
+>> remove it. We could disable it, but that requires more changes
+>> this series isn't aiming for. For more context:
+>> https://lore.kernel.org/qemu-devel/56fde49f-7dc6-4f8e-9bbf-0336a20a9ebf@roeck-us.net/
+>>
+>> Philippe Mathieu-Daudé (2):
+>>    hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
+>>    hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
+>>
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/s390x/tcg/translate.c | 18 +++++++-----------
->   1 file changed, 7 insertions(+), 11 deletions(-)
 > 
-> diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-> index 62ab2be8b1..ae4e7b27ec 100644
-> --- a/target/s390x/tcg/translate.c
-> +++ b/target/s390x/tcg/translate.c
-> @@ -754,10 +754,10 @@ static void disas_jcc(DisasContext *s, DisasCompare *c, uint32_t mask)
->       case CC_OP_TM_64:
->           switch (mask) {
->           case 8:
-> -            cond = TCG_COND_EQ;
-> +            cond = TCG_COND_TSTEQ;
->               break;
->           case 4 | 2 | 1:
-> -            cond = TCG_COND_NE;
-> +            cond = TCG_COND_TSTNE;
->               break;
->           default:
->               goto do_dynamic;
-> @@ -768,11 +768,11 @@ static void disas_jcc(DisasContext *s, DisasCompare *c, uint32_t mask)
->       case CC_OP_ICM:
->           switch (mask) {
->           case 8:
-> -            cond = TCG_COND_EQ;
-> +            cond = TCG_COND_TSTEQ;
->               break;
->           case 4 | 2 | 1:
->           case 4 | 2:
-> -            cond = TCG_COND_NE;
-> +            cond = TCG_COND_TSTNE;
->               break;
->           default:
->               goto do_dynamic;
-> @@ -854,18 +854,14 @@ static void disas_jcc(DisasContext *s, DisasCompare *c, uint32_t mask)
->           c->u.s64.a = cc_dst;
->           c->u.s64.b = tcg_constant_i64(0);
->           break;
-> +
->       case CC_OP_LTGT_64:
->       case CC_OP_LTUGTU_64:
-> -        c->u.s64.a = cc_src;
-> -        c->u.s64.b = cc_dst;
-> -        break;
-> -
->       case CC_OP_TM_32:
->       case CC_OP_TM_64:
->       case CC_OP_ICM:
-> -        c->u.s64.a = tcg_temp_new_i64();
-> -        c->u.s64.b = tcg_constant_i64(0);
-> -        tcg_gen_and_i64(c->u.s64.a, cc_src, cc_dst);
-> +        c->u.s64.a = cc_src;
-> +        c->u.s64.b = cc_dst;
->           break;
->   
->       case CC_OP_ADDU:
+> 
+> Applied to target-arm.next, thanks.
 
-To the best of my s390x knowledge:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks! I posted a v2 with the requested changes (mention
+migration compat break):
+https://lore.kernel.org/qemu-devel/20240119215106.45776-1-philmd@linaro.org/
 
 
