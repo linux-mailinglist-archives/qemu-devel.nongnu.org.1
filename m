@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAACD8333BD
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 12:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6328F8333D4
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 12:21:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR97e-0002eO-K8; Sat, 20 Jan 2024 06:02:46 -0500
+	id 1rR9O9-0001IV-67; Sat, 20 Jan 2024 06:19:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR97V-0002dp-44
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:02:40 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR9O6-0001Hg-Kh
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:19:46 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR97R-0003DA-5E
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:02:35 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40e7065b692so17026545e9.3
- for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 03:02:32 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR9O4-0002U5-Oj
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:19:46 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e913e3f03so19618965e9.3
+ for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 03:19:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705748551; x=1706353351; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705749583; x=1706354383; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=FOobVmEprJ3LsAG4vcFFuSSmIIPEXnWH6LVvQAkcv6c=;
- b=Z+KK4jFQu6w50fu5geXO/gFbLZpjbhxp54x108EX0LoJfBOLazuHnItXKChnVz8EfC
- DnUH9A3hBJ69YyZjN7FlYaqEecwvqVd8NeRgJKNTD2gVfE1b89Ta16q6jE95PIfJ6Wqi
- G29RA0hcEU9Sj9FeNFtzFqFigee1JheTtRpxtzgDp6c81sNvUyt8JUeylB5Gx6MRMyB2
- JjJuY5whB494Oz6mI3/MUplD71IN+UY/kTbeNUeMdAmm7Z7EW4+m6ZJMmYTmb3rs4mjx
- JtwnEHJ3WA4eTwMFaX9lIyugv7ECl3rbHzdBOdQV6dhSc3x0+yAcUZ6P9pzkmtNxI7IC
- oiMQ==
+ bh=8XxT+zWpinE2KG9kFzoXNAjkwKzRav0ogGN/bs3kOtA=;
+ b=L0acavYvbc48RprLlhncwl0jmH+79zoiwxJyCD31tyyv4P31zKsOS/+kdsDwau/+fu
+ J7t5soP/EnTp4TY0PYlDzaU+aHRdJJ/CQhXqFFAxcyFiUzlPHjb7cZHDJNdwphfgNLbG
+ 4jE+ViS2TaIYYTMtnworIazxL++hJL6bggSTZ9h6eC6bw4o9ZEQhQiT07/LhmnOMEe1o
+ FtVRdAfOw5EDRU6+IW5DIf/UbTzqEWlRpJ3a0/MrIzGol8TQQGhPXICGY/fHCZUtuD7D
+ xxLAa8MFj69kKKT9MFXpLmipT9z99CIrDeEV07izNvZ1O4F/H8ZmZA346XYE10JtKEMU
+ yVsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705748551; x=1706353351;
+ d=1e100.net; s=20230601; t=1705749583; x=1706354383;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FOobVmEprJ3LsAG4vcFFuSSmIIPEXnWH6LVvQAkcv6c=;
- b=RNuK8Hwi11nXdOyzqmyUY3qFWruXxe3QPM1zcoh/OJNvfVSKKcZqGrUjGjVIyR/dJP
- pc9rbj9P1yg/bkjHFbxinxgqdVYRKF2NTLjsdEyKHkQumI9dXndQsZslXfVypsutNFiH
- /DT3NrzsGVb3qHI/9a6225pk97u1vpLrzqSEEf+5Dl4PTeVu/COtNSxXhOSL/vWUFSUl
- LlUpjrF6mpap7hO6Suo8Dhp907LDRzw0eS6GsTihICbFIlpPYsx1JNFO+IsFqIS7e3tU
- IhEwp/qmaFNwUN9z1+Yn5yigwA5kPOhGB8sQLJjOacFP6F7UbeEyuH7aPhdT/x3WCkgO
- s8tw==
-X-Gm-Message-State: AOJu0YxNqhXirK2oSDYmVfGtTQu+T1MXFEcPyb4rzwzk+NmEWfzTcKvE
- b/EODkkKP3XoWEsMFU8NIdpjGv+Bmx4KEsp2CgSVV0jq2sdIXOrjcgSmq/ORrc6kmlljYHJZccP
- h
-X-Google-Smtp-Source: AGHT+IGby+O0apPINmn7UUT0VRXADep2p+M7gjrWvU2b0pEYqjeHtvm9hHgWzvWFX1DhYVW4RIb2Ew==
-X-Received: by 2002:a05:600c:1906:b0:40e:a3b8:a2b0 with SMTP id
- j6-20020a05600c190600b0040ea3b8a2b0mr469975wmq.5.1705748550906; 
- Sat, 20 Jan 2024 03:02:30 -0800 (PST)
+ bh=8XxT+zWpinE2KG9kFzoXNAjkwKzRav0ogGN/bs3kOtA=;
+ b=F+DiFD2/vw0Ld4+oD+BqLqY4+RGhSYeJOtUX7DMKFXh4WPp1IBiWgkhi19fQAFT9lG
+ ZTaxC2LJ2E4wo6Ge7voUwLggCp83V57t+p74SDtuAWFS1aKsHwaCWNDCOvsuqYbTJWYy
+ eEip3yual9oBKj/Xc9ukALPjdKRUyHQqiTErfa18Db5QvGpcSA/ki2qYrTRD2OJgttJX
+ bJPSZb7pOXvBric8/6Aigfv4V8M3sOvK53MEIdxBFxeni9Yl6VCwg0UnJOi4dDAFtC40
+ 6NZCaf8iRlBgZoKgJ43GylMYCE5P7EKwLOHfqglcBKClihh7fwHuAF0YMnJUc39TShEu
+ 2ULQ==
+X-Gm-Message-State: AOJu0Yx4fx0N0hDGX1XkXTAiHh/9gY5vZvxhREwShfi315YjWI+RWacx
+ FPhfo32tacBaDMKJFgD7T/1BHOgifeEIQEdFwWHwNRVCIa5NQ/eJ5IVF4BI4OEE=
+X-Google-Smtp-Source: AGHT+IFeRqlQpTVghYSZbIMa2TVn/xfZqF3lbNoW8//VFD+tLWk9RN6sz3C1UsI0fc+046lC5Ql2pg==
+X-Received: by 2002:a05:600c:a43:b0:40e:62aa:fa7b with SMTP id
+ c3-20020a05600c0a4300b0040e62aafa7bmr718082wmq.111.1705749582784; 
+ Sat, 20 Jan 2024 03:19:42 -0800 (PST)
 Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
  by smtp.gmail.com with ESMTPSA id
- g6-20020a05600c4ec600b0040e6b0a1bc1sm25268398wmq.12.2024.01.20.03.02.30
+ n18-20020a05600c3b9200b0040e4ca7fcb4sm32238107wms.37.2024.01.20.03.19.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 20 Jan 2024 03:02:30 -0800 (PST)
-Message-ID: <afeb22db-736f-496e-b9a0-f64625aef4d8@linaro.org>
-Date: Sat, 20 Jan 2024 12:02:29 +0100
+ Sat, 20 Jan 2024 03:19:42 -0800 (PST)
+Message-ID: <2ce78985-6262-4d9e-9079-24947e62ed85@linaro.org>
+Date: Sat, 20 Jan 2024 12:19:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 26/38] tcg/i386: Use TEST r,r to test 8/16/32 bits
+Subject: Re: [PATCH] fsl-imx6ul: Add various missing unimplemented devices
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20240110224408.10444-1-richard.henderson@linaro.org>
- <20240110224408.10444-27-richard.henderson@linaro.org>
+To: Guenter Roeck <linux@roeck-us.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Jean-Christophe Dubois <jcd@tribudubois.net>
+References: <20240120005356.2599547-1-linux@roeck-us.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240110224408.10444-27-richard.henderson@linaro.org>
+In-Reply-To: <20240120005356.2599547-1-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,18 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/24 23:43, Richard Henderson wrote:
-> From: Paolo Bonzini <pbonzini@redhat.com>
+On 20/1/24 01:53, Guenter Roeck wrote:
+> Add MMDC, OCOTP, SQPI, CAAM, and USBMISC as unimplemented devices.
 > 
-> Just like when testing against the sign bits, TEST r,r can be used when the
-> immediate is 0xff, 0xff00, 0xffff, 0xffffffff.
+> This allows operating systems such as Linux to run emulations such as
+> mcimx6ul-evk.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Before commit 0cd4926b85 ("Refactor i.MX6UL processor code"), the affected
+> memory ranges were covered by the unimplemented DAP device. The commit
+> reduced the DAP address range from 0x100000 to 4kB, and the emulation
+> thus no longer covered the various unimplemented devices in the affected
+> address range.
+> 
+> Fixes: 0cd4926b85 ("Refactor i.MX6UL processor code")
+> Cc: Jean-Christophe Dubois <jcd@tribudubois.net>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > ---
->   tcg/i386/tcg-target.c.inc | 17 +++++++++++++++++
->   1 file changed, 17 insertions(+)
+> This patch is necessary to boot mcimx6ul-evk with Linux v6.7.
+> 
+> My apologies for the noise if a similar patch has already been submitted
+> and I missed it.
+> 
+>   hw/arm/fsl-imx6ul.c         | 30 ++++++++++++++++++++++++++++++
+>   include/hw/arm/fsl-imx6ul.h |  2 ++
+>   2 files changed, 32 insertions(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
