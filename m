@@ -2,100 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447388331AA
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 00:44:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 966BC8331FF
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 01:54:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQyWk-0006fW-QO; Fri, 19 Jan 2024 18:43:58 -0500
+	id 1rQzba-0001qo-Na; Fri, 19 Jan 2024 19:53:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQyWi-0006fD-Pg
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:43:56 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rQyWh-0002fi-6f
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 18:43:56 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 03FF11F818;
- Fri, 19 Jan 2024 23:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705707834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OntPJWnvs95mgXlCUBrMbQE7wqOTjtNG7ktI29DZ60g=;
- b=UU/2rCRyzaxNCL4utPlcN/LUIxFiNEBg9W3yumcMs01Qcf5jyf63sqGADWoCv8LvuC0HEW
- S+w/EOo0a7e3i1iauLE99mS5oMbKi1Bp8yHj9ADIFJ/t0O2f1dWffJxXJUVcZ3m0ExTSuh
- YJAcZiiOJmkJMAyKmmBfdl2KOZkpZsM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705707834;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OntPJWnvs95mgXlCUBrMbQE7wqOTjtNG7ktI29DZ60g=;
- b=86Xvyd9hmMZxJd/NdYXRt62kJ617CBMSvZK4+mC2gaok1bKmjcfwKGRi19iTxv1QOka72i
- WcGnEnSuMDN8W4DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705707834; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OntPJWnvs95mgXlCUBrMbQE7wqOTjtNG7ktI29DZ60g=;
- b=UU/2rCRyzaxNCL4utPlcN/LUIxFiNEBg9W3yumcMs01Qcf5jyf63sqGADWoCv8LvuC0HEW
- S+w/EOo0a7e3i1iauLE99mS5oMbKi1Bp8yHj9ADIFJ/t0O2f1dWffJxXJUVcZ3m0ExTSuh
- YJAcZiiOJmkJMAyKmmBfdl2KOZkpZsM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705707834;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OntPJWnvs95mgXlCUBrMbQE7wqOTjtNG7ktI29DZ60g=;
- b=86Xvyd9hmMZxJd/NdYXRt62kJ617CBMSvZK4+mC2gaok1bKmjcfwKGRi19iTxv1QOka72i
- WcGnEnSuMDN8W4DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D4FD1375D;
- Fri, 19 Jan 2024 23:43:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 7qQRETkJq2WEVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 19 Jan 2024 23:43:53 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1rQzbX-0001qU-Gd
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:52:59 -0500
+Received: from mgamail.intel.com ([192.55.52.120])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1rQzbV-0000HA-69
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:52:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705711977; x=1737247977;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xpMDzIHqzApRxub5vxUFd2LIh2G+nE3xd3Hb1B1F9bo=;
+ b=ZOIgTimrT3AWzF/iefGbCUvghc1Cfhj0CJpZyKvEwiYGjVH/w8S6yKXi
+ Rboi+OgXtcIhhcOlzefCqNWClyCZzk65lpJLpSx3nPzxk9jRzgFoywAcP
+ V2nJdpRVomYWqK2Y+p65dvDwK3T+7C+INo5JfCePPaS7xd/GYxV51FfKZ
+ ZfcLYsjMWNhLXhSSNUxFNLC1J8OD1cCnSJYmvVf5K9ZMPltaPSickTqH5
+ cFi2uLhPKHPUGdAJ0CBup3p29/ant6LrKUBH94sa/mEVeg7VjSGeIO8qh
+ /aYE2/uPPmlVbIGjqcdfdrXbre01ugUgIirc+tYFkbQrSljDtd8rQLtXg Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="399763749"
+X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="399763749"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2024 16:52:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="904297434"
+X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="904297434"
+Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2024 16:52:52 -0800
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 1/5] migration: Fix use-after-free of migration state
- object
-In-Reply-To: <20240119233922.32588-2-farosas@suse.de>
-References: <20240119233922.32588-1-farosas@suse.de>
- <20240119233922.32588-2-farosas@suse.de>
-Date: Fri, 19 Jan 2024 20:43:50 -0300
-Message-ID: <87ttn8vqh5.fsf@suse.de>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
+Subject: [PATCH v1 0/7] ui/spice: Enable gl=on option for non-local or remote
+ clients
+Date: Fri, 19 Jan 2024 16:30:06 -0800
+Message-Id: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -1.42
-X-Spamd-Result: default: False [-1.42 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-0.12)[67.11%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_TWO(0.00)[2];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.120;
+ envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -113,24 +79,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+To address the limitation that this option is incompatible with
+remote clients, this patch series adds an option to select a
+preferred codec and also enable gl=on option for clients that
+are connected via the network. In other words, with this option
+enabled (and the below linked Spice series merged), it would be
+possible to have Qemu share a dmabuf fd with Spice, which would
+then forward it to a hardware or software based encoder and
+eventually send the data associated with the fd to a client that
+could be located on a different machine.
 
-> We're currently allowing the process_incoming_migration_bh bottom-half
-> to run without holding a reference to the 'current_migration' object,
-> which leads to a segmentation fault if the BH is still live after
-> migration_shutdown() has dropped the last reference to
-> current_migration.
->
-> In my system the bug manifests as migrate_multifd() returning true
-> when it shouldn't and multifd_load_shutdown() calling
-> multifd_recv_terminate_threads() which crashes due to an uninitialized
-> multifd_recv_state.
->
-> Fix the issue by holding a reference to the object when scheduling the
-> BH and dropping it before returning from the BH. The same is already
-> done for the cleanup_bh at migrate_fd_cleanup_schedule().
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Tested with: -device virtio-vga,max_outputs=1,xres=1920,yres=1080
+             -spice port=3001,gl=on,disable-ticketing=on,preferred-codec=gstreamer:h264
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1969
+and remote-viewer --spice-debug spice://x.x.x.x:3001 on the client side.
+
+---
+Associated Spice server patches can be found here:
+https://lists.freedesktop.org/archives/spice-devel/2023-December/053288.html
+
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Frediano Ziglio <freddy77@gmail.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+
+Vivek Kasireddy (7):
+  ui/spice: Add an option for users to provide a preferred codec
+  ui/spice: Enable gl=on option for non-local or remote clients
+  ui/spice: Submit the gl_draw requests at 60 FPS for remote clients
+  ui/console-gl: Add an option to override a surface's glformat
+  ui/spice: Override the surface's glformat when gl=on is enabled
+  ui/console-gl: Add a helper to create a texture with linear memory
+    layout
+  ui/spice: Create another texture with linear layout when gl=on is
+    enabled
+
+ include/ui/console.h       |  2 +
+ include/ui/spice-display.h |  1 +
+ include/ui/surface.h       |  1 +
+ qemu-options.hx            |  5 +++
+ ui/console-gl.c            | 32 ++++++++++++++++
+ ui/spice-core.c            | 16 ++++++++
+ ui/spice-display.c         | 75 +++++++++++++++++++++++++++++++++-----
+ 7 files changed, 122 insertions(+), 10 deletions(-)
+
+-- 
+2.39.2
+
 
