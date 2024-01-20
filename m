@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2679B833688
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 22:47:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E635B833686
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 22:47:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRJA1-0006tl-Ln; Sat, 20 Jan 2024 16:45:53 -0500
+	id 1rRJ9z-0006sT-Dx; Sat, 20 Jan 2024 16:45:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9x-0006s6-Ov
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:49 -0500
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9x-0006s7-P7
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:50 -0500
 Received: from todd.t-8ch.de ([159.69.126.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9u-0008A6-QM
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9v-00089r-Jc
  for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1705787141; bh=GKphi3SnzBrLWdNbMAbEC03yt732UAoayHsOeiLhWAg=;
+ t=1705787141; bh=dbh+bIjKa1C8kqFOnFCmAjsBglPryxzUjTBooCsU9zc=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=nw4w/gon05X/JaM8EicXOtYB0oqvrJHe1XHvwTvJ8OyifFiLGFndyMbEmS7hYvmTf
- Tipo8fMDVKEkbWr4n4benw74BTNAwd3Z3KhMKQXjMdTcRiMaryvmx+fmi7P/wSt696
- I3Syzj4wY9OCoq3zbhRry54L+G5u9qCWGiXx9S0E=
+ b=BdEn63ZLi8t/QSNAcWBoluRf/uwvULQwNvu0usC1Ag9zMnW2+ZXLcCdpCTA2br5HL
+ in77vuUbDkWebtJwLYr67LXkTo8HLz28rdElrkrsbzxEXsl4cwKOhFblEBa4IlnZJH
+ uRM96LcwgYx+SKW84QrN9qftyxOkk9B1e5E1a+w4=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Sat, 20 Jan 2024 22:45:24 +0100
-Subject: [PATCH v3 1/2] linux-user/elfload: test return value of getrlimit
+Date: Sat, 20 Jan 2024 22:45:25 +0100
+Subject: [PATCH v3 2/2] linux-user/elfload: check PR_GET_DUMPABLE before
+ creating coredump
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
+Message-Id: <20240120-qemu-user-dumpable-v3-2-6aa410c933f1@t-8ch.de>
 References: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
 In-Reply-To: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
 To: Laurent Vivier <laurent@vivier.eu>
@@ -36,11 +37,11 @@ Cc: qemu-devel@nongnu.org,
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>, 
  Richard Henderson <richard.henderson@linaro.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705787141; l=891;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705787141; l=1100;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=GKphi3SnzBrLWdNbMAbEC03yt732UAoayHsOeiLhWAg=;
- b=tWc9LNQQ59NCpb+pKekzt6s8W6APkl8pL6nsOI2uC3iFrnhlbWKvxkb9k5Mj6tNctG+50sK1Z
- 6oe2JtloolxBy9kExuL0dX+qybJTCD8o3vdsYoSGJ5pK/ODY8o31x95
+ bh=dbh+bIjKa1C8kqFOnFCmAjsBglPryxzUjTBooCsU9zc=;
+ b=aLfoaPrngn/sYo9CWNAgWa4woJiFVVM8K9S6WpDwjTJVCWqZJ/BQeXeXgZoCrvazNl+dsqUfK
+ 4MUeXI5FeQ9BDC7xcOenMfuaHhvmb26Jma01xeBN/06/FZ9+B7IToBZ
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
@@ -66,32 +67,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Should getrlimit() fail the value of dumpsize.rlimit_cur may not be
-initialized. Avoid reading garbage data by checking the return value of
-getrlimit.
+A process can opt-out of coredump creation by calling
+prctl(PR_SET_DUMPABLE, 0).
+linux-user passes this call from the guest through to the
+operating system.
+From there it can be read back again to avoid creating coredumps from
+qemu-user itself if the guest chose so.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
- linux-user/elfload.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cf9e74468b11..c5968719380a 100644
+index c5968719380a..daf7ef843564 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4667,9 +4667,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+@@ -2,6 +2,7 @@
+ #include "qemu/osdep.h"
+ #include <sys/param.h>
+ 
++#include <sys/prctl.h>
+ #include <sys/resource.h>
+ #include <sys/shm.h>
+ 
+@@ -4667,6 +4668,11 @@ static int elf_core_dump(int signr, const CPUArchState *env)
      init_note_info(&info);
  
      errno = 0;
--    getrlimit(RLIMIT_CORE, &dumpsize);
--    if (dumpsize.rlim_cur == 0)
-+    if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
-         return 0;
++
++    if (prctl(PR_GET_DUMPABLE) == 0) {
++        return 0;
 +    }
- 
-     corefile = core_dump_filename(ts);
- 
++
+     if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
+         return 0;
+     }
 
 -- 
 2.43.0
