@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C86B833394
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 11:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C5483339B
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 11:29:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR8Qv-0006cy-Ko; Sat, 20 Jan 2024 05:18:37 -0500
+	id 1rR8aj-0000r7-Ca; Sat, 20 Jan 2024 05:28:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rR8Qr-0006Y9-4p; Sat, 20 Jan 2024 05:18:34 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rR8af-0000qz-JT
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 05:28:41 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rR8Qn-0001wR-Dp; Sat, 20 Jan 2024 05:18:32 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rR8ad-00077q-NV
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 05:28:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F12AE45AEA;
- Sat, 20 Jan 2024 13:18:48 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 62DEF45AEE;
+ Sat, 20 Jan 2024 13:29:09 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B323967C5F;
- Sat, 20 Jan 2024 13:18:14 +0300 (MSK)
-Message-ID: <789d8190-6d14-46ff-89a8-c7f2457ecc15@tls.msk.ru>
-Date: Sat, 20 Jan 2024 13:18:14 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 066EF67C68;
+ Sat, 20 Jan 2024 13:28:34 +0300 (MSK)
+Message-ID: <45c13c08-c539-4daf-892e-db2e9360a186@tls.msk.ru>
+Date: Sat, 20 Jan 2024 13:28:34 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] hw/pflash: implement update buffer for block writes
+Subject: Re: [PATCH] hw/elf_ops: Ignore loadable segments with zero size
 Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>
-References: <20240108160900.104835-1-kraxel@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+References: <20240116155049.390301-1-bmeng@tinylab.org>
+ <8ecba163-cd69-4adf-96aa-95f46a0d07e9@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -58,9 +58,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240108160900.104835-1-kraxel@redhat.com>
+In-Reply-To: <8ecba163-cd69-4adf-96aa-95f46a0d07e9@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -84,25 +84,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-08.01.2024 19:08, Gerd Hoffmann:
-> When running qemu with edk2 efi firmware on aarch64 the efi
-> variable store in pflash can get corrupted.  qemu not doing
-> proper block writes -- flush all or nothing to storage -- is
-> a hot candidate for being the root cause.
+16.01.2024 19:38, Richard Henderson wrote:
+> On 1/17/24 02:50, Bin Meng wrote:
+>> Some ELF files really do have segments of zero size, e.g.:
+>>
+>> Program Headers:
+>>    Type           Offset             VirtAddr           PhysAddr
+>>                   FileSiz            MemSiz              Flags  Align
+>>    RISCV_ATTRIBUT 0x00000000000025b8 0x0000000000000000 0x0000000000000000
+>>                   0x000000000000003e 0x0000000000000000  R      0x1
+>>    LOAD           0x0000000000001000 0x0000000080200000 0x0000000080200000
+>>                   0x00000000000001d1 0x00000000000001d1  R E    0x1000
+>>    LOAD           0x00000000000011d1 0x00000000802001d1 0x00000000802001d1
+>>                   0x0000000000000e37 0x0000000000000e37  RW     0x1000
+>>    LOAD           0x0000000000000120 0x0000000000000000 0x0000000000000000
+>>                   0x0000000000000000 0x0000000000000000         0x1000
+>>
+>> The current logic does not check for this condition, resulting in
+>> the incorrect assignment of 'lowaddr' as zero.
+>>
+>> There is already a piece of codes inside the segment traversal loop
+>> that checks for zero-sized loadable segments for not creating empty
+>> ROM blobs. Let's move this check to the beginning of the loop to
+>> cover both scenarios.
+>>
+>> Signed-off-by: Bin Meng <bmeng@tinylab.org>
 > 
-> This little series tries to fix that with an update buffer
-> where block writes are staged, so we can commit or discard
-> the changes when the block write is completed or canceled.
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> But please report this as a bug to whatever tool produced such nonsense.
 
-It looks like we can pick this up for stable too.  It's not
-usual to pick up new features for stable, but this one fixes
-actual bug and if not applied, can easily lead to data corruption.
-
-I'd pick it up for 8.2.x and 8.1.x at least.
-
-Thoughts?
-
-Thanks,
+I think we've an old bug about this in debian bts, https://bugs.debian.org/919921 .
 
 /mjt
 
