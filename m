@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63DE833369
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B88A83336C
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:55:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR82m-00083E-PO; Sat, 20 Jan 2024 04:53:40 -0500
+	id 1rR82q-000845-5T; Sat, 20 Jan 2024 04:53:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82j-00081O-Oz
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82j-00081C-KD
  for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82h-00063D-1c
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82g-000632-Gr
  for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705744414;
+ s=mimecast20190719; t=1705744413;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y8RGbW2k8yCXApTfT7sSr7/FCzzhW9sTMtnFpEvy0Z4=;
- b=PRspgrHrUPfcFS8vhhnmVs4LCR9VR+SjupAxjNJTvBylFLeNZ8ai+kDkUtJSGHVFU5Z77X
- 3CkxyZRmz2vQeZc+0T+pEzyqRBFDNIYz/xRfgsycIjpMkrIw3BmZGJD51Tpg4ScUUxrJHA
- fJcb7WHNhECTNVaBH3TS20eTgKCg70g=
+ bh=2UT5EfYyaBjt6eTBspgfOokgyN/jy3NM7DNZlYf958A=;
+ b=HzZRpcYxCCmPSdB0S/KLQz8UU23L5GUrWr2tJtLGIYPyT3iQpNtOwataj9BCKwsRdgOBYC
+ KsB7Bcwi1bcsRTOkQVaNXTKL4pVOIYFO4Qy7sTcUzqItVUv5GCY86hkcADluF1bEx2j1QJ
+ 8geUhcQLQ5fnGzJhImRl/YV+e74MNSg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-_4USKbRDPWuTyRSPf-0sHg-1; Sat, 20 Jan 2024 04:53:30 -0500
-X-MC-Unique: _4USKbRDPWuTyRSPf-0sHg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-28-8wcRV3mXOq-YHKqvl8Jl0w-1; Sat, 20 Jan 2024 04:53:30 -0500
+X-MC-Unique: 8wcRV3mXOq-YHKqvl8Jl0w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1D8A1066140;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5823800074;
  Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.246])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B45C21C02EB3;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B419B492BC6;
  Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6127E21E660C; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
+ id 6404E21E65C3; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com,
 	peter.maydell@linaro.org,
 	jsnow@redhat.com
-Subject: [PATCH 6/7] qapi: Indent tagged doc comment sections properly
-Date: Sat, 20 Jan 2024 10:53:26 +0100
-Message-ID: <20240120095327.666239-7-armbru@redhat.com>
+Subject: [PATCH 7/7] qapi: Fix malformed "Since:" section tags (again)
+Date: Sat, 20 Jan 2024 10:53:27 +0100
+Message-ID: <20240120095327.666239-8-armbru@redhat.com>
 In-Reply-To: <20240120095327.666239-1-armbru@redhat.com>
 References: <20240120095327.666239-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
@@ -82,141 +82,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-docs/devel/qapi-code-gen demands that the "second and subsequent lines
-of sections other than "Example"/"Examples" should be indented".
-Commit a937b6aa739 (qapi: Reformat doc comments to conform to current
-conventions) missed a few instances, and a few more have crept in
-since.  Indent them.
+"Since X.Y" is not recognized as a tagged section, and therefore not
+formatted as such in generated documentation.  Fix by adding the
+required colon.
+
+Previously fixed in commit 433a4fdc420 (qapi: Fix malformed "Since:"
+section tags)
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/char.json        |  4 ++--
- qapi/machine.json     | 24 ++++++++++++------------
- qapi/misc-target.json |  2 +-
- qapi/misc.json        | 10 +++++-----
- qapi/yank.json        |  4 ++--
- 5 files changed, 22 insertions(+), 22 deletions(-)
+ qapi/block-core.json |  4 ++--
+ qapi/migration.json  | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/qapi/char.json b/qapi/char.json
-index c1bab7b855..6c6ad3b10c 100644
---- a/qapi/char.json
-+++ b/qapi/char.json
-@@ -391,8 +391,8 @@
- # @rows: console height, in chars
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index ca390c5700..3919156d49 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1361,7 +1361,7 @@
+ #     target, i.e. same data and new writes are done synchronously to
+ #     both.
  #
- # Note: the options are only effective when the VNC or SDL graphical
--# display backend is active. They are ignored with the GTK, Spice, VNC
--# and D-Bus display backends.
-+#     display backend is active.  They are ignored with the GTK,
-+#     Spice, VNC and D-Bus display backends.
- #
- # Since: 1.5
+-# Since 8.2
++# Since: 8.2
  ##
-diff --git a/qapi/machine.json b/qapi/machine.json
-index b6d634b30d..aa99fa333f 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -1059,10 +1059,10 @@
- #     From it we have: balloon_size = vm_ram_size - @value
+ { 'struct': 'BlockJobInfoMirror',
+   'data': { 'actively-synced': 'bool' } }
+@@ -3080,7 +3080,7 @@
  #
- # Returns:
--# - Nothing on success
--# - If the balloon driver is enabled but not functional because the
--#   KVM kernel module cannot support it, KVMMissingCap
--# - If no balloon device is present, DeviceNotActive
-+#     - Nothing on success
-+#     - If the balloon driver is enabled but not functional because
-+#       the KVM kernel module cannot support it, KVMMissingCap
-+#     - If no balloon device is present, DeviceNotActive
+ # @type: The job type
  #
- # Notes: This command just issues a request to the guest.  When it
- #     returns, the balloon size may not have changed.  A guest can
-@@ -1097,10 +1097,10 @@
- # Return information about the balloon device.
+-# Since 8.2
++# Since: 8.2
+ ##
+ { 'union': 'BlockJobChangeOptions',
+   'base': { 'id': 'str', 'type': 'JobType' },
+diff --git a/qapi/migration.json b/qapi/migration.json
+index eb2f883513..489b591c23 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1597,7 +1597,7 @@
  #
- # Returns:
--# - @BalloonInfo on success
--# - If the balloon driver is enabled but not functional because the
--#   KVM kernel module cannot support it, KVMMissingCap
--# - If no balloon device is present, DeviceNotActive
-+#     - @BalloonInfo on success
-+#     - If the balloon driver is enabled but not functional because
-+#       the KVM kernel module cannot support it, KVMMissingCap
-+#     - If no balloon device is present, DeviceNotActive
+ # @file: Direct the migration stream to a file.
  #
- # Since: 0.14
+-# Since 8.2
++# Since: 8.2
+ ##
+ { 'enum': 'MigrationAddressType',
+   'data': [ 'socket', 'exec', 'rdma', 'file' ] }
+@@ -1609,7 +1609,7 @@
  #
-@@ -1161,10 +1161,10 @@
- # message from the guest.
+ # @offset: The file offset where the migration stream will start
  #
- # Returns:
--# - @HvBalloonInfo on success
--# - If no hv-balloon device is present, guest memory status reporting
--#   is not enabled or no guest memory status report received yet,
--#   GenericError
-+#     - @HvBalloonInfo on success
-+#     - If no hv-balloon device is present, guest memory status
-+#       reporting is not enabled or no guest memory status report
-+#       received yet, GenericError
+-# Since 8.2
++# Since: 8.2
+ ##
+ { 'struct': 'FileMigrationArgs',
+   'data': { 'filename': 'str',
+@@ -1620,7 +1620,7 @@
  #
- # Since: 8.2
+ # @args: command (list head) and arguments to execute.
  #
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 88291453ba..9195e7d26b 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -475,7 +475,7 @@
- # @port: The port number
+-# Since 8.2
++# Since: 8.2
+ ##
+ { 'struct': 'MigrationExecCommand',
+   'data': {'args': [ 'str' ] } }
+@@ -1630,7 +1630,7 @@
  #
- # Returns:
--# - Nothing on success.
-+#     - Nothing on success.
+ # Migration endpoint configuration.
  #
- # Since: 8.0
+-# Since 8.2
++# Since: 8.2
+ ##
+ { 'union': 'MigrationAddress',
+   'base': { 'transport' : 'MigrationAddressType'},
+@@ -1648,7 +1648,7 @@
  #
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 3622d98d01..2ca8c39874 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -344,9 +344,9 @@
- # @opaque: A free-form string that can be used to describe the fd.
+ # @main: Main outbound migration channel.
  #
- # Returns:
--# - @AddfdInfo on success
--# - If file descriptor was not received, GenericError
--# - If @fdset-id is a negative value, GenericError
-+#     - @AddfdInfo on success
-+#     - If file descriptor was not received, GenericError
-+#     - If @fdset-id is a negative value, GenericError
+-# Since 8.1
++# Since: 8.1
+ ##
+ { 'enum': 'MigrationChannelType',
+   'data': [ 'main' ] }
+@@ -1662,7 +1662,7 @@
  #
- # Notes: The list of fd sets is shared by all monitor connections.
+ # @addr: Migration endpoint configuration on destination interface.
  #
-@@ -374,8 +374,8 @@
- # @fd: The file descriptor that is to be removed.
+-# Since 8.1
++# Since: 8.1
+ ##
+ { 'struct': 'MigrationChannel',
+   'data': {
+@@ -2126,7 +2126,7 @@
  #
- # Returns:
--# - Nothing on success
--# - If @fdset-id or @fd is not found, GenericError
-+#     - Nothing on success
-+#     - If @fdset-id or @fd is not found, GenericError
+ # @millisecond: value is in milliseconds
  #
- # Since: 1.2
+-# Since 8.2
++# Since: 8.2
  #
-diff --git a/qapi/yank.json b/qapi/yank.json
-index 87ec7cab96..60eda20816 100644
---- a/qapi/yank.json
-+++ b/qapi/yank.json
-@@ -77,8 +77,8 @@
- # Takes a list of @YankInstance as argument.
- #
- # Returns:
--# - Nothing on success
--# - @DeviceNotFound error, if any of the YankInstances doesn't exist
-+#     - Nothing on success
-+#     - @DeviceNotFound error, if any of the YankInstances doesn't exist
- #
- # Example:
- #
+ ##
+ { 'enum': 'TimeUnit',
 -- 
 2.43.0
 
