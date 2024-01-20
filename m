@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B88A83336C
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C86B833394
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 11:20:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR82q-000845-5T; Sat, 20 Jan 2024 04:53:44 -0500
+	id 1rR8Qv-0006cy-Ko; Sat, 20 Jan 2024 05:18:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82j-00081C-KD
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rR8Qr-0006Y9-4p; Sat, 20 Jan 2024 05:18:34 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82g-000632-Gr
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705744413;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2UT5EfYyaBjt6eTBspgfOokgyN/jy3NM7DNZlYf958A=;
- b=HzZRpcYxCCmPSdB0S/KLQz8UU23L5GUrWr2tJtLGIYPyT3iQpNtOwataj9BCKwsRdgOBYC
- KsB7Bcwi1bcsRTOkQVaNXTKL4pVOIYFO4Qy7sTcUzqItVUv5GCY86hkcADluF1bEx2j1QJ
- 8geUhcQLQ5fnGzJhImRl/YV+e74MNSg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-8wcRV3mXOq-YHKqvl8Jl0w-1; Sat, 20 Jan 2024 04:53:30 -0500
-X-MC-Unique: 8wcRV3mXOq-YHKqvl8Jl0w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5823800074;
- Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.246])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B419B492BC6;
- Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6404E21E65C3; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: michael.roth@amd.com,
-	peter.maydell@linaro.org,
-	jsnow@redhat.com
-Subject: [PATCH 7/7] qapi: Fix malformed "Since:" section tags (again)
-Date: Sat, 20 Jan 2024 10:53:27 +0100
-Message-ID: <20240120095327.666239-8-armbru@redhat.com>
-In-Reply-To: <20240120095327.666239-1-armbru@redhat.com>
-References: <20240120095327.666239-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rR8Qn-0001wR-Dp; Sat, 20 Jan 2024 05:18:32 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id F12AE45AEA;
+ Sat, 20 Jan 2024 13:18:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id B323967C5F;
+ Sat, 20 Jan 2024 13:18:14 +0300 (MSK)
+Message-ID: <789d8190-6d14-46ff-89a8-c7f2457ecc15@tls.msk.ru>
+Date: Sat, 20 Jan 2024 13:18:14 +0300
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] hw/pflash: implement update buffer for block writes
+Content-Language: en-US
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20240108160900.104835-1-kraxel@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240108160900.104835-1-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,109 +84,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Since X.Y" is not recognized as a tagged section, and therefore not
-formatted as such in generated documentation.  Fix by adding the
-required colon.
+08.01.2024 19:08, Gerd Hoffmann:
+> When running qemu with edk2 efi firmware on aarch64 the efi
+> variable store in pflash can get corrupted.  qemu not doing
+> proper block writes -- flush all or nothing to storage -- is
+> a hot candidate for being the root cause.
+> 
+> This little series tries to fix that with an update buffer
+> where block writes are staged, so we can commit or discard
+> the changes when the block write is completed or canceled.
 
-Previously fixed in commit 433a4fdc420 (qapi: Fix malformed "Since:"
-section tags)
+It looks like we can pick this up for stable too.  It's not
+usual to pick up new features for stable, but this one fixes
+actual bug and if not applied, can easily lead to data corruption.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- qapi/block-core.json |  4 ++--
- qapi/migration.json  | 14 +++++++-------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+I'd pick it up for 8.2.x and 8.1.x at least.
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index ca390c5700..3919156d49 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -1361,7 +1361,7 @@
- #     target, i.e. same data and new writes are done synchronously to
- #     both.
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'struct': 'BlockJobInfoMirror',
-   'data': { 'actively-synced': 'bool' } }
-@@ -3080,7 +3080,7 @@
- #
- # @type: The job type
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'union': 'BlockJobChangeOptions',
-   'base': { 'id': 'str', 'type': 'JobType' },
-diff --git a/qapi/migration.json b/qapi/migration.json
-index eb2f883513..489b591c23 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1597,7 +1597,7 @@
- #
- # @file: Direct the migration stream to a file.
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'enum': 'MigrationAddressType',
-   'data': [ 'socket', 'exec', 'rdma', 'file' ] }
-@@ -1609,7 +1609,7 @@
- #
- # @offset: The file offset where the migration stream will start
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'struct': 'FileMigrationArgs',
-   'data': { 'filename': 'str',
-@@ -1620,7 +1620,7 @@
- #
- # @args: command (list head) and arguments to execute.
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'struct': 'MigrationExecCommand',
-   'data': {'args': [ 'str' ] } }
-@@ -1630,7 +1630,7 @@
- #
- # Migration endpoint configuration.
- #
--# Since 8.2
-+# Since: 8.2
- ##
- { 'union': 'MigrationAddress',
-   'base': { 'transport' : 'MigrationAddressType'},
-@@ -1648,7 +1648,7 @@
- #
- # @main: Main outbound migration channel.
- #
--# Since 8.1
-+# Since: 8.1
- ##
- { 'enum': 'MigrationChannelType',
-   'data': [ 'main' ] }
-@@ -1662,7 +1662,7 @@
- #
- # @addr: Migration endpoint configuration on destination interface.
- #
--# Since 8.1
-+# Since: 8.1
- ##
- { 'struct': 'MigrationChannel',
-   'data': {
-@@ -2126,7 +2126,7 @@
- #
- # @millisecond: value is in milliseconds
- #
--# Since 8.2
-+# Since: 8.2
- #
- ##
- { 'enum': 'TimeUnit',
--- 
-2.43.0
+Thoughts?
 
+Thanks,
+
+/mjt
 
