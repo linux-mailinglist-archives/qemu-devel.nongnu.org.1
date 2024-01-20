@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B2F833201
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 01:54:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EAE833203
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 01:54:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rQzbe-0001rr-Il; Fri, 19 Jan 2024 19:53:06 -0500
+	id 1rQzbi-0001t8-NS; Fri, 19 Jan 2024 19:53:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1rQzbb-0001rB-PE
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:53:03 -0500
+ id 1rQzbd-0001ru-ST
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:53:05 -0500
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1rQzba-0000HA-1R
- for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:53:03 -0500
+ id 1rQzbc-0000HV-17
+ for qemu-devel@nongnu.org; Fri, 19 Jan 2024 19:53:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705711982; x=1737247982;
+ t=1705711984; x=1737247984;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=w6zsMuKR5+dos2BSIN9Npc/spxx3lltKpXTlvh/rSkg=;
- b=dyGbyXxfsN3GGJdRD7svG8LKuvZOXpeb1P7MEOfmyGzncU4LZjbrfJ+c
- eVvpDE2OxFkEmBGqkl5w1nup4eGlSR+5fjFpDyGLO6SFXZ9/AUuHLpXB8
- mjqlopVcq0iIgoXpMJeeaXm73y5aX/+g6JC3+Dq+Tlx45N2LFvQ0F/dba
- mNp9TMSBBcCSIsEguRptoFuwldJW/evXb1C1H6vVhvyB8JHOMLgNNiE9r
- AOV5gVLJndu/SRuHe3yDvwOmYHl28dzjxxEmcjht50p7zEHKYVbQaWglY
- nq4Oo+Mx8A77icWz1O3rS5szbY59QBNNHJes/3M/IfZvPrQCOSX6EMUEJ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="399763762"
-X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="399763762"
+ bh=0l+PsH2fLrrdH4iP9164gk31Qk9B4U0bQLvvhVpe58M=;
+ b=Pv4BhBECiqxDv/7v/JMTL460RkbcL1cG7HheGgYZU1UFSuiR3i2vcW30
+ r1ao8vHTOtVqy4orCJ1f+v2Id4urqKiV+++C8xDAaGwui0mKZPGx/Koxy
+ hYtZfHhA/P9m4D4p46Xbqxo23w+PIDlNgddQtjNArTG52bNaqDoTG47DG
+ +YdArDKtyrM8nQxC1kfMS67K9XrEldQQqgApdfRXg7w+zWGVCjr41rIMI
+ wRg1Dz35dup36o7BhJnr/969KiO0GrQk5vdgMIGOW9NaDt2nl1Se1Ss6x
+ c6wFOERL8Jhr7UlKYVqeO6ZEHlVK/Upe7klbShik9ipeSwOzJzxCowtTJ A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="399763765"
+X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="399763765"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Jan 2024 16:52:52 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="904297445"
-X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="904297445"
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="904297449"
+X-IronPort-AV: E=Sophos;i="6.05,206,1701158400"; d="scan'208";a="904297449"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Jan 2024 16:52:52 -0800
@@ -47,10 +47,10 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
-Subject: [PATCH v1 4/7] ui/console-gl: Add an option to override a surface's
- glformat
-Date: Fri, 19 Jan 2024 16:30:10 -0800
-Message-Id: <20240120003013.1829757-5-vivek.kasireddy@intel.com>
+Subject: [PATCH v1 5/7] ui/spice: Override the surface's glformat when gl=on
+ is enabled
+Date: Fri, 19 Jan 2024 16:30:11 -0800
+Message-Id: <20240120003013.1829757-6-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
 References: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
@@ -81,11 +81,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In some cases where a UI component (e.g, Spice) needs to choose
-a particular glformat for a surface while creating a texture,
-this new GLenum provides an option to do so. One situation
-where this needs to be done is when the Host endianness is
-causing issues such as interchanged R and B channels.
+When testing with gl=on on an Intel Host, it was noticed that the
+R and B channels were interchanged while the Guest FB image was
+displayed. This was only seen if the display layer (virtio-gpu)
+did not directly share the dmabuf fd with Spice (i.e, blob=false).
+
+One of the main differences in the case where blob=true vs blob=false
+is that we create the dmabuf fd from a texture in the latter case
+whereas we directly pass the fd from the display layer to Spice in
+the former case. Although, the surface's format (PIXMAN_BE_b8g8r8x8)
+is the same in both cases, the creation of the texture (which involves
+copying data from Pixman image into a GPU buffer) appears to somehow
+result in having the R and B channels interchanged. One way to ensure
+correct behavior is we have glformat=GL_RGBA while creating the texture.
+
+It looks like having glformat=GL_RGBA and gltype = GL_UNSIGNED_BYTE
+should work regardless of the Host's endianness but let us limit
+this change only to this specific use-case for now.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -93,39 +105,23 @@ Cc: Frediano Ziglio <freddy77@gmail.com>
 Cc: Dongwon Kim <dongwon.kim@intel.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
- include/ui/surface.h | 1 +
- ui/console-gl.c      | 6 ++++++
- 2 files changed, 7 insertions(+)
+ ui/spice-display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/ui/surface.h b/include/ui/surface.h
-index 4244e0ca4a..a39fee55a2 100644
---- a/include/ui/surface.h
-+++ b/include/ui/surface.h
-@@ -20,6 +20,7 @@ typedef struct DisplaySurface {
-     uint8_t flags;
- #ifdef CONFIG_OPENGL
-     GLenum glformat;
-+    GLenum target_glformat;
-     GLenum gltype;
-     GLuint texture;
- #endif
-diff --git a/ui/console-gl.c b/ui/console-gl.c
-index 103b954017..dee317f42c 100644
---- a/ui/console-gl.c
-+++ b/ui/console-gl.c
-@@ -72,6 +72,12 @@ void surface_gl_create_texture(QemuGLShader *gls,
-         g_assert_not_reached();
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index 90c04623ec..08b4aec921 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -900,6 +900,9 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
      }
- 
-+    /* The caller wants to override the glformat in some specific cases */
-+    if (surface->target_glformat &&
-+        surface->target_glformat != surface->glformat) {
-+        surface->glformat = surface->target_glformat;
-+    }
-+
-     glGenTextures(1, &surface->texture);
-     glEnable(GL_TEXTURE_2D);
-     glBindTexture(GL_TEXTURE_2D, surface->texture);
+     ssd->ds = new_surface;
+     if (ssd->ds) {
++        if (remote_client && surface_format(ssd->ds) != PIXMAN_r5g6b5) {
++            ssd->ds->target_glformat = GL_RGBA;
++        }
+         surface_gl_create_texture(ssd->gls, ssd->ds);
+         fd = egl_get_fd_for_texture(ssd->ds->texture,
+                                     &stride, &fourcc,
 -- 
 2.39.2
 
