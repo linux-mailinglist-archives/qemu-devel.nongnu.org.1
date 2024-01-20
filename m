@@ -2,72 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F44683335E
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296B383336A
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:55:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR7to-0006OP-TI; Sat, 20 Jan 2024 04:44:24 -0500
+	id 1rR82l-00082M-Bh; Sat, 20 Jan 2024 04:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rR7tk-0006OF-FZ
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:44:20 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82j-00080w-Eh
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rR7ti-0001RX-9y
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:44:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705743858; x=1737279858;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=c+HAb0QhWrtxF6Hn0AxR5wtL6vM51S4sx0bPBIE+FW0=;
- b=JUK0j8RSbYayZFcSSEi1yHc7JFgN/6sTIiYTZpcHqJSd+6yHZrFqDVRf
- Tdn+GEk0Rf0Qlg30k0Sge3z/8/iFGmO+iOuNPNtUn7kHBag9sMXYHFQc5
- X/ZpZWZ+2Vd8XFYIrdF1I4OlNL5FjPb/70u6Vb3SzSaU/Gbjx+V6x9+tb
- wQsADXS6Fi2LdrMl+3HQCWvxDZN1CMIRO8mZsz6httGrK2QlndJ7F1XCx
- aMB1+LFg4z2hlEbtsou4hdDGsoQxeCcPL4i9vmdhN8J3ewRY3LXxDEoC9
- Q8IxGarWme1xYQIb5LcX1l5R0L1CQkRmyg2OWAW/m2xkVGFUMeB0O6gai A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="7606907"
-X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; 
-   d="scan'208";a="7606907"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2024 01:44:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="904379718"
-X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; d="scan'208";a="904379718"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.33.17])
- ([10.93.33.17])
- by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2024 01:44:10 -0800
-Message-ID: <b6950a34-0ef6-4945-9e50-5a47e86490e1@intel.com>
-Date: Sat, 20 Jan 2024 17:44:07 +0800
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82g-00062v-DN
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705744413;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=bXH7BJgupruC+s9ZX2NkpVYHh5sEAE1NaDZQWk+6KL4=;
+ b=F2a7z3Zw3kplVkSuy5Xjivxh/QSBNCjAJDfeWuaucZ7Hql/PKIj49dGGaOOZMRMnjZ6C0J
+ 22li2Othp8DXXwNiX4lo7zMoRUl49vuFc+fdTcjs8IrHDghqh2RyBFMeqbAcBmmhXNPC8y
+ p3D2nN5qKq64Id0rST2chYIQo97szqw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-245-qbu6qsH3N3Oz5oU4LagXEQ-1; Sat,
+ 20 Jan 2024 04:53:29 -0500
+X-MC-Unique: qbu6qsH3N3Oz5oU4LagXEQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A23E1C05154;
+ Sat, 20 Jan 2024 09:53:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.246])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 73565492BE2;
+ Sat, 20 Jan 2024 09:53:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 50C6D21E66C8; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: michael.roth@amd.com,
+	peter.maydell@linaro.org,
+	jsnow@redhat.com
+Subject: [PATCH 0/7] qapi qmp: Documentation fixes
+Date: Sat, 20 Jan 2024 10:53:20 +0100
+Message-ID: <20240120095327.666239-1-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Why invtsc (CPUID_APM_INVTSC) is unmigratable?
-To: Marcelo Tosatti <mtosatti@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Lei Wang <lei4.wang@intel.com>
-References: <825f29d7-9112-45a2-b4a3-7d3b54c3c0a2@intel.com>
- <Zaqf839r8TXvkIAf@tpad>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <Zaqf839r8TXvkIAf@tpad>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,81 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/20/2024 12:14 AM, Marcelo Tosatti wrote:
-> On Fri, Jan 19, 2024 at 02:46:22PM +0800, Xiaoyao Li wrote:
->> I'm wondering why CPUID_APM_INVTSC is set as unmigratable_flags. Could
->> anyone explain it?
-> 
-> 
-> commit 68bfd0ad4a1dcc4c328d5db85dc746b49c1ec07e
-> Author: Marcelo Tosatti <mtosatti@redhat.com>
-> Date:   Wed May 14 16:30:09 2014 -0300
-> 
->      target-i386: block migration and savevm if invariant tsc is exposed
->      
->      Invariant TSC documentation mentions that "invariant TSC will run at a
->      constant rate in all ACPI P-, C-. and T-states".
->      
->      This is not the case if migration to a host with different TSC frequency
->      is allowed, or if savevm is performed. So block migration/savevm.
-> 
-> So the rationale here was that without ensuring the destination host
-> has the same TSC clock frequency, we can't migrate.
+Markus Armbruster (7):
+  docs/devel/qapi-code-gen: Fix missing ':' in tagged section docs
+  docs: Replace dangling references to docs/interop/qmp-intro.txt
+  qapi: Fix dangling references to docs/devel/qapi-code-gen.txt
+  docs/interop/bitmaps: Clean up a reference to qemu-qmp-ref
+  qapi: Fix mangled "Returns" sections in documentation
+  qapi: Indent tagged doc comment sections properly
+  qapi: Fix malformed "Since:" section tags (again)
 
-It seems to me the concept of invtsc was extended to "tsc freq will not 
-change even after the machine is live migrated". I'm not sure it is 
-correct to extend the concept of invtsc.
+ docs/devel/qapi-code-gen.rst            |  4 ++--
+ docs/devel/writing-monitor-commands.rst |  4 ++--
+ docs/interop/bitmaps.rst                |  6 +++---
+ qapi/block-core.json                    |  4 ++--
+ qapi/char.json                          |  4 ++--
+ qapi/introspect.json                    |  2 +-
+ qapi/machine.json                       | 24 ++++++++++++------------
+ qapi/migration.json                     | 14 +++++++-------
+ qapi/misc-target.json                   |  2 +-
+ qapi/misc.json                          | 10 +++++-----
+ qapi/net.json                           | 15 +++++++++------
+ qapi/qdev.json                          |  5 +++--
+ qapi/qom.json                           | 10 ++++++----
+ qapi/yank.json                          |  4 ++--
+ include/qapi/visitor.h                  |  2 +-
+ include/qemu/yank.h                     |  2 +-
+ qapi/qapi-util.c                        |  2 +-
+ util/yank.c                             |  2 +-
+ scripts/qapi/parser.py                  |  2 +-
+ 19 files changed, 62 insertions(+), 56 deletions(-)
 
-The main reason of introducing invtsc is to tell the tsc hardware keeps 
-counting (at the same rate) even at deep C state, so long as other states.
-
-For example, a guest is created on machine A with X GHz tsc, and invtsc 
-exposed (machine A can ensure the guest's tsc counts at X GHz at any 
-state). If the guest is migrated to machine B with Y GHz tsc, and 
-machine B can also ensure the invtsc of its guest, i.e., the guest's tsc 
-counts at Y GHz at any state. IMHO, in this case, the invtsc is 
-supported at both src and dest, which means it is a migratable feature. 
-However, the migration itself fails, due to mismatched/different 
-configuration of tsc freq, not due to invtsc.
-
-> However, this was later extended to allow invtsc migratioon when setting
-> tsc-khz explicitly:
-> 
-> commit d99569d9d8562c480e0befab601756b0b7b5d0e0
-> Author: Eduardo Habkost <ehabkost@redhat.com>
-> Date:   Sun Jan 8 15:32:34 2017 -0200
-> 
->      kvm: Allow invtsc migration if tsc-khz is set explicitly
->      
->      We can safely allow a VM to be migrated with invtsc enabled if
->      tsc-khz is set explicitly, because:
->      * QEMU already refuses to start if it can't set the TSC frequency
->        to the configured value.
->      * Management software is already required to keep device
->        configuration (including CPU configuration) the same on
->        migration source and destination.
->      
->      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
->      Message-Id: <20170108173234.25721-3-ehabkost@redhat.com>
->      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
-
-But in the case that user doesn't set tsc freq explicitly, the live 
-migration is likely to fail or have issues even without invtsc exposed 
-to guest, if the destination host has a different tsc frequency than src 
-host.
-
-So why bother checking invtsc only?
-
-> And support for libvirt was added:
-> 
-> https://listman.redhat.com/archives/libvir-list/2017-January/141757.html
-> 
->>
->> When the host supports invtsc, it can be exposed to guest.
->> When the src VM has invtsc exposed, what will forbid it to be migrated to a
->> dest that also supports VMs with invtsc exposed?
->>
->>
-> 
+-- 
+2.43.0
 
 
