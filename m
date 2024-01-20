@@ -2,47 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F998833687
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 22:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2679B833688
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 22:47:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRJA1-0006tb-FS; Sat, 20 Jan 2024 16:45:53 -0500
+	id 1rRJA1-0006tl-Ln; Sat, 20 Jan 2024 16:45:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9z-0006su-MJ
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:51 -0500
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9x-0006s6-Ov
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:49 -0500
 Received: from todd.t-8ch.de ([159.69.126.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9v-00089q-Mt
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:50 -0500
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rRJ9u-0008A6-QM
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 16:45:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1705787141; bh=VHbKu6UCe0NttHrFFX9ITBcfvJ1sraAsfNyNRV3siB0=;
- h=From:Subject:Date:To:Cc:From;
- b=LtcaICOzUkbebBx8iXv2IXw9Av+EgZF9WDhEbkDqopoah2YutgJCCmGwbcrpx/rFK
- V0VZK2ybkXl4Q8maHJAdFUJIuOrvNwNgK0tNj/BOPnzuz+M2o8uTw5WsTzCJfktAim
- dGKRVhOYI0D3N7i544zNjg8/YMQo1qmxiFXbPVsU=
+ t=1705787141; bh=GKphi3SnzBrLWdNbMAbEC03yt732UAoayHsOeiLhWAg=;
+ h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+ b=nw4w/gon05X/JaM8EicXOtYB0oqvrJHe1XHvwTvJ8OyifFiLGFndyMbEmS7hYvmTf
+ Tipo8fMDVKEkbWr4n4benw74BTNAwd3Z3KhMKQXjMdTcRiMaryvmx+fmi7P/wSt696
+ I3Syzj4wY9OCoq3zbhRry54L+G5u9qCWGiXx9S0E=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Subject: [PATCH v3 0/2] linux-user: two fixes to coredump generation
-Date: Sat, 20 Jan 2024 22:45:23 +0100
-Message-Id: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
+Date: Sat, 20 Jan 2024 22:45:24 +0100
+Subject: [PATCH v3 1/2] linux-user/elfload: test return value of getrlimit
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPM+rGUC/33NTQrCMBCG4auUrB2ZJK21rryHuGiSiQ3YH5M2K
- KV3Ny0ILsTlO/A9M7NA3lFgp2xmnqILru9SyF3GdFN3NwJnUjOBQnLOC3hQO8GUVmCmdqjVncD
- kVaVRVgeOkqXh4Mm654ZerqkbF8bev7Yfka/Xv1zkgEBGUWnRKoXiPMJRN3tDbNWi+Ag5cix/C
- iIJRU5SaasRdfUlLMvyBnNkkuT1AAAA
+Message-Id: <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
+References: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
+In-Reply-To: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
 To: Laurent Vivier <laurent@vivier.eu>
 Cc: qemu-devel@nongnu.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>, 
  Richard Henderson <richard.henderson@linaro.org>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1705787141; l=837;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1705787141; l=891;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=VHbKu6UCe0NttHrFFX9ITBcfvJ1sraAsfNyNRV3siB0=;
- b=pgb4vGnMaKZpbTv9y9vzmSsi0IUNSjkwysvivkYsWzKCRmvqJ5slg+Uo6mWdJ4Yl3J+EI1VAL
- xgUHueTz89WDrwIUh0la4Gjnw3k+/3CwMU5c6CmlqGDE5wrgSG+G+52
+ bh=GKphi3SnzBrLWdNbMAbEC03yt732UAoayHsOeiLhWAg=;
+ b=tWc9LNQQ59NCpb+pKekzt6s8W6APkl8pL6nsOI2uC3iFrnhlbWKvxkb9k5Mj6tNctG+50sK1Z
+ 6oe2JtloolxBy9kExuL0dX+qybJTCD8o3vdsYoSGJ5pK/ODY8o31x95
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
@@ -68,31 +66,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Should getrlimit() fail the value of dumpsize.rlimit_cur may not be
+initialized. Avoid reading garbage data by checking the return value of
+getrlimit.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
-Changes in v3:
-- Add braces to if statements
-- Add Reviewed-by from Richard
-- Link to v2: https://lore.kernel.org/r/20240107-qemu-user-dumpable-v2-0-54e3bcfc00c9@t-8ch.de
+ linux-user/elfload.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes in v2:
-- Rebase on 8.2 master
-- Resend after closed tree and holidays
-- Link to v1: https://lore.kernel.org/r/20231115-qemu-user-dumpable-v1-0-edbe7f0fbb02@t-8ch.de
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index cf9e74468b11..c5968719380a 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -4667,9 +4667,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+     init_note_info(&info);
+ 
+     errno = 0;
+-    getrlimit(RLIMIT_CORE, &dumpsize);
+-    if (dumpsize.rlim_cur == 0)
++    if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
+         return 0;
++    }
+ 
+     corefile = core_dump_filename(ts);
+ 
 
----
-Thomas Weißschuh (2):
-      linux-user/elfload: test return value of getrlimit
-      linux-user/elfload: check PR_GET_DUMPABLE before creating coredump
-
- linux-user/elfload.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
----
-base-commit: 3f2a357b95845ea0bf7463eff6661e43b97d1afc
-change-id: 20231115-qemu-user-dumpable-d499c0396103
-
-Best regards,
 -- 
-Thomas Weißschuh <thomas@t-8ch.de>
+2.43.0
 
 
