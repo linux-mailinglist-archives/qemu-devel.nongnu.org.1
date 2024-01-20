@@ -2,90 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2726833323
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 08:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F44683335E
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:45:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR5vE-00011G-Ho; Sat, 20 Jan 2024 02:37:44 -0500
+	id 1rR7to-0006OP-TI; Sat, 20 Jan 2024 04:44:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rR5vB-00010L-Qw
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 02:37:41 -0500
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rR5v9-0005Sc-1w
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 02:37:40 -0500
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3bbb4806f67so1307797b6e.3
- for <qemu-devel@nongnu.org>; Fri, 19 Jan 2024 23:37:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705736257; x=1706341057; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yK+7e3y3bv5eqHe1DA+NBJet8+lXvBvaGRGybBVRlyw=;
- b=ZcYz0zjKXtAr3Ab4bpBYgt81OAveOQyta1D1moBLJqbzqMxYctr12k6feFPHPrmQWC
- cEv4Mv9/H4tRl0RlfHAOBKO5VhIkHTX0eR07T5pi6TOlyi2GYyxhSyisx1yhtijVf+sB
- wJmIv2vDIcATwiNDXIkl4rpSN2utxprfJkmjQUFvZEieipA80LvoR3kDOiz874TTigUk
- dHcaDKMrue3VPk6mpvuKTkldys1yv66MSdQ/LlJ/kuxmx89/BoMmUc5xKuDGB7VK3Jtc
- RZJWSAR8I/sF3nVAxaHyMwn63Fs7sNfBGOHUWRbXbZ38R2D+ExPnsCNtdvcxSXcokhrJ
- Jvxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705736257; x=1706341057;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yK+7e3y3bv5eqHe1DA+NBJet8+lXvBvaGRGybBVRlyw=;
- b=LlofiRRooqYaIJn4XFM1UjeAkFGBI9br5eKLeQ355F+3wTaZErKWf155ugbHXE5iVN
- iSEoZpZ8jDt/4BJt6ZH28SvJ+k5NB8pV9sRLpdPM9I1Z4OGyriYnn1+qU6cv3xcRBgXY
- ArGA6wy2VQpgXp2ebQn7XwBLzBpKIKjLXs6uh8eiujFO6heGYheAyqeuBM2HaRX9h6RT
- chuKgeCXLCktist0KC9BmOpNRDAeekgwJnLiNuarW1ujJuDqCPwCPeSBkEQJg8jsOtxE
- Rmit0nLOsQRjLKqW4CgC74+fKnbVTLBNnUYZRFhTj3/AUn1DFKO16JLx67l0pxHFZkBs
- +7zQ==
-X-Gm-Message-State: AOJu0YyUnmcrBaIO/tHauR6ZlknPZVyUrAR5n04X7yhUBZnY/0OX+7iW
- pqZ+MhX0nT2rogjGr4a+q71lRp0mvE2tglacy/vwIfHhDI9Y5dpPUDoOzO+QHsA=
-X-Google-Smtp-Source: AGHT+IGIpkqmzGRYw35IXJEiuoHs3H1mO/uOXiL3/Wch80Lp671rF4ONS3T32gjcjd5m54UNaU7VPA==
-X-Received: by 2002:a05:6808:1812:b0:3bd:a82a:a827 with SMTP id
- bh18-20020a056808181200b003bda82aa827mr1501287oib.7.1705736257421; 
- Fri, 19 Jan 2024 23:37:37 -0800 (PST)
-Received: from ?IPV6:2001:8004:5170:1e39:8ee2:6e6b:fea2:d3ab?
- ([2001:8004:5170:1e39:8ee2:6e6b:fea2:d3ab])
- by smtp.gmail.com with ESMTPSA id
- y37-20020a634965000000b005ceeeea1816sm4693980pgk.77.2024.01.19.23.37.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 19 Jan 2024 23:37:36 -0800 (PST)
-Message-ID: <5b6571d3-f654-488d-9dc5-0d18ba542e05@linaro.org>
-Date: Sat, 20 Jan 2024 18:37:27 +1100
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rR7tk-0006OF-FZ
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:44:20 -0500
+Received: from mgamail.intel.com ([198.175.65.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rR7ti-0001RX-9y
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:44:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1705743858; x=1737279858;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=c+HAb0QhWrtxF6Hn0AxR5wtL6vM51S4sx0bPBIE+FW0=;
+ b=JUK0j8RSbYayZFcSSEi1yHc7JFgN/6sTIiYTZpcHqJSd+6yHZrFqDVRf
+ Tdn+GEk0Rf0Qlg30k0Sge3z/8/iFGmO+iOuNPNtUn7kHBag9sMXYHFQc5
+ X/ZpZWZ+2Vd8XFYIrdF1I4OlNL5FjPb/70u6Vb3SzSaU/Gbjx+V6x9+tb
+ wQsADXS6Fi2LdrMl+3HQCWvxDZN1CMIRO8mZsz6httGrK2QlndJ7F1XCx
+ aMB1+LFg4z2hlEbtsou4hdDGsoQxeCcPL4i9vmdhN8J3ewRY3LXxDEoC9
+ Q8IxGarWme1xYQIb5LcX1l5R0L1CQkRmyg2OWAW/m2xkVGFUMeB0O6gai A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="7606907"
+X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; 
+   d="scan'208";a="7606907"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2024 01:44:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10957"; a="904379718"
+X-IronPort-AV: E=Sophos;i="6.05,207,1701158400"; d="scan'208";a="904379718"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.33.17])
+ ([10.93.33.17])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2024 01:44:10 -0800
+Message-ID: <b6950a34-0ef6-4945-9e50-5a47e86490e1@intel.com>
+Date: Sat, 20 Jan 2024 17:44:07 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
- current number of masked bits for pointer masking
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Alexey Baturo <baturo.alexey@gmail.com>, zhiwei_liu@linux.alibaba.com,
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-4-me@deliversmonkey.space>
- <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
- <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
- <CAKC1njRXPi1Roch=T+NwQk-TOzN=gSjmPh2KCVsemKdex9CamA@mail.gmail.com>
+Subject: Re: Why invtsc (CPUID_APM_INVTSC) is unmigratable?
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Lei Wang <lei4.wang@intel.com>
+References: <825f29d7-9112-45a2-b4a3-7d3b54c3c0a2@intel.com>
+ <Zaqf839r8TXvkIAf@tpad>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAKC1njRXPi1Roch=T+NwQk-TOzN=gSjmPh2KCVsemKdex9CamA@mail.gmail.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <Zaqf839r8TXvkIAf@tpad>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.519,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,44 +83,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/19/24 09:40, Deepak Gupta wrote:
-> On Thu, Jan 18, 2024 at 12:50 PM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->> At some point pointer masking will be in hardware, and the kernel will gain support for
->> it, and there will likely be a prctl() added for it.  At the point the kernel finalizes
->> the API, you will be able to enable pointer masking for qemu-user.
+On 1/20/2024 12:14 AM, Marcelo Tosatti wrote:
+> On Fri, Jan 19, 2024 at 02:46:22PM +0800, Xiaoyao Li wrote:
+>> I'm wondering why CPUID_APM_INVTSC is set as unmigratable_flags. Could
+>> anyone explain it?
 > 
-> I am sure I am missing some important detail here, BUT...
 > 
-> How is it different from aarch64 "top byte ignore".
+> commit 68bfd0ad4a1dcc4c328d5db85dc746b49c1ec07e
+> Author: Marcelo Tosatti <mtosatti@redhat.com>
+> Date:   Wed May 14 16:30:09 2014 -0300
+> 
+>      target-i386: block migration and savevm if invariant tsc is exposed
+>      
+>      Invariant TSC documentation mentions that "invariant TSC will run at a
+>      constant rate in all ACPI P-, C-. and T-states".
+>      
+>      This is not the case if migration to a host with different TSC frequency
+>      is allowed, or if savevm is performed. So block migration/savevm.
+> 
+> So the rationale here was that without ensuring the destination host
+> has the same TSC clock frequency, we can't migrate.
 
-It is very similar, yes.
+It seems to me the concept of invtsc was extended to "tsc freq will not 
+change even after the machine is live migrated". I'm not sure it is 
+correct to extend the concept of invtsc.
 
-> I think commit: 16c8497 enables top byte ignore for user pointers and
-> by default for qemu-user for aarch64 target.
+The main reason of introducing invtsc is to tell the tsc hardware keeps 
+counting (at the same rate) even at deep C state, so long as other states.
 
-Not quite, no.
+For example, a guest is created on machine A with X GHz tsc, and invtsc 
+exposed (machine A can ensure the guest's tsc counts at X GHz at any 
+state). If the guest is migrated to machine B with Y GHz tsc, and 
+machine B can also ensure the invtsc of its guest, i.e., the guest's tsc 
+counts at Y GHz at any state. IMHO, in this case, the invtsc is 
+supported at both src and dest, which means it is a migratable feature. 
+However, the migration itself fails, due to mismatched/different 
+configuration of tsc freq, not due to invtsc.
 
-commit 0e0c030c681730f3ec55ba3b223b608a8f3e8282
-Author: Richard Henderson <richard.henderson@linaro.org>
-Date:   Fri Feb 12 10:48:51 2021 -0800
+> However, this was later extended to allow invtsc migratioon when setting
+> tsc-khz explicitly:
+> 
+> commit d99569d9d8562c480e0befab601756b0b7b5d0e0
+> Author: Eduardo Habkost <ehabkost@redhat.com>
+> Date:   Sun Jan 8 15:32:34 2017 -0200
+> 
+>      kvm: Allow invtsc migration if tsc-khz is set explicitly
+>      
+>      We can safely allow a VM to be migrated with invtsc enabled if
+>      tsc-khz is set explicitly, because:
+>      * QEMU already refuses to start if it can't set the TSC frequency
+>        to the configured value.
+>      * Management software is already required to keep device
+>        configuration (including CPU configuration) the same on
+>        migration source and destination.
+>      
+>      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
+>      Message-Id: <20170108173234.25721-3-ehabkost@redhat.com>
+>      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
 
-     linux-user/aarch64: Implement PR_TAGGED_ADDR_ENABLE
+But in the case that user doesn't set tsc freq explicitly, the live 
+migration is likely to fail or have issues even without invtsc exposed 
+to guest, if the destination host has a different tsc frequency than src 
+host.
 
-is more relevant.
+So why bother checking invtsc only?
 
-> IIRC, user <--> kernel abi is only needed for pointers that are passed
-> to the kernel.
+> And support for libvirt was added:
+> 
+> https://listman.redhat.com/archives/libvir-list/2017-January/141757.html
+> 
+>>
+>> When the host supports invtsc, it can be exposed to guest.
+>> When the src VM has invtsc exposed, what will forbid it to be migrated to a
+>> dest that also supports VMs with invtsc exposed?
+>>
+>>
+> 
 
-It is also needed to *enable* pointer masking at all.
-
-For aarch64, TBI has been enabled for user-space since the beginning, but that is not true 
-for riscv.  Therefore there will be a need for a syscall to opt in and enable pointer masking.
-
-> And in the case of qemu-user, we are talking about the host kernel.
-
-No, we are not.  We are always emulating the guest kernel.
-
-
-r~
 
