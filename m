@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C5483339B
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 11:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CE08333B3
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 11:44:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR8aj-0000r7-Ca; Sat, 20 Jan 2024 05:28:45 -0500
+	id 1rR8oF-0006kg-Md; Sat, 20 Jan 2024 05:42:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rR8af-0000qz-JT
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 05:28:41 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rR8oD-0006j3-FV; Sat, 20 Jan 2024 05:42:41 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rR8ad-00077q-NV
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 05:28:41 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rR8oB-0001wU-Pe; Sat, 20 Jan 2024 05:42:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 62DEF45AEE;
- Sat, 20 Jan 2024 13:29:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 96D1845AF1;
+ Sat, 20 Jan 2024 13:43:09 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 066EF67C68;
- Sat, 20 Jan 2024 13:28:34 +0300 (MSK)
-Message-ID: <45c13c08-c539-4daf-892e-db2e9360a186@tls.msk.ru>
-Date: Sat, 20 Jan 2024 13:28:34 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4814467C78;
+ Sat, 20 Jan 2024 13:42:35 +0300 (MSK)
+Message-ID: <6978eac1-96d8-4759-96f1-7edc6784ffa1@tls.msk.ru>
+Date: Sat, 20 Jan 2024 13:42:34 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/elf_ops: Ignore loadable segments with zero size
+Subject: Re: [PATCH] virtio-net: correctly copy vnet header when flushing TX
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-References: <20240116155049.390301-1-bmeng@tinylab.org>
- <8ecba163-cd69-4adf-96aa-95f46a0d07e9@linaro.org>
+To: Jason Wang <jasowang@redhat.com>, mst@redhat.com, qemu-devel@nongnu.org
+Cc: Xiao Lei <leixiao.nop@zju.edu.cn>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, qemu-stable@nongnu.org,
+ Mauro Matteo Cascella <mcascell@redhat.com>
+References: <20240102032901.3234-1-jasowang@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -58,9 +58,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <8ecba163-cd69-4adf-96aa-95f46a0d07e9@linaro.org>
+In-Reply-To: <20240102032901.3234-1-jasowang@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -84,37 +84,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-16.01.2024 19:38, Richard Henderson wrote:
-> On 1/17/24 02:50, Bin Meng wrote:
->> Some ELF files really do have segments of zero size, e.g.:
->>
->> Program Headers:
->>    Type           Offset             VirtAddr           PhysAddr
->>                   FileSiz            MemSiz              Flags  Align
->>    RISCV_ATTRIBUT 0x00000000000025b8 0x0000000000000000 0x0000000000000000
->>                   0x000000000000003e 0x0000000000000000  R      0x1
->>    LOAD           0x0000000000001000 0x0000000080200000 0x0000000080200000
->>                   0x00000000000001d1 0x00000000000001d1  R E    0x1000
->>    LOAD           0x00000000000011d1 0x00000000802001d1 0x00000000802001d1
->>                   0x0000000000000e37 0x0000000000000e37  RW     0x1000
->>    LOAD           0x0000000000000120 0x0000000000000000 0x0000000000000000
->>                   0x0000000000000000 0x0000000000000000         0x1000
->>
->> The current logic does not check for this condition, resulting in
->> the incorrect assignment of 'lowaddr' as zero.
->>
->> There is already a piece of codes inside the segment traversal loop
->> that checks for zero-sized loadable segments for not creating empty
->> ROM blobs. Let's move this check to the beginning of the loop to
->> cover both scenarios.
->>
->> Signed-off-by: Bin Meng <bmeng@tinylab.org>
+02.01.2024 06:29, Jason Wang :
+> When HASH_REPORT is negotiated, the guest_hdr_len might be larger than
+> the size of the mergeable rx buffer header. Using
+> virtio_net_hdr_mrg_rxbuf during the header swap might lead a stack
+> overflow in this case. Fixing this by using virtio_net_hdr_v1_hash
+> instead.
 > 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> But please report this as a bug to whatever tool produced such nonsense.
+> Reported-by: Xiao Lei <leixiao.nop@zju.edu.cn>
+> Cc: Yuri Benditovich <yuri.benditovich@daynix.com>
+> Cc: qemu-stable@nongnu.org
+> Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+> Fixes: CVE-2023-6693
+> Fixes: e22f0603fb2f ("virtio-net: reference implementation of hash report")
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 
-I think we've an old bug about this in debian bts, https://bugs.debian.org/919921 .
+Hi!  Can we get this to master before Jan-27 please, so it's included in 8.2.1?
+
+Thanks!
 
 /mjt
 
