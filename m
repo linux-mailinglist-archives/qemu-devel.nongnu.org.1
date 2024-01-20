@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6328F8333D4
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 12:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 425608333E3
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 12:32:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR9O9-0001IV-67; Sat, 20 Jan 2024 06:19:49 -0500
+	id 1rR9Yr-0003H9-QS; Sat, 20 Jan 2024 06:30:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR9O6-0001Hg-Kh
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:19:46 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rR9Ym-0003Ed-95
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:30:49 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rR9O4-0002U5-Oj
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:19:46 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40e913e3f03so19618965e9.3
- for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 03:19:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rR9Yi-0007q1-7b
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 06:30:46 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40ea8695be6so634585e9.0
+ for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 03:30:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705749583; x=1706354383; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8XxT+zWpinE2KG9kFzoXNAjkwKzRav0ogGN/bs3kOtA=;
- b=L0acavYvbc48RprLlhncwl0jmH+79zoiwxJyCD31tyyv4P31zKsOS/+kdsDwau/+fu
- J7t5soP/EnTp4TY0PYlDzaU+aHRdJJ/CQhXqFFAxcyFiUzlPHjb7cZHDJNdwphfgNLbG
- 4jE+ViS2TaIYYTMtnworIazxL++hJL6bggSTZ9h6eC6bw4o9ZEQhQiT07/LhmnOMEe1o
- FtVRdAfOw5EDRU6+IW5DIf/UbTzqEWlRpJ3a0/MrIzGol8TQQGhPXICGY/fHCZUtuD7D
- xxLAa8MFj69kKKT9MFXpLmipT9z99CIrDeEV07izNvZ1O4F/H8ZmZA346XYE10JtKEMU
- yVsQ==
+ d=linaro.org; s=google; t=1705750241; x=1706355041; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6Vg/FjUFaLDWAcPbbO7PuiLrCEmBzcaZZE7e4JGqAqk=;
+ b=aql2LXuRkdQ7H+zOrAxcaWC7kiiBEOsTP5ni62laFSz3rkzV8mrLOG2DW/ya02/qEm
+ vz5Mg4YJbN5MtawaOpqHLPnUVZxU4sgdjwCd+abIQ4NxyXTU7e50HcM/QkH6dZb8I4c2
+ FMxvmyZ+kovN43yxYDe0WOVp+qmqWc1dB7LA7ZTQXjewPLSKd/KaJROCWOfm7QZkS+tM
+ tv+I5k3TSpe49xVHa157adjdOkRyvGRCZclyOjEKpLDrMwLgJgiPC467KSCpcmWW7mGa
+ e04rq/LlaOdjBNbU0SWD9jY0C/IBLkWM/LR7/ddP72uGvXG1aZC9Mi+GWSJQ0GjC8TcE
+ 6ygg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705749583; x=1706354383;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8XxT+zWpinE2KG9kFzoXNAjkwKzRav0ogGN/bs3kOtA=;
- b=F+DiFD2/vw0Ld4+oD+BqLqY4+RGhSYeJOtUX7DMKFXh4WPp1IBiWgkhi19fQAFT9lG
- ZTaxC2LJ2E4wo6Ge7voUwLggCp83V57t+p74SDtuAWFS1aKsHwaCWNDCOvsuqYbTJWYy
- eEip3yual9oBKj/Xc9ukALPjdKRUyHQqiTErfa18Db5QvGpcSA/ki2qYrTRD2OJgttJX
- bJPSZb7pOXvBric8/6Aigfv4V8M3sOvK53MEIdxBFxeni9Yl6VCwg0UnJOi4dDAFtC40
- 6NZCaf8iRlBgZoKgJ43GylMYCE5P7EKwLOHfqglcBKClihh7fwHuAF0YMnJUc39TShEu
- 2ULQ==
-X-Gm-Message-State: AOJu0Yx4fx0N0hDGX1XkXTAiHh/9gY5vZvxhREwShfi315YjWI+RWacx
- FPhfo32tacBaDMKJFgD7T/1BHOgifeEIQEdFwWHwNRVCIa5NQ/eJ5IVF4BI4OEE=
-X-Google-Smtp-Source: AGHT+IFeRqlQpTVghYSZbIMa2TVn/xfZqF3lbNoW8//VFD+tLWk9RN6sz3C1UsI0fc+046lC5Ql2pg==
-X-Received: by 2002:a05:600c:a43:b0:40e:62aa:fa7b with SMTP id
- c3-20020a05600c0a4300b0040e62aafa7bmr718082wmq.111.1705749582784; 
- Sat, 20 Jan 2024 03:19:42 -0800 (PST)
-Received: from [192.168.1.67] (91-163-26-170.subs.proxad.net. [91.163.26.170])
- by smtp.gmail.com with ESMTPSA id
- n18-20020a05600c3b9200b0040e4ca7fcb4sm32238107wms.37.2024.01.20.03.19.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 20 Jan 2024 03:19:42 -0800 (PST)
-Message-ID: <2ce78985-6262-4d9e-9079-24947e62ed85@linaro.org>
-Date: Sat, 20 Jan 2024 12:19:41 +0100
+ d=1e100.net; s=20230601; t=1705750241; x=1706355041;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6Vg/FjUFaLDWAcPbbO7PuiLrCEmBzcaZZE7e4JGqAqk=;
+ b=k74ZaH6FiIJOOYLszkHLHN/F/P4syRacBcGZ1qfIXnUc4S1ImIJHr1ra4nNWHcCo7j
+ hGhbOe1k1wsrautc+u//m53kqHSdYatNnMXuEpp/1lPWm/JDnik2iijWIfaaVS9OQdoK
+ LVFwBxWtRC2sIrmC8pDk0aWtaQ/GwUtJvX7C0W8daYGF1rpUoY89NUMHOeR1zXPmGn2/
+ 2zCKSsZL58JESEqdb3Q41qHMlvJmt79GBOk3rUExyuj7AmyAoesUqiB5jVR9UPUMxq/C
+ 2qp/JXmPHh9OsFVUjDttkf/6XS3xfd5NDeDwGg+gbFZWZhFSPiruGube7YyHqfoDX79h
+ MeNw==
+X-Gm-Message-State: AOJu0YxdZHPM3SakMPwvho09fSLkntZJxnEWsdrnfdkIYs16CU6b/pdR
+ 1iXaeSxozBIWNrpbCYP49pXDI6JDNztarq0L7zJQnEYxpoJgEFvL2guyTP9qIe84ukJ35WjcuFs
+ gbWJyKCrpHxsB+UiUBlM60YB5vlAXEauGVYfzY+aZf5Ea1E3Z
+X-Google-Smtp-Source: AGHT+IHZ6BRma9Vf6jeQqibyGlBeFCIMX2OZKrcyeTpv5r/MBW8Gi4/CwsX6pCUHG2Eyxw4sWletOvOpkel4/zI9UUY=
+X-Received: by 2002:a05:600c:138b:b0:40e:a569:3555 with SMTP id
+ u11-20020a05600c138b00b0040ea5693555mr382859wmf.35.1705750241158; Sat, 20 Jan
+ 2024 03:30:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fsl-imx6ul: Add various missing unimplemented devices
-Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Jean-Christophe Dubois <jcd@tribudubois.net>
-References: <20240120005356.2599547-1-linux@roeck-us.net>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240120005356.2599547-1-linux@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+References: <20240119203303.2230984-1-nabihestefan@google.com>
+ <20240119203303.2230984-2-nabihestefan@google.com>
+In-Reply-To: <20240119203303.2230984-2-nabihestefan@google.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 20 Jan 2024 11:30:08 +0000
+Message-ID: <CAFEAcA-6hvj14NokcU1T4t-e0+rkP3eg2Zk+=tmr8SPTqbk+TQ@mail.gmail.com>
+Subject: Re: [PATCH v13 1/9] hw/misc: Add Nuvoton's PCI Mailbox Module
+To: Nabih Estefan <nabihestefan@google.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
+ kwliu@nuvoton.com, tomer.maimon@nuvoton.com, Hila.Miranda-Kuzi@nuvoton.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,31 +88,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/1/24 01:53, Guenter Roeck wrote:
-> Add MMDC, OCOTP, SQPI, CAAM, and USBMISC as unimplemented devices.
-> 
-> This allows operating systems such as Linux to run emulations such as
-> mcimx6ul-evk.
-> 
-> Before commit 0cd4926b85 ("Refactor i.MX6UL processor code"), the affected
-> memory ranges were covered by the unimplemented DAP device. The commit
-> reduced the DAP address range from 0x100000 to 4kB, and the emulation
-> thus no longer covered the various unimplemented devices in the affected
-> address range.
-> 
-> Fixes: 0cd4926b85 ("Refactor i.MX6UL processor code")
-> Cc: Jean-Christophe Dubois <jcd@tribudubois.net>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
-> This patch is necessary to boot mcimx6ul-evk with Linux v6.7.
-> 
-> My apologies for the noise if a similar patch has already been submitted
-> and I missed it.
-> 
->   hw/arm/fsl-imx6ul.c         | 30 ++++++++++++++++++++++++++++++
->   include/hw/arm/fsl-imx6ul.h |  2 ++
->   2 files changed, 32 insertions(+)
+On Fri, 19 Jan 2024 at 20:33, Nabih Estefan <nabihestefan@google.com> wrote:
+>
+> From: Hao Wu <wuhaotsh@google.com>
+>
+> The PCI Mailbox Module is a high-bandwidth communcation module
+> between a Nuvoton BMC and CPU. It features 16KB RAM that are both
+> accessible by the BMC and core CPU. and supports interrupt for
+> both sides.
+>
+> This patch implements the BMC side of the PCI mailbox module.
+> Communication with the core CPU is emulated via a chardev and
+> will be in a follow-up patch.
+>
+> Change-Id: Iaca22f81c4526927d437aa367079ed038faf43f2
+> Signed-off-by: Hao Wu <wuhaotsh@google.com>
+> Signed-off-by: Nabih Estefan <nabihestefan@google.com>
+> Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Can we have a comment or other documentation defining what
+the protocol expected on the chardev device is, please?
+Without that it's hard to review to see whether the
+implementation is doing what it is supposed to.
 
+thanks
+-- PMM
 
