@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A72F833367
-	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C142A83336B
+	for <lists+qemu-devel@lfdr.de>; Sat, 20 Jan 2024 10:55:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rR82n-00083J-Ce; Sat, 20 Jan 2024 04:53:41 -0500
+	id 1rR82m-00082s-7C; Sat, 20 Jan 2024 04:53:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82k-00082J-Ob
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:38 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82j-00081B-JK
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82h-00063J-22
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:38 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rR82g-00062n-DQ
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 04:53:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705744414;
+ s=mimecast20190719; t=1705744412;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FQA1DRO6iI9twls7npaDRRxrXTtaWLpraltdDpbY+9A=;
- b=fMoL+QMwz9F2ZStexUF93RPlSpOycgP2QgoVHjqPTKsKAOPy6wm5ns+7bEHRGMymQnRZsv
- JTQgwieV89Lm911zLHgNZyFe9ClLR4TVe2N/W2P7N3T5hmefm/c/qzwUEvb9VX7ldUM00H
- i/bOqlZiqis+JSCQopbU5P/Msf+hkcs=
+ bh=8zMUZLz6aZ4QhMcvIy31bzbpBMATn24NCuvAj97hayc=;
+ b=JLNbwhVHNNGoz87aYCKQaYJEuPzZswBEpBok6DGQFlbS7Uv+V7+VWLTAWtxTWgRimMzh7W
+ oLTOsvqJ5EmxAzeYPyKRldKR/6RcyJpYwzPgxOnw5KUM6KrfSofhJKVmx3UWsUY7LZPZds
+ dfXLsZRcy4HICFXsgNML0xS9zUecRGI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-245-S_H-PmVbPyeWqokdtRA0KA-1; Sat,
- 20 Jan 2024 04:53:29 -0500
-X-MC-Unique: S_H-PmVbPyeWqokdtRA0KA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-307-f5XGsUK5OsG-EpFvFBYEVQ-1; Sat,
+ 20 Jan 2024 04:53:30 -0500
+X-MC-Unique: f5XGsUK5OsG-EpFvFBYEVQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A2BC1C06D06;
- Sat, 20 Jan 2024 09:53:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D482838143A3;
+ Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.246])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 736742166B35;
- Sat, 20 Jan 2024 09:53:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B3C7C2026D66;
+ Sat, 20 Jan 2024 09:53:29 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5B2A021E6682; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
+ id 5E2FE21E6691; Sat, 20 Jan 2024 10:53:27 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com,
 	peter.maydell@linaro.org,
 	jsnow@redhat.com
-Subject: [PATCH 4/7] docs/interop/bitmaps: Clean up a reference to qemu-qmp-ref
-Date: Sat, 20 Jan 2024 10:53:24 +0100
-Message-ID: <20240120095327.666239-5-armbru@redhat.com>
+Subject: [PATCH 5/7] qapi: Fix mangled "Returns" sections in documentation
+Date: Sat, 20 Jan 2024 10:53:25 +0100
+Message-ID: <20240120095327.666239-6-armbru@redhat.com>
 In-Reply-To: <20240120095327.666239-1-armbru@redhat.com>
 References: <20240120095327.666239-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
@@ -82,52 +82,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-docs/interop/bitmaps.rst uses references like
+Commit e050e426782e (qapi: Use explicit bulleted lists) added list
+markup to correct bad rendering:
 
-    `qemu-qmp-ref <qemu-qmp-ref.html>`_
-    `query-block <qemu-qmp-ref.html#index-query_002dblock>`_
+    A JSON block comment like this:
+         Returns: nothing on success
+                  If @node is not a valid block device, DeviceNotFound
+                  If @name is not found, GenericError with an explanation
 
-to refer to and into docs/interop/qemu-qmp-ref.rst.
+    renders like this:
 
-Clean up the former: use :doc:`qemu-qmp-ref`.
+         Returns: nothing on success If node is not a valid block device,
+         DeviceNotFound If name is not found, GenericError with an explanation
 
-I don't know how to clean up the latter.
+    because whitespace is not significant.
+
+    Use an actual bulleted list, so that the formatting is correct.
+
+It missed a few instances.  Commit a937b6aa739 (qapi: Reformat doc
+comments to conform to current conventions) then reflowed them.
+
+Revert the reflowing, and add list markup.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/interop/bitmaps.rst | 4 ++--
- qapi/introspect.json     | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ qapi/net.json  | 15 +++++++++------
+ qapi/qdev.json |  5 +++--
+ qapi/qom.json  | 10 ++++++----
+ 3 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/docs/interop/bitmaps.rst b/docs/interop/bitmaps.rst
-index c731be2f01..ddf8947d54 100644
---- a/docs/interop/bitmaps.rst
-+++ b/docs/interop/bitmaps.rst
-@@ -167,8 +167,8 @@ Basic QMP Usage
- 
- The primary interface to manipulating bitmap objects is via the QMP
- interface. If you are not familiar, see the :doc:`qmp-spec` for the
--protocol, and `qemu-qmp-ref <qemu-qmp-ref.html>`_ for a full
--reference of all QMP commands.
-+protocol, and :doc:`qemu-qmp-ref` for a full reference of all QMP
-+commands.
- 
- Supported Commands
- ~~~~~~~~~~~~~~~~~~
-diff --git a/qapi/introspect.json b/qapi/introspect.json
-index ebc4e199d2..8df1ce85ed 100644
---- a/qapi/introspect.json
-+++ b/qapi/introspect.json
-@@ -260,8 +260,8 @@
- # Additional SchemaInfo members for meta-type 'alternate'.
+diff --git a/qapi/net.json b/qapi/net.json
+index 8095b68fa8..68493d6ac9 100644
+--- a/qapi/net.json
++++ b/qapi/net.json
+@@ -18,8 +18,9 @@
  #
- # @members: the alternate type's members, in no particular order.  The
--#     members' wire encoding is distinct, see :doc:`qapi-code-gen`
--#     section Alternate types.
-+#     members' wire encoding is distinct, see
-+#     :doc:`/devel/qapi-code-gen` section Alternate types.
+ # @up: true to set the link status to be up
  #
- # On the wire, this can be any of the members.
+-# Returns: Nothing on success If @name is not a valid network device,
+-#     DeviceNotFound
++# Returns:
++#     - Nothing on success
++#     - If @name is not a valid network device, DeviceNotFound
+ #
+ # Since: 0.14
+ #
+@@ -44,8 +45,9 @@
+ #
+ # Since: 0.14
+ #
+-# Returns: Nothing on success If @type is not a valid network backend,
+-#     DeviceNotFound
++# Returns:
++#     - Nothing on success
++#     - If @type is not a valid network backend, DeviceNotFound
+ #
+ # Example:
+ #
+@@ -64,8 +66,9 @@
+ #
+ # @id: the name of the network backend to remove
+ #
+-# Returns: Nothing on success If @id is not a valid network backend,
+-#     DeviceNotFound
++# Returns:
++#     - Nothing on success
++#     - If @id is not a valid network backend, DeviceNotFound
+ #
+ # Since: 0.14
+ #
+diff --git a/qapi/qdev.json b/qapi/qdev.json
+index 6bc5a733b8..25bac5e611 100644
+--- a/qapi/qdev.json
++++ b/qapi/qdev.json
+@@ -89,8 +89,9 @@
+ #
+ # @id: the device's ID or QOM path
+ #
+-# Returns: Nothing on success If @id is not a valid device,
+-#     DeviceNotFound
++# Returns:
++#     - Nothing on success
++#     - If @id is not a valid device, DeviceNotFound
+ #
+ # Notes: When this command completes, the device may not be removed
+ #     from the guest.  Hot removal is an operation that requires guest
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 95516ba325..84af23fe24 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1056,8 +1056,9 @@
+ #
+ # Create a QOM object.
+ #
+-# Returns: Nothing on success Error if @qom-type is not a valid class
+-#     name
++# Returns:
++#     - Nothing on success
++#     - Error if @qom-type is not a valid class name
+ #
+ # Since: 2.0
+ #
+@@ -1078,8 +1079,9 @@
+ #
+ # @id: the name of the QOM object to remove
+ #
+-# Returns: Nothing on success Error if @id is not a valid id for a QOM
+-#     object
++# Returns:
++#     - Nothing on success
++#     - Error if @id is not a valid id for a QOM object
+ #
+ # Since: 2.0
  #
 -- 
 2.43.0
