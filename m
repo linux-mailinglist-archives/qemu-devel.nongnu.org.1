@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C4283557F
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 12:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356298355A8
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 13:30:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRW92-0002lZ-BW; Sun, 21 Jan 2024 06:37:44 -0500
+	id 1rRWwH-0005Xh-VG; Sun, 21 Jan 2024 07:28:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rRW90-0002lK-Bf
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 06:37:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rRWwG-0005XX-38
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:28:36 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rRW8y-0007Gy-Ik
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 06:37:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705837058;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ZSjNHdTUUhNegNqIQrmP/ec7BZ8VKJDL6NrNfwFOq/A=;
- b=V8wGhErPKHDh5thBPTyV+73cs4zbCodjNaIC1AgWlSZ+Xzehu8qWSN80JQsjb9UssJNR62
- avkCGROIDA+qZoi9ktJYzO/DPqSbrOmTfONd6m3bGLUh4RqostKAMScMv5pvq/vgPlXNYt
- 10mMoclWAeThcE6a9/74O80pu6lcDss=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-67-BLN_386kNqC7VTbuzFnChQ-1; Sun, 21 Jan 2024 06:37:36 -0500
-X-MC-Unique: BLN_386kNqC7VTbuzFnChQ-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-50e75f8d722so1722415e87.0
- for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 03:37:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705837055; x=1706441855;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZSjNHdTUUhNegNqIQrmP/ec7BZ8VKJDL6NrNfwFOq/A=;
- b=ZAAP6t3mKB9/bSa1TkvWBdMiGiswbPKcDotpjhoMu28mUhu57v51dTjTwh6Vf8L9jk
- GqzMnpHXzS98LaVId2Uxq08LS8K8X1wKrwqfvqb6f39QBFCcxh2iI2ILrPhtV+dKGAL1
- 1rVnJb+BryIdolp0hTYubyVpLRh7GMRsFbuCVF6L7fQVn7ez7okKkoRtMEMmiloQKRU8
- 483FyOiy0Ci/K/5FoTdUxGxKpFQB/y5rxGmLI07ZtutGOF3ANPJ9njRwVyjQQ/eWuiRD
- 96iv0makuIWpPHOt9awwB2hR1i2rdB9MlYzufjdL6lOBNllpsocu1YYfyVuqCUJeD7DJ
- HMUA==
-X-Gm-Message-State: AOJu0YzSlOyv+Tq6dSSRQ0bChISgwClcOz/NlV9SxRqgmWdBhxZYt9RW
- 6ayDsdrVAbhVyqzUHWo/pDjRxcPHlZuPssZcDc/q/+mia8635m4jXvXCMV8hKT/aWm5ogZURs2g
- CvRUGkg+L1tZpK+IEmAFCctSIPi+TAzSALnytuJWXQRpQPxReEtpU2/YVBFFO4Fk=
-X-Received: by 2002:a05:6512:1598:b0:50f:fac9:b8f1 with SMTP id
- bp24-20020a056512159800b0050ffac9b8f1mr45798lfb.28.1705837054869; 
- Sun, 21 Jan 2024 03:37:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgGb9HjBu8D3ELiQYi6pju+UjOZe2vzDwidkmEigW8+2PqIJsP8XcRvefHPRATfEplXoT5gA==
-X-Received: by 2002:a05:6512:1598:b0:50f:fac9:b8f1 with SMTP id
- bp24-20020a056512159800b0050ffac9b8f1mr45789lfb.28.1705837054500; 
- Sun, 21 Jan 2024 03:37:34 -0800 (PST)
-Received: from redhat.com ([2.52.14.57]) by smtp.gmail.com with ESMTPSA id
- o6-20020ac24c46000000b0050eab0f6a59sm1613996lfk.84.2024.01.21.03.37.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 21 Jan 2024 03:37:33 -0800 (PST)
-Date: Sun, 21 Jan 2024 06:37:27 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 0/5] buses: switch to 3-phase-reset
-Message-ID: <20240121063612-mutt-send-email-mst@kernel.org>
-References: <20240119163512.3810301-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rRWwE-0005tM-7V
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:28:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6/S/GSygUh2t/uezBD5kHT6jlK7MTpL6uDoUrFmN5P0=; b=fnIe7N/jxMKYhorONpPIBMvzx1
+ rq/jD1G6F8ck3jvgvBVW/jSkU0o8LKyiNKzDuGm83xh+AX8uNylm06mnSXyVFySmy9y3Uz8vhnd9x
+ 1jj0UnrkFwjplP5lybTUG1tKCHLdRMtnhEnVqwJeeW4hbJuK8W1iDCx54SW+Ws3Tp4bG0ozCdebvD
+ Uwv8bLDLh7M6HdCuJfcSq+eBhQMaEUUD0AfY3Ty+OL3D2pEJzwylwRl3VasUBf9E7De6Mgv2ESfl3
+ eBCPeMbn8jdfsmMLxH0qsBYrDrT+Bp9DwyJ4ljBlpqNGJNxXwPVJANJQ6+RFLRZ7B0jyV+bi5wO3t
+ kRRcNyCh+dP+mdyUv8eYGpPqDYdo48DolCpGl1bdF0eDIQ1nCXIi55nFR3Wpx7IFa3K1gAQs80lNJ
+ Wo6jDeH/1ulEw+XsPT71l7ReH78gRc8W7LN9lj7SkSuo0r93wFjFz/Gbc6zTlWs08pnaBU7/63hTA
+ NL4xbs6j4HGE/ljI+nqWaFQk+VbYUehI1+OVZvLKae0A8wXAN+m8EjOwFDQ8D+9bc6igaARf5p4zR
+ Yaerxi2ETbdeyXcVWQaCDJRTQ5ZxfzmCf1j5w1IQUJVy/+DanvbTsiOFAJksp1xTZeW+UU6Wrie6K
+ LGZ81KyXmKqiB0XhUro3go4m5AbFecSPnqkCUix0g=;
+Received: from [2a00:23c4:8bb1:9800:5dbf:d3e3:d848:4670]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rRWvE-000Cep-1z; Sun, 21 Jan 2024 12:27:36 +0000
+Message-ID: <561fe2bf-4236-479b-b68b-02a92741230e@ilande.co.uk>
+Date: Sun, 21 Jan 2024 12:28:03 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240119163512.3810301-1-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Michael Tokarev <mjt@tls.msk.ru>, pbonzini@redhat.com, fam@euphon.net,
+ hpoussin@reactos.org, deller@gmx.de, linux@roeck-us.net,
+ qemu-devel@nongnu.org
+References: <20240112131529.515642-1-mark.cave-ayland@ilande.co.uk>
+ <9ceaeead-107a-4766-b5da-a9060ddeddf4@tls.msk.ru>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <9ceaeead-107a-4766-b5da-a9060ddeddf4@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:5dbf:d3e3:d848:4670
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/4] esp-pci: fixes for Linux and MS-DOS
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,57 +104,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 04:35:07PM +0000, Peter Maydell wrote:
-> This patchset switches the handful of bus types that implement a
-> reset method over to using the 3-phase-reset APIs, and then removes
-> the transitional infrastructure from the core bus class that was
-> supporting the ability to have bus types that use old-style reset.
-> 
-> I wrote this ages ago and recently picked it back up because of a
-> recent PCI related reset ordering problem noted by Peter Xu.  I'm not
-> sure if this patchset is necessary as a part of fixing that ordering
-> problem (it might even be possible now to have the intel_iommu device
-> use 3-phase reset and put the relevant parts of its reset into the
-> 'exit' phase), but either way we really ought to do this cleanup
-> to reduce the amount of legacy/transitional handling we have.
-> 
-> In theory this patchset should be fine and shouldn't be changing
-> behaviour.  On the other hand the reason I never sent it out when I
-> originally wrote it was that I ran into a test failure in the
-> BootLinuxConsole.test_sh4_r2d avocado test.  Rerunning all the
-> avocado tests I don't see that failing now, so maybe I was just
-> confused by a flaky test back then.
-> 
-> In any case, this could probably use a thorough soak testing with
-> workloads that do resets of the PCI bus; I've only done 'make check'
-> and 'make check-avocado' on it.  But I wanted to get it out onto the
-> list anyway.
-> 
-> thanks
-> -- PMM
+On 20/01/2024 13:09, Michael Tokarev wrote:
 
-From a quick look, we need this cleanup
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-I'll try some tests too, and report.
-
-> Peter Maydell (5):
->   pci: Switch bus reset to 3-phase-reset
->   vmbus: Switch bus reset to 3-phase-reset
->   adb: Switch bus reset to 3-phase-reset
->   hw/s390x/css-bridge: switch virtual-css bus to 3-phase-reset
->   hw/core: Remove transitional infrastructure from BusClass
+> 12.01.2024 16:15, Mark Cave-Ayland:
+>> This series contains fixes for the esp-pci device (am53c974 or dc390) for a
+>> few issues spotted whilst testing the previous ESP series.
+>>
+>> Patches 1-3 are fixes for issues found by Helge/Guenter whilst testing the
+>> hppa C3700 machine with the amd53c974/dc390 devices under Linux, whilst patch
+>> 4 fixes an issue that was exposed by testing MS-DOS and Windows drivers.
+>>
+>> With this series applied on top of the reworked ESP device, it is possible to
+>> boot Linux under qemu-system-hppa without any errors and also boot and install
+>> Win98SE from a DC390 PCI SCSI controller (no IDE!) using an MS-DOS boot floppy.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> Based-on: 20240112125420.514425-1-mark.cave-ayland@ilande.co.uk
+>>
+>>
+>> Mark Cave-Ayland (4):
+>>    esp-pci.c: use correct address register for PCI DMA transfers
+>>    esp-pci.c: generate PCI interrupt from separate ESP and PCI sources
+>>    esp-pci.c: synchronise setting of DMA_STAT_DONE with ESP completion
+>>      interrupt
+>>    esp-pci.c: set DMA_STAT_BCMBLT when BLAST command issued
 > 
->  include/hw/qdev-core.h |  2 --
->  hw/core/bus.c          | 67 ------------------------------------------
->  hw/hyperv/vmbus.c      |  7 +++--
->  hw/input/adb.c         |  7 +++--
->  hw/pci/pci.c           | 10 ++++---
->  hw/s390x/css-bridge.c  |  5 ++--
->  6 files changed, 17 insertions(+), 81 deletions(-)
-> 
-> -- 
-> 2.34.1
+> Is it worth to pick up for stable?  Especially the first one.
+> It's interesting this bug is here for a very long time.. :)
+
+Good question! I did my comprehensive boot tests with this series on top of the core 
+ESP series so I can't say that I've tested this series on its own. Then again other 
+than the DMA_STAT_DONE patch which is a timing change, the rest of the patches are 
+fixing specific edge cases which were already broken so I would be surprised if 
+anything broke.
+
+
+ATB,
+
+Mark.
 
 
