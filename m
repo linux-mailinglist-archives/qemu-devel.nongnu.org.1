@@ -2,34 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F24A8354D4
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 08:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14B48354D7
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 08:35:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRSKe-0006PY-GD; Sun, 21 Jan 2024 02:33:28 -0500
+	id 1rRSMQ-0007a3-Nf; Sun, 21 Jan 2024 02:35:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rRSKc-0006OZ-0s
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 02:33:26 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rRSMK-0007Zd-Kl; Sun, 21 Jan 2024 02:35:12 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rRSKa-0007SC-7U
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 02:33:25 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rRSMJ-0007se-1B; Sun, 21 Jan 2024 02:35:12 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4E24045D43;
- Sun, 21 Jan 2024 10:33:56 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 83E3045D45;
+ Sun, 21 Jan 2024 10:35:44 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4DF8F6889A;
- Sun, 21 Jan 2024 10:33:20 +0300 (MSK)
-Message-ID: <cc0f471c-c89e-4fcc-9813-427ef63470a5@tls.msk.ru>
-Date: Sun, 21 Jan 2024 10:33:20 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 755CE6889F;
+ Sun, 21 Jan 2024 10:35:08 +0300 (MSK)
+Message-ID: <862398b3-0f21-4c6f-bb4e-bffa470a7394@tls.msk.ru>
+Date: Sun, 21 Jan 2024 10:35:08 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/8] tcg + linux-user patch queue
+Subject: Re: [PATCH] virtio-net: correctly copy vnet header when flushing TX
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240121002047.89234-1-richard.henderson@linaro.org>
+To: Jason Wang <jasowang@redhat.com>, mst@redhat.com, qemu-devel@nongnu.org
+Cc: Xiao Lei <leixiao.nop@zju.edu.cn>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, qemu-stable@nongnu.org,
+ Mauro Matteo Cascella <mcascell@redhat.com>
+References: <20240102032901.3234-1-jasowang@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -55,7 +58,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240121002047.89234-1-richard.henderson@linaro.org>
+In-Reply-To: <20240102032901.3234-1-jasowang@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -81,18 +84,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-21.01.2024 03:20, Richard Henderson:
+02.01.2024 06:29, Jason Wang :
+> When HASH_REPORT is negotiated, the guest_hdr_len might be larger than
+> the size of the mergeable rx buffer header. Using
+> virtio_net_hdr_mrg_rxbuf during the header swap might lead a stack
+> overflow in this case. Fixing this by using virtio_net_hdr_v1_hash
+> instead.
+> 
+> Reported-by: Xiao Lei <leixiao.nop@zju.edu.cn>
+> Cc: Yuri Benditovich <yuri.benditovich@daynix.com>
+> Cc: qemu-stable@nongnu.org
+> Cc: Mauro Matteo Cascella <mcascell@redhat.com>
+> Fixes: CVE-2023-6693
+> Fixes: e22f0603fb2f ("virtio-net: reference implementation of hash report")
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 
-> tcg/s390x: Fix encoding of VRIc, VRSa, VRSc insns
-> tcg: Clean up error paths in alloc_code_gen_buffer_splitwx_memfd
-> linux-user/riscv: Adjust vdso signal frame cfa offsets
-> linux-user: Fixed cpu restore with pc 0 on SIGBUS
-
-It looks like the last two should go to stable-8.2 too
-(besides the s390 fix which is already marked for-stable).
-Please let me know if I'm wrong.
-
-Thanks,
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
 /mjt
 
