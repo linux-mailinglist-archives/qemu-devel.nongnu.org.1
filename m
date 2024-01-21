@@ -2,101 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1374D8356A4
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 17:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE468356B9
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 17:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRaci-0003tl-CJ; Sun, 21 Jan 2024 11:24:40 -0500
+	id 1rRazV-0001vb-03; Sun, 21 Jan 2024 11:48:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
- id 1rRach-0003tW-0H; Sun, 21 Jan 2024 11:24:39 -0500
-Received: from mout.web.de ([217.72.192.78])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
- id 1rRacf-0004Q6-2Y; Sun, 21 Jan 2024 11:24:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
- t=1705854272; x=1706459072; i=jan.kiszka@web.de;
- bh=ECl6xXsI289B9nONusLcZmYsxKtnfBVMIX2BDjFm/+Y=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
- In-Reply-To;
- b=OKcchecspyeXPQxT40Oc6ikUuSH08t32jg6+kis5enttZ3vS3ltM6afrODKmeiFD
- /2wcVdbeJ3SvT0w7XDaQ6Htv21Ni2aX4xKXOpmHQl6fClVL/7H5ar5xeosV8GV2uB
- DNAifPeQ/3qlHVpq1QeA5UVcR5t1NuMSH3T8nfiI1PzjOafG4z6X3pFoRzE4he8M3
- LnRBoUBTyqNyDjEO8BUV15a4DNxg2A21x6g4xhO+n4U1cPx7eJZ9borIBpE2sOL/l
- nvWhkXF1oB1/5E0H9ZJlI14o9mrP7MAKwZuvrAriK6qgAH7X3fGa7ON9NStilCLJ5
- hzUUMOAEFikoogJInA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.12.10] ([46.128.89.130]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MFaui-1rKUxi21cM-00H6XN; Sun, 21
- Jan 2024 17:24:32 +0100
-Message-ID: <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
-Date: Sun, 21 Jan 2024 17:24:31 +0100
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rRazP-0001sE-LA
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 11:48:09 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rRazN-0002RC-R1
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 11:48:07 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40e775695c6so24133465e9.3
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 08:48:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705855682; x=1706460482; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2fWaQq4rWnp40PzjNHzj6lKaMLvc/fS0V8M6PQMp2GQ=;
+ b=NSNLLi84wlNwgyyUUIo5pgVRxQFHbJ1POXsPwXj6HjLb11taGYMwuSrXf7tcvie/gq
+ DPzoNIN1BMWPB3Sz0nuFKb24+YMtK3TvsFt7cv7qEDdvkJUQYZ2h5tUTfJvlx197nR0t
+ LklTN5pCmEfMD4UpyXVvywbQN1bmLoulCtug9pcWU0ig7DgP4oAb57JuIhnWw4yiW68G
+ sqMzXAjbWlqQLARoUCrBbI4M/vYnSbs9FNDucZ1SHiNKXlMeJHGcscmjXxXXUFLFH9Ex
+ PDDN344y52a3RAEfsqOD1O+49xXJnpsslwnpeuY3BNVClZl+SMh4QpE6P7IaGu5gjvJf
+ TgCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705855682; x=1706460482;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2fWaQq4rWnp40PzjNHzj6lKaMLvc/fS0V8M6PQMp2GQ=;
+ b=a2MLodN75RHmFcFfSQm4xCmLY+n1CsbTBH19oXfeq8u3qQ3C3S0NQ5p165eJhDobvC
+ /6VW2pKhqE3JAdtb7WoWc1vc7ERBwD+p5VlYbNTfYUxUn9dMgAWEnjzH6xaLqd254RTS
+ YgSIUGhaP+wVglDPZMbrzl4pc4nYq1bLUTcM5d2st93L28Er5wGMYcg8eJzKA+BHXtcH
+ Ae0fpy8Xl3TL+9CYYFVa4Ddl0NU0+P50pZhwRS5JXUuKx8XW3dD8dM08rPKQ/T4BR0lZ
+ Z6CldBRIGuhtt7CQ9YU/+gwkayw2yA9B/OdDZkPGVhYSzM6PqpwHPFzIgS6G4jNIINoi
+ s1cw==
+X-Gm-Message-State: AOJu0Yz09PQKsnU3KV64jtR0Cwv9Q2BD3+h6DyaTRuf9XkQYTBUZ9w66
+ 4r/PJ8VGElLqb29YH+mkeQwymH+1XJPbzCIlDWYVI2QgT0eO9OK5aO6MvsucG5E=
+X-Google-Smtp-Source: AGHT+IE/nL8cO88wYta38z59v4S58wkBeRgzssEN6B/Qq/c0kFGVzQaofnp3geKZ7ySkK0awl2phNg==
+X-Received: by 2002:a05:600c:4e8a:b0:40e:34e2:9d1f with SMTP id
+ f10-20020a05600c4e8a00b0040e34e29d1fmr1824136wmq.62.1705855682339; 
+ Sun, 21 Jan 2024 08:48:02 -0800 (PST)
+Received: from Dev-shlomop.pliops.ent ([213.8.195.28])
+ by smtp.googlemail.com with ESMTPSA id
+ v21-20020a05600c445500b0040d62f89381sm36289367wmn.35.2024.01.21.08.48.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Jan 2024 08:48:01 -0800 (PST)
+From: Shlomo Pongratz <shlomopongratz@gmail.com>
+X-Google-Original-From: Shlomo Pongratz <shlomop@pliops.com>
+To: qemu-devel@nongnu.org
+Cc: andrew.sminov@gmail.com, peter.maydell@linaro.com, shlomop@pliops.com,
+ shlomopongratz@gmail.com
+Subject: [PATCH v3] Handle wrap around in limit calculation
+Date: Sun, 21 Jan 2024 18:47:54 +0200
+Message-Id: <20240121164754.47367-1-shlomop@pliops.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Jan Kiszka <jan.kiszka@web.de>
-References: <20231103182750.855577-1-peter.maydell@linaro.org>
- <871qadh8g8.fsf@draig.linaro.org>
-From: Jan Kiszka <jan.kiszka@web.de>
-Autocrypt: addr=jan.kiszka@web.de; keydata=
- xsDhBEq0i8QRBAD2wOxlC9m/8t/vqjm1U9yQCT6OJ2Wbv/qys9DYM0CvcOTDMWQwmV1/VsZj
- KR5YgB5NPt+To7X6x5cjz15AGnx5Fb8Wnrq8EF9ZfHMwb7YMx1LdPYPDnXr37wE3XupFmkHB
- Mes4htyX7Dz8LvKDLnli4IsAmWG+kV1JI6LWKXLpSwCg8JRq4SWoB4VCQxbH3GjntgvwNc8D
- /2q5Dj0urJ7s7sdXhrH0hcFkpSFRmU5Yd6MCwcbFHm2paL5gqVjNNUUwDBKAL9eZaQVIHKwC
- 44BvNGO2gcQ26R3AuCHUQ+pZHg34tok1JCNZ6IEZccb+33Qq0qbcDMJJiDYp7ppp6ozifvc4
- YaqJECX48IydxfE9+41oV7T5vNAzA/QL/UMJyTnu5jiOXcyn5iFQw535lXkwKsqeXzCowLho
- HICZ2jITJPdTT/+9pGWwMQqST/SS35Tx4EnS3z2BWsNMCLuXCPkxF1elaMJqMfMJxFD8rAgS
- 9GK6zP6fJlsA1wq/UvKSL8v4QPOnTNCVOsyqJVasGV0ZPcDfcj+ClNO4zR5KYW4gS2lzemth
- IDxqYW4ua2lzemthQHdlYi5kZT7CYAQTEQIAIAUCSrSLxAIbIwYLCQgHAwIEFQIIAwQWAgMB
- Ah4BAheAAAoJEIrUrG965ecUhIMAnR6DDCW5cx+cVdYhydbhQXqeief6AJ4p+z4+nrmZLdfU
- 7V6nKqKeHeTtj87BTQRKtIvEEAgA2/PlX6oyi7dToH0CJCHq0eKmZaa7CmGaVnxyeepKvIfi
- M8n8Td76AbG64fjREMwgSpb4F/UytF3z/03tj4e49W/zKjbBRB2/wmFRlZBC9crg22Q+bgvM
- OsxnC6uHXaWN8fL+jVei/5OoHOoFqaMsX8EvploitlI/BPj+VgW26jksf3YZyk1hnclsZ/IY
- hXzgRmVJo4RiTW/YLQAkwndwc+fKPa/IYLEDW1Jc4kNLoK0P90b45zju0hpl0C00pVORTOtz
- FK9G5Ha7qOAWJfAVJORHKAkkvwftf3hkpPdLyvZUWRHXvUexmA61fLvDBAFhRxYGD8t5gz88
- SF5Tzq+0ywADBQf/YSkaYrEslPWiCA2wU6EW0yaqBQAobFsOMvsufJ6o2ntq5Ncq37VI3KCT
- 67eHPE9x+zPcENoZWsRrC9S9PCf1LOsi7ybZsR13AJqDFlRzJZ4klh9QwgwFZxUBzOdIvttw
- zG1QkzHx06RKZluFYpPF3DRduSMukdIJ2wmWCU+ohB+mYefe65JGjYQfHVs8mgYVFOPxbRea
- 9VJACCMuspoZWpj43UdR1lLLyIUFYz+jqcPW7Hd/GTIw4N67pYl0dwPDmFd4ohJ5g4Zpq61t
- oNysBGEuEm5GCcn0VmGtQpSYnR5cVm5b2yPz4bIuFOSuZUo/l7vitdY0iy0/wvKbBC+NK8JJ
- BBgRAgAJBQJKtIvEAhsMAAoJEIrUrG965ecULvAAoKGvxs5T3IhyQT8I8sMsyAvCE4wHAJ46
- S16yab+OxNkvOeoOEX0EnHVHaA==
-In-Reply-To: <871qadh8g8.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mrluBn4fJJBQNWIHAydViwPjI2aVUIXBnqSFg4+vt9qXWXV5e7C
- KySUH76hb/y61J0P/vzLeRkzBuaWf6CpsIiQ3A6KsZAUshhBKQGD52/9ELgOhDXH3vgFCTj
- JjJLJYtdIwRcSmQmcf8hiXsCROnG5ju3nfTMBfbAVOv52rihrtE50Ff3geWnn0OArgduDe5
- 0r4Da41ZbthwoPa6FkZhw==
-UI-OutboundReport: notjunk:1;M01:P0:TFFsts8+Ris=;i5D/CK2UKWwQDwefS47uoSVYS0q
- cEBjTbOZq947TH89T86WUf/d4zgP3ejmsKVDGQdoE8PcB3AjqJUR3D7Q/4S42K1hganRWptFM
- jlFZdBrHihj57a5KcfWv2AyiouGAf+gfKYJEbheRzT44A9jIPp2fpNBbQfdLexcYVvyqseHXy
- DOq1HSDjKt5HWkMoz+hvQAVmFl8S0H0GMzCad7QTowK+1i/Jg/7wIraNbvPYG08RUJcl4XjUA
- PpJJffKBUsGrgf1bHSBQT4hQbzsO7Q/CdUOk31dIzdZb55K//fo2Q6LcVoGP7tylcKjHyafVB
- 6NfPJvielEtxtJiWb97KKjg6zGnVMOFg6rcV8Ic/jQ5dcXLcbEGuMTRaSa6xNXCENH6cZWt75
- BfbOece6F11bPhdFNlJUbRq21CNbo9tmPKELd6mkPtEqgnFifHCQEeO/QOGJowkuptGbNQDTG
- sTGS10eUAVDO66Kwkw79PJnJKXWcYJzesRBgyJjU2Cvh1h49OOHqP+BUUPeHLR8nXZ6CKc7VA
- HCN83Fm5rVCkLRj84m1qDQd36taWzOeAw78rYknd9gzmwCZ36eB1ifOpzsFa2mmF54gPr0Z/v
- 229svQbfV7oU2tBWGrUkNagjiC1c/+4W4r1Xmjq9ltMoU0PIkRlI0cB5OaqU0OgI1nuniZWRZ
- XlMzSwzU9B0A4C95HUK4YNQEdmH6rjkawdw0F4OPi2/Vecdz5s596HtxAYA4yH9Xlp643fjl8
- KaIXVKQZeS6lWfJnD8VCgLijBUGT27cWbIUUijIAcjH0wQQ1NUSU9BEAO/bYgDvBWywzQfYsL
- r9upVzk4eVzUDPz6i4hv3Ar1z7dWEHlSBNw5mN0XtfGeldS/u/hq8WBsi8z4LV4pi0kwMMG+n
- 9gIGXoDcoaydPINIdcq3/zlx60j8D2DgKkbfb8vAzNoeguqNXyxVzenY4eypANjcayKX6ISNf
- sGWE9g==
-Received-SPF: pass client-ip=217.72.192.78; envelope-from=jan.kiszka@web.de;
- helo=mout.web.de
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=shlomopongratz@gmail.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,42 +90,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
->> Convert the musicpal key input device to use
->> qemu_add_kbd_event_handler().  This lets us simplify it because we no
->> longer need to track whether we're in the middle of a PS/2 multibyte
->> key sequence.
->>
->> In the conversion we move the keyboard handler registration from init
->> to realize, because devices shouldn't disturb the state of the
->> simulation by doing things like registering input handlers until
->> they're realized, so that device objects can be introspected
->> safely.
->>
->> The behaviour where key-repeat is permitted for the arrow-keys only
->> is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
->> and add a comment to that effect.
->
-> Well the key input all works as intended and looks good to me. I'm a
-> little disappointed I couldn't get audio working on the musicpal machine
-> but that is not a problem for this patch.
->
-> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
+From: Shlomo Pongratz <shlomopongratz@gmail.com>
 
-Looks good to me as well, all keys still work fine.
+    Hanlde wrap around when calculating the viewport size
+    caused by the fact that perior to version 460A the limit variable
+    was 32bit quantity and not 64 bits quantity.
+    In the i.MX 6Dual/6Quad Applications Processor Reference Manual
+    document on which the original code was based upon in the
+    description of the iATU Region Upper Base Address Register it is
+    written:
+    Forms bits [63:32] of the start (and end) address of the address region to be
+    translated.
+    That is in this register is the upper of both base and the limit.
+    In the current implementation this value was ignored for the limit
+    which caused a wrap around of the size calculaiton.
+    Using the documnet example:
+    Base HI: 0x80000000 Base LO: 0xd0000000 Limit LO: 0xd000ffff
+    The correct size is 0x80000000d000ffff - 0x80000000d0000000 + 1 =
+0x010000
+    The wrong result is 0xd000ffff - 0x80000000d0000000 + 1 = 0x8000000000010000
 
-No idea what's the issue with sound, though. I think I haven't run the
-whole stuff in a decade or so, had to search for all the pieces first of
-all again. The webradio service original behind this stopped their
-operations, at least for this device, but manually entered favorits
-still work on the real device - I still have one, though that is
-starting to get some issues as well.
+    Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
 
-Thanks,
-Jan
+    ----
+
+    Changes since v2:
+     * Don't try to fix the calculation.
+     * Change the limit variable from 32bit to 64 bit
+     * Set the limit bits [63:32] same as the base according to
+       the specification on which the original code was base upon.
+
+    Changes since v1:
+     * Seperate subject and description
+---
+ hw/pci-host/designware.c         | 19 ++++++++++++++-----
+ include/hw/pci-host/designware.h |  2 +-
+ 2 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index dd9e389c07..43cba9432f 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -269,7 +269,7 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+ {
+     const uint64_t target = viewport->target;
+     const uint64_t base   = viewport->base;
+-    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
++    const uint64_t size   = viewport->limit - base + 1;
+     const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
+ 
+     MemoryRegion *current, *other;
+@@ -351,6 +351,14 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+     case DESIGNWARE_PCIE_ATU_UPPER_BASE:
+         viewport->base &= 0x00000000FFFFFFFFULL;
+         viewport->base |= (uint64_t)val << 32;
++        /* The documentatoin states that the value of this register
++         * "Forms bits [63:32] of the start (and end) address
++         * of the address region to be translated.
++         * Note that from version 406A there is a sperate
++         * register fot the upper end address
++         */
++        viewport->limit &= 0x00000000FFFFFFFFULL;
++        viewport->limit |= (uint64_t)val << 32;
+         break;
+ 
+     case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
+@@ -364,7 +372,8 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
+         break;
+ 
+     case DESIGNWARE_PCIE_ATU_LIMIT:
+-        viewport->limit = val;
++        viewport->limit &= 0xFFFFFFFF00000000ULL;
++        viewport->limit |= val;
+         break;
+ 
+     case DESIGNWARE_PCIE_ATU_CR1:
+@@ -429,7 +438,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+         viewport->inbound = true;
+         viewport->base    = 0x0000000000000000ULL;
+         viewport->target  = 0x0000000000000000ULL;
+-        viewport->limit   = UINT32_MAX;
++        viewport->limit   = 0x00000000FFFFFFFFULL;
+         viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
+ 
+         source      = &host->pci.address_space_root;
+@@ -453,7 +462,7 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+         viewport->inbound = false;
+         viewport->base    = 0x0000000000000000ULL;
+         viewport->target  = 0x0000000000000000ULL;
+-        viewport->limit   = UINT32_MAX;
++        viewport->limit   = 0x00000000FFFFFFFFULL;
+         viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
+ 
+         destination = &host->pci.memory;
+@@ -560,7 +569,7 @@ static const VMStateDescription vmstate_designware_pcie_viewport = {
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT64(base, DesignwarePCIEViewport),
+         VMSTATE_UINT64(target, DesignwarePCIEViewport),
+-        VMSTATE_UINT32(limit, DesignwarePCIEViewport),
++        VMSTATE_UINT64(limit, DesignwarePCIEViewport),
+         VMSTATE_UINT32_ARRAY(cr, DesignwarePCIEViewport, 2),
+         VMSTATE_END_OF_LIST()
+     }
+diff --git a/include/hw/pci-host/designware.h b/include/hw/pci-host/designware.h
+index 908f3d946b..51052683b7 100644
+--- a/include/hw/pci-host/designware.h
++++ b/include/hw/pci-host/designware.h
+@@ -41,7 +41,7 @@ typedef struct DesignwarePCIEViewport {
+ 
+     uint64_t base;
+     uint64_t target;
+-    uint32_t limit;
++    uint64_t limit;
+     uint32_t cr[2];
+ 
+     bool inbound;
+-- 
+2.25.1
 
 
