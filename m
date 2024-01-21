@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3140D833738
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 01:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E81B833734
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 01:22:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRLaP-0002Yk-UV; Sat, 20 Jan 2024 19:21:17 -0500
+	id 1rRLaS-0002ZG-Ql; Sat, 20 Jan 2024 19:21:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rRLaO-0002YQ-MY
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 19:21:16 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rRLaQ-0002Yr-DT
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 19:21:18 -0500
+Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rRLaN-0007Qn-7O
- for qemu-devel@nongnu.org; Sat, 20 Jan 2024 19:21:16 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d6fbaaec91so16701885ad.3
- for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 16:21:14 -0800 (PST)
+ id 1rRLaO-0007RM-TH
+ for qemu-devel@nongnu.org; Sat, 20 Jan 2024 19:21:18 -0500
+Received: by mail-il1-x134.google.com with SMTP id
+ e9e14a558f8ab-361ae51a4d9so5617905ab.1
+ for <qemu-devel@nongnu.org>; Sat, 20 Jan 2024 16:21:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705796473; x=1706401273; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705796476; x=1706401276; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xu2jaDl0CebkWF1EGwbc5gC+5GyuWO8TNdEnyUmyH68=;
- b=zB1ECvkmgrwdiPenZzDGtE9p4m1jwc6vpFoDjMd1cduNtOx/E929wuuMPYda6+eviD
- MWW/AKc4H7ENq2NfdjXW2wt5P8NTOD+p0zQULfV4UnQyxqyx6Z8uwZlvxqUK1AdRE0ML
- lQlz/AcoSmMqEYwmVhzthfFYPTM7CyhVQJi63hKdVRHfG4QYkoDXrzhFEE8kCaltIhAy
- g6W7iLyTYs2yfI6XN76SVsQfOJlHBujBn80Zp5/7SgtiWgd/UMd/Mqy4KJJnjznV3avi
- U9eEAvFkB/ADh8e9Thukz2ng9wiLQ2S69tkr/5zvOOPu9tQmTT1qTMZWvOE3oW7yktkJ
- xq4g==
+ bh=AszAzFAp6jrF5ZpcMELuMynXb9ZnBs+nghMoHKpvVGo=;
+ b=rusVckiWhew5o9FyoD9wdQAgIw9aUm8aOym54TDh1ozMzNfdcwXeoBLZnLEJyyxrx3
+ vczkPgABUICoEKlNWX78cNhZz4vx15AivBIIJlwg+wFWmdgFGgLT4iK0rasZzQBOYGYB
+ ZkQjvQZhHadzMtRSp3rJw8EPwNXaau4YBVc0UNKu7wF7yokm8n5WP3TSEXI2bZljOgLx
+ bAz6WufDn+x3Q4PpBqoS9EnEHMIxPd9gfHqYVTRnjoUka+/oJ91UysJAeTpIyKzb9qh8
+ Q/DszWP0V0UAA+zJ2byhoCz6Oxmf08L8mGY5/PuSjmaabvfacxonS/WG+VmHM9npsEsh
+ QW+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705796473; x=1706401273;
+ d=1e100.net; s=20230601; t=1705796476; x=1706401276;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xu2jaDl0CebkWF1EGwbc5gC+5GyuWO8TNdEnyUmyH68=;
- b=ewAIsSmCbFXPHmbryPZIuGUJA0hyWjv7s8sk+4QvZoKDA0OvpC5Gb6tvztLXeCdKBH
- lzMkJptjyqB+Ciyel6YhpAvSLTxolVloaHrLieY13RsNWjbCtX1iASzgouciXzNMVJbb
- C0vQk7kPcAbak6PFJiWz3trOQOraN8qxYQK/PBrfB7zx/1B4eVIsLIcAS+Q69fYieYOY
- vKUkH4vaT3ZhAVv9wUWPC/DK6haLs/kl4qu5bUI821SC9k/DO//uOtC/cpF/lSo5KFPZ
- h6LpP1LiDZvgzDQSEbgpk9Hxwa5WZHQccoxSU5hL+LcO6SVQJK4bLjqQUfn0gHoV8Buv
- rsCQ==
-X-Gm-Message-State: AOJu0Yzr9aM/FdUn3NzO0WFEjL+CcO+J8AdVAaWUZOnQIimPWMw5Mk2s
- 83FiVPxJe9LEr+5j+3z4Iw6unoEuaV8wvZoPQ54ti85wNLLPfpoIaVNaFanKL3GAyLlPdQ3QHLh
- Q5Gc=
-X-Google-Smtp-Source: AGHT+IH5p7dLi6RF6/Udu3gjScmM2zK87XtgN7a0APjO1Y0PLpjL8sE5paodCue1L3k4D4J+1bd66w==
-X-Received: by 2002:a17:902:e852:b0:1d7:41b7:332b with SMTP id
- t18-20020a170902e85200b001d741b7332bmr875256plg.14.1705796473556; 
- Sat, 20 Jan 2024 16:21:13 -0800 (PST)
+ bh=AszAzFAp6jrF5ZpcMELuMynXb9ZnBs+nghMoHKpvVGo=;
+ b=V3ERk6n/Rb4hlwrYafJTexuinREbjcxnANg1dZrx2TESrF7esLrdNe57PZcNfR6Zh1
+ xR4eAYhSd5AgGX7I9N+GzD46TIlSvwFCHyW09QCjzTFD1C8z2ZyEZtyUg6uVIaFkNlP9
+ FS7S9ucGEmThMYIS1MICFqLerZMpYW/3Bl2VcWrDh5EP55KljiQAYlE40MyTFQqrwvf7
+ 3tlQsJVAmrOK6REt3hH7QMHARFEEBx49rXjOwQt1hc5J7m9YTL5YDOA32ms++3x0gcuu
+ Mk6lZe6dTgka9phPhzO3Is0p3UP/1hXUUt0MvN6nNt13N7Iro6RHhjEHUJeW3GVMs4/n
+ mrmw==
+X-Gm-Message-State: AOJu0YzKUHZ8kQeer9vs/RajK8byugWw/cP1Al2Mzvd6QZHcB6t/yoT5
+ 5X0qKb3/l3y38xkRjITcHQZd/93Tc83EHU5KjJ96WKV3+2DVFaC0rkVRjbXDUPIsO3lOAJO9VZ9
+ mWD4=
+X-Google-Smtp-Source: AGHT+IG/vxkYNFSyvsgw+P6dfYaW3iC6CHH2AV4xlOjNkwmaXPLJlvs14wMWQKYehkGKhxmR8gIreg==
+X-Received: by 2002:a05:6e02:f14:b0:35f:ca9d:6c42 with SMTP id
+ x20-20020a056e020f1400b0035fca9d6c42mr3071536ilj.4.1705796475892; 
+ Sat, 20 Jan 2024 16:21:15 -0800 (PST)
 Received: from stoup.net ([2001:8004:5170:1e39:1361:3840:4873:7990])
  by smtp.gmail.com with ESMTPSA id
- j4-20020a17090276c400b001d5af7fbda0sm5023546plt.122.2024.01.20.16.21.11
+ j4-20020a17090276c400b001d5af7fbda0sm5023546plt.122.2024.01.20.16.21.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 20 Jan 2024 16:21:13 -0800 (PST)
+ Sat, 20 Jan 2024 16:21:15 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Subject: [PULL 7/8] linux-user/elfload: test return value of getrlimit
-Date: Sun, 21 Jan 2024 11:20:46 +1100
-Message-Id: <20240121002047.89234-8-richard.henderson@linaro.org>
+Subject: [PULL 8/8] linux-user/elfload: check PR_GET_DUMPABLE before creating
+ coredump
+Date: Sun, 21 Jan 2024 11:20:47 +1100
+Message-Id: <20240121002047.89234-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240121002047.89234-1-richard.henderson@linaro.org>
 References: <20240121002047.89234-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +96,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Weißschuh <thomas@t-8ch.de>
 
-Should getrlimit() fail the value of dumpsize.rlimit_cur may not be
-initialized. Avoid reading garbage data by checking the return value of
-getrlimit.
+A process can opt-out of coredump creation by calling
+prctl(PR_SET_DUMPABLE, 0).
+linux-user passes this call from the guest through to the
+operating system.
+From there it can be read back again to avoid creating coredumps from
+qemu-user itself if the guest chose so.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Message-Id: <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
+Message-Id: <20240120-qemu-user-dumpable-v3-2-6aa410c933f1@t-8ch.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ linux-user/elfload.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cf9e74468b..c596871938 100644
+index c596871938..daf7ef8435 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -4667,9 +4667,9 @@ static int elf_core_dump(int signr, const CPUArchState *env)
+@@ -2,6 +2,7 @@
+ #include "qemu/osdep.h"
+ #include <sys/param.h>
+ 
++#include <sys/prctl.h>
+ #include <sys/resource.h>
+ #include <sys/shm.h>
+ 
+@@ -4667,6 +4668,11 @@ static int elf_core_dump(int signr, const CPUArchState *env)
      init_note_info(&info);
  
      errno = 0;
--    getrlimit(RLIMIT_CORE, &dumpsize);
--    if (dumpsize.rlim_cur == 0)
-+    if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
-         return 0;
++
++    if (prctl(PR_GET_DUMPABLE) == 0) {
++        return 0;
 +    }
- 
-     corefile = core_dump_filename(ts);
- 
++
+     if (getrlimit(RLIMIT_CORE, &dumpsize) == 0 && dumpsize.rlim_cur == 0) {
+         return 0;
+     }
 -- 
 2.34.1
 
