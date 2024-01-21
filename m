@@ -2,53 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356298355A8
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 13:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F4F8355AB
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 13:30:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRWwH-0005Xh-VG; Sun, 21 Jan 2024 07:28:37 -0500
+	id 1rRWxl-0006Cr-CC; Sun, 21 Jan 2024 07:30:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rRWwG-0005XX-38
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:28:36 -0500
+ id 1rRWxg-0006Av-Vs
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:30:05 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rRWwE-0005tM-7V
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:28:35 -0500
+ id 1rRWxd-0005zX-CZ
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 07:30:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ In-Reply-To:References:To:From:MIME-Version:Date:Message-ID:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6/S/GSygUh2t/uezBD5kHT6jlK7MTpL6uDoUrFmN5P0=; b=fnIe7N/jxMKYhorONpPIBMvzx1
- rq/jD1G6F8ck3jvgvBVW/jSkU0o8LKyiNKzDuGm83xh+AX8uNylm06mnSXyVFySmy9y3Uz8vhnd9x
- 1jj0UnrkFwjplP5lybTUG1tKCHLdRMtnhEnVqwJeeW4hbJuK8W1iDCx54SW+Ws3Tp4bG0ozCdebvD
- Uwv8bLDLh7M6HdCuJfcSq+eBhQMaEUUD0AfY3Ty+OL3D2pEJzwylwRl3VasUBf9E7De6Mgv2ESfl3
- eBCPeMbn8jdfsmMLxH0qsBYrDrT+Bp9DwyJ4ljBlpqNGJNxXwPVJANJQ6+RFLRZ7B0jyV+bi5wO3t
- kRRcNyCh+dP+mdyUv8eYGpPqDYdo48DolCpGl1bdF0eDIQ1nCXIi55nFR3Wpx7IFa3K1gAQs80lNJ
- Wo6jDeH/1ulEw+XsPT71l7ReH78gRc8W7LN9lj7SkSuo0r93wFjFz/Gbc6zTlWs08pnaBU7/63hTA
- NL4xbs6j4HGE/ljI+nqWaFQk+VbYUehI1+OVZvLKae0A8wXAN+m8EjOwFDQ8D+9bc6igaARf5p4zR
- Yaerxi2ETbdeyXcVWQaCDJRTQ5ZxfzmCf1j5w1IQUJVy/+DanvbTsiOFAJksp1xTZeW+UU6Wrie6K
- LGZ81KyXmKqiB0XhUro3go4m5AbFecSPnqkCUix0g=;
+ bh=Pv5DdezbC3EYmMlo2jshDuTrLowtepUMobjpW4Pluek=; b=f8KRdd0SArGLetApTlgJ1lpxsh
+ jIqWZUlED+n6AGv/Y0EA1YZJtpTMGwEo4KuFbXPaizPaLRolqLe8HgUYFaiOOJJjTm/Szn91CYLlU
+ JtpFh3FJpBeGSjyN89/ZdXu4y+xzLfxiwVwdUE3ze5KJMxo0JJGyizre2CVtZuQAeCaR5iguK4SpX
+ 0heWgWkqmdHrp27km9pyg0W6cugdAsoP3wZ53BOPYbDzGJ32etubUfEhD6UuGjs5o/cd8xHC3zRd6
+ lC01AOIOG7qoc3PPjRFnov0uELDi1kpX7XLKnPCRMmAXenYAUm3UqHLeFRX5LhRfpLIfrPET3rxx+
+ FHzQ9gNVsTOmDURIxwQS1wzdXJzKQ3qKrWsXiPh4h7P11z6ZAxdnt/HMzKqrlvHxuyTIxpJeTEETg
+ 9rtQzTCeqi95MCQGK8Km4Jm9G7sf0R8DALT0nvErDEbBsefQqKuxA5qonJY/iUp6xUnmWJx00Bj9Z
+ QHYRUTh6/mVrgDBm6FryaE+SdbVFLMAFWzb1d/ArshtNutDcaMV391Qnk8et1wWGkQC0tz7OniiAm
+ snO8FuaHLyBzxy5rWFH3rRbbd6SODgPVLCr1meZBG+C/5diNotiSuHHkNk11DVrGhx0dof1duK4Jg
+ U+iPDztwkL5NscVCPXW5PxzZZahASVcT1kUMaysqE=;
 Received: from [2a00:23c4:8bb1:9800:5dbf:d3e3:d848:4670]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rRWvE-000Cep-1z; Sun, 21 Jan 2024 12:27:36 +0000
-Message-ID: <561fe2bf-4236-479b-b68b-02a92741230e@ilande.co.uk>
-Date: Sun, 21 Jan 2024 12:28:03 +0000
+ id 1rRWx1-000CfL-DE; Sun, 21 Jan 2024 12:29:27 +0000
+Message-ID: <3a88e9b4-f185-4439-9b11-5cbaba1a75f8@ilande.co.uk>
+Date: Sun, 21 Jan 2024 12:29:55 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, pbonzini@redhat.com, fam@euphon.net,
- hpoussin@reactos.org, deller@gmx.de, linux@roeck-us.net,
- qemu-devel@nongnu.org
-References: <20240112131529.515642-1-mark.cave-ayland@ilande.co.uk>
- <9ceaeead-107a-4766-b5da-a9060ddeddf4@tls.msk.ru>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu, qemu-devel@nongnu.org, elliotnunn@fastmail.com
+References: <20240111102954.449462-1-mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
  3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
@@ -73,12 +70,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <9ceaeead-107a-4766-b5da-a9060ddeddf4@tls.msk.ru>
+In-Reply-To: <20240111102954.449462-1-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb1:9800:5dbf:d3e3:d848:4670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/4] esp-pci: fixes for Linux and MS-DOS
+Subject: Re: [PATCH v3 0/3] nubus: add nubus-virtio-mmio device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -104,39 +101,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/01/2024 13:09, Michael Tokarev wrote:
+On 11/01/2024 10:29, Mark Cave-Ayland wrote:
 
-> 12.01.2024 16:15, Mark Cave-Ayland:
->> This series contains fixes for the esp-pci device (am53c974 or dc390) for a
->> few issues spotted whilst testing the previous ESP series.
->>
->> Patches 1-3 are fixes for issues found by Helge/Guenter whilst testing the
->> hppa C3700 machine with the amd53c974/dc390 devices under Linux, whilst patch
->> 4 fixes an issue that was exposed by testing MS-DOS and Windows drivers.
->>
->> With this series applied on top of the reworked ESP device, it is possible to
->> boot Linux under qemu-system-hppa without any errors and also boot and install
->> Win98SE from a DC390 PCI SCSI controller (no IDE!) using an MS-DOS boot floppy.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> Based-on: 20240112125420.514425-1-mark.cave-ayland@ilande.co.uk
->>
->>
->> Mark Cave-Ayland (4):
->>    esp-pci.c: use correct address register for PCI DMA transfers
->>    esp-pci.c: generate PCI interrupt from separate ESP and PCI sources
->>    esp-pci.c: synchronise setting of DMA_STAT_DONE with ESP completion
->>      interrupt
->>    esp-pci.c: set DMA_STAT_BCMBLT when BLAST command issued
+> This series introduces a new nubus-virtio-mmio device which can be plugged into
+> the q800 machine to enable a 68k Classic MacOS guest to access virtio devices
+> such as virtio-9p-device (host filesharing), virtio-gpu (extended framebuffer
+> support) and virtio-tablet-device (absolute positioning).
 > 
-> Is it worth to pick up for stable?  Especially the first one.
-> It's interesting this bug is here for a very long time.. :)
+> Once the nubus-virtio-mmio device has been plugged into the q800 machine, virtio
+> devices can be accessed by a Classic MacOS guest using the drivers from the
+> classicvirtio project at https://github.com/elliotnunn/classicvirtio.
+> 
+> The nubus-virtio-mmio device is purposefully designed to be similar to the
+> virtio-mmio interface used by the existing 68k virt machine, making use of a
+> similar memory layout and the goldfish PIC for simple interrupt management. The
+> main difference is that only a single goldfish PIC is used, however that still
+> allows up to 32 virtio devices to be connected using a single nubus card.
+> 
+> Patch 1 fixes an alignment bug in the existing nubus-device Declaration ROM code
+> whereby some ROM images could trigger an assert() in QEMU, patch 2 increases the
+> maximum Declaration ROM size (to aid development), whilst patch 3 adds the
+> nubus-virtio-mmio device itself.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> 
+> [Patches still needing review: 2, 3]
+> 
+> v3:
+> - Rebase onto master
+> - Update patch 1 alignment calculation to use intermediatery uint8_t rom_ptr
+>    variable, add Phil's R-B tag
+> - Add patch 2 to increase maximum Declaration ROM size to 1MB
+> 
+> v2:
+> - Rebase onto master
+> - Adjust comment in patch 1 as suggested by Phil
+> 
+> 
+> Mark Cave-Ayland (3):
+>    nubus-device: round Declaration ROM memory region address to
+>      qemu_target_page_size()
+>    nubus.h: increase maximum Declaration ROM size from 128k to 1Mb
+>    nubus: add nubus-virtio-mmio device
+> 
+>   hw/nubus/meson.build                 |   1 +
+>   hw/nubus/nubus-device.c              |  18 +++--
+>   hw/nubus/nubus-virtio-mmio.c         | 102 +++++++++++++++++++++++++++
+>   include/hw/nubus/nubus-virtio-mmio.h |  36 ++++++++++
+>   include/hw/nubus/nubus.h             |   2 +-
+>   5 files changed, 154 insertions(+), 5 deletions(-)
+>   create mode 100644 hw/nubus/nubus-virtio-mmio.c
+>   create mode 100644 include/hw/nubus/nubus-virtio-mmio.h
 
-Good question! I did my comprehensive boot tests with this series on top of the core 
-ESP series so I can't say that I've tested this series on its own. Then again other 
-than the DMA_STAT_DONE patch which is a timing change, the rest of the patches are 
-fixing specific edge cases which were already broken so I would be surprised if 
-anything broke.
+Ping?
 
 
 ATB,
