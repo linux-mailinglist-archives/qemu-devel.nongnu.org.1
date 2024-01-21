@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C288354CB
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 08:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F24A8354D4
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 08:34:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRS20-0001tP-2Q; Sun, 21 Jan 2024 02:14:12 -0500
+	id 1rRSKe-0006PY-GD; Sun, 21 Jan 2024 02:33:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rRS1y-0001sq-Cw; Sun, 21 Jan 2024 02:14:10 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rRS1w-0000lA-IY; Sun, 21 Jan 2024 02:14:10 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-5578485fc0eso2059358a12.1; 
- Sat, 20 Jan 2024 23:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705821246; x=1706426046; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wHlpOcv02DwrrX6WvncuMRoVIQ5OQyEnOP0Kgmns+98=;
- b=m66WnaHaDONsllXvHMc1jC1RNRAg4EVD1Mo/BjyC/3fnJtpTgQm/z/XEUaPhfu5vWW
- RGDH3b0dFLUubBvKDc8aX4yEgudkC3YvaTevIAAgRPNTKWTPPEbwaJEGFNexrAKCA2b8
- KN+pNJNbfIHTAtbXqK3ZFfVvFY/jO1+IhHUzpV/7ko8rezk+y5Ob8zZgNJtdcdzqj3L4
- Jw6IJmbwnrYvsQJ7JAeeus4I/AJmODmjV857Ujym8VOjP/CesRG8qYnSCP+zxtDUdH3K
- SsLQTsbfZgs4WY93uQoiSoXGj1XkSbr49mXu/wI2UzgeWOEN8d1rXiIalFdruG1wf1vk
- a3cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705821246; x=1706426046;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wHlpOcv02DwrrX6WvncuMRoVIQ5OQyEnOP0Kgmns+98=;
- b=bSwR2XR7VcckEEXtOYhyvIxp+kOJ3D7X+8B2HXhaIQJE/kx4pfPTo2sDO1t11E7LOO
- 4nYXYjIm4QGVIgHvn9uZ0S4/drIQKm4U9/jsHiIZrKoVVp31fWDA+7dWOz4j+20Tk6ly
- hg6U9Y/IMkxn/Nxz4RmhnBUI+o6KjmlNh5BAsgxPlXnel+61iMDn4uCy97OedRDQnZ2l
- bvASEjE8n0euF4D8yo3JX4qn9jAz0ie8r/ZtIQR/g/qZgsDUgHXBs4T2RW4+drspyO3a
- f1IwaJadF4DfhztUo/lTCpOcMejyxJbRUAQaAkyXoRHIruA8/D2c+/NVmL7tQNZQ1l1q
- cxmQ==
-X-Gm-Message-State: AOJu0YyuvN2TazGiz1E8+oPTjyqhCkKnRA8YMG0BpdIx7Vp09zno9CLy
- ja227kRUfGKFHmM/1uLrf9WkE2x5tnEYLbMc04PwYfSRjQ5RYm/aQ1FnDFDfW2X66Hz7dSSCDro
- xp9u94Xe0rzsnPqx8cTe6+2HN5vY=
-X-Google-Smtp-Source: AGHT+IGu+XNmCR16hb6YCOeQpnuYPdTDQ278fIdj65a7GYeQmPxy+HPWJ+/agUSY5sKjTix4G6jkk9SXolvFbQp0uIQ=
-X-Received: by 2002:a05:6402:50d3:b0:55a:c0e7:1e03 with SMTP id
- h19-20020a05640250d300b0055ac0e71e03mr1029655edb.71.1705821246061; Sat, 20
- Jan 2024 23:14:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rRSKc-0006OZ-0s
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 02:33:26 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rRSKa-0007SC-7U
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 02:33:25 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E24045D43;
+ Sun, 21 Jan 2024 10:33:56 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4DF8F6889A;
+ Sun, 21 Jan 2024 10:33:20 +0300 (MSK)
+Message-ID: <cc0f471c-c89e-4fcc-9813-427ef63470a5@tls.msk.ru>
+Date: Sun, 21 Jan 2024 10:33:20 +0300
 MIME-Version: 1.0
-References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-4-me@deliversmonkey.space>
- <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
- <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
- <CAKC1njRXPi1Roch=T+NwQk-TOzN=gSjmPh2KCVsemKdex9CamA@mail.gmail.com>
- <5b6571d3-f654-488d-9dc5-0d18ba542e05@linaro.org>
-In-Reply-To: <5b6571d3-f654-488d-9dc5-0d18ba542e05@linaro.org>
-From: Alexey Baturo <baturo.alexey@gmail.com>
-Date: Sun, 21 Jan 2024 10:13:54 +0300
-Message-ID: <CAFukJ-Cf51kS17BOCkuPpxGXS+h4-MENKqBH5EW7Bj0mz+KPRQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
- current number of masked bits for pointer masking
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: Deepak Gupta <debug@rivosinc.com>, zhiwei_liu@linux.alibaba.com,
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000006c00b1060f6f754f"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=baturo.alexey@gmail.com; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/8] tcg + linux-user patch queue
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240121002047.89234-1-richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240121002047.89234-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,141 +81,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000006c00b1060f6f754f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+21.01.2024 03:20, Richard Henderson:
 
-Hi,
+> tcg/s390x: Fix encoding of VRIc, VRSa, VRSc insns
+> tcg: Clean up error paths in alloc_code_gen_buffer_splitwx_memfd
+> linux-user/riscv: Adjust vdso signal frame cfa offsets
+> linux-user: Fixed cpu restore with pc 0 on SIGBUS
 
-Having the feature to run binaries with pointer masking on qemu-user is
-really nice, but I see this patch series as an initial support.
-Obviously there'll be more patches and fixes for pointer masking as soon as
-arch tests are ready.
-I suggest supporting qemu-user in the next patches, but make sure we do
-this before claiming 100% support for pointer masking.
-@Deepak Gupta <debug@rivosinc.com> what do you think?
+It looks like the last two should go to stable-8.2 too
+(besides the s390 fix which is already marked for-stable).
+Please let me know if I'm wrong.
 
-Thanks
+Thanks,
 
-=D1=81=D0=B1, 20 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 10:37, Ric=
-hard Henderson <richard.henderson@linaro.org
->:
-
-> On 1/19/24 09:40, Deepak Gupta wrote:
-> > On Thu, Jan 18, 2024 at 12:50=E2=80=AFPM Richard Henderson
-> > <richard.henderson@linaro.org> wrote:
-> >> At some point pointer masking will be in hardware, and the kernel will
-> gain support for
-> >> it, and there will likely be a prctl() added for it.  At the point the
-> kernel finalizes
-> >> the API, you will be able to enable pointer masking for qemu-user.
-> >
-> > I am sure I am missing some important detail here, BUT...
-> >
-> > How is it different from aarch64 "top byte ignore".
->
-> It is very similar, yes.
->
-> > I think commit: 16c8497 enables top byte ignore for user pointers and
-> > by default for qemu-user for aarch64 target.
->
-> Not quite, no.
->
-> commit 0e0c030c681730f3ec55ba3b223b608a8f3e8282
-> Author: Richard Henderson <richard.henderson@linaro.org>
-> Date:   Fri Feb 12 10:48:51 2021 -0800
->
->      linux-user/aarch64: Implement PR_TAGGED_ADDR_ENABLE
->
-> is more relevant.
->
-> > IIRC, user <--> kernel abi is only needed for pointers that are passed
-> > to the kernel.
->
-> It is also needed to *enable* pointer masking at all.
->
-> For aarch64, TBI has been enabled for user-space since the beginning, but
-> that is not true
-> for riscv.  Therefore there will be a need for a syscall to opt in and
-> enable pointer masking.
->
-> > And in the case of qemu-user, we are talking about the host kernel.
->
-> No, we are not.  We are always emulating the guest kernel.
->
->
-> r~
->
-
---0000000000006c00b1060f6f754f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi,<div><br></div><div>Having the feature to run binaries =
-with pointer masking on qemu-user is really nice, but I see this patch seri=
-es as an initial support.</div><div>Obviously there&#39;ll be more patches =
-and fixes for pointer=C2=A0masking as soon as arch tests are ready.</div><d=
-iv>I suggest supporting qemu-user in the next patches, but make sure we do =
-this before claiming 100% support for pointer masking.</div><div><a class=
-=3D"gmail_plusreply" id=3D"plusReplyChip-0" href=3D"mailto:debug@rivosinc.c=
-om" tabindex=3D"-1">@Deepak Gupta</a>=C2=A0what do you think?<br></div><div=
-><br></div><div>Thanks</div></div><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr" class=3D"gmail_attr">=D1=81=D0=B1, 20 =D1=8F=D0=BD=D0=B2. 2024=E2=
-=80=AF=D0=B3. =D0=B2 10:37, Richard Henderson &lt;<a href=3D"mailto:richard=
-.henderson@linaro.org">richard.henderson@linaro.org</a>&gt;:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">On 1/19/24 09:40, Deepak Gupta=
- wrote:<br>
-&gt; On Thu, Jan 18, 2024 at 12:50=E2=80=AFPM Richard Henderson<br>
-&gt; &lt;<a href=3D"mailto:richard.henderson@linaro.org" target=3D"_blank">=
-richard.henderson@linaro.org</a>&gt; wrote:<br>
-&gt;&gt; At some point pointer masking will be in hardware, and the kernel =
-will gain support for<br>
-&gt;&gt; it, and there will likely be a prctl() added for it.=C2=A0 At the =
-point the kernel finalizes<br>
-&gt;&gt; the API, you will be able to enable pointer masking for qemu-user.=
-<br>
-&gt; <br>
-&gt; I am sure I am missing some important detail here, BUT...<br>
-&gt; <br>
-&gt; How is it different from aarch64 &quot;top byte ignore&quot;.<br>
-<br>
-It is very similar, yes.<br>
-<br>
-&gt; I think commit: 16c8497 enables top byte ignore for user pointers and<=
-br>
-&gt; by default for qemu-user for aarch64 target.<br>
-<br>
-Not quite, no.<br>
-<br>
-commit 0e0c030c681730f3ec55ba3b223b608a8f3e8282<br>
-Author: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.or=
-g" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
-Date:=C2=A0 =C2=A0Fri Feb 12 10:48:51 2021 -0800<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0linux-user/aarch64: Implement PR_TAGGED_ADDR_ENABLE<br>
-<br>
-is more relevant.<br>
-<br>
-&gt; IIRC, user &lt;--&gt; kernel abi is only needed for pointers that are =
-passed<br>
-&gt; to the kernel.<br>
-<br>
-It is also needed to *enable* pointer masking at all.<br>
-<br>
-For aarch64, TBI has been enabled for user-space since the beginning, but t=
-hat is not true <br>
-for riscv.=C2=A0 Therefore there will be a need for a syscall to opt in and=
- enable pointer masking.<br>
-<br>
-&gt; And in the case of qemu-user, we are talking about the host kernel.<br=
->
-<br>
-No, we are not.=C2=A0 We are always emulating the guest kernel.<br>
-<br>
-<br>
-r~<br>
-</blockquote></div>
-
---0000000000006c00b1060f6f754f--
+/mjt
 
