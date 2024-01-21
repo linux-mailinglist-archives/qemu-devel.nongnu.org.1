@@ -2,87 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20668835627
-	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 15:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1374D8356A4
+	for <lists+qemu-devel@lfdr.de>; Sun, 21 Jan 2024 17:26:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRYwh-0001nM-UM; Sun, 21 Jan 2024 09:37:11 -0500
+	id 1rRaci-0003tl-CJ; Sun, 21 Jan 2024 11:24:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rRYwd-0001kp-Gf
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 09:37:07 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rRYwa-0000yR-5W
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 09:37:06 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6dbdbddc180so313124b3a.2
- for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 06:37:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1705847822; x=1706452622;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=x5bovMyB+xlKv2Vyli+jBAUdsWO8rW3ItMprWjw87zo=;
- b=DZ+hJfmKQ8/59HBjE2ZsaNzbnBfa08hT5Q5YAvAJ2sbS9X0d0mu8RKoQSImCk3cKBU
- 9xStl7Wc2KPf7wK0t/hwDuL1eE5yRDFr1be5GenUIjApBsoj6CH0285mV/2gwoG4G+Y6
- 6ki163oNiTAfBXfbel60ohIY8CgOzdHp2v0luH3NeB+HbfXFjtLvMrN7L3iisM5MrOVG
- pJmZae9onAgLKiCV/cC63YJPoXApaJC/SQXlYqeMk8uvdbcKMAtyN11o/pvSAgKwxY2G
- KHU8hdQcKsX9v6gBPrYxexAIlRnpwTj0wNDYmouVobZT7q6sxP/vkv5OQc7FsSWyfcPN
- VkIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705847822; x=1706452622;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x5bovMyB+xlKv2Vyli+jBAUdsWO8rW3ItMprWjw87zo=;
- b=LI0GWf4DAjkTBy2jQudNnzdzA213mEoJq/3SQpbQZV5mOGsCm0UElhuGhafqnWoT/Z
- 14ycilrFARd61QBXjtYhHTiObgWFWxvZiPMsi4Q6UwN/GBlrYdP45BL+3COXMPz2UVIy
- lb5UjoVNyJAtzb+SnO/PmA/tOlmw6LCwuy9C2ctJpj6aWSdbm+XVE4pBpBTQ6r2DMQEc
- ny6n7rXS5IwULJR0pvHDyVK5P+S7pCQY5QXTmPZy7usQPW5HCVxU67opEFnTVc8OWvtf
- IwPYRkxK6AhHNtp4luLJTmssvE5//9injo8Xb9vL+WhbPpgQAfEwsRTcqZ7aULxJvMQ9
- 4mqQ==
-X-Gm-Message-State: AOJu0YyM6F0k15BLzDSanvtqXKDLm3a6BLb8sQ0o7fJlaExRQuFk/J78
- po4UdJHYG3pp+UI3LighRSzAOa3Ia3ykLWZNSYUAubVpisGrYBewQyy9ScghTbc=
-X-Google-Smtp-Source: AGHT+IEmVLsVYdXjnFVH/XXPYjzZbTAU9WdkV3ei+OCBL+swGDTx/3/f3N+FvnhAfgGXfAMc/ZVrdg==
-X-Received: by 2002:a05:6a20:8e0a:b0:19b:155c:7e5c with SMTP id
- y10-20020a056a208e0a00b0019b155c7e5cmr3810828pzj.39.1705847822163; 
- Sun, 21 Jan 2024 06:37:02 -0800 (PST)
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with ESMTPSA id
- u30-20020a63471e000000b0059b2316be86sm6608989pga.46.2024.01.21.06.37.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 21 Jan 2024 06:37:01 -0800 (PST)
-Message-ID: <b872f23b-a992-489d-856c-9321576a4d29@daynix.com>
-Date: Sun, 21 Jan 2024 23:36:58 +0900
+ (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
+ id 1rRach-0003tW-0H; Sun, 21 Jan 2024 11:24:39 -0500
+Received: from mout.web.de ([217.72.192.78])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
+ id 1rRacf-0004Q6-2Y; Sun, 21 Jan 2024 11:24:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+ t=1705854272; x=1706459072; i=jan.kiszka@web.de;
+ bh=ECl6xXsI289B9nONusLcZmYsxKtnfBVMIX2BDjFm/+Y=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+ In-Reply-To;
+ b=OKcchecspyeXPQxT40Oc6ikUuSH08t32jg6+kis5enttZ3vS3ltM6afrODKmeiFD
+ /2wcVdbeJ3SvT0w7XDaQ6Htv21Ni2aX4xKXOpmHQl6fClVL/7H5ar5xeosV8GV2uB
+ DNAifPeQ/3qlHVpq1QeA5UVcR5t1NuMSH3T8nfiI1PzjOafG4z6X3pFoRzE4he8M3
+ LnRBoUBTyqNyDjEO8BUV15a4DNxg2A21x6g4xhO+n4U1cPx7eJZ9borIBpE2sOL/l
+ nvWhkXF1oB1/5E0H9ZJlI14o9mrP7MAKwZuvrAriK6qgAH7X3fGa7ON9NStilCLJ5
+ hzUUMOAEFikoogJInA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.12.10] ([46.128.89.130]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MFaui-1rKUxi21cM-00H6XN; Sun, 21
+ Jan 2024 17:24:32 +0100
+Message-ID: <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
+Date: Sun, 21 Jan 2024 17:24:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 17/22] plugins: add an API to read registers
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20240116104809.250076-1-alex.bennee@linaro.org>
- <20240116104809.250076-18-alex.bennee@linaro.org>
- <4b2156ed-688d-4617-b52d-200413f01156@daynix.com>
- <87cytyhnxi.fsf@draig.linaro.org>
+Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87cytyhnxi.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Jan Kiszka <jan.kiszka@web.de>
+References: <20231103182750.855577-1-peter.maydell@linaro.org>
+ <871qadh8g8.fsf@draig.linaro.org>
+From: Jan Kiszka <jan.kiszka@web.de>
+Autocrypt: addr=jan.kiszka@web.de; keydata=
+ xsDhBEq0i8QRBAD2wOxlC9m/8t/vqjm1U9yQCT6OJ2Wbv/qys9DYM0CvcOTDMWQwmV1/VsZj
+ KR5YgB5NPt+To7X6x5cjz15AGnx5Fb8Wnrq8EF9ZfHMwb7YMx1LdPYPDnXr37wE3XupFmkHB
+ Mes4htyX7Dz8LvKDLnli4IsAmWG+kV1JI6LWKXLpSwCg8JRq4SWoB4VCQxbH3GjntgvwNc8D
+ /2q5Dj0urJ7s7sdXhrH0hcFkpSFRmU5Yd6MCwcbFHm2paL5gqVjNNUUwDBKAL9eZaQVIHKwC
+ 44BvNGO2gcQ26R3AuCHUQ+pZHg34tok1JCNZ6IEZccb+33Qq0qbcDMJJiDYp7ppp6ozifvc4
+ YaqJECX48IydxfE9+41oV7T5vNAzA/QL/UMJyTnu5jiOXcyn5iFQw535lXkwKsqeXzCowLho
+ HICZ2jITJPdTT/+9pGWwMQqST/SS35Tx4EnS3z2BWsNMCLuXCPkxF1elaMJqMfMJxFD8rAgS
+ 9GK6zP6fJlsA1wq/UvKSL8v4QPOnTNCVOsyqJVasGV0ZPcDfcj+ClNO4zR5KYW4gS2lzemth
+ IDxqYW4ua2lzemthQHdlYi5kZT7CYAQTEQIAIAUCSrSLxAIbIwYLCQgHAwIEFQIIAwQWAgMB
+ Ah4BAheAAAoJEIrUrG965ecUhIMAnR6DDCW5cx+cVdYhydbhQXqeief6AJ4p+z4+nrmZLdfU
+ 7V6nKqKeHeTtj87BTQRKtIvEEAgA2/PlX6oyi7dToH0CJCHq0eKmZaa7CmGaVnxyeepKvIfi
+ M8n8Td76AbG64fjREMwgSpb4F/UytF3z/03tj4e49W/zKjbBRB2/wmFRlZBC9crg22Q+bgvM
+ OsxnC6uHXaWN8fL+jVei/5OoHOoFqaMsX8EvploitlI/BPj+VgW26jksf3YZyk1hnclsZ/IY
+ hXzgRmVJo4RiTW/YLQAkwndwc+fKPa/IYLEDW1Jc4kNLoK0P90b45zju0hpl0C00pVORTOtz
+ FK9G5Ha7qOAWJfAVJORHKAkkvwftf3hkpPdLyvZUWRHXvUexmA61fLvDBAFhRxYGD8t5gz88
+ SF5Tzq+0ywADBQf/YSkaYrEslPWiCA2wU6EW0yaqBQAobFsOMvsufJ6o2ntq5Ncq37VI3KCT
+ 67eHPE9x+zPcENoZWsRrC9S9PCf1LOsi7ybZsR13AJqDFlRzJZ4klh9QwgwFZxUBzOdIvttw
+ zG1QkzHx06RKZluFYpPF3DRduSMukdIJ2wmWCU+ohB+mYefe65JGjYQfHVs8mgYVFOPxbRea
+ 9VJACCMuspoZWpj43UdR1lLLyIUFYz+jqcPW7Hd/GTIw4N67pYl0dwPDmFd4ohJ5g4Zpq61t
+ oNysBGEuEm5GCcn0VmGtQpSYnR5cVm5b2yPz4bIuFOSuZUo/l7vitdY0iy0/wvKbBC+NK8JJ
+ BBgRAgAJBQJKtIvEAhsMAAoJEIrUrG965ecULvAAoKGvxs5T3IhyQT8I8sMsyAvCE4wHAJ46
+ S16yab+OxNkvOeoOEX0EnHVHaA==
+In-Reply-To: <871qadh8g8.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mrluBn4fJJBQNWIHAydViwPjI2aVUIXBnqSFg4+vt9qXWXV5e7C
+ KySUH76hb/y61J0P/vzLeRkzBuaWf6CpsIiQ3A6KsZAUshhBKQGD52/9ELgOhDXH3vgFCTj
+ JjJLJYtdIwRcSmQmcf8hiXsCROnG5ju3nfTMBfbAVOv52rihrtE50Ff3geWnn0OArgduDe5
+ 0r4Da41ZbthwoPa6FkZhw==
+UI-OutboundReport: notjunk:1;M01:P0:TFFsts8+Ris=;i5D/CK2UKWwQDwefS47uoSVYS0q
+ cEBjTbOZq947TH89T86WUf/d4zgP3ejmsKVDGQdoE8PcB3AjqJUR3D7Q/4S42K1hganRWptFM
+ jlFZdBrHihj57a5KcfWv2AyiouGAf+gfKYJEbheRzT44A9jIPp2fpNBbQfdLexcYVvyqseHXy
+ DOq1HSDjKt5HWkMoz+hvQAVmFl8S0H0GMzCad7QTowK+1i/Jg/7wIraNbvPYG08RUJcl4XjUA
+ PpJJffKBUsGrgf1bHSBQT4hQbzsO7Q/CdUOk31dIzdZb55K//fo2Q6LcVoGP7tylcKjHyafVB
+ 6NfPJvielEtxtJiWb97KKjg6zGnVMOFg6rcV8Ic/jQ5dcXLcbEGuMTRaSa6xNXCENH6cZWt75
+ BfbOece6F11bPhdFNlJUbRq21CNbo9tmPKELd6mkPtEqgnFifHCQEeO/QOGJowkuptGbNQDTG
+ sTGS10eUAVDO66Kwkw79PJnJKXWcYJzesRBgyJjU2Cvh1h49OOHqP+BUUPeHLR8nXZ6CKc7VA
+ HCN83Fm5rVCkLRj84m1qDQd36taWzOeAw78rYknd9gzmwCZ36eB1ifOpzsFa2mmF54gPr0Z/v
+ 229svQbfV7oU2tBWGrUkNagjiC1c/+4W4r1Xmjq9ltMoU0PIkRlI0cB5OaqU0OgI1nuniZWRZ
+ XlMzSwzU9B0A4C95HUK4YNQEdmH6rjkawdw0F4OPi2/Vecdz5s596HtxAYA4yH9Xlp643fjl8
+ KaIXVKQZeS6lWfJnD8VCgLijBUGT27cWbIUUijIAcjH0wQQ1NUSU9BEAO/bYgDvBWywzQfYsL
+ r9upVzk4eVzUDPz6i4hv3Ar1z7dWEHlSBNw5mN0XtfGeldS/u/hq8WBsi8z4LV4pi0kwMMG+n
+ 9gIGXoDcoaydPINIdcq3/zlx60j8D2DgKkbfb8vAzNoeguqNXyxVzenY4eypANjcayKX6ISNf
+ sGWE9g==
+Received-SPF: pass client-ip=217.72.192.78; envelope-from=jan.kiszka@web.de;
+ helo=mout.web.de
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,173 +113,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/01/18 20:38, Alex Bennée wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> On 2024/01/16 19:48, Alex Bennée wrote:
->>> We can only request a list of registers once the vCPU has been
->>> initialised so the user needs to use either call the get function on
->>> vCPU initialisation or during the translation phase.
->>> We don't expose the reg number to the plugin instead hiding it
->>> behind
->>> an opaque handle. This allows for a bit of future proofing should the
->>> internals need to be changed while also being hashed against the
->>> CPUClass so we can handle different register sets per-vCPU in
->>> hetrogenous situations.
->>> Having an internal state within the plugins also allows us to expand
->>> the interface in future (for example providing callbacks on register
->>> change if the translator can track changes).
->>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
->>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> Message-Id: <20240103173349.398526-39-alex.bennee@linaro.org>
->>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
->>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
->>> index 4daab6efd29..2c1930e7e45 100644
->>> --- a/include/qemu/qemu-plugin.h
->>> +++ b/include/qemu/qemu-plugin.h
->>> @@ -11,6 +11,7 @@
->>>    #ifndef QEMU_QEMU_PLUGIN_H
->>>    #define QEMU_QEMU_PLUGIN_H
->>>    +#include <glib.h>
->>>    #include <inttypes.h>
->>>    #include <stdbool.h>
->>>    #include <stddef.h>
->>> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
->>>     * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
->>>     * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
->>>     *
->>> - * Note: currently unused, plugins cannot read or change system
->>> - * register state.
->>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot change
->>> + * system register state.
->>>     */
->>>    enum qemu_plugin_cb_flags {
->>>        QEMU_PLUGIN_CB_NO_REGS,
->>> @@ -708,4 +709,50 @@ uint64_t qemu_plugin_end_code(void);
->>>    QEMU_PLUGIN_API
->>>    uint64_t qemu_plugin_entry_code(void);
->>>    +/** struct qemu_plugin_register - Opaque handle for register
->>> access */
->>> +struct qemu_plugin_register;
->>> +
->>> +/**
->>> + * typedef qemu_plugin_reg_descriptor - register descriptions
->>> + *
->>> + * @handle: opaque handle for retrieving value with qemu_plugin_read_register
->>> + * @name: register name
->>> + * @feature: optional feature descriptor, can be NULL
->>> + */
->>> +typedef struct {
->>> +    struct qemu_plugin_register *handle;
->>> +    const char *name;
->>> +    const char *feature;
->>> +} qemu_plugin_reg_descriptor;
->>> +
->>> +/**
->>> + * qemu_plugin_get_registers() - return register list for vCPU
->>> + * @vcpu_index: vcpu to query
->>> + *
->>> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
->>> + * frees the array (but not the const strings).
->>> + *
->>> + * Should be used from a qemu_plugin_register_vcpu_init_cb() callback
->>> + * after the vCPU is initialised.
->>> + */
->>> +GArray *qemu_plugin_get_registers(unsigned int vcpu_index);
->>> +
->>> +/**
->>> + * qemu_plugin_read_register() - read register
->>> + *
->>> + * @vcpu: vcpu index
->>> + * @handle: a @qemu_plugin_reg_handle handle
->>> + * @buf: A GByteArray for the data owned by the plugin
->>> + *
->>> + * This function is only available in a context that register read access is
->>> + * explicitly requested.
->>> + *
->>> + * Returns the size of the read register. The content of @buf is in target byte
->>> + * order. On failure returns -1
->>> + */
->>> +int qemu_plugin_read_register(unsigned int vcpu,
->>> +                              struct qemu_plugin_register *handle,
->>> +                              GByteArray *buf);
->>> +
->>> +
->>>    #endif /* QEMU_QEMU_PLUGIN_H */
->>> diff --git a/plugins/api.c b/plugins/api.c
->>> index ac39cdea0b3..8d5cca53295 100644
->>> --- a/plugins/api.c
->>> +++ b/plugins/api.c
->>> @@ -8,6 +8,7 @@
->>>     *
->>>     *  qemu_plugin_tb
->>>     *  qemu_plugin_insn
->>> + *  qemu_plugin_register
->>>     *
->>>     * Which can then be passed back into the API to do additional things.
->>>     * As such all the public functions in here are exported in
->>> @@ -35,10 +36,12 @@
->>>     */
->>>      #include "qemu/osdep.h"
->>> +#include "qemu/main-loop.h"
->>>    #include "qemu/plugin.h"
->>>    #include "qemu/log.h"
->>>    #include "tcg/tcg.h"
->>>    #include "exec/exec-all.h"
->>> +#include "exec/gdbstub.h"
->>>    #include "exec/ram_addr.h"
->>>    #include "disas/disas.h"
->>>    #include "plugin.h"
->>> @@ -435,3 +438,111 @@ uint64_t qemu_plugin_entry_code(void)
->>>    #endif
->>>        return entry;
->>>    }
->>> +
->>> +/*
->>> + * Register handles
->>> + *
->>> + * The plugin infrastructure keeps hold of these internal data
->>> + * structures which are presented to plugins as opaque handles. They
->>> + * are global to the system and therefor additions to the hash table
->>> + * must be protected by the @reg_handle_lock.
+On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+>> Convert the musicpal key input device to use
+>> qemu_add_kbd_event_handler().  This lets us simplify it because we no
+>> longer need to track whether we're in the middle of a PS/2 multibyte
+>> key sequence.
 >>
->> The BQL should be used instead. This lock only serializes the plugin
->> access, but the whole gdbstub code needs to be serialized to ensure
->> the correct behaving of e.g., gdb_get_register_list().
-> 
-> Why does gdb_get_register_list need to take the BQL? It only works
-> through per-cpu structures. The reg_handle_lock only protects the hash
-> table itself.
-> 
+>> In the conversion we move the keyboard handler registration from init
+>> to realize, because devices shouldn't disturb the state of the
+>> simulation by doing things like registering input handlers until
+>> they're realized, so that device objects can be introspected
+>> safely.
 >>
->>> + *
->>> + * In order to future proof for up-coming heterogeneous work we want
->>> + * different entries for each CPU type while sharing them in the
->>> + * common case of multiple cores of the same type.
->>
->> I don't think such an effort should be done in the plugin code, but it
->> should be done in the common gdbstub code.
-> 
-> Sure - we can always move it later.
-> 
->> GDB assumes all threads have the same set of registers, so gdbstub
->> will need to take care of them by running distinct GDB servers for
->> each processor type, for example. There is a good chance that gdbstub
->> will duplicate similar logic.
-> 
-> Which logic?
-reg_handles, a GHashTable, is used to detect the duplicate definitions 
-of a register in processors with same type, but such a logic is probably 
-better off to be implemented in gdbstub; gdbstub should have one 
-definition of register set for each type of processors in a system, and 
-gdbstub can use it to start a distinct GDB server for the type. This 
-way, gdbstub can ensure it exposes a homogeneous view for each GDB 
-server as GDB requires.
+>> The behaviour where key-repeat is permitted for the arrow-keys only
+>> is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
+>> and add a comment to that effect.
+>
+> Well the key input all works as intended and looks good to me. I'm a
+> little disappointed I couldn't get audio working on the musicpal machine
+> but that is not a problem for this patch.
+>
+> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>
 
-If gdbstub already has such a logic, the plugin infrastructure can just 
-query gdbstub for a common, shared register set used for a processor 
-type; it will no longer have to check for duplicate definitions with a 
-hash table.
+Looks good to me as well, all keys still work fine.
+
+No idea what's the issue with sound, though. I think I haven't run the
+whole stuff in a decade or so, had to search for all the pieces first of
+all again. The webradio service original behind this stopped their
+operations, at least for this device, but manually entered favorits
+still work on the real device - I still have one, though that is
+starting to get some issues as well.
+
+Thanks,
+Jan
+
 
