@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B61835F59
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 11:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46496835F68
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 11:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRrOC-0007PU-Dp; Mon, 22 Jan 2024 05:18:48 -0500
+	id 1rRrQh-0000XL-SP; Mon, 22 Jan 2024 05:21:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rRrO6-0007P4-U3; Mon, 22 Jan 2024 05:18:44 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRrQd-0000X7-8P
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 05:21:19 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rRrO4-0001Ij-VX; Mon, 22 Jan 2024 05:18:42 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 00728461A0;
- Mon, 22 Jan 2024 13:19:05 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 93C5869239;
- Mon, 22 Jan 2024 13:18:26 +0300 (MSK)
-Message-ID: <d2482bd3-7f0a-4f6e-a366-539f0122162f@tls.msk.ru>
-Date: Mon, 22 Jan 2024 13:18:26 +0300
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRrQb-0002Cu-6A
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 05:21:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705918875;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FkQZ97UlUSHsiaCbt7H/2htNgqsk5fiHfglAVbVJKLs=;
+ b=Fv23BmOW2hledNxrtiI6K3qFbesmncvgVfHqwUPr8lyM+gTJP9EVJbsYO0Hbrx1BJ2z1b/
+ wd1yvgNBdkvlle2leydDr9LV3GXgE3AA5I3uYnOPRxcrTXspiEYWetpR2KK6AgnGxycutC
+ H2zsBlfSj7zx5YzmhBTaFlASGfq8i9A=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-ee0jANoHOw64SnRS0d2h1g-1; Mon, 22 Jan 2024 05:21:14 -0500
+X-MC-Unique: ee0jANoHOw64SnRS0d2h1g-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5cfccde4a54so212324a12.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 02:21:14 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705918873; x=1706523673;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FkQZ97UlUSHsiaCbt7H/2htNgqsk5fiHfglAVbVJKLs=;
+ b=Q7gyNgHbzsCRwX1Frd41FDtLb66GCh/TkF7Ad1knH4uU2u5lrqCTC2joKcgYmIWAz/
+ tDy0Gbe4CquUbIvpPatgTLuMHP9HtPJN5fZOtVb42smzdkTYlDx4nJAxPs51zDTlc3X2
+ 5uE0EX+62/GOOQ25kD4mo3BMqtf7j5xFL9EsuuzO0XsQloE1NJTs4vuecaenQGN1tKEG
+ VwoRQ8rqrgqKwWwaj3x24TDqGWlCpuI3NPx0+bOUfEXHb2WXUG5xCa9YmuFqW5C6j13F
+ 0qlIGJqf1TOYWdauHArDQ+htWW3QsLVItAbrte2Tlx9/1s3vHdkPMOIJlaSJM9FpdW2T
+ sEmg==
+X-Gm-Message-State: AOJu0YzSi251IvAI2wwxXsoW89aFIPG82Pw6TebaI+3bb1WDz9aU5sYa
+ rV5EEt43JqKN/nNeE0TIOZmz8bMTNa84OYOOTaPGXz6nEs+Rug+3MLY7JZVqwqn/W2PhhGcVGti
+ M4awRW3vwjPfpjiAqCx+kFD4LOYHfrvItZBai/1smBiUHyK/L69xN
+X-Received: by 2002:a17:902:a3c7:b0:1d4:e1d7:3740 with SMTP id
+ q7-20020a170902a3c700b001d4e1d73740mr8106035plb.3.1705918873139; 
+ Mon, 22 Jan 2024 02:21:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IERZzRNshT2XfJkEX2tnwtHtfqUJRyyKR8cO9NcQbuLy+Sh61NHKavci9PT8SA5fwQ7JxMHVg==
+X-Received: by 2002:a17:902:a3c7:b0:1d4:e1d7:3740 with SMTP id
+ q7-20020a170902a3c700b001d4e1d73740mr8106021plb.3.1705918872800; 
+ Mon, 22 Jan 2024 02:21:12 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ kv4-20020a17090328c400b001d5b93560c3sm7023377plb.167.2024.01.22.02.21.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 02:21:12 -0800 (PST)
+Date: Mon, 22 Jan 2024 18:21:04 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/5] migration: Fix use-after-free of migration state
+ object
+Message-ID: <Za5BkH5au-5h0imh@x1n>
+References: <20240119233922.32588-1-farosas@suse.de>
+ <20240119233922.32588-2-farosas@suse.de> <Za46DZfpCGe9rdLs@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] s390x/pci: fix ISM reset
-Content-Language: en-US
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
- frankja@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240118185151.265329-1-mjrosato@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Za46DZfpCGe9rdLs@x1n>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,42 +97,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-18.01.2024 21:51, Matthew Rosato :
-> Commit ef1535901a0 (re-)introduced an issue where passthrough ISM devices
-> on s390x would enter an error state after reboot.  This was previously fixed
-> by 03451953c79e, using device reset callbacks, however the change in
-> ef1535901a0 effectively triggers a cold reset of the pci bus before the
-> device reset callbacks are triggered.
+On Mon, Jan 22, 2024 at 05:49:01PM +0800, Peter Xu wrote:
+> On Fri, Jan 19, 2024 at 08:39:18PM -0300, Fabiano Rosas wrote:
+> > We're currently allowing the process_incoming_migration_bh bottom-half
+> > to run without holding a reference to the 'current_migration' object,
+> > which leads to a segmentation fault if the BH is still live after
+> > migration_shutdown() has dropped the last reference to
+> > current_migration.
+> > 
+> > In my system the bug manifests as migrate_multifd() returning true
+> > when it shouldn't and multifd_load_shutdown() calling
+> > multifd_recv_terminate_threads() which crashes due to an uninitialized
+> > multifd_recv_state.
+> > 
+> > Fix the issue by holding a reference to the object when scheduling the
+> > BH and dropping it before returning from the BH. The same is already
+> > done for the cleanup_bh at migrate_fd_cleanup_schedule().
+> > 
+> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> > ---
+> >  migration/migration.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/migration/migration.c b/migration/migration.c
+> > index 219447dea1..cf17b68e57 100644
+> > --- a/migration/migration.c
+> > +++ b/migration/migration.c
+> > @@ -648,6 +648,7 @@ static void process_incoming_migration_bh(void *opaque)
+> >                        MIGRATION_STATUS_COMPLETED);
+> >      qemu_bh_delete(mis->bh);
+> >      migration_incoming_state_destroy();
+> > +    object_unref(OBJECT(migrate_get_current()));
+> >  }
+> >  
+> >  static void coroutine_fn
+> > @@ -713,6 +714,7 @@ process_incoming_migration_co(void *opaque)
+> >      }
+> >  
+> >      mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
+> > +    object_ref(OBJECT(migrate_get_current()));
+> >      qemu_bh_schedule(mis->bh);
+> >      return;
+> >  fail:
+> > -- 
+> > 2.35.3
+> > 
 > 
-> To resolve this, this series proposes to remove the use of the reset callback
-> for ISM cleanup and instead trigger ISM reset from subsystem_reset before
-> triggering bus resets.  This has to happen before the bus resets because the
-> reset of s390-pcihost will trigger reset of the PCI bus followed by the
-> s390-pci bus, and the former will trigger vfio-pci reset / the aperture-wide
-> unmap that ISM gets upset about.
->   
->    /s390-pcihost (s390-pcihost)
->      /pci.0 (PCI)
->      /s390-pcibus.0 (s390-pcibus)
->      
-> While fixing this, it was also noted that kernel warnings could be seen that
-> indicate a guest ISC reference count error.  That's because in some reset
-> cases we were not bothering to disable AIF, but would again re-enable it after
-> the reset (causing the reference count to grow erroneously).  This was a base
-> issue that went unnoticed because the kernel previously did not detect and
-> issue a warning for this scenario.
+> I know I missed something, but I'd better ask: use-after-free needs to
+> happen only after migration_shutdown() / qemu_cleanup(), am I right?
+> 
+> If so, shouldn't qemu_main_loop() already returned?  Then how could any BH
+> keep running (including migration's) without qemu_main_loop()?
 
-> Matthew Rosato (3):
->    s390x/pci: avoid double enable/disable of aif
->    s390x/pci: refresh fh before disabling aif
->    s390x/pci: drive ISM reset from subsystem reset
+Hmm, I saw a pretty old stack mentioned in commit fd392cfa8e6:
 
-Is it this a material for -stable, or there's no need to bother?
-(changes 1 and 2 applies to 7.2 (while 2 fixes later change),
-all 3 applies to 8.1 (while 3 fixes later change), and all 3 can be
-picked up for 8.2, I guess).
+    Original output:
+    qemu-system-x86_64: terminating on signal 15 from pid 31980 (<unknown process>)
+    =================================================================
+    ==31958==ERROR: AddressSanitizer: heap-use-after-free on address 0x61900001d210
+      at pc 0x555558a535ca bp 0x7fffffffb190 sp 0x7fffffffb188
+    READ of size 8 at 0x61900001d210 thread T0 (qemu-vm-0)
+        #0 0x555558a535c9 in migrate_fd_cleanup migration/migration.c:1502:23
+        #1 0x5555594fde0a in aio_bh_call util/async.c:90:5
+        #2 0x5555594fe522 in aio_bh_poll util/async.c:118:13
+        #3 0x555559524783 in aio_poll util/aio-posix.c:725:17
+        #4 0x555559504fb3 in aio_wait_bh_oneshot util/aio-wait.c:71:5
+        #5 0x5555573bddf6 in virtio_blk_data_plane_stop
+          hw/block/dataplane/virtio-blk.c:282:5
+        #6 0x5555589d5c09 in virtio_bus_stop_ioeventfd hw/virtio/virtio-bus.c:246:9
+        #7 0x5555589e9917 in virtio_pci_stop_ioeventfd hw/virtio/virtio-pci.c:287:5
+        #8 0x5555589e22bf in virtio_pci_vmstate_change hw/virtio/virtio-pci.c:1072:9
+        #9 0x555557628931 in virtio_vmstate_change hw/virtio/virtio.c:2257:9
+        #10 0x555557c36713 in vm_state_notify vl.c:1605:9
+        #11 0x55555716ef53 in do_vm_stop cpus.c:1074:9
+        #12 0x55555716eeff in vm_shutdown cpus.c:1092:12
+        #13 0x555557c4283e in main vl.c:4617:5
+        #14 0x7fffdfdb482f in __libc_start_main
+          (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+        #15 0x555556ecb118 in _start (x86_64-softmmu/qemu-system-x86_64+0x1977118)
 
-Thanks,
+Would that be the same case that you mentioned here?  As vm_shutdown() is
+indeed after migration_shutdown().
 
-/mjt
+Even if so, two follow up comments..
+
+(1) How did it help if process_incoming_migration_bh() took ref on
+    MigrationState*?  I didn't even see it touching the object (instead, it
+    uses the incoming object)?
+
+(2) This is what I'm just wondering.. on whether we should clear
+    current_migration to NULL in migration_shutdown() after we unref it.
+    Maybe it'll make such issues abort in an even clearer way.
+
+-- 
+Peter Xu
+
 
