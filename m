@@ -2,96 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6307B8366DD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:08:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A598366D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:08:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRvu9-0001wq-7Y; Mon, 22 Jan 2024 10:08:05 -0500
+	id 1rRvtX-0001Rd-FY; Mon, 22 Jan 2024 10:07:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rRvu6-0001v7-FC; Mon, 22 Jan 2024 10:08:02 -0500
+ id 1rRvtM-0001PQ-1L; Mon, 22 Jan 2024 10:07:16 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1rRvu4-00036f-Nr; Mon, 22 Jan 2024 10:08:02 -0500
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ id 1rRvtK-00033i-2f; Mon, 22 Jan 2024 10:07:15 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MF2A7G013469; Mon, 22 Jan 2024 15:07:58 GMT
+ 40MDB9qp027298; Mon, 22 Jan 2024 15:06:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=mg9RnBPcPMRmocLeAjJ4n0mULqGc2AufAMhhPJ7nr9s=;
- b=Xt9ecPqXXXxTE2Eyw8qshjURfoK3VzJYxL2X2BZFtUVZe7Xp9EoA8WYJsi/y0o+XM3//
- FdcvJK9XRuIJw9LT0eR6rJ4i7Zx2OTLwkHyqW8K22sQlhzGyQaPxwIae3M8nxZPCY2Th
- AmCJDjqWMoPPdISm+4L2/Rl0Ko9kevwv8tuV22l47inK8EL/0AQv9FKXa/wvXHK56w2Y
- QizxN/jHlAcUxm8n8UDWTkxY6801kp9Fsd5saLB6/X+aOXJXX5BggkDocWUQ03wOmGLx
- F8vmek0n4SnGtD6ndCBoJiRX4pkSvT/ke15PVSwCIeqVhfNzCCRyvO67XpJR3T70qgyB Vg== 
+ bh=yHxhP+TKCeApLrQHrvtfrkxA3HxXu76edoE+20DCaBU=;
+ b=Q4ZmmcEa5cMN+MvL+txYLtS3qtN6JLDuGUYIsht8OKG3MmkuTiEZXb5fzygPsBIywM9h
+ JoviY4opEn8iGauOdm2arZa8fZizkZkMQBe/Gldt3e9NJalLv9k2Te8CujXY5HwcE2Tj
+ 1d3+tK6VBh+5QaCbEfAUsoJG/askHo6yXI2koIQ38B62LC/ckAgoT4Ehuzc/Br28tDdn
+ Vjvf0spTv66T8Swglr6omEqNNeVTMLPk9I1fIyt7wL5pMv9kX58f77ggJOQmARLOBxTk
+ /w5IVSUdASZRKFebh6HmULR4jR0Wv9SA3HHQ0c8TSgn2GS13VzoSzLOtY/2GpK123dZL MA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vstn60516-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsryckhrb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 15:07:56 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40MF3Xoi021252;
- Mon, 22 Jan 2024 15:07:27 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vstn604fx-1
+ Mon, 22 Jan 2024 15:06:51 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40MEt0PA003671;
+ Mon, 22 Jan 2024 15:06:50 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsryckhpb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 15:07:26 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MDCMLA026876; Mon, 22 Jan 2024 15:06:41 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgt18m2-1
+ Mon, 22 Jan 2024 15:06:50 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40MF0wn6022429; Mon, 22 Jan 2024 15:06:48 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0krw1v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 15:06:41 +0000
+ Mon, 22 Jan 2024 15:06:48 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40MF6efB49742306
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40MF6lAh14025292
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jan 2024 15:06:40 GMT
+ Mon, 22 Jan 2024 15:06:47 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F36B058055;
- Mon, 22 Jan 2024 15:06:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D554C58055;
+ Mon, 22 Jan 2024 15:06:46 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EAC6E58043;
- Mon, 22 Jan 2024 15:06:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AD0DD58059;
+ Mon, 22 Jan 2024 15:06:45 +0000 (GMT)
 Received: from [9.61.119.211] (unknown [9.61.119.211])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jan 2024 15:06:38 +0000 (GMT)
-Message-ID: <c206887f-7bca-4c5a-a416-88951902ff21@linux.ibm.com>
-Date: Mon, 22 Jan 2024 10:06:38 -0500
+ Mon, 22 Jan 2024 15:06:45 +0000 (GMT)
+Message-ID: <8bd02b29-d90f-4b6a-8cb8-a024be6f8a7c@linux.ibm.com>
+Date: Mon, 22 Jan 2024 10:06:45 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] s390x/pci: drive ISM reset from subsystem reset
-Content-Language: en-US
-To: Halil Pasic <pasic@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, farman@linux.ibm.com, thuth@redhat.com,
- clg@redhat.com, frankja@linux.ibm.com, borntraeger@linux.ibm.com,
+Subject: Re: [PATCH v2 0/3] s390x/pci: fix ISM reset
+To: Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-s390x@nongnu.org
+Cc: farman@linux.ibm.com, clg@redhat.com, frankja@linux.ibm.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
  qemu-devel@nongnu.org, qemu-stable@nongnu.org
 References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
- <20240118185151.265329-4-mjrosato@linux.ibm.com>
- <20240119220739.0f5739b3.pasic@linux.ibm.com>
+ <d2482bd3-7f0a-4f6e-a366-539f0122162f@tls.msk.ru>
+ <85e2c13a-73cf-40df-9708-4012f4dccf55@tls.msk.ru>
+ <3933b2ce-2c96-440d-abc0-c7b12094f2ac@redhat.com>
+Content-Language: en-US
 From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20240119220739.0f5739b3.pasic@linux.ibm.com>
+In-Reply-To: <3933b2ce-2c96-440d-abc0-c7b12094f2ac@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: i5p3691OXZHv-y8q5jtgqmJTsP97hv54
-X-Proofpoint-ORIG-GUID: KFk79RHIY1vPq1De6M441QdK00WiV8GM
+X-Proofpoint-ORIG-GUID: SkBCqn_NpPyEpCik96iJrCuWu4A6508w
+X-Proofpoint-GUID: zRssz2yqZxQTlk9ojw_88MuDCu1w8_49
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-22_05,2024-01-22_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- mlxlogscore=999 phishscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0 clxscore=1015
+ impostorscore=0 mlxscore=0 spamscore=0 adultscore=0 mlxlogscore=851
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401220103
 Received-SPF: pass client-ip=148.163.156.1;
  envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
@@ -117,40 +119,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/19/24 4:07 PM, Halil Pasic wrote:
-> On Thu, 18 Jan 2024 13:51:51 -0500
-> Matthew Rosato <mjrosato@linux.ibm.com> wrote:
+On 1/22/24 5:49 AM, Thomas Huth wrote:
+> On 22/01/2024 11.31, Michael Tokarev wrote:
+>> 22.01.2024 13:18, Michael Tokarev :
+>> ..
+>>> Is it this a material for -stable, or there's no need to bother?
+>>
+>> Actually it's been Cc'd to qemu-stable@ already, I haven't noticed.
+>> Still there's a question which branches should get which patches.
+> ...
+>> So all 3 are okay for 8.2.
+>>
+>> What about 8.1 and 7.2 which are the current still-maintained stable branches?
+>> (I think this 8.1 release will be the last in series).
 > 
->> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
->> index eaf61d3640..c99682b07d 100644
->> --- a/hw/s390x/s390-virtio-ccw.c
->> +++ b/hw/s390x/s390-virtio-ccw.c
->> @@ -118,6 +118,14 @@ static void subsystem_reset(void)
->>      DeviceState *dev;
->>      int i;
->>  
->> +    /*
->> +     * ISM firmware is sensitive to unexpected changes to the IOMMU, which can
->> +     * occur during reset of the vfio-pci device (unmap of entire aperture).
->> +     * Ensure any passthrough ISM devices are reset now, while CPUs are paused
->> +     * but before vfio-pci cleanup occurs.
->> +     */
->> +    s390_pci_ism_reset();
+> IIUC the main issue that this series fixes is the bug that has been uncovered by commit ef1535901a07f2e49fa25c8bcee7f0b73801d824 ("s390x: do a subsystem reset before the unprotect on reboot") - and that one is in 8.2 only. So I think it should be OK to just backport this to 8.2 and skip 8.1 and 7.2.
 > 
-> Hm I'm not sure about special casing ISM in here. In my opinion the loop
-> below shall take care of all the reset.
-> 
-> For TYPE_AP_BRIDGE and TYPE_VIRTUAL_CSS_BRIDGE AFAIU a
-> device_cold_reset() on all objects of those types results in the resets
-> of objects that hang below these buses.
-> 
-> I guess this also happens for the S390PCIBusDevices, but not for the
-> actual PCI devices.
 
-PCI is a bit different because we have both the PCI root bus and the s390 pci bus --  When we reset the s390-pcihost in the device_cold_reset() loop, the root pci bus will also receive a reset and in practice this causes the vfio-pci devices to get cleaned up (this includes an unmap of the entire iommu aperture) and this happens before we get to the reset of S390PCIBusDevices.  This order is OK for other device types who are not sensitive to the IOMMU being wiped out in this manner, but ISM is effectively treating some portion of the IOMMU as state data and is not expecting this UNMAP.  Triggering the reset as we do here causes the host device to throw out the existing state data, so we want to do that at a point in time after CPU pause and before vfio-pci cleanup; this is basically working around a quirk of ISM devices.
-
-FWIW, this series of fixes was already pulled.  I think for a fix, this location in code was the safe bet -- But if we can figure out a way to ensure the reset targeted S390PCIBusDevices first before the root PCI bus then I could see a follow-on cleanup patch that moves this logic back into s390 pci bus code (e.g. allowing the loop to take care of all the reset once again). 
+Agreed.
 
 Thanks,
 Matt
+
 
