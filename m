@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3908375B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 22:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC148375CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 23:03:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS2J7-0006qk-D9; Mon, 22 Jan 2024 16:58:17 -0500
+	id 1rS2NH-00089Z-KK; Mon, 22 Jan 2024 17:02:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rS2J2-0006qA-Qa
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:58:12 -0500
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ id 1rS2ND-00089K-QH
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 17:02:32 -0500
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rS2Iz-00027Y-Eu
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:58:10 -0500
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-598a5448ef5so2391952eaf.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 13:58:02 -0800 (PST)
+ id 1rS2NA-00035X-GB
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 17:02:30 -0500
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6dbd07916d0so2123589b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 14:02:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705960681; x=1706565481; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1705960946; x=1706565746; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=tjWjybt/zgLq6P5NZFanM3ugb1hYhyr5rrMmFU2mgL4=;
- b=K+wXKh+PfSUcRDzQh9UwmgOnD/YZaydXpeCDIlYEgrdAgN28K7+vSYloAUj8L2kPkh
- dwD+Run4a4J9QeORzclvJD4iQZrXdSTpIbAhh0zUPCMl5Csqy1E8Nm4bCGWF5lXfk45G
- gafmsZs03b6aViZMyeom0vzsmK3x6RvU1dX7blhvzgvsuywNdVPwqx12UI46XtPCj5tA
- Qe6A7XgYMTI3STv2n4Kipnt1USwywqAWYOnMJaz8Z6yMUfZGAZg8JXilgu9XciGFykgr
- pBvBfu+ZPWzZLx8XShINBmyhPzSVC6Ivf8LWal0MBgUaaWgk3p03Ea4sZQdv3hWhmRma
- s1Dg==
+ bh=uXM8xkLKePSKWxUnlGvoWgfRvffu6+pTgfAN0qvsdQQ=;
+ b=nfp+GF9Us8GuTwSfskSms5qLUsro8p0abQga69R2G2wUMe1E2T1TYyjD5Ud/Q/Rn8O
+ hquGZ9vHSrA6R7uUmYaRlblRvXrHe1mMgHv+8DfLN4bBUcL086pcZm/dtoJL2c+EjROK
+ 8neIDv9H2cTE7XmS/RoBYEZVIQsG75yYZZBkZ7ShVmVjD9p1RUEoJ6OBHI+XMqfxTlSF
+ PueHsTpDiviyPj9OBFv/eIE/HScCA7lIIZg7bnY97qlfaApvvdWWAvJ1STTi/mypDTh2
+ LZuBVwvjJD/Cft7rgVMy2pB+4vWqeP78p7gMRDFDrJ7y/96zz2IEvfKwj0R2eUOyg5ej
+ w/Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705960681; x=1706565481;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1705960946; x=1706565746;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tjWjybt/zgLq6P5NZFanM3ugb1hYhyr5rrMmFU2mgL4=;
- b=W8xbZFmU+gYrx32msEGXS9RlqyTaUolwBkXsVnmYg10+tU1ykl6GatVIF5fwCOn7R3
- dSail7+rEyrcVu2aj6n/epTdVpS9zQcFxpqc8Yu4orACgKdPCE3VaXTW6jxbKLowNVPi
- Q3PnAucgM5A42tnoS5YE3NJ7tG1xvQs/YvBd36r9zLEvBuTRoCG1vWCxxJ52QI0iKDnl
- 3tsTaebFhD+ODR4zLcgxENV3ZORojIFwuMFkVifQ2kgTmIff1LIobVfjH7mskMTnszks
- X+UUZsI+CYFSw9q+D7Mbto6ixV3A0EvAcAn/c1ZdguOUk5PPgA4zP6EwjJhZygwKpZ4S
- Vh0w==
-X-Gm-Message-State: AOJu0Yw9sBtLmge5/jCki8miDo5PXQah/rRNx8/xM6AS9YQ9qenLl/J6
- Fn3M/yJfVUVbDXrO2FMgnkmSy6FC7e/TpDYCcptKRVdkM6gtN8OmUAqkOT62s0g=
-X-Google-Smtp-Source: AGHT+IGNUHYoK6pIcvGCW1Uei+LGbmmKN1Ge9d8jP/4TorslrGc5m9XoVitDmGU62cT4IG2iwliFYw==
-X-Received: by 2002:a05:6358:89d:b0:176:5d11:3071 with SMTP id
- m29-20020a056358089d00b001765d113071mr1616745rwj.12.1705960681271; 
- Mon, 22 Jan 2024 13:58:01 -0800 (PST)
+ bh=uXM8xkLKePSKWxUnlGvoWgfRvffu6+pTgfAN0qvsdQQ=;
+ b=gEne2f6NpGvTArFKvyI3cSvZkKYtmVWqw4zESxJarJ5+qkoyUdys53H4j1p0Ng0dRg
+ 3bFjxuIJpfKM6IQWzMMcb+1eacfXUmJ1ocWbGmFvQRYTiJT9tl3Us5YOGZrtfQ9tcErd
+ jeferYfrBvgxvSRbEedCpd90t2sGet3v3zK1Odqo9t3fLlH4H48tZqbPsion/kin4Do/
+ eHj3wOTaf4JJpyfdDxwSn8CpOF54Hx5vaiSeSVmplSJrk+hwtpVAORN2IbG7l8T4alFy
+ lbwgZ3aipXJbjcU9B+yUqwA3yls6L8MdsdAxcGndYCk3+yoEBc+ffx+tk0JdknBLgWlO
+ adhA==
+X-Gm-Message-State: AOJu0YzL53f0opQjeJFZnVO9hKy96wzvpeJjhIR9mVBx0rMesK5aEkgm
+ XVMLc19c2+/Gg0v+wtwPbi+ltKKQIc+Y5Wtb6nAci/5Cl33FyfTzG8lIaY1Hws0aw8BthfqXddm
+ Elxw=
+X-Google-Smtp-Source: AGHT+IFQ3SDcu6+2Bfieit15o8AJslud3iDZDxC3j1F7rTuv1DJC6O3iwjoHpXJMjVj9z2wbVRJ75w==
+X-Received: by 2002:a05:6a21:189:b0:19a:5687:9490 with SMTP id
+ le9-20020a056a21018900b0019a56879490mr6526353pzb.19.1705960946652; 
+ Mon, 22 Jan 2024 14:02:26 -0800 (PST)
 Received: from ?IPV6:2001:44b8:2176:c800:2a49:979b:9002:98e6?
  (2001-44b8-2176-c800-2a49-979b-9002-98e6.static.ipv6.internode.on.net.
  [2001:44b8:2176:c800:2a49:979b:9002:98e6])
  by smtp.gmail.com with ESMTPSA id
- d2-20020a056a00198200b006d99f930607sm10346911pfl.140.2024.01.22.13.57.58
+ b7-20020aa78107000000b006dbd9501028sm3171030pfi.92.2024.01.22.14.02.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 13:58:00 -0800 (PST)
-Message-ID: <d569042e-2c27-47f6-8636-f708b11814b4@linaro.org>
-Date: Tue, 23 Jan 2024 07:57:54 +1000
+ Mon, 22 Jan 2024 14:02:26 -0800 (PST)
+Message-ID: <d9bee29b-2317-41be-87c6-55fc42f9804e@linaro.org>
+Date: Tue, 23 Jan 2024 08:02:21 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] cpu-exec: simplify jump cache management
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org
-References: <20240122153409.351959-1-pbonzini@redhat.com>
+Subject: Re: [PULL 0/8] tcg + linux-user patch queue
 Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20240121002047.89234-1-richard.henderson@linaro.org>
+ <CAFEAcA84d+mq85kae=yiwNvg1Ja=SKch00mocuNok1VghiYozQ@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240122153409.351959-1-pbonzini@redhat.com>
+In-Reply-To: <CAFEAcA84d+mq85kae=yiwNvg1Ja=SKch00mocuNok1VghiYozQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,25 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/23/24 01:34, Paolo Bonzini wrote:
-> Unless I'm missing something egregious, the jmp cache is only every
-> populated with a valid entry by the same thread that reads the cache.
-> Therefore, the contents of any valid entry are always consistent and
-> there is no need for any acquire/release magic.
+On 1/23/24 01:26, Peter Maydell wrote:
+> On Sun, 21 Jan 2024 at 00:22, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> The following changes since commit 3f2a357b95845ea0bf7463eff6661e43b97d1afc:
+>>
+>>    Merge tag 'hw-cpus-20240119' of https://github.com/philmd/qemu into staging (2024-01-19 11:39:38 +0000)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240121
+>>
+>> for you to fetch changes up to 1d5e32e3198d2d8fd2342c8f7f8e0875aeff49c5:
+>>
+>>    linux-user/elfload: check PR_GET_DUMPABLE before creating coredump (2024-01-21 10:25:07 +1100)
+>>
+>> ----------------------------------------------------------------
+>> tcg/s390x: Fix encoding of VRIc, VRSa, VRSc insns
+>> tcg: Clean up error paths in alloc_code_gen_buffer_splitwx_memfd
+>> linux-user/riscv: Adjust vdso signal frame cfa offsets
+>> linux-user: Fixed cpu restore with pc 0 on SIGBUS
+>>
+>> ----------------------------------------------------------------
+> 
+> The new chacha test seems to consistently segfault on aarch64 host:
+> 
+> https://gitlab.com/qemu-project/qemu/-/jobs/5979230595
+> https://gitlab.com/qemu-project/qemu/-/jobs/5978381815
+> https://gitlab.com/qemu-project/qemu/-/jobs/5982075408
 
-I think you're right, and I over-complicated this thinking about invalidations.
+Oh dear.  It seems to be a problem with the aarch64 cross-compiler for s390x.
+If I use a binary created on an s390x or x86_64 host, it works.
 
-> Because of this, there is really nothing to win in splitting the CF_PCREL
-> and !CF_PCREL paths.  It is easier to just always use the ->pc field in
-> the jump cache.
-
-Once upon a time, PCREL was an ifdef, and the jump cache pc did not exist for !PCREL.  The 
-split has not been addressed since then.
-
-
-The cleanup looks good.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Unless someone has a better idea, I'll drop the testcase for now.
 
 
 r~
