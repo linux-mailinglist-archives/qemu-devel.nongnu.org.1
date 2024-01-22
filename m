@@ -2,43 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8ED836577
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B72836589
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRvKm-0004V8-8O; Mon, 22 Jan 2024 09:31:32 -0500
+	id 1rRvNa-0005Wz-IP; Mon, 22 Jan 2024 09:34:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rRvKi-0004UZ-EV
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:31:28 -0500
+ id 1rRvNY-0005Wg-Ts
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:34:24 -0500
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rRvKg-0002og-HL
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:31:28 -0500
+ id 1rRvNV-0003AK-Sq
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:34:23 -0500
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rRvKG-0005kS-Kk; Mon, 22 Jan 2024 15:31:00 +0100
-Message-ID: <b7c6e535-3540-46e5-8024-83a712747452@maciej.szmigiero.name>
-Date: Mon, 22 Jan 2024 15:30:55 +0100
+ id 1rRvNL-0005lC-7C; Mon, 22 Jan 2024 15:34:11 +0100
+Message-ID: <8bb91d74-8322-44b5-919b-a4d1c4317407@maciej.szmigiero.name>
+Date: Mon, 22 Jan 2024 15:34:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] vmbus: Switch bus reset to 3-phase-reset
+Subject: Re: [PATCH v1 0/2] memory-device: reintroduce memory region size check
 Content-Language: en-US, pl-PL
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+To: David Hildenbrand <david@redhat.com>
+Cc: Mario Casquero <mcasquer@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
  qemu-devel@nongnu.org
-References: <20240119163512.3810301-1-peter.maydell@linaro.org>
- <20240119163512.3810301-3-peter.maydell@linaro.org>
+References: <20240117135554.787344-1-david@redhat.com>
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
@@ -81,7 +75,7 @@ Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
  H5/qn1uUAhP1Oz+jKLUECbPS2ll73rFXUr+U3AKyLpx4T+/Wy1ajKn7rOB7udmTmYb8nnlQb
  0fpPzYGBzK7zWIzFotuS5x1PzLYhZQFkfegyAaxys2joryhI6YNFo+BHYTfamOVfFi8QFQL5
  5ZSOo27q/Ox95rwuC/n+PoJxBfqU36XBi886VV4LxuGZ8kfy0qDpL5neYtkC9w==
-In-Reply-To: <20240119163512.3810301-3-peter.maydell@linaro.org>
+In-Reply-To: <20240117135554.787344-1-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -106,17 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.01.2024 17:35, Peter Maydell wrote:
-> Switch vmbus from using BusClass::reset to the Resettable interface.
-> 
-> This has no behavioural change, because the BusClass code to support
-> subclasses that use the legacy BusClass::reset will call that method
-> in the hold phase of 3-phase reset.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
+Hi David,
 
-Acked-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+On 17.01.2024 14:55, David Hildenbrand wrote:
+> Reintroduce a modified region size check, after we would now allow some
+> configurations that don't make any sense (e.g., partial hugetlb pages,
+> 1G+1byte DIMMs).
+> 
+> We have to take care of hv-balloon first, which was the case why we
+> remove that check in the first place.
+> 
+> Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> Cc: Mario Casquero <mcasquer@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+> 
+> David Hildenbrand (2):
+>    hv-balloon: use get_min_alignment() to express 32 GiB alignment
+>    memory-device: reintroduce memory region size check
+> 
+>   hw/hyperv/hv-balloon.c | 37 +++++++++++++++++++++----------------
+>   hw/mem/memory-device.c | 14 ++++++++++++++
+>   2 files changed, 35 insertions(+), 16 deletions(-)
+> 
+
+Looked at the changes, tested hv-balloon with a small memory
+backend and it seem to work fine, so for the whole series:
+
+Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
 Thanks,
 Maciej
