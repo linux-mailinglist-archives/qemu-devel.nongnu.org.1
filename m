@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3D2835CD2
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEE1835CDC
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:41:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRpoY-0005Lt-VT; Mon, 22 Jan 2024 03:37:54 -0500
+	id 1rRprZ-0006GM-NI; Mon, 22 Jan 2024 03:41:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
- id 1rRpoV-0005Hf-9P
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:37:51 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rRprW-0006GE-LK
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:00 -0500
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
- id 1rRpoS-0004vn-Om
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:37:50 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-337d6d7fbd5so2138607f8f.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:37:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rRprU-0005g0-ND
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:40:58 -0500
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3bdb42da0e0so814393b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:40:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705912667; x=1706517467; darn=nongnu.org;
- h=content-transfer-encoding:from:in-reply-to:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BABMo+tBFElBwdd4D/pEXRYsj9g/W9bB2fYSZqQAhgI=;
- b=RwMVF+iFbALw0GJqzk64iM7mxG+mQO4EfwZAZhRxNqTqM2DHvUJivgZmicQxwlXa6v
- MJfs6ZppKHFdAZonlGE5LRnzZYVk7Tzf2sK7ig8jIhaKVaTs2q0Z+ILi2T41wq6uUqsc
- orZAsZs7daqlQOApQEuvs+s5gn4CuCz4c+pi9GLMAkCD8GsZGuSqOZ4gD+K+OFX7PYyt
- o+szmW1WIuNIL/qu9ewdWrg/9kB0c2nyiDtLFNKgYoP7MhkhVu7qydpQPYtTxR3Te8uY
- 5qVdoHcFEed8TCacXCh7AHvQ8+jcNR30tgJ1TpuegTw9I+3pG5oXDzLI2w78a3qfZZOe
- WZ1Q==
+ d=gmail.com; s=20230601; t=1705912855; x=1706517655; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AVrAH+Uw2Wxd3XSCYBzUKTJ25+x2qraZmxaar+zhWd0=;
+ b=nbaKOJDuP4OLMfwCkfyzPtmlrSlqgnh6pXxZnqikqaN4cRMQMqj+YvEvNIB4PwUlK8
+ /x9RmSbpSwnrFhu12/7SQIYV5JomGdEYGaCoDIkbPF4kdY27+/6zlDqkigNcVoE2AFGF
+ l3AFE/YDBNvndBXBWvvx2oCNWgKaq1NEKpGe3H5EjU1jtXODnk1m9K6u4bQBN4/cTWob
+ tDaXSMqQ56vmgOyyGDtjpQgnPyc8Ih8ZjscC24yz3UrdzS6A3R3CZ6C0pVXQH9iL2G1o
+ UnwLPj4k6FkoZesEMRfFSqscWbHe5IG4J0ihPSYvHXSaT++/Y2Wf3ZnkhoOo925MblL9
+ 1v7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705912667; x=1706517467;
- h=content-transfer-encoding:from:in-reply-to:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BABMo+tBFElBwdd4D/pEXRYsj9g/W9bB2fYSZqQAhgI=;
- b=wsdjfF0dSw+y8W9p2x8y/ix7BttqpdZJeWYW53VJnkv0F8Ftd0XdwNeOGi0zh4hkIC
- bA/s4+wNgy7mcUrxFzJM/01q4C4lx0QhlQlixQumkqzGtOvLEHLa6HgdqoPbbXTqrW/Z
- 6LjvGIQOaGQ6P9rNCDW/I62I2ceYgeKvi05d6gn7hfaQwvGVOBnQaZH+zeCeUvNWb1X5
- SNLd3mnpxfWthhaoJFfjBnA+nM3LMIZRI/lBLZQbqiUhNdhVyVo57VUaRcKTPvG7YJsb
- Y3Kq+uJJ2Gh2HsqsfEAaQwzdceNaCkIYFIBcG01nHSBU55v5ATSadKsThfRfI4iwhFST
- 3bSg==
-X-Gm-Message-State: AOJu0Yzj6utZJiwZTBxYsl9a7195Lyl2SRlqgM8PgMDZi6Fxk6QbCGOz
- T6oz+IjlT0eU/fFSxaq9vveNPsYhtyFQQUjfiGgcMwiHPYYsvlmy
-X-Google-Smtp-Source: AGHT+IHJFp7dgmyQHda3nZeIPYHhx4lSyCqE4p+hsRgluW2L6q+OTGZJnD6LtnggW/Lreo9GjhSRfA==
-X-Received: by 2002:adf:f3c6:0:b0:337:c29a:ba40 with SMTP id
- g6-20020adff3c6000000b00337c29aba40mr2352114wrp.31.1705912666820; 
- Mon, 22 Jan 2024 00:37:46 -0800 (PST)
-Received: from [192.168.1.131] ([87.68.195.83])
- by smtp.gmail.com with ESMTPSA id
- q5-20020adff505000000b00339214d70b5sm8056910wro.85.2024.01.22.00.37.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 00:37:46 -0800 (PST)
-Message-ID: <a85c387c-76a5-c86d-1523-592ff910c31e@gmail.com>
-Date: Mon, 22 Jan 2024 10:37:44 +0200
+ d=1e100.net; s=20230601; t=1705912855; x=1706517655;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AVrAH+Uw2Wxd3XSCYBzUKTJ25+x2qraZmxaar+zhWd0=;
+ b=JqCfhMfyB0u8QfHzTN42fOOzEDmAxXRfLote3F84JIZ+gO0tt+/zY7ccqjrTogxB5o
+ kqOKzUKjnjxn6N/JW40ObmOCw9UsfDoPxDabLkHvr3pTKbnvZLRyfurbNfG4LbmmG2ZK
+ xWKzU8Lo7ciPzW5Z58fTkJFSBVCGZlGbO18D4OWJ/yLvQU6Vy5VGG36bMv5/mLXO36lw
+ KRFkVHru4pe+3TKki2TcFToxSaR5JOCtmhpJ2DhBP9W+5nx9o5AkzhJ0EXTCHqpDJKXj
+ 9UiMNpvokX2nZwwM5PH6/DOMdwu2w/B24g+cq+hrjTLJgS7KSWtVrX5RxM4pTm0PTu2y
+ 0GtQ==
+X-Gm-Message-State: AOJu0YxnKm/E9E6kr4Nstp+IZ67ud9a/6EbwE16b7G3DJR2Dljd4oYjC
+ CZttftaFXgWbqs3A73HnHmBs6pkfhBXZZDi19nFU+UX6XPnHlF9QaJTU6+HH2OJ0aXWGrglGxBV
+ qHsb1eSm9RndoZLkCqjDs6z8MXEI=
+X-Google-Smtp-Source: AGHT+IENRES9zuIld8UNX4CuV2nYRhsOkbMu261sicUE6qzDuYjMtSIzfVeg1MjyUzQgZ8DQ8k3Zm/E+qfHhF7bEglQ=
+X-Received: by 2002:a05:6808:3c6:b0:3bc:968c:7a55 with SMTP id
+ o6-20020a05680803c600b003bc968c7a55mr3744491oie.77.1705912854988; Mon, 22 Jan
+ 2024 00:40:54 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH v3] Handle wrap around in limit calculation
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: andrew.sminov@gmail.com, peter.maydell@linaro.com, shlomop@pliops.com,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <20240121164754.47367-1-shlomop@pliops.com>
- <98ede7dd-b254-43aa-bf7d-f5d90494b8c9@linaro.org>
-In-Reply-To: <98ede7dd-b254-43aa-bf7d-f5d90494b8c9@linaro.org>
-From: Shlomo Pongratz <shlomopongratz@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=shlomopongratz@gmail.com; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
+ <20240120003013.1829757-8-vivek.kasireddy@intel.com>
+In-Reply-To: <20240120003013.1829757-8-vivek.kasireddy@intel.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 22 Jan 2024 12:40:43 +0400
+Message-ID: <CAJ+F1CJbf37qJcyo+aZkqrN7chXoCK=Q_yHYJQrwZOkZpJawvw@mail.gmail.com>
+Subject: Re: [PATCH v1 7/7] ui/spice: Create another texture with linear
+ layout when gl=on is enabled
+To: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.72, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,299 +90,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Please see inline
+Hi
 
-On 22/01/2024 01:17, Philippe Mathieu-Daudé wrote:
-> Hi Shlomo,
+On Sat, Jan 20, 2024 at 4:54=E2=80=AFAM Vivek Kasireddy
+<vivek.kasireddy@intel.com> wrote:
 >
-> On 21/1/24 17:47, Shlomo Pongratz wrote:
->> From: Shlomo Pongratz <shlomopongratz@gmail.com>
->>
->>      Hanlde wrap around when calculating the viewport size
->>      caused by the fact that perior to version 460A the limit variable
->>      was 32bit quantity and not 64 bits quantity.
->>      In the i.MX 6Dual/6Quad Applications Processor Reference Manual
->>      document on which the original code was based upon in the
->>      description of the iATU Region Upper Base Address Register it is
->>      written:
->>      Forms bits [63:32] of the start (and end) address of the address 
->> region to be
->>      translated.
->>      That is in this register is the upper of both base and the limit.
->>      In the current implementation this value was ignored for the limit
->>      which caused a wrap around of the size calculaiton.
->>      Using the documnet example:
->>      Base HI: 0x80000000 Base LO: 0xd0000000 Limit LO: 0xd000ffff
->>      The correct size is 0x80000000d000ffff - 0x80000000d0000000 + 1 =
->> 0x010000
->>      The wrong result is 0xd000ffff - 0x80000000d0000000 + 1 = 
->> 0x8000000000010000
->>
->>      Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
->>
->>      ----
->>
->>      Changes since v2:
->>       * Don't try to fix the calculation.
->>       * Change the limit variable from 32bit to 64 bit
->>       * Set the limit bits [63:32] same as the base according to
->>         the specification on which the original code was base upon.
->>
->>      Changes since v1:
->>       * Seperate subject and description
->> ---
->>   hw/pci-host/designware.c         | 19 ++++++++++++++-----
->>   include/hw/pci-host/designware.h |  2 +-
->>   2 files changed, 15 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
->> index dd9e389c07..43cba9432f 100644
->> --- a/hw/pci-host/designware.c
->> +++ b/hw/pci-host/designware.c
->> @@ -269,7 +269,7 @@ static void 
->> designware_pcie_update_viewport(DesignwarePCIERoot *root,
->>   {
->>       const uint64_t target = viewport->target;
->>       const uint64_t base   = viewport->base;
->> -    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
->> +    const uint64_t size   = viewport->limit - base + 1;
->>       const bool enabled    = viewport->cr[1] & 
->> DESIGNWARE_PCIE_ATU_ENABLE;
->>         MemoryRegion *current, *other;
->> @@ -351,6 +351,14 @@ static void 
->> designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
->>       case DESIGNWARE_PCIE_ATU_UPPER_BASE:
->>           viewport->base &= 0x00000000FFFFFFFFULL;
->>           viewport->base |= (uint64_t)val << 32;
->> +        /* The documentatoin states that the value of this register
->> +         * "Forms bits [63:32] of the start (and end) address
->> +         * of the address region to be translated.
->> +         * Note that from version 406A there is a sperate
->> +         * register fot the upper end address
->> +         */
->> +        viewport->limit &= 0x00000000FFFFFFFFULL;
->> +        viewport->limit |= (uint64_t)val << 32;
+> Since most encoders (invoked by Spice) may not work with tiled memory
+> associated with a texture, we need to create another texture that has
+> linear memory layout and use that instead.
 >
-> This code is easier to review using:
+> Note that, there does not seem to be a direct way to indicate to the
+> GL implementation that a texture's backing memory needs to be linear.
+> Instead, we have to do it in a roundabout way where we first need to
+> create a tiled texture and obtain a dmabuf fd associated with it via
+> EGL. Next, we have to create a memory object by importing the dmabuf
+> fd created earlier and finally create a linear texture by using the
+> memory object as the texture storage mechanism.
 >
->           viewport->limit = deposit64(viewport->limit, 32, 32, val);
+> Cc: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Cc: Frediano Ziglio <freddy77@gmail.com>
+> Cc: Dongwon Kim <dongwon.kim@intel.com>
+> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> ---
+>  ui/spice-display.c | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
 >
-It will be strange to have
-viewport->base &= 0x00000000FFFFFFFFULL;
-     viewport->base |= (uint64_t)val << 32;
-and then
-viewport->limit = deposit64(viewport->limit, 32, 32, val);
-I think that the code for base and limit should be the same.
-And I don't think the original for base should be change to
-viewport->base = deposit64(viewport->base, 32, 32, val);
-SO everything will look the same.
->>           break;
->>         case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
->> @@ -364,7 +372,8 @@ static void 
->> designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
->>           break;
->>         case DESIGNWARE_PCIE_ATU_LIMIT:
->> -        viewport->limit = val;
->> +        viewport->limit &= 0xFFFFFFFF00000000ULL;
->> +        viewport->limit |= val;
+> diff --git a/ui/spice-display.c b/ui/spice-display.c
+> index 08b4aec921..94cb378dbe 100644
+> --- a/ui/spice-display.c
+> +++ b/ui/spice-display.c
+> @@ -893,6 +893,7 @@ static void spice_gl_switch(DisplayChangeListener *dc=
+l,
+>  {
+>      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
+l);
+>      EGLint stride, fourcc;
+> +    GLuint texture =3D 0;
+>      int fd;
 >
-> Here:
+>      if (ssd->ds) {
+> @@ -912,6 +913,38 @@ static void spice_gl_switch(DisplayChangeListener *d=
+cl,
+>              return;
+>          }
 >
->           viewport->limit = deposit64(viewport->limit, 0, 32, val);
-My opinion is that the code should be identical to
-case DESIGNWARE_PCIE_ATU_LOWER_BASE:
-         viewport->base &= 0xFFFFFFFF00000000ULL;
-         viewport->base |= val;
-         break;
-I don't think it is good to mix two styles.
->>           break;
->>         case DESIGNWARE_PCIE_ATU_CR1:
->> @@ -429,7 +438,7 @@ static void 
->> designware_pcie_root_realize(PCIDevice *dev, Error **errp)
->>           viewport->inbound = true;
->>           viewport->base    = 0x0000000000000000ULL;
->>           viewport->target  = 0x0000000000000000ULL;
->> -        viewport->limit   = UINT32_MAX;
->> +        viewport->limit   = 0x00000000FFFFFFFFULL;
+> +        if (remote_client && surface_format(ssd->ds) !=3D PIXMAN_r5g6b5)=
+ {
+
+hmm
+
+> +            /*
+> +             * We really want to ensure that the memory layout of the te=
+xture
+> +             * is linear; otherwise, the encoder's output may show corru=
+ption.
+> +             */
+> +            surface_gl_create_texture_from_fd(ssd->ds, fd, &texture);
+
+What if the encoder actually supports tiled layout?
+
+Shouldn't this conversion be done at the encoder level as necessary?
+
+It's also strange to reuse an FD associated with a tiled texture for a
+linear layout (I am uncomfortable with all this tbh)
+
+> +
+> +            /*
+> +             * A successful return after glImportMemoryFdEXT() means tha=
+t
+> +             * the ownership of fd has been passed to GL. In other words=
+,
+> +             * the fd we got above should not be used anymore.
+> +             */
+> +            if (texture > 0) {
+> +                fd =3D egl_get_fd_for_texture(texture,
+> +                                            &stride, &fourcc,
+> +                                            NULL);
+> +                if (fd < 0) {
+
+I suggest adding warnings or tracing, to help debug issues...
+
+> +                    glDeleteTextures(1, &texture);
+> +                    fd =3D egl_get_fd_for_texture(ssd->ds->texture,
+> +                                                &stride, &fourcc,
+> +                                                NULL);
+> +                    if (fd < 0) {
+> +                        surface_gl_destroy_texture(ssd->gls, ssd->ds);
+> +                        return;
+> +                    }
+> +                } else {
+> +                    surface_gl_destroy_texture(ssd->gls, ssd->ds);
+> +                    ssd->ds->texture =3D texture;
+
+Have you tried this series with virgl? (I doubt the renderer accepts
+that the scanout texture is changed)
+
+> +                }
+> +            }
+> +        }
+> +
+>          trace_qemu_spice_gl_surface(ssd->qxl.id,
+>                                      surface_width(ssd->ds),
+>                                      surface_height(ssd->ds),
+> --
+> 2.39.2
 >
-> Previous code is easier to review IMHO.
-Just want to make it clear that this is 64 bit values and that the
-upper value is the same as the base's upper value, and according to spec.
->>           viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
->>             source      = &host->pci.address_space_root;
->> @@ -453,7 +462,7 @@ static void 
->> designware_pcie_root_realize(PCIDevice *dev, Error **errp)
->>           viewport->inbound = false;
->>           viewport->base    = 0x0000000000000000ULL;
->>           viewport->target  = 0x0000000000000000ULL;
->> -        viewport->limit   = UINT32_MAX;
->> +        viewport->limit   = 0x00000000FFFFFFFFULL;
 >
-> Ditto.
-Ditto.
->
->>           viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
->>             destination = &host->pci.memory;
->> @@ -560,7 +569,7 @@ static const VMStateDescription 
->> vmstate_designware_pcie_viewport = {
->>       .fields = (const VMStateField[]) {
->>           VMSTATE_UINT64(base, DesignwarePCIEViewport),
->>           VMSTATE_UINT64(target, DesignwarePCIEViewport),
->> -        VMSTATE_UINT32(limit, DesignwarePCIEViewport),
->> +        VMSTATE_UINT64(limit, DesignwarePCIEViewport),
->
-> Unfortunately this breaks the migration stream. I'm not sure
-> what is the best way to deal with it (Cc'ing migration
-> maintainers).
-My bad forgot to update version_id and minimum_version_id.
-I'll consult Peter Xu's document.
->
->>           VMSTATE_UINT32_ARRAY(cr, DesignwarePCIEViewport, 2),
->>           VMSTATE_END_OF_LIST()
->>       }
-> Regards,
->
-> Phil.
 
 
-------------------------------------------------------------------------
-*From:* Philippe Mathieu-Daudé [mailto:philmd@linaro.org]
-*Sent:* Monday, January 22, 2024, 1:17 AM
-*To:* Shlomo Pongratz; qemu-devel@nongnu.org
-*Cc:* andrew.sminov@gmail.com, peter.maydell@linaro.com, 
-shlomop@pliops.com, Peter Xu; Fabiano Rosas
-*Subject:* [PATCH v3] Handle wrap around in limit calculation
-
-> Hi Shlomo,
->
-> On 21/1/24 17:47, Shlomo Pongratz wrote:
->> From: Shlomo Pongratz <shlomopongratz@gmail.com>
->>
->>      Hanlde wrap around when calculating the viewport size
->>      caused by the fact that perior to version 460A the limit variable
->>      was 32bit quantity and not 64 bits quantity.
->>      In the i.MX 6Dual/6Quad Applications Processor Reference Manual
->>      document on which the original code was based upon in the
->>      description of the iATU Region Upper Base Address Register it is
->>      written:
->>      Forms bits [63:32] of the start (and end) address of the address 
->> region to be
->>      translated.
->>      That is in this register is the upper of both base and the limit.
->>      In the current implementation this value was ignored for the limit
->>      which caused a wrap around of the size calculaiton.
->>      Using the documnet example:
->>      Base HI: 0x80000000 Base LO: 0xd0000000 Limit LO: 0xd000ffff
->>      The correct size is 0x80000000d000ffff - 0x80000000d0000000 + 1 =
->> 0x010000
->>      The wrong result is 0xd000ffff - 0x80000000d0000000 + 1 = 
->> 0x8000000000010000
->>
->>      Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
->>
->>      ----
->>
->>      Changes since v2:
->>       * Don't try to fix the calculation.
->>       * Change the limit variable from 32bit to 64 bit
->>       * Set the limit bits [63:32] same as the base according to
->>         the specification on which the original code was base upon.
->>
->>      Changes since v1:
->>       * Seperate subject and description
->> ---
->>   hw/pci-host/designware.c         | 19 ++++++++++++++-----
->>   include/hw/pci-host/designware.h |  2 +-
->>   2 files changed, 15 insertions(+), 6 deletions(-)
->>
->> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
->> index dd9e389c07..43cba9432f 100644
->> --- a/hw/pci-host/designware.c
->> +++ b/hw/pci-host/designware.c
->> @@ -269,7 +269,7 @@ static void 
->> designware_pcie_update_viewport(DesignwarePCIERoot *root,
->>   {
->>       const uint64_t target = viewport->target;
->>       const uint64_t base   = viewport->base;
->> -    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
->> +    const uint64_t size   = viewport->limit - base + 1;
->>       const bool enabled    = viewport->cr[1] & 
->> DESIGNWARE_PCIE_ATU_ENABLE;
->>         MemoryRegion *current, *other;
->> @@ -351,6 +351,14 @@ static void 
->> designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
->>       case DESIGNWARE_PCIE_ATU_UPPER_BASE:
->>           viewport->base &= 0x00000000FFFFFFFFULL;
->>           viewport->base |= (uint64_t)val << 32;
->> +        /* The documentatoin states that the value of this register
->> +         * "Forms bits [63:32] of the start (and end) address
->> +         * of the address region to be translated.
->> +         * Note that from version 406A there is a sperate
->> +         * register fot the upper end address
->> +         */
->> +        viewport->limit &= 0x00000000FFFFFFFFULL;
->> +        viewport->limit |= (uint64_t)val << 32;
->
-> This code is easier to review using:
->
->           viewport->limit = deposit64(viewport->limit, 32, 32, val);
->
->>           break;
->>         case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
->> @@ -364,7 +372,8 @@ static void 
->> designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
->>           break;
->>         case DESIGNWARE_PCIE_ATU_LIMIT:
->> -        viewport->limit = val;
->> +        viewport->limit &= 0xFFFFFFFF00000000ULL;
->> +        viewport->limit |= val;
->
-> Here:
->
->           viewport->limit = deposit64(viewport->limit, 0, 32, val);
->
->>           break;
->>         case DESIGNWARE_PCIE_ATU_CR1:
->> @@ -429,7 +438,7 @@ static void 
->> designware_pcie_root_realize(PCIDevice *dev, Error **errp)
->>           viewport->inbound = true;
->>           viewport->base    = 0x0000000000000000ULL;
->>           viewport->target  = 0x0000000000000000ULL;
->> -        viewport->limit   = UINT32_MAX;
->> +        viewport->limit   = 0x00000000FFFFFFFFULL;
->
-> Previous code is easier to review IMHO.
->
->>           viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
->>             source      = &host->pci.address_space_root;
->> @@ -453,7 +462,7 @@ static void 
->> designware_pcie_root_realize(PCIDevice *dev, Error **errp)
->>           viewport->inbound = false;
->>           viewport->base    = 0x0000000000000000ULL;
->>           viewport->target  = 0x0000000000000000ULL;
->> -        viewport->limit   = UINT32_MAX;
->> +        viewport->limit   = 0x00000000FFFFFFFFULL;
->
-> Ditto.
->
->>           viewport->cr[0]   = DESIGNWARE_PCIE_ATU_TYPE_MEM;
->>             destination = &host->pci.memory;
->> @@ -560,7 +569,7 @@ static const VMStateDescription 
->> vmstate_designware_pcie_viewport = {
->>       .fields = (const VMStateField[]) {
->>           VMSTATE_UINT64(base, DesignwarePCIEViewport),
->>           VMSTATE_UINT64(target, DesignwarePCIEViewport),
->> -        VMSTATE_UINT32(limit, DesignwarePCIEViewport),
->> +        VMSTATE_UINT64(limit, DesignwarePCIEViewport),
->
-> Unfortunately this breaks the migration stream. I'm not sure
-> what is the best way to deal with it (Cc'ing migration
-> maintainers).
->
->>           VMSTATE_UINT32_ARRAY(cr, DesignwarePCIEViewport, 2),
->>           VMSTATE_END_OF_LIST()
->>       }
-> Regards,
->
-> Phil.
+--=20
+Marc-Andr=C3=A9 Lureau
 
