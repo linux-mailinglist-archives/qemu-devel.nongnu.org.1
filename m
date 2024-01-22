@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33485836BC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70AF836BC5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:51:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxUv-00039J-BV; Mon, 22 Jan 2024 11:50:09 -0500
+	id 1rRxVg-0003RL-Ah; Mon, 22 Jan 2024 11:50:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rRxUp-000390-3k
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:50:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rRxVU-0003Ng-W6
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:50:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rRxUm-0003f7-Sn
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:50:02 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rRxVT-000415-Bo
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:50:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705942198;
+ s=mimecast20190719; t=1705942241;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=aALr9u/7WuvWo0D4ZZKNVN25Ub70jsijUvLXQfF1Nds=;
- b=fpZvRJKSdCo9/6d7co9AR3NM7II0j6lVU/uyCdX3gieSEMalQ7iQloJXwP2V6c+JmA0jDw
- XRnbmk7L4Wbp2WAVylgGqgcR8sEDmVeQsOHU7SA29HkmrFFRromGZWfFeznIhzaJc5R5Ae
- B9jP3O39fSKQDI5dvzvbegcSSzxW0ws=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h85iaIRTG/IVHbfLP7EuPW6M6By6uebq9dK+46+hsf4=;
+ b=VW+T8qAqO+h01PAadtSaTQKwFd9X1CYykC75uK5kWCkx+Hnxh3lU34oS13Sp+iAknqSn8T
+ +PwHmOH5bAK2sDjW3cHRzAlT+6qZrSiG71rJgMZP7uXwGB1je6rLyBgo6Vtb1VoWoT8B36
+ Pm4ul51kSRGKYWAt5gCAm2F9Vc2Kc0E=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-iutVOZ4uMyyJgXkpCoZVRQ-1; Mon, 22 Jan 2024 11:49:57 -0500
-X-MC-Unique: iutVOZ4uMyyJgXkpCoZVRQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40e9d6a364eso28610935e9.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:49:57 -0800 (PST)
+ us-mta-287-2W_elsupOMiG0wyA0dsEZQ-1; Mon, 22 Jan 2024 11:50:40 -0500
+X-MC-Unique: 2W_elsupOMiG0wyA0dsEZQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40eb06001c2so7041425e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:50:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705942196; x=1706546996;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aALr9u/7WuvWo0D4ZZKNVN25Ub70jsijUvLXQfF1Nds=;
- b=TvUUTKCrVqKMMGK1qqnVWPw3Tui4oLUT/3FhIzlN8JGqrBlsdHtDYFnymIhToNuBBy
- io7ZUWWg8R/18dMnHbEx89Ng6pZLTkNDS8jNh9oKpMsbenqwoW1vNeG9aQPg1PtN4Oob
- pdOFDeuesRk3q37T11cuc0mPsCpsUBfzARb/4Nw3WVuA6T6Kwu3ID/ktqZaw22CREt6E
- Nmx8eqhHdHWUO3lIeOn+cUaFCU+d8UfVJtZP/spzZh+0h2DzSgO+0C6YCx5nuTdtLdAf
- S902cwlH+kgD9nw0LZ26uoSE/Mdv7YKJ52QB4NqR9Yk0aF+YY/mI0ZJJkeYsHdPWNELS
- ofvQ==
-X-Gm-Message-State: AOJu0YyOqVgVNpNs7CxLAd1RJWINM74V5N5SS/WlVaX4R/7aIE4KLTKy
- yjneRgaEBBf5ca+a9dg8BxZWineeFM+iiVc4dVJm7FMQYm0DvIyhok+iulKDHAShIst8X8nPgTa
- 5/UX21znxEkpEz/ZMEdxBqWj61vFYOg7+rP7bDWam38UgiuW4WVpKkcGWZaF0cRjjVGl5BwFL7M
- NB6f0ug0I4OWfVtyxWuJHGyy8V+YduLiti
-X-Received: by 2002:a05:600c:3147:b0:40e:546f:f373 with SMTP id
- h7-20020a05600c314700b0040e546ff373mr2549740wmo.91.1705942196226; 
- Mon, 22 Jan 2024 08:49:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEplGhyq8oy96nuCqe5F7jD4Ch63WvePmIxl9yag3jafgjEnWKCCjgdJ8CEP1EkJIQ1qNM9Eg==
-X-Received: by 2002:a05:600c:3147:b0:40e:546f:f373 with SMTP id
- h7-20020a05600c314700b0040e546ff373mr2549731wmo.91.1705942195833; 
- Mon, 22 Jan 2024 08:49:55 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705942239; x=1706547039;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :references:cc:to:from:content-language:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=h85iaIRTG/IVHbfLP7EuPW6M6By6uebq9dK+46+hsf4=;
+ b=ssBuqwvVPNU48QudYjkMfJ1oLwsHKb4IkJc1CvOBVPfomWpjZcfIkIzStD5ahJMHWH
+ 0i0iE6QFvcHZzzpQ1UZfzvjEDGuya8CUIFnUnx9fH+rR5bLxr09xRBKDnRLN/GBIxd1J
+ gsNG6Z+XLrprDaIStK6LmdEN7y/OG6grZ1+8V+qO8Ce9tCliV25XYeHeveoD0cagrZkT
+ 8Ht9jlFqTn+NtJgL50wVih+bdeIJ7WDfeNF27YtDPQXOmpPeNYU+bQf8yzXgIpZf4ib2
+ zphHzslkFsZbjKDOhCb9+rpSIIkQlSz5kItIfpWkSuI03x6O2ZmsGQ4/3U7QTp0WeQ9M
+ IH5A==
+X-Gm-Message-State: AOJu0YxLcOkXEt+vv2yCXW5ZLZcx3Q9yZbGCYb0vB9ZKlohMMCAKIdNi
+ y7ghBDwTOmOUoVjrkKDXmn5BzNcLkrn97/GfmY/vRrv7eg9Sxgls4nS1kqut3p55w9dvW9Ak7b7
+ GSIGc5mbuzfiDsFdsmeOHj/UybKEfUrxB9rjjXviUqWpEX/dffYq2J+VtWdgGtY4L4t9/uH2duj
+ W7obsm1tY/Hq9aj2HPR5yR+ilTS5fBToZL
+X-Received: by 2002:a05:600c:154a:b0:40e:3505:32eb with SMTP id
+ f10-20020a05600c154a00b0040e350532ebmr2365138wmg.133.1705942238919; 
+ Mon, 22 Jan 2024 08:50:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGKdaJieY3nHN4RXJSsSRlJVExfZlGm0BwD6WkCmF7ByxIYHs+0SE8I+fjPrQjVy2pI3BNk6A==
+X-Received: by 2002:a05:600c:154a:b0:40e:3505:32eb with SMTP id
+ f10-20020a05600c154a00b0040e350532ebmr2365127wmg.133.1705942238520; 
+ Mon, 22 Jan 2024 08:50:38 -0800 (PST)
 Received: from ?IPV6:2003:cb:c737:f400:b194:1841:c4a5:75f5?
  (p200300cbc737f400b1941841c4a575f5.dip0.t-ipconnect.de.
  [2003:cb:c737:f400:b194:1841:c4a5:75f5])
  by smtp.gmail.com with ESMTPSA id
- s8-20020a05600c45c800b0040e527602c8sm43861690wmo.9.2024.01.22.08.49.55
+ s8-20020a05600c45c800b0040e527602c8sm43861690wmo.9.2024.01.22.08.50.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 08:49:55 -0800 (PST)
-Message-ID: <a8fd0d6f-70d6-4f46-a8ad-10aaf767dbe3@redhat.com>
-Date: Mon, 22 Jan 2024 17:49:54 +0100
+ Mon, 22 Jan 2024 08:50:38 -0800 (PST)
+Message-ID: <8d8bbeb5-efde-45f7-97a9-c31bfac51993@redhat.com>
+Date: Mon, 22 Jan 2024 17:50:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 0/2] memory-device: reintroduce memory region size check
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
  Mario Casquero <mcasquer@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Xiao Guangrong <xiaoguangrong.eric@gmail.com>
 References: <20240117135554.787344-1-david@redhat.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
+ <a8fd0d6f-70d6-4f46-a8ad-10aaf767dbe3@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -122,17 +123,17 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240117135554.787344-1-david@redhat.com>
+In-Reply-To: <a8fd0d6f-70d6-4f46-a8ad-10aaf767dbe3@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -150,22 +151,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17.01.24 14:55, David Hildenbrand wrote:
-> Reintroduce a modified region size check, after we would now allow some
-> configurations that don't make any sense (e.g., partial hugetlb pages,
-> 1G+1byte DIMMs).
+On 22.01.24 17:49, David Hildenbrand wrote:
+> On 17.01.24 14:55, David Hildenbrand wrote:
+>> Reintroduce a modified region size check, after we would now allow some
+>> configurations that don't make any sense (e.g., partial hugetlb pages,
+>> 1G+1byte DIMMs).
+>>
+>> We have to take care of hv-balloon first, which was the case why we
+>> remove that check in the first place.
+>>
+>> Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+>> Cc: Mario Casquero <mcasquer@redhat.com>
+>> Cc: Igor Mammedov <imammedo@redhat.com>
+>> Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
 > 
-> We have to take care of hv-balloon first, which was the case why we
-> remove that check in the first place.
-> 
-> Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-> Cc: Mario Casquero <mcasquer@redhat.com>
-> Cc: Igor Mammedov <imammedo@redhat.com>
-> Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+> Thanks all for resting+review. Queued to
 
-Thanks all for resting+review. Queued to
-
-https://github.com/davidhildenbrand/qemu.git mem-next
+Haha, "testing" :)
 
 -- 
 Cheers,
