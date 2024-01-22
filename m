@@ -2,97 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A506836DF2
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:41:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 776B9836E26
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:46:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRyIq-000107-M1; Mon, 22 Jan 2024 12:41:44 -0500
+	id 1rRyNe-0002jD-Ca; Mon, 22 Jan 2024 12:46:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rRyIo-0000yU-LO
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:41:42 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rRyIm-0004VW-Ln
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:41:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705945299;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bhzcNusFhE3ZbWvRuVLZG9DrxNB0DtMuGCg7FqA16K8=;
- b=d5f+L8ZAtQjNpRr7hPY3mSAsEnMIgMmFYrvsaTnfWhdSTmAEkZGRlnvL8xYGQMqnYP03YE
- ybw7wwPnETcv9evbSm8Q6Dor72xpGpHLVz5p5/DsIvYx6Rk0Y62koakeESydybRN6DiS0k
- L8tg4fMDNeDUiaw+KyPHTPrhDiF21TM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-97-mcVRedAFO1C782DFworukg-1; Mon, 22 Jan 2024 12:41:37 -0500
-X-MC-Unique: mcVRedAFO1C782DFworukg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33932e8b3e6so945692f8f.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:41:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRyNc-0002iQ-Da
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:46:40 -0500
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRyNa-0005Dr-SJ
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:46:40 -0500
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6dc36e501e1so3127707a34.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:46:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705945596; x=1706550396; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6tJKN90fYoTF+wPqjbzqzOdyVCh676j3Po9ZwYKNXDk=;
+ b=UuwdD/b/O5+EQFGHXmXYJH7dk7LPTE3GACu/Jz/dg4OX40cHqBP9MaSult3oXmTUHM
+ xsuR/edftK8L09WGasJ8qF6tp8IKmhLIEsAXzS6ZbPN60f0rOdsaBHeGrA+Qx4TJ86km
+ mhOaS5PMp/pwrOKKNPe75wKOP7uaBu8JMV0B+gR4ymeVXijtx835mP9lJ7aQF4fhOkps
+ Kb9JVZAED27V5OQaztFNzX6ouXUWm+miIO0OZWclQKIIM+vetzzfp+grmjMWjRTew9ZE
+ GnDiPJBfoQYJMvd5WcvqDB5JTHf8VYZ2oNNxmqviSvOIGnt0K4BVSkisima/gps5OqeW
+ diFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705945297; x=1706550097;
+ d=1e100.net; s=20230601; t=1705945596; x=1706550396;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bhzcNusFhE3ZbWvRuVLZG9DrxNB0DtMuGCg7FqA16K8=;
- b=djiknkMIULeLtZpAQZ1z+DG/rKi+OYTrS6dfIQdky9WwKN5ZLSwWjb+0KdCWOKezLf
- eUSNH4kjDvFyrvOl5A3qScWALjmiogxNI+Cgo1Kua0ZiljbGFS7ArnDlGMZXax9SOu4Q
- MZlER35rj3GP+bO8/5++ZVQUA0+Cik0rfaPsZxjdYv++kMD7k4Gvig/9lKZz3bpPGzLK
- /ESA32oylTiO1eQ+OjZQkxCvhVtUjTcB3udMsz+v0b/FxemGZvitiVbiE23b8PX2Bn1w
- RkVcc0ZbAmZlzFQaBvdY5iqw5CAjJSJ+t4CwEnHtW+8Vz98Eq5cjQVJZMvTkFEC74VWu
- oGsA==
-X-Gm-Message-State: AOJu0YwHN2anCcpO2znZmGkZu5eyTXzLv+mizY9llMSH4gP2JlHf7ci5
- n06elX3EoGNDBFAMkZcCG4S8K9EUiuQF2UldKaAV0GRr2Q/XZY4qTri7qKEJDBXEhqXyMHhKWyE
- 55F2L4BfgDsEYYF0GBE71QTvPQubR/YuROlbA55VOzUs09rYb6Lat
-X-Received: by 2002:a05:6000:cb:b0:339:3f40:ffc9 with SMTP id
- q11-20020a05600000cb00b003393f40ffc9mr466070wrx.134.1705945296823; 
- Mon, 22 Jan 2024 09:41:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHAvwyl3kk/GjfzCBfuwCaPqbaoePxcs90Qd0D3m/6KehElFmBENsRx2F2kwiEHm2w+f7fqlg==
-X-Received: by 2002:a05:6000:cb:b0:339:3f40:ffc9 with SMTP id
- q11-20020a05600000cb00b003393f40ffc9mr466062wrx.134.1705945296515; 
- Mon, 22 Jan 2024 09:41:36 -0800 (PST)
-Received: from ?IPV6:2003:cf:d73b:4117:ba1b:6e10:5c4e:878?
- (p200300cfd73b4117ba1b6e105c4e0878.dip0.t-ipconnect.de.
- [2003:cf:d73b:4117:ba1b:6e10:5c4e:878])
+ bh=6tJKN90fYoTF+wPqjbzqzOdyVCh676j3Po9ZwYKNXDk=;
+ b=wmhnnt1YPAWxyoreGoQZhDpT2XIfZp1nld+C2eRIuP6fDPVa0MdPpBfg8GUaQOPYaV
+ kWJBUKh33MjuWyg3Kg2Yhou32btatJkpIFFAktNO97OUHSIz/QlLu+W/NgbVVsiMO2gI
+ ex9eGQxWJZrnEYyQth543A5XBNEwOngFDaMJt4QOEGVFEDCvR1o3PSUggvhIV7/SYGsC
+ XoG2bhyer0+G/tAw4dK3eM1LKUkgh741JXzK2WXKmzeinX1OB6V214GXjtYrGcszJk92
+ BDtpE+iEYhP2bgj6idMrOYnubR5rubGonl1MLPl7+NCc9+HdI9YqFaX/09OnHk1vLshD
+ EAuQ==
+X-Gm-Message-State: AOJu0Yz7c3QIezruGB2wd5Kx6aQoYnjkMm5Gl+WQKD04Cp5A2am5QARt
+ fM0f1068BMe/AEp4rhSnwziDSuYetSiywrYm6hIUcPRNdpX47FLCFA3Uc/YrwCU=
+X-Google-Smtp-Source: AGHT+IGDg/WaIgPPFZMIeRvbYYb9xONLYdj1pbo/qGLSade2y258uqLJnovbdrVMK/rPCzQRPGlVTQ==
+X-Received: by 2002:a9d:5c0c:0:b0:6dc:224:21ca with SMTP id
+ o12-20020a9d5c0c000000b006dc022421camr5340840otk.73.1705945596419; 
+ Mon, 22 Jan 2024 09:46:36 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.57])
  by smtp.gmail.com with ESMTPSA id
- cp9-20020a056000400900b003392ded41c7sm4960923wrb.39.2024.01.22.09.41.35
+ y9-20020a9d5189000000b006e0d91a32b9sm1451427otg.0.2024.01.22.09.46.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 09:41:35 -0800 (PST)
-Message-ID: <3bb5aa0e-ae0a-4fda-a5b5-1bfac86651ac@redhat.com>
-Date: Mon, 22 Jan 2024 18:41:35 +0100
+ Mon, 22 Jan 2024 09:46:35 -0800 (PST)
+Message-ID: <ceb451fd-c7c6-4ddd-861f-df8e4d897dc5@linaro.org>
+Date: Mon, 22 Jan 2024 18:46:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
+Subject: Re: [PATCH 2/2] qemu-options.hx: Improve -serial option documentation
 Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>
-References: <20231213211544.1601971-1-stefanha@redhat.com>
- <142d6078-1bb9-4116-ac87-7daac16f12d8@redhat.com>
- <016ac3d1-f6c1-48eb-a714-fb777dff7012@proxmox.com>
- <94db88e7-1f02-44dd-bc2c-3d9ccf1cce72@redhat.com>
- <bfc7b20c-2144-46e9-acbc-e726276c5a31@proxmox.com>
- <67a36617-9e61-4778-aebf-1e667cb51120@proxmox.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <67a36617-9e61-4778-aebf-1e667cb51120@proxmox.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-stable@nongnu.org, Bohdan Kostiv <bogdan.kostiv@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20240122163607.459769-1-peter.maydell@linaro.org>
+ <20240122163607.459769-3-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240122163607.459769-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-ot1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,97 +95,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05.01.24 15:30, Fiona Ebner wrote:
-> Am 05.01.24 um 14:43 schrieb Fiona Ebner:
->> Am 03.01.24 um 14:35 schrieb Paolo Bonzini:
->>> On 1/3/24 12:40, Fiona Ebner wrote:
->>>> I'm happy to report that I cannot reproduce the CPU-usage-spike issue
->>>> with the patch, but I did run into an assertion failure when trying to
->>>> verify that it fixes my original stuck-guest-IO issue. See below for the
->>>> backtrace [0]. Hanna wrote in https://issues.redhat.com/browse/RHEL-3934
->>>>
->>>>> I think it’s sufficient to simply call virtio_queue_notify_vq(vq)
->>>>> after the virtio_queue_aio_attach_host_notifier(vq, ctx) call, because
->>>>> both virtio-scsi’s and virtio-blk’s .handle_output() implementations
->>>>> acquire the device’s context, so this should be directly callable from
->>>>> any context.
->>>> I guess this is not true anymore now that the AioContext locking was
->>>> removed?
->>> Good point and, in fact, even before it was much safer to use
->>> virtio_queue_notify() instead.  Not only does it use the event notifier
->>> handler, but it also calls it in the right thread/AioContext just by
->>> doing event_notifier_set().
->>>
->> But with virtio_queue_notify() using the event notifier, the
->> CPU-usage-spike issue is present:
->>
->>>> Back to the CPU-usage-spike issue: I experimented around and it doesn't
->>>> seem to matter whether I notify the virt queue before or after attaching
->>>> the notifiers. But there's another functional difference. My patch
->>>> called virtio_queue_notify() which contains this block:
->>>>
->>>>>      if (vq->host_notifier_enabled) {
->>>>>          event_notifier_set(&vq->host_notifier);
->>>>>      } else if (vq->handle_output) {
->>>>>          vq->handle_output(vdev, vq);
->>>> In my testing, the first branch was taken, calling event_notifier_set().
->>>> Hanna's patch uses virtio_queue_notify_vq() and there,
->>>> vq->handle_output() will be called. That seems to be the relevant
->>>> difference regarding the CPU-usage-spike issue.
->> I should mention that this is with a VirtIO SCSI disk. I also attempted
->> to reproduce the CPU-usage-spike issue with a VirtIO block disk, but
->> didn't manage yet.
->>
->> What I noticed is that in virtio_queue_host_notifier_aio_poll(), one of
->> the queues (but only one) will always show as nonempty. And then,
->> run_poll_handlers_once() will always detect progress which explains the
->> CPU usage.
->>
->> The following shows
->> 1. vq address
->> 2. number of times vq was passed to virtio_queue_host_notifier_aio_poll()
->> 3. number of times the result of virtio_queue_host_notifier_aio_poll()
->> was true for the vq
->>
->>> 0x555fd93f9c80 17162000 0
->>> 0x555fd93f9e48 17162000 6
->>> 0x555fd93f9ee0 17162000 0
->>> 0x555fd93f9d18 17162000 17162000
->>> 0x555fd93f9db0 17162000 0
->>> 0x555fd93f9f78 17162000 0
->> And for the problematic one, the reason it is seen as nonempty is:
->>
->>> 0x555fd93f9d18 shadow_avail_idx 8 last_avail_idx 0
-> vring_avail_idx(vq) also gives 8 here. This is the vs->event_vq and
-> s->events_dropped is false in my testing, so
-> virtio_scsi_handle_event_vq() doesn't do anything.
->
->> Those values stay like this while the call counts above increase.
->>
->> So something going wrong with the indices when the event notifier is set
->> from QEMU side (in the main thread)?
->>
->> The guest is Debian 12 with a 6.1 kernel.
+Hi,
 
-So, trying to figure out a new RFC version:
+On 22/1/24 17:36, Peter Maydell wrote:
+> The -serial option documentation is a bit brief about '-serial none'
+> and '-serial null'. In particular it's not very clear about the
+> difference between them, and it doesn't mention that it's up to
+> the machine model whether '-serial none' means "don't create the
+> serial port" or "don't wire the serial port up to anything".
+> 
+> Expand on these points.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   qemu-options.hx | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
+> 
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index ced82848637..d8c3fe91de1 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -4129,7 +4129,8 @@ SRST
+>       This option can be used several times to simulate up to 4 serial
+>       ports.
+>   
+> -    Use ``-serial none`` to disable all serial ports.
+> +    You can use ``-serial none`` to suppress the creation of default
+> +    serial devices.
+>   
+>       Available character devices are:
+>   
+> @@ -4151,10 +4152,17 @@ SRST
+>           [Linux only] Pseudo TTY (a new PTY is automatically allocated)
+>   
+>       ``none``
+> -        No device is allocated.
+> +        No device is allocated. Note that 
 
-About the stack trace you, Fiona, posted:  As far as I understand, that 
-happens because virtio_blk_drained_end() calling 
-virtio_queue_notify_vq() wasn’t safe after all, and instead we need to 
-use virtio_queue_notify().  Right?
+>          for machine types which
+> +        emulate systems where a serial device is always present in
+> +        real hardware, this may be equivalent to the ``null`` option,
+> +        in that the serial device is still present but all output
+> +        is discarded.
 
-However, you say using virtio_queue_notify() instead causes busy loops 
-of doing nothing in virtio-scsi (what you describe above).  I mean, 
-better than a crash, but, you know. :)
+Should we deprecate this broken case, suggesting to use ``null``
+instead?
 
-I don’t know have any prior knowledge about the event handling, 
-unfortunately.  The fact that 8 buffers are available but we don’t use 
-any sounds OK to me; as far as I understand, we only use those buffers 
-if we have any events to push into them, so as long as we don’t, we 
-won’t.  Question is, should we not have its poll handler return false if 
-we don’t have any events (i.e. events_dropped is false)?  Would that 
-solve it?
+>          For boards where the number of serial ports is
+> +        truly variable, this suppresses the creation of the device.
+>   
+>       ``null``
+> -        void device
+> +        A guest will see the UART or serial device as present in the
+> +        machine, but all output is discarded, and there is no input.
+> +        Conceptually equivalent to redirecting the output to ``/dev/null``.
+>   
+>       ``chardev:id``
+>           Use a named character device defined with the ``-chardev``
 
-Hanna
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
