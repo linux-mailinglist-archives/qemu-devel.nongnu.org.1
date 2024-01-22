@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B61683623D
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 12:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93B583625C
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 12:45:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRshS-0002jY-9F; Mon, 22 Jan 2024 06:42:46 -0500
+	id 1rRsjf-0004Kf-N5; Mon, 22 Jan 2024 06:45:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRshO-0002j6-Rr
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:42:42 -0500
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRsjZ-0004JR-DS
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:44:57 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRshN-0004L7-0i
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:42:42 -0500
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50e5a9bcec9so3119821e87.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 03:42:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRsjX-0004sZ-GE
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:44:57 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-55a179f5fa1so3302276a12.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 03:44:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705923759; x=1706528559; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ET4YoUKutSWLTzQ9liVs6t9DnomuPEvkpod4f0ual2k=;
- b=fPjAAakZrPfBrv4SCWCV4R7jFnrPleNHBc18r0NkPeTbkVrn5M69Js+cqauh3lL546
- Dxjnt1JnVOb8xwxnFclwcdNZsNn9uDtsHTGrx0zN+0NIotexhHfckUx/ywT6E25WF3RD
- AsuV7kJPIsG82z8TiujnyndXBWj28qlSUfqcu324evRLvoi/XBY3kn5aMO8nfvNgk/kf
- R86ZXgnGDfDKLhbLWJtpxdaWIrqIbV9XAXTQNPIXrAQvswrvDIySOprc2ZZc35PXa2s0
- sl4FzHJkianuPseLxETiV/QuyXyZ7JFZ4GejUyvwPGzvCiaPrdzzMvDr2gEMknaNR6wv
- doVQ==
+ d=linaro.org; s=google; t=1705923893; x=1706528693; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YuYWbSwTik+hhs++MPAjkzQJq1wD4hmbUDCVCg3RcxI=;
+ b=cxhKYoP3ARPiwD3mJjfIBDawAnZgDpbYXYIKEYpIHzBk7qXSc5VyjbGV7bFs3regNO
+ xA0uoCFuaytsU4ji08qjaNoZpKXcNjtPfH6g2gBytx+0NQVsE9vp7/zgFrkflZXy1kB4
+ 8WBxvJH1JuXT3vwPB477f8kQahXicuX+dkDSo435B8atDTslMjKYgf8nPDoXt9YePh5v
+ SnOsidBk+4GZ8/w3q4KOaNuiRFuJ06KlML7dJfjzfd8k6nOE972FSyLqqyAidUJKFU7f
+ w1knm5ryzBhQtW7H4D0q2y4C5mf1isC/2IpRl2J+/TkviLTnlcmArs6MLfRWoF2kFEUb
+ x8UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705923759; x=1706528559;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ET4YoUKutSWLTzQ9liVs6t9DnomuPEvkpod4f0ual2k=;
- b=ha4dS+eCLp5Ie/wZNVoQnJqJ2K6ZapJT66ONhAOLdkDz7iWrd6/YWDBkHcA4j6i7x4
- Lr1/1Z28uk/yfwI8adRliBjasNSal/uz7zw3i7zbtJrEFaXvUuAytRXogWcZU43uzsq6
- VthJRhvVR/CAWbhWwhe3uS0gbJy4zDdWaQh0Wz9l2+SfqzTyEAdPKcYKt7jaaTvr6Oil
- SF1U1v7Myy3haQNo2MdQ2mlwoDmzV3Ibcag37CODmusAYfWoWI1QE7/kfkMo+q55gmi8
- mL1FEHtjsjzY8eLZ/9J3shtJ45BZarVSYjg6oFbAXLlEoWP9UEe+Sofujf44p2dnMS0M
- INYw==
-X-Gm-Message-State: AOJu0YwMLVdZiLdl2+azcuVuZGMdoS8cZufwRxd/XbAPS/hjbXmE6bgr
- Lc5wtEgdSIPMAbu72OizAPFwVSRDTH9n3xnEQ7d2msorAXnrsTybBnJieqx2GuBDoL1QTXT2CwV
- J8k0=
-X-Google-Smtp-Source: AGHT+IEOC/hg+qFfe1lGZqssQtrr+I4e2Qr7WvED1LNHYRsbSb9wJQZ3NmH/p3YlXgVWxEGmNfO3Rw==
-X-Received: by 2002:a05:6512:786:b0:50f:d65:895c with SMTP id
- x6-20020a056512078600b0050f0d65895cmr1642931lfr.69.1705923758833; 
- Mon, 22 Jan 2024 03:42:38 -0800 (PST)
-Received: from [192.168.149.175] ([92.88.171.62])
- by smtp.gmail.com with ESMTPSA id
- vi11-20020a170907d40b00b00a2cd74b743csm12044122ejc.3.2024.01.22.03.42.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 03:42:38 -0800 (PST)
-Message-ID: <acf4d4c3-933e-4ea8-87f9-498cc690efbc@linaro.org>
-Date: Mon, 22 Jan 2024 12:42:37 +0100
+ d=1e100.net; s=20230601; t=1705923893; x=1706528693;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YuYWbSwTik+hhs++MPAjkzQJq1wD4hmbUDCVCg3RcxI=;
+ b=nTwovcCsDDO4CfBlKl4MffsSNP65v0DrAzE1XG84G1IAs0ciMsvdbPd3KN26Ul3Ohn
+ uKMVtvPJWQTOUHUCmLh8Qmaq9lskNnTa1Ra5kIZRX/1b5N3hKSgN923P8bACiYvE9OBb
+ MIZ9gN6LV9wxYNvRGYsrI1EZ1zm4OxeIfpXlOmQ0+pPFdar/F+BnzkPJTAVcoe8FfkKb
+ JDXMajijnrg2qlbn9vqaxGWqsFbGlc4GVhB8v+AfChSZ0A+7GXlfuRbvC7z93KQmGHjI
+ bVts6pwFE3E39FALVnpUplwk4asc2wX/z0a85DGyamLUrMem4KiDIgpwGwtWrRPJsSMR
+ 7Xog==
+X-Gm-Message-State: AOJu0Yz9RWXqv4+ZsR3TAmA/OxabjfC8PaNgT2/3IjulYDtM99Mkr8+C
+ 8JAzu/h9tEwXj2JivcGDczKB9u0ch3kZHjLoUExaaZriaqtke5820ZmU1CtefH8eOD0CCTEFSjX
+ 0wyr9kSCI+OiyxjeNFMe10krggXWLuZyXpYAGYg==
+X-Google-Smtp-Source: AGHT+IHxqTIMmIYoDOmDBXkaKjxBmXp97zTrSn/zrbMHRs/M1Q4TTGFNfAUPIdlVqXLRj971FEyOGVuy9d41zvizaIc=
+X-Received: by 2002:a05:6402:b03:b0:55a:3b6d:dd16 with SMTP id
+ bm3-20020a0564020b0300b0055a3b6ddd16mr2130756edb.17.1705923893619; Mon, 22
+ Jan 2024 03:44:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] linux-user/elfload: test return value of getrlimit
-Content-Language: en-US
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-References: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
- <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+References: <20240119181327.236745-1-kwolf@redhat.com>
+ <CAFEAcA9eR1Hs9CUu7MTdMsc93kUXt_btzS364AaO6V1axn5P8g@mail.gmail.com>
+ <Za5OL56iirwteiEe@redhat.com>
+In-Reply-To: <Za5OL56iirwteiEe@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 11:44:42 +0000
+Message-ID: <CAFEAcA8N1K-KXjA2THKaOPsDMJN45ZL1L7X1jizp=VJ+SpqTiQ@mail.gmail.com>
+Subject: Re: [PULL 00/14] Block layer patches
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, ira.weiny@intel.com, 
+ Jonathan.Cameron@huawei.com, mst@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,17 +90,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/1/24 22:45, Thomas Weißschuh wrote:
-> Should getrlimit() fail the value of dumpsize.rlimit_cur may not be
-> initialized. Avoid reading garbage data by checking the return value of
-> getrlimit.
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-> ---
->   linux-user/elfload.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, 22 Jan 2024 at 11:15, Kevin Wolf <kwolf@redhat.com> wrote:
+>
+> Am 20.01.2024 um 18:21 hat Peter Maydell geschrieben:
+> > Got some compile failures on this one; looks like the compiler
+> > on our s390 box didn't like this:
+> >
+> > https://gitlab.com/qemu-project/qemu/-/jobs/5973441293
+> > https://gitlab.com/qemu-project/qemu/-/jobs/5973441291
+> > https://gitlab.com/qemu-project/qemu/-/jobs/5973441330
+> >
+> > In file included from ../include/qemu/host-utils.h:33,
+> > from ../include/qemu/bitops.h:16,
+> > from ../include/qemu/timer.h:4,
+> > from ../include/block/aio.h:24,
+> > from ../include/block/aio-wait.h:28,
+> > from ../include/block/block-io.h:27,
+> > from ../block/blklogwrites.c:15:
+> > ../block/blklogwrites.c: In function =E2=80=98blk_log_writes_co_do_log=
+=E2=80=99:
+> > ../include/qemu/bswap.h:148:36: error: left shift count >=3D width of
+> > type [-Werror=3Dshift-count-overflow]
+> > 148 | ((((_x) & 0x00000000000000ffU) << 56) | \
+> > | ^~
+> > ../block/blklogwrites.c:409:27: note: in expansion of macro =E2=80=98co=
+nst_le64=E2=80=99
+> > 409 | .nr_entries =3D const_le64(0),
+> > | ^~~~~~~~~~
+> > ../include/qemu/bswap.h:149:36: error: left shift count >=3D width of
+> > type [-Werror=3Dshift-count-overflow]
+> > 149 | (((_x) & 0x000000000000ff00U) << 40) | \
+> > | ^~
+> > ../block/blklogwrites.c:409:27: note: in expansion of macro =E2=80=98co=
+nst_le64=E2=80=99
+> > 409 | .nr_entries =3D const_le64(0),
+> > | ^~~~~~~~~~
+> > cc1: all warnings being treated as errors
+>
+> Looks like const_le64() introduced in commit 845d80a8 is buggy. I wonder
+> why we even added it when there is no user of it (this blklogwrites one
+> is the first one, so it exposes the error).
+>
+> Of course, 0 is just as good as const_le64(0), so I'll just change it to
+> that for now. But I suppose const_le64() should either be fixed (and
+> used by something) or removed.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Using ULL as the suffix on the constants in the macro should
+be sufficient to fix the problem, I suspect.
 
+-- PMM
 
