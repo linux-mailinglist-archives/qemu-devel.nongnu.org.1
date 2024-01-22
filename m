@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C97C83705C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 19:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B98B837066
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 19:44:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRzG5-0005r7-Tf; Mon, 22 Jan 2024 13:42:57 -0500
+	id 1rRzHK-0006SZ-L1; Mon, 22 Jan 2024 13:44:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRzG2-0005qz-FS
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 13:42:54 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1rRzHH-0006R7-KW; Mon, 22 Jan 2024 13:44:12 -0500
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRzFy-0006lO-LJ
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 13:42:53 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-55a349cf29cso3997367a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 10:42:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1rRzHG-0006ts-0R; Mon, 22 Jan 2024 13:44:11 -0500
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-29080973530so1455568a91.1; 
+ Mon, 22 Jan 2024 10:44:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705948968; x=1706553768; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=P/MqoP5uP96UGBIc53wscvaBiG6AgEHe2FhRhTvSoaQ=;
- b=U3qijrcHKhvZxw182E0F68FoQPbEEmxAMkyWF71WewvqrvxVttHJsu5jt3DDi0nDfZ
- 7OVWUT5a5nwoCFu9crgWTk8+7gVDOi4sMTFvnHnBNE68CSAF8thDNMZ2VFaHX8R3bYe6
- sARxr6digaZ3GewCwzdr+pT4oDWRkb/YMbON/+E/IxZRn9IIKJMjIm+kuJNoRKnll7xf
- iv1RMd0VO1hgnhfBHbHwdyo6zgmbkR83G34ah4J6clTlmvIHnXuuh2/IvNlGbWaVvYFk
- 3ggNVBZ82ooh51PCdpmGfATEbo3JLh0RRyy+iYuYb/VIvcJLKjY0yNCZWse7/rLOuYlN
- 8bKQ==
+ d=gmail.com; s=20230601; t=1705949047; x=1706553847; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HV8ttvRIyT0Xeby9+IF6pg8qLS5ZLJ0l5G30GgaYlVs=;
+ b=e0DVnEBT19z6HSIxg7/itr66P0VDKa8jaNynBGJdhD5wLocOSImRO559sJ9T6gZSAA
+ 3Z6NEy0dZ7JY2eSyYMJFXOo8qs/0JjnDA2DD+r10sx//PTLDB/809dZ3EHs1btuaQAOD
+ 3/y60roBrDuoa/8D68g4bSrjWDpooOI3QHAARQb5rb2/fic5a/OdW7VWbg7P4vaXBC7G
+ khrhXba2mS1cS+cUEHaHmOOaRw+jzVTSWUaLqbOGAo9QeQ/3QsjUZYSQ3dAX5/1qGtKA
+ WwoD68loy6eIn+C8sS6VwbZ39juDnXBN3/dZWHcN7ycjvq8XLS78ZNu5z7BU26Kc+UtY
+ YV2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705948968; x=1706553768;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=P/MqoP5uP96UGBIc53wscvaBiG6AgEHe2FhRhTvSoaQ=;
- b=tJ6xjnrxsg4TO/TbwHpE4hKVsmiHibXGc9+IEt67sV8LKKMGUFVpWqeDISlTZos402
- Jfqz8/INqsdFelfQSe/9s4sa7FueQXeFz5JYK8oIbFizTvYWqN+3j2VylIFL2s6M+P+F
- UNGeb+iJlvwGJYO4OdvhYAV3oP6lW9eWDMMvS2u8aOrzd+Tp0xEYm/4c9Yx743eMDMDr
- +DLoLVIGPlEOYNpoGvRP4FCAYmMSHpXp8203jV5ZPzV2nuGqCy96tjLLTFjzqzWkAv2k
- JUojjema11rralFcBEz1SAeH0C40zST/1co6+J4uLSdmSHw+6mfuo2qz1Mkk3bHkTn+f
- BJ0g==
-X-Gm-Message-State: AOJu0YzqEgEfwbrAsjvE5HPBZTgdFhQ/BrQd1PVUKNtTjkYHAClP+d7D
- np92D0P9nhHXGcVloJEhxdSibydzGBzQciMsORvCOj9nLU7NuNDXLxvNCu/dh4dK2AsI/thILtt
- xVoVTv3zkzXUyk4mn5p0qlS7LdF5Ke+bgoyTPUA==
-X-Google-Smtp-Source: AGHT+IGLNi2MV2OsedboThZTmfwG+Sc9Icr5OtdITxTEUvAU06DUaaq0ta/YUmtg4lLpRsNrPat2KzXu+71fqEKAmbI=
-X-Received: by 2002:aa7:c60e:0:b0:55a:4959:a2e4 with SMTP id
- h14-20020aa7c60e000000b0055a4959a2e4mr200573edq.52.1705948968508; Mon, 22 Jan
- 2024 10:42:48 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705949047; x=1706553847;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HV8ttvRIyT0Xeby9+IF6pg8qLS5ZLJ0l5G30GgaYlVs=;
+ b=h21F9SqZ1ssgwOd5+v2gbOe9enZ5LinYDt1s8ZuQ12QW/oMtaGa0+ed5jRuNjpnz8e
+ rr/LoXTbgRX7Ne94pRyD03H28Rh2kWapuXEMgbA5fcF8fqxIf/0HxWt2njod6jF/WUjG
+ N/ErIqeFsRkn6AbUgn6gXjKbx3QivYtK2RoBgV7nWmDies05tRLRMHxALsBstKk0Vxdh
+ /ynTvIWxe9ZZZXxBtwotk8C4KXbMmhJrKpEmpF5mpLNEeRyTSOeJTIAwfV4JkQmxI09t
+ ENn2mCmYlBVXDMIqDOXsToETy6XNzwC+rvRxu6zzXOzRRapyxgSsytwDaC8rmTAwcVgw
+ OBfw==
+X-Gm-Message-State: AOJu0Yx29h+/7P2CF4OKagTPJSYbnBe2BziiNcHnwZbMqBJcoKC9b9WW
+ ccchVO4dPyFegc5nFgVSCW8g++6Jjyqfm68Ni5kKdDTUqtOY1A2oUta0vEQDDce4C6SHaLpW+4r
+ 4YfHRVHaD4uXKsR4AQrTK/E8kPmw=
+X-Google-Smtp-Source: AGHT+IFCCHGy+/YV5FT4k/cailhryvy0cpjC3XBKqbp2XLCknOrQsj3Cn18m4pCucjZjokbQUoFQST4jd3gBa0+gyC4=
+X-Received: by 2002:a17:90a:6b84:b0:28e:87a0:c05b with SMTP id
+ w4-20020a17090a6b8400b0028e87a0c05bmr2039612pjj.40.1705949047305; Mon, 22 Jan
+ 2024 10:44:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20240119204608.779541-1-jcmvbkbc@gmail.com>
- <20240119204608.779541-3-jcmvbkbc@gmail.com>
-In-Reply-To: <20240119204608.779541-3-jcmvbkbc@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 18:42:37 +0000
-Message-ID: <CAFEAcA_OvQzJV5knmS6qyK=XoZYBcqWNu29nSqBcgzy4G2ebBg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] target/xtensa: tidy TLB way variability logic
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: qemu-devel@nongnu.org
+References: <20231127085641.3729-1-faithilikerun@gmail.com>
+ <ZZ4-lo64mGubad5t@cormorant.local>
+In-Reply-To: <ZZ4-lo64mGubad5t@cormorant.local>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 22 Jan 2024 19:43:41 +0100
+Message-ID: <CAAAx-8Ko+0M85AXMad8UCsLspYjBXm7nqOs_yZkKOKqsDy-PgA@mail.gmail.com>
+Subject: Re: [RFC v2 0/7] Add persistence to NVMe ZNS emulation
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com, qemu-block@nongnu.org, 
+ hare@suse.de, David Hildenbrand <david@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Keith Busch <kbusch@kernel.org>, Hanna Reitz <hreitz@redhat.com>,
+ dmitry.fomichev@wdc.com, 
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ dlemoal@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=faithilikerun@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,145 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Jan 2024 at 20:47, Max Filippov <jcmvbkbc@gmail.com> wrote:
+Klaus Jensen <its@irrelevant.dk> =E4=BA=8E2024=E5=B9=B41=E6=9C=8810=E6=97=
+=A5=E5=91=A8=E4=B8=89 07:52=E5=86=99=E9=81=93=EF=BC=9A
 >
-> Whether TLB ways 5 and 6 are variable is not a property of the TLB
-> instance or a TLB entry instance, it's a property of the xtensa core
-> configuration.
-> Remove 'varway56' field from the xtensa_tlb structure and remove
-> 'variable' field from the xtensa_tlb_entry structure. Add
-> 'tlb_variable_way' array to the XtensaConfig and use it instead of
-> removed fields.
+> Hi Sam,
 >
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-> ---
->  target/xtensa/cpu.h          |  3 +--
->  target/xtensa/mmu_helper.c   | 38 ++++++++++--------------------------
->  target/xtensa/overlay_tool.h | 15 ++++++++++++--
->  3 files changed, 24 insertions(+), 32 deletions(-)
+> This is awesome. For the hw/nvme parts,
 >
-> diff --git a/target/xtensa/cpu.h b/target/xtensa/cpu.h
-> index 497325466397..24d3f15ea1bf 100644
-> --- a/target/xtensa/cpu.h
-> +++ b/target/xtensa/cpu.h
-> @@ -316,13 +316,11 @@ typedef struct xtensa_tlb_entry {
->      uint32_t paddr;
->      uint8_t asid;
->      uint8_t attr;
-> -    bool variable;
->  } xtensa_tlb_entry;
+> Acked-by: Klaus Jensen <k.jensen@samsung.com>
 >
->  typedef struct xtensa_tlb {
->      unsigned nways;
->      const unsigned way_size[10];
-> -    bool varway56;
->      unsigned nrefillentries;
->  } xtensa_tlb;
->
-> @@ -493,6 +491,7 @@ typedef struct XtensaConfig {
->
->      xtensa_tlb itlb;
->      xtensa_tlb dtlb;
-> +    bool tlb_variable_way[16];
->
->      uint32_t mpu_align;
->      unsigned n_mpu_fg_segments;
-> diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
-> index d9f845e7fb6f..414c2f5ef669 100644
-> --- a/target/xtensa/mmu_helper.c
-> +++ b/target/xtensa/mmu_helper.c
-> @@ -105,23 +105,19 @@ static uint32_t xtensa_tlb_get_addr_mask(const CPUXtensaState *env,
->                                           bool dtlb, uint32_t way)
->  {
->      if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
-> -        bool varway56 = dtlb ?
-> -            env->config->dtlb.varway56 :
-> -            env->config->itlb.varway56;
-> -
->          switch (way) {
->          case 4:
->              return 0xfff00000 << get_page_size(env, dtlb, way) * 2;
->
->          case 5:
-> -            if (varway56) {
-> +            if (env->config->tlb_variable_way[5]) {
->                  return 0xf8000000 << get_page_size(env, dtlb, way);
->              } else {
->                  return 0xf8000000;
->              }
->
->          case 6:
-> -            if (varway56) {
-> +            if (env->config->tlb_variable_way[6]) {
->                  return 0xf0000000 << (1 - get_page_size(env, dtlb, way));
->              } else {
->                  return 0xf0000000;
+> I'll give it a proper R-b when you drop the RFC status.
 
-So we now have a tlb_variable_way bool for all 16 possible
-ways, but the code actually only checks it for ways 5 and 6.
-Should we have an assertion somewhere that the config
-doesn't try to set it on ways where it has no effect ?
-Or is there actually a generic behaviour that would make
-sense for eg "way 3 is variable-way" that we just don't
-currently implement?
+Hi Klaus,
 
-> @@ -150,11 +146,8 @@ static uint32_t get_vpn_mask(const CPUXtensaState *env, bool dtlb, uint32_t way)
->          return xtensa_tlb_get_addr_mask(env, dtlb, way) << 2;
->      } else if (way <= 6) {
->          uint32_t mask = xtensa_tlb_get_addr_mask(env, dtlb, way);
-> -        bool varway56 = dtlb ?
-> -            env->config->dtlb.varway56 :
-> -            env->config->itlb.varway56;
->
-> -        if (varway56) {
-> +        if (env->config->tlb_variable_way[5]) {
->              return mask << (way == 5 ? 2 : 3);
->          } else {
->              return mask << 1;
+Sorry for the late response. I will submit a new RFC patch series very
+soon.
 
-This doesn't look right -- this branch of the if-else deals
-with way == 5 and way == 6, but we're only looking at
-tlb_variable_way[5].
+Now the zone states should persist. The following is the result of
+regression tests on zonefs. It's been a while since I worked on this
+series. Please let me know if I made any mistake.
 
-> @@ -172,10 +165,6 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
->                                       bool dtlb, uint32_t *vpn,
->                                       uint32_t wi, uint32_t *ei)
->  {
-> -    bool varway56 = dtlb ?
-> -        env->config->dtlb.varway56 :
-> -        env->config->itlb.varway56;
-> -
->      if (!dtlb) {
->          wi &= 7;
->      }
-> @@ -195,7 +184,7 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
->              break;
->
->          case 5:
-> -            if (varway56) {
-> +            if (env->config->tlb_variable_way[5]) {
->                  uint32_t eibase = 27 + get_page_size(env, dtlb, wi);
->                  *ei = (v >> eibase) & 0x3;
->              } else {
-> @@ -204,7 +193,7 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
->              break;
->
->          case 6:
-> -            if (varway56) {
-> +            if (env->config->tlb_variable_way[6]) {
->                  uint32_t eibase = 29 - get_page_size(env, dtlb, wi);
->                  *ei = (v >> eibase) & 0x7;
->              } else {
+Thanks,
+Sam
 
-There's no direct code duplication, but it definitely feels like
-the logic for "figure out how many bits we're dealing with" is
-duplicated across these three functions.
-
-I think it ought to be possible to have a function (or maybe two)
-which take account of both the way number and tlb_get_variable_way[]
-such that all of these three functions then don't need to have
-a switch on the way or look at tlb_variable_way[] themselves...
-
-thanks
--- PMM
+[root@guest tests]# ./zonefs-tests.sh /dev/nvme0n1
+Gathering information on /dev/nvme0n1...
+zonefs-tests on /dev/nvme0n1:
+  12 zones (0 conventional zones, 12 sequential zones)
+  131072 512B sectors zone size (64 MiB)
+  6 max open zones
+  8 max active zones
+Running tests
+...
+75 / 112 tests passed (37 skipped, 0 failures)
 
