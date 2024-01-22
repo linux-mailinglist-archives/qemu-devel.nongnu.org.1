@@ -2,73 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB8D836BE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A69836C05
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:55:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxYY-0005Cc-Ny; Mon, 22 Jan 2024 11:53:54 -0500
+	id 1rRxaA-0006VL-Ms; Mon, 22 Jan 2024 11:55:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRxYX-0005CM-2p
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:53:53 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRxYV-0004Iw-9d
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:53:52 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-55a684acf92so3474235a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:53:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705942429; x=1706547229; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ouCAUGiG/HN6wtEcgdOS3ToVZeS6s+J3KqfEjW4t2YA=;
- b=YPORGlUNaph901y8NEJJ+ni41e1vvNd7G6Sd3sDLcgaINKD1wtAQhWEDIruDTAweMV
- EEAYoUOp/c+PgRKxlZbO0hgGo9+GvN1Q7YrgrxsMTIHRHUS+H+YLIMCSWQHm0Hns2/J6
- AvQ2+hxKi/DWqqph/zlIU0tW8adaaVlXft3/CTNJUUECzfJjNjRexPPZTHVciD4sKGDG
- v3qq51+HSNDcd0YVvz7Kog5f3zTZoeF2Av64YVKZQoHP74duxsRWRyRLaSbCMxQmcPUA
- vTlZnAjvEu7sCJbbfXObZ4oa6hq/NGP0Rzuy7F9WPpTnT91JQNYeqA+abHQrfYUGXWAH
- alDA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rRxa3-0006UP-Mz
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rRxa1-0004ih-Ch
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705942524;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=i5LfdYktbYhmT2MomwJOqpNyVmyw27tPHxLECtYqtak=;
+ b=gZMt+D0lS0qHTDAQgzGGmZYGJju5X6pWJ40is8WweJMLzkIE44Rh1nYOSt12QUNoz3EmDt
+ WYJNypAQ81MyQmxK57L7Ji1phygdvV2JEh0N5vHM1IERpKQQZo50vMXjhhFOlogUDFI0rH
+ 8U3hJTNNjXgsA/KLRCad3eK50zZhvyo=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-360-Fq0KNM0rPiOApSKsgqQYUA-1; Mon, 22 Jan 2024 11:55:22 -0500
+X-MC-Unique: Fq0KNM0rPiOApSKsgqQYUA-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6854ad24a0cso41878586d6.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:55:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705942429; x=1706547229;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ouCAUGiG/HN6wtEcgdOS3ToVZeS6s+J3KqfEjW4t2YA=;
- b=AGVHXrFBe0D4j03Ds1k6ncVCSuZLX09O9B0eHbAlcM4xIyit7uUWWfhi7dmEOZ6Fww
- A7XWg9ueDzUqW3xAH/nwA5jrTxwc15rNtFaIiU7hbpU60iTFUbbPpz7gWIJ8rLt8uXfw
- a/gPH7JngoP4DxO+Crpx1nTbxaVQuBwdiSCx1ZbM//RchmQVimsFHDyLd7/2g63ApD3v
- CBtdEdCC3hSclvc797N42A8txCBmQXiNhu9ocUksOx+XVBwcJFx2PEEj+JhLFrtnMdiB
- z0BAQNJ3CYFo+r+aYs0pG/Jdfrf8cJTdvX5DjAviarAvMabOzWFQKl3Bn9ljHlEZIVL8
- tQ1g==
-X-Gm-Message-State: AOJu0Ywl1bmjdjNikhxoUwAYpCHx71K7POdoiwnipyMN164SttM7DOSf
- 6fReuvpx0pw7w0dXpbs3Hc4yROIxkZNzhplz70xfIRYkZlElIr1MHzmLSzl64kKZQAICjMIHAb1
- HsEdF5gC2O9S4im/v2ruGf+JSj3h+MUi+IcLXWwj8+odg879x
-X-Google-Smtp-Source: AGHT+IEwbyHRBB7Fx4hjFKlsxM3zWjTUbH89ZlcjlsBiWnwFyHOOW9anOPYbuWpm/JaIfaHRqN2wb7jKkKjP6Enlbp8=
-X-Received: by 2002:aa7:d3d6:0:b0:55a:6d3:352f with SMTP id
- o22-20020aa7d3d6000000b0055a06d3352fmr83824edr.38.1705942429199; Mon, 22 Jan
- 2024 08:53:49 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705942519; x=1706547319;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i5LfdYktbYhmT2MomwJOqpNyVmyw27tPHxLECtYqtak=;
+ b=Ik5PpqmGae8LBKLkH1HjWV/qRVABKOR0PzhiLu+9c5DICPA3Ef6q9I2C3hcwQpeHu0
+ YdPwjN2NimbrgXN2Qa19R8kPBixcez2zV+reqP9+y6eV2ziduCDXzpsEvXUF3zoU3fIC
+ Qgd20SwFGlYaIvSu0VVwQaMn3Y7HjyDZczX4ekE7JTQ7lGz98CH8WQVFZSowF3xN3kk8
+ wIk8rngJxwKK3Yw1QspjskJLcOTx3I0K0K8jm1hu2DZ3fGYVECxLco4d7SetZHwa/QT0
+ aLdZWQaTHb81NxIgrhLMg5MT7IP9+iKUvFjtXgF71dztiZ0XGBZ7guXSXh4McnwRzPKU
+ bndA==
+X-Gm-Message-State: AOJu0YxnJMK8LcXQ09WOGz23DsmarTk9wwH/WkK6KPKK70V8nccHS1P2
+ /F6f1pskmluOMt1JEJhAVsgkbRgH3lWTnaqP/A9RdFK/5cpYJ6AH4Uqalh1FrSiz+JGVEb2s5TW
+ kNSlvhfYLDpNdjmt2p3S3Bioe4oeFCkzdO9cE4fr6FbS0KLc3lXbb
+X-Received: by 2002:a05:6214:509b:b0:686:5374:1186 with SMTP id
+ kk27-20020a056214509b00b0068653741186mr4525081qvb.117.1705942519512; 
+ Mon, 22 Jan 2024 08:55:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWmQSKQkwygt5zZuv9+N1wI+X3VjtAOhf4NLrceHFhKZs1JL1eBcE9pnLbBdxhxUYqMjBEoA==
+X-Received: by 2002:a05:6214:509b:b0:686:5374:1186 with SMTP id
+ kk27-20020a056214509b00b0068653741186mr4525071qvb.117.1705942519157; 
+ Mon, 22 Jan 2024 08:55:19 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ nc5-20020a0562142dc500b00685e2ffcaf5sm2197878qvb.38.2024.01.22.08.55.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 08:55:18 -0800 (PST)
+Message-ID: <f2ca6b36-922c-42e4-98d6-59616099980a@redhat.com>
+Date: Mon, 22 Jan 2024 17:55:15 +0100
 MIME-Version: 1.0
-References: <CAHP40m=UQ=F1-Vy4-wR18RjqzF9o+8UOjgpUsrTU8QXn=7eAeA@mail.gmail.com>
-In-Reply-To: <CAHP40m=UQ=F1-Vy4-wR18RjqzF9o+8UOjgpUsrTU8QXn=7eAeA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 16:53:38 +0000
-Message-ID: <CAFEAcA-6Eb-XDBYkcK4rbDcavNU7pY4dWHeQvVa4MFODBKiWsA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Port qemu to GNU/Hurd
-To: Manolo de Medici <manolodemedici@gmail.com>
-Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rfcv1 2/6] hw/pci: introduce
+ pci_device_set/unset_iommu_device()
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun
+ <yi.y.sun@linux.intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
+ <20240115101313.131139-3-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240115101313.131139-3-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,43 +106,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 at 16:02, Manolo de Medici <manolodemedici@gmail.com> wrote:
->
-> Recently, a testsuite for gnumach, the GNU/Hurd microkernel, was developed
-> that uses qemu. Currently qemu cannot be compiled for the GNU/Hurd, as such,
-> this testsuite is available only for GNU/Linux users.
->
-> This patcheset allows qemu compilation in GNU/Hurd. With this patchset applied,
-> qemu can be compiled without any special configure options.
->
-> Please review, thanks,
->
-> Manolo de Medici (4):
->   Include new arbitrary limits if not already defined
->   Avoid conflicting types for 'copy_file_range'
->   Add the GNU/Hurd as a target host
->   Exclude TPM ioctls definitions for the GNU/Hurd
+On 1/15/24 11:13, Zhenzhong Duan wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
+> 
+> This adds pci_device_set/unset_iommu_device() to set/unset
+> IOMMUFDDevice for a given PCIe device. Caller of set
+> should fail if set operation fails.
+> 
+> Extract out pci_device_get_iommu_bus_devfn() to facilitate
+> implementation of pci_device_set/unset_iommu_device().
+> 
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   include/hw/pci/pci.h | 39 ++++++++++++++++++++++++++++++++++-
+>   hw/pci/pci.c         | 49 +++++++++++++++++++++++++++++++++++++++++++-
+>   2 files changed, 86 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index fa6313aabc..a810c0ec74 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -7,6 +7,8 @@
+>   /* PCI includes legacy ISA access.  */
+>   #include "hw/isa/isa.h"
+>   
+> +#include "sysemu/iommufd_device.h"
+> +
+>   extern bool pci_available;
+>   
+>   /* PCI bus */
+> @@ -384,10 +386,45 @@ typedef struct PCIIOMMUOps {
+>        *
+>        * @devfn: device and function number
+>        */
+> -   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
+> +    AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
+> +    /**
+> +     * @set_iommu_device: set iommufd device for a PCI device to vIOMMU
+> +     *
+> +     * Optional callback, if not implemented in vIOMMU, then vIOMMU can't
+> +     * utilize iommufd specific features.
+> +     *
+> +     * Return true if iommufd device is accepted, or else return false with
+> +     * errp set.
+> +     *
+> +     * @bus: the #PCIBus of the PCI device.
+> +     *
+> +     * @opaque: the data passed to pci_setup_iommu().
+> +     *
+> +     * @devfn: device and function number of the PCI device.
+> +     *
+> +     * @idev: the data structure representing iommufd device.
+> +     *
+> +     */
+> +    int (*set_iommu_device)(PCIBus *bus, void *opaque, int32_t devfn,
+> +                            IOMMUFDDevice *idev, Error **errp);
+> +    /**
+> +     * @unset_iommu_device: unset iommufd device for a PCI device from vIOMMU
+> +     *
+> +     * Optional callback.
+> +     *
+> +     * @bus: the #PCIBus of the PCI device.
+> +     *
+> +     * @opaque: the data passed to pci_setup_iommu().
+> +     *
+> +     * @devfn: device and function number of the PCI device.
+> +     */
+> +    void (*unset_iommu_device)(PCIBus *bus, void *opaque, int32_t devfn);
+>   } PCIIOMMUOps;
+>   
+>   AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
+> +int pci_device_set_iommu_device(PCIDevice *dev, IOMMUFDDevice *idev,
+> +                                Error **errp);
+> +void pci_device_unset_iommu_device(PCIDevice *dev);
+>   
+>   /**
+>    * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 76080af580..3848662f95 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2672,7 +2672,10 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
+>       }
+>   }
+>   
+> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+> +static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
+> +                                           PCIBus **aliased_pbus,
+> +                                           PCIBus **piommu_bus,
+> +                                           uint8_t *aliased_pdevfn)
+>   {
+>       PCIBus *bus = pci_get_bus(dev);
+>       PCIBus *iommu_bus = bus;
+> @@ -2717,6 +2720,18 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>   
+>           iommu_bus = parent_bus;
+>       }
+> +    *aliased_pbus = bus;
+> +    *piommu_bus = iommu_bus;
+> +    *aliased_pdevfn = devfn;
+> +}
+> +
+> +AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+> +{
+> +    PCIBus *bus;
+> +    PCIBus *iommu_bus;
+> +    uint8_t devfn;
+> +
+> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
+>       if (!pci_bus_bypass_iommu(bus) && iommu_bus->iommu_ops) {
+>           return iommu_bus->iommu_ops->get_address_space(bus,
+>                                    iommu_bus->iommu_opaque, devfn);
+> @@ -2724,6 +2739,38 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>       return &address_space_memory;
+>   }
+>   
+> +int pci_device_set_iommu_device(PCIDevice *dev, IOMMUFDDevice *idev,
+> +                                Error **errp)
+> +{
+> +    PCIBus *bus;
+> +    PCIBus *iommu_bus;
+> +    uint8_t devfn;
+> +
+> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
+> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
 
-Hi -- something odd seems to have happened with these patchset
-emails. The cover letter got to the list:
-https://lore.kernel.org/qemu-devel/CAHP40m=UQ=F1-Vy4-wR18RjqzF9o+8UOjgpUsrTU8QXn=7eAeA@mail.gmail.com/
+Why do we test iommu_bus in pci_device_un/set_iommu_device routines and
+not in pci_device_iommu_address_space() ?
 
-but it doesn't have any of the patches as followup emails
-in the thread. Instead they got sent as entirely separate
-emails, eg here's patch 1:
-https://lore.kernel.org/qemu-devel/CAHP40mmk4cPk6ZHETfq5BtQxK63A6PiuCKrvv4yyOPBxVTW+OQ@mail.gmail.com/
 
-This means the automated patch tooling thinks none of the patches
-arrived, eg patchew says "0 patches received":
-https://lore.kernel.org/qemu-devel/CAHP40mmk4cPk6ZHETfq5BtQxK63A6PiuCKrvv4yyOPBxVTW+OQ@mail.gmail.com/
+Thanks,
 
-git format-patch can help in getting this right (it is its
-"--thread=shallow" style).
+C.
 
-For this version, I'll send some review comments to the
-individual patch emails, but it would be nice to get this
-right on v3.
 
-thanks
--- PMM
+> +        iommu_bus->iommu_ops && iommu_bus->iommu_ops->set_iommu_device) {
+> +        return iommu_bus->iommu_ops->set_iommu_device(pci_get_bus(dev),
+> +                                                      iommu_bus->iommu_opaque,
+> +                                                      dev->devfn, idev, errp);
+> +    }
+> +    return 0;
+> +}
+> +
+> +void pci_device_unset_iommu_device(PCIDevice *dev)
+> +{
+> +    PCIBus *bus;
+> +    PCIBus *iommu_bus;
+> +    uint8_t devfn;
+> +
+> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
+> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
+> +        iommu_bus->iommu_ops && iommu_bus->iommu_ops->unset_iommu_device) {
+> +        return iommu_bus->iommu_ops->unset_iommu_device(pci_get_bus(dev),
+> +                                                        iommu_bus->iommu_opaque,
+> +                                                        dev->devfn);
+> +    }
+> +}
+> +
+>   void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+>   {
+>       /*
+
 
