@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993908369E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B16DF8369E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:13:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRwtQ-0006RO-Bi; Mon, 22 Jan 2024 11:11:24 -0500
+	id 1rRwtR-0006Rk-2C; Mon, 22 Jan 2024 11:11:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rRwtM-0006QR-D6
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:20 -0500
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1rRwtO-0006RK-UH
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:22 -0500
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rRwtK-0005Ho-68
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:20 -0500
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-29023dec816so2859384a91.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:11:17 -0800 (PST)
+ id 1rRwtN-0005I8-Cn
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:22 -0500
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5ce10b5ee01so2272667a12.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:11:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705939876; x=1706544676; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2KydqUaZaC//XIffXRRDLDmyjP4IgRQT4Nned4Jp2zE=;
- b=IqnWM3JSL9bFnjfi4Uhhg0fICZEbFy8TUQ3umzf/dOVBzbJ7LCPhSTRTzqfqPhlg1Z
- Put/mrPAjd75TuD6a3r/rnEjfx0Kbsi3jhqo4sIfinSn1A0f+v2JO6VECqqyEHFSOwrD
- d2K+qoVERavMeiM57CQAT99ws2b8R2HTNzVAireZiisY2Egv31f1V8LzP0WO8Jy3QIgn
- Iv4/mvYYB59yBa1gCvc7CmDMt2gtMzoUVliWiWlaaPbJFTizQKR5eWeD0Cx6z7PzzyAr
- Kd3tnXYcMs2LYwlVOs03ymecMTNd0oZ6xAo4Alp77AGmturFTrmscH11tPpRvyqY2Zog
- qAFQ==
+ d=ventanamicro.com; s=google; t=1705939879; x=1706544679; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kdZGIPIeOKiZR9PMV7XS4inlMO2XkrOcO/ATQYdynj0=;
+ b=dvWrrazt6MNThmcl5Np91FA//dXKNvU29AoeoOMEG5FcVInwQpyfi+u6fTPEsvxet/
+ WB3MsG5WdED2xArCtxYeJ7fvHFkWSXIiZkHfSxnAC/hU5h830Jp5jGMfjYapFK6o5OHB
+ jGS75eVaGeVX4ImVlAldre/iHDM2wTJBM7W0XFEofF4oFKKa2lWz1hWMktLzVI1GoL/M
+ HkhnEBXDc/aSn9jXH5uYJzVHIlx/qie5fzG6jU1wTp+LHWqdVj8pz26oHKZ0v0gOyxeD
+ 9bteshwwC47/58i4FaAe/rtjDcadYVaII80QqzPoYrGgiXKaQ6vuw6bdMGK1LdpLKn3E
+ cbQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705939876; x=1706544676;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2KydqUaZaC//XIffXRRDLDmyjP4IgRQT4Nned4Jp2zE=;
- b=d72IqF7i7a+R+EQC7WF0B+U+wO8FPLVv9tnIkqfADJyjRmtUfI6LivP29JA4Zax8nb
- QadRJGxC8FkH58d4q0jhYPwgBB55lIaAyhJlu8eVqLQNV9vx8Mq3sdtFPaqNwK/YAvmJ
- d5j+wSmtK4PzlmIv9dQPGoSxGhnZI2+dKiqdNxkJB5WwBGfC8X3wi2axiHczZNb0LP+1
- u7WXkPVhU4+FFJZEZBP35Su7Njl5TGTlNjYi84lf6moXoZpFPtvrEPGDfQQcd60StW01
- ce/iiWv7a8AlRzIBoJ3jzCtsViSZscJum2eS0s2WQtF8TFG7ZSRBWtd8DkTUwLNsB0GC
- 1F4w==
-X-Gm-Message-State: AOJu0YylfX+R7wDD7WpnExO8mp14Kr91GDWDCZhNw/M0lI8/929n0+ZA
- I0fO7FeTmTEn4cSuxBCl0pgBnhwlyMowzEcGXpTRJH6tDRuIVfVRmQgidoUqnGHiTT6pVrE1oSL
- H
-X-Google-Smtp-Source: AGHT+IFdhWw0fAHoE+45Umrd7oahkUp8yFY2KDVZshhSQUO7P2nO7RU/H0tY6Klb9SIyCU+PM45KVQ==
-X-Received: by 2002:a17:90a:1287:b0:290:119c:1f7 with SMTP id
- g7-20020a17090a128700b00290119c01f7mr1834086pja.27.1705939875699; 
- Mon, 22 Jan 2024 08:11:15 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705939879; x=1706544679;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kdZGIPIeOKiZR9PMV7XS4inlMO2XkrOcO/ATQYdynj0=;
+ b=xNa5lCf1WIHNI6QkXqaWqAML+xrJV1SSvJy1h62jP6nS/CrUWwZfpH0CkAnHxHUdim
+ zMaSHAmCGsZxZ7sE5a+SXyF2/GI08dpJ64t++jyDg3rPNaRPDdYiQOzOeQ6CuroWjHo3
+ JDQJxxivmeReDAxBCowj0K9B6EH9b9ofqEl8ZPwkS+Y0vzKZsZCGwXgfk48Ic4aoQ8EA
+ wZtLCocf57i1wHo2EZ716jwv4Ark5z47lhv7H40JQ0w3XYvbnVeWcb0AOZOVdHKCbYBk
+ uDl4CFveZxraZw8XLJhSMN5Nhrqmjdhj0YDhxdv7fM0G4uczVKmIBCXgxU1X/6HkqGbY
+ ut8g==
+X-Gm-Message-State: AOJu0YwuWZmRrTuz1vTIR1q6DlZSHeWkA6lkVqZFIEoIlm6QVka7q9Tx
+ c1NPnjXuBZ1yP+9c85v+PJfq7jUh1/N9dbWOyVTbERlbveBe/qeAw98+5vaFLX2B61kdspwcY49
+ /
+X-Google-Smtp-Source: AGHT+IFUhhrRqGsORbL/ISvyV7gl9yqqOyFvT4c1zpYHlHo1Mteg3ms/PpoJzlsAiTp7YzaiVPaX/Q==
+X-Received: by 2002:a17:90a:ac0e:b0:290:1c4d:82da with SMTP id
+ o14-20020a17090aac0e00b002901c4d82damr5067083pjq.10.1705939879300; 
+ Mon, 22 Jan 2024 08:11:19 -0800 (PST)
 Received: from grind.. ([152.234.127.94]) by smtp.gmail.com with ESMTPSA id
- db3-20020a17090ad64300b0028e245501e7sm9866446pjb.4.2024.01.22.08.11.12
+ db3-20020a17090ad64300b0028e245501e7sm9866446pjb.4.2024.01.22.08.11.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 08:11:15 -0800 (PST)
+ Mon, 22 Jan 2024 08:11:18 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 00/13] target/riscv: add 'cpu->cfg.vlenb', remove
-Date: Mon, 22 Jan 2024 13:10:54 -0300
-Message-ID: <20240122161107.26737-1-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 01/13] target/riscv: add 'vlenb' field in cpu->cfg
+Date: Mon, 22 Jan 2024 13:10:55 -0300
+Message-ID: <20240122161107.26737-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240122161107.26737-1-dbarboza@ventanamicro.com>
+References: <20240122161107.26737-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,43 +94,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Our usage of 'vlenb' is overwhelming superior than the use of 'vlen'.
+We're using 'vlenb' most of the time, having to do 'vlen >> 3' or
+'vlen / 8' in every instance.
 
-This new version is rebased with a newer riscv-to-apply.next branch
-(@ 096b6b0729). No other changes made.
+In hindsight we would be better if the 'vlenb' property  was introduced
+instead of 'vlen'. That's not what happened, and now we can't easily get
+rid of it due to user scripts all around. What we can do, however, is to
+change our internal representation to use 'vlenb'.
 
-All patches acked.
+Add a 'vlenb' field in cpu->cfg. It'll be set via the existing 'vlen'
+property, i.e. setting 'vlen' will also set 'vlenb'.
 
-v4 link: https://lore.kernel.org/qemu-riscv/20240116205817.344178-1-dbarboza@ventanamicro.com/
+We'll replace all 'vlen >> 3' code to use 'vlenb' directly. Start with
+the single instance we have in target/riscv/cpu.c.
 
-Daniel Henrique Barboza (13):
-  target/riscv: add 'vlenb' field in cpu->cfg
-  target/riscv/csr.c: use 'vlenb' instead of 'vlen'
-  target/riscv/gdbstub.c: use 'vlenb' instead of shifting 'vlen'
-  target/riscv/insn_trans/trans_rvbf16.c.inc: use cpu->cfg.vlenb
-  target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb'
-  target/riscv/insn_trans/trans_rvvk.c.inc: use 'vlenb'
-  target/riscv/vector_helper.c: use 'vlenb'
-  target/riscv/vector_helper.c: use vlenb in HELPER(vsetvl)
-  target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb' in MAXSZ()
-  target/riscv/cpu.h: use 'vlenb' in vext_get_vlmax()
-  target/riscv: change vext_get_vlmax() arguments
-  trans_rvv.c.inc: use vext_get_vlmax() in trans_vrgather_v*()
-  target/riscv/cpu.c: remove cpu->cfg.vlen
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu.c     | 4 +++-
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
- target/riscv/cpu.c                         |  12 +-
- target/riscv/cpu.h                         |  14 +-
- target/riscv/cpu_cfg.h                     |   2 +-
- target/riscv/cpu_helper.c                  |  11 +-
- target/riscv/csr.c                         |   4 +-
- target/riscv/gdbstub.c                     |   6 +-
- target/riscv/insn_trans/trans_rvbf16.c.inc |  12 +-
- target/riscv/insn_trans/trans_rvv.c.inc    | 152 ++++++++++-----------
- target/riscv/insn_trans/trans_rvvk.c.inc   |  16 +--
- target/riscv/tcg/tcg-cpu.c                 |   4 +-
- target/riscv/vector_helper.c               |  43 +++---
- 11 files changed, 148 insertions(+), 128 deletions(-)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ad1df2318b..89f2349eb4 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -852,7 +852,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+                              csr_ops[csrno].name, val);
+             }
+         }
+-        uint16_t vlenb = cpu->cfg.vlen >> 3;
++        uint16_t vlenb = cpu->cfg.vlenb;
+ 
+         for (i = 0; i < 32; i++) {
+             qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
+@@ -1320,6 +1320,7 @@ static void riscv_cpu_init(Object *obj)
+     /* Default values for non-bool cpu properties */
+     cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
+     cpu->cfg.vlen = 128;
++    cpu->cfg.vlenb = 128 >> 3;
+     cpu->cfg.elen = 64;
+     cpu->cfg.cbom_blocksize = 64;
+     cpu->cfg.cbop_blocksize = 64;
+@@ -1819,6 +1820,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
+ 
+     cpu_option_add_user_setting(name, value);
+     cpu->cfg.vlen = value;
++    cpu->cfg.vlenb = value >> 3;
+ }
+ 
+ static void prop_vlen_get(Object *obj, Visitor *v, const char *name,
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index fea14c275f..50479dd72f 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -140,6 +140,7 @@ struct RISCVCPUConfig {
+ 
+     uint32_t pmu_mask;
+     uint16_t vlen;
++    uint16_t vlenb;
+     uint16_t elen;
+     uint16_t cbom_blocksize;
+     uint16_t cbop_blocksize;
 -- 
 2.43.0
 
