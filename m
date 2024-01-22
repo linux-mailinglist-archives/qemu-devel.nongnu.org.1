@@ -2,128 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919108364F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6472F836538
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:20:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRusD-0003ZC-1B; Mon, 22 Jan 2024 09:02:01 -0500
+	id 1rRv8a-0000xQ-Kb; Mon, 22 Jan 2024 09:18:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rRus9-0003Yt-Hb
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:01:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rRus7-00063R-HC
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:01:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705932113;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=byDAG06xxyn2HzqTNWebayGFRrQQuxt/kQVXB92vpeg=;
- b=cwh3g9DQFaaGzHNMEXF6SGbw86xW1TY/YYbYwu47mFp9JJfMWLhmOo/6s/J9VngH9kxZ2O
- mlKWiU8uDPxRDBAXQAV0jXefIl442nk42npYOGDl54lCPX772+M04J5+N/GVDZ0srbqz/j
- 1gmmSbZsEuP1qUAEoWTCtvGMRAfDNDI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-sPabpgwBN5GUvxyqlqIMbA-1; Mon, 22 Jan 2024 09:01:52 -0500
-X-MC-Unique: sPabpgwBN5GUvxyqlqIMbA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-783350c4584so631089885a.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 06:01:52 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRv8Z-0000wx-3B
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:18:55 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRv8W-0000gW-FS
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:18:54 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-55c33773c0aso983550a12.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 06:18:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705933130; x=1706537930; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qRWvhIFT3K5FYkwfKQZANlw0/6MnU5gH7CMC4lMEBTA=;
+ b=W/PNptJnLD6JPVeN+q95HCficcCKyxfh7/xfhO0JkxGiz1XuZUKnjTxHDBWL0Q7TpS
+ P8qc533YXyoSRZpVg6D4CK96SV2GhRWuVWL60mYQDchwX0E/uZk9oWTPsev+Pbc0B7yu
+ XDr8J/Qu4uAgj2CtEpKiRwZboEsVht9OIaGVFyW4SlD86kbeeQJnTMw6F5FYrk1tm52B
+ 7DGQ3U4KvnEkZid6Z8AfwBVEBC3YoNUrA8PsTkj89828zAFiqPYLIHBwA2uD8cs5nJbY
+ 1zk+CAFfE+4ngTYsTsGAaFcmj3pHZXBiZLBTKrUmftF2YjTzYITDAoLfw2/YYPtOduhV
+ Q5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705932111; x=1706536911;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=byDAG06xxyn2HzqTNWebayGFRrQQuxt/kQVXB92vpeg=;
- b=Ee10vx8JRNV2rVXQ52rugTiCqqaTdkKcNELDuHLLj86TOHPBKi5LvA/SzCx//3x4j6
- pNYKwuF0A2+GwcP6GSvewKXl2/gmGph3tT86zIAGxeek9iA8N3QwmCglQsv1bWdjP4W8
- yYRrduPtKYpYp6Pn3r8gX5dyrHNk2JKExMl0doml/cg37XHFlEfRe5mjubMrgWiRBIOP
- UC68qYi++30JHgBoTAONwIErvWvhsglFaojr8LilsJVoEXKbGbFsNx/jgDjTdsTQhLap
- jYT3YCdw4zqhg+Ql9YYy5zejkjy5joU6nYg+jKveAgsZ5BB3qnasvw6ony8KECakIPTP
- 7z+A==
-X-Gm-Message-State: AOJu0YxrOPV7/B1f31dgjZq6PvxzU2DA7/wCw49V3w943RTn4zIkE2xj
- qYXhI6p1u5kbqImR8kjp5AmXiN27K0RNMfYnWBFwJTdhJnblFkwjHvfhz2HlnThSu2Bio0wDsW7
- 06h9czO0QPyV+1ROXOTrhcPnPHGjRH/NE+YYtPtneqeYX/AHYwXvdoScyMWNf
-X-Received: by 2002:a05:620a:24c1:b0:783:25d4:621b with SMTP id
- m1-20020a05620a24c100b0078325d4621bmr6923543qkn.80.1705932111434; 
- Mon, 22 Jan 2024 06:01:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcHxAivX0v5Ve7MDdgwg4eF4l76CMekCB8aCoBlSxmcr0u2jlyx/aqwmiaz5CFsRE+mtpj0w==
-X-Received: by 2002:a05:620a:24c1:b0:783:25d4:621b with SMTP id
- m1-20020a05620a24c100b0078325d4621bmr6923529qkn.80.1705932111140; 
- Mon, 22 Jan 2024 06:01:51 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
- [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
- vy24-20020a05620a491800b0078358c123f8sm2135347qkn.109.2024.01.22.06.01.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 06:01:50 -0800 (PST)
-Message-ID: <e16dbe80-a574-41e1-977f-a7763828e779@redhat.com>
-Date: Mon, 22 Jan 2024 15:01:46 +0100
+ d=1e100.net; s=20230601; t=1705933130; x=1706537930;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qRWvhIFT3K5FYkwfKQZANlw0/6MnU5gH7CMC4lMEBTA=;
+ b=VTQkLTdRuWYP243oVd1bgzbhN6qwfVRHqMXOBVNi2u5M5WGiJpdIZ2NRwkUlK8Jw55
+ FS1hDu1RXwoNwsVV7GFWDqe/W2sppCFTx0OjrL5LElSjt1Ta3N5/jp/q1AzYHJBH7zDP
+ 1RmnnHEBYaSZXtiIA5USi3RLNpgkKOVR3m8uD9lYmOZ0Ivi7fvz5ppg3ml0BlF4YJo75
+ HkbY+/coZX6AHHCsz+tBFJFrjKdyfpbhnD+LOC6l+rfDM1tZzwBVwfUC1OfTpCdwTSu1
+ Bjp8WmUqmUCwySEaD31d7/yGl9+Z5hXPu1yYR5DEdmzIS0bG+VWLq8zVNm406FYjEoJC
+ XvlA==
+X-Gm-Message-State: AOJu0Yy02qElLEXLm1Gy8Yp1kY7uJSZqkMaD5aEy1GJ4AOHSEfr+Rwub
+ tMmSY1isZMB9V1e05t+mP8gj9kQuuth+2zW9RXHQckzyxzdq626heZ8/hNoYwDnmaVXsW9gN3WQ
+ XX+rGRMR2JsXfdRSijmTLXhV6sL9v36hzTUd6zrjzOeQuhEPz
+X-Google-Smtp-Source: AGHT+IFVdGWwN201u8RYqyYfyaW+bGg4QOUdvIoBcvxus00hIDetGiFydmIiDA9tBjZKbSRnqhJ8lwegnpS7mg/+h4o=
+X-Received: by 2002:a05:6402:270c:b0:55c:2609:e3c8 with SMTP id
+ y12-20020a056402270c00b0055c2609e3c8mr1878649edd.19.1705933130484; Mon, 22
+ Jan 2024 06:18:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/xtensa: require libfdt
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20240122094230.283653-1-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240122094230.283653-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ <aa777c77-c55a-4737-afc6-d8c2a3111814@linaro.org>
+In-Reply-To: <aa777c77-c55a-4737-afc6-d8c2a3111814@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 14:18:38 +0000
+Message-ID: <CAFEAcA8VP9eo8i1kXyJGGtw5QhMvxw3FJHN+i39MNEafLLPm9A@mail.gmail.com>
+Subject: Re: [PATCH] hw/xtensa: require libfdt
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -140,62 +89,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/01/2024 10.42, Paolo Bonzini wrote:
-> Always allow -dtb in qemu-system-xtensa.  Basically all other targets require
-> it if it can be used (including for example i386/x86_64).
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   configs/targets/xtensa-softmmu.mak   | 1 +
->   configs/targets/xtensaeb-softmmu.mak | 1 +
->   hw/xtensa/xtfpga.c                   | 9 ---------
->   3 files changed, 2 insertions(+), 9 deletions(-)
-> 
-> diff --git a/configs/targets/xtensa-softmmu.mak b/configs/targets/xtensa-softmmu.mak
-> index f075557bfa9..c394df73034 100644
-> --- a/configs/targets/xtensa-softmmu.mak
-> +++ b/configs/targets/xtensa-softmmu.mak
-> @@ -1,2 +1,3 @@
->   TARGET_ARCH=xtensa
->   TARGET_SUPPORTS_MTTCG=y
-> +TARGET_NEED_FDT=y
-> diff --git a/configs/targets/xtensaeb-softmmu.mak b/configs/targets/xtensaeb-softmmu.mak
-> index b02e11b8200..517b4c3e12d 100644
-> --- a/configs/targets/xtensaeb-softmmu.mak
-> +++ b/configs/targets/xtensaeb-softmmu.mak
-> @@ -1,3 +1,4 @@
->   TARGET_ARCH=xtensa
->   TARGET_BIG_ENDIAN=y
->   TARGET_SUPPORTS_MTTCG=y
-> +TARGET_NEED_FDT=y
-> diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-> index fbad1c83a3f..3c93cfffbaa 100644
-> --- a/hw/xtensa/xtfpga.c
-> +++ b/hw/xtensa/xtfpga.c
-> @@ -357,7 +357,6 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
->               cur_tagptr = put_tag(cur_tagptr, BP_TAG_COMMAND_LINE,
->                                    strlen(kernel_cmdline) + 1, kernel_cmdline);
->           }
-> -#ifdef CONFIG_FDT
->           if (dtb_filename) {
->               int fdt_size;
->               void *fdt = load_device_tree(dtb_filename, &fdt_size);
-> @@ -374,14 +373,6 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
->               cur_lowmem = QEMU_ALIGN_UP(cur_lowmem + fdt_size, 4 * KiB);
->               g_free(fdt);
->           }
-> -#else
-> -        if (dtb_filename) {
-> -            error_report("could not load DTB '%s': "
-> -                         "FDT support is not configured in QEMU",
-> -                         dtb_filename);
-> -            exit(EXIT_FAILURE);
-> -        }
-> -#endif
+On Mon, 22 Jan 2024 at 11:10, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+> On 22/1/24 10:42, Paolo Bonzini wrote:
+> > Always allow -dtb in qemu-system-xtensa.  Basically all other targets r=
+equire
+> > it if it can be used (including for example i386/x86_64).
 
-Agreed, we should do this the same way on all architectures.
+> I've been wondering for some time why not requires libfdt
+> for all sysemu targets. It gives some pain with MIPS machines,
+> and I wonder if there is any value in not including it.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I think traditionally we wanted to avoid the dependency
+for the common case of "I only care about x86 guests",
+back when fdt was mostly limited to ppc or arm, but since
+these days even x86 sets TARGET_NEED_FDT there's something
+to be said for just making it obligatory.
 
+Guest archs which *don't* use fdt:
+ alpha cris hppa m68k s390x sh4 sparc tricore xtensa.
 
+Of those, s390x is the only one with KVM support and
+so the only one where maybe somebody might care about
+the extra dependency for security auditing purposes.
+But given it's already in x86 binaries I don't think that's
+a very strong argument. The rest are all "minor" architectures.
+So if making fdt mandatory makes our lives easier for
+development purposes I think we should go ahead and do it.
+
+(mips is a bit odd because only mips64el-softmmu sets
+TARGET_NEED_FDT, not the other mips configs. Since upstream
+Linux has an arch/mips/boot/dts/mti/malta.dts, presumably
+in theory the 32-bit boards also ought to support -dtb and
+friends; though CONFIG_MIPS_RAW_APPENDED_DTB makes this
+not a problem in practice.)
+
+thanks
+-- PMM
 
