@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69702835EA5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:50:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E81F835EC0
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:54:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRqwl-0007h4-C8; Mon, 22 Jan 2024 04:50:27 -0500
+	id 1rRqzz-0000J5-SK; Mon, 22 Jan 2024 04:53:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRqwg-0007fj-5N
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:50:22 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1rRqzy-0000IU-3k
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:53:46 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRqwe-0003fl-G9
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:50:21 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3392b15ca41so840240f8f.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:50:19 -0800 (PST)
+ id 1rRqzw-0004A8-0j
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:53:45 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40ea5654271so18973475e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:53:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705917018; x=1706521818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705917222; x=1706522022; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+Da0gBi7XS2vcc2+a3NM52eQoDbF58qwkxk12PWR27s=;
- b=uY9NGm7gTqbi3tvOcVLkjtLTmGlYia3LNrshgrYayvt7Nws9JdeqcgNvhAsKKbf2ry
- eCTV5F7+vNliI5HoWWYWi7RliMjHcA6qpSLMf4+OeGVJ6P7f3ees4QGntNGsNcNaBAuM
- s1JLA9wh1oUylYIx6IaN/Icrh/h0b5ODjEFusQ2imt4rXx5/XZE6zAD9KTo81VZEDvWN
- oTER7TdgVq2pEZIjolVDrv6F743vYjTBS1WJ7LgBIlZaIFf/g2CerxOOb+kMTlJfDNs/
- iG2Ss5mSAuwja5lCy2jszRdQJ+6Sa4oNHPldhZtgU1RF0YGi50UflYJk6N4gD2kby21F
- u4tw==
+ bh=ThGwpu9lN1p5xHZLe22/HUmHYCnKVollP83E7lHBrp4=;
+ b=M8RyToaddMU++NVW2BJL4d/hnPK447JvZgkmILkWGIvM+pVxebQvjYrruXH+evmqrw
+ d7Aw1fiQYiQyroyh43LklalgdSGlJet8GRxJHv3TmUHAkwdlX/cUz1UY+LDWUBcmM7VC
+ KEfa0IIci6BrHXsxM9zSjtt5653d/PCxLAXyvJ/R/uHQ0RUKxWyRUySOGlTWa21dSS00
+ DJdAfepfkb3ZstSX9WUfxvJyyglNdwBAtPLk5k6KPSTCnS7WNfC5FE1w3WkNjnzPBOa0
+ 3IRjk7LSJL24w3kt9xMxFG8OpzLczGpERucLJ0ZxY8GQ/EK4CqEHgAwTJwc6Uek3DKVH
+ VAjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705917018; x=1706521818;
+ d=1e100.net; s=20230601; t=1705917222; x=1706522022;
  h=content-transfer-encoding:mime-version:message-id:date:user-agent
  :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=+Da0gBi7XS2vcc2+a3NM52eQoDbF58qwkxk12PWR27s=;
- b=uDBoUgFDBRVL2RZXaysNzoY7t2VJfleSGEddSIgvNJa8DReHSLyQZlQ141sTKh0Fx9
- UKw7LZyLGyOFag1JlOXWo0/M+BliTJz8knUUDJqoLuA2u5sVlRkgzJ16VLPfRi7iis56
- ZBMv306HI+Nf9WXtWRBS+Te0r1k/95sIBKJk8pyqK+ULIzWKdQetsC7XiIOQQq3Hkl23
- 3bZJj+jP3QjxTa2HMN096Imqqxd1LnynW2XKVX/pRy6IDODmJgCIndrHjs4VXeN7DrJM
- 65rICYeUH+rd3gxW6fv6K+NExU9OB7MWkICF2yMNy7yRxsOzltrnTDjc9lcoMUTohPJ9
- d9MA==
-X-Gm-Message-State: AOJu0YyQymOIMzhwfcWoChbOpa6dHTE1cJzf39M7pWKil2RPLszr7n95
- OwpeS6Be+rGCq5V/DcSbc72t0gPwGIwYa8MOie3TwnrdRVPOll+xJuZ6UMJyeWs=
-X-Google-Smtp-Source: AGHT+IFjGqASW+NtNnKTszCvFirtPia/qxwMfAJ7yBI9GJH8gJ0vnJO7GsZ4gT4sGwJG2mp9TjIInA==
-X-Received: by 2002:a05:6000:1043:b0:337:767f:c98c with SMTP id
- c3-20020a056000104300b00337767fc98cmr1633612wrx.13.1705917018400; 
- Mon, 22 Jan 2024 01:50:18 -0800 (PST)
+ bh=ThGwpu9lN1p5xHZLe22/HUmHYCnKVollP83E7lHBrp4=;
+ b=YiReB9eH3qbLyP1GH/ldslA849sKQodJYz3gPlr8YCBPjP3tjzSzlS1ryuk6a+19tN
+ k497ThwlvV3oNt0D9nD28UZdqozTyO5ZjelbDt5UiYcDGrhAs7W6tDpXwFlX7gDvZ8Cd
+ J/WypE7WfE5mmaXycHKu8OIOPlpkwR1FUuPGB8j6DqotksFowJjmBDoSOCj9n5nhLEXR
+ 8zK81R4L1BnKYylmFnpulmGEhLNx1Q4e6BPPqY3GatCPEryneK8Pwdfcr53y9zaQDBoi
+ Ydn9XeZgoSEkemlfYKc4quRuynx1lpcTF+an7b5azdMRbXbsoVmb8ShGSZ8abFcMEXGL
+ ESpg==
+X-Gm-Message-State: AOJu0Yw3UsLvMae76gpO/HocHG4aCOy2BAPPj6GQTaC6ylrc3Gp5TcVI
+ CYjwMZG1CDmxM0Kf9mq2ZVwBf8XU3CqsEGszRK35Ndwzudj5c4zdeHLm4LYK+WQ=
+X-Google-Smtp-Source: AGHT+IEddBwcQfl52Udmp5Ei+HMRNw73gZwy8QV8LYvm72BCsOkJBjfhgkC5nhUe5BZqGDylCe1TWA==
+X-Received: by 2002:a05:600c:3781:b0:40e:6803:bcb6 with SMTP id
+ o1-20020a05600c378100b0040e6803bcb6mr1990219wmr.170.1705917222343; 
+ Mon, 22 Jan 2024 01:53:42 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b5-20020a5d4d85000000b00337d5aa55cdsm10350822wru.53.2024.01.22.01.50.18
+ v21-20020a05600c445500b0040e3bdff98asm42020439wmn.23.2024.01.22.01.53.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 01:50:18 -0800 (PST)
+ Mon, 22 Jan 2024 01:53:42 -0800 (PST)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 76C505F7AE;
- Mon, 22 Jan 2024 09:50:17 +0000 (GMT)
+ by draig.lan (Postfix) with ESMTP id 9301B5F7AE;
+ Mon, 22 Jan 2024 09:53:41 +0000 (GMT)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Jan Kiszka <jan.kiszka@web.de>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-In-Reply-To: <9dff82f7-d997-4092-8b5a-cd21963826da@web.de> (Jan Kiszka's
- message of "Sun, 21 Jan 2024 17:24:31 +0100")
-References: <20231103182750.855577-1-peter.maydell@linaro.org>
- <871qadh8g8.fsf@draig.linaro.org>
- <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,  Mahmoud Mandour
+ <ma.mandourr@gmail.com>
+Subject: Re: [PULL 17/22] plugins: add an API to read registers
+In-Reply-To: <b872f23b-a992-489d-856c-9321576a4d29@daynix.com> (Akihiko
+ Odaki's message of "Sun, 21 Jan 2024 23:36:58 +0900")
+References: <20240116104809.250076-1-alex.bennee@linaro.org>
+ <20240116104809.250076-18-alex.bennee@linaro.org>
+ <4b2156ed-688d-4617-b52d-200413f01156@daynix.com>
+ <87cytyhnxi.fsf@draig.linaro.org>
+ <b872f23b-a992-489d-856c-9321576a4d29@daynix.com>
 User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Mon, 22 Jan 2024 09:50:17 +0000
-Message-ID: <87r0i9ofxi.fsf@draig.linaro.org>
+Date: Mon, 22 Jan 2024 09:53:41 +0000
+Message-ID: <87le8hofru.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,59 +101,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jan Kiszka <jan.kiszka@web.de> writes:
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
 
-> On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->>> Convert the musicpal key input device to use
->>> qemu_add_kbd_event_handler().  This lets us simplify it because we no
->>> longer need to track whether we're in the middle of a PS/2 multibyte
->>> key sequence.
-<snip>
->>
->> Well the key input all works as intended and looks good to me. I'm a
->> little disappointed I couldn't get audio working on the musicpal machine
->> but that is not a problem for this patch.
->>
->> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>
+> On 2024/01/18 20:38, Alex Benn=C3=A9e wrote:
+>> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+>>=20
+>>> On 2024/01/16 19:48, Alex Benn=C3=A9e wrote:
+>>>> We can only request a list of registers once the vCPU has been
+>>>> initialised so the user needs to use either call the get function on
+>>>> vCPU initialisation or during the translation phase.
+>>>> We don't expose the reg number to the plugin instead hiding it
+>>>> behind
+>>>> an opaque handle. This allows for a bit of future proofing should the
+>>>> internals need to be changed while also being hashed against the
+>>>> CPUClass so we can handle different register sets per-vCPU in
+>>>> hetrogenous situations.
+>>>> Having an internal state within the plugins also allows us to expand
+>>>> the interface in future (for example providing callbacks on register
+>>>> change if the translator can track changes).
+>>>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1706
+>>>> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> Message-Id: <20240103173349.398526-39-alex.bennee@linaro.org>
+>>>> Based-on: <20231025093128.33116-18-akihiko.odaki@daynix.com>
+>>>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+>>>> index 4daab6efd29..2c1930e7e45 100644
+>>>> --- a/include/qemu/qemu-plugin.h
+>>>> +++ b/include/qemu/qemu-plugin.h
+>>>> @@ -11,6 +11,7 @@
+>>>>    #ifndef QEMU_QEMU_PLUGIN_H
+>>>>    #define QEMU_QEMU_PLUGIN_H
+>>>>    +#include <glib.h>
+>>>>    #include <inttypes.h>
+>>>>    #include <stdbool.h>
+>>>>    #include <stddef.h>
+>>>> @@ -227,8 +228,8 @@ struct qemu_plugin_insn;
+>>>>     * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
+>>>>     * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
+>>>>     *
+>>>> - * Note: currently unused, plugins cannot read or change system
+>>>> - * register state.
+>>>> + * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot c=
+hange
+>>>> + * system register state.
+>>>>     */
+>>>>    enum qemu_plugin_cb_flags {
+>>>>        QEMU_PLUGIN_CB_NO_REGS,
+>>>> @@ -708,4 +709,50 @@ uint64_t qemu_plugin_end_code(void);
+>>>>    QEMU_PLUGIN_API
+>>>>    uint64_t qemu_plugin_entry_code(void);
+>>>>    +/** struct qemu_plugin_register - Opaque handle for register
+>>>> access */
+>>>> +struct qemu_plugin_register;
+>>>> +
+>>>> +/**
+>>>> + * typedef qemu_plugin_reg_descriptor - register descriptions
+>>>> + *
+>>>> + * @handle: opaque handle for retrieving value with qemu_plugin_read_=
+register
+>>>> + * @name: register name
+>>>> + * @feature: optional feature descriptor, can be NULL
+>>>> + */
+>>>> +typedef struct {
+>>>> +    struct qemu_plugin_register *handle;
+>>>> +    const char *name;
+>>>> +    const char *feature;
+>>>> +} qemu_plugin_reg_descriptor;
+>>>> +
+>>>> +/**
+>>>> + * qemu_plugin_get_registers() - return register list for vCPU
+>>>> + * @vcpu_index: vcpu to query
+>>>> + *
+>>>> + * Returns a GArray of qemu_plugin_reg_descriptor or NULL. Caller
+>>>> + * frees the array (but not the const strings).
+>>>> + *
+>>>> + * Should be used from a qemu_plugin_register_vcpu_init_cb() callback
+>>>> + * after the vCPU is initialised.
+>>>> + */
+>>>> +GArray *qemu_plugin_get_registers(unsigned int vcpu_index);
+>>>> +
+>>>> +/**
+>>>> + * qemu_plugin_read_register() - read register
+>>>> + *
+>>>> + * @vcpu: vcpu index
+>>>> + * @handle: a @qemu_plugin_reg_handle handle
+>>>> + * @buf: A GByteArray for the data owned by the plugin
+>>>> + *
+>>>> + * This function is only available in a context that register read ac=
+cess is
+>>>> + * explicitly requested.
+>>>> + *
+>>>> + * Returns the size of the read register. The content of @buf is in t=
+arget byte
+>>>> + * order. On failure returns -1
+>>>> + */
+>>>> +int qemu_plugin_read_register(unsigned int vcpu,
+>>>> +                              struct qemu_plugin_register *handle,
+>>>> +                              GByteArray *buf);
+>>>> +
+>>>> +
+>>>>    #endif /* QEMU_QEMU_PLUGIN_H */
+>>>> diff --git a/plugins/api.c b/plugins/api.c
+>>>> index ac39cdea0b3..8d5cca53295 100644
+>>>> --- a/plugins/api.c
+>>>> +++ b/plugins/api.c
+>>>> @@ -8,6 +8,7 @@
+>>>>     *
+>>>>     *  qemu_plugin_tb
+>>>>     *  qemu_plugin_insn
+>>>> + *  qemu_plugin_register
+>>>>     *
+>>>>     * Which can then be passed back into the API to do additional thin=
+gs.
+>>>>     * As such all the public functions in here are exported in
+>>>> @@ -35,10 +36,12 @@
+>>>>     */
+>>>>      #include "qemu/osdep.h"
+>>>> +#include "qemu/main-loop.h"
+>>>>    #include "qemu/plugin.h"
+>>>>    #include "qemu/log.h"
+>>>>    #include "tcg/tcg.h"
+>>>>    #include "exec/exec-all.h"
+>>>> +#include "exec/gdbstub.h"
+>>>>    #include "exec/ram_addr.h"
+>>>>    #include "disas/disas.h"
+>>>>    #include "plugin.h"
+>>>> @@ -435,3 +438,111 @@ uint64_t qemu_plugin_entry_code(void)
+>>>>    #endif
+>>>>        return entry;
+>>>>    }
+>>>> +
+>>>> +/*
+>>>> + * Register handles
+>>>> + *
+>>>> + * The plugin infrastructure keeps hold of these internal data
+>>>> + * structures which are presented to plugins as opaque handles. They
+>>>> + * are global to the system and therefor additions to the hash table
+>>>> + * must be protected by the @reg_handle_lock.
+>>>
+>>> The BQL should be used instead. This lock only serializes the plugin
+>>> access, but the whole gdbstub code needs to be serialized to ensure
+>>> the correct behaving of e.g., gdb_get_register_list().
+>> Why does gdb_get_register_list need to take the BQL? It only works
+>> through per-cpu structures. The reg_handle_lock only protects the hash
+>> table itself.
+>>=20
+>>>
+>>>> + *
+>>>> + * In order to future proof for up-coming heterogeneous work we want
+>>>> + * different entries for each CPU type while sharing them in the
+>>>> + * common case of multiple cores of the same type.
+>>>
+>>> I don't think such an effort should be done in the plugin code, but it
+>>> should be done in the common gdbstub code.
+>> Sure - we can always move it later.
+>>=20
+>>> GDB assumes all threads have the same set of registers, so gdbstub
+>>> will need to take care of them by running distinct GDB servers for
+>>> each processor type, for example. There is a good chance that gdbstub
+>>> will duplicate similar logic.
+>> Which logic?
+> reg_handles, a GHashTable, is used to detect the duplicate definitions
+> of a register in processors with same type, but such a logic is
+> probably better off to be implemented in gdbstub; gdbstub should have
+> one definition of register set for each type of processors in a
+> system, and gdbstub can use it to start a distinct GDB server for the
+> type. This way, gdbstub can ensure it exposes a homogeneous view for
+> each GDB server as GDB requires.
 >
-> Looks good to me as well, all keys still work fine.
->
-> No idea what's the issue with sound, though. I think I haven't run the
-> whole stuff in a decade or so, had to search for all the pieces first of
-> all again. The webradio service original behind this stopped their
-> operations, at least for this device, but manually entered favorits
-> still work on the real device - I still have one, though that is
-> starting to get some issues as well.
+> If gdbstub already has such a logic, the plugin infrastructure can
+> just query gdbstub for a common, shared register set used for a
+> processor type; it will no longer have to check for duplicate
+> definitions with a hash table.
 
-I navigated through the favourites and after pressing some keys it seems
-to indicate there was a stream of some sort (or at least a bitrate was
-reported ;-).
-
-The main issue I was having with sound was with pipewire - this would
-eventually generate a lot of warning messages because input devices are
-created but I guess the model wasn't draining the input buffers so
-eventually we get:
-
-  qemu: 0x7f1490259500: overrun write:5859188 filled:5842804 + size:940 > m=
-ax:4194304
-  qemu: 0x7f14902680a0: overrun write:5860128 filled:5843744 + size:940 > m=
-ax:4194304
-  qemu: 0x7f1490259500: overrun write:5861068 filled:5844684 + size:940 > m=
-ax:4194304
-  qemu: 0x7f14902680a0: overrun write:5862008 filled:5845624 + size:940 > m=
-ax:4194304
-
-Is your image just a hacked up version of the original firmware or
-something we have source for? I guess there was never a rockbox port for
-the device?
-
->
-> Thanks,
-> Jan
+I think we can move this after the merge to do further clean-up. There
+are other register details plugins might want to track itself. For
+example the translator has knowledge of some registers that it knows
+when they are updated (due to using translator static TCGv defs). We
+wouldn't want to expose that via gdbstub.
 
 --=20
 Alex Benn=C3=A9e
