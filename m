@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F24835E01
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9022835DFF
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:21:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRqTf-00043R-R7; Mon, 22 Jan 2024 04:20:23 -0500
+	id 1rRqTg-000448-Us; Mon, 22 Jan 2024 04:20:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rRqTd-00041v-Gp; Mon, 22 Jan 2024 04:20:21 -0500
-Received: from zproxy3.enst.fr ([137.194.2.222])
+ id 1rRqTd-000423-OW; Mon, 22 Jan 2024 04:20:21 -0500
+Received: from zproxy3.enst.fr ([2001:660:330f:2::de])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rRqTZ-0005Fi-OR; Mon, 22 Jan 2024 04:20:21 -0500
+ id 1rRqTa-0005Fh-Bv; Mon, 22 Jan 2024 04:20:21 -0500
 Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 5BEF6A058E;
- Mon, 22 Jan 2024 10:20:13 +0100 (CET)
+ by zproxy3.enst.fr (Postfix) with ESMTP id F3960A05C2;
+ Mon, 22 Jan 2024 10:20:12 +0100 (CET)
 Received: from zproxy3.enst.fr ([IPv6:::1])
  by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id xfNZpDzNhOOL; Mon, 22 Jan 2024 10:20:12 +0100 (CET)
+ id BmcOCFiaO_lM; Mon, 22 Jan 2024 10:20:12 +0100 (CET)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 2C213A0578;
+ by zproxy3.enst.fr (Postfix) with ESMTP id 57E20A058E;
  Mon, 22 Jan 2024 10:20:12 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 2C213A0578
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 57E20A058E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
  s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705915212;
- bh=86pq/si2QkdCdyuLLyFBI/gcvYmFa7vW3p6cqizVkYg=;
+ bh=GZTWNKkJAs48RR6sMlDMn0sMlV/iVNIkvfPIWEnz3uA=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=CA47xQqhKQ+XSz1Nq3blczbo0ZIDyutt3Ub7bCy5XBKmu6ZuuUBr/9VNLcO+uSmOJ
- 5d1DrDH9MgZt0TtndIca3eLFjypxzPQxwoAoVYS7Z8Ct3WP+aCfllKXJYPt9r09/ug
- NcO1VmMD+sdL5w/cEpJoCnBAbWfcIIevOQ6FO9DU=
+ b=TM1+4eUPQPgtxdFG6RRds/Zn4abbieJOtUhzuZTYQ6FRXuu8X0DPqvTsoG+dTH/Vf
+ vxSyKLzPfTy6o2Mr1rGEGPIFtAIbXCpcetaz1fUkbkwK4utV5pyIS11xaqFYjbjosk
+ uBfXT0fKPeypnO0QTb9E7sNXjirNrUVkcCyYYIks=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy3.enst.fr ([IPv6:::1])
  by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id C4KfC27DNyGT; Mon, 22 Jan 2024 10:20:12 +0100 (CET)
+ id YbbKxFeTyodI; Mon, 22 Jan 2024 10:20:12 +0100 (CET)
 Received: from inesv-Inspiron-3501.enst.fr (unknown
  [IPv6:2a04:8ec0:0:240:e2ca:746b:7d17:381f])
- by zproxy3.enst.fr (Postfix) with ESMTPSA id E5A26A058E;
- Mon, 22 Jan 2024 10:20:11 +0100 (CET)
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id 17693A059C;
+ Mon, 22 Jan 2024 10:20:12 +0100 (CET)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
@@ -51,24 +51,23 @@ Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 1/3] hw/gpio: Implement STM32L4x5 GPIO
-Date: Mon, 22 Jan 2024 10:18:32 +0100
-Message-ID: <20240122092005.30556-2-ines.varhol@telecom-paris.fr>
+Subject: [PATCH 2/3] hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+Date: Mon, 22 Jan 2024 10:18:33 +0100
+Message-ID: <20240122092005.30556-3-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122092005.30556-1-ines.varhol@telecom-paris.fr>
 References: <20240122092005.30556-1-ines.varhol@telecom-paris.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.222;
+Received-SPF: pass client-ip=2001:660:330f:2::de;
  envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,763 +83,175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Features supported :
-- the 8 STM32L4x5 GPIOs are initialized with their reset values
-    (except IDR, see below)
-- input mode : setting a pin in input mode "externally" (using input
-    irqs) results in an out irq (transmitted to SYSCFG)
-- output mode : setting a bit in ODR sets the corresponding out irq
-    (if this line is configured in output mode)
-- pull-up, pull-down
-- push-pull, open-drain
-
-Difference with the real GPIOs :
-- Alternate Function and Analog mode aren't implemented :
-    pins in AF/Analog behave like pins in input mode
-- floating pins stay at their last value
-- register IDR reset values differ from the real one :
-    values are coherent with the other registers reset values
-    and the fact that AF/Analog modes aren't implemented
-- setting I/O output speed isn't supported
-- locking port bits isn't supported
-- ADC function isn't supported
-- GPIOH has 16 pins instead of 2 pins
-- writing to registers LCKR, AFRL, AFRH and ASCR is ineffective
-
 Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- MAINTAINERS                        |   1 +
- docs/system/arm/b-l475e-iot01a.rst |   2 +-
- hw/gpio/Kconfig                    |   3 +
- hw/gpio/meson.build                |   1 +
- hw/gpio/stm32l4x5_gpio.c           | 537 +++++++++++++++++++++++++++++
- hw/gpio/trace-events               |   6 +
- include/hw/gpio/stm32l4x5_gpio.h   |  80 +++++
- 7 files changed, 629 insertions(+), 1 deletion(-)
- create mode 100644 hw/gpio/stm32l4x5_gpio.c
- create mode 100644 include/hw/gpio/stm32l4x5_gpio.h
+ hw/arm/Kconfig                 |  3 +-
+ hw/arm/stm32l4x5_soc.c         | 67 +++++++++++++++++++++++++++-------
+ include/hw/arm/stm32l4x5_soc.h |  2 +
+ 3 files changed, 58 insertions(+), 14 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c4085c32a7..269ed96052 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1131,6 +1131,7 @@ F: hw/arm/stm32l4x5_soc.c
- F: hw/misc/stm32l4x5_exti.c
- F: hw/misc/stm32l4x5_syscfg.c
- F: hw/misc/stm32l4x5_rcc.c
-+F: hw/gpio/stm32l4x5_gpio.c
- F: include/hw/*/stm32l4x5_*.h
-=20
- B-L475E-IOT01A IoT Node
-diff --git a/docs/system/arm/b-l475e-iot01a.rst b/docs/system/arm/b-l475e=
--iot01a.rst
-index b857a56ca4..0afef8e4f4 100644
---- a/docs/system/arm/b-l475e-iot01a.rst
-+++ b/docs/system/arm/b-l475e-iot01a.rst
-@@ -18,6 +18,7 @@ Currently B-L475E-IOT01A machine's only supports the fo=
-llowing devices:
- - STM32L4x5 EXTI (Extended interrupts and events controller)
- - STM32L4x5 SYSCFG (System configuration controller)
- - STM32L4x5 RCC (Reset and clock control)
-+- STM32L4x5 GPIOs (General-purpose I/Os)
-=20
- Missing devices
- """""""""""""""
-@@ -25,7 +26,6 @@ Missing devices
- The B-L475E-IOT01A does *not* support the following devices:
-=20
- - Serial ports (UART)
--- General-purpose I/Os (GPIO)
- - Analog to Digital Converter (ADC)
- - SPI controller
- - Timer controller (TIMER)
-diff --git a/hw/gpio/Kconfig b/hw/gpio/Kconfig
-index d2cf3accc8..712940b8e0 100644
---- a/hw/gpio/Kconfig
-+++ b/hw/gpio/Kconfig
-@@ -16,3 +16,6 @@ config GPIO_PWR
-=20
- config SIFIVE_GPIO
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 6bd7ba424f..3e49b913f8 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -459,9 +459,10 @@ config STM32L4X5_SOC
      bool
+     select ARM_V7M
+     select OR_IRQ
+-    select STM32L4X5_SYSCFG
+     select STM32L4X5_EXTI
++    select STM32L4X5_SYSCFG
+     select STM32L4X5_RCC
++    select STM32L4X5_GPIO
+=20
+ config XLNX_ZYNQMP_ARM
+     bool
+diff --git a/hw/arm/stm32l4x5_soc.c b/hw/arm/stm32l4x5_soc.c
+index bcdad69e92..7857313f84 100644
+--- a/hw/arm/stm32l4x5_soc.c
++++ b/hw/arm/stm32l4x5_soc.c
+@@ -78,6 +78,28 @@ static const int exti_irq[NUM_EXTI_IRQ] =3D {
+ #define RCC_BASE_ADDRESS 0x40021000
+ #define RCC_IRQ 5
+=20
++static const uint32_t gpio_addr[] =3D {
++    0x48000000,
++    0x48000400,
++    0x48000800,
++    0x48000C00,
++    0x48001000,
++    0x48001400,
++    0x48001800,
++    0x48001C00,
++};
 +
-+config STM32L4X5_GPIO
-+    bool
-diff --git a/hw/gpio/meson.build b/hw/gpio/meson.build
-index 066ea96480..8470ca1639 100644
---- a/hw/gpio/meson.build
-+++ b/hw/gpio/meson.build
-@@ -9,6 +9,7 @@ system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_gpi=
-o.c'))
- system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_gpio.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_gpio.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_gpio.c'))
-+system_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_gp=
-io.c'))
- system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_gpio.c'))
- system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files('aspeed_gpio.c')=
-)
- system_ss.add(when: 'CONFIG_SIFIVE_GPIO', if_true: files('sifive_gpio.c'=
-))
-diff --git a/hw/gpio/stm32l4x5_gpio.c b/hw/gpio/stm32l4x5_gpio.c
-new file mode 100644
-index 0000000000..35df427363
---- /dev/null
-+++ b/hw/gpio/stm32l4x5_gpio.c
-@@ -0,0 +1,537 @@
-+/*
-+ * STM32L4x5 GPIO (General Purpose Input/Ouput)
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-+ * See the COPYING file in the top-level directory.
-+ */
++static const char *gpio_name[] =3D {
++    "gpioa",
++    "gpiob",
++    "gpioc",
++    "gpiod",
++    "gpioe",
++    "gpiof",
++    "gpiog",
++    "gpioh",
++};
 +
-+/*
-+ * The reference used is the STMicroElectronics RM0351 Reference manual
-+ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
-mentation.html
-+ */
+ static void stm32l4x5_soc_initfn(Object *obj)
+ {
+     Stm32l4x5SocState *s =3D STM32L4X5_SOC(obj);
+@@ -85,6 +107,15 @@ static void stm32l4x5_soc_initfn(Object *obj)
+     object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
+     object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SY=
+SCFG);
+     object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
 +
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
++    object_initialize_child(obj, "gpioa", &s->gpio[0], TYPE_STM32L4X5_GP=
+IO_A);
++    object_initialize_child(obj, "gpiob", &s->gpio[1], TYPE_STM32L4X5_GP=
+IO_B);
++    object_initialize_child(obj, "gpioc", &s->gpio[2], TYPE_STM32L4X5_GP=
+IO_C);
++    object_initialize_child(obj, "gpiod", &s->gpio[3], TYPE_STM32L4X5_GP=
+IO_D);
++    object_initialize_child(obj, "gpioe", &s->gpio[4], TYPE_STM32L4X5_GP=
+IO_E);
++    object_initialize_child(obj, "gpiof", &s->gpio[5], TYPE_STM32L4X5_GP=
+IO_F);
++    object_initialize_child(obj, "gpiog", &s->gpio[6], TYPE_STM32L4X5_GP=
+IO_G);
++    object_initialize_child(obj, "gpioh", &s->gpio[7], TYPE_STM32L4X5_GP=
+IO_H);
+ }
+=20
+ static void stm32l4x5_soc_realize(DeviceState *dev_soc, Error **errp)
+@@ -95,6 +126,8 @@ static void stm32l4x5_soc_realize(DeviceState *dev_soc=
+, Error **errp)
+     MemoryRegion *system_memory =3D get_system_memory();
+     DeviceState *armv7m;
+     SysBusDevice *busdev;
++    uint32_t pin_index;
++    char clk_name[10];
+=20
+     if (!memory_region_init_rom(&s->flash, OBJECT(dev_soc), "flash",
+                                 sc->flash_size, errp)) {
+@@ -134,17 +167,33 @@ static void stm32l4x5_soc_realize(DeviceState *dev_=
+soc, Error **errp)
+         return;
+     }
+=20
++    /* GPIOs */
++    for (unsigned i =3D 0; i < NUM_GPIOS; i++) {
++        busdev =3D SYS_BUS_DEVICE(&s->gpio[i]);
++        sprintf(clk_name, "%s-out", gpio_name[i]);
++        qdev_connect_clock_in(DEVICE(&s->gpio[i]), "clk",
++            qdev_get_clock_out(DEVICE(&(s->rcc)), clk_name));
++        if (!sysbus_realize(busdev, errp)) {
++            return;
++        }
++        sysbus_mmio_map(busdev, 0, gpio_addr[i]);
++    }
++
+     /* System configuration controller */
+     busdev =3D SYS_BUS_DEVICE(&s->syscfg);
+     if (!sysbus_realize(busdev, errp)) {
+         return;
+     }
+     sysbus_mmio_map(busdev, 0, SYSCFG_ADDR);
+-    /*
+-     * TODO: when the GPIO device is implemented, connect it
+-     * to SYCFG using `qdev_connect_gpio_out`, NUM_GPIOS and
+-     * GPIO_NUM_PINS.
+-     */
++
++    for (unsigned i =3D 0; i < NUM_GPIOS; i++) {
++        for (unsigned j =3D 0; j < GPIO_NUM_PINS; j++) {
++            pin_index =3D GPIO_NUM_PINS * i + j;
++            qdev_connect_gpio_out(DEVICE(&s->gpio[i]), j,
++                                  qdev_get_gpio_in(DEVICE(&s->syscfg),
++                                  pin_index));
++        }
++    }
+=20
+     /* EXTI device */
+     busdev =3D SYS_BUS_DEVICE(&s->exti);
+@@ -241,14 +290,6 @@ static void stm32l4x5_soc_realize(DeviceState *dev_s=
+oc, Error **errp)
+     /* RESERVED:    0x40024400, 0x7FDBC00 */
+=20
+     /* AHB2 BUS */
+-    create_unimplemented_device("GPIOA",     0x48000000, 0x400);
+-    create_unimplemented_device("GPIOB",     0x48000400, 0x400);
+-    create_unimplemented_device("GPIOC",     0x48000800, 0x400);
+-    create_unimplemented_device("GPIOD",     0x48000C00, 0x400);
+-    create_unimplemented_device("GPIOE",     0x48001000, 0x400);
+-    create_unimplemented_device("GPIOF",     0x48001400, 0x400);
+-    create_unimplemented_device("GPIOG",     0x48001800, 0x400);
+-    create_unimplemented_device("GPIOH",     0x48001C00, 0x400);
+     /* RESERVED:    0x48002000, 0x7FDBC00 */
+     create_unimplemented_device("OTG_FS",    0x50000000, 0x40000);
+     create_unimplemented_device("ADC",       0x50040000, 0x400);
+diff --git a/include/hw/arm/stm32l4x5_soc.h b/include/hw/arm/stm32l4x5_so=
+c.h
+index 1f71298b45..cb4da08629 100644
+--- a/include/hw/arm/stm32l4x5_soc.h
++++ b/include/hw/arm/stm32l4x5_soc.h
+@@ -29,6 +29,7 @@
+ #include "hw/misc/stm32l4x5_syscfg.h"
+ #include "hw/misc/stm32l4x5_exti.h"
+ #include "hw/misc/stm32l4x5_rcc.h"
 +#include "hw/gpio/stm32l4x5_gpio.h"
-+#include "hw/irq.h"
-+#include "hw/qdev-clock.h"
-+#include "qapi/error.h"
-+#include "migration/vmstate.h"
-+#include "trace.h"
-+
-+#define GPIO_MODER 0x00
-+#define GPIO_OTYPER 0x04
-+#define GPIO_OSPEEDR 0x08
-+#define GPIO_PUPDR 0x0C
-+#define GPIO_IDR 0x10
-+#define GPIO_ODR 0x14
-+#define GPIO_BSRR 0x18
-+#define GPIO_LCKR 0x1C
-+#define GPIO_AFRL 0x20
-+#define GPIO_AFRH 0x24
-+#define GPIO_BRR 0x28
-+#define GPIO_ASCR 0x2C
-+/*
-+ * DISCONNECTED_PINS isn't actually a GPIO register.
-+ * It exists to ensure that :
-+ * - push-pull output pins can't be set externally
-+ * - open-drain output pins can only be externally set to 0
-+ *
-+ * This field is accessed for test purposes.
-+ */
-+#define GPIO_DISCONNECTED_PINS 0x30
-+
-+/* 0b11111111_11111111_00000000_00000000 */
-+#define RESERVED_BITS_MASK 0xFFFF0000
-+
-+static void update_gpio_idr(Stm32l4x5GpioState *s);
-+
-+static void stm32l4x5_gpio_reset_hold(Object *obj)
-+{
-+    Stm32l4x5GpioState *s =3D STM32L4X5_GPIO(obj);
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_GET_CLASS(obj);
-+
-+    s->moder =3D sc->moder_reset;
-+    s->otyper =3D 0x00000000;
-+    s->ospeedr =3D sc->ospeedr_reset;
-+    s->pupdr =3D sc->pupdr_reset;
-+    s->idr =3D 0x00000000;
-+    s->odr =3D 0x00000000;
-+    s->lckr =3D 0x00000000;
-+    s->afrl =3D 0x00000000;
-+    s->afrh =3D 0x00000000;
-+    s->ascr =3D 0x00000000;
-+
-+    s->disconnected_pins =3D 0xFFFF;
-+    s->pins_connected_high =3D 0x0000;
-+    update_gpio_idr(s);
-+}
-+
-+static void stm32l4x5_gpio_set(void *opaque, int line, int level)
-+{
-+    Stm32l4x5GpioState *s =3D opaque;
-+    /*
-+     * The pin isn't set if line is configured in output mode
-+     * except if level is 0 and the output is open-drain.
-+     * This way there will be no short-circuit prone situations.
-+     */
-+    if ((extract32(s->moder, 2 * line, 2) =3D=3D 1) &&
-+        !((extract32(s->otyper, line, 1) =3D=3D 1) &&
-+          (level =3D=3D 0))) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Line %d can't be driven external=
-ly\n",
-+                      line);
-+        return;
-+    }
-+
-+    s->disconnected_pins &=3D ~(1 << line);
-+    if (level) {
-+        s->pins_connected_high |=3D (1 << line);
-+    } else {
-+        s->pins_connected_high &=3D ~(1 << line);
-+    }
-+    trace_stm32l4x5_gpio_pins(s->disconnected_pins,
-+                              s->pins_connected_high);
-+    update_gpio_idr(s);
-+}
-+
-+
-+static void update_gpio_idr(Stm32l4x5GpioState *s)
-+{
-+    uint32_t new_idr_mask =3D 0;
-+    uint32_t new_idr =3D s->odr;
-+
-+    for (int i =3D 0; i < 16; i++) {
-+        /* output mode */
-+        if (extract32(s->moder, 2 * i, 2) =3D=3D 1) {
-+            if (extract32(s->otyper, i, 1) =3D=3D 0) {
-+                /* push-pull */
-+                new_idr_mask |=3D (1 << i);
-+            } else if (!(s->odr & (1 << i))) {
-+                /* open-drain ODR 0 */
-+                new_idr_mask |=3D (1 << i);
-+            } else if ((s->disconnected_pins & (1 << i)) &&
-+                       (extract32(s->pupdr, 2 * i, 2) =3D=3D 1)) {
-+                /* open-drain pull-up ODR 1 with disconnected pin */
-+                new_idr_mask |=3D (1 << i);
-+            } else if ((s->disconnected_pins & (1 << i)) &&
-+                       (extract32(s->pupdr, 2 * i, 2) =3D=3D 2)) {
-+                /* open-drain pull-down ODR 1 with disconnected pin */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr &=3D ~(1 << i);
-+            } else if (!(s->pins_connected_high & (1 << i))) {
-+                /* open-drain ODR 1 with pin connected low */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr &=3D ~(1 << i);
-+            }
-+            /*
-+             * The only case left is for open-drain ODR 1
-+             * with disconnected pin without pull-up or pull-down :
-+             * the value is floating.
-+             */
-+        /* input or analog mode with connected pin */
-+        } else if (!(s->disconnected_pins & (1 << i))) {
-+            if (s->pins_connected_high & (1 << i)) {
-+                /* pin high */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr |=3D (1 << i);
-+            } else {
-+                /* pin low */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr &=3D ~(1 << i);
-+            }
-+        /* input or analog mode with disconnected pin */
-+        } else {
-+            if (extract32(s->pupdr, 2 * i, 2) =3D=3D 1) {
-+                /* pull-up */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr |=3D (1 << i);
-+            } else if (extract32(s->pupdr, 2 * i, 2) =3D=3D 2) {
-+                /* pull-down */
-+                new_idr_mask |=3D (1 << i);
-+                new_idr &=3D ~(1 << i);
-+            }
-+            /*
-+             * The only case left is for a disconnected pin
-+             * without pull-up or pull-down :
-+             * the value is floating.
-+             */
-+        }
-+    }
-+
-+    uint32_t old_idr =3D s->idr;
-+    s->idr =3D (old_idr & ~new_idr_mask) | (new_idr & new_idr_mask);
-+    trace_stm32l4x5_gpio_update_idr(old_idr, s->idr);
-+
-+    for (int i =3D 0; i < 16; i++) {
-+        if (new_idr_mask & (1 << i)) {
-+            if ((new_idr & (1 << i)) > (old_idr & (1 << i))) {
-+                qemu_irq_raise(s->pin[i]);
-+            } else if ((new_idr & (1 << i)) < (old_idr & (1 << i))) {
-+                qemu_irq_lower(s->pin[i]);
-+            }
-+        }
-+    }
-+}
-+
-+/*
-+ * Return pins both configured in output mode
-+ * and externally driven (except pins in open-drain
-+ * mode externally set to 0).
-+ */
-+static uint32_t get_gpio_pins_to_disconnect(Stm32l4x5GpioState *s)
-+{
-+    uint32_t pins_to_disconnect =3D 0;
-+    for (int i =3D 0; i < 16; i++) {
-+        /* for each connected pin in output mode */
-+        if ((~s->disconnected_pins & (1 << i)) &&
-+            (extract32(s->moder, 2 * i, 2) =3D=3D 1)) {
-+            /* if either push-pull or high level */
-+            if ((extract32(s->otyper, i, 1) =3D=3D 0) ||
-+                (extract16(s->pins_connected_high, i, 1)) =3D=3D 1) {
-+                pins_to_disconnect |=3D (1 << i);
-+                qemu_log_mask(LOG_GUEST_ERROR,
-+                              "Line %d can't be driven externally\n",
-+                              i);
-+            }
-+        }
-+    }
-+    return pins_to_disconnect;
-+}
-+
-+/*
-+ * Set field `disconnected_pins` and call `update_gpio_idr()`
-+ */
-+static void disconnect_gpio_pins(Stm32l4x5GpioState *s, uint16_t lines)
-+{
-+    s->disconnected_pins |=3D lines;
-+    trace_stm32l4x5_gpio_pins(s->disconnected_pins,
-+                              s->pins_connected_high);
-+    update_gpio_idr(s);
-+}
-+
-+static void stm32l4x5_gpio_write(void *opaque, hwaddr addr,
-+                                 uint64_t val64, unsigned int size)
-+{
-+    Stm32l4x5GpioState *s =3D opaque;
-+
-+    uint32_t value =3D val64;
-+    trace_stm32l4x5_gpio_write(addr, val64);
-+
-+    switch (addr) {
-+    case GPIO_MODER:
-+        s->moder =3D value;
-+        disconnect_gpio_pins(s, get_gpio_pins_to_disconnect(s));
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Analog and AF modes aren't supported\n\
-+                       Analog and AF mode behave like input mode\n",
-+                      __func__);
-+        return;
-+    case GPIO_OTYPER:
-+        s->otyper =3D value & ~RESERVED_BITS_MASK;
-+        disconnect_gpio_pins(s, get_gpio_pins_to_disconnect(s));
-+        return;
-+    case GPIO_OSPEEDR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Changing I/O output speed isn't supported\n\
-+                       I/O speed is already maximal\n",
-+                      __func__);
-+        s->ospeedr =3D value;
-+        return;
-+    case GPIO_PUPDR:
-+        s->pupdr =3D value;
-+        update_gpio_idr(s);
-+        return;
-+    case GPIO_IDR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: GPIO->IDR is read-only\n",
-+                      __func__);
-+        return;
-+    case GPIO_ODR:
-+        s->odr =3D value & ~RESERVED_BITS_MASK;
-+        update_gpio_idr(s);
-+        return;
-+    case GPIO_BSRR: {
-+        uint32_t bits_to_reset =3D (value & RESERVED_BITS_MASK) >> 16;
-+        uint32_t bits_to_set =3D value & ~RESERVED_BITS_MASK;
-+        /* If both BSx and BRx are set, BSx has priority.*/
-+        s->odr &=3D ~bits_to_reset;
-+        s->odr |=3D bits_to_set;
-+        update_gpio_idr(s);
-+        return;
-+    }
-+    case GPIO_LCKR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Locking port bits configuration isn't support=
-ed\n",
-+                      __func__);
-+        s->lckr =3D value & ~RESERVED_BITS_MASK;
-+        return;
-+    case GPIO_AFRL:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Alternate functions aren't supported\n",
-+                      __func__);
-+        s->afrl =3D value;
-+        return;
-+    case GPIO_AFRH:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: Alternate functions aren't supported\n",
-+                      __func__);
-+        s->afrh =3D value;
-+        return;
-+    case GPIO_BRR: {
-+        uint32_t bits_to_reset =3D value & ~RESERVED_BITS_MASK;
-+        s->odr &=3D ~bits_to_reset;
-+        update_gpio_idr(s);
-+        return;
-+    }
-+    case GPIO_ASCR:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: ADC function isn't supported\n",
-+                      __func__);
-+        s->ascr =3D value & ~RESERVED_BITS_MASK;
-+        return;
-+    /* a tweak to enable the qtest checking disconnected pins */
-+    case GPIO_DISCONNECTED_PINS:
-+        disconnect_gpio_pins(s, value);
-+        return;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%" HWADDR_PRIx "\n", __func__, a=
-ddr);
-+    }
-+}
-+
-+static uint64_t stm32l4x5_gpio_read(void *opaque, hwaddr addr,
-+                                    unsigned int size)
-+{
-+    Stm32l4x5GpioState *s =3D opaque;
-+
-+    trace_stm32l4x5_gpio_read(addr);
-+
-+    switch (addr) {
-+    case GPIO_MODER:
-+        return s->moder;
-+    case GPIO_OTYPER:
-+        return s->otyper;
-+    case GPIO_OSPEEDR:
-+        return s->ospeedr;
-+    case GPIO_PUPDR:
-+        return s->pupdr;
-+    case GPIO_IDR:
-+        return s->idr;
-+    case GPIO_ODR:
-+        return s->odr;
-+    case GPIO_BSRR:
-+        return 0;
-+    case GPIO_LCKR:
-+        return s->lckr;
-+    case GPIO_AFRL:
-+        return s->afrl;
-+    case GPIO_AFRH:
-+        return s->afrh;
-+    case GPIO_BRR:
-+        return 0;
-+    case GPIO_ASCR:
-+        return s->ascr;
-+    /* a tweak to enable the qtest checking disconnected pins */
-+    case GPIO_DISCONNECTED_PINS:
-+        return s->disconnected_pins;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%" HWADDR_PRIx "\n", __func__, a=
-ddr);
-+        return 0;
-+    }
-+}
-+
-+static const MemoryRegionOps stm32l4x5_gpio_ops =3D {
-+    .read =3D stm32l4x5_gpio_read,
-+    .write =3D stm32l4x5_gpio_write,
-+    .endianness =3D DEVICE_NATIVE_ENDIAN,
-+    .impl =3D {
-+        .min_access_size =3D 4,
-+        .max_access_size =3D 4,
-+        .unaligned =3D false,
-+    },
-+    .valid =3D {
-+        .min_access_size =3D 4,
-+        .max_access_size =3D 4,
-+        .unaligned =3D false,
-+    },
-+};
-+
-+static void stm32l4x5_gpio_init(Object *obj)
-+{
-+    Stm32l4x5GpioState *s =3D STM32L4X5_GPIO(obj);
-+
-+    memory_region_init_io(&s->mmio, obj, &stm32l4x5_gpio_ops, s,
-+                          TYPE_STM32L4X5_GPIO, 0x400);
-+
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-+
-+    qdev_init_gpio_out(DEVICE(obj), s->pin, GPIO_NUM_PINS);
-+    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_gpio_set, GPIO_NUM_PINS);
-+
-+    s->clk =3D qdev_init_clock_in(DEVICE(s), "clk", NULL, s, 0);
-+}
-+
-+static void stm32l4x5_gpio_realize(DeviceState *dev, Error **errp)
-+{
-+    Stm32l4x5GpioState *s =3D STM32L4X5_GPIO(dev);
-+    if (!clock_has_source(s->clk)) {
-+        error_setg(errp, "GPIO: clk input must be connected");
-+        return;
-+    }
-+}
-+
-+static const VMStateDescription vmstate_stm32l4x5_gpio =3D {
-+    .name =3D TYPE_STM32L4X5_GPIO,
-+    .version_id =3D 1,
-+    .minimum_version_id =3D 1,
-+    .fields =3D (VMStateField[]){
-+        VMSTATE_UINT32(moder, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(otyper, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(ospeedr, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(pupdr, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(idr, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(odr, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(lckr, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(afrl, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(afrh, Stm32l4x5GpioState),
-+        VMSTATE_UINT32(ascr, Stm32l4x5GpioState),
-+        VMSTATE_UINT16(disconnected_pins, Stm32l4x5GpioState),
-+        VMSTATE_UINT16(pins_connected_high, Stm32l4x5GpioState),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void stm32l4x5_gpio_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc =3D DEVICE_CLASS(klass);
-+    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
-+
-+    dc->vmsd =3D &vmstate_stm32l4x5_gpio;
-+    dc->realize =3D stm32l4x5_gpio_realize;
-+    rc->phases.hold =3D stm32l4x5_gpio_reset_hold;
-+}
-+
-+static void stm32l4x5_gpio_a_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xABFFFFFF;
-+    sc->ospeedr_reset =3D 0x0C000000;
-+    sc->pupdr_reset =3D 0x64000000;
-+}
-+
-+static void stm32l4x5_gpio_b_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFEBF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000100;
-+}
-+
-+static void stm32l4x5_gpio_c_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFFFF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static void stm32l4x5_gpio_d_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFFFF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static void stm32l4x5_gpio_e_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFFFF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static void stm32l4x5_gpio_f_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFFFF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static void stm32l4x5_gpio_g_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0xFFFFFFFF;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static void stm32l4x5_gpio_h_class_init(ObjectClass *klass, void *data)
-+{
-+    Stm32l4x5GpioClass *sc =3D STM32L4X5_GPIO_CLASS(klass);
-+
-+    sc->moder_reset =3D 0x0000000F;
-+    sc->ospeedr_reset =3D 0x00000000;
-+    sc->pupdr_reset =3D 0x00000000;
-+}
-+
-+static const TypeInfo stm32l4x5_gpio_types[] =3D {
-+    {
-+        .name =3D TYPE_STM32L4X5_GPIO,
-+        .parent =3D TYPE_SYS_BUS_DEVICE,
-+        .instance_size =3D sizeof(Stm32l4x5GpioState),
-+        .instance_init =3D stm32l4x5_gpio_init,
-+        .class_size     =3D sizeof(Stm32l4x5GpioClass),
-+        .class_init =3D stm32l4x5_gpio_class_init,
-+        .abstract =3D true,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_A,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_a_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_B,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_b_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_C,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_c_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_D,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_d_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_E,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_e_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_F,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_f_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_G,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_g_class_init,
-+    }, {
-+        .name =3D TYPE_STM32L4X5_GPIO_H,
-+        .parent =3D TYPE_STM32L4X5_GPIO,
-+        .class_init =3D stm32l4x5_gpio_h_class_init,
-+    },
-+};
-+
-+DEFINE_TYPES(stm32l4x5_gpio_types)
-diff --git a/hw/gpio/trace-events b/hw/gpio/trace-events
-index 9736b362ac..8cbf75a897 100644
---- a/hw/gpio/trace-events
-+++ b/hw/gpio/trace-events
-@@ -31,3 +31,9 @@ sifive_gpio_update_output_irq(int64_t line, int64_t val=
-ue) "line %" PRIi64 " val
- # aspeed_gpio.c
- aspeed_gpio_read(uint64_t offset, uint64_t value) "offset: 0x%" PRIx64 "=
- value 0x%" PRIx64
- aspeed_gpio_write(uint64_t offset, uint64_t value) "offset: 0x%" PRIx64 =
-" value 0x%" PRIx64
-+
-+# stm32l4x5_gpio.c
-+stm32l4x5_gpio_read(uint64_t addr) "reg read: addr: 0x%" PRIx64 " "
-+stm32l4x5_gpio_write(uint64_t addr, uint64_t data) "reg write: addr: 0x%=
-" PRIx64 " val: 0x%" PRIx64 ""
-+stm32l4x5_gpio_update_idr(uint32_t old_idr, uint32_t new_idr) "previous =
-idr: 0x%x new idr: 0x%x"
-+stm32l4x5_gpio_pins(uint16_t disconnected, uint16_t high) "disconnected =
-pins: 0x%x levels: 0x%x"
-diff --git a/include/hw/gpio/stm32l4x5_gpio.h b/include/hw/gpio/stm32l4x5=
-_gpio.h
-new file mode 100644
-index 0000000000..40aae52ffb
---- /dev/null
-+++ b/include/hw/gpio/stm32l4x5_gpio.h
-@@ -0,0 +1,80 @@
-+/*
-+ * STM32L4x5 GPIO (General Purpose Input/Ouput)
-+ *
-+ * Copyright (c) 2023 Arnaud Minier <arnaud.minier@telecom-paris.fr>
-+ * Copyright (c) 2023 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or la=
-ter.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+/*
-+ * The reference used is the STMicroElectronics RM0351 Reference manual
-+ * for STM32L4x5 and STM32L4x6 advanced Arm =C2=AE -based 32-bit MCUs.
-+ * https://www.st.com/en/microcontrollers-microprocessors/stm32l4x5/docu=
-mentation.html
-+ */
-+
-+#ifndef HW_STM32L4X5_GPIO_H
-+#define HW_STM32L4X5_GPIO_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_STM32L4X5_GPIO "stm32l4x5-gpio"
-+#define TYPE_STM32L4X5_GPIO_A "stm32l4x5-gpio-a"
-+#define TYPE_STM32L4X5_GPIO_B "stm32l4x5-gpio-b"
-+#define TYPE_STM32L4X5_GPIO_C "stm32l4x5-gpio-c"
-+#define TYPE_STM32L4X5_GPIO_D "stm32l4x5-gpio-d"
-+#define TYPE_STM32L4X5_GPIO_E "stm32l4x5-gpio-e"
-+#define TYPE_STM32L4X5_GPIO_F "stm32l4x5-gpio-f"
-+#define TYPE_STM32L4X5_GPIO_G "stm32l4x5-gpio-g"
-+#define TYPE_STM32L4X5_GPIO_H "stm32l4x5-gpio-h"
-+OBJECT_DECLARE_TYPE(Stm32l4x5GpioState, Stm32l4x5GpioClass, STM32L4X5_GP=
-IO)
-+
-+#define GPIO_NUM_PINS 16
-+
-+struct Stm32l4x5GpioState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mmio;
-+
-+    /* GPIO registers */
-+    uint32_t moder;
-+    uint32_t otyper;
-+    uint32_t ospeedr;
-+    uint32_t pupdr;
-+    uint32_t idr;
-+    uint32_t odr;
-+    uint32_t lckr;
-+    uint32_t afrl;
-+    uint32_t afrh;
-+    uint32_t ascr;
-+
-+    /*
-+     * External driving of pins.
-+     * The pins can be set externally through the device
-+     * anonymous input GPIOs lines under certain conditions.
-+     * The pin must not be in push-pull output mode,
-+     * and can't be set high in open-drain mode.
-+     * Pins driven externally and configured to
-+     * output mode will in general be "disconnected"
-+     * (see `get_gpio_pins_to_disconnect()`)
-+     */
-+    uint16_t disconnected_pins;
-+    uint16_t pins_connected_high;
-+
-+    Clock *clk;
-+    qemu_irq pin[GPIO_NUM_PINS];
-+};
-+
-+struct Stm32l4x5GpioClass {
-+    SysBusDeviceClass parent_class;
-+
-+    uint32_t moder_reset;
-+    uint32_t ospeedr_reset;
-+    uint32_t pupdr_reset;
-+};
-+
-+#endif
+ #include "qom/object.h"
+=20
+ #define TYPE_STM32L4X5_SOC "stm32l4x5-soc"
+@@ -45,6 +46,7 @@ struct Stm32l4x5SocState {
+     Stm32l4x5ExtiState exti;
+     Stm32l4x5SyscfgState syscfg;
+     Stm32l4x5RccState rcc;
++    Stm32l4x5GpioState gpio[NUM_GPIOS];
+=20
+     MemoryRegion sram1;
+     MemoryRegion sram2;
 --=20
 2.43.0
 
