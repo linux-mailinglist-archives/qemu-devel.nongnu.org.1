@@ -2,68 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147BE836CCC
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A4D836CDF
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:19:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxug-0001uo-Jv; Mon, 22 Jan 2024 12:16:46 -0500
+	id 1rRxx6-0003e8-Ef; Mon, 22 Jan 2024 12:19:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRxuX-0001sI-Au
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:16:37 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rRxx4-0003di-T5
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:19:14 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRxuU-0008OJ-SC
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:16:37 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55a179f5fa1so3770098a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:16:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rRxx1-0000D1-DT
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:19:14 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40e60e137aaso38216345e9.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:19:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705943793; x=1706548593; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qTYTAokmYn1QlxaW+DX1tM+T4jTh8+nH3A72Ydzb2cc=;
- b=Ejop6geCExNj04IMBtN9K3GguOoveiMGKdD46TTVhfYMBGKPbuq8ta1Q1Jh8W+cgSe
- hhvUy2okRgs6oQVLjN+v/PYiFVCJQdqMYTwkwSEt/SZgsh1G6iuNA8iI2cB/DeBjZdnt
- abmo6U6gPGGLJ03XpgaF2TkmfQwaatJ5Fycgm0b23CxshDOlR99miNZT8qBjf88+nW1R
- mCl1XLXe5gWtNnKNVKxKpbtFtMIPNrqTXWOfxxFtD8MzYgW8YkrCBJ22/KOyVRutwIdT
- II8OkTseNxsexmCGECnn1VDhrS8y6stK7QxqEnWM6xNgBnPaH7/a808CrCwdDjZWJucx
- 3L1w==
+ d=linaro.org; s=google; t=1705943948; x=1706548748; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=agKtL+k3Dq+BSli4miMY6vEaDpGimuTEDFWJnn0H/nc=;
+ b=Tk5Jp0mPWG0HqJ7zwhALXZKgurZuHvL393MN9rw0WSO+2ECJObxBCcOWxvdPBq/cI8
+ dp/aEta310d262H+qBbsAIy1jl9z+4GvJiKx7Xtn26cSDed2gblTC5qgA8Di5FV8Yl9x
+ tLqfwcR8ZWfeQjy5c1BPKk7h6j6vJpefHW/gU1AgHH3GrklSaFGcqfZQyh3xsaqR1DJR
+ lFQSMyAPqtI7SRadxTnhCJ09YIh3QlanMvO1B1r1Fi0/gry+rl0j9iUCy4GIKygyHSmq
+ boTgqkC0Js5S5fLThWmbDvC0zUct7EClN8nfVOkJ0xnz/0/VrNN4tbfKcGpDFz8hNSUu
+ UwLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705943793; x=1706548593;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qTYTAokmYn1QlxaW+DX1tM+T4jTh8+nH3A72Ydzb2cc=;
- b=Z1BzNhxJg/cXebLKFoGmPsRnYQm+KkNexWcB9Ly72dqMNR5ZCXj6MkffqFNM7B7D6m
- 4S+Ng4uCFpNTxEjhtnkCI23tLpoPtTDNoGDtcMPZTzD/WrcG9gssW1AeZHKTyYa+Fp92
- oFYY9nEW05mNiLJoNf4moOXWtm9wYkXzmZQpgGShpEd1RBpA/BgiuzQTNEyMA9Bj8ecp
- eYR1P9T/9ZMiVUhB7vMWeS1nofWk2GiOwiICi04y1K+BOngzzpq9EpBStgcXyrY2i0z8
- Ue5Am87MJetgkkkCSmT2E/pgCiq0szZIxKylbtMq9jBVPaSaXVrlW3CngZsfMkyXzRtF
- xHoA==
-X-Gm-Message-State: AOJu0YxF57kAkrw52yOcVXGNLWLXlep+XMdydWauOeNE4mR5wO1n9TCs
- IkmkqYbW6B4e9D8IbDzUQiUn2cUSN1werdTL7nq2zx1fo9/Egn36RGlY/TQjsuZzbwlaIJ+78eo
- sWFTlBz0gUmodzTEyHnpSOvo9a7xzVdSWX1vWFg==
-X-Google-Smtp-Source: AGHT+IGnPykCduUnpC6bwx/bn6fVQ4ouCQ5OxE3s0WxhdZAu1OwUoGtWGdq2qe3i5aAl/EqX6yq/al8117c5FO+w0eo=
-X-Received: by 2002:a05:6402:3507:b0:559:6c9e:96fe with SMTP id
- b7-20020a056402350700b005596c9e96femr138164edd.37.1705943792970; Mon, 22 Jan
- 2024 09:16:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705943948; x=1706548748;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=agKtL+k3Dq+BSli4miMY6vEaDpGimuTEDFWJnn0H/nc=;
+ b=NPRaM6/SxVSVPGyrOgZdcVkTp8G6lrWGshgPerf6jiyVS7pd3T1OMCrWpfTEJ7XaGg
+ eLpaEKcsNKN/reAxP06/RL/f3n8je2fa2s+WK+3Itm7MS50ZQfejzYXL7nOsFXsO+LzM
+ FPcg6GShJ1C7BRhrjTLU0WTD4Qg7vkwGh++Mhahr1fOjEXdUnDIXSd1KKJ5h+KCmetEV
+ t2vEwecfMz2vM1unXWzL6OqGZDFKIhmwr9U8Oo3vynvH5H3Do52kg+UfSHvB+7uxzdOb
+ 39KedJ6b5OMfuSdlz/MsvIZyRb3jiW16GITB1kQnDnCqtIQmVEi/Q0ntRBlyEqEIHGS/
+ HkRg==
+X-Gm-Message-State: AOJu0YzH2yJv2jTWWPVJK1jGFOVrC+EsxDf5NtYDwQ9inI4LbEASxep+
+ kSrpc10NrgsOPW1bj5BZ73cdlolP14rM5rsS/SKF3RaRMUgGq9uveKo0M7VeO68=
+X-Google-Smtp-Source: AGHT+IH17S2AGyvOuh5OsFYm+SkAb/+SkQljPl1YoZCZQwHzBEoj/BPle36U4vUNactueW4c8TbcvA==
+X-Received: by 2002:a05:600c:b93:b0:40e:ac15:8791 with SMTP id
+ fl19-20020a05600c0b9300b0040eac158791mr1243594wmb.33.1705943948375; 
+ Mon, 22 Jan 2024 09:19:08 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ d7-20020a05600c3ac700b0040ea64a7bbasm8793065wms.30.2024.01.22.09.19.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 09:19:08 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 993665F794;
+ Mon, 22 Jan 2024 17:19:07 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Jan Kiszka <jan.kiszka@web.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
+In-Reply-To: <3b4481cf-e1c4-4515-a7e4-80915cbe2bec@web.de> (Jan Kiszka's
+ message of "Mon, 22 Jan 2024 17:30:35 +0100")
+References: <20231103182750.855577-1-peter.maydell@linaro.org>
+ <871qadh8g8.fsf@draig.linaro.org>
+ <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
+ <87r0i9ofxi.fsf@draig.linaro.org>
+ <3b4481cf-e1c4-4515-a7e4-80915cbe2bec@web.de>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Mon, 22 Jan 2024 17:19:07 +0000
+Message-ID: <87plxtmgl0.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <CAHP40m=_7zOT5bnp1FR12ohVbm-miUorh6+rrk2Rwd1jArR1VA@mail.gmail.com>
-In-Reply-To: <CAHP40m=_7zOT5bnp1FR12ohVbm-miUorh6+rrk2Rwd1jArR1VA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 17:16:22 +0000
-Message-ID: <CAFEAcA_ZyphRxH59VHEpnS_8D4YuBFSZeODwRbMjrqhkggD-Cw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] Exclude TPM ioctls definitions for the GNU/Hurd
-To: Manolo de Medici <manolodemedici@gmail.com>
-Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org, 
- Stefan Berger <stefanb@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,43 +100,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 at 16:04, Manolo de Medici <manolodemedici@gmail.com> wrote:
->
-> The Hurd currently doesn't have any TPM driver, compilation fails
-> for missing symbols unless these are left undefined.
->
-> Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
-> ---
->  backends/tpm/tpm_ioctl.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/backends/tpm/tpm_ioctl.h b/backends/tpm/tpm_ioctl.h
-> index 1933ab6855..c721bf8847 100644
-> --- a/backends/tpm/tpm_ioctl.h
-> +++ b/backends/tpm/tpm_ioctl.h
-> @@ -274,7 +274,7 @@ typedef struct ptm_lockstorage ptm_lockstorage;
->  #define PTM_CAP_SEND_COMMAND_HEADER (1 << 15)
->  #define PTM_CAP_LOCK_STORAGE       (1 << 16)
->
-> -#ifndef _WIN32
-> +#if !defined(_WIN32) && !defined(__GNU__)
->  enum {
->      PTM_GET_CAPABILITY     = _IOR('P', 0, ptm_cap),
->      PTM_INIT               = _IOWR('P', 1, ptm_init),
-> --
-> 2.43.0
+Jan Kiszka <jan.kiszka@web.de> writes:
 
-This looks plausible as a change, but looking at the history
-of the file in git it seems like this is a file we import
-from a third-party swtpm project.
+> On 22.01.24 10:50, Alex Benn=C3=A9e wrote:
+>> Jan Kiszka <jan.kiszka@web.de> writes:
+>>
+>>> On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
+>>>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>>>
+>>>>> Convert the musicpal key input device to use
+>>>>> qemu_add_kbd_event_handler().  This lets us simplify it because we no
+>>>>> longer need to track whether we're in the middle of a PS/2 multibyte
+>>>>> key sequence.
+>> <snip>
+>>>>
+>>>> Well the key input all works as intended and looks good to me. I'm a
+>>>> little disappointed I couldn't get audio working on the musicpal machi=
+ne
+>>>> but that is not a problem for this patch.
+>>>>
+>>>> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>>>
+>>>
+>>> Looks good to me as well, all keys still work fine.
+>>>
+>>> No idea what's the issue with sound, though. I think I haven't run the
+>>> whole stuff in a decade or so, had to search for all the pieces first of
+>>> all again. The webradio service original behind this stopped their
+>>> operations, at least for this device, but manually entered favorits
+>>> still work on the real device - I still have one, though that is
+>>> starting to get some issues as well.
+>>
+>> I navigated through the favourites and after pressing some keys it seems
+>> to indicate there was a stream of some sort (or at least a bitrate was
+>> reported ;-).
+>>
+>> The main issue I was having with sound was with pipewire - this would
+>> eventually generate a lot of warning messages because input devices are
+>> created but I guess the model wasn't draining the input buffers so
+>> eventually we get:
+>>
+>>   qemu: 0x7f1490259500: overrun write:5859188 filled:5842804 + size:940 =
+> max:4194304
+>>   qemu: 0x7f14902680a0: overrun write:5860128 filled:5843744 + size:940 =
+> max:4194304
+>>   qemu: 0x7f1490259500: overrun write:5861068 filled:5844684 + size:940 =
+> max:4194304
+>>   qemu: 0x7f14902680a0: overrun write:5862008 filled:5845624 + size:940 =
+> max:4194304
+>>
+>
+> I'm getting these here:
+>
+> pulseaudio: set_source_output_volume() failed
+> pulseaudio: Reason: Invalid argument
+> ...
 
-Stefan: should we get this change made in the swtpm project
-too? Or have we diverged from that copy of the header?
-If the latter, then the simple thing would be to delete
-this enum entirely, because as far as I can see we don't
-use any of the values in QEMU, so we can avoid the
-portability problem that way.
+Yeah I get that with -M musicpal,audiodev=3Dsystem ... -audiodev pa,id=3Dsy=
+stem
 
-thanks
--- PMM
+>
+>> Is your image just a hacked up version of the original firmware or
+>> something we have source for? I guess there was never a rockbox port for
+>> the device?
+>>
+>
+> It's an original firmware, nothing hacked. I do have some sources here,
+> but just partial ones: U-Boot, kernel, not the complete userland and
+> even not all kernel drivers IIRC.
+
+With -nic user,hostfwd=3Dtcp::8888-:80 I'm able to attempt to connect to
+the webpage bit the documented admin:admin doesn't work. I can see
+/etc/passwd has something set for admin.
+
+I did find:
+
+  https://musicpal.mcproductions.nl/
+
+which has a bunch of firmwares but the mpimage.bin is raw data (not a
+jffs2 partition) so I suspect that is something that gets unpacked
+during the flashing:
+
+  =E2=9E=9C  file Firmware\ 1.68/mp*
+  Firmware 1.68/mp2image.bin: data
+  Firmware 1.68/mpimage.bin:  data
+  =F0=9F=95=9917:17:29 alex@draig:tests/testcases/FreecomMusicPalFirmware=
+=20=20
+  =E2=9E=9C  file ../musicpal/musicpal.image=20
+  ../musicpal/musicpal.image: Linux jffs2 filesystem data little endian
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
