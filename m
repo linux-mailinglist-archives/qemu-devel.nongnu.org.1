@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8E1835FC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 11:32:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3306D835FE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 11:41:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRrag-00033Y-C3; Mon, 22 Jan 2024 05:31:42 -0500
+	id 1rRrjE-00067x-0O; Mon, 22 Jan 2024 05:40:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rRraV-00032w-Ho; Mon, 22 Jan 2024 05:31:34 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rRrjA-00067T-VG
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 05:40:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rRraP-0004Cj-Cv; Mon, 22 Jan 2024 05:31:28 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 17AF3461AD;
- Mon, 22 Jan 2024 13:32:00 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A48CA6924D;
- Mon, 22 Jan 2024 13:31:21 +0300 (MSK)
-Message-ID: <85e2c13a-73cf-40df-9708-4012f4dccf55@tls.msk.ru>
-Date: Mon, 22 Jan 2024 13:31:21 +0300
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rRrj9-0005sX-HC
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 05:40:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705920026;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mCqD7t8hxqe/534mIJpK3BKL7PCySwTHXRSipQzuuOs=;
+ b=HOIjc5aAB0tkfhGv6zpw6wn7W56amogQV8OSTB9DHbqBaSgk6/4jVZdZ842UYkOT0yU9/i
+ VS89/gapmUqMxaoRuU/98FEPaNGIgroEKjfC29vpBUMVtNfcGfX3kcfW41PYHfbomgH4yt
+ ji2JPcmDYmK+Aay6wE2ujhWtEljMgmE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-371-Xa9oFC4hOduugKYYq5nihA-1; Mon, 22 Jan 2024 05:40:21 -0500
+X-MC-Unique: Xa9oFC4hOduugKYYq5nihA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0594C80007C;
+ Mon, 22 Jan 2024 10:40:21 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.66])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D7EF92026F95;
+ Mon, 22 Jan 2024 10:40:20 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id E24EF180038B; Mon, 22 Jan 2024 11:40:19 +0100 (CET)
+Date: Mon, 22 Jan 2024 11:40:19 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Hanna Reitz <hreitz@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: Re: [PATCH v2 0/3] hw/pflash: implement update buffer for block
+ writes
+Message-ID: <l2hfr22wl4ztjvwnm4e7f7dvour3fbe4yoydvofy2ktsjbfwfk@hnknxiljcjdm>
+References: <20240108160900.104835-1-kraxel@redhat.com>
+ <789d8190-6d14-46ff-89a8-c7f2457ecc15@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] s390x/pci: fix ISM reset
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Matthew Rosato <mjrosato@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: farman@linux.ibm.com, thuth@redhat.com, clg@redhat.com,
- frankja@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
- <d2482bd3-7f0a-4f6e-a366-539f0122162f@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <d2482bd3-7f0a-4f6e-a366-539f0122162f@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <789d8190-6d14-46ff-89a8-c7f2457ecc15@tls.msk.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,33 +84,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-22.01.2024 13:18, Michael Tokarev :
-..
-> Is it this a material for -stable, or there's no need to bother?
+On Sat, Jan 20, 2024 at 01:18:14PM +0300, Michael Tokarev wrote:
+> 08.01.2024 19:08, Gerd Hoffmann:
+> > When running qemu with edk2 efi firmware on aarch64 the efi
+> > variable store in pflash can get corrupted.  qemu not doing
+> > proper block writes -- flush all or nothing to storage -- is
+> > a hot candidate for being the root cause.
+> > 
+> > This little series tries to fix that with an update buffer
+> > where block writes are staged, so we can commit or discard
+> > the changes when the block write is completed or canceled.
+> 
+> It looks like we can pick this up for stable too.  It's not
+> usual to pick up new features for stable, but this one fixes
+> actual bug and if not applied, can easily lead to data corruption.
+> 
+> I'd pick it up for 8.2.x and 8.1.x at least.
 
-Actually it's been Cc'd to qemu-stable@ already, I haven't noticed.
-Still there's a question which branches should get which patches.
+Well, it turned out there was a edk2 bug causing flash corruption.
+While debugging edk2 I was using a qemu build with fixed pflash.
 
-> (changes 1 and 2 applies to 7.2 (while 2 fixes later change),
-> all 3 applies to 8.1 (while 3 fixes later change), and all 3 can be
-> picked up for 8.2, I guess).
+So on one hand I don't know for sure whenever the incorrect block
+flash emulation /alone/ can cause pflash corruption too.
 
-07b2c8e034d80f s390x/pci: avoid double enable/disable of aif
-  Fixes: v7.1.0-416-gd0bc7091c2 s390x/pci: enable adapter event notification for interpreted devices
+On the other hand the edk2 debugging session also was a stress
+test for the pflash fix, so I'm pretty confident it works
+correctly.
 
-30e35258e25c75  s390x/pci: refresh fh before disabling aif
-  Fixes: v7.2.0-51-g03451953c7 s390x/pci: reset ISM passthrough devices on shutdown and system reset
+I think it makes sense to include it.
 
-68c691ca99a253 s390x/pci: drive ISM reset from subsystem reset
-  Fixes: v8.1.0-654-gef1535901a s390x: do a subsystem reset before the unprotect on reboot
-  Fixes: v7.2.0-51-g03451953c7 s390x/pci: reset ISM passthrough devices on shutdown and system reset
+take care,
+  Gerd
 
-So all 3 are okay for 8.2.
-
-What about 8.1 and 7.2 which are the current still-maintained stable branches?
-(I think this 8.1 release will be the last in series).
-
-Thanks,
-
-/mjt
 
