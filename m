@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C5E835976
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 03:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E54B83597F
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 03:56:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRkOB-0007bw-BV; Sun, 21 Jan 2024 21:50:19 -0500
+	id 1rRkTk-0000FN-UV; Sun, 21 Jan 2024 21:56:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rRkO8-0007bi-6Q
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 21:50:16 -0500
-Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rRkTf-0000F1-VL; Sun, 21 Jan 2024 21:55:59 -0500
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
- id 1rRkO5-00027g-CJ
- for qemu-devel@nongnu.org; Sun, 21 Jan 2024 21:50:14 -0500
-Received: by mail-ua1-x92b.google.com with SMTP id
- a1e0cc1a2514c-7ce55932330so242221241.0
- for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 18:50:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rRkTc-00039m-9s; Sun, 21 Jan 2024 21:55:59 -0500
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7d2a78c49d1so1592835241.0; 
+ Sun, 21 Jan 2024 18:55:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705891812; x=1706496612; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705892149; x=1706496949; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+cXLgPXYA5Fe6az71hac21hiFb2mTxJdrHHMfSV7PMA=;
- b=NQfV5IL5CeN2jIpdWClWE4eH0eafiic3YzQYDSX2C4Ev+F6Liqtqki33kxEjChqNz/
- 0IQMCYo+kM2h7zECZQnVDyA+lvFPlxlwlgrbVdHyYqUp2KdjFdHyX00GyrormByw2Z+m
- Md0MQRbcXzwp4BoQGoYUPz2ptqYn9jd6q8y5w363NXTCIYbyIoAlP6eqQxF37B18i2wf
- jR8aDIgakkBYbd9QB2Vzw4ZqKgH3sRNlJg1AL/3dyFNlnwnWnwbxUr4wEcKWdbnGebdC
- TidWzKBQlUt7iE77s64+/s7K3NypR3RQU7nJTSzqdCCcdCTNktxZsUe2oURluF2rGIHE
- 9dTA==
+ bh=6D+lUHCaaaLaTEc1OzGOFgyQeexGGSTV/qw2ByYNTO8=;
+ b=EDnDNHlqWcX2aSaVC3maQjOA4XE6ztWPDWYaPTJI29jFPXlS/KeJUaONAbG/8YUwW+
+ CY7tlQEorM/sLgu9M7/8BwGSEfVPqJ/DE5oowUBELp0PUZyGaNkCTrSA33SBEwh2KhU6
+ ol0dMfvpm259RNogpds67bkRFRmLSWt64WeYpslE0MCQoAEx/GDRyuD3doYbCMk9Iz3Q
+ x32me6IqDB2mjVZ0qlcMQ45Waqgb9eIZ+/witS4wnaW1ojWnysRtPJ8UPEKSbYrE5Job
+ tEwG4V3FQxs2mktgetq10A0wQL61VgeyiGnQAM1DT97lDejL3X8chZYnJNknjxgu6z6K
+ hiiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705891812; x=1706496612;
+ d=1e100.net; s=20230601; t=1705892149; x=1706496949;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+cXLgPXYA5Fe6az71hac21hiFb2mTxJdrHHMfSV7PMA=;
- b=ozh8RGGZ7Ktu4m+YYybCU2jUOBPZqyibTuGG0mW1FDp7iWjCE9nLrBG/bflsd4jpsG
- 0h30fvjqQ83Ur+hGt9cANGPo+rUPGs3BhV7JESheozDzMQx8j5eaVA1xaygUHQ3nkmUo
- HfCDSG7XMOuO+5QRGFRSwUquEXA7MUupMRkOF1dzKZav7uxoktYqKPmXlX3hfea/e/6W
- XO2evtsNqArHEE28msKaU9ob39HZBEEpOSa+2Kf7T7nzZGl+b1XNkBefTCW3ryQYa6nb
- JijDVAM1wAWhxPLzhpHa3Bfr4bo97Ygq74C9yLRh1JzfBlDWOswnmTUlEsc7NoF1LioU
- yQ6w==
-X-Gm-Message-State: AOJu0Yx3jdNub+nHrUx2lc3jMVOzeVq0P51U/YyHm9Zu7OrevGj50eiz
- w8cc+rWQnoGmdoKMFfAOsUv0n8ZTsu83f9qpmsPi2M7Be3SCqe7Z7Tck9TTczzF4zTdnCB7PSNU
- 4WnncsNkVqz7Qx0HXOqPmW9vmThg=
-X-Google-Smtp-Source: AGHT+IEnsKtgEXI0mfVZDlHugltUuL7oafebGrrUgHYsrFVtdmNBjZVTMno7dA7/Qbi3SUy17YEEsz9hIJ12GXa4p14=
-X-Received: by 2002:a1f:ee47:0:b0:4b6:f0c7:62e4 with SMTP id
- m68-20020a1fee47000000b004b6f0c762e4mr542083vkh.12.1705891811766; Sun, 21 Jan
- 2024 18:50:11 -0800 (PST)
+ bh=6D+lUHCaaaLaTEc1OzGOFgyQeexGGSTV/qw2ByYNTO8=;
+ b=uVAUFLQv0Lp3WDlypdUILR4qaDPE1zfPYozTSkm8UdyxaZ2qxLxv+76Yl678c6wuMU
+ 4YaPB3JL8L5cwxzpeT9Aqjzvwn+7sAsaJmH1A19wM8WFkCHRxekxuxCDsbw/mSHc5DC/
+ DMDedQSXCUrANviNnHdkPc5hMd4ildrdeocc1oWvFXJi/pQ+nYtr3xEVOATFtg9qlXvc
+ CCiw+7cudApbLkrLuY7Lwo2+4l/M9yWaky8KZRQTWsl3alrHW/Hdj42XQ8uU/SpyVhIm
+ SHMJYpYC8fBm313J9TEmDzw8vIf0lIV355a0nqHDQeBeq0y69L4h2fY0/kk4tcET9Kwy
+ j1Xg==
+X-Gm-Message-State: AOJu0YzgN4PEvCLBY5wv71ChyBe/yd7SiIZg3h27CZ5vYnYZmicU2dOv
+ bq1+hTtAuo9jDFvQHu1JWzTwBZBVp8Ps0A5q1xE4rMpNDNxTwensac2iAQee/uVogKKLf2a62kf
+ pzKI4kUVJ+6YlHi85z6Zr4k3JWTw=
+X-Google-Smtp-Source: AGHT+IGi4PxwTAXfBDawVvVyAlFxxRi8FGqFiyFF9MtPuNy0soyXOqqV2PFLc9KTR0+AL/XfhzNE8dHGx8dMGoxy68c=
+X-Received: by 2002:a05:6102:9b3:b0:469:7b0d:6b6b with SMTP id
+ f19-20020a05610209b300b004697b0d6b6bmr2168306vsb.5.1705892148715; Sun, 21 Jan
+ 2024 18:55:48 -0800 (PST)
 MIME-Version: 1.0
-References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
- <20231222090051.3265307-4-42.hyeyoo@gmail.com>
- <20240109175358.00007c48@Huawei.com>
-In-Reply-To: <20240109175358.00007c48@Huawei.com>
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Date: Sun, 21 Jan 2024 21:50:00 -0500
-Message-ID: <CAB=+i9QrmMMazcNvEhuwTNF+UZMHPQE=yT=RE+MJCUQO+QY27A@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] hw/cxl/mbox: replace sanitize_running() with
- cxl_dev_media_disabled()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>, linux-cxl@vger.kernel.org,
- qemu-devel@nongnu.org
+References: <20240116205817.344178-1-dbarboza@ventanamicro.com>
+ <20240116205817.344178-3-dbarboza@ventanamicro.com>
+In-Reply-To: <20240116205817.344178-3-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 22 Jan 2024 12:55:22 +1000
+Message-ID: <CAKmqyKOWc2fPwz=WwQCyC84BOyQtcXJDXnUL+DRoVQon_9JK_A@mail.gmail.com>
+Subject: Re: [PATCH v3 02/13] target/riscv/csr.c: use 'vlenb' instead of 'vlen'
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, richard.henderson@linaro.org, max.chou@sifive.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
- envelope-from=42.hyeyoo@gmail.com; helo=mail-ua1-x92b.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,56 +89,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 12:54=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Wed, Jan 17, 2024 at 7:00=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> On Fri, 22 Dec 2023 18:00:50 +0900
-> Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
+> As a bonus, we're being more idiomatic using cpu->cfg.vlenb when
+> reading CSR_VLENB.
 >
-> > The spec states that reads/writes should have no effect and a part of
-> > commands should be ignored when the media is disabled, not when the
-> > sanitize command is running.qq
-> >
-> > Introduce cxl_dev_media_disabled() to check if the media is disabled an=
-d
-> > replace sanitize_running() with it.
-> >
-> > Make sure that the media has been correctly disabled during sanitation
-> > by adding an assert to __toggle_media(). Now, enabling when already
-> > enabled or vice versa results in an assert() failure.
-> >
-> > Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
-> > Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  target/riscv/csr.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> This applies to
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 674ea075a4..5c8d22452b 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -683,7 +683,7 @@ static RISCVException read_vl(CPURISCVState *env, int=
+ csrno,
 >
-> hw/cxl: Add get scan media capabilities cmd support.
+>  static int read_vlenb(CPURISCVState *env, int csrno, target_ulong *val)
+>  {
+> -    *val =3D riscv_cpu_cfg(env)->vlen >> 3;
+> +    *val =3D riscv_cpu_cfg(env)->vlenb;
+>      return RISCV_EXCP_NONE;
+>  }
 >
-> Should I just squash it with that patch in my tree?
-> For now I'm holding it immediately on top of that, but I'm not keen to
-> send messy code upstream unless there is a good reason to retain the
-> history.
-
-Oh, while the diff looks like the patch touches scan_media_running(), it's =
-not.
-
-The proper Fixes: tag will be:
-Fixes: d77176724422 ("hw/cxl: Add support for device sanitation")
-
-> If you are doing this sort of fix series in future, please call out
-> what they fix explicitly.  Can't use fixes tags as the commit ids
-> are unstable, but can mention the patch to make my life easier!
-
-Okay, next time I will either add the Fixes tag or add a comment on
-what it fixes.
-
-By the way I guess your latest, public branch is still cxl-2023-11-02, righ=
-t?
-https://gitlab.com/jic23/qemu/-/tree/cxl-2023-11-02
-
-I assume you adjusted my v2 series, but please let me know if you prefer
-sending v3 against your latest tree.
-
-Thanks,
-Hyeonggon
+> @@ -738,7 +738,7 @@ static RISCVException write_vstart(CPURISCVState *env=
+, int csrno,
+>       * The vstart CSR is defined to have only enough writable bits
+>       * to hold the largest element index, i.e. lg2(VLEN) bits.
+>       */
+> -    env->vstart =3D val & ~(~0ULL << ctzl(riscv_cpu_cfg(env)->vlen));
+> +    env->vstart =3D val & ~(~0ULL << ctzl(riscv_cpu_cfg(env)->vlenb << 3=
+));
+>      return RISCV_EXCP_NONE;
+>  }
+>
+> --
+> 2.43.0
+>
+>
 
