@@ -2,67 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2C4835B29
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94EED835B3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:49:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRo1N-0005He-C1; Mon, 22 Jan 2024 01:43:01 -0500
+	id 1rRo6e-0000S8-4K; Mon, 22 Jan 2024 01:48:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rRo1E-0005AR-OK; Mon, 22 Jan 2024 01:42:53 -0500
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rRo1C-0007Hl-B9; Mon, 22 Jan 2024 01:42:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705905770; x=1737441770;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kcYDJ8Ys3vWxL5eMBWnoD+cCsD3TWw3GxiXV9Bfxjss=;
- b=n+SLVSDOETiRaoU9tIDiesiYO56S3C4EhxYi9jD0jgGHzqCbRDVKmNul
- 0IKt2yLNUt5ZLodW6GjTew+0Ntzppfc1daFXtaLIyG4Nd5WVXLoY//ytR
- 6HLA24EEiYwsPYZ7uSJM/90iTxvutbHaUe5C/FHEvp6/eleNnRbQ9I95l
- AHTaytnoAOa/ewJ1PvOIUshtQu9ujlYPHl7ntdyr1XGHKEOaV4e9rC5ms
- DQjEeEKZtq8AQDs6/u0PQ86SRYXEgl9G7Js8Un89qE+lCaH7q+dA7LSZC
- RSf5z+wO+WNhZ1ymkMCmQfjF5YNi1v1Oc3VF0LcYjVLVXcxj8U+0t8f0t g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="7792107"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="7792107"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 22:42:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="761646713"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="761646713"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 22:42:44 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org
-Cc: eric.auger@redhat.com, jean-philippe@linaro.org,
- alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, mst@redhat.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 3/3] virtio-iommu: Support PCI device aliases
-Date: Mon, 22 Jan 2024 14:40:15 +0800
-Message-Id: <20240122064015.94630-4-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240122064015.94630-1-zhenzhong.duan@intel.com>
-References: <20240122064015.94630-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rRo6X-0000Rg-4o
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:48:22 -0500
+Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rRo6V-0008Ls-Ms
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:48:20 -0500
+Received: by mail-vs1-xe2c.google.com with SMTP id
+ ada2fe7eead31-467a7a376d5so395096137.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 22:48:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705906098; x=1706510898; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mxkcK958nlAkpBJVXETcoJwO3Smq4kPUF6KlJSxmoDo=;
+ b=On1jVakrzQqBQti+byxvLT8HY211QRe3H6xtsIWKAnGXYKwysmi7Id+60HsmkYaVCp
+ 5vQVEvNQIGFXl2C4j7XP42gJV3X+VSsmJqZsQh3S7MlRDGUO8Gpscjlev5SnsNbmnAZE
+ J7Dva6VRKvHTzmR8D9I9WYNhHhwq/vbetMcZOojsYKveCEMevPLVk0yXjL4XlxfxrTFX
+ JBuSISCfbfG8770MeTlwgMk2BskEo5TDzWzon+nWQqjZAJ6Y5jzNEDRxD5vH8F8gVSfD
+ xVkbBfFkBEOBZf5STRUnIKBtyaf8vswqCbIEeqZPmc7cGoZMdBeFD5c9bEQuThCkCt2n
+ TdRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705906098; x=1706510898;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mxkcK958nlAkpBJVXETcoJwO3Smq4kPUF6KlJSxmoDo=;
+ b=McO9mI/AkUx0AGzUQDgesnUU7O2DsKg8l7NHdRhHrnWhfg0GgmiQqOlGEHV1pUXnR4
+ aRG3fvzsiUztnjSMQdswX4YAKM41Fm5uXNs2fHUmPYabxdnbxEge5I9FTeWiydoqHLWl
+ GacOVrd99T53KY2lWD91X+Oy1xmAsE97+Vbb4S6SckX70OIAQTO4UdBc15G8naP5e+sS
+ Ml4SEwFSVFpRge5O+DI9Ep8YAznmCcZxnilliMDkYOfnFHA44VIGPjxEnNvQDbKIrFJr
+ sR/xARvcazm+eo8m4yJtsZOosQx3L7oQS/j4MsdcysAchK6GIQ8Wf0BfSQGgnEepadaI
+ HVBA==
+X-Gm-Message-State: AOJu0YzzEIXqhaP31WoeMImqsLB+AiieHarajmOnFGRsNRhwbfmQ5sc8
+ rw8+fJ/OE4YN9ka/wp7OwvvgBlC1vnmkcj7JDvUF18UR2p6Xbo9OGZO/f9QZEu2NRJaj69zaDuz
+ UWFa5Nw2+I/sd6bp8VQiOVamNcX8Njv0mM1k=
+X-Google-Smtp-Source: AGHT+IH/DZCw52BYpqKHGFmSIdZ5FGdYcnc0KhSkB/fPD7oX6V12OmWBrNToNeOYK51cxHV8pkQO4C1Zv8XHo9SBPsc=
+X-Received: by 2002:a05:6102:1886:b0:469:7690:eefc with SMTP id
+ ji6-20020a056102188600b004697690eefcmr905519vsb.32.1705906098321; Sun, 21 Jan
+ 2024 22:48:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <MN2PR07MB60808AC0A8A31AF17BE2EBC6C561A@MN2PR07MB6080.namprd07.prod.outlook.com>
+In-Reply-To: <MN2PR07MB60808AC0A8A31AF17BE2EBC6C561A@MN2PR07MB6080.namprd07.prod.outlook.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 22 Jan 2024 16:47:52 +1000
+Message-ID: <CAKmqyKN71ff1-qMQ1GNbqQXym4=v1oR+r+Lohv8K-=j-Kq1jyw@mail.gmail.com>
+Subject: Re: Adding custom CSR to riscv-qemu
+To: Nati Rapaport <rapaport@cadence.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,70 +88,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently virtio-iommu doesn't work well if there are multiple devices
-in same iommu group. In below example config, guest virtio-iommu driver
-can successfully probe first device but fail on others. Only one device
-under the bridge can work normally.
+On Tue, Jan 2, 2024 at 7:22=E2=80=AFPM Nati Rapaport <rapaport@cadence.com>=
+ wrote:
+>
+> Hello,
+>
+> I=E2=80=99m going to add some custom CSRs (Control & Status Registers) to=
+ a new RiscV core in qemu.
+>
+> Could you please help me understanding if there is any method to do it?
 
--device virtio-iommu \
--device pcie-pci-bridge,id=root0 \
--device vfio-pci,host=81:11.0,bus=root0 \
--device vfio-pci,host=6f:01.0,bus=root0 \
+Have a look at decode_opc() in target/riscv/translate.c.
 
-The reason is virtio-iommu stores AS(address space) in hash table with
-aliased BDF and corelates endpoint which is indexed by device's real
-BDF, i.e., virtio_iommu_mr() is passed a real BDF to lookup AS hash
-table, we either get wrong AS or NULL.
+We probably want something similar where we can iterate over the
+vendor enabled CSRs.
 
-Fix it by storing AS indexed by real BDF. This way also make iova_ranges
-from vfio device stored in IOMMUDevice of real BDF successfully.
+>
+> Should I do it in /target/riscv/cpu_bits.h where all CSRs are defined  (a=
+nd other files, where all standard CSRs implementation reside?) and just pu=
+t it under a compilation flag for our new core only?
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/virtio/virtio-iommu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+The vendor CSRs should be in their own file. The idea is to keep as
+much as possible separated from the general RISC-V code.
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index d99c1f0d64..6880d92a44 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -399,27 +399,27 @@ static AddressSpace *virtio_iommu_find_add_as(PCIBus *bus, void *opaque,
-                                               int real_devfn)
- {
-     VirtIOIOMMU *s = opaque;
--    IOMMUPciBus *sbus = g_hash_table_lookup(s->as_by_busptr, bus);
-+    IOMMUPciBus *sbus = g_hash_table_lookup(s->as_by_busptr, real_bus);
-     static uint32_t mr_index;
-     IOMMUDevice *sdev;
- 
-     if (!sbus) {
-         sbus = g_malloc0(sizeof(IOMMUPciBus) +
-                          sizeof(IOMMUDevice *) * PCI_DEVFN_MAX);
--        sbus->bus = bus;
--        g_hash_table_insert(s->as_by_busptr, bus, sbus);
-+        sbus->bus = real_bus;
-+        g_hash_table_insert(s->as_by_busptr, real_bus, sbus);
-     }
- 
--    sdev = sbus->pbdev[devfn];
-+    sdev = sbus->pbdev[real_devfn];
-     if (!sdev) {
-         char *name = g_strdup_printf("%s-%d-%d",
-                                      TYPE_VIRTIO_IOMMU_MEMORY_REGION,
--                                     mr_index++, devfn);
--        sdev = sbus->pbdev[devfn] = g_new0(IOMMUDevice, 1);
-+                                     mr_index++, real_devfn);
-+        sdev = sbus->pbdev[real_devfn] = g_new0(IOMMUDevice, 1);
- 
-         sdev->viommu = s;
--        sdev->bus = bus;
--        sdev->devfn = devfn;
-+        sdev->bus = real_bus;
-+        sdev->devfn = real_devfn;
- 
-         trace_virtio_iommu_init_iommu_mr(name);
- 
--- 
-2.34.1
+>
+> I don=E2=80=99t think so.. as I don=E2=80=99t see any similar example for=
+ that there.
+>
+> Should I add all the related code around these CSRs in dedicated source f=
+iles and let them built only for our core?
 
+Pretty much, although it will be built by default. We don't want
+custom binaries for vendors or anything like that
+
+Alistair
+
+>
+> Please explain..
+>
+>
+>
+> Thank you in advance.
+>
+> Nati Rapaport
+>
+> Cadence Design Systems
 
