@@ -2,81 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2B0835AC9
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A5D835AF6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:26:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRnNP-0002LE-AS; Mon, 22 Jan 2024 01:01:43 -0500
+	id 1rRnkI-0008FV-CB; Mon, 22 Jan 2024 01:25:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRnNN-0002KY-IY; Mon, 22 Jan 2024 01:01:41 -0500
-Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRnNM-00082J-0z; Mon, 22 Jan 2024 01:01:41 -0500
-Received: by mail-vs1-xe2f.google.com with SMTP id
- ada2fe7eead31-467010c1c72so1728764137.0; 
- Sun, 21 Jan 2024 22:01:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705903298; x=1706508098; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=omvBBLY6VyD2J5FDeIIr7uHDzzWC1Lf8wzbt0zFmFYI=;
- b=iWqAnF7mFAMqY+ogShNMZiC6FGRUrj2y4EysuJnu7iZd6RVcCCbOuvcfOq328iKgsL
- v8Kg34A2ue1Wr67TS8fihGFzmxB6RGldVuFUBKX+yD/x1yjdYofx8t/GWAToMNlQoRwN
- cEqJQSnlly0Ye55q1/DV7J/c/MIL1i6eamrA/sh2ie2rg0QN0AkfKe8XSJDRaBJdduoX
- V5bD6w7QAS1JjXIPnGY3isWQDM40dLky83uittjkjdwhh7fhZSRYwlJrIC+rSYmMn8mg
- dY2B2OvfNwZSkMhm5Uxi28jxOBp+FxQ0DNKub6xtzMz1Khl5iwHbC7L7y2AStT3unIs6
- p7JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705903298; x=1706508098;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=omvBBLY6VyD2J5FDeIIr7uHDzzWC1Lf8wzbt0zFmFYI=;
- b=lZWlWblDZoFDrZ30s5JXGwdRFlft3szGggBPiPyhetZ1colSYz4NPifVre8SpYzrcb
- iHXbXBvaG1J6C8mwhirfWy9AlNQ1eqWVPzdGG9Qs6VXJIcCbYL7sN5WD8RmQfNjdUplZ
- 4b89+9i+k6r9bun0vXq2wllrb44+QkA1Rn7GYn9nu0Ei67ZWWPGuLmNivYCJgh5Kk6JH
- I7R8lTvuT4D8zjG5DQrXZCbuVz97vxNFazhIbd4ehxQ54azdbSheZbIekTqtmLYS1V0b
- TMXzMCnrVzO0TUc6YAuppjxhhrwvuBO9l71e3fLMEcnlfgWPpgpB+5xvKG/EOsO0tTEt
- GCBg==
-X-Gm-Message-State: AOJu0YzsyhB4CbU1++Fo+lvRutdNECHLQjHCjqOgkxccJzpwofpGDBDN
- b7vg2KMJXmj+RMY8wVGRgfE+aXNHF7g3OEFtEjXUcGzqAmBvA4+QxuDF/9v9ba3JkTdf+GebDZR
- YvF0BRh0K7jPOeVqTYkZ3Dchpd4c=
-X-Google-Smtp-Source: AGHT+IEXuN9WgTiBlNyHBL7pH7ntgNwMsDcQwJMPPuI/2966hO5IVe2YVEsp7a8UgA+LHMh0yMv32G7/f2lp6Jt71J4=
-X-Received: by 2002:a05:6102:759:b0:469:9473:66dd with SMTP id
- v25-20020a056102075900b00469947366ddmr2788741vsg.16.1705903298471; Sun, 21
- Jan 2024 22:01:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rRnkE-0008FG-EZ
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:25:18 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rRnkB-0003LD-7j
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:25:18 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8DxmfA_Cq5lTl0DAA--.14123S3;
+ Mon, 22 Jan 2024 14:25:03 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx8OQ_Cq5lAd8QAA--.12811S2; 
+ Mon, 22 Jan 2024 14:25:03 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, philmd@linaro.org, maobibo@loongson.cn,
+ zhaotianrui@loongson.cn
+Subject: [PATCH 1/1] target/loongarch/kvm: Enable LSX/LASX extension
+Date: Mon, 22 Jan 2024 14:09:01 +0800
+Message-Id: <20240122060901.4056487-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20231122053251.440723-1-ethan84@andestech.com>
- <CAKmqyKO9nGLo2b0TamakNh4qRr+Bi8NQ973bQ=ch8=CKoH-etg@mail.gmail.com>
- <ZYPdY38SqIE7/eoz@ethan84-VirtualBox>
-In-Reply-To: <ZYPdY38SqIE7/eoz@ethan84-VirtualBox>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 16:01:12 +1000
-Message-ID: <CAKmqyKN2NAmmWiH1eUy8Hf+V0-5ENTjews5o0VzPDfySt_nqgw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Support RISC-V IOPMP
-To: Ethan Chen <ethan84@andestech.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, edgar.iglesias@gmail.com, 
- richard.henderson@linaro.org, pbonzini@redhat.com, palmer@dabbelt.com, 
- alistair.francis@wdc.com, in.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, hiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, 
- peterx@redhat.com, david@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Bx8OQ_Cq5lAd8QAA--.12811S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,51 +62,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Dec 21, 2023 at 4:38=E2=80=AFPM Ethan Chen <ethan84@andestech.com> =
-wrote:
->
-> On Mon, Dec 18, 2023 at 02:18:58PM +1000, Alistair Francis wrote:
-> > On Wed, Nov 22, 2023 at 3:36=E2=80=AFPM Ethan Chen via <qemu-devel@nong=
-nu.org> wrote:
-> > >
-> > > This series implements IOPMP specification v1.0.0-draft4 rapid-k mode=
-l.
-> > > The specification url:
-> > > https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_spe=
-cification.pdf
-> > >
-> > > When IOPMP is enabled, a DMA device ATCDMAC300 is added to RISC-V vir=
-t
-> > > platform. This DMA device is connected to the IOPMP and has the funct=
-ionalities
-> >
-> > I don't think we want to add an Andes DMA device to the virt machine.
-> >
-> > I can't even find the spec for the ATCDMAC300, which isn't great
-> >
-> > Alistair
->
-> Since the IOPMP does not take effect when there is no other device connec=
-ts to
-> IOPMP, I think it is necessary to have a DMA device for IOPMP demonstrati=
-on.
+The kernel had already support LSX and LASX [1],
+but QEMU is disable LSX/LASX for kvm. This patch adds
+kvm_check_cpucfg to check CPUCFG2.
 
-That is true, but that device shouldn't be a vendor specific device
-for the virt machine.
+[1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
 
->
-> Do you have any suggestions for supporting IOPMP on RISC-V virt machine?
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ linux-headers/asm-loongarch/kvm.h |  1 +
+ target/loongarch/kvm/kvm.c        | 35 ++++++++++++++++++++++++-------
+ 2 files changed, 29 insertions(+), 7 deletions(-)
 
-A RVI device would be fine. Otherwise something that has become a
-defacto standard by being commonly used (the SiFive PLIC for example).
+diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
+index c6ad2ee610..923d0bd382 100644
+--- a/linux-headers/asm-loongarch/kvm.h
++++ b/linux-headers/asm-loongarch/kvm.h
+@@ -79,6 +79,7 @@ struct kvm_fpu {
+ #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
+ #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
+ #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
++#define KVM_LOONGARCH_VCPU_CPUCFG	0
+ 
+ struct kvm_debug_exit_arch {
+ };
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index 84bcdf5f86..41b6947c7b 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -537,6 +537,28 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
+     return ret;
+ }
+ 
++static int kvm_check_cpucfg(int id, CPUState *cs)
++{
++    int ret;
++    uint64_t val;
++    struct kvm_device_attr attr = {
++        .group = KVM_LOONGARCH_VCPU_CPUCFG,
++        .attr = id,
++        .addr = (uint64_t)&val,
++    };
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
++    CPULoongArchState *env = &cpu->env;
++
++    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
++
++    if (!ret) {
++        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
++        env->cpucfg[id] &= val;
++    }
++
++    return ret;
++}
++
+ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+ {
+     int i, ret = 0;
+@@ -545,14 +567,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+     uint64_t val;
+ 
+     for (i = 0; i < 21; i++) {
++	if (i == 2) {
++            ret = kvm_check_cpucfg(i, cs);
++            if (ret) {
++                return ret;
++            }
++	}
+         val = env->cpucfg[i];
+-        /* LSX and LASX and LBT are not supported in kvm now */
+-        if (i == 2) {
+-            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
+-            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
+-                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
+-                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
+-        }
+         ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
+         if (ret < 0) {
+             trace_kvm_failed_put_cpucfg(strerror(errno));
+-- 
+2.25.1
 
-I really don't think it should be some vendor IP, especially one that
-doesn't have a public datasheet.
-
-You could add an Andes machine that can use your vendor IP. Otherwise
-we can look at adding IOPMP and not connecting it, but that is a pain.
-
-What is the IOPMP spec group doing for testing?
-
-Alistair
 
