@@ -2,82 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0618D836541
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8ED836577
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 15:32:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRvB1-0002Rm-El; Mon, 22 Jan 2024 09:21:27 -0500
+	id 1rRvKm-0004V8-8O; Mon, 22 Jan 2024 09:31:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRvB0-0002Rd-Bb
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:21:26 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRvAx-00018Z-Lq
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:21:26 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e72a567eeso39314495e9.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 06:21:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705933282; x=1706538082; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Hb24Duzw496P1ea+X19AanATjERY6jyqCWFSnlKPB+A=;
- b=sp3LYd1PBrLISsUIJCXR9GEXWRNM4LYcZoePA8IBIhgekpQwVDrdsuI1mePLosPZsD
- 7jtTmBpNf3Ogn/JD1N8F8HUIwuy0dgMN7vtzbnvwVsTvBLjSH1/0pSvVfXGTyqLN/HRE
- c8g5a/4Yf80U0514+ZaRyKXEHuN9pZVgfUfQQpB4fMO5oJl4AJXnqkoyexuaXHhSJhB7
- LZA+dWrPNxN81WuvYEgQR+GPDJ9f5I8sKoiadR/vE2Pls50nsQLZ9Fb+M0M3ezW4AkJy
- ROzgE4FXdnZ8SubWzm/xDe0GKMX1e0Nr6f4xaLQBVXKiUONAaqmUxz220rnXhuLtl9E9
- eQvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705933282; x=1706538082;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Hb24Duzw496P1ea+X19AanATjERY6jyqCWFSnlKPB+A=;
- b=Lg3OJfeIcbhle9g0EUVAJ7byEJG9xtrwJf7XnASmGK/ol0dzRr3r56xDpVAC7/Hk1J
- YBuTAZkEjHf6VskAeyntyK/2g+ps90d7jKOW21EVpYBSJlOTisS3Vn4QeGwJIwpSA3Ji
- d3nErn79vhwjQZ5nmEb7YtyFjv1/Opawz/3FKcw8/kgLBT7b+IxA8MO+LlT+43e+SV0p
- 95a+aRkvWC7eRQ30OlewCurxLH2zvqtchJtS+fEgKHIVO5Uy6PnFQGDdP5hbYBZI6HFl
- lQCjMDyjVnqsi54gQZAs91Qn+8zurMGU2GHHjQTm4+NJe11iaxMvsFKcpLGvQIDTGxi6
- ES6w==
-X-Gm-Message-State: AOJu0YxmY7Nio3a96d2PkwZN9NLjmSHuRap8KTStldCVgdC6PE51uFVT
- 38VFJs0+wtFsgWSOmyPu0hM416iLoeNO9t9yexuzJ4T7886aDh0MIhabw3oGmuU=
-X-Google-Smtp-Source: AGHT+IGc9ETFFlYaYpTR5SLNMr7mcUgXN79IoTPkE/6hQBCkJ5EsPknGDbVk/vD7sZ493eKRQk9tkA==
-X-Received: by 2002:a05:600c:a001:b0:40e:66bc:1649 with SMTP id
- jg1-20020a05600ca00100b0040e66bc1649mr1247760wmb.119.1705933281917; 
- Mon, 22 Jan 2024 06:21:21 -0800 (PST)
-Received: from [192.168.96.175] ([92.88.171.222])
- by smtp.gmail.com with ESMTPSA id
- o31-20020a05600c511f00b0040e703ad630sm30641442wms.22.2024.01.22.06.20.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 06:21:06 -0800 (PST)
-Message-ID: <cdef47c9-2fc2-48fe-b96a-38f6ec16a48f@linaro.org>
-Date: Mon, 22 Jan 2024 15:20:49 +0100
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rRvKi-0004UZ-EV
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:31:28 -0500
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rRvKg-0002og-HL
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 09:31:28 -0500
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1rRvKG-0005kS-Kk; Mon, 22 Jan 2024 15:31:00 +0100
+Message-ID: <b7c6e535-3540-46e5-8024-83a712747452@maciej.szmigiero.name>
+Date: Mon, 22 Jan 2024 15:30:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 19/38] tcg/aarch64: Generate CBNZ for TSTNE of
- UINT32_MAX
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com
-References: <20240110224408.10444-1-richard.henderson@linaro.org>
- <20240110224408.10444-20-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240110224408.10444-20-richard.henderson@linaro.org>
+Subject: Re: [PATCH 2/5] vmbus: Switch bus reset to 3-phase-reset
+Content-Language: en-US, pl-PL
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20240119163512.3810301-1-peter.maydell@linaro.org>
+ <20240119163512.3810301-3-peter.maydell@linaro.org>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <20240119163512.3810301-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,48 +106,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/1/24 23:43, Richard Henderson wrote:
-> ... and the inverse, CBZ for TSTEQ.
+On 19.01.2024 17:35, Peter Maydell wrote:
+> Switch vmbus from using BusClass::reset to the Resettable interface.
 > 
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> This has no behavioural change, because the BusClass code to support
+> subclasses that use the legacy BusClass::reset will call that method
+> in the hold phase of 3-phase reset.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->   tcg/aarch64/tcg-target.c.inc | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-> index 55225313ad..0c98c48f68 100644
-> --- a/tcg/aarch64/tcg-target.c.inc
-> +++ b/tcg/aarch64/tcg-target.c.inc
-> @@ -1453,6 +1453,7 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
->           break;
->       case TCG_COND_LT:
->       case TCG_COND_GE:
-> +        /* cmp xN,0; b.mi L -> tbnz xN,63,L */
->           if (b_const && b == 0) {
->               c = (c == TCG_COND_LT ? TCG_COND_TSTNE : TCG_COND_TSTEQ);
 
-This comment ...
+Acked-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
->               tbit = ext ? 63 : 31;
-> @@ -1461,6 +1462,13 @@ static void tcg_out_brcond(TCGContext *s, TCGType ext, TCGCond c, TCGArg a,
->           break;
->       case TCG_COND_TSTEQ:
->       case TCG_COND_TSTNE:
-> +        /* tst xN,0xffffffff; b.ne L -> cbnz wN,L */
-> +        if (b_const && b == UINT32_MAX) {
-> +            ext = TCG_TYPE_I32;
-> +            need_cmp = false;
-> +            break;
-> +        }
-> +        /* tst xN,1<<B; b.ne L -> tbnz xN,B,L */
-
-... and this one belong to the previous patch. Otherwise:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
->           if (b_const && is_power_of_2(b)) {
->               tbit = ctz64(b);
->               need_cmp = false;
+Thanks,
+Maciej
 
 
