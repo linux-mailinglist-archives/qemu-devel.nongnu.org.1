@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6F8836DE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:41:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F34836DE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:40:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRyHd-0007c7-Vp; Mon, 22 Jan 2024 12:40:30 -0500
+	id 1rRyHz-0007vv-5Z; Mon, 22 Jan 2024 12:40:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRyHW-0007bb-Uj
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:40:23 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRyHt-0007tc-Id
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:40:45 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRyHV-0004QU-54
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:40:22 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-557dcb0f870so3875889a12.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:40:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRyHr-0004S3-8e
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:40:44 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-337cf4ac600so3227725f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:40:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705945219; x=1706550019; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B73if8oMiUchhXW0yXjMMFsaiUUB8eLj8kmuwBme5q0=;
- b=E8e4Y/Ij+m60Afh93mnwE+cwngCHAbYck/f2W8ZYhERGKdftB0bYCZXP6Eeq/YkHQa
- 5koBEoOPTA/RUfhR+1aFGoRuwxaJ8Zu1l7vjpPINsdDMD9pEkfktbmm/dwBFuibI3VC3
- LMdW2cked2UrMIT573vn13W/ZRBdpARmdwqCTs6xtXPcohaMAt/J76HIG6CMkeeVoR9t
- kIexDKuzZuCo09dQHh3jBJi2RyMMVp0Mb2TqaGw9dD9hEW/T3z07Xvuc4eO7DnVjjbx+
- OJC/L9uT3oV47IKzxN4lalA6d24PxbE5IUhgBPsAYZCciSswUXVB003u9wkgVxV6UL+H
- 6dFg==
+ d=linaro.org; s=google; t=1705945241; x=1706550041; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5iBpbXLf/I89NcN4YOYTD0SsIZ+CEeM9pmCfbAhKbGA=;
+ b=UJXv6bhfKFcjujNDXzPLzajsmKIQpA7f8C0zKbaq231RzPl67HUDr7f+s2i3Oyvfwv
+ e5NFIUdHOG1sOn3/d3rVNiTA9lyKtcFTUN7ta40uvlFrKAM4KNXlwZeJqOgOjdDsHwIe
+ WnEIH2virkCOl9nV9UCixjNze6zrLf3JXFW4xTVEyBNQvPpvbGhObTow8GSPocI+UYQo
+ hHt2IEtJMUcbhub36O2fS2NfCfBkNHxr8ae3/DoaBa6zYHkNKjPSQt09nqT6ovfTPdr5
+ 2AFALFByGmTN7wf13GLh9lzHH3Y4Uzb0V8HYWyZLsA50OSlq5eXu+EmpvbAlMPZr4P53
+ uu1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705945219; x=1706550019;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=B73if8oMiUchhXW0yXjMMFsaiUUB8eLj8kmuwBme5q0=;
- b=qjt5mJF13rgtZ4/S2h6AvzALzMFWHdBY9Pi2surQZsUKzyanpl7LHK1iNZLMmu+GOn
- Tzys7CA/WEUMSg/IfWN2Z0tXQ4VDvgTlR1Gns7ltPFUQvGxQXGNeUcdiqKGe7pjAU1Vy
- RKWaofJHYjP2daxehpn1S89vpHEtErqI9mFd7cv1Cs9iuv69bRDd2RB1jVp/grSdECad
- FI6V+yrNvOJU9o+NRr/izGGw4qvxdonC/ph9yUzCsHZrzQGzAgnwX56jUpEhKwjOvAyh
- 1/dM7dNGNEmtQTzrpYjUhp8D+PPuJHDfVDdrjGEXNxPdyja+4ONp3b5VfnGkUouNyhnR
- N/SQ==
-X-Gm-Message-State: AOJu0YwUewzxGTyN3IAfAXR4u0QbvJL5z9/5av16+4XT259Erz3nT7Wi
- GzfxN/yUfuI8osDYv/oJfQnJbpYxmzzDDyMFOsyuDyumVeBmjL0lGR4pV3/VRva8LQthXTZKwDu
- z+qZ7RZsAjbfu+TFFpMzjbnDhYhLrpushyvYWYg==
-X-Google-Smtp-Source: AGHT+IGlvsPxvKMqs+Xebpx1m1MZBEqENRUOGfDtclBpAelXrlErwAvK/OKRFmes0POID11GAwD2wdRSnGwq/W0l5pE=
-X-Received: by 2002:a05:6402:3507:b0:559:6c9e:96fe with SMTP id
- b7-20020a056402350700b005596c9e96femr155023edd.37.1705945219290; Mon, 22 Jan
- 2024 09:40:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705945241; x=1706550041;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5iBpbXLf/I89NcN4YOYTD0SsIZ+CEeM9pmCfbAhKbGA=;
+ b=KRSWbDhR8fjhGkPPjTuNQrNfBXErq1kKL5sAD34JqoVba6F3pznAHWFZdEM1US6KOH
+ 6OwKIyhCF4NhQwK01oGqjE/jT2r9H9y/1ITGtZPKKqd0cKSU9TMaSzK9WNFJlA+3vshD
+ QDpsSTIzz60owIBq1u/SLAdZD2bgLXDOU3oVzjANNILK+aTOQcNhzQZgmV92xtpGaqSM
+ v3XpigDAjOzUfjwWoQFj5sqIGAIIN/WsktuuWpD00AhymwXfsSJn/BGaDoJMUprH+hGj
+ k6a3W5N7E5tqR/tgTeT0TE0T6xDHGEv/6gu9zjw3qLjhALhSdZpq9OPExnlWiNoKxmQU
+ yEXQ==
+X-Gm-Message-State: AOJu0Yyh1U4CTe95R1YV6AwJrHf67d2gR3vx41HMe8EkMkMfloe7l3ZF
+ O0fzWYJYlIkZHKHIDt2oeyBO9V1u1D2PPGs2RjXdfw/fQzMt6nb60lNL1A0tmLI=
+X-Google-Smtp-Source: AGHT+IEwl1yivr07/emeJfGLFhbipogDKP8jMDv767/YF/382hj55T1kn8rH1oG4TzZvlbJVs2X+lQ==
+X-Received: by 2002:adf:9bc9:0:b0:337:be5f:b633 with SMTP id
+ e9-20020adf9bc9000000b00337be5fb633mr2244974wrc.104.1705945241489; 
+ Mon, 22 Jan 2024 09:40:41 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.57])
+ by smtp.gmail.com with ESMTPSA id
+ v4-20020a5d6784000000b0033940bc04fesm150031wru.16.2024.01.22.09.40.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 09:40:41 -0800 (PST)
+Message-ID: <f0a09fe4-83fc-4573-82e1-e19741d93987@linaro.org>
+Date: Mon, 22 Jan 2024 18:40:39 +0100
 MIME-Version: 1.0
-References: <CAHP40mmk4cPk6ZHETfq5BtQxK63A6PiuCKrvv4yyOPBxVTW+OQ@mail.gmail.com>
- <Za6lUaLwYm1Y4gvj@redhat.com>
-In-Reply-To: <Za6lUaLwYm1Y4gvj@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 17:40:08 +0000
-Message-ID: <CAFEAcA--TgOV0rQ0x6UHG2d-DO=c6jsbgmgYNXcNorh_EJ+qzA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] Include new arbitrary limits if not already defined
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Manolo de Medici <manolodemedici@gmail.com>, qemu-devel@nongnu.org,
- bug-hurd@gnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] bswap.h: Fix const_le64() macro
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Ira Weiny <ira.weiny@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20240122173735.472951-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240122173735.472951-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,61 +93,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 Jan 2024 at 17:27, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
-> On Thu, Jan 18, 2024 at 05:02:23PM +0100, Manolo de Medici wrote:
-> > qemu uses the PATH_MAX and IOV_MAX constants extensively
-> > in the code. Define these constants to sensible values ourselves
-> > if the system doesn't define them already.
->
-> Please give details of what platform(s) lack these constants
-> in the commit message.
->
-> Presumably this is a platform that is outside of our normal
-> support build target list, since we have at least build
-> coverage for everything mainstream.
+On 22/1/24 18:37, Peter Maydell wrote:
+> The const_le64() macro introduced in commit 845d80a8c7b187 turns out
+> to have a bug which means that on big-endian systems the compiler
+> complains if the argument isn't already a 64-bit type. This hasn't
+> caused a problem yet, because there are no in-tree uses, but it
+> means it's not possible for anybody to add one without it failing CI.
+> 
+> This example is from an attempted use of it with the argument '0',
+> from the s390 CI runner's gcc:
+> 
+> ../block/blklogwrites.c: In function ‘blk_log_writes_co_do_log’:
+> ../include/qemu/bswap.h:148:36: error: left shift count >= width of
+> type [-Werror=shift-count-overflow]
+> 148 | ((((_x) & 0x00000000000000ffU) << 56) | \
+> | ^~
+> ../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
+> 409 | .nr_entries = const_le64(0),
+> | ^~~~~~~~~~
+> ../include/qemu/bswap.h:149:36: error: left shift count >= width of
+> type [-Werror=shift-count-overflow]
+> 149 | (((_x) & 0x000000000000ff00U) << 40) | \
+> | ^~
+> ../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
+> 409 | .nr_entries = const_le64(0),
+> | ^~~~~~~~~~
+> cc1: all warnings being treated as errors
+> 
+> Fix this by making all the constants in the macro have the ULL
+> suffix.  This will cause them all to be 64-bit integers, which means
+> the result of the logical & will also be an unsigned 64-bit type,
+> even if the input to the macro is a smaller type, and so the shifts
+> will be in range.
+> 
+> Fixes: 845d80a8c7b187 ("qemu/bswap: Add const_le64()")
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+> Tested 'by hand' on the s390 box that was complaining about
+> Kevin's pullreq.
+> ---
+>   include/qemu/bswap.h | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 
-It's GNU Hurd. The patchset isn't threaded, but the cover
-letter is
-https://lore.kernel.org/qemu-devel/CAHP40m=3DUQ=3DF1-Vy4-wR18RjqzF9o+8UOjgp=
-UsrTU8QXn=3D7eAeA@mail.gmail.com/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-and you can pick up the other patches in it by searching the list.
-
-> >
-> > Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
-> > ---
-> >  include/qemu/osdep.h | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> > index 9a405bed89..9fb6ac5c64 100644
-> > --- a/include/qemu/osdep.h
-> > +++ b/include/qemu/osdep.h
-> > @@ -363,6 +363,14 @@ void QEMU_ERROR("code path is reachable")
-> >  #define TIME_MAX TYPE_MAXIMUM(time_t)
-> >  #endif
-> >
-> > +#ifndef PATH_MAX
-> > +#define PATH_MAX 1024
-> > +#endif
-> > +
-> > +#ifndef IOV_MAX
-> > +#define IOV_MAX 1024
-> > +#endif
->
-> If we're going to add this, since we should be removing the
-> later duplication:
->
->   #define IOV_MAX 1024
->
-> in this same file
-
-Mmm, I wondered about that, although in that case it's
-"for when the host has no iov implementation at all
-and we're rolling our own".
-
-thanks
--- PMM
 
