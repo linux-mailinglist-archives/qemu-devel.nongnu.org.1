@@ -2,78 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAEA7835B5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3636B835B60
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:06:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRoN0-0007Nw-HX; Mon, 22 Jan 2024 02:05:22 -0500
+	id 1rRoNs-0008Ff-OC; Mon, 22 Jan 2024 02:06:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRoMx-0007MH-2b; Mon, 22 Jan 2024 02:05:19 -0500
-Received: from mail-vs1-xe34.google.com ([2607:f8b0:4864:20::e34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRoMv-0003Km-8R; Mon, 22 Jan 2024 02:05:18 -0500
-Received: by mail-vs1-xe34.google.com with SMTP id
- ada2fe7eead31-469b79d0efdso54151137.3; 
- Sun, 21 Jan 2024 23:05:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705907115; x=1706511915; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WZUclu2M2bkOpiKwNIhRIt21C90dQM6h2dS5CyYkPA4=;
- b=TzJ8/6FJktC/bd3UR+yj0KzFUKBwPoaiKWqBy474tbPqtWfuBxWJ8tyPPIbLZDo/Dg
- OjFErUspzMwwPX5eZ5Bluj9i5tor53pxX8lR1T/skmYwlv3FynJzP7bhlOa5h8IVnGn8
- nNNp1hxbSsgk5l2kEI/guY49eRxp25eJNXJUi6NYlw3uSKrIkUmlGmXrK8pqanS1BkQn
- dDjuVsz5cmCFHeRpRtI7+Mt/MxrXbx7hm3HE7M+6Aljv3uYjzgUIkkhaCZw5ReyCYw2B
- Tqe/HGqDdT9gNI1GgglnUqQG7B2wY/vPjrNOPHzCBckyDp/oroint7qGtcu5HH1akNYt
- 7E4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705907115; x=1706511915;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WZUclu2M2bkOpiKwNIhRIt21C90dQM6h2dS5CyYkPA4=;
- b=T2YATdToxU/WY/fRSl2VK8zO5FldvxqzvpgaXUEatALnhaSxQeDSTdVTZwSzC3ef2e
- lj2SlfmMkvMSL87esrhRV5ngrerA8IEr2GWGVPy+JNdQHOsCAgjrFqtrqgX7ItIjeImM
- CLFxWHEqa/GSY+C0gVh4LxjthdSnwbsptqq/f4M/wTjCyGQep8+ODj7VIdK+X6reWrup
- qJ7QERUEBDNiyCgLAwBKnHWzkYBGmCBRWn2C8QTjEBvYH3iNgg+3VF7FbGarCbGfG9xq
- lC+URJ64H/rgoo9wzRTiCYyBA3iigJrXJSf10egi95m7y7/Uu5nPI3kCBB+IZEl1V+bb
- Z1eg==
-X-Gm-Message-State: AOJu0YyiKZLlXXJZfOB7tSLhF+v0sa/HbMT3WWuEWLzBMCfTSoz6/wOq
- IeuMRkVwWd12NToiDrlnrymXNgM2FJh0IggAN2gDMX0aEuZMZJ3TmgJib+uXOHpOr73NJNlt8uK
- cAw4POKi2hX3eW4PjzJlg/mTr2wU=
-X-Google-Smtp-Source: AGHT+IGYm3qDcA8p6Rn/3Fos//8J2tIDfyqw01d4kJrLc82NWrR3YSto0pqbauBZWlweQWLz8ZlycjSaIixqQjN5zdc=
-X-Received: by 2002:a05:6102:357a:b0:469:5655:153e with SMTP id
- bh26-20020a056102357a00b004695655153emr1486111vsb.29.1705907115428; Sun, 21
- Jan 2024 23:05:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoNo-0008FP-E1
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:06:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoNm-0003Wg-6Q
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:06:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705907169;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=GO+wQaBQS8+w2ZAwVLW3/M2i3NJOkciOSJkzcI73pgs=;
+ b=OCsvV2VxKad6oxrRnPf0DmnhTTmFY8e0RRffOTERAwCFhaVJTRY/RXiiqlIIvkOsiAXs4u
+ I6U9cMtW3kUxUgej1G0GEiUmWi4CFq+z48nYsPx1C3+hWgy76mzrGM4cBfLWi234LSmUfK
+ o3vfbtvaaJ5BZyB8p3cSTlC4+cNmYM0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-t4ouGvrRPNeAcYi2Vez-3A-1; Mon, 22 Jan 2024 02:06:04 -0500
+X-MC-Unique: t4ouGvrRPNeAcYi2Vez-3A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E04A1013661;
+ Mon, 22 Jan 2024 07:06:04 +0000 (UTC)
+Received: from x1n.redhat.com (unknown [10.72.116.47])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 431A72166B31;
+ Mon, 22 Jan 2024 07:06:01 +0000 (UTC)
+From: peterx@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ peterx@redhat.com
+Subject: [PATCH] migration/docs: Explain two solutions for VMSD compatibility
+Date: Mon, 22 Jan 2024 15:06:00 +0800
+Message-ID: <20240122070600.16681-1-peterx@redhat.com>
 MIME-Version: 1.0
-References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-3-me@deliversmonkey.space>
-In-Reply-To: <20240109102930.405323-3-me@deliversmonkey.space>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 17:04:49 +1000
-Message-ID: <CAKmqyKNRk_on+ZqKBGGhmXnwLNdmHhXoXK+yTr5p3FEhezOJxg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] target/riscv: Add new CSR fields for S{sn, mn,
- m}pm extensions as part of Zjpm v0.8
-To: Alexey Baturo <baturo.alexey@gmail.com>
-Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e34;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe34.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,218 +76,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 8:32=E2=80=AFPM Alexey Baturo <baturo.alexey@gmail.c=
-om> wrote:
->
-> From: Alexey Baturo <baturo.alexey@gmail.com>
->
-> Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
+From: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+The current article is not extremely easy to follow, and may contain too
+much information for someone looking for solutions on VMSD compatibility
+issues.  Meanwhile, VMSD versioning is not discussed.
 
-Alistair
+I'm not yet sure whether we should just obsolete VMSD versioning; it's
+still used quite a lot.  And I had a feeling that for simple use cases
+where backward migration is not strongly required, device developers can
+still consider using it.  So in this patch I decided to keep it (anyway, we
+can't drop it in the near future because of massive existing users), and we
+can still allow user to use it in contexts where forward-only migration
+might be enough.
 
-> ---
->  target/riscv/cpu.h      |  8 ++++++++
->  target/riscv/cpu_bits.h |  3 +++
->  target/riscv/cpu_cfg.h  |  3 +++
->  target/riscv/csr.c      | 11 +++++++++++
->  target/riscv/machine.c  | 10 +++++++---
->  target/riscv/pmp.c      | 13 ++++++++++---
->  target/riscv/pmp.h      | 11 ++++++-----
->  7 files changed, 48 insertions(+), 11 deletions(-)
->
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index a43c8fba57..c9bed5c9fc 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -101,6 +101,14 @@ typedef enum {
->      EXT_STATUS_DIRTY,
->  } RISCVExtStatus;
->
-> +/* Enum holds PMM field values for Zjpm v0.8 extension */
-> +typedef enum {
-> +    PMM_FIELD_DISABLED =3D 0,
-> +    PMM_FIELD_RESERVED =3D 1,
-> +    PMM_FIELD_PMLEN7   =3D 2,
-> +    PMM_FIELD_PMLEN16  =3D 3,
-> +} RISCVPmPmm;
-> +
->  #define MMU_USER_IDX 3
->
->  #define MAX_RISCV_PMPS (16)
-> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> index 1c92458a01..7cf1049bf4 100644
-> --- a/target/riscv/cpu_bits.h
-> +++ b/target/riscv/cpu_bits.h
-> @@ -715,6 +715,7 @@ typedef enum RISCVException {
->  #define MENVCFG_CBIE                       (3UL << 4)
->  #define MENVCFG_CBCFE                      BIT(6)
->  #define MENVCFG_CBZE                       BIT(7)
-> +#define MENVCFG_PMM                        (3ULL << 32)
->  #define MENVCFG_ADUE                       (1ULL << 61)
->  #define MENVCFG_PBMTE                      (1ULL << 62)
->  #define MENVCFG_STCE                       (1ULL << 63)
-> @@ -728,11 +729,13 @@ typedef enum RISCVException {
->  #define SENVCFG_CBIE                       MENVCFG_CBIE
->  #define SENVCFG_CBCFE                      MENVCFG_CBCFE
->  #define SENVCFG_CBZE                       MENVCFG_CBZE
-> +#define SENVCFG_PMM                        MENVCFG_PMM
->
->  #define HENVCFG_FIOM                       MENVCFG_FIOM
->  #define HENVCFG_CBIE                       MENVCFG_CBIE
->  #define HENVCFG_CBCFE                      MENVCFG_CBCFE
->  #define HENVCFG_CBZE                       MENVCFG_CBZE
-> +#define HENVCFG_PMM                        MENVCFG_PMM
->  #define HENVCFG_ADUE                       MENVCFG_ADUE
->  #define HENVCFG_PBMTE                      MENVCFG_PBMTE
->  #define HENVCFG_STCE                       MENVCFG_STCE
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index f4605fb190..201f8af6ae 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -113,6 +113,9 @@ struct RISCVCPUConfig {
->      bool ext_ssaia;
->      bool ext_sscofpmf;
->      bool ext_smepmp;
-> +    bool ext_ssnpm;
-> +    bool ext_smnpm;
-> +    bool ext_smmpm;
->      bool rvv_ta_all_1s;
->      bool rvv_ma_all_1s;
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index ea4e1ac6ef..a67ba30494 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -527,6 +527,9 @@ static RISCVException have_mseccfg(CPURISCVState *env=
-, int csrno)
->      if (riscv_cpu_cfg(env)->ext_zkr) {
->          return RISCV_EXCP_NONE;
->      }
-> +    if (riscv_cpu_cfg(env)->ext_smmpm) {
-> +        return RISCV_EXCP_NONE;
-> +    }
->
->      return RISCV_EXCP_ILLEGAL_INST;
->  }
-> @@ -2030,6 +2033,10 @@ static RISCVException write_menvcfg(CPURISCVState =
-*env, int csrno,
->                  (cfg->ext_sstc ? MENVCFG_STCE : 0) |
->                  (cfg->ext_svadu ? MENVCFG_ADUE : 0);
->      }
-> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
-8 */
-> +    if (((val & MENVCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
-> +        mask |=3D MENVCFG_PMM;
-> +    }
->      env->menvcfg =3D (env->menvcfg & ~mask) | (val & mask);
->
->      return RISCV_EXCP_NONE;
-> @@ -2074,6 +2081,10 @@ static RISCVException write_senvcfg(CPURISCVState =
-*env, int csrno,
->                                      target_ulong val)
->  {
->      uint64_t mask =3D SENVCFG_FIOM | SENVCFG_CBIE | SENVCFG_CBCFE | SENV=
-CFG_CBZE;
-> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
-8 */
-> +    if (((val & SENVCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
-> +        mask |=3D SENVCFG_PMM;
-> +    }
->      RISCVException ret;
->
->      ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
-> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
-> index 71ee8bab19..0ad593ed5a 100644
-> --- a/target/riscv/machine.c
-> +++ b/target/riscv/machine.c
-> @@ -152,15 +152,19 @@ static const VMStateDescription vmstate_vector =3D =
-{
->
->  static bool pointermasking_needed(void *opaque)
->  {
-> -    return false;
-> +    RISCVCPU *cpu =3D opaque;
-> +    return cpu->cfg.ext_ssnpm || cpu->cfg.ext_smnpm || cpu->cfg.ext_smmp=
-m;
->  }
->
->  static const VMStateDescription vmstate_pointermasking =3D {
->      .name =3D "cpu/pointer_masking",
-> -    .version_id =3D 1,
-> -    .minimum_version_id =3D 1,
-> +    .version_id =3D 2,
-> +    .minimum_version_id =3D 2,
->      .needed =3D pointermasking_needed,
->      .fields =3D (VMStateField[]) {
-> +        VMSTATE_UINTTL(env.mseccfg, RISCVCPU),
-> +        VMSTATE_UINTTL(env.senvcfg, RISCVCPU),
-> +        VMSTATE_UINTTL(env.menvcfg, RISCVCPU),
->          VMSTATE_END_OF_LIST()
->      }
->  };
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 162e88a90a..893ccd58d8 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -576,6 +576,12 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, ui=
-nt32_t addr_index)
->  void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
->  {
->      int i;
-> +    uint64_t mask =3D MSECCFG_MMWP | MSECCFG_MML;
-> +
-> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
-8 */
-> +    if (((val & MSECCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
-> +        mask |=3D MSECCFG_PMM;
-> +    }
->
->      trace_mseccfg_csr_write(env->mhartid, val);
->
-> @@ -591,12 +597,13 @@ void mseccfg_csr_write(CPURISCVState *env, target_u=
-long val)
->
->      if (riscv_cpu_cfg(env)->ext_smepmp) {
->          /* Sticky bits */
-> -        val |=3D (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
-> -        if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
-> +        val |=3D (env->mseccfg & mask);
-> +        if ((val ^ env->mseccfg) & mask) {
->              tlb_flush(env_cpu(env));
->          }
->      } else {
-> -        val &=3D ~(MSECCFG_MMWP | MSECCFG_MML | MSECCFG_RLB);
-> +        mask |=3D MSECCFG_RLB;
-> +        val &=3D ~(mask);
->      }
->
->      env->mseccfg =3D val;
-> diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-> index 9af8614cd4..b3ca51c26d 100644
-> --- a/target/riscv/pmp.h
-> +++ b/target/riscv/pmp.h
-> @@ -40,11 +40,12 @@ typedef enum {
->  } pmp_am_t;
->
->  typedef enum {
-> -    MSECCFG_MML   =3D 1 << 0,
-> -    MSECCFG_MMWP  =3D 1 << 1,
-> -    MSECCFG_RLB   =3D 1 << 2,
-> -    MSECCFG_USEED =3D 1 << 8,
-> -    MSECCFG_SSEED =3D 1 << 9
-> +    MSECCFG_MML       =3D 1 << 0,
-> +    MSECCFG_MMWP      =3D 1 << 1,
-> +    MSECCFG_RLB       =3D 1 << 2,
-> +    MSECCFG_USEED     =3D 1 << 8,
-> +    MSECCFG_SSEED     =3D 1 << 9,
-> +    MSECCFG_PMM       =3D 3UL << 32,
->  } mseccfg_field_t;
->
->  typedef struct {
-> --
-> 2.34.1
->
->
+This doc patch does below changes:
+
+  - Rename the page from "Backward compatibility" to "Migration
+  compatibility", to avoid using "backward" as a word (because we'll want
+  to identify "forward" / "backward" migrations in the new doc)
+
+  - Add a TOC for this page for better indexing
+
+  - A new section to explain what is forward/backward migration
+
+  - A new small section for VMSD just to make things complete
+
+  - Explain the two ways to make VMSD compatible with old qemu binaries
+
+    For this one, I added a small section on how to use VMSD versioning for
+    new fields just to start such documents.  Rename the old "How backwards
+    compatibility works" section to "machine type based (forward+backward
+    migration)" to be the 2nd solution (I called it machine type based
+    solution). When at it, I provided a summary and a TODO for the 2nd
+    solution.
+
+  - A new section to explain which solution to choose
+
+  - Moved the other two existing sections into "Extended readings", because
+  they can be even further away to most device developers
+
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ docs/devel/migration/compatibility.rst | 140 ++++++++++++++++++++++++-
+ 1 file changed, 137 insertions(+), 3 deletions(-)
+
+diff --git a/docs/devel/migration/compatibility.rst b/docs/devel/migration/compatibility.rst
+index 5a5417ef06..ea9da201ef 100644
+--- a/docs/devel/migration/compatibility.rst
++++ b/docs/devel/migration/compatibility.rst
+@@ -1,8 +1,139 @@
+-Backwards compatibility
+ =======================
++Migration compatibility
++=======================
++
++Migration is a hard topic sometimes.  One of the major reason is that it
++has a strict compatibility requirement - a migration (live or not) can
++happen between two different versions of QEMUs, so QEMU needs to make sure
++the migration can work across different versions of QEMU binaries.
++
++This document majorly discusses the compatibility requirement of forward /
++backward migrations that QEMU need to maintain, and what QEMU developers
++should do to achieve such compatibility requirements across different QEMU
++versions.
++
++.. contents::
++
++Types of migrations (forward / backward)
++========================================
++
++Let's firstly define the terms **forward migration** and **backward
++migration**.
++
++.. note::
++
++    To simplify the use case, we always discuss between two consecutive
++    versions of QEMU major releases (between QEMU version *N* and QEMU
++    version *N-1*).  But logically it applies to the case where the two
++    QEMU binaries involved contains more than one major version difference.
++
++.. _forward_migration:
++
++**Forward migration**: can be seen as the use case where a VM cluster can
++upgrade its nodes to a newer version of QEMU (version *N*) from an older
++version of QEMU (version *N-1*).
++
++.. _backward_migration:
++
++**Backward migration**: can be seen as the use case where a VM cluster
++would like to migrate from a newer version of QEMU (version *N*) back to an
++even older version of QEMU (version *N-1*).
++
++A forward migration is more common, where system upgrades are needed.  In
++this case, the upgrade can be done seamlessly by live migrating the old VMs
++to the new VMs with the new binaries.
++
++A backward migration can be less common OTOH, because downgrade is less
++common than upgrade for whatever reasons.  However for a production level
++system setup, this should also be allowed, because a cluster can contain
++different versions of QEMU binary.  It should be always allowed to migrate
++between old and new hosts as long as the machine type is supported across
++all the relevant hosts / nodes.
++
++VMState description data structure (VMSD)
++=========================================
++
++VMSD (or in the complete form, **VMStateDescription**) is the data
++structure that QEMU uses to describe data to be migrated for devices.
++Each device should provide its own VMSD structure to describe what it needs
++to be migrated when a VM live migration is requested.
++
++Device VMSD compatibility
++=========================
++
++Then if the VMSD structures need changing, how does the device maintain
++compatibilty?
+ 
+-How backwards compatibility works
+----------------------------------
++Here we only discuss VMSD-based migrations.  If one device is not using
++VMSD to migrate its device data, it's considered part of "advanced users",
++then this document may not apply anymore.  If you're writting a new device,
++please always consider starting with VMSD-based migration model.
++
++Consider the case where a device can start to support a new feature in the
++current release, where it wasn't supported before.  The new feature may
++require some new device states to be migrated (which can be new VMSD fields
++to be added, or new subsections).  The same question needs to be answered
++when one would like to modify an existing VMSD fields / layouts to fix a
++bug, and so on.
++
++Depending on the goal, the solution to this problem may vary.
++
++If one would like to provide a full support of migration between whatever
++versions, one can try to implement it using :ref:`machine_type_compat`
++solution.  If one would like to provide a fundamental upgrade-only
++compatibility, one could consider to use the simpler
++:ref:`vmsd_versioning_compat` solution.
++
++Solutions
++=========
++
++.. _vmsd_versioning_compat:
++
++VMSD versioning (forward migration only)
++----------------------------------------
++
++This is normally the simplest way to support cross-version QEMU live
++migration. The trade-off is backward migration will not be supported. It
++means migrations from new QEMU binaries to old QEMU binaries can fail. It's
++because even if the new QEMU can understand the old version of VMSD by
++proper versioning of the VMSD fields, the old QEMU will not be able to
++understand the new version of VMSD layout.  Then when someone migrates a VM
++using the new VMSD to an older version of QEMU, the old QEMU will not
++accept the new migration stream, reporting that the VSMD version too new.
++
++Please have a look at **include/migration/vmstate.h** for more information
++on how to use VMSD versioning.
++
++Taking an example of adding a new field for migration.  The change will
++need to at least contain two parts:
++
++  - Boost existing VMSD version.
++
++  - Add the new VMSD field with the boosted version, with specific
++    **VMSTATE_\*_V()** macros.  For example, **VMSTATE_UINT8_V()** will
++    define an uint8 typed VMSD field with version specified.
++
++.. _machine_type_compat:
++
++Machine type based (forward+backward migration)
++-----------------------------------------------
++
++QEMU developers can leverage machine type compatibile properties to provide
++a fully migratable device / protocol, so the migration behavior will be
++defined by the machine type, no matter which QEMU binary will be used.  One
++can reference the entries defined in **hw_compat_\*** global properties for
++examples.
++
++Comparing to VMSD versioning approach above, this may require more code
++changes, but provide a higher level of compatibility that is bound to the
++machine type being used.  To be explicit, since the migration behavior is
++bound to machine type, it will support both forward migration and backward
++migration as long as the machine type is supported.
++
++.. note::
++
++   Currently this section is pretty long.  TODO: rewrite this section to
++   make it easier for QEMU developers to understand.
+ 
+ When we do migration, we have two QEMU processes: the source and the
+ target.  There are two cases, they are the same version or they are
+@@ -217,6 +348,9 @@ machine types to have the right value::
+          ...
+      };
+ 
++Extended readings
++=================
++
+ A device with different features on both sides
+ ----------------------------------------------
+ 
+-- 
+2.43.0
+
 
