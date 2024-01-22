@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A00835CDF
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D83835CE0
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:42:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRprx-0006N5-Vp; Mon, 22 Jan 2024 03:41:26 -0500
+	id 1rRpry-0006Nh-0V; Mon, 22 Jan 2024 03:41:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rRprd-0006KG-TL
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:06 -0500
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ id 1rRprh-0006Ke-Ge
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:10 -0500
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rRprb-0005iP-MM
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:05 -0500
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-42a35982c09so10882901cf.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:41:03 -0800 (PST)
+ id 1rRprg-0005ih-1A
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:09 -0500
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-429915eefa5so20662671cf.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:41:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705912863; x=1706517663; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705912867; x=1706517667; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5M1U3PLwXexTP7FoEOoShW80d0ipsAq8WqxKIJJqwtU=;
- b=W99BD2U/yQhJBlTBvoKmMJAbELkv14tvMcTzBLX1fA51FrKAryN1M8CTPMIeeM9TDB
- C+I1741Cff/FGsTjUz/hyDxM418mfEbxxs6rx/YROMXJEdb0AQDikGGkytyLtBY/NdNt
- 1hDD1T9Y+/KDmZPWG1DYiAS9keYNl72mJB/P/xgM0ylpgOCVEkXIH/QUWgTUAGqWHkcd
- un41mmAAEeTvXp5fTK3cnSWxyRz6knzCJ7i5yg/gojkJ8ivSMkeIcdLP64ghh4yphq5n
- zjp921qnJ6EW+PNFZZY/Tyldyzpk+SWiY9s8q6VQfaJcTAyQP0Nqp7hQmLnRpLsIK8+F
- ERfA==
+ bh=iTpqQpK/d1Oo7SY8Sg/cqZiMJrn3HKctPhkhbjrYtMo=;
+ b=ehB6PjFPkNkL+HJyABKHQNoovd65mF7exILOAGTRYgfq9HpRwHEkWhDv8/QdV2jprs
+ F7usq2byVWNeo6ZUTc4FmJqbtzAsF/qhMebwyrbEU/mG8ZsI+0Vu7ewQQKRp6mUhdlw1
+ 2cM3vP3PYUqVfW5ZoJPNjWQmvadaZVk0Go8FTzSJfFt7PcFJK40dhMRQ31NH2qjlMsT6
+ 2FYZdylrJiEtdFkHWr7l05vkuAZle2h5CHPBfaMJdbp3FmKUAFUs3FxOiYXMIjrZv+q2
+ Idzg4tTiXfPGHf0KHsWc4im01geK72pfxwPXzbJ9qb3Ez3ckkwCs+nOsGC2vhuMws50n
+ I2tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705912863; x=1706517663;
+ d=1e100.net; s=20230601; t=1705912867; x=1706517667;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5M1U3PLwXexTP7FoEOoShW80d0ipsAq8WqxKIJJqwtU=;
- b=uC3erVNPA6+VwAUFv4G/z1dIblofwzZcxIQd/GZWA3IUoIsqSQEX9gAPSkUDCGadl7
- RbFv1pH9a+UWvUYcvlrR+jwyN+S09oijIqHN3uVVxbxQxvFu5LrYDOjzH2PdJU3XyKXv
- ysXTUp9Zvb4FNkpHGi4wXwFHsCP7l9vuYkD+kwmk02NHPGHQhB6xGR6q/snGNmQ4Gm7S
- t+GR6qwJBnqyQHGqJElLzuq64WCfox1TmIfguKQ8qyC85hlt/I94o9ht+Ogb9+uPUHb6
- Ti1yZ7uW7DiVBY0SyeFetitjd3BsD0QBuKQExFTjSIZfNnhUVjZ+80d9Y7ooX4jOgwqZ
- 5Epw==
-X-Gm-Message-State: AOJu0Yykay534aMnUdBP8DJi9ZCv/ujKRaqRyUP0A+FGmMcEMCUDcHiy
- hEx2RUKWytU/aRdioBlV7ZGZuUwrUFVjURsBzFRheCBSGVFXOJjYdXT8381H6klbCWF1mLcEHWy
- 1NQh9/F6XASSIsTRvPDwFvE/4Ix0=
-X-Google-Smtp-Source: AGHT+IGa/e2k0xj8tFhsQBzQMqxv6cQ6WdMtGfOGjL4FfkkrFIkcnhMOPkMhIIixSMIN0BkvXMNRt4Ug5VKN62vwyzo=
-X-Received: by 2002:a05:622a:181b:b0:42a:37cc:cb3c with SMTP id
- t27-20020a05622a181b00b0042a37cccb3cmr3590981qtc.73.1705912862713; Mon, 22
- Jan 2024 00:41:02 -0800 (PST)
+ bh=iTpqQpK/d1Oo7SY8Sg/cqZiMJrn3HKctPhkhbjrYtMo=;
+ b=FGZjw1GUNXbvWAj6RjQbrkNRP/1w1XSI+z0ESxUGh+1IHvBZRaezP/JEmqEfnuuRgB
+ S22gHj6RCSctEP2ZVLyFlXUTkev9WNFMtuaz2sYMhrjgUCMH5O8Gy6Ie1Q9aBIQgpT+R
+ LBcFyeo8Qp/ub05V/WVCJpCZYEgLgQ5UuhSLG+uuPmlPlR+eKHdsBRcyK90eGluTx78L
+ 3u3Xi4qwa3KOFK7FLNMr88LkZP2Nok5IkPydnxBESJ/QYXm4R5shaYKXlLwkNdfLySZD
+ kMqvGTI+eolZqlWEpjp5YHjSgUZogO3ycRFn9C/OzkmyPL3mwd+wEDFKok/+RJ8s7kp6
+ QwaA==
+X-Gm-Message-State: AOJu0Ywl/KrNJU/soimMbzh6xMLMpc7m5yrV6kLzzEZMrm+FExoCGTaX
+ d3thlNGB8/Q0gP5EgxjeLSduT08i/HmClv2BaVUD1HzIop/rVPhbtYXHj42rCosjuqmPWPUdOMq
+ tVgEKaZ6FSR/kobhwtIk6kY8v+/Y=
+X-Google-Smtp-Source: AGHT+IEB7lX+uTdHnTvkc1I8j+qaG7n110SJWwctbMnGcJNrdphRLtwroJWXhdd4i+5+Rp8vwqc/kmiHkHSuxJMkWJY=
+X-Received: by 2002:ac8:5acb:0:b0:42a:3090:e7fb with SMTP id
+ d11-20020ac85acb000000b0042a3090e7fbmr4607281qtd.3.1705912867022; Mon, 22 Jan
+ 2024 00:41:07 -0800 (PST)
 MIME-Version: 1.0
 References: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
- <20240120003013.1829757-4-vivek.kasireddy@intel.com>
-In-Reply-To: <20240120003013.1829757-4-vivek.kasireddy@intel.com>
+ <20240120003013.1829757-3-vivek.kasireddy@intel.com>
+In-Reply-To: <20240120003013.1829757-3-vivek.kasireddy@intel.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 22 Jan 2024 12:40:51 +0400
-Message-ID: <CAJ+F1CKUr7dGjVG+Fcvc4sBRFAncBRTTQ76uZs9SkNCsQgBZUg@mail.gmail.com>
-Subject: Re: [PATCH v1 3/7] ui/spice: Submit the gl_draw requests at 60 FPS
- for remote clients
+Date: Mon, 22 Jan 2024 12:40:56 +0400
+Message-ID: <CAJ+F1CJ2TC+jMjGovWo==CAJJz0RKdo-=UG-3h92uJf7OOUNaw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/7] ui/spice: Enable gl=on option for non-local or
+ remote clients
 To: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,26 +95,12 @@ Hi
 On Sat, Jan 20, 2024 at 4:54=E2=80=AFAM Vivek Kasireddy
 <vivek.kasireddy@intel.com> wrote:
 >
-> In the specific case where the display layer (virtio-gpu) is using
-> dmabuf, and if remote clients are enabled (-spice gl=3Don,port=3Dxxxx),
-> it makes sense to limit the maximum (streaming) rate to 60 FPS
-> using the GUI timer. This matches the behavior of GTK UI where the
-> display updates are submitted at 60 FPS (assuming the underlying
-> mode is WxY@60).
-
-One of the issues with this approach is that the DMABUF isn't owned by
-the consumer. By delaying the usage of it, we risk having
-damaged/invalid updates.
-
-It would be great if we could have a mechanism for double/triple
-buffering with virtio-gpu, as far as I know this is not possible yet.
-
-I wonder if setting dpy_set_ui_info() with the fixed refresh_rate is
-enough for the guest to have a fixed FPS. It will only work with gfx
-hw that support ui_info() though.
-
-
-
+> Newer versions of Spice server should be able to accept dmabuf
+> fds from Qemu for clients that are connected via the network.
+> In other words, when this option is enabled, Qemu would share
+> a dmabuf fd with Spice which would encode and send the data
+> associated with the fd to a client that could be located on
+> a different machine.
 >
 > Cc: Gerd Hoffmann <kraxel@redhat.com>
 > Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
@@ -122,93 +108,58 @@ hw that support ui_info() though.
 > Cc: Dongwon Kim <dongwon.kim@intel.com>
 > Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 > ---
->  ui/spice-display.c | 38 ++++++++++++++++++++++++++++----------
->  1 file changed, 28 insertions(+), 10 deletions(-)
+>  include/ui/spice-display.h | 1 +
+>  ui/spice-core.c            | 4 ++++
+>  ui/spice-display.c         | 1 +
+>  3 files changed, 6 insertions(+)
 >
+> diff --git a/include/ui/spice-display.h b/include/ui/spice-display.h
+> index e1a9b36185..f4922dd74b 100644
+> --- a/include/ui/spice-display.h
+> +++ b/include/ui/spice-display.h
+> @@ -151,6 +151,7 @@ struct SimpleSpiceCursor {
+>  };
+>
+>  extern bool spice_opengl;
+> +extern bool remote_client;
+>
+>  int qemu_spice_rect_is_empty(const QXLRect* r);
+>  void qemu_spice_rect_union(QXLRect *dest, const QXLRect *r);
+> diff --git a/ui/spice-core.c b/ui/spice-core.c
+> index 13bfbe4e89..3b9a54685f 100644
+> --- a/ui/spice-core.c
+> +++ b/ui/spice-core.c
+> @@ -849,9 +849,13 @@ static void qemu_spice_init(void)
+>  #ifdef HAVE_SPICE_GL
+>      if (qemu_opt_get_bool(opts, "gl", 0)) {
+>          if ((port !=3D 0) || (tls_port !=3D 0)) {
+> +#if SPICE_SERVER_VERSION >=3D 0x000f03 /* release 0.15.3 */
+
+(ok, we should wait for the Spice series to be merged)
+
+
+> +            remote_client =3D 1;
+> +#else
+>              error_report("SPICE GL support is local-only for now and "
+>                           "incompatible with -spice port/tls-port");
+>              exit(1);
+> +#endif
+>          }
+>          egl_init(qemu_opt_get(opts, "rendernode"), DISPLAYGL_MODE_ON, &e=
+rror_fatal);
+>          spice_opengl =3D 1;
 > diff --git a/ui/spice-display.c b/ui/spice-display.c
-> index 384b8508d4..90c04623ec 100644
+> index 6eb98a5a5c..384b8508d4 100644
 > --- a/ui/spice-display.c
 > +++ b/ui/spice-display.c
-> @@ -841,12 +841,31 @@ static void qemu_spice_gl_block_timer(void *opaque)
->      warn_report("spice: no gl-draw-done within one second");
->  }
+> @@ -29,6 +29,7 @@
+>  #include "ui/spice-display.h"
 >
-> +static void spice_gl_draw(SimpleSpiceDisplay *ssd,
-> +                           uint32_t x, uint32_t y, uint32_t w, uint32_t =
-h)
-> +{
-> +    uint64_t cookie;
-> +
-> +    cookie =3D (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0=
-);
-> +    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
-> +}
-> +
->  static void spice_gl_refresh(DisplayChangeListener *dcl)
+>  bool spice_opengl;
+> +bool remote_client;
+>
+>  int qemu_spice_rect_is_empty(const QXLRect* r)
 >  {
->      SimpleSpiceDisplay *ssd =3D container_of(dcl, SimpleSpiceDisplay, dc=
-l);
-> -    uint64_t cookie;
-> +    QemuDmaBuf *dmabuf =3D ssd->guest_dmabuf;
->
-> -    if (!ssd->ds || qemu_console_is_gl_blocked(ssd->dcl.con)) {
-> +    if (!ssd->ds) {
-> +        return;
-> +    }
-> +
-> +    if (qemu_console_is_gl_blocked(ssd->dcl.con)) {
-> +        if (remote_client && ssd->gl_updates && dmabuf) {
-> +            spice_gl_draw(ssd, 0, 0, dmabuf->width, dmabuf->height);
-> +            ssd->gl_updates =3D 0;
-> +            /* To stream at 60 FPS, the (GUI) timer delay needs to be ~1=
-7 ms */
-> +            dcl->update_interval =3D 1000 / (2 * GUI_REFRESH_INTERVAL_DE=
-FAULT) + 1;
-> +        }
->          return;
->      }
->
-> @@ -854,11 +873,8 @@ static void spice_gl_refresh(DisplayChangeListener *=
-dcl)
->      if (ssd->gl_updates && ssd->have_surface) {
->          qemu_spice_gl_block(ssd, true);
->          glFlush();
-> -        cookie =3D (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DON=
-E, 0);
-> -        spice_qxl_gl_draw_async(&ssd->qxl, 0, 0,
-> -                                surface_width(ssd->ds),
-> -                                surface_height(ssd->ds),
-> -                                cookie);
-> +        spice_gl_draw(ssd, 0, 0,
-> +                      surface_width(ssd->ds), surface_height(ssd->ds));
->          ssd->gl_updates =3D 0;
->      }
->  }
-> @@ -1025,7 +1041,6 @@ static void qemu_spice_gl_update(DisplayChangeListe=
-ner *dcl,
->      EGLint stride =3D 0, fourcc =3D 0;
->      bool render_cursor =3D false;
->      bool y_0_top =3D false; /* FIXME */
-> -    uint64_t cookie;
->      int fd;
->
->      if (!ssd->have_scanout) {
-> @@ -1098,8 +1113,11 @@ static void qemu_spice_gl_update(DisplayChangeList=
-ener *dcl,
->      trace_qemu_spice_gl_update(ssd->qxl.id, w, h, x, y);
->      qemu_spice_gl_block(ssd, true);
->      glFlush();
-> -    cookie =3D (uintptr_t)qxl_cookie_new(QXL_COOKIE_TYPE_GL_DRAW_DONE, 0=
-);
-> -    spice_qxl_gl_draw_async(&ssd->qxl, x, y, w, h, cookie);
-> +    if (remote_client) {
-> +        ssd->gl_updates++;
-> +    } else {
-> +        spice_gl_draw(ssd, x, y, w, h);
-> +    }
->  }
->
->  static const DisplayChangeListenerOps display_listener_gl_ops =3D {
 > --
 > 2.39.2
 >
