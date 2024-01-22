@@ -2,94 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A69836C05
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:55:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91193836C07
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:56:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxaA-0006VL-Ms; Mon, 22 Jan 2024 11:55:34 -0500
+	id 1rRxaU-0006g6-Te; Mon, 22 Jan 2024 11:55:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rRxa3-0006UP-Mz
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rRxa1-0004ih-Ch
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705942524;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rRxaT-0006dr-2O
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:53 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rRxaQ-0004ki-HA
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:52 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id E3F931F388;
+ Mon, 22 Jan 2024 16:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705942549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=i5LfdYktbYhmT2MomwJOqpNyVmyw27tPHxLECtYqtak=;
- b=gZMt+D0lS0qHTDAQgzGGmZYGJju5X6pWJ40is8WweJMLzkIE44Rh1nYOSt12QUNoz3EmDt
- WYJNypAQ81MyQmxK57L7Ji1phygdvV2JEh0N5vHM1IERpKQQZo50vMXjhhFOlogUDFI0rH
- 8U3hJTNNjXgsA/KLRCad3eK50zZhvyo=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-Fq0KNM0rPiOApSKsgqQYUA-1; Mon, 22 Jan 2024 11:55:22 -0500
-X-MC-Unique: Fq0KNM0rPiOApSKsgqQYUA-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6854ad24a0cso41878586d6.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:55:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705942519; x=1706547319;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i5LfdYktbYhmT2MomwJOqpNyVmyw27tPHxLECtYqtak=;
- b=Ik5PpqmGae8LBKLkH1HjWV/qRVABKOR0PzhiLu+9c5DICPA3Ef6q9I2C3hcwQpeHu0
- YdPwjN2NimbrgXN2Qa19R8kPBixcez2zV+reqP9+y6eV2ziduCDXzpsEvXUF3zoU3fIC
- Qgd20SwFGlYaIvSu0VVwQaMn3Y7HjyDZczX4ekE7JTQ7lGz98CH8WQVFZSowF3xN3kk8
- wIk8rngJxwKK3Yw1QspjskJLcOTx3I0K0K8jm1hu2DZ3fGYVECxLco4d7SetZHwa/QT0
- aLdZWQaTHb81NxIgrhLMg5MT7IP9+iKUvFjtXgF71dztiZ0XGBZ7guXSXh4McnwRzPKU
- bndA==
-X-Gm-Message-State: AOJu0YxnJMK8LcXQ09WOGz23DsmarTk9wwH/WkK6KPKK70V8nccHS1P2
- /F6f1pskmluOMt1JEJhAVsgkbRgH3lWTnaqP/A9RdFK/5cpYJ6AH4Uqalh1FrSiz+JGVEb2s5TW
- kNSlvhfYLDpNdjmt2p3S3Bioe4oeFCkzdO9cE4fr6FbS0KLc3lXbb
-X-Received: by 2002:a05:6214:509b:b0:686:5374:1186 with SMTP id
- kk27-20020a056214509b00b0068653741186mr4525081qvb.117.1705942519512; 
- Mon, 22 Jan 2024 08:55:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWmQSKQkwygt5zZuv9+N1wI+X3VjtAOhf4NLrceHFhKZs1JL1eBcE9pnLbBdxhxUYqMjBEoA==
-X-Received: by 2002:a05:6214:509b:b0:686:5374:1186 with SMTP id
- kk27-20020a056214509b00b0068653741186mr4525071qvb.117.1705942519157; 
- Mon, 22 Jan 2024 08:55:19 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- nc5-20020a0562142dc500b00685e2ffcaf5sm2197878qvb.38.2024.01.22.08.55.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 08:55:18 -0800 (PST)
-Message-ID: <f2ca6b36-922c-42e4-98d6-59616099980a@redhat.com>
-Date: Mon, 22 Jan 2024 17:55:15 +0100
+ bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
+ b=h7BV3gdUrycWtX6fb4+DlHod81r2zJDFeWqQIqN0UDZihFB9gx3eQc2nCBEXfhhRyGIza9
+ VKkQoHJ2JdAPASlhFV8DxSu6OSV2SDm9hdPLDGe5CUQ+Oe2nJyo07QkTnCJqxrlz9aha7R
+ K1ZxHXg8KhEusq3XBJ0SeDGwBh4x89A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705942549;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
+ b=EzVna9xZLr+3IboxXKcprJhKtn0UX+mVY30bUDccOpP//ZJU8a724g8kVqtyOW4eoLhS8P
+ Sn5cH2/x4JqBsSCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1705942548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
+ b=BHnJQxuY+l7FlW6+vimwqcVPm1NRUNZumAqFyUh2etbO+hpGESkSd0R0WoTBFM/5eQHzCE
+ o0Bn8l/PYt7GiouSb88yqmawZSUO5WJZ74xONKFUjrDIT3G6ewnsooYfImka7T2hvdN50Y
+ 8AKc4Yq2/Imd8k1LJTTRa/D2R5Ib2+M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1705942548;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
+ b=LIMRN0iVOFHaT8CUgUbaCclQcGmjo7kUlIG8tWvmPlLFS95t6GGZnk+zsmMB+TJB6IXCXr
+ 2T58zdas5KLff5DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 661D4136A4;
+ Mon, 22 Jan 2024 16:55:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VXK1CxSermUeBwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 22 Jan 2024 16:55:48 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/5] migration: Fix use-after-free of migration state
+ object
+In-Reply-To: <Za5BkH5au-5h0imh@x1n>
+References: <20240119233922.32588-1-farosas@suse.de>
+ <20240119233922.32588-2-farosas@suse.de> <Za46DZfpCGe9rdLs@x1n>
+ <Za5BkH5au-5h0imh@x1n>
+Date: Mon, 22 Jan 2024 13:55:45 -0300
+Message-ID: <87le8hgve6.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv1 2/6] hw/pci: introduce
- pci_device_set/unset_iommu_device()
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun
- <yi.y.sun@linux.intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-3-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240115101313.131139-3-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.988]; RCPT_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,168 +113,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/15/24 11:13, Zhenzhong Duan wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
+Peter Xu <peterx@redhat.com> writes:
+
+> On Mon, Jan 22, 2024 at 05:49:01PM +0800, Peter Xu wrote:
+>> On Fri, Jan 19, 2024 at 08:39:18PM -0300, Fabiano Rosas wrote:
+>> > We're currently allowing the process_incoming_migration_bh bottom-half
+>> > to run without holding a reference to the 'current_migration' object,
+>> > which leads to a segmentation fault if the BH is still live after
+>> > migration_shutdown() has dropped the last reference to
+>> > current_migration.
+>> > 
+>> > In my system the bug manifests as migrate_multifd() returning true
+>> > when it shouldn't and multifd_load_shutdown() calling
+>> > multifd_recv_terminate_threads() which crashes due to an uninitialized
+>> > multifd_recv_state.
+>> > 
+>> > Fix the issue by holding a reference to the object when scheduling the
+>> > BH and dropping it before returning from the BH. The same is already
+>> > done for the cleanup_bh at migrate_fd_cleanup_schedule().
+>> > 
+>> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> > ---
+>> >  migration/migration.c | 2 ++
+>> >  1 file changed, 2 insertions(+)
+>> > 
+>> > diff --git a/migration/migration.c b/migration/migration.c
+>> > index 219447dea1..cf17b68e57 100644
+>> > --- a/migration/migration.c
+>> > +++ b/migration/migration.c
+>> > @@ -648,6 +648,7 @@ static void process_incoming_migration_bh(void *opaque)
+>> >                        MIGRATION_STATUS_COMPLETED);
+>> >      qemu_bh_delete(mis->bh);
+>> >      migration_incoming_state_destroy();
+>> > +    object_unref(OBJECT(migrate_get_current()));
+>> >  }
+>> >  
+>> >  static void coroutine_fn
+>> > @@ -713,6 +714,7 @@ process_incoming_migration_co(void *opaque)
+>> >      }
+>> >  
+>> >      mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
+>> > +    object_ref(OBJECT(migrate_get_current()));
+>> >      qemu_bh_schedule(mis->bh);
+>> >      return;
+>> >  fail:
+>> > -- 
+>> > 2.35.3
+>> > 
+>> 
+> I know I missed something, but I'd better ask: use-after-free needs to
+> happen only after migration_shutdown() / qemu_cleanup(), am I right?
 > 
-> This adds pci_device_set/unset_iommu_device() to set/unset
-> IOMMUFDDevice for a given PCIe device. Caller of set
-> should fail if set operation fails.
-> 
-> Extract out pci_device_get_iommu_bus_devfn() to facilitate
-> implementation of pci_device_set/unset_iommu_device().
-> 
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   include/hw/pci/pci.h | 39 ++++++++++++++++++++++++++++++++++-
->   hw/pci/pci.c         | 49 +++++++++++++++++++++++++++++++++++++++++++-
->   2 files changed, 86 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index fa6313aabc..a810c0ec74 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -7,6 +7,8 @@
->   /* PCI includes legacy ISA access.  */
->   #include "hw/isa/isa.h"
->   
-> +#include "sysemu/iommufd_device.h"
-> +
->   extern bool pci_available;
->   
->   /* PCI bus */
-> @@ -384,10 +386,45 @@ typedef struct PCIIOMMUOps {
->        *
->        * @devfn: device and function number
->        */
-> -   AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-> +    AddressSpace * (*get_address_space)(PCIBus *bus, void *opaque, int devfn);
-> +    /**
-> +     * @set_iommu_device: set iommufd device for a PCI device to vIOMMU
-> +     *
-> +     * Optional callback, if not implemented in vIOMMU, then vIOMMU can't
-> +     * utilize iommufd specific features.
-> +     *
-> +     * Return true if iommufd device is accepted, or else return false with
-> +     * errp set.
-> +     *
-> +     * @bus: the #PCIBus of the PCI device.
-> +     *
-> +     * @opaque: the data passed to pci_setup_iommu().
-> +     *
-> +     * @devfn: device and function number of the PCI device.
-> +     *
-> +     * @idev: the data structure representing iommufd device.
-> +     *
-> +     */
-> +    int (*set_iommu_device)(PCIBus *bus, void *opaque, int32_t devfn,
-> +                            IOMMUFDDevice *idev, Error **errp);
-> +    /**
-> +     * @unset_iommu_device: unset iommufd device for a PCI device from vIOMMU
-> +     *
-> +     * Optional callback.
-> +     *
-> +     * @bus: the #PCIBus of the PCI device.
-> +     *
-> +     * @opaque: the data passed to pci_setup_iommu().
-> +     *
-> +     * @devfn: device and function number of the PCI device.
-> +     */
-> +    void (*unset_iommu_device)(PCIBus *bus, void *opaque, int32_t devfn);
->   } PCIIOMMUOps;
->   
->   AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-> +int pci_device_set_iommu_device(PCIDevice *dev, IOMMUFDDevice *idev,
-> +                                Error **errp);
-> +void pci_device_unset_iommu_device(PCIDevice *dev);
->   
->   /**
->    * pci_setup_iommu: Initialize specific IOMMU handlers for a PCIBus
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 76080af580..3848662f95 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2672,7 +2672,10 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
->       }
->   }
->   
-> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +static void pci_device_get_iommu_bus_devfn(PCIDevice *dev,
-> +                                           PCIBus **aliased_pbus,
-> +                                           PCIBus **piommu_bus,
-> +                                           uint8_t *aliased_pdevfn)
->   {
->       PCIBus *bus = pci_get_bus(dev);
->       PCIBus *iommu_bus = bus;
-> @@ -2717,6 +2720,18 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->   
->           iommu_bus = parent_bus;
->       }
-> +    *aliased_pbus = bus;
-> +    *piommu_bus = iommu_bus;
-> +    *aliased_pdevfn = devfn;
-> +}
-> +
-> +AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +{
-> +    PCIBus *bus;
-> +    PCIBus *iommu_bus;
-> +    uint8_t devfn;
-> +
-> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
->       if (!pci_bus_bypass_iommu(bus) && iommu_bus->iommu_ops) {
->           return iommu_bus->iommu_ops->get_address_space(bus,
->                                    iommu_bus->iommu_opaque, devfn);
-> @@ -2724,6 +2739,38 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->       return &address_space_memory;
->   }
->   
-> +int pci_device_set_iommu_device(PCIDevice *dev, IOMMUFDDevice *idev,
-> +                                Error **errp)
-> +{
-> +    PCIBus *bus;
-> +    PCIBus *iommu_bus;
-> +    uint8_t devfn;
-> +
-> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
+> If so, shouldn't qemu_main_loop() already returned?  Then how could any BH
+> keep running (including migration's) without qemu_main_loop()?
 
-Why do we test iommu_bus in pci_device_un/set_iommu_device routines and
-not in pci_device_iommu_address_space() ?
+The aio_bh_poll() -> aio_bh_call() sequence doesn't depend on
+qemu_main_loop(). In the stack you found below it happens after
+aio_wait_bh_oneshot() -> AIO_WAIT_WHILE -> aio_poll().
 
+The stack I see is:
 
-Thanks,
+#0  0x00005625c97bffc0 in multifd_recv_terminate_threads (err=0x0) at ../migration/multifd.c:992
+#1  0x00005625c97c0086 in multifd_load_shutdown () at ../migration/multifd.c:1012
+#2  0x00005625c97b6163 in process_incoming_migration_bh (opaque=0x5625cbce59f0) at ../migration/migration.c:624
+#3  0x00005625c9c740c2 in aio_bh_call (bh=0x5625cc9e1320) at ../util/async.c:169
+#4  0x00005625c9c741de in aio_bh_poll (ctx=0x5625cba2a670) at ../util/async.c:216
 
-C.
+here^
 
+#5  0x00005625c9af0599 in bdrv_graph_wrunlock () at ../block/graph-lock.c:170
+#6  0x00005625c9aba8bd in bdrv_close (bs=0x5625cbcb3d80) at ../block.c:5099
+#7  0x00005625c9abb71a in bdrv_delete (bs=0x5625cbcb3d80) at ../block.c:5501
+#8  0x00005625c9abe840 in bdrv_unref (bs=0x5625cbcb3d80) at ../block.c:7075
+#9  0x00005625c9abe865 in bdrv_schedule_unref_bh (opaque=0x5625cbcb3d80) at ../block.c:7083
+#10 0x00005625c9c740c2 in aio_bh_call (bh=0x5625cbde09d0) at ../util/async.c:169
+#11 0x00005625c9c741de in aio_bh_poll (ctx=0x5625cba2a670) at ../util/async.c:216
+#12 0x00005625c9af0599 in bdrv_graph_wrunlock () at ../block/graph-lock.c:170
+#13 0x00005625c9ae05db in blk_remove_bs (blk=0x5625cbcc1070) at ../block/block-backend.c:907
+#14 0x00005625c9adfb1b in blk_remove_all_bs () at ../block/block-backend.c:571
+#15 0x00005625c9abab0d in bdrv_close_all () at ../block.c:5146
+#16 0x00005625c97892e4 in qemu_cleanup (status=0) at ../system/runstate.c:880
+#17 0x00005625c9a58081 in qemu_default_main () at ../system/main.c:38
+#18 0x00005625c9a580af in main (argc=35, argv=0x7ffe30ab0578) at ../system/main.c:48
 
-> +        iommu_bus->iommu_ops && iommu_bus->iommu_ops->set_iommu_device) {
-> +        return iommu_bus->iommu_ops->set_iommu_device(pci_get_bus(dev),
-> +                                                      iommu_bus->iommu_opaque,
-> +                                                      dev->devfn, idev, errp);
-> +    }
-> +    return 0;
-> +}
-> +
-> +void pci_device_unset_iommu_device(PCIDevice *dev)
-> +{
-> +    PCIBus *bus;
-> +    PCIBus *iommu_bus;
-> +    uint8_t devfn;
-> +
-> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus &&
-> +        iommu_bus->iommu_ops && iommu_bus->iommu_ops->unset_iommu_device) {
-> +        return iommu_bus->iommu_ops->unset_iommu_device(pci_get_bus(dev),
-> +                                                        iommu_bus->iommu_opaque,
-> +                                                        dev->devfn);
-> +    }
-> +}
-> +
->   void pci_setup_iommu(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
->   {
->       /*
+> Hmm, I saw a pretty old stack mentioned in commit fd392cfa8e6:
+>
+>     Original output:
+>     qemu-system-x86_64: terminating on signal 15 from pid 31980 (<unknown process>)
+>     =================================================================
+>     ==31958==ERROR: AddressSanitizer: heap-use-after-free on address 0x61900001d210
+>       at pc 0x555558a535ca bp 0x7fffffffb190 sp 0x7fffffffb188
+>     READ of size 8 at 0x61900001d210 thread T0 (qemu-vm-0)
+>         #0 0x555558a535c9 in migrate_fd_cleanup migration/migration.c:1502:23
+>         #1 0x5555594fde0a in aio_bh_call util/async.c:90:5
+>         #2 0x5555594fe522 in aio_bh_poll util/async.c:118:13
+>         #3 0x555559524783 in aio_poll util/aio-posix.c:725:17
+>         #4 0x555559504fb3 in aio_wait_bh_oneshot util/aio-wait.c:71:5
+>         #5 0x5555573bddf6 in virtio_blk_data_plane_stop
+>           hw/block/dataplane/virtio-blk.c:282:5
+>         #6 0x5555589d5c09 in virtio_bus_stop_ioeventfd hw/virtio/virtio-bus.c:246:9
+>         #7 0x5555589e9917 in virtio_pci_stop_ioeventfd hw/virtio/virtio-pci.c:287:5
+>         #8 0x5555589e22bf in virtio_pci_vmstate_change hw/virtio/virtio-pci.c:1072:9
+>         #9 0x555557628931 in virtio_vmstate_change hw/virtio/virtio.c:2257:9
+>         #10 0x555557c36713 in vm_state_notify vl.c:1605:9
+>         #11 0x55555716ef53 in do_vm_stop cpus.c:1074:9
+>         #12 0x55555716eeff in vm_shutdown cpus.c:1092:12
+>         #13 0x555557c4283e in main vl.c:4617:5
+>         #14 0x7fffdfdb482f in __libc_start_main
+>           (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
+>         #15 0x555556ecb118 in _start (x86_64-softmmu/qemu-system-x86_64+0x1977118)
+>
+> Would that be the same case that you mentioned here?  As vm_shutdown() is
+> indeed after migration_shutdown().
+>
+> Even if so, two follow up comments..
+>
+> (1) How did it help if process_incoming_migration_bh() took ref on
+>     MigrationState*?  I didn't even see it touching the object (instead, it
+>     uses the incoming object)?
 
+We touch MigrationState every time we check for a capability. See the
+stack I posted above: process_incoming_migration_bh() ->
+multifd_load_shutdown().
+
+void multifd_load_shutdown(void)
+{
+    if (migrate_multifd()) {        <-- HERE
+        multifd_recv_terminate_threads(NULL);
+    }
+}
+
+The bug reproduces *without* multifd, because that check passes and we
+go into multifd code that has not been initialized.
+
+side note: we should probably introduce a MigrationOutgoingState to pair
+with MigrationIncomingState and have both inside a global MigrationState
+that contains the common elements. If you agree I can add this to our
+todo list.
+
+> (2) This is what I'm just wondering.. on whether we should clear
+>     current_migration to NULL in migration_shutdown() after we unref it.
+>     Maybe it'll make such issues abort in an even clearer way.
+
+It hits the assert at migrate_get_current():
+
+#4  0x00005643006e22ae in migrate_get_current () at ../migration/migration.c:246
+#5  0x00005643006f0415 in migrate_late_block_activate () at ../migration/options.c:275
+#6  0x00005643006e30e0 in process_incoming_migration_bh (opaque=0x564303b279f0) at ../migration/migration.c:603
+#7  0x0000564300ba10cd in aio_bh_call (bh=0x564304823320) at ../util/async.c:169
+#8  0x0000564300ba11e9 in aio_bh_poll (ctx=0x56430386c670) at ../util/async.c:216
+...
+#20 0x00005643006b62e4 in qemu_cleanup (status=0) at ../system/runstate.c:880
+#21 0x000056430098508c in qemu_default_main () at ../system/main.c:38
+#22 0x00005643009850ba in main (argc=35, argv=0x7ffc8bf703c8) at
+#../system/main.c:4
+
+Note that this breaks at migrate_late_block_activate(), which is even
+earlier than the bug scenario at multifd_load_shutdown().
+
+However we cannot set NULL currently because the BHs are still running
+after migration_shutdown(). I don't know of a safe way to cancel/delete
+a BH after it has (potentially) been scheduled already.
 
