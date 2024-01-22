@@ -2,110 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E47835DFA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 786CA835E0A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:24:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRqSW-0002vM-6y; Mon, 22 Jan 2024 04:19:12 -0500
+	id 1rRqXU-0007D9-Ue; Mon, 22 Jan 2024 04:24:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rRqSR-0002rQ-TB
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:19:08 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rRqXS-0007Cv-Pc
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:24:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rRqSQ-0004v6-Eo
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:19:07 -0500
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40M8sqHV000833; Mon, 22 Jan 2024 09:18:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=RuKfqmqmd+JAOMkCxr0KGSTfVzKKloNEuZRItxllrSM=;
- b=MUKpGYGH2caRlRfy+K9lr5fiDk+CaqSCJwKeegRzn18mQE5ea2LOh0hY78bAUWwtTq4K
- YfiA2/ExAo6YRTVOnHv2y6+xF32Ze690Y8aif2jecuBsgXCGovwO2XiEclKR0caM/pFx
- UCNqpHTa5sIZ/Zc0aFYPmFuopVR3A11kY6a8y2UafRhRxm0idWfK+NLUXS9vnhbxOKVa
- UVGUFdtccUav67xzDeZ3JOZ81r4iXhUciW1OqXV1vDd7eHyeoXKyF6ARd2/mLS1g47FP
- LDASWHUPc0fxeH4wLEyyG5JerAA3msQlY+sss1e8PVcBstf8wWk741yiHe0v7ZMd44Eh 6g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vrgpj2ea1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 09:18:55 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40M8t1j2001662;
- Mon, 22 Jan 2024 09:18:55 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vrgpj2e9t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 09:18:55 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40M8PTq9025931; Mon, 22 Jan 2024 09:18:54 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrsgnq8ts-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 09:18:54 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40M9Ipx222020718
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jan 2024 09:18:51 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54EDB2004D;
- Mon, 22 Jan 2024 09:18:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B340B20040;
- Mon, 22 Jan 2024 09:18:50 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.179.29.242])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
- Mon, 22 Jan 2024 09:18:50 +0000 (GMT)
-Date: Mon, 22 Jan 2024 10:18:49 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Peter Xu
- <peterx@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH 4/5] hw/s390x/css-bridge: switch virtual-css bus to
- 3-phase-reset
-Message-ID: <20240122101849.090978bb.pasic@linux.ibm.com>
-In-Reply-To: <20240119163512.3810301-5-peter.maydell@linaro.org>
-References: <20240119163512.3810301-1-peter.maydell@linaro.org>
- <20240119163512.3810301-5-peter.maydell@linaro.org>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rRqXR-000626-2E
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:24:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705915455;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xoQgOwyOMuVlXIGva6sxyRxJF4LYpW9O+ytvHsdPXy8=;
+ b=aK/G1jYh8QEqMec+ZOnhCUuoJPb573GwoT2wYLAMxN5x8/WtQ23TvFmLW3nFax6aGfeeoB
+ 4Tny3v6Y2gzOa52+Qa0l/288gl3LBB5pWVH/6UbJKjg43OZKhSTjvSAj3CxwdIQVAbn9jQ
+ wXgkzCK6vh7PRhAp3HGnMEpWpjaYM7U=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-tK_8G8blNXOou15reClWOA-1; Mon, 22 Jan 2024 04:24:13 -0500
+X-MC-Unique: tK_8G8blNXOou15reClWOA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40eaed4f393so5096845e9.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:24:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705915451; x=1706520251;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xoQgOwyOMuVlXIGva6sxyRxJF4LYpW9O+ytvHsdPXy8=;
+ b=rTj4vhe9xibwV/eSNJMrS873Fvjw2xApVF5zSB3NykZtLWlAasFniBuY7YG/A+gbxk
+ l2/FH4MdlL8RpXd7RBwrZb1K0BXZ5ZOzPIq0tf0eT1eg7I+2SNH2oZIZPtkZU0Pv4t1V
+ w0bHf9mvC4zP8tD6pFXMB29keEFeKMqrDZOOCEuQap0HljkzyKwawk/4b1mH0vgs8cGs
+ sIiGxazd51kpFpRjuy6J7sFzT3fSiDsromJ+2qGbRsiIwc0+ggwmgf3Fx+8V0XyBL3YO
+ WwV28/Ff+2yrKMLmQbxkhKmdXWyq5zSnrzTzVm/covwaqJeJOGAUTRzHeudwH9pciLwb
+ uh1A==
+X-Gm-Message-State: AOJu0YzXI//3BCfaQIUDa5vUU8YTRAX57P1KfPsFwH3U4pcDOqpJflTh
+ qhPjLh7kMGZtmyCQcDj8YaVQYxauA48HjNYcAXT2Fo4k09F3dP82AJfl5rxkIy93USku0Ii8mU0
+ s/sqOuRkmzQat+RyT2f74qwq4oPga5OXvmzLYutylOXoIYCpBYDeCN/Z8268mhA/3EIpiKNw2Va
+ GOFAfXgqU8BUpzPUzLQXLXLJCoJSiFPPHCIX6x
+X-Received: by 2002:a05:600c:3b84:b0:40e:aed5:3218 with SMTP id
+ n4-20020a05600c3b8400b0040eaed53218mr437676wms.39.1705915451299; 
+ Mon, 22 Jan 2024 01:24:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHTqryupOwj5ly+8xFZAiL5yRnrlMXCzoJB+41HPx4RBThwRVNsJSrovX+bqCP067QMUmCfjg==
+X-Received: by 2002:a05:600c:3b84:b0:40e:aed5:3218 with SMTP id
+ n4-20020a05600c3b8400b0040eaed53218mr437667wms.39.1705915450903; 
+ Mon, 22 Jan 2024 01:24:10 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.gmail.com with ESMTPSA id
+ m10-20020adffa0a000000b003392172fd60sm8167907wrr.51.2024.01.22.01.24.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 01:24:10 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com
+Subject: [PATCH] monitor: add dumpdtb command only in device-tree-enabled
+ targets
+Date: Mon, 22 Jan 2024 10:24:09 +0100
+Message-ID: <20240122092409.280919-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZtK5WgEvLs0B5EFgyd4ZjKXq3blDzifk
-X-Proofpoint-ORIG-GUID: av48n8aNAoe3AVOYmg5JX86fYk-OPAEj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-21_04,2024-01-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- mlxscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0 adultscore=0
- suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401220066
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pasic@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,16 +99,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Jan 2024 16:35:11 +0000
-Peter Maydell <peter.maydell@linaro.org> wrote:
+Remove the command altogether from targets that do not have device tree support,
+instead of leaving it nonfunctional.
 
-> Switch the s390x virtual-css bus from using BusClass::reset to the
-> Resettable interface.
-> 
-> This has no behavioural change, because the BusClass code to support
-> subclasses that use the legacy BusClass::reset will call that method
-> in the hold phase of 3-phase reset.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ meson.build        | 2 --
+ qapi/machine.json  | 2 +-
+ hmp-commands.hx    | 2 +-
+ system/meson.build | 2 +-
+ 4 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index de8e5ad67dc..6bf7f3eb685 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3126,8 +3126,6 @@ if fdt_required.length() > 0 or get_option('fdt').enabled()
+   endif
+ endif
+ 
+-config_host_data.set('CONFIG_FDT', fdt.found())
+-
+ vhost_user = not_found
+ if host_os == 'linux' and have_vhost_user
+   libvhost_user = subproject('libvhost-user')
+diff --git a/qapi/machine.json b/qapi/machine.json
+index b6d634b30d5..c5e40857ba4 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1828,4 +1828,4 @@
+ ##
+ { 'command': 'dumpdtb',
+   'data': { 'filename': 'str' },
+-  'if': 'CONFIG_FDT' }
++  'if': 'TARGET_NEEDS_FDT' }
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 17b5ea839d9..f7263957240 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1819,7 +1819,7 @@ ERST
+         .flags      = "p",
+     },
+ 
+-#if defined(CONFIG_FDT)
++#if defined(TARGET_NEED_FDT)
+     {
+         .name       = "dumpdtb",
+         .args_type  = "filename:F",
+diff --git a/system/meson.build b/system/meson.build
+index 25e21172505..4e54f5d1a4b 100644
+--- a/system/meson.build
++++ b/system/meson.build
+@@ -32,7 +32,7 @@ if have_tpm
+ endif
+ 
+ system_ss.add(when: seccomp, if_true: files('qemu-seccomp.c'))
+-system_ss.add(when: fdt, if_true: files('device_tree.c'))
++system_ss.add(when: 'TARGET_NEED_FDT', if_true: [fdt, files('device_tree.c')])
+ if host_os == 'linux'
+   system_ss.add(files('async-teardown.c'))
+ endif
+-- 
+2.43.0
+
 
