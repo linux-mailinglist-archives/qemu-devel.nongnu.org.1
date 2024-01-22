@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724FA83596E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 03:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C5E835976
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 03:51:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRkCz-0005tN-3o; Sun, 21 Jan 2024 21:38:45 -0500
+	id 1rRkOB-0007bw-BV; Sun, 21 Jan 2024 21:50:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRkCv-0005sp-8u; Sun, 21 Jan 2024 21:38:41 -0500
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1rRkO8-0007bi-6Q
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 21:50:16 -0500
+Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRkCt-0007XR-La; Sun, 21 Jan 2024 21:38:40 -0500
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-7d2a67daa25so796344241.0; 
- Sun, 21 Jan 2024 18:38:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <42.hyeyoo@gmail.com>)
+ id 1rRkO5-00027g-CJ
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 21:50:14 -0500
+Received: by mail-ua1-x92b.google.com with SMTP id
+ a1e0cc1a2514c-7ce55932330so242221241.0
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 18:50:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705891117; x=1706495917; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705891812; x=1706496612; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vv+u4W2Hx8OQa8plQDcFKIld72nNQ8ZUv2EyDmmeHb8=;
- b=OEG5f11/TO2sAdcnZqnLCBXgdzPa7/8gLyhaqloI+mFO9iGQiVF+gpJad/IdKfnB9s
- iRie8Gb/YHDH4CKX3Ac2FHKbysLPUBc1LBmvgyo99rliRCaPpPnSrkUcSavdbHh1Xs84
- pO2MsMCG/HtAWY3ZaWJ1BleLb0VRsGB7abk4e8XNxHiZRf3+SzGQFa33aWWKtCGbcGKt
- KXCP1Heu7FMiADAEQf7lTD7mutNtvnVkQdAosbL4/u7wHfuRS0cQ3dU8HWa2zxCWlaWp
- riWQbgFiLk3rZzQtriB9zq7M6DvE7lH9VLX2A9YOMtqWrUxhIb/q2mcuNSvqJpbIOZrk
- laTg==
+ bh=+cXLgPXYA5Fe6az71hac21hiFb2mTxJdrHHMfSV7PMA=;
+ b=NQfV5IL5CeN2jIpdWClWE4eH0eafiic3YzQYDSX2C4Ev+F6Liqtqki33kxEjChqNz/
+ 0IQMCYo+kM2h7zECZQnVDyA+lvFPlxlwlgrbVdHyYqUp2KdjFdHyX00GyrormByw2Z+m
+ Md0MQRbcXzwp4BoQGoYUPz2ptqYn9jd6q8y5w363NXTCIYbyIoAlP6eqQxF37B18i2wf
+ jR8aDIgakkBYbd9QB2Vzw4ZqKgH3sRNlJg1AL/3dyFNlnwnWnwbxUr4wEcKWdbnGebdC
+ TidWzKBQlUt7iE77s64+/s7K3NypR3RQU7nJTSzqdCCcdCTNktxZsUe2oURluF2rGIHE
+ 9dTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705891117; x=1706495917;
+ d=1e100.net; s=20230601; t=1705891812; x=1706496612;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vv+u4W2Hx8OQa8plQDcFKIld72nNQ8ZUv2EyDmmeHb8=;
- b=ljz85Wyy01gMKBsTbQ6ddY/zhycUGwECsiLQDRidLkGM4hJonFNwh7ibjPSvM6LOCU
- tguh4QD4YI8DTB9Ei36QS7WT537BMxWmxv4tf0vaoIX72emdvZTLJ3FXeEyTmnHwu4MR
- ry5a8SNlhmXON2L3hw/eIwNCxOB/UAGOS76n9RqUY+nwUUkbjn+8QK+hUoEFJ0nuOiG4
- yP3yNsDswB+7/8jd/NIzSUPC7lQXk4Z76Ot2Gz4NYVcNZnM8ECZUv7LOvGKK0ofZp/Rh
- anJcBeQZqFrV8dGHWtyHc2gS/PpV9jkOinvPpj1cfNW8r4HCiX7aIFuOcMLpy+XMR9rE
- /qpQ==
-X-Gm-Message-State: AOJu0Yw+Ecj5IGDzXQZCPQRp5ocBSvSNBc98fLSiN2gIqeZTiGR7w0jP
- 6SEDnft0NgB47ccTs9qEywdoaZrPi+VEmQmYMAkZIf6L8u10hiIhUzLrEdaaoYt2RpCA9DUXxAy
- Llkd8evt9LyOTwNn1DsLJUXXSew4=
-X-Google-Smtp-Source: AGHT+IG0hmGWEJdOujoz0o16V/RfVq6qm3uO2z5xPIq2W6HY8mknZx0VECJJdJsYqLDybCBdvNgE6yWD2u614rgFS/A=
-X-Received: by 2002:a05:6122:509:b0:4b6:dc25:3d4b with SMTP id
- x9-20020a056122050900b004b6dc253d4bmr717664vko.12.1705891116273; Sun, 21 Jan
- 2024 18:38:36 -0800 (PST)
+ bh=+cXLgPXYA5Fe6az71hac21hiFb2mTxJdrHHMfSV7PMA=;
+ b=ozh8RGGZ7Ktu4m+YYybCU2jUOBPZqyibTuGG0mW1FDp7iWjCE9nLrBG/bflsd4jpsG
+ 0h30fvjqQ83Ur+hGt9cANGPo+rUPGs3BhV7JESheozDzMQx8j5eaVA1xaygUHQ3nkmUo
+ HfCDSG7XMOuO+5QRGFRSwUquEXA7MUupMRkOF1dzKZav7uxoktYqKPmXlX3hfea/e/6W
+ XO2evtsNqArHEE28msKaU9ob39HZBEEpOSa+2Kf7T7nzZGl+b1XNkBefTCW3ryQYa6nb
+ JijDVAM1wAWhxPLzhpHa3Bfr4bo97Ygq74C9yLRh1JzfBlDWOswnmTUlEsc7NoF1LioU
+ yQ6w==
+X-Gm-Message-State: AOJu0Yx3jdNub+nHrUx2lc3jMVOzeVq0P51U/YyHm9Zu7OrevGj50eiz
+ w8cc+rWQnoGmdoKMFfAOsUv0n8ZTsu83f9qpmsPi2M7Be3SCqe7Z7Tck9TTczzF4zTdnCB7PSNU
+ 4WnncsNkVqz7Qx0HXOqPmW9vmThg=
+X-Google-Smtp-Source: AGHT+IEnsKtgEXI0mfVZDlHugltUuL7oafebGrrUgHYsrFVtdmNBjZVTMno7dA7/Qbi3SUy17YEEsz9hIJ12GXa4p14=
+X-Received: by 2002:a1f:ee47:0:b0:4b6:f0c7:62e4 with SMTP id
+ m68-20020a1fee47000000b004b6f0c762e4mr542083vkh.12.1705891811766; Sun, 21 Jan
+ 2024 18:50:11 -0800 (PST)
 MIME-Version: 1.0
-References: <20240116205817.344178-1-dbarboza@ventanamicro.com>
- <20240116205817.344178-2-dbarboza@ventanamicro.com>
-In-Reply-To: <20240116205817.344178-2-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 12:38:10 +1000
-Message-ID: <CAKmqyKN71zvJnF8OuLRFmXHXn47OyaYUTVD+r5cS9SipUZYdJw@mail.gmail.com>
-Subject: Re: [PATCH v3 01/13] target/riscv: add 'vlenb' field in cpu->cfg
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, richard.henderson@linaro.org, max.chou@sifive.com
+References: <20231222090051.3265307-1-42.hyeyoo@gmail.com>
+ <20231222090051.3265307-4-42.hyeyoo@gmail.com>
+ <20240109175358.00007c48@Huawei.com>
+In-Reply-To: <20240109175358.00007c48@Huawei.com>
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Date: Sun, 21 Jan 2024 21:50:00 -0500
+Message-ID: <CAB=+i9QrmMMazcNvEhuwTNF+UZMHPQE=yT=RE+MJCUQO+QY27A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] hw/cxl/mbox: replace sanitize_running() with
+ cxl_dev_media_disabled()
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <fan.ni@samsung.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, linux-cxl@vger.kernel.org,
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
+ envelope-from=42.hyeyoo@gmail.com; helo=mail-ua1-x92b.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.998, HK_RANDOM_FROM=0.998, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,81 +93,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 17, 2024 at 7:00=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Tue, Jan 9, 2024 at 12:54=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> Our usage of 'vlenb' is overwhelming superior than the use of 'vlen'.
-> We're using 'vlenb' most of the time, having to do 'vlen >> 3' or
-> 'vlen / 8' in every instance.
+> On Fri, 22 Dec 2023 18:00:50 +0900
+> Hyeonggon Yoo <42.hyeyoo@gmail.com> wrote:
 >
-> In hindsight we would be better if the 'vlenb' property  was introduced
-> instead of 'vlen'. That's not what happened, and now we can't easily get
-> rid of it due to user scripts all around. What we can do, however, is to
-> change our internal representation to use 'vlenb'.
+> > The spec states that reads/writes should have no effect and a part of
+> > commands should be ignored when the media is disabled, not when the
+> > sanitize command is running.qq
+> >
+> > Introduce cxl_dev_media_disabled() to check if the media is disabled an=
+d
+> > replace sanitize_running() with it.
+> >
+> > Make sure that the media has been correctly disabled during sanitation
+> > by adding an assert to __toggle_media(). Now, enabling when already
+> > enabled or vice versa results in an assert() failure.
+> >
+> > Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
+> > Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 >
-> Add a 'vlenb' field in cpu->cfg. It'll be set via the existing 'vlen'
-> property, i.e. setting 'vlen' will also set 'vlenb'.
+> This applies to
 >
-> We'll replace all 'vlen >> 3' code to use 'vlenb' directly. Start with
-> the single instance we have in target/riscv/cpu.c.
+> hw/cxl: Add get scan media capabilities cmd support.
 >
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Should I just squash it with that patch in my tree?
+> For now I'm holding it immediately on top of that, but I'm not keen to
+> send messy code upstream unless there is a good reason to retain the
+> history.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Oh, while the diff looks like the patch touches scan_media_running(), it's =
+not.
 
-Alistair
+The proper Fixes: tag will be:
+Fixes: d77176724422 ("hw/cxl: Add support for device sanitation")
 
-> ---
->  target/riscv/cpu.c     | 4 +++-
->  target/riscv/cpu_cfg.h | 1 +
->  2 files changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 8d3ec74a1c..f4261d2ffc 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -847,7 +847,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *=
-f, int flags)
->                               csr_ops[csrno].name, val);
->              }
->          }
-> -        uint16_t vlenb =3D cpu->cfg.vlen >> 3;
-> +        uint16_t vlenb =3D cpu->cfg.vlenb;
->
->          for (i =3D 0; i < 32; i++) {
->              qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-> @@ -1314,6 +1314,7 @@ static void riscv_cpu_init(Object *obj)
->      /* Default values for non-bool cpu properties */
->      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
->      cpu->cfg.vlen =3D 128;
-> +    cpu->cfg.vlenb =3D 128 >> 3;
->      cpu->cfg.elen =3D 64;
->      cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
->  }
-> @@ -1810,6 +1811,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, =
-const char *name,
->
->      cpu_option_add_user_setting(name, value);
->      cpu->cfg.vlen =3D value;
-> +    cpu->cfg.vlenb =3D value >> 3;
->  }
->
->  static void prop_vlen_get(Object *obj, Visitor *v, const char *name,
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index fea14c275f..50479dd72f 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -140,6 +140,7 @@ struct RISCVCPUConfig {
->
->      uint32_t pmu_mask;
->      uint16_t vlen;
-> +    uint16_t vlenb;
->      uint16_t elen;
->      uint16_t cbom_blocksize;
->      uint16_t cbop_blocksize;
-> --
-> 2.43.0
->
->
+> If you are doing this sort of fix series in future, please call out
+> what they fix explicitly.  Can't use fixes tags as the commit ids
+> are unstable, but can mention the patch to make my life easier!
+
+Okay, next time I will either add the Fixes tag or add a comment on
+what it fixes.
+
+By the way I guess your latest, public branch is still cxl-2023-11-02, righ=
+t?
+https://gitlab.com/jic23/qemu/-/tree/cxl-2023-11-02
+
+I assume you adjusted my v2 series, but please let me know if you prefer
+sending v3 against your latest tree.
+
+Thanks,
+Hyeonggon
 
