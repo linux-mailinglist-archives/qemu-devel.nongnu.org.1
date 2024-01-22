@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC4B835A2F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 05:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAD5835A49
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 06:35:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRmOX-0006Sf-Hg; Sun, 21 Jan 2024 23:58:49 -0500
+	id 1rRmwP-0001uf-9d; Mon, 22 Jan 2024 00:33:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRmOU-0006SM-88; Sun, 21 Jan 2024 23:58:47 -0500
-Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
+ (Exim 4.90_1) (envelope-from <junho920219@gmail.com>)
+ id 1rRlfQ-0008GM-T0
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 23:12:12 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRmOS-0003MH-J6; Sun, 21 Jan 2024 23:58:46 -0500
-Received: by mail-ua1-x932.google.com with SMTP id
- a1e0cc1a2514c-7d2e15193bbso647321241.0; 
- Sun, 21 Jan 2024 20:58:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <junho920219@gmail.com>)
+ id 1rRlfP-0003AC-Aq
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 23:12:12 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a2c375d2430so303085066b.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 20:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705899522; x=1706504322; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AL/38ayuYmFsOfmjvkcoGC7AR0LzTi3WOVe0WNEp8Bc=;
- b=Rt98+qx5CyNUORVPfuIuzHmi4LnCFFEL0vUQFwX2OSmAVStV81vnYoDjsVfdKU0+OE
- 1bkRIcAC4BI2xPqDdoSc5IlU/E0vJRyXA2XQG3zloVFAAQOSSwQbRlK0/D/YSMGgQCrG
- Qh1J3iK2f0hAhpZSQRMZPudO0PMUUnzsaG7py2L+ufCHkj8nSqEzoL37e2X/2ULv83Oo
- rEKkP9I/dUcALPKgQSyHs0FDr0mSheNuqixsT0lOFZbUYSOAJSjEW3d666OM/0+UpqoM
- kDpAUo9haRdkwXyEq86WINwXY2uRLn1r6KRNdmbJv0+cX1Nbih2hHzv8bKqr6OAbqbK/
- l+WQ==
+ d=gmail.com; s=20230601; t=1705896729; x=1706501529; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=oC57M8MS8kQFeD2AL0wDqV0/Btayug4t4G425kfPSCQ=;
+ b=LqBIa1uhsYk739PbJ0ax7iTzqeDaHEJuvEhKUa2x20nTvTKbJBRmzZfTBSQP/RIn2Q
+ S0JVKjNMQDO4jidkiM5uEZJhLwL5oPj/5S/bfxOnBBM4XywXxcKSGsrb4xhWOCDY0LMT
+ 9Jg/VirWfCwGltH0bhsfNFIc5FTpTo6w4xzITxlP8LUaFZoaOP/4Dj03rVdG6xoUiLBD
+ xH84hHck8e57XFdm6s4kw9mQn0ZwSyFDIKC8zarUU7PIH9lfES/80JqjHh0VYyU3GtnC
+ tmRtGf34A9hvIVJr09uRgDTaG9VJLHprzwjo34qTYUq3uqCtKcKkF+ok6nx+AjI49Y6k
+ yDEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705899522; x=1706504322;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AL/38ayuYmFsOfmjvkcoGC7AR0LzTi3WOVe0WNEp8Bc=;
- b=MQcndjgnH8UNp4iTZd4qhVg7I1gtubR9y7w8i/K4Reo18UZhbbqaYmUxQId7b4kJch
- zg3CBUKgMEL/uq0v5c9CQOrmrW1wsdhDi88S+EJanPdGWY/yxI0/ucGbH/DvQTMtvlxR
- 2vozCYRJoUWd8Rfvg/mRMk6nKJN9Qplvmfkwjyz6Eh4bocoLN5c5LpJR6e45y9CO3a4/
- UHhkqCRPYEDdBYUFoyylNvzdhyFWfhElheKgTJf1E50NuEBequtDMywY/nFxhYWK1qbv
- qzFeu9VFZNTaa+E6pY1Yu07QEGSCrVCQjMT4tBFVXE5s2TJnYs3OFVXKmNNgFrDQXIBk
- LwIw==
-X-Gm-Message-State: AOJu0Yw8lzo410Im3sLLgQV7yRgHbRLDorRvGzccwCrV9DKW4W1cf/Z+
- Dh1JGdHAENg/q+Q2d7M32xSRaku/di9i4wZ58GOErTbyfHMzxrT/pHUqTanswE+SHrmaGC0UBgH
- 8D7pw3yVk1afK6nT6NrGvtHNqTHs=
-X-Google-Smtp-Source: AGHT+IF5qCwEWnJ2g1impy2PmFhMZiGUKKMDhKNo7pZRNBsmswV8LpZXtQQxM54ibbeLymBd0nyycvQbH8YcRmSb5fc=
-X-Received: by 2002:a05:6122:912:b0:4b7:e5c2:73db with SMTP id
- j18-20020a056122091200b004b7e5c273dbmr871926vka.4.1705899522025; Sun, 21 Jan
- 2024 20:58:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705896729; x=1706501529;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oC57M8MS8kQFeD2AL0wDqV0/Btayug4t4G425kfPSCQ=;
+ b=o6nz0TAJcjehOgQrfakGYeIZCix6AQRSF0a1eQz4yvcSNbmmA/WdPc6MfR9+2WzK/+
+ bCNt36krCWtARJ3CIrBPBqupwxUFPC6kxzz4mGC3x/Bvr1SPO6YboNh3QmHDTXVlCT48
+ z6hN4DMGqxLg0w11X8DaS5HvcsvJDPOVXjIxl6s5nLNvk78Z1yWm6vV78C+gmkcN+buh
+ faho7cBQmhnGL9w2lolWyGFCGmlct79buReTw8nYNhKKXllLoB0ir75c1PkS7bzZk5lu
+ 0FUklYMQKGR7ADHW7NWvmptxQYlxZ9V2pSbTT39e/BNqiUUNG4t/BYp7rXa+Tl2QXA6C
+ f9RQ==
+X-Gm-Message-State: AOJu0YxHiotI2/7iAT+2fREdJlI9KgdtWL7tMT4lXV6EjqLIivIO6lVr
+ VqqDpxYroLn8BDNbeIoHKCruB/yypocoXti9L94ILUUAi4MuArVqr4SLn70tSt2tDKfPfPAK5D/
+ mxORTKO18f9F0mo8SByaSSda1HuwN/VocKxw=
+X-Google-Smtp-Source: AGHT+IHtwsgDL1PMtywebkzAbt6Qj1js75gC1QlvCvDRV/94qSsNITwZtz4f6fkRx/LmZX4/ijbvKmgoiFkLByu1B68=
+X-Received: by 2002:a17:907:a786:b0:a2d:bcdc:da6d with SMTP id
+ vx6-20020a170907a78600b00a2dbcdcda6dmr1973313ejc.0.1705896729041; Sun, 21 Jan
+ 2024 20:12:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20240109002554.646572-1-atishp@rivosinc.com>
- <20240109002554.646572-5-atishp@rivosinc.com>
-In-Reply-To: <20240109002554.646572-5-atishp@rivosinc.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 14:58:16 +1000
-Message-ID: <CAKmqyKNo2dcpEFyLJVR5wP+0_bmCEV1gELK6zqpsAi-47ffc4w@mail.gmail.com>
-Subject: Re: [PATCH v4 4/5] target/riscv: Add cycle & instret privilege mode
- filtering support
-To: Atish Patra <atishp@rivosinc.com>
-Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- Weiwei Li <liwei1518@gmail.com>, kaiwenxue1@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
+From: Junho <junho920219@gmail.com>
+Date: Mon, 22 Jan 2024 13:11:58 +0900
+Message-ID: <CACrrvNSKQ1du+f40RvcDCvhjojvvDSsHi0FyWoJMMBtt8R+Q3A@mail.gmail.com>
+Subject: How can I know Page Table address on RAM?
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000008ede4f060f8108a3"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=junho920219@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 22 Jan 2024 00:33:46 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,165 +83,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 10:29=E2=80=AFAM Atish Patra <atishp@rivosinc.com> w=
-rote:
->
-> From: Kaiwen Xue <kaiwenx@rivosinc.com>
->
-> QEMU only calculates dummy cycles and instructions, so there is no
-> actual means to stop the icount in QEMU. Hence this patch merely adds
-> the functionality of accessing the cfg registers, and cause no actual
-> effects on the counting of cycle and instret counters.
->
-> Signed-off-by: Atish Patra <atishp@rivosinc.com>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
+--0000000000008ede4f060f8108a3
+Content-Type: text/plain; charset="UTF-8"
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Hello,
 
-Alistair
+I'm a QEMU user with PowerPc target architecture.
+I have some personal modifications related to tb jmp cache and chaining
+logic to improve the performance of a specific guest code. To verify the
+safety, I have to guarantee that the page table on RAM does not change
+after initialization. Do you have any information related to this work?
+Currently, what I need to find is the page table start address on the RAM
+so that I can test with the range detected.
 
-> ---
->  target/riscv/csr.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
->
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 283468bbc652..3bd4aa22374f 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -233,6 +233,24 @@ static RISCVException sscofpmf_32(CPURISCVState *env=
-, int csrno)
->      return sscofpmf(env, csrno);
->  }
->
-> +static RISCVException smcntrpmf(CPURISCVState *env, int csrno)
-> +{
-> +    if (!riscv_cpu_cfg(env)->ext_smcntrpmf) {
-> +        return RISCV_EXCP_ILLEGAL_INST;
-> +    }
-> +
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static RISCVException smcntrpmf_32(CPURISCVState *env, int csrno)
-> +{
-> +    if (riscv_cpu_mxl(env) !=3D MXL_RV32) {
-> +        return RISCV_EXCP_ILLEGAL_INST;
-> +    }
-> +
-> +    return smcntrpmf(env, csrno);
-> +}
-> +
->  static RISCVException any(CPURISCVState *env, int csrno)
->  {
->      return RISCV_EXCP_NONE;
-> @@ -818,6 +836,54 @@ static int read_hpmcounterh(CPURISCVState *env, int =
-csrno, target_ulong *val)
->
->  #else /* CONFIG_USER_ONLY */
->
-> +static int read_mcyclecfg(CPURISCVState *env, int csrno, target_ulong *v=
-al)
-> +{
-> +    *val =3D env->mcyclecfg;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int write_mcyclecfg(CPURISCVState *env, int csrno, target_ulong v=
-al)
-> +{
-> +    env->mcyclecfg =3D val;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int read_mcyclecfgh(CPURISCVState *env, int csrno, target_ulong *=
-val)
-> +{
-> +    *val =3D env->mcyclecfgh;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int write_mcyclecfgh(CPURISCVState *env, int csrno, target_ulong =
-val)
-> +{
-> +    env->mcyclecfgh =3D val;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int read_minstretcfg(CPURISCVState *env, int csrno, target_ulong =
-*val)
-> +{
-> +    *val =3D env->minstretcfg;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int write_minstretcfg(CPURISCVState *env, int csrno, target_ulong=
- val)
-> +{
-> +    env->minstretcfg =3D val;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int read_minstretcfgh(CPURISCVState *env, int csrno, target_ulong=
- *val)
-> +{
-> +    *val =3D env->minstretcfgh;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
-> +static int write_minstretcfgh(CPURISCVState *env, int csrno, target_ulon=
-g val)
-> +{
-> +    env->minstretcfgh =3D val;
-> +    return RISCV_EXCP_NONE;
-> +}
-> +
->  static int read_mhpmevent(CPURISCVState *env, int csrno, target_ulong *v=
-al)
->  {
->      int evt_index =3D csrno - CSR_MCOUNTINHIBIT;
-> @@ -4922,6 +4988,13 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
->                               write_mcountinhibit,
->                               .min_priv_ver =3D PRIV_VERSION_1_11_0      =
- },
->
-> +    [CSR_MCYCLECFG]      =3D { "mcyclecfg",   smcntrpmf, read_mcyclecfg,
-> +                             write_mcyclecfg,
-> +                             .min_priv_ver =3D PRIV_VERSION_1_12_0      =
- },
-> +    [CSR_MINSTRETCFG]    =3D { "minstretcfg", smcntrpmf, read_minstretcf=
-g,
-> +                             write_minstretcfg,
-> +                             .min_priv_ver =3D PRIV_VERSION_1_12_0      =
- },
-> +
->      [CSR_MHPMEVENT3]     =3D { "mhpmevent3",     any,    read_mhpmevent,
->                               write_mhpmevent                           }=
-,
->      [CSR_MHPMEVENT4]     =3D { "mhpmevent4",     any,    read_mhpmevent,
-> @@ -4981,6 +5054,13 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D {
->      [CSR_MHPMEVENT31]    =3D { "mhpmevent31",    any,    read_mhpmevent,
->                               write_mhpmevent                           }=
-,
->
-> +    [CSR_MCYCLECFGH]     =3D { "mcyclecfgh",   smcntrpmf_32, read_mcycle=
-cfgh,
-> +                             write_mcyclecfgh,
-> +                             .min_priv_ver =3D PRIV_VERSION_1_12_0      =
-  },
-> +    [CSR_MINSTRETCFGH]   =3D { "minstretcfgh", smcntrpmf_32, read_minstr=
-etcfgh,
-> +                             write_minstretcfgh,
-> +                             .min_priv_ver =3D PRIV_VERSION_1_12_0      =
-  },
-> +
->      [CSR_MHPMEVENT3H]    =3D { "mhpmevent3h",    sscofpmf_32,  read_mhpm=
-eventh,
->                               write_mhpmeventh,
->                               .min_priv_ver =3D PRIV_VERSION_1_12_0      =
-  },
-> --
-> 2.34.1
->
->
+I look forward to your response.
+
+Thank you
+Junho
+
+--0000000000008ede4f060f8108a3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello,<div><br></div><div>I&#39;m a QEMU user with PowerPc=
+ target architecture.</div><div>I have some personal modifications related =
+to tb jmp cache and chaining logic to improve the performance of a specific=
+ guest code. To verify the safety, I have to guarantee that the page table =
+on RAM does not change after initialization. Do you have any information re=
+lated to this work? Currently, what I need to find is the page table start =
+address on the RAM so that I can test with the range detected.</div><div><b=
+r></div><div>I look forward to your response.</div><div><br></div><div>Than=
+k you<br>Junho</div></div>
+
+--0000000000008ede4f060f8108a3--
 
