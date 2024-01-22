@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD011835CDE
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8752E835D12
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 09:49:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRprz-0006W7-Re; Mon, 22 Jan 2024 03:41:27 -0500
+	id 1rRpzR-0001Ls-6H; Mon, 22 Jan 2024 03:49:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rRprn-0006NA-O9
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:15 -0500
-Received: from mail-qt1-x82e.google.com ([2607:f8b0:4864:20::82e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRpzI-0001LC-LE
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:49:04 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rRprl-0005jS-Tr
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:41:15 -0500
-Received: by mail-qt1-x82e.google.com with SMTP id
- d75a77b69052e-429be992974so19400451cf.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:41:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRpzC-0007Vv-PN
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 03:48:59 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-50e7dd8bce8so3153788e87.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 00:48:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705912872; x=1706517672; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xMOmEpuOGzx0heo5sGEFErbz/cpnHqAG0Uxk3MzcaLI=;
- b=gdCHejTy5FLpq1+cwALDbisewJKvMu6xICM4xZDM1L4iUpZy5U7FIxE+sWptDz8V2t
- bdss/opT7/drB0F1F3SJTnIScPRTmo/DHgpdz0pL5UP29BENqF6LmpYMTZeIm/0bLwHh
- HEncS9tFuzAvObwovn8+5cwZKUe8N5Lcdn8LgbYaN/eD9Q7RbPIwrHG0pz170FR0Yr0b
- s1Zy+HG+gridpaSE+BUweQZy69q/EjqVvDWj0mD1mdULiyTlbu+vDZlpTiVYvYsN1PXf
- 4UJ9EZAVD3WxbhX/8KyRtONpFXjAat8aFyqArFF6ofvsCgx6mTfF967P+SkwjOSqrkm9
- TdfA==
+ d=linaro.org; s=google; t=1705913327; x=1706518127; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iLpTmUaDav58vzmw8nbpX4wGVAs96f7yZ9HepnS5/NA=;
+ b=XbReGMMO3zt+R9WasSvgOE5dsqHqyGc0Da5j59Qq9fPMtxmKv0H8zkYBg3DXDa6WNV
+ Vv/qDdsQVrECpbaYBe7cpuzGpUk6cKwEwn099ptxAz52ZGCqeCqtmuDh7HtlVFbzKOjR
+ 4++PV1qBOOmK4m02k1avk5SQrQ4pDQg87HVC7W7NEk5sluvl3kUh0fwsHRX5NW6p4Z8X
+ 3c1/kVWDAIFdCimdbwYrepgA79l8sGMDwdEnrboaLgY1vN0CIiI67lt6X6WkpLCjV2iH
+ EwMQw5otiL+u6IEf8+cnyVX0URP2SSZu30Ux5TC6F7K49CiZidIDinL1zMXqNJqFebq9
+ YaMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705912872; x=1706517672;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xMOmEpuOGzx0heo5sGEFErbz/cpnHqAG0Uxk3MzcaLI=;
- b=s+U5tTMtkqLW3b7I/BUwI5tdkuDYxYa0trPEH4iGcIaOj0BLdeNt602ARfES0YmfJK
- /EEVQOcHtLVdIrp1LnGrkATPe/mwLLSHqoAZZ4fNwyB90RVA629Ruj4uDDKKnRvgabJf
- /mSbg0iiTYVsUtl49WH2JN1Bpd8IjNLwc5KtqPxk0Gjx4uBlTWEv00+pZjuQzszzTH2t
- zxgjlGavt5yI92NsndKJGWSzGgYBt5iyC54/lpPHIhvxqGOZk2bl5daF5vjfA7F3Q2AD
- bfEsRUwGWZxPp4NP7pPcXs82CxuToHYGCYhPkAmxxThjWsgUbqB+tFIvBxGS9TXy/vx1
- 2Dxw==
-X-Gm-Message-State: AOJu0Yw8InxJrWEApvp9vWdma8c1EWqywYxXCiuRN5iarXWfZbjCXSlo
- KIgPUFeTuFwUsB/h03ls51bhNK/1NykJzcN0jRioNOCVPR1cz1cJ6jfBrR1owZPfKfvGU9Z3ugr
- 5LGHvrLBNa6bT0tcaKoEfdcjyN1E=
-X-Google-Smtp-Source: AGHT+IGxd+LWUxW8RF0d9FcTq4phE2ErqIYfDJIOYRShfHmqNF8HLxqAi0b3K7Jk/VR+8x9Mzxge8fJYKUt9yOD+aWo=
-X-Received: by 2002:ac8:6e8d:0:b0:42a:2ea1:4226 with SMTP id
- c13-20020ac86e8d000000b0042a2ea14226mr4020235qtv.85.1705912872208; Mon, 22
- Jan 2024 00:41:12 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705913327; x=1706518127;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iLpTmUaDav58vzmw8nbpX4wGVAs96f7yZ9HepnS5/NA=;
+ b=o4MoelF+3nUUXgEcpfNGgLFDz2VQd2c5hNgZFps0NLu91CyTTnOATyOVDbZRDvpaau
+ UQYVsrVoG6CZsLQbA0uHWnTnnLoBp2s7BiA/nIWHRVkVBnlKyF66mfG+Z8F7t8QCDcfj
+ jo0GGVSEAii1TR90u5pRYbL2yKQt7tmzRuIXLmq5t9qeaxCnoFe2+5N2ELnLFyF4IWtG
+ PtOIwPip5+FZkCVZNP0SYyoQelyEzIRsgItZVrd+lf6KszF/heOjwmt+Tnl/UZVAYuCg
+ npku0Vk8NMYvWjauMgkxEmiGz6kXgmYDOa0VR7pFSPRHBP4AOkKKoe58ZsLtv7hy8PAS
+ /i5g==
+X-Gm-Message-State: AOJu0Yz6YNVIQuj34AevbV7BMHAixLn8DwiBOgI2RrRGygmgzFnvEVR3
+ 40k6EHoNxAn3EMCaEn2tWm/RusVNa9qtdxVSh3rZ2l/TAGjm7/33L5fm/LiofRv6gJCs7QLmxsa
+ qq44nynU8rAC49b4wbK2c0NIrXyxErqCrpGRCJQ==
+X-Google-Smtp-Source: AGHT+IHoFQbAM+Ja4md5zAKV5eTHlJPh2jDINyvnP8tzoAF1K/kfpAqkRfNRPrdGI1zNxuL+ovUt+zsdLl3fS7OhLUs=
+X-Received: by 2002:ac2:455a:0:b0:50e:5c71:51f1 with SMTP id
+ j26-20020ac2455a000000b0050e5c7151f1mr1325873lfm.62.1705913327141; Mon, 22
+ Jan 2024 00:48:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20240120003013.1829757-1-vivek.kasireddy@intel.com>
- <20240120003013.1829757-2-vivek.kasireddy@intel.com>
-In-Reply-To: <20240120003013.1829757-2-vivek.kasireddy@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 22 Jan 2024 12:41:01 +0400
-Message-ID: <CAJ+F1CLL-BhebmHsBEGV+Lqm-gJ9uDktQkbYT0WGW41qL+ESdA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/7] ui/spice: Add an option for users to provide a
- preferred codec
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
+References: <20240119152507.55182-1-thuth@redhat.com>
+In-Reply-To: <20240119152507.55182-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 08:48:15 +0000
+Message-ID: <CAFEAcA8DbfT73XeMgQ6ov981q4js2k2K0i+kYVXRKsf6NJQmVQ@mail.gmail.com>
+Subject: Re: [PULL 00/11] s390x fixes, removal of deprecated options, netbsd
+ VM fix
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,123 +86,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Sat, Jan 20, 2024 at 4:54=E2=80=AFAM Vivek Kasireddy
-<vivek.kasireddy@intel.com> wrote:
+On Fri, 19 Jan 2024 at 15:25, Thomas Huth <thuth@redhat.com> wrote:
 >
-> Giving users an option to choose a particular codec will enable
-> them to make an appropriate decision based on their hardware and
-> use-case.
+> The following changes since commit 88cf5fec91e50cd34bc002b633b4116228db0bc8:
 >
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Frediano Ziglio <freddy77@gmail.com>
-> Cc: Dongwon Kim <dongwon.kim@intel.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+>   Merge tag 'pull-target-arm-20240118' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-01-18 12:48:17 +0000)
 >
-> ---
-> v2:
-> - Don't override the default Spice codec if preferred-codec is not
->   provided (Frediano)
-> ---
->  qemu-options.hx |  5 +++++
->  ui/spice-core.c | 12 ++++++++++++
->  2 files changed, 17 insertions(+)
+> are available in the Git repository at:
 >
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index b66570ae00..caaafe01d5 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -2260,6 +2260,7 @@ DEF("spice", HAS_ARG, QEMU_OPTION_spice,
->      "       [,streaming-video=3D[off|all|filter]][,disable-copy-paste=3D=
-on|off]\n"
->      "       [,disable-agent-file-xfer=3Don|off][,agent-mouse=3D[on|off]]=
-\n"
->      "       [,playback-compression=3D[on|off]][,seamless-migration=3D[on=
-|off]]\n"
-> +    "       [,preferred-codec=3D<encoder>:<codec>\n"
-
-The SPICE API is "spice_server_set_video_codecs()", let's name the
-option: "video-codecs" to avoid confusions.
-
->      "       [,gl=3D[on|off]][,rendernode=3D<file>]\n"
->      "                enable spice\n"
->      "                at least one of {port, tls-port} is mandatory\n",
-> @@ -2348,6 +2349,10 @@ SRST
->      ``seamless-migration=3D[on|off]``
->          Enable/disable spice seamless migration. Default is off.
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2024-01-19
 >
-> +    ``preferred-codec=3D<encoder>:<codec>``
-> +        Provide the preferred codec the Spice server should use.
-> +        Default would be spice:mjpeg.
-
-The SPICE API says:
- * @codecs: a codec string in the following format: encoder:codec;encoder:c=
-odec
-
-But the doc doesn't say whether the order is important, and doesn't
-give more details on the "encoder:codec" format.
-
-Also reading the code, it seems "auto" has a special meaning for
-default video codecs.
-
-> +
->      ``gl=3D[on|off]``
->          Enable/disable OpenGL context. Default is off.
+> for you to fetch changes up to 4a27d97c80b90215b33a092a1c3a5efcc987b582:
 >
-> diff --git a/ui/spice-core.c b/ui/spice-core.c
-> index db21db2c94..13bfbe4e89 100644
-> --- a/ui/spice-core.c
-> +++ b/ui/spice-core.c
-> @@ -488,6 +488,9 @@ static QemuOptsList qemu_spice_opts =3D {
->          },{
->              .name =3D "streaming-video",
->              .type =3D QEMU_OPT_STRING,
-> +        },{
-> +            .name =3D "preferred-codec",
-> +            .type =3D QEMU_OPT_STRING,
->          },{
->              .name =3D "agent-mouse",
->              .type =3D QEMU_OPT_BOOL,
-> @@ -663,6 +666,7 @@ static void qemu_spice_init(void)
->      char *x509_key_file =3D NULL,
->          *x509_cert_file =3D NULL,
->          *x509_cacert_file =3D NULL;
-> +    const char *preferred_codec =3D NULL;
->      int port, tls_port, addr_flags;
->      spice_image_compression_t compression;
->      spice_wan_compression_t wan_compr;
-> @@ -802,6 +806,14 @@ static void qemu_spice_init(void)
->          spice_server_set_streaming_video(spice_server, SPICE_STREAM_VIDE=
-O_OFF);
->      }
+>   tests/vm/netbsd: Remove missing py311-expat package (2024-01-19 11:38:32 +0100)
 >
-> +    preferred_codec =3D qemu_opt_get(opts, "preferred-codec");
-> +    if (preferred_codec) {
-> +        if (spice_server_set_video_codecs(spice_server, preferred_codec)=
-) {
-
-Sadly, the API just returns 0 if one of the codec was accepted, not
-great if you want a specific set of codecs.
-
-otherwise, lgtm
-
-
-> +            error_report("Preferred codec name is not valid");
-> +            exit(1);
-> +        }
-> +    }
-> +
->      spice_server_set_agent_mouse
->          (spice_server, qemu_opt_get_bool(opts, "agent-mouse", 1));
->      spice_server_set_playback_compression
-> --
-> 2.39.2
+> ----------------------------------------------------------------
+> - Fix s390x ISM reset
+> - Remove deprecated CLI options -no-hpet, -no-acpi, -async-teardown,
+>   -chroot and -singlestep
+> - Fix installation of the netbsd VM
 >
->
+> ----------------------------------------------------------------
 
 
---
-Marc-Andr=C3=A9 Lureau
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
+
+-- PMM
 
