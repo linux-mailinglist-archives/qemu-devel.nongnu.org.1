@@ -2,50 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A5D835AF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DD7835B0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:37:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRnkI-0008FV-CB; Mon, 22 Jan 2024 01:25:22 -0500
+	id 1rRnuA-0002s1-Mu; Mon, 22 Jan 2024 01:35:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rRnkE-0008FG-EZ
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:25:18 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rRnkB-0003LD-7j
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:25:18 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxmfA_Cq5lTl0DAA--.14123S3;
- Mon, 22 Jan 2024 14:25:03 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx8OQ_Cq5lAd8QAA--.12811S2; 
- Mon, 22 Jan 2024 14:25:03 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, philmd@linaro.org, maobibo@loongson.cn,
- zhaotianrui@loongson.cn
-Subject: [PATCH 1/1] target/loongarch/kvm: Enable LSX/LASX extension
-Date: Mon, 22 Jan 2024 14:09:01 +0800
-Message-Id: <20240122060901.4056487-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1rRnu8-0002pu-Du
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:35:32 -0500
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1rRnu5-0005hg-J8
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:35:31 -0500
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 40M4qn48020229; Mon, 22 Jan 2024 06:35:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ from:to:cc:subject:date:message-id:mime-version:content-type
+ :content-transfer-encoding; s=qcppdkim1; bh=PvaREmC9Jm4QYMTlrWXa
+ 9ewsonsVFBFzTB4P5RO4ysM=; b=pQ4cOEUex+DmnKYR6Gu/pXJh1611X29CnGP3
+ kgum1IU8qRmP3pBnCIWx/+zZx8KoLZDocLSgWNvUmAzAoRLnHm/Bc1WYWXQFt+LE
+ hinIOX6MxgqBGEp9qnNsfP4K/g7PKNFVbIYNWewT7dxKUriCcoJoN0mC2nN1n+0v
+ 7nHEGqZJArh1UVvLJlnGwD+iond3bsvAqMDHYUS1jHpVYZoNocUPjCgC2c168Yhc
+ 858b3ct7/kxxLjA3BkOaja+0gdnwAHDhFjoCpUOBy/cDmMulxzog5qDAzqmlhSDv
+ G0cwFBL1yuWZhdVEyt0nd/Z9+5eouRzdON8Jj0oW2yPm0YV7/g==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vr5s4u45j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jan 2024 06:35:24 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40M6ZNIW027280
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 22 Jan 2024 06:35:23 GMT
+Received: from hu-bcain-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sun, 21 Jan 2024 22:35:22 -0800
+From: Brian Cain <bcain@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <bcain@quicinc.com>, <armbru@redhat.com>, <richard.henderson@linaro.org>, 
+ <philmd@linaro.org>, <peter.maydell@linaro.org>,
+ <quic_mathbern@quicinc.com>, <stefanha@redhat.com>, <ale@rev.ng>,
+ <anjo@rev.ng>, <quic_mliebel@quicinc.com>, <ltaylorsimpson@gmail.com>
+Subject: [PULL 00/15] target-hexagon queue, hexagon docker
+Date: Sun, 21 Jan 2024 22:34:46 -0800
+Message-ID: <20240122063501.782041-1-bcain@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx8OQ_Cq5lAd8QAA--.12811S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: NHdpd1G4klx69dq8V-V8WeJQ7lNR2KOT
+X-Proofpoint-GUID: NHdpd1G4klx69dq8V-V8WeJQ7lNR2KOT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-21_04,2024-01-19_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ spamscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=433 priorityscore=1501 impostorscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401220046
+Received-SPF: pass client-ip=205.220.180.131; envelope-from=bcain@quicinc.com;
+ helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -62,85 +95,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kernel had already support LSX and LASX [1],
-but QEMU is disable LSX/LASX for kvm. This patch adds
-kvm_check_cpucfg to check CPUCFG2.
-
-[1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
-
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- linux-headers/asm-loongarch/kvm.h |  1 +
- target/loongarch/kvm/kvm.c        | 35 ++++++++++++++++++++++++-------
- 2 files changed, 29 insertions(+), 7 deletions(-)
-
-diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
-index c6ad2ee610..923d0bd382 100644
---- a/linux-headers/asm-loongarch/kvm.h
-+++ b/linux-headers/asm-loongarch/kvm.h
-@@ -79,6 +79,7 @@ struct kvm_fpu {
- #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
- #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
- #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
-+#define KVM_LOONGARCH_VCPU_CPUCFG	0
- 
- struct kvm_debug_exit_arch {
- };
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 84bcdf5f86..41b6947c7b 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -537,6 +537,28 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
-     return ret;
- }
- 
-+static int kvm_check_cpucfg(int id, CPUState *cs)
-+{
-+    int ret;
-+    uint64_t val;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_CPUCFG,
-+        .attr = id,
-+        .addr = (uint64_t)&val,
-+    };
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+    CPULoongArchState *env = &cpu->env;
-+
-+    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
-+
-+    if (!ret) {
-+        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
-+        env->cpucfg[id] &= val;
-+    }
-+
-+    return ret;
-+}
-+
- static int kvm_loongarch_put_cpucfg(CPUState *cs)
- {
-     int i, ret = 0;
-@@ -545,14 +567,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
-     uint64_t val;
- 
-     for (i = 0; i < 21; i++) {
-+	if (i == 2) {
-+            ret = kvm_check_cpucfg(i, cs);
-+            if (ret) {
-+                return ret;
-+            }
-+	}
-         val = env->cpucfg[i];
--        /* LSX and LASX and LBT are not supported in kvm now */
--        if (i == 2) {
--            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
--            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
--                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
--                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
--        }
-         ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
-         if (ret < 0) {
-             trace_kvm_failed_put_cpucfg(strerror(errno));
--- 
-2.25.1
-
+VGhlIGZvbGxvd2luZyBjaGFuZ2VzIHNpbmNlIGNvbW1pdCAzZjJhMzU3Yjk1ODQ1ZWEwYmY3NDYz
+ZWZmNjY2MWU0M2I5N2QxYWZjOgoKICBNZXJnZSB0YWcgJ2h3LWNwdXMtMjAyNDAxMTknIG9mIGh0
+dHBzOi8vZ2l0aHViLmNvbS9waGlsbWQvcWVtdSBpbnRvIHN0YWdpbmcgKDIwMjQtMDEtMTkgMTE6
+Mzk6MzggKzAwMDApCgphcmUgYXZhaWxhYmxlIGluIHRoZSBHaXQgcmVwb3NpdG9yeSBhdDoKCiAg
+aHR0cHM6Ly9naXRodWIuY29tL3F1aWMvcWVtdSB0YWdzL3B1bGwtaGV4LTIwMjQwMTIxCgpmb3Ig
+eW91IHRvIGZldGNoIGNoYW5nZXMgdXAgdG8gYmJlNDIwOWM4YjQzMDBkNzIyZjQ3NzkxZjkxNTFl
+MWE2OWNiMDEzNToKCiAgdGFyZ2V0L2hleGFnb246IHJlZHVjZSBzY29wZSBvZiBkZWZfcmVnbnVt
+LCByZW1vdmUgZGVhZCBhc3NpZ25tZW50ICgyMDI0LTAxLTIxIDIyOjAyOjQ4IC0wODAwKQoKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpDb3Zlcml0eSBmaXgsIGNyb3NzIHRvb2xjaGFpbiB1cGRhdGUsIHN3aXRjaCB0byBkZWNv
+ZGV0cmVlCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCkJyaWFuIENhaW4gKDIpOgogICAgICB0ZXN0cy9kb2NrZXI6IEhleGFn
+b24gdG9vbGNoYWluIHVwZGF0ZQogICAgICB0YXJnZXQvaGV4YWdvbjogcmVkdWNlIHNjb3BlIG9m
+IGRlZl9yZWdudW0sIHJlbW92ZSBkZWFkIGFzc2lnbm1lbnQKClRheWxvciBTaW1wc29uICgxMyk6
+CiAgICAgIEhleGFnb24gKHRhcmdldC9oZXhhZ29uKSBGaXggc2hhZG93IHZhcmlhYmxlIHdoZW4g
+aWRlZi1wYXJzZXIgaXMgb2ZmCiAgICAgIEhleGFnb24gKHRhcmdldC9oZXhhZ29uKSBDbGVhbiB1
+cCBoYW5kbGluZyBvZiBtb2RpZmllciByZWdpc3RlcnMKICAgICAgSGV4YWdvbiAodGFyZ2V0L2hl
+eGFnb24pIE1ha2UgZ2VuZXJhdG9ycyBvYmplY3Qgb3JpZW50ZWQgLSBnZW5fdGNnX2Z1bmNzCiAg
+ICAgIEhleGFnb24gKHRhcmdldC9oZXhhZ29uKSBNYWtlIGdlbmVyYXRvcnMgb2JqZWN0IG9yaWVu
+dGVkIC0gZ2VuX2hlbHBlcl9wcm90b3MKICAgICAgSGV4YWdvbiAodGFyZ2V0L2hleGFnb24pIE1h
+a2UgZ2VuZXJhdG9ycyBvYmplY3Qgb3JpZW50ZWQgLSBnZW5faGVscGVyX2Z1bmNzCiAgICAgIEhl
+eGFnb24gKHRhcmdldC9oZXhhZ29uKSBNYWtlIGdlbmVyYXRvcnMgb2JqZWN0IG9yaWVudGVkIC0g
+Z2VuX2lkZWZfcGFyc2VyX2Z1bmNzCiAgICAgIEhleGFnb24gKHRhcmdldC9oZXhhZ29uKSBNYWtl
+IGdlbmVyYXRvcnMgb2JqZWN0IG9yaWVudGVkIC0gZ2VuX29wX3JlZ3MKICAgICAgSGV4YWdvbiAo
+dGFyZ2V0L2hleGFnb24pIE1ha2UgZ2VuZXJhdG9ycyBvYmplY3Qgb3JpZW50ZWQgLSBnZW5fYW5h
+bHl6ZV9mdW5jcwogICAgICBIZXhhZ29uICh0YXJnZXQvaGV4YWdvbikgUmVtb3ZlIHVudXNlZCBX
+UklURVNfUFJFRF9SRUcgYXR0cmlidXRlCiAgICAgIEhleGFnb24gKHRhcmdldC9oZXhhZ29uKSBS
+ZW1vdmUgZGVhZCBmdW5jdGlvbnMgZnJvbSBoZXhfY29tbW9uLnB5CiAgICAgIEhleGFnb24gKHRh
+cmdldC9oZXhhZ29uKSBVc2UgUUVNVSBkZWNvZGV0cmVlICgzMi1iaXQgaW5zdHJ1Y3Rpb25zKQog
+ICAgICBIZXhhZ29uICh0YXJnZXQvaGV4YWdvbikgVXNlIFFFTVUgZGVjb2RldHJlZSAoMTYtYml0
+IGluc3RydWN0aW9ucykKICAgICAgSGV4YWdvbiAodGFyZ2V0L2hleGFnb24pIFJlbW92ZSBvbGQg
+ZGVjdHJlZS5weQoKIHRhcmdldC9oZXhhZ29uL1JFQURNRSAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDE0ICstCiB0YXJnZXQvaGV4YWdvbi9hdHRyaWJzX2RlZi5oLmluYyAgICAgICAg
+ICAgICAgICAgICB8ICAgMSAtCiB0YXJnZXQvaGV4YWdvbi9kZWNvZGUuYyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8IDQzOSArKystLS0tLS0tCiB0YXJnZXQvaGV4YWdvbi9kZWNvZGUuaCAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArLQogdGFyZ2V0L2hleGFnb24vZGVjdHJl
+ZS5weSAgICAgICAgICAgICAgICAgICAgICAgICAgfCA0MDMgLS0tLS0tLS0tCiB0YXJnZXQvaGV4
+YWdvbi9nZW5fYW5hbHl6ZV9mdW5jcy5weSAgICAgICAgICAgICAgICB8IDE2MyArLS0tCiB0YXJn
+ZXQvaGV4YWdvbi9nZW5fZGVjb2RldHJlZS5weSAgICAgICAgICAgICAgICAgICB8IDE5OCArKysr
+KwogdGFyZ2V0L2hleGFnb24vZ2VuX2RlY3RyZWVfaW1wb3J0LmMgICAgICAgICAgICAgICAgfCAg
+NDkgLS0KIHRhcmdldC9oZXhhZ29uL2dlbl9oZWxwZXJfZnVuY3MucHkgICAgICAgICAgICAgICAg
+IHwgMzcwICsrLS0tLS0tLQogdGFyZ2V0L2hleGFnb24vZ2VuX2hlbHBlcl9wcm90b3MucHkgICAg
+ICAgICAgICAgICAgfCAxNDkgKy0tLQogdGFyZ2V0L2hleGFnb24vZ2VuX2lkZWZfcGFyc2VyX2Z1
+bmNzLnB5ICAgICAgICAgICAgfCAgMjAgKy0KIHRhcmdldC9oZXhhZ29uL2dlbl9vcF9yZWdzLnB5
+ICAgICAgICAgICAgICAgICAgICAgIHwgICA2ICstCiB0YXJnZXQvaGV4YWdvbi9nZW5fdGNnLmgg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOSArLQogdGFyZ2V0L2hleGFnb24vZ2VuX3Rj
+Z19mdW5jcy5weSAgICAgICAgICAgICAgICAgICAgfCA1NjYgKy0tLS0tLS0tLS0tLQogdGFyZ2V0
+L2hleGFnb24vZ2VuX3RyYW5zX2Z1bmNzLnB5ICAgICAgICAgICAgICAgICAgfCAxMjQgKysrCiB0
+YXJnZXQvaGV4YWdvbi9oZXhfY29tbW9uLnB5ICAgICAgICAgICAgICAgICAgICAgICB8IDkyMSAr
+KysrKysrKysrKysrKysrKysrLS0KIHRhcmdldC9oZXhhZ29uL2lkZWYtcGFyc2VyL3BhcnNlci1o
+ZWxwZXJzLmMgICAgICAgIHwgICA4ICstCiB0YXJnZXQvaGV4YWdvbi9tYWNyb3MuaCAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgOSArLQogdGFyZ2V0L2hleGFnb24vbWVzb24uYnVpbGQg
+ICAgICAgICAgICAgICAgICAgICAgICAgfCAxNDcgKysrLQogdGFyZ2V0L2hleGFnb24vbW12ZWMv
+ZGVjb2RlX2V4dF9tbXZlYy5jICAgICAgICAgICAgfCAgIDQgKy0KIHRhcmdldC9oZXhhZ29uL29w
+Y29kZXMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDI5IC0KIHRhcmdldC9oZXhhZ29u
+L29wY29kZXMuaCAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyIC0KIHRhcmdldC9oZXhh
+Z29uL3RyYW5zbGF0ZS5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiAuLi4vZG9j
+a2VyL2RvY2tlcmZpbGVzL2RlYmlhbi1oZXhhZ29uLWNyb3NzLmRvY2tlciB8ICAgNCArLQogMjQg
+ZmlsZXMgY2hhbmdlZCwgMTU1OSBpbnNlcnRpb25zKCspLCAyMDg1IGRlbGV0aW9ucygtKQogZGVs
+ZXRlIG1vZGUgMTAwNzU1IHRhcmdldC9oZXhhZ29uL2RlY3RyZWUucHkKIGNyZWF0ZSBtb2RlIDEw
+MDc1NSB0YXJnZXQvaGV4YWdvbi9nZW5fZGVjb2RldHJlZS5weQogY3JlYXRlIG1vZGUgMTAwNzU1
+IHRhcmdldC9oZXhhZ29uL2dlbl90cmFuc19mdW5jcy5weQo=
 
