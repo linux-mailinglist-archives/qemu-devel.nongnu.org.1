@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85A28373A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3267837430
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:44:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS0oD-0000gE-RA; Mon, 22 Jan 2024 15:22:17 -0500
+	id 1rS189-0004CG-Te; Mon, 22 Jan 2024 15:42:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cr@cristianrodriguez.net>)
- id 1rS0oA-0000e4-8V
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:22:14 -0500
-Received: from mail-vk1-xa33.google.com ([2607:f8b0:4864:20::a33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cr@cristianrodriguez.net>)
- id 1rS0o8-0007Js-E2
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:22:13 -0500
-Received: by mail-vk1-xa33.google.com with SMTP id
- 71dfb90a1353d-4b732e678cfso265607e0c.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 12:22:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rodriguez.im; s=google; t=1705954930; x=1706559730; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=S8hrN1y7mGH/+a7/eCInLNxA+3vziRVmFNU7vTqEcCU=;
- b=UwVSYulspqW23HAit+ZJmcrWqe3QcKZsmXMukwTupc5q+DmF0RNVD4cIJr72DwtK9Q
- JHSSKzK77GjVoZURGgWOsf4keFxbpseDCaG8HrbsESU+FyVPrL7wFLA8KGlfpPNX5PMW
- jzEnetQ2Y6Mlo3JN3uVwM2Vq5oxPvRWavX0yc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705954930; x=1706559730;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=S8hrN1y7mGH/+a7/eCInLNxA+3vziRVmFNU7vTqEcCU=;
- b=Dc9ge+mX9t4gfED7EBAwpIqiGdruSkGEdq0TiK+ymv57b9jybeblaCUR1uD0RGAr0r
- w+pVtJ4AMtScnAw8UoUCSzK8eQ+1XV5Epyen0X8OkcEI2EA/t0nMViYiaL8nYnXAnEpd
- Nir3FL5qyyHJU+V0r2AonnI9XgPotN1IvTc0OJ/erz2NZq3P734i2lPEVdP4AIi0BYei
- uTa+YLlckUaJrGRZaImrZfws2Og778CTn+gx/cGAkkTijwQ+5oRXe4M4uCbJMYiMhgtM
- osAUXft1E/fUCYeuOsbqXCZgDb5f/1z8sQ4jqPrb+idbAwkwAbi8mnkuM4WuzEUUQtH0
- KWvg==
-X-Gm-Message-State: AOJu0YyIloWKltRgmQfe1tgbdS8c9jne+ijvHt0qVXKr5UQb7J93GKcf
- Dy+iKcrxYC7CrSAHDCqtC6r9vsxB1oprd98elzniGWJBtOwBFKIpvY7nksKusuWl+ClWFEXxGTj
- j8YGtU0hSZdy05vjPsexN4GV/c8s1PYhpShri
-X-Google-Smtp-Source: AGHT+IHGnBtXsBO6FxxVDUKxJ+6a74m+2GHwTE37FtBBWllPxY5JJDuvhEhPEEShtr4vqxe9VNQ1JwZByN+qvjDpev8=
-X-Received: by 2002:a05:6122:2009:b0:4b7:2dbf:c558 with SMTP id
- l9-20020a056122200900b004b72dbfc558mr3891945vkd.0.1705954930594; Mon, 22 Jan
- 2024 12:22:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1rS184-000478-WD
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:42:49 -0500
+Received: from smtp-relay-services-1.canonical.com ([185.125.188.251])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1rS182-0004sD-Hh
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:42:48 -0500
+Received: from juju-98d295-prod-launchpad-16.localdomain (scripts.lp.internal
+ [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-1.canonical.com (Postfix) with ESMTPSA id 335633F8DF
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 20:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1705956156;
+ bh=0BTrjjoOaerh2v889sF2kraVlNioNbJ4IzrzQzJdffU=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=GH86wk0hmF4ApDuN+Su7EIUrSMlANkHPjtsznk/O4RfqCGMVBxWJuEj/1D7ueNfit
+ 8aFfcXpzYUdBnlaPRVj6XhxT4r+bZH+0DQNDJGiacXQuO/5Eh7qU9UFROqOk1JTMnU
+ Bhyr8dGwjfpRqoiBsSyBNQMlNPUeo0jY6qtG2X6K93k4WP3wDYjF+Kz0m6kT7ryV3y
+ V5nrjMvNlANuMQtJWBTSlyqAl2+RekWwRGoyygzGfu89DB74QPqQVwNmo4VGHU2dQU
+ 6kGZwANupTajwPO/iRpVPwr/EDIgSzM4Lkb4Y/DDc6QVllzlRHjG6HCtKfem4v2+Fk
+ dkDM2D71RYR3g==
+Received: from [10.131.215.246] (localhost [127.0.0.1])
+ by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
+ 933D67EA4D
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 20:40:46 +0000 (UTC)
 MIME-Version: 1.0
-References: <20240119203950.6434-1-cristian@rodriguez.im>
- <Za6ALDkMyW9Pdspd@redhat.com>
- <CAPBLoAfbj51gFZ-=41jYHytPBvM_AagsB1ixySPpwr5Y4SPJpA@mail.gmail.com>
- <Za7N3pIUXQB4lAkl@redhat.com>
-In-Reply-To: <Za7N3pIUXQB4lAkl@redhat.com>
-From: =?UTF-8?Q?Cristian_Rodr=C3=ADguez?= <cristian@rodriguez.im>
-Date: Mon, 22 Jan 2024 17:21:59 -0300
-Message-ID: <CAPBLoAdKUvHfkR3grXLnd29C8KTGPf9r4LmH4hGwG+QZVje=Qg@mail.gmail.com>
-Subject: Re: [PATCH] crypto/gcrypt: prefer kernel as direct source of entropy
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: "open list:All patches CC here" <qemu-devel@nongnu.org>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>
-Content-Type: multipart/alternative; boundary="000000000000a42d1a060f8e95e1"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a33;
- envelope-from=cr@cristianrodriguez.net; helo=mail-vk1-xa33.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 22 Jan 2024 20:29:29 -0000
+From: Jacob <1225187@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=New; importance=Undecided; assignee=None;
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: jacob11 janitor kavsrf th-huth
+X-Launchpad-Bug-Reporter: alex (kavsrf)
+X-Launchpad-Bug-Modifier: Jacob (jacob11)
+References: <20130913204828.19236.78809.malonedeb@soybean.canonical.com>
+Message-Id: <170595536926.413629.8452294576399738096.malone@juju-98d295-prod-launchpad-4>
+Subject: [Bug 1225187] Re: qemu hangs in windows 7 host with -serial
+ pipe:windbg
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="ff54b7050d99a0d84ff58e179f1b8e071713b594";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: 0ae165547720adc98eafcf3731fc951d76cbcc85
+Received-SPF: pass client-ip=185.125.188.251;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-1.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -83,38 +85,47 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1225187 <1225187@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a42d1a060f8e95e1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Tested and this issue still affects the latest version of QEMU (8.2.0)
+compiled for Windows.
 
-On Mon, Jan 22, 2024 at 5:19=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com>
-wrote:
+Instructions in original post are still sufficient to reproduce the problem=
+ on Windows 7 x64.
+Both i386 and x86_64 were tested and both result in a hung QEMU process, ex=
+cept on my system the GUI for QEMU displayed a white screen when hung inste=
+ad of black.
 
->
-> If the DRBG is required for FIPS compliance, and QEMU hardcoded
-> the system RNG, then QEMU can't be used in a FIPS environment.
->
+** Changed in: qemu
+       Status: Expired =3D> New
 
-No, the library overrides this choice.. the DRBG has higher priority.
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1225187
 
---000000000000a42d1a060f8e95e1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Title:
+  qemu hangs in windows 7 host with -serial pipe:windbg
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jan 22, 2024 at 5:19=E2=80=AF=
-PM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berra=
-nge@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex"><br>
-If the DRBG is required for FIPS compliance, and QEMU hardcoded<br>
-the system RNG, then QEMU can&#39;t be used in a FIPS environment.<br></blo=
-ckquote><div><br></div><div>No, the library overrides=C2=A0this choice.. th=
-e DRBG has higher priority.</div><div>=C2=A0</div></div></div>
+Status in QEMU:
+  New
 
---000000000000a42d1a060f8e95e1--
+Bug description:
+  Execution line:
+  qemu-system-i386.exe -m 512 c:\Disks\Qemu_XP_en.vhd  -serial pipe:windbg
+
+  It waits for the pipe.
+  Execute windbg
+  c:\WINDDK\7600.16385.1\Debuggers\windbg.exe -k com:pipe,port=3D\\.\pipe\w=
+indbg,resets=3D0,reconnect
+
+  GUI black screen shown. QEMU hangs.
+
+  qemu v1.5.3 (c0b1a7e207094dba0b37a892b41fe4cab3195e44). MinGW built.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1225187/+subscriptions
+
 
