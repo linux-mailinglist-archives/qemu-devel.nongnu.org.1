@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D9F837459
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA15837456
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:46:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS1Ar-0006BF-Gc; Mon, 22 Jan 2024 15:45:41 -0500
+	id 1rS1BM-0006gl-5D; Mon, 22 Jan 2024 15:46:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1rS1Ap-0006B3-Rh; Mon, 22 Jan 2024 15:45:39 -0500
-Received: from mail.weilnetz.de ([37.120.169.71]
- helo=mail.v2201612906741603.powersrv.de)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rS1BI-0006Zn-0O
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:46:08 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sw@weilnetz.de>)
- id 1rS1An-0005Mu-Nd; Mon, 22 Jan 2024 15:45:39 -0500
-Received: from [192.168.178.59] (p5b1519e5.dip0.t-ipconnect.de [91.21.25.229])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.v2201612906741603.powersrv.de (Postfix) with ESMTPSA id 4E565DA0F70;
- Mon, 22 Jan 2024 21:45:33 +0100 (CET)
-Message-ID: <f6e58aaf-fa64-4b40-b7b9-d7f434dd902a@weilnetz.de>
-Date: Mon, 22 Jan 2024 21:45:32 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rS1BF-0005Um-4e
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:46:06 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-55c2e6f0542so1704303a12.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 12:46:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705956363; x=1706561163; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=X88/NUHn09TSNhlqrrbj/PgNx95vNRBZOnAF7uVWttk=;
+ b=gPqG3qqlk+kJ6HOwA2ZZMbH7QFJ9UYdETJmXat7f4Qwdz3cvI9PXQvmyuAy14LoB7t
+ 9/oDO0Z4HNc7Y64K8UvJQ8L4cAYIyn1fjVcEDXmW7qBMez57WrIs7e+KInUp1IJTzC4n
+ ZVcuAWeXiVVsyG5ZXKTrVklj1Zh5TNcxQNmrRcOhwsvE/iX/7LtaWdAkn78NdRSnQiWn
+ i6upAo0I8Y6S2uSofGOWi3ptwVBr0cZ4XCKJwg6pmP9Z0KbaY/oiC54V1A1mHOIK2+Rl
+ Y3s1ovaRvBenVYbSmgijtUQhHMDCLc1qaNCULullYTO/WU4tKpU/pOmtWtl9dAKYybWx
+ qycA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705956363; x=1706561163;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=X88/NUHn09TSNhlqrrbj/PgNx95vNRBZOnAF7uVWttk=;
+ b=cOMTPZdtTngCm00JH+2tQIlIggvrTOEulOmd/AwepJc9v1eUBPJeVAbGnpDyrj/r8z
+ X2fhzzFmf5oodkiyM8sj6xkBwh8jAz6EO50WJM5Im5IB+DR5IcTjL73r7srtt24ymoyd
+ ltXCD7vehLXKchcWSXvnd2nUpjr6WL4J/yWqs4Mt1CPrKy3D0t1dn7vj0xbBBPnjw2sl
+ lVoWKynAogabmiDtItaLhi0qC9RZdMBe5DgTn9HN07pKcspn9dwHmUj6bdznlw/e1Jud
+ rSqW5uJZbnLdSnoIAoMDh2+XG4rnw/BVHtFMDOO7KzOb5YSXqPEbqK2eirmdrnqPROMl
+ q1tA==
+X-Gm-Message-State: AOJu0YxiGghIsla+II4lq/yBOpxOj8r6FzhAmh4TBL6YuQP1P1tnxLAH
+ o/RghhcnPbSqIpktarxwPwmWQgcOcnx4GKX7HP98j8Tn7ANmrB9hH7TP1oxqlPEhjswZ1cZu04C
+ rD/HPYe6BHIWZ2Xn+zXlaz7/Mbb+wjOH+h9x9DA==
+X-Google-Smtp-Source: AGHT+IFRQhWt+sfeF0rR3RVQX3l3gAYl/GBSQcpg6OMZiEolXywjcQEdhPTkTbqbufzBLtRaE9n2VEV5CHmnjeN6Ilg=
+X-Received: by 2002:a05:6402:b6e:b0:55a:5ecc:79ed with SMTP id
+ cb14-20020a0564020b6e00b0055a5ecc79edmr249601edb.79.1705956363484; Mon, 22
+ Jan 2024 12:46:03 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] util/uri: Remove the unused "target" argument from
- uri_string_unescape()
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-trivial@nongnu.org
-References: <20240122191753.103118-1-thuth@redhat.com>
- <20240122191753.103118-2-thuth@redhat.com>
-Autocrypt: addr=sw@weilnetz.de; keydata=
- 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
-In-Reply-To: <20240122191753.103118-2-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.120.169.71; envelope-from=sw@weilnetz.de;
- helo=mail.v2201612906741603.powersrv.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240119204608.779541-1-jcmvbkbc@gmail.com>
+ <20240119204608.779541-2-jcmvbkbc@gmail.com>
+ <CAFEAcA-dSxaseY+w_z-U1pa8XkJ9XTyBWekXvH0q0XkrZJ+jNA@mail.gmail.com>
+ <CAMo8BfKWg14m9HG+3D9YiGdJ5JZsphU9AF4d6jha-DPbhr8TOw@mail.gmail.com>
+In-Reply-To: <CAMo8BfKWg14m9HG+3D9YiGdJ5JZsphU9AF4d6jha-DPbhr8TOw@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 20:45:32 +0000
+Message-ID: <CAFEAcA890Q7mwt4CZWRnrhOUm2_8y54PTuk31_B248p+O4PhzA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] target/xtensa: wrap MMU and MPU state into structures
+To: Max Filippov <jcmvbkbc@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,24 +87,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Stefan Weil <sw@weilnetz.de>
-From:  Stefan Weil via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 22.01.24 um 20:17 schrieb Thomas Huth:
-
-> All callers pass NULL as target, so we can simplify the code by
-> dropping this parameter.
+On Mon, 22 Jan 2024 at 18:45, Max Filippov <jcmvbkbc@gmail.com> wrote:
 >
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   include/qemu/uri.h |  2 +-
->   util/uri.c         | 32 ++++++++++++++------------------
->   2 files changed, 15 insertions(+), 19 deletions(-)
+> On Mon, Jan 22, 2024 at 10:29=E2=80=AFAM Peter Maydell <peter.maydell@lin=
+aro.org> wrote:
+> >
+> > On Fri, 19 Jan 2024 at 20:47, Max Filippov <jcmvbkbc@gmail.com> wrote:
+> > > +    union {
+> > > +        XtensaMMU mmu;
+> > > +        XtensaMPU mpu;
+> > > +    };
+> >
+> > Is it really worth having this be a union ? I suspect it will
+> > make adding migration/savevm support later more awkward.
+>
+> I have a draft implementation of savevm for xtensa and I did this part
+> using subsections with the .needed callback checking whether the
+> MMU or MPU option is enabled in the config. I wonder where the
+> awkwardness is expected.
 
+Oh, well if it works that's fine I guess. I was kind of thinking
+that if you didn't have the union you could avoid having
+subsections entirely.
 
-Reviewed-by: Stefan Weil <sw@weilnetz.de>
+On Arm we don't try to save space in the CPU struct by
+using unions, even though some fields are A-profile
+specific and some are R or M-profile specific.
 
-
+-- PMM
 
