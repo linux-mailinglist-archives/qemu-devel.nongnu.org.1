@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EED835B3A
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E204D835B40
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:53:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRo6e-0000S8-4K; Mon, 22 Jan 2024 01:48:28 -0500
+	id 1rRoBG-0001t2-TV; Mon, 22 Jan 2024 01:53:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRo6X-0000Rg-4o
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:48:22 -0500
-Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ id 1rRoBF-0001so-8B; Mon, 22 Jan 2024 01:53:13 -0500
+Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRo6V-0008Ls-Ms
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 01:48:20 -0500
-Received: by mail-vs1-xe2c.google.com with SMTP id
- ada2fe7eead31-467a7a376d5so395096137.1
- for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 22:48:19 -0800 (PST)
+ id 1rRoBD-00011Q-Lj; Mon, 22 Jan 2024 01:53:13 -0500
+Received: by mail-vs1-xe2a.google.com with SMTP id
+ ada2fe7eead31-46777099deeso385738137.0; 
+ Sun, 21 Jan 2024 22:53:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705906098; x=1706510898; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705906390; x=1706511190; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mxkcK958nlAkpBJVXETcoJwO3Smq4kPUF6KlJSxmoDo=;
- b=On1jVakrzQqBQti+byxvLT8HY211QRe3H6xtsIWKAnGXYKwysmi7Id+60HsmkYaVCp
- 5vQVEvNQIGFXl2C4j7XP42gJV3X+VSsmJqZsQh3S7MlRDGUO8Gpscjlev5SnsNbmnAZE
- J7Dva6VRKvHTzmR8D9I9WYNhHhwq/vbetMcZOojsYKveCEMevPLVk0yXjL4XlxfxrTFX
- JBuSISCfbfG8770MeTlwgMk2BskEo5TDzWzon+nWQqjZAJ6Y5jzNEDRxD5vH8F8gVSfD
- xVkbBfFkBEOBZf5STRUnIKBtyaf8vswqCbIEeqZPmc7cGoZMdBeFD5c9bEQuThCkCt2n
- TdRA==
+ bh=E8REJkew4LagY2rTEWrTU8d9T5j7ISmZiOk9Othppc8=;
+ b=TGPP/y9mWjM7H23Ro7pKBK2HygdI6VoWkbpK0ztDSKHGsRAgOSdh9S4IpE13FzexZE
+ sfZ+jEzi+DvJqLwruXIyxmLFhnXyrnuUeJPuNhdTZveTymnzYB6y6EU6X7IgB5P8uG7r
+ BvHSi4J67rw22vqJarQv0uqPKGBHRj5OykgN396YHFuRs9vefWnU0K+zBcDDhc2owXYY
+ ySHvEkDe/Q8kyzOPODXLuPNTFMpvtza0tcO/qY5016kUizXMkHZ4hWD5jOoGYflrl/qH
+ ItWYq6GYnottMpPKawPV0vM6WeHuY/QVbl4Crugzmxs2pk+/OMBWt1ENE7ekvolBtW+H
+ 9GPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705906098; x=1706510898;
+ d=1e100.net; s=20230601; t=1705906390; x=1706511190;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mxkcK958nlAkpBJVXETcoJwO3Smq4kPUF6KlJSxmoDo=;
- b=McO9mI/AkUx0AGzUQDgesnUU7O2DsKg8l7NHdRhHrnWhfg0GgmiQqOlGEHV1pUXnR4
- aRG3fvzsiUztnjSMQdswX4YAKM41Fm5uXNs2fHUmPYabxdnbxEge5I9FTeWiydoqHLWl
- GacOVrd99T53KY2lWD91X+Oy1xmAsE97+Vbb4S6SckX70OIAQTO4UdBc15G8naP5e+sS
- Ml4SEwFSVFpRge5O+DI9Ep8YAznmCcZxnilliMDkYOfnFHA44VIGPjxEnNvQDbKIrFJr
- sR/xARvcazm+eo8m4yJtsZOosQx3L7oQS/j4MsdcysAchK6GIQ8Wf0BfSQGgnEepadaI
- HVBA==
-X-Gm-Message-State: AOJu0YzzEIXqhaP31WoeMImqsLB+AiieHarajmOnFGRsNRhwbfmQ5sc8
- rw8+fJ/OE4YN9ka/wp7OwvvgBlC1vnmkcj7JDvUF18UR2p6Xbo9OGZO/f9QZEu2NRJaj69zaDuz
- UWFa5Nw2+I/sd6bp8VQiOVamNcX8Njv0mM1k=
-X-Google-Smtp-Source: AGHT+IH/DZCw52BYpqKHGFmSIdZ5FGdYcnc0KhSkB/fPD7oX6V12OmWBrNToNeOYK51cxHV8pkQO4C1Zv8XHo9SBPsc=
-X-Received: by 2002:a05:6102:1886:b0:469:7690:eefc with SMTP id
- ji6-20020a056102188600b004697690eefcmr905519vsb.32.1705906098321; Sun, 21 Jan
- 2024 22:48:18 -0800 (PST)
+ bh=E8REJkew4LagY2rTEWrTU8d9T5j7ISmZiOk9Othppc8=;
+ b=PFDbU4Yu0cJzv7fY4c86+G+8Gn65A3I7Q5Msh9s5j/TSkGAcvSRQArA/CzXLxjRvhs
+ n1UlNR1sxYirrBKrXv8VuJerv3IRiQqXCEo32dhPdXUFeXZZp/dpPBDqjKNn3JqDHldP
+ 1cTUFCCNCgX9OI2+/TUiBTcB1GrCSAZYj5FBmEw/3GNhuYrswULLd4+lIE/m21Jn6241
+ GduDUOPoq1fWuEi01MdpisPOhTdAP+sYe7cGKIzEg6YTBWq9DWlnulobEA+SaB16Bhl/
+ TEEcTwxxSipENNOMEhKu9wDNL6+JnZLBbmfnhP0DYFtMVGm2eDwTo3DQcjvJHkK74vzA
+ wJdw==
+X-Gm-Message-State: AOJu0Yyu5o1fhfZjRm0R2Hbpj9Fs5YJ9+U59TOoZqYlADGvUjojRZiCq
+ HXBQbu1l0jbD0fYRyowV3UYndMNnOLQxegYhH7eGyUhL3UwvwtZY5yaJVpXNVPqdofV2MZv08hE
+ Io8ZZlYyd+go2muXu6CU8BrcbYOo=
+X-Google-Smtp-Source: AGHT+IEL5c6bdzgE5u+mdjDrjwxVSOF1lkDpFBxTeU1o3zdkR9RnMOBCOngjwl6ZTMp+U41f4Zd0jWJLhdbBkSgBTRk=
+X-Received: by 2002:a67:b448:0:b0:469:a69e:1f12 with SMTP id
+ c8-20020a67b448000000b00469a69e1f12mr990622vsm.1.1705906390298; Sun, 21 Jan
+ 2024 22:53:10 -0800 (PST)
 MIME-Version: 1.0
-References: <MN2PR07MB60808AC0A8A31AF17BE2EBC6C561A@MN2PR07MB6080.namprd07.prod.outlook.com>
-In-Reply-To: <MN2PR07MB60808AC0A8A31AF17BE2EBC6C561A@MN2PR07MB6080.namprd07.prod.outlook.com>
+References: <20240109102930.405323-1-me@deliversmonkey.space>
+In-Reply-To: <20240109102930.405323-1-me@deliversmonkey.space>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 16:47:52 +1000
-Message-ID: <CAKmqyKN71ff1-qMQ1GNbqQXym4=v1oR+r+Lohv8K-=j-Kq1jyw@mail.gmail.com>
-Subject: Re: Adding custom CSR to riscv-qemu
-To: Nati Rapaport <rapaport@cadence.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Date: Mon, 22 Jan 2024 16:52:44 +1000
+Message-ID: <CAKmqyKMDxtqsNTBqVZFaHO8XusyD+vXO6=mJ0QZpAaAUTKbvcA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] Pointer Masking update for Zjpm v0.8
+To: Alexey Baturo <baturo.alexey@gmail.com>
+Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
+ palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ TVD_PH_BODY_ACCOUNTS_POST=0.001, TVD_PH_BODY_META_ALL=1.587,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,49 +89,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 2, 2024 at 7:22=E2=80=AFPM Nati Rapaport <rapaport@cadence.com>=
- wrote:
+On Tue, Jan 9, 2024 at 8:31=E2=80=AFPM Alexey Baturo <baturo.alexey@gmail.c=
+om> wrote:
 >
-> Hello,
+> From: Alexey Baturo <baturo.alexey@gmail.com>
 >
-> I=E2=80=99m going to add some custom CSRs (Control & Status Registers) to=
- a new RiscV core in qemu.
+> Hi,
 >
-> Could you please help me understanding if there is any method to do it?
 
-Have a look at decode_opc() in target/riscv/translate.c.
-
-We probably want something similar where we can iterate over the
-vendor enabled CSRs.
-
->
-> Should I do it in /target/riscv/cpu_bits.h where all CSRs are defined  (a=
-nd other files, where all standard CSRs implementation reside?) and just pu=
-t it under a compilation flag for our new core only?
-
-The vendor CSRs should be in their own file. The idea is to keep as
-much as possible separated from the general RISC-V code.
-
->
-> I don=E2=80=99t think so.. as I don=E2=80=99t see any similar example for=
- that there.
->
-> Should I add all the related code around these CSRs in dedicated source f=
-iles and let them built only for our core?
-
-Pretty much, although it will be built by default. We don't want
-custom binaries for vendors or anything like that
+Do you mind including a pointer to the exact spec (a Github link with
+the SHA or tag is great) that you are targeting? We are having issues
+with a different spec, so it will be helpful in future to know exactly
+what the developer was targeting in the cover letter
 
 Alistair
 
+> Patch series updated after the suggested comments:
+> - removed J-letter extension as it's unused
+> - renamed and fixed function to detect if address should be sign-extended
+> - zeroed unused context variables and moved computation logic to another =
+patch
+> - bumped pointer masking version_id and minimum_version_id by 1
 >
-> Please explain..
+> Thanks
+>
+> [v3]:
+> There patches are updated after Richard's comments:
+> - moved new tb flags to the end
+> - used tcg_gen_(s)extract to get the final address
+> - properly handle CONFIG_USER_ONLY
+>
+> Thanks
+>
+> [v2]:
+> As per Richard's suggestion I made pmm field part of tb_flags.
+> It allowed to get rid of global variable to store pmlen.
+> Also it allowed to simplify all the machinery around it.
+>
+> Thanks
+>
+> [v1]:
+> Hi all,
+>
+> It looks like Zjpm v0.8 is almost frozen and we don't expect it change dr=
+astically anymore.
+> Compared to the original implementation with explicit base and mask CSRs,=
+ we now only have
+> several fixed options for number of masked bits which are set using exist=
+ing CSRs.
+> The changes have been tested with handwritten assembly tests and LLVM HWA=
+SAN
+> test suite.
+>
+> Thanks
+>
+> Alexey Baturo (6):
+>   target/riscv: Remove obsolete pointer masking extension code.
+>   target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
+>     of Zjpm v0.8
+>   target/riscv: Add helper functions to calculate current number of
+>     masked bits for pointer masking
+>   target/riscv: Add pointer masking tb flags
+>   target/riscv: Update address modify functions to take into account
+>     pointer masking
+>   target/riscv: Enable updates for pointer masking variables and thus
+>     enable pointer masking extension
+>
+>  target/riscv/cpu.c           |  21 +--
+>  target/riscv/cpu.h           |  46 +++--
+>  target/riscv/cpu_bits.h      |  90 +---------
+>  target/riscv/cpu_cfg.h       |   3 +
+>  target/riscv/cpu_helper.c    |  96 +++++-----
+>  target/riscv/csr.c           | 337 ++---------------------------------
+>  target/riscv/machine.c       |  16 +-
+>  target/riscv/pmp.c           |  13 +-
+>  target/riscv/pmp.h           |  11 +-
+>  target/riscv/tcg/tcg-cpu.c   |   5 +-
+>  target/riscv/translate.c     |  46 ++---
+>  target/riscv/vector_helper.c |  14 +-
+>  12 files changed, 153 insertions(+), 545 deletions(-)
+>
+> --
+> 2.34.1
 >
 >
->
-> Thank you in advance.
->
-> Nati Rapaport
->
-> Cadence Design Systems
 
