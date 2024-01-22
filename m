@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDDE835E9F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69702835EA5
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:50:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRqvf-00077R-0m; Mon, 22 Jan 2024 04:49:19 -0500
+	id 1rRqwl-0007h4-C8; Mon, 22 Jan 2024 04:50:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRqvc-000772-85
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:49:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRqva-0003Is-GW
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:49:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705916953;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iKQvIFS5HsdljQSzMH3UEUiJF4234I9kU4i+tkw/iF0=;
- b=ZJgyh3kYsUhQvyT5332fJkNd7p6iKAF8IZ/5Gg2ATLM8fHNkoOWfvtIlL1f3P5m1g0mjsZ
- y9mSEcYZGbrHr8+pT0CIstiNm37KQbDNS0WrmC0SaN5zwPezg54Kvm394Wmda+b5cwrwgJ
- 7VtumY4a20UL2wSNtWE6mCUlYiqzK9Q=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-DbnDmUbNMF2cFDxm45MUbQ-1; Mon, 22 Jan 2024 04:49:09 -0500
-X-MC-Unique: DbnDmUbNMF2cFDxm45MUbQ-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-5ceac510f8cso405331a12.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:49:09 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705916948; x=1706521748;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rRqwg-0007fj-5N
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:50:22 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rRqwe-0003fl-G9
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:50:21 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3392b15ca41so840240f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:50:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705917018; x=1706521818; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iKQvIFS5HsdljQSzMH3UEUiJF4234I9kU4i+tkw/iF0=;
- b=bjSrj56fffugYrcqOam0K39uhtN8r/GLMMDt66gecF/sNVbqkto5sl8ivM1Hx47Kny
- blkuJhOSeh6skPGne6ftcOG2KQ8w13Bmm8NHWUQCljCgDM93HySejUooepdz2vZgvGcD
- 4TxK8GiX4TGlZg3b1BW9MMpvuobqHWEnTrTEF9jh/X7voGwf3yrlEYwc7fkRax7Dsw0s
- 1rAqUqzt300ffShedkXe1CbruvAFjiJvy3C6y8QO7MrzkFKWwAZ2P/x9SBKdNmHm+gCR
- QphN/wJgmac0DroqJmjLGylfW5kVf94k8e9+8fUZDu0ONMzYO4TthSWRXtFWHuT0yeLO
- 11tA==
-X-Gm-Message-State: AOJu0YwEd1Yc0hJCdNKACesvrTzvuKEvrvkHBP1EQo1lnRBBaOPWFlqA
- ZRqhumOQeNRZ6TBcZdsnhVjDJBzxTSgBiDTXQng9waHNcmvkRECVSvoxKBQg/+bkrX5WaOmIdlW
- qiaFkjpn5MZhAj5CoExP4uj1P+u4AtlR60Hu+BNloy0p9kmOdSm4X
-X-Received: by 2002:a17:90a:f196:b0:290:3e14:5670 with SMTP id
- bv22-20020a17090af19600b002903e145670mr4987450pjb.3.1705916948650; 
- Mon, 22 Jan 2024 01:49:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEr48gi7YeSTfBspR3YKH2D7XqeDhKTjM7mxrwR3Ptq11cgYPtklBlC0Cx5o/cRBLjIZBZOhA==
-X-Received: by 2002:a17:90a:f196:b0:290:3e14:5670 with SMTP id
- bv22-20020a17090af19600b002903e145670mr4987443pjb.3.1705916948311; 
- Mon, 22 Jan 2024 01:49:08 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- dj11-20020a17090ad2cb00b0029051dad730sm6573850pjb.26.2024.01.22.01.49.07
+ bh=+Da0gBi7XS2vcc2+a3NM52eQoDbF58qwkxk12PWR27s=;
+ b=uY9NGm7gTqbi3tvOcVLkjtLTmGlYia3LNrshgrYayvt7Nws9JdeqcgNvhAsKKbf2ry
+ eCTV5F7+vNliI5HoWWYWi7RliMjHcA6qpSLMf4+OeGVJ6P7f3ees4QGntNGsNcNaBAuM
+ s1JLA9wh1oUylYIx6IaN/Icrh/h0b5ODjEFusQ2imt4rXx5/XZE6zAD9KTo81VZEDvWN
+ oTER7TdgVq2pEZIjolVDrv6F743vYjTBS1WJ7LgBIlZaIFf/g2CerxOOb+kMTlJfDNs/
+ iG2Ss5mSAuwja5lCy2jszRdQJ+6Sa4oNHPldhZtgU1RF0YGi50UflYJk6N4gD2kby21F
+ u4tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705917018; x=1706521818;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+Da0gBi7XS2vcc2+a3NM52eQoDbF58qwkxk12PWR27s=;
+ b=uDBoUgFDBRVL2RZXaysNzoY7t2VJfleSGEddSIgvNJa8DReHSLyQZlQ141sTKh0Fx9
+ UKw7LZyLGyOFag1JlOXWo0/M+BliTJz8knUUDJqoLuA2u5sVlRkgzJ16VLPfRi7iis56
+ ZBMv306HI+Nf9WXtWRBS+Te0r1k/95sIBKJk8pyqK+ULIzWKdQetsC7XiIOQQq3Hkl23
+ 3bZJj+jP3QjxTa2HMN096Imqqxd1LnynW2XKVX/pRy6IDODmJgCIndrHjs4VXeN7DrJM
+ 65rICYeUH+rd3gxW6fv6K+NExU9OB7MWkICF2yMNy7yRxsOzltrnTDjc9lcoMUTohPJ9
+ d9MA==
+X-Gm-Message-State: AOJu0YyQymOIMzhwfcWoChbOpa6dHTE1cJzf39M7pWKil2RPLszr7n95
+ OwpeS6Be+rGCq5V/DcSbc72t0gPwGIwYa8MOie3TwnrdRVPOll+xJuZ6UMJyeWs=
+X-Google-Smtp-Source: AGHT+IFjGqASW+NtNnKTszCvFirtPia/qxwMfAJ7yBI9GJH8gJ0vnJO7GsZ4gT4sGwJG2mp9TjIInA==
+X-Received: by 2002:a05:6000:1043:b0:337:767f:c98c with SMTP id
+ c3-20020a056000104300b00337767fc98cmr1633612wrx.13.1705917018400; 
+ Mon, 22 Jan 2024 01:50:18 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ b5-20020a5d4d85000000b00337d5aa55cdsm10350822wru.53.2024.01.22.01.50.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 01:49:08 -0800 (PST)
-Date: Mon, 22 Jan 2024 17:49:01 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/5] migration: Fix use-after-free of migration state
- object
-Message-ID: <Za46DZfpCGe9rdLs@x1n>
-References: <20240119233922.32588-1-farosas@suse.de>
- <20240119233922.32588-2-farosas@suse.de>
+ Mon, 22 Jan 2024 01:50:18 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 76C505F7AE;
+ Mon, 22 Jan 2024 09:50:17 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Jan Kiszka <jan.kiszka@web.de>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
+In-Reply-To: <9dff82f7-d997-4092-8b5a-cd21963826da@web.de> (Jan Kiszka's
+ message of "Sun, 21 Jan 2024 17:24:31 +0100")
+References: <20231103182750.855577-1-peter.maydell@linaro.org>
+ <871qadh8g8.fsf@draig.linaro.org>
+ <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Mon, 22 Jan 2024 09:50:17 +0000
+Message-ID: <87r0i9ofxi.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240119233922.32588-2-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,58 +98,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 08:39:18PM -0300, Fabiano Rosas wrote:
-> We're currently allowing the process_incoming_migration_bh bottom-half
-> to run without holding a reference to the 'current_migration' object,
-> which leads to a segmentation fault if the BH is still live after
-> migration_shutdown() has dropped the last reference to
-> current_migration.
-> 
-> In my system the bug manifests as migrate_multifd() returning true
-> when it shouldn't and multifd_load_shutdown() calling
-> multifd_recv_terminate_threads() which crashes due to an uninitialized
-> multifd_recv_state.
-> 
-> Fix the issue by holding a reference to the object when scheduling the
-> BH and dropping it before returning from the BH. The same is already
-> done for the cleanup_bh at migrate_fd_cleanup_schedule().
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/migration.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 219447dea1..cf17b68e57 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -648,6 +648,7 @@ static void process_incoming_migration_bh(void *opaque)
->                        MIGRATION_STATUS_COMPLETED);
->      qemu_bh_delete(mis->bh);
->      migration_incoming_state_destroy();
-> +    object_unref(OBJECT(migrate_get_current()));
->  }
->  
->  static void coroutine_fn
-> @@ -713,6 +714,7 @@ process_incoming_migration_co(void *opaque)
->      }
->  
->      mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
-> +    object_ref(OBJECT(migrate_get_current()));
->      qemu_bh_schedule(mis->bh);
->      return;
->  fail:
-> -- 
-> 2.35.3
-> 
+Jan Kiszka <jan.kiszka@web.de> writes:
 
-I know I missed something, but I'd better ask: use-after-free needs to
-happen only after migration_shutdown() / qemu_cleanup(), am I right?
+> On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>>> Convert the musicpal key input device to use
+>>> qemu_add_kbd_event_handler().  This lets us simplify it because we no
+>>> longer need to track whether we're in the middle of a PS/2 multibyte
+>>> key sequence.
+<snip>
+>>
+>> Well the key input all works as intended and looks good to me. I'm a
+>> little disappointed I couldn't get audio working on the musicpal machine
+>> but that is not a problem for this patch.
+>>
+>> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>
+>
+> Looks good to me as well, all keys still work fine.
+>
+> No idea what's the issue with sound, though. I think I haven't run the
+> whole stuff in a decade or so, had to search for all the pieces first of
+> all again. The webradio service original behind this stopped their
+> operations, at least for this device, but manually entered favorits
+> still work on the real device - I still have one, though that is
+> starting to get some issues as well.
 
-If so, shouldn't qemu_main_loop() already returned?  Then how could any BH
-keep running (including migration's) without qemu_main_loop()?
+I navigated through the favourites and after pressing some keys it seems
+to indicate there was a stream of some sort (or at least a bitrate was
+reported ;-).
 
--- 
-Peter Xu
+The main issue I was having with sound was with pipewire - this would
+eventually generate a lot of warning messages because input devices are
+created but I guess the model wasn't draining the input buffers so
+eventually we get:
 
+  qemu: 0x7f1490259500: overrun write:5859188 filled:5842804 + size:940 > m=
+ax:4194304
+  qemu: 0x7f14902680a0: overrun write:5860128 filled:5843744 + size:940 > m=
+ax:4194304
+  qemu: 0x7f1490259500: overrun write:5861068 filled:5844684 + size:940 > m=
+ax:4194304
+  qemu: 0x7f14902680a0: overrun write:5862008 filled:5845624 + size:940 > m=
+ax:4194304
+
+Is your image just a hacked up version of the original firmware or
+something we have source for? I guess there was never a rockbox port for
+the device?
+
+>
+> Thanks,
+> Jan
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
