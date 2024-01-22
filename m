@@ -2,68 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0B9835B70
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:13:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746FB835B76
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:15:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRoUN-0002Xi-8R; Mon, 22 Jan 2024 02:12:59 -0500
+	id 1rRoWR-0003xA-8h; Mon, 22 Jan 2024 02:15:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rRoUK-0002XG-1F
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:12:56 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rRoUG-0004aE-7K
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:12:55 -0500
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8BxHOtlFa5la2MDAA--.3743S3;
- Mon, 22 Jan 2024 15:12:38 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx_c5iFa5liQARAA--.13449S3; 
- Mon, 22 Jan 2024 15:12:36 +0800 (CST)
-Subject: Re: [PATCH 1/1] target/loongarch/kvm: Enable LSX/LASX extension
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, philmd@linaro.org, zhaotianrui@loongson.cn
-References: <20240122060901.4056487-1-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <d1b0557a-b591-6bf1-6ad9-ed5103b44726@loongson.cn>
-Date: Mon, 22 Jan 2024 15:12:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoWP-0003wd-KQ
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:15:05 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoWN-00052b-MZ
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:15:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705907703;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1WU+NUYK0fAZkUQe6anybytPlskJ5sOK83wXpcLXY6Q=;
+ b=GJvwTqypHX6hj9GMhTsnyp56inVmSpNBHlWOw04lMUJ6dEb3P1YhtrI8TGk7yXJ0/oA62y
+ U1HtFNHOlFUdtfHSVW/Mxrhn5iQ/lR67VEFrXqpVCcisfjoxlPgNVtosk3CM05LYsf1a2o
+ C5f8i8dCPBV/F7rfbDQ+nb1MfLnvlyk=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-2_hmWpNnONWLm-kc1gld5w-1; Mon, 22 Jan 2024 02:14:59 -0500
+X-MC-Unique: 2_hmWpNnONWLm-kc1gld5w-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-6d99a379dacso911465b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 23:14:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705907698; x=1706512498;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1WU+NUYK0fAZkUQe6anybytPlskJ5sOK83wXpcLXY6Q=;
+ b=PkW8361c6IOERdcmtu8ud0OKs+3fFLCzxNi9O8Erx83LRqW364m01CCwOyytgR7CCS
+ 0Lp0V4s3eKhC1pH8N+4mQFkD0KmyiT8GCSynqS0MFHmeXTV3U+tBmYXKEs3FxBAu3fyj
+ 3lmPg2k6oLMbOQ5JbrJL9kq20d7r2QjTu9r9iqkEP/wTxaIqq4dgnJ20ZYC+/JnTnIh9
+ gf/c95cRbLYkLiZNWtKLUoxgDLJEHGIyHK5yl6E5PJH28Vmr2Xg93TeUvqvbHqUYO3Pu
+ AN8QC5VGqMqLmRTq+x8DHQVRlh60m8TrBuOtaer0eXBlRZJ4WPVLFDamtoxrx7HxCCLo
+ IGkA==
+X-Gm-Message-State: AOJu0YxmNr7UVuULHogsgM3VALbWniwlGgWGyMqlKNkCb9bFLw8j9cJB
+ yaCYmFZrMyaMxxOuefKWPVwv+QRbqcwcNoA2vm3Q7cLgvv83OhhK6Av9iV4uP3t2P1i+dkNUx29
+ R/KpGekUQQgmMaUM9MVANdwPxN42KpceLsK5OTIAiJMmIXe8dmMHA
+X-Received: by 2002:aa7:9f4a:0:b0:6d9:edd1:4ede with SMTP id
+ h10-20020aa79f4a000000b006d9edd14edemr7503400pfr.2.1705907697963; 
+ Sun, 21 Jan 2024 23:14:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwDLaWkXPgu1VjHpRiUbgsTxoumYSUG12yWgk5Ss6fnVB4MmVChDF4hPJJzKRy/BbZhEbnnQ==
+X-Received: by 2002:aa7:9f4a:0:b0:6d9:edd1:4ede with SMTP id
+ h10-20020aa79f4a000000b006d9edd14edemr7503391pfr.2.1705907697629; 
+ Sun, 21 Jan 2024 23:14:57 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ s16-20020a639250000000b005c200b11b77sm7821609pgn.86.2024.01.21.23.14.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Jan 2024 23:14:57 -0800 (PST)
+Date: Mon, 22 Jan 2024 15:14:50 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Shlomo Pongratz <shlomopongratz@gmail.com>, qemu-devel@nongnu.org,
+ andrew.sminov@gmail.com, peter.maydell@linaro.com,
+ shlomop@pliops.com, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v3] Handle wrap around in limit calculation
+Message-ID: <Za4V6rjEmk9fRsQX@x1n>
+References: <20240121164754.47367-1-shlomop@pliops.com>
+ <98ede7dd-b254-43aa-bf7d-f5d90494b8c9@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20240122060901.4056487-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx_c5iFa5liQARAA--.13449S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCF17Zw1kCryUuw43ZFWxZrc_yoW5Ww43pF
- srZF4FgryftF9rGwnaq34qqr43Zr4xGwsF9Fy7ArZ2yr4Yvr1xJ348tFsxWF15G34rCFWI
- vFs5AFs09a1kA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9
- N3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+In-Reply-To: <98ede7dd-b254-43aa-bf7d-f5d90494b8c9@linaro.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.72,
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -81,95 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 2024/1/22 下午2:09, Song Gao wrote:
-> The kernel had already support LSX and LASX [1],
-> but QEMU is disable LSX/LASX for kvm. This patch adds
-> kvm_check_cpucfg to check CPUCFG2.
+On Mon, Jan 22, 2024 at 12:17:24AM +0100, Philippe Mathieu-Daudé wrote:
+> > @@ -560,7 +569,7 @@ static const VMStateDescription vmstate_designware_pcie_viewport = {
+> >       .fields = (const VMStateField[]) {
+> >           VMSTATE_UINT64(base, DesignwarePCIEViewport),
+> >           VMSTATE_UINT64(target, DesignwarePCIEViewport),
+> > -        VMSTATE_UINT32(limit, DesignwarePCIEViewport),
+> > +        VMSTATE_UINT64(limit, DesignwarePCIEViewport),
 > 
-> [1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   linux-headers/asm-loongarch/kvm.h |  1 +
->   target/loongarch/kvm/kvm.c        | 35 ++++++++++++++++++++++++-------
->   2 files changed, 29 insertions(+), 7 deletions(-)
-> 
-> diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
-> index c6ad2ee610..923d0bd382 100644
-> --- a/linux-headers/asm-loongarch/kvm.h
-> +++ b/linux-headers/asm-loongarch/kvm.h
-> @@ -79,6 +79,7 @@ struct kvm_fpu {
->   #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
->   #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
->   #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
-> +#define KVM_LOONGARCH_VCPU_CPUCFG	0
->   
->   struct kvm_debug_exit_arch {
->   };
-> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-> index 84bcdf5f86..41b6947c7b 100644
-> --- a/target/loongarch/kvm/kvm.c
-> +++ b/target/loongarch/kvm/kvm.c
-> @@ -537,6 +537,28 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
->       return ret;
->   }
->   
-> +static int kvm_check_cpucfg(int id, CPUState *cs)
-> +{
-> +    int ret;
-> +    uint64_t val;
-> +    struct kvm_device_attr attr = {
-> +        .group = KVM_LOONGARCH_VCPU_CPUCFG,
-> +        .attr = id,
-> +        .addr = (uint64_t)&val,
-> +    };
-> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-> +    CPULoongArchState *env = &cpu->env;
-> +
-> +    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
-> +
-> +    if (!ret) {
-> +        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
-> +        env->cpucfg[id] &= val;
-With feature bit represents supported or disabled, it is ok to use
-logic of qemu feature bitmap and kvm supported feature bitmap.
+> Unfortunately this breaks the migration stream. I'm not sure
+> what is the best way to deal with it (Cc'ing migration
+> maintainers).
 
-However about feature version, there will be problem with "and logic".
-Can we use minimal version here?
+My understanding is that we can have at least two ways to do this, one
+relying on machine type properties, the other one can be VMSD versioning.
+Frankly I don't have a solid mind either on which is the best approach.
 
-Regards
-Bibo Mao
-> +    }
-> +
-> +    return ret;
-> +}
-> +
->   static int kvm_loongarch_put_cpucfg(CPUState *cs)
->   {
->       int i, ret = 0;
-> @@ -545,14 +567,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
->       uint64_t val;
->   
->       for (i = 0; i < 21; i++) {
-> +	if (i == 2) {
-> +            ret = kvm_check_cpucfg(i, cs);
-> +            if (ret) {
-> +                return ret;
-> +            }
-> +	}
->           val = env->cpucfg[i];
-> -        /* LSX and LASX and LBT are not supported in kvm now */
-> -        if (i == 2) {
-> -            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
-> -            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
-> -                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
-> -                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
-> -        }
->           ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
->           if (ret < 0) {
->               trace_kvm_failed_put_cpucfg(strerror(errno));
-> 
+I never had a talk with either Juan / Dave before on this, but my
+understanding is that VMSD versioning is just less-flexible, because it
+doesn't support backward migrations (only forward).  While machine-type
+property based solution can support both (forward + backward).
+
+I decided to draft a doc update for this, to put my thoughts here:
+
+https://lore.kernel.org/qemu-devel/20240122070600.16681-1-peterx@redhat.com
+
+It can be seen as a reference, or review comments also welcomed.
+
+This device seems to be only supported by CONFIG_FSL_IMX7.  Maybe vmsd
+versioning would be good enough here, then?  If so, instead of
+VMSTATE_UINT64(), we may want a new VMSTATE_UINT32_V() with a boosted
+version.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
