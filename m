@@ -2,107 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B6683759E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 22:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3908375B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 22:59:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS2Bq-0003vz-CC; Mon, 22 Jan 2024 16:50:47 -0500
+	id 1rS2J7-0006qk-D9; Mon, 22 Jan 2024 16:58:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1rS2Bb-0003rr-FB
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:50:33 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1rS2BY-0000mz-IE
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:50:29 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MJlDeA000791; Mon, 22 Jan 2024 21:50:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=yvufu5WV3pdUFecNaztgTEy/SaLjTzcl7J5GjThuX6c=;
- b=dvQN1uY4lWVKLAOpvf5NkHvmCV3a3iAkjhQgZz6jsQXcl1Lnxd2pvD5n5YpKtqdF65M/
- cDtx4Ogob0Cn5oG/vOIPW/kSxUdF67WrWrH8EKOcn+sSzvdqEgLlY3rDIn+inqUzi5Rg
- hCQveCRTeGLiGcWxH6ZAazmycdIluazeTatz+AjSq6lp5LghZoz82FzjY90m62QYyMkl
- nnRyGOlAgJGCciyjMAte47e385e1Y0O5WCF2UwDtUxIvknpyiDFSTdCJOkD7dXK6xXB8
- RT0gG7WKk3SwY+BxA10rFnatAWVi0aj8dfPuR6qyGVrsmZu1/W3SrEkE6SIVMMv4pcRP 3A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsxtr2qbx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:50:22 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40MLkH1v011523;
- Mon, 22 Jan 2024 21:50:21 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsxtr2qba-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:50:21 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MJiwgS022412; Mon, 22 Jan 2024 21:50:20 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0ku592-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:50:20 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40MLoKHc14942800
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jan 2024 21:50:20 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C0D758056;
- Mon, 22 Jan 2024 21:50:20 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B55145803F;
- Mon, 22 Jan 2024 21:50:19 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 22 Jan 2024 21:50:19 +0000 (GMT)
-Message-ID: <0713a717-6220-41b3-a578-53f1f0beb2c0@linux.ibm.com>
-Date: Mon, 22 Jan 2024 16:50:19 -0500
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rS2J2-0006qA-Qa
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:58:12 -0500
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rS2Iz-00027Y-Eu
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:58:10 -0500
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-598a5448ef5so2391952eaf.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 13:58:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705960681; x=1706565481; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=tjWjybt/zgLq6P5NZFanM3ugb1hYhyr5rrMmFU2mgL4=;
+ b=K+wXKh+PfSUcRDzQh9UwmgOnD/YZaydXpeCDIlYEgrdAgN28K7+vSYloAUj8L2kPkh
+ dwD+Run4a4J9QeORzclvJD4iQZrXdSTpIbAhh0zUPCMl5Csqy1E8Nm4bCGWF5lXfk45G
+ gafmsZs03b6aViZMyeom0vzsmK3x6RvU1dX7blhvzgvsuywNdVPwqx12UI46XtPCj5tA
+ Qe6A7XgYMTI3STv2n4Kipnt1USwywqAWYOnMJaz8Z6yMUfZGAZg8JXilgu9XciGFykgr
+ pBvBfu+ZPWzZLx8XShINBmyhPzSVC6Ivf8LWal0MBgUaaWgk3p03Ea4sZQdv3hWhmRma
+ s1Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705960681; x=1706565481;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tjWjybt/zgLq6P5NZFanM3ugb1hYhyr5rrMmFU2mgL4=;
+ b=W8xbZFmU+gYrx32msEGXS9RlqyTaUolwBkXsVnmYg10+tU1ykl6GatVIF5fwCOn7R3
+ dSail7+rEyrcVu2aj6n/epTdVpS9zQcFxpqc8Yu4orACgKdPCE3VaXTW6jxbKLowNVPi
+ Q3PnAucgM5A42tnoS5YE3NJ7tG1xvQs/YvBd36r9zLEvBuTRoCG1vWCxxJ52QI0iKDnl
+ 3tsTaebFhD+ODR4zLcgxENV3ZORojIFwuMFkVifQ2kgTmIff1LIobVfjH7mskMTnszks
+ X+UUZsI+CYFSw9q+D7Mbto6ixV3A0EvAcAn/c1ZdguOUk5PPgA4zP6EwjJhZygwKpZ4S
+ Vh0w==
+X-Gm-Message-State: AOJu0Yw9sBtLmge5/jCki8miDo5PXQah/rRNx8/xM6AS9YQ9qenLl/J6
+ Fn3M/yJfVUVbDXrO2FMgnkmSy6FC7e/TpDYCcptKRVdkM6gtN8OmUAqkOT62s0g=
+X-Google-Smtp-Source: AGHT+IGNUHYoK6pIcvGCW1Uei+LGbmmKN1Ge9d8jP/4TorslrGc5m9XoVitDmGU62cT4IG2iwliFYw==
+X-Received: by 2002:a05:6358:89d:b0:176:5d11:3071 with SMTP id
+ m29-20020a056358089d00b001765d113071mr1616745rwj.12.1705960681271; 
+ Mon, 22 Jan 2024 13:58:01 -0800 (PST)
+Received: from ?IPV6:2001:44b8:2176:c800:2a49:979b:9002:98e6?
+ (2001-44b8-2176-c800-2a49-979b-9002-98e6.static.ipv6.internode.on.net.
+ [2001:44b8:2176:c800:2a49:979b:9002:98e6])
+ by smtp.gmail.com with ESMTPSA id
+ d2-20020a056a00198200b006d99f930607sm10346911pfl.140.2024.01.22.13.57.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 13:58:00 -0800 (PST)
+Message-ID: <d569042e-2c27-47f6-8636-f708b11814b4@linaro.org>
+Date: Tue, 23 Jan 2024 07:57:54 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] Exclude TPM ioctls definitions for the GNU/Hurd
+Subject: Re: [PATCH v2] cpu-exec: simplify jump cache management
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+References: <20240122153409.351959-1-pbonzini@redhat.com>
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Manolo de Medici <manolodemedici@gmail.com>, qemu-devel@nongnu.org,
- bug-hurd@gnu.org
-References: <CAHP40m=_7zOT5bnp1FR12ohVbm-miUorh6+rrk2Rwd1jArR1VA@mail.gmail.com>
- <CAFEAcA_ZyphRxH59VHEpnS_8D4YuBFSZeODwRbMjrqhkggD-Cw@mail.gmail.com>
- <130d2f10-4165-4d35-ade3-e6080e2a109f@linux.ibm.com>
- <CAFEAcA-k8MF6f6fAa8Hn1B8z4H-Ott8d7G1tZRqxVtQyY+O9og@mail.gmail.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CAFEAcA-k8MF6f6fAa8Hn1B8z4H-Ott8d7G1tZRqxVtQyY+O9og@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240122153409.351959-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IBIpHfF5uaZeQ_vj_nbw3608A29VSVqy
-X-Proofpoint-ORIG-GUID: WZvrhXYEMoLKpU2FcSKHFVWH4z-L_N9l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-22_09,2024-01-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 impostorscore=0 mlxscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401220154
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,69 +95,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/23/24 01:34, Paolo Bonzini wrote:
+> Unless I'm missing something egregious, the jmp cache is only every
+> populated with a valid entry by the same thread that reads the cache.
+> Therefore, the contents of any valid entry are always consistent and
+> there is no need for any acquire/release magic.
+
+I think you're right, and I over-complicated this thinking about invalidations.
+
+> Because of this, there is really nothing to win in splitting the CF_PCREL
+> and !CF_PCREL paths.  It is easier to just always use the ->pc field in
+> the jump cache.
+
+Once upon a time, PCREL was an ifdef, and the jump cache pc did not exist for !PCREL.  The 
+split has not been addressed since then.
 
 
-On 1/22/24 15:46, Peter Maydell wrote:
-> On Mon, 22 Jan 2024 at 19:30, Stefan Berger <stefanb@linux.ibm.com> wrote:
->>
->>
->>
->> On 1/22/24 12:16, Peter Maydell wrote:
->>> On Thu, 18 Jan 2024 at 16:04, Manolo de Medici <manolodemedici@gmail.com> wrote:
->>>>
->>>> The Hurd currently doesn't have any TPM driver, compilation fails
->>>> for missing symbols unless these are left undefined.
->>>>
->>>> Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
->>>> ---
->>>>    backends/tpm/tpm_ioctl.h | 2 +-
->>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/backends/tpm/tpm_ioctl.h b/backends/tpm/tpm_ioctl.h
->>>> index 1933ab6855..c721bf8847 100644
->>>> --- a/backends/tpm/tpm_ioctl.h
->>>> +++ b/backends/tpm/tpm_ioctl.h
->>>> @@ -274,7 +274,7 @@ typedef struct ptm_lockstorage ptm_lockstorage;
->>>>    #define PTM_CAP_SEND_COMMAND_HEADER (1 << 15)
->>>>    #define PTM_CAP_LOCK_STORAGE       (1 << 16)
->>>>
->>>> -#ifndef _WIN32
->>>> +#if !defined(_WIN32) && !defined(__GNU__)
->>>>    enum {
->>>>        PTM_GET_CAPABILITY     = _IOR('P', 0, ptm_cap),
->>>>        PTM_INIT               = _IOWR('P', 1, ptm_init),
->>>> --
->>>> 2.43.0
->>>
->>> This looks plausible as a change, but looking at the history
->>> of the file in git it seems like this is a file we import
->>> from a third-party swtpm project.
->>>
->>> Stefan: should we get this change made in the swtpm project
->>> too? Or have we diverged from that copy of the header?
->>
->> The diffs are minimal at the moment:
->> $ diff swtpm/include/swtpm/tpm_ioctl.h qemu/backends/tpm/tpm_ioctl.h
->> 15,16d14
->> < #include <stdint.h>
->> < #include <sys/types.h>
->>
->> Since we already handle _WIN32 we can just take this case for __GNU__.
-> 
-> OK, so how should we handle the mechanics of it -- just take
-> this commit in QEMU and then you'll sort it out in swtpm?
+The cleanup looks good.
 
-Yes.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> Or do we need to change swtpm first and then sync?
 
-No.
-
-Regarding the patch:
-
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-
-> 
-> thanks
-> -- PMM
+r~
 
