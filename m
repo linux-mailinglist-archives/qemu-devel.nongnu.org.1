@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA15837456
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:46:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B00F837473
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:48:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS1BM-0006gl-5D; Mon, 22 Jan 2024 15:46:12 -0500
+	id 1rS1Ci-0008V7-A0; Mon, 22 Jan 2024 15:47:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rS1BI-0006Zn-0O
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:46:08 -0500
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1rS1Cc-0008UT-Nk
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:47:30 -0500
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rS1BF-0005Um-4e
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:46:06 -0500
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-55c2e6f0542so1704303a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 12:46:04 -0800 (PST)
+ id 1rS1CZ-0005db-QY
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 15:47:30 -0500
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2cd853c159eso42057261fa.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 12:47:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705956363; x=1706561163; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=X88/NUHn09TSNhlqrrbj/PgNx95vNRBZOnAF7uVWttk=;
- b=gPqG3qqlk+kJ6HOwA2ZZMbH7QFJ9UYdETJmXat7f4Qwdz3cvI9PXQvmyuAy14LoB7t
- 9/oDO0Z4HNc7Y64K8UvJQ8L4cAYIyn1fjVcEDXmW7qBMez57WrIs7e+KInUp1IJTzC4n
- ZVcuAWeXiVVsyG5ZXKTrVklj1Zh5TNcxQNmrRcOhwsvE/iX/7LtaWdAkn78NdRSnQiWn
- i6upAo0I8Y6S2uSofGOWi3ptwVBr0cZ4XCKJwg6pmP9Z0KbaY/oiC54V1A1mHOIK2+Rl
- Y3s1ovaRvBenVYbSmgijtUQhHMDCLc1qaNCULullYTO/WU4tKpU/pOmtWtl9dAKYybWx
- qycA==
+ d=linaro.org; s=google; t=1705956444; x=1706561244; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vLRy6pGNsndsgSO6Zt3UBnLSBcFirLCyCzG+Tmfc8Bg=;
+ b=C3TcpqxU1jm50ngQtk0PxfK0v+7bzB9w8NxZ+8cveBWhAbvbApz6gzKPbKdr59SvSv
+ 3uprzZ3lPLl7HEsso33wUfK8HYJ+TDZPikvclhBQcalqtrqQrcsiidvhnDsCAPHLtZiW
+ CPu4plMR3+Vsv3RCmiXepPm8elCmjsUjFeRxOx7X5qtH5X2FfdDL43XVBoru27Go8LWK
+ 9h6GVm14pYcC338z0uO6IUXZK4abIrS58S+zTa11wzTJCXVWZnnwMURRkXszW8O19zyb
+ /0fqooogeCL82gQ0atIfR1/04qdmWtDKOP4ORrSQ2xwY+/wQqCoUzJy3l4m5I1emBhH+
+ Q6xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705956363; x=1706561163;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X88/NUHn09TSNhlqrrbj/PgNx95vNRBZOnAF7uVWttk=;
- b=cOMTPZdtTngCm00JH+2tQIlIggvrTOEulOmd/AwepJc9v1eUBPJeVAbGnpDyrj/r8z
- X2fhzzFmf5oodkiyM8sj6xkBwh8jAz6EO50WJM5Im5IB+DR5IcTjL73r7srtt24ymoyd
- ltXCD7vehLXKchcWSXvnd2nUpjr6WL4J/yWqs4Mt1CPrKy3D0t1dn7vj0xbBBPnjw2sl
- lVoWKynAogabmiDtItaLhi0qC9RZdMBe5DgTn9HN07pKcspn9dwHmUj6bdznlw/e1Jud
- rSqW5uJZbnLdSnoIAoMDh2+XG4rnw/BVHtFMDOO7KzOb5YSXqPEbqK2eirmdrnqPROMl
- q1tA==
-X-Gm-Message-State: AOJu0YxiGghIsla+II4lq/yBOpxOj8r6FzhAmh4TBL6YuQP1P1tnxLAH
- o/RghhcnPbSqIpktarxwPwmWQgcOcnx4GKX7HP98j8Tn7ANmrB9hH7TP1oxqlPEhjswZ1cZu04C
- rD/HPYe6BHIWZ2Xn+zXlaz7/Mbb+wjOH+h9x9DA==
-X-Google-Smtp-Source: AGHT+IFRQhWt+sfeF0rR3RVQX3l3gAYl/GBSQcpg6OMZiEolXywjcQEdhPTkTbqbufzBLtRaE9n2VEV5CHmnjeN6Ilg=
-X-Received: by 2002:a05:6402:b6e:b0:55a:5ecc:79ed with SMTP id
- cb14-20020a0564020b6e00b0055a5ecc79edmr249601edb.79.1705956363484; Mon, 22
- Jan 2024 12:46:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705956444; x=1706561244;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vLRy6pGNsndsgSO6Zt3UBnLSBcFirLCyCzG+Tmfc8Bg=;
+ b=BLvyz70q8SUE6ggDSjU/z9+JtDsX5PK2MxskeDsPrjOmvXN9yO7jib7ONOmWJgy2YR
+ 7zlxAtF13AD2f5VRgDRff7N+yF2+mjwyKz8kTWrKyvKJEDjIpvP/sH+s5fselx7rLv4w
+ l87ISuapOQmOvuvYqu6m4nqah7h00Z7WTJIRS2nWhiZLcUpoXoIKQYGPnlMFxaX/BQWj
+ VIEmReVsLhBxmLuVR0wtyBq839KBVx1MM1M2b3lm8kVVz57FmQQQC+fNZEuOL9TFbIU1
+ C813AR74BWl+Qjbm5IqgBZ1hi8Q7t5bYlaCHHxknmyFynHeun5HgYwFJQO+ZX8f7zmxt
+ RUHg==
+X-Gm-Message-State: AOJu0YxzkfT25gqnkj8E7fcTLQPaSxUl+EonKeNG0bJbsmjHKRDlPkth
+ 6EOHjTA9Z19zIpr79RiQeouaEl9p47F3gf4uVz0rbBWxyQaJA8FODytXGEgvlYPlHjeZYXNZuyQ
+ cKojYTAaIl5huhBUT3P7UebpZb6RLnsOq8cmNqQ==
+X-Google-Smtp-Source: AGHT+IHiSGcDqXCL5S7wApV9epxHHqPyArL9eohHfhU2siiTzZ7dwi+Ri8kD83GhY/UbF8kVnZlZZYlgGr4DhmTA87A=
+X-Received: by 2002:a2e:a98f:0:b0:2cd:50a7:12d0 with SMTP id
+ x15-20020a2ea98f000000b002cd50a712d0mr2705129ljq.38.1705956443978; Mon, 22
+ Jan 2024 12:47:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20240119204608.779541-1-jcmvbkbc@gmail.com>
- <20240119204608.779541-2-jcmvbkbc@gmail.com>
- <CAFEAcA-dSxaseY+w_z-U1pa8XkJ9XTyBWekXvH0q0XkrZJ+jNA@mail.gmail.com>
- <CAMo8BfKWg14m9HG+3D9YiGdJ5JZsphU9AF4d6jha-DPbhr8TOw@mail.gmail.com>
-In-Reply-To: <CAMo8BfKWg14m9HG+3D9YiGdJ5JZsphU9AF4d6jha-DPbhr8TOw@mail.gmail.com>
+References: <CAHP40m=_7zOT5bnp1FR12ohVbm-miUorh6+rrk2Rwd1jArR1VA@mail.gmail.com>
+ <CAFEAcA_ZyphRxH59VHEpnS_8D4YuBFSZeODwRbMjrqhkggD-Cw@mail.gmail.com>
+ <130d2f10-4165-4d35-ade3-e6080e2a109f@linux.ibm.com>
+In-Reply-To: <130d2f10-4165-4d35-ade3-e6080e2a109f@linux.ibm.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 20:45:32 +0000
-Message-ID: <CAFEAcA890Q7mwt4CZWRnrhOUm2_8y54PTuk31_B248p+O4PhzA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/xtensa: wrap MMU and MPU state into structures
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: qemu-devel@nongnu.org
+Date: Mon, 22 Jan 2024 20:46:51 +0000
+Message-ID: <CAFEAcA-k8MF6f6fAa8Hn1B8z4H-Ott8d7G1tZRqxVtQyY+O9og@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] Exclude TPM ioctls definitions for the GNU/Hurd
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Manolo de Medici <manolodemedici@gmail.com>, qemu-devel@nongnu.org,
+ bug-hurd@gnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,32 +88,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 Jan 2024 at 18:45, Max Filippov <jcmvbkbc@gmail.com> wrote:
+On Mon, 22 Jan 2024 at 19:30, Stefan Berger <stefanb@linux.ibm.com> wrote:
 >
-> On Mon, Jan 22, 2024 at 10:29=E2=80=AFAM Peter Maydell <peter.maydell@lin=
-aro.org> wrote:
-> >
-> > On Fri, 19 Jan 2024 at 20:47, Max Filippov <jcmvbkbc@gmail.com> wrote:
-> > > +    union {
-> > > +        XtensaMMU mmu;
-> > > +        XtensaMPU mpu;
-> > > +    };
-> >
-> > Is it really worth having this be a union ? I suspect it will
-> > make adding migration/savevm support later more awkward.
 >
-> I have a draft implementation of savevm for xtensa and I did this part
-> using subsections with the .needed callback checking whether the
-> MMU or MPU option is enabled in the config. I wonder where the
-> awkwardness is expected.
+>
+> On 1/22/24 12:16, Peter Maydell wrote:
+> > On Thu, 18 Jan 2024 at 16:04, Manolo de Medici <manolodemedici@gmail.com> wrote:
+> >>
+> >> The Hurd currently doesn't have any TPM driver, compilation fails
+> >> for missing symbols unless these are left undefined.
+> >>
+> >> Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
+> >> ---
+> >>   backends/tpm/tpm_ioctl.h | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/backends/tpm/tpm_ioctl.h b/backends/tpm/tpm_ioctl.h
+> >> index 1933ab6855..c721bf8847 100644
+> >> --- a/backends/tpm/tpm_ioctl.h
+> >> +++ b/backends/tpm/tpm_ioctl.h
+> >> @@ -274,7 +274,7 @@ typedef struct ptm_lockstorage ptm_lockstorage;
+> >>   #define PTM_CAP_SEND_COMMAND_HEADER (1 << 15)
+> >>   #define PTM_CAP_LOCK_STORAGE       (1 << 16)
+> >>
+> >> -#ifndef _WIN32
+> >> +#if !defined(_WIN32) && !defined(__GNU__)
+> >>   enum {
+> >>       PTM_GET_CAPABILITY     = _IOR('P', 0, ptm_cap),
+> >>       PTM_INIT               = _IOWR('P', 1, ptm_init),
+> >> --
+> >> 2.43.0
+> >
+> > This looks plausible as a change, but looking at the history
+> > of the file in git it seems like this is a file we import
+> > from a third-party swtpm project.
+> >
+> > Stefan: should we get this change made in the swtpm project
+> > too? Or have we diverged from that copy of the header?
+>
+> The diffs are minimal at the moment:
+> $ diff swtpm/include/swtpm/tpm_ioctl.h qemu/backends/tpm/tpm_ioctl.h
+> 15,16d14
+> < #include <stdint.h>
+> < #include <sys/types.h>
+>
+> Since we already handle _WIN32 we can just take this case for __GNU__.
 
-Oh, well if it works that's fine I guess. I was kind of thinking
-that if you didn't have the union you could avoid having
-subsections entirely.
+OK, so how should we handle the mechanics of it -- just take
+this commit in QEMU and then you'll sort it out in swtpm?
+Or do we need to change swtpm first and then sync?
 
-On Arm we don't try to save space in the CPU struct by
-using unions, even though some fields are A-profile
-specific and some are R or M-profile specific.
-
+thanks
 -- PMM
 
