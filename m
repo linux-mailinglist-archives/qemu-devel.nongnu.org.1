@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B748359AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1624F8359BA
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:28:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRklj-0000qQ-9W; Sun, 21 Jan 2024 22:14:39 -0500
+	id 1rRky5-000335-Pj; Sun, 21 Jan 2024 22:27:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRklf-0000qA-Pi; Sun, 21 Jan 2024 22:14:35 -0500
-Received: from mail-ua1-x936.google.com ([2607:f8b0:4864:20::936])
+ id 1rRky4-00032s-5A; Sun, 21 Jan 2024 22:27:24 -0500
+Received: from mail-ua1-x929.google.com ([2607:f8b0:4864:20::929])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRkle-0006we-3Z; Sun, 21 Jan 2024 22:14:35 -0500
-Received: by mail-ua1-x936.google.com with SMTP id
- a1e0cc1a2514c-7d2dee968a5so313896241.0; 
- Sun, 21 Jan 2024 19:14:32 -0800 (PST)
+ id 1rRky1-0001DO-OB; Sun, 21 Jan 2024 22:27:23 -0500
+Received: by mail-ua1-x929.google.com with SMTP id
+ a1e0cc1a2514c-7d2940ad0e1so609205241.1; 
+ Sun, 21 Jan 2024 19:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705893272; x=1706498072; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705894040; x=1706498840; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HZiKZHenpCp/ipK3xnk011QEJCokR8f2bzsGTp3ZZ1Q=;
- b=Bfq9vNThIAEloAag1c35yF+6TMkv9HIHxGX97qe9XO6qYSRlcNOEhw55tiMgtwf/E8
- 5yo5sUgQOAIJq+SGI51bxFN+2ZSWRIxL3xr+Bzsoi67FS0Rz2FFEXz9ptfh8UXZiEmMJ
- DdlrnKBpDaQPTACK+nc3y21CUI8nGMkwZX2Xb/Fbv6zc6t3Nz3pZ3fz74xGqGhwNk12x
- SiVFoPVBohbtm0te5bLmAbjdR0Wsg2fo8LZ3iPMIoR1uxOOWl3OBNxfQIJ8MdEZjQknu
- Ez/FyjXQK5HKP6GBdpSpuf4OHXtPPzeEMObrbuG8RQ6kuOQzLiCy8dq+l+bfbi2hGor1
- hdoQ==
+ bh=p2igC9J/DXbp0p2cQRhRVs1QMFzrKhrr2jRPbTk8b3Y=;
+ b=NvhV+8b70omzccwp/UUDKxwI3j9OnEfdBLm0iBQOfEDG+NH1Xk7ezjIrAtBiPYpeF/
+ 3v7Tas7fA9u8jg66LexNedVvAH4mNaOdnNktjJdaIFQYYYacqFUjbOBSybFV3Oo4yX0W
+ L7pHr4VfR30Y6YtKNzZn1ZgcWs2SIWCuVglOQWWtB3fXS3dkUOYB9QpVYG7HvOQaMt4z
+ f6S1CoAiZR3oNp91IZCZlxCEGIJemBmZU8E/QC5J+Lf98jVUkx2I/hPwZSwxjhZh2PT9
+ +ZBldbv7uUi6qw008KLCZdhH7PSWqC9upe+8AidK77X81rCjMqiYe/sKNVFUOJgIgaLl
+ okhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705893272; x=1706498072;
+ d=1e100.net; s=20230601; t=1705894040; x=1706498840;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HZiKZHenpCp/ipK3xnk011QEJCokR8f2bzsGTp3ZZ1Q=;
- b=FrXmdaQ8Hkz1mb6L/DaGaSiWKWv8qe1SMahr4IgJFzpfoB2Hm7ZbkvoVhgUQxT2ykU
- rSmkcWqDG6fu8GiCLUYUuMfgxrwB4Fv3kzBH7ysG2c+EA9fpffOoTyF31kZK1NL6IIHn
- g4wdNYaD5TxlpizGHDUuJTz5IVDFhgIkjdAwkcVpCwl1NVaJ81X7NvJ7BV3ywRFJEAs5
- OC736r+Nbqr1h4sE1f/HyrKlStCd/k3vNfYi7fcCvnXXCRrjyME7xK1KzhewsnWLP4uK
- /qTeNIJQ7F2A+GZBMc5VJUO2etv0Z7zbQWhRtj43FlZNPVECGrs8N5xOAfAfH9/xqBC7
- zJbw==
-X-Gm-Message-State: AOJu0Yxy/15odrU1sSf8YBJ5V39LESOpjcCMLInx/Ztj1zsq72HxfXdP
- oKpfeTA9QLmNthzSsyuMCQP3LZch78yDTmD+l2apcToaKxIG45FcGkNG4dL55t80jyAGMvZ8+tE
- m/PwI/PSwKSe7lbW7wvxtRJlItlI=
-X-Google-Smtp-Source: AGHT+IHVBmIBIvR54PDg17ORNBKt2GKC0IA9bhRHp8+qqhBIw2GVCoR0Xkq20Lz4Zq/iRpu/ypFr1iyXAOnmCzFGxM8=
-X-Received: by 2002:a05:6122:3697:b0:4b6:dbfd:f89b with SMTP id
- ec23-20020a056122369700b004b6dbfdf89bmr1029208vkb.27.1705893272179; Sun, 21
- Jan 2024 19:14:32 -0800 (PST)
+ bh=p2igC9J/DXbp0p2cQRhRVs1QMFzrKhrr2jRPbTk8b3Y=;
+ b=eHaH7Pc82vTE2BgcPZO9Z30ilrlJl0kVFUwgvTjNcv7zNvnUDGsLhKZ4bohft1xQY4
+ HtGG2cl73zsjRQWqL5ITeVVFE/A/ahh2Gx4X3sPoW0x8a0DMRvt2LoeEsRNEnadPcibl
+ oMPpo/9haPI2BOQqs0ME6nu4jT0UtUvfHcJdjF7KP5lBh4yzZxiWY3wFpekK6kIYK31d
+ ZBcXMq0x188DvoeuaE/Hun8SyFSPaH18vd8YTaP9Dx68R/EuyezmHs3cROfN1oU66ftv
+ llmAr3Xe60l/JxgDNaYfoT4OQRKCKb37RDz38cvmhowf/2j7yrYWubJeb0FRuHaBX8hN
+ XDJA==
+X-Gm-Message-State: AOJu0YwVTNnseaqhBiq5uJ70F/z65qS8Rv6gzrCA2t4uXdrDC9jjcz1v
+ D07JWwEGlSXsFDbJZJoykuA7jzjB+BnUbIzrEZAB61vBblvej/+xaDFlZ/4kuahZFjsMo0XWUmA
+ ZU66UUjvL8dkoQXC3S9orBgXW5Nc=
+X-Google-Smtp-Source: AGHT+IHdCZBMYImZDjE4BfLkd0ZtVEmQ76if7xWyrMEgYMSHWJe6hjNNHOMUBMWcnabmGRsOiNVm/qwO92OQIEv/N9E=
+X-Received: by 2002:a67:fa45:0:b0:467:fa58:7eb7 with SMTP id
+ j5-20020a67fa45000000b00467fa587eb7mr961350vsq.50.1705894039988; Sun, 21 Jan
+ 2024 19:27:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20240116205817.344178-1-dbarboza@ventanamicro.com>
- <20240116205817.344178-14-dbarboza@ventanamicro.com>
-In-Reply-To: <20240116205817.344178-14-dbarboza@ventanamicro.com>
+References: <20240115043431.3900922-1-bin.meng@windriver.com>
+ <20240115043431.3900922-2-bin.meng@windriver.com>
+In-Reply-To: <20240115043431.3900922-2-bin.meng@windriver.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 13:14:06 +1000
-Message-ID: <CAKmqyKMgutEUq2Rpsi+8HGUN0LRyWWQXV6+OiAzqN5xTDnvG7Q@mail.gmail.com>
-Subject: Re: [PATCH v3 13/13] target/riscv/cpu.c: remove cpu->cfg.vlen
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, richard.henderson@linaro.org, max.chou@sifive.com
+Date: Mon, 22 Jan 2024 13:26:53 +1000
+Message-ID: <CAKmqyKNm3cLk1_VDi76W2qXM1kw4XmvP8Fn5NmsYg+sj3iQdEw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] hw/arm: Refactor struct arm_boot_info::get_dtb()
+To: Bin Meng <bin.meng@windriver.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::936;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x936.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::929;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x929.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,95 +92,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 17, 2024 at 7:03=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Mon, Jan 15, 2024 at 2:36=E2=80=AFPM Bin Meng <bin.meng@windriver.com> w=
+rote:
 >
-> There is no need to keep both 'vlen' and 'vlenb'. All existing code
-> that requires 'vlen' is retrieving it via 'vlenb << 3'.
+> At present we expect struct arm_boot_info::get_dtb() to return the
+> device tree pointer as well as the device tree size. However, this
+> is not necessary as we can get the device tree size via the device
+> tree header directly. Change get_dtb() signature to drop the *size
+> argument, and get the size by ourselves.
 >
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Bin Meng <bin.meng@windriver.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  target/riscv/cpu.c         | 8 +++-----
->  target/riscv/cpu_cfg.h     | 1 -
->  target/riscv/tcg/tcg-cpu.c | 4 +++-
->  3 files changed, 6 insertions(+), 7 deletions(-)
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f4261d2ffc..7b3f69d3fb 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1313,7 +1313,6 @@ static void riscv_cpu_init(Object *obj)
+>  include/hw/arm/boot.h     | 8 ++++----
+>  hw/arm/boot.c             | 3 ++-
+>  hw/arm/sbsa-ref.c         | 3 +--
+>  hw/arm/virt.c             | 4 +---
+>  hw/arm/xlnx-versal-virt.c | 4 +---
+>  5 files changed, 9 insertions(+), 13 deletions(-)
 >
->      /* Default values for non-bool cpu properties */
->      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
-> -    cpu->cfg.vlen =3D 128;
->      cpu->cfg.vlenb =3D 128 >> 3;
->      cpu->cfg.elen =3D 64;
->      cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
-> @@ -1802,22 +1801,21 @@ static void prop_vlen_set(Object *obj, Visitor *v=
-, const char *name,
->          return;
+> diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
+> index 80c492d742..37fd1b520e 100644
+> --- a/include/hw/arm/boot.h
+> +++ b/include/hw/arm/boot.h
+> @@ -82,11 +82,11 @@ struct arm_boot_info {
+>                                       const struct arm_boot_info *info);
+>      /* if a board is able to create a dtb without a dtb file then it
+>       * sets get_dtb. This will only be used if no dtb file is provided
+> -     * by the user. On success, sets *size to the length of the created
+> -     * dtb, and returns a pointer to it. (The caller must free this memo=
+ry
+> -     * with g_free() when it has finished with it.) On failure, returns =
+NULL.
+> +     * by the user. On success, returns a pointer to it. (The caller mus=
+t
+> +     * free this memory with g_free() when it has finished with it.)
+> +     * On failure, returns NULL.
+>       */
+> -    void *(*get_dtb)(const struct arm_boot_info *info, int *size);
+> +    void *(*get_dtb)(const struct arm_boot_info *info);
+>      /* if a board needs to be able to modify a device tree provided by
+>       * the user it should implement this hook.
+>       */
+> diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+> index 84ea6a807a..ff1173299f 100644
+> --- a/hw/arm/boot.c
+> +++ b/hw/arm/boot.c
+> @@ -538,11 +538,12 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot=
+_info *binfo,
+>          }
+>          g_free(filename);
+>      } else {
+> -        fdt =3D binfo->get_dtb(binfo, &size);
+> +        fdt =3D binfo->get_dtb(binfo);
+>          if (!fdt) {
+>              fprintf(stderr, "Board was unable to create a dtb blob\n");
+>              goto fail;
+>          }
+> +        size =3D fdt_totalsize(fdt);
 >      }
 >
-> -    if (value !=3D cpu->cfg.vlen && riscv_cpu_is_vendor(obj)) {
-> +    if (value !=3D cpu->cfg.vlenb && riscv_cpu_is_vendor(obj)) {
->          cpu_set_prop_err(cpu, name, errp);
->          error_append_hint(errp, "Current '%s' val: %u\n",
-> -                          name, cpu->cfg.vlen);
-> +                          name, cpu->cfg.vlenb << 3);
->          return;
->      }
->
->      cpu_option_add_user_setting(name, value);
-> -    cpu->cfg.vlen =3D value;
->      cpu->cfg.vlenb =3D value >> 3;
+>      if (addr_limit > addr && size > (addr_limit - addr)) {
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 477dca0637..c5023871a7 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -681,12 +681,11 @@ static void create_pcie(SBSAMachineState *sms)
+>      create_smmu(sms, pci->bus);
 >  }
 >
->  static void prop_vlen_get(Object *obj, Visitor *v, const char *name,
->                           void *opaque, Error **errp)
+> -static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_si=
+ze)
+> +static void *sbsa_ref_dtb(const struct arm_boot_info *binfo)
 >  {
-> -    uint16_t value =3D RISCV_CPU(obj)->cfg.vlen;
-> +    uint16_t value =3D RISCV_CPU(obj)->cfg.vlenb << 3;
+>      const SBSAMachineState *board =3D container_of(binfo, SBSAMachineSta=
+te,
+>                                                   bootinfo);
 >
->      visit_type_uint16(v, name, &value, errp);
+> -    *fdt_size =3D board->fdt_size;
+>      return board->fdt;
 >  }
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index 50479dd72f..e241922f89 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -139,7 +139,6 @@ struct RISCVCPUConfig {
->      bool ext_XVentanaCondOps;
 >
->      uint32_t pmu_mask;
-> -    uint16_t vlen;
->      uint16_t vlenb;
->      uint16_t elen;
->      uint16_t cbom_blocksize;
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index daff0b8f60..667421b0b7 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -298,7 +298,9 @@ static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu=
-, Error **errp)
->  static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg=
-,
->                                   Error **errp)
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 2793121cb4..1996fffa99 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -1577,14 +1577,12 @@ static void create_secure_ram(VirtMachineState *v=
+ms,
+>      g_free(nodename);
+>  }
+>
+> -static void *machvirt_dtb(const struct arm_boot_info *binfo, int *fdt_si=
+ze)
+> +static void *machvirt_dtb(const struct arm_boot_info *binfo)
 >  {
-> -    if (cfg->vlen > RV_VLEN_MAX || cfg->vlen < 128) {
-> +    uint32_t vlen =3D cfg->vlenb << 3;
-> +
-> +    if (vlen > RV_VLEN_MAX || vlen < 128) {
->          error_setg(errp,
->                     "Vector extension implementation only supports VLEN "
->                     "in the range [128, %d]", RV_VLEN_MAX);
+>      const VirtMachineState *board =3D container_of(binfo, VirtMachineSta=
+te,
+>                                                   bootinfo);
+>      MachineState *ms =3D MACHINE(board);
+>
+> -
+> -    *fdt_size =3D board->fdt_size;
+>      return ms->fdt;
+>  }
+>
+> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+> index 537118224f..1e043c813e 100644
+> --- a/hw/arm/xlnx-versal-virt.c
+> +++ b/hw/arm/xlnx-versal-virt.c
+> @@ -551,12 +551,10 @@ static void versal_virt_modify_dtb(const struct arm=
+_boot_info *binfo,
+>      fdt_add_memory_nodes(s, fdt, binfo->ram_size);
+>  }
+>
+> -static void *versal_virt_get_dtb(const struct arm_boot_info *binfo,
+> -                                  int *fdt_size)
+> +static void *versal_virt_get_dtb(const struct arm_boot_info *binfo)
+>  {
+>      const VersalVirt *board =3D container_of(binfo, VersalVirt, binfo);
+>
+> -    *fdt_size =3D board->fdt_size;
+>      return board->fdt;
+>  }
+>
 > --
-> 2.43.0
+> 2.34.1
 >
 >
 
