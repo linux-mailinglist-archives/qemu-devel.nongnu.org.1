@@ -2,74 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E03583646F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 14:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DADC836493
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 14:42:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRuK7-00022c-P1; Mon, 22 Jan 2024 08:26:47 -0500
+	id 1rRuXh-0006Yz-S2; Mon, 22 Jan 2024 08:40:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rRuK3-00022H-Lt
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 08:26:43 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rRuK1-0006mv-JJ
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 08:26:43 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-55a50649ff6so3302684a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 05:26:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705929999; x=1706534799; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5I8n0R/IucDxDXY9xuCTQCEJrISpDtQ+7W0s/w6EjQk=;
- b=HJbC7udpTJJIQ4GNLxo+Z95uo5xTtNJJqx/BRdoDgjdKfOytToad5UkmOFSlMUlnBw
- xacLbmj1SN38KC8BIY7ENQu9l63uES4JDmwtIdzIs2Y7YPWec+ov05NZd/UGGIa/TXGp
- U+6M4M3hAixcA+YG7JiyYi43kEIrxPvUKMkaubL18LkGSMEHWnd1AQCZAQPcB3nZ/pUI
- tdKE8J/EXyYk+/+ZdZfVzGXKvuo6RNoMPxPLW1D3lANtfaj9sxkv2tUlj7DMbHw0CEql
- /H2DuS0P478r4eCmf+FpZDNm2czrpJOOGBLMLwhVbQ1kfJVk3XM8SsP06UCRpzItRbYx
- Myvw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rRuXa-0006YU-Jp
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 08:40:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rRuXY-0002Rm-7e
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 08:40:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705930838;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ChsysDllRcaKaxgyaNTpU+uYSSYGx8ovAMmNNHt49SM=;
+ b=Ck7Hrek4ULQSBQdewGowJgW8bLj30a5aDE3Ys7sBXoqKcoJm7kbFKqgz3QMe5ExPAY4rWP
+ HRTGa1iWG+tTwU6iLsoqHSgUmGQgJEapVN1wUF5fcrHOIib7tVRviN607yet77BZXk2WaM
+ vabz/5RuNhwDbXGdmI2pfmnN2guwlxg=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-327-bBrSxPlKO0mcLf0g8edP-Q-1; Mon, 22 Jan 2024 08:40:37 -0500
+X-MC-Unique: bBrSxPlKO0mcLf0g8edP-Q-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7817253831cso537240685a.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 05:40:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705929999; x=1706534799;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5I8n0R/IucDxDXY9xuCTQCEJrISpDtQ+7W0s/w6EjQk=;
- b=IslxGcBc7w+43VFriI8cScAcCY4lFMbxQ5lhNwHgBrUMTL5xNPaTCJEISR6f7eHEP8
- C5CYi008Qz1lIdOM/SjG7JNX1hN0nRYxXmZ7Nq67yP1hrsllFvWQgW7N1k732mwSLHsk
- to+oXXsrDfA/X/zevVtzdvCI6DXPl2vYsOcjS4QpW4KhRCsYj+7wpdID4JfdUKEz2gxe
- QeRRaiTsfO8+v/AxSbuyzWl7rUfpFlm38Wa2OVvzXvYSQ50b0zMsEd2709a89q75GDeL
- Z2lm/N3S9LG/u5wv6SS1X1CqKnqJr2AO9MCKmLlOAPiiAOo6X6DHs7tiy3ToLvwU8o2K
- ngcA==
-X-Gm-Message-State: AOJu0Yy16S6flu/FJo1KwNBYqTV99Hw0ohAC1VkGPHzG8kGrcWP0Yygn
- yKuTI2Vjhv80hPdpOjOiz8vtiUMB4A/GV3KUWUskC6WnhbXPm0ih32/qTdM8nI8DjrlzaU7HaXT
- 4J46F46jCXN6q9i8OyQsq6iE0yhc=
-X-Google-Smtp-Source: AGHT+IGynJaDsvLqs/5Sr2myktcW2lLuEMlwhI3FqE0b4AnTbkrAzY8IIKcEEz5bb8DlO9CCjcRjAgReEhUZpS6Lu3k=
-X-Received: by 2002:aa7:c351:0:b0:55a:5146:aefa with SMTP id
- j17-20020aa7c351000000b0055a5146aefamr1825931edr.36.1705929999002; Mon, 22
- Jan 2024 05:26:39 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705930836; x=1706535636;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ChsysDllRcaKaxgyaNTpU+uYSSYGx8ovAMmNNHt49SM=;
+ b=vumcM4fMAL7pqKtpfekkJaUFS7pcJG9VVfX+5EuBfXRYFFLfQBEJaTXedcaI/dtWtT
+ 3R0+UGqgA921u7eL0q5PM5NwMWKksiQHkYKe1DiAzxo1woSbV+GtX+Jc6FzlRhEIn+Ss
+ LlJv6wAxafE5Jbjk/x0K/2FDM9jaVbShPYDEtE/e1GeFrM1hqDlt4qwWkBSIqWc61kF+
+ VdTGkSwGUS+YX6GYgObGGlXiAo0d9rCRsHwNeWOlTemAiPowVFYrH2oM3pMf4WwrQxDq
+ 8APy4wHMZVoC8b0rD7rqaMRdjYjORxPEFdeJd9442wcAQ7DeSFNWlxnWpOZjHzt8GeVH
+ HaWA==
+X-Gm-Message-State: AOJu0YxP7tAZtwoN3BFdFfOZYt3t0UyActe83OnYNKP8rpxoyG9IuXoc
+ iWcJ9Vb+df4y26Z4Au6Yd9KW0+V6IlSINGSAlc5Ss6IwvidISxOMLB4uaWxIyEBXPBegVGeX9rM
+ UcgNcZxJvypwPO9sfDMw5LtkyDrNctJmz1sl8xF43a7JHLLrtWKtJ
+X-Received: by 2002:a05:620a:46a5:b0:783:9dc9:9a6f with SMTP id
+ bq37-20020a05620a46a500b007839dc99a6fmr2271461qkb.120.1705930836713; 
+ Mon, 22 Jan 2024 05:40:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFhpqMR5y8IDp18ca3vTO/wglFdmfcJUBiYBXi6i3tDxPbjnNQruuejsi/YX56TqSrYKCLf2A==
+X-Received: by 2002:a05:620a:46a5:b0:783:9dc9:9a6f with SMTP id
+ bq37-20020a05620a46a500b007839dc99a6fmr2271454qkb.120.1705930836492; 
+ Mon, 22 Jan 2024 05:40:36 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-179-227.web.vodafone.de.
+ [109.43.179.227]) by smtp.gmail.com with ESMTPSA id
+ d8-20020a05620a204800b007832bb4dbcdsm2119234qka.72.2024.01.22.05.40.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 05:40:36 -0800 (PST)
+Message-ID: <c05bf905-de71-42c0-aeb6-9993bcbcbaca@redhat.com>
+Date: Mon, 22 Jan 2024 14:40:33 +0100
 MIME-Version: 1.0
-References: <20240111172546.823263-1-atp.exp@gmail.com>
- <Zal_RMi4wmLGj6k9@redhat.com>
-In-Reply-To: <Zal_RMi4wmLGj6k9@redhat.com>
-From: atp exp <atp.exp@gmail.com>
-Date: Mon, 22 Jan 2024 18:56:26 +0530
-Message-ID: <CAFgBtdFpRmdFiPYChzxPEDWHCe=o_2FXhQAXy8W_OPPs6gfz-A@mail.gmail.com>
-Subject: Re: [PATCH v3] qemu-img: Fix Column Width and Improve Formatting in
- snapshot list
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com
-Content-Type: multipart/alternative; boundary="0000000000009a2f1e060f88c777"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=atp.exp@gmail.com; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] monitor: add dumpdtb command only in device-tree-enabled
+ targets
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240122092409.280919-1-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240122092409.280919-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,131 +141,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009a2f1e060f88c777
-Content-Type: text/plain; charset="UTF-8"
+On 22/01/2024 10.24, Paolo Bonzini wrote:
+> Remove the command altogether from targets that do not have device tree support,
+> instead of leaving it nonfunctional.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   meson.build        | 2 --
+>   qapi/machine.json  | 2 +-
+>   hmp-commands.hx    | 2 +-
+>   system/meson.build | 2 +-
+>   4 files changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index de8e5ad67dc..6bf7f3eb685 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -3126,8 +3126,6 @@ if fdt_required.length() > 0 or get_option('fdt').enabled()
+>     endif
+>   endif
+>   
+> -config_host_data.set('CONFIG_FDT', fdt.found())
+> -
+>   vhost_user = not_found
+>   if host_os == 'linux' and have_vhost_user
+>     libvhost_user = subproject('libvhost-user')
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index b6d634b30d5..c5e40857ba4 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -1828,4 +1828,4 @@
+>   ##
+>   { 'command': 'dumpdtb',
+>     'data': { 'filename': 'str' },
+> -  'if': 'CONFIG_FDT' }
+> +  'if': 'TARGET_NEEDS_FDT' }
+> diff --git a/hmp-commands.hx b/hmp-commands.hx
+> index 17b5ea839d9..f7263957240 100644
+> --- a/hmp-commands.hx
+> +++ b/hmp-commands.hx
+> @@ -1819,7 +1819,7 @@ ERST
+>           .flags      = "p",
+>       },
+>   
+> -#if defined(CONFIG_FDT)
+> +#if defined(TARGET_NEED_FDT)
+>       {
+>           .name       = "dumpdtb",
+>           .args_type  = "filename:F",
+> diff --git a/system/meson.build b/system/meson.build
+> index 25e21172505..4e54f5d1a4b 100644
+> --- a/system/meson.build
+> +++ b/system/meson.build
+> @@ -32,7 +32,7 @@ if have_tpm
+>   endif
+>   
+>   system_ss.add(when: seccomp, if_true: files('qemu-seccomp.c'))
+> -system_ss.add(when: fdt, if_true: files('device_tree.c'))
+> +system_ss.add(when: 'TARGET_NEED_FDT', if_true: [fdt, files('device_tree.c')])
 
-Alright, right now there are 10 digits for ID, don't think a billion
-snapshots are feasible anyway.
+IIUC this does not work. For example, I applied your patch and tried to 
+"make qemu-system-xtensa", I got:
 
-> Maybe what we should also do is decreasing the width of each field by
-> one and instead writing a space character into the format string.
+/usr/bin/ld: libcommon.fa.p/hw_core_guest-loader.c.o: in function 
+`loader_insert_platform_data':
+/home/thuth/tmp/qemu-build/../../devel/qemu/hw/core/guest-loader.c:55: 
+undefined reference to `qemu_fdt_add_subnode'
+/usr/bin/ld: 
+/home/thuth/tmp/qemu-build/../../devel/qemu/hw/core/guest-loader.c:56: 
+undefined reference to `qemu_fdt_setprop'
+/usr/bin/ld: 
+/home/thuth/tmp/qemu-build/../../devel/qemu/hw/core/guest-loader.c:60: 
+undefined reference to `qemu_fdt_setprop_string_array'
+/usr/bin/ld: 
+/home/thuth/tmp/qemu-build/../../devel/qemu/hw/core/guest-loader.c:67: 
+undefined reference to `qemu_fdt_setprop_string'
+/usr/bin/ld: 
+/home/thuth/tmp/qemu-build/../../devel/qemu/hw/core/guest-loader.c:73: 
+undefined reference to `qemu_fdt_setprop_string_array'
+collect2: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.
 
-I'm assuming  you are talking about adding spaces between DATE, VM_CLOCK
-and ICOUNT, because spaces already exist for ID and TAGS.
+system_ss is a common set, so you must not use a TARGET_* switch for 
+deciding what goes into that set, or did I get that wrong? I.e. I think you 
+have to drop the system/meson.build change here?
 
-Will send a patch soon.
+Also, there is another #ifdef CONFIG_FDT in hw/xtensa/xtfpga.c which likely 
+needs some treatment, too?
 
-Abhiram
+  Thomas
 
-On Fri, 19 Jan 2024 at 01:13, Kevin Wolf <kwolf@redhat.com> wrote:
 
-> Am 11.01.2024 um 18:25 hat Abhiram Tilak geschrieben:
-> > When running the command `qemu-img snapshot -l SNAPSHOT` the output of
-> > VM_CLOCK (measures the offset between host and VM clock) cannot to
-> > accommodate values in the order of thousands (4-digit).
-> >
-> > This line [1] hints on the problem. Additionally, the column width for
-> > the VM_CLOCK field was reduced from 15 to 13 spaces in commit b39847a5
-> > in line [2], resulting in a shortage of space.
-> >
-> > [1]:
-> https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L753
-> > [2]:
-> https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L763
-> >
-> > This patch restores the column width to 15 spaces and makes adjustments
-> > to the affected iotests accordingly. Furthermore, addresses a potential
-> source
-> > of confusion by removing whitespace in column headers. Example, VM CLOCK
-> > is modified to VM_CLOCK. Additionally a '--' symbol is introduced when
-> > ICOUNT returns no output for clarity.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2062
-> > Fixes: b39847a50553 (migration: introduce icount field for snapshots )
-> > Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
->
-> We can tweak the format a bit, but then we need to save those two
-> characters somewhere else so that the output still fits in 80
-> characters. We can probably reduce the size of the ID column.
->
-> Maybe what we should also do is decreasing the width of each field by
-> one and instead writing a space character into the format string. So if
-> we ever use up the space for one of the fields again, we would lose the
-> nice column alignment, but you could still recognise the individual
-> fields.
->
-> Kevin
->
->
-
---0000000000009a2f1e060f88c777
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">Alright, right now there=
- are 10 digits for ID, don&#39;t think a billion snapshots are feasible any=
-way.<br><br>&gt; Maybe what we should also do is decreasing the width of ea=
-ch field by<br>&gt; one and instead writing a space character into the form=
-at string.<br><div><br></div><div>I&#39;m assuming=C2=A0 you are talking ab=
-out adding spaces between DATE, VM_CLOCK</div><div>and ICOUNT, because spac=
-es already exist for ID and TAGS.</div><div><br></div><div>Will send a patc=
-h soon.</div><div><br></div><div>Abhiram</div></div></div><br><div class=3D=
-"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 19 Jan 2024 at =
-01:13, Kevin Wolf &lt;<a href=3D"mailto:kwolf@redhat.com">kwolf@redhat.com<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
-px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">A=
-m 11.01.2024 um 18:25 hat Abhiram Tilak geschrieben:<br>
-&gt; When running the command `qemu-img snapshot -l SNAPSHOT` the output of=
-<br>
-&gt; VM_CLOCK (measures the offset between host and VM clock) cannot to<br>
-&gt; accommodate values in the order of thousands (4-digit).<br>
-&gt; <br>
-&gt; This line [1] hints on the problem. Additionally, the column width for=
-<br>
-&gt; the VM_CLOCK field was reduced from 15 to 13 spaces in commit b39847a5=
-<br>
-&gt; in line [2], resulting in a shortage of space.<br>
-&gt; <br>
-&gt; [1]: <a href=3D"https://gitlab.com/qemu-project/qemu/-/blob/master/blo=
-ck/qapi.c?ref_type=3Dheads#L753" rel=3D"noreferrer" target=3D"_blank">https=
-://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=3Dheads=
-#L753</a><br>
-&gt; [2]: <a href=3D"https://gitlab.com/qemu-project/qemu/-/blob/master/blo=
-ck/qapi.c?ref_type=3Dheads#L763" rel=3D"noreferrer" target=3D"_blank">https=
-://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=3Dheads=
-#L763</a><br>
-&gt; <br>
-&gt; This patch restores the column width to 15 spaces and makes adjustment=
-s<br>
-&gt; to the affected iotests accordingly. Furthermore, addresses a potentia=
-l source<br>
-&gt; of confusion by removing whitespace in column headers. Example, VM CLO=
-CK<br>
-&gt; is modified to VM_CLOCK. Additionally a &#39;--&#39; symbol is introdu=
-ced when<br>
-&gt; ICOUNT returns no output for clarity.<br>
-&gt; <br>
-&gt; Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/206=
-2" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qem=
-u/-/issues/2062</a><br>
-&gt; Fixes: b39847a50553 (migration: introduce icount field for snapshots )=
-<br>
-&gt; Signed-off-by: Abhiram Tilak &lt;<a href=3D"mailto:atp.exp@gmail.com" =
-target=3D"_blank">atp.exp@gmail.com</a>&gt;<br>
-<br>
-We can tweak the format a bit, but then we need to save those two<br>
-characters somewhere else so that the output still fits in 80<br>
-characters. We can probably reduce the size of the ID column.<br>
-<br>
-Maybe what we should also do is decreasing the width of each field by<br>
-one and instead writing a space character into the format string. So if<br>
-we ever use up the space for one of the fields again, we would lose the<br>
-nice column alignment, but you could still recognise the individual<br>
-fields.<br>
-<br>
-Kevin<br>
-<br>
-</blockquote></div></div>
-
---0000000000009a2f1e060f88c777--
 
