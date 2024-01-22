@@ -2,63 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3636B835B60
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0B9835B70
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:13:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRoNs-0008Ff-OC; Mon, 22 Jan 2024 02:06:16 -0500
+	id 1rRoUN-0002Xi-8R; Mon, 22 Jan 2024 02:12:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoNo-0008FP-E1
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:06:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rRoNm-0003Wg-6Q
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:06:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705907169;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=GO+wQaBQS8+w2ZAwVLW3/M2i3NJOkciOSJkzcI73pgs=;
- b=OCsvV2VxKad6oxrRnPf0DmnhTTmFY8e0RRffOTERAwCFhaVJTRY/RXiiqlIIvkOsiAXs4u
- I6U9cMtW3kUxUgej1G0GEiUmWi4CFq+z48nYsPx1C3+hWgy76mzrGM4cBfLWi234LSmUfK
- o3vfbtvaaJ5BZyB8p3cSTlC4+cNmYM0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-t4ouGvrRPNeAcYi2Vez-3A-1; Mon, 22 Jan 2024 02:06:04 -0500
-X-MC-Unique: t4ouGvrRPNeAcYi2Vez-3A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E04A1013661;
- Mon, 22 Jan 2024 07:06:04 +0000 (UTC)
-Received: from x1n.redhat.com (unknown [10.72.116.47])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 431A72166B31;
- Mon, 22 Jan 2024 07:06:01 +0000 (UTC)
-From: peterx@redhat.com
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- peterx@redhat.com
-Subject: [PATCH] migration/docs: Explain two solutions for VMSD compatibility
-Date: Mon, 22 Jan 2024 15:06:00 +0800
-Message-ID: <20240122070600.16681-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1rRoUK-0002XG-1F
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:12:56 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1rRoUG-0004aE-7K
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 02:12:55 -0500
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8BxHOtlFa5la2MDAA--.3743S3;
+ Mon, 22 Jan 2024 15:12:38 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx_c5iFa5liQARAA--.13449S3; 
+ Mon, 22 Jan 2024 15:12:36 +0800 (CST)
+Subject: Re: [PATCH 1/1] target/loongarch/kvm: Enable LSX/LASX extension
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, philmd@linaro.org, zhaotianrui@loongson.cn
+References: <20240122060901.4056487-1-gaosong@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <d1b0557a-b591-6bf1-6ad9-ed5103b44726@loongson.cn>
+Date: Mon, 22 Jan 2024 15:12:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240122060901.4056487-1-gaosong@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+X-CM-TRANSID: AQAAf8Cx_c5iFa5liQARAA--.13449S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCF17Zw1kCryUuw43ZFWxZrc_yoW5Ww43pF
+ srZF4FgryftF9rGwnaq34qqr43Zr4xGwsF9Fy7ArZ2yr4Yvr1xJ348tFsxWF15G34rCFWI
+ vFs5AFs09a1kA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8r9
+ N3UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.72,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,209 +81,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
 
-The current article is not extremely easy to follow, and may contain too
-much information for someone looking for solutions on VMSD compatibility
-issues.  Meanwhile, VMSD versioning is not discussed.
 
-I'm not yet sure whether we should just obsolete VMSD versioning; it's
-still used quite a lot.  And I had a feeling that for simple use cases
-where backward migration is not strongly required, device developers can
-still consider using it.  So in this patch I decided to keep it (anyway, we
-can't drop it in the near future because of massive existing users), and we
-can still allow user to use it in contexts where forward-only migration
-might be enough.
+On 2024/1/22 下午2:09, Song Gao wrote:
+> The kernel had already support LSX and LASX [1],
+> but QEMU is disable LSX/LASX for kvm. This patch adds
+> kvm_check_cpucfg to check CPUCFG2.
+> 
+> [1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   linux-headers/asm-loongarch/kvm.h |  1 +
+>   target/loongarch/kvm/kvm.c        | 35 ++++++++++++++++++++++++-------
+>   2 files changed, 29 insertions(+), 7 deletions(-)
+> 
+> diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
+> index c6ad2ee610..923d0bd382 100644
+> --- a/linux-headers/asm-loongarch/kvm.h
+> +++ b/linux-headers/asm-loongarch/kvm.h
+> @@ -79,6 +79,7 @@ struct kvm_fpu {
+>   #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
+>   #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
+>   #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
+> +#define KVM_LOONGARCH_VCPU_CPUCFG	0
+>   
+>   struct kvm_debug_exit_arch {
+>   };
+> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+> index 84bcdf5f86..41b6947c7b 100644
+> --- a/target/loongarch/kvm/kvm.c
+> +++ b/target/loongarch/kvm/kvm.c
+> @@ -537,6 +537,28 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
+>       return ret;
+>   }
+>   
+> +static int kvm_check_cpucfg(int id, CPUState *cs)
+> +{
+> +    int ret;
+> +    uint64_t val;
+> +    struct kvm_device_attr attr = {
+> +        .group = KVM_LOONGARCH_VCPU_CPUCFG,
+> +        .attr = id,
+> +        .addr = (uint64_t)&val,
+> +    };
+> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+> +    CPULoongArchState *env = &cpu->env;
+> +
+> +    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
+> +
+> +    if (!ret) {
+> +        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
+> +        env->cpucfg[id] &= val;
+With feature bit represents supported or disabled, it is ok to use
+logic of qemu feature bitmap and kvm supported feature bitmap.
 
-This doc patch does below changes:
+However about feature version, there will be problem with "and logic".
+Can we use minimal version here?
 
-  - Rename the page from "Backward compatibility" to "Migration
-  compatibility", to avoid using "backward" as a word (because we'll want
-  to identify "forward" / "backward" migrations in the new doc)
-
-  - Add a TOC for this page for better indexing
-
-  - A new section to explain what is forward/backward migration
-
-  - A new small section for VMSD just to make things complete
-
-  - Explain the two ways to make VMSD compatible with old qemu binaries
-
-    For this one, I added a small section on how to use VMSD versioning for
-    new fields just to start such documents.  Rename the old "How backwards
-    compatibility works" section to "machine type based (forward+backward
-    migration)" to be the 2nd solution (I called it machine type based
-    solution). When at it, I provided a summary and a TODO for the 2nd
-    solution.
-
-  - A new section to explain which solution to choose
-
-  - Moved the other two existing sections into "Extended readings", because
-  they can be even further away to most device developers
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- docs/devel/migration/compatibility.rst | 140 ++++++++++++++++++++++++-
- 1 file changed, 137 insertions(+), 3 deletions(-)
-
-diff --git a/docs/devel/migration/compatibility.rst b/docs/devel/migration/compatibility.rst
-index 5a5417ef06..ea9da201ef 100644
---- a/docs/devel/migration/compatibility.rst
-+++ b/docs/devel/migration/compatibility.rst
-@@ -1,8 +1,139 @@
--Backwards compatibility
- =======================
-+Migration compatibility
-+=======================
-+
-+Migration is a hard topic sometimes.  One of the major reason is that it
-+has a strict compatibility requirement - a migration (live or not) can
-+happen between two different versions of QEMUs, so QEMU needs to make sure
-+the migration can work across different versions of QEMU binaries.
-+
-+This document majorly discusses the compatibility requirement of forward /
-+backward migrations that QEMU need to maintain, and what QEMU developers
-+should do to achieve such compatibility requirements across different QEMU
-+versions.
-+
-+.. contents::
-+
-+Types of migrations (forward / backward)
-+========================================
-+
-+Let's firstly define the terms **forward migration** and **backward
-+migration**.
-+
-+.. note::
-+
-+    To simplify the use case, we always discuss between two consecutive
-+    versions of QEMU major releases (between QEMU version *N* and QEMU
-+    version *N-1*).  But logically it applies to the case where the two
-+    QEMU binaries involved contains more than one major version difference.
-+
-+.. _forward_migration:
-+
-+**Forward migration**: can be seen as the use case where a VM cluster can
-+upgrade its nodes to a newer version of QEMU (version *N*) from an older
-+version of QEMU (version *N-1*).
-+
-+.. _backward_migration:
-+
-+**Backward migration**: can be seen as the use case where a VM cluster
-+would like to migrate from a newer version of QEMU (version *N*) back to an
-+even older version of QEMU (version *N-1*).
-+
-+A forward migration is more common, where system upgrades are needed.  In
-+this case, the upgrade can be done seamlessly by live migrating the old VMs
-+to the new VMs with the new binaries.
-+
-+A backward migration can be less common OTOH, because downgrade is less
-+common than upgrade for whatever reasons.  However for a production level
-+system setup, this should also be allowed, because a cluster can contain
-+different versions of QEMU binary.  It should be always allowed to migrate
-+between old and new hosts as long as the machine type is supported across
-+all the relevant hosts / nodes.
-+
-+VMState description data structure (VMSD)
-+=========================================
-+
-+VMSD (or in the complete form, **VMStateDescription**) is the data
-+structure that QEMU uses to describe data to be migrated for devices.
-+Each device should provide its own VMSD structure to describe what it needs
-+to be migrated when a VM live migration is requested.
-+
-+Device VMSD compatibility
-+=========================
-+
-+Then if the VMSD structures need changing, how does the device maintain
-+compatibilty?
- 
--How backwards compatibility works
-----------------------------------
-+Here we only discuss VMSD-based migrations.  If one device is not using
-+VMSD to migrate its device data, it's considered part of "advanced users",
-+then this document may not apply anymore.  If you're writting a new device,
-+please always consider starting with VMSD-based migration model.
-+
-+Consider the case where a device can start to support a new feature in the
-+current release, where it wasn't supported before.  The new feature may
-+require some new device states to be migrated (which can be new VMSD fields
-+to be added, or new subsections).  The same question needs to be answered
-+when one would like to modify an existing VMSD fields / layouts to fix a
-+bug, and so on.
-+
-+Depending on the goal, the solution to this problem may vary.
-+
-+If one would like to provide a full support of migration between whatever
-+versions, one can try to implement it using :ref:`machine_type_compat`
-+solution.  If one would like to provide a fundamental upgrade-only
-+compatibility, one could consider to use the simpler
-+:ref:`vmsd_versioning_compat` solution.
-+
-+Solutions
-+=========
-+
-+.. _vmsd_versioning_compat:
-+
-+VMSD versioning (forward migration only)
-+----------------------------------------
-+
-+This is normally the simplest way to support cross-version QEMU live
-+migration. The trade-off is backward migration will not be supported. It
-+means migrations from new QEMU binaries to old QEMU binaries can fail. It's
-+because even if the new QEMU can understand the old version of VMSD by
-+proper versioning of the VMSD fields, the old QEMU will not be able to
-+understand the new version of VMSD layout.  Then when someone migrates a VM
-+using the new VMSD to an older version of QEMU, the old QEMU will not
-+accept the new migration stream, reporting that the VSMD version too new.
-+
-+Please have a look at **include/migration/vmstate.h** for more information
-+on how to use VMSD versioning.
-+
-+Taking an example of adding a new field for migration.  The change will
-+need to at least contain two parts:
-+
-+  - Boost existing VMSD version.
-+
-+  - Add the new VMSD field with the boosted version, with specific
-+    **VMSTATE_\*_V()** macros.  For example, **VMSTATE_UINT8_V()** will
-+    define an uint8 typed VMSD field with version specified.
-+
-+.. _machine_type_compat:
-+
-+Machine type based (forward+backward migration)
-+-----------------------------------------------
-+
-+QEMU developers can leverage machine type compatibile properties to provide
-+a fully migratable device / protocol, so the migration behavior will be
-+defined by the machine type, no matter which QEMU binary will be used.  One
-+can reference the entries defined in **hw_compat_\*** global properties for
-+examples.
-+
-+Comparing to VMSD versioning approach above, this may require more code
-+changes, but provide a higher level of compatibility that is bound to the
-+machine type being used.  To be explicit, since the migration behavior is
-+bound to machine type, it will support both forward migration and backward
-+migration as long as the machine type is supported.
-+
-+.. note::
-+
-+   Currently this section is pretty long.  TODO: rewrite this section to
-+   make it easier for QEMU developers to understand.
- 
- When we do migration, we have two QEMU processes: the source and the
- target.  There are two cases, they are the same version or they are
-@@ -217,6 +348,9 @@ machine types to have the right value::
-          ...
-      };
- 
-+Extended readings
-+=================
-+
- A device with different features on both sides
- ----------------------------------------------
- 
--- 
-2.43.0
+Regards
+Bibo Mao
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+>   static int kvm_loongarch_put_cpucfg(CPUState *cs)
+>   {
+>       int i, ret = 0;
+> @@ -545,14 +567,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+>       uint64_t val;
+>   
+>       for (i = 0; i < 21; i++) {
+> +	if (i == 2) {
+> +            ret = kvm_check_cpucfg(i, cs);
+> +            if (ret) {
+> +                return ret;
+> +            }
+> +	}
+>           val = env->cpucfg[i];
+> -        /* LSX and LASX and LBT are not supported in kvm now */
+> -        if (i == 2) {
+> -            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
+> -            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
+> -                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
+> -                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
+> -        }
+>           ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
+>           if (ret < 0) {
+>               trace_kvm_failed_put_cpucfg(strerror(errno));
+> 
 
 
