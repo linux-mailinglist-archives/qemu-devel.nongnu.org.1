@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043B9836670
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA46B83666B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:02:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRvo3-00087Z-21; Mon, 22 Jan 2024 10:01:47 -0500
+	id 1rRvo8-0008Uw-8f; Mon, 22 Jan 2024 10:01:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRvnv-0007jF-Ab
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:01:39 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1rRvnx-0007w9-GE
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:01:44 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRvnn-0001lx-4Y
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:01:38 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40eaf3528c8so7312885e9.2
+ id 1rRvnn-0001ml-Fx
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:01:41 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40e8d3b29f2so39455465e9.1
  for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 07:01:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705935689; x=1706540489; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705935690; x=1706540490; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L7VOplgsBBAgAtEJeAgTFkF54S4NCVefHHQnrnHK8t0=;
- b=AeXivKSIoxzxKpSA5sDZUPsObI+mOKI6PtGCp/2+NCKKUp6/qasomAmjU47aa7LGwR
- rV/MqzpdLGHcEQk4bm67pbfE2Ca7EKP3EOrT+akQnEsOvR6t5huLkfPhSV3Ll87uTjJP
- cBzift88zp7T7Og8YUvkFyHROsvUIYzjLOMma6MxoGyu5MacDBwp09hgVleVe1tN31Pf
- cocfTKjFfSGYW3rM/tdf0oOPGOA4XWfY04r2B0EnoVczTbxz5RSMrZdef/algMQqoKhn
- o14wNHaYls1Z02ZgXTp0rXegaTap90mnZyWJ999oi1vZZNeEo804Ql/O9KfH7UNgA7UE
- wVtg==
+ bh=eZ1nEd8NJNCNQAO45v/M0dXLXOT0Wd7jVxF+jov+Saw=;
+ b=oBYV3ioTnLMX77Inn4NkF/S5eaRmjdDyEc7gyjwT3Lwga8ECk7yoiVFnoroY7RXfD+
+ naMtYfH//+Y1jbOtG5mUTD1HUFlrPS82fmXyc+EtKPSnhOiapF1GMtHeB0OSyMPyXGPx
+ 1kZLNZ8JbnFQ8ofNGnYQ/oHWYMsp5uKIYfBo/lKSii6jFEybxfksrWGtRv65X2KulCP+
+ DyTEvkphJS/DhvQT4ecx4u0o6n0qYjSVmuWSWE9VM6CB23grH+yZ8kn8rHTyjjeWDYR2
+ 1Tiq00FavXxfej8xNePv3mrN3kIeJknwrGVhm5U5evrGeOdYV9aZfqOfQ7jhGxb7XG+5
+ yARQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705935689; x=1706540489;
+ d=1e100.net; s=20230601; t=1705935690; x=1706540490;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L7VOplgsBBAgAtEJeAgTFkF54S4NCVefHHQnrnHK8t0=;
- b=WyQ3iRxzIxKscXJpFQkvplMn2q4ji6VWOiBgXB2xjjKanu/f6fbabWTEdqYBb93HpA
- dpxSzZIhwfVxO8KMHmkrmLs/PnZ+I+bdX21v+XYB8TUTiUaYLFbblbMJ4WCQVBxdx3OO
- VyLLNQWYEI5ECrFWfg2BPmzbkLyGIYQw7kgcqewDFjJfwZ18ntWEJQc6ICs3g/aRQVp2
- JMC8e0IIrsErLOhFPw+EgUdKPhGqzPlVY8G1Y1etqD8RWDJsVoEuCEMr2dpd5L/tPdRK
- 5AUqUH9HQ4VPkR8DnPbhXC0n8NpHGj3wLmuiHbQEb32imf9kj7FPB49w9ECMz9mUED4n
- fJcA==
-X-Gm-Message-State: AOJu0YzM/lKvav4obueg0oBDNHiS4zmkLJ1XP+Mm/x9S+Toj7O6Sgkpz
- dJsi6+22E8VUqSkGG5obQPKCelUyYEYwpLDAZ4TBZMqtZxldQ2gTZoHpS4tdkc0=
-X-Google-Smtp-Source: AGHT+IFxNTPr8NUI2fFrYkNhQafasrORn8JAkp9EvucZOYRV+FHSy9wjv9TICupAQqM47gPf+Jni/Q==
-X-Received: by 2002:a05:600c:154c:b0:40d:7f19:40b1 with SMTP id
- f12-20020a05600c154c00b0040d7f1940b1mr2366763wmg.169.1705935688882; 
- Mon, 22 Jan 2024 07:01:28 -0800 (PST)
+ bh=eZ1nEd8NJNCNQAO45v/M0dXLXOT0Wd7jVxF+jov+Saw=;
+ b=ZDYZ9Zd/yBqB3OhlbBzcNuA4dnn7L7LMr8JEsaiVNyGjqasNbuCz0lIglOjIFRlob5
+ Yi4RiVdSpNW1ScTOxZ0E8hi0wHahWq86O9Wm3kriYksjDA8min0RKDipfy5vRPgmnA9o
+ WL51Lo+0YFmY7fzQEgdhh4A/bjzQGiAElsUfJe9rFPNhgMluO/Lxwv/PS1GF0YVg4s0O
+ YFw5vll7UZ9QhQlAhO2xpKG2KvxYt08n0sPkSVCs/tgHetAwUPfx4AWhQWIDLmQn7J7k
+ BtkYuGNYD8RTyfCu0IvRH1e0MI4vkNFptcP+ojIYaTR4AxxCGy37nbRt3eEE46fUG9bj
+ 7okw==
+X-Gm-Message-State: AOJu0Yww9YXmpmH3f8CK4SKa3bigPIha/cg1NBep48GlUn5vmFfereVE
+ 1Y0q+2EbYwsL7FpksVZwJMu61bVF1PIVPXmjltcL8hcwFKCTDyv/koxdAKDoLiY=
+X-Google-Smtp-Source: AGHT+IEwv0U3gluOvjzxJUPlNZ0yWsCpKsoao62m327xZ8POdVEwgy/zDswLP5yfB02fCPKJ5stsXQ==
+X-Received: by 2002:a05:600c:5403:b0:40e:a666:4729 with SMTP id
+ he3-20020a05600c540300b0040ea6664729mr1258496wmb.278.1705935689716; 
+ Mon, 22 Jan 2024 07:01:29 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s15-20020a5d6a8f000000b00336898daceasm11699962wru.96.2024.01.22.07.01.28
+ v21-20020a05600c445500b0040d62f89381sm39534890wmn.35.2024.01.22.07.01.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 22 Jan 2024 07:01:28 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AC7E75F936;
+ by draig.lan (Postfix) with ESMTP id E12235F9D2;
  Mon, 22 Jan 2024 14:56:12 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,18 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>,
  Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
- Paul Durrant <paul@xen.org>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 16/21] gdbstub: expose api to find registers
-Date: Mon, 22 Jan 2024 14:56:05 +0000
-Message-Id: <20240122145610.413836-17-alex.bennee@linaro.org>
+ Paul Durrant <paul@xen.org>
+Subject: [PATCH v3 18/21] contrib/plugins: fix imatch
+Date: Mon, 22 Jan 2024 14:56:07 +0000
+Message-Id: <20240122145610.413836-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240122145610.413836-1-alex.bennee@linaro.org>
 References: <20240122145610.413836-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,99 +125,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose an internal API to QEMU to return all the registers for a vCPU.
-The list containing the details required to called gdb_read_register().
+We can't directly save the ephemeral imatch from argv as that memory
+will get recycled.
 
-Based-on: <20231025093128.33116-15-akihiko.odaki@daynix.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240103173349.398526-38-alex.bennee@linaro.org>
+Message-Id: <20240103173349.398526-40-alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-v3
-  - rm unused api functions left over
----
- include/exec/gdbstub.h | 28 ++++++++++++++++++++++++++++
- gdbstub/gdbstub.c      | 27 ++++++++++++++++++++++++++-
- 2 files changed, 54 insertions(+), 1 deletion(-)
+ contrib/plugins/execlog.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index da9ddfe54c5..eb14b91139b 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -111,6 +111,34 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder);
-  */
- const GDBFeature *gdb_find_static_feature(const char *xmlname);
- 
-+/**
-+ * gdb_read_register() - Read a register associated with a CPU.
-+ * @cpu: The CPU associated with the register.
-+ * @buf: The buffer that the read register will be appended to.
-+ * @reg: The register's number returned by gdb_find_feature_register().
-+ *
-+ * Return: The number of read bytes.
-+ */
-+int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
-+
-+/**
-+ * typedef GDBRegDesc - a register description from gdbstub
-+ */
-+typedef struct {
-+    int gdb_reg;
-+    const char *name;
-+    const char *feature_name;
-+} GDBRegDesc;
-+
-+/**
-+ * gdb_get_register_list() - Return list of all registers for CPU
-+ * @cpu: The CPU being searched
-+ *
-+ * Returns a GArray of GDBRegDesc, caller frees array but not the
-+ * const strings.
-+ */
-+GArray *gdb_get_register_list(CPUState *cpu);
-+
- void gdb_set_stop_cpu(CPUState *cpu);
- 
- /* in gdbstub-xml.c, generated by scripts/feature_to_c.py */
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 420ab2a3766..14f2f32e63f 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -490,7 +490,32 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname)
-     g_assert_not_reached();
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 82dc2f584e2..f262e5555eb 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -199,7 +199,7 @@ static void parse_insn_match(char *match)
+     if (!imatches) {
+         imatches = g_ptr_array_new();
+     }
+-    g_ptr_array_add(imatches, match);
++    g_ptr_array_add(imatches, g_strdup(match));
  }
  
--static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-+GArray *gdb_get_register_list(CPUState *cpu)
-+{
-+    GArray *results = g_array_new(true, true, sizeof(GDBRegDesc));
-+
-+    /* registers are only available once the CPU is initialised */
-+    if (!cpu->gdb_regs) {
-+        return results;
-+    }
-+
-+    for (int f = 0; f < cpu->gdb_regs->len; f++) {
-+        GDBRegisterState *r = &g_array_index(cpu->gdb_regs, GDBRegisterState, f);
-+        for (int i = 0; i < r->feature->num_regs; i++) {
-+            const char *name = r->feature->regs[i];
-+            GDBRegDesc desc = {
-+                r->base_reg + i,
-+                name,
-+                r->feature->name
-+            };
-+            g_array_append_val(results, desc);
-+        }
-+    }
-+
-+    return results;
-+}
-+
-+int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
- {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-     GDBRegisterState *r;
+ static void parse_vaddr_match(char *match)
 -- 
 2.39.2
 
