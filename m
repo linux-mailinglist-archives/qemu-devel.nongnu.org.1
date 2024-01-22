@@ -2,76 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D12F836937
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71106836961
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:00:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRwdY-0003vD-Cp; Mon, 22 Jan 2024 10:55:00 -0500
+	id 1rRwhk-0007ag-R6; Mon, 22 Jan 2024 10:59:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRwdW-0003tB-C5
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:58 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rRwdU-0002v4-NP
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:58 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-55c2e6f0542so1346350a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 07:54:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705938895; x=1706543695; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FQ89/gHU/0fCqpWPcNOOU1hTDbxZXHtbw+6dvcE8kJI=;
- b=TlgJfG5du08CNPy4Vmzo1a/CPigw6ajCf9CxiDcweFM8UumSkgmXUz86Mn/5tqp8OG
- E6dE2q6mTgIKtjx5YNX918G46D+qZlQ0rk+HulG0wirjG/z45ORKRYYEunXWohwhxWvI
- j4BoITpqtSP1gfg7qY7zygMYJKt32y+gmlFyEHOBpzgmiaCIMziupUMVKmJqbrkLwkm5
- iOdbgq9J6kT0PpXUojHCWwrTZk12sH93fyvBYEJNExr7B1Xxg9fqeH4YDS0EUTgI327E
- NjAUo0Ln+E+j6/J1/XPUcpQjfD15zMA+be4ReA1NhZTgNFaiEC3lKcu36tJ4Y2Fti48R
- zn5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705938895; x=1706543695;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FQ89/gHU/0fCqpWPcNOOU1hTDbxZXHtbw+6dvcE8kJI=;
- b=FUOSwKc+ofJ2MkGaVf3021k2qeydS2QKtNlDaWn28fPmCsUPesEyWxZO08VKlVgc3E
- vxbpMuSR43OlL09ZM6Uko5mChBGqYr00hz0jCB9pgp67YwDWzViLJdfpNCY4AIgdqfBC
- JCaYRHsdtIBZZCSejvuzXhbGD8vj7u9M+sFuV7OPo0xZbdEqZXR2tuGQmuRFHjlohB3T
- QyxkQPI38QOuOruPisiePnEe59dV/48QVDynRjj0X223tgi7IVxwmXh6LyxccvtDQUBD
- PcOoAYxkSmaMuLjC1hcVU2w52yEBr8BBmQvLx3Wq+G0cF3zAfgGDiMikCN1iRQxyrbSV
- xzzQ==
-X-Gm-Message-State: AOJu0Yyjmda8G7fxesbZYd1BXae5300PV24WSNyPzL1AUVMMNCK6t7g0
- XWLo3RzUy3a+7bJ6ScFyslcvw85Wj1Y/qrnDMvBQ0rVlYfR8u1qVZBql5w1yE/dBDHKxbVpnnOr
- y3q613ee70mb/A+QMHoUN0nGB2S987aWIHslXSw==
-X-Google-Smtp-Source: AGHT+IHZ4AmYYS41l1+oY4P1F0NcI9IjYzzNjkEVmsOGCTIDiinLeIqy97GATBO/I31sJUp8DyAu1vKgqbzjCmdgWd8=
-X-Received: by 2002:a05:6402:b90:b0:559:d8eb:e443 with SMTP id
- cf16-20020a0564020b9000b00559d8ebe443mr49313edb.80.1705938895269; Mon, 22 Jan
- 2024 07:54:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rRwhd-0007aS-0p
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:59:13 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rRwhb-0003Ru-5o
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:59:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705939150;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=kXI3N2t/KGtGnu47vp1ZNwOF+lMD0eoQyXmYdE5nWD0=;
+ b=GCwssqjZBYIHX6a612EXliaQY6PtHA5Oqq+74U7Zt3zgCzF0UChRdK8YOqkCHl0dXepN51
+ e/gZErH78owhc+Jx6ECYksvjC2iJD4EJTnGb3UDml+jgv9RB6sWyUzirvGaafsRRvJ350o
+ XgEIbOWRbdaPmWidIk3nwfMK+xBM9NI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-wr1d_XlWMc6hRbA_RjhWAg-1; Mon, 22 Jan 2024 10:59:05 -0500
+X-MC-Unique: wr1d_XlWMc6hRbA_RjhWAg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 786038B39AA;
+ Mon, 22 Jan 2024 15:59:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.229])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CA3C3492BE8;
+ Mon, 22 Jan 2024 15:59:04 +0000 (UTC)
+Date: Mon, 22 Jan 2024 16:59:03 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: atp exp <atp.exp@gmail.com>
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com
+Subject: Re: [PATCH v3] qemu-img: Fix Column Width and Improve Formatting in
+ snapshot list
+Message-ID: <Za6Qx4tIMOp-fcic@redhat.com>
+References: <20240111172546.823263-1-atp.exp@gmail.com>
+ <Zal_RMi4wmLGj6k9@redhat.com>
+ <CAFgBtdFpRmdFiPYChzxPEDWHCe=o_2FXhQAXy8W_OPPs6gfz-A@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com>
- <CAFEAcA_5ip7q0Wp=jJkV7sJg=w=e08JCRqPmQuOObNe8AMZLDA@mail.gmail.com>
-In-Reply-To: <CAFEAcA_5ip7q0Wp=jJkV7sJg=w=e08JCRqPmQuOObNe8AMZLDA@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 22 Jan 2024 15:54:43 +0000
-Message-ID: <CAFEAcA_sX50fnyR8GqrmM4=gtm9cMg-U6Ooh5gK39-sWcrTRJQ@mail.gmail.com>
-Subject: Re: [PATCH] Fixed '-serial none' usage breaks following '-serial ...'
- usage
-To: Bohdan Kostiv <bogdan.kostiv@gmail.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFgBtdFpRmdFiPYChzxPEDWHCe=o_2FXhQAXy8W_OPPs6gfz-A@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,61 +80,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 15 Jan 2024 at 16:14, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> (I've cc'd a few people who might have opinions on possible
-> command-line compatibility breakage.)
->
-> On Wed, 10 Jan 2024 at 14:38, Bohdan Kostiv <bogdan.kostiv@gmail.com> wrote:
+Am 22.01.2024 um 14:26 hat atp exp geschrieben:
+> Alright, right now there are 10 digits for ID, don't think a billion
+> snapshots are feasible anyway.
+
+Indeed.
+
+> > Maybe what we should also do is decreasing the width of each field by
+> > one and instead writing a space character into the format string.
+> 
+> I'm assuming  you are talking about adding spaces between DATE, VM_CLOCK
+> and ICOUNT, because spaces already exist for ID and TAGS.
+
+Yes, exactly.
+
+Kevin
+
+> On Fri, 19 Jan 2024 at 01:13, Kevin Wolf <kwolf@redhat.com> wrote:
+> 
+> > Am 11.01.2024 um 18:25 hat Abhiram Tilak geschrieben:
+> > > When running the command `qemu-img snapshot -l SNAPSHOT` the output of
+> > > VM_CLOCK (measures the offset between host and VM clock) cannot to
+> > > accommodate values in the order of thousands (4-digit).
+> > >
+> > > This line [1] hints on the problem. Additionally, the column width for
+> > > the VM_CLOCK field was reduced from 15 to 13 spaces in commit b39847a5
+> > > in line [2], resulting in a shortage of space.
+> > >
+> > > [1]:
+> > https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L753
+> > > [2]:
+> > https://gitlab.com/qemu-project/qemu/-/blob/master/block/qapi.c?ref_type=heads#L763
+> > >
+> > > This patch restores the column width to 15 spaces and makes adjustments
+> > > to the affected iotests accordingly. Furthermore, addresses a potential
+> > source
+> > > of confusion by removing whitespace in column headers. Example, VM CLOCK
+> > > is modified to VM_CLOCK. Additionally a '--' symbol is introduced when
+> > > ICOUNT returns no output for clarity.
+> > >
+> > > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2062
+> > > Fixes: b39847a50553 (migration: introduce icount field for snapshots )
+> > > Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
 > >
-> > Hello,
+> > We can tweak the format a bit, but then we need to save those two
+> > characters somewhere else so that the output still fits in 80
+> > characters. We can probably reduce the size of the ID column.
 > >
-> > I have faced an issue in using serial ports when I need to skip a couple of ports in the CLI.
+> > Maybe what we should also do is decreasing the width of each field by
+> > one and instead writing a space character into the format string. So if
+> > we ever use up the space for one of the fields again, we would lose the
+> > nice column alignment, but you could still recognise the individual
+> > fields.
 > >
-> > For example the ARM machine netduinoplus2 supports up to 7 UARTS.
-> > Following case works (the first UART is used to send data in the firmware):
-> > qemu-system-arm -machine netduinoplus2 -nographic -serial mon:stdio -kernel path-to-fw/firmware.elf
-> > But this one doesn't  (the third UART is used to send data in the firmware):
-> > qemu-system-arm -machine netduinoplus2 -nographic -serial none -serial none -serial mon:stdio -kernel path-to-fw/firmware.elf
->
-> Putting the patch inline for more convenient discussion:
->
-> > Subject: [PATCH] Fixed '-serial none' usage breaks following '-serial ...' usage
+> > Kevin
 > >
-> > Signed-off-by: Bohdan Kostiv <bohdan.kostiv@tii.ae>
-> > ---
-> >  system/vl.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/system/vl.c b/system/vl.c
-> > index 2bcd9efb9a..b8744475cd 100644
-> > --- a/system/vl.c
-> > +++ b/system/vl.c
-> > @@ -1442,8 +1442,11 @@ static int serial_parse(const char *devname)
-> >      int index = num_serial_hds;
-> >      char label[32];
-> >
-> > -    if (strcmp(devname, "none") == 0)
-> > +    if (strcmp(devname, "none") == 0) {
-> > +        num_serial_hds++;
-> >          return 0;
-> > +    }
-> > +
-> >      snprintf(label, sizeof(label), "serial%d", index);
-> >      serial_hds = g_renew(Chardev *, serial_hds, index + 1);
 > >
 
-While I was testing this patch, I discovered that it has a bug:
-if you run 'qemu-system-x86_64 -serial none' it now crashes.
-This happens because the serial_hd() function assumes that
-serial_hds points to enough memory for num_serial_hds
-pointers, and now we are increasing num_serial_hds but
-skipping the g_renew() that enlarges the array.
-
-I'll send a patch which gets that part right and also has
-an expanded commit message which mentions some of the
-things we've discussed in this thread.
-
-thanks
--- PMM
 
