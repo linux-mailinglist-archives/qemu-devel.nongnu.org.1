@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B1F835A6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 06:47:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB57835A71
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 06:47:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRn90-0006pu-4D; Mon, 22 Jan 2024 00:46:50 -0500
+	id 1rRn9t-0007Uq-S3; Mon, 22 Jan 2024 00:47:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRn8s-0006pW-Jj; Mon, 22 Jan 2024 00:46:45 -0500
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
+ id 1rRn9r-0007Uh-Tl
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 00:47:43 -0500
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRn8r-0004yO-4x; Mon, 22 Jan 2024 00:46:42 -0500
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-7ce603b9051so756274241.2; 
- Sun, 21 Jan 2024 21:46:40 -0800 (PST)
+ id 1rRn9o-000559-TA
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 00:47:43 -0500
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7ce55932330so273061241.0
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 21:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705902399; x=1706507199; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705902459; x=1706507259; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YdJ2czemUsaHJpJg0DhAPk/LGaceBp+lfKkunkosdKo=;
- b=N9NkLIq0My+UVCc/mI8svnJbDP2EKZtyql8cJi+UwwF+92vLfU9QcMDEcxM11f6TMr
- R11nuABMyCYH8vsU3DqK75FejHjHzQLshMOsGQ8/SZ74eYNEAMZHknMV1djQYpPDzLaO
- hRImDkOxzegzxz8p+NFpovnvhTUAHaJRwBR+/hJWfcQuntT8/vPElwSp1dfKoFPV1vcg
- TbrQOr9qRKT5lz5mhlTZNfLPd1qQWzUUzNUehFZeglr/luF0DuPJ3nRx8tgZeX2D/WqN
- 8Bbc/pvlJJqbHCovHRj0ogm6MrxQEO3DqmzQRp3FUMRm+HT2jheRR9trDz3W4QVU0V+j
- XqJw==
+ bh=+LKJQdkjIADnOBOAtPA6xxokDrIg1kBmWLkAgWDRSFg=;
+ b=haPS1pT67HwINHbtJOSR/7VxoKHUQLXcHhRPpVx7kX5QIN8iaejggiYv1/ES4XxYoV
+ 9aigZ8NrbQbYlOKm9zv57Guzq6/Tb7zW3wv94fZdwZJ5TjaoCFMzCNcwo66Ur/62yuGH
+ 9tgiJg5qGW+/R0LMLXnCKxr9EcuJuHJ6A1Td57jXAp2yu5q6n39CBYS+XEfngmQ53b1N
+ ApEFA2PgT16uA/szzvEXubUAe+tuaGFs/swQbycaCjsTN4th1Sf7uHgU6jw2Hl+2iQ6S
+ w9EXnyGBTvCNXE7Ex/p94y4XpXyWpoqSzYLlEZJMo7w7Z8PQjf0qVVt9izCArkraq74y
+ L1AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705902399; x=1706507199;
+ d=1e100.net; s=20230601; t=1705902459; x=1706507259;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YdJ2czemUsaHJpJg0DhAPk/LGaceBp+lfKkunkosdKo=;
- b=D7Us7vsW755ChEF6pWmh/Sl3dvt5c+viVUQm+PqlGb1BSvBc0rBeLMEVV47YQS8eOo
- K3l2yHXCWmJwTT1KZ6sb0Qc2hYJtngEKpblTqrbJnRbJqJtUucpCK02mrd2CqYFOZT1z
- 4dBpuNnDxbNssjbI/4FBAmlMLCh4mSIW2wsX8EmybO70UxfLgT11os7Uv23Qsot5oV86
- Yh9kF42JyJozSUxc8fKhb/lcWos4QQvxu9UmSvVwKnwqfcI6+BlO8QrIhyOdJS2e8KCJ
- HOWrK+oFgJ63CVoyyX3HF9ZWvqT47g6yvR6Uc2ps3sccb6KB8vJyTG/h/68H3ZVZBUan
- /LSg==
-X-Gm-Message-State: AOJu0YwhpsRr7WT4g9M+Wzx+Va7yo5AEj2ZZwvSwuk9fgZv8J9qzgJbI
- 9tF7Z1ljtPCj+PcCocDRKMW2dvAT3Csd/pAKZDyAejTCMzIHlE1gMVs9w7LQxBnatINfUf86NCw
- 5X01AJYA2qjQOHV64PYuheAXs0K8=
-X-Google-Smtp-Source: AGHT+IGCaMbM+bBhyteRc07mubGf3RCKJNV9TXHx4MZLMxel3Z5pkj9p0FxR2Kfq5y/PibvYQuX+d4aCF3q6QE9y18g=
-X-Received: by 2002:a05:6102:e13:b0:467:da18:30af with SMTP id
- o19-20020a0561020e1300b00467da1830afmr1990993vst.27.1705902399178; Sun, 21
- Jan 2024 21:46:39 -0800 (PST)
+ bh=+LKJQdkjIADnOBOAtPA6xxokDrIg1kBmWLkAgWDRSFg=;
+ b=krtLkCVZV72ulvrXlJXeJ5ve9P6WcfbgfbuBi1UsjsM2sGcqQHoEtSMgyCLRFBiN8c
+ WArwVg9bFR5qP/X/jZ4zp18xy2g0BG/58cDiuXXTzP1gIaFkFV2a8H6Ep0rEgEyzNR3m
+ p+zrM0x0ee770EF1C5O4UM8OAOghhyst1VYWN5FRpGGKJ4yFsc32FJPBdSh9KQ8xLd72
+ oh3ilFQjJGMkMB7jUiLarlBPdeIpHo3bbqABHOhyYhtFLaDGvBiznQ3hTvETisI2XFJS
+ 7BDVyxbPcl08rlwU702s1GAwA0tDcdV33MNcUk9W2nVlVjBhC1nT1h/s9wJP6Dso0tMK
+ hBEQ==
+X-Gm-Message-State: AOJu0Yz3EhvzX3S20x7Oo5dKgPAvBQAPrlN8XumKXxQP/zj5UK1ZRH5v
+ 75BPlOUodfgdNrpqkrCaS02H8nTfnVSdpqQyKXZor1NIpLmimw2cMpJHt7jZvA0QMNwvJIAVFsC
+ nNqeQ5xjlrX0TWI5GwlBtdw307CU=
+X-Google-Smtp-Source: AGHT+IEnp7aWj+bUSIyR0aacqEa3i13XX5PPNOkBhFAOy142I/y+WXDMD7lkzfRk3bCAfMlPIsw3cgIh7XqbZRehQXo=
+X-Received: by 2002:a05:6122:4127:b0:4b6:ea3a:f87a with SMTP id
+ ce39-20020a056122412700b004b6ea3af87amr814525vkb.4.1705902459677; Sun, 21 Jan
+ 2024 21:47:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20240119112129.20067-1-rbradford@rivosinc.com>
- <20240119112129.20067-2-rbradford@rivosinc.com>
-In-Reply-To: <20240119112129.20067-2-rbradford@rivosinc.com>
+References: <20240112220348.49021-1-richard.henderson@linaro.org>
+In-Reply-To: <20240112220348.49021-1-richard.henderson@linaro.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 15:46:13 +1000
-Message-ID: <CAKmqyKMBYjwsb1uYuShz3jjnyWAvaZQ+i+943sr-T3RYz_Rbig@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] target/riscv: Add Zaamo and Zalrsc extensions
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, atishp@rivosinc.com, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Date: Mon, 22 Jan 2024 15:47:13 +1000
+Message-ID: <CAKmqyKOe9o-LYcA1GNCvjy-6CcB22e7EHGpnjdDpTpFXA=+9SA@mail.gmail.com>
+Subject: Re: [PATCH] linux-user/riscv: Fix sizeof_reg typo in vdso unwind info
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Vineet Gupta <vineetg@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,67 +88,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 9:22=E2=80=AFPM Rob Bradford <rbradford@rivosinc.co=
-m> wrote:
+On Sat, Jan 13, 2024 at 8:04=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> These extensions represent the atomic operations from A (Zaamo) and the
-> Load-Reserved/Store-Conditional operations from A (Zalrsc)
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c     | 5 +++++
->  target/riscv/cpu_cfg.h | 2 ++
->  2 files changed, 7 insertions(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 8d3ec74a1c..604baf53c8 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -103,7 +103,9 @@ const RISCVIsaExtData isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
-),
->      ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
->      ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-> +    ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
->      ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
-> +    ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
->      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->      ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
->      ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-> @@ -1491,6 +1493,9 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental=
-_exts[] =3D {
->      MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
->      MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
->
-> +    MULTI_EXT_CFG_BOOL("x-zaamo", ext_zaamo, false),
-> +    MULTI_EXT_CFG_BOOL("x-zalrsc", ext_zalrsc, false),
+> Reported-by: Vineet Gupta <vineetg@rivosinc.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-We should implement the extension before we expose it to userspace.
-That helps maintain bisectability of the code
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
-> +
->      MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
->      MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
+> ---
+>  linux-user/riscv/vdso-32.so | Bin 2900 -> 2900 bytes
+>  linux-user/riscv/vdso-64.so | Bin 3856 -> 3856 bytes
+>  linux-user/riscv/vdso.S     |   2 +-
+>  3 files changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index fea14c275f..cc4c30244c 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -78,7 +78,9 @@ struct RISCVCPUConfig {
->      bool ext_svnapot;
->      bool ext_svpbmt;
->      bool ext_zdinx;
-> +    bool ext_zaamo;
->      bool ext_zacas;
-> +    bool ext_zalrsc;
->      bool ext_zawrs;
->      bool ext_zfa;
->      bool ext_zfbfmin;
+> diff --git a/linux-user/riscv/vdso-32.so b/linux-user/riscv/vdso-32.so
+> index 1ad1e5cbbbb8b1fe36b0fe4bcb6c06fab8219ecd..5829c1dc90f1c1aafde69f5b9=
+f5bc9afb85251f7 100755
+> GIT binary patch
+> delta 112
+> zcmV-$0FVFF7StB71OXHyD|k<wiZ(XN!ME<$oE!73r-+KP7y<qQJ!67mgJFbVg<pnV
+> zhh2zViCc<Vi&>0VjaQCVk5!OVkyDaVlTnmVl~0yVmra;VnM;~Vn@OBVokyNVpGC7%
+> S1ndF^OjB%HZ#A<;2M+}Mt1p-U
+>
+> delta 112
+> zcmV-$0FVFF7StB71OXI7ek-E|Z8Fh9(G%V1AYqwmRqNri7y<qQJz|1jgI<JOg<6JK
+> zhgOJGiBgJCi%yJ8jY^J4k4BJ0kwTI{lRlI@l{%I<mo}I*nKGI%n=3DYIzohqIvpC+?Y
+> S1ndF^P;+@qVQaHR2M+{CwJgd2
+>
+> diff --git a/linux-user/riscv/vdso-64.so b/linux-user/riscv/vdso-64.so
+> index 83992bebe6d0182f24edfffc531015fd2f4e1cfb..de18e35537a493ba35307e93a=
+2d33faaf489c0b3 100755
+> GIT binary patch
+> delta 118
+> zcmV-+0Ez#Q9*`cepaB$miap5s7G5`$2#eqLH6<vG8d2V}v;pe_KY{^*fB}PkgnWg1
+> zhIof|h;)f^ig1f=3DjBJf+j%bf&kYtf!l3<fwlw6fsmROfom{gfknoyfgoJ^fco=3DBfY
+> YlidYEvmgdT0|snTdTn?%vuO#Z1^ZDlW&i*H
+>
+> delta 117
+> zcmV-*0E+*R9*`cepaB$}OC4Olbn*vwtO;!U^UJ?5jVB4Sv;pe_K7av&e1mv|bcJw+
+> zY=3D>xwWQkykT#HzYRE<!MOpi#AM3F#}Jd-$-G?g%xESD&lB$*(Z9Ge)N6rB*B44(*-
+> X-UULl9|lAN23SxxMKVLPX$hwVbapOM
+>
+> diff --git a/linux-user/riscv/vdso.S b/linux-user/riscv/vdso.S
+> index a86d8fc488..4b4e34aeea 100644
+> --- a/linux-user/riscv/vdso.S
+> +++ b/linux-user/riscv/vdso.S
+> @@ -101,7 +101,7 @@ endf __vdso_flush_icache
+>         .cfi_startproc simple
+>         .cfi_signal_frame
+>
+> -#define sizeof_reg     (__riscv_xlen / 4)
+> +#define sizeof_reg     (__riscv_xlen / 8)
+>  #define sizeof_freg    8
+>  #define B_GR   (offsetof_uc_mcontext - sizeof_rt_sigframe)
+>  #define B_FR   (offsetof_uc_mcontext - sizeof_rt_sigframe + offsetof_fre=
+g0)
 > --
-> 2.43.0
+> 2.34.1
 >
 >
 
