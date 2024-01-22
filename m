@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BCB835B27
+	by mail.lfdr.de (Postfix) with ESMTPS id 9089E835B28
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 07:43:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRo1F-000591-L5; Mon, 22 Jan 2024 01:42:55 -0500
+	id 1rRo1L-0005AB-V7; Mon, 22 Jan 2024 01:42:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rRo12-00054y-9e; Mon, 22 Jan 2024 01:42:40 -0500
+ id 1rRo15-00057y-8u; Mon, 22 Jan 2024 01:42:43 -0500
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rRo0z-0007FD-DW; Mon, 22 Jan 2024 01:42:39 -0500
+ id 1rRo13-0007FD-1P; Mon, 22 Jan 2024 01:42:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1705905757; x=1737441757;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3slVKNPgKP7HnQMkKS8GL34uXrfKAhck3xmWHvDKgEo=;
- b=isU9vsqCutwKdFNqtcFRwBGFW420rYoX+pRcc6mC02y63twZDbZQSymV
- Ln993EXnqA9AN0O9fiO0DiLhCPhuiwoGZq8RfArIbI4M/EXrisrY0cyGo
- JFnonAKrmXrE/HfOa9/NfhdiTm3QPjNqZ0WkKRC1ibrtOy67pMv2cmG5I
- YLSpdM1mIq9ESz2h5N95khdKrRDOb5Tja/eSJ+g4vEzjDFTiOksOQrP73
- OMNMJZHw/CG4m8JZiDEnpXk+qod6D08ob6dkmZCpFQMaLUbJOU/B5A1Pw
- QuxxRUXhMFYFjzZaiFsMQ30YCknxDAJR3AjKowYuUgkqgW6mBiQsbWXzQ Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="7791982"
+ t=1705905761; x=1737441761;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ZQY0H75u+yRvchuolvuAcTS1ZqiXfRlinti37nkbD/Y=;
+ b=KZETwAGcOs81cGrFxEXllrgm9AekN9LBdJnE6tQ9sjqKoTqspCCoAln7
+ 8u3xB32BxzPenwo12RpJl23zDHGRCdlqC7yEb9qEkVBI/4uXQMpN2MfWt
+ FwGyL9okMxku5eLzQDw0jWg/Iihx7CBxzBqC8EQvBepYFtwU5dmhhXKb9
+ ZLAMMqJ7cKBfLqLqt4BIn4q8ocREgVTyK1tY26tLtDHTp8QLcIkANyhWJ
+ g2qmyeIlnn3ErWRKaft3ON31gbAlcourgCvck6CDXdRsgpxIhaCxXZDnw
+ djYF/LdXC7/RuZrhvI4DgqV4YKpDmZ2N2mF6i78OQMDWsUKTHn7s9unAM w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="7792045"
 X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; 
-   d="scan'208";a="7791982"
+   d="scan'208";a="7792045"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 22:42:30 -0800
+ 21 Jan 2024 22:42:34 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="761646598"
-X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="761646598"
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="761646631"
+X-IronPort-AV: E=Sophos;i="6.05,211,1701158400"; d="scan'208";a="761646631"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2024 22:42:26 -0800
+ 21 Jan 2024 22:42:30 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org
@@ -47,10 +47,13 @@ Cc: eric.auger@redhat.com, jean-philippe@linaro.org,
  alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
  jasowang@redhat.com, mst@redhat.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 0/3] Two minor fixes on virtio-iommu
-Date: Mon, 22 Jan 2024 14:40:12 +0800
-Message-Id: <20240122064015.94630-1-zhenzhong.duan@intel.com>
+Subject: [PATCH 1/3] virtio_iommu: Clear IOMMUPciBus pointer cache when system
+ reset
+Date: Mon, 22 Jan 2024 14:40:13 +0800
+Message-Id: <20240122064015.94630-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240122064015.94630-1-zhenzhong.duan@intel.com>
+References: <20240122064015.94630-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.11;
@@ -77,49 +80,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PATCH1 fixes a potential issue with vfio devices when reboot to a
-different OS which set bus number differently from previous OS.
-I didn't reproduce the issue in reality, but it's still possible
-in theory.
+IOMMUPciBus pointer cache is indexed by bus number, bus number
+may not always be a fixed value, i.e., guest reboot to different
+kernel which set bus number with different algorithm.
 
-PATCH2 is a prerequisite of of PATCH3.
+This could lead to endpoint binding to wrong iommu MR in
+virtio_iommu_get_endpoint(), then vfio device setup wrong
+mapping from other device.
 
-PATCH3 make virtio-iommu support PCI device aliases. If there are
-more than one device in same IOMMU group, either due to topology,
-isolation feature, etc. virtio-iommu can only make one which has
-alias BDF works. This impacts both emulated and vfio devices.
-I have reproduced the failure with an example config to have two
-vfio devices under same pcie to pci bridge.
-This patch also make a proper place in virtio-iommu to store
-iova_ranges from vfio device when vfio device shares same IOMMU
-group with other devices, either emulated or vfio devices.
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/virtio/virtio-iommu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Zhenzhong Duan (3):
-  virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
-  hw/pci: Add two parameters to get_address_space
-  virtio-iommu: Support PCI device aliases
-
- include/hw/pci/pci.h     | 11 ++++++++---
- hw/alpha/typhoon.c       |  3 ++-
- hw/arm/smmu-common.c     |  3 ++-
- hw/i386/amd_iommu.c      |  6 ++++--
- hw/i386/intel_iommu.c    |  6 ++++--
- hw/pci-host/astro.c      |  3 ++-
- hw/pci-host/designware.c |  3 ++-
- hw/pci-host/dino.c       |  3 ++-
- hw/pci-host/pnv_phb3.c   |  3 ++-
- hw/pci-host/pnv_phb4.c   |  3 ++-
- hw/pci-host/ppce500.c    |  3 ++-
- hw/pci-host/raven.c      |  3 ++-
- hw/pci-host/sabre.c      |  3 ++-
- hw/pci/pci.c             |  3 ++-
- hw/ppc/ppc440_pcix.c     |  3 ++-
- hw/ppc/spapr_pci.c       |  3 ++-
- hw/remote/iommu.c        |  3 ++-
- hw/s390x/s390-pci-bus.c  |  3 ++-
- hw/virtio/virtio-iommu.c | 21 ++++++++++++---------
- 19 files changed, 58 insertions(+), 31 deletions(-)
-
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 8a4bd933c6..bfce3237f3 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -1264,6 +1264,8 @@ static void virtio_iommu_system_reset(void *opaque)
+ 
+     trace_virtio_iommu_system_reset();
+ 
++    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
++
+     /*
+      * config.bypass is sticky across device reset, but should be restored on
+      * system reset
 -- 
 2.34.1
 
