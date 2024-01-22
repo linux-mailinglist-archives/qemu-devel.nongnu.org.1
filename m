@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287578373C7
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6618373C8
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 21:31:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS0vs-0002aa-Ce; Mon, 22 Jan 2024 15:30:12 -0500
+	id 1rS0vv-0002cQ-4a; Mon, 22 Jan 2024 15:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bugaevc@gmail.com>)
- id 1rRyx5-0000Xd-9S; Mon, 22 Jan 2024 13:23:19 -0500
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
+ id 1rRz0b-000171-2V; Mon, 22 Jan 2024 13:26:57 -0500
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <bugaevc@gmail.com>)
- id 1rRyx3-0003PD-NE; Mon, 22 Jan 2024 13:23:19 -0500
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-2046c724383so1137057fac.1; 
- Mon, 22 Jan 2024 10:23:17 -0800 (PST)
+ id 1rRz0Z-00043P-Ib; Mon, 22 Jan 2024 13:26:56 -0500
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-21481a3de56so14941fac.2; 
+ Mon, 22 Jan 2024 10:26:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705947796; x=1706552596; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705948013; x=1706552813; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8TmwHmnOhISs71aSrcCBz5bcG+VwDO7652AAuKwae3A=;
- b=C/5NdNIzKOVtlUY5i1okN9Bx9uj06xIY673yhr5DC9CwDfCVuWXPSa54siF5vFVFzh
- rKpHV2U1499qHTRxuDQ/OJyPCQjT4tB0hPX+vbBvR1OL4leH7QB3ULWy0JYaehYRC5/0
- WIR1uGPCSkXHyHQvL56fN/1iRL6wrkVj9OWsl5jhbVvQdIgY/xqhvCdCVnbhtG+LSg3D
- W0bBHBGqUx5wsv1hHjqh33cIvAwWK6yBzw1D5sl7Y5HbErFTN1VGrwhE7W6XDEA3w/Sj
- QeazFNPS0ouJfrvH4Docz0LewpWw5wWxsY5JErinDCIZN3uwImDS72G5wnvrFcjP2cpG
- 0IVQ==
+ bh=Zbwe4WGeVsrGfvPSuuJRnkc+RwzuXQPgAoSGJSHxkhw=;
+ b=b65wTzluYmVugRdfK78eYMZshdSsRi9NZ5uBUwabfju6jdsmdd6C7bNlMPMLQ6GQ0H
+ 7rW55o2fE/loPtU3oXywlO7RHyJPtJAIzJJ2owb4XpG3l1rm9WtTcRZvhDFi8oAHlDqE
+ s32i38xZmKT+h68v38j+4c5vqNX4974ebgp7obu+vHKblE3K5OhGsY0LhGaqf4rK74jL
+ kootSqunutc1wuTgIa5LL0IE+vEma3tDKI3vOkXwQewNnUbeL1EAgzvY8Uwb5GpHL1qA
+ iqTxMc3rMDI803hv35Uz0EoeTxYjKsFIJBnPWpStYOHaB5ZSeuhcMe7MIl00ow7HDiTc
+ ejTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705947796; x=1706552596;
+ d=1e100.net; s=20230601; t=1705948013; x=1706552813;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8TmwHmnOhISs71aSrcCBz5bcG+VwDO7652AAuKwae3A=;
- b=Ad91Z6VOFGy6DcJkRcaXiz7nKsht2fr6EpYYBBNYk6NYxRm/N2jkvXY1DD7jjGp9YF
- 8V5iNgknEtLCZQJ9xQ8rYaJAxUL1vL9/dKhthQ2y5HPQ3yrMEsYnaxmJSTYR8udcJ/L1
- SKr4MkbzVCn3SjBEWk5YSXK/SA4ajLUxTnFDX40v5EzOhMceDVYcgt5Js35CecB0ngz4
- 839Eyhqpa/sFP70JZ6rOD+seL69O+5jaPFWmvUI7a0Z4FKaUnQyXu10XARg2DUXjBHrN
- eUelLo0v16Q8Qe0kihvhyvNowpoQhxNGieA5jvhm79PwMImA1mUlczXBzeqKFTsHgQYu
- VHFw==
-X-Gm-Message-State: AOJu0YySiUi/AA2sCgVQL/xA4cQQDSvsG36Uzr9lKy22PMMEpq1eRLBB
- dKZDGWEqOrqvFU6rgg6B514acXdzmH1ojvhxdBsSOimj3NQp/q0YWuLluiIRMWAv8DJYhZN/WTk
- p0nnDDMjrX3qrn5bZao2rRykd8so=
-X-Google-Smtp-Source: AGHT+IGJSzAxA13sM1Kh1MsArD9uuRPZoXE5RSBhzBPbjGsKhaqJ7NwwlTXqoNTiU4IFKKi/gnP/FVs7+9TYxl2Om4Q=
-X-Received: by 2002:a05:6871:722:b0:210:a3e9:3bca with SMTP id
- f34-20020a056871072200b00210a3e93bcamr309169oap.98.1705947795726; Mon, 22 Jan
- 2024 10:23:15 -0800 (PST)
+ bh=Zbwe4WGeVsrGfvPSuuJRnkc+RwzuXQPgAoSGJSHxkhw=;
+ b=bO3+nlxlubDbi4zdwitUdCY/i6XEL7TIxInxCdO/EBbptq/IIApkrC8DooOVEV0NwY
+ 3y1hX4nzMGKIFjlpEniwDWeNZKbUqfCZFrJGg7OsF+p4HLzJ4t0Uz2yPC5nDaGv5PSJq
+ 7I9t8z1I/T0GjgYyc2FcNLQJIn8+UmRwc1b0tPILUucZBoGsl55nLVYK+vO9oxvAlOrm
+ ZRClhf8noOlRliKki2L36rvFWxCdR5CeudLMg/M9SnScakr1wmCoF3OZqLa+IpWD+lsF
+ 6msZZBe34qGTd3AmmcoL28j1SjsI0f5zeEI3p/n2pf4/T2ZecpshDKel9p1wHTuCMxr2
+ vQQA==
+X-Gm-Message-State: AOJu0YyJILGtY1E+gcmnEbh01bubbOJMAAlPqstzPTFVxLgUMvWeASms
+ sG3xPHdloUbcukO2FnJHjj/WNd7HnL4h6YC64b0Grmq1JAegvC1bdnKK+ux8J+bPJeXorIdhMev
+ 5SlUuYVs+jlraKmVm6eIe0qGoM/E=
+X-Google-Smtp-Source: AGHT+IF3wOjgU4sPlvVpR6v9IgYnw2Kg3ithAR36X/m01b9d6XaH3TgNmY60cCMEKq2NoibdR5Ni6b3AEIQs4C6KR8c=
+X-Received: by 2002:a05:6871:4413:b0:206:e3d:16c7 with SMTP id
+ nd19-20020a056871441300b002060e3d16c7mr331104oab.105.1705948013469; Mon, 22
+ Jan 2024 10:26:53 -0800 (PST)
 MIME-Version: 1.0
 References: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
  <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
-In-Reply-To: <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
+ <CAN9u=Hd7rnsE4XMvhTOQD0F3gBZ68L3kUvHphQjEKnnsY0iDrQ@mail.gmail.com>
+In-Reply-To: <CAN9u=Hd7rnsE4XMvhTOQD0F3gBZ68L3kUvHphQjEKnnsY0iDrQ@mail.gmail.com>
 From: Sergey Bugaev <bugaevc@gmail.com>
-Date: Mon, 22 Jan 2024 21:23:04 +0300
-Message-ID: <CAN9u=Hd7rnsE4XMvhTOQD0F3gBZ68L3kUvHphQjEKnnsY0iDrQ@mail.gmail.com>
+Date: Mon, 22 Jan 2024 21:26:42 +0300
+Message-ID: <CAN9u=HcYOTc8_-2xwEsra+yiEaP55k3quVrMzYCJU1vrjxUi0w@mail.gmail.com>
 Subject: Re: [PATCH v2 2/4] Avoid conflicting types for 'copy_file_range'
 To: Peter Maydell <peter.maydell@linaro.org>,
  Manolo de Medici <manolodemedici@gmail.com>
@@ -64,8 +65,8 @@ Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org,
  Qemu-block <qemu-block@nongnu.org>, Kevin Wolf <kwolf@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=bugaevc@gmail.com; helo=mail-oa1-x2f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=bugaevc@gmail.com; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,48 +90,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Mon, Jan 22, 2024 at 9:23=E2=80=AFPM Sergey Bugaev <bugaevc@gmail.com> w=
+rote:
+> call such a function. For example on GNU/Linux, remove(2) is a stub,
 
-On Mon, Jan 22, 2024 at 8:05=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Thu, 18 Jan 2024 at 16:03, Manolo de Medici <manolodemedici@gmail.com>=
- wrote:
-> >
-> > Compilation fails on systems where copy_file_range is already defined a=
-s a
-> > stub.
->
-> What do you mean by "stub" here ? If the system headers define
-> a prototype for the function, I would have expected the
-> meson check to set HAVE_COPY_FILE_RANGE, and then this
-> function doesn't get defined at all. That is, the prototype
-> mismatch shouldn't matter because if the prototype exists we
-> use the libc function, and if it doesn't then we use our version.
-
-Let me answer :)
-
-glibc has this stubs mechanism: a function can be declared in the
-system headers, but only implemented as a stub that always fails with
-ENOSYS (or some such). You get a linker warning at link time if you
-call such a function. For example on GNU/Linux, remove(2) is a stub,
-and if I try to use it, the code does compile, but I get
-
-/usr/bin/ld: /tmp/ccLCnRnW.o: in function `main':
-demo.c:(.text+0xa): warning: revoke is not implemented and will always fail
-
-during linking. This is done by embedding a
-'.gnu.warning.function-name' section inside libc.so (try readelf
---wide --section-headers /lib64/libc.so.6 | grep warning). You can
-also find the list of stubs in the gnu/stubs.h header, which contains
-definitions like __stub_revoke.
-
-Meson's has_function() knows about this mechanism, and returns false
-if the function is declared, but is actually just a stub (by looking
-for "__stub_{func}" being defined); autoconf does, too. But as the
-prototype is still declared (and the function technically exists, too,
-even if it's a stub), you'll get errors if you define the same
-function incompatibly yourself.
-
-Sergey
+(That was supposed to say revoke(2), of course.)
 
