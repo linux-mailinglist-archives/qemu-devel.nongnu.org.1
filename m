@@ -2,82 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA08836936
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D12F836937
 	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 16:56:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRwdD-0003lr-GJ; Mon, 22 Jan 2024 10:54:39 -0500
+	id 1rRwdY-0003vD-Cp; Mon, 22 Jan 2024 10:55:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRwdA-0003if-Kj
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:36 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRwdW-0003tB-C5
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:58 -0500
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rRwd8-0002ms-TO
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:36 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-337d05b8942so3828367f8f.3
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 07:54:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRwdU-0002v4-NP
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 10:54:58 -0500
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-55c2e6f0542so1346350a12.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 07:54:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705938873; x=1706543673; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PS+IvZYXeAwJ+6xyPpwBHOW9gWzIRzYYVS99BfSjRBY=;
- b=USxOcaorKhikimXJlkaUW3uSArO7KqdNOHqw0YCC9aBUCLpx/Y3FvgtmLhGHoxPmxl
- fuCD0bu7bX1RyPdO/FRhbcQ3XM6/6gJ3kRErIPR5gFKoM54Z5Z5q5M6snd+6/nvVDjfZ
- UuvGFzCZUq6x2M/LK0UEzVptAuRcg76kbh5FP1UapJeMhLa4h9GDWhlklv3LWpBOl0c4
- clpzsZ/4wl8x0tRsNlJFd4BfLZB7AtUQbIEkhTI40ghSta2Gwx6RZ6LocoNoMCPzexRG
- +cSdD4RRiR+IuWFyF78DK3+MNUJYCXp1lk2u7J3yXPCpjDvPMeANW28MoIZuw9cUV61n
- iQwg==
+ d=linaro.org; s=google; t=1705938895; x=1706543695; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=FQ89/gHU/0fCqpWPcNOOU1hTDbxZXHtbw+6dvcE8kJI=;
+ b=TlgJfG5du08CNPy4Vmzo1a/CPigw6ajCf9CxiDcweFM8UumSkgmXUz86Mn/5tqp8OG
+ E6dE2q6mTgIKtjx5YNX918G46D+qZlQ0rk+HulG0wirjG/z45ORKRYYEunXWohwhxWvI
+ j4BoITpqtSP1gfg7qY7zygMYJKt32y+gmlFyEHOBpzgmiaCIMziupUMVKmJqbrkLwkm5
+ iOdbgq9J6kT0PpXUojHCWwrTZk12sH93fyvBYEJNExr7B1Xxg9fqeH4YDS0EUTgI327E
+ NjAUo0Ln+E+j6/J1/XPUcpQjfD15zMA+be4ReA1NhZTgNFaiEC3lKcu36tJ4Y2Fti48R
+ zn5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705938873; x=1706543673;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=PS+IvZYXeAwJ+6xyPpwBHOW9gWzIRzYYVS99BfSjRBY=;
- b=WLswOud9LTws+9zUFOsPm7rmDMb9zGFOvRogGTZo0U9bFOp4JdgtIN9abtW2Mmcl/p
- 2m7b4y0L0tRNlnC/FijhZxE216LnbEUbSf0Rlwyo8v9VaxrPoqfEAQ9YC41fj0X4uCWo
- 8MZU/XlDIuPQcL3pnMyQU8mMXMvapXi1qjW1Ug9XpIbK1YYCleKNAR7m8PqAMyd7ZOEx
- czwrhycnV428+GWMqqwVCXD0ataJzZrJEFVl1eGbBjN+Y/o17ZVkQXazL8gJfrj49M+V
- muBnyy3ZZHrW31cPXyudU1UdsweAVvLLIoD7AC0HOiuphNYltCSDiYx4SVnJ3o0r5WIg
- FW4Q==
-X-Gm-Message-State: AOJu0Yz16upFlcObjxg+wtOaPslLYtzzJMiW9Rpxbv2ctchAnxbZuF6q
- MV1G6jLOUlG7E5ODvs5068kGJQUXI7KNF3IbJ2IoLfz4CthpRMr95e2xzvAiiUM=
-X-Google-Smtp-Source: AGHT+IHNKqTo+QPajHBnTCQcGWZ0FMwzDJ5qplenU9+eZ1NI2YT8rax3miWd76Ona2iwoJHwP3VuTg==
-X-Received: by 2002:a5d:5191:0:b0:336:7d6e:d969 with SMTP id
- k17-20020a5d5191000000b003367d6ed969mr2663803wrv.99.1705938873228; 
- Mon, 22 Jan 2024 07:54:33 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b17-20020a5d4d91000000b0033935b0a0fdsm3534040wru.44.2024.01.22.07.54.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 07:54:32 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7F1B25F794;
- Mon, 22 Jan 2024 15:54:32 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,  Peter Maydell
- <peter.maydell@linaro.org>,  David Hildenbrand <david@redhat.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  qemu-devel@nongnu.org,  qemu-arm@nongnu.org,
- qemu-s390x@nongnu.org
-Subject: Re: [PATCH v3 3/3] tests/tcg: Add the PROT_NONE gdbstub test
-In-Reply-To: <20240116003551.75168-4-iii@linux.ibm.com> (Ilya Leoshkevich's
- message of "Tue, 16 Jan 2024 01:31:42 +0100")
-References: <20240116003551.75168-1-iii@linux.ibm.com>
- <20240116003551.75168-4-iii@linux.ibm.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Mon, 22 Jan 2024 15:54:32 +0000
-Message-ID: <871qa9nz2f.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1705938895; x=1706543695;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FQ89/gHU/0fCqpWPcNOOU1hTDbxZXHtbw+6dvcE8kJI=;
+ b=FUOSwKc+ofJ2MkGaVf3021k2qeydS2QKtNlDaWn28fPmCsUPesEyWxZO08VKlVgc3E
+ vxbpMuSR43OlL09ZM6Uko5mChBGqYr00hz0jCB9pgp67YwDWzViLJdfpNCY4AIgdqfBC
+ JCaYRHsdtIBZZCSejvuzXhbGD8vj7u9M+sFuV7OPo0xZbdEqZXR2tuGQmuRFHjlohB3T
+ QyxkQPI38QOuOruPisiePnEe59dV/48QVDynRjj0X223tgi7IVxwmXh6LyxccvtDQUBD
+ PcOoAYxkSmaMuLjC1hcVU2w52yEBr8BBmQvLx3Wq+G0cF3zAfgGDiMikCN1iRQxyrbSV
+ xzzQ==
+X-Gm-Message-State: AOJu0Yyjmda8G7fxesbZYd1BXae5300PV24WSNyPzL1AUVMMNCK6t7g0
+ XWLo3RzUy3a+7bJ6ScFyslcvw85Wj1Y/qrnDMvBQ0rVlYfR8u1qVZBql5w1yE/dBDHKxbVpnnOr
+ y3q613ee70mb/A+QMHoUN0nGB2S987aWIHslXSw==
+X-Google-Smtp-Source: AGHT+IHZ4AmYYS41l1+oY4P1F0NcI9IjYzzNjkEVmsOGCTIDiinLeIqy97GATBO/I31sJUp8DyAu1vKgqbzjCmdgWd8=
+X-Received: by 2002:a05:6402:b90:b0:559:d8eb:e443 with SMTP id
+ cf16-20020a0564020b9000b00559d8ebe443mr49313edb.80.1705938895269; Mon, 22 Jan
+ 2024 07:54:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+References: <CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com>
+ <CAFEAcA_5ip7q0Wp=jJkV7sJg=w=e08JCRqPmQuOObNe8AMZLDA@mail.gmail.com>
+In-Reply-To: <CAFEAcA_5ip7q0Wp=jJkV7sJg=w=e08JCRqPmQuOObNe8AMZLDA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 15:54:43 +0000
+Message-ID: <CAFEAcA_sX50fnyR8GqrmM4=gtm9cMg-U6Ooh5gK39-sWcrTRJQ@mail.gmail.com>
+Subject: Re: [PATCH] Fixed '-serial none' usage breaks following '-serial ...'
+ usage
+To: Bohdan Kostiv <bogdan.kostiv@gmail.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,146 +88,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ilya Leoshkevich <iii@linux.ibm.com> writes:
-
-> Make sure that qemu gdbstub, like gdbserver, allows reading from and
-> writing to PROT_NONE pages.
+On Mon, 15 Jan 2024 at 16:14, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->  tests/tcg/multiarch/Makefile.target      |  9 +++++-
->  tests/tcg/multiarch/gdbstub/prot-none.py | 22 +++++++++++++
->  tests/tcg/multiarch/prot-none.c          | 40 ++++++++++++++++++++++++
->  3 files changed, 70 insertions(+), 1 deletion(-)
->  create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
->  create mode 100644 tests/tcg/multiarch/prot-none.c
+> (I've cc'd a few people who might have opinions on possible
+> command-line compatibility breakage.)
 >
-> diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Ma=
-kefile.target
-> index d31ba8d6ae4..315a2e13588 100644
-> --- a/tests/tcg/multiarch/Makefile.target
-> +++ b/tests/tcg/multiarch/Makefile.target
-> @@ -101,13 +101,20 @@ run-gdbstub-registers: sha512
->  		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
->  	checking register enumeration)
->=20=20
-> +run-gdbstub-prot-none: prot-none
-> +	$(call run-test, $@, env PROT_NONE_PY=3D1 $(GDB_SCRIPT) \
-> +		--gdb $(GDB) \
-> +		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-> +		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
-> +	accessing PROT_NONE memory)
-> +
->  else
->  run-gdbstub-%:
->  	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst =
--%,,$(TARGET_NAME)) support")
->  endif
->  EXTRA_RUNS +=3D run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
->  	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
-> -	      run-gdbstub-registers
-> +	      run-gdbstub-registers run-gdbstub-prot-none
->=20=20
->  # ARM Compatible Semi Hosting Tests
->  #
-> diff --git a/tests/tcg/multiarch/gdbstub/prot-none.py b/tests/tcg/multiar=
-ch/gdbstub/prot-none.py
-> new file mode 100644
-> index 00000000000..f1f1dd82cbe
-> --- /dev/null
-> +++ b/tests/tcg/multiarch/gdbstub/prot-none.py
-> @@ -0,0 +1,22 @@
-> +"""Test that GDB can access PROT_NONE pages.
-> +
-> +This runs as a sourced script (via -x, via run-test.py).
-> +
-> +SPDX-License-Identifier: GPL-2.0-or-later
-> +"""
-> +from test_gdbstub import main, report
-> +
-> +
-> +def run_test():
-> +    """Run through the tests one by one"""
-> +    gdb.Breakpoint("break_here")
-> +    gdb.execute("continue")
-> +    val =3D gdb.parse_and_eval("*(char[2] *)q").string()
+> On Wed, 10 Jan 2024 at 14:38, Bohdan Kostiv <bogdan.kostiv@gmail.com> wrote:
+> >
+> > Hello,
+> >
+> > I have faced an issue in using serial ports when I need to skip a couple of ports in the CLI.
+> >
+> > For example the ARM machine netduinoplus2 supports up to 7 UARTS.
+> > Following case works (the first UART is used to send data in the firmware):
+> > qemu-system-arm -machine netduinoplus2 -nographic -serial mon:stdio -kernel path-to-fw/firmware.elf
+> > But this one doesn't  (the third UART is used to send data in the firmware):
+> > qemu-system-arm -machine netduinoplus2 -nographic -serial none -serial none -serial mon:stdio -kernel path-to-fw/firmware.elf
+>
+> Putting the patch inline for more convenient discussion:
+>
+> > Subject: [PATCH] Fixed '-serial none' usage breaks following '-serial ...' usage
+> >
+> > Signed-off-by: Bohdan Kostiv <bohdan.kostiv@tii.ae>
+> > ---
+> >  system/vl.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/system/vl.c b/system/vl.c
+> > index 2bcd9efb9a..b8744475cd 100644
+> > --- a/system/vl.c
+> > +++ b/system/vl.c
+> > @@ -1442,8 +1442,11 @@ static int serial_parse(const char *devname)
+> >      int index = num_serial_hds;
+> >      char label[32];
+> >
+> > -    if (strcmp(devname, "none") == 0)
+> > +    if (strcmp(devname, "none") == 0) {
+> > +        num_serial_hds++;
+> >          return 0;
+> > +    }
+> > +
+> >      snprintf(label, sizeof(label), "serial%d", index);
+> >      serial_hds = g_renew(Chardev *, serial_hds, index + 1);
+> >
 
-Better traceback:
+While I was testing this patch, I discovered that it has a bug:
+if you run 'qemu-system-x86_64 -serial none' it now crashes.
+This happens because the serial_hd() function assumes that
+serial_hds points to enough memory for num_serial_hds
+pointers, and now we are increasing num_serial_hds but
+skipping the g_renew() that enlarges the array.
 
-  Breakpoint 1, break_here (q=3D0x400000802fff) at /home/alex/lsrc/qemu.git=
-/tests/tcg/multiarch/prot-none.c:14
-  14      }
-  GDB Exception:
-  Traceback (most recent call last):
-    File "/home/alex/lsrc/qemu.git/tests/guest-debug/test_gdbstub.py", line=
- 42, in main
-      test()
-    File "./tests/tcg/multiarch/gdbstub/prot-none.py", line 14, in run_test
-      val =3D gdb.parse_and_eval("*(char[2] *)q").string()
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  gdb.MemoryError: Cannot access memory at address 0x400000802fff
-  Python 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0] on linux
-  Type "help", "copyright", "credits" or "license" for more information.
-  (InteractiveConsole)
-  >>>=20
+I'll send a patch which gets that part right and also has
+an expanded commit message which mentions some of the
+things we've discussed in this thread.
 
-> +    report(val =3D=3D "42", "{} =3D=3D 42".format(val))
-> +    gdb.execute("set *(char[3] *)q =3D \"24\"")
-> +    gdb.execute("continue")
-> +    exitcode =3D int(gdb.parse_and_eval("$_exitcode"))
-> +    report(exitcode =3D=3D 0, "{} =3D=3D 0".format(exitcode))
-> +
-> +
-> +main(run_test)
-> diff --git a/tests/tcg/multiarch/prot-none.c b/tests/tcg/multiarch/prot-n=
-one.c
-> new file mode 100644
-> index 00000000000..dc56aadb3c5
-> --- /dev/null
-> +++ b/tests/tcg/multiarch/prot-none.c
-> @@ -0,0 +1,40 @@
-> +/*
-> + * Test that GDB can access PROT_NONE pages.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +#include <assert.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <sys/mman.h>
-> +#include <unistd.h>
-> +
-> +void break_here(void *q)
-> +{
-> +}
-> +
-> +int main(void)
-> +{
-> +    long pagesize =3D sysconf(_SC_PAGESIZE);
-> +    void *p, *q;
-> +    int err;
-> +
-> +    p =3D mmap(NULL, pagesize * 2, PROT_READ | PROT_WRITE,
-> +             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +    assert(p !=3D MAP_FAILED);
-> +    q =3D p + pagesize - 1;
-> +    strcpy(q, "42");
-> +
-> +    err =3D mprotect(p, pagesize * 2, PROT_NONE);
-> +    assert(err =3D=3D 0);
-> +
-> +    break_here(q);
-> +
-> +    err =3D mprotect(p, pagesize * 2, PROT_READ);
-> +    assert(err =3D=3D 0);
-> +    if (getenv("PROT_NONE_PY")) {
-> +        assert(strcmp(q, "24") =3D=3D 0);
-> +    }
-> +
-> +    return EXIT_SUCCESS;
-> +}
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+thanks
+-- PMM
 
