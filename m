@@ -2,72 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355B9836979
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:02:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 993908369E0
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:13:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRwk8-0001aW-Lg; Mon, 22 Jan 2024 11:01:48 -0500
+	id 1rRwtQ-0006RO-Bi; Mon, 22 Jan 2024 11:11:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rRwk4-0001W8-1y
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:01:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rRwk2-0004CE-Gk
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:01:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705939301;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9eZYOBiyLtZMjq2yi8d9zHmoX+ctsJtlNfR3xYLfzKY=;
- b=UEVZxXcOwS+arC92C0WlVKlHrAvEczjCMxwr6o+D5fIVn/9WN3UCjQ+Dv11xyywZEe+L3R
- wXlyn2mwXJ2qFfZFsiVEwyI2a0tgrEquf2VESAq4THJ7bmy5dVlCvOKTaDy8tkkJj4rjeW
- SNLMC5DprNuurMKAVM9+sNmeEFj/iXg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-PtCncahCMqW2fSpv_o-Raw-1; Mon, 22 Jan 2024 11:01:35 -0500
-X-MC-Unique: PtCncahCMqW2fSpv_o-Raw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E87C85A5BC;
- Mon, 22 Jan 2024 16:01:34 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.240])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2DEDA1C060AF;
- Mon, 22 Jan 2024 16:01:32 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rRwtM-0006QR-D6
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:20 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rRwtK-0005Ho-68
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:11:20 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-29023dec816so2859384a91.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:11:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1705939876; x=1706544676; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2KydqUaZaC//XIffXRRDLDmyjP4IgRQT4Nned4Jp2zE=;
+ b=IqnWM3JSL9bFnjfi4Uhhg0fICZEbFy8TUQ3umzf/dOVBzbJ7LCPhSTRTzqfqPhlg1Z
+ Put/mrPAjd75TuD6a3r/rnEjfx0Kbsi3jhqo4sIfinSn1A0f+v2JO6VECqqyEHFSOwrD
+ d2K+qoVERavMeiM57CQAT99ws2b8R2HTNzVAireZiisY2Egv31f1V8LzP0WO8Jy3QIgn
+ Iv4/mvYYB59yBa1gCvc7CmDMt2gtMzoUVliWiWlaaPbJFTizQKR5eWeD0Cx6z7PzzyAr
+ Kd3tnXYcMs2LYwlVOs03ymecMTNd0oZ6xAo4Alp77AGmturFTrmscH11tPpRvyqY2Zog
+ qAFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705939876; x=1706544676;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2KydqUaZaC//XIffXRRDLDmyjP4IgRQT4Nned4Jp2zE=;
+ b=d72IqF7i7a+R+EQC7WF0B+U+wO8FPLVv9tnIkqfADJyjRmtUfI6LivP29JA4Zax8nb
+ QadRJGxC8FkH58d4q0jhYPwgBB55lIaAyhJlu8eVqLQNV9vx8Mq3sdtFPaqNwK/YAvmJ
+ d5j+wSmtK4PzlmIv9dQPGoSxGhnZI2+dKiqdNxkJB5WwBGfC8X3wi2axiHczZNb0LP+1
+ u7WXkPVhU4+FFJZEZBP35Su7Njl5TGTlNjYi84lf6moXoZpFPtvrEPGDfQQcd60StW01
+ ce/iiWv7a8AlRzIBoJ3jzCtsViSZscJum2eS0s2WQtF8TFG7ZSRBWtd8DkTUwLNsB0GC
+ 1F4w==
+X-Gm-Message-State: AOJu0YylfX+R7wDD7WpnExO8mp14Kr91GDWDCZhNw/M0lI8/929n0+ZA
+ I0fO7FeTmTEn4cSuxBCl0pgBnhwlyMowzEcGXpTRJH6tDRuIVfVRmQgidoUqnGHiTT6pVrE1oSL
+ H
+X-Google-Smtp-Source: AGHT+IFdhWw0fAHoE+45Umrd7oahkUp8yFY2KDVZshhSQUO7P2nO7RU/H0tY6Klb9SIyCU+PM45KVQ==
+X-Received: by 2002:a17:90a:1287:b0:290:119c:1f7 with SMTP id
+ g7-20020a17090a128700b00290119c01f7mr1834086pja.27.1705939875699; 
+ Mon, 22 Jan 2024 08:11:15 -0800 (PST)
+Received: from grind.. ([152.234.127.94]) by smtp.gmail.com with ESMTPSA id
+ db3-20020a17090ad64300b0028e245501e7sm9866446pjb.4.2024.01.22.08.11.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 08:11:15 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 2/2] block/io: clear BDRV_BLOCK_RECURSE flag after recursing in
- bdrv_co_block_status
-Date: Mon, 22 Jan 2024 11:01:26 -0500
-Message-ID: <20240122160126.394141-3-stefanha@redhat.com>
-In-Reply-To: <20240122160126.394141-1-stefanha@redhat.com>
-References: <20240122160126.394141-1-stefanha@redhat.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 00/13] target/riscv: add 'cpu->cfg.vlenb', remove
+Date: Mon, 22 Jan 2024 13:10:54 -0300
+Message-ID: <20240122161107.26737-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1030.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,106 +91,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+Hi,
 
-Using fleecing backup like in [0] on a qcow2 image (with metadata
-preallocation) can lead to the following assertion failure:
+This new version is rebased with a newer riscv-to-apply.next branch
+(@ 096b6b0729). No other changes made.
 
-> bdrv_co_do_block_status: Assertion `!(ret & BDRV_BLOCK_ZERO)' failed.
+All patches acked.
 
-In the reproducer [0], it happens because the BDRV_BLOCK_RECURSE flag
-will be set by the qcow2 driver, so the caller will recursively check
-the file child. Then the BDRV_BLOCK_ZERO set too. Later up the call
-chain, in bdrv_co_do_block_status() for the snapshot-access driver,
-the assertion failure will happen, because both flags are set.
+v4 link: https://lore.kernel.org/qemu-riscv/20240116205817.344178-1-dbarboza@ventanamicro.com/
 
-To fix it, clear the recurse flag after the recursive check was done.
+Daniel Henrique Barboza (13):
+  target/riscv: add 'vlenb' field in cpu->cfg
+  target/riscv/csr.c: use 'vlenb' instead of 'vlen'
+  target/riscv/gdbstub.c: use 'vlenb' instead of shifting 'vlen'
+  target/riscv/insn_trans/trans_rvbf16.c.inc: use cpu->cfg.vlenb
+  target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb'
+  target/riscv/insn_trans/trans_rvvk.c.inc: use 'vlenb'
+  target/riscv/vector_helper.c: use 'vlenb'
+  target/riscv/vector_helper.c: use vlenb in HELPER(vsetvl)
+  target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb' in MAXSZ()
+  target/riscv/cpu.h: use 'vlenb' in vext_get_vlmax()
+  target/riscv: change vext_get_vlmax() arguments
+  trans_rvv.c.inc: use vext_get_vlmax() in trans_vrgather_v*()
+  target/riscv/cpu.c: remove cpu->cfg.vlen
 
-In detail:
+ target/riscv/cpu.c                         |  12 +-
+ target/riscv/cpu.h                         |  14 +-
+ target/riscv/cpu_cfg.h                     |   2 +-
+ target/riscv/cpu_helper.c                  |  11 +-
+ target/riscv/csr.c                         |   4 +-
+ target/riscv/gdbstub.c                     |   6 +-
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  12 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 152 ++++++++++-----------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  16 +--
+ target/riscv/tcg/tcg-cpu.c                 |   4 +-
+ target/riscv/vector_helper.c               |  43 +++---
+ 11 files changed, 148 insertions(+), 128 deletions(-)
 
-> #0  qcow2_co_block_status
-
-Returns 0x45 = BDRV_BLOCK_RECURSE | BDRV_BLOCK_DATA |
-BDRV_BLOCK_OFFSET_VALID.
-
-> #1  bdrv_co_do_block_status
-
-Because of the data flag, bdrv_co_do_block_status() will now also set
-BDRV_BLOCK_ALLOCATED. Because of the recurse flag,
-bdrv_co_do_block_status() for the bdrv_file child will be called,
-which returns 0x16 = BDRV_BLOCK_ALLOCATED | BDRV_BLOCK_OFFSET_VALID |
-BDRV_BLOCK_ZERO. Now the return value inherits the zero flag.
-
-Returns 0x57 = BDRV_BLOCK_RECURSE | BDRV_BLOCK_DATA |
-BDRV_BLOCK_OFFSET_VALID | BDRV_BLOCK_ALLOCATED | BDRV_BLOCK_ZERO.
-
-> #2  bdrv_co_common_block_status_above
-> #3  bdrv_co_block_status_above
-> #4  bdrv_co_block_status
-> #5  cbw_co_snapshot_block_status
-> #6  bdrv_co_snapshot_block_status
-> #7  snapshot_access_co_block_status
-> #8  bdrv_co_do_block_status
-
-Return value is propagated all the way up to here, where the assertion
-failure happens, because BDRV_BLOCK_RECURSE and BDRV_BLOCK_ZERO are
-both set.
-
-> #9  bdrv_co_common_block_status_above
-> #10 bdrv_co_block_status_above
-> #11 block_copy_block_status
-> #12 block_copy_dirty_clusters
-> #13 block_copy_common
-> #14 block_copy_async_co_entry
-> #15 coroutine_trampoline
-
-[0]:
-
-> #!/bin/bash
-> rm /tmp/disk.qcow2
-> ./qemu-img create /tmp/disk.qcow2 -o preallocation=metadata -f qcow2 1G
-> ./qemu-img create /tmp/fleecing.qcow2 -f qcow2 1G
-> ./qemu-img create /tmp/backup.qcow2 -f qcow2 1G
-> ./qemu-system-x86_64 --qmp stdio \
-> --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 \
-> --blockdev qcow2,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.qcow2 \
-> --blockdev qcow2,node-name=node2,file.driver=file,file.filename=/tmp/backup.qcow2 \
-> <<EOF
-> {"execute": "qmp_capabilities"}
-> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
-> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
-> {"execute": "blockdev-backup", "arguments": { "device": "snap0", "target": "node1", "sync": "full", "job-id": "backup0" } }
-> EOF
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-id: 20240116154839.401030-1-f.ebner@proxmox.com
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- block/io.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/block/io.c b/block/io.c
-index 8fa7670571..33150c0359 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -2584,6 +2584,16 @@ bdrv_co_do_block_status(BlockDriverState *bs, bool want_zero,
-                 ret |= (ret2 & BDRV_BLOCK_ZERO);
-             }
-         }
-+
-+        /*
-+         * Now that the recursive search was done, clear the flag. Otherwise,
-+         * with more complicated block graphs like snapshot-access ->
-+         * copy-before-write -> qcow2, where the return value will be propagated
-+         * further up to a parent bdrv_co_do_block_status() call, both the
-+         * BDRV_BLOCK_RECURSE and BDRV_BLOCK_ZERO flags would be set, which is
-+         * not allowed.
-+         */
-+        ret &= ~BDRV_BLOCK_RECURSE;
-     }
- 
- out:
 -- 
 2.43.0
 
