@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D770835DEF
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D30835E00
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 10:21:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRqPy-0001gd-Nf; Mon, 22 Jan 2024 04:16:34 -0500
+	id 1rRqTf-00042S-2r; Mon, 22 Jan 2024 04:20:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rRqPr-0001cU-TW
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:16:29 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rRqPo-0004Tg-8A
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 04:16:27 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40eac352733so9438545e9.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 01:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705914981; x=1706519781; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=NVdJ1l5G9jn1rBjjw7NYRRFNZNCaYHvpzj4eNS9ml7s=;
- b=gVSyuGc2m+BrMa3DExhr/fVklINccvsnE1ml8ozIyzT9Ux4GZqt1QAvXNYWrYaZLye
- 7i1DzqSjKppimUF1qQgCS+5CD4gMTCOKjF5OPNvPT8W3OpTa9+S07LvmfwOjkyQK+OFo
- /PetwfvUd1ETjWK8PbXLi4r2TPe+IYxH7tYqDQJS5/5ldSP8cbvugLmhZhENRgUi+iMx
- GAaMAA5GHd1ISXy/GKQh/dCbteIXQIjKdRM8MP9/jsO+LGkO5qzdMatqmpmfeIqxUErv
- m/Lm/k/uaF0Qr+xIJw+MjdQK54dwQeyhSrNW7wApHr10cu1CB6Fwd0N3q21GDfu/lKjd
- rp2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705914981; x=1706519781;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NVdJ1l5G9jn1rBjjw7NYRRFNZNCaYHvpzj4eNS9ml7s=;
- b=rSIiUwlp53bPi1skjWFuFvXHqa4l1dPXOxGEM931Bb1+jFoo+l1ZznXz/OLL0ro29s
- WN4vNThXPIfpVStpkE3BoWqUwOAa4jPjYAC38bKdGVGhJOhrVft/oyWC6BibmbipTqf5
- RQQaIjdJhe+kldrX9eXEv4HyKh5ZLRwf4EX6bDvkXbyjpA58amWO1QoTdTTz1QSbrk7F
- DU2qnS0Zjexuif4IE3KM1pTjyZYALouuLr/zbxNhZRqTIuxB4X9ZpuDao2wsLv1btj6V
- sbau0sdGN/c8Xa9MW3KN7PTaknZYltSG0doYUI0VxidnIA0nQWthf+0SOyscyz/8IEaX
- mkIg==
-X-Gm-Message-State: AOJu0YzzDwmUpDfqV/YHN7HOV8M6xrolZeGabmTsYsO6uQZTegebP23F
- WAPD0/hsKDir2rdE+tPYXNn73+bikeupDU197RyvVCybLpZUpZkxKX8gjquuarw=
-X-Google-Smtp-Source: AGHT+IGgk+B2VCwTumI0YB42RyFQU/5YceTcdY8zRx+G8ETrrJ0jZp17+9IZGnOmGsYtiFDNDdcpOw==
-X-Received: by 2002:a05:600c:444b:b0:40e:b21a:7ab4 with SMTP id
- v11-20020a05600c444b00b0040eb21a7ab4mr37022wmn.180.1705914981497; 
- Mon, 22 Jan 2024 01:16:21 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- w14-20020a5d404e000000b00337d9a717bcsm8858354wrp.52.2024.01.22.01.16.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 01:16:20 -0800 (PST)
-Date: Mon, 22 Jan 2024 10:16:19 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Rob Bradford <rbradford@rivosinc.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Himanshu Chauhan <hchauhan@ventanamicro.com>, 
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Alvin Chang <alvinga@andestech.com>, 
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: Re: [PATCH 0/2] Export debug triggers as an extension
-Message-ID: <20240122-29d7d206e9ea3ecd46fad930@orel>
-References: <20240110040203.1920924-1-hchauhan@ventanamicro.com>
- <e2763db2-fade-482d-b433-1bfce6acf7d3@ventanamicro.com>
- <CAKmqyKOA6OtixYoMJ_qtXj_u0t6rMdHawg0VEvq3-=mK4q6_XQ@mail.gmail.com>
- <3c091744cd4bafeb7c1d177455fa9789822e7209.camel@rivosinc.com>
- <CAKmqyKPkjBBo-2EAL25-3qACSv4c4naGT8V-F5e5as4D=WVa9g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rRqTc-00040B-7O; Mon, 22 Jan 2024 04:20:20 -0500
+Received: from zproxy3.enst.fr ([2001:660:330f:2::de])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rRqTa-0005Fg-BW; Mon, 22 Jan 2024 04:20:19 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id DBC73A05AC;
+ Mon, 22 Jan 2024 10:20:12 +0100 (CET)
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id aXdaQtn5lRaR; Mon, 22 Jan 2024 10:20:12 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 05770A0592;
+ Mon, 22 Jan 2024 10:20:12 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 05770A0592
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1705915212;
+ bh=IM3wqjGXbcQUmVFb2U84wyTqClwegOsrGVv54ZHXoho=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=RXaybsJ/6d4miU9m6HbxnPOiQYiN7NFOTDqXGPUKS6JK4ak587XDDqkit4IGtgHCr
+ /3OeXkCShm+ccddD0gpIuHLtHrz3vDKDmpMETceSSVH2SjooAWEZj9QoRyBcs01Ex2
+ 4av4IBUnuti5iJtVibaahH7g+UQ1ROvQsdvezT3Y=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id J6nB1MnhqhqJ; Mon, 22 Jan 2024 10:20:11 +0100 (CET)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:240:e2ca:746b:7d17:381f])
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id A9E68A0578;
+ Mon, 22 Jan 2024 10:20:11 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 0/3] Add device STM32L4x5 GPIO
+Date: Mon, 22 Jan 2024 10:18:31 +0100
+Message-ID: <20240122092005.30556-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKmqyKPkjBBo-2EAL25-3qACSv4c4naGT8V-F5e5as4D=WVa9g@mail.gmail.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::de;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,89 +81,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 22, 2024 at 03:42:10PM +1000, Alistair Francis wrote:
-> > > From memory the "debug" property is for the original debug spec:
-> > > https://github.com/riscv/riscv-debug-spec/releases/tag/task_group_vote
-> > >
-> > > That was ratified and is an official extension. AFAIK this is what is
-> > > in physical hardware as well.
-> > >
-> > > The actual PDF says draft though, I'm not sure what's going on there.
-> > >
-> > > The debug spec doesn't have a Z* name, so it's just "debug", at least
-> > > AFAIK.
-> > >
-> > > "sdtrig" seems to be a new backwards-incompatible extension doing
-> > > basically the same thing. What a mess
-...
-> >
-> > I've done a bit of digging and I agree things are quite messy. Here are
-> > my discoveries:
-> >
-> > The debug option and the code for triggers was added in these commits:
-> >
-> > c9711bd778 target/riscv: cpu: Enable native debug feature
-> > 38b4e781a4 target/riscv: machine: Add debug state description
-> > b6092544fc target/riscv: csr: Hook debug CSR read/write
-> > 1acdb3b013 target/riscv: cpu: Add a config option for native debug
-> > 95799e36c1 target/riscv: Add initial support for the Sdtrig extension
-> >
-> > In March 2022 - since the commit refers to the Sdtrig extension name
-> > and from the date this was an implementation not of the ratified 0.13
-> > debug spec (which did not have Sdtrig as a separate extension) but
-> > rather a version of the in development 1.0 debug spec.
-> 
-> Yeah... We used the "stable" from master. That is our mistake there.
-> 
-> I'm pretty sure we targeted the 0.13. The "Sdtrig" was only added in
-> the v4 as the changelog says: "mention Sdtrig extension in the commit"
-> 
-> >
-> > It's not trivial to tell if it's closer to the ratified 0.13 version or
-> > the (hopefully soon to be frozen) 1.0 version.
-> >
-> > As the only part of the debug specification to be implemented is the
-> > triggers then effectively the debug option is x-sdtrig.
-> >
-> > I don't think there is any way for code running on the machine to
-> > identify what version of the debug is implemented - the appropriate
-> > register is only available for external debug. Once 1.0 is frozen then
-> > the presence of Sdtrig isa string would indicate 1.0 trigger support is
-> > available.
-> >
-> > According to JIRA - https://jira.riscv.org/browse/RVS-981 the debug
-> > specification should freeze this month.
-> >
-> > How about considering this as a solution:
-> >
-> > - Add a new x-sdtrig option that defaults to false
-> > - Deprecate debug option - but retain it with default on
-> 
-> We can't deprecate a ratified spec. The 0.13 just seems to call it
-> "debug" so that's what we are stuck with
-> 
-> > - Add warning if triggers are used and x-sdtrig is not enabled
-> > - Update the trigger implementation to match frozen spec
-> 
-> We will need to support two versions, as there are two ratified specs.
->
+This patch adds a new device STM32L4x5 GPIO device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-We'll likely want to be allowed to deprecate ratified extensions as riscv
-evolves. Despite best intentions, extensions may be designed and ratified
-which ultimately fail to be of much utility, and new extensions will
-supersede old extensions. If QEMU keeps every extension it adds, then
-we'll slow progress on new extensions by maintaining old extension code.
-The old extensions will also bitrot or waste CI resources getting tested
-for no reason.
+Changes from RFC v1 :
+- `stm32l4x5-gpio-test.c` : correct typos, make the test generic,
+add a test for bitwise writing in register ODR
+- `stm32l4x5_soc.c` : connect gpios to their clock, use an
+array of GpioState
+- `stm32l4x5_gpio.c` : correct comments in `update_gpio_idr()`,
+correct `get_gpio_pins_to_disconnect()`, correct `stm32l4x5_gpio_init()`
+and initialize the clock, add a realize function
+- add a summary in the commit messages
+- update MAINAINERS
 
-I don't know the history of 'debug' and 'sdtrig', other than what I've
-read above, but, to me, it looks like 'debug' might be one of the first
-extensions which should be deprecated. Assuming we have a long enough
-deprecation period, then I think it's always safe to attempt a
-deprecation. If somebody shouts, then it can always be taken back off the
-chopping block.
+Based-on: 20240118091107.87831-1-arnaud.minier@telecom-paris.fr
+([PATCH v2 0/7] Add device STM32L4x5 RCC)
 
-Thanks,
-drew
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (3):
+  hw/gpio: Implement STM32L4x5 GPIO
+  hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 GPIO QTest testcase
+
+ MAINTAINERS                        |   1 +
+ docs/system/arm/b-l475e-iot01a.rst |   2 +-
+ hw/arm/Kconfig                     |   3 +-
+ hw/arm/stm32l4x5_soc.c             |  67 +++-
+ hw/gpio/Kconfig                    |   3 +
+ hw/gpio/meson.build                |   1 +
+ hw/gpio/stm32l4x5_gpio.c           | 537 +++++++++++++++++++++++++++++
+ hw/gpio/trace-events               |   6 +
+ include/hw/arm/stm32l4x5_soc.h     |   2 +
+ include/hw/gpio/stm32l4x5_gpio.h   |  80 +++++
+ tests/qtest/meson.build            |   3 +-
+ tests/qtest/stm32l4x5_gpio-test.c  | 526 ++++++++++++++++++++++++++++
+ 12 files changed, 1215 insertions(+), 16 deletions(-)
+ create mode 100644 hw/gpio/stm32l4x5_gpio.c
+ create mode 100644 include/hw/gpio/stm32l4x5_gpio.h
+ create mode 100644 tests/qtest/stm32l4x5_gpio-test.c
+
+--=20
+2.43.0
 
 
