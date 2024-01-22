@@ -2,103 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738FE836AA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F8C836B03
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:38:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxC8-0002Jt-Fx; Mon, 22 Jan 2024 11:30:44 -0500
+	id 1rRxHr-0004At-Lr; Mon, 22 Jan 2024 11:36:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
- id 1rRxC6-0002Jg-OE; Mon, 22 Jan 2024 11:30:42 -0500
-Received: from mout.web.de ([212.227.15.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jan.kiszka@web.de>)
- id 1rRxC4-0000ZV-Mc; Mon, 22 Jan 2024 11:30:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
- t=1705941036; x=1706545836; i=jan.kiszka@web.de;
- bh=LG5d/F7Yb0IifmTVWUQGUWTBicUks8yyRvf5ftPVRLk=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
- In-Reply-To;
- b=YnI/DtBor69Sr1GWfz3X0g1lkErdjbcdxI9otx/pIenOCmeJLfldp5gD36NS+Zti
- rvmIX9IOowQ/duutxPLBQZNgpOeCl/ItRPXtDUpFa2CRkYB0n4uPq4/FtfUZ8kh8J
- v8HEs0SyVkS7IMsYj7/Lu68F71serF1He5W/3LOykuOFiqJ3LhsfrynmxJBgQTjoA
- L2RzmL10s+64U+4MtU33q2jlWkrKGsJ7vkIS7yH8IkjSjdebbXyokFgQ2iWZiHB4W
- YfGfEnQcwF9Uk35puZRtz8yejLbJ2r8xaPVw4DTgqFuK4EI2mbm+9dNP7k9B/bbur
- 0SxI3v/R6fyO40MIzw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.179.60] ([94.24.63.16]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MrOdf-1qmrwR19uB-00oSb8; Mon, 22
- Jan 2024 17:30:36 +0100
-Message-ID: <3b4481cf-e1c4-4515-a7e4-80915cbe2bec@web.de>
-Date: Mon, 22 Jan 2024 17:30:35 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRxHS-00046D-Dv
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:36:15 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRxHQ-0001hF-6u
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:36:14 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-337d05b8942so3883380f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 08:36:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705941369; x=1706546169; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bjp0S/N+NhO4FsZAdOW5c5zn70Yf5efsmf1R/p4lRgM=;
+ b=iezkToXIyht7uL3NZRR9P7fOf3V7OLd6P0neyxh3rS5BrwM9VTeNi1K5jbA/dYqCDP
+ I5WEuZlibOGkkSELWRdcJFJI8onwYQhSUr1/d45MMQimGJaxupEHJtNjUzhTsCvW7+m4
+ sSwE/9pPS+Ar1wtePllyFtxqaOOrz9Upk/ndcN5YZrDz2PMmtXH/ByOaSPrsUsp9yRH3
+ fpgK9Y5IJiC8rkXqybKw5AGmpO9i5XME55aG+1fbGyCnHpI7rwYh+gG7KMyUc9C7QcYC
+ 5/oJQGV0pWLyTKRb9raOafQwJnOBfxGJNYPthxs4rPHt/sS1/7nXNUi2tUASutZF6w1e
+ 17Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705941369; x=1706546169;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bjp0S/N+NhO4FsZAdOW5c5zn70Yf5efsmf1R/p4lRgM=;
+ b=pRmsAWOJMKvS0ksFvKJOF2/WP7Y1fWfuJHIqU7MMglQzFxjE9XWOyUyik/7CsaYeVr
+ HkWyFYfBbaQ8xkuHcOB/YJ6K3+4YWu55z7Ref/kDlI1+ICGuMtHlKLp1nlXIVZLdS+Bq
+ yK18iARDLHFXzAN/VG8rOO/fI7TEQsni3y/1CD6E58UTRdds020csxMf9+rMm8hPveuF
+ gxn/6y+P+NxQiztIc9PLSdyh8p3DtXOg25+dICh2cDEvO9n01PCh0QgMRVyjycrUeE3H
+ r7nbsbOyD8XBUDjVInDdNUKx2W6Xc7xMrfgPaN0Zl2Hn0m9dHG0LKfC2NM0N8Zi2osD4
+ ufzA==
+X-Gm-Message-State: AOJu0Yw9sQw6HZS1nOdw80GBvwhK8u8aHkSyV74w7ZOTPc1VgTA9BRUH
+ n3/stO8ZhBWzDKHuLznuFH+kP6a2fBwMF0kuMb7w1gdYVumnd4hdjZ39KuyCRWdhooBxESnetdX
+ Q
+X-Google-Smtp-Source: AGHT+IG3ALe3GgBcgewCv8XdsL/OwVNbgUBVONq0caXN+GUAyKsCGy6+pGNF6h3ymPcQyyCuPPwxjQ==
+X-Received: by 2002:a05:6000:1e81:b0:337:c260:9e6e with SMTP id
+ dd1-20020a0560001e8100b00337c2609e6emr2883465wrb.16.1705941369156; 
+ Mon, 22 Jan 2024 08:36:09 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ e15-20020a5d530f000000b003391720fa51sm9188728wrv.60.2024.01.22.08.36.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 08:36:08 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Bohdan Kostiv <bogdan.kostiv@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/2] system: Fix handling of '-serial none -serial something'
+Date: Mon, 22 Jan 2024 16:36:05 +0000
+Message-Id: <20240122163607.459769-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20231103182750.855577-1-peter.maydell@linaro.org>
- <871qadh8g8.fsf@draig.linaro.org>
- <9dff82f7-d997-4092-8b5a-cd21963826da@web.de>
- <87r0i9ofxi.fsf@draig.linaro.org>
-From: Jan Kiszka <jan.kiszka@web.de>
-Autocrypt: addr=jan.kiszka@web.de; keydata=
- xsDhBEq0i8QRBAD2wOxlC9m/8t/vqjm1U9yQCT6OJ2Wbv/qys9DYM0CvcOTDMWQwmV1/VsZj
- KR5YgB5NPt+To7X6x5cjz15AGnx5Fb8Wnrq8EF9ZfHMwb7YMx1LdPYPDnXr37wE3XupFmkHB
- Mes4htyX7Dz8LvKDLnli4IsAmWG+kV1JI6LWKXLpSwCg8JRq4SWoB4VCQxbH3GjntgvwNc8D
- /2q5Dj0urJ7s7sdXhrH0hcFkpSFRmU5Yd6MCwcbFHm2paL5gqVjNNUUwDBKAL9eZaQVIHKwC
- 44BvNGO2gcQ26R3AuCHUQ+pZHg34tok1JCNZ6IEZccb+33Qq0qbcDMJJiDYp7ppp6ozifvc4
- YaqJECX48IydxfE9+41oV7T5vNAzA/QL/UMJyTnu5jiOXcyn5iFQw535lXkwKsqeXzCowLho
- HICZ2jITJPdTT/+9pGWwMQqST/SS35Tx4EnS3z2BWsNMCLuXCPkxF1elaMJqMfMJxFD8rAgS
- 9GK6zP6fJlsA1wq/UvKSL8v4QPOnTNCVOsyqJVasGV0ZPcDfcj+ClNO4zR5KYW4gS2lzemth
- IDxqYW4ua2lzemthQHdlYi5kZT7CYAQTEQIAIAUCSrSLxAIbIwYLCQgHAwIEFQIIAwQWAgMB
- Ah4BAheAAAoJEIrUrG965ecUhIMAnR6DDCW5cx+cVdYhydbhQXqeief6AJ4p+z4+nrmZLdfU
- 7V6nKqKeHeTtj87BTQRKtIvEEAgA2/PlX6oyi7dToH0CJCHq0eKmZaa7CmGaVnxyeepKvIfi
- M8n8Td76AbG64fjREMwgSpb4F/UytF3z/03tj4e49W/zKjbBRB2/wmFRlZBC9crg22Q+bgvM
- OsxnC6uHXaWN8fL+jVei/5OoHOoFqaMsX8EvploitlI/BPj+VgW26jksf3YZyk1hnclsZ/IY
- hXzgRmVJo4RiTW/YLQAkwndwc+fKPa/IYLEDW1Jc4kNLoK0P90b45zju0hpl0C00pVORTOtz
- FK9G5Ha7qOAWJfAVJORHKAkkvwftf3hkpPdLyvZUWRHXvUexmA61fLvDBAFhRxYGD8t5gz88
- SF5Tzq+0ywADBQf/YSkaYrEslPWiCA2wU6EW0yaqBQAobFsOMvsufJ6o2ntq5Ncq37VI3KCT
- 67eHPE9x+zPcENoZWsRrC9S9PCf1LOsi7ybZsR13AJqDFlRzJZ4klh9QwgwFZxUBzOdIvttw
- zG1QkzHx06RKZluFYpPF3DRduSMukdIJ2wmWCU+ohB+mYefe65JGjYQfHVs8mgYVFOPxbRea
- 9VJACCMuspoZWpj43UdR1lLLyIUFYz+jqcPW7Hd/GTIw4N67pYl0dwPDmFd4ohJ5g4Zpq61t
- oNysBGEuEm5GCcn0VmGtQpSYnR5cVm5b2yPz4bIuFOSuZUo/l7vitdY0iy0/wvKbBC+NK8JJ
- BBgRAgAJBQJKtIvEAhsMAAoJEIrUrG965ecULvAAoKGvxs5T3IhyQT8I8sMsyAvCE4wHAJ46
- S16yab+OxNkvOeoOEX0EnHVHaA==
-In-Reply-To: <87r0i9ofxi.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Z3ehDAgo+rYWOC9OKj3zOfJa1+zM3vQwg3A/kxKU9TK7VzLXFhg
- aNp+rF0fFyjH3yIZ4HesdhgjJ/a7frb6fWDas4a3lxBBGdSKyOwXRBX6U38CazjE/0B/5i9
- k3vPT8rebGkFeaMn/RcazCtsijjHsRucBLPte19Es3cWqufUOIbRKuh6f749/fTokqMbZjD
- pt80pAhhXHGRiAs6OUbwQ==
-UI-OutboundReport: notjunk:1;M01:P0:qbvVMW9m++M=;mno9lEZ3io1x4iPB8NmOUAgGILm
- 6g463LfNHQzKMShBjH/i7FTFlkmv+ZlVLjvB4MQ28gASC/DRqKroT+tq7zvKl43/1KbkPc2c/
- SUx3YJlyBE2+07aF+xp3ErBB0bBIGkJ+rmzNUxx1UI0ORvoeExsWl52FGCNg1b5GRu6RFADd7
- bBp9Eol9VUrILfE3WFsOgjZIbfsu1ILKtXOr6wtOmqdVLbALsD8f0lJ3uX0GMW7bcxlpD837o
- FiQDNdErSLSBIbhhLZ2m6M8Hqp5rR+7pChZfoXHgLLcTq+IpArEL4O/DoH+tGKTF2XGitAZoi
- zSFRi5qRD/oEgXcLKJ+F0i3A4QGgeaKW19S2oOdsKCsx88vtOf3EL4yeZJy1or9lrR+WszFVK
- agf3sAx8XPnoev8e02c9FfCnsXUsPpIC2gDCVYVFP5qRdoPb4/PLVQavpl3/YNjqNeJXkv+o3
- 3Vp/ibO2Yvcm9auJINEeW1ms2rPXxsW8HqO16dJw4q2qMkYcd101UZn515F9iuFSaLYQwz3tl
- B/Iw09ISlOE2281/k+1O5iCn6NK//snmOE4Zrrwv4NE7I/oKPL63Og20Hb3rslBEA763EmZWu
- cKztCcEQ0fQk6a3MxRVsDqQDxwEG3WA42Js7bRBApfmdxRr7Nbs94J73AWu4dX4xy6GFSZ+Wa
- iEkYxsrUcc25KaOkbPVn2y9YX20J5HOefm71GJbcZyhl4miwPmnRLxZaXd4JsaLPlNzY2RU8a
- xi9mRD6o1Fii8hcZK7AL+BCYKZ3iL1wX0h4vY/8AP85KF4+SMZP/FPrgC9RTHbP9W2O4peHqU
- NbSn8H3+JItz5qN+HVWPeM0gfeAGMl4Z4z21BnBxMwTKgokbFM6Y2KNEgQfLeZHCGQvsrdb34
- iML707nB5O9F4woaXbFcS4psktA9nrT+dnffR7ryIf1LoHFtJoPUb28kwsQZ9uXMTTO+k5xgK
- jXlScw==
-Received-SPF: pass client-ip=212.227.15.14; envelope-from=jan.kiszka@web.de;
- helo=mout.web.de
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,71 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.01.24 10:50, Alex Benn=C3=A9e wrote:
-> Jan Kiszka <jan.kiszka@web.de> writes:
->
->> On 19.01.24 12:24, Alex Benn=C3=A9e wrote:
->>> Peter Maydell <peter.maydell@linaro.org> writes:
->>>
->>>> Convert the musicpal key input device to use
->>>> qemu_add_kbd_event_handler().  This lets us simplify it because we no
->>>> longer need to track whether we're in the middle of a PS/2 multibyte
->>>> key sequence.
-> <snip>
->>>
->>> Well the key input all works as intended and looks good to me. I'm a
->>> little disappointed I couldn't get audio working on the musicpal machi=
-ne
->>> but that is not a problem for this patch.
->>>
->>> Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>>
->>
->> Looks good to me as well, all keys still work fine.
->>
->> No idea what's the issue with sound, though. I think I haven't run the
->> whole stuff in a decade or so, had to search for all the pieces first o=
-f
->> all again. The webradio service original behind this stopped their
->> operations, at least for this device, but manually entered favorits
->> still work on the real device - I still have one, though that is
->> starting to get some issues as well.
->
-> I navigated through the favourites and after pressing some keys it seems
-> to indicate there was a stream of some sort (or at least a bitrate was
-> reported ;-).
->
-> The main issue I was having with sound was with pipewire - this would
-> eventually generate a lot of warning messages because input devices are
-> created but I guess the model wasn't draining the input buffers so
-> eventually we get:
->
->   qemu: 0x7f1490259500: overrun write:5859188 filled:5842804 + size:940 =
-> max:4194304
->   qemu: 0x7f14902680a0: overrun write:5860128 filled:5843744 + size:940 =
-> max:4194304
->   qemu: 0x7f1490259500: overrun write:5861068 filled:5844684 + size:940 =
-> max:4194304
->   qemu: 0x7f14902680a0: overrun write:5862008 filled:5845624 + size:940 =
-> max:4194304
->
+(This patchset fixes a bug reported by Bohdan Kostiv at
+https://lore.kernel.org/qemu-devel/CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com/
+ -- my patch 1 avoids a bug in his suggested change, and
+patch 2 is new, improving the documentation.)
 
-I'm getting these here:
+Currently if the user passes multiple -serial options on the command
+line, we mostly treat those as applying to the different serial
+devices in order, so that for example
+ -serial stdio -serial file:filename
+will connect the first serial port to stdio and the second to the
+named file.
 
-pulseaudio: set_source_output_volume() failed
-pulseaudio: Reason: Invalid argument
-...
+The exception to this is the '-serial none' serial device type.  This
+means "don't allocate this serial device", but a bug means that
+following -serial options are not correctly handled, so that
+ -serial none -serial stdio
+has the unexpected effect that stdio is connected to the first serial
+port, not the second.
 
-> Is your image just a hacked up version of the original firmware or
-> something we have source for? I guess there was never a rockbox port for
-> the device?
->
+This is a very long-standing bug that dates back at least as far as
+commit 998bbd74b9d81 from 2009.
+        
+It's possible that some users have commandlines that mistakenly
+include a previously-redundant '-serial none'; those users can
+simply delete that option in order to produce a command line that
+has the same effect on both old and new QEMU. We can mention this
+in the release notes.
 
-It's an original firmware, nothing hacked. I do have some sources here,
-but just partial ones: U-Boot, kernel, not the complete userland and
-even not all kernel drivers IIRC.
+Our documentation for -serial none and -serial null was also a
+bit lacking; I've provided a patch here which tries to improve it.
 
-Jan
+thanks
+-- PMM
 
+Peter Maydell (2):
+  system/vl.c: Fix handling of '-serial none -serial something'
+  qemu-options.hx: Improve -serial option documentation
+
+ system/vl.c     | 22 +++++++++++++---------
+ qemu-options.hx | 14 +++++++++++---
+ 2 files changed, 24 insertions(+), 12 deletions(-)
+
+-- 
+2.34.1
 
