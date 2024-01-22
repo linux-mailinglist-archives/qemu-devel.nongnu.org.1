@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A3D835B59
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEA7835B5E
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 08:05:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRoKD-00057r-BC; Mon, 22 Jan 2024 02:02:29 -0500
+	id 1rRoN0-0007Nw-HX; Mon, 22 Jan 2024 02:05:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRoKB-00057f-DH; Mon, 22 Jan 2024 02:02:27 -0500
-Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
+ id 1rRoMx-0007MH-2b; Mon, 22 Jan 2024 02:05:19 -0500
+Received: from mail-vs1-xe34.google.com ([2607:f8b0:4864:20::e34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRoK9-0002nc-TA; Mon, 22 Jan 2024 02:02:27 -0500
-Received: by mail-vk1-xa2a.google.com with SMTP id
- 71dfb90a1353d-4bb193ac0f8so490651e0c.2; 
- Sun, 21 Jan 2024 23:02:25 -0800 (PST)
+ id 1rRoMv-0003Km-8R; Mon, 22 Jan 2024 02:05:18 -0500
+Received: by mail-vs1-xe34.google.com with SMTP id
+ ada2fe7eead31-469b79d0efdso54151137.3; 
+ Sun, 21 Jan 2024 23:05:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705906944; x=1706511744; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705907115; x=1706511915; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K3HUfNs+2LsPV7TM+lAebAkVXeDABFRjVnNsw9F5Bmo=;
- b=UrQOAZYfX5scuXatnQ5ca52hU4c5o+/he4SHFVepn9Btn7GI5oLopDfBG0RSatKvps
- rKlgy98ExxnqpR01tpHmRsG+XR298xr8XVtdzhgMFs3vDhfLSONb4neMZBg+ziF4ZK+o
- TngCxva0cvcxEMA3HdbggZCpgKlxTWc2GT1vVfjJKSfzLwPAHjCqw1Pfg8iXXxVl4u+z
- tIOR6a8W8000xN/iCNZAaORsQHHrArx6D+4y7SP9UjGiZKi1eZ0b0U6joRfmqwMKhY/9
- +Y18jb4rzTkQFAICd2075uvj50eJSLXxYf6WjC8bMapuRgjrJaEtXXWALVam7FI72fFN
- h8wQ==
+ bh=WZUclu2M2bkOpiKwNIhRIt21C90dQM6h2dS5CyYkPA4=;
+ b=TzJ8/6FJktC/bd3UR+yj0KzFUKBwPoaiKWqBy474tbPqtWfuBxWJ8tyPPIbLZDo/Dg
+ OjFErUspzMwwPX5eZ5Bluj9i5tor53pxX8lR1T/skmYwlv3FynJzP7bhlOa5h8IVnGn8
+ nNNp1hxbSsgk5l2kEI/guY49eRxp25eJNXJUi6NYlw3uSKrIkUmlGmXrK8pqanS1BkQn
+ dDjuVsz5cmCFHeRpRtI7+Mt/MxrXbx7hm3HE7M+6Aljv3uYjzgUIkkhaCZw5ReyCYw2B
+ Tqe/HGqDdT9gNI1GgglnUqQG7B2wY/vPjrNOPHzCBckyDp/oroint7qGtcu5HH1akNYt
+ 7E4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705906944; x=1706511744;
+ d=1e100.net; s=20230601; t=1705907115; x=1706511915;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K3HUfNs+2LsPV7TM+lAebAkVXeDABFRjVnNsw9F5Bmo=;
- b=Sr3gn8KCrFB7qQ7j3JNfR0UGrE8PmSd0VSnOr1+4OeSPmRFKUYDp2zz9xpt8eybPV3
- MRyQP+3hQvK/w5hFluhItBSRQ7lGoQrxOyCwN8f5q62Zq+8hh0a02tGRZ2E482r6UK6a
- EWyrYAjPVv2RSgnyCqmmpfQXHRhOCFUfjs6+KvH+a3zR6Ae158KKzYuTvHn4EPIgKRVB
- n32Y6Z+3VaXWnNwh3rnSyGYVYoLO1X8ot5eiH74NYhHY/JfcJl1LFCo3NXT6hC9zv5Jo
- Lt1i5dTENeNOU4NnK9s/avB0M16mPuaWqP6WL2v6oZ0fltAtT53B0TCeoKO/nrxQ8QtC
- qHxQ==
-X-Gm-Message-State: AOJu0YxA4hIw44ueaOa16IqohWo9xmQUnVg4090IveE5RgR5on2Rfjj1
- vykq0jiBonZEGQIrGm23cZ3Z26HXo2TJ0LY2Naks7eMrD8jcFx5h27HGxfrRLcTBYbiUOnc9SL1
- T9pt+zjEpImFkwNHFP4r579EKdVg=
-X-Google-Smtp-Source: AGHT+IHVjh9aWB8MpCH+z8GExsTX0c+seS9fHmjgat+jX4+EGOmT0tFjiLcvfcR1PJ/XHYgkAbQM+T3lDPzggEyQBng=
-X-Received: by 2002:a05:6122:30ab:b0:4b6:c771:47e8 with SMTP id
- cd43-20020a05612230ab00b004b6c77147e8mr746398vkb.20.1705906944526; Sun, 21
- Jan 2024 23:02:24 -0800 (PST)
+ bh=WZUclu2M2bkOpiKwNIhRIt21C90dQM6h2dS5CyYkPA4=;
+ b=T2YATdToxU/WY/fRSl2VK8zO5FldvxqzvpgaXUEatALnhaSxQeDSTdVTZwSzC3ef2e
+ lj2SlfmMkvMSL87esrhRV5ngrerA8IEr2GWGVPy+JNdQHOsCAgjrFqtrqgX7ItIjeImM
+ CLFxWHEqa/GSY+C0gVh4LxjthdSnwbsptqq/f4M/wTjCyGQep8+ODj7VIdK+X6reWrup
+ qJ7QERUEBDNiyCgLAwBKnHWzkYBGmCBRWn2C8QTjEBvYH3iNgg+3VF7FbGarCbGfG9xq
+ lC+URJ64H/rgoo9wzRTiCYyBA3iigJrXJSf10egi95m7y7/Uu5nPI3kCBB+IZEl1V+bb
+ Z1eg==
+X-Gm-Message-State: AOJu0YyiKZLlXXJZfOB7tSLhF+v0sa/HbMT3WWuEWLzBMCfTSoz6/wOq
+ IeuMRkVwWd12NToiDrlnrymXNgM2FJh0IggAN2gDMX0aEuZMZJ3TmgJib+uXOHpOr73NJNlt8uK
+ cAw4POKi2hX3eW4PjzJlg/mTr2wU=
+X-Google-Smtp-Source: AGHT+IGYm3qDcA8p6Rn/3Fos//8J2tIDfyqw01d4kJrLc82NWrR3YSto0pqbauBZWlweQWLz8ZlycjSaIixqQjN5zdc=
+X-Received: by 2002:a05:6102:357a:b0:469:5655:153e with SMTP id
+ bh26-20020a056102357a00b004695655153emr1486111vsb.29.1705907115428; Sun, 21
+ Jan 2024 23:05:15 -0800 (PST)
 MIME-Version: 1.0
 References: <20240109102930.405323-1-me@deliversmonkey.space>
- <20240109102930.405323-5-me@deliversmonkey.space>
-In-Reply-To: <20240109102930.405323-5-me@deliversmonkey.space>
+ <20240109102930.405323-3-me@deliversmonkey.space>
+In-Reply-To: <20240109102930.405323-3-me@deliversmonkey.space>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 17:01:58 +1000
-Message-ID: <CAKmqyKM5biG5CbBF4OeB6TcXmaxmwpAQFOu_ak=jLgz9e4s5gw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] target/riscv: Add pointer masking tb flags
+Date: Mon, 22 Jan 2024 17:04:49 +1000
+Message-ID: <CAKmqyKNRk_on+ZqKBGGhmXnwLNdmHhXoXK+yTr5p3FEhezOJxg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/6] target/riscv: Add new CSR fields for S{sn, mn,
+ m}pm extensions as part of Zjpm v0.8
 To: Alexey Baturo <baturo.alexey@gmail.com>
 Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
  palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
  kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e34;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe34.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,87 +90,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 9, 2024 at 8:31=E2=80=AFPM Alexey Baturo <baturo.alexey@gmail.c=
+On Tue, Jan 9, 2024 at 8:32=E2=80=AFPM Alexey Baturo <baturo.alexey@gmail.c=
 om> wrote:
 >
 > From: Alexey Baturo <baturo.alexey@gmail.com>
 >
 > Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
->  target/riscv/cpu.h        | 3 +++
->  target/riscv/cpu_helper.c | 3 +++
->  target/riscv/translate.c  | 5 +++++
->  3 files changed, 11 insertions(+)
+>  target/riscv/cpu.h      |  8 ++++++++
+>  target/riscv/cpu_bits.h |  3 +++
+>  target/riscv/cpu_cfg.h  |  3 +++
+>  target/riscv/csr.c      | 11 +++++++++++
+>  target/riscv/machine.c  | 10 +++++++---
+>  target/riscv/pmp.c      | 13 ++++++++++---
+>  target/riscv/pmp.h      | 11 ++++++-----
+>  7 files changed, 48 insertions(+), 11 deletions(-)
 >
 > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 1c8979c1c8..0284ea418f 100644
+> index a43c8fba57..c9bed5c9fc 100644
 > --- a/target/riscv/cpu.h
 > +++ b/target/riscv/cpu.h
-> @@ -545,6 +545,9 @@ FIELD(TB_FLAGS, ITRIGGER, 20, 1)
->  FIELD(TB_FLAGS, VIRT_ENABLED, 21, 1)
->  FIELD(TB_FLAGS, PRIV, 22, 2)
->  FIELD(TB_FLAGS, AXL, 24, 2)
-> +/* If pointer masking should be applied and address sign extended */
-> +FIELD(TB_FLAGS, PM_PMM, 26, 2)
-> +FIELD(TB_FLAGS, PM_SIGNEXTEND, 28, 1)
+> @@ -101,6 +101,14 @@ typedef enum {
+>      EXT_STATUS_DIRTY,
+>  } RISCVExtStatus;
 >
->  #ifdef TARGET_RISCV32
->  #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index 9640e4c2c5..67bc51e510 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -68,6 +68,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc=
-,
->      RISCVCPU *cpu =3D env_archcpu(env);
->      RISCVExtStatus fs, vs;
->      uint32_t flags =3D 0;
-> +    bool pm_signext =3D riscv_cpu_virt_mem_enabled(env);
+> +/* Enum holds PMM field values for Zjpm v0.8 extension */
+> +typedef enum {
+> +    PMM_FIELD_DISABLED =3D 0,
+> +    PMM_FIELD_RESERVED =3D 1,
+> +    PMM_FIELD_PMLEN7   =3D 2,
+> +    PMM_FIELD_PMLEN16  =3D 3,
+> +} RISCVPmPmm;
+> +
+>  #define MMU_USER_IDX 3
 >
->      *pc =3D env->xl =3D=3D MXL_RV32 ? env->pc & UINT32_MAX : env->pc;
->      *cs_base =3D 0;
-> @@ -135,6 +136,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *=
-pc,
->      flags =3D FIELD_DP32(flags, TB_FLAGS, VS, vs);
->      flags =3D FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
->      flags =3D FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
-> +    flags =3D FIELD_DP32(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env))=
-;
-> +    flags =3D FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
+>  #define MAX_RISCV_PMPS (16)
+> diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+> index 1c92458a01..7cf1049bf4 100644
+> --- a/target/riscv/cpu_bits.h
+> +++ b/target/riscv/cpu_bits.h
+> @@ -715,6 +715,7 @@ typedef enum RISCVException {
+>  #define MENVCFG_CBIE                       (3UL << 4)
+>  #define MENVCFG_CBCFE                      BIT(6)
+>  #define MENVCFG_CBZE                       BIT(7)
+> +#define MENVCFG_PMM                        (3ULL << 32)
+>  #define MENVCFG_ADUE                       (1ULL << 61)
+>  #define MENVCFG_PBMTE                      (1ULL << 62)
+>  #define MENVCFG_STCE                       (1ULL << 63)
+> @@ -728,11 +729,13 @@ typedef enum RISCVException {
+>  #define SENVCFG_CBIE                       MENVCFG_CBIE
+>  #define SENVCFG_CBCFE                      MENVCFG_CBCFE
+>  #define SENVCFG_CBZE                       MENVCFG_CBZE
+> +#define SENVCFG_PMM                        MENVCFG_PMM
 >
->      *pflags =3D flags;
+>  #define HENVCFG_FIOM                       MENVCFG_FIOM
+>  #define HENVCFG_CBIE                       MENVCFG_CBIE
+>  #define HENVCFG_CBCFE                      MENVCFG_CBCFE
+>  #define HENVCFG_CBZE                       MENVCFG_CBZE
+> +#define HENVCFG_PMM                        MENVCFG_PMM
+>  #define HENVCFG_ADUE                       MENVCFG_ADUE
+>  #define HENVCFG_PBMTE                      MENVCFG_PBMTE
+>  #define HENVCFG_STCE                       MENVCFG_STCE
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index f4605fb190..201f8af6ae 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -113,6 +113,9 @@ struct RISCVCPUConfig {
+>      bool ext_ssaia;
+>      bool ext_sscofpmf;
+>      bool ext_smepmp;
+> +    bool ext_ssnpm;
+> +    bool ext_smnpm;
+> +    bool ext_smmpm;
+>      bool rvv_ta_all_1s;
+>      bool rvv_ma_all_1s;
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index ea4e1ac6ef..a67ba30494 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -527,6 +527,9 @@ static RISCVException have_mseccfg(CPURISCVState *env=
+, int csrno)
+>      if (riscv_cpu_cfg(env)->ext_zkr) {
+>          return RISCV_EXCP_NONE;
+>      }
+> +    if (riscv_cpu_cfg(env)->ext_smmpm) {
+> +        return RISCV_EXCP_NONE;
+> +    }
+>
+>      return RISCV_EXCP_ILLEGAL_INST;
 >  }
-> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-> index 6b4b9a671c..2c89d749c0 100644
-> --- a/target/riscv/translate.c
-> +++ b/target/riscv/translate.c
-> @@ -103,6 +103,9 @@ typedef struct DisasContext {
->      bool vl_eq_vlmax;
->      CPUState *cs;
->      TCGv zero;
-> +    /* actual address width */
-> +    uint8_t addr_width;
-> +    bool addr_signed;
->      /* Use icount trigger for native debug */
->      bool itrigger;
->      /* FRM is known to contain a valid value. */
-> @@ -1176,6 +1179,8 @@ static void riscv_tr_init_disas_context(DisasContex=
-tBase *dcbase, CPUState *cs)
->      ctx->xl =3D FIELD_EX32(tb_flags, TB_FLAGS, XL);
->      ctx->address_xl =3D FIELD_EX32(tb_flags, TB_FLAGS, AXL);
->      ctx->cs =3D cs;
-> +    ctx->addr_width =3D 0;
-> +    ctx->addr_signed =3D false;
->      ctx->itrigger =3D FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
->      ctx->zero =3D tcg_constant_tl(0);
->      ctx->virt_inst_excp =3D false;
+> @@ -2030,6 +2033,10 @@ static RISCVException write_menvcfg(CPURISCVState =
+*env, int csrno,
+>                  (cfg->ext_sstc ? MENVCFG_STCE : 0) |
+>                  (cfg->ext_svadu ? MENVCFG_ADUE : 0);
+>      }
+> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
+8 */
+> +    if (((val & MENVCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
+> +        mask |=3D MENVCFG_PMM;
+> +    }
+>      env->menvcfg =3D (env->menvcfg & ~mask) | (val & mask);
+>
+>      return RISCV_EXCP_NONE;
+> @@ -2074,6 +2081,10 @@ static RISCVException write_senvcfg(CPURISCVState =
+*env, int csrno,
+>                                      target_ulong val)
+>  {
+>      uint64_t mask =3D SENVCFG_FIOM | SENVCFG_CBIE | SENVCFG_CBCFE | SENV=
+CFG_CBZE;
+> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
+8 */
+> +    if (((val & SENVCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
+> +        mask |=3D SENVCFG_PMM;
+> +    }
+>      RISCVException ret;
+>
+>      ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_HSENVCFG);
+> diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+> index 71ee8bab19..0ad593ed5a 100644
+> --- a/target/riscv/machine.c
+> +++ b/target/riscv/machine.c
+> @@ -152,15 +152,19 @@ static const VMStateDescription vmstate_vector =3D =
+{
+>
+>  static bool pointermasking_needed(void *opaque)
+>  {
+> -    return false;
+> +    RISCVCPU *cpu =3D opaque;
+> +    return cpu->cfg.ext_ssnpm || cpu->cfg.ext_smnpm || cpu->cfg.ext_smmp=
+m;
+>  }
+>
+>  static const VMStateDescription vmstate_pointermasking =3D {
+>      .name =3D "cpu/pointer_masking",
+> -    .version_id =3D 1,
+> -    .minimum_version_id =3D 1,
+> +    .version_id =3D 2,
+> +    .minimum_version_id =3D 2,
+>      .needed =3D pointermasking_needed,
+>      .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINTTL(env.mseccfg, RISCVCPU),
+> +        VMSTATE_UINTTL(env.senvcfg, RISCVCPU),
+> +        VMSTATE_UINTTL(env.menvcfg, RISCVCPU),
+>          VMSTATE_END_OF_LIST()
+>      }
+>  };
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index 162e88a90a..893ccd58d8 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -576,6 +576,12 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, ui=
+nt32_t addr_index)
+>  void mseccfg_csr_write(CPURISCVState *env, target_ulong val)
+>  {
+>      int i;
+> +    uint64_t mask =3D MSECCFG_MMWP | MSECCFG_MML;
+> +
+> +    /* Update PMM field only if the value is valid according to Zjpm v0.=
+8 */
+> +    if (((val & MSECCFG_PMM) >> 32) !=3D PMM_FIELD_RESERVED) {
+> +        mask |=3D MSECCFG_PMM;
+> +    }
+>
+>      trace_mseccfg_csr_write(env->mhartid, val);
+>
+> @@ -591,12 +597,13 @@ void mseccfg_csr_write(CPURISCVState *env, target_u=
+long val)
+>
+>      if (riscv_cpu_cfg(env)->ext_smepmp) {
+>          /* Sticky bits */
+> -        val |=3D (env->mseccfg & (MSECCFG_MMWP | MSECCFG_MML));
+> -        if ((val ^ env->mseccfg) & (MSECCFG_MMWP | MSECCFG_MML)) {
+> +        val |=3D (env->mseccfg & mask);
+> +        if ((val ^ env->mseccfg) & mask) {
+>              tlb_flush(env_cpu(env));
+>          }
+>      } else {
+> -        val &=3D ~(MSECCFG_MMWP | MSECCFG_MML | MSECCFG_RLB);
+> +        mask |=3D MSECCFG_RLB;
+> +        val &=3D ~(mask);
+>      }
+>
+>      env->mseccfg =3D val;
+> diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
+> index 9af8614cd4..b3ca51c26d 100644
+> --- a/target/riscv/pmp.h
+> +++ b/target/riscv/pmp.h
+> @@ -40,11 +40,12 @@ typedef enum {
+>  } pmp_am_t;
+>
+>  typedef enum {
+> -    MSECCFG_MML   =3D 1 << 0,
+> -    MSECCFG_MMWP  =3D 1 << 1,
+> -    MSECCFG_RLB   =3D 1 << 2,
+> -    MSECCFG_USEED =3D 1 << 8,
+> -    MSECCFG_SSEED =3D 1 << 9
+> +    MSECCFG_MML       =3D 1 << 0,
+> +    MSECCFG_MMWP      =3D 1 << 1,
+> +    MSECCFG_RLB       =3D 1 << 2,
+> +    MSECCFG_USEED     =3D 1 << 8,
+> +    MSECCFG_SSEED     =3D 1 << 9,
+> +    MSECCFG_PMM       =3D 3UL << 32,
+>  } mseccfg_field_t;
+>
+>  typedef struct {
 > --
 > 2.34.1
 >
