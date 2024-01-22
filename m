@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1624F8359BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE7D8359C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:32:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRky5-000335-Pj; Sun, 21 Jan 2024 22:27:25 -0500
+	id 1rRl2B-00049L-4h; Sun, 21 Jan 2024 22:31:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRky4-00032s-5A; Sun, 21 Jan 2024 22:27:24 -0500
-Received: from mail-ua1-x929.google.com ([2607:f8b0:4864:20::929])
+ id 1rRl27-00048y-QF; Sun, 21 Jan 2024 22:31:35 -0500
+Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRky1-0001DO-OB; Sun, 21 Jan 2024 22:27:23 -0500
-Received: by mail-ua1-x929.google.com with SMTP id
- a1e0cc1a2514c-7d2940ad0e1so609205241.1; 
- Sun, 21 Jan 2024 19:27:20 -0800 (PST)
+ id 1rRl26-0001w8-3h; Sun, 21 Jan 2024 22:31:35 -0500
+Received: by mail-vk1-xa32.google.com with SMTP id
+ 71dfb90a1353d-4b71e8790efso576067e0c.3; 
+ Sun, 21 Jan 2024 19:31:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705894040; x=1706498840; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705894292; x=1706499092; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p2igC9J/DXbp0p2cQRhRVs1QMFzrKhrr2jRPbTk8b3Y=;
- b=NvhV+8b70omzccwp/UUDKxwI3j9OnEfdBLm0iBQOfEDG+NH1Xk7ezjIrAtBiPYpeF/
- 3v7Tas7fA9u8jg66LexNedVvAH4mNaOdnNktjJdaIFQYYYacqFUjbOBSybFV3Oo4yX0W
- L7pHr4VfR30Y6YtKNzZn1ZgcWs2SIWCuVglOQWWtB3fXS3dkUOYB9QpVYG7HvOQaMt4z
- f6S1CoAiZR3oNp91IZCZlxCEGIJemBmZU8E/QC5J+Lf98jVUkx2I/hPwZSwxjhZh2PT9
- +ZBldbv7uUi6qw008KLCZdhH7PSWqC9upe+8AidK77X81rCjMqiYe/sKNVFUOJgIgaLl
- okhA==
+ bh=EAOCGSDTsLLK4ekXFuUPVUP7PGb4360SsCeHGQE435A=;
+ b=eUIS9gkQzH2S1G6yG/gR5ny3uxmovDdKhZS9IWfGBTIHWTOWP5k6I5uZh+GjQOn7Du
+ jGbjx8uZl2zVy3qlbHPqyW5EucOuis9m30Acp3ab5vd8bxn20Z9/f7h/6diH7b86CM91
+ ltkum7uUVKyzLNTN5bfDxYeC2cFtCY7bW7Sb5maX/kXu+4r7bNytYM3UwOq6Bgf4Erak
+ KqU5ID8xsSsV3B1D0oJ/nuSrYIFiS4UVf3g7JPcdttWnOm4TXbrcwnIhmkXWNovyuPKs
+ cUgyIJNIjeGsBqVMuu4AkFJZGzno4WN3AYHN76BjALTq4h0Pz6vwxxCRa01IjYaJSDxp
+ bVhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705894040; x=1706498840;
+ d=1e100.net; s=20230601; t=1705894292; x=1706499092;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p2igC9J/DXbp0p2cQRhRVs1QMFzrKhrr2jRPbTk8b3Y=;
- b=eHaH7Pc82vTE2BgcPZO9Z30ilrlJl0kVFUwgvTjNcv7zNvnUDGsLhKZ4bohft1xQY4
- HtGG2cl73zsjRQWqL5ITeVVFE/A/ahh2Gx4X3sPoW0x8a0DMRvt2LoeEsRNEnadPcibl
- oMPpo/9haPI2BOQqs0ME6nu4jT0UtUvfHcJdjF7KP5lBh4yzZxiWY3wFpekK6kIYK31d
- ZBcXMq0x188DvoeuaE/Hun8SyFSPaH18vd8YTaP9Dx68R/EuyezmHs3cROfN1oU66ftv
- llmAr3Xe60l/JxgDNaYfoT4OQRKCKb37RDz38cvmhowf/2j7yrYWubJeb0FRuHaBX8hN
- XDJA==
-X-Gm-Message-State: AOJu0YwVTNnseaqhBiq5uJ70F/z65qS8Rv6gzrCA2t4uXdrDC9jjcz1v
- D07JWwEGlSXsFDbJZJoykuA7jzjB+BnUbIzrEZAB61vBblvej/+xaDFlZ/4kuahZFjsMo0XWUmA
- ZU66UUjvL8dkoQXC3S9orBgXW5Nc=
-X-Google-Smtp-Source: AGHT+IHdCZBMYImZDjE4BfLkd0ZtVEmQ76if7xWyrMEgYMSHWJe6hjNNHOMUBMWcnabmGRsOiNVm/qwO92OQIEv/N9E=
-X-Received: by 2002:a67:fa45:0:b0:467:fa58:7eb7 with SMTP id
- j5-20020a67fa45000000b00467fa587eb7mr961350vsq.50.1705894039988; Sun, 21 Jan
- 2024 19:27:19 -0800 (PST)
+ bh=EAOCGSDTsLLK4ekXFuUPVUP7PGb4360SsCeHGQE435A=;
+ b=LwjNm72uunMTH+Y5vLotnzZHcQbZ1kK7wkt1BcOcl3cgo+Wt/gvabNvuBcOtpmXe8i
+ UcVzDNE0yHA76F9bKlKEJpu0UtmwuHfUNZ/s1bCwwqsElId5RFTlDG/qjhH/uE7hTb7a
+ u5i4jYQAmBbxhBj7Gk+nb/kMgQ3LIqNkleQsSzyd75PNYBjYQgY7RWirBenCbeRW28Pd
+ FI6rvAsTPTLV5AVgBRylGAIRPj83rHgJ7mRWLg0nzop2Ed9SMCJhLkPdaAGfNPKfoKAR
+ OBsJtouvp5jUFh/6m/Jq7xQz3tsNGGtP/gx0CvhPlzrZZC8cm/tV7Jy/P7F3HIJ/sNJI
+ o6Ng==
+X-Gm-Message-State: AOJu0YyL+8w3RNx2xvwynmHJ3AaZD6ltP+ousQmKBSlUNMV2OZq6mWOj
+ YPX86yZy+vWv2tUH5fx0xkgPF2QKlx5O0/g97YoBBK4wViTLRyy8g4OT3zvwADeG7th++Mu+Tbw
+ ZLrkcgCzpY2Wu6WCEBzsiUKIe4sk=
+X-Google-Smtp-Source: AGHT+IGxyjgnASaJSPY1KDGy53XwrTWSNQFjIgz4TLmeu0d4Of4DJxVd43k5GCQAcOizRQGh8PmTKNJfewz50Y5BxhU=
+X-Received: by 2002:a05:6122:ca3:b0:4b6:dc09:3d04 with SMTP id
+ ba35-20020a0561220ca300b004b6dc093d04mr811269vkb.8.1705894292647; Sun, 21 Jan
+ 2024 19:31:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20240115043431.3900922-1-bin.meng@windriver.com>
- <20240115043431.3900922-2-bin.meng@windriver.com>
-In-Reply-To: <20240115043431.3900922-2-bin.meng@windriver.com>
+References: <20240108161903.353648-1-dbarboza@ventanamicro.com>
+ <20240108161903.353648-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20240108161903.353648-2-dbarboza@ventanamicro.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 13:26:53 +1000
-Message-ID: <CAKmqyKNm3cLk1_VDi76W2qXM1kw4XmvP8Fn5NmsYg+sj3iQdEw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] hw/arm: Refactor struct arm_boot_info::get_dtb()
-To: Bin Meng <bin.meng@windriver.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair@alistair23.me>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, 
- Radoslaw Biernacki <rad@semihalf.com>, qemu-arm@nongnu.org
+Date: Mon, 22 Jan 2024 13:31:06 +1000
+Message-ID: <CAKmqyKOWzne35oBcXt7oOdHHE4haO1zSGQqk9TANgb=DkMtpFQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] target/riscv/cpu.c: add riscv_bare_cpu_init()
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::929;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x929.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,136 +89,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 15, 2024 at 2:36=E2=80=AFPM Bin Meng <bin.meng@windriver.com> w=
-rote:
+On Tue, Jan 9, 2024 at 3:32=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> At present we expect struct arm_boot_info::get_dtb() to return the
-> device tree pointer as well as the device tree size. However, this
-> is not necessary as we can get the device tree size via the device
-> tree header directly. Change get_dtb() signature to drop the *size
-> argument, and get the size by ourselves.
+> Next patch will add more bare CPUs. Their cpu_init() functions would be
+> glorified copy/pastes of rv64i_bare_cpu_init(), differing only by a
+> riscv_cpu_set_misa() call.
 >
-> Signed-off-by: Bin Meng <bin.meng@windriver.com>
+> Add a new .instance_init for the TYPE_RISCV_BARE_CPU typ to avoid this
+> code repetition. While we're at it, add a better explanation on why
+> we're disabling the timing extensions for bare CPUs.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
 > ---
+>  target/riscv/cpu.c | 45 +++++++++++++++++++++++++++++----------------
+>  1 file changed, 29 insertions(+), 16 deletions(-)
 >
->  include/hw/arm/boot.h     | 8 ++++----
->  hw/arm/boot.c             | 3 ++-
->  hw/arm/sbsa-ref.c         | 3 +--
->  hw/arm/virt.c             | 4 +---
->  hw/arm/xlnx-versal-virt.c | 4 +---
->  5 files changed, 9 insertions(+), 13 deletions(-)
->
-> diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
-> index 80c492d742..37fd1b520e 100644
-> --- a/include/hw/arm/boot.h
-> +++ b/include/hw/arm/boot.h
-> @@ -82,11 +82,11 @@ struct arm_boot_info {
->                                       const struct arm_boot_info *info);
->      /* if a board is able to create a dtb without a dtb file then it
->       * sets get_dtb. This will only be used if no dtb file is provided
-> -     * by the user. On success, sets *size to the length of the created
-> -     * dtb, and returns a pointer to it. (The caller must free this memo=
-ry
-> -     * with g_free() when it has finished with it.) On failure, returns =
-NULL.
-> +     * by the user. On success, returns a pointer to it. (The caller mus=
-t
-> +     * free this memory with g_free() when it has finished with it.)
-> +     * On failure, returns NULL.
->       */
-> -    void *(*get_dtb)(const struct arm_boot_info *info, int *size);
-> +    void *(*get_dtb)(const struct arm_boot_info *info);
->      /* if a board needs to be able to modify a device tree provided by
->       * the user it should implement this hook.
->       */
-> diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-> index 84ea6a807a..ff1173299f 100644
-> --- a/hw/arm/boot.c
-> +++ b/hw/arm/boot.c
-> @@ -538,11 +538,12 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot=
-_info *binfo,
->          }
->          g_free(filename);
->      } else {
-> -        fdt =3D binfo->get_dtb(binfo, &size);
-> +        fdt =3D binfo->get_dtb(binfo);
->          if (!fdt) {
->              fprintf(stderr, "Board was unable to create a dtb blob\n");
->              goto fail;
->          }
-> +        size =3D fdt_totalsize(fdt);
->      }
->
->      if (addr_limit > addr && size > (addr_limit - addr)) {
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 477dca0637..c5023871a7 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -681,12 +681,11 @@ static void create_pcie(SBSAMachineState *sms)
->      create_smmu(sms, pci->bus);
->  }
->
-> -static void *sbsa_ref_dtb(const struct arm_boot_info *binfo, int *fdt_si=
-ze)
-> +static void *sbsa_ref_dtb(const struct arm_boot_info *binfo)
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index b32681f7f3..1202ec3e57 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -575,22 +575,6 @@ static void rv64i_bare_cpu_init(Object *obj)
 >  {
->      const SBSAMachineState *board =3D container_of(binfo, SBSAMachineSta=
-te,
->                                                   bootinfo);
->
-> -    *fdt_size =3D board->fdt_size;
->      return board->fdt;
->  }
->
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 2793121cb4..1996fffa99 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1577,14 +1577,12 @@ static void create_secure_ram(VirtMachineState *v=
-ms,
->      g_free(nodename);
->  }
->
-> -static void *machvirt_dtb(const struct arm_boot_info *binfo, int *fdt_si=
-ze)
-> +static void *machvirt_dtb(const struct arm_boot_info *binfo)
->  {
->      const VirtMachineState *board =3D container_of(binfo, VirtMachineSta=
-te,
->                                                   bootinfo);
->      MachineState *ms =3D MACHINE(board);
->
+>      CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+>      riscv_cpu_set_misa(env, MXL_RV64, RVI);
 > -
-> -    *fdt_size =3D board->fdt_size;
->      return ms->fdt;
+> -    /* Remove the defaults from the parent class */
+> -    RISCV_CPU(obj)->cfg.ext_zicntr =3D false;
+> -    RISCV_CPU(obj)->cfg.ext_zihpm =3D false;
+> -
+> -    /* Set to QEMU's first supported priv version */
+> -    env->priv_ver =3D PRIV_VERSION_1_10_0;
+> -
+> -    /*
+> -     * Support all available satp_mode settings. The default
+> -     * value will be set to MBARE if the user doesn't set
+> -     * satp_mode manually (see set_satp_mode_default()).
+> -     */
+> -#ifndef CONFIG_USER_ONLY
+> -    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV64);
+> -#endif
+>  }
+>  #else
+>  static void rv32_base_cpu_init(Object *obj)
+> @@ -1266,6 +1250,34 @@ static void riscv_cpu_init(Object *obj)
+>      RISCV_CPU(obj)->cfg.ext_zihpm =3D true;
 >  }
 >
-> diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-> index 537118224f..1e043c813e 100644
-> --- a/hw/arm/xlnx-versal-virt.c
-> +++ b/hw/arm/xlnx-versal-virt.c
-> @@ -551,12 +551,10 @@ static void versal_virt_modify_dtb(const struct arm=
-_boot_info *binfo,
->      fdt_add_memory_nodes(s, fdt, binfo->ram_size);
->  }
->
-> -static void *versal_virt_get_dtb(const struct arm_boot_info *binfo,
-> -                                  int *fdt_size)
-> +static void *versal_virt_get_dtb(const struct arm_boot_info *binfo)
->  {
->      const VersalVirt *board =3D container_of(binfo, VersalVirt, binfo);
->
-> -    *fdt_size =3D board->fdt_size;
->      return board->fdt;
->  }
->
+> +static void riscv_bare_cpu_init(Object *obj)
+> +{
+> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> +
+> +    /*
+> +     * Bare CPUs do not inherit the timer and performance
+> +     * counters from the parent class (see riscv_cpu_init()
+> +     * for info on why the parent enables them).
+> +     *
+> +     * Users have to explicitly enable these counters for
+> +     * bare CPUs.
+> +     */
+> +    cpu->cfg.ext_zicntr =3D false;
+> +    cpu->cfg.ext_zihpm =3D false;
+> +
+> +    /* Set to QEMU's first supported priv version */
+> +    cpu->env.priv_ver =3D PRIV_VERSION_1_10_0;
+> +
+> +    /*
+> +     * Support all available satp_mode settings. The default
+> +     * value will be set to MBARE if the user doesn't set
+> +     * satp_mode manually (see set_satp_mode_default()).
+> +     */
+> +#ifndef CONFIG_USER_ONLY
+> +    set_satp_mode_max_supported(cpu, VM_1_10_SV64);
+> +#endif
+> +}
+> +
+>  typedef struct misa_ext_info {
+>      const char *name;
+>      const char *description;
+> @@ -1925,6 +1937,7 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
+>      {
+>          .name =3D TYPE_RISCV_BARE_CPU,
+>          .parent =3D TYPE_RISCV_CPU,
+> +        .instance_init =3D riscv_bare_cpu_init,
+>          .abstract =3D true,
+>      },
+>      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_ANY,      riscv_any_cpu_init),
 > --
-> 2.34.1
+> 2.43.0
 >
 >
 
