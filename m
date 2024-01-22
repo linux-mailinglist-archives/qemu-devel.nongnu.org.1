@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567C48359CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C588359E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 04:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRl9z-0000ZS-T7; Sun, 21 Jan 2024 22:39:43 -0500
+	id 1rRlPM-0003jx-Rk; Sun, 21 Jan 2024 22:55:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRl9x-0000Yv-CO; Sun, 21 Jan 2024 22:39:41 -0500
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rRl9v-0003Zl-IL; Sun, 21 Jan 2024 22:39:41 -0500
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-7d2ded146cbso393912241.2; 
- Sun, 21 Jan 2024 19:39:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705894777; x=1706499577; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hY72BxvzmiGSGQtkAGOHlAHwL7oboFqjI4NfFTHI4YI=;
- b=jxspjG45i3tz8+dJnBrYEaRPdow4kNXiglt007l0RyIUCtwyxpugkIA/NqyGHIMu6O
- mPLwSrPDF3/rI8vCTLdsIvDtESGAfmpQi9qCommtKUwwaDgonwZ5jxqm+6xo36Vy1inU
- mBnLKTnZmkS8HY4ag6uybxydBjujrFP9aIXeORhzy6iYUoyOETiCcTNHw5xGp3+SWcoZ
- 5jLV1401NwD7+rGz58EqzF1CBBFmVLPRtrmWVC33FsgM50hVgxR3q/wqrKWApEHbZ8kw
- BTtgR3kT213BqOXEKwT+wknnhVBv2j278asTqXRTkgJNGr1/6qF6oOi+NLPK1qGe553X
- R3Eg==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rRlPL-0003ji-81
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 22:55:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rRlPJ-0007BW-JL
+ for qemu-devel@nongnu.org; Sun, 21 Jan 2024 22:55:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705895731;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vFquFqu3fTOS/soOAd9VGV02yOhmVCuciU6uM1rISK4=;
+ b=RAky2T3MY7rCs9RNc9zGUMWnNS2RaTXhfk/mRdoxx9KSxDIFlqTesGOYoP7yWvAh3rdmp1
+ KKxNlT87X/v/sdyO2LDbV3FiVI81tO1tRjmysiBCFth/B/EP4/5Lc+U0HLAyQ1m4L8uuy3
+ CAQf4TAEQ+QvEe2e/nQgjj3CVHGpelc=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-RBtO0swzMeaFFP5sCwMABw-1; Sun, 21 Jan 2024 22:55:28 -0500
+X-MC-Unique: RBtO0swzMeaFFP5sCwMABw-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d9ba60e1c1so2038814b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 21 Jan 2024 19:55:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705894777; x=1706499577;
+ d=1e100.net; s=20230601; t=1705895727; x=1706500527;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hY72BxvzmiGSGQtkAGOHlAHwL7oboFqjI4NfFTHI4YI=;
- b=UEHsZohsBbCU3+37P6yiM4vJQZ1wpYt9i4lHJF1gkzVrpyILTs0kJd/XogdiSOEEXq
- p6u4Y3XPsWbA70l27LwCpjndLoJKTJRyThpjZy/NU6GsV8DHOs76sUtj25oZ2LaeyjWn
- 3od7pcG7Nyb1Dqv9/4UagyD3y4DfkADTSod+GdHeyO/4cFO3TGwRO+qHtLMoeM0xfRwF
- CwewQd/etTX3iUOwYVnQNLUA7VBFiuDojl1PIUlJD1ucuXEt7PUsBbJoKxfqtAPc14/I
- +IsVp/TXzB+5xXU4gFtZlMMxfIAqbeNG5quI/ii+l5s43yoYWKwo9WDjNrwx4X0wvCPd
- alkg==
-X-Gm-Message-State: AOJu0Yx4XTqK95kLIkUl9NHkxVpBxXAz07Y7g8YhMfJIs3qJNY4ZHSYD
- z1feFfrEN2gixON/bIR8G5S8ZFzspqzeLnu5LhAEc6jt1o2ahx0f6JhMIql1ZaOR1+QpN16dxxq
- 4eZrYvK3mXtl++E05+DbYqi5Eb04=
-X-Google-Smtp-Source: AGHT+IE+/OxfWU9v8nJL7Hep4g62dFUxePVW+lw4IshWSsmB4WemLyP9+8pqY2A6UdnCzzMAVjYcNSD2LN+YWt/oxhA=
-X-Received: by 2002:a05:6122:ca0:b0:4b6:dc25:3d53 with SMTP id
- ba32-20020a0561220ca000b004b6dc253d53mr1118936vkb.16.1705894777401; Sun, 21
- Jan 2024 19:39:37 -0800 (PST)
+ bh=vFquFqu3fTOS/soOAd9VGV02yOhmVCuciU6uM1rISK4=;
+ b=fLXWOU/xWe0QE5uAFlVlhR6s3oYbBoJMZFh8bHHYwbChrpcwos8p/XpHlDRB1sWgKt
+ G9OoLMhWQmOwCM2xGD9kM2DTc420Eu4eHG/fhRNtzEvap8N1c5QJqD/bad633DzST6ZM
+ LJ/IEnv/1b95t25tS5jjqXETRdPg1fMolvF8zNunoaXOtA97ntVAxTfUChtojnYWApvw
+ YZ2f7aorL1M+PehfmmxWMXNVVNrwubRSOH+2pGz+dyvC2pym9/mVjZBvvD4keLv6wB3x
+ NT0SfcKNjJY1YKmeKhLIJA0jOltNZR+3XdA8RmiB0uhdUiJjlJ9NXzpuD9rmveWQM/6h
+ erGw==
+X-Gm-Message-State: AOJu0Yy4r+8Z9EO1/iOboJcZqXyY8XWrfKjlNrr6MEiBSPiMd3TP49cj
+ cJX8mecmpbiB82UZCZDZnfmTom2tMksmIrSKDnxF5kFG4cyWtoukf8MlXvfZB8bQQgcq2jRNW+W
+ OmYIamPF1PkGwngao8XrQHypPP986r1JFOhT+08QLFDMUtrgpwoGu5DLqp7jhvVRLzD60fi28oN
+ MkM1dBETgUdW/XiIPWSiknokK0eJ4=
+X-Received: by 2002:a05:6a20:411f:b0:19a:132:e893 with SMTP id
+ y31-20020a056a20411f00b0019a0132e893mr1035568pze.63.1705895727793; 
+ Sun, 21 Jan 2024 19:55:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFaoRbVkzvAanfO1PQ6JnIfpzEeukJmvQ9amm0C4+xxE1JXlnkpD8744/W+Qo6HNVhdghgKIuTHaMq/eOqzPgY=
+X-Received: by 2002:a05:6a20:411f:b0:19a:132:e893 with SMTP id
+ y31-20020a056a20411f00b0019a0132e893mr1035563pze.63.1705895727543; Sun, 21
+ Jan 2024 19:55:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20240116205817.344178-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20240116205817.344178-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 22 Jan 2024 13:39:11 +1000
-Message-ID: <CAKmqyKOeYV6_Li8Q6L2gvWjYsZqQC+CiCOiFhiwti+_4X_7qqg@mail.gmail.com>
-Subject: Re: [PATCH v3 00/13] target/riscv: add 'cpu->cfg.vlenb',
- remove 'cpu->cfg.vlen'
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, richard.henderson@linaro.org, max.chou@sifive.com
+References: <20240118091035.48178-1-peterx@redhat.com>
+In-Reply-To: <20240118091035.48178-1-peterx@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 22 Jan 2024 11:55:15 +0800
+Message-ID: <CACGkMEszynKON4nCSNaWF7-gLWarcsYXJSttp6YW+NXidMKPFw@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Drop myself as VT-d maintainers
+To: peterx@redhat.com
+Cc: qemu-devel@nongnu.org, Yi Liu <yi.l.liu@intel.com>, eric.auger@redhat.com, 
+ Alex Williamson <alex.williamson@redhat.com>, zhenzhong.duan@intel.com, 
+ "Michael S . Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.287,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,75 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 17, 2024 at 7:41=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Thu, Jan 18, 2024 at 5:10=E2=80=AFPM <peterx@redhat.com> wrote:
 >
-> Hi,
+> From: Peter Xu <peterx@redhat.com>
 >
-> In this v3 the most significant change is with vext_get_vlmax() from
-> cpu.h. The logic used in this function is also used in at least two
-> other places, trans_vrgather_vi() and trans_vrgather_vx(), and we need
-> to make changes in them to remove 'vlen' occurrences.
+> Due to my own limitation on bandwidth, I noticed that unfortunately I won=
+'t
+> have time to review VT-d patches at least in the near future.  Meanwhile =
+I
+> expect a lot of possibilities could actually happen in this area in the
+> near future.
 >
-> Instead, we're adding an extra patch (11) to rework vext_get_vlmax()
-> arguments to make the function usable in trans_vrgather_v*(). This
-> rework includes some naming changes in local variables - we're using
-> 'vsew' and 'vlmul' more often to be less ambiguous when reading code.
+> To reflect that reality, I decided to drop myself from the VT-d role.  It
+> shouldn't affect much since we still have Jason around like usual, and
+> Michael on top.  But I assume it'll always be good if anyone would like t=
+o
+> fill this role up.
 >
-> Series based on Alistair's riscv-to-apply.next.
+> I'll still work on QEMU.  So I suppose anyone can still copy me if one
+> thinks essential.
 >
-> Patches missing review: patches 10, 11, 12.
->
-> Changes from v3:
-> - patch 8:
->   - changed fractional LMUL comment to show the expansion
-> - patches 9 and 10: switched places
-> - patch 10 (former 9):
->   - use 'vlen' in vext_get_vlmax() to avoid a negative shift
-> - patch 11 (new):
->   - change vext_get_vlmax() to use 'vlenb', 'vsew' and 'lmul'
-> - patch 12 (former 11):
->   - use vext_get_vlmax() instead of calculating vlmax manually
-> - v2 link: https://lore.kernel.org/qemu-riscv/20240115222528.257342-1-dba=
-rboza@ventanamicro.com/
->
->
-> Daniel Henrique Barboza (13):
->   target/riscv: add 'vlenb' field in cpu->cfg
->   target/riscv/csr.c: use 'vlenb' instead of 'vlen'
->   target/riscv/gdbstub.c: use 'vlenb' instead of shifting 'vlen'
->   target/riscv/insn_trans/trans_rvbf16.c.inc: use cpu->cfg.vlenb
->   target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb'
->   target/riscv/insn_trans/trans_rvvk.c.inc: use 'vlenb'
->   target/riscv/vector_helper.c: use 'vlenb'
->   target/riscv/vector_helper.c: use vlenb in HELPER(vsetvl)
->   target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb' in MAXSZ()
->   target/riscv/cpu.h: use 'vlenb' in vext_get_vlmax()
->   target/riscv: change vext_get_vlmax() arguments
->   trans_rvv.c.inc: use vext_get_vlmax() in trans_vrgather_v*()
->   target/riscv/cpu.c: remove cpu->cfg.vlen
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Do you mind rebasing this on
-https://github.com/alistair23/qemu/tree/riscv-to-apply.next ?
+Thanks a lot for the work for vtd.
 
-Alistair
+Acked-by: Jason Wang <jasowang@redhat.com>
 
->
->  target/riscv/cpu.c                         |  12 +-
->  target/riscv/cpu.h                         |  14 +-
->  target/riscv/cpu_cfg.h                     |   2 +-
->  target/riscv/cpu_helper.c                  |  11 +-
->  target/riscv/csr.c                         |   4 +-
->  target/riscv/gdbstub.c                     |   6 +-
->  target/riscv/insn_trans/trans_rvbf16.c.inc |  12 +-
->  target/riscv/insn_trans/trans_rvv.c.inc    | 152 ++++++++++-----------
->  target/riscv/insn_trans/trans_rvvk.c.inc   |  16 +--
->  target/riscv/tcg/tcg-cpu.c                 |   4 +-
->  target/riscv/vector_helper.c               |  43 +++---
->  11 files changed, 148 insertions(+), 128 deletions(-)
->
-> --
-> 2.43.0
->
->
+Thanks
+
 
