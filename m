@@ -2,101 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91193836C07
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 17:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41541836C75
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 18:06:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRxaU-0006g6-Te; Mon, 22 Jan 2024 11:55:55 -0500
+	id 1rRxjB-0002kW-9P; Mon, 22 Jan 2024 12:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rRxaT-0006dr-2O
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:53 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRxiy-0002jx-Tb
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:04:41 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rRxaQ-0004ki-HA
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 11:55:52 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E3F931F388;
- Mon, 22 Jan 2024 16:55:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705942549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
- b=h7BV3gdUrycWtX6fb4+DlHod81r2zJDFeWqQIqN0UDZihFB9gx3eQc2nCBEXfhhRyGIza9
- VKkQoHJ2JdAPASlhFV8DxSu6OSV2SDm9hdPLDGe5CUQ+Oe2nJyo07QkTnCJqxrlz9aha7R
- K1ZxHXg8KhEusq3XBJ0SeDGwBh4x89A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705942549;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
- b=EzVna9xZLr+3IboxXKcprJhKtn0UX+mVY30bUDccOpP//ZJU8a724g8kVqtyOW4eoLhS8P
- Sn5cH2/x4JqBsSCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1705942548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
- b=BHnJQxuY+l7FlW6+vimwqcVPm1NRUNZumAqFyUh2etbO+hpGESkSd0R0WoTBFM/5eQHzCE
- o0Bn8l/PYt7GiouSb88yqmawZSUO5WJZ74xONKFUjrDIT3G6ewnsooYfImka7T2hvdN50Y
- 8AKc4Yq2/Imd8k1LJTTRa/D2R5Ib2+M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1705942548;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=sRT3/GSJvvqwQ0XaNCEZq++LisKHS1+Cm/MbKT85N1M=;
- b=LIMRN0iVOFHaT8CUgUbaCclQcGmjo7kUlIG8tWvmPlLFS95t6GGZnk+zsmMB+TJB6IXCXr
- 2T58zdas5KLff5DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 661D4136A4;
- Mon, 22 Jan 2024 16:55:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id VXK1CxSermUeBwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 22 Jan 2024 16:55:48 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/5] migration: Fix use-after-free of migration state
- object
-In-Reply-To: <Za5BkH5au-5h0imh@x1n>
-References: <20240119233922.32588-1-farosas@suse.de>
- <20240119233922.32588-2-farosas@suse.de> <Za46DZfpCGe9rdLs@x1n>
- <Za5BkH5au-5h0imh@x1n>
-Date: Mon, 22 Jan 2024 13:55:45 -0300
-Message-ID: <87le8hgve6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rRxix-0006Py-6e
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 12:04:40 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-556c3f0d6c5so4273672a12.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 09:04:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705943077; x=1706547877; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=KSBqd9k1kWVdc0fAFzc8l9sC4D/kg9Zdss044DvcT4M=;
+ b=ei+rK0r1em25ljn/cO1sUG7IE3gzyZZIe2VYPFiBjjdjKEPDpi4OsRfYSRK804poY/
+ 4c++85YJUZY9cx7u4KtLS0eGoqNdd7mOCgyoTXb1SAgP3BO/jSsj4iIW3cy/bs2Db0FG
+ TZJjtzDnwIQ4Gg3Jyy8ZniuYaNdxXY0xFKy1BUpbAvqU5F2hcZrxrbRyMAz66/hMYu5L
+ YHW/ZKkYefBm0feAoaU94B1QhBVeXbU+8ZUnP7Uu2Mp3rb4YLpOUkZsK9UNAmgsHgSHn
+ sz/CDo28WTx2W79QofgMZv8Bm0RkhBPgNlvvwummdt+wDMJyq9q4qTDUkopkbhUBoVBX
+ g3gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705943077; x=1706547877;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KSBqd9k1kWVdc0fAFzc8l9sC4D/kg9Zdss044DvcT4M=;
+ b=VE31h05ZicYvFMXAUeGT/qyR6YPCAJ26j4ztbHguAfc89sX8tL0RM0/FsLEnmvbBXG
+ PVl8JebKR8v44Ty834zd9QNeZJLssJlo3htanyo4h3QC/eVmwEQW/dWT1cM1sdCuT9Yj
+ q9Ja0ZPqyO4+9ghy2VETH5nX/vVX1159YSHb0wtkVkk3l7L0YlR7hS/p4Oa22o29GbuD
+ 79SJWVNfDD5RUzrmSMfoj50iOpmX/6WOrAjtD/7q5I9sPAlkcr6U4sizxs6xRWX2rJAN
+ eY166mjfo+gyIO16YvKpKTe+fMp5uFCTIO04jyw8j8i7qg/Xbr6HVD8XLksvovtdzBDq
+ UqBw==
+X-Gm-Message-State: AOJu0YzaVZxEtLWEYUZyuN8mhu2KQacKPP6OdpeKXuOS5SVxmCmCqm3i
+ dXT0s/7me9Dpd+0MzyMEErhfzYYppwEL9p9ssLvQO4t8YJNKa5mKJ/z04EY+KY0hmhLladRH0sE
+ 09IydjTOQtw3lots7v+XaxNhtQ82jibTwyBRUMA==
+X-Google-Smtp-Source: AGHT+IHO1KcTJW1u4+mSMIcMvgKv+pdrR3d1yuUOdJeydCxz3r/qSIX8/nj7/54HMnpyW642Dtofnm+JOMJNy1K/mDI=
+X-Received: by 2002:aa7:d7d2:0:b0:55b:fef2:121c with SMTP id
+ e18-20020aa7d7d2000000b0055bfef2121cmr88171eds.9.1705943076965; Mon, 22 Jan
+ 2024 09:04:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-0.988]; RCPT_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
+In-Reply-To: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Jan 2024 17:04:26 +0000
+Message-ID: <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] Avoid conflicting types for 'copy_file_range'
+To: Manolo de Medici <manolodemedici@gmail.com>
+Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org, 
+ Qemu-block <qemu-block@nongnu.org>, Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,165 +86,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+(Cc'ing the block folks)
 
-> On Mon, Jan 22, 2024 at 05:49:01PM +0800, Peter Xu wrote:
->> On Fri, Jan 19, 2024 at 08:39:18PM -0300, Fabiano Rosas wrote:
->> > We're currently allowing the process_incoming_migration_bh bottom-half
->> > to run without holding a reference to the 'current_migration' object,
->> > which leads to a segmentation fault if the BH is still live after
->> > migration_shutdown() has dropped the last reference to
->> > current_migration.
->> > 
->> > In my system the bug manifests as migrate_multifd() returning true
->> > when it shouldn't and multifd_load_shutdown() calling
->> > multifd_recv_terminate_threads() which crashes due to an uninitialized
->> > multifd_recv_state.
->> > 
->> > Fix the issue by holding a reference to the object when scheduling the
->> > BH and dropping it before returning from the BH. The same is already
->> > done for the cleanup_bh at migrate_fd_cleanup_schedule().
->> > 
->> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> > ---
->> >  migration/migration.c | 2 ++
->> >  1 file changed, 2 insertions(+)
->> > 
->> > diff --git a/migration/migration.c b/migration/migration.c
->> > index 219447dea1..cf17b68e57 100644
->> > --- a/migration/migration.c
->> > +++ b/migration/migration.c
->> > @@ -648,6 +648,7 @@ static void process_incoming_migration_bh(void *opaque)
->> >                        MIGRATION_STATUS_COMPLETED);
->> >      qemu_bh_delete(mis->bh);
->> >      migration_incoming_state_destroy();
->> > +    object_unref(OBJECT(migrate_get_current()));
->> >  }
->> >  
->> >  static void coroutine_fn
->> > @@ -713,6 +714,7 @@ process_incoming_migration_co(void *opaque)
->> >      }
->> >  
->> >      mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
->> > +    object_ref(OBJECT(migrate_get_current()));
->> >      qemu_bh_schedule(mis->bh);
->> >      return;
->> >  fail:
->> > -- 
->> > 2.35.3
->> > 
->> 
-> I know I missed something, but I'd better ask: use-after-free needs to
-> happen only after migration_shutdown() / qemu_cleanup(), am I right?
-> 
-> If so, shouldn't qemu_main_loop() already returned?  Then how could any BH
-> keep running (including migration's) without qemu_main_loop()?
-
-The aio_bh_poll() -> aio_bh_call() sequence doesn't depend on
-qemu_main_loop(). In the stack you found below it happens after
-aio_wait_bh_oneshot() -> AIO_WAIT_WHILE -> aio_poll().
-
-The stack I see is:
-
-#0  0x00005625c97bffc0 in multifd_recv_terminate_threads (err=0x0) at ../migration/multifd.c:992
-#1  0x00005625c97c0086 in multifd_load_shutdown () at ../migration/multifd.c:1012
-#2  0x00005625c97b6163 in process_incoming_migration_bh (opaque=0x5625cbce59f0) at ../migration/migration.c:624
-#3  0x00005625c9c740c2 in aio_bh_call (bh=0x5625cc9e1320) at ../util/async.c:169
-#4  0x00005625c9c741de in aio_bh_poll (ctx=0x5625cba2a670) at ../util/async.c:216
-
-here^
-
-#5  0x00005625c9af0599 in bdrv_graph_wrunlock () at ../block/graph-lock.c:170
-#6  0x00005625c9aba8bd in bdrv_close (bs=0x5625cbcb3d80) at ../block.c:5099
-#7  0x00005625c9abb71a in bdrv_delete (bs=0x5625cbcb3d80) at ../block.c:5501
-#8  0x00005625c9abe840 in bdrv_unref (bs=0x5625cbcb3d80) at ../block.c:7075
-#9  0x00005625c9abe865 in bdrv_schedule_unref_bh (opaque=0x5625cbcb3d80) at ../block.c:7083
-#10 0x00005625c9c740c2 in aio_bh_call (bh=0x5625cbde09d0) at ../util/async.c:169
-#11 0x00005625c9c741de in aio_bh_poll (ctx=0x5625cba2a670) at ../util/async.c:216
-#12 0x00005625c9af0599 in bdrv_graph_wrunlock () at ../block/graph-lock.c:170
-#13 0x00005625c9ae05db in blk_remove_bs (blk=0x5625cbcc1070) at ../block/block-backend.c:907
-#14 0x00005625c9adfb1b in blk_remove_all_bs () at ../block/block-backend.c:571
-#15 0x00005625c9abab0d in bdrv_close_all () at ../block.c:5146
-#16 0x00005625c97892e4 in qemu_cleanup (status=0) at ../system/runstate.c:880
-#17 0x00005625c9a58081 in qemu_default_main () at ../system/main.c:38
-#18 0x00005625c9a580af in main (argc=35, argv=0x7ffe30ab0578) at ../system/main.c:48
-
-> Hmm, I saw a pretty old stack mentioned in commit fd392cfa8e6:
+On Thu, 18 Jan 2024 at 16:03, Manolo de Medici <manolodemedici@gmail.com> wrote:
 >
->     Original output:
->     qemu-system-x86_64: terminating on signal 15 from pid 31980 (<unknown process>)
->     =================================================================
->     ==31958==ERROR: AddressSanitizer: heap-use-after-free on address 0x61900001d210
->       at pc 0x555558a535ca bp 0x7fffffffb190 sp 0x7fffffffb188
->     READ of size 8 at 0x61900001d210 thread T0 (qemu-vm-0)
->         #0 0x555558a535c9 in migrate_fd_cleanup migration/migration.c:1502:23
->         #1 0x5555594fde0a in aio_bh_call util/async.c:90:5
->         #2 0x5555594fe522 in aio_bh_poll util/async.c:118:13
->         #3 0x555559524783 in aio_poll util/aio-posix.c:725:17
->         #4 0x555559504fb3 in aio_wait_bh_oneshot util/aio-wait.c:71:5
->         #5 0x5555573bddf6 in virtio_blk_data_plane_stop
->           hw/block/dataplane/virtio-blk.c:282:5
->         #6 0x5555589d5c09 in virtio_bus_stop_ioeventfd hw/virtio/virtio-bus.c:246:9
->         #7 0x5555589e9917 in virtio_pci_stop_ioeventfd hw/virtio/virtio-pci.c:287:5
->         #8 0x5555589e22bf in virtio_pci_vmstate_change hw/virtio/virtio-pci.c:1072:9
->         #9 0x555557628931 in virtio_vmstate_change hw/virtio/virtio.c:2257:9
->         #10 0x555557c36713 in vm_state_notify vl.c:1605:9
->         #11 0x55555716ef53 in do_vm_stop cpus.c:1074:9
->         #12 0x55555716eeff in vm_shutdown cpus.c:1092:12
->         #13 0x555557c4283e in main vl.c:4617:5
->         #14 0x7fffdfdb482f in __libc_start_main
->           (/lib/x86_64-linux-gnu/libc.so.6+0x2082f)
->         #15 0x555556ecb118 in _start (x86_64-softmmu/qemu-system-x86_64+0x1977118)
+> Compilation fails on systems where copy_file_range is already defined as a
+> stub.
+
+What do you mean by "stub" here ? If the system headers define
+a prototype for the function, I would have expected the
+meson check to set HAVE_COPY_FILE_RANGE, and then this
+function doesn't get defined at all. That is, the prototype
+mismatch shouldn't matter because if the prototype exists we
+use the libc function, and if it doesn't then we use our version.
+
+> The prototype of copy_file_range in glibc returns an ssize_t, not an off_t.
 >
-> Would that be the same case that you mentioned here?  As vm_shutdown() is
-> indeed after migration_shutdown().
+> The function currently only exists on linux and freebsd, and in both cases
+> the return type is ssize_t
 >
-> Even if so, two follow up comments..
+> Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
+> ---
+>  block/file-posix.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 >
-> (1) How did it help if process_incoming_migration_bh() took ref on
->     MigrationState*?  I didn't even see it touching the object (instead, it
->     uses the incoming object)?
+> diff --git a/block/file-posix.c b/block/file-posix.c
+> index 35684f7e21..f744b35642 100644
+> --- a/block/file-posix.c
+> +++ b/block/file-posix.c
+> @@ -2000,12 +2000,13 @@ static int handle_aiocb_write_zeroes_unmap(void *opaque)
+>  }
+>
+>  #ifndef HAVE_COPY_FILE_RANGE
+> -static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
+> -                             off_t *out_off, size_t len, unsigned int flags)
+> +ssize_t copy_file_range (int infd, off_t *pinoff,
+> +                         int outfd, off_t *poutoff,
+> +                         size_t length, unsigned int flags)
 
-We touch MigrationState every time we check for a capability. See the
-stack I posted above: process_incoming_migration_bh() ->
-multifd_load_shutdown().
+No space after "copy_file_range". No need to rename all the
+arguments either.
 
-void multifd_load_shutdown(void)
-{
-    if (migrate_multifd()) {        <-- HERE
-        multifd_recv_terminate_threads(NULL);
-    }
-}
+>  {
+>  #ifdef __NR_copy_file_range
+> -    return syscall(__NR_copy_file_range, in_fd, in_off, out_fd,
+> -                   out_off, len, flags);
+> +    return (ssize_t)syscall(__NR_copy_file_range, infd, pinoff, outfd,
+> +                            poutoff, length, flags);
 
-The bug reproduces *without* multifd, because that check passes and we
-go into multifd code that has not been initialized.
+Don't need a cast here, because returning the value will
+automatically cast it to the right thing.
 
-side note: we should probably introduce a MigrationOutgoingState to pair
-with MigrationIncomingState and have both inside a global MigrationState
-that contains the common elements. If you agree I can add this to our
-todo list.
+>  #else
+>      errno = ENOSYS;
+>      return -1;
 
-> (2) This is what I'm just wondering.. on whether we should clear
->     current_migration to NULL in migration_shutdown() after we unref it.
->     Maybe it'll make such issues abort in an even clearer way.
+These changes aren't wrong, but as noted above I'm surprised that
+the Hurd gets into this code at all.
 
-It hits the assert at migrate_get_current():
+Note for Kevin: shouldn't this direct use of syscall() have
+some sort of OS-specific guard on it? There's nothing that
+says that a non-Linux host OS has to have the same set of
+arguments to an __NR_copy_file_range syscall. If this
+fallback is a Linux-ism we should guard it appropriately.
 
-#4  0x00005643006e22ae in migrate_get_current () at ../migration/migration.c:246
-#5  0x00005643006f0415 in migrate_late_block_activate () at ../migration/options.c:275
-#6  0x00005643006e30e0 in process_incoming_migration_bh (opaque=0x564303b279f0) at ../migration/migration.c:603
-#7  0x0000564300ba10cd in aio_bh_call (bh=0x564304823320) at ../util/async.c:169
-#8  0x0000564300ba11e9 in aio_bh_poll (ctx=0x56430386c670) at ../util/async.c:216
-...
-#20 0x00005643006b62e4 in qemu_cleanup (status=0) at ../system/runstate.c:880
-#21 0x000056430098508c in qemu_default_main () at ../system/main.c:38
-#22 0x00005643009850ba in main (argc=35, argv=0x7ffc8bf703c8) at
-#../system/main.c:4
+For that matter, at what point can we just remove the fallback
+entirely? copy_file_range() went into Linux in 4.5, apparently,
+which is now nearly 8 years old. Maybe all our supported
+hosts now have a new enough kernel and we can drop this
+somewhat ugly syscall() wrapper...
 
-Note that this breaks at migrate_late_block_activate(), which is even
-earlier than the bug scenario at multifd_load_shutdown().
-
-However we cannot set NULL currently because the BHs are still running
-after migration_shutdown(). I don't know of a safe way to cancel/delete
-a BH after it has (potentially) been scheduled already.
+thanks
+-- PMM
 
