@@ -2,98 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBDE83758C
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 22:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8827283759B
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 22:50:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS20Q-0008BY-Et; Mon, 22 Jan 2024 16:38:58 -0500
+	id 1rS2AW-0003Ye-Nv; Mon, 22 Jan 2024 16:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rS20O-0008BG-Co; Mon, 22 Jan 2024 16:38:56 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rS2AT-0003YO-Jj
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:49:21 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rS20M-0006cL-MB; Mon, 22 Jan 2024 16:38:56 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1rS2AR-0000Ti-2U
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 16:49:21 -0500
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MLHESa025242; Mon, 22 Jan 2024 21:38:51 GMT
+ 40MKbNUo015995; Mon, 22 Jan 2024 21:49:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=pp1;
- bh=6f5rEqJGkawSR9gyWKH3B9MU5YHoXAqaIsLZQMdNxoE=;
- b=V9vPL4hmhR8mxu9q8dV6/8aJrbBcGuU5oTOSb+qLxzPs8tIUYEmjr2AB7kHP9xccSULS
- W5H3PtVPCVXPpb/USHplHlPwJGTuOBSCWxBKJymatJ7uBLFVfV5kt7hKhTNA1llp+S8/
- ctgn8IzLpZ4jJdsx1HW/4G1sLuQIYuOgHKAhlvKiczWKAhHnyEYxCXaPfrTvztnRNrTp
- wRvpsa1CxG09AYi670lzO6z9pX8zQVskv8CAnMIbF9s6WeZgbzDWr+m0Go7u4kG94Ir7
- 0Gi3mR4hDFvOH9CgLSOcewMieTSuWSOjUelNoE229BZW4xOwr5Cmgj1D4IQ1Ur0jRtVF cA== 
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=Y58ayR1uNZVFspwMfpr3hcZckA4v2BVgk9cODCHV0M0=;
+ b=B8UjbL54ZFL9YjiA4pywqwkdH878BqGkRPLzoTkvtfULgwGwBE3VcFO+oesymH0asGvp
+ ZoMD6TFluENKEpBPxUEhZa6hM6G6ZYDYOFpdHVqlqhmT2hGYnHJy0jb3t50RdYyJXKeZ
+ PYtOxG0keDCiTgDQ6YfXWBUZuhgJq5uodB2Mki0fhUx6ni7cz3f8rEaB0ac2r5EHQ2IU
+ GlkeEmKlsKmDyUAxPGwf7rEOjjAatXcnyX8ZXvimgxekkDkGPRq+eJ+G4cXPu6Cw3jlZ
+ PpsWK3wRZKCtvWhrkvjGjMeDDuH+Nrcxm8UukS6OJAnITG4SGySIa7o1nd8jvW/i3BVQ ag== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsy4f1ve9-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsyj61g4t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:38:51 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40MLHLJ8025522;
- Mon, 22 Jan 2024 21:38:50 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsy4f1vdp-1
+ Mon, 22 Jan 2024 21:49:07 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40MLf41a026398;
+ Mon, 22 Jan 2024 21:49:07 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vsyj61g42-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:38:50 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40MKnDJ8028287; Mon, 22 Jan 2024 21:38:50 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vru72asbs-1
+ Mon, 22 Jan 2024 21:49:07 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40MIbFvp010855; Mon, 22 Jan 2024 21:49:05 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrrvyke5a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Jan 2024 21:38:50 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40MLcmP160096974
+ Mon, 22 Jan 2024 21:49:05 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40MLn4AQ7930424
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Jan 2024 21:38:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D6CB20049;
- Mon, 22 Jan 2024 21:38:48 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D191220040;
- Mon, 22 Jan 2024 21:38:47 +0000 (GMT)
-Received: from heavy (unknown [9.171.83.169])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 22 Jan 2024 21:38:47 +0000 (GMT)
-Date: Mon, 22 Jan 2024 22:38:46 +0100
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org
-Subject: Re: [PATCH v3 15/38 6/6] target/s390x: Improve general case of
- disas_jcc
-Message-ID: <grg5xrqkzomr4aqoc2vlmzwkfgeasw7caxxyqo3lhehvodztei@igmdmyoa7vgu>
-References: <20240110224408.10444-16-richard.henderson@linaro.org>
- <20240119232302.50393-6-philmd@linaro.org>
+ Mon, 22 Jan 2024 21:49:05 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B461758055;
+ Mon, 22 Jan 2024 21:49:04 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E908958043;
+ Mon, 22 Jan 2024 21:49:03 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.187.25]) by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 22 Jan 2024 21:49:03 +0000 (GMT)
+Message-ID: <bf9d0a0f1ed254a34ef8a4891eff31681419dc5a.camel@linux.ibm.com>
+Subject: Re: [PATCH 4/5] hw/s390x/css-bridge: switch virtual-css bus to
+ 3-phase-reset
+From: Eric Farman <farman@linux.ibm.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Halil Pasic
+ <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Date: Mon, 22 Jan 2024 16:49:03 -0500
+In-Reply-To: <20240119163512.3810301-5-peter.maydell@linaro.org>
+References: <20240119163512.3810301-1-peter.maydell@linaro.org>
+ <20240119163512.3810301-5-peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240119232302.50393-6-philmd@linaro.org>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: r_g_4FDKpWhXkKRdB5rbONxLjZirsYmz
-X-Proofpoint-ORIG-GUID: 0_fZmHSlfBD5nbLIZA2_d2qRYpjsWkGM
+X-Proofpoint-GUID: u1DC1oechHXv_llS114XUbiFFh0UbgWu
+X-Proofpoint-ORIG-GUID: wiuVixUzVqpEWc2nGwMV_TuXCyXKUYGU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-22_09,2024-01-22_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 mlxlogscore=494 bulkscore=0 adultscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 suspectscore=0
+ suspectscore=0 phishscore=0
+ adultscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999 priorityscore=1501
+ impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401220153
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ definitions=main-2401220154
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -116,20 +120,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 20, 2024 at 12:23:02AM +0100, Philippe Mathieu-Daudé wrote:
-> From: Richard Henderson <richard.henderson@linaro.org>
-> 
-> Avoid code duplication by handling 7 of the 14 cases
-> by inverting the test for the other 7 cases.
-> 
-> Use TCG_COND_TSTNE for cc in {1,3}.
-> Use (cc - 1) <= 1 for cc in {1,2}.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, 2024-01-19 at 16:35 +0000, Peter Maydell wrote:
+> Switch the s390x virtual-css bus from using BusClass::reset to the
+> Resettable interface.
+>=20
+> This has no behavioural change, because the BusClass code to support
+> subclasses that use the legacy BusClass::reset will call that method
+> in the hold phase of 3-phase reset.
+>=20
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  target/s390x/tcg/translate.c | 52 +++++++++++-------------------------
->  1 file changed, 15 insertions(+), 37 deletions(-)
+> =C2=A0hw/s390x/css-bridge.c | 5 +++--
+> =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
 
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
