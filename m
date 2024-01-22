@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB7083719F
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 20:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C8C8371AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 20:02:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRzXC-0005gX-7P; Mon, 22 Jan 2024 14:00:38 -0500
+	id 1rRzXD-0005hE-OS; Mon, 22 Jan 2024 14:00:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rRzXA-0005fz-CR; Mon, 22 Jan 2024 14:00:36 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1rRzXB-0005gd-Qg; Mon, 22 Jan 2024 14:00:37 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1rRzX8-00025H-BX; Mon, 22 Jan 2024 14:00:36 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-33934567777so1605617f8f.1; 
- Mon, 22 Jan 2024 11:00:33 -0800 (PST)
+ id 1rRzX9-00025P-PO; Mon, 22 Jan 2024 14:00:37 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a2821884a09so264049966b.2; 
+ Mon, 22 Jan 2024 11:00:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705950032; x=1706554832; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1705950033; x=1706554833; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Mbe8IJdT/146B0yLIjQfTQC3deMWdsDoJBafFhCKv3w=;
- b=kp9NF0gXsYcCBHmo/XemZumEs7ooq0sycUuYlNHe+xFypftokrbLLlL2YaxiIgzqe3
- ixfWSWCupI80HdQOh19Nsz6LaL2dEOzq1T10diF8NB2+UCZaOxb5m3OAzM7vDWTgtO8o
- gWF5md73KvHADrWXFAZZ1L66JV1/cBQDH2Ccrc0PfpXhGTjIOSotUUoaHkgRcvcJPoJU
- 2lqDwk+8wvQhfS2gCX3/RdbkNqWtpJLeVQtJrFcgoI5dainTntfhG2II7Z0W/wXfKxy/
- QjaT3t/64EQfnsM34nEFTkRgwDxIr884/P7KdJ8Vr3U/gbitiSZGBH2juA688Mu/zfuQ
- HV6Q==
+ bh=yX93vARGE4EZ8dVsl+J/Ugdwgba6V1YzNVL4jgpJfRk=;
+ b=P4OxwImrrls8c1M/n7Pw/t/0L0doFOnDPJqJuBwUPMMLsQX3Smj4cRhv+XLpKoAG46
+ to9QB4UITrT5Y+snzIm8wZToOFRocGegR299DLVNojYvzPD1cLjeLamY2YkCOhmekspy
+ iIiCk31NJdQsk+Exx3jT4XdvIuytajaoqbJv4MaYSADU3bR0/AA6kUelgaYBizhHLufa
+ ZNjQnQYQrNx8JwX1IQF7aeeF3xCZrg4z2JBEKfjYZuSU2BfE8TFhjD1YSLQ4KvrnJ6ea
+ pYZgxSyut0a4F3aIbG6257NUaeLSzNS8MTWx1uLkuTL+I7fWMw01zaGT8LCPyOGm5iPB
+ NjdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705950032; x=1706554832;
+ d=1e100.net; s=20230601; t=1705950033; x=1706554833;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mbe8IJdT/146B0yLIjQfTQC3deMWdsDoJBafFhCKv3w=;
- b=B3vHFR3ctrujnmnZQw2XbvD9+52KxfI1SCZNhKo2b9pntrN5o8gqFCU/cjXT4LlBvF
- Ql3Jmfj8LGLaKaOHgnb4PNsqb4VMafAyblDHSx7n5xHkclfhh/DNdjbJYk9ddewKTpxj
- Ijnx5sk+zp2VOuZOM6+gvcgy05k4i05gDaTF6ZhudmZa2aQCwiGwX3p9K4x7xzC12gW8
- y8Q3Cr58ciwOdW/c5Rg6oohRC74rn4JxPAGd00SEVN0JKmTYcDqRrdZ+E7OOzJCz7lgZ
- RyVaDVQpBhWxdD6YzXBDF8iNlFYJpZb6IemmMKfWx7Bhu1phmtENFI5yupcQoPyPjkGr
- qxZw==
-X-Gm-Message-State: AOJu0Yz6qtjL1b4PdxLpaz+eRwdtfNjnHIHm58kXpPD460SGmJVWJAT/
- udfF4tR39XV3x1Ke/+ULNOkDPW9DTThsTBvEYmBkx+g32+o1EV9qkWVCAVSl9uA=
-X-Google-Smtp-Source: AGHT+IG5LghvUcps8bruBNtCTjQZy3nUnqAJ2aDtzJprHV0a5cs3ubjPP2hBTRSTFUBBoIwhLc+4eA==
-X-Received: by 2002:a7b:c4ca:0:b0:40e:545b:80e6 with SMTP id
- g10-20020a7bc4ca000000b0040e545b80e6mr2534498wmk.158.1705950032060; 
- Mon, 22 Jan 2024 11:00:32 -0800 (PST)
+ bh=yX93vARGE4EZ8dVsl+J/Ugdwgba6V1YzNVL4jgpJfRk=;
+ b=TeUmVnVdXYyE1a6FB+9K+Zf7gIG8r+L0xlQfmbDGy+8IZfQk+0HOXm9Nvxp4J8LT0S
+ JyQVx+y/llhsg4DD6BbRs/UHQ31FqALR4KoA0Nj55Umed+CyAfY+G/kIKE03pUz5bvEw
+ 4msDCDUUcOjcUcFT7ztmLWy6XTKj9BxqleTFVW5Q+aDRIagGlOIU3pStaqNcWCcxtuLk
+ M+gtAkGLrDJ39Apt5ZGCAjvvp3qd4B5Vr2UKR6UAGufihVcIboIUdZqaChg0lYHeZio/
+ rMDparAhrCQbEndc/Jv9VwrYuC+JssZsc896hxYnuXt0ZdTjP70jIqfSI0Q4kxbGPZ/t
+ 0H9A==
+X-Gm-Message-State: AOJu0Yw/PqZT41B4JwFb04uXY9VxWi7HsAa+W+B/SQkHj/bbOIgIGfUP
+ cUeTnQDw/cIEKBLSUdcR3pg+zWh8AP5t+laQHdTBZnCGL7gJ8TpgJnt+v2UlZ4k=
+X-Google-Smtp-Source: AGHT+IE42KsObPWWVwtqZfQZbkSl3qEB2yLz+M/xoPEcqzhATBev0VdaQ3FX8OwE7mvBMlyfQ3VZSw==
+X-Received: by 2002:a17:906:1913:b0:a26:c376:d1dc with SMTP id
+ a19-20020a170906191300b00a26c376d1dcmr2742328eje.70.1705950033257; 
+ Mon, 22 Jan 2024 11:00:33 -0800 (PST)
 Received: from localhost.localdomain ([2a02:2454:367:1500:fa08:d4d:b569:ac2d])
  by smtp.gmail.com with ESMTPSA id
- k3-20020a170906a38300b00a298d735a1bsm13842413ejz.149.2024.01.22.11.00.30
+ k3-20020a170906a38300b00a298d735a1bsm13842413ejz.149.2024.01.22.11.00.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 11:00:31 -0800 (PST)
+ Mon, 22 Jan 2024 11:00:32 -0800 (PST)
 From: Sam Li <faithilikerun@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -64,17 +64,16 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  dlemoal@kernel.org, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>, Sam Li <faithilikerun@gmail.com>
-Subject: [RFC v3 6/7] hw/nvme: refactor zone append write using block layer
- APIs
-Date: Mon, 22 Jan 2024 20:00:12 +0100
-Message-Id: <20240122190013.41302-7-faithilikerun@gmail.com>
+Subject: [RFC v3 7/7] hw/nvme: make ZDED persistent
+Date: Mon, 22 Jan 2024 20:00:13 +0100
+Message-Id: <20240122190013.41302-8-faithilikerun@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240122190013.41302-1-faithilikerun@gmail.com>
 References: <20240122190013.41302-1-faithilikerun@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=faithilikerun@gmail.com; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,306 +96,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Zone descriptor extension data (ZDED) is not persistent across QEMU
+restarts. The zone descriptor extension valid bit (ZDEV) is part of
+zone attributes, which sets to one when the ZDED is associated with
+the zone.
+
+With the qcow2 img as the backing file, the NVMe ZNS device stores
+the zone attributes at the following eight bit of zone type bit of write
+pointers for each zone. The ZDED is stored as part of zoned metadata as
+write pointers.
+
 Signed-off-by: Sam Li <faithilikerun@gmail.com>
 ---
- block/qcow2.c        |   2 +-
- hw/nvme/ctrl.c       | 190 ++++++++++++++++++++++++++++++++-----------
- include/sysemu/dma.h |   3 +
- system/dma-helpers.c |  17 ++++
- 4 files changed, 162 insertions(+), 50 deletions(-)
+ block/qcow2.c                | 45 ++++++++++++++++++++++++++++++++++++
+ hw/nvme/ctrl.c               |  1 +
+ include/block/block-common.h |  1 +
+ 3 files changed, 47 insertions(+)
 
 diff --git a/block/qcow2.c b/block/qcow2.c
-index 0bb249fa6e..43ee0f47b9 100644
+index 43ee0f47b9..f2d58d86c4 100644
 --- a/block/qcow2.c
 +++ b/block/qcow2.c
-@@ -2395,7 +2395,7 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
-     bs->bl.max_open_zones = s->zoned_header.max_open_zones;
-     bs->bl.zone_size = s->zoned_header.zone_size;
-     bs->bl.zone_capacity = s->zoned_header.zone_capacity;
--    bs->bl.write_granularity = BDRV_SECTOR_SIZE;
-+    bs->bl.write_granularity = BDRV_SECTOR_SIZE; /* physical block size */
-     bs->bl.zd_extension_size = s->zoned_header.zd_extension_size;
+@@ -25,6 +25,7 @@
+ #include "qemu/osdep.h"
+ 
+ #include "block/qdict.h"
++#include "block/nvme.h"
+ #include "sysemu/block-backend.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+@@ -197,6 +198,17 @@ qcow2_extract_crypto_opts(QemuOpts *opts, const char *fmt, Error **errp)
+ 
+ #define QCOW2_ZT_IS_CONV(wp)    (wp & 1ULL << 59)
+ 
++static inline void qcow2_set_za(uint64_t *wp, uint8_t za)
++{
++    /*
++     * The zone attribute takes up one byte. Store it after the zoned
++     * bit.
++     */
++    uint64_t addr = *wp;
++    addr |= ((uint64_t)za << 51);
++    *wp = addr;
++}
++
+ /*
+  * To emulate a real zoned device, closed, empty and full states are
+  * preserved after a power cycle. The open states are in-memory and will
+@@ -5053,6 +5065,36 @@ unlock:
+     return ret;
  }
  
++static int coroutine_fn GRAPH_RDLOCK
++qcow2_zns_set_zded(BlockDriverState *bs, uint32_t index)
++{
++    BDRVQcow2State *s = bs->opaque;
++    int ret;
++
++    qemu_co_mutex_lock(&bs->wps->colock);
++    uint64_t *wp = &bs->wps->wp[index];
++    BlockZoneState zs = qcow2_get_zone_state(bs, index);
++    if (zs == BLK_ZS_EMPTY) {
++        if (!qcow2_can_activate_zone(bs)) {
++            goto unlock;
++        }
++
++        qcow2_set_za(wp, NVME_ZA_ZD_EXT_VALID);
++        ret = qcow2_write_wp_at(bs, wp, index);
++        if (ret < 0) {
++            error_report("Failed to set zone extension at 0x%" PRIx64 "", *wp);
++            goto unlock;
++        }
++        s->nr_zones_closed++;
++        qemu_co_mutex_unlock(&bs->wps->colock);
++        return ret;
++    }
++
++unlock:
++    qemu_co_mutex_unlock(&bs->wps->colock);
++    return NVME_ZONE_INVAL_TRANSITION;
++}
++
+ static int coroutine_fn GRAPH_RDLOCK
+ qcow2_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
+                                            int64_t offset, int64_t len)
+@@ -5110,6 +5152,9 @@ qcow2_co_zone_mgmt(BlockDriverState *bs, BlockZoneOp op,
+     case BLK_ZO_OFFLINE:
+         /* There are no transitions from the offline state to any other state */
+         break;
++    case BLK_ZO_SET_ZDED:
++        ret = qcow2_zns_set_zded(bs, index);
++        break;
+     default:
+         error_report("Unsupported zone op: 0x%x", op);
+         ret = -ENOTSUP;
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index e31aa52c06..de41d8bac8 100644
+index de41d8bac8..2799a3ac31 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -1726,6 +1726,95 @@ static void nvme_misc_cb(void *opaque, int ret)
-     nvme_enqueue_req_completion(nvme_cq(req), req);
- }
+@@ -3465,6 +3465,7 @@ static uint16_t nvme_zone_mgmt_send(NvmeCtrl *n, NvmeRequest *req)
+         break;
  
-+typedef struct NvmeZoneCmdAIOCB {
-+    NvmeRequest *req;
-+    NvmeCmd *cmd;
-+    NvmeCtrl *n;
-+
-+    union {
-+        struct {
-+          uint32_t partial;
-+          unsigned int nr_zones;
-+          BlockZoneDescriptor *zones;
-+        } zone_report_data;
-+        struct {
-+          int64_t offset;
-+        } zone_append_data;
-+    };
-+} NvmeZoneCmdAIOCB;
-+
-+static void nvme_blk_zone_append_complete_cb(void *opaque, int ret)
-+{
-+    NvmeZoneCmdAIOCB *cb = opaque;
-+    NvmeRequest *req = cb->req;
-+    int64_t *offset = (int64_t *)&req->cqe;
-+
-+    if (ret) {
-+        nvme_aio_err(req, ret);
-+    }
-+
-+    *offset = nvme_b2l(req->ns, cb->zone_append_data.offset);
-+    nvme_enqueue_req_completion(nvme_cq(req), req);
-+    g_free(cb);
-+}
-+
-+static inline void nvme_blk_zone_append(BlockBackend *blk, int64_t *offset,
-+                                  uint32_t align,
-+                                  BlockCompletionFunc *cb,
-+                                  NvmeZoneCmdAIOCB *aiocb)
-+{
-+    NvmeRequest *req = aiocb->req;
-+    assert(req->sg.flags & NVME_SG_ALLOC);
-+
-+    if (req->sg.flags & NVME_SG_DMA) {
-+        req->aiocb = dma_blk_zone_append(blk, &req->sg.qsg, (int64_t)offset,
-+                                         align, cb, aiocb);
-+    } else {
-+        req->aiocb = blk_aio_zone_append(blk, offset, &req->sg.iov, 0,
-+                                         cb, aiocb);
-+    }
-+}
-+
-+static void nvme_zone_append_cb(void *opaque, int ret)
-+{
-+    NvmeZoneCmdAIOCB *aiocb = opaque;
-+    NvmeRequest *req = aiocb->req;
-+    NvmeNamespace *ns = req->ns;
-+
-+    BlockBackend *blk = ns->blkconf.blk;
-+
-+    trace_pci_nvme_rw_cb(nvme_cid(req), blk_name(blk));
-+
-+    if (ret) {
-+        goto out;
-+    }
-+
-+    if (ns->lbaf.ms) {
-+        NvmeRwCmd *rw = (NvmeRwCmd *)&req->cmd;
-+        uint32_t nlb = (uint32_t)le16_to_cpu(rw->nlb) + 1;
-+        int64_t offset = aiocb->zone_append_data.offset;
-+
-+        if (nvme_ns_ext(ns) || req->cmd.mptr) {
-+            uint16_t status;
-+
-+            nvme_sg_unmap(&req->sg);
-+            status = nvme_map_mdata(nvme_ctrl(req), nlb, req);
-+            if (status) {
-+                ret = -EFAULT;
-+                goto out;
-+            }
-+
-+            return nvme_blk_zone_append(blk, &offset, 1,
-+                                        nvme_blk_zone_append_complete_cb,
-+                                        aiocb);
-+        }
-+    }
-+
-+out:
-+    nvme_blk_zone_append_complete_cb(aiocb, ret);
-+}
-+
-+
- void nvme_rw_complete_cb(void *opaque, int ret)
- {
-     NvmeRequest *req = opaque;
-@@ -3052,6 +3141,9 @@ static uint16_t nvme_do_write(NvmeCtrl *n, NvmeRequest *req, bool append,
-     uint64_t mapped_size = data_size;
-     uint64_t data_offset;
-     BlockBackend *blk = ns->blkconf.blk;
-+    BlockZoneWps *wps = blk_get_zone_wps(blk);
-+    uint32_t zone_size = blk_get_zone_size(blk);
-+    uint32_t zone_idx;
-     uint16_t status;
+     case NVME_ZONE_ACTION_SET_ZD_EXT:
++        op = BLK_ZO_SET_ZDED;
+         int zd_ext_size = blk_get_zd_ext_size(blk);
+         trace_pci_nvme_set_descriptor_extension(slba, zone_idx);
+         if (all || !zd_ext_size) {
+diff --git a/include/block/block-common.h b/include/block/block-common.h
+index 7690b05149..7c501e053e 100644
+--- a/include/block/block-common.h
++++ b/include/block/block-common.h
+@@ -88,6 +88,7 @@ typedef enum BlockZoneOp {
+     BLK_ZO_FINISH,
+     BLK_ZO_RESET,
+     BLK_ZO_OFFLINE,
++    BLK_ZO_SET_ZDED,
+ } BlockZoneOp;
  
-     if (nvme_ns_ext(ns)) {
-@@ -3082,42 +3174,47 @@ static uint16_t nvme_do_write(NvmeCtrl *n, NvmeRequest *req, bool append,
-     }
- 
-     if (blk_get_zone_model(blk)) {
--        uint32_t zone_size = blk_get_zone_size(blk);
--        uint32_t zone_idx = slba / zone_size;
--        int64_t zone_start = zone_idx * zone_size;
-+        assert(wps);
-+        if (zone_size) {
-+            zone_idx = slba / zone_size;
-+            int64_t zone_start = zone_idx * zone_size;
-+
-+            if (append) {
-+                bool piremap = !!(ctrl & NVME_RW_PIREMAP);
-+
-+                if (n->params.zasl &&
-+                    data_size > (uint64_t)
-+                    n->page_size << n->params.zasl) {
-+                    trace_pci_nvme_err_zasl(data_size);
-+                    return NVME_INVALID_FIELD | NVME_DNR;
-+                }
- 
--        if (append) {
--            bool piremap = !!(ctrl & NVME_RW_PIREMAP);
-+                rw->slba = cpu_to_le64(slba);
- 
--            if (n->params.zasl &&
--                data_size > (uint64_t)n->page_size << n->params.zasl) {
--                trace_pci_nvme_err_zasl(data_size);
--                return NVME_INVALID_FIELD | NVME_DNR;
--            }
-+                switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
-+                case NVME_ID_NS_DPS_TYPE_1:
-+                    if (!piremap) {
-+                        return NVME_INVALID_PROT_INFO | NVME_DNR;
-+                    }
- 
--            rw->slba = cpu_to_le64(slba);
--            switch (NVME_ID_NS_DPS_TYPE(ns->id_ns.dps)) {
--            case NVME_ID_NS_DPS_TYPE_1:
--                if (!piremap) {
--                    return NVME_INVALID_PROT_INFO | NVME_DNR;
--                }
-+                    /* fallthrough */
- 
--                /* fallthrough */
-+                case NVME_ID_NS_DPS_TYPE_2:
-+                    if (piremap) {
-+                        uint32_t reftag = le32_to_cpu(rw->reftag);
-+                        rw->reftag =
-+                            cpu_to_le32(reftag + (slba - zone_start));
-+                    }
- 
--            case NVME_ID_NS_DPS_TYPE_2:
--                if (piremap) {
--                    uint32_t reftag = le32_to_cpu(rw->reftag);
--                    rw->reftag = cpu_to_le32(reftag + (slba - zone_start));
--                }
-+                    break;
- 
--                break;
-+                case NVME_ID_NS_DPS_TYPE_3:
-+                    if (piremap) {
-+                        return NVME_INVALID_PROT_INFO | NVME_DNR;
-+                    }
- 
--            case NVME_ID_NS_DPS_TYPE_3:
--                if (piremap) {
--                    return NVME_INVALID_PROT_INFO | NVME_DNR;
-+                    break;
-                 }
--
--                break;
-             }
-         }
- 
-@@ -3137,9 +3234,21 @@ static uint16_t nvme_do_write(NvmeCtrl *n, NvmeRequest *req, bool append,
-             goto invalid;
-         }
- 
--        block_acct_start(blk_get_stats(blk), &req->acct, data_size,
--                         BLOCK_ACCT_WRITE);
--        nvme_blk_write(blk, data_offset, BDRV_SECTOR_SIZE, nvme_rw_cb, req);
-+        if (append) {
-+            NvmeZoneCmdAIOCB *cb = g_malloc(sizeof(NvmeZoneCmdAIOCB));
-+            cb->req = req;
-+            cb->zone_append_data.offset = data_offset;
-+
-+            block_acct_start(blk_get_stats(blk), &req->acct, data_size,
-+                             BLOCK_ACCT_ZONE_APPEND);
-+            nvme_blk_zone_append(blk, &cb->zone_append_data.offset,
-+                                 blk_get_write_granularity(blk),
-+                                 nvme_zone_append_cb, cb);
-+        } else {
-+            block_acct_start(blk_get_stats(blk), &req->acct, data_size,
-+                             BLOCK_ACCT_WRITE);
-+            nvme_blk_write(blk, data_offset, BDRV_SECTOR_SIZE, nvme_rw_cb, req);
-+        }
-     } else {
-         req->aiocb = blk_aio_pwrite_zeroes(blk, data_offset, data_size,
-                                            BDRV_REQ_MAY_UNMAP, nvme_rw_cb,
-@@ -3163,24 +3272,7 @@ static inline uint16_t nvme_write_zeroes(NvmeCtrl *n, NvmeRequest *req)
-     return nvme_do_write(n, req, false, true);
- }
- 
--typedef struct NvmeZoneCmdAIOCB {
--    NvmeRequest *req;
--    NvmeCmd *cmd;
--    NvmeCtrl *n;
--
--    union {
--        struct {
--          uint32_t partial;
--          unsigned int nr_zones;
--          BlockZoneDescriptor *zones;
--        } zone_report_data;
--        struct {
--          int64_t offset;
--        } zone_append_data;
--    };
--} NvmeZoneCmdAIOCB;
--
--static inline uint16_t nvme_zone_append(NvmeCtrl *n, NvmeRequest *req)
-+static uint16_t nvme_zone_append(NvmeCtrl *n, NvmeRequest *req)
- {
-     return nvme_do_write(n, req, true, false);
- }
-diff --git a/include/sysemu/dma.h b/include/sysemu/dma.h
-index a1ac5bc1b5..680e0b5477 100644
---- a/include/sysemu/dma.h
-+++ b/include/sysemu/dma.h
-@@ -301,6 +301,9 @@ BlockAIOCB *dma_blk_read(BlockBackend *blk,
- BlockAIOCB *dma_blk_write(BlockBackend *blk,
-                           QEMUSGList *sg, uint64_t offset, uint32_t align,
-                           BlockCompletionFunc *cb, void *opaque);
-+BlockAIOCB *dma_blk_zone_append(BlockBackend *blk,
-+                          QEMUSGList *sg, int64_t offset, uint32_t align,
-+                          void (*cb)(void *opaque, int ret), void *opaque);
- MemTxResult dma_buf_read(void *ptr, dma_addr_t len, dma_addr_t *residual,
-                          QEMUSGList *sg, MemTxAttrs attrs);
- MemTxResult dma_buf_write(void *ptr, dma_addr_t len, dma_addr_t *residual,
-diff --git a/system/dma-helpers.c b/system/dma-helpers.c
-index 9b221cf94e..908aff9bc0 100644
---- a/system/dma-helpers.c
-+++ b/system/dma-helpers.c
-@@ -274,6 +274,23 @@ BlockAIOCB *dma_blk_write(BlockBackend *blk,
-                       DMA_DIRECTION_TO_DEVICE);
- }
- 
-+static
-+BlockAIOCB *dma_blk_zone_append_io_func(int64_t offset, QEMUIOVector *iov,
-+                                  BlockCompletionFunc *cb, void *cb_opaque,
-+                                  void *opaque)
-+{
-+    BlockBackend *blk = opaque;
-+    return blk_aio_zone_append(blk, (int64_t *)offset, iov, 0, cb, cb_opaque);
-+}
-+
-+BlockAIOCB *dma_blk_zone_append(BlockBackend *blk,
-+                          QEMUSGList *sg, int64_t offset, uint32_t align,
-+                          void (*cb)(void *opaque, int ret), void *opaque)
-+{
-+    return dma_blk_io(blk_get_aio_context(blk), sg, offset, align,
-+                      dma_blk_zone_append_io_func, blk, cb, opaque,
-+                      DMA_DIRECTION_TO_DEVICE);
-+}
- 
- static MemTxResult dma_buf_rw(void *buf, dma_addr_t len, dma_addr_t *residual,
-                               QEMUSGList *sg, DMADirection dir,
+ typedef enum BlockZoneModel {
 -- 
 2.40.1
 
