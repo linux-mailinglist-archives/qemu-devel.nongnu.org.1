@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79F4836237
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 12:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B61683623D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Jan 2024 12:43:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rRsgs-0002FB-T3; Mon, 22 Jan 2024 06:42:11 -0500
+	id 1rRshS-0002jY-9F; Mon, 22 Jan 2024 06:42:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRsgg-0002Eh-5B
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:41:59 -0500
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRshO-0002j6-Rr
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:42:42 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRsge-0004Cy-CE
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:41:57 -0500
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-50e7f58c5fbso3554673e87.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 03:41:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rRshN-0004L7-0i
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 06:42:42 -0500
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-50e5a9bcec9so3119821e87.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 03:42:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705923714; x=1706528514; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705923759; x=1706528559; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7xI6/By+mMtFp8zHg1014M69oJkkrB72yVFY32UuVvY=;
- b=LljPTXQJ/r3c2dshZTDpiW6RJallk5nhPxckVmrZj3ICX7VRJCf82lHUiuHGBr0Ent
- kTN4OXSiJLOdfM61caysQveWWsnp4XygQvrpngmumJtk2r9Vt1Bmrsaz/6sn7jBLdwHh
- L80IO7+k9Tr28pLWOrkQ+0FUkc6k6CoyYTjkUI/3ItYlH/cy1cMoDR5R9UefUWXm6nYs
- TTujpg8kNnBGVrxYc6JYgJR5dPeN9ANZZtJbkTVVQ/403Nyyi9/EuT7PQoq7XdUVTU9f
- 3D9si1O400Ki25FcW07mEHTNjpjMeCLGakqzTvfUQzXJT4YuADu/mH8mAc0slfRVL8a3
- ocoA==
+ bh=ET4YoUKutSWLTzQ9liVs6t9DnomuPEvkpod4f0ual2k=;
+ b=fPjAAakZrPfBrv4SCWCV4R7jFnrPleNHBc18r0NkPeTbkVrn5M69Js+cqauh3lL546
+ Dxjnt1JnVOb8xwxnFclwcdNZsNn9uDtsHTGrx0zN+0NIotexhHfckUx/ywT6E25WF3RD
+ AsuV7kJPIsG82z8TiujnyndXBWj28qlSUfqcu324evRLvoi/XBY3kn5aMO8nfvNgk/kf
+ R86ZXgnGDfDKLhbLWJtpxdaWIrqIbV9XAXTQNPIXrAQvswrvDIySOprc2ZZc35PXa2s0
+ sl4FzHJkianuPseLxETiV/QuyXyZ7JFZ4GejUyvwPGzvCiaPrdzzMvDr2gEMknaNR6wv
+ doVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705923714; x=1706528514;
+ d=1e100.net; s=20230601; t=1705923759; x=1706528559;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7xI6/By+mMtFp8zHg1014M69oJkkrB72yVFY32UuVvY=;
- b=JUJga6S3yrQkxffhyPG4g2DFDDzA8Ep3Fhq8L77nywbcxmyY9gUI3xsSJsJAiZL0tC
- hZrZLTsDpDUQGDkCJaEf14+8BtRW3+ebuzloiznktLCkEuDY8s9NM6GK3A1tlkBK1rwc
- fr3RiQzhimP3LRGciaanEG59yHGkMfGu5EWBXcDRxv1I91Ua3a04A6/ZwosgiBS8c48f
- Q+0hePcRAlj2Abib+vwnUHlkUEqVcxu1u1fBuzNzGrmuEl3PNrLLORZrxeDnxzegQq07
- 4N/iuxAUUbhTox1BXvx2e0TsCA5JJ0m1PffTu5yW9h2+bsTtRX7TOeK/YlEM5clJI97S
- JYjw==
-X-Gm-Message-State: AOJu0YxwNrGRXDr4W5MZhi9z93ci/omLSgUA2h+s7CwFDWWSlxcHaJy1
- 80009T6RLMOqO8G/xHH6Q+sUfW+F8QfIUGWgki36u+SQggDxSaqf+Qn6VsHXJ0JaMIEuyKG9vhx
- o+ig=
-X-Google-Smtp-Source: AGHT+IHBAUK6S4oCR5EyqT4bJAIosWiy1pPbRjz2PGd/pvz0C7Jz8ydtyUI4OTp0D1YOXYjYscbgvQ==
-X-Received: by 2002:a05:6512:692:b0:50e:7f88:9ebe with SMTP id
- t18-20020a056512069200b0050e7f889ebemr2045276lfe.103.1705923713898; 
- Mon, 22 Jan 2024 03:41:53 -0800 (PST)
+ bh=ET4YoUKutSWLTzQ9liVs6t9DnomuPEvkpod4f0ual2k=;
+ b=ha4dS+eCLp5Ie/wZNVoQnJqJ2K6ZapJT66ONhAOLdkDz7iWrd6/YWDBkHcA4j6i7x4
+ Lr1/1Z28uk/yfwI8adRliBjasNSal/uz7zw3i7zbtJrEFaXvUuAytRXogWcZU43uzsq6
+ VthJRhvVR/CAWbhWwhe3uS0gbJy4zDdWaQh0Wz9l2+SfqzTyEAdPKcYKt7jaaTvr6Oil
+ SF1U1v7Myy3haQNo2MdQ2mlwoDmzV3Ibcag37CODmusAYfWoWI1QE7/kfkMo+q55gmi8
+ mL1FEHtjsjzY8eLZ/9J3shtJ45BZarVSYjg6oFbAXLlEoWP9UEe+Sofujf44p2dnMS0M
+ INYw==
+X-Gm-Message-State: AOJu0YwMLVdZiLdl2+azcuVuZGMdoS8cZufwRxd/XbAPS/hjbXmE6bgr
+ Lc5wtEgdSIPMAbu72OizAPFwVSRDTH9n3xnEQ7d2msorAXnrsTybBnJieqx2GuBDoL1QTXT2CwV
+ J8k0=
+X-Google-Smtp-Source: AGHT+IEOC/hg+qFfe1lGZqssQtrr+I4e2Qr7WvED1LNHYRsbSb9wJQZ3NmH/p3YlXgVWxEGmNfO3Rw==
+X-Received: by 2002:a05:6512:786:b0:50f:d65:895c with SMTP id
+ x6-20020a056512078600b0050f0d65895cmr1642931lfr.69.1705923758833; 
+ Mon, 22 Jan 2024 03:42:38 -0800 (PST)
 Received: from [192.168.149.175] ([92.88.171.62])
  by smtp.gmail.com with ESMTPSA id
- vi11-20020a170907d40b00b00a2cd74b743csm12044122ejc.3.2024.01.22.03.41.52
+ vi11-20020a170907d40b00b00a2cd74b743csm12044122ejc.3.2024.01.22.03.42.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 03:41:53 -0800 (PST)
-Message-ID: <e1cb892d-a0c5-470c-9444-8d7a56756f20@linaro.org>
-Date: Mon, 22 Jan 2024 12:41:52 +0100
+ Mon, 22 Jan 2024 03:42:38 -0800 (PST)
+Message-ID: <acf4d4c3-933e-4ea8-87f9-498cc690efbc@linaro.org>
+Date: Mon, 22 Jan 2024 12:42:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] linux-user/elfload: check PR_GET_DUMPABLE before
- creating coredump
+Subject: Re: [PATCH v3 1/2] linux-user/elfload: test return value of getrlimit
 Content-Language: en-US
 To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
  Laurent Vivier <laurent@vivier.eu>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 References: <20240120-qemu-user-dumpable-v3-0-6aa410c933f1@t-8ch.de>
- <20240120-qemu-user-dumpable-v3-2-6aa410c933f1@t-8ch.de>
+ <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240120-qemu-user-dumpable-v3-2-6aa410c933f1@t-8ch.de>
+In-Reply-To: <20240120-qemu-user-dumpable-v3-1-6aa410c933f1@t-8ch.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,18 +95,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 20/1/24 22:45, Thomas Weißschuh wrote:
-> A process can opt-out of coredump creation by calling
-> prctl(PR_SET_DUMPABLE, 0).
-> linux-user passes this call from the guest through to the
-> operating system.
->  From there it can be read back again to avoid creating coredumps from
-> qemu-user itself if the guest chose so.
+> Should getrlimit() fail the value of dumpsize.rlimit_cur may not be
+> initialized. Avoid reading garbage data by checking the return value of
+> getrlimit.
 > 
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 > ---
->   linux-user/elfload.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   linux-user/elfload.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
