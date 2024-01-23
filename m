@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BDD838798
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 07:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0771983879A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 07:40:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSARS-0003o2-L4; Tue, 23 Jan 2024 01:39:26 -0500
+	id 1rSARY-00044X-Sm; Tue, 23 Jan 2024 01:39:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSARQ-0003n6-Kz
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:39:24 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSARW-0003y2-06
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:39:30 -0500
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSARP-00086K-00
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:39:24 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a2dc7827a97so424850566b.2
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 22:39:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSARU-00087N-H9
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:39:29 -0500
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-55a3a875f7fso4285060a12.3
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 22:39:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705991961; x=1706596761; darn=nongnu.org;
+ d=linaro.org; s=google; t=1705991967; x=1706596767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d2C77azz43915zIuIoKlnCQM/jW1+ruzYffMI8d4fYY=;
- b=rK18/Jg2pkaOJHGccEXn5j5jujHqc4prwNyUwF0uxEACcDZ3l56TDNuoFTjDNxa7uB
- XtbKI9uOApkA81oKt10uSpGDaEeuTSnunB7etdwAdMwjAda7ryBiMQpJlhb9SHxlg8lW
- SZxZKrFWogO7xET09dLKHCCN1/7+8XD+O9juGSh0ZzG4LKeXtXVMfAe8kZFps34RbJND
- +gE1XYebodIew67yVvx8gytg4NVGfKpvUaapj231sEn8lSZAQUGlLCTixz00fkpFZKCQ
- SumsevgH/UYeBbz9mdrp+TUMZYpqBRjFlpe+hM5a2J9MsiErJ/qyWBUgSho5bN3cHgQN
- gjcg==
+ bh=ONN8zUFU0/kjuTx5JtjFzfx6OgyKBiCsAIN6XbeS+GY=;
+ b=ONb2HzlNHOnMwe8CIcIOp+2+6v0KJjzMp3PFIZxST/a2YGw+W5WYkrHL/459iAXDzV
+ qAn3knJSniTpzncKDhCLNyEbhKwcNuW8IrZK3dcPWqQdDs+iTeOym4U6MVYee23sm45/
+ 8ZcBYeknWSzngARyjiS2ArsmM0z53HOz/Ew0lM3BUqUL5Sm/q2+Bq7bog5BApJK7BZ45
+ Jvb+SnQVsmEcIXQ43tTh4Fs69srMfkparCDQrgv0q8ff8XDs6Ne9VuO03HovEwPIYwm4
+ 5ejPG9WwyAKQ2DauN1mx8c5SXAl3rFUX0QCelVD1oAU+ycmSPiyKD7NmxjojTth89aPr
+ S48Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705991961; x=1706596761;
+ d=1e100.net; s=20230601; t=1705991967; x=1706596767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d2C77azz43915zIuIoKlnCQM/jW1+ruzYffMI8d4fYY=;
- b=lwKG7h35nbXUuqYaVPBWfBH0PaZensJUQUIINQjEAVUH/5zpO0FGGYi04TYdPVO7Mn
- Xl94GqGDZttGcqJJ31WXTU2UeuLzmkgSeyl2NDXdHFiYw1heakJ912ng5Qz9Edb5Tuc5
- VJJwvSByTPxnRuCLkRuHHk19dJkeqvycXM5BnCR4x6ZMmz1Muufk7EShfDkXBkzfKGkd
- ehItlet8GOo2x7v9JFId52DSJJE0dzWcznQ8ZxGi8s/8OY3U/GhsYTMh7j8uwjkEqBnK
- sA/YUZ52jjzayVmzJZtHq7FEMAhQ2G2bsb5pNPAf7NKMZxDzgB3OujlPjrktD5BIFSLE
- u9iA==
-X-Gm-Message-State: AOJu0Ywjvv1JJMTUQckKmL63Dn4LLZuE/5NGPSrp7x30jyTdXYwWsQ8O
- txCw1HyEeOxY+atjG7SAidpb87TujG1g9d8FEwtw2z0YvQVJnUOfx/N3jaqsrsDSyAwmvzeHQkI
- JyF8=
-X-Google-Smtp-Source: AGHT+IEj8i4UpNbA6phQkKEIgn78CvYE8sF5Tzho+WkHlTmKNpLq4f3yqkeChak6w51ttYTbEHSR1w==
-X-Received: by 2002:a17:906:4ac7:b0:a29:335f:4248 with SMTP id
- u7-20020a1709064ac700b00a29335f4248mr2660526ejt.45.1705991961146; 
- Mon, 22 Jan 2024 22:39:21 -0800 (PST)
+ bh=ONN8zUFU0/kjuTx5JtjFzfx6OgyKBiCsAIN6XbeS+GY=;
+ b=OmB73safn8WWz+LfcK1vVNVng9634c15PWDZVlikFRqaKqK/f9UpGRv7KHR9WeGKN6
+ KFl97tpg2s0CZudgnamkyivO1zn4khPVWIw2VHqgLnKReovukpE9hh44NLEYBADKNyZg
+ WuTQhGuA99jixhqdZ+chi27KVqU0c3vsF2fOZTlMvV/ANUWjkMReQO2usLXJuG86rV0s
+ rEPi9Z/cdyo5n/vbOZWo+mEgJnRHrCYArS0VM+dHqRx0KbwINeS/sFU2OllyKlIJjaLi
+ At07GPxAGjCQI+Z/VTtKmyDQQkcltaH3B0nrFV3NTJcxCESvV55rlAWs0K6Gf5QoUyk6
+ RuHw==
+X-Gm-Message-State: AOJu0YyX7XQdfwFtXX/gvtdBQBIFCkskTz78kk4dGlRR8eL2fxc6H7KO
+ +xLQnKlwWpxAvR75mK509k0mszZle1qGqvtmPpK5CSu3/AiUlfnmlb8AkHYntswkGAvdH9ODzyL
+ q8Ns=
+X-Google-Smtp-Source: AGHT+IHuL5e+9tPUyEFbWPPDTIg5ou+khhcIfuw2z/J2l9i74JMMdvkHLlDlHX4e6VtC931gwL9gRw==
+X-Received: by 2002:a17:906:d52:b0:a30:b7a5:c34e with SMTP id
+ r18-20020a1709060d5200b00a30b7a5c34emr276658ejh.17.1705991966915; 
+ Mon, 22 Jan 2024 22:39:26 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- jx21-20020a170906ca5500b00a30d9c47f92sm16896ejb.15.2024.01.22.22.39.19
+ bt16-20020a170906b15000b00a2ada87f6a1sm14122434ejb.90.2024.01.22.22.39.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 22 Jan 2024 22:39:20 -0800 (PST)
+ Mon, 22 Jan 2024 22:39:26 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -66,18 +66,18 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Rob Herring <robh@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 6/8] hw/arm/aspeed/2600: Check for CPU types in
+Subject: [PATCH 7/8] hw/arm/aspeed/1030: Check for CPU types in
  machine_run_board_init()
-Date: Tue, 23 Jan 2024 07:38:40 +0100
-Message-ID: <20240123063842.35255-7-philmd@linaro.org>
+Date: Tue, 23 Jan 2024 07:38:41 +0100
+Message-ID: <20240123063842.35255-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240123063842.35255-1-philmd@linaro.org>
 References: <20240123063842.35255-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,81 +105,33 @@ valid CPU type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/aspeed.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ hw/arm/aspeed.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index df627096d2..393c97d55e 100644
+index 393c97d55e..62d08899d8 100644
 --- a/hw/arm/aspeed.c
 +++ b/hw/arm/aspeed.c
-@@ -1157,6 +1157,11 @@ static const char * const ast2500_a1_valid_cpu_types[] = {
+@@ -1162,6 +1162,11 @@ static const char * const ast2600_a3_valid_cpu_types[] = {
      NULL
  };
  
-+static const char * const ast2600_a3_valid_cpu_types[] = {
-+    ARM_CPU_TYPE_NAME("cortex-a9"),
++static const char * const ast1030_a1_valid_cpu_types[] = {
++    ARM_CPU_TYPE_NAME("cortex-m4"), /* TODO cortex-m4f */
 +    NULL
 +};
 +
  static void aspeed_machine_class_init(ObjectClass *oc, void *data)
  {
      MachineClass *mc = MACHINE_CLASS(oc);
-@@ -1373,6 +1378,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON |
-                      ASPEED_MAC3_ON;
-     amc->i2c_init  = ast2600_evb_i2c_init;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = 1 * GiB;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1392,6 +1398,7 @@ static void aspeed_machine_tacoma_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->macs_mask  = ASPEED_MAC2_ON;
-     amc->i2c_init  = witherspoon_bmc_i2c_init; /* Same board layout */
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = 1 * GiB;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1449,6 +1456,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->macs_mask  = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = rainier_bmc_i2c_init;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = 1 * GiB;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1471,6 +1479,7 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask = ASPEED_MAC3_ON;
-     amc->i2c_init = fuji_bmc_i2c_init;
-     amc->uart_default = ASPEED_DEV_UART1;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = FUJI_BMC_RAM_SIZE;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1492,6 +1501,7 @@ static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->macs_mask = ASPEED_MAC2_ON;
-     amc->i2c_init  = bletchley_bmc_i2c_init;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = BLETCHLEY_BMC_RAM_SIZE;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1631,6 +1641,7 @@ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-     amc->num_cs    = 2;
-     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = 1 * GiB;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
-@@ -1651,6 +1662,7 @@ static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
-     amc->num_cs    = 2;
-     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = qcom_dc_scm_firework_i2c_init;
-+    mc->valid_cpu_types = ast2600_a3_valid_cpu_types;
-     mc->default_ram_size = 1 * GiB;
-     mc->default_cpus = mc->min_cpus = mc->max_cpus =
-         aspeed_soc_num_cpus(amc->soc_name);
+@@ -1613,6 +1618,7 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
+     AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+ 
+     mc->desc = "Aspeed AST1030 MiniBMC (Cortex-M4)";
++    mc->valid_cpu_types = ast1030_a1_valid_cpu_types;
+     amc->soc_name = "ast1030-a1";
+     amc->hw_strap1 = 0;
+     amc->hw_strap2 = 0;
 -- 
 2.41.0
 
