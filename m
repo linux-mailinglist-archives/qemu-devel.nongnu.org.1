@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB818380A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 03:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E957B838296
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 03:21:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS657-0003o7-68; Mon, 22 Jan 2024 21:00:05 -0500
+	id 1rS6Ob-0007cJ-9U; Mon, 22 Jan 2024 21:20:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rS654-0003nd-Rh; Mon, 22 Jan 2024 21:00:02 -0500
-Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rS653-0004OS-5j; Mon, 22 Jan 2024 21:00:02 -0500
-Received: by mail-il1-x129.google.com with SMTP id
- e9e14a558f8ab-361af86c7f7so8612105ab.3; 
- Mon, 22 Jan 2024 18:00:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705975199; x=1706579999; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WriUz2uije3DgAqgmD8Wgqr3sDlFkbiCgRZt0yNTdqA=;
- b=l96Wp+1SVHJuSYhwn0xNg94uKHBOBDjFRBlCz8oz/cjl9kFQPcmkwIwmpTaKuMPkG6
- 9ua2VUP8djFEnF7mKafyLlm0DqoNlbTJmEuHViOu/7j0fngy7Y8DwmUzcJL6zQgKVEM3
- SCJHDJaXSy7DPQvnuAy2U3pzUvHCnpTY5hq4KPtUhWojllLe/WO7q73QLB+8WR842+AZ
- GZy4vM/klV/MaHWBzE2e9RefQYX2cUw334mJlEbj/SaCXD+rKy7jmByH3RUM5k7pPMSk
- kqJVrz6XcXLj9ZgbBopWUewkLJY8eWqWNIV5Ia5NzBOUNJyExFSpcEesoPP6COiVNb/+
- jfgQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS6OX-0007cA-Ol
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 21:20:09 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS6OV-00084O-RF
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 21:20:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705976406;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6aWOeZucCHGuFCFfwJx/suJFuJDWPxAXW93S4Hot0ic=;
+ b=FQaIZLmBF1YCfhvvLalNg+iF7mWTHdTURiyzXSMNyP1kcFuNmyB3r4WX0amNM1VXjnsW+L
+ c51eubYpPtunpsbDwAFUrVDoZ+L8wmmdAhp2y67o1WwiBdOKGWsIbdY7fWgeb43hN4Ck8p
+ aPx20+0267Uj68vgwNeqSxUKnPMcCPU=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-7OE8IbRGMcy4W1rd9r3RyA-1; Mon, 22 Jan 2024 21:20:03 -0500
+X-MC-Unique: 7OE8IbRGMcy4W1rd9r3RyA-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-6d99cdbeb9dso1131268b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 18:20:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705975199; x=1706579999;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=WriUz2uije3DgAqgmD8Wgqr3sDlFkbiCgRZt0yNTdqA=;
- b=S85f8xcglgWy8uzLlerhDAb/79jfUcBfSKTHt6uIkfyt/RlSU/G0s6eFWRGTU2h2F2
- Mh6HDQ5K0/IF1c86NLojq8I1a2PGoz2uLMzs+PEQVca4C4Kln1hRV0oaqwpoO0Gni9tZ
- cxhRYEjd5mHcygXfrGxcXSZiONW/lMVeJ30RwyaexPnLemKSUn4vq2D0YxdQRxyUXd54
- m66o3k1bIumzToQfm6YzvfO6DnJ3J894fgMavlocprSJkO8ODcqLgxef2f6yYsfddTX/
- AQKwInHKosKn+QKORPVWWG23ablVfW88sTcUJ8tfyJxk00u8FHsQS88chatw7xciyv77
- lSvQ==
-X-Gm-Message-State: AOJu0Yz2U+MKztKr6bHd7vwF1rQ3ZM8yg6cgqTF+GZyGXBQURTLTDl91
- +U971xnAiMorw02OQ3nCW9a0BXlfGQbHKw9k2dmQ2ITeryon1aGL
-X-Google-Smtp-Source: AGHT+IGZkbqiRtfejTkdQo5/QK/atllfWsrmxVPHuig8PKIe/6CXNJhequkg502vOHxxJKKfXqZ7dQ==
-X-Received: by 2002:a05:6e02:605:b0:360:6aeb:1068 with SMTP id
- t5-20020a056e02060500b003606aeb1068mr6382107ils.47.1705975199495; 
- Mon, 22 Jan 2024 17:59:59 -0800 (PST)
-Received: from localhost (124-171-76-150.tpgi.com.au. [124.171.76.150])
- by smtp.gmail.com with ESMTPSA id
- g8-20020a635208000000b005cfbef6657fsm5101121pgb.58.2024.01.22.17.59.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 17:59:59 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Jan 2024 11:59:51 +1000
-Message-Id: <CYLPQFUAZ55G.1G5L7E9FXBP0C@wheely>
-Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>, "Daniel
- Henrique Barboza" <danielhb413@gmail.com>, "David Gibson"
- <david@gibson.dropbear.id.au>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v3 2/2] target/ppc: Implement attn instruction on BookS
- 64-bit processors
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20240118152523.178576-1-npiggin@gmail.com>
- <20240118152523.178576-3-npiggin@gmail.com>
- <f8d6fd3e-07c3-4f8f-a4b7-d3e08d94aec0@linaro.org>
-In-Reply-To: <f8d6fd3e-07c3-4f8f-a4b7-d3e08d94aec0@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ d=1e100.net; s=20230601; t=1705976403; x=1706581203;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6aWOeZucCHGuFCFfwJx/suJFuJDWPxAXW93S4Hot0ic=;
+ b=C8dMYZRG3d91KVy8PPMVtgdm2lUxgbDYgESlOp87CogMTDYzXCJN4QndYpTUIHr50+
+ SMbHl9g91mqeAweWR1dnUPqZvbNNwAuxiW33Ykl8bwgwbAYN10taMjc+/R4fpscdHTi9
+ B7y/eIYmSVSp4FriauOL1ppS+ECsGiyyJFHE2YBjg17d6L0ojH0TBsPIKB3+1v6JSAM6
+ M7K2w+yz+MHQB4nqKWNCepn4ZaurGg+Ci95Ytk4zxK8gYCgep8t9F9BQ3DcNahbBAp8Z
+ b6M7wLuU6WHS/PVMec/Dl4T/qB9w+WXs6CiZX2N4W8M3hVPcbGEDWpNMorl4ZXNLRf9y
+ 5T+g==
+X-Gm-Message-State: AOJu0Yxw7Ra2BD64tkxlMub0mrUCX3vaNWMhR3YJumMxdOXb7GF1ublH
+ 1dTYk0XiAWcsMJdgfbBiQG2Q52oyI2ygyCd1MCikQuwaCW4r24TMtRGAr+hC8oeZQJxjx2yqc2h
+ YHPzpdhBjhZXLOaVucmSJrGRZohnIhTeXC++bqSx+s5FMP4q39K8D
+X-Received: by 2002:a05:6a00:6596:b0:6dd:7ae5:9dca with SMTP id
+ hd22-20020a056a00659600b006dd7ae59dcamr77827pfb.1.1705976402890; 
+ Mon, 22 Jan 2024 18:20:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+XK8yl5FQeI5ctajoPb67E7cj87BAX8SHU34VuJW8gQiH932TlzsThj6V2cYLTX3rSbECFQ==
+X-Received: by 2002:a05:6a00:6596:b0:6dd:7ae5:9dca with SMTP id
+ hd22-20020a056a00659600b006dd7ae59dcamr77816pfb.1.1705976402576; 
+ Mon, 22 Jan 2024 18:20:02 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ v6-20020aa78506000000b006dbec0b9ba2sm1028745pfn.63.2024.01.22.18.20.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 22 Jan 2024 18:20:02 -0800 (PST)
+Date: Tue, 23 Jan 2024 10:19:53 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/5] migration: Fix migration state reference counting
+Message-ID: <Za8iSaCvoY1C0xVs@x1n>
+References: <20240119233922.32588-1-farosas@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240119233922.32588-1-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,25 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Jan 19, 2024 at 8:09 AM AEST, Richard Henderson wrote:
-> On 1/19/24 02:25, Nicholas Piggin wrote:
-> > +/* attn enable check                                                  =
-       */
-> > +static inline int check_attn_none(CPUPPCState *env)
->
-> Don't mark inline ...
->
-> > @@ -2150,6 +2170,7 @@ POWERPC_FAMILY(405)(ObjectClass *oc, void *data)
-> >       dc->desc =3D "PowerPC 405";
-> >       pcc->init_proc =3D init_proc_405;
-> >       pcc->check_pow =3D check_pow_nocheck;
-> > +    pcc->check_attn =3D check_attn_none;
->
-> ... since it is never called directly.
+On Fri, Jan 19, 2024 at 08:39:17PM -0300, Fabiano Rosas wrote:
+> We currently have a bug when running migration code in bottom
+> halves. The issue has already been reported in Gitlab[1] and it
+> started happening very frequently on my machine for some reason.
+> 
+> The issue is that we're dropping the last reference to the
+> MigrationState object while the cleanup bottom half is still running
+> and it leads to an use after free. More details on the commit message.
+> 
+> This series fixes the issue and does a refactoring around the
+> migration BH scheduling aiming to consolidate some code so that it is
+> less error prone.
+> 
+> 1- https://gitlab.com/qemu-project/qemu/-/issues/1969
+> 
+> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1144927625
+> 
+> Fabiano Rosas (5):
+>   migration: Fix use-after-free of migration state object
+>   migration: Take reference to migration state around
+>     bg_migration_vm_start_bh
+>   migration: Reference migration state around
+>     loadvm_postcopy_handle_run_bh
+>   migration: Add a wrapper to qemu_bh_schedule
+>   migration: Centralize BH creation and dispatch
+> 
+>  migration/migration.c | 82 +++++++++++++++++++++++++------------------
+>  migration/migration.h |  5 +--
+>  migration/savevm.c    |  5 +--
+>  3 files changed, 49 insertions(+), 43 deletions(-)
 
-True, I mindlessly followed check_pow_none(). Maybe all
-those helpers could be uninlined and moved into cpu_init.c.
+Looks all good now, queued.  I'll amend the "Resolve:" line in patch 1.
 
-Thanks,
-Nick
+-- 
+Peter Xu
+
 
