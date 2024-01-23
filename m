@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432688388BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C5C8388C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:22:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSC1x-0001RG-OM; Tue, 23 Jan 2024 03:21:13 -0500
+	id 1rSC2x-0002BN-E1; Tue, 23 Jan 2024 03:22:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC1u-0001Pj-VJ
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:21:10 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC1s-0000NZ-Dd
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:21:10 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40eacb4bfa0so19931805e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705998066; x=1706602866; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vgXaw/jt6H2vmMlwijH9Eh5yEEx14Kw5bUFUTrmJmuY=;
- b=lLlQpJ9KX95TbNNYSM8AmEU+ABI3/DIgy/OXGeO7yOsgQ1c2txGM/XYICKmV6Qujqm
- rrUaLIPPz0a55C0b5f9uZlPEduUUBRIfD3y+fgS4wBMDl0GAolR0otx5tY7Hb+qLLrnq
- pSMNTaSxaIOGGLWxR1E1U1UV+cPhVfBV4yfdVBBVhZqcgqJJVomf2eModwR/BrQlkT8x
- P2/gTuEU4f7Zwtz8cszeJKq8SV+WfvpE4hXSS6JmBtzKC/tvde8lLzxRdRyN50MMGOX4
- zotRmWYEjDyJaUhfmY2pxlh43Uoc5gE/RqKylECHmnei3ejo//xOe+y2RQEmAReDtuuW
- ypjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705998066; x=1706602866;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vgXaw/jt6H2vmMlwijH9Eh5yEEx14Kw5bUFUTrmJmuY=;
- b=lGdmsPdYy5j3Xtm7Ex5xGxelLiseFdD23ebnQu5GXSvMLOv3DjZB7AuZbWEM9pMqQ6
- /PFga8J0uJUBayyUeauHsRh9E2UNZqyg4lnKBuoRRq3N473pqiTd1TuXJSidcyQzwem/
- uwHMIhXDSljP9j7Z7gqogFssECg0GdlarZD3cAk24tqt6rwNER1h519nVBw18d9A70qn
- ypM98GshU0VDtETKXLer2Zx+Jy02qnz8rBfkVQNaKhN36YRl5Ql2lhHqeB+f2Lan40+M
- gSVVeTSmBF7nBQMdwGoRIe7VB/z1mt8KFsUjLnKInoBZmpZWBmbDgetdEoBrU906Gd8m
- X/qg==
-X-Gm-Message-State: AOJu0YwiCFQoRWBv540hopK9+FFaypoECUoPUe1mdm8/LkyEyNosRStJ
- GUCw8ikJ6iTbe6PzNNAh3gZkIUdiuZib7cvvG0/9UdCY0Y/3iNisZSo8RwFT/ZyO5ZUDgujPE98
- 4x9U=
-X-Google-Smtp-Source: AGHT+IEzphcX6EYIcFaSPITiZbjm9JS50GyoJwXSUrl3LJaHiU/XdiuDzptnA6bWmNKsvESYkF6LUQ==
-X-Received: by 2002:a7b:cb87:0:b0:40e:42ce:f28b with SMTP id
- m7-20020a7bcb87000000b0040e42cef28bmr292949wmi.52.1705998066247; 
- Tue, 23 Jan 2024 00:21:06 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.194.78])
- by smtp.gmail.com with ESMTPSA id
- n22-20020a05600c4f9600b0040e53f24ceasm41477156wmq.16.2024.01.23.00.21.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jan 2024 00:21:05 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] mailmap: Fix Stefan Weil email
-Date: Tue, 23 Jan 2024 09:21:04 +0100
-Message-ID: <20240123082104.36208-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rSC2u-0002B1-P9
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:22:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rSC2s-0000Ub-7G
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:22:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1705998129;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=M36Yb2onoTJ/82rN36RtLVVxqYNaSW2ddYYyVrYF8A4=;
+ b=KUE8TiBruAWje2oM5fXfYL5aoiwQKAczKeF6sH06Sr9A5CjmNjScnH2mlNBvNhVrALmsCX
+ I3jGldyxtEussYFmWLoNLswV3CX1LKJIPwXNAbA8c82lxp8U6L2e/J+5ctuMFx6rdCVEzc
+ aIked40m2jz8Pfa3QKe+JbteIwGxjME=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-GYwBV3wROPyNbVd2wqR_8Q-1; Tue, 23 Jan 2024 03:22:05 -0500
+X-MC-Unique: GYwBV3wROPyNbVd2wqR_8Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A12C1066143;
+ Tue, 23 Jan 2024 08:22:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.42])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C39EB51D5;
+ Tue, 23 Jan 2024 08:22:00 +0000 (UTC)
+Date: Tue, 23 Jan 2024 08:21:55 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
+ armbru@redhat.com
+Subject: Re: [PATCH] Make 'uri' optional for migrate QAPI
+Message-ID: <Za93I-50U745B27C@redhat.com>
+References: <20240123064219.40514-1-het.gala@nutanix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240123064219.40514-1-het.gala@nutanix.com>
+User-Agent: Mutt/2.2.10 (2023-03-25)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,52 +78,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 5204b499a6 ("mailmap: Fix Stefan Weil author email")
-corrected authorship for patch received at qemu-devel@nongnu.org,
-correct now for patch received at qemu-trivial@nongnu.org.
+On Tue, Jan 23, 2024 at 06:42:19AM +0000, Het Gala wrote:
+> 'uri' argument should be optional, as 'uri' and 'channels'
+> arguments are mutally exclusive in nature.
+> 
+> Fixes: 074dbce5fcce (migration: New migrate and
+> migrate-incoming argument 'channels')
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> ---
+>  qapi/migration.json | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index eb2f883513..197d3faa43 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -1757,7 +1757,7 @@
+>  #
+>  ##
+>  { 'command': 'migrate',
+> -  'data': {'uri': 'str',
+> +  'data': {'*uri': 'str',
+>             '*channels': [ 'MigrationChannel' ],
+>             '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
+>             '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
 
-Update other authorship email for Stefan's commits.
+Hmm, this mistake shows a lack of coverage in migration-test.c for
+the 'channels' argument. I thought the original series adding 'channels'
+included the tests for this. Either way, this needs to come with test
+coverage for use of 'channels', with 'uri' omitted.
 
-Suggested-by: Stefan Weil <sw@weilnetz.de>
-Fixes: d819fc9516 ("virtio-blk: Fix potential nullptr read access")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- .mailmap | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/.mailmap b/.mailmap
-index d94572af05..88fb68143e 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -36,6 +36,8 @@ Marek Dolata <mkdolata@us.ibm.com> mkdolata@us.ibm.com <mkdolata@us.ibm.com>
- Michael Ellerman <mpe@ellerman.id.au> michael@ozlabs.org <michael@ozlabs.org>
- Nick Hudson <hnick@vmware.com> hnick@vmware.com <hnick@vmware.com>
- Timothée Cocault <timothee.cocault@gmail.com> timothee.cocault@gmail.com <timothee.cocault@gmail.com>
-+Stefan Weil <sw@weilnetz.de> <weil@mail.berlios.de>
-+Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@kiwi.(none)>
- 
- # There is also a:
- #    (no author) <(no author)@c046a42c-6fe2-441c-8c8c-71466251a162>
-@@ -60,6 +62,7 @@ Ian McKellar <ianloic@google.com> Ian McKellar via Qemu-devel <qemu-devel@nongnu
- Julia Suvorova <jusual@mail.ru> Julia Suvorova via Qemu-devel <qemu-devel@nongnu.org>
- Justin Terry (VM) <juterry@microsoft.com> Justin Terry (VM) via Qemu-devel <qemu-devel@nongnu.org>
- Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-devel@nongnu.org>
-+Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-trivial@nongnu.org>
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com> Andrey Drobyshev via <qemu-block@nongnu.org>
- BALATON Zoltan <balaton@eik.bme.hu> BALATON Zoltan via <qemu-ppc@nongnu.org>
- 
-@@ -98,6 +101,7 @@ Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
- Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
- Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
- Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
-+Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@weilnetz.de>
- Taylor Simpson <ltaylorsimpson@gmail.com> <tsimpson@quicinc.com>
- Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
- 
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
