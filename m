@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2898838990
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5321083897F
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:50:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSCSg-0001Qp-VL; Tue, 23 Jan 2024 03:48:51 -0500
+	id 1rSCSi-0001Rd-3h; Tue, 23 Jan 2024 03:48:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSCSc-0001O7-PU; Tue, 23 Jan 2024 03:48:46 -0500
+ id 1rSCSe-0001QX-MA; Tue, 23 Jan 2024 03:48:48 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSCSb-0004ul-1e; Tue, 23 Jan 2024 03:48:46 -0500
+ id 1rSCSc-0004vU-TD; Tue, 23 Jan 2024 03:48:48 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D244A46673;
+ by isrv.corpit.ru (Postfix) with ESMTP id E2F2446674;
  Tue, 23 Jan 2024 11:49:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 95979699F1;
+ by tsrv.corpit.ru (Postfix) with SMTP id A67DE699F2;
  Tue, 23 Jan 2024 11:48:31 +0300 (MSK)
-Received: (nullmailer pid 3828117 invoked by uid 1000);
+Received: (nullmailer pid 3828120 invoked by uid 1000);
  Tue, 23 Jan 2024 08:48:31 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 14/20] hw/pflash: refactor pflash_data_write()
-Date: Tue, 23 Jan 2024 11:48:24 +0300
-Message-Id: <20240123084831.3828060-6-mjt@tls.msk.ru>
+Subject: [Stable-7.2.9 15/20] hw/pflash: use ldn_{be,le}_p and stn_{be,le}_p
+Date: Tue, 23 Jan 2024 11:48:25 +0300
+Message-Id: <20240123084831.3828060-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.9-20240123114733@cover.tls.msk.ru>
 References: <qemu-stable-7.2.9-20240123114733@cover.tls.msk.ru>
@@ -63,72 +63,99 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gerd Hoffmann <kraxel@redhat.com>
 
-Move the offset calculation, do it once at the start of the function and
-let the 'p' variable point directly to the memory location which should
-be updated.  This makes it simpler to update other buffers than
-pfl->storage in an upcoming patch.  No functional change.
+Use the helper functions we have to read/write multi-byte values
+in correct byte order.
 
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240108160900.104835-2-kraxel@redhat.com>
+Message-ID: <20240108160900.104835-3-kraxel@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 3b14a555fdb627ac091559ef5931c887d06590d8)
+(cherry picked from commit 5dd58358a57048e5ceabf5c91c0544f4f56afdcd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index 0cbc2fb4cb..c250214944 100644
+index c250214944..dbb3d0312d 100644
 --- a/hw/block/pflash_cfi01.c
 +++ b/hw/block/pflash_cfi01.c
-@@ -404,33 +404,35 @@ static void pflash_update(PFlashCFI01 *pfl, int offset,
- static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
-                                      uint32_t value, int width, int be)
- {
--    uint8_t *p = pfl->storage;
-+    uint8_t *p;
+@@ -226,34 +226,10 @@ static uint32_t pflash_data_read(PFlashCFI01 *pfl, hwaddr offset,
+     uint32_t ret;
  
-     trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
-+    p = pfl->storage + offset;
-+
-     switch (width) {
-     case 1:
--        p[offset] = value;
-+        p[0] = value;
-         break;
-     case 2:
-         if (be) {
--            p[offset] = value >> 8;
--            p[offset + 1] = value;
-+            p[0] = value >> 8;
-+            p[1] = value;
-         } else {
--            p[offset] = value;
--            p[offset + 1] = value >> 8;
-+            p[0] = value;
-+            p[1] = value >> 8;
-         }
-         break;
-     case 4:
-         if (be) {
--            p[offset] = value >> 24;
--            p[offset + 1] = value >> 16;
--            p[offset + 2] = value >> 8;
--            p[offset + 3] = value;
-+            p[0] = value >> 24;
-+            p[1] = value >> 16;
-+            p[2] = value >> 8;
-+            p[3] = value;
-         } else {
--            p[offset] = value;
--            p[offset + 1] = value >> 8;
--            p[offset + 2] = value >> 16;
--            p[offset + 3] = value >> 24;
-+            p[0] = value;
-+            p[1] = value >> 8;
-+            p[2] = value >> 16;
-+            p[3] = value >> 24;
-         }
-         break;
+     p = pfl->storage;
+-    switch (width) {
+-    case 1:
+-        ret = p[offset];
+-        break;
+-    case 2:
+-        if (be) {
+-            ret = p[offset] << 8;
+-            ret |= p[offset + 1];
+-        } else {
+-            ret = p[offset];
+-            ret |= p[offset + 1] << 8;
+-        }
+-        break;
+-    case 4:
+-        if (be) {
+-            ret = p[offset] << 24;
+-            ret |= p[offset + 1] << 16;
+-            ret |= p[offset + 2] << 8;
+-            ret |= p[offset + 3];
+-        } else {
+-            ret = p[offset];
+-            ret |= p[offset + 1] << 8;
+-            ret |= p[offset + 2] << 16;
+-            ret |= p[offset + 3] << 24;
+-        }
+-        break;
+-    default:
+-        abort();
++    if (be) {
++        ret = ldn_be_p(p + offset, width);
++    } else {
++        ret = ldn_le_p(p + offset, width);
      }
+     trace_pflash_data_read(pfl->name, offset, width, ret);
+     return ret;
+@@ -409,34 +385,11 @@ static inline void pflash_data_write(PFlashCFI01 *pfl, hwaddr offset,
+     trace_pflash_data_write(pfl->name, offset, width, value, pfl->counter);
+     p = pfl->storage + offset;
+ 
+-    switch (width) {
+-    case 1:
+-        p[0] = value;
+-        break;
+-    case 2:
+-        if (be) {
+-            p[0] = value >> 8;
+-            p[1] = value;
+-        } else {
+-            p[0] = value;
+-            p[1] = value >> 8;
+-        }
+-        break;
+-    case 4:
+-        if (be) {
+-            p[0] = value >> 24;
+-            p[1] = value >> 16;
+-            p[2] = value >> 8;
+-            p[3] = value;
+-        } else {
+-            p[0] = value;
+-            p[1] = value >> 8;
+-            p[2] = value >> 16;
+-            p[3] = value >> 24;
+-        }
+-        break;
++    if (be) {
++        stn_be_p(p, width, value);
++    } else {
++        stn_le_p(p, width, value);
+     }
+-
+ }
+ 
+ static void pflash_write(PFlashCFI01 *pfl, hwaddr offset,
 -- 
 2.39.2
 
