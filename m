@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B5D839425
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:05:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0709839489
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:19:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJFf-0008Gt-Du; Tue, 23 Jan 2024 11:03:51 -0500
+	id 1rSJSv-0003We-RB; Tue, 23 Jan 2024 11:17:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSJFU-0008GQ-F8
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:03:40 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rSJSp-0003Tc-3v
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:27 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSJFQ-0004cg-2i
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:03:39 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40eb033c192so12229575e9.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:03:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rSJSm-0007TJ-2m
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:26 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2906bd9f2ebso2098728a91.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706025814; x=1706630614; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1706026642; x=1706631442; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jTUUEUja40WbQS6wzJYDPCgMUCiS6GJwtB6HGzHkSGs=;
- b=c9RPmTpGldE8JL3AfanR+bxNnaEcRwp0X/T16FJsCPBOwO9t5TBiqz7xNMmHKcaa6T
- aa7npVhae417GYeJMxD8JWBMjQfPW4YREIu+AH+HkXctArsPyE4JhSeI0b1zY02kccoa
- VMhGAnkOa7suCYCzL4QUCLRpzt10saVWiC7zJz78zzzAk/GsbhZ+egDBT1mrGqMFtmB6
- flyZYPsQ1sv8pmxjaYuwUGZS3Hj+tumzsYlSR4jGDWZtMykxAYJcoDA90Byxa7n5aA8Y
- fxjkA1uPH5sANnmSijG9mf9GVCrST0C1Zsab0okEiNoGimezD88owSN7JoWvM6DDnzPK
- SA2w==
+ bh=o+uMzKgEdWxAfaTKc31QCrp/gGCfKuJesU8lsEew9OQ=;
+ b=gplP29iVSScKTk34+wZ8YaVmjICPbnpENSyV7qfE9dBhm2L2dy1ADtJh8DyBrSpCbl
+ q8HtzfWfsm2y8WOBhz7dKR/9LjqA04i4vtegq3ZtUGjp/OAZxHTCXv7CbaKpGSTkRNFE
+ 1LxoPNQo4p9PehvMU4xjHY2aaNVUNabdHQcHLHD0vAMchg/xXN8qIBbjOPmUX/av593W
+ I+IwtVLmSqmMsGzOfHm22J+j3RmUUZr3m2YhSoPvhIYmlVdIph+kcn3NEK8gG2XCU8ZN
+ uiU/oIl5Sk4gYEdW74r5V0ghpmtSFXfarFSpXlqd00Uox/CxdcY0BvyD4BWgbxdweQK4
+ F0lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706025814; x=1706630614;
+ d=1e100.net; s=20230601; t=1706026642; x=1706631442;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jTUUEUja40WbQS6wzJYDPCgMUCiS6GJwtB6HGzHkSGs=;
- b=SYulwl79F6YFny+plE0KK6iN3rGM2IFhQbuyxDOEUVW6ko/mYVKQ0mlC5UC8tqk15C
- h/6INdO2ugaM31mBKRm+PImwAxzK63mvq35dZ/x1h8UCUg9Hu2tudBI6qnOyG86VBsuV
- 64DGexeR2DM6l9o7bV7PodHG6kkOaM5c9zRkKVkhS65zz3SUhloNuQoy7sopuyllGedI
- 2PhnVFevF7uHyWz9jkKWbyL1fmp6d6kKjuKiOLKh99EPG+mAmNM38D+So5yN2WjLhj3l
- POMDnh+rve1RDrlcfmMcduwES8R99vIHoSJPLycC5SHfAKAMgX/WgFtVYOgBokp1OB18
- soXA==
-X-Gm-Message-State: AOJu0Yy+Uf3EBQCwXx8yxgFg9AyOAs4z0giET8VZRerlNg1KiGN/B8mJ
- JKnjjH67Gfd4P6dd1N3gRxloVT7gfB3ZVmMF/NFfXdYPf6ESx680CrE6DFpYOu8=
-X-Google-Smtp-Source: AGHT+IGF/q32cHIYvJzRB0JqPkPeToJpBr9fuVZhWQaHWupt+vmI9RhjjKEpFO0nWnHQOyGigjJ1tQ==
-X-Received: by 2002:a05:600c:1c23:b0:40e:4832:9fc3 with SMTP id
- j35-20020a05600c1c2300b0040e48329fc3mr299253wms.7.1706025814148; 
- Tue, 23 Jan 2024 08:03:34 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- f13-20020a05600c4e8d00b0040eb6ce137asm2651539wmq.39.2024.01.23.08.03.33
+ bh=o+uMzKgEdWxAfaTKc31QCrp/gGCfKuJesU8lsEew9OQ=;
+ b=OjTcbypI2Vi2BzsRdDAys32gyrIWnr7MJQv91PKoE6WowyNGICLrBmYvdtQTxdnsIF
+ BafYT/CMQFl3PmjT6lK0x3rUwCYBVt/4zDFzLJbR177yksxKBJqXgTWbNMzSZNtPUEkS
+ OW99BoHJuQ9nr5JmKiYyuBFu8QQ77J88PFDHf1I/gpM2qN7cJ/FMJBe0YxSfvZnAMTh2
+ pDWBVb35T567onjCGHFoyNgKuSrB2fJ6SPS8BINstoizKEc/ZBgumRAiK67A1acZwu9a
+ faIRyUK9etouAzG+9tJDdael4u4lscp0kIXAGyTdRd7+y/Gvy0qdWcMHjZRBltzc8Ou5
+ x7NA==
+X-Gm-Message-State: AOJu0YydEZDKDYXBOfnu+mJ1qY00aylodhzY34Tx9Mt/ASYTBu8AZeYh
+ c5I3ZW7InEpNamb/nevrSjlSmEOWDkHhzQH0mhp7zpeeh05C2rzuWRYTVNNU9+7hBQNFPVUR75t
+ X
+X-Google-Smtp-Source: AGHT+IHLlmK+3asEIWRwGkfIALuLSuka+7+zFVfUpIxr6eMhMnjtuu0bBVX3V8wotnnveIrNnetOzA==
+X-Received: by 2002:a17:90b:3cf:b0:28e:3b7f:a2af with SMTP id
+ go15-20020a17090b03cf00b0028e3b7fa2afmr7414350pjb.47.1706026641730; 
+ Tue, 23 Jan 2024 08:17:21 -0800 (PST)
+Received: from grind.. ([152.234.127.94]) by smtp.gmail.com with ESMTPSA id
+ u14-20020a17090ac88e00b0028bcc2a47e9sm11755686pjt.38.2024.01.23.08.17.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 08:03:33 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH] target/arm: Fix incorrect aa64_tidcp1 feature check
-Date: Tue, 23 Jan 2024 16:03:33 +0000
-Message-Id: <20240123160333.958841-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Tue, 23 Jan 2024 08:17:21 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/3] target/riscv/kvm: support 'vlenb' and vregs[]
+Date: Tue, 23 Jan 2024 13:17:11 -0300
+Message-ID: <20240123161714.160149-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,33 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A typo in the implementation of isar_feature_aa64_tidcp1() means we
-were checking the field in the wrong ID register, so we might have
-provided the feature on CPUs that don't have it and not provided
-it on CPUs that should have it. Correct this bug.
+Hi,
 
-Cc: qemu-stable@nongnu.org
-Fixes: 9cd0c0dec97be9 "target/arm: Implement FEAT_TIDCP1"
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2120
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/cpu-features.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This short series implements both 'vlenb' and 'vregs[]' in the KVM
+driver.
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 7a590c824cf..24525e36349 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -771,7 +771,7 @@ static inline bool isar_feature_aa64_hcx(const ARMISARegisters *id)
- 
- static inline bool isar_feature_aa64_tidcp1(const ARMISARegisters *id)
- {
--    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR1, TIDCP1) != 0;
-+    return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, TIDCP1) != 0;
- }
- 
- static inline bool isar_feature_aa64_hafs(const ARMISARegisters *id)
+The patches were done a couple of months ago but we were missing some
+changes in Linux (support to 'vlenb' in KVM) that got upstreamed
+recently with Linux 6.8.
+
+Patches based on top of Alistair's riscv-to-apply.next that already has
+the 'remove vlen, add vlenb' changes.
+
+Daniel Henrique Barboza (3):
+  target/riscv/kvm: change kvm_reg_id to uint64_t
+  target/riscv/kvm: initialize 'vlenb' via get-reg-list
+  target/riscv/kvm: get/set vector vregs[]
+
+ target/riscv/kvm/kvm-cpu.c | 144 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 138 insertions(+), 6 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
 
