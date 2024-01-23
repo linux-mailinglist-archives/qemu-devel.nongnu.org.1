@@ -2,101 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F13839814
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 19:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1F68398EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 20:00:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSLkT-0004rg-Av; Tue, 23 Jan 2024 13:43:49 -0500
+	id 1rSLzE-0004KZ-I5; Tue, 23 Jan 2024 13:59:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rSLkA-0004jH-Kn
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:43:34 -0500
-Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
- id 1rSLk6-0002oX-JD
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:43:28 -0500
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 1F3224032F
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 18:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1706035402;
- bh=cpcO92XOl2zNt9sq2MJVJ7XaxnnPhG6+lYWq+HSy79Q=;
- h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
- MIME-Version;
- b=VNH+ihOZtior15lJDTXQOwfIbhjbhh1EZmXALZAqmuKgDTlPixlCUKjTyS1XHmuYb
- PDV6vsUZVnzI0qVXORxaS79TpYBD74EjQxih5BHNrNjuMCJ1S9nkcLMGHN+GFbMRVb
- tCGLgoqhWMGSF2yeJkyZLTLlleY4oO5X/VGp+zwMxgEtJKbctUdY9gawzdEiClVkOQ
- WW18iWs/n81547Fcs2mso5XlBzmKXLm0YP9Age6ErL8QxF0CLJSDK9Itm33TkuqEC2
- JfuxxebM7iXPM4R2eBiD5RZ4SjsSpyEaDPEm9bV/x6IB8qVbvNlsBfsTI7VfpCPGxU
- Zlq23DJ5mVa0g==
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33944381671so464065f8f.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 10:43:22 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rSLzA-0004Jv-If
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:59:00 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rSLz8-0005Nf-Da
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:59:00 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40eb033c1b0so24323305e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 10:58:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1706036336; x=1706641136; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=YhpwPIwMBlvL+OsTFRSnSM+bvZBcd/phHKPqJLfjKhc=;
+ b=OlZVhsbThrvGftqLReSp9RCs3TY19jr4kTOzOupFtQb6r4rM1Sl5XAYtmnyzIcQMqo
+ g4NIowvtzr1CkLkijK96le0zxyCL2hbx7WCZ6EvjJY6EmOXeymSyyGqBcFXktRbwKLD3
+ 1TQbjSl5r2XBFvs8e50Of9DSb2Ukg8vRJTDCRQOw8FYfUPVEk8hV6xbty0m/iL9y6znk
+ vdB9+Yi2JoA+RB6GJ14Rq4/iY9+vrQIQN3LTrA6vtmZT64cC5vP/UMdArENFPKOir6/c
+ tvegxcbVaaWyPBdU5g6gmB25JPVC6z0V+rUK1OwEuZxPBjbGwMWiap1c18gATPvJr2Bd
+ YxOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706035394; x=1706640194;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cpcO92XOl2zNt9sq2MJVJ7XaxnnPhG6+lYWq+HSy79Q=;
- b=NYGLbBdLmamSn9StTgDCZjxjWcgtxqKTyyXhIGNHxdJsaabNKGMKwrZAe8Cfj8GCcM
- K7HiqZssYleJb6X2bm/fBXvki3r1ambY0E/38XukYQnQFOzTPqqVotS97MDoi4wGUb4L
- BHxhy7zLL3usJ+BCdcvweoyODOmEeovVssJJhGHuOjJ7E/LBXdSmcJiU1oTr4FUG9EBj
- 1x30Ob6EN0Pi3hPKpy6KXAd80M1XhqT7szNNxeAM4CROTCd4n66BwA981IQ8HTLFKh6c
- Tqek36UCQe6Ec1DxmzXVWtjZ2TWuS3phBUm9FzSncquUWpQG3ENr9QSVvrSlIq1vEgXa
- FVvw==
-X-Gm-Message-State: AOJu0YxIaEM1sLw16YftuSTULGOHeAYQh9DPiMa6ANQNstmNm4xeNjYA
- anEapmMVAiY6hO2IMLs4T8qYs9j+sn3chDUY3EVXKHI25TsYUaRkwZ3lhH9Hn3RQv40+jOuB7Il
- gNW0Z+V2cDezqyJTfN0/6tTZp3rB1mrcRCTZpLQkfCssDF2RNwgO75MFm15A8fADCdXeU
-X-Received: by 2002:a05:6000:1191:b0:337:c658:9952 with SMTP id
- g17-20020a056000119100b00337c6589952mr3233715wrx.107.1706035394513; 
- Tue, 23 Jan 2024 10:43:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHu0IRY8+uf1KeQwVMffTCixbfa+fmoMjDnc3VXSJ4eZMwG8v35HE8xmwzX+psaF/O6gw4x/w==
-X-Received: by 2002:a05:6000:1191:b0:337:c658:9952 with SMTP id
- g17-20020a056000119100b00337c6589952mr3233701wrx.107.1706035394265; 
- Tue, 23 Jan 2024 10:43:14 -0800 (PST)
-Received: from workstation5.fritz.box
- (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
+ d=1e100.net; s=20230601; t=1706036336; x=1706641136;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YhpwPIwMBlvL+OsTFRSnSM+bvZBcd/phHKPqJLfjKhc=;
+ b=HfO9QahbyDOFKI+Ph3inhQsWpL8K42JgIpsmhyTNR+/b377IIM3/9ggi6FI4FT12XV
+ pLqYNjrjOCkiX7pL5/24CEso1dB7Y2qARVVJnmdPAfk1is/K0sGGRCFus7MVt+givcfD
+ JtjXgJ527Pb3ADEddvOIHtfs8B8nJBct4JN/xF2WQwfRMF1M2DE4n7yzxWJ6lPSdvz9M
+ Oq5TUJns6V8BD935XXnBJl61jWKt+7J6NRah1ajM0AX6nSAqwYIEyByZt0bZ8QrKsSfa
+ rjSldhXArHfL6inRbkxBpOGTi/1FTeRPo2u+WADpugBhV5FKQ1xZ3CC2etBNOBmZ1by6
+ 3PFg==
+X-Gm-Message-State: AOJu0YwAeHyAjCpHbKTK3qxjVTQKGcPNukCn0s5hzi0c25/3BaciMxDW
+ yBEhA1IIzwwi/A3TafDIwNHcaVOgg/IyB5MqPFoTVtVjBKO6FaN1S6vvKbE/uK8=
+X-Google-Smtp-Source: AGHT+IH7eghgmAdzVN2+5+XImR18tQVseP+Gn83qv2kqsEP+H9kqhzfmEnNFZEWcVWVUgi+RHKd3/g==
+X-Received: by 2002:a05:600c:5029:b0:40d:f9c8:887f with SMTP id
+ n41-20020a05600c502900b0040df9c8887fmr430653wmr.51.1706036336582; 
+ Tue, 23 Jan 2024 10:58:56 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- u9-20020a5d6ac9000000b00337d392c6c3sm14180252wrw.13.2024.01.23.10.43.13
+ y3-20020adfee03000000b003368c8d120fsm17027966wrn.7.2024.01.23.10.58.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 10:43:13 -0800 (PST)
-From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
+ Tue, 23 Jan 2024 10:58:56 -0800 (PST)
+Date: Tue, 23 Jan 2024 19:58:55 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: [PATCH v4 4/4] qemu-options: enable -smbios option on RISC-V
-Date: Tue, 23 Jan 2024 19:42:29 +0100
-Message-ID: <20240123184229.10415-5-heinrich.schuchardt@canonical.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240123184229.10415-1-heinrich.schuchardt@canonical.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v4 3/4] target/riscv: SMBIOS support for RISC-V virt
+ machine
+Message-ID: <20240123-09e26e57d75c53e4872d158f@orel>
 References: <20240123184229.10415-1-heinrich.schuchardt@canonical.com>
+ <20240123184229.10415-4-heinrich.schuchardt@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=185.125.188.122;
- envelope-from=heinrich.schuchardt@canonical.com;
- helo=smtp-relay-internal-0.canonical.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240123184229.10415-4-heinrich.schuchardt@canonical.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,38 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With SMBIOS support added for RISC-V we also should enable the command line
-option.
+On Tue, Jan 23, 2024 at 07:42:28PM +0100, Heinrich Schuchardt wrote:
+> Generate SMBIOS tables for the RISC-V mach-virt.
+> Add CONFIG_SMBIOS=y to the RISC-V default config.
+> Set the default processor family in the type 4 table.
+> 
+> The implementation is based on the corresponding ARM and Loongson code.
+> 
+> With the patch the following firmware tables are provided:
+> 
+>     etc/smbios/smbios-anchor
+>     etc/smbios/smbios-tables
+> 
+> Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> ---
+> v4:
+> 	remove a superfluous #ifdef
+> v3:
+> 	use misa_mxl_max to determine bitness
+> v2:
+> 	set processor family
+> ---
+>  hw/riscv/Kconfig |  1 +
+>  hw/riscv/virt.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 43 insertions(+)
+>
 
-Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
-v4:
-	no change
-v3:
-	no change
-v2:
-	new patch
----
- qemu-options.hx | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/qemu-options.hx b/qemu-options.hx
-index d90bdffc7a..935aec7cb9 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2697,7 +2697,7 @@ DEF("smbios", HAS_ARG, QEMU_OPTION_smbios,
-     "                specify SMBIOS type 17 fields\n"
-     "-smbios type=41[,designation=str][,kind=str][,instance=%d][,pcidev=str]\n"
-     "                specify SMBIOS type 41 fields\n",
--    QEMU_ARCH_I386 | QEMU_ARCH_ARM | QEMU_ARCH_LOONGARCH)
-+    QEMU_ARCH_I386 | QEMU_ARCH_ARM | QEMU_ARCH_LOONGARCH | QEMU_ARCH_RISCV)
- SRST
- ``-smbios file=binary``
-     Load SMBIOS entry from binary file.
--- 
-2.43.0
-
 
