@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EFC839C19
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 23:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FF7839C1D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 23:26:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSPDH-0005qK-GD; Tue, 23 Jan 2024 17:25:47 -0500
+	id 1rSPDN-0006FE-I1; Tue, 23 Jan 2024 17:25:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPDF-0005hr-2U
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:25:45 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPDL-0006Cm-59
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:25:51 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPDC-0000zJ-RW
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:25:44 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so501945666b.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 14:25:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPDJ-00010G-Fu
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:25:50 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2cddf596321so52184871fa.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 14:25:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706048741; x=1706653541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706048747; x=1706653547; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2RjX1tFrRGVlM1BwnlKhE6JoLvLjIml7FEvFQ9cMoCw=;
- b=TUc19tHZjyl4FfUjXYKcFb56jSJO7LiGv+PpiXnYJ3C3ywjCMi5rBdmJ0lOv0TBpEE
- 0KOfNhBgAfzuDI9yH/iPHhSm3jONaFEEoBH2RTH1SJFT809eGdYJhbnefSyFDEBjdXZV
- 9EJxyWEZs5D5O/fyfspUAU6ZkRvh94mXFw6Z+gb4hm7im67XIbk9fUnQeT8J02Doq7it
- vtH/DMx4d2FCHcfrRMru30iBpR1E7Fu3bfL1XusCEiWyxuAwwzevvpp9OzDwton2+ox3
- LrIFrJ9y5KNCk0yPirt0XH5+51bWGglt7aRd9hRgp/eSVLnAa5Xa3GZ9x48Qi3MZi5QV
- xNHQ==
+ bh=39OP9EE9lF2EcfOzamU8x35qcADjGnzDFDx/nFOBMLk=;
+ b=XpXdfJ8WOaiDi43sRQvx8su0uIO3TVGYPOOgR1DC2a7OXxg1ap426IsUNRaGiFs03l
+ xXdEBrXN9rGr0kJTlqdbmhQ2BzHoQQMpYEDpHgrT+IIgzhUzDQ0OzWlrcMhoDmiWuFPC
+ lCx7GQV1/qDKgZdXx+ZZAhXre/IwmkED4kU9lEoAT5bVWXbMxnaWWQTQ4jpHk9pQwoLs
+ Doy3URRljeMvcXpQimDiABfNqEKUuXRBklyxGAKVYuw65X+zdLRjgopkTszMR5FvoIsH
+ cxu27L7T205npJjGajkHHqYcZNrbk/DE9UPwFuBJeaemiUwe47lLA7LRmXCBPMyiYxhQ
+ sMkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706048741; x=1706653541;
+ d=1e100.net; s=20230601; t=1706048747; x=1706653547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2RjX1tFrRGVlM1BwnlKhE6JoLvLjIml7FEvFQ9cMoCw=;
- b=TLvQs2UnsV4X7iv8V/Xx65CW9KZHAv2vhzo17lrIkYDmrvPFKkWyTYCFVh8ayxw11/
- DVApECUNG6laSSixlbbDAdv3f9AlwoWq23GLth3gMMMEd2y0BERmwEbOKUYGTDgpcXq8
- mrlPSXxKpWLIqAd9e/YRtQQgFws0VDs82rmbXnnGJrx7N8T4IPVJkegIfkOkrTvPJ0lG
- rM2VzDlUKAy6yqM6fS0ibHRsagk83xNMnuSy+akDB9JBPeqZqVO2kntO671x9mpoxmut
- nNpL3Ua4vzYbB4nrpzyje+ws4hM0OwqdEBj0CIIWs8Fug4eRXhKlq9x2oDa+pXeSWuTG
- qeow==
-X-Gm-Message-State: AOJu0YzB58oMMwx9p2QGF3CCWQnk9BSaaoOcWO2Tr2iyUPOO4HYfhF07
- PaXCrrBYU6cmWMySWYFwEcLLxt3bv0cjLo9MlNMCp/lUcsJx9dlxIr3fyJEIRFmqeyFLB63wkVH
- Z
-X-Google-Smtp-Source: AGHT+IEn7r3h75w6vm5m2TAgM5ELIUQ8bWkNZJV5XfU7Zfak1rjJUR8WqEwWgcm3AKP0Mqb7/K/hCQ==
-X-Received: by 2002:a17:907:8749:b0:a31:408:e4e5 with SMTP id
- qo9-20020a170907874900b00a310408e4e5mr146355ejc.178.1706048741114; 
- Tue, 23 Jan 2024 14:25:41 -0800 (PST)
+ bh=39OP9EE9lF2EcfOzamU8x35qcADjGnzDFDx/nFOBMLk=;
+ b=BHl7aficVGB3Yp/uZaKVjJqKlTb75og6KxzjgpY3ssG7ZK33RQGcW2Jqs6atR6nIBh
+ MGGRTpedBUOYbjeRQcreNOowlG6QcsNnqDRfR6JG+gQm5f1/4d/f3bhJTjf7kxnDQmmC
+ KUx7rlSWMux6c+cUsn+lYm1meniH07LtO//4zVBIkrNeehOBDbKV4hFWjZs7nDWhnXyz
+ r0N6yTNUohxux15+TnTjAeX7Zo6eLhO7euVjw4PpHCxHS4QFo6kKKBKdOyEG8C1tvJEd
+ vUYhELVzWTsFA0jCQTur985AxNJtwUjYasnedGtZdnx+EmqlJz2brH3TXV0c6E5cOfrb
+ a4cA==
+X-Gm-Message-State: AOJu0YziZodey8xCbVF/BzVlcBU9/33QddpfRkUIK3JlllzqbBUYwy+C
+ ErVEhiTQlSY0uSErNDzx01iB+7ajWgwmWff3mNf9tKoclNG0rQbtjgvZvHHbBKSGVw9O5uqj4yk
+ 9
+X-Google-Smtp-Source: AGHT+IGGL9aDF1iXuPV3F+90sviFPEeOwjpvSnLOoTYFIN3lXSAKmz9Iups9xwTir/FoEtPzP73Fww==
+X-Received: by 2002:a2e:964b:0:b0:2cd:cfd7:2ee9 with SMTP id
+ z11-20020a2e964b000000b002cdcfd72ee9mr250403ljh.38.1706048747067; 
+ Tue, 23 Jan 2024 14:25:47 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- x1-20020a1709064bc100b00a2c70caccbasm14539348ejv.107.2024.01.23.14.25.39
+ ef5-20020a05640228c500b00557d839727esm15820192edb.7.2024.01.23.14.25.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jan 2024 14:25:40 -0800 (PST)
+ Tue, 23 Jan 2024 14:25:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
@@ -66,18 +66,18 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Gavin Shan <gshan@redhat.com>, Alistair Francis <alistair@alistair23.me>,
  Igor Mammedov <imammedo@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/6] hw/arm/vexpress: Check for CPU types in
+Subject: [PATCH v2 6/6] hw/arm/zynq: Check for CPU types in
  machine_run_board_init()
-Date: Tue, 23 Jan 2024 23:25:07 +0100
-Message-ID: <20240123222508.13826-6-philmd@linaro.org>
+Date: Tue, 23 Jan 2024 23:25:08 +0100
+Message-ID: <20240123222508.13826-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240123222508.13826-1-philmd@linaro.org>
 References: <20240123222508.13826-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,49 +101,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Restrict MachineClass::valid_cpu_types[] to the single
-valid CPU types.
+valid CPU type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/vexpress.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ hw/arm/xilinx_zynq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
-index f1b45245d5..a3561a1b56 100644
---- a/hw/arm/vexpress.c
-+++ b/hw/arm/vexpress.c
-@@ -783,22 +783,32 @@ static void vexpress_class_init(ObjectClass *oc, void *data)
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index 66d0de139f..6ec65d4780 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -355,6 +355,10 @@ static void zynq_init(MachineState *machine)
  
- static void vexpress_a9_class_init(ObjectClass *oc, void *data)
+ static void zynq_machine_class_init(ObjectClass *oc, void *data)
  {
 +    static const char * const valid_cpu_types[] = {
 +        ARM_CPU_TYPE_NAME("cortex-a9"),
 +        NULL
 +    };
      MachineClass *mc = MACHINE_CLASS(oc);
-     VexpressMachineClass *vmc = VEXPRESS_MACHINE_CLASS(oc);
- 
-     mc->desc = "ARM Versatile Express for Cortex-A9";
+     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
+     mc->init = zynq_init;
+@@ -362,6 +366,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+     mc->no_sdcard = 1;
+     mc->ignore_memory_transaction_failures = true;
      mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
 +    mc->valid_cpu_types = valid_cpu_types;
- 
-     vmc->daughterboard = &a9_daughterboard;
+     mc->default_ram_id = "zynq.ext_ram";
  }
- 
- static void vexpress_a15_class_init(ObjectClass *oc, void *data)
- {
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a15"),
-+        NULL
-+    };
-     MachineClass *mc = MACHINE_CLASS(oc);
-     VexpressMachineClass *vmc = VEXPRESS_MACHINE_CLASS(oc);
- 
-     mc->desc = "ARM Versatile Express for Cortex-A15";
-     mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a15");
-+    mc->valid_cpu_types = valid_cpu_types;
- 
-     vmc->daughterboard = &a15_daughterboard;
  
 -- 
 2.41.0
