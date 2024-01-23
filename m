@@ -2,67 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D600A838D6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE40A838D61
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:26:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSEzF-0006XF-RW; Tue, 23 Jan 2024 06:30:39 -0500
+	id 1rSEue-0005Lx-MP; Tue, 23 Jan 2024 06:25:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1rSEz5-0006VK-FT
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:30:28 -0500
-Received: from mout.kundenserver.de ([212.227.126.130])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rSEuM-0005Go-Ul
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:25:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
- id 1rSEz0-0007mb-Qp
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:30:27 -0500
-Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1N9L64-1r53mm2ikm-015Fgy; Tue, 23 Jan 2024 12:25:04 +0100
-From: Laurent Vivier <lvivier@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 2/2] e1000e: fix link state on resume
-Date: Tue, 23 Jan 2024 12:25:01 +0100
-Message-ID: <20240123112501.305681-2-lvivier@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240123112501.305681-1-lvivier@redhat.com>
-References: <20240123112501.305681-1-lvivier@redhat.com>
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rSEuH-0006xq-Gz
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:25:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706009127;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4IgL7xkE/ZFGFm35Oqp6i0tcdRHexgi2JIIMynUsVSI=;
+ b=PV3hMuLoKbvJPmru1PSTKrBDmnEKxdvcZtfP6+b+URdCtsmWGI7GJWfxNHlz568RkRSiUw
+ VPKOQdF8YUIexAT43Jl/eUfmgyphAileXGhKJ98y6IWpWQ8FwEQvGJfCafcMc1TPcSabVf
+ Alodrt6eqnlFI5Ygq2mVJgfW6lNW5Yc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-ytxrr_euNo6wWL2o2NneBQ-1; Tue, 23 Jan 2024 06:25:23 -0500
+X-MC-Unique: ytxrr_euNo6wWL2o2NneBQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40eaedb4446so15140725e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:25:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706009122; x=1706613922;
+ h=in-reply-to:from:references:cc:to:content-language:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=4IgL7xkE/ZFGFm35Oqp6i0tcdRHexgi2JIIMynUsVSI=;
+ b=SR5ReZiD2a4Z4mu7OFeuf3MtPf0wxi1dcn17IuRyX7cMasjWjvwopmzg0tbYxet+K8
+ zIsfpX1xT5GBRj6HNhSdIHTvR+Vvkdl9m2owgPbIiOX0B7OFxgkStXP+XK4Vj3qwjf5E
+ B71J+QSznNhLO98O50Pltm2RdtLyJaOxGUb/RhoB1Jm4h49ao6ynXVjqelyomML9FupI
+ TalBHLjqjqcDE9zUUSW+2TN5SVrbR3xdLBS9Mmdmfe5T0JbfAF4UXKRHkwH46Xw/T9oP
+ pAxtP/Y9S/aXUNGJ28aSr+uZD1CKko6U3OKAR0/4Ba4Fpcj4QO7RXmJYxugbk2iAsRkj
+ YjaA==
+X-Gm-Message-State: AOJu0Yz7JvcQDOUnH2//VFJzvWMW7GoUP11zRl+NHUp8heonbUkWtUC0
+ zLXMP2wjDEFF98YqXj+RJ4aBdvaXRtSohq8ad4xXlNiac+BahiuuYXKf83EL210iAKgSx23KYz/
+ btOAdE51WDt/cILSFcb6GypNx4FDNk6fwUF49zyrnh4IBaI5a/rU7
+X-Received: by 2002:a7b:cb87:0:b0:40e:b2b2:d2 with SMTP id
+ m7-20020a7bcb87000000b0040eb2b200d2mr25437wmi.134.1706009122151; 
+ Tue, 23 Jan 2024 03:25:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHtS6PIH+rjwJFfsRg6kAbldbVhRtYX2TbK9sjCoRBdqCPrLH7B9IDSjFxuVLQyXokOJdKHYw==
+X-Received: by 2002:a7b:cb87:0:b0:40e:b2b2:d2 with SMTP id
+ m7-20020a7bcb87000000b0040eb2b200d2mr25430wmi.134.1706009121865; 
+ Tue, 23 Jan 2024 03:25:21 -0800 (PST)
+Received: from ?IPV6:2003:cf:d73b:4143:2bf6:228a:1b7a:e384?
+ (p200300cfd73b41432bf6228a1b7ae384.dip0.t-ipconnect.de.
+ [2003:cf:d73b:4143:2bf6:228a:1b7a:e384])
+ by smtp.gmail.com with ESMTPSA id
+ n18-20020a05600c3b9200b0040e4ca7fcb4sm42388131wms.37.2024.01.23.03.25.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 03:25:21 -0800 (PST)
+Content-Type: multipart/alternative;
+ boundary="------------aJ7CF4e8iHwij30aUT0D9MKL"
+Message-ID: <b609e36e-62ab-40d0-b51a-3717f90a51e5@redhat.com>
+Date: Tue, 23 Jan 2024 12:25:20 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:CBm09x7yLOvR07L/zHYkVcOUg3/MHvjg1vQfqykGJ80DqOjsuS7
- UIx6eYUZotqaqMmzkPq+V7UFwuCQX7vSJQMjw4eBOMig0PjHfUTPwblSdHsma1MdWOys114
- 9KcZKnppK1tBuoUjDSWPxnBIVwHb5Vg8bLGYmdCvjavKwWrmhbY9cqAX1FizQASHTCASQ3u
- 1RFBshkWNvRZnaby44FpA==
-UI-OutboundReport: notjunk:1;M01:P0:9TCk6udNkOk=;fA/tUQ5+i+gJAJiVryC/1pip9fx
- 0xL71FBVRpcNBxIoizi69yAcP/UFTYQRRkAfeViBTeML+TDj3csC7K5ekavbwVar+AjNr0beb
- zQPUE5ZKoB0HDqwsVblVOx1pNxZGse8sUSFdWN71vNa5jHwlISn7J+AFxbY1Zm3DP6NCac/li
- hVe69fUrAPx3LQMWdNj8lCTeFBrWEQScJcqcVlTN4aW9qysnN37VF3f9O518+tsGS8Nq3QBDE
- JjNVsIVaIFcR1278+yQpW35dAMfRlWfx6uwYKyajcGEsciT3xb2ca4rdwOdxJ2D7o5kjLQW4S
- iajs6BSFbK2XqPvup7AFZ6iTXozJX/3heS1YcODxLYLebYM6y75q2KjpVeUGNb9VpmQt0EcQ5
- HwlmI3MRo2KQflE/aMZyyFE+HB2NXW87MrRi28IjC6aflwsYbSIFsOwmPU/n3enoAaZFaHzv6
- zpzGYgh6N0Xl3mafQBEHnD+ibzlusjzZ0k8stSS9JSbSgTfHakyO+bmTQtRroEyr3sIwC1xXd
- YBZb2FVU8C+bw3PZ0qJH8YMWucPpBZlQiRZSRBeXXw+x7zUxWiMyz+vOc82CVrQENw4gW5X68
- JXqImo7zQGMBlsNuOQ+sQE7cM2GkPEFPPJiwZ8Y2RzETz/vHEqLhhf0aNGirp/NMPyZ6ydLYM
- WVl8OKv/g+6MII0r4jcQF/DXi5NHIXOdj0fNT0z4wAe6fxgWQQRGbfuHJ/yYqIiEgBXY0T7Zb
- xhQ4HpQI3ZblDjS4T29HgPQ78VvMVETsPwBM7svbdpzFoUc2Kzw36iNchgCAHqcxp2Wssihg2
- UxjLu1SgpedmtcIuygFmRN0I9Lm6RIpz9JRN/OfT339Dds4/CoYGdk6BLRkkDOXG0E9F5QHpP
- xOnItnkiDkLyxhQ==
-Received-SPF: permerror client-ip=212.227.126.130;
- envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
- SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/3] aio-posix: call ->poll_end() when removing AioHandler
+Content-Language: en-US
+To: Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>
+References: <20231213211544.1601971-1-stefanha@redhat.com>
+ <142d6078-1bb9-4116-ac87-7daac16f12d8@redhat.com>
+ <016ac3d1-f6c1-48eb-a714-fb777dff7012@proxmox.com>
+ <94db88e7-1f02-44dd-bc2c-3d9ccf1cce72@redhat.com>
+ <bfc7b20c-2144-46e9-acbc-e726276c5a31@proxmox.com>
+ <67a36617-9e61-4778-aebf-1e667cb51120@proxmox.com>
+ <3bb5aa0e-ae0a-4fda-a5b5-1bfac86651ac@redhat.com>
+ <e281e717-f416-47d2-aef4-d08b327122ef@redhat.com>
+ <8a32f350-e69a-458a-be4e-1d3335e696c6@proxmox.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <8a32f350-e69a-458a-be4e-1d3335e696c6@proxmox.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,142 +110,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On resume e1000e_vm_state_change() always calls e1000e_autoneg_resume()
-that sets link_down to false, and thus activates the link even
-if we have disabled it.
+This is a multi-part message in MIME format.
+--------------aJ7CF4e8iHwij30aUT0D9MKL
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The problem can be reproduced starting qemu in paused state (-S) and
-then set the link to down. When we resume the machine the link appears
-to be up.
+On 23.01.24 12:12, Fiona Ebner wrote:
 
-Reproducer:
+[...]
 
-   # qemu-system-x86_64 ... -device e1000e,netdev=netdev0,id=net0 -S
+> I noticed poll_set_started() is not called, because
+> ctx->fdmon_ops->need_wait(ctx) was true, i.e. ctx->poll_disable_cnt was
+> positive (I'm using fdmon_poll). I then found this is because of the
+> notifier for the event vq, being attached with
+>
+>> virtio_queue_aio_attach_host_notifier_no_poll(vs->event_vq, s->ctx);
+> in virtio_scsi_dataplane_start(). But in virtio_scsi_drained_end() it is
+> attached with virtio_queue_aio_attach_host_notifier() instead of the
+> _no_poll() variant. So that might be the actual issue here?
+>
+>  From a quick test, I cannot see the CPU-usage-spike issue with the
+> following either:
+>
+>> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+>> index 690aceec45..ba1ab8e410 100644
+>> --- a/hw/scsi/virtio-scsi.c
+>> +++ b/hw/scsi/virtio-scsi.c
+>> @@ -1166,7 +1166,15 @@ static void virtio_scsi_drained_end(SCSIBus *bus)
+>>   
+>>       for (uint32_t i = 0; i < total_queues; i++) {
+>>           VirtQueue *vq = virtio_get_queue(vdev, i);
+>> -        virtio_queue_aio_attach_host_notifier(vq, s->ctx);
+>> +        if (!virtio_queue_get_notification(vq)) {
+>> +            virtio_queue_set_notification(vq, true);
+>> +        }
+>> +        if (vq == VIRTIO_SCSI_COMMON(s)->event_vq) {
+>> +            virtio_queue_aio_attach_host_notifier_no_poll(vq, s->ctx);
+>> +        } else {
+>> +            virtio_queue_aio_attach_host_notifier(vq, s->ctx);
+>> +        }
+>> +        virtio_queue_notify(vdev, i);
+>>       }
+>>   }
 
-   {"execute": "qmp_capabilities" }
-   {"execute": "set_link", "arguments": {"name": "net0", "up": false}}
-   {"execute": "cont" }
+Perfect, so we agree on trying it that way. :)
 
-To fix the problem, merge the content of e1000e_vm_state_change()
-into e1000e_core_post_load() as e1000 does.
+Hanna
+--------------aJ7CF4e8iHwij30aUT0D9MKL
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Buglink: https://issues.redhat.com/browse/RHEL-21867
-Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
----
- hw/net/e1000e_core.c | 50 +++-----------------------------------------
- hw/net/e1000e_core.h |  2 --
- 2 files changed, 3 insertions(+), 49 deletions(-)
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 23.01.24 12:12, Fiona Ebner wrote:<br>
+      <br>
+      [...]<br>
+      <br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:8a32f350-e69a-458a-be4e-1d3335e696c6@proxmox.com"><span
+      style="white-space: pre-wrap">
+</span>
+      <pre class="moz-quote-pre" wrap="">I noticed poll_set_started() is not called, because
+ctx-&gt;fdmon_ops-&gt;need_wait(ctx) was true, i.e. ctx-&gt;poll_disable_cnt was
+positive (I'm using fdmon_poll). I then found this is because of the
+notifier for the event vq, being attached with
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index e324c02dd589..95311fd60530 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -123,14 +123,6 @@ e1000e_intmgr_timer_resume(E1000IntrDelayTimer *timer)
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">virtio_queue_aio_attach_host_notifier_no_poll(vs-&gt;event_vq, s-&gt;ctx);
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+in virtio_scsi_dataplane_start(). But in virtio_scsi_drained_end() it is
+attached with virtio_queue_aio_attach_host_notifier() instead of the
+_no_poll() variant. So that might be the actual issue here?
+
+From a quick test, I cannot see the CPU-usage-spike issue with the
+following either:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 690aceec45..ba1ab8e410 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -1166,7 +1166,15 @@ static void virtio_scsi_drained_end(SCSIBus *bus)
+ 
+     for (uint32_t i = 0; i &lt; total_queues; i++) {
+         VirtQueue *vq = virtio_get_queue(vdev, i);
+-        virtio_queue_aio_attach_host_notifier(vq, s-&gt;ctx);
++        if (!virtio_queue_get_notification(vq)) {
++            virtio_queue_set_notification(vq, true);
++        }
++        if (vq == VIRTIO_SCSI_COMMON(s)-&gt;event_vq) {
++            virtio_queue_aio_attach_host_notifier_no_poll(vq, s-&gt;ctx);
++        } else {
++            virtio_queue_aio_attach_host_notifier(vq, s-&gt;ctx);
++        }
++        virtio_queue_notify(vdev, i);
      }
  }
- 
--static void
--e1000e_intmgr_timer_pause(E1000IntrDelayTimer *timer)
--{
--    if (timer->running) {
--        timer_del(timer->timer);
--    }
--}
--
- static inline void
- e1000e_intrmgr_stop_timer(E1000IntrDelayTimer *timer)
- {
-@@ -398,24 +390,6 @@ e1000e_intrmgr_resume(E1000ECore *core)
-     }
- }
- 
--static void
--e1000e_intrmgr_pause(E1000ECore *core)
--{
--    int i;
--
--    e1000e_intmgr_timer_pause(&core->radv);
--    e1000e_intmgr_timer_pause(&core->rdtr);
--    e1000e_intmgr_timer_pause(&core->raid);
--    e1000e_intmgr_timer_pause(&core->tidv);
--    e1000e_intmgr_timer_pause(&core->tadv);
--
--    e1000e_intmgr_timer_pause(&core->itr);
--
--    for (i = 0; i < E1000E_MSIX_VEC_NUM; i++) {
--        e1000e_intmgr_timer_pause(&core->eitr[i]);
--    }
--}
--
- static void
- e1000e_intrmgr_reset(E1000ECore *core)
- {
-@@ -3351,22 +3325,6 @@ e1000e_autoneg_resume(E1000ECore *core)
-     }
- }
- 
--static void
--e1000e_vm_state_change(void *opaque, bool running, RunState state)
--{
--    E1000ECore *core = opaque;
--
--    if (running) {
--        trace_e1000e_vm_state_running();
--        e1000e_intrmgr_resume(core);
--        e1000e_autoneg_resume(core);
--    } else {
--        trace_e1000e_vm_state_stopped();
--        e1000e_autoneg_pause(core);
--        e1000e_intrmgr_pause(core);
--    }
--}
--
- void
- e1000e_core_pci_realize(E1000ECore     *core,
-                         const uint16_t *eeprom_templ,
-@@ -3379,9 +3337,6 @@ e1000e_core_pci_realize(E1000ECore     *core,
-                                        e1000e_autoneg_timer, core);
-     e1000e_intrmgr_pci_realize(core);
- 
--    core->vmstate =
--        qemu_add_vm_change_state_handler(e1000e_vm_state_change, core);
--
-     for (i = 0; i < E1000E_NUM_QUEUES; i++) {
-         net_tx_pkt_init(&core->tx[i].tx_pkt, E1000E_MAX_TX_FRAGS);
-     }
-@@ -3405,8 +3360,6 @@ e1000e_core_pci_uninit(E1000ECore *core)
- 
-     e1000e_intrmgr_pci_unint(core);
- 
--    qemu_del_vm_change_state_handler(core->vmstate);
--
-     for (i = 0; i < E1000E_NUM_QUEUES; i++) {
-         net_tx_pkt_uninit(core->tx[i].tx_pkt);
-     }
-@@ -3576,5 +3529,8 @@ e1000e_core_post_load(E1000ECore *core)
-      */
-     nc->link_down = (core->mac[STATUS] & E1000_STATUS_LU) == 0;
- 
-+    e1000e_intrmgr_resume(core);
-+    e1000e_autoneg_resume(core);
-+
-     return 0;
- }
-diff --git a/hw/net/e1000e_core.h b/hw/net/e1000e_core.h
-index 66b025cc43f1..01510ca78b47 100644
---- a/hw/net/e1000e_core.h
-+++ b/hw/net/e1000e_core.h
-@@ -98,8 +98,6 @@ struct E1000Core {
- 
-     E1000IntrDelayTimer eitr[E1000E_MSIX_VEC_NUM];
- 
--    VMChangeStateEntry *vmstate;
--
-     uint32_t itr_guest_value;
-     uint32_t eitr_guest_value[E1000E_MSIX_VEC_NUM];
- 
--- 
-2.43.0
+</pre>
+      </blockquote>
+    </blockquote>
+    <br>
+    Perfect, so we agree on trying it that way. :)<br>
+    <br>
+    Hanna<br>
+  </body>
+</html>
+
+--------------aJ7CF4e8iHwij30aUT0D9MKL--
 
 
