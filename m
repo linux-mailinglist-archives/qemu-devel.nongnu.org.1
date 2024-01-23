@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1C4838D11
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4760838D14
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:12:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSEgD-00036l-GH; Tue, 23 Jan 2024 06:10:57 -0500
+	id 1rSEhg-000524-Kr; Tue, 23 Jan 2024 06:12:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rSEfz-0002qt-Jh
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:10:45 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1rSEfw-0004Nm-50
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:10:42 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-338aca547d9so3308876f8f.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:10:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706008235; x=1706613035;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a6UoAAKm1BSVru2djWDEvJDwpv7xKurDJDJjWffjIbA=;
- b=DcAkNhnYQUEA1KZukWTKB3AmzF7Zj8nqeFywO0L5/Fa3MSZtmpCVIdVVVIZnUvyVlO
- 7J3z43vT4LfsMhBcLsNRxSzY0woANDtoMeFwmxsmWKa3lvni7RB+sIPD8x3j6ZNo/3Va
- m65rQtr9lV61Hb4WYViMlK5fppuOIkoLHSB5or2oqAK2IIqkVLZHvwVrmX51P4epQuuY
- E9he1lYJPuL9uKrT5J/KodpIshmfwvAfkYdFdjBN3ZQnu1hfm0cKSRE83t4hEJCwB7fV
- Sy6gey1JsVzF3aZf+XrLG//Jl7v6Hxf+GcxLhbC6FZMPQ5P3/P5eHTE8AVp7Z6z/Ia14
- +sHA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rSEhS-0004p5-EE
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:12:16 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rSEhP-0004dJ-Ev
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:12:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706008330;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=U6aq/Ijjh/vnlChJ/HoevxoLFpiIHA5IftpWu5u9MMA=;
+ b=es9nLopeO5R08KgAFbp1Tg+v0zowinHBXvaACKvc6YtWbVbFCj32r8MUW7fqUQnKwNsw16
+ p0ZpoFSR2+tNHfJs46gBVCtOjXcCz3EyqPWfcGb4xH02ZfnMiAVpUSazyz6kwCjtoLr/cv
+ vqTCQO6n7vRxcHbuyTfBvEe6RKKqfjk=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-288-jb18HG9tMmej7bqRWK40uw-1; Tue, 23 Jan 2024 06:12:08 -0500
+X-MC-Unique: jb18HG9tMmej7bqRWK40uw-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-7d2dfa4c664so1489498241.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:12:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706008235; x=1706613035;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1706008328; x=1706613128;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a6UoAAKm1BSVru2djWDEvJDwpv7xKurDJDJjWffjIbA=;
- b=qhDYxzQi9Ixu7HViqq1fSYBneZHySwde8ZNQ0yx5Yatwpp+ti08RrF6cHyOGRGgpod
- Qlz3fxLGuUHUQuyQySDlr20Yk+I9x+f3+yyIvFTnTu2hy3DA7if3v1n8eMVi7kiqEuUf
- Bka2I9GVmYLI6sq6LL6+xN+MxaoFvSMUIV6uL2b1ACuxR9FdT66QTqh8h3Km1i62jt6b
- o4+ObB5+ZlIGQ/iPbiH4vjr0Tmq8mYJ++qbIhi69F5cLaLzSgid35ExA5wg3PUug52I8
- IKdk8G9x2NG9TrolBXmyjgUAX+WN8jNpaNYy0rjre0aUlw+u9f9owjInvbKAtA0diLar
- JoRA==
-X-Gm-Message-State: AOJu0Yxtb/qXuGG0xPygTZvctpO98lzNVNq+frvI9kpWbv6IP7R1FciJ
- z5bswv3RQJMSVV0CIUOM/ZJLRzRqkTyMMipw5h5ay8ZL3uVF+bRJIJbij843ezziuvrAiQnDFTM
- yEjk=
-X-Google-Smtp-Source: AGHT+IGXQ9R9gZGixdo57qdApxgwlFBEkkow5z3BRcUSXlogUwHnrwj53SC89qJ6MRyFXrZrKKC5ow==
-X-Received: by 2002:a05:6000:108a:b0:337:bfd9:bd48 with SMTP id
- y10-20020a056000108a00b00337bfd9bd48mr1568534wrw.62.1706008235559; 
- Tue, 23 Jan 2024 03:10:35 -0800 (PST)
-Received: from rockhopper.. (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- n15-20020a5d4c4f000000b00337d6f0013esm12288013wrt.107.2024.01.23.03.10.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 03:10:35 -0800 (PST)
-From: Rob Bradford <rbradford@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH v3 3/3] target/riscv: Expose Zaamo and Zalrsc extensions
-Date: Tue, 23 Jan 2024 11:10:30 +0000
-Message-ID: <20240123111030.15074-4-rbradford@rivosinc.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240123111030.15074-1-rbradford@rivosinc.com>
-References: <20240123111030.15074-1-rbradford@rivosinc.com>
+ bh=U6aq/Ijjh/vnlChJ/HoevxoLFpiIHA5IftpWu5u9MMA=;
+ b=H+m1XpWSF0WSE35DaR54MiRoleOg+2NOSAyuV5fbs51SfVX/sVvLcQYwqN3/XmiqQk
+ nG21wG3ok+O9wy1UkXnGDpSGrFGda2DS1zHU9lB9C5Jm5yFzzaBKzKWpagyFpl4+XstA
+ jgZYfNl/pzL49b06aoXvGfXzhbFMIu4wqhkdeF7s/3ycnEyLKNQfoTSb5R683+RFCpvp
+ 4ebYcZG3EjFjoowOS56+wi2X7ortoSIlzUsQ/yMRZwCbpNzNeyza2S+tFsnl/81gx0P/
+ lIxQiMj0Xg4enPvmAL6x/ZSc2MfKSSiD5F6T1k50V5QA+9L2LozXXZYeISltnsWw6He/
+ NRmg==
+X-Gm-Message-State: AOJu0YxUmQvDnflpYcV2TMnfkqYnRn/oBY2MLJ8wrTp0E4ftyLTodI+P
+ +qfmpKSqRq8ty1EswlWljlNzjCUZuQnk5DXxyn8M54e5EvnyLBRycyL4tMKbnG+jC6jdT/HrEjo
+ uDZfqikabwI2ckKdTT8stRoHIQKUxaOgbeFYSo6GzufhcPoDCbbHrJMvPWKismnbB0jceelEoxx
+ NNu/ROVglqptFnLEUd6ac5ZcB/Esg=
+X-Received: by 2002:a05:6102:160f:b0:469:b0b2:2150 with SMTP id
+ cu15-20020a056102160f00b00469b0b22150mr2373442vsb.3.1706008328303; 
+ Tue, 23 Jan 2024 03:12:08 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEAgo/FhbAsuYBwQsX1N/zLAYfJ3s0pVdHpQOi6C/ENsBzO0zJRGKdxoW4a5gzx2RDfLJcpWDOMBgEEAFxZgnE=
+X-Received: by 2002:a05:6102:160f:b0:469:b0b2:2150 with SMTP id
+ cu15-20020a056102160f00b00469b0b22150mr2373434vsb.3.1706008328055; Tue, 23
+ Jan 2024 03:12:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=rbradford@rivosinc.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20231222175951.172669-1-pbonzini@redhat.com>
+ <20231222175951.172669-2-pbonzini@redhat.com>
+ <4f419058-fda4-4101-8787-167056ddbf33@tls.msk.ru>
+In-Reply-To: <4f419058-fda4-4101-8787-167056ddbf33@tls.msk.ru>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 23 Jan 2024 12:11:55 +0100
+Message-ID: <CABgObfZN0ZLoHijRwPWZ7pxKh=_fON8me4enVAWrtGBQ=vUMCw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] target/i386: mask high bits of CR3 in 32-bit mode
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, mcb30@ipxe.org, 
+ qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,39 +98,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose the newly added extensions to the guest and allow their control
-through the CPU properties.
+On Thu, Jan 18, 2024 at 9:04=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
+>
+> 22.12.2023 20:59, Paolo Bonzini:
+> > CR3 bits 63:32 are ignored in 32-bit mode (either legacy 2-level
+> > paging or PAE paging).  Do this in mmu_translate() to remove
+> > the last where get_physical_address() meaningfully drops the high
+> > bits of the address.
+> >
+> > Cc: qemu-stable@nongnu.org
+> > Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> > Fixes: 4a1e9d4d11c ("target/i386: Use atomic operations for pte updates=
+", 2022-10-18)
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>
+> Ping?
+>
+> Can we get this patch set to master before Jan-27?
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
----
- target/riscv/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+I have to test and send a new version, and had to spend some of my
+precious TCG time on the PCREL regressions. :(
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8d3ec74a1c..604baf53c8 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -103,7 +103,9 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
-     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-+    ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
-     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
-+    ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-@@ -1491,6 +1493,9 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
-     MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
- 
-+    MULTI_EXT_CFG_BOOL("x-zaamo", ext_zaamo, false),
-+    MULTI_EXT_CFG_BOOL("x-zalrsc", ext_zalrsc, false),
-+
-     MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
-     MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
- 
--- 
-2.43.0
+
+Paolo
 
 
