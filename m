@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64404838D83
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD8B838DCF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:47:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSF2D-0008RZ-Rv; Tue, 23 Jan 2024 06:33:41 -0500
+	id 1rSFDu-00059x-Oc; Tue, 23 Jan 2024 06:45:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rSF2A-0008RB-EG
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:33:38 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rSF28-000899-RH
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:33:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706009616;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=pFTbjmGJ9y6Siy5C7p3AP0TmLytJqbrRdXMBSmF2znU=;
- b=T34FjXkFgch1rSYEeCJSaH5Q7mEZMLivNmCZrP/qKKiH1o00vBRxyA4a9rVg7Z1JvntFxl
- hT/b9NtNcBc4Co3tQ+MEu1rciVLVJ2hx/yTqQ5Ztaa62i0Ek9M4tHbnzx/LXKWSzlUz1aG
- Z/rYeDW/kGfqe/M/H12ahZjUx/TQkNg=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-TkXATqegNxKRNdRc6je_Fw-1; Tue, 23 Jan 2024 06:33:35 -0500
-X-MC-Unique: TkXATqegNxKRNdRc6je_Fw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5596f90d5c8so1994810a12.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:33:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFDt-00059i-6N
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:45:45 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFDr-00037F-Dz
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:45:44 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40d6b4e2945so50239915e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:45:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706010341; x=1706615141; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=d+6HecxFXfNe2HBfJN+hhzyOccUxn8QuYR9EJF1Bxjg=;
+ b=aMFk9ylIfBXw+ZQqYlHYkIbclQgQPdbqoxI3dzxq8+lxwGKiER0H/3yJmwlclCR2sA
+ EaxD7dGMMWq0LMQQVXgbTvBqMch+vhvvPmjgfD3hawxMdfqsPedRRSQIV+HjoTptEQ1/
+ DEuloC4e4lv+bEa5iA9N3Pf60y3/5s/82SM5rMzONG6XivbcXZpYBGz8uJ1H1FLQ0+Hj
+ Qr0t5B1wsNnGxRI0zvGby5+6HTD7WnGmOdEZ6EUIh5n6ChUua02A2fqkVa9xjSBlbFmk
+ uuw9Pu0p06udm8lnEA3VQaDiknTiPEDIEln9teK51PkrVi6vB8RQANwmBVKdad/GgS9z
+ kw7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706009613; x=1706614413;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pFTbjmGJ9y6Siy5C7p3AP0TmLytJqbrRdXMBSmF2znU=;
- b=KpKvrHPBOdYzTpEYS7QMVSGVoCr8es2YS3QFN1qvAMZY23Fzp9oHpM0YArtYroNFb+
- xrymFm9RwPGLiNyCPHPg3IB0kYgJt+UXdel5Yg+3hIpKM+i4LXGk/gYBJenB6ggD+Qmq
- MriGukyOCEmIzOEIZleMoeeib2/+38qUFaVUjUn5b+gkHSx1ARVt4ASCE/QIR/j9zlhh
- 3Gw55CLz5y3h7SWzG9VDQXj2P+/sr0NBJHhAZCtYFrXk4x29YKxfPr3QniyUnzmxBw/4
- t15tVk2Sv+SDHGj3TOzDTnCBvVZSzcV0QuLllLeAWp5fCQfpumhsKrax+h6PTeC+ngt5
- bz5Q==
-X-Gm-Message-State: AOJu0YyVJEzZixK/zD4qnSPdFOeSBOFXvl5W1SGR2ZG0nzpSJcDFf8j/
- zdHfImkqe2Q68PY8dKvSIlzfGcfUa8sWqb3VzRhHGIeEGSlBE3vO+UJLVgyLOky4mrhntve0yRp
- EMnJQNTTS+NnOyVYzTK7ga+UeczHtGjuNjIy6Vye7RqckAsGtCnJy7V7bhcnmlzQZO4zXHgqcn+
- JMnIPxPkP4EUk84fV/FRqKud/XqlPwRwFotsVV
-X-Received: by 2002:a05:6402:50d:b0:55c:3072:2167 with SMTP id
- m13-20020a056402050d00b0055c30722167mr731262edv.78.1706009613022; 
- Tue, 23 Jan 2024 03:33:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF85tlsj5AIHwtw3iJA6RtwHVBBWTqsBdlZWG4v5pMBCOX7DOCQmmO1Tia+oK1hkC+PlPu67g==
-X-Received: by 2002:a05:6402:50d:b0:55c:3072:2167 with SMTP id
- m13-20020a056402050d00b0055c30722167mr731254edv.78.1706009612590; 
- Tue, 23 Jan 2024 03:33:32 -0800 (PST)
-Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ d=1e100.net; s=20230601; t=1706010341; x=1706615141;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=d+6HecxFXfNe2HBfJN+hhzyOccUxn8QuYR9EJF1Bxjg=;
+ b=fVPa1+VtC9O1F1nQj4ie3b5hHQbb4qt3q/6wm3I5hweqS+ZtGI7Oi94aHz6UE86LxZ
+ /cieVBceOmWJzxXLH3rNMkuOtLQlw8gSaj9ffhmnV1XmL4PWfDGbesq5wMbHs+ACp/NI
+ QSeAhfLnHsxdVsODjMBaLRwRVKxoCWTBirr8HeGC/EUFFDhGiySUKUZNdbRAgwGDgcQ8
+ ZSSHiLwUI/x6f83g75+39h+ZWxSTNxCtYNd95IRn0zb+gwGtOd2+yrIxP8Qbolte+am0
+ 3NqW/7q2K9TZ/CkxJ4MG+/mKsvvdHu1JkSrLcZkFJM1+/sP45bhG82NJYCPkD2WxCc2K
+ UR8g==
+X-Gm-Message-State: AOJu0YxR6OrYPQNUYmCeK4btaAQov50DcveTsK6fG5OleGr3JM70FN3L
+ uc8EFjbWQjNytDg3hL5qXlYhyul42JgRjiDIOgLc4Scu3zvC9n4QMwbQ2d942v8=
+X-Google-Smtp-Source: AGHT+IES7Z0WE7synZo0a/h5RFn7xVP01cXD9mv/aI+9bCYAnyrBtnx2fUP6+Lom8cAmU/izpDes2A==
+X-Received: by 2002:a7b:c40e:0:b0:40e:4747:69f9 with SMTP id
+ k14-20020a7bc40e000000b0040e474769f9mr31613wmi.187.1706010341403; 
+ Tue, 23 Jan 2024 03:45:41 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- fd4-20020a056402388400b0055864f99f78sm15213310edb.20.2024.01.23.03.33.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 03:33:32 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 8.1] accel/tcg: Revert mapping of PCREL translation block to
- multiple virtual addresses
-Date: Tue, 23 Jan 2024 12:33:31 +0100
-Message-ID: <20240123113331.432891-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
+ u11-20020adfa18b000000b00337d2d1e0ecsm13436861wru.104.2024.01.23.03.45.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 03:45:41 -0800 (PST)
+Message-ID: <b1c7e761-34ef-4143-993f-98580bffb086@linaro.org>
+Date: Tue, 23 Jan 2024 12:45:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 30/34] accel/tcg: Make tcg-all.c target indpendent
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, richard.henderson@linaro.org
+References: <20240119144024.14289-1-anjo@rev.ng>
+ <20240119144024.14289-31-anjo@rev.ng>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240119144024.14289-31-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,88 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is causing regressions that have not been analyzed yet.  Revert the
-change on stable branches.
+Hi Anton,
 
-Cc: qemu-stable@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Related: https://gitlab.com/qemu-project/qemu/-/issues/2092
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- accel/tcg/cpu-exec.c      | 4 ++--
- accel/tcg/tb-maint.c      | 6 +++---
- accel/tcg/translate-all.c | 4 +---
- 3 files changed, 6 insertions(+), 8 deletions(-)
+On 19/1/24 15:40, Anton Johansson wrote:
+> Uses target_supports_mttcg() and target_long_bits() to turn ifdefs into
+> runtime branches.
+> 
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   accel/tcg/tcg-all.c | 25 +++++++++----------------
+>   1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index c724e8b6f10..d10c8eb9560 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -182,7 +182,7 @@ static bool tb_lookup_cmp(const void *p, const void *d)
-     const TranslationBlock *tb = p;
-     const struct tb_desc *desc = d;
- 
--    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->pc) &&
-+    if (tb->pc == desc->pc &&
-         tb_page_addr0(tb) == desc->page_addr0 &&
-         tb->cs_base == desc->cs_base &&
-         tb->flags == desc->flags &&
-@@ -232,7 +232,7 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
-         return NULL;
-     }
-     desc.page_addr0 = phys_pc;
--    h = tb_hash_func(phys_pc, (cflags & CF_PCREL ? 0 : pc),
-+    h = tb_hash_func(phys_pc, pc,
-                      flags, cs_base, cflags);
-     return qht_lookup_custom(&tb_ctx.htable, &desc, h, tb_lookup_cmp);
- }
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 85684f2b3d8..5c7a76bf885 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -46,7 +46,7 @@ static bool tb_cmp(const void *ap, const void *bp)
-     const TranslationBlock *a = ap;
-     const TranslationBlock *b = bp;
- 
--    return ((tb_cflags(a) & CF_PCREL || a->pc == b->pc) &&
-+    return (a->pc == b->pc &&
-             a->cs_base == b->cs_base &&
-             a->flags == b->flags &&
-             (tb_cflags(a) & ~CF_INVALID) == (tb_cflags(b) & ~CF_INVALID) &&
-@@ -916,7 +916,7 @@ static void do_tb_phys_invalidate(TranslationBlock *tb, bool rm_from_page_list)
- 
-     /* remove the TB from the hash list */
-     phys_pc = tb_page_addr0(tb);
--    h = tb_hash_func(phys_pc, (orig_cflags & CF_PCREL ? 0 : tb->pc),
-+    h = tb_hash_func(phys_pc, tb->pc,
-                      tb->flags, tb->cs_base, orig_cflags);
-     if (!qht_remove(&tb_ctx.htable, tb, h)) {
-         return;
-@@ -983,7 +983,7 @@ TranslationBlock *tb_link_page(TranslationBlock *tb)
-     tb_record(tb);
- 
-     /* add in the hash table */
--    h = tb_hash_func(tb_page_addr0(tb), (tb->cflags & CF_PCREL ? 0 : tb->pc),
-+    h = tb_hash_func(tb_page_addr0(tb), tb->pc,
-                      tb->flags, tb->cs_base, tb->cflags);
-     qht_insert(&tb_ctx.htable, tb, h, &existing_tb);
- 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index b2d4e22c17d..678ddeff371 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -326,9 +326,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
- 
-     gen_code_buf = tcg_ctx->code_gen_ptr;
-     tb->tc.ptr = tcg_splitwx_to_rx(gen_code_buf);
--    if (!(cflags & CF_PCREL)) {
--        tb->pc = pc;
--    }
-+    tb->pc = pc;
-     tb->cs_base = cs_base;
-     tb->flags = flags;
-     tb->cflags = cflags;
--- 
-2.43.0
+
+>   static void tcg_accel_instance_init(Object *obj)
+> @@ -137,17 +129,18 @@ static char *tcg_get_thread(Object *obj, Error **errp)
+>   static void tcg_set_thread(Object *obj, const char *value, Error **errp)
+>   {
+>       TCGState *s = TCG_STATE(obj);
+> +    const bool oversized_guest = target_long_bits() > TCG_TARGET_REG_BITS;
+>   
+>       if (strcmp(value, "multi") == 0) {
+> -        if (TCG_OVERSIZED_GUEST) {
+> +        if (oversized_guest) {
+>               error_setg(errp, "No MTTCG when guest word size > hosts");
+>           } else if (icount_enabled()) {
+>               error_setg(errp, "No MTTCG when icount is enabled");
+>           } else {
+> -#ifndef TARGET_SUPPORTS_MTTCG
+> -            warn_report("Guest not yet converted to MTTCG - "
+> -                        "you may get unexpected results");
+> -#endif
+> +            if (target_supports_mttcg()) {
+
+I started smth similar but then realized this call has to be per target,
+so put my work on hold. My plan is to have a single common tcg
+accelerator framework, having target-specific code handled by vcpu
+dispatchers. Is your plan to have each target link its own tcg?
+
+> +                warn_report("Guest not yet converted to MTTCG - "
+> +                            "you may get unexpected results");
+> +            }
+>               s->mttcg_enabled = true;
+>           }
+>       } else if (strcmp(value, "single") == 0) {
 
 
