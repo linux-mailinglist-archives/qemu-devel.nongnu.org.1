@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DA083870E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 07:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A966283870F
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 07:03:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS9r4-0003MF-Pu; Tue, 23 Jan 2024 01:01:50 -0500
+	id 1rS9sO-00043v-46; Tue, 23 Jan 2024 01:03:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rS9r2-0003Lj-Ry
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:01:48 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rS9sM-00043V-7s
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:03:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rS9r1-00020Z-7B
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:01:48 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rS9sK-000287-Hh
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 01:03:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705989706;
+ s=mimecast20190719; t=1705989787;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8b1APuGuolgG2iDO4VcLt6TOCUmnLraDN2Px29rMzJg=;
- b=GdAwtO6dEBR+FwXdQKKh+FaBBSsCnGzU5sPmuhbvU5Yy10CeVhtJ7iUv52SMD2DXIVnxSC
- Yw2Fq5zXpK+DhDSaikMq0mM/p+UE2HA4IafEs3htuLht0E/2wYVscYNw7LEIQHejcNmDNg
- lMaZWYynsAPwEm0/F/boznvTmyNVSRY=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8WS41xF2DVcaaNjp7X0CT5IdEVatjAVnvYyfHAkiwLI=;
+ b=MIRYk5ZC0zXPM70eKKAqZDKMp9R1DzkHMo1gGx/BN33ZD0kZp5BPfHNaDL+G9NmoK5wsV+
+ jXqVAcUgQGSmS/fMRzxXk32vEggNe9095vYykAp4/vZm2WCL4gXLSIvZJXhgiai3wkSd6n
+ 9/E4CizHfLDwd1KQx9SPkymRZDz9J4I=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-3oBJ7vLCPwm3nE9lJwQIOQ-1; Tue, 23 Jan 2024 01:01:44 -0500
-X-MC-Unique: 3oBJ7vLCPwm3nE9lJwQIOQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-50e5aa11579so3525119e87.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 22:01:43 -0800 (PST)
+ us-mta-1-QCDRPbvnNjmaqx8M53-cUw-1; Tue, 23 Jan 2024 01:03:05 -0500
+X-MC-Unique: QCDRPbvnNjmaqx8M53-cUw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2cd0804c5e6so38899851fa.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 22:03:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705989703; x=1706594503;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8b1APuGuolgG2iDO4VcLt6TOCUmnLraDN2Px29rMzJg=;
- b=Gzgmb5bo6TdCEJ7GI9G+l993VLhGlOm9BSg5/qttwnJ5AmnGErILTes5b40KExgHIZ
- mZIHKx2kA15JJZhj31qPL41TuzT6J+Zp9qLlvCmgPYwV/+9qeSZRwC86N9UO6yfPP28X
- LR7Wgn0PRKPNPW2wj7Pk/mQAML/7qGqsM8vnzTjsG9BHwXgyj38KLrJRTbb+isJfQ19T
- 0A/29Kj16NybZJwuPt5+PMQTJH08vK9kCTaORF+en91rWkhNyO/uFAChgcBtl7dJWtt4
- 9L0IoIFAkc1OpC1cxD4JV/ZFQjCPr0VGaE4UZh+G7MKuL0cZAwX6kR1jblaFiz1wjHbb
- zxGQ==
-X-Gm-Message-State: AOJu0YzqZA4d2e26CStyjUe7N8QwUy5nxMPY2kozq8YOZ+d7ThSmfm0k
- m28uNMTYAuAck4o3ta1G2twE7Yic1memTkGp3xSVq3tGxPXRHfVsRKXUFoBw5uWITJK78shI4ar
- JLqxeJ2OP0A8joLSo6UDV6d4z20Vg6HJOgSAs5ekj8GAJmVxpI5Aw
-X-Received: by 2002:a05:6512:3f05:b0:50e:e168:9fcd with SMTP id
- y5-20020a0565123f0500b0050ee1689fcdmr2697849lfa.26.1705989702804; 
- Mon, 22 Jan 2024 22:01:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEYGQKDWYF4mY8F6uWMDXFaV+9pZYFEWOmxGhQfg+ct6egYC/b4itvmLmgGr5jx0OUeAc4yUQ==
-X-Received: by 2002:a05:6512:3f05:b0:50e:e168:9fcd with SMTP id
- y5-20020a0565123f0500b0050ee1689fcdmr2697842lfa.26.1705989702485; 
- Mon, 22 Jan 2024 22:01:42 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705989784; x=1706594584;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8WS41xF2DVcaaNjp7X0CT5IdEVatjAVnvYyfHAkiwLI=;
+ b=qc06aRF2cMT8zNmwRcuTXqWJop93AP91uVpeVP1f+WOe5APxkZ2yonFkSfT3/IwjBk
+ Q3c5NKHcgHXuyaRd+HOd9XJuJQNlZaatqYoctiPa9hjTrdQutMxxeVybY+gGpeOHea4B
+ o0pG82boaVAc+Sk51DNkrn3Lu6ad/jWA4XfE1QS9GNMc9k7twhc8K1kTrPlWNV5rTcj3
+ HgyrOCqpdkVkb/QxGP2HDd4qJXlA38WUzgfjkG65K3eatlemm9JxoYQxITQakZvLDYqB
+ MvQ6kYBr3StZYWUzzvQC+Wl/W8Ou9lKjAdD3NXGBj8VBe4fNVI2Y1+IAVdXjxkYEZQNE
+ jWUw==
+X-Gm-Message-State: AOJu0YxXrlOI/DGDZ6oEoGXEjA7Yo7PskH4tfkQkYnG/t3KtKiPMXfg7
+ eBUuLUI/yjrohfzx86jiz2LQQOxgW7PmBwhIjNDJ7FcWZ6/WfMfq8H6O2HM32mSj5kBa7ODDq5/
+ Z1FtGD3QRv0Z02DFLQrPSGe7FlcSDl/Hq2F0PdSuOcOsPcRLkY2tV
+X-Received: by 2002:a05:6512:1115:b0:50e:f4c0:52b3 with SMTP id
+ l21-20020a056512111500b0050ef4c052b3mr3298763lfg.44.1705989784462; 
+ Mon, 22 Jan 2024 22:03:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJXe2xlw2oJenmqnpKfN2bh0zhPA3mcq/C3Vt9803+cTjRiVwi9E2KzBtJunpT4zEMNNNi5Q==
+X-Received: by 2002:a05:6512:1115:b0:50e:f4c0:52b3 with SMTP id
+ l21-20020a056512111500b0050ef4c052b3mr3298752lfg.44.1705989784168; 
+ Mon, 22 Jan 2024 22:03:04 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-177-121.web.vodafone.de.
  [109.43.177.121]) by smtp.gmail.com with ESMTPSA id
- th7-20020a1709078e0700b00a2fd84bc421sm3232512ejc.83.2024.01.22.22.01.41
+ th7-20020a1709078e0700b00a2fd84bc421sm3232512ejc.83.2024.01.22.22.03.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Jan 2024 22:01:42 -0800 (PST)
-Message-ID: <f4062f9b-617a-4ea9-90f1-b9b5eee20523@redhat.com>
-Date: Tue, 23 Jan 2024 07:01:40 +0100
+ Mon, 22 Jan 2024 22:03:03 -0800 (PST)
+Message-ID: <b60d2855-8275-41d0-b5eb-e9912749b4f1@redhat.com>
+Date: Tue, 23 Jan 2024 07:03:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] util/uri: Simplify uri_string_unescape()
+Subject: Re: [PATCH 3/5] util/uri: Remove the uri_string_escape() function
+Content-Language: en-US
 To: Stefan Weil <sw@weilnetz.de>, qemu-devel@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-trivial@nongnu.org
 References: <20240122191753.103118-1-thuth@redhat.com>
- <20240122191753.103118-3-thuth@redhat.com>
- <8c728584-8bf2-4122-bc2b-a8063d89fbe8@weilnetz.de>
-Content-Language: en-US
+ <20240122191753.103118-4-thuth@redhat.com>
+ <343c59db-8004-4461-9c9e-976ca2f1a357@weilnetz.de>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -117,17 +116,17 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <8c728584-8bf2-4122-bc2b-a8063d89fbe8@weilnetz.de>
+In-Reply-To: <343c59db-8004-4461-9c9e-976ca2f1a357@weilnetz.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 0
 X-Spam_score: -0.1
 X-Spam_bar: /
 X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -145,93 +144,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/01/2024 22.22, Stefan Weil wrote:
+On 22/01/2024 21.59, Stefan Weil wrote:
 > Am 22.01.24 um 20:17 schrieb Thomas Huth:
 > 
->> uri_string_unescape() basically does the same as the glib function
->> g_uri_unescape_string(), with just an additional length parameter.
->> So we can simplify this function a lot by limiting the length with
->> g_strndup() first and then by calling g_uri_unescape_string() instead
->> of walking through the string manually.
+>> It is not used in QEMU - and if somebody needs this functionality,
+>> they can simply use g_uri_escape_string() from the glib instead.
 >>
->> Suggested-by: Stefan Weil<stefan.weil@weilnetz.de>
-> 
-> Can my e-mail address be replaced by another one (sw@weilnetz.de)?
-
-Sure! ... not sure where I copy-n-pasted the other one from ... sorry for that.
-
->> @@ -1585,8 +1576,7 @@ static int is_hex(char c)
->>    */
->>   char *uri_string_unescape(const char *str, int len)
->>   {
->> -    char *ret, *out;
->> -    const char *in;
->> +    g_autofree char *lstr = NULL;
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   include/qemu/uri.h |  1 -
+>>   util/uri.c         | 64 ----------------------------------------------
+>>   2 files changed, 65 deletions(-)
 > 
 > 
-> Is it necessary to assign NULL? It does not look so.
-
-Yes, it's necessary for the early "return NULL" statement below. Since it's 
-an g_autofree variable, it must either be set to a valid allocated buffer or 
-NULL before returning.
-
->>   
->>       if (str == NULL) {
->>           return NULL;
->> @@ -1594,42 +1584,9 @@ char *uri_string_unescape(const char *str, int len)
->>       if (len <= 0) {
->>           len = strlen(str);
->>       }
->> -    if (len < 0) {
->> -        return NULL;
->> -    }
->> -
->> -    ret = g_malloc(len + 1);
->> +    lstr = g_strndup(str, len);
->>   
->> -    in = str;
->> -    out = ret;
->> -    while (len > 0) {
->> -        if ((len > 2) && (*in == '%') && (is_hex(in[1])) && (is_hex(in[2]))) {
->> -            in++;
->> -            if ((*in >= '0') && (*in <= '9')) {
->> -                *out = (*in - '0');
->> -            } else if ((*in >= 'a') && (*in <= 'f')) {
->> -                *out = (*in - 'a') + 10;
->> -            } else if ((*in >= 'A') && (*in <= 'F')) {
->> -                *out = (*in - 'A') + 10;
->> -            }
->> -            in++;
->> -            if ((*in >= '0') && (*in <= '9')) {
->> -                *out = *out * 16 + (*in - '0');
->> -            } else if ((*in >= 'a') && (*in <= 'f')) {
->> -                *out = *out * 16 + (*in - 'a') + 10;
->> -            } else if ((*in >= 'A') && (*in <= 'F')) {
->> -                *out = *out * 16 + (*in - 'A') + 10;
->> -            }
->> -            in++;
->> -            len -= 3;
->> -            out++;
->> -        } else {
->> -            *out++ = *in++;
->> -            len--;
->> -        }
->> -    }
->> -    *out = 0;
->> -    return ret;
->> +    return g_uri_unescape_string(lstr, NULL);
->>   }
->>   
->>   /**
+> The removed function is used in util/uri.c, so this patch breaks the 
+> compilation.
 > 
+> That can be fixed by applying patch 4 before this one.
 > 
-> Thank you.
+> With that re-ordering you may add my signature:
 > 
 > Reviewed-by: Stefan Weil <sw@weilnetz.de>
+
+D'oh, I originally developed the patches the other way round indeed, but 
+then thought it would be nicer for review this way and swapped the order 
+without checking :-( ... I'll swap it back again.
 
 Thanks!
 
   Thomas
-
 
 
