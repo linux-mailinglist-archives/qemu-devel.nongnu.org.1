@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BA0839B07
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 22:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C84E839B09
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 22:25:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSOFe-0008V4-Rp; Tue, 23 Jan 2024 16:24:11 -0500
+	id 1rSOFe-0008V5-Ao; Tue, 23 Jan 2024 16:24:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSOFO-0008UO-30
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 16:23:55 -0500
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rSOFN-0008UG-Ml
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 16:23:54 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSOFI-0006hn-AG
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 16:23:53 -0500
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2cf1fd1cc5bso76191fa.3
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rSOFI-0006hy-AI
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 16:23:52 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6dbb003be79so4169867b3a.0
  for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 13:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706045026; x=1706649826; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TyxkbOp2hplD3Yn6XW8pzAsdTTFoZaSbz6e9yJIbJYQ=;
- b=ldjytA38B5opebtROa0jswWRkqwkJNSF++UOi7o7uGuATSiqcmaWB7An6JUDNK4NPk
- AVkqWSv3s7PQPMJwwUP0soakHlFJdMX4gCqxUUB+ZPwbehNj0sbUzZi/eg/nFVvuU3z/
- 3Gx0LoFGJ/LdgOlc7xtF1aP23JmjFOIYfkhpkLIEhyrtC7fj2VQRmkEcrv6G4niLGqd7
- WeHMmqC+addKxG6LQVyps/aKO6yxyKeXSys/f8BC/D7xt2z2xCOZJZ1iw7YdpkXxikIh
- vs8rzedHkQ1KwcVUAL8ylVbdKofy2dET692+XdcMV19yc7om8kNRzfHbe732tObJFQ6a
- mbJg==
+ d=linaro.org; s=google; t=1706045027; x=1706649827; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LKS8HF1IzMzN3IpYc7t40qCt+rc8/FF/9zQ1oVgE2IA=;
+ b=SwinIda5s8rC16zi7wOsos8i6Ovtuoia4IKhRNGs9DYATUQIdxJOPeMYDecd93XnZg
+ 1sve77LFp8pfAJyJFKGQjCbjUdST9aCSbBGfAaPiN3pL02Rye+EBteAVT2pT16tvkhu2
+ wB+jRFYsocuZP43bbc+ND2TvoYJtJ5XAd2sj2p0xvpRWULNaDw4c3y4gJFIrI7qktZeQ
+ WXGCE3kPFBviON0sCOjyEQk9jPrRNGk+PURj0Z+67Towh36P8rWBbBbypR9VuqYdZJ60
+ Xh95M3w5NYe1+cvW/fTXVjcvaeHLjgScgh83zOZ0gwoEvRUECy6aI4AVxHKPvCWOyp1o
+ d0Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706045026; x=1706649826;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TyxkbOp2hplD3Yn6XW8pzAsdTTFoZaSbz6e9yJIbJYQ=;
- b=PIoXtK+ArdjPvZbs2APPcuoKpjzaMHbGx2R1butuboM0Ywi3mgdPUTY+ejG8KPV0T8
- gwn0w68tjyOPPoEuq03Vab1QlSwJW5CH7XCPZ9iF+sKXv4WXjaoj0rtpMGmlLt0sDGyO
- 52nY6MTyZOGMCAlXZT3vY4DbFCfY0+cGRpWHzXaOpqTxJmryfwl/8FQS70M4uIXU3xTO
- wGtNt/WKNEwX7z9g5VlaU8CmBc2igAxmmjnbQhkTRZM8d1AZuPJnTwm1nMexoTE5lTPp
- rqjRKTSAgAffHdQRPHjiV72M9/bwrhtDC1qpvLTMlLzIMdQXJDrmmlHj6xsqLheF3JmR
- c9/Q==
-X-Gm-Message-State: AOJu0YzKE7cz20zO5cj43RY2vnnTuQs6Qdz8HsEdoIk71CIMtMv7YO/C
- 6mRoIWsckM/5WH067K6pTySbQt/z5QMsiOV/g8LIevF0Y/YDZg9B8XEfyn5/YnfbaaVCv9XfszP
- zFIJ4ih9ZAP9i3RiHeRGHyILyoXp5+0sBGuy5RQ==
-X-Google-Smtp-Source: AGHT+IFk66upI90/RT9r0MLvKcEyQc/qKuFAR7rLpn0nxbOqHZYI8DqMtR+FtJTX/mKJopY+wZ+aS1NAhhjDRMkSvEU=
-X-Received: by 2002:a2e:8199:0:b0:2cd:d7eb:4fce with SMTP id
- e25-20020a2e8199000000b002cdd7eb4fcemr255645ljg.80.1706045026325; Tue, 23 Jan
- 2024 13:23:46 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706045027; x=1706649827;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LKS8HF1IzMzN3IpYc7t40qCt+rc8/FF/9zQ1oVgE2IA=;
+ b=ZoN0+oVX5hwQ3s41oL2Hr5YHGd9vC0z9n3lnRVkV6Q/NAAuW7LlTccHu5TJKblxSd0
+ iWuGiL6gmE/tRpDw94ew/5pcQuT7WSWzwxoPz4KHc7WQmcLs9K95uDdSb7mmlbwQCCY+
+ Ie73qya+AiBaREd5hn0Ov1kbg0j1FOk1GjINGc6mNEzd/yUhnAbKVNkm7qmtrxbxxkis
+ m8A01N5YK0RYl21mDH8ZST/R7OVDJU9pqNv7zd7zFeS8katqH3wFmmedLqi4sOXNyL3p
+ gC+Tma41oSt7P2yIBP5g2M4/IFBZqNzkNeynuWVyAkgNNL+RZEES9NXDc57HFlv4pBKg
+ 3jNQ==
+X-Gm-Message-State: AOJu0YyORg4jRCT7BWR9CnzVP1Jvw9qdBfa68I3nJb2Na8+RJ31VI25N
+ b4XmUcnuTKJnfEnTsUi7RpcpkbySmrP9iNuaWWAx2XBdre9LOJOKY0qhti+pbBw=
+X-Google-Smtp-Source: AGHT+IHRpx2kfw3LdTM25czFKiI2D+s+k/dVh32cWNDu47aUhvl+YXx+YCT5hXbr0OloOfujVmlgOQ==
+X-Received: by 2002:a05:6a20:9f4f:b0:19b:46c7:c986 with SMTP id
+ ml15-20020a056a209f4f00b0019b46c7c986mr304935pzb.16.1706045026709; 
+ Tue, 23 Jan 2024 13:23:46 -0800 (PST)
+Received: from ?IPV6:2001:44b8:2176:c800:dd1:291f:3c3c:2485?
+ (2001-44b8-2176-c800-0dd1-291f-3c3c-2485.static.ipv6.internode.on.net.
+ [2001:44b8:2176:c800:dd1:291f:3c3c:2485])
+ by smtp.gmail.com with ESMTPSA id
+ i15-20020a63cd0f000000b005ce6b79ab6asm10655125pgg.82.2024.01.23.13.23.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 13:23:46 -0800 (PST)
+Message-ID: <1ba077ad-6959-4edd-b08a-24c5145c1c54@linaro.org>
+Date: Wed, 24 Jan 2024 07:23:39 +1000
 MIME-Version: 1.0
-References: <20231215070357.10888-1-thuth@redhat.com>
- <db19cdd7-4049-4b9a-9108-c1f05f992d89@tls.msk.ru>
- <2a8e7077-0603-4455-8b4c-69a4200dd280@redhat.com>
- <6d279ebd-fa9f-4839-97ca-7921679392f5@tls.msk.ru>
-In-Reply-To: <6d279ebd-fa9f-4839-97ca-7921679392f5@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 23 Jan 2024 21:23:15 +0000
-Message-ID: <CAFEAcA98EEpavYbZmy8WgJ2-Aq5uyhft626qNk8Jt17BM+7Z7g@mail.gmail.com>
-Subject: Re: [PATCH v3 00/16] tests: enable meson test timeouts to improve
- debuggability
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] util/uri: Simplify the code, remove unused
+ functions
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22e.google.com
+Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org,
+ qemu-block@nongnu.org
+References: <20240123182247.432642-1-thuth@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240123182247.432642-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,30 +98,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 Jan 2024 at 20:52, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> 23.01.2024 20:47, Thomas Huth:
-> > On 23/01/2024 17.50, Michael Tokarev wrote:
-> ..
->
-> >> I'm picking this up for stable branches too, since there we have the same
-> >> problems in CI environment. In particular, bios-tables-test almost always
-> >> times out, even hitting retry doesn't help.  Let's see how it goes..
-> >
-> > Uh, wait, that does not make too much sense ... if bios-tables-test already times out *without* the additional meson-based timeouts, then adding the
-> > meson timeouts won't help. bios-tables-test uses the manually coded timeout from boot_sector_test() that is currently set to 600 seconds. If you hit
-> > that timeout, that likely means that something is really broken in your branch - or is it sometimes still succeeding?
->
-> I mistyped the test name as I was dealing with bios-tables-test at that
-> time in another context (unrelated).  Actual failing test in this case,
-> among others, is avocado acpi_smbios_bits, eg
->   https://gitlab.com/qemu-project/qemu/-/jobs/5991505589#L231 which timed
-> out on multiple attempts.  In this example it took a bit less than 65s.
+On 1/24/24 04:22, Thomas Huth wrote:
+> Thomas Huth (4):
+>    util/uri: Remove uri_string_unescape()
+>    util/uri: Remove unused functions uri_resolve() and
+>      uri_resolve_relative()
+>    util/uri: Remove the uri_string_escape() function
+>    util/uri: Remove unused macros ISA_RESERVED() and ISA_GEN_DELIM()
 
-The fix for that flakiness is commit 7ef4c41e91d59
-("acpi/tests/avocado/bits: wait for 200 seconds for SHUTDOWN event
-from bits VM").
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-thanks
--- PMM
+r~
 
