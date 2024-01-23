@@ -2,69 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A1D839797
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 19:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F03839817
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 19:44:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSLQQ-0001sg-KB; Tue, 23 Jan 2024 13:23:06 -0500
+	id 1rSLk5-0004f8-0n; Tue, 23 Jan 2024 13:43:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSLQN-0001qi-Qk
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:23:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rSLk1-0004dn-M9
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:43:21 -0500
+Received: from smtp-relay-internal-0.canonical.com ([185.125.188.122])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSLQM-00075C-D4
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:23:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706034181;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hXzjaPrm8EeY1wCl4uaoHpH5ctPZ6quOFNd2OAdMg6c=;
- b=NrAd73NdhAcVTUOw6Z6VRpvlAjr3qdgtV2nZr/Ry5+AU55MtuGvymm9kpbcYl9DT7uEwR9
- agSRqkQZ58MLMcFZMMKscDBGl+ZJF7Sqlwjculz7ESHnBq2mjfrmfhsKf3OqWYZQg7BoMA
- Xfx9iChdBNwKoWkTRXeslZty1Y7I3tk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-gUZbvGGvP4aOaS50DUPdnQ-1; Tue, 23 Jan 2024 13:22:58 -0500
-X-MC-Unique: gUZbvGGvP4aOaS50DUPdnQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ (Exim 4.90_1) (envelope-from <heinrich.schuchardt@canonical.com>)
+ id 1rSLjz-0002me-Qa
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:43:21 -0500
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D16C1013667;
- Tue, 23 Jan 2024 18:22:57 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3132D2166B32;
- Tue, 23 Jan 2024 18:22:56 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org,
- qemu-block@nongnu.org
-Subject: [PATCH v2 4/4] util/uri: Remove unused macros ISA_RESERVED() and
- ISA_GEN_DELIM()
-Date: Tue, 23 Jan 2024 19:22:47 +0100
-Message-ID: <20240123182247.432642-5-thuth@redhat.com>
-In-Reply-To: <20240123182247.432642-1-thuth@redhat.com>
-References: <20240123182247.432642-1-thuth@redhat.com>
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D28204032F
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 18:43:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1706035391;
+ bh=5j3mVdGTDGaCWMdmDtFz1Oq1qeObw7oJUX1aePYiZRA=;
+ h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+ b=UW40Gixl87DJSCe1sx3RZcxR28WHHRNCjwnAvv1fnJ1SP+jJRtrZNHYFhK1wwgdS9
+ rK6wT8LrI9kJCVyyAISd0rwxvj8h1Fj0MGB91VeK64p1WbGdFqbPISH0wmut4l/B0a
+ lsR+5LfuFQLEQc9yOxMFWLITEV8IHCR8SuIevFdBlB/VRXms28Tupi414lWy0Aot1G
+ e5xwmmY9Pp5k3415ChqCrU+z87lULcJpLeOO1ifaWXSbOEsLPiqMELa9hB5ZFRKY3r
+ pi6PG3bq4jLzDiwgdyJL/RrRgQYK/C7tkeIshjhmWp02CXHxZJijgArlUCydKa3f2u
+ Fdf8aEJKH9iPw==
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-40e412c1e65so40383895e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 10:43:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706035391; x=1706640191;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5j3mVdGTDGaCWMdmDtFz1Oq1qeObw7oJUX1aePYiZRA=;
+ b=Buq+S3+5WCMddVZGOhYSR8lrKRas69SH7O4H6R26ASsU+kTPsJQsrn+goYvPeQ/A+q
+ yRSd7KxIi5NXqhJL1piMuIs8H7dl9pM3cgMCTxQqOBZjA6X9/1L/BjXsDbAvZkU0VKAZ
+ FK+C5G1EVwqBZi3E7kCyKslIKrkFDVCARK+czuM4hS+lkTQCCrkpsC7vpU37de/AZlWc
+ v8ldxyZRSRFyYwVpra+Cz2YfUO8LWBUcsOqui57HzAQvpkZzvCEIkRfMjwIgiF7xX+8B
+ rlEobLhpUDoiBM+Q08HKF78SodNhYhIztzVYTTDpaqUkcQGhIv8FVgdBNiE+zgqgnjng
+ qemg==
+X-Gm-Message-State: AOJu0YykR75ei0CHaSwdlPgmrvs8nSA0ATnbh0/dTq3fObhcs5s0p4Mc
+ BQqJrrGWR1ft2/cJHVZHS24gN4bRxt1M6B9GIECTD4btC0zOt+z2JPXHjKVsDXo32fq4vT8loo+
+ RemdJxSEJ815B0wpLWvSBkelUmNPWa5lr6z+HsBInb+lr7YDdM6vkPUjV+AsdG9JBduaz
+X-Received: by 2002:a05:600c:56c1:b0:40e:71b9:65b4 with SMTP id
+ ju1-20020a05600c56c100b0040e71b965b4mr743490wmb.133.1706035391015; 
+ Tue, 23 Jan 2024 10:43:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEGHcpIGQvddEb5oSLcGJah5hXJAW/KnwvLbR72bGW3HvOqGgzQovLQkgOSYDjHXRwqOo96mg==
+X-Received: by 2002:a05:600c:56c1:b0:40e:71b9:65b4 with SMTP id
+ ju1-20020a05600c56c100b0040e71b965b4mr743486wmb.133.1706035390624; 
+ Tue, 23 Jan 2024 10:43:10 -0800 (PST)
+Received: from workstation5.fritz.box
+ (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
+ by smtp.gmail.com with ESMTPSA id
+ u9-20020a5d6ac9000000b00337d392c6c3sm14180252wrw.13.2024.01.23.10.43.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Jan 2024 10:43:10 -0800 (PST)
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH v4 0/4] target/riscv: SMBIOS support for RISC-V virt machine
+Date: Tue, 23 Jan 2024 19:42:25 +0100
+Message-ID: <20240123184229.10415-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
+Received-SPF: pass client-ip=185.125.188.122;
+ envelope-from=heinrich.schuchardt@canonical.com;
+ helo=smtp-relay-internal-0.canonical.com
+X-Spam_score_int: -56
+X-Spam_score: -5.7
+X-Spam_bar: -----
+X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,41 +109,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They are not used anywhere, so there's no need to keep them around.
+Generate SMBIOS tables for the RISC-V mach-virt.
+Add CONFIG_SMBIOS=y to the RISC-V default config.
 
-Message-ID: <20240122191753.103118-6-thuth@redhat.com>
-Reviewed-by: Stefan Weil <sw@weilnetz.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- util/uri.c | 13 -------------
- 1 file changed, 13 deletions(-)
+With the series the following firmware tables are provided:
 
-diff --git a/util/uri.c b/util/uri.c
-index 350835b03f..573174bf47 100644
---- a/util/uri.c
-+++ b/util/uri.c
-@@ -163,19 +163,6 @@ static void uri_clean(URI *uri);
-      ((*(p) == '+')) || ((*(p) == ',')) || ((*(p) == ';')) ||                  \
-      ((*(p) == '=')) || ((*(p) == '\'')))
- 
--/*
-- *    gen-delims    = ":" / "/" / "?" / "#" / "[" / "]" / "@"
-- */
--#define ISA_GEN_DELIM(p)                                                       \
--    (((*(p) == ':')) || ((*(p) == '/')) || ((*(p) == '?')) ||                  \
--     ((*(p) == '#')) || ((*(p) == '[')) || ((*(p) == ']')) ||                  \
--     ((*(p) == '@')))
--
--/*
-- *    reserved      = gen-delims / sub-delims
-- */
--#define ISA_RESERVED(p) (ISA_GEN_DELIM(p) || (ISA_SUB_DELIM(p)))
--
- /*
-  *    unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
-  */
+    etc/smbios/smbios-anchor
+    etc/smbios/smbios-tables
+
+Add processor-family to the '-smbios type=4' command line options.
+
+v4:
+	remove a superfluous #ifdef
+v3:
+	use misa_mxl_max to determine bitness
+v2:
+	set processor family
+
+Heinrich Schuchardt (4):
+  smbios: add processor-family option
+  smbios: function to set default processor family
+  target/riscv: SMBIOS support for RISC-V virt machine
+  qemu-options: enable -smbios option on RISC-V
+
+ hw/riscv/Kconfig             |  1 +
+ hw/riscv/virt.c              | 42 ++++++++++++++++++++++++++++++++++++
+ hw/smbios/smbios.c           | 20 +++++++++++++++--
+ include/hw/firmware/smbios.h |  1 +
+ qemu-options.hx              |  6 +++---
+ 5 files changed, 65 insertions(+), 5 deletions(-)
+
 -- 
 2.43.0
 
