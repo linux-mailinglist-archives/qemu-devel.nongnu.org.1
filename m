@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99F983939F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEBB8393AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:50:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJ1c-0005K0-K5; Tue, 23 Jan 2024 10:49:20 -0500
+	id 1rSJ1f-0005iV-Um; Tue, 23 Jan 2024 10:49:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSJ0L-0002uS-NV; Tue, 23 Jan 2024 10:48:08 -0500
+ id 1rSJ0L-0002uR-NU; Tue, 23 Jan 2024 10:48:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSJ0I-0000lP-VE; Tue, 23 Jan 2024 10:48:00 -0500
+ id 1rSJ0J-0000m0-0P; Tue, 23 Jan 2024 10:48:00 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4F90546929;
+ by isrv.corpit.ru (Postfix) with ESMTP id 858AE4692A;
  Tue, 23 Jan 2024 18:47:52 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 59D7269EB8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9702F69EB9;
  Tue, 23 Jan 2024 18:47:11 +0300 (MSK)
-Received: (nullmailer pid 3847930 invoked by uid 1000);
+Received: (nullmailer pid 3847933 invoked by uid 1000);
  Tue, 23 Jan 2024 15:47:08 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,10 @@ Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Guenter Roeck <linux@roeck-us.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.1 50/54] hw/scsi/esp-pci: synchronise setting of
- DMA_STAT_DONE with ESP completion interrupt
-Date: Tue, 23 Jan 2024 18:46:51 +0300
-Message-Id: <20240123154708.3847837-12-mjt@tls.msk.ru>
+Subject: [Stable-8.2.1 51/54] hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST
+ command issued
+Date: Tue, 23 Jan 2024 18:46:52 +0300
+Message-Id: <20240123154708.3847837-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.1-20240123123124@cover.tls.msk.ru>
 References: <qemu-stable-8.2.1-20240123123124@cover.tls.msk.ru>
@@ -65,91 +65,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-The setting of DMA_STAT_DONE at the end of a DMA transfer can be configured to
-generate an interrupt, however the Linux driver manually checks for DMA_STAT_DONE
-being set and if it is, considers that a DMA transfer has completed.
+Even though the BLAST command isn't fully implemented in QEMU, the DMA_STAT_BCMBLT
+bit should be set after the command has been issued to indicate that the command
+has completed.
 
-If DMA_STAT_DONE is set but the ESP device isn't indicating an interrupt then
-the Linux driver considers this to be a spurious interrupt. However this can
-occur in QEMU as there is a delay between the end of DMA transfer where
-DMA_STAT_DONE is set, and the ESP device raising its completion interrupt.
-
-This appears to be an incorrect assumption in the Linux driver as the ESP and
-PCI DMA interrupt sources are separate (and may not be raised exactly
-together), however we can work around this by synchronising the setting of
-DMA_STAT_DONE at the end of a DMA transfer with the ESP completion interrupt.
-
-In conjunction with the previous commit Linux is now able to correctly boot
-from an am53c974 PCI SCSI device on the hppa C3700 machine without emitting
-"iget: checksum invalid" and "Spurious irq, sreg=10" errors.
+This fixes an issue with the DC390 DOS driver which issues the BLAST command as
+part of its normal error recovery routine at startup, and otherwise sits in a
+tight loop waiting for DMA_STAT_BCMBLT to be set before continuing.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <20240112131529.515642-4-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20240112131529.515642-5-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 1e8e6644e063b20ad391140fae13d00ad7750b33)
+(cherry picked from commit c2d7de557d19ec76eb83b87b6bf77c8114e2f183)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index d29c8c25bd..b1bd43b7db 100644
+index b1bd43b7db..51f0157934 100644
 --- a/hw/scsi/esp-pci.c
 +++ b/hw/scsi/esp-pci.c
-@@ -93,6 +93,18 @@ static void esp_irq_handler(void *opaque, int irq_num, int level)
- 
-     if (level) {
-         pci->dma_regs[DMA_STAT] |= DMA_STAT_SCSIINT;
-+
-+        /*
-+         * If raising the ESP IRQ to indicate end of DMA transfer, set
-+         * DMA_STAT_DONE at the same time. In theory this should be done in
-+         * esp_pci_dma_memory_rw(), however there is a delay between setting
-+         * DMA_STAT_DONE and the ESP IRQ arriving which is visible to the
-+         * guest that can cause confusion e.g. Linux
-+         */
-+        if ((pci->dma_regs[DMA_CMD] & DMA_CMD_MASK) == 0x3 &&
-+            pci->dma_regs[DMA_WBC] == 0) {
-+                pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
-+        }
-     } else {
-         pci->dma_regs[DMA_STAT] &= ~DMA_STAT_SCSIINT;
-     }
-@@ -306,9 +318,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
-     /* update status registers */
-     pci->dma_regs[DMA_WBC] -= len;
-     pci->dma_regs[DMA_WAC] += len;
--    if (pci->dma_regs[DMA_WBC] == 0) {
--        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
--    }
+@@ -124,6 +124,7 @@ static void esp_pci_handle_blast(PCIESPState *pci, uint32_t val)
+ {
+     trace_esp_pci_dma_blast(val);
+     qemu_log_mask(LOG_UNIMP, "am53c974: cmd BLAST not implemented\n");
++    pci->dma_regs[DMA_STAT] |= DMA_STAT_BCMBLT;
  }
  
- static void esp_pci_dma_memory_read(void *opaque, uint8_t *buf, int len)
-@@ -363,24 +372,13 @@ static const VMStateDescription vmstate_esp_pci_scsi = {
-     }
- };
- 
--static void esp_pci_command_complete(SCSIRequest *req, size_t resid)
--{
--    ESPState *s = req->hba_private;
--    PCIESPState *pci = container_of(s, PCIESPState, esp);
--
--    esp_command_complete(req, resid);
--    pci->dma_regs[DMA_WBC] = 0;
--    pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
--    esp_pci_update_irq(pci);
--}
--
- static const struct SCSIBusInfo esp_pci_scsi_info = {
-     .tcq = false,
-     .max_target = ESP_MAX_DEVS,
-     .max_lun = 7,
- 
-     .transfer_data = esp_transfer_data,
--    .complete = esp_pci_command_complete,
-+    .complete = esp_command_complete,
-     .cancel = esp_request_cancelled,
- };
- 
+ static void esp_pci_handle_abort(PCIESPState *pci, uint32_t val)
 -- 
 2.39.2
 
