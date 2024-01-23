@@ -2,72 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610CA839777
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 19:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E1839796
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 19:24:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSLLp-0007En-9m; Tue, 23 Jan 2024 13:18:21 -0500
+	id 1rSLQI-0001mg-Q7; Tue, 23 Jan 2024 13:22:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rSLLi-00078p-02
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:18:14 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSLQG-0001lz-5a
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:22:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rSLLg-00066R-3x
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:18:13 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSLQE-00072w-MI
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 13:22:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706033888;
+ s=mimecast20190719; t=1706034173;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4E9PS+wmquzixnBAkIzbuS/d8cmi9np9eCbZNk4hpos=;
- b=BtY9ZRJHFDoF8nZxyqBcTbBlx7jJCzL7Ol6rFoUpjscdYcCwN30nc0fUfFBuS+hQjI0uO1
- ukaA+cYArVn0HfOjJxgtpr9RI0vu/Q5zBE6JQBydqP+A+b+ZQSDCWMtMGvMOxM1TGbUAY6
- xj8XSiFtVd7sYbmKrGBq8cYAJu4CI80=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-6h_DB6LDPuybBo2N080mBQ-1; Tue, 23 Jan 2024 13:18:07 -0500
-X-MC-Unique: 6h_DB6LDPuybBo2N080mBQ-1
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/XIomd7FwtU6MAO8bx+bwdsVq7NLXu1L8ZYmsCFmiWg=;
+ b=WRneLY1JMoQaJoAiip+2sOScUJQ0kIYvOvvBX5i+/uTcO62wXmqHVqdIbjsos8PfIU14Py
+ 9qyQnnpBwFXUMw9qFEqxfCAjoE26sWto92JRoWE/hZooLtO0jtPeugHwHLPOpPTLxTmmDj
+ n55C4Vh8Sm0EdCYFsYnX5v+e3o0jY3c=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-0xtK3HvvNd2VIC0J_vXsWA-1; Tue,
+ 23 Jan 2024 13:22:50 -0500
+X-MC-Unique: 0xtK3HvvNd2VIC0J_vXsWA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6C111013663;
- Tue, 23 Jan 2024 18:18:06 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1DD7C2166B32;
- Tue, 23 Jan 2024 18:18:03 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, jean-philippe@linaro.org, alex.williamson@redhat.com,
- peter.maydell@linaro.org, zhenzhong.duan@intel.com, peterx@redhat.com,
- yanghliu@redhat.com
-Cc: mst@redhat.com,
-	clg@redhat.com,
-	jasowang@redhat.com
-Subject: [PATCH 3/3] hw/pc: Set the default virtio-iommu aw-bits to 39 on
- pc_q35_9.0 onwards
-Date: Tue, 23 Jan 2024 19:15:57 +0100
-Message-ID: <20240123181753.413961-4-eric.auger@redhat.com>
-In-Reply-To: <20240123181753.413961-1-eric.auger@redhat.com>
-References: <20240123181753.413961-1-eric.auger@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB172280C2AD;
+ Tue, 23 Jan 2024 18:22:49 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.89])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 497472166B32;
+ Tue, 23 Jan 2024 18:22:48 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org,
+ qemu-block@nongnu.org
+Subject: [PATCH v2 0/4] util/uri: Simplify the code, remove unused functions
+Date: Tue, 23 Jan 2024 19:22:43 +0100
+Message-ID: <20240123182247.432642-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,91 +77,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the default input range can extend to 64 bits. On x86,
-when the virtio-iommu protects vfio devices, the physical iommu
-may support only 39 bits. Let's set the default to 39, as done
-for the intel-iommu. We introduce a new compat to make sure older
-pc_q35 machine types still use 64 bits. On ARM we keep 64b as
-the default input address width. Of course if aw-bits is set
-from the command line, the default is overriden.
+The URI function uri_string_unescape() is pretty much the same as the
+function g_uri_unescape_segment() from the glib, so we can simplify
+our code here quite a bit.
+While at it, I also noticed that there are many other unused functions
+in here which we likely can drop, too.
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- hw/arm/virt.c            |  6 ++++++
- hw/i386/pc.c             | 10 +++++++++-
- hw/virtio/virtio-iommu.c |  2 +-
- 3 files changed, 16 insertions(+), 2 deletions(-)
+v2:
+- Replace uri_string_unescape() with g_uri_unescape_segment(), so
+  we can remove uri_string_unescape() completely now
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 2793121cb4..a27fe13c73 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2715,10 +2715,16 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-+                                                   "aw-bits", NULL);
-         hwaddr db_start = 0, db_end = 0;
-         QList *reserved_regions;
-         char *resv_prop_str;
- 
-+        if (!aw_bits) {
-+            qdev_prop_set_uint8(dev, "aw-bits", 64);
-+        }
-+
-         if (vms->iommu != VIRT_IOMMU_NONE) {
-             error_setg(errp, "virt machine does not support multiple IOMMUs");
-             return;
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 496498df3a..a8dbc99946 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -78,7 +78,9 @@
-     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
-     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
- 
--GlobalProperty pc_compat_8_2[] = {};
-+GlobalProperty pc_compat_8_2[] = {
-+    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-+};
- const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
- 
- GlobalProperty pc_compat_8_1[] = {};
-@@ -1458,6 +1460,8 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-+                                                   "aw-bits", NULL);
-         /* Declare the APIC range as the reserved MSI region */
-         char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
-                                               VIRTIO_IOMMU_RESV_MEM_T_MSI);
-@@ -1466,6 +1470,10 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-         qlist_append_str(reserved_regions, resv_prop_str);
-         qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
- 
-+        if (!aw_bits) {
-+            qdev_prop_set_uint8(dev, "aw-bits", 39);
-+        }
-+
-         g_free(resv_prop_str);
-     }
- 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index e7f299e0c6..a7c268a01a 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1526,7 +1526,7 @@ static Property virtio_iommu_properties[] = {
-     DEFINE_PROP_LINK("primary-bus", VirtIOIOMMU, primary_bus,
-                      TYPE_PCI_BUS, PCIBus *),
-     DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
--    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
-+    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
+Thomas Huth (4):
+  util/uri: Remove uri_string_unescape()
+  util/uri: Remove unused functions uri_resolve() and
+    uri_resolve_relative()
+  util/uri: Remove the uri_string_escape() function
+  util/uri: Remove unused macros ISA_RESERVED() and ISA_GEN_DELIM()
+
+ include/qemu/uri.h |   4 -
+ util/uri.c         | 869 +--------------------------------------------
+ 2 files changed, 11 insertions(+), 862 deletions(-)
+
 -- 
-2.41.0
+2.43.0
 
 
