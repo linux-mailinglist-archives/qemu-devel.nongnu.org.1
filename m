@@ -2,81 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C729A838DE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0677D838E1D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:05:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSFJ0-0007AE-GB; Tue, 23 Jan 2024 06:51:02 -0500
+	id 1rSFVF-00017f-1C; Tue, 23 Jan 2024 07:03:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFIy-00078A-Uu
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:51:00 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFIx-0004LF-0c
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:51:00 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40eacb4bfa0so21901925e9.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:50:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706010657; x=1706615457; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OSEOxyBqJBLSvvvMHEAjv3yLyA28u8IONApUfy+8YUQ=;
- b=EwyM3gTylkI1J/fVmVPq6Gfzknoep1+8jG493lxHL3+gq10MNw+z7DOvjwOpoBLBhA
- VhUYN/j89QM2WpiX2qwKoFrCv6j0bCJqQWKbAzSMyDAoX4bf0ZCkuOTvC58j3iindSpy
- pGJfKyoc0EmwJm7LK7gqpyJBtszsGXcrzejXD0TNw7qUMo2XXGHRkXZx41S4+mfzdsjg
- 9dSbrWt1geS3AqSRhYDl/9OVZo0BCjoxxzLuRA6Q3iF/BimYZsFsTHYNq69+Qsps4ahQ
- wFBE5gFVZT0p65nPBo+NPN+VB709bA4EoKUNiGIlXNNZM9AtMmK1SVPT3vvPLpnus2y3
- Y9zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706010657; x=1706615457;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OSEOxyBqJBLSvvvMHEAjv3yLyA28u8IONApUfy+8YUQ=;
- b=LXUDUkotDD9uxywfbxGs5DoB9GaLkdUFEP1HQ49w+jWQbfD1k4ZW2Gb77rxTMQou66
- DkTlwiIrdnQsqFp/pnuvLun987erpZOrGBnhYv/fCOb3DijP4vAM6dNw1Uta00jO2lBn
- gJ7VccVKipmm7h9PVqLNT2CYTggfUpyDXX6nqFa9WqzgvLVYFPaYHYNpvGCF8UuyGls7
- 6WIwY3+KS4JV2mYA1zggnSNP0mZvLjRq9ywyFYPxEheN5oFIBksAU4uvxiK9e6eA6omW
- Gooh1CoTWjDgIYEzyLlgj7V+gr7KrCWNziz0+9alD6BJTM74egW7t4B7+J966daZ3YER
- tmSA==
-X-Gm-Message-State: AOJu0YxBBgoVetTfgYnzbhRAeF4BpNSMYTeFVNk6jniRnjVUasRGwVQW
- CfsV69CCgoUNjXWUlUHU6GgsO+047mRD+l8vwWKE+vMnumLcW0fZQYD4j2cwOhQ=
-X-Google-Smtp-Source: AGHT+IES9aNSKgkPD7ykXP2090lQ05RmwZoGsi1XT85DX1zZjubCCURwLVLx1DSnHfPZjLOJMO/upg==
-X-Received: by 2002:a05:600c:6a0b:b0:40e:3b1c:d3a2 with SMTP id
- jj11-20020a05600c6a0b00b0040e3b1cd3a2mr50760wmb.126.1706010657256; 
- Tue, 23 Jan 2024 03:50:57 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.194.78])
- by smtp.gmail.com with ESMTPSA id
- u21-20020a05600c139500b0040e4a7a7ca3sm42305464wmf.43.2024.01.23.03.50.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jan 2024 03:50:56 -0800 (PST)
-Message-ID: <a69519cf-27f6-479e-9ec6-ff7e11454c90@linaro.org>
-Date: Tue, 23 Jan 2024 12:50:55 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 26/34] Wrap target macros in functions
-Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, richard.henderson@linaro.org
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFV9-00016M-19
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:03:36 -0500
+Received: from rev.ng ([5.9.113.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFV6-0006Iz-2t
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:03:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=czzatmFXzShaDKPDZ8zwIuNYhD6TqNlsmqbGsv2FUO4=; b=CkMNRCfN9yPkN22Ww4tjWJCNi8
+ M19n9cjxaD+5E89pC+SFghd9mJqI5P/uB14OzbBeaOg3Eec3kfEqPKr/bJ/d7XLRVOJBvZh1PN1yW
+ Uq0m0xizX7LWVtP0QtWK11QTKnHZHvfel5zv3YE46M4F/MSSQV3VJ7hk+ybVlYltBTp8=;
+Date: Tue, 23 Jan 2024 13:03:27 +0100
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, ale@rev.ng, richard.henderson@linaro.org
+Subject: Re: [RFC PATCH 30/34] accel/tcg: Make tcg-all.c target indpendent
+Message-ID: <a5x4m7apjbqftlvyehg35xpb2vuqt7yeytu5p43qml7wwwt3kv@wijdl5teb6be>
 References: <20240119144024.14289-1-anjo@rev.ng>
- <20240119144024.14289-27-anjo@rev.ng>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240119144024.14289-27-anjo@rev.ng>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+ <20240119144024.14289-31-anjo@rev.ng>
+ <b1c7e761-34ef-4143-993f-98580bffb086@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b1c7e761-34ef-4143-993f-98580bffb086@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,134 +57,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Anton,
-
-On 19/1/24 15:40, Anton Johansson wrote:
-> Adds wrapper functions around common target specific macros required by
-> accel/tcg.
+On 23/01/24, Philippe Mathieu-Daudé wrote:
+> Hi Anton,
 > 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> ---
->   include/hw/core/cpu.h |  9 +++++++
->   cpu-target.c          | 62 +++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 71 insertions(+)
+> On 19/1/24 15:40, Anton Johansson wrote:
+> > Uses target_supports_mttcg() and target_long_bits() to turn ifdefs into
+> > runtime branches.
+> > 
+> > Signed-off-by: Anton Johansson <anjo@rev.ng>
+> > ---
+> >   accel/tcg/tcg-all.c | 25 +++++++++----------------
+> >   1 file changed, 9 insertions(+), 16 deletions(-)
 > 
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 57d100c203..a2d65c1d7a 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -26,6 +26,7 @@
->   #include "exec/vaddr.h"
->   #include "exec/memattrs.h"
->   #include "exec/tlb-common.h"
-> +#include "exec/memop.h"
->   #include "qapi/qapi-types-run-state.h"
->   #include "qemu/bitmap.h"
->   #include "qemu/rcu_queue.h"
-> @@ -1164,6 +1165,14 @@ void cpu_exec_unrealizefn(CPUState *cpu);
->    * what you are doing!
->    */
->   bool target_words_bigendian(void);
-> +bool target_supports_mttcg(void);
-> +bool target_has_precise_smc(void);
-> +int target_long_bits(void);
-> +int target_phys_addr_space_bits(void);
-> +uint8_t target_insn_start_words(void);
-> +uint8_t target_default_memory_order(void);
-> +uint8_t target_tlb_dyn_max_bits(void);
-> +MemOp target_endian_memory_order(void);
+> 
+> >   static void tcg_accel_instance_init(Object *obj)
+> > @@ -137,17 +129,18 @@ static char *tcg_get_thread(Object *obj, Error **errp)
+> >   static void tcg_set_thread(Object *obj, const char *value, Error **errp)
+> >   {
+> >       TCGState *s = TCG_STATE(obj);
+> > +    const bool oversized_guest = target_long_bits() > TCG_TARGET_REG_BITS;
+> >       if (strcmp(value, "multi") == 0) {
+> > -        if (TCG_OVERSIZED_GUEST) {
+> > +        if (oversized_guest) {
+> >               error_setg(errp, "No MTTCG when guest word size > hosts");
+> >           } else if (icount_enabled()) {
+> >               error_setg(errp, "No MTTCG when icount is enabled");
+> >           } else {
+> > -#ifndef TARGET_SUPPORTS_MTTCG
+> > -            warn_report("Guest not yet converted to MTTCG - "
+> > -                        "you may get unexpected results");
+> > -#endif
+> > +            if (target_supports_mttcg()) {
+> 
+> I started smth similar but then realized this call has to be per target,
+> so put my work on hold. My plan is to have a single common tcg
+> accelerator framework, having target-specific code handled by vcpu
+> dispatchers. Is your plan to have each target link its own tcg?
 
-None of these helpers take argument. I don't understand
-how they can be called in heterogeneous context.
+Yes I was leaning towards one tcg per target, but hadn't put much 
+thought into it. I think your approach is better.  This patchset was
+primarily focused on getting accl/tcg/ to compile once, with 
+heterogeneous stuff coming down the line. IMO it becomes a bit easier to 
+see what target-specific information we really need.
 
->   const char *target_name(void);
->   
-> diff --git a/cpu-target.c b/cpu-target.c
-> index 1a8e730bed..6b67af7a51 100644
-> --- a/cpu-target.c
-> +++ b/cpu-target.c
-> @@ -39,10 +39,13 @@
->   #include "exec/tb-flush.h"
->   #include "exec/translate-all.h"
->   #include "exec/log.h"
-> +#include "exec/cpu-defs.h"
->   #include "hw/core/accel-cpu.h"
->   #include "trace/trace-root.h"
->   #include "qemu/accel.h"
->   #include "qemu/plugin.h"
-> +#include "tcg/tcg-mo.h"
-> +#include "tcg/insn-start-words.h"
->   
->   uintptr_t qemu_host_page_size;
->   intptr_t qemu_host_page_mask;
-> @@ -416,6 +419,65 @@ bool target_words_bigendian(void)
->       return TARGET_BIG_ENDIAN;
->   }
->   
-> +bool target_supports_mttcg(void)
-> +{
-> +#ifdef TARGET_SUPPORTS_MTTCG
-> +# ifndef TCG_GUEST_DEFAULT_MO
-> +#  error "TARGET_SUPPORTS_MTTCG without TCG_GUEST_DEFAULT_MO"
-> +# endif
-> +    return true;
-> +#else
-> +    return false;
-> +#endif
-> +}
-> +
-> +bool target_has_precise_smc(void)
-> +{
-> +#ifdef TARGET_HAS_PRECISE_SMC
-> +    return true;
-> +#else
-> +    return false;
-> +#endif
-> +}
-> +
-> +int target_long_bits(void)
-> +{
-> +    return TARGET_LONG_BITS;
-> +}
-> +
-> +int target_phys_addr_space_bits(void)
-> +{
-> +    return TARGET_PHYS_ADDR_SPACE_BITS;
-> +}
-> +
-> +uint8_t target_insn_start_words(void)
-> +{
-> +    return TARGET_INSN_START_WORDS;
-> +}
-> +
-> +uint8_t target_default_memory_order(void)
-> +{
-> +#ifdef TCG_GUEST_DEFAULT_MO
-> +    return TCG_GUEST_DEFAULT_MO;
-> +#else
-> +    return TCG_MO_ALL;
-> +#endif
-> +}
-> +
-> +MemOp target_endian_memory_order(void)
-> +{
-> +    return MO_TE;
-> +}
-> +
-> +uint8_t target_tlb_dyn_max_bits(void)
-> +{
-> +#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
-> +    return CPU_TLB_DYN_MAX_BITS;
-> +#else
-> +    return 0;
-> +#endif
-> +}
-> +
->   const char *target_name(void)
->   {
->       return TARGET_NAME;
+What do you think of a simple TargetConfig struct for information such 
+as target_supports_mttcg() and the other functions introduced in 
+cpu-target.c? We probably need dispatcher for other stuff but I think we 
+can get quite far with struct.
 
 
