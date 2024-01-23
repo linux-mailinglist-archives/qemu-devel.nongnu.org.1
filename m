@@ -2,105 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BB28388BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432688388BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:21:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSC1B-0000cz-M9; Tue, 23 Jan 2024 03:20:25 -0500
+	id 1rSC1x-0001RG-OM; Tue, 23 Jan 2024 03:21:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rSC19-0000cB-U7
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:20:23 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC1u-0001Pj-VJ
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:21:10 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rSC18-0000GZ-AB
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:20:23 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-55c932f7fcbso45463a12.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:20:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC1s-0000NZ-Dd
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:21:10 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40eacb4bfa0so19931805e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:21:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1705998020; x=1706602820; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=jUV2ETur/YHhD2L9r2syN08M+wLYBj7G/QeHONE9k4A=;
- b=Y+pGHeiiMv0c10XnaR55SM9C3UZZNClJTCWT3Udb6Uu7hww2y95Icj8XS56jCkSfOr
- IrgCj7AmJ7fUhUoRQqhu7X+6tTwcHAGtyz0Vb1qbOmMHvXj+VoZ4dylKPzan0BhFFlww
- La2GlotTjw0fMfo2hFxKE8ETp3M0ol9/UUkCVqFk6C1n9yUHEX6hiRogto9vlkIIC/8W
- un+T/ufwsf1kbqjjCldNvQ9KmfLLTQ3y/jzkOLHMX+5YQlfRigbPbvS8T4Ev7rIHQB40
- yo7DPd08/jsx7NcdMAi9CUF4lexkr5YrAEmvuBo3wU3SjrSHyK0w1eivUZ2yqbown05A
- 8zKQ==
+ d=linaro.org; s=google; t=1705998066; x=1706602866; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vgXaw/jt6H2vmMlwijH9Eh5yEEx14Kw5bUFUTrmJmuY=;
+ b=lLlQpJ9KX95TbNNYSM8AmEU+ABI3/DIgy/OXGeO7yOsgQ1c2txGM/XYICKmV6Qujqm
+ rrUaLIPPz0a55C0b5f9uZlPEduUUBRIfD3y+fgS4wBMDl0GAolR0otx5tY7Hb+qLLrnq
+ pSMNTaSxaIOGGLWxR1E1U1UV+cPhVfBV4yfdVBBVhZqcgqJJVomf2eModwR/BrQlkT8x
+ P2/gTuEU4f7Zwtz8cszeJKq8SV+WfvpE4hXSS6JmBtzKC/tvde8lLzxRdRyN50MMGOX4
+ zotRmWYEjDyJaUhfmY2pxlh43Uoc5gE/RqKylECHmnei3ejo//xOe+y2RQEmAReDtuuW
+ ypjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705998020; x=1706602820;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jUV2ETur/YHhD2L9r2syN08M+wLYBj7G/QeHONE9k4A=;
- b=oWDYP/CtlY/OamKKTlFysdQ1watEPQiQ7nDcwNhzNOxTR4FYGnee/mwUptEm1sCjbN
- o94gAMjsjXz7hTJP7tN1wmGaLVjiDcnCDg3ULJN3MteHMV6voZKO2WY2aU6MmQAnaY92
- HFkf2DTsMpUd8/65ZXSpzotoaov9W/MgSJgi78wJ0jUvluRfCJ7LeMChc4H7qj9zRAeM
- 96HWi6ZV8LBxLbMpIdjFUCzUEJwf345WcgN78/SU1jwr4+HHDBDt/wDWeD4x0i+T4edg
- Y+7gpubHpQmsFBpHCtUW50Jhy1kJUfGAiivbVulplfkmPMv4v8Yo7652FKjmYI1sBG9V
- JcjA==
-X-Gm-Message-State: AOJu0Yyab/jj9rvihObZysE3Eum/8A2xKPaqZmOZiB2HkZCd4RU9zIbB
- ZuAj8hE+SMyaeA0vRFsRwszydKX8MgOHgz7kf9lpgTug7OAyH193eOi3WsBlf7c=
-X-Google-Smtp-Source: AGHT+IHrnFo96kFqXrbmtDTaJ16lW2vZWFoc71DDaTGvlSuwCuKmyi9E4Xkwwz9HfBbRN5oWg8OMmg==
-X-Received: by 2002:aa7:c982:0:b0:559:3583:bb6d with SMTP id
- c2-20020aa7c982000000b005593583bb6dmr667767edt.32.1705998020528; 
- Tue, 23 Jan 2024 00:20:20 -0800 (PST)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ d=1e100.net; s=20230601; t=1705998066; x=1706602866;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vgXaw/jt6H2vmMlwijH9Eh5yEEx14Kw5bUFUTrmJmuY=;
+ b=lGdmsPdYy5j3Xtm7Ex5xGxelLiseFdD23ebnQu5GXSvMLOv3DjZB7AuZbWEM9pMqQ6
+ /PFga8J0uJUBayyUeauHsRh9E2UNZqyg4lnKBuoRRq3N473pqiTd1TuXJSidcyQzwem/
+ uwHMIhXDSljP9j7Z7gqogFssECg0GdlarZD3cAk24tqt6rwNER1h519nVBw18d9A70qn
+ ypM98GshU0VDtETKXLer2Zx+Jy02qnz8rBfkVQNaKhN36YRl5Ql2lhHqeB+f2Lan40+M
+ gSVVeTSmBF7nBQMdwGoRIe7VB/z1mt8KFsUjLnKInoBZmpZWBmbDgetdEoBrU906Gd8m
+ X/qg==
+X-Gm-Message-State: AOJu0YwiCFQoRWBv540hopK9+FFaypoECUoPUe1mdm8/LkyEyNosRStJ
+ GUCw8ikJ6iTbe6PzNNAh3gZkIUdiuZib7cvvG0/9UdCY0Y/3iNisZSo8RwFT/ZyO5ZUDgujPE98
+ 4x9U=
+X-Google-Smtp-Source: AGHT+IEzphcX6EYIcFaSPITiZbjm9JS50GyoJwXSUrl3LJaHiU/XdiuDzptnA6bWmNKsvESYkF6LUQ==
+X-Received: by 2002:a7b:cb87:0:b0:40e:42ce:f28b with SMTP id
+ m7-20020a7bcb87000000b0040e42cef28bmr292949wmi.52.1705998066247; 
+ Tue, 23 Jan 2024 00:21:06 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- ec32-20020a0564020d6000b0055c4c97b1f2sm1716628edb.91.2024.01.23.00.20.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 00:20:20 -0800 (PST)
-Date: Tue, 23 Jan 2024 09:20:18 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Michael Rolnik <mrolnik@gmail.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, 
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Laurent Vivier <laurent@vivier.eu>, 
- Yanan Wang <wangyanan55@huawei.com>, qemu-ppc@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, 
- qemu-s390x@nongnu.org, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>, 
- John Snow <jsnow@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- David Woodhouse <dwmw2@infradead.org>, Cleber Rosa <crosa@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, 
- Bin Meng <bin.meng@windriver.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Thomas Huth <thuth@redhat.com>, 
- David Hildenbrand <david@redhat.com>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>, 
- Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
- Paul Durrant <paul@xen.org>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v3 01/21] hw/riscv: Use misa_mxl instead of misa_mxl_max
-Message-ID: <20240123-b8d1c55688885bfc9125c42b@orel>
-References: <20240122145610.413836-1-alex.bennee@linaro.org>
- <20240122145610.413836-2-alex.bennee@linaro.org>
+ n22-20020a05600c4f9600b0040e53f24ceasm41477156wmq.16.2024.01.23.00.21.05
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 23 Jan 2024 00:21:05 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] mailmap: Fix Stefan Weil email
+Date: Tue, 23 Jan 2024 09:21:04 +0100
+Message-ID: <20240123082104.36208-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240122145610.413836-2-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -123,43 +89,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 22, 2024 at 02:55:50PM +0000, Alex Benn�e wrote:
-> From: Akihiko Odaki <akihiko.odaki@daynix.com>
-> 
-> The effective MXL value matters when booting.
+Commit 5204b499a6 ("mailmap: Fix Stefan Weil author email")
+corrected authorship for patch received at qemu-devel@nongnu.org,
+correct now for patch received at qemu-trivial@nongnu.org.
 
-I'd prefer this commit message get some elaboration. riscv_is_32bit()
-is used in a variety of contexts, some where it should be reporting
-the max misa.mxl. However, when used for booting an S-mode kernel it
-should indeed report the effective mxl. I think we're fine with the
-change, though, because at init and on reset the effective mxl is set
-to the max mxl, so, in those contexts, where riscv_is_32bit() should
-be reporting the max, it does.
+Update other authorship email for Stefan's commits.
 
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Message-Id: <20240103173349.398526-23-alex.bennee@linaro.org>
-> Message-Id: <20231213-riscv-v7-1-a760156a337f@daynix.com>
-> Signed-off-by: Alex Benn�e <alex.bennee@linaro.org>
-> ---
->  hw/riscv/boot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index 0ffca05189f..bc67c0bd189 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -36,7 +36,7 @@
->  
->  bool riscv_is_32bit(RISCVHartArrayState *harts)
->  {
-> -    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
-> +    return harts->harts[0].env.misa_mxl == MXL_RV32;
->  }
+Suggested-by: Stefan Weil <sw@weilnetz.de>
+Fixes: d819fc9516 ("virtio-blk: Fix potential nullptr read access")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ .mailmap | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Assuming everyone agrees with what I've written above, then maybe we
-should write something similar in a comment above this function.
+diff --git a/.mailmap b/.mailmap
+index d94572af05..88fb68143e 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -36,6 +36,8 @@ Marek Dolata <mkdolata@us.ibm.com> mkdolata@us.ibm.com <mkdolata@us.ibm.com>
+ Michael Ellerman <mpe@ellerman.id.au> michael@ozlabs.org <michael@ozlabs.org>
+ Nick Hudson <hnick@vmware.com> hnick@vmware.com <hnick@vmware.com>
+ Timothée Cocault <timothee.cocault@gmail.com> timothee.cocault@gmail.com <timothee.cocault@gmail.com>
++Stefan Weil <sw@weilnetz.de> <weil@mail.berlios.de>
++Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@kiwi.(none)>
+ 
+ # There is also a:
+ #    (no author) <(no author)@c046a42c-6fe2-441c-8c8c-71466251a162>
+@@ -60,6 +62,7 @@ Ian McKellar <ianloic@google.com> Ian McKellar via Qemu-devel <qemu-devel@nongnu
+ Julia Suvorova <jusual@mail.ru> Julia Suvorova via Qemu-devel <qemu-devel@nongnu.org>
+ Justin Terry (VM) <juterry@microsoft.com> Justin Terry (VM) via Qemu-devel <qemu-devel@nongnu.org>
+ Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-devel@nongnu.org>
++Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-trivial@nongnu.org>
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com> Andrey Drobyshev via <qemu-block@nongnu.org>
+ BALATON Zoltan <balaton@eik.bme.hu> BALATON Zoltan via <qemu-ppc@nongnu.org>
+ 
+@@ -98,6 +101,7 @@ Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
+ Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
+ Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
+ Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
++Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@weilnetz.de>
+ Taylor Simpson <ltaylorsimpson@gmail.com> <tsimpson@quicinc.com>
+ Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
+ 
+-- 
+2.41.0
 
-Thanks,
-drew
 
