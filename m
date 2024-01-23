@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AA6838BAE
+	by mail.lfdr.de (Postfix) with ESMTPS id 39295838BAD
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 11:25:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSDxC-0000N9-MY; Tue, 23 Jan 2024 05:24:26 -0500
+	id 1rSDxD-0000NH-99; Tue, 23 Jan 2024 05:24:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSDxA-0000MX-3M
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 05:24:24 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1rSDxC-0000N7-4m
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 05:24:26 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSDx8-0004cA-BV
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 05:24:23 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6dd7c5437b0so274851b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 02:24:21 -0800 (PST)
+ id 1rSDxA-0004cc-KL
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 05:24:25 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6db0fdd2b8fso1963398b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 02:24:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706005460; x=1706610260; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706005463; x=1706610263; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8KxhZwbZAcm1asBjHob1LgeGTJkXdHPPGTQpwmtvThw=;
- b=VDKntUHDe81VJEdB00Nl1mv1yloJGfFuvqU1j00MIgIaeXvAlZ04mK6jNUdjaDBEj4
- l+8d9p/0h6tJLdTYoNacGce4qwcFvTU7aiIAtSrQeKZF1gOZG3ZIc9mK7DloxXDocQVL
- /uOhBU62I2cqb8SP4LHV7K/Nw48A0INZ+kig1T6GoroYKkDCUn52pm724RcHdPFRaR34
- gtROoXWviTfpasy7fYgo2wqAHrMS9v0fqy9F1qKlLGgGrwBg0gtiVViIkiH17a4VP88r
- CfTYj1lnIdrk5C94eALwLTQzSgDfT51Zre1oG4wSbvasU8UPX4FHTtxMO2f/5PnjOxUN
- RcPw==
+ bh=0EKsORzhcd/voY/5GCXD+0ZH5a0YI/B7BiYyHrdge+w=;
+ b=yxQu3ZyMZCaD2wAE7x4g9Egl2XymqzQr4qaoPXv/KHXEsja4m1QApaZ7pTEcdOFUPV
+ wYl2naZkkOsgMB2nYiEJsNYr2OCZYGU4k7VqPeU00Y/RbTfwSns6R8ADYqA7w2BbsAXa
+ Y/jYOnF30P0+R+I1Uk5x2G2Nr1KsaS600DJPgXLVLkURViBPZ4T+bTsVRpDWDsAHmoWF
+ tPXPjjVCJ4dWXn1x3RcAVjq3burNX9NR6yGgvbxpC0kGRE4JmKrJCQAjmOoKtalboj3T
+ hPDvWEjWbFAPRseX43KlL5ENeM/dyaVkTQgDM2K1nZhTnrxfCsZKAw4jPJlimsIlWjuy
+ l1Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706005460; x=1706610260;
+ d=1e100.net; s=20230601; t=1706005463; x=1706610263;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8KxhZwbZAcm1asBjHob1LgeGTJkXdHPPGTQpwmtvThw=;
- b=VZb6iJnnnIakva1VS5ipfWvtT12wr74BRANZB4wX18Pz2Dy5g4qOJbzIn0RPm+XD9Y
- EeW8BlrXuIwgvAeuus8VbkDRuDtxHW01Q1r8ZQZeDcFcUZ/xoBTY7hlu6wkf5Tmjtj+I
- iFC4kfZoaaQhYW3YM1hc0FEPyksLXIOAwrrZtxuAkVM23CWeG/xykNA/mRpGXANfYGGr
- adIg8MZgJxVGwEHa7ljBD88R/aBgngIEg7HKckTQ9vhsp+jbVBl0PkBScj3ny+PVduIf
- hpgD7m8+CKNCFF1M7tHwXMB6P2SK/H5HODB9OphB0eNTdSMDn8HU15fjYBBTv5b8st01
- a+pA==
-X-Gm-Message-State: AOJu0YxraZFqkFicAqtJt+n/WMT+tuqqnrSCzASCvVIZhimvH5/ubyig
- odQkcC6HrLPtNQDga6zV592yH+d88TBep+WA36lQBP+O/9zkavc/lNdPwLbAiqaww8wUxsfrh39
- Fo/k=
-X-Google-Smtp-Source: AGHT+IFbEITn4mA6lPyn6EPMoU5EJzjrqY6lMlUcma+KbLrF6SNmFFpxiU91cKUGgNpSwj5myZMDlA==
-X-Received: by 2002:a05:6a20:da83:b0:19a:29a4:4994 with SMTP id
- iy3-20020a056a20da8300b0019a29a44994mr6959060pzb.84.1706005460639; 
- Tue, 23 Jan 2024 02:24:20 -0800 (PST)
+ bh=0EKsORzhcd/voY/5GCXD+0ZH5a0YI/B7BiYyHrdge+w=;
+ b=f3kNjJLRv0SCHR5PZvfT9cK6x3MRHMNWf20ZCBOGYpganuzRN5nPC6JemI0HPYyPHO
+ RJuLQam/ZkiA69JyBGS8gCRQIGuaY7hSKRTGyceNAWB6BB2akVKEaiyMYHY25G32+Tgb
+ va9PA63UEMlA/FPWQ8B7qz/XlXhM6xtRK09PWY73Sy6/HzMdMYK/uggg/XrP9enTjnml
+ v3KBkFlNIzwBpejwE9iALhhjoP9r4FPDTE+ms7ckooOb0OJJg921StnuC/eg1+0mprTv
+ ALgqfS4LI9P7PGaE9IDVgKbFIM4+/PhbZyMB+/c+UzLlQyWvonzKvtXuM1D8gvpzBo+o
+ wN2A==
+X-Gm-Message-State: AOJu0Yz28xISiPtgIfuyNrVagV19oNI2wjI+amUE9qcvzxG/I0ZU15FV
+ x6L3Mo11QW9vo4Sc4qL43FTOxWFDUHRAG/eXFPaErfpw7KXbOEBVHMZZ0h3+9u59nt7VtOiOEVf
+ 7N6k=
+X-Google-Smtp-Source: AGHT+IFVTClaWd5fhBg8HC90hAnk276sCKk+j1+k7kVc3nWjf/DSMmUoWL0krVP9DDTZbsn9Zmvi0Q==
+X-Received: by 2002:a05:6a00:9281:b0:6dd:7ae5:9dd9 with SMTP id
+ jw1-20020a056a00928100b006dd7ae59dd9mr487508pfb.3.1706005463234; 
+ Tue, 23 Jan 2024 02:24:23 -0800 (PST)
 Received: from stoup.lan
  (2001-44b8-2176-c800-b8a0-0408-58be-7d2e.static.ipv6.internode.on.net.
  [2001:44b8:2176:c800:b8a0:408:58be:7d2e])
  by smtp.gmail.com with ESMTPSA id
- d8-20020a62f808000000b006d9ce7d3258sm11072408pfh.204.2024.01.23.02.24.18
+ d8-20020a62f808000000b006d9ce7d3258sm11072408pfh.204.2024.01.23.02.24.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 02:24:20 -0800 (PST)
+ Tue, 23 Jan 2024 02:24:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Samuel Tardieu <sam@rfc1149.net>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL v2 1/8] tcg: Remove unreachable code
-Date: Tue, 23 Jan 2024 20:24:05 +1000
-Message-Id: <20240123102412.4569-2-richard.henderson@linaro.org>
+Subject: [PULL v2 2/8] tcg: Make the cleanup-on-error path unique
+Date: Tue, 23 Jan 2024 20:24:06 +1000
+Message-Id: <20240123102412.4569-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240123102412.4569-1-richard.henderson@linaro.org>
 References: <20240123102412.4569-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,34 +96,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Samuel Tardieu <sam@rfc1149.net>
 
-The `fail_rx`/`fail` block is only entered while `buf_rx` is equal to
-its initial value `MAP_FAILED`. The `munmap(buf_rx, size);` was never
-executed.
+By calling `error_setg_errno()` before jumping to the cleanup-on-error
+path at the `fail` label, the cleanup path is clearer.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2030
 Signed-off-by: Samuel Tardieu <sam@rfc1149.net>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20231219182212.455952-2-sam@rfc1149.net>
+Message-Id: <20231219182212.455952-3-sam@rfc1149.net>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/region.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tcg/region.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tcg/region.c b/tcg/region.c
-index 86692455c0..467e51cf6f 100644
+index 467e51cf6f..478ec051c4 100644
 --- a/tcg/region.c
 +++ b/tcg/region.c
-@@ -597,9 +597,7 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
-  fail_rx:
-     error_setg_errno(errp, errno, "failed to map shared memory for execute");
-  fail:
--    if (buf_rx != MAP_FAILED) {
--        munmap(buf_rx, size);
--    }
-+    /* buf_rx is always equal to MAP_FAILED here and does not require cleanup */
-     if (buf_rw) {
-         munmap(buf_rw, size);
+@@ -584,7 +584,9 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+ 
+     buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
+     if (buf_rx == MAP_FAILED) {
+-        goto fail_rx;
++        error_setg_errno(errp, errno,
++                         "failed to map shared memory for execute");
++        goto fail;
      }
+ 
+     close(fd);
+@@ -594,8 +596,6 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
+ 
+     return PROT_READ | PROT_WRITE;
+ 
+- fail_rx:
+-    error_setg_errno(errp, errno, "failed to map shared memory for execute");
+  fail:
+     /* buf_rx is always equal to MAP_FAILED here and does not require cleanup */
+     if (buf_rw) {
 -- 
 2.34.1
 
