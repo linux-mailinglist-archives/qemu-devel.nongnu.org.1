@@ -2,78 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06ECF83968B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 18:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 826288396BC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 18:45:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSKgF-000065-2L; Tue, 23 Jan 2024 12:35:23 -0500
+	id 1rSKpa-0004QI-4j; Tue, 23 Jan 2024 12:45:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSKgB-0008V4-Tg
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:35:20 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1rSKpT-0004Px-RR
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:44:55 -0500
+Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rSKg9-0006UA-Fb
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:35:19 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2cf0e9f76b4so12518881fa.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 09:35:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <debug@rivosinc.com>)
+ id 1rSKpS-0007ov-3T
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:44:55 -0500
+Received: by mail-yb1-xb34.google.com with SMTP id
+ 3f1490d57ef6-dc261316b0dso3432792276.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 09:44:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706031314; x=1706636114; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=paIsa4xyA7FzF8RxzgnnwI2DhQRer0e6faRBj+BRK1s=;
- b=lCKIwYfWz18Ie5P8xvs5sYGV36U78bZXwjcYpPVidWZY9ilQKicGqsSDA6rwjteO9V
- FLfsedYzEwexSaiB4ToJ+IfqfIQdYAOwv209VELjSutJHU4TLDmNzSLN7JT9z1EXSiL9
- m8OSijYxN1RAHYjAZTVzD65gjhYDkQ4isk1/04zf0f2B1nzo6z+p8KCjMIOtl8YrZwXS
- OmNL/F43kSP4C9it1o7ygqcG+Cj67EHqsBVBrALT/MHObISyS89pbLi+PwYJLEdbib4Y
- xf1RhDIv4x2p9ABnhsPEob6Rg7ajav3hfEqnVdeeWiyfppnrOu81gOJbQMzDVKrBv3DG
- C3wA==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1706031892; x=1706636692;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cY+sbWdyrY3TPUbLY7/g3QAsx2vYqWtXyWuZMFZGBSM=;
+ b=DNrHdCjcSNkTSIBT4QA4PYcsvws6uUilD/CZyGxy+rE6Md+B2TPcrnFA7R8ldWtk5T
+ rCX+xqOibAXc7IGZ2Hpb8R5b8alDJcq20Tkl25xwv75PVQHUbNrgpOjP2rwD5AVQ76Of
+ AedNNFEO6lKONVtHyeDBklDYfC1bBACnZ9aqYoXBW6iR+I1A/3r1/EyOuUKM8RQdD1cY
+ //Z7CymDz0L2K6FqR8HRxWv8nO9s2z8V9SpmnwVOSIo6MLO7Mz1hDRc/zqRv++gvl/at
+ rkenm9ovi5SoiWHS7BdTrUZ7dLzD8eeonG4Sm15TWEamj3uRBzJM6QGoh1zBFU3+uMOx
+ jDNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706031314; x=1706636114;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=paIsa4xyA7FzF8RxzgnnwI2DhQRer0e6faRBj+BRK1s=;
- b=O36lUzsGfKyOFhzdtcilAbzxyXHu7Cw/OAr8+Oi3vZg8vCfzH1Xp93f+6FZirJijZK
- Ly5yAg4bUAVB+VqaMORGaQT9VaMOEOD1Z1rEz1gEmpy104p9OJ9o4SuQzkQCpG6eBQBO
- awOeG9FWPGZ7IWG09XehxIlmnbrGZMUP1nERfruE371MNkHz9z1D43aHYq27Hlp2lhRX
- hB2ep110bnPILnBD1IBJy8nytlgpUDHqP5JwA6yHHHdyYZA9GspozBCllurWAwXOiLiT
- GwmmXjEin2u76XuoQvoc6LNhUfb5TWe6r/XArhgF0CoKkgD9Del4HVPkx0cDQ+MCffsX
- PR1w==
-X-Gm-Message-State: AOJu0Ywg2WSHewBxJPz2UprsTpWrLN36H80VPz4UyCHojl7R+vVKZOYW
- 8DZmABBM3YbIBKYd/cfymKexTwo2ezqdHy9ux75Q4r6JYAbAJFK8ILsUM2P2hINWlUSS/iMKdgd
- +JLSsoB5horUoDhbqrzn/VEeDNchGckFXjy79n2GSEq7mXtYY
-X-Google-Smtp-Source: AGHT+IFvn9Yuj96pUlRRn3cZmgzMs3auBztK5Li3ptsTYWYxhwQydC7bFy6sjZSsiOI9I29v1WNvYDWrCv22rIvIa+M=
-X-Received: by 2002:a2e:9bc4:0:b0:2cc:6f7f:6ba4 with SMTP id
- w4-20020a2e9bc4000000b002cc6f7f6ba4mr49199ljj.199.1706031314210; Tue, 23 Jan
- 2024 09:35:14 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706031892; x=1706636692;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cY+sbWdyrY3TPUbLY7/g3QAsx2vYqWtXyWuZMFZGBSM=;
+ b=SskrX/FubSIC8xmfc6sU0OrxxJSmPsKmPKBKdU28uMUQAZCiKzuWD4LK7O0NVIfT64
+ 5A8a8HB7iitVbRQguZX0omZT/3BshJs8UcDk98tvT1B0PiCK/QzeSHHWSprNP1mvGcEE
+ 8zfD9Z3U4laR9exPmFDOw7iPm7AjxVtxGD4xQcn4MULeSic4rUTASNKb3r+Jx0iEPFXV
+ ETdsOGt3AI0tkI8IJGtHuS3KfrkohonedNLOmhILR73Z/CDtTsqscRwIF8JFXLIUdfE2
+ RlVtOTq3cfPfBZYVv2BXEIzcHnnIGL8rweCEeUEgvUjdIDlbtMXs17FUONMhdYpfxeRL
+ a9LQ==
+X-Gm-Message-State: AOJu0YxGEaPqgGlTzjDozVZEi7qr+nw69VEXzfhViOgCEGzp+8oMB4bA
+ +u0LC1QcEZo/aHFPR1MoiIB+zjd0nzFKQ1yJi98P7aKA15gjssIL/OW3lBcF5fITyYXkRBu2jGr
+ 2QmPVwVPbKj/wvJWiaiojUnWyvKsmmHnBvXHozg==
+X-Google-Smtp-Source: AGHT+IHrvbB8Z4AgljPrAziLFzaZXeq2n1A/jS2UZT6t2stQe5/1WjAKFQHfnCB2ItqIfRZET3vTDvT6QQOTe2zbRp0=
+X-Received: by 2002:a5b:1ca:0:b0:dbc:e3ba:2f55 with SMTP id
+ f10-20020a5b01ca000000b00dbce3ba2f55mr3658430ybp.112.1706031892514; Tue, 23
+ Jan 2024 09:44:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20240118074749.2299959-1-rayhan.faizel@gmail.com>
-In-Reply-To: <20240118074749.2299959-1-rayhan.faizel@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 23 Jan 2024 17:35:03 +0000
-Message-ID: <CAFEAcA9xYiTWU1Nk2_G8gAbC=spQZDFbQazEeVWJYKJu=PFs2Q@mail.gmail.com>
-Subject: Re: [PATCH v3] hw/char/imx_serial: Implement receive FIFO and ageing
- timer for imx serial.
-To: Rayhan Faizel <rayhan.faizel@gmail.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:i.MX31 (kzm)" <qemu-arm@nongnu.org>
+References: <20240109102930.405323-1-me@deliversmonkey.space>
+ <20240109102930.405323-4-me@deliversmonkey.space>
+ <CAKC1njSLR614zQk0_DAgYN1jjdg=0eUa7N1AEwwXZVNN6BwjmA@mail.gmail.com>
+ <3cb918ca-27cd-4f1e-8738-306dc5280f42@linaro.org>
+ <CAKC1njRXPi1Roch=T+NwQk-TOzN=gSjmPh2KCVsemKdex9CamA@mail.gmail.com>
+ <5b6571d3-f654-488d-9dc5-0d18ba542e05@linaro.org>
+ <CAFukJ-Cf51kS17BOCkuPpxGXS+h4-MENKqBH5EW7Bj0mz+KPRQ@mail.gmail.com>
+In-Reply-To: <CAFukJ-Cf51kS17BOCkuPpxGXS+h4-MENKqBH5EW7Bj0mz+KPRQ@mail.gmail.com>
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Tue, 23 Jan 2024 09:44:41 -0800
+Message-ID: <CAKC1njTJMWOoBoXeAk6ScCW0Y7CR4=qiErdTxVzf6qn_+XFL3g@mail.gmail.com>
+Subject: Re: [PATCH v4 3/6] target/riscv: Add helper functions to calculate
+ current number of masked bits for pointer masking
+To: Alexey Baturo <baturo.alexey@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ zhiwei_liu@linux.alibaba.com, 
+ palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
+ envelope-from=debug@rivosinc.com; helo=mail-yb1-xb34.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,170 +97,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Jan 2024 at 07:49, Rayhan Faizel <rayhan.faizel@gmail.com> wrote:
+On Sat, Jan 20, 2024 at 11:14=E2=80=AFPM Alexey Baturo <baturo.alexey@gmail=
+.com> wrote:
 >
-> This patch implements a 32 half word FIFO as per imx serial device
-> specifications. If a non empty FIFO is below the trigger level, an ageing
-> timer will tick for a duration of 8 characters. On expiry, AGTIM will be set
-> triggering an interrupt. AGTIM timer resets when there is activity in
-> the receive FIFO.
+> Hi,
 >
-> Otherwise, RRDY is set when trigger level is
-> exceeded. The receive trigger level is 8 in newer kernel versions and 1 in
-> older ones.
+> Having the feature to run binaries with pointer masking on qemu-user is r=
+eally nice, but I see this patch series as an initial support.
+> Obviously there'll be more patches and fixes for pointer masking as soon =
+as arch tests are ready.
+> I suggest supporting qemu-user in the next patches, but make sure we do t=
+his before claiming 100% support for pointer masking.
+> @Deepak Gupta what do you think?
+
+I think that makes sense. Thanks.
+
 >
-> This change will break migration compatibility.
+> Thanks
 >
-> [Changes in v3]
->
-> - Caught more whitespace changes that went overlooked
-> - Moved fifo and timer initialization to realize
->
-> [Changes in v2]
->
-> As per Peter Maydell's suggestions,
->
-> - Use generic FIFO32 implementation in place of handmade impl.
-> - Moved timer_init to serial init and use timer_del in reset
-> - Removed stray whitespaces
-> - Increment VMSTATE version
->
-> Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
-> ---
->  hw/char/imx_serial.c         | 97 +++++++++++++++++++++++++++++++-----
->  include/hw/char/imx_serial.h | 18 ++++++-
->  2 files changed, 102 insertions(+), 13 deletions(-)
-
-Thanks; this looks good and was easy to review.
-I have a couple of comments about corner cases of the device
-behaviour and a few final coding style nits, and that's all.
-
-> +static void imx_serial_rx_fifo_push(IMXSerialState *s, uint32_t value)
-> +{
-> +    if (fifo32_is_full(&s->rx_fifo)) {
-> +        /* Discard lost character on overflow */
-> +        fifo32_pop(&s->rx_fifo);
-
-Is this the right behaviour on rx overflow? The imx6 TRM
-I have says the behaviour is:
-
- * when we put the 32nd character into the RX FIFO
-   (i.e. the last one which will fit) then we we need
-   to arrange that when it is read it has the
-   URXD.OVRRUN and URXD.ERR bits associated with it,
-   which we can achieve by ORing them in before we push
-   the char into the FIFO here
- * when the 33rd character arrives, we set USR2.ORE and
-   discard this 33rd character (i.e. never put it in the fifo)
-
-> +    }
-> +    fifo32_push(&s->rx_fifo, value);
-> +}
-> +
-> +static uint32_t imx_serial_rx_fifo_pop(IMXSerialState *s)
-> +{
-> +    if (fifo32_is_empty(&s->rx_fifo)) {
-> +        return URXD_ERR;
-
-Similarly, I don't think this is how the UART signals that
-you just tried to read from an empty FIFO either. My reading
-of the TRM is that if there's data in the FIFO you get it
-in the low 8 bits, and CHARRDY is set in bit 15. If the
-FIFO is empty and the guest tries to read it then it gets
-a word with CHARRDY clear and the other bits don't have
-valid data (an entirely 0 word would do). The ERR bit is
-only set for the OVRRUN/FRMERR/BRK/PRERR cases.
-
-> +    }
-> +    return fifo32_pop(&s->rx_fifo);
-> +}
-> +
-> +static void imx_serial_rx_fifo_ageing_timer_int(void *opaque)
-> +{
-> +    IMXSerialState *s = (IMXSerialState *) opaque;
-> +    s->usr1 |= USR1_AGTIM;
-> +
-> +    imx_update(s);
-> +}
-> +
-> +static void imx_serial_rx_fifo_ageing_timer_restart(void *opaque)
-> +{
-> +    /*
-> +     * Ageing timer starts ticking when
-> +     * RX FIFO is non empty and below trigger level.
-> +     * Timer is reset if new character is received or
-> +     * a FIFO read occurs.
-> +     * Timer triggers an interrupt when duration of
-> +     * 8 characters has passed ( assuming 115200 baudrate ).
-
-We don't need the spaces after ( and before ) here.
-
-> +     */
-> +    IMXSerialState *s = (IMXSerialState *) opaque;
-> +    uint8_t rxtl = s->ufcr & TL_MASK;
-> +    int rx_used = fifo32_num_used(&s->rx_fifo);
-> +
-> +    if (rx_used > 0 && rx_used < rxtl) {
-
-Rather than checking rx_used against rxtl, can we do what the
-datasheet says and check against "is USR1.RRDY == 0" ?
-
-> +        timer_mod_ns(&s->ageing_timer,
-> +            qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + AGE_DURATION_NS);
-> +    } else {
-> +        timer_del(&s->ageing_timer);
-> +    }
-> +}
-> +
->  static void imx_serial_reset(IMXSerialState *s)
->  {
-
-> @@ -345,6 +414,10 @@ static void imx_serial_realize(DeviceState *dev, Error **errp)
->  {
->      IMXSerialState *s = IMX_SERIAL(dev);
->
-> +    fifo32_create(&s->rx_fifo, FIFO_SIZE);
-> +    timer_init_ns(&s->ageing_timer, QEMU_CLOCK_VIRTUAL,
-> +        imx_serial_rx_fifo_ageing_timer_int, s);
-
-Generally for indent on function calls we make the second line
-line up with the first character after the '(' on the preceding line.
-
-> +
->      DPRINTF("char dev for uart: %p\n", qemu_chr_fe_get_driver(&s->chr));
->
->      qemu_chr_fe_set_handlers(&s->chr, imx_can_receive, imx_receive,
-> diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
-> index b823f94519..b5f714add1 100644
-> --- a/include/hw/char/imx_serial.h
-> +++ b/include/hw/char/imx_serial.h
-> @@ -21,10 +21,13 @@
->  #include "hw/sysbus.h"
->  #include "chardev/char-fe.h"
->  #include "qom/object.h"
-> +#include "qemu/fifo32.h"
->
->  #define TYPE_IMX_SERIAL "imx.serial"
->  OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
->
-> +#define FIFO_SIZE       32
-> +
->  #define URXD_CHARRDY    (1<<15)   /* character read is valid */
->  #define URXD_ERR        (1<<14)   /* Character has error */
->  #define URXD_FRMERR     (1<<12)   /* Character has frame error */
-> @@ -65,6 +68,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
->  #define UCR1_TXMPTYEN   (1<<6)    /* Tx Empty Interrupt Enable */
->  #define UCR1_UARTEN     (1<<0)    /* UART Enable */
->
-> +#define UCR2_ATEN       BIT(3)    /* Ageing Timer Enable */
-
-Can you define this as (1<<3), for consistency with how all
-the other defines in this file are written, please?
-
->  #define UCR2_TXEN       (1<<2)    /* Transmitter enable */
->  #define UCR2_RXEN       (1<<1)    /* Receiver enable */
->  #define UCR2_SRST       (1<<0)    /* Reset complete */
-
-thanks
--- PMM
+> =D1=81=D0=B1, 20 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 10:37, R=
+ichard Henderson <richard.henderson@linaro.org>:
+>>
+>> On 1/19/24 09:40, Deepak Gupta wrote:
+>> > On Thu, Jan 18, 2024 at 12:50=E2=80=AFPM Richard Henderson
+>> > <richard.henderson@linaro.org> wrote:
+>> >> At some point pointer masking will be in hardware, and the kernel wil=
+l gain support for
+>> >> it, and there will likely be a prctl() added for it.  At the point th=
+e kernel finalizes
+>> >> the API, you will be able to enable pointer masking for qemu-user.
+>> >
+>> > I am sure I am missing some important detail here, BUT...
+>> >
+>> > How is it different from aarch64 "top byte ignore".
+>>
+>> It is very similar, yes.
+>>
+>> > I think commit: 16c8497 enables top byte ignore for user pointers and
+>> > by default for qemu-user for aarch64 target.
+>>
+>> Not quite, no.
+>>
+>> commit 0e0c030c681730f3ec55ba3b223b608a8f3e8282
+>> Author: Richard Henderson <richard.henderson@linaro.org>
+>> Date:   Fri Feb 12 10:48:51 2021 -0800
+>>
+>>      linux-user/aarch64: Implement PR_TAGGED_ADDR_ENABLE
+>>
+>> is more relevant.
+>>
+>> > IIRC, user <--> kernel abi is only needed for pointers that are passed
+>> > to the kernel.
+>>
+>> It is also needed to *enable* pointer masking at all.
+>>
+>> For aarch64, TBI has been enabled for user-space since the beginning, bu=
+t that is not true
+>> for riscv.  Therefore there will be a need for a syscall to opt in and e=
+nable pointer masking.
+>>
+>> > And in the case of qemu-user, we are talking about the host kernel.
+>>
+>> No, we are not.  We are always emulating the guest kernel.
+>>
+>>
+>> r~
 
