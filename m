@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB1983885F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 08:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A90883888F
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:11:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSBcs-00069E-LV; Tue, 23 Jan 2024 02:55:18 -0500
+	id 1rSBqa-0001OO-QH; Tue, 23 Jan 2024 03:09:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rSBce-00068o-LZ
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 02:55:05 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rSBcb-00047l-1T
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 02:55:04 -0500
-Received: from loongson.cn (unknown [10.20.42.173])
- by gateway (Coremail) with SMTP id _____8DxWPDIcK9lpxAEAA--.16352S3;
- Tue, 23 Jan 2024 15:54:49 +0800 (CST)
-Received: from [10.20.42.173] (unknown [10.20.42.173])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxVMzEcK9lQvETAA--.29438S3; 
- Tue, 23 Jan 2024 15:54:47 +0800 (CST)
-Subject: Re: [PATCH v2] target/loongarch/kvm: Enable LSX/LASX extension
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, philmd@linaro.org, zhaotianrui@loongson.cn
-References: <20240122090206.1083584-1-gaosong@loongson.cn>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <cf038e76-b95d-b145-1e40-2201d9ba4581@loongson.cn>
-Date: Tue, 23 Jan 2024 15:54:45 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rSBqT-0001N8-8Y
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:21 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rSBqR-0006mb-H1
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:20 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-55a45a453eeso5000169a12.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:09:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705997356; x=1706602156; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=OI9IIjpMVEfwc1WY0Um4KoqbJRq6fNOPWlBoGCOF4Ks=;
+ b=OEZzMVJoLtI0rwK69hU0xHvZOfiTnakZF1cchWfrOrc2koYGkYmGJ6fS3ZXmNv+5XH
+ h96xuRm7fETWko38bvD5K3nAveTnEWFz0jyIeNFR89grlcey0x8/5UKg2RsUuiA9jQIL
+ eXw4Bu0PfmUZQxbQp0zMoSZPDmRFjjVdVP5lc9fM9WaatBk67gz/fEe8ChC6xahHwD6R
+ e8N4eG7M58pSJth6WOFfXruXINxqkz15r+egOFYwJwo6GOQoAYj3YXjxA64WEx5628gP
+ 1lAp4Cq/MRkBiqkOktt7JKlzIypHNnOpdrYbkltYKjUpZETxv/nlM1/ahRpK/3JMkKlx
+ guTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705997356; x=1706602156;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OI9IIjpMVEfwc1WY0Um4KoqbJRq6fNOPWlBoGCOF4Ks=;
+ b=Sh5hlw5E0hUGN0/L5fdPeDW9gRZ+N6nJu32pKIwMdavFZ9lxVPTz+jW526if3oBDMl
+ SGILB1i8tuCp0OJFAV5gX/rLOgsXdROzs6gyO7GGHkl1Uk0/3RU45UsJdanEKwIJlWAK
+ Se0iuLBYd+FKWw3Aj2e3aSzCj8wkhHX2/64SGk9v4L3XwYn/X3MY7pmT2kIRDQ65e66C
+ AGx40EkQHJs1l/anTzpIsZHpa9tnk4b6RX0edHtaWUwUlM0ZVAHLLGm5Uhrjh38dLrX9
+ tqERLFCg0B3HLyaDkTaMoFE6Gmafpt6/RNeAUXMVuXj3DcsHmNc3w+EH369C++q3Rr1d
+ agaA==
+X-Gm-Message-State: AOJu0YwXbTS1cCw8eHp8GR8rwxry52dX5wEXLXJnW0pJutcroCYdgQ5K
+ vO4OuR3bGXFkC0aXvjh656Np3DkW2mXksAxHJ99m+b5hxPHyNNwcNLKcpqMz1hD+/UGcBMbhecq
+ 1smM=
+X-Google-Smtp-Source: AGHT+IHmMLp+ZhxB8ISNo6h5eUk9FklBXro+ZVR3fty970heZ1ik4XrXOMFmKPND3f66yumr/bPwjg==
+X-Received: by 2002:a17:906:3e08:b0:a28:fe51:8e8d with SMTP id
+ k8-20020a1709063e0800b00a28fe518e8dmr2874474eji.80.1705997356474; 
+ Tue, 23 Jan 2024 00:09:16 -0800 (PST)
+Received: from localhost.localdomain (adsl-138.37.6.1.tellas.gr. [37.6.1.138])
+ by smtp.gmail.com with ESMTPSA id
+ tb21-20020a1709078b9500b00a2f24da8baasm5794069ejc.39.2024.01.23.00.09.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Jan 2024 00:09:16 -0800 (PST)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org,
+	qemu-block@nongnu.org
+Subject: [PATCH 0/2] hw/block/block.c: improve confusing error
+Date: Tue, 23 Jan 2024 10:09:11 +0200
+Message-Id: <cover.1705938003.git.manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-In-Reply-To: <20240122090206.1083584-1-gaosong@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxVMzEcK9lQvETAA--.29438S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCF1rWFWrWFWUtF43WFykZwc_yoW5Cr1kpF
- 47AFsYgryrtr9rGwsFq34qqr43Zr4xGwsrua47XrZ2yrn0vr1xW34ktanrGF15Gw18Gay0
- vF4vyan09a1kJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1QV
- y3UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.22,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,98 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In cases where a device tries to read more bytes than the block device 
+contains with the blk_check_size_and_read_all() function, the error is 
+vague: "device requires X bytes, block backend provides Y bytes".
+
+This patch changes the errors of this function to include the block
+backend name, the device id and device type name where appropriate.
+
+Manos Pitsidianakis (2):
+  hw/core/qdev.c: add qdev_get_human_name()
+  hw/block/block.c: improve confusing blk_check_size_and_read_all()
+    error
+
+ hw/block/block.c         | 25 +++++++++++++++----------
+ hw/block/m25p80.c        |  3 ++-
+ hw/block/pflash_cfi01.c  |  4 ++--
+ hw/block/pflash_cfi02.c  |  2 +-
+ hw/core/qdev.c           | 10 ++++++++++
+ include/hw/block/block.h |  4 ++--
+ include/hw/qdev-core.h   | 15 +++++++++++++++
+ 7 files changed, 47 insertions(+), 16 deletions(-)
 
 
-On 2024/1/22 下午5:02, Song Gao wrote:
-> The kernel had already support LSX and LASX [1],
-> but QEMU is disable LSX/LASX for kvm. This patch adds
-> kvm_check_cpucfg2() to check CPUCFG2.
-> 
-> [1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   linux-headers/asm-loongarch/kvm.h |  1 +
->   target/loongarch/kvm/kvm.c        | 45 ++++++++++++++++++++++++++-----
->   2 files changed, 39 insertions(+), 7 deletions(-)
-> 
-> diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
-> index c6ad2ee610..923d0bd382 100644
-> --- a/linux-headers/asm-loongarch/kvm.h
-> +++ b/linux-headers/asm-loongarch/kvm.h
-> @@ -79,6 +79,7 @@ struct kvm_fpu {
->   #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
->   #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
->   #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
-> +#define KVM_LOONGARCH_VCPU_CPUCFG	0
->   
->   struct kvm_debug_exit_arch {
->   };
-> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-> index 84bcdf5f86..2712bb7ab6 100644
-> --- a/target/loongarch/kvm/kvm.c
-> +++ b/target/loongarch/kvm/kvm.c
-> @@ -537,6 +537,38 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
->       return ret;
->   }
->   
-> +static int kvm_check_cpucfg2(CPUState *cs)
-> +{
-> +    int ret;
-> +    uint64_t val;
-> +    struct kvm_device_attr attr = {
-> +        .group = KVM_LOONGARCH_VCPU_CPUCFG,
-> +        .attr = 2,
-> +        .addr = (uint64_t)&val,
-> +    };
-> +    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-> +    CPULoongArchState *env = &cpu->env;
-> +
-> +    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
-> +
-> +    if (!ret) {
-> +        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
-> +        env->cpucfg[2] &= val;
-> +
-> +        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, FP)) {
-> +            /* The FP minimal version is 1. */
-> +            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, FP_VER, 1);
-> +        }
-> +
-> +        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, LLFTP)) {
-> +            /* The LLFTP minimal version is 1. */
-> +            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, LLFTP_VER, 1);
-> +        }
-> +    }
-> +
-> +    return ret;
-> +}
-> +
->   static int kvm_loongarch_put_cpucfg(CPUState *cs)
->   {
->       int i, ret = 0;
-> @@ -545,14 +577,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
->       uint64_t val;
->   
->       for (i = 0; i < 21; i++) {
-> +	if (i == 2) {
-> +            ret = kvm_check_cpucfg2(cs);
-> +            if (ret) {
-> +                return ret;
-> +            }
-> +	}
->           val = env->cpucfg[i];
-> -        /* LSX and LASX and LBT are not supported in kvm now */
-> -        if (i == 2) {
-> -            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
-> -            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
-> -                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
-> -                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
-> -        }
->           ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
->           if (ret < 0) {
->               trace_kvm_failed_put_cpucfg(strerror(errno));
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+base-commit: 09be34717190c1620f0c6e5c8765b8da354aeb4b
+-- 
+γαῖα πυρί μιχθήτω
 
 
