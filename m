@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F3E839C80
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 23:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F0B839C81
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 23:50:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSPZx-00072n-3r; Tue, 23 Jan 2024 17:49:13 -0500
+	id 1rSPZy-00075Z-Tn; Tue, 23 Jan 2024 17:49:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPZp-000729-Ip
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:49:05 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPZw-00073h-93
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:49:13 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPZm-0004L9-FA
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:49:05 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3392b15ca41so2062829f8f.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 14:49:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSPZs-0004NA-1d
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 17:49:12 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40e800461baso57950015e9.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 14:49:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706050141; x=1706654941; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706050146; x=1706654946; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QEBEkDP6qGPzC+3ewoPUDTZ07buC9oNuSZRC+33yQxM=;
- b=OIRoBZBlcRKU/WphpiwVPqJekTj0nYXosCyyylIAgXn1+xtrYAM9N28a9/bfy7eaBf
- ImNN7m64QuGV420jNwbnXMGMIdTDwdtJJc2MU9ftGwGSYeoa6+bY6gdzcm5mWWaFxeys
- H31a70aU7i3NNd5/T1IkIpIiWZkWjP1noZoWM+5NtnHWyGgfnnxcahWwPwB78JjLVXD1
- tyvC8k1G3Iyu4aDeXauavRwL9XJlNYUbFbmhqdB1o7lGC4awAA2vEuowp2q+74LF+D26
- RfY2miS50IT2BM6NkMuqGn6jd1DNT6bfr3eFeCoRXP6F3seY/SWChfr/hoqGthwNyj2Q
- kPTA==
+ bh=qbNjV/GRSEnvliPT0ZyleNqMAmiv0RWp/+WjhZ6DISw=;
+ b=Wpwg7gCs1cH3Z7ff+0S09PwC9olTubUQFd81UOBYj3NRXI8hH0/bbZzuYXANXOEGZu
+ QRCRYaVRZ8Mm0+ZFU6oCd84n70XgJ2QG5RhqPbamDtJ3daTX60D+giO7o+1mOyqHgVLz
+ VBDOC1WfSWeS03p4154uHU8wYGH9QrWAG3nouyAe159xMvQo7pRMXo+2kXt3aRNbOavJ
+ 9EgSbbFv+MxuA6PAtKWqnV+SjXqMMGHFA8PPB7AXqgjUXkF0hZTOUpBPVcqnDJjs3U5w
+ cvQgKvZkg68ZSQ21lEMpW46GpxDnn5dzaZisV310fXp5nwA2oQleKNa8l9QB03Lm/tW3
+ A9PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706050141; x=1706654941;
+ d=1e100.net; s=20230601; t=1706050146; x=1706654946;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QEBEkDP6qGPzC+3ewoPUDTZ07buC9oNuSZRC+33yQxM=;
- b=E+U32fZX9nqAJKqCOfokwf9agmqPllf2TwAfxf34To7fRFZtYQHoyL/wkf/Wsyro1M
- pr1aa4i+BSZ0N5mVXWB0uu1blvRO6r868XG84FKgWplgCK8Mkiz8/OlQmSHcKgnsvmNf
- 8AyqcyeUAijBdh+bIiHHcR3bC2/bvQ7op1/pFrS9qP/sbyszYvz3TwoZ6+MQ+ss73rox
- CCLlgKGcQI/0U2O8nvhSpwumEoWtxTzK2L2/eq/zqHZzteK9qt1W0wSscWnWmnGgQiJ1
- JV+BecKvInXkhws4fxiEB5akdtw8k4O8tLKonB5ruOoU03OdU2wspoZqp1SL/TaI3v5W
- YOrw==
-X-Gm-Message-State: AOJu0Yz94UamZfG4TWKSNJqcjBBxumG8HBccj8fF8RYQ26opzV9uQJTI
- aVXVpXCQYFI348qXyKj/B/04ZdtGrAku+68mBuGWstfLBhSOyu0jqOk1gjJBipBydJAZqZ11ZLM
+ bh=qbNjV/GRSEnvliPT0ZyleNqMAmiv0RWp/+WjhZ6DISw=;
+ b=rGhyiJts+SYEbgLiVkyYQ2hoY27afTXGaO/sd41Pb7O0vOYrZgBr21HoRMyhwPzpeV
+ /AyYGsDZ+On4UgZA6RV9+fJHZcMMwV0yqIsk/wr5HPNhA5NtFstUH9+EPfo/qP8hItf1
+ hk0rZbz3iTv2Bm/WEF+h4ZybfnjteN65U6Wk9+mOFAHSQRVMwMMUpLej9TF2hz6ONJ6q
+ zPIhAGL90BjWGoRSEAaUrOfKa8MdXIEBB4JGttRKQ8ZdzGBsxOWIt/nAvPDtavk+qzxr
+ BPaVmD9YE30dDRAN+FN1hCxhVfXl6/ZJ0b6HUmxUf+HCU/VO1fhiqtsW1OqBnmSsDe81
+ fGyA==
+X-Gm-Message-State: AOJu0YwJl6uFrlqn1q0yoUtr8thFo3DkN++CZqaIpWELeFPzDDHvWmT2
+ JjPCtXeEf1UKT4+EY1RE+uCGnPip0t9h8TWYO9dO2ol0LBltP3AUylDr2MkR7T2I2zDAFfP2F3r
  P
-X-Google-Smtp-Source: AGHT+IHaQhR10SkqNDeFL5NHmrfI2Gw07hrglkyaehGYmoLgY3eO9HJ5lAkBCTRRbieRkofQlv6ZZA==
-X-Received: by 2002:a5d:64c4:0:b0:337:eea:6b24 with SMTP id
- f4-20020a5d64c4000000b003370eea6b24mr120947wri.69.1706050140875; 
- Tue, 23 Jan 2024 14:49:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhENtLntBFmrZ6uyzvqIhXoKM15eqZVwkk2ZXb5h7bYxfRnH6B2QaaWWSMze6xfYuzQuAXzQ==
+X-Received: by 2002:a05:600c:46c5:b0:40e:617e:412f with SMTP id
+ q5-20020a05600c46c500b0040e617e412fmr491321wmo.150.1706050146214; 
+ Tue, 23 Jan 2024 14:49:06 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- c11-20020a5d63cb000000b00337aed83aaasm17295972wrw.92.2024.01.23.14.48.59
+ h5-20020a05600c314500b0040e5e21cd7bsm43236968wmo.11.2024.01.23.14.49.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jan 2024 14:49:00 -0800 (PST)
+ Tue, 23 Jan 2024 14:49:05 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
@@ -62,17 +62,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Andrew Jeffery <andrew@codeconstruct.com.au>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/5] hw/arm/aspeed: Init CPU defaults in a common helper
-Date: Tue, 23 Jan 2024 23:48:40 +0100
-Message-ID: <20240123224842.18485-4-philmd@linaro.org>
+Subject: [PATCH v2 4/5] hw/arm/aspeed: Introduce aspeed_soc_cpu_type() helper
+Date: Tue, 23 Jan 2024 23:48:41 +0100
+Message-ID: <20240123224842.18485-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240123224842.18485-1-philmd@linaro.org>
 References: <20240123224842.18485-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,244 +95,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rework aspeed_soc_num_cpus() as a new init_cpus_defaults()
-helper to reduce code duplication.
+In order to alter AspeedSoCClass::cpu_type in the next
+commit, introduce the aspeed_soc_cpu_type() helper to
+retrieve the per-SoC CPU type from AspeedSoCClass.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/aspeed.c | 71 +++++++++++++++++++------------------------------
- 1 file changed, 28 insertions(+), 43 deletions(-)
+ include/hw/arm/aspeed_soc.h | 1 +
+ hw/arm/aspeed_ast10x0.c     | 2 +-
+ hw/arm/aspeed_ast2400.c     | 3 ++-
+ hw/arm/aspeed_ast2600.c     | 3 ++-
+ hw/arm/aspeed_soc_common.c  | 5 +++++
+ 5 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 5b01a4dd28..636a6269aa 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -1141,10 +1141,14 @@ static void aspeed_machine_class_props_init(ObjectClass *oc)
-                                           "Change the SPI Flash model");
- }
+diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
+index cb832bc1ee..a060a59918 100644
+--- a/include/hw/arm/aspeed_soc.h
++++ b/include/hw/arm/aspeed_soc.h
+@@ -143,6 +143,7 @@ struct AspeedSoCClass {
+     qemu_irq (*get_irq)(AspeedSoCState *s, int dev);
+ };
  
--static int aspeed_soc_num_cpus(const char *soc_name)
-+static void aspeed_machine_class_init_cpus_defaults(MachineClass *mc)
- {
--   AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(soc_name));
--   return sc->num_cpus;
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(mc);
-+    AspeedSoCClass *sc = ASPEED_SOC_CLASS(object_class_by_name(amc->soc_name));
++const char *aspeed_soc_cpu_type(AspeedSoCClass *sc);
+ 
+ enum {
+     ASPEED_DEV_SPI_BOOT,
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index 8becb146a8..dca601a3f9 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -211,7 +211,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
+     /* AST1030 CPU Core */
+     armv7m = DEVICE(&a->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 256);
+-    qdev_prop_set_string(armv7m, "cpu-type", sc->cpu_type);
++    qdev_prop_set_string(armv7m, "cpu-type", aspeed_soc_cpu_type(sc));
+     qdev_connect_clock_in(armv7m, "cpuclk", s->sysclk);
+     object_property_set_link(OBJECT(&a->armv7m), "memory",
+                              OBJECT(s->memory), &error_abort);
+diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
+index ad76035528..3baf95916d 100644
+--- a/hw/arm/aspeed_ast2400.c
++++ b/hw/arm/aspeed_ast2400.c
+@@ -156,7 +156,8 @@ static void aspeed_ast2400_soc_init(Object *obj)
+     }
+ 
+     for (i = 0; i < sc->num_cpus; i++) {
+-        object_initialize_child(obj, "cpu[*]", &a->cpu[i], sc->cpu_type);
++        object_initialize_child(obj, "cpu[*]", &a->cpu[i],
++                                aspeed_soc_cpu_type(sc));
+     }
+ 
+     snprintf(typename, sizeof(typename), "aspeed.scu-%s", socname);
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 386a88d4e0..b264433cf0 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -158,7 +158,8 @@ static void aspeed_soc_ast2600_init(Object *obj)
+     }
+ 
+     for (i = 0; i < sc->num_cpus; i++) {
+-        object_initialize_child(obj, "cpu[*]", &a->cpu[i], sc->cpu_type);
++        object_initialize_child(obj, "cpu[*]", &a->cpu[i],
++                                aspeed_soc_cpu_type(sc));
+     }
+ 
+     snprintf(typename, sizeof(typename), "aspeed.scu-%s", socname);
+diff --git a/hw/arm/aspeed_soc_common.c b/hw/arm/aspeed_soc_common.c
+index 828f61093b..36ca189ce9 100644
+--- a/hw/arm/aspeed_soc_common.c
++++ b/hw/arm/aspeed_soc_common.c
+@@ -18,6 +18,11 @@
+ #include "hw/char/serial.h"
+ 
+ 
++const char *aspeed_soc_cpu_type(AspeedSoCClass *sc)
++{
++    return sc->cpu_type;
++}
 +
-+    mc->default_cpus = mc->min_cpus
-+                     = mc->max_cpus
-+                     = sc->num_cpus;
- }
- 
- static void aspeed_machine_class_init(ObjectClass *oc, void *data)
-@@ -1176,8 +1180,7 @@ static void aspeed_machine_palmetto_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 1;
-     amc->i2c_init  = palmetto_bmc_i2c_init;
-     mc->default_ram_size       = 256 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc, void *data)
-@@ -1193,8 +1196,7 @@ static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 1;
-     amc->i2c_init  = quanta_q71l_bmc_i2c_init;
-     mc->default_ram_size       = 128 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
- static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
-@@ -1212,8 +1214,7 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
-     amc->i2c_init  = palmetto_bmc_i2c_init;
-     mc->default_ram_size = 256 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
- static void aspeed_machine_supermicro_x11spi_bmc_class_init(ObjectClass *oc,
-@@ -1231,8 +1232,7 @@ static void aspeed_machine_supermicro_x11spi_bmc_class_init(ObjectClass *oc,
-     amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
-     amc->i2c_init  = palmetto_bmc_i2c_init;
-     mc->default_ram_size = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
- static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc, void *data)
-@@ -1248,8 +1248,7 @@ static void aspeed_machine_ast2500_evb_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 1;
-     amc->i2c_init  = ast2500_evb_i2c_init;
-     mc->default_ram_size       = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_yosemitev2_class_init(ObjectClass *oc, void *data)
-@@ -1266,8 +1265,7 @@ static void aspeed_machine_yosemitev2_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->i2c_init  = yosemitev2_bmc_i2c_init;
-     mc->default_ram_size       = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_romulus_class_init(ObjectClass *oc, void *data)
-@@ -1283,8 +1281,7 @@ static void aspeed_machine_romulus_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->i2c_init  = romulus_bmc_i2c_init;
-     mc->default_ram_size       = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_tiogapass_class_init(ObjectClass *oc, void *data)
-@@ -1301,8 +1298,7 @@ static void aspeed_machine_tiogapass_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->i2c_init  = tiogapass_bmc_i2c_init;
-     mc->default_ram_size       = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_sonorapass_class_init(ObjectClass *oc, void *data)
-@@ -1318,8 +1314,7 @@ static void aspeed_machine_sonorapass_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->i2c_init  = sonorapass_bmc_i2c_init;
-     mc->default_ram_size       = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_witherspoon_class_init(ObjectClass *oc, void *data)
-@@ -1335,8 +1330,7 @@ static void aspeed_machine_witherspoon_class_init(ObjectClass *oc, void *data)
-     amc->num_cs    = 2;
-     amc->i2c_init  = witherspoon_bmc_i2c_init;
-     mc->default_ram_size = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-@@ -1355,8 +1349,7 @@ static void aspeed_machine_ast2600_evb_class_init(ObjectClass *oc, void *data)
-                      ASPEED_MAC3_ON;
-     amc->i2c_init  = ast2600_evb_i2c_init;
-     mc->default_ram_size = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_tacoma_class_init(ObjectClass *oc, void *data)
-@@ -1374,8 +1367,7 @@ static void aspeed_machine_tacoma_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask  = ASPEED_MAC2_ON;
-     amc->i2c_init  = witherspoon_bmc_i2c_init; /* Same board layout */
-     mc->default_ram_size = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_g220a_class_init(ObjectClass *oc, void *data)
-@@ -1392,8 +1384,7 @@ static void aspeed_machine_g220a_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
-     amc->i2c_init  = g220a_bmc_i2c_init;
-     mc->default_ram_size = 1024 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc, void *data)
-@@ -1410,8 +1401,7 @@ static void aspeed_machine_fp5280g2_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask  = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
-     amc->i2c_init  = fp5280g2_bmc_i2c_init;
-     mc->default_ram_size = 512 * MiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
-@@ -1429,8 +1419,7 @@ static void aspeed_machine_rainier_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask  = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = rainier_bmc_i2c_init;
-     mc->default_ram_size = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- #define FUJI_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
-@@ -1451,8 +1440,7 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init = fuji_bmc_i2c_init;
-     amc->uart_default = ASPEED_DEV_UART1;
-     mc->default_ram_size = FUJI_BMC_RAM_SIZE;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- #define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
-@@ -1472,8 +1460,7 @@ static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
-     amc->macs_mask = ASPEED_MAC2_ON;
-     amc->i2c_init  = bletchley_bmc_i2c_init;
-     mc->default_ram_size = BLETCHLEY_BMC_RAM_SIZE;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
- static void fby35_reset(MachineState *state, ShutdownCause reason)
-@@ -1515,6 +1502,7 @@ static void aspeed_machine_fby35_class_init(ObjectClass *oc, void *data)
-     amc->i2c_init  = fby35_i2c_init;
-     /* FIXME: Replace this macro with something more general */
-     mc->default_ram_size = FUJI_BMC_RAM_SIZE;
-+    aspeed_machine_class_init_cpus_defaults(mc); //
- }
- 
- #define AST1030_INTERNAL_FLASH_SIZE (1024 * 1024)
-@@ -1592,8 +1580,7 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     amc->spi_model = "sst25vf032b";
-     amc->num_cs = 2;
-     amc->macs_mask = 0;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
- static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-@@ -1612,8 +1599,7 @@ static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = qcom_dc_scm_bmc_i2c_init;
-     mc->default_ram_size = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
-@@ -1632,8 +1618,7 @@ static void aspeed_machine_qcom_firework_class_init(ObjectClass *oc,
-     amc->macs_mask = ASPEED_MAC2_ON | ASPEED_MAC3_ON;
-     amc->i2c_init  = qcom_dc_scm_firework_i2c_init;
-     mc->default_ram_size = 1 * GiB;
--    mc->default_cpus = mc->min_cpus = mc->max_cpus =
--        aspeed_soc_num_cpus(amc->soc_name);
-+    aspeed_machine_class_init_cpus_defaults(mc);
- };
- 
- static const TypeInfo aspeed_machine_types[] = {
+ qemu_irq aspeed_soc_get_irq(AspeedSoCState *s, int dev)
+ {
+     return ASPEED_SOC_GET_CLASS(s)->get_irq(s, dev);
 -- 
 2.41.0
 
