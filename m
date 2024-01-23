@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BF683888C
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD6383888E
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:11:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSBqg-0001PO-00; Tue, 23 Jan 2024 03:09:34 -0500
+	id 1rSBqn-0001QY-J5; Tue, 23 Jan 2024 03:09:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rSBqa-0001Oo-P0
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:28 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSBqk-0001QL-Q1
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:38 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rSBqX-0006mq-1P
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:27 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-5100409e31eso899735e87.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:09:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSBqh-0006oE-Gm
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:09:37 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40eb033c1b0so16419365e9.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:09:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1705997359; x=1706602159; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F2eJvbF20rYGA/+fjcTQo9Ig7hIhbqVGnNCnWf30Rds=;
- b=Md7uBqpo2SC07/kr2xe/aZQPjU5N4KstWvTD0Q6OFpy6T89aVNAPBmhUjHc/BeH7uM
- sOA8q9MKcyk2EuxB1uuAmyAQ7C7txLEBVnApQwG3E4juNGIT+53Ulis0bswXCLrEXCKm
- VU6lNpTaAUXE/L0oYwhbvxHyboe7SA8lY0xs/+YHotr6uNv8w9kNIazUs6RSHhVTBG6J
- 5aES0O9VNrkxPnwLvJTb20JWfI3RTNlmo8lraEBb1BBg8ZLIZ0RPyHVyBGUQbM1AdwEC
- LPa0v+V3/v5DnykMQXuIcCGsr3bgojUy6j+9lqbDRsfwad90t5WxIz11zjXakjVCMSOi
- A1jw==
+ d=linaro.org; s=google; t=1705997374; x=1706602174; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HTpOr9bWP+WOfbDkoEe4Zizbi0WuDHZ9gtbs03jHZvQ=;
+ b=B1RvuPiy0A49EFP7KkX8u0txY/9Cv7i9mIbqYuei47RhGZROmjp1et7EgFB/CX9WYt
+ MYn3u5z2jQtdstlDQEHPXqFsdxTGZ+QyC8f7q0jB2YaJR2q2o/pdYwA5HrHP+NYnQ7Dk
+ 9R0XpZCe4/olpbi8hXb9y3TQxoXP26+T2yQSSDEZDtDf/7H9yrUzL1ns5ju71KVB7tSx
+ 3G+8ujrv87gqj8yBQCl4if5Qhvyu/cHBB7pxzYaP7AxhbH20Yv9qVF+n3APcUwIHuxWr
+ VxYtUpxgRJQXZizvxINkuHmlQKDxyD/MURYlrdBj/8Nf1oMlPgw+AdKulSdR0y3IvkA9
+ fzsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705997359; x=1706602159;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F2eJvbF20rYGA/+fjcTQo9Ig7hIhbqVGnNCnWf30Rds=;
- b=d1GtSKO2hieEfu/PXEafxO67DM45gL3/xDH/7FqZYpRXT0A+mVgHzycfIo30TZod2T
- 1CvTlScydHT/4KnJkDor1WQiCdkm8DrqK+TXIFRRKEbnoQaphAWrRDYcIB3/skQFiOYr
- hoJ5WCb92fs0vAXQ/uEqTGpx16VpvMo5YNAV6Ksjlvv2QmczijI2qAsLKDPeqolYWiHL
- h8OP6R8xUpAlFloomTNe+upTnzl8Naff/znACkCnTmU7wqCy0Ekke80zaib8xa4ULqTV
- Y2m1zRwco52DA1OjcMGFqJdYIrfqMvVwNqCkkvN0MR0GegENUfE5qQ8trKl6Ivd4i+Lu
- gvDg==
-X-Gm-Message-State: AOJu0YwYqCb9okSQeVNnD2BCIK0ayZllsDr237vQ2RxkeyZ7qt6x2SOt
- lkL3xCkbARVP+efyuhQVhkr5Mf/WUwjUbddqyMwNJX92drG9Ci6Li72vcbV3fikM2TABPYEzIyL
- RMJk=
-X-Google-Smtp-Source: AGHT+IEOEfad0+dUh0oHVFSesdOjEtp8arUOTUCuBrdNjRD6xRFUh6eL57kl3spzF2ZxhGVBF5OjZQ==
-X-Received: by 2002:a05:6512:1111:b0:50e:8696:1718 with SMTP id
- l17-20020a056512111100b0050e86961718mr2924778lfg.37.1705997359319; 
- Tue, 23 Jan 2024 00:09:19 -0800 (PST)
-Received: from localhost.localdomain (adsl-138.37.6.1.tellas.gr. [37.6.1.138])
+ d=1e100.net; s=20230601; t=1705997374; x=1706602174;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HTpOr9bWP+WOfbDkoEe4Zizbi0WuDHZ9gtbs03jHZvQ=;
+ b=KqJ/IiFYtL+1hRMIDS1p2PSgnV5mL999z8+VaQzuBAksJjs0Pp0e52F/rW6O3pLl83
+ UdOBpHNmo2S1JF+8S76xzcYnU7RNUyCg7j2+PvhNHL+Ebyep9t2ZCDxm8r96zzO/UrCj
+ znSUmarstXyPyfSAuoZXJpB3K4kCOWQUh/RrgXkTtBZ/P0t+wGwHIkqzHwPSZhWLj97C
+ hiR11XpC2GF66Ry4Ab/WOHJa9Mt3z7DHT8dzzpzq6Qh4kLXz/0w1JgXG2ItHin+IKyar
+ w40pBjyEEt9x+2+nN/GxZMe15GFYveI1cZdlTbqxC1n2EOWjEHZNVGAeuOIeS7NIDzv2
+ a7vA==
+X-Gm-Message-State: AOJu0YydntBWqiBBUPLIf5M9Zjfw3zHpEHCv0iO0AM7gOGmKaVPomi/S
+ UDaJchifmf5J2bQpzQCpmP1wy+H6SSV/ZDHhcG95mRvhZAYYuBQ6+77C1MIPcxE=
+X-Google-Smtp-Source: AGHT+IE0cJXztiRmjKyyh1n3QNUl6xMzdTKKUZdBr2rz581pE6zUW1+8B8VrFANKlLCll4wycxdaAw==
+X-Received: by 2002:a05:600c:cd:b0:40e:8fc6:763 with SMTP id
+ u13-20020a05600c00cd00b0040e8fc60763mr316849wmm.77.1705997373922; 
+ Tue, 23 Jan 2024 00:09:33 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.78])
  by smtp.gmail.com with ESMTPSA id
- tb21-20020a1709078b9500b00a2f24da8baasm5794069ejc.39.2024.01.23.00.09.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 00:09:19 -0800 (PST)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org,
-	qemu-block@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] hw/block/block.c: improve confusing
- blk_check_size_and_read_all() error
-Date: Tue, 23 Jan 2024 10:09:13 +0200
-Message-Id: <e3701762eddf0a58b32ebac7d4c8330e792a2401.1705938003.git.manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1705938003.git.manos.pitsidianakis@linaro.org>
-References: <cover.1705938003.git.manos.pitsidianakis@linaro.org>
+ bl1-20020adfe241000000b0033935779a23sm5114372wrb.89.2024.01.23.00.09.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 00:09:33 -0800 (PST)
+Message-ID: <d62f9bce-f86b-42db-8c27-6565cf1b8159@linaro.org>
+Date: Tue, 23 Jan 2024 09:09:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
+References: <20240122210829.127691-1-ines.varhol@telecom-paris.fr>
+ <20240122210829.127691-3-ines.varhol@telecom-paris.fr>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240122210829.127691-3-ines.varhol@telecom-paris.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,137 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In cases where a device tries to read more bytes than the block device
-contains, the error is vague: "device requires X bytes, block backend
-provides Y bytes".
+Hi Inès,
 
-This patch changes the errors of this function to include the block
-backend name, the device id and device type name where appropriate.
+On 22/1/24 22:02, Inès Varhol wrote:
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+> ---
+>   hw/arm/Kconfig                 |  3 +-
+>   hw/arm/stm32l4x5_soc.c         | 79 ++++++++++++++++++++++++++++------
+>   include/hw/arm/stm32l4x5_soc.h |  2 +
+>   3 files changed, 69 insertions(+), 15 deletions(-)
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/block/block.c         | 25 +++++++++++++++----------
- hw/block/m25p80.c        |  3 ++-
- hw/block/pflash_cfi01.c  |  4 ++--
- hw/block/pflash_cfi02.c  |  2 +-
- include/hw/block/block.h |  4 ++--
- 5 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/hw/block/block.c b/hw/block/block.c
-index 9f52ee6e72..624389d62d 100644
---- a/hw/block/block.c
-+++ b/hw/block/block.c
-@@ -54,29 +54,30 @@ static int blk_pread_nonzeroes(BlockBackend *blk, hwaddr size, void *buf)
-  * BDRV_REQUEST_MAX_BYTES.
-  * On success, return true.
-  * On failure, store an error through @errp and return false.
-- * Note that the error messages do not identify the block backend.
-- * TODO Since callers don't either, this can result in confusing
-- * errors.
-+ *
-  * This function not intended for actual block devices, which read on
-  * demand.  It's for things like memory devices that (ab)use a block
-  * backend to provide persistence.
-  */
--bool blk_check_size_and_read_all(BlockBackend *blk, void *buf, hwaddr size,
--                                 Error **errp)
-+bool blk_check_size_and_read_all(BlockBackend *blk, DeviceState *dev,
-+                                 void *buf, hwaddr size, Error **errp)
- {
-     int64_t blk_len;
-     int ret;
-+    g_autofree char *dev_id = NULL;
- 
-     blk_len = blk_getlength(blk);
-     if (blk_len < 0) {
-         error_setg_errno(errp, -blk_len,
--                         "can't get size of block backend");
-+                         "can't get size of %s block backend", blk_name(blk));
-         return false;
-     }
-     if (blk_len != size) {
--        error_setg(errp, "device requires %" HWADDR_PRIu " bytes, "
--                   "block backend provides %" PRIu64 " bytes",
--                   size, blk_len);
-+        dev_id = qdev_get_human_name(dev);
-+        error_setg(errp, "%s device with id='%s' requires %" HWADDR_PRIu
-+                   " bytes, %s block backend provides %" PRIu64 " bytes",
-+                   object_get_typename(OBJECT(dev)), dev_id, size,
-+                   blk_name(blk), blk_len);
-         return false;
-     }
- 
-@@ -89,7 +90,11 @@ bool blk_check_size_and_read_all(BlockBackend *blk, void *buf, hwaddr size,
-     assert(size <= BDRV_REQUEST_MAX_BYTES);
-     ret = blk_pread_nonzeroes(blk, size, buf);
-     if (ret < 0) {
--        error_setg_errno(errp, -ret, "can't read block backend");
-+        dev_id = qdev_get_human_name(dev);
-+        error_setg_errno(errp, -ret, "can't read %s block backend"
-+                         "for %s device with id='%s'",
-+                         blk_name(blk), object_get_typename(OBJECT(dev)),
-+                         dev_id);
-         return false;
-     }
-     return true;
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index 26ce895628..0a12030a3a 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -1617,7 +1617,8 @@ static void m25p80_realize(SSIPeripheral *ss, Error **errp)
-         trace_m25p80_binding(s);
-         s->storage = blk_blockalign(s->blk, s->size);
- 
--        if (!blk_check_size_and_read_all(s->blk, s->storage, s->size, errp)) {
-+        if (!blk_check_size_and_read_all(s->blk, DEVICE(s),
-+                                         s->storage, s->size, errp)) {
-             return;
-         }
-     } else {
-diff --git a/hw/block/pflash_cfi01.c b/hw/block/pflash_cfi01.c
-index f956f8bcf7..1bda8424b9 100644
---- a/hw/block/pflash_cfi01.c
-+++ b/hw/block/pflash_cfi01.c
-@@ -848,8 +848,8 @@ static void pflash_cfi01_realize(DeviceState *dev, Error **errp)
-     }
- 
-     if (pfl->blk) {
--        if (!blk_check_size_and_read_all(pfl->blk, pfl->storage, total_len,
--                                         errp)) {
-+        if (!blk_check_size_and_read_all(pfl->blk, dev, pfl->storage,
-+                                         total_len, errp)) {
-             vmstate_unregister_ram(&pfl->mem, DEVICE(pfl));
-             return;
-         }
-diff --git a/hw/block/pflash_cfi02.c b/hw/block/pflash_cfi02.c
-index 6fa56f14c0..2314142373 100644
---- a/hw/block/pflash_cfi02.c
-+++ b/hw/block/pflash_cfi02.c
-@@ -902,7 +902,7 @@ static void pflash_cfi02_realize(DeviceState *dev, Error **errp)
-     }
- 
-     if (pfl->blk) {
--        if (!blk_check_size_and_read_all(pfl->blk, pfl->storage,
-+        if (!blk_check_size_and_read_all(pfl->blk, dev, pfl->storage,
-                                          pfl->chip_len, errp)) {
-             vmstate_unregister_ram(&pfl->orig_mem, DEVICE(pfl));
-             return;
-diff --git a/include/hw/block/block.h b/include/hw/block/block.h
-index 15fff66435..de3946a5f1 100644
---- a/include/hw/block/block.h
-+++ b/include/hw/block/block.h
-@@ -88,8 +88,8 @@ static inline unsigned int get_physical_block_exp(BlockConf *conf)
- 
- /* Backend access helpers */
- 
--bool blk_check_size_and_read_all(BlockBackend *blk, void *buf, hwaddr size,
--                                 Error **errp);
-+bool blk_check_size_and_read_all(BlockBackend *blk, DeviceState *dev,
-+                                 void *buf, hwaddr size, Error **errp);
- 
- /* Configuration helpers */
- 
--- 
-γαῖα πυρί μιχθήτω
+>   static void stm32l4x5_soc_initfn(Object *obj)
+>   {
+>       Stm32l4x5SocState *s = STM32L4X5_SOC(obj);
+> +    g_autofree char *name = NULL;
+
+        [1]
+>   
+>       object_initialize_child(obj, "exti", &s->exti, TYPE_STM32L4X5_EXTI);
+>       object_initialize_child(obj, "syscfg", &s->syscfg, TYPE_STM32L4X5_SYSCFG);
+>       object_initialize_child(obj, "rcc", &s->rcc, TYPE_STM32L4X5_RCC);
+> +
+> +    for (unsigned i = 0; i < NUM_GPIOS; i++) {
+> +        name = g_strdup_printf("gpio%c", 'a' + i);
+
+           [2] // alloc
+
+> +        object_initialize_child(obj, name, &s->gpio[i], TYPE_STM32L4X5_GPIO);
+
+           [3] // expected free
+
+> +    }
+
+       [4] // current autofree
+
+>   }
+If you declare the variable to be automatically free'd in the
+main body scope [1], it will be free'd when the scope is leaved,
+so in [4], meaning only the *last* allocation ("GPIOH") from [2]
+will be free'd, all other are leaked. We want to release in [3].
+
+Similar comment applies to stm32l4x5_soc_realize() in this
+patch.
+
+See https://docs.gtk.org/glib/auto-cleanup.html for context.
+
+Regards,
+
+Phil.
 
 
