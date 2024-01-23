@@ -2,85 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763DE838E4B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565CE838E76
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:27:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSFhz-0006tF-O9; Tue, 23 Jan 2024 07:16:51 -0500
+	id 1rSFqv-0000i1-Nq; Tue, 23 Jan 2024 07:26:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rSFhv-0006sy-An
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:16:47 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rSFht-0000nV-Aa
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:16:46 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40ebfc5fb19so3789265e9.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 04:16:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706012202; x=1706617002; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z9TlaSvBvWRxVof6oIJCMpj+PLk87M2+4QstXtHawgU=;
- b=Ms5Dya6C6s0OKvE9RCrb+ELe0vBuUPuP9sgXwtuzHU+y8BxsdW5XaFg2p2NNNkHl5D
- 50KNyNKT110Kxf6s6ISMLq0yxuLchQfctH67rT2puJuowIajXqoInOAGwM42yZfkf+4E
- ONGfYkb4Zi5W68pCs8WY1upthfF4PJsc0zu24TINtOeXR2ocvgaJTTrs9cnqjQnuVIcU
- it0ZzCoc9LtUHUWp2VB1xouJvyUOVk9UzpZg6pzAZxpCMilP9OY38vDj6RtV7Jw1OqNL
- zr1JzPkOIDkpApR1Zti1gjQ3wEkigXsCqKDw85RQ0G7RA9FVQ24EBX4G+QAx8U8u+6RR
- XuJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706012202; x=1706617002;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:to:from:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Z9TlaSvBvWRxVof6oIJCMpj+PLk87M2+4QstXtHawgU=;
- b=uL7W4w3IesaJuDXrQZSQF2cz5gP+Euuuv8bhpb3Viyp8EzDNl0TnWjksG9rvbmDA0F
- 5msML725o7q1ObViQExXOKDfYFcovPMMszkg1CWMNmv6ByjiitaiJQLevPYKDlnkcBIG
- PWf/P1M2lAkpbpOoXf9Qkhn5Mh6/EzaOS/Vq2Qk9agZPxybypwVczqD1yIV3O0+LSWKd
- Tj5VhA5U3frhgbfgHnYw++rNFVvqNERsbXXneiJBq81ts/9kttsOYryZzcozBIDdZEN+
- eS9KZHwlIyNxeLUbvmr1H+rn+/uY2mDAzdEcO5JGCt8qQLxB4+g2e7fqkRPwBBAKJyCV
- VBKw==
-X-Gm-Message-State: AOJu0Yz1YGQNqnUxAPO0O0abVWf6DD1ma6yiWJMi55AjPYSZ3zqqgbQ6
- OIu5GAl5Yxa+JmJs/rPDlhoLH3Omztwq2ldrEWwC2Pn4FY5lzolrfmVHdgCgqidAfW0p8KY+xDA
- W
-X-Google-Smtp-Source: AGHT+IEEunRDjM7haLy/QZ1GjcL+n9o9qoUHBjJSjUSdUMPyeo5PEd8LHwIhdHgBAI8BOxGHGv+k2w==
-X-Received: by 2002:a1c:7508:0:b0:40d:94da:ff40 with SMTP id
- o8-20020a1c7508000000b0040d94daff40mr49340wmc.195.1706012202375; 
- Tue, 23 Jan 2024 04:16:42 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h2-20020a5d5042000000b00337d941604bsm11986704wrt.98.2024.01.23.04.16.41
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 04:16:41 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5AD5B5F753
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 12:16:41 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rSFqG-0000Wu-Nn; Tue, 23 Jan 2024 07:25:24 -0500
+Received: from zproxy3.enst.fr ([2001:660:330f:2::de])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rSFqD-0002Fs-1c; Tue, 23 Jan 2024 07:25:24 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 1FEF9A05C4;
+ Tue, 23 Jan 2024 13:25:14 +0100 (CET)
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id etrq1au-SX-9; Tue, 23 Jan 2024 13:25:13 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 2A041A065A;
+ Tue, 23 Jan 2024 13:25:13 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 2A041A065A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1706012713;
+ bh=tqPDx3vKPo8imUs2ABP3ymYy7Fs2Y0cI0+VAG/zvE70=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=2HxZOZVsTkVP8Wpuewc0h4TLTe3YsqPWxAtB6zlA9th5iV5RWWWk312ptMOHIk2eF
+ IjEnCuS0/6tsQMLNu6VOLFlZgYzFU8Xg4kRJlYJzzJpYGGTcyO3b5zr0+A/GoJ5ub+
+ ozrE+lkXNhgvnZk/bPuj28cjlR3CTIajbJoBAd3c=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id uRncy-tr7_r2; Tue, 23 Jan 2024 13:25:13 +0100 (CET)
+Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id A6C1CA014F;
+ Tue, 23 Jan 2024 13:25:12 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-Subject: Re: KVM/QEMU Community Call 23rd Jan Agenda Items
-In-Reply-To: <877ck6hhlt.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
- =?utf-8?Q?e=22's?= message of "Thu, 18 Jan 2024 13:54:38 +0000")
-References: <877ck6hhlt.fsf@draig.linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Tue, 23 Jan 2024 12:16:41 +0000
-Message-ID: <878r4gmehi.fsf@draig.linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/3] Add device STM32L4x5 GPIO
+Date: Tue, 23 Jan 2024 13:22:51 +0100
+Message-ID: <20240123122505.516393-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2001:660:330f:2::de;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,22 +80,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+This patch adds a new device STM32L4x5 GPIO device and is part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-> Hi,
->
-> The KVM/QEMU community call is at:
->
->   https://meet.jit.si/kvmcallmeeting
->   @
->   23/1/2024 14:00 UTC
->
-> If anyone has any agenda items please reply to this thread.
+Changes from v2 :
+- correct memory leaks caused by re-assigning a `g_autofree`
+pointer without freeing it
+- gpio-test : test that reset values (and not just initialization
+values) are correct, correct `stm32l4x5_gpio_reset()` accordingly
+- adding a `clock-freq-hz` object property to test that
+enabling GPIO clock in RCC sets the GPIO clocks
 
-Reminder the call is this afternoon but currently I have no items for
-the agenda.
+Changes from v1 :
+- replacing test GPIO register `DISCONNECTED_PINS` with an object
+property accessed using `qtest_qmp()` in the qtest (through helpers
+`get_disconnected_pins()` and `disconnect_all_pins()`)
+- removing GPIO subclasses and storing MODER, OSPEEDR and PUPDR reset
+values in properties
+- adding a `name` property and using it for more lisible traces
+- using `g_strdup_printf()` to facilitate setting irqs in the qtest,
+and initializing GPIO children in soc_initfn
+
+Changes from RFC v1 :
+- `stm32l4x5-gpio-test.c` : correct typos, make the test generic,
+add a test for bitwise writing in register ODR
+- `stm32l4x5_soc.c` : connect gpios to their clock, use an
+array of GpioState
+- `stm32l4x5_gpio.c` : correct comments in `update_gpio_idr()`,
+correct `get_gpio_pins_to_disconnect()`, correct `stm32l4x5_gpio_init()`
+and initialize the clock, add a realize function
+- update MAINAINERS
+
+Based-on: 20240118091107.87831-1-arnaud.minier@telecom-paris.fr
+([PATCH v2 0/7] Add device STM32L4x5 RCC)
+
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (3):
+  hw/gpio: Implement STM32L4x5 GPIO
+  hw/arm: Connect STM32L4x5 GPIO to STM32L4x5 SoC
+  tests/qtest: Add STM32L4x5 GPIO QTest testcase
+
+ MAINTAINERS                        |   1 +
+ docs/system/arm/b-l475e-iot01a.rst |   2 +-
+ hw/arm/Kconfig                     |   3 +-
+ hw/arm/stm32l4x5_soc.c             |  78 +++-
+ hw/gpio/Kconfig                    |   3 +
+ hw/gpio/meson.build                |   1 +
+ hw/gpio/stm32l4x5_gpio.c           | 456 ++++++++++++++++++++++
+ hw/gpio/trace-events               |   6 +
+ include/hw/arm/stm32l4x5_soc.h     |   2 +
+ include/hw/gpio/stm32l4x5_gpio.h   |  70 ++++
+ tests/qtest/meson.build            |   3 +-
+ tests/qtest/stm32l4x5_gpio-test.c  | 586 +++++++++++++++++++++++++++++
+ 12 files changed, 1194 insertions(+), 17 deletions(-)
+ create mode 100644 hw/gpio/stm32l4x5_gpio.c
+ create mode 100644 include/hw/gpio/stm32l4x5_gpio.h
+ create mode 100644 tests/qtest/stm32l4x5_gpio-test.c
 
 --=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+2.43.0
+
 
