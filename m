@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E957B838296
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 03:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191DC83860D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 04:33:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS6Ob-0007cJ-9U; Mon, 22 Jan 2024 21:20:14 -0500
+	id 1rS7Vu-0005vg-NH; Mon, 22 Jan 2024 22:31:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS6OX-0007cA-Ol
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 21:20:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS6OV-00084O-RF
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 21:20:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705976406;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6aWOeZucCHGuFCFfwJx/suJFuJDWPxAXW93S4Hot0ic=;
- b=FQaIZLmBF1YCfhvvLalNg+iF7mWTHdTURiyzXSMNyP1kcFuNmyB3r4WX0amNM1VXjnsW+L
- c51eubYpPtunpsbDwAFUrVDoZ+L8wmmdAhp2y67o1WwiBdOKGWsIbdY7fWgeb43hN4Ck8p
- aPx20+0267Uj68vgwNeqSxUKnPMcCPU=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-7OE8IbRGMcy4W1rd9r3RyA-1; Mon, 22 Jan 2024 21:20:03 -0500
-X-MC-Unique: 7OE8IbRGMcy4W1rd9r3RyA-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-6d99cdbeb9dso1131268b3a.0
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 18:20:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rS7Vs-0005uv-SC
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 22:31:48 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rS7Vq-00031k-2H
+ for qemu-devel@nongnu.org; Mon, 22 Jan 2024 22:31:48 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-5ce74ea4bf2so2448575a12.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 19:31:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705980704; x=1706585504; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rst7CkaOi1dkozdL9S94SxZycocSuZNQ9dDJxL/wk3Q=;
+ b=DXXMK7JAkWD4dEwubpNQwRTlSMoKDzEg+YssXViEm3RqQ7w9y7DR7pm/QFKBZVUPbW
+ PayYFxsCi1zQBEYYgG91GIbyobX3ecreKrs08MU/w35hw8XcoWDNyJwF5wW24QiD/1P8
+ GOUXDZnSwEEgo701Qjx9YghB55rd/anI4uTG3zP4uKgXPvkroWBAv5Fd4bRLcTTAC5B6
+ Hu5dSuMzoPB4qxPWpLwkifjhy7TWSB7CZchJGTvDV1TCPU+dNje4DNNzrHKVHmyXltTY
+ KIyLRJJoP9mLdpHApN0BmOgQpsZQ2hE2rsRVvvdbs0s0v1XrqJtFFeIz4a00MBMlIijd
+ 96rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705976403; x=1706581203;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6aWOeZucCHGuFCFfwJx/suJFuJDWPxAXW93S4Hot0ic=;
- b=C8dMYZRG3d91KVy8PPMVtgdm2lUxgbDYgESlOp87CogMTDYzXCJN4QndYpTUIHr50+
- SMbHl9g91mqeAweWR1dnUPqZvbNNwAuxiW33Ykl8bwgwbAYN10taMjc+/R4fpscdHTi9
- B7y/eIYmSVSp4FriauOL1ppS+ECsGiyyJFHE2YBjg17d6L0ojH0TBsPIKB3+1v6JSAM6
- M7K2w+yz+MHQB4nqKWNCepn4ZaurGg+Ci95Ytk4zxK8gYCgep8t9F9BQ3DcNahbBAp8Z
- b6M7wLuU6WHS/PVMec/Dl4T/qB9w+WXs6CiZX2N4W8M3hVPcbGEDWpNMorl4ZXNLRf9y
- 5T+g==
-X-Gm-Message-State: AOJu0Yxw7Ra2BD64tkxlMub0mrUCX3vaNWMhR3YJumMxdOXb7GF1ublH
- 1dTYk0XiAWcsMJdgfbBiQG2Q52oyI2ygyCd1MCikQuwaCW4r24TMtRGAr+hC8oeZQJxjx2yqc2h
- YHPzpdhBjhZXLOaVucmSJrGRZohnIhTeXC++bqSx+s5FMP4q39K8D
-X-Received: by 2002:a05:6a00:6596:b0:6dd:7ae5:9dca with SMTP id
- hd22-20020a056a00659600b006dd7ae59dcamr77827pfb.1.1705976402890; 
- Mon, 22 Jan 2024 18:20:02 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH+XK8yl5FQeI5ctajoPb67E7cj87BAX8SHU34VuJW8gQiH932TlzsThj6V2cYLTX3rSbECFQ==
-X-Received: by 2002:a05:6a00:6596:b0:6dd:7ae5:9dca with SMTP id
- hd22-20020a056a00659600b006dd7ae59dcamr77816pfb.1.1705976402576; 
- Mon, 22 Jan 2024 18:20:02 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- v6-20020aa78506000000b006dbec0b9ba2sm1028745pfn.63.2024.01.22.18.20.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 18:20:02 -0800 (PST)
-Date: Tue, 23 Jan 2024 10:19:53 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/5] migration: Fix migration state reference counting
-Message-ID: <Za8iSaCvoY1C0xVs@x1n>
-References: <20240119233922.32588-1-farosas@suse.de>
+ d=1e100.net; s=20230601; t=1705980704; x=1706585504;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rst7CkaOi1dkozdL9S94SxZycocSuZNQ9dDJxL/wk3Q=;
+ b=TEjr8Z7GqC2HgDAwKaWji9ahxeB+EqS8onGA54tUYbHDKMDQN1ZxFDkDZyL6vzQzwH
+ RnC0sZQgTjGyJ+aDKytjj3G4oMtjX3MBQXgi/68IHeg3Tq3PqvhZDNcDxFBvso8UFln9
+ 1tg2I7/9Ane6K5Ic1g0Bjay/ZUqCeV6KDZDVvMihTu4sQpRfgGc9EN0pCch53BLTRXDc
+ 8HHabHBj254zcb/yQ5T3r5xGcHz38pGL9zNipdYksExmCLag6eaun9j1gTobJ6Vjq0qZ
+ 0WDv5j1lF3qccUn7KC1LiYI0RvZZ5U3duT8ahg+jFqTVI5BGc2RMIcP1cW/64+i2lkfU
+ cTvA==
+X-Gm-Message-State: AOJu0YxELDNyQtZTIvofeXYdCD8oL9Lm5GMEiArme7o+OAFycHwQLLMz
+ lULZvqoGjexgiw6NP6dnSLvYdj7NpUQ4ujew5iwpTJxlhEXjn5lS/4KthBcOMMI=
+X-Google-Smtp-Source: AGHT+IF8unYWD5gH5Ig0xfYav3agJAn1YG1XlxsDQjKfmFnwAprqGmjd+hs8jWN2z7a/DFfuY4iZGw==
+X-Received: by 2002:a05:6a20:8410:b0:19b:42ea:314f with SMTP id
+ c16-20020a056a20841000b0019b42ea314fmr6431938pzd.16.1705980704173; 
+ Mon, 22 Jan 2024 19:31:44 -0800 (PST)
+Received: from ?IPV6:2001:44b8:2176:c800:2a49:979b:9002:98e6?
+ (2001-44b8-2176-c800-2a49-979b-9002-98e6.static.ipv6.internode.on.net.
+ [2001:44b8:2176:c800:2a49:979b:9002:98e6])
+ by smtp.gmail.com with ESMTPSA id
+ fa20-20020a056a002d1400b006dbdfb7624bsm2775699pfb.170.2024.01.22.19.31.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 19:31:43 -0800 (PST)
+Message-ID: <d2a08d09-5ad3-4ca9-a113-b481dbb5c866@linaro.org>
+Date: Tue, 23 Jan 2024 13:31:38 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240119233922.32588-1-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tcg/arm: Fix SIGILL in tcg_out_qemu_st_direct
+Content-Language: en-US
+To: Joseph Burt <caseorum@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, "open list:ARM TCG target" <qemu-arm@nongnu.org>
+References: <20240121211439.100829-1-caseorum@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240121211439.100829-1-caseorum@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,40 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 19, 2024 at 08:39:17PM -0300, Fabiano Rosas wrote:
-> We currently have a bug when running migration code in bottom
-> halves. The issue has already been reported in Gitlab[1] and it
-> started happening very frequently on my machine for some reason.
+On 1/22/24 07:14, Joseph Burt wrote:
+> When tcg_out_qemu_st_{index,direct} were merged, the direct case for
+> MO_64 was omitted, causing qemu_st_i64 to be encoded as 0xffffffff due
+> to underflow when adding h.base and h.index.
 > 
-> The issue is that we're dropping the last reference to the
-> MigrationState object while the cleanup bottom half is still running
-> and it leads to an use after free. More details on the commit message.
-> 
-> This series fixes the issue and does a refactoring around the
-> migration BH scheduling aiming to consolidate some code so that it is
-> less error prone.
-> 
-> 1- https://gitlab.com/qemu-project/qemu/-/issues/1969
-> 
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1144927625
-> 
-> Fabiano Rosas (5):
->   migration: Fix use-after-free of migration state object
->   migration: Take reference to migration state around
->     bg_migration_vm_start_bh
->   migration: Reference migration state around
->     loadvm_postcopy_handle_run_bh
->   migration: Add a wrapper to qemu_bh_schedule
->   migration: Centralize BH creation and dispatch
-> 
->  migration/migration.c | 82 +++++++++++++++++++++++++------------------
->  migration/migration.h |  5 +--
->  migration/savevm.c    |  5 +--
->  3 files changed, 49 insertions(+), 43 deletions(-)
+> Fixes: 1df6d611bdc2("tcg/arm: Introduce HostAddress")
+> Signed-off-by: Joseph Burt <caseorum@gmail.com>
+> ---
+>   tcg/arm/tcg-target.c.inc | 3 +++
+>   1 file changed, 3 insertions(+)
 
-Looks all good now, queued.  I'll amend the "Resolve:" line in patch 1.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
--- 
-Peter Xu
+
+r~
 
 
