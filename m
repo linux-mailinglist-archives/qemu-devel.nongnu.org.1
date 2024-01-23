@@ -2,51 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E82983898F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D548389EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 10:04:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSCTA-0001hP-HG; Tue, 23 Jan 2024 03:49:20 -0500
+	id 1rSChB-00032S-W7; Tue, 23 Jan 2024 04:03:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSCT6-0001bF-R1; Tue, 23 Jan 2024 03:49:16 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
+ id 1rSCh6-00030s-5w; Tue, 23 Jan 2024 04:03:44 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSCT4-00052n-Vc; Tue, 23 Jan 2024 03:49:16 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5D29646679;
- Tue, 23 Jan 2024 11:49:12 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1F919699F7;
- Tue, 23 Jan 2024 11:48:32 +0300 (MSK)
-Received: (nullmailer pid 3828136 invoked by uid 1000);
- Tue, 23 Jan 2024 08:48:31 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 20/20] hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST
- command issued
-Date: Tue, 23 Jan 2024 11:48:30 +0300
-Message-Id: <20240123084831.3828060-12-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.9-20240123114733@cover.tls.msk.ru>
-References: <qemu-stable-7.2.9-20240123114733@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
+ id 1rSCgy-0007zL-Bj; Tue, 23 Jan 2024 04:03:43 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TK1N20sWgz4wcX;
+ Tue, 23 Jan 2024 20:03:30 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TK1My2hGkz4wc6;
+ Tue, 23 Jan 2024 20:03:26 +1100 (AEDT)
+Message-ID: <14f2245c-ef63-454f-8ea2-eb5f21808100@kaod.org>
+Date: Tue, 23 Jan 2024 10:03:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] hw/arm/aspeed/2400: Check for CPU types in
+ machine_run_board_init()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>, Gavin Shan <gshan@redhat.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, qemu-arm@nongnu.org,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Rob Herring <robh@kernel.org>
+References: <20240123063842.35255-1-philmd@linaro.org>
+ <20240123063842.35255-5-philmd@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240123063842.35255-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=9HdW=JB=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,37 +71,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+On 1/23/24 07:38, Philippe Mathieu-Daudé wrote:
+> Restrict MachineClass::valid_cpu_types[] to the single
+> valid CPU type.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Even though the BLAST command isn't fully implemented in QEMU, the DMA_STAT_BCMBLT
-bit should be set after the command has been issued to indicate that the command
-has completed.
 
-This fixes an issue with the DC390 DOS driver which issues the BLAST command as
-part of its normal error recovery routine at startup, and otherwise sits in a
-tight loop waiting for DMA_STAT_BCMBLT to be set before continuing.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <20240112131529.515642-5-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit c2d7de557d19ec76eb83b87b6bf77c8114e2f183)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Thanks,
 
-diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index e9e94070ec..6b7b963409 100644
---- a/hw/scsi/esp-pci.c
-+++ b/hw/scsi/esp-pci.c
-@@ -124,6 +124,7 @@ static void esp_pci_handle_blast(PCIESPState *pci, uint32_t val)
- {
-     trace_esp_pci_dma_blast(val);
-     qemu_log_mask(LOG_UNIMP, "am53c974: cmd BLAST not implemented\n");
-+    pci->dma_regs[DMA_STAT] |= DMA_STAT_BCMBLT;
- }
- 
- static void esp_pci_handle_abort(PCIESPState *pci, uint32_t val)
--- 
-2.39.2
+C.
+
+
+> ---
+>   hw/arm/aspeed.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+> index cc59176563..e0e0877b1d 100644
+> --- a/hw/arm/aspeed.c
+> +++ b/hw/arm/aspeed.c
+> @@ -1147,6 +1147,11 @@ static int aspeed_soc_num_cpus(const char *soc_name)
+>      return sc->num_cpus;
+>   }
+>   
+> +static const char * const ast2400_a1_valid_cpu_types[] = {
+> +    ARM_CPU_TYPE_NAME("arm926"),
+> +    NULL
+> +};
+> +
+>   static void aspeed_machine_class_init(ObjectClass *oc, void *data)
+>   {
+>       MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -1175,6 +1180,7 @@ static void aspeed_machine_palmetto_class_init(ObjectClass *oc, void *data)
+>       amc->spi_model = "mx25l25635f";
+>       amc->num_cs    = 1;
+>       amc->i2c_init  = palmetto_bmc_i2c_init;
+> +    mc->valid_cpu_types = ast2400_a1_valid_cpu_types;
+>       mc->default_ram_size       = 256 * MiB;
+>       mc->default_cpus = mc->min_cpus = mc->max_cpus =
+>           aspeed_soc_num_cpus(amc->soc_name);
+> @@ -1192,6 +1198,7 @@ static void aspeed_machine_quanta_q71l_class_init(ObjectClass *oc, void *data)
+>       amc->spi_model = "mx25l25635e";
+>       amc->num_cs    = 1;
+>       amc->i2c_init  = quanta_q71l_bmc_i2c_init;
+> +    mc->valid_cpu_types = ast2400_a1_valid_cpu_types;
+>       mc->default_ram_size       = 128 * MiB;
+>       mc->default_cpus = mc->min_cpus = mc->max_cpus =
+>           aspeed_soc_num_cpus(amc->soc_name);
+> @@ -1211,6 +1218,7 @@ static void aspeed_machine_supermicrox11_bmc_class_init(ObjectClass *oc,
+>       amc->num_cs    = 1;
+>       amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON;
+>       amc->i2c_init  = palmetto_bmc_i2c_init;
+> +    mc->valid_cpu_types = ast2400_a1_valid_cpu_types;
+>       mc->default_ram_size = 256 * MiB;
+>   }
+>   
 
 
