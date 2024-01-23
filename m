@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755FB839553
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB8E8396AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 18:43:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJye-0004L9-Uf; Tue, 23 Jan 2024 11:50:21 -0500
+	id 1rSKmt-0002uN-3i; Tue, 23 Jan 2024 12:42:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rSJyc-0004Kh-3O
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:50:18 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
+ id 1rSKmq-0002u9-Cv
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:42:12 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rSJya-0004oY-93
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:50:17 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DB0FF46973;
- Tue, 23 Jan 2024 19:50:50 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C269069F07;
- Tue, 23 Jan 2024 19:50:09 +0300 (MSK)
-Message-ID: <db19cdd7-4049-4b9a-9108-c1f05f992d89@tls.msk.ru>
-Date: Tue, 23 Jan 2024 19:50:09 +0300
+ (Exim 4.90_1) (envelope-from <mtosatti@redhat.com>)
+ id 1rSKmk-0007Tv-PZ
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 12:42:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706031725;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jkvSIp7rkNdT2cki/AZkk4CDku7EWSTyyKLOivN71QM=;
+ b=DVbwmboHFy/2qpih3xAWkEpzGg0hNKhPYnXGcwk5E2H52RRxsfVknOIBNeBuxsuxKqTRy/
+ EVmwj5Om2f9FcSzEtOJSdszZW/bJfn/j32qB3LgKpQHSgckEEe/0HILQINAMbsbogMQGvu
+ fYf9XbIEQ8lgboywvsie21zMFTTLACg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-_bVpLGBHMRqLa8tqhRkvrA-1; Tue, 23 Jan 2024 12:42:01 -0500
+X-MC-Unique: _bVpLGBHMRqLa8tqhRkvrA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E03AF83B82D;
+ Tue, 23 Jan 2024 17:42:00 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BF5642026F95;
+ Tue, 23 Jan 2024 17:41:59 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+ id 0F1D7405151AE; Tue, 23 Jan 2024 12:39:13 -0300 (-03)
+Date: Tue, 23 Jan 2024 12:39:13 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Lei Wang <lei4.wang@intel.com>
+Subject: Re: Why invtsc (CPUID_APM_INVTSC) is unmigratable?
+Message-ID: <Za/doRj6sEibC64y@tpad>
+References: <825f29d7-9112-45a2-b4a3-7d3b54c3c0a2@intel.com>
+ <Zaqf839r8TXvkIAf@tpad>
+ <b6950a34-0ef6-4945-9e50-5a47e86490e1@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] tests: enable meson test timeouts to improve
- debuggability
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231215070357.10888-1-thuth@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20231215070357.10888-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6950a34-0ef6-4945-9e50-5a47e86490e1@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mtosatti@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,22 +85,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-15.12.2023 10:03, Thomas Huth wrote:
-> This is a respin of Daniel's series that re-enables the meson test
-> runner timeouts. To make sure that we do not get into trouble on
-> older systems, I ran all the tests with "make check SPEED=slow -j32"
-> on my laptop that has only 16 SMT threads, so each test was running
-> quite a bit slower than with a normal "-j$(nproc)" run. I think
-> that these timeouts should now work in most cases - if not, we still
-> can adjust them easily later.
+On Sat, Jan 20, 2024 at 05:44:07PM +0800, Xiaoyao Li wrote:
+> On 1/20/2024 12:14 AM, Marcelo Tosatti wrote:
+> > On Fri, Jan 19, 2024 at 02:46:22PM +0800, Xiaoyao Li wrote:
+> > > I'm wondering why CPUID_APM_INVTSC is set as unmigratable_flags. Could
+> > > anyone explain it?
+> > 
+> > 
+> > commit 68bfd0ad4a1dcc4c328d5db85dc746b49c1ec07e
+> > Author: Marcelo Tosatti <mtosatti@redhat.com>
+> > Date:   Wed May 14 16:30:09 2014 -0300
+> > 
+> >      target-i386: block migration and savevm if invariant tsc is exposed
+> >      Invariant TSC documentation mentions that "invariant TSC will run at a
+> >      constant rate in all ACPI P-, C-. and T-states".
+> >      This is not the case if migration to a host with different TSC frequency
+> >      is allowed, or if savevm is performed. So block migration/savevm.
+> > 
+> > So the rationale here was that without ensuring the destination host
+> > has the same TSC clock frequency, we can't migrate.
+> 
+> It seems to me the concept of invtsc was extended to "tsc freq will not
+> change even after the machine is live migrated". I'm not sure it is correct
+> to extend the concept of invtsc.
+> 
+> The main reason of introducing invtsc is to tell the tsc hardware keeps
+> counting (at the same rate) even at deep C state, so long as other states.
+> 
+> For example, a guest is created on machine A with X GHz tsc, and invtsc
+> exposed (machine A can ensure the guest's tsc counts at X GHz at any state).
+> If the guest is migrated to machine B with Y GHz tsc, and machine B can also
+> ensure the invtsc of its guest, i.e., the guest's tsc counts at Y GHz at any
+> state. IMHO, in this case, the invtsc is supported at both src and dest,
+> which means it is a migratable feature. However, the migration itself fails,
+> due to mismatched/different configuration of tsc freq, not due to invtsc.
+> 
+> > However, this was later extended to allow invtsc migratioon when setting
+> > tsc-khz explicitly:
+> > 
+> > commit d99569d9d8562c480e0befab601756b0b7b5d0e0
+> > Author: Eduardo Habkost <ehabkost@redhat.com>
+> > Date:   Sun Jan 8 15:32:34 2017 -0200
+> > 
+> >      kvm: Allow invtsc migration if tsc-khz is set explicitly
+> >      We can safely allow a VM to be migrated with invtsc enabled if
+> >      tsc-khz is set explicitly, because:
+> >      * QEMU already refuses to start if it can't set the TSC frequency
+> >        to the configured value.
+> >      * Management software is already required to keep device
+> >        configuration (including CPU configuration) the same on
+> >        migration source and destination.
+> >      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
+> >      Message-Id: <20170108173234.25721-3-ehabkost@redhat.com>
+> >      Signed-off-by: Eduardo Habkost <ehabkost@redhat.com>
+> 
+> But in the case that user doesn't set tsc freq explicitly, the live
+> migration is likely to fail or have issues even without invtsc exposed to
+> guest, 
 
-I'm picking this up for stable branches too, since there we have the same
-problems in CI environment. In particular, bios-tables-test almost always
-times out, even hitting retry doesn't help.  Let's see how it goes..
+Depends on how the guest is using the TSC, but yes.
 
-JFYI.
+> if the destination host has a different tsc frequency than src host.
+> 
+> So why bother checking invtsc only?
 
-Thanks,
+Well, if invtsc is exposed to the guest, then it might use the TSC for
+timekeeping purposes. 
 
-/mjt
+Therefore you don't want to fail (on the invtsc clock characteristics)
+otherwise timekeeping in the guest might be problematic.
+
+But this are all just heuristics. 
+
+Do you have a suggestion for different behaviour?
+
+> 
+> > And support for libvirt was added:
+> > 
+> > https://listman.redhat.com/archives/libvir-list/2017-January/141757.html
+> > 
+> > > 
+> > > When the host supports invtsc, it can be exposed to guest.
+> > > When the src VM has invtsc exposed, what will forbid it to be migrated to a
+> > > dest that also supports VMs with invtsc exposed?
+> > > 
+> > > 
+> > 
+> 
+> 
+
 
