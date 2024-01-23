@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F05838BE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 11:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAE6838CAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 11:56:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSE2Q-0007bD-BJ; Tue, 23 Jan 2024 05:29:50 -0500
+	id 1rSERB-0004IH-S7; Tue, 23 Jan 2024 05:55:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSE2D-0007RI-V1; Tue, 23 Jan 2024 05:29:39 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
+ id 1rSER5-0004Hz-GZ; Tue, 23 Jan 2024 05:55:19 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rSE2B-0005Re-Fh; Tue, 23 Jan 2024 05:29:37 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F050146757;
- Tue, 23 Jan 2024 13:29:24 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8FC0969AF3;
- Tue, 23 Jan 2024 13:28:44 +0300 (MSK)
-Received: (nullmailer pid 3831741 invoked by uid 1000);
- Tue, 23 Jan 2024 10:28:43 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.5 24/24] hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST
- command issued
-Date: Tue, 23 Jan 2024 13:28:38 +0300
-Message-Id: <20240123102843.3831660-13-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.1.5-20240123123057@cover.tls.msk.ru>
-References: <qemu-stable-8.1.5-20240123123057@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
+ id 1rSER2-0001nA-JS; Tue, 23 Jan 2024 05:55:19 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TK3rs3nVBz4wdC;
+ Tue, 23 Jan 2024 21:55:09 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TK3rq4KhJz4wbv;
+ Tue, 23 Jan 2024 21:55:07 +1100 (AEDT)
+Message-ID: <b9b198ca-6949-491f-a7aa-d8d6827a5905@kaod.org>
+Date: Tue, 23 Jan 2024 11:55:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/ppc: Fix crash on machine check caused by ifetch
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org,
+ qemu-stable@nongnu.org
+References: <20240107170559.82383-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240107170559.82383-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=9HdW=JB=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,37 +63,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+On 1/7/24 18:05, Nicholas Piggin wrote:
+> is_prefix_insn_excp() loads the first word of the instruction address
+> which caused an exception, to determine whether or not it was prefixed
+> so the prefix bit can be set in [H]SRR1.
+> 
+> In case it was the instruction fetch itself that caused the exception,
+> the [H]SRR1 prefix bit is not required to be set, because it is not the
+> instruction itself that causes the interrupt. If the load is attempted,
+> t could cause a recursive exception.
+> 
+> Instruction storage interrupts, HDSIs caused by ifetch are excluded from
+> the prefix check. Machine checks caused by ifetch are not, and these
+> can cause bugs. For example fetching from an unmapped physical address
+> can result in:
+> 
+>    ERROR:../system/cpus.c:504:qemu_mutex_lock_iothread_impl:
+>        assertion failed: (!qemu_mutex_iothread_locked())
+>    #0  __pthread_kill_implementation
+>        (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0)
+>        at ./nptl/pthread_kill.c:44
+>    #1  0x00007ffff705a15f in __pthread_kill_internal
+>        (signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:78
+>    #2  0x00007ffff700c472 in __GI_raise (sig=sig@entry=6)
+>        at ../sysdeps/posix/raise.c:26
+>    #3  0x00007ffff6ff64b2 in __GI_abort () at ./stdlib/abort.c:79
+>    #4  0x00007ffff73def08 in  () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+>    #5  0x00007ffff7445e4e in g_assertion_message_expr ()
+>        at /lib/x86_64-linux-gnu/libglib-2.0.so.0
+>    #6  0x0000555555a833f1 in qemu_mutex_lock_iothread_impl
+>        (file=0x555555efda6e "../accel/tcg/cputlb.c", line=2033)
+>        at ../system/cpus.c:504
+>    #7  qemu_mutex_lock_iothread_impl
+>        (file=file@entry=0x555555efda6e "../accel/tcg/cputlb.c", line=line@entry=2033) at ../system/cpus.c:500
+>    #8  0x0000555555cbf786 in do_ld_mmio_beN
+>        (cpu=cpu@entry=0x555556b72010, full=0x7fff5408e010, ret_be=ret_be@entry=0, addr=2310065133864353792, size=size@entry=4, mmu_idx=7, type=MMU_INST_FETCH, ra=0) at ../accel/tcg/cputlb.c:2033
+>    #9  0x0000555555cc2ec6 in do_ld_4
+>        (ra=0, memop=MO_BEUL, type=MMU_INST_FETCH, mmu_idx=<optimized out>, p=0x7fff67dfc660, cpu=0x555556b72010) at ../accel/tcg/cputlb.c:2336
+>    #10 do_ld4_mmu
+>        (cpu=cpu@entry=0x555556b72010, addr=<optimized out>, oi=<optimized out>, ra=ra@entry=0, access_type=access_type@entry=MMU_INST_FETCH)
+>        at ../accel/tcg/cputlb.c:2418
+>    #11 0x0000555555ccbaf6 in cpu_ldl_code
+>        (env=env@entry=0x555556b747d0, addr=<optimized out>)
+>        at ../accel/tcg/cputlb.c:2975
+>    #12 0x0000555555b7a47c in ppc_ldl_code
+>        (addr=<optimized out>, env=0x555556b747d0)
+>        at ../target/ppc/excp_helper.c:147
+>    #13 is_prefix_insn_excp (excp=1, cpu=0x555556b72010)
+>        at ../target/ppc/excp_helper.c:1350
+>    #14 powerpc_excp_books (excp=1, cpu=0x555556b72010)
+>        at ../target/ppc/excp_helper.c:1415
+>    #15 powerpc_excp (cpu=0x555556b72010, excp=<optimized out>)
+>        at ../target/ppc/excp_helper.c:1733
+>    #16 0x0000555555cb1c74 in cpu_handle_exception
+>        (ret=<synthetic pointer>, cpu=<optimized out>)
+> 
+> Fix this by excluding machine checks caused by ifetch from the prefix
+> check.
+> 
+> Fixes: 55a7fa34f89 ("target/ppc: Machine check on invalid real address access on POWER9/10")
+> Fixes: 5a5d3b23cb2 ("target/ppc: Add SRR1 prefix indication to interrupt handlers")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Even though the BLAST command isn't fully implemented in QEMU, the DMA_STAT_BCMBLT
-bit should be set after the command has been issued to indicate that the command
-has completed.
 
-This fixes an issue with the DC390 DOS driver which issues the BLAST command as
-part of its normal error recovery routine at startup, and otherwise sits in a
-tight loop waiting for DMA_STAT_BCMBLT to be set before continuing.
+Ack-by: Cédric Le Goater <clg@kaod.org>
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-ID: <20240112131529.515642-5-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit c2d7de557d19ec76eb83b87b6bf77c8114e2f183)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Thanks,
 
-diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
-index b1bd43b7db..51f0157934 100644
---- a/hw/scsi/esp-pci.c
-+++ b/hw/scsi/esp-pci.c
-@@ -124,6 +124,7 @@ static void esp_pci_handle_blast(PCIESPState *pci, uint32_t val)
- {
-     trace_esp_pci_dma_blast(val);
-     qemu_log_mask(LOG_UNIMP, "am53c974: cmd BLAST not implemented\n");
-+    pci->dma_regs[DMA_STAT] |= DMA_STAT_BCMBLT;
- }
- 
- static void esp_pci_handle_abort(PCIESPState *pci, uint32_t val)
--- 
-2.39.2
+C.
+
+
+> ---
+>   target/ppc/excp_helper.c | 32 +++++++++++++++++++++-----------
+>   1 file changed, 21 insertions(+), 11 deletions(-)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index a42743a3e0..34c307b572 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -1322,6 +1322,15 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+>       }
+>   
+>       switch (excp) {
+> +    case POWERPC_EXCP_MCHECK:
+> +        if (!(env->error_code & PPC_BIT(42))) {
+> +            /*
+> +             * Fetch attempt caused a machine check, so attempting to fetch
+> +             * again would cause a recursive machine check.
+> +             */
+> +            return false;
+> +        }
+> +        break;
+>       case POWERPC_EXCP_HDSI:
+>           /* HDSI PRTABLE_FAULT has the originating access type in error_code */
+>           if ((env->spr[SPR_HDSISR] & DSISR_PRTABLE_FAULT) &&
+> @@ -1332,10 +1341,10 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+>                * instruction at NIP would cause recursive faults with the same
+>                * translation).
+>                */
+> -            break;
+> +            return false;
+>           }
+> -        /* fall through */
+> -    case POWERPC_EXCP_MCHECK:
+> +        break;
+> +
+>       case POWERPC_EXCP_DSI:
+>       case POWERPC_EXCP_DSEG:
+>       case POWERPC_EXCP_ALIGN:
+> @@ -1346,17 +1355,14 @@ static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+>       case POWERPC_EXCP_VPU:
+>       case POWERPC_EXCP_VSXU:
+>       case POWERPC_EXCP_FU:
+> -    case POWERPC_EXCP_HV_FU: {
+> -        uint32_t insn = ppc_ldl_code(env, env->nip);
+> -        if (is_prefix_insn(env, insn)) {
+> -            return true;
+> -        }
+> +    case POWERPC_EXCP_HV_FU:
+>           break;
+> -    }
+>       default:
+> -        break;
+> +        return false;
+>       }
+> -    return false;
+> +
+> +
+> +    return is_prefix_insn(env, ppc_ldl_code(env, env->nip));
+>   }
+>   #else
+>   static bool is_prefix_insn_excp(PowerPCCPU *cpu, int excp)
+> @@ -3245,6 +3251,10 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+>               env->error_code |= PPC_BIT(42);
+>   
+>           } else { /* Fetch */
+> +            /*
+> +             * is_prefix_insn_excp() tests !PPC_BIT(42) to avoid fetching
+> +             * the instruction, so that must always be clear for fetches.
+> +             */
+>               env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
+>           }
+>           break;
 
 
