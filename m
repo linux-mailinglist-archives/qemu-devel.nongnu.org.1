@@ -2,104 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DF5838EEB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8EE83918A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 15:39:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSGIu-00014m-EA; Tue, 23 Jan 2024 07:55:00 -0500
+	id 1rSHuT-0002nR-Fx; Tue, 23 Jan 2024 09:37:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rSGIr-00014O-Tm
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:54:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rSGIp-0007Mc-Sz
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:54:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706014494;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <hare@suse.de>)
+ id 1rSG4b-00063D-7D; Tue, 23 Jan 2024 07:40:13 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hare@suse.de>)
+ id 1rSG4Y-0004rY-3Y; Tue, 23 Jan 2024 07:40:12 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 48C7A21F69;
+ Tue, 23 Jan 2024 12:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706013602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GNaVyaW7arppHjHCYe29G2hbVqfvceOWI8sOA5I7C/Y=;
- b=b57oLtP+waJ0cUBGbSFwG53ikPEyiT4c7Qu99ij6XRaoO8aQAlNFb496h/m8TbVi/ecPLL
- Y/i3Vf4vN8soQHIjhqiFcLHYHITAubs/u7avBPxKFiTlT+HQrkSxYz/H8Ro/vz/p+2o5jT
- tstdgZ2H6py5xh2VSukPogTKtcfdmdI=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-UX39C3CPOZeenjJE6vwwxA-1; Tue, 23 Jan 2024 07:54:51 -0500
-X-MC-Unique: UX39C3CPOZeenjJE6vwwxA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7830ab8fb5aso488254185a.2
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 04:54:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706014490; x=1706619290;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GNaVyaW7arppHjHCYe29G2hbVqfvceOWI8sOA5I7C/Y=;
- b=XJpe0BiIq5EdzNASoT9AbZyXWgurXBUuEyATXTUTOuq5L0eWJfKXa/D3jv/lHIE6zq
- RRwQavbbPDQSKEL6o9Dg6StOjAJ2AEcnl+mj6ixGUgZrwJmrbJcB8xs+yDC0lf9n6MLq
- 2xnFbF7r9zPfFyBDmRquSGu7CeOi4LcWjutY9jO+PHGjUG3PhngfrKM3hG9SR3lz+BKn
- 7Kw5H0hPgWTOGZMRcncUd4Lm1VNAUZ9X01Yel39WhqmewV+M3hpxHjGAeVizsuktDQFE
- 3R5IIanitdtjcZXMfJNC98suns6J4fJXi4dxBiXo3UwgGuyInDpDUSm12/xQjguOaOp+
- UoEg==
-X-Gm-Message-State: AOJu0YzN85lnke/yOsL02zyfqm8+CUoVqvJJWiNqPsj86PeHboaL91px
- sSPKbHeZdCMdCpYdtfBzNr7NTCux8q5ZXM2j18O+TRi5FCXCijnIi4E7eAEUHzkkPYAtTOhKC8K
- OWmsmnd77njjvzi0bwx6DzODPz4u0dvyB3625CwlTpWj6VPNtad83
-X-Received: by 2002:ac8:5945:0:b0:42a:8ba:a956 with SMTP id
- 5-20020ac85945000000b0042a08baa956mr819321qtz.38.1706014490759; 
- Tue, 23 Jan 2024 04:54:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHFK1TUEMzZw9tS2Qu/SXWb4+7VARAIc1O0rZ3vjnio1XffrFSEDxHrUbcXrpduIDiHdzoSbA==
-X-Received: by 2002:ac8:5945:0:b0:42a:8ba:a956 with SMTP id
- 5-20020ac85945000000b0042a08baa956mr819313qtz.38.1706014490477; 
- Tue, 23 Jan 2024 04:54:50 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- gd21-20020a05622a5c1500b00429cfdac07fsm3448868qtb.18.2024.01.23.04.54.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jan 2024 04:54:50 -0800 (PST)
-Message-ID: <ef9e0483-b984-457f-b317-bff89241a4de@redhat.com>
-Date: Tue, 23 Jan 2024 13:54:47 +0100
+ bh=8bsZwpBUdtm8cIYzFdHoBotXmsQ1yjRuTGaoCqNT+Zk=;
+ b=o/Qnh30Xy7qnk0JukT3lYd7D7k5GaPNbD0/r3aONDg+yVtViuPPQHHAabiZEk22cXLy2IE
+ lC4QlujuYY7Z7GYwggEj1X7sBuFe0Jgz/+3zkdHaaBXdJBQg6kMbzSQQEdaBIqjUd2AN8x
+ NVdJ72FQvwiZCz7dD3N6TTS8TaUDIOg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706013602;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8bsZwpBUdtm8cIYzFdHoBotXmsQ1yjRuTGaoCqNT+Zk=;
+ b=WutBRYZwaoiM5BrrvuI1GN7qhxl4mQyy7YoMhAH0fLCcLm3np0Eyr7/ezcriGYuQaHz4PM
+ vQPffbVeO3ew/HAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706013602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8bsZwpBUdtm8cIYzFdHoBotXmsQ1yjRuTGaoCqNT+Zk=;
+ b=o/Qnh30Xy7qnk0JukT3lYd7D7k5GaPNbD0/r3aONDg+yVtViuPPQHHAabiZEk22cXLy2IE
+ lC4QlujuYY7Z7GYwggEj1X7sBuFe0Jgz/+3zkdHaaBXdJBQg6kMbzSQQEdaBIqjUd2AN8x
+ NVdJ72FQvwiZCz7dD3N6TTS8TaUDIOg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706013602;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8bsZwpBUdtm8cIYzFdHoBotXmsQ1yjRuTGaoCqNT+Zk=;
+ b=WutBRYZwaoiM5BrrvuI1GN7qhxl4mQyy7YoMhAH0fLCcLm3np0Eyr7/ezcriGYuQaHz4PM
+ vQPffbVeO3ew/HAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2ECA113786;
+ Tue, 23 Jan 2024 12:40:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id z7mCCqKzr2U/QQAAD6G6ig
+ (envelope-from <hare@suse.de>); Tue, 23 Jan 2024 12:40:02 +0000
+Message-ID: <499096d7-1b4d-471b-9abf-5b6f72bb7990@suse.de>
+Date: Tue, 23 Jan 2024 13:40:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rfcv1 4/6] vfio: initialize IOMMUFDDevice and pass to
- vIOMMU
+Subject: Re: NVME hotplug support ?
 Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-5-zhenzhong.duan@intel.com>
- <852e8e08-1d82-49d4-a19c-36a6b256d662@redhat.com>
- <SJ0PR11MB67442926DAA9AD72F1B89CED92742@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB67442926DAA9AD72F1B89CED92742@SJ0PR11MB6744.namprd11.prod.outlook.com>
+To: Damien Hedde <dhedde@kalrayinc.com>, qemu-block@nongnu.org,
+ Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Titouan Huard <thuard@kalrayinc.com>
+References: <PR2P264MB0861AAF89D0B361A33710261D1742@PR2P264MB0861.FRAP264.PROD.OUTLOOK.COM>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <PR2P264MB0861AAF89D0B361A33710261D1742@PR2P264MB0861.FRAP264.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="o/Qnh30X";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WutBRYZw
+X-Spamd-Result: default: False [-2.82 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ XM_UA_NO_VERSION(0.01)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ BAYES_HAM(-0.02)[52.41%]; MIME_GOOD(-0.10)[text/plain];
+ DWL_DNSWL_HI(-3.50)[suse.de:dkim]; RCPT_COUNT_FIVE(0.00)[6];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; SUBJECT_ENDS_QUESTION(1.00)[];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 48C7A21F69
+X-Spam-Score: -2.82
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=hare@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 23 Jan 2024 09:37:48 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,123 +128,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/23/24 10:46, Duan, Zhenzhong wrote:
+On 1/23/24 11:59, Damien Hedde wrote:
+> Hi all,
 > 
+> We are currently looking into hotplugging nvme devices and it is currently not possible:
+> When nvme was introduced 2 years ago, the feature was disabled.
+>> commit cc6fb6bc506e6c47ed604fcb7b7413dff0b7d845
+>> Author: Klaus Jensen
+>> Date:   Tue Jul 6 10:48:40 2021 +0200
+>>
+>>     hw/nvme: mark nvme-subsys non-hotpluggable
+>>     
+>>     We currently lack the infrastructure to handle subsystem hotplugging, so
+>>     disable it.
 > 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Subject: Re: [PATCH rfcv1 4/6] vfio: initialize IOMMUFDDevice and pass to
->> vIOMMU
->>
->> On 1/15/24 11:13, Zhenzhong Duan wrote:
->>> Initialize IOMMUFDDevice in vfio and pass to vIOMMU, so that vIOMMU
->>> could get hw IOMMU information.
->>>
->>> In VFIO legacy backend mode, we still pass a NULL IOMMUFDDevice to
->> vIOMMU,
->>> in case vIOMMU needs some processing for VFIO legacy backend mode.
->>>
->>> Originally-by: Yi Liu <yi.l.liu@intel.com>
->>> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
->>> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>    include/hw/vfio/vfio-common.h |  2 ++
->>>    hw/vfio/iommufd.c             |  2 ++
->>>    hw/vfio/pci.c                 | 24 +++++++++++++++++++-----
->>>    3 files changed, 23 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
->> common.h
->>> index 9b7ef7d02b..fde0d0ca60 100644
->>> --- a/include/hw/vfio/vfio-common.h
->>> +++ b/include/hw/vfio/vfio-common.h
->>> @@ -31,6 +31,7 @@
->>>    #endif
->>>    #include "sysemu/sysemu.h"
->>>    #include "hw/vfio/vfio-container-base.h"
->>> +#include "sysemu/iommufd_device.h"
->>>
->>>    #define VFIO_MSG_PREFIX "vfio %s: "
->>>
->>> @@ -126,6 +127,7 @@ typedef struct VFIODevice {
->>>        bool dirty_tracking;
->>>        int devid;
->>>        IOMMUFDBackend *iommufd;
->>> +    IOMMUFDDevice idev;
->>>    } VFIODevice;
->>>
->>>    struct VFIODeviceOps {
->>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->>> index 9bfddc1360..cbd035f148 100644
->>> --- a/hw/vfio/iommufd.c
->>> +++ b/hw/vfio/iommufd.c
->>> @@ -309,6 +309,7 @@ static int iommufd_cdev_attach(const char *name,
->> VFIODevice *vbasedev,
->>>        VFIOContainerBase *bcontainer;
->>>        VFIOIOMMUFDContainer *container;
->>>        VFIOAddressSpace *space;
->>> +    IOMMUFDDevice *idev = &vbasedev->idev;
->>>        struct vfio_device_info dev_info = { .argsz = sizeof(dev_info) };
->>>        int ret, devfd;
->>>        uint32_t ioas_id;
->>> @@ -428,6 +429,7 @@ found_container:
->>>        QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev,
->> container_next);
->>>        QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
->>>
->>> +    iommufd_device_init(idev, sizeof(*idev), container->be, vbasedev-
->>> devid);
->>>        trace_iommufd_cdev_device_info(vbasedev->name, devfd, vbasedev-
->>> num_irqs,
->>>                                       vbasedev->num_regions, vbasedev->flags);
->>>        return 0;
->>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
->>> index d7fe06715c..2c3a5d267b 100644
->>> --- a/hw/vfio/pci.c
->>> +++ b/hw/vfio/pci.c
->>> @@ -3107,11 +3107,21 @@ static void vfio_realize(PCIDevice *pdev,
->> Error **errp)
->>>
->>>        vfio_bars_register(vdev);
->>>
->>> -    ret = vfio_add_capabilities(vdev, errp);
->>> +    if (vbasedev->iommufd) {
->>> +        ret = pci_device_set_iommu_device(pdev, &vbasedev->idev, errp);
->>> +    } else {
->>> +        ret = pci_device_set_iommu_device(pdev, 0, errp);
->>
->>
->> AFAICT, pci_device_set_iommu_device() with a NULL IOMMUFDDevice will
->> do
->> nothing. Why call it ?
+> Do someone know what's lacking or anyone have some tips/idea of what we should develop to add the support ?
 > 
-> We will do something in nesting series, see https://github.com/yiliu1765/qemu/commit/7f0bb59575bb5cf38618ae950f68a8661676e881
+Problem is that the object model is messed up. In qemu namespaces are 
+attached to controllers, which in turn are children of the PCI device.
+There are subsystems, but these just reference the controller.
 
-ok, that's not much. idev is used as a capability bool and later on
-to pass the /dev/iommu fd.  We don't need to support the legacy mode ?
+So if you hotunplug the PCI device you detach/destroy the controller and 
+detach the namespaces from the controller.
+But if you hotplug the PCI device again the NVMe controller will be 
+attached to the PCI device, but the namespace are still be detached.
 
-> Another choice is to call pci_device_set_iommu_device() no matter which backend
-> is used and check idev->iommufd in vtd_dev_set_iommu_device(). Is this better
-> for you?
+Klaus said he was going to fix that, and I dimly remember some patches
+floating around. But apparently it never went anywhere.
 
-yes. Should be fine. There is more to it though.
+Fundamental problem is that the NVMe hierarchy as per spec is 
+incompatible with the qemu object model; qemu requires a strict
+tree model where every object has exactly _one_ parent.
 
-IIUC, what will determine most of the requirements, is the legacy
-mode. We also need the host iommu info in that case. As said Eric,
-ideally, we should introduce a common abstract "host-iommu-info" struct
-and sub structs associated with the iommu backends (iommufd + legacy)
-which would be allocated accordingly.
+Cheers,
 
-So, IOMMUFDDevice usage should be limited to the iommufd files. All PCI
-files should use the common abstract type. We should define these data
-structures first. They could be simple C struct for now. We will see if
-QOM applies after.
-
-Will take a look at Eric's patchset next.
-
-Thanks,
-
-C.
+Hannes
 
 
