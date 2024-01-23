@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D72C838A8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 10:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B5A838B42
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 11:00:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSDJn-0005fx-6l; Tue, 23 Jan 2024 04:43:43 -0500
+	id 1rSDYC-0000pB-VQ; Tue, 23 Jan 2024 04:58:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rSDJh-0005fV-K1
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:43:37 -0500
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rSDJd-0005mg-JE
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:43:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706003013; x=1737539013;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wU64uHlR52rNEzdKGKovUXzpWZVCS6qVw80l/VHg/G4=;
- b=VFeCwX+JSMZg7DHfy3Pl4PsxWGQNc6S9yUKUccN3fVNE79pc0pGdNXF/
- vO6VbKSAOo5gk3pmteBqgdhzEiNWk7sENLcGS+bWXNIOux+MqzTKYbqB2
- c25OGmYI5HZ+7qCS1lmhu/DzX1Kw/hLvsnlr6LI8UQFhiHGHP+kEYw1RY
- Bc6hrfOLsoBwLR5kwPyn0SaPL0g8u/J5I151zafcF92rDuPmZMiBsKmva
- q2VU/kevmGjFa15xAXFal1r6geT7F4lc7IspSCCG/BM3b/zn9dLks4KFA
- U8/PyMT7JQDznGBtL1FVuhvKFCq35N6bJ49XKfmVvE7g9PG5accxZzSB7 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="8838340"
-X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
-   d="scan'208";a="8838340"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2024 01:43:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="735514573"
-X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; d="scan'208";a="735514573"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga003.jf.intel.com with ESMTP; 23 Jan 2024 01:43:25 -0800
-Date: Tue, 23 Jan 2024 17:56:27 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
- specific topology level
-Message-ID: <Za+NS1OneKg7IHOj@intel.com>
-References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
- <20240108082727.420817-6-zhao1.liu@linux.intel.com>
- <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rSDYB-0000p1-Lz
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:58:35 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1rSDYA-00089B-0d
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:58:35 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-40ea5653f6bso36519025e9.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 01:58:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1706003912; x=1706608712; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VcJwkYMqUSjkE5fDzZQeShAVzibJ7FwWpRDb8AOYV3A=;
+ b=AyVz3PFthHNA7RkYQ7bVQS0yzsneMf3fKSafcIFvV+DjmjhAbkMJ/b0OPrGvfA/pj5
+ QSzbLmdn3790PsNFIRphhM6AJS7PO3t/lz78Z98ECzvCCt87xyxK5m4L1l60k3+eNyE1
+ xm+7tf91aqoSf6E6WXuzM4PPqNf/EAQoTP4Z4A9Ih6DYTKPyWmdoFdEtIs9y9ZSmll5W
+ tY7R6uq1IwDJwAyQdriowWHNmBPm/YcGGQo8YtdQZPVp32P1ALh0fASr9VivHVOBZjbQ
+ vca++oEHrKcC24kfzzpWMVaaN5cDMyyQUf546WDWFke2LJma3uwBScv3DYjvRrUGOj7Y
+ +8cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706003912; x=1706608712;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VcJwkYMqUSjkE5fDzZQeShAVzibJ7FwWpRDb8AOYV3A=;
+ b=dGscnUAPI/4F+/EsZ6jNLtp6ETWC/Q5FQAiE54yJ8cK5iY0EPy12SOlNNJA/IPu/xi
+ PxB02/CbuucKr12YGfZnKY7nwqXryEsDl/IRjOv4S+WX8KTcM0Tx4pTPI4yG/gRIsrm7
+ aA3YfivsaAatZVgglgCe0ACydxtENlw8BCvhBJREzIuYx9BSQkCJZeHeU/XBCJxWIbZ8
+ IH7HGqF6hDlkLlhUUvAL8fEiK6VVPiQGyyS9I0n4M8cwKdV0OXRZHQjYjcjNSPTG4zw6
+ w/SFypYiYrB4yfvqXLDt4wZVTqglIppQb52DdItteWTeOwgMMDKp1xb62Wy6hI7dvAvr
+ PftQ==
+X-Gm-Message-State: AOJu0YxE+PlD64tBHdbgrXiMg1HLL2JO4owqaoEjKawVlZX7vVpOLFTc
+ rTkKtZceudPSpWO9K8o10L7ZqKyOzv0l3VyZfxIycN3WSJ8n+MsMBUEfeR1bfuU=
+X-Google-Smtp-Source: AGHT+IFsoj3Aze1igwwscmmIVPcoYyX4osGucZued+WMxsItnwXq+IFUzfmPXVh6gr8Ow6tH4H4UYg==
+X-Received: by 2002:a05:600c:1910:b0:40e:5978:c94a with SMTP id
+ j16-20020a05600c191000b0040e5978c94amr387332wmq.24.1706003911530; 
+ Tue, 23 Jan 2024 01:58:31 -0800 (PST)
+Received: from Dev-shlomop.pliops.ent ([213.8.195.28])
+ by smtp.googlemail.com with ESMTPSA id
+ n18-20020a05600c3b9200b0040e4ca7fcb4sm42113422wms.37.2024.01.23.01.58.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Jan 2024 01:58:30 -0800 (PST)
+From: Shlomo Pongratz <shlomopongratz@gmail.com>
+X-Google-Original-From: Shlomo Pongratz <shlomop@pliops.com>
+To: qemu-devel@nongnu.org
+Cc: andrew.sminov@gmail.com, peter.maydell@linaro.com, philmd@linaro.org,
+ shlomop@pliops.com, shlomopongratz@gmail.com
+Subject: [PATCH v4] Handle wrap around in limit calculation
+Date: Tue, 23 Jan 2024 11:58:21 +0200
+Message-Id: <20240123095821.59625-1-shlomop@pliops.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
-Received-SPF: none client-ip=198.175.65.12;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=shlomopongratz@gmail.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,293 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+    Hanlde wrap around when calculating the viewport size
+    caused by the fact that perior to version 460A the limit variable
+    was 32bit quantity and not 64 bits quantity.
+    In the i.MX 6Dual/6Quad Applications Processor Reference Manual
+    document on which the original code was based upon in the
+    description of the iATU Region Upper Base Address Register it is
+    written:
+    Forms bits [63:32] of the start (and end) address of the address region to be
+    translated.
+    That is in this register is the upper of both base and the limit.
+    In the current implementation this value was ignored for the limit
+    which caused a wrap around of the size calculaiton.
+    Using the documnet example:
+    Base HI: 0x80000000 Base LO: 0xd0000000 Limit LO: 0xd000ffff
+    The correct size is 0x80000000d000ffff - 0x80000000d0000000 + 1 =
+0x010000
+    The wrong result is 0xd000ffff - 0x80000000d0000000 + 1 = 0x8000000000010000
 
-On Thu, Jan 11, 2024 at 11:19:34AM +0800, Xiaoyao Li wrote:
-> Date: Thu, 11 Jan 2024 11:19:34 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
->  specific topology level
-> 
-> On 1/8/2024 4:27 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
-> > 
-> > In fact, the specific topology level exposed in 0x1F depends on the
-> > platform's support for extension levels (module, tile and die).
-> > 
-> > To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
-> > with specific topology level.
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Babu Moger <babu.moger@amd.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > Changes since v3:
-> >   * New patch to prepare to expose module level in 0x1F.
-> >   * Move the CPUTopoLevel enumeration definition from "i386: Add cache
-> >     topology info in CPUCacheInfo" to this patch. Note, to align with
-> >     topology types in SDM, revert the name of CPU_TOPO_LEVEL_UNKNOW to
-> >     CPU_TOPO_LEVEL_INVALID.
-> > ---
-> >   target/i386/cpu.c | 136 +++++++++++++++++++++++++++++++++++++---------
-> >   target/i386/cpu.h |  15 +++++
-> >   2 files changed, 126 insertions(+), 25 deletions(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index bc440477d13d..5c295c9a9e2d 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -269,6 +269,116 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
-> >              (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
-> >   }
-> > +static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
-> > +                                       enum CPUTopoLevel topo_level)
-> > +{
-> > +    switch (topo_level) {
-> > +    case CPU_TOPO_LEVEL_SMT:
-> > +        return 1;
-> > +    case CPU_TOPO_LEVEL_CORE:
-> > +        return topo_info->threads_per_core;
-> > +    case CPU_TOPO_LEVEL_DIE:
-> > +        return topo_info->threads_per_core * topo_info->cores_per_die;
-> > +    case CPU_TOPO_LEVEL_PACKAGE:
-> > +        return topo_info->threads_per_core * topo_info->cores_per_die *
-> > +               topo_info->dies_per_pkg;
-> > +    default:
-> > +        g_assert_not_reached();
-> > +    }
-> > +    return 0;
-> > +}
-> > +
-> > +static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
-> > +                                            enum CPUTopoLevel topo_level)
-> > +{
-> > +    switch (topo_level) {
-> > +    case CPU_TOPO_LEVEL_SMT:
-> > +        return 0;
-> > +    case CPU_TOPO_LEVEL_CORE:
-> > +        return apicid_core_offset(topo_info);
-> > +    case CPU_TOPO_LEVEL_DIE:
-> > +        return apicid_die_offset(topo_info);
-> > +    case CPU_TOPO_LEVEL_PACKAGE:
-> > +        return apicid_pkg_offset(topo_info);
-> > +    default:
-> > +        g_assert_not_reached();
-> > +    }
-> > +    return 0;
-> > +}
-> > +
-> > +static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
-> > +{
-> > +    switch (topo_level) {
-> > +    case CPU_TOPO_LEVEL_INVALID:
-> > +        return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
-> > +    case CPU_TOPO_LEVEL_SMT:
-> > +        return CPUID_1F_ECX_TOPO_LEVEL_SMT;
-> > +    case CPU_TOPO_LEVEL_CORE:
-> > +        return CPUID_1F_ECX_TOPO_LEVEL_CORE;
-> > +    case CPU_TOPO_LEVEL_DIE:
-> > +        return CPUID_1F_ECX_TOPO_LEVEL_DIE;
-> > +    default:
-> > +        /* Other types are not supported in QEMU. */
-> > +        g_assert_not_reached();
-> > +    }
-> > +    return 0;
-> > +}
-> > +
-> > +static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
-> > +                                X86CPUTopoInfo *topo_info,
-> > +                                uint32_t *eax, uint32_t *ebx,
-> > +                                uint32_t *ecx, uint32_t *edx)
-> > +{
-> > +    static DECLARE_BITMAP(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-> > +    X86CPU *cpu = env_archcpu(env);
-> > +    unsigned long level, next_level;
-> > +    uint32_t num_cpus_next_level, offset_next_level;
-> 
-> again, I dislike the name of cpus to represent the logical process or
-> thread. we can call it, num_lps_next_level, or num_threads_next_level;
-> 
-> > +
-> > +    /*
-> > +     * Initialize the bitmap to decide which levels should be
-> > +     * encoded in 0x1f.
-> > +     */
-> > +    if (!count) {
-> 
-> using static bitmap and initialize the bitmap on (count == 0), looks bad to
-> me. It highly relies on the order of how encode_topo_cpuid1f() is called,
-> and fragile.
-> 
-> Instead, we can maintain an array in CPUX86State, e.g.,
+    Signed-off-by: Shlomo Pongratz <shlomop@pliops.com>
 
-In my practice, I have found this way to be rather tricky since...
+    ----
 
-> 
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -1904,6 +1904,8 @@ typedef struct CPUArchState {
-> 
->      /* Number of dies within this CPU package. */
->      unsigned nr_dies;
-> +
-> +    unint8_t valid_cpu_topo[CPU_TOPO_LEVEL_MAX];
->  } CPUX86State;
-> 
+    Changes since v3:
+     * Use Peter Maydell's suggestion for fixing the bug,
+       that is compute a 64 bits limit from the upper 32 bits of the base
+       and the given 32 bits limit.
 
-this array actually pre-binds the 0x1f subleaf to the topology level,
-so this way brings difficulties to the array initialization stage...
+    Changes since v2:
+     * Don't try to fix the calculation.
+     * Change the limit variable from 32bit to 64 bit
+     * Set the limit bits [63:32] same as the base according to
+       the specification on which the original code was base upon.
 
-> 
-> and initialize it as below, when initializing the env
-> 
-> env->valid_cpu_topo[0] = CPU_TOPO_LEVEL_SMT;
-> env->valid_cpu_topo[1] = CPU_TOPO_LEVEL_CORE;
-> if (env->nr_dies > 1) {
-> 	env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
-> }
+    Changes since v1:
+     * Seperate subject and description
+---
+ hw/pci-host/designware.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-... as here.
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index dd9e389c07..f81dbe3975 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -269,8 +269,20 @@ static void designware_pcie_update_viewport(DesignwarePCIERoot *root,
+ {
+     const uint64_t target = viewport->target;
+     const uint64_t base   = viewport->base;
+-    const uint64_t size   = (uint64_t)viewport->limit - base + 1;
++    uint64_t size;
+     const bool enabled    = viewport->cr[1] & DESIGNWARE_PCIE_ATU_ENABLE;
++    uint64_t limit;
++
++    /*
++     * Versions 460A and above of this PCI controller have a
++     * 64-bit limit register. We currently model the older type
++     * where the limit register is 32 bits, and the upper 32 bits
++     * of the end address are the same as the upper 32 bits of
++     * the start address.
++     */
++
++    limit = deposit64(viewport->limit, 32, 32, extract64(base, 32, 32));
++    size = limit - base + 1;
+ 
+     MemoryRegion *current, *other;
+ 
+-- 
+2.25.1
 
-Based on 1f encoding rule, with module, we may need this logic like
-this:
-
-// If there's module, encode the module level at ECX=2.
-if (env->nr_modules > 1) {
-       env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_MODULE;
-       if (env->nr_dies > 1) {
-       		env->valid_cpu_topo[3] = CPU_TOPO_LEVEL_DIE;
-       }
-} else if (env->nr_dies > 1) { // Otherwise, encode die directly.
-       env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
-}
-
-Such case-by-case checking lacks scalability, and if more levels are
-supported in the future, such as tiles, the whole checking becomes
-unclean. Am I understanding you correctly?
-
-About the static bitmap, declaring it as static is an optimization.
-Because the count (ECX, e.g., ECX=N) means the Nth topology levels,
-if we didn't use static virable, we would need to iterate each time
-to find the Nth level.
-
-Since we know that the subleaf of 0x1f must be sequentially encoded,
-the logic of this static code is always in effect.
-
-What do you think?
-
-Thanks,
-Zhao
-
-> 
-> then in encode_topo_cpuid1f(), we can get level and next_level as
-> 
-> level = env->valid_cpu_topo[count];
-> next_level = env->valid_cpu_topo[count + 1];
-> 
-> 
-> > +        /* SMT and core levels are exposed in 0x1f leaf by default. */
-> > +        set_bit(CPU_TOPO_LEVEL_SMT, topo_bitmap);
-> > +        set_bit(CPU_TOPO_LEVEL_CORE, topo_bitmap);
-> > +
-> > +        if (env->nr_dies > 1) {
-> > +            set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
-> > +        }
-> > +    }
-> > +
-> > +    *ecx = count & 0xff;
-> > +    *edx = cpu->apic_id;
-> > +
-> > +    level = find_first_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX);
-> > +    if (level == CPU_TOPO_LEVEL_MAX) {
-> > +        num_cpus_next_level = 0;
-> > +        offset_next_level = 0;
-> > +
-> > +        /* Encode CPU_TOPO_LEVEL_INVALID into the last subleaf of 0x1f. */
-> > +        level = CPU_TOPO_LEVEL_INVALID;
-> > +    } else {
-> > +        next_level = find_next_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX, level + 1);
-> > +        if (next_level == CPU_TOPO_LEVEL_MAX) {
-> > +            next_level = CPU_TOPO_LEVEL_PACKAGE;
-> > +        }
-> > +
-> > +        num_cpus_next_level = num_cpus_by_topo_level(topo_info, next_level);
-> > +        offset_next_level = apicid_offset_by_topo_level(topo_info, next_level);
-> > +    }
-> > +
-> > +    *eax = offset_next_level;
-> > +    *ebx = num_cpus_next_level;
-> > +    *ecx |= cpuid1f_topo_type(level) << 8;
-> > +
-> > +    assert(!(*eax & ~0x1f));
-> > +    *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-> > +    if (level != CPU_TOPO_LEVEL_MAX) {
-> > +        clear_bit(level, topo_bitmap);
-> > +    }
-> > +}
-> > +
-> >   /* Encode cache info for CPUID[0x80000005].ECX or CPUID[0x80000005].EDX */
-> >   static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
-> >   {
-> > @@ -6284,31 +6394,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >               break;
-> >           }
-> > -        *ecx = count & 0xff;
-> > -        *edx = cpu->apic_id;
-> > -        switch (count) {
-> > -        case 0:
-> > -            *eax = apicid_core_offset(&topo_info);
-> > -            *ebx = topo_info.threads_per_core;
-> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_SMT << 8;
-> > -            break;
-> > -        case 1:
-> > -            *eax = apicid_die_offset(&topo_info);
-> > -            *ebx = topo_info.cores_per_die * topo_info.threads_per_core;
-> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_CORE << 8;
-> > -            break;
-> > -        case 2:
-> > -            *eax = apicid_pkg_offset(&topo_info);
-> > -            *ebx = cpus_per_pkg;
-> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_DIE << 8;
-> > -            break;
-> > -        default:
-> > -            *eax = 0;
-> > -            *ebx = 0;
-> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_INVALID << 8;
-> > -        }
-> > -        assert(!(*eax & ~0x1f));
-> > -        *ebx &= 0xffff; /* The count doesn't need to be reliable. */
-> > +        encode_topo_cpuid1f(env, count, &topo_info, eax, ebx, ecx, edx);
-> >           break;
-> >       case 0xD: {
-> >           /* Processor Extended State */
-> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> > index f47bad46db5e..9c78cfc3f322 100644
-> > --- a/target/i386/cpu.h
-> > +++ b/target/i386/cpu.h
-> > @@ -1008,6 +1008,21 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-> >   #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
-> >   #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
-> > +/*
-> > + * CPUTopoLevel is the general i386 topology hierarchical representation,
-> > + * ordered by increasing hierarchical relationship.
-> > + * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
-> > + * or AMD (CPUID[0x80000026]).
-> > + */
-> > +enum CPUTopoLevel {
-> > +    CPU_TOPO_LEVEL_INVALID,
-> > +    CPU_TOPO_LEVEL_SMT,
-> > +    CPU_TOPO_LEVEL_CORE,
-> > +    CPU_TOPO_LEVEL_DIE,
-> > +    CPU_TOPO_LEVEL_PACKAGE,
-> > +    CPU_TOPO_LEVEL_MAX,
-> > +};
-> > +
-> >   /* CPUID[0xB].ECX level types */
-> >   #define CPUID_B_ECX_TOPO_LEVEL_INVALID  0
-> >   #define CPUID_B_ECX_TOPO_LEVEL_SMT      1
-> 
 
