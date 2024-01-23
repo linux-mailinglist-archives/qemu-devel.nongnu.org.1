@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298DE83926E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:17:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E34F4839282
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:20:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSIWI-0006Zp-Bc; Tue, 23 Jan 2024 10:16:58 -0500
+	id 1rSIZA-0007rH-Ly; Tue, 23 Jan 2024 10:19:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rSIWD-0006ZD-Eq
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:16:53 -0500
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+ id 1rSIZ3-0007lV-QN; Tue, 23 Jan 2024 10:19:50 -0500
+Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rSIWB-0003Vb-Nh
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:16:53 -0500
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-361af86c7f7so10357735ab.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 07:16:51 -0800 (PST)
+ id 1rSIZ2-0003yQ-8W; Tue, 23 Jan 2024 10:19:49 -0500
+Received: by mail-io1-xd2c.google.com with SMTP id
+ ca18e2360f4ac-7bed8fee278so162884939f.2; 
+ Tue, 23 Jan 2024 07:19:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706023010; x=1706627810; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1706023186; x=1706627986; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f9lG+Y3I12WetBQ37KyI8fUwy+yGRZ4sEnJv/LjJ0Jk=;
- b=gGtUIw6FI+WL+m9+mfkU7ArBWWTwQ+KRsVs37J9ybhbBvBbi+13XNpyJEaOds0bXAW
- NFY5RZNKHzBu1qLOgbIN/A+hmCxRmm15v/ZfLKu/BGZWd0Rxm0js8wchcqJboCULmkFT
- JWkDvxIj4sG1dckEV8mQbZXgpQ6oDVkTnAQNckRFxn5g+b+LlfNlgvN+e6Fy953uFA6O
- W9wug2wZ+jJt4787MRzYlTq+IK6H8hCG48VF6GzuGtKy6DNg2aEgU54b2B+tid8qmqKq
- qBrbFu8dcchPmebJsgSizrsxEz58W/WciG1Adk/OXhs33nd5yDvJhj+XOJ0A/CLqBUDm
- CFmw==
+ bh=sw6EVIsFx+oAF6CbewijJKoaePtDE6G+Gtlr0nDnTt0=;
+ b=hcKH3lHGTUXUKTU/3Gv3+bbcGj697edXTMDdDutvATg+cmGCmXKZGq5Zfa02/jUSGg
+ 9WSEnamuBJqyLFNjdYvFVLI36lyJGY0fR/8Fyx5BaRmWF7aSCc6Rhq3UXSYw1nmteCbb
+ w+TazjIdgSgwpujuQXJwRYV7QgJQj56+sRS9NzsIUbvOTx0eN/OMsR5W6KYHNt775OFy
+ LvuYHD+izxpNpAHNg5x6tMX73Ngsc7IwpPBVTYJdi63xXTc2BJTXNY0yo1LoMyotRwvu
+ hUCG2nVrBtMvKfuv0JR4tJQ/ww5uGJZd8z2wTjCNdAW6GEFObhL9dMmSp74uJbT1v2IV
+ jI/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706023010; x=1706627810;
+ d=1e100.net; s=20230601; t=1706023186; x=1706627986;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f9lG+Y3I12WetBQ37KyI8fUwy+yGRZ4sEnJv/LjJ0Jk=;
- b=Yx6gLJnAyyglU5UJxmbga4Cg3t8qdWcBE57ESIcCsv6ZaGADuw7LlwiqU61um1g4el
- rVQQfq/nVXG1JOT+XySQ4+cIPeozk2bMA094Nr451QCurrHifsMz988wVRWM53YKYpwW
- NwLSyTBBt5kfPqvrJk5xpi3jTMfd7ByTbLL9D1sPmM7RJ1XXdLRkyYNB9Fq+wWlzn235
- oTny+nwgiTnZv9cxGtCgGmSA6/+D9xMDxQPMrig3hzAqRP0G5IxQXl/xzlib6ggQx5g+
- ZJ1Cx92wN6mjvEEg0NY7uYSJ9k+IbHpv/dEvhG6BKiY7Dfv/jsTQqMsmpHk8YFu5fj/G
- cMBA==
-X-Gm-Message-State: AOJu0YxOQNhCYDCWHv+Fz+kYcs+REqX3mgFh3KSwMsUiSHpDwuHis7JL
- wTDhsA7oacjU8V69lDf/ttyDEr65Sse7Na6p/GOc4effgNj6I5qLf86LAcWXYCAFRMgb7hmxAlR
- M+jHzLpvJxgvXi2ekHpItay/+hn4=
-X-Google-Smtp-Source: AGHT+IFsnfG42Vk8LuyY+yt5+cFiS91uhcRKaMLlHPKvGw1QyzK8V6kGnSjk+qJ4ZzgBG/pJ5IkkqrdZc7+rms2ADL8=
-X-Received: by 2002:a92:c146:0:b0:35f:b2f4:506b with SMTP id
- b6-20020a92c146000000b0035fb2f4506bmr6723630ilh.17.1706023010062; Tue, 23 Jan
- 2024 07:16:50 -0800 (PST)
+ bh=sw6EVIsFx+oAF6CbewijJKoaePtDE6G+Gtlr0nDnTt0=;
+ b=tiNwZoCyv8mwDPdrjq6yZ0fx/5cmIg35K0t2lFJVOMOnqXgZzSWfKcSZ3aos+WjMmF
+ TU++Tvbszd1AQSUfPuuQo9fSjid0cfOL+6hBB4nceihDQpxn+07z3t7RkNP11QvU5Seq
+ 0p+4p4Lni8onvpsoEbqJwIs7zwnGOreeokpa2D93NLy+4G6Hr2BLk/YcHh4xeiUTgXT0
+ be+l6Sh+rT3a95dkUU6fSThsYqmKR0tlLxolD3G0Y0/ouMHypUmk/A0s9tCeD2iQUzy9
+ 3CHpCdGGijblwK+m8qzzok2YAeEW55AJtXmkIbFwAGnERBMdeA7LaSqwbP7jDbZ8XEd0
+ iZoA==
+X-Gm-Message-State: AOJu0Yzn98ViDKsud7f4HaUHt3ACUyhuCvl8mgVqRKHKiouDerQ3o7yL
+ /K4r7MApaFwLLiGhwyU4p/FDPgaZIFbM8c4UHvEUGXmL0sWkgm1KGz2qrMroIk5LepvBgyJoM4S
+ xOSJAOqDx1L03n7OnHVuA3WthfyZFw6vN
+X-Google-Smtp-Source: AGHT+IHXlsrqo9+yUOGXJeaBxknSWA7C586sBSckqphfhcr3FZUvkIYn7Z4bkaqleGciWxQVfcVg7/IlME+AzPfXna4=
+X-Received: by 2002:a92:d24d:0:b0:360:8bfd:78f1 with SMTP id
+ v13-20020a92d24d000000b003608bfd78f1mr5937434ilg.47.1706023186511; Tue, 23
+ Jan 2024 07:19:46 -0800 (PST)
 MIME-Version: 1.0
-References: <CAHP40mmk4cPk6ZHETfq5BtQxK63A6PiuCKrvv4yyOPBxVTW+OQ@mail.gmail.com>
- <Za6lUaLwYm1Y4gvj@redhat.com>
- <CAFEAcA--TgOV0rQ0x6UHG2d-DO=c6jsbgmgYNXcNorh_EJ+qzA@mail.gmail.com>
-In-Reply-To: <CAFEAcA--TgOV0rQ0x6UHG2d-DO=c6jsbgmgYNXcNorh_EJ+qzA@mail.gmail.com>
+References: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
+ <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
+In-Reply-To: <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
 From: Manolo de Medici <manolodemedici@gmail.com>
-Date: Tue, 23 Jan 2024 16:16:43 +0100
-Message-ID: <CAHP40mn25JM6FQBBUu=ywBB5BnXXkR4VKwB6uNXCd5YKG=o+zQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] Include new arbitrary limits if not already defined
+Date: Tue, 23 Jan 2024 16:19:39 +0100
+Message-ID: <CAHP40mnvG=5LtxUr7bpOUFs+1PQSK+bZ+fy0414p0D6u5qGkjw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] Avoid conflicting types for 'copy_file_range'
 To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, bug-hurd@gnu.org
+Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org, 
+ Qemu-block <qemu-block@nongnu.org>, Kevin Wolf <kwolf@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
- envelope-from=manolodemedici@gmail.com; helo=mail-il1-x12b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2c;
+ envelope-from=manolodemedici@gmail.com; helo=mail-io1-xd2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,69 +87,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 22, 2024 at 6:40=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+On Mon, Jan 22, 2024 at 6:04=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
 .org> wrote:
 >
-> On Mon, 22 Jan 2024 at 17:27, Daniel P. Berrang=C3=A9 <berrange@redhat.co=
-m> wrote:
-> >
-> > On Thu, Jan 18, 2024 at 05:02:23PM +0100, Manolo de Medici wrote:
-> > > qemu uses the PATH_MAX and IOV_MAX constants extensively
-> > > in the code. Define these constants to sensible values ourselves
-> > > if the system doesn't define them already.
-> >
-> > Please give details of what platform(s) lack these constants
-> > in the commit message.
-> >
-> > Presumably this is a platform that is outside of our normal
-> > support build target list, since we have at least build
-> > coverage for everything mainstream.
+> (Cc'ing the block folks)
 >
-> It's GNU Hurd. The patchset isn't threaded, but the cover
-> letter is
-> https://lore.kernel.org/qemu-devel/CAHP40m=3DUQ=3DF1-Vy4-wR18RjqzF9o+8UOj=
-gpUsrTU8QXn=3D7eAeA@mail.gmail.com/
->
-> and you can pick up the other patches in it by searching the list.
->
-> > >
-> > > Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
-> > > ---
-> > >  include/qemu/osdep.h | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > >
-> > > diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-> > > index 9a405bed89..9fb6ac5c64 100644
-> > > --- a/include/qemu/osdep.h
-> > > +++ b/include/qemu/osdep.h
-> > > @@ -363,6 +363,14 @@ void QEMU_ERROR("code path is reachable")
-> > >  #define TIME_MAX TYPE_MAXIMUM(time_t)
-> > >  #endif
-> > >
-> > > +#ifndef PATH_MAX
-> > > +#define PATH_MAX 1024
-> > > +#endif
-> > > +
-> > > +#ifndef IOV_MAX
-> > > +#define IOV_MAX 1024
-> > > +#endif
+> On Thu, 18 Jan 2024 at 16:03, Manolo de Medici <manolodemedici@gmail.com>=
+ wrote:
 > >
-> > If we're going to add this, since we should be removing the
-> > later duplication:
-> >
-> >   #define IOV_MAX 1024
-> >
-> > in this same file
+> > Compilation fails on systems where copy_file_range is already defined a=
+s a
+> > stub.
 >
-> Mmm, I wondered about that, although in that case it's
-> "for when the host has no iov implementation at all
-> and we're rolling our own".
+> What do you mean by "stub" here ? If the system headers define
+> a prototype for the function, I would have expected the
+> meson check to set HAVE_COPY_FILE_RANGE, and then this
+> function doesn't get defined at all. That is, the prototype
+> mismatch shouldn't matter because if the prototype exists we
+> use the libc function, and if it doesn't then we use our version.
 >
-> thanks
-> -- PMM
+> > The prototype of copy_file_range in glibc returns an ssize_t, not an of=
+f_t.
+> >
+> > The function currently only exists on linux and freebsd, and in both ca=
+ses
+> > the return type is ssize_t
+> >
+> > Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
+> > ---
+> >  block/file-posix.c | 9 +++++----
+> >  1 file changed, 5 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/block/file-posix.c b/block/file-posix.c
+> > index 35684f7e21..f744b35642 100644
+> > --- a/block/file-posix.c
+> > +++ b/block/file-posix.c
+> > @@ -2000,12 +2000,13 @@ static int handle_aiocb_write_zeroes_unmap(void=
+ *opaque)
+> >  }
+> >
+> >  #ifndef HAVE_COPY_FILE_RANGE
+> > -static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
+> > -                             off_t *out_off, size_t len, unsigned int =
+flags)
+> > +ssize_t copy_file_range (int infd, off_t *pinoff,
+> > +                         int outfd, off_t *poutoff,
+> > +                         size_t length, unsigned int flags)
+>
+> No space after "copy_file_range". No need to rename all the
+> arguments either.
 
-I think that although the two cover different cases, in order for the
-patch to be correct we should indeed remove the later duplication,
-otherwise compilation will fail on systems lacking IOVEC. Thank you
-both for the review
+Ok
+
+>
+> >  {
+> >  #ifdef __NR_copy_file_range
+> > -    return syscall(__NR_copy_file_range, in_fd, in_off, out_fd,
+> > -                   out_off, len, flags);
+> > +    return (ssize_t)syscall(__NR_copy_file_range, infd, pinoff, outfd,
+> > +                            poutoff, length, flags);
+>
+> Don't need a cast here, because returning the value will
+> automatically cast it to the right thing.
+>
+
+Ok
+
+> >  #else
+> >      errno =3D ENOSYS;
+> >      return -1;
+>
+> These changes aren't wrong, but as noted above I'm surprised that
+> the Hurd gets into this code at all.
+>
+
+I think Sergey explained very well why the Hurd its this piece of code
+
+> Note for Kevin: shouldn't this direct use of syscall() have
+> some sort of OS-specific guard on it? There's nothing that
+> says that a non-Linux host OS has to have the same set of
+> arguments to an __NR_copy_file_range syscall. If this
+> fallback is a Linux-ism we should guard it appropriately.
+>
+> For that matter, at what point can we just remove the fallback
+> entirely? copy_file_range() went into Linux in 4.5, apparently,
+> which is now nearly 8 years old. Maybe all our supported
+> hosts now have a new enough kernel and we can drop this
+> somewhat ugly syscall() wrapper...
+
+I'd love to remove the syscall wrapper if you give me the ok to do it
+
+Thanks
 
