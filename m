@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2B18387E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 08:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B808387EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 08:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSB5u-0003mT-PU; Tue, 23 Jan 2024 02:21:14 -0500
+	id 1rSB72-0004KK-MJ; Tue, 23 Jan 2024 02:22:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
- id 1rSB5m-0003jd-PF; Tue, 23 Jan 2024 02:21:07 -0500
+ id 1rSB6y-0004Iw-Tu; Tue, 23 Jan 2024 02:22:20 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=9HdW=JB=kaod.org=clg@ozlabs.org>)
- id 1rSB5k-0006uZ-51; Tue, 23 Jan 2024 02:21:06 -0500
+ id 1rSB6w-00071L-Lb; Tue, 23 Jan 2024 02:22:20 -0500
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TJz5f2jxGz4wcH;
- Tue, 23 Jan 2024 18:20:54 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TJz7D2rWcz4wcM;
+ Tue, 23 Jan 2024 18:22:16 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TJz5c3b2gz4wc8;
- Tue, 23 Jan 2024 18:20:52 +1100 (AEDT)
-Message-ID: <f8c8da63-31dd-4103-9d20-4a37b57ff7a1@kaod.org>
-Date: Tue, 23 Jan 2024 08:20:47 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TJz7B6CFrz4wcK;
+ Tue, 23 Jan 2024 18:22:14 +1100 (AEDT)
+Message-ID: <3cfdde83-3409-4616-9342-733df3c048c9@kaod.org>
+Date: Tue, 23 Jan 2024 08:22:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/8] ppc/pnv: Wire ChipTOD model to powernv9 and
- powernv10 machines
+Subject: Re: [PATCH v3 8/8] target/ppc: Add SMT support to time facilities
 Content-Language: en-US
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
  qemu-devel@nongnu.org
 References: <20231201121636.142694-1-npiggin@gmail.com>
- <20231201121636.142694-6-npiggin@gmail.com>
+ <20231201121636.142694-9-npiggin@gmail.com>
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20231201121636.142694-6-npiggin@gmail.com>
+In-Reply-To: <20231201121636.142694-9-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -67,13 +66,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 12/1/23 13:16, Nicholas Piggin wrote:
-> Wire the ChipTOD model to powernv9 and powernv10 machines.
+> The TB, VTB, PURR, HDEC SPRs are per-LPAR registers, and the TFMR is a
+> per-core register. Add the necessary SMT synchronisation and value
+> sharing.
 > 
-> Suggested-by-by: Cédric Le Goater <clg@kaod.org>
+> The TFMR can only drive the timebase state machine via thread 0 of the
+> core, which is almost certainly not right, but it is enough for skiboot
+> and certain other proprietary firmware.
+> 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Acked-by: Cédric Le Goater <clg@kaod.org>
 
 Thanks,
 
@@ -81,99 +85,288 @@ C.
 
 
 > ---
->   include/hw/ppc/pnv_chip.h |  3 +++
->   hw/ppc/pnv.c              | 30 ++++++++++++++++++++++++++++++
->   2 files changed, 33 insertions(+)
+>   target/ppc/timebase_helper.c | 105 ++++++++++++++++++++++++++++++++---
+>   target/ppc/translate.c       |  42 +++++++++++++-
+>   2 files changed, 136 insertions(+), 11 deletions(-)
 > 
-> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> index 0ab5c42308..bfc4772cf3 100644
-> --- a/include/hw/ppc/pnv_chip.h
-> +++ b/include/hw/ppc/pnv_chip.h
-> @@ -2,6 +2,7 @@
->   #define PPC_PNV_CHIP_H
+> diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
+> index bc1d54a427..a23fbf75ff 100644
+> --- a/target/ppc/timebase_helper.c
+> +++ b/target/ppc/timebase_helper.c
+> @@ -60,19 +60,55 @@ target_ulong helper_load_purr(CPUPPCState *env)
 >   
->   #include "hw/pci-host/pnv_phb4.h"
-> +#include "hw/ppc/pnv_chiptod.h"
->   #include "hw/ppc/pnv_core.h"
->   #include "hw/ppc/pnv_homer.h"
->   #include "hw/ppc/pnv_lpc.h"
-> @@ -78,6 +79,7 @@ struct Pnv9Chip {
->       PnvXive      xive;
->       Pnv9Psi      psi;
->       PnvLpcController lpc;
-> +    PnvChipTOD   chiptod;
->       PnvOCC       occ;
->       PnvSBE       sbe;
->       PnvHomer     homer;
-> @@ -110,6 +112,7 @@ struct Pnv10Chip {
->       PnvXive2     xive;
->       Pnv9Psi      psi;
->       PnvLpcController lpc;
-> +    PnvChipTOD   chiptod;
->       PnvOCC       occ;
->       PnvSBE       sbe;
->       PnvHomer     homer;
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index b949398689..d38888cb76 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1419,6 +1419,8 @@ static void pnv_chip_power9_instance_init(Object *obj)
->   
->       object_initialize_child(obj, "lpc", &chip9->lpc, TYPE_PNV9_LPC);
->   
-> +    object_initialize_child(obj, "chiptod", &chip9->chiptod, TYPE_PNV9_CHIPTOD);
+>   void helper_store_purr(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_purr(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
 > +
->       object_initialize_child(obj, "occ", &chip9->occ, TYPE_PNV9_OCC);
->   
->       object_initialize_child(obj, "sbe", &chip9->sbe, TYPE_PNV9_SBE);
-> @@ -1565,6 +1567,19 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
->       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
->                                               (uint64_t) PNV9_LPCM_BASE(chip));
->   
-> +    /* ChipTOD */
-> +    object_property_set_bool(OBJECT(&chip9->chiptod), "primary",
-> +                             chip->chip_id == 0, &error_abort);
-> +    object_property_set_bool(OBJECT(&chip9->chiptod), "secondary",
-> +                             chip->chip_id == 1, &error_abort);
-> +    object_property_set_link(OBJECT(&chip9->chiptod), "chip", OBJECT(chip),
-> +                             &error_abort);
-> +    if (!qdev_realize(DEVICE(&chip9->chiptod), NULL, errp)) {
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_purr(env, val);
 > +        return;
 > +    }
-> +    pnv_xscom_add_subregion(chip, PNV9_XSCOM_CHIPTOD_BASE,
-> +                            &chip9->chiptod.xscom_regs);
 > +
->       /* Create the simplified OCC model */
->       if (!qdev_realize(DEVICE(&chip9->occ), NULL, errp)) {
->           return;
-> @@ -1677,6 +1692,8 @@ static void pnv_chip_power10_instance_init(Object *obj)
->                                 "xive-fabric");
->       object_initialize_child(obj, "psi", &chip10->psi, TYPE_PNV10_PSI);
->       object_initialize_child(obj, "lpc", &chip10->lpc, TYPE_PNV10_LPC);
-> +    object_initialize_child(obj, "chiptod", &chip10->chiptod,
-> +                            TYPE_PNV10_CHIPTOD);
->       object_initialize_child(obj, "occ",  &chip10->occ, TYPE_PNV10_OCC);
->       object_initialize_child(obj, "sbe",  &chip10->sbe, TYPE_PNV10_SBE);
->       object_initialize_child(obj, "homer", &chip10->homer, TYPE_PNV10_HOMER);
-> @@ -1810,6 +1827,19 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
->       chip->dt_isa_nodename = g_strdup_printf("/lpcm-opb@%" PRIx64 "/lpc@0",
->                                               (uint64_t) PNV10_LPCM_BASE(chip));
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_purr(cenv, val);
+> +    }
+>   }
+>   #endif
 >   
-> +    /* ChipTOD */
-> +    object_property_set_bool(OBJECT(&chip10->chiptod), "primary",
-> +                             chip->chip_id == 0, &error_abort);
-> +    object_property_set_bool(OBJECT(&chip10->chiptod), "secondary",
-> +                             chip->chip_id == 1, &error_abort);
-> +    object_property_set_link(OBJECT(&chip10->chiptod), "chip", OBJECT(chip),
-> +                             &error_abort);
-> +    if (!qdev_realize(DEVICE(&chip10->chiptod), NULL, errp)) {
+>   #if !defined(CONFIG_USER_ONLY)
+>   void helper_store_tbl(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_tbl(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_tbl(env, val);
 > +        return;
 > +    }
-> +    pnv_xscom_add_subregion(chip, PNV10_XSCOM_CHIPTOD_BASE,
-> +                            &chip10->chiptod.xscom_regs);
 > +
->       /* Create the simplified OCC model */
->       if (!qdev_realize(DEVICE(&chip10->occ), NULL, errp)) {
->           return;
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_tbl(cenv, val);
+> +    }
+>   }
+>   
+>   void helper_store_tbu(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_tbu(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_tbu(env, val);
+> +        return;
+> +    }
+> +
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_tbu(cenv, val);
+> +    }
+>   }
+>   
+>   void helper_store_atbl(CPUPPCState *env, target_ulong val)
+> @@ -102,17 +138,53 @@ target_ulong helper_load_hdecr(CPUPPCState *env)
+>   
+>   void helper_store_hdecr(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_hdecr(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_hdecr(env, val);
+> +        return;
+> +    }
+> +
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_hdecr(cenv, val);
+> +    }
+>   }
+>   
+>   void helper_store_vtb(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_vtb(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_vtb(env, val);
+> +        return;
+> +    }
+> +
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_vtb(cenv, val);
+> +    }
+>   }
+>   
+>   void helper_store_tbu40(CPUPPCState *env, target_ulong val)
+>   {
+> -    cpu_ppc_store_tbu40(env, val);
+> +    CPUState *cs = env_cpu(env);
+> +    CPUState *ccs;
+> +    uint32_t nr_threads = cs->nr_threads;
+> +
+> +    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        cpu_ppc_store_tbu40(env, val);
+> +        return;
+> +    }
+> +
+> +    THREAD_SIBLING_FOREACH(cs, ccs) {
+> +        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +        cpu_ppc_store_tbu40(cenv, val);
+> +    }
+>   }
+>   
+>   target_ulong helper_load_40x_pit(CPUPPCState *env)
+> @@ -211,6 +283,21 @@ static uint64_t tfmr_new_tb_state(uint64_t tfmr, unsigned int tbst)
+>       return tfmr;
+>   }
+>   
+> +static void write_tfmr(CPUPPCState *env, target_ulong val)
+> +{
+> +    CPUState *cs = env_cpu(env);
+> +
+> +    if (cs->nr_threads == 1) {
+> +        env->spr[SPR_TFMR] = val;
+> +    } else {
+> +        CPUState *ccs;
+> +        THREAD_SIBLING_FOREACH(cs, ccs) {
+> +            CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
+> +            cenv->spr[SPR_TFMR] = val;
+> +        }
+> +    }
+> +}
+> +
+>   static void tb_state_machine_step(CPUPPCState *env)
+>   {
+>       uint64_t tfmr = env->spr[SPR_TFMR];
+> @@ -224,7 +311,7 @@ static void tb_state_machine_step(CPUPPCState *env)
+>           env->pnv_tod_tbst.tb_sync_pulse_timer--;
+>       } else {
+>           tfmr |= TFMR_TB_SYNC_OCCURED;
+> -        env->spr[SPR_TFMR] = tfmr;
+> +        write_tfmr(env, tfmr);
+>       }
+>   
+>       if (env->pnv_tod_tbst.tb_state_timer) {
+> @@ -262,7 +349,7 @@ static void tb_state_machine_step(CPUPPCState *env)
+>           }
+>       }
+>   
+> -    env->spr[SPR_TFMR] = tfmr;
+> +    write_tfmr(env, tfmr);
+>   }
+>   
+>   target_ulong helper_load_tfmr(CPUPPCState *env)
+> @@ -357,7 +444,7 @@ void helper_store_tfmr(CPUPPCState *env, target_ulong val)
+>       }
+>   
+>   out:
+> -    env->spr[SPR_TFMR] = tfmr;
+> +    write_tfmr(env, tfmr);
+>   }
+>   #endif
+>   
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 329da4d518..bd103b1026 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -247,13 +247,24 @@ static inline bool gen_serialize(DisasContext *ctx)
+>       return true;
+>   }
+>   
+> -#if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
+> +#if !defined(CONFIG_USER_ONLY)
+> +#if defined(TARGET_PPC64)
+> +static inline bool gen_serialize_core(DisasContext *ctx)
+> +{
+> +    if (ctx->flags & POWERPC_FLAG_SMT) {
+> +        return gen_serialize(ctx);
+> +    }
+> +    return true;
+> +}
+> +#endif
+> +
+>   static inline bool gen_serialize_core_lpar(DisasContext *ctx)
+>   {
+> +#if defined(TARGET_PPC64)
+>       if (ctx->flags & POWERPC_FLAG_SMT_1LPAR) {
+>           return gen_serialize(ctx);
+>       }
+> -
+> +#endif
+>       return true;
+>   }
+>   #endif
+> @@ -667,12 +678,20 @@ void spr_read_atbu(DisasContext *ctx, int gprn, int sprn)
+>   #if !defined(CONFIG_USER_ONLY)
+>   void spr_write_tbl(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+> +
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_tbl(tcg_env, cpu_gpr[gprn]);
+>   }
+>   
+>   void spr_write_tbu(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+> +
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_tbu(tcg_env, cpu_gpr[gprn]);
+>   }
+> @@ -696,6 +715,9 @@ void spr_read_purr(DisasContext *ctx, int gprn, int sprn)
+>   
+>   void spr_write_purr(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_purr(tcg_env, cpu_gpr[gprn]);
+>   }
+> @@ -709,6 +731,9 @@ void spr_read_hdecr(DisasContext *ctx, int gprn, int sprn)
+>   
+>   void spr_write_hdecr(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_hdecr(tcg_env, cpu_gpr[gprn]);
+>   }
+> @@ -721,12 +746,18 @@ void spr_read_vtb(DisasContext *ctx, int gprn, int sprn)
+>   
+>   void spr_write_vtb(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_vtb(tcg_env, cpu_gpr[gprn]);
+>   }
+>   
+>   void spr_write_tbu40(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core_lpar(ctx)) {
+> +        return;
+> +    }
+>       translator_io_start(&ctx->base);
+>       gen_helper_store_tbu40(tcg_env, cpu_gpr[gprn]);
+>   }
+> @@ -1220,11 +1251,18 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
+>   
+>   void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn)
+>   {
+> +    /* Reading TFMR can cause it to be updated, so serialize threads here too */
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+>       gen_helper_load_tfmr(cpu_gpr[gprn], tcg_env);
+>   }
+>   
+>   void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
+>   {
+> +    if (!gen_serialize_core(ctx)) {
+> +        return;
+> +    }
+>       gen_helper_store_tfmr(tcg_env, cpu_gpr[gprn]);
+>   }
+>   
 
 
