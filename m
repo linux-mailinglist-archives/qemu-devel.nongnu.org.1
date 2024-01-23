@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8E5839487
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07287839492
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:21:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJTN-0003oP-7C; Tue, 23 Jan 2024 11:18:01 -0500
+	id 1rSJWD-0007mk-C0; Tue, 23 Jan 2024 11:20:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSJTL-0003mU-PI
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:59 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rSJW9-0007lt-0v
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:20:53 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSJTJ-0007eL-0r
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:59 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6dd7debc476so457642b3a.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:56 -0800 (PST)
+ id 1rSJW6-0008Hy-Ib
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:20:52 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6dd7b525cd6so582144b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:20:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706026675; x=1706631475; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706026849; x=1706631649; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zPfNttPXTR9h5tB3nJI+pxcAw/vTz53KQbJKMTMP5ys=;
- b=zFm3Gv1mj6WNUx9NCLb3SaRTSujup3cVnjVW+UCUqXanqVFJajrJEC7W2xMwLMLiNf
- lEjWw9757cn5wJGk2EFE+uQRItrUe+GKQZ3wWss3L6lIjF2QIG3k/ghWT5lbAr46tzGy
- W9+JPlYPhs5OtlOpT2Rg+xwh5324MUmk3QbhPGFNkBEoOGcwfMpS2koJp2IFjRM+gimC
- seHw4+Rthv1+UZHcZ6Dd16NCTHqOxJ5eXuwsGhi8etuTLN8iz6e52eQVMXIVMylOuGKO
- Q99bC1ANKlhqCFHhJ4cuDN1bodf5fQ/JQHBUxvTQ8UaueYUzwwl85m4YAbQIfm8fIzeK
- BP4w==
+ bh=Pn04OMQMlQSwCcJHQ5cMYbx+ikgt1jnLNW8k0MO7c6Q=;
+ b=j+aHKRwffFpOQAfHvlbXiGaV1BtvWI8ZcPpxY0csknZ8je8lQH5QubvpXLMWTATQ5m
+ P8y+ydHoNuK/PvOtqoqymElwTjRmiZsubckv/ZwRjlvAZ03MIHbSoPwvSMPxOYn/QJ3K
+ AXApttKdmgIZdiS5QRyeVf602l8pmPKz3Jj9pAFG9ZTSxrvZ3sZ4KFJX/Hukm4ut2reB
+ qQXQeAaPGE2gcliZmT9CFU0FhY2k3Ft8D2cW+3w7+Eh5DhPA/DGmsZB58EeJm8GY0itV
+ +OXPkSUXrNRluW7WOuVDJ1hb9Db+BeMzzK+SJhLGxk0OhfJB1mOX+6GwVxxTJGamwu4v
+ OUHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706026675; x=1706631475;
+ d=1e100.net; s=20230601; t=1706026849; x=1706631649;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zPfNttPXTR9h5tB3nJI+pxcAw/vTz53KQbJKMTMP5ys=;
- b=GslJz+iYco3iY/UeNqXdKyhZpRqH+hP/inxsAVuv8qYUwxWAJ3lGgqIjEZxuTie25o
- 9f6osrzLfL2fJyv+EzyXYr9Yr9prIR8taxcWljdx/PQ3fg8VdlX1OxmwBevHk232YC3J
- cx/IUK3rLOmGG1lKFBeuVHoCbrC7jaMqhtQzf1EsObBUkVICuQvf9LWUFjNhHgaU67j8
- AtRO8bWS82X4krzpBPk+H6wFKvGtESx4bvx6wzk9eGpXsOkzhALqzSmmSVsOw3bgMZEa
- cw9Qdetq6krNAjhXZdzXFdSLrdEHTKMPZW0oHGqsxB2SqGXhebsoW2ocFRs8me6XbkcC
- a3ZQ==
-X-Gm-Message-State: AOJu0YxfYqQsYJQdIBq4Db1rZl9ZyUtY9/eGzQ3JXAt9ozf4DbMtLZCz
- HGtylml7R9cBAUgHU/W9GCk845V3oJpGPSxKACSKqTuQb4NCDvFVlC0C27Tg7Os=
-X-Google-Smtp-Source: AGHT+IEDTU2Zv8n4q4EpIsOWBzw5b+IeawLaHcbWmYv4Bjdg9MsJA0sxgZCZSz4st7vLfhCCHjo0Hg==
-X-Received: by 2002:a05:6a00:238d:b0:6db:6fc9:5e79 with SMTP id
- f13-20020a056a00238d00b006db6fc95e79mr4064280pfc.3.1706026675448; 
- Tue, 23 Jan 2024 08:17:55 -0800 (PST)
+ bh=Pn04OMQMlQSwCcJHQ5cMYbx+ikgt1jnLNW8k0MO7c6Q=;
+ b=qv3vrTo0te8abNR54qEwps68Od8niHcY7loUNT/Ek/fwUBVQHhj5qy0844EYAZNFnJ
+ s6F/69cErtXmjtHpbgYcAuG/8cEW5NfEYB6R05T19w0JN7dXxvQLgPV/dUNkjzHP6EUM
+ 2l/F8nGEunUCfnXKej7qcUTJq4WoLTP8MBIRYh4o61AGB9TV02PUib1yoIoIe72gBH10
+ WozMs4vui4iJLPo2OT6nB+nUF1o+nSCUAW5GwcOqMfMrpNwX6XWtSdT8c0vz4HXCJk5W
+ 45QDGVyk0AQb7XRT/Mx4sGsrAEtr3+HBhDbD3pNsgZ4KHdDeP6epJ8kRGd18Yu7RJIOA
+ mx2Q==
+X-Gm-Message-State: AOJu0YzC1HWOX7igvzb+CvbDAadlxeZSvJikfBFZt8NkrE9r5Xq9RP/J
+ 8rqfSDcmHc+3Gzzm25/0UT4U7WahJdBx52NKOdTocueYfI8konmm+6wHEjw1kGg=
+X-Google-Smtp-Source: AGHT+IG8pbBfLTH66a18ZX3+Gj45d+NBy9vK6I8DrG67uUiea0AfWj3UIFFUPMAIpWm5d6U+a8e8XQ==
+X-Received: by 2002:aa7:9902:0:b0:6db:e731:5ecb with SMTP id
+ z2-20020aa79902000000b006dbe7315ecbmr2546935pff.11.1706026849119; 
+ Tue, 23 Jan 2024 08:20:49 -0800 (PST)
 Received: from ?IPV6:2001:44b8:2176:c800:94f0:22fe:dda1:1842?
  (2001-44b8-2176-c800-94f0-22fe-dda1-1842.static.ipv6.internode.on.net.
  [2001:44b8:2176:c800:94f0:22fe:dda1:1842])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a056a00244500b006da19433468sm11799778pfj.61.2024.01.23.08.17.52
+ r28-20020a635d1c000000b005c67a388836sm10226073pgb.62.2024.01.23.08.20.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jan 2024 08:17:54 -0800 (PST)
-Message-ID: <20117cb1-b167-425d-ae7c-a5e149264f70@linaro.org>
-Date: Wed, 24 Jan 2024 02:17:49 +1000
+ Tue, 23 Jan 2024 08:20:48 -0800 (PST)
+Message-ID: <2fda5397-0fbf-4d07-8674-3ad7a1d8c209@linaro.org>
+Date: Wed, 24 Jan 2024 02:20:43 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/arm: Fix A64 scalar SQSHRN and SQRSHRN
+Subject: Re: [PATCH] target/arm: Fix incorrect aa64_tidcp1 feature check
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-References: <20240123153416.877308-1-peter.maydell@linaro.org>
+References: <20240123160333.958841-1-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240123153416.877308-1-peter.maydell@linaro.org>
+In-Reply-To: <20240123160333.958841-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,32 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/24/24 01:34, Peter Maydell wrote:
-> In commit 1b7bc9b5c8bf374dd we changed handle_vec_simd_sqshrn() so
-> that instead of starting with a 0 value and depositing in each new
-> element from the narrowing operation, it instead started with the raw
-> result of the narrowing operation of the first element.
-> 
-> This is fine in the vector case, because the deposit operations for
-> the second and subsequent elements will always overwrite any higher
-> bits that might have been in the first element's result value in
-> tcg_rd.  However in the scalar case we only go through this loop
-> once.  The effect is that for a signed narrowing operation, if the
-> result is negative then we will now return a value where the bits
-> above the first element are incorrectly 1 (because the narrowfn
-> returns a sign-extended result, not one that is truncated to the
-> element size).
-> 
-> Fix this by using an extract operation to get exactly the correct
-> bits of the output of the narrowfn for element 1, instead of a
-> plain move.
+On 1/24/24 02:03, Peter Maydell wrote:
+> A typo in the implementation of isar_feature_aa64_tidcp1() means we
+> were checking the field in the wrong ID register, so we might have
+> provided the feature on CPUs that don't have it and not provided
+> it on CPUs that should have it. Correct this bug.
 > 
 > Cc:qemu-stable@nongnu.org
-> Fixes: 1b7bc9b5c8bf374dd3 ("target/arm: Avoid tcg_const_ptr in handle_vec_simd_sqshrn")
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/2089
+> Fixes: 9cd0c0dec97be9 "target/arm: Implement FEAT_TIDCP1"
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/2120
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/tcg/translate-a64.c | 2 +-
+>   target/arm/cpu-features.h | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
