@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34F4839282
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7FF8392E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:35:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSIZA-0007rH-Ly; Tue, 23 Jan 2024 10:19:56 -0500
+	id 1rSInC-0004Nd-06; Tue, 23 Jan 2024 10:34:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rSIZ3-0007lV-QN; Tue, 23 Jan 2024 10:19:50 -0500
-Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rSIn7-0004JI-J5
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:34:21 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manolodemedici@gmail.com>)
- id 1rSIZ2-0003yQ-8W; Tue, 23 Jan 2024 10:19:49 -0500
-Received: by mail-io1-xd2c.google.com with SMTP id
- ca18e2360f4ac-7bed8fee278so162884939f.2; 
- Tue, 23 Jan 2024 07:19:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rSIn5-0006ds-Qw
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:34:21 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40e7065b7bdso53073705e9.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 07:34:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706023186; x=1706627986; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sw6EVIsFx+oAF6CbewijJKoaePtDE6G+Gtlr0nDnTt0=;
- b=hcKH3lHGTUXUKTU/3Gv3+bbcGj697edXTMDdDutvATg+cmGCmXKZGq5Zfa02/jUSGg
- 9WSEnamuBJqyLFNjdYvFVLI36lyJGY0fR/8Fyx5BaRmWF7aSCc6Rhq3UXSYw1nmteCbb
- w+TazjIdgSgwpujuQXJwRYV7QgJQj56+sRS9NzsIUbvOTx0eN/OMsR5W6KYHNt775OFy
- LvuYHD+izxpNpAHNg5x6tMX73Ngsc7IwpPBVTYJdi63xXTc2BJTXNY0yo1LoMyotRwvu
- hUCG2nVrBtMvKfuv0JR4tJQ/ww5uGJZd8z2wTjCNdAW6GEFObhL9dMmSp74uJbT1v2IV
- jI/g==
+ d=linaro.org; s=google; t=1706024058; x=1706628858; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WserJn90ElmaLFKu56K8+uISef20eii9M5Mz4+TMvho=;
+ b=qY2FlyLkZk80wBcCUV+dwD8aPMknPtp+1ktRyPQ/fer+R4qx34saGu2JFWFukPDpNe
+ Nj8IEKM9DuwUvuZWCJ2FAhnuSl1CW9eUDVhUns4WMcmMqIokatmTcFgr0lAf3I2aqejb
+ vW7Pc2HStswp1D6Gcz88jgGb6CdPBxDPySWPMY3f0iRHngjGakrjp+Wd3mRB3RRAQ4Y9
+ CuUZ2VjZDABe5ugc6kpKjRe3V6wyDnEKR6ZogVB02p8Mu495wHVjIUjG9IqszIlVnbtV
+ zJlzwyaH0McR0Yvurklgjxw/f/I65b5g0ASOhuYNb2XRvsHFMkEH3c9BdA0oxx+4LX1f
+ 46zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706023186; x=1706627986;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sw6EVIsFx+oAF6CbewijJKoaePtDE6G+Gtlr0nDnTt0=;
- b=tiNwZoCyv8mwDPdrjq6yZ0fx/5cmIg35K0t2lFJVOMOnqXgZzSWfKcSZ3aos+WjMmF
- TU++Tvbszd1AQSUfPuuQo9fSjid0cfOL+6hBB4nceihDQpxn+07z3t7RkNP11QvU5Seq
- 0p+4p4Lni8onvpsoEbqJwIs7zwnGOreeokpa2D93NLy+4G6Hr2BLk/YcHh4xeiUTgXT0
- be+l6Sh+rT3a95dkUU6fSThsYqmKR0tlLxolD3G0Y0/ouMHypUmk/A0s9tCeD2iQUzy9
- 3CHpCdGGijblwK+m8qzzok2YAeEW55AJtXmkIbFwAGnERBMdeA7LaSqwbP7jDbZ8XEd0
- iZoA==
-X-Gm-Message-State: AOJu0Yzn98ViDKsud7f4HaUHt3ACUyhuCvl8mgVqRKHKiouDerQ3o7yL
- /K4r7MApaFwLLiGhwyU4p/FDPgaZIFbM8c4UHvEUGXmL0sWkgm1KGz2qrMroIk5LepvBgyJoM4S
- xOSJAOqDx1L03n7OnHVuA3WthfyZFw6vN
-X-Google-Smtp-Source: AGHT+IHXlsrqo9+yUOGXJeaBxknSWA7C586sBSckqphfhcr3FZUvkIYn7Z4bkaqleGciWxQVfcVg7/IlME+AzPfXna4=
-X-Received: by 2002:a92:d24d:0:b0:360:8bfd:78f1 with SMTP id
- v13-20020a92d24d000000b003608bfd78f1mr5937434ilg.47.1706023186511; Tue, 23
- Jan 2024 07:19:46 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706024058; x=1706628858;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WserJn90ElmaLFKu56K8+uISef20eii9M5Mz4+TMvho=;
+ b=NAB0U9mIrOmbURil0kbOWCbC35uscMCua6iiAhtfhxu99jFmr3PIS98jVRccRUp8kg
+ ch5DgSJ5pw1/D7FjQr5HPhv+ZDWK8c6Igg90P6YEZHMvj3qCq/cJ+wUQCgGzvM/GltEh
+ p1GEHi9V6vwN2762mskchfzk3UTydipBnOmXTA4YqOPlxPgsP1JwvpVF5RGCAcCsVUkm
+ 0c9rQeJnEt4rYsujuiy0QaF7/hXvnuKE1rzWePm7K1MAUglGRuUyTbt4J+5LhsC0kQmi
+ 1gB8U3K+d87SqwddbJBr5dB2lsgm6fGAy+aU2e6ERP2NoAyxTCtZycGvCUTL4V4C1IEq
+ g2VA==
+X-Gm-Message-State: AOJu0Yz4b5bYS1HxM1ZOp7r+t3FtfubKDSRwsdZfubF2at4V5+LWdDG6
+ uVCw6hzX2KFcyk7xwEwXwWZjfKX3udoeGkMQJJNJPDbboWGbbTFZRmk1OKK4iws=
+X-Google-Smtp-Source: AGHT+IEBFyF6iVT8DKr7VQkAATYkR7LQHzvCMNsXvztaHwPwQIz+EI8S8oKKtgyG/MA/Uj0zZ1q8JA==
+X-Received: by 2002:a05:600c:4393:b0:40e:526b:d5f5 with SMTP id
+ e19-20020a05600c439300b0040e526bd5f5mr167632wmn.247.1706024058481; 
+ Tue, 23 Jan 2024 07:34:18 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ f13-20020a05600c4e8d00b0040eb6ce137asm2577783wmq.39.2024.01.23.07.34.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Jan 2024 07:34:18 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH] target/arm: Fix A64 scalar SQSHRN and SQRSHRN
+Date: Tue, 23 Jan 2024 15:34:16 +0000
+Message-Id: <20240123153416.877308-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAHP40mnyxgmwY39jKMHsZCrCXdozNwFO+RDTYMPUhfkGu_pfFQ@mail.gmail.com>
- <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
-In-Reply-To: <CAFEAcA-9LS2hP=Ju6K_wWdhFWVrwhYinSaq6P0s5xmcE6pDtKw@mail.gmail.com>
-From: Manolo de Medici <manolodemedici@gmail.com>
-Date: Tue, 23 Jan 2024 16:19:39 +0100
-Message-ID: <CAHP40mnvG=5LtxUr7bpOUFs+1PQSK+bZ+fy0414p0D6u5qGkjw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] Avoid conflicting types for 'copy_file_range'
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, bug-hurd@gnu.org, 
- Qemu-block <qemu-block@nongnu.org>, Kevin Wolf <kwolf@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2c;
- envelope-from=manolodemedici@gmail.com; helo=mail-io1-xd2c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -87,95 +90,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 22, 2024 at 6:04=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> (Cc'ing the block folks)
->
-> On Thu, 18 Jan 2024 at 16:03, Manolo de Medici <manolodemedici@gmail.com>=
- wrote:
-> >
-> > Compilation fails on systems where copy_file_range is already defined a=
-s a
-> > stub.
->
-> What do you mean by "stub" here ? If the system headers define
-> a prototype for the function, I would have expected the
-> meson check to set HAVE_COPY_FILE_RANGE, and then this
-> function doesn't get defined at all. That is, the prototype
-> mismatch shouldn't matter because if the prototype exists we
-> use the libc function, and if it doesn't then we use our version.
->
-> > The prototype of copy_file_range in glibc returns an ssize_t, not an of=
-f_t.
-> >
-> > The function currently only exists on linux and freebsd, and in both ca=
-ses
-> > the return type is ssize_t
-> >
-> > Signed-off-by: Manolo de Medici <manolo.demedici@gmail.com>
-> > ---
-> >  block/file-posix.c | 9 +++++----
-> >  1 file changed, 5 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/block/file-posix.c b/block/file-posix.c
-> > index 35684f7e21..f744b35642 100644
-> > --- a/block/file-posix.c
-> > +++ b/block/file-posix.c
-> > @@ -2000,12 +2000,13 @@ static int handle_aiocb_write_zeroes_unmap(void=
- *opaque)
-> >  }
-> >
-> >  #ifndef HAVE_COPY_FILE_RANGE
-> > -static off_t copy_file_range(int in_fd, off_t *in_off, int out_fd,
-> > -                             off_t *out_off, size_t len, unsigned int =
-flags)
-> > +ssize_t copy_file_range (int infd, off_t *pinoff,
-> > +                         int outfd, off_t *poutoff,
-> > +                         size_t length, unsigned int flags)
->
-> No space after "copy_file_range". No need to rename all the
-> arguments either.
+In commit 1b7bc9b5c8bf374dd we changed handle_vec_simd_sqshrn() so
+that instead of starting with a 0 value and depositing in each new
+element from the narrowing operation, it instead started with the raw
+result of the narrowing operation of the first element.
 
-Ok
+This is fine in the vector case, because the deposit operations for
+the second and subsequent elements will always overwrite any higher
+bits that might have been in the first element's result value in
+tcg_rd.  However in the scalar case we only go through this loop
+once.  The effect is that for a signed narrowing operation, if the
+result is negative then we will now return a value where the bits
+above the first element are incorrectly 1 (because the narrowfn
+returns a sign-extended result, not one that is truncated to the
+element size).
 
->
-> >  {
-> >  #ifdef __NR_copy_file_range
-> > -    return syscall(__NR_copy_file_range, in_fd, in_off, out_fd,
-> > -                   out_off, len, flags);
-> > +    return (ssize_t)syscall(__NR_copy_file_range, infd, pinoff, outfd,
-> > +                            poutoff, length, flags);
->
-> Don't need a cast here, because returning the value will
-> automatically cast it to the right thing.
->
+Fix this by using an extract operation to get exactly the correct
+bits of the output of the narrowfn for element 1, instead of a
+plain move.
 
-Ok
+Cc: qemu-stable@nongnu.org
+Fixes: 1b7bc9b5c8bf374dd3 ("target/arm: Avoid tcg_const_ptr in handle_vec_simd_sqshrn")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2089
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/tcg/translate-a64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> >  #else
-> >      errno =3D ENOSYS;
-> >      return -1;
->
-> These changes aren't wrong, but as noted above I'm surprised that
-> the Hurd gets into this code at all.
->
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 27335e85407..340265beb05 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -8343,7 +8343,7 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
+         narrowfn(tcg_rd_narrowed, tcg_env, tcg_rd);
+         tcg_gen_extu_i32_i64(tcg_rd, tcg_rd_narrowed);
+         if (i == 0) {
+-            tcg_gen_mov_i64(tcg_final, tcg_rd);
++            tcg_gen_extract_i64(tcg_final, tcg_rd, 0, esize);
+         } else {
+             tcg_gen_deposit_i64(tcg_final, tcg_final, tcg_rd, esize * i, esize);
+         }
+-- 
+2.34.1
 
-I think Sergey explained very well why the Hurd its this piece of code
-
-> Note for Kevin: shouldn't this direct use of syscall() have
-> some sort of OS-specific guard on it? There's nothing that
-> says that a non-Linux host OS has to have the same set of
-> arguments to an __NR_copy_file_range syscall. If this
-> fallback is a Linux-ism we should guard it appropriately.
->
-> For that matter, at what point can we just remove the fallback
-> entirely? copy_file_range() went into Linux in 4.5, apparently,
-> which is now nearly 8 years old. Maybe all our supported
-> hosts now have a new enough kernel and we can drop this
-> somewhat ugly syscall() wrapper...
-
-I'd love to remove the syscall wrapper if you give me the ok to do it
-
-Thanks
 
