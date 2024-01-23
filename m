@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C5C8388C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:22:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6008388D3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 09:24:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSC2x-0002BN-E1; Tue, 23 Jan 2024 03:22:15 -0500
+	id 1rSC4U-0002om-Dk; Tue, 23 Jan 2024 03:23:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rSC2u-0002B1-P9
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:22:12 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rSC2s-0000Ub-7G
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:22:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705998129;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=M36Yb2onoTJ/82rN36RtLVVxqYNaSW2ddYYyVrYF8A4=;
- b=KUE8TiBruAWje2oM5fXfYL5aoiwQKAczKeF6sH06Sr9A5CjmNjScnH2mlNBvNhVrALmsCX
- I3jGldyxtEussYFmWLoNLswV3CX1LKJIPwXNAbA8c82lxp8U6L2e/J+5ctuMFx6rdCVEzc
- aIked40m2jz8Pfa3QKe+JbteIwGxjME=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-203-GYwBV3wROPyNbVd2wqR_8Q-1; Tue, 23 Jan 2024 03:22:05 -0500
-X-MC-Unique: GYwBV3wROPyNbVd2wqR_8Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A12C1066143;
- Tue, 23 Jan 2024 08:22:05 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C39EB51D5;
- Tue, 23 Jan 2024 08:22:00 +0000 (UTC)
-Date: Tue, 23 Jan 2024 08:21:55 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org, peterx@redhat.com, farosas@suse.de,
- armbru@redhat.com
-Subject: Re: [PATCH] Make 'uri' optional for migrate QAPI
-Message-ID: <Za93I-50U745B27C@redhat.com>
-References: <20240123064219.40514-1-het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC4N-0002oP-1a
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:23:43 -0500
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSC4K-0000lE-Jp
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 03:23:42 -0500
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-40e490c2115so30427295e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 00:23:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1705998217; x=1706603017; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/Cs5nWKYVBc+kpwNwGbUPObeH2Tdxuuvq0yhDBSfUME=;
+ b=x14fg7pbEFN5PEFFAMIdpkRrrKWME0zsp9kyzwhOHT8DyPVYRLSA/Ar/1SWaV+IvbK
+ lbUHT5DUCx+AXW1cWbdZpHxgLiwFH359Vd8pChL8Vr4k2aTR+cS4/eM78jmpi8zmdH3c
+ FGX/BIAGwRQfFNVD7KgKiwB8RMjRR6nHqhKoQG+38RmeNNR+UDeERYUOlHLxmPZbvzmG
+ 27vH8+h0EN1/ZIPdXpTYpr3M1lZ/CrZET/lYpxDiY5D1RDTzACXBOUwjJNqUHcdvnWZS
+ la5C0pxXFluxkh7XXP7NxnUlMlhjyNBhmjm7/uRXFid348IYKoI9f5pNReh71kQYDBol
+ W3jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705998217; x=1706603017;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/Cs5nWKYVBc+kpwNwGbUPObeH2Tdxuuvq0yhDBSfUME=;
+ b=WBKuHgV0MoE3Rn3Q6h4QbUP6vjtdTikpn1E4O33RBbOK2gwsYeKAALHVa78hBT/L0D
+ ALvHIcGWKENiH5OVDnXWQjUoxfml5yJM62laGzClpiX+3AVAnus6n7SGbzOq74TdFQTP
+ 5ypgPls+VzaDuL3ikAsq96RKkntqgGQSMF/z55EmA3mYDBC3eFbhCKvji3YX1/NAzbfx
+ WYep5jumg5rWY6kT/xJ5IB0NfNvPjVReBzgBLchXdvgzuwsiNhazvpE/vlPEXgTYBfN4
+ Q4obLueCtBzhEgWhPo/FylwOUBZfwFINw4m7CoouT3BoOnepqy4oniMxP1MR2mnST5xN
+ TgWQ==
+X-Gm-Message-State: AOJu0YxY+przsz4F1JerduJdhOFKLIZpnRWzJIOQXel5hHRmj8uoAaOM
+ Xofyj8J88Pno0DVXfzFmmqk1x0nVqol5xLLLp58LKP1W/00juIi0YYPz6H4Jb40=
+X-Google-Smtp-Source: AGHT+IHQDHo1He7uOJnON4TDNJxJfN0gNc6MhQPM3JP7K0y9oVYxzmpq8ZWPYBDkS6QP5i2VK5ZveQ==
+X-Received: by 2002:a05:600c:4fc5:b0:40e:6ca9:98a0 with SMTP id
+ o5-20020a05600c4fc500b0040e6ca998a0mr272930wmq.15.1705998217380; 
+ Tue, 23 Jan 2024 00:23:37 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.78])
+ by smtp.gmail.com with ESMTPSA id
+ w6-20020adfee46000000b00337cf4a20c6sm13077246wro.31.2024.01.23.00.23.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 00:23:37 -0800 (PST)
+Message-ID: <625695f3-d739-4a46-8944-01447e4cdbf1@linaro.org>
+Date: Tue, 23 Jan 2024 09:23:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240123064219.40514-1-het.gala@nutanix.com>
-User-Agent: Mutt/2.2.10 (2023-03-25)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] hw/core/qdev.c: add qdev_get_human_name()
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <cover.1705938003.git.manos.pitsidianakis@linaro.org>
+ <15b15d6d4f2a1706b5e2d85ab18e25bcb03e72c2.1705938003.git.manos.pitsidianakis@linaro.org>
+ <1c9c1750-d9c4-4743-afa4-7fafc1f82ed8@linaro.org>
+ <7pgcr.qacudqer98uf@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <7pgcr.qacudqer98uf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,45 +94,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 23, 2024 at 06:42:19AM +0000, Het Gala wrote:
-> 'uri' argument should be optional, as 'uri' and 'channels'
-> arguments are mutally exclusive in nature.
+On 23/1/24 09:15, Manos Pitsidianakis wrote:
+> On Tue, 23 Jan 2024 10:13, Philippe Mathieu-Daudé <philmd@linaro.org> 
+> wrote:
+>> Hi Manos,
+>>
+>> On 23/1/24 09:09, Manos Pitsidianakis wrote:
+>>> Add a simple method to return some kind of human readable identifier for
+>>> use in error messages.
+>>>
+>>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>>> ---
+>>>   hw/core/qdev.c         | 10 ++++++++++
+>>>   include/hw/qdev-core.h | 15 +++++++++++++++
+>>>   2 files changed, 25 insertions(+)
+>>>
+>>> diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+>>> index 43d863b0c5..499f191826 100644
+>>> --- a/hw/core/qdev.c
+>>> +++ b/hw/core/qdev.c
+>>> @@ -879,6 +879,16 @@ Object *qdev_get_machine(void)
+>>>       return dev;
+>>>   }
+>>> +char *qdev_get_human_name(DeviceState *dev)
+>>> +{
+>>> +    if (!dev) {
+>>> +        return g_strdup("");
+>>> +    }
+>>> +
+>>> +    return dev->id ?
+>>> +           g_strdup(dev->id) : object_get_canonical_path(OBJECT(dev));
+>>> +}
+>>> +
+>>>   static MachineInitPhase machine_phase;
+>>>   bool phase_check(MachineInitPhase phase)
+>>> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+>>> index 151d968238..a8c742b4a3 100644
+>>> --- a/include/hw/qdev-core.h
+>>> +++ b/include/hw/qdev-core.h
+>>> @@ -993,6 +993,21 @@ const char *qdev_fw_name(DeviceState *dev);
+>>>   void qdev_assert_realized_properly(void);
+>>>   Object *qdev_get_machine(void);
+>>> +/**
+>>> + * qdev_get_human_name() - Return a human-readable name for a device
+>>> + * @dev: The device
+>>> + *
+>>> + * .. note::
+>>> + *    This function is intended for user friendly error messages.
+>>> + *
+>>> + * Returns: A newly allocated string containing the device id if not 
+>>> null,
+>>> + * else the object canonical path if not null. If @dev is NULL, it 
+>>> returns an
+>>> + * allocated empty string.
+>>
+>> In which case do we want to call this with NULL?
 > 
-> Fixes: 074dbce5fcce (migration: New migrate and
-> migrate-incoming argument 'channels')
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> ---
->  qapi/migration.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> None I could think of, just future-proofing the NULL case.
+
+I'd rather have a raw assert() as future-proof API, avoiding
+dubious corner cases :)
+
 > 
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index eb2f883513..197d3faa43 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1757,7 +1757,7 @@
->  #
->  ##
->  { 'command': 'migrate',
-> -  'data': {'uri': 'str',
-> +  'data': {'*uri': 'str',
->             '*channels': [ 'MigrationChannel' ],
->             '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
->             '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
-
-Hmm, this mistake shows a lack of coverage in migration-test.c for
-the 'channels' argument. I thought the original series adding 'channels'
-included the tests for this. Either way, this needs to come with test
-coverage for use of 'channels', with 'uri' omitted.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>>> + *
+>>> + * Use g_free() to free it.
+>>> + */
+>>> +char *qdev_get_human_name(DeviceState *dev);
+>>> +
+>>>   /* FIXME: make this a link<> */
+>>>   bool qdev_set_parent_bus(DeviceState *dev, BusState *bus, Error 
+>>> **errp);
+>>
 
 
