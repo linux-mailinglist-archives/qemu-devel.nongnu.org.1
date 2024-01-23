@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D505838E30
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 609B8838E38
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 13:12:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSFan-00049H-03; Tue, 23 Jan 2024 07:09:25 -0500
+	id 1rSFda-0005An-M3; Tue, 23 Jan 2024 07:12:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFaj-000485-7s
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:09:22 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFdU-00059o-Ex
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:12:12 -0500
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFah-0007rr-2F
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:09:20 -0500
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rSFdS-0008Op-7s
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 07:12:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=JGo7DVnOi6ooU4J7/M/WdclRGhnP+nbv6XeTxVKILDY=; b=MhBFf3vOSSj1gLDOrRwHcn9n80
- 7jf6e6uUf9x2sFEU65w1Gh6XOLK66oGWT40+sVRpIotiCSR5iJ87ZMsQmfreUzfJA389CEldyczwN
- /yRBZJSnrztHawqYmVOXUpbruUj2WdoUV2/QH3iUkOeoGAy/8SNrhfIu6wPSxsU8HU0Q=;
-Date: Tue, 23 Jan 2024 13:09:23 +0100
+ bh=RFCEqXaYsbjfE3WI5hBYmaEDPRym06irZuJpcai79l0=; b=MSX7Ef6JbTg8Hh8rbruOBNwCKZ
+ qnhgqZPE00WsSc/oGB3Z1BQUg9wStK9+8WccuqxGQ6/U5Qy6m6aZpRft3rZU+Ko8smHKlJusrxpFO
+ sYCpV85QDEyR8nIyVgH97bIcyerkfrx4KKZOxdHrRq9QlYxaqjfY7aw/pPsAXyv6Un2w=;
+Date: Tue, 23 Jan 2024 13:12:17 +0100
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, ale@rev.ng, richard.henderson@linaro.org
-Subject: Re: [RFC PATCH 01/34] target: [PAGE_VARY] Use PAGE_VARY for all
- softmmu targets
-Message-ID: <yctbjnfh4fqqbdymxvt4sqjkpfc5g5ch5xfviy4xf6ecpybztu@peoixwu7cm6r>
+Subject: Re: [RFC PATCH 26/34] Wrap target macros in functions
+Message-ID: <n2u2ifeti6fqzppvojuyi4i4phzrb4xbk3x2rpjhhesnwxwbdy@lmf3m6fqcr7g>
 References: <20240119144024.14289-1-anjo@rev.ng>
- <20240119144024.14289-2-anjo@rev.ng>
- <30632dae-21cf-4134-bf82-cc075a7a4950@linaro.org>
+ <20240119144024.14289-27-anjo@rev.ng>
+ <a69519cf-27f6-479e-9ec6-ff7e11454c90@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <30632dae-21cf-4134-bf82-cc075a7a4950@linaro.org>
+In-Reply-To: <a69519cf-27f6-479e-9ec6-ff7e11454c90@linaro.org>
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -63,18 +62,50 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/01/24, Philippe Mathieu-Daudé wrote:
-> On 19/1/24 15:39, Anton Johansson wrote:
-> > Allows for future commits to use TargetPageBits to access page bits and
-> > mask, thus making TARGET_PAGE_* independent of softmmu target.
+On 23/01/24, Philippe Mathieu-Daudé wrote:
+> Hi Anton,
+> 
+> On 19/1/24 15:40, Anton Johansson wrote:
+> > Adds wrapper functions around common target specific macros required by
+> > accel/tcg.
 > > 
-> > In the future, this will also be important fo allowing heterogeneous CPUs
-> > on the same board.
+> > Signed-off-by: Anton Johansson <anjo@rev.ng>
+> > ---
+> >   include/hw/core/cpu.h |  9 +++++++
+> >   cpu-target.c          | 62 +++++++++++++++++++++++++++++++++++++++++++
+> >   2 files changed, 71 insertions(+)
+> > 
+> > diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> > index 57d100c203..a2d65c1d7a 100644
+> > --- a/include/hw/core/cpu.h
+> > +++ b/include/hw/core/cpu.h
+> > @@ -26,6 +26,7 @@
+> >   #include "exec/vaddr.h"
+> >   #include "exec/memattrs.h"
+> >   #include "exec/tlb-common.h"
+> > +#include "exec/memop.h"
+> >   #include "qapi/qapi-types-run-state.h"
+> >   #include "qemu/bitmap.h"
+> >   #include "qemu/rcu_queue.h"
+> > @@ -1164,6 +1165,14 @@ void cpu_exec_unrealizefn(CPUState *cpu);
+> >    * what you are doing!
+> >    */
+> >   bool target_words_bigendian(void);
+> > +bool target_supports_mttcg(void);
+> > +bool target_has_precise_smc(void);
+> > +int target_long_bits(void);
+> > +int target_phys_addr_space_bits(void);
+> > +uint8_t target_insn_start_words(void);
+> > +uint8_t target_default_memory_order(void);
+> > +uint8_t target_tlb_dyn_max_bits(void);
+> > +MemOp target_endian_memory_order(void);
 > 
-> Yeah I carry an almost similar patch :)
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> None of these helpers take argument. I don't understand
+> how they can be called in heterogeneous context.
 
-Suspected there might be some overlap with this patchset:) Do you have 
-branch I could rebase on to remove conflicts?
+No you're right, I was focused mostly on getting accel/tcg to compile 
+with hetrogeneous being a goal downt the line.
+
+I like the idea of moving these fields to a struct filled out per 
+target, but dispatching would also work.
 
