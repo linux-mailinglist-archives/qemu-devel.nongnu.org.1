@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0709839489
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F8F839485
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:18:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJSv-0003We-RB; Tue, 23 Jan 2024 11:17:33 -0500
+	id 1rSJSw-0003X9-IW; Tue, 23 Jan 2024 11:17:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rSJSp-0003Tc-3v
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:27 -0500
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1rSJSr-0003VP-FA
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:31 -0500
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rSJSm-0007TJ-2m
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:26 -0500
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2906bd9f2ebso2098728a91.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:23 -0800 (PST)
+ id 1rSJSp-0007XW-DO
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:29 -0500
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-290d59df3f0so495989a91.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1706026642; x=1706631442; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o+uMzKgEdWxAfaTKc31QCrp/gGCfKuJesU8lsEew9OQ=;
- b=gplP29iVSScKTk34+wZ8YaVmjICPbnpENSyV7qfE9dBhm2L2dy1ADtJh8DyBrSpCbl
- q8HtzfWfsm2y8WOBhz7dKR/9LjqA04i4vtegq3ZtUGjp/OAZxHTCXv7CbaKpGSTkRNFE
- 1LxoPNQo4p9PehvMU4xjHY2aaNVUNabdHQcHLHD0vAMchg/xXN8qIBbjOPmUX/av593W
- I+IwtVLmSqmMsGzOfHm22J+j3RmUUZr3m2YhSoPvhIYmlVdIph+kcn3NEK8gG2XCU8ZN
- uiU/oIl5Sk4gYEdW74r5V0ghpmtSFXfarFSpXlqd00Uox/CxdcY0BvyD4BWgbxdweQK4
- F0lw==
+ d=ventanamicro.com; s=google; t=1706026645; x=1706631445; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kzJ+UgJJuE7W/tRb8snvZi1WjQ/6d52gsikzd4/7YbA=;
+ b=Ou6svFNNPZaeNa2JwhBzkS399OgHjkGFLcMJTru9CIKZPy2uuXYmRH6KIDqBuAHGrb
+ T1MwtPL63aUAEP2ttAoMY5W5R62rBTl1karQ7qSoC/LnjXTK5pab7ZL/UGbpRt1smFgU
+ 2knIHhtSin4wH7sEwP5fsu+57+z3Kd0YJCwALX6ctYJ3sS6jqfkPyYju1DJLFN35OcIP
+ eEdE5WjDJb/kNASx9KqzIM5B29amcCMprts4bDq2nKLJHtcCoS8hRkdVRH9cDCU29kVd
+ 9Iof4xTRPNexYmTDhSITUjbLSEXfOwGHXL6g31H8yVSEc/kxT3b9k+hxgh0EZHtRkJWE
+ oZ3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706026642; x=1706631442;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=o+uMzKgEdWxAfaTKc31QCrp/gGCfKuJesU8lsEew9OQ=;
- b=OjTcbypI2Vi2BzsRdDAys32gyrIWnr7MJQv91PKoE6WowyNGICLrBmYvdtQTxdnsIF
- BafYT/CMQFl3PmjT6lK0x3rUwCYBVt/4zDFzLJbR177yksxKBJqXgTWbNMzSZNtPUEkS
- OW99BoHJuQ9nr5JmKiYyuBFu8QQ77J88PFDHf1I/gpM2qN7cJ/FMJBe0YxSfvZnAMTh2
- pDWBVb35T567onjCGHFoyNgKuSrB2fJ6SPS8BINstoizKEc/ZBgumRAiK67A1acZwu9a
- faIRyUK9etouAzG+9tJDdael4u4lscp0kIXAGyTdRd7+y/Gvy0qdWcMHjZRBltzc8Ou5
- x7NA==
-X-Gm-Message-State: AOJu0YydEZDKDYXBOfnu+mJ1qY00aylodhzY34Tx9Mt/ASYTBu8AZeYh
- c5I3ZW7InEpNamb/nevrSjlSmEOWDkHhzQH0mhp7zpeeh05C2rzuWRYTVNNU9+7hBQNFPVUR75t
- X
-X-Google-Smtp-Source: AGHT+IHLlmK+3asEIWRwGkfIALuLSuka+7+zFVfUpIxr6eMhMnjtuu0bBVX3V8wotnnveIrNnetOzA==
-X-Received: by 2002:a17:90b:3cf:b0:28e:3b7f:a2af with SMTP id
- go15-20020a17090b03cf00b0028e3b7fa2afmr7414350pjb.47.1706026641730; 
- Tue, 23 Jan 2024 08:17:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706026645; x=1706631445;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kzJ+UgJJuE7W/tRb8snvZi1WjQ/6d52gsikzd4/7YbA=;
+ b=BRdi41ukkSIh9TBR/KYpcfmUg+jswCikBzkOKHYquaFCApayjP1DF5cGRHb7hY0BcM
+ rdYUovc7qCuG5xmBNP0b8hORxdHzzfvah2oVcXRNtzejKnhx/JyGGn6+7SLBMrpD1yGz
+ HFnZIGlxeD09EvsSdsNLOfaEzGThJaHsQOPECI/QcGDHlm2BIG5KNYIBhOBl3r3P6Gyq
+ SWPZ1v/ctgfCvHc6LqGeA5MPVYc+K0uIyqS+w1Ms4umjoyd4JHsYmfX6jKp7PjedyXFc
+ b/b1mQjwf7tU3u1XTa8eXuMZcxctd2GSRAmdewhDMmYnwp2VF4SEtcVVEpzdjBMM2AuI
+ dOPA==
+X-Gm-Message-State: AOJu0YwCdixjIq3ywDrOCGAIjFGj4cd93aa3uh4yUC7huOnOyHt2OXvb
+ s0kdtHvwrPedgcmx7vezvKxFWEjil5LutJT6Tn1NlaAq6LqFbei+y1aF6Df5CFyaaJxR30MwCaH
+ C
+X-Google-Smtp-Source: AGHT+IGOV0cXnOulctbjRgw7MtjLzFAwnlCcZyvm9DI0IHdvzzwniOgPKrGJt0aWDHMwKci/XSu5Sw==
+X-Received: by 2002:a17:90a:9c5:b0:28f:ee89:8149 with SMTP id
+ 63-20020a17090a09c500b0028fee898149mr3193483pjo.79.1706026645499; 
+ Tue, 23 Jan 2024 08:17:25 -0800 (PST)
 Received: from grind.. ([152.234.127.94]) by smtp.gmail.com with ESMTPSA id
- u14-20020a17090ac88e00b0028bcc2a47e9sm11755686pjt.38.2024.01.23.08.17.18
+ u14-20020a17090ac88e00b0028bcc2a47e9sm11755686pjt.38.2024.01.23.08.17.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 08:17:21 -0800 (PST)
+ Tue, 23 Jan 2024 08:17:25 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 0/3] target/riscv/kvm: support 'vlenb' and vregs[]
-Date: Tue, 23 Jan 2024 13:17:11 -0300
-Message-ID: <20240123161714.160149-1-dbarboza@ventanamicro.com>
+Subject: [PATCH 1/3] target/riscv/kvm: change kvm_reg_id to uint64_t
+Date: Tue, 23 Jan 2024 13:17:12 -0300
+Message-ID: <20240123161714.160149-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240123161714.160149-1-dbarboza@ventanamicro.com>
+References: <20240123161714.160149-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,26 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The field isn't big enough to hold an uint64_t kvm register and Vector
+registers will end up overflowing it.
 
-This short series implements both 'vlenb' and 'vregs[]' in the KVM
-driver.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/kvm/kvm-cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The patches were done a couple of months ago but we were missing some
-changes in Linux (support to 'vlenb' in KVM) that got upstreamed
-recently with Linux 6.8.
-
-Patches based on top of Alistair's riscv-to-apply.next that already has
-the 'remove vlen, add vlenb' changes.
-
-Daniel Henrique Barboza (3):
-  target/riscv/kvm: change kvm_reg_id to uint64_t
-  target/riscv/kvm: initialize 'vlenb' via get-reg-list
-  target/riscv/kvm: get/set vector vregs[]
-
- target/riscv/kvm/kvm-cpu.c | 144 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 138 insertions(+), 6 deletions(-)
-
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 4dec91740b..902180e8a5 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -145,7 +145,7 @@ typedef struct KVMCPUConfig {
+     const char *name;
+     const char *description;
+     target_ulong offset;
+-    int kvm_reg_id;
++    uint64_t kvm_reg_id;
+     bool user_set;
+     bool supported;
+ } KVMCPUConfig;
 -- 
 2.43.0
 
