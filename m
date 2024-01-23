@@ -2,108 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF33838DDA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C729A838DE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 12:51:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSFGr-00062N-6X; Tue, 23 Jan 2024 06:48:49 -0500
+	id 1rSFJ0-0007AE-GB; Tue, 23 Jan 2024 06:51:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rSFGp-000626-Ju; Tue, 23 Jan 2024 06:48:47 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pasic@linux.ibm.com>)
- id 1rSFGn-0003k0-Mt; Tue, 23 Jan 2024 06:48:47 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40NA7t4s023213; Tue, 23 Jan 2024 11:48:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=FDNME5hbzaEnsHDO/Qz7pbl9lDzJUgSQ0UnLA/DbsNg=;
- b=MshiEMMCx/vTnk7QyRAjzl5iTf0oYKdqmMCINEj9k5FSZtPfpGNWDA/qy+JC2I8kNnQU
- MU+7Mp9l1WkZ5YedZ4WVbyhWBiedrRVk2sM4tqpidhnb1x8mK2HgeyzLkjL0v8yZqge/
- xEZmll8tQz0Aot+nlCpMawpBS/psW26RDiLiU/g8l1TsUiGu7vlnFe1THpCI+w755K8n
- jrHgYhE+jmM0v674eCGmyyKE12l0xCK/eZJ6n2cTApRYpUyV015dsh3c0M1f2EcRLZtl
- 5E+uN+e/Maiv/avRhuqQ/lPFDA9pKHBia7FwS1mEyBcTQBvuyedFUgImYIgCxNc1BBV1 Vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vtbe7j3y9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jan 2024 11:48:42 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40NBAw0m024918;
- Tue, 23 Jan 2024 11:48:41 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vtbe7j3y3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jan 2024 11:48:41 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40NBdKW6026879; Tue, 23 Jan 2024 11:48:41 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgt74s8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Jan 2024 11:48:40 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40NBmctF41222816
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Jan 2024 11:48:38 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8A7B2004B;
- Tue, 23 Jan 2024 11:48:37 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 924D220040;
- Tue, 23 Jan 2024 11:48:37 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown
- [9.152.224.212])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 23 Jan 2024 11:48:37 +0000 (GMT)
-Date: Tue, 23 Jan 2024 12:48:35 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, farman@linux.ibm.com, thuth@redhat.com,
- clg@redhat.com, frankja@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org, Halil Pasic
- <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2 3/3] s390x/pci: drive ISM reset from subsystem reset
-Message-ID: <20240123124835.7ea76fb0.pasic@linux.ibm.com>
-In-Reply-To: <c206887f-7bca-4c5a-a416-88951902ff21@linux.ibm.com>
-References: <20240118185151.265329-1-mjrosato@linux.ibm.com>
- <20240118185151.265329-4-mjrosato@linux.ibm.com>
- <20240119220739.0f5739b3.pasic@linux.ibm.com>
- <c206887f-7bca-4c5a-a416-88951902ff21@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFIy-00078A-Uu
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:51:00 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSFIx-0004LF-0c
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 06:51:00 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40eacb4bfa0so21901925e9.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 03:50:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706010657; x=1706615457; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OSEOxyBqJBLSvvvMHEAjv3yLyA28u8IONApUfy+8YUQ=;
+ b=EwyM3gTylkI1J/fVmVPq6Gfzknoep1+8jG493lxHL3+gq10MNw+z7DOvjwOpoBLBhA
+ VhUYN/j89QM2WpiX2qwKoFrCv6j0bCJqQWKbAzSMyDAoX4bf0ZCkuOTvC58j3iindSpy
+ pGJfKyoc0EmwJm7LK7gqpyJBtszsGXcrzejXD0TNw7qUMo2XXGHRkXZx41S4+mfzdsjg
+ 9dSbrWt1geS3AqSRhYDl/9OVZo0BCjoxxzLuRA6Q3iF/BimYZsFsTHYNq69+Qsps4ahQ
+ wFBE5gFVZT0p65nPBo+NPN+VB709bA4EoKUNiGIlXNNZM9AtMmK1SVPT3vvPLpnus2y3
+ Y9zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706010657; x=1706615457;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OSEOxyBqJBLSvvvMHEAjv3yLyA28u8IONApUfy+8YUQ=;
+ b=LXUDUkotDD9uxywfbxGs5DoB9GaLkdUFEP1HQ49w+jWQbfD1k4ZW2Gb77rxTMQou66
+ DkTlwiIrdnQsqFp/pnuvLun987erpZOrGBnhYv/fCOb3DijP4vAM6dNw1Uta00jO2lBn
+ gJ7VccVKipmm7h9PVqLNT2CYTggfUpyDXX6nqFa9WqzgvLVYFPaYHYNpvGCF8UuyGls7
+ 6WIwY3+KS4JV2mYA1zggnSNP0mZvLjRq9ywyFYPxEheN5oFIBksAU4uvxiK9e6eA6omW
+ Gooh1CoTWjDgIYEzyLlgj7V+gr7KrCWNziz0+9alD6BJTM74egW7t4B7+J966daZ3YER
+ tmSA==
+X-Gm-Message-State: AOJu0YxBBgoVetTfgYnzbhRAeF4BpNSMYTeFVNk6jniRnjVUasRGwVQW
+ CfsV69CCgoUNjXWUlUHU6GgsO+047mRD+l8vwWKE+vMnumLcW0fZQYD4j2cwOhQ=
+X-Google-Smtp-Source: AGHT+IES9aNSKgkPD7ykXP2090lQ05RmwZoGsi1XT85DX1zZjubCCURwLVLx1DSnHfPZjLOJMO/upg==
+X-Received: by 2002:a05:600c:6a0b:b0:40e:3b1c:d3a2 with SMTP id
+ jj11-20020a05600c6a0b00b0040e3b1cd3a2mr50760wmb.126.1706010657256; 
+ Tue, 23 Jan 2024 03:50:57 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.78])
+ by smtp.gmail.com with ESMTPSA id
+ u21-20020a05600c139500b0040e4a7a7ca3sm42305464wmf.43.2024.01.23.03.50.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 23 Jan 2024 03:50:56 -0800 (PST)
+Message-ID: <a69519cf-27f6-479e-9ec6-ff7e11454c90@linaro.org>
+Date: Tue, 23 Jan 2024 12:50:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VLeiMEvVxWj9o1OHguVEk-Muld7U1FLr
-X-Proofpoint-ORIG-GUID: t8ceGdktfwrNUqEw0LNQLZ6d6JLecj8B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-23_05,2024-01-23_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501
- clxscore=1015 spamscore=0 mlxscore=0 impostorscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401230085
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pasic@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 26/34] Wrap target macros in functions
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, richard.henderson@linaro.org
+References: <20240119144024.14289-1-anjo@rev.ng>
+ <20240119144024.14289-27-anjo@rev.ng>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240119144024.14289-27-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,57 +92,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 22 Jan 2024 10:06:38 -0500
-Matthew Rosato <mjrosato@linux.ibm.com> wrote:
+Hi Anton,
 
-> On 1/19/24 4:07 PM, Halil Pasic wrote:
-> > On Thu, 18 Jan 2024 13:51:51 -0500
-> > Matthew Rosato <mjrosato@linux.ibm.com> wrote:
-> >   
-> >> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> >> index eaf61d3640..c99682b07d 100644
-> >> --- a/hw/s390x/s390-virtio-ccw.c
-> >> +++ b/hw/s390x/s390-virtio-ccw.c
-> >> @@ -118,6 +118,14 @@ static void subsystem_reset(void)
-> >>      DeviceState *dev;
-> >>      int i;
-> >>  
-> >> +    /*
-> >> +     * ISM firmware is sensitive to unexpected changes to the IOMMU, which can
-> >> +     * occur during reset of the vfio-pci device (unmap of entire aperture).
-> >> +     * Ensure any passthrough ISM devices are reset now, while CPUs are paused
-> >> +     * but before vfio-pci cleanup occurs.
-> >> +     */
-> >> +    s390_pci_ism_reset();  
-> > 
-> > Hm I'm not sure about special casing ISM in here. In my opinion the loop
-> > below shall take care of all the reset.
-> > 
-> > For TYPE_AP_BRIDGE and TYPE_VIRTUAL_CSS_BRIDGE AFAIU a
-> > device_cold_reset() on all objects of those types results in the resets
-> > of objects that hang below these buses.
-> > 
-> > I guess this also happens for the S390PCIBusDevices, but not for the
-> > actual PCI devices.  
+On 19/1/24 15:40, Anton Johansson wrote:
+> Adds wrapper functions around common target specific macros required by
+> accel/tcg.
 > 
-> PCI is a bit different because we have both the PCI root bus and the s390 pci bus --  When we reset the s390-pcihost in the device_cold_reset() loop, the root pci bus will also receive a reset and in practice this causes the vfio-pci devices to get cleaned up (this includes an unmap of the entire iommu aperture) and this happens before we get to the reset of S390PCIBusDevices.  This order is OK for other device types who are not sensitive to the IOMMU being wiped out in this manner, but ISM is effectively treating some portion of the IOMMU as state data and is not expecting this UNMAP.  Triggering the reset as we do here causes the host device to throw out the existing state data, so we want to do that at a point in time after CPU pause and before vfio-pci cleanup; this is basically working around a quirk of ISM devices.
->
-
-I am still a bit confused. Are you saying that when subsystem_reset() is
-called, the resets happen in an order that leads to problems with ISM
-but when qemu_devices_reset() is called the resets happen in an order
-favorable to ISM?
-
-Anyway the important thing is that we are functionally covered. My
-concern is just the how.
-
- 
-> FWIW, this series of fixes was already pulled.  I think for a fix, this location in code was the safe bet -- But if we can figure out a way to ensure the reset targeted S390PCIBusDevices first before the root PCI bus then I could see a follow-on cleanup patch that moves this logic back into s390 pci bus code (e.g. allowing the loop to take care of all the reset once again). 
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   include/hw/core/cpu.h |  9 +++++++
+>   cpu-target.c          | 62 +++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 71 insertions(+)
 > 
+> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> index 57d100c203..a2d65c1d7a 100644
+> --- a/include/hw/core/cpu.h
+> +++ b/include/hw/core/cpu.h
+> @@ -26,6 +26,7 @@
+>   #include "exec/vaddr.h"
+>   #include "exec/memattrs.h"
+>   #include "exec/tlb-common.h"
+> +#include "exec/memop.h"
+>   #include "qapi/qapi-types-run-state.h"
+>   #include "qemu/bitmap.h"
+>   #include "qemu/rcu_queue.h"
+> @@ -1164,6 +1165,14 @@ void cpu_exec_unrealizefn(CPUState *cpu);
+>    * what you are doing!
+>    */
+>   bool target_words_bigendian(void);
+> +bool target_supports_mttcg(void);
+> +bool target_has_precise_smc(void);
+> +int target_long_bits(void);
+> +int target_phys_addr_space_bits(void);
+> +uint8_t target_insn_start_words(void);
+> +uint8_t target_default_memory_order(void);
+> +uint8_t target_tlb_dyn_max_bits(void);
+> +MemOp target_endian_memory_order(void);
 
-Yes that makes sense. Should I find the time, I can come back to this
-too.
+None of these helpers take argument. I don't understand
+how they can be called in heterogeneous context.
 
-Regards,
-Halil
+>   const char *target_name(void);
+>   
+> diff --git a/cpu-target.c b/cpu-target.c
+> index 1a8e730bed..6b67af7a51 100644
+> --- a/cpu-target.c
+> +++ b/cpu-target.c
+> @@ -39,10 +39,13 @@
+>   #include "exec/tb-flush.h"
+>   #include "exec/translate-all.h"
+>   #include "exec/log.h"
+> +#include "exec/cpu-defs.h"
+>   #include "hw/core/accel-cpu.h"
+>   #include "trace/trace-root.h"
+>   #include "qemu/accel.h"
+>   #include "qemu/plugin.h"
+> +#include "tcg/tcg-mo.h"
+> +#include "tcg/insn-start-words.h"
+>   
+>   uintptr_t qemu_host_page_size;
+>   intptr_t qemu_host_page_mask;
+> @@ -416,6 +419,65 @@ bool target_words_bigendian(void)
+>       return TARGET_BIG_ENDIAN;
+>   }
+>   
+> +bool target_supports_mttcg(void)
+> +{
+> +#ifdef TARGET_SUPPORTS_MTTCG
+> +# ifndef TCG_GUEST_DEFAULT_MO
+> +#  error "TARGET_SUPPORTS_MTTCG without TCG_GUEST_DEFAULT_MO"
+> +# endif
+> +    return true;
+> +#else
+> +    return false;
+> +#endif
+> +}
+> +
+> +bool target_has_precise_smc(void)
+> +{
+> +#ifdef TARGET_HAS_PRECISE_SMC
+> +    return true;
+> +#else
+> +    return false;
+> +#endif
+> +}
+> +
+> +int target_long_bits(void)
+> +{
+> +    return TARGET_LONG_BITS;
+> +}
+> +
+> +int target_phys_addr_space_bits(void)
+> +{
+> +    return TARGET_PHYS_ADDR_SPACE_BITS;
+> +}
+> +
+> +uint8_t target_insn_start_words(void)
+> +{
+> +    return TARGET_INSN_START_WORDS;
+> +}
+> +
+> +uint8_t target_default_memory_order(void)
+> +{
+> +#ifdef TCG_GUEST_DEFAULT_MO
+> +    return TCG_GUEST_DEFAULT_MO;
+> +#else
+> +    return TCG_MO_ALL;
+> +#endif
+> +}
+> +
+> +MemOp target_endian_memory_order(void)
+> +{
+> +    return MO_TE;
+> +}
+> +
+> +uint8_t target_tlb_dyn_max_bits(void)
+> +{
+> +#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+> +    return CPU_TLB_DYN_MAX_BITS;
+> +#else
+> +    return 0;
+> +#endif
+> +}
+> +
+>   const char *target_name(void)
+>   {
+>       return TARGET_NAME;
+
 
