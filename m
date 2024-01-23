@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691C4837DC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 02:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3221837FE0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 02:55:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS5Zp-0004yU-AA; Mon, 22 Jan 2024 20:27:45 -0500
+	id 1rS5yr-0000xx-Dq; Mon, 22 Jan 2024 20:53:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS5Zn-0004xZ-2b
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 20:27:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rS5Zl-0007j5-CW
- for qemu-devel@nongnu.org; Mon, 22 Jan 2024 20:27:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1705973260;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AVBgtZs/Ger0XtssyDMOo6hH+KUSlS7ADnEs4PwyKsE=;
- b=GLEq4QPG+oXLWyKagVTg8GHyKfib7xVldyqpOMuc7EBL6pwnUliszFf2hKvyMOf3LgRl0U
- 74Furk5KIGYP0CJCkTHCn/OzTpaQg11KpIHOp4jefrMtqImBo5fscgTlIetQtap5HOl6YG
- csXmvoFxWgkEXkXheYzkcvrga0xxW6w=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-VrUSYnRgPt29bMAORBon_A-1; Mon, 22 Jan 2024 20:27:38 -0500
-X-MC-Unique: VrUSYnRgPt29bMAORBon_A-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-28c0765415eso562163a91.1
- for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 17:27:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705973258; x=1706578058;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rS5yo-0000xQ-DI; Mon, 22 Jan 2024 20:53:34 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rS5ym-0003JF-Pv; Mon, 22 Jan 2024 20:53:34 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6dbcdbe13e1so1685556b3a.3; 
+ Mon, 22 Jan 2024 17:53:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1705974810; x=1706579610; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AVBgtZs/Ger0XtssyDMOo6hH+KUSlS7ADnEs4PwyKsE=;
- b=al0Q0cvSkWKJUToSCQ8HDVs3ocNpzPXseY465lPnyG2zgAz7bFT9fZdDzK7c6bZcMA
- ubPbjzGMif1yVPRsXxY8roozwCVRJkFHM3ZqPRyVucPH7AxOY74WQ+Q/YaGOZXIgRDXP
- HANlBWX9MCtJfVq2GoP2/Hh2CDhRLKvUSEZEKgh6pTlOO1wNqJIdpibg6GBzmFQT2DJ4
- jdzF2MgsIXfqRLGDKZYVf68eeEkN2BvaLD7oLXwk/5kCslQP99bHYtPo7D+opkIo8gqv
- mZqd8X2iYozWAjm9CNYTjh5MNXgNzWkGRpM7hMviwOGl/9rATMRrVaA7qJPtR+KYzA8e
- llYQ==
-X-Gm-Message-State: AOJu0Ywb037bzPkp16AGoxCu2x5+yiTWpJHNvTYfyauSQKzF2FUXbZxR
- +95Ve3JNIb06sCazyt9m/LN3SF0GiyyhZ38/6OhDZGBU2HMRngqbDfmZB+EpgMjqpcHfNvgPY71
- AP+gT8385flwwj0sWzpRjpokjFqwKbT35MVsySMJ9jJHsV3PS/fAU
-X-Received: by 2002:a17:902:ee05:b0:1d3:c5e4:b2f6 with SMTP id
- z5-20020a170902ee0500b001d3c5e4b2f6mr10108059plb.4.1705973255860; 
- Mon, 22 Jan 2024 17:27:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEo7qRKLe6IMN8bbhkzgt35lXQe6S37fN1hoDXkLJomzH4jcFAkNxBC5IFhfxeX5k6/9ZLttQ==
-X-Received: by 2002:a17:902:ee05:b0:1d3:c5e4:b2f6 with SMTP id
- z5-20020a170902ee0500b001d3c5e4b2f6mr10108046plb.4.1705973255450; 
- Mon, 22 Jan 2024 17:27:35 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- w11-20020a170903310b00b001d73412b4fesm4112850plc.171.2024.01.22.17.27.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Jan 2024 17:27:35 -0800 (PST)
-Date: Tue, 23 Jan 2024 09:27:28 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Lukas Straub <lukasstraub2@web.de>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v6 08/10] migration/yank: Use channel features
-Message-ID: <Za8WAPR_dUZSKBHQ@x1n>
-References: <20230911171320.24372-1-farosas@suse.de>
- <20230911171320.24372-9-farosas@suse.de> <ZQIV9RZFS0soEOJ4@x1n>
- <87il3lgmhi.fsf@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87il3lgmhi.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ bh=xNbwDsG4lb3Kt/1dUOE9HEgOQGSweLY9oNP3b4LSRyQ=;
+ b=E7qNoWlSh+GWSAR9NyRMv8UU3sPQZlFUJWJ/QHNjfkWQs/INca4BaAiQz3/edV6Z/+
+ 74fzR27scExdzPJzUN4buqCeFHqNkfLPc4i+xJ1isLOohUGUC8+apNpaqpSghnLOUKsq
+ dWX0FtbeVA+1n1oxnCglNmiuvAWXsxgDycpYuEzLusEFaovisQjgEicbgl3FdIPv5iBX
+ E7dvKDuXYXsJylXlAP6jwzCrpurM/vpKSgxTruIDnDRiPPdPFPJySUji1z+jiAVVM7iY
+ BMHR5TwzsEbMgomZ/cKBKZWemvKwXvbgdQ13f3Ch46xt95N6lLAw96Sauh2ZxpedBNIl
+ yKZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1705974810; x=1706579610;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=xNbwDsG4lb3Kt/1dUOE9HEgOQGSweLY9oNP3b4LSRyQ=;
+ b=g79opRRCRoEwX+PPAOZtjkfnUc9Xv/z9YW26/PNmqcsM3aVBD4wCsH5XqCr0JfrEuc
+ +nSZnPKhUTKQqsC3ymQyA+eSqOLCm3ediv8e06s3YHkR4wNVW07IXt6r8GFJvy+HxpGv
+ c0zQ5dzJe0wNNDZjvMKAlHvQnCOJCl3vKvObVr5z+VSbTJ5cGlS7UMjNzt1MKILJ4Yic
+ 6Q39U2iB5HIJQl+9Wg93hRjiDENZ5wT42gqjAqOG5SgsQwZiOjt7BTC7N801eehvmcx5
+ 3FI8iho2hmbrLePEw80XqWb/vG03qpWzLx/u56BOaceGud/1beEFuotJbZSA693wlnO3
+ vnfA==
+X-Gm-Message-State: AOJu0YwIAU9wVUzwaILHiHDrL5A8NdXdGL71etmUhGY3l61wgbzSg8zz
+ vD2WY42ePD62YGrxd9YzvVF7eU2GQwO/61aJkQGQh7TzeTCYDl8+
+X-Google-Smtp-Source: AGHT+IF0LVPZ30xq4rrIIAzb3ibY610GSR0v2dbjOroHtPqynvASfoImYhNnQPC4axmGua7m3F9YmQ==
+X-Received: by 2002:a05:6a20:9149:b0:19c:520c:c5d6 with SMTP id
+ x9-20020a056a20914900b0019c520cc5d6mr1278078pzc.13.1705974810161; 
+ Mon, 22 Jan 2024 17:53:30 -0800 (PST)
+Received: from localhost (124-171-76-150.tpgi.com.au. [124.171.76.150])
+ by smtp.gmail.com with ESMTPSA id
+ o5-20020a1709026b0500b001d70af7dd0dsm7344669plk.263.2024.01.22.17.53.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 17:53:29 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Jan 2024 11:53:23 +1000
+Message-Id: <CYLPLHDACTB6.3U6TMG2OMBXU0@wheely>
+Cc: =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>, "Daniel
+ Henrique Barboza" <danielhb413@gmail.com>, "David Gibson"
+ <david@gibson.dropbear.id.au>, "Harsh Prateek Bora"
+ <harshpb@linux.ibm.com>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 00/26] target/ppc: TCG improvements and fixes
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20240118150644.177371-1-npiggin@gmail.com>
+ <4d55b173-3fc1-44ef-882e-a5da945c67ad@kaod.org>
+In-Reply-To: <4d55b173-3fc1-44ef-882e-a5da945c67ad@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,28 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jan 22, 2024 at 05:08:09PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Mon, Sep 11, 2023 at 02:13:18PM -0300, Fabiano Rosas wrote:
-> >> Stop using outside knowledge about the io channels when registering
-> >> yank functions. Query for features instead.
-> >> 
-> >> The yank method for all channels used with migration code currently is
-> >> to call the qio_channel_shutdown() function, so query for
-> >> QIO_CHANNEL_FEATURE_SHUTDOWN. We could add a separate feature in the
-> >> future for indicating whether a channel supports yanking, but that
-> >> seems overkill at the moment.
-> >> 
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >
-> > Reviewed-by: Peter Xu <peterx@redhat.com>
-> 
-> Hi Peter, this one has fell through the cracks, think we could merge it?
+On Fri Jan 19, 2024 at 6:58 PM AEST, C=C3=A9dric Le Goater wrote:
+> Hello Nick,
+>
+> On 1/18/24 16:06, Nicholas Piggin wrote:
+> > This is mostly TCG core emulation improvements and fixes. I
+> > got the chiptod model in there because it's intertwined with
+> > TFMR SPR.
+> >=20
+> > Other non-TCG patches are spapr MSR entry point change which
+> > goes together with the other machine check / MSR[ME] fixes.
+> > And Saif's gdb patches, as well as some SPR renaming.
+> >=20
+> > Will probably a bit more similar patches too, e.g., Dan's SPR
+> > patches, but I'll just get this out for review before
+> > upstreaming it.
+>
+> Before we start a new round of reviews, could we please uptream the ones
+> reviewed in the previous cycle [1] ? Some are part of this series and we
+> shoudn't have to go through them again.
 
-Yep, queued.
+Yeah good idea, will do.
 
--- 
-Peter Xu
-
+Thanks,
+Nick
 
