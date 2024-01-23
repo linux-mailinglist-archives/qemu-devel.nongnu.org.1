@@ -2,175 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06A3838ABF
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 10:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D72C838A8C
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 10:44:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSDNL-0007Rv-R5; Tue, 23 Jan 2024 04:47:23 -0500
+	id 1rSDJn-0005fx-6l; Tue, 23 Jan 2024 04:43:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rSDNH-0007RD-2L
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:47:19 -0500
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rSDJh-0005fV-K1
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:43:37 -0500
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rSDNF-0006on-2s
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:47:18 -0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rSDJd-0005mg-JE
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 04:43:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706003237; x=1737539237;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=jqqI9J79Wc2wbP8xHsQsk7fri2NXomharBrAEJiJs00=;
- b=bxj06OFtQaVqvdineUP+DWiQ+mNBwUMDB2zDqBuoqlKzq2ZX/l4mPu38
- omerPfN6+TwPS4p2ar75RgGzJRQ1FSpA3tQntopcLTl6nALJpWX64sSbU
- Jz1olOYVTvDdLDX+Q07exS55W91VQ2Cd3qrTZOCZZX5mow9Iir4gq7QxS
- 7mg7N9XBeorPqdMXOnD4Rig0/TCU4Vhuvd6qokgiVcHnInU/vhso2FWMj
- 8QcQjiPy1F3OFKw+wOEybFQImo5wG5Kz2znBOAO3UxlAdPTxurFSOGF5X
- ysT1TXluWIRHz9ijGkOo2++jiMVTtYV1ibgAmmS1ZHmSPLI2JGP9+lRgM Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="363470"
+ t=1706003013; x=1737539013;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=wU64uHlR52rNEzdKGKovUXzpWZVCS6qVw80l/VHg/G4=;
+ b=VFeCwX+JSMZg7DHfy3Pl4PsxWGQNc6S9yUKUccN3fVNE79pc0pGdNXF/
+ vO6VbKSAOo5gk3pmteBqgdhzEiNWk7sENLcGS+bWXNIOux+MqzTKYbqB2
+ c25OGmYI5HZ+7qCS1lmhu/DzX1Kw/hLvsnlr6LI8UQFhiHGHP+kEYw1RY
+ Bc6hrfOLsoBwLR5kwPyn0SaPL0g8u/J5I151zafcF92rDuPmZMiBsKmva
+ q2VU/kevmGjFa15xAXFal1r6geT7F4lc7IspSCCG/BM3b/zn9dLks4KFA
+ U8/PyMT7JQDznGBtL1FVuhvKFCq35N6bJ49XKfmVvE7g9PG5accxZzSB7 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="8838340"
 X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
-   d="scan'208";a="363470"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2024 01:47:07 -0800
+   d="scan'208";a="8838340"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2024 01:43:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="785995471"
-X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; d="scan'208";a="785995471"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orsmga002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 23 Jan 2024 01:47:06 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 23 Jan 2024 01:47:05 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 23 Jan 2024 01:47:05 -0800
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 23 Jan 2024 01:47:05 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k17zfhx8DMZROzXidHovp0uK06yEJR7zhqVMOBroRPgrqt592mqCgWddCQ+uD2pZyLpD+Eiab4UVp+eO6wNz1+TwgvscBZkseN59f7fib1PI8RHujPwiJaYC3z24qxfrtlj0ovJ+8QmnuFcyEKgxWEFL1b0lkWKeu+YbrSeT7pqYV4/CXREfVX1iWvars9A578KI6Ixi7TrWJnRpqywBUGLcI16ONCAuAFdNmyrhWDM2YzBd3GFKr4f9kOX22nA0m/sLjMtdXylOpuG+XeRl42FBl2VTJWCpuuW05ex+cqq5yCr4eV3WR5WS2qCY0bbUw7ta+YP1aYDyXdjRsPlC0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jqqI9J79Wc2wbP8xHsQsk7fri2NXomharBrAEJiJs00=;
- b=VE4Rs3O28BLqJZ2TGfBsT63CRVVba7jBkKwEn2JvIi0OLkO5DAU0jaOGwyvESggZ1Nw+8cPpbEMexUc9GQqXptoLPKn2ILu6/8fpVW+CU9j2iYdavIH1eocHkQVT7eQ5RjdqOwLLQ5sXw1xVEMc7UkCx6GVbXRGzpQjWLyJDlodO5GnBwO5S/fg0d+oCSsXNYO/BCNGMnMZjjMHq0DRtj7+rmmVuk6A5cZq2L5swQeObjJrl4nEn23E11skJFaU18UW/dPpwVQXtMlClNJ/E4LmWRccUXv7KWoRg/98YAxZsJACVWw+TN0FrofiPJw47R36lBqzPeTFpojbIYtcR+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by DM4PR11MB5518.namprd11.prod.outlook.com (2603:10b6:5:39a::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.34; Tue, 23 Jan
- 2024 09:46:58 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::d7ca:7979:6536:7ac3]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::d7ca:7979:6536:7ac3%4]) with mapi id 15.20.7202.035; Tue, 23 Jan 2024
- 09:46:58 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi
- L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>
-Subject: RE: [PATCH rfcv1 4/6] vfio: initialize IOMMUFDDevice and pass to
- vIOMMU
-Thread-Topic: [PATCH rfcv1 4/6] vfio: initialize IOMMUFDDevice and pass to
- vIOMMU
-Thread-Index: AQHaR5v0AZ3rmcpUu0e+6RYUwmKBmbDmHeSAgAEUL8A=
-Date: Tue, 23 Jan 2024 09:46:58 +0000
-Message-ID: <SJ0PR11MB67442926DAA9AD72F1B89CED92742@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240115101313.131139-1-zhenzhong.duan@intel.com>
- <20240115101313.131139-5-zhenzhong.duan@intel.com>
- <852e8e08-1d82-49d4-a19c-36a6b256d662@redhat.com>
-In-Reply-To: <852e8e08-1d82-49d4-a19c-36a6b256d662@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DM4PR11MB5518:EE_
-x-ms-office365-filtering-correlation-id: a72d47b9-a43c-4419-7694-08dc1bf83db9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Oo6z9YOB21wkfQ8c0DUWOc0bmaj4P3T8RIKKV1pWD4SoFWhvi9h+4IHkfWO8oG7ukycrwGcbl4Hi/voMbQtQ8rGZ3qaeJItn4xvLYPPk59IEVZG4NpDdfvZh/t4I+mqoAGmgqGMuT3O7BfspfyKfsUQ0fIbXed+1YgN1U4F9ZlqmGSpZWSGvqX8h7LIty70WwM+nRWQcsbdS5XNNn97aRId5AzzxkdvBZyMXtUq9nGDRknaqLWsAeFdPr1ktFdCacuWNHbxRw2T+sD4dETjVhgHtRNOuvA0F43qXUp2tgRwwdj7Q/g6wOD8PkR2noO05QCM+enlCADh1UhxtZwe/qnIqM0JenHX7eeraiqMjaM4zqcF1PZYz4oMf+dBUJrZYDe8ctLpA3oPxsl+TGolpda7bd4lz1AfjnDNJIBbsbjHJLmQy9p3BvHRsLaWDK7cWkowoJJ2BTEzghTlVGo9Ij0vP10hkfAkh+42TTh2H1AU8YEkG/K77GM4lLuKgepf/ngJDDaYm6rT1N/7azvSFGA4SEGMCUv/hFqcamndMs83bp9Ct9STYxk4iOmIxZmYLr806YR/lpjKoE/8irVNl755CxOHYblI5Vaqu3xL+h1mdCwBNKKEamGHRZJm+R+H7
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(136003)(366004)(396003)(376002)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(41300700001)(33656002)(55016003)(38100700002)(122000001)(82960400001)(64756008)(4326008)(8936002)(6506007)(66946007)(52536014)(966005)(7696005)(7416002)(2906002)(26005)(5660300002)(9686003)(66556008)(66476007)(316002)(478600001)(110136005)(66446008)(54906003)(8676002)(76116006)(86362001)(71200400001)(83380400001)(38070700009)(13296009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QlluSHRPMUw4TmpxalhYN2VjcnJMS1RjekdHc3B5VXRlekMxbkkyWnFIdTgv?=
- =?utf-8?B?aEp3VVF0ekMxd2xMWHNjaUFnN2hPVm14UWk5bWsxdWtUSEtRdHZwWGxOaEdj?=
- =?utf-8?B?U0FQQThwbXhRNkx5ZzZzcVQ4em9OWCt4bTVOWDZWUXdESUNBMFZ1Z2NJcDJL?=
- =?utf-8?B?Y3hFOG5SZTFpLzRPRFIyS2cwNjA1QnBrNktiZ1J0b0RFYlpBbHZBbDh1V1Fl?=
- =?utf-8?B?dmQ4WFlkU2tZKzQ0Y2JzUWtaeURVV3JTSWlLaStUZHdpWlI1Vm9uN2dZZEk2?=
- =?utf-8?B?bmFxOGhDc2VxZENxVFZKenBPUitTZlFPdFVRdDFPUzVoY0RVbG5LM3FRN0ZV?=
- =?utf-8?B?YXZFYzNETHdhKzdIMmJjaWtjdmVHRGRJOXhRVlRUZkZxZEFxRWhyM0Urd1Bt?=
- =?utf-8?B?dEg2RVcyOWFNK3JPa1NTU0hPUnlZQUFPYTdIc3dKV2ZSN3Q1bk5VRGh2TDJO?=
- =?utf-8?B?ZXd5WVY4VUVmM0dLWkU0RUM5SGhoUndaTEh6aExreGJsWEE5ZEtGVHBvR0Z2?=
- =?utf-8?B?T2drSThmMDdOdTJFMXFYcjZtYStqaktnc1J0R0xHSlZkdjN1dUxMWGZZSmd4?=
- =?utf-8?B?aVFNSjI5dzhPNkVycXpqYmRkZFFJUVhPZ2RQdnd2cSs0SEJ4OGpIeXZtalQ5?=
- =?utf-8?B?VEVCazFBZkIwcElicWlvSWRySmdVMENzejVhbzR4RG1rSnE5MWhLa3hXNlJE?=
- =?utf-8?B?dmgyZVpQZ0tLK0NZaEVUMlhIRHZGY0VldXJ6YU1hWTl5V3lpUmsweGs1S01B?=
- =?utf-8?B?OFJrME00SDRjQlVKc3R3bWVBYmNzRkJrZnl5aHlMSTUydnNUWElSUGRyT01h?=
- =?utf-8?B?S0xyUFpCWTNvTkErK0krUGNLVFdJdjdlNUdIVGw1a0VGSmhicitsTFU2a2Jt?=
- =?utf-8?B?a2d3RHFWVlp6NUVjL0VzT1c3akk0bGtWVVJCdzQxWUVoVU84R3hOQUlvOWo5?=
- =?utf-8?B?aWRSUjU4YWtwR1dNNXkxUEJMSTl3c2Uvdks2Zk44YXNJSmg3eUJNdzdLS0JH?=
- =?utf-8?B?bUdpRENVNXIrYjc4MFZpamE4UXEybElOUHkza0ZVTmZlQm4xR0dOam9zRmZp?=
- =?utf-8?B?V0c1a0JocVUzNjFzbFpyRDRrR29PaDAyNGp1RUxTMC8wVjZvUjhheG9WS3hG?=
- =?utf-8?B?dExaSHM1eHJURUJDZTVqR1ExdEZQUzRVUjczNm5FVTNFWW94dDhDaXpGRjBn?=
- =?utf-8?B?VUgwUkw3NkFTVzFuWHJ6VU4xc0NDeGFxL0ZYNHlaQU9hZnpYQTRDYzRBejlE?=
- =?utf-8?B?eWpSYlphclBSakkxY0N0RkY3UHBWWHhKc2hDa1lrakpsQ0NNVWh5YWpnSWhi?=
- =?utf-8?B?Z1B2Mnk1aksyNnVGNmNQaFFRRGZES1ZDTUxwL05WdVJyeVRwVlpIWGR4NnZm?=
- =?utf-8?B?d3VZWUJpZkxrSDM3RzV6SVk5NEhoUjBaM1E5c1VkVGJhWXBKK2VkeUlVbjBs?=
- =?utf-8?B?VjF0aklXZDJobnc5Z1hHaWV5SzhHV3dzMlBPUFNDZFAya3N1aDIzMVphWTJT?=
- =?utf-8?B?ZGUwTS8vZDZROTZJMUVZdEZoUXc2Yy9ibDFOVitIS0FPM1ZiVUFxNGNMR00r?=
- =?utf-8?B?cWppMUVxN0NneHV6cmdYMWNCaHdlNGxrazg0QkVjMVJFUXM5b2xOdlVyelFx?=
- =?utf-8?B?Z2p0RGhkcGJFOWI0ZGlQV2ZOQjVRNFcrdHZ6NDFtQjJqaFFmdXJYZTlKTmNm?=
- =?utf-8?B?a0owRWpuYm8weEZrMmFtdGV4YlBXaVMrcXlXUEl5V280QktvRGVNUjYxK3Vs?=
- =?utf-8?B?YmVEaWZOWUhxa2JHT01BN0cxSGd0NEVWZmU0ZHFzQjFjMW1wTTlTdGJzU21U?=
- =?utf-8?B?ajkwUWJoQ2UySFZDdVF2OUNVK3FmdDFlU25XaEI2VER0Ny9uaWxRbkxaZ1g5?=
- =?utf-8?B?Z2M1anNVVnArbTlOTUwzUCt3QjVCTEdIY1RnVG1jalJLdVd2TDJ5dzFyZGgx?=
- =?utf-8?B?Y1BsbHBSYjZyenlMQzJlajVKUmtIWlg4cEk5emZ0aGpUN0hDTTRBZjVjNnFQ?=
- =?utf-8?B?UHRXSkRHZWY3Y0o2bDVhelZadklwV2Evbk1DOTVGNzZIaVc3RHdZMkc4TUNl?=
- =?utf-8?B?enppSHY2clEvclNKNlB0ZFpieUJVeHhyZEorcm9rWnd1WUsvNllqL2gxQVVR?=
- =?utf-8?Q?GkScOhJg/o5uGMiWUfqI1drsb?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="735514573"
+X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; d="scan'208";a="735514573"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga003.jf.intel.com with ESMTP; 23 Jan 2024 01:43:25 -0800
+Date: Tue, 23 Jan 2024 17:56:27 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
+ specific topology level
+Message-ID: <Za+NS1OneKg7IHOj@intel.com>
+References: <20240108082727.420817-1-zhao1.liu@linux.intel.com>
+ <20240108082727.420817-6-zhao1.liu@linux.intel.com>
+ <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a72d47b9-a43c-4419-7694-08dc1bf83db9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2024 09:46:58.0774 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Uh+GgpKw//HtMsAYqx7PYkvIp7VcOVXvGU67Rl3ZEiS4eoRIiChBth/jdrsWwG2dTA/t8yxuJS1ngsPlnutFMM/EPp6qiE0hXhItJEha8AY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5518
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.198.163.13;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb75fcea-7e3a-4062-8d1c-3067f5e53bcc@intel.com>
+Received-SPF: none client-ip=198.175.65.12;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.289,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -186,66 +88,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHJmY3YxIDQvNl0gdmZpbzog
-aW5pdGlhbGl6ZSBJT01NVUZERGV2aWNlIGFuZCBwYXNzIHRvDQo+dklPTU1VDQo+DQo+T24gMS8x
-NS8yNCAxMToxMywgWmhlbnpob25nIER1YW4gd3JvdGU6DQo+PiBJbml0aWFsaXplIElPTU1VRkRE
-ZXZpY2UgaW4gdmZpbyBhbmQgcGFzcyB0byB2SU9NTVUsIHNvIHRoYXQgdklPTU1VDQo+PiBjb3Vs
-ZCBnZXQgaHcgSU9NTVUgaW5mb3JtYXRpb24uDQo+Pg0KPj4gSW4gVkZJTyBsZWdhY3kgYmFja2Vu
-ZCBtb2RlLCB3ZSBzdGlsbCBwYXNzIGEgTlVMTCBJT01NVUZERGV2aWNlIHRvDQo+dklPTU1VLA0K
-Pj4gaW4gY2FzZSB2SU9NTVUgbmVlZHMgc29tZSBwcm9jZXNzaW5nIGZvciBWRklPIGxlZ2FjeSBi
-YWNrZW5kIG1vZGUuDQo+Pg0KPj4gT3JpZ2luYWxseS1ieTogWWkgTGl1IDx5aS5sLmxpdUBpbnRl
-bC5jb20+DQo+PiBTaWduZWQtb2ZmLWJ5OiBOaWNvbGluIENoZW4gPG5pY29saW5jQG52aWRpYS5j
-b20+DQo+PiBTaWduZWQtb2ZmLWJ5OiBZaSBTdW4gPHlpLnkuc3VuQGxpbnV4LmludGVsLmNvbT4N
-Cj4+IFNpZ25lZC1vZmYtYnk6IFpoZW56aG9uZyBEdWFuIDx6aGVuemhvbmcuZHVhbkBpbnRlbC5j
-b20+DQo+PiAtLS0NCj4+ICAgaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmggfCAgMiArKw0K
-Pj4gICBody92ZmlvL2lvbW11ZmQuYyAgICAgICAgICAgICB8ICAyICsrDQo+PiAgIGh3L3ZmaW8v
-cGNpLmMgICAgICAgICAgICAgICAgIHwgMjQgKysrKysrKysrKysrKysrKysrKy0tLS0tDQo+PiAg
-IDMgZmlsZXMgY2hhbmdlZCwgMjMgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkNCj4+DQo+
-PiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmggYi9pbmNsdWRlL2h3
-L3ZmaW8vdmZpby0NCj5jb21tb24uaA0KPj4gaW5kZXggOWI3ZWY3ZDAyYi4uZmRlMGQwY2E2MCAx
-MDA2NDQNCj4+IC0tLSBhL2luY2x1ZGUvaHcvdmZpby92ZmlvLWNvbW1vbi5oDQo+PiArKysgYi9p
-bmNsdWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaA0KPj4gQEAgLTMxLDYgKzMxLDcgQEANCj4+ICAg
-I2VuZGlmDQo+PiAgICNpbmNsdWRlICJzeXNlbXUvc3lzZW11LmgiDQo+PiAgICNpbmNsdWRlICJo
-dy92ZmlvL3ZmaW8tY29udGFpbmVyLWJhc2UuaCINCj4+ICsjaW5jbHVkZSAic3lzZW11L2lvbW11
-ZmRfZGV2aWNlLmgiDQo+Pg0KPj4gICAjZGVmaW5lIFZGSU9fTVNHX1BSRUZJWCAidmZpbyAlczog
-Ig0KPj4NCj4+IEBAIC0xMjYsNiArMTI3LDcgQEAgdHlwZWRlZiBzdHJ1Y3QgVkZJT0RldmljZSB7
-DQo+PiAgICAgICBib29sIGRpcnR5X3RyYWNraW5nOw0KPj4gICAgICAgaW50IGRldmlkOw0KPj4g
-ICAgICAgSU9NTVVGREJhY2tlbmQgKmlvbW11ZmQ7DQo+PiArICAgIElPTU1VRkREZXZpY2UgaWRl
-djsNCj4+ICAgfSBWRklPRGV2aWNlOw0KPj4NCj4+ICAgc3RydWN0IFZGSU9EZXZpY2VPcHMgew0K
-Pj4gZGlmZiAtLWdpdCBhL2h3L3ZmaW8vaW9tbXVmZC5jIGIvaHcvdmZpby9pb21tdWZkLmMNCj4+
-IGluZGV4IDliZmRkYzEzNjAuLmNiZDAzNWYxNDggMTAwNjQ0DQo+PiAtLS0gYS9ody92ZmlvL2lv
-bW11ZmQuYw0KPj4gKysrIGIvaHcvdmZpby9pb21tdWZkLmMNCj4+IEBAIC0zMDksNiArMzA5LDcg
-QEAgc3RhdGljIGludCBpb21tdWZkX2NkZXZfYXR0YWNoKGNvbnN0IGNoYXIgKm5hbWUsDQo+VkZJ
-T0RldmljZSAqdmJhc2VkZXYsDQo+PiAgICAgICBWRklPQ29udGFpbmVyQmFzZSAqYmNvbnRhaW5l
-cjsNCj4+ICAgICAgIFZGSU9JT01NVUZEQ29udGFpbmVyICpjb250YWluZXI7DQo+PiAgICAgICBW
-RklPQWRkcmVzc1NwYWNlICpzcGFjZTsNCj4+ICsgICAgSU9NTVVGRERldmljZSAqaWRldiA9ICZ2
-YmFzZWRldi0+aWRldjsNCj4+ICAgICAgIHN0cnVjdCB2ZmlvX2RldmljZV9pbmZvIGRldl9pbmZv
-ID0geyAuYXJnc3ogPSBzaXplb2YoZGV2X2luZm8pIH07DQo+PiAgICAgICBpbnQgcmV0LCBkZXZm
-ZDsNCj4+ICAgICAgIHVpbnQzMl90IGlvYXNfaWQ7DQo+PiBAQCAtNDI4LDYgKzQyOSw3IEBAIGZv
-dW5kX2NvbnRhaW5lcjoNCj4+ICAgICAgIFFMSVNUX0lOU0VSVF9IRUFEKCZiY29udGFpbmVyLT5k
-ZXZpY2VfbGlzdCwgdmJhc2VkZXYsDQo+Y29udGFpbmVyX25leHQpOw0KPj4gICAgICAgUUxJU1Rf
-SU5TRVJUX0hFQUQoJnZmaW9fZGV2aWNlX2xpc3QsIHZiYXNlZGV2LCBnbG9iYWxfbmV4dCk7DQo+
-Pg0KPj4gKyAgICBpb21tdWZkX2RldmljZV9pbml0KGlkZXYsIHNpemVvZigqaWRldiksIGNvbnRh
-aW5lci0+YmUsIHZiYXNlZGV2LQ0KPj5kZXZpZCk7DQo+PiAgICAgICB0cmFjZV9pb21tdWZkX2Nk
-ZXZfZGV2aWNlX2luZm8odmJhc2VkZXYtPm5hbWUsIGRldmZkLCB2YmFzZWRldi0NCj4+bnVtX2ly
-cXMsDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdmJhc2VkZXYtPm51
-bV9yZWdpb25zLCB2YmFzZWRldi0+ZmxhZ3MpOw0KPj4gICAgICAgcmV0dXJuIDA7DQo+PiBkaWZm
-IC0tZ2l0IGEvaHcvdmZpby9wY2kuYyBiL2h3L3ZmaW8vcGNpLmMNCj4+IGluZGV4IGQ3ZmUwNjcx
-NWMuLjJjM2E1ZDI2N2IgMTAwNjQ0DQo+PiAtLS0gYS9ody92ZmlvL3BjaS5jDQo+PiArKysgYi9o
-dy92ZmlvL3BjaS5jDQo+PiBAQCAtMzEwNywxMSArMzEwNywyMSBAQCBzdGF0aWMgdm9pZCB2Zmlv
-X3JlYWxpemUoUENJRGV2aWNlICpwZGV2LA0KPkVycm9yICoqZXJycCkNCj4+DQo+PiAgICAgICB2
-ZmlvX2JhcnNfcmVnaXN0ZXIodmRldik7DQo+Pg0KPj4gLSAgICByZXQgPSB2ZmlvX2FkZF9jYXBh
-YmlsaXRpZXModmRldiwgZXJycCk7DQo+PiArICAgIGlmICh2YmFzZWRldi0+aW9tbXVmZCkgew0K
-Pj4gKyAgICAgICAgcmV0ID0gcGNpX2RldmljZV9zZXRfaW9tbXVfZGV2aWNlKHBkZXYsICZ2YmFz
-ZWRldi0+aWRldiwgZXJycCk7DQo+PiArICAgIH0gZWxzZSB7DQo+PiArICAgICAgICByZXQgPSBw
-Y2lfZGV2aWNlX3NldF9pb21tdV9kZXZpY2UocGRldiwgMCwgZXJycCk7DQo+DQo+DQo+QUZBSUNU
-LCBwY2lfZGV2aWNlX3NldF9pb21tdV9kZXZpY2UoKSB3aXRoIGEgTlVMTCBJT01NVUZERGV2aWNl
-IHdpbGwNCj5kbw0KPm5vdGhpbmcuIFdoeSBjYWxsIGl0ID8NCg0KV2Ugd2lsbCBkbyBzb21ldGhp
-bmcgaW4gbmVzdGluZyBzZXJpZXMsIHNlZSBodHRwczovL2dpdGh1Yi5jb20veWlsaXUxNzY1L3Fl
-bXUvY29tbWl0LzdmMGJiNTk1NzViYjVjZjM4NjE4YWU5NTBmNjhhODY2MTY3NmU4ODENCg0KQW5v
-dGhlciBjaG9pY2UgaXMgdG8gY2FsbCBwY2lfZGV2aWNlX3NldF9pb21tdV9kZXZpY2UoKSBubyBt
-YXR0ZXIgd2hpY2ggYmFja2VuZA0KaXMgdXNlZCBhbmQgY2hlY2sgaWRldi0+aW9tbXVmZCBpbiB2
-dGRfZGV2X3NldF9pb21tdV9kZXZpY2UoKS4gSXMgdGhpcyBiZXR0ZXINCmZvciB5b3U/DQoNClRo
-YW5rcw0KWmhlbnpob25nDQo=
+Hi Xiaoyao,
+
+On Thu, Jan 11, 2024 at 11:19:34AM +0800, Xiaoyao Li wrote:
+> Date: Thu, 11 Jan 2024 11:19:34 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [PATCH v7 05/16] i386: Decouple CPUID[0x1F] subleaf with
+>  specific topology level
+> 
+> On 1/8/2024 4:27 PM, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > At present, the subleaf 0x02 of CPUID[0x1F] is bound to the "die" level.
+> > 
+> > In fact, the specific topology level exposed in 0x1F depends on the
+> > platform's support for extension levels (module, tile and die).
+> > 
+> > To help expose "module" level in 0x1F, decouple CPUID[0x1F] subleaf
+> > with specific topology level.
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Babu Moger <babu.moger@amd.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > ---
+> > Changes since v3:
+> >   * New patch to prepare to expose module level in 0x1F.
+> >   * Move the CPUTopoLevel enumeration definition from "i386: Add cache
+> >     topology info in CPUCacheInfo" to this patch. Note, to align with
+> >     topology types in SDM, revert the name of CPU_TOPO_LEVEL_UNKNOW to
+> >     CPU_TOPO_LEVEL_INVALID.
+> > ---
+> >   target/i386/cpu.c | 136 +++++++++++++++++++++++++++++++++++++---------
+> >   target/i386/cpu.h |  15 +++++
+> >   2 files changed, 126 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index bc440477d13d..5c295c9a9e2d 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -269,6 +269,116 @@ static void encode_cache_cpuid4(CPUCacheInfo *cache,
+> >              (cache->complex_indexing ? CACHE_COMPLEX_IDX : 0);
+> >   }
+> > +static uint32_t num_cpus_by_topo_level(X86CPUTopoInfo *topo_info,
+> > +                                       enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return 1;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return topo_info->threads_per_core;
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return topo_info->threads_per_core * topo_info->cores_per_die;
+> > +    case CPU_TOPO_LEVEL_PACKAGE:
+> > +        return topo_info->threads_per_core * topo_info->cores_per_die *
+> > +               topo_info->dies_per_pkg;
+> > +    default:
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static uint32_t apicid_offset_by_topo_level(X86CPUTopoInfo *topo_info,
+> > +                                            enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return 0;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return apicid_core_offset(topo_info);
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return apicid_die_offset(topo_info);
+> > +    case CPU_TOPO_LEVEL_PACKAGE:
+> > +        return apicid_pkg_offset(topo_info);
+> > +    default:
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static uint32_t cpuid1f_topo_type(enum CPUTopoLevel topo_level)
+> > +{
+> > +    switch (topo_level) {
+> > +    case CPU_TOPO_LEVEL_INVALID:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_INVALID;
+> > +    case CPU_TOPO_LEVEL_SMT:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_SMT;
+> > +    case CPU_TOPO_LEVEL_CORE:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_CORE;
+> > +    case CPU_TOPO_LEVEL_DIE:
+> > +        return CPUID_1F_ECX_TOPO_LEVEL_DIE;
+> > +    default:
+> > +        /* Other types are not supported in QEMU. */
+> > +        g_assert_not_reached();
+> > +    }
+> > +    return 0;
+> > +}
+> > +
+> > +static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+> > +                                X86CPUTopoInfo *topo_info,
+> > +                                uint32_t *eax, uint32_t *ebx,
+> > +                                uint32_t *ecx, uint32_t *edx)
+> > +{
+> > +    static DECLARE_BITMAP(topo_bitmap, CPU_TOPO_LEVEL_MAX);
+> > +    X86CPU *cpu = env_archcpu(env);
+> > +    unsigned long level, next_level;
+> > +    uint32_t num_cpus_next_level, offset_next_level;
+> 
+> again, I dislike the name of cpus to represent the logical process or
+> thread. we can call it, num_lps_next_level, or num_threads_next_level;
+> 
+> > +
+> > +    /*
+> > +     * Initialize the bitmap to decide which levels should be
+> > +     * encoded in 0x1f.
+> > +     */
+> > +    if (!count) {
+> 
+> using static bitmap and initialize the bitmap on (count == 0), looks bad to
+> me. It highly relies on the order of how encode_topo_cpuid1f() is called,
+> and fragile.
+> 
+> Instead, we can maintain an array in CPUX86State, e.g.,
+
+In my practice, I have found this way to be rather tricky since...
+
+> 
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -1904,6 +1904,8 @@ typedef struct CPUArchState {
+> 
+>      /* Number of dies within this CPU package. */
+>      unsigned nr_dies;
+> +
+> +    unint8_t valid_cpu_topo[CPU_TOPO_LEVEL_MAX];
+>  } CPUX86State;
+> 
+
+this array actually pre-binds the 0x1f subleaf to the topology level,
+so this way brings difficulties to the array initialization stage...
+
+> 
+> and initialize it as below, when initializing the env
+> 
+> env->valid_cpu_topo[0] = CPU_TOPO_LEVEL_SMT;
+> env->valid_cpu_topo[1] = CPU_TOPO_LEVEL_CORE;
+> if (env->nr_dies > 1) {
+> 	env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
+> }
+
+... as here.
+
+Based on 1f encoding rule, with module, we may need this logic like
+this:
+
+// If there's module, encode the module level at ECX=2.
+if (env->nr_modules > 1) {
+       env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_MODULE;
+       if (env->nr_dies > 1) {
+       		env->valid_cpu_topo[3] = CPU_TOPO_LEVEL_DIE;
+       }
+} else if (env->nr_dies > 1) { // Otherwise, encode die directly.
+       env->valid_cpu_topo[2] = CPU_TOPO_LEVEL_DIE;
+}
+
+Such case-by-case checking lacks scalability, and if more levels are
+supported in the future, such as tiles, the whole checking becomes
+unclean. Am I understanding you correctly?
+
+About the static bitmap, declaring it as static is an optimization.
+Because the count (ECX, e.g., ECX=N) means the Nth topology levels,
+if we didn't use static virable, we would need to iterate each time
+to find the Nth level.
+
+Since we know that the subleaf of 0x1f must be sequentially encoded,
+the logic of this static code is always in effect.
+
+What do you think?
+
+Thanks,
+Zhao
+
+> 
+> then in encode_topo_cpuid1f(), we can get level and next_level as
+> 
+> level = env->valid_cpu_topo[count];
+> next_level = env->valid_cpu_topo[count + 1];
+> 
+> 
+> > +        /* SMT and core levels are exposed in 0x1f leaf by default. */
+> > +        set_bit(CPU_TOPO_LEVEL_SMT, topo_bitmap);
+> > +        set_bit(CPU_TOPO_LEVEL_CORE, topo_bitmap);
+> > +
+> > +        if (env->nr_dies > 1) {
+> > +            set_bit(CPU_TOPO_LEVEL_DIE, topo_bitmap);
+> > +        }
+> > +    }
+> > +
+> > +    *ecx = count & 0xff;
+> > +    *edx = cpu->apic_id;
+> > +
+> > +    level = find_first_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX);
+> > +    if (level == CPU_TOPO_LEVEL_MAX) {
+> > +        num_cpus_next_level = 0;
+> > +        offset_next_level = 0;
+> > +
+> > +        /* Encode CPU_TOPO_LEVEL_INVALID into the last subleaf of 0x1f. */
+> > +        level = CPU_TOPO_LEVEL_INVALID;
+> > +    } else {
+> > +        next_level = find_next_bit(topo_bitmap, CPU_TOPO_LEVEL_MAX, level + 1);
+> > +        if (next_level == CPU_TOPO_LEVEL_MAX) {
+> > +            next_level = CPU_TOPO_LEVEL_PACKAGE;
+> > +        }
+> > +
+> > +        num_cpus_next_level = num_cpus_by_topo_level(topo_info, next_level);
+> > +        offset_next_level = apicid_offset_by_topo_level(topo_info, next_level);
+> > +    }
+> > +
+> > +    *eax = offset_next_level;
+> > +    *ebx = num_cpus_next_level;
+> > +    *ecx |= cpuid1f_topo_type(level) << 8;
+> > +
+> > +    assert(!(*eax & ~0x1f));
+> > +    *ebx &= 0xffff; /* The count doesn't need to be reliable. */
+> > +    if (level != CPU_TOPO_LEVEL_MAX) {
+> > +        clear_bit(level, topo_bitmap);
+> > +    }
+> > +}
+> > +
+> >   /* Encode cache info for CPUID[0x80000005].ECX or CPUID[0x80000005].EDX */
+> >   static uint32_t encode_cache_cpuid80000005(CPUCacheInfo *cache)
+> >   {
+> > @@ -6284,31 +6394,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+> >               break;
+> >           }
+> > -        *ecx = count & 0xff;
+> > -        *edx = cpu->apic_id;
+> > -        switch (count) {
+> > -        case 0:
+> > -            *eax = apicid_core_offset(&topo_info);
+> > -            *ebx = topo_info.threads_per_core;
+> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_SMT << 8;
+> > -            break;
+> > -        case 1:
+> > -            *eax = apicid_die_offset(&topo_info);
+> > -            *ebx = topo_info.cores_per_die * topo_info.threads_per_core;
+> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_CORE << 8;
+> > -            break;
+> > -        case 2:
+> > -            *eax = apicid_pkg_offset(&topo_info);
+> > -            *ebx = cpus_per_pkg;
+> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_DIE << 8;
+> > -            break;
+> > -        default:
+> > -            *eax = 0;
+> > -            *ebx = 0;
+> > -            *ecx |= CPUID_1F_ECX_TOPO_LEVEL_INVALID << 8;
+> > -        }
+> > -        assert(!(*eax & ~0x1f));
+> > -        *ebx &= 0xffff; /* The count doesn't need to be reliable. */
+> > +        encode_topo_cpuid1f(env, count, &topo_info, eax, ebx, ecx, edx);
+> >           break;
+> >       case 0xD: {
+> >           /* Processor Extended State */
+> > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> > index f47bad46db5e..9c78cfc3f322 100644
+> > --- a/target/i386/cpu.h
+> > +++ b/target/i386/cpu.h
+> > @@ -1008,6 +1008,21 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+> >   #define CPUID_MWAIT_IBE     (1U << 1) /* Interrupts can exit capability */
+> >   #define CPUID_MWAIT_EMX     (1U << 0) /* enumeration supported */
+> > +/*
+> > + * CPUTopoLevel is the general i386 topology hierarchical representation,
+> > + * ordered by increasing hierarchical relationship.
+> > + * Its enumeration value is not bound to the type value of Intel (CPUID[0x1F])
+> > + * or AMD (CPUID[0x80000026]).
+> > + */
+> > +enum CPUTopoLevel {
+> > +    CPU_TOPO_LEVEL_INVALID,
+> > +    CPU_TOPO_LEVEL_SMT,
+> > +    CPU_TOPO_LEVEL_CORE,
+> > +    CPU_TOPO_LEVEL_DIE,
+> > +    CPU_TOPO_LEVEL_PACKAGE,
+> > +    CPU_TOPO_LEVEL_MAX,
+> > +};
+> > +
+> >   /* CPUID[0xB].ECX level types */
+> >   #define CPUID_B_ECX_TOPO_LEVEL_INVALID  0
+> >   #define CPUID_B_ECX_TOPO_LEVEL_SMT      1
+> 
 
