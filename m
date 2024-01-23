@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDB68393F7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 16:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B5D839425
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:05:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJA8-0006ik-W6; Tue, 23 Jan 2024 10:58:09 -0500
+	id 1rSJFf-0008Gt-Du; Tue, 23 Jan 2024 11:03:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSJA5-0006hu-1e
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:58:05 -0500
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rSJFU-0008GQ-F8
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:03:40 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSJA3-0003NT-8T
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 10:58:04 -0500
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-2907748497dso2093945a91.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 07:58:02 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rSJFQ-0004cg-2i
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:03:39 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40eb033c192so12229575e9.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:03:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706025481; x=1706630281; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tcTpvbjJwfPsYzw2YmoZSPVZf9rAhM7xR0nmwArUt1U=;
- b=bVUhBLaRo8GaJEnVSlmQEJ5rEoMbVvOkE0H4kt/voCKfLGwYqaFcYXa6uynqr3H5kv
- YNM3pT6uM96qrVqu3xef/5TLJrwOlKqvs9FglN1izrq+xhUdz6A+rtUZ9veSw6PhF4Kt
- m+k9Ept9dJWmM1GxSURheKe1VwF1dzQqDppXaRPu85U59Xq9Gl1lWB2D8JJdWW2t5mxn
- QXJNTvQlx+BvPdhsfvVndzsy+9B5B0BwyEXYyyf6O0PaHqaP59pcQwErSfVb/zGDuCNx
- UD9hoxiyjqdYAQyHF35NrSMBkIpU1JaRtc+Zo7CrzBQAXtMsb3XrC/qFFJz4cwQwhOt9
- +AmA==
+ d=linaro.org; s=google; t=1706025814; x=1706630614; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jTUUEUja40WbQS6wzJYDPCgMUCiS6GJwtB6HGzHkSGs=;
+ b=c9RPmTpGldE8JL3AfanR+bxNnaEcRwp0X/T16FJsCPBOwO9t5TBiqz7xNMmHKcaa6T
+ aa7npVhae417GYeJMxD8JWBMjQfPW4YREIu+AH+HkXctArsPyE4JhSeI0b1zY02kccoa
+ VMhGAnkOa7suCYCzL4QUCLRpzt10saVWiC7zJz78zzzAk/GsbhZ+egDBT1mrGqMFtmB6
+ flyZYPsQ1sv8pmxjaYuwUGZS3Hj+tumzsYlSR4jGDWZtMykxAYJcoDA90Byxa7n5aA8Y
+ fxjkA1uPH5sANnmSijG9mf9GVCrST0C1Zsab0okEiNoGimezD88owSN7JoWvM6DDnzPK
+ SA2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706025481; x=1706630281;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tcTpvbjJwfPsYzw2YmoZSPVZf9rAhM7xR0nmwArUt1U=;
- b=mETflDinTvSOb3ZalH4QkANO55YX3babiL716l3yhj6HRioBMvC+cxO6cGQ2YuSgfk
- FehJ/+7Sf8SSyKU83wqdGC9UbJoeb4phII2sgPPTbb5yAddQjVso12rjJGZRt86JhLMf
- UF892jB3/FL9wH+AlColTJ5k1MJ/LBJiBe5rLfWGyfyfeYFJOZttYufXu1KOZ3B73p9l
- Rw9CUOi4ca01sCnTzuenv3CRjUaIs4nyrwwrB8wgwrWjd14XBTPQTKEFJrfKEogtO8a6
- g1Tz45RadbE6IIICE97hnBRk5Zx1jGmM2q/dj00QwQ2GeckQF9Ejmmea1zyYA6EqeTdz
- 4CXA==
-X-Gm-Message-State: AOJu0YyD9BiW4vV5pTOQ6UzX13iA0pKLCJ/gnKFxYEBDwpLshxo9F3cF
- dwiKs0ceh+2AX4pfztJ1Y9SLRhRhns9ltHmJfS9O3XYwR6VEw/ds1ryPu2t0SV4=
-X-Google-Smtp-Source: AGHT+IFJOjnmntIpsh840mI6lOjiGab1GOhcWVamGH10FxymzY/Rf5gHceC9LLFCwEc639MomEj9Zw==
-X-Received: by 2002:a17:90a:488a:b0:28e:8458:2889 with SMTP id
- b10-20020a17090a488a00b0028e84582889mr2902350pjh.30.1706025481525; 
- Tue, 23 Jan 2024 07:58:01 -0800 (PST)
-Received: from ?IPV6:2001:44b8:2176:c800:94f0:22fe:dda1:1842?
- (2001-44b8-2176-c800-94f0-22fe-dda1-1842.static.ipv6.internode.on.net.
- [2001:44b8:2176:c800:94f0:22fe:dda1:1842])
+ d=1e100.net; s=20230601; t=1706025814; x=1706630614;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jTUUEUja40WbQS6wzJYDPCgMUCiS6GJwtB6HGzHkSGs=;
+ b=SYulwl79F6YFny+plE0KK6iN3rGM2IFhQbuyxDOEUVW6ko/mYVKQ0mlC5UC8tqk15C
+ h/6INdO2ugaM31mBKRm+PImwAxzK63mvq35dZ/x1h8UCUg9Hu2tudBI6qnOyG86VBsuV
+ 64DGexeR2DM6l9o7bV7PodHG6kkOaM5c9zRkKVkhS65zz3SUhloNuQoy7sopuyllGedI
+ 2PhnVFevF7uHyWz9jkKWbyL1fmp6d6kKjuKiOLKh99EPG+mAmNM38D+So5yN2WjLhj3l
+ POMDnh+rve1RDrlcfmMcduwES8R99vIHoSJPLycC5SHfAKAMgX/WgFtVYOgBokp1OB18
+ soXA==
+X-Gm-Message-State: AOJu0Yy+Uf3EBQCwXx8yxgFg9AyOAs4z0giET8VZRerlNg1KiGN/B8mJ
+ JKnjjH67Gfd4P6dd1N3gRxloVT7gfB3ZVmMF/NFfXdYPf6ESx680CrE6DFpYOu8=
+X-Google-Smtp-Source: AGHT+IGF/q32cHIYvJzRB0JqPkPeToJpBr9fuVZhWQaHWupt+vmI9RhjjKEpFO0nWnHQOyGigjJ1tQ==
+X-Received: by 2002:a05:600c:1c23:b0:40e:4832:9fc3 with SMTP id
+ j35-20020a05600c1c2300b0040e48329fc3mr299253wms.7.1706025814148; 
+ Tue, 23 Jan 2024 08:03:34 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- su7-20020a17090b534700b0028d29d837c7sm11767601pjb.36.2024.01.23.07.57.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Jan 2024 07:58:01 -0800 (PST)
-Message-ID: <506043f7-e245-437c-a4cc-e6bc0f71d086@linaro.org>
-Date: Wed, 24 Jan 2024 01:57:53 +1000
+ f13-20020a05600c4e8d00b0040eb6ce137asm2651539wmq.39.2024.01.23.08.03.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Jan 2024 08:03:33 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] target/arm: Fix incorrect aa64_tidcp1 feature check
+Date: Tue, 23 Jan 2024 16:03:33 +0000
+Message-Id: <20240123160333.958841-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] system/vl.c: Fix handling of '-serial none -serial
- something'
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bohdan Kostiv <bogdan.kostiv@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20240122163607.459769-1-peter.maydell@linaro.org>
- <20240122163607.459769-2-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240122163607.459769-2-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,47 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/23/24 02:36, Peter Maydell wrote:
-> Currently if the user passes multiple -serial options on the command
-> line, we mostly treat those as applying to the different serial
-> devices in order, so that for example
->   -serial stdio -serialfile:filename
-> will connect the first serial port to stdio and the second to the
-> named file.
-> 
-> The exception to this is the '-serial none' serial device type.  This
-> means "don't allocate this serial device", but a bug means that
-> following -serial options are not correctly handled, so that
->   -serial none -serial stdio
-> has the unexpected effect that stdio is connected to the first serial
-> port, not the second.
-> 
-> This is a very long-standing bug that dates back at least as far as
-> commit 998bbd74b9d81 from 2009.
-> 
-> Make the 'none' serial type move forward in the indexing of serial
-> devices like all the other serial types, so that any subsequent
-> -serial options are correctly handled.
-> 
-> Note that if your commandline mistakenly had a '-serial none' that
-> was being overridden by a following '-serial something' option, you
-> should delete the unnecessary '-serial none'.  This will give you the
-> same behaviour as before, on QEMU versions both with and without this
-> bug fix.
-> 
-> Cc:qemu-stable@nongnu.org
-> Reported-by: Bohdan Kostiv<bohdan.kostiv@tii.ae>
-> Fixes: 998bbd74b9d81 ("default devices: core code & serial lines")
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
-> See the discussion of Bohdan's patch on the mailing list for
-> further context:
-> https://lore.kernel.org/qemu-devel/CAA3Sv1LQ8yDUNLCB5WqLVZjsHffrU0uSbL_YYJW_m+Db2PhEeQ@mail.gmail.com/
-> ---
->   system/vl.c | 22 +++++++++++++---------
->   1 file changed, 13 insertions(+), 9 deletions(-)
+A typo in the implementation of isar_feature_aa64_tidcp1() means we
+were checking the field in the wrong ID register, so we might have
+provided the feature on CPUs that don't have it and not provided
+it on CPUs that should have it. Correct this bug.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org
+Fixes: 9cd0c0dec97be9 "target/arm: Implement FEAT_TIDCP1"
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2120
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/cpu-features.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-r~
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 7a590c824cf..24525e36349 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -771,7 +771,7 @@ static inline bool isar_feature_aa64_hcx(const ARMISARegisters *id)
+ 
+ static inline bool isar_feature_aa64_tidcp1(const ARMISARegisters *id)
+ {
+-    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR1, TIDCP1) != 0;
++    return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, TIDCP1) != 0;
+ }
+ 
+ static inline bool isar_feature_aa64_hafs(const ARMISARegisters *id)
+-- 
+2.34.1
+
 
