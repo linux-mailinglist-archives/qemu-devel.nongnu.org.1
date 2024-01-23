@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BCA839488
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:19:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C25839484
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 17:18:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSJT0-0003Z6-Ds; Tue, 23 Jan 2024 11:17:39 -0500
+	id 1rSJT2-0003Zt-FC; Tue, 23 Jan 2024 11:17:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rSJSy-0003Xq-2a
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:36 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1rSJSz-0003YS-Cj
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:37 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rSJSt-0007a2-78
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:35 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2907748497dso2114077a91.0
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:30 -0800 (PST)
+ id 1rSJSx-0007bu-Ad
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 11:17:37 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-2906bcae4feso1306865a91.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 08:17:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1706026649; x=1706631449; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1706026653; x=1706631453; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DlLC6Ot4/dn/UCAb/W6JpULetzzTz/g5dq77T6/tyqo=;
- b=nWK+EV6i2j9AtKyAHZXx0NKCnATZ5KZbgd+oar2QXO28vrzXTsT4z+8tFxo/mp4UBs
- 48pz2WnniRxdpxjZhfkJPK73tzhlYogUk8qfPV+shD1Wo9xwsR6I8UM85NhdR+EIqVQU
- dHsIgrR9RBIDCLBw0VLKCtvZjWutoLlUvNjX9WGsh316FJbBoLzh7yxziZ2rb/eKsHqw
- uqzegQXv+U6M6rF4cEkK1bhumqahnhjqo+q2lTN/e6M+P8Ra437VXeZFDCisfpjfOjOt
- SVl++9p0mvZD1CQ86HIHVJFhi5Wgn2jq5MLlvZs//lkCK+xrVXpFU/oaItRtZjUcodDA
- /B5Q==
+ bh=LOOocRNMyUSXJ3ngIwpNGvdMcQOP/Ba340YkioYdkN0=;
+ b=leK5oLGHtwHt1X9Aj/VTZkRynyafZeM24/F1uW4vkrBEkYkRQNmF5pB6pkgZXjHhUN
+ tgY3/CzjNFmvgVqYLJlsWnd7pGAjlu+KuarRgHZPMB5nrh5TUQdyc1roATMBA374LrYv
+ Hh5Gl+YJVaqx+0FZUWo0hQIWUoxGQjwebFBoDAT1CyBLUoKBdolQe8vJNOrALehKKPnB
+ oGrOG7h7L8wHdnqdOU8HlAjsh5qmmbxEs2FHAGYxTErz7aa9h2BlP/W3PcmVpWEjUQ5X
+ DnEtTpAs/MIVq0a2KepxNso9RcB69hHzc+/fIBBYHno931+NmUBuBvrP7+mCpg3Es3Y9
+ /xQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706026649; x=1706631449;
+ d=1e100.net; s=20230601; t=1706026653; x=1706631453;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DlLC6Ot4/dn/UCAb/W6JpULetzzTz/g5dq77T6/tyqo=;
- b=fxmkOXqpEmGeIPBPAWq8APKSJKSQ2d2CG59/93ZDxtOZESN1X5p4Q2L4i19PSpBFto
- XTqbWzo4hHT0NLkvJy/M9rhuC5skYAQj2h2Uj7vWcZjHHHSQqpyXrEvRjNcPeZXptR13
- ySH8IBPachS2WLT2F5WLRrH3VLDUsKf3R92Hf+IC73p5AUkr7LtQSzYibwBlgP8rBXK9
- oD5dtCw56WNs7FOmcw8rcO8RxCQuIhu10/OdER7qFca2ymxHD4O8lKO/BS/BHx4rAKKM
- C89Ge9r7lhE9Yex9yy/97JiPcGrwseE7tqf7RRyj/Sd9CWLJ0Uy8prFUMuXtk1+vSNdE
- wpFQ==
-X-Gm-Message-State: AOJu0Yy/uV1SiVOjDfCnuwbgIv2EWr5zkJKB4BKXBQqQItPfVWHLz3QM
- 62bnh4PBu3fnAxg8zz/i/XbcenX0+jP1po+7vZGERyYJTLMWgNfXG9Y40NJnEJtCmxDW9UWonuT
- d
-X-Google-Smtp-Source: AGHT+IHEQL40+wUcxdYC+VK/FZ+GvweSj5l870dP+8SwcUgqckjFoL0epxkJeynJb6tKY3Paadu8+A==
-X-Received: by 2002:a17:90b:157:b0:290:2c5:b231 with SMTP id
- em23-20020a17090b015700b0029002c5b231mr3017397pjb.81.1706026649486; 
- Tue, 23 Jan 2024 08:17:29 -0800 (PST)
+ bh=LOOocRNMyUSXJ3ngIwpNGvdMcQOP/Ba340YkioYdkN0=;
+ b=evYGE1URgSfWwK0QyfNW4oy/M33mOC8bRL+28ej/lEos0ZtT+O6a0oK30TWl4IWjDI
+ f/NIA4dLWXsbJGoThg4nJlj8MFI48GreRwYEnh7l5MOFxXxJ5fCg03oIXnrzXaA3jvY5
+ Ad94SGwXe68l9+ueZzBWnslXS4MwCECXWVuD7g4pfKbEU/7QDLu/cUhXc1YWsvQbduqp
+ Pw+fxszkBu1NtRdEx0zXzpjEC9XqBTh6cSQJUZNdTlYBXbM0MCGv3m1YaleW7VLGrWYa
+ ltHwWLM/rXIHB4cofQMFPBfGK1viV6jTQ8SP0+IMIa/wM06Xr3j2/cELNKlRPHnsiTGT
+ BBvA==
+X-Gm-Message-State: AOJu0YwgADei1gHkWrehUQl8dZoc9gc28cWjAcf+YN+QXOl1KkgU1fD8
+ Xz2JsDUfvWx3WCYban/3Uk90zz80QZviAlz7bjWKcSKNDdQLXA6/eGEx6bqoKcCXZuHw5zynRuf
+ C
+X-Google-Smtp-Source: AGHT+IEzZrqMn1mtj4kwpVwex65oCTLZLCf49XvLu8TMCOyghpGPLGPjgTEQg8AngWq+m2TuA/8uUQ==
+X-Received: by 2002:a17:90a:ce83:b0:28d:42d3:5cde with SMTP id
+ g3-20020a17090ace8300b0028d42d35cdemr2740665pju.68.1706026652975; 
+ Tue, 23 Jan 2024 08:17:32 -0800 (PST)
 Received: from grind.. ([152.234.127.94]) by smtp.gmail.com with ESMTPSA id
- u14-20020a17090ac88e00b0028bcc2a47e9sm11755686pjt.38.2024.01.23.08.17.25
+ u14-20020a17090ac88e00b0028bcc2a47e9sm11755686pjt.38.2024.01.23.08.17.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Jan 2024 08:17:29 -0800 (PST)
+ Tue, 23 Jan 2024 08:17:32 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 2/3] target/riscv/kvm: initialize 'vlenb' via get-reg-list
-Date: Tue, 23 Jan 2024 13:17:13 -0300
-Message-ID: <20240123161714.160149-3-dbarboza@ventanamicro.com>
+Subject: [PATCH 3/3] target/riscv/kvm: get/set vector vregs[]
+Date: Tue, 23 Jan 2024 13:17:14 -0300
+Message-ID: <20240123161714.160149-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240123161714.160149-1-dbarboza@ventanamicro.com>
 References: <20240123161714.160149-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,176 +94,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM will check for the correct 'reg_size' when accessing the vector
-registers, erroring with EINVAL if we encode the wrong size in reg ID.
-Vector registers varies in size with the vector length in bytes, or
-'vlenb'. This means that we need the current 'vlenb' being used by the
-host, otherwise we won't be able to fetch all vector regs.
+vregs[] have variable size that depends on the current vlenb set by the
+host, meaning we can't use our regular kvm_riscv_reg_id() to retrieve
+it.
 
-We'll deal with 'vlenb' first. Its support was added in Linux 6.8 as a
-get-reg-list register. We'll read 'vlenb' via get-reg-list and mark the
-register as 'supported'. All 'vlenb' ops via kvm_arch_get_registers()
-and kvm_arch_put_registers() will only be done if the reg is supported,
-i.e. we fetched it in get-reg-list during init.
+Create a generic kvm_encode_reg_size_id() helper to encode any given
+size in bytes into a given kvm reg id. kvm_riscv_vector_reg_id() will
+use it to encode vlenb into a given vreg ID.
 
-If the user sets a new vlenb value using the 'vlen' property, throw an
-error if the user value differs from the host.
+kvm_riscv_(get|set)_vector() can then get/set all 32 vregs.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 85 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 82 insertions(+), 3 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 57 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 902180e8a5..3812481971 100644
+index 3812481971..a7881de7f9 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -352,6 +352,13 @@ static KVMCPUConfig kvm_cboz_blocksize = {
-     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
- };
- 
-+static KVMCPUConfig kvm_v_vlenb = {
-+    .name = "vlenb",
-+    .offset = CPU_CFG_OFFSET(vlenb),
-+    .kvm_reg_id =  KVM_REG_RISCV | KVM_REG_SIZE_U64 | KVM_REG_RISCV_VECTOR |
-+                   KVM_REG_RISCV_VECTOR_CSR_REG(vlenb)
-+};
-+
- static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
- {
-     CPURISCVState *env = &cpu->env;
-@@ -684,7 +691,8 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
- 
- static int kvm_riscv_get_regs_vector(CPUState *cs)
- {
--    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    CPURISCVState *env = &cpu->env;
-     target_ulong reg;
-     int ret = 0;
- 
-@@ -710,12 +718,21 @@ static int kvm_riscv_get_regs_vector(CPUState *cs)
-     }
-     env->vtype = reg;
- 
-+    if (kvm_v_vlenb.supported) {
-+        ret = kvm_get_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vlenb), &reg);
-+        if (ret) {
-+            return ret;
-+        }
-+        cpu->cfg.vlenb = reg;
-+    }
-+
-     return 0;
+@@ -86,6 +86,27 @@ static uint64_t kvm_riscv_reg_id_u64(uint64_t type, uint64_t idx)
+     return KVM_REG_RISCV | KVM_REG_SIZE_U64 | type | idx;
  }
  
- static int kvm_riscv_put_regs_vector(CPUState *cs)
- {
--    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    CPURISCVState *env = &cpu->env;
-     target_ulong reg;
-     int ret = 0;
- 
-@@ -737,6 +754,14 @@ static int kvm_riscv_put_regs_vector(CPUState *cs)
- 
-     reg = env->vtype;
-     ret = kvm_set_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vtype), &reg);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    if (kvm_v_vlenb.supported) {
-+        reg = cpu->cfg.vlenb;
-+        ret = kvm_set_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vlenb), &reg);
-+    }
- 
-     return ret;
- }
-@@ -921,6 +946,33 @@ static int uint64_cmp(const void *a, const void *b)
-     return 0;
- }
- 
-+static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-+                                 struct kvm_reg_list *reglist)
++static uint64_t kvm_encode_reg_size_id(uint64_t id, size_t size_b)
 +{
-+    struct kvm_one_reg reg;
-+    struct kvm_reg_list *reg_search;
-+    uint64_t val;
-+    int ret;
++    uint64_t size_ctz = __builtin_ctz(size_b);
 +
-+    reg_search = bsearch(&kvm_v_vlenb.kvm_reg_id, reglist->reg, reglist->n,
-+                         sizeof(uint64_t), uint64_cmp);
-+
-+    if (reg_search) {
-+        reg.id = kvm_v_vlenb.kvm_reg_id;
-+        reg.addr = (uint64_t)&val;
-+
-+        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            error_report("Unable to read vlenb register, error code: %s",
-+                         strerrorname_np(errno));
-+            exit(EXIT_FAILURE);
-+        }
-+
-+        kvm_v_vlenb.supported = true;
-+        cpu->cfg.vlenb = val;
-+    }
++    return id | (size_ctz << KVM_REG_SIZE_SHIFT);
 +}
 +
- static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- {
-     KVMCPUConfig *multi_ext_cfg;
-@@ -995,6 +1047,10 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-     if (cpu->cfg.ext_zicboz) {
-         kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-     }
++static uint64_t kvm_riscv_vector_reg_id(RISCVCPU *cpu,
++                                        uint64_t idx)
++{
++    uint64_t id;
++    size_t size_b;
 +
-+    if (riscv_has_ext(&cpu->env, RVV)) {
-+        kvm_riscv_read_vlenb(cpu, kvmcpu, reglist);
-+    }
- }
++    g_assert(idx < 32);
++
++    id = KVM_REG_RISCV | KVM_REG_RISCV_VECTOR | KVM_REG_RISCV_VECTOR_REG(idx);
++    size_b = cpu->cfg.vlenb;
++
++    return kvm_encode_reg_size_id(id, size_b);
++}
++
+ #define RISCV_CORE_REG(env, name) \
+     kvm_riscv_reg_id_ulong(env, KVM_REG_RISCV_CORE, \
+                            KVM_REG_RISCV_CORE_REG(name))
+@@ -694,7 +715,8 @@ static int kvm_riscv_get_regs_vector(CPUState *cs)
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+     target_ulong reg;
+-    int ret = 0;
++    uint64_t vreg_id;
++    int vreg_idx, ret = 0;
  
- static void riscv_init_kvm_registers(Object *cpu_obj)
-@@ -1566,7 +1622,8 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-     int ret;
- 
-     /* short-circuit without spinning the scratch CPU */
--    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
-+    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz &&
-+        !riscv_has_ext(env, RVV)) {
-         return;
-     }
- 
-@@ -1613,6 +1670,28 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+     if (!riscv_has_ext(env, RVV)) {
+         return 0;
+@@ -724,6 +746,21 @@ static int kvm_riscv_get_regs_vector(CPUState *cs)
+             return ret;
          }
+         cpu->cfg.vlenb = reg;
++
++        for (int i = 0; i < 32; i++) {
++            /*
++             * vreg[] is statically allocated using RV_VLEN_MAX.
++             * Use it instead of vlenb to calculate vreg_idx for
++             * simplicity.
++             */
++            vreg_idx = i * RV_VLEN_MAX / 64;
++            vreg_id = kvm_riscv_vector_reg_id(cpu, i);
++
++            ret = kvm_get_one_reg(cs, vreg_id, &env->vreg[vreg_idx]);
++            if (ret) {
++                return ret;
++            }
++        }
      }
  
-+    /* Users are setting vlen, not vlenb */
-+    if (riscv_has_ext(env, RVV) && riscv_cpu_option_set("vlen")) {
-+        if (!kvm_v_vlenb.supported) {
-+            error_setg(errp, "Unable to set 'vlenb': register not supported");
-+            return;
-+        }
-+
-+        reg.id = kvm_v_vlenb.kvm_reg_id;
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            error_setg(errp, "Unable to read vlenb register, error %d", errno);
-+            return;
-+        }
-+
-+        if (cpu->cfg.vlenb != val) {
-+            error_setg(errp, "Unable to set 'vlen' to a different "
-+                       "value than the host (%lu)", val * 8);
-+            return;
-+        }
-+    }
-+
-     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
- }
+     return 0;
+@@ -734,7 +771,8 @@ static int kvm_riscv_put_regs_vector(CPUState *cs)
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+     target_ulong reg;
+-    int ret = 0;
++    uint64_t vreg_id;
++    int vreg_idx, ret = 0;
  
+     if (!riscv_has_ext(env, RVV)) {
+         return 0;
+@@ -761,6 +799,21 @@ static int kvm_riscv_put_regs_vector(CPUState *cs)
+     if (kvm_v_vlenb.supported) {
+         reg = cpu->cfg.vlenb;
+         ret = kvm_set_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vlenb), &reg);
++
++        for (int i = 0; i < 32; i++) {
++            /*
++             * vreg[] is statically allocated using RV_VLEN_MAX.
++             * Use it instead of vlenb to calculate vreg_idx for
++             * simplicity.
++             */
++            vreg_idx = i * RV_VLEN_MAX / 64;
++            vreg_id = kvm_riscv_vector_reg_id(cpu, i);
++
++            ret = kvm_set_one_reg(cs, vreg_id, &env->vreg[vreg_idx]);
++            if (ret) {
++                return ret;
++            }
++        }
+     }
+ 
+     return ret;
 -- 
 2.43.0
 
