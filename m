@@ -2,104 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1EE8386FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 06:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C99D1838702
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Jan 2024 06:50:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rS9ep-0007Pl-SB; Tue, 23 Jan 2024 00:49:11 -0500
+	id 1rS9fn-0008Eg-Ux; Tue, 23 Jan 2024 00:50:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rS9en-0007PF-DX; Tue, 23 Jan 2024 00:49:09 -0500
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rS9fl-0008EM-Ve
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 00:50:10 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rS9el-0008Tl-QW; Tue, 23 Jan 2024 00:49:09 -0500
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-46771fc85cdso828095137.2; 
- Mon, 22 Jan 2024 21:49:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rS9fk-0000MB-0v
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 00:50:09 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a2c179aa5c4so412124166b.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Jan 2024 21:50:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1705988945; x=1706593745; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XGWFIgPM+i7sy9OAsZEHC3tF/I68FLzyifoG6R+5O+0=;
- b=JthRGq4aQ3XqACeD3RVRYTFvhkUK9NvxzOr1ZixKwM3R0AzTo0ly1pNfBVb2f/edpP
- uKgF4kXYl1Mx2MiNKUb+Vlo0alspETNVygapO4IMdsnCdvIOvCe46lHBNYMly9Y6K9wb
- nmkJCwUd4D0MYXQbx4AplSer6j1tGQQkyVeoXOux0gTfMrnw5L8if9iZa+nyH9TnqTsm
- hT8L2YfBQ1c3oTpvFIUVMnhFEydIUFCphXJuqzoZKqL1YrFHCedEtIbDS9tCtFzPqgNS
- 3120VrxgitOVQk+/3tvO2RnWFP+gLTTMcF4r27IYE87qTwDewTUaESfPSq8hCQsRPBZ5
- /zww==
+ d=linaro.org; s=google; t=1705989006; x=1706593806; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ppChUoIFvo8a+f8Bqe3rqtKEWQsMJcEIWzXIQbJm984=;
+ b=Jqjf9d7WevloQpe94PRvDl9A40G0hjXRPH2KTQzSRbXx6PmSOFw17/k1myL+5qaR7d
+ n1tEpdpUv3umCzPSGN0O60AVFqMqxQFOH+MHZshTXMHhHCbo6dRN6zMCJATkgeZp9MNa
+ iWUQ4GwkpoHedjhg9puktD3Fr0kdmEpk0gZGbIw2J5hi9dCxDyRm69nJ7CEtNwgZHS7l
+ GfLtO8/Jy14foOQ9VMrwOz0nfB2LFP0noz9iiZqKwwSMyiDWCQ4q7ZZSmJw++/MX9Ujo
+ 0mnhm0tosR8MjoZd0o/eP4/3wh/DRL5i508mUDupvK797J1b5KdNhA+Rvx51u+/8IUJV
+ ks1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1705988945; x=1706593745;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XGWFIgPM+i7sy9OAsZEHC3tF/I68FLzyifoG6R+5O+0=;
- b=a2j52BB5zxxKlpM5NWNERFtp7RxePQqLgfL5ZH3RlpiBddrHotHrttsTGhbYOnqduD
- zUFREwD6cj9t127PyzYoLXj+sort+iLjpwKfrEvt3iRTnm94dHn8Bv6n3MIAMk2z6NxM
- 8ZgjYuvrRnqB6QuMrBtO47jzLUL9sKusvfMcM2Hp5FYWx5b++y2WkQ2hzkcVjMteEMRi
- DVRKg3VsGAtDQjGD+rR+A32Ri89xumhC9DHCnN0pBCreVO6O0hmzuzKeJHHoyU8dpDpn
- OdJXpB7Y/wV5BySPxkSZIwxVBE/fIlU5OSh/QhlkUMlhB5pjBLADWcJV6DgV1d1YeZeN
- J3fg==
-X-Gm-Message-State: AOJu0Yz5ZCdMVjNzWhc95O03wt9pPbbbdcwR15mDBzyEUwCwLHt/uLXk
- geSkVM1paVXoobmRFykwiUvifOWT5oQONbITPYTvyEEgUHWU2n/P6IGjTYxylFR9t3d5BEDm9Vr
- J68tRfaF7AOWqJ/oXLtRzwVA1o/s=
-X-Google-Smtp-Source: AGHT+IEGeNkPgWGB2ABOu+k0n1xgc8g0ke5OU9+x6qKIzezRXOSKHl+yIjtOmtVfaKEE0HM4paszPnbDaOrSmaVRSdk=
-X-Received: by 2002:a67:e3a7:0:b0:469:aec1:b42c with SMTP id
- j7-20020a67e3a7000000b00469aec1b42cmr2494332vsm.5.1705988945512; Mon, 22 Jan
- 2024 21:49:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1705989006; x=1706593806;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ppChUoIFvo8a+f8Bqe3rqtKEWQsMJcEIWzXIQbJm984=;
+ b=O4qoMZlN/5OaMXGZd9gMeuzSeRTJPjrTr/M+hXOFyodsHgeik+7nYZBnoFxvLfmSOG
+ yaAc9j0NrYtQCmTKdzyv8NojBpTdW01p/eWwmuvF2nSL/uH2nMBnZ0Vr0WHvNwDPLDbm
+ SRi5rlOlzvYoFCqDcr9aQLZOidvfcRWRcE6Mhiki/tnf/TobdDU1B8k0PlxOV0xWbqMP
+ UWdpVCWptDa4msmDuLdC2GYn4MegCjUnBO1XVnWls8tmF6NljroiN79/GsKNRjOsRyDb
+ //QwxJWJEMe9JVcxC5VYxueeSeTuwotVKCFeT1Yv78rSW10uCWeFfWu1+oCSnR5FWH32
+ 6vQg==
+X-Gm-Message-State: AOJu0YycUJ9GrfqTVgvlzNKVLBlBHx6yE3BIo79Aw31boY1jw/kCtUCR
+ 7wPAMX4qD2KuoM7XrRAumjozK9zbxPKUyZ/U996a70kbMCU5YLbCgM0Ij+siVuARO26bsVPDYEh
+ 2jrc=
+X-Google-Smtp-Source: AGHT+IG+6b89cpImxJmrOaW3MVd6rnk2CHr3D6NgKu6BSXm1UL0OTRD6ED9+t9IyEaeYbLmjH6fNCA==
+X-Received: by 2002:a17:907:7008:b0:a29:51ca:9df with SMTP id
+ wr8-20020a170907700800b00a2951ca09dfmr2170014ejb.148.1705989006144; 
+ Mon, 22 Jan 2024 21:50:06 -0800 (PST)
+Received: from [192.168.69.100] ([176.187.194.78])
+ by smtp.gmail.com with ESMTPSA id
+ th7-20020a1709078e0700b00a2fd84bc421sm3224500ejc.83.2024.01.22.21.50.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Jan 2024 21:50:05 -0800 (PST)
+Message-ID: <17bd56cb-8e29-47e8-939e-af5dfca55138@linaro.org>
+Date: Tue, 23 Jan 2024 06:50:04 +0100
 MIME-Version: 1.0
-References: <20240122145610.413836-1-alex.bennee@linaro.org>
- <20240122145610.413836-2-alex.bennee@linaro.org>
-In-Reply-To: <20240122145610.413836-2-alex.bennee@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 23 Jan 2024 15:48:39 +1000
-Message-ID: <CAKmqyKPawDYf1DBhGb05qnphOKNt8PATHiwaZVBuhS14sHAR0w@mail.gmail.com>
-Subject: Re: [PATCH v3 01/21] hw/riscv: Use misa_mxl instead of misa_mxl_max
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Michael Rolnik <mrolnik@gmail.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org, 
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Laurent Vivier <laurent@vivier.eu>, Yanan Wang <wangyanan55@huawei.com>,
- qemu-ppc@nongnu.org, 
- Weiwei Li <liwei1518@gmail.com>, qemu-s390x@nongnu.org, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Peter Maydell <peter.maydell@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>, 
- John Snow <jsnow@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- David Woodhouse <dwmw2@infradead.org>, Cleber Rosa <crosa@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, 
- Bin Meng <bin.meng@windriver.com>, Nicholas Piggin <npiggin@gmail.com>, 
- Aurelien Jarno <aurelien@aurel32.net>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Thomas Huth <thuth@redhat.com>, 
- David Hildenbrand <david@redhat.com>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, 
- Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>, 
- Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
- Paul Durrant <paul@xen.org>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] util/uri: Remove unused macros ISA_RESERVED() and
+ ISA_GEN_DELIM()
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Stefan Weil <sw@weilnetz.de>, qemu-trivial@nongnu.org
+References: <20240122191753.103118-1-thuth@redhat.com>
+ <20240122191753.103118-6-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240122191753.103118-6-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -117,41 +95,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 23, 2024 at 12:57=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@lina=
-ro.org> wrote:
->
-> From: Akihiko Odaki <akihiko.odaki@daynix.com>
->
-> The effective MXL value matters when booting.
->
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Message-Id: <20240103173349.398526-23-alex.bennee@linaro.org>
-> Message-Id: <20231213-riscv-v7-1-a760156a337f@daynix.com>
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On 22/1/24 20:17, Thomas Huth wrote:
+> They are not used anywhere, so there's no need to keep them around.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  hw/riscv/boot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
-> index 0ffca05189f..bc67c0bd189 100644
-> --- a/hw/riscv/boot.c
-> +++ b/hw/riscv/boot.c
-> @@ -36,7 +36,7 @@
->
->  bool riscv_is_32bit(RISCVHartArrayState *harts)
->  {
-> -    return harts->harts[0].env.misa_mxl_max =3D=3D MXL_RV32;
-> +    return harts->harts[0].env.misa_mxl =3D=3D MXL_RV32;
->  }
->
->  /*
-> --
-> 2.39.2
->
->
+>   util/uri.c | 13 -------------
+>   1 file changed, 13 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+(could be reordered as patch 1 to clarify it is not
+  an effect of the uri_string_foo() cleanups)
 
