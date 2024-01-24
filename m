@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E1183AA51
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 13:52:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 183F183AA65
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 13:57:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rScjY-0001vu-9D; Wed, 24 Jan 2024 07:52:00 -0500
+	id 1rScnT-00030x-O3; Wed, 24 Jan 2024 07:56:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rScjW-0001vk-Ay
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:51:58 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rScjU-0000UU-Id
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:51:58 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-599d1fd9cc1so142258eaf.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 04:51:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706100715; x=1706705515; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=cs/6JsPLBzreJMgldTB9t6wd19xezkERRpVu8YmspeU=;
- b=GVGHVQF0bS/OcXTzro0WUYcKm1dwKGwYwCZmUn/PerYF1k+wawe4gI5wRCl64A+TfO
- BWXWFf14PsrOHo0DKkHbU/9Q1wshHXgbH8yyxar6tMt6g6Z3L4iTUPSA6BLSaXqYTHJW
- CSDjx7bjyPwQsQkLw010YvtXfCgFb3bQZ5or4oElPZsJqUY0VPuQvROUU6XpKBNvLKzF
- QN0FKKqAYBhayYTT0wzNxrsYV9+c3Ph0jWOmvmg7Lavl40c46/yw9HLTfgHAyPg13KH5
- K6ibUuKudE3CyKAdUr5vIkGME3PkyB7sYdZgeqmdICsG3mikanBBbaifmVqdD+0wh95K
- ESVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706100715; x=1706705515;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cs/6JsPLBzreJMgldTB9t6wd19xezkERRpVu8YmspeU=;
- b=QzgcGTdEuvToinmh13gkOBnOo8UwnehOkev3nFmJZ4d9iBUKWERwsYl5jLbnvModhJ
- FCW4F0+SMuyaGiGkvrmPaGzbeXxhsqTygV4147Bb0YFTkU67bsh6628ReRqWfDZ6mpLT
- fYbBwIBXiOrGTTEpmFToVHMaBMT6jLm1qMgs26p0Ejq+qBmDnzbz5thO9hmaZSZ48eui
- JR+u5o6xseisxu1cNbJaVY3oGfjjD4HSjOaAFjWdsgX5GUjb7TU+TgbIrhG5UoftC3sF
- rkpDWKUgZuDDoOf6ssbg17ESU7RyRXqME3GAdorCbu+Pt2G5S2yCkQEAZQoJgjmRHTfi
- aUwA==
-X-Gm-Message-State: AOJu0Yy28nK2o12ai+iYVUlUFfmKUTmonwy5fg49nFuUCyHyU2FrJf7a
- MSiAkLRSWxp5Zf1n59h6sJasTVSMzjf8FeynxrI9vTEKQgm+yKHAySNeWeXgduYOjOYCAzrBmlZ
- JfWP6X7ihpIbyswLQsNPilcfqkXM=
-X-Google-Smtp-Source: AGHT+IHbxv/DVhQ9sc23QC0rRtvtHQgqtBqLdLNysaL/CcQCK5BxP16443ZkR5JZs7J0br7snzL44ceinoH1c8/NyvU=
-X-Received: by 2002:a4a:e60f:0:b0:590:aaff:e4a5 with SMTP id
- f15-20020a4ae60f000000b00590aaffe4a5mr1227241oot.19.1706100714674; Wed, 24
- Jan 2024 04:51:54 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1rScnQ-00030Z-4W; Wed, 24 Jan 2024 07:56:00 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1rScnO-00017y-8w; Wed, 24 Jan 2024 07:55:59 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 24A6161D27;
+ Wed, 24 Jan 2024 12:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847BEC433C7;
+ Wed, 24 Jan 2024 12:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1706100954;
+ bh=sWj3663Jmj8sBFRio7qScRQKO4AK1EQL47ZBiYADI5M=;
+ h=From:To:Cc:Subject:Date:From;
+ b=ISeJWzsBWj20ECchs0xbmYVxstLgG+Sh3atoRBgRcpxyqQs9W9/T1WLl8kUzcYJAy
+ 339vxPxzo/J+MbtovSbMQBBB5JXtmiaeA52fV1zkuGsZYnx4+zFIAlAhXHzhMIVuvI
+ 4h5OKi0joQTcBXYnW5+Evr4N5f8rmiNBdiLb67CR96a+ffDa0s+WFLSYD5aJnnfVE1
+ w0AM+0uOW1sqS5o9O4zRAa39FELKJP1NLcKVewEFmBw58mTAV8ACDUZ5eFYuer8T6W
+ R0e80YMa76VyyHha1k3rvduvGqpV7JYa6lFuBGBG3A9ls02KtRFi1IkrtE51o2CH2m
+ z+dNWXX3AXBVA==
+From: Conor Dooley <conor@kernel.org>
+To: qemu-riscv@nongnu.org
+Cc: conor@kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Subject: [PATCH v4 0/2] riscv: support new isa extension detection devicetree
+ properties
+Date: Wed, 24 Jan 2024 12:55:48 +0000
+Message-ID: <20240124-squatting-getup-a16a8499ad73@spud>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CAJSP0QX9TQ-=PD7apOamXvGW29VwJPfVNN2X5BsFLFoP2g6USg@mail.gmail.com>
- <CAAfnVBn0+627rLGXeLdsvUge0_VegcbTVuQf8rQwtjuJ3hcJnA@mail.gmail.com>
-In-Reply-To: <CAAfnVBn0+627rLGXeLdsvUge0_VegcbTVuQf8rQwtjuJ3hcJnA@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 24 Jan 2024 07:51:42 -0500
-Message-ID: <CAJSP0QUV7-_C7WS78WytD9zE0aTt4JgqJTHcP-fU2exbmsN6SA@mail.gmail.com>
-Subject: Re: Call for GSoC/Outreachy internship project ideas
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Sergio Lopez <slp@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1532;
+ i=conor.dooley@microchip.com; h=from:subject:message-id;
+ bh=U9xrLkvP6aWjr4EdzduhntI7SpEyvTJA1TFpNdnDKdI=;
+ b=owGbwMvMwCFWscWwfUFT0iXG02pJDKkbOa4k/f8+/ZWwyfGin8/5FdVEd0xxsf/X5HZjIW9/5
+ rXVPeGfO0pZGMQ4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjCRdysYGb5fk17NpnP17lHn
+ Xabv+jV2LTWJT/Bk03zorrpmXtrj9hKG32ynnrPc51Ozf9+X8HFTY5qxoXrtqYsG0znE7TPzz+y
+ W4gIA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp;
+ fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -85
+X-Spam_score: -8.6
+X-Spam_bar: --------
+X-Spam_report: (-8.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,47 +80,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 Jan 2024 at 22:47, Gurchetan Singh
-<gurchetansingh@chromium.org> wrote:
-> Title:
-> - Improve display integration for upstream virtualized graphics
->
-> Summary:
-> - The Rutabaga Virtual Graphics interface's UI integration upstream is very simple, but in deployment it will be complex.  This project aims to bridge the gap between downstream consumers and upstream QEMU.
->
-> Looking for someone interested in Rust + system level graphics to help realize the next steps.
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Hi Gurchetan,
-It's unclear what this project idea entails.
+Making it a series to keep the standalone change to riscv_isa_string()
+that Drew reported separate.
 
-Based on your email my guess is you're looking for someone to help
-upstream code into QEMU, but I'm not sure. Last year there was a
-project to upstream bsd-user emulation code into QEMU and I think that
-type of project can work well.
+Changes in v4:
+- Other than a rebase, add a helper for the mxl_max to xlen conversion
 
-Or maybe you're looking for someone to write a QEMU UI code that uses
-rutabaga_gfx.
+Changes in v3:
+- g_free() isa_extensions too
+- use misa_mxl_max rather than the compile target for the base isa
+- add a new patch changing riscv_isa_string() to do the same
+- drop a null check that cannot be null
+- rebased on top of Alistair's next branch
 
-Can you describe the next steps in more detail?
+Changes in v2:
+- use g_strdup() for multiletter extension string copying
+- wrap stuff in #ifndef to prevent breaking the user mode build
+- rename riscv_isa_set_props() -> riscv_isa_write_fdt()
 
-The project description should contain enough information for someone
-who knows how to program but has no domain knowledge in Rutabaga,
-virtio-gpu, or QEMU.
+CC: Alistair Francis <Alistair.Francis@wdc.com>
+CC: Bin Meng <bin.meng@windriver.com>
+CC: Palmer Dabbelt <palmer@dabbelt.com>
+CC: Weiwei Li <liwei1518@gmail.com>
+CC: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+CC: Andrew Jones <ajones@ventanamicro.com>
+CC: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+CC: qemu-riscv@nongnu.org
+CC: qemu-devel@nongnu.org
 
-> Note: developers should be willing to sign Google CLA, here:
->
-> https://cla.developers.google.com/about/google-individual
->
-> But everything will be FOSS.
+Conor Dooley (2):
+  target/riscv: use misa_mxl_max to populate isa string rather than
+    TARGET_LONG_BITS
+  target/riscv: support new isa extension detection devicetree
+    properties
 
-Which codebase will this project touch? If a CLA is required then it
-sounds like it's not qemu.git?
+ hw/riscv/sifive_u.c    |  7 ++---
+ hw/riscv/spike.c       |  6 ++--
+ hw/riscv/virt.c        |  6 ++--
+ target/riscv/cpu.c     | 62 +++++++++++++++++++++++++++++++++++++++++-
+ target/riscv/cpu.h     |  2 ++
+ target/riscv/gdbstub.c |  2 +-
+ 6 files changed, 70 insertions(+), 15 deletions(-)
 
-> Links
-> - https://crosvm.dev/book/appendix/rutabaga_gfx.html
-> - https://patchew.org/QEMU/20230421011223.718-1-gurchetansingh@chromium.org/
->
-> Skills
->  - Level: Advanced
->  - Rust, Vulkan, virtualization, cross-platform graphics
+-- 
+2.43.0
+
 
