@@ -2,83 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7DF83A397
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 08:57:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 737D883A3E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 09:18:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSY7o-0001df-Ek; Wed, 24 Jan 2024 02:56:44 -0500
+	id 1rSYRa-00008J-SD; Wed, 24 Jan 2024 03:17:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSY7j-0001Z5-1t
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:56:40 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rSYRN-000050-Pq
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 03:16:58 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSY7g-0005Ur-WA
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:56:38 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a31092083acso62205366b.3
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 23:56:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rSYRK-0000G8-Fb
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 03:16:57 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a3107d2bfbaso52119666b.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 00:16:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706082995; x=1706687795; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=prVP50+y3lyE2N1LPnQRqeEggvTqD8gqLUeNHLmJDyg=;
- b=nQRqEQTz4S2r/v8wQjdX42JGYpkO+Z5x4jpj/6mN0P4P5bi1cDyJKHXt9M2CwXAY/f
- zTXMAQzeXjE8uMc59rlsnNjlZ09LKn2IkRpM0ovbqUABTAejTx5B0br/qa/y4qE317kP
- wfJ6ORcnI529aaO2GNRapVgcF6lg23E2Dg0Cttpi32ObCeRwm4qKAtLFkLWnSkT5d7uP
- XT3fS+tYhTUwU0KU+d3aWGu43xRtpc8wfDes6J6b+/rjx3QcZ9kSJLaKhr3Ck3CxKfpb
- bsfiJLhRX5tulczKb+lXpmcUxh+RhbCKNagaUW718DJusCXveizDhdDPlsND1WcnIqvA
- OWBw==
+ d=ventanamicro.com; s=google; t=1706084213; x=1706689013; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=9sXg36sUep+N61vSnj8FOK4eOgfj23LfuaYjihRPx9s=;
+ b=MA5/Vzg1xp91Ckc9/tGxt9G8jW748KHiOrNUJ1I2CcvZ22kxeIlOcZldPt8vH1Z9LV
+ DqxGubtP0mPfhl+fiifeLfU/Kv/nTr9jbdKE9XdfVKXdLBbyakWt4KDsWs+mrNt6QSZt
+ DJVMrNRztGOJPYB9FazfN2wHdRgfGLSnsVvFHQ4T6hhWvDXSnrDp1MgWw7RClK5yeuHf
+ VfoLxI5757fV3y2qMGJFCEl5CeTNPxJX4YuvU8ZS6S74ex+vbut15Fk2Bit2z79GfcGk
+ 8iEyH5WsZjlbdem1T+70XlzXD497MjCPYMJkn9USWnVIxRH3sCtplYND3vjnEK1+g0Uz
+ f6rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706082995; x=1706687795;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=prVP50+y3lyE2N1LPnQRqeEggvTqD8gqLUeNHLmJDyg=;
- b=awPIDSnXXjqMxrzSfDksdWx8xh7hMxMU9W2NURK8npGN30liCm5L6fU+/ENSJLISdg
- ZCfm9k+gYkiRVtOnOXFWFhLOb1Z2Qch1np7XqiSqfd0YzBUcuCngF83mJibTDOi36UUH
- WF7xlQO9AYuQftSUDQ3TDKnrTMmEYP8XhmQDzTX/ebaJE+s+AcWp8/talPKMsDFPC7SJ
- CvIvhOOA2tigEiSQ8pWhF9I1qhC7gVSk1PqoC1WBV1p2ViVzK0EnoVNmKfpo1ASwOfFk
- 2eiC8cEGZHKMUIe8gT0uX0KXZK6LyMsCXObXfkIAeyOKDF6LYS7XzYWWLMR8pih8oIJ9
- yxxA==
-X-Gm-Message-State: AOJu0YzF+33vogr75p78/5QhRSp6y6Xs3V/VelxiLcNucW8aSLDXlh7Z
- ZQjoXF8mM1icTsGG5+0pyxs8WA7LHph6++JWYtVKG4ti16uwPtVkC2V1JNAmzr7eSlj6867H2Yk
- l
-X-Google-Smtp-Source: AGHT+IFiyn0aTqu6bug+ATPhglyTwiilOR3hOgGWHJBqF+lOyQIPJ/XXPS4icyfPlNv21wF7kg4Dfg==
-X-Received: by 2002:a17:907:1250:b0:a30:ebfd:581c with SMTP id
- wc16-20020a170907125000b00a30ebfd581cmr491505ejb.78.1706082994823; 
- Tue, 23 Jan 2024 23:56:34 -0800 (PST)
-Received: from m1x-phil.lan (lgp44-h02-176-184-8-67.dsl.sta.abo.bbox.fr.
- [176.184.8.67]) by smtp.gmail.com with ESMTPSA id
- vx6-20020a170907a78600b00a311a360433sm395865ejc.143.2024.01.23.23.56.33
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jan 2024 23:56:34 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v5 4/4] accel/tcg: Move perf and debuginfo support to tcg
-Date: Wed, 24 Jan 2024 08:56:09 +0100
-Message-ID: <20240124075609.14756-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240124075609.14756-1-philmd@linaro.org>
-References: <20240124075609.14756-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1706084213; x=1706689013;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9sXg36sUep+N61vSnj8FOK4eOgfj23LfuaYjihRPx9s=;
+ b=bnn+e/2qap6ypzuCkJYikXnp6nHA58I+WNFCLPKRaCkl7AdD9zPe6FWrAbz2ikSasb
+ nwt5dmfA13K6SWHIRszy26J57RU6FJFbkebMIVq02mD5IF5+tD8RvCbooI2Ajlh4N9na
+ jhlGzni2vAkP6qG6wqbLZIEDp0vJEC38qZS16AqqQ9CKOtcx2cmXDyqTStK5l7uR9Ath
+ K/Eub1M6fG5S9nS1+u/KhQ+c0Sp2T+wm6ibU5vUVa6mSQdzW6p5adnBC1CEc/nEaN+Hy
+ lsehhVf3REOuKAGWRSoA0jgzSJV1VqzaMfB6MLUjUDnAI8NVO6pPL4G/4+mctU/Gad6x
+ IpUQ==
+X-Gm-Message-State: AOJu0YwYWG/Pd2ZkWKgwdjQCXqGEO9+f1PB9so3T4EMaCFZknygcFdLx
+ Sn1763HRGTpeh8Y86m4RtVp0soCec8Po9UaMq/I1DUXvljPZIwLtkGgWgRaKKgg=
+X-Google-Smtp-Source: AGHT+IGDg1ZQqdXZKs3GCQc5JFbRDXhgLr6ZlGiNbTZRR/B1PaEq7yGPv5awPONM0W1s3+iCwea/Kw==
+X-Received: by 2002:a17:906:9c91:b0:a31:2905:5dca with SMTP id
+ fj17-20020a1709069c9100b00a3129055dcamr247199ejc.53.1706084212585; 
+ Wed, 24 Jan 2024 00:16:52 -0800 (PST)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ mn6-20020a1709077b0600b00a2ccddf9a7dsm13874643ejc.124.2024.01.24.00.16.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Jan 2024 00:16:52 -0800 (PST)
+Date: Wed, 24 Jan 2024 09:16:51 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Michael Rolnik <mrolnik@gmail.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, kvm@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Yanan Wang <wangyanan55@huawei.com>, qemu-ppc@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, 
+ qemu-s390x@nongnu.org, =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, 
+ Peter Maydell <peter.maydell@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>, 
+ John Snow <jsnow@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ David Woodhouse <dwmw2@infradead.org>, Cleber Rosa <crosa@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ Bin Meng <bin.meng@windriver.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Thomas Huth <thuth@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Song Gao <gaosong@loongson.cn>, 
+ Eduardo Habkost <eduardo@habkost.net>, Brian Cain <bcain@quicinc.com>,
+ Paul Durrant <paul@xen.org>
+Subject: Re: Re: [PATCH v3 01/21] hw/riscv: Use misa_mxl instead of
+ misa_mxl_max
+Message-ID: <20240124-3d9bec68bff7ab0057b902b6@orel>
+References: <20240122145610.413836-1-alex.bennee@linaro.org>
+ <20240122145610.413836-2-alex.bennee@linaro.org>
+ <20240123-b8d1c55688885bfc9125c42b@orel>
+ <15d2f958-a51e-4b87-9a70-28edf3b55491@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+In-Reply-To: <15d2f958-a51e-4b87-9a70-28edf3b55491@daynix.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,217 +127,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+On Wed, Jan 24, 2024 at 12:08:33PM +0900, Akihiko Odaki wrote:
+> On 2024/01/23 17:20, Andrew Jones wrote:
+> > On Mon, Jan 22, 2024 at 02:55:50PM +0000, Alex BennÈe wrote:
+> > > From: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > 
+> > > The effective MXL value matters when booting.
+> > 
+> > I'd prefer this commit message get some elaboration. riscv_is_32bit()
+> > is used in a variety of contexts, some where it should be reporting
+> > the max misa.mxl. However, when used for booting an S-mode kernel it
+> > should indeed report the effective mxl. I think we're fine with the
+> > change, though, because at init and on reset the effective mxl is set
+> > to the max mxl, so, in those contexts, where riscv_is_32bit() should
+> > be reporting the max, it does.
+> > 
+> > > 
+> > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > Message-Id: <20240103173349.398526-23-alex.bennee@linaro.org>
+> > > Message-Id: <20231213-riscv-v7-1-a760156a337f@daynix.com>
+> > > Signed-off-by: Alex BennÈe <alex.bennee@linaro.org>
+> > > ---
+> > >   hw/riscv/boot.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+> > > index 0ffca05189f..bc67c0bd189 100644
+> > > --- a/hw/riscv/boot.c
+> > > +++ b/hw/riscv/boot.c
+> > > @@ -36,7 +36,7 @@
+> > >   bool riscv_is_32bit(RISCVHartArrayState *harts)
+> > >   {
+> > > -    return harts->harts[0].env.misa_mxl_max == MXL_RV32;
+> > > +    return harts->harts[0].env.misa_mxl == MXL_RV32;
+> > >   }
+> > 
+> > Assuming everyone agrees with what I've written above, then maybe we
+> > should write something similar in a comment above this function.
+> > 
+> > Thanks,
+> > drew
+> 
+> The corresponding commit in my series has a more elaborated message:
+> https://patchew.org/QEMU/20240115-riscv-v9-0-ff171e1aedc8@daynix.com/20240115-riscv-v9-1-ff171e1aedc8@daynix.com/
 
-tcg/ should not depend on accel/tcg/, but perf and debuginfo
-support provided by the latter are being used by tcg/tcg.c.
+I've pulled the message from that link and quoted it below
 
-Since that's the only user, move both to tcg/.
+> A later commit requires one extra step to retrieve misa_mxl_max. As
+> misa_mxl is semantically more correct and does not need such a extra
+> step, refer to misa_mxl instead. Below is the explanation why misa_mxl
+> is more semantically correct to refer to than misa_mxl_max in this case.
+> 
+> Currently misa_mxl always equals to misa_mxl_max so it does not matter
 
-Suggested-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20231208003754.3688038-5-iii@linux.ibm.com>
-Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
----
- {accel/tcg => tcg}/debuginfo.h | 4 ++--
- {accel/tcg => tcg}/perf.h      | 4 ++--
- accel/tcg/translate-all.c      | 2 +-
- hw/core/loader.c               | 2 +-
- linux-user/elfload.c           | 2 +-
- linux-user/exit.c              | 2 +-
- linux-user/main.c              | 2 +-
- system/vl.c                    | 2 +-
- {accel/tcg => tcg}/debuginfo.c | 0
- {accel/tcg => tcg}/perf.c      | 2 +-
- tcg/tcg.c                      | 2 +-
- accel/tcg/meson.build          | 4 ----
- tcg/meson.build                | 5 +++++
- 13 files changed, 17 insertions(+), 16 deletions(-)
- rename {accel/tcg => tcg}/debuginfo.h (96%)
- rename {accel/tcg => tcg}/perf.h (95%)
- rename {accel/tcg => tcg}/debuginfo.c (100%)
- rename {accel/tcg => tcg}/perf.c (99%)
+That's true, but I think that's due to a bug in write_misa(), which
+shouldn't be masking val with the extension mask until mxl has been
+extracted.
 
-diff --git a/accel/tcg/debuginfo.h b/tcg/debuginfo.h
-similarity index 96%
-rename from accel/tcg/debuginfo.h
-rename to tcg/debuginfo.h
-index f064e1c144..858535b5da 100644
---- a/accel/tcg/debuginfo.h
-+++ b/tcg/debuginfo.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
+> which of misa_mxl or misa_mxl_max to refer to. However, it is possible
+> to have different values for misa_mxl and misa_mxl_max if QEMU gains a
+> new feature to load a RV32 kernel on a RV64 system, for example. For
+> such a behavior, the real system will need the firmware to switch MXL to
+> RV32, and if QEMU implements the same behavior, mxl will represent the
+> MXL that corresponds to the kernel being loaded. Therefore, it is more
+> appropriate to refer to mxl instead of misa_mxl_max when
+> misa_mxl != misa_mxl_max.
+
+Right, but that doesn't say anything more than the original one line,
+"The effective MXL value matters when booting."
+
+What I'm looking for is a code comment explaining how riscv_is_32bit()
+is always safe to use. Something like
+
+ /*
+  * Checking the effective mxl is always correct, because the effective
+  * mxl will be equal to the max mxl at initialization and also on reset,
+  * which are the times when it should check the maximum mxl. Later, if
+  * firmware writes misa with a smaller mxl, then that mxl should be
+  * used in checks.
   */
- 
--#ifndef ACCEL_TCG_DEBUGINFO_H
--#define ACCEL_TCG_DEBUGINFO_H
-+#ifndef TCG_DEBUGINFO_H
-+#define TCG_DEBUGINFO_H
- 
- #include "qemu/bitops.h"
- 
-diff --git a/accel/tcg/perf.h b/tcg/perf.h
-similarity index 95%
-rename from accel/tcg/perf.h
-rename to tcg/perf.h
-index f92dd52c69..c96b5920a3 100644
---- a/accel/tcg/perf.h
-+++ b/tcg/perf.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--#ifndef ACCEL_TCG_PERF_H
--#define ACCEL_TCG_PERF_H
-+#ifndef TCG_PERF_H
-+#define TCG_PERF_H
- 
- #if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
- /* Start writing perf-<pid>.map. */
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 1737bb3da5..1c695efe02 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -63,7 +63,7 @@
- #include "tb-context.h"
- #include "internal-common.h"
- #include "internal-target.h"
--#include "perf.h"
-+#include "tcg/perf.h"
- #include "tcg/insn-start-words.h"
- 
- TBContext tb_ctx;
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index e7a9b3775b..b8e52f3fb0 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -62,7 +62,7 @@
- #include "hw/boards.h"
- #include "qemu/cutils.h"
- #include "sysemu/runstate.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #include <zlib.h>
- 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cf9e74468b..62120c7615 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -21,7 +21,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "target_signal.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #ifdef TARGET_ARM
- #include "target/arm/cpu-features.h"
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 50266314e0..1ff8fe4f07 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -17,7 +17,7 @@
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- #include "qemu/osdep.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "user-internals.h"
-diff --git a/linux-user/main.c b/linux-user/main.c
-index c9470eeccf..74b2fbb393 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -54,7 +54,7 @@
- #include "signal-common.h"
- #include "loader.h"
- #include "user-mmap.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- 
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-diff --git a/system/vl.c b/system/vl.c
-index 788d88ea03..60fd1e56b6 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -96,7 +96,7 @@
- #endif
- #include "sysemu/qtest.h"
- #ifdef CONFIG_TCG
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #endif
- 
- #include "disas/disas.h"
-diff --git a/accel/tcg/debuginfo.c b/tcg/debuginfo.c
-similarity index 100%
-rename from accel/tcg/debuginfo.c
-rename to tcg/debuginfo.c
-diff --git a/accel/tcg/perf.c b/tcg/perf.c
-similarity index 99%
-rename from accel/tcg/perf.c
-rename to tcg/perf.c
-index 68a46b1b52..de34248d92 100644
---- a/accel/tcg/perf.c
-+++ b/tcg/perf.c
-@@ -11,7 +11,7 @@
- #include "qemu/osdep.h"
- #include "elf.h"
- #include "exec/target_page.h"
--#include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "qemu/timer.h"
- #include "tcg/tcg.h"
- 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index e2c38f6d11..eeff4c1d51 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -55,7 +55,7 @@
- #include "tcg/tcg-ldst.h"
- #include "tcg/tcg-temp-internal.h"
- #include "tcg-internal.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #ifdef CONFIG_USER_ONLY
- #include "exec/user/guest-base.h"
- #endif
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index c15ac9ac8f..46f7d53eeb 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -16,10 +16,6 @@ tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- if get_option('plugins')
-   tcg_ss.add(files('plugin-gen.c'))
- endif
--tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
--if host_os == 'linux'
--  tcg_ss.add(files('perf.c'))
--endif
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
- 
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 5afdec1e1a..8251589fd4 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -22,6 +22,11 @@ if get_option('tcg_interpreter')
-   tcg_ss.add(files('tci.c'))
- endif
- 
-+tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
-+if host_os == 'linux'
-+  tcg_ss.add(files('perf.c'))
-+endif
-+
- tcg_ss = tcg_ss.apply({})
- 
- libtcg_user = static_library('tcg_user',
--- 
-2.41.0
 
+Thanks,
+drew
 
