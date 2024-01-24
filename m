@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A03083A68D
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0E783A690
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 11:18:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSaKF-0003jB-QZ; Wed, 24 Jan 2024 05:17:43 -0500
+	id 1rSaKG-0003t8-QE; Wed, 24 Jan 2024 05:17:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaJq-0003Mq-HN
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:17:20 -0500
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaJv-0003NS-3C
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:17:25 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaJo-0003q3-5Y
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:17:18 -0500
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so549244766b.1
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 02:17:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaJt-0003qQ-8j
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:17:22 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5100b424f8fso1401957e87.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 02:17:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706091434; x=1706696234; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706091439; x=1706696239; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kCdApdVb2tqf6HzKRfmudkQU18WR02XSp7D7zgQR15M=;
- b=kr5swZd+2nM1QAnTrCMMOZ5KARfyobJ4HPJY86G0Bq94ies0QJLgO76Jg8dSEwpMKv
- TENaYADgGJc1GYDnhTKGowl2T5kjATMMmOVxo/prSpTQJrnHG+L0W6wXxMeauOdS6weC
- FbvyeD+09sY9SghpqGQ9F+uMMyP1XqJ8eGMAlGcd7U6cONePOYpnecJqAKeaC/H/LuV+
- NOC77FA6jl9Glcfo0pM6n+iRUtIQb1Lm4ZjlOod6GusRAQJ5sygksWl67w/Y60cOvnCt
- 8ntMbBP+09oMX3d/GXAACSkcrBzMi/hxRhKh+7ygkUuppq+gxUJUQkANTuAMOvjMJJnk
- 3jmQ==
+ bh=TSQhp0P/DRalBnOPDt7LO9q/NJaOxDtFUMlWyOyZnN8=;
+ b=l1L1keZpSxgaSwqjNK8uAs3+/ZEr7MkclSMw1/S/byFZkYEKrKu/TLZD4zM0nhpjAv
+ Fi2eSEoM+1+g11TMyzOmDzNt25ZJpwlF1/ZcpMN/r/+ankap4ed6ik0d7TjTzdvLQdr4
+ NDzFquoLZemjwRjdI+8QuP9xVGo47ZMYBjC1EBjxrKbFpm7+9mPE1SXZCMx3jsgfw5u1
+ oX+ITyz7f3bC6YhE+NacK29ZSzODXSKhoVN6bidlbHlmn8nTyKJiY+dG2r1QqAAiLU4r
+ wNhbfUuyRMrrGZNq2QaqJlq7+qdYsnaG6eFSvGMJ12e0KUkRql+Olx1LJxkkO/Mj3lAt
+ Blew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706091434; x=1706696234;
+ d=1e100.net; s=20230601; t=1706091439; x=1706696239;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kCdApdVb2tqf6HzKRfmudkQU18WR02XSp7D7zgQR15M=;
- b=Gk2HuTa+JYJ4v5KadNmG/3WMAsAY/pUnkaKch4FsCDfWXhX2xP8PhdRHMShvLcv8ev
- pz7BbLyxaphqx3HCsgMryvJQrdu8G5whfiJxXo6lz+swr4C3FaLbVCdhMQ3olNYO7FmP
- 4Bks6Dt4qKAqBOI/fAveurrJNWUMpMtAKhnKW/dEdDSVVZJKL99zUT5ooGTmK8IvsQeD
- 6DYs70eCsWmmlnISQDD/gmW8kFOxDTJLdOroBoh53Po82knkyAkcv7IeWDtUie0XIwzB
- Vqc/5DlxzP0/Ebio5iUjaBMDEjysn+wO8w7tTSApuPdVY6piD+0Lx1YIrvkl0tk8hKPK
- Uv2Q==
-X-Gm-Message-State: AOJu0YwNYQ1iiCp1oLrsybRDa7bW5iLfivtIqSwCF7g6A2eijlCvydcs
- wGgaJHOFs5uCBjWhMG/4yiLakr4O30kJpd/p4tD+mCRWJQSfu9Iral12HZ8i90Y=
-X-Google-Smtp-Source: AGHT+IHn1Xvl36cwiqj9hcYhEW0WZ34e4eNFzBSz1q8ioyEEXwnTprlQ8V5G5MMuYOQNErFAxI3qog==
-X-Received: by 2002:a17:907:8b87:b0:a31:1092:69b2 with SMTP id
- tb7-20020a1709078b8700b00a31109269b2mr339392ejc.77.1706091433618; 
- Wed, 24 Jan 2024 02:17:13 -0800 (PST)
+ bh=TSQhp0P/DRalBnOPDt7LO9q/NJaOxDtFUMlWyOyZnN8=;
+ b=PZG0ti4auOF5wDLUYlaOY18LYN+w9qiKLjc3AUXzjrH0qp+v96XB6XIKO0haKfBj64
+ VLZ5D6za8KTe3WUT9WD78du9iHxNbdGDT7qUIkhtzhmquZviVQcrdCP4BsSSJLY/MwDK
+ 1itxVpq5xk+tUvY6Age8Ra2SCmwhx8+pvDfC/LLHKvqcLa/PzmeO6FzfUrJheQ9kQFdY
+ yvxe93fs7mo4it2z4W6w9qeg/Y9WvUk8Pn/loPnnWyMX2s9bltoiFPw4X2Mggl8QUzD2
+ xS+4l+XcwKoPrqUy4D6v2Lb7HrK9JfmEoZJke0ZpqPIywe3N6DlKrXVrWZEyiwHS6zya
+ oDMA==
+X-Gm-Message-State: AOJu0Yy35S+sKw7xqvOd/6xToUH+0SfD1xxInYpIEtRi3z2+kXswuOV2
+ zjVBApkQstguVi2ySPeDJ1RsFJl98dNJOozK9lJB+ECmy5XmLG/kHr6mXty8EaA=
+X-Google-Smtp-Source: AGHT+IGQlAgZaXnyZceE+/sYIMLyuxs6C1gSEEQtHHKiUo7Iy7xOXHaKOHVdL2t70v5IIF7PgTq/IQ==
+X-Received: by 2002:a05:6512:4018:b0:50f:da9:16b2 with SMTP id
+ br24-20020a056512401800b0050f0da916b2mr3904262lfb.74.1706091439730; 
+ Wed, 24 Jan 2024 02:17:19 -0800 (PST)
 Received: from m1x-phil.lan (lgp44-h02-176-184-8-67.dsl.sta.abo.bbox.fr.
  [176.184.8.67]) by smtp.gmail.com with ESMTPSA id
- w17-20020a17090652d100b00a28116285e0sm10969588ejn.165.2024.01.24.02.17.12
+ i13-20020a05640200cd00b00559c71e70e3sm9558946edu.79.2024.01.24.02.17.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 24 Jan 2024 02:17:13 -0800 (PST)
+ Wed, 24 Jan 2024 02:17:19 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Anton Johansson <anjo@rev.ng>,
 	qemu-devel@nongnu.org
@@ -62,18 +62,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
  Claudio Fontana <cfontana@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/9] accel/tcg: Hoist CPUClass arg to functions with external
- linkage
-Date: Wed, 24 Jan 2024 11:16:35 +0100
-Message-ID: <20240124101639.30056-6-philmd@linaro.org>
+Subject: [PATCH 6/9] accel/tcg: Introduce TCGCPUOps::need_replay_interrupt()
+ handler
+Date: Wed, 24 Jan 2024 11:16:36 +0100
+Message-ID: <20240124101639.30056-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240124101639.30056-1-philmd@linaro.org>
 References: <20240124101639.30056-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,349 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hoist the CPUClass argument from most of these internal helpers:
-
- - check_for_breakpoints_slow
- - check_for_breakpoints()
- - cpu_tb_exec()
- - cpu_exec_enter()
- - cpu_exec_exit()
- - cpu_handle_halt()
- - cpu_handle_debug_exception()
- - cpu_handle_exception()
- - need_replay_interrupt()
- - cpu_handle_interrupt()
- - cpu_loop_exec_tb()
- - cpu_exec_loop()
- - cpu_exec_setjmp()
-
-to the following ones with external linkage:
-
- - lookup_tb_ptr()
- - cpu_exec_step_atomic()
- - cpu_exec()
+In order to make accel/tcg/ target agnostic,
+introduce the need_replay_interrupt() handler.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 82 ++++++++++++++++++++------------------------
- 1 file changed, 37 insertions(+), 45 deletions(-)
+ include/hw/core/tcg-cpu-ops.h | 5 +++++
+ accel/tcg/cpu-exec.c          | 5 ++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 479713a36e..2fae3ac70f 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -170,6 +170,11 @@ struct TCGCPUOps {
+      */
+     bool (*io_recompile_replay_branch)(CPUState *cpu,
+                                        const TranslationBlock *tb);
++    /**
++     * @need_replay_interrupt: Return %true if @interrupt_request
++     * needs to be recorded for replay purposes.
++     */
++    bool (*need_replay_interrupt)(int interrupt_request);
+ #endif /* !CONFIG_USER_ONLY */
+ #endif /* NEED_CPU_H */
+ 
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index d61b285d5e..b10472cbc7 100644
+index b10472cbc7..4ab7d6c896 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -324,8 +324,8 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
-     }
- }
- 
--static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
--                                       uint32_t *cflags)
-+static bool check_for_breakpoints_slow(CPUClass *cc, CPUState *cpu,
-+                                       vaddr pc, uint32_t *cflags)
- {
-     CPUBreakpoint *bp;
-     bool match_page = false;
-@@ -357,7 +357,6 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
- #ifdef CONFIG_USER_ONLY
-                 g_assert_not_reached();
- #else
--                CPUClass *cc = CPU_GET_CLASS(cpu);
-                 assert(cc->tcg_ops->debug_check_breakpoint);
-                 match_bp = cc->tcg_ops->debug_check_breakpoint(cpu);
- #endif
-@@ -390,11 +389,11 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
-     return false;
- }
- 
--static inline bool check_for_breakpoints(CPUState *cpu, vaddr pc,
--                                         uint32_t *cflags)
-+static inline bool check_for_breakpoints(CPUClass *cc, CPUState *cpu,
-+                                         vaddr pc, uint32_t *cflags)
- {
-     return unlikely(!QTAILQ_EMPTY(&cpu->breakpoints)) &&
--        check_for_breakpoints_slow(cpu, pc, cflags);
-+        check_for_breakpoints_slow(cc, cpu, pc, cflags);
- }
- 
- /**
-@@ -408,6 +407,7 @@ static inline bool check_for_breakpoints(CPUState *cpu, vaddr pc,
- const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
- {
-     CPUState *cpu = env_cpu(env);
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
-     TranslationBlock *tb;
-     vaddr pc;
-     uint64_t cs_base;
-@@ -416,7 +416,7 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
-     cpu_get_tb_cpu_state(env, &pc, &cs_base, &flags);
- 
-     cflags = curr_cflags(cpu);
--    if (check_for_breakpoints(cpu, pc, &cflags)) {
-+    if (check_for_breakpoints(cc, cpu, pc, &cflags)) {
-         cpu_loop_exit(cpu);
-     }
- 
-@@ -443,7 +443,7 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
-  * affect the impact of CFI in environment with high security requirements
-  */
- static inline TranslationBlock * QEMU_DISABLE_CFI
--cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
-+cpu_tb_exec(CPUClass *cc, CPUState *cpu, TranslationBlock *itb, int *tb_exit)
- {
-     CPUArchState *env = cpu_env(cpu);
-     uintptr_t ret;
-@@ -476,8 +476,6 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
-          * counter hit zero); we must restore the guest PC to the address
-          * of the start of the TB.
-          */
--        CPUClass *cc = CPU_GET_CLASS(cpu);
--
-         if (cc->tcg_ops->synchronize_from_tb) {
-             cc->tcg_ops->synchronize_from_tb(cpu, last_tb);
-         } else {
-@@ -509,19 +507,15 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
- }
- 
- 
--static void cpu_exec_enter(CPUState *cpu)
-+static void cpu_exec_enter(CPUClass *cc, CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
-     if (cc->tcg_ops->cpu_exec_enter) {
-         cc->tcg_ops->cpu_exec_enter(cpu);
-     }
- }
- 
--static void cpu_exec_exit(CPUState *cpu)
-+static void cpu_exec_exit(CPUClass *cc, CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
--
-     if (cc->tcg_ops->cpu_exec_exit) {
-         cc->tcg_ops->cpu_exec_exit(cpu);
-     }
-@@ -566,6 +560,7 @@ static void cpu_exec_longjmp_cleanup(CPUState *cpu)
- 
- void cpu_exec_step_atomic(CPUState *cpu)
- {
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
-     CPUArchState *env = cpu_env(cpu);
-     TranslationBlock *tb;
-     vaddr pc;
-@@ -600,11 +595,11 @@ void cpu_exec_step_atomic(CPUState *cpu)
-             mmap_unlock();
-         }
- 
--        cpu_exec_enter(cpu);
-+        cpu_exec_enter(cc, cpu);
-         /* execute the generated code */
-         trace_exec_tb(tb, pc);
--        cpu_tb_exec(cpu, tb, &tb_exit);
--        cpu_exec_exit(cpu);
-+        cpu_tb_exec(cc, cpu, tb, &tb_exit);
-+        cpu_exec_exit(cc, cpu);
-     } else {
-         cpu_exec_longjmp_cleanup(cpu);
-     }
-@@ -673,7 +668,7 @@ static inline void tb_add_jump(TranslationBlock *tb, int n,
-     return;
- }
- 
--static inline bool cpu_handle_halt(CPUState *cpu)
-+static inline bool cpu_handle_halt(CPUClass *cc, CPUState *cpu)
- {
- #ifndef CONFIG_USER_ONLY
-     if (cpu->halted) {
-@@ -697,9 +692,8 @@ static inline bool cpu_handle_halt(CPUState *cpu)
-     return false;
- }
- 
--static inline void cpu_handle_debug_exception(CPUState *cpu)
-+static inline void cpu_handle_debug_exception(CPUClass *cc, CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-     CPUWatchpoint *wp;
- 
-     if (!cpu->watchpoint_hit) {
-@@ -713,7 +707,7 @@ static inline void cpu_handle_debug_exception(CPUState *cpu)
-     }
- }
- 
--static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-+static inline bool cpu_handle_exception(CPUClass *cc, CPUState *cpu, int *ret)
- {
-     if (cpu->exception_index < 0) {
- #ifndef CONFIG_USER_ONLY
-@@ -730,7 +724,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-         /* exit request from the cpu execution loop */
-         *ret = cpu->exception_index;
-         if (*ret == EXCP_DEBUG) {
--            cpu_handle_debug_exception(cpu);
-+            cpu_handle_debug_exception(cc, cpu);
-         }
-         cpu->exception_index = -1;
-         return true;
-@@ -740,7 +734,6 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-            which will be handled outside the cpu execution
-            loop */
- #if defined(TARGET_I386)
--        CPUClass *cc = CPU_GET_CLASS(cpu);
-         cc->tcg_ops->fake_user_interrupt(cpu);
- #endif /* TARGET_I386 */
-         *ret = cpu->exception_index;
-@@ -748,7 +741,6 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-         return true;
- #else
-         if (replay_exception()) {
--            CPUClass *cc = CPU_GET_CLASS(cpu);
-             bql_lock();
-             cc->tcg_ops->do_interrupt(cpu);
-             bql_unlock();
-@@ -761,7 +753,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-                  * next instruction.
-                  */
-                 *ret = EXCP_DEBUG;
--                cpu_handle_debug_exception(cpu);
-+                cpu_handle_debug_exception(cc, cpu);
-                 return true;
-             }
-         } else if (!replay_has_interrupt()) {
-@@ -781,7 +773,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-  * "real" interrupt event later. It does not need to be recorded for
-  * replay purposes.
-  */
--static inline bool need_replay_interrupt(int interrupt_request)
-+static inline bool need_replay_interrupt(CPUClass *cc, int interrupt_request)
- {
+@@ -778,7 +778,10 @@ static inline bool need_replay_interrupt(CPUClass *cc, int interrupt_request)
  #if defined(TARGET_I386)
      return !(interrupt_request & CPU_INTERRUPT_POLL);
-@@ -802,7 +794,7 @@ static inline bool icount_exit_request(CPUState *cpu)
-     return cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0;
+ #else
+-    return true;
++    if (!cc->tcg_ops->need_replay_interrupt) {
++        return true;
++    }
++    return cc->tcg_ops->need_replay_interrupt(interrupt_request);
+ #endif
  }
- 
--static inline bool cpu_handle_interrupt(CPUState *cpu,
-+static inline bool cpu_handle_interrupt(CPUClass *cc, CPUState *cpu,
-                                         TranslationBlock **last_tb)
- {
-     /*
-@@ -870,11 +862,9 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-            True when it is, and we should restart on a new TB,
-            and via longjmp via cpu_loop_exit.  */
-         else {
--            CPUClass *cc = CPU_GET_CLASS(cpu);
--
-             if (cc->tcg_ops->cpu_exec_interrupt &&
-                 cc->tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
--                if (need_replay_interrupt(interrupt_request)) {
-+                if (need_replay_interrupt(cc, interrupt_request)) {
-                     replay_interrupt();
-                 }
-                 /*
-@@ -918,14 +908,15 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-     return false;
- }
- 
--static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
-+static inline void cpu_loop_exec_tb(CPUClass *cc, CPUState *cpu,
-+                                    TranslationBlock *tb,
-                                     vaddr pc, TranslationBlock **last_tb,
-                                     int *tb_exit)
- {
-     int32_t insns_left;
- 
-     trace_exec_tb(tb, pc);
--    tb = cpu_tb_exec(cpu, tb, tb_exit);
-+    tb = cpu_tb_exec(cc, cpu, tb, tb_exit);
-     if (*tb_exit != TB_EXIT_REQUESTED) {
-         *last_tb = tb;
-         return;
-@@ -970,16 +961,16 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
- /* main execution loop */
- 
- static int __attribute__((noinline))
--cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-+cpu_exec_loop(CPUClass *cc, CPUState *cpu, SyncClocks *sc)
- {
-     int ret;
- 
-     /* if an exception is pending, we execute it here */
--    while (!cpu_handle_exception(cpu, &ret)) {
-+    while (!cpu_handle_exception(cc, cpu, &ret)) {
-         TranslationBlock *last_tb = NULL;
-         int tb_exit = 0;
- 
--        while (!cpu_handle_interrupt(cpu, &last_tb)) {
-+        while (!cpu_handle_interrupt(cc, cpu, &last_tb)) {
-             TranslationBlock *tb;
-             vaddr pc;
-             uint64_t cs_base;
-@@ -1001,7 +992,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-                 cpu->cflags_next_tb = -1;
-             }
- 
--            if (check_for_breakpoints(cpu, pc, &cflags)) {
-+            if (check_for_breakpoints(cc, cpu, pc, &cflags)) {
-                 break;
-             }
- 
-@@ -1046,7 +1037,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-                 tb_add_jump(last_tb, tb_exit, tb);
-             }
- 
--            cpu_loop_exec_tb(cpu, tb, pc, &last_tb, &tb_exit);
-+            cpu_loop_exec_tb(cc, cpu, tb, pc, &last_tb, &tb_exit);
- 
-             /* Try to align the host and virtual clocks
-                if the guest is in advance */
-@@ -1056,30 +1047,31 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-     return ret;
- }
- 
--static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
-+static int cpu_exec_setjmp(CPUClass *cc, CPUState *cpu, SyncClocks *sc)
- {
-     /* Prepare setjmp context for exception handling. */
-     if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
-         cpu_exec_longjmp_cleanup(cpu);
-     }
- 
--    return cpu_exec_loop(cpu, sc);
-+    return cpu_exec_loop(cc, cpu, sc);
- }
- 
- int cpu_exec(CPUState *cpu)
- {
-     int ret;
-     SyncClocks sc = { 0 };
-+    CPUClass *cc = CPU_GET_CLASS(cpu);
- 
-     /* replay_interrupt may need current_cpu */
-     current_cpu = cpu;
- 
--    if (cpu_handle_halt(cpu)) {
-+    if (cpu_handle_halt(cc, cpu)) {
-         return EXCP_HALTED;
-     }
- 
-     WITH_RCU_READ_LOCK_GUARD() {
--        cpu_exec_enter(cpu);
-+        cpu_exec_enter(cc, cpu);
- 
-         /*
-          * Calculate difference between guest clock and host clock.
-@@ -1089,9 +1081,9 @@ int cpu_exec(CPUState *cpu)
-          */
-         init_delay_params(&sc, cpu);
- 
--        ret = cpu_exec_setjmp(cpu, &sc);
-+        ret = cpu_exec_setjmp(cc, cpu, &sc);
- 
--        cpu_exec_exit(cpu);
-+        cpu_exec_exit(cc, cpu);
-     };
- 
-     return ret;
+ #endif /* !CONFIG_USER_ONLY */
 -- 
 2.41.0
 
