@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF4183B38B
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 22:06:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C3783B391
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 22:07:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSkQU-0002Y9-TE; Wed, 24 Jan 2024 16:04:50 -0500
+	id 1rSkSn-0004eJ-Aw; Wed, 24 Jan 2024 16:07:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rSkQN-0002XC-Lj
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 16:04:45 -0500
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rSkSl-0004eA-0J
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 16:07:11 -0500
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rSkQL-0001Pk-R6
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 16:04:43 -0500
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5cde7afa1d7so3093759a12.1
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 13:04:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rSkSi-0001wA-Bj
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 16:07:10 -0500
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6dd80d3d419so1780096b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 13:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706130280; x=1706735080; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8JYoZcnluoDvCJc9xqAMy3/BcoaNF0u77JLKKb6+Ahg=;
- b=jEn/YJlY/RcgO5ZoBBZE01PEDWBYMzkoahSJZyjI6fSJ125rFTqFmx7b6eq1kb3wFA
- t4KTNAwkad0HsBmsQ938aFFb9UVP9R0K9wGIfkynV9mf2+0VkQrbAnWnyQIK6VoiMo3Z
- O0Yo33mLBdia6gu70u2rkPvMq7jWmg8NQw6jQnuFk6h2JAqHiQOiHJ0K3/g8MI/Jhkvm
- /68UrT7cvM0xvgBJ6R49rSIwCDHHrakAexsuq14rT3aq6cszDHP7mkOPyDzxoW1dqKMU
- yfkXzcKq8P4h0RXoe3+PCow+L5DPd2KRzQg0KWjilLmE8KVyvb9aFbVSpCSKRbhZ+0ma
- ViJg==
+ d=linaro.org; s=google; t=1706130426; x=1706735226; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/4ElbIcff0CHPDqU1I8wUrQFcsPXxKnQT6oSTHK94D0=;
+ b=CefUfLQO0laAZXTHPGWe4qGtdu/UjCXwc1HWCAP3bif1DcVukGB8Fyse4D6nOdg8Kr
+ tp5ByzuFxYEB/TxpuPY75BTIjxPp6PbAi5Slv55zXCSqO69vdf626dwsVdPgoJ9FKQvk
+ B82F2BJbK0MJFedLObvEDh0+DQqwMndb3aMjEpN+gutDzHOLLUcx2UptCc82M+JrelwG
+ e87QoaPqR4Ur8Up4O/yRyS9t918CO1cndJjt5G6mYm2m9pgQgGLeTNH6aE8zjgn1h6G6
+ At1ujkYkQAfHiCKAyYiyYvxV4zFNmTLoD0GGRskrL9thfoSoJKIa6H76NrBO0z21cuuW
+ U1fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706130280; x=1706735080;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8JYoZcnluoDvCJc9xqAMy3/BcoaNF0u77JLKKb6+Ahg=;
- b=QD8pq4UyWk2PGmP3zSgSkgvdmTqO9agIPzg3ni7kFiG/jVJL0hNCVc6FNlIyGzqgs8
- +aC1KtfnqeTH77i8ersncSlxXcHaPIs4C9Z+o87kUHyzYGBJdqFZAxIf4iW7ATyftcn7
- IN1pRAUyDkCxySAINOE3vhcBkfID0BX8pd0vXvPg7LyHs0/PEI9ivoc2tqlC9jm5GmRH
- 7mEPNIaDr/++uHhpyrlFaecjm9rqiBqhP1NMoMBzNwHglSFLUj2ARIrzE4E9S0A5Iknw
- TWEsepPYMaqRXg4Kb3A4cOJfajED8A0DR5X8KCONbqaaRRQ6UmffnTG6I4NJghSpTuFD
- u2YA==
-X-Gm-Message-State: AOJu0YyWxjBnP50qmOntomKfP4iQiWDkMUP7z67ztKImtesS4zmrDzPo
- ownuW4j4vnXuJfk6/G7lDSn34t3vFmyXYR/yXCoqeN2OSFWesGZO
-X-Google-Smtp-Source: AGHT+IEdc1zUvJpKwLv00KX1tKvpJYxkxJv/r8oxFFtNTpoU7K9eRW/RciWy/etjhzi2Tw5/6a3v+g==
-X-Received: by 2002:a17:90b:440b:b0:28e:3daf:f6e0 with SMTP id
- hx11-20020a17090b440b00b0028e3daff6e0mr133045pjb.53.1706130280164; 
- Wed, 24 Jan 2024 13:04:40 -0800 (PST)
-Received: from debian (c-71-202-32-218.hsd1.ca.comcast.net. [71.202.32.218])
+ d=1e100.net; s=20230601; t=1706130426; x=1706735226;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/4ElbIcff0CHPDqU1I8wUrQFcsPXxKnQT6oSTHK94D0=;
+ b=QgCRUqDmqS3wJ5m5H2BwqkI6+HH93XAUXqp+nDwL2IaUXgPtaPSDQgR+JUKgbGLtUc
+ ETgqXemXbcPvI/04s+/YNufXR2zSmL6aZ6neGgwpPHlJDyqhoa1gkJS/kZW7rhTZAQCc
+ eM8VqWce7JSTaJl04QLyLUWn+6MWgt0j/KolQG4FmF6iDeQ5N3hpM66gzWqrzIxVi3tg
+ j2M8FatpoMH+ibI72Ahs93CKvgkrptpx7lcDEGn6WF3xGvY4rIBU2MADlwM2CCrpX7Mk
+ NKofczMyKDdN9BiiZxiWuE2aGsRscKoaIPcJXkrSSAGsldrtjf6nJBHrNMNkdMRpV6ig
+ Ftfg==
+X-Gm-Message-State: AOJu0YxfUJ1mPKIy2YxCsm5umZu6EqYi0JX0+mVacyoGCrpAwvx5u4HC
+ h0RpomaZipwzmQqoVL2akLLYkroKBuh1qUVYOJHgSnISrKfDcAmEvw91bwV6ZE8=
+X-Google-Smtp-Source: AGHT+IGqhMsXarAOnI3havs5nKD2Pe/+PS5TCgG2uSYqvolZ1u82RqYQbR1h3mlaGAGNwMVg1f5U0Q==
+X-Received: by 2002:a05:6a20:1591:b0:196:6d16:6db4 with SMTP id
+ h17-20020a056a20159100b001966d166db4mr56234pzj.53.1706130426294; 
+ Wed, 24 Jan 2024 13:07:06 -0800 (PST)
+Received: from ?IPV6:2001:44b8:2176:c800:5fcf:9e3:2e58:9c7?
+ (2001-44b8-2176-c800-5fcf-09e3-2e58-09c7.static.ipv6.internode.on.net.
+ [2001:44b8:2176:c800:5fcf:9e3:2e58:9c7])
  by smtp.gmail.com with ESMTPSA id
- md2-20020a17090b23c200b0028adcc0f2c4sm90521pjb.18.2024.01.24.13.04.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Jan 2024 13:04:39 -0800 (PST)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Wed, 24 Jan 2024 13:04:23 -0800
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
- Fan Ni <fan.ni@samsung.com>, Michael Tsirkin <mst@redhat.com>,
- Ira Weiny <ira.weiny@intel.com>,
- Huai-Cheng Kuo <hchkuo@avery-design.com.tw>,
- Dave Jiang <dave.jiang@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Li Zhijian <lizhijian@fujitsu.com>,
- Stefan Hajnoczi <stefanha@gmail.com>, linuxarm@huawei.com,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 01/12] cxl/cdat: Handle cdat table build errors
-Message-ID: <ZbF7V0lhCwZ2fey4@debian>
-References: <20240124124100.8218-1-Jonathan.Cameron@huawei.com>
- <20240124124100.8218-2-Jonathan.Cameron@huawei.com>
+ r13-20020a63d90d000000b005ce033f3b54sm12497610pgg.27.2024.01.24.13.07.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Jan 2024 13:07:05 -0800 (PST)
+Message-ID: <4394fc8e-3646-4811-adeb-fc44e307e90f@linaro.org>
+Date: Thu, 25 Jan 2024 07:06:57 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240124124100.8218-2-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pg1-x52f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] target: Make qemu_target_page_mask() available for
+ *-user
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Ilya Leoshkevich
+ <iii@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+References: <20240124075609.14756-1-philmd@linaro.org>
+ <20240124075609.14756-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240124075609.14756-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,41 +100,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 24, 2024 at 12:40:49PM +0000, Jonathan Cameron wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
+On 1/24/24 17:56, Philippe Mathieu-Daudé wrote:
+> From: Ilya Leoshkevich<iii@linux.ibm.com>
 > 
-> The callback for building CDAT tables may return negative error codes.
-> This was previously unhandled and will result in potentially huge
-> allocations later on in ct3_build_cdat()
+> Currently qemu_target_page_mask() is usable only from the softmmu
+> code. Make it possible to use it from the *-user code as well.
 > 
-> Detect the negative error code and defer cdat building.
+> Make use of it in perf.c.
 > 
-> Fixes: f5ee7413d592 ("hw/mem/cxl-type3: Add CXL CDAT Data Object Exchange")
-> Cc: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
+> Message-ID:<20231208003754.3688038-2-iii@linux.ibm.com>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
+>   accel/tcg/perf.c       |  3 ++-
+>   system/physmem.c       |  5 -----
+>   target/target-common.c | 10 ++++++++++
+>   target/meson.build     |  2 ++
+>   4 files changed, 14 insertions(+), 6 deletions(-)
+>   create mode 100644 target/target-common.c
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
->  hw/cxl/cxl-cdat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-> index 639a2db3e1..24829cf242 100644
-> --- a/hw/cxl/cxl-cdat.c
-> +++ b/hw/cxl/cxl-cdat.c
-> @@ -63,7 +63,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
->      cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf,
->                                                   cdat->private);
->  
-> -    if (!cdat->built_buf_len) {
-> +    if (cdat->built_buf_len <= 0) {
->          /* Build later as not all data available yet */
->          cdat->to_update = true;
->          return;
-> -- 
-> 2.39.2
-> 
+r~
 
