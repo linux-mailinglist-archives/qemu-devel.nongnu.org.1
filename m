@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F083B02C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 18:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D27D083B02F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 18:40:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rShD9-0002CP-PV; Wed, 24 Jan 2024 12:38:51 -0500
+	id 1rShEN-0003pH-UO; Wed, 24 Jan 2024 12:40:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rShD7-00029k-0t
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 12:38:49 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rShD5-00027f-93
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 12:38:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706117926;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lX1sT80RAiQermXgE8doojql21JqoxTeFTn7oKC4pDU=;
- b=PPpC/2RudlqsK56uhlJFIxqIshKVKdcqSeuJObTur5Q5tm/6l4DhKXB9Jl/H4nPagdJPYj
- Hpve+k8d3hC3ODG6arBeWidqrlFpkvwlnrOj8bsLvM3HeCaPrNPyscusHxM6c05ZvOCAf9
- zjhBOPB/9WIuepogTxqW7dbP5bhT9RE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-mhbvCd6RPu6cq5HFJL0nbQ-1; Wed, 24 Jan 2024 12:38:41 -0500
-X-MC-Unique: mhbvCd6RPu6cq5HFJL0nbQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55EA4845E60;
- Wed, 24 Jan 2024 17:38:41 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.82])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E4E182028CD2;
- Wed, 24 Jan 2024 17:38:40 +0000 (UTC)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PATCH 2/2] virtio: Keep notifications disabled during drain
-Date: Wed, 24 Jan 2024 18:38:30 +0100
-Message-ID: <20240124173834.66320-3-hreitz@redhat.com>
-In-Reply-To: <20240124173834.66320-1-hreitz@redhat.com>
-References: <20240124173834.66320-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <komlodi@google.com>)
+ id 1rShEF-0003l4-HH
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 12:40:00 -0500
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <komlodi@google.com>)
+ id 1rShED-0002Hw-Nm
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 12:39:59 -0500
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-429d2ebdf05so3691cf.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 09:39:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1706117996; x=1706722796; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yXTaes9a+DpnB/iregs+Axn1k2lzOZ8nIqaAsqGVNkc=;
+ b=DEj4hP8rs28nBShVxNlL4Y0Fw6iKS0+MdIE/JZKJCTv8GVMqpXMZg/OLR1Z3sPWtpH
+ g4oVWpLlRYwf7ChDgijcuentFpxFqK/rhiGIRak9Ns5tJOWoGVKyhyT5gPl4qj5Rl/9Q
+ HxodKKcT0y6hGcXK2TYTwXR3ykaYxRXA+PAu1uQ8ADAET1qPKN/QCNttU4DQToyCUPUA
+ 0nzVycO/dcD84pdXy+kWIs0GELmPW04++7S5f6G4sNQApMk/c12m4sgBLc3zSpTjQSpX
+ fpTfMvFb14F1P0SjmJpkSNfhTDOhec9qjUxNr04YjpnbYLAho0iKeStWkr3RU3xKSmjs
+ rk9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706117996; x=1706722796;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yXTaes9a+DpnB/iregs+Axn1k2lzOZ8nIqaAsqGVNkc=;
+ b=X/6uYYxpMEbEozSp8tiIjp+7nN1j9GF8n1a3azOR7HcBFSsxWRCyj+2Q7EFbvx2/uI
+ Q5fG6ZOxONGIVS8srOorOcotNwHQ0kn8RMcAEgn6+YjXd/CJXKsPs6BM4e2v3Q5lftF9
+ D+YBsNoXXcmg0FkrqlPPx3/KNEKgHR0GOeUuV8yCaQy7+Oi1lSyMdTKdVz5J1RSqp6EF
+ UHYep9eQjwtOQHHFBw0PGraNMggyp0/YOlLgcZfMfDbMSs3RYplVjOi9GJ0k6q68tizc
+ jpyXjcI2EnIox2duo7yBIZh95Y36z5px0pyWHhV+nYj/VRFZygEynycQAONExVe6Kh40
+ UI+w==
+X-Gm-Message-State: AOJu0Yw3zh3rS/32yTte1Nc0IvM6vA8MfTs+TfuQc3JuucILhcF1NgVs
+ ttFjCcu6LYacbodGwI5o8mBhSHBN7tPFQn2asweemP1uhWxSj4Zx3bxLy/Od7k+gatl16zwTOz8
+ 6NkqSL9qIDQiwMW0mO4Jww/DuBu0EDSmHuvAy/EAat5C3QKeWPQ/N
+X-Google-Smtp-Source: AGHT+IHVTUDl5HeBL8gOoHkniaoDDrUYhyn0JxDPM3kADBliPZ0ptXaZW9yHOKoqT5c9slkf8nOYtXFemlUJSGYunnM=
+X-Received: by 2002:a05:622a:100b:b0:42a:6098:8122 with SMTP id
+ d11-20020a05622a100b00b0042a60988122mr171591qte.3.1706117995919; Wed, 24 Jan
+ 2024 09:39:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+References: <20240110212641.1916202-1-komlodi@google.com>
+ <ZZ/1J4q1TEFmc72P@mail.minyard.net>
+In-Reply-To: <ZZ/1J4q1TEFmc72P@mail.minyard.net>
+From: Joe Komlodi <komlodi@google.com>
+Date: Wed, 24 Jan 2024 09:39:44 -0800
+Message-ID: <CAGDLtxssLuFYutF-GUksbWmaOb7FCdhoOH-OdbfMEZ2Ma3Bu4A@mail.gmail.com>
+Subject: Re: [PATCH 0/4] hw/i2c: smbus: Reset fixes
+To: minyard@acm.org
+Cc: qemu-devel@nongnu.org, venture@google.com, cminyard@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=komlodi@google.com; helo=mail-qt1-x829.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,126 +89,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During drain, we do not care about virtqueue notifications, which is why
-we remove the handlers on it.  When removing those handlers, whether vq
-notifications are enabled or not depends on whether we were in polling
-mode or not; if not, they are enabled (by default); if so, they have
-been disabled by the io_poll_start callback.
+On Thu, Jan 11, 2024 at 6:03=E2=80=AFAM Corey Minyard <minyard@acm.org> wro=
+te:
+>
+> On Wed, Jan 10, 2024 at 09:26:37PM +0000, Joe Komlodi wrote:
+> > Hi all,
+> >
+> > This series adds some resets for SMBus and for the I2C core. Along with
+> > it, we make SMBus slave error printing a little more helpful.
+> >
+> > These reset issues were very infrequent, they would maybe occur in 1 ou=
+t
+> > of hundreds of resets in our testing, but the way they happen is pretty
+> > straightforward.
+> > Basically as long as a reset happens in the middle of a transaction, th=
+e
+> > state of the old transaction would still partially be there after the
+> > reset. Once a new transaction comes in, the partial stale state can
+> > cause the new transaction to incorrectly fail.
+>
+> This seems wrong to me.  In a real system, the reset would be done on
+> the smbus master and not necessarily on the mux (though I looked at a
+> few of the PCA954x devices and they appear to have reset lines, but
+> different systems may drive that reset differently).
+>
+> It seems to me that the bug is the smbus master device isn't getting
+> reset in a system reset.  Just adding the reset logic there would be
+> easier and more consistent with the real hardware.
+>
+> -corey
+>
+Oops, sorry, missed this in my inbox.
 
-Because we do not care about those notifications after removing the
-handlers, this is fine.  However, we have to explicitly ensure they are
-enabled when re-attaching the handlers, so we will resume receiving
-notifications.  We do this in virtio_queue_aio_attach_host_notifier*().
-If such a function is called while we are in a polling section,
-attaching the notifiers will then invoke the io_poll_start callback,
-re-disabling notifications.
+That sounds good to me, I'll send up a v2 that resets the SMBus master
+instead of the mux.
 
-Because we will always miss virtqueue updates in the drained section, we
-also need to poll the virtqueue once after attaching the notifiers.
+Thanks,
+Joe
 
-Buglink: https://issues.redhat.com/browse/RHEL-3934
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- include/block/aio.h |  7 ++++++-
- hw/virtio/virtio.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+), 1 deletion(-)
-
-diff --git a/include/block/aio.h b/include/block/aio.h
-index 5d0a114988..8378553eb9 100644
---- a/include/block/aio.h
-+++ b/include/block/aio.h
-@@ -480,9 +480,14 @@ void aio_set_event_notifier(AioContext *ctx,
-                             AioPollFn *io_poll,
-                             EventNotifierHandler *io_poll_ready);
- 
--/* Set polling begin/end callbacks for an event notifier that has already been
-+/*
-+ * Set polling begin/end callbacks for an event notifier that has already been
-  * registered with aio_set_event_notifier.  Do nothing if the event notifier is
-  * not registered.
-+ *
-+ * Note that if the io_poll_end() callback (or the entire notifier) is removed
-+ * during polling, it will not be called, so an io_poll_begin() is not
-+ * necessarily always followed by an io_poll_end().
-  */
- void aio_set_event_notifier_poll(AioContext *ctx,
-                                  EventNotifier *notifier,
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 7549094154..4166da9e97 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3556,6 +3556,17 @@ static void virtio_queue_host_notifier_aio_poll_end(EventNotifier *n)
- 
- void virtio_queue_aio_attach_host_notifier(VirtQueue *vq, AioContext *ctx)
- {
-+    /*
-+     * virtio_queue_aio_detach_host_notifier() can leave notifications disabled.
-+     * Re-enable them.  (And if detach has not been used before, notifications
-+     * being enabled is still the default state while a notifier is attached;
-+     * see virtio_queue_host_notifier_aio_poll_end(), which will always leave
-+     * notifications enabled once the polling section is left.)
-+     */
-+    if (!virtio_queue_get_notification(vq)) {
-+        virtio_queue_set_notification(vq, 1);
-+    }
-+
-     aio_set_event_notifier(ctx, &vq->host_notifier,
-                            virtio_queue_host_notifier_read,
-                            virtio_queue_host_notifier_aio_poll,
-@@ -3563,6 +3574,13 @@ void virtio_queue_aio_attach_host_notifier(VirtQueue *vq, AioContext *ctx)
-     aio_set_event_notifier_poll(ctx, &vq->host_notifier,
-                                 virtio_queue_host_notifier_aio_poll_begin,
-                                 virtio_queue_host_notifier_aio_poll_end);
-+
-+    /*
-+     * We will have ignored notifications about new requests from the guest
-+     * during the drain, so "kick" the virt queue to process those requests
-+     * now.
-+     */
-+    virtio_queue_notify(vq->vdev, vq->queue_index);
- }
- 
- /*
-@@ -3573,14 +3591,38 @@ void virtio_queue_aio_attach_host_notifier(VirtQueue *vq, AioContext *ctx)
-  */
- void virtio_queue_aio_attach_host_notifier_no_poll(VirtQueue *vq, AioContext *ctx)
- {
-+    /* See virtio_queue_aio_attach_host_notifier() */
-+    if (!virtio_queue_get_notification(vq)) {
-+        virtio_queue_set_notification(vq, 1);
-+    }
-+
-     aio_set_event_notifier(ctx, &vq->host_notifier,
-                            virtio_queue_host_notifier_read,
-                            NULL, NULL);
-+
-+    /*
-+     * See virtio_queue_aio_attach_host_notifier().
-+     * Note that this may be unnecessary for the type of virtqueues this
-+     * function is used for.  Still, it will not hurt to have a quick look into
-+     * whether we can/should process any of the virtqueue elements.
-+     */
-+    virtio_queue_notify(vq->vdev, vq->queue_index);
- }
- 
- void virtio_queue_aio_detach_host_notifier(VirtQueue *vq, AioContext *ctx)
- {
-     aio_set_event_notifier(ctx, &vq->host_notifier, NULL, NULL, NULL);
-+
-+    /*
-+     * aio_set_event_notifier_poll() does not guarantee whether io_poll_end()
-+     * will run after io_poll_begin(), so by removing the notifier, we do not
-+     * know whether virtio_queue_host_notifier_aio_poll_end() has run after a
-+     * previous virtio_queue_host_notifier_aio_poll_begin(), i.e. whether
-+     * notifications are enabled or disabled.  It does not really matter anyway;
-+     * we just removed the notifier, so we do not care about notifications until
-+     * we potentially re-attach it.  The attach_host_notifier functions will
-+     * ensure that notifications are enabled again when they are needed.
-+     */
- }
- 
- void virtio_queue_host_notifier_read(EventNotifier *n)
--- 
-2.43.0
-
+> >
+> > Thanks,
+> > Joe
+> >
+> > Joe Komlodi (4):
+> >   hw/i2c: core: Add reset
+> >   hw/i2c/smbus_slave: Add object path on error prints
+> >   hw/i2c: smbus_slave: Reset state on reset
+> >   hw/i2c: smbus: mux: Reset SMBusDevice state on reset
+> >
+> >  hw/i2c/core.c                | 30 +++++++++++++++++++++++++-----
+> >  hw/i2c/i2c_mux_pca954x.c     |  5 +++++
+> >  hw/i2c/smbus_slave.c         | 20 ++++++++++++++++++--
+> >  include/hw/i2c/i2c.h         |  6 +++++-
+> >  include/hw/i2c/smbus_slave.h |  1 +
+> >  5 files changed, 54 insertions(+), 8 deletions(-)
+> >
+> > --
+> > 2.43.0.472.g3155946c3a-goog
+> >
+> >
 
