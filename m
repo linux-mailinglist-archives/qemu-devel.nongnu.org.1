@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CE283B506
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 23:55:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4A383B507
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 23:55:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSm8w-0005Ks-NC; Wed, 24 Jan 2024 17:54:50 -0500
+	id 1rSm9n-0006JE-1E; Wed, 24 Jan 2024 17:55:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSm8v-0005Kg-6M
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 17:54:49 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rSm9j-0006HT-43
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 17:55:39 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rSm8s-0001k7-Ev
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 17:54:48 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d746ce7d13so32599225ad.0
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 14:54:46 -0800 (PST)
+ id 1rSm9f-0002HZ-Jj
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 17:55:37 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d7232dcb3eso30225815ad.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 14:55:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706136885; x=1706741685; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706136934; x=1706741734; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=x2nI9rtsZtS/jfj4b1io6ekxBYd9MBqJSO8Zb2YBI5E=;
- b=JAVVy9BIGPUijK4MZoyjD6JVVwRHuogaBMTE+4kBh5xmiw2ER+60QbBMnpNrVGB7j8
- zqfSWKsN8bMlBbexEl1aHR5xMhyytO7lei4seyJQNtg+fxbvcxqAe0v3xbzZUieRsOaM
- oyhKopyLTCjg6KqUx5brHFgGeZBib4A5LtrB2bARZxBPtW1IIcQoLKotACDuIgwsmVoX
- tDDFenEvVLrKp6cFcHPN4jJS8Bt/Y1Ee6YIl4aFqYEG91jFh+/hEeoTMRjMpOts5kEh9
- D1+aBpcCROe3GY+3k+q6E3b7YiHRTkFu+JntqS/AihNTk5SOUa+Xp8RqQahqTGfQNTaU
- fW1A==
+ bh=SV2C7UD6E08+4MuqNIOOHdBEOzIP3IxS94vbuRd31nU=;
+ b=KsS8f5m02Fs8jWxijoqK53IOAnK/GtNB2wZbHJGJ5hlMOEYbDRBur33T4o8c8OMbQQ
+ XKdPt/trlhWTHv+V7abL4QV23TZ2hmmx2atF/I7ErQvAblaX5agJLtvrg1q2EQ4eKzig
+ ZUsooWGjrD+BiGF/S6rkZYMcFGbU+wmhZDvVx1t2BgW09yWjnWjUM5Jffe1u/9JZpS/L
+ taTvoq8i/jQVBS6OBbd28TuG6w+n7oCuRdTSBfejP03LGCkuEwuBfKYLM+7rD631hENw
+ Zd9NWQ+tAz/JWBASxA/F6QUetCC9BqpTdkOQZ7b9dlV49U5QI00qtvMowHS6kLb0so0F
+ Gckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706136885; x=1706741685;
+ d=1e100.net; s=20230601; t=1706136934; x=1706741734;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x2nI9rtsZtS/jfj4b1io6ekxBYd9MBqJSO8Zb2YBI5E=;
- b=FyBb5Gnv39BSdfFc0VWnmGCJtReLFsEYQsc+trpKAwSWUkaaorTTRpVadgDWBuPv+N
- /pZTD11Op9n4Aj0NnFBAbQxcDD0GdZ/7/FvEGA8PKlHiq/NxcBNgF8b7j0KFCB61eTlw
- 77R94dDCEFOHPtVu5WAyDxbm05cU9gLYdVOxtUdO8x4UR9bV55EU/anSUh/OJc4Cs2yU
- tIQyvXYtDLJM41j5vk1yvGOZEF03ewrKGhbId8nvGLpzYa0M9smdxd7KSbGnp7cauSq9
- WDEDY1zuiaYH6cHetIm43FytQ7fOy5ZnMxJfa6OttUNESB9ojZAHjm4EUKtTtbMLlGNh
- 3YnQ==
-X-Gm-Message-State: AOJu0YxRfaiKu0wipIPWHISjh1CuiwRRdxWzGh2FYc68hdj3qFenf+H2
- 4bTEKHQcHFb0o/g6sJ4T+brs/EZXIwacVh0NessI3b41+oQ0vl/9KQAT2gt6yyo=
-X-Google-Smtp-Source: AGHT+IHp+ppUZbe0RhIepHDJqDfOFr5K9dF6x6asATz1KuhpVJbt43bdA0DRAJo/sAdx7oXVEbuGiA==
-X-Received: by 2002:a17:902:e546:b0:1d7:450c:be68 with SMTP id
- n6-20020a170902e54600b001d7450cbe68mr149905plf.66.1706136885083; 
- Wed, 24 Jan 2024 14:54:45 -0800 (PST)
+ bh=SV2C7UD6E08+4MuqNIOOHdBEOzIP3IxS94vbuRd31nU=;
+ b=CN+ky0dH8JW0QmwGoCW3CIdScTDOUVTe3X2S9nQIBPMtK8bdxPHeEeYahrqjkL4IAG
+ g/rN2Zei1wCXAVJ0E77eZDBThLnC3q1S5nD3EZbjuOaNtdlqgPaQCU41sc84r+sDOUMz
+ EAabn9R497sYKS2I0TdX0tpHrPiTkzW3Wsi6kWE/kEWD76CMeKAw0ly/8/xtJ2CGpx/i
+ +rvfe3zW60eKjSyt925JdgKEU5L4RdE9xvGvvxyDPYLqJJwR2QbcXb4YRMVNpXMoORZ6
+ ZMWTHKKeFuU/FFEwwhYaGz8WQcnWQbxAoijFZbuIzdhYqCWxMaoNcMKPGN0OO+4wcV15
+ u1Ug==
+X-Gm-Message-State: AOJu0Yx6c+iJM4MgTpugkaz7pP2ziUbjeqhxjwcdGQER+pcBVhWPU4sj
+ ASOESR94LZOR7pHLzkrD2z27DyDnzp739mBVBCF4DadhFDOF6kTOk88VvCuYrak=
+X-Google-Smtp-Source: AGHT+IF+FRLJWGC8bbB62L5GMPk03L06xdaAxp1zaZmFSTSCmB1wViRa0WqlbWksafeEvfuyv+6LTQ==
+X-Received: by 2002:a17:902:7ec1:b0:1d4:42c1:3470 with SMTP id
+ p1-20020a1709027ec100b001d442c13470mr97005plb.64.1706136934218; 
+ Wed, 24 Jan 2024 14:55:34 -0800 (PST)
 Received: from ?IPV6:2001:44b8:2176:c800:5fcf:9e3:2e58:9c7?
  (2001-44b8-2176-c800-5fcf-09e3-2e58-09c7.static.ipv6.internode.on.net.
  [2001:44b8:2176:c800:5fcf:9e3:2e58:9c7])
  by smtp.gmail.com with ESMTPSA id
- bi3-20020a170902bf0300b001d6fe15b563sm10909619plb.157.2024.01.24.14.54.42
+ bi3-20020a170902bf0300b001d6fe15b563sm10909619plb.157.2024.01.24.14.55.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Jan 2024 14:54:44 -0800 (PST)
-Message-ID: <cc8024bd-ce99-47b0-9418-f99f37dab924@linaro.org>
-Date: Thu, 25 Jan 2024 08:54:41 +1000
+ Wed, 24 Jan 2024 14:55:33 -0800 (PST)
+Message-ID: <a6e8c008-7941-488d-a3b2-95daed07cf9a@linaro.org>
+Date: Thu, 25 Jan 2024 08:55:30 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] accel/tcg: Rename tcg_cpus_destroy() ->
- tcg_cpu_destroy()
+Subject: Re: [PATCH 3/9] accel/tcg: Rename tcg_cpus_exec() -> tcg_cpu_exec()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
@@ -71,13 +70,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
  Claudio Fontana <cfontana@suse.de>
 References: <20240124101639.30056-1-philmd@linaro.org>
- <20240124101639.30056-3-philmd@linaro.org>
+ <20240124101639.30056-4-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240124101639.30056-3-philmd@linaro.org>
+In-Reply-To: <20240124101639.30056-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,8 +100,8 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 1/24/24 20:16, Philippe Mathieu-Daudé wrote:
-> tcg_cpus_destroy() operates on a single vCPU, rename it
-> as 'tcg_cpu_destroy'.
+> tcg_cpus_exec() operates on a single vCPU, rename it
+> as 'tcg_cpu_exec'.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
