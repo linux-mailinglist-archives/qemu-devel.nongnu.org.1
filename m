@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198BB83A718
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 11:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EBA83A70D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 11:43:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSaiO-0008AH-G2; Wed, 24 Jan 2024 05:42:40 -0500
+	id 1rSaiS-0008B6-3P; Wed, 24 Jan 2024 05:42:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSaiM-000891-Gp
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:42:38 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSaiQ-0008Am-E9
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:42:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSaiK-0008EX-Vx
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:42:38 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rSaiO-0008Eh-Ru
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:42:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706092956;
+ s=mimecast20190719; t=1706092960;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=hHS4DUVHFaNS+EzcRjh+46sUcFmdh8jcJjDaA12txVw=;
- b=JnY2j9IvFE9u5+X8QFTya/KaMPowtU/76aL9030jAQc0wLQtheHqpIIyi/UouoQ/gKxkbx
- Hf7cP6GjHENV9MB3Uzqmab9gsb9V/koVYazCfg3ROnjDk5fTkWuj46F4RjvXTsiSrBFWs8
- lJ+zB+Decw1UDef/43JhGF87BER9u30=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-2T5718IkN66EIrMIz60P3A-1; Wed,
- 24 Jan 2024 05:42:34 -0500
-X-MC-Unique: 2T5718IkN66EIrMIz60P3A-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JyWoeTwTFJrwOepQC3Sda3BVDGkOofIimIJS4eeQWCE=;
+ b=i4L2m8DwTHG96X0FJMySz/g6tQHLiY6lLDqR/gYI+OP2BNn6fFqBxgMsQ5wg4bb/MzWEtz
+ 53aOqbydJ+wrOJEcBOxaepcQ8P/C3PolHrKpxrwyNYKq5S+ZAptM0IJpcJC0yb/+fZ+efU
+ LzjCO8uAkFJF+Hz4NTM163kCeHgGWYc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-210-uVokYlJOP2q6s01sNwNRaQ-1; Wed, 24 Jan 2024 05:42:35 -0500
+X-MC-Unique: uVokYlJOP2q6s01sNwNRaQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B770B3C0F366;
- Wed, 24 Jan 2024 10:42:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E9D385A596;
+ Wed, 24 Jan 2024 10:42:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.115])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ED2DF51D5;
- Wed, 24 Jan 2024 10:42:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7DD4B51D5;
+ Wed, 24 Jan 2024 10:42:34 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 0/7] Test timeout fixes and URI code clean up
-Date: Wed, 24 Jan 2024 11:42:24 +0100
-Message-ID: <20240124104231.603418-1-thuth@redhat.com>
+Subject: [PULL 1/7] tests/qtest: Bump timeout of the boot-serial-test to 360
+ seconds
+Date: Wed, 24 Jan 2024 11:42:25 +0100
+Message-ID: <20240124104231.603418-2-thuth@redhat.com>
+In-Reply-To: <20240124104231.603418-1-thuth@redhat.com>
+References: <20240124104231.603418-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -75,38 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Peter!
+On the slow k8s CI runner, the test sometimes takes more than 240
+seconds. See for example this run here where it took ~ 267 seconds:
 
-The following changes since commit 09be34717190c1620f0c6e5c8765b8da354aeb4b:
+ https://gitlab.com/qemu-project/qemu/-/jobs/5806087027#L4769
 
-  Merge tag 'pull-request-2024-01-19' of https://gitlab.com/thuth/qemu into staging (2024-01-20 17:22:16 +0000)
+Thus we have to bump the timeout here even further to be on the
+safe side. Let's use 360 seconds which should hopefully really be
+high enough now.
 
-are available in the Git repository at:
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2097
+Message-ID: <20240123110353.30658-1-thuth@redhat.com>
+Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/qtest/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-01-24
-
-for you to fetch changes up to e7b991451eecb58af34d6d3d17209e97f5e97f96:
-
-  util/uri: Remove unused macros ISA_RESERVED() and ISA_GEN_DELIM() (2024-01-24 09:54:05 +0100)
-
-----------------------------------------------------------------
-* Test timeout fixes
-* Clean up URI code
-
-----------------------------------------------------------------
-Thomas Huth (7):
-      tests/qtest: Bump timeout of the boot-serial-test to 360 seconds
-      tests/unit/test-iov: Fix timeout problem on NetBSD and OpenBSD
-      tests/qtest: Bump timeouts of boot_sector_test()-based tests to 610 seconds
-      util/uri: Remove uri_string_unescape()
-      util/uri: Remove unused functions uri_resolve() and uri_resolve_relative()
-      util/uri: Remove the uri_string_escape() function
-      util/uri: Remove unused macros ISA_RESERVED() and ISA_GEN_DELIM()
-
- include/qemu/uri.h      |   4 -
- tests/unit/test-iov.c   |  20 +-
- util/uri.c              | 869 +-----------------------------------------------
- tests/qtest/meson.build |   8 +-
- 4 files changed, 27 insertions(+), 874 deletions(-)
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index d22434b14e..d22aec6734 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -9,7 +9,7 @@ slow_qtests = {
+   'test-hmp' : 240,
+   'pxe-test': 600,
+   'prom-env-test': 360,
+-  'boot-serial-test': 240,
++  'boot-serial-test': 360,
+   'qos-test': 120,
+ }
+ 
+-- 
+2.43.0
 
 
