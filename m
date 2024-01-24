@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC38783A340
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF3783A341
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 08:42:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSXtm-00034v-Gr; Wed, 24 Jan 2024 02:42:14 -0500
+	id 1rSXts-00035d-PP; Wed, 24 Jan 2024 02:42:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSXtj-00034k-44
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:42:11 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSXtn-00035G-SR
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:42:15 -0500
 Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSXtf-00033t-TG
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:42:09 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSXtm-000347-DC
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 02:42:15 -0500
 Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3392d417a9fso2204457f8f.1
- for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 23:42:06 -0800 (PST)
+ ffacd0b85a97d-33929364bdaso3477181f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Jan 2024 23:42:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706082125; x=1706686925; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cf7qB2BMl9WBhIDGMxLzOoiU+ORQO1oIrTiLobNFJVA=;
- b=lm9X33tPKkb5EtuLERlMkDWxNidzhFSfhKfwQw9DH8vXmTfQ33oQtqvjL+ipX/uNA+
- E3f3pEbynIOKgFpp/x/OEXL+OTXdOEMU8JgpnMtG0mgNXt7t0f/apoFDEhoJzp3+8qhm
- 544CnDwV2MDersNXeAzyTUZzdVO/RT795fkl6qQZRWQJ8dBIKs8457e4RHNrreqF+nf+
- iNia2ohUkDKng/xkp5gbP3ZSwQd8m6tRe/tkj2hmFAtMjifz5Vn2yVxGqOggMFToZYKY
- m8GyvPOW3Jm/BkXCvJAnupxIhQVtgDIHJuhLh2Og/uFROfdeiN1NDh4kFE3fBvnVHKG6
- DN9Q==
+ d=linaro.org; s=google; t=1706082132; x=1706686932; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dEohNbICE64fiWDiipXLr8WUwbdgtkPH1DVHZNt9exk=;
+ b=DDoeCPLV3fFdSGskkVyIHmGNphkwkXsjo8m5f9RbvmH1ujm1tMDBaPxyEjJiycBHcn
+ WW2WmuQ8vfySck3aHcc7zQReQYkaaLVxY77sw1NoF4jkAoYNXonlooH7YpezGpamod9c
+ 6aOAqaJOT4H1qVsH0s/O9DIQSW6h2OQleRY6GuKcQ4yavBHJTSlpBj4pHIkdnYldK4V4
+ Mhu+UAf2NQDQZ2b2VlWjNKj+MltGGxLk1gBetlspNqP+yKbOg1wfjlZMz5H1WBU97oqd
+ lv95mvGPo52b1bgYBkDS/HBsKnHSgFc8yFc0sgA+ZQNFg8j4GhIb1Nr/3TDN+ievcO2d
+ VTfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706082125; x=1706686925;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cf7qB2BMl9WBhIDGMxLzOoiU+ORQO1oIrTiLobNFJVA=;
- b=sW5zMuR7LDCN/9STIAYM5d2jmEMGS6Q+VcUi3QOVIvEgxViSDMWlOy3Cqos9P5yqnK
- ffW/56r8Yxd+iOD7OJWZviu6wDrX3N1/EBEE1kUiIf+44kOydh0A5kFvMrLKevFJpoN/
- 0/vYk8iZSQdgy4utigvvSB3LaZjq/0JBn4ySA0wnbyVMTN6l1WyEaqtH63TdHdV4EcJa
- eHbAUSkhuI7fa2JWgarSkOc40c0UKS+/R7nutPsfeMDOHCEZVODbjwm5saKGrh6f3n01
- Rf8rKltadDl7nVMYU9X4jBieqX86TpgFABTl1TTfkKQQGF73Qp52kl3VGLDa5TGxY6Wi
- EZ3w==
-X-Gm-Message-State: AOJu0Yx8gX6HTDj817Ku/c0NlPOakuM+gMG4WboGAppt13gcKco91WHc
- 9ydz1yk2JUuIRJmUiCaeOQnLrgNM6c9yi05TbQyUawHX9dt+ZNpBACk2FA/jz9JIVpmNczUfk17
- K
-X-Google-Smtp-Source: AGHT+IHy1iSPich9I/us8UAOfoBIQg7binsg2YL//o5jb1J6NjsC2eFZkXFly7SLwNZNLFDReoHxsA==
-X-Received: by 2002:adf:e787:0:b0:337:c54a:199f with SMTP id
- n7-20020adfe787000000b00337c54a199fmr232653wrm.86.1706082125347; 
- Tue, 23 Jan 2024 23:42:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706082132; x=1706686932;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dEohNbICE64fiWDiipXLr8WUwbdgtkPH1DVHZNt9exk=;
+ b=hroMDtLdGaI+TeJ432ZKHXKyS87Zy7gb0zOjr/XnwkGYG1EMRicCCNuZekqb/dcc6Z
+ /vgMoxJeAAKUrvruSXMoB5ZNCvit/kj4pfkXDIPPDnISsbUzHjbZk6RSM+evuUHje62r
+ wyAPlXsvCoWMhouBtfgIssL18/6P2iG8OpzKZ46sGRg7N0p36GxBmpbGi42MtQYgEXib
+ Edp2ArLoPPeMP73OCPbEBwIMS63IMbWwoDXqftqVY1Kz6mMc0PcJaGhzNmshC46/IW3A
+ MR6AuQH0TiXxbinNFuFsFcC+/u+cE+B0Osf8AcDhVlJQ28YLQISWol5B2kpbOJTL7iCr
+ 0jig==
+X-Gm-Message-State: AOJu0YxXC6k5aKtVazzfssk+h5AfkjzeMy0HEQffQ8Eufi0qxbfsu9Ho
+ 5TFbC2h1Y88faKqN51jP9nIAc6OdeP1W6mcpgraUROHANJIREMSvd/Nrf0l2jounrAAnjw37p9C
+ I
+X-Google-Smtp-Source: AGHT+IHrso0aJRBQ4AHG205wcbVar1gNDDJjgpVJ9YUvs31G9E16/Icy29W00MKEI9uqtyUfiMBSnQ==
+X-Received: by 2002:adf:eace:0:b0:339:2c1a:5d79 with SMTP id
+ o14-20020adfeace000000b003392c1a5d79mr267975wrn.6.1706082131894; 
+ Tue, 23 Jan 2024 23:42:11 -0800 (PST)
 Received: from m1x-phil.lan (lgp44-h02-176-184-8-67.dsl.sta.abo.bbox.fr.
  [176.184.8.67]) by smtp.gmail.com with ESMTPSA id
- w15-20020adfec4f000000b00338a3325331sm13143027wrn.69.2024.01.23.23.42.03
+ v27-20020adfa1db000000b0033946c0f9e7sm2977610wrv.17.2024.01.23.23.42.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 23 Jan 2024 23:42:04 -0800 (PST)
+ Tue, 23 Jan 2024 23:42:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,12 +65,14 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/6] hw/accel: Use RCU_READ macros
-Date: Wed, 24 Jan 2024 08:41:55 +0100
-Message-ID: <20240124074201.8239-1-philmd@linaro.org>
+Subject: [PATCH 1/6] accel/tcg/cpu-exec: Use RCU_READ macro
+Date: Wed, 24 Jan 2024 08:41:56 +0100
+Message-ID: <20240124074201.8239-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240124074201.8239-1-philmd@linaro.org>
+References: <20240124074201.8239-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::434;
  envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
@@ -95,25 +98,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use RCU_READ_LOCK_GUARD and WITH_RCU_READ_LOCK_GUARD
-to replace the manual rcu_read_(un)lock calls.
+Replace the manual rcu_read_(un)lock calls by the
+WITH_RCU_READ_LOCK_GUARD macro (See commit ef46ae67ba
+"docs/style: call out the use of GUARD macros").
 
-Philippe Mathieu-Daudé (6):
-  accel/tcg/cpu-exec: Use RCU_READ macro
-  hw/9pfs/9p-synth: Use RCU_READ macro
-  hw/display/virtio-gpu-udmabuf: Use RCU_READ macro
-  hw/scsi/virtio-scsi: Use RCU_READ macro
-  hw/vfio/common: Use RCU_READ macros
-  hw/virtio/vhost: Use RCU_READ macro
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/tcg/cpu-exec.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
- accel/tcg/cpu-exec.c            | 24 +++++++++++------------
- hw/9pfs/9p-synth.c              | 24 +++++++++++------------
- hw/display/virtio-gpu-udmabuf.c |  6 +++---
- hw/scsi/virtio-scsi.c           | 12 ++++++------
- hw/vfio/common.c                | 34 ++++++++++++++++-----------------
- hw/virtio/vhost.c               |  6 +++---
- 6 files changed, 52 insertions(+), 54 deletions(-)
-
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 67eda9865e..6b3f66930e 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1070,21 +1070,21 @@ int cpu_exec(CPUState *cpu)
+         return EXCP_HALTED;
+     }
+ 
+-    rcu_read_lock();
+-    cpu_exec_enter(cpu);
++    WITH_RCU_READ_LOCK_GUARD() {
++        cpu_exec_enter(cpu);
+ 
+-    /*
+-     * Calculate difference between guest clock and host clock.
+-     * This delay includes the delay of the last cycle, so
+-     * what we have to do is sleep until it is 0. As for the
+-     * advance/delay we gain here, we try to fix it next time.
+-     */
+-    init_delay_params(&sc, cpu);
++        /*
++         * Calculate difference between guest clock and host clock.
++         * This delay includes the delay of the last cycle, so
++         * what we have to do is sleep until it is 0. As for the
++         * advance/delay we gain here, we try to fix it next time.
++         */
++        init_delay_params(&sc, cpu);
+ 
+-    ret = cpu_exec_setjmp(cpu, &sc);
++        ret = cpu_exec_setjmp(cpu, &sc);
+ 
+-    cpu_exec_exit(cpu);
+-    rcu_read_unlock();
++        cpu_exec_exit(cpu);
++    };
+ 
+     return ret;
+ }
 -- 
 2.41.0
 
