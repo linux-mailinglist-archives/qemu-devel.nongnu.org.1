@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDD683A691
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 11:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A3F83A6C3
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 11:28:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSaKZ-0005b5-1U; Wed, 24 Jan 2024 05:18:03 -0500
+	id 1rSaTA-0002FV-DS; Wed, 24 Jan 2024 05:26:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaKX-0005Y6-3M
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:18:01 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaSo-0002F1-3p
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:26:34 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaKV-0003vl-8D
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:18:00 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-554fe147ddeso7040953a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 02:17:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSaSm-0005LX-B6
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 05:26:33 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-5100c4aa08cso1493822e87.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 02:26:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706091478; x=1706696278; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706091990; x=1706696790; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=jHCnnfTejy5QARf1DO0t+EVDivL8dzaNZF5EgrGxArw=;
- b=ImQIniKV+3ofx1MvkX4lsSFNVc1txN2XQ8KST1by2UGtzpP6iSUdn5tZp9v5p8bOa3
- tleaWjkTWIPTeptJT6Q+PGhqQXm1j2p7BVMA2yJ0LI7I3dHamcZoEEflwBUKurXhWfAO
- cdOGjGTnKC4GXsoemPiy6uGUx/+5xRjKWoCCjgnA8zn9dtZoMPcg8trYIMcHSL7PWGtQ
- YGe47pH8KYrVINCN3NXXDJE1pxNc7Oa4M/uQKcV3K907JQkZpf7EN3L70o1A5jySvci9
- odX252+Mo3OHgB7LyXRIE287QY/oNhOHwoUDEton3r2PEV1nWQRcvG04KMzELiIJW/+b
- lcpg==
+ bh=r12sVsqEGH47jYsmakDboBTMdmOFgHzBDlkELkNODOg=;
+ b=YeqitDRWft05J588uodqZoCDgk36YEhgQqV12vhsQk5QjPFByp5DVoukyVjcAP5YH1
+ VNZNEC40ok4GlhEAQqwXXZSk6UTDPamj5GAmN/OjpOQZxB1wrgZUhJjmsRka5fjP1WDY
+ vSpw6X6XVJL/4ykrX8VVekpP26yj3CxCtw5/o4y/bUar+WvYoOWTdrNWiHhiqzdkUfET
+ 31hCMdEfc2NSkxmrLcsYupcEsn5LjTfMdiyzLdVoHwyVtWVGoTA2sOn9B4cAxU/LyKCR
+ H3Op/s2A1Tt5KFlHM+xPx13i7l7EGwKKER+oNbzrRpB6cH7rOljGihMUfnNZW9pmCm75
+ r9XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706091478; x=1706696278;
+ d=1e100.net; s=20230601; t=1706091990; x=1706696790;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jHCnnfTejy5QARf1DO0t+EVDivL8dzaNZF5EgrGxArw=;
- b=ZVarMJW0MdO5+sdg4WuAbjZmQNe02bK4hHmVdVS0MJfRuQl69bt88WeTxzUAVjpsIS
- vjb4XUJuwxdZaQW1NM872Y7Hdz9FoOS7ygqbJkuANbXwYM5Ouckp2lm3jsGNZ9nFLH2j
- iUt8dnzMyrYk9R0TmsD6M0p3KE0BJpiXToZHtGkvOiEmMViQz7RlQeZuKOztnXXOXHkl
- 3qw4aoGiEhga56Ub6cVxMNoSCWWbStEo0HkUTg1KUxfmyObzbCcsCPtWAgyEKsneu/XI
- 4eQiL8lR1DGb5ixxCnV3qoOeeX7Q8F+UV6azBaPBnZproCfZ+paXDg121oitluqpCDpd
- GFHA==
-X-Gm-Message-State: AOJu0YyDy/8lLXDFewGaEYbUTxnu4R6rrWa+Md/0QraLD6iY0rCoBMtM
- e6R1NBzwgXKlpQ+6aWMPCDVe28vJPDdJA/YvJFyKRohevjVKeGRgVeR7kyLhm08=
-X-Google-Smtp-Source: AGHT+IH0GVVhDCDTE3mWuVtBNJY5HjGlOkYH8RCAyfqek0koOcjYyYext1WsH4kBOYcDu2qbuobycQ==
-X-Received: by 2002:a17:906:6550:b0:a2b:28a2:1bd9 with SMTP id
- u16-20020a170906655000b00a2b28a21bd9mr360936ejn.244.1706091477742; 
- Wed, 24 Jan 2024 02:17:57 -0800 (PST)
+ bh=r12sVsqEGH47jYsmakDboBTMdmOFgHzBDlkELkNODOg=;
+ b=UDYos0PWLe/p3dOiEhRokp+qzrEyM21Q5/FZDrXplb7x3g8HUDS0mTXZuAAOgS49ol
+ 7uDhPKarveOl9LI21qjbyhdd505solxaRAVnkRFaCPSJytCp1d0iskJju9VOFfeW1lBp
+ TlC4dWahZQ9evCDo7LSMZj/Cc/01Eamit83ZAvk5HtnZaD735L2YBTZj9D68NrbiWQu+
+ MKIzteePd66/D+zSVGLrhr8uKBBpZ6GZ0GgqWXXra8861ogw8rdO6DGTfz/9EmNrhgAX
+ Ijwrw2+iRHSMcYbr5sqP0nUAgZAufep4VdE0sjF4O33n9ZUEK+JI21xBqCG3maHhTdMF
+ 9CTg==
+X-Gm-Message-State: AOJu0YxgRAOpW28v6jpkg6HjWZvgsXTtfMMR8I2EhFShjl2IVxsjUx1C
+ AgIonKoaL6bdDB9XnUEdSSC09cWuiaVQFVqupnVM9JDjUUumWa7Z59qH/E3gQio=
+X-Google-Smtp-Source: AGHT+IEjeNUmzmGamlaj7vUzgxS/4wluQUEupAQWjjulzxOWkab5zl0jRVzhznhDAKpM8er7tdhoZw==
+X-Received: by 2002:ac2:518c:0:b0:510:a0b:52e3 with SMTP id
+ u12-20020ac2518c000000b005100a0b52e3mr1051093lfi.68.1706091990205; 
+ Wed, 24 Jan 2024 02:26:30 -0800 (PST)
 Received: from [192.168.69.100] (lgp44-h02-176-184-8-67.dsl.sta.abo.bbox.fr.
  [176.184.8.67]) by smtp.gmail.com with ESMTPSA id
- k16-20020a170906129000b00a274f3396a0sm15478120ejb.145.2024.01.24.02.17.56
+ c13-20020a170906170d00b00a2c047c6847sm15263070eje.113.2024.01.24.02.26.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Jan 2024 02:17:57 -0800 (PST)
-Message-ID: <f9b94516-fd70-49e8-85e6-c64019a52717@linaro.org>
-Date: Wed, 24 Jan 2024 11:17:55 +0100
+ Wed, 24 Jan 2024 02:26:29 -0800 (PST)
+Message-ID: <8c0501b8-6ce9-46f2-afb5-70b053f42c1e@linaro.org>
+Date: Wed, 24 Jan 2024 11:26:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/9] accel/tcg: Extract some x86-specific code
+Subject: Re: [PATCH 4/6] hw/scsi/virtio-scsi: Use RCU_READ macro
 Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- Claudio Fontana <cfontana@suse.de>
-References: <20240124101639.30056-1-philmd@linaro.org>
+ Christian Schoenebeck <qemu_oss@crudebyte.com>, Fam Zheng <fam@euphon.net>,
+ Greg Kurz <groug@kaod.org>, Richard Henderson
+ <richard.henderson@linaro.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C_=C3=A9_dric_Le_Goater?= <clg@redhat.com>
+References: <20240124074201.8239-1-philmd@linaro.org>
+ <20240124074201.8239-5-philmd@linaro.org> <7re0d.o8r1pancklv@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240124101639.30056-1-philmd@linaro.org>
+In-Reply-To: <7re0d.o8r1pancklv@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,40 +98,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/1/24 11:16, Philippe Mathieu-Daudé wrote:
-> accel/tcg/ ought to be target agnostic. This series remove
-> some x86 code, addressing part of "Work still remains" from
-> Anjo's series:
+On 24/1/24 10:17, Manos Pitsidianakis wrote:
+> On Wed, 24 Jan 2024 09:41, Philippe Mathieu-Daudé <philmd@linaro.org> 
+> wrote:
+>> Replace the manual rcu_read_(un)lock calls by the
+>> WITH_RCU_READ_LOCK_GUARD macro (See commit ef46ae67ba
+>> "docs/style: call out the use of GUARD macros").
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> hw/scsi/virtio-scsi.c | 12 ++++++------
+>> 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Oops, s/Anjo/Anton/
+> Unrelated to your patch: I just noticed in hw/scsi/virtio-scsi.c, 
+> s->resetting is used to flag whether the bus is resetting; but there's 
+> no check if a resetting is taking place before starting another. Is this 
+> single threaded code so it's not necessary?
 
-> https://lore.kernel.org/qemu-devel/20240119144024.14289-1-anjo@rev.ng/
-> 
-> Based-on: <20240124075609.14756-1-philmd@linaro.org>
->            "Move perf and debuginfo support to tcg"
-> 
-> Philippe Mathieu-Daudé (9):
->    accel/tcg: Rename tcg_ss[] -> tcg_specific_ss[] in meson
->    accel/tcg: Rename tcg_cpus_destroy() -> tcg_cpu_destroy()
->    accel/tcg: Rename tcg_cpus_exec() -> tcg_cpu_exec()
->    accel/tcg: Un-inline icount_exit_request() for clarity
->    accel/tcg: Hoist CPUClass arg to functions with external linkage
->    accel/tcg: Introduce TCGCPUOps::need_replay_interrupt() handler
->    target/i386: Extract x86_need_replay_interrupt() from accel/tcg/
->    accel/tcg: Introduce TCGCPUOps::cpu_exec_halt() handler
->    target/i386: Extract x86_cpu_exec_halt() from accel/tcg/
-> 
->   accel/tcg/tcg-accel-ops.h           |   4 +-
->   include/hw/core/tcg-cpu-ops.h       |   7 ++
->   target/i386/tcg/helper-tcg.h        |   2 +
->   accel/tcg/cpu-exec.c                | 125 ++++++++++++----------------
->   accel/tcg/tcg-accel-ops-mttcg.c     |   4 +-
->   accel/tcg/tcg-accel-ops-rr.c        |   4 +-
->   accel/tcg/tcg-accel-ops.c           |   4 +-
->   target/i386/tcg/sysemu/seg_helper.c |  23 +++++
->   target/i386/tcg/tcg-cpu.c           |   2 +
->   accel/tcg/meson.build               |  12 +--
->   10 files changed, 103 insertions(+), 84 deletions(-)
-> 
-
+No clue about this device, I'll let the maintainers answer you :)
 
