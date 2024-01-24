@@ -2,61 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C361D83AB23
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 14:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD1F83AB42
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 14:59:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSddI-0002mS-CM; Wed, 24 Jan 2024 08:49:36 -0500
+	id 1rSdlK-0001ov-DN; Wed, 24 Jan 2024 08:57:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>) id 1rSdd7-0002fk-Rg
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 08:49:27 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rSdlH-0001m9-AO
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 08:57:52 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>) id 1rSdd4-0004HS-VQ
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 08:49:25 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id E615161D44;
- Wed, 24 Jan 2024 13:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DE3C433F1;
- Wed, 24 Jan 2024 13:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1706104156;
- bh=Hbu03H2eAZDQJTRnpJ27e4m4VHvK8aE2vA+Htsf4E9c=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=ptHY/JzywnyvN9r+npERvLBahgBT4/pIA/blCBOR97dm8dzkFS2GFjgupEw3+tOHg
- 4u82NO6U+bKbIuDUjX4+2DG0/A2ZC0FKgFrOKZzi2xYcsakq4J64Kh3lkwNVusc9Tf
- J1jmajD6+qHxJp75axllpZEnYAnWSS5LCpJ6+i1cv13HPHKmB1aGx4AJxGqakikIB0
- t+b58TcoA9mkhyyT7ImjGVaiUAWOp0tF1ScQYiTnM5INZt9vjyv/neX5G+cLYSbtyy
- ZfcbSO1JhlmAip992eitkBFyJMxZHuZXtoLI9LM4K7bh6lRZ3sBG+/H5wxEdS9pzJp
- LiAMKXvUBYOpg==
-Date: Wed, 24 Jan 2024 13:49:12 +0000
-From: Conor Dooley <conor@kernel.org>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Christoph =?iso-8859-1?Q?M=FCllner?= <christoph.muellner@vrull.eu>,
- linux-riscv@lists.infradead.org, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: qemu riscv, thead c906, Linux boot regression
-Message-ID: <20240124-disarm-couch-bb8b96b62898@spud>
-References: <874jf2rj4g.fsf@all.your.base.are.belong.to.us>
- <20240124-sliceable-atom-c87a10922d4b@spud>
- <871qa6yi8h.fsf@all.your.base.are.belong.to.us>
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rSdlF-0005sc-NJ
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 08:57:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706104668;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=a1fnDX6sltVJ/8BF/VLCjhr9I2rkrkUjdXw/y9U6yng=;
+ b=Iztaz4jC6B8McewtTC+ZOMY4cMTNS8I/3iSSKYtkHCqPMbnAkp5qqChiOAkAQ2WtaCq4SD
+ nvOvHbD0sha7UFIDfOmk1nqJpurZQmIRxvaUxYqKqhJ2K4u58280TKerL6FiUio6cRN0F+
+ B85sF1by/Bbli3B6QmzMKXlvVGQ8Q68=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-173-v3UwvcpYNbyqlniOtpmM9A-1; Wed, 24 Jan 2024 08:57:46 -0500
+X-MC-Unique: v3UwvcpYNbyqlniOtpmM9A-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-781d8e14fd8so791513085a.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 05:57:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706104666; x=1706709466;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a1fnDX6sltVJ/8BF/VLCjhr9I2rkrkUjdXw/y9U6yng=;
+ b=YgV8fRN+ZaB6bW+iPAjdN62kt51K/dHg/9/NHJQhcEAdU0MStfEsigKiq2K3zxuzhq
+ 6L4kzrOPNQ5F/xslcYiYoxA+VPb9f45AFPfLa+iNMUJa4f5DSOWf7ky8A2e6e6loeay6
+ 7t3fOx6Uv8g1+FgDJRXABdXhn7BJ2J/ZUafJ6uCmpVSYkFBZIvjxKpVoIozX274bhQXe
+ XcH06NkB6Q/wBwKjonpStOsIrwFMfOX+2+LEyYfKpjrTZcRsqvjfSp/uVdDZvhTchmiU
+ KnAHhI0fJfN2Non7P+cJknl4RbAxcCv2paqOwgmBLVIG2aLrwqrAfc30Ar4pt5xleK7/
+ I/ow==
+X-Gm-Message-State: AOJu0YxlUj4dmUPLy6f50+RiK3waiT5LBnn/E+tOQKRfmUftT+Y8/4N0
+ kuN9cthJU3NC87JL1M3RIn/xDxQ/6d+tCCtIhTG/o80NzPIWo/TAl8jLtgiWK9nAMXWxhr8O7dh
+ nXLOuTwbD4w37npAo3ZkV7DTY+mnGapzLF5vRKlidRT6OR3T7qa9F
+X-Received: by 2002:a05:622a:15c5:b0:42a:311f:a7c2 with SMTP id
+ d5-20020a05622a15c500b0042a311fa7c2mr2663607qty.1.1706104666254; 
+ Wed, 24 Jan 2024 05:57:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG7MTMyz4h2VKLbeWY6SaQLP4NTNYQxpxI3gu8FgK5UMva7AzMACuhZwo7t/N3bUD5d92PHCw==
+X-Received: by 2002:a05:622a:15c5:b0:42a:311f:a7c2 with SMTP id
+ d5-20020a05622a15c500b0042a311fa7c2mr2663596qty.1.1706104665995; 
+ Wed, 24 Jan 2024 05:57:45 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ay23-20020a05622a229700b0042a5c2a81a8sm614103qtb.60.2024.01.24.05.57.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 24 Jan 2024 05:57:45 -0800 (PST)
+Message-ID: <a92a2023-7448-4b74-bfd9-e412c6092270@redhat.com>
+Date: Wed, 24 Jan 2024 14:57:41 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="mtHz7+QrxFH7I2eq"
-Content-Disposition: inline
-In-Reply-To: <871qa6yi8h.fsf@all.your.base.are.belong.to.us>
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=conor@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] virtio-iommu: Add an option to define the input range
+ width
+Content-Language: en-US
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ jean-philippe@linaro.org, peter.maydell@linaro.org,
+ zhenzhong.duan@intel.com, peterx@redhat.com, yanghliu@redhat.com,
+ mst@redhat.com, clg@redhat.com, jasowang@redhat.com
+References: <20240123181753.413961-1-eric.auger@redhat.com>
+ <20240123181753.413961-2-eric.auger@redhat.com>
+ <20240123165141.7a79de34.alex.williamson@redhat.com>
+ <a35c4fad-a981-4fbf-81d1-be5625a537b9@redhat.com>
+ <20240124063700.67c8c32c.alex.williamson@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20240124063700.67c8c32c.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,113 +109,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Alex,
 
---mtHz7+QrxFH7I2eq
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 1/24/24 14:37, Alex Williamson wrote:
+> On Wed, 24 Jan 2024 14:14:19 +0100
+> Eric Auger <eric.auger@redhat.com> wrote:
+>
+>> Hi Alex,
+>>
+>> On 1/24/24 00:51, Alex Williamson wrote:
+>>> On Tue, 23 Jan 2024 19:15:55 +0100
+>>> Eric Auger <eric.auger@redhat.com> wrote:
+>>>  
+>>>> aw-bits is a new option that allows to set the bit width of
+>>>> the input address range. This value will be used as a default for
+>>>> the device config input_range.end. By default it is set to 64 bits
+>>>> which is the current value.
+>>>>
+>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>>> ---
+>>>>  include/hw/virtio/virtio-iommu.h | 1 +
+>>>>  hw/virtio/virtio-iommu.c         | 4 +++-
+>>>>  2 files changed, 4 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/include/hw/virtio/virtio-iommu.h b/include/hw/virtio/virtio-iommu.h
+>>>> index 781ebaea8f..5fbe4677c2 100644
+>>>> --- a/include/hw/virtio/virtio-iommu.h
+>>>> +++ b/include/hw/virtio/virtio-iommu.h
+>>>> @@ -66,6 +66,7 @@ struct VirtIOIOMMU {
+>>>>      bool boot_bypass;
+>>>>      Notifier machine_done;
+>>>>      bool granule_frozen;
+>>>> +    uint8_t aw_bits;
+>>>>  };
+>>>>  
+>>>>  #endif
+>>>> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+>>>> index ec2ba11d1d..e7f299e0c6 100644
+>>>> --- a/hw/virtio/virtio-iommu.c
+>>>> +++ b/hw/virtio/virtio-iommu.c
+>>>> @@ -1314,7 +1314,8 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+>>>>       */
+>>>>      s->config.bypass = s->boot_bypass;
+>>>>      s->config.page_size_mask = qemu_real_host_page_mask();
+>>>> -    s->config.input_range.end = UINT64_MAX;
+>>>> +    s->config.input_range.end =
+>>>> +        s->aw_bits == 64 ? UINT64_MAX : BIT_ULL(s->aw_bits) - 1;  
+>>> What happens when someone sets aw_bits = 1?  There are a whole bunch of
+>>> impractical values here ripe for annoying bug reports.  vtd_realize()
+>>> returns an Error for any values other than 39 or 48.  We might pick an
+>>> arbitrary lower bound (39?) or some other more creative solution here
+>>> to avoid those silly issues in our future.  Thanks,  
+>> You're right. I can check the input value. This needs to be dependent on
+>> the machine though but this should be feasable.
+>> Then I would allow 39 and 48 for q35 and 64 only on ARM.
+> AFAIK AMD-Vi supports 64-bit address space.  Without querying the host
+> there's no way to place an accurate limit below 64-bit.  Thanks,
 
-On Wed, Jan 24, 2024 at 02:27:10PM +0100, Bj=F6rn T=F6pel wrote:
-> Conor Dooley <conor@kernel.org> writes:
->=20
-> > On Wed, Jan 24, 2024 at 01:49:51PM +0100, Bj=F6rn T=F6pel wrote:
-> >> Hi!
-> >>=20
-> >> I bumped the RISC-V Linux kernel CI to use qemu 8.2.0, and realized th=
-at
-> >> thead c906 didn't boot anymore. Bisection points to commit d6a427e2c0b2
-> >> ("target/riscv/cpu.c: restrict 'marchid' value")
-> >>=20
-> >> Reverting that commit, or the hack below solves the boot issue:
-> >>=20
-> >> --8<--
-> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> >> index 8cbfc7e781ad..e18596c8a55a 100644
-> >> --- a/target/riscv/cpu.c
-> >> +++ b/target/riscv/cpu.c
-> >> @@ -505,6 +505,9 @@ static void rv64_thead_c906_cpu_init(Object *obj)
-> >>      cpu->cfg.ext_xtheadsync =3D true;
-> >> =20
-> >>      cpu->cfg.mvendorid =3D THEAD_VENDOR_ID;
-> >> +    cpu->cfg.marchid =3D ((QEMU_VERSION_MAJOR << 16) |
-> >> +                        (QEMU_VERSION_MINOR << 8)  |
-> >> +                        (QEMU_VERSION_MICRO));
-> >>  #ifndef CONFIG_USER_ONLY
-> >>      set_satp_mode_max_supported(cpu, VM_1_10_SV39);
-> >>  #endif
-> >> --8<--
-> >>=20
-> >> I'm unsure what the correct qemu way of adding a default value is,
-> >> or if c906 should have a proper marchid.
-> >
-> > The "correct" marchid/mimpid values for the c906 are zero.
->=20
-> Ok! Thanks for clearing that up for me.
->=20
-> > I haven't looked into the code at all, so I am "assuming" that it is
-> > being zero intialised at present. Linux applies the errata fixups for
-> > the c906 when archid and impid are both zero - so your patch will avoid
-> > these fixups being applied.
->=20
-> I'm also assuming 0, -- will double-check. Hmm, that means that the
-> *previous* marchid was incorrect (pre d6a427e2c0b2).
->=20
-> > Do you think that perhaps the emulation in QEMU does not support what
-> > the kernel uses once then errata fixups are enabled?
->=20
-> Did a quick look at the c906 "in_asm,int" logs:
->=20
-> | 0x80201040:  12000073          sfence.vma              zero,zero
-> | 0x80201044:  18051073          csrrw                   zero,satp,a0
-> |=20
-> | riscv_cpu_do_interrupt: hart:0, async:0, cause:000000000000000c, epc:0x=
-0000000080201048, tval:0x0000000080201048, desc=3Dexec_page_fault
-> | riscv_cpu_do_interrupt: hart:0, async:0, cause:000000000000000c, epc:0x=
-ffffffff80001048, tval:0xffffffff80001048, desc=3Dexec_page_fault
-> | ...cont forever
->=20
-> So it looks like we're tripping over the page tables, when we're turning
-> on paging.
->=20
-> Hmm, maybe it's not qemu, but the c906 that has been broken for a while?
+Hum this means I would need to look at
+/sys/class/iommu/<iommu>/amd-iommu/ or /sys/class/iommu/dmar* to
+discriminate between AMD IOMMU and INTEL IOMMU physical IOMMU. Would
+that be acceptable?
 
-I didn't know what you mean by "not qemu, but the c906", so I went and
-boot tested my d1 nezha. On today's next (6.8.0-rc1-next-20240124) it
-booted into my initramfs with no problems. Obivously though my config is
-unlikely to match yours, but that seems like a core thing that should be
-hit regardless of config.
-So perhaps this is a c906-in-QEMU problem? Lacking emulation for
-something the kernel uses perhaps? I know nothing about the capabilities
-of its emulation in QEMU, so I am of no help.
+Eric
+>
+> Alex
+>
+>>>>      s->config.domain_range.end = UINT32_MAX;
+>>>>      s->config.probe_size = VIOMMU_PROBE_SIZE;
+>>>>  
+>>>> @@ -1525,6 +1526,7 @@ static Property virtio_iommu_properties[] = {
+>>>>      DEFINE_PROP_LINK("primary-bus", VirtIOIOMMU, primary_bus,
+>>>>                       TYPE_PCI_BUS, PCIBus *),
+>>>>      DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
+>>>> +    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
+>>>>      DEFINE_PROP_END_OF_LIST(),
+>>>>  };
+>>>>    
 
-Cheers,
-Conor.
-
->=20
-> I'll disable it temporarily from CI anyhow, and will continue digging.
->=20
->=20
-> Thanks for the pointers/clarifications, Conor!
-> Bj=F6rn
->=20
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
---mtHz7+QrxFH7I2eq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbEVWAAKCRB4tDGHoIJi
-0ssbAQDUibEblOKMmRO73UIweV16Yt0iOJZksiLIcDl55I33QQEA+83TMPm1lYZV
-VYsbjILAHOezIJ7QGzQwyTAq6oQvUAM=
-=Y6P5
------END PGP SIGNATURE-----
-
---mtHz7+QrxFH7I2eq--
 
