@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D508783AA24
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 13:44:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCFA83AA2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 13:45:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rScc0-00050r-9t; Wed, 24 Jan 2024 07:44:12 -0500
+	id 1rSccn-0005Sn-DF; Wed, 24 Jan 2024 07:45:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rScbw-0004za-6j
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:44:08 -0500
+ id 1rSccQ-0005S6-RW
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:44:38 -0500
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rScbu-0007TH-4Z
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:44:07 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TKk8f6hSPz6K8xv;
- Wed, 24 Jan 2024 20:41:06 +0800 (CST)
+ id 1rSccO-0007VY-DM
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 07:44:37 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TKk9G18Rwz6K910;
+ Wed, 24 Jan 2024 20:41:38 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 8CDB9140517;
- Wed, 24 Jan 2024 20:44:03 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id C5631140684;
+ Wed, 24 Jan 2024 20:44:34 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 24 Jan 2024 12:44:02 +0000
+ 15.1.2507.35; Wed, 24 Jan 2024 12:44:33 +0000
 To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Fan Ni
  <fan.ni@samsung.com>, Michael Tsirkin <mst@redhat.com>
 CC: Ira Weiny <ira.weiny@intel.com>, Huai-Cheng Kuo
@@ -36,10 +36,9 @@ CC: Ira Weiny <ira.weiny@intel.com>, Huai-Cheng Kuo
  Hyeonggon Yoo <42.hyeyoo@gmail.com>, Li Zhijian <lizhijian@fujitsu.com>,
  Stefan Hajnoczi <stefanha@gmail.com>, <linuxarm@huawei.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/12] hw/cxl/device: read from register values in
- mdev_reg_read()
-Date: Wed, 24 Jan 2024 12:40:54 +0000
-Message-ID: <20240124124100.8218-7-Jonathan.Cameron@huawei.com>
+Subject: [PATCH 07/12] hw/cxl: Pass CXLComponentState to cache_mem_ops
+Date: Wed, 24 Jan 2024 12:40:55 +0000
+Message-ID: <20240124124100.8218-8-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240124124100.8218-1-Jonathan.Cameron@huawei.com>
 References: <20240124124100.8218-1-Jonathan.Cameron@huawei.com>
@@ -74,103 +73,34 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-In the current mdev_reg_read() implementation, it consistently returns
-that the Media Status is Ready (01b). This was fine until commit
-25a52959f99d ("hw/cxl: Add support for device sanitation") because the
-media was presumed to be ready.
+cache_mem_ops.{read,write}() interprets opaque as
+CXLComponentState(cxl_cstate) instead of ComponentRegisters(cregs).
 
-However, as per the CXL 3.0 spec "8.2.9.8.5.1 Sanitize (Opcode 4400h)",
-during sanitation, the Media State should be set to Disabled (11b). The
-mentioned commit correctly sets it to Disabled, but mdev_reg_read()
-still returns Media Status as Ready.
+Fortunately, cregs is the first member of cxl_cstate, so their values are
+the same.
 
-To address this, update mdev_reg_read() to read register values instead
-of returning dummy values.
-
-Note that __toggle_media() managed to not only write something
-that no one read, it did it to the wrong register storage and
-so changed the reported mailbox size which was definitely not
-the intent. That gets fixed as a side effect of allocating
-separate state storage for this register.
-
-Fixes: commit 25a52959f99d ("hw/cxl: Add support for device sanitation")
-Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Fixes: 9e58f52d3f8 ("hw/cxl/component: Introduce CXL components (8.1.x, 8.2.5)")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
 ---
-Patch description expanded to cover the overwrite bug fixed almost
-by accident in this patch.
----
- include/hw/cxl/cxl_device.h |  9 +++++++--
- hw/cxl/cxl-device-utils.c   | 17 +++++++++++------
- 2 files changed, 18 insertions(+), 8 deletions(-)
+ hw/cxl/cxl-component-utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index befb5f884b..31d2afcd3d 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -202,6 +202,9 @@ typedef struct cxl_device_state {
-         };
-     };
+diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+index 29d477492b..9dfde6c0b3 100644
+--- a/hw/cxl/cxl-component-utils.c
++++ b/hw/cxl/cxl-component-utils.c
+@@ -199,7 +199,7 @@ void cxl_component_register_block_init(Object *obj,
+     /* io registers controls link which we don't care about in QEMU */
+     memory_region_init_io(&cregs->io, obj, NULL, cregs, ".io",
+                           CXL2_COMPONENT_IO_REGION_SIZE);
+-    memory_region_init_io(&cregs->cache_mem, obj, &cache_mem_ops, cregs,
++    memory_region_init_io(&cregs->cache_mem, obj, &cache_mem_ops, cxl_cstate,
+                           ".cache_mem", CXL2_COMPONENT_CM_REGION_SIZE);
  
-+    /* Stash the memory device status value */
-+    uint64_t memdev_status;
-+
-     struct {
-         bool set;
-         uint64_t last_set;
-@@ -353,8 +356,10 @@ static inline void __toggle_media(CXLDeviceState *cxl_dstate, int val)
- {
-     uint64_t dev_status_reg;
- 
--    dev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, val);
--    cxl_dstate->mbox_reg_state64[R_CXL_MEM_DEV_STS] = dev_status_reg;
-+    dev_status_reg = cxl_dstate->memdev_status;
-+    dev_status_reg = FIELD_DP64(dev_status_reg, CXL_MEM_DEV_STS, MEDIA_STATUS,
-+                                val);
-+    cxl_dstate->memdev_status = dev_status_reg;
- }
- #define cxl_dev_disable_media(cxlds)                    \
-         do { __toggle_media((cxlds), 0x3); } while (0)
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 61a3c4dc2e..40b619ffd9 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -229,12 +229,9 @@ static void mailbox_reg_write(void *opaque, hwaddr offset, uint64_t value,
- 
- static uint64_t mdev_reg_read(void *opaque, hwaddr offset, unsigned size)
- {
--    uint64_t retval = 0;
--
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
--    retval = FIELD_DP64(retval, CXL_MEM_DEV_STS, MBOX_READY, 1);
-+    CXLDeviceState *cxl_dstate = opaque;
- 
--    return retval;
-+    return cxl_dstate->memdev_status;
- }
- 
- static void ro_reg_write(void *opaque, hwaddr offset, uint64_t value,
-@@ -371,7 +368,15 @@ static void mailbox_reg_init_common(CXLDeviceState *cxl_dstate)
-     cxl_dstate->mbox_msi_n = msi_n;
- }
- 
--static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
-+static void memdev_reg_init_common(CXLDeviceState *cxl_dstate)
-+{
-+    uint64_t memdev_status_reg;
-+
-+    memdev_status_reg = FIELD_DP64(0, CXL_MEM_DEV_STS, MEDIA_STATUS, 1);
-+    memdev_status_reg = FIELD_DP64(memdev_status_reg, CXL_MEM_DEV_STS,
-+                                   MBOX_READY, 1);
-+    cxl_dstate->memdev_status = memdev_status_reg;
-+}
- 
- void cxl_device_register_init_t3(CXLType3Dev *ct3d)
- {
+     memory_region_add_subregion(&cregs->component_registers, 0, &cregs->io);
 -- 
 2.39.2
 
