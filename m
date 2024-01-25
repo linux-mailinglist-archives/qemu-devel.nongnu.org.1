@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B3D83B833
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B225F83B813
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:32:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqSP-0003aJ-Hx; Wed, 24 Jan 2024 22:31:13 -0500
+	id 1rSqSR-0003mV-3T; Wed, 24 Jan 2024 22:31:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSM-0003K0-25
+ id 1rSqSM-0003KA-24
  for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:10 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSF-0001Dr-3P
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:08 -0500
+ id 1rSqSH-0001Dy-2F
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153464; x=1737689464;
+ t=1706153465; x=1737689465;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=AdKQF2BW1bf4ZYSY+8ORr/ArRwOGx//exmON+mQRoYo=;
- b=IoKyhKjR4+nc6z6jFs8npx4oqFEnd2VkpqH68fuElOp6tuP9azNiHXJA
- ZwX1aL/RRpzhFBoooernWMTCNe33ePDY2FtksKrqoizdkR425xAN0ZlWA
- 1v9cBB9Oxg5gxD4K3fBfwqnyvoBZ7plgoc1FI0kgs7qCGMAkhsO/lLUr6
- D3KLhrWAtJ4ihluzL4VNZq9JDKSULcmRRXYlMT4Lk9avvBgE3mUzJ6Bgc
- gcXDi3SUiX/A7Sk5ET4Cs08ZlbupW7UPl4YWDa6V9KUAygHYXd+nN9jqV
- LK26VdL3SeLFaE1M4NpewO3XB9w7hO3l6kwF7qZZHKfL0+0rgeG83zCuu Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9429922"
+ bh=u9KMXUEQeXh0mI5sy6l0uCUlYOKP73JuhfrwPW/W4eo=;
+ b=LGtOruO9uKFKaIAvxjYAJ15v2XnzhN7n1pBwo0vMYRLVTw69E6qmmzCL
+ CGIPeAPQuhDQOmpysNm7dDO2IKiIEW1ikn25yR+Vba1+uDyUhEPn4iv0W
+ RCIoBg0V+6X8qXXtmyEGGglc5WZsc+dv5xbzdQVjp1twwXoMVSdUZ3Y/o
+ EzacVEReH2P+4WWd5y7pY+eF4NLu2T3buRIeN4gzJgzs44dXl4xTlgB6M
+ YCO2N+ckl60OsWjJrsNIfka9FXESxyavvcHU1d3aTPyGRzzynq1GVofB6
+ Y6/wYX32WTv1tpZI/GL33qr7i2XqlS/PYAi0Fbcq/a3P/Ql58zHF/p8jw Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9429959"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9429922"
+   d="scan'208";a="9429959"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:28:00 -0800
+ 24 Jan 2024 19:28:06 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086101"
+   d="scan'208";a="2086106"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:27:55 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:01 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 48/66] i386/tdx: Finalize TDX VM
-Date: Wed, 24 Jan 2024 22:23:10 -0500
-Message-Id: <20240125032328.2522472-49-xiaoyao.li@intel.com>
+Subject: [PATCH v4 49/66] i386/tdx: handle
+ TDG.VP.VMCALL<SetupEventNotifyInterrupt>
+Date: Wed, 24 Jan 2024 22:23:11 -0500
+Message-Id: <20240125032328.2522472-50-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,33 +92,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invoke KVM_TDX_FINALIZE_VM to finalize the TD's measurement and make
-the TD vCPUs runnable once machine initialization is complete.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
+For SetupEventNotifyInterrupt, record interrupt vector and the apic id
+of the vcpu that received this TDVMCALL.
+
+Later it can inject interrupt with given vector to the specific vcpu
+that received SetupEventNotifyInterrupt.
+
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/kvm/kvm.c      |  8 ++++++
+ target/i386/kvm/tdx-stub.c |  5 ++++
+ target/i386/kvm/tdx.c      | 53 ++++++++++++++++++++++++++++++++++++++
+ target/i386/kvm/tdx.h      | 14 ++++++++++
+ 4 files changed, 80 insertions(+)
 
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 348f76a9cb81..e36ece874246 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5426,6 +5426,14 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+         ret = kvm_xen_handle_exit(cpu, &run->xen);
+         break;
+ #endif
++    case KVM_EXIT_TDX:
++        if (!is_tdx_vm()) {
++            error_report("KVM: get KVM_EXIT_TDX for a non-TDX VM.");
++            ret = -1;
++            break;
++        }
++        ret = tdx_handle_exit(cpu, &run->tdx);
++        break;
+     default:
+         fprintf(stderr, "KVM: unknown exit reason %d\n", run->exit_reason);
+         ret = -1;
+diff --git a/target/i386/kvm/tdx-stub.c b/target/i386/kvm/tdx-stub.c
+index 587dbeeed196..ffaf659bc9be 100644
+--- a/target/i386/kvm/tdx-stub.c
++++ b/target/i386/kvm/tdx-stub.c
+@@ -16,3 +16,8 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
+ {
+     return -EINVAL;
+ }
++
++int tdx_handle_exit(X86CPU *cpu, struct kvm_tdx_exit *tdx_exit)
++{
++    return -EINVAL;
++}
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 341b4e76bf7d..69a697608219 100644
+index 69a697608219..602b5656d462 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -674,6 +674,13 @@ static void tdx_finalize_vm(Notifier *notifier, void *unused)
-     /* Tdvf image was copied into private region above. It becomes unnecessary. */
-     ram_block = tdx_guest->tdvf_region->ram_block;
-     ram_block_discard_range(ram_block, 0, ram_block->max_length);
-+
-+    r = tdx_vm_ioctl(KVM_TDX_FINALIZE_VM, 0, NULL);
-+    if (r < 0) {
-+        error_report("KVM_TDX_FINALIZE_VM failed %s", strerror(-r));
-+        exit(0);
-+    }
-+    tdx_guest->parent_obj.ready = true;
+@@ -852,6 +852,56 @@ int tdx_parse_tdvf(void *flash_ptr, int size)
+     return tdvf_parse_metadata(&tdx_guest->tdvf, flash_ptr, size);
  }
  
- static Notifier tdx_machine_done_notify = {
++static int tdx_handle_setup_event_notify_interrupt(X86CPU *cpu,
++                                                   struct kvm_tdx_vmcall *vmcall)
++{
++    int vector = vmcall->in_r12;
++
++    if (32 <= vector && vector <= 255) {
++        qemu_mutex_lock(&tdx_guest->lock);
++        tdx_guest->event_notify_vector = vector;
++        tdx_guest->event_notify_apicid = cpu->apic_id;
++        qemu_mutex_unlock(&tdx_guest->lock);
++        vmcall->status_code = TDG_VP_VMCALL_SUCCESS;
++    } else {
++        vmcall->status_code = TDG_VP_VMCALL_INVALID_OPERAND;
++    }
++
++    return 0;
++}
++
++static int tdx_handle_vmcall(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
++{
++    vmcall->status_code = TDG_VP_VMCALL_INVALID_OPERAND;
++
++    /* For now handle only TDG.VP.VMCALL leaf defined in TDX GHCI */
++    if (vmcall->type != 0) {
++        error_report("Unknown TDG.VP.VMCALL type 0x%llx subfunction 0x%llx",
++                     vmcall->type, vmcall->subfunction);
++        return -1;
++    }
++
++    switch (vmcall->subfunction) {
++    case TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT:
++        return tdx_handle_setup_event_notify_interrupt(cpu, vmcall);
++    default:
++        error_report("Unknown TDG.VP.VMCALL type 0x%llx subfunction 0x%llx",
++                     vmcall->type, vmcall->subfunction);
++        return -1;
++    }
++}
++
++int tdx_handle_exit(X86CPU *cpu, struct kvm_tdx_exit *tdx_exit)
++{
++    switch (tdx_exit->type) {
++    case KVM_EXIT_TDX_VMCALL:
++        return tdx_handle_vmcall(cpu, &tdx_exit->u.vmcall);
++    default:
++        error_report("unknown tdx exit type 0x%x", tdx_exit->type);
++        return -1;
++    }
++}
++
+ static void tdx_guest_region_add(MemoryListener *listener,
+                                  MemoryRegionSection *section)
+ {
+@@ -961,6 +1011,9 @@ static void tdx_guest_init(Object *obj)
+     object_property_add_str(obj, "mrownerconfig",
+                             tdx_guest_get_mrownerconfig,
+                             tdx_guest_set_mrownerconfig);
++
++    tdx->event_notify_vector = -1;
++    tdx->event_notify_apicid = -1;
+ }
+ 
+ static void tdx_guest_finalize(Object *obj)
+diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+index 5fb20a5f06bb..992916e4c905 100644
+--- a/target/i386/kvm/tdx.h
++++ b/target/i386/kvm/tdx.h
+@@ -7,6 +7,7 @@
+ 
+ #include "exec/confidential-guest-support.h"
+ #include "hw/i386/tdvf.h"
++#include "sysemu/kvm.h"
+ 
+ #define TYPE_TDX_GUEST "tdx-guest"
+ #define TDX_GUEST(obj)  OBJECT_CHECK(TdxGuest, (obj), TYPE_TDX_GUEST)
+@@ -15,6 +16,14 @@ typedef struct TdxGuestClass {
+     ConfidentialGuestSupportClass parent_class;
+ } TdxGuestClass;
+ 
++#define TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT      0x10004ULL
++
++#define TDG_VP_VMCALL_SUCCESS           0x0000000000000000ULL
++#define TDG_VP_VMCALL_RETRY             0x0000000000000001ULL
++#define TDG_VP_VMCALL_INVALID_OPERAND   0x8000000000000000ULL
++#define TDG_VP_VMCALL_GPA_INUSE         0x8000000000000001ULL
++#define TDG_VP_VMCALL_ALIGN_ERROR       0x8000000000000002ULL
++
+ enum TdxRamType{
+     TDX_RAM_UNACCEPTED,
+     TDX_RAM_ADDED,
+@@ -42,6 +51,10 @@ typedef struct TdxGuest {
+ 
+     uint32_t nr_ram_entries;
+     TdxRamEntry *ram_entries;
++
++    /* runtime state */
++    uint32_t event_notify_vector;
++    uint32_t event_notify_apicid;
+ } TdxGuest;
+ 
+ #ifdef CONFIG_TDX
+@@ -56,5 +69,6 @@ void tdx_get_supported_cpuid(uint32_t function, uint32_t index, int reg,
+ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp);
+ void tdx_set_tdvf_region(MemoryRegion *tdvf_region);
+ int tdx_parse_tdvf(void *flash_ptr, int size);
++int tdx_handle_exit(X86CPU *cpu, struct kvm_tdx_exit *tdx_exit);
+ 
+ #endif /* QEMU_I386_TDX_H */
 -- 
 2.34.1
 
