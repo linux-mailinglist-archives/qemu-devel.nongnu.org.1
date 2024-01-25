@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F36983CCD1
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACEF83CCD2
 	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 20:49:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT5if-0001NZ-4N; Thu, 25 Jan 2024 14:49:01 -0500
+	id 1rT5ig-0001Nr-7e; Thu, 25 Jan 2024 14:49:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rT5ic-0001NC-Sz
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:48:58 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rT5id-0001NR-Vi
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:49:00 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rT5ib-0007yW-95
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:48:58 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rT5ic-0007yf-2J
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:48:59 -0500
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PJTusJ028624; Thu, 25 Jan 2024 19:48:52 GMT
+ 40PJMJXh030140; Thu, 25 Jan 2024 19:48:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=1aXNMtXqDOFZ4/4XM1jhbh4Ge1wdZLWmcGewq2S0We0=;
- b=e/JUhDlDCBABeCzydI8D/ULUuUrETbDfF2PROhH4AFHgujF0L1ZnjXC7Sw/D3oDGOLbd
- ACzKX8+3eoS56hi7AFi8sxeAe6eNw0PPFgjdxMQ5p/Y0gcNyRdFJOkf9sF6LBsFW/NtJ
- TgRTGOHzeLSR5aWhCQWK1nVnWvpuYfLBUO6C0RttNYLpMB/5Q5BCsnJFztpJRqK7p0C0
- 1girtpQdrJ3P9hyK1OuhKy2CnC6Bg2iygHy0gQpBw6ya7wcwAk1RcuHUbPv/eT5eyHCK
- 5ogykdifkGmdNNhligoyt6iqBGwUBxL7uGxOIv418YG4xfEjw/AuDLFp8YRKJU+lPtKb yg== 
+ bh=QrqqIXBVulxLz7m0qz6pGgXWkMJr+WZUAxRKKZE8k3o=;
+ b=jCAHuU660YkhAVs6FDp2Wxmu9JZrOsDTh7FFNlet1TOMZv7e88xbBN3CuKiqKZS11RR7
+ wyL8RTUNMI/UVaI07ij6aj+vHVYAK2L/5KRQRAbvl4/JICGmXR+xASyjLOXFvrM3NrE9
+ cPbpgNZk+vKMhJzLgRryrQTngTZ1GIu02K3mFlogW+NSi73JQCGQf3pswWV+YvQLaFdQ
+ VMDMo+1mGKs3AH793zpKHSotqhtodvokqLNM9fvb8PYqqybQA2vGuurzmhrKvWCEkuZm
+ d13oQqhNlr6YEvELZuBsFyGY0QxzcKj8VDU7txgjJ8jFvVVo6HZ236xOfuvrYK7j9qBw mQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuqt8twut-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuwr2ggpx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Jan 2024 19:48:53 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PJZrYp006305;
+ Thu, 25 Jan 2024 19:48:52 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuwr2ggpn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Jan 2024 19:48:52 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40PIqZ3o025639; Thu, 25 Jan 2024 19:48:51 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrsgpeax1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 25 Jan 2024 19:48:51 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PJUTfJ032709;
- Thu, 25 Jan 2024 19:48:50 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuqt8twub-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 19:48:50 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PJKDDg022412; Thu, 25 Jan 2024 19:48:49 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0me59s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 19:48:49 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40PJmlMR24314462
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40PJmnbq21627386
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jan 2024 19:48:47 GMT
+ Thu, 25 Jan 2024 19:48:49 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 405C120043;
- Thu, 25 Jan 2024 19:48:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 394B720043;
+ Thu, 25 Jan 2024 19:48:49 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5256220040;
- Thu, 25 Jan 2024 19:48:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4F97020040;
+ Thu, 25 Jan 2024 19:48:48 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.21.210])
  by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jan 2024 19:48:46 +0000 (GMT)
+ Thu, 25 Jan 2024 19:48:48 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -75,25 +75,25 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 1/3] tests/vm: Set UseDNS=no in the sshd configuration
-Date: Thu, 25 Jan 2024 20:48:16 +0100
-Message-ID: <20240125194840.1564-2-iii@linux.ibm.com>
+Subject: [PATCH 2/3] tests/vm/freebsd: Reload the sshd configuration
+Date: Thu, 25 Jan 2024 20:48:17 +0100
+Message-ID: <20240125194840.1564-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240125194840.1564-1-iii@linux.ibm.com>
 References: <20240125194840.1564-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: O0_n9glCsR7Y6FYeu78rzsZgpDzTZxhp
-X-Proofpoint-GUID: p5UZdQ6UXGTJUKinLfyrOxcfUo5VVC5l
+X-Proofpoint-ORIG-GUID: oya6U_J9kDlLj02HNosjbM6feuAKWM9g
+X-Proofpoint-GUID: 1kno0e-Lp5kJWrcEm-8Z5O2L8_V5Hg_l
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-25_12,2024-01-25_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 bulkscore=0 adultscore=0 impostorscore=0 mlxscore=0
- spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 phishscore=0 impostorscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401250143
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -119,48 +119,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-make vm-build-freebsd sometimes fails with "Connection timed out during
-banner exchange". The client strace shows:
-
-    13:59:30 write(3, "SSH-2.0-OpenSSH_9.3\r\n", 21) = 21
-    13:59:30 getpid()                       = 252655
-    13:59:30 poll([{fd=3, events=POLLIN}], 1, 5000) = 1 ([{fd=3, revents=POLLIN}])
-    13:59:32 read(3, "S", 1)                = 1
-    13:59:32 poll([{fd=3, events=POLLIN}], 1, 3625) = 1 ([{fd=3, revents=POLLIN}])
-    13:59:32 read(3, "S", 1)                = 1
-    13:59:32 poll([{fd=3, events=POLLIN}], 1, 3625) = 1 ([{fd=3, revents=POLLIN}])
-    13:59:32 read(3, "H", 1)                = 1
-
-There is a 2s delay during connection, and ConnectTimeout is set to 1.
-Raising it makes the issue go away, but we can do better. The server
-truss shows:
-
-    888: 27.811414714 socket(PF_INET,SOCK_DGRAM|SOCK_CLOEXEC,0) = 5 (0x5)
-    888: 27.811765030 connect(5,{ AF_INET 10.0.2.3:53 },16) = 0 (0x0)
-    888: 27.812166941 sendto(5,"\^Z/\^A\0\0\^A\0\0\0\0\0\0\^A2"...,39,0,NULL,0) = 39 (0x27)
-    888: 29.363970743 poll({ 5/POLLRDNORM },1,5000) = 1 (0x1)
-
-So the delay is due to a DNS query. Disable DNS queries in the server
-config.
+After console_sshd_config(), the SSH server needs to be nudged to pick
+up the new configs. The scripts for the other BSD flavors already do
+this with a reboot, but a simple reload is sufficient.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- tests/vm/basevm.py | 2 ++
+ tests/vm/freebsd | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index 61725b83254..c0d62c08031 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -423,6 +423,8 @@ def console_ssh_init(self, prompt, user, pw):
-     def console_sshd_config(self, prompt):
-         self.console_wait(prompt)
-         self.console_send("echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config\n")
+diff --git a/tests/vm/freebsd b/tests/vm/freebsd
+index b581bd17fb7..9971bc1f2b2 100755
+--- a/tests/vm/freebsd
++++ b/tests/vm/freebsd
+@@ -108,6 +108,8 @@ class FreeBSDVM(basevm.BaseVM):
+         prompt = "root@freebsd:~ #"
+         self.console_ssh_init(prompt, "root", self._config["root_pass"])
+         self.console_sshd_config(prompt)
 +        self.console_wait(prompt)
-+        self.console_send("echo 'UseDNS no' >> /etc/ssh/sshd_config\n")
-         for var in self.envvars:
-             self.console_wait(prompt)
-             self.console_send("echo 'AcceptEnv %s' >> /etc/ssh/sshd_config\n" % var)
++        self.console_send("service sshd reload\n")
+ 
+         # setup virtio-blk #1 (tarfile)
+         self.console_wait(prompt)
 -- 
 2.43.0
 
