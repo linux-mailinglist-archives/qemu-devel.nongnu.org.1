@@ -2,103 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A20A83CF9C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 23:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A149883D077
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 00:16:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT8XK-0007Gn-WC; Thu, 25 Jan 2024 17:49:31 -0500
+	id 1rT8vW-0001YN-Kt; Thu, 25 Jan 2024 18:14:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rT8XD-0007Ex-By; Thu, 25 Jan 2024 17:49:24 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rT8X9-0000Vc-F4; Thu, 25 Jan 2024 17:49:23 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PLVINI013702; Thu, 25 Jan 2024 22:49:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=8R+QmeRr6hjBtxijbMImAGSx8oD+VfXDm1wF82MvdiA=;
- b=AIahPcUuc/daCb7ZMJi4G0IWpfJvtvx3sWgLG9PiLwBGixOTakFyZHE9oXz/w3WPSvWT
- j5RHzY9h1VPfbQy6Vb/GDRVNcetYJpSNk6v6kBCSu3Nw4g4Zg1H7ZVmNXrwb+DMARLLA
- 3znVMjHO0pEVhOSweZcu+Thpu+Sj7bKuYExZs4OFNKr5WJibyDt2Jd932pQT53lIelO7
- wG5Kllj4G1RmGdZMMwGkRLAZ4dD1EC/zALomL4wDJcCRtKepoxiSyGB0MLQvXR2iSMWt
- Obka2gnJIqXDQWyCfDyBxxiTFDP3njTimMgW3zeu40Y70ostgF0evSz2NMeyCNZh71PS rA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuy2str87-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:49:10 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PMU5OJ021755;
- Thu, 25 Jan 2024 22:49:09 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuy2str7d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:49:09 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PLKA1Y026508; Thu, 25 Jan 2024 22:49:08 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrrgtqdw3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:49:08 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40PMn6Ip19333674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jan 2024 22:49:06 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6ECA958058;
- Thu, 25 Jan 2024 22:49:06 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3369458057;
- Thu, 25 Jan 2024 22:49:06 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jan 2024 22:49:06 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
-Subject: [PATCH v7 9/9] ppc/pnv: Test pnv i2c master and connected devices
-Date: Thu, 25 Jan 2024 16:48:18 -0600
-Message-Id: <20240125224818.146499-10-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240125224818.146499-1-milesg@linux.vnet.ibm.com>
-References: <20240125224818.146499-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rT8vS-0001Xf-HS
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 18:14:27 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rT8vO-0006IL-TQ
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 18:14:25 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8B0F92239A;
+ Thu, 25 Jan 2024 23:14:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706224458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=euoW8o35qM/auFwJDRVsBwc0uT6tGGTPwoE0bIdjVk0=;
+ b=p1gS9a3kUSb6iDUeiZgTscH6846qZ86Cz0hlGCH49rY8F/YmpVbzxEsAqKgwK3oV5WQ/uC
+ GwYaeGADsyUGxhEPcks+UyJRT4Cl6N4TBqXjMde4pNaiZNaQneURzQqOlxkE1b82nay+1Z
+ fbvoa6zOuMrzpEi2a9AmU8BT17KiTSw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706224458;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=euoW8o35qM/auFwJDRVsBwc0uT6tGGTPwoE0bIdjVk0=;
+ b=1+98PfWUzLSgyB0GqrRM7QmWaSpZmJlDKJixPoXf6OOYI69pP34TUTkPEEAia/qwj8tnWp
+ +8OiQxWrZQ6siXBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706224458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=euoW8o35qM/auFwJDRVsBwc0uT6tGGTPwoE0bIdjVk0=;
+ b=p1gS9a3kUSb6iDUeiZgTscH6846qZ86Cz0hlGCH49rY8F/YmpVbzxEsAqKgwK3oV5WQ/uC
+ GwYaeGADsyUGxhEPcks+UyJRT4Cl6N4TBqXjMde4pNaiZNaQneURzQqOlxkE1b82nay+1Z
+ fbvoa6zOuMrzpEi2a9AmU8BT17KiTSw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706224458;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=euoW8o35qM/auFwJDRVsBwc0uT6tGGTPwoE0bIdjVk0=;
+ b=1+98PfWUzLSgyB0GqrRM7QmWaSpZmJlDKJixPoXf6OOYI69pP34TUTkPEEAia/qwj8tnWp
+ +8OiQxWrZQ6siXBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A02A134C3;
+ Thu, 25 Jan 2024 23:14:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id kaXML0nrsmW8agAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 25 Jan 2024 23:14:17 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@bytedance.com>
+Cc: peter.maydell@linaro.org, peterx@redhat.com,
+ marcandre.lureau@redhat.com, bryan.zhang@bytedance.com,
+ qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [External] Re: [PATCH v2 04/20] So we use multifd to transmit
+ zero pages.
+In-Reply-To: <CAAYibXgtVP-w02Jiy-JM8JZBj2h4jxvwnmeM6VvfycxY09jxzQ@mail.gmail.com>
+References: <20231114054032.1192027-1-hao.xiang@bytedance.com>
+ <20231114054032.1192027-5-hao.xiang@bytedance.com>
+ <87pm09ennn.fsf@suse.de>
+ <CAAYibXiD5Ni4Dh8=K-iXAuv9sx_LpxXd8ZkA3XP_dJy+P7J7Sw@mail.gmail.com>
+ <CAAYibXgtVP-w02Jiy-JM8JZBj2h4jxvwnmeM6VvfycxY09jxzQ@mail.gmail.com>
+Date: Thu, 25 Jan 2024 20:14:15 -0300
+Message-ID: <877cjxvwe0.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sMFxzw2Z3jSfsPLPuAIBxL_bhSViHVpS
-X-Proofpoint-ORIG-GUID: IPyGGk2GIhhZEbQ_DAlChFlrnM5XWcy1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 spamscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 impostorscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401250164
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=p1gS9a3k;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1+98PfWU
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+ RCVD_COUNT_THREE(0.00)[3]; DKIM_TRACE(0.00)[suse.de:+];
+ MX_GOOD(-0.01)[]; RCPT_COUNT_SEVEN(0.00)[7];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 8B0F92239A
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,999 +130,304 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tests the following for both P9 and P10:
-  - I2C master POR status
-  - I2C master status after immediate reset
+Hao Xiang <hao.xiang@bytedance.com> writes:
 
-Tests the following for powernv10-ranier only:
-  - Config pca9552 hotplug device pins as inputs then
-    Read the INPUT0/1 registers to verify all pins are high
-  - Connected GPIO pin tests of P10 PCA9552 device.  Tests
-    output of pins 0-4 affect input of pins 5-9 respectively.
-  - PCA9554 GPIO pins test.  Tests input and ouput functionality.
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+> On Mon, Jan 22, 2024 at 8:28=E2=80=AFPM Hao Xiang <hao.xiang@bytedance.co=
+m> wrote:
+>>
+>> On Thu, Nov 16, 2023 at 7:14=E2=80=AFAM Fabiano Rosas <farosas@suse.de> =
+wrote:
+>> >
+>> > Hao Xiang <hao.xiang@bytedance.com> writes:
+>> >
+>> > > From: Juan Quintela <quintela@redhat.com>
+>> > >
+>> > > Signed-off-by: Juan Quintela <quintela@redhat.com>
+>> > > Reviewed-by: Leonardo Bras <leobras@redhat.com>
+>> > > ---
+>> > >  migration/multifd.c |  7 ++++---
+>> > >  migration/options.c | 13 +++++++------
+>> > >  migration/ram.c     | 45 ++++++++++++++++++++++++++++++++++++++----=
 ---
+>> > >  qapi/migration.json |  1 -
+>> > >  4 files changed, 49 insertions(+), 17 deletions(-)
+>> > >
+>> > > diff --git a/migration/multifd.c b/migration/multifd.c
+>> > > index 1b994790d5..1198ffde9c 100644
+>> > > --- a/migration/multifd.c
+>> > > +++ b/migration/multifd.c
+>> > > @@ -13,6 +13,7 @@
+>> > >  #include "qemu/osdep.h"
+>> > >  #include "qemu/cutils.h"
+>> > >  #include "qemu/rcu.h"
+>> > > +#include "qemu/cutils.h"
+>> > >  #include "exec/target_page.h"
+>> > >  #include "sysemu/sysemu.h"
+>> > >  #include "exec/ramblock.h"
+>> > > @@ -459,7 +460,6 @@ static int multifd_send_pages(QEMUFile *f)
+>> > >      p->packet_num =3D multifd_send_state->packet_num++;
+>> > >      multifd_send_state->pages =3D p->pages;
+>> > >      p->pages =3D pages;
+>> > > -
+>> > >      qemu_mutex_unlock(&p->mutex);
+>> > >      qemu_sem_post(&p->sem);
+>> > >
+>> > > @@ -684,7 +684,7 @@ static void *multifd_send_thread(void *opaque)
+>> > >      MigrationThread *thread =3D NULL;
+>> > >      Error *local_err =3D NULL;
+>> > >      /* qemu older than 8.2 don't understand zero page on multifd ch=
+annel */
+>> > > -    bool use_zero_page =3D !migrate_use_main_zero_page();
+>> > > +    bool use_multifd_zero_page =3D !migrate_use_main_zero_page();
+>> > >      int ret =3D 0;
+>> > >      bool use_zero_copy_send =3D migrate_zero_copy_send();
+>> > >
+>> > > @@ -713,6 +713,7 @@ static void *multifd_send_thread(void *opaque)
+>> > >              RAMBlock *rb =3D p->pages->block;
+>> > >              uint64_t packet_num =3D p->packet_num;
+>> > >              uint32_t flags;
+>> > > +
+>> > >              p->normal_num =3D 0;
+>> > >              p->zero_num =3D 0;
+>> > >
+>> > > @@ -724,7 +725,7 @@ static void *multifd_send_thread(void *opaque)
+>> > >
+>> > >              for (int i =3D 0; i < p->pages->num; i++) {
+>> > >                  uint64_t offset =3D p->pages->offset[i];
+>> > > -                if (use_zero_page &&
+>> > > +                if (use_multifd_zero_page &&
+>> >
+>> > We could have a new function in multifd_ops for zero page
+>> > handling. We're already considering an accelerator for the compression
+>> > method in the other series[1] and in this series we're adding an
+>> > accelerator for zero page checking. It's about time we make the
+>> > multifd_ops generic instead of only compression/no compression.
+>>
+>> Sorry I overlooked this email earlier.
+>> I will extend the multifd_ops interface and add a new API for zero
+>> page checking.
+>>
+>> >
+>> > 1- [PATCH v2 0/4] Live Migration Acceleration with IAA Compression
+>> > https://lore.kernel.org/r/20231109154638.488213-1-yuan1.liu@intel.com
+>> >
+>> > >                      buffer_is_zero(rb->host + offset, p->page_size)=
+) {
+>> > >                      p->zero[p->zero_num] =3D offset;
+>> > >                      p->zero_num++;
+>> > > diff --git a/migration/options.c b/migration/options.c
+>> > > index 00c0c4a0d6..97d121d4d7 100644
+>> > > --- a/migration/options.c
+>> > > +++ b/migration/options.c
+>> > > @@ -195,6 +195,7 @@ Property migration_properties[] =3D {
+>> > >      DEFINE_PROP_MIG_CAP("x-block", MIGRATION_CAPABILITY_BLOCK),
+>> > >      DEFINE_PROP_MIG_CAP("x-return-path", MIGRATION_CAPABILITY_RETUR=
+N_PATH),
+>> > >      DEFINE_PROP_MIG_CAP("x-multifd", MIGRATION_CAPABILITY_MULTIFD),
+>> > > +    DEFINE_PROP_MIG_CAP("x-main-zero-page", MIGRATION_CAPABILITY_MA=
+IN_ZERO_PAGE),
+>> > >      DEFINE_PROP_MIG_CAP("x-background-snapshot",
+>> > >              MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT),
+>> > >  #ifdef CONFIG_LINUX
+>> > > @@ -288,13 +289,9 @@ bool migrate_multifd(void)
+>> > >
+>> > >  bool migrate_use_main_zero_page(void)
+>> > >  {
+>> > > -    //MigrationState *s;
+>> > > -
+>> > > -    //s =3D migrate_get_current();
+>> > > +    MigrationState *s =3D migrate_get_current();
+>> > >
+>> > > -    // We will enable this when we add the right code.
+>> > > -    // return s->enabled_capabilities[MIGRATION_CAPABILITY_MAIN_ZER=
+O_PAGE];
+>> > > -    return true;
+>> > > +    return s->capabilities[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE];
+>> >
+>> > What happens if we disable main-zero-page while multifd is not enabled?
+>>
+>> In ram.c
+>> ...
+>> if (migrate_multifd() && !migrate_use_main_zero_page()) {
+>> migration_ops->ram_save_target_page =3D ram_save_target_page_multifd;
+>> } else {
+>> migration_ops->ram_save_target_page =3D ram_save_target_page_legacy;
+>> }
+>> ...
+>>
+>> So if main-zero-page is disabled and multifd is also disabled, it will
+>> go with the "else" path, which is the legacy path
+>> ram_save_target_page_legacy() and do zero page checking from the main
+>> thread.
+>>
+>> >
+>> > >  }
+>> > >
+>> > >  bool migrate_pause_before_switchover(void)
+>> > > @@ -457,6 +454,7 @@ INITIALIZE_MIGRATE_CAPS_SET(check_caps_backgroun=
+d_snapshot,
+>> > >      MIGRATION_CAPABILITY_LATE_BLOCK_ACTIVATE,
+>> > >      MIGRATION_CAPABILITY_RETURN_PATH,
+>> > >      MIGRATION_CAPABILITY_MULTIFD,
+>> > > +    MIGRATION_CAPABILITY_MAIN_ZERO_PAGE,
+>> > >      MIGRATION_CAPABILITY_PAUSE_BEFORE_SWITCHOVER,
+>> > >      MIGRATION_CAPABILITY_AUTO_CONVERGE,
+>> > >      MIGRATION_CAPABILITY_RELEASE_RAM,
+>> > > @@ -534,6 +532,9 @@ bool migrate_caps_check(bool *old_caps, bool *ne=
+w_caps, Error **errp)
+>> > >              error_setg(errp, "Postcopy is not yet compatible with m=
+ultifd");
+>> > >              return false;
+>> > >          }
+>> > > +        if (new_caps[MIGRATION_CAPABILITY_MAIN_ZERO_PAGE]) {
+>> > > +            error_setg(errp, "Postcopy is not yet compatible with m=
+ain zero copy");
+>> > > +        }
+>> >
+>> > Won't this will breaks compatibility for postcopy? A command that used
+>> > to work now will have to disable main-zero-page first.
+>>
+>> main-zero-page is disabled by default.
+>>
+>> >
+>> > >      }
+>> > >
+>> > >      if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
+>> > > diff --git a/migration/ram.c b/migration/ram.c
+>> > > index 8c7886ab79..f7a42feff2 100644
+>> > > --- a/migration/ram.c
+>> > > +++ b/migration/ram.c
+>> > > @@ -2059,17 +2059,42 @@ static int ram_save_target_page_legacy(RAMSt=
+ate *rs, PageSearchStatus *pss)
+>> > >      if (save_zero_page(rs, pss, offset)) {
+>> > >          return 1;
+>> > >      }
+>> > > -
+>> > >      /*
+>> > > -     * Do not use multifd in postcopy as one whole host page should=
+ be
+>> > > -     * placed.  Meanwhile postcopy requires atomic update of pages,=
+ so even
+>> > > -     * if host page size =3D=3D guest page size the dest guest duri=
+ng run may
+>> > > -     * still see partially copied pages which is data corruption.
+>> > > +     * Do not use multifd for:
+>> > > +     * 1. Compression as the first page in the new block should be =
+posted out
+>> > > +     *    before sending the compressed page
+>> > > +     * 2. In postcopy as one whole host page should be placed
+>> > >       */
+>> > > -    if (migrate_multifd() && !migration_in_postcopy()) {
+>> > > +    if (!migrate_compress() && migrate_multifd() && !migration_in_p=
+ostcopy()) {
+>> > > +        return ram_save_multifd_page(pss->pss_channel, block, offse=
+t);
+>> > > +    }
+>> >
+>> > This could go into ram_save_target_page_multifd like so:
+>> >
+>> > if (!migrate_compress() && !migration_in_postcopy() && !migration_main=
+_zero_page()) {
+>> >     return ram_save_multifd_page(pss->pss_channel, block, offset);
+>> > } else {
+>> >   return ram_save_target_page_legacy();
+>> > }
+>> >
+>> > > +
+>> > > +    return ram_save_page(rs, pss);
+>> > > +}
+>> > > +
+>> > > +/**
+>> > > + * ram_save_target_page_multifd: save one target page
+>> > > + *
+>> > > + * Returns the number of pages written
+>> > > + *
+>> > > + * @rs: current RAM state
+>> > > + * @pss: data about the page we want to send
+>> > > + */
+>> > > +static int ram_save_target_page_multifd(RAMState *rs, PageSearchSta=
+tus *pss)
+>> > > +{
+>> > > +    RAMBlock *block =3D pss->block;
+>> > > +    ram_addr_t offset =3D ((ram_addr_t)pss->page) << TARGET_PAGE_BI=
+TS;
+>> > > +    int res;
+>> > > +
+>> > > +    if (!migration_in_postcopy()) {
+>> > >          return ram_save_multifd_page(pss->pss_channel, block, offse=
+t);
+>> > >      }
+>> > >
+>> > > +    res =3D save_zero_page(rs, pss, offset);
+>> > > +    if (res > 0) {
+>> > > +        return res;
+>> > > +    }
+>> > > +
+>> > >      return ram_save_page(rs, pss);
+>> > >  }
+>> > >
+>> > > @@ -2982,9 +3007,15 @@ static int ram_save_setup(QEMUFile *f, void *=
+opaque)
+>> > >      }
+>> > >
+>> > >      migration_ops =3D g_malloc0(sizeof(MigrationOps));
+>> > > -    migration_ops->ram_save_target_page =3D ram_save_target_page_le=
+gacy;
+>> > > +
+>> > > +    if (migrate_multifd() && !migrate_use_main_zero_page()) {
+>> > > +        migration_ops->ram_save_target_page =3D ram_save_target_pag=
+e_multifd;
+>> > > +    } else {
+>> > > +        migration_ops->ram_save_target_page =3D ram_save_target_pag=
+e_legacy;
+>> > > +    }
+>> >
+>> > This should not check main-zero-page. Just have multifd vs. legacy and
+>> > have the multifd function defer to _legacy if main-zero-page or
+>> > in_postcopy.
+>>
+>> I noticed that ram_save_target_page_legacy and
+>> ram_save_target_page_multifd have a lot of overlap and are quite
+>> confusing. I can refactor this path and take-in your comments here.
+>>
+>> 1) Remove ram_save_multifd_page() call from
+>> ram_save_target_page_legacy(). ram_save_multifd_page() will only be
+>> called in ram_save_target_page_multifd().
+>> 2) Remove save_zero_page() and ram_save_page() from
+>> ram_save_target_page_multifd().
+>> 3) Postcopy will always go with the ram_save_target_page_legacy() path.
+>> 4) Legacy compression will always go with the
+>> ram_save_target_page_legacy() path.
+>> 5) Call ram_save_target_page_legacy() from within
+>> ram_save_target_page_multifd() if postcopy or legacy compression.
+>>
+>
+> Hi Fabiano,
+> So I spent some time reading the
+> ram_save_target_page_legacy/ram_save_target_page_multifd code path
+> Juan wrote and here is my current understanding:
+> 1) Multifd and legacy compression are not compatible.
+> 2) Multifd and postcopy are not compatible.
+> The compatibility checks are implemented in migrate_caps_check(). So
+> there is really no need to handle a lot of the complexity in Juan's
+> code.
+>
+> I think what we can do is:
+> 1) If multifd is enabled, use ram_save_target_page_multifd().
+> Otherwise, use ram_save_target_page_legacy().
+> 2) In ram_save_target_page_legacy(), we don't need the special path to
+> call ram_save_multifd_page(). That can be handled by
+> ram_save_target_page_multifd() alone.
+> 3) In ram_save_target_page_multifd(), we assert that legacy
+> compression is not enabled. And we also assert that postcopy is also
+> not enabled.
+> 4) We do need backward compatibility support for the main zero page
+> checking case in multifd. So in ram_save_target_page_multifd(), we
+> call save_zero_page() if migrate_multifd_zero_page() is false.
+>
 
-Changes from previous version:
-  - Moved PNV I2C register definitions from pnv-host-i2c-test.c and
-    pnv_i2c.c into pnv_i2c_regs.h.
-  - Moved PNV XSCOM definitions from pnv-host-i2c-test.c and
-    pnv-xscom-test.c into pnv-xscom.h.
-  - Renamed pnv_i2c_dev_t to PnvI2cDev.
-  - Added PnvI2cCtlr structure for conveniece in passing parameters.
-
- hw/ppc/pnv_i2c.c                | 131 +--------
- include/hw/i2c/pnv_i2c_regs.h   | 143 ++++++++++
- tests/qtest/meson.build         |   1 +
- tests/qtest/pnv-host-i2c-test.c | 491 ++++++++++++++++++++++++++++++++
- tests/qtest/pnv-xscom-test.c    |  61 +---
- tests/qtest/pnv-xscom.h         |  80 ++++++
- 6 files changed, 717 insertions(+), 190 deletions(-)
- create mode 100644 include/hw/i2c/pnv_i2c_regs.h
- create mode 100644 tests/qtest/pnv-host-i2c-test.c
- create mode 100644 tests/qtest/pnv-xscom.h
-
-diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-index 774946d6b2..4581cc5e5d 100644
---- a/hw/ppc/pnv_i2c.c
-+++ b/hw/ppc/pnv_i2c.c
-@@ -22,136 +22,7 @@
- 
- #include <libfdt.h>
- 
--/* I2C FIFO register */
--#define I2C_FIFO_REG                    0x4
--#define I2C_FIFO                        PPC_BITMASK(0, 7)
--
--/* I2C command register */
--#define I2C_CMD_REG                     0x5
--#define I2C_CMD_WITH_START              PPC_BIT(0)
--#define I2C_CMD_WITH_ADDR               PPC_BIT(1)
--#define I2C_CMD_READ_CONT               PPC_BIT(2)
--#define I2C_CMD_WITH_STOP               PPC_BIT(3)
--#define I2C_CMD_INTR_STEERING           PPC_BITMASK(6, 7) /* P9 */
--#define   I2C_CMD_INTR_STEER_HOST       1
--#define   I2C_CMD_INTR_STEER_OCC        2
--#define I2C_CMD_DEV_ADDR                PPC_BITMASK(8, 14)
--#define I2C_CMD_READ_NOT_WRITE          PPC_BIT(15)
--#define I2C_CMD_LEN_BYTES               PPC_BITMASK(16, 31)
--#define I2C_MAX_TFR_LEN                 0xfff0ull
--
--/* I2C mode register */
--#define I2C_MODE_REG                    0x6
--#define I2C_MODE_BIT_RATE_DIV           PPC_BITMASK(0, 15)
--#define I2C_MODE_PORT_NUM               PPC_BITMASK(16, 21)
--#define I2C_MODE_ENHANCED               PPC_BIT(28)
--#define I2C_MODE_DIAGNOSTIC             PPC_BIT(29)
--#define I2C_MODE_PACING_ALLOW           PPC_BIT(30)
--#define I2C_MODE_WRAP                   PPC_BIT(31)
--
--/* I2C watermark register */
--#define I2C_WATERMARK_REG               0x7
--#define I2C_WATERMARK_HIGH              PPC_BITMASK(16, 19)
--#define I2C_WATERMARK_LOW               PPC_BITMASK(24, 27)
--
--/*
-- * I2C interrupt mask and condition registers
-- *
-- * NB: The function of 0x9 and 0xa changes depending on whether you're reading
-- *     or writing to them. When read they return the interrupt condition bits
-- *     and on writes they update the interrupt mask register.
-- *
-- *  The bit definitions are the same for all the interrupt registers.
-- */
--#define I2C_INTR_MASK_REG               0x8
--
--#define I2C_INTR_RAW_COND_REG           0x9 /* read */
--#define I2C_INTR_MASK_OR_REG            0x9 /* write*/
--
--#define I2C_INTR_COND_REG               0xa /* read */
--#define I2C_INTR_MASK_AND_REG           0xa /* write */
--
--#define I2C_INTR_ALL                    PPC_BITMASK(16, 31)
--#define I2C_INTR_INVALID_CMD            PPC_BIT(16)
--#define I2C_INTR_LBUS_PARITY_ERR        PPC_BIT(17)
--#define I2C_INTR_BKEND_OVERRUN_ERR      PPC_BIT(18)
--#define I2C_INTR_BKEND_ACCESS_ERR       PPC_BIT(19)
--#define I2C_INTR_ARBT_LOST_ERR          PPC_BIT(20)
--#define I2C_INTR_NACK_RCVD_ERR          PPC_BIT(21)
--#define I2C_INTR_DATA_REQ               PPC_BIT(22)
--#define I2C_INTR_CMD_COMP               PPC_BIT(23)
--#define I2C_INTR_STOP_ERR               PPC_BIT(24)
--#define I2C_INTR_I2C_BUSY               PPC_BIT(25)
--#define I2C_INTR_NOT_I2C_BUSY           PPC_BIT(26)
--#define I2C_INTR_SCL_EQ_1               PPC_BIT(28)
--#define I2C_INTR_SCL_EQ_0               PPC_BIT(29)
--#define I2C_INTR_SDA_EQ_1               PPC_BIT(30)
--#define I2C_INTR_SDA_EQ_0               PPC_BIT(31)
--
--/* I2C status register */
--#define I2C_RESET_I2C_REG               0xb /* write */
--#define I2C_RESET_ERRORS                0xc
--#define I2C_STAT_REG                    0xb /* read */
--#define I2C_STAT_INVALID_CMD            PPC_BIT(0)
--#define I2C_STAT_LBUS_PARITY_ERR        PPC_BIT(1)
--#define I2C_STAT_BKEND_OVERRUN_ERR      PPC_BIT(2)
--#define I2C_STAT_BKEND_ACCESS_ERR       PPC_BIT(3)
--#define I2C_STAT_ARBT_LOST_ERR          PPC_BIT(4)
--#define I2C_STAT_NACK_RCVD_ERR          PPC_BIT(5)
--#define I2C_STAT_DATA_REQ               PPC_BIT(6)
--#define I2C_STAT_CMD_COMP               PPC_BIT(7)
--#define I2C_STAT_STOP_ERR               PPC_BIT(8)
--#define I2C_STAT_UPPER_THRS             PPC_BITMASK(9, 15)
--#define I2C_STAT_ANY_I2C_INTR           PPC_BIT(16)
--#define I2C_STAT_PORT_HISTORY_BUSY      PPC_BIT(19)
--#define I2C_STAT_SCL_INPUT_LEVEL        PPC_BIT(20)
--#define I2C_STAT_SDA_INPUT_LEVEL        PPC_BIT(21)
--#define I2C_STAT_PORT_BUSY              PPC_BIT(22)
--#define I2C_STAT_INTERFACE_BUSY         PPC_BIT(23)
--#define I2C_STAT_FIFO_ENTRY_COUNT       PPC_BITMASK(24, 31)
--
--#define I2C_STAT_ANY_ERR (I2C_STAT_INVALID_CMD | I2C_STAT_LBUS_PARITY_ERR | \
--                          I2C_STAT_BKEND_OVERRUN_ERR | \
--                          I2C_STAT_BKEND_ACCESS_ERR | I2C_STAT_ARBT_LOST_ERR | \
--                          I2C_STAT_NACK_RCVD_ERR | I2C_STAT_STOP_ERR)
--
--
--#define I2C_INTR_ACTIVE \
--        ((I2C_STAT_ANY_ERR >> 16) | I2C_INTR_CMD_COMP | I2C_INTR_DATA_REQ)
--
--/* Pseudo-status used for timeouts */
--#define I2C_STAT_PSEUDO_TIMEOUT         PPC_BIT(63)
--
--/* I2C extended status register */
--#define I2C_EXTD_STAT_REG               0xc
--#define I2C_EXTD_STAT_FIFO_SIZE         PPC_BITMASK(0, 7)
--#define I2C_EXTD_STAT_MSM_CURSTATE      PPC_BITMASK(11, 15)
--#define I2C_EXTD_STAT_SCL_IN_SYNC       PPC_BIT(16)
--#define I2C_EXTD_STAT_SDA_IN_SYNC       PPC_BIT(17)
--#define I2C_EXTD_STAT_S_SCL             PPC_BIT(18)
--#define I2C_EXTD_STAT_S_SDA             PPC_BIT(19)
--#define I2C_EXTD_STAT_M_SCL             PPC_BIT(20)
--#define I2C_EXTD_STAT_M_SDA             PPC_BIT(21)
--#define I2C_EXTD_STAT_HIGH_WATER        PPC_BIT(22)
--#define I2C_EXTD_STAT_LOW_WATER         PPC_BIT(23)
--#define I2C_EXTD_STAT_I2C_BUSY          PPC_BIT(24)
--#define I2C_EXTD_STAT_SELF_BUSY         PPC_BIT(25)
--#define I2C_EXTD_STAT_I2C_VERSION       PPC_BITMASK(27, 31)
--
--/* I2C residual front end/back end length */
--#define I2C_RESIDUAL_LEN_REG            0xd
--#define I2C_RESIDUAL_FRONT_END          PPC_BITMASK(0, 15)
--#define I2C_RESIDUAL_BACK_END           PPC_BITMASK(16, 31)
--
--/* Port busy register */
--#define I2C_PORT_BUSY_REG               0xe
--#define I2C_SET_S_SCL_REG               0xd
--#define I2C_RESET_S_SCL_REG             0xf
--#define I2C_SET_S_SDA_REG               0x10
--#define I2C_RESET_S_SDA_REG             0x11
--
--#define PNV_I2C_FIFO_SIZE 8
--#define PNV_I2C_MAX_BUSSES 64
-+#include "hw/i2c/pnv_i2c_regs.h"
- 
- static I2CBus *pnv_i2c_get_bus(PnvI2C *i2c)
- {
-diff --git a/include/hw/i2c/pnv_i2c_regs.h b/include/hw/i2c/pnv_i2c_regs.h
-new file mode 100644
-index 0000000000..85e96ff480
---- /dev/null
-+++ b/include/hw/i2c/pnv_i2c_regs.h
-@@ -0,0 +1,143 @@
-+/*
-+ * PowerNV I2C Controller Register Definitions
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef PNV_I2C_REGS_H
-+#define PNV_I2C_REGS_H
-+
-+/* I2C FIFO register */
-+#define I2C_FIFO_REG                    0x4
-+#define I2C_FIFO                        PPC_BITMASK(0, 7)
-+
-+/* I2C command register */
-+#define I2C_CMD_REG                     0x5
-+#define I2C_CMD_WITH_START              PPC_BIT(0)
-+#define I2C_CMD_WITH_ADDR               PPC_BIT(1)
-+#define I2C_CMD_READ_CONT               PPC_BIT(2)
-+#define I2C_CMD_WITH_STOP               PPC_BIT(3)
-+#define I2C_CMD_INTR_STEERING           PPC_BITMASK(6, 7) /* P9 */
-+#define   I2C_CMD_INTR_STEER_HOST       1
-+#define   I2C_CMD_INTR_STEER_OCC        2
-+#define I2C_CMD_DEV_ADDR                PPC_BITMASK(8, 14)
-+#define I2C_CMD_READ_NOT_WRITE          PPC_BIT(15)
-+#define I2C_CMD_LEN_BYTES               PPC_BITMASK(16, 31)
-+#define I2C_MAX_TFR_LEN                 0xfff0ull
-+
-+/* I2C mode register */
-+#define I2C_MODE_REG                    0x6
-+#define I2C_MODE_BIT_RATE_DIV           PPC_BITMASK(0, 15)
-+#define I2C_MODE_PORT_NUM               PPC_BITMASK(16, 21)
-+#define I2C_MODE_ENHANCED               PPC_BIT(28)
-+#define I2C_MODE_DIAGNOSTIC             PPC_BIT(29)
-+#define I2C_MODE_PACING_ALLOW           PPC_BIT(30)
-+#define I2C_MODE_WRAP                   PPC_BIT(31)
-+
-+/* I2C watermark register */
-+#define I2C_WATERMARK_REG               0x7
-+#define I2C_WATERMARK_HIGH              PPC_BITMASK(16, 19)
-+#define I2C_WATERMARK_LOW               PPC_BITMASK(24, 27)
-+
-+/*
-+ * I2C interrupt mask and condition registers
-+ *
-+ * NB: The function of 0x9 and 0xa changes depending on whether you're reading
-+ *     or writing to them. When read they return the interrupt condition bits
-+ *     and on writes they update the interrupt mask register.
-+ *
-+ *  The bit definitions are the same for all the interrupt registers.
-+ */
-+#define I2C_INTR_MASK_REG               0x8
-+
-+#define I2C_INTR_RAW_COND_REG           0x9 /* read */
-+#define I2C_INTR_MASK_OR_REG            0x9 /* write*/
-+
-+#define I2C_INTR_COND_REG               0xa /* read */
-+#define I2C_INTR_MASK_AND_REG           0xa /* write */
-+
-+#define I2C_INTR_ALL                    PPC_BITMASK(16, 31)
-+#define I2C_INTR_INVALID_CMD            PPC_BIT(16)
-+#define I2C_INTR_LBUS_PARITY_ERR        PPC_BIT(17)
-+#define I2C_INTR_BKEND_OVERRUN_ERR      PPC_BIT(18)
-+#define I2C_INTR_BKEND_ACCESS_ERR       PPC_BIT(19)
-+#define I2C_INTR_ARBT_LOST_ERR          PPC_BIT(20)
-+#define I2C_INTR_NACK_RCVD_ERR          PPC_BIT(21)
-+#define I2C_INTR_DATA_REQ               PPC_BIT(22)
-+#define I2C_INTR_CMD_COMP               PPC_BIT(23)
-+#define I2C_INTR_STOP_ERR               PPC_BIT(24)
-+#define I2C_INTR_I2C_BUSY               PPC_BIT(25)
-+#define I2C_INTR_NOT_I2C_BUSY           PPC_BIT(26)
-+#define I2C_INTR_SCL_EQ_1               PPC_BIT(28)
-+#define I2C_INTR_SCL_EQ_0               PPC_BIT(29)
-+#define I2C_INTR_SDA_EQ_1               PPC_BIT(30)
-+#define I2C_INTR_SDA_EQ_0               PPC_BIT(31)
-+
-+/* I2C status register */
-+#define I2C_RESET_I2C_REG               0xb /* write */
-+#define I2C_RESET_ERRORS                0xc
-+#define I2C_STAT_REG                    0xb /* read */
-+#define I2C_STAT_INVALID_CMD            PPC_BIT(0)
-+#define I2C_STAT_LBUS_PARITY_ERR        PPC_BIT(1)
-+#define I2C_STAT_BKEND_OVERRUN_ERR      PPC_BIT(2)
-+#define I2C_STAT_BKEND_ACCESS_ERR       PPC_BIT(3)
-+#define I2C_STAT_ARBT_LOST_ERR          PPC_BIT(4)
-+#define I2C_STAT_NACK_RCVD_ERR          PPC_BIT(5)
-+#define I2C_STAT_DATA_REQ               PPC_BIT(6)
-+#define I2C_STAT_CMD_COMP               PPC_BIT(7)
-+#define I2C_STAT_STOP_ERR               PPC_BIT(8)
-+#define I2C_STAT_UPPER_THRS             PPC_BITMASK(9, 15)
-+#define I2C_STAT_ANY_I2C_INTR           PPC_BIT(16)
-+#define I2C_STAT_PORT_HISTORY_BUSY      PPC_BIT(19)
-+#define I2C_STAT_SCL_INPUT_LEVEL        PPC_BIT(20)
-+#define I2C_STAT_SDA_INPUT_LEVEL        PPC_BIT(21)
-+#define I2C_STAT_PORT_BUSY              PPC_BIT(22)
-+#define I2C_STAT_INTERFACE_BUSY         PPC_BIT(23)
-+#define I2C_STAT_FIFO_ENTRY_COUNT       PPC_BITMASK(24, 31)
-+
-+#define I2C_STAT_ANY_ERR (I2C_STAT_INVALID_CMD | I2C_STAT_LBUS_PARITY_ERR | \
-+                          I2C_STAT_BKEND_OVERRUN_ERR | \
-+                          I2C_STAT_BKEND_ACCESS_ERR | I2C_STAT_ARBT_LOST_ERR | \
-+                          I2C_STAT_NACK_RCVD_ERR | I2C_STAT_STOP_ERR)
-+
-+
-+#define I2C_INTR_ACTIVE \
-+        ((I2C_STAT_ANY_ERR >> 16) | I2C_INTR_CMD_COMP | I2C_INTR_DATA_REQ)
-+
-+/* Pseudo-status used for timeouts */
-+#define I2C_STAT_PSEUDO_TIMEOUT         PPC_BIT(63)
-+
-+/* I2C extended status register */
-+#define I2C_EXTD_STAT_REG               0xc
-+#define I2C_EXTD_STAT_FIFO_SIZE         PPC_BITMASK(0, 7)
-+#define I2C_EXTD_STAT_MSM_CURSTATE      PPC_BITMASK(11, 15)
-+#define I2C_EXTD_STAT_SCL_IN_SYNC       PPC_BIT(16)
-+#define I2C_EXTD_STAT_SDA_IN_SYNC       PPC_BIT(17)
-+#define I2C_EXTD_STAT_S_SCL             PPC_BIT(18)
-+#define I2C_EXTD_STAT_S_SDA             PPC_BIT(19)
-+#define I2C_EXTD_STAT_M_SCL             PPC_BIT(20)
-+#define I2C_EXTD_STAT_M_SDA             PPC_BIT(21)
-+#define I2C_EXTD_STAT_HIGH_WATER        PPC_BIT(22)
-+#define I2C_EXTD_STAT_LOW_WATER         PPC_BIT(23)
-+#define I2C_EXTD_STAT_I2C_BUSY          PPC_BIT(24)
-+#define I2C_EXTD_STAT_SELF_BUSY         PPC_BIT(25)
-+#define I2C_EXTD_STAT_I2C_VERSION       PPC_BITMASK(27, 31)
-+
-+/* I2C residual front end/back end length */
-+#define I2C_RESIDUAL_LEN_REG            0xd
-+#define I2C_RESIDUAL_FRONT_END          PPC_BITMASK(0, 15)
-+#define I2C_RESIDUAL_BACK_END           PPC_BITMASK(16, 31)
-+
-+/* Port busy register */
-+#define I2C_PORT_BUSY_REG               0xe
-+#define I2C_SET_S_SCL_REG               0xd
-+#define I2C_RESET_S_SCL_REG             0xf
-+#define I2C_SET_S_SDA_REG               0x10
-+#define I2C_RESET_S_SDA_REG             0x11
-+
-+#define PNV_I2C_FIFO_SIZE 8
-+#define PNV_I2C_MAX_BUSSES 64
-+
-+#endif /* PNV_I2C_REGS_H */
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 84a055a7d9..bde1e04990 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -167,6 +167,7 @@ qtests_ppc64 = \
-   qtests_ppc + \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['device-plug-test'] : []) +               \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-xscom-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-host-i2c-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['rtas-test'] : []) +                      \
-   (slirp.found() ? ['pxe-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_USB_UHCI') ? ['usb-hcd-uhci-test'] : []) +             \
-diff --git a/tests/qtest/pnv-host-i2c-test.c b/tests/qtest/pnv-host-i2c-test.c
-new file mode 100644
-index 0000000000..c635177252
---- /dev/null
-+++ b/tests/qtest/pnv-host-i2c-test.c
-@@ -0,0 +1,491 @@
-+/*
-+ * QTest testcase for PowerNV 10 Host I2C Communications
-+ *
-+ * Copyright (c) 2023, IBM Corporation.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * later. See the COPYING file in the top-level directory.
-+ */
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "hw/misc/pca9554_regs.h"
-+#include "hw/misc/pca9552_regs.h"
-+#include "pnv-xscom.h"
-+
-+#define PPC_BIT(bit)            (0x8000000000000000ULL >> (bit))
-+#define PPC_BIT32(bit)          (0x80000000 >> (bit))
-+#define PPC_BIT8(bit)           (0x80 >> (bit))
-+#define PPC_BITMASK(bs, be)     ((PPC_BIT(bs) - PPC_BIT(be)) | PPC_BIT(bs))
-+#define PPC_BITMASK32(bs, be)   ((PPC_BIT32(bs) - PPC_BIT32(be)) | \
-+                                 PPC_BIT32(bs))
-+
-+#define MASK_TO_LSH(m)          (__builtin_ffsll(m) - 1)
-+#define GETFIELD(m, v)          (((v) & (m)) >> MASK_TO_LSH(m))
-+#define SETFIELD(m, v, val) \
-+        (((v) & ~(m)) | ((((typeof(v))(val)) << MASK_TO_LSH(m)) & (m)))
-+
-+#define PNV10_XSCOM_I2CM_BASE   0xa0000
-+#define PNV10_XSCOM_I2CM_SIZE   0x1000
-+
-+#include "hw/i2c/pnv_i2c_regs.h"
-+
-+typedef struct {
-+    QTestState    *qts;
-+    const PnvChip *chip;
-+    int           engine;
-+} PnvI2cCtlr;
-+
-+typedef struct {
-+    PnvI2cCtlr  *ctlr;
-+    int         port;
-+    uint8_t     addr;
-+} PnvI2cDev;
-+
-+
-+static uint64_t pnv_i2c_xscom_addr(PnvI2cCtlr *ctlr, uint32_t reg)
-+{
-+    return pnv_xscom_addr(ctlr->chip, PNV10_XSCOM_I2CM_BASE +
-+                          (PNV10_XSCOM_I2CM_SIZE * ctlr->engine) + reg);
-+}
-+
-+static uint64_t pnv_i2c_xscom_read(PnvI2cCtlr *ctlr, uint32_t reg)
-+{
-+    return qtest_readq(ctlr->qts, pnv_i2c_xscom_addr(ctlr, reg));
-+}
-+
-+static void pnv_i2c_xscom_write(PnvI2cCtlr *ctlr, uint32_t reg, uint64_t val)
-+{
-+    qtest_writeq(ctlr->qts, pnv_i2c_xscom_addr(ctlr, reg), val);
-+}
-+
-+/* Write len bytes from buf to i2c device with given addr and port */
-+static void pnv_i2c_send(PnvI2cDev *dev, const uint8_t *buf, uint16_t len)
-+{
-+    int byte_num;
-+    uint64_t reg64;
-+
-+    /* select requested port */
-+    reg64 = SETFIELD(I2C_MODE_BIT_RATE_DIV, 0ull, 0x2be);
-+    reg64 = SETFIELD(I2C_MODE_PORT_NUM, reg64, dev->port);
-+    pnv_i2c_xscom_write(dev->ctlr, I2C_MODE_REG, reg64);
-+
-+    /* check status for cmd complete and bus idle */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_EXTD_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_EXTD_STAT_I2C_BUSY, ==, 0);
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & (I2C_STAT_ANY_ERR | I2C_STAT_CMD_COMP), ==,
-+                    I2C_STAT_CMD_COMP);
-+
-+    /* Send start, with stop, with address and len bytes of data */
-+    reg64 = I2C_CMD_WITH_START | I2C_CMD_WITH_ADDR | I2C_CMD_WITH_STOP;
-+    reg64 = SETFIELD(I2C_CMD_DEV_ADDR, reg64, dev->addr);
-+    reg64 = SETFIELD(I2C_CMD_LEN_BYTES, reg64, len);
-+    pnv_i2c_xscom_write(dev->ctlr, I2C_CMD_REG, reg64);
-+
-+    /* check status for errors */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_STAT_ANY_ERR, ==, 0);
-+
-+    /* write data bytes to fifo register */
-+    for (byte_num = 0; byte_num < len; byte_num++) {
-+        reg64 = SETFIELD(I2C_FIFO, 0ull, buf[byte_num]);
-+        pnv_i2c_xscom_write(dev->ctlr, I2C_FIFO_REG, reg64);
-+    }
-+
-+    /* check status for cmd complete and bus idle */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_EXTD_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_EXTD_STAT_I2C_BUSY, ==, 0);
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & (I2C_STAT_ANY_ERR | I2C_STAT_CMD_COMP), ==,
-+                    I2C_STAT_CMD_COMP);
-+}
-+
-+/* Recieve len bytes into buf from i2c device with given addr and port */
-+static void pnv_i2c_recv(PnvI2cDev *dev, uint8_t *buf, uint16_t len)
-+{
-+    int byte_num;
-+    uint64_t reg64;
-+
-+    /* select requested port */
-+    reg64 = SETFIELD(I2C_MODE_BIT_RATE_DIV, 0ull, 0x2be);
-+    reg64 = SETFIELD(I2C_MODE_PORT_NUM, reg64, dev->port);
-+    pnv_i2c_xscom_write(dev->ctlr, I2C_MODE_REG, reg64);
-+
-+    /* check status for cmd complete and bus idle */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_EXTD_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_EXTD_STAT_I2C_BUSY, ==, 0);
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & (I2C_STAT_ANY_ERR | I2C_STAT_CMD_COMP), ==,
-+                    I2C_STAT_CMD_COMP);
-+
-+    /* Send start, with stop, with address and len bytes of data */
-+    reg64 = I2C_CMD_WITH_START | I2C_CMD_WITH_ADDR |
-+            I2C_CMD_WITH_STOP | I2C_CMD_READ_NOT_WRITE;
-+    reg64 = SETFIELD(I2C_CMD_DEV_ADDR, reg64, dev->addr);
-+    reg64 = SETFIELD(I2C_CMD_LEN_BYTES, reg64, len);
-+    pnv_i2c_xscom_write(dev->ctlr, I2C_CMD_REG, reg64);
-+
-+    /* check status for errors */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_STAT_ANY_ERR, ==, 0);
-+
-+    /* Read data bytes from fifo register */
-+    for (byte_num = 0; byte_num < len; byte_num++) {
-+        reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_FIFO_REG);
-+        buf[byte_num] = GETFIELD(I2C_FIFO, reg64);
-+    }
-+
-+    /* check status for cmd complete and bus idle */
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_EXTD_STAT_REG);
-+    g_assert_cmphex(reg64 & I2C_EXTD_STAT_I2C_BUSY, ==, 0);
-+    reg64 = pnv_i2c_xscom_read(dev->ctlr, I2C_STAT_REG);
-+    g_assert_cmphex(reg64 & (I2C_STAT_ANY_ERR | I2C_STAT_CMD_COMP), ==,
-+                    I2C_STAT_CMD_COMP);
-+}
-+
-+static void pnv_i2c_pca9554_default_cfg(PnvI2cDev *dev)
-+{
-+    uint8_t buf[2];
-+
-+    /* input register bits are not inverted */
-+    buf[0] = PCA9554_POLARITY;
-+    buf[1] = 0;
-+    pnv_i2c_send(dev, buf, 2);
-+
-+    /* All pins are inputs */
-+    buf[0] = PCA9554_CONFIG;
-+    buf[1] = 0xff;
-+    pnv_i2c_send(dev, buf, 2);
-+
-+    /* Output value for when pins are outputs */
-+    buf[0] = PCA9554_OUTPUT;
-+    buf[1] = 0xff;
-+    pnv_i2c_send(dev, buf, 2);
-+}
-+
-+static void pnv_i2c_pca9554_set_pin(PnvI2cDev *dev, int pin, bool high)
-+{
-+    uint8_t send_buf[2];
-+    uint8_t recv_buf[2];
-+    uint8_t mask = 0x1 << pin;
-+    uint8_t new_value = ((high) ? 1 : 0) << pin;
-+
-+    /* read current OUTPUT value */
-+    send_buf[0] = PCA9554_OUTPUT;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+
-+    /* write new OUTPUT value */
-+    send_buf[1] = (recv_buf[0] & ~mask) | new_value;
-+    pnv_i2c_send(dev, send_buf, 2);
-+
-+    /* Update config bit for output */
-+    send_buf[0] = PCA9554_CONFIG;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+    send_buf[1] = recv_buf[0] & ~mask;
-+    pnv_i2c_send(dev, send_buf, 2);
-+}
-+
-+static uint8_t pnv_i2c_pca9554_read_pins(PnvI2cDev *dev)
-+{
-+    uint8_t send_buf[1];
-+    uint8_t recv_buf[1];
-+    uint8_t inputs;
-+    send_buf[0] = PCA9554_INPUT;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+    inputs = recv_buf[0];
-+    return inputs;
-+}
-+
-+static void pnv_i2c_pca9554_flip_polarity(PnvI2cDev *dev)
-+{
-+    uint8_t recv_buf[1];
-+    uint8_t send_buf[2];
-+
-+    send_buf[0] = PCA9554_POLARITY;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+    send_buf[1] = recv_buf[0] ^ 0xff;
-+    pnv_i2c_send(dev, send_buf, 2);
-+}
-+
-+static void pnv_i2c_pca9554_default_inputs(PnvI2cDev *dev)
-+{
-+    uint8_t pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0xff);
-+}
-+
-+/* Check that setting pin values and polarity changes inputs as expected */
-+static void pnv_i2c_pca554_set_pins(PnvI2cDev *dev)
-+{
-+    uint8_t pin_values;
-+    pnv_i2c_pca9554_set_pin(dev, 0, 0);
-+    pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0xfe);
-+    pnv_i2c_pca9554_flip_polarity(dev);
-+    pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0x01);
-+    pnv_i2c_pca9554_set_pin(dev, 2, 0);
-+    pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0x05);
-+    pnv_i2c_pca9554_flip_polarity(dev);
-+    pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0xfa);
-+    pnv_i2c_pca9554_default_cfg(dev);
-+    pin_values = pnv_i2c_pca9554_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0xff);
-+}
-+
-+static void pnv_i2c_pca9552_default_cfg(PnvI2cDev *dev)
-+{
-+    uint8_t buf[2];
-+    /* configure pwm/psc regs */
-+    buf[0] = PCA9552_PSC0;
-+    buf[1] = 0xff;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_PWM0;
-+    buf[1] = 0x80;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_PSC1;
-+    buf[1] = 0xff;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_PWM1;
-+    buf[1] = 0x80;
-+    pnv_i2c_send(dev, buf, 2);
-+
-+    /* configure all pins as inputs */
-+    buf[0] = PCA9552_LS0;
-+    buf[1] = 0x55;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_LS1;
-+    buf[1] = 0x55;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_LS2;
-+    buf[1] = 0x55;
-+    pnv_i2c_send(dev, buf, 2);
-+    buf[0] = PCA9552_LS3;
-+    buf[1] = 0x55;
-+    pnv_i2c_send(dev, buf, 2);
-+}
-+
-+static void pnv_i2c_pca9552_set_pin(PnvI2cDev *dev, int pin, bool high)
-+{
-+    uint8_t send_buf[2];
-+    uint8_t recv_buf[2];
-+    uint8_t reg = PCA9552_LS0 + (pin / 4);
-+    uint8_t shift = (pin % 4) * 2;
-+    uint8_t mask = ~(0x3 << shift);
-+    uint8_t new_value = ((high) ? 1 : 0) << shift;
-+
-+    /* read current LSx value */
-+    send_buf[0] = reg;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+
-+    /* write new value to LSx */
-+    send_buf[1] = (recv_buf[0] & mask) | new_value;
-+    pnv_i2c_send(dev, send_buf, 2);
-+}
-+
-+static uint16_t pnv_i2c_pca9552_read_pins(PnvI2cDev *dev)
-+{
-+    uint8_t send_buf[2];
-+    uint8_t recv_buf[2];
-+    uint16_t inputs;
-+    send_buf[0] = PCA9552_INPUT0;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+    inputs = recv_buf[0];
-+    send_buf[0] = PCA9552_INPUT1;
-+    pnv_i2c_send(dev, send_buf, 1);
-+    pnv_i2c_recv(dev, recv_buf, 1);
-+    inputs |= recv_buf[0] << 8;
-+    return inputs;
-+}
-+
-+static void pnv_i2c_pca9552_default_inputs(PnvI2cDev *dev)
-+{
-+    uint16_t pin_values = pnv_i2c_pca9552_read_pins(dev);
-+    g_assert_cmphex(pin_values, ==, 0xffff);
-+}
-+
-+/*
-+ * Set pins 0-4 one at a time and verify that pins 5-9 are
-+ * set to the same value
-+ */
-+static void pnv_i2c_pca552_set_pins(PnvI2cDev *dev)
-+{
-+    uint16_t pin_values;
-+
-+    /* set pin 0 low */
-+    pnv_i2c_pca9552_set_pin(dev, 0, 0);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* pins 0 and 5 should be low */
-+    g_assert_cmphex(pin_values, ==, 0xffde);
-+
-+    /* set pin 1 low */
-+    pnv_i2c_pca9552_set_pin(dev, 1, 0);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* pins 0, 1, 5 and 6 should be low */
-+    g_assert_cmphex(pin_values, ==, 0xff9c);
-+
-+    /* set pin 2 low */
-+    pnv_i2c_pca9552_set_pin(dev, 2, 0);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* pins 0, 1, 2, 5, 6 and 7 should be low */
-+    g_assert_cmphex(pin_values, ==, 0xff18);
-+
-+    /* set pin 3 low */
-+    pnv_i2c_pca9552_set_pin(dev, 3, 0);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* pins 0, 1, 2, 3, 5, 6, 7 and 8 should be low */
-+    g_assert_cmphex(pin_values, ==, 0xfe10);
-+
-+    /* set pin 4 low */
-+    pnv_i2c_pca9552_set_pin(dev, 4, 0);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* pins 0, 1, 2, 3, 5, 6, 7, 8 and 9 should be low */
-+    g_assert_cmphex(pin_values, ==, 0xfc00);
-+
-+    /* reset all pins to the high state */
-+    pnv_i2c_pca9552_default_cfg(dev);
-+    pin_values = pnv_i2c_pca9552_read_pins(dev);
-+
-+    /* verify all pins went back to the high state */
-+    g_assert_cmphex(pin_values, ==, 0xffff);
-+}
-+
-+static void reset_engine(PnvI2cCtlr *ctlr)
-+{
-+    pnv_i2c_xscom_write(ctlr, I2C_RESET_I2C_REG, 0);
-+}
-+
-+static void check_i2cm_por_regs(QTestState *qts, const PnvChip *chip)
-+{
-+    int engine;
-+    for (engine = 0; engine < chip->num_i2c; engine++) {
-+        PnvI2cCtlr ctlr;
-+        ctlr.qts = qts;
-+        ctlr.chip = chip;
-+        ctlr.engine = engine;
-+
-+        /* Check version in Extended Status Register */
-+        uint64_t value = pnv_i2c_xscom_read(&ctlr, I2C_EXTD_STAT_REG);
-+        g_assert_cmphex(value & I2C_EXTD_STAT_I2C_VERSION, ==, 0x1700000000);
-+
-+        /* Check for command complete and bus idle in Status Register */
-+        value = pnv_i2c_xscom_read(&ctlr, I2C_STAT_REG);
-+        g_assert_cmphex(value & (I2C_STAT_ANY_ERR | I2C_STAT_CMD_COMP),
-+                        ==,
-+                        I2C_STAT_CMD_COMP);
-+    }
-+}
-+
-+static void reset_all(QTestState *qts, const PnvChip *chip)
-+{
-+    int engine;
-+    for (engine = 0; engine < chip->num_i2c; engine++) {
-+        PnvI2cCtlr ctlr;
-+        ctlr.qts = qts;
-+        ctlr.chip = chip;
-+        ctlr.engine = engine;
-+        reset_engine(&ctlr);
-+        pnv_i2c_xscom_write(&ctlr, I2C_MODE_REG, 0x02be040000000000);
-+    }
-+}
-+
-+static void test_host_i2c(const void *data)
-+{
-+    const PnvChip *chip = data;
-+    QTestState *qts;
-+    const char *machine = "powernv8";
-+    PnvI2cCtlr ctlr;
-+    PnvI2cDev pca9552;
-+    PnvI2cDev pca9554;
-+
-+    if (chip->chip_type == PNV_CHIP_POWER9) {
-+        machine = "powernv9";
-+    } else if (chip->chip_type == PNV_CHIP_POWER10) {
-+        machine = "powernv10-rainier";
-+    }
-+
-+    qts = qtest_initf("-M %s -smp %d,cores=1,threads=%d -nographic "
-+                      "-nodefaults -serial mon:stdio -S "
-+                      "-d guest_errors",
-+                      machine, SMT, SMT);
-+
-+    /* Check the I2C master status registers after POR */
-+    check_i2cm_por_regs(qts, chip);
-+
-+    /* Now do a forced "immediate" reset on all engines */
-+    reset_all(qts, chip);
-+
-+    /* Check that the status values are still good */
-+    check_i2cm_por_regs(qts, chip);
-+
-+    /* P9 doesn't have any i2c devices attached at this time */
-+    if (chip->chip_type != PNV_CHIP_POWER10) {
-+        qtest_quit(qts);
-+        return;
-+    }
-+
-+    /* Initialize for a P10 pca9552 hotplug device */
-+    ctlr.qts = qts;
-+    ctlr.chip = chip;
-+    ctlr.engine = 2;
-+    pca9552.ctlr = &ctlr;
-+    pca9552.port = 1;
-+    pca9552.addr = 0x63;
-+
-+    /* Set all pca9552 pins as inputs */
-+    pnv_i2c_pca9552_default_cfg(&pca9552);
-+
-+    /* Check that all pins of the pca9552 are high */
-+    pnv_i2c_pca9552_default_inputs(&pca9552);
-+
-+    /* perform individual pin tests */
-+    pnv_i2c_pca552_set_pins(&pca9552);
-+
-+    /* Initialize for a P10 pca9554 CableCard Presence detection device */
-+    pca9554.ctlr = &ctlr;
-+    pca9554.port = 1;
-+    pca9554.addr = 0x25;
-+
-+    /* Set all pca9554 pins as inputs */
-+    pnv_i2c_pca9554_default_cfg(&pca9554);
-+
-+    /* Check that all pins of the pca9554 are high */
-+    pnv_i2c_pca9554_default_inputs(&pca9554);
-+
-+    /* perform individual pin tests */
-+    pnv_i2c_pca554_set_pins(&pca9554);
-+
-+    qtest_quit(qts);
-+}
-+
-+static void add_test(const char *name, void (*test)(const void *data))
-+{
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(pnv_chips); i++) {
-+        char *tname = g_strdup_printf("pnv-xscom/%s/%s", name,
-+                                      pnv_chips[i].cpu_model);
-+        qtest_add_data_func(tname, &pnv_chips[i], test);
-+        g_free(tname);
-+    }
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    add_test("host-i2c", test_host_i2c);
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/pnv-xscom-test.c b/tests/qtest/pnv-xscom-test.c
-index 8a5ac11037..c814c0f4f5 100644
---- a/tests/qtest/pnv-xscom-test.c
-+++ b/tests/qtest/pnv-xscom-test.c
-@@ -10,66 +10,7 @@
- 
- #include "libqtest.h"
- 
--typedef enum PnvChipType {
--    PNV_CHIP_POWER8E,     /* AKA Murano (default) */
--    PNV_CHIP_POWER8,      /* AKA Venice */
--    PNV_CHIP_POWER8NVL,   /* AKA Naples */
--    PNV_CHIP_POWER9,      /* AKA Nimbus */
--    PNV_CHIP_POWER10,
--} PnvChipType;
--
--typedef struct PnvChip {
--    PnvChipType chip_type;
--    const char *cpu_model;
--    uint64_t    xscom_base;
--    uint64_t    cfam_id;
--    uint32_t    first_core;
--} PnvChip;
--
--static const PnvChip pnv_chips[] = {
--    {
--        .chip_type  = PNV_CHIP_POWER8,
--        .cpu_model  = "POWER8",
--        .xscom_base = 0x0003fc0000000000ull,
--        .cfam_id    = 0x220ea04980000000ull,
--        .first_core = 0x1,
--    }, {
--        .chip_type  = PNV_CHIP_POWER8NVL,
--        .cpu_model  = "POWER8NVL",
--        .xscom_base = 0x0003fc0000000000ull,
--        .cfam_id    = 0x120d304980000000ull,
--        .first_core = 0x1,
--    },
--    {
--        .chip_type  = PNV_CHIP_POWER9,
--        .cpu_model  = "POWER9",
--        .xscom_base = 0x000603fc00000000ull,
--        .cfam_id    = 0x220d104900008000ull,
--        .first_core = 0x0,
--    },
--    {
--        .chip_type  = PNV_CHIP_POWER10,
--        .cpu_model  = "POWER10",
--        .xscom_base = 0x000603fc00000000ull,
--        .cfam_id    = 0x120da04900008000ull,
--        .first_core = 0x0,
--    },
--};
--
--static uint64_t pnv_xscom_addr(const PnvChip *chip, uint32_t pcba)
--{
--    uint64_t addr = chip->xscom_base;
--
--    if (chip->chip_type == PNV_CHIP_POWER10) {
--        addr |= ((uint64_t) pcba << 3);
--    } else if (chip->chip_type == PNV_CHIP_POWER9) {
--        addr |= ((uint64_t) pcba << 3);
--    } else {
--        addr |= (((uint64_t) pcba << 4) & ~0xffull) |
--            (((uint64_t) pcba << 3) & 0x78);
--    }
--    return addr;
--}
-+#include "pnv-xscom.h"
- 
- static uint64_t pnv_xscom_read(QTestState *qts, const PnvChip *chip,
-                                uint32_t pcba)
-diff --git a/tests/qtest/pnv-xscom.h b/tests/qtest/pnv-xscom.h
-new file mode 100644
-index 0000000000..6f62941744
---- /dev/null
-+++ b/tests/qtest/pnv-xscom.h
-@@ -0,0 +1,80 @@
-+/*
-+ * PowerNV XSCOM Bus
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef PNV_XSCOM_H
-+#define PNV_XSCOM_H
-+
-+#define SMT                     4 /* some tests will break if less than 4 */
-+
-+typedef enum PnvChipType {
-+    PNV_CHIP_POWER8E,     /* AKA Murano (default) */
-+    PNV_CHIP_POWER8,      /* AKA Venice */
-+    PNV_CHIP_POWER8NVL,   /* AKA Naples */
-+    PNV_CHIP_POWER9,      /* AKA Nimbus */
-+    PNV_CHIP_POWER10,
-+} PnvChipType;
-+
-+typedef struct PnvChip {
-+    PnvChipType chip_type;
-+    const char *cpu_model;
-+    uint64_t    xscom_base;
-+    uint64_t    cfam_id;
-+    uint32_t    first_core;
-+    uint32_t    num_i2c;
-+} PnvChip;
-+
-+static const PnvChip pnv_chips[] = {
-+    {
-+        .chip_type  = PNV_CHIP_POWER8,
-+        .cpu_model  = "POWER8",
-+        .xscom_base = 0x0003fc0000000000ull,
-+        .cfam_id    = 0x220ea04980000000ull,
-+        .first_core = 0x1,
-+        .num_i2c    = 0,
-+    }, {
-+        .chip_type  = PNV_CHIP_POWER8NVL,
-+        .cpu_model  = "POWER8NVL",
-+        .xscom_base = 0x0003fc0000000000ull,
-+        .cfam_id    = 0x120d304980000000ull,
-+        .first_core = 0x1,
-+        .num_i2c    = 0,
-+    },
-+    {
-+        .chip_type  = PNV_CHIP_POWER9,
-+        .cpu_model  = "POWER9",
-+        .xscom_base = 0x000603fc00000000ull,
-+        .cfam_id    = 0x220d104900008000ull,
-+        .first_core = 0x0,
-+        .num_i2c    = 4,
-+    },
-+    {
-+        .chip_type  = PNV_CHIP_POWER10,
-+        .cpu_model  = "POWER10",
-+        .xscom_base = 0x000603fc00000000ull,
-+        .cfam_id    = 0x120da04900008000ull,
-+        .first_core = 0x0,
-+        .num_i2c    = 4,
-+    },
-+};
-+
-+static inline uint64_t pnv_xscom_addr(const PnvChip *chip, uint32_t pcba)
-+{
-+    uint64_t addr = chip->xscom_base;
-+
-+    if (chip->chip_type == PNV_CHIP_POWER10) {
-+        addr |= ((uint64_t) pcba << 3);
-+    } else if (chip->chip_type == PNV_CHIP_POWER9) {
-+        addr |= ((uint64_t) pcba << 3);
-+    } else {
-+        addr |= (((uint64_t) pcba << 4) & ~0xffull) |
-+            (((uint64_t) pcba << 3) & 0x78);
-+    }
-+    return addr;
-+}
-+
-+#endif /* PNV_XSCOM_H */
--- 
-2.31.1
+Sounds good. Could you apply those changes and the capability we
+discussed in the other message and send a separate series?  I haven't
+found the time to work on this yet.
 
 
