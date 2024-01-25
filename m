@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8133283B7D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7594983B7E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:29:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqPo-00039c-Cp; Wed, 24 Jan 2024 22:28:32 -0500
+	id 1rSqPq-0003D9-3I; Wed, 24 Jan 2024 22:28:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqPl-00038u-Or
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:29 -0500
+ id 1rSqPn-00039i-Q7
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:31 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqPj-0001Dr-VV
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:29 -0500
+ id 1rSqPm-0001Dy-3U
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153308; x=1737689308;
+ t=1706153310; x=1737689310;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qWOj2eQbQqTTvHD6HtJwRO1jTfYXQp1i9dIrNkCuZCA=;
- b=N7LguVZpx/kQRQKCkkFmgXHCM+FQIxusIXdXDVjAThCL8URCYSZAMi9K
- pDcznht0WDaJnxWNpkZuEBHW6r4Wia4y0tTvmI9O1lny/F4JsunR7Lgzi
- zCzUilrXCw+RsnQ+Dz9+fL0mXNYy6zZby+2t8Fiv/reP2p/EUgmPD082M
- 9VtTBCcBbmXcvHwQPXzPodd1gF2eLFY3c9OGYvwY6bh4P18LoFtv4JPcN
- 8jrxwFuYdjvs5Bf8r0pYQymfYp+UqFQ5/vGaeP2M3q1zqoN5h+TbHdPUa
- kKWM1ynpLIpsYr7RdHMYJX67FAd7wVFmnA3fvZmwkXz61PLmUC+y02sK4 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9428197"
+ bh=Ak9gbkWME/+XOgFurmlCx0ZICYh/+s5jBeuIHp28kNU=;
+ b=OCJFIBOd1plFBdFmCuO6zYum98yNxH76eo/l1RUmn9pRwbviwYdeCEIX
+ MyRXwUuOxIy3TIpHtvdQ6qLddPf7rp2C/G3bm0M1b7Wtey5TJXTcH6fyr
+ 626tHpI2tZ1C+1sraCEgBBROtjc8DYOrJLry1Yt0PH5IhmNSYI+tiVm7S
+ gMk3wyMWmi8YuqMdxlXJWubEDQhOg5NTMlBTYZ1XPytAJdkZc7PUqJ5yi
+ Qs9rjRrZW8GsNrTT/n1o3xVrT37kkzS7ijF6TTyQ9LiTREXyH8gkx0VIC
+ wMPCVYCs6t+5LX6oJ1OJXcO3FZF0KLHKQoy63voawP7AlZpQLjUaqfVDS Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9428253"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9428197"
+   d="scan'208";a="9428253"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:24:43 -0800
+ 24 Jan 2024 19:24:48 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2084870"
+   d="scan'208";a="2084911"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:24:38 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:24:44 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,13 +59,14 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 12/66] target/i386: Implement mc->kvm_type() to get VM type
-Date: Wed, 24 Jan 2024 22:22:34 -0500
-Message-Id: <20240125032328.2522472-13-xiaoyao.li@intel.com>
+Subject: [PATCH v4 13/66] target/i386: Introduce kvm_confidential_guest_init()
+Date: Wed, 24 Jan 2024 22:22:35 -0500
+Message-Id: <20240125032328.2522472-14-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
@@ -91,134 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX VM requires VM type KVM_X86_TDX_VM to be passed to
-kvm_ioctl(KVM_CREATE_VM). Hence implement mc->kvm_type() for i386
-architecture.
-
-If tdx-guest object is specified to confidential-guest-support, like,
-
-  qemu -machine ...,confidential-guest-support=tdx0 \
-       -object tdx-guest,id=tdx0,...
-
-it parses VM type as KVM_X86_TDX_VM. Otherwise, it's KVM_X86_DEFAULT_VM.
-
-Also store the vm_type in MachineState for other code to query what the
-VM type is.
+Introduce a separate function kvm_confidential_guest_init(), which
+dispatches specific confidential guest initialization function by
+ms->cgs type.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Changes in v4:
- - fix the build error of kvm_get_vm_type() when --disable-kvm;
----
- hw/i386/x86.c              | 12 ++++++++++++
- include/hw/i386/x86.h      |  1 +
- target/i386/kvm/kvm.c      | 30 ++++++++++++++++++++++++++++++
- target/i386/kvm/kvm_i386.h |  1 +
- 4 files changed, 44 insertions(+)
+ target/i386/kvm/kvm.c | 11 ++++++++++-
+ target/i386/sev.c     |  1 -
+ target/i386/sev.h     |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 2b6291ad8d5f..f66a92f6c9cc 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1386,6 +1386,17 @@ static void machine_set_sgx_epc(Object *obj, Visitor *v, const char *name,
-     qapi_free_SgxEPCList(list);
- }
- 
-+static int x86_kvm_type(MachineState *ms, const char *vm_type)
-+{
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-+    int kvm_type;
-+
-+    kvm_type = kvm_enabled() ? kvm_get_vm_type(ms, vm_type) : 0;
-+    x86ms->vm_type = kvm_type;
-+
-+    return kvm_type;
-+}
-+
- static void x86_machine_initfn(Object *obj)
- {
-     X86MachineState *x86ms = X86_MACHINE(obj);
-@@ -1410,6 +1421,7 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
-     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
-     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
-     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
-+    mc->kvm_type = x86_kvm_type;
-     x86mc->save_tsc_khz = true;
-     x86mc->fwcfg_dma_enabled = true;
-     nc->nmi_monitor_handler = x86_nmi;
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index da19ae15463a..ab1d38569019 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -41,6 +41,7 @@ struct X86MachineState {
-     MachineState parent;
- 
-     /*< public >*/
-+    unsigned int vm_type;
- 
-     /* Pointers to devices and objects: */
-     ISADevice *rtc;
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 42970ab046fa..c961846777cc 100644
+index c961846777cc..f9a774925cf6 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -32,6 +32,7 @@
- #include "sysemu/runstate.h"
- #include "kvm_i386.h"
- #include "sev.h"
-+#include "tdx.h"
- #include "xen-emu.h"
- #include "hyperv.h"
- #include "hyperv-proto.h"
-@@ -161,6 +162,35 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
- static RateLimit bus_lock_ratelimit_ctrl;
- static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
+@@ -2541,6 +2541,15 @@ int kvm_arch_get_default_type(MachineState *ms)
+     return 0;
+ }
  
-+static const char *vm_type_name[] = {
-+    [KVM_X86_DEFAULT_VM] = "default",
-+    [KVM_X86_TDX_VM] = "tdx",
-+};
-+
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type)
++static int kvm_confidential_guest_init(MachineState *ms, Error **errp)
 +{
-+    int kvm_type = KVM_X86_DEFAULT_VM;
-+
-+    if (ms->cgs && object_dynamic_cast(OBJECT(ms->cgs), TYPE_TDX_GUEST)) {
-+        kvm_type = KVM_X86_TDX_VM;
++    if (object_dynamic_cast(OBJECT(ms->cgs), TYPE_SEV_GUEST)) {
++        return sev_kvm_init(ms->cgs, errp);
 +    }
 +
-+    /*
-+     * old KVM doesn't support KVM_CAP_VM_TYPES and KVM_X86_DEFAULT_VM
-+     * is always supported
-+     */
-+    if (kvm_type == KVM_X86_DEFAULT_VM) {
-+        return kvm_type;
-+    }
-+
-+    if (!(kvm_check_extension(KVM_STATE(ms->accelerator), KVM_CAP_VM_TYPES) & BIT(kvm_type))) {
-+        error_report("vm-type %s not supported by KVM", vm_type_name[kvm_type]);
-+        exit(1);
-+    }
-+
-+    return kvm_type;
++    return 0;
 +}
 +
- bool kvm_has_smm(void)
+ int kvm_arch_init(MachineState *ms, KVMState *s)
  {
-     return kvm_vm_check_extension(kvm_state, KVM_CAP_X86_SMM);
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 30fedcffea3e..55fb25fa8e2e 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -37,6 +37,7 @@ bool kvm_hv_vpindex_settable(void);
- bool kvm_enable_sgx_provisioning(KVMState *s);
- bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp);
+     uint64_t identity_base = 0xfffbc000;
+@@ -2561,7 +2570,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+      * mechanisms are supported in future (e.g. TDX), they'll need
+      * their own initialization either here or elsewhere.
+      */
+-    ret = sev_kvm_init(ms->cgs, &local_err);
++    ret = kvm_confidential_guest_init(ms, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
+         return ret;
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 173de91afe7d..27d58702d6dc 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -39,7 +39,6 @@
+ #include "hw/i386/pc.h"
+ #include "exec/address-spaces.h"
  
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type);
- void kvm_arch_reset_vcpu(X86CPU *cs);
- void kvm_arch_after_reset_vcpu(X86CPU *cpu);
- void kvm_arch_do_init_vcpu(X86CPU *cs);
+-#define TYPE_SEV_GUEST "sev-guest"
+ OBJECT_DECLARE_SIMPLE_TYPE(SevGuestState, SEV_GUEST)
+ 
+ 
+diff --git a/target/i386/sev.h b/target/i386/sev.h
+index e7499c95b1e8..1fe25d096dc4 100644
+--- a/target/i386/sev.h
++++ b/target/i386/sev.h
+@@ -20,6 +20,8 @@
+ 
+ #include "exec/confidential-guest-support.h"
+ 
++#define TYPE_SEV_GUEST "sev-guest"
++
+ #define SEV_POLICY_NODBG        0x1
+ #define SEV_POLICY_NOKS         0x2
+ #define SEV_POLICY_ES           0x4
 -- 
 2.34.1
 
