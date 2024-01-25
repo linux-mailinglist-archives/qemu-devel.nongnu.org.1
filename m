@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8909A83CF99
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 23:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93C083CFA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 23:50:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT8Wn-00074e-Tb; Thu, 25 Jan 2024 17:48:57 -0500
+	id 1rT8X6-00079V-IS; Thu, 25 Jan 2024 17:49:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rT8Wl-00074M-6N; Thu, 25 Jan 2024 17:48:55 -0500
+ id 1rT8X2-00076b-I0; Thu, 25 Jan 2024 17:49:13 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rT8Wj-0000ND-Bk; Thu, 25 Jan 2024 17:48:54 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ id 1rT8X0-0000TR-5V; Thu, 25 Jan 2024 17:49:12 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PMR7Bn026397; Thu, 25 Jan 2024 22:48:47 GMT
+ 40PKSgYt018200; Thu, 25 Jan 2024 22:48:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
+ : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=bVbceKt4SqlyC9nkzIWub92dMHSmnrI5MtUJ9MQoy/M=;
- b=RR/gvTFvLeMj+NkuURqXkAz2lB66AGY/GwqP03HzKbdc2TDlGOC29mg0UEBodCylwcPW
- wEhZcSp1Ozo38/TngsOxDIl8oFqudOQEC1nJyYgKBiFz5r6sLk4Z1iRHGMVe96Gl50t7
- YlvvNoCKeBjZFup5PKgFJVkv7IcXVUVW33SGEHNXd+qb7ShE/r1c59z9NzbJ6nnnOhk6
- +bBDLbiQXBe2pKo/njaykgU45/g2Wt3DpXNQN2LtVxEqlidMmgeXlSzs9s85RRv3aJbB
- fV2WK3tQVRdd+ObCZ4/YCjXVJlG9sVMAIn3iaJRKtxiKmpVNM61rVz+u1BMhQ74TCtgW Iw== 
+ bh=iT+KujHMgPQTEhNtuj4AWxsRsQ7y4V0Nz3cGTO+yFNw=;
+ b=m5Q6iX0eU2ZA3PcsqJmlY8BrcwCbkWpwDGM53UXiVEm1D1lPJ4/1TSjUorYObf4mo1v9
+ 8SLiWduE8GzjvOkkXZERqRXrcOwCNPt5TjG/aEUwA/7jA/JFOSsyp73xgwowu1qOzDvH
+ d8v3wpf4YmE4cwerWriWKqJvIDzNyNMyfuQTTPdFFihwehv7/0ec/7sE2LEx2w9UZkvp
+ 5qCAtAvLJU59UlbIG/XJzMTNgRivTNyXMiKV/yEWCn290F/JY+zEWl2mc9LRNr2t8Gtp
+ xJ0XxKZ+SMieVLdkHaO07qDqdnqtUnYD1e+wPDI287Iw+BwfeuP8F2uN38iEx3vQUps8 oQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv0eq0e8p-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuvv0x5qm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:48:47 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PMRBqQ026428;
- Thu, 25 Jan 2024 22:48:47 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv0eq0e8b-1
+ Thu, 25 Jan 2024 22:48:56 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PM05gM030608;
+ Thu, 25 Jan 2024 22:48:55 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vuvv0x5q4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:48:46 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PK5AF1028240; Thu, 25 Jan 2024 22:48:46 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vru72xnr5-1
+ Thu, 25 Jan 2024 22:48:55 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40PJVTjb022429; Thu, 25 Jan 2024 22:48:54 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0mey37-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 22:48:46 +0000
+ Thu, 25 Jan 2024 22:48:54 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40PMmjId10486354
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40PMmrIc16974378
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jan 2024 22:48:45 GMT
+ Thu, 25 Jan 2024 22:48:53 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7509458057;
- Thu, 25 Jan 2024 22:48:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 18F4B58057;
+ Thu, 25 Jan 2024 22:48:53 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 494DA58058;
- Thu, 25 Jan 2024 22:48:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D804758059;
+ Thu, 25 Jan 2024 22:48:52 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jan 2024 22:48:45 +0000 (GMT)
+ Thu, 25 Jan 2024 22:48:52 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Reza Arbab <arbab@linux.ibm.com>
-Subject: [PATCH v7 0/9] Add powernv10 I2C devices and tests
-Date: Thu, 25 Jan 2024 16:48:09 -0600
-Message-Id: <20240125224818.146499-1-milesg@linux.vnet.ibm.com>
+ Reza Arbab <arbab@linux.ibm.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH v7 1/9] misc/pca9552: Fix inverted input status
+Date: Thu, 25 Jan 2024 16:48:10 -0600
+Message-Id: <20240125224818.146499-2-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20240125224818.146499-1-milesg@linux.vnet.ibm.com>
+References: <20240125224818.146499-1-milesg@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tmEvvO5n8rnciOkBJPdhP6VX5nY1Nldr
-X-Proofpoint-ORIG-GUID: 7RMJFrbwROLVBUu4U2E8WrrV1a4nsj3G
+X-Proofpoint-ORIG-GUID: ILAf95B3FL1iPjMARy2jHDL5nuAIoCnm
+X-Proofpoint-GUID: d-ho7cSWVS3RWigKA8OQsqScnWqPdA0c
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- suspectscore=0 priorityscore=1501 clxscore=1011 adultscore=0 mlxscore=0
- spamscore=0 mlxlogscore=832 malwarescore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=999 mlxscore=0
+ adultscore=0 phishscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ suspectscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2401250164
 Received-SPF: none client-ip=148.163.156.1;
@@ -113,58 +115,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series of patches includes support, tests and fixes for
-adding PCA9552 and PCA9554 I2C devices to the powernv10 chip.
+The pca9552 INPUT0 and INPUT1 registers are supposed to
+hold the logical values of the LED pins.  A logical 0
+should be seen in the INPUT0/1 registers for a pin when
+its corresponding LSn bits are set to 0, which is also
+the state needed for turning on an LED in a typical
+usage scenario.  Existing code was doing the opposite
+and setting INPUT0/1 bit to a 1 when the LSn bit was
+set to 0, so this commit fixes that.
 
-The PCA9552 device is used for PCIe slot hotplug power control
-and monitoring, while the PCA9554 device is used for presence
-detection of IBM CableCard devices.  Both devices are required
-by the Power Hypervisor Firmware on the Power10 Ranier platform.
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
 
-Changes from previous version:
-  - Made several changes to commit 9/9 to address comments from
-    Cédric.
-  - Added new PnvI2cCtlr struct to commit 9/9 for convenience in
-    passing parameters.
+No changes from previous version
 
-Glenn Miles (9):
-  misc/pca9552: Fix inverted input status
-  misc/pca9552: Let external devices set pca9552 inputs
-  ppc/pnv: New powernv10-rainier machine type
-  ppc/pnv: Add pca9552 to powernv10-rainier for PCIe hotplug power
-    control
-  ppc/pnv: Wire up pca9552 GPIO pins for PCIe hotplug power control
-  ppc/pnv: Use resettable interface to reset child I2C buses
-  misc: Add a pca9554 GPIO device model
-  ppc/pnv: Add a pca9554 I2C device to powernv10-rainier
-  ppc/pnv: Test pnv i2c master and connected devices
+ hw/misc/pca9552.c          | 18 +++++++++++++-----
+ tests/qtest/pca9552-test.c |  6 +++---
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
- MAINTAINERS                     |  10 +-
- hw/misc/Kconfig                 |   4 +
- hw/misc/meson.build             |   1 +
- hw/misc/pca9552.c               |  58 +++-
- hw/misc/pca9554.c               | 328 +++++++++++++++++++++
- hw/ppc/Kconfig                  |   2 +
- hw/ppc/pnv.c                    |  67 ++++-
- hw/ppc/pnv_i2c.c                | 146 +---------
- include/hw/i2c/pnv_i2c_regs.h   | 143 ++++++++++
- include/hw/misc/pca9552.h       |   3 +-
- include/hw/misc/pca9554.h       |  36 +++
- include/hw/misc/pca9554_regs.h  |  19 ++
- include/hw/ppc/pnv.h            |   1 +
- tests/qtest/meson.build         |   1 +
- tests/qtest/pca9552-test.c      |   6 +-
- tests/qtest/pnv-host-i2c-test.c | 491 ++++++++++++++++++++++++++++++++
- tests/qtest/pnv-xscom-test.c    |  61 +---
- tests/qtest/pnv-xscom.h         |  80 ++++++
- 18 files changed, 1251 insertions(+), 206 deletions(-)
- create mode 100644 hw/misc/pca9554.c
- create mode 100644 include/hw/i2c/pnv_i2c_regs.h
- create mode 100644 include/hw/misc/pca9554.h
- create mode 100644 include/hw/misc/pca9554_regs.h
- create mode 100644 tests/qtest/pnv-host-i2c-test.c
- create mode 100644 tests/qtest/pnv-xscom.h
-
+diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+index 72b653463f..f00a149d61 100644
+--- a/hw/misc/pca9552.c
++++ b/hw/misc/pca9552.c
+@@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
+ 
+ DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
+                        TYPE_PCA955X)
+-
++/*
++ * Note:  The LED_ON and LED_OFF configuration values for the PCA955X
++ *        chips are the reverse of the PCA953X family of chips.
++ */
+ #define PCA9552_LED_ON   0x0
+ #define PCA9552_LED_OFF  0x1
+ #define PCA9552_LED_PWM0 0x2
+@@ -112,13 +115,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
+ 
+         switch (config) {
+         case PCA9552_LED_ON:
+-            qemu_set_irq(s->gpio[i], 1);
+-            s->regs[input_reg] |= 1 << input_shift;
+-            break;
+-        case PCA9552_LED_OFF:
++            /* Pin is set to 0V to turn on LED */
+             qemu_set_irq(s->gpio[i], 0);
+             s->regs[input_reg] &= ~(1 << input_shift);
+             break;
++        case PCA9552_LED_OFF:
++            /*
++             * Pin is set to Hi-Z to turn off LED and
++             * pullup sets it to a logical 1.
++             */
++            qemu_set_irq(s->gpio[i], 1);
++            s->regs[input_reg] |= 1 << input_shift;
++            break;
+         case PCA9552_LED_PWM0:
+         case PCA9552_LED_PWM1:
+             /* TODO */
+diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
+index d80ed93cd3..ccca2b3d91 100644
+--- a/tests/qtest/pca9552-test.c
++++ b/tests/qtest/pca9552-test.c
+@@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x55);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x0);
++    g_assert_cmphex(value, ==, 0xFF);
+ 
+     pca9552_init(i2cdev);
+ 
+@@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x01);
++    g_assert_cmphex(value, ==, 0xFE);
+ 
+     value = i2c_get8(i2cdev, PCA9552_LS3);
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT1);
+-    g_assert_cmphex(value, ==, 0x10);
++    g_assert_cmphex(value, ==, 0xEF);
+ }
+ 
+ static void pca9552_register_nodes(void)
 -- 
 2.31.1
 
