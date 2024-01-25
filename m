@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988C083CF65
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE5683CF64
 	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 23:31:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT8ER-0007WD-FC; Thu, 25 Jan 2024 17:30:00 -0500
+	id 1rT8Ei-0007g7-WA; Thu, 25 Jan 2024 17:30:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rT8EI-0007Vq-JO; Thu, 25 Jan 2024 17:29:50 -0500
+ id 1rT8EM-0007Ws-TF; Thu, 25 Jan 2024 17:29:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rT8EG-0001x0-NT; Thu, 25 Jan 2024 17:29:50 -0500
+ id 1rT8EL-0001xP-BB; Thu, 25 Jan 2024 17:29:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4D8EE47563;
+ by isrv.corpit.ru (Postfix) with ESMTP id 50A5B47564;
  Fri, 26 Jan 2024 01:30:29 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B5E586BA53;
+ by tsrv.corpit.ru (Postfix) with SMTP id CDD826BA54;
  Fri, 26 Jan 2024 01:29:42 +0300 (MSK)
-Received: (nullmailer pid 147069 invoked by uid 1000);
+Received: (nullmailer pid 147072 invoked by uid 1000);
  Thu, 25 Jan 2024 22:29:42 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH trivial 1/2] close_all_open_fd(): move to oslib-posix.c
-Date: Fri, 26 Jan 2024 01:29:35 +0300
-Message-Id: <94fcee0d7595865b3a6fab744982ad47715e5faf.1706221377.git.mjt@tls.msk.ru>
+Subject: [PATCH trivial 2/2] net/tap: use os_close_all_open_fd() instead of
+ open-coding it
+Date: Fri, 26 Jan 2024 01:29:36 +0300
+Message-Id: <14aa02474bc5127910810969b87b659d766e2969.1706221377.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1706221377.git.mjt@tls.msk.ru>
 References: <cover.1706221377.git.mjt@tls.msk.ru>
@@ -58,138 +59,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Initially in async-teardown.c, but the same construct is used
-elsewhere too.
+Current code loops over every file descriptor up to SC_OPEN_MAX/RLIMIT_NOFILE
+which might be huge and the loop might be slow.  But we already have
+os_close_all_open_fd() which is fast.  Use it.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- include/sysemu/os-posix.h |  1 +
- system/async-teardown.c   | 37 +------------------------------------
- util/oslib-posix.c        | 36 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 36 deletions(-)
+ net/tap.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-index dff32ae185..4c91d03f44 100644
---- a/include/sysemu/os-posix.h
-+++ b/include/sysemu/os-posix.h
-@@ -53,6 +53,7 @@ bool os_set_runas(const char *user_id);
- void os_set_chroot(const char *path);
- void os_setup_post(void);
- int os_mlock(void);
-+void os_close_all_open_fd(int minfd);
- 
- /**
-  * qemu_alloc_stack:
-diff --git a/system/async-teardown.c b/system/async-teardown.c
-index 396963c091..41d3d94935 100644
---- a/system/async-teardown.c
-+++ b/system/async-teardown.c
-@@ -26,40 +26,6 @@
- 
- static pid_t the_ppid;
- 
--/*
-- * Close all open file descriptors.
-- */
--static void close_all_open_fd(void)
--{
--    struct dirent *de;
--    int fd, dfd;
--    DIR *dir;
+diff --git a/net/tap.c b/net/tap.c
+index c698b70475..11c85c50dc 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -459,13 +459,7 @@ static void launch_script(const char *setup_script, const char *ifname,
+         return;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
 -
--#ifdef CONFIG_CLOSE_RANGE
--    int r = close_range(0, ~0U, 0);
--    if (!r) {
--        /* Success, no need to try other ways. */
--        return;
--    }
--#endif
--
--    dir = opendir("/proc/self/fd");
--    if (!dir) {
--        /* If /proc is not mounted, there is nothing that can be done. */
--        return;
--    }
--    /* Avoid closing the directory. */
--    dfd = dirfd(dir);
--
--    for (de = readdir(dir); de; de = readdir(dir)) {
--        fd = atoi(de->d_name);
--        if (fd != dfd) {
--            close(fd);
+-        for (i = 3; i < open_max; i++) {
+-            if (i != fd) {
+-                close(i);
+-            }
 -        }
--    }
--    closedir(dir);
--}
--
- static void hup_handler(int signal)
- {
-     /* Check every second if this process has been reparented. */
-@@ -85,9 +51,8 @@ static int async_teardown_fn(void *arg)
-     /*
-      * Close all file descriptors that might have been inherited from the
-      * main qemu process when doing clone, needed to make libvirt happy.
--     * Not using close_range for increased compatibility with older kernels.
-      */
--    close_all_open_fd();
-+    os_close_all_open_fd(0);
++        os_close_all_open_fd(3);
+         parg = args;
+         *parg++ = (char *)setup_script;
+         *parg++ = (char *)ifname;
+@@ -549,16 +543,11 @@ static int net_bridge_run_helper(const char *helper, const char *bridge,
+         return -1;
+     }
+     if (pid == 0) {
+-        int open_max = sysconf(_SC_OPEN_MAX), i;
+         char *fd_buf = NULL;
+         char *br_buf = NULL;
+         char *helper_cmd = NULL;
  
-     /* Set up a handler for SIGHUP and unblock SIGHUP. */
-     sigaction(SIGHUP, &sa, NULL);
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 7c297003b9..09d0ce4da6 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -27,6 +27,7 @@
-  */
+-        for (i = 3; i < open_max; i++) {
+-            if (i != sv[1]) {
+-                close(i);
+-            }
+-        }
++        os_close_all_open_fd(3);
  
- #include "qemu/osdep.h"
-+#include <dirent.h>
- #include <termios.h>
+         fd_buf = g_strdup_printf("%s%d", "--fd=", sv[1]);
  
- #include <glib/gprintf.h>
-@@ -106,6 +107,41 @@ int qemu_get_thread_id(void)
- #endif
- }
- 
-+/*
-+ * Close all open file descriptors starting with minfd and up.
-+ * Not using close_range for increased compatibility with older kernels.
-+ */
-+void os_close_all_open_fd(int minfd)
-+{
-+    struct dirent *de;
-+    int fd, dfd;
-+    DIR *dir;
-+
-+#ifdef CONFIG_CLOSE_RANGE
-+    int r = close_range(minfd, ~0U, 0);
-+    if (!r) {
-+        /* Success, no need to try other ways. */
-+        return;
-+    }
-+#endif
-+
-+    dir = opendir("/proc/self/fd");
-+    if (!dir) {
-+        /* If /proc is not mounted, there is nothing that can be done. */
-+        return;
-+    }
-+    /* Avoid closing the directory. */
-+    dfd = dirfd(dir);
-+
-+    for (de = readdir(dir); de; de = readdir(dir)) {
-+        fd = atoi(de->d_name);
-+        if (fd >= minfd && fd != dfd) {
-+            close(fd);
-+        }
-+    }
-+    closedir(dir);
-+}
-+
- int qemu_daemon(int nochdir, int noclose)
- {
-     return daemon(nochdir, noclose);
 -- 
 2.39.2
 
