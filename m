@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E8B83B860
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:37:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F1583B81F
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqSy-0005Mv-7g; Wed, 24 Jan 2024 22:31:48 -0500
+	id 1rSqT3-0006Rb-GH; Wed, 24 Jan 2024 22:31:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSY-000558-NF
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:22 -0500
+ id 1rSqSm-0005aD-6D
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:38 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSW-0001Dy-IT
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:22 -0500
+ id 1rSqSj-0001Dy-BI
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153480; x=1737689480;
+ t=1706153493; x=1737689493;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fDht0M8HIC/RtXrcbvEg+wKbn8OdTSNmi650IuzqiJs=;
- b=VKLRfdl9/8NaoK+NHIHgTkxecv4Acjb3bl6itksJ22D3HnkB+68+fNHn
- EI1RQWf5PZgBNQAV2F4pJb9rqV1r9LZj3nSweliWFuWZvlR+K9JXVwQYe
- g8izySaw1cWi5OrZlrEbEoYnc9YCzUrr/mdo11IyhOMP5qFUjeGHsRM/q
- YT+VFA9abz4kqjoAZNPxQs/RLGTT7wgn35CXLou5gZKkEeVmq6KVSMP03
- h9fKTuTve/Hw14DpLV9wwKBZFbWb382wUDPfvxZuPXT9ivb9iheBspR42
- GIVHiySWj1/Xq/tNRSXwDkZ1BlURuNhY2jjCl5HXRtdTlK/lY4eHCopF3 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430086"
+ bh=XbBZ8FghQKjl9boDgrpDUaHhve+aNsi3xaBiWaJYrm0=;
+ b=j0fMXpp71xvaZMp7QeMffpaObY5s/EeA3sQs7UBFKgg4af4O0QeCvSDo
+ MJ32Ia/qFE5I/DEQKg2R9vQT7P7PctD+Kr5iI6fJYCcStDmkqQSCS4fRh
+ ZrzAUvjP2BHUXjoZAfRusJRUau1MBE3lxAbYJzURQCsm+qMmDO1tnj7v1
+ RXUWizqIoystScMrYtpwxxQ8NxprPwfYZKR54lLO4vh0pS0HXcBbVukDx
+ 6otJaPbFwTxidU8ItQ2pre8AyqUOuPGJP5TOUwJZRKeHXm690SbBXS7/j
+ YzDCN7PmfxxGe1dDHyBLDHXM/IoiNluhRiLtXIM+HzBWZZqGid+e67Tf6 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430148"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430086"
+   d="scan'208";a="9430148"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:28:22 -0800
+ 24 Jan 2024 19:28:28 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086138"
+   d="scan'208";a="2086209"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:17 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:23 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 52/66] i386/tdx: Handle TDG.VP.VMCALL<REPORT_FATAL_ERROR>
-Date: Wed, 24 Jan 2024 22:23:14 -0500
-Message-Id: <20240125032328.2522472-53-xiaoyao.li@intel.com>
+Subject: [PATCH v4 53/66] i386/tdx: Wire TDX_REPORT_FATAL_ERROR with
+ GuestPanic facility
+Date: Wed, 24 Jan 2024 22:23:15 -0500
+Message-Id: <20240125032328.2522472-54-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,87 +92,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TD guest can use TDG.VP.VMCALL<REPORT_FATAL_ERROR> to request termination
-with error message encoded in GPRs.
+Integrate TDX's TDX_REPORT_FATAL_ERROR into QEMU GuestPanic facility
 
-Parse and print the error message, and terminate the TD guest in the
-handler.
-
+Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- target/i386/kvm/tdx.c | 39 +++++++++++++++++++++++++++++++++++++++
- target/i386/kvm/tdx.h |  1 +
- 2 files changed, 40 insertions(+)
+Changes in v4:
+- refine the documentation; (Markus)
 
+Changes in v3:
+- Add docmentation of new type and struct; (Daniel)
+- refine the error message handling; (Daniel)
+---
+ qapi/run-state.json   | 28 ++++++++++++++++++++--
+ system/runstate.c     | 54 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/kvm/tdx.c | 24 ++++++++++++++++++-
+ 3 files changed, 103 insertions(+), 3 deletions(-)
+
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index 08bc99cb8561..5429116679e3 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -485,10 +485,12 @@
+ #
+ # @s390: s390 guest panic information type (Since: 2.12)
+ #
++# @tdx: tdx guest panic information type (Since: 8.2)
++#
+ # Since: 2.9
+ ##
+ { 'enum': 'GuestPanicInformationType',
+-  'data': [ 'hyper-v', 's390' ] }
++  'data': [ 'hyper-v', 's390', 'tdx' ] }
+ 
+ ##
+ # @GuestPanicInformation:
+@@ -503,7 +505,8 @@
+  'base': {'type': 'GuestPanicInformationType'},
+  'discriminator': 'type',
+  'data': {'hyper-v': 'GuestPanicInformationHyperV',
+-          's390': 'GuestPanicInformationS390'}}
++          's390': 'GuestPanicInformationS390',
++          'tdx' : 'GuestPanicInformationTdx'}}
+ 
+ ##
+ # @GuestPanicInformationHyperV:
+@@ -566,6 +569,27 @@
+           'psw-addr': 'uint64',
+           'reason': 'S390CrashReason'}}
+ 
++##
++# @GuestPanicInformationTdx:
++#
++# TDX Guest panic information specific to TDX GCHI
++# TDG.VP.VMCALL<ReportFatalError>.
++#
++# @error-code: TD-specific error code
++#
++# @gpa: guest-physical address of a page that contains additional
++#     error data, in forms of zero-terminated string.
++#
++# @message: Human-readable error message provided by the guest. Not
++#     to be trusted.
++#
++# Since: 9.0
++##
++{'struct': 'GuestPanicInformationTdx',
++ 'data': {'error-code': 'uint64',
++          'gpa': 'uint64',
++          'message': 'str'}}
++
+ ##
+ # @MEMORY_FAILURE:
+ #
+diff --git a/system/runstate.c b/system/runstate.c
+index d6ab860ecaa7..1ae85ea2c345 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -519,6 +519,52 @@ static void qemu_system_wakeup(void)
+     }
+ }
+ 
++static char* tdx_parse_panic_message(char *message)
++{
++    bool printable = false;
++    char *buf = NULL;
++    int len = 0, i;
++
++    /*
++     * Although message is defined as a json string, we shouldn't
++     * unconditionally treat it as is because the guest generated it and
++     * it's not necessarily trustable.
++     */
++    if (message) {
++        /* The caller guarantees the NUL-terminated string. */
++        len = strlen(message);
++
++        printable = len > 0;
++        for (i = 0; i < len; i++) {
++            if (!(0x20 <= message[i] && message[i] <= 0x7e)) {
++                printable = false;
++                break;
++            }
++        }
++    }
++
++    if (!printable && len) {
++        /* 3 = length of "%02x " */
++        buf = g_malloc(len * 3);
++        for (i = 0; i < len; i++) {
++            if (message[i] == '\0') {
++                break;
++            } else {
++                sprintf(buf + 3 * i, "%02x ", message[i]);
++            }
++        }
++        if (i > 0)
++            /* replace the last ' '(space) to NUL */
++            buf[i * 3 - 1] = '\0';
++        else
++            buf[0] = '\0';
++
++        return buf;
++    }
++
++    return message;
++}
++
+ void qemu_system_guest_panicked(GuestPanicInformation *info)
+ {
+     qemu_log_mask(LOG_GUEST_ERROR, "Guest crashed");
+@@ -560,7 +606,15 @@ void qemu_system_guest_panicked(GuestPanicInformation *info)
+                           S390CrashReason_str(info->u.s390.reason),
+                           info->u.s390.psw_mask,
+                           info->u.s390.psw_addr);
++        } else if (info->type == GUEST_PANIC_INFORMATION_TYPE_TDX) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          " TDX guest reports fatal error:\"%s\""
++                          " error code: 0x%016" PRIx64 " gpa page: 0x%016" PRIx64 "\n",
++                          tdx_parse_panic_message(info->u.tdx.message),
++                          info->u.tdx.error_code,
++                          info->u.tdx.gpa);
+         }
++
+         qapi_free_GuestPanicInformation(info);
+     }
+ }
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index f1c60274c448..1c79032ca262 100644
+index 1c79032ca262..4fbb18135951 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -1078,6 +1078,43 @@ static int tdx_handle_get_quote(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
+@@ -20,6 +20,7 @@
+ #include "qom/object_interfaces.h"
+ #include "standard-headers/asm-x86/kvm_para.h"
+ #include "sysemu/kvm.h"
++#include "sysemu/runstate.h"
+ #include "sysemu/sysemu.h"
+ #include "exec/address-spaces.h"
+ #include "exec/ramblock.h"
+@@ -1078,11 +1079,26 @@ static int tdx_handle_get_quote(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
      return 0;
  }
  
-+static int tdx_handle_report_fatal_error(X86CPU *cpu,
-+                                         struct kvm_tdx_vmcall *vmcall)
++static void tdx_panicked_on_fatal_error(X86CPU *cpu, uint64_t error_code,
++                                        uint64_t gpa, char *message)
 +{
-+    uint64_t error_code = vmcall->in_r12;
-+    char *message = NULL;
++    GuestPanicInformation *panic_info;
 +
-+    if (error_code & 0xffff) {
-+        error_report("TDX: REPORT_FATAL_ERROR: invalid error code: "
-+                     "0x%lx\n", error_code);
-+        return -1;
-+    }
++    panic_info = g_new0(GuestPanicInformation, 1);
++    panic_info->type = GUEST_PANIC_INFORMATION_TYPE_TDX;
++    panic_info->u.tdx.error_code = error_code;
++    panic_info->u.tdx.gpa = gpa;
++    panic_info->u.tdx.message = message;
 +
-+    /* it has optional message */
-+    if (vmcall->in_r14) {
-+        uint64_t * tmp;
-+
-+#define GUEST_PANIC_INFO_TDX_MESSAGE_MAX        64
-+        message = g_malloc0(GUEST_PANIC_INFO_TDX_MESSAGE_MAX + 1);
-+
-+        tmp = (uint64_t *)message;
-+        /* The order is defined in TDX GHCI spec */
-+        *(tmp++) = cpu_to_le64(vmcall->in_r14);
-+        *(tmp++) = cpu_to_le64(vmcall->in_r15);
-+        *(tmp++) = cpu_to_le64(vmcall->in_rbx);
-+        *(tmp++) = cpu_to_le64(vmcall->in_rdi);
-+        *(tmp++) = cpu_to_le64(vmcall->in_rsi);
-+        *(tmp++) = cpu_to_le64(vmcall->in_r8);
-+        *(tmp++) = cpu_to_le64(vmcall->in_r9);
-+        *(tmp++) = cpu_to_le64(vmcall->in_rdx);
-+        message[GUEST_PANIC_INFO_TDX_MESSAGE_MAX] = '\0';
-+        assert((char *)tmp == message + GUEST_PANIC_INFO_TDX_MESSAGE_MAX);
-+    }
-+
-+    error_report("TD guest reports fatal error. %s\n", message ? : "");
-+    return -1;
++    qemu_system_guest_panicked(panic_info);
 +}
 +
- static int tdx_handle_setup_event_notify_interrupt(X86CPU *cpu,
-                                                    struct kvm_tdx_vmcall *vmcall)
+ static int tdx_handle_report_fatal_error(X86CPU *cpu,
+                                          struct kvm_tdx_vmcall *vmcall)
  {
-@@ -1112,6 +1149,8 @@ static int tdx_handle_vmcall(X86CPU *cpu, struct kvm_tdx_vmcall *vmcall)
-         return tdx_handle_map_gpa(cpu, vmcall);
-     case TDG_VP_VMCALL_GET_QUOTE:
-         return tdx_handle_get_quote(cpu, vmcall);
-+    case TDG_VP_VMCALL_REPORT_FATAL_ERROR:
-+        return  tdx_handle_report_fatal_error(cpu, vmcall);
-     case TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT:
-         return tdx_handle_setup_event_notify_interrupt(cpu, vmcall);
-     default:
-diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
-index cedc7d7e226f..37fdd845f462 100644
---- a/target/i386/kvm/tdx.h
-+++ b/target/i386/kvm/tdx.h
-@@ -20,6 +20,7 @@ typedef struct TdxGuestClass {
+     uint64_t error_code = vmcall->in_r12;
+     char *message = NULL;
++    uint64_t gpa = -1ull;
  
- #define TDG_VP_VMCALL_MAP_GPA                           0x10001ULL
- #define TDG_VP_VMCALL_GET_QUOTE                         0x10002ULL
-+#define TDG_VP_VMCALL_REPORT_FATAL_ERROR                0x10003ULL
- #define TDG_VP_VMCALL_SETUP_EVENT_NOTIFY_INTERRUPT      0x10004ULL
+     if (error_code & 0xffff) {
+         error_report("TDX: REPORT_FATAL_ERROR: invalid error code: "
+@@ -1111,7 +1127,13 @@ static int tdx_handle_report_fatal_error(X86CPU *cpu,
+         assert((char *)tmp == message + GUEST_PANIC_INFO_TDX_MESSAGE_MAX);
+     }
  
- #define TDG_VP_VMCALL_SUCCESS           0x0000000000000000ULL
+-    error_report("TD guest reports fatal error. %s\n", message ? : "");
++#define TDX_REPORT_FATAL_ERROR_GPA_VALID    BIT_ULL(63)
++    if (error_code & TDX_REPORT_FATAL_ERROR_GPA_VALID) {
++        gpa = vmcall->in_r13;
++    }
++
++    tdx_panicked_on_fatal_error(cpu, error_code, gpa, message);
++
+     return -1;
+ }
+ 
 -- 
 2.34.1
 
