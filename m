@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1715F83C308
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 14:04:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0700B83C33E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 14:08:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSzNm-0001uN-Fn; Thu, 25 Jan 2024 08:03:03 -0500
+	id 1rSzRs-0005Eb-34; Thu, 25 Jan 2024 08:07:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rSzNf-0001tB-MV
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 08:02:55 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rSzNa-0006qu-SD
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 08:02:55 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 94DF947365;
- Thu, 25 Jan 2024 16:03:21 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DA2A86B719;
- Thu, 25 Jan 2024 16:02:36 +0300 (MSK)
-Message-ID: <289b0f6c-8d77-4604-88c0-c257e0837d67@tls.msk.ru>
-Date: Thu, 25 Jan 2024 16:02:36 +0300
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rSzRn-000567-Vh
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 08:07:12 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rSzRl-0001kn-Lf
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 08:07:11 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-558f523c072so7996189a12.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 05:07:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706188024; x=1706792824;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=M3SM6i36WcoNv9Eb0tJ7o9bjxd/YEs0hdGEkoQAyC6E=;
+ b=BvvIQozjVCGQQTwyVbqlX8uR6Zbc3sMxf8ePZlV3diQoy3wfSPwINgpgoA6/OWItOO
+ sYe3TBrHUw8JOWcP5o4D286iGHDvr+iPtl70LW+oLGLO7Ze953nBbYuQfbhYQEpgYU3e
+ dnPBAwdduENY4hc7mGcmxfZoyyyjVjgk7XzD7ISJ0vdWqIgyVw/ZObO6TmmTpkV5nxYn
+ cvQABl32UzXs/u/YdzjQewRbjZoglujfVofV78DWO/Iva5U2n+z9uea3GLI2WMXsdQs5
+ UyPLwV7KWfOo74Syj9f9WIUkWpAfnkncQqI3ZpjiqRp9v9YAiu4D6a56fZKSf6I7ZwcO
+ 6ZiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706188024; x=1706792824;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=M3SM6i36WcoNv9Eb0tJ7o9bjxd/YEs0hdGEkoQAyC6E=;
+ b=tJjxlrYS5Y/TtxDvh/QhuR50qS3mMM2CprxYDzbjQnbSnKLsxUyNn+LlsVChI8vH4m
+ h2hfevjy7ZnZ7L90aUSfUY/PwGUHupT4HAYL7bJUAHOkC7FS/5xvH/LbgbzRV8kWiFPW
+ uSiRj+nmzSrRaILAMG20N2DzyOdr3FQ+rzjbLOW3jtTzW78rjfvgFvoXNkpsQaTpsoFl
+ GdN+7BYvUuWdsOFCoUuzL6adRqdr/pftDfaqOljJahP/fN2r2iWLwPVKa21gI5ZQnbHO
+ CouSVYu1lvj1OG2m2rnlwsoz+UgkX+JgAwWkro2lOLsFWSaWdMCgm5bqZz+ouUiTnNDh
+ SxmQ==
+X-Gm-Message-State: AOJu0YyZSFf7EYrL8nzYq91WzHnIXUT7KYoRfI+S4pbs7PYSeMs4pAgO
+ B9SkyRUy/q9pG2Jv4g5rVf4eO+bG834L7qaVocIIiZWPUlMoJ9FV85YCtP0KXnk=
+X-Google-Smtp-Source: AGHT+IEG52o369ZBCvCOMzSLF6l9YFR1MU39Y7EQi6nA2qDJyH3EUKDv30egbeMwYbMGdOfHDUX7dg==
+X-Received: by 2002:aa7:dad0:0:b0:55c:415:612a with SMTP id
+ x16-20020aa7dad0000000b0055c0415612amr302482eds.151.1706188023768; 
+ Thu, 25 Jan 2024 05:07:03 -0800 (PST)
+Received: from navi.cosmonova.net.ua ([95.67.24.131])
+ by smtp.gmail.com with ESMTPSA id
+ er25-20020a056402449900b0055a829811ddsm6558709edb.48.2024.01.25.05.07.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Jan 2024 05:07:03 -0800 (PST)
+From: Andrew Melnychenko <andrew@daynix.com>
+To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
+ qemu-devel@nongnu.org, berrange@redhat.com
+Cc: yuri.benditovich@daynix.com,
+	yan@daynix.com,
+	akihiko.odaki@daynix.com
+Subject: [PATCH v8 0/5] eBPF RSS through QMP support.
+Date: Thu, 25 Jan 2024 15:06:49 +0200
+Message-ID: <20240125130656.425607-1-andrew@daynix.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Do we still need pre-meson compatibility hacks?
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Wolf, Kevin" <kwolf@redhat.com>,
- "P. Berrange, Daniel" <berrange@redhat.com>
-References: <CABgObfaCq+++xj7ow5Sm22P5nfMZyh-BKt57m3Po6voKyCnuXQ@mail.gmail.com>
- <CAFEAcA-fnOjEOWGjw1vqyx3Evnf6U99-Yo-mqMkXD87J_ZdTgg@mail.gmail.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <CAFEAcA-fnOjEOWGjw1vqyx3Evnf6U99-Yo-mqMkXD87J_ZdTgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2a00:1450:4864:20::530;
+ envelope-from=andrew@daynix.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,34 +89,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-25.01.2024 14:04, Peter Maydell :
-> On Thu, 25 Jan 2024 at 07:54, Paolo Bonzini <pbonzini@redhat.com> wrote:
->>
->> Right now configure contains a couple hacks to preserve some of the semantics of the pre-meson build system:
->>
->> 1) emulation of ./configure by creating a build directory and a forwarding GNUmakefile (requested by Kevin)
->>
->> 2) creation of symlinks such as x86_64-softmmu/qemu-system-x86_64 and arm-linux-user/qemu-arm (requested by Peter)
->>
->> Neither of these are a lot of code, but if people aren't relying on them we might as well delete them. Do they have any users still?
-> 
-> Personally I have moved away from using the old $TARGET/qemu-foo
-> so I would not miss the symlinks if they went away. Can't
-> speak for anybody else on that one.
+This series of patches provides the ability to retrieve eBPF program
+through qmp, so management application may load bpf blob with proper capabilities.
+Now, virtio-net devices can accept eBPF programs and maps through properties
+as external file descriptors. Access to the eBPF map is direct through mmap()
+call, so it should not require additional capabilities to bpf* calls.
+eBPF file descriptors can be passed to QEMU from parent process or by unix
+socket with sendfd() qmp command.
 
-Heh.  I still use `make qemu-system-arm` (or `ninja qemu-system-arm`), but only
-because I haven't followed closely what's the "right" target to use.  I don't
-care much which target it is exactly, but guess this is some info which needs
-to be findable somewhere (again, maybe it's in the docs for a long time, and
-I just need rtfm).
+Changes since v8:
+ * rebased and refactored QMP interface
 
-> I suspect that "just run configure in the source tree" is still
-> popular with the kind of people who don't frequently build
-> QEMU, though.
+Changes since v7:
+ * rebased and refactored
+ * used SPDX license identifier
+ * used DEFINE_PROP_ARRAY() for virtio-net "ebpf-rss-fds" property
 
-"Run configure" is popular indeed, -- configure might either be a startup script
-or just something to tell which command to use.  Again, personally I don't care
-much which it will be as long as I know what it is ;)
+Changes since v6:
+ * added comments to ebpf.json
+ * added libbpf version requirements to meson script with BPF_F_MMAPABLE check
 
-/mjt
+Changes since v5:
+ * refactored ebpf.json
+
+Changes since v4:
+ * refactored commit hunks
+ * added explicit BPF_F_MMAPABLE declaration
+
+Changes since v3:
+ * fixed issue with the build if bpf disabled
+ * rebased to the last master
+ * refactored according to review
+
+Changes since v2:
+ * moved/refactored QMP command
+ * refactored virtio-net
+
+Changes since v1:
+ * refactored virtio-net
+ * moved hunks for ebpf mmap()
+ * added qmp enum for eBPF id.
+ 
+Andrew Melnychenko (5):
+  ebpf: Added eBPF map update through mmap.
+  ebpf: Added eBPF initialization by fds.
+  virtio-net: Added property to load eBPF RSS with fds.
+  qmp: Added new command to retrieve eBPF blob.
+  ebpf: Updated eBPF program and skeleton.
+
+ ebpf/ebpf.c                    |   69 ++
+ ebpf/ebpf.h                    |   29 +
+ ebpf/ebpf_rss-stub.c           |    9 +-
+ ebpf/ebpf_rss.c                |  153 +++-
+ ebpf/ebpf_rss.h                |   13 +-
+ ebpf/meson.build               |    2 +-
+ ebpf/rss.bpf.skeleton.h        | 1343 ++++++++++++++++----------------
+ hw/net/virtio-net.c            |   63 +-
+ include/hw/virtio/virtio-net.h |    2 +
+ meson.build                    |   10 +-
+ qapi/ebpf.json                 |   66 ++
+ qapi/meson.build               |    1 +
+ qapi/qapi-schema.json          |    1 +
+ tools/ebpf/rss.bpf.c           |    7 +-
+ 14 files changed, 1059 insertions(+), 709 deletions(-)
+ create mode 100644 ebpf/ebpf.c
+ create mode 100644 ebpf/ebpf.h
+ create mode 100644 qapi/ebpf.json
+
+-- 
+2.43.0
+
 
