@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C1383B83E
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B1F83B821
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqT4-0006aj-B0; Wed, 24 Jan 2024 22:31:54 -0500
+	id 1rSqTF-0007oQ-Ow; Wed, 24 Jan 2024 22:32:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqT0-0006Ce-S3
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:50 -0500
+ id 1rSqTB-0007V9-D8
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:01 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSz-0001Dr-5d
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:50 -0500
+ id 1rSqT9-0001Dy-5q
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153509; x=1737689509;
+ t=1706153519; x=1737689519;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=06fQye4ab2G7q75ZKWk8jLhdTnPCEpYY476w3krl16E=;
- b=ivkBsctXhQ/GZMXEMZiA6QliTFGdqjflbjf29LSLf2qWQNd7i59jt47M
- K0SUXYUDy75/HxnAym6PHkb60yDlaS3wFfnasoJrLHiXO/58Xw21kBO/4
- UpI/YaGcxNiHgWemaOGJ9B+wUrkQtx7qUzw+2CgfB7KLKonVYJQRd/9yF
- RWkrQqSXinclMxEeM7Y/1eUgtuksNemLfJ/SOuxvUHv/TnibFf5kDwtde
- y5hOsO+OdTbccNrCfFqgmNGEu0dKEkog08LuGhizotWgMYl7q0r2pZFzl
- aA7+o9quScBYlbwOIGY7bbrPISGerBUIAlpPc/2+AwxdBd7Cdf3EDULmL g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430381"
+ bh=kAhbpSvf5mcqCqnuUHwzUyFR0bBkU6DMg1Kt+jDOu9k=;
+ b=Vnf6HWBgPiF3W//ca0dVmvvDvXOFOtUX1F46+EedR1aw0pkVCkhR89vc
+ RKWCIWhsjicrrJjF1o1hE0nLMKKGJNoudNbtdz9Lq2S/Eq/ZEeuOcHw10
+ Ni5XM3z47DqtubRemhRFOqMND/FnQCAH88BtUU3bK7Gh0t6JcGHs6km/z
+ xry6H61mY5y/3xTcpJE4hxvZ+shed+NkVvAjK6/05lYqmmbsthVJxqek3
+ B92Gt7iCrGRO5A7o9+s6NWmGaTOHksYRSB1x2kjGwYl8YN3hjV0JP2aGk
+ YG6zqWt4vHZ68xDCkaBIGdMtExJCGkXz9GmMYHK6mYKFOv4tYxne3B1hQ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430418"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430381"
+   d="scan'208";a="9430418"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:28:54 -0800
+ 24 Jan 2024 19:29:00 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086449"
+   d="scan'208";a="2086471"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:50 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:55 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 58/66] i386/tdx: Don't allow system reset for TDX VMs
-Date: Wed, 24 Jan 2024 22:23:20 -0500
-Message-Id: <20240125032328.2522472-59-xiaoyao.li@intel.com>
+Subject: [PATCH v4 59/66] i386/tdx: LMCE is not supported for TDX
+Date: Wed, 24 Jan 2024 22:23:21 -0500
+Message-Id: <20240125032328.2522472-60-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,27 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX CPU state is protected and thus vcpu state cann't be reset by VMM.
+LMCE is not supported TDX since KVM doesn't provide emulation for
+MSR_IA32_FEAT_CTL.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/kvm/kvm-cpu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e36ece874246..0ec0584d22ca 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5686,7 +5686,7 @@ bool kvm_has_waitpkg(void)
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 9c791b7b0520..8c618869533c 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -15,6 +15,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/boards.h"
  
- bool kvm_arch_cpu_check_are_resettable(void)
- {
--    return !sev_es_enabled();
-+    return !sev_es_enabled() && !is_tdx_vm();
++#include "tdx.h"
+ #include "kvm_i386.h"
+ #include "hw/core/accel-cpu.h"
+ 
+@@ -60,6 +61,10 @@ static bool lmce_supported(void)
+     if (kvm_ioctl(kvm_state, KVM_X86_GET_MCE_CAP_SUPPORTED, &mce_cap) < 0) {
+         return false;
+     }
++
++    if (is_tdx_vm())
++        return false;
++
+     return !!(mce_cap & MCG_LMCE_P);
  }
  
- #define ARCH_REQ_XCOMP_GUEST_PERM       0x1025
 -- 
 2.34.1
 
