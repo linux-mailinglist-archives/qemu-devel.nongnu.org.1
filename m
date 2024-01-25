@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD4483C829
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7451683C828
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:36:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT2gF-0006rM-Od; Thu, 25 Jan 2024 11:34:19 -0500
+	id 1rT2gG-0006ru-6Z; Thu, 25 Jan 2024 11:34:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT2gD-0006pg-Jp
+ id 1rT2gD-0006qC-Ul
  for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:34:17 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT2g9-00028c-Lu
+ id 1rT2gA-000295-2P
  for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:34:17 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso4741618f8f.2
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40eb033c192so6090155e9.0
  for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 08:34:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706200452; x=1706805252; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1djk9Mx2e66FY1I90FdC46YRiQSkTTbTopB41mRqY/E=;
- b=BT2Q5L6FPLJcD/jSKXnk249PDNrv6ov26TMQcaHHnPc8X/JGUzcS9SgQO1IjmBW3iz
- OrGc1vt2Bg9BeNDrfRJ7mn5WaOOdmnHJ6TSOfMTg2mkh6iQJ5vR6DfKtI8fMthzbZg5l
- ZJ0XEP3C1ZYJBaHTP8F0ni9wIOgZF0rsjtUdWDd0DiCUoPcY9C/r/bjo7d2VT6mKJUum
- j0WCgEVc3id9s+czxpW5BusmrjmvdhFK8w2c+mdECBEnts5AyxyGCD4xnft9KnOO+1n0
- T5pSCm9lfHKGHAIQaYSQ66/Klf6G966Q8WsVKGB+t+WFp07qkcxpJtPSoABmF+dE6x1w
- lmGg==
+ bh=5VAtlyKekgyrpcRxglyNDTk+EfBtmZT3jre+RwjFb84=;
+ b=YfPmM/ncBRWpFQQOQewrEalxrkMsI0TQYJuG4jH+kWNWimyywcnXMfOphxoWCtvgcr
+ Gm/8OCJyTv2hUdwE5YiMnINMcS2S5UoFK6Dwsu5nUnecqMV7TiGB1OJc8om7cH9Ly25U
+ ILwdy2UIG+Pjq2GLuhO/U1g/0vHsmPT4PP+0mTWBrRZBdYVoZgiUB5M6PBmYTFwctxhr
+ S96ZUCgUzUJCVwxBcy76VqTDZVgALJqgKaHHIyYdqLH0NyAdpiTA3RX6hfVui5dIyBMz
+ V5bkNnnUCMX02dJ7+yyKK+Bh9CwWdNYOcCeteg4ZtnZ5m02kjBZUWKs7RaYDa0wzikec
+ 08YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706200452; x=1706805252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1djk9Mx2e66FY1I90FdC46YRiQSkTTbTopB41mRqY/E=;
- b=KQHFjG1SKbk21u//DSXlVZ9QHee2814x+9mUfNBXjnRzCKS2h6SvzbNwVeehsEofos
- Yafj2RmbRK4fyYS+MX/WOWjwwP29NOUVc3GJvJylYJyMBZL/de9AioNr7iX9KLUI2mXx
- qrrNCRDZKqd0HRC4xosy+LUYt1fyiUyjgRUVPNXor0+eacMlrC7UlfMqZ8KFvMLF/TJk
- QiqBX4FrpGs3i260ICbX3bhWjNeN66rKVF4Mn0HA0VrgtSaNChOYsA7VcqWTjaK/k1vr
- rEjjn8rpfK3LaU7h4ZdffkvXZcCBsiJcvYQIGUZTM8GEtpyWseIEeq2PAde0iBUymtGW
- Zr0A==
-X-Gm-Message-State: AOJu0YzJj9BQHzSYyQG0lXz3AaNbtj5HsQlwkqXDSAI8kVVuglM2e8nl
- gSSjA24mQVPptSaXoF1PsGuZSgIAcGkYsVEYA22r46yp7PjH5U1eFnOaQ6ladp/pUYbOpltq5il
- C
-X-Google-Smtp-Source: AGHT+IEBT4lW0PjnuwQtKEuRYzIUG+veTyNR8elNqgPJe4sY/WkL5skwdc7hJOPIWdbW6s6gy1QRnA==
-X-Received: by 2002:a05:600c:5022:b0:40e:d232:b5cb with SMTP id
- n34-20020a05600c502200b0040ed232b5cbmr558309wmr.195.1706200452194; 
+ bh=5VAtlyKekgyrpcRxglyNDTk+EfBtmZT3jre+RwjFb84=;
+ b=uZOvIaZqM3uhYXKsSSVoE2WgZ5jsADfXBRfA9JAFSUCQESemFRMzh5ic2bonwoSKWN
+ Z6FAeMfHA6QRtPnKGlNEGI5/2UsRjicFoCl0ZrL7urRPBH80N+BWeHSsvED/5GWMKaMC
+ yt+knnspBH2epSmkULuhqXhy6ZBs/Ll8LQ/avTwYFgwht3/nCqh4gAoUcDkqtSDV3YAq
+ uBatAEk5xe9eyVTHpS5T3Lq5qZ7M+yh2M3YX19kPs16gY1VfqN14DN1VtTHzPJudHG7J
+ 6TTLX6vByQJQCdUMJjFV34YtKy7+0Z8YGIz/DhRs0f272+qaW4la/hSsL0LQXxUilrHM
+ nQbQ==
+X-Gm-Message-State: AOJu0Yza+/0E78mW9g5DaxrHt9FLyFLL4tohgp/sFiPQLjkVlf5uhWa2
+ kgWOkziyXe8IminPYZSbwrlbbwECA0wIYIlqtjZUV+k70i1CACrCkzRBMISdXkvjDnJnIJnev0x
+ V
+X-Google-Smtp-Source: AGHT+IGl23dbk6M9Zr1YlSPfewofwjrLnGbQ9yoY3iDw1oI4gHjKnf5tvL29+qfxZDhbQmLEXkqjmQ==
+X-Received: by 2002:a05:600c:1d90:b0:40e:c635:331 with SMTP id
+ p16-20020a05600c1d9000b0040ec6350331mr42474wms.53.1706200452627; 
  Thu, 25 Jan 2024 08:34:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- p13-20020a05600c358d00b0040ea875a527sm3122208wmq.26.2024.01.25.08.34.11
+ p13-20020a05600c358d00b0040ea875a527sm3122208wmq.26.2024.01.25.08.34.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jan 2024 08:34:11 -0800 (PST)
+ Thu, 25 Jan 2024 08:34:12 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org
-Subject: [PATCH 06/10] m68k: Clean up includes
-Date: Thu, 25 Jan 2024 16:34:04 +0000
-Message-Id: <20240125163408.1595135-7-peter.maydell@linaro.org>
+Subject: [PATCH 07/10] include: Clean up includes
+Date: Thu, 25 Jan 2024 16:34:05 +0000
+Message-Id: <20240125163408.1595135-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125163408.1595135-1-peter.maydell@linaro.org>
 References: <20240125163408.1595135-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,7 +93,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This commit was created with scripts/clean-includes:
-./scripts/clean-includes --git m68k include/hw/audio/asc.h include/hw/m68k/*.h
+ ./scripts/clean-includes --git include include/*/*.h include/*/*/*.h
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -106,34 +106,90 @@ related cleanups:
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/audio/asc.h      | 1 -
- include/hw/m68k/q800-glue.h | 1 -
- 2 files changed, 2 deletions(-)
+I hand-checked that all these headers are included only by .c
+files which already have osdep.h included.
+---
+ include/hw/arm/raspberrypi-fw-defs.h | 1 -
+ include/hw/mem/memory-device.h       | 1 -
+ include/hw/ppc/spapr_nested.h        | 1 -
+ include/hw/xen/xen-hvm-common.h      | 1 -
+ include/qemu/qtree.h                 | 1 -
+ include/ui/rect.h                    | 2 --
+ 6 files changed, 7 deletions(-)
 
-diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
-index 4741f92c461..04fac270b6a 100644
---- a/include/hw/audio/asc.h
-+++ b/include/hw/audio/asc.h
-@@ -13,7 +13,6 @@
- #ifndef HW_AUDIO_ASC_H
- #define HW_AUDIO_ASC_H
+diff --git a/include/hw/arm/raspberrypi-fw-defs.h b/include/hw/arm/raspberrypi-fw-defs.h
+index 4551fe7450d..579cf0d5546 100644
+--- a/include/hw/arm/raspberrypi-fw-defs.h
++++ b/include/hw/arm/raspberrypi-fw-defs.h
+@@ -10,7 +10,6 @@
+ #ifndef INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
+ #define INCLUDE_HW_MISC_RASPBERRYPI_FW_DEFS_H_
  
 -#include "qemu/osdep.h"
- #include "hw/sysbus.h"
- #include "audio/audio.h"
  
-diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
-index ceb916d16c1..04fac25f6c2 100644
---- a/include/hw/m68k/q800-glue.h
-+++ b/include/hw/m68k/q800-glue.h
-@@ -23,7 +23,6 @@
- #ifndef HW_Q800_GLUE_H
- #define HW_Q800_GLUE_H
+ enum rpi_firmware_property_tag {
+     RPI_FWREQ_PROPERTY_END =                           0,
+diff --git a/include/hw/mem/memory-device.h b/include/hw/mem/memory-device.h
+index a1d62cc551a..e0571c8a319 100644
+--- a/include/hw/mem/memory-device.h
++++ b/include/hw/mem/memory-device.h
+@@ -14,7 +14,6 @@
+ #define MEMORY_DEVICE_H
+ 
+ #include "hw/qdev-core.h"
+-#include "qemu/typedefs.h"
+ #include "qapi/qapi-types-machine.h"
+ #include "qom/object.h"
+ 
+diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+index d3834864764..d312a5d61da 100644
+--- a/include/hw/ppc/spapr_nested.h
++++ b/include/hw/ppc/spapr_nested.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_SPAPR_NESTED_H
+ #define HW_SPAPR_NESTED_H
  
 -#include "qemu/osdep.h"
- #include "hw/sysbus.h"
+ #include "target/ppc/cpu.h"
  
- #define TYPE_GLUE "q800-glue"
+ /*
+diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+index 4e9904f1a65..4b1d728f35c 100644
+--- a/include/hw/xen/xen-hvm-common.h
++++ b/include/hw/xen/xen-hvm-common.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_XEN_HVM_COMMON_H
+ #define HW_XEN_HVM_COMMON_H
+ 
+-#include "qemu/osdep.h"
+ #include "qemu/units.h"
+ 
+ #include "cpu.h"
+diff --git a/include/qemu/qtree.h b/include/qemu/qtree.h
+index 69fe74b50d0..dc2b14d2582 100644
+--- a/include/qemu/qtree.h
++++ b/include/qemu/qtree.h
+@@ -42,7 +42,6 @@
+ #ifndef QEMU_QTREE_H
+ #define QEMU_QTREE_H
+ 
+-#include "qemu/osdep.h"
+ 
+ #ifdef HAVE_GLIB_WITH_SLICE_ALLOCATOR
+ 
+diff --git a/include/ui/rect.h b/include/ui/rect.h
+index 68f05d78a8e..7ebf47ebcdc 100644
+--- a/include/ui/rect.h
++++ b/include/ui/rect.h
+@@ -4,8 +4,6 @@
+ #ifndef QEMU_RECT_H
+ #define QEMU_RECT_H
+ 
+-#include <stdint.h>
+-#include <stdbool.h>
+ 
+ typedef struct QemuRect {
+     int16_t x;
 -- 
 2.34.1
 
