@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A851B83BAA1
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F2283BAA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:32:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSuBA-0006ws-Kx; Thu, 25 Jan 2024 02:29:40 -0500
+	id 1rSuDI-0007fg-7P; Thu, 25 Jan 2024 02:31:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rSuB3-0006wW-V5
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:29:35 -0500
+ id 1rSuD1-0007do-PJ
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:35 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rSuB1-0007ke-Ib
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:29:33 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rSuCz-0008MV-QY
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:35 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxbevVDbJlhWwFAA--.20580S3;
- Thu, 25 Jan 2024 15:29:25 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxWOhPDrJl6WwFAA--.975S3;
+ Thu, 25 Jan 2024 15:31:27 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxZMzVDbJlOOIYAA--.48769S2; 
- Thu, 25 Jan 2024 15:29:25 +0800 (CST)
+ AQAAf8Bx8ORNDrJl8OMYAA--.43196S2; 
+ Thu, 25 Jan 2024 15:31:26 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: 
 Cc: qemu-devel@nongnu.org,
 	peter.maydell@linaro.org
 Subject: [PULL 0/2] loongarch-to-apply queue
-Date: Thu, 25 Jan 2024 15:13:16 +0800
-Message-Id: <20240125071318.53255-1-gaosong@loongson.cn>
+Date: Thu, 25 Jan 2024 15:15:17 +0800
+Message-Id: <20240125071519.53361-1-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxZMzVDbJlOOIYAA--.48769S2
+X-CM-TRANSID: AQAAf8Bx8ORNDrJl8OMYAA--.43196S2
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
