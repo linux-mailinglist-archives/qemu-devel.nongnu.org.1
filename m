@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE5A83CCCF
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 20:49:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA45F83CCF0
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 20:54:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT5ic-0001Mu-Kn; Thu, 25 Jan 2024 14:48:58 -0500
+	id 1rT5n1-0004aO-GI; Thu, 25 Jan 2024 14:53:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rT5ib-0001Ml-9H
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:48:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rT5iZ-0007xq-Rq
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:48:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706212133;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Sdcd+8NuW0mkMumBAi7O/0l9rRG2hGj0Pxoe4i7o4bE=;
- b=RLBe6/LlQsIUrl4kK0fs8jRfarUjHRT52K8cudWfahxc785HJfApGcu44jZTiuylk8woG7
- SU0j8dLT2kCBgcNYYgoUuBRamKB9ATfJGt57tq27GadqgeU0cgzLwEY9z0q8F3k3P6Czfi
- uzv3GDqmxo535RJa75do3aNcDPhQoX0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-6zaVG8OHPCWzz37aaUVTQw-1; Thu, 25 Jan 2024 14:48:48 -0500
-X-MC-Unique: 6zaVG8OHPCWzz37aaUVTQw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 074DC185A783;
- Thu, 25 Jan 2024 19:48:48 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.221])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DA9A68D38;
- Thu, 25 Jan 2024 19:48:46 +0000 (UTC)
-Date: Thu, 25 Jan 2024 13:48:45 -0600
-From: Eric Blake <eblake@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, michael.roth@amd.com, peter.maydell@linaro.org, 
- jsnow@redhat.com
-Subject: Re: [PATCH 0/7] qapi qmp: Documentation fixes
-Message-ID: <hozt5yxggkrqdlmzvunrqkxnjxylu44jaxe7fv2n6eh23ft4hd@vmvkhydox4x6>
-References: <20240120095327.666239-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rT5mz-0004Zr-6z
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:53:29 -0500
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rT5mx-00015N-Fp
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 14:53:28 -0500
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-29041136f73so3842001a91.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 11:53:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1706212405; x=1706817205; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=MKkWlwwYYk5o7CvSFPpJVirm/B1Ja/1V+c7BjnxxjbA=;
+ b=IKcWSfMe0tgGmyLv72Bx1maAj643wozeh/Kp5R/egW2IoLxPoTQWoKOVoOKxYmGmXB
+ u9azgbEoTyjUuhlc4zad08XP1jA0El1aRCJOca+ugRIpusUCAEj/22Z0ic2CYyK//xIO
+ FW8YBJz3JvaJlY2oM+AmiQKEcaNKKd1lP/oKJP37B2ZR81rLZTVZ8MQ+5DzV/hitkb/Y
+ G31xSK8O5pBFwlU8jf4H8XVWfzQaXHUvaYi62LLqoN5yVS5I7TFiIj1jDHBB3YPqyrz8
+ 6y4HxKQkxgaHUDOt24zvGmaSFBCvPGNtaOy3OSIDIqhiASjnEAl7wZ12aoCBUzqnZhW3
+ m62w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706212405; x=1706817205;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MKkWlwwYYk5o7CvSFPpJVirm/B1Ja/1V+c7BjnxxjbA=;
+ b=oFnOlmrlbDNUUJH01Spgk9+5R4QOXmLd+L2+i7/xdI01znOjPhg6oVyZQkLR9qMx7Y
+ wN5/A55MJGnnFMNJhXBUz0eYeOqY+stfyE/BvPoxP4dnghacKnXpbwJfQWixWhz7rDHp
+ U7DQZeouio7UAx3zpA0OAJtDN23jLCLJ2VGn+Wsb0T3jErX5v0sXIhXZFku99FlbDn4O
+ 5r9m2U5TzllmpkkbACZxjhLWQ7WOOdyuKsHREpgMVugkoRtlVFEtyj+wvoz4e0J1oSGU
+ GeQobt5DtnUNAQiC45frkXnxFtS/9Z0dEsoMZ4mDoB41zALNJb4TJKV5qPZwfwHZG0i1
+ mpzw==
+X-Gm-Message-State: AOJu0Yy1o+iWYN6obVz0SrzoENFAU/2FIByRIRDfTGsuBlcmDoczVixo
+ O6xrU8viU1yVpHrs40eSdgpZ3iEpQuyhPScH2C7T0QCnyqsHxh+WfNXo9LRE/5ilKwdDmpj4F9o
+ F
+X-Google-Smtp-Source: AGHT+IH+EqFEyaFymb9+H9z7kPe1kSYtvIEtTur9cLU4QGToXQNwdydtHW9t2+rsHf57v+j3ZMYDDg==
+X-Received: by 2002:a17:90b:a16:b0:28c:a632:1f87 with SMTP id
+ gg22-20020a17090b0a1600b0028ca6321f87mr137281pjb.34.1706212405597; 
+ Thu, 25 Jan 2024 11:53:25 -0800 (PST)
+Received: from grind.. ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
+ by smtp.gmail.com with ESMTPSA id
+ r7-20020a17090ad40700b0028b6759d8c1sm1958613pju.29.2024.01.25.11.53.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Jan 2024 11:53:25 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/6] riscv: named features riscv,isa, 'svade' rework
+Date: Thu, 25 Jan 2024 16:53:13 -0300
+Message-ID: <20240125195319.329181-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240120095327.666239-1-armbru@redhat.com>
-User-Agent: NeoMutt/20231221
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,22 +92,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jan 20, 2024 at 10:53:20AM +0100, Markus Armbruster wrote:
-> Markus Armbruster (7):
->   docs/devel/qapi-code-gen: Fix missing ':' in tagged section docs
->   docs: Replace dangling references to docs/interop/qmp-intro.txt
->   qapi: Fix dangling references to docs/devel/qapi-code-gen.txt
->   docs/interop/bitmaps: Clean up a reference to qemu-qmp-ref
->   qapi: Fix mangled "Returns" sections in documentation
->   qapi: Indent tagged doc comment sections properly
->   qapi: Fix malformed "Since:" section tags (again)
+Hi,
 
-For the series:
-Reviewed-by: Eric Blake <eblake@redhat.com>
+This is a bundle of fixes based on discoveries that were made in the
+last week or so:
+
+- what we call "named features" are actually real extensions, which are
+  considered to be ratified by the profile spec that defines them. This
+  means that we need to add riscv,isa strings for them. More info can be
+  found on the commit msg of patch 2;
+
+- the design behind 'svade' and 'svadu' is wrong. 'svade' does not mean
+  'we do not have svadu'. In fact they can coexist. Patch 5 gives more
+  details about it.
+
+
+After this series, 'svade' is promoted to a regular extension and all
+the named features QEMU implements are now being displayed in riscv,isa.
+
+
+Andrew Jones (3):
+  target/riscv: Reset henvcfg to zero
+  target/riscv: Gate hardware A/D PTE bit updating
+  target/riscv: Promote svade to a normal extension
+
+Daniel Henrique Barboza (3):
+  target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
+  target/riscv: add riscv,isa to named features
+  target/riscv: add remaining named features
+
+ target/riscv/cpu.c         | 63 ++++++++++++++++++++++++++++----------
+ target/riscv/cpu_cfg.h     | 15 +++++++--
+ target/riscv/cpu_helper.c  | 18 ++++++++---
+ target/riscv/csr.c         |  2 +-
+ target/riscv/tcg/tcg-cpu.c | 42 +++++++++++++++----------
+ 5 files changed, 99 insertions(+), 41 deletions(-)
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.43.0
 
 
