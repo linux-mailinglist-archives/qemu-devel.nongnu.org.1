@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9DE83B73D
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 03:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F048583B73C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 03:41:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSpfO-0003UC-JN; Wed, 24 Jan 2024 21:40:34 -0500
+	id 1rSpfZ-0003Va-Ic; Wed, 24 Jan 2024 21:40:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSpfG-0003Te-H8
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 21:40:26 -0500
+ id 1rSpfH-0003U1-Cb
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 21:40:27 -0500
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSpfE-0007d2-Qh
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 21:40:26 -0500
+ id 1rSpfF-0007dM-RP
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 21:40:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706150424; x=1737686424;
+ t=1706150425; x=1737686425;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nblpklNzUZKD78eAt5m3cZr0n/f8GwIruXeYbHNh9Ok=;
- b=GNMj4WwjqCql2nsXhJFhjnK2sY3ph8jbPgUrD8fy8F+dHCt7yPTZUSnt
- 63goLi9xTnGuM0buD2nQblt0wq+DbE4GihSqAZkyyll6Bu0N9QOtHbvmy
- 2SIaWFhCjVI7bFTMI0zJYwqZBzzvqmY7/Uw0obVHUG9H7VuurIQfDEwhp
- PO/b3bdxACJgasXBtI/Pk3z/P5nxHzq6j8ssD5v8dMzCEJghrgOoI8vTI
- +kCVfAzwrUxJqT5Mf0ajxWlyr/zDi8zrn93pfWIFlr070lfXeTbbovpjs
- 98G+CByrUlKDzN3oI1VgSOEpTlW9AKeYNOUy+MqLBDGXtc08RkqKy05/Q A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="401687453"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="401687453"
+ bh=AckTspWNDYDrRLMW6Dhxf2nPnuEuHbcix4yyarI2Zew=;
+ b=Rvp6RFqbAP8UNjsa46JNGx3U1K691a7v4SNBvIvVy/xVlJXu4cAuRFG3
+ kC1p+fUx4ETp+DPygHyxVyPi4py10iRD9PtDd5AsgyjyFZH+f0jHqtN4D
+ +umZO4rIK1CA2CLRzcRyC/3JyTAJ1Nz24UC0iybvHytWBVfXRXJUXF4tU
+ BokJ37cmBpSF/fcaxdgAGZLDehof9qI/3xjAYm3S2VrdYf0np2qnJtVkj
+ 3Ve0X1khXBXX0QHh7GHhZ/5nXDhzRXKQLuvwetoV5Ub328hh7KeqCaMwh
+ /OSBZax80XsGeXkf8Bm63VVxDBKa+4ZRGrtgeSMJoydb0y+b1N7EIU3TI w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="401687456"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="401687456"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 18:40:22 -0800
+ 24 Jan 2024 18:40:24 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2120530"
+   d="scan'208";a="2120534"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa003.jf.intel.com with ESMTP; 24 Jan 2024 18:40:21 -0800
+ by orviesa003.jf.intel.com with ESMTP; 24 Jan 2024 18:40:23 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	kvm@vger.kernel.org,
 	xiaoyao.li@intel.com
-Subject: [PATCH v3 1/3] i386/cpuid: Decrease cpuid_i when skipping CPUID leaf
- 1F
-Date: Wed, 24 Jan 2024 21:40:14 -0500
-Message-Id: <20240125024016.2521244-2-xiaoyao.li@intel.com>
+Subject: [PATCH v3 2/3] i386/cpuid: Remove subleaf constraint on CPUID leaf 1F
+Date: Wed, 24 Jan 2024 21:40:15 -0500
+Message-Id: <20240125024016.2521244-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125024016.2521244-1-xiaoyao.li@intel.com>
 References: <20240125024016.2521244-1-xiaoyao.li@intel.com>
@@ -79,30 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Existing code misses a decrement of cpuid_i when skip leaf 0x1F.
-There's a blank CPUID entry(with leaf, subleaf as 0, and all fields
-stuffed 0s) left in the CPUID array.
-
-It conflicts with correct CPUID leaf 0.
+No such constraint that subleaf index needs to be less than 64.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by:Yang Weijiang <weijiang.yang@intel.com>
 ---
- target/i386/kvm/kvm.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/i386/kvm/kvm.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 76a66246eb72..dff9dedbd761 100644
+index dff9dedbd761..9758c83693ec 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -1914,6 +1914,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
-         }
-         case 0x1f:
-             if (env->nr_dies < 2) {
-+                cpuid_i--;
-                 break;
-             }
-             /* fallthrough */
+@@ -1926,10 +1926,6 @@ int kvm_arch_init_vcpu(CPUState *cs)
+                     break;
+                 }
+ 
+-                if (i == 0x1f && j == 64) {
+-                    break;
+-                }
+-
+                 c->function = i;
+                 c->flags = KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+                 c->index = j;
 -- 
 2.34.1
 
