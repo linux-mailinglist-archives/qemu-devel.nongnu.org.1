@@ -2,104 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A2A840595
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 13:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731678406B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 14:22:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUR6a-000204-Dq; Mon, 29 Jan 2024 07:51:16 -0500
+	id 1rURZ0-0006Pt-IO; Mon, 29 Jan 2024 08:20:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rUR6X-0001yf-QY
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 07:51:13 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rUR6V-0004qL-U9
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 07:51:13 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rURYm-0006Om-Ea
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 08:20:27 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rURYd-0003cQ-WB
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 08:20:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706534411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=DoYxf9eAqdbLBQUbOoVCUDzlRnQxmjWEbO2MdKIkEGU=;
+ b=Tvj89DBbkvlW8pU0OM8ObHjyz0d2LTFOyANFLqmGBuLLFz3ZW0cCJPUA2IOXnzx1Y3M11o
+ V14REMi21CocG4jIYi8DedHoeb7sIn8PU9qUFH/AIgHX0hekXlmXSNau5B/ADFApZz9EGF
+ pe0rYJ1ZiENPI5BvGMxcpt2kXWijQ44=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-qdUXk2kqOtitbi11Yl18zw-1; Mon, 29 Jan 2024 08:20:06 -0500
+X-MC-Unique: qdUXk2kqOtitbi11Yl18zw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A547F1FCF2;
- Mon, 29 Jan 2024 12:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706532669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ropfbvkcP8hYG8kFzkmIMjz33yQYNeTDAtdDm0GS0sI=;
- b=0vE4oGVpQUK5QOL2T/i2+xcE+8FP5LCTMNGCDuqrzcBs9yV00cuAId43z7OaKwJyhLYbxC
- jTTIcgMTGpVupbFrtjt3wF2nsx1oMrWw2+43Stm4vxES9SiG7MUZyVUJuaOyZvw17oGixM
- mKOs57mDvsj50eapUyx3H728hTJcEmg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706532669;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ropfbvkcP8hYG8kFzkmIMjz33yQYNeTDAtdDm0GS0sI=;
- b=GCUIuTcoANybfBY0g/0vjSRXSOKlKa6HxaWtPUITcCQ2VyyE5hkOshRs2KLw/d1j6QKBCp
- UuSFouGYdId2ahCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706532669; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ropfbvkcP8hYG8kFzkmIMjz33yQYNeTDAtdDm0GS0sI=;
- b=0vE4oGVpQUK5QOL2T/i2+xcE+8FP5LCTMNGCDuqrzcBs9yV00cuAId43z7OaKwJyhLYbxC
- jTTIcgMTGpVupbFrtjt3wF2nsx1oMrWw2+43Stm4vxES9SiG7MUZyVUJuaOyZvw17oGixM
- mKOs57mDvsj50eapUyx3H728hTJcEmg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706532669;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ropfbvkcP8hYG8kFzkmIMjz33yQYNeTDAtdDm0GS0sI=;
- b=GCUIuTcoANybfBY0g/0vjSRXSOKlKa6HxaWtPUITcCQ2VyyE5hkOshRs2KLw/d1j6QKBCp
- UuSFouGYdId2ahCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 32EE012FF7;
- Mon, 29 Jan 2024 12:51:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id qBnUOjyft2U+HwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 29 Jan 2024 12:51:08 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, "Liu, Yuan1" <yuan1.liu@intel.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Hao Xiang
- <hao.xiang@bytedance.com>, Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: Re: [PATCH 0/5] migration/multifd: Prerequisite cleanups for
- ongoing work
-In-Reply-To: <ZbdVhLTLo5udNfeL@x1n>
-References: <20240126221943.26628-1-farosas@suse.de>
- <PH7PR11MB5941BDAB9743C53A9E08CC3CA37E2@PH7PR11MB5941.namprd11.prod.outlook.com>
- <ZbdVhLTLo5udNfeL@x1n>
-Date: Mon, 29 Jan 2024 09:51:06 -0300
-Message-ID: <87jznse211.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4425A85A597;
+ Mon, 29 Jan 2024 13:20:06 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.31])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B7A2B400F364;
+ Mon, 29 Jan 2024 13:20:05 +0000 (UTC)
+Date: Thu, 25 Jan 2024 15:50:38 -0500
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, peter.maydell@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] iotests/iothreads-stream: Use the right TimeoutError
+Message-ID: <20240125205038.GA54178@fedora>
+References: <20240125152150.42389-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -1.30
-X-Spamd-Result: default: False [-1.30 / 50.00]; ARC_NA(0.00)[];
- TO_DN_EQ_ADDR_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ZDk4Lb+Cw3dkz8Kc"
+Content-Disposition: inline
+In-Reply-To: <20240125152150.42389-1-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,41 +80,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
 
-> On Mon, Jan 29, 2024 at 01:41:01AM +0000, Liu, Yuan1 wrote:
->> Because this change has an impact on the previous live migration 
->> With IAA Patch, does the submission of the next version needs 
->> to be submitted based on this change?
->
-> I'd say hold off a little while until we're more certain on the planned
-> interface changes, to avoid you rebase your code back and forth; unless
-> you're pretty confident that this will be the right approach.
->
-> I apologize on not having looked at any of the QAT/IAA compression / zero
-> detection series posted on the list; I do plan to read them very soon too
-> after Fabiano.  So I may not have a complete full picture here yet, please
-> bare with me.
->
-> If this series is trying to provide a base ground for all the efforts,
-> it'll be great if we can thoroughly discuss here and settle an approach
-> soon that will satisfy everyone.
+--ZDk4Lb+Cw3dkz8Kc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Just a summary if it helps:
+On Thu, Jan 25, 2024 at 04:21:50PM +0100, Kevin Wolf wrote:
+> Since Python 3.11 asyncio.TimeoutError is an alias for TimeoutError, but
+> in older versions it's not. We really have to catch asyncio.TimeoutError
+> here, otherwise a slow test run will fail (as has happened multiple
+> times on CI recently).
+>=20
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  tests/qemu-iotests/tests/iothreads-stream | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-For compression work (IAA/QPL, QAT) the discussion is around having a
-new "compression acceleration" option that enables the accelerators and
-is complementary to the existing zlib compression method. We'd choose
-those automatically based on availability and we'd make HW accelerated
-compression produce a stream that is compatible with QEMU's zlib stream
-so we could migrate between solutions.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-For zero page work and zero page acceleration (DSA), the question is how
-to fit zero page detection into multifd and whether we need a new hook
-multifd_ops->zero_page_detect() (or similar) to allow client code to
-provide it's own zero page detection methods. My worry here is that
-teaching multifd to recognize zero pages is one more coupling to the
-"pages" data type. Ideallly we'd find a way to include that operation as
-a prepare() responsibility and the client code would deal with it.
+--ZDk4Lb+Cw3dkz8Kc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmWyyZ4ACgkQnKSrs4Gr
+c8i9HAf+P7vd8VsK/qzn2zzos7pUOfztsaLoNbjs6GqaRdBteqqNz511gLrpUc2G
+HXZ8GCPbSyvZOPunu8Qzbm1YQN85YzYN47t5pksLTDv34D6lcdYtUoCaSFq6TYvb
+bSGODb/bgza3wizT6ja8pv2HLY8ja9FL4yRjru4b04X4Td5Lf1gEDnLA9A5iTB2L
+djBZ+VSyuvNDRoWlCR17W5CWl77Pl3aAZMUyxuWgssKgb7PLnahXbY0pj/rL0ev/
+eFPUL5z58+pV7mejxX9AWunQ/LzFyggwNAej3pvOLpL0/L8U+eTzPxFjp+hat61u
+gtKSm7PsVQfW9BY+zuJFNaR8r4MJWA==
+=ZVp0
+-----END PGP SIGNATURE-----
+
+--ZDk4Lb+Cw3dkz8Kc--
 
 
