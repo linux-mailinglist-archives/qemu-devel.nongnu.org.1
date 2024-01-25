@@ -2,78 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B53983B8EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 06:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26C083B920
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 06:47:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSrwc-00083J-IT; Thu, 25 Jan 2024 00:06:30 -0500
+	id 1rSsZT-0007nt-Sx; Thu, 25 Jan 2024 00:46:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSrwX-00082n-Ef
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 00:06:25 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSsZS-0007nl-5m
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 00:46:38 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSrwU-0002UP-8d
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 00:06:24 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40e775695c6so61611095e9.3
- for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 21:06:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rSsZQ-0008Aq-Kx
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 00:46:37 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40eac352733so44982555e9.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Jan 2024 21:46:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706159181; x=1706763981; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Gmqrv4fvsbInb7Sp74XcN97wYzqqaxwGQuaHqjrzI+I=;
- b=rWvmfn6Hhpx6Jz+S4GjuX+UKyh7odF2K9xV4PBf88as4Kvt6tisDbaQcLEHcabNe/7
- bqykkl085oQFJVuJSwF72EGnoW8E8iVsc+EU2guD9fbnua9D7oG6u0n/q3+YcDVF+d9w
- q2do+FhYLXhM6Gp48vbXIylxPIb0jyFtVhAXJIR6yweI2kxnrAs7EZrZqFcY+llV4UWG
- jk6NEV+LY502ztl3hj7dDtRpQVpH/D4VonBF5DTfYJXo2kYt9iNgHMaJW6qfPpHL8ISA
- JsfWG5zPiH1J6/xXI7PjxtI82+0ICJ3kUHIVkNuWnLvKIM1bJOKXo3F/+kKHA8Ij5EcS
- wQtg==
+ d=linaro.org; s=google; t=1706161594; x=1706766394; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7pl0jBZIgLiocBT81t4z9AQLPc3Jq1Fc18MeBj1ODrE=;
+ b=YXMkxT3U1ZEW1CpUDlWR11RDHkFegH0w0jySA0RYSfDXQXQqjTKaVGMdtqZ/qFp71O
+ Qrqpu4X7+78IUorj4bgiZr3O/tYby/W6Ib47tV9lvmKJxax49HkR6wnP6JOuPFJE72zF
+ tEVwUjQ9S+vcmHtbsAw7dnJgt7x2iWbDUUzXlWsaW1QxR/Rgef9zSu/GjsZCNypAAb6b
+ RQxj5Ghng9VB5Nb5UY11TPdFZHDzMo43omtldsZsd5D1/UGxJXIkvnSh/V/ILE4nx7aV
+ U8i37msl1gZ/XB+/6DtIgfWZjU4hy3d9eVGNuw2SU9PCbWcj9lhR4ZSqFiJVgX2uWf4N
+ p89Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706159181; x=1706763981;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gmqrv4fvsbInb7Sp74XcN97wYzqqaxwGQuaHqjrzI+I=;
- b=lwHBCrzF6bWgK4R+1NwvQIYfgWgZQ3qSogLWLZda1pBbw+hJiMvjeU5SvnIR5QOuUK
- scK8MWLV4Noei9L74TQqXImFMuJ1wokpetCf565YXh4IviobXFh1F4bYn4z74MsJ8fVq
- 3HSIICAxq9GUTpFY8veKEYxTcvc9QOWEByjc4oGp9hVTgjCUFclnxW64nT4mLleDP0AM
- cQVvrjQCBbZ4NC4FN84S+Puwv6nQaRq6e2UgbUjMExvZsS+Tu+q2hOy4ppcdXpqwsLMr
- aR7xyO8ITvmqsYIiJjim+HLNFpUGs3adUaTF6MWRzhLaEt09+gHqBER6cVF6ytJQ4VFm
- +R+w==
-X-Gm-Message-State: AOJu0YyVk9oP3OxmopgjQWt31WndXmo/5WPrn1gboMVIVEC8OL2boc/+
- fDH8UaKX+CPxRNUBgSvYI+AgcSEtJew+95a5L501IxgIOIavR3GQ1cOgLSf8Ktg=
-X-Google-Smtp-Source: AGHT+IEWzFd/i6V1HE4aHxBjv+I9VgW5mBGOtV3PRnvIdG+c1+oswZ5zwgn+Bkt6i2QXpxC305+R5Q==
-X-Received: by 2002:a5d:4c47:0:b0:339:372e:771a with SMTP id
- n7-20020a5d4c47000000b00339372e771amr238267wrt.52.1706159180729; 
- Wed, 24 Jan 2024 21:06:20 -0800 (PST)
-Received: from [192.168.69.100] (lec62-h02-176-184-19-125.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1706161594; x=1706766394;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7pl0jBZIgLiocBT81t4z9AQLPc3Jq1Fc18MeBj1ODrE=;
+ b=Zal52fn+FWElXFxNfnV20e5qaMvtJl07PT/PRXYY+OifOkUb4pJd7bX2/4Y0EHXR4k
+ +nibsBGg0+YO36QVOL/Fe2h0ajbZI8zuDG+y6MrBopgS0Zo9nCP8WMJPvDVzouMeTui8
+ hV4v+NFI0clAB2OvXwPsxHOs2VinL/1ozDzZvWpygja3gJsSJ7dysc0fSC29HvgxFg1f
+ DIOZfOQ33Ijbf6307M0jf4aBoaen1Iqp/jF6/J/w+c/QwiP3XAwTRCcAvAX7CTo2Elo8
+ HZnoHEttDjHuoPQGBy09vVEP2HzGMK4/+Dwc7pUydS9Jkpo2rHfC4P5gA1/ochyyiqIq
+ up3g==
+X-Gm-Message-State: AOJu0Yz0lsphJZDpDcmzQkJ9qz5/FQsBkqczRBw0GAFy8QAkn5yTmJHR
+ h60nBrcvj1U1+2vvqihS8yuyXVrAuPigFp6eFMIyjsqGj8AJUN4C7Msbsz5kGbjAe71dIiddFgZ
+ L
+X-Google-Smtp-Source: AGHT+IF3/HexgY9G1kUtw6R0Bi7Gqn3D7O1C7U00Axh1BFY6Xo7ztbpW4Nk0t7wx9TbylhcAgVEj9Q==
+X-Received: by 2002:a05:600c:220b:b0:40e:75e5:4e62 with SMTP id
+ z11-20020a05600c220b00b0040e75e54e62mr167265wml.44.1706161594324; 
+ Wed, 24 Jan 2024 21:46:34 -0800 (PST)
+Received: from m1x-phil.lan (lec62-h02-176-184-19-125.dsl.sta.abo.bbox.fr.
  [176.184.19.125]) by smtp.gmail.com with ESMTPSA id
- c11-20020a056000104b00b003392cb66714sm11066228wrx.61.2024.01.24.21.06.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Jan 2024 21:06:20 -0800 (PST)
-Message-ID: <9943c88e-3ccd-4a3b-bbe0-65a8a58755d1@linaro.org>
-Date: Thu, 25 Jan 2024 06:06:18 +0100
+ r12-20020a05600c35cc00b0040ecd258f29sm1268260wmq.0.2024.01.24.21.46.32
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 24 Jan 2024 21:46:33 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 0/4] accel/tcg: Move perf and debuginfo support to tcg
+Date: Thu, 25 Jan 2024 06:46:26 +0100
+Message-ID: <20240125054631.78867-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] physmem: replace function name with __func__ in
- ram_block_discard_range()
-Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240125023328.2520888-1-xiaoyao.li@intel.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240125023328.2520888-1-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,100 +91,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Since v5:
+- Use v4 instead of v3...
+- Rebased on commit 53e8868d69
+  ("meson: remove OS definitions from config_targetos")
 
-On 25/1/24 03:33, Xiaoyao Li wrote:
-> Use __func__ to avoid hard-coded function name.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> ---
->   system/physmem.c | 38 +++++++++++++++++---------------------
->   1 file changed, 17 insertions(+), 21 deletions(-)
+Ilya Leoshkevich (4):
+  accel/tcg: Make use of qemu_target_page_mask() in perf.c
+  tcg: Make tb_cflags() usable from target-agnostic code
+  accel/tcg: Remove #ifdef TARGET_I386 from perf.c
+  accel/tcg: Move perf and debuginfo support to tcg/
 
+ include/exec/exec-all.h            |  6 ------
+ include/exec/translation-block.h   |  6 ++++++
+ {accel => include}/tcg/debuginfo.h |  4 ++--
+ {accel => include}/tcg/perf.h      |  4 ++--
+ accel/tcg/translate-all.c          |  2 +-
+ hw/core/loader.c                   |  2 +-
+ linux-user/elfload.c               |  2 +-
+ linux-user/exit.c                  |  2 +-
+ linux-user/main.c                  |  2 +-
+ system/vl.c                        |  2 +-
+ {accel/tcg => tcg}/debuginfo.c     |  3 +--
+ {accel/tcg => tcg}/perf.c          | 14 +++++---------
+ tcg/tcg.c                          |  2 +-
+ accel/tcg/meson.build              |  4 ----
+ tcg/meson.build                    |  5 +++++
+ 15 files changed, 28 insertions(+), 32 deletions(-)
+ rename {accel => include}/tcg/debuginfo.h (96%)
+ rename {accel => include}/tcg/perf.h (95%)
+ rename {accel/tcg => tcg}/debuginfo.c (98%)
+ rename {accel/tcg => tcg}/perf.c (97%)
 
->       if ((start + length) <= rb->max_length) {
->           bool need_madvise, need_fallocate;
->           if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
-> -            error_report("ram_block_discard_range: Unaligned length: %zx",
-> -                         length);
-> +            error_report("%s: Unaligned length: %zx", __func__, length);
-
-Pre-existing, should we enforce 0x prefix for %*x format?
-
-See https://www.qemu.org/docs/master/devel/style.html#printf-flag
-and related commit c3e5875afc ("checkpatch: check trace-events code
-style") for rationale.
-
-$ git grep '[^x]%zx'
-accel/tcg/perf.c:239:        fprintf(perfmap, "%"PRIxPTR" %zx 
-tcg-prologue-buffer\n",
-gdbstub/user-target.c:300:    g_string_printf(gdbserver_state.str_buf, 
-"F%zx;", n);
-migration/postcopy-ram.c:759:        error_report("%s: Failed to wake: 
-%zx in %s (%s)",
-migration/trace-events:100:ram_discard_range(const char *rbname, 
-uint64_t start, size_t len) "%s: start: %" PRIx64 " %zx"
-system/physmem.c:3511:            error_report("ram_block_discard_range: 
-Unaligned length: %zx",
-system/physmem.c:3564:                             "%s:%" PRIx64 " +%zx 
-(%d)",
-system/physmem.c:3571:                         "%s:%" PRIx64 " +%zx (%d)",
-system/physmem.c:3591:                             "%s:%" PRIx64 " +%zx 
-(%d)",
-system/physmem.c:3598:                         "%s:%" PRIx64 " +%zx (%d)",
-system/physmem.c:3607:                     "/%zx/" RAM_ADDR_FMT")",
-
->               if (ret) {
->                   ret = -errno;
-> -                error_report("ram_block_discard_range: Failed to fallocate "
-> -                             "%s:%" PRIx64 " +%zx (%d)",
-> -                             rb->idstr, start, length, ret);
-> +                error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-> +                             __func__, rb->idstr, start, length, ret);
->                   goto err;
->               }
->   #else
->               ret = -ENOSYS;
-> -            error_report("ram_block_discard_range: fallocate not available/file"
-> +            error_report("%s: fallocate not available/file"
->                            "%s:%" PRIx64 " +%zx (%d)",
-> -                         rb->idstr, start, length, ret);
-> +                         __func__, rb->idstr, start, length, ret);
->               goto err;
->   #endif
->           }
-> @@ -3587,25 +3585,23 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
->               }
->               if (ret) {
->                   ret = -errno;
-> -                error_report("ram_block_discard_range: Failed to discard range "
-> +                error_report("%s: Failed to discard range "
->                                "%s:%" PRIx64 " +%zx (%d)",
-> -                             rb->idstr, start, length, ret);
-> +                             __func__, rb->idstr, start, length, ret);
->                   goto err;
->               }
->   #else
->               ret = -ENOSYS;
-> -            error_report("ram_block_discard_range: MADVISE not available"
-> -                         "%s:%" PRIx64 " +%zx (%d)",
-> -                         rb->idstr, start, length, ret);
-> +            error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
-> +                         __func__, rb->idstr, start, length, ret);
->               goto err;
->   #endif
->           }
->           trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
->                                         need_madvise, need_fallocate, ret);
->       } else {
-> -        error_report("ram_block_discard_range: Overrun block '%s' (%" PRIu64
-> -                     "/%zx/" RAM_ADDR_FMT")",
-> -                     rb->idstr, start, length, rb->max_length);
-> +        error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
-> +                     __func__, rb->idstr, start, length, rb->max_length);
->       }
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+-- 
+2.41.0
 
 
