@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A1783C821
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:35:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A5D83C823
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT2gI-0006uj-2A; Thu, 25 Jan 2024 11:34:22 -0500
+	id 1rT2gH-0006tp-1Q; Thu, 25 Jan 2024 11:34:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT2gF-0006r6-1Y
+ id 1rT2gF-0006rq-9y
  for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:34:19 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT2gB-0002AK-10
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:34:18 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33937dd1b43so3359945f8f.3
+ id 1rT2gB-0002Ai-Ai
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:34:19 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40e913e3f03so87223285e9.3
  for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 08:34:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706200453; x=1706805253; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706200454; x=1706805254; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q+eC4LHMBL/iVnWEGbnsMN/lqwJwozZWJpzQmLLpDa0=;
- b=gZTPy9M8DXpWBMJVATgRm04efqFyEE/FsBwtBdKklrr+Tr94m5Zca0TnRrNgIbXiCa
- iOhdZ+l4B7WN4RHmaCUT0bRaO3vaNyCzTckh6dEir4xSTFkNbHEN8GhVW9YJilawWH1i
- UGLNs9q7WPWbiAx+JYl7nuWVOKSJEL0MVdCNwk5m/gmyhdiHV0AKimFgskDm4CW0GhcJ
- SGM40qzwQezDNdETE1CY9TAAWQPBaQALbd2NeVp6UzvLOspnR9PcDu7huK5SjFYw35g9
- cGrDHnsgaKWezFWcAow/FZ04PfCHpe0MU8Ky28r4nJJUfxHhY0bzcXXSnpRfxSG25UJc
- +G2g==
+ bh=3B7RIYSQBA2EJV4QrqnnX0R7U4YmJKg5KsLLI0ApV2U=;
+ b=T2rxg3vkySHMQvphLG/I4yaLExBBr5fNmE7/rVutu47xdMZguAVEbSLUEGu++efIoI
+ RBS6Fdkj3Tlmc/El8IMLrqCpXw1bL1JScnweShUV668uCiX0tq/OtjHhnifE1kCQMJJh
+ BIjUypzLzy9bASl9heFIy7OPsVH2TvDA/Td8Lk10yJt0DY2YszNnK3yM/6XBuU0y+LDn
+ 3+j/jocbfLh4T3SR+3aa1PcyEwxMCv3q0/pp4FLQW+yHLfkXeo/xjBCCzvWhMm43C7t1
+ irBPOCj42nPtEqCNMtZ/rXQyzrteYpwhWyxWYtdc+S4IjBGGb9hYgd7WliyziDY6upe/
+ wArQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706200453; x=1706805253;
+ d=1e100.net; s=20230601; t=1706200454; x=1706805254;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q+eC4LHMBL/iVnWEGbnsMN/lqwJwozZWJpzQmLLpDa0=;
- b=HlHkSZGhswHl5dTu9ekgE6d5PHvVqRNomqARVGzrK0Tia4FZV9B5SeAHUz6WcBuLW5
- xWzOSKWypV+1HDzX8OzPWimd5Eojydc441hTSix2BJi2PaO2CyTUGHcbha7nm2QCBik2
- 9tWI3LIbiIbf2K2aHPUkPSYUe08wrsvQlSs1IPtikQpQSH/F/rkzSjTTaphus6lKcvMF
- 6LXZPkgUSOGimmkyfYFtj8nCxlfKyw9x63QMIYbhWVIQx5mLRdbNitYxBXw4TXylVTP3
- kW2mRmcFtHQ+FtytfzTk8ic4TAn786Qhu5F4TID4NMi+iJm6K3zyby1t2WhM1b0gYeLr
- HwGQ==
-X-Gm-Message-State: AOJu0YysZ8A036BBksPz64A7aGbZP3gORjYplG3aifRKGT/fouf/RaR/
- i1FOFR/ccq4sJoZqd6VizvOZsf8zyos9U9hV2K1iwZlgaQ0zjpou43lm7FNcdK+gJggI8ZW03CK
- P
-X-Google-Smtp-Source: AGHT+IGyP5nRjHk0KpttX4oDcB2/nRV7auXh/RG+igrAkp1gDwPsD5uz4x8PKPiZDBAucmppiO9Tmg==
-X-Received: by 2002:a5d:6543:0:b0:339:502f:5e0c with SMTP id
- z3-20020a5d6543000000b00339502f5e0cmr1146669wrv.10.1706200453495; 
+ bh=3B7RIYSQBA2EJV4QrqnnX0R7U4YmJKg5KsLLI0ApV2U=;
+ b=lXiwNS2LUTzVseIi65faOGI4sKXFGcTe5PQ6oZXaiP40DZus6sEgQCXAryxpbNoxId
+ QS+v25ZXEp+x6BA6/GsfcX15rxPM6F2+aC/C1F7bHDG/ph1a8c3qvzcIw6uv1bWPcU/V
+ WDWKlRy949CqO/ASrC5kSVNqYyHDoDox3IMSzDsjdzSUUmC1Q+lD5/c7FeJ9PuFB5mj1
+ DMjmoOXHCy6KvZ4a4Qhv/pWXRi8kmW0jceKgTnIeWOwjIlTLdcsfl7c/nGlD1y4vYo9g
+ TTJ/xMlcQkIbePo08vHl8PvVaPUWZEe4S4e4r/WwEr2cPy10LcKf7p5UdsVyWCLSOMF+
+ xv2g==
+X-Gm-Message-State: AOJu0Yyrr1gVQzipXu1YQnIfQIvWPwNsG+xsaXpXF6l1adTW2ITad219
+ 4sXNKIZvXLUdy/bcjTqaUKofwpTl3zPz10itkkrDBduwzOJZOAmkNov/MTsGzR0xSZSz3v8PtaW
+ 3
+X-Google-Smtp-Source: AGHT+IHAV+HJ4CQw/CsjJbiEyOWODFMOY+687qWqxl57jwwCUCdZivdKIsMtI/O8/EKLE0uSuKwjLA==
+X-Received: by 2002:a05:600c:4f54:b0:40e:a0fc:6435 with SMTP id
+ m20-20020a05600c4f5400b0040ea0fc6435mr687987wmq.116.1706200453923; 
  Thu, 25 Jan 2024 08:34:13 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -60,16 +60,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org
-Subject: [PATCH 09/10] riscv: Clean up includes
-Date: Thu, 25 Jan 2024 16:34:07 +0000
-Message-Id: <20240125163408.1595135-10-peter.maydell@linaro.org>
+Subject: [PATCH 10/10] misc: Clean up includes
+Date: Thu, 25 Jan 2024 16:34:08 +0000
+Message-Id: <20240125163408.1595135-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125163408.1595135-1-peter.maydell@linaro.org>
 References: <20240125163408.1595135-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,7 +93,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This commit was created with scripts/clean-includes:
- ./scripts/clean-includes --git riscv target/riscv/*.[ch]
+ ./scripts/clean-includes --git misc net/af-xdp.c plugins/*.c audio/pwaudio.c util/userfaultfd.c
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -106,34 +106,75 @@ related cleanups:
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/riscv/vector_internals.h | 1 -
- target/riscv/vector_internals.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+These are all cases where files include things osdep already gives them.
+---
+ audio/pwaudio.c    | 1 -
+ net/af-xdp.c       | 1 -
+ plugins/core.c     | 1 -
+ plugins/loader.c   | 1 -
+ util/userfaultfd.c | 1 -
+ 5 files changed, 5 deletions(-)
 
-diff --git a/target/riscv/vector_internals.h b/target/riscv/vector_internals.h
-index 8133111e5f6..842765f6c16 100644
---- a/target/riscv/vector_internals.h
-+++ b/target/riscv/vector_internals.h
-@@ -19,7 +19,6 @@
- #ifndef TARGET_RISCV_VECTOR_INTERNALS_H
- #define TARGET_RISCV_VECTOR_INTERNALS_H
+diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+index 3ce5f6507b4..3b14e04fbb0 100644
+--- a/audio/pwaudio.c
++++ b/audio/pwaudio.c
+@@ -11,7 +11,6 @@
+ #include "qemu/osdep.h"
+ #include "qemu/module.h"
+ #include "audio.h"
+-#include <errno.h>
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include <spa/param/audio/format-utils.h>
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+index 6c65028fb00..38e600703a3 100644
+--- a/net/af-xdp.c
++++ b/net/af-xdp.c
+@@ -13,7 +13,6 @@
  
--#include "qemu/osdep.h"
- #include "qemu/bitops.h"
- #include "cpu.h"
- #include "tcg/tcg-gvec-desc.h"
-diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
-index 9cf5c17cdea..12f5964fbbe 100644
---- a/target/riscv/vector_internals.c
-+++ b/target/riscv/vector_internals.c
-@@ -16,6 +16,7 @@
-  * this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
+ #include "qemu/osdep.h"
+ #include <bpf/bpf.h>
+-#include <inttypes.h>
+ #include <linux/if_link.h>
+ #include <linux/if_xdp.h>
+ #include <net/if.h>
+diff --git a/plugins/core.c b/plugins/core.c
+index 49588285dd0..ee2fa41af9e 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -27,7 +27,6 @@
+ #include "tcg/tcg.h"
+ #include "tcg/tcg-op.h"
+ #include "plugin.h"
+-#include "qemu/compiler.h"
  
-+#include "qemu/osdep.h"
- #include "vector_internals.h"
+ struct qemu_plugin_cb {
+     struct qemu_plugin_ctx *ctx;
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 734c11cae04..9768b78eb6b 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -33,7 +33,6 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/boards.h"
+ #endif
+-#include "qemu/compiler.h"
  
- /* set agnostic elements to 1s */
+ #include "plugin.h"
+ 
+diff --git a/util/userfaultfd.c b/util/userfaultfd.c
+index fdff4867e8b..1b2fa949d4d 100644
+--- a/util/userfaultfd.c
++++ b/util/userfaultfd.c
+@@ -18,7 +18,6 @@
+ #include <poll.h>
+ #include <sys/syscall.h>
+ #include <sys/ioctl.h>
+-#include <fcntl.h>
+ 
+ typedef enum {
+     UFFD_UNINITIALIZED = 0,
 -- 
 2.34.1
 
