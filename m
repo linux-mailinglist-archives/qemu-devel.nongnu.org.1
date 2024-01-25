@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A5A83B834
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4742D83B7C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:25:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqTk-00029f-Ev; Wed, 24 Jan 2024 22:32:36 -0500
+	id 1rSqLs-0001Kp-EI; Wed, 24 Jan 2024 22:24:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqTb-0001uZ-Ic
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:28 -0500
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqTZ-0001E0-EL
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153545; x=1737689545;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=klfzRXQXY4gU48ZNC2oRdXZ/A2KblsfGhFWWh4dKX9U=;
- b=FxfsB51usjv3z6Pu+0NjUYAKOZPqGF+JEFzPNm94MbPbg5LdzsFpAxL6
- Cl9IYY5ZzwMYzqoudtPSiirj3Mefi0cYdgPavVorzxSlJOADRIlmSok2P
- KsU/TjdyBlQdGiAYAFRPJIiJG63T6frOvk7LOhXK9wqMD8IjQTtsDJzGt
- e5KeRwxHsqhMCaYVZ/fYCD9Qv2jPs2o1PIRL0feS9ptfsnvDAUUkjZzYW
- 3Dlc6lZQhMPl80KngWD0+TCLkECBTH6skm5izxgmnbf5GqLfagxeemBA3
- CdzC82/dnEJEIYJL7HneoTCm9YPAa1FB3bplJ0qJ3ec+/z06exzFZj73n A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430602"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430602"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:29:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086811"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:29:32 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
- Michael Roth <michael.roth@amd.com>,
- Sean Christopherson <seanjc@google.com>,
- Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Isaku Yamahata <isaku.yamahata@gmail.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 66/66] docs: Add TDX documentation
-Date: Wed, 24 Jan 2024 22:23:28 -0500
-Message-Id: <20240125032328.2522472-67-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
-References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rSqLp-0001A0-Kz; Wed, 24 Jan 2024 22:24:25 -0500
+Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rSqLk-0000gh-SI; Wed, 24 Jan 2024 22:24:25 -0500
+Received: by mail-qk1-x736.google.com with SMTP id
+ af79cd13be357-7833b6bb41bso522278885a.3; 
+ Wed, 24 Jan 2024 19:24:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1706153059; x=1706757859; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NooOZ4nOLFTRQ22i2e1umk5KF3O7mXY614vSWu1T2tY=;
+ b=OxatFpDfKhjfQa2T1YabrNWHKv5O4nPGPSJX9kjvm8yfn1oOiEGYytE799VasaBqgf
+ QK8NI46dktu2DqfA1Guj4iWi+ySqDUPhLYhYLF8gJgaFC4imFIUvWAt5rInTNkdwosWE
+ gAUnAbeNTeFOs7/bD20VdjgPMoPUxZ5LLtki8qcc4FzgPoefgIMug/qYL7mUQ8HrEL5q
+ 2yhx8o9qmnc+wfRnQ1CSmxxD3rWSUWtvy02TOef5HNi1Ny/tHHqzePWvQvRAx5QN0f4G
+ DKGILnzM/lDcXmi9ePrLiulL7RCnZHK7mjSzA9Cc333LRawpvoZ+W6w17LTlvGcCSDOm
+ KXcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706153059; x=1706757859;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NooOZ4nOLFTRQ22i2e1umk5KF3O7mXY614vSWu1T2tY=;
+ b=hWJ+0h6W+MfV+BuyIvIOWIKe8NTqODAZWiprBJjsN6P8F4kbgBmArLBFeMiwu707qe
+ pvd+9a87wTk8pR0/dCEP7QUBhPhksjKpykAO+B7JYwHJXYk6MfY0fi0ni/znrOyXWMwe
+ r0/ojkpzpp6+xhmqqDcd1TRcf1roaKGGYzgm9XtYZ0ZdC8vvC4AnoNdHaLXjSzGrvTA9
+ 6muup+pe+VfICaobPfGUjtrM8Q9H0TQ2EvlFHtuImD4BpsXKEPrnz07D3vfHgKRCAj55
+ V8jOqZuAtBP4aOnbpnpiNKn1HWPYUxp4tJa2//ktqXo+49uI/iuHXjQuSL+HPaVNksFP
+ RlVQ==
+X-Gm-Message-State: AOJu0YzlBD/npZX4xfPr3VVdfHrqZSIKGh/p1NwUJPWZg2KFCLUl0rzU
+ ld1PpJ278fVdnz8ycypd2TNNiy8f0+4tie8ncoGCOrd4uonOu7KIi9pRHwh+MCbI6KGRbq/uOTq
+ xJmkCfWoTccar4WJ3OnxDi5XCzA8=
+X-Google-Smtp-Source: AGHT+IHu4ObJraP24b5Db/J35jm9KCFmNQ1Y8lPrrVGjDaDTDlHbXTALDqo4Lht8+iHzdTYOjY4oNFy+Ew7jzyln528=
+X-Received: by 2002:a05:620a:51cc:b0:783:bcdc:e2d1 with SMTP id
+ cx12-20020a05620a51cc00b00783bcdce2d1mr370655qkb.70.1706153058706; Wed, 24
+ Jan 2024 19:24:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
+References: <20240123161714.160149-1-dbarboza@ventanamicro.com>
+ <20240123161714.160149-3-dbarboza@ventanamicro.com>
+In-Reply-To: <20240123161714.160149-3-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 25 Jan 2024 13:23:52 +1000
+Message-ID: <CAKmqyKMhQtTyutd2WRA8jM0wqPo+4W6DwB5GSOTxqywZx6vJOA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] target/riscv/kvm: initialize 'vlenb' via get-reg-list
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
+ envelope-from=alistair23@gmail.com; helo=mail-qk1-x736.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,169 +89,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add docs/system/i386/tdx.rst for TDX support, and add tdx in
-confidential-guest-support.rst
+On Wed, Jan 24, 2024 at 2:18=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> KVM will check for the correct 'reg_size' when accessing the vector
+> registers, erroring with EINVAL if we encode the wrong size in reg ID.
+> Vector registers varies in size with the vector length in bytes, or
+> 'vlenb'. This means that we need the current 'vlenb' being used by the
+> host, otherwise we won't be able to fetch all vector regs.
+>
+> We'll deal with 'vlenb' first. Its support was added in Linux 6.8 as a
+> get-reg-list register. We'll read 'vlenb' via get-reg-list and mark the
+> register as 'supported'. All 'vlenb' ops via kvm_arch_get_registers()
+> and kvm_arch_put_registers() will only be done if the reg is supported,
+> i.e. we fetched it in get-reg-list during init.
+>
+> If the user sets a new vlenb value using the 'vlen' property, throw an
+> error if the user value differs from the host.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
----
-Changes since v1:
- - Add prerequisite of private gmem;
- - update example command to launch TD;
+Alistair
 
-Changes since RFC v4:
- - add the restriction that kernel-irqchip must be split
----
- docs/system/confidential-guest-support.rst |   1 +
- docs/system/i386/tdx.rst                   | 113 +++++++++++++++++++++
- docs/system/target-i386.rst                |   1 +
- 3 files changed, 115 insertions(+)
- create mode 100644 docs/system/i386/tdx.rst
-
-diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
-index 0c490dbda2b7..66129fbab64c 100644
---- a/docs/system/confidential-guest-support.rst
-+++ b/docs/system/confidential-guest-support.rst
-@@ -38,6 +38,7 @@ Supported mechanisms
- Currently supported confidential guest mechanisms are:
- 
- * AMD Secure Encrypted Virtualization (SEV) (see :doc:`i386/amd-memory-encryption`)
-+* Intel Trust Domain Extension (TDX) (see :doc:`i386/tdx`)
- * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
- * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
- 
-diff --git a/docs/system/i386/tdx.rst b/docs/system/i386/tdx.rst
-new file mode 100644
-index 000000000000..1872e4f5a8be
---- /dev/null
-+++ b/docs/system/i386/tdx.rst
-@@ -0,0 +1,113 @@
-+Intel Trusted Domain eXtension (TDX)
-+====================================
-+
-+Intel Trusted Domain eXtensions (TDX) refers to an Intel technology that extends
-+Virtual Machine Extensions (VMX) and Multi-Key Total Memory Encryption (MKTME)
-+with a new kind of virtual machine guest called a Trust Domain (TD). A TD runs
-+in a CPU mode that is designed to protect the confidentiality of its memory
-+contents and its CPU state from any other software, including the hosting
-+Virtual Machine Monitor (VMM), unless explicitly shared by the TD itself.
-+
-+Prerequisites
-+-------------
-+
-+To run TD, the physical machine needs to have TDX module loaded and initialized
-+while KVM hypervisor has TDX support and has TDX enabled. If those requirements
-+are met, the ``KVM_CAP_VM_TYPES`` will report the support of ``KVM_X86_TDX_VM``.
-+
-+Trust Domain Virtual Firmware (TDVF)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Trust Domain Virtual Firmware (TDVF) is required to provide TD services to boot
-+TD Guest OS. TDVF needs to be copied to guest private memory and measured before
-+a TD boots.
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_INIT_MEM_REGION``
-+to copy the TDVF image to TD's private memory space.
-+
-+Since TDX doesn't support readonly memslot, TDVF cannot be mapped as pflash
-+device and it actually works as RAM. "-bios" option is chosen to load TDVF.
-+
-+OVMF is the opensource firmware that implements the TDVF support. Thus the
-+command line to specify and load TDVF is ``-bios OVMF.fd``
-+
-+KVM private gmem
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TD's memory (RAM) needs to be able to be transformed between private and shared.
-+And its BIOS (OVMF/TDVF) needs to be mapped as private. Thus QEMU needs to
-+allocate private gmem for them via KVM's IOCTL (KVM_CREATE_GUEST_MEMFD), which
-+requires KVM is newer enough that reports KVM_CAP_GUEST_MEMFD.
-+
-+Feature Control
-+---------------
-+
-+Unlike non-TDX VM, the CPU features (enumerated by CPU or MSR) of a TD is not
-+under full control of VMM. VMM can only configure part of features of a TD on
-+``KVM_TDX_INIT_VM`` command of VM scope ``MEMORY_ENCRYPT_OP`` ioctl.
-+
-+The configurable features have three types:
-+
-+- Attributes:
-+  - PKS (bit 30) controls whether Supervisor Protection Keys is exposed to TD,
-+  which determines related CPUID bit and CR4 bit;
-+  - PERFMON (bit 63) controls whether PMU is exposed to TD.
-+
-+- XSAVE related features (XFAM):
-+  XFAM is a 64b mask, which has the same format as XCR0 or IA32_XSS MSR. It
-+  determines the set of extended features available for use by the guest TD.
-+
-+- CPUID features:
-+  Only some bits of some CPUID leaves are directly configurable by VMM.
-+
-+What features can be configured is reported via TDX capabilities.
-+
-+TDX capabilities
-+~~~~~~~~~~~~~~~~
-+
-+The VM scope ``MEMORY_ENCRYPT_OP`` ioctl provides command ``KVM_TDX_CAPABILITIES``
-+to get the TDX capabilities from KVM. It returns a data structure of
-+``struct kvm_tdx_capabilites``, which tells the supported configuration of
-+attributes, XFAM and CPUIDs.
-+
-+Launching a TD (TDX VM)
-+-----------------------
-+
-+To launch a TDX guest, below are new added and required:
-+
-+.. parsed-literal::
-+
-+    |qemu_system_x86| \\
-+        -object tdx-guest,id=tdx0 \\
-+        -machine ...,kernel-irqchip=split,confidential-guest-support=tdx0 \\
-+        -bios OVMF.fd \\
-+
-+Debugging
-+---------
-+
-+Bit 0 of TD attributes, is DEBUG bit, which decides if the TD runs in off-TD
-+debug mode. When in off-TD debug mode, TD's VCPU state and private memory are
-+accessible via given SEAMCALLs. This requires KVM to expose APIs to invoke those
-+SEAMCALLs and resonponding QEMU change.
-+
-+It's targeted as future work.
-+
-+restrictions
-+------------
-+
-+ - kernel-irqchip must be split;
-+
-+ - No readonly support for private memory;
-+
-+ - No SMM support: SMM support requires manipulating the guset register states
-+   which is not allowed;
-+
-+Live Migration
-+--------------
-+
-+TODO
-+
-+References
-+----------
-+
-+- `TDX Homepage <https://www.intel.com/content/www/us/en/developer/articles/technical/intel-trust-domain-extensions.html>`__
-diff --git a/docs/system/target-i386.rst b/docs/system/target-i386.rst
-index 1b8a1f248abb..4d58cdbc4e06 100644
---- a/docs/system/target-i386.rst
-+++ b/docs/system/target-i386.rst
-@@ -29,6 +29,7 @@ Architectural features
-    i386/kvm-pv
-    i386/sgx
-    i386/amd-memory-encryption
-+   i386/tdx
- 
- OS requirements
- ~~~~~~~~~~~~~~~
--- 
-2.34.1
-
+> ---
+>  target/riscv/kvm/kvm-cpu.c | 85 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 82 insertions(+), 3 deletions(-)
+>
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 902180e8a5..3812481971 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -352,6 +352,13 @@ static KVMCPUConfig kvm_cboz_blocksize =3D {
+>      .kvm_reg_id =3D KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
+>  };
+>
+> +static KVMCPUConfig kvm_v_vlenb =3D {
+> +    .name =3D "vlenb",
+> +    .offset =3D CPU_CFG_OFFSET(vlenb),
+> +    .kvm_reg_id =3D  KVM_REG_RISCV | KVM_REG_SIZE_U64 | KVM_REG_RISCV_VE=
+CTOR |
+> +                   KVM_REG_RISCV_VECTOR_CSR_REG(vlenb)
+> +};
+> +
+>  static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs=
+)
+>  {
+>      CPURISCVState *env =3D &cpu->env;
+> @@ -684,7 +691,8 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+>
+>  static int kvm_riscv_get_regs_vector(CPUState *cs)
+>  {
+> -    CPURISCVState *env =3D &RISCV_CPU(cs)->env;
+> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +    CPURISCVState *env =3D &cpu->env;
+>      target_ulong reg;
+>      int ret =3D 0;
+>
+> @@ -710,12 +718,21 @@ static int kvm_riscv_get_regs_vector(CPUState *cs)
+>      }
+>      env->vtype =3D reg;
+>
+> +    if (kvm_v_vlenb.supported) {
+> +        ret =3D kvm_get_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vlenb), &r=
+eg);
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +        cpu->cfg.vlenb =3D reg;
+> +    }
+> +
+>      return 0;
+>  }
+>
+>  static int kvm_riscv_put_regs_vector(CPUState *cs)
+>  {
+> -    CPURISCVState *env =3D &RISCV_CPU(cs)->env;
+> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +    CPURISCVState *env =3D &cpu->env;
+>      target_ulong reg;
+>      int ret =3D 0;
+>
+> @@ -737,6 +754,14 @@ static int kvm_riscv_put_regs_vector(CPUState *cs)
+>
+>      reg =3D env->vtype;
+>      ret =3D kvm_set_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vtype), &reg);
+> +    if (ret) {
+> +        return ret;
+> +    }
+> +
+> +    if (kvm_v_vlenb.supported) {
+> +        reg =3D cpu->cfg.vlenb;
+> +        ret =3D kvm_set_one_reg(cs, RISCV_VECTOR_CSR_REG(env, vlenb), &r=
+eg);
+> +    }
+>
+>      return ret;
+>  }
+> @@ -921,6 +946,33 @@ static int uint64_cmp(const void *a, const void *b)
+>      return 0;
+>  }
+>
+> +static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
+> +                                 struct kvm_reg_list *reglist)
+> +{
+> +    struct kvm_one_reg reg;
+> +    struct kvm_reg_list *reg_search;
+> +    uint64_t val;
+> +    int ret;
+> +
+> +    reg_search =3D bsearch(&kvm_v_vlenb.kvm_reg_id, reglist->reg, reglis=
+t->n,
+> +                         sizeof(uint64_t), uint64_cmp);
+> +
+> +    if (reg_search) {
+> +        reg.id =3D kvm_v_vlenb.kvm_reg_id;
+> +        reg.addr =3D (uint64_t)&val;
+> +
+> +        ret =3D ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
+> +        if (ret !=3D 0) {
+> +            error_report("Unable to read vlenb register, error code: %s"=
+,
+> +                         strerrorname_np(errno));
+> +            exit(EXIT_FAILURE);
+> +        }
+> +
+> +        kvm_v_vlenb.supported =3D true;
+> +        cpu->cfg.vlenb =3D val;
+> +    }
+> +}
+> +
+>  static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kv=
+mcpu)
+>  {
+>      KVMCPUConfig *multi_ext_cfg;
+> @@ -995,6 +1047,10 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *c=
+pu, KVMScratchCPU *kvmcpu)
+>      if (cpu->cfg.ext_zicboz) {
+>          kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
+>      }
+> +
+> +    if (riscv_has_ext(&cpu->env, RVV)) {
+> +        kvm_riscv_read_vlenb(cpu, kvmcpu, reglist);
+> +    }
+>  }
+>
+>  static void riscv_init_kvm_registers(Object *cpu_obj)
+> @@ -1566,7 +1622,8 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu,=
+ Error **errp)
+>      int ret;
+>
+>      /* short-circuit without spinning the scratch CPU */
+> -    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz) {
+> +    if (!cpu->cfg.ext_zicbom && !cpu->cfg.ext_zicboz &&
+> +        !riscv_has_ext(env, RVV)) {
+>          return;
+>      }
+>
+> @@ -1613,6 +1670,28 @@ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu=
+, Error **errp)
+>          }
+>      }
+>
+> +    /* Users are setting vlen, not vlenb */
+> +    if (riscv_has_ext(env, RVV) && riscv_cpu_option_set("vlen")) {
+> +        if (!kvm_v_vlenb.supported) {
+> +            error_setg(errp, "Unable to set 'vlenb': register not suppor=
+ted");
+> +            return;
+> +        }
+> +
+> +        reg.id =3D kvm_v_vlenb.kvm_reg_id;
+> +        reg.addr =3D (uint64_t)&val;
+> +        ret =3D ioctl(kvmcpu.cpufd, KVM_GET_ONE_REG, &reg);
+> +        if (ret !=3D 0) {
+> +            error_setg(errp, "Unable to read vlenb register, error %d", =
+errno);
+> +            return;
+> +        }
+> +
+> +        if (cpu->cfg.vlenb !=3D val) {
+> +            error_setg(errp, "Unable to set 'vlen' to a different "
+> +                       "value than the host (%lu)", val * 8);
+> +            return;
+> +        }
+> +    }
+> +
+>      kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+>  }
+>
+> --
+> 2.43.0
+>
+>
 
