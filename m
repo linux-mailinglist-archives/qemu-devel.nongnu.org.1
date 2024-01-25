@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758A983B828
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A3F83B7E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:29:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqPZ-00035a-Be; Wed, 24 Jan 2024 22:28:17 -0500
+	id 1rSqPb-00037b-V2; Wed, 24 Jan 2024 22:28:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqPW-00034H-KF
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:14 -0500
+ id 1rSqPZ-00035w-63
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:17 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqPU-0001Dr-Eq
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:14 -0500
+ id 1rSqPW-0001E0-A7
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153292; x=1737689292;
+ t=1706153294; x=1737689294;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8AoHBD7YPJCeSiiafbeRxLUlYdqPOgOF84h3ug2/0pE=;
- b=RwLUeWSaJC2JaKiXj252NmO4p5XT7BxnUVmgeeo1UBfS1jxO7vo8SxLf
- /NhqXEfei6DUHsNt6YtWK8lteunnFwx5DBeeyY1QGsYjQyKH7dHLeNw32
- DPlET71b0IGxU61KOKO7BICOXTPVMtmHvPYe36YRw7p84G4h4yfJasmG+
- uycFMXNBTSHhr/Yav0N3QbCy20aw53VuJjhbl0EuxWepcryAO+x3UvylV
- 0JYacpMWj9eYSlJtwtydOWRXf4SEJv6U3N6/WOSnf/ypZOEO4yjJfdBzk
- csmo+k1/nyvYi0BhsucoWYHdGnc5dmd06kwQ7CY0Jkg2QRqDEeCHqb7tL w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9427961"
+ bh=HeSIyCfwY3UukiDGQMr59wgL9NJm35/w6ryNr1Q1bMU=;
+ b=nhfhwO8KyLw+2thws6spACgQl/i9lct4QqzDNKWqx8fc9lU3SGTxNGBg
+ /1MZ0ujm/LGh1P1Ij5XPHgDTHrn5A4KPWPiJqNRyk4EO+SHt483XSiprN
+ NGCLv1ql5jchXkspm8yQDVunM2XB83dwrW8lxywhnDQJvP+uSshcYBC8s
+ jZz/oKaOBdiF94vGJzS93yTJVpOXNJoWT6frRmz3/bKKRPoIHeev5hixX
+ DRr3i3NdaotJCXUOqUM//EHpF004o5SkN/TwiPMntcBkGNy0wWZZ1s6CO
+ GVRP3vhQ9V5KNzSirkWI5BdN5gPAV7HL5Sx7SRdUiXpKFekRFWRLrvLwh g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9427970"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9427961"
+   d="scan'208";a="9427970"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:24:10 -0800
+ 24 Jan 2024 19:24:15 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2084576"
+   d="scan'208";a="2084618"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:24:05 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:24:10 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 06/66] kvm: Introduce support for memory_attributes
-Date: Wed, 24 Jan 2024 22:22:28 -0500
-Message-Id: <20240125032328.2522472-7-xiaoyao.li@intel.com>
+Subject: [PATCH v4 07/66] physmem: Introduce
+ ram_block_discard_guest_memfd_range()
+Date: Wed, 24 Jan 2024 22:22:29 -0500
+Message-Id: <20240125032328.2522472-8-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,106 +92,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce the helper functions to set the attributes of a range of
-memory to private or shared.
+When memory page is converted from private to shared, the original
+private memory is back'ed by guest_memfd. Introduce
+ram_block_discard_guest_memfd_range() for discarding memory in
+guest_memfd.
 
-This is necessary to notify KVM the private/shared attribute of each gpa
-range. KVM needs the information to decide the GPA needs to be mapped at
-hva-based shared memory or guest_memfd based private memory.
-
+Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
+Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v4:
-- move the check of kvm_supported_memory_attributes to the common
-  kvm_set_memory_attributes(); (Wang Wei)
-- change warn_report() to error_report() in kvm_set_memory_attributes()
-  and drop the __func__; (Daniel)
+Changes in in v4:
+- Drop ram_block_convert_range() and open code its implementation in the
+  next Patch.
 ---
- accel/kvm/kvm-all.c  | 44 ++++++++++++++++++++++++++++++++++++++++++++
- include/sysemu/kvm.h |  3 +++
- 2 files changed, 47 insertions(+)
+ include/exec/cpu-common.h |  2 ++
+ system/physmem.c          | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 50c10becf772..3bc78a16b48d 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -92,6 +92,7 @@ static bool kvm_has_guest_debug;
- static int kvm_sstep_flags;
- static bool kvm_immediate_exit;
- static bool kvm_guest_memfd_supported;
-+static uint64_t kvm_supported_memory_attributes;
- static hwaddr kvm_max_slot_size = ~0;
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index fef3138d29fc..05610efa8b4f 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -175,6 +175,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
  
- static const KVMCapabilityInfo kvm_required_capabilites[] = {
-@@ -1294,6 +1295,46 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
-     kvm_max_slot_size = max_slot_size;
+ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
+ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++                                        size_t length);
+ 
+ #endif
+ 
+diff --git a/system/physmem.c b/system/physmem.c
+index 4735b0462ed9..fc59470191ef 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3626,6 +3626,29 @@ err:
+     return ret;
  }
  
-+static int kvm_set_memory_attributes(hwaddr start, hwaddr size, uint64_t attr)
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++                                        size_t length)
 +{
-+    struct kvm_memory_attributes attrs;
-+    int r;
++    int ret = -1;
 +
-+    if (kvm_supported_memory_attributes == 0) {
-+        error_report("No memory attribute supported by KVM\n");
-+        return -EINVAL;
++#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
++    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
++                    start, length);
++
++    if (ret) {
++        ret = -errno;
++        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
++                     __func__, rb->idstr, start, length, ret);
 +    }
++#else
++    ret = -ENOSYS;
++    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
++                 __func__, rb->idstr, start, length, ret);
++#endif
 +
-+    if ((attr & kvm_supported_memory_attributes) != attr) {
-+        error_report("memory attribute 0x%lx not supported by KVM,"
-+                     " supported bits are 0x%lx\n",
-+                     attr, kvm_supported_memory_attributes);
-+        return -EINVAL;
-+    }
-+
-+    attrs.attributes = attr;
-+    attrs.address = start;
-+    attrs.size = size;
-+    attrs.flags = 0;
-+
-+    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
-+    if (r) {
-+        error_report("failed to set memory (0x%lx+%#zx) with attr 0x%lx error '%s'",
-+                     start, size, attr, strerror(errno));
-+    }
-+    return r;
++    return ret;
 +}
 +
-+int kvm_set_memory_attributes_private(hwaddr start, hwaddr size)
-+{
-+    return kvm_set_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+}
-+
-+int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size)
-+{
-+    return kvm_set_memory_attributes(start, size, 0);
-+}
-+
- /* Called with KVMMemoryListener.slots_lock held */
- static void kvm_set_phys_mem(KVMMemoryListener *kml,
-                              MemoryRegionSection *section, bool add)
-@@ -2429,6 +2470,9 @@ static int kvm_init(MachineState *ms)
- 
-     kvm_guest_memfd_supported = kvm_check_extension(s, KVM_CAP_GUEST_MEMFD);
- 
-+    ret = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
-+    kvm_supported_memory_attributes = ret > 0 ? ret : 0;
-+
-     if (object_property_find(OBJECT(current_machine), "kvm-type")) {
-         g_autofree char *kvm_type = object_property_get_str(OBJECT(current_machine),
-                                                             "kvm-type",
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index fedc28c7d17f..0e88958190a4 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -540,4 +540,7 @@ bool kvm_dirty_ring_enabled(void);
- uint32_t kvm_dirty_ring_size(void);
- 
- int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp);
-+
-+int kvm_set_memory_attributes_private(hwaddr start, hwaddr size);
-+int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size);
- #endif
+ bool ramblock_is_pmem(RAMBlock *rb)
+ {
+     return rb->flags & RAM_PMEM;
 -- 
 2.34.1
 
