@@ -2,116 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2612983C80E
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:31:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBAE83C7DB
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 17:27:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT2cw-0004cr-1Z; Thu, 25 Jan 2024 11:30:54 -0500
+	id 1rT2YG-0002Hu-1T; Thu, 25 Jan 2024 11:26:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rT2cr-0004cI-9A
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:30:49 -0500
-Received: from mail-mw2nam04on2084.outbound.protection.outlook.com
- ([40.107.101.84] helo=NAM04-MW2-obe.outbound.protection.outlook.com)
+ id 1rT2Y0-0002Gv-NT
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:25:50 -0500
+Received: from mail-dm6nam10on2062a.outbound.protection.outlook.com
+ ([2a01:111:f400:7e88::62a]
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rT2cn-0001Vm-Q2
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:30:47 -0500
+ id 1rT2Xy-0000Qg-LO
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 11:25:48 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W5p1a2N2B72OgcEnpySZjwVupfZtBkObbN8+e7cTg8WsR5IbSZz4KvG4ZZU15uBH2jPUILxX8g1D0bI5HhkIJ3SUXCGCtZQTKpSmhkRQFAZ+AXioVp3LPK+cY2Dq4et/Q2taCZ2nb6u7/5kGsG06Q0eDkUhkaAODRku6wM4EmSZLkqsvuW8vMLgnkOtsjJiysJIQWjqZyUKkSzcm/8QGgPZefj++HRoH4FkZBfWIFiBpJXY/4984fgJccu5tczJRA2LY0lIPVECHjxf2zMALcFtwKkxv814noCptlKFmRgOr78YBie0imDuSolzvvk7YbyzVd5sW2FdsObjXBqYfUg==
+ b=gGyWw7qivkxc6JYrMuAzC6yoiC+beQToCLijsJDxGVoLsKv3dwTqf8fTuQUxX9dTqdh5/bEiW6WseQAVZ+Outi/8TFpxwd/UqAHeo9eqa1n+wHyIJG/6G0g4hK9aENEjJVs5twxeDvo60T9Nct2lKAz3se5KdqQtp7SDLOf3P4mnf2HPqrJJ+VVeKcT1uxzCUcL8+Y8Payi/eJZ4M/7o3chVl3kGiKZ7xgy/hXzUw/xlp4O+gtM0IzZsQEJuIUKK0FTF/ucemc45MdTTTHw5miDHmF2WaqWVe6VxW21SgqMOsZ7E0VaB1Q1GTYhkqQNP/HKmNWM9kCH76WBrZytCEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AUeKX84Z0ksgv3Ii0eo+2R7PHDBxU8/ipQhyf/Zq1CI=;
- b=J/wUYPp/Ea1u8OjX8/QbVCSN/Phb2G6ifxrSejcz+SL5m1RwfNYtRB/PvB/utb7D+UsbSqUM1J2T+ke/7/1Aq3ZOSDHfLK6B+gj9IOXL3dTj9kgR73N4XI9zdtKOqvjvBa0fL9V+vLeOSVCQjDok4xDf1BMC90z0TMnihq0yze1PZ/LJ304VQnuSvXtrsIA4jzWd5J1xHGKnvETwxjEL5zli4veRsV/VaOGPy5hiy3HT+RrhRnBOf9zOTYHGYxbOytCjXOzIMXDZ7Z9g5Srj+wtPJXxKjuB1AymXDPEwDYY5+vuPFl4kEUXriblyv9g9kdDMjSht+QAFBQm69I8pXg==
+ bh=crbYLni9S89KWLQnHn85X3Qv2aaylUqb4MnpLmw+pR4=;
+ b=LhJwhQCYqrg++Bs6DJwvOEEUUOD1SfitfHZh8Yji0Ec9TOt79OEjIDYB5T7PYlSnb9R2vXF+SRNnCUF30/pu2lIATYfpbe8OFuQTYfkY5FDymoxWLxbnhDvqVfwwW7LwIZaABLX5QCeBDakIOac+YiMT9VpH/eUI0r3shyDneNS7xQEU92wR7JHsef0qPhfMUpAW91xJF+6gT1i6M4ve9IH2o6Voq0gavlZBsqiTwWqay18YRxx2fukaDyaRYDJpM2mmeTXs/uel6K8UsQoKKHbbffqdpz43lruvqEj0zXnKoH9iWElAgnYpTHwM17ULkfJ3VKEJr2eF0boJXjzO8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AUeKX84Z0ksgv3Ii0eo+2R7PHDBxU8/ipQhyf/Zq1CI=;
- b=QqRaM9JnT1gB+WGMeuO+WRGiQNmp81QpAJibZzYYr1XuUmkc1s4tOExWb0QOmIkXRtjWvRw92Iz+uXtxtluRVdQZnyP5AAcozgnRsyqOZiVlZrEV304PLlEXxzy50I3nEzv9mwA0C9TJcgPAzLPsEcPbVFzwrf8Dz6nmhdtctZ3bkx0a3Gbihlm6kykH5egkPXgtlKF10nkeuJhOjeKwdoONzvAKWCWv/oZPp2Lih2Re0wJHNo3Zu556cQYUdsRqLN53h8JsfBCYaZgJ76mnDIzehX/0oDHOJMDER6SB8/CQjoOKkyU1LXQLXOX/bjXWAmphoVVOJBot77MKt2keIw==
-Received: from DM6PR05CA0046.namprd05.prod.outlook.com (2603:10b6:5:335::15)
- by MN2PR12MB4304.namprd12.prod.outlook.com (2603:10b6:208:1d0::12) with
+ bh=crbYLni9S89KWLQnHn85X3Qv2aaylUqb4MnpLmw+pR4=;
+ b=XBIv9agsd/0B4guaWB5RmuZ6ISXaw4H383UGxktw8mc2Qd1jrn4RgG33cjpw2PEeNEUmZgMBlizn4h4Jq/07Dt2oCHIcTSzSvPT5mbOLMoWYTIEyX6JNMAnj4AUmAoOb6mXH1ZopIJ+e8QhX3J8fml/msKMFaeLLsRdwjE6b0NoEMYryZ79URei+yL3jn1PIcghuquveqy5KBOzZqEnlAMFW1lorYmG8lJH2x+qT3MGTdgfNsd77BQZn9Jkxv2j6a14eNtxWsW4rriV5FEyO6spDJbqipTtmn8rTcpxbsFWKJXY38RCevEweL91bkNta+YHCLj6XLAgnyi6x/3qe6A==
+Received: from DM6PR17CA0014.namprd17.prod.outlook.com (2603:10b6:5:1b3::27)
+ by LV3PR12MB9354.namprd12.prod.outlook.com (2603:10b6:408:211::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Thu, 25 Jan
- 2024 16:25:37 +0000
-Received: from DS3PEPF000099DF.namprd04.prod.outlook.com
- (2603:10b6:5:335:cafe::eb) by DM6PR05CA0046.outlook.office365.com
- (2603:10b6:5:335::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.21 via Frontend
- Transport; Thu, 25 Jan 2024 16:25:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.26; Thu, 25 Jan
+ 2024 16:25:40 +0000
+Received: from CY4PEPF0000E9DB.namprd05.prod.outlook.com
+ (2603:10b6:5:1b3:cafe::b4) by DM6PR17CA0014.outlook.office365.com
+ (2603:10b6:5:1b3::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22 via Frontend
+ Transport; Thu, 25 Jan 2024 16:25:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS3PEPF000099DF.mail.protection.outlook.com (10.167.17.202) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CY4PEPF0000E9DB.mail.protection.outlook.com (10.167.241.81) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7202.16 via Frontend Transport; Thu, 25 Jan 2024 16:25:36 +0000
+ 15.20.7228.16 via Frontend Transport; Thu, 25 Jan 2024 16:25:40 +0000
 Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 25 Jan
- 2024 08:25:30 -0800
+ 2024 08:25:32 -0800
 Received: from drhqmail202.nvidia.com (10.126.190.181) by
  drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Thu, 25 Jan 2024 08:25:30 -0800
+ 15.2.986.41; Thu, 25 Jan 2024 08:25:32 -0800
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.181)
  with Microsoft SMTP Server id 15.2.986.41 via Frontend Transport;
- Thu, 25 Jan 2024 08:25:29 -0800
+ Thu, 25 Jan 2024 08:25:30 -0800
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, "Avihai
  Horon" <avihaih@nvidia.com>
-Subject: [PATCH 00/17] migration: Add new migration channel connect and TLS
- upgrade APIs
-Date: Thu, 25 Jan 2024 18:25:11 +0200
-Message-ID: <20240125162528.7552-1-avihaih@nvidia.com>
+Subject: [PATCH 01/17] migration: Fix logic of channels and transport
+ compatibility check
+Date: Thu, 25 Jan 2024 18:25:12 +0200
+Message-ID: <20240125162528.7552-2-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
+In-Reply-To: <20240125162528.7552-1-avihaih@nvidia.com>
+References: <20240125162528.7552-1-avihaih@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DF:EE_|MN2PR12MB4304:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f2d6b6e-2e28-4301-c3bd-08dc1dc24322
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DB:EE_|LV3PR12MB9354:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8db83e9b-9bce-419d-25c0-08dc1dc24557
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /BAN37wQ0LgkKxK3/nii4DtocPQkCK0vTiuhwX5NhqXbrhYvnO8ZvnfpR4Xng38ICRZnZsa11B7baLYAkKsvR7jLd0W5gIcu0uXXNFGInuHlBVVgDIQZ52PmlxCTisdtMVdCLLe/GX4H/P/Ss68MuiqQQ3v5a4TFBohDRaIlSf6Z79Ipfzygh+TIPvxbQjM1hLH6fMs7i4s+wGjJmCRJAQ8kpfHYu3TgXiRe9bWPtlJ53i0GooQqgoLhSvRFDSZ7z8zT9jocWrQP4G1gf0WDGlo2maixlT2RrtDbEkgEb5xx68S1jL7bm7d23qoq602EW//Njp00lkufx7/lucKJsBe7Y7xuz9QWS36MUmW+TQ7xuXqIAquFtGdW3zoLgc/eE5IaQrtSk4OakXkL/jGu8FUdWWSFCZ2gO4RQDCl9Vc+ke1P8iZ/nxEbuEB8orR5Y8dOx5QMFQD7oHzOOgZVAI7WYskbrfEVBGzpDxssodm3MjlOO2LKstIg1N/Ryt+hf10ZoaGoBQ/9dpfpyNdsFIC/2pkkpkvAhLPSdjTps06M+LZkcd3uxpk7ILGKIx3gOUe+dJyMXKerJ4zBzb1W/6N6iTWFQFPqSESXiLkgH9QsbbuD7F3lq0t7P+ebsyvPCrTFY8qm4xIdD8+2kkU4rcsaE1/zfBOV308LHSFq6wHVVr/VLjAgieJMxbZ8qGjjzVBXxxK+soh6SbaXA9PFtVXM2OdroIlsNiy0lRGqaXpU=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(346002)(136003)(396003)(376002)(39860400002)(230922051799003)(1800799012)(82310400011)(451199024)(186009)(64100799003)(36840700001)(46966006)(40470700004)(4326008)(8936002)(8676002)(36756003)(7696005)(426003)(2906002)(83380400001)(336012)(107886003)(2616005)(5660300002)(26005)(1076003)(86362001)(41300700001)(478600001)(70586007)(70206006)(6666004)(6916009)(54906003)(316002)(47076005)(356005)(7636003)(36860700001)(40480700001)(40460700003)(82740400003);
+X-Microsoft-Antispam-Message-Info: FCkw7mG6aTeyp5A9tHQ7qHIvEIx/AzY5+6+lMZIHlqHyYUJ5OKySos53u9Dn56n99UNJjqr91yKpfbf/rJJFPL7g4VPtyYlsPWz0kvnr2+AzMpVxo7tZjfoJTjNdHQZK4Azk4Xh/K/A/vqZ4fOylhhTDi2Pn5FDMcjHNOTMaQ93JMIKChdOG+XRd5adVu/Yv2Tr5qyluJnov9s1qZ1Z+V+2xR9Xs2dLoc0utKyGgDWpxlE2srLb87R4xHFu1XCEtTZPquA8rUwFpciGnBiQ+6uwsOnHoVyDuGWFQWeKrQPssAEmqu8kZKMLRHs7D5AdxCpsuFnGFHiFv1J3bdf/57JZQ8IJTJZjtTQeu6KmST94hDB6seyJvt0bzT+6oFGRSGJtXcO+7vqhsN17PtWDaHLvg0ePkchbqquQsIRez7+3dmOodzQfZfmYFSb+GMJASGuIDvIpzDmqgRBzYNiF0Y7ghi9DoLWl3qF3RnDM44qzk30D+zZKnpNhBDMAZhAQp8Tc7659N4+1czCl+ECzaDoEIie6C36tD+jb57NxtJCIdaiTMngOATPtfbTjdgeEOoPaqbT1nuS1hFaWYTZS/VXhrE3eC/joe6oXScWDvCyYN4sYw48YtP0nF2seqlcmSR6MekC9Uo1uxNgSA5EhPSCM7IB7d2XgIvGE2AxEMQuSxz2W74zB8e+F4kGiVlwDyZr9zemkMEXYSslNotD8db6iHriomc20zD5X+OaeozEX+w+AJMNmX7slv3ub3P2qI
+X-Forefront-Antispam-Report: CIP:216.228.118.232; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge1.nvidia.com; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(396003)(376002)(136003)(39860400002)(230922051799003)(64100799003)(82310400011)(451199024)(1800799012)(186009)(40470700004)(46966006)(36840700001)(36860700001)(47076005)(36756003)(2906002)(41300700001)(86362001)(7636003)(82740400003)(356005)(54906003)(7696005)(6916009)(316002)(70586007)(478600001)(70206006)(6666004)(83380400001)(336012)(426003)(8676002)(5660300002)(2616005)(8936002)(26005)(107886003)(1076003)(4326008)(40480700001)(40460700003);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2024 16:25:36.5574 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f2d6b6e-2e28-4301-c3bd-08dc1dc24322
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2024 16:25:40.3030 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8db83e9b-9bce-419d-25c0-08dc1dc24557
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.232];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DF.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9DB.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4304
-Received-SPF: softfail client-ip=40.107.101.84;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9354
+Received-SPF: softfail client-ip=2a01:111:f400:7e88::62a;
  envelope-from=avihaih@nvidia.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,75 +130,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+The commit in the fixes line mistakenly modified the channels and
+transport compatibility check logic so it now checks multi-channel
+support only for socket transport type.
 
-Today there are several types of migration channels that can be used
-during migration: main migration channel, multifd channels and postcopy
-preempt channel. Each channel type has its own code to connect and to
-TLS upgrade itself when needed. There is no unified API for these tasks
-and it makes the code a bit unclear and cumbersome.
+Thus, running multifd migration using a transport other than socket that
+is incompatible with multi-channels (such as "exec") would lead to a
+segmentation fault instead of an error message.
+For example:
+  (qemu) migrate_set_capability multifd on
+  (qemu) migrate -d "exec:cat > /tmp/vm_state"
+  Segmentation fault (core dumped)
 
-This series aims to solve this by introducing two new APIs for the above
-tasks that will replace the existing code.
+Fix it by checking multi-channel compatibility for all transport types.
 
-The first one is an API to TLS upgrade migration channels. A new
-function, migration_tls_channel_connect(), is introduced and is used by
-main migration, multifd and postcopy preempt channels.
+Fixes: d95533e1cdcc ("migration: modify migration_channels_and_uri_compatible() for new QAPI syntax")
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+---
+ migration/migration.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-The second one is an API to connect migration channels. A new function,
-migration_channel_connect(), is introduced and is used by all migration
-channels other than main migration channel, i.e., multifd and postcopy
-preempt channels. The reason it's not used by main migration channel is
-because the main channel is a bit special and has different flows, and I
-didn't see a smooth way to include it.
-
-Patch breakdown:
-1-5: Some fixes and cleanups.
-6-12: Add new migration channel TLS upgrade API.
-13-17: Add new migration channel connect API.
-
-Thanks for reviewing.
-
-Avihai Horon (17):
-  migration: Fix logic of channels and transport compatibility check
-  migration: Move local_err check in migration_ioc_process_incoming()
-  migration: Rename default_channel to main_channel
-  migration/multifd: Set p->running = true in the right place
-  migration/multifd: Wait for multifd channels creation before
-    proceeding
-  migration/tls: Rename main migration channel TLS functions
-  migration/tls: Add new migration channel TLS upgrade API
-  migration: Use the new TLS upgrade API for main channel
-  migration/multifd: Use the new TLS upgrade API for multifd channels
-  migration/postcopy: Use the new TLS upgrade API for preempt channel
-  migration/tls: Make migration_tls_client_create() static
-  migration/multifd: Consolidate TLS/non-TLS multifd channel error flow
-  migration: Store MigrationAddress in MigrationState
-  migration: Rename migration_channel_connect()
-  migration: Add new migration channel connect API
-  migration/multifd: Use the new migration channel connect API for
-    multifd
-  migration/postcopy: Use the new migration channel connect API for
-    postcopy preempt
-
- migration/channel.h      |  30 +++++++--
- migration/migration.h    |   5 ++
- migration/multifd.h      |   3 +
- migration/postcopy-ram.h |   2 +-
- migration/tls.h          |  30 +++++++--
- migration/channel.c      | 106 +++++++++++++++++++++++++----
- migration/exec.c         |   2 +-
- migration/fd.c           |   2 +-
- migration/file.c         |   2 +-
- migration/migration.c    |  47 ++++++++-----
- migration/multifd.c      | 142 +++++++++++----------------------------
- migration/postcopy-ram.c | 111 +++++++++++-------------------
- migration/ram.c          |   7 ++
- migration/socket.c       |   2 +-
- migration/tls.c          |  94 +++++++++++++++++---------
- migration/trace-events   |  16 ++---
- 16 files changed, 344 insertions(+), 257 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index 219447dea1..6fc544711a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -128,11 +128,17 @@ static bool migration_needs_multiple_sockets(void)
+     return migrate_multifd() || migrate_postcopy_preempt();
+ }
+ 
+-static bool transport_supports_multi_channels(SocketAddress *saddr)
++static bool transport_supports_multi_channels(MigrationAddress *addr)
+ {
+-    return saddr->type == SOCKET_ADDRESS_TYPE_INET ||
+-           saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
+-           saddr->type == SOCKET_ADDRESS_TYPE_VSOCK;
++    if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
++        SocketAddress *saddr = &addr->u.socket;
++
++        return saddr->type == SOCKET_ADDRESS_TYPE_INET ||
++               saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
++               saddr->type == SOCKET_ADDRESS_TYPE_VSOCK;
++    }
++
++    return false;
+ }
+ 
+ static bool
+@@ -140,8 +146,7 @@ migration_channels_and_transport_compatible(MigrationAddress *addr,
+                                             Error **errp)
+ {
+     if (migration_needs_multiple_sockets() &&
+-        (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) &&
+-        !transport_supports_multi_channels(&addr->u.socket)) {
++        !transport_supports_multi_channels(addr)) {
+         error_setg(errp, "Migration requires multi-channel URIs (e.g. tcp)");
+         return false;
+     }
 -- 
 2.26.3
 
