@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B1F83B821
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52EF83B83B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:34:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqTF-0007oQ-Ow; Wed, 24 Jan 2024 22:32:05 -0500
+	id 1rSqTG-000876-BM; Wed, 24 Jan 2024 22:32:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqTB-0007V9-D8
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:01 -0500
+ id 1rSqTC-0007eK-M9
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:02 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqT9-0001Dy-5q
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:00 -0500
+ id 1rSqTA-0001E0-B6
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:32:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153519; x=1737689519;
+ t=1706153520; x=1737689520;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kAhbpSvf5mcqCqnuUHwzUyFR0bBkU6DMg1Kt+jDOu9k=;
- b=Vnf6HWBgPiF3W//ca0dVmvvDvXOFOtUX1F46+EedR1aw0pkVCkhR89vc
- RKWCIWhsjicrrJjF1o1hE0nLMKKGJNoudNbtdz9Lq2S/Eq/ZEeuOcHw10
- Ni5XM3z47DqtubRemhRFOqMND/FnQCAH88BtUU3bK7Gh0t6JcGHs6km/z
- xry6H61mY5y/3xTcpJE4hxvZ+shed+NkVvAjK6/05lYqmmbsthVJxqek3
- B92Gt7iCrGRO5A7o9+s6NWmGaTOHksYRSB1x2kjGwYl8YN3hjV0JP2aGk
- YG6zqWt4vHZ68xDCkaBIGdMtExJCGkXz9GmMYHK6mYKFOv4tYxne3B1hQ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430418"
+ bh=4/L/zFftOASDg8dMA/HkiVMm8CbnS0xqfd/o4PC3bt4=;
+ b=fvBz5/gvNMCGK3+tLTUmiJC4nvg1GadOnIkcyGrjLpgQsLusaR/5hoI5
+ R1z1JCNmxN4NsyJ5VGxYd2L7tOSN5YUrsaLgFlRMrkyNXzB6HUmF/K1uB
+ D5PziDSFzBGaDzsKDhjS918FYLu0X4V39uzUDSSHBXGhMucr4I1AaQPEW
+ ADw21jzNjr9DJxHWnq0RnkcIPYckTA6MUrDXDhRwAreu/6qa06itdEUrI
+ 3KYU8pwNxNF4hRs0aEHKBdxNs4a8j2sLDXBJ2/ADQy7bhIO2XvWP8Bhqx
+ Lz3P2w9xSRw2nPd4JQGfle21MZVDVTzLunBq9dZlB5w3m5yisUTAcvYPa w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430447"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430418"
+   d="scan'208";a="9430447"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:29:00 -0800
+ 24 Jan 2024 19:29:05 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086471"
+   d="scan'208";a="2086516"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:55 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:29:00 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 59/66] i386/tdx: LMCE is not supported for TDX
-Date: Wed, 24 Jan 2024 22:23:21 -0500
-Message-Id: <20240125032328.2522472-60-xiaoyao.li@intel.com>
+Subject: [PATCH v4 60/66] hw/i386: add eoi_intercept_unsupported member to
+ X86MachineState
+Date: Wed, 24 Jan 2024 22:23:22 -0500
+Message-Id: <20240125032328.2522472-61-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,37 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LMCE is not supported TDX since KVM doesn't provide emulation for
-MSR_IA32_FEAT_CTL.
+Add a new bool member, eoi_intercept_unsupported, to X86MachineState
+with default value false. Set true for TDX VM.
+
+Inability to intercept eoi causes impossibility to emulate level
+triggered interrupt to be re-injected when level is still kept active.
+which affects interrupt controller emulation.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/kvm-cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/i386/x86.c         | 1 +
+ include/hw/i386/x86.h | 1 +
+ target/i386/kvm/tdx.c | 2 ++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 9c791b7b0520..8c618869533c 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -15,6 +15,7 @@
- #include "sysemu/sysemu.h"
- #include "hw/boards.h"
- 
-+#include "tdx.h"
- #include "kvm_i386.h"
- #include "hw/core/accel-cpu.h"
- 
-@@ -60,6 +61,10 @@ static bool lmce_supported(void)
-     if (kvm_ioctl(kvm_state, KVM_X86_GET_MCE_CAP_SUPPORTED, &mce_cap) < 0) {
-         return false;
-     }
-+
-+    if (is_tdx_vm())
-+        return false;
-+
-     return !!(mce_cap & MCG_LMCE_P);
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index f13f49069d40..504575abfa98 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1422,6 +1422,7 @@ static void x86_machine_initfn(Object *obj)
+     x86ms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     x86ms->bus_lock_ratelimit = 0;
+     x86ms->above_4g_mem_start = 4 * GiB;
++    x86ms->eoi_intercept_unsupported = false;
  }
  
+ static void x86_machine_class_init(ObjectClass *oc, void *data)
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index ab1d38569019..b689feb389b3 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -59,6 +59,7 @@ struct X86MachineState {
+ 
+     /* CPU and apic information: */
+     bool apic_xrupt_override;
++    bool eoi_intercept_unsupported;
+     unsigned pci_irq_mask;
+     unsigned apic_id_limit;
+     uint16_t boot_cpus;
+diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+index 838b7916278c..c844d753736c 100644
+--- a/target/i386/kvm/tdx.c
++++ b/target/i386/kvm/tdx.c
+@@ -715,6 +715,8 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+         return -EINVAL;
+     }
+ 
++    x86ms->eoi_intercept_unsupported = true;
++
+     if (!tdx_caps) {
+         r = get_tdx_capabilities(errp);
+         if (r) {
 -- 
 2.34.1
 
