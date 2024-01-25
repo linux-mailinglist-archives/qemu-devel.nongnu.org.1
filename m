@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E72783CA18
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 18:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD0083CA17
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 18:33:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT3aN-0006BB-CA; Thu, 25 Jan 2024 12:32:19 -0500
+	id 1rT3aN-0006BK-Cj; Thu, 25 Jan 2024 12:32:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT3aL-0006Ag-1M
+ id 1rT3aL-0006Ah-2a
  for qemu-devel@nongnu.org; Thu, 25 Jan 2024 12:32:17 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rT3aJ-0006na-33
+ id 1rT3aJ-0006nf-30
  for qemu-devel@nongnu.org; Thu, 25 Jan 2024 12:32:16 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40eacb6067dso57033715e9.1
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40e60e137aaso76632805e9.0
  for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 09:32:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706203932; x=1706808732; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706203933; x=1706808733; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=qYjEPErl5XVh5u2nT0CJZDvflYNdae3uJnahchVLNhA=;
- b=jAyEVuIpg+ONfrSB6uW03dH3WVXziNiRGgkDk32GYsARKGcS+E9YPTFxJ2He3hhtSS
- Li3M9Mp38OGR3y8wWtum2QncdH9d0P5Qn0WxgG76O+oEy61AyeIX6oblLJ7A6ow2XbkP
- 0Yl2jHnJcVr1Na6H5eBCdAxfE2Ms5SK4h4QlVcvKQdtBD1RBEGcedPYYSpX/9sR7KQDX
- nTIVx2Yhq/tTCS7B7TE55fsEC80Tf4PbwQ2j4Ywdd6qstoVPZrlf1i8D0FcktC/RhDNE
- rH9LkcxUQxyf/ao1w2kFalsuiAlRLKLkjPOFKoimu7l27tdPOU6pB+97cZRPoLfqIIn1
- Rw1g==
+ :reply-to; bh=Pwpt9wjrohdTqeijR7zcxx8QTW0iX7DDa8r/R2Jitvo=;
+ b=ffEN8C6J/0/GnUh6VwPq7UqAq1k2VMI5tGwNquDViq0GDBmNPZ85MIh1UJ4YrXhdBf
+ pAFOtlDj4LAdXKrNF97Z/JHaydMsjFoYCzf6bZ9mIO+DPwKl4LAarebz52Q/Gf8bv4u8
+ 3z9CnJg7ffEQDGvl1TX6cpW2lZmV7lQlL7diSfGqz+xv9m2ipiTFbg0hdbxnc7I5zMgw
+ NchahjEkyVK99DTOI+mZZ1gk04IhSnSCypvrJDLnLGU8ctcaxv19lL7w6I/+ZFlbPk4j
+ Q7RlH0BT5TzxnWE7WljXbHLWdk6OulF4dEnOiy4BIbuzMyPrawRL2Mqh+7aNHDAyfigp
+ lC2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706203932; x=1706808732;
+ d=1e100.net; s=20230601; t=1706203933; x=1706808733;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qYjEPErl5XVh5u2nT0CJZDvflYNdae3uJnahchVLNhA=;
- b=PCZOHi0XDuFv+XlF47DtIiDHrT28awy+RqxYWWoc3nD2OCPbTE/tfvq57pzUJGgdKq
- qmyAXbnnOj2MVsJ7gJlgH3VaJ4cscILjZKicAqtWImuHF5r2huvPsl7SMz+uKEeWiORs
- isYVZ+feyyKGvEPW/l0WnUbvazApGEhPylIiwPclTk1eJYG3f/KFHqFFYNweNMpf1NrI
- oAxZVd+xCeFq9giWoezu9LDz+9FRd27e6cHRMF/9UG/15RWkEn+1S2DwOmZQVcEVkviP
- +8xqRS5c82RD30TD+5neg94XdJjQ/9PQs9WB05NZXcFD+xcTmgfrWp+bYudoQBfASGcC
- f8rA==
-X-Gm-Message-State: AOJu0YzhWW0DRI8tnLBHmmVefHq/yRDsmkj0q29Ytza9ZVSGQg7RDXfo
- U9yNA+SkoEDOciVSeecYjGskxsXNx0rIPLu5/ww+2aCmh4vgNl5hbuFuQS5Wq+lJtJhD8tMDS1t
- B
-X-Google-Smtp-Source: AGHT+IGTtOwq0/g6b8okxw62hPkqwjcd4cSVWXKTNtUdM3YoZ8zb9LwCHiIQmAAX2vY1H/NBIKcoVw==
-X-Received: by 2002:a7b:c40a:0:b0:40e:9ec9:e4bc with SMTP id
- k10-20020a7bc40a000000b0040e9ec9e4bcmr27835wmi.332.1706203932488; 
+ bh=Pwpt9wjrohdTqeijR7zcxx8QTW0iX7DDa8r/R2Jitvo=;
+ b=X2KXg4vNnxZfpgveiq6Ljen0MvMfP/mO7PGu+Glq8kJBzat4SfdyexaeGWXKD/Uh1P
+ rrRyTfho3r9FTdl2F5+/T3N2hg7qfusSoOCXkMbIN2osVprGB1w5DrkNn6euozryB4Gq
+ 9BM0fVxifcFBmYwBfrSerGP8tz8oUZ89D69MAdj9116pSawrcKNi1755TS4Uyp12EQep
+ NrEur7RgsRclDbeKuAJwh3hY9pQNfb/6Z0Q++fzkdjDU7b7mz148+Nybv7d3qGvE58rs
+ 7+31SsiOsj8VvEzGOqIDstmfDNwsQAUhP6zVPhamO1QYZ1wJ7PSG1T24C/Es4Ad9ovU2
+ uH0Q==
+X-Gm-Message-State: AOJu0YwZ7DubNjoCQRfUUno+Gmwnz51hU8cNZkrvcTZhMHwr7rHbweNI
+ TIt6+tPWWZPihp852AsWE3ZszZ9GWDOP2OJcYUlcQe2Qze8OdhmhvQzogh3YeBU73ZSZ2w8u8tY
+ b
+X-Google-Smtp-Source: AGHT+IFi4h1X/4FqYcA7zygtCKeBpB5zJv93wNRzabMViZCczgJpxD2VAaZD/LJ3PDL/hSLflIE6QQ==
+X-Received: by 2002:a05:600c:5756:b0:40e:c69d:94f3 with SMTP id
+ jw22-20020a05600c575600b0040ec69d94f3mr51726wmb.185.1706203932991; 
  Thu, 25 Jan 2024 09:32:12 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Jan 2024 09:32:12 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 1/2] tests/qtest/xlnx-versal-trng-test.c: Drop use of variable
- length array
-Date: Thu, 25 Jan 2024 17:32:10 +0000
-Message-Id: <20240125173211.1786196-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/2] meson: Enable -Wvla
+Date: Thu, 25 Jan 2024 17:32:11 +0000
+Message-Id: <20240125173211.1786196-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125173211.1786196-1-peter.maydell@linaro.org>
 References: <20240125173211.1786196-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,77 +91,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This test program is the last use of any variable length array in the
-codebase.  If we can get rid of all uses of VLAs we can make the
-compiler error on new additions.  This is a defensive measure against
-security bugs where an on-stack dynamic allocation isn't correctly
-size-checked (e.g.  CVE-2021-3527).
+QEMU has historically used variable length arrays only very rarely.
+Variable length arrays are a potential security issue where an
+on-stack dynamic allocation isn't correctly size-checked, especially
+when the size comes from the guest.  (An example problem of this kind
+from the past is CVE-2021-3527).  Forbidding them entirely is a
+defensive measure against further bugs of this kind.
 
-In this case the test code didn't even want a variable-sized
-array, it was just accidentally using syntax that gave it one.
-(The array size for C has to be an actual constant expression,
-not just something that happens to be known to be constant...)
-
-Remove the VLA usage.
+Enable -Wvla to prevent any new uses from sneaking into the codebase.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/xlnx-versal-trng-test.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/xlnx-versal-trng-test.c b/tests/qtest/xlnx-versal-trng-test.c
-index cef4e575bba..ba86f39d13c 100644
---- a/tests/qtest/xlnx-versal-trng-test.c
-+++ b/tests/qtest/xlnx-versal-trng-test.c
-@@ -298,10 +298,13 @@ static size_t trng_collect(uint32_t *rnd, size_t cnt)
-     return i;
- }
+diff --git a/meson.build b/meson.build
+index d0329966f1b..385b8247073 100644
+--- a/meson.build
++++ b/meson.build
+@@ -601,6 +601,7 @@ warn_flags = [
+   '-Wno-psabi',
+   '-Wno-gnu-variable-sized-type-not-at-end',
+   '-Wshadow=local',
++  '-Wvla',
+ ]
  
-+/* These tests all generate 512 bits of random data with the device */
-+#define TEST_DATA_WORDS (512 / 32)
-+
- static void trng_test_autogen(void)
- {
--    const size_t cnt = 512 / 32;
--    uint32_t rng[cnt], prng[cnt];
-+    const size_t cnt = TEST_DATA_WORDS;
-+    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
-     size_t n;
- 
-     trng_reset();
-@@ -343,8 +346,8 @@ static void trng_test_autogen(void)
- 
- static void trng_test_oneshot(void)
- {
--    const size_t cnt = 512 / 32;
--    uint32_t rng[cnt];
-+    const size_t cnt = TEST_DATA_WORDS;
-+    uint32_t rng[TEST_DATA_WORDS];
-     size_t n;
- 
-     trng_reset();
-@@ -370,8 +373,8 @@ static void trng_test_oneshot(void)
- 
- static void trng_test_per_str(void)
- {
--    const size_t cnt = 512 / 32;
--    uint32_t rng[cnt], prng[cnt];
-+    const size_t cnt = TEST_DATA_WORDS;
-+    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
-     size_t n;
- 
-     trng_reset();
-@@ -415,8 +418,8 @@ static void trng_test_forced_prng(void)
-     const char *prop = "forced-prng";
-     const uint64_t seed = 0xdeadbeefbad1bad0ULL;
- 
--    const size_t cnt = 512 / 32;
--    uint32_t rng[cnt], prng[cnt];
-+    const size_t cnt = TEST_DATA_WORDS;
-+    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
-     size_t n;
- 
-     trng_reset();
+ if host_os != 'darwin'
 -- 
 2.34.1
 
