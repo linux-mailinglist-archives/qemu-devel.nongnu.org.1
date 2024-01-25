@@ -2,90 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B1383BF01
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 11:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8CE83BF13
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 11:39:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSx5e-0007ZX-6w; Thu, 25 Jan 2024 05:36:10 -0500
+	id 1rSx8T-0000qH-IX; Thu, 25 Jan 2024 05:39:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rSx5b-0007WA-9H
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 05:36:07 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=Usek=JD=kaod.org=clg@ozlabs.org>)
+ id 1rSx8R-0000oS-HQ; Thu, 25 Jan 2024 05:39:03 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rSx5Z-0008WC-TT
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 05:36:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706178964;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=aI8CbuiyC4bOr9Lu4ccL2jCFMGVKbL3JuSYKgPFfm2osSFOMjZdWWeCbP2/0O8s0yXgkLo
- /6frAlOlm7+1hDORygFm1s5+HDOtr0sFyHSPn+yw1BQgxzMjhXkPU7zJUFJcEysIhwFFpn
- E8TxMD/dz9YmyyEumu9UMWGdVrE5jxE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-OriBRpeEPM6A4gqGsVofgg-1; Thu, 25 Jan 2024 05:36:02 -0500
-X-MC-Unique: OriBRpeEPM6A4gqGsVofgg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a27eddc1c27so311280066b.3
- for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 02:36:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706178961; x=1706783761;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=GYHSbKZAUW3eVMf52uMoLjXJIjbTr1hJgDeou7hENHFLEuN6wfR6VWYUXmsMHPN4hP
- GHLZUiY1VuMwrGPF/DNku+C3DgkGlhgnWr9X3w0hQMHQqb7qvXaCp40T05XnAPBFxwTb
- VF0qdCloXfjGHmUn32H/wKU5Erz5ylfZogvrBg2j0TBezfUtCc5B1HxzhdMW8BgiwxPM
- Mv/wqSz5KqHTbsy2z1AcGmN9bs0QqZSiB0+q0PeQ7u7P5qaXdTUGMUsJltv4kafrxc+w
- bgK2eYewF9jfGroqdqVuEj684lKAFjHhuUOMfj7smTgsf8V6Q8yq6/0r17Kh2UewY7OA
- tm/Q==
-X-Gm-Message-State: AOJu0YzLo+LCyHBTNE+y7YjyyUoNcDOEkd6PCHUtI0Ra3MxeLJIGdiWP
- Bh5IlsV2wOVyQhx9QYG7qrPIl+8MEAd9yFopPff5hCDiSCQ7EmCPHXD6plhT18AwSQfSey/5KL3
- vqskbK6TCjTbsC2faRC8vP5n7lZuuZFcR39TkHH0sFkxEatHxgnke
-X-Received: by 2002:a17:906:b7d1:b0:a29:906e:b8f4 with SMTP id
- fy17-20020a170906b7d100b00a29906eb8f4mr261233ejb.46.1706178961239; 
- Thu, 25 Jan 2024 02:36:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHI3F7rDewc72YTUwjEU3W4vp+87Av/lrWcxCfZvnFA9Myuo1hStdQH4XZAU4hqe42ph1+Mxw==
-X-Received: by 2002:a17:906:b7d1:b0:a29:906e:b8f4 with SMTP id
- fy17-20020a170906b7d100b00a29906eb8f4mr261229ejb.46.1706178960846; 
- Thu, 25 Jan 2024 02:36:00 -0800 (PST)
-Received: from [192.168.1.174] ([151.48.72.171])
- by smtp.gmail.com with ESMTPSA id
- p13-20020a17090653cd00b00a28badcf367sm880604ejo.54.2024.01.25.02.35.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Jan 2024 02:36:00 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] physmem: replace function name with __func__ in
- ram_block_discard_range()
-Date: Thu, 25 Jan 2024 11:35:41 +0100
-Message-ID: <20240125103541.789156-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240125023328.2520888-1-xiaoyao.li@intel.com>
-References: 
+ (Exim 4.90_1) (envelope-from <SRS0=Usek=JD=kaod.org=clg@ozlabs.org>)
+ id 1rSx8O-0002gJ-MP; Thu, 25 Jan 2024 05:39:03 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TLHP9649Wz4x5r;
+ Thu, 25 Jan 2024 21:38:53 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TLHP66Yfyz4wc8;
+ Thu, 25 Jan 2024 21:38:50 +1100 (AEDT)
+Message-ID: <0f62f45b-7b1d-49d3-adaa-9ceb76de1a5d@kaod.org>
+Date: Thu, 25 Jan 2024 11:38:47 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] target/ppc: Fix 440 tlbwe TLB invalidation gaps
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
+References: <20240117151238.93323-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240117151238.93323-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Usek=JD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,8 +66,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+On 1/17/24 16:12, Nicholas Piggin wrote:
+> The 440 software TLB write entry misses several cases that must flush
+> the TCG TLB:
+> - If the new size is smaller than the existing size, the EA no longer
+>    covered should be flushed. This looks like an inverted inequality test.
+> - If the TLB PID changes.
+> - If the TLB attr bit 0 (translation address space) changes.
+> - If low prot (access control) bits change.
+> 
+> Fix this by removing tricks to avoid TLB flushes, and just invalidate
+> the TLB if any valid entry is being changed, similarly to 4xx.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Paolo
+
+Acked-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+PS: A cover letter would have been nice :) I couldn't find it.
+
+
+> ---
+>   target/ppc/mmu_helper.c | 35 ++++++++++-------------------------
+>   1 file changed, 10 insertions(+), 25 deletions(-)
+> 
+> diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+> index f87d35379a..c140f3c96d 100644
+> --- a/target/ppc/mmu_helper.c
+> +++ b/target/ppc/mmu_helper.c
+> @@ -855,49 +855,34 @@ void helper_440_tlbwe(CPUPPCState *env, uint32_t word, target_ulong entry,
+>                         target_ulong value)
+>   {
+>       ppcemb_tlb_t *tlb;
+> -    target_ulong EPN, RPN, size;
+> -    int do_flush_tlbs;
+>   
+>       qemu_log_mask(CPU_LOG_MMU, "%s word %d entry %d value " TARGET_FMT_lx "\n",
+>                     __func__, word, (int)entry, value);
+> -    do_flush_tlbs = 0;
+>       entry &= 0x3F;
+>       tlb = &env->tlb.tlbe[entry];
+> +
+> +    /* Invalidate previous TLB (if it's valid) */
+> +    if (tlb->prot & PAGE_VALID) {
+> +        tlb_flush(env_cpu(env));
+> +    }
+> +
+>       switch (word) {
+>       default:
+>           /* Just here to please gcc */
+>       case 0:
+> -        EPN = value & 0xFFFFFC00;
+> -        if ((tlb->prot & PAGE_VALID) && EPN != tlb->EPN) {
+> -            do_flush_tlbs = 1;
+> -        }
+> -        tlb->EPN = EPN;
+> -        size = booke_tlb_to_page_size((value >> 4) & 0xF);
+> -        if ((tlb->prot & PAGE_VALID) && tlb->size < size) {
+> -            do_flush_tlbs = 1;
+> -        }
+> -        tlb->size = size;
+> +        tlb->EPN = value & 0xFFFFFC00;
+> +        tlb->size = booke_tlb_to_page_size((value >> 4) & 0xF);
+>           tlb->attr &= ~0x1;
+>           tlb->attr |= (value >> 8) & 1;
+>           if (value & 0x200) {
+>               tlb->prot |= PAGE_VALID;
+>           } else {
+> -            if (tlb->prot & PAGE_VALID) {
+> -                tlb->prot &= ~PAGE_VALID;
+> -                do_flush_tlbs = 1;
+> -            }
+> +            tlb->prot &= ~PAGE_VALID;
+>           }
+>           tlb->PID = env->spr[SPR_440_MMUCR] & 0x000000FF;
+> -        if (do_flush_tlbs) {
+> -            tlb_flush(env_cpu(env));
+> -        }
+>           break;
+>       case 1:
+> -        RPN = value & 0xFFFFFC0F;
+> -        if ((tlb->prot & PAGE_VALID) && tlb->RPN != RPN) {
+> -            tlb_flush(env_cpu(env));
+> -        }
+> -        tlb->RPN = RPN;
+> +        tlb->RPN = value & 0xFFFFFC0F;
+>           break;
+>       case 2:
+>           tlb->attr = (tlb->attr & 0x1) | (value & 0x0000FF00);
 
 
