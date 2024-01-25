@@ -2,52 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7C683BAA8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:32:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F143F83BA98
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:25:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSuDL-0007lJ-WF; Thu, 25 Jan 2024 02:31:56 -0500
+	id 1rSu5p-0003Um-IA; Thu, 25 Jan 2024 02:24:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rSuDI-0007jG-OH
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:53 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rSuDG-0000gr-34
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:52 -0500
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxuuhjDrJlB20FAA--.936S3;
- Thu, 25 Jan 2024 15:31:47 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxHs9gDrJlHeQYAA--.42878S4; 
- Thu, 25 Jan 2024 15:31:45 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 2/2] target/loongarch/kvm: Enable LSX/LASX extension
-Date: Thu, 25 Jan 2024 15:15:37 +0800
-Message-Id: <20240125071537.53397-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240125071537.53397-1-gaosong@loongson.cn>
-References: <20240125071537.53397-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rSu5m-0003Tk-33
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:24:06 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rSu5h-0005cH-Ox
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:24:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706167441;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=HqK5Jg2AWC298Chjn6yXJQK8HIzW7u+LTdEhFHXTGT4=;
+ b=UMVxyuMuijC+xxg+qACvAIfz9ZYS9DsUz9tf3LA1ECUqcFbeehnwamtlyVK9rsdjfHHySS
+ 7bO7JrmebkupD3iDSL+9kyx3vE875oFYs7bnNHoC3BqRvvF/UPC1O7OdDkmmT72etqMkV3
+ uZQ5zTAVxEHi7eSm2ZoVJD3p7aJkMpQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-0X7hC3IgMP-6SGRxhl5dmA-1; Thu, 25 Jan 2024 02:22:23 -0500
+X-MC-Unique: 0X7hC3IgMP-6SGRxhl5dmA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C094484AE40
+ for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 07:22:22 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.208.14])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 71F231121306;
+ Thu, 25 Jan 2024 07:22:21 +0000 (UTC)
+From: Anthony Harivel <aharivel@redhat.com>
+To: pbonzini@redhat.com,
+	mtosatti@redhat.com,
+	berrange@redhat.com
+Cc: qemu-devel@nongnu.org, vchundur@redhat.com,
+ Anthony Harivel <aharivel@redhat.com>
+Subject: [PATCH v3 0/3] Add support for the RAPL MSRs series
+Date: Thu, 25 Jan 2024 08:22:11 +0100
+Message-ID: <20240125072214.318382-1-aharivel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxHs9gDrJlHeQYAA--.42878S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aharivel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,97 +79,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kernel had already support LSX and LASX [1],
-but QEMU is disable LSX/LASX for kvm. This patch adds
-kvm_check_cpucfg2() to check CPUCFG2.
+Dear maintainers,
 
-[1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
+First of all, thank you very much for your recent review of my patch 
+[1].
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-Id: <20240122090206.1083584-1-gaosong@loongson.cn>
----
- linux-headers/asm-loongarch/kvm.h |  1 +
- target/loongarch/kvm/kvm.c        | 45 ++++++++++++++++++++++++++-----
- 2 files changed, 39 insertions(+), 7 deletions(-)
+In this version (v3), I have attempted to address the most crucial and 
+challenging aspect highlighted in your last review.
 
-diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
-index c6ad2ee610..923d0bd382 100644
---- a/linux-headers/asm-loongarch/kvm.h
-+++ b/linux-headers/asm-loongarch/kvm.h
-@@ -79,6 +79,7 @@ struct kvm_fpu {
- #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
- #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
- #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
-+#define KVM_LOONGARCH_VCPU_CPUCFG	0
- 
- struct kvm_debug_exit_arch {
- };
-diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 2230f029d0..c19978a970 100644
---- a/target/loongarch/kvm/kvm.c
-+++ b/target/loongarch/kvm/kvm.c
-@@ -540,6 +540,38 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
-     return ret;
- }
- 
-+static int kvm_check_cpucfg2(CPUState *cs)
-+{
-+    int ret;
-+    uint64_t val;
-+    struct kvm_device_attr attr = {
-+        .group = KVM_LOONGARCH_VCPU_CPUCFG,
-+        .attr = 2,
-+        .addr = (uint64_t)&val,
-+    };
-+    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-+    CPULoongArchState *env = &cpu->env;
-+
-+    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
-+
-+    if (!ret) {
-+        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
-+        env->cpucfg[2] &= val;
-+
-+        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, FP)) {
-+            /* The FP minimal version is 1. */
-+            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, FP_VER, 1);
-+        }
-+
-+        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, LLFTP)) {
-+            /* The LLFTP minimal version is 1. */
-+            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, LLFTP_VER, 1);
-+        }
-+    }
-+
-+    return ret;
-+}
-+
- static int kvm_loongarch_put_cpucfg(CPUState *cs)
- {
-     int i, ret = 0;
-@@ -548,14 +580,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
-     uint64_t val;
- 
-     for (i = 0; i < 21; i++) {
-+	if (i == 2) {
-+            ret = kvm_check_cpucfg2(cs);
-+            if (ret) {
-+                return ret;
-+            }
-+	}
-         val = env->cpucfg[i];
--        /* LSX and LASX and LBT are not supported in kvm now */
--        if (i == 2) {
--            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
--            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
--                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
--                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
--        }
-         ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
-         if (ret < 0) {
-             trace_kvm_failed_put_cpucfg(strerror(errno));
+I am hopeful that we can now engage in a discussion and address the 
+remaining potential points that need attention.
+
+Thank you for your continued guidance.
+
+v2 -> v3
+--------
+
+- Move all memory allocations from Clib to Glib
+
+- Compile on *BSD (working on Linux only)
+
+- No more limitation on the virtual package: each vCPU that belongs to 
+  the same virtual package is giving the same results like expected on 
+  a real CPU.
+  This has been tested topology like:
+     -smp 4,sockets=2
+     -smp 16,sockets=4,cores=2,threads=2
+
+v1 -> v2
+--------
+
+- To overcome the CVE-2020-8694 a socket communication is created
+  to a priviliged helper
+
+- Add the priviliged helper (qemu-vmsr-helper)
+
+- Add SO_PEERCRED in qio channel socket
+
+RFC -> v1
+---------
+
+- Add vmsr_* in front of all vmsr specific function
+
+- Change malloc()/calloc()... with all glib equivalent
+
+- Pre-allocate all dynamic memories when possible
+
+- Add a Documentation of implementation, limitation and usage
+
+Best regards,
+Anthony
+
+[1]: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1003382.html
+
+Anthony Harivel (3):
+  qio: add support for SO_PEERCRED for socket channel
+  tools: build qemu-vmsr-helper
+  Add support for RAPL MSRs in KVM/Qemu
+
+ accel/kvm/kvm-all.c                      |  27 ++
+ contrib/systemd/qemu-vmsr-helper.service |  15 +
+ contrib/systemd/qemu-vmsr-helper.socket  |   9 +
+ docs/specs/index.rst                     |   1 +
+ docs/specs/rapl-msr.rst                  | 133 ++++++
+ docs/tools/index.rst                     |   1 +
+ docs/tools/qemu-vmsr-helper.rst          |  89 ++++
+ include/io/channel.h                     |  21 +
+ include/sysemu/kvm_int.h                 |  17 +
+ io/channel-socket.c                      |  23 +
+ io/channel.c                             |  12 +
+ meson.build                              |   5 +
+ target/i386/cpu.h                        |   8 +
+ target/i386/kvm/kvm.c                    | 348 ++++++++++++++++
+ target/i386/kvm/meson.build              |   1 +
+ target/i386/kvm/vmsr_energy.c            | 295 +++++++++++++
+ target/i386/kvm/vmsr_energy.h            |  87 ++++
+ tools/i386/qemu-vmsr-helper.c            | 507 +++++++++++++++++++++++
+ tools/i386/rapl-msr-index.h              |  28 ++
+ 19 files changed, 1627 insertions(+)
+ create mode 100644 contrib/systemd/qemu-vmsr-helper.service
+ create mode 100644 contrib/systemd/qemu-vmsr-helper.socket
+ create mode 100644 docs/specs/rapl-msr.rst
+ create mode 100644 docs/tools/qemu-vmsr-helper.rst
+ create mode 100644 target/i386/kvm/vmsr_energy.c
+ create mode 100644 target/i386/kvm/vmsr_energy.h
+ create mode 100644 tools/i386/qemu-vmsr-helper.c
+ create mode 100644 tools/i386/rapl-msr-index.h
+
 -- 
-2.25.1
+2.43.0
 
 
