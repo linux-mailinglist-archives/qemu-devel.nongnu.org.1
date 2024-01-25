@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B47883B836
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C1383B83E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:34:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqT4-0006jL-M1; Wed, 24 Jan 2024 22:31:54 -0500
+	id 1rSqT4-0006aj-B0; Wed, 24 Jan 2024 22:31:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSz-00066L-Ub
+ id 1rSqT0-0006Ce-S3
  for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:50 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSy-0001E0-3Q
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:49 -0500
+ id 1rSqSz-0001Dr-5d
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153508; x=1737689508;
+ t=1706153509; x=1737689509;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dYbC6/O6Cy+T1AZ7szpJepdFNBXHXc3/nDTSns21eRk=;
- b=KR2ky1/m1iQN0w+sDZwAcBdiby2RRVDtJDRKDFf4tNjJxa9AYJUScHHv
- BqtrsArNihyZgJdnTd/oTRHvBToT7B+N/YgubWxKHmn3g6Q4f3aQVCwEZ
- M8iY8xRH+lwAjSTcSVmam7Ygd78ooH/SD4ULFkNT8W4YOEUML/QDXF5Kx
- 38YkaGf8HL2iOhlBASRc3o8kmD4VcTjfBl1pRUG0CkWO/S/oMeEDacmBs
- ne3dhqJVFb5sBwrTlYBGmu7M2irieWXXx6zeTy7ZQSgWZPKOnVBFDaSlK
- trjNZEY9ZWPgpZJA2ux/HuuhhIy7WCax0q0O0erTF4MUhK7EhQAYYR2JL Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430354"
+ bh=06fQye4ab2G7q75ZKWk8jLhdTnPCEpYY476w3krl16E=;
+ b=ivkBsctXhQ/GZMXEMZiA6QliTFGdqjflbjf29LSLf2qWQNd7i59jt47M
+ K0SUXYUDy75/HxnAym6PHkb60yDlaS3wFfnasoJrLHiXO/58Xw21kBO/4
+ UpI/YaGcxNiHgWemaOGJ9B+wUrkQtx7qUzw+2CgfB7KLKonVYJQRd/9yF
+ RWkrQqSXinclMxEeM7Y/1eUgtuksNemLfJ/SOuxvUHv/TnibFf5kDwtde
+ y5hOsO+OdTbccNrCfFqgmNGEu0dKEkog08LuGhizotWgMYl7q0r2pZFzl
+ aA7+o9quScBYlbwOIGY7bbrPISGerBUIAlpPc/2+AwxdBd7Cdf3EDULmL g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430381"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430354"
+   d="scan'208";a="9430381"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:28:49 -0800
+ 24 Jan 2024 19:28:54 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086423"
+   d="scan'208";a="2086449"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:44 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:50 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 57/66] i386/tdx: Disable PIC for TDX VMs
-Date: Wed, 24 Jan 2024 22:23:19 -0500
-Message-Id: <20240125032328.2522472-58-xiaoyao.li@intel.com>
+Subject: [PATCH v4 58/66] i386/tdx: Don't allow system reset for TDX VMs
+Date: Wed, 24 Jan 2024 22:23:20 -0500
+Message-Id: <20240125032328.2522472-59-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,37 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Legacy PIC (8259) cannot be supported for TDX VMs since TDX module
-doesn't allow directly interrupt injection.  Using posted interrupts
-for the PIC is not a viable option as the guest BIOS/kernel will not
-do EOI for PIC IRQs, i.e. will leave the vIRR bit set.
-
-Hence disable PIC for TDX VMs and error out if user wants PIC.
+TDX CPU state is protected and thus vcpu state cann't be reset by VMM.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/kvm/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 7eb3628763ae..838b7916278c 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -708,6 +708,13 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
-         return -EINVAL;
-     }
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index e36ece874246..0ec0584d22ca 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5686,7 +5686,7 @@ bool kvm_has_waitpkg(void)
  
-+    if (x86ms->pic == ON_OFF_AUTO_AUTO) {
-+        x86ms->pic = ON_OFF_AUTO_OFF;
-+    } else if (x86ms->pic == ON_OFF_AUTO_ON) {
-+        error_setg(errp, "TDX VM doesn't support PIC");
-+        return -EINVAL;
-+    }
-+
-     if (!tdx_caps) {
-         r = get_tdx_capabilities(errp);
-         if (r) {
+ bool kvm_arch_cpu_check_are_resettable(void)
+ {
+-    return !sev_es_enabled();
++    return !sev_es_enabled() && !is_tdx_vm();
+ }
+ 
+ #define ARCH_REQ_XCOMP_GUEST_PERM       0x1025
 -- 
 2.34.1
 
