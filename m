@@ -2,66 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE2183C16A
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 12:57:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B85F83C19D
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 13:05:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSyLW-0003Io-Fy; Thu, 25 Jan 2024 06:56:38 -0500
+	id 1rSyTW-0007D2-UD; Thu, 25 Jan 2024 07:04:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1rSyLU-0003IQ-Bs
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 06:56:36 -0500
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <SRS0=Usek=JD=kaod.org=clg@ozlabs.org>)
+ id 1rSyTO-0007Cg-FE
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 07:04:46 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1rSyLP-0004zL-Kg
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 06:56:36 -0500
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c29:fcc6:0:640:eb21:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id B692960FCE;
- Thu, 25 Jan 2024 14:56:28 +0300 (MSK)
-Received: from davydov-max-nux.yandex-team.ru (unknown
- [2a02:6b8:b081:1220::1:4])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id AuSJvL1IYeA0-dFHybvdV; Thu, 25 Jan 2024 14:56:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1706183787;
- bh=Wf7hyXgZjMI6J3e9itlcQyItCDlTsZs+Xl2FBi+leog=;
- h=In-Reply-To:Cc:References:To:Message-Id:Date:Subject:From;
- b=VBGTayFrU6pxL9I8XwzOyyHEVJEWQ5WwMUuYiTLp92Y87bI0NoTwDWvzVnuyDVgGv
- 52JWcZK6wWQ9HltBgubgrhmUH3u2k/cx4Z+2gXxroml9e2jFrOumQJnwYS6bPenVBL
- AJ2uWcYB67p9Co6+6vfefgk4+clMdKosNJp92kKg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Maksim Davydov <davydov-max@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, jsnow@redhat.com, eblake@redhat.com,
- armbru@redhat.com, pbonzini@redhat.com, berrange@redhat.com, alxndr@bu.edu,
- davydov-max@yandex-team.ru, vsementsov@yandex-team.ru,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- michael.labiuk@virtuozzo.com
-Subject: [PATCH v8 4/4] scripts: add script to compare compatibility properties
-Date: Thu, 25 Jan 2024 14:56:10 +0300
-Message-Id: <20240125115610.23697-5-davydov-max@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240125115610.23697-1-davydov-max@yandex-team.ru>
-References: <20240125115610.23697-1-davydov-max@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <SRS0=Usek=JD=kaod.org=clg@ozlabs.org>)
+ id 1rSyTL-0007kx-Kr
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 07:04:46 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TLKJ5693qz4x7q;
+ Thu, 25 Jan 2024 23:04:37 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TLKJ403SYz4x5r;
+ Thu, 25 Jan 2024 23:04:35 +1100 (AEDT)
+Message-ID: <3ed45dfe-8bda-4f73-b85d-60a53cc0a50a@kaod.org>
+Date: Thu, 25 Jan 2024 13:04:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ppc/pnv: Improve pervasive topology calculation for
+ big-core
+Content-Language: en-US
+To: Caleb Schlossin <calebs@linux.vnet.ibm.com>, qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, fbarrat@linux.ibm.com, danielhb413@gmail.com
+References: <20240123195005.8965-1-calebs@linux.vnet.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240123195005.8965-1-calebs@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=Usek=JD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,561 +66,288 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This script runs QEMU to obtain compat_props of machines and default
-values of different types of drivers to produce comparison table. This
-table can be used to compare machine types to choose the most suitable
-machine or compare binaries to be sure that migration to the newer version
-will save all device properties. Also the json or csv format of this
-table can be used to check does a new machine affect the previous ones by
-comparing tables with and without the new machine.
+Hello Caleb,
 
-Default values (that will be used without machine compat_props) of
-properties are needed to fill "holes" in the table (one machine has
-the property but another machine not. For instance, 2.12 machine has
-`{ "EPYC-" TYPE_X86_CPU, "xlevel", "0x8000000a" }`, but compat_pros of
-3.1 machine doesn't have it. Thus, to compare these machines we need to
-get unknown value of "EPYC-x86_64-cpu-xlevel" for 3.1 machine. These
-unknown values in the table are called "holes". To get values for these
-"holes" the script uses list of appropriate methods.)
+On 1/23/24 20:50, Caleb Schlossin wrote:
+> Big (SMT8) cores have a complicated function to map the core, thread ID
+> to pervasive topology (PIR). Fix this for power8, power9, and power10.
+> 
+> Signed-off-by: Caleb Schlossin <calebs@linux.vnet.ibm.com>
 
-Notes:
-* Some init values from the devices can't be available like properties
-  from virtio-9p when configure has --disable-virtfs. This situations will
-  be seen in the table as "unavailable driver".
-* Default values can be obtained in an unobvious way, like x86 features.
-  If the script doesn't know how to get property default value to compare
-  one machine with another it fills "holes" with "unavailable method". This
-  is done because script uses whitelist model to get default values of
-  different types. It means that the method that can't be applied to a new
-  type that can crash this script. It is better to get an "unavailable
-  driver" when creating a new machine with new compatible properties than
-  to break this script. So it turns out a more stable and generic script.
-* If the default value can't be obtained because this property doesn't
-  exist or because this property can't have default value, appropriate
-  "hole" will be filled by "unknown property" or "no default value"
-* If the property is applied to the abstract class, the script collects
-  default values from all child classes and prints all these classes
-* Raw table (--raw flag) should be used with json/csv parameters for
-  scripts and etc. Human-readable (default) format contains transformed
-  and simplified values and it doesn't contain lines with the same values
-  in columns
+Thanks for these changes. Looks OK.
 
-Example:
-./scripts/compare-machine-types.py --mt pc-q35-6.2 pc-q35-7.1
-╒══════════════════╤══════════════════════════╤════════════════════════════╤════════════════════════════╕
-│      Driver      │         Property         │  build/qemu-system-x86_64  │  build/qemu-system-x86_64  │
-│                  │                          │         pc-q35-6.2         │         pc-q35-7.1         │
-╞══════════════════╪══════════════════════════╪════════════════════════════╪════════════════════════════╡
-│     PIIX4_PM     │ x-not-migrate-acpi-index │            True            │           False            │
-├──────────────────┼──────────────────────────┼────────────────────────────┼────────────────────────────┤
-│ arm-gicv3-common │     force-8-bit-prio     │            True            │     unavailable driver     │
-├──────────────────┼──────────────────────────┼────────────────────────────┼────────────────────────────┤
-│     nvme-ns      │      eui64-default       │            True            │           False            │
-├──────────────────┼──────────────────────────┼────────────────────────────┼────────────────────────────┤
-│    virtio-mem    │  unplugged-inaccessible  │           False            │            auto            │
-╘══════════════════╧══════════════════════════╧════════════════════════════╧════════════════════════════╛
+Support for fused core will require more work, a new CPU PVR, may be with
+a machine "fused=on/off" option, and various adjustements in the models.
+I hope you find time to upstream these changes at least for OPAL/P10.
 
-Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
-Co-developed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- scripts/compare-machine-types.py | 486 +++++++++++++++++++++++++++++++
- 1 file changed, 486 insertions(+)
- create mode 100755 scripts/compare-machine-types.py
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-diff --git a/scripts/compare-machine-types.py b/scripts/compare-machine-types.py
-new file mode 100755
-index 0000000000..49bead761a
---- /dev/null
-+++ b/scripts/compare-machine-types.py
-@@ -0,0 +1,486 @@
-+#!/usr/bin/env python3
-+#
-+# Script to compare machine type compatible properties (include/hw/boards.h).
-+# compat_props are applied to the driver during initialization to change
-+# default values, for instance, to maintain compatibility.
-+# This script constructs table with machines and values of their compat_props
-+# to compare and to find places for improvements or places with bugs. If
-+# during the comparison, some machine type doesn't have a property (it is in
-+# the comparison table because another machine type has it), then the
-+# appropriate method will be used to obtain the default value of this driver
-+# property via qmp command (e.g. query-cpu-model-expansion for x86_64-cpu).
-+# These methods are defined below in qemu_property_methods.
-+#
-+# Copyright (c) Yandex Technologies LLC, 2023
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program; if not, see <http://www.gnu.org/licenses/>.
-+
-+import sys
-+from os import path
-+from argparse import ArgumentParser, RawTextHelpFormatter, Namespace
-+import pandas as pd
-+from contextlib import ExitStack
-+from typing import Optional, List, Dict, Generator, Tuple, Union, Any, Set
-+
-+try:
-+    qemu_dir = path.abspath(path.dirname(path.dirname(__file__)))
-+    sys.path.append(path.join(qemu_dir, 'python'))
-+    from qemu.machine import QEMUMachine
-+except ModuleNotFoundError as exc:
-+    print(f"Module '{exc.name}' not found.")
-+    print("Try export PYTHONPATH=top-qemu-dir/python or run from top-qemu-dir")
-+    sys.exit(1)
-+
-+
-+default_qemu_args = '-enable-kvm -machine none'
-+default_qemu_binary = 'build/qemu-system-x86_64'
-+
-+
-+# Methods for gettig the right values of drivers properties
-+#
-+# Use these methods as a 'whitelist' and add entries only if necessary. It's
-+# important to be stable and predictable in analysis and tests.
-+# Be careful:
-+# * Class must be inherited from 'QEMUObject' and used in new_driver()
-+# * Class has to implement get_prop method in order to get values
-+# * Specialization always wins (with the given classes for 'device' and
-+#   'x86_64-cpu', method of 'x86_64-cpu' will be used for '486-x86_64-cpu')
-+
-+class Driver():
-+    def __init__(self, vm: QEMUMachine, name: str, abstract: bool) -> None:
-+        self.vm = vm
-+        self.name = name
-+        self.abstract = abstract
-+        self.parent: Optional[Driver] = None
-+        self.property_getter: Optional[Driver] = None
-+
-+    def get_prop(self, driver: str, prop: str) -> str:
-+        if self.property_getter:
-+            return self.property_getter.get_prop(driver, prop)
-+        else:
-+            return 'Unavailable method'
-+
-+    def is_child_of(self, parent: 'Driver') -> bool:
-+        """Checks whether self is (recursive) child of @parent"""
-+        cur_parent = self.parent
-+        while cur_parent:
-+            if cur_parent is parent:
-+                return True
-+            cur_parent = cur_parent.parent
-+
-+        return False
-+
-+    def set_implementations(self, implementations: List['Driver']) -> None:
-+        self.implementations = implementations
-+
-+
-+class QEMUObject(Driver):
-+    def __init__(self, vm: QEMUMachine, name: str) -> None:
-+        super().__init__(vm, name, True)
-+
-+    def set_implementations(self, implementations: List[Driver]) -> None:
-+        self.implementations = implementations
-+
-+        # each implementation of the abstract driver has to use property getter
-+        # of this abstract driver unless it has specialization. (e.g. having
-+        # 'device' and 'x86_64-cpu', property getter of 'x86_64-cpu' will be
-+        # used for '486-x86_64-cpu')
-+        for impl in implementations:
-+            if not impl.property_getter or\
-+                    self.is_child_of(impl.property_getter):
-+                impl.property_getter = self
-+
-+
-+class QEMUDevice(QEMUObject):
-+    def __init__(self, vm: QEMUMachine) -> None:
-+        super().__init__(vm, 'device')
-+        self.cached: Dict[str, List[Dict[str, Any]]] = {}
-+
-+    def get_prop(self, driver: str, prop_name: str) -> str:
-+        if driver not in self.cached:
-+            self.cached[driver] = self.vm.cmd('device-list-properties',
-+                                              typename=driver)
-+        for prop in self.cached[driver]:
-+            if prop['name'] == prop_name:
-+                return str(prop.get('default-value', 'No default value'))
-+
-+        return 'Unknown property'
-+
-+
-+class QEMUx86CPU(QEMUObject):
-+    def __init__(self, vm: QEMUMachine) -> None:
-+        super().__init__(vm, 'x86_64-cpu')
-+        self.cached: Dict[str, Dict[str, Any]] = {}
-+
-+    def get_prop(self, driver: str, prop_name: str) -> str:
-+        if not driver.endswith('-x86_64-cpu'):
-+            return 'Wrong x86_64-cpu name'
-+
-+        # crop last 11 chars '-x86_64-cpu'
-+        name = driver[:-11]
-+        if name not in self.cached:
-+            self.cached[name] = self.vm.cmd(
-+                'query-cpu-model-expansion', type='full',
-+                model={'name': name})['model']['props']
-+        return str(self.cached[name].get(prop_name, 'Unknown property'))
-+
-+
-+# Now it's stub, because all memory_backend types don't have default values
-+# but this behaviour can be changed
-+class QEMUMemoryBackend(QEMUObject):
-+    def __init__(self, vm: QEMUMachine) -> None:
-+        super().__init__(vm, 'memory-backend')
-+        self.cached: Dict[str, List[Dict[str, Any]]] = {}
-+
-+    def get_prop(self, driver: str, prop_name: str) -> str:
-+        if driver not in self.cached:
-+            self.cached[driver] = self.vm.cmd('qom-list-properties',
-+                                              typename=driver)
-+        for prop in self.cached[driver]:
-+            if prop['name'] == prop_name:
-+                return str(prop.get('default-value', 'No default value'))
-+
-+        return 'Unknown property'
-+
-+
-+def new_driver(vm: QEMUMachine, name: str, is_abstr: bool) -> Driver:
-+    if name == 'object':
-+        return QEMUObject(vm, 'object')
-+    elif name == 'device':
-+        return QEMUDevice(vm)
-+    elif name == 'x86_64-cpu':
-+        return QEMUx86CPU(vm)
-+    elif name == 'memory-backend':
-+        return QEMUMemoryBackend(vm)
-+    else:
-+        return Driver(vm, name, is_abstr)
-+# End of methods definition
-+
-+
-+class VMPropertyGetter:
-+    """It implements the relationship between drivers and how to get their
-+    properties"""
-+    def __init__(self, vm: QEMUMachine) -> None:
-+        self.drivers: Dict[str, Driver] = {}
-+
-+        qom_all_types = vm.cmd('qom-list-types', abstract=True)
-+        self.drivers = {t['name']: new_driver(vm, t['name'],
-+                                              t.get('abstract', False))
-+                        for t in qom_all_types}
-+
-+        for t in qom_all_types:
-+            drv = self.drivers[t['name']]
-+            if 'parent' in t:
-+                drv.parent = self.drivers[t['parent']]
-+
-+        for drv in self.drivers.values():
-+            imps = vm.cmd('qom-list-types', implements=drv.name)
-+            # only implementations inherit property getter
-+            drv.set_implementations([self.drivers[imp['name']]
-+                                     for imp in imps])
-+
-+    def get_prop(self, driver: str, prop: str) -> str:
-+        # wrong driver name or disabled in config driver
-+        try:
-+            drv = self.drivers[driver]
-+        except KeyError:
-+            return 'Unavailable driver'
-+
-+        assert not drv.abstract
-+
-+        return drv.get_prop(driver, prop)
-+
-+    def get_implementations(self, driver: str) -> List[str]:
-+        return [impl.name for impl in self.drivers[driver].implementations]
-+
-+
-+class Machine:
-+    """A short QEMU machine type description. It contains only processed
-+    compat_props (properties of abstract classes are applied to its
-+    implementations)
-+    """
-+    # raw_mt_dict - dict produced by `query-machines`
-+    def __init__(self, raw_mt_dict: Dict[str, Any],
-+                 qemu_drivers: VMPropertyGetter) -> None:
-+        self.name = raw_mt_dict['name']
-+        self.compat_props: Dict[str, Any] = {}
-+        # properties are applied sequentially and can rewrite values like in
-+        # QEMU. Also it has to resolve class relationships to apply appropriate
-+        # values from abstract class to all implementations
-+        for prop in raw_mt_dict['compat-props']:
-+            driver = prop['driver']
-+            try:
-+                # implementation adds only itself, abstract class adds
-+                #  lementation (abstract classes are uninterestiong)
-+                impls = qemu_drivers.get_implementations(driver)
-+                for impl in impls:
-+                    if impl not in self.compat_props:
-+                        self.compat_props[impl] = {}
-+                    self.compat_props[impl][prop['property']] = prop['value']
-+            except KeyError:
-+                # QEMU doesn't know this driver thus it has to be saved
-+                if driver not in self.compat_props:
-+                    self.compat_props[driver] = {}
-+                self.compat_props[driver][prop['property']] = prop['value']
-+
-+
-+class Configuration():
-+    """Class contains all necessary components to generate table and is used
-+    to compare different binaries"""
-+    def __init__(self, vm: QEMUMachine,
-+                 req_mt: List[str], all_mt: bool) -> None:
-+        self._vm = vm
-+        self._binary = vm.binary
-+        self._qemu_args = args.qemu_args.split(' ')
-+
-+        self._qemu_drivers = VMPropertyGetter(vm)
-+        self.req_mt = get_req_mt(self._qemu_drivers, vm, req_mt, all_mt)
-+
-+    def get_implementations(self, driver_name: str) -> List[str]:
-+        return self._qemu_drivers.get_implementations(driver_name)
-+
-+    def get_table(self, req_props: List[Tuple[str, str]]) -> pd.DataFrame:
-+        table: List[pd.DataFrame] = []
-+        for mt in self.req_mt:
-+            name = f'{self._binary}\n{mt.name}'
-+            column = []
-+            for driver, prop in req_props:
-+                try:
-+                    # values from QEMU machine type definitions
-+                    column.append(mt.compat_props[driver][prop])
-+                except KeyError:
-+                    # values from QEMU type definitions
-+                    column.append(self._qemu_drivers.get_prop(driver, prop))
-+            table.append(pd.DataFrame({name: column}))
-+
-+        return pd.concat(table, axis=1)
-+
-+
-+script_desc = """Script to compare machine types (their compat_props).
-+
-+Examples:
-+* save info about all machines:  ./scripts/compare-machine-types.py --all \
-+--format csv --raw > table.csv
-+* compare machines: ./scripts/compare-machine-types.py --mt pc-q35-2.12 \
-+pc-q35-3.0
-+* compare binaries and machines: ./scripts/compare-machine-types.py \
-+--mt pc-q35-6.2 pc-q35-7.0 --qemu-binary build/qemu-system-x86_64 \
-+build/qemu-exp
-+  ╒════════════╤══════════════════════════╤════════════════════════════\
-+╤════════════════════════════╤══════════════════╤══════════════════╕
-+  │   Driver   │         Property         │  build/qemu-system-x86_64  \
-+│  build/qemu-system-x86_64  │  build/qemu-exp  │  build/qemu-exp  │
-+  │            │                          │         pc-q35-6.2         \
-+│         pc-q35-7.0         │    pc-q35-6.2    │    pc-q35-7.0    │
-+  ╞════════════╪══════════════════════════╪════════════════════════════\
-+╪════════════════════════════╪══════════════════╪══════════════════╡
-+  │  PIIX4_PM  │ x-not-migrate-acpi-index │            True            \
-+│           False            │      False       │      False       │
-+  ├────────────┼──────────────────────────┼────────────────────────────\
-+┼────────────────────────────┼──────────────────┼──────────────────┤
-+  │ virtio-mem │  unplugged-inaccessible  │           False            \
-+│            auto            │      False       │       auto       │
-+  ╘════════════╧══════════════════════════╧════════════════════════════\
-+╧════════════════════════════╧══════════════════╧══════════════════╛
-+
-+If a property from QEMU machine defintion applies to an abstract class (e.g. \
-+x86_64-cpu) this script will compare all implementations of this class.
-+
-+"Unavailable method" - means that this script doesn't know how to get \
-+default values of the driver. To add method use the construction described \
-+at the top of the script.
-+"Unavailable driver" - means that this script doesn't know this driver. \
-+For instance, this can happen if you configure QEMU without this device or \
-+if machine type definition has error.
-+"No default value" - means that the appropriate method can't get the default \
-+value and most likely that this property doesn't have it.
-+"Unknown property" - means that the appropriate method can't find property \
-+with this name."""
-+
-+
-+def parse_args() -> Namespace:
-+    parser = ArgumentParser(formatter_class=RawTextHelpFormatter,
-+                            description=script_desc)
-+    parser.add_argument('--format', choices=['human-readable', 'json', 'csv'],
-+                        default='human-readable',
-+                        help='returns table in json format')
-+    parser.add_argument('--raw', action='store_true',
-+                        help='prints ALL defined properties without value '
-+                             'transformation. By default, only rows '
-+                             'with different values will be printed and '
-+                             'values will be transformed(e.g. "on" -> True)')
-+    parser.add_argument('--qemu-args', default=default_qemu_args,
-+                        help='command line to start qemu. '
-+                             f'Default: "{default_qemu_args}"')
-+    parser.add_argument('--qemu-binary', nargs="*", type=str,
-+                        default=[default_qemu_binary],
-+                        help='list of qemu binaries that will be compared. '
-+                             f'Deafult: {default_qemu_binary}')
-+
-+    mt_args_group = parser.add_mutually_exclusive_group()
-+    mt_args_group.add_argument('--all', action='store_true',
-+                               help='prints all available machine types (list '
-+                                    'of machine types will be ignored)')
-+    mt_args_group.add_argument('--mt', nargs="*", type=str,
-+                               help='list of Machine Types '
-+                                    'that will be compared')
-+
-+    return parser.parse_args()
-+
-+
-+def mt_comp(mt: Machine) -> Tuple[str, int, int, int]:
-+    """Function to compare and sort machine by names.
-+    It returns socket_name, major version, minor version, revision"""
-+    # none, microvm, x-remote and etc.
-+    if '-' not in mt.name or '.' not in mt.name:
-+        return mt.name, 0, 0, 0
-+
-+    socket, ver = mt.name.rsplit('-', 1)
-+    ver_list = list(map(int, ver.split('.', 2)))
-+    ver_list += [0] * (3 - len(ver_list))
-+    return socket, ver_list[0], ver_list[1], ver_list[2]
-+
-+
-+def get_mt_definitions(qemu_drivers: VMPropertyGetter,
-+                       vm: QEMUMachine) -> List[Machine]:
-+    """Constructs list of machine definitions (primarily compat_props) via
-+    info from QEMU"""
-+    raw_mt_defs = vm.cmd('query-machines', compat_props=True)
-+    mt_defs = []
-+    for raw_mt in raw_mt_defs:
-+        mt_defs.append(Machine(raw_mt, qemu_drivers))
-+
-+    mt_defs.sort(key=mt_comp)
-+    return mt_defs
-+
-+
-+def get_req_mt(qemu_drivers: VMPropertyGetter, vm: QEMUMachine,
-+               req_mt: Optional[List[str]], all_mt: bool) -> List[Machine]:
-+    """Returns list of requested by user machines"""
-+    mt_defs = get_mt_definitions(qemu_drivers, vm)
-+    if all_mt:
-+        return mt_defs
-+
-+    if req_mt is None:
-+        print('Enter machine types for comparision')
-+        exit(0)
-+
-+    matched_mt = []
-+    for mt in mt_defs:
-+        if mt.name in req_mt:
-+            matched_mt.append(mt)
-+
-+    return matched_mt
-+
-+
-+def get_affected_props(configs: List[Configuration]) -> Generator[Tuple[str,
-+                                                                        str],
-+                                                                  None, None]:
-+    """Helps to go through all affected in machine definitions drivers
-+    and properties"""
-+    driver_props: Dict[str, Set[Any]] = {}
-+    for config in configs:
-+        for mt in config.req_mt:
-+            compat_props = mt.compat_props
-+            for driver, prop in compat_props.items():
-+                if driver not in driver_props:
-+                    driver_props[driver] = set()
-+                driver_props[driver].update(prop.keys())
-+
-+    for driver, props in sorted(driver_props.items()):
-+        for prop in sorted(props):
-+            yield driver, prop
-+
-+
-+def transform_value(value: str) -> Union[str, bool]:
-+    true_list = ['true', 'on']
-+    false_list = ['false', 'off']
-+
-+    out = value.lower()
-+
-+    if out in true_list:
-+        return True
-+
-+    if out in false_list:
-+        return False
-+
-+    return value
-+
-+
-+def simplify_table(table: pd.DataFrame) -> pd.DataFrame:
-+    """transforms values to make it easier to compare it and drops rows
-+    with the same values for all columns"""
-+
-+    table = table.map(transform_value)
-+
-+    return table[~table.iloc[:, 3:].eq(table.iloc[:, 2], axis=0).all(axis=1)]
-+
-+
-+# constructs table in the format:
-+#
-+# Driver  | Property  | binary1  | binary1  | ...
-+#         |           | machine1 | machine2 | ...
-+# ------------------------------------------------------ ...
-+# driver1 | property1 |  value1  |  value2  | ...
-+# driver1 | property2 |  value3  |  value4  | ...
-+# driver2 | property3 |  value5  |  value6  | ...
-+#   ...   |    ...    |   ...    |   ...    | ...
-+#
-+def fill_prop_table(configs: List[Configuration],
-+                    is_raw: bool) -> pd.DataFrame:
-+    req_props = list(get_affected_props(configs))
-+    if not req_props:
-+        print('No drivers to compare. Check machine names')
-+        exit(0)
-+
-+    driver_col, prop_col = tuple(zip(*req_props))
-+    table = [pd.DataFrame({'Driver': driver_col}),
-+             pd.DataFrame({'Property': prop_col})]
-+
-+    table.extend([config.get_table(req_props) for config in configs])
-+
-+    df_table = pd.concat(table, axis=1)
-+
-+    if is_raw:
-+        return df_table
-+
-+    return simplify_table(df_table)
-+
-+
-+def print_table(table: pd.DataFrame, table_format: str) -> None:
-+    if table_format == 'json':
-+        print(comp_table.to_json())
-+    elif table_format == 'csv':
-+        print(comp_table.to_csv())
-+    else:
-+        print(comp_table.to_markdown(index=False, stralign='center',
-+                                     colalign=('center',), headers='keys',
-+                                     tablefmt='fancy_grid',
-+                                     disable_numparse=True))
-+
-+
-+if __name__ == '__main__':
-+    args = parse_args()
-+    with ExitStack() as stack:
-+        vms = [stack.enter_context(QEMUMachine(binary=binary, qmp_timer=15,
-+               args=args.qemu_args.split(' '))) for binary in args.qemu_binary]
-+
-+        configurations = []
-+        for vm in vms:
-+            vm.launch()
-+            configurations.append(Configuration(vm, args.mt, args.all))
-+
-+        comp_table = fill_prop_table(configurations, args.raw)
-+        if not comp_table.empty:
-+            print_table(comp_table, args.format)
--- 
-2.34.1
+C.
+
+
+> ---
+>   include/hw/ppc/pnv_chip.h |  2 +-
+>   include/hw/ppc/pnv_core.h |  1 +
+>   hw/ppc/pnv.c              | 60 ++++++++++++++++++++++++++-------------
+>   hw/ppc/pnv_core.c         |  8 +++---
+>   target/ppc/misc_helper.c  |  3 --
+>   5 files changed, 46 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+> index 0ab5c42308..d77e63b0a4 100644
+> --- a/include/hw/ppc/pnv_chip.h
+> +++ b/include/hw/ppc/pnv_chip.h
+> @@ -142,7 +142,7 @@ struct PnvChipClass {
+>   
+>       DeviceRealize parent_realize;
+>   
+> -    uint32_t (*core_pir)(PnvChip *chip, uint32_t core_id);
+> +    uint32_t (*chip_pir)(PnvChip *chip, uint32_t core_id, uint32_t thread_id);
+>       void (*intc_create)(PnvChip *chip, PowerPCCPU *cpu, Error **errp);
+>       void (*intc_reset)(PnvChip *chip, PowerPCCPU *cpu);
+>       void (*intc_destroy)(PnvChip *chip, PowerPCCPU *cpu);
+> diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
+> index 4db21229a6..c6d62fd145 100644
+> --- a/include/hw/ppc/pnv_core.h
+> +++ b/include/hw/ppc/pnv_core.h
+> @@ -36,6 +36,7 @@ struct PnvCore {
+>       /*< public >*/
+>       PowerPCCPU **threads;
+>       uint32_t pir;
+> +    uint32_t hwid;
+>       uint64_t hrmor;
+>       PnvChip *chip;
+>   
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 0297871bdd..9964f2665a 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -141,8 +141,10 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+>       int smt_threads = CPU_CORE(pc)->nr_threads;
+>       CPUPPCState *env = &cpu->env;
+>       PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
+> +    PnvChipClass *pnv_cc = PNV_CHIP_GET_CLASS(chip);
+>       g_autofree uint32_t *servers_prop = g_new(uint32_t, smt_threads);
+>       int i;
+> +    uint32_t pir;
+>       uint32_t segs[] = {cpu_to_be32(28), cpu_to_be32(40),
+>                          0xffffffff, 0xffffffff};
+>       uint32_t tbfreq = PNV_TIMEBASE_FREQ;
+> @@ -158,15 +160,17 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+>       char *nodename;
+>       int cpus_offset = get_cpus_node(fdt);
+>   
+> -    nodename = g_strdup_printf("%s@%x", dc->fw_name, pc->pir);
+> +    pir = pnv_cc->chip_pir(chip, pc->hwid, 0);
+> +
+> +    nodename = g_strdup_printf("%s@%x", dc->fw_name, pir);
+>       offset = fdt_add_subnode(fdt, cpus_offset, nodename);
+>       _FDT(offset);
+>       g_free(nodename);
+>   
+>       _FDT((fdt_setprop_cell(fdt, offset, "ibm,chip-id", chip->chip_id)));
+>   
+> -    _FDT((fdt_setprop_cell(fdt, offset, "reg", pc->pir)));
+> -    _FDT((fdt_setprop_cell(fdt, offset, "ibm,pir", pc->pir)));
+> +    _FDT((fdt_setprop_cell(fdt, offset, "reg", pir)));
+> +    _FDT((fdt_setprop_cell(fdt, offset, "ibm,pir", pir)));
+>       _FDT((fdt_setprop_string(fdt, offset, "device_type", "cpu")));
+>   
+>       _FDT((fdt_setprop_cell(fdt, offset, "cpu-version", env->spr[SPR_PVR])));
+> @@ -241,15 +245,17 @@ static void pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
+>   
+>       /* Build interrupt servers properties */
+>       for (i = 0; i < smt_threads; i++) {
+> -        servers_prop[i] = cpu_to_be32(pc->pir + i);
+> +        servers_prop[i] = cpu_to_be32(pnv_cc->chip_pir(chip, pc->hwid, i));
+>       }
+>       _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
+>                          servers_prop, sizeof(*servers_prop) * smt_threads)));
+>   }
+>   
+> -static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t pir,
+> +static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t hwid,
+>                          uint32_t nr_threads)
+>   {
+> +    PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
+> +    uint32_t pir = pcc->chip_pir(chip, hwid, 0);
+>       uint64_t addr = PNV_ICP_BASE(chip) | (pir << 12);
+>       char *name;
+>       const char compat[] = "IBM,power8-icp\0IBM,ppc-xicp";
+> @@ -263,6 +269,7 @@ static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t pir,
+>       rsize = sizeof(uint64_t) * 2 * nr_threads;
+>       reg = g_malloc(rsize);
+>       for (i = 0; i < nr_threads; i++) {
+> +        /* We know P8 PIR is linear with thread id */
+>           reg[i * 2] = cpu_to_be64(addr | ((pir + i) * 0x1000));
+>           reg[i * 2 + 1] = cpu_to_be64(0x1000);
+>       }
+> @@ -315,7 +322,7 @@ static void pnv_chip_power8_dt_populate(PnvChip *chip, void *fdt)
+>           pnv_dt_core(chip, pnv_core, fdt);
+>   
+>           /* Interrupt Control Presenters (ICP). One per core. */
+> -        pnv_dt_icp(chip, fdt, pnv_core->pir, CPU_CORE(pnv_core)->nr_threads);
+> +        pnv_dt_icp(chip, fdt, pnv_core->hwid, CPU_CORE(pnv_core)->nr_threads);
+>       }
+>   
+>       if (chip->ram_size) {
+> @@ -987,9 +994,10 @@ static void pnv_init(MachineState *machine)
+>    *   25:28  Core number
+>    *   29:31  Thread ID
+>    */
+> -static uint32_t pnv_chip_core_pir_p8(PnvChip *chip, uint32_t core_id)
+> +static uint32_t pnv_chip_pir_p8(PnvChip *chip, uint32_t core_id,
+> +                                uint32_t thread_id)
+>   {
+> -    return (chip->chip_id << 7) | (core_id << 3);
+> +    return (chip->chip_id << 7) | (core_id << 3) | thread_id;
+>   }
+>   
+>   static void pnv_chip_power8_intc_create(PnvChip *chip, PowerPCCPU *cpu,
+> @@ -1041,14 +1049,26 @@ static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+>    *
+>    * We only care about the lower bits. uint32_t is fine for the moment.
+>    */
+> -static uint32_t pnv_chip_core_pir_p9(PnvChip *chip, uint32_t core_id)
+> +static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
+> +                                uint32_t thread_id)
+>   {
+> -    return (chip->chip_id << 8) | (core_id << 2);
+> +    if (chip->nr_threads == 8) {
+> +        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
+> +               (thread_id >> 1);
+> +    } else {
+> +        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
+> +    }
+>   }
+>   
+> -static uint32_t pnv_chip_core_pir_p10(PnvChip *chip, uint32_t core_id)
+> +static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
+> +                                 uint32_t thread_id)
+>   {
+> -    return (chip->chip_id << 8) | (core_id << 2);
+> +    if (chip->nr_threads == 8) {
+> +        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
+> +               (thread_id >> 1);
+> +    } else {
+> +        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
+> +    }
+>   }
+>   
+>   static void pnv_chip_power9_intc_create(PnvChip *chip, PowerPCCPU *cpu,
+> @@ -1227,7 +1247,7 @@ static void pnv_chip_icp_realize(Pnv8Chip *chip8, Error **errp)
+>           int core_hwid = CPU_CORE(pnv_core)->core_id;
+>   
+>           for (j = 0; j < CPU_CORE(pnv_core)->nr_threads; j++) {
+> -            uint32_t pir = pcc->core_pir(chip, core_hwid) + j;
+> +            uint32_t pir = pcc->chip_pir(chip, core_hwid, j);
+>               PnvICPState *icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
+>   
+>               memory_region_add_subregion(&chip8->icp_mmio, pir << 12,
+> @@ -1340,7 +1360,7 @@ static void pnv_chip_power8e_class_init(ObjectClass *klass, void *data)
+>       k->chip_cfam_id = 0x221ef04980000000ull;  /* P8 Murano DD2.1 */
+>       k->cores_mask = POWER8E_CORE_MASK;
+>       k->num_phbs = 3;
+> -    k->core_pir = pnv_chip_core_pir_p8;
+> +    k->chip_pir = pnv_chip_pir_p8;
+>       k->intc_create = pnv_chip_power8_intc_create;
+>       k->intc_reset = pnv_chip_power8_intc_reset;
+>       k->intc_destroy = pnv_chip_power8_intc_destroy;
+> @@ -1364,7 +1384,7 @@ static void pnv_chip_power8_class_init(ObjectClass *klass, void *data)
+>       k->chip_cfam_id = 0x220ea04980000000ull; /* P8 Venice DD2.0 */
+>       k->cores_mask = POWER8_CORE_MASK;
+>       k->num_phbs = 3;
+> -    k->core_pir = pnv_chip_core_pir_p8;
+> +    k->chip_pir = pnv_chip_pir_p8;
+>       k->intc_create = pnv_chip_power8_intc_create;
+>       k->intc_reset = pnv_chip_power8_intc_reset;
+>       k->intc_destroy = pnv_chip_power8_intc_destroy;
+> @@ -1388,7 +1408,7 @@ static void pnv_chip_power8nvl_class_init(ObjectClass *klass, void *data)
+>       k->chip_cfam_id = 0x120d304980000000ull;  /* P8 Naples DD1.0 */
+>       k->cores_mask = POWER8_CORE_MASK;
+>       k->num_phbs = 4;
+> -    k->core_pir = pnv_chip_core_pir_p8;
+> +    k->chip_pir = pnv_chip_pir_p8;
+>       k->intc_create = pnv_chip_power8_intc_create;
+>       k->intc_reset = pnv_chip_power8_intc_reset;
+>       k->intc_destroy = pnv_chip_power8_intc_destroy;
+> @@ -1646,7 +1666,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
+>   
+>       k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
+>       k->cores_mask = POWER9_CORE_MASK;
+> -    k->core_pir = pnv_chip_core_pir_p9;
+> +    k->chip_pir = pnv_chip_pir_p9;
+>       k->intc_create = pnv_chip_power9_intc_create;
+>       k->intc_reset = pnv_chip_power9_intc_reset;
+>       k->intc_destroy = pnv_chip_power9_intc_destroy;
+> @@ -1895,7 +1915,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
+>   
+>       k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
+>       k->cores_mask = POWER10_CORE_MASK;
+> -    k->core_pir = pnv_chip_core_pir_p10;
+> +    k->chip_pir = pnv_chip_pir_p10;
+>       k->intc_create = pnv_chip_power10_intc_create;
+>       k->intc_reset = pnv_chip_power10_intc_reset;
+>       k->intc_destroy = pnv_chip_power10_intc_destroy;
+> @@ -1985,8 +2005,8 @@ static void pnv_chip_core_realize(PnvChip *chip, Error **errp)
+>                                   chip->nr_threads, &error_fatal);
+>           object_property_set_int(OBJECT(pnv_core), CPU_CORE_PROP_CORE_ID,
+>                                   core_hwid, &error_fatal);
+> -        object_property_set_int(OBJECT(pnv_core), "pir",
+> -                                pcc->core_pir(chip, core_hwid), &error_fatal);
+> +        object_property_set_int(OBJECT(pnv_core), "hwid", core_hwid,
+> +                                &error_fatal);
+>           object_property_set_int(OBJECT(pnv_core), "hrmor", pnv->fw_load_addr,
+>                                   &error_fatal);
+>           object_property_set_link(OBJECT(pnv_core), "chip", OBJECT(chip),
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index 8c7afe037f..f40ab721d6 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -226,7 +226,7 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+>                                    int thread_index)
+>   {
+>       CPUPPCState *env = &cpu->env;
+> -    int core_pir;
+> +    int core_hwid;
+>       ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
+>       ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
+>       Error *local_err = NULL;
+> @@ -242,10 +242,10 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
+>           return;
+>       }
+>   
+> -    core_pir = object_property_get_uint(OBJECT(pc), "pir", &error_abort);
+> +    core_hwid = object_property_get_uint(OBJECT(pc), "hwid", &error_abort);
+>   
+>       tir->default_value = thread_index;
+> -    pir->default_value = core_pir + thread_index;
+> +    pir->default_value = pcc->chip_pir(pc->chip, core_hwid, thread_index);
+>   
+>       /* Set time-base frequency to 512 MHz */
+>       cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
+> @@ -342,7 +342,7 @@ static void pnv_core_unrealize(DeviceState *dev)
+>   }
+>   
+>   static Property pnv_core_properties[] = {
+> -    DEFINE_PROP_UINT32("pir", PnvCore, pir, 0),
+> +    DEFINE_PROP_UINT32("hwid", PnvCore, hwid, 0),
+>       DEFINE_PROP_UINT64("hrmor", PnvCore, hrmor, 0),
+>       DEFINE_PROP_LINK("chip", PnvCore, chip, TYPE_PNV_CHIP, PnvChip *),
+>       DEFINE_PROP_END_OF_LIST(),
+> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> index a9d41d2802..58e808dc96 100644
+> --- a/target/ppc/misc_helper.c
+> +++ b/target/ppc/misc_helper.c
+> @@ -49,9 +49,6 @@ void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+>       uint32_t nr_threads = cs->nr_threads;
+> -    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
+> -
+> -    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
+>   
+>       if (nr_threads == 1) {
+>           env->spr[sprn] = val;
 
 
