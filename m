@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547BE83BAA7
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7C683BAA8
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:32:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSuDJ-0007jH-SO; Thu, 25 Jan 2024 02:31:53 -0500
+	id 1rSuDL-0007lJ-WF; Thu, 25 Jan 2024 02:31:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rSuDG-0007h8-6g
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:51 -0500
+ id 1rSuDI-0007jG-OH
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:53 -0500
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rSuDE-0000ad-CF
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:49 -0500
+ (envelope-from <gaosong@loongson.cn>) id 1rSuDG-0000gr-34
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 02:31:52 -0500
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxdfFhDrJlBG0FAA--.20713S3;
- Thu, 25 Jan 2024 15:31:45 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxuuhjDrJlB20FAA--.936S3;
+ Thu, 25 Jan 2024 15:31:47 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxHs9gDrJlHeQYAA--.42878S3; 
+ AQAAf8AxHs9gDrJlHeQYAA--.42878S4; 
  Thu, 25 Jan 2024 15:31:45 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 1/2] target/loongarch: Set cpuid CSR register only once with
- kvm mode
-Date: Thu, 25 Jan 2024 15:15:36 +0800
-Message-Id: <20240125071537.53397-2-gaosong@loongson.cn>
+Subject: [PULL 2/2] target/loongarch/kvm: Enable LSX/LASX extension
+Date: Thu, 25 Jan 2024 15:15:37 +0800
+Message-Id: <20240125071537.53397-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240125071537.53397-1-gaosong@loongson.cn>
 References: <20240125071537.53397-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxHs9gDrJlHeQYAA--.42878S3
+X-CM-TRANSID: AQAAf8AxHs9gDrJlHeQYAA--.42878S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,56 +63,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+The kernel had already support LSX and LASX [1],
+but QEMU is disable LSX/LASX for kvm. This patch adds
+kvm_check_cpucfg2() to check CPUCFG2.
 
-CSR cpuid register is used for routing irq to different vcpus, its
-value is kept unchanged since poweron. So it is not necessary to
-set CSR cpuid register after system resets, and it is only set at
-vm creation stage.
+[1]: https://lore.kernel.org/all/CABgObfZHRf7E_7Jk4uPRmSyxTy3EiuuYwHC35jQncNL9s-zTDA@mail.gmail.com/
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240115085121.180524-1-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Message-Id: <20240122090206.1083584-1-gaosong@loongson.cn>
 ---
- target/loongarch/kvm/kvm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ linux-headers/asm-loongarch/kvm.h |  1 +
+ target/loongarch/kvm/kvm.c        | 45 ++++++++++++++++++++++++++-----
+ 2 files changed, 39 insertions(+), 7 deletions(-)
 
+diff --git a/linux-headers/asm-loongarch/kvm.h b/linux-headers/asm-loongarch/kvm.h
+index c6ad2ee610..923d0bd382 100644
+--- a/linux-headers/asm-loongarch/kvm.h
++++ b/linux-headers/asm-loongarch/kvm.h
+@@ -79,6 +79,7 @@ struct kvm_fpu {
+ #define LOONGARCH_REG_64(TYPE, REG)	(TYPE | KVM_REG_SIZE_U64 | (REG << LOONGARCH_REG_SHIFT))
+ #define KVM_IOC_CSRID(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CSR, REG)
+ #define KVM_IOC_CPUCFG(REG)		LOONGARCH_REG_64(KVM_REG_LOONGARCH_CPUCFG, REG)
++#define KVM_LOONGARCH_VCPU_CPUCFG	0
+ 
+ struct kvm_debug_exit_arch {
+ };
 diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
-index 84bcdf5f86..2230f029d0 100644
+index 2230f029d0..c19978a970 100644
 --- a/target/loongarch/kvm/kvm.c
 +++ b/target/loongarch/kvm/kvm.c
-@@ -250,7 +250,7 @@ static int kvm_loongarch_get_csr(CPUState *cs)
+@@ -540,6 +540,38 @@ static int kvm_loongarch_get_cpucfg(CPUState *cs)
      return ret;
  }
  
--static int kvm_loongarch_put_csr(CPUState *cs)
-+static int kvm_loongarch_put_csr(CPUState *cs, int level)
- {
-     int ret = 0;
-     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
-@@ -322,8 +322,11 @@ static int kvm_loongarch_put_csr(CPUState *cs)
-     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_RVACFG),
-                            &env->CSR_RVACFG);
- 
--    ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CPUID),
-+    /* CPUID is constant after poweron, it should be set only once */
-+    if (level >= KVM_PUT_FULL_STATE) {
-+        ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_CPUID),
-                            &env->CSR_CPUID);
++static int kvm_check_cpucfg2(CPUState *cs)
++{
++    int ret;
++    uint64_t val;
++    struct kvm_device_attr attr = {
++        .group = KVM_LOONGARCH_VCPU_CPUCFG,
++        .attr = 2,
++        .addr = (uint64_t)&val,
++    };
++    LoongArchCPU *cpu = LOONGARCH_CPU(cs);
++    CPULoongArchState *env = &cpu->env;
++
++    ret = kvm_vcpu_ioctl(cs, KVM_HAS_DEVICE_ATTR, &attr);
++
++    if (!ret) {
++        kvm_vcpu_ioctl(cs, KVM_GET_DEVICE_ATTR, &attr);
++        env->cpucfg[2] &= val;
++
++        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, FP)) {
++            /* The FP minimal version is 1. */
++            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, FP_VER, 1);
++        }
++
++        if (FIELD_EX32(env->cpucfg[2], CPUCFG2, LLFTP)) {
++            /* The LLFTP minimal version is 1. */
++            env->cpucfg[2] = FIELD_DP32(env->cpucfg[2], CPUCFG2, LLFTP_VER, 1);
++        }
 +    }
++
++    return ret;
++}
++
+ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+ {
+     int i, ret = 0;
+@@ -548,14 +580,13 @@ static int kvm_loongarch_put_cpucfg(CPUState *cs)
+     uint64_t val;
  
-     ret |= kvm_set_one_reg(cs, KVM_IOC_CSRID(LOONGARCH_CSR_PRCFG1),
-                            &env->CSR_PRCFG1);
-@@ -598,7 +601,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         return ret;
-     }
- 
--    ret = kvm_loongarch_put_csr(cs);
-+    ret = kvm_loongarch_put_csr(cs, level);
-     if (ret) {
-         return ret;
-     }
+     for (i = 0; i < 21; i++) {
++	if (i == 2) {
++            ret = kvm_check_cpucfg2(cs);
++            if (ret) {
++                return ret;
++            }
++	}
+         val = env->cpucfg[i];
+-        /* LSX and LASX and LBT are not supported in kvm now */
+-        if (i == 2) {
+-            val &= ~(BIT(R_CPUCFG2_LSX_SHIFT) | BIT(R_CPUCFG2_LASX_SHIFT));
+-            val &= ~(BIT(R_CPUCFG2_LBT_X86_SHIFT) |
+-                     BIT(R_CPUCFG2_LBT_ARM_SHIFT) |
+-                     BIT(R_CPUCFG2_LBT_MIPS_SHIFT));
+-        }
+         ret = kvm_set_one_reg(cs, KVM_IOC_CPUCFG(i), &val);
+         if (ret < 0) {
+             trace_kvm_failed_put_cpucfg(strerror(errno));
 -- 
 2.25.1
 
