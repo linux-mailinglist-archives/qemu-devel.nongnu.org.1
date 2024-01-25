@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4B483B84B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B47883B836
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:33:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqT2-0006NW-Sk; Wed, 24 Jan 2024 22:31:52 -0500
+	id 1rSqT4-0006jL-M1; Wed, 24 Jan 2024 22:31:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSy-0005uQ-La
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:48 -0500
+ id 1rSqSz-00066L-Ub
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:50 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqSw-0001Dy-Vg
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:48 -0500
+ id 1rSqSy-0001E0-3Q
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:31:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153507; x=1737689507;
+ t=1706153508; x=1737689508;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b62wnyy+65LCHAGArSiNyZudOLiHWSJaSpIcuumUQrw=;
- b=Nl9EX8njPdH3s637JzeLkicdng+bRqleg2tLxu4/QOGOITxskKK441EE
- PvR0yHX/Txf3gNOJAn9bbmwXH/ZGbd+JQLDh5dsVKM6j5W7fimP1S2EGg
- SWqe0S0zM7DMncYapEC02+9A0LKSVfbADttIPfDZQmHOXYpiCdQKFoBr5
- dx9VxTVxLkKVmVOn9BM2jRuaiql7I62n5nIAQlsodU8lMbsWAJGydEsIn
- M65K5yoCMq5/ImOQueD+bG6q8CD72tYaRLhh/9AxrSah0qj1pRXUphyzM
- F2OT4nmJK8/7LfzwkdfRGjMk8FQbNXS53ZXWmS+OQQK9ObU6erjk2IUy5 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430301"
+ bh=dYbC6/O6Cy+T1AZ7szpJepdFNBXHXc3/nDTSns21eRk=;
+ b=KR2ky1/m1iQN0w+sDZwAcBdiby2RRVDtJDRKDFf4tNjJxa9AYJUScHHv
+ BqtrsArNihyZgJdnTd/oTRHvBToT7B+N/YgubWxKHmn3g6Q4f3aQVCwEZ
+ M8iY8xRH+lwAjSTcSVmam7Ygd78ooH/SD4ULFkNT8W4YOEUML/QDXF5Kx
+ 38YkaGf8HL2iOhlBASRc3o8kmD4VcTjfBl1pRUG0CkWO/S/oMeEDacmBs
+ ne3dhqJVFb5sBwrTlYBGmu7M2irieWXXx6zeTy7ZQSgWZPKOnVBFDaSlK
+ trjNZEY9ZWPgpZJA2ux/HuuhhIy7WCax0q0O0erTF4MUhK7EhQAYYR2JL Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9430354"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9430301"
+   d="scan'208";a="9430354"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:28:44 -0800
+ 24 Jan 2024 19:28:49 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2086390"
+   d="scan'208";a="2086423"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:39 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:28:44 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 56/66] i386/tdx: Disable SMM for TDX VMs
-Date: Wed, 24 Jan 2024 22:23:18 -0500
-Message-Id: <20240125032328.2522472-57-xiaoyao.li@intel.com>
+Subject: [PATCH v4 57/66] i386/tdx: Disable PIC for TDX VMs
+Date: Wed, 24 Jan 2024 22:23:19 -0500
+Message-Id: <20240125032328.2522472-58-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,35 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TDX doesn't support SMM and VMM cannot emulate SMM for TDX VMs because
-VMM cannot manipulate TDX VM's memory.
+Legacy PIC (8259) cannot be supported for TDX VMs since TDX module
+doesn't allow directly interrupt injection.  Using posted interrupts
+for the PIC is not a viable option as the guest BIOS/kernel will not
+do EOI for PIC IRQs, i.e. will leave the vIRR bit set.
 
-Disable SMM for TDX VMs and error out if user requests to enable SMM.
+Hence disable PIC for TDX VMs and error out if user wants PIC.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- target/i386/kvm/tdx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ target/i386/kvm/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 4fbb18135951..7eb3628763ae 100644
+index 7eb3628763ae..838b7916278c 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -695,11 +695,19 @@ static Notifier tdx_machine_done_notify = {
+@@ -708,6 +708,13 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+         return -EINVAL;
+     }
  
- int tdx_kvm_init(MachineState *ms, Error **errp)
- {
-+    X86MachineState *x86ms = X86_MACHINE(ms);
-     TdxGuest *tdx = TDX_GUEST(OBJECT(ms->cgs));
-     int r = 0;
- 
-     ms->require_guest_memfd = true;
- 
-+    if (x86ms->smm == ON_OFF_AUTO_AUTO) {
-+        x86ms->smm = ON_OFF_AUTO_OFF;
-+    } else if (x86ms->smm == ON_OFF_AUTO_ON) {
-+        error_setg(errp, "TDX VM doesn't support SMM");
++    if (x86ms->pic == ON_OFF_AUTO_AUTO) {
++        x86ms->pic = ON_OFF_AUTO_OFF;
++    } else if (x86ms->pic == ON_OFF_AUTO_ON) {
++        error_setg(errp, "TDX VM doesn't support PIC");
 +        return -EINVAL;
 +    }
 +
