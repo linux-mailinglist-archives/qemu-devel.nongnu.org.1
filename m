@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0028A83BAD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2440F83BAD5
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 08:40:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSuKf-0004fO-8Q; Thu, 25 Jan 2024 02:39:29 -0500
+	id 1rSuKh-0004i0-3c; Thu, 25 Jan 2024 02:39:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rSuKb-0004eS-Dp; Thu, 25 Jan 2024 02:39:25 -0500
+ id 1rSuKd-0004f6-PQ; Thu, 25 Jan 2024 02:39:27 -0500
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rSuKZ-0002YQ-OU; Thu, 25 Jan 2024 02:39:25 -0500
+ id 1rSuKc-0002Z1-1w; Thu, 25 Jan 2024 02:39:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706168363; x=1737704363;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=VD+w9a50KOP5gQOa1rpKHZ8VF21XLZk8+rGBup4Yo5o=;
- b=k4nYdVPo2ARBhiDxyf+Uwmq+57vr0SFxyJq2jrmlJQjflvdF/rClGUt7
- LnLiJFSFut1gmc4bUvH/oi/PGuR4EinFDAwUkxHfcH235m/J2jf00aTtz
- v1ZEjmNrNv7cfMoIc6a3hwOCcS1XfgC4NR4MMqWhZW/O9uv48macCj4Rr
- nclO5Z+EToO/yJ/MYT4YASAy9wLz8kaZp2DVhdPFfI4/sAZGFdbI3Qk13
- HTIsmJAZhQJkMt1PKFEYBW1JDPP2NzSFCn2YkbIjbM/NLHYEifDQf1dpm
- M1ALac7JBghlBblIvsbvwhPjByI9554xi3SpUxTVGMSWncMeMEXLAqslA Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400942952"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="400942952"
+ t=1706168365; x=1737704365;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5UPbvjnJVUH3Taf72eBNl8r8qzYN+VKXSZvKAc2YBa0=;
+ b=J4NILJaaDwAu6raLK+TeLfZU+7PM2BRo/ocr4fEuZv0OwSdq10W8aGZZ
+ 9szNaRYkeG1qo8JTTRbl3x5LTitOqTtnPBvWQT74WfHewAA6fTnkDP1Mx
+ qgOWSLQgsTex4cyfhGOqa0w54RD9aJxQHMms81Aci6X+bT81UgKKEvkcA
+ +iMyBDmXPs10cHgrgv+oHiwBhtq/iLJhIHrtYc4DhPsRXBKEYnEgVMi42
+ BJ6CZpFCkoFSnQErkKYkgeQXJ4Ji/IOca0ygAAZgFFvhPD0PEPpWNIp11
+ GouVSHbeuAq6Wq/86u2tW120oETaG8F3xRgFW3XyQhsXWJC1fRCbNklwI w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="400942958"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="400942958"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  24 Jan 2024 23:39:19 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2187713"
+   d="scan'208";a="2187721"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 23:39:12 -0800
+ 24 Jan 2024 23:39:16 -0800
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org
@@ -46,12 +46,14 @@ Cc: eric.auger@redhat.com, jean-philippe@linaro.org,
  alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
  jasowang@redhat.com, mst@redhat.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 0/2] Two minor fixes on virtio-iommu and smmu
-Date: Thu, 25 Jan 2024 15:37:04 +0800
-Message-Id: <20240125073706.339369-1-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 1/2] virtio_iommu: Clear IOMMUPciBus pointer cache when
+ system reset
+Date: Thu, 25 Jan 2024 15:37:05 +0800
+Message-Id: <20240125073706.339369-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240125073706.339369-1-zhenzhong.duan@intel.com>
+References: <20240125073706.339369-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.55.52.120;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -77,34 +79,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+s->iommu_pcibus_by_bus_num is a IOMMUPciBus pointer cache indexed
+by bus number, bus number may not always be a fixed value,
+i.e., guest reboot to different kernel which set bus number with
+different algorithm.
 
-PATCH1 fixes a potential issue with vfio devices when reboot to a
-different OS which set bus number differently from previous OS.
-I didn't reproduce the issue in reality, but it's still possible
-in theory. VTD doesn't have same issue as it use some verify logic
-to ensure right iommu MR is picked.
+This could lead to endpoint binding to wrong iommu MR in
+virtio_iommu_get_endpoint(), then vfio device setup wrong
+mapping from other device.
 
-PATCH2 does same thing for smmu.
+Remove the memset in virtio_iommu_device_realize() to avoid
+redundancy with memset in system reset.
 
-v2:
-- Remove redundant memset in realize (Cédric)
-- Add a patch for smmu (Eric)
-- Drop the patch to support PCI device alias for now, as it's tricky in
-  using two different IOMMU MRs and Eric already sent a smarter fix.
-
-
-Thanks
-Zhenzhong
-
-Zhenzhong Duan (2):
-  virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
-  smmu: Clear SMMUPciBus pointer cache when system reset
-
- hw/arm/smmu-common.c     | 2 ++
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
  hw/virtio/virtio-iommu.c | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 8a4bd933c6..86623d55a5 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -1264,6 +1264,8 @@ static void virtio_iommu_system_reset(void *opaque)
+ 
+     trace_virtio_iommu_system_reset();
+ 
++    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
++
+     /*
+      * config.bypass is sticky across device reset, but should be restored on
+      * system reset
+@@ -1302,8 +1304,6 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+ 
+     virtio_init(vdev, VIRTIO_ID_IOMMU, sizeof(struct virtio_iommu_config));
+ 
+-    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
+-
+     s->req_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE,
+                              virtio_iommu_handle_command);
+     s->event_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE, NULL);
 -- 
 2.34.1
 
