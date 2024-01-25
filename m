@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E9483C5C3
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 15:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A2E83C633
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 16:13:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rT18d-0003K9-LL; Thu, 25 Jan 2024 09:55:31 -0500
+	id 1rT1OK-0007TL-QK; Thu, 25 Jan 2024 10:11:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rT18c-0003K0-7J
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 09:55:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rT18a-0006fB-FK
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 09:55:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706194527;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CVyiBYfdFM4kEuPfBazWRhxgsFEEyA0O3kbPtWlu76o=;
- b=XDiAz8QC8MducITyZ+EVzn7tbV7vFV6pQFaqK5iZzmQZyMg4IpUSLH57b1TFlstgraYiWJ
- 2KzHFzRWwNAb2c+RdKTiiHwD97nbMrRWm7omhnGiQ4peITX0IT4wuTm/LlLZS08AqLRTC+
- ls0YwRhc1KebG++sg+BbZVg265AxVrg=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-JQJy9MnwOUez1mcYvtliKw-1; Thu, 25 Jan 2024 09:55:25 -0500
-X-MC-Unique: JQJy9MnwOUez1mcYvtliKw-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-7d2d72f7965so1403624241.2
- for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 06:55:25 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rT1OI-0007Sw-QC
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 10:11:42 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rT1OH-0003Um-7R
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 10:11:42 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-55d0031d8b5so657329a12.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Jan 2024 07:11:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706195498; x=1706800298; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JlZx2CConwDZM4SlbaEO4H+Gs581wkGTZT7k6BZJkPg=;
+ b=mEr453wJRpsudQDeb31SHErZK4qrGKX2k519kpyQHanSW3d8UqW63NZsxul8L8s0AQ
+ fPlJtnA8JKsE7i+geYzLdBEa4MaJw7kI8AlqpwGXcQKuxEGZiEsNSzn4hk/LXMOMmBUo
+ D5tdPcBi8c6/cdqVXg5tak40z7oO8apib7OTypWSjTAzKVCkCGlFQEobibOjHMhS6W55
+ rr0NhDFW2ZwTjiXCijF7mhn5gVsIoK30pd7gcEK6fNa9DAHpumVz+z6bocPEn533PddU
+ vpNnT+NEVby3UJcnYBi6eWPDAx147nz9SCd5lYr86opQav4TSBpHcXB4WeHxlZTsk/cf
+ gKQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706194525; x=1706799325;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CVyiBYfdFM4kEuPfBazWRhxgsFEEyA0O3kbPtWlu76o=;
- b=VeehkwQqCyzaO067Ghdsv+feJssESuiwgTxlNi0wtzK6V6Fzph9bK6O84GywIRubp1
- YOmz8I8aOF67rIal+72Ytisd9RYyuPtD2JQkjS+Zow2TMb/S0HUrz0XpeakoklbOjQ97
- 6gN22zhJ5k43x11zG272Sb/iFhQs8Ms3iUFxgz5Bsjke9es3jvR2BwztN2xiIsprYzzy
- /NieAO7ExmImhtA7p9U7J4CXPp40RaVsGkhiPL+Xv/u7w12vUy6hu8j7UV0F/csq2udc
- 9eej5BofXy31m9VSAT65t8dDFv0oSeFQ17c40kM02qKhawgbhK+vVElR3AVwmmoyxMbp
- O7Mg==
-X-Gm-Message-State: AOJu0YwawDqvQAuM3Y07nyAM16x3K93HFuzfJ+Mhap90krdzrvhdL/Ga
- Bb02Q4T4LeaS/Ry+Z4iYKKsKwPfWPKHf4UqpjdQobf2JgjozAFHxaFBeqo8XocIqpsiDCkH05R0
- mrRwQsDP6Ic7HWu2S98DZgvzBTUBD3QDaJaTzJh3OBic4xpsigOPJnyXb47IBgPFVWzv2aYkPLA
- c/7Ukd9AeNLwbxREdh6BSnR2ectOSa4sRyFPOWEQ==
-X-Received: by 2002:a05:6102:30a4:b0:46b:2bb:6936 with SMTP id
- y4-20020a05610230a400b0046b02bb6936mr519073vsd.33.1706194524726; 
- Thu, 25 Jan 2024 06:55:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHSDu0ldgOBBa3lQrlJXmmS2zcvTbkatr4zwGLgeqH8Q8jgRdL6met16Xa0lKNCRBAPW5B3+Q5to6R2nhHX2kI=
-X-Received: by 2002:a05:6102:30a4:b0:46b:2bb:6936 with SMTP id
- y4-20020a05610230a400b0046b02bb6936mr519067vsd.33.1706194524369; Thu, 25 Jan
- 2024 06:55:24 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706195498; x=1706800298;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JlZx2CConwDZM4SlbaEO4H+Gs581wkGTZT7k6BZJkPg=;
+ b=qQ4GahHf+7YxAqlKi0UYJHGTxHyhlIh/DFw6BzNO6hyw3qTyAM+/5TiTkeGg4W9t1B
+ n0MCuhm2nsgx0JZbALYKCI2Wn2zkrS4wuILDhjg5Z47H32im+U6wZN0+fmHAnH0hCAWM
+ gxyZCbesxRvA3Zs9csIqfqBKZ4VQN6FbGPu2bsVbyeBmbehN0e3zl8B2g+hZ7Ey0lJpY
+ kKm3U/a1vilnSoGB5X83RhZc9t9Il243/SSw3pSvLrSZFDG0zLGoIz/DYOxaehX6ffEY
+ jYEgeq+d7SH8tMszNtNpUsQb+vDyZSdmwMmiLEiGEGX2PM8M/rGC6vhdcqSnVjvOioFW
+ JTZg==
+X-Gm-Message-State: AOJu0YwgOJ3xrUqZHFmZFpjuOZyCYcK6FQi7nNX612vjhVY2c3WT3MoE
+ gd8UXV/WfZTUbqunzTZ5qsHscoE4zd1EtrzPVSaF49ujGFhjOgUd8PYCvYbleKjXiH8Ua6MThlv
+ kaB6UvReSoh9oYa7aJUf+O2asPiwtOLSxgW7TCw==
+X-Google-Smtp-Source: AGHT+IGgdemACCkbDf+TCIXx/mm8rnVQmR0QrQNtMjNKRogDUp2QE1yWq2+ZzIaCgglAX3ok6iB4SlVF9q4ydcmU5fM=
+X-Received: by 2002:a05:6402:254c:b0:55d:12b8:626 with SMTP id
+ l12-20020a056402254c00b0055d12b80626mr394458edb.35.1706195497841; Thu, 25 Jan
+ 2024 07:11:37 -0800 (PST)
 MIME-Version: 1.0
-References: <CABgObfaCq+++xj7ow5Sm22P5nfMZyh-BKt57m3Po6voKyCnuXQ@mail.gmail.com>
- <ZbJxlgqwkRdmdYmB@redhat.com>
-In-Reply-To: <ZbJxlgqwkRdmdYmB@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 25 Jan 2024 15:55:12 +0100
-Message-ID: <CABgObfYNcm+8_gZY4-ggCouCYvWDHfzrQKr1uRb5vQM4+x=zBQ@mail.gmail.com>
-Subject: Re: Do we still need pre-meson compatibility hacks?
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Wolf, Kevin" <kwolf@redhat.com>, 
- "Maydell, Peter" <peter.maydell@linaro.org>
+References: <20240122160126.394141-1-stefanha@redhat.com>
+In-Reply-To: <20240122160126.394141-1-stefanha@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 25 Jan 2024 15:11:25 +0000
+Message-ID: <CAFEAcA_vRf6uAEDNJjOpXVk+pkYx-cX_YvBr5Swyh7hOEk62zw@mail.gmail.com>
+Subject: Re: [PULL 0/2] Block patches
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, 
+ Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,69 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 25, 2024 at 3:35=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
-> The latter feels redundant, but the former feels worthwhile as long as we
-> keep a wrapper cnofigure script around.
+On Mon, 22 Jan 2024 at 16:01, Stefan Hajnoczi <stefanha@redhat.com> wrote:
 >
-> It seems like we're not far off being able to do a build with the normal
-> sequence of
+> The following changes since commit 09be34717190c1620f0c6e5c8765b8da354aeb4b:
 >
->   meson setup build
->   meson compile -C build
+>   Merge tag 'pull-request-2024-01-19' of https://gitlab.com/thuth/qemu into staging (2024-01-20 17:22:16 +0000)
 >
-> The creation of the config-host.mak and config-host.h files looks like
-> the big one. I feel like config-host.mak ought not to even exist. Meson
-> only consumes a subset of values written into that AFAICT:
-
-The big one is actually everything else that configure does. :) All
-emulator build tasks and tests (especially config-host.h) are done in
-meson.build, but there's more than that to configure.
-
-At this point, concerns are well separated between configure and
-meson. QEMU has a complex multi-target build system that goes beyond
-what Meson is designed to do well; but it also has a complex
-multi-binary component (the emulators) that goes beyond what can be
-done easily in Makefiles. So we have shell/Makefile to orchestrate the
-build, and a single meson/ninja step underneath it for the emulators.
-
-Creating the Python virtual environment _could_ be part of the Meson
-Python module, but it doesn't make sense in my opinion to do so.
-First, because the virtual environment is also used by other non-meson
-parts of the build, notably by Avocado. Second, because it would force
-us to use very new Meson versions now that we've been able to rein
-that in. (Third, because I can't afford the required time :)).
-
-Determining the firmware and tests trees to recurse into, based on the
-list of targets and the detected compiler environments, cannot be done
-in meson because it only supports two compiler environments. It also
-does not map well to the meson DSL.
-
-> $ git grep 'config_host\b'
-> meson.build:config_host =3D keyval.load(meson.current_build_dir() / 'conf=
-ig-host.mak')
-> meson.build:target_dirs =3D config_host['TARGET_DIRS'].split()
-> meson.build:default_targets =3D 'CONFIG_DEFAULT_TARGETS' in config_host
-> meson.build:if config_host.has_key('GDB')
-> meson.build:  summary_info +=3D {'gdb':             config_host['GDB']}
-> meson.build:summary_info +=3D {'genisoimage':       config_host['GENISOIM=
-AGE']}
+> are available in the Git repository at:
 >
-> and I would have thought meson could detect 'gdb' / 'genisoimage' itself,
+>   https://gitlab.com/stefanha/qemu.git tags/block-pull-request
+>
+> for you to fetch changes up to 8a9be7992426c8920d4178e7dca59306a18c7a3a:
+>
+>   block/io: clear BDRV_BLOCK_RECURSE flag after recursing in bdrv_co_block_status (2024-01-22 11:00:12 -0500)
+>
+> ----------------------------------------------------------------
+> Pull request
+>
+> ----------------------------------------------------------------
 
-gdb/genisoimage are used by only used to print the summary, they are
-not used anywhere in the emulator build but they are used by the TCG
-and Avocado tests.
 
-It should be possible to move TARGET_DIRS and CONFIG_DEFAULT_TARGETS
-to meson options and remove the need for meson.build to read
-config-host.mak. I would not reject patches to do so, but building
-qemu.git without going through configure was never a goal of the
-conversion. (The only wrinkle would be that the default TARGET_DIRS
-are computed with globbing, which does not exist in meson, so one
-would have to list the desired targets by hand. That's not a problem,
-it's just different from "./configure").
+Applied, thanks.
 
-Paolo
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
+-- PMM
 
