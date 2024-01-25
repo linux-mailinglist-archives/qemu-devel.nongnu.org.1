@@ -2,100 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EA583C28C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 13:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D31383C28B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 13:32:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSyt5-0003PL-BD; Thu, 25 Jan 2024 07:31:19 -0500
+	id 1rSytq-0003rA-79; Thu, 25 Jan 2024 07:32:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rSysz-0003Lh-FG; Thu, 25 Jan 2024 07:31:13 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rSytm-0003po-Sz
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 07:32:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rSysw-0001zb-00; Thu, 25 Jan 2024 07:31:12 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PARIlN023271; Thu, 25 Jan 2024 12:31:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=MNJbKLRgVm6p0ufGIlf3XdiOukS2mJluK/nZRqsgIQs=;
- b=tMbh8PxDPuCM6zJ3iWy1xeAUXNUDDjvAY1BPYQxJuLA5z+62es3UUpt66U4gtfKeu8+M
- DIhGULKV9uD4QDgPfhUorg+t/iMqwpEuVoaKwGCtb8po2BIVkAiwpx88UgiurYxyzq1T
- 24Y6ss3BFszO1bfc+Ej/W0TFxjNt/hh5nfx2NJCGl60kEJUTiL0Kzy4kG2HQ3oN+e4ML
- b8mAWMV2RlnOy8jz3XInkab1kph6cWhX4SUhCCT0ta+yVTbXJA/OJB9oM6dQ3UaAVNn9
- mtOZCcIROWARbNADSGxgHPxK7UbJJgsJ0uCahrjD/r5JNDnFd4V35sWwTGDCAUFwICjM +g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vunwc351t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 12:31:07 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40PBgdQR027067;
- Thu, 25 Jan 2024 12:31:07 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vunwc351j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 12:31:07 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40PCSfuc025653; Thu, 25 Jan 2024 12:31:06 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrsgpcaf5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Jan 2024 12:31:06 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40PCV40D7602826
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Jan 2024 12:31:04 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A114520043;
- Thu, 25 Jan 2024 12:31:04 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7437F20040;
- Thu, 25 Jan 2024 12:31:04 +0000 (GMT)
-Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 25 Jan 2024 12:31:04 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/2] tests/tcg/s390x: Test CONVERT TO DECIMAL
-Date: Thu, 25 Jan 2024 13:29:45 +0100
-Message-ID: <20240125123059.220131-3-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240125123059.220131-1-iii@linux.ibm.com>
-References: <20240125123059.220131-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rSytk-0003wI-Ub
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 07:32:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706185919;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=4V7+rwa2drGU46d1D2pjPPc90q9XGh3msMRigDRP/10=;
+ b=Bej6bgnskKMJttEBjnpZIeh+AAQhJQgGCZl264H/tJipFklTFZnRDxaZ/Jh5QAgZkfEOY1
+ /X4cKQ7hjZUhmeGFB4rt5Q35VY5YlLHrpKLKhQIdymM9/mQzcdQm/0EZ+Z8f36DzHaQbf9
+ GlYYNuo88xEylYN3fPec8Yp1tX17g9w=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-TSC9VRTOMF2Rybok16NdWg-1; Thu, 25 Jan 2024 07:31:55 -0500
+X-MC-Unique: TSC9VRTOMF2Rybok16NdWg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5FEE488CC40;
+ Thu, 25 Jan 2024 12:31:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.139])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9D28A492BC6;
+ Thu, 25 Jan 2024 12:31:54 +0000 (UTC)
+Date: Thu, 25 Jan 2024 13:31:53 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ "Maydell, Peter" <peter.maydell@linaro.org>,
+ "P. Berrange, Daniel" <berrange@redhat.com>
+Subject: Re: Do we still need pre-meson compatibility hacks?
+Message-ID: <ZbJUuQF_ZpFI8D5e@redhat.com>
+References: <CABgObfaCq+++xj7ow5Sm22P5nfMZyh-BKt57m3Po6voKyCnuXQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FFJR3QrEpnHnFiUl2X5-ZTzQXPmieG_9
-X-Proofpoint-GUID: zgYA0CM0EruDKIof-m7CAJNStQikZqrI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_06,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=811 spamscore=0
- phishscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401250086
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfaCq+++xj7ow5Sm22P5nfMZyh-BKt57m3Po6voKyCnuXQ@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,76 +79,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check the CVD's and CVDG's corner cases.
+Am 25.01.2024 um 08:54 hat Paolo Bonzini geschrieben:
+> Right now configure contains a couple hacks to preserve some of the
+> semantics of the pre-meson build system:
+> 
+> 1) emulation of ./configure by creating a build directory and a forwarding
+> GNUmakefile (requested by Kevin)
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/cvd.c           | 42 +++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
- create mode 100644 tests/tcg/s390x/cvd.c
+I occasionally still use this. It's a bit more convenient when it does
+work, but I have the impression it's not 100% reliable and sometimes
+'make' on the top level doesn't do anything while 'make -C build/' finds
+something to do. Though I'm not sure if it actually happens on upstream
+or if it's a downstream problem.
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 30994dcf9c2..04e4bddd83d 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -45,6 +45,7 @@ TESTS+=clc
- TESTS+=laalg
- TESTS+=add-logical-with-carry
- TESTS+=lae
-+TESTS+=cvd
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/cvd.c b/tests/tcg/s390x/cvd.c
-new file mode 100644
-index 00000000000..4d12282c6aa
---- /dev/null
-+++ b/tests/tcg/s390x/cvd.c
-@@ -0,0 +1,42 @@
-+/*
-+ * Test the CONVERT TO DECIMAL instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdint.h>
-+
-+static uint64_t cvd(int32_t x)
-+{
-+    uint64_t ret;
-+
-+    asm("cvd %[x],%[ret]" : [ret] "=R" (ret) : [x] "r" (x));
-+
-+    return ret;
-+}
-+
-+static __uint128_t cvdg(int64_t x)
-+{
-+    __uint128_t ret;
-+
-+    asm("cvdg %[x],%[ret]" : [ret] "=T" (ret) : [x] "r" (x));
-+
-+    return ret;
-+}
-+
-+int main(void)
-+{
-+    __uint128_t m = (((__uint128_t)0x9223372036854775) << 16) | 0x8070;
-+
-+    assert(cvd(0) == 0xc);
-+    assert(cvd(1) == 0x1c);
-+    assert(cvd(-1) == 0x1d);
-+    assert(cvd(0x7fffffff) == 0x2147483647c);
-+    assert(cvd(-0x7fffffff) == 0x2147483647d);
-+
-+    assert(cvdg(0) == 0xc);
-+    assert(cvdg(1) == 0x1c);
-+    assert(cvdg(-1) == 0x1d);
-+    assert(cvdg(0x7fffffffffffffff) == (m | 0xc));
-+    assert(cvdg(-0x7fffffffffffffff) == (m | 0xd));
-+}
--- 
-2.43.0
+> 2) creation of symlinks such as x86_64-softmmu/qemu-system-x86_64 and
+> arm-linux-user/qemu-arm (requested by Peter)
+
+This is another thing I haven't tested in a while, but for some reason,
+some test cases only used to work for me when I gave them a binary like
+x86_64-softmmu/qemu-system-x86_64, but not with ./qemu-system-x86_64.
+
+Kevin
 
 
