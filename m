@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B7B83B7D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E1C83B7DC
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Jan 2024 04:29:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSqQF-00042T-3P; Wed, 24 Jan 2024 22:28:59 -0500
+	id 1rSqQK-0004GR-Px; Wed, 24 Jan 2024 22:29:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqQC-0003uq-Dn
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:56 -0500
+ id 1rSqQD-00040N-KN
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:57 -0500
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rSqQ9-0001E0-AA
- for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:55 -0500
+ id 1rSqQA-0001Dy-UR
+ for qemu-devel@nongnu.org; Wed, 24 Jan 2024 22:28:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706153333; x=1737689333;
+ t=1706153335; x=1737689335;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MDV1CK+CwY5NNGZELqNeBXtymIPsaa9CAufkhjBYBw4=;
- b=QOs7BaWN6fzfVLSmmv25FWMMuULQY2KCcCDNW+NDoJSh4jyfU01996Io
- y/BxlYSB4O3YX9e271wMLfRetElA/mq8Ur8W8uTUCGDEAZcJxgyfQhc0Z
- VMe1oEhLsy/Eyr3y91VKiTSYPDg+y8rmqyA+OUslna/lt+ifIKMTgb5hL
- e58UWvqS5Mpf7p8ZtT/AgJ1Fcka1PklkgobyTyC5bgCDAnO1hhJWxAlSf
- SNvnzn6fNUjvH5pjMw0+dD7F31Q6rSZHQ1xx4oB/VFlh8/PNoKCj6o05j
- 1fnxg/FEPG44OuF7t9LYdTi3oGyel3SAjXlxP/qubViUHDRgfsIML9elA Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9428469"
+ bh=lmEwcAjBKpd3d6dQx1hVOkIXooa5afvFKHoaSpmVz3w=;
+ b=PNqUMTixhHkXN3T8e2zNwDogkA2Zq7RORKO77CDssn09f8H4diNXqsWE
+ /2J7VqVz1uUo98Uam6pmmWd+jJ9qe4njV2oxW6dnhyoQGoi9Jg4Pe9q40
+ cIQrxO8s/373DYEZL0jSd320OeiiUeEJytyszti5CmQrb5EpdTubijy5N
+ JriLDdFH1hPUkQHGCpFhTz20WYJoBM8fPmGyquco5IBs4qXMQ6TGcmaR6
+ ojJSS0ssDVHvYJnmWy9zoaju85lSTXKp+zaaBbSjGWYIqocafCI9JsLZl
+ n7oM88pX4oDoSTj0KK3fuUuMTFxGdZh6XOfVqNDVPjb5gEVzYWfNTO+Ty g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9428511"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9428469"
+   d="scan'208";a="9428511"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jan 2024 19:25:16 -0800
+ 24 Jan 2024 19:25:21 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2085263"
+   d="scan'208";a="2085340"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:25:11 -0800
+ by orviesa005.jf.intel.com with ESMTP; 24 Jan 2024 19:25:17 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
@@ -59,9 +59,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Isaku Yamahata <isaku.yamahata@gmail.com>,
  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: [PATCH v4 18/66] i386/tdx: Make Intel-PT unsupported for TD guest
-Date: Wed, 24 Jan 2024 22:22:40 -0500
-Message-Id: <20240125032328.2522472-19-xiaoyao.li@intel.com>
+Subject: [PATCH v4 19/66] i386/tdx: Update tdx_cpuid_lookup[].tdx_fixed0/1 by
+ tdx_caps.cpuid_config[]
+Date: Wed, 24 Jan 2024 22:22:41 -0500
+Message-Id: <20240125032328.2522472-20-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240125032328.2522472-1-xiaoyao.li@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
@@ -91,41 +92,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Due to the fact that Intel-PT virtualization support has been broken in
-QEMU since Sapphire Rapids generation[1], below warning is triggered when
-luanching TD guest:
+tdx_cpuid_lookup[].tdx_fixed0/1 is QEMU maintained data which reflects
+TDX restrictions regrading what bits are fixed by TDX module.
 
-  warning: host doesn't support requested feature: CPUID.07H:EBX.intel-pt [bit 25]
-
-Before Intel-pt is fixed in QEMU, just make Intel-PT unsupported for TD
-guest, to avoid the confusing warning.
-
-[1] https://lore.kernel.org/qemu-devel/20230531084311.3807277-1-xiaoyao.li@intel.com/
+It's retrieved from TDX spec and static. However, TDX may evolve and
+change some fixed fields to configurable in the future. Update
+tdx_cpuid.lookup[].tdx_fixed0/1 fields by removing the bits that
+reported from TDX module as configurable. This can adapt with the
+updated TDX (module) automatically.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
-Changes in v4:
- - newly added patch;
----
- target/i386/kvm/tdx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/i386/kvm/tdx.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index a962f8a4ea60..2703e97f991d 100644
+index 2703e97f991d..5dfea0378f26 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -292,6 +292,11 @@ void tdx_get_supported_cpuid(uint32_t function, uint32_t index, int reg,
-     if (function == 1 && reg == R_ECX && !enable_cpu_pm) {
-         *ret &= ~CPUID_EXT_MONITOR;
-     }
-+
-+    /* QEMU Intel-pt support is broken, don't advertise Intel-PT */
-+    if (function == 7 && reg == R_EBX) {
-+        *ret &= ~CPUID_7_0_EBX_INTEL_PT;
-+    }
+@@ -377,6 +377,38 @@ static int get_tdx_capabilities(Error **errp)
+     return 0;
  }
  
- enum tdx_ioctl_level{
++static void update_tdx_cpuid_lookup_by_tdx_caps(void)
++{
++    KvmTdxCpuidLookup *entry;
++    FeatureWordInfo *fi;
++    uint32_t config;
++    FeatureWord w;
++
++    for (w = 0; w < FEATURE_WORDS; w++) {
++        fi = &feature_word_info[w];
++        entry = &tdx_cpuid_lookup[w];
++
++        if (fi->type != CPUID_FEATURE_WORD) {
++            continue;
++        }
++
++        config = tdx_cap_cpuid_config(fi->cpuid.eax,
++                                      fi->cpuid.needs_ecx ? fi->cpuid.ecx : ~0u,
++                                      fi->cpuid.reg);
++
++        if (!config) {
++            continue;
++        }
++
++        /*
++         * Remove the configurable bits from tdx_fixed0/1 in case QEMU
++         * maintained fixed0/1 values is outdated to TDX module.
++         */
++        entry->tdx_fixed0 &= ~config;
++        entry->tdx_fixed1 &= ~config;
++    }
++}
++
+ int tdx_kvm_init(MachineState *ms, Error **errp)
+ {
+     TdxGuest *tdx = TDX_GUEST(OBJECT(ms->cgs));
+@@ -391,6 +423,8 @@ int tdx_kvm_init(MachineState *ms, Error **errp)
+         }
+     }
+ 
++    update_tdx_cpuid_lookup_by_tdx_caps();
++
+     tdx_guest = tdx;
+     return 0;
+ }
 -- 
 2.34.1
 
