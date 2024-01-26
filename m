@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF18083DC37
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D37A83DC34
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHG-0002IP-Ie; Fri, 26 Jan 2024 09:33:54 -0500
+	id 1rTNHD-0002Er-4I; Fri, 26 Jan 2024 09:33:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHB-0002EB-5z
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:49 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1rTNHA-0002Dg-8m
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:48 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH7-0007rd-Tq
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:48 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-337d58942c9so555691f8f.0
+ id 1rTNH8-0007rh-AP
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:47 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-339208f5105so571829f8f.1
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279624; x=1706884424; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=FgvQRpsiH5zpwPcK6Oo54VoqD9iaIo5i9dZssiG51CE=;
- b=SBT0neLZXMm6RIAHCneBrK+3iSFKpED/GNJ6I53FKKgvcVSNmQjbmfFzdW9YfDn1ig
- vVo/UYYBJrTmcl6QOO7vmYmaXipN2mKOPWnl3Sbt8Qh3yf7JxrjL+Fe1Iv9TeRiUXOZt
- Kw00J2HTJ/BllhdTz9DfswhEKPWQnYefSD7Yy7hRXNPBq1lEZQoYatSsMULHVYVeTzjR
- C3+XhNeeOSnKjd9508SAzNLXkeCK+lHVLBeM43/aZBsdb2muIv3BfZLoJHIalpxbUGQM
- pIfeUeUQgY8vCtYNUGAV18Ia0xxvBwHtgUZpRtyzng3Zc8OvDSjOAIbJgPa9xdE7+VDt
- eE0g==
+ :reply-to; bh=ul4GmzC0vbtgvuz9Q5o0fiW1gb75AZUpep615Cah9j8=;
+ b=dik3LNKts1pbzovz2Jfmig3A3qg6U6X28L49TGqAr6A81o0TTfWwiH0SqD/EZsCZv4
+ ANksVjGsQLsQP2egxSsX5O9QNcQCKoK8LmlgXy9m8L+6y26WPIUujqIyXiBeNuSIwGMo
+ cgpGyC6yiC/HgboV9lnnF6CObp/sWlYSD3HfGZWSruluP+6YLTirVM48PHdggYsvv13u
+ 8Glz0FlqnLuSvY0icQdWiGtMqo2xJkPNMcRNuPNWl1fLWZ6e0rNWzXBN+mkZe7Rlg1d7
+ SYse1ndym0pOXtTrzMDUGbKOyr1AbbsbwTCVcin9giwoZxeeXfQ0xrVrAPKVhPSRVHOw
+ Y9ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279624; x=1706884424;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FgvQRpsiH5zpwPcK6Oo54VoqD9iaIo5i9dZssiG51CE=;
- b=F1muW7fU+fgXWbG1SN+yKIfJGWNbNKoYOXEnb1d/yiwvEE7Lho+U8Td1t1ecLf/5w1
- RUlCQceMciPolKUPfFQ/EZ4slm+efzgOt1UgpNlOB1DTjsxF8Hlthl3Ylk3wDGuqSPVl
- EYgthv5z1hCd0tUTT6KD3XbRP522embUKSK50roJuvtAn9oYYvlb41zPpGrwo0kF7Clc
- 2BruudnlERm1O+DtV0NQRYE7RJesXTceTlR+AnJNkI9o4jOdN9/UEPsXUhayMMdQotnb
- Tq1r00eUry1YiRds5HcytnO39J223ROWZKMvHjUVg7Qhga6mv1dNW4x+TLMUuXRUJWro
- u0Ww==
-X-Gm-Message-State: AOJu0YzpDu64b6yszwfC/JnRtAsyfcXrd6qzPKWdMctX5ie5AqjM0ChH
- loIFfZXbG+lJnVTwHVVvi4D8Mqf5H7FUWwKnbGer4oCYOsmsiQ9EwiHrLk2OXKiR1Zn+2PL7sP2
- 5
-X-Google-Smtp-Source: AGHT+IFuCtCIzduHGzT+leX+t2nOW3aINUptU1puokYYACpjBbX/lgvHiQpLqBo0DkjT9iVgWo+bwA==
-X-Received: by 2002:a5d:6687:0:b0:332:eaa7:56b0 with SMTP id
- l7-20020a5d6687000000b00332eaa756b0mr1031839wru.14.1706279624343; 
+ bh=ul4GmzC0vbtgvuz9Q5o0fiW1gb75AZUpep615Cah9j8=;
+ b=Py39lWFc1oReNzvHNdRXUA6zE6Mgv6rsxuPH47tqK043/utPYY8YSae5W1qenTBOeJ
+ Q4CXRJsKspgRaY2GOtwruBWDufwttOWNG117Bj9J7737WqOe1vtp1qAENC8kfznVURbK
+ Ao8kFzO9cWPyHt8q3RDop5hpfvO8WpQlZOC099mhBoQyW7oZkxuwIEMvuXs6pjcb64AG
+ hnuWPCef86eKzyFfyypl0iBDy6Cj7SlM2sGgSoS2+N1XYb1Tp+YrgIzKB6LeyXZP4hmO
+ eWlQ9UrslGubJggPmg2w6CmFF+378QJLYxrr8j/loDHY64PS05dJwkLwECv/JgQVZZOK
+ eJcQ==
+X-Gm-Message-State: AOJu0YzM0ETP21O2/yExfGZVrZgFwDEHm9wz9Bok9PEGl+cSkMYSXXxc
+ cjRB8JP6Spyz3OIIH0QDIEgpPnhw6II7AhSLrJKpE55ztAjGFbjf2StFkcW6KIVOVCMNlF8OQDq
+ a
+X-Google-Smtp-Source: AGHT+IHGS6q0AE2aKgPC9AuhhQ1kq31o1d5Y7N1/ZPkDDigp8xpiNzkzyJ00v8kfp/ZdMPpNsmJ1Sw==
+X-Received: by 2002:adf:e889:0:b0:337:c829:9838 with SMTP id
+ d9-20020adfe889000000b00337c8299838mr744340wrm.69.1706279624730; 
  Fri, 26 Jan 2024 06:33:44 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.43
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 06:33:43 -0800 (PST)
+ Fri, 26 Jan 2024 06:33:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/36] hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-Date: Fri, 26 Jan 2024 14:33:09 +0000
-Message-Id: <20240126143341.2101237-5-peter.maydell@linaro.org>
+Subject: [PULL 05/36] hw/arm/allwinner-a10: Unconditionally map the USB Host
+ controllers
+Date: Fri, 26 Jan 2024 14:33:10 +0000
+Message-Id: <20240126143341.2101237-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,231 +93,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert the musicpal key input device to use
-qemu_add_kbd_event_handler().  This lets us simplify it because we no
-longer need to track whether we're in the middle of a PS/2 multibyte
-key sequence.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In the conversion we move the keyboard handler registration from init
-to realize, because devices shouldn't disturb the state of the
-simulation by doing things like registering input handlers until
-they're realized, so that device objects can be introspected
-safely.
+The USB Controllers are part of the chipset, thus are
+always present and mapped in memory.
 
-The behaviour where key-repeat is permitted for the arrow-keys only
-is intentional (added in commit 7c6ce4baedfcd0c), so we retain it,
-and add a comment to that effect.
+This is a migration compatibility break for the cubieboard
+machine started with the '-usb none' option.
 
-This is a migration compatibility break for musicpal.
-
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Message-id: 20240119215106.45776-2-philmd@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20231103182750.855577-1-peter.maydell@linaro.org
 ---
- hw/arm/musicpal.c | 131 +++++++++++++++++++++-------------------------
- 1 file changed, 61 insertions(+), 70 deletions(-)
+ hw/arm/allwinner-a10.c | 49 +++++++++++++++++-------------------------
+ 1 file changed, 20 insertions(+), 29 deletions(-)
 
-diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
-index 3200c9f68ac..6987472871e 100644
---- a/hw/arm/musicpal.c
-+++ b/hw/arm/musicpal.c
-@@ -1043,20 +1043,6 @@ static const TypeInfo musicpal_gpio_info = {
- };
+diff --git a/hw/arm/allwinner-a10.c b/hw/arm/allwinner-a10.c
+index b0ea3f7f662..0135632996c 100644
+--- a/hw/arm/allwinner-a10.c
++++ b/hw/arm/allwinner-a10.c
+@@ -79,15 +79,10 @@ static void aw_a10_init(Object *obj)
  
- /* Keyboard codes & masks */
--#define KEY_RELEASED            0x80
--#define KEY_CODE                0x7f
--
--#define KEYCODE_TAB             0x0f
--#define KEYCODE_ENTER           0x1c
--#define KEYCODE_F               0x21
--#define KEYCODE_M               0x32
--
--#define KEYCODE_EXTENDED        0xe0
--#define KEYCODE_UP              0x48
--#define KEYCODE_DOWN            0x50
--#define KEYCODE_LEFT            0x4b
--#define KEYCODE_RIGHT           0x4d
--
- #define MP_KEY_WHEEL_VOL       (1 << 0)
- #define MP_KEY_WHEEL_VOL_INV   (1 << 1)
- #define MP_KEY_WHEEL_NAV       (1 << 2)
-@@ -1074,67 +1060,66 @@ struct musicpal_key_state {
-     SysBusDevice parent_obj;
-     /*< public >*/
+     object_initialize_child(obj, "i2c0", &s->i2c0, TYPE_AW_I2C);
  
--    uint32_t kbd_extended;
-     uint32_t pressed_keys;
-     qemu_irq out[8];
- };
- 
--static void musicpal_key_event(void *opaque, int keycode)
-+static void musicpal_key_event(DeviceState *dev, QemuConsole *src,
-+                               InputEvent *evt)
- {
--    musicpal_key_state *s = opaque;
-+    musicpal_key_state *s = MUSICPAL_KEY(dev);
-+    InputKeyEvent *key = evt->u.key.data;
-+    int qcode = qemu_input_key_value_to_qcode(key->key);
-     uint32_t event = 0;
-     int i;
- 
--    if (keycode == KEYCODE_EXTENDED) {
--        s->kbd_extended = 1;
--        return;
-+    switch (qcode) {
-+    case Q_KEY_CODE_UP:
-+        event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
-+        break;
-+
-+    case Q_KEY_CODE_DOWN:
-+        event = MP_KEY_WHEEL_NAV;
-+        break;
-+
-+    case Q_KEY_CODE_LEFT:
-+        event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
-+        break;
-+
-+    case Q_KEY_CODE_RIGHT:
-+        event = MP_KEY_WHEEL_VOL;
-+        break;
-+
-+    case Q_KEY_CODE_F:
-+        event = MP_KEY_BTN_FAVORITS;
-+        break;
-+
-+    case Q_KEY_CODE_TAB:
-+        event = MP_KEY_BTN_VOLUME;
-+        break;
-+
-+    case Q_KEY_CODE_RET:
-+        event = MP_KEY_BTN_NAVIGATION;
-+        break;
-+
-+    case Q_KEY_CODE_M:
-+        event = MP_KEY_BTN_MENU;
-+        break;
-     }
- 
--    if (s->kbd_extended) {
--        switch (keycode & KEY_CODE) {
--        case KEYCODE_UP:
--            event = MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_NAV_INV;
--            break;
+-    if (machine_usb(current_machine)) {
+-        int i;
 -
--        case KEYCODE_DOWN:
--            event = MP_KEY_WHEEL_NAV;
--            break;
--
--        case KEYCODE_LEFT:
--            event = MP_KEY_WHEEL_VOL | MP_KEY_WHEEL_VOL_INV;
--            break;
--
--        case KEYCODE_RIGHT:
--            event = MP_KEY_WHEEL_VOL;
--            break;
+-        for (i = 0; i < AW_A10_NUM_USB; i++) {
+-            object_initialize_child(obj, "ehci[*]", &s->ehci[i],
+-                                    TYPE_PLATFORM_EHCI);
+-            object_initialize_child(obj, "ohci[*]", &s->ohci[i],
+-                                    TYPE_SYSBUS_OHCI);
 -        }
--    } else {
--        switch (keycode & KEY_CODE) {
--        case KEYCODE_F:
--            event = MP_KEY_BTN_FAVORITS;
--            break;
++    for (size_t i = 0; i < AW_A10_NUM_USB; i++) {
++        object_initialize_child(obj, "ehci[*]", &s->ehci[i],
++                                TYPE_PLATFORM_EHCI);
++        object_initialize_child(obj, "ohci[*]", &s->ohci[i], TYPE_SYSBUS_OHCI);
+     }
+ 
+     object_initialize_child(obj, "mmc0", &s->mmc0, TYPE_AW_SDHOST_SUN4I);
+@@ -165,28 +160,24 @@ static void aw_a10_realize(DeviceState *dev, Error **errp)
+                    qdev_get_gpio_in(dev, 1),
+                    115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
+ 
+-    if (machine_usb(current_machine)) {
+-        int i;
++    for (size_t i = 0; i < AW_A10_NUM_USB; i++) {
++        g_autofree char *bus = g_strdup_printf("usb-bus.%zu", i);
+ 
+-        for (i = 0; i < AW_A10_NUM_USB; i++) {
+-            g_autofree char *bus = g_strdup_printf("usb-bus.%d", i);
++        object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
++                                 true, &error_fatal);
++        sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
++                        AW_A10_EHCI_BASE + i * 0x8000);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
++                           qdev_get_gpio_in(dev, 39 + i));
+ 
+-            object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
+-                                     true, &error_fatal);
+-            sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
+-            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+-                            AW_A10_EHCI_BASE + i * 0x8000);
+-            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
+-                               qdev_get_gpio_in(dev, 39 + i));
 -
--        case KEYCODE_TAB:
--            event = MP_KEY_BTN_VOLUME;
--            break;
--
--        case KEYCODE_ENTER:
--            event = MP_KEY_BTN_NAVIGATION;
--            break;
--
--        case KEYCODE_M:
--            event = MP_KEY_BTN_MENU;
--            break;
+-            object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
+-                                    &error_fatal);
+-            sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
+-            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
+-                            AW_A10_OHCI_BASE + i * 0x8000);
+-            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
+-                               qdev_get_gpio_in(dev, 64 + i));
 -        }
--        /* Do not repeat already pressed buttons */
--        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
-+    /*
-+     * We allow repeated wheel-events when the arrow keys are held down,
-+     * but do not repeat already-pressed buttons for the other key inputs.
-+     */
-+    if (!(event & (MP_KEY_WHEEL_NAV | MP_KEY_WHEEL_VOL))) {
-+        if (key->down && (s->pressed_keys & event)) {
-             event = 0;
-         }
++        object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
++                                &error_fatal);
++        sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
++        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
++                        AW_A10_OHCI_BASE + i * 0x8000);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
++                           qdev_get_gpio_in(dev, 64 + i));
      }
  
-     if (event) {
-         /* Raise GPIO pin first if repeating a key */
--        if (!(keycode & KEY_RELEASED) && (s->pressed_keys & event)) {
-+        if (key->down && (s->pressed_keys & event)) {
-             for (i = 0; i <= 7; i++) {
-                 if (event & (1 << i)) {
-                     qemu_set_irq(s->out[i], 1);
-@@ -1143,17 +1128,15 @@ static void musicpal_key_event(void *opaque, int keycode)
-         }
-         for (i = 0; i <= 7; i++) {
-             if (event & (1 << i)) {
--                qemu_set_irq(s->out[i], !!(keycode & KEY_RELEASED));
-+                qemu_set_irq(s->out[i], !key->down);
-             }
-         }
--        if (keycode & KEY_RELEASED) {
--            s->pressed_keys &= ~event;
--        } else {
-+        if (key->down) {
-             s->pressed_keys |= event;
-+        } else {
-+            s->pressed_keys &= ~event;
-         }
-     }
--
--    s->kbd_extended = 0;
- }
- 
- static void musicpal_key_init(Object *obj)
-@@ -1162,20 +1145,27 @@ static void musicpal_key_init(Object *obj)
-     DeviceState *dev = DEVICE(sbd);
-     musicpal_key_state *s = MUSICPAL_KEY(dev);
- 
--    s->kbd_extended = 0;
-     s->pressed_keys = 0;
- 
-     qdev_init_gpio_out(dev, s->out, ARRAY_SIZE(s->out));
-+}
- 
--    qemu_add_kbd_event_handler(musicpal_key_event, s);
-+static const QemuInputHandler musicpal_key_handler = {
-+    .name = "musicpal_key",
-+    .mask = INPUT_EVENT_MASK_KEY,
-+    .event = musicpal_key_event,
-+};
-+
-+static void musicpal_key_realize(DeviceState *dev, Error **errp)
-+{
-+    qemu_input_handler_register(dev, &musicpal_key_handler);
- }
- 
- static const VMStateDescription musicpal_key_vmsd = {
-     .name = "musicpal_key",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT32(kbd_extended, musicpal_key_state),
-         VMSTATE_UINT32(pressed_keys, musicpal_key_state),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -1186,6 +1176,7 @@ static void musicpal_key_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->vmsd = &musicpal_key_vmsd;
-+    dc->realize = musicpal_key_realize;
- }
- 
- static const TypeInfo musicpal_key_info = {
+     /* SD/MMC */
 -- 
 2.34.1
 
