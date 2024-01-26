@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB0383DC2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2EC83DC2D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHI-0002LD-W1; Fri, 26 Jan 2024 09:33:57 -0500
+	id 1rTNHK-0002NE-Ar; Fri, 26 Jan 2024 09:33:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHG-0002IM-17
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:54 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1rTNHH-0002K6-9L
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHD-0007wA-HR
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:53 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso548154f8f.2
+ id 1rTNHE-0007wO-1n
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33ade380b9fso569673f8f.2
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279630; x=1706884430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aKFqrLvCzXTDGSINS8VWH1i0hLeDZyaY1SkgUJsHk9M=;
- b=UEd733YkeDANubnYUnCNE/GrAdynl14V5gm3FlKHQegKwdpTftLN5BsBzG5aidn3yP
- eCRfr9012I5hKZofHAXWJUNIHURK/btr74ck8/l4Az14DPPNl7LHv2n1HNUgvmDdeaK+
- tlmLF2iTh7Z8dKSfxaYnFrMNwziXqTb02ZK4iQD0/pNWVUdgXvhARHlDLhcwMt3xl4sG
- I7TIHap99rosPFSj44ozycG1Ux9BYtJWAXRJV+Ra6a3hReKHfVB9r3n7qj4uh8KJTZft
- 6T62ipYPmUrR7hI9/SlO9EURiVn9OocKY6ENDdZZw9pwaqUEEhsxlkgJhylpR2aQLtVg
- 33LA==
+ :reply-to; bh=gl5mdL8o4tkULNtVB7E10+lX7Lfh3f3aHXrBpGvFwCw=;
+ b=l2qwh0WBfH1JVfdtAgS3H8IvDTYxbqBXhwxQTZhL1EGY3JHnYq0CzGNH3O/xq6lV8h
+ L5UDeQc9psbER8/uK2yxms8xzU50oqOa1utlvOuiBxZ9SU1aw/mflvTO5WfdBSN58LXr
+ NyhiQ2vJ16e7uc+vvQCHWSU8BzZIz76nCHKubreRpopNoqC12YNvbzNhg028Qe2N5RWs
+ IRETHdHAJthE8yUTlYF+FpXz9ClC9kLXBpcbjokpzF/EuIvf2J/FpyoXj8OJH5tPozhp
+ kNmDpOjVQyVB5r2c/+bdbzpUfM1Hi5VOcptOAhsSttOsZD7xdgEy/XzE7eKY2c+02Iqs
+ fUAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279630; x=1706884430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aKFqrLvCzXTDGSINS8VWH1i0hLeDZyaY1SkgUJsHk9M=;
- b=D3lDNdtaVbR5PF1DdrohuoaaZZ9xaWEfvFMTEEfJFSMfmyss/0Ur/R+C8+qMYigrVw
- /iQh//L0RiN3GUwoYYnsaN9oIhMoZWDUJNgxp8YlGSpEtRXCniZ5lrWJBjN0yeS4UQzq
- iLTrSJGhiFLYrakndsiQS67TQ5R+NpD660yeZkM9u/STGXBsyFz7v83jRDPjkpeFnr/y
- QajFieNYoyhZdhKJ0Q4AsUEyEhwfP+TA7XHMV5/SOiNe7Jf0Dc2Rs94F8gY6/rSXJ7c1
- LodUBQfy3OlZGU8QElaJ5l662UikFFwXHtnQSLbFaxS/NqfY7cVYBZrNXzBbL/vI5ZY7
- rCNQ==
-X-Gm-Message-State: AOJu0YxGeeZ7yUHhK8HvGPmuFhjXMH62iO7rZibVsZZ8FbuKtifaU03z
- AbicbH+PncfqRw8zupemleKiXrG1MewJ+LRDTsyrIK1XE0zsH0okOXn0tQpqcDZ1vY/cbgh58S2
- 6
-X-Google-Smtp-Source: AGHT+IEIy+ckq7GFIKhkAM1WGB0VYb6u5WtGOgJHhtQykhYqTDFIqMN/TnuAu3pIDDsh84CaRcOBZA==
-X-Received: by 2002:a7b:cb43:0:b0:40e:5aa4:44f8 with SMTP id
- v3-20020a7bcb43000000b0040e5aa444f8mr863285wmj.216.1706279630224; 
+ bh=gl5mdL8o4tkULNtVB7E10+lX7Lfh3f3aHXrBpGvFwCw=;
+ b=itMiomyeHM9kfKqkde5nHgcG7x8uMc1N4PIT5A0YV9BehfWWkTVpYxPjjbEaNYXueW
+ lRrDszUphC7oHQbOdYV4Vz6B78Fh3C+F6hUnueRYEZ6BgRk6r1KN2foPtoZOcLE+k2aO
+ h6Kmf+DMfBsOMLLrZHCc+LV+affJCIQJZVr+4rE9jJU4HPTpQogIuW+gvggsvLN9yTdx
+ BBcsPx17M4Bb9O7Vyv/59QHWxZFY4iw+JdvjZUBn/WGHujGgTXaWtpKEfxDg3XlejVND
+ KqfPGZ1AKXOsez+p2VhA5Qjiq31e7shd1TqOS7gV5cBjA/mjlDd+U93y2Pao5OVET4+O
+ 6Piw==
+X-Gm-Message-State: AOJu0Yy3MA5x2MaK5T2fi9nblIiWBVmKRU1uZn0E7efGqTFOt8+qX0OM
+ B73rUU8e3Mw05jkc6h08zWW8eiSS8FPAsfDb2Or2yJCogVLWkYhMP9mzntCuKMSw0O094syugOF
+ W
+X-Google-Smtp-Source: AGHT+IHFOH8mAEtP2w4qdoPCzIcRF+mw7DSaZ9w2IKxVNs+hBYdzxSgMfELwBgP0ZZLMoBMqsf0R7Q==
+X-Received: by 2002:adf:ee8a:0:b0:337:b74b:492c with SMTP id
+ b10-20020adfee8a000000b00337b74b492cmr486377wro.234.1706279630638; 
  Fri, 26 Jan 2024 06:33:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.49
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Jan 2024 06:33:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/36] target/arm: Create arm_cpu_mp_affinity
-Date: Fri, 26 Jan 2024 14:33:23 +0000
-Message-Id: <20240126143341.2101237-19-peter.maydell@linaro.org>
+Subject: [PULL 19/36] target/arm: Expose arm_cpu_mp_affinity() in
+ 'multiprocessing.h' header
+Date: Fri, 26 Jan 2024 14:33:24 +0000
+Message-Id: <20240126143341.2101237-20-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,159 +93,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Wrapper to return the mp affinity bits from the cpu.
+Declare arm_cpu_mp_affinity() prototype in the new
+ "target/arm/multiprocessing.h" header so units in
+hw/arm/ can use it without having to include the huge
+target-specific "cpu.h".
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+File list to include the new header generated using:
+
+  $ git grep -lw arm_cpu_mp_affinity
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-10-philmd@linaro.org
+Message-id: 20240118200643.29037-11-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h          | 5 +++++
- hw/arm/virt-acpi-build.c  | 2 +-
- hw/arm/virt.c             | 6 +++---
- hw/arm/xlnx-versal-virt.c | 3 ++-
- hw/misc/xlnx-versal-crl.c | 4 ++--
- target/arm/arm-powerctl.c | 2 +-
- target/arm/hvf/hvf.c      | 4 ++--
- target/arm/tcg/psci.c     | 2 +-
- 8 files changed, 17 insertions(+), 11 deletions(-)
+ target/arm/cpu.h             |  6 +-----
+ target/arm/multiprocessing.h | 16 ++++++++++++++++
+ hw/arm/virt-acpi-build.c     |  1 +
+ hw/arm/virt.c                |  1 +
+ hw/arm/xlnx-versal-virt.c    |  1 +
+ hw/misc/xlnx-versal-crl.c    |  1 +
+ target/arm/arm-powerctl.c    |  1 +
+ target/arm/cpu.c             |  5 +++++
+ target/arm/hvf/hvf.c         |  1 +
+ target/arm/tcg/psci.c        |  1 +
+ 10 files changed, 29 insertions(+), 5 deletions(-)
+ create mode 100644 target/arm/multiprocessing.h
 
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 55a19e8539e..d1584bdb3b5 100644
+index d1584bdb3b5..cecac4c0a12 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -1173,6 +1173,11 @@ void arm_cpu_post_init(Object *obj);
+@@ -26,6 +26,7 @@
+ #include "cpu-qom.h"
+ #include "exec/cpu-defs.h"
+ #include "qapi/qapi-types-common.h"
++#include "target/arm/multiprocessing.h"
+ 
+ /* ARM processors have a weak memory model */
+ #define TCG_GUEST_DEFAULT_MO      (0)
+@@ -1173,11 +1174,6 @@ void arm_cpu_post_init(Object *obj);
  
  uint64_t arm_build_mp_affinity(int idx, uint8_t clustersz);
  
-+static inline uint64_t arm_cpu_mp_affinity(ARMCPU *cpu)
+-static inline uint64_t arm_cpu_mp_affinity(ARMCPU *cpu)
+-{
+-    return cpu->mp_affinity;
+-}
+-
+ #ifndef CONFIG_USER_ONLY
+ extern const VMStateDescription vmstate_arm_cpu;
+ 
+diff --git a/target/arm/multiprocessing.h b/target/arm/multiprocessing.h
+new file mode 100644
+index 00000000000..81715d345c2
+--- /dev/null
++++ b/target/arm/multiprocessing.h
+@@ -0,0 +1,16 @@
++/*
++ * ARM multiprocessor CPU helpers
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#ifndef TARGET_ARM_MULTIPROCESSING_H
++#define TARGET_ARM_MULTIPROCESSING_H
++
++#include "target/arm/cpu-qom.h"
++
++uint64_t arm_cpu_mp_affinity(ARMCPU *cpu);
++
++#endif
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 2127778c1ea..43ccc60f43c 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -59,6 +59,7 @@
+ #include "hw/acpi/ghes.h"
+ #include "hw/acpi/viot.h"
+ #include "hw/virtio/virtio-acpi.h"
++#include "target/arm/multiprocessing.h"
+ 
+ #define ARM_SPI_BASE 32
+ 
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index b3592798ea9..1e0df6ea3ad 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -74,6 +74,7 @@
+ #include "hw/arm/smmuv3.h"
+ #include "hw/acpi/acpi.h"
+ #include "target/arm/internals.h"
++#include "target/arm/multiprocessing.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+ #include "hw/acpi/generic_event_device.h"
+diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
+index 841ef69df66..29f4d2c2dce 100644
+--- a/hw/arm/xlnx-versal-virt.c
++++ b/hw/arm/xlnx-versal-virt.c
+@@ -20,6 +20,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/arm/xlnx-versal.h"
+ #include "hw/arm/boot.h"
++#include "target/arm/multiprocessing.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_XLNX_VERSAL_VIRT_MACHINE MACHINE_TYPE_NAME("xlnx-versal-virt")
+diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
+index 9bfa9baa157..1f1762ef163 100644
+--- a/hw/misc/xlnx-versal-crl.c
++++ b/hw/misc/xlnx-versal-crl.c
+@@ -19,6 +19,7 @@
+ #include "hw/resettable.h"
+ 
+ #include "target/arm/arm-powerctl.h"
++#include "target/arm/multiprocessing.h"
+ #include "hw/misc/xlnx-versal-crl.h"
+ 
+ #ifndef XLNX_VERSAL_CRL_ERR_DEBUG
+diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
+index 6c86e901028..2b2055c6acc 100644
+--- a/target/arm/arm-powerctl.c
++++ b/target/arm/arm-powerctl.c
+@@ -16,6 +16,7 @@
+ #include "qemu/log.h"
+ #include "qemu/main-loop.h"
+ #include "sysemu/tcg.h"
++#include "target/arm/multiprocessing.h"
+ 
+ #ifndef DEBUG_ARM_POWERCTL
+ #define DEBUG_ARM_POWERCTL 0
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 5b5af7d4e1e..04296f2928f 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1314,6 +1314,11 @@ uint64_t arm_build_mp_affinity(int idx, uint8_t clustersz)
+     return (Aff1 << ARM_AFF1_SHIFT) | Aff0;
+ }
+ 
++uint64_t arm_cpu_mp_affinity(ARMCPU *cpu)
 +{
 +    return cpu->mp_affinity;
 +}
 +
- #ifndef CONFIG_USER_ONLY
- extern const VMStateDescription vmstate_arm_cpu;
- 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index a22a2f43a56..2127778c1ea 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -720,7 +720,7 @@ build_madt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-         build_append_int_noprefix(table_data, vgic_interrupt, 4);
-         build_append_int_noprefix(table_data, 0, 8);    /* GICR Base Address*/
-         /* MPIDR */
--        build_append_int_noprefix(table_data, armcpu->mp_affinity, 8);
-+        build_append_int_noprefix(table_data, arm_cpu_mp_affinity(armcpu), 8);
-         /* Processor Power Efficiency Class */
-         build_append_int_noprefix(table_data, 0, 1);
-         /* Reserved */
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index eecde04fc77..b3592798ea9 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -370,7 +370,7 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
-     for (cpu = 0; cpu < smp_cpus; cpu++) {
-         ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(cpu));
- 
--        if (armcpu->mp_affinity & ARM_AFF3_MASK) {
-+        if (arm_cpu_mp_affinity(armcpu) & ARM_AFF3_MASK) {
-             addr_cells = 2;
-             break;
-         }
-@@ -397,10 +397,10 @@ static void fdt_add_cpu_nodes(const VirtMachineState *vms)
- 
-         if (addr_cells == 2) {
-             qemu_fdt_setprop_u64(ms->fdt, nodename, "reg",
--                                 armcpu->mp_affinity);
-+                                 arm_cpu_mp_affinity(armcpu));
-         } else {
-             qemu_fdt_setprop_cell(ms->fdt, nodename, "reg",
--                                  armcpu->mp_affinity);
-+                                  arm_cpu_mp_affinity(armcpu));
-         }
- 
-         if (ms->possible_cpus->cpus[cs->cpu_index].props.has_node_id) {
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index 537118224fb..841ef69df66 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -107,7 +107,8 @@ static void fdt_add_cpu_nodes(VersalVirt *s, uint32_t psci_conduit)
-         ARMCPU *armcpu = ARM_CPU(qemu_get_cpu(i));
- 
-         qemu_fdt_add_subnode(s->fdt, name);
--        qemu_fdt_setprop_cell(s->fdt, name, "reg", armcpu->mp_affinity);
-+        qemu_fdt_setprop_cell(s->fdt, name, "reg",
-+                              arm_cpu_mp_affinity(armcpu));
-         if (psci_conduit != QEMU_PSCI_CONDUIT_DISABLED) {
-             qemu_fdt_setprop_string(s->fdt, name, "enable-method", "psci");
-         }
-diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index ac6889fcf26..9bfa9baa157 100644
---- a/hw/misc/xlnx-versal-crl.c
-+++ b/hw/misc/xlnx-versal-crl.c
-@@ -67,9 +67,9 @@ static void crl_reset_cpu(XlnxVersalCRL *s, ARMCPU *armcpu,
-                           bool rst_old, bool rst_new)
+ static void arm_cpu_initfn(Object *obj)
  {
-     if (rst_new) {
--        arm_set_cpu_off(armcpu->mp_affinity);
-+        arm_set_cpu_off(arm_cpu_mp_affinity(armcpu));
-     } else {
--        arm_set_cpu_on_and_reset(armcpu->mp_affinity);
-+        arm_set_cpu_on_and_reset(arm_cpu_mp_affinity(armcpu));
-     }
- }
- 
-diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
-index 88503815659..6c86e901028 100644
---- a/target/arm/arm-powerctl.c
-+++ b/target/arm/arm-powerctl.c
-@@ -37,7 +37,7 @@ CPUState *arm_get_cpu_by_id(uint64_t id)
-     CPU_FOREACH(cpu) {
-         ARMCPU *armcpu = ARM_CPU(cpu);
- 
--        if (armcpu->mp_affinity == id) {
-+        if (arm_cpu_mp_affinity(armcpu) == id) {
-             return cpu;
-         }
-     }
+     ARMCPU *cpu = ARM_CPU(obj);
 diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index a537a5bc94c..659401e12c7 100644
+index 659401e12c7..71a26db1886 100644
 --- a/target/arm/hvf/hvf.c
 +++ b/target/arm/hvf/hvf.c
-@@ -1016,7 +1016,7 @@ static void hvf_raise_exception(CPUState *cpu, uint32_t excp,
+@@ -28,6 +28,7 @@
+ #include "arm-powerctl.h"
+ #include "target/arm/cpu.h"
+ #include "target/arm/internals.h"
++#include "target/arm/multiprocessing.h"
+ #include "trace/trace-target_arm_hvf.h"
+ #include "migration/vmstate.h"
  
- static void hvf_psci_cpu_off(ARMCPU *arm_cpu)
- {
--    int32_t ret = arm_set_cpu_off(arm_cpu->mp_affinity);
-+    int32_t ret = arm_set_cpu_off(arm_cpu_mp_affinity(arm_cpu));
-     assert(ret == QEMU_ARM_POWERCTL_RET_SUCCESS);
- }
- 
-@@ -1045,7 +1045,7 @@ static bool hvf_handle_psci_call(CPUState *cpu)
-     int32_t ret = 0;
- 
-     trace_hvf_psci_call(param[0], param[1], param[2], param[3],
--                        arm_cpu->mp_affinity);
-+                        arm_cpu_mp_affinity(arm_cpu));
- 
-     switch (param[0]) {
-     case QEMU_PSCI_0_2_FN_PSCI_VERSION:
 diff --git a/target/arm/tcg/psci.c b/target/arm/tcg/psci.c
-index 9080a91d9c6..50d4b23d26b 100644
+index 50d4b23d26b..51d2ca3d30d 100644
 --- a/target/arm/tcg/psci.c
 +++ b/target/arm/tcg/psci.c
-@@ -215,7 +215,7 @@ err:
-     return;
+@@ -24,6 +24,7 @@
+ #include "sysemu/runstate.h"
+ #include "internals.h"
+ #include "arm-powerctl.h"
++#include "target/arm/multiprocessing.h"
  
- cpu_off:
--    ret = arm_set_cpu_off(cpu->mp_affinity);
-+    ret = arm_set_cpu_off(arm_cpu_mp_affinity(cpu));
-     /* notreached */
-     /* sanity check in case something failed */
-     assert(ret == QEMU_ARM_POWERCTL_RET_SUCCESS);
+ bool arm_is_psci_call(ARMCPU *cpu, int excp_type)
+ {
 -- 
 2.34.1
 
