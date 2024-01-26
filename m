@@ -2,96 +2,131 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52A683DD69
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 16:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F1083DD7D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 16:28:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTO53-0006Wz-0c; Fri, 26 Jan 2024 10:25:21 -0500
+	id 1rTO7x-0002mc-2B; Fri, 26 Jan 2024 10:28:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rTO4i-0006R1-RL
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 10:25:04 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTO7u-0002k4-3i
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 10:28:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rTO4g-0004OW-14
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 10:25:00 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTO7r-000561-D5
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 10:28:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706282696;
+ s=mimecast20190719; t=1706282893;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=LSnYg3o24ekVgD3ZWjBbs2VxGpZr48UArIqjvPDc3SU=;
- b=U8exGTzNRnm41ReXdzbL0TMoK3buQEExq3b8WJ0g/USuHhfFLu7Gb/DHaqRj8YeCWlHM0h
- hz2ZUFbVIZSXQoZcyp2kAXi4ttVHO6gJ2YNUsthEvvS2GnrrNSaUcsKwlhxATZzxE056d9
- R+sn2ZBe2H2T4NTSrJp1oqZn4ld6Z9M=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=vMbKvj8zCML+ETLPMBGBs2Utoyc43BzwDcOpZc0JK1g=;
+ b=adBiurYAzbVU0tGCnP3nnfm3o8c/lva7M/gWcztZzc+OnC1ql+gD/SaLL9xyi6dNeA1IJP
+ syI+MzrOzWzk9pdTkNQ73j2hfnW/lP0YFtnS14+E6nkY/d+5QezPhgZuslyPNISNA3+fMt
+ ma/FI38ds5mlTv9UkCZ2v+r4eA/Ymlk=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-63-6Ah3axqHM1uYeq5HzN4fqg-1; Fri, 26 Jan 2024 10:24:54 -0500
-X-MC-Unique: 6Ah3axqHM1uYeq5HzN4fqg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40e479a51e4so8648165e9.0
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 07:24:54 -0800 (PST)
+ us-mta-601-u0S-p7ICNmaAMult7OYDMw-1; Fri, 26 Jan 2024 10:28:12 -0500
+X-MC-Unique: u0S-p7ICNmaAMult7OYDMw-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-6ddf165f956so520141a34.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 07:28:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706282693; x=1706887493;
- h=in-reply-to:from:content-language:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=LSnYg3o24ekVgD3ZWjBbs2VxGpZr48UArIqjvPDc3SU=;
- b=bp6k+3fQNos5g8fDiGsEcKtMeYBE1YHYlRo2yNR69wrnfwiDeluZXdnQHRFM9zwNbZ
- WAapVzSqNk36khPQyp/iwlvv+RMjDxbQ7MDNtK9XjsKSsKz4aTkRjnxbB9MQD7wSMsfP
- 2G+FGT+mkiQGnWPAhmC8sSv/t/3OaQV77y2nky3t+loLobV9FoPCw48ZufIiGrhBaxKX
- uci5vPbHssH50EFjXLoxeChKYkrGz2umXTuO87rSVjT9+ZJV+U+k3MQ4DZ8dGMn969ZW
- klrP41zeEq22qVR8tDUz4QBTbHUvLELUn9yW6PNHRi+e93zSn/El7pf123gID1ZI+17g
- /ZJw==
-X-Gm-Message-State: AOJu0YxoY+TdWXLBcTNxBB2OIdBqRTYHV4OD8Dqf6Jt1+h7NNOMxT3MI
- Gs4VmNSL5gzbGMS725iOiIzCIveWOJMz88NuFNUUgRqajUgl2nvswyd4i1j6hl/qu9iX8KZOXF3
- xEdGPzyEQuT2JwyY1YdB9E7G+yW18lRy1246Eizpv4jEZxTx7V9NnEXfH9wXf
-X-Received: by 2002:a05:600c:2188:b0:40e:e875:ae86 with SMTP id
- e8-20020a05600c218800b0040ee875ae86mr163965wme.179.1706282692772; 
- Fri, 26 Jan 2024 07:24:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGfHtOv85GIIxYcUoYEX8LKJA6OzWMO/zqdS9Ca86k1S1ConIFiuvZYVRrAfCITHLtns2HBUQ==
-X-Received: by 2002:a05:600c:2188:b0:40e:e875:ae86 with SMTP id
- e8-20020a05600c218800b0040ee875ae86mr163956wme.179.1706282692258; 
- Fri, 26 Jan 2024 07:24:52 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCXDOxYisxnvbDIWKT2WpE/PrCxVOXXRrgpBhihA5JpNU+6u5dOgTcqcn65eoSxf+RWd79/duHFw5XqOKDNVNyIC9gWpf7mQKGvvUNaN4p+PxJhySuWJlxHZ59E=
-Received: from ?IPV6:2003:cf:d73b:41e3:4a3e:681e:32b7:8988?
- (p200300cfd73b41e34a3e681e32b78988.dip0.t-ipconnect.de.
- [2003:cf:d73b:41e3:4a3e:681e:32b7:8988])
- by smtp.gmail.com with ESMTPSA id
- z7-20020a05600c0a0700b0040eccfa8a36sm2210560wmp.27.2024.01.26.07.24.49
+ d=1e100.net; s=20230601; t=1706282892; x=1706887692;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vMbKvj8zCML+ETLPMBGBs2Utoyc43BzwDcOpZc0JK1g=;
+ b=kmaSbcNp7Wj2nVhZ8l4O9h+OwOCLSLzXmwxRjYOBbfKYRHWFa0yK/rHCP8YVvknKZT
+ b3Mbat3n9P0F1NzGkF+nBnjQJ05TOddkD6rwTfC8x+u6oqa7nqcUN7VgB5fFiG+GxERW
+ sTpUPh2kiehpIeWZ1QpS68UaBZrobDGb4HGMBri6z0QRkTiO7004bBj1t2dj0JnV6Zvv
+ C2kNKtRGn12EzKDLf5squDpbsLLfM74oWyj7wVU2NMRBWG6iG4aMQ34HQO1+xRn/ARhy
+ BmxWvVGsC+IyEcjpulq6uofJiSxCEwM160ts/Hz+SI4emy7C5S3oAEEKVP7cLz8OPGnQ
+ fttQ==
+X-Gm-Message-State: AOJu0YyEmwYQazm34AiluauWAXH7difklV2yFKQx2VRIiqykt3zYPPk9
+ XvjNWTDJZlW5xKLTPt0PM+vOkkBcG6i9zL4PiLco8sVNWdgOR4yIu+qB3vHTjQmGeDHDIhGwovQ
+ noNWGo/2DRGLdwac3Md0/sF9/PVZqE5+yU+f7e0ZIWALRBxGOc7T/
+X-Received: by 2002:a9d:6e8c:0:b0:6dd:ec7f:f46d with SMTP id
+ a12-20020a9d6e8c000000b006ddec7ff46dmr2659099otr.11.1706282891906; 
+ Fri, 26 Jan 2024 07:28:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHoEYcXujJj9EHwcOiUz3bWZSqAH6ak+T0c/tzqaYb77F5FeLF+a0vXwN6XQw89rSM/7StZZg==
+X-Received: by 2002:a9d:6e8c:0:b0:6dd:ec7f:f46d with SMTP id
+ a12-20020a9d6e8c000000b006ddec7ff46dmr2659088otr.11.1706282891653; 
+ Fri, 26 Jan 2024 07:28:11 -0800 (PST)
+Received: from [192.168.0.9] (ip-109-43-176-119.web.vodafone.de.
+ [109.43.176.119]) by smtp.gmail.com with ESMTPSA id
+ r10-20020ac8520a000000b004298a09900bsm603808qtn.53.2024.01.26.07.28.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jan 2024 07:24:49 -0800 (PST)
-Content-Type: multipart/alternative;
- boundary="------------uAgtG0pd8xnWWweAqDUeUx1o"
-Message-ID: <4c4173f2-b8fc-4c6f-88e1-8c31c4411837@redhat.com>
-Date: Fri, 26 Jan 2024 16:24:49 +0100
+ Fri, 26 Jan 2024 07:28:11 -0800 (PST)
+Message-ID: <8abbb153-c549-444f-bfb0-3391f238a622@redhat.com>
+Date: Fri, 26 Jan 2024 16:28:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 11/33] scsi: only access SCSIDevice->requests from one
- thread
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, qemu-devel@nongnu.org
-References: <20231221212339.164439-1-kwolf@redhat.com>
- <20231221212339.164439-12-kwolf@redhat.com>
- <73e752b2-a037-4b10-a903-56fa6ad75c6e@redhat.com>
- <Za_zAj11uwavd2va@redhat.com>
- <08a66849-f190-4756-9b01-666f0d66afb6@redhat.com>
- <ZbOxI9Ar-YDn51Z0@redhat.com>
+Subject: Re: [PATCH v3 07/46] hw/alpha/dp264: use pci_init_nic_devices()
 Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <ZbOxI9Ar-YDn51Z0@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Jason Wang <jasowang@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>
+References: <20240108204909.564514-1-dwmw2@infradead.org>
+ <20240108204909.564514-8-dwmw2@infradead.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240108204909.564514-8-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.313,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.313,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,460 +143,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------uAgtG0pd8xnWWweAqDUeUx1o
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On 08/01/2024 21.26, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/alpha/dp264.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
+> index 03495e1e60..52a1fa310b 100644
+> --- a/hw/alpha/dp264.c
+> +++ b/hw/alpha/dp264.c
+> @@ -124,9 +124,7 @@ static void clipper_init(MachineState *machine)
+>       pci_vga_init(pci_bus);
+>   
+>       /* Network setup.  e1000 is good enough, failing Tulip support.  */
+> -    for (i = 0; i < nb_nics; i++) {
+> -        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+> -    }
+> +    pci_init_nic_devices(pci_bus, mc->default_nic);
+>   
+>       /* Super I/O */
+>       isa_create_simple(isa_bus, TYPE_SMC37C669_SUPERIO);
 
-On 26.01.24 14:18, Kevin Wolf wrote:
-> Am 25.01.2024 um 18:32 hat Hanna Czenczek geschrieben:
->> On 23.01.24 18:10, Kevin Wolf wrote:
->>> Am 23.01.2024 um 17:40 hat Hanna Czenczek geschrieben:
->>>> On 21.12.23 22:23, Kevin Wolf wrote:
->>>>> From: Stefan Hajnoczi<stefanha@redhat.com>
->>>>>
->>>>> Stop depending on the AioContext lock and instead access
->>>>> SCSIDevice->requests from only one thread at a time:
->>>>> - When the VM is running only the BlockBackend's AioContext may access
->>>>>      the requests list.
->>>>> - When the VM is stopped only the main loop may access the requests
->>>>>      list.
->>>>>
->>>>> These constraints protect the requests list without the need for locking
->>>>> in the I/O code path.
->>>>>
->>>>> Note that multiple IOThreads are not supported yet because the code
->>>>> assumes all SCSIRequests are executed from a single AioContext. Leave
->>>>> that as future work.
->>>>>
->>>>> Signed-off-by: Stefan Hajnoczi<stefanha@redhat.com>
->>>>> Reviewed-by: Eric Blake<eblake@redhat.com>
->>>>> Message-ID:<20231204164259.1515217-2-stefanha@redhat.com>
->>>>> Signed-off-by: Kevin Wolf<kwolf@redhat.com>
->>>>> ---
->>>>>     include/hw/scsi/scsi.h |   7 +-
->>>>>     hw/scsi/scsi-bus.c     | 181 ++++++++++++++++++++++++++++-------------
->>>>>     2 files changed, 131 insertions(+), 57 deletions(-)
->>>> My reproducer forhttps://issues.redhat.com/browse/RHEL-3934  now breaks more
->>>> often because of this commit than because of the original bug, i.e. when
->>>> repeatedly hot-plugging and unplugging a virtio-scsi and a scsi-hd device,
->>>> this tends to happen when unplugging the scsi-hd:
-
-Note: We (on issues.redhat.com) have a separate report that seems to be 
-concerning this very problem: https://issues.redhat.com/browse/RHEL-19381
-
->>>> {"execute":"device_del","arguments":{"id":"stg0"}}
->>>> {"return": {}}
->>>> qemu-system-x86_64: ../block/block-backend.c:2429: blk_get_aio_context:
->>>> Assertion `ctx == blk->ctx' failed.
->> [...]
->>
->>>> I don’t know anything about the problem yet, but as usual, I like
->>>> speculation and discovering how wrong I was later on, so one thing I came
->>>> across that’s funny about virtio-scsi is that requests can happen even while
->>>> a disk is being attached or detached.  That is, Linux seems to probe all
->>>> LUNs when a new virtio-scsi device is being attached, and it won’t stop just
->>>> because a disk is being attached or removed.  So maybe that’s part of the
->>>> problem, that we get a request while the BB is being detached, and
->>>> temporarily in an inconsistent state (BDS context differs from BB context).
->>> I don't know anything about the problem either, but since you already
->>> speculated about the cause, let me speculate about the solution:
->>> Can we hold the graph writer lock for the tran_commit() call in
->>> bdrv_try_change_aio_context()? And of course take the reader lock for
->>> blk_get_aio_context(), but that should be completely unproblematic.
->> Actually, now that completely unproblematic part is giving me trouble.  I
->> wanted to just put a graph lock into blk_get_aio_context() (making it a
->> coroutine with a wrapper)
-> Which is the first thing I neglected and already not great. We have
-> calls of blk_get_aio_context() in the SCSI I/O path, and creating a
-> coroutine and doing at least two context switches simply for this call
-> is a lot of overhead...
->
->> but callers of blk_get_aio_context() generally assume the context is
->> going to stay the BB’s context for as long as their AioContext *
->> variable is in scope.
-> I'm not so sure about that. And taking another step back, I'm actually
-> also not sure how much it still matters now that they can submit I/O
-> from any thread.
-
-That’s my impression, too, but “not sure” doesn’t feel great. :) 
-scsi_device_for_each_req_async_bh() specifically double-checks whether 
-it’s still in the right context before invoking the specified function, 
-so it seems there was some intention to continue to run in the context 
-associated with the BB.
-
-(Not judging whether that intent makes sense or not, yet.)
-
-> Maybe the correct solution is to remove the assertion from
-> blk_get_aio_context() and just always return blk->ctx. If it's in the
-> middle of a change, you'll either get the old one or the new one. Either
-> one is fine to submit I/O from, and if you care about changes for other
-> reasons (like SCSI does), then you need explicit code to protect it
-> anyway (which SCSI apparently has, but it doesn't work).
-
-I think most callers do just assume the BB stays in the context they got 
-(without any proof, admittedly), but I agree that under re-evaluation, 
-it probably doesn’t actually matter to them, really. And yes, basically, 
-if the caller doesn’t need to take a lock because it doesn’t really 
-matter whether blk->ctx changes while its still using the old value, 
-blk_get_aio_context() in turn doesn’t need to double-check blk->ctx 
-against the root node’s context either, and nobody needs a lock.
-
-So I agree, it’s on the caller to protect against a potentially changing 
-context, blk_get_aio_context() should just return blk->ctx and not check 
-against the root node.
-
-(On a tangent: blk_drain() is a caller of blk_get_aio_context(), and it 
-polls that context.  Why does it need to poll that context specifically 
-when requests may be in any context?  Is it because if there are 
-requests in the main thread, we must poll that, but otherwise it’s fine 
-to poll any thread, and we can only have requests in the main thread if 
-that’s the BB’s context?)
-
->> I was tempted to think callers know what happens to the BB they pass
->> to blk_get_aio_context(), and it won’t change contexts so easily, but
->> then I remembered this is exactly what happens in this case; we run
->> scsi_device_for_each_req_async_bh() in one thread (which calls
->> blk_get_aio_context()), and in the other, we change the BB’s context.
-> Let's think a bit more about scsi_device_for_each_req_async()
-> specifically. This is a function that runs in the main thread. Nothing
-> will change any AioContext assignment if it doesn't call it. It wants to
-> make sure that scsi_device_for_each_req_async_bh() is called in the
-> same AioContext where the virtqueue is processed, so it schedules a BH
-> and waits for it.
-
-I don’t quite follow, it doesn’t wait for the BH.  It uses 
-aio_bh_schedule_oneshot(), not aio_wait_bh_oneshot().  While you’re 
-right that if it did wait, the BB context might still change, in 
-practice we wouldn’t have the problem at hand because the caller is 
-actually the one to change the context, concurrently while the BH is 
-running.
-
-> Waiting for it means running a nested event loop that could do anything,
-> including changing AioContexts. So this is what needs the locking, not
-> the blk_get_aio_context() call in scsi_device_for_each_req_async_bh().
-> If we lock before the nested event loop and unlock in the BH, the check
-> in the BH can become an assertion. (It is important that we unlock in
-> the BH rather than after waiting because if something takes the writer
-> lock, we need to unlock during the nested event loop of bdrv_wrlock() to
-> avoid a deadlock.)
->
-> And spawning a coroutine for this looks a lot more acceptable because
-> it's on a slow path anyway.
->
-> In fact, we probably don't technically need a coroutine to take the
-> reader lock here. We can have a new graph lock function that asserts
-> that there is no writer (we know because we're running in the main loop)
-> and then atomically increments the reader count. But maybe that already
-> complicates things again...
-
-So as far as I understand we can’t just use aio_wait_bh_oneshot() and 
-wrap it in bdrv_graph_rd{,un}lock_main_loop(), because that doesn’t 
-actually lock the graph.  I feel like adding a new graph lock function 
-for this quite highly specific case could be dangerous, because it seems 
-easy to use the wrong way.
-
-Just having a trampoline coroutine to call bdrv_graph_co_rd{,un}lock() 
-seems simple enough and reasonable here (not a hot path).  Can we have 
-that coroutine then use aio_wait_bh_oneshot() with the existing _bh 
-function, or should that be made a coroutine, too?
-
->> It seems like there are very few blk_* functions right now that
->> require taking a graph lock around it, so I’m hesitant to go that
->> route.  But if we’re protecting a BB’s context via the graph write
->> lock, I can’t think of a way around having to take a read lock
->> whenever reading a BB’s context, and holding it for as long as we
->> assume that context to remain the BB’s context.  It’s also hard to
->> figure out how long that is, case by case; for example, dma_blk_read()
->> schedules an AIO function in the BB context; but we probably don’t
->> care that this context remains the BB’s context until the request is
->> done.  In the case of scsi_device_for_each_req_async_bh(), we already
->> take care to re-schedule it when it turns out the context is outdated,
->> so it does seem quite important here, and we probably want to keep the
->> lock until after the QTAILQ_FOREACH_SAFE() loop.
-> Maybe we need to audit all callers. Fortunately, there don't seem to be
-> too many. At least not direct ones...
->
->> On a tangent, this TOCTTOU problem makes me wary of other blk_*
->> functions that query information.  For example, fuse_read() (in
->> block/export/fuse.c) truncates requests to the BB length.  But what if
->> the BB length changes concurrently between blk_getlength() and
->> blk_pread()?  While we can justify using the graph lock for a BB’s
->> AioContext, we can’t use it for other metadata like its length.
-> Hm... Is "tough luck" an acceptable answer? ;-)
-
-Absolutely, if we do it acknowledgingly (great word).  I’m just a bit 
-worried not all of these corner cases have been acknowledged, and some 
-of them may be looking for a different answer.
-
-Hanna
---------------uAgtG0pd8xnWWweAqDUeUx1o
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <div class="moz-cite-prefix">On 26.01.24 14:18, Kevin Wolf wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <pre class="moz-quote-pre" wrap="">Am 25.01.2024 um 18:32 hat Hanna Czenczek geschrieben:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On 23.01.24 18:10, Kevin Wolf wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Am 23.01.2024 um 17:40 hat Hanna Czenczek geschrieben:
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">On 21.12.23 22:23, Kevin Wolf wrote:
-</pre>
-            <blockquote type="cite">
-              <pre class="moz-quote-pre" wrap="">From: Stefan Hajnoczi<a class="moz-txt-link-rfc2396E" href="mailto:stefanha@redhat.com">&lt;stefanha@redhat.com&gt;</a>
-
-Stop depending on the AioContext lock and instead access
-SCSIDevice-&gt;requests from only one thread at a time:
-- When the VM is running only the BlockBackend's AioContext may access
-    the requests list.
-- When the VM is stopped only the main loop may access the requests
-    list.
-
-These constraints protect the requests list without the need for locking
-in the I/O code path.
-
-Note that multiple IOThreads are not supported yet because the code
-assumes all SCSIRequests are executed from a single AioContext. Leave
-that as future work.
-
-Signed-off-by: Stefan Hajnoczi<a class="moz-txt-link-rfc2396E" href="mailto:stefanha@redhat.com">&lt;stefanha@redhat.com&gt;</a>
-Reviewed-by: Eric Blake<a class="moz-txt-link-rfc2396E" href="mailto:eblake@redhat.com">&lt;eblake@redhat.com&gt;</a>
-Message-ID:<a class="moz-txt-link-rfc2396E" href="mailto:20231204164259.1515217-2-stefanha@redhat.com">&lt;20231204164259.1515217-2-stefanha@redhat.com&gt;</a>
-Signed-off-by: Kevin Wolf<a class="moz-txt-link-rfc2396E" href="mailto:kwolf@redhat.com">&lt;kwolf@redhat.com&gt;</a>
----
-   include/hw/scsi/scsi.h |   7 +-
-   hw/scsi/scsi-bus.c     | 181 ++++++++++++++++++++++++++++-------------
-   2 files changed, 131 insertions(+), 57 deletions(-)
-</pre>
-            </blockquote>
-            <pre class="moz-quote-pre" wrap="">My reproducer for <a class="moz-txt-link-freetext" href="https://issues.redhat.com/browse/RHEL-3934">https://issues.redhat.com/browse/RHEL-3934</a> now breaks more
-often because of this commit than because of the original bug, i.e. when
-repeatedly hot-plugging and unplugging a virtio-scsi and a scsi-hd device,
-this tends to happen when unplugging the scsi-hd:
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-    <br>
-    Note: We (on issues.redhat.com) have a separate report that seems to
-    be concerning this very problem:
-    <a class="moz-txt-link-freetext" href="https://issues.redhat.com/browse/RHEL-19381">https://issues.redhat.com/browse/RHEL-19381</a><br>
-    <br>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">
-{"execute":"device_del","arguments":{"id":"stg0"}}
-{"return": {}}
-qemu-system-x86_64: ../block/block-backend.c:2429: blk_get_aio_context:
-Assertion `ctx == blk-&gt;ctx' failed.
-</pre>
-          </blockquote>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-[...]
-
-</pre>
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">I don’t know anything about the problem yet, but as usual, I like
-speculation and discovering how wrong I was later on, so one thing I came
-across that’s funny about virtio-scsi is that requests can happen even while
-a disk is being attached or detached.  That is, Linux seems to probe all
-LUNs when a new virtio-scsi device is being attached, and it won’t stop just
-because a disk is being attached or removed.  So maybe that’s part of the
-problem, that we get a request while the BB is being detached, and
-temporarily in an inconsistent state (BDS context differs from BB context).
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">I don't know anything about the problem either, but since you already
-speculated about the cause, let me speculate about the solution:
-Can we hold the graph writer lock for the tran_commit() call in
-bdrv_try_change_aio_context()? And of course take the reader lock for
-blk_get_aio_context(), but that should be completely unproblematic.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-Actually, now that completely unproblematic part is giving me trouble.  I
-wanted to just put a graph lock into blk_get_aio_context() (making it a
-coroutine with a wrapper)
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Which is the first thing I neglected and already not great. We have
-calls of blk_get_aio_context() in the SCSI I/O path, and creating a
-coroutine and doing at least two context switches simply for this call
-is a lot of overhead...
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">but callers of blk_get_aio_context() generally assume the context is
-going to stay the BB’s context for as long as their AioContext *
-variable is in scope.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-I'm not so sure about that. And taking another step back, I'm actually
-also not sure how much it still matters now that they can submit I/O
-from any thread.</pre>
-    </blockquote>
-    <br>
-    That’s my impression, too, but “not sure” doesn’t feel great. :) 
-    scsi_device_for_each_req_async_bh() specifically double-checks
-    whether it’s still in the right context before invoking the
-    specified function, so it seems there was some intention to continue
-    to run in the context associated with the BB.<br>
-    <br>
-    (Not judging whether that intent makes sense or not, yet.)<br>
-    <br>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <pre class="moz-quote-pre" wrap="">Maybe the correct solution is to remove the assertion from
-blk_get_aio_context() and just always return blk-&gt;ctx. If it's in the
-middle of a change, you'll either get the old one or the new one. Either
-one is fine to submit I/O from, and if you care about changes for other
-reasons (like SCSI does), then you need explicit code to protect it
-anyway (which SCSI apparently has, but it doesn't work).</pre>
-    </blockquote>
-    <br>
-    I think most callers do just assume the BB stays in the context they
-    got (without any proof, admittedly), but I agree that under
-    re-evaluation, it probably doesn’t actually matter to them, really. 
-    And yes, basically, if the caller doesn’t need to take a lock
-    because it doesn’t really matter whether blk-&gt;ctx changes while
-    its still using the old value, blk_get_aio_context() in turn doesn’t
-    need to double-check blk-&gt;ctx against the root node’s context
-    either, and nobody needs a lock.<br>
-    <br>
-    So I agree, it’s on the caller to protect against a potentially
-    changing context, blk_get_aio_context() should just return
-    blk-&gt;ctx and not check against the root node.<br>
-    <br>
-    (On a tangent: blk_drain() is a caller of blk_get_aio_context(), and
-    it polls that context.  Why does it need to poll that context
-    specifically when requests may be in any context?  Is it because if
-    there are requests in the main thread, we must poll that, but
-    otherwise it’s fine to poll any thread, and we can only have
-    requests in the main thread if that’s the BB’s context?)<br>
-    <br>
-    <span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">I was tempted to think callers know what happens to the BB they pass
-to blk_get_aio_context(), and it won’t change contexts so easily, but
-then I remembered this is exactly what happens in this case; we run
-scsi_device_for_each_req_async_bh() in one thread (which calls
-blk_get_aio_context()), and in the other, we change the BB’s context.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Let's think a bit more about scsi_device_for_each_req_async()
-specifically. This is a function that runs in the main thread. Nothing
-will change any AioContext assignment if it doesn't call it. It wants to
-make sure that scsi_device_for_each_req_async_bh() is called in the
-same AioContext where the virtqueue is processed, so it schedules a BH
-and waits for it.</pre>
-    </blockquote>
-    <br>
-    I don’t quite follow, it doesn’t wait for the BH.  It uses
-    aio_bh_schedule_oneshot(), not aio_wait_bh_oneshot().  While you’re
-    right that if it did wait, the BB context might still change, in
-    practice we wouldn’t have the problem at hand because the caller is
-    actually the one to change the context, concurrently while the BH is
-    running.<br>
-    <br>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <pre class="moz-quote-pre" wrap="">Waiting for it means running a nested event loop that could do anything,
-including changing AioContexts. So this is what needs the locking, not
-the blk_get_aio_context() call in scsi_device_for_each_req_async_bh().
-If we lock before the nested event loop and unlock in the BH, the check
-in the BH can become an assertion. (It is important that we unlock in
-the BH rather than after waiting because if something takes the writer
-lock, we need to unlock during the nested event loop of bdrv_wrlock() to
-avoid a deadlock.)
-
-And spawning a coroutine for this looks a lot more acceptable because
-it's on a slow path anyway.
-
-In fact, we probably don't technically need a coroutine to take the
-reader lock here. We can have a new graph lock function that asserts
-that there is no writer (we know because we're running in the main loop)
-and then atomically increments the reader count. But maybe that already
-complicates things again...</pre>
-    </blockquote>
-    <br>
-    So as far as I understand we can’t just use aio_wait_bh_oneshot()
-    and wrap it in bdrv_graph_rd{,un}lock_main_loop(), because that
-    doesn’t actually lock the graph.  I feel like adding a new graph
-    lock function for this quite highly specific case could be
-    dangerous, because it seems easy to use the wrong way.<br>
-    <br>
-    Just having a trampoline coroutine to call
-    bdrv_graph_co_rd{,un}lock() seems simple enough and reasonable here
-    (not a hot path).  Can we have that coroutine then use
-    aio_wait_bh_oneshot() with the existing _bh function, or should that
-    be made a coroutine, too?<br>
-    <br>
-    <span style="white-space: pre-wrap">
-</span><span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:ZbOxI9Ar-YDn51Z0@redhat.com">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">It seems like there are very few blk_* functions right now that
-require taking a graph lock around it, so I’m hesitant to go that
-route.  But if we’re protecting a BB’s context via the graph write
-lock, I can’t think of a way around having to take a read lock
-whenever reading a BB’s context, and holding it for as long as we
-assume that context to remain the BB’s context.  It’s also hard to
-figure out how long that is, case by case; for example, dma_blk_read()
-schedules an AIO function in the BB context; but we probably don’t
-care that this context remains the BB’s context until the request is
-done.  In the case of scsi_device_for_each_req_async_bh(), we already
-take care to re-schedule it when it turns out the context is outdated,
-so it does seem quite important here, and we probably want to keep the
-lock until after the QTAILQ_FOREACH_SAFE() loop.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Maybe we need to audit all callers. Fortunately, there don't seem to be
-too many. At least not direct ones...
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On a tangent, this TOCTTOU problem makes me wary of other blk_*
-functions that query information.  For example, fuse_read() (in
-block/export/fuse.c) truncates requests to the BB length.  But what if
-the BB length changes concurrently between blk_getlength() and
-blk_pread()?  While we can justify using the graph lock for a BB’s
-AioContext, we can’t use it for other metadata like its length.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Hm... Is "tough luck" an acceptable answer? ;-)</pre>
-    </blockquote>
-    <br>
-    Absolutely, if we do it acknowledgingly (great word).  I’m just a
-    bit worried not all of these corner cases have been acknowledged,
-    and some of them may be looking for a different answer.<br>
-    <br>
-    Hanna<br>
-  </body>
-</html>
-
---------------uAgtG0pd8xnWWweAqDUeUx1o--
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
