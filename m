@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC15C83E090
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B9C83E095
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:40:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ5q-0001e1-I3; Fri, 26 Jan 2024 12:34:18 -0500
+	id 1rTQ5r-0001hf-WF; Fri, 26 Jan 2024 12:34:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ5R-00009k-7M; Fri, 26 Jan 2024 12:33:55 -0500
+ id 1rTQ5P-00008s-In; Fri, 26 Jan 2024 12:33:53 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ5O-0001jU-FJ; Fri, 26 Jan 2024 12:33:52 -0500
+ id 1rTQ5O-0001jY-09; Fri, 26 Jan 2024 12:33:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=4LcthZeMhomcS7qQ4JhYfqujNilKqWbfcJYcyaxs+fc=; b=eb0XJkJuWocD3iK6u87tYR06n9
- ax3ot0dKSypGvUXc+P6A+yUMIk1i3PNIdSvyYe4WgJRtHGvbbkeuIkt53Nquif8nh/2x5gu93xpo2
- PAZtMoQ8ww9Ismo7iFZPEGRrB6Bocjn7I0FyBo8WJE7Tyt4Y2ikEEFx3btIW7Kz66bESjqgqSdGb1
- OfAgVgvvJ7SreyzHXMXFelEIW/XSl4VbQWXuLzxLPx9uI0lhd0g1p0u//FZIX+5tP7Nw1tmD3MCrf
- 3wxV1hb3hqyP9hZNmVI2v8KGSj7ZVbhJFr8wM6ZcD0WTczEHy7RVXtbvJfHdKKPYcGzjqDMjN9uoi
- Vu8mG43A==;
+ bh=1By8MLkJQQ5aDNY2GpLO8Lg7eMBepYz9kIQOUj3RWg4=; b=Lu42CPJkj0fpF55INNF9dFE3Jb
+ 36moigKQb4zpZw+xI/DratrTzBmjGRdyT25PQKyglZ74refrkiMyun8BzZSzSHEJM+92iI9HenrW6
+ meVmjVhZdnroFEGp4i3jIHB5B8t+nh2Jact19MP0cKrJ6KjxVjd4w6lDHuYT9vILTen85kESCpoyf
+ 1GIEUuuVMXBnJEC97Vd9RxAMa7BSErwen5aaBIVeSoBaLU1C6Kyaix6HEoW+2GZcYsz447SCP6Oa7
+ VOEez5Ox5CXR3k9U+T1cFCtXv2IqJHwEagBkJc1Fk3ADvav1IGvajAx3hyQ0Co8W1aAPD/XV5AGfR
+ vRRhxKww==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ4A-000000069Uj-1wtg; Fri, 26 Jan 2024 17:32:47 +0000
+ id 1rTQ4A-000000069Uh-1rdy; Fri, 26 Jan 2024 17:32:34 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ47-00000001eln-3y12;
- Fri, 26 Jan 2024 17:32:31 +0000
+ Hat Linux)) id 1rTQ48-00000001elq-0EMr;
+ Fri, 26 Jan 2024 17:32:32 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -84,9 +84,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v4 12/47] hw/mips/fuloong2e: use pci_init_nic_devices()
-Date: Fri, 26 Jan 2024 17:24:49 +0000
-Message-ID: <20240126173228.394202-13-dwmw2@infradead.org>
+Subject: [PATCH v4 13/47] hw/mips/malta: use pci_init_nic_devices()
+Date: Fri, 26 Jan 2024 17:24:50 +0000
+Message-ID: <20240126173228.394202-14-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
@@ -121,28 +121,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The previous behaviour was: *if* the first NIC specified on the command
-line was an RTL8139 (or unspecified model) then it gets assigned to PCI
-slot 7, which is where the Fuloong board had an RTL8139. All other
-devices (including the first, if it was specified as anything other than
-an rtl8319) get dynamically assigned on the bus.
+The Malta board setup code would previously place the first NIC into PCI
+slot 11 if was a PCNet card, and the rest (including the first if it was
+anything other than a PCNet card) would be dynamically assigned.
 
-The new behaviour is subtly different: If the first NIC was given a
-specific model *other* than rtl8139, and a subsequent NIC was not,
-then the rtl8139 (or unspecified) NIC will go to slot 7 and the rest
-will be dynamically assigned.
+Now it will place any PCNet NIC into slot 11, and then anything else will
+be dynamically assigned.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/mips/fuloong2e.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ hw/mips/malta.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index 97b2c8ed8e..a45aac368c 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -201,19 +201,9 @@ static void main_cpu_reset(void *opaque)
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index d22bb1edef..af74008c82 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -612,18 +612,9 @@ static MaltaFPGAState *malta_fpga_init(MemoryRegion *address_space,
  /* Network support */
  static void network_init(PCIBus *pci_bus)
  {
@@ -152,19 +148,18 @@ index 97b2c8ed8e..a45aac368c 100644
 -        NICInfo *nd = &nd_table[i];
 -        const char *default_devaddr = NULL;
 -
--        if (i == 0 && (!nd->model || strcmp(nd->model, "rtl8139") == 0)) {
--            /* The Fuloong board has a RTL8139 card using PCI SLOT 7 */
--            default_devaddr = "07";
--        }
+-        if (i == 0 && (!nd->model || strcmp(nd->model, "pcnet") == 0))
+-            /* The malta board has a PCNet card using PCI SLOT 11 */
+-            default_devaddr = "0b";
 -
--        pci_nic_init_nofail(nd, pci_bus, "rtl8139", default_devaddr);
+-        pci_nic_init_nofail(nd, pci_bus, "pcnet", default_devaddr);
 -    }
-+    /* The Fuloong board has a RTL8139 card using PCI SLOT 7 */
-+    pci_init_nic_in_slot(pci_bus, "rtl8139", NULL, "07");
-+    pci_init_nic_devices(pci_bus, "rtl8139");
++    /* The malta board has a PCNet card using PCI SLOT 11 */
++    pci_init_nic_in_slot(pci_bus, "pcnet", NULL, "0b");
++    pci_init_nic_devices(pci_bus, "pcnet");
  }
  
- static void mips_fuloong2e_init(MachineState *machine)
+ static void bl_setup_gt64120_jump_kernel(void **p, uint64_t run_addr,
 -- 
 2.43.0
 
