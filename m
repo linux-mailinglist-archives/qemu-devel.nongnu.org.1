@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D0883E4DF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 576D183E49B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:07:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTULN-0002f1-0M; Fri, 26 Jan 2024 17:06:37 -0500
+	id 1rTULO-0002oJ-JD; Fri, 26 Jan 2024 17:06:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKY-0000e2-U4
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:47 -0500
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKj-0001DE-Cd
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:58 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKV-0004Fv-4g
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:46 -0500
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a3122b70439so122086466b.3
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:05:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKd-0004Jw-9E
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:56 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-337d05b8942so1092626f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:05:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706306741; x=1706911541; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706306748; x=1706911548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wkOEO96VeYz15t7MFpkcGQawVspurMDTqf/y8c7vhEo=;
- b=pTcaS6tJXnX5eIh9+DM9zC2Nsnf4YHLPgupn80S7NUx+xHHDcXISd75tNEmhgQmYnC
- N1toqpssV7ATI3kSPJT2HNm+lGul+VMG7AatqqOYTvkpj58RchtaOW1LWSndIKQ2yNp5
- ThckOLqwlpm1WEBWKa5wG5fcZ0FBGwEUE+shkqDrySHh2JOK/lABwymge6bUBYDp35VY
- RmfPjQ3nwBJg/AZFVgB75Oih094pFvRBjwWGXP+G3mNIP8LemyhIS6npl0eyJeMCUlbW
- rUkYRwzG+ixA4daQgxC43a9oCNkmTVKZsd8omllQYIR51qpZ1lhi/rau3QKLR7j2SDWZ
- 7/vQ==
+ bh=hrrpUHlY+apDJ+Bfl8GBcR4XdU7wA9f0hxfDSc9g5ew=;
+ b=LLURRiO+TsuqTB0BpXfXPb2M/onbv4KLGEXBHvsZz6xjhjgjEqlfBBJabP5ZTmhQgZ
+ dDnVF/pFpLPTll1PU00nWrkWggFGqGySSox6HE+it3yThagBIM+5otwjHDX+y1agI/UC
+ doq8SwGl1ndYMMDCI5GbQ/8KL3MHyFtBMW5yQ5e44gGZJq9VALYMyVMxOxzfA1f1P58j
+ SqPo27OMD5JIBfhWzQt9ZsRtHQxLVZlfXQZtYi5rFSgg7HxnABY9P7ZIyjeC58Nsc9XB
+ GAHwMzqk7CYxw7SquUnccDsop7umnf9QLEI0pE1/j2r3gRF3BAqXL1M9LNVnMRIJ9bim
+ lf+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706306741; x=1706911541;
+ d=1e100.net; s=20230601; t=1706306748; x=1706911548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wkOEO96VeYz15t7MFpkcGQawVspurMDTqf/y8c7vhEo=;
- b=rJ7zwSadVMU+NcaKW7jP8iCO8MRlWTeDIrCCfSq377EzHI7oPQ6AaXAOo8sy0riGzg
- hvJ43wIY9wAg8gnJKhtOJto4gSiivA7+qppwZuo0KqIRICIHj4IL2cmuZ68cyZxHX4Fb
- ceG+cD3LcaFDPYsF0CI7I84iex5d63TD7uAIMvENsUiByo0P7Ew3HDRDFGS3DWkWTAGn
- XjZJeGJi5zBcslZna/2uIpUjksJclUhKqGeISw15eBJG6rFO7QpLp76DGzx8ZGHWGYAI
- cKB4NhdDVeGSOD1EwkSt5QzmLw3kWXMLSJZqpqDFOneunzbj4IQHiwY2XcfRKMqzoLDX
- RAvA==
-X-Gm-Message-State: AOJu0Yz7CVlKHifnHmUA6r+qfViK/aBDzlsfu/W1tFBndcNi0HU2y4XD
- xI3pC4/5xJaJunnqv9FZfcDihTKG8xMkBOaHUIPnGs0/cHb0vssPz6On6fDQ0nmrKesuURKHIDZ
- 1
-X-Google-Smtp-Source: AGHT+IFULGfyWx+16roF4bjomerz5x/6lnX7Q84paIKcDaIdxN0Nl5Y6z6BBmJj/+hQmNl+T2yoBcA==
-X-Received: by 2002:a17:906:fc09:b0:a34:d426:1beb with SMTP id
- ov9-20020a170906fc0900b00a34d4261bebmr335803ejb.54.1706306741394; 
- Fri, 26 Jan 2024 14:05:41 -0800 (PST)
+ bh=hrrpUHlY+apDJ+Bfl8GBcR4XdU7wA9f0hxfDSc9g5ew=;
+ b=A+shcPwAms2w4EciXoAXMpA/q1Eh3ITSIQYwQMlGlMvslZziqpcitufjo0zYa3lVwv
+ 00QuOslOeObR2tF1YxB2B7uqg87rX5bBeuSjjRoo/QbfQ022OHqOBKnfk2kjwa/+eRQW
+ 7Qp3XMbh0+PE/c0y03L8R2znagPx3XTE1SknmEdgaCZPk2Wtj+LeL1wQh8kXZs3h7vgV
+ 5NF5P3E7t+PjkUMIB35LmKI37jRdyvcZW6pfadKUtV3yg+4+YgsNST3HQ2KXRhcdKjuL
+ wUrGeFxrMVbF+8tfz21Zi8XvypAzUbe2/bLM/FeB68RlOD6qMLUHpxj2R59ZZ4WeW+U4
+ qhqQ==
+X-Gm-Message-State: AOJu0YzfFeASeu4wguM15y2Io8+saqP+1a74L7eGxmIeeId1zoqNLG7L
+ t6Iok1PL+hFCCtdm976CaPs8NVFr1F5HXyLX2a6Taw6OHAyGdCYaHiPYZqMSNcOa1tMwyqj5/kl
+ B
+X-Google-Smtp-Source: AGHT+IEQKe50gK5ARKXwhup8IC6s7bgd0Ck3aZ5gAXWX69DcDS+bGKUhFgWBLLvFvpdPsm2Ioh9Vag==
+X-Received: by 2002:adf:edd1:0:b0:33a:deec:66ad with SMTP id
+ v17-20020adfedd1000000b0033adeec66admr239506wro.104.1706306747724; 
+ Fri, 26 Jan 2024 14:05:47 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.142.39])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a170906408c00b00a3185d260e5sm1039705ejj.151.2024.01.26.14.05.39
+ vh5-20020a170907d38500b00a3517d26918sm508925ejc.107.2024.01.26.14.05.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Jan 2024 14:05:41 -0800 (PST)
+ Fri, 26 Jan 2024 14:05:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -64,19 +64,24 @@ Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stafford Horne <shorne@gmail.com>
-Subject: [PATCH v2 15/23] target/openrisc: Prefer fast cpu_env() over slower
- CPU QOM cast macro
-Date: Fri, 26 Jan 2024 23:03:57 +0100
-Message-ID: <20240126220407.95022-16-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH v2 16/23] target/ppc: Prefer fast cpu_env() over slower CPU
+ QOM cast macro
+Date: Fri, 26 Jan 2024 23:03:58 +0100
+Message-ID: <20240126220407.95022-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240126220407.95022-1-philmd@linaro.org>
 References: <20240126220407.95022-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,63 +109,269 @@ in scripts/coccinelle/cpu_env.cocci_template header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/openrisc/gdbstub.c   | 3 +--
- target/openrisc/interrupt.c | 6 ++----
- target/openrisc/translate.c | 3 +--
- 3 files changed, 4 insertions(+), 8 deletions(-)
+ hw/ppc/mpc8544_guts.c         |  3 +--
+ hw/ppc/pnv.c                  |  3 +--
+ hw/ppc/pnv_xscom.c            |  5 +----
+ hw/ppc/ppce500_spin.c         |  3 +--
+ hw/ppc/spapr.c                |  3 +--
+ hw/ppc/spapr_caps.c           |  6 ++----
+ target/ppc/cpu_init.c         | 11 +++--------
+ target/ppc/excp_helper.c      |  3 +--
+ target/ppc/gdbstub.c          | 12 ++++--------
+ target/ppc/kvm.c              |  6 ++----
+ target/ppc/ppc-qmp-cmds.c     |  3 +--
+ target/ppc/user_only_helper.c |  3 +--
+ 12 files changed, 19 insertions(+), 42 deletions(-)
 
-diff --git a/target/openrisc/gdbstub.c b/target/openrisc/gdbstub.c
-index d1074a0581..0cce8d4f92 100644
---- a/target/openrisc/gdbstub.c
-+++ b/target/openrisc/gdbstub.c
-@@ -23,8 +23,7 @@
- 
- int openrisc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+diff --git a/hw/ppc/mpc8544_guts.c b/hw/ppc/mpc8544_guts.c
+index a26e83d048..e3540b0281 100644
+--- a/hw/ppc/mpc8544_guts.c
++++ b/hw/ppc/mpc8544_guts.c
+@@ -71,8 +71,7 @@ static uint64_t mpc8544_guts_read(void *opaque, hwaddr addr,
+                                   unsigned size)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
+     uint32_t value = 0;
+-    PowerPCCPU *cpu = POWERPC_CPU(current_cpu);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(current_cpu);
  
-     if (n < 32) {
-         return gdb_get_reg32(mem_buf, cpu_get_gpr(env, n));
-diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
-index d4fdb8ce8e..b3b5b40577 100644
---- a/target/openrisc/interrupt.c
-+++ b/target/openrisc/interrupt.c
-@@ -29,8 +29,7 @@
+     addr &= MPC8544_GUTS_MMIO_SIZE - 1;
+     switch (addr) {
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 0297871bdd..a202b377e1 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -2294,8 +2294,7 @@ static void pnv_machine_set_hb(Object *obj, bool value, Error **errp)
  
- void openrisc_cpu_do_interrupt(CPUState *cs)
+ static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, run_on_cpu_data arg)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     int exception = cs->exception_index;
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
  
-     env->epcr = env->pc;
-@@ -105,8 +104,7 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+     cpu_synchronize_state(cs);
+     ppc_cpu_do_system_reset(cs);
+diff --git a/hw/ppc/pnv_xscom.c b/hw/ppc/pnv_xscom.c
+index 805b1d0c87..a17816d072 100644
+--- a/hw/ppc/pnv_xscom.c
++++ b/hw/ppc/pnv_xscom.c
+@@ -44,15 +44,12 @@ static void xscom_complete(CPUState *cs, uint64_t hmer_bits)
+      * passed for the cpu, and no CPU completion is generated.
+      */
+     if (cs) {
+-        PowerPCCPU *cpu = POWERPC_CPU(cs);
+-        CPUPPCState *env = &cpu->env;
+-
+         /*
+          * TODO: Need a CPU helper to set HMER, also handle generation
+          * of HMIs
+          */
+         cpu_synchronize_state(cs);
+-        env->spr[SPR_HMER] |= hmer_bits;
++        cpu_env(cs)->spr[SPR_HMER] |= hmer_bits;
+     }
+ }
  
- bool openrisc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+diff --git a/hw/ppc/ppce500_spin.c b/hw/ppc/ppce500_spin.c
+index bbce63e8a4..dfbe759481 100644
+--- a/hw/ppc/ppce500_spin.c
++++ b/hw/ppc/ppce500_spin.c
+@@ -90,8 +90,7 @@ static void mmubooke_create_initial_mapping(CPUPPCState *env,
+ 
+ static void spin_kick(CPUState *cs, run_on_cpu_data data)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     int idx = -1;
- 
-     if ((interrupt_request & CPU_INTERRUPT_HARD) && (env->sr & SR_IEE)) {
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index ecff4412b7..aff53c0065 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -1668,8 +1668,7 @@ void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
- 
- void openrisc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     SpinInfo *curspin = data.host_ptr;
+     hwaddr map_size = 64 * MiB;
+     hwaddr map_start;
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index e8dabc8614..d7edfc2a1a 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -3487,8 +3487,7 @@ static void spapr_machine_finalizefn(Object *obj)
+ void spapr_do_system_reset_on_cpu(CPUState *cs, run_on_cpu_data arg)
  {
--    OpenRISCCPU *cpu = OPENRISC_CPU(cs);
--    CPUOpenRISCState *env = &cpu->env;
-+    CPUOpenRISCState *env = cpu_env(cs);
+     SpaprMachineState *spapr = SPAPR_MACHINE(qdev_get_machine());
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+ 
+     cpu_synchronize_state(cs);
+     /* If FWNMI is inactive, addr will be -1, which will deliver to 0x100 */
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index e889244e52..39edec0f84 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -194,8 +194,7 @@ static void cap_htm_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ {
+     ERRP_GUARD();
+-    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(first_cpu);
+ 
+     if (!val) {
+         /* TODO: We don't support disabling vsx yet */
+@@ -213,8 +212,7 @@ static void cap_vsx_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ static void cap_dfp_apply(SpaprMachineState *spapr, uint8_t val, Error **errp)
+ {
+     ERRP_GUARD();
+-    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(first_cpu);
+ 
+     if (!val) {
+         /* TODO: We don't support disabling dfp yet */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 344196a8ce..f39f426fa9 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7195,12 +7195,9 @@ static void ppc_cpu_reset_hold(Object *obj)
+ 
+ static bool ppc_cpu_is_big_endian(CPUState *cs)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
+-
+     cpu_synchronize_state(cs);
+ 
+-    return !FIELD_EX64(env->msr, MSR, LE);
++    return !FIELD_EX64(cpu_env(cs)->msr, MSR, LE);
+ }
+ 
+ static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
+@@ -7287,8 +7284,7 @@ static bool ppc_pvr_match_default(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+ 
+ static void ppc_disas_set_info(CPUState *cs, disassemble_info *info)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+ 
+     if ((env->hflags >> MSR_LE) & 1) {
+         info->endian = BFD_ENDIAN_LITTLE;
+@@ -7446,8 +7442,7 @@ void ppc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ #define RGPL  4
+ #define RFPL  4
+ 
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
      int i;
  
-     qemu_fprintf(f, "PC=%08x\n", env->pc);
+     qemu_fprintf(f, "NIP " TARGET_FMT_lx "   LR " TARGET_FMT_lx " CTR "
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 2ec6429e36..fccfefa88e 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2588,8 +2588,7 @@ void ppc_cpu_do_fwnmi_machine_check(CPUState *cs, target_ulong vector)
+ 
+ bool ppc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int interrupt;
+ 
+     if ((interrupt_request & CPU_INTERRUPT_HARD) == 0) {
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index ec5731e5d6..fd986b1922 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -108,8 +108,7 @@ void ppc_maybe_bswap_register(CPUPPCState *env, uint8_t *mem_buf, int len)
+ 
+ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     uint8_t *mem_buf;
+     int r = ppc_gdb_register_len(n);
+ 
+@@ -152,8 +151,7 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+ 
+ int ppc_cpu_gdb_read_register_apple(CPUState *cs, GByteArray *buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     uint8_t *mem_buf;
+     int r = ppc_gdb_register_len_apple(n);
+ 
+@@ -206,8 +204,7 @@ int ppc_cpu_gdb_read_register_apple(CPUState *cs, GByteArray *buf, int n)
+ 
+ int ppc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int r = ppc_gdb_register_len(n);
+ 
+     if (!r) {
+@@ -253,8 +250,7 @@ int ppc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ }
+ int ppc_cpu_gdb_write_register_apple(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int r = ppc_gdb_register_len_apple(n);
+ 
+     if (!r) {
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 26fa9d0575..7a0651b0af 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -546,8 +546,7 @@ static void kvm_sw_tlb_put(PowerPCCPU *cpu)
+ 
+ static void kvm_get_one_spr(CPUState *cs, uint64_t id, int spr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     /* Init 'val' to avoid "uninitialised value" Valgrind warnings */
+     union {
+         uint32_t u32;
+@@ -581,8 +580,7 @@ static void kvm_get_one_spr(CPUState *cs, uint64_t id, int spr)
+ 
+ static void kvm_put_one_spr(CPUState *cs, uint64_t id, int spr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     union {
+         uint32_t u32;
+         uint64_t u64;
+diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
+index c0c137d9d7..9ac74f5c04 100644
+--- a/target/ppc/ppc-qmp-cmds.c
++++ b/target/ppc/ppc-qmp-cmds.c
+@@ -133,8 +133,7 @@ static int ppc_cpu_get_reg_num(const char *numstr, int maxnum, int *pregnum)
+ int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval)
+ {
+     int i, regnum;
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+ 
+     /* General purpose registers */
+     if ((qemu_tolower(name[0]) == 'r') &&
+diff --git a/target/ppc/user_only_helper.c b/target/ppc/user_only_helper.c
+index 7ff76f7a06..a4d07a0d0d 100644
+--- a/target/ppc/user_only_helper.c
++++ b/target/ppc/user_only_helper.c
+@@ -27,8 +27,7 @@ void ppc_cpu_record_sigsegv(CPUState *cs, vaddr address,
+                             MMUAccessType access_type,
+                             bool maperr, uintptr_t retaddr)
+ {
+-    PowerPCCPU *cpu = POWERPC_CPU(cs);
+-    CPUPPCState *env = &cpu->env;
++    CPUPPCState *env = cpu_env(cs);
+     int exception, error_code;
+ 
+     /*
 -- 
 2.41.0
 
