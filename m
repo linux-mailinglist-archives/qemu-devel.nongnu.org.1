@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0AB83E089
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 428E383E062
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:37:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ4g-0007BA-FQ; Fri, 26 Jan 2024 12:33:06 -0500
+	id 1rTQ4z-0007iD-2y; Fri, 26 Jan 2024 12:33:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ4N-00071Y-UD; Fri, 26 Jan 2024 12:32:48 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rTQ4h-0007FK-C3; Fri, 26 Jan 2024 12:33:07 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ4K-0001cU-Fw; Fri, 26 Jan 2024 12:32:47 -0500
+ <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rTQ4c-0001jI-K8; Fri, 26 Jan 2024 12:33:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
- To:From:Reply-To:Content-ID:Content-Description;
- bh=pMTNl31Z4wpC7RcyuXgVYoTxdcUq3RoTFZ8/v9Gj+ug=; b=ODknmQx9pYHZ2OKzuPTEoZWS1B
- QfPM2lEpj+28gcu3a/nGfEJDtNOhbYE5phTZvy+Q95iPyF7opdo6PhO4rKABtsv1fVlLZ8/pUr+Ps
- snEPHO+f2tc4eKwrTOt4PRfShqjQC8kKFEpjsViqXHkLjp+mcTXkA0bqpHVgIykBy/YyJb5emsmXy
- PAqprcm+ymy0h/xEza6ae9QafFApdKKvSK+Gfgyvnp7DFT99VAYGuoBSMPd5FWS2dUQmSWMyHM9mt
- 8RukyYs2i5ya21RAr7O3+4ZQ1nhuYilKDm9rnb2d1dJmC3axTOwTubfqZrvhFzMpUh0qimjhcAqMC
- lUUf6c0A==;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=dzXOsNH9wRjvHj3st0gxTJIXdksb3OkDh+zWazNsC/A=; b=LNsJG7YJqs5GTjqRgQhdiPF1SQ
+ zmcMo2Vh8Ifp/kCuxMIuGCm7/dMuLhFuR2apigsHN4jJZPSF+HPHrJr2ZqP6z7RMV61bzkBXLvYH6
+ 2rNAT90JcnCxqBzFUCz3zaf5GflvSPEwpRxUpA9qPkd6zr2/YaneIHitgqo9TD11/Pfxu0a027c46
+ sFzjX169LBmyzhCtfCyOuWh+oGavb0R+k9ySNDACEo11Aw2ltP8fwUCM2Lcg2apWBUwxqmuXqjiQr
+ CaGfRP8cy6pxHou+q1f55jHgUa1whNeFNAKMPOzCuuMcioZphqihCfaGFb0VA/CIF34gF8So7jY5G
+ MU4bRqoQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ48-0000000EKUO-1Dvu; Fri, 26 Jan 2024 17:32:33 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rTQ4A-000000069Um-1qlU; Fri, 26 Jan 2024 17:32:35 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ48-00000001emH-43JH;
- Fri, 26 Jan 2024 17:32:32 +0000
+ Hat Linux)) id 1rTQ49-00000001emM-0Fux;
+ Fri, 26 Jan 2024 17:32:33 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -82,21 +82,21 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 22/47] hw/arm/aspeed: use qemu_configure_nic_device()
-Date: Fri, 26 Jan 2024 17:24:59 +0000
-Message-ID: <20240126173228.394202-23-dwmw2@infradead.org>
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 23/47] hw/arm/exynos4: use qemu_create_nic_device()
+Date: Fri, 26 Jan 2024 17:25:00 +0000
+Message-ID: <20240126173228.394202-24-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -122,38 +122,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/arm/aspeed.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ hw/arm/exynos4_boards.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index cc59176563..bed5e4f40b 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -356,7 +356,6 @@ static void aspeed_machine_init(MachineState *machine)
-     AspeedMachineClass *amc = ASPEED_MACHINE_GET_CLASS(machine);
-     AspeedSoCClass *sc;
-     int i;
--    NICInfo *nd = &nd_table[0];
+diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
+index b0e13eb4f0..003992189b 100644
+--- a/hw/arm/exynos4_boards.c
++++ b/hw/arm/exynos4_boards.c
+@@ -76,10 +76,8 @@ static void lan9215_init(uint32_t base, qemu_irq irq)
+     SysBusDevice *s;
  
-     bmc->soc = ASPEED_SOC(object_new(amc->soc_name));
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(bmc->soc));
-@@ -371,10 +370,10 @@ static void aspeed_machine_init(MachineState *machine)
-                              &error_fatal);
- 
-     for (i = 0; i < sc->macs_num; i++) {
--        if ((amc->macs_mask & (1 << i)) && nd->used) {
--            qemu_check_nic_model(nd, TYPE_FTGMAC100);
--            qdev_set_nic_properties(DEVICE(&bmc->soc->ftgmac100[i]), nd);
--            nd++;
-+        if ((amc->macs_mask & (1 << i)) &&
-+            !qemu_configure_nic_device(DEVICE(&bmc->soc->ftgmac100[i]),
-+                                       true, NULL)) {
-+            break; /* No configs left; stop asking */
-         }
-     }
- 
+     /* This should be a 9215 but the 9118 is close enough */
+-    if (nd_table[0].used) {
+-        qemu_check_nic_model(&nd_table[0], "lan9118");
+-        dev = qdev_new(TYPE_LAN9118);
+-        qdev_set_nic_properties(dev, &nd_table[0]);
++    dev = qemu_create_nic_device(TYPE_LAN9118, true, NULL);
++    if (dev) {
+         qdev_prop_set_uint32(dev, "mode_16bit", 1);
+         s = SYS_BUS_DEVICE(dev);
+         sysbus_realize_and_unref(s, &error_fatal);
 -- 
 2.43.0
 
