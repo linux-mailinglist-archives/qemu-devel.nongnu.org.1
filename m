@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3614583DC2E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D9283DC00
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:35:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHQ-0002dI-KR; Fri, 26 Jan 2024 09:34:04 -0500
+	id 1rTNHR-0002fx-7v; Fri, 26 Jan 2024 09:34:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHM-0002S9-FU
+ id 1rTNHM-0002T7-RX
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:00 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHK-0007zN-PP
+ id 1rTNHL-0007zT-41
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:00 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-339237092dcso435659f8f.3
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-339289fead2so522702f8f.3
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279637; x=1706884437; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279638; x=1706884438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cravlyBFi7JJgiMIcZjmEYHU7D0lxD+xDQlAtlvWf2Y=;
- b=q1rMAIpkyzvxt0CJ+Yt6GxYNtfNHrwXKzgwrX+zMjwsQWVQ18Xrf1E5NJNX6qqGGR/
- DDRuJdLXN6h6tscri4vOoD331KnjJg0U+NPSimYGp6wtl6zxFZ2C+wZ6uqKSWlEjJD2j
- 27agOc6NxhH9xWL2Lu6Hby7lRQEd9cOTsoZJgSxF8PsGyB+34P80Ju6ee5tXL5gbnx/B
- uZGA11YSMquyCV94WUrLoLeHkSFZ1JaFwLwAokuXOJleasetZV+sRyrdGj/bfV5BkXCD
- NUILACNSkMFuUy1+fVrK6tescVqaOafF1bJNlfjEca8fYlEE5UWAyvPIFkGBir+cRG5l
- lmcQ==
+ :reply-to; bh=28nbiWFQ3dXc2wMfXx4/3I1JNB6kABMI1o1Dd2Ej4Ok=;
+ b=YXVVmRfMnPNwIz5OvFi1mkRn59oMkASYDDtWUrRnlC34BDVQDHjGIQJlxfALkxm7vL
+ o2xIxZ4hiLn3l+SKPxmRZjaFN/JWKxD28bOKGxUVBZuBaLMZStCDFsKVLxyScOlm5tTy
+ Qe6SM0hsQwYN8p1JHWOV3lv/szQZBRhjSt+2iNra6iHV3EXgTdQE1sjOb15R8NRpj+jk
+ aMYyFWkGEtl9gB8bk8LtJ6jveSl4kHINKtuuEttpwyhvQsKOx5JKp8sxfiCVvpkVM6z6
+ ZeF9bMGOyITPTc4hFknoZCI+pl5TIHj4Z3Tb3Ob2mQ5CJRZW2zv5hSev246bxSUYXE8J
+ IDbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279637; x=1706884437;
+ d=1e100.net; s=20230601; t=1706279638; x=1706884438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cravlyBFi7JJgiMIcZjmEYHU7D0lxD+xDQlAtlvWf2Y=;
- b=ppvHRSc2zpR7xDP5jFGa9wSu99M4q/CDF5b2AE0mGn1IOvXafswZVwA4uHpNIGfBfQ
- nCTzlddeqcVx7vBwfiC61Z/YIarZxOpXWevZgtXqiPvmSQP3ykxySdZDzI5OBiaH4/OQ
- P/hq0SiiqN3LKynD3ggpwY4Gqy6Ta57ozUm+NgRteIMx3S5GQLa5snpJFEadXPwth/uK
- y3mjbMmz+8kqNCSQqBSS2/FH5ACLC0PfT9ratZxgaQr7cahm4Y5XJRJFSuUHEsPjRyfP
- 6wTCUT+2ARFpa/8nZ+sKtkdZoB7eoF111PezKB/4GcOfWc7wT3mBTLGTqO4cOZ32+U2r
- pDtA==
-X-Gm-Message-State: AOJu0YyPDbdsmTWA3NEJE4E7x2sP+9a/42HqIb+Kg96V31JwkJNDPv9F
- Wi50go25PEqT6pyn8sbRaR2b316ClAFvVGl62UsZcQMk0mKSmOkKjL3wfxqUbsjBOYF1iPq4qC6
- G
-X-Google-Smtp-Source: AGHT+IEILqfnbZGBXlWy+slEhy6m0yFFQg4ZhwKklIfg1knI3hjrnn8+o6vxiwuXsW6YxovER/bN8w==
-X-Received: by 2002:a5d:564a:0:b0:33a:9919:853a with SMTP id
- j10-20020a5d564a000000b0033a9919853amr1022036wrw.96.1706279637483; 
+ bh=28nbiWFQ3dXc2wMfXx4/3I1JNB6kABMI1o1Dd2Ej4Ok=;
+ b=YxzH+YPAu2q48YLDct/41lNmtn9STsPiu5s5QUR853sAiik7mBEJ8Uk1zyej2416Q4
+ oFwfalG+UezCyGWHlnU8PkvleMFhCQL7xbbz+4xjdAPxTb6DYX+TcfpD8EBGoW9Nw3sY
+ 7QHi76S7vmn6ZEVhj3C8M9gLDUKe4l75/4/sXVkA8/qOiLeFS39SLfxfA8PgKE0d2OaD
+ vNBNX1nTP6QXqEVN/BTt54TljdA5E/fMRgyi4lusXBi22oM8XtHOGg+vAZ2HkOfYNVnq
+ SVrxDLXOmqYYzDc5eVR/I+WRfluzCVculJilwQ0srj1Z3vAaCBOsbWupIWUhcRjTHgs7
+ BmPg==
+X-Gm-Message-State: AOJu0Yy4lC36GSOtL1fqTjc/pRCIFw4fSySePI1yLIZjfL/R6l1iJeey
+ P2/4SqU3/amVO0W1jvG0RatiP/5pWT2QrH/jTcl4IQ7wPM3anUa7m0loEfUEiNeORSUjeHSNrA8
+ 2
+X-Google-Smtp-Source: AGHT+IFOfNiYrNmobatReAw0ULuW1hKCIhApIbEgmXU7B5i9gurHKy8t1YI/+quUBvUSSqpEB8Vmtg==
+X-Received: by 2002:adf:f88e:0:b0:337:d649:da70 with SMTP id
+ u14-20020adff88e000000b00337d649da70mr834366wrp.138.1706279637863; 
  Fri, 26 Jan 2024 06:33:57 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.56
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Jan 2024 06:33:57 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 33/36] target/arm: Fix A64 scalar SQSHRN and SQRSHRN
-Date: Fri, 26 Jan 2024 14:33:38 +0000
-Message-Id: <20240126143341.2101237-34-peter.maydell@linaro.org>
+Subject: [PULL 34/36] bswap.h: Fix const_le64() macro
+Date: Fri, 26 Jan 2024 14:33:39 +0000
+Message-Id: <20240126143341.2101237-35-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,48 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 1b7bc9b5c8bf374dd we changed handle_vec_simd_sqshrn() so
-that instead of starting with a 0 value and depositing in each new
-element from the narrowing operation, it instead started with the raw
-result of the narrowing operation of the first element.
+The const_le64() macro introduced in commit 845d80a8c7b187 turns out
+to have a bug which means that on big-endian systems the compiler
+complains if the argument isn't already a 64-bit type. This hasn't
+caused a problem yet, because there are no in-tree uses, but it
+means it's not possible for anybody to add one without it failing CI.
 
-This is fine in the vector case, because the deposit operations for
-the second and subsequent elements will always overwrite any higher
-bits that might have been in the first element's result value in
-tcg_rd.  However in the scalar case we only go through this loop
-once.  The effect is that for a signed narrowing operation, if the
-result is negative then we will now return a value where the bits
-above the first element are incorrectly 1 (because the narrowfn
-returns a sign-extended result, not one that is truncated to the
-element size).
+This example is from an attempted use of it with the argument '0',
+from the s390 CI runner's gcc:
 
-Fix this by using an extract operation to get exactly the correct
-bits of the output of the narrowfn for element 1, instead of a
-plain move.
+../block/blklogwrites.c: In function ‘blk_log_writes_co_do_log’:
+../include/qemu/bswap.h:148:36: error: left shift count >= width of
+type [-Werror=shift-count-overflow]
+148 | ((((_x) & 0x00000000000000ffU) << 56) | \
+| ^~
+../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
+409 | .nr_entries = const_le64(0),
+| ^~~~~~~~~~
+../include/qemu/bswap.h:149:36: error: left shift count >= width of
+type [-Werror=shift-count-overflow]
+149 | (((_x) & 0x000000000000ff00U) << 40) | \
+| ^~
+../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
+409 | .nr_entries = const_le64(0),
+| ^~~~~~~~~~
+cc1: all warnings being treated as errors
 
-Cc: qemu-stable@nongnu.org
-Fixes: 1b7bc9b5c8bf374dd3 ("target/arm: Avoid tcg_const_ptr in handle_vec_simd_sqshrn")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2089
+Fix this by making all the constants in the macro have the ULL
+suffix.  This will cause them all to be 64-bit integers, which means
+the result of the logical & will also be an unsigned 64-bit type,
+even if the input to the macro is a smaller type, and so the shifts
+will be in range.
+
+Fixes: 845d80a8c7b187 ("qemu/bswap: Add const_le64()")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240123153416.877308-1-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Message-id: 20240122173735.472951-1-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate-a64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/qemu/bswap.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 27335e85407..340265beb05 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -8343,7 +8343,7 @@ static void handle_vec_simd_sqshrn(DisasContext *s, bool is_scalar, bool is_q,
-         narrowfn(tcg_rd_narrowed, tcg_env, tcg_rd);
-         tcg_gen_extu_i32_i64(tcg_rd, tcg_rd_narrowed);
-         if (i == 0) {
--            tcg_gen_mov_i64(tcg_final, tcg_rd);
-+            tcg_gen_extract_i64(tcg_final, tcg_rd, 0, esize);
-         } else {
-             tcg_gen_deposit_i64(tcg_final, tcg_final, tcg_rd, esize * i, esize);
-         }
+diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
+index 933a66ee87e..bd67468e5e4 100644
+--- a/include/qemu/bswap.h
++++ b/include/qemu/bswap.h
+@@ -145,14 +145,14 @@ CPU_CONVERT(le, 64, uint64_t)
+  */
+ #if HOST_BIG_ENDIAN
+ # define const_le64(_x)                          \
+-    ((((_x) & 0x00000000000000ffU) << 56) |      \
+-     (((_x) & 0x000000000000ff00U) << 40) |      \
+-     (((_x) & 0x0000000000ff0000U) << 24) |      \
+-     (((_x) & 0x00000000ff000000U) <<  8) |      \
+-     (((_x) & 0x000000ff00000000U) >>  8) |      \
+-     (((_x) & 0x0000ff0000000000U) >> 24) |      \
+-     (((_x) & 0x00ff000000000000U) >> 40) |      \
+-     (((_x) & 0xff00000000000000U) >> 56))
++    ((((_x) & 0x00000000000000ffULL) << 56) |    \
++     (((_x) & 0x000000000000ff00ULL) << 40) |    \
++     (((_x) & 0x0000000000ff0000ULL) << 24) |    \
++     (((_x) & 0x00000000ff000000ULL) <<  8) |    \
++     (((_x) & 0x000000ff00000000ULL) >>  8) |    \
++     (((_x) & 0x0000ff0000000000ULL) >> 24) |    \
++     (((_x) & 0x00ff000000000000ULL) >> 40) |    \
++     (((_x) & 0xff00000000000000ULL) >> 56))
+ # define const_le32(_x)                          \
+     ((((_x) & 0x000000ffU) << 24) |              \
+      (((_x) & 0x0000ff00U) <<  8) |              \
 -- 
 2.34.1
 
