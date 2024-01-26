@@ -2,102 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D698F83D879
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 11:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2887F83D8EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 12:03:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTJna-0004qt-GE; Fri, 26 Jan 2024 05:51:02 -0500
+	id 1rTJyA-00076G-Jx; Fri, 26 Jan 2024 06:01:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rTJn3-0004Zq-2k; Fri, 26 Jan 2024 05:50:31 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rTJxz-00075q-9Z
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:01:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rTJn0-0006BW-LI; Fri, 26 Jan 2024 05:50:28 -0500
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40Q8HEDw004368; Fri, 26 Jan 2024 10:50:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=aKyfy/Fj0al5vSZsw6TwiwX3q61IhE59c2bMNfzF9gg=;
- b=eI9N5UyYGmfunx3/EuZlDRigRSZJKyTkzkwIKFVTHG8reMFyWowHW481PTyO2moaAUkS
- 9GcoR1ujb8Hq1ftTIv05x44+4kOjhckamtPqqZY/2h1B5KdfZSjCZEKtPDJH6t8AdebZ
- l+YzENAn8kM8Le7YD4uN2YPgoZepqz80Mcefn1LiEkDCRdaFGlStOT8Ul9q6l25brolj
- qHiT0WXC1DPo/hFQkpLwbEa9UC26Jc57pHY1shVi/5dPamlX0MtFLWCEFTLFWOQVXxX5
- 311bPDTp7LxBrIlRQtf3A0AVpZecUXCSdEaBjm5RbJT1Mhx/PxgtQ4CfZjw9tcg1SuVD qw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv93dk4ew-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 10:50:12 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40QAXPRP024173;
- Fri, 26 Jan 2024 10:50:12 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv93dk4ek-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 10:50:12 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40Q9jExu028239; Fri, 26 Jan 2024 10:50:11 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vru731t20-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 10:50:11 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40QAoAMY13697788
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jan 2024 10:50:10 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44D7F58053;
- Fri, 26 Jan 2024 10:50:10 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 771D65805F;
- Fri, 26 Jan 2024 10:50:09 +0000 (GMT)
-Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jan 2024 10:50:09 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, lvivier@redhat.com
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v12 11/11] hw/fsi: Update MAINTAINER list
-Date: Fri, 26 Jan 2024 04:49:56 -0600
-Message-Id: <20240126104956.74126-12-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240126104956.74126-1-ninad@linux.ibm.com>
-References: <20240126104956.74126-1-ninad@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rTJxx-0000p8-Ct
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:01:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706266904;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/gd6lJVnSVUS69Xf9qLuJFQa4bTUTxSXqpPF5edxEWw=;
+ b=B0XPRxTkNKeoK/Yj7D+t3V2P8YKEXghQLCTxzEa2mQL14UnWYTnJtuCXTqxXgDLlYXNycY
+ pFuQHvKgsrulo76+InKMql+AL2sngti4ccUCDlC6mLWKDIBR0I4n2RbvV0EsSfNXelanTR
+ VLkO8Xo5S6yk8W38zkRQT3F/N9VJoc8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-361-8JTTNg7ePt666QxjN_BJvg-1; Fri, 26 Jan 2024 06:01:41 -0500
+X-MC-Unique: 8JTTNg7ePt666QxjN_BJvg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3447837226;
+ Fri, 26 Jan 2024 11:01:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.198])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 06542492BFA;
+ Fri, 26 Jan 2024 11:01:38 +0000 (UTC)
+Date: Fri, 26 Jan 2024 11:01:36 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Laurent Vivier <laurent@vivier.eu>, QEMU Trivial <qemu-trivial@nongnu.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: [PATCH trivial 1/2] close_all_open_fd(): move to oslib-posix.c
+Message-ID: <ZbOREEOcbSCwex15@redhat.com>
+References: <cover.1706221377.git.mjt@tls.msk.ru>
+ <94fcee0d7595865b3a6fab744982ad47715e5faf.1706221377.git.mjt@tls.msk.ru>
+ <ffc002d5-f648-43b8-b938-011a4a92cf5e@vivier.eu>
+ <ZbN2DhQ4GeKc-aaX@redhat.com>
+ <dbb90f22-d17d-4c40-8684-58ec976a014e@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ox0iGRAR0pvZRG8LjaK4R9tg_O8prVBk
-X-Proofpoint-GUID: YZo57P5Xu1egry7CZDc_37VZg3PGcgET
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- spamscore=0 bulkscore=0 mlxscore=0 adultscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxlogscore=939
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401260078
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <dbb90f22-d17d-4c40-8684-58ec976a014e@tls.msk.ru>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,41 +85,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added maintainer for IBM FSI model
+On Fri, Jan 26, 2024 at 01:45:39PM +0300, Michael Tokarev wrote:
+> 26.01.2024 12:06, Daniel P. Berrangé wrote:
+> > On Fri, Jan 26, 2024 at 08:44:13AM +0100, Laurent Vivier wrote:
+> > > Le 25/01/2024 à 23:29, Michael Tokarev a écrit :
+> 
+> 
+> > > I think the way using sysconf(_SC_OPEN_MAX) is more portable, simpler and
+> > > cleaner than the one using /proc/self/fd.
+> > 
+> > A fallback that uses _SC_OPEN_MAX is good for portability, but it is
+> > should not be considered a replacement for iterating over /proc/self/fd,
+> > rather an additional fallback for non-Linux, or when /proc is not mounted.
+> > It is not uncommon for _SC_OPEN_MAX to be *exceedingly* high
+> > 
+> >    $ podman run -it quay.io/centos/centos:stream9
+> >    [root@4a440d62935c /]# ulimit -n
+> >    524288
+> > 
+> > Iterating over 1/2 a million FDs is a serious performance penalty that
+> > we don't want to have, so _SC_OPEN_MAX should always be the last resort.
+> 
+> From yesterday conversation in IRC which started this:
+> 
+>  <mmlb> open files          (-n) 1073741816
+> 
+> (it is a docker container)
+> They weren't able to start qemu.. :)
+> 
+> Sanity of such setting is questionable, but ok.
+> 
+> Not only linux implement close_range(2) syscall, it is also
+> available on some *BSDs.
+> 
+> And the most important point is, - we should aim at using O_CLOEXEC
+> everywhere, without this need to close each FD at exec time.  I think
+> qemu is the only software with such paranoid closing when just running
+> an interface setup script..
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
-v11:
- - Added Cedric as reviewer.
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+We should try to use O_CLOEXEC everywhere, but at the same time QEMU
+links to a large number of libraries, and we can't assume that they've
+reliably used O_CLOEXEC. Non-QEMU owned code that is mapped in process
+likely dwarfs QEMU owned code by a factor of x10.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfaca8323e..39deb8ee1f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3585,6 +3585,15 @@ F: tests/qtest/adm1272-test.c
- F: tests/qtest/max34451-test.c
- F: tests/qtest/isl_pmbus_vr-test.c
- 
-+FSI
-+M: Ninad Palsule <ninad@linux.ibm.com>
-+R: Cédric Le Goater <clg@kaod.org>
-+S: Maintained
-+F: hw/fsi/*
-+F: include/hw/fsi/*
-+F: docs/specs/fsi.rst
-+F: tests/qtest/fsi-test.c
-+
- Firmware schema specifications
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
+With regards,
+Daniel
 -- 
-2.39.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
