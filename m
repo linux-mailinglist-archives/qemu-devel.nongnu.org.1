@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527FC83E08B
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F9983E079
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:38:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ5I-0008LT-5p; Fri, 26 Jan 2024 12:33:44 -0500
+	id 1rTQ4t-0007bw-8s; Fri, 26 Jan 2024 12:33:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ5B-0008BX-I0; Fri, 26 Jan 2024 12:33:37 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rTQ4g-0007Cp-5x; Fri, 26 Jan 2024 12:33:06 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ58-0001cb-2j; Fri, 26 Jan 2024 12:33:37 -0500
+ <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rTQ4c-0001jN-Dw; Fri, 26 Jan 2024 12:33:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=uxZ4mGKFLew5MTQuKKAqXya97kMNkAzbjIcyINbmJGE=; b=L789Dzt6MRyCiK291RHRqqMe+V
- Srde9pmzJin4uUey0pMnEejE6xMp/9M6g9l8tUpziOzuA1LQmG6rsV3bmoeH8/PT+8JfpGSUEFn5l
- KxevtOxzueFYY2OObJ6DIyZ+82yb9ytGPa+mQTtz19N3nWl+4/q/3wIcad7/RyYkvIeZscD1AYX1D
- ZDDDvEFxB4zmkvOJJ44emRqdLNkEefIa4QpkmBquuL1m0pNRPsbTylK21NAJ3DbQoxa93w8Wxy/WM
- UDxk8pkVmj4SueJNAqldB8zJeNLBWFacCReO65PwoSiWKbu+ybgxJaJ4uYzWsw0+hY35mfFeiGZNr
- UTejY6hA==;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=l9x9HGNJH5fBiIeKzePXsIuGh5SQlI6/4CQcfviByuY=; b=IcyrOZNXHpSLCk6TAnka1I9R+t
+ 3vjdvrDxoj9S0mBl3ozeCJWq/HpqMLvBUMFAORv+1SBecbE0cDjMuO9aFvZON++rc1jPkHaC+ghgP
+ 5L8zN3gB8nHPOYYlPmvNpLlMSpTekahGSC4AOzs6+IIk9qK+fFFqtc84HLEgjDyCzQMwocC4VIUT/
+ XGz64EbdU/7DMpdxI7atb/fpQg69VBiAOalydcEJ4bCCzYa2Cs/hf3UDE3MWX4+TH52Vy8uBkTNI0
+ o2fSSTMwt5iZhujAmRuoamJkL+zcASmcD5odNtASTsals+MCB8T2mzCkE+4bw69w/+TPEehpiYgeY
+ 5a7gBiQg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ48-0000000EKUB-0emG; Fri, 26 Jan 2024 17:32:33 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rTQ4A-000000069Ui-1qun; Fri, 26 Jan 2024 17:32:34 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ46-00000001elD-3aD3;
+ Hat Linux)) id 1rTQ46-00000001elG-432t;
  Fri, 26 Jan 2024 17:32:30 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -82,19 +82,22 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v4 00/47] Rework matching of network devices to -nic options
-Date: Fri, 26 Jan 2024 17:24:37 +0000
-Message-ID: <20240126173228.394202-1-dwmw2@infradead.org>
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 01/47] net: add qemu_{configure, create}_nic_device(),
+ qemu_find_nic_info()
+Date: Fri, 26 Jan 2024 17:24:38 +0000
+Message-ID: <20240126173228.394202-2-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
+References: <20240126173228.394202-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -117,198 +120,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Most platforms iterating directly over the nd_table[] are doing one of 
-two things. Either they are creating the NIC for their platform and want
-to find a matching -nic configuration for it, if such exists. Or they
-are only going to create that platform NIC if a matching config *does*
-exist.
+Most code which directly accesses nd_table[] and nb_nics uses them for
+one of two things. Either "I have created a NIC device and I'd like a
+configuration for it", or "I will create a NIC device *if* there is a
+configuration for it".  With some variants on the theme around whether
+they actually *check* if the model specified in the configuration is
+the right one.
 
-All of those can be converted to the new qemu_configure_nic_device()
-and qemu_create_nic_device() functions. The latter of which will call
-qdev_new() to create the device (and apply the config) if a matching
-NIC config does exist for it. The existing behaviour of each platform
-has been preserved for now, despite it being apparently fairly random.
+Provide functions which perform both of those, allowing platforms to
+be a little more consistent and as a step towards making nd_table[]
+and nb_nics private to the net code.
 
-PCI and indeed XenBus can use a qemu_create_nic_bus_devices() which will 
-create all NICs that live on a given bus type. That covers most 
-platforms, but some PCI platforms do something special with the first 
-NIC of a given type, placing it in the slot where it would have been on 
-the real hardware. There were various inconsistencies in the way the 
-platforms did so, and whether they cared what model the NIC was. Those 
-subtle behavioural changes I *have* allowed to change, and now the 
-pci_init_nic_slot() function will pick the first NIC that the user 
-specified which isn't explicitly *not* the default type, and put that
-in the specified slot.
+One might argue that platforms ought to be consistent about whether
+they create the unconfigured devices or not, but making significant
+user-visible changes is explicitly *not* the intent right now.
 
-The tests for npcm7xx used to lament that they had to instantiate both
-NICs even when they wanted to test only the second, because there was
-no way to specify which hardware devices gets which configuration. I
-made that untrue, by allowing 'emc0' and 'emc1' aliases, and fixed up
-the test accordingly.
+The new functions leave the 'model' field of the NICInfo as NULL after
+using it for the default NIC model, unlike the qemu_check_nic_model()
+function which does set nd->model to match default_model explicitly.
+This is acceptable because there is no code which consumes nd->model
+except this NIC-matching code in net/net.c, and no reasonable excuse
+for any code wanting to use nd->model in future.
 
-There are one or two special cases which want to do special things with
-the MAC address of the primary NIC, to set up a system identification
-(or force it to use an Apple OUI, in the case of m68k/q400). All those
-work out relatively cleanly too.
+Also export the qemu_find_nic_info() helper, as some platforms have
+special cases they need to handle.
 
-And I can clean up the ugly patch which fixed up the Xen network device 
-handling, and replace it with a simple call to the new 
-qemu_create_nic_bus_devices() function.
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+---
+ include/net/net.h | 40 +++++++++++++++++++++++++++++++++++++
+ net/net.c         | 51 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
 
-I suspect that we can remove the pci_init_nic_devices() from platform
-code and just do it later, except for platforms which *care* which
-PCI bus the dynamic devices go on (is that just sun4u which puts its
-primary NIC onto a different bus?).
-
-Finally, while we're at it, clean up -nic model=help to only print
-the device models which are actually usable on the given platform
-rather than just listing them *all*.
-
-And now we can make nd_table[] and nb_nics static in net/net.c because
-nothing else has any business poking at them directly.
-
- v4: Fix LASI_82596 build and rework HPPA machine support for it.
-     Slight improvement to ISA NE2000 error handling in hw/i386/pc.c.
-     Document new functions better in include/net/net.h.
-          
- v3: Rebase to 8.2
-
- v2: Some build fixes after better coverage testing, revert the Xen fix
-     in this series because I'm putting the less invasive hack into 8.2
-     (hopefully).
-
-
-David Woodhouse (47):
-      net: add qemu_{configure,create}_nic_device(), qemu_find_nic_info()
-      net: report list of available models according to platform
-      net: add qemu_create_nic_bus_devices()
-      hw/pci: add pci_init_nic_devices(), pci_init_nic_in_slot()
-      hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()
-      hw/xen: use qemu_create_nic_bus_devices() to instantiate Xen NICs
-      hw/alpha/dp264: use pci_init_nic_devices()
-      hw/arm/sbsa-ref: use pci_init_nic_devices()
-      hw/arm/virt: use pci_init_nic_devices()
-      hw/hppa: use pci_init_nic_devices()
-      hw/loongarch: use pci_init_nic_devices()
-      hw/mips/fuloong2e: use pci_init_nic_devices()
-      hw/mips/malta: use pci_init_nic_devices()
-      hw/mips/loongson3_virt: use pci_init_nic_devices()
-      hw/ppc/prep: use pci_init_nic_devices()
-      hw/ppc/spapr: use qemu_get_nic_info() and pci_init_nic_devices()
-      hw/ppc: use pci_init_nic_devices()
-      hw/sh4/r2d: use pci_init_nic_devices()
-      hw/sparc64/sun4u: use pci_init_nic_devices()
-      hw/xtensa/virt: use pci_init_nic_devices()
-      hw/arm/allwinner: use qemu_configure_nic_device()
-      hw/arm/aspeed: use qemu_configure_nic_device()
-      hw/arm/exynos4: use qemu_create_nic_device()
-      hw/arm/fsl: use qemu_configure_nic_device()
-      hw/net/smc91c111: use qemu_configure_nic_device()
-      hw/net/lan9118: use qemu_configure_nic_device()
-      hw/arm/highbank: use qemu_create_nic_device()
-      hw/arm/npcm7xx: use qemu_configure_nic_device, allow emc0/emc1 as aliases
-      hw/arm/stellaris: use qemu_find_nic_info()
-      hw/arm: use qemu_configure_nic_device()
-      hw/net/etraxfs-eth: use qemu_configure_nic_device()
-      hw/m68k/mcf5208: use qemu_create_nic_device()
-      hw/m68k/q800: use qemu_find_nic_info()
-      hw/microblaze: use qemu_configure_nic_device()
-      hw/mips/mipssim: use qemu_create_nic_device()
-      hw/mips/jazz: use qemu_find_nic_info()
-      hw/net/lasi_i82596: Re-enable build
-      hw/net/lasi_i82596: use qemu_create_nic_device()
-      hw/openrisc/openrisc_sim: use qemu_create_nic_device()
-      hw/riscv: use qemu_configure_nic_device()
-      hw/s390x/s390-virtio-ccw: use qemu_create_nic_device()
-      hw/sparc/sun4m: use qemu_find_nic_info()
-      hw/xtensa/xtfpga: use qemu_create_nic_device()
-      net: remove qemu_check_nic_model()
-      hw/pci: remove pci_nic_init_nofail()
-      net: remove qemu_show_nic_models(), qemu_find_nic_model()
-      net: make nb_nics and nd_table[] static in net/net.c
-
- hw/alpha/dp264.c                         |   4 +-
- hw/arm/allwinner-a10.c                   |   6 +-
- hw/arm/allwinner-h3.c                    |   6 +-
- hw/arm/allwinner-r40.c                   |  27 +---
- hw/arm/aspeed.c                          |   9 +-
- hw/arm/exynos4_boards.c                  |   6 +-
- hw/arm/fsl-imx25.c                       |   2 +-
- hw/arm/fsl-imx6.c                        |   2 +-
- hw/arm/fsl-imx6ul.c                      |   2 +-
- hw/arm/fsl-imx7.c                        |   2 +-
- hw/arm/gumstix.c                         |   6 +-
- hw/arm/highbank.c                        |  12 +-
- hw/arm/integratorcp.c                    |   5 +-
- hw/arm/kzm.c                             |   4 +-
- hw/arm/mainstone.c                       |   3 +-
- hw/arm/mps2-tz.c                         |   8 +-
- hw/arm/mps2.c                            |   2 +-
- hw/arm/msf2-soc.c                        |   6 +-
- hw/arm/musicpal.c                        |   3 +-
- hw/arm/npcm7xx.c                         |  16 +-
- hw/arm/realview.c                        |  25 ++-
- hw/arm/sbsa-ref.c                        |   4 +-
- hw/arm/stellaris.c                       |  30 +++-
- hw/arm/versatilepb.c                     |  15 +-
- hw/arm/vexpress.c                        |   4 +-
- hw/arm/virt.c                            |   4 +-
- hw/arm/xilinx_zynq.c                     |  11 +-
- hw/arm/xlnx-versal.c                     |   7 +-
- hw/arm/xlnx-zynqmp.c                     |   8 +-
- hw/cris/axis_dev88.c                     |   9 +-
- hw/hppa/machine.c                        |  14 +-
- hw/i386/pc.c                             |  38 +++--
- hw/i386/pc_piix.c                        |   2 +-
- hw/i386/pc_q35.c                         |   2 +-
- hw/loongarch/virt.c                      |   4 +-
- hw/m68k/mcf5208.c                        |  19 +--
- hw/m68k/q800.c                           |  29 ++--
- hw/microblaze/petalogix_ml605_mmu.c      |   3 +-
- hw/microblaze/petalogix_s3adsp1800_mmu.c |   3 +-
- hw/mips/fuloong2e.c                      |  16 +-
- hw/mips/jazz.c                           |  15 +-
- hw/mips/loongson3_virt.c                 |   4 +-
- hw/mips/malta.c                          |  15 +-
- hw/mips/mipssim.c                        |  13 +-
- hw/net/etraxfs_eth.c                     |   5 +-
- hw/net/lan9118.c                         |   5 +-
- hw/net/lasi_i82596.c                     |  13 +-
- hw/net/meson.build                       |   2 +-
- hw/net/smc91c111.c                       |   5 +-
- hw/openrisc/openrisc_sim.c               |  18 +--
- hw/pci/pci.c                             |  73 +++------
- hw/ppc/e500.c                            |   4 +-
- hw/ppc/mac_newworld.c                    |   4 +-
- hw/ppc/mac_oldworld.c                    |   4 +-
- hw/ppc/ppc440_bamboo.c                   |  14 +-
- hw/ppc/prep.c                            |   8 +-
- hw/ppc/spapr.c                           |  18 +--
- hw/riscv/microchip_pfsoc.c               |  14 +-
- hw/riscv/sifive_u.c                      |   7 +-
- hw/s390x/s390-virtio-ccw.c               |  11 +-
- hw/sh4/r2d.c                             |   6 +-
- hw/sparc/sun4m.c                         |  20 ++-
- hw/sparc64/sun4u.c                       |  27 +---
- hw/xen/xen-bus.c                         |   6 +-
- hw/xen/xen_devconfig.c                   |  25 ---
- hw/xenpv/xen_machine_pv.c                |   9 --
- hw/xtensa/virt.c                         |   4 +-
- hw/xtensa/xtfpga.c                       |  13 +-
- include/hw/cris/etraxfs.h                |   2 +-
- include/hw/i386/pc.h                     |   4 +-
- include/hw/net/lan9118.h                 |   2 +-
- include/hw/net/lasi_82596.h              |   4 +-
- include/hw/net/ne2000-isa.h              |   2 -
- include/hw/net/smc91c111.h               |   2 +-
- include/hw/pci/pci.h                     |   7 +-
- include/hw/xen/xen-bus.h                 |   2 +-
- include/hw/xen/xen-legacy-backend.h      |   1 -
- include/net/net.h                        |  70 ++++++++-
- net/net.c                                | 253 +++++++++++++++++++++++++------
- system/globals.c                         |   2 -
- tests/qtest/npcm7xx_emc-test.c           |  18 +--
- 81 files changed, 547 insertions(+), 562 deletions(-)
+diff --git a/include/net/net.h b/include/net/net.h
+index ffbd2c8d56..dff1872b4d 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -207,7 +207,47 @@ int qemu_show_nic_models(const char *arg, const char *const *models);
+ void qemu_check_nic_model(NICInfo *nd, const char *model);
+ int qemu_find_nic_model(NICInfo *nd, const char * const *models,
+                         const char *default_model);
++/**
++ * qemu_find_nic_info: Obtain NIC configuration information
++ * @typename: Name of device object type
++ * @match_default: Match NIC configurations with no model specified
++ * @alias: Additional model string to match (for user convenience and
++ *         backward compatibility).
++ *
++ * Search for a NIC configuration matching the NIC model constraints.
++ */
++NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
++                            const char *alias);
++/**
++ * qemu_configure_nic_device: Apply NIC configuration to a given device
++ * @dev: Network device to be configured
++ * @match_default: Match NIC configurations with no model specified
++ * @alias: Additional model string to match
++ *
++ * Search for a NIC configuration for the provided device, using the
++ * additionally specified matching constraints. If found, apply the
++ * configuration using qdev_set_nic_properties() and return %true.
++ *
++ * This is used by platform code which creates the device anyway,
++ * regardless of whether there is a configuration for it. This tends
++ * to be platforms which ignore `--nodefaults` and create net devices
++ * anyway, for example because the Ethernet device on that board is
++ * always physically present.
++ */
++bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
++                               const char *alias);
+ 
++/**
++ * qemu_create_nic_device: Create a NIC device if a configuration exists for it
++ * @typename: Object typename of network device
++ * @match_default: Match NIC configurations with no model specified
++ * @alias: Additional model string to match
++ *
++ * Search for a NIC configuration for the provided device type. If found,
++ * create an object of the corresponding type and return it.
++ */
++DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
++                                    const char *alias);
+ void print_net_client(Monitor *mon, NetClientState *nc);
+ void net_socket_rs_init(SocketReadState *rs,
+                         SocketReadStateFinalize *finalize,
+diff --git a/net/net.c b/net/net.c
+index 0520bc1681..aeb7f573fc 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1087,6 +1087,57 @@ static int net_init_nic(const Netdev *netdev, const char *name,
+     return idx;
+ }
+ 
++NICInfo *qemu_find_nic_info(const char *typename, bool match_default,
++                            const char *alias)
++{
++    NICInfo *nd;
++    int i;
++
++    for (i = 0; i < nb_nics; i++) {
++        nd = &nd_table[i];
++
++        if (!nd->used || nd->instantiated) {
++            continue;
++        }
++
++        if ((match_default && !nd->model) || !g_strcmp0(nd->model, typename)
++            || (alias && !g_strcmp0(nd->model, alias))) {
++            return nd;
++        }
++    }
++    return NULL;
++}
++
++
++/* "I have created a device. Please configure it if you can" */
++bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
++                               const char *alias)
++{
++    NICInfo *nd = qemu_find_nic_info(object_get_typename(OBJECT(dev)),
++                                     match_default, alias);
++
++    if (nd) {
++        qdev_set_nic_properties(dev, nd);
++        return true;
++    }
++    return false;
++}
++
++/* "Please create a device, if you have a configuration for it" */
++DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
++                                    const char *alias)
++{
++    NICInfo *nd = qemu_find_nic_info(typename, match_default, alias);
++    DeviceState *dev;
++
++    if (!nd) {
++        return NULL;
++    }
++
++    dev = qdev_new(typename);
++    qdev_set_nic_properties(dev, nd);
++    return dev;
++}
+ 
+ static int (* const net_client_init_fun[NET_CLIENT_DRIVER__MAX])(
+     const Netdev *netdev,
+-- 
+2.43.0
 
 
