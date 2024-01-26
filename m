@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5FF83DC14
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F1E83DC38
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHJ-0002M8-Fl; Fri, 26 Jan 2024 09:33:57 -0500
+	id 1rTNHN-0002Tg-MX; Fri, 26 Jan 2024 09:34:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHH-0002K9-BU
+ id 1rTNHH-0002Km-KD
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHE-0007wt-Tn
+ id 1rTNHF-0007xB-DN
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3392291b21bso634144f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:52 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-33921b95dddso1153424f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279631; x=1706884431; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279632; x=1706884432; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8W6Dmg/Z15G38A2ANLX0PCG/NULptGOn1F3YALWfvag=;
- b=fkEx0EjjHRzF3rvznw7+RqB3EJFj9s6om0y4h137cxnTPcjhjbuATTUIOSsqWrcku8
- mtufP+rbCoJdlWs5RVX6n+fYKRnYYiOEmQfe6PZYD0g/Zo2B6naQJR1X2qbr+Uopt72w
- 0tmlUG7Npzno68sfDbxP+zKRu2CvhgXpmvGH8yBp/wZYJvn4rAzipZhRgQwRuHYZUr3l
- 9Yguqo8be9o2xbdzlyVl1o0KP8n7g5Hv3PCTN/PvmACp1U+ZqaOFt/ZlKwxen1SJ4EHP
- 8smtBXJUIYUu4+okXQJqTj0DEQiU7QBDJuzxXHaASW9+Cr0GBUNMWCfGTP5AMElRPPL2
- E16g==
+ :reply-to; bh=STnpdxdBqg+D7O0t/DW+hSCI5CBTAErw95dM/Zpjin0=;
+ b=A4CZHqLJRxtChmNlg5Blxgr3R9SYqdZAi/b3s4/d6TCgdcujBWHX4Zf3A6WNDh60jy
+ 5Z6VHhW9ZZgWFypOMrKcvKk078UwlRPpSmiWkHln7U6LcHtluFLvX7Rd+X8DVAqbTZtr
+ Tl0rw3c8yskquAu/LrVZcOCCLlN7VwCbOV3DQzoi9Wue97A2bCDyMm762BcOEGmdDN6w
+ mgVgO6K9oecWLPCBt2pZUXjc/MeGTu/n2TgD58OmF/XCqNrZ5MSV6pColJhgx9Wy4OxC
+ 6nV5HXO9OUlVZPrm8oEgs4aSfahzUA4DB+NoTUekTpgYzpl1MMLXGZk8EAVAmf5SFxOu
+ up2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279631; x=1706884431;
+ d=1e100.net; s=20230601; t=1706279632; x=1706884432;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8W6Dmg/Z15G38A2ANLX0PCG/NULptGOn1F3YALWfvag=;
- b=IOBaDbz5SZDeSoASO0zLxrRExCKf4sFrayV3pFG3I6oTzX1quiesA6G3G8eZhtpZvT
- MWplpQI2VEamu93eR6Kl7Tg3FfD2a8CvR7NBMPSLIwi+Ba8nD7ro1NyylNYCYbiscj7s
- 3Xr3IUNFZa7L07CHYx+KI7lgNzWVJazbLQukwVsBhfVhzQ1eMQzH0qTITrHpmnND3whx
- WyAG6oSNHtze2Vci71lQ/XS2/Hoh4RJowrfKq1RVoZo14M9kFFcjV/viGp+zdz4kIsWP
- 0pcxNathGRhf9DJ8Xg6fBXgOJiT1+fzFQ6LA1X55kPtLgEq+8j0qduGfVbn1SMs/WKM1
- OTXA==
-X-Gm-Message-State: AOJu0YxYEcTr23t2LLxyRvFhvmc8bbWleJiZ8hp+oQO/LDGOYgylT+H5
- r7qkOPNMHNA0gNX8zH59wN+tAIeHfqFV1303ZM5eXn3M9bq2X2jo/Ep5hu+Xt74XvbCsvnY00Zm
- V
-X-Google-Smtp-Source: AGHT+IF9uk3c1ASXF2iTrylbz01F2lZILul21p0dTjJY97LbAxFj3xdLDYkfRD/yqN8e6kmrAfG4gQ==
-X-Received: by 2002:a5d:6303:0:b0:337:9b58:6b8d with SMTP id
- i3-20020a5d6303000000b003379b586b8dmr926115wru.112.1706279631407; 
- Fri, 26 Jan 2024 06:33:51 -0800 (PST)
+ bh=STnpdxdBqg+D7O0t/DW+hSCI5CBTAErw95dM/Zpjin0=;
+ b=U2P6Lmw1dMmlfnmQNqnVzmrVlSH0To+7MvssXbdFsPmJ0Lb1oKOiD7gO7W82ctwwNg
+ HQHfk2DEk82P9CiZFnjt1qNfFSdFgR5m5/+7giaOIY39n3/I0dvLRBKHfAyN9aVxUu4g
+ 3c1mF5U06eJubeOVNO3U8sUImL6zPBRywhdjFwaawJ4j3JvkuQbtIINqJztmgs0aLBqg
+ 0l+QE6WZVHiyQqxxGNvX+lGShI3/ZVEFJs04bicG6LYTIMPJZaIS8Ei74Bpw6bvRsMlg
+ VmQWyY8b79MMHNUGnq4i0ctQrq93uqS1VTX7u711KFyTLHOfT+RbnNMQUsopofjzN8F8
+ WmtA==
+X-Gm-Message-State: AOJu0YzLahPD1rDv180ZfAUzQPdRR9GW6c7xEJbeNeqzBPiaFNVn/hyU
+ 3xhuSmDkYFR6k37/RoP9fVeAd5eG0b91BypTHJOMmYhuQgNUtmemngLKgit7skUEu/43T+JwH9T
+ 7
+X-Google-Smtp-Source: AGHT+IEozrV2gn/h4yKWScmgLGPMd1nC9i3lak6xrEo/I20bmEpJ+Dx4cU+YLvY+/u2vZJDii/lkMg==
+X-Received: by 2002:adf:ea44:0:b0:33a:c656:b26c with SMTP id
+ j4-20020adfea44000000b0033ac656b26cmr757908wrn.14.1706279632087; 
+ Fri, 26 Jan 2024 06:33:52 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.51
@@ -59,17 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:51 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/36] hw/cpu/a9mpcore: Build it only once
-Date: Fri, 26 Jan 2024 14:33:26 +0000
-Message-Id: <20240126143341.2101237-22-peter.maydell@linaro.org>
+Subject: [PULL 22/36] hw/misc/xlnx-versal-crl: Include generic 'cpu-qom.h'
+ instead of 'cpu.h'
+Date: Fri, 26 Jan 2024 14:33:27 +0000
+Message-Id: <20240126143341.2101237-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-hw/cpu/a9mpcore.c doesn't require "cpu.h" anymore.
-By removing it, the unit become target agnostic:
-we can build it once. Update meson.
+"target/arm/cpu.h" is target specific, any file including it
+becomes target specific too, thus this is the same for any file
+including "hw/misc/xlnx-versal-crl.h".
+
+"hw/misc/xlnx-versal-crl.h" doesn't require any target specific
+definition however, only the target-agnostic QOM definitions
+from "target/arm/cpu-qom.h". Include the latter header to avoid
+tainting unnecessary objects as target-specific.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-13-philmd@linaro.org
+Message-id: 20240118200643.29037-14-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/cpu/a9mpcore.c  | 2 +-
- hw/cpu/meson.build | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/hw/misc/xlnx-versal-crl.h | 2 +-
+ hw/misc/xlnx-versal-crl.c         | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
-index d03f57e579b..c30ef72c669 100644
---- a/hw/cpu/a9mpcore.c
-+++ b/hw/cpu/a9mpcore.c
-@@ -15,7 +15,7 @@
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "hw/core/cpu.h"
--#include "cpu.h"
+diff --git a/include/hw/misc/xlnx-versal-crl.h b/include/hw/misc/xlnx-versal-crl.h
+index dfb8dff197d..dba6d3585d1 100644
+--- a/include/hw/misc/xlnx-versal-crl.h
++++ b/include/hw/misc/xlnx-versal-crl.h
+@@ -11,7 +11,7 @@
+ 
+ #include "hw/sysbus.h"
+ #include "hw/register.h"
+-#include "target/arm/cpu.h"
 +#include "target/arm/cpu-qom.h"
  
- #define A9_GIC_NUM_PRIORITY_BITS    5
+ #define TYPE_XLNX_VERSAL_CRL "xlnx-versal-crl"
+ OBJECT_DECLARE_SIMPLE_TYPE(XlnxVersalCRL, XLNX_VERSAL_CRL)
+diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
+index 1f1762ef163..1a596f1cf57 100644
+--- a/hw/misc/xlnx-versal-crl.c
++++ b/hw/misc/xlnx-versal-crl.c
+@@ -18,6 +18,7 @@
+ #include "hw/register.h"
+ #include "hw/resettable.h"
  
-diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
-index 6d319947ca0..38cdcfbe572 100644
---- a/hw/cpu/meson.build
-+++ b/hw/cpu/meson.build
-@@ -2,5 +2,5 @@ system_ss.add(files('core.c', 'cluster.c'))
- 
- system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
- system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview_mpcore.c'))
--specific_ss.add(when: 'CONFIG_A9MPCORE', if_true: files('a9mpcore.c'))
-+system_ss.add(when: 'CONFIG_A9MPCORE', if_true: files('a9mpcore.c'))
- specific_ss.add(when: 'CONFIG_A15MPCORE', if_true: files('a15mpcore.c'))
++#include "target/arm/cpu.h"
+ #include "target/arm/arm-powerctl.h"
+ #include "target/arm/multiprocessing.h"
+ #include "hw/misc/xlnx-versal-crl.h"
 -- 
 2.34.1
 
