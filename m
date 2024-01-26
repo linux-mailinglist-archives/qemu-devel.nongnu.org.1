@@ -2,102 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE46A83D300
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 04:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5C583D36A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:18:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTD5F-0004aZ-4v; Thu, 25 Jan 2024 22:40:49 -0500
+	id 1rTDet-0001hk-VX; Thu, 25 Jan 2024 23:17:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rTD5C-0004X2-OM; Thu, 25 Jan 2024 22:40:46 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDes-0001fk-1F
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:17:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1rTD5A-0003NV-Se; Thu, 25 Jan 2024 22:40:46 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40Q2vlfO029537; Fri, 26 Jan 2024 03:40:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=Aeh4m6y4uSorIijoXOWHORcwePrt5iAPL8+LUhQbUYk=;
- b=oH2h5TrJON7P8V+O/sXvAIJ6kB0ShfhWwvT4u6ekzSrdEotEWfIsTVSolX/5wYThq4Qe
- FwXvh/hAz5JRLi+iM7m9sF1r+4NSeGXsmk8DnSfCcN7JcDUK43DFGYJJHXoGlGkqZCl+
- eBN19v1lnkDmm4Q19qoL80k/2Axk1ADVqtCFmbNLPMbfnY/IMlPds4H9YySgcsEyVL3b
- QkneqCMagDDG2WEnlI7J6/SjaKnvDBKLsL/ThgBHxdrxVnkXN96UqySJQPCyL/vKVJgt
- 4rGm3WDAtvz5mDz2EnFGu2VzQeEv6jgtGCABEFuZNEFGh/RW7iO9G+2z40H/tU8mm18b 3Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv4dm8yt8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 03:40:34 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40Q3UHCA009734;
- Fri, 26 Jan 2024 03:40:34 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv4dm8yt1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 03:40:34 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40Q2dQwX028239; Fri, 26 Jan 2024 03:40:33 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vru7300q1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Jan 2024 03:40:33 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40Q3eWQ064160168
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Jan 2024 03:40:33 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D760A58043;
- Fri, 26 Jan 2024 03:40:32 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 903B75805D;
- Fri, 26 Jan 2024 03:40:32 +0000 (GMT)
-Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 26 Jan 2024 03:40:32 +0000 (GMT)
-From: Ninad Palsule <ninad@linux.ibm.com>
-To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
- andrew@codeconstruct.com.au, joel@jms.id.au, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, lvivier@redhat.com
-Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
-Subject: [PATCH v11 11/11] hw/fsi: Update MAINTAINER list
-Date: Thu, 25 Jan 2024 21:40:26 -0600
-Message-Id: <20240126034026.31068-12-ninad@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240126034026.31068-1-ninad@linux.ibm.com>
-References: <20240126034026.31068-1-ninad@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDep-0004n2-8X
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:17:37 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706242653;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jMxyAGI3qYVs5QH6kzyj5YicRDJmhNpflR+yarg5k9k=;
+ b=T2hQR29Wk5kwkl4o9pPvfh/w0RHMEk42GgMO8/ZMNwWPUvIlltvZvSWImE7fOMXVBuMlAg
+ tSm09yfz1P3Sk3yztWYhzYzogonC/6EDa3lLG4bCI7JvfFuiLpKokKPd/NSwGIzv1T0czz
+ hg898G8BbI91LnE2Jh8ShICgpnTOXlA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-Z56msUsuOPSY-r67TdFsgQ-1; Thu, 25 Jan 2024 23:17:30 -0500
+X-MC-Unique: Z56msUsuOPSY-r67TdFsgQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2FD65101A526;
+ Fri, 26 Jan 2024 04:17:30 +0000 (UTC)
+Received: from x1n.redhat.com (unknown [10.72.116.11])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 38D7E492BC6;
+ Fri, 26 Jan 2024 04:17:27 +0000 (UTC)
+From: peterx@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+	peterx@redhat.com
+Subject: [PULL 00/15] Migration 20240126 patches
+Date: Fri, 26 Jan 2024 12:17:10 +0800
+Message-ID: <20240126041725.124562-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ju8k8E0s4w2ZUT2lCCIF84w19hnrko_u
-X-Proofpoint-GUID: qMUiM410uthhPCYxUjdA6ul2B0__pmFv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
- adultscore=0 spamscore=0 mlxscore=0 mlxlogscore=910 suspectscore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401260024
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,37 +76,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Added maintainer for IBM FSI model
+From: Peter Xu <peterx@redhat.com>
 
-Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
----
-v11:
- - Added Cedric as reviewer.
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+The following changes since commit 5bab95dc74d43bbb28c6a96d24c810a664432057:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfaca8323e..39deb8ee1f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3585,6 +3585,15 @@ F: tests/qtest/adm1272-test.c
- F: tests/qtest/max34451-test.c
- F: tests/qtest/isl_pmbus_vr-test.c
- 
-+FSI
-+M: Ninad Palsule <ninad@linux.ibm.com>
-+R: Cédric Le Goater <clg@kaod.org>
-+S: Maintained
-+F: hw/fsi/*
-+F: include/hw/fsi/*
-+F: docs/specs/fsi.rst
-+F: tests/qtest/fsi-test.c
-+
- Firmware schema specifications
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Daniel P. Berrange <berrange@redhat.com>
+  Merge tag 'pull-request-2024-01-24' of https://gitlab.com/thuth/qemu into staging (2024-01-25 12:33:42 +0000)
+
+are available in the Git repository at:
+
+  https://gitlab.com/peterx/qemu.git tags/migration-20240126-pull-request
+
+for you to fetch changes up to 24b0c2ec956ca225282f81470f7c26f5bb844885:
+
+  Make 'uri' optional for migrate QAPI (2024-01-26 11:06:13 +0800)
+
+----------------------------------------------------------------
+Migration pull for 9.0
+
+- Fabiano's patchset to fix migration state references in BHs
+- Fabiano's new 'n-1' migration test for CI
+- Het's fix on making "uri" optional in QMP migrate cmd
+- Markus's HMP leak fix reported by Coverity
+- Paolo's cleanup on uffd to replace u64 usage
+- Peter's small migration cleanup series all over the places
+
+----------------------------------------------------------------
+
+Fabiano Rosas (9):
+  tests/qtest/migration: Don't use -cpu max for aarch64
+  ci: Add a migration compatibility test job
+  ci: Disable migration compatibility tests for aarch64
+  migration/yank: Use channel features
+  migration: Fix use-after-free of migration state object
+  migration: Take reference to migration state around
+    bg_migration_vm_start_bh
+  migration: Reference migration state around
+    loadvm_postcopy_handle_run_bh
+  migration: Add a wrapper to qemu_bh_schedule
+  migration: Centralize BH creation and dispatch
+
+Het Gala (1):
+  Make 'uri' optional for migrate QAPI
+
+Markus Armbruster (1):
+  migration: Plug memory leak on HMP migrate error path
+
+Paolo Bonzini (1):
+  userfaultfd: use 1ULL to build ioctl masks
+
+Peter Xu (3):
+  migration: Make threshold_size an uint64_t
+  migration: Drop unnecessary check in ram's pending_exact()
+  analyze-migration.py: Remove trick on parsing ramblocks
+
+ qapi/migration.json                       |  2 +-
+ migration/migration.h                     |  7 +-
+ migration/migration-hmp-cmds.c            |  4 +-
+ migration/migration.c                     | 82 +++++++++++++----------
+ migration/postcopy-ram.c                  | 16 ++---
+ migration/ram.c                           |  9 ++-
+ migration/savevm.c                        |  5 +-
+ migration/yank_functions.c                |  6 +-
+ subprojects/libvhost-user/libvhost-user.c |  2 +-
+ tests/qtest/migration-test.c              |  6 +-
+ .gitlab-ci.d/buildtest.yml                | 64 ++++++++++++++++++
+ scripts/analyze-migration.py              | 11 +--
+ 12 files changed, 135 insertions(+), 79 deletions(-)
+
 -- 
-2.39.2
+2.43.0
 
 
