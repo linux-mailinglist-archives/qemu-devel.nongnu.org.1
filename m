@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE3083E077
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4105183E052
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:36:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ5L-0008MB-NE; Fri, 26 Jan 2024 12:33:48 -0500
+	id 1rTQ5H-0008Kf-CE; Fri, 26 Jan 2024 12:33:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ5B-0008Ab-0P; Fri, 26 Jan 2024 12:33:37 -0500
+ id 1rTQ5B-0008Aa-0E; Fri, 26 Jan 2024 12:33:37 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTQ58-0001cP-9g; Fri, 26 Jan 2024 12:33:36 -0500
+ id 1rTQ58-0001cd-Aj; Fri, 26 Jan 2024 12:33:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=XNIjAmOhj+SZtS07BQBFCx/gbJe5yDDVggy1z+Bpirk=; b=qRXBwy8wUZBA7uZmqg9qysYyBX
- Y6Ht7Uox+6oAhC7gW4UQMkRldIgtf5lI/GgLn4EtGwZu0/+8aZ3UQ/6sw5Nm3YMXsI9ZplbcbqVRU
- GiScBh5rU2/rvAZI+rbdLSXVYqwSpx2Xj+MikdK1RdUBZva0Xcpdckrj/KRFo1FxaE10njMG3SWRb
- LkADFbDwwlhMqaRJtmytj91Ya617+xnZWYXRs2Ed1Z3ursa9//nPX6CeTgziudkhqDHG/KmFDVYxw
- 09AEiwPniBXkf+XV7YRKFK7GNdiekuVJFoJ6xULYvfLkXQR20xacHe13v/fDVjSrdNymWeMDedHXz
- Oo1BD/eA==;
+ bh=OKm118/V6gxksMAtfnJ8Ufap3iGAGMSmq6JcPfpdm/s=; b=KmE2/C36b2yD/mi6cnVRZu3qWq
+ Z9xfuHuEdCxG75ekpPyLnVv/AlHYqa969PePpng1ceqCLcMC8mgXmzOrtlrKXJm1KswPmlJI5eifu
+ oipdb0z1La5GuH8+oHn9mjdomJ5IUBu60G8KM01RZt/B0sIfTloIyYVpC3tjXgTCIAoX1Pchpmxka
+ rOLsWIqM9B/ix0CPnKtCsTUV7Z0EK+MUFpl1jLMkD3kvc8VlpDOLWGaB6cHmhzCDOJuxHrO1khvR2
+ SLamE78r6mAXsis1twc0Wv36LXwO15tXzS4FXPZJRsnPiSf97GDvzE+N6gNLcHFJkw3VhzKt6Px3/
+ Rt5/rmYQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ48-0000000EKUL-0gC3; Fri, 26 Jan 2024 17:32:33 +0000
+ id 1rTQ48-0000000EKUM-0cz8; Fri, 26 Jan 2024 17:32:33 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ48-00000001em5-2PYf;
+ Hat Linux)) id 1rTQ48-00000001em8-2k7B;
  Fri, 26 Jan 2024 17:32:32 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -82,10 +82,11 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 18/47] hw/sh4/r2d: use pci_init_nic_devices()
-Date: Fri, 26 Jan 2024 17:24:55 +0000
-Message-ID: <20240126173228.394202-19-dwmw2@infradead.org>
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 19/47] hw/sparc64/sun4u: use pci_init_nic_devices()
+Date: Fri, 26 Jan 2024 17:24:56 +0000
+Message-ID: <20240126173228.394202-20-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
@@ -120,42 +121,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Previously, the first PCI NIC would be assigned to slot 2 even if the
-user override the model and made it something other than an rtl8139
-which is the default. Everything else would be dynamically assigned.
+The first sunhme NIC gets placed a function 1 on slot 1 of PCI bus A,
+and the rest are dynamically assigned on PCI bus B.
 
-Now, the first rtl8139 gets slot 2 and everything else is dynamic.
+Previously, any PCI NIC would get the special treatment purely by
+virtue of being first in the list.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/sh4/r2d.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/sparc64/sun4u.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index 4944994e9c..e9f316a6ce 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -240,7 +240,6 @@ static void r2d_init(MachineState *machine)
-     MemoryRegion *sdram = g_new(MemoryRegion, 1);
-     qemu_irq *irq;
-     DriveInfo *dinfo;
--    int i;
-     DeviceState *dev;
-     SysBusDevice *busdev;
-     MemoryRegion *address_space_mem = get_system_memory();
-@@ -309,9 +308,8 @@ static void r2d_init(MachineState *machine)
-                           0x555, 0x2aa, 0);
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index 24d53bf5fd..eda9b58a21 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -639,29 +639,18 @@ static void sun4uv_init(MemoryRegion *address_space_mem,
  
-     /* NIC: rtl8139 on-board, and 2 slots. */
--    for (i = 0; i < nb_nics; i++)
--        pci_nic_init_nofail(&nd_table[i], pci_bus,
--                            mc->default_nic, i == 0 ? "2" : NULL);
-+    pci_init_nic_in_slot(pci_bus, mc->default_nic, NULL, "2");
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
+     memset(&macaddr, 0, sizeof(MACAddr));
+     onboard_nic = false;
+-    for (i = 0; i < nb_nics; i++) {
+-        PCIBus *bus;
+-        nd = &nd_table[i];
+-
+-        if (!nd->model || strcmp(nd->model, mc->default_nic) == 0) {
+-            if (!onboard_nic) {
+-                pci_dev = pci_new_multifunction(PCI_DEVFN(1, 1), mc->default_nic);
+-                bus = pci_busA;
+-                memcpy(&macaddr, &nd->macaddr.a, sizeof(MACAddr));
+-                onboard_nic = true;
+-            } else {
+-                pci_dev = pci_new(-1, mc->default_nic);
+-                bus = pci_busB;
+-            }
+-        } else {
+-            pci_dev = pci_new(-1, nd->model);
+-            bus = pci_busB;
+-        }
  
-     /* USB keyboard */
-     usb_create_simple(usb_bus_find(-1), "usb-kbd");
++    nd = qemu_find_nic_info(mc->default_nic, true, NULL);
++    if (nd) {
++        pci_dev = pci_new_multifunction(PCI_DEVFN(1, 1), mc->default_nic);
+         dev = &pci_dev->qdev;
+         qdev_set_nic_properties(dev, nd);
+-        pci_realize_and_unref(pci_dev, bus, &error_fatal);
++        pci_realize_and_unref(pci_dev, pci_busA, &error_fatal);
++
++        memcpy(&macaddr, &nd->macaddr.a, sizeof(MACAddr));
++        onboard_nic = true;
+     }
++    pci_init_nic_devices(pci_busB, mc->default_nic);
+ 
+     /* If we don't have an onboard NIC, grab a default MAC address so that
+      * we have a valid machine id */
 -- 
 2.43.0
 
