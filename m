@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5437B83DAE7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:32:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1983D83DAE6
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:32:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTMIa-0000oV-KF; Fri, 26 Jan 2024 08:31:12 -0500
+	id 1rTMIc-0000qD-0h; Fri, 26 Jan 2024 08:31:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rTMIX-0000lU-Vu
+ id 1rTMIY-0000lW-1S
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:10 -0500
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rTMIT-0007b8-K9
+ id 1rTMIU-0007bN-EE
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:09 -0500
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2cf35e5c2ddso4474721fa.2
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40e72a567eeso12250355e9.0
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 05:31:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1706275863; x=1706880663; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0nf21EKXMPkJM8ze3CVTUdJSzYvTzNLrOGzIKTot8cI=;
- b=NGXOMCzhf7FnaY5lM1lGcQk4UUI9UplT7IeO8UhuTHGfaz4G7cgkPRgwwW0xxQHAea
- k3KWp7tTEtx77i5M1blaD5Y1049FbKGWqAyCVW0zC6oNB33IBKKQefcVCsQNASmKYgsC
- qbdSOeS+bL2gbVmgxV71rJLZww4XTd3vLIWaE9EsyroH+dUrw+sElz5GxdPv1ZORAUN2
- MpvPXV/sOtJx3PEnb/oZFIfiszZ0oBFLN54bSGHCk/YpCETDbbweATi6J2mAuSZdGEXs
- hNZsOLMBo65Bxy9hO9GnmmS+iWGAmSYiWhurevVd+TAVqQFLYETZAWMw6hm+LI6nMxvV
- VjXg==
+ d=ventanamicro.com; s=google; t=1706275865; x=1706880665; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RVWt+St3Ao7R6IQtw+wm6ZjZD9uCy5mKNVtcNByTS0E=;
+ b=IeQwgOQ7vBckQ0DNx8H9kA1oX7cu/N9QIfuBZneyUbbRGyeYHVlPAr4kdLntGCDyXI
+ yeSMRFhSLrFbsDfyQWRIH/MCJfXn+MmuWCWzMRDqoxTt6GtIeQzzsVU8OFurNPXlgowZ
+ RsV5FMoydVE1r0RHcWCES8x14AMIp/haRgI5QEUvE/tVG8jjAGG4fG+s7nPFOjA+E5qG
+ hIzxIoWp7cBiZvY4rrOBGlDi/jXR12BoEBBNsb6pXB+Bks2kYTI6Sqc6E4ucXMJ2t5dh
+ ZJAx+itjDoyuuwm4o1nrICmBZSYuPwPKJ9fAVTG8/0hXCD+CQJJTOxobAmFi4s4wQQXV
+ dkIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706275863; x=1706880663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0nf21EKXMPkJM8ze3CVTUdJSzYvTzNLrOGzIKTot8cI=;
- b=VeXHqDxj+yrt3nPomZ43lXjo5vCzmawNvKeYtBsas+waO1PChQ+jW/rnLeOsj8YFkQ
- Pyb+lo5XUWkdp3MlQqn4WXOnbiED0br2y9hhKuyrC3BWIzrmAE6/GLqnigkUiGZRkbCq
- B+Uz6A+HbtmBB2PwJ29DGAqVJ4gZeFkGkjLLhichwugey1izC6TOIy7EJ2wr72S8OJPS
- KfAVqd5Muh41wTQwWqwy4sbjryfyGEwDQdjPTXfevNrNtklIhuKgj9cTZ06cBBt746iP
- NBQwg2TcWq5AqTWxoa0ahh1h0mqhAm8BusA5Lb7bsrFg+69zZqgLf8k4Pnw0MQXuWLiN
- 6usw==
-X-Gm-Message-State: AOJu0YzzUBZ2JB8Vy631GR7xthmuu78Stt+aYckwbj4Q0CNzQvHlVpRI
- BqRdRXKEsdKW/vx1g+5jjIQwoBIzgILJ9wIcMt+AAFneLhA5ewE8rE1XI9C7VS0dl7etePOElcb
- l
-X-Google-Smtp-Source: AGHT+IH/3nPvij2/Z40gkyapC2Sm2N7u2M9Oa9iv2pAw6MCBxnf//mzepqHY+RDHMUgFr+hI9qOnVw==
-X-Received: by 2002:a2e:b5c4:0:b0:2cc:fc52:df9e with SMTP id
- g4-20020a2eb5c4000000b002ccfc52df9emr682130ljn.12.1706275863345; 
- Fri, 26 Jan 2024 05:31:03 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706275865; x=1706880665;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RVWt+St3Ao7R6IQtw+wm6ZjZD9uCy5mKNVtcNByTS0E=;
+ b=BXx1yMCmieq69X/xeI9r+iZYkoaSf887C1AWfM/sMvL7zz8ZCr69/KvCTIRzHmQuVu
+ gn7/aFBRgBvAWcZo3TgzarfjJl0mihWe7Xit6rvF3APn5RCF8lQXvTryfwPJIqNJRJOs
+ pqUBx3/KDMev0tDMLQPjKyFdIHpF6qdU/h0zwgzR9YH1CdEA4AAqqCVE9W7GOS6SAHzM
+ fLJObSHtqWI/T5sbRCje/LCAcZf/vuJQEHQw8boZGVRovQoojSJXU1Fq1BGmgDJALQFK
+ lTYVDg6PpdQK7fAQGCAJr8Nz44uhxyLOiCHGxn2pu276rR6b5ZtHas3G5fLj0vjcTYhQ
+ Vf8Q==
+X-Gm-Message-State: AOJu0Yy7sO7lnChPZvgM0wS6klAeLk6r5xI2X1VsS5q3tZXowxJEEP6c
+ m2/ml7jqNY/pU79kBVHsVMZ37SzC+fMdxYKJcImQcmImx1PSi+3pJjqIrvh60A13aDYTfMO5qzS
+ u
+X-Google-Smtp-Source: AGHT+IHP6LQoTNmZHR2oodocUL7BmkJZvjTK5udXH74C2vxgw35NBxU+8nXWncJRB05FM+LlJS0KJg==
+X-Received: by 2002:a05:600c:3785:b0:40e:c7fc:a44d with SMTP id
+ o5-20020a05600c378500b0040ec7fca44dmr547990wmr.355.1706275864754; 
+ Fri, 26 Jan 2024 05:31:04 -0800 (PST)
 Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
  [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
  by smtp.gmail.com with ESMTPSA id
- x16-20020aa7d390000000b0055c2b21be1dsm600205edq.35.2024.01.26.05.31.02
+ b26-20020a056402139a00b0055c4c97b1f2sm591166edv.91.2024.01.26.05.31.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 05:31:02 -0800 (PST)
+ Fri, 26 Jan 2024 05:31:04 -0800 (PST)
 From: Andrew Jones <ajones@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  dbarboza@ventanamicro.com
-Subject: [PATCH v2 0/6] riscv: named features riscv,isa, 'svade' rework
-Date: Fri, 26 Jan 2024 14:31:02 +0100
-Message-ID: <20240126133101.61344-8-ajones@ventanamicro.com>
+Subject: [PATCH v2 1/6] target/riscv/tcg: set 'mmu' with 'satp' in
+ cpu_set_profile()
+Date: Fri, 26 Jan 2024 14:31:03 +0100
+Message-ID: <20240126133101.61344-9-ajones@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240126133101.61344-8-ajones@ventanamicro.com>
+References: <20240126133101.61344-8-ajones@ventanamicro.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x22c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,45 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-This is a bundle of fixes based on discoveries that were made in the
-last week or so:
+Recent changes in options handling removed the 'mmu' default the bare
+CPUs had, meaning that we must enable 'mmu' by hand when using the
+rva22s64 profile CPU.
 
-- what we call "named features" are actually real extensions, which are
-  considered to be ratified by the profile spec that defines them. This
-  means that we need to add riscv,isa strings for them. More info can be
-  found on the commit msg of patch 2;
+Given that this profile is setting a satp mode, it already implies that
+we need a 'mmu'. Enable the 'mmu' in this case.
 
-- the design behind 'svade' and 'svadu' is wrong. 'svade' does not mean
-  'we do not have svadu'. In fact they can coexist. Patch 5 gives more
-  details about it.
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/tcg/tcg-cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-After this series, 'svade' is promoted to a regular extension and all
-the named features QEMU implements are now being displayed in riscv,isa.
-
-v2:
- - Ensure svade is off by default even for the max cpu type
-
-
-Andrew Jones (3):
-  target/riscv: Reset henvcfg to zero
-  target/riscv: Gate hardware A/D PTE bit updating
-  target/riscv: Promote svade to a normal extension
-
-Daniel Henrique Barboza (3):
-  target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
-  target/riscv: add riscv,isa to named features
-  target/riscv: add remaining named features
-
- target/riscv/cpu.c         | 63 ++++++++++++++++++++++++++++----------
- target/riscv/cpu_cfg.h     | 15 +++++++--
- target/riscv/cpu_helper.c  | 18 ++++++++---
- target/riscv/csr.c         |  2 +-
- target/riscv/tcg/tcg-cpu.c | 48 +++++++++++++++++++----------
- 5 files changed, 105 insertions(+), 41 deletions(-)
-
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index da437975b429..88f92d1c7d2c 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1107,6 +1107,7 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
+ 
+ #ifndef CONFIG_USER_ONLY
+     if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
++        object_property_set_bool(obj, "mmu", true, NULL);
+         const char *satp_prop = satp_mode_str(profile->satp_mode,
+                                               riscv_cpu_is_32bit(cpu));
+         object_property_set_bool(obj, satp_prop, profile->enabled, NULL);
 -- 
 2.43.0
 
