@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F5183DBFA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F4283DC15
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHF-0002HQ-Nx; Fri, 26 Jan 2024 09:33:53 -0500
+	id 1rTNHH-0002JP-Ar; Fri, 26 Jan 2024 09:33:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHC-0002Eu-Ga
+ id 1rTNHC-0002F3-S9
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:50 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHA-0007sf-FY
+ id 1rTNHA-0007sr-QI
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:50 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33922d2cb92so650785f8f.1
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-337cf4ac600so482313f8f.3
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279627; x=1706884427; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PQlpwttdu93pWOUx8f8ZpRO+tP7SjE8rg5GEXBoZTSo=;
- b=seGSi7NnkrNRe7w71GD2OVmjB1BCv5HjLtsVd6FS85WtfafRWb01v+7W7HVgf3kgRj
- sOGHF7N+UiZ+jfl+mikfAib7i0FxzqP2xkBfAviMAf3HV3jbMp0m2upeTH71k5N54qkf
- Vg7SJBnPTsKrJRlPFWzGglqtgyvYmlmgwNp73w6ZhxDX4pRPyHL6yGGlTQGUUsnHWuMv
- XHwoO4LWsuKJJQw5r5Fh+2o7Ih/l3DQS7w2R9lWgxPBdbUU9pEDmU4C6VPKk/WjEJAJ8
- Yz75fCQ+QYQhqoEOAovg8zB6CsKii1FP9zA7yNcju6jK6QRZcHIXqhyJWUMlrcBSuiJ5
- KyLw==
+ :reply-to; bh=fI0vqBKhfwteSfpqeytU8U01fv4ToN4htezLoldNdvs=;
+ b=sNl3UFpT7Hf7+MNWSqplgSGAit1vVweNpPau2JOFP+e0u+Ji8qJX601wob+qPQPat+
+ fe5FjMU2RTAAA5F4VsPh5QjUGAVd5nqFEKH89YnJJwfBF7IlHVejuHqe2VBXQhgqnxP1
+ yj/gl4ajRwx19Pysv5zaFgOO/+TLL71/6A5V5K1NmoLU/UKXHdpJ/8YcDayD5+begkGk
+ y2UzHH4VK/4CzfkQWdkICGLTf8ODJ+sjbSRl+JqA75w8dxULX0nm9aKwT8kICCBtJQu+
+ GyjbKJJ8RKB5s7gJsCg0nyqCQc319xd8mz3TlFneH2dGbO3E+oGsC78kP+1FE3KOQeqD
+ g1pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279627; x=1706884427;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PQlpwttdu93pWOUx8f8ZpRO+tP7SjE8rg5GEXBoZTSo=;
- b=tmgaf6S93km5ZMVqcy/2BVPXjHZjVIP2MyskX69fwl3mwcgx/gF1UqqM3mUiNgcr+4
- EJJoJNybep0rUkGipFyh5b6WyT+C/1lLrUM+vkIPKPJfxd2hDHqfkfAuwtCRMeEcwGfe
- 47BZuSaElsozRVMUQJkoxoYOzn+KJ1553d4Wimz1RfMeF0Y89ud6ywzY30lJqH9hxu0D
- CooChHRrFRUlLKgoGQte67/wCm45E9Fp7kX8RaHsrRjDIjlmki3xmrLiJvD76LPxZRFm
- BpGjLJjVsHooqWNw6Xp+phnTAHpKm6FWWq+UGk+OxRsApyOiihuvA1mV0CTwxByyDVNv
- sL4w==
-X-Gm-Message-State: AOJu0Yzt+GLzOsecWHz9ccbXFmTa5/q9nP4oIO1JOb/rn1yKbLIvPnEh
- ihC1UUOoOZWQFKi+Q4lGzZvlL9LaGC5UfadQW4fjbTU4ZRv1gQNJB2Jy0rGXGOVOSkUwHJvzSD+
- l
-X-Google-Smtp-Source: AGHT+IGuBCfmCEmJaHUcfVSPNBDGHt1VP1D8fr6a+qLf7wsrg+sWOuft+daQEJYCbDZC25qzk3/o3Q==
-X-Received: by 2002:adf:eac9:0:b0:33a:ea1:538f with SMTP id
- o9-20020adfeac9000000b0033a0ea1538fmr736911wrn.121.1706279627192; 
+ bh=fI0vqBKhfwteSfpqeytU8U01fv4ToN4htezLoldNdvs=;
+ b=lapP21BIl3CQ6BCIc8Px9IqrRcGPsbCZf3PtXYE7EWnKHQo/4zauGurEM3ReCx1RTM
+ d0qyeyM8xBh5d9ILkZeSb/rboGu9Bjr8cvpdp+20Q1SbmNMMjTPI+22/DgksDwfenTsW
+ m6dHtLBJiFv3OYOF4vYjjLiNcAI21SdwcXHh5ze9Ie3uXe3zF0UYV6fRigAv2MQQkuAv
+ FJslFXDFFYb2aTheC1WZiQs/pkvdh0ABFVI2dYkcASwxLcmt4tAMAceF6kpVCtlAzlXE
+ rQASCzrktdPfSaurpvuDukYscCCAZ5US/VfNFM/l/w1joewR3493FtwpCeueezVDYIIy
+ wSuA==
+X-Gm-Message-State: AOJu0YxD5RKwi5xrcnlxsDDwOSdwCPZ/xfN9ZYpRbNf6NwNj+W6FzSp4
+ j06levVTNMVcH7tpYGWrog/E18xbGMSXLgzreVxo4Kl1wk9eXgENWP9xNGVk4ar1K9G+dCGWVp/
+ g
+X-Google-Smtp-Source: AGHT+IGKMXqE4/LQMu87xBGIIHTlmQBVHx0bcptNPN7l4/BMpSzyxPN81AGiXxFmJeQKcEk9O2nsmQ==
+X-Received: by 2002:adf:f54c:0:b0:337:bf75:1a3e with SMTP id
+ j12-20020adff54c000000b00337bf751a3emr1124667wrp.37.1706279627552; 
  Fri, 26 Jan 2024 06:33:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.46
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Jan 2024 06:33:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/36] hw/arm/xilinx_zynq: Include missing 'exec/tswap.h' header
-Date: Fri, 26 Jan 2024 14:33:16 +0000
-Message-Id: <20240126143341.2101237-12-peter.maydell@linaro.org>
+Subject: [PULL 12/36] hw/arm/smmuv3: Include missing 'hw/registerfields.h'
+ header
+Date: Fri, 26 Jan 2024 14:33:17 +0000
+Message-Id: <20240126143341.2101237-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +95,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-hw/arm/xilinx_zynq.c calls tswap32() which is declared
-in "exec/tswap.h". Include it in order to avoid when
-refactoring unrelated headers:
+hw/arm/smmuv3-internal.h uses the REG32() and FIELD()
+macros defined in "hw/registerfields.h". Include it in
+order to avoid when refactoring unrelated headers:
 
-  hw/arm/xilinx_zynq.c:103:31: error: call to undeclared function 'tswap32';
-  ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-          board_setup_blob[n] = tswap32(board_setup_blob[n]);
-                                ^
+  In file included from ../../hw/arm/smmuv3.c:34:
+  hw/arm/smmuv3-internal.h:36:28: error: expected identifier
+  REG32(IDR0,                0x0)
+                             ^
+  hw/arm/smmuv3-internal.h:37:5: error: expected function body after function declarator
+      FIELD(IDR0, S2P,         0 , 1)
+      ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-3-philmd@linaro.org
+Message-id: 20240118200643.29037-4-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xilinx_zynq.c | 1 +
+ hw/arm/smmuv3-internal.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index dbb9793aa13..d4c817ecdc0 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -37,6 +37,7 @@
- #include "hw/qdev-clock.h"
- #include "sysemu/reset.h"
- #include "qom/object.h"
-+#include "exec/tswap.h"
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index 6076025ad6a..e987bc4686b 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -21,6 +21,7 @@
+ #ifndef HW_ARM_SMMUV3_INTERNAL_H
+ #define HW_ARM_SMMUV3_INTERNAL_H
  
- #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
- OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
++#include "hw/registerfields.h"
+ #include "hw/arm/smmu-common.h"
+ 
+ typedef enum SMMUTranslationStatus {
 -- 
 2.34.1
 
