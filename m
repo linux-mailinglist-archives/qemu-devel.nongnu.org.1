@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B6B83D864
+	by mail.lfdr.de (Postfix) with ESMTPS id B672183D865
 	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 11:46:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTJhX-0000e5-Jd; Fri, 26 Jan 2024 05:44:47 -0500
+	id 1rTJii-0001rV-Ap; Fri, 26 Jan 2024 05:46:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTJhH-0000bV-MS
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 05:44:33 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTJh4-0002nD-4A
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 05:44:21 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-51028acdcf0so269895e87.0
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 02:44:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706265849; x=1706870649; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fauZjtje0U1FVRMrKjMx2UjITlVsoiQwgqcFx8wHmk4=;
- b=CuPEWkA/KHjOx0L8koyqP9az317GZ7FOqGnRNd5oPAHCR3xddIdoqttSvK/ec99PJD
- whspO664m+lKOW9SyAEtXaYmcrl/ISVQY6S2UsgZVceaBHCSBj5t093dhwrrjyiB8a6L
- SNH3z3XOQJqpAbCvbOkSMtCxggTOLJe8lYSBHuxMYElHRAxrymIQ4LJPNbpjJE7q61ho
- N+ibHvxsL8Y4PllCFT9Pk3KDL+NBVFX2+eJtYRxgMiks33T7EFyfwfOc2fF4emf0LfrG
- kXyzJ4BZC6ZGeEN4hG7R917YcOZHTDSqq6XsuDoGw/C7l5dyF8EBZz7zUiV8VoL5Mc8Y
- E6bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706265849; x=1706870649;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fauZjtje0U1FVRMrKjMx2UjITlVsoiQwgqcFx8wHmk4=;
- b=HwQeyi+br9JDQtcNelflOVfR7eHgK1bNCStWKveja8q/mE7Mtw/1r3ui5Zg+cFN2ss
- /HGN6LNSNthCAVKfhRwpdfa6QmMXmDenfg1yczru44/dqnLpk7IRKXOHarZyWJNjTI1f
- YPxzqdNvfcBPyEECMDMasU1fcym60m/jwRtFMns87xUW54UJ0hf+8cTIqmkyfMiv4MZX
- il1pZyW1jrmQ+9+BcTkS8kNbgSONqL4iYDYBY2dCCKgIloZrMmLguZvEkcAt987pbIKH
- C07jhaasY7d0E8EPTbnq8oUhzEIohaUZCbsflHK+AYmhnclcieWRHC5uDO9rvxtA6Nc/
- nr9A==
-X-Gm-Message-State: AOJu0YwuDGZqJKPNt7Xgk1Xz4bKKVpuEpv3Jzt5cH433fcUohXRebaxR
- oRCG0kRF6f8odBptwRD2QNa51t5w7IBocSpy5bwoqhA/LBamGsppc6lgC9ZOHaU=
-X-Google-Smtp-Source: AGHT+IFMzEJnU8k7tPivK/ZHrbxoGbg2RttftXQbdxMboqBdH8488KOW414mOaVfwvx/B2ibfemAhw==
-X-Received: by 2002:ac2:4555:0:b0:510:16f3:8087 with SMTP id
- j21-20020ac24555000000b0051016f38087mr583321lfm.32.1706265849153; 
- Fri, 26 Jan 2024 02:44:09 -0800 (PST)
-Received: from [192.168.69.100] ([176.176.142.39])
- by smtp.gmail.com with ESMTPSA id
- x20-20020ac25dd4000000b0051023513d8bsm140051lfq.258.2024.01.26.02.44.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jan 2024 02:44:08 -0800 (PST)
-Message-ID: <17455043-25cf-4978-afdd-147e689a1abd@linaro.org>
-Date: Fri, 26 Jan 2024 11:44:06 +0100
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rTJiV-0001km-RT; Fri, 26 Jan 2024 05:45:47 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rTJiS-0003RP-CG; Fri, 26 Jan 2024 05:45:46 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 73E9F47832;
+ Fri, 26 Jan 2024 13:46:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E77346BEA6;
+ Fri, 26 Jan 2024 13:45:39 +0300 (MSK)
+Message-ID: <dbb90f22-d17d-4c40-8684-58ec976a014e@tls.msk.ru>
+Date: Fri, 26 Jan 2024 13:45:39 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] target/arm: Move v7m-related code from cpu32.c into a
- separate file
+Subject: Re: [PATCH trivial 1/2] close_all_open_fd(): move to oslib-posix.c
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>
-References: <20240126084001.879548-1-thuth@redhat.com>
- <20240126084001.879548-2-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240126084001.879548-2-thuth@redhat.com>
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, QEMU Trivial <qemu-trivial@nongnu.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>
+References: <cover.1706221377.git.mjt@tls.msk.ru>
+ <94fcee0d7595865b3a6fab744982ad47715e5faf.1706221377.git.mjt@tls.msk.ru>
+ <ffc002d5-f648-43b8-b938-011a4a92cf5e@vivier.eu>
+ <ZbN2DhQ4GeKc-aaX@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <ZbN2DhQ4GeKc-aaX@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,63 +86,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas,
+26.01.2024 12:06, Daniel P. Berrangé wrote:
+> On Fri, Jan 26, 2024 at 08:44:13AM +0100, Laurent Vivier wrote:
+>> Le 25/01/2024 à 23:29, Michael Tokarev a écrit :
 
-On 26/1/24 09:39, Thomas Huth wrote:
-> Move the code to a separate file so that we do not have to compile
-> it anymore if CONFIG_ARM_V7M is not set.
+
+>> I think the way using sysconf(_SC_OPEN_MAX) is more portable, simpler and
+>> cleaner than the one using /proc/self/fd.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   target/arm/tcg/cpu-v7m.c   | 292 +++++++++++++++++++++++++++++++++++++
->   target/arm/tcg/cpu32.c     | 261 ---------------------------------
->   target/arm/tcg/meson.build |   4 +
->   3 files changed, 296 insertions(+), 261 deletions(-)
->   create mode 100644 target/arm/tcg/cpu-v7m.c
+> A fallback that uses _SC_OPEN_MAX is good for portability, but it is
+> should not be considered a replacement for iterating over /proc/self/fd,
+> rather an additional fallback for non-Linux, or when /proc is not mounted.
+> It is not uncommon for _SC_OPEN_MAX to be *exceedingly* high
 > 
-> diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-> new file mode 100644
-> index 0000000000..d61873ab6d
-> --- /dev/null
-> +++ b/target/arm/tcg/cpu-v7m.c
-> @@ -0,0 +1,292 @@
-> +/*
-> + * QEMU ARM V7 TCG-only CPUs.
+>    $ podman run -it quay.io/centos/centos:stream9
+>    [root@4a440d62935c /]# ulimit -n
+>    524288
+> 
+> Iterating over 1/2 a million FDs is a serious performance penalty that
+> we don't want to have, so _SC_OPEN_MAX should always be the last resort.
 
-s/V7/v7M/
+ From yesterday conversation in IRC which started this:
 
-> + *
-> + * Copyright (c) 2012 SUSE LINUX Products GmbH
-> + *
-> + * This code is licensed under the GNU GPL v2 or later.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "cpu.h"
-> +#include "hw/core/tcg-cpu-ops.h"
-> +#include "internals.h"
-> +#include "hw/intc/armv7m_nvic.h"
-> +
-> +/* CPU models. These are not needed for the AArch64 linux-user build. */
-> +#if !defined(CONFIG_USER_ONLY) || !defined(TARGET_AARCH64)
+  <mmlb> open files          (-n) 1073741816
 
-Could we do that in meson instead?
+(it is a docker container)
+They weren't able to start qemu.. :)
 
-> diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-> index 6fca38f2cc..8c7f6b43f3 100644
-> --- a/target/arm/tcg/meson.build
-> +++ b/target/arm/tcg/meson.build
-> @@ -52,6 +52,10 @@ arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
->     'sve_helper.c',
->   ))
->   
-> +arm_ss.add(when: 'CONFIG_ARM_V7M', if_true: files(
+Sanity of such setting is questionable, but ok.
 
--> arm_system_ss
+Not only linux implement close_range(2) syscall, it is also
+available on some *BSDs.
 
-> +  'cpu-v7m.c'
-> +))
+And the most important point is, - we should aim at using O_CLOEXEC
+everywhere, without this need to close each FD at exec time.  I think
+qemu is the only software with such paranoid closing when just running
+an interface setup script..
 
+So yes, loop though all FDs is okay too as a last resort but..
+For scripts in net/tap.c, this isn't necessary at all.  I want to take
+a look at all open(2)/socket(2)/etc calls in qemu to ensure they're all
+using O_CLOEXEC or are closed promptly, after which this code can be
+removed entirely, hopefully.  Maybe this patch wont be needed after
+that (so only async-teardown will need that code since it doesn't
+do exec()).
+
+Thanks,
+
+/mjt
 
