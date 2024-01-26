@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0019F83DC10
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7983DBF0
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:34:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHA-0002Df-HM; Fri, 26 Jan 2024 09:33:48 -0500
+	id 1rTNH9-0002BO-Ff; Fri, 26 Jan 2024 09:33:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH8-0002BC-FO
+ id 1rTNH8-0002B5-4B
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:46 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH6-0007rI-CT
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:46 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33929364bdaso414978f8f.2
+ id 1rTNH6-0007rK-Bf
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:45 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-336c8ab0b20so462348f8f.1
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279623; x=1706884423; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=BiBlBIvpDD1Y0teocb3BdvPikx3aYsdw5wpsTL5vxyM=;
- b=bKbFWFgECtQzNwzAl8WGnM3vlhmPlxvqdMDTzQCS7eg00sNBWDN8GmNga0BVohx1J5
- je3t54Va1HJmZmVIsZw7k1Ph3Q5CW0pvDgwwaEapKo2PIp+CsN11fDf9wYPShJDlxqY3
- EUzAjJp8quzyYWHY8HQMZGSelkzVEpnH+BUUf23/anZ4+7fq1NnGdG2RPGdDx2XWQiiS
- Y4MKA9ZhcboGxXpnqot3rkmwWM7EFDwjH3zaMEyLiFPkavC2QDRe8g8Kk0hUP9pF8dme
- dxTV2P8vE12iJoY4mT5mLWYmaTg8QV0yLKGqAG90DjGcsiCsUh6/I10mF7Cin90h7zvb
- 2VcA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=zP/lYKNH4Nfu30L6dAxijOyJutxvSbBpVMIqdo7k2Lk=;
+ b=MtSdYjv0YRMbg/lqAnQ0kgiyHcQG1633SNqoMzaxxNbqfbO0bRVB694tZ2GmlDB3Za
+ JsYjgAmdpr/CoYTX/wGVei6JG4M9GxDkW/1EyT2K6POKT5+xjSh5vbRA0txDYHcW2I64
+ asH24uO/bCw95eG4dx2noITXt8eNDunk0HBxxw+qj6Dib5rzyLE7/0yhVfERGIMxogxI
+ w2e8JIpdxo534AofEGYkb2GbXwMVJzDqQ85Ze5YlG9BkZKVYL10mZg93IHeGS6pOTUlF
+ Vcso7l/+nO0suBYroeN4lu3k4+SqxHm+9IomCEf2MB1kFLa+sf11c7EnUbnMH8on2VS/
+ I/PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279623; x=1706884423;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BiBlBIvpDD1Y0teocb3BdvPikx3aYsdw5wpsTL5vxyM=;
- b=sfJnCEeNtpR9kN868g8VXEE+6FvKaaDMoK0S/gBZDDkRT/SQpAWtX6vteMejFAoi+y
- nhVQ9ggSbOHB1Fuqx4IMLOUjYIxx4MuVwH5E5c9tqeIb1rCxOvqsUphJazBn9dr68Bod
- KTkTLgOOszY8Uw4hzFTtUNSF+hTEQYgNb/ZxPuYgaq4/XTEur8Mm2ONcgy7WK4UG81Uc
- Uqaee1AgqX8r4M5a+xC+xVuSUsjP/TzCHe05/2aAIiw38EFIxA8hiXW3cBlVs8H4bKHT
- N7DPeUho9D1MXlq0Bu9bpbD21DhcjVsDpwjKl4TPoVwuNEYH/atrr8mY/A0E2Nr9ykvZ
- 2NnQ==
-X-Gm-Message-State: AOJu0Yx+LAWDZ9cmiXs3/gvh8P8brWxrc9ASLKYaVcKoNv1X5e4uYe5u
- 3e9f2O0xfUu/AOs/mboWjrjeyJZFfASGX3OpE5LI1OEFsB5vw/wuTx6PftWfGOIhAIMMAzUfMUm
- 8
-X-Google-Smtp-Source: AGHT+IHyeMoCd7mkAA20btRiQHTcvweRO+zMtZDmhcoqzJ0HwKrhhA7XN1BdmX8Xl4X1qzXmWwBSSg==
-X-Received: by 2002:adf:fd84:0:b0:337:bf42:b1f8 with SMTP id
- d4-20020adffd84000000b00337bf42b1f8mr1113172wrr.137.1706279622579; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zP/lYKNH4Nfu30L6dAxijOyJutxvSbBpVMIqdo7k2Lk=;
+ b=sVzrBdrMWURDgd1ay9R7SWCiAgL5Qwl+DquFfpVCCBMERG1qbgUGk1ls4p+0nqSpMN
+ JfPtHhvQxnhM/MVF932x3Q97ORZ5SFupVf6ZAitu9a8mnWwYNnR640ym1UdFOozkVMJA
+ 5wF0QeoNjIJiuy2Y8JDFEWVwGwYvkVbZlMXCwMzOQclsSIOviEfQOGKOePwVO5W8OHWV
+ o1ZSYv5CrOSyj7VlaQ60GEJE/3UaCmmxo1XVA/fTjopkfVP8GXy3s8A6xWSNqoutxqcU
+ 7zsYpIRiRRbiJI6U3Z0/RorbewtH8bphlsmRHygn9SPne31Ot3yDBEr4xaaQAg/m2mAN
+ +kJA==
+X-Gm-Message-State: AOJu0YxPmlfxw35ceFqnFqbcGl4t890PEjr8eLo/nOZoI7PoJpzMlqNH
+ TZSNPfGZq7ztiUwdM4C1MHhzl06PKwKtgtU5kiOO5wnu45/fQD/fJfAlc2LB36W3H/Jyw5v4dkx
+ 2
+X-Google-Smtp-Source: AGHT+IFTxB9KxuSb/3KhnTp6lA0Kc+/qfeKdIS95NSRlIDuRfp5nUksU6beol6ljAHM11MONk7EpUg==
+X-Received: by 2002:adf:fd07:0:b0:339:431b:90f4 with SMTP id
+ e7-20020adffd07000000b00339431b90f4mr1125247wrr.100.1706279622995; 
  Fri, 26 Jan 2024 06:33:42 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,15 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/36] target-arm queue
-Date: Fri, 26 Jan 2024 14:33:05 +0000
-Message-Id: <20240126143341.2101237-1-peter.maydell@linaro.org>
+Subject: [PULL 01/36] target/xtensa: fix OOB TLB entry access
+Date: Fri, 26 Jan 2024 14:33:06 +0000
+Message-Id: <20240126143341.2101237-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
+References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,166 +91,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 5bab95dc74d43bbb28c6a96d24c810a664432057:
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-  Merge tag 'pull-request-2024-01-24' of https://gitlab.com/thuth/qemu into staging (2024-01-25 12:33:42 +0000)
+r[id]tlb[01], [iw][id]tlb opcodes use TLB way index passed in a register
+by the guest. The host uses 3 bits of the index for ITLB indexing and 4
+bits for DTLB, but there's only 7 entries in the ITLB array and 10 in
+the DTLB array, so a malicious guest may trigger out-of-bound access to
+these arrays.
 
-are available in the Git repository at:
+Change split_tlb_entry_spec return type to bool to indicate whether TLB
+way passed to it is valid. Change get_tlb_entry to return NULL in case
+invalid TLB way is requested. Add assertion to xtensa_tlb_get_entry that
+requested TLB way and entry indices are valid. Add checks to the
+[rwi]tlb helpers that requested TLB way is valid and return 0 or do
+nothing when it's not.
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240126
+Cc: qemu-stable@nongnu.org
+Fixes: b67ea0cd7441 ("target-xtensa: implement memory protection options")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20231215120307.545381-1-jcmvbkbc@gmail.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/xtensa/mmu_helper.c | 47 ++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-for you to fetch changes up to 5e6be95ed1578c7cfac2082b39384d99fd912508:
+diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
+index 12552a33470..2fda4e887cc 100644
+--- a/target/xtensa/mmu_helper.c
++++ b/target/xtensa/mmu_helper.c
+@@ -224,22 +224,31 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
+  * Split TLB address into TLB way, entry index and VPN (with index).
+  * See ISA, 4.6.5.5 - 4.6.5.8 for the TLB addressing format
+  */
+-static void split_tlb_entry_spec(CPUXtensaState *env, uint32_t v, bool dtlb,
+-        uint32_t *vpn, uint32_t *wi, uint32_t *ei)
++static bool split_tlb_entry_spec(CPUXtensaState *env, uint32_t v, bool dtlb,
++                                 uint32_t *vpn, uint32_t *wi, uint32_t *ei)
+ {
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+         *wi = v & (dtlb ? 0xf : 0x7);
+-        split_tlb_entry_spec_way(env, v, dtlb, vpn, *wi, ei);
++        if (*wi < (dtlb ? env->config->dtlb.nways : env->config->itlb.nways)) {
++            split_tlb_entry_spec_way(env, v, dtlb, vpn, *wi, ei);
++            return true;
++        } else {
++            return false;
++        }
+     } else {
+         *vpn = v & REGION_PAGE_MASK;
+         *wi = 0;
+         *ei = (v >> 29) & 0x7;
++        return true;
+     }
+ }
+ 
+ static xtensa_tlb_entry *xtensa_tlb_get_entry(CPUXtensaState *env, bool dtlb,
+                                               unsigned wi, unsigned ei)
+ {
++    const xtensa_tlb *tlb = dtlb ? &env->config->dtlb : &env->config->itlb;
++
++    assert(wi < tlb->nways && ei < tlb->way_size[wi]);
+     return dtlb ?
+         env->dtlb[wi] + ei :
+         env->itlb[wi] + ei;
+@@ -252,11 +261,14 @@ static xtensa_tlb_entry *get_tlb_entry(CPUXtensaState *env,
+     uint32_t wi;
+     uint32_t ei;
+ 
+-    split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei);
+-    if (pwi) {
+-        *pwi = wi;
++    if (split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei)) {
++        if (pwi) {
++            *pwi = wi;
++        }
++        return xtensa_tlb_get_entry(env, dtlb, wi, ei);
++    } else {
++        return NULL;
+     }
+-    return xtensa_tlb_get_entry(env, dtlb, wi, ei);
+ }
+ 
+ static void xtensa_tlb_set_entry_mmu(const CPUXtensaState *env,
+@@ -482,7 +494,12 @@ uint32_t HELPER(rtlb0)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+         uint32_t wi;
+         const xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, &wi);
+-        return (entry->vaddr & get_vpn_mask(env, dtlb, wi)) | entry->asid;
++
++        if (entry) {
++            return (entry->vaddr & get_vpn_mask(env, dtlb, wi)) | entry->asid;
++        } else {
++            return 0;
++        }
+     } else {
+         return v & REGION_PAGE_MASK;
+     }
+@@ -491,7 +508,12 @@ uint32_t HELPER(rtlb0)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+ uint32_t HELPER(rtlb1)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+ {
+     const xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, NULL);
+-    return entry->paddr | entry->attr;
++
++    if (entry) {
++        return entry->paddr | entry->attr;
++    } else {
++        return 0;
++    }
+ }
+ 
+ void HELPER(itlb)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+@@ -499,7 +521,7 @@ void HELPER(itlb)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
+     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
+         uint32_t wi;
+         xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, &wi);
+-        if (entry->variable && entry->asid) {
++        if (entry && entry->variable && entry->asid) {
+             tlb_flush_page(env_cpu(env), entry->vaddr);
+             entry->asid = 0;
+         }
+@@ -537,8 +559,9 @@ void HELPER(wtlb)(CPUXtensaState *env, uint32_t p, uint32_t v, uint32_t dtlb)
+     uint32_t vpn;
+     uint32_t wi;
+     uint32_t ei;
+-    split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei);
+-    xtensa_tlb_set_entry(env, dtlb, wi, ei, vpn, p);
++    if (split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei)) {
++        xtensa_tlb_set_entry(env, dtlb, wi, ei, vpn, p);
++    }
+ }
+ 
+ /*!
+-- 
+2.34.1
 
-  hw/arm: add PCIe to Freescale i.MX6 (2024-01-26 12:23:04 +0000)
-
-----------------------------------------------------------------
-target-arm queue:
- * Fix VNCR fault detection logic
- * Fix A64 scalar SQSHRN and SQRSHRN
- * Fix incorrect aa64_tidcp1 feature check
- * hw/arm/virt.c: Remove newline from error_report() string
- * hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
- * hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
- * hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
- * hw/arm: Add EHCI/OHCI controllers to Allwinner R40 and Bananapi board
- * hw/arm: Add AHCI/SATA controller to Allwinner R40 and Bananapi board
- * hw/arm: Add watchdog timer to Allwinner H40 and Bananapi board
- * arm: various include header cleanups
- * cleanups to allow some files to be built only once
- * fsl-imx6ul: Add various missing unimplemented devices
- * docs/system/arm/virt.rst: Add note on CPU features off by default
- * hw/char/imx_serial: Implement receive FIFO and ageing timer
- * target/xtensa: fix OOB TLB entry access
- * bswap.h: Fix const_le64() macro
- * hw/arm: add PCIe to Freescale i.MX6
-
-----------------------------------------------------------------
-Guenter Roeck (4):
-      hw/arm: Add EHCI/OHCI controllers to Allwinner R40 and Bananapi board
-      hw/arm: Add AHCI/SATA controller to Allwinner R40 and Bananapi board
-      hw/arm: Add watchdog timer to Allwinner H40 and Bananapi board
-      fsl-imx6ul: Add various missing unimplemented devices
-
-Gustavo Romero (1):
-      docs/system/arm/virt.rst: Add note on CPU features off by default
-
-Max Filippov (1):
-      target/xtensa: fix OOB TLB entry access
-
-Nikita Ostrenkov (1):
-      hw/arm: add PCIe to Freescale i.MX6
-
-Peter Maydell (6):
-      target/arm: Fix VNCR fault detection logic
-      hw/arm/virt.c: Remove newline from error_report() string
-      hw/arm/musicpal: Convert to qemu_add_kbd_event_handler()
-      target/arm: Fix A64 scalar SQSHRN and SQRSHRN
-      bswap.h: Fix const_le64() macro
-      target/arm: Fix incorrect aa64_tidcp1 feature check
-
-Philippe Mathieu-Daudé (20):
-      hw/arm/allwinner-a10: Unconditionally map the USB Host controllers
-      hw/arm/nseries: Unconditionally map the TUSB6010 USB Host controller
-      hw/arm/exynos4210: Include missing 'exec/tswap.h' header
-      hw/arm/xilinx_zynq: Include missing 'exec/tswap.h' header
-      hw/arm/smmuv3: Include missing 'hw/registerfields.h' header
-      hw/arm/xlnx-versal: Include missing 'cpu.h' header
-      target/arm/cpu-features: Include missing 'hw/registerfields.h' header
-      target/arm/cpregs: Include missing 'hw/registerfields.h' header
-      target/arm/cpregs: Include missing 'kvm-consts.h' header
-      target/arm: Expose arm_cpu_mp_affinity() in 'multiprocessing.h' header
-      target/arm: Declare ARM_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'
-      hw/cpu/a9mpcore: Build it only once
-      hw/misc/xlnx-versal-crl: Include generic 'cpu-qom.h' instead of 'cpu.h'
-      hw/misc/xlnx-versal-crl: Build it only once
-      target/arm: Expose M-profile register bank index definitions
-      hw/arm/armv7m: Make 'hw/intc/armv7m_nvic.h' a target agnostic header
-      target/arm: Move ARM_CPU_IRQ/FIQ definitions to 'cpu-qom.h' header
-      target/arm: Move e2h_access() helper around
-      target/arm: Move GTimer definitions to new 'gtimer.h' header
-      hw/arm: Build various units only once
-
-Rayhan Faizel (1):
-      hw/char/imx_serial: Implement receive FIFO and ageing timer
-
-Richard Henderson (2):
-      target/arm: Rename arm_cpu_mp_affinity
-      target/arm: Create arm_cpu_mp_affinity
-
- docs/system/arm/bananapi_m2u.rst  |   5 +-
- docs/system/arm/virt.rst          |  13 ++++
- hw/arm/smmuv3-internal.h          |   1 +
- include/hw/arm/allwinner-r40.h    |  15 +++++
- include/hw/arm/fsl-imx6.h         |  44 +++++++------
- include/hw/arm/fsl-imx6ul.h       |   2 +
- include/hw/arm/xlnx-versal.h      |   1 +
- include/hw/char/imx_serial.h      |  20 +++++-
- include/hw/intc/armv7m_nvic.h     |   2 +-
- include/hw/misc/xlnx-versal-crl.h |   2 +-
- include/qemu/bswap.h              |  16 ++---
- target/arm/cpregs.h               |   3 +
- target/arm/cpu-features.h         |   4 +-
- target/arm/cpu-qom.h              |  24 +++++++
- target/arm/cpu.h                  |  34 +---------
- target/arm/gtimer.h               |  21 ++++++
- target/arm/multiprocessing.h      |  16 +++++
- hw/arm/allwinner-a10.c            |  50 ++++++--------
- hw/arm/allwinner-h3.c             |   2 +
- hw/arm/allwinner-r40.c            |  69 +++++++++++++++++++-
- hw/arm/armv7m.c                   |   2 +
- hw/arm/aspeed_ast2400.c           |   1 +
- hw/arm/aspeed_ast2600.c           |   1 +
- hw/arm/bcm2836.c                  |   2 +
- hw/arm/collie.c                   |   1 -
- hw/arm/exynos4210.c               |   2 +
- hw/arm/fsl-imx25.c                |   1 +
- hw/arm/fsl-imx31.c                |   1 +
- hw/arm/fsl-imx6.c                 |  26 ++++++++
- hw/arm/fsl-imx6ul.c               |  31 +++++++++
- hw/arm/fsl-imx7.c                 |   1 +
- hw/arm/gumstix.c                  |   1 -
- hw/arm/highbank.c                 |   1 +
- hw/arm/integratorcp.c             |   2 +-
- hw/arm/mainstone.c                |   1 -
- hw/arm/musicpal.c                 | 133 ++++++++++++++++++--------------------
- hw/arm/npcm7xx.c                  |   3 +-
- hw/arm/nseries.c                  |   4 +-
- hw/arm/omap1.c                    |   1 +
- hw/arm/omap2.c                    |   2 +-
- hw/arm/omap_sx1.c                 |   1 -
- hw/arm/palm.c                     |   1 -
- hw/arm/realview.c                 |   1 +
- hw/arm/sbsa-ref.c                 |   4 +-
- hw/arm/spitz.c                    |   1 -
- hw/arm/strongarm.c                |   2 +-
- hw/arm/versatilepb.c              |   2 +-
- hw/arm/vexpress.c                 |   2 +-
- hw/arm/virt-acpi-build.c          |   4 +-
- hw/arm/virt.c                     |  15 +++--
- hw/arm/xilinx_zynq.c              |   3 +-
- hw/arm/xlnx-versal-virt.c         |   5 +-
- hw/arm/xlnx-versal.c              |   2 +
- hw/arm/xlnx-zynqmp.c              |   2 +
- hw/arm/z2.c                       |   1 -
- hw/char/imx_serial.c              | 102 +++++++++++++++++++++++++----
- hw/cpu/a15mpcore.c                |   1 +
- hw/cpu/a9mpcore.c                 |   2 +-
- hw/misc/xlnx-versal-crl.c         |   5 +-
- target/arm/arm-powerctl.c         |   3 +-
- target/arm/cpu.c                  |  13 +++-
- target/arm/helper.c               |  30 +++++----
- target/arm/hvf/hvf.c              |   6 +-
- target/arm/kvm.c                  |   1 +
- target/arm/machine.c              |   1 +
- target/arm/tcg/psci.c             |   3 +-
- target/arm/tcg/tlb_helper.c       |   2 +-
- target/arm/tcg/translate-a64.c    |   2 +-
- target/xtensa/mmu_helper.c        |  47 ++++++++++----
- hw/arm/Kconfig                    |   6 ++
- hw/arm/meson.build                |  23 +++----
- hw/cpu/meson.build                |   2 +-
- hw/misc/meson.build               |   2 +-
- 73 files changed, 597 insertions(+), 261 deletions(-)
- create mode 100644 target/arm/gtimer.h
- create mode 100644 target/arm/multiprocessing.h
 
