@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E389183D373
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBD483D371
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:19:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTDfI-0001oF-Q3; Thu, 25 Jan 2024 23:18:04 -0500
+	id 1rTDfL-0001q2-BK; Thu, 25 Jan 2024 23:18:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfG-0001nm-Pn
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:02 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfI-0001oK-0Z
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:04 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfE-0004z2-8r
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfF-0004zB-3Y
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706242679;
+ s=mimecast20190719; t=1706242680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5O48hzm3gfL1t5vlHM4mhcRlYYJEH9P+E36O4VJdn9I=;
- b=ZGH0DvjBygYUk39kN/1CFh3+RXaQnz+qBL6iHXfQd3lNh9LIGFCrKj7kZg5xJSxqwHpTlf
- 34OSmBYla0TZpUAz38UteV43m8WTP8zRZp2ToNlQwYwuQkcwwJBWgunLAP9a+Ra0FhCLv9
- 0ojnGB1yaBLezQhyZS0zi1mr6fNNDLw=
+ bh=C4ER0TJ1Vqgpct/whtoJPyK9n6HJ6571tM7r0VERKjg=;
+ b=I7akx1Q25uIXJDk915OXctgxkbbi0Zp/tgOCDmmSDe+EJGs1jW4EDbSABX4luHU1mNzXju
+ 7cRNlfZZmZLjOmc3eqkLNb3sk1D+bXrWviJplsFHtUfajZKXIPu81e1Alb0QsBuhuckvV0
+ QwvX7ECfFFJVr/lGklbsz7EgiHxZzpI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-0QgQoVPzNh6oewMbiMf4rg-1; Thu, 25 Jan 2024 23:17:55 -0500
-X-MC-Unique: 0QgQoVPzNh6oewMbiMf4rg-1
+ us-mta-155-LQyv0wmkPQSH2vgXomTesg-1; Thu, 25 Jan 2024 23:17:58 -0500
+X-MC-Unique: LQyv0wmkPQSH2vgXomTesg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0CF7683DE29;
- Fri, 26 Jan 2024 04:17:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE047185A780;
+ Fri, 26 Jan 2024 04:17:57 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 68F4E492BC6;
- Fri, 26 Jan 2024 04:17:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A6256492BC6;
+ Fri, 26 Jan 2024 04:17:55 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>,
-	peterx@redhat.com
-Subject: [PULL 08/15] ci: Disable migration compatibility tests for aarch64
-Date: Fri, 26 Jan 2024 12:17:18 +0800
-Message-ID: <20240126041725.124562-9-peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/15] migration/yank: Use channel features
+Date: Fri, 26 Jan 2024 12:17:19 +0800
+Message-ID: <20240126041725.124562-10-peterx@redhat.com>
 In-Reply-To: <20240126041725.124562-1-peterx@redhat.com>
 References: <20240126041725.124562-1-peterx@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,40 +81,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-Until 9.0 is out, we need to keep the aarch64 job disabled because the
-tests always use the n-1 version of migration-test. That happens to be
-broken for aarch64 in 8.2. Once 9.0 is out, it will become the n-1
-version and it will bring the fixed tests.
+Stop using outside knowledge about the io channels when registering
+yank functions. Query for features instead.
 
-We can revert this patch when 9.0 releases.
+The yank method for all channels used with migration code currently is
+to call the qio_channel_shutdown() function, so query for
+QIO_CHANNEL_FEATURE_SHUTDOWN. We could add a separate feature in the
+future for indicating whether a channel supports yanking, but that
+seems overkill at the moment.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240118164951.30350-4-farosas@suse.de
-[peterx: use _SKIPPED rather than _OPTIONAL]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20230911171320.24372-9-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++++
- 1 file changed, 4 insertions(+)
+ migration/yank_functions.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index f0b0edc634..79bbc8585b 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -217,10 +217,14 @@ build-previous-qemu:
-     - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
-           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
+diff --git a/migration/yank_functions.c b/migration/yank_functions.c
+index d5a710a3f2..979e60c762 100644
+--- a/migration/yank_functions.c
++++ b/migration/yank_functions.c
+@@ -8,12 +8,9 @@
+  */
  
-+# This job is disabled until we release 9.0. The existing
-+# migration-test in 8.2 is broken on aarch64. The fix was already
-+# commited, but it will only take effect once 9.0 is out.
- migration-compat-aarch64:
-   extends: .migration-compat-common
-   variables:
-     TARGET: aarch64
-+    QEMU_JOB_SKIPPED: 1
+ #include "qemu/osdep.h"
+-#include "qapi/error.h"
+ #include "io/channel.h"
+ #include "yank_functions.h"
+ #include "qemu/yank.h"
+-#include "io/channel-socket.h"
+-#include "io/channel-tls.h"
+ #include "qemu-file.h"
  
- migration-compat-x86_64:
-   extends: .migration-compat-common
+ void migration_yank_iochannel(void *opaque)
+@@ -26,8 +23,7 @@ void migration_yank_iochannel(void *opaque)
+ /* Return whether yank is supported on this ioc */
+ static bool migration_ioc_yank_supported(QIOChannel *ioc)
+ {
+-    return object_dynamic_cast(OBJECT(ioc), TYPE_QIO_CHANNEL_SOCKET) ||
+-        object_dynamic_cast(OBJECT(ioc), TYPE_QIO_CHANNEL_TLS);
++    return qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
+ }
+ 
+ void migration_ioc_register_yank(QIOChannel *ioc)
 -- 
 2.43.0
 
