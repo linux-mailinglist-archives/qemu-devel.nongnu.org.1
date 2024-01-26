@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AA883DB55
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1796283DB58
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTMiX-0006BD-9A; Fri, 26 Jan 2024 08:58:01 -0500
+	id 1rTMjG-0007Ur-SN; Fri, 26 Jan 2024 08:58:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rTMiU-000699-Ki
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:57:59 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rTMjA-00079G-NN
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:58:42 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rTMiT-0006HG-5n
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:57:58 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rTMj6-0006NO-Mw
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:58:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706277476;
+ s=mimecast20190719; t=1706277514;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=xSXRGQngmFK9Sx/8Ei0ngl3iNg7BxibW1pg5kPF9OuQ=;
- b=T2ra2UH1/XUZNCXX7fXxjlULvcZl3IWhTB0TRfiGyFqGEf1o39cyf95KJFvRUAyqQjkgxt
- yjMb1YqcAr9bB692hyQbAtelrKiWi3uNr4roKSsuhqr6Kkt4bhg/MWo7nIyZpdn/FTAqdd
- vOIaZICoE/yIHxcipMUYzQ+QAbp9uVo=
+ bh=m0/Kw/UqeWjRvfLNoYJ1HpaDqfUNWU5iA4RU+J0H0qU=;
+ b=VPLg/JNhhylWYnGSvQb9B4IjqKHhlovhdupKUwW0SpI8syorbMlE9rY1Q9XGV7xdhrcLAL
+ 6qLZoTHrUw5A9l79LhSZ9W7pi/2NkSZWosDdPpb1Zhec35EWwEvO2sg+dIS9G2dprNcL5O
+ DJMwkmA5cqL6pEBO6omSsGdgQpHVg+g=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-IILG_DkbMT-IsyXm8Um20g-1; Fri, 26 Jan 2024 08:57:54 -0500
-X-MC-Unique: IILG_DkbMT-IsyXm8Um20g-1
+ us-mta-427-WAwCnfomMAKmBpuLq3kCsA-1; Fri, 26 Jan 2024 08:58:33 -0500
+X-MC-Unique: WAwCnfomMAKmBpuLq3kCsA-1
 Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40e478693bcso8181775e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 05:57:54 -0800 (PST)
+ 5b1f17b1804b1-40eba1f0aa7so4454145e9.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 05:58:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706277473; x=1706882273;
+ d=1e100.net; s=20230601; t=1706277512; x=1706882312;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
  :references:cc:to:content-language:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xSXRGQngmFK9Sx/8Ei0ngl3iNg7BxibW1pg5kPF9OuQ=;
- b=vM5sEtZwGH7LneeD2YzbRlejEhs0eRnoBKVcikr3W/yTt8dnMreMtzrpA/ogcyiq+l
- kf/PWq+Yh/EwuFLKuCJJUfVbUserLe1DbtXklkY7LaLChEBbxBM92iRiVdeAjdT21WaA
- iPkXRRpn8MuN+ZJv7gBrQglxCp5OHeYYra9lnos5nLSYe+DXl0cfTGRJ+nVtRR1utU7Q
- z9XzDrrqCSHs/kgUZrq5eN/nA7Nr+imCCQmQvw0alW47rQGZv/07R8Z96rlnh80j9ZQz
- 1VTrmMLSJhCZAC+9j2X43liVGkwNwBCpvmmCGUGDod5eXIb/nkVXsetA/srhwbzCC7dd
- 8r+Q==
-X-Gm-Message-State: AOJu0Yx4V/yWGCTVoMS/HD+f1Uv2fdrdq3GPP1iKKDAApmp1sbFbirub
- 0Q/R3lqCojdLJzrQ+Hzc/aIpMX5RMhSNBio9A2fNMTXhGpcGYki6TjFj63KBfPVvgJng99UoEPO
- pmJE3UfLFoPo47SzITkCWFGwkEta2/YRFHCpfrx6wPUfGTKqKOfRq
-X-Received: by 2002:a1c:7919:0:b0:40d:b191:10e with SMTP id
- l25-20020a1c7919000000b0040db191010emr572185wme.175.1706277473464; 
- Fri, 26 Jan 2024 05:57:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEEkpGE1Pu6e5X8Jk29S9vir52yw/GllKKjFTRUG9Ngie3xAhUTrEndrSCbsTO42siFgDe28A==
-X-Received: by 2002:a1c:7919:0:b0:40d:b191:10e with SMTP id
- l25-20020a1c7919000000b0040db191010emr572176wme.175.1706277472990; 
- Fri, 26 Jan 2024 05:57:52 -0800 (PST)
+ bh=m0/Kw/UqeWjRvfLNoYJ1HpaDqfUNWU5iA4RU+J0H0qU=;
+ b=r65zlctTafc6mS6nMLNQbjrm3YdctY2PTcb95aG7uljFTPu1Mg2oD8xlS+z+ZAfhiz
+ dCcDFkpjkwN78g6/ae+X3upaaXscohz/iRf3bePiC2arAtotqbEqHawbYqHgL5TNNn7F
+ t7siLnaplh83vYS0+YjEMuxXCwRSrN7/wsnX6rb2+U5WVSidoxURlUYO5qSoa7UNiE4W
+ motsS1bZoNrOmwRzni3NZ0eXWtfbd25YrAWHy4Tywku7bfJLRVizYv/9/vo5mvlDMyAd
+ Jvxi9TBG542MNKG8ZU4y5+YcDvl23qjUU6pZHnyCWlm6EnY9qfOBGSQ02KIVMKJw2roK
+ kPXA==
+X-Gm-Message-State: AOJu0YzIl+eQU0tOxdgIK1I+qxXGfdHAEL5MWzHlx9oeyCqmiJjGH69w
+ 95fnGF0O5SmYfuLJZX+ve2FRa10QI4+AoFs4rjZafO/rUpLTEUZli7TTCqyJIDr6gtIgTeJ8LIU
+ vtX81HIh49AYQV8mGUIxVlXOwJZiSG93WxWFOTcTEmbxXHwlS4ciH
+X-Received: by 2002:a7b:c041:0:b0:40e:9f6d:61f8 with SMTP id
+ u1-20020a7bc041000000b0040e9f6d61f8mr865458wmc.243.1706277511885; 
+ Fri, 26 Jan 2024 05:58:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGf0Z7nTRg7kwBw3OBq+s0NR+GiXrIrcOxESLJj2faMyt0PTwiqUb285vSLxKvnG2QaL3DQcw==
+X-Received: by 2002:a7b:c041:0:b0:40e:9f6d:61f8 with SMTP id
+ u1-20020a7bc041000000b0040e9f6d61f8mr865447wmc.243.1706277511548; 
+ Fri, 26 Jan 2024 05:58:31 -0800 (PST)
 Received: from ?IPV6:2003:cb:c70a:5100:7e95:22ff:3f9b:1e92?
  (p200300cbc70a51007e9522ff3f9b1e92.dip0.t-ipconnect.de.
  [2003:cb:c70a:5100:7e95:22ff:3f9b:1e92])
  by smtp.gmail.com with ESMTPSA id
- az29-20020a05600c601d00b0040ee6ff86f6sm709785wmb.0.2024.01.26.05.57.51
+ az29-20020a05600c601d00b0040ee6ff86f6sm709785wmb.0.2024.01.26.05.58.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jan 2024 05:57:52 -0800 (PST)
-Message-ID: <504fca4f-89a1-4f92-a2f0-f64b04473ec4@redhat.com>
-Date: Fri, 26 Jan 2024 14:57:51 +0100
+ Fri, 26 Jan 2024 05:58:31 -0800 (PST)
+Message-ID: <2b408c4e-8ebe-4131-a30e-326104f4e389@redhat.com>
+Date: Fri, 26 Jan 2024 14:58:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/66] RAMBlock: Add support of KVM private guest memfd
+Subject: Re: [PATCH v4 03/66] HostMem: Add mechanism to opt in kvm guest memfd
+ via MachineState
 Content-Language: en-US
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
@@ -85,7 +86,7 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
  <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
 References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
- <20240125032328.2522472-3-xiaoyao.li@intel.com>
+ <20240125032328.2522472-4-xiaoyao.li@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -132,7 +133,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240125032328.2522472-3-xiaoyao.li@intel.com>
+In-Reply-To: <20240125032328.2522472-4-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -160,42 +161,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->   uint8_t memory_region_get_dirty_log_mask(MemoryRegion *mr)
->   {
->       uint8_t mask = mr->dirty_log_mask;
-> diff --git a/system/physmem.c b/system/physmem.c
-> index c1b22bac77c2..4735b0462ed9 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -1841,6 +1841,17 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
->           }
->       }
->   
-> +    if (kvm_enabled() && (new_block->flags & RAM_GUEST_MEMFD) &&
-> +        new_block->guest_memfd < 0) {
-
-How could we have a guest_memfd already at this point? Smells more like 
-an assert(new_block->guest_memfd < 0);
-
-> +        /* TODO: to decide if KVM_GUEST_MEMFD_ALLOW_HUGEPAGE is supported */
-
-I suggest dropping that completely. As long as it's not upstream, not 
-even the name of that thing is stable.
-
-> +        new_block->guest_memfd = kvm_create_guest_memfd(new_block->max_length,
-> +                                                        0, errp);
-> +        if (new_block->guest_memfd < 0) {
-> +            qemu_mutex_unlock_ramlist();
-> +            return;
-> +        }
-> +    }
-> +
-
-
-In general, LGTM. With the two nits above:
+On 25.01.24 04:22, Xiaoyao Li wrote:
+> Add a new member "guest_memfd" to memory backends. When it's set
+> to true, it enables RAM_GUEST_MEMFD in ram_flags, thus private kvm
+> guest_memfd will be allocated during RAMBlock allocation.
+> 
+> Memory backend's @guest_memfd is wired with @require_guest_memfd
+> field of MachineState. It avoid looking up the machine in phymem.c.
+> 
+> MachineState::require_guest_memfd is supposed to be set by any VMs
+> that requires KVM guest memfd as private memory, e.g., TDX VM.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
-
 
 -- 
 Cheers,
