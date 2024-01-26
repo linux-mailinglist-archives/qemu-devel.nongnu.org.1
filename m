@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E148F83D36E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E389183D373
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:19:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTDfG-0001mX-Br; Thu, 25 Jan 2024 23:18:02 -0500
+	id 1rTDfI-0001oF-Q3; Thu, 25 Jan 2024 23:18:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfE-0001m2-HZ
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:00 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfG-0001nm-Pn
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:02 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfC-0004st-DL
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:00 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfE-0004z2-8r
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:01 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706242677;
+ s=mimecast20190719; t=1706242679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u9E9ZiyB8lolyP1h8HTT4gHWB7P2p+lbkjksyMOxvG8=;
- b=WxQ4Ant3ogBf2EX00LImQ1/Q71mRjek7KNcyefH+g54U4KrkqOR9uWpNL3habxK1Q+I/L+
- sXFFyD4neluXnxYdvELxLBUPR5jdu8wFgFdNWLu/yybZgNL2BDaLQrE2dxAqFQxHWJIkwx
- 3l9mgNmm5Rq8BJ2zsHvLTddmSJAT6A8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-6-sCae4bOGGg6_SeUIahjw-1; Thu,
- 25 Jan 2024 23:17:52 -0500
-X-MC-Unique: 6-sCae4bOGGg6_SeUIahjw-1
+ bh=5O48hzm3gfL1t5vlHM4mhcRlYYJEH9P+E36O4VJdn9I=;
+ b=ZGH0DvjBygYUk39kN/1CFh3+RXaQnz+qBL6iHXfQd3lNh9LIGFCrKj7kZg5xJSxqwHpTlf
+ 34OSmBYla0TZpUAz38UteV43m8WTP8zRZp2ToNlQwYwuQkcwwJBWgunLAP9a+Ra0FhCLv9
+ 0ojnGB1yaBLezQhyZS0zi1mr6fNNDLw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-0QgQoVPzNh6oewMbiMf4rg-1; Thu, 25 Jan 2024 23:17:55 -0500
+X-MC-Unique: 0QgQoVPzNh6oewMbiMf4rg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A48929AB3E4;
- Fri, 26 Jan 2024 04:17:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0CF7683DE29;
+ Fri, 26 Jan 2024 04:17:55 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8923B492BC6;
- Fri, 26 Jan 2024 04:17:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 68F4E492BC6;
+ Fri, 26 Jan 2024 04:17:53 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>,
 	peterx@redhat.com
-Subject: [PULL 07/15] ci: Add a migration compatibility test job
-Date: Fri, 26 Jan 2024 12:17:17 +0800
-Message-ID: <20240126041725.124562-8-peterx@redhat.com>
+Subject: [PULL 08/15] ci: Disable migration compatibility tests for aarch64
+Date: Fri, 26 Jan 2024 12:17:18 +0800
+Message-ID: <20240126041725.124562-9-peterx@redhat.com>
 In-Reply-To: <20240126041725.124562-1-peterx@redhat.com>
 References: <20240126041725.124562-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -80,107 +80,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-The migration tests have support for being passed two QEMU binaries to
-test migration compatibility.
+Until 9.0 is out, we need to keep the aarch64 job disabled because the
+tests always use the n-1 version of migration-test. That happens to be
+broken for aarch64 in 8.2. Once 9.0 is out, it will become the n-1
+version and it will bring the fixed tests.
 
-Add a CI job that builds the lastest release of QEMU and another job
-that uses that version plus an already present build of the current
-version and run the migration tests with the two, both as source and
-destination. I.e.:
-
- old QEMU (n-1) -> current QEMU (development tree)
- current QEMU (development tree) -> old QEMU (n-1)
-
-The purpose of this CI job is to ensure the code we're about to merge
-will not cause a migration compatibility problem when migrating the
-next release (which will contain that code) to/from the previous
-release.
-
-The version of migration-test used will be the one matching the older
-QEMU. That way we can avoid special-casing new tests that wouldn't be
-compatible with the older QEMU.
-
-Note: for user forks, the version tags need to be pushed to gitlab
-otherwise it won't be able to checkout a different version.
+We can revert this patch when 9.0 releases.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240118164951.30350-3-farosas@suse.de
+Link: https://lore.kernel.org/r/20240118164951.30350-4-farosas@suse.de
+[peterx: use _SKIPPED rather than _OPTIONAL]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 60 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ .gitlab-ci.d/buildtest.yml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e1c7801598..f0b0edc634 100644
+index f0b0edc634..79bbc8585b 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -167,6 +167,66 @@ build-system-centos:
-       x86_64-softmmu rx-softmmu sh4-softmmu nios2-softmmu
-     MAKE_CHECK_ARGS: check-build
+@@ -217,10 +217,14 @@ build-previous-qemu:
+     - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
+           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
  
-+# Previous QEMU release. Used for cross-version migration tests.
-+build-previous-qemu:
-+  extends: .native_build_job_template
-+  artifacts:
-+    when: on_success
-+    expire_in: 2 days
-+    paths:
-+      - build-previous
-+    exclude:
-+      - build-previous/**/*.p
-+      - build-previous/**/*.a.p
-+      - build-previous/**/*.fa.p
-+      - build-previous/**/*.c.o
-+      - build-previous/**/*.c.o.d
-+      - build-previous/**/*.fa
-+  needs:
-+    job: amd64-opensuse-leap-container
-+  variables:
-+    IMAGE: opensuse-leap
-+    TARGETS: x86_64-softmmu aarch64-softmmu
-+  before_script:
-+    - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-+    - git checkout $QEMU_PREV_VERSION
-+  after_script:
-+    - mv build build-previous
-+
-+.migration-compat-common:
-+  extends: .common_test_job_template
-+  needs:
-+    - job: build-previous-qemu
-+    - job: build-system-opensuse
-+  # The old QEMU could have bugs unrelated to migration that are
-+  # already fixed in the current development branch, so this test
-+  # might fail.
-+  allow_failure: true
-+  variables:
-+    IMAGE: opensuse-leap
-+    MAKE_CHECK_ARGS: check-build
-+  script:
-+    # Use the migration-tests from the older QEMU tree. This avoids
-+    # testing an old QEMU against new features/tests that it is not
-+    # compatible with.
-+    - cd build-previous
-+    # old to new
-+    - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
-+    # new to old
-+    - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
-+
-+migration-compat-aarch64:
-+  extends: .migration-compat-common
-+  variables:
-+    TARGET: aarch64
-+
-+migration-compat-x86_64:
-+  extends: .migration-compat-common
-+  variables:
-+    TARGET: x86_64
-+
- check-system-centos:
-   extends: .native_test_job_template
-   needs:
++# This job is disabled until we release 9.0. The existing
++# migration-test in 8.2 is broken on aarch64. The fix was already
++# commited, but it will only take effect once 9.0 is out.
+ migration-compat-aarch64:
+   extends: .migration-compat-common
+   variables:
+     TARGET: aarch64
++    QEMU_JOB_SKIPPED: 1
+ 
+ migration-compat-x86_64:
+   extends: .migration-compat-common
 -- 
 2.43.0
 
