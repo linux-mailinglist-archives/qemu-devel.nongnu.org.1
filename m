@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FC983DC49
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2690C83DBF7
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:34:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHE-0002FN-93; Fri, 26 Jan 2024 09:33:52 -0500
+	id 1rTNHI-0002Kq-C7; Fri, 26 Jan 2024 09:33:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHB-0002EJ-Fd
+ id 1rTNHB-0002EK-Ic
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:49 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH9-0007ry-0a
+ id 1rTNH9-0007s9-EQ
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:49 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-337cf4eabc9so530721f8f.3
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33adec41b55so143127f8f.0
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279625; x=1706884425; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279626; x=1706884426; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lK9uzbOPuqI5nBpCiVJSQd+IeQXNzZSi8eQru0HuK+4=;
- b=jF+FcIz1Gz2B5y71zEJflTI8mDS4EjfYlTh+aO7bZVRABP4zVYPvqDFjjBUirNxuV4
- rv/1tvMtbiivRnizApXAVP7MEeILnWeBCr3yCkPV8f9YutWq33MUompHJpqXPYoRHKWi
- uzjMo6ZRO83vq8uaxh5ddu5IGLvRsVNAMHx3NBgUoTqeDqCnmmga48UaAraVkbXZXshR
- n1ji8PECchF1fgaTdasg5QVmnUDjKZ2YKvHbzSSNf8wIDrHdBxCaf9xiSzl11mIfGYXQ
- B16LlVLycc0cHxAOKX2FZBCj8dbdcFu8QRekiDSz1rDzOudG3h/NCDtTno1KbCKRdzAS
- QhKA==
+ :reply-to; bh=HEc7i4Xgpnf10j5Y5ryc8bAt0O15wFZx7gUBthUTBOc=;
+ b=LXA1JhHa3XiDCcf2Ag33XakAXiFH3/5L77zXh9XF6B9y2TnfvLKruwOo7PbAxy4+cS
+ DOSS7/WvIG8AVnHPZkkeDlOQd7o4+AclbjTvEmz+cR1SJ01V0LtOJK1o8b/1yiS3uS86
+ G4ncAFKWxj/InLsZf6JwCl3HGXLgtmcxK351Xp+6ERknTOfDxQE7U5Lx/BpyuRw5BWRV
+ j3Gi637W0KL/aOKLkEZapokxHaru5TXRjuL5Tom35S3H3eUXUvG3QNnQBZjoWfDDYRJf
+ 6JbtvATgGVUbOt8PCw6T9EAEwtB4bd40GzBWcq7X66k2DZKHdp3kR/px1gYo2p4a1ftU
+ xEJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279625; x=1706884425;
+ d=1e100.net; s=20230601; t=1706279626; x=1706884426;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lK9uzbOPuqI5nBpCiVJSQd+IeQXNzZSi8eQru0HuK+4=;
- b=jwRuhg+jivqTqcB8vsO0TGAiznClcUNCp6/NHq9T467r9Uol2I/PxWBtl5rpep6abu
- r6eICVagW7Exu3hfPmVZyYV5+hYOGhB0gTFVGGwHVxmG0t1TI/5TSbyqCn4uI3AIwP3J
- nHo6AKfDkMgbxYFi/lswzU28FZo44bPdndlGJAc8UxDvOQJxda0mzXKg/iYGbti4LW1b
- qYiaDq7NcNq2VtxdCSG0dU8NMw3yXEjbf7Iz/UJ19s/9pS58g44fGt8TLyjQ9fiP3IfJ
- I1MovbrJ7L/De4ib/EkUevZ/3KSo5wymNPp4x6G8JSik7IEEhtpPqSKAXfAVn1eNwljU
- Xi2A==
-X-Gm-Message-State: AOJu0YyEyu4d2u3baZTdsgJeopDJbjKjwWqY8MTSgQ0j3iH3guPip3zE
- CefZlBFL/tsYPkmUhiC3io0nQCGvQBSI43jOrRjq7rTCj3QZunjveut78TbqJ8K8GtWAFs72e0a
- j
-X-Google-Smtp-Source: AGHT+IF3Xn0cb19Vjmk7Hd/V45B+ezYyoq3EPMw7NWB73nbST3ClyfyzUdBdo8SJF4B2yCKt/nlyqQ==
-X-Received: by 2002:adf:a44e:0:b0:336:e161:8d with SMTP id
- e14-20020adfa44e000000b00336e161008dmr1000199wra.78.1706279625575; 
- Fri, 26 Jan 2024 06:33:45 -0800 (PST)
+ bh=HEc7i4Xgpnf10j5Y5ryc8bAt0O15wFZx7gUBthUTBOc=;
+ b=T9jwgG1RKoi+kq+svpELbW3VNVDTx4BetfCMeOwmwHjZMwWYFedhjE6P4bHBGyKKT/
+ W7WmIJVjI5o5NyowGFKW9WX5Dmmn4nl/8DRZ9QoIFsKws9qS2F9SidB2PEzqcPNv7QA/
+ cbiECSnJWzYW25FHvzUvNb7FDoGBlbjOYgUdNQm1eAsqivt7pjwjA7EHMdhPCSPJ0o4U
+ fiMhWHPq7xSZxTjhZUyIl+OXD8YREu9uCbc7EnAeAOTVj7ZrJ5kZgZWmBzzf2dCLFa5d
+ GVD902/jERynqPWrt7u+Q6xiEHe5T1hw1Dug1SVclTwbNoHbPO74JeKnTrxcCoSYwCOb
+ Gcxg==
+X-Gm-Message-State: AOJu0YyLGdD5PFMfjcNRIUAJMJgK7AIOgLUFxdFoRAMXng19Xy6ZGQ+i
+ DuNvqisTkhtVZrxxavbndtActctTKVfI38VL1Ueo8GVJnnfq4YQ5lIvTyCes0HkHc2YDgUX+qEq
+ M
+X-Google-Smtp-Source: AGHT+IEBJsVcIccN1l8L3fD3K33Rqts/LmE+VB4VNCA563ESrfAyEp/c3IMlV7XWuGRjZdhk6LG3MQ==
+X-Received: by 2002:adf:ca8d:0:b0:337:aa92:7835 with SMTP id
+ r13-20020adfca8d000000b00337aa927835mr701798wrh.43.1706279626005; 
+ Fri, 26 Jan 2024 06:33:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.45
@@ -59,26 +59,25 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/36] hw/arm: Add EHCI/OHCI controllers to Allwinner R40 and
+Subject: [PULL 08/36] hw/arm: Add AHCI/SATA controller to Allwinner R40 and
  Bananapi board
-Date: Fri, 26 Jan 2024 14:33:12 +0000
-Message-Id: <20240126143341.2101237-8-peter.maydell@linaro.org>
+Date: Fri, 26 Jan 2024 14:33:13 +0000
+Message-Id: <20240126143341.2101237-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,192 +95,123 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-Allwinner R40 supports two USB host ports shared between a USB 2.0 EHCI
-host controller and a USB 1.1 OHCI host controller. Add support for both
-of them.
+Allwinner R40 supports an AHCI compliant SATA controller.
+Add support for it.
 
-If machine USB support is not enabled, create unimplemented devices
-for the USB memory ranges to avoid crashes when booting Linux.
-
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240115182757.1095012-2-linux@roeck-us.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Message-id: 20240115182757.1095012-3-linux@roeck-us.net
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/bananapi_m2u.rst |  2 +-
- include/hw/arm/allwinner-r40.h   |  9 ++++++
- hw/arm/allwinner-r40.c           | 47 ++++++++++++++++++++++++++++++--
- hw/arm/Kconfig                   |  2 ++
- 4 files changed, 57 insertions(+), 3 deletions(-)
+ docs/system/arm/bananapi_m2u.rst |  1 +
+ include/hw/arm/allwinner-r40.h   |  3 +++
+ hw/arm/allwinner-r40.c           | 12 +++++++++++-
+ hw/arm/Kconfig                   |  1 +
+ 4 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/docs/system/arm/bananapi_m2u.rst b/docs/system/arm/bananapi_m2u.rst
-index b09ba5c5486..e77c425e2cb 100644
+index e77c425e2cb..542310591d6 100644
 --- a/docs/system/arm/bananapi_m2u.rst
 +++ b/docs/system/arm/bananapi_m2u.rst
-@@ -23,6 +23,7 @@ The Banana Pi M2U machine supports the following devices:
+@@ -22,6 +22,7 @@ The Banana Pi M2U machine supports the following devices:
+  * EMAC ethernet
   * GMAC ethernet
   * Clock Control Unit
++ * SATA
   * TWI (I2C)
-+ * USB 2.0
+  * USB 2.0
  
- Limitations
- """""""""""
-@@ -33,7 +34,6 @@ Currently, Banana Pi M2U does *not* support the following features:
- - Audio output
- - Hardware Watchdog
- - Real Time Clock
--- USB 2.0 interfaces
- 
- Also see the 'unimplemented' array in the Allwinner R40 SoC module
- for a complete list of unimplemented I/O devices: ``./hw/arm/allwinner-r40.c``
 diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
-index 6e1ac9d4c13..ae82822d424 100644
+index ae82822d424..c589fcc1c15 100644
 --- a/include/hw/arm/allwinner-r40.h
 +++ b/include/hw/arm/allwinner-r40.h
-@@ -30,6 +30,8 @@
- #include "hw/i2c/allwinner-i2c.h"
- #include "hw/net/allwinner_emac.h"
- #include "hw/net/allwinner-sun8i-emac.h"
-+#include "hw/usb/hcd-ohci.h"
-+#include "hw/usb/hcd-ehci.h"
- #include "target/arm/cpu.h"
- #include "sysemu/block-backend.h"
+@@ -22,6 +22,7 @@
  
-@@ -44,6 +46,10 @@ enum {
+ #include "qom/object.h"
+ #include "hw/timer/allwinner-a10-pit.h"
++#include "hw/ide/ahci.h"
+ #include "hw/intc/arm_gic.h"
+ #include "hw/sd/allwinner-sdhost.h"
+ #include "hw/misc/allwinner-r40-ccu.h"
+@@ -46,6 +47,7 @@ enum {
      AW_R40_DEV_MMC1,
      AW_R40_DEV_MMC2,
      AW_R40_DEV_MMC3,
-+    AW_R40_DEV_EHCI1,
-+    AW_R40_DEV_OHCI1,
-+    AW_R40_DEV_EHCI2,
-+    AW_R40_DEV_OHCI2,
-     AW_R40_DEV_CCU,
-     AW_R40_DEV_PIT,
-     AW_R40_DEV_UART0,
-@@ -88,6 +94,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AwR40State, AW_R40)
-  * which are currently emulated by the R40 SoC code.
-  */
- #define AW_R40_NUM_MMCS         4
-+#define AW_R40_NUM_USB          2
- #define AW_R40_NUM_UARTS        8
- 
- struct AwR40State {
-@@ -106,6 +113,8 @@ struct AwR40State {
++    AW_R40_DEV_AHCI,
+     AW_R40_DEV_EHCI1,
+     AW_R40_DEV_OHCI1,
+     AW_R40_DEV_EHCI2,
+@@ -112,6 +114,7 @@ struct AwR40State {
+     const hwaddr *memmap;
      AwSRAMCState sramc;
      AwA10PITState timer;
++    AllwinnerAHCIState sata;
      AwSdHostState mmc[AW_R40_NUM_MMCS];
-+    EHCISysBusState ehci[AW_R40_NUM_USB];
-+    OHCISysBusState ohci[AW_R40_NUM_USB];
-     AwR40ClockCtlState ccu;
-     AwR40DramCtlState dramc;
-     AWI2CState i2c0;
+     EHCISysBusState ehci[AW_R40_NUM_USB];
+     OHCISysBusState ohci[AW_R40_NUM_USB];
 diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
-index a0d367c60d1..2e8943eff74 100644
+index 2e8943eff74..534be4a735d 100644
 --- a/hw/arm/allwinner-r40.c
 +++ b/hw/arm/allwinner-r40.c
-@@ -23,6 +23,7 @@
- #include "qemu/bswap.h"
- #include "qemu/module.h"
- #include "qemu/units.h"
-+#include "hw/boards.h"
- #include "hw/qdev-core.h"
- #include "hw/sysbus.h"
- #include "hw/char/serial.h"
-@@ -45,6 +46,10 @@ const hwaddr allwinner_r40_memmap[] = {
+@@ -46,6 +46,7 @@ const hwaddr allwinner_r40_memmap[] = {
      [AW_R40_DEV_MMC1]       = 0x01c10000,
      [AW_R40_DEV_MMC2]       = 0x01c11000,
      [AW_R40_DEV_MMC3]       = 0x01c12000,
-+    [AW_R40_DEV_EHCI1]      = 0x01c19000,
-+    [AW_R40_DEV_OHCI1]      = 0x01c19400,
-+    [AW_R40_DEV_EHCI2]      = 0x01c1c000,
-+    [AW_R40_DEV_OHCI2]      = 0x01c1c400,
-     [AW_R40_DEV_CCU]        = 0x01c20000,
-     [AW_R40_DEV_PIT]        = 0x01c20c00,
-     [AW_R40_DEV_UART0]      = 0x01c28000,
-@@ -89,9 +94,9 @@ static struct AwR40Unimplemented r40_unimplemented[] = {
++    [AW_R40_DEV_AHCI]       = 0x01c18000,
+     [AW_R40_DEV_EHCI1]      = 0x01c19000,
+     [AW_R40_DEV_OHCI1]      = 0x01c19400,
+     [AW_R40_DEV_EHCI2]      = 0x01c1c000,
+@@ -93,7 +94,6 @@ static struct AwR40Unimplemented r40_unimplemented[] = {
+     { "usb0-host",  0x01c14000, 4 * KiB },
      { "crypto",     0x01c15000, 4 * KiB },
      { "spi2",       0x01c17000, 4 * KiB },
-     { "sata",       0x01c18000, 4 * KiB },
--    { "usb1-host",  0x01c19000, 4 * KiB },
-+    { "usb1-phy",   0x01c19800, 2 * KiB },
+-    { "sata",       0x01c18000, 4 * KiB },
+     { "usb1-phy",   0x01c19800, 2 * KiB },
      { "sid",        0x01c1b000, 4 * KiB },
--    { "usb2-host",  0x01c1c000, 4 * KiB },
-+    { "usb2-phy",   0x01c1c800, 2 * KiB },
-     { "cs1",        0x01c1d000, 4 * KiB },
-     { "spi3",       0x01c1f000, 4 * KiB },
-     { "rtc",        0x01c20400, 1 * KiB },
-@@ -181,6 +186,10 @@ enum {
+     { "usb2-phy",   0x01c1c800, 2 * KiB },
+@@ -186,6 +186,7 @@ enum {
      AW_R40_GIC_SPI_MMC2      = 34,
      AW_R40_GIC_SPI_MMC3      = 35,
      AW_R40_GIC_SPI_EMAC      = 55,
-+    AW_R40_GIC_SPI_OHCI1     = 64,
-+    AW_R40_GIC_SPI_OHCI2     = 65,
-+    AW_R40_GIC_SPI_EHCI1     = 76,
-+    AW_R40_GIC_SPI_EHCI2     = 78,
-     AW_R40_GIC_SPI_GMAC      = 85,
- };
- 
-@@ -276,6 +285,13 @@ static void allwinner_r40_init(Object *obj)
++    AW_R40_GIC_SPI_AHCI      = 56,
+     AW_R40_GIC_SPI_OHCI1     = 64,
+     AW_R40_GIC_SPI_OHCI2     = 65,
+     AW_R40_GIC_SPI_EHCI1     = 76,
+@@ -285,6 +286,8 @@ static void allwinner_r40_init(Object *obj)
                                  TYPE_AW_SDHOST_SUN50I_A64);
      }
  
-+    for (size_t i = 0; i < AW_R40_NUM_USB; i++) {
-+        object_initialize_child(obj, "ehci[*]", &s->ehci[i],
-+                                TYPE_PLATFORM_EHCI);
-+        object_initialize_child(obj, "ohci[*]", &s->ohci[i],
-+                                TYPE_SYSBUS_OHCI);
-+    }
++    object_initialize_child(obj, "sata", &s->sata, TYPE_ALLWINNER_AHCI);
 +
-     object_initialize_child(obj, "twi0", &s->i2c0, TYPE_AW_I2C_SUN6I);
- 
-     object_initialize_child(obj, "emac", &s->emac, TYPE_AW_EMAC);
-@@ -407,6 +423,33 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
+     for (size_t i = 0; i < AW_R40_NUM_USB; i++) {
+         object_initialize_child(obj, "ehci[*]", &s->ehci[i],
+                                 TYPE_PLATFORM_EHCI);
+@@ -423,6 +426,13 @@ static void allwinner_r40_realize(DeviceState *dev, Error **errp)
      sysbus_realize(SYS_BUS_DEVICE(&s->ccu), &error_fatal);
      sysbus_mmio_map(SYS_BUS_DEVICE(&s->ccu), 0, s->memmap[AW_R40_DEV_CCU]);
  
-+    /* USB */
-+    for (size_t i = 0; i < AW_R40_NUM_USB; i++) {
-+        g_autofree char *bus = g_strdup_printf("usb-bus.%zu", i);
++    /* SATA / AHCI */
++    sysbus_realize(SYS_BUS_DEVICE(&s->sata), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&s->sata), 0,
++                    allwinner_r40_memmap[AW_R40_DEV_AHCI]);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&s->sata), 0,
++                       qdev_get_gpio_in(DEVICE(&s->gic), AW_R40_GIC_SPI_AHCI));
 +
-+        object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable", true,
-+                                 &error_fatal);
-+        sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
-+                        allwinner_r40_memmap[i ? AW_R40_DEV_EHCI2
-+                                               : AW_R40_DEV_EHCI1]);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
-+                           qdev_get_gpio_in(DEVICE(&s->gic),
-+                                            i ? AW_R40_GIC_SPI_EHCI2
-+                                              : AW_R40_GIC_SPI_EHCI1));
-+
-+        object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
-+                                &error_fatal);
-+        sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
-+                        allwinner_r40_memmap[i ? AW_R40_DEV_OHCI2
-+                                               : AW_R40_DEV_OHCI1]);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
-+                           qdev_get_gpio_in(DEVICE(&s->gic),
-+                                            i ? AW_R40_GIC_SPI_OHCI2
-+                                              : AW_R40_GIC_SPI_OHCI1));
-+    }
-+
-     /* SD/MMC */
-     for (int i = 0; i < AW_R40_NUM_MMCS; i++) {
-         qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->gic),
+     /* USB */
+     for (size_t i = 0; i < AW_R40_NUM_USB; i++) {
+         g_autofree char *bus = g_strdup_printf("usb-bus.%zu", i);
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 218b454e97f..4a2a5fca974 100644
+index 4a2a5fca974..704517edd4f 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -415,6 +415,8 @@ config ALLWINNER_R40
-     select ARM_TIMER
-     select ARM_GIC
-     select UNIMP
-+    select USB_OHCI
-+    select USB_EHCI_SYSBUS
-     select SD
- 
- config RASPI
+@@ -408,6 +408,7 @@ config ALLWINNER_H3
+ config ALLWINNER_R40
+     bool
+     default y if TCG && ARM
++    select AHCI
+     select ALLWINNER_SRAMC
+     select ALLWINNER_A10_PIT
+     select AXP2XX_PMU
 -- 
 2.34.1
 
