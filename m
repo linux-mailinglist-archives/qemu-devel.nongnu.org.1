@@ -2,49 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF78C83D78D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 11:13:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F3F83D76F
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 11:09:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTJCu-0005Lu-Ug; Fri, 26 Jan 2024 05:13:08 -0500
+	id 1rTJ8k-0002fc-EL; Fri, 26 Jan 2024 05:08:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenh@yusur.tech>) id 1rTJCr-0005Lk-DU
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 05:13:05 -0500
-Received: from out28-145.mail.aliyun.com ([115.124.28.145])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rTJ8h-0002es-RL; Fri, 26 Jan 2024 05:08:47 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenh@yusur.tech>) id 1rTJCo-0005gc-N1
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 05:13:05 -0500
-X-Alimail-AntiSpam: AC=CONTINUE; BC=0.08249918|-1; CH=green;
- DM=|CONTINUE|false|;
- DS=CONTINUE|ham_system_inform|0.00253355-0.000422707-0.997044;
- FP=0|0|0|0|0|-1|-1|-1; HT=ay29a033018047211; MF=chenh@yusur.tech; NM=1; PH=DS;
- RN=4; RT=4; SR=0; TI=SMTPD_---.WG6x5gm_1706263658; 
-Received: from localhost.localdomain(mailfrom:chenh@yusur.tech
- fp:SMTPD_---.WG6x5gm_1706263658) by smtp.aliyun-inc.com;
- Fri, 26 Jan 2024 18:07:43 +0800
-From: Hao Chen <chenh@yusur.tech>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: huangml@yusur.tech,
-	zy@yusur.tech
-Subject: [PATCH] vhost-user: fix the issue of vhost deadlock in nested
- virtualization
-Date: Fri, 26 Jan 2024 18:07:37 +0800
-Message-Id: <20240126100737.2509847-1-chenh@yusur.tech>
-X-Mailer: git-send-email 2.27.0
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1rTJ8f-0004Vo-RF; Fri, 26 Jan 2024 05:08:47 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40Q8HHuL004780; Fri, 26 Jan 2024 10:08:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=hgpk0IY6UTbcRSXutAt4hE12DlHb0NhMjJGP1i7bUYg=;
+ b=jCDQjsOdSxigGMXSvb7C5S2ORHZaTGaovdMC/HST+sJ2MErtm/xbAXB0xcUBXXWG68r+
+ uGPUvmd0dEYmLCgHKz33VNm4dPKzWOVJnRUzU2+w919HTKAbS0xTfOiQVkP8ft3dH1Wo
+ 0Tshhmc7RR5ThvAbeLO6zCAqbNHMHHGOHD26GHdlcAzwSJfkqdx7c+vznC/CS9BXG8Xl
+ rFXMwlORgxA4jAWDNjDJ3mGjdiqtYvsXWDVcA5OyXpXRUWeHpqvCJKos8P4ww/9O7k7b
+ ae7pyk6r9udPNF74cTfBdvmzwfuSIzMoHN3UpQXZojZVtT3QTYRJ3zj7LS/be6nG7qIT Rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv93djbbr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jan 2024 10:08:33 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40Q9qNYi010766;
+ Fri, 26 Jan 2024 10:08:33 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vv93djbba-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jan 2024 10:08:32 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40Q9iuYG025272; Fri, 26 Jan 2024 10:08:32 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vrtqksrck-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Jan 2024 10:08:31 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40QA8Vx629754076
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 26 Jan 2024 10:08:31 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CA835805A;
+ Fri, 26 Jan 2024 10:08:31 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 135D758062;
+ Fri, 26 Jan 2024 10:08:30 +0000 (GMT)
+Received: from [9.61.160.70] (unknown [9.61.160.70])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 26 Jan 2024 10:08:29 +0000 (GMT)
+Message-ID: <4ca3ee69-55e9-4cec-a4d8-23304ff6290d@linux.ibm.com>
+Date: Fri, 26 Jan 2024 04:08:29 -0600
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 05/11] hw/fsi: Introduce IBM's cfam
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org, Andrew Jeffery <andrew@aj.id.au>
+References: <20240126034026.31068-1-ninad@linux.ibm.com>
+ <20240126034026.31068-6-ninad@linux.ibm.com>
+ <6c1a24a2-dfc6-4ce3-828b-4bc196f9d71f@kaod.org>
+From: Ninad Palsule <ninad@linux.ibm.com>
+In-Reply-To: <6c1a24a2-dfc6-4ce3-828b-4bc196f9d71f@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.145; envelope-from=chenh@yusur.tech;
- helo=out28-145.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lQWJ33gQ7GMRrFrOQVsfRt6h-mwgxp0k
+X-Proofpoint-GUID: Ov7bzAy6eXwqj8QXGdRGXmIOW3Xb2mt_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0
+ spamscore=0 bulkscore=0 mlxscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxlogscore=621
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401260073
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,61 +117,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I run "dpdk-vdpa" and "qemur-L2" in "qemu-L1".
+Hello Cedric,
 
-In a nested virtualization environment, "qemu-L2" vhost-user socket sends
-a "VHOST_USER_IOTLB_MSG" message to "dpdk-vdpa" and blocks waiting for
-"dpdk-vdpa" to process the message.
-If "dpdk-vdpa" doesn't complete the processing of the "VHOST_USER_IOTLB_MSG"
-message and sends a message that needs to be replied in another thread,
-such as "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", "dpdk-vdpa" will also
-block and wait for "qemu-L2" to process this message. However, "qemu-L2"
-vhost-user's socket is blocking while waiting for a reply from "dpdk-vdpa"
-after processing the message "VHOSTr_USER_IOTLB_MSG", and
-"VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" will not be processed.
-In this case, both "dpdk-vdpa" and "qemu-L2" are blocked on the
-vhost read, resulting in a deadlock.
 
-You can modify "VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG" or
-"VHOST_USER_IOTLB_MSG" to "no need reply" to fix this issue.
-There are too many messages in dpdk that are similar to
-"VHOST_USER_SLAVE_VRING_HOST_NOTIFIER_MSG", and I would prefer the latter.
+>> +#include "hw/fsi/fsi.h"
+>> +
+>> +#include "hw/qdev-properties.h"
+>> +
+>> +#define ENGINE_CONFIG_NEXT            BE_BIT(0)
+>
+> BE_BIT is not used much. I wonder if we should keep it.
+Agree. It is only used at couple of places. Removed BE_BIT()
+>
+> Anyhow,
+>
+>
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Fixes: 24e34754eb78 ("vhost-user: factor out msg head and payload")
+Added tag. Thanks for the review.
 
-Signed-off-by: Hao Chen <chenh@yusur.tech>
----
- hw/virtio/vhost-user.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+Regards,
 
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index f214df804b..02caa94b6c 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2371,20 +2371,14 @@ static int vhost_user_net_set_mtu(struct vhost_dev *dev, uint16_t mtu)
- static int vhost_user_send_device_iotlb_msg(struct vhost_dev *dev,
-                                             struct vhost_iotlb_msg *imsg)
- {
--    int ret;
-     VhostUserMsg msg = {
-         .hdr.request = VHOST_USER_IOTLB_MSG,
-         .hdr.size = sizeof(msg.payload.iotlb),
--        .hdr.flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
-+        .hdr.flags = VHOST_USER_VERSION,
-         .payload.iotlb = *imsg,
-     };
- 
--    ret = vhost_user_write(dev, &msg, NULL, 0);
--    if (ret < 0) {
--        return ret;
--    }
--
--    return process_message_reply(dev, &msg);
-+    return vhost_user_write(dev, &msg, NULL, 0);
- }
- 
- 
--- 
-2.27.0
+Ninad
+
 
 
