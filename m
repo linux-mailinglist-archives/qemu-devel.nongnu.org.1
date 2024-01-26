@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6158E83DC05
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5FF83DC14
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHJ-0002MC-J1; Fri, 26 Jan 2024 09:33:57 -0500
+	id 1rTNHJ-0002M8-Fl; Fri, 26 Jan 2024 09:33:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHG-0002Jd-V9
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:54 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1rTNHH-0002K9-BU
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHE-0007wX-Aa
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:54 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-337cf4eabc9so530805f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:51 -0800 (PST)
+ id 1rTNHE-0007wt-Tn
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:55 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3392291b21bso634144f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279631; x=1706884431; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=REDIbkefaHLl5VHtlOjlhfc4RzzdVkDK80vRRwWKuZc=;
- b=IfNhhx5q8HfdM8X7V5D1BVrn5s4fHkr9+i9Q2XPZdBNq7IZIq2FAcywdQ5cJvKsy/q
- pxJsrFPGBMvuItpbSJkU+Bo8d8HKbxxwEZJoD5W1FiBS82qFxgGUcaT+LC8iwMH1R2tO
- ubr4zaSyLTl3dLwuzQpmARf97s5+Lrp0Jh2uRrhtk1bDJm0QJYp0LkV0ogvIR7zRSp/j
- PBnsO6XfYAx8iYWtkmIsbJOxItvZ2kOzieCPSm4vBFy0z/HlXvxRa5ZDN92L5VBOfJe6
- kAu1O9fNSt6U35JDmkC6j9S6U7okmOeFPJeZUf9IM5wYaoXK117lBi8jUw40lYTVnbdu
- dH6w==
+ :reply-to; bh=8W6Dmg/Z15G38A2ANLX0PCG/NULptGOn1F3YALWfvag=;
+ b=fkEx0EjjHRzF3rvznw7+RqB3EJFj9s6om0y4h137cxnTPcjhjbuATTUIOSsqWrcku8
+ mtufP+rbCoJdlWs5RVX6n+fYKRnYYiOEmQfe6PZYD0g/Zo2B6naQJR1X2qbr+Uopt72w
+ 0tmlUG7Npzno68sfDbxP+zKRu2CvhgXpmvGH8yBp/wZYJvn4rAzipZhRgQwRuHYZUr3l
+ 9Yguqo8be9o2xbdzlyVl1o0KP8n7g5Hv3PCTN/PvmACp1U+ZqaOFt/ZlKwxen1SJ4EHP
+ 8smtBXJUIYUu4+okXQJqTj0DEQiU7QBDJuzxXHaASW9+Cr0GBUNMWCfGTP5AMElRPPL2
+ E16g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279631; x=1706884431;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=REDIbkefaHLl5VHtlOjlhfc4RzzdVkDK80vRRwWKuZc=;
- b=ioWmd7g9KC903VjVxL3mEo6QK18hQQ77XKKlQSF82F99SCihMfRd6XlTo9ZHd75nkW
- Mx3V1rS+RkntUQJqfG6om3nykaFp527nvGlVjDlNbuXxfrxGYdKHhs+OErXMRRykuZxp
- BVvhVQN+L65wlY0wYKKTP4RL5eh6hH0W+Z1M+EzfadopP1qig9437NekJuSw2/MaykdX
- GYtCXI6fKWFeC1IEB4mK3g46DWzU+oaz78zMiRvE1cJ7wZ/r1DvIbCzhrB/KenMST7iq
- STr1t0cz5456jJl2wWmIi2Y6+GFe7lY2w60Qpa9pbT5lzBe/6p82NymqgUQEC6UZGyye
- UG2g==
-X-Gm-Message-State: AOJu0YyxGUaLuTpeiZfhWAPhqYeEVZYzFNKuEU5en3de5gX/zsoWi1Za
- zgA5D8h+vxy9Im0IgRGe+U0V4eZrPEe6GarpSSPHNOZy3tNqB4M0rpCg1XgAFwuFq2HrNb+g/Qu
- s
-X-Google-Smtp-Source: AGHT+IEvOQJ/vsG+Xzc79qS1kUH+Htbk/BG6NHSjSTEIr9T+0yCJnlJvTaif+wGC/2vziqW8FicwUA==
-X-Received: by 2002:adf:ee46:0:b0:336:68dd:c7e2 with SMTP id
- w6-20020adfee46000000b0033668ddc7e2mr992707wro.27.1706279631022; 
+ bh=8W6Dmg/Z15G38A2ANLX0PCG/NULptGOn1F3YALWfvag=;
+ b=IOBaDbz5SZDeSoASO0zLxrRExCKf4sFrayV3pFG3I6oTzX1quiesA6G3G8eZhtpZvT
+ MWplpQI2VEamu93eR6Kl7Tg3FfD2a8CvR7NBMPSLIwi+Ba8nD7ro1NyylNYCYbiscj7s
+ 3Xr3IUNFZa7L07CHYx+KI7lgNzWVJazbLQukwVsBhfVhzQ1eMQzH0qTITrHpmnND3whx
+ WyAG6oSNHtze2Vci71lQ/XS2/Hoh4RJowrfKq1RVoZo14M9kFFcjV/viGp+zdz4kIsWP
+ 0pcxNathGRhf9DJ8Xg6fBXgOJiT1+fzFQ6LA1X55kPtLgEq+8j0qduGfVbn1SMs/WKM1
+ OTXA==
+X-Gm-Message-State: AOJu0YxYEcTr23t2LLxyRvFhvmc8bbWleJiZ8hp+oQO/LDGOYgylT+H5
+ r7qkOPNMHNA0gNX8zH59wN+tAIeHfqFV1303ZM5eXn3M9bq2X2jo/Ep5hu+Xt74XvbCsvnY00Zm
+ V
+X-Google-Smtp-Source: AGHT+IF9uk3c1ASXF2iTrylbz01F2lZILul21p0dTjJY97LbAxFj3xdLDYkfRD/yqN8e6kmrAfG4gQ==
+X-Received: by 2002:a5d:6303:0:b0:337:9b58:6b8d with SMTP id
+ i3-20020a5d6303000000b003379b586b8dmr926115wru.112.1706279631407; 
  Fri, 26 Jan 2024 06:33:51 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.50
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 06:33:50 -0800 (PST)
+ Fri, 26 Jan 2024 06:33:51 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/36] target/arm: Declare ARM_CPU_TYPE_NAME/SUFFIX in
- 'cpu-qom.h'
-Date: Fri, 26 Jan 2024 14:33:25 +0000
-Message-Id: <20240126143341.2101237-21-peter.maydell@linaro.org>
+Subject: [PULL 21/36] hw/cpu/a9mpcore: Build it only once
+Date: Fri, 26 Jan 2024 14:33:26 +0000
+Message-Id: <20240126143341.2101237-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,44 +94,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Missed in commit 2d56be5a29 ("target: Declare
-FOO_CPU_TYPE_NAME/SUFFIX in 'cpu-qom.h'"). See
-it for more details.
+hw/cpu/a9mpcore.c doesn't require "cpu.h" anymore.
+By removing it, the unit become target agnostic:
+we can build it once. Update meson.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-12-philmd@linaro.org
+Message-id: 20240118200643.29037-13-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-qom.h | 3 +++
- target/arm/cpu.h     | 2 --
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ hw/cpu/a9mpcore.c  | 2 +-
+ hw/cpu/meson.build | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index 02b914c8767..f795994135f 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -33,4 +33,7 @@ typedef struct AArch64CPUClass AArch64CPUClass;
- DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
-                        TYPE_AARCH64_CPU)
+diff --git a/hw/cpu/a9mpcore.c b/hw/cpu/a9mpcore.c
+index d03f57e579b..c30ef72c669 100644
+--- a/hw/cpu/a9mpcore.c
++++ b/hw/cpu/a9mpcore.c
+@@ -15,7 +15,7 @@
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/core/cpu.h"
+-#include "cpu.h"
++#include "target/arm/cpu-qom.h"
  
-+#define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
-+#define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
-+
- #endif
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index cecac4c0a12..41659d0ef15 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -2837,8 +2837,6 @@ bool write_cpustate_to_list(ARMCPU *cpu, bool kvm_sync);
- #define ARM_CPUID_TI915T      0x54029152
- #define ARM_CPUID_TI925T      0x54029252
+ #define A9_GIC_NUM_PRIORITY_BITS    5
  
--#define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
--#define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
- #define CPU_RESOLVING_TYPE TYPE_ARM_CPU
+diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
+index 6d319947ca0..38cdcfbe572 100644
+--- a/hw/cpu/meson.build
++++ b/hw/cpu/meson.build
+@@ -2,5 +2,5 @@ system_ss.add(files('core.c', 'cluster.c'))
  
- #define TYPE_ARM_HOST_CPU "host-" TYPE_ARM_CPU
+ system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
+ system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview_mpcore.c'))
+-specific_ss.add(when: 'CONFIG_A9MPCORE', if_true: files('a9mpcore.c'))
++system_ss.add(when: 'CONFIG_A9MPCORE', if_true: files('a9mpcore.c'))
+ specific_ss.add(when: 'CONFIG_A15MPCORE', if_true: files('a15mpcore.c'))
 -- 
 2.34.1
 
