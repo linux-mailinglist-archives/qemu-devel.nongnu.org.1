@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B48283DD8C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 16:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E5F83DD96
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 16:35:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTOCU-00015P-Gb; Fri, 26 Jan 2024 10:33:02 -0500
+	id 1rTOE5-0003CI-5q; Fri, 26 Jan 2024 10:34:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rTOCO-0000p7-PU; Fri, 26 Jan 2024 10:32:58 -0500
-Received: from mgamail.intel.com ([198.175.65.10])
+ id 1rTODp-00037Y-A0; Fri, 26 Jan 2024 10:34:25 -0500
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rTOCM-00062j-55; Fri, 26 Jan 2024 10:32:55 -0500
+ id 1rTODn-0006HL-Hn; Fri, 26 Jan 2024 10:34:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706283174; x=1737819174;
+ t=1706283263; x=1737819263;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Xdnt7TugAddM5NzoPI2fVh+GAXklW+s16lNhdZleJU8=;
- b=SShdiS+Ir0pcJDnGi5+GWWQlWAXiAxlxQlVM4ydA8J98ho4pMCvc1ing
- ohMhW0Ik2ZxCQv0piTK9+bq4KsdkuubQ8ZVJANGjoHkpkPKl9lo5/Ceoo
- JA+7a25ndqO3C6ZUIdKLRkrF6A0skx1Xemceg2i15ZTTiF/uIHppeiqUh
- AFM4OP6/dapmwJJzEv2i8z/qzzDDz+QobxbIooDdKgiupJOXJktMol6nE
- MEel7KxqCqx/wFBQFKSc44oZaa6jYHVBQkYDHjrwM0CxRl0VzhpqLGN24
- eh+EGV6XwlDwgRpWos9SADjg5vwLsKxQeatlTUsywk4w2HfMRMQ5hqITe w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="15854939"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="15854939"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2024 07:32:24 -0800
+ bh=BstrZwgM1Y+iwNJmCRHendx4Fgmy6QSeO0xSowhKAxM=;
+ b=nXXtY2iz23DsWonzzj3Tni56f82Tgyb/MdQKOQd5xSK86UJGlhsN3Fmk
+ YDbuRf2yCPhYuhmXhA3mqXEItTekWdY5kc+0e9w1+I4Wu2hz9jWvXXCf3
+ 9yUsEKUxY22Ce0g9tbDjN4QaaA3G6sI+QxA8ALjdk23zd3ch3Y07q/U2W
+ 766R3rws3rIyyaBo0WTRcMNQqO5cXCPRFQPKrVwADQahFOJ85YDK0Z1Vz
+ GPKEG4yUjY7n0r7BNE8nRlX/ACVioLuYf35fOgTUGVJrLrieS8qIYp9Um
+ BUhlTD1dlrsBlYtHw6iu4hixCFOGcbGtIZCGKkIpfPwrFePQNUce+S8WZ w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="23959842"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="23959842"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jan 2024 07:34:21 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2643268"
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="736714844"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; d="scan'208";a="736714844"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 26 Jan 2024 07:32:23 -0800
-Date: Fri, 26 Jan 2024 23:45:25 +0800
+ by orsmga003.jf.intel.com with ESMTP; 26 Jan 2024 07:34:19 -0800
+Date: Fri, 26 Jan 2024 23:47:23 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH 02/10] hyperv: Clean up includes
-Message-ID: <ZbPTlRJtPRlnDL3C@intel.com>
+Subject: Re: [PATCH 10/10] misc: Clean up includes
+Message-ID: <ZbPUC3KoK30WANMX@intel.com>
 References: <20240125163408.1595135-1-peter.maydell@linaro.org>
- <20240125163408.1595135-3-peter.maydell@linaro.org>
+ <20240125163408.1595135-11-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240125163408.1595135-3-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240125163408.1595135-11-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
@@ -75,14 +75,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 25, 2024 at 04:34:00PM +0000, Peter Maydell wrote:
-> Date: Thu, 25 Jan 2024 16:34:00 +0000
+On Thu, Jan 25, 2024 at 04:34:08PM +0000, Peter Maydell wrote:
+> Date: Thu, 25 Jan 2024 16:34:08 +0000
 > From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 02/10] hyperv: Clean up includes
+> Subject: [PATCH 10/10] misc: Clean up includes
 > X-Mailer: git-send-email 2.34.1
 > 
 > This commit was created with scripts/clean-includes:
->  ./scripts/clean-includes --git hyperv hw/hyperv/*.[ch]
+>  ./scripts/clean-includes --git misc net/af-xdp.c plugins/*.c audio/pwaudio.c util/userfaultfd.c
 > 
 > All .c should include qemu/osdep.h first.  The script performs three
 > related cleanups:
@@ -95,89 +95,78 @@ On Thu, Jan 25, 2024 at 04:34:00PM +0000, Peter Maydell wrote:
 > 
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  hw/hyperv/hv-balloon-internal.h           | 1 -
->  hw/hyperv/hv-balloon-our_range_memslots.h | 1 -
->  hw/hyperv/hv-balloon-page_range_tree.h    | 1 -
->  hw/hyperv/hv-balloon-our_range_memslots.c | 1 +
->  hw/hyperv/hv-balloon-page_range_tree.c    | 1 +
->  hw/hyperv/hv-balloon.c                    | 1 +
->  6 files changed, 3 insertions(+), 3 deletions(-)
+> These are all cases where files include things osdep already gives them.
+> ---
+>  audio/pwaudio.c    | 1 -
+>  net/af-xdp.c       | 1 -
+>  plugins/core.c     | 1 -
+>  plugins/loader.c   | 1 -
+>  util/userfaultfd.c | 1 -
+>  5 files changed, 5 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 > 
-> diff --git a/hw/hyperv/hv-balloon-internal.h b/hw/hyperv/hv-balloon-internal.h
-> index 164c2e58253..ee53a28a266 100644
-> --- a/hw/hyperv/hv-balloon-internal.h
-> +++ b/hw/hyperv/hv-balloon-internal.h
-> @@ -10,7 +10,6 @@
->  #ifndef HW_HYPERV_HV_BALLOON_INTERNAL_H
->  #define HW_HYPERV_HV_BALLOON_INTERNAL_H
+> diff --git a/audio/pwaudio.c b/audio/pwaudio.c
+> index 3ce5f6507b4..3b14e04fbb0 100644
+> --- a/audio/pwaudio.c
+> +++ b/audio/pwaudio.c
+> @@ -11,7 +11,6 @@
+>  #include "qemu/osdep.h"
+>  #include "qemu/module.h"
+>  #include "audio.h"
+> -#include <errno.h>
+>  #include "qemu/error-report.h"
+>  #include "qapi/error.h"
+>  #include <spa/param/audio/format-utils.h>
+> diff --git a/net/af-xdp.c b/net/af-xdp.c
+> index 6c65028fb00..38e600703a3 100644
+> --- a/net/af-xdp.c
+> +++ b/net/af-xdp.c
+> @@ -13,7 +13,6 @@
 >  
-> -#include "qemu/osdep.h"
+>  #include "qemu/osdep.h"
+>  #include <bpf/bpf.h>
+> -#include <inttypes.h>
+>  #include <linux/if_link.h>
+>  #include <linux/if_xdp.h>
+>  #include <net/if.h>
+> diff --git a/plugins/core.c b/plugins/core.c
+> index 49588285dd0..ee2fa41af9e 100644
+> --- a/plugins/core.c
+> +++ b/plugins/core.c
+> @@ -27,7 +27,6 @@
+>  #include "tcg/tcg.h"
+>  #include "tcg/tcg-op.h"
+>  #include "plugin.h"
+> -#include "qemu/compiler.h"
 >  
->  #define HV_BALLOON_PFN_SHIFT 12
->  #define HV_BALLOON_PAGE_SIZE (1 << HV_BALLOON_PFN_SHIFT)
-> diff --git a/hw/hyperv/hv-balloon-our_range_memslots.h b/hw/hyperv/hv-balloon-our_range_memslots.h
-> index b6f592d34b0..df3b686bc7c 100644
-> --- a/hw/hyperv/hv-balloon-our_range_memslots.h
-> +++ b/hw/hyperv/hv-balloon-our_range_memslots.h
-> @@ -10,7 +10,6 @@
->  #ifndef HW_HYPERV_HV_BALLOON_OUR_RANGE_MEMSLOTS_H
->  #define HW_HYPERV_HV_BALLOON_OUR_RANGE_MEMSLOTS_H
+>  struct qemu_plugin_cb {
+>      struct qemu_plugin_ctx *ctx;
+> diff --git a/plugins/loader.c b/plugins/loader.c
+> index 734c11cae04..9768b78eb6b 100644
+> --- a/plugins/loader.c
+> +++ b/plugins/loader.c
+> @@ -33,7 +33,6 @@
+>  #ifndef CONFIG_USER_ONLY
+>  #include "hw/boards.h"
+>  #endif
+> -#include "qemu/compiler.h"
 >  
-> -#include "qemu/osdep.h"
+>  #include "plugin.h"
 >  
->  #include "exec/memory.h"
->  #include "qom/object.h"
-> diff --git a/hw/hyperv/hv-balloon-page_range_tree.h b/hw/hyperv/hv-balloon-page_range_tree.h
-> index 07a9ae0da61..333772b86d2 100644
-> --- a/hw/hyperv/hv-balloon-page_range_tree.h
-> +++ b/hw/hyperv/hv-balloon-page_range_tree.h
-> @@ -10,7 +10,6 @@
->  #ifndef HW_HYPERV_HV_BALLOON_PAGE_RANGE_TREE_H
->  #define HW_HYPERV_HV_BALLOON_PAGE_RANGE_TREE_H
+> diff --git a/util/userfaultfd.c b/util/userfaultfd.c
+> index fdff4867e8b..1b2fa949d4d 100644
+> --- a/util/userfaultfd.c
+> +++ b/util/userfaultfd.c
+> @@ -18,7 +18,6 @@
+>  #include <poll.h>
+>  #include <sys/syscall.h>
+>  #include <sys/ioctl.h>
+> -#include <fcntl.h>
 >  
-> -#include "qemu/osdep.h"
->  
->  /* PageRange */
->  typedef struct PageRange {
-> diff --git a/hw/hyperv/hv-balloon-our_range_memslots.c b/hw/hyperv/hv-balloon-our_range_memslots.c
-> index 99bae870f37..1505a395cf7 100644
-> --- a/hw/hyperv/hv-balloon-our_range_memslots.c
-> +++ b/hw/hyperv/hv-balloon-our_range_memslots.c
-> @@ -7,6 +7,7 @@
->   * See the COPYING file in the top-level directory.
->   */
->  
-> +#include "qemu/osdep.h"
->  #include "hv-balloon-internal.h"
->  #include "hv-balloon-our_range_memslots.h"
->  #include "trace.h"
-> diff --git a/hw/hyperv/hv-balloon-page_range_tree.c b/hw/hyperv/hv-balloon-page_range_tree.c
-> index e178d8b413c..dfb14852f42 100644
-> --- a/hw/hyperv/hv-balloon-page_range_tree.c
-> +++ b/hw/hyperv/hv-balloon-page_range_tree.c
-> @@ -7,6 +7,7 @@
->   * See the COPYING file in the top-level directory.
->   */
->  
-> +#include "qemu/osdep.h"
->  #include "hv-balloon-internal.h"
->  #include "hv-balloon-page_range_tree.h"
->  
-> diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-> index 66f297c1d7e..02383657124 100644
-> --- a/hw/hyperv/hv-balloon.c
-> +++ b/hw/hyperv/hv-balloon.c
-> @@ -7,6 +7,7 @@
->   * See the COPYING file in the top-level directory.
->   */
->  
-> +#include "qemu/osdep.h"
->  #include "hv-balloon-internal.h"
->  
->  #include "exec/address-spaces.h"
+>  typedef enum {
+>      UFFD_UNINITIALIZED = 0,
 > -- 
 > 2.34.1
 > 
