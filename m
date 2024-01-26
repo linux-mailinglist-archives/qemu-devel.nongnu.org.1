@@ -2,69 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1F683D424
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 07:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C9283D43E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 07:29:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTFNt-0002xg-3h; Fri, 26 Jan 2024 01:08:13 -0500
+	id 1rTFh9-0005Ji-TP; Fri, 26 Jan 2024 01:28:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTFNq-0002vd-Kn
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 01:08:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTFgz-0005Cf-Ch
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 01:27:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTFNp-0004Ro-7U
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 01:08:10 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTFgu-0001kx-Js
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 01:27:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706249288;
+ s=mimecast20190719; t=1706250468;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dVNsNEcw8TGjgHwfI+qgun3dMWws0fEf5O1ZWqWd+rI=;
- b=f0NlBLt70C/Dua+KScVWik5HfCOXdFVPU0fr731GTcOh9OpzSBl7smR91NdjE9A1n2Bkcx
- p2jU+UMK5IKofKcpXlFfgG2g4fo7VyiuDZcWMLQCIAVzQFL+SrCSaifUxiySAeYqkHEQOL
- 053JAJzUBth3UKzlNUCoXJMamLUFgss=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-JCMKtxs2Nw6QW12Ds5FMTw-1; Fri, 26 Jan 2024 01:08:04 -0500
-X-MC-Unique: JCMKtxs2Nw6QW12Ds5FMTw-1
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yFFQcZOejh+Azwa+uHbmJ29+OPbYCOyje9AgaCP8rd8=;
+ b=RbnKb7x7t01q39n21lb/MEEBcqDuL4umlkG/u/XSdYXmfrISjc36AY25uk3brCBZ8gC+uv
+ 7FlU0V0BQWj67kVwy2UFqCCnBAiqgf+uHPwm/Dbsx5kcZ7X+zmrc8GdhEctGR6MaK63CXL
+ SI9Id3y8n2uTtamahFdT3cACArWYqCk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-d6vyl39zPwWjd1fbEBD5Ww-1; Fri,
+ 26 Jan 2024 01:27:46 -0500
+X-MC-Unique: d6vyl39zPwWjd1fbEBD5Ww-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EB6C4185A780;
- Fri, 26 Jan 2024 06:08:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA6833C13A84;
+ Fri, 26 Jan 2024 06:27:45 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.123])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B8CE12028CD4;
- Fri, 26 Jan 2024 06:08:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C9D7B200A08E;
+ Fri, 26 Jan 2024 06:27:45 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B5C7221E6806; Fri, 26 Jan 2024 07:08:02 +0100 (CET)
+ id B407521E66E6; Fri, 26 Jan 2024 07:27:44 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: michael.roth@amd.com,  peter.maydell@linaro.org,  jsnow@redhat.com
-Subject: Re: [PATCH 0/7] qapi qmp: Documentation fixes
-In-Reply-To: <20240120095327.666239-1-armbru@redhat.com> (Markus Armbruster's
- message of "Sat, 20 Jan 2024 10:53:20 +0100")
-References: <20240120095327.666239-1-armbru@redhat.com>
-Date: Fri, 26 Jan 2024 07:08:02 +0100
-Message-ID: <874jf039vh.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/8] QAPI patches patches for 2024-01-26
+Date: Fri, 26 Jan 2024 07:27:36 +0100
+Message-ID: <20240126062744.265588-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PYZOR_CHECK=1.392, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SCC_BODY_SINGLE_WORD=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,6 +77,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued.
+The following changes since commit 5bab95dc74d43bbb28c6a96d24c810a664432057:
+
+  Merge tag 'pull-request-2024-01-24' of https://gitlab.com/thuth/qemu into staging (2024-01-25 12:33:42 +0000)
+
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-01-26
+
+for you to fetch changes up to 37507c14a6f562036fce98453de3e869b9c0684f:
+
+  qapi: Fix malformed "Since:" section tags (again) (2024-01-26 07:04:54 +0100)
+
+----------------------------------------------------------------
+QAPI patches patches for 2024-01-26
+
+----------------------------------------------------------------
+Markus Armbruster (8):
+      docs/devel/qapi-code-gen: Don't reserve types ending with 'Kind'
+      docs/devel/qapi-code-gen: Fix missing ':' in tagged section docs
+      docs: Replace dangling references to docs/interop/qmp-intro.txt
+      qapi: Fix dangling references to docs/devel/qapi-code-gen.txt
+      docs/interop/bitmaps: Clean up a reference to qemu-qmp-ref
+      qapi: Fix mangled "Returns" sections in documentation
+      qapi: Indent tagged doc comment sections properly
+      qapi: Fix malformed "Since:" section tags (again)
+
+ docs/devel/qapi-code-gen.rst            |  9 ++++-----
+ docs/devel/writing-monitor-commands.rst |  4 ++--
+ docs/interop/bitmaps.rst                |  6 +++---
+ qapi/block-core.json                    |  4 ++--
+ qapi/char.json                          |  4 ++--
+ qapi/introspect.json                    |  2 +-
+ qapi/machine.json                       | 24 ++++++++++++------------
+ qapi/migration.json                     | 14 +++++++-------
+ qapi/misc-target.json                   |  2 +-
+ qapi/misc.json                          | 10 +++++-----
+ qapi/net.json                           | 15 +++++++++------
+ qapi/qdev.json                          |  5 +++--
+ qapi/qom.json                           | 10 ++++++----
+ qapi/yank.json                          |  4 ++--
+ include/qapi/visitor.h                  |  2 +-
+ include/qemu/yank.h                     |  2 +-
+ qapi/qapi-util.c                        |  2 +-
+ util/yank.c                             |  2 +-
+ scripts/qapi/parser.py                  |  2 +-
+ 19 files changed, 64 insertions(+), 59 deletions(-)
+
+-- 
+2.43.0
 
 
