@@ -2,85 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1595283DAE5
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3A883DB00
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:35:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTMIm-00015e-Nb; Fri, 26 Jan 2024 08:31:24 -0500
+	id 1rTMK4-00033Z-Hl; Fri, 26 Jan 2024 08:32:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rTMIc-0000t2-Po
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:14 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rTMIa-0007dW-Rj
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:14 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55a179f5fa1so373284a12.0
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 05:31:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1706275871; x=1706880671; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QiekAr7rZgYcU2IGkVrfbUPYTKoPVa5QUXzJp79BZr4=;
- b=GozLm+OitaiA0LKWYasEq44fKd4DhSXF11uqW7/dD/ZcSk8qpuCYi1CH3/juq/2Mpi
- MKdoYR5OSfwJYED8eRaZTWY2CFsCHYUMnefxuHF6p6c8fRlZe1Xgzsu4b7ogI6HcTgM5
- 3LFdNm5dfHOQrxYaYAVXApwxDaCurH8jA5AP9W2JA19c6fZHO2x4tfBQpZavg2oBWVXq
- 58rKfzg/p/CRHM372oVBBvn9gQ/rVwpvkyTB13a35ntrav80PIYzBKS5NTqWkoPu+4Fx
- eQfKYhqqg0cZAIAh3hIjcE1ur58FBPVwFT9TxUAL9peZlbnosH/kdgC2dr+700qSngVA
- xEeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706275871; x=1706880671;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QiekAr7rZgYcU2IGkVrfbUPYTKoPVa5QUXzJp79BZr4=;
- b=Oxo4x1nuD1+SfbVhP91vjzKpTEtOlLSiCrCBEqawM1MmpP7Tm2if+cGIrOQ7KV0D3D
- YXaOaD0KEld6+3N7gUlOMhVf9SyZXntrDixby4hs1yUwrCKzT9ITjPROSr5qzYsQ5vd/
- nbRpy8Vv7h/DSIqoOhPVhR30KkxzDvSfqJEfOcKsWBsRdQgaJPccp68FeB00TcnjM/OG
- XgJm0jnO80rUASKEIfMx1lVtl3ELpGYIQtcHDpzhsTSl1ZVTcty2E2jG5iuzaJjgAopw
- iimg3svUQDTOZWkLTMU1ss9XAVC6MZ/k5gJZzq17Ho1jH2WWj5MrP+kZqyufhCVN7NBv
- lQlQ==
-X-Gm-Message-State: AOJu0YzB1/UI3nyXWlcgFJPD0glQRLqbdIHg/2/yIaj9NPRw5oaQWs5X
- fvBcd0dlANDm9XpMrSEMoRbatRQPZmPRhwZBMhPB7q4wpAPmI4RSSDq2VCdVhbzkBF/i8DFl3ow
- y
-X-Google-Smtp-Source: AGHT+IGA8SflCD9biBxv5FT4LbxrUj9L2yjkOdahc/csT8XM/1sdud8oSbh46LjSrZK0tGEWW7sOjw==
-X-Received: by 2002:a17:906:1d0b:b0:a31:5b30:6f54 with SMTP id
- n11-20020a1709061d0b00b00a315b306f54mr857524ejh.30.1706275871393; 
- Fri, 26 Jan 2024 05:31:11 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- h20-20020a170906111400b00a312e352dacsm624861eja.181.2024.01.26.05.31.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 05:31:10 -0800 (PST)
-From: Andrew Jones <ajones@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- dbarboza@ventanamicro.com
-Subject: [PATCH v2 6/6] target/riscv: Promote svade to a normal extension
-Date: Fri, 26 Jan 2024 14:31:08 +0100
-Message-ID: <20240126133101.61344-14-ajones@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <SRS0=5gEp=JE=kaod.org=clg@ozlabs.org>)
+ id 1rTMJu-0002Xg-2R; Fri, 26 Jan 2024 08:32:34 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=5gEp=JE=kaod.org=clg@ozlabs.org>)
+ id 1rTMJr-0007wu-Cm; Fri, 26 Jan 2024 08:32:33 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TLzBx2XL4z4wc3;
+ Sat, 27 Jan 2024 00:32:25 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TLzBw0bzVz4wbp;
+ Sat, 27 Jan 2024 00:32:23 +1100 (AEDT)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 00/17] aspeed queue
+Date: Fri, 26 Jan 2024 14:31:59 +0100
+Message-ID: <20240126133217.996306-1-clg@kaod.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240126133101.61344-8-ajones@ventanamicro.com>
-References: <20240126133101.61344-8-ajones@ventanamicro.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=5gEp=JE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,82 +61,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Named features are extensions which don't make sense for users to
-control and are therefore not exposed on the command line. However,
-svade is an extension which makes sense for users to control, so treat
-it like a "normal" extension. The default is false, even for the max
-cpu type, since QEMU has always implemented hardware A/D PTE bit
-updating, so users must opt into svade (or get it from a CPU type
-which enables it by default).
+The following changes since commit e029fe22caad9b75c7ab69bd4e84853c11fb71e0:
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu.c         | 8 +++-----
- target/riscv/tcg/tcg-cpu.c | 6 ++++++
- 2 files changed, 9 insertions(+), 5 deletions(-)
+  Merge tag 'pull-qapi-2024-01-26' of https://repo.or.cz/qemu/armbru into staging (2024-01-26 10:21:27 +0000)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index a56c2ff91d6d..4ddde2541233 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1421,6 +1421,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
- 
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
-+    MULTI_EXT_CFG_BOOL("svade", ext_svade, false),
-     MULTI_EXT_CFG_BOOL("svadu", ext_svadu, true),
-     MULTI_EXT_CFG_BOOL("svinval", ext_svinval, false),
-     MULTI_EXT_CFG_BOOL("svnapot", ext_svnapot, false),
-@@ -1528,7 +1529,6 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-  * and priv_ver like regular extensions.
-  */
- const RISCVCPUMultiExtConfig riscv_cpu_named_features[] = {
--    MULTI_EXT_CFG_BOOL("svade", ext_svade, true),
-     MULTI_EXT_CFG_BOOL("zic64b", ext_zic64b, true),
- 
-     /*
-@@ -2175,8 +2175,6 @@ static RISCVCPUProfile RVA22U64 = {
-  * Other named features that we already implement: Sstvecd, Sstvala,
-  * Sscounterenw
-  *
-- * Named features that we need to enable: svade
-- *
-  * The remaining features/extensions comes from RVA22U64.
-  */
- static RISCVCPUProfile RVA22S64 = {
-@@ -2188,11 +2186,11 @@ static RISCVCPUProfile RVA22S64 = {
-     .ext_offsets = {
-         /* rva22s64 exts */
-         CPU_CFG_OFFSET(ext_zifencei), CPU_CFG_OFFSET(ext_svpbmt),
--        CPU_CFG_OFFSET(ext_svinval),
-+        CPU_CFG_OFFSET(ext_svinval), CPU_CFG_OFFSET(ext_svade),
- 
-         /* rva22s64 named features */
-         CPU_CFG_OFFSET(ext_sstvecd), CPU_CFG_OFFSET(ext_sstvala),
--        CPU_CFG_OFFSET(ext_sscounterenw), CPU_CFG_OFFSET(ext_svade),
-+        CPU_CFG_OFFSET(ext_sscounterenw),
- 
-         RISCV_PROFILE_EXT_LIST_END
-     }
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index bc3c45b11704..b93df1725a79 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1314,6 +1314,12 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-         isa_ext_update_enabled(cpu, prop->offset, true);
-     }
- 
-+    /*
-+     * Some extensions can't be added without backward compatibilty concerns.
-+     * Disable those, the user can still opt in to them on the command line.
-+     */
-+    cpu->cfg.ext_svade = false;
-+
-     /* set vector version */
-     env->vext_ver = VEXT_VERSION_1_00_0;
- 
--- 
-2.43.0
+are available in the Git repository at:
 
+  https://github.com/legoater/qemu/ tags/pull-aspeed-20240126
+
+for you to fetch changes up to b40769f4b49d15485ffaaa7acade3e3593ee6daa:
+
+  hw/fsi: Update MAINTAINER list (2024-01-26 14:22:08 +0100)
+
+----------------------------------------------------------------
+aspeed queue:
+
+* Update of buildroot images to 2023.11 (6.6.3 kernel)
+* Check of the valid CPU type supported by aspeed machines
+* Simplified models for the IBM's FSI bus and the Aspeed
+  controller bridge
+
+----------------------------------------------------------------
+Cédric Le Goater (1):
+      tests/avocado/machine_aspeed.py: Update buildroot images to 2023.11
+
+Ninad Palsule (11):
+      hw/fsi: Introduce IBM's Local bus
+      hw/fsi: Introduce IBM's scratchpad device
+      hw/fsi: Introduce IBM's FSI Bus
+      hw/fsi: Introduce IBM's fsi-slave model
+      hw/fsi: Introduce IBM's cfam
+      hw/fsi: Introduce IBM's FSI master
+      hw/fsi: Aspeed APB2OPB & On-chip peripheral bus
+      hw/arm: Hook up FSI module in AST2600
+      hw/fsi: Added qtest
+      hw/fsi: Added FSI documentation
+      hw/fsi: Update MAINTAINER list
+
+Philippe Mathieu-Daudé (5):
+      hw/arm/aspeed: Remove dead code
+      hw/arm/aspeed: Set default CPU count using aspeed_soc_num_cpus()
+      hw/arm/aspeed: Init CPU defaults in a common helper
+      hw/arm/aspeed: Introduce aspeed_soc_cpu_type() helper
+      hw/arm/aspeed: Check for CPU types in machine_run_board_init()
+
+ MAINTAINERS                     |   9 ++
+ docs/specs/fsi.rst              | 122 +++++++++++++++
+ docs/specs/index.rst            |   1 +
+ meson.build                     |   1 +
+ hw/fsi/trace.h                  |   1 +
+ include/hw/arm/aspeed_soc.h     |   8 +-
+ include/hw/fsi/aspeed_apb2opb.h |  46 ++++++
+ include/hw/fsi/cfam.h           |  34 +++++
+ include/hw/fsi/fsi-master.h     |  32 ++++
+ include/hw/fsi/fsi.h            |  37 +++++
+ include/hw/fsi/lbus.h           |  43 ++++++
+ hw/arm/aspeed.c                 |  70 ++++-----
+ hw/arm/aspeed_ast10x0.c         |   8 +-
+ hw/arm/aspeed_ast2400.c         |  15 +-
+ hw/arm/aspeed_ast2600.c         |  28 +++-
+ hw/arm/aspeed_soc_common.c      |   8 +
+ hw/fsi/aspeed_apb2opb.c         | 329 ++++++++++++++++++++++++++++++++++++++++
+ hw/fsi/cfam.c                   | 168 ++++++++++++++++++++
+ hw/fsi/fsi-master.c             | 170 +++++++++++++++++++++
+ hw/fsi/fsi.c                    | 102 +++++++++++++
+ hw/fsi/lbus.c                   | 117 ++++++++++++++
+ tests/qtest/aspeed-fsi-test.c   | 205 +++++++++++++++++++++++++
+ hw/Kconfig                      |   1 +
+ hw/arm/Kconfig                  |   1 +
+ hw/fsi/Kconfig                  |   7 +
+ hw/fsi/meson.build              |   2 +
+ hw/fsi/trace-events             |  13 ++
+ hw/meson.build                  |   1 +
+ tests/avocado/machine_aspeed.py |  18 +--
+ tests/qtest/meson.build         |   1 +
+ 30 files changed, 1540 insertions(+), 58 deletions(-)
+ create mode 100644 docs/specs/fsi.rst
+ create mode 100644 hw/fsi/trace.h
+ create mode 100644 include/hw/fsi/aspeed_apb2opb.h
+ create mode 100644 include/hw/fsi/cfam.h
+ create mode 100644 include/hw/fsi/fsi-master.h
+ create mode 100644 include/hw/fsi/fsi.h
+ create mode 100644 include/hw/fsi/lbus.h
+ create mode 100644 hw/fsi/aspeed_apb2opb.c
+ create mode 100644 hw/fsi/cfam.c
+ create mode 100644 hw/fsi/fsi-master.c
+ create mode 100644 hw/fsi/fsi.c
+ create mode 100644 hw/fsi/lbus.c
+ create mode 100644 tests/qtest/aspeed-fsi-test.c
+ create mode 100644 hw/fsi/Kconfig
+ create mode 100644 hw/fsi/meson.build
+ create mode 100644 hw/fsi/trace-events
 
