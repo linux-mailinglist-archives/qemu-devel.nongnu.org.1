@@ -2,175 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549BB83DC1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5408883DC4D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:39:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHI-0002LI-Vq; Fri, 26 Jan 2024 09:33:57 -0500
+	id 1rTNHN-0002SV-6o; Fri, 26 Jan 2024 09:34:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTNHD-0002G3-VO
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTNHC-0007v9-7f
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706279629;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=XO3uKYSgCxcQQA08HN7uml3FSQq73eoPnM4iRraw2cY=;
- b=g83jvVhnWJbaj5eiHNubnQFGz4QeECti3ymo3GwVjDP3NsnwZq+BHLX+dSmI9PU8STEIHW
- tiJwQzFS+UXp/sADbmqhio836n8Z3CcjyFjRPtHyACStQMBWwwXjHlT6PJdSWIQEXKOFBD
- u+adCrh6RylkZhU2nToQdiupv7yfBug=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-VqAy8_csNNe-zayEorlhWQ-1; Fri, 26 Jan 2024 09:33:48 -0500
-X-MC-Unique: VqAy8_csNNe-zayEorlhWQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-78315f41c6cso62998285a.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rTNHJ-0002N7-MN
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:57 -0500
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rTNHH-0007y0-7F
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:57 -0500
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-337d99f9cdfso591105f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706279634; x=1706884434; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=kT4FU7BdZDSw/ALIzrvXiPFzXH+nnZjgGXux5dvXWzU=;
+ b=c7Xl2/sNXTUtr1/4+SKNJ6fPqdR7fKXe1KPPGRGnkSvGrAduSUkdjkOWBXMJBw0UNd
+ CKDATmOMCVAQ8w0dIxcYbkgiBCf1vr49gq5WkdeMrvOhl36c95wLvYw/NQQuUPt8kxAl
+ NTpMv0dS/GJz0aZCRKlcgi+doM5QY4rQTIYclszcJaVJILsdlRzlAgVZSj0pGNjYTV+U
+ Dl2Q7/dqF7FMLr/edBKkSXIDiZwpiBoF6nmzMd2cCmmOgAOHVu7+Gu3M9eQIgkevtRd8
+ v7+TgqXuXACGHN8NkPpOK67lTxjcuooEMP8mSsbQmZqmFhwYUe4ldvT/pAVnQ0p+ZxT8
+ zRTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279628; x=1706884428;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XO3uKYSgCxcQQA08HN7uml3FSQq73eoPnM4iRraw2cY=;
- b=bCa5/zF6AXfhyJqG8Qwjv0qeqsQjqAfYQ2ojxBjFdk5015K2hb26NSxFXhBrct3vuy
- UP1VIS7ZNb8XCRKeDCHociFOHIV2+UuX2yANcHiAoIX52oPSC3gB2jNCNmx2ilBz3J8j
- y850nbZZd+zTs3dsSmKr3wjQg47TIIa99IAAjIwy77hynU8Cfx1PfKbBMaql3l1rThaE
- yTe75/sdXgTUejsM/Mn/EJjs31Xtav7rFGp8mg7QQIMK2zHFOIswzQk1f4BiwIbjK5f0
- YifIfU+kEbICboNA9ooj1exmWZ+R9wF3bOikqJaGrhxj1ABbuIneegZ4/L5powbhibXk
- vh7Q==
-X-Gm-Message-State: AOJu0YwLT3JKsWrdKjGGEBQVJilPyQhUmpHmCoZ1MtGw1MIB5JS302i2
- 4lgXhkJndauQPKiamTfPS4MCSq6Rxbs5o1QDhn878OMuNG1Kj5mZQdhRK7I9HTrY7oF4M1eiPS4
- 7X6o3qDfB/UxZ0JB18aH/0/ufdSQYeH82JWjuAkRTO7eag3yuO3ik
-X-Received: by 2002:a05:620a:a46:b0:783:9a8f:27a4 with SMTP id
- j6-20020a05620a0a4600b007839a8f27a4mr1843446qka.5.1706279627832; 
- Fri, 26 Jan 2024 06:33:47 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFLU1FiT+dpVwDXfyESOn/OYV+USTQU7Glot+fqvgnRH9/ehvAQ6E+hMypl3svO3bsrsSmPRA==
-X-Received: by 2002:a05:620a:a46:b0:783:9a8f:27a4 with SMTP id
- j6-20020a05620a0a4600b007839a8f27a4mr1843428qka.5.1706279627561; 
- Fri, 26 Jan 2024 06:33:47 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-119.web.vodafone.de.
- [109.43.176.119]) by smtp.gmail.com with ESMTPSA id
- y5-20020a37e305000000b0078392eacfd4sm619792qki.80.2024.01.26.06.33.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jan 2024 06:33:47 -0800 (PST)
-Message-ID: <9ae3e373-5213-4906-9a57-7a5eb026a51f@redhat.com>
-Date: Fri, 26 Jan 2024 15:33:30 +0100
+ d=1e100.net; s=20230601; t=1706279634; x=1706884434;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kT4FU7BdZDSw/ALIzrvXiPFzXH+nnZjgGXux5dvXWzU=;
+ b=a9/4HAllDQzUPhMPfHfZkVnHywReeJHWnMCvSzEDJpowf9xWMVb+Rb3r3F0ljRNdTP
+ gToGLSBUralLyRl2/9rG9Oq86EWR5wN5MhLMiWsxv2T0HGNS6tqDyN0BrOW9DAN7yL32
+ 6obERsjvm0+h5/iwxIJKRTZI/WbL+LHInmstFsulpH05QHthCBFYk6pvQlQLBnF3oLmw
+ fgtIhXe8rFQ6NL/G21pQdCRrA3/9OQ+NfUzOn1SeSe4xR8hJAqri67xVDaS96rEYrLwQ
+ FOyalFo/d67LxpZL/uIoleCKmue+qg2wqkYruuOgtgwFEBUnJWv7deIE1DxGAMoNUbRU
+ YMOg==
+X-Gm-Message-State: AOJu0Yz17LTbkzs4lGr5IdDdMX0SOJY6q3EoP+iYTXIkqFmn2qh7F35T
+ Yk2Q0Sle9hGRFpHC0A6yacmXE1vLQ5QjjbD0cIijRUEopb8A4IbuixhCOEPr9Sx9NySHFTVgGdL
+ 2
+X-Google-Smtp-Source: AGHT+IEkiTHfQG3tdDenazw7FYn1Siu3aWSas6UF2onyIPEg4QzLqYcqHoKj1TRFblQSKARMa4oJjg==
+X-Received: by 2002:adf:f103:0:b0:337:bfa5:221a with SMTP id
+ r3-20020adff103000000b00337bfa5221amr981373wro.107.1706279633775; 
+ Fri, 26 Jan 2024 06:33:53 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.53
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jan 2024 06:33:53 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 26/36] target/arm: Move ARM_CPU_IRQ/FIQ definitions to
+ 'cpu-qom.h' header
+Date: Fri, 26 Jan 2024 14:33:31 +0000
+Message-Id: <20240126143341.2101237-27-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
+References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/46] net: report list of available models according
- to platform
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
- <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
- <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-References: <20240108204909.564514-1-dwmw2@infradead.org>
- <20240108204909.564514-3-dwmw2@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240108204909.564514-3-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.313,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -187,71 +93,439 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/01/2024 21.26, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> By noting the models for which a configuration was requested, we can give
-> the user an accurate list of which NIC models were actually available on
-> the platform/configuration that was otherwise chosen.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Reviewed-by: Paul Durrant <paul@xen.org>
-> ---
->   net/net.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 94 insertions(+)
-> 
-> diff --git a/net/net.c b/net/net.c
-> index aeb7f573fc..962904eaef 100644
-> --- a/net/net.c
-> +++ b/net/net.c
-> @@ -75,6 +75,8 @@ typedef QSIMPLEQ_HEAD(, NetdevQueueEntry) NetdevQueue;
->   
->   static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
->   
-> +static GHashTable *nic_model_help;
-> +
->   /***********************************************************/
->   /* network device redirectors */
->   
-> @@ -1087,12 +1089,94 @@ static int net_init_nic(const Netdev *netdev, const char *name,
->       return idx;
->   }
->   
-> +static gboolean add_nic_result(gpointer key, gpointer value, gpointer user_data)
-> +{
-> +    GPtrArray *results = user_data;
-> +    GPtrArray *alias_list = value;
-> +    const char *model = key;
-> +    char *result;
-> +
-> +    if (!alias_list) {
-> +        result = g_strdup(model);
-> +    } else {
-> +        GString *result_str = g_string_new(model);
-> +        int i;
-> +
-> +        g_string_append(result_str, " (aka ");
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-It's an abbreviation, so I'd rather use "a.k.a." instead of "aka".
+The ARM_CPU_IRQ/FIQ definitions are used to index the GPIO
+IRQ created calling qdev_init_gpio_in() in ARMCPU instance_init()
+handler. To allow non-ARM code to raise interrupt on ARM cores,
+move they to 'target/arm/cpu-qom.h' which is non-ARM specific and
+can be included by any hw/ file.
 
-Apart from that, the patch looks reasonable to me.
+File list to include the new header generated using:
 
-  Thomas
+  $ git grep -wEl 'ARM_CPU_(\w*IRQ|FIQ)'
 
-> +        for (i = 0; i < alias_list->len; i++) {
-> +            if (i) {
-> +                g_string_append(result_str, ", ");
-> +            }
-> +            g_string_append(result_str, alias_list->pdata[i]);
-> +        }
-> +        g_string_append(result_str, ")");
-> +        result = result_str->str;
-> +        g_string_free(result_str, false);
-> +        g_ptr_array_unref(alias_list);
-> +    }
-> +    g_ptr_array_add(results, result);
-> +    return true;
-> +}
-...
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240118200643.29037-18-philmd@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/cpu-qom.h    | 6 ++++++
+ target/arm/cpu.h        | 6 ------
+ hw/arm/allwinner-a10.c  | 1 +
+ hw/arm/allwinner-h3.c   | 1 +
+ hw/arm/allwinner-r40.c  | 1 +
+ hw/arm/armv7m.c         | 1 +
+ hw/arm/aspeed_ast2400.c | 1 +
+ hw/arm/aspeed_ast2600.c | 1 +
+ hw/arm/bcm2836.c        | 1 +
+ hw/arm/exynos4210.c     | 1 +
+ hw/arm/fsl-imx25.c      | 1 +
+ hw/arm/fsl-imx31.c      | 1 +
+ hw/arm/fsl-imx6.c       | 1 +
+ hw/arm/fsl-imx6ul.c     | 1 +
+ hw/arm/fsl-imx7.c       | 1 +
+ hw/arm/highbank.c       | 1 +
+ hw/arm/integratorcp.c   | 1 +
+ hw/arm/musicpal.c       | 1 +
+ hw/arm/npcm7xx.c        | 1 +
+ hw/arm/omap1.c          | 1 +
+ hw/arm/omap2.c          | 1 +
+ hw/arm/realview.c       | 1 +
+ hw/arm/sbsa-ref.c       | 1 +
+ hw/arm/strongarm.c      | 1 +
+ hw/arm/versatilepb.c    | 1 +
+ hw/arm/vexpress.c       | 1 +
+ hw/arm/virt.c           | 1 +
+ hw/arm/xilinx_zynq.c    | 1 +
+ hw/arm/xlnx-versal.c    | 1 +
+ hw/arm/xlnx-zynqmp.c    | 1 +
+ target/arm/cpu.c        | 1 +
+ 31 files changed, 35 insertions(+), 6 deletions(-)
+
+diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
+index 77bbc1f13c9..8e032691dbf 100644
+--- a/target/arm/cpu-qom.h
++++ b/target/arm/cpu-qom.h
+@@ -36,6 +36,12 @@ DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
+ #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
+ #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
+ 
++/* Meanings of the ARMCPU object's four inbound GPIO lines */
++#define ARM_CPU_IRQ 0
++#define ARM_CPU_FIQ 1
++#define ARM_CPU_VIRQ 2
++#define ARM_CPU_VFIQ 3
++
+ /* For M profile, some registers are banked secure vs non-secure;
+  * these are represented as a 2-element array where the first element
+  * is the non-secure copy and the second is the secure copy.
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index d6a79482adb..e8df41d642e 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -93,12 +93,6 @@
+ #define offsetofhigh32(S, M) (offsetof(S, M) + sizeof(uint32_t))
+ #endif
+ 
+-/* Meanings of the ARMCPU object's four inbound GPIO lines */
+-#define ARM_CPU_IRQ 0
+-#define ARM_CPU_FIQ 1
+-#define ARM_CPU_VIRQ 2
+-#define ARM_CPU_VFIQ 3
+-
+ /* ARM-specific extra insn start words:
+  * 1: Conditional execution bits
+  * 2: Partial exception syndrome for data aborts
+diff --git a/hw/arm/allwinner-a10.c b/hw/arm/allwinner-a10.c
+index 0135632996c..581dd45edf0 100644
+--- a/hw/arm/allwinner-a10.c
++++ b/hw/arm/allwinner-a10.c
+@@ -26,6 +26,7 @@
+ #include "hw/boards.h"
+ #include "hw/usb/hcd-ohci.h"
+ #include "hw/loader.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define AW_A10_SRAM_A_BASE      0x00000000
+ #define AW_A10_DRAMC_BASE       0x01c01000
+diff --git a/hw/arm/allwinner-h3.c b/hw/arm/allwinner-h3.c
+index f05afddf7e0..2d684b5287b 100644
+--- a/hw/arm/allwinner-h3.c
++++ b/hw/arm/allwinner-h3.c
+@@ -30,6 +30,7 @@
+ #include "hw/loader.h"
+ #include "sysemu/sysemu.h"
+ #include "hw/arm/allwinner-h3.h"
++#include "target/arm/cpu-qom.h"
+ 
+ /* Memory map */
+ const hwaddr allwinner_h3_memmap[] = {
+diff --git a/hw/arm/allwinner-r40.c b/hw/arm/allwinner-r40.c
+index a28e5b3886a..79976b0b54d 100644
+--- a/hw/arm/allwinner-r40.c
++++ b/hw/arm/allwinner-r40.c
+@@ -33,6 +33,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/arm/allwinner-r40.h"
+ #include "hw/misc/allwinner-r40-dramc.h"
++#include "target/arm/cpu-qom.h"
+ 
+ /* Memory map */
+ const hwaddr allwinner_r40_memmap[] = {
+diff --git a/hw/arm/armv7m.c b/hw/arm/armv7m.c
+index edcd8adc748..7c68525a9e6 100644
+--- a/hw/arm/armv7m.c
++++ b/hw/arm/armv7m.c
+@@ -23,6 +23,7 @@
+ #include "target/arm/idau.h"
+ #include "target/arm/cpu.h"
+ #include "target/arm/cpu-features.h"
++#include "target/arm/cpu-qom.h"
+ #include "migration/vmstate.h"
+ 
+ /* Bitbanded IO.  Each word corresponds to a single bit.  */
+diff --git a/hw/arm/aspeed_ast2400.c b/hw/arm/aspeed_ast2400.c
+index 0baa2ff96e4..ad76035528f 100644
+--- a/hw/arm/aspeed_ast2400.c
++++ b/hw/arm/aspeed_ast2400.c
+@@ -21,6 +21,7 @@
+ #include "hw/i2c/aspeed_i2c.h"
+ #include "net/net.h"
+ #include "sysemu/sysemu.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define ASPEED_SOC_IOMEM_SIZE       0x00200000
+ 
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 3a9a303ab8b..386a88d4e0f 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -16,6 +16,7 @@
+ #include "hw/i2c/aspeed_i2c.h"
+ #include "net/net.h"
+ #include "sysemu/sysemu.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define ASPEED_SOC_IOMEM_SIZE       0x00200000
+ #define ASPEED_SOC_DPMCU_SIZE       0x00040000
+diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
+index b0674a22a6c..58a78780d2b 100644
+--- a/hw/arm/bcm2836.c
++++ b/hw/arm/bcm2836.c
+@@ -15,6 +15,7 @@
+ #include "hw/arm/bcm2836.h"
+ #include "hw/arm/raspi_platform.h"
+ #include "hw/sysbus.h"
++#include "target/arm/cpu-qom.h"
+ 
+ struct BCM283XClass {
+     /*< private >*/
+diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
+index af511a153dd..6c428d8eeb4 100644
+--- a/hw/arm/exynos4210.c
++++ b/hw/arm/exynos4210.c
+@@ -36,6 +36,7 @@
+ #include "hw/arm/exynos4210.h"
+ #include "hw/sd/sdhci.h"
+ #include "hw/usb/hcd-ehci.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define EXYNOS4210_CHIPID_ADDR         0x10000000
+ 
+diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
+index 9d2fb75a689..4a49507ef19 100644
+--- a/hw/arm/fsl-imx25.c
++++ b/hw/arm/fsl-imx25.c
+@@ -28,6 +28,7 @@
+ #include "sysemu/sysemu.h"
+ #include "hw/qdev-properties.h"
+ #include "chardev/char.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define IMX25_ESDHC_CAPABILITIES     0x07e20000
+ 
+diff --git a/hw/arm/fsl-imx31.c b/hw/arm/fsl-imx31.c
+index c0584e4dfcd..4b8d9b8e4fe 100644
+--- a/hw/arm/fsl-imx31.c
++++ b/hw/arm/fsl-imx31.c
+@@ -26,6 +26,7 @@
+ #include "exec/address-spaces.h"
+ #include "hw/qdev-properties.h"
+ #include "chardev/char.h"
++#include "target/arm/cpu-qom.h"
+ 
+ static void fsl_imx31_init(Object *obj)
+ {
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index af2e982b052..42f90588251 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -29,6 +29,7 @@
+ #include "chardev/char.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define IMX6_ESDHC_CAPABILITIES     0x057834b4
+ 
+diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
+index e37b69a5e16..486a009deb8 100644
+--- a/hw/arm/fsl-imx6ul.c
++++ b/hw/arm/fsl-imx6ul.c
+@@ -25,6 +25,7 @@
+ #include "sysemu/sysemu.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define NAME_SIZE 20
+ 
+diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
+index 474cfdc87c6..57281094918 100644
+--- a/hw/arm/fsl-imx7.c
++++ b/hw/arm/fsl-imx7.c
+@@ -26,6 +26,7 @@
+ #include "sysemu/sysemu.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define NAME_SIZE 20
+ 
+diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
+index c21e18d08fd..e6e27d69af5 100644
+--- a/hw/arm/highbank.c
++++ b/hw/arm/highbank.c
+@@ -36,6 +36,7 @@
+ #include "qemu/log.h"
+ #include "qom/object.h"
+ #include "cpu.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define SMP_BOOT_ADDR           0x100
+ #define SMP_BOOT_REG            0x40
+diff --git a/hw/arm/integratorcp.c b/hw/arm/integratorcp.c
+index 1830e1d7850..5600616a4dd 100644
+--- a/hw/arm/integratorcp.c
++++ b/hw/arm/integratorcp.c
+@@ -28,6 +28,7 @@
+ #include "hw/sd/sd.h"
+ #include "qom/object.h"
+ #include "audio/audio.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define TYPE_INTEGRATOR_CM "integrator_core"
+ OBJECT_DECLARE_SIMPLE_TYPE(IntegratorCMState, INTEGRATOR_CM)
+diff --git a/hw/arm/musicpal.c b/hw/arm/musicpal.c
+index 6987472871e..a2d25139e20 100644
+--- a/hw/arm/musicpal.c
++++ b/hw/arm/musicpal.c
+@@ -39,6 +39,7 @@
+ #include "hw/net/mv88w8618_eth.h"
+ #include "audio/audio.h"
+ #include "qemu/error-report.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define MP_MISC_BASE            0x80002000
+ #define MP_MISC_SIZE            0x00001000
+diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+index 7fb0a233b2d..e3243a520d8 100644
+--- a/hw/arm/npcm7xx.c
++++ b/hw/arm/npcm7xx.c
+@@ -26,6 +26,7 @@
+ #include "qapi/error.h"
+ #include "qemu/units.h"
+ #include "sysemu/sysemu.h"
++#include "target/arm/cpu-qom.h"
+ 
+ /*
+  * This covers the whole MMIO space. We'll use this to catch any MMIO accesses
+diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
+index d5438156ee9..86ee336e599 100644
+--- a/hw/arm/omap1.c
++++ b/hw/arm/omap1.c
+@@ -40,6 +40,7 @@
+ #include "hw/sysbus.h"
+ #include "qemu/cutils.h"
+ #include "qemu/bcd.h"
++#include "target/arm/cpu-qom.h"
+ 
+ static inline void omap_log_badwidth(const char *funcname, hwaddr addr, int sz)
+ {
+diff --git a/hw/arm/omap2.c b/hw/arm/omap2.c
+index f170728e7ec..f159fb73ea9 100644
+--- a/hw/arm/omap2.c
++++ b/hw/arm/omap2.c
+@@ -39,6 +39,7 @@
+ #include "hw/sysbus.h"
+ #include "hw/boards.h"
+ #include "audio/audio.h"
++#include "target/arm/cpu-qom.h"
+ 
+ /* Enhanced Audio Controller (CODEC only) */
+ struct omap_eac_s {
+diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+index 132217b2edd..566deff9ced 100644
+--- a/hw/arm/realview.c
++++ b/hw/arm/realview.c
+@@ -30,6 +30,7 @@
+ #include "hw/i2c/arm_sbcon_i2c.h"
+ #include "hw/sd/sd.h"
+ #include "audio/audio.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define SMP_BOOT_ADDR 0xe0000000
+ #define SMP_BOOTREG_ADDR 0x10000030
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index b8857d1e9e4..d6081bfc41f 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -50,6 +50,7 @@
+ #include "net/net.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qom/object.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define RAMLIMIT_GB 8192
+ #define RAMLIMIT_BYTES (RAMLIMIT_GB * GiB)
+diff --git a/hw/arm/strongarm.c b/hw/arm/strongarm.c
+index fef3638acaa..75637869cba 100644
+--- a/hw/arm/strongarm.c
++++ b/hw/arm/strongarm.c
+@@ -46,6 +46,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/log.h"
+ #include "qom/object.h"
++#include "target/arm/cpu-qom.h"
+ 
+ //#define DEBUG
+ 
+diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
+index 4b2257787b2..15b5ed0cedc 100644
+--- a/hw/arm/versatilepb.c
++++ b/hw/arm/versatilepb.c
+@@ -27,6 +27,7 @@
+ #include "hw/sd/sd.h"
+ #include "qom/object.h"
+ #include "audio/audio.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define VERSATILE_FLASH_ADDR 0x34000000
+ #define VERSATILE_FLASH_SIZE (64 * 1024 * 1024)
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index fd981f4c33e..49dbcdcbf0c 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -46,6 +46,7 @@
+ #include "qapi/qmp/qlist.h"
+ #include "qom/object.h"
+ #include "audio/audio.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define VEXPRESS_BOARD_ID 0x8e0
+ #define VEXPRESS_FLASH_SIZE (64 * 1024 * 1024)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 1e0df6ea3ad..64802446cb1 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -73,6 +73,7 @@
+ #include "standard-headers/linux/input.h"
+ #include "hw/arm/smmuv3.h"
+ #include "hw/acpi/acpi.h"
++#include "target/arm/cpu-qom.h"
+ #include "target/arm/internals.h"
+ #include "target/arm/multiprocessing.h"
+ #include "hw/mem/pc-dimm.h"
+diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
+index d4c817ecdc0..5809fc32af9 100644
+--- a/hw/arm/xilinx_zynq.c
++++ b/hw/arm/xilinx_zynq.c
+@@ -38,6 +38,7 @@
+ #include "sysemu/reset.h"
+ #include "qom/object.h"
+ #include "exec/tswap.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define TYPE_ZYNQ_MACHINE MACHINE_TYPE_NAME("xilinx-zynq-a9")
+ OBJECT_DECLARE_SIMPLE_TYPE(ZynqMachineState, ZYNQ_MACHINE)
+diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
+index 9600551c442..87fdb39d430 100644
+--- a/hw/arm/xlnx-versal.c
++++ b/hw/arm/xlnx-versal.c
+@@ -23,6 +23,7 @@
+ #include "hw/misc/unimp.h"
+ #include "hw/arm/xlnx-versal.h"
+ #include "qemu/log.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define XLNX_VERSAL_ACPU_TYPE ARM_CPU_TYPE_NAME("cortex-a72")
+ #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
+diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
+index 5905a330151..38cb34942f8 100644
+--- a/hw/arm/xlnx-zynqmp.c
++++ b/hw/arm/xlnx-zynqmp.c
+@@ -25,6 +25,7 @@
+ #include "sysemu/kvm.h"
+ #include "sysemu/sysemu.h"
+ #include "kvm_arm.h"
++#include "target/arm/cpu-qom.h"
+ 
+ #define GIC_NUM_SPI_INTR 160
+ 
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 04296f2928f..4807a4fea0d 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -48,6 +48,7 @@
+ #include "disas/capstone.h"
+ #include "fpu/softfloat.h"
+ #include "cpregs.h"
++#include "target/arm/cpu-qom.h"
+ 
+ static void arm_cpu_set_pc(CPUState *cs, vaddr value)
+ {
+-- 
+2.34.1
 
 
