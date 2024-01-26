@@ -2,176 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0C283D93F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 12:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBE983D94B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 12:26:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTKGi-0008Rm-T7; Fri, 26 Jan 2024 06:21:09 -0500
+	id 1rTKLB-0001ko-Md; Fri, 26 Jan 2024 06:25:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTKGa-0008Q2-RC
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:21:01 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rTKKs-0001UJ-EH
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:25:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rTKGX-0005UY-Sg
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:21:00 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rTKKY-0006Sf-Lf
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 06:25:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706268057;
+ s=mimecast20190719; t=1706268305;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=fJ5FeqP2XKfj6svBB0cNkZlZTEhA0qeNru0y2SwAZq8=;
- b=NRvyy1KfWkSdmrdVla5F7OMvtwNfFnVsa3u2uI4jGyoFgc1q6sANbPbrh94m94KjrNOWja
- 1lbl+RUCSVhfbZTdkeV7g2RqyHVtqufwO6BlN7i3E2fkFHckg5ggku42dDIOTg/SvJTw1I
- JLW22FRf9QeI9/bAlxx/ddrWQWUnWOQ=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=aF27/ZePh3ddk3rGqciVQDVinq36RJdej/bR+Eib+3Q=;
+ b=flrD764EN2BFtQJS6pzNOsMQiIebXKgU8PW46/RkkEv9qNbR2Bb5uexVNlzymOYhjKvorn
+ Btw1dkxVYOa+iQS37kgWMPp7fTK/mIVcqpyfkvMYtO3T4lFbsaQbw1HZ/BG/NBJAKJ2GZZ
+ ThFZ1nCy62bIGsyY/3nmRpw4MgyNa/0=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-sRGgvQVjMWqBG3O9iLNd4A-1; Fri, 26 Jan 2024 06:20:55 -0500
-X-MC-Unique: sRGgvQVjMWqBG3O9iLNd4A-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-68058b0112cso9689436d6.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 03:20:55 -0800 (PST)
+ us-mta-549-NCVW_C8CNryAQoVHIvtlRQ-1; Fri, 26 Jan 2024 06:25:02 -0500
+X-MC-Unique: NCVW_C8CNryAQoVHIvtlRQ-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-5ff82dc16e0so3186707b3.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 03:25:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706268055; x=1706872855;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fJ5FeqP2XKfj6svBB0cNkZlZTEhA0qeNru0y2SwAZq8=;
- b=TIbt206yrPMUsSj/L8Hw0DTfnVbk6wDiihd0gSpJxGb7mYT+VpMNt/ORh1mLy3X0AO
- WKfrrqwbZHT3WcP1Y0pPt+5HcRv3fZYSse8IFGChhdx6HlELAwtrYMjIR3FmQSg6iqQi
- AKr+Pg+b8H8CIxqvFMbN/6P16rWFRDtSs+FxW8JH5LManNRomwau6/nI6yIPTUlpR8/x
- irZzNX6m+yYiCGCRGo3LtovUEqMIRRZhKUfJY+dYyXDJXIwYU9nsBfg32MvOcXikShUS
- E1ukvZU6YSsJQqDNKTFyKxKbC3NJqQol9/9wP1vIX2d2wumdAdgcnfe8jv5ai13hTR9d
- jlmg==
-X-Gm-Message-State: AOJu0YzXvQTR0fy1xsCDZrw+GD4U/lAT+DslHXdRL6ogW75NaEdgwch6
- ZgS2GM3oknRwes5neDNRT5eWem1JdMeBrBYGVemf9vlswdCiHakps8Em9Ete93YJL04jIbG9EPL
- k1l67mObBcgy56VOMHjRL2V2e+VrCoj7qnBgTDmgyKCkssS9zeUW2
-X-Received: by 2002:ad4:5f89:0:b0:686:9e87:a0d4 with SMTP id
- jp9-20020ad45f89000000b006869e87a0d4mr1477605qvb.23.1706268055202; 
- Fri, 26 Jan 2024 03:20:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHppLBe/1tsc9YBAOM4Adh/A4rcqZv2YHMC7gUpJu+11IJqxvYgKYiel6IUtmTgJOPU5q1xig==
-X-Received: by 2002:ad4:5f89:0:b0:686:9e87:a0d4 with SMTP id
- jp9-20020ad45f89000000b006869e87a0d4mr1477571qvb.23.1706268054851; 
- Fri, 26 Jan 2024 03:20:54 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-176-119.web.vodafone.de.
- [109.43.176.119]) by smtp.gmail.com with ESMTPSA id
- fc16-20020ad44f30000000b006845032c973sm429852qvb.124.2024.01.26.03.20.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Jan 2024 03:20:54 -0800 (PST)
-Message-ID: <da5f845f-dfee-48de-9fc2-af27b83a615b@redhat.com>
-Date: Fri, 26 Jan 2024 12:20:37 +0100
+ d=1e100.net; s=20230601; t=1706268302; x=1706873102;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aF27/ZePh3ddk3rGqciVQDVinq36RJdej/bR+Eib+3Q=;
+ b=ruZLOzfm4cce8OQ1M3ia20Dx5VGJ2o2aK1wP5dqqxHYLpagP7Jac6Kjn++83d5/ZWR
+ pEETPMam16o7L/rq83ehGmZGe1IzDTHI4ghDoRrkLqG/11U5JjZpQegTkVVDEPIqPyvE
+ GYYtWwSwQXP4jtgJaxbykdolEn6SihaoW2wk0QLHihHL5QBR3/UK7UhTzLDDQQewPGXa
+ djeJgJWU3xpSY0iD89DUKCOAZlEDHWjTF3RrUsvebpkrOSAl2ku3lbBppAjS3wkrbk3l
+ V4bFSCbB+W2N8Rbl4/7rVI6cfaJTe5rImykl/tAznPCqTbgdmIlOWoK+sFvTkPlbl7CX
+ mBWg==
+X-Gm-Message-State: AOJu0YxKkwI97/UwfnEIBppRZ7K9Lyq8maejOO1wQBk1QyP2S9jbzoKg
+ 4jooUAXkEkcwIBU+Ug4Vt5heu9IYnw0xzSo/oe6y6W7GwmBlwhwDeZKFKBh6cVbHqtkqzQS7QNk
+ iLMUxQTeecHortCFEq8rgKds0W5UtGbSp1/XQUnDyxMdjQfGMmU4gwDcaIXF3T9qaV8F7Q8UFHf
+ YV5GqxehCeIjuSatN1lvNOFzdvpP0=
+X-Received: by 2002:a0d:d4cb:0:b0:5ff:9c13:73e5 with SMTP id
+ w194-20020a0dd4cb000000b005ff9c1373e5mr1198361ywd.58.1706268302017; 
+ Fri, 26 Jan 2024 03:25:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHAZfE1meZufghpT1uJmSRQW90YMFQgd/dGkDL4lZ3B5RRPY7aCE6BvNYDo7IfGvRaCq0FkdyYrZQ1mBolIFyU=
+X-Received: by 2002:a0d:d4cb:0:b0:5ff:9c13:73e5 with SMTP id
+ w194-20020a0dd4cb000000b005ff9c1373e5mr1198335ywd.58.1706268300264; Fri, 26
+ Jan 2024 03:25:00 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/46] hw/i386/pc: use qemu_get_nic_info() and
- pci_init_nic_devices()
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
- <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
- <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, qemu-s390x@nongnu.org, xen-devel@lists.xenproject.org
-References: <20240108204909.564514-1-dwmw2@infradead.org>
- <20240108204909.564514-6-dwmw2@infradead.org>
- <d6b0fd22-92ef-4873-a19a-e7752bfddd2d@redhat.com>
- <b618c5e3163a3407c413464edd5f638f1c8563fa.camel@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <b618c5e3163a3407c413464edd5f638f1c8563fa.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+References: <20240125165648.49898-1-philmd@linaro.org>
+ <20240125165648.49898-2-philmd@linaro.org>
+ <1128019c-adca-4cd4-aa73-937001ad990a@linaro.org>
+In-Reply-To: <1128019c-adca-4cd4-aa73-937001ad990a@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 26 Jan 2024 12:24:48 +0100
+Message-ID: <CABgObfZuPwzVdPjgeLOOtjmNqUMGcK=ExsvVQOzLqnUABmmX-A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] scripts/coccinelle: Add cpu_env.cocci_template script
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.5,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -188,60 +101,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/01/2024 12.13, David Woodhouse wrote:
-> On Fri, 2024-01-26 at 11:43 +0100, Thomas Huth wrote:
->> On 08/01/2024 21.26, David Woodhouse wrote:
->>> From: David Woodhouse <dwmw@amazon.co.uk>
->>>
->>> Eliminate direct access to nd_table[] and nb_nics by processing the the
->>> Xen and ISA NICs first and then calling pci_init_nic_devices() for the
->>> rest.
->>>
->>> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
->>> Reviewed-by: Paul Durrant <paul@xen.org>
->>> ---
->>>    hw/i386/pc.c                | 26 ++++++++++++++++----------
->>>    include/hw/net/ne2000-isa.h |  2 --
->>>    2 files changed, 16 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->>> index 496498df3a..d80c536d88 100644
->>> --- a/hw/i386/pc.c
->>> +++ b/hw/i386/pc.c
->>> @@ -658,8 +658,11 @@ static void pc_init_ne2k_isa(ISABus *bus, NICInfo *nd)
->>>    {
->>>        static int nb_ne2k = 0;
->>>    
->>> -    if (nb_ne2k == NE2000_NB_MAX)
->>> +    if (nb_ne2k == NE2000_NB_MAX) {
->>> +        error_setg(&error_fatal,
->>> +                   "maximum number of ISA NE2000 devices exceeded");
->>>            return;
->>> +    }
->>
->> error_setg(&error_fatal, ...) quits QEMU, so the "return;" does not make
->> much sense anymore.
->> Now, according to include/qapi/error.h :
->>
->>    * Please don't error_setg(&error_fatal, ...), use error_report() and
->>    * exit(), because that's more obvious.
->>
->> So I'd suggest to do that instead.
-> 
-> It's going slightly in the opposite direction to what's requested in
-> https://lore.kernel.org/qemu-devel/34e2c0c6-4e04-486a-8e1f-4afdc461a5d4@linaro.org/
-> 
-> I was thinking that a future patch would let the &error_fatal be an
-> Error** passed in by the caller, and not actually hard-coded to be
-> fatal at all.
-> 
-> But sure, unless Philippe objects I'm happy to do it as you show above.
+On Fri, Jan 26, 2024 at 11:38=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> On 25/1/24 17:56, Philippe Mathieu-Daud=C3=A9 wrote:
+> > Add a Coccinelle script to convert the following slow path
+> > (due to the QOM cast macro):
+> >
+> >    &ARCH_CPU(..)->env
+> >
+> > to the following fast path:
+> >
+> >    cpu_env(..)
+> >
+> > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > ---
+> >   MAINTAINERS                               |  1 +
+> >   scripts/coccinelle/cpu_env.cocci_template | 60 ++++++++++++++++++++++=
++
+> >   2 files changed, 61 insertions(+)
+> >   create mode 100644 scripts/coccinelle/cpu_env.cocci_template
+>
+>
+> > diff --git a/scripts/coccinelle/cpu_env.cocci_template b/scripts/coccin=
+elle/cpu_env.cocci_template
+> > new file mode 100644
+> > index 0000000000..53aa3a1fea
+> > --- /dev/null
+> > +++ b/scripts/coccinelle/cpu_env.cocci_template
+> > @@ -0,0 +1,60 @@
+> > +/*
+> > +
+> > + Convert &ARCH_CPU(..)->env to use cpu_env(..).
+> > +
+> > + Rationale: ARCH_CPU() might be slow, being a QOM cast macro.
+> > +            cpu_env() is its fast equivalent.
+> > +
+> > + SPDX-License-Identifier: GPL-2.0-or-later
+> > + SPDX-FileCopyrightText: Linaro Ltd 2024
+> > + SPDX-FileContributor: Philippe Mathieu-Daud=C3=A9
+> > +
+> > + Usage as of v8.2.0:
+> > +
+> > + $ for targetdir in target/*; do test -d $targetdir || continue; \
+> > +       export target=3D${targetdir:7}; \
+> > +       sed \
+> > +           -e "s/__CPUArchState__/$( \
+> > +               git grep -h --no-line-number '@env: #CPU.*State' \
+> > +                   target/$target/cpu.h \
+> > +               | sed -n -e 's/.*\(CPU.*State\).\?/\1/p')/g" \
+> > +           -e "s/__ARCHCPU__/$( \
+> > +               git grep -h --no-line-number OBJECT_DECLARE_CPU_TYPE.*C=
+PU \
+> > +                   target/$target/cpu-qom.h \
+> > +               | sed -n -e 's/.*(\(.*\), .*, .*)/\1/p')/g" \
+> > +           -e "s/__ARCH_CPU__/$( \
+> > +               git grep -h --no-line-number OBJECT_DECLARE_CPU_TYPE.*C=
+PU \
+> > +                   target/$target/cpu-qom.h \
+> > +               | sed -n -e 's/.*(.*, .*, \(.*\))/\1/p')/g" \
+> > +       < scripts/coccinelle/cpu_env.cocci_template \
+> > +       > $TMPDIR/cpu_env_$target.cocci; \
+> > +       for dir in hw target/$target; do \
+> > +           spatch --macro-file scripts/cocci-macro-file.h \
+> > +                  --sp-file $TMPDIR/cpu_env_$target.cocci \
+> > +                  --keep-comments \
+> > +                  --dir $dir \
+> > +                  --in-place; \
+> > +       done; \
+> > +   done
+> > +
+> > +*/
+> > +
+> > +@ CPUState_arg_used @
+> > +CPUState *cs;
+> > +identifier cpu;
+> > +identifier env;
+> > +@@
+> > +-   __ARCHCPU__ *cpu =3D __ARCH_CPU__(cs);
+>
+> Here we remove ARCH_CPU(), ...
+>
+> > +-   __CPUArchState__ *env =3D &cpu->env;
+> > ++   __CPUArchState__ *env =3D cpu_env(cs);
+> > +    ... when !=3D cpu
+> > +
+> > +@ depends on never CPUState_arg_used @
+> > +identifier obj;
+> > +identifier cpu;
+> > +identifier env;
+> > +@@
+> > +-   __ARCHCPU__ *cpu =3D __ARCH_CPU__(obj);
+> > +-   __CPUArchState__ *env =3D &cpu->env;
+> > ++   __CPUArchState__ *env =3D cpu_env(CPU(obj));
+>
+> ... but here we just change it by a CPU() QOM call.
+> So this 2nd change is just style cleanup.
 
-Now that you mention it, I'd also prefer having an Error** parameter to the 
-function instead, that's certainly cleaner. So if you don't mind, please 
-follow Philippe's suggestion instead!
+Can you also add a hunk that is
 
-  Thanks,
-   Thomas
+CPUState *cs;
+@@
+-  CPU(cs)
++ cs
+
+to clean up on the second?  cpu_env(CPU(current_cpu)) is suboptimal
+and also a bit ugly.
+
+paolo
 
 
