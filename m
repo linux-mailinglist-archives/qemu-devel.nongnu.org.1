@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03B983E05D
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B4383E08A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:39:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ4m-0007ND-DI; Fri, 26 Jan 2024 12:33:12 -0500
+	id 1rTQ4v-0007hh-MA; Fri, 26 Jan 2024 12:33:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ4f-0007CD-VX; Fri, 26 Jan 2024 12:33:05 -0500
+ id 1rTQ4f-0007C4-TP; Fri, 26 Jan 2024 12:33:05 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ4c-0001jO-MM; Fri, 26 Jan 2024 12:33:05 -0500
+ id 1rTQ4c-0001jM-HA; Fri, 26 Jan 2024 12:33:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=84SjqVRU3phUY6XFnzqwJCBs+MK5duPh9P72Y2DAnRw=; b=YLRHM0QJuZvioEMu4cTtQ8XMuH
- DVoVTEiaE3jTfvMomCo1nLl8WENf0AkMzj8FCw9W+7oiwcKi2HBu4BfDOoQVkyRU9MsxkrQ1e7Xoo
- A3MhXXnSEOIzy17tHel7ZFnScnbb+71N0lUKLS/zL6uRTqCA3xT9Z7TnteXeHUI3M3jnXdfElquLe
- DFrF7Ha30BtG/n/jc3x/HMOoIMGwInJvf3fq4+spwa79+6kWiWPn3Ljos1oDjoWwt2f8xjw9JGNut
- PoVOqnueY4A0hkcHW0bulErS47xyEAhtQFp/1VXRa7LDgHUgjJYtMtyHVIHys3oHO7S6dS2crmmcb
- QBtUxEmw==;
+ bh=mX/hl3L+uzP16qDkLnKIjlw9AZT6Th7nY6ik791ai64=; b=FEyZ2pdM526tfsTPguJ6nEMtvW
+ HI13ThH4aGimnLaYdXWR6rBmwT7yOvUeWUsDqp3/RxjGthObBG+wR589pvEUzemdixC/bMU5Mps6Q
+ GZLdNd4A1WuN6jfAJYdVVLx+zy2Ml0Ze7DAOdwAqJ5nLHoP2Bs2Sbzt3l/TgAi4oGa9stRTBVFars
+ yi0kyONAoU/zrWfE2ZIGQxr7frBsw8wisVh/52fZ/UB5N02IFNCAuA7amOO/tPAVNricYVxymrzLH
+ jlhrncipjhaI27Tw0EnVvqCioV/tFZBrjwYrghPt9PJLAFi1ybpFOoL4q36iR7L/gm+12+BCgRnKM
+ +RY5auxQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ4B-000000069Uy-2xei; Fri, 26 Jan 2024 17:32:36 +0000
+ id 1rTQ4B-000000069V7-2w5m; Fri, 26 Jan 2024 17:32:36 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ4A-00000001eoF-2md2;
+ Hat Linux)) id 1rTQ4A-00000001eoK-38TD;
  Fri, 26 Jan 2024 17:32:34 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -82,10 +82,11 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 42/47] hw/sparc/sun4m: use qemu_find_nic_info()
-Date: Fri, 26 Jan 2024 17:25:19 +0000
-Message-ID: <20240126173228.394202-43-dwmw2@infradead.org>
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 43/47] hw/xtensa/xtfpga: use qemu_create_nic_device()
+Date: Fri, 26 Jan 2024 17:25:20 +0000
+Message-ID: <20240126173228.394202-44-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
@@ -120,81 +121,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Obtain the MAC address from the NIC configuration if there is one, or
-generate one explicitly so that it can be placed in the PROM.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/sparc/sun4m.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ hw/xtensa/xtfpga.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
-index 550af01690..e782c8ec7a 100644
---- a/hw/sparc/sun4m.c
-+++ b/hw/sparc/sun4m.c
-@@ -299,13 +299,15 @@ static void *iommu_init(hwaddr addr, uint32_t version, qemu_irq irq)
- 
- static void *sparc32_dma_init(hwaddr dma_base,
-                               hwaddr esp_base, qemu_irq espdma_irq,
--                              hwaddr le_base, qemu_irq ledma_irq, NICInfo *nd)
-+                              hwaddr le_base, qemu_irq ledma_irq,
-+                              MACAddr *mac)
+diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
+index fbad1c83a3..f49e6591dc 100644
+--- a/hw/xtensa/xtfpga.c
++++ b/hw/xtensa/xtfpga.c
+@@ -141,14 +141,16 @@ static void xtfpga_net_init(MemoryRegion *address_space,
+         hwaddr base,
+         hwaddr descriptors,
+         hwaddr buffers,
+-        qemu_irq irq, NICInfo *nd)
++        qemu_irq irq)
  {
-     DeviceState *dma;
-     ESPDMADeviceState *espdma;
-     LEDMADeviceState *ledma;
-     SysBusESPState *esp;
-     SysBusPCNetState *lance;
-+    NICInfo *nd = qemu_find_nic_info("lance", true, NULL);
+     DeviceState *dev;
+     SysBusDevice *s;
+     MemoryRegion *ram;
  
-     dma = qdev_new(TYPE_SPARC32_DMA);
-     espdma = SPARC32_ESPDMA_DEVICE(object_resolve_path_component(
-@@ -320,7 +322,14 @@ static void *sparc32_dma_init(hwaddr dma_base,
- 
-     lance = SYSBUS_PCNET(object_resolve_path_component(
-                          OBJECT(ledma), "lance"));
--    qdev_set_nic_properties(DEVICE(lance), nd);
-+
-+    if (nd) {
-+        qdev_set_nic_properties(DEVICE(lance), nd);
-+        memcpy(mac->a, nd->macaddr.a, sizeof(mac->a));
-+    } else {
-+        qemu_macaddr_default_if_unset(mac);
-+        qdev_prop_set_macaddr(DEVICE(lance), "mac", mac->a);
+-    dev = qdev_new("open_eth");
+-    qdev_set_nic_properties(dev, nd);
++    dev = qemu_create_nic_device("open_eth", true, NULL);
++    if (!dev) {
++        return;
 +    }
  
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dma), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dma), 0, dma_base);
-@@ -823,7 +832,7 @@ static void sun4m_hw_init(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     unsigned int max_cpus = machine->smp.max_cpus;
-     HostMemoryBackend *ram_memdev = machine->memdev;
--    NICInfo *nd = &nd_table[0];
-+    MACAddr hostid;
- 
-     if (machine->ram_size > hwdef->max_mem) {
-         error_report("Too much memory for this machine: %" PRId64 ","
-@@ -884,10 +893,9 @@ static void sun4m_hw_init(MachineState *machine)
-                         hwdef->iommu_pad_base, hwdef->iommu_pad_len);
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+@@ -301,10 +303,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+         memory_region_add_subregion(system_memory, board->io[1], io);
      }
+     xtfpga_fpga_init(system_io, 0x0d020000, freq);
+-    if (nd_table[0].used) {
+-        xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000,
+-                        extints[1], nd_table);
+-    }
++    xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000, extints[1]);
  
--    qemu_check_nic_model(nd, TYPE_LANCE);
-     sparc32_dma_init(hwdef->dma_base,
-                      hwdef->esp_base, slavio_irq[18],
--                     hwdef->le_base, slavio_irq[16], nd);
-+                     hwdef->le_base, slavio_irq[16], &hostid);
- 
-     if (graphic_depth != 8 && graphic_depth != 24) {
-         error_report("Unsupported depth: %d", graphic_depth);
-@@ -1039,7 +1047,7 @@ static void sun4m_hw_init(MachineState *machine)
-                                     machine->initrd_filename,
-                                     machine->ram_size, &initrd_size);
- 
--    nvram_init(nvram, (uint8_t *)&nd->macaddr, machine->kernel_cmdline,
-+    nvram_init(nvram, hostid.a, machine->kernel_cmdline,
-                machine->boot_config.order, machine->ram_size, kernel_size,
-                graphic_width, graphic_height, graphic_depth,
-                hwdef->nvram_machine_id, "Sun4m");
+     serial_mm_init(system_io, 0x0d050020, 2, extints[0],
+                    115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
 -- 
 2.43.0
 
