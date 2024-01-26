@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F053E83DC17
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD0F83DC22
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:37:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHO-0002XK-Vp; Fri, 26 Jan 2024 09:34:03 -0500
+	id 1rTNHQ-0002dG-D9; Fri, 26 Jan 2024 09:34:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHL-0002RO-J4
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:59 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ id 1rTNHM-0002S0-4j
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:00 -0500
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHJ-0007z3-St
+ id 1rTNHK-0007z7-2D
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:59 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-510218ab26fso724719e87.2
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-339289fead2so522683f8f.3
  for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279636; x=1706884436; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=CbytbZE5r6VKI1aTBZEBghdNkVDSmRfkbInRbv2Plj8=;
- b=ZqeJ10taPdCjvez4CdoAUJCaxLsAXocrTWkQJQP/bw+L6l1WZpQHqOzzauTL/HgCfH
- NSMRt7OnyYGn2OJf0xZN1KZxB7Ac3k+RqyJlbIS9Vq3AnUatSO9Yr4Ka0C7+dfkBEb3Q
- U9kqHop0YtnZKhdJF8kSrTzoZ3cM/1qnJN/bGWh8RjvLyyfSySOiXCE272L0BNNQLK0+
- YRaDa+fTZ3l52EbrNqDdNtDYJYajvEoeEkKIQTX1OQDwxrL/LriWCYqLDBmTnrIG3iAX
- 7AeHBmxOXKrkhRAl/1UTotIcXLDJoeDPCPlVSL4wMOl091/Ui4w0ZuFUKei/7f2NA1hb
- HqSQ==
+ :reply-to; bh=6GdiHkmihi3/CT5xTxzMMWZkQ0ZumRMBWRBDkHYF3cM=;
+ b=HS4FzEvbXAzrow0tGa7JlFxepfrHvM6FhtXEJWSnCRsKmimebZG6u0sKsMc2AzMA5s
+ dJ3qOyywTPIVxLQFVOa5FbIFYqKXoQpSirMnPt20kf8rkWb7z92zNuKICdC9Nwqw3+0d
+ mlbSLMW3xXTHwyxkt4mLOVKa9YzpU57j6u3VP1YvghbelmQvFEXwo4S03KBbX0l68RLc
+ WDvz1aYTlJ3i0TS8GE7gp7OuaYtMWD2OYeyJLYU/eyvlxBz12datRdm8pwQ/ACVwefsw
+ LK2odhqR+QmLL01DxogAXcCh6CyYkB2pudaqd6MipyW+ZpgLDH0c2MyfL///9O/Ig9h+
+ bNHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279636; x=1706884436;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CbytbZE5r6VKI1aTBZEBghdNkVDSmRfkbInRbv2Plj8=;
- b=a+bFUpDtXpH1frAxV2iyHAYwa9ASJoRI+i7+PEJA2ERoVm1TYVjljmjE25lYBsavNr
- mPl64RprL4tZz6MkTzjqo1nTohKPZoj7lmor75lSvWHakOE+YUOSqdUNx/dadwbI9uSx
- WA5zRM4t4iLJ2Dyu1rJLVsqpeS2Q39g09GX8JSq+561tVIx/BV93COpHlOcK5RqYsSdZ
- 0xCmFM9sqpZZ5PHR5GvKlnMItT8LgvN8MW8B6Yks93LJi3R/XexgL4KFl6IBnCenCnaW
- ahtPcSLUiDfugeRomuu1BauwQDgQ7C7lvohVm+XjxS7Y2NgvxIYidIudTIacAsPifZmV
- VLaw==
-X-Gm-Message-State: AOJu0YwMDp8SsXqjnKtZ8kKIa/9Zux11/jr3JGot1AfXpSutzdnACFkJ
- ucruZvTEGjJ9Z0QxyiHja9xeovmX6P/LSdtQP9yS95HWiP5BMf4YXMomOSRfHGckxf+ogDbfkhq
- 2
-X-Google-Smtp-Source: AGHT+IHN/1J38rMpghWDj72Ez7d93GxehQXOJaTPrsZp17r7QncdV8Q8+J8HQigE0ahunrOaTcphbQ==
-X-Received: by 2002:ac2:59da:0:b0:510:c20:74a9 with SMTP id
- x26-20020ac259da000000b005100c2074a9mr1820442lfn.64.1706279636312; 
+ bh=6GdiHkmihi3/CT5xTxzMMWZkQ0ZumRMBWRBDkHYF3cM=;
+ b=CMt4g7dxuED9BthGXi0kS4qYKEoPet4DIb7pHtnPymrRMQKsfCSnjpddJcn5z3PpT7
+ OFX071yunWZAZTEfwF22HdbqfV4E23nclCIg0fY0YqKiFOgCrEN8Gwh5xRPaoo4rByBC
+ pxQp6pSPzio5A4ew4dFr8qfeOpg8F4G+675FxL/oJQNrM9GD87gsoliCGO8nAxJXJwxD
+ Dm0qSf7yRAN3288zJebJoB5X4kJIwTgmFeUg5dXEEoe7OCw6ae6Mah1w+fofU/yC9pLl
+ vnieV8qb5Vl8LFbAd+dhLJ6JbSY+uv0EtIARnHCB9tZJZh/+yDY1f9aLpouKBuZe+T2H
+ XchQ==
+X-Gm-Message-State: AOJu0YwyhrpvDiCoA57olg7kPJb8IgKWzCU2cmj/cBdxikPr4A2/GlyS
+ jnlxzUrD7QnsLDgaIxoRFOAhUnrQ04Ofok2yK+O+HfngGpX7D8lolvJl+23dRUwQ9beq9oa3ukV
+ 5
+X-Google-Smtp-Source: AGHT+IGnhXC9n4txh3nwEVwkGsFb6F0MNe4S3MfyCgzrS8pcOu8zEHl75/65Sm9GCklBo9ehi2YnJQ==
+X-Received: by 2002:a5d:5741:0:b0:337:c943:5f04 with SMTP id
+ q1-20020a5d5741000000b00337c9435f04mr984971wrw.90.1706279636735; 
  Fri, 26 Jan 2024 06:33:56 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.55
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 06:33:55 -0800 (PST)
+ Fri, 26 Jan 2024 06:33:56 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 31/36] docs/system/arm/virt.rst: Add note on CPU features off
- by default
-Date: Fri, 26 Jan 2024 14:33:36 +0000
-Message-Id: <20240126143341.2101237-32-peter.maydell@linaro.org>
+Subject: [PULL 32/36] hw/char/imx_serial: Implement receive FIFO and ageing
+ timer
+Date: Fri, 26 Jan 2024 14:33:37 +0000
+Message-Id: <20240126143341.2101237-33-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,47 +92,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+From: Rayhan Faizel <rayhan.faizel@gmail.com>
 
-Add a note on CPU features that are off by default in `virt` machines.
-Some CPU features will remain off even if a CPU-capable CPU (e.g.,
-`-cpu max`) is selected because they require support in both the CPU
-itself and in the wider system. Therefore, the user, besides selecting a
-CPU that supports such features, must also turn on the feature using a
-machine option.
+This patch implements a 32 half word FIFO as per imx serial device
+specifications.  If a non empty FIFO is below the trigger level, an
+ageing timer will tick for a duration of 8 characters.  On expiry,
+AGTIM will be set triggering an interrupt.  AGTIM timer resets when
+there is activity in the receive FIFO.
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-id: 20240122211215.95073-1-gustavo.romero@linaro.org
+Otherwise, RRDY is set when trigger level is exceeded.  The receive
+trigger level is 8 in newer kernel versions and 1 in older ones.
+
+This change will break migration compatibility for the imx boards.
+
+Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
+Message-id: 20240125151931.83494-1-rayhan.faizel@gmail.com
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: commit message tidyups]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/virt.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ include/hw/char/imx_serial.h |  20 ++++++-
+ hw/char/imx_serial.c         | 102 ++++++++++++++++++++++++++++++-----
+ 2 files changed, 108 insertions(+), 14 deletions(-)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index c245c52b7ac..26fcba00b76 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -69,6 +69,19 @@ Supported guest CPU types:
- Note that the default is ``cortex-a15``, so for an AArch64 guest you must
- specify a CPU type.
+diff --git a/include/hw/char/imx_serial.h b/include/hw/char/imx_serial.h
+index b823f945195..65f0e97c76b 100644
+--- a/include/hw/char/imx_serial.h
++++ b/include/hw/char/imx_serial.h
+@@ -21,12 +21,16 @@
+ #include "hw/sysbus.h"
+ #include "chardev/char-fe.h"
+ #include "qom/object.h"
++#include "qemu/fifo32.h"
  
-+Also, please note that passing ``max`` CPU (i.e. ``-cpu max``) won't
-+enable all the CPU features for a given ``virt`` machine. Where a CPU
-+architectural feature requires support in both the CPU itself and in the
-+wider system (e.g. the MTE feature), it may not be enabled by default,
-+but instead requires a machine option to enable it.
+ #define TYPE_IMX_SERIAL "imx.serial"
+ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ 
++#define FIFO_SIZE       32
 +
-+For example, MTE support must be enabled with ``-machine virt,mte=on``,
-+as well as by selecting an MTE-capable CPU (e.g., ``max``) with the
-+``-cpu`` option.
+ #define URXD_CHARRDY    (1<<15)   /* character read is valid */
+ #define URXD_ERR        (1<<14)   /* Character has error */
++#define URXD_OVRRUN     (1<<13)   /* 32nd character in RX FIFO */
+ #define URXD_FRMERR     (1<<12)   /* Character has frame error */
+ #define URXD_BRK        (1<<11)   /* Break received */
+ 
+@@ -65,11 +69,13 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ #define UCR1_TXMPTYEN   (1<<6)    /* Tx Empty Interrupt Enable */
+ #define UCR1_UARTEN     (1<<0)    /* UART Enable */
+ 
++#define UCR2_ATEN       (1<<3)    /* Ageing Timer Enable */
+ #define UCR2_TXEN       (1<<2)    /* Transmitter enable */
+ #define UCR2_RXEN       (1<<1)    /* Receiver enable */
+ #define UCR2_SRST       (1<<0)    /* Reset complete */
+ 
+ #define UCR4_DREN       BIT(0)    /* Receive Data Ready interrupt enable */
++#define UCR4_OREN       BIT(1)    /* Overrun interrupt enable */
+ #define UCR4_TCEN       BIT(3)    /* TX complete interrupt enable */
+ #define UCR4_WKEN       BIT(7)    /* WAKE interrupt enable */
+ 
+@@ -78,13 +84,25 @@ OBJECT_DECLARE_SIMPLE_TYPE(IMXSerialState, IMX_SERIAL)
+ #define UTS1_TXFULL     (1<<4)
+ #define UTS1_RXFULL     (1<<3)
+ 
++#define TL_MASK         0x3f
 +
-+See the machine-specific options below, or check them for a given machine
-+by passing the ``help`` suboption, like: ``-machine virt-9.0,help``.
++ /* Bit time in nanoseconds assuming maximum baud rate of 115200 */
++#define BIT_TIME_NS     8681
 +
- Graphics output is available, but unlike the x86 PC machine types
- there is no default display device enabled: you should select one from
- the Display devices section of "-device help". The recommended option
++/* Assume 8 bits per character */
++#define NUM_BITS        8
++
++/* Ageing timer triggers after 8 characters */
++#define AGE_DURATION_NS (8 * NUM_BITS * BIT_TIME_NS)
++
+ struct IMXSerialState {
+     /*< private >*/
+     SysBusDevice parent_obj;
+ 
+     /*< public >*/
+     MemoryRegion iomem;
+-    int32_t readbuff;
++    QEMUTimer ageing_timer;
++    Fifo32 rx_fifo;
+ 
+     uint32_t usr1;
+     uint32_t usr2;
+diff --git a/hw/char/imx_serial.c b/hw/char/imx_serial.c
+index 1df862eb7ff..ba37be6faab 100644
+--- a/hw/char/imx_serial.c
++++ b/hw/char/imx_serial.c
+@@ -26,6 +26,7 @@
+ #include "migration/vmstate.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
++#include "qemu/fifo32.h"
+ 
+ #ifndef DEBUG_IMX_UART
+ #define DEBUG_IMX_UART 0
+@@ -41,10 +42,11 @@
+ 
+ static const VMStateDescription vmstate_imx_serial = {
+     .name = TYPE_IMX_SERIAL,
+-    .version_id = 2,
+-    .minimum_version_id = 2,
++    .version_id = 3,
++    .minimum_version_id = 3,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_INT32(readbuff, IMXSerialState),
++        VMSTATE_FIFO32(rx_fifo, IMXSerialState),
++        VMSTATE_TIMER(ageing_timer, IMXSerialState),
+         VMSTATE_UINT32(usr1, IMXSerialState),
+         VMSTATE_UINT32(usr2, IMXSerialState),
+         VMSTATE_UINT32(ucr1, IMXSerialState),
+@@ -71,6 +73,10 @@ static void imx_update(IMXSerialState *s)
+      * following:
+      */
+     usr1 = s->usr1 & s->ucr1 & (USR1_TRDY | USR1_RRDY);
++    /*
++     * Interrupt if AGTIM is set (ageing timer interrupt in RxFIFO)
++     */
++    usr1 |= (s->ucr2 & UCR2_ATEN) ? (s->usr1 & USR1_AGTIM) : 0;
+     /*
+      * Bits that we want in USR2 are not as conveniently laid out,
+      * unfortunately.
+@@ -78,15 +84,66 @@ static void imx_update(IMXSerialState *s)
+     mask = (s->ucr1 & UCR1_TXMPTYEN) ? USR2_TXFE : 0;
+     /*
+      * TCEN and TXDC are both bit 3
++     * ORE and OREN are both bit 1
+      * RDR and DREN are both bit 0
+      */
+-    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN);
++    mask |= s->ucr4 & (UCR4_WKEN | UCR4_TCEN | UCR4_DREN | UCR4_OREN);
+ 
+     usr2 = s->usr2 & mask;
+ 
+     qemu_set_irq(s->irq, usr1 || usr2);
+ }
+ 
++static void imx_serial_rx_fifo_push(IMXSerialState *s, uint32_t value)
++{
++    uint32_t pushed_value = value;
++    if (fifo32_is_full(&s->rx_fifo)) {
++        /* Set ORE if FIFO is already full */
++        s->usr2 |= USR2_ORE;
++    } else {
++        if (fifo32_num_used(&s->rx_fifo) == FIFO_SIZE - 1) {
++            /* Set OVRRUN on 32nd character in FIFO */
++            pushed_value |= URXD_ERR | URXD_OVRRUN;
++        }
++        fifo32_push(&s->rx_fifo, pushed_value);
++    }
++}
++
++static uint32_t imx_serial_rx_fifo_pop(IMXSerialState *s)
++{
++    if (fifo32_is_empty(&s->rx_fifo)) {
++        return 0;
++    }
++    return fifo32_pop(&s->rx_fifo);
++}
++
++static void imx_serial_rx_fifo_ageing_timer_int(void *opaque)
++{
++    IMXSerialState *s = (IMXSerialState *) opaque;
++    s->usr1 |= USR1_AGTIM;
++    imx_update(s);
++}
++
++static void imx_serial_rx_fifo_ageing_timer_restart(void *opaque)
++{
++    /*
++     * Ageing timer starts ticking when
++     * RX FIFO is non empty and below trigger level.
++     * Timer is reset if new character is received or
++     * a FIFO read occurs.
++     * Timer triggers an interrupt when duration of
++     * 8 characters has passed (assuming 115200 baudrate).
++     */
++    IMXSerialState *s = (IMXSerialState *) opaque;
++
++    if (!(s->usr1 & USR1_RRDY) && !(s->uts1 & UTS1_RXEMPTY)) {
++        timer_mod_ns(&s->ageing_timer,
++                     qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + AGE_DURATION_NS);
++    } else {
++        timer_del(&s->ageing_timer);
++    }
++}
++
+ static void imx_serial_reset(IMXSerialState *s)
+ {
+ 
+@@ -102,7 +159,9 @@ static void imx_serial_reset(IMXSerialState *s)
+     s->ucr3 = 0x700;
+     s->ubmr = 0;
+     s->ubrc = 4;
+-    s->readbuff = URXD_ERR;
++
++    fifo32_reset(&s->rx_fifo);
++    timer_del(&s->ageing_timer);
+ }
+ 
+ static void imx_serial_reset_at_boot(DeviceState *dev)
+@@ -125,20 +184,28 @@ static uint64_t imx_serial_read(void *opaque, hwaddr offset,
+                                 unsigned size)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
+-    uint32_t c;
++    uint32_t c, rx_used;
++    uint8_t rxtl = s->ufcr & TL_MASK;
+ 
+     DPRINTF("read(offset=0x%" HWADDR_PRIx ")\n", offset);
+ 
+     switch (offset >> 2) {
+     case 0x0: /* URXD */
+-        c = s->readbuff;
++        c = imx_serial_rx_fifo_pop(s);
+         if (!(s->uts1 & UTS1_RXEMPTY)) {
+             /* Character is valid */
+             c |= URXD_CHARRDY;
+-            s->usr1 &= ~USR1_RRDY;
+-            s->usr2 &= ~USR2_RDR;
+-            s->uts1 |= UTS1_RXEMPTY;
++            rx_used = fifo32_num_used(&s->rx_fifo);
++            /* Clear RRDY if below threshold */
++            if (rx_used < rxtl) {
++                s->usr1 &= ~USR1_RRDY;
++            }
++            if (rx_used == 0) {
++                s->usr2 &= ~USR2_RDR;
++                s->uts1 |= UTS1_RXEMPTY;
++            }
+             imx_update(s);
++            imx_serial_rx_fifo_ageing_timer_restart(s);
+             qemu_chr_fe_accept_input(&s->chr);
+         }
+         return c;
+@@ -300,19 +367,24 @@ static void imx_serial_write(void *opaque, hwaddr offset,
+ static int imx_can_receive(void *opaque)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
+-    return !(s->usr1 & USR1_RRDY);
++    return s->ucr2 & UCR2_RXEN && fifo32_num_used(&s->rx_fifo) < FIFO_SIZE;
+ }
+ 
+ static void imx_put_data(void *opaque, uint32_t value)
+ {
+     IMXSerialState *s = (IMXSerialState *)opaque;
++    uint8_t rxtl = s->ufcr & TL_MASK;
+ 
+     DPRINTF("received char\n");
++    imx_serial_rx_fifo_push(s, value);
++    if (fifo32_num_used(&s->rx_fifo) >= rxtl) {
++        s->usr1 |= USR1_RRDY;
++    }
++
++    imx_serial_rx_fifo_ageing_timer_restart(s);
+ 
+-    s->usr1 |= USR1_RRDY;
+     s->usr2 |= USR2_RDR;
+     s->uts1 &= ~UTS1_RXEMPTY;
+-    s->readbuff = value;
+     if (value & URXD_BRK) {
+         s->usr2 |= USR2_BRCD;
+     }
+@@ -345,6 +417,10 @@ static void imx_serial_realize(DeviceState *dev, Error **errp)
+ {
+     IMXSerialState *s = IMX_SERIAL(dev);
+ 
++    fifo32_create(&s->rx_fifo, FIFO_SIZE);
++    timer_init_ns(&s->ageing_timer, QEMU_CLOCK_VIRTUAL,
++                  imx_serial_rx_fifo_ageing_timer_int, s);
++
+     DPRINTF("char dev for uart: %p\n", qemu_chr_fe_get_driver(&s->chr));
+ 
+     qemu_chr_fe_set_handlers(&s->chr, imx_can_receive, imx_receive,
 -- 
 2.34.1
 
