@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3BF83E4A9
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F97C83E4B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:09:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTULY-0004Hm-Er; Fri, 26 Jan 2024 17:06:48 -0500
+	id 1rTULZ-0004V1-MR; Fri, 26 Jan 2024 17:06:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTULM-0002nm-HA
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:06:36 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTULL-0002dx-4c
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:06:35 -0500
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTULG-0004Yu-RF
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:06:36 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40ed356a6ecso6722905e9.2
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:06:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTULG-0004dI-SE
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:06:34 -0500
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3394dc75eadso908731f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:06:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706306775; x=1706911575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706306781; x=1706911581; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YtuQrPEiaOdoOF8LUQEAgkD/kFrAu5dyJpYlVEeXrYA=;
- b=IiJX0UpKkpMgBf2OA2JAYYuXd0mT/4locTLZ4E9cIe3UkQRclRUAn+ue7Hr8QGkKbf
- u7nzYXP+dggmiJY3OEsRETL1+dEqaD8OxBg0MYIUw17EoXGYAQFeOOQpqQAYzYLFdILo
- PhXx2Gp/ULSptV7FUBb8ceT5Q/YCIopnS9JlRjmC9zFPhpMmONjiOI/c+N3vkun7aSQJ
- lU+VmiwQAS3NRXBd40x+7LQwWLpLLR3+6uLq/m46fKIcJx67Nt7aVUPr8Vxvhc5I13Y5
- dCmUmi8Z+liu4voXC6CJrvGKXS89ALLUKgyrq93WoO7RBL+B0FUSIgaRSY3c2Te/Lu2w
- VNqA==
+ bh=vV6dlj18pAtxWLV4KcwUuJD4lVU4OiaIF5yNARG5Efc=;
+ b=dFDrlOcYYCoLUKhTfrwwk1wY5LRwJkzicRrnq0GD+iXPvehlhRHZOKU8Z0Pg8UGgRG
+ 3ZY4BIidofq/JKdtHChBY0Eao6n4Bf+tJO5UNYSIRq8pPxJZBfucz9gLw5BValfRM4mr
+ Fq/F/WCA7XPXN3z4i9VLgXeOSa1pQOXPT5hcUWNatVn1DlUljHfMOoCUaOxhAXufeOjm
+ LI0ozefW5BXighfvNHf3b1qk6BQw2w+yJbFa+xveUZ3yVGddgoFWbF8+i7sKoxtNNf7L
+ miRo9+gyZS34CUQXI9VoHHze5YHJjMyklcaf10oQyXMIiRJNgZC1XYZvZDZw7ycmpACc
+ k58w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706306775; x=1706911575;
+ d=1e100.net; s=20230601; t=1706306781; x=1706911581;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YtuQrPEiaOdoOF8LUQEAgkD/kFrAu5dyJpYlVEeXrYA=;
- b=PEaiXFs2zyyZRCt9At1LRGcUL9mehRUuUVc+u3pw/K0pPDP4IXlT+UGtWrAxUWI7LZ
- lmgnv4v68KqnVPUEAgB6khlcBxZzlW6gXDEtuhJ6Il5nHR0dcyLOoaHZAaYh8aNpg4Jj
- JJN30ljQb0LbSGHkODTjjisQSiRfmsfkXm/SduZ1eXyZ9WkuqBDbfAfsMJH00QUKrJuj
- PZt8RSDd2LL16hEi9R8KbR5NAIsWj5x3nJzKw3jUCmjPSIhHYIYVby+ibK1BbbEwOmkZ
- wRq4HrSonS4WvdcqsFdij3rp0/qrhCbujOusYQoa7St4bawi6eSaV1ZdsyhIQ9e8RIX7
- wxNg==
-X-Gm-Message-State: AOJu0YxqMjQNUAlniwfvvEi0Hw+deY/Ptz+MH8AtrbqLdP7z2Yl8dza4
- Hd+tp7qKQxHTIbseG2TW58Tr8pfLZFCQSiZbPIoTXGH2tfAsxPy5wF27xCZjxJrScApaMtnQjlv
- q
-X-Google-Smtp-Source: AGHT+IGAJd1+nxpnhxNSxbbDkweDQV7fyyewwmnnG2Uh8Gfd0V5Pa5JSlH8Cjw1RHP8jg3sEePPxpg==
-X-Received: by 2002:a05:600c:b8a:b0:40e:5947:bcf9 with SMTP id
- fl10-20020a05600c0b8a00b0040e5947bcf9mr535667wmb.18.1706306774930; 
- Fri, 26 Jan 2024 14:06:14 -0800 (PST)
+ bh=vV6dlj18pAtxWLV4KcwUuJD4lVU4OiaIF5yNARG5Efc=;
+ b=MkDi97Rai61v49/UfMnuatCGZD/yc0Cyr1JErs5TjzGZAru4YihaAcQNcfZLhTuUCB
+ ixKef2C0wLgRL1IlnVLtPcP9dBxsyH9F/ezHdF34DGqgL0WJa3EORKvEVNkySvatg7ui
+ axsI9YMfn5Eudi4NiiWkArVUCNCCwK3DT08fQgHOi6yCiVjGOEirPk0/h/h2fDa42IDP
+ 4iStWgDSfMkv36FnmazsllBOjkDqFuqkzFeggoim4j00LG27Nn8BJmAwF6LISKfE8faC
+ H0RQuUWxbgDeNbLbicit213S59Bf4JPw9pv0DYEvgmDa9vQbEEcipiuZ4MXZGfN6SA9q
+ Txxg==
+X-Gm-Message-State: AOJu0YzryBhTWG9Q2iPUBETCWmfQTeyg20UwuumbVkO5bMXVR4ozW+zQ
+ dTXBpYa3eWP3o94Izs42CfQnttxU+PkZjDlygUHZuSsYvYfiSsH/qMYtctm2yE+YFzNvLOl1o8E
+ w
+X-Google-Smtp-Source: AGHT+IEILfBTjrvb6AYehjpbj/erQivk6DH/567rWQm8N/mmRzPIMyAQrBr8ZvoYrwb5nMIDLR/v/w==
+X-Received: by 2002:adf:f48d:0:b0:337:bfdb:5b8d with SMTP id
+ l13-20020adff48d000000b00337bfdb5b8dmr216861wro.115.1706306781480; 
+ Fri, 26 Jan 2024 14:06:21 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.142.39])
  by smtp.gmail.com with ESMTPSA id
- bu25-20020a056000079900b0033921b2a5d4sm2097084wrb.75.2024.01.26.14.06.13
+ n14-20020a5d6b8e000000b0033ade016ba5sm1380477wrx.4.2024.01.26.14.06.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Jan 2024 14:06:14 -0800 (PST)
+ Fri, 26 Jan 2024 14:06:21 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -64,19 +64,19 @@ Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH v2 20/23] target/sh4: Prefer fast cpu_env() over slower CPU
- QOM cast macro
-Date: Fri, 26 Jan 2024 23:04:02 +0100
-Message-ID: <20240126220407.95022-21-philmd@linaro.org>
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v2 21/23] target/tricore: Prefer fast cpu_env() over slower
+ CPU QOM cast macro
+Date: Fri, 26 Jan 2024 23:04:03 +0100
+Message-ID: <20240126220407.95022-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240126220407.95022-1-philmd@linaro.org>
 References: <20240126220407.95022-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,141 +104,111 @@ in scripts/coccinelle/cpu_env.cocci_template header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sh4/cpu.c       | 15 +++++----------
- target/sh4/gdbstub.c   |  6 ++----
- target/sh4/helper.c    | 11 +++--------
- target/sh4/translate.c |  3 +--
- 4 files changed, 11 insertions(+), 24 deletions(-)
+ target/tricore/cpu.c       | 20 ++++----------------
+ target/tricore/gdbstub.c   |  6 ++----
+ target/tricore/helper.c    |  3 +--
+ target/tricore/translate.c |  3 +--
+ 4 files changed, 8 insertions(+), 24 deletions(-)
 
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 806a0ef875..786c77615e 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -71,8 +71,7 @@ static void superh_restore_state_to_opc(CPUState *cs,
- static bool superh_io_recompile_replay_branch(CPUState *cs,
-                                               const TranslationBlock *tb)
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 8acacdf0c0..7f0609090c 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -36,38 +36,26 @@ static const gchar *tricore_gdb_arch_name(CPUState *cs)
+ 
+ static void tricore_cpu_set_pc(CPUState *cs, vaddr value)
  {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
- 
-     if ((env->flags & (TB_FLAG_DELAY_SLOT | TB_FLAG_DELAY_SLOT_COND))
-         && !(cs->tcg_cflags & CF_PCREL) && env->pc != tb->pc) {
-@@ -144,8 +143,7 @@ out:
- 
- static void sh7750r_cpu_initfn(Object *obj)
- {
--    SuperHCPU *cpu = SUPERH_CPU(obj);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(CPU(obj));
- 
-     env->id = SH_CPU_SH7750R;
-     env->features = SH_FEATURE_BCR3_AND_BCR4;
-@@ -162,8 +160,7 @@ static void sh7750r_class_init(ObjectClass *oc, void *data)
- 
- static void sh7751r_cpu_initfn(Object *obj)
- {
--    SuperHCPU *cpu = SUPERH_CPU(obj);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(CPU(obj));
- 
-     env->id = SH_CPU_SH7751R;
-     env->features = SH_FEATURE_BCR3_AND_BCR4;
-@@ -180,8 +177,7 @@ static void sh7751r_class_init(ObjectClass *oc, void *data)
- 
- static void sh7785_cpu_initfn(Object *obj)
- {
--    SuperHCPU *cpu = SUPERH_CPU(obj);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(CPU(obj));
- 
-     env->id = SH_CPU_SH7785;
-     env->features = SH_FEATURE_SH4A;
-@@ -216,8 +212,7 @@ static void superh_cpu_realizefn(DeviceState *dev, Error **errp)
- 
- static void superh_cpu_initfn(Object *obj)
- {
--    SuperHCPU *cpu = SUPERH_CPU(obj);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(CPU(obj));
- 
-     env->movcal_backup_tail = &(env->movcal_backup);
- }
-diff --git a/target/sh4/gdbstub.c b/target/sh4/gdbstub.c
-index d8e199fc06..75926d4e04 100644
---- a/target/sh4/gdbstub.c
-+++ b/target/sh4/gdbstub.c
-@@ -26,8 +26,7 @@
- 
- int superh_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
- 
-     switch (n) {
-     case 0 ... 7:
-@@ -76,8 +75,7 @@ int superh_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int superh_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
- 
-     switch (n) {
-     case 0 ... 7:
-diff --git a/target/sh4/helper.c b/target/sh4/helper.c
-index 5a6f653c12..28b81a5c54 100644
---- a/target/sh4/helper.c
-+++ b/target/sh4/helper.c
-@@ -55,8 +55,7 @@ int cpu_sh4_is_cached(CPUSH4State *env, target_ulong addr)
- 
- void superh_cpu_do_interrupt(CPUState *cs)
- {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
-     int do_irq = cs->interrupt_request & CPU_INTERRUPT_HARD;
-     int do_exp, irq_vector = cs->exception_index;
- 
-@@ -782,11 +781,8 @@ int cpu_sh4_is_cached(CPUSH4State * env, target_ulong addr)
- bool superh_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
- {
-     if (interrupt_request & CPU_INTERRUPT_HARD) {
--        SuperHCPU *cpu = SUPERH_CPU(cs);
--        CPUSH4State *env = &cpu->env;
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
 -
-         /* Delay slots are indivisible, ignore interrupts */
--        if (env->flags & TB_FLAG_DELAY_SLOT_MASK) {
-+        if (cpu_env(cs)->flags & TB_FLAG_DELAY_SLOT_MASK) {
-             return false;
-         } else {
-             superh_cpu_do_interrupt(cs);
-@@ -800,8 +796,7 @@ bool superh_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                          MMUAccessType access_type, int mmu_idx,
-                          bool probe, uintptr_t retaddr)
- {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
-     int ret;
+-    env->PC = value & ~(target_ulong)1;
++    cpu_env(cs)->PC = value & ~(target_ulong)1;
+ }
  
-     target_ulong physical;
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 81f825f125..4a933adad8 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -159,8 +159,7 @@ void sh4_translate_init(void)
- 
- void superh_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ static vaddr tricore_cpu_get_pc(CPUState *cs)
  {
--    SuperHCPU *cpu = SUPERH_CPU(cs);
--    CPUSH4State *env = &cpu->env;
-+    CPUSH4State *env = cpu_env(cs);
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+-    return env->PC;
++    return cpu_env(cs)->PC;
+ }
+ 
+ static void tricore_cpu_synchronize_from_tb(CPUState *cs,
+                                             const TranslationBlock *tb)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->PC = tb->pc;
++    cpu_env(cs)->PC = tb->pc;
+ }
+ 
+ static void tricore_restore_state_to_opc(CPUState *cs,
+                                          const TranslationBlock *tb,
+                                          const uint64_t *data)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+-    env->PC = data[0];
++    cpu_env(cs)->PC = data[0];
+ }
+ 
+ static void tricore_cpu_reset_hold(Object *obj)
+diff --git a/target/tricore/gdbstub.c b/target/tricore/gdbstub.c
+index e8f8e5e6ea..f9309c5e27 100644
+--- a/target/tricore/gdbstub.c
++++ b/target/tricore/gdbstub.c
+@@ -106,8 +106,7 @@ static void tricore_cpu_gdb_write_csfr(CPUTriCoreState *env, int n,
+ 
+ int tricore_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+ 
+     if (n < 16) { /* data registers */
+         return gdb_get_reg32(mem_buf, env->gpr_d[n]);
+@@ -121,8 +120,7 @@ int tricore_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+ int tricore_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     uint32_t tmp;
+ 
+     tmp = ldl_p(mem_buf);
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 174f666e1e..d328414c99 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -67,8 +67,7 @@ bool tricore_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                           MMUAccessType rw, int mmu_idx,
+                           bool probe, uintptr_t retaddr)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     hwaddr physical;
+     int prot;
+     int ret = 0;
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 66553d1be0..ad314bdf3c 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -95,8 +95,7 @@ enum {
+ 
+ void tricore_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     uint32_t psw;
      int i;
  
-     qemu_fprintf(f, "pc=0x%08x sr=0x%08x pr=0x%08x fpscr=0x%08x\n",
 -- 
 2.41.0
 
