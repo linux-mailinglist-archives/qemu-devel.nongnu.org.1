@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E5583D374
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:19:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A61D683D36B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 05:18:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTDfc-00027d-At; Thu, 25 Jan 2024 23:18:25 -0500
+	id 1rTDfl-0002IM-7g; Thu, 25 Jan 2024 23:18:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfT-0001zA-Pw
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:15 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfU-000230-Qd
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfQ-0004zv-Sy
- for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:14 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rTDfR-000508-UL
+ for qemu-devel@nongnu.org; Thu, 25 Jan 2024 23:18:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706242692;
+ s=mimecast20190719; t=1706242693;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+Vvbftuj0OCUtZRn4vsJpQ7cASD1WEAgCGmOsdimkcI=;
- b=da3Dcf8F+YWRZzQPo0112v8gTjrVxTODvBWgOcyK7XdClmj/OzIcMx4Aox/WsPqKuXT1va
- cZd2zNR5nOUv6y9pkJzQRo1tqv4qj4c5y78BXS45ZQSmtWh5Q9h1EZroyOTXuDqjQPsZvF
- XQ+jkX23+L4ls29hZ5J33gFTAh6p3jU=
+ bh=nwPQaFncawh6LoHnuw9aCaruCaalCFdEX19mUZAGe+Q=;
+ b=M725+GOyXVV/DTLZYBa81/gikauJ8lTLz8ic1XYDGyvjzAMDtxrvTWUeBbNd8IxMUplPsI
+ AFPy3ulj/B3lAOHn6n/UXlX2mYNOgXAsdIviNmhKOBMRTH1VxIQoXQLoU66G15NtThf2bg
+ kQ2UUQnwpRMRKeLu3kEf8oi1x3qtbr8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-JZZj14NHM46dbQrmWbx48A-1; Thu, 25 Jan 2024 23:18:06 -0500
-X-MC-Unique: JZZj14NHM46dbQrmWbx48A-1
+ us-mta-654-LnfpJD83PmiwHonQn2F1yg-1; Thu, 25 Jan 2024 23:18:09 -0500
+X-MC-Unique: LnfpJD83PmiwHonQn2F1yg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3ABFE83DE29;
- Fri, 26 Jan 2024 04:18:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 00E1283DE27;
+ Fri, 26 Jan 2024 04:18:09 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 44C5B492BC6;
- Fri, 26 Jan 2024 04:18:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0ADE6492BC6;
+ Fri, 26 Jan 2024 04:18:06 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>,
 	peterx@redhat.com
-Subject: [PULL 12/15] migration: Reference migration state around
- loadvm_postcopy_handle_run_bh
-Date: Fri, 26 Jan 2024 12:17:22 +0800
-Message-ID: <20240126041725.124562-13-peterx@redhat.com>
+Subject: [PULL 13/15] migration: Add a wrapper to qemu_bh_schedule
+Date: Fri, 26 Jan 2024 12:17:23 +0800
+Message-ID: <20240126041725.124562-14-peterx@redhat.com>
 In-Reply-To: <20240126041725.124562-1-peterx@redhat.com>
 References: <20240126041725.124562-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,38 +80,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-We need to hold a reference to the current_migration object around
-async calls to avoid it been freed while still in use. Even on this
-load-side function, we might still use the MigrationState, e.g to
-check for capabilities.
+Wrap qemu_bh_schedule() to ensure we always hold a reference to the
+current_migration object.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240119233922.32588-4-farosas@suse.de
+Link: https://lore.kernel.org/r/20240119233922.32588-5-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/savevm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ migration/migration.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 6410705ebe..93387350c7 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2174,6 +2174,7 @@ static void loadvm_postcopy_handle_run_bh(void *opaque)
-     qemu_bh_delete(mis->bh);
- 
-     trace_vmstate_downtime_checkpoint("dst-postcopy-bh-vm-started");
-+    object_unref(OBJECT(migration_get_current()));
+diff --git a/migration/migration.c b/migration/migration.c
+index b1213b59ce..0e7f101d64 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -199,6 +199,16 @@ void migration_object_init(void)
+     dirty_bitmap_mig_init();
  }
  
- /* After all discards we can start running and asking for pages */
-@@ -2189,6 +2190,7 @@ static int loadvm_postcopy_handle_run(MigrationIncomingState *mis)
++static void migration_bh_schedule(MigrationState *s, QEMUBH *bh)
++{
++    /*
++     * Ref the state for bh, because it may be called when
++     * there're already no other refs
++     */
++    object_ref(OBJECT(s));
++    qemu_bh_schedule(bh);
++}
++
+ void migration_cancel(const Error *error)
+ {
+     if (error) {
+@@ -714,8 +724,7 @@ process_incoming_migration_co(void *opaque)
+     }
  
-     postcopy_state_set(POSTCOPY_INCOMING_RUNNING);
-     mis->bh = qemu_bh_new(loadvm_postcopy_handle_run_bh, mis);
-+    object_ref(OBJECT(migration_get_current()));
-     qemu_bh_schedule(mis->bh);
+     mis->bh = qemu_bh_new(process_incoming_migration_bh, mis);
+-    object_ref(OBJECT(migrate_get_current()));
+-    qemu_bh_schedule(mis->bh);
++    migration_bh_schedule(migrate_get_current(), mis->bh);
+     return;
+ fail:
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+@@ -1332,16 +1341,6 @@ static void migrate_fd_cleanup(MigrationState *s)
+     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+ }
  
-     /* We need to finish reading the stream from the package
+-static void migrate_fd_cleanup_schedule(MigrationState *s)
+-{
+-    /*
+-     * Ref the state for bh, because it may be called when
+-     * there're already no other refs
+-     */
+-    object_ref(OBJECT(s));
+-    qemu_bh_schedule(s->cleanup_bh);
+-}
+-
+ static void migrate_fd_cleanup_bh(void *opaque)
+ {
+     MigrationState *s = opaque;
+@@ -3140,7 +3139,7 @@ static void migration_iteration_finish(MigrationState *s)
+         error_report("%s: Unknown ending state %d", __func__, s->state);
+         break;
+     }
+-    migrate_fd_cleanup_schedule(s);
++    migration_bh_schedule(s, s->cleanup_bh);
+     bql_unlock();
+ }
+ 
+@@ -3171,7 +3170,7 @@ static void bg_migration_iteration_finish(MigrationState *s)
+         break;
+     }
+ 
+-    migrate_fd_cleanup_schedule(s);
++    migration_bh_schedule(s, s->cleanup_bh);
+     bql_unlock();
+ }
+ 
+@@ -3487,9 +3486,7 @@ static void *bg_migration_thread(void *opaque)
+      * writes to virtio VQs memory which is in write-protected region.
+      */
+     s->vm_start_bh = qemu_bh_new(bg_migration_vm_start_bh, s);
+-    object_ref(OBJECT(s));
+-    qemu_bh_schedule(s->vm_start_bh);
+-
++    migration_bh_schedule(s, s->vm_start_bh);
+     bql_unlock();
+ 
+     while (migration_is_active(s)) {
 -- 
 2.43.0
 
