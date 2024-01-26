@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428E383E062
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:37:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5489083E06C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:38:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ4z-0007iD-2y; Fri, 26 Jan 2024 12:33:25 -0500
+	id 1rTQ6l-0004p4-C8; Fri, 26 Jan 2024 12:35:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ4h-0007FK-C3; Fri, 26 Jan 2024 12:33:07 -0500
+ id 1rTQ5R-00009e-1L; Fri, 26 Jan 2024 12:33:55 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ4c-0001jI-K8; Fri, 26 Jan 2024 12:33:06 -0500
+ id 1rTQ5O-0001jV-Ea; Fri, 26 Jan 2024 12:33:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=dzXOsNH9wRjvHj3st0gxTJIXdksb3OkDh+zWazNsC/A=; b=LNsJG7YJqs5GTjqRgQhdiPF1SQ
- zmcMo2Vh8Ifp/kCuxMIuGCm7/dMuLhFuR2apigsHN4jJZPSF+HPHrJr2ZqP6z7RMV61bzkBXLvYH6
- 2rNAT90JcnCxqBzFUCz3zaf5GflvSPEwpRxUpA9qPkd6zr2/YaneIHitgqo9TD11/Pfxu0a027c46
- sFzjX169LBmyzhCtfCyOuWh+oGavb0R+k9ySNDACEo11Aw2ltP8fwUCM2Lcg2apWBUwxqmuXqjiQr
- CaGfRP8cy6pxHou+q1f55jHgUa1whNeFNAKMPOzCuuMcioZphqihCfaGFb0VA/CIF34gF8So7jY5G
- MU4bRqoQ==;
+ bh=KOJpufq4zmSAW4K5QRQS7wrF9AysmCJpGSwOq9y3MvE=; b=Kkc6w4XBr8jGCKymZ8GonYtRQf
+ 3nKIA1F+AOT0Y0gp30CLxWOk0LHUYyXz6gt/8Cin6mmr3eAbf8dzVvSbbBSk9KelfbaAnW5/yJe5U
+ nExgrTMI7VIqwGLenUCm2tKd4kN7NVsljwGTI1S2gcurVCy29EA/XOYrAGr4SHtmhme8En06YvlVr
+ QQ7FZZSbOFHL7aJJVndJra1TxvjTN0ZuzpRZjXwrL/D8VH3MWjr1xAvkOZuixFv0WeSruJKJnjXhB
+ SsoUQflZFtcaIEQI2SjAQqIKU7bcTVOWPzAHCGgDGAHCbADyxPEJ1yXdQfbzyi0lulvFZ/ELgPpvK
+ 4BgnFm1Q==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ4A-000000069Um-1qlU; Fri, 26 Jan 2024 17:32:35 +0000
+ id 1rTQ4A-000000069Un-1mvK; Fri, 26 Jan 2024 17:32:35 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ49-00000001emM-0Fux;
+ Hat Linux)) id 1rTQ49-00000001emi-0XuV;
  Fri, 26 Jan 2024 17:32:33 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v4 23/47] hw/arm/exynos4: use qemu_create_nic_device()
-Date: Fri, 26 Jan 2024 17:25:00 +0000
-Message-ID: <20240126173228.394202-24-dwmw2@infradead.org>
+Subject: [PATCH v4 24/47] hw/arm/fsl: use qemu_configure_nic_device()
+Date: Fri, 26 Jan 2024 17:25:01 +0000
+Message-ID: <20240126173228.394202-25-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
@@ -124,26 +124,64 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/arm/exynos4_boards.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/arm/fsl-imx25.c  | 2 +-
+ hw/arm/fsl-imx6.c   | 2 +-
+ hw/arm/fsl-imx6ul.c | 2 +-
+ hw/arm/fsl-imx7.c   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
-index b0e13eb4f0..003992189b 100644
---- a/hw/arm/exynos4_boards.c
-+++ b/hw/arm/exynos4_boards.c
-@@ -76,10 +76,8 @@ static void lan9215_init(uint32_t base, qemu_irq irq)
-     SysBusDevice *s;
+diff --git a/hw/arm/fsl-imx25.c b/hw/arm/fsl-imx25.c
+index 9d2fb75a68..a24fa7b443 100644
+--- a/hw/arm/fsl-imx25.c
++++ b/hw/arm/fsl-imx25.c
+@@ -170,7 +170,7 @@ static void fsl_imx25_realize(DeviceState *dev, Error **errp)
  
-     /* This should be a 9215 but the 9118 is close enough */
--    if (nd_table[0].used) {
--        qemu_check_nic_model(&nd_table[0], "lan9118");
--        dev = qdev_new(TYPE_LAN9118);
--        qdev_set_nic_properties(dev, &nd_table[0]);
-+    dev = qemu_create_nic_device(TYPE_LAN9118, true, NULL);
-+    if (dev) {
-         qdev_prop_set_uint32(dev, "mode_16bit", 1);
-         s = SYS_BUS_DEVICE(dev);
-         sysbus_realize_and_unref(s, &error_fatal);
+     object_property_set_uint(OBJECT(&s->fec), "phy-num", s->phy_num,
+                              &error_abort);
+-    qdev_set_nic_properties(DEVICE(&s->fec), &nd_table[0]);
++    qemu_configure_nic_device(DEVICE(&s->fec), true, NULL);
+ 
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->fec), errp)) {
+         return;
+diff --git a/hw/arm/fsl-imx6.c b/hw/arm/fsl-imx6.c
+index af2e982b05..afe9a59a81 100644
+--- a/hw/arm/fsl-imx6.c
++++ b/hw/arm/fsl-imx6.c
+@@ -383,7 +383,7 @@ static void fsl_imx6_realize(DeviceState *dev, Error **errp)
+ 
+     object_property_set_uint(OBJECT(&s->eth), "phy-num", s->phy_num,
+                              &error_abort);
+-    qdev_set_nic_properties(DEVICE(&s->eth), &nd_table[0]);
++    qemu_configure_nic_device(DEVICE(&s->eth), true, NULL);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->eth), errp)) {
+         return;
+     }
+diff --git a/hw/arm/fsl-imx6ul.c b/hw/arm/fsl-imx6ul.c
+index e37b69a5e1..ca3dd439ec 100644
+--- a/hw/arm/fsl-imx6ul.c
++++ b/hw/arm/fsl-imx6ul.c
+@@ -442,7 +442,7 @@ static void fsl_imx6ul_realize(DeviceState *dev, Error **errp)
+                                  s->phy_num[i], &error_abort);
+         object_property_set_uint(OBJECT(&s->eth[i]), "tx-ring-num",
+                                  FSL_IMX6UL_ETH_NUM_TX_RINGS, &error_abort);
+-        qdev_set_nic_properties(DEVICE(&s->eth[i]), &nd_table[i]);
++        qemu_configure_nic_device(DEVICE(&s->eth[i]), true, NULL);
+         sysbus_realize(SYS_BUS_DEVICE(&s->eth[i]), &error_abort);
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->eth[i]), 0,
+diff --git a/hw/arm/fsl-imx7.c b/hw/arm/fsl-imx7.c
+index 474cfdc87c..1acbe065db 100644
+--- a/hw/arm/fsl-imx7.c
++++ b/hw/arm/fsl-imx7.c
+@@ -446,7 +446,7 @@ static void fsl_imx7_realize(DeviceState *dev, Error **errp)
+                                  s->phy_num[i], &error_abort);
+         object_property_set_uint(OBJECT(&s->eth[i]), "tx-ring-num",
+                                  FSL_IMX7_ETH_NUM_TX_RINGS, &error_abort);
+-        qdev_set_nic_properties(DEVICE(&s->eth[i]), &nd_table[i]);
++        qemu_configure_nic_device(DEVICE(&s->eth[i]), true, NULL);
+         sysbus_realize(SYS_BUS_DEVICE(&s->eth[i]), &error_abort);
+ 
+         sysbus_mmio_map(SYS_BUS_DEVICE(&s->eth[i]), 0, FSL_IMX7_ENETn_ADDR[i]);
 -- 
 2.43.0
 
