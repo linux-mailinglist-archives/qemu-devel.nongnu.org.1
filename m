@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0698F83E4AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD5883E4BC
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 23:09:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTUKu-0001Tf-99; Fri, 26 Jan 2024 17:06:08 -0500
+	id 1rTUKx-0001oG-TK; Fri, 26 Jan 2024 17:06:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKN-0008Ny-La
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:37 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKS-0000A7-Ll
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:41 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKJ-00049T-UD
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:34 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a313b51cf1fso154234866b.0
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:05:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rTUKP-0004Cj-Hd
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 17:05:40 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40e7065b7bdso17231575e9.3
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 14:05:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706306729; x=1706911529; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706306735; x=1706911535; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3J8OeebImZE8Elj1XiYwJgYjx4pjHQV9LzHXJrkifLg=;
- b=oegaTsIerNnG7s9Dw8byXfFavHLE0cubZdz/TjTkHzVzSK1438b8vMzAZDrxU6D1wc
- Gkg5uX3BfMUuHioLbIo/DD45LVLbvKl51b7S2F6307FY/dA/uCfzR7fu7PR4pPGUyGrr
- 4VZT2eYRho8K0rd8qvAAe+C5ECEr/HrrruEfHzu+xEq8MqtCI3LPWJpvFFkuCJwITcTz
- Ri5GT2XVtx7LhuoC71DDCXtM8FxVF7hDkyzxPdRlQIBNCJzRs4c6jseBfLvXfIULKnpo
- kTJn5vMI3LDfX2urlDoQH1LFECzNCOy+ubphYmL65lmrEsp20b7+2dKyHVbn/6btvr1M
- qBrA==
+ bh=FFJLEX8dK90+jos80xXDDodOgI2wmwmhf0FUxCQuinw=;
+ b=Cz5GAQzXyFWJQnda5cT/mRJM4/z+9llym5n18wu+pTRcQrYEHaes3+dEXrVr6SD9uc
+ FNP+8aFBPxkUuI/D0SE7WtV1oXxNiaxJjjTw5N2NJTNEKJ1S+q+AmW1lDbMDdYQMVR7I
+ Cvc6Xb4bCKD809lorEV4AyW4b0DqPpiE5reWpKzzAyhCwPlOqqYHGSUlPhjAIzLcwVAL
+ xtGMyOTmrXIjzbZ+B4qfuhLqge3ot7bqed4Pzu+V2ewdgVL0z+h8Ei/UE6XsvnSrOQlo
+ HE0CpHaWNX6mtbQW6CedRX1yGukZP7rxMEQMyz9wwBOcaDbGvlJz45WwZXxdYTrfUYrx
+ ooDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706306729; x=1706911529;
+ d=1e100.net; s=20230601; t=1706306735; x=1706911535;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3J8OeebImZE8Elj1XiYwJgYjx4pjHQV9LzHXJrkifLg=;
- b=LbnDEkiNTtExLDa9H+sNbtFavfOWO9BJQfyg5gFrz20uEiXLF5C2D3gQCBOy9Ra8GK
- hNHv4PmM1ZySdeut2RmGyJo8p6tX8F33suKx7eFAKce6dKQCEJFpmgQ9NDCKirFE4YyC
- WPuYH+8/ft/sWZEPHtxdqrdQrBawt0GNJnS5/44rj9l7LEppooS4lIiYB0cf+D0tTc0R
- 3QtpRl0ecB45CkrLaB5eolf+at1AXdKRr584lURT3Zz8QDZxKDMTMtl0xHWjYQw2m98q
- 95gW7QvQq/h9gAgY39B/Ovx6GHQDKNRvGRwjOAe80v42+rHT2iiNIkyAA38O1jCBVywr
- Xkog==
-X-Gm-Message-State: AOJu0YwsxLwwGcocO1dH4QfevaoorpGHEO3QjfJBWtAe6CoTb/dwcV0y
- nRt+6ILdKfBuhWd1AIwvzc36KyTfbXRy9/C+nCrI6JYvnz7VTi18oM/TR/rRBG7VSeoQp8kI9gU
- l
-X-Google-Smtp-Source: AGHT+IFEhLA1jIB4l+ACKPiJElwY3cM/dMwsgfLQuB+LdSxqTKEjkK7rUGdxJzzKir1jjg6bT9hK9A==
-X-Received: by 2002:a17:907:9805:b0:a27:d3ee:2ef5 with SMTP id
- ji5-20020a170907980500b00a27d3ee2ef5mr2958088ejc.24.1706306729550; 
- Fri, 26 Jan 2024 14:05:29 -0800 (PST)
+ bh=FFJLEX8dK90+jos80xXDDodOgI2wmwmhf0FUxCQuinw=;
+ b=O5gKakjdt3l919lYXTgvF6SIzEx0AZCKYn+O03TWTeK9yN4qbGDfA+wh1mCcOVkfSm
+ UOZWgpdmInshHUwuqheVz+wF/YBxxxD67T3/utunF8GGqcZJVzoBM3cOcuDvwxy1m3LE
+ /rQGEC/y6I7tWJuAKvj0i9//6GEJqA2CPtkqmSBhGJ4zzIYIm2G9NQkeqAYLpl4VpO0l
+ lAc8QLMT/DqFR7p7YvGbkNdQVDnnXKCmg2ZhVhYzDVmuoaWbQftmKDEwyyFRd1NaKTj/
+ vL7hTV85cSg5Ky1rxzEPqvWFRP8qiq2Zz3YeKLB6WRxaRU0SI2QJtLjL0kkJshEOTQkX
+ 0z2Q==
+X-Gm-Message-State: AOJu0Yz0xvFjJdZNsTJ4I27yv6QLnSq4oJEFxIHA6LqZqB5sib75jv27
+ /wxEiwEa/wC4gIPnewCjqkWPaOq3wdkIkZA1olM2wTZBB3mZngJNZyrphccd/9f6RiPMDF5bEG6
+ Q
+X-Google-Smtp-Source: AGHT+IERKWPKqMlUDr8TgLLCEk48utrgqZ8fZ+srVdZ0DPEqZSZhTX1J0vsKsxaQU/Y2UaXBmJlN2g==
+X-Received: by 2002:a05:600c:2246:b0:40e:e944:154a with SMTP id
+ a6-20020a05600c224600b0040ee944154amr243867wmm.198.1706306735629; 
+ Fri, 26 Jan 2024 14:05:35 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.142.39])
  by smtp.gmail.com with ESMTPSA id
- tl9-20020a170907c30900b00a318b8650bbsm1057523ejc.9.2024.01.26.14.05.27
+ s6-20020a1709060c0600b00a2a37f63216sm1056778ejf.171.2024.01.26.14.05.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Jan 2024 14:05:29 -0800 (PST)
+ Fri, 26 Jan 2024 14:05:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
@@ -64,22 +64,19 @@ Cc: qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH v2 13/23] target/mips: Prefer fast cpu_env() over slower CPU
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>
+Subject: [PATCH v2 14/23] target/nios2: Prefer fast cpu_env() over slower CPU
  QOM cast macro
-Date: Fri, 26 Jan 2024 23:03:55 +0100
-Message-ID: <20240126220407.95022-14-philmd@linaro.org>
+Date: Fri, 26 Jan 2024 23:03:56 +0100
+Message-ID: <20240126220407.95022-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240126220407.95022-1-philmd@linaro.org>
 References: <20240126220407.95022-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,265 +104,85 @@ in scripts/coccinelle/cpu_env.cocci_template header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.c                       | 11 +++-------
- target/mips/gdbstub.c                   |  6 ++----
- target/mips/kvm.c                       | 27 +++++++++----------------
- target/mips/sysemu/physaddr.c           |  3 +--
- target/mips/tcg/exception.c             |  3 +--
- target/mips/tcg/op_helper.c             |  3 +--
- target/mips/tcg/sysemu/special_helper.c |  3 +--
- target/mips/tcg/sysemu/tlb_helper.c     |  6 ++----
- target/mips/tcg/translate.c             |  3 +--
- 9 files changed, 21 insertions(+), 44 deletions(-)
+ target/nios2/cpu.c        | 15 +++------------
+ target/nios2/helper.c     |  3 +--
+ target/nios2/nios2-semi.c |  6 ++----
+ 3 files changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index a0023edd43..d9c0c0dada 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -80,8 +80,7 @@ static void fpu_dump_state(CPUMIPSState *env, FILE *f, int flags)
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index a27732bf2b..a2eaf35c1a 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -28,28 +28,19 @@
  
- static void mips_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ static void nios2_cpu_set_pc(CPUState *cs, vaddr value)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int i;
- 
-     qemu_fprintf(f, "pc=0x" TARGET_FMT_lx " HI=0x" TARGET_FMT_lx
-@@ -137,8 +136,7 @@ static vaddr mips_cpu_get_pc(CPUState *cs)
- 
- static bool mips_cpu_has_work(CPUState *cs)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     bool has_work = false;
- 
-     /*
-@@ -428,10 +426,7 @@ static void mips_cpu_reset_hold(Object *obj)
- 
- static void mips_cpu_disas_set_info(CPUState *s, disassemble_info *info)
- {
--    MIPSCPU *cpu = MIPS_CPU(s);
--    CPUMIPSState *env = &cpu->env;
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
 -
--    if (!(env->insn_flags & ISA_NANOMIPS32)) {
-+    if (!(cpu_env(s)->insn_flags & ISA_NANOMIPS32)) {
- #if TARGET_BIG_ENDIAN
-         info->print_insn = print_insn_big_mips;
- #else
-diff --git a/target/mips/gdbstub.c b/target/mips/gdbstub.c
-index 62d7b72407..169d47416a 100644
---- a/target/mips/gdbstub.c
-+++ b/target/mips/gdbstub.c
-@@ -25,8 +25,7 @@
+-    env->pc = value;
++    cpu_env(cs)->pc = value;
+ }
  
- int mips_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ static vaddr nios2_cpu_get_pc(CPUState *cs)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
+-
+-    return env->pc;
++    return cpu_env(cs)->pc;
+ }
  
-     if (n < 32) {
-         return gdb_get_regl(mem_buf, env->active_tc.gpr[n]);
-@@ -78,8 +77,7 @@ int mips_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int mips_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ static void nios2_restore_state_to_opc(CPUState *cs,
+                                        const TranslationBlock *tb,
+                                        const uint64_t *data)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     target_ulong tmp;
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
+-
+-    env->pc = data[0];
++    cpu_env(cs)->pc = data[0];
+ }
  
-     tmp = ldtul_p(mem_buf);
-diff --git a/target/mips/kvm.c b/target/mips/kvm.c
-index 15d0cf9adb..6c52e59f55 100644
---- a/target/mips/kvm.c
-+++ b/target/mips/kvm.c
-@@ -63,8 +63,7 @@ int kvm_arch_irqchip_create(KVMState *s)
- 
- int kvm_arch_init_vcpu(CPUState *cs)
+ static bool nios2_cpu_has_work(CPUState *cs)
+diff --git a/target/nios2/helper.c b/target/nios2/helper.c
+index bb3b09e5a7..ac57121afc 100644
+--- a/target/nios2/helper.c
++++ b/target/nios2/helper.c
+@@ -287,8 +287,7 @@ void nios2_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+                                    MMUAccessType access_type,
+                                    int mmu_idx, uintptr_t retaddr)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int ret = 0;
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
++    CPUNios2State *env = cpu_env(cs);
  
-     qemu_add_vm_change_state_handler(kvm_mips_update_state, cs);
-@@ -460,8 +459,7 @@ static inline int kvm_mips_change_one_reg(CPUState *cs, uint64_t reg_id,
-  */
- static int kvm_mips_save_count(CPUState *cs)
+     env->ctrl[CR_BADADDR] = addr;
+     cs->exception_index = EXCP_UNALIGN;
+diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
+index 0b84fcb6b6..420702e293 100644
+--- a/target/nios2/nios2-semi.c
++++ b/target/nios2/nios2-semi.c
+@@ -75,8 +75,7 @@ static int host_to_gdb_errno(int err)
+ 
+ static void nios2_semi_u32_cb(CPUState *cs, uint64_t ret, int err)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     uint64_t count_ctl;
-     int err, ret = 0;
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
++    CPUNios2State *env = cpu_env(cs);
+     target_ulong args = env->regs[R_ARG1];
  
-@@ -502,8 +500,7 @@ static int kvm_mips_save_count(CPUState *cs)
-  */
- static int kvm_mips_restore_count(CPUState *cs)
+     if (put_user_u32(ret, args) ||
+@@ -93,8 +92,7 @@ static void nios2_semi_u32_cb(CPUState *cs, uint64_t ret, int err)
+ 
+ static void nios2_semi_u64_cb(CPUState *cs, uint64_t ret, int err)
  {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     uint64_t count_ctl;
-     int err_dc, err, ret = 0;
+-    Nios2CPU *cpu = NIOS2_CPU(cs);
+-    CPUNios2State *env = &cpu->env;
++    CPUNios2State *env = cpu_env(cs);
+     target_ulong args = env->regs[R_ARG1];
  
-@@ -590,8 +587,7 @@ static void kvm_mips_update_state(void *opaque, bool running, RunState state)
- 
- static int kvm_mips_put_fpu_registers(CPUState *cs, int level)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int err, ret = 0;
-     unsigned int i;
- 
-@@ -670,8 +666,7 @@ static int kvm_mips_put_fpu_registers(CPUState *cs, int level)
- 
- static int kvm_mips_get_fpu_registers(CPUState *cs)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int err, ret = 0;
-     unsigned int i;
- 
-@@ -751,8 +746,7 @@ static int kvm_mips_get_fpu_registers(CPUState *cs)
- 
- static int kvm_mips_put_cp0_registers(CPUState *cs, int level)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int err, ret = 0;
- 
-     (void)level;
-@@ -974,8 +968,7 @@ static int kvm_mips_put_cp0_registers(CPUState *cs, int level)
- 
- static int kvm_mips_get_cp0_registers(CPUState *cs)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int err, ret = 0;
- 
-     err = kvm_mips_get_one_reg(cs, KVM_REG_MIPS_CP0_INDEX, &env->CP0_Index);
-@@ -1181,8 +1174,7 @@ static int kvm_mips_get_cp0_registers(CPUState *cs)
- 
- int kvm_arch_put_registers(CPUState *cs, int level)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     struct kvm_regs regs;
-     int ret;
-     int i;
-@@ -1217,8 +1209,7 @@ int kvm_arch_put_registers(CPUState *cs, int level)
- 
- int kvm_arch_get_registers(CPUState *cs)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int ret = 0;
-     struct kvm_regs regs;
-     int i;
-diff --git a/target/mips/sysemu/physaddr.c b/target/mips/sysemu/physaddr.c
-index 05990aa5bb..56380dfe6c 100644
---- a/target/mips/sysemu/physaddr.c
-+++ b/target/mips/sysemu/physaddr.c
-@@ -230,8 +230,7 @@ int get_physical_address(CPUMIPSState *env, hwaddr *physical,
- 
- hwaddr mips_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     hwaddr phys_addr;
-     int prot;
- 
-diff --git a/target/mips/tcg/exception.c b/target/mips/tcg/exception.c
-index da49a93912..13275d1ded 100644
---- a/target/mips/tcg/exception.c
-+++ b/target/mips/tcg/exception.c
-@@ -79,8 +79,7 @@ void helper_wait(CPUMIPSState *env)
- 
- void mips_cpu_synchronize_from_tb(CPUState *cs, const TranslationBlock *tb)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
- 
-     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
-     env->active_tc.PC = tb->pc;
-diff --git a/target/mips/tcg/op_helper.c b/target/mips/tcg/op_helper.c
-index 98935b5e64..b57baa7ec1 100644
---- a/target/mips/tcg/op_helper.c
-+++ b/target/mips/tcg/op_helper.c
-@@ -279,8 +279,7 @@ void mips_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                   MMUAccessType access_type,
-                                   int mmu_idx, uintptr_t retaddr)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     int error_code = 0;
-     int excp;
- 
-diff --git a/target/mips/tcg/sysemu/special_helper.c b/target/mips/tcg/sysemu/special_helper.c
-index 93276f789d..7934f2ea41 100644
---- a/target/mips/tcg/sysemu/special_helper.c
-+++ b/target/mips/tcg/sysemu/special_helper.c
-@@ -90,8 +90,7 @@ static void debug_post_eret(CPUMIPSState *env)
- 
- bool mips_io_recompile_replay_branch(CPUState *cs, const TranslationBlock *tb)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
- 
-     if ((env->hflags & MIPS_HFLAG_BMASK) != 0
-         && !(cs->tcg_cflags & CF_PCREL) && env->active_tc.PC != tb->pc) {
-diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-index 4ede904800..6c48c4fa80 100644
---- a/target/mips/tcg/sysemu/tlb_helper.c
-+++ b/target/mips/tcg/sysemu/tlb_helper.c
-@@ -910,8 +910,7 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
-                        bool probe, uintptr_t retaddr)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
-     hwaddr physical;
-     int prot;
-     int ret = TLBRET_BADADDR;
-@@ -1346,8 +1345,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
- bool mips_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
- {
-     if (interrupt_request & CPU_INTERRUPT_HARD) {
--        MIPSCPU *cpu = MIPS_CPU(cs);
--        CPUMIPSState *env = &cpu->env;
-+        CPUMIPSState *env = cpu_env(cs);
- 
-         if (cpu_mips_hw_interrupts_enabled(env) &&
-             cpu_mips_hw_interrupts_pending(env)) {
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 13e43fa3b6..e74b98de1c 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -15628,8 +15628,7 @@ void mips_restore_state_to_opc(CPUState *cs,
-                                const TranslationBlock *tb,
-                                const uint64_t *data)
- {
--    MIPSCPU *cpu = MIPS_CPU(cs);
--    CPUMIPSState *env = &cpu->env;
-+    CPUMIPSState *env = cpu_env(cs);
- 
-     env->active_tc.PC = data[0];
-     env->hflags &= ~MIPS_HFLAG_BMASK;
+     if (put_user_u32(ret >> 32, args) ||
 -- 
 2.41.0
 
