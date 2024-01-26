@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D9283DC00
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDDC83DC1D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:37:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHR-0002fx-7v; Fri, 26 Jan 2024 09:34:05 -0500
+	id 1rTNHT-0002lt-3E; Fri, 26 Jan 2024 09:34:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHM-0002T7-RX
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:00 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1rTNHN-0002Tk-Bg
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:01 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHL-0007zT-41
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:00 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-339289fead2so522702f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:58 -0800 (PST)
+ id 1rTNHL-0007zn-LB
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:34:01 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3392d417a9fso239941f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279638; x=1706884438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=28nbiWFQ3dXc2wMfXx4/3I1JNB6kABMI1o1Dd2Ej4Ok=;
- b=YXVVmRfMnPNwIz5OvFi1mkRn59oMkASYDDtWUrRnlC34BDVQDHjGIQJlxfALkxm7vL
- o2xIxZ4hiLn3l+SKPxmRZjaFN/JWKxD28bOKGxUVBZuBaLMZStCDFsKVLxyScOlm5tTy
- Qe6SM0hsQwYN8p1JHWOV3lv/szQZBRhjSt+2iNra6iHV3EXgTdQE1sjOb15R8NRpj+jk
- aMYyFWkGEtl9gB8bk8LtJ6jveSl4kHINKtuuEttpwyhvQsKOx5JKp8sxfiCVvpkVM6z6
- ZeF9bMGOyITPTc4hFknoZCI+pl5TIHj4Z3Tb3Ob2mQ5CJRZW2zv5hSev246bxSUYXE8J
- IDbg==
+ :reply-to; bh=C5S28rdH5ZOgcnO36OWOW5DPAS8PCmcDgoLOzpGvQH0=;
+ b=VM6/jWRY2nrlR6dvjufh17JM0zp/0CxemEYfEmKj7M9Pf+AooZD0uQBW0YmIQjUvM/
+ cPLSYBbAqk6WsPBmnpdiHG2gNI2+/TxW1Sh6iISJvlyZhKN3NQgWd4bZOTrzKs2n3kWS
+ Rt0uN1z++z4hOV8UUhSjhGImHy38M42CpKB/tX0IrLx9kM5PCgf2wiltP0OS/QmBB1Kx
+ WQMiNJY8ZzhChFDlf3JjL3T8VsMAAxWVfoWeNmHUB6dItSCQb5++M+xf4Ekhhzz5tuT2
+ NZOPRXkGBHRjyDfMm3UQh/aAQg02XL3Yq8BlgToT3BPFdKm84qb61VYGls7ERJWCwhJM
+ bzww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279638; x=1706884438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=28nbiWFQ3dXc2wMfXx4/3I1JNB6kABMI1o1Dd2Ej4Ok=;
- b=YxzH+YPAu2q48YLDct/41lNmtn9STsPiu5s5QUR853sAiik7mBEJ8Uk1zyej2416Q4
- oFwfalG+UezCyGWHlnU8PkvleMFhCQL7xbbz+4xjdAPxTb6DYX+TcfpD8EBGoW9Nw3sY
- 7QHi76S7vmn6ZEVhj3C8M9gLDUKe4l75/4/sXVkA8/qOiLeFS39SLfxfA8PgKE0d2OaD
- vNBNX1nTP6QXqEVN/BTt54TljdA5E/fMRgyi4lusXBi22oM8XtHOGg+vAZ2HkOfYNVnq
- SVrxDLXOmqYYzDc5eVR/I+WRfluzCVculJilwQ0srj1Z3vAaCBOsbWupIWUhcRjTHgs7
- BmPg==
-X-Gm-Message-State: AOJu0Yy4lC36GSOtL1fqTjc/pRCIFw4fSySePI1yLIZjfL/R6l1iJeey
- P2/4SqU3/amVO0W1jvG0RatiP/5pWT2QrH/jTcl4IQ7wPM3anUa7m0loEfUEiNeORSUjeHSNrA8
- 2
-X-Google-Smtp-Source: AGHT+IFOfNiYrNmobatReAw0ULuW1hKCIhApIbEgmXU7B5i9gurHKy8t1YI/+quUBvUSSqpEB8Vmtg==
-X-Received: by 2002:adf:f88e:0:b0:337:d649:da70 with SMTP id
- u14-20020adff88e000000b00337d649da70mr834366wrp.138.1706279637863; 
- Fri, 26 Jan 2024 06:33:57 -0800 (PST)
+ bh=C5S28rdH5ZOgcnO36OWOW5DPAS8PCmcDgoLOzpGvQH0=;
+ b=l1Zfcr+w40aQF0z4Shl73bTL1301rL/qEwu2cTpWoQ/0GOdxvI+hJFSCzDwVgq0vnX
+ 8R0sBbbkzzZ/sdVCIsyUvB/1Uy8t6YuUClPqGbAUhBLaxQEK37WnXffLfr4NKSC8TYA3
+ w8lwQfztCLZaYpbAA62h9xClm/2RHkR8BVZPS9+7a5oSGzSa1md46utNgFfaa9rn7u9v
+ 0rPdWu5Q54sokkYWXz+QdtfNP7kcou19iTWuua30IQe328J5ymztjMITkhhCRL8ORkBx
+ uX1MFjHx5fUxyDm+uAQhy9EWAd/j00GUgTtU4VlfrBrOlOtFU2t+JlZgqjrq9OxnYa+Y
+ qYjA==
+X-Gm-Message-State: AOJu0YyY5bEypoX/LbMpeQrA35K3SZr4FiEEzAgQnrzYYwG8Ta1Kf4NL
+ TBxDxjZr0SpLlMhM8Edp0fLsO4IcEwXGfgmqkGqYbLZBJAlMKLheya9d5jrUkQrlZ/aZxlfaUhF
+ g
+X-Google-Smtp-Source: AGHT+IFHfcslRv6yflytRnCHgtutM2iAyDyWyfUpzvJOzYoWtDOD5yvb4pFTxs7dwV/MddQjv5QG1g==
+X-Received: by 2002:a5d:4ac4:0:b0:333:a28:bfc5 with SMTP id
+ y4-20020a5d4ac4000000b003330a28bfc5mr1401960wrs.70.1706279638409; 
+ Fri, 26 Jan 2024 06:33:58 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 06:33:57 -0800 (PST)
+ Fri, 26 Jan 2024 06:33:58 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 34/36] bswap.h: Fix const_le64() macro
-Date: Fri, 26 Jan 2024 14:33:39 +0000
-Message-Id: <20240126143341.2101237-35-peter.maydell@linaro.org>
+Subject: [PULL 35/36] target/arm: Fix incorrect aa64_tidcp1 feature check
+Date: Fri, 26 Jan 2024 14:33:40 +0000
+Message-Id: <20240126143341.2101237-36-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,76 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The const_le64() macro introduced in commit 845d80a8c7b187 turns out
-to have a bug which means that on big-endian systems the compiler
-complains if the argument isn't already a 64-bit type. This hasn't
-caused a problem yet, because there are no in-tree uses, but it
-means it's not possible for anybody to add one without it failing CI.
+A typo in the implementation of isar_feature_aa64_tidcp1() means we
+were checking the field in the wrong ID register, so we might have
+provided the feature on CPUs that don't have it and not provided
+it on CPUs that should have it. Correct this bug.
 
-This example is from an attempted use of it with the argument '0',
-from the s390 CI runner's gcc:
-
-../block/blklogwrites.c: In function ‘blk_log_writes_co_do_log’:
-../include/qemu/bswap.h:148:36: error: left shift count >= width of
-type [-Werror=shift-count-overflow]
-148 | ((((_x) & 0x00000000000000ffU) << 56) | \
-| ^~
-../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
-409 | .nr_entries = const_le64(0),
-| ^~~~~~~~~~
-../include/qemu/bswap.h:149:36: error: left shift count >= width of
-type [-Werror=shift-count-overflow]
-149 | (((_x) & 0x000000000000ff00U) << 40) | \
-| ^~
-../block/blklogwrites.c:409:27: note: in expansion of macro ‘const_le64’
-409 | .nr_entries = const_le64(0),
-| ^~~~~~~~~~
-cc1: all warnings being treated as errors
-
-Fix this by making all the constants in the macro have the ULL
-suffix.  This will cause them all to be 64-bit integers, which means
-the result of the logical & will also be an unsigned 64-bit type,
-even if the input to the macro is a smaller type, and so the shifts
-will be in range.
-
-Fixes: 845d80a8c7b187 ("qemu/bswap: Add const_le64()")
+Cc: qemu-stable@nongnu.org
+Fixes: 9cd0c0dec97be9 "target/arm: Implement FEAT_TIDCP1"
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2120
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Message-id: 20240122173735.472951-1-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240123160333.958841-1-peter.maydell@linaro.org
 ---
- include/qemu/bswap.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/arm/cpu-features.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/qemu/bswap.h b/include/qemu/bswap.h
-index 933a66ee87e..bd67468e5e4 100644
---- a/include/qemu/bswap.h
-+++ b/include/qemu/bswap.h
-@@ -145,14 +145,14 @@ CPU_CONVERT(le, 64, uint64_t)
-  */
- #if HOST_BIG_ENDIAN
- # define const_le64(_x)                          \
--    ((((_x) & 0x00000000000000ffU) << 56) |      \
--     (((_x) & 0x000000000000ff00U) << 40) |      \
--     (((_x) & 0x0000000000ff0000U) << 24) |      \
--     (((_x) & 0x00000000ff000000U) <<  8) |      \
--     (((_x) & 0x000000ff00000000U) >>  8) |      \
--     (((_x) & 0x0000ff0000000000U) >> 24) |      \
--     (((_x) & 0x00ff000000000000U) >> 40) |      \
--     (((_x) & 0xff00000000000000U) >> 56))
-+    ((((_x) & 0x00000000000000ffULL) << 56) |    \
-+     (((_x) & 0x000000000000ff00ULL) << 40) |    \
-+     (((_x) & 0x0000000000ff0000ULL) << 24) |    \
-+     (((_x) & 0x00000000ff000000ULL) <<  8) |    \
-+     (((_x) & 0x000000ff00000000ULL) >>  8) |    \
-+     (((_x) & 0x0000ff0000000000ULL) >> 24) |    \
-+     (((_x) & 0x00ff000000000000ULL) >> 40) |    \
-+     (((_x) & 0xff00000000000000ULL) >> 56))
- # define const_le32(_x)                          \
-     ((((_x) & 0x000000ffU) << 24) |              \
-      (((_x) & 0x0000ff00U) <<  8) |              \
+diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
+index 028795ff23f..7567854db63 100644
+--- a/target/arm/cpu-features.h
++++ b/target/arm/cpu-features.h
+@@ -773,7 +773,7 @@ static inline bool isar_feature_aa64_hcx(const ARMISARegisters *id)
+ 
+ static inline bool isar_feature_aa64_tidcp1(const ARMISARegisters *id)
+ {
+-    return FIELD_EX64(id->id_aa64mmfr2, ID_AA64MMFR1, TIDCP1) != 0;
++    return FIELD_EX64(id->id_aa64mmfr1, ID_AA64MMFR1, TIDCP1) != 0;
+ }
+ 
+ static inline bool isar_feature_aa64_hafs(const ARMISARegisters *id)
 -- 
 2.34.1
 
