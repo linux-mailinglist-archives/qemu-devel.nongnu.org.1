@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D37A83DC34
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF13583DC3D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:38:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHD-0002Er-4I; Fri, 26 Jan 2024 09:33:51 -0500
+	id 1rTNHD-0002Es-11; Fri, 26 Jan 2024 09:33:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHA-0002Dg-8m
+ id 1rTNHA-0002E2-PQ
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:48 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH8-0007rh-AP
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:47 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-339208f5105so571829f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:45 -0800 (PST)
+ id 1rTNH8-0007rm-Fo
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:48 -0500
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3394b892691so284537f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279624; x=1706884424; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279625; x=1706884425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ul4GmzC0vbtgvuz9Q5o0fiW1gb75AZUpep615Cah9j8=;
- b=dik3LNKts1pbzovz2Jfmig3A3qg6U6X28L49TGqAr6A81o0TTfWwiH0SqD/EZsCZv4
- ANksVjGsQLsQP2egxSsX5O9QNcQCKoK8LmlgXy9m8L+6y26WPIUujqIyXiBeNuSIwGMo
- cgpGyC6yiC/HgboV9lnnF6CObp/sWlYSD3HfGZWSruluP+6YLTirVM48PHdggYsvv13u
- 8Glz0FlqnLuSvY0icQdWiGtMqo2xJkPNMcRNuPNWl1fLWZ6e0rNWzXBN+mkZe7Rlg1d7
- SYse1ndym0pOXtTrzMDUGbKOyr1AbbsbwTCVcin9giwoZxeeXfQ0xrVrAPKVhPSRVHOw
- Y9ZQ==
+ :reply-to; bh=Vu5+mTBX8rW6qLHNzt1OhoCL6zzW3Ic3LDbMk8svH4c=;
+ b=xLV76L0ZlCnlIIn2vYMAbdPAU2eF3kQEIxSVQtrT4MImawa8urMkhxLDQiZZ0X2J5J
+ F62xto0ZJBEKeKIrjVz/FjwrgjQozSc2J6Fn2cQbcGR3pG4B5xu11GVFLVORrt2vANo9
+ mxu2IoMXs3QPRt02DxlYMaJkXJ/q7nnojjNSWK1xoQ7LVNYkpWs1gXVL/SjALhK9rKnR
+ qyHGqpMZ6hfLQdvS3FDgJGI84CI1M7A68h5QhEUYPh/LdGWzRqY8pzM9nnqI4q/Y4hqE
+ j8pIl6JTahfhewSfj2xcRc16kYRMSp/eDyTwhKzFYmOFfqE+2XYQRr2VuKWompzfZ3st
+ nzbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279624; x=1706884424;
+ d=1e100.net; s=20230601; t=1706279625; x=1706884425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ul4GmzC0vbtgvuz9Q5o0fiW1gb75AZUpep615Cah9j8=;
- b=Py39lWFc1oReNzvHNdRXUA6zE6Mgv6rsxuPH47tqK043/utPYY8YSae5W1qenTBOeJ
- Q4CXRJsKspgRaY2GOtwruBWDufwttOWNG117Bj9J7737WqOe1vtp1qAENC8kfznVURbK
- Ao8kFzO9cWPyHt8q3RDop5hpfvO8WpQlZOC099mhBoQyW7oZkxuwIEMvuXs6pjcb64AG
- hnuWPCef86eKzyFfyypl0iBDy6Cj7SlM2sGgSoS2+N1XYb1Tp+YrgIzKB6LeyXZP4hmO
- eWlQ9UrslGubJggPmg2w6CmFF+378QJLYxrr8j/loDHY64PS05dJwkLwECv/JgQVZZOK
- eJcQ==
-X-Gm-Message-State: AOJu0YzM0ETP21O2/yExfGZVrZgFwDEHm9wz9Bok9PEGl+cSkMYSXXxc
- cjRB8JP6Spyz3OIIH0QDIEgpPnhw6II7AhSLrJKpE55ztAjGFbjf2StFkcW6KIVOVCMNlF8OQDq
- a
-X-Google-Smtp-Source: AGHT+IHGS6q0AE2aKgPC9AuhhQ1kq31o1d5Y7N1/ZPkDDigp8xpiNzkzyJ00v8kfp/ZdMPpNsmJ1Sw==
-X-Received: by 2002:adf:e889:0:b0:337:c829:9838 with SMTP id
- d9-20020adfe889000000b00337c8299838mr744340wrm.69.1706279624730; 
- Fri, 26 Jan 2024 06:33:44 -0800 (PST)
+ bh=Vu5+mTBX8rW6qLHNzt1OhoCL6zzW3Ic3LDbMk8svH4c=;
+ b=ianeDiFhm19f06b9GlP0CEItMEpGLCS/PHSyQlG8AdnKjZ0X+s5SNMj6ux9kOCQzCB
+ mH19R0LlOd/bt5mpT49ppdCVzStqUQ1wcYTYGWi0yx1u3oFnE5PzYE7D5sdfonfMghmt
+ A0Q86DsNQK34ctFNX/GGa+eB62mgdzgC+3ok6vXuIAJ4YP71l/EMck1aDCNpTJuJdMSO
+ LiYeLROSF8Zl9XHMrcaIGW0RsQ0bqWD6BFAaM7X03VBnjG4E1xpiKk5mJnZFlDuoa6zQ
+ 4OTLbNXopEOOv/Ui2mkK8r8MPs5M2mlE37/HUm8Dl3hzWouuBGSn2sPlOxCadQLRXQ4y
+ zlvw==
+X-Gm-Message-State: AOJu0YywbZJDg9h5dHhJXb7TqSgb7V8TdFGjsmtXI74AOxy/MRKlilnU
+ jKf/vFFikQu3SME+cJPMV5+E0y4GcFCv4ADhoHl6QLVHLqhIVygTyangx6tT6/gOvBT504TltAS
+ F
+X-Google-Smtp-Source: AGHT+IGSpBAopCijh62thggyhIvqVDqZbQVke8A9WRn+bhR7trijqZ1bHS7S8gHtUgnlfG/v83w62Q==
+X-Received: by 2002:a5d:5748:0:b0:337:b74b:6f1f with SMTP id
+ q8-20020a5d5748000000b00337b74b6f1fmr582892wrw.22.1706279625123; 
+ Fri, 26 Jan 2024 06:33:45 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.44
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:44 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/36] hw/arm/allwinner-a10: Unconditionally map the USB Host
- controllers
-Date: Fri, 26 Jan 2024 14:33:10 +0000
-Message-Id: <20240126143341.2101237-6-peter.maydell@linaro.org>
+Subject: [PULL 06/36] hw/arm/nseries: Unconditionally map the TUSB6010 USB
+ Host controller
+Date: Fri, 26 Jan 2024 14:33:11 +0000
+Message-Id: <20240126143341.2101237-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,92 +95,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The USB Controllers are part of the chipset, thus are
-always present and mapped in memory.
+The TUSB6010 USB controller is soldered on the N800 and N810
+tablets, thus is always present.
 
-This is a migration compatibility break for the cubieboard
-machine started with the '-usb none' option.
+This is a migration compatibility break for the n800/n810
+machines started with the '-usb none' option.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-id: 20240119215106.45776-2-philmd@linaro.org
+Message-id: 20240119215106.45776-3-philmd@linaro.org
+[PMM: fixed commit message typo]
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/allwinner-a10.c | 49 +++++++++++++++++-------------------------
- 1 file changed, 20 insertions(+), 29 deletions(-)
+ hw/arm/nseries.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/arm/allwinner-a10.c b/hw/arm/allwinner-a10.c
-index b0ea3f7f662..0135632996c 100644
---- a/hw/arm/allwinner-a10.c
-+++ b/hw/arm/allwinner-a10.c
-@@ -79,15 +79,10 @@ static void aw_a10_init(Object *obj)
+diff --git a/hw/arm/nseries.c b/hw/arm/nseries.c
+index 35aff46b4b4..35deb74f655 100644
+--- a/hw/arm/nseries.c
++++ b/hw/arm/nseries.c
+@@ -1353,9 +1353,7 @@ static void n8x0_init(MachineState *machine,
+     n8x0_spi_setup(s);
+     n8x0_dss_setup(s);
+     n8x0_cbus_setup(s);
+-    if (machine_usb(machine)) {
+-        n8x0_usb_setup(s);
+-    }
++    n8x0_usb_setup(s);
  
-     object_initialize_child(obj, "i2c0", &s->i2c0, TYPE_AW_I2C);
- 
--    if (machine_usb(current_machine)) {
--        int i;
--
--        for (i = 0; i < AW_A10_NUM_USB; i++) {
--            object_initialize_child(obj, "ehci[*]", &s->ehci[i],
--                                    TYPE_PLATFORM_EHCI);
--            object_initialize_child(obj, "ohci[*]", &s->ohci[i],
--                                    TYPE_SYSBUS_OHCI);
--        }
-+    for (size_t i = 0; i < AW_A10_NUM_USB; i++) {
-+        object_initialize_child(obj, "ehci[*]", &s->ehci[i],
-+                                TYPE_PLATFORM_EHCI);
-+        object_initialize_child(obj, "ohci[*]", &s->ohci[i], TYPE_SYSBUS_OHCI);
-     }
- 
-     object_initialize_child(obj, "mmc0", &s->mmc0, TYPE_AW_SDHOST_SUN4I);
-@@ -165,28 +160,24 @@ static void aw_a10_realize(DeviceState *dev, Error **errp)
-                    qdev_get_gpio_in(dev, 1),
-                    115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
- 
--    if (machine_usb(current_machine)) {
--        int i;
-+    for (size_t i = 0; i < AW_A10_NUM_USB; i++) {
-+        g_autofree char *bus = g_strdup_printf("usb-bus.%zu", i);
- 
--        for (i = 0; i < AW_A10_NUM_USB; i++) {
--            g_autofree char *bus = g_strdup_printf("usb-bus.%d", i);
-+        object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
-+                                 true, &error_fatal);
-+        sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
-+                        AW_A10_EHCI_BASE + i * 0x8000);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
-+                           qdev_get_gpio_in(dev, 39 + i));
- 
--            object_property_set_bool(OBJECT(&s->ehci[i]), "companion-enable",
--                                     true, &error_fatal);
--            sysbus_realize(SYS_BUS_DEVICE(&s->ehci[i]), &error_fatal);
--            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ehci[i]), 0,
--                            AW_A10_EHCI_BASE + i * 0x8000);
--            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ehci[i]), 0,
--                               qdev_get_gpio_in(dev, 39 + i));
--
--            object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
--                                    &error_fatal);
--            sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
--            sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
--                            AW_A10_OHCI_BASE + i * 0x8000);
--            sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
--                               qdev_get_gpio_in(dev, 64 + i));
--        }
-+        object_property_set_str(OBJECT(&s->ohci[i]), "masterbus", bus,
-+                                &error_fatal);
-+        sysbus_realize(SYS_BUS_DEVICE(&s->ohci[i]), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&s->ohci[i]), 0,
-+                        AW_A10_OHCI_BASE + i * 0x8000);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&s->ohci[i]), 0,
-+                           qdev_get_gpio_in(dev, 64 + i));
-     }
- 
-     /* SD/MMC */
+     if (machine->kernel_filename) {
+         /* Or at the linux loader.  */
 -- 
 2.34.1
 
