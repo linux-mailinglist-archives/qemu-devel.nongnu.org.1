@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F4283DC15
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2DE83DBF1
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:34:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHH-0002JP-Ar; Fri, 26 Jan 2024 09:33:55 -0500
+	id 1rTNHF-0002Hz-UR; Fri, 26 Jan 2024 09:33:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHC-0002F3-S9
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:50 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1rTNHD-0002F8-22
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:51 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHA-0007sr-QI
+ id 1rTNHB-0007t7-De
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:50 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-337cf4ac600so482313f8f.3
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:48 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3394dc75eadso451919f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279627; x=1706884427; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279628; x=1706884428; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fI0vqBKhfwteSfpqeytU8U01fv4ToN4htezLoldNdvs=;
- b=sNl3UFpT7Hf7+MNWSqplgSGAit1vVweNpPau2JOFP+e0u+Ji8qJX601wob+qPQPat+
- fe5FjMU2RTAAA5F4VsPh5QjUGAVd5nqFEKH89YnJJwfBF7IlHVejuHqe2VBXQhgqnxP1
- yj/gl4ajRwx19Pysv5zaFgOO/+TLL71/6A5V5K1NmoLU/UKXHdpJ/8YcDayD5+begkGk
- y2UzHH4VK/4CzfkQWdkICGLTf8ODJ+sjbSRl+JqA75w8dxULX0nm9aKwT8kICCBtJQu+
- GyjbKJJ8RKB5s7gJsCg0nyqCQc319xd8mz3TlFneH2dGbO3E+oGsC78kP+1FE3KOQeqD
- g1pQ==
+ :reply-to; bh=SayjVZreUIIZvwgWfW2preOvFMoE7PMcRfYHzIZ+5wg=;
+ b=AJ4+1TzMLsSYIAejsV+VIv9vMqf2ZvMb6Tz4ejpGJi29/RNJ4I67/oAMxFtx09C+eY
+ oAYF6ODr/oDbEqnBI/6sz7q8mvGjTP9Xu40MKb3qgDpc5ECk9wEDQKNCvSRHKcRywS/6
+ tHEmKHLl8FwhNe7bpnsVCQ3NZu7yeN3Hb0sCx9D1mMkiNyB44oSHvNSkDYyFBuk0KoVz
+ 4XgVH1m3U5CxHAAE1FCO8wILM022HVpacJkmd19nefPvt9vJRg42LDJyXV7yf6Q1sHXS
+ ski9BWrNPSKymCsEqa8/f3Xk8/TJhdWITBqthv5XM8o/W60lMhCArUHwST1jtw67845w
+ 34AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279627; x=1706884427;
+ d=1e100.net; s=20230601; t=1706279628; x=1706884428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fI0vqBKhfwteSfpqeytU8U01fv4ToN4htezLoldNdvs=;
- b=lapP21BIl3CQ6BCIc8Px9IqrRcGPsbCZf3PtXYE7EWnKHQo/4zauGurEM3ReCx1RTM
- d0qyeyM8xBh5d9ILkZeSb/rboGu9Bjr8cvpdp+20Q1SbmNMMjTPI+22/DgksDwfenTsW
- m6dHtLBJiFv3OYOF4vYjjLiNcAI21SdwcXHh5ze9Ie3uXe3zF0UYV6fRigAv2MQQkuAv
- FJslFXDFFYb2aTheC1WZiQs/pkvdh0ABFVI2dYkcASwxLcmt4tAMAceF6kpVCtlAzlXE
- rQASCzrktdPfSaurpvuDukYscCCAZ5US/VfNFM/l/w1joewR3493FtwpCeueezVDYIIy
- wSuA==
-X-Gm-Message-State: AOJu0YxD5RKwi5xrcnlxsDDwOSdwCPZ/xfN9ZYpRbNf6NwNj+W6FzSp4
- j06levVTNMVcH7tpYGWrog/E18xbGMSXLgzreVxo4Kl1wk9eXgENWP9xNGVk4ar1K9G+dCGWVp/
- g
-X-Google-Smtp-Source: AGHT+IGKMXqE4/LQMu87xBGIIHTlmQBVHx0bcptNPN7l4/BMpSzyxPN81AGiXxFmJeQKcEk9O2nsmQ==
-X-Received: by 2002:adf:f54c:0:b0:337:bf75:1a3e with SMTP id
- j12-20020adff54c000000b00337bf751a3emr1124667wrp.37.1706279627552; 
+ bh=SayjVZreUIIZvwgWfW2preOvFMoE7PMcRfYHzIZ+5wg=;
+ b=Y1ePOvkYK9VY9xyHFZfvpfVPQOPmLTqbv3fQIB1Jei50Zp7z0b4eEG6N/CeYc76AK0
+ BCLweqqxNW3U1QLZa2llTGDsgxFn7umLFKTM7pa2UNLMHFbal8NrxD+GwmKSZzpBSLja
+ PiwOQDvVWOINpGDN+3cSK+IFquuRB3DxW5VbPla/4/lQtpkrF/xEc/6WHZgiOFfoAgFy
+ 4DN+yr/xC65zbnubstK8y0sMVmTRABuzF59KDHgCViEJ8uPDUAVZvtjzBkzvCeiNhx6t
+ NjmWITAAYXs6h+PI6mlGZnGR905O3VjZNmz6YXwHvPSB+Wzyo2okdWdEMfUIn4HAzqqo
+ tyCA==
+X-Gm-Message-State: AOJu0Yy7ESb/MJLVf6/Qg/9A76Bolq9b+dyJCYect9Y5NpRSTa8wnLJl
+ yF6LrDHFup/ly6CayE3TCcvSyXW2kBX0MHliHSxLBRLdSObeOTrn+48zWtLqH0esCZAKHVyBUAi
+ j
+X-Google-Smtp-Source: AGHT+IH38csVYwjKhtQbIj15R9ZNILBM9iRhfOcaZr5ANC3f2NvcK/INsCNOYmibZDQojnTVsrawqg==
+X-Received: by 2002:adf:a199:0:b0:337:cab8:b7e1 with SMTP id
+ u25-20020adfa199000000b00337cab8b7e1mr1028565wru.81.1706279627975; 
  Fri, 26 Jan 2024 06:33:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/36] hw/arm/smmuv3: Include missing 'hw/registerfields.h'
- header
-Date: Fri, 26 Jan 2024 14:33:17 +0000
-Message-Id: <20240126143341.2101237-13-peter.maydell@linaro.org>
+Subject: [PULL 13/36] hw/arm/xlnx-versal: Include missing 'cpu.h' header
+Date: Fri, 26 Jan 2024 14:33:18 +0000
+Message-Id: <20240126143341.2101237-14-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,38 +94,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-hw/arm/smmuv3-internal.h uses the REG32() and FIELD()
-macros defined in "hw/registerfields.h". Include it in
+include/hw/arm/xlnx-versal.h uses the ARMCPU structure which
+is defined in the "target/arm/cpu.h" header. Include it in
 order to avoid when refactoring unrelated headers:
 
-  In file included from ../../hw/arm/smmuv3.c:34:
-  hw/arm/smmuv3-internal.h:36:28: error: expected identifier
-  REG32(IDR0,                0x0)
-                             ^
-  hw/arm/smmuv3-internal.h:37:5: error: expected function body after function declarator
-      FIELD(IDR0, S2P,         0 , 1)
-      ^
+  In file included from hw/arm/xlnx-versal-virt.c:20:
+  include/hw/arm/xlnx-versal.h:62:23: error: array has incomplete element type 'ARMCPU' (aka 'struct ArchCPU')
+              ARMCPU cpu[XLNX_VERSAL_NR_ACPUS];
+                        ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-4-philmd@linaro.org
+Message-id: 20240118200643.29037-5-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/smmuv3-internal.h | 1 +
+ include/hw/arm/xlnx-versal.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index 6076025ad6a..e987bc4686b 100644
---- a/hw/arm/smmuv3-internal.h
-+++ b/hw/arm/smmuv3-internal.h
-@@ -21,6 +21,7 @@
- #ifndef HW_ARM_SMMUV3_INTERNAL_H
- #define HW_ARM_SMMUV3_INTERNAL_H
+diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
+index b24fa64557f..025beb5532d 100644
+--- a/include/hw/arm/xlnx-versal.h
++++ b/include/hw/arm/xlnx-versal.h
+@@ -34,6 +34,7 @@
+ #include "hw/net/xlnx-versal-canfd.h"
+ #include "hw/misc/xlnx-versal-cfu.h"
+ #include "hw/misc/xlnx-versal-cframe-reg.h"
++#include "target/arm/cpu.h"
  
-+#include "hw/registerfields.h"
- #include "hw/arm/smmu-common.h"
- 
- typedef enum SMMUTranslationStatus {
+ #define TYPE_XLNX_VERSAL "xlnx-versal"
+ OBJECT_DECLARE_SIMPLE_TYPE(Versal, XLNX_VERSAL)
 -- 
 2.34.1
 
