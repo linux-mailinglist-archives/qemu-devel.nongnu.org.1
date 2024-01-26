@@ -2,65 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF2083D9FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 13:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051BD83DA08
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 13:17:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTL2B-00039n-FP; Fri, 26 Jan 2024 07:10:11 -0500
+	id 1rTL8W-0004VI-Tm; Fri, 26 Jan 2024 07:16:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTL27-00030R-Pb
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 07:10:07 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ (Exim 4.90_1) (envelope-from <SRS0=5gEp=JE=kaod.org=clg@ozlabs.org>)
+ id 1rTL8P-0004UW-52; Fri, 26 Jan 2024 07:16:37 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rTL25-0003PB-Ls
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 07:10:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=mN8ugIZEICUexKp7khxtEvNFLbmj8I2/TvCDR+ptJso=; b=vaTd8oWIe56TivuUCnI/UlrF4g
- NfHrrakCSadMOn4ir6kMG+6BZFPAWDAfA1VoM5SxdU4yVD/Ie/+8aaG7lWCiQ/hZTsbuNPhwYDS4O
- AXhtabFqV3jHM61gCZXgB5xbg2yAEz44IF8YXjR4dw0SBi4FPAfQAzQTmSJv3Wv7IGpSVQht3p8SJ
- u4/6JwUsPa6csHzwO8p4JOOF1q3vtdg4MdogzXLipizv35bSVvDtl1aiVUOVbCxzYe8lveloSrpOR
- cEfyRhi0pI0t38xUqqnSh2pDeqkfFxxNH/GOU1tmVnUJ2ufTKuPOm7OasoIKbxeWdActeAmG2DXr8
- 69tTDqhw==;
-Received: from [2001:8b0:10b:5:66db:af88:1954:1e3]
- (helo=u3832b3a9db3152.ant.amazon.com)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTL22-0000000DXsj-32f0; Fri, 26 Jan 2024 12:10:04 +0000
-Message-ID: <68a78ef60be8f84540581b0eaf11daf0bd6a1248.camel@infradead.org>
-Subject: Re: [PATCH] hw/timer/hpet: fix IRQ routing in legacy support mode
-From: David Woodhouse <dwmw2@infradead.org>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>
-Date: Fri, 26 Jan 2024 12:10:03 +0000
-In-Reply-To: <20231019000033.64684-1-dwmw2@infradead.org>
-References: <20231019000033.64684-1-dwmw2@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-8Sc3gNrJa5UpbwiDHc8T"
-User-Agent: Evolution 3.44.4-0ubuntu2 
+ (Exim 4.90_1) (envelope-from <SRS0=5gEp=JE=kaod.org=clg@ozlabs.org>)
+ id 1rTL8L-00053L-Hu; Fri, 26 Jan 2024 07:16:36 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TLxWG3KJ0z4wd4;
+ Fri, 26 Jan 2024 23:16:26 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TLxW51TKHz4wd0;
+ Fri, 26 Jan 2024 23:16:16 +1100 (AEDT)
+Message-ID: <9d1368b2-b163-4fd7-90e6-c87a3e643bbc@kaod.org>
+Date: Fri, 26 Jan 2024 13:16:07 +0100
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 10/11] hw/fsi: Added FSI documentation
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20240126104956.74126-1-ninad@linux.ibm.com>
+ <20240126104956.74126-11-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240126104956.74126-11-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=5gEp=JE=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,138 +68,177 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 1/26/24 11:49, Ninad Palsule wrote:
+> Documentation for IBM FSI model.
+> 
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> ---
+> v11:
+>    - Removed Cedric's signoff.
+> ---
+>   docs/specs/fsi.rst   | 126 +++++++++++++++++++++++++++++++++++++++++++
+>   docs/specs/index.rst |   1 +
+>   2 files changed, 127 insertions(+)
+>   create mode 100644 docs/specs/fsi.rst
+> 
+> diff --git a/docs/specs/fsi.rst b/docs/specs/fsi.rst
+> new file mode 100644
+> index 0000000000..b33b4d565c
+> --- /dev/null
+> +++ b/docs/specs/fsi.rst
+> @@ -0,0 +1,126 @@
+> +======================================
+> +IBM's Flexible Service Interface (FSI)
+> +======================================
+> +
+> +The QEMU FSI emulation implements hardware interfaces between ASPEED SOC, FSI
+> +master/slave and the end engine.
+> +
+> +FSI is a point-to-point two wire interface which is capable of supporting
+> +distances of up to 4 meters. FSI interfaces have been used successfully for
+> +many years in IBM servers to attach IBM Flexible Support Processors(FSP) to
+> +CPUs and IBM ASICs.
+> +
+> +FSI allows a service processor access to the internal buses of a host POWER
+> +processor to perform configuration or debugging. FSI has long existed in POWER
+> +processes and so comes with some baggage, including how it has been integrated
+> +into the ASPEED SoC.
+> +
+> +Working backwards from the POWER processor, the fundamental pieces of interest
+> +for the implementation are: (see the `FSI specification`_ for more details)
+> +
+> +1. The Common FRU Access Macro (CFAM), an address space containing various
+> +   "engines" that drive accesses on buses internal and external to the POWER
+> +   chip. Examples include the SBEFIFO and I2C masters. The engines hang off of
+> +   an internal Local Bus (LBUS) which is described by the CFAM configuration
+> +   block.
+> +
+> +2. The FSI slave: The slave is the terminal point of the FSI bus for FSI
+> +   symbols addressed to it. Slaves can be cascaded off of one another. The
+> +   slave's configuration registers appear in address space of the CFAM to
+> +   which it is attached.
+> +
+> +3. The FSI master: A controller in the platform service processor (e.g. BMC)
+> +   driving CFAM engine accesses into the POWER chip. At the hardware level
+> +   FSI is a bit-based protocol supporting synchronous and DMA-driven accesses
+> +   of engines in a CFAM.
+> +
+> +4. The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in POWER
+> +   processors. This now makes an appearance in the ASPEED SoC due to tight
+> +   integration of the FSI master IP with the OPB, mainly the existence of an
+> +   MMIO-mapping of the CFAM address straight onto a sub-region of the OPB
+> +   address space.
+> +
+> +5. An APB-to-OPB bridge enabling access to the OPB from the ARM core in the
+> +   AST2600. Hardware limitations prevent the OPB from being directly mapped
+> +   into APB, so all accesses are indirect through the bridge.
+> +
+> +The LBUS is modelled to maintain the qdev bus hierarchy and to take advantages
+> +of the object model to automatically generate the CFAM configuration block.
+> +The configuration block presents engines in the order they are attached to the
+> +CFAM's LBUS. Engine implementations should subclass the LBusDevice and set the
+> +'config' member of LBusDeviceClass to match the engine's type.
+> +
+> +CFAM designs offer a lot of flexibility, for instance it is possible for a
+> +CFAM to be simultaneously driven from multiple FSI links. The modeling is not
+> +so complete; it's assumed that each CFAM is attached to a single FSI slave (as
+> +a consequence the CFAM subclasses the FSI slave).
+> +
+> +As for FSI, its symbols and wire-protocol are not modelled at all. This is not
+> +necessary to get FSI off the ground thanks to the mapping of the CFAM address
+> +space onto the OPB address space - the models follow this directly and map the
+> +CFAM memory region into the OPB's memory region.
+> +
+> +QEMU files related to FSI interface are in following directories:
+> + - ``hw/fsi``
+> + - ``include/hw/fsi``
 
---=-8Sc3gNrJa5UpbwiDHc8T
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is not useful.
 
-On Thu, 2023-10-19 at 01:00 +0100, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> The interrupt from timer 0 in legacy mode is supposed to go to IRQ 0 on
-> the i8259 and IRQ 2 on the I/O APIC. The generic x86 GSI handling can't
-> cope with IRQ numbers differing between the two chips (despite it also
-> being the case for PCI INTx routing), so add a special case for the HPET.
->=20
-> IRQ 2 isn't valid on the i8259; it's the cascade IRQ and would be
-> interpreted as spurious interrupt on the secondary PIC. So we can fix
-> up all attempts to deliver IRQ2, to actually deliver to IRQ0 on the PIC.
->=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> +The following commands start the ``rainier-bmc`` machine with built-in FSI
+> +model. There are no model specific arguments. Please check this document to
+> +learn more about Aspeed ``rainier-bmc`` machine: docs/system/arm/aspeed.rst
 
-Ping?
+This should be :  (:doc:`../../system/arm/aspeed`)
 
---=-8Sc3gNrJa5UpbwiDHc8T
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+I will fix it.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwMTI2MTIxMDAzWjAvBgkqhkiG9w0BCQQxIgQgPWAg4m0F
-B5EBOCAXsF/F+YCRAfzo08m6dWv9ohrA37owgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBBPbngdTqvNhdp/6dOYd4AHav95aGVXfdt
-7iOymrxoZs/9srOYj7cGCkBptA6ef2RB5c5h3T2CHNx0p4gfIsWQURxINqt4NR0kryxNmC1sp/Tm
-ZMZviYrJLBBYa9Mgjba3n6HGL/9XcREIaRIbUQtlOsvIdlp1HyPXdxk9fQvmwhsk4Atu/OhccKPK
-yPRAy4Lrak9Kjm6gZkbtymZD8f/XnnkrugTL/4LOXJhGTtk742KiEqnq5YbRxUdFImlJjvGk6ZPj
-DjpIQThHCD4yOJRvhMOZlSiRPNvmd1W7V+KXxl2FqICdrThxPjL23YNYrlhj8cTpwDvuCMP16TXp
-jEumv8hE/0uhAqDMCNPboc7eig6m2MyFYUguA6myIvg71ypnShm/jumqcgAkWm7JIlhlZPTM3kef
-tjb5wNFSbnWU3VftN0zDrYtAItVjz0a1SWHx+V3W8rUnkqooyut1JPQ6fj6QK0cp0uiyeEASk2Ot
-iy7SR+Q85dC7MNJm+R30P3XNEjReRLMw7ZrvkcLmKF5PvJmMpI6tjeDDFSOXDHC4WLEs1ZTk6EL4
-omDSOclo0MZV/rjN3CAd/XAJm7Hx9uPIawHM0csHcCsFWg9EFOZAxRVwLqxlC8pHRAW9mG0SVmKa
-aXmsSR3KnH87MYCYPByielzo1b3Sap91UM80Fk9GAwAAAAAAAA==
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
 
 
---=-8Sc3gNrJa5UpbwiDHc8T--
+
+> +
+> +.. code-block:: console
+> +
+> +  qemu-system-arm -M rainier-bmc -nographic \
+> +  -kernel fitImage-linux.bin \
+> +  -dtb aspeed-bmc-ibm-rainier.dtb \
+> +  -initrd obmc-phosphor-initramfs.rootfs.cpio.xz \
+> +  -drive file=obmc-phosphor-image.rootfs.wic.qcow2,if=sd,index=2 \
+> +  -append "rootwait console=ttyS4,115200n8 root=PARTLABEL=rofs-a"
+> +
+> +The implementation appears as following in the qemu device tree:
+> +
+> +.. code-block:: console
+> +
+> +  (qemu) info qtree
+> +  bus: main-system-bus
+> +    type System
+> +    ...
+> +    dev: aspeed.apb2opb, id ""
+> +      gpio-out "sysbus-irq" 1
+> +      mmio 000000001e79b000/0000000000001000
+> +      bus: opb.1
+> +        type opb
+> +        dev: fsi.master, id ""
+> +          bus: fsi.bus.1
+> +            type fsi.bus
+> +            dev: cfam.config, id ""
+> +            dev: cfam, id ""
+> +              bus: lbus.1
+> +                type lbus
+> +                dev: scratchpad, id ""
+> +                  address = 0 (0x0)
+> +      bus: opb.0
+> +        type opb
+> +        dev: fsi.master, id ""
+> +          bus: fsi.bus.0
+> +            type fsi.bus
+> +            dev: cfam.config, id ""
+> +            dev: cfam, id ""
+> +              bus: lbus.0
+> +                type lbus
+> +                dev: scratchpad, id ""
+> +                  address = 0 (0x0)
+> +
+> +pdbg is a simple application to allow debugging of the host POWER processors
+> +from the BMC. (see the `pdbg source repository`_ for more details)
+> +
+> +.. code-block:: console
+> +
+> +  root@p10bmc:~# pdbg -a getcfam 0x0
+> +  p0: 0x0 = 0xc0022d15
+> +
+> +.. _FSI specification:
+> +   https://openpowerfoundation.org/specifications/fsi/
+> +
+> +.. _pdbg source repository:
+> +   https://github.com/open-power/pdbg
+> diff --git a/docs/specs/index.rst b/docs/specs/index.rst
+> index b3f482b0aa..1484e3e760 100644
+> --- a/docs/specs/index.rst
+> +++ b/docs/specs/index.rst
+> @@ -24,6 +24,7 @@ guest hardware that is specific to QEMU.
+>      acpi_erst
+>      sev-guest-firmware
+>      fw_cfg
+> +   fsi
+>      vmw_pvscsi-spec
+>      edu
+>      ivshmem-spec
+
 
