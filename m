@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF0483E2AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 20:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CF083E37C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 21:50:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTRyY-0001XE-KI; Fri, 26 Jan 2024 14:34:54 -0500
+	id 1rTT8S-0001JP-JI; Fri, 26 Jan 2024 15:49:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTRyK-0001WC-As
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 14:34:42 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTRyG-0002ur-KC
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 14:34:38 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40e8d3b29f2so14933815e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 11:34:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706297674; x=1706902474; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0TeAfcJDcGJDZye+r/25zW/L60aexsAJdtgh4QaVcLo=;
- b=RKr+0W2xM2CiSxZZc1M55Rq2RMCfGYsNBWunBMbAA+ZQSXCeavRleGZRlgKRZeVGqF
- NnowFL0GK4ntrYk0hLVvTBggVWotbRg1R811Ov4DGqSsD0mjquNj4azQPbwFw3UJesFP
- AAjXzlr5BIwDlr6Vegdrr96GeERDxltYrDlF+avIqtvr6KLtRCIEVAQxYSTAv4cr43YW
- G9TTF6kfRj5bVi3+MCRqzXSIY6zqLjHapqaowwM0YRP4QwaiGIgqnbg7hUZBQThHmxnB
- W2zTDw1l8cV+rnsECKPRWKiHfRTibyh2plvSh61TepBSiOVCbwlm8bVjgfnXF32T/N0U
- 1pwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706297674; x=1706902474;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0TeAfcJDcGJDZye+r/25zW/L60aexsAJdtgh4QaVcLo=;
- b=N9IyNFx/1jhDXGNnCp2BRzgaJGfbdr600pLQUJU47obXSqBEFSffGL24aeTYgcnrpY
- aXWwARQF676l9mFZqfB6auhL5KEe3AEPt4QQkPd5f/yW7M/y8lcL+9mgksNhhKBwYamu
- BENLh53xaknx20hHBlnSDa9PFCNVRJ9FCINEWDKnfiOiRBGt0QSMKqfPsczCV0T2baYJ
- d+WZp7YtEwxUhatOu7YYbBwsIvRYez1DZZP5ZzQn6Q2+tNQzUT+Qk1O5CUKCwexLg+PI
- GE8VH1f1h6STzmjDkPsCGrejJ7bar0q5ig650N0T9WZqpnt4XTwZgjb/h0afVw0EX//M
- /NJw==
-X-Gm-Message-State: AOJu0YxFgPPVw4OJ96Sfwe4LhqPjceEpCaHTFGf2ROS6v89nKhOt8CH7
- 8X9Y/sGvQ25FY1mlff0dftmU4bSfNqnY6+jsEapLCzvM6MfxNXAO7B4LMx2bwsdmo+c1X1l9qAy
- T
-X-Google-Smtp-Source: AGHT+IFriJxCjxF0KOk7wRmQV5FOfeolE1kP+T7EyFR8L418XSTknqHo6ntX/+K9eiXK6Wts4VqmCg==
-X-Received: by 2002:a05:600c:ad4:b0:40e:44a9:c2be with SMTP id
- c20-20020a05600c0ad400b0040e44a9c2bemr164051wmr.201.1706297674529; 
- Fri, 26 Jan 2024 11:34:34 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- he9-20020a05600c540900b0040ed1df542bsm2676611wmb.20.2024.01.26.11.34.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 11:34:33 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] target/arm: Reinstate "vfp" property on AArch32 CPUs
-Date: Fri, 26 Jan 2024 19:34:32 +0000
-Message-Id: <20240126193432.2210558-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTT8R-0001JA-2g
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 15:49:11 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rTT8O-0001Qc-VL
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 15:49:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706302147;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+H9QhM33mS50VET8ZAmUJOqbMwvpJw7HJPJxCGLXW2k=;
+ b=D2Vix6Wmi7sP4Xb8jnQyQjJn7bFQkrFA12fhhnGbU2iGdJbtUDe5d4rjwLHDWfWSzvtFCt
+ AVFYFvcRvihzwhpD5B0XLex+UcxKJzesuqK1zp6C5QVsEsRNp3bi6l6vw3htQdfb2nAFWw
+ aiOqg0rX92vlcGyXM7597tYWUEeUbSM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-TDdwbg3CP3qrv7n3yeR9Tw-1; Fri,
+ 26 Jan 2024 15:49:03 -0500
+X-MC-Unique: TDdwbg3CP3qrv7n3yeR9Tw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6AB43C0F387;
+ Fri, 26 Jan 2024 20:49:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.123])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E6E6900;
+ Fri, 26 Jan 2024 20:49:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DF06721E66DA; Fri, 26 Jan 2024 21:49:00 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  David Gibson
+ <david@gibson.dropbear.id.au>,  Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,  qemu-ppc <qemu-ppc@nongnu.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>
+Subject: Re: spapr watchdog vs watchdog_perform_action() / QMP
+ watchdog-set-action
+In-Reply-To: <CAFEAcA_KjSgt-oC=d2m6WAdqoRsUcs1W_ji7Ng2fgVjxAWLZEw@mail.gmail.com>
+ (Peter Maydell's message of "Fri, 26 Jan 2024 15:23:44 +0000")
+References: <CAFEAcA_KjSgt-oC=d2m6WAdqoRsUcs1W_ji7Ng2fgVjxAWLZEw@mail.gmail.com>
+Date: Fri, 26 Jan 2024 21:49:00 +0100
+Message-ID: <87le8byg5f.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.313,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,38 +86,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 4315f7c614743 we restructured the logic for creating the
-VFP related properties to avoid testing the aa32_simd_r32 feature on
-AArch64 CPUs.  However in the process we accidentally stopped
-exposing the "vfp" QOM property on AArch32 TCG CPUs.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-This mostly hasn't had any ill effects because not many people want
-to disable VFP, but it wasn't intentional.  Reinstate the property.
+> Hi; one of the "bitesized tasks" we have listed is to convert
+> watchdog timers which directly call qemu_system_reset_request() on
+> watchdog timeout to call watchdog_perform_action() instead. This
+> means they honour the QMP commands that let the user specifiy
+> the behaviour on watchdog expiry:
+> https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#qapidoc-141
+> https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#qapidoc-129
+> (choices include reset, power off the system, do nothing, etc).
+>
+> There are only a few remaining watchdogs that don't use the
+> watchdog_perform_action() function. In most cases the change
+> is obvious and easy: just make them do that instead of calling
+> qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET).
+>
+> However, the hw/watchdog/spapr_watchdog.c case is trickier. As
+> far as I can tell from the sources, this is a watchdog set up via
+> a hypercall, and the guest makes a choice of "power off, restart,
+> or dump and restart" for its on-expiry action.
+>
+> What should this watchdog's interaction with the watchdog-set-action
+> QMP command be? If the user says "do X" and the guest says "do Y",
+> which do we do? (With the current code, we always honour what
+> the guest asks for and ignore what the user asks for.)
 
-Cc: qemu-stable@nongnu.org
-Fixes: 4315f7c614743 ("target/arm: Restructure has_vfp_d32 test")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2098
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- target/arm/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Gut reaction: when the user says "do X", the guest should not get a say.
+But one of the values of X could be "whatever the guest says".
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 593695b4247..2bed5987619 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1620,6 +1620,10 @@ void arm_cpu_post_init(Object *obj)
-         }
-     } else if (cpu_isar_feature(aa32_vfp, cpu)) {
-         cpu->has_vfp = true;
-+        if (tcg_enabled() || qtest_enabled()) {
-+            qdev_property_add_static(DEVICE(obj),
-+                                     &arm_cpu_has_vfp_property);
-+        }
-         if (cpu_isar_feature(aa32_simd_r32, cpu)) {
-             cpu->has_vfp_d32 = true;
-             /*
--- 
-2.34.1
+> (The bitesized task for watchdog_perform_action() is
+> https://gitlab.com/qemu-project/qemu/-/issues/2124 . For the
+> purposes of this email thread I'm only after a concrete decision
+> about what we think the right thing is, not for any code. Then
+> I can write that up in the bug for potential new contributors.)
+>
+> thanks
+> -- PMM
 
 
