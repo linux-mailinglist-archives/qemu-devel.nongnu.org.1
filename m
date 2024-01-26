@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE39283DA9E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5437B83DAE7
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 14:32:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTM6V-0003GK-Vw; Fri, 26 Jan 2024 08:18:44 -0500
+	id 1rTMIa-0000oV-KF; Fri, 26 Jan 2024 08:31:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rTM6N-0003EW-RP
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:18:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rTM6L-000413-9d
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:18:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706275111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FgUPFBhD4Y81DH+QhopsCurpAIOnn/5E43L6+jU8SEk=;
- b=C4DMpsqosx+pk7BAmal5wQixvIky145yseP2xDWxDC27Vbm78zxwtWNUginzM+Bd+4hVkF
- 9mCMGD4xfn32IX1d1w4HiKhGGMHomxEcyroIitwlp6OJ5jN1MZYpHThseetMnNOhQMW0AD
- GJZiQ3WK37gsEoMUUJM0cXKTLV27hto=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-5SaLOUdcPyWQSccqax8fFw-1; Fri, 26 Jan 2024 08:18:30 -0500
-X-MC-Unique: 5SaLOUdcPyWQSccqax8fFw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF136185A782;
- Fri, 26 Jan 2024 13:18:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.108])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 057CD492BC9;
- Fri, 26 Jan 2024 13:18:28 +0000 (UTC)
-Date: Fri, 26 Jan 2024 14:18:27 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PULL 11/33] scsi: only access SCSIDevice->requests from one
- thread
-Message-ID: <ZbOxI9Ar-YDn51Z0@redhat.com>
-References: <20231221212339.164439-1-kwolf@redhat.com>
- <20231221212339.164439-12-kwolf@redhat.com>
- <73e752b2-a037-4b10-a903-56fa6ad75c6e@redhat.com>
- <Za_zAj11uwavd2va@redhat.com>
- <08a66849-f190-4756-9b01-666f0d66afb6@redhat.com>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rTMIX-0000lU-Vu
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:10 -0500
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rTMIT-0007b8-K9
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 08:31:09 -0500
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2cf35e5c2ddso4474721fa.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 05:31:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1706275863; x=1706880663; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0nf21EKXMPkJM8ze3CVTUdJSzYvTzNLrOGzIKTot8cI=;
+ b=NGXOMCzhf7FnaY5lM1lGcQk4UUI9UplT7IeO8UhuTHGfaz4G7cgkPRgwwW0xxQHAea
+ k3KWp7tTEtx77i5M1blaD5Y1049FbKGWqAyCVW0zC6oNB33IBKKQefcVCsQNASmKYgsC
+ qbdSOeS+bL2gbVmgxV71rJLZww4XTd3vLIWaE9EsyroH+dUrw+sElz5GxdPv1ZORAUN2
+ MpvPXV/sOtJx3PEnb/oZFIfiszZ0oBFLN54bSGHCk/YpCETDbbweATi6J2mAuSZdGEXs
+ hNZsOLMBo65Bxy9hO9GnmmS+iWGAmSYiWhurevVd+TAVqQFLYETZAWMw6hm+LI6nMxvV
+ VjXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706275863; x=1706880663;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0nf21EKXMPkJM8ze3CVTUdJSzYvTzNLrOGzIKTot8cI=;
+ b=VeXHqDxj+yrt3nPomZ43lXjo5vCzmawNvKeYtBsas+waO1PChQ+jW/rnLeOsj8YFkQ
+ Pyb+lo5XUWkdp3MlQqn4WXOnbiED0br2y9hhKuyrC3BWIzrmAE6/GLqnigkUiGZRkbCq
+ B+Uz6A+HbtmBB2PwJ29DGAqVJ4gZeFkGkjLLhichwugey1izC6TOIy7EJ2wr72S8OJPS
+ KfAVqd5Muh41wTQwWqwy4sbjryfyGEwDQdjPTXfevNrNtklIhuKgj9cTZ06cBBt746iP
+ NBQwg2TcWq5AqTWxoa0ahh1h0mqhAm8BusA5Lb7bsrFg+69zZqgLf8k4Pnw0MQXuWLiN
+ 6usw==
+X-Gm-Message-State: AOJu0YzzUBZ2JB8Vy631GR7xthmuu78Stt+aYckwbj4Q0CNzQvHlVpRI
+ BqRdRXKEsdKW/vx1g+5jjIQwoBIzgILJ9wIcMt+AAFneLhA5ewE8rE1XI9C7VS0dl7etePOElcb
+ l
+X-Google-Smtp-Source: AGHT+IH/3nPvij2/Z40gkyapC2Sm2N7u2M9Oa9iv2pAw6MCBxnf//mzepqHY+RDHMUgFr+hI9qOnVw==
+X-Received: by 2002:a2e:b5c4:0:b0:2cc:fc52:df9e with SMTP id
+ g4-20020a2eb5c4000000b002ccfc52df9emr682130ljn.12.1706275863345; 
+ Fri, 26 Jan 2024 05:31:03 -0800 (PST)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ x16-20020aa7d390000000b0055c2b21be1dsm600205edq.35.2024.01.26.05.31.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Jan 2024 05:31:02 -0800 (PST)
+From: Andrew Jones <ajones@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ dbarboza@ventanamicro.com
+Subject: [PATCH v2 0/6] riscv: named features riscv,isa, 'svade' rework
+Date: Fri, 26 Jan 2024 14:31:02 +0100
+Message-ID: <20240126133101.61344-8-ajones@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <08a66849-f190-4756-9b01-666f0d66afb6@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.313,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,141 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 25.01.2024 um 18:32 hat Hanna Czenczek geschrieben:
-> On 23.01.24 18:10, Kevin Wolf wrote:
-> > Am 23.01.2024 um 17:40 hat Hanna Czenczek geschrieben:
-> > > On 21.12.23 22:23, Kevin Wolf wrote:
-> > > > From: Stefan Hajnoczi<stefanha@redhat.com>
-> > > > 
-> > > > Stop depending on the AioContext lock and instead access
-> > > > SCSIDevice->requests from only one thread at a time:
-> > > > - When the VM is running only the BlockBackend's AioContext may access
-> > > >     the requests list.
-> > > > - When the VM is stopped only the main loop may access the requests
-> > > >     list.
-> > > > 
-> > > > These constraints protect the requests list without the need for locking
-> > > > in the I/O code path.
-> > > > 
-> > > > Note that multiple IOThreads are not supported yet because the code
-> > > > assumes all SCSIRequests are executed from a single AioContext. Leave
-> > > > that as future work.
-> > > > 
-> > > > Signed-off-by: Stefan Hajnoczi<stefanha@redhat.com>
-> > > > Reviewed-by: Eric Blake<eblake@redhat.com>
-> > > > Message-ID:<20231204164259.1515217-2-stefanha@redhat.com>
-> > > > Signed-off-by: Kevin Wolf<kwolf@redhat.com>
-> > > > ---
-> > > >    include/hw/scsi/scsi.h |   7 +-
-> > > >    hw/scsi/scsi-bus.c     | 181 ++++++++++++++++++++++++++++-------------
-> > > >    2 files changed, 131 insertions(+), 57 deletions(-)
-> > > My reproducer for https://issues.redhat.com/browse/RHEL-3934 now breaks more
-> > > often because of this commit than because of the original bug, i.e. when
-> > > repeatedly hot-plugging and unplugging a virtio-scsi and a scsi-hd device,
-> > > this tends to happen when unplugging the scsi-hd:
-> > > 
-> > > {"execute":"device_del","arguments":{"id":"stg0"}}
-> > > {"return": {}}
-> > > qemu-system-x86_64: ../block/block-backend.c:2429: blk_get_aio_context:
-> > > Assertion `ctx == blk->ctx' failed.
-> 
-> [...]
-> 
-> > > I don’t know anything about the problem yet, but as usual, I like
-> > > speculation and discovering how wrong I was later on, so one thing I came
-> > > across that’s funny about virtio-scsi is that requests can happen even while
-> > > a disk is being attached or detached.  That is, Linux seems to probe all
-> > > LUNs when a new virtio-scsi device is being attached, and it won’t stop just
-> > > because a disk is being attached or removed.  So maybe that’s part of the
-> > > problem, that we get a request while the BB is being detached, and
-> > > temporarily in an inconsistent state (BDS context differs from BB context).
-> > I don't know anything about the problem either, but since you already
-> > speculated about the cause, let me speculate about the solution:
-> > Can we hold the graph writer lock for the tran_commit() call in
-> > bdrv_try_change_aio_context()? And of course take the reader lock for
-> > blk_get_aio_context(), but that should be completely unproblematic.
-> 
-> Actually, now that completely unproblematic part is giving me trouble.  I
-> wanted to just put a graph lock into blk_get_aio_context() (making it a
-> coroutine with a wrapper)
+Hi,
 
-Which is the first thing I neglected and already not great. We have
-calls of blk_get_aio_context() in the SCSI I/O path, and creating a
-coroutine and doing at least two context switches simply for this call
-is a lot of overhead...
+This is a bundle of fixes based on discoveries that were made in the
+last week or so:
 
-> but callers of blk_get_aio_context() generally assume the context is
-> going to stay the BB’s context for as long as their AioContext *
-> variable is in scope.
+- what we call "named features" are actually real extensions, which are
+  considered to be ratified by the profile spec that defines them. This
+  means that we need to add riscv,isa strings for them. More info can be
+  found on the commit msg of patch 2;
 
-I'm not so sure about that. And taking another step back, I'm actually
-also not sure how much it still matters now that they can submit I/O
-from any thread.
+- the design behind 'svade' and 'svadu' is wrong. 'svade' does not mean
+  'we do not have svadu'. In fact they can coexist. Patch 5 gives more
+  details about it.
 
-Maybe the correct solution is to remove the assertion from
-blk_get_aio_context() and just always return blk->ctx. If it's in the
-middle of a change, you'll either get the old one or the new one. Either
-one is fine to submit I/O from, and if you care about changes for other
-reasons (like SCSI does), then you need explicit code to protect it
-anyway (which SCSI apparently has, but it doesn't work).
 
-> I was tempted to think callers know what happens to the BB they pass
-> to blk_get_aio_context(), and it won’t change contexts so easily, but
-> then I remembered this is exactly what happens in this case; we run
-> scsi_device_for_each_req_async_bh() in one thread (which calls
-> blk_get_aio_context()), and in the other, we change the BB’s context.
+After this series, 'svade' is promoted to a regular extension and all
+the named features QEMU implements are now being displayed in riscv,isa.
 
-Let's think a bit more about scsi_device_for_each_req_async()
-specifically. This is a function that runs in the main thread. Nothing
-will change any AioContext assignment if it doesn't call it. It wants to
-make sure that scsi_device_for_each_req_async_bh() is called in the
-same AioContext where the virtqueue is processed, so it schedules a BH
-and waits for it.
+v2:
+ - Ensure svade is off by default even for the max cpu type
 
-Waiting for it means running a nested event loop that could do anything,
-including changing AioContexts. So this is what needs the locking, not
-the blk_get_aio_context() call in scsi_device_for_each_req_async_bh().
-If we lock before the nested event loop and unlock in the BH, the check
-in the BH can become an assertion. (It is important that we unlock in
-the BH rather than after waiting because if something takes the writer
-lock, we need to unlock during the nested event loop of bdrv_wrlock() to
-avoid a deadlock.)
 
-And spawning a coroutine for this looks a lot more acceptable because
-it's on a slow path anyway.
+Andrew Jones (3):
+  target/riscv: Reset henvcfg to zero
+  target/riscv: Gate hardware A/D PTE bit updating
+  target/riscv: Promote svade to a normal extension
 
-In fact, we probably don't technically need a coroutine to take the
-reader lock here. We can have a new graph lock function that asserts
-that there is no writer (we know because we're running in the main loop)
-and then atomically increments the reader count. But maybe that already
-complicates things again...
+Daniel Henrique Barboza (3):
+  target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
+  target/riscv: add riscv,isa to named features
+  target/riscv: add remaining named features
 
-> It seems like there are very few blk_* functions right now that
-> require taking a graph lock around it, so I’m hesitant to go that
-> route.  But if we’re protecting a BB’s context via the graph write
-> lock, I can’t think of a way around having to take a read lock
-> whenever reading a BB’s context, and holding it for as long as we
-> assume that context to remain the BB’s context.  It’s also hard to
-> figure out how long that is, case by case; for example, dma_blk_read()
-> schedules an AIO function in the BB context; but we probably don’t
-> care that this context remains the BB’s context until the request is
-> done.  In the case of scsi_device_for_each_req_async_bh(), we already
-> take care to re-schedule it when it turns out the context is outdated,
-> so it does seem quite important here, and we probably want to keep the
-> lock until after the QTAILQ_FOREACH_SAFE() loop.
+ target/riscv/cpu.c         | 63 ++++++++++++++++++++++++++++----------
+ target/riscv/cpu_cfg.h     | 15 +++++++--
+ target/riscv/cpu_helper.c  | 18 ++++++++---
+ target/riscv/csr.c         |  2 +-
+ target/riscv/tcg/tcg-cpu.c | 48 +++++++++++++++++++----------
+ 5 files changed, 105 insertions(+), 41 deletions(-)
 
-Maybe we need to audit all callers. Fortunately, there don't seem to be
-too many. At least not direct ones...
-
-> On a tangent, this TOCTTOU problem makes me wary of other blk_*
-> functions that query information.  For example, fuse_read() (in
-> block/export/fuse.c) truncates requests to the BB length.  But what if
-> the BB length changes concurrently between blk_getlength() and
-> blk_pread()?  While we can justify using the graph lock for a BB’s
-> AioContext, we can’t use it for other metadata like its length.
-
-Hm... Is "tough luck" an acceptable answer? ;-)
-
-Kevin
+-- 
+2.43.0
 
 
