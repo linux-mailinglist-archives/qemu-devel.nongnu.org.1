@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E35383E078
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED31783E055
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 18:36:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTQ6j-0004S5-Tb; Fri, 26 Jan 2024 12:35:14 -0500
+	id 1rTQ5p-0001WB-Hb; Fri, 26 Jan 2024 12:34:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ5R-00009d-0b; Fri, 26 Jan 2024 12:33:55 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rTQ5E-0008HS-AG; Fri, 26 Jan 2024 12:33:40 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rTQ5O-0001jX-FH; Fri, 26 Jan 2024 12:33:52 -0500
+ <BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rTQ58-0001ca-Is; Fri, 26 Jan 2024 12:33:39 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=EN2ajdy4otemmrb2xvygJan0iJiZe9osoit8g3Fryzw=; b=aw7QMl2FOdGpX2URBLKLY9O25Z
- 3fyDarOFSCu7FdfGeuUOAHBmAb2tnUjAu1bvZwlYPeOiuB9dCADtk/Zr+m27jqS6HL6OjZw8gQQZP
- r4sjI/LTm1A/7fFc9NzofOb06hUw+QpB1t8YvG5GoXnMSYESbIXvf/ywjcywXVL7vGlmeUw1ihIWl
- uwq8gSP2SBn/pRnZhgiUyWWtV4e7Zee5sN55JOIfrWIqmxXqxOhO8zKI1DQT0mvjWte9Wp3eRFViS
- E0/CngId3tP/sMw1tS4vVxhL56woaV745KBmd5NWmYRxdEL3aPBZ+NX3Nz2IxGGsComhCp/wkH14P
- 6cZc8A+w==;
+ bh=DVny/j77ulUUleAP4xxt8G+Z0haYgB9hlZ/h/9Yyrxg=; b=DlRBjExjlAWl+S+PBC+lla3Kef
+ FuduYJJNw+3RIesEwWQ06DsltvkZ60y4rdBDynv1/T8B8x6xYBKa7PlEA43FRHSnvrqK/kcNkt6f4
+ AKgmjbjlKqGsJ84ajqCs6o7Jt1R1IOYfpeRTOLvC0msw3643izcxMzr+Odu1lE9tB9En31J5J+Ypk
+ d0u8RGMG34ZZ8sOqjEKpjBpG7mOPpvBL29eQY1NJhRu6nd9spHxshDeDiPi+PK0c6r0n7KVyMUZnL
+ LLM1YbMTN37dL7+Qf2lYlh93U3q+exZBv4S3jTbCbNeVVNWqcCGAsr5gT2azI7+Gwixra42hQAhbq
+ dj4A4AkQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rTQ4B-000000069Ut-2zDu; Fri, 26 Jan 2024 17:32:36 +0000
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rTQ49-0000000EKUx-1uSO; Fri, 26 Jan 2024 17:32:35 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rTQ4A-00000001enc-0lfJ;
+ Hat Linux)) id 1rTQ4A-00000001eng-14GT;
  Fri, 26 Jan 2024 17:32:34 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -83,19 +83,19 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  xen-devel@lists.xenproject.org, David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v4 36/47] hw/mips/jazz: use qemu_find_nic_info()
-Date: Fri, 26 Jan 2024 17:25:13 +0000
-Message-ID: <20240126173228.394202-37-dwmw2@infradead.org>
+Subject: [PATCH v4 37/47] hw/net/lasi_i82596: Re-enable build
+Date: Fri, 26 Jan 2024 17:25:14 +0000
+Message-ID: <20240126173228.394202-38-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240126173228.394202-1-dwmw2@infradead.org>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+5cc348fc898a3f56ac6c+7460+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+7caeb094913322f6f00d+7460+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -120,51 +120,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+When converting to the shiny build-system-du-jour, a typo prevented the
+last_i82596 driver from being built. Correct the config option name to
+re-enable the build. And include "sysemu/sysemu.h" so it actually builds.
+
+Fixes: b1419fa66558 ("meson: convert hw/net")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/mips/jazz.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ hw/net/lasi_i82596.c | 1 +
+ hw/net/meson.build   | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/mips/jazz.c b/hw/mips/jazz.c
-index 0d2348aa5a..5bf3e328db 100644
---- a/hw/mips/jazz.c
-+++ b/hw/mips/jazz.c
-@@ -119,15 +119,19 @@ static const MemoryRegionOps dma_dummy_ops = {
-     .endianness = DEVICE_NATIVE_ENDIAN,
- };
- 
--static void mips_jazz_init_net(NICInfo *nd, IOMMUMemoryRegion *rc4030_dma_mr,
-+static void mips_jazz_init_net(IOMMUMemoryRegion *rc4030_dma_mr,
-                                DeviceState *rc4030, MemoryRegion *dp8393x_prom)
- {
-     DeviceState *dev;
-     SysBusDevice *sysbus;
-     int checksum, i;
-     uint8_t *prom;
-+    NICInfo *nd;
- 
--    qemu_check_nic_model(nd, "dp83932");
-+    nd = qemu_find_nic_info("dp8393x", true, "dp82932");
-+    if (!nd) {
-+        return;
-+    }
- 
-     dev = qdev_new("dp8393x");
-     qdev_set_nic_properties(dev, nd);
-@@ -324,12 +328,7 @@ static void mips_jazz_init(MachineState *machine,
-     }
- 
-     /* Network controller */
--    if (nb_nics == 1) {
--        mips_jazz_init_net(&nd_table[0], rc4030_dma_mr, rc4030, dp8393x_prom);
--    } else if (nb_nics > 1) {
--        error_report("This machine only supports one NIC");
--        exit(1);
--    }
-+    mips_jazz_init_net(rc4030_dma_mr, rc4030, dp8393x_prom);
- 
-     /* SCSI adapter */
-     dev = qdev_new(TYPE_SYSBUS_ESP);
+diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
+index 6a3147fe2d..09e830ba5f 100644
+--- a/hw/net/lasi_i82596.c
++++ b/hw/net/lasi_i82596.c
+@@ -14,6 +14,7 @@
+ #include "qapi/error.h"
+ #include "qemu/timer.h"
+ #include "hw/sysbus.h"
++#include "sysemu/sysemu.h"
+ #include "net/eth.h"
+ #include "hw/net/lasi_82596.h"
+ #include "hw/net/i82596.h"
+diff --git a/hw/net/meson.build b/hw/net/meson.build
+index 9afceb0619..2b426d3d5a 100644
+--- a/hw/net/meson.build
++++ b/hw/net/meson.build
+@@ -33,7 +33,7 @@ system_ss.add(when: 'CONFIG_MARVELL_88W8618', if_true: files('mv88w8618_eth.c'))
+ system_ss.add(when: 'CONFIG_CADENCE', if_true: files('cadence_gem.c'))
+ system_ss.add(when: 'CONFIG_STELLARIS_ENET', if_true: files('stellaris_enet.c'))
+ system_ss.add(when: 'CONFIG_LANCE', if_true: files('lance.c'))
+-system_ss.add(when: 'CONFIG_LASI_I82596', if_true: files('lasi_i82596.c'))
++system_ss.add(when: 'CONFIG_LASI_82596', if_true: files('lasi_i82596.c'))
+ system_ss.add(when: 'CONFIG_I82596_COMMON', if_true: files('i82596.c'))
+ system_ss.add(when: 'CONFIG_SUNHME', if_true: files('sunhme.c'))
+ system_ss.add(when: 'CONFIG_FTGMAC100', if_true: files('ftgmac100.c'))
 -- 
 2.43.0
 
