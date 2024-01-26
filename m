@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7983DBF0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:34:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C4783DC0E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNH9-0002BO-Ff; Fri, 26 Jan 2024 09:33:47 -0500
+	id 1rTNHC-0002ER-8k; Fri, 26 Jan 2024 09:33:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH8-0002B5-4B
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:46 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1rTNH9-0002C9-Hy
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:47 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNH6-0007rK-Bf
- for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:45 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-336c8ab0b20so462348f8f.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:43 -0800 (PST)
+ id 1rTNH6-0007rO-RB
+ for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:47 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3392b12dd21so627682f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706279623; x=1706884423; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zP/lYKNH4Nfu30L6dAxijOyJutxvSbBpVMIqdo7k2Lk=;
- b=MtSdYjv0YRMbg/lqAnQ0kgiyHcQG1633SNqoMzaxxNbqfbO0bRVB694tZ2GmlDB3Za
- JsYjgAmdpr/CoYTX/wGVei6JG4M9GxDkW/1EyT2K6POKT5+xjSh5vbRA0txDYHcW2I64
- asH24uO/bCw95eG4dx2noITXt8eNDunk0HBxxw+qj6Dib5rzyLE7/0yhVfERGIMxogxI
- w2e8JIpdxo534AofEGYkb2GbXwMVJzDqQ85Ze5YlG9BkZKVYL10mZg93IHeGS6pOTUlF
- Vcso7l/+nO0suBYroeN4lu3k4+SqxHm+9IomCEf2MB1kFLa+sf11c7EnUbnMH8on2VS/
- I/PA==
+ :reply-to; bh=AlL0ncqDDbK49LmHwxJsXF89nfVWU3/6tLGTdA35huY=;
+ b=uLvhLgjo8xo021bgFZqoiHKDmsw6eGjuJ0GHe13ZGY4qTaeCjFh7KNX6zDDMBow+SR
+ 4ra1Bsvam1M2+Dn53Ez9tirct6tSaGElRmkJ5hHhZpVC+JKT4aFCj9XY5XMGLbbjh6Cy
+ BZ/lwaDyBIOOx7/oswqdojFfBfqW/kQQ/aTbOnICqvbsnmDzZCOxQCY5LyOVMskkL39K
+ lLzggREGZNQFNZ0+DJO7MM7/UrzlP6XpbJfzf93G67q4GQxj9riPEH/O0JdrHdvoWwP5
+ PkefJgZ83uKG/LCh9RDGFawX6+MbO9Lt1NQ5BWWBop3ELnkxjegBESjbTbg88bpH4prz
+ RRBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706279623; x=1706884423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zP/lYKNH4Nfu30L6dAxijOyJutxvSbBpVMIqdo7k2Lk=;
- b=sVzrBdrMWURDgd1ay9R7SWCiAgL5Qwl+DquFfpVCCBMERG1qbgUGk1ls4p+0nqSpMN
- JfPtHhvQxnhM/MVF932x3Q97ORZ5SFupVf6ZAitu9a8mnWwYNnR640ym1UdFOozkVMJA
- 5wF0QeoNjIJiuy2Y8JDFEWVwGwYvkVbZlMXCwMzOQclsSIOviEfQOGKOePwVO5W8OHWV
- o1ZSYv5CrOSyj7VlaQ60GEJE/3UaCmmxo1XVA/fTjopkfVP8GXy3s8A6xWSNqoutxqcU
- 7zsYpIRiRRbiJI6U3Z0/RorbewtH8bphlsmRHygn9SPne31Ot3yDBEr4xaaQAg/m2mAN
- +kJA==
-X-Gm-Message-State: AOJu0YxPmlfxw35ceFqnFqbcGl4t890PEjr8eLo/nOZoI7PoJpzMlqNH
- TZSNPfGZq7ztiUwdM4C1MHhzl06PKwKtgtU5kiOO5wnu45/fQD/fJfAlc2LB36W3H/Jyw5v4dkx
- 2
-X-Google-Smtp-Source: AGHT+IFTxB9KxuSb/3KhnTp6lA0Kc+/qfeKdIS95NSRlIDuRfp5nUksU6beol6ljAHM11MONk7EpUg==
-X-Received: by 2002:adf:fd07:0:b0:339:431b:90f4 with SMTP id
- e7-20020adffd07000000b00339431b90f4mr1125247wrr.100.1706279622995; 
- Fri, 26 Jan 2024 06:33:42 -0800 (PST)
+ bh=AlL0ncqDDbK49LmHwxJsXF89nfVWU3/6tLGTdA35huY=;
+ b=h04f893vF0FiPN90TbhQUbr8hkMBm05Zlp0kS6PO1Qs3AkaG4oCkpBtDnbbl0MziIs
+ OypKN8wWlUBu3yxfD2GQT/xHSe/2teKbrolgBlU3HJjRspM0PhUwYoKUbpgc3pf6Rj3j
+ qhSrtnIoOyHIgFLTwDpEb/MzydoGQMlVFImraUoEYlYdZjpkzcH4IVslaFu6LwC36fBh
+ /z8dxTXhtAJfC8FD0KzFy4vAN8uo7TNjnxpjWAn4DML7uXtbMOsuM5yz1xMZmQUBARWW
+ wcmxFG0kSAEoh38oGPMQctUjcsK/CrxShY6avMQ4guRyGPVDOXv+ugUMwXoD5So7vEK1
+ 180A==
+X-Gm-Message-State: AOJu0YykkkdA/0mTJMQuWFiW3AuyikGXmMI3/oHowDExn1VGO85D+EQW
+ CxjvZoXa4p3z32i8Y8vXt+GqwD/bx1cPkZME3mn4n8JZKoWSfKmVvpZug4mwqQo3n+6mhbIGYuO
+ T
+X-Google-Smtp-Source: AGHT+IGFrx9n39TrRKNsYW8V5g8lxlOcwyMbMeeB5nsHmMs/lrmLwwRAGlbRr280DRflIR2RLMBGDA==
+X-Received: by 2002:adf:a44e:0:b0:337:abf9:52a6 with SMTP id
+ e14-20020adfa44e000000b00337abf952a6mr1003213wra.77.1706279623434; 
+ Fri, 26 Jan 2024 06:33:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.42
+ n5-20020a5d4845000000b00337f722e5ccsm1396207wrs.65.2024.01.26.06.33.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Jan 2024 06:33:42 -0800 (PST)
+ Fri, 26 Jan 2024 06:33:43 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/36] target/xtensa: fix OOB TLB entry access
-Date: Fri, 26 Jan 2024 14:33:06 +0000
-Message-Id: <20240126143341.2101237-2-peter.maydell@linaro.org>
+Subject: [PULL 02/36] target/arm: Fix VNCR fault detection logic
+Date: Fri, 26 Jan 2024 14:33:07 +0000
+Message-Id: <20240126143341.2101237-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,138 +91,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+In arm_deliver_fault() we check for whether the fault is caused
+by a data abort due to an access to a FEAT_NV2 sysreg in the
+memory pointed to by the VNCR. Unfortunately part of the
+condition checks the wrong argument to the function, meaning
+that it would spuriously trigger, resulting in some instruction
+aborts being taken to the wrong EL and reported incorrectly.
 
-r[id]tlb[01], [iw][id]tlb opcodes use TLB way index passed in a register
-by the guest. The host uses 3 bits of the index for ITLB indexing and 4
-bits for DTLB, but there's only 7 entries in the ITLB array and 10 in
-the DTLB array, so a malicious guest may trigger out-of-bound access to
-these arrays.
+Use the right variable in the condition.
 
-Change split_tlb_entry_spec return type to bool to indicate whether TLB
-way passed to it is valid. Change get_tlb_entry to return NULL in case
-invalid TLB way is requested. Add assertion to xtensa_tlb_get_entry that
-requested TLB way and entry indices are valid. Add checks to the
-[rwi]tlb helpers that requested TLB way is valid and return 0 or do
-nothing when it's not.
-
-Cc: qemu-stable@nongnu.org
-Fixes: b67ea0cd7441 ("target-xtensa: implement memory protection options")
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20231215120307.545381-1-jcmvbkbc@gmail.com
+Fixes: 674e5345275d425 ("target/arm: Report VNCR_EL2 based faults correctly")
+Reported-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-id: 20240116165605.2523055-1-peter.maydell@linaro.org
 ---
- target/xtensa/mmu_helper.c | 47 ++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 12 deletions(-)
+ target/arm/tcg/tlb_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
-index 12552a33470..2fda4e887cc 100644
---- a/target/xtensa/mmu_helper.c
-+++ b/target/xtensa/mmu_helper.c
-@@ -224,22 +224,31 @@ static void split_tlb_entry_spec_way(const CPUXtensaState *env, uint32_t v,
-  * Split TLB address into TLB way, entry index and VPN (with index).
-  * See ISA, 4.6.5.5 - 4.6.5.8 for the TLB addressing format
-  */
--static void split_tlb_entry_spec(CPUXtensaState *env, uint32_t v, bool dtlb,
--        uint32_t *vpn, uint32_t *wi, uint32_t *ei)
-+static bool split_tlb_entry_spec(CPUXtensaState *env, uint32_t v, bool dtlb,
-+                                 uint32_t *vpn, uint32_t *wi, uint32_t *ei)
- {
-     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
-         *wi = v & (dtlb ? 0xf : 0x7);
--        split_tlb_entry_spec_way(env, v, dtlb, vpn, *wi, ei);
-+        if (*wi < (dtlb ? env->config->dtlb.nways : env->config->itlb.nways)) {
-+            split_tlb_entry_spec_way(env, v, dtlb, vpn, *wi, ei);
-+            return true;
-+        } else {
-+            return false;
-+        }
-     } else {
-         *vpn = v & REGION_PAGE_MASK;
-         *wi = 0;
-         *ei = (v >> 29) & 0x7;
-+        return true;
-     }
- }
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index dd5de74ffb7..5477c7fb7dc 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -184,7 +184,7 @@ void arm_deliver_fault(ARMCPU *cpu, vaddr addr,
+      * (and indeed syndrome does not have the EC field in it,
+      * because we masked that out in disas_set_insn_syndrome())
+      */
+-    bool is_vncr = (mmu_idx != MMU_INST_FETCH) &&
++    bool is_vncr = (access_type != MMU_INST_FETCH) &&
+         (env->exception.syndrome & ARM_EL_VNCR);
  
- static xtensa_tlb_entry *xtensa_tlb_get_entry(CPUXtensaState *env, bool dtlb,
-                                               unsigned wi, unsigned ei)
- {
-+    const xtensa_tlb *tlb = dtlb ? &env->config->dtlb : &env->config->itlb;
-+
-+    assert(wi < tlb->nways && ei < tlb->way_size[wi]);
-     return dtlb ?
-         env->dtlb[wi] + ei :
-         env->itlb[wi] + ei;
-@@ -252,11 +261,14 @@ static xtensa_tlb_entry *get_tlb_entry(CPUXtensaState *env,
-     uint32_t wi;
-     uint32_t ei;
- 
--    split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei);
--    if (pwi) {
--        *pwi = wi;
-+    if (split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei)) {
-+        if (pwi) {
-+            *pwi = wi;
-+        }
-+        return xtensa_tlb_get_entry(env, dtlb, wi, ei);
-+    } else {
-+        return NULL;
-     }
--    return xtensa_tlb_get_entry(env, dtlb, wi, ei);
- }
- 
- static void xtensa_tlb_set_entry_mmu(const CPUXtensaState *env,
-@@ -482,7 +494,12 @@ uint32_t HELPER(rtlb0)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
-     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
-         uint32_t wi;
-         const xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, &wi);
--        return (entry->vaddr & get_vpn_mask(env, dtlb, wi)) | entry->asid;
-+
-+        if (entry) {
-+            return (entry->vaddr & get_vpn_mask(env, dtlb, wi)) | entry->asid;
-+        } else {
-+            return 0;
-+        }
-     } else {
-         return v & REGION_PAGE_MASK;
-     }
-@@ -491,7 +508,12 @@ uint32_t HELPER(rtlb0)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
- uint32_t HELPER(rtlb1)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
- {
-     const xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, NULL);
--    return entry->paddr | entry->attr;
-+
-+    if (entry) {
-+        return entry->paddr | entry->attr;
-+    } else {
-+        return 0;
-+    }
- }
- 
- void HELPER(itlb)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
-@@ -499,7 +521,7 @@ void HELPER(itlb)(CPUXtensaState *env, uint32_t v, uint32_t dtlb)
-     if (xtensa_option_enabled(env->config, XTENSA_OPTION_MMU)) {
-         uint32_t wi;
-         xtensa_tlb_entry *entry = get_tlb_entry(env, v, dtlb, &wi);
--        if (entry->variable && entry->asid) {
-+        if (entry && entry->variable && entry->asid) {
-             tlb_flush_page(env_cpu(env), entry->vaddr);
-             entry->asid = 0;
-         }
-@@ -537,8 +559,9 @@ void HELPER(wtlb)(CPUXtensaState *env, uint32_t p, uint32_t v, uint32_t dtlb)
-     uint32_t vpn;
-     uint32_t wi;
-     uint32_t ei;
--    split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei);
--    xtensa_tlb_set_entry(env, dtlb, wi, ei, vpn, p);
-+    if (split_tlb_entry_spec(env, v, dtlb, &vpn, &wi, &ei)) {
-+        xtensa_tlb_set_entry(env, dtlb, wi, ei, vpn, p);
-+    }
- }
- 
- /*!
+     if (is_vncr) {
 -- 
 2.34.1
 
