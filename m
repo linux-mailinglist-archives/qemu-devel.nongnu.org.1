@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BE483DC11
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F89983DC47
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Jan 2024 15:39:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTNHK-0002Of-Tx; Fri, 26 Jan 2024 09:33:58 -0500
+	id 1rTNHM-0002S8-QG; Fri, 26 Jan 2024 09:34:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHI-0002Kz-8x
+ id 1rTNHI-0002LT-Kz
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:56 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rTNHG-0007xM-5s
+ id 1rTNHG-0007xc-Fa
  for qemu-devel@nongnu.org; Fri, 26 Jan 2024 09:33:56 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40eacb4bfa0so7000195e9.1
- for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:53 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33ade052953so335741f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Jan 2024 06:33:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706279632; x=1706884432; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706279633; x=1706884433; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LouzfqvK2IHKPiiDEvjrZzysBnMRC0GfKDnWQD9WZEU=;
- b=MBs5J5Xt/Qy+tNUZG8p9FDnzJppyFPN5AHlNS28yEvJjVCZV7BH5o6PLPoTtbBksIS
- qdR9ZuSWYviHM4q8+P3xvxlCpK8P4FsraNGY7QZMy2WbDyMRMC4A1mz7UAQgNB7V74NV
- eLT5WTnUFhm794IXiCXYZk00+7hRLiISu8mLjHV/sTRIvNkHDp+5a0EBGZVTYtmKrl33
- 1uR/BoF/kMe+z5wkBp2GNBQZpkWnr9BZtOilEtxUjyB96XK+ZXf0VJ2kGq0pRA+EgLwQ
- zS1lve/t+YPNidfJ0JyF38aUGQURlfY8Ots3qEi4yIaVNtsZWWy9n3/988e4v5nCtAXX
- +lqw==
+ :reply-to; bh=KENK9Mpj18OXyJdvgmdqz6uWTQ8A1jTnhGCoNoZ/oAs=;
+ b=XbPhYnoP+Ejo6jE+cWN6QxOCsVRITxzn3oDn5Pa4tTAwxzPiwbbxnilbbs3LTU4pLF
+ jgn8mLZZJqlJuw+DtDp+CuV9uKBKLfYuPbpF8kv4NTC5Mt4akEiBXFO8Y/82fBG99oJ8
+ Fia9R3WboZR+7bqmRQQswq2j871HUlv6gDGAlzxOs1Kv+cDGuVq99jWAh7hWykE04S3y
+ K+9r+vn+VWpgK2p+H9yKfl8G9RyIsjRegUDPtc9EIWHB6VR1zs3ge0h4vxVGhrFIFeDR
+ NxN8O3PuWXbdv8VDaNejGI/R7yfJIcZDGfNIhPonTzlUiIWoSvPLQWkRTpIvhjQIAnnV
+ P9mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706279632; x=1706884432;
+ d=1e100.net; s=20230601; t=1706279633; x=1706884433;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LouzfqvK2IHKPiiDEvjrZzysBnMRC0GfKDnWQD9WZEU=;
- b=Iy/Yv5A9/mc25eruVCBkM9VDoOtGW1blVMWmNZB6q0VOQ9JZ6Oy6nwBeT7trZjxJWe
- D5iOv4UGjeMxJ1cfbS0Hke8joEcc/efeNYza7N2hLJCC9Tg3HtLOSQt21OWKrmKY7Scj
- J4m7S/cnp4yusR3eFqRm+jLF7LTu8wxdjslaN1qjoNu4lBOHphpXvBW5HReE2P58nh5Q
- +FJMqSBVuOMmQxfDXj8twUG5B6BcNv21jth/kACX8b+ApThCIoE/7cZ6VN4FT5qrvAeg
- KJ2nqGOJtFE13FPHxT4HftCKfhkdFmQVY2PDODs2fk7EqLWV++VbBPdyGK0A+Np8wN6C
- 78Sw==
-X-Gm-Message-State: AOJu0YzHjqKxT/lZgQmlTekCJtYlAuDFXRZECeojTHhbwDMW2KE0ACGe
- rkZARuWuR1pCaV3limA3aqm0Q9YWTS7obDl1oSEH81fXXQJsyesi45XwR48CgHAiK6QPz6iy54b
- M
-X-Google-Smtp-Source: AGHT+IEafsKxr2vb8cyaFangAYRpmu2zOUni7W8du/1ULX+hA4klsujtUyFenx+u3TJokHdsaC/ybw==
-X-Received: by 2002:a7b:c3d1:0:b0:40e:47db:9a3b with SMTP id
- t17-20020a7bc3d1000000b0040e47db9a3bmr1023333wmj.75.1706279632501; 
+ bh=KENK9Mpj18OXyJdvgmdqz6uWTQ8A1jTnhGCoNoZ/oAs=;
+ b=NXZq9Aqfd4G++AlwHnBeu0NN7JyBJ1b6iTxO04UkKa3XwXCGSnIc8J3pBR6+lrsXcW
+ A9GXn+odU4RxWyN7Uqxg3SlNNDfi/GdUZNhp5tiA3eQtPpumDrKtlQRaBsZ7BhPnarwn
+ 5Gn9Wv+QxLI9qYIPiXeoPDEN6KKz18nqxzeVrpYvqf4Cz0f8meCZ1tqSDLkAbb8f6CiZ
+ lzSfNOhzK1/2O9/HPFF5AwZ34OANfRm7+jtdNtL9MzKT7jYHx6pRMBH7ucpDnaqPX6f8
+ F2DU8pYQX/q6tKeL7Hnqc62ASwB+mkLSDYEDR+YC1nru7FGZi+FuDrQenaq9r9bqSo90
+ P/bg==
+X-Gm-Message-State: AOJu0YwUx4yDDUXZ9qaxBaae8bC1dux70zyYz+8bN7gbaoPaeFDNU6Se
+ xUDVkSZh/HIa9kI3fxOOqvhfaUSj+oIdpPWlo2uCY1UQ86zoH4li6tl9mYmM6cWBX5QB6z+Tbac
+ e
+X-Google-Smtp-Source: AGHT+IFXln4FmTTuxM+HvVjtzdcSWwL2GgAhRb+NQLPYwq8EGSh5L1X9xug/j/ZMTYSosH50/fJlXA==
+X-Received: by 2002:a5d:6204:0:b0:337:6f4e:3833 with SMTP id
+ y4-20020a5d6204000000b003376f4e3833mr1004795wru.12.1706279632960; 
  Fri, 26 Jan 2024 06:33:52 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 26 Jan 2024 06:33:52 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/36] hw/misc/xlnx-versal-crl: Build it only once
-Date: Fri, 26 Jan 2024 14:33:28 +0000
-Message-Id: <20240126143341.2101237-24-peter.maydell@linaro.org>
+Subject: [PULL 24/36] target/arm: Expose M-profile register bank index
+ definitions
+Date: Fri, 26 Jan 2024 14:33:29 +0000
+Message-Id: <20240126143341.2101237-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240126143341.2101237-1-peter.maydell@linaro.org>
 References: <20240126143341.2101237-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,45 +95,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-hw/misc/xlnx-versal-crl.c doesn't require "cpu.h"
-anymore.  By removing it, the unit become target
-agnostic: we can build it once. Update meson.
+The ARMv7M QDev container accesses the QDev SysTickState
+by its secure/non-secure bank index. In order to make
+the "hw/intc/armv7m_nvic.h" header target-agnostic in
+the next commit, first move the M-profile bank index
+definitions to "target/arm/cpu-qom.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240118200643.29037-15-philmd@linaro.org
+Message-id: 20240118200643.29037-16-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/xlnx-versal-crl.c | 1 -
- hw/misc/meson.build       | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ target/arm/cpu-qom.h | 15 +++++++++++++++
+ target/arm/cpu.h     | 15 ---------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/hw/misc/xlnx-versal-crl.c b/hw/misc/xlnx-versal-crl.c
-index 1a596f1cf57..1f1762ef163 100644
---- a/hw/misc/xlnx-versal-crl.c
-+++ b/hw/misc/xlnx-versal-crl.c
-@@ -18,7 +18,6 @@
- #include "hw/register.h"
- #include "hw/resettable.h"
+diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
+index f795994135f..77bbc1f13c9 100644
+--- a/target/arm/cpu-qom.h
++++ b/target/arm/cpu-qom.h
+@@ -36,4 +36,19 @@ DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
+ #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
+ #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
  
--#include "target/arm/cpu.h"
- #include "target/arm/arm-powerctl.h"
- #include "target/arm/multiprocessing.h"
- #include "hw/misc/xlnx-versal-crl.h"
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 2ca2ce4b62e..e4ef1da5a53 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -96,8 +96,8 @@ system_ss.add(when: 'CONFIG_SLAVIO', if_true: files('slavio_misc.c'))
- system_ss.add(when: 'CONFIG_ZYNQ', if_true: files('zynq_slcr.c'))
- system_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp-crf.c'))
- system_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp-apu-ctrl.c'))
--specific_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-crl.c'))
- system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files(
-+  'xlnx-versal-crl.c',
-   'xlnx-versal-xramc.c',
-   'xlnx-versal-pmc-iou-slcr.c',
-   'xlnx-versal-cfu.c',
++/* For M profile, some registers are banked secure vs non-secure;
++ * these are represented as a 2-element array where the first element
++ * is the non-secure copy and the second is the secure copy.
++ * When the CPU does not have implement the security extension then
++ * only the first element is used.
++ * This means that the copy for the current security state can be
++ * accessed via env->registerfield[env->v7m.secure] (whether the security
++ * extension is implemented or not).
++ */
++enum {
++    M_REG_NS = 0,
++    M_REG_S = 1,
++    M_REG_NUM_BANKS = 2,
++};
++
+ #endif
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 41659d0ef15..d6a79482adb 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -73,21 +73,6 @@
+ #define ARMV7M_EXCP_PENDSV  14
+ #define ARMV7M_EXCP_SYSTICK 15
+ 
+-/* For M profile, some registers are banked secure vs non-secure;
+- * these are represented as a 2-element array where the first element
+- * is the non-secure copy and the second is the secure copy.
+- * When the CPU does not have implement the security extension then
+- * only the first element is used.
+- * This means that the copy for the current security state can be
+- * accessed via env->registerfield[env->v7m.secure] (whether the security
+- * extension is implemented or not).
+- */
+-enum {
+-    M_REG_NS = 0,
+-    M_REG_S = 1,
+-    M_REG_NUM_BANKS = 2,
+-};
+-
+ /* ARM-specific interrupt pending bits.  */
+ #define CPU_INTERRUPT_FIQ   CPU_INTERRUPT_TGT_EXT_1
+ #define CPU_INTERRUPT_VIRQ  CPU_INTERRUPT_TGT_EXT_2
 -- 
 2.34.1
 
