@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBC383F3E8
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A2683F3E4
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx1N-0006Hm-Ib; Sat, 27 Jan 2024 23:43:53 -0500
+	id 1rTx1M-0006AX-Pq; Sat, 27 Jan 2024 23:43:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx1C-0005qS-3o
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:42 -0500
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1rTx1D-0005tV-OY
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:44 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx1A-0004RA-GL
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:41 -0500
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-29065efa06fso1553948a91.1
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:39 -0800 (PST)
+ id 1rTx1C-0004Rz-29
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:43 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-290a55f3feaso1323687a91.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706417018; x=1707021818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706417021; x=1707021821; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LMqE9xBix0QLmyhH8Xqft/09pdbioiePfeACz0Kfp3o=;
- b=yWyFvs5GLPW9XgHMsmDwAVGUO25QwbfifYhUo0UrG+4jTdK/Xp26ERHYL4Ywsig+63
- CtK6V/N8P88Mjr2hHibPWBaEJr9k88sP67bnemrYmN0kGpc9mZ96bGqZ1pA3lmkDE5O3
- mJkd1LKpS+8qoDTWCzxjKd/26mvUltaOU3yfp6lw82Y19H/99M4kpyOT81FwDqsnb9pv
- s3wk6gxoe+2aMjEKv0x7RrhTkNMwQ0b1PHVZGeqNPPQMrILnqjlsnLQRkYXpZ33kTSxD
- EepXEQiK0opgXFkTFnsrobAkajcR70EF2fdKK9fsQb8KM4Ghy4EZepYpJZuZgFKxSckR
- mR9w==
+ bh=T/uaC3GU2r5ag1NYLRtG0R3ws3tDO6FtLPMPWrHI/7I=;
+ b=CNxCRIliyLjf9CoTLwX8GO3Z5MEGmw2wP9TOXBqMoZJvkvuPG5BrD8DqkFD7tj6wxV
+ crEeyLOqppnVh25HGOyRofwxwjLWS29OLgmVaSjmPzfG4m70ell9QEmSr0FJt1576bh2
+ V4FQQbKSDEhh1TdLetpbtDXeuDVIwl4q+kO2lghBxV3SAT+YicVhF1Mq5ue82jD7K6ff
+ VR28ARbIlVdycaIN4QXEcRarhYyCR/z7DlnXma6eUyIZ/r5EGnNjqEGVppmY5zA+WdTF
+ SBocA01VF4oZBWZ6PJLOEPR6JJl+PgUtmHasFcMX73+ciECgRJQMkSXtK1a5vLK4oVUD
+ 9iTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706417018; x=1707021818;
+ d=1e100.net; s=20230601; t=1706417021; x=1707021821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LMqE9xBix0QLmyhH8Xqft/09pdbioiePfeACz0Kfp3o=;
- b=e61Cc6Sc65T0rvWijzouoisXMqQ1Ov+SxRgfCaU2Dw/3wXQsGOinnj/MUK2TIRU6+H
- M5fg3Q/Kua5eq4+Z3cFyJ8vY/UKBliryjyHQmeg0GC4Zg2tMeufEy/jcN1GopHPj4yrb
- J19ySOS93UqUEoX0tfHMKnDIiBrxaF0zaUvdzeXhlDvGm5+gfzVMYYl7l7gKnBhVDbLL
- irFXFinUeUpAghJv24otlPGP02/BLdtzozQZwseheciQ7LzWGbIHQAGNmy1kgr9sxbyn
- zIMr1UBBJKm91Vv2BxopS6hIi9ONIDLWnmpeNT475xrqVExbtXAOhVfzNzK5GAAHtCXA
- W6oQ==
-X-Gm-Message-State: AOJu0YxtKVcnieCdgeTfwpyUd0caL8x582Yd4J9AhJQtkfdl8L3QXvkl
- wIWapxKirohhGBSliHIQv+d6hPChsPybDTXZSj6AMjV17Kh5VCd2SlV1du+faAzM0Wz/ZCjGhV+
- iT7eaWA==
-X-Google-Smtp-Source: AGHT+IEoTkgNygjlQX+xOaKcSFVmDunG/JqWg05qSiM3srH71iwE99c7dgHabEs9hukxMbJAfWZGTg==
-X-Received: by 2002:a17:90b:88c:b0:28c:ea35:44f8 with SMTP id
- bj12-20020a17090b088c00b0028cea3544f8mr1631535pjb.79.1706417018287; 
- Sat, 27 Jan 2024 20:43:38 -0800 (PST)
+ bh=T/uaC3GU2r5ag1NYLRtG0R3ws3tDO6FtLPMPWrHI/7I=;
+ b=DVHTb3EIOCqVmqVT9yq109Khg4TNpWt/xplFd7gmJFbSbf72KoMHmkAUAob2IiiTrz
+ pi+Lgz99pKlVrYr6iRML3AZ64o9tZiqDkcaSqx8YDcWhgQoBVoKV2+jC490UoaCUYPme
+ yKms9X4p79rC4Bzl1WWCcuvl3A4Agn9EnNkCaY9JBUadkzddMsJJj1IjQWtuqPqrHts1
+ WWl+KsQbRPG1ECyV/YB93FpXoyjelwXwa2s/kTKxTYW9mcxAkhGxO3N2x1uzC6bojeSM
+ B5NotKpWujgkNFg0ILcqrgoWtWZkU+XGOcF9oJRKIDcLQiijxYAWvfhB7EYP0iaas/lA
+ B82g==
+X-Gm-Message-State: AOJu0Yyw11y5BrnlFoOy0dAJFLDG0X4TvH0HCNYDs4vYAg6/gqZseAfw
+ hVJWI72ZFbANgFjIa55+ZRuDNAVdo0+gH2BmGm05dghLGopgGxzrvVux9qll+2b8iB5bpa7qR0V
+ H483uLA==
+X-Google-Smtp-Source: AGHT+IH6+V9twuxV00uYp9p82Ezc0zV35qoKn2bXtI0imI19KZLlgZmXOaMB0zBw8WMknq4OZWR3Kg==
+X-Received: by 2002:a17:902:ec85:b0:1d7:79c5:8f5a with SMTP id
+ x5-20020a170902ec8500b001d779c58f5amr3414450plg.134.1706417020940; 
+ Sat, 27 Jan 2024 20:43:40 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.36
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:43:37 -0800 (PST)
+ Sat, 27 Jan 2024 20:43:40 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 32/33] accel/tcg: Introduce TCGCPUOps::cpu_exec_halt() handler
-Date: Sun, 28 Jan 2024 14:42:12 +1000
-Message-Id: <20240128044213.316480-33-richard.henderson@linaro.org>
+Subject: [PATCH 33/33] target/i386: Extract x86_cpu_exec_halt() from accel/tcg/
+Date: Sun, 28 Jan 2024 14:42:13 +1000
+Message-Id: <20240128044213.316480-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,55 +97,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In order to make accel/tcg/ target agnostic,
-introduce the cpu_exec_halt() handler.
+Move this x86-specific code out of the generic accel/tcg/.
 
+Reported-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240124101639.30056-9-philmd@linaro.org>
+Message-Id: <20240124101639.30056-10-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/tcg-cpu-ops.h | 2 ++
- accel/tcg/cpu-exec.c          | 5 +++++
- 2 files changed, 7 insertions(+)
+ target/i386/tcg/helper-tcg.h        |  1 +
+ accel/tcg/cpu-exec.c                | 12 ------------
+ target/i386/tcg/sysemu/seg_helper.c | 13 +++++++++++++
+ target/i386/tcg/tcg-cpu.c           |  1 +
+ 4 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index 013867b890..bf8ff8e3ee 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -112,6 +112,8 @@ struct TCGCPUOps {
-     void (*do_interrupt)(CPUState *cpu);
-     /** @cpu_exec_interrupt: Callback for processing interrupts in cpu_exec */
-     bool (*cpu_exec_interrupt)(CPUState *cpu, int interrupt_request);
-+    /** @cpu_exec_halt: Callback for handling halt in cpu_exec */
-+    void (*cpu_exec_halt)(CPUState *cpu);
-     /**
-      * @tlb_fill: Handle a softmmu tlb miss
-      *
+diff --git a/target/i386/tcg/helper-tcg.h b/target/i386/tcg/helper-tcg.h
+index 253b1f561e..effc2c1c98 100644
+--- a/target/i386/tcg/helper-tcg.h
++++ b/target/i386/tcg/helper-tcg.h
+@@ -39,6 +39,7 @@ QEMU_BUILD_BUG_ON(TCG_PHYS_ADDR_BITS > TARGET_PHYS_ADDR_SPACE_BITS);
+  */
+ void x86_cpu_do_interrupt(CPUState *cpu);
+ #ifndef CONFIG_USER_ONLY
++void x86_cpu_exec_halt(CPUState *cpu);
+ bool x86_need_replay_interrupt(int interrupt_request);
+ bool x86_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ #endif
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 75f7ba7bed..82627b12b8 100644
+index 82627b12b8..977576ca14 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -664,6 +664,8 @@ static inline bool cpu_handle_halt(CPUState *cpu)
- {
- #ifndef CONFIG_USER_ONLY
+@@ -30,9 +30,6 @@
+ #include "qemu/rcu.h"
+ #include "exec/log.h"
+ #include "qemu/main-loop.h"
+-#if defined(TARGET_I386) && !defined(CONFIG_USER_ONLY)
+-#include "hw/i386/apic.h"
+-#endif
+ #include "sysemu/cpus.h"
+ #include "exec/cpu-all.h"
+ #include "sysemu/cpu-timers.h"
+@@ -666,15 +663,6 @@ static inline bool cpu_handle_halt(CPUState *cpu)
      if (cpu->halted) {
-+        const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+         const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+ 
+-#if defined(TARGET_I386)
+-        if (cpu->interrupt_request & CPU_INTERRUPT_POLL) {
+-            X86CPU *x86_cpu = X86_CPU(cpu);
+-            bql_lock();
+-            apic_poll_irq(x86_cpu->apic_state);
+-            cpu_reset_interrupt(cpu, CPU_INTERRUPT_POLL);
+-            bql_unlock();
+-        }
+-#endif /* TARGET_I386 */
+         if (tcg_ops->cpu_exec_halt) {
+             tcg_ops->cpu_exec_halt(cpu);
+         }
+diff --git a/target/i386/tcg/sysemu/seg_helper.c b/target/i386/tcg/sysemu/seg_helper.c
+index e6f42282bb..2db8083748 100644
+--- a/target/i386/tcg/sysemu/seg_helper.c
++++ b/target/i386/tcg/sysemu/seg_helper.c
+@@ -20,6 +20,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
++#include "qemu/main-loop.h"
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
+ #include "exec/cpu_ldst.h"
+@@ -127,6 +128,18 @@ void x86_cpu_do_interrupt(CPUState *cs)
+     }
+ }
+ 
++void x86_cpu_exec_halt(CPUState *cpu)
++{
++    if (cpu->interrupt_request & CPU_INTERRUPT_POLL) {
++        X86CPU *x86_cpu = X86_CPU(cpu);
 +
- #if defined(TARGET_I386)
-         if (cpu->interrupt_request & CPU_INTERRUPT_POLL) {
-             X86CPU *x86_cpu = X86_CPU(cpu);
-@@ -673,6 +675,9 @@ static inline bool cpu_handle_halt(CPUState *cpu)
-             bql_unlock();
-         }
- #endif /* TARGET_I386 */
-+        if (tcg_ops->cpu_exec_halt) {
-+            tcg_ops->cpu_exec_halt(cpu);
-+        }
-         if (!cpu_has_work(cpu)) {
-             return true;
-         }
++        bql_lock();
++        apic_poll_irq(x86_cpu->apic_state);
++        cpu_reset_interrupt(cpu, CPU_INTERRUPT_POLL);
++        bql_unlock();
++    }
++}
++
+ bool x86_need_replay_interrupt(int interrupt_request)
+ {
+     /*
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index 5bdcf45199..cca19cd40e 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -119,6 +119,7 @@ static const TCGCPUOps x86_tcg_ops = {
+ #else
+     .tlb_fill = x86_cpu_tlb_fill,
+     .do_interrupt = x86_cpu_do_interrupt,
++    .cpu_exec_halt = x86_cpu_exec_halt,
+     .cpu_exec_interrupt = x86_cpu_exec_interrupt,
+     .do_unaligned_access = x86_cpu_do_unaligned_access,
+     .debug_excp_handler = breakpoint_handler,
 -- 
 2.34.1
 
