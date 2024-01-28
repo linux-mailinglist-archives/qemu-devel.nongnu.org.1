@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB2783F8D4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 18:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A899083F8DE
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 18:54:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rU9Hh-0006xI-0Z; Sun, 28 Jan 2024 12:49:33 -0500
+	id 1rU9Hf-0006u2-Gw; Sun, 28 Jan 2024 12:49:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rU9H4-0006R0-DS; Sun, 28 Jan 2024 12:48:55 -0500
+ id 1rU9H4-0006R3-RD; Sun, 28 Jan 2024 12:48:55 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rU9H1-0000OE-SU; Sun, 28 Jan 2024 12:48:53 -0500
+ id 1rU9H1-0000OH-TL; Sun, 28 Jan 2024 12:48:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BFF10480E9;
- Sun, 28 Jan 2024 20:49:38 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 651E9480EA;
+ Sun, 28 Jan 2024 20:49:39 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 633866D510;
+ by tsrv.corpit.ru (Postfix) with SMTP id E6D636D511;
  Sun, 28 Jan 2024 20:48:47 +0300 (MSK)
-Received: (nullmailer pid 811699 invoked by uid 1000);
+Received: (nullmailer pid 811702 invoked by uid 1000);
  Sun, 28 Jan 2024 17:48:46 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.5 26/36] accel/tcg: Revert mapping of PCREL translation
- block to multiple virtual addresses
-Date: Sun, 28 Jan 2024 20:48:31 +0300
-Message-Id: <20240128174845.811654-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.5 27/36] block/io: clear BDRV_BLOCK_RECURSE flag after
+ recursing in bdrv_co_block_status
+Date: Sun, 28 Jan 2024 20:48:32 +0300
+Message-Id: <20240128174845.811654-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.5-20240128204753@cover.tls.msk.ru>
 References: <qemu-stable-8.1.5-20240128204753@cover.tls.msk.ru>
@@ -60,85 +61,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-This is causing regressions that have not been analyzed yet.  Revert the
-change on stable branches.
+Using fleecing backup like in [0] on a qcow2 image (with metadata
+preallocation) can lead to the following assertion failure:
 
-Cc: qemu-stable@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Related: https://gitlab.com/qemu-project/qemu/-/issues/2092
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> bdrv_co_do_block_status: Assertion `!(ret & BDRV_BLOCK_ZERO)' failed.
+
+In the reproducer [0], it happens because the BDRV_BLOCK_RECURSE flag
+will be set by the qcow2 driver, so the caller will recursively check
+the file child. Then the BDRV_BLOCK_ZERO set too. Later up the call
+chain, in bdrv_co_do_block_status() for the snapshot-access driver,
+the assertion failure will happen, because both flags are set.
+
+To fix it, clear the recurse flag after the recursive check was done.
+
+In detail:
+
+> #0  qcow2_co_block_status
+
+Returns 0x45 = BDRV_BLOCK_RECURSE | BDRV_BLOCK_DATA |
+BDRV_BLOCK_OFFSET_VALID.
+
+> #1  bdrv_co_do_block_status
+
+Because of the data flag, bdrv_co_do_block_status() will now also set
+BDRV_BLOCK_ALLOCATED. Because of the recurse flag,
+bdrv_co_do_block_status() for the bdrv_file child will be called,
+which returns 0x16 = BDRV_BLOCK_ALLOCATED | BDRV_BLOCK_OFFSET_VALID |
+BDRV_BLOCK_ZERO. Now the return value inherits the zero flag.
+
+Returns 0x57 = BDRV_BLOCK_RECURSE | BDRV_BLOCK_DATA |
+BDRV_BLOCK_OFFSET_VALID | BDRV_BLOCK_ALLOCATED | BDRV_BLOCK_ZERO.
+
+> #2  bdrv_co_common_block_status_above
+> #3  bdrv_co_block_status_above
+> #4  bdrv_co_block_status
+> #5  cbw_co_snapshot_block_status
+> #6  bdrv_co_snapshot_block_status
+> #7  snapshot_access_co_block_status
+> #8  bdrv_co_do_block_status
+
+Return value is propagated all the way up to here, where the assertion
+failure happens, because BDRV_BLOCK_RECURSE and BDRV_BLOCK_ZERO are
+both set.
+
+> #9  bdrv_co_common_block_status_above
+> #10 bdrv_co_block_status_above
+> #11 block_copy_block_status
+> #12 block_copy_dirty_clusters
+> #13 block_copy_common
+> #14 block_copy_async_co_entry
+> #15 coroutine_trampoline
+
+[0]:
+
+> #!/bin/bash
+> rm /tmp/disk.qcow2
+> ./qemu-img create /tmp/disk.qcow2 -o preallocation=metadata -f qcow2 1G
+> ./qemu-img create /tmp/fleecing.qcow2 -f qcow2 1G
+> ./qemu-img create /tmp/backup.qcow2 -f qcow2 1G
+> ./qemu-system-x86_64 --qmp stdio \
+> --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/disk.qcow2 \
+> --blockdev qcow2,node-name=node1,file.driver=file,file.filename=/tmp/fleecing.qcow2 \
+> --blockdev qcow2,node-name=node2,file.driver=file,file.filename=/tmp/backup.qcow2 \
+> <<EOF
+> {"execute": "qmp_capabilities"}
+> {"execute": "blockdev-add", "arguments": { "driver": "copy-before-write", "file": "node0", "target": "node1", "node-name": "node3" } }
+> {"execute": "blockdev-add", "arguments": { "driver": "snapshot-access", "file": "node3", "node-name": "snap0" } }
+> {"execute": "blockdev-backup", "arguments": { "device": "snap0", "target": "node1", "sync": "full", "job-id": "backup0" } }
+> EOF
+
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-id: 20240116154839.401030-1-f.ebner@proxmox.com
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+(cherry picked from commit 8a9be7992426c8920d4178e7dca59306a18c7a3a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index c724e8b6f1..d10c8eb956 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -182,7 +182,7 @@ static bool tb_lookup_cmp(const void *p, const void *d)
-     const TranslationBlock *tb = p;
-     const struct tb_desc *desc = d;
- 
--    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->pc) &&
-+    if (tb->pc == desc->pc &&
-         tb_page_addr0(tb) == desc->page_addr0 &&
-         tb->cs_base == desc->cs_base &&
-         tb->flags == desc->flags &&
-@@ -232,7 +232,7 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
-         return NULL;
+diff --git a/block/io.c b/block/io.c
+index 055fcf7438..83d1b1dfdc 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -2585,6 +2585,16 @@ bdrv_co_block_status(BlockDriverState *bs, bool want_zero,
+                 ret |= (ret2 & BDRV_BLOCK_ZERO);
+             }
+         }
++
++        /*
++         * Now that the recursive search was done, clear the flag. Otherwise,
++         * with more complicated block graphs like snapshot-access ->
++         * copy-before-write -> qcow2, where the return value will be propagated
++         * further up to a parent bdrv_co_do_block_status() call, both the
++         * BDRV_BLOCK_RECURSE and BDRV_BLOCK_ZERO flags would be set, which is
++         * not allowed.
++         */
++        ret &= ~BDRV_BLOCK_RECURSE;
      }
-     desc.page_addr0 = phys_pc;
--    h = tb_hash_func(phys_pc, (cflags & CF_PCREL ? 0 : pc),
-+    h = tb_hash_func(phys_pc, pc,
-                      flags, cs_base, cflags);
-     return qht_lookup_custom(&tb_ctx.htable, &desc, h, tb_lookup_cmp);
- }
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 85684f2b3d..5c7a76bf88 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -46,7 +46,7 @@ static bool tb_cmp(const void *ap, const void *bp)
-     const TranslationBlock *a = ap;
-     const TranslationBlock *b = bp;
  
--    return ((tb_cflags(a) & CF_PCREL || a->pc == b->pc) &&
-+    return (a->pc == b->pc &&
-             a->cs_base == b->cs_base &&
-             a->flags == b->flags &&
-             (tb_cflags(a) & ~CF_INVALID) == (tb_cflags(b) & ~CF_INVALID) &&
-@@ -916,7 +916,7 @@ static void do_tb_phys_invalidate(TranslationBlock *tb, bool rm_from_page_list)
- 
-     /* remove the TB from the hash list */
-     phys_pc = tb_page_addr0(tb);
--    h = tb_hash_func(phys_pc, (orig_cflags & CF_PCREL ? 0 : tb->pc),
-+    h = tb_hash_func(phys_pc, tb->pc,
-                      tb->flags, tb->cs_base, orig_cflags);
-     if (!qht_remove(&tb_ctx.htable, tb, h)) {
-         return;
-@@ -983,7 +983,7 @@ TranslationBlock *tb_link_page(TranslationBlock *tb)
-     tb_record(tb);
- 
-     /* add in the hash table */
--    h = tb_hash_func(tb_page_addr0(tb), (tb->cflags & CF_PCREL ? 0 : tb->pc),
-+    h = tb_hash_func(tb_page_addr0(tb), tb->pc,
-                      tb->flags, tb->cs_base, tb->cflags);
-     qht_insert(&tb_ctx.htable, tb, h, &existing_tb);
- 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index b2d4e22c17..678ddeff37 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -326,9 +326,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
- 
-     gen_code_buf = tcg_ctx->code_gen_ptr;
-     tb->tc.ptr = tcg_splitwx_to_rx(gen_code_buf);
--    if (!(cflags & CF_PCREL)) {
--        tb->pc = pc;
--    }
-+    tb->pc = pc;
-     tb->cs_base = cs_base;
-     tb->flags = flags;
-     tb->cflags = cflags;
+ out:
 -- 
 2.39.2
 
