@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5AB83F3D6
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA74C83F3CA
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:43:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0W-0004o9-Au; Sat, 27 Jan 2024 23:43:00 -0500
+	id 1rTx0X-0004oJ-TI; Sat, 27 Jan 2024 23:43:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0U-0004nQ-31
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:58 -0500
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ id 1rTx0W-0004oA-DF
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:00 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0S-0004La-FY
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:57 -0500
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6e11cda9f6fso320121a34.2
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:56 -0800 (PST)
+ id 1rTx0U-0004Ls-Qy
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:00 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-29065efa06fso1553799a91.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416975; x=1707021775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416977; x=1707021777; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s84QwsvJ4FUEfSYgoD2xLjKpOUhTXQHsXWR0Okjxs+g=;
- b=esJ/DG5QHYlz2RF+C3L4+gDhtW4weBNIESMy+VH73gs4fqs3DIiqGV8v1a0MnXenqM
- r01sw0vlhje4nemCojnzakN3R/wtOVIsM5CQVAVRWIP5vHS/vrkHKQjjkARmx19rTtzH
- vSElKnvVTzJcUAg/vtps7NDm3K92HDF7ps3S1h8VDYxTNfr3wYbRRUgDLdMuTRJSSAvk
- s1lHa1EMS5dkZsGDJAUlpSEaHXkVe+XLp1rh2rn4k1GON1AbcJ4fN9YH+qCGixCXfWBL
- LeA7op+40LLJ0cKfp4EeQFzQXxnNGKS2LM6LfAwMsSOod6hJwr/yR6kTIBPc04wutNOO
- 2ZFw==
+ bh=p58dq3BNm1M9yORIAE2cQcXeCTaVjSrZcGgMOspnf2M=;
+ b=FFQcIL8r9e1BzlduKnXMpK2Odl/2g3YabMHMfV/DpnnSRAW1ZYRpzhfq7Mw5AveHwH
+ v4O8952/hjrwNgSFlvkzuiLP+Gsrm4Z2fAtJ9+BGvwyCkNWZPx6reep+kOd2DIME/865
+ SZzfXszBPrz54YeYGlitwcZyOOCb+KCLyJr/EYp33THU0PpA3rrbFc8IPKtqUlK1mB64
+ 2DSEVhzDH/ERcogPQZcu2RVVhlwptj7l934hE9g1L8Rke6vXXF7RXivE3pVGJtMrq8gm
+ vY/D2/5ImmvPrKRVy8qnH44PIh31c9vy+83/d3Gni9MlSmPpPot+IVcL0DYT4kU5kXKv
+ l0kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416975; x=1707021775;
+ d=1e100.net; s=20230601; t=1706416977; x=1707021777;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s84QwsvJ4FUEfSYgoD2xLjKpOUhTXQHsXWR0Okjxs+g=;
- b=oUhPt28u/rNlgUHrnmec/MhZZuHYnbr7+QYOuusVrVN0BOxLwTxCxOQbKGZE+6j07L
- 3uLdI0FSJw97t2vRW4/O29jyilmG9ccsQmP0+Oc/1cxUtaEJrgD+3Kzvmiexh/pjMGBV
- RuBrWHWCJS618n5gMF1L9bM5iFC5FeiluSs6hHffzlbjpaIuQeB3d3KRyf+nqvB2TICd
- tyyo+YL9ahkq/WHq1TyxGEQghsbol7bpvrgRM0l3F1cZJkOnVJis2XkdVS4MaMFfRGS6
- Bel2sYAJhcTVEUPDRDMjO2L9t2756IHSKdHborIXJ718x/VIC77hXTrdBQ5bs1DR7+8Q
- cUUg==
-X-Gm-Message-State: AOJu0YzhjSxeY93QGH+zvwO+0Z1zB3HxqkAdHIV0WuROVeTKAHqBg8AC
- PeqCeGXiSqUCbznDEA55NqXyBuV4sFdRiDWRaFRD8JqqW1/NT9wIyLxzfUyIzBIKvDCzFSxBk0T
- MCfSuBA==
-X-Google-Smtp-Source: AGHT+IFjOJsDxai7Yqjd+IMqWSxpXCgee7cKN31LdGejTnFIbhjTt+jtXs/xsTE4PIV0sYEgB8/RWw==
-X-Received: by 2002:a05:6358:2826:b0:175:7a57:81ed with SMTP id
- k38-20020a056358282600b001757a5781edmr3127610rwb.23.1706416975133; 
- Sat, 27 Jan 2024 20:42:55 -0800 (PST)
+ bh=p58dq3BNm1M9yORIAE2cQcXeCTaVjSrZcGgMOspnf2M=;
+ b=MWPLEWzIS05OMcunCN4hSdZp94iJCJDJn8OF0wlFnbyWLcuWEHI1B9GqF1MBzKm9pD
+ +diRTJzhcuHgTrF3H9+5K20dEgSynFzBuwr2QQZEE+PMXJMgiRyOQ+NbtfrEXHBeLt1/
+ aIA9tbkA2bVNhT56z1ViY/2h7STLszbatX+Z2LYF39w2A0JrMXHhJYw4eTVJ1y5rQqWW
+ AHHJpKj4zgaFRhqbVEbDcjn7vaQy4oxWAMjzahAFDosn/+YTfqDw73R+PhBEMYvBagaf
+ ca4HzSM6KWJH/4MCL0WHpW5vkyKXczY4NFDBNDYIP9LhEZkysZ6eTC/9922j0vkFRFlZ
+ jdVQ==
+X-Gm-Message-State: AOJu0Yxnl+PnIUMKOh4ZhBMehxpXqtEdMWll1Uwz+npWkh7IbaWa9mj1
+ sy5q6jWrVOzuvMJxUDHc6/K+meSItARBBVG7p5Bp1WW2HVmSRG5XDP2MPjDzaFYD0UGTtRG3rlK
+ 3qS7hew==
+X-Google-Smtp-Source: AGHT+IGf3VxO1VhOTznnn69pllVLFyMmg4ojYaF58hz4yLlUxbJX7zc1k3sy4UU7CYZW2yWFLmow4Q==
+X-Received: by 2002:a17:90a:4bc6:b0:290:11a4:ec4b with SMTP id
+ u6-20020a17090a4bc600b0029011a4ec4bmr1603372pjl.61.1706416977455; 
+ Sat, 27 Jan 2024 20:42:57 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.53
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:42:54 -0800 (PST)
+ Sat, 27 Jan 2024 20:42:57 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 15/33] tests/tcg: Add the PROT_NONE gdbstub test
-Date: Sun, 28 Jan 2024 14:41:55 +1000
-Message-Id: <20240128044213.316480-16-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 16/33] accel/tcg/cpu-exec: Use RCU_READ_LOCK_GUARD
+Date: Sun, 28 Jan 2024 14:41:56 +1000
+Message-Id: <20240128044213.316480-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,122 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Make sure that qemu gdbstub, like gdbserver, allows reading from and
-writing to PROT_NONE pages.
+Replace the manual rcu_read_(un)lock calls in cpu_exec().
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240109230808.583012-4-iii@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240124074201.8239-2-philmd@linaro.org>
+[rth: Use RCU_READ_LOCK_GUARD not WITH_RCU_READ_LOCK_GUARD]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tests/tcg/multiarch/prot-none.c          | 40 ++++++++++++++++++++++++
- tests/tcg/multiarch/Makefile.target      |  9 +++++-
- tests/tcg/multiarch/gdbstub/prot-none.py | 22 +++++++++++++
- 3 files changed, 70 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/prot-none.c
- create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
+ accel/tcg/cpu-exec.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tests/tcg/multiarch/prot-none.c b/tests/tcg/multiarch/prot-none.c
-new file mode 100644
-index 0000000000..dc56aadb3c
---- /dev/null
-+++ b/tests/tcg/multiarch/prot-none.c
-@@ -0,0 +1,40 @@
-+/*
-+ * Test that GDB can access PROT_NONE pages.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+void break_here(void *q)
-+{
-+}
-+
-+int main(void)
-+{
-+    long pagesize = sysconf(_SC_PAGESIZE);
-+    void *p, *q;
-+    int err;
-+
-+    p = mmap(NULL, pagesize * 2, PROT_READ | PROT_WRITE,
-+             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    assert(p != MAP_FAILED);
-+    q = p + pagesize - 1;
-+    strcpy(q, "42");
-+
-+    err = mprotect(p, pagesize * 2, PROT_NONE);
-+    assert(err == 0);
-+
-+    break_here(q);
-+
-+    err = mprotect(p, pagesize * 2, PROT_READ);
-+    assert(err == 0);
-+    if (getenv("PROT_NONE_PY")) {
-+        assert(strcmp(q, "24") == 0);
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index d31ba8d6ae..315a2e1358 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -101,13 +101,20 @@ run-gdbstub-registers: sha512
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
- 	checking register enumeration)
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 40c268bfa1..950dad63cb 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1050,7 +1050,7 @@ int cpu_exec(CPUState *cpu)
+         return EXCP_HALTED;
+     }
  
-+run-gdbstub-prot-none: prot-none
-+	$(call run-test, $@, env PROT_NONE_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
-+	accessing PROT_NONE memory)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
--	      run-gdbstub-registers
-+	      run-gdbstub-registers run-gdbstub-prot-none
+-    rcu_read_lock();
++    RCU_READ_LOCK_GUARD();
+     cpu_exec_enter(cpu);
  
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/prot-none.py b/tests/tcg/multiarch/gdbstub/prot-none.py
-new file mode 100644
-index 0000000000..f1f1dd82cb
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/prot-none.py
-@@ -0,0 +1,22 @@
-+"""Test that GDB can access PROT_NONE pages.
-+
-+This runs as a sourced script (via -x, via run-test.py).
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.Breakpoint("break_here")
-+    gdb.execute("continue")
-+    val = gdb.parse_and_eval("*(char[2] *)q").string()
-+    report(val == "42", "{} == 42".format(val))
-+    gdb.execute("set *(char[3] *)q = \"24\"")
-+    gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
+     /*
+@@ -1064,8 +1064,6 @@ int cpu_exec(CPUState *cpu)
+     ret = cpu_exec_setjmp(cpu, &sc);
+ 
+     cpu_exec_exit(cpu);
+-    rcu_read_unlock();
+-
+     return ret;
+ }
+ 
 -- 
 2.34.1
 
