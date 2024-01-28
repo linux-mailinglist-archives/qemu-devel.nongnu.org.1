@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C12E83F3D8
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D9D83F3DA
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:45:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0P-0004lc-8G; Sat, 27 Jan 2024 23:42:53 -0500
+	id 1rTx0Q-0004my-PT; Sat, 27 Jan 2024 23:42:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0M-0004kj-SR
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:50 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1rTx0P-0004mj-0K
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:53 -0500
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0L-0004Ja-CF
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:50 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-290b9f83037so1064998a91.1
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:48 -0800 (PST)
+ id 1rTx0N-0004Jq-9G
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:52 -0500
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-42993124fa1so17148271cf.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416968; x=1707021768; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416970; x=1707021770; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o1cRBtAgGqadhUih0VNs9If35/tfCXiaB3lrOMREblM=;
- b=kYnh0zd0TQiYg0Z6U6BJ80akl4v3ALjHiZGHQlJaeMIVSh3dU6mnQCFmRWQqazty0H
- hvBpeLYTF+aAt778g2KqPSNsYTKW3fIsVVfchUBan7BYxJljeGwPY1recRK2jkarsETM
- q59qVySUNJpny+HiCnWsC1RMEl5YzRM+rsXHJJsOIx3YxI3AVdKBc9jd2q/G+SIVRWa+
- q0IpG2pUkGYH48nAxfUaW/O+X1dEscrRg22t56GkctjRc8eotRl/wbu7jX+gYBtB9fGr
- VbH2rHmXeHV4zjnLniv+bhZ1SAwZUnTz6gqOt63Esv4i7OnUGt9romA511l+Aq8CM0Sj
- 3VcQ==
+ bh=50eKL1UP4eaaSsdfVAm5gMAL4OibGGuLebFEQUtStnM=;
+ b=hg3VOZS1o4Ryc53UNyUCUH1VAsTJ4Z62+DZrcgT1zGGYNv2JD42GCSH1SrC1e0gFAG
+ /g4D3IaEtfYeD4AjtUUbBIGQqv1ij1QgOYYVrb/rY4I8FP9TaKqQnoiSyc50waKu/7CF
+ 0E8ikzFlp/COpowCOjEEVLtfoHKPtZuto64mfz7xzEHDgihPg6cIb8ZWmovv+aR5rijY
+ r7kWGuheyUUSOkb4rkruzf9lG+xxRpg92DWJPP0ZmQqu30nIUwq1GSarjYcTifIwMQiB
+ tIrMrLhU0ngurf4lyLWeKgeLX6CaDDE4VoOUOY9WYR5kflYskKwnBWkjKd2ebZ3znYOb
+ WYKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416968; x=1707021768;
+ d=1e100.net; s=20230601; t=1706416970; x=1707021770;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o1cRBtAgGqadhUih0VNs9If35/tfCXiaB3lrOMREblM=;
- b=rQ+K0s89PD5SWbD1Htrla7VjJOOvmR5CjRijPGvAIkD19YxIz9nWAkkzaIgxo1Wh0G
- 9FjfXLYPrGm8u3MQaZD6uNoNccHpuQEofiV3ZJpTyG6AIenMEKbwvkEDN6jvoW5FumKG
- rJX62uPN21Ao0fvocS40Oo7dq9yX3Sg1rXjDS861lgj+J1ZERtadFkdDWoqHXgkKRqVh
- NMkfjOcobdXr8xtjhICIt5Drw1lXn6aQc8MqVX7wItTEEaB3Ys6xwjpmMcfUV0LRGRfa
- a1HoHXUwEL93fdhN9ixHfv+R5HlWJHhjY6DXOqlYYQ75badGMT/nk6KWnyDFBFiBRJ+Y
- 4FYQ==
-X-Gm-Message-State: AOJu0YxfsFf65wSUYBGhd5cE/Y3GkZbTc8M0Gj5ACZgG4lmfM2HDr8t3
- Bteb3Tj0CObfzWW4u34KpkVGTXJRtMmtO+/+Oc+7Qmtr5vSi8ZRfRfhC/IouIyXOW7w0p7NmPRo
- kel05tg==
-X-Google-Smtp-Source: AGHT+IEijjP8ZPixMaWeIou+bNJAqOExYJCOmhVTN94HZ3VJpWf5ca85o/beBWx4yai3j2f3fsKxWw==
-X-Received: by 2002:a17:90b:1e05:b0:28d:afe2:1013 with SMTP id
- pg5-20020a17090b1e0500b0028dafe21013mr2662049pjb.34.1706416968059; 
- Sat, 27 Jan 2024 20:42:48 -0800 (PST)
+ bh=50eKL1UP4eaaSsdfVAm5gMAL4OibGGuLebFEQUtStnM=;
+ b=q2l9mTyFlM4bL0Ae+tZiJJS3oZZ356Tr/eLU+56RWpvzY//8BR7UBl39kW3I9XUKxS
+ F7M39m8GV9FkJRcQbxhyUdWdfE9JHDwLEiY4wCG8Hin9H6yYibC+ZinBfRndGUyzcPQo
+ pVMxW4A7JGyCYS31WJheo+pZOd73JG1ToSH3QWbNF/A3QFXSX4mhpMtEztsp3VD+kiAv
+ oxcW/yjifcQBQ1kJo+GQit7vfsaeJCOLrQpYnChmog+oYW/DELWsCC4+MyiQuby2EZBZ
+ wKzM+kYITMvg9Ur4orKjBGLawB3INtsJhwchxsViS6dTdlSYTJ9hQJSsZeyHcK25SEZW
+ dU0g==
+X-Gm-Message-State: AOJu0YwlgrAtDQPxuI4ux+WU0Bm3lmHhYxa5zbTA8ILKARGm6lik+iUk
+ Tl9Cp9KdnoeMlI7PU3VNmwv7hp8qUyRX+RXE9fHKujBsRpXt9DP8hjq61t49tonumIXr3jfFnpF
+ vrhd2Jw==
+X-Google-Smtp-Source: AGHT+IGyW1LUPib3EQWfTd+FngMbcPzvs0CSNrLwSkTzui9Re7Tjv+TTgB++thF7EkeqHNu98tuBGw==
+X-Received: by 2002:ac8:5795:0:b0:42a:85b1:9be2 with SMTP id
+ v21-20020ac85795000000b0042a85b19be2mr3867274qta.83.1706416970383; 
+ Sat, 27 Jan 2024 20:42:50 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.46
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:42:47 -0800 (PST)
+ Sat, 27 Jan 2024 20:42:50 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 12/33] include/hw/core: Remove i386 conditional on
- fake_user_interrupt
-Date: Sun, 28 Jan 2024 14:41:52 +1000
-Message-Id: <20240128044213.316480-13-richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 13/33] linux-user: Allow gdbstub to ignore page protection
+Date: Sun, 28 Jan 2024 14:41:53 +1000
+Message-Id: <20240128044213.316480-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,43 +93,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Always include fake_user_interrupt in user-only build, despite
-only being used for i386.  This will enable cpu-exec.c to be
-compiled only once.
+gdbserver ignores page protection by virtue of using /proc/$pid/mem.
+Teach qemu gdbstub to do this too. This will not work if /proc is not
+mounted; accept this limitation.
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-ID: <20240119144024.14289-18-anjo@rev.ng>
-[rth: Split out of a larger patch; remove TARGET_I386 conditional.]
+One alternative is to temporarily grant the missing PROT_* bit, but
+this is inherently racy. Another alternative is self-debugging with
+ptrace(POKE), which will break if QEMU itself is being debugged - a
+much more severe limitation.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240109230808.583012-2-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/tcg-cpu-ops.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ cpu-target.c | 76 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 61 insertions(+), 15 deletions(-)
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index d6fe55d471..3ed279836f 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -50,7 +50,7 @@ struct TCGCPUOps {
-     void (*debug_excp_handler)(CPUState *cpu);
+diff --git a/cpu-target.c b/cpu-target.c
+index f6e07c3deb..c4e2169ab1 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -382,6 +382,9 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+     vaddr l, page;
+     void * p;
+     uint8_t *buf = ptr;
++    ssize_t written;
++    int ret = -1;
++    int fd = -1;
  
- #ifdef NEED_CPU_H
--#if defined(CONFIG_USER_ONLY) && defined(TARGET_I386)
-+#ifdef CONFIG_USER_ONLY
-     /**
-      * @fake_user_interrupt: Callback for 'fake exception' handling.
-      *
-@@ -58,8 +58,7 @@ struct TCGCPUOps {
-      * cpu execution loop (hack for x86 user mode).
-      */
-     void (*fake_user_interrupt)(CPUState *cpu);
--#endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
--#ifdef CONFIG_USER_ONLY
-+
-     /**
-      * record_sigsegv:
-      * @cpu: cpu context
+     while (len > 0) {
+         page = addr & TARGET_PAGE_MASK;
+@@ -389,30 +392,73 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+         if (l > len)
+             l = len;
+         flags = page_get_flags(page);
+-        if (!(flags & PAGE_VALID))
+-            return -1;
++        if (!(flags & PAGE_VALID)) {
++            goto out_close;
++        }
+         if (is_write) {
+-            if (!(flags & PAGE_WRITE))
+-                return -1;
++            if (flags & PAGE_WRITE) {
++                /* XXX: this code should not depend on lock_user */
++                p = lock_user(VERIFY_WRITE, addr, l, 0);
++                if (!p) {
++                    goto out_close;
++                }
++                memcpy(p, buf, l);
++                unlock_user(p, addr, l);
++            } else {
++                /* Bypass the host page protection using ptrace. */
++                if (fd == -1) {
++                    fd = open("/proc/self/mem", O_WRONLY);
++                    if (fd == -1) {
++                        goto out;
++                    }
++                }
++                /*
++                 * If there is a TranslationBlock and we weren't bypassing the
++                 * host page protection, the memcpy() above would SEGV,
++                 * ultimately leading to page_unprotect(). So invalidate the
++                 * translations manually. Both invalidation and pwrite() must
++                 * be under mmap_lock() in order to prevent the creation of
++                 * another TranslationBlock in between.
++                 */
++                mmap_lock();
++                tb_invalidate_phys_range(addr, addr + l - 1);
++                written = pwrite(fd, buf, l, (off_t)g2h_untagged(addr));
++                mmap_unlock();
++                if (written != l) {
++                    goto out_close;
++                }
++            }
++        } else if (flags & PAGE_READ) {
+             /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
+-                return -1;
+-            memcpy(p, buf, l);
+-            unlock_user(p, addr, l);
+-        } else {
+-            if (!(flags & PAGE_READ))
+-                return -1;
+-            /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_READ, addr, l, 1)))
+-                return -1;
++            p = lock_user(VERIFY_READ, addr, l, 1);
++            if (!p) {
++                goto out_close;
++            }
+             memcpy(buf, p, l);
+             unlock_user(p, addr, 0);
++        } else {
++            /* Bypass the host page protection using ptrace. */
++            if (fd == -1) {
++                fd = open("/proc/self/mem", O_RDONLY);
++                if (fd == -1) {
++                    goto out;
++                }
++            }
++            if (pread(fd, buf, l, (off_t)g2h_untagged(addr)) != l) {
++                goto out_close;
++            }
+         }
+         len -= l;
+         buf += l;
+         addr += l;
+     }
+-    return 0;
++    ret = 0;
++out_close:
++    if (fd != -1) {
++        close(fd);
++    }
++out:
++    return ret;
+ }
+ #endif
+ 
 -- 
 2.34.1
 
