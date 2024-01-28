@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470C583F3D4
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5742E83F3DF
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:46:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0h-0004q3-PX; Sat, 27 Jan 2024 23:43:11 -0500
+	id 1rTx0i-0004qW-HT; Sat, 27 Jan 2024 23:43:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0f-0004pa-62
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:09 -0500
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+ id 1rTx0h-0004q4-Bu
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:11 -0500
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0d-0004Mj-I7
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:08 -0500
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-2954b34ddd0so313513a91.0
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:07 -0800 (PST)
+ id 1rTx0f-0004Ms-TM
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:11 -0500
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-59a146e8c85so791257eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416986; x=1707021786; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416989; x=1707021789; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4bfmq9Mg4HxfU53OW0oPle9hQIH8zXg09YsWAHRVD1c=;
- b=oMOjDl1Ybii2UF44Dm/KozkbX7FzH7gGHCmdhoMEX+qVtm0heOxFuhKKJaI7+9WfnC
- lS72teZ0eoHA3J9gQF5/eI7stMwXmmO8fa5cUAuYgIqM7YSyXA3oGqM6qcL4FUvanL61
- NIgA9b95GszQW2He8pGtxkrYrY6kIHlri8W7+SmSBqzi+p8ys0zK6qa/eLXLKH5Ku7bi
- xI8BI2H0FjYjOqijbi0NppGfkNmFGnlw7+JWt8sI5u5IBp9KwW+Eq7HohP04+lZCLiZ5
- e+ISyNyY+UGV+55fBu5JozAg2ka8GEsromGvzYPSlQ+5PdQVQL05reUub5BdoMuLTXvo
- dfDg==
+ bh=TByYFDCUWCaxnnHjASz8MJMk4paFqdDSnL+kqN7t/Zk=;
+ b=eXVbQFpA+LwlZFCaBQFGeO7sBbwOFpHC+n0fqfHlnsGsrCQorVgeKYt3/KczxMixdM
+ wrGi1d7xPh+MwKQoMQ5pMDYBOFBxUf/fHe/PAInQdvqZbJJveiEITSnUPZ3mfoDbQyMG
+ QCsjiT5ljWld1z3cHeLY7fQTlxMUlsFqlJ01CzyBYlP3YDsOcRdkf632C1oJjeS5j41m
+ G2zo3xWKbK5bmPbcMmvEgHp8THlNXwMiAQX/+e9mZivYEZxn5/7bjvL0FMVtvXgmqYkO
+ pDZTaWEueUb+0ANvDCulyAlqORr65MSCizDjhb5CC7z44OW4276hLB//cC4PibsgNKEb
+ eYCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416986; x=1707021786;
+ d=1e100.net; s=20230601; t=1706416989; x=1707021789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4bfmq9Mg4HxfU53OW0oPle9hQIH8zXg09YsWAHRVD1c=;
- b=ohVB4dBx5oaGGSXeehQRr2UJG+jQOlQR4pYw9ax2V/rZiKprMZiFqztv6njvhwfaZr
- S1wKbLKX/jU8XmRjKmlSBhNy9hWeP/Ty3qHOsHUQfha0ijSGN6BCTWPG/tedXB2C1zV0
- 38OQog4xxn90Ln+zSl9PpbYao9SW/GytZaj2gNpNXVhafqloDZ3/GwrmkgLo2dBGnFGT
- o5QUb1gDxaxsAhZTJT8u0/miuoj9NKXS7CHUY2FrE9v4DYPeXQ9wqhdF3RMB3wbheq/G
- gopRWq6BbKa56gIppjpxN6FUV/ewXk4E6bmbea7EXw4m8wrkYl1HEGbXNVhp/yN4t2S9
- rpxA==
-X-Gm-Message-State: AOJu0Yxx2jQBmp1PNxhDsYruxKUT0CaiYkTxEoGiqBjA/GowAz26k96n
- IuyLg50mJTcs/Elviin261UNckMqS2/cC30Qjqdhn1zBIJHOipi97AnPpldZ+89runCSslmkxxx
- SYWKSvA==
-X-Google-Smtp-Source: AGHT+IHSxmkYaNVW+tpEbBadq3HejzPPH+5J3zGBjk1wnyNuIc2YhbpnYA07N2z1bjKPMr+aTtLaAg==
-X-Received: by 2002:a17:902:b48d:b0:1d7:323e:f362 with SMTP id
- y13-20020a170902b48d00b001d7323ef362mr2525328plr.120.1706416986320; 
- Sat, 27 Jan 2024 20:43:06 -0800 (PST)
+ bh=TByYFDCUWCaxnnHjASz8MJMk4paFqdDSnL+kqN7t/Zk=;
+ b=UsSrDRgdVtNrp6lWlo+EOKnp8scB87+c2gHEgDQvkKLtn7oHST8quLMTHDaFlnMLCT
+ MAErvj5zGoLJaVM/CmN+QK8AQ8+fKwYeTR+sMYPjo+JrLRk+NaQzfpcnYhcoR4MwzzSa
+ SAdtyNUewBcEGJ4SKjM74JIlZBU8tpeuYAIfFTvi7ksTLYqrWjs9Z9Q4VHcixZI/AXSg
+ 40N+Fld5kpTOMnJuDsfdcZGzuf+T4DcM69nWOXl9VDyd2eXaTA2kITowPcGWAkatsurC
+ NoWpQSY0M2zI0CgQwj01snN0b/cMlO/L0hBcLBe1BEO5ZFGC/dz0eEVD9nBTdzpa86ac
+ m2kA==
+X-Gm-Message-State: AOJu0YwFHCfr1LkDdYN6A3OzvA0g+ix0uNW9Ydq3zL6OznsnSvRus8qX
+ yzFHDU7aspjK0EGMawzMDM33dzdETwCIxN9sOdevW070nkUY85YfiE4GmW6TwNTfzsW2h1OmVDY
+ /2j3MGQ==
+X-Google-Smtp-Source: AGHT+IEGpw6L5swsr+ZUjpZfyryp3qm5R51U2sJW0Yl9+Ko5BkDSoHjb+W9SM5aSwGMBgov3iRSJUQ==
+X-Received: by 2002:a05:6358:7e9a:b0:175:cc50:56dc with SMTP id
+ o26-20020a0563587e9a00b00175cc5056dcmr3369287rwn.58.1706416988777; 
+ Sat, 27 Jan 2024 20:43:08 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.03
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:43:05 -0800 (PST)
+ Sat, 27 Jan 2024 20:43:08 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 19/33] tcg: Make tb_cflags() usable from target-agnostic code
-Date: Sun, 28 Jan 2024 14:41:59 +1000
-Message-Id: <20240128044213.316480-20-richard.henderson@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 20/33] accel/tcg: Remove #ifdef TARGET_I386 from perf.c
+Date: Sun, 28 Jan 2024 14:42:00 +1000
+Message-Id: <20240128044213.316480-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,52 +97,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Currently tb_cflags() is defined in exec-all.h, which is not usable
-from target-agnostic code. Move it to translation-block.h, which is.
+Preparation for moving perf.c to tcg/.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This affects only profiling guest code, which has code in a non-0 based
+segment, e.g., 16-bit code, which is not particularly important.
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20231212003837.64090-3-iii@linux.ibm.com>
-Message-Id: <20240125054631.78867-3-philmd@linaro.org>
+Message-ID: <20231212003837.64090-4-iii@linux.ibm.com>
+Message-Id: <20240125054631.78867-4-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/exec-all.h          | 6 ------
- include/exec/translation-block.h | 6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ accel/tcg/perf.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index df3d93a2e2..ce36bb10d4 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -459,12 +459,6 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
- 
- #endif
- 
--/* Hide the qatomic_read to make code a little easier on the eyes */
--static inline uint32_t tb_cflags(const TranslationBlock *tb)
--{
--    return qatomic_read(&tb->cflags);
--}
--
- static inline tb_page_addr_t tb_page_addr0(const TranslationBlock *tb)
- {
- #ifdef CONFIG_USER_ONLY
-diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-index e2b26e16da..48211c890a 100644
---- a/include/exec/translation-block.h
-+++ b/include/exec/translation-block.h
-@@ -145,4 +145,10 @@ struct TranslationBlock {
- /* The alignment given to TranslationBlock during allocation. */
- #define CODE_GEN_ALIGN  16
- 
-+/* Hide the qatomic_read to make code a little easier on the eyes */
-+static inline uint32_t tb_cflags(const TranslationBlock *tb)
-+{
-+    return qatomic_read(&tb->cflags);
-+}
-+
- #endif /* EXEC_TRANSLATION_BLOCK_H */
+diff --git a/accel/tcg/perf.c b/accel/tcg/perf.c
+index ba75c1bbe4..68a46b1b52 100644
+--- a/accel/tcg/perf.c
++++ b/accel/tcg/perf.c
+@@ -337,10 +337,6 @@ void perf_report_code(uint64_t guest_pc, TranslationBlock *tb,
+         q[insn].address = gen_insn_data[insn * start_words + 0];
+         if (tb_cflags(tb) & CF_PCREL) {
+             q[insn].address |= (guest_pc & qemu_target_page_mask());
+-        } else {
+-#if defined(TARGET_I386)
+-            q[insn].address -= tb->cs_base;
+-#endif
+         }
+         q[insn].flags = DEBUGINFO_SYMBOL | (jitdump ? DEBUGINFO_LINE : 0);
+     }
 -- 
 2.34.1
 
