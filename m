@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CC783F3C8
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A0383F3D5
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:44:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTwzx-0004db-1e; Sat, 27 Jan 2024 23:42:25 -0500
+	id 1rTwzz-0004dm-0o; Sat, 27 Jan 2024 23:42:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTwzu-0004Xd-QO
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:22 -0500
-Received: from mail-qv1-xf33.google.com ([2607:f8b0:4864:20::f33])
+ id 1rTwzx-0004de-CD
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:25 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTwzs-0004Ej-J1
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:22 -0500
-Received: by mail-qv1-xf33.google.com with SMTP id
- 6a1803df08f44-68196a09e2eso14917746d6.3
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:19 -0800 (PST)
+ id 1rTwzv-0004FP-CV
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:25 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d8a66a2976so16568165ad.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416939; x=1707021739; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=q1jwjqm7l9h5DBFAY4dReFeQ1iAcBWZLYF0/hKu249Q=;
- b=Ol0goO2T3F838U12aICxCm/0ANAYRkVDpYSFhxVp/fowWC+nfpb5JUgjtuHDQ0QF8y
- VES3OvslGY9XJf+IRBaGSYQQoOO1krUHXllGQ9bZosmA8KoMhl8FwbRdFHl7w1VHrDRX
- gfig2mpDexR/I7qRNZRVi3Xq7wgeIoL24jcOSdNxbSgXJfiw6inXpLYe35CfqAbfOZPJ
- pbZQkN6m1FSwMmLJOJ6lH84s63o/muh/cSm61bY4P7iwm2imajhwGyiglbt97YQtXqGO
- fk+5R7hm+1DPSGCru8JItaistZN5YGKnV2qWlQEYCwYIw9pzFux7SpCJoVmDOT/j2/MX
- 9I5g==
+ d=linaro.org; s=google; t=1706416942; x=1707021742; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qYS/soxWe3h+ML5uFbbfcdAcoE+eOI+G62ajUSGtp3A=;
+ b=NV03rp4b5mca3d5+wtx2dlG+sEm8M5fPIhm0xpVxRB2sT0bV1gHbxeS1Kg1HUMamv4
+ KmzLSZQ2TSwcN8cPt13X3hpUTAjLJgG5DKMQOlkg/9nIaV7ozNoLmW3PGPWdyU+3shKW
+ VoHTbxYISyx6yukFYNynYfpcTpMGkm9Iule9rfdS0bk+X3Hu/TaFH4UqFwWkZESXcUBr
+ YbxMfGffC3f6grFvu7qHxbFKXVhDNWuZG4zODVWfQ9fRGv3CGILQX651QOuQyMz5lXKP
+ HPFhxD6yI7D5VFbECD64Ond0r9/G0J72KOtq8saRUVsMju7Nbh9Z40M27NDT+ts0mVEZ
+ XQdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416939; x=1707021739;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q1jwjqm7l9h5DBFAY4dReFeQ1iAcBWZLYF0/hKu249Q=;
- b=uwBj/goODgX1KK6sYoCBS7lEeCatjyhFl02oVEa43GTUcPWoZqa2gNbbycU2MzCP2I
- sE0EuoOOUeNu0OVaLGenXSJjBA+cB07BiDfyvgfwR8/e03ze+IiWe10DiciRLfo60z3L
- 5k5QMowRIwa3EKSTqQTc5eww9tAOd1qssBlP8pYgcZhG5tH4Ofa3C+z+kWITEwbIc2p+
- jD1itzamvRsgoCCn5KmimnFNemE+4IPcV2zXPbFc52Ne46PFcY2zzqwfd666Q+LMxrbP
- josWYZAHcozjBWyYvdXO1iKdkPWFBGFbSK8F9TjE3z4yY1Qq1iegUgPNJ7gJI1D8a+M+
- xBBw==
-X-Gm-Message-State: AOJu0YxVEnVpWBZV35BGnTeggnpHUaqozwo4u+oz0r6471oWoHgcFCOA
- qOu1eYHIA+wBh3aocCN6MgLiw1xuVWBp9sCpAJxJZZw+Jyuguj0bAh5xoamHnGETADqJyRrqGmn
- p+p7Heg==
-X-Google-Smtp-Source: AGHT+IGMnRCqzlT116PwdOK9KhZj35iIsRjtIqu8qN8rJ6eNoQoap57ZzjD+AFlrTTuPRdzGSZiY2A==
-X-Received: by 2002:ad4:5ec8:0:b0:680:c76b:2bd4 with SMTP id
- jm8-20020ad45ec8000000b00680c76b2bd4mr4088401qvb.131.1706416939200; 
- Sat, 27 Jan 2024 20:42:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706416942; x=1707021742;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qYS/soxWe3h+ML5uFbbfcdAcoE+eOI+G62ajUSGtp3A=;
+ b=HB/e4ZDDITxowWQGGaBPmk31/mUOUBJW93Dn5u3nQkug679cjUzAYWatzeIUh1O8iL
+ Jxu/OIeAKCM2Ptc+QoXBxZqdi3eWanP+k23/3qHepHvhNT2LIsGD9VLtRneZz0miqYIi
+ ryaPRl+Ds6LHAOoxJ1F06PvyBUKVAoScjnfWMyL+uOUYxJzT23DJoYbgiMk6ewVAVCJR
+ el4LPtDrdKdHG14RRyEZexLnOccegx0BXDHy8tXDmU07Uct3A3+WBt+HqBD1Z+YDVRVE
+ 02CYU9XGfAgmedlukWU5Gf10Y0KVy93F0lQsVhjynJa6tLWuyh102S03zfw1qNjhODzD
+ pGmg==
+X-Gm-Message-State: AOJu0YzF3nPV5rEoQi7JuwpvPXfH2DZr6BXWBsKvyUr9BS+TxdfY8s+Z
+ 6Oa28IZGQrB9zxJaRVLlfDRHY0PovXnWohVq+2+kF1o1sKN//BmVzwds1rZrLD8mvL3O5zPNxXo
+ iUdA=
+X-Google-Smtp-Source: AGHT+IEtpG0xYW2IvKMcsCluwn6z8i/pAYdzzp3E1QPXpfLDngjMOcm0qyzKJzji3XignqEFUT3dDw==
+X-Received: by 2002:a17:902:e84b:b0:1d8:d71b:8801 with SMTP id
+ t11-20020a170902e84b00b001d8d71b8801mr119288plg.54.1706416941824; 
+ Sat, 27 Jan 2024 20:42:21 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.17
- for <qemu-devel@nongnu.org>
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:42:18 -0800 (PST)
+ Sat, 27 Jan 2024 20:42:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/33] tcg patch queue, pre-pull
-Date: Sun, 28 Jan 2024 14:41:40 +1000
-Message-Id: <20240128044213.316480-1-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH 01/33] cpu-exec: simplify jump cache management
+Date: Sun, 28 Jan 2024 14:41:41 +1000
+Message-Id: <20240128044213.316480-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
+References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f33;
- envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,194 +95,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Collect some patch sets, cherry-pick from others, with a few
-changes of my own.  Patches that lack review:
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-  26-include-qemu-Add-TCGCPUOps-typedef-to-typedefs.h.patch
-  27-target-loongarch-Constify-loongarch_tcg_ops.patch
-  28-accel-tcg-Use-CPUState.cc-instead-of-CPU_GET_CLASS-i.patch
-  31-accel-tcg-Inline-need_replay_interrupt.patch
+Unless I'm missing something egregious, the jmp cache is only every
+populated with a valid entry by the same thread that reads the cache.
+Therefore, the contents of any valid entry are always consistent and
+there is no need for any acquire/release magic.
 
+Indeed ->tb has to be accessed with atomics, because concurrent
+invalidations would otherwise cause data races.  But ->pc is only ever
+accessed by one thread, and accesses to ->tb and ->pc within tb_lookup
+can never race with another tb_lookup.  While the TranslationBlock
+(especially the flags) could be modified by a concurrent invalidation,
+store-release and load-acquire operations on the cache entry would
+not add any additional ordering beyond what you get from performing
+the accesses within a single thread.
 
-r~
+Because of this, there is really nothing to win in splitting the CF_PCREL
+and !CF_PCREL paths.  It is easier to just always use the ->pc field in
+the jump cache.
 
+I noticed this while working on splitting commit 8ed558ec0cb
+("accel/tcg: Introduce TARGET_TB_PCREL", 2022-10-04) into multiple
+pieces, for the sake of finding a more fine-grained bisection
+result for https://gitlab.com/qemu-project/qemu/-/issues/2092.
+It does not (and does not intend to) fix that issue; therefore
+it may make sense to not commit it until the root cause
+of issue #2092 is found.
 
-Anton Johansson (11):
-  include/exec: Move vaddr defines to separate file
-  hw/core: Include vaddr.h from cpu.h
-  target: Use vaddr in gen_intermediate_code
-  include/exec: Use vaddr in DisasContextBase for virtual addresses
-  include/exec: typedef abi_ptr to vaddr
-  target: Uninline cpu_mmu_index()
-  target: Uninline cpu_get_tb_cpu_state()
-  include/exec: Move PAGE_* macros to common header
-  include/exec: Move cpu_*()/cpu_env() to common header
-  include/hw/core: Move do_interrupt in TCGCPUOps
-  include/hw/core: Remove i386 conditional on fake_user_interrupt
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240122153409.351959-1-pbonzini@redhat.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/tb-jmp-cache.h |  8 +++--
+ accel/tcg/cpu-exec.c     | 66 ++++++++++++++--------------------------
+ 2 files changed, 28 insertions(+), 46 deletions(-)
 
-Ilya Leoshkevich (8):
-  linux-user: Allow gdbstub to ignore page protection
-  tests/tcg: Factor out gdbstub test functions
-  tests/tcg: Add the PROT_NONE gdbstub test
-  target: Make qemu_target_page_mask() available for *-user
-  accel/tcg: Make use of qemu_target_page_mask() in perf.c
-  tcg: Make tb_cflags() usable from target-agnostic code
-  accel/tcg: Remove #ifdef TARGET_I386 from perf.c
-  accel/tcg: Move perf and debuginfo support to tcg/
-
-Paolo Bonzini (1):
-  cpu-exec: simplify jump cache management
-
-Philippe Mathieu-Daudé (9):
-  accel/tcg/cpu-exec: Use RCU_READ_LOCK_GUARD
-  accel/tcg: Rename tcg_ss[] -> tcg_specific_ss[] in meson
-  accel/tcg: Rename tcg_cpus_destroy() -> tcg_cpu_destroy()
-  accel/tcg: Rename tcg_cpus_exec() -> tcg_cpu_exec()
-  accel/tcg: Un-inline icount_exit_request() for clarity
-  accel/tcg: Introduce TCGCPUOps::need_replay_interrupt() handler
-  target/i386: Extract x86_need_replay_interrupt() from accel/tcg/
-  accel/tcg: Introduce TCGCPUOps::cpu_exec_halt() handler
-  target/i386: Extract x86_cpu_exec_halt() from accel/tcg/
-
-Richard Henderson (4):
-  include/qemu: Add TCGCPUOps typedef to typedefs.h
-  target/loongarch: Constify loongarch_tcg_ops
-  accel/tcg: Use CPUState.cc instead of CPU_GET_CLASS in cpu-exec.c
-  accel/tcg: Inline need_replay_interrupt
-
- accel/tcg/tb-jmp-cache.h                      |   8 +-
- accel/tcg/tcg-accel-ops.h                     |   4 +-
- include/exec/cpu-all.h                        |  49 ----
- include/exec/cpu-common.h                     |  82 ++++++-
- include/exec/cpu_ldst.h                       |   4 +-
- include/exec/exec-all.h                       |   6 -
- include/exec/translation-block.h              |   6 +
- include/exec/translator.h                     |   8 +-
- include/exec/vaddr.h                          |  18 ++
- include/hw/core/cpu.h                         |   7 +-
- include/hw/core/tcg-cpu-ops.h                 |  19 +-
- include/qemu/typedefs.h                       |   1 +
- {accel => include}/tcg/debuginfo.h            |   4 +-
- {accel => include}/tcg/perf.h                 |   4 +-
- target/alpha/cpu.h                            |  20 --
- target/arm/cpu.h                              |  16 --
- target/avr/cpu.h                              |  25 --
- target/cris/cpu.h                             |  14 --
- target/hexagon/cpu.h                          |  21 --
- target/hppa/cpu.h                             |  55 -----
- target/i386/cpu.h                             |  21 --
- target/i386/tcg/helper-tcg.h                  |   2 +
- target/loongarch/cpu.h                        |  24 --
- target/m68k/cpu.h                             |  20 --
- target/microblaze/cpu.h                       |  23 --
- target/mips/cpu.h                             |  14 --
- target/mips/tcg/translate.h                   |   3 +-
- target/nios2/cpu.h                            |  18 --
- target/openrisc/cpu.h                         |  22 --
- target/ppc/cpu.h                              |  21 --
- target/riscv/cpu.h                            |   6 -
- target/rx/cpu.h                               |  14 --
- target/s390x/cpu.h                            |  55 -----
- target/sh4/cpu.h                              |  25 --
- target/sparc/cpu.h                            |  61 -----
- target/tricore/cpu.h                          |  17 --
- target/xtensa/cpu.h                           |  73 ------
- accel/tcg/cpu-exec.c                          | 223 ++++++++----------
- accel/tcg/tcg-accel-ops-mttcg.c               |   4 +-
- accel/tcg/tcg-accel-ops-rr.c                  |   4 +-
- accel/tcg/tcg-accel-ops.c                     |   4 +-
- accel/tcg/translate-all.c                     |   2 +-
- bsd-user/signal.c                             |   4 +-
- cpu-target.c                                  |  76 ++++--
- hw/core/loader.c                              |   2 +-
- linux-user/elfload.c                          |   2 +-
- linux-user/exit.c                             |   2 +-
- linux-user/main.c                             |   2 +-
- linux-user/signal.c                           |   4 +-
- system/physmem.c                              |   5 -
- system/vl.c                                   |   2 +-
- target/alpha/cpu.c                            |  21 +-
- target/alpha/translate.c                      |   2 +-
- target/arm/cpu.c                              |   7 +-
- target/arm/tcg/cpu32.c                        |   2 +-
- target/arm/tcg/translate.c                    |   2 +-
- target/avr/cpu.c                              |  25 +-
- target/avr/translate.c                        |   2 +-
- target/cris/cpu.c                             |  18 +-
- target/cris/translate.c                       |   2 +-
- target/hexagon/cpu.c                          |  23 +-
- target/hexagon/translate.c                    |   5 +-
- target/hppa/cpu.c                             |  57 ++++-
- target/hppa/translate.c                       |   2 +-
- target/i386/cpu.c                             |  21 ++
- target/i386/tcg/sysemu/seg_helper.c           |  23 ++
- target/i386/tcg/tcg-cpu.c                     |   4 +-
- target/i386/tcg/translate.c                   |   2 +-
- target/loongarch/cpu.c                        |  26 +-
- target/loongarch/tcg/translate.c              |   2 +-
- target/m68k/cpu.c                             |  23 +-
- target/m68k/translate.c                       |   4 +-
- target/microblaze/cpu.c                       |  25 +-
- target/microblaze/translate.c                 |   2 +-
- target/mips/cpu.c                             |  16 +-
- target/mips/tcg/translate.c                   |  14 +-
- target/nios2/cpu.c                            |  20 +-
- target/nios2/translate.c                      |   2 +-
- target/openrisc/cpu.c                         |  24 +-
- target/openrisc/translate.c                   |   2 +-
- target/ppc/cpu.c                              |   9 +
- target/ppc/cpu_init.c                         |   2 +-
- target/ppc/helper_regs.c                      |  17 +-
- target/ppc/translate.c                        |   2 +-
- target/riscv/cpu_helper.c                     |   2 +-
- target/riscv/tcg/tcg-cpu.c                    |   2 +-
- target/riscv/translate.c                      |   2 +-
- target/rx/cpu.c                               |  16 +-
- target/rx/translate.c                         |   2 +-
- target/s390x/cpu.c                            |  55 ++++-
- target/s390x/tcg/translate.c                  |   2 +-
- target/sh4/cpu.c                              |  30 ++-
- target/sh4/translate.c                        |   2 +-
- target/sparc/cpu.c                            |  63 ++++-
- target/sparc/translate.c                      |   2 +-
- target/target-common.c                        |  10 +
- target/tricore/cpu.c                          |  19 +-
- target/tricore/translate.c                    |   2 +-
- target/xtensa/cpu.c                           |  74 +++++-
- target/xtensa/translate.c                     |   2 +-
- {accel/tcg => tcg}/debuginfo.c                |   3 +-
- {accel/tcg => tcg}/perf.c                     |  14 +-
- tcg/tcg.c                                     |   2 +-
- tests/tcg/multiarch/prot-none.c               |  40 ++++
- accel/tcg/meson.build                         |  16 +-
- target/meson.build                            |   2 +
- tcg/meson.build                               |   5 +
- tests/guest-debug/run-test.py                 |   7 +-
- tests/guest-debug/test_gdbstub.py             |  56 +++++
- tests/tcg/aarch64/gdbstub/test-sve-ioctl.py   |  34 +--
- tests/tcg/aarch64/gdbstub/test-sve.py         |  33 +--
- tests/tcg/multiarch/Makefile.target           |   9 +-
- tests/tcg/multiarch/gdbstub/interrupt.py      |  47 +---
- tests/tcg/multiarch/gdbstub/memory.py         |  39 +--
- tests/tcg/multiarch/gdbstub/prot-none.py      |  22 ++
- tests/tcg/multiarch/gdbstub/registers.py      |  41 +---
- tests/tcg/multiarch/gdbstub/sha1.py           |  38 +--
- .../multiarch/gdbstub/test-proc-mappings.py   |  39 +--
- .../multiarch/gdbstub/test-qxfer-auxv-read.py |  37 +--
- .../gdbstub/test-thread-breakpoint.py         |  37 +--
- tests/tcg/s390x/gdbstub/test-signals-s390x.py |  42 +---
- tests/tcg/s390x/gdbstub/test-svc.py           |  39 +--
- 122 files changed, 1117 insertions(+), 1304 deletions(-)
- create mode 100644 include/exec/vaddr.h
- rename {accel => include}/tcg/debuginfo.h (96%)
- rename {accel => include}/tcg/perf.h (95%)
- create mode 100644 target/target-common.c
- rename {accel/tcg => tcg}/debuginfo.c (98%)
- rename {accel/tcg => tcg}/perf.c (97%)
- create mode 100644 tests/tcg/multiarch/prot-none.c
- create mode 100644 tests/guest-debug/test_gdbstub.py
- create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
-
+diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
+index bb424c8a05..4ab8553afc 100644
+--- a/accel/tcg/tb-jmp-cache.h
++++ b/accel/tcg/tb-jmp-cache.h
+@@ -13,9 +13,11 @@
+ #define TB_JMP_CACHE_SIZE (1 << TB_JMP_CACHE_BITS)
+ 
+ /*
+- * Accessed in parallel; all accesses to 'tb' must be atomic.
+- * For CF_PCREL, accesses to 'pc' must be protected by a
+- * load_acquire/store_release to 'tb'.
++ * Invalidated in parallel; all accesses to 'tb' must be atomic.
++ * A valid entry is read/written by a single CPU, therefore there is
++ * no need for qatomic_rcu_read() and pc is always consistent with a
++ * non-NULL value of 'tb'.  Strictly speaking pc is only needed for
++ * CF_PCREL, but it's used always for simplicity.
+  */
+ struct CPUJumpCache {
+     struct rcu_head rcu;
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 67eda9865e..40c268bfa1 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -253,43 +253,29 @@ static inline TranslationBlock *tb_lookup(CPUState *cpu, vaddr pc,
+     hash = tb_jmp_cache_hash_func(pc);
+     jc = cpu->tb_jmp_cache;
+ 
+-    if (cflags & CF_PCREL) {
+-        /* Use acquire to ensure current load of pc from jc. */
+-        tb = qatomic_load_acquire(&jc->array[hash].tb);
+-
+-        if (likely(tb &&
+-                   jc->array[hash].pc == pc &&
+-                   tb->cs_base == cs_base &&
+-                   tb->flags == flags &&
+-                   tb_cflags(tb) == cflags)) {
+-            return tb;
+-        }
+-        tb = tb_htable_lookup(cpu, pc, cs_base, flags, cflags);
+-        if (tb == NULL) {
+-            return NULL;
+-        }
+-        jc->array[hash].pc = pc;
+-        /* Ensure pc is written first. */
+-        qatomic_store_release(&jc->array[hash].tb, tb);
+-    } else {
+-        /* Use rcu_read to ensure current load of pc from *tb. */
+-        tb = qatomic_rcu_read(&jc->array[hash].tb);
+-
+-        if (likely(tb &&
+-                   tb->pc == pc &&
+-                   tb->cs_base == cs_base &&
+-                   tb->flags == flags &&
+-                   tb_cflags(tb) == cflags)) {
+-            return tb;
+-        }
+-        tb = tb_htable_lookup(cpu, pc, cs_base, flags, cflags);
+-        if (tb == NULL) {
+-            return NULL;
+-        }
+-        /* Use the pc value already stored in tb->pc. */
+-        qatomic_set(&jc->array[hash].tb, tb);
++    tb = qatomic_read(&jc->array[hash].tb);
++    if (likely(tb &&
++               jc->array[hash].pc == pc &&
++               tb->cs_base == cs_base &&
++               tb->flags == flags &&
++               tb_cflags(tb) == cflags)) {
++        goto hit;
+     }
+ 
++    tb = tb_htable_lookup(cpu, pc, cs_base, flags, cflags);
++    if (tb == NULL) {
++        return NULL;
++    }
++
++    jc->array[hash].pc = pc;
++    qatomic_set(&jc->array[hash].tb, tb);
++
++hit:
++    /*
++     * As long as tb is not NULL, the contents are consistent.  Therefore,
++     * the virtual PC has to match for non-CF_PCREL translations.
++     */
++    assert((tb_cflags(tb) & CF_PCREL) || tb->pc == pc);
+     return tb;
+ }
+ 
+@@ -1012,14 +998,8 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+                  */
+                 h = tb_jmp_cache_hash_func(pc);
+                 jc = cpu->tb_jmp_cache;
+-                if (cflags & CF_PCREL) {
+-                    jc->array[h].pc = pc;
+-                    /* Ensure pc is written first. */
+-                    qatomic_store_release(&jc->array[h].tb, tb);
+-                } else {
+-                    /* Use the pc value already stored in tb->pc. */
+-                    qatomic_set(&jc->array[h].tb, tb);
+-                }
++                jc->array[h].pc = pc;
++                qatomic_set(&jc->array[h].tb, tb);
+             }
+ 
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.34.1
 
