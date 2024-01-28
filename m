@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAFC83F3E1
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D49283F3DB
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx01-0004fs-OC; Sat, 27 Jan 2024 23:42:29 -0500
+	id 1rTx03-0004gS-K9; Sat, 27 Jan 2024 23:42:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTwzz-0004e2-If
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:27 -0500
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1rTx01-0004ft-Ah
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:29 -0500
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTwzx-0004HV-UV
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:27 -0500
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-29080973530so1599299a91.1
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:25 -0800 (PST)
+ id 1rTwzz-0004He-Qr
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:29 -0500
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5cdbc4334edso782591a12.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416944; x=1707021744; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416946; x=1707021746; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M8UjEMO1j2vm3/2aeEMHpkVHZcyY+4Tl4SZGy9Fx+X8=;
- b=xwpUCp6Z0/wMQUDar6h13ph8N6Cqlh3gAnSXJ9T+2EJt5wlB1QGShLOznRzbElZHHI
- yu/M+DvIERJbrPVJMXYKtXPgCPbbS+VLWsPQyYb4y+uwsSOdSURoUtcIewIgOc1spyVd
- /qLOFZoQdf3yLF+iK4pf09d+cyfMOz4JbikQ9RAzrrgNW20ozen8f1TleczAF7o6x1wq
- pLwRUvkRM5U6WnzAsOUQE20H5wukl0uV7INw0s8jc4ZaJuzhNb3oo5U+ld+wuFQAjQ89
- ojsIEVB0l5DBChWWiQS5ZIk3cIIBx5X9/d3klhOB6e5J2YpR1Q7QBi3KCA43nBeCcpCc
- 2PEQ==
+ bh=ADBUc3fCETku7gSMiSslG1Ep+CbDq8k+uqgwv8Xr0vk=;
+ b=GxFUAyKyJ2o/erIMEZwWZ75wlqDokA1HmbgjqiQ1d8Rs7AtwVK8V2R4UtBvGiIV0mD
+ abe372aoUmeTGm6vh4dWrfWdJDvKgSyjJIUHnukSChm1XmnzAHgS9m0f8d2XuM7ULPpL
+ dqyCNd9XQ5w6MxP4JEQmo5kT1PmTOkHn7dbL4LLgIxHqiKH+NNYhXcwetFp0+7pM6ehP
+ 3jZh0a0F9UIz8MAxtr91YHRcoETB0YM9Xi04BWdUKLJ+FRIqGps0FVnzOOaBexJKn9Eb
+ n+0gHAAajbH/p0865xQqJSuQmjN0q6xCTbV68GMda7VQnXa6EuXqoUXT8yiGsoVNJGJO
+ rNmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416944; x=1707021744;
+ d=1e100.net; s=20230601; t=1706416946; x=1707021746;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M8UjEMO1j2vm3/2aeEMHpkVHZcyY+4Tl4SZGy9Fx+X8=;
- b=MrPfpUhc9oiDOS4NEGRV6X5Ogoc1zGyP2bxPKXZI24erlNHsGsUI3TN7I2RuV3cpbC
- h5atIzE9Yy1+rr/7B+DTXpCJxTuuKBF0jPJj3/NMx9P9E5n1AQkmzqVUpi8+YkEJuFbE
- Nxq30mbacOZ8p6/hij6gvZE4/RbudmtnNNBqg7Iz9kzgxuFVQrMXAUW7J+5hE77rol7w
- jU6xB4jK9CNnoG7xxjN1HC3Nz0Ga6aw4roNfwkLRS6/Ck8caBFMIcP5F64s5OPlH69bg
- 7sVxNd2O4cqbE0Igavy4fqUm2DV8JrPnCYfkcXVEUIO3ml5g6osbSBdxPYH/RxGQJ6y/
- e+zw==
-X-Gm-Message-State: AOJu0YwcwL6NBLel+1kiLRDmbIP8ZHMTRtnJS8Z/ujs6jnTX1Kd4Uzfa
- r/H1mVyC2kHw+wOojZxoE52xy+bxIOhmBBfQryHDzj70Yj0FGzFhMNS26sUtbS/OvnjlcM/LCqR
- 0GiEGOg==
-X-Google-Smtp-Source: AGHT+IHesmxOMg60A/XeOaybajAeK/+Za+rEP9yJMVYwQr6p/PQTpPP0TX/HDSoPZ5Vnn2TqmFmISg==
-X-Received: by 2002:a17:90a:9f0c:b0:290:cd3:a2d2 with SMTP id
- n12-20020a17090a9f0c00b002900cd3a2d2mr1592139pjp.3.1706416944267; 
- Sat, 27 Jan 2024 20:42:24 -0800 (PST)
+ bh=ADBUc3fCETku7gSMiSslG1Ep+CbDq8k+uqgwv8Xr0vk=;
+ b=Fi6ZO185nDedax49ceU3fMngMEKEBZKYETDubuDiA7BT2BDd5U/bn6st55I93uCpaZ
+ AWwewMoV4il5qZA2myQlc8Z9QHET6XGC5L3MTuU90DW73y5wHUn/mzTSZJ83dtCai23V
+ lT9PXZcyRKKEzJNVX3b8j0iNS4bDhhBwKxFgTSBu9qxJflNw0pQPvdPjIkwZMc1Gi96A
+ FsuQFb/Vs1H33779Gkc1mC7J6lAC9WQ+JyE0eDXtT8kJcqyKm7sQ9GkOJaQ5eA5zHJfC
+ fJ8g0tGjNmL33kKYyDGnhMg0lLxzmZg/Wmkb6yk/58yXQ9WgUXv4g1X2hutiSygk6YmN
+ 3QwQ==
+X-Gm-Message-State: AOJu0YyNig+XlQ/f/oKHwjVBHiPqDVrPf3bhiQbL6CTXc93UnpmnVG1E
+ jbiDRn5oKlXTVQXW/0MZxIdKUVAyTs/o87jSxizrPXaE3AgWgcDg8tLOmgYBJSTCATmugC7oulY
+ oSV6jjA==
+X-Google-Smtp-Source: AGHT+IGni/2IOtdevUIzh4oxbadX3CrC8Oy9rUOG3cpQHcc43qMaTLhwe6RH33xjq2UFSIwZq96REA==
+X-Received: by 2002:a17:90b:4d8e:b0:290:3439:154f with SMTP id
+ oj14-20020a17090b4d8e00b002903439154fmr877084pjb.83.1706416946468; 
+ Sat, 27 Jan 2024 20:42:26 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.22
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:42:23 -0800 (PST)
+ Sat, 27 Jan 2024 20:42:26 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 02/33] include/exec: Move vaddr defines to separate file
-Date: Sun, 28 Jan 2024 14:41:42 +1000
-Message-Id: <20240128044213.316480-3-richard.henderson@linaro.org>
+Subject: [PATCH 03/33] hw/core: Include vaddr.h from cpu.h
+Date: Sun, 28 Jan 2024 14:41:43 +1000
+Message-Id: <20240128044213.316480-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,79 +95,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Needed to work around circular includes. vaddr is currently defined in
-cpu-common.h and needed by hw/core/cpu.h, but cpu-common.h also need
-cpu.h to know the size of the CPUState.
-
-[Maybe we can instead move parts of cpu-common.h w. hw/core/cpu.h to
-sort out the circular inclusion.]
+cpu-common.h is only needed for vaddr
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240119144024.14289-7-anjo@rev.ng>
+Message-Id: <20240119144024.14289-8-anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-[rth: Add include of vaddr.h into cpu-common.h]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 13 +------------
- include/exec/vaddr.h      | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+), 12 deletions(-)
- create mode 100644 include/exec/vaddr.h
+ include/hw/core/cpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index fef3138d29..3109c6b67d 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -3,6 +3,7 @@
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 238c02c05e..db58f12233 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -22,8 +22,8 @@
  
- /* CPU interfaces that are target independent.  */
- 
-+#include "exec/vaddr.h"
- #ifndef CONFIG_USER_ONLY
+ #include "hw/qdev-core.h"
+ #include "disas/dis-asm.h"
+-#include "exec/cpu-common.h"
  #include "exec/hwaddr.h"
- #endif
-@@ -14,18 +15,6 @@
- #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
- #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
- 
--/**
-- * vaddr:
-- * Type wide enough to contain any #target_ulong virtual address.
-- */
--typedef uint64_t vaddr;
--#define VADDR_PRId PRId64
--#define VADDR_PRIu PRIu64
--#define VADDR_PRIo PRIo64
--#define VADDR_PRIx PRIx64
--#define VADDR_PRIX PRIX64
--#define VADDR_MAX UINT64_MAX
--
- void cpu_exec_init_all(void);
- void cpu_exec_step_atomic(CPUState *cpu);
- 
-diff --git a/include/exec/vaddr.h b/include/exec/vaddr.h
-new file mode 100644
-index 0000000000..b9844afc77
---- /dev/null
-+++ b/include/exec/vaddr.h
-@@ -0,0 +1,18 @@
-+/* Define vaddr.  */
-+
-+#ifndef VADDR_H
-+#define VADDR_H
-+
-+/**
-+ * vaddr:
-+ * Type wide enough to contain any #target_ulong virtual address.
-+ */
-+typedef uint64_t vaddr;
-+#define VADDR_PRId PRId64
-+#define VADDR_PRIu PRIu64
-+#define VADDR_PRIo PRIo64
-+#define VADDR_PRIx PRIx64
-+#define VADDR_PRIX PRIX64
-+#define VADDR_MAX UINT64_MAX
-+
-+#endif
++#include "exec/vaddr.h"
+ #include "exec/memattrs.h"
+ #include "exec/tlb-common.h"
+ #include "qapi/qapi-types-run-state.h"
 -- 
 2.34.1
 
