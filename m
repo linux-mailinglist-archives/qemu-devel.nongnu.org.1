@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6772B83F480
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F97183F47F
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 08:17:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTzOL-00037n-8t; Sun, 28 Jan 2024 02:15:45 -0500
+	id 1rTzOM-00038e-5W; Sun, 28 Jan 2024 02:15:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rTzOF-000367-Qy
- for qemu-devel@nongnu.org; Sun, 28 Jan 2024 02:15:40 -0500
-Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
+ id 1rTzOG-00036I-9D
+ for qemu-devel@nongnu.org; Sun, 28 Jan 2024 02:15:41 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rTzOD-0004AK-IU
+ id 1rTzOE-0004AP-05
  for qemu-devel@nongnu.org; Sun, 28 Jan 2024 02:15:39 -0500
-Received: by mail-io1-xd2b.google.com with SMTP id
- ca18e2360f4ac-7bfe5aa702fso27525239f.3
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 23:15:34 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso1307463a12.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 23:15:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706426132; x=1707030932;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706426135; x=1707030935;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=wMk2Dn5lu3F9Qa7EJOP18lOhECpVX5h3SFHTrT99Ous=;
- b=DM/C7ONF3TvP8OYBNXZ7d7QWrihAwYE5EJLCcfZQDye7Q0vEFnNTjEdvJDKYffmacB
- +r8Ss+31rI2OifaIzcpSztPtjLe+yp4AU4uMM/72J5EaouVRUQ9yOtd2pTNdZwMzqfsY
- FqZA98gpmRFexEWKNWDfHDLjj5z2cjdsvFlnf7TyNftco6D4M2P0c1GyPdGd9AiAMmO3
- Wy9z8FySQzh3b2V4fMRXKl6GtApIZdfpx2hNzctzXU0wggGsvOF7KWn6ET49iiiIWP6J
- v3O9PJB7cpwrEYjdYQtyWfna9qWAWFed06qaspmcP1nYsaLcsJeLaC7tjpHYBDOhRYNI
- uV4A==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=V1KoYGLz/4ZfG7upt/fBifSuqVAkdhjRoiQkFAgHFg4=;
+ b=qcCtPhMEeEACfeV9D1TBUNDMZ5wNnZm3aadHt5UTZyhQdNYHaj4VoNEQY6jmsbE6wI
+ 5287o8pO+UwE8Fj0X8TqhUEGW4kgNIrbyydvZF9p06Udd+N1Bus7GMdP7E7zft88f2eD
+ UpLPdHeANsXt8Yn1bTONxtCmXh421V176EcckZzbNw08ROx/9SgdEGik3iaGzNdyShEn
+ RMIrfmyLT7CD1uWM3/dvvmg06J9rQoDY/kqosp2P1BjpcIZ1UgKU9kfospv/OD7QE5bD
+ KZt+XFl8vqZQrGdkbzKQ5edSP2/YZLbQol8NYsBNXS7MP/w3IFrd8UnH8tUZBVgJYjL9
+ vbKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706426132; x=1707030932;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wMk2Dn5lu3F9Qa7EJOP18lOhECpVX5h3SFHTrT99Ous=;
- b=bfvoY/cD7eeScFnn5x+BbT8r9RekqsxCmF5oF1+Az/zncqzL3loxgusZDfVDLbtgaH
- e0aTYmXVfK7/TCHWV4YkM5w7AH3egGw4SDDBJOQiWOHEoItgFOzfuJM38/mUrQg8b+oy
- Ljq5KUhzltWoH2o8KOAvTJfhBtllw1eHr6u0RkAoguvKdBteEOocTbRdX0C004QHZpIh
- 2mgPEX1FYy3RHVkBXzqKUJp9y9EHXJ80WJbxRH8/jWHiNqHLiSpZkg96AYoNLzXRlW8D
- +Iry5jq76BPjpuo/z6t9b22KcTZs/XTCXxOO/sw9DBlL3RxTuWv3uBcWy1pDRrd6lE4o
- Rl1w==
-X-Gm-Message-State: AOJu0YzpvQAyMjXICSybxRNhvRzmpEu63zmqYd9Fx8wn2SHNO8/hPeer
- BCeLSVqPgIXNFqO4Amf27xdBT2TUl0vy8GaO3syFNBMnUKTtWg8CzwmDzopqjtg=
-X-Google-Smtp-Source: AGHT+IHQQo0AhH3bBVxNhcrJpMy7N2/PQInijOqWNbkRBfYHb48CHSskOlkwjXLptFSxXCG2N/5EEQ==
-X-Received: by 2002:a05:6e02:12c7:b0:363:7b5e:1378 with SMTP id
- i7-20020a056e0212c700b003637b5e1378mr1084080ilm.31.1706426132016; 
- Sat, 27 Jan 2024 23:15:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706426135; x=1707030935;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=V1KoYGLz/4ZfG7upt/fBifSuqVAkdhjRoiQkFAgHFg4=;
+ b=s+imsbRuNRiMApGz5GwM0Icfhp46VQNfvj9avfuIkrPZpuf2UT+ioXC0GTPYtHE5w0
+ AdE98p59957s74SibgaB5ey8mKk+b5R5fQ9aZFa2Tx6BVLp4dm7LUJ+efLywZIb/dDQl
+ rgqOooazTOKndbcfQI0++NNdQXWo/yuR3mgXo8eMcJ6rDBSIx3rMLcyFaRMSNKcmZu+r
+ vZ+R6Z+lh38fxRmCw8mYgdTIsavTlI3OuZyDP+jUh5LOGYhu3yPeA0IsR7dWyQ3YOvlK
+ v5/zwfD5LIZz1MIUCRwJFTSnpDLKf72MsItVPdLtgzRUpVSll8ydbdthDakKMZ/4TLp/
+ QJPA==
+X-Gm-Message-State: AOJu0Yw810131YAI7fQzeKU1koTCEPMbzElLqimsswszmMsrBWaiKOr5
+ yBejHqiobXwXKRarnP4ESYmUQz8eemkrUDZcFwTbF02PAFC/M9oNyPYlc5y46HQ=
+X-Google-Smtp-Source: AGHT+IH1Gj4h83KVztRR3824U4dHXQZufuERRVW0vyKYzfcesgXCJDY2f61wsZHyphCICBbprzIHsQ==
+X-Received: by 2002:a05:6a20:2045:b0:19a:ef21:60a0 with SMTP id
+ x5-20020a056a20204500b0019aef2160a0mr2532304pzx.25.1706426135505; 
+ Sat, 27 Jan 2024 23:15:35 -0800 (PST)
 Received: from localhost ([157.82.200.138])
  by smtp.gmail.com with UTF8SMTPSA id
- by36-20020a056a0205a400b005ceb4a6d72bsm3106667pgb.65.2024.01.27.23.15.30
+ j2-20020a635942000000b005d5445349edsm3768544pgm.19.2024.01.27.23.15.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 Jan 2024 23:15:31 -0800 (PST)
+ Sat, 27 Jan 2024 23:15:35 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/2] hw/smbios: Fix option validation
-Date: Sun, 28 Jan 2024 16:15:27 +0900
-Message-Id: <20240128-smbios-v1-0-c3a50499baea@daynix.com>
+Date: Sun, 28 Jan 2024 16:15:28 +0900
+Subject: [PATCH 1/2] hw/smbios: Fix OEM strings table option validation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAA//tWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQyML3eLcpMz8Yt2kVNNkYyPDFHNDUwsloOKCotS0zAqwQdGxtbUAftx
- 9iVgAAAA=
+Message-Id: <20240128-smbios-v1-1-c3a50499baea@daynix.com>
+References: <20240128-smbios-v1-0-c3a50499baea@daynix.com>
+In-Reply-To: <20240128-smbios-v1-0-c3a50499baea@daynix.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::d2b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd2b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,23 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This fixes qemu_smbios_type8_opts and qemu_smbios_type11_opts to have
-list terminators and elements for the type option.
+qemu_smbios_type11_opts did not the list terminator and that resulted in
+out-of-bound memory access. qemu_smbios_type11_opts also needs to have
+an element for the type option.
 
+Fixes: 2d6dcbf93fb0 ("smbios: support setting OEM strings table")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (2):
-      hw/smbios: Fix OEM strings table option validation
-      hw/smbios: Fix port connector option validation
+ hw/smbios/smbios.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- hw/smbios/smbios.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
----
-base-commit: f614acb7450282a119d85d759f27eae190476058
-change-id: 20240128-smbios-be5c321d7158
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index 2a90601ac5d9..522ed1ed9fe3 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -369,6 +369,11 @@ static const QemuOptDesc qemu_smbios_type8_opts[] = {
+ };
+ 
+ static const QemuOptDesc qemu_smbios_type11_opts[] = {
++    {
++        .name = "type",
++        .type = QEMU_OPT_NUMBER,
++        .help = "SMBIOS element type",
++    },
+     {
+         .name = "value",
+         .type = QEMU_OPT_STRING,
+@@ -379,6 +384,7 @@ static const QemuOptDesc qemu_smbios_type11_opts[] = {
+         .type = QEMU_OPT_STRING,
+         .help = "OEM string data from file",
+     },
++    { /* end of list */ }
+ };
+ 
+ static const QemuOptDesc qemu_smbios_type17_opts[] = {
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.43.0
 
 
