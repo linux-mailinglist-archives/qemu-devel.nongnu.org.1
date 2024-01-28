@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353AA83F3EA
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1C083F3E3
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0y-00059V-JJ; Sat, 27 Jan 2024 23:43:28 -0500
+	id 1rTx0y-00059o-R6; Sat, 27 Jan 2024 23:43:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0t-00057j-2D
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:23 -0500
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ id 1rTx0u-00058j-Qg
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:24 -0500
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0r-0004O0-CR
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:22 -0500
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-59a146e8c85so791288eaf.0
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:20 -0800 (PST)
+ id 1rTx0t-0004OC-2E
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:24 -0500
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-290d59df3f0so1351615a91.2
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416999; x=1707021799; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706417002; x=1707021802; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=h0D5wvbqCBKDS3PIRJ2u8mID+Ysdp5Zl/usWtkQWmMI=;
- b=XVvQXq9b9AZgSDqXxGtk+ZbtbxJxcjbkTID/4TV8dAJ7BFKYSMO+wee1yKBF8zX9AX
- 0EsL8coekG18V3DienXN6MZLia0u53pO1Uv0Yv2D92AmQuumR44SFO97rZtwlHTDpBmi
- ST2kBZcvnS/JLitBaR11cSE2BljB/gSjivCKrxGlEUngJYFdl+7BemmMLV1sbCah/rq9
- oqGl/BKIsPV6cSSmR1744IETlwxrlX2eK9fTHTwjEMqn1doKP6g/5rKjyxF54rKmP9Cf
- u3j9OeZW9AceSUYUps4uGltEOo6qWTE8RYa1/bEBSCV5irwsg1K/n0+9b3pkOFWB9+Jj
- uUMw==
+ bh=zfMhTQxwxgwjYRWhH0P+ZcfoxncjyISGzQ2K+4rTjEw=;
+ b=T7y1ebxaIU/WGVJL0aecfKq+bcNOYUHaHSk/DfSC3zaIoFaglj0uSdOl05AtdTgTvI
+ 5iaOjEi0vimG2jYNlOac8go+brs0MsESjYmeLLL3TtWiGq8xk0ZLAiW8d3fODN5/+x1V
+ WsrXElBk8qwZBT5Pyin0nGL8ragHJRxIu1JdY5rCxSY+wNiGTV+Cl6Ae9CZVxxoJZdnu
+ dEhU55u/R6K32ElRvmzUOn6Bv8+5qma79YTXlbAW5Jvsd6Y1XbzROMBghto+Vt54qz3a
+ RlUUhYSuByhU9BugpkWZX1RwCPQeMzfjKHu0gIAjeejIUr0Lhg1GLI9Rs2gscmh22DRx
+ DZ1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416999; x=1707021799;
+ d=1e100.net; s=20230601; t=1706417002; x=1707021802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=h0D5wvbqCBKDS3PIRJ2u8mID+Ysdp5Zl/usWtkQWmMI=;
- b=koI6B73XJYppZ56VElRXGlRNk1BzWXaKeFYXfquSJTrsnRGldD77naxUw917Yh+NEP
- ocAT5R7l57AfBQFoKGEg/nr6/jTzPX/0IQMqe6BNWGL07B/trMSICTwY63b24/L/yZ7f
- ye9owoYuOwT/gq/Nbw3/iPfQ8KrsqCb41eYeIilwLySom0ZsI8uza+G3TJc8hwEkSlur
- ZN7ZT83FN2kyzmVUJhd2ss031s0rRkKtYA1iM+KvwdpjP5BbHjWPK4KvrWawWH8z/oCx
- aCXIIBpRCy1r7McJz5HXDirVnND9BwPbcOaz2YJOXd1U4coZ2cuQ6QnmkxQCBYP8i4/H
- mvnQ==
-X-Gm-Message-State: AOJu0YyUmDbQqO1P/mXQLjbRfADhj5zxhRQXO03E5iW7cwXvguoUJlAN
- Vh6oVCyVdQ57kWEeHA2T4H9xf77mHOEp9Ew/aFAkY4PV8XY/wdtWT5do+dDhY7Yfp4Nnb3yFe7T
- nZnkvlA==
-X-Google-Smtp-Source: AGHT+IHYzL/aBOCLYjBLQ292BGC5ogjO6YZiEBee4x3+woyQD1QpkzzHqB35QvJSUMG64YX+FaxB1g==
-X-Received: by 2002:a05:6358:9490:b0:170:e2dc:3e19 with SMTP id
- i16-20020a056358949000b00170e2dc3e19mr2487468rwb.43.1706416999172; 
- Sat, 27 Jan 2024 20:43:19 -0800 (PST)
+ bh=zfMhTQxwxgwjYRWhH0P+ZcfoxncjyISGzQ2K+4rTjEw=;
+ b=j8Ku3xNgP1aBBGDmnsLsvFLFn9s5mDo11aorlq0jfKBxoXmWW1f7Q3h3Dw6rMihf1M
+ rgvGsu9WehRqzGHvNyfcl0Xl5LvTtkcDlLQI1dOSMPdS3uYxW0ysW2LuvH47j/CUmTct
+ 6zBMx41Ovbey81Ixf1M3IR++MOb01FAGz+thPZV+pESTrJSZbFcdcEjvUU4nTaoMHpIi
+ a4Rjzn9Ahowc7DqDg1Xq4caA2z48R3fgPv6Nb15aTs3Sw9CEMtiEwR5PbY8UVysy8geA
+ xRlIRCbo7xlWJf2xcTWJA3S8Y4gY+hP3m+GT4sYbzWgjdV1WAXZiGec1pUHrWKmvzmMb
+ ppig==
+X-Gm-Message-State: AOJu0YyS5TPjP2SNIqrsSPB8u07QmsolK1KVreMPDSUvvvcmk90ATyVv
+ Udbn1aI9jz8DyLYkwmJJI5Ng00dU7oUMSPa15+mdOuVTQ3h5iuNnvByj/s8Eer0FIHKKoHIkRfF
+ 9dY3J4g==
+X-Google-Smtp-Source: AGHT+IFt+x+DQT2Oi6Fi2cZra8uEXcbNk4SD2wfKUGSSUS2B+/rqkiIQwYQzs3Z/1PxO9pzA2IASrQ==
+X-Received: by 2002:a17:90a:b398:b0:290:f7a7:333d with SMTP id
+ e24-20020a17090ab39800b00290f7a7333dmr1569016pjr.36.1706417001755; 
+ Sat, 27 Jan 2024 20:43:21 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.17
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:43:18 -0800 (PST)
+ Sat, 27 Jan 2024 20:43:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 24/33] accel/tcg: Rename tcg_cpus_exec() -> tcg_cpu_exec()
-Date: Sun, 28 Jan 2024 14:42:04 +1000
-Message-Id: <20240128044213.316480-25-richard.henderson@linaro.org>
+Subject: [PATCH 25/33] accel/tcg: Un-inline icount_exit_request() for clarity
+Date: Sun, 28 Jan 2024 14:42:05 +1000
+Message-Id: <20240128044213.316480-26-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,73 +97,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-tcg_cpus_exec() operates on a single vCPU, rename it
-as 'tcg_cpu_exec'.
+Convert packed logic to dumb icount_exit_request() helper.
+No functional change intended.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240124101639.30056-4-philmd@linaro.org>
+Message-Id: <20240124101639.30056-5-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-accel-ops.h       | 2 +-
- accel/tcg/tcg-accel-ops-mttcg.c | 2 +-
- accel/tcg/tcg-accel-ops-rr.c    | 2 +-
- accel/tcg/tcg-accel-ops.c       | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ accel/tcg/cpu-exec.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
-index 17c7ed00eb..44c4079972 100644
---- a/accel/tcg/tcg-accel-ops.h
-+++ b/accel/tcg/tcg-accel-ops.h
-@@ -15,7 +15,7 @@
- #include "sysemu/cpus.h"
- 
- void tcg_cpu_destroy(CPUState *cpu);
--int tcg_cpus_exec(CPUState *cpu);
-+int tcg_cpu_exec(CPUState *cpu);
- void tcg_handle_interrupt(CPUState *cpu, int mask);
- void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
- 
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index bcba314a65..c552b45b8e 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -92,7 +92,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
-         if (cpu_can_run(cpu)) {
-             int r;
-             bql_unlock();
--            r = tcg_cpus_exec(cpu);
-+            r = tcg_cpu_exec(cpu);
-             bql_lock();
-             switch (r) {
-             case EXCP_DEBUG:
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 0617f66b5b..894e73e52c 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -258,7 +258,7 @@ static void *rr_cpu_thread_fn(void *arg)
-                 if (icount_enabled()) {
-                     icount_prepare_for_run(cpu, cpu_budget);
-                 }
--                r = tcg_cpus_exec(cpu);
-+                r = tcg_cpu_exec(cpu);
-                 if (icount_enabled()) {
-                     icount_process_data(cpu);
-                 }
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 9b84b84218..9c957f421c 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -68,7 +68,7 @@ void tcg_cpu_destroy(CPUState *cpu)
-     cpu_thread_signal_destroyed(cpu);
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 950dad63cb..f2535a2991 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -777,6 +777,17 @@ static inline bool need_replay_interrupt(int interrupt_request)
  }
+ #endif /* !CONFIG_USER_ONLY */
  
--int tcg_cpus_exec(CPUState *cpu)
-+int tcg_cpu_exec(CPUState *cpu)
++static inline bool icount_exit_request(CPUState *cpu)
++{
++    if (!icount_enabled()) {
++        return false;
++    }
++    if (cpu->cflags_next_tb != -1 && !(cpu->cflags_next_tb & CF_USE_ICOUNT)) {
++        return false;
++    }
++    return cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0;
++}
++
+ static inline bool cpu_handle_interrupt(CPUState *cpu,
+                                         TranslationBlock **last_tb)
  {
-     int ret;
-     assert(tcg_enabled());
+@@ -882,10 +893,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+     }
+ 
+     /* Finally, check if we need to exit to the main loop.  */
+-    if (unlikely(qatomic_read(&cpu->exit_request))
+-        || (icount_enabled()
+-            && (cpu->cflags_next_tb == -1 || cpu->cflags_next_tb & CF_USE_ICOUNT)
+-            && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0)) {
++    if (unlikely(qatomic_read(&cpu->exit_request)) || icount_exit_request(cpu)) {
+         qatomic_set(&cpu->exit_request, 0);
+         if (cpu->exception_index == -1) {
+             cpu->exception_index = EXCP_INTERRUPT;
 -- 
 2.34.1
 
