@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E6A83F3DE
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353AA83F3EA
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0r-00051U-Tb; Sat, 27 Jan 2024 23:43:21 -0500
+	id 1rTx0y-00059V-JJ; Sat, 27 Jan 2024 23:43:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0p-0004yE-ON
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:19 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1rTx0t-00057j-2D
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:23 -0500
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0o-0004No-67
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:19 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-59a146e8c85so791279eaf.0
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:17 -0800 (PST)
+ id 1rTx0r-0004O0-CR
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:43:22 -0500
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-59a146e8c85so791288eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:43:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416996; x=1707021796; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416999; x=1707021799; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IeBfHlDAifxu4F1/UNQzzGCEUArq4HbYf2mScaRZKZ4=;
- b=f7FzQJha1UfDYDFRCNrnaD3VeweiPjO/5FeGsz/F+3eUdoWLc2ZRvzz4JcaQFkywXy
- MWw7ae606x3e9OId4KlSfF7a/h+mZfKvtY+PxKOHEelY4llYIoxq6SxqSUd6tNm10S6m
- unbWAalSfDwgtPgbjMEmwOahddDDb0yVy7lexXmpHxXfhvixYXhrsxfb9v1geXqOah3X
- 34EVUO2gpmYoj/M+GRD3wRB9kSWyR+3xnuKS+ExKHdikRZG4aCmFEER/VUpcd+2WqhsJ
- fHpQgFbjtwdfqdsYq14mO8Bbb2+ZQvPi3CQJYW8SUh07KkQR13xuJEFZ32ZlZRmDVEMl
- LvXQ==
+ bh=h0D5wvbqCBKDS3PIRJ2u8mID+Ysdp5Zl/usWtkQWmMI=;
+ b=XVvQXq9b9AZgSDqXxGtk+ZbtbxJxcjbkTID/4TV8dAJ7BFKYSMO+wee1yKBF8zX9AX
+ 0EsL8coekG18V3DienXN6MZLia0u53pO1Uv0Yv2D92AmQuumR44SFO97rZtwlHTDpBmi
+ ST2kBZcvnS/JLitBaR11cSE2BljB/gSjivCKrxGlEUngJYFdl+7BemmMLV1sbCah/rq9
+ oqGl/BKIsPV6cSSmR1744IETlwxrlX2eK9fTHTwjEMqn1doKP6g/5rKjyxF54rKmP9Cf
+ u3j9OeZW9AceSUYUps4uGltEOo6qWTE8RYa1/bEBSCV5irwsg1K/n0+9b3pkOFWB9+Jj
+ uUMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416996; x=1707021796;
+ d=1e100.net; s=20230601; t=1706416999; x=1707021799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IeBfHlDAifxu4F1/UNQzzGCEUArq4HbYf2mScaRZKZ4=;
- b=RXfF5z0FCuy7TXP6qjVy8UmT4Qghp1oXgDpfYOoawDsDFqHH/oxnNoS3U43t5sGd2T
- JD1B0WJITGgjsc5TPVoQKN4hOQaNfXlKlenldC+5SqikOB3i/rhNQryKgNZvC2U5mvkG
- zf/9n2045WYnfIS+43xit3EbDkT//H99Suuu9oocDkIGR5MSvHS3lWG6t9VA9vR0j7UI
- 6nPD9/w/N2xobWPRZUEVDwP4TSdCcMrLkzK6MMMyHHAASYpX74/hMwYF3GvFkk4KPMII
- QxLRUObBC76ZlfMqd6jwbuqleZZYKYdTKAZuFT3c54Cw7mcoQk0sQl7bxqYwhVrL1D3s
- oU/w==
-X-Gm-Message-State: AOJu0YzBeobvUNyDjV9iLFXMDY0G9nhNNDQDTDE2Dw3WmIx5PUmzqaor
- q9tMxww7epTZNZ6/+aCQTOMDHDW3cQXK+L7my5KuCeD6mivA94sz7YYB0yiaBebdMh4xSr+oqYh
- p6e12+w==
-X-Google-Smtp-Source: AGHT+IFIsbMAm27bHgb/fNYmCECZyibW1Is462S9l3popKVjMfdcT4tGfggiA1O1MgCZiQc5lq2ePg==
-X-Received: by 2002:a05:6358:3a14:b0:176:cf6e:51fc with SMTP id
- g20-20020a0563583a1400b00176cf6e51fcmr3089000rwe.53.1706416996717; 
- Sat, 27 Jan 2024 20:43:16 -0800 (PST)
+ bh=h0D5wvbqCBKDS3PIRJ2u8mID+Ysdp5Zl/usWtkQWmMI=;
+ b=koI6B73XJYppZ56VElRXGlRNk1BzWXaKeFYXfquSJTrsnRGldD77naxUw917Yh+NEP
+ ocAT5R7l57AfBQFoKGEg/nr6/jTzPX/0IQMqe6BNWGL07B/trMSICTwY63b24/L/yZ7f
+ ye9owoYuOwT/gq/Nbw3/iPfQ8KrsqCb41eYeIilwLySom0ZsI8uza+G3TJc8hwEkSlur
+ ZN7ZT83FN2kyzmVUJhd2ss031s0rRkKtYA1iM+KvwdpjP5BbHjWPK4KvrWawWH8z/oCx
+ aCXIIBpRCy1r7McJz5HXDirVnND9BwPbcOaz2YJOXd1U4coZ2cuQ6QnmkxQCBYP8i4/H
+ mvnQ==
+X-Gm-Message-State: AOJu0YyUmDbQqO1P/mXQLjbRfADhj5zxhRQXO03E5iW7cwXvguoUJlAN
+ Vh6oVCyVdQ57kWEeHA2T4H9xf77mHOEp9Ew/aFAkY4PV8XY/wdtWT5do+dDhY7Yfp4Nnb3yFe7T
+ nZnkvlA==
+X-Google-Smtp-Source: AGHT+IHYzL/aBOCLYjBLQ292BGC5ogjO6YZiEBee4x3+woyQD1QpkzzHqB35QvJSUMG64YX+FaxB1g==
+X-Received: by 2002:a05:6358:9490:b0:170:e2dc:3e19 with SMTP id
+ i16-20020a056358949000b00170e2dc3e19mr2487468rwb.43.1706416999172; 
+ Sat, 27 Jan 2024 20:43:19 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.14
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.43.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:43:16 -0800 (PST)
+ Sat, 27 Jan 2024 20:43:18 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 23/33] accel/tcg: Rename tcg_cpus_destroy() ->
- tcg_cpu_destroy()
-Date: Sun, 28 Jan 2024 14:42:03 +1000
-Message-Id: <20240128044213.316480-24-richard.henderson@linaro.org>
+Subject: [PATCH 24/33] accel/tcg: Rename tcg_cpus_exec() -> tcg_cpu_exec()
+Date: Sun, 28 Jan 2024 14:42:04 +1000
+Message-Id: <20240128044213.316480-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,13 +97,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-tcg_cpus_destroy() operates on a single vCPU, rename it
-as 'tcg_cpu_destroy'.
+tcg_cpus_exec() operates on a single vCPU, rename it
+as 'tcg_cpu_exec'.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240124101639.30056-3-philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20240124101639.30056-4-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  accel/tcg/tcg-accel-ops.h       | 2 +-
@@ -114,57 +113,57 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
-index f9bc6330e2..17c7ed00eb 100644
+index 17c7ed00eb..44c4079972 100644
 --- a/accel/tcg/tcg-accel-ops.h
 +++ b/accel/tcg/tcg-accel-ops.h
-@@ -14,7 +14,7 @@
- 
+@@ -15,7 +15,7 @@
  #include "sysemu/cpus.h"
  
--void tcg_cpus_destroy(CPUState *cpu);
-+void tcg_cpu_destroy(CPUState *cpu);
- int tcg_cpus_exec(CPUState *cpu);
+ void tcg_cpu_destroy(CPUState *cpu);
+-int tcg_cpus_exec(CPUState *cpu);
++int tcg_cpu_exec(CPUState *cpu);
  void tcg_handle_interrupt(CPUState *cpu, int mask);
  void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
+ 
 diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index af7307013a..bcba314a65 100644
+index bcba314a65..c552b45b8e 100644
 --- a/accel/tcg/tcg-accel-ops-mttcg.c
 +++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -118,7 +118,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
-         qemu_wait_io_event(cpu);
-     } while (!cpu->unplug || cpu_can_run(cpu));
- 
--    tcg_cpus_destroy(cpu);
-+    tcg_cpu_destroy(cpu);
-     bql_unlock();
-     rcu_remove_force_rcu_notifier(&force_rcu.notifier);
-     rcu_unregister_thread();
+@@ -92,7 +92,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
+         if (cpu_can_run(cpu)) {
+             int r;
+             bql_unlock();
+-            r = tcg_cpus_exec(cpu);
++            r = tcg_cpu_exec(cpu);
+             bql_lock();
+             switch (r) {
+             case EXCP_DEBUG:
 diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 3208035d85..0617f66b5b 100644
+index 0617f66b5b..894e73e52c 100644
 --- a/accel/tcg/tcg-accel-ops-rr.c
 +++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -131,7 +131,7 @@ static void rr_deal_with_unplugged_cpus(void)
- 
-     CPU_FOREACH(cpu) {
-         if (cpu->unplug && !cpu_can_run(cpu)) {
--            tcg_cpus_destroy(cpu);
-+            tcg_cpu_destroy(cpu);
-             break;
-         }
-     }
+@@ -258,7 +258,7 @@ static void *rr_cpu_thread_fn(void *arg)
+                 if (icount_enabled()) {
+                     icount_prepare_for_run(cpu, cpu_budget);
+                 }
+-                r = tcg_cpus_exec(cpu);
++                r = tcg_cpu_exec(cpu);
+                 if (icount_enabled()) {
+                     icount_process_data(cpu);
+                 }
 diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 813065c0ec..9b84b84218 100644
+index 9b84b84218..9c957f421c 100644
 --- a/accel/tcg/tcg-accel-ops.c
 +++ b/accel/tcg/tcg-accel-ops.c
-@@ -63,7 +63,7 @@ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel)
-     cpu->tcg_cflags |= cflags;
- }
- 
--void tcg_cpus_destroy(CPUState *cpu)
-+void tcg_cpu_destroy(CPUState *cpu)
- {
+@@ -68,7 +68,7 @@ void tcg_cpu_destroy(CPUState *cpu)
      cpu_thread_signal_destroyed(cpu);
  }
+ 
+-int tcg_cpus_exec(CPUState *cpu)
++int tcg_cpu_exec(CPUState *cpu)
+ {
+     int ret;
+     assert(tcg_enabled());
 -- 
 2.34.1
 
