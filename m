@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6F183F8C8
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 18:49:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F310B83F8C0
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 18:49:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rU9GU-0005xP-4k; Sun, 28 Jan 2024 12:48:18 -0500
+	id 1rU9Ga-0005ze-Jv; Sun, 28 Jan 2024 12:48:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rU9GH-0005su-AW; Sun, 28 Jan 2024 12:48:05 -0500
+ id 1rU9GH-0005sw-Aj; Sun, 28 Jan 2024 12:48:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rU9GD-0000G8-6i; Sun, 28 Jan 2024 12:48:03 -0500
+ id 1rU9GD-0000G7-6U; Sun, 28 Jan 2024 12:48:03 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EC2DC480DE;
- Sun, 28 Jan 2024 20:48:42 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 00096480DF;
+ Sun, 28 Jan 2024 20:48:43 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 26A276D507;
- Sun, 28 Jan 2024 20:47:51 +0300 (MSK)
-Received: (nullmailer pid 811311 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 4C8F16D508;
+ Sun, 28 Jan 2024 20:47:52 +0300 (MSK)
+Received: (nullmailer pid 811314 invoked by uid 1000);
  Sun, 28 Jan 2024 17:47:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Xiao Lei <leixiao.nop@zju.edu.cn>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.9 24/30] virtio-net: correctly copy vnet header when
- flushing TX
-Date: Sun, 28 Jan 2024 20:47:37 +0300
-Message-Id: <20240128174747.811264-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Ari Sundholm <ari@tuxera.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.9 25/30] block/blklogwrites: Fix a bug when logging
+ "write zeroes" operations.
+Date: Sun, 28 Jan 2024 20:47:38 +0300
+Message-Id: <20240128174747.811264-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.9-20240128204652@cover.tls.msk.ru>
 References: <qemu-stable-7.2.9-20240128204652@cover.tls.msk.ru>
@@ -62,70 +60,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Wang <jasowang@redhat.com>
+From: Ari Sundholm <ari@tuxera.com>
 
-When HASH_REPORT is negotiated, the guest_hdr_len might be larger than
-the size of the mergeable rx buffer header. Using
-virtio_net_hdr_mrg_rxbuf during the header swap might lead a stack
-overflow in this case. Fixing this by using virtio_net_hdr_v1_hash
-instead.
+There is a bug in the blklogwrites driver pertaining to logging "write
+zeroes" operations, causing log corruption. This can be easily observed
+by setting detect-zeroes to something other than "off" for the driver.
 
-Reported-by: Xiao Lei <leixiao.nop@zju.edu.cn>
-Cc: Yuri Benditovich <yuri.benditovich@daynix.com>
+The issue is caused by a concurrency bug pertaining to the fact that
+"write zeroes" operations have to be logged in two parts: first the log
+entry metadata, then the zeroed-out region. While the log entry
+metadata is being written by bdrv_co_pwritev(), another operation may
+begin in the meanwhile and modify the state of the blklogwrites driver.
+This is as intended by the coroutine-driven I/O model in QEMU, of
+course.
+
+Unfortunately, this specific scenario is mishandled. A short example:
+    1. Initially, in the current operation (#1), the current log sector
+number in the driver state is only incremented by the number of sectors
+taken by the log entry metadata, after which the log entry metadata is
+written. The current operation yields.
+    2. Another operation (#2) may start while the log entry metadata is
+being written. It uses the current log position as the start offset for
+its log entry. This is in the sector right after the operation #1 log
+entry metadata, which is bad!
+    3. After bdrv_co_pwritev() returns (#1), the current log sector
+number is reread from the driver state in order to find out the start
+offset for bdrv_co_pwrite_zeroes(). This is an obvious blunder, as the
+offset will be the sector right after the (misplaced) operation #2 log
+entry, which means that the zeroed-out region begins at the wrong
+offset.
+    4. As a result of the above, the log is corrupt.
+
+Fix this by only reading the driver metadata once, computing the
+offsets and sizes in one go (including the optional zeroed-out region)
+and setting the log sector number to the appropriate value for the next
+operation in line.
+
+Signed-off-by: Ari Sundholm <ari@tuxera.com>
 Cc: qemu-stable@nongnu.org
-Cc: Mauro Matteo Cascella <mcascell@redhat.com>
-Fixes: CVE-2023-6693
-Fixes: e22f0603fb2f ("virtio-net: reference implementation of hash report")
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 2220e8189fb94068dbad333228659fbac819abb0)
+Message-ID: <20240109184646.1128475-1-megari@gmx.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit a9c8ea95470c27a8a02062b67f9fa6940e828ab6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 06f35ac2d8..412cba4927 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -664,6 +664,11 @@ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
+diff --git a/block/blklogwrites.c b/block/blklogwrites.c
+index cef9efe55d..ad589c4a2e 100644
+--- a/block/blklogwrites.c
++++ b/block/blklogwrites.c
+@@ -321,22 +321,39 @@ typedef struct {
+ static void coroutine_fn blk_log_writes_co_do_log(BlkLogWritesLogReq *lr)
+ {
+     BDRVBlkLogWritesState *s = lr->bs->opaque;
+-    uint64_t cur_log_offset = s->cur_log_sector << s->sectorbits;
  
-     n->mergeable_rx_bufs = mergeable_rx_bufs;
- 
+-    s->nr_entries++;
+-    s->cur_log_sector +=
+-            ROUND_UP(lr->qiov->size, s->sectorsize) >> s->sectorbits;
 +    /*
-+     * Note: when extending the vnet header, please make sure to
-+     * change the vnet header copying logic in virtio_net_flush_tx()
-+     * as well.
++     * Determine the offsets and sizes of different parts of the entry, and
++     * update the state of the driver.
++     *
++     * This needs to be done in one go, before any actual I/O is done, as the
++     * log entry may have to be written in two parts, and the state of the
++     * driver may be modified by other driver operations while waiting for the
++     * I/O to complete.
 +     */
-     if (version_1) {
-         n->guest_hdr_len = hash_report ?
-             sizeof(struct virtio_net_hdr_v1_hash) :
-@@ -2630,7 +2635,7 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-         ssize_t ret;
-         unsigned int out_num;
-         struct iovec sg[VIRTQUEUE_MAX_SIZE], sg2[VIRTQUEUE_MAX_SIZE + 1], *out_sg;
--        struct virtio_net_hdr_mrg_rxbuf mhdr;
-+        struct virtio_net_hdr_v1_hash vhdr;
++    const uint64_t entry_start_sector = s->cur_log_sector;
++    const uint64_t entry_offset = entry_start_sector << s->sectorbits;
++    const uint64_t qiov_aligned_size = ROUND_UP(lr->qiov->size, s->sectorsize);
++    const uint64_t entry_aligned_size = qiov_aligned_size +
++        ROUND_UP(lr->zero_size, s->sectorsize);
++    const uint64_t entry_nr_sectors = entry_aligned_size >> s->sectorbits;
  
-         elem = virtqueue_pop(q->tx_vq, sizeof(VirtQueueElement));
-         if (!elem) {
-@@ -2647,7 +2652,7 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-         }
+-    lr->log_ret = bdrv_co_pwritev(s->log_file, cur_log_offset, lr->qiov->size,
++    s->nr_entries++;
++    s->cur_log_sector += entry_nr_sectors;
++
++    /*
++     * Write the log entry. Note that if this is a "write zeroes" operation,
++     * only the entry header is written here, with the zeroing being done
++     * separately below.
++     */
++    lr->log_ret = bdrv_co_pwritev(s->log_file, entry_offset, lr->qiov->size,
+                                   lr->qiov, 0);
  
-         if (n->has_vnet_hdr) {
--            if (iov_to_buf(out_sg, out_num, 0, &mhdr, n->guest_hdr_len) <
-+            if (iov_to_buf(out_sg, out_num, 0, &vhdr, n->guest_hdr_len) <
-                 n->guest_hdr_len) {
-                 virtio_error(vdev, "virtio-net header incorrect");
-                 virtqueue_detach_element(q->tx_vq, elem, 0);
-@@ -2655,8 +2660,8 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
-                 return -EINVAL;
-             }
-             if (n->needs_vnet_hdr_swap) {
--                virtio_net_hdr_swap(vdev, (void *) &mhdr);
--                sg2[0].iov_base = &mhdr;
-+                virtio_net_hdr_swap(vdev, (void *) &vhdr);
-+                sg2[0].iov_base = &vhdr;
-                 sg2[0].iov_len = n->guest_hdr_len;
-                 out_num = iov_copy(&sg2[1], ARRAY_SIZE(sg2) - 1,
-                                    out_sg, out_num,
+     /* Logging for the "write zeroes" operation */
+     if (lr->log_ret == 0 && lr->zero_size) {
+-        cur_log_offset = s->cur_log_sector << s->sectorbits;
+-        s->cur_log_sector +=
+-                ROUND_UP(lr->zero_size, s->sectorsize) >> s->sectorbits;
++        const uint64_t zeroes_offset = entry_offset + qiov_aligned_size;
+ 
+-        lr->log_ret = bdrv_co_pwrite_zeroes(s->log_file, cur_log_offset,
++        lr->log_ret = bdrv_co_pwrite_zeroes(s->log_file, zeroes_offset,
+                                             lr->zero_size, 0);
+     }
+ 
 -- 
 2.39.2
 
