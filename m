@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB29E83F468
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 07:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6772B83F480
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 08:17:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTyzJ-0004Ri-U3; Sun, 28 Jan 2024 01:49:53 -0500
+	id 1rTzOL-00037n-8t; Sun, 28 Jan 2024 02:15:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTyzH-0004Px-AT
- for qemu-devel@nongnu.org; Sun, 28 Jan 2024 01:49:52 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rTzOF-000367-Qy
+ for qemu-devel@nongnu.org; Sun, 28 Jan 2024 02:15:40 -0500
+Received: from mail-io1-xd2b.google.com ([2607:f8b0:4864:20::d2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTyzE-0007wk-VQ
- for qemu-devel@nongnu.org; Sun, 28 Jan 2024 01:49:50 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5cf450eba00so1797369a12.0
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 22:49:48 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rTzOD-0004AK-IU
+ for qemu-devel@nongnu.org; Sun, 28 Jan 2024 02:15:39 -0500
+Received: by mail-io1-xd2b.google.com with SMTP id
+ ca18e2360f4ac-7bfe5aa702fso27525239f.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 23:15:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706424587; x=1707029387; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eo6kJMxU5o1LNw4YmzyHnxQq+8llwHzhpgYGCIu5R+c=;
- b=RmcoHCggIcBK+n2b/MW2906gOtyG/Jxvt/j8ZomzvZ7Z1sbbdsfnAFKQmPTBRwl63O
- rkVVfSTdY2nVzHrff6HuwIMY52p0hmhzrGuQ2/c2ldhJdOOS3ET2lIulKDAINFVBkfp5
- iDC4iK9b42LzA1P1spzO4rQ41YnyS3HbIV3ti6B7/L/S1Xe7iymIpdc1JrHiq6lGZUdE
- mlmBLAlVKQT8s2r52h+l5Vtewn0j09ibPiJB+8eaE70rQNK3o8ANcLRkCaGaPygZ8tet
- dIlivbcGAWkXYy+ONKf6UJzfcO7dkEN5KYQ0SGptJ0YQTItpZev3LvfLzy3MY39L7FvM
- BT8A==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706426132; x=1707030932;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wMk2Dn5lu3F9Qa7EJOP18lOhECpVX5h3SFHTrT99Ous=;
+ b=DM/C7ONF3TvP8OYBNXZ7d7QWrihAwYE5EJLCcfZQDye7Q0vEFnNTjEdvJDKYffmacB
+ +r8Ss+31rI2OifaIzcpSztPtjLe+yp4AU4uMM/72J5EaouVRUQ9yOtd2pTNdZwMzqfsY
+ FqZA98gpmRFexEWKNWDfHDLjj5z2cjdsvFlnf7TyNftco6D4M2P0c1GyPdGd9AiAMmO3
+ Wy9z8FySQzh3b2V4fMRXKl6GtApIZdfpx2hNzctzXU0wggGsvOF7KWn6ET49iiiIWP6J
+ v3O9PJB7cpwrEYjdYQtyWfna9qWAWFed06qaspmcP1nYsaLcsJeLaC7tjpHYBDOhRYNI
+ uV4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706424587; x=1707029387;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eo6kJMxU5o1LNw4YmzyHnxQq+8llwHzhpgYGCIu5R+c=;
- b=B1F1a2I0t/iJ/Q61VNmkO3su8KAyvn/aSi4TTx3eIdaAfI0c1ejD/CA0KUCgASK0TR
- NrxCKEe1P+dFdVg3uhjWYLf0UYD8Od7m0BB4Kdv6cB13zM0k/AiSXfiKH2s5dLnWT9Zf
- wUHkJ1yHdqdIhR/LwBSTTSu+qIKRQzOKZJ5n+zvYEaUZ+e+cs/cM4MYx9+HnQeFT4r4a
- n6cj2pFL7Ld02YANyTTS/kFL4N8BOeXRomN4VpY++HWY1HAzxkM6uQG9yOhQMj/YLo9W
- +12Z8kV035XwXTfcGzRNkkASvyYm7Ec4Fn3fCaE3kzfnvYizyJG7NiyjT9e0cphLZG/g
- Ycrw==
-X-Gm-Message-State: AOJu0YzLaVG9iKqiaytJiIxKgkPFJuZVKRSFmrlZ6Tp1Q2pudw/Gu597
- r10xAMFbeI/gZpRNk6e6r9TVmqSuvfBVyexC493ttXm7ypid5aEnjvjJ9W/SHG0xwgKBaJL8Nid
- 5COc=
-X-Google-Smtp-Source: AGHT+IE1oNu9DeYzvR+a/LMUqAVY6+MbZNplnHa1vkvL5ef38ggE5N3MS879DfHZDP1VO1O7HXnTaA==
-X-Received: by 2002:a05:6a20:bc85:b0:19c:a2aa:67f8 with SMTP id
- fx5-20020a056a20bc8500b0019ca2aa67f8mr1191350pzb.24.1706424587303; 
- Sat, 27 Jan 2024 22:49:47 -0800 (PST)
-Received: from [192.168.198.227]
- (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
- by smtp.gmail.com with ESMTPSA id
- k130-20020a636f88000000b005d32c807296sm3765481pgc.68.2024.01.27.22.49.45
+ d=1e100.net; s=20230601; t=1706426132; x=1707030932;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wMk2Dn5lu3F9Qa7EJOP18lOhECpVX5h3SFHTrT99Ous=;
+ b=bfvoY/cD7eeScFnn5x+BbT8r9RekqsxCmF5oF1+Az/zncqzL3loxgusZDfVDLbtgaH
+ e0aTYmXVfK7/TCHWV4YkM5w7AH3egGw4SDDBJOQiWOHEoItgFOzfuJM38/mUrQg8b+oy
+ Ljq5KUhzltWoH2o8KOAvTJfhBtllw1eHr6u0RkAoguvKdBteEOocTbRdX0C004QHZpIh
+ 2mgPEX1FYy3RHVkBXzqKUJp9y9EHXJ80WJbxRH8/jWHiNqHLiSpZkg96AYoNLzXRlW8D
+ +Iry5jq76BPjpuo/z6t9b22KcTZs/XTCXxOO/sw9DBlL3RxTuWv3uBcWy1pDRrd6lE4o
+ Rl1w==
+X-Gm-Message-State: AOJu0YzpvQAyMjXICSybxRNhvRzmpEu63zmqYd9Fx8wn2SHNO8/hPeer
+ BCeLSVqPgIXNFqO4Amf27xdBT2TUl0vy8GaO3syFNBMnUKTtWg8CzwmDzopqjtg=
+X-Google-Smtp-Source: AGHT+IHQQo0AhH3bBVxNhcrJpMy7N2/PQInijOqWNbkRBfYHb48CHSskOlkwjXLptFSxXCG2N/5EEQ==
+X-Received: by 2002:a05:6e02:12c7:b0:363:7b5e:1378 with SMTP id
+ i7-20020a056e0212c700b003637b5e1378mr1084080ilm.31.1706426132016; 
+ Sat, 27 Jan 2024 23:15:32 -0800 (PST)
+Received: from localhost ([157.82.200.138])
+ by smtp.gmail.com with UTF8SMTPSA id
+ by36-20020a056a0205a400b005ceb4a6d72bsm3106667pgb.65.2024.01.27.23.15.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 Jan 2024 22:49:46 -0800 (PST)
-Message-ID: <a96a571b-55b7-46b4-a793-bb405ef10467@linaro.org>
-Date: Sun, 28 Jan 2024 16:49:42 +1000
+ Sat, 27 Jan 2024 23:15:31 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 0/2] hw/smbios: Fix option validation
+Date: Sun, 28 Jan 2024 16:15:27 +0900
+Message-Id: <20240128-smbios-v1-0-c3a50499baea@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/22] target/sparc: floating-point cleanup
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-References: <20231103173841.33651-1-richard.henderson@linaro.org>
-In-Reply-To: <20231103173841.33651-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-B4-Tracking: v=1; b=H4sIAA//tWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQyML3eLcpMz8Yt2kVNNkYyPDFHNDUwsloOKCotS0zAqwQdGxtbUAftx
+ 9iVgAAAA=
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-io1-xd2b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,68 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/4/23 03:38, Richard Henderson wrote:
-> Major changes:
-> 
-> (1) Get rid of the env->qt[01] temporaries and use TCGv_i128 for float128.
-> (2) Perform ieee exception check within the helpers, before any writeback
->      to the floating point registers.
-> (3) Split env->fsr into pieces to simplify update, especially compares.
-> 
-> 
-> r~
-> 
-> 
-> Based-on: 20231101041132.174501-1-richard.henderson@linaro.org
-> ("[PATCH v2 00/21] target/sparc: Cleanup condition codes etc")
+This fixes qemu_smbios_type8_opts and qemu_smbios_type11_opts to have
+list terminators and elements for the type option.
 
-Ping.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Akihiko Odaki (2):
+      hw/smbios: Fix OEM strings table option validation
+      hw/smbios: Fix port connector option validation
 
-Prerequisites are upstream, and it rebases cleanly on master.
-For reference,
+ hw/smbios/smbios.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+---
+base-commit: f614acb7450282a119d85d759f27eae190476058
+change-id: 20240128-smbios-be5c321d7158
 
-   https://gitlab.com/rth7680/qemu/-/commits/tgt-sparc-fp
-
-
-r~
-
-> 
-> 
-> Richard Henderson (22):
->    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for ASI_M_BCOPY
->    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for ASI_M_BFILL
->    target/sparc: Remove gen_dest_fpr_F
->    target/sparc: Introduce gen_{load,store}_fpr_Q
->    target/sparc: Inline FNEG, FABS
->    target/sparc: Use i128 for FSQRTq
->    target/sparc: Use i128 for FADDq, FSUBq, FMULq, FDIVq
->    target/sparc: Use i128 for FqTOs, FqTOi
->    target/sparc: Use i128 for FqTOd, FqTOx
->    target/sparc: Use i128 for FCMPq, FCMPEq
->    target/sparc: Use i128 for FsTOq, FiTOq
->    target/sparc: Use i128 for FdTOq, FxTOq
->    target/sparc: Use i128 for Fdmulq
->    target/sparc: Remove qt0, qt1 temporaries
->    target/sparc: Introduce cpu_get_fsr, cpu_put_fsr
->    target/split: Split ver from env->fsr
->    target/sparc: Clear cexc and ftt in do_check_ieee_exceptions
->    target/sparc: Merge check_ieee_exceptions with FPop helpers
->    target/sparc: Split cexc and ftt from env->fsr
->    target/sparc: Remove cpu_fsr
->    target/sparc: Split fcc out of env->fsr
->    target/sparc: Remove FSR_FTT_NMASK, FSR_FTT_CEXC_NMASK
-> 
->   target/sparc/cpu.h          |  39 +-
->   target/sparc/helper.h       | 116 ++----
->   linux-user/sparc/cpu_loop.c |   2 +-
->   linux-user/sparc/signal.c   |  14 +-
->   target/sparc/cpu.c          |  32 +-
->   target/sparc/fop_helper.c   | 510 +++++++++++++----------
->   target/sparc/gdbstub.c      |   8 +-
->   target/sparc/ldst_helper.c  |   3 -
->   target/sparc/machine.c      |  38 +-
->   target/sparc/translate.c    | 799 ++++++++++++------------------------
->   10 files changed, 680 insertions(+), 881 deletions(-)
-> 
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
