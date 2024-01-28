@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E010383F3D0
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:44:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAD883F3E7
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Jan 2024 05:47:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rTx0K-0004jy-OO; Sat, 27 Jan 2024 23:42:48 -0500
+	id 1rTx0M-0004kS-Hb; Sat, 27 Jan 2024 23:42:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0I-0004jm-IX
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:46 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rTx0K-0004kI-Pg
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:48 -0500
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rTx0H-0004J4-0J
- for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:46 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d746ce7d13so15818885ad.0
- for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:44 -0800 (PST)
+ id 1rTx0J-0004JL-9j
+ for qemu-devel@nongnu.org; Sat, 27 Jan 2024 23:42:48 -0500
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-290483f8c7bso1322954a91.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Jan 2024 20:42:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706416964; x=1707021764; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706416966; x=1707021766; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XtUAEvtZlEFe6xSkMZOBhFgppz0gGYIST8afKDqnszc=;
- b=crpLBow+lgRWgjMyPIqbGTsIDiIk4vLB7QRA61wclq/DT6BiTJzyK4n3lp4buvhOQ8
- oEJYsmqVrvAE1xe64tNAk03SlWvy/HwJmBnMnwxqcrwd+fAPXDjQzbMK0yS90lRomnEp
- Zgmz7J6gwwfRy2IppW71SYGXaQgRbzzOoGrJ0v5BawcnUyflt8ChyK4PTqJ3c1JZV750
- wNrGV44tt0LCklw0YGXDaVSwlKv69hgVOUuEvd1wa2SJ/JJLKUg5tGz4kVSOftqdGE80
- X1zPm3j+n0w3WjqMWayzlRD9QZOZMNpq0vQXLG7Uiy0qq+EBXsZQa9yHTaF1GtViwnQZ
- 6XGQ==
+ bh=0IsJCYKuWrursPA6kPyaSh6Iig/if/7dsXp1H2oDJMs=;
+ b=BaOPrRv980yaVACOJTE4DnWzuGl/0lVF+rWL52lIIC7JNOGVEee0Ckvz8Kl7p5tjxh
+ Itd9ZlY6pC3z0bdp63LBFXwa7jIpHQYBjuAoFpiDBq5W28cB099b4Zo/H8AiJdyuzV/x
+ Ilq0T/BDp2Eq7w0DvxhfhZe2WFrgNBlXgXG8fos3ZEQJwSjuusqQUG4GqIa5ajjBVKfs
+ u2oyhz7iJ8wZw4wSyRBC2hZCvzWzYNNZIsc4VENuaqkqhdDBIZSxtW9hjYHxIPRigt2D
+ /MjpzO5m2bgEBzhtgwgfPlcUJ8TQlg2LJq+8j3bgaSrm9aOfAvJnP/etTPx9keNBcnyK
+ 46wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706416964; x=1707021764;
+ d=1e100.net; s=20230601; t=1706416966; x=1707021766;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XtUAEvtZlEFe6xSkMZOBhFgppz0gGYIST8afKDqnszc=;
- b=G4tyRWFSLea60CPUwiL4Dql7Hpfv7maTYnb3P0dN1XJ0VMAtT6IPvDG0DTnbdMNxfQ
- rFfOMgDLUAhj2Ss8QIVhhdj6NDNVKCO3WQ8L4vr1kHIMMJHLSdBVnhCrbuBF6mYYO7mE
- zXtFMFU3EDwU/d6yLM93nicNdTPudoPoFy7+r8zbsHl/VEPyJFmrJrPzWjgwnpLSrGMD
- 0AZZLMLvYUgE+lADb5ieEQ13293jGqqB3nW0JdvfFBjkWDOx45G6AHgf1NI/zjfLEmov
- 76pdoZyoVVrxsi8FaCtC4SBhAm/X9bTXKPWw4TS/XR+m0E/E9kzcjYcA+uFe+LLiQXyb
- W80g==
-X-Gm-Message-State: AOJu0Yx+ItyTi4WQLrkBwUtdWe5HN5WhVn8QZYBeLJbTMytzs8ROYF01
- nWKxcSmc8SbS+S/vnj6BUaHhZ+pm5BZzs95JO4cGE89faWZSP7yCEjcn0hFQEEjAGkjwCiShu2S
- 2f/UkRQ==
-X-Google-Smtp-Source: AGHT+IEqoXUMbDRfq9zvPJMnm+rGsQYvSdXTOb7OoHIYYKSxF0pbRiw3MmBjRnVMzTbZX+FFHfKx8A==
-X-Received: by 2002:a17:902:c412:b0:1d8:d6c1:fcb9 with SMTP id
- k18-20020a170902c41200b001d8d6c1fcb9mr139840plk.100.1706416963770; 
- Sat, 27 Jan 2024 20:42:43 -0800 (PST)
+ bh=0IsJCYKuWrursPA6kPyaSh6Iig/if/7dsXp1H2oDJMs=;
+ b=qX17bqvGgCKkkKlIbA0TkwsMHItEifTGm64THynG/Lul+ELT+1AL6Ymcj76CcLczhA
+ kwwDfw9GrJjMOO7oEF0nIeOec6lo0myeLyNlXSqzZemZVJryibDX++OQ95XfbBiDoJEQ
+ 0fo5vf31hNxXXAtkJ4InllqLb7vJ7QGxGbb48glPr1IRP3vf61yMJm7Auky54U+0dauc
+ lWjs+3qJOLKVhpg+MTillGcOqqyG21N3tWDhYDAU7nCSYAQWRPN+PbsdN5qTkna4l/WP
+ zx8Z5QhOM5vc6PyRJePOlcPvEVk7jLXnZJd0PV2ar9bj2cmHJvP2j+fr/PRloQcuWyd2
+ 0kAQ==
+X-Gm-Message-State: AOJu0YzH2gntopdIEUkwUKMohly5kzSC4Alf77DF8v8i+ub29+iQUFuG
+ 1Z3bSC9XMtC+QSXxeNo5JQgDpk/4jifQ9aasJY5cCN6uKA4pHWmMJFPVN1IN5V+n3hUpJO11TuW
+ 6KIEsrg==
+X-Google-Smtp-Source: AGHT+IGDsF25tuBpf3hP1SjogbVqRI7bd1LE/jHwl5HLdeowmtarHEL465tLSaCdsLT6mrc7Wfwr+w==
+X-Received: by 2002:a17:90a:5d07:b0:293:e0bf:39ae with SMTP id
+ s7-20020a17090a5d0700b00293e0bf39aemr1659675pji.59.1706416965937; 
+ Sat, 27 Jan 2024 20:42:45 -0800 (PST)
 Received: from stoup..
  (ppp121-45-131-89.bri-pow-que-bras31.tpg.internode.on.net. [121.45.131.89])
  by smtp.gmail.com with ESMTPSA id
- w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.41
+ w24-20020a17090aaf9800b002906e09e1d1sm5631873pjq.18.2024.01.27.20.42.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Jan 2024 20:42:43 -0800 (PST)
+ Sat, 27 Jan 2024 20:42:45 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 10/33] include/exec: Move cpu_*()/cpu_env() to common header
-Date: Sun, 28 Jan 2024 14:41:50 +1000
-Message-Id: <20240128044213.316480-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/33] include/hw/core: Move do_interrupt in TCGCPUOps
+Date: Sun, 28 Jan 2024 14:41:51 +1000
+Message-Id: <20240128044213.316480-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240128044213.316480-1-richard.henderson@linaro.org>
 References: <20240128044213.316480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,97 +95,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Functions are target independent.
+The ifdef out of which it is moved is not quite right: do_interrupt is
+only needed for system mode.  Move it to the top of a different ifdef
+block, which preserves its position within the structure for that case.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240119144024.14289-17-anjo@rev.ng>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240119144024.14289-18-anjo@rev.ng>
+[rth: Split from a larger patch and simplified.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h    | 25 -------------------------
- include/exec/cpu-common.h | 26 ++++++++++++++++++++++++++
- 2 files changed, 26 insertions(+), 25 deletions(-)
+ include/hw/core/tcg-cpu-ops.h | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index edee87d3f4..8501a33dbf 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -384,33 +384,8 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
- 
- #endif /* !CONFIG_USER_ONLY */
- 
--/* accel/tcg/cpu-exec.c */
--int cpu_exec(CPUState *cpu);
--
- /* Validate correct placement of CPUArchState. */
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
- 
--/**
-- * env_archcpu(env)
-- * @env: The architecture environment
-- *
-- * Return the ArchCPU associated with the environment.
-- */
--static inline ArchCPU *env_archcpu(CPUArchState *env)
--{
--    return (void *)env - sizeof(CPUState);
--}
--
--/**
-- * env_cpu(env)
-- * @env: The architecture environment
-- *
-- * Return the CPUState associated with the environment.
-- */
--static inline CPUState *env_cpu(CPUArchState *env)
--{
--    return (void *)env - sizeof(CPUState);
--}
--
- #endif /* CPU_ALL_H */
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index ba10351576..7e1a4afad8 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -7,6 +7,7 @@
- #ifndef CONFIG_USER_ONLY
- #include "exec/hwaddr.h"
- #endif
-+#include "hw/core/cpu.h"
- 
- #define EXCP_INTERRUPT  0x10000 /* async interruption */
- #define EXCP_HLT        0x10001 /* hlt instruction reached */
-@@ -249,4 +250,29 @@ G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
-  */
- #define PAGE_PASSTHROUGH 0x0800
- 
-+/* accel/tcg/cpu-exec.c */
-+int cpu_exec(CPUState *cpu);
-+
-+/**
-+ * env_archcpu(env)
-+ * @env: The architecture environment
-+ *
-+ * Return the ArchCPU associated with the environment.
-+ */
-+static inline ArchCPU *env_archcpu(CPUArchState *env)
-+{
-+    return (void *)env - sizeof(CPUState);
-+}
-+
-+/**
-+ * env_cpu(env)
-+ * @env: The architecture environment
-+ *
-+ * Return the CPUState associated with the environment.
-+ */
-+static inline CPUState *env_cpu(CPUArchState *env)
-+{
-+    return (void *)env - sizeof(CPUState);
-+}
-+
- #endif /* CPU_COMMON_H */
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 479713a36e..d6fe55d471 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -58,11 +58,6 @@ struct TCGCPUOps {
+      * cpu execution loop (hack for x86 user mode).
+      */
+     void (*fake_user_interrupt)(CPUState *cpu);
+-#else
+-    /**
+-     * @do_interrupt: Callback for interrupt handling.
+-     */
+-    void (*do_interrupt)(CPUState *cpu);
+ #endif /* !CONFIG_USER_ONLY || !TARGET_I386 */
+ #ifdef CONFIG_USER_ONLY
+     /**
+@@ -114,6 +109,8 @@ struct TCGCPUOps {
+     void (*record_sigbus)(CPUState *cpu, vaddr addr,
+                           MMUAccessType access_type, uintptr_t ra);
+ #else
++    /** @do_interrupt: Callback for interrupt handling.  */
++    void (*do_interrupt)(CPUState *cpu);
+     /** @cpu_exec_interrupt: Callback for processing interrupts in cpu_exec */
+     bool (*cpu_exec_interrupt)(CPUState *cpu, int interrupt_request);
+     /**
 -- 
 2.34.1
 
