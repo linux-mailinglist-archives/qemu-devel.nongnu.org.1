@@ -2,78 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C3F83FC61
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 03:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 169F083FC88
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 04:06:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUHkH-0001IW-UH; Sun, 28 Jan 2024 21:51:37 -0500
+	id 1rUHwc-0003bL-OB; Sun, 28 Jan 2024 22:04:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUHkF-0001I7-QH
- for qemu-devel@nongnu.org; Sun, 28 Jan 2024 21:51:35 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUHwY-0003bC-0T
+ for qemu-devel@nongnu.org; Sun, 28 Jan 2024 22:04:18 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUHkD-0000g4-W0
- for qemu-devel@nongnu.org; Sun, 28 Jan 2024 21:51:35 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUHwV-0002Zg-Eq
+ for qemu-devel@nongnu.org; Sun, 28 Jan 2024 22:04:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706496692;
+ s=mimecast20190719; t=1706497454;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HQ6A9nBrW8nPlhkYv3MIGSl5aT9C6NGpQkEBGkINVEQ=;
- b=VklLl4Hxf4LwWCAmYC6Uika7JFGH54rQ9pKggMjhlQ6I9hLXiFTOakjLqNO2qDJYkxPjZR
- gcg4bmRlp87FmT/tQibvxntlDHGXaDY6TOV1hlhOugVeetVV26likgoJMS4QVKCl0FWSdH
- UemUcoDuPTQCEIkZ0HAgbAh9tjhsTok=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sEHT8p/ugD2PhygK1Zn4V4empTsUuTqCfMEAWIDEu7c=;
+ b=Zwd5Oqzp5LTy3g2Abuu5w9i5I0l9p0gz0sIPZly//4C4D1JQldfe6SySBwUEt994RReVTl
+ x0RqEMpcCtlI2ekqD1mWW8V4/RBJQ2Sxt7TvrU18RJ/ZWrCNkWDpzl6tfXbI2K4uSSK2nZ
+ WjghD+XeUWesBXZYeA6vnb9lsMoaVB4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-9098uunAPGmchxk0piwxBw-1; Sun, 28 Jan 2024 21:51:31 -0500
-X-MC-Unique: 9098uunAPGmchxk0piwxBw-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-6da5a9defd5so411890b3a.0
- for <qemu-devel@nongnu.org>; Sun, 28 Jan 2024 18:51:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706496690; x=1707101490;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HQ6A9nBrW8nPlhkYv3MIGSl5aT9C6NGpQkEBGkINVEQ=;
- b=FAlhpu4U3ZMeXBUeuw7IQau9WVnakIyGYp79jkCRNIfSX0MjqPoMw4VYzvblUos5PH
- bT3MATvfNjGrWhAuwouer3hc466ag/e/EEaD30r2Lco3daI3O+y7Thcy6Ho6hHCXQkez
- bcj02s5C34ihrtGpaJGsx4w5e2vC36c2FRHud+55Goi/FgwmiiIEQBYQm3syXov++rI4
- xgqK9aMf84tho1ZLHHjm3GnnBM3XGBBUYSNqeSLrxG2i4tsn33dufquGF6OGBNy2waAC
- H9p+b70TQ+igyFo4s7/M58Nf2Zokea+pP8Ty/VgE2UUdFeeSK/To8rLvBohSauep/Wdk
- l5+w==
-X-Gm-Message-State: AOJu0YyENIxWo1uN/38qJSsHQrHxLR835/SozL9/ThsvE0WOeq90fh5T
- clCXIFdvRcpeYseFOyu/q9WdxNjkslDEmXeiLxcD0pD237HshkbcNWuTfCJNqiqKJs3S3YI7end
- HXqnQ5V7AZ0ky3afSl5106Qi30dNKD5DodICLs+cSARaHlkMPJnha
-X-Received: by 2002:a05:6a20:8e06:b0:19c:9b7d:bb36 with SMTP id
- y6-20020a056a208e0600b0019c9b7dbb36mr8345489pzj.2.1706496689996; 
- Sun, 28 Jan 2024 18:51:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IESwQU3bQqhhxmSMGO/5ybE/MH0NcpZdrXU8c5Fc+aBmtEIwDziu2Tcy3XAbRsgZ47n5UgvYg==
-X-Received: by 2002:a05:6a20:8e06:b0:19c:9b7d:bb36 with SMTP id
- y6-20020a056a208e0600b0019c9b7dbb36mr8345483pzj.2.1706496689550; 
- Sun, 28 Jan 2024 18:51:29 -0800 (PST)
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- m12-20020aa78a0c000000b006ddb1286b74sm4715895pfa.105.2024.01.28.18.51.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Jan 2024 18:51:29 -0800 (PST)
-Date: Mon, 29 Jan 2024 10:51:23 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PULL 06/15] tests/qtest/migration: Don't use -cpu max for aarch64
-Message-ID: <ZbcSqyGNLGu7ugBb@x1n>
-References: <20240126041725.124562-1-peterx@redhat.com>
- <20240126041725.124562-7-peterx@redhat.com>
- <87le8c6u1d.fsf@suse.de>
- <CAFEAcA-x4WqvPsN-KZOA3SPN0F=vvYi=NFZ2qom2iT7-CN0RSg@mail.gmail.com>
- <87il3g6t7b.fsf@suse.de>
+ us-mta-578-RgyTg1L0M1m6H9zpAtERAQ-1; Sun, 28 Jan 2024 22:04:10 -0500
+X-MC-Unique: RgyTg1L0M1m6H9zpAtERAQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8305383BA87;
+ Mon, 29 Jan 2024 03:04:10 +0000 (UTC)
+Received: from x1n.redhat.com (unknown [10.72.116.11])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 111071121306;
+ Mon, 29 Jan 2024 03:04:07 +0000 (UTC)
+From: peterx@redhat.com
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>,
+	peterx@redhat.com
+Subject: [PULL 00/14] Migration 20240126 patches
+Date: Mon, 29 Jan 2024 11:03:51 +0800
+Message-ID: <20240129030405.177100-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87il3g6t7b.fsf@suse.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
@@ -99,95 +77,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 26, 2024 at 11:54:32AM -0300, Fabiano Rosas wrote:
-> Peter Maydell <peter.maydell@linaro.org> writes:
-> 
-> > On Fri, 26 Jan 2024 at 14:36, Fabiano Rosas <farosas@suse.de> wrote:
-> >>
-> >> peterx@redhat.com writes:
-> >>
-> >> > From: Fabiano Rosas <farosas@suse.de>
-> >> >
-> >> > The 'max' cpu is not expected to be stable in terms of features across
-> >> > QEMU versions, so it should not be expected to migrate.
-> >> >
-> >> > While the tests currently all pass with -cpu max, that is only because
-> >> > we're not testing across QEMU versions, which is the more common
-> >> > use-case for migration.
-> >> >
-> >> > We've recently introduced compatibility tests that use two different
-> >> > QEMU versions and the tests are now failing for aarch64. The next
-> >> > patch adds those tests to CI, so we cannot use the 'max' cpu
-> >> > anymore. Replace it with the 'neoverse-n1', which has a fixed set of
-> >> > features.
-> >> >
-> >> > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> >> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> > Link: https://lore.kernel.org/r/20240118164951.30350-2-farosas@suse.de
-> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> >> > ---
-> >> >  tests/qtest/migration-test.c | 2 +-
-> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >> >
-> >> > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> >> > index 7675519cfa..15713f3666 100644
-> >> > --- a/tests/qtest/migration-test.c
-> >> > +++ b/tests/qtest/migration-test.c
-> >> > @@ -820,7 +820,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-> >> >          memory_size = "150M";
-> >> >          machine_alias = "virt";
-> >> >          machine_opts = "gic-version=max";
-> >> > -        arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-> >> > +        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
-> >> >          start_address = ARM_TEST_MEM_START;
-> >> >          end_address = ARM_TEST_MEM_END;
-> >> >      } else {
-> >>
-> >> This breaks the tests on an arm host with KVM support. We could drop
-> >> this patch from the PR, it doesn't affect anything else.
-> >>
-> >> Or squash in:
-> >>
-> >> -->8--
-> >> From b8aa5d8a2b33dcc28e4cd4ce2c4f4eacc3a3b845 Mon Sep 17 00:00:00 2001
-> >> From: Fabiano Rosas <farosas@suse.de>
-> >> Date: Fri, 26 Jan 2024 11:33:15 -0300
-> >> Subject: [PATCH] fixup! tests/qtest/migration: Don't use -cpu max for aarch64
-> >>
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> ---
-> >>  tests/qtest/migration-test.c | 4 +++-
-> >>  1 file changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> >> index 15713f3666..2ba9cab684 100644
-> >> --- a/tests/qtest/migration-test.c
-> >> +++ b/tests/qtest/migration-test.c
-> >> @@ -820,7 +820,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-> >>          memory_size = "150M";
-> >>          machine_alias = "virt";
-> >>          machine_opts = "gic-version=max";
-> >> -        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
-> >> +        arch_opts = g_strdup_printf("-cpu %s -kernel %s",
-> >> +                                    qtest_has_accel("kvm") ?
-> >> +                                    "host" : "neoverse-n1", bootpath);
-> >>          start_address = ARM_TEST_MEM_START;
-> >>          end_address = ARM_TEST_MEM_END;
-> >>      } else {
-> >
-> > If you want to do that then a comment explaining why would be
-> > helpful for future readers, I think.
-> 
-> Ok, let's drop this one then, I'll resend.
+From: Peter Xu <peterx@redhat.com>
 
-I'll drop this one for now then, thanks.
+The following changes since commit 7a1dc45af581d2b643cdbf33c01fd96271616fbd:
 
-Just to double check: Fabiano, you meant that "-cpu host" won't hit the
-same issue as what "-cpu max" would have for the new "n-1" CI test, right?
+  Merge tag 'pull-target-arm-20240126' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2024-01-26 18:16:35 +0000)
 
-I can also wait to read your patch if that will contain the explanations.
+are available in the Git repository at:
+
+  https://gitlab.com/peterx/qemu.git tags/migration-20240126-pull-request
+
+for you to fetch changes up to 57fd4b4e10756448acd6c90ce041ba8dc9313efc:
+
+  Make 'uri' optional for migrate QAPI (2024-01-29 11:02:12 +0800)
+
+----------------------------------------------------------------
+Migration Pull
+
+[dropped fabiano's patch on modifying cpu model for arm migration tests for
+ now]
+
+- Fabiano's patchset to fix migration state references in BHs
+- Fabiano's new 'n-1' migration test for CI
+- Het's fix on making "uri" optional in QMP migrate cmd
+- Markus's HMP leak fix reported by Coverity
+- Paolo's cleanup on uffd to replace u64 usage
+- Peter's small migration cleanup series all over the places
+
+----------------------------------------------------------------
+
+Fabiano Rosas (8):
+  ci: Add a migration compatibility test job
+  ci: Disable migration compatibility tests for aarch64
+  migration/yank: Use channel features
+  migration: Fix use-after-free of migration state object
+  migration: Take reference to migration state around
+    bg_migration_vm_start_bh
+  migration: Reference migration state around
+    loadvm_postcopy_handle_run_bh
+  migration: Add a wrapper to qemu_bh_schedule
+  migration: Centralize BH creation and dispatch
+
+Het Gala (1):
+  Make 'uri' optional for migrate QAPI
+
+Markus Armbruster (1):
+  migration: Plug memory leak on HMP migrate error path
+
+Paolo Bonzini (1):
+  userfaultfd: use 1ULL to build ioctl masks
+
+Peter Xu (3):
+  migration: Make threshold_size an uint64_t
+  migration: Drop unnecessary check in ram's pending_exact()
+  analyze-migration.py: Remove trick on parsing ramblocks
+
+ qapi/migration.json                       |  2 +-
+ migration/migration.h                     |  7 +-
+ migration/migration-hmp-cmds.c            |  4 +-
+ migration/migration.c                     | 82 +++++++++++++----------
+ migration/postcopy-ram.c                  | 16 ++---
+ migration/ram.c                           |  9 ++-
+ migration/savevm.c                        |  5 +-
+ migration/yank_functions.c                |  6 +-
+ subprojects/libvhost-user/libvhost-user.c |  2 +-
+ tests/qtest/migration-test.c              |  4 +-
+ .gitlab-ci.d/buildtest.yml                | 64 ++++++++++++++++++
+ scripts/analyze-migration.py              | 11 +--
+ 12 files changed, 134 insertions(+), 78 deletions(-)
 
 -- 
-Peter Xu
+2.43.0
 
 
