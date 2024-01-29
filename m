@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991188416F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 101ED841708
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:39:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb72-0006pG-7d; Mon, 29 Jan 2024 18:32:24 -0500
+	id 1rUb70-0006eP-W8; Mon, 29 Jan 2024 18:32:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb6a-00067G-IA
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:32:01 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1rUb6d-0006BE-JI
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:32:03 -0500
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb6X-0005Ad-Fk
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:55 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d75ea3a9b6so27846465ad.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:52 -0800 (PST)
+ id 1rUb6a-0005As-A0
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:57 -0500
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-290b1e19101so3281998a91.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571112; x=1707175912; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571114; x=1707175914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pNNENKH/HQj+hw6JTH28lUCmFQmGh5or2lvTAvTEZkw=;
- b=T2Uavm53nWw++xcqq73mP5KT7OM6qbF6z88B3NbCUFLeYLoVT7UYqkQ6EyK2Fknt9S
- 6xJaqAS6qesioodjSDhEvzp2yUfzVrNtS7xMuyyjQwaNwagrVnCtf1ZfnZMDW8uk/cT9
- mYDtRbqlA8CGlZ9ZPbiL602IpbORvO9/waI884+D+lFU37b8C4pknZ5ujkgvy2phFLvY
- LJknPyOSwn5nCEo90K41Ftahj/A3HTIMbSXMf4Y6vysRkCxOdxZWtO9qOwMnQxYoCGMh
- jhKspJLfqOc4W7cofJyG7OGeavFVLGlH3coJc/9prsq5MhWIERzTcbdOPKnDm+jrYvVc
- 4aww==
+ bh=OUpbcCo1Gwdi5RtgiHT0o/+TLFpXSWoQp1ADmvaIAeE=;
+ b=eRr3aR97g1P5+ySHFEy/kK+B9hqTXLOA/Ia1x7v10uVy04UdifUX+40RaboUvdMonw
+ L+SyEs1rvMKZk+FE1FXk8MWa7C5hQXzd80FOPVIbY183RfAav4XHCeY+eWSEr8iHefG/
+ NtydjIIAPacTMDxrR28ue9RAS2XuZodLJsdESMEvvPFqzDqyvruJAJmFdVsfQa3sbJLW
+ gSNCGDe63ZzIgqv9sNABf7H8YHSgrGJuyLCTozARgnTIlJcZzpC5i5lsX3bKBmgP/IZ5
+ 02Dzw+JjVCOXY9zzniXm81oVCSd2Y3V2gk8ZgYsCAvXLFVhj6nVx07HHmEy7kJkGUfAC
+ B09Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571112; x=1707175912;
+ d=1e100.net; s=20230601; t=1706571114; x=1707175914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pNNENKH/HQj+hw6JTH28lUCmFQmGh5or2lvTAvTEZkw=;
- b=ABAlH/A57X0f3VY6YOuHHxzoJV3JYcZb9XPrdou1vWuAkVK1D6lrjH9Mv0rU8x+cPI
- G/08oUdDjbwZT7DNiNsTLQ8Ed6ie6oTcsWlWbgbYtMS7USKsI5kDcqr13nlYActF+Ta0
- /DYhYsES52TodJKb3yY5nWeSJTh4W5jCNwPh7RYHtLMAlm/628Z7TjU5vgcT/aB6QVR9
- g5T2HAlmkWuG0yhmdOZpsQEnpZPIuuPU0c0sFZyUJNYOu2oEGtrZVqDZXlTBbBE6IBNp
- I+mbsENBozBrLweWoGxuw8rimmRwL23RXO1dlwiCT2fIC/IkG1dnFczwMb606fhxPQF/
- MXfg==
-X-Gm-Message-State: AOJu0Yyc7peRGMdMiG57KurPEcBeBbFicl5KXRsx1E5hO2bZNi9pLax7
- 5kKUjEp+0lLRp5bXVSMWoUxr6NCDFHAmhKaOcbtaChuShfmnJ9BJz2FUq3/pPYVKxAy/dUyZWo/
- chcU=
-X-Google-Smtp-Source: AGHT+IEA8s3zPLl5CgEhOaWD8vCynTc+bHpj0vi+QeYfCMX2RAAMGsmPDFKousDVnaVic4GBcVC7BQ==
-X-Received: by 2002:a17:903:2351:b0:1d7:428f:50fd with SMTP id
- c17-20020a170903235100b001d7428f50fdmr7656338plh.31.1706571112105; 
- Mon, 29 Jan 2024 15:31:52 -0800 (PST)
+ bh=OUpbcCo1Gwdi5RtgiHT0o/+TLFpXSWoQp1ADmvaIAeE=;
+ b=bqqggRF89UpetZkM6/+xrfbabqWEU3at+araHKSih1JulZuA8GbL0LwyN+VuFQEeIx
+ zUCh8BGDDFx2Afd47bD1YCs5LgLhhlGFT5Z3ZPucMcQvVdBkJYYDTvLcshWvKU8z2gs/
+ JyEBETZ4uNMI2VbmapDPpDD7pmjqPsKLAlsW4yxZUmJrSfpH/xmA1T/67EhzLbPIFJ6i
+ 7JY/bBqlpZuGk18VlBaV+HoyvUTcaILCXGErTdfeSozXPcM6fk3BnkM/Jz/7R9aSTGwS
+ CUzfEvGb68qTi0y0Sauv4//RGJsW93CgfSduWN7mZnZaqQoNQ4BwM/kL7SMAJHnqCzUR
+ seMw==
+X-Gm-Message-State: AOJu0YztWzoYiO/hm93vkgLV/f1/Z80Etos9KQZFbLciaXyH0/S7u0zK
+ TskuclxY0YmJxolhUtXD6uocx9FK/cyza5T8Xlklat3odCqmWtrbypbhAmyY1hpVvh6uAnfbZHS
+ hLsY=
+X-Google-Smtp-Source: AGHT+IFW+/JiwHFFTRiKhroGzPNS5wC66nCN9prVjIt2Dm20vB3Nsj5WmAszJv8ufKbie9yyMSDA4A==
+X-Received: by 2002:a17:90a:f0d7:b0:290:c94b:6667 with SMTP id
+ fa23-20020a17090af0d700b00290c94b6667mr49378pjb.48.1706571114361; 
+ Mon, 29 Jan 2024 15:31:54 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.50
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:51 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 28/33] target/sh4: Populate CPUClass.mmu_index
-Date: Tue, 30 Jan 2024 09:30:38 +1000
-Message-Id: <20240129233043.34558-29-richard.henderson@linaro.org>
+Subject: [PATCH 29/33] target/sparc: Populate CPUClass.mmu_index
+Date: Tue, 30 Jan 2024 09:30:39 +1000
+Message-Id: <20240129233043.34558-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,78 +94,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sh4/cpu.h | 16 ++++++----------
- target/sh4/cpu.c | 16 ++++++++++++++++
- 2 files changed, 22 insertions(+), 10 deletions(-)
+ target/sparc/cpu.h | 34 ++++++----------------------------
+ target/sparc/cpu.c | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
-index 0e6fa65bae..9c5e2b349e 100644
---- a/target/sh4/cpu.h
-+++ b/target/sh4/cpu.h
-@@ -273,16 +273,6 @@ void cpu_load_tlb(CPUSH4State * env);
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 12a11ecb26..92c58c92c1 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -708,34 +708,6 @@ static inline int cpu_supervisor_mode(CPUSPARCState *env1)
+ }
+ #endif
  
- /* MMU modes definitions */
- #define MMU_USER_IDX 1
--static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
+-static inline int cpu_mmu_index(CPUSPARCState *env, bool ifetch)
 -{
--    /* The instruction in a RTE delay slot is fetched in privileged
--       mode, but executed in user mode.  */
--    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
--        return 0;
+-#if defined(CONFIG_USER_ONLY)
+-    return MMU_USER_IDX;
+-#elif !defined(TARGET_SPARC64)
+-    if ((env->mmuregs[0] & MMU_E) == 0) { /* MMU disabled */
+-        return MMU_PHYS_IDX;
 -    } else {
--        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
+-        return env->psrs;
 -    }
+-#else
+-    /* IMMU or DMMU disabled.  */
+-    if (ifetch
+-        ? (env->lsu & IMMU_E) == 0 || (env->pstate & PS_RED) != 0
+-        : (env->lsu & DMMU_E) == 0) {
+-        return MMU_PHYS_IDX;
+-    } else if (cpu_hypervisor_mode(env)) {
+-        return MMU_PHYS_IDX;
+-    } else if (env->tl > 0) {
+-        return MMU_NUCLEUS_IDX;
+-    } else if (cpu_supervisor_mode(env)) {
+-        return MMU_KERNEL_IDX;
+-    } else {
+-        return MMU_USER_IDX;
+-    }
+-#endif
 -}
+-
+ static inline int cpu_interrupts_enabled(CPUSPARCState *env1)
+ {
+ #if !defined (TARGET_SPARC64)
+@@ -777,6 +749,12 @@ trap_state* cpu_tsptr(CPUSPARCState* env);
+ #define TB_FLAG_HYPER        (1 << 7)
+ #define TB_FLAG_ASI_SHIFT    24
  
- #include "exec/cpu-all.h"
- 
-@@ -380,6 +370,12 @@ static inline void cpu_write_sr(CPUSH4State *env, target_ulong sr)
-     env->sr = sr & ~((1u << SR_M) | (1u << SR_Q) | (1u << SR_T));
- }
- 
-+int sh4_cpu_mmu_index(CPUState *cs, bool ifetch);
-+static inline int cpu_mmu_index(CPUSH4State *env, bool ifetch)
++int sparc_cpu_mmu_index(CPUState *cs, bool ifetch);
++static inline int cpu_mmu_index(CPUSPARCState *env, bool ifetch)
 +{
-+    return sh4_cpu_mmu_index(env_cpu(env), ifetch);
++    return sparc_cpu_mmu_index(env_cpu(env), ifetch);
 +}
 +
- static inline void cpu_get_tb_cpu_state(CPUSH4State *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
+ static inline void cpu_get_tb_cpu_state(CPUSPARCState *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *pflags)
  {
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 39772955b5..6fead5655f 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -89,6 +89,21 @@ static bool superh_cpu_has_work(CPUState *cs)
-     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 7d0d629a3d..7a3b815737 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -718,6 +718,34 @@ static bool sparc_cpu_has_work(CPUState *cs)
+            cpu_interrupts_enabled(env);
  }
  
-+int sh4_cpu_mmu_index(CPUState *cs, bool ifetch)
++int sparc_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    CPUSH4State *env = cpu_env(cs);
++    CPUSPARCState *env = cpu_env(cs);
 +
-+    /*
-+     * The instruction in a RTE delay slot is fetched in privileged mode,
-+     * but executed in user mode.
-+     */
-+    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
-+        return 0;
++#ifndef TARGET_SPARC64
++    if ((env->mmuregs[0] & MMU_E) == 0) { /* MMU disabled */
++        return MMU_PHYS_IDX;
 +    } else {
-+        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
++        return env->psrs;
 +    }
++#else
++    /* IMMU or DMMU disabled.  */
++    if (ifetch
++        ? (env->lsu & IMMU_E) == 0 || (env->pstate & PS_RED) != 0
++        : (env->lsu & DMMU_E) == 0) {
++        return MMU_PHYS_IDX;
++    } else if (cpu_hypervisor_mode(env)) {
++        return MMU_PHYS_IDX;
++    } else if (env->tl > 0) {
++        return MMU_NUCLEUS_IDX;
++    } else if (cpu_supervisor_mode(env)) {
++        return MMU_KERNEL_IDX;
++    } else {
++        return MMU_USER_IDX;
++    }
++#endif
 +}
 +
- static void superh_cpu_reset_hold(Object *obj)
+ static char *sparc_cpu_type_name(const char *cpu_model)
  {
-     CPUState *s = CPU(obj);
-@@ -266,6 +281,7 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
- 
-     cc->class_by_name = superh_cpu_class_by_name;
-     cc->has_work = superh_cpu_has_work;
-+    cc->mmu_index = sh4_cpu_mmu_index;
-     cc->dump_state = superh_cpu_dump_state;
-     cc->set_pc = superh_cpu_set_pc;
-     cc->get_pc = superh_cpu_get_pc;
+     char *name = g_strdup_printf(SPARC_CPU_TYPE_NAME("%s"), cpu_model);
+@@ -906,6 +934,7 @@ static void sparc_cpu_class_init(ObjectClass *oc, void *data)
+     cc->class_by_name = sparc_cpu_class_by_name;
+     cc->parse_features = sparc_cpu_parse_features;
+     cc->has_work = sparc_cpu_has_work;
++    cc->mmu_index = sparc_cpu_mmu_index;
+     cc->dump_state = sparc_cpu_dump_state;
+ #if !defined(TARGET_SPARC64) && !defined(CONFIG_USER_ONLY)
+     cc->memory_rw_debug = sparc_cpu_memory_rw_debug;
 -- 
 2.34.1
 
