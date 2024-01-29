@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E31A840C26
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941AC840C20
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:48:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUUnc-0002M8-1Q; Mon, 29 Jan 2024 11:47:56 -0500
+	id 1rUUnP-0000jt-E9; Mon, 29 Jan 2024 11:47:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmB-0006nz-1E
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:46:28 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmF-00072V-Sg
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:46:32 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUm7-0003vx-HI
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:46:26 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e8d3b29f2so39658085e9.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:46:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmD-0003xW-4H
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:46:31 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33af2823edbso509562f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:46:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706546781; x=1707151581; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706546787; x=1707151587; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qs1q2hIX1TKLXUzvNhNiLBWs7dxyWeQLrsbzeUj/euM=;
- b=Ch/RCi0UXz1xSC3fxQT+A46De1e0aXvbw/pYhIKaOG0qH70b332S4wYXOG2ek1X64m
- qQ7rRkXx8umBulrwASA7MWVRq6vGLP3HU8Jo+agzO/ki8bDk3qmEM7STdGe/6JNacMMF
- EsthOmf6zaWzQowJP6N7A1xx0VopO7/KSKfVxERP94S+y2gKp0lxuYcYBxyfdJY7rMRr
- 8+f/IxMZ2alhQQhJFztpiFUYAkc2B43aEfnKpNYG6iJQc15HRTqgfYstXSfmMgzeWBym
- lGoKYB296krBDtPyoQ9ADZ8Ux26nHZ4SPtgK5E3YeRmesUhd2sxK6wNn7FzdPL/uCEqy
- PoWg==
+ bh=wpEyww5ql+HDyU+E74XNxXzD2LWLWxnIJJxDrC1dnKo=;
+ b=XLINSp+Ces/DTB30elwFcbAG4KQQCg6YrP2UDMa5yARNPPCkMCgwfSWZMYGGaF3nKa
+ 9XklbPkXk4aFEwy9P+XKgT6HPyJQgNpLe7kxL68a2UDRH8JIU6cXMka/yPoRgdyJV//t
+ IRuedVvbgGkI/CLm98U+1J2vypT9o8zW8MErl7yBgMuQExQyq36g2FGgkeVe2HsnqyBQ
+ 4kRL6+X0xmLtHdbhrmQfzxk/N5zgk122R2leM2aYsbPgfdK5cHyQRzrdHLMqAk4Nq/wP
+ HKNtCFkvYDSQ9DTJEsbhyxLejz4An+zgDIW/pCKTZKx5R/pGeuvwO8z4WD6lcqPYiWs7
+ XleQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706546781; x=1707151581;
+ d=1e100.net; s=20230601; t=1706546787; x=1707151587;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qs1q2hIX1TKLXUzvNhNiLBWs7dxyWeQLrsbzeUj/euM=;
- b=rVYQkpkxm5rdoY1cpJsZC4L9Od+vem2LOx3Ng8/goYNfxq0ifTMqH2ZAx8rrBwCNDs
- GFJl/BGRsIOSKrUrgCSnsW6G7onO0VVVcPiNBy4d1/IjCAv/cImJmugqWWyt9w90GmXk
- oxxf2GM9Yi0AYZKeDQVCLudo0zNHDlpNZ99urvnhUTKbyPwUELrF2TkmoS2qgNlWN/aS
- R7NM9ZNjANU1wFTLQeJR8h0RPZwx5vNynk0zfFSivhC+cS5z09OWpaypHogqFyazrOwO
- P9N2w8DjBGi9afO4cAYr9Jierd71Gi1gPbrbSZstxgquDY3STDM95rlRYmIlIoApzxry
- v+9Q==
-X-Gm-Message-State: AOJu0YzB2ombMWUt8nOZj6J1qyVTHLyEK2od+Z9QnR38/J78UNdsz0qK
- thzwmkknc6v1j37ANAql7HDXTX4JqVGiY7KQUg2K7l667dCApjPVVWH/xoZbG05qigfiYO18QsQ
- e
-X-Google-Smtp-Source: AGHT+IFCSjt586qMBuxNZypsApcZ+VC1FCZxUMqaBfFfPBMsHNMjn2msv5U3H1M4DbXITkHOuF5KTQ==
-X-Received: by 2002:a05:6000:402a:b0:33a:e525:b15 with SMTP id
- cp42-20020a056000402a00b0033ae5250b15mr4721457wrb.19.1706546781551; 
- Mon, 29 Jan 2024 08:46:21 -0800 (PST)
+ bh=wpEyww5ql+HDyU+E74XNxXzD2LWLWxnIJJxDrC1dnKo=;
+ b=jllybjPJrzhDsAYXs5bTEsc+I0yoh77WJY2l8cuMNKeshIf2WfyIuNbiFGKsrKr9IR
+ A19w9+3AoBcSrDILbEXtMEKQY7+S0kmE9UOUiFMf6/RbPUeCA72yODgIcekchPG1NDw/
+ jlzomXDrMUyMgvIU3HzRueLf4PnaCVwCmXsqGK1Eo/UhdBkL2yqbp2yZ/gPdPi8Zw2rk
+ QlsVpJ6uvYLMhFkHv7xupwwV9A73dCc/MI1FPVt4+akl5nTircNKpWWHQ0cIAK2r+8de
+ KvGeJNGBkmWjjXDn6XJDZjMVmqY7//MIbwOFfRJYwMat/6wbXJekmcCPxcA9F7u39dMj
+ h25g==
+X-Gm-Message-State: AOJu0YxrSvRQQ3ZyYzDSer3oWnNbJQ/wo7DBs9QMP1UFZgCMisjyx795
+ XKeI6DmyW4x6AzLo3mY1FQUfXsFPgLyYHghGtWUwYcWJKTc4Z0crvuvYQsrlYUYTTFsS6AEb8i9
+ 4
+X-Google-Smtp-Source: AGHT+IE/pmLN7aJB50sjYT7HNVrs0xGJu0OS4F2RLGx8AfT4RgKOArlTbN0yv5fwQwzrh+8k2SbzhQ==
+X-Received: by 2002:adf:fa51:0:b0:33a:eae2:11a4 with SMTP id
+ y17-20020adffa51000000b0033aeae211a4mr2806032wrr.26.1706546787414; 
+ Mon, 29 Jan 2024 08:46:27 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- bh5-20020a05600005c500b0033aed46956csm3386579wrb.80.2024.01.29.08.46.20
+ p7-20020a5d4587000000b0033af670213dsm258204wrq.110.2024.01.29.08.46.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 08:46:21 -0800 (PST)
+ Mon, 29 Jan 2024 08:46:27 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,19 +62,19 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v3 10/29] target/cris: Prefer fast cpu_env() over slower CPU
- QOM cast macro
-Date: Mon, 29 Jan 2024 17:44:52 +0100
-Message-ID: <20240129164514.73104-11-philmd@linaro.org>
+ Brian Cain <bcain@quicinc.com>
+Subject: [PATCH v3 11/29] target/hexagon: Prefer fast cpu_env() over slower
+ CPU QOM cast macro
+Date: Mon, 29 Jan 2024 17:44:53 +0100
+Message-ID: <20240129164514.73104-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240129164514.73104-1-philmd@linaro.org>
 References: <20240129164514.73104-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,153 +100,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Mechanical patch produced running the command documented
 in scripts/coccinelle/cpu_env.cocci_template header.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/cris/cpu.c       | 10 +++-------
- target/cris/gdbstub.c   |  9 +++------
- target/cris/helper.c    | 12 ++++--------
- target/cris/translate.c |  6 ++----
- 4 files changed, 12 insertions(+), 25 deletions(-)
+ target/hexagon/cpu.c     | 25 ++++++-------------------
+ target/hexagon/gdbstub.c |  6 ++----
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
-diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-index 4187e0ef3c..122071f142 100644
---- a/target/cris/cpu.c
-+++ b/target/cris/cpu.c
-@@ -58,10 +58,9 @@ static bool cris_cpu_has_work(CPUState *cs)
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index 085d6c0115..17a22aa7a5 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -236,10 +236,7 @@ static void hexagon_dump(CPUHexagonState *env, FILE *f, int flags)
  
- static void cris_cpu_reset_hold(Object *obj)
+ static void hexagon_dump_state(CPUState *cs, FILE *f, int flags)
  {
--    CPUState *s = CPU(obj);
--    CRISCPU *cpu = CRIS_CPU(s);
-+    CPUState *cs = CPU(obj);
-     CRISCPUClass *ccc = CRIS_CPU_GET_CLASS(obj);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     uint32_t vr;
- 
-     if (ccc->parent_phases.hold) {
-@@ -142,10 +141,7 @@ static void cris_cpu_set_irq(void *opaque, int irq, int level)
- 
- static void cris_disas_set_info(CPUState *cpu, disassemble_info *info)
- {
--    CRISCPU *cc = CRIS_CPU(cpu);
--    CPUCRISState *env = &cc->env;
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
 -
--    if (env->pregs[PR_VR] != 32) {
-+    if (cpu_env(cpu)->pregs[PR_VR] != 32) {
-         info->mach = bfd_mach_cris_v0_v10;
-         info->print_insn = print_insn_crisv10;
-     } else {
-diff --git a/target/cris/gdbstub.c b/target/cris/gdbstub.c
-index 25c0ca33a5..9e87069da8 100644
---- a/target/cris/gdbstub.c
-+++ b/target/cris/gdbstub.c
-@@ -23,8 +23,7 @@
+-    hexagon_dump(env, f, flags);
++    hexagon_dump(cpu_env(cs), f, flags);
+ }
  
- int crisv10_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ void hexagon_debug(CPUHexagonState *env)
+@@ -249,25 +246,19 @@ void hexagon_debug(CPUHexagonState *env)
+ 
+ static void hexagon_cpu_set_pc(CPUState *cs, vaddr value)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
+-    env->gpr[HEX_REG_PC] = value;
++    cpu_env(cs)->gpr[HEX_REG_PC] = value;
+ }
  
-     if (n < 15) {
-         return gdb_get_reg32(mem_buf, env->regs[n]);
-@@ -55,8 +54,7 @@ int crisv10_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int cris_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ static vaddr hexagon_cpu_get_pc(CPUState *cs)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     uint8_t srs;
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
+-    return env->gpr[HEX_REG_PC];
++    return cpu_env(cs)->gpr[HEX_REG_PC];
+ }
  
-     srs = env->pregs[PR_SRS];
-@@ -90,8 +88,7 @@ int cris_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int cris_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ static void hexagon_cpu_synchronize_from_tb(CPUState *cs,
+                                             const TranslationBlock *tb)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     uint32_t tmp;
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->gpr[HEX_REG_PC] = tb->pc;
++    cpu_env(cs)->gpr[HEX_REG_PC] = tb->pc;
+ }
  
-     if (n > 49) {
-diff --git a/target/cris/helper.c b/target/cris/helper.c
-index c0bf987e3e..1c3f86876f 100644
---- a/target/cris/helper.c
-+++ b/target/cris/helper.c
-@@ -53,8 +53,7 @@ bool cris_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType access_type, int mmu_idx,
-                        bool probe, uintptr_t retaddr)
+ static bool hexagon_cpu_has_work(CPUState *cs)
+@@ -279,18 +270,14 @@ static void hexagon_restore_state_to_opc(CPUState *cs,
+                                          const TranslationBlock *tb,
+                                          const uint64_t *data)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     struct cris_mmu_result res;
-     int prot, miss;
-     target_ulong phy;
-@@ -97,8 +96,7 @@ bool cris_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
+-
+-    env->gpr[HEX_REG_PC] = data[0];
++    cpu_env(cs)->gpr[HEX_REG_PC] = data[0];
+ }
  
- void crisv10_cpu_do_interrupt(CPUState *cs)
+ static void hexagon_cpu_reset_hold(Object *obj)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     int ex_vec = -1;
+     CPUState *cs = CPU(obj);
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+     HexagonCPUClass *mcc = HEXAGON_CPU_GET_CLASS(obj);
+-    CPUHexagonState *env = &cpu->env;
++    CPUHexagonState *env = cpu_env(cs);
  
-     D_LOG("exception index=%d interrupt_req=%d\n",
-@@ -159,8 +157,7 @@ void crisv10_cpu_do_interrupt(CPUState *cs)
+     if (mcc->parent_phases.hold) {
+         mcc->parent_phases.hold(obj);
+diff --git a/target/hexagon/gdbstub.c b/target/hexagon/gdbstub.c
+index 54d37e006e..f773f8ea4f 100644
+--- a/target/hexagon/gdbstub.c
++++ b/target/hexagon/gdbstub.c
+@@ -22,8 +22,7 @@
  
- void cris_cpu_do_interrupt(CPUState *cs)
+ int hexagon_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     int ex_vec = -1;
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
++    CPUHexagonState *env = cpu_env(cs);
  
-     D_LOG("exception index=%d interrupt_req=%d\n",
-@@ -262,8 +259,7 @@ hwaddr cris_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
- bool cris_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+     if (n == HEX_REG_P3_0_ALIASED) {
+         uint32_t p3_0 = 0;
+@@ -42,8 +41,7 @@ int hexagon_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+ int hexagon_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
  {
-     CPUClass *cc = CPU_GET_CLASS(cs);
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     bool ret = false;
+-    HexagonCPU *cpu = HEXAGON_CPU(cs);
+-    CPUHexagonState *env = &cpu->env;
++    CPUHexagonState *env = cpu_env(cs);
  
-     if (interrupt_request & CPU_INTERRUPT_HARD
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index b3974ba0bb..5213db820b 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -3006,7 +3006,6 @@ static void cris_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void cris_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUCRISState *env = cpu_env(cs);
-     unsigned int insn_len;
- 
-     /* Pretty disas.  */
-@@ -3014,7 +3013,7 @@ static void cris_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- 
-     dc->clear_x = 1;
- 
--    insn_len = dc->decoder(env, dc);
-+    insn_len = dc->decoder(cpu_env(cs), dc);
-     dc->ppc = dc->pc;
-     dc->pc += insn_len;
-     dc->base.pc_next += insn_len;
-@@ -3180,8 +3179,7 @@ void gen_intermediate_code(CPUState *cs, TranslationBlock *tb, int *max_insns,
- 
- void cris_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
--    CRISCPU *cpu = CRIS_CPU(cs);
--    CPUCRISState *env = &cpu->env;
-+    CPUCRISState *env = cpu_env(cs);
-     const char * const *regnames;
-     const char * const *pregnames;
-     int i;
+     if (n == HEX_REG_P3_0_ALIASED) {
+         uint32_t p3_0 = ldtul_p(mem_buf);
 -- 
 2.41.0
 
