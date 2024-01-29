@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C880C83FE22
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 07:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D57A83FE48
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 07:25:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUKzF-0000gp-DI; Mon, 29 Jan 2024 01:19:18 -0500
+	id 1rUL4Q-0002K6-R1; Mon, 29 Jan 2024 01:24:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rUKz4-0000fX-N6
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 01:19:07 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rUL3x-0002Jd-RI; Mon, 29 Jan 2024 01:24:09 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rUKz3-0004Pm-4a
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 01:19:06 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rUL3s-0005Wz-Ja; Mon, 29 Jan 2024 01:24:06 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 33C32482D9;
- Mon, 29 Jan 2024 09:19:55 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 36365482DB;
+ Mon, 29 Jan 2024 09:24:55 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EE8206D8E9;
- Mon, 29 Jan 2024 09:19:02 +0300 (MSK)
-Message-ID: <8f4ad5a6-00aa-40e1-8937-5984dabb8625@tls.msk.ru>
-Date: Mon, 29 Jan 2024 09:19:02 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id EA6C46D8EF;
+ Mon, 29 Jan 2024 09:24:02 +0300 (MSK)
+Message-ID: <df95ae46-5e9e-4257-90ff-7d72754f565a@tls.msk.ru>
+Date: Mon, 29 Jan 2024 09:24:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw/smbios: Fix port connector option validation
+Subject: Re: [PATCH] hw/scsi/lsi53c895a: add missing decrement of reentrancy
+ counter
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20240128-smbios-v1-0-c3a50499baea@daynix.com>
- <20240128-smbios-v1-2-c3a50499baea@daynix.com>
+To: Sven Schnelle <svens@stackframe.org>, Thomas Huth <thuth@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Cc: qemu-devel@nongnu.org, deller@gmx.de, qemu-stable <qemu-stable@nongnu.org>
+References: <20240128202214.2644768-1-svens@stackframe.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -59,7 +58,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240128-smbios-v1-2-c3a50499baea@daynix.com>
+In-Reply-To: <20240128202214.2644768-1-svens@stackframe.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -85,14 +84,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.01.2024 10:15, Akihiko Odaki:
-> qemu_smbios_type8_opts did not the list terminator and that resulted in
-> out-of-bound memory access. qemu_smbios_type8_opts also needs to have
-> an element for the type option.
+28.01.2024 23:22, Sven Schnelle :
+> When the maximum count of SCRIPTS instructions is reached, the code
+> stops execution and returns, but fails to decrement the reentrancy
+> counter. This effectively renders the SCSI controller unusable
+> because on next entry the reentrancy counter is still above the limit.
+> 
+> This bug was seen on HP-UX 10.20 which seems to trigger SCRIPTS
+> loops.
 
-With the same description fix as in 1/1,
-
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-stable@
 
 /mjt
 
