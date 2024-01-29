@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242F5840C89
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF65D840C77
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:54:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUUq1-0003wW-L4; Mon, 29 Jan 2024 11:50:25 -0500
+	id 1rUUsz-0002sQ-Oy; Mon, 29 Jan 2024 11:53:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUpz-0003gB-73
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:50:23 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUst-0002fx-6b
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:53:23 -0500
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUpv-00058L-3w
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:50:22 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40ef6454277so10573035e9.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:50:17 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUsk-0005mB-RR
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:53:22 -0500
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-5110d0b1af7so2042473e87.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:53:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706547016; x=1707151816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706547190; x=1707151990; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=omKaa0iHW1o+ye+O07qQ9YI+SPw/nbBCLeN2GURIQnI=;
- b=C/AeTLtl9bTH5v8nKEkiHCIyBGvLwQbPSlBaPG5WrF78cFlpGCGBcOMc+Wz9u6QcGA
- bqIKGaLSazNjU+jHo6Xc+NL4KuvtvXEPwqEJ9UpLDlsjNMVNXJ/wpDpEZPGN+hAze08a
- bFIApGrjEYIAzPmZtgciONjNLxAUhminE/2NayIRIi7gbtI2psKZQL6QOcjaYx0qNha6
- ixCNgqlX8wF/MJGk7ZCZIC2GXE0nYHGV0iy0oxw1lz0jot+aMHZeAkq+JPmNZ4tInSso
- cz7RO+rQcavVZJynqBzTkATTZBz69aZ2M6cHOl9IjPV4DHiRHklWfwXMZZApgw2ktJ9n
- VY+w==
+ bh=7zYf6iUNFHrfxMQpPNj1mXN6dt+LxrDt3+/kg2hLKwo=;
+ b=Vwp/kM1sp7UetpiN+Fm1hczwoUYJRqIn5TyOjRBDa6tFqlCFY2nc+DJUsiKI/OyOlR
+ YrlV1w0N9Gljto29Qcu9ByvweL4d+KJCEOxbiqPytEuy6+QuEYisq17h5yX1mxAhEwff
+ MCdulEpQ2DWYJMOjyAnJYuyL6R92Xzl5qhnr6boRWqlKU+xXmi8JqhBEoPxOWiALo5iB
+ COFbxQLHf7PwonGm4HovCZlLQ1JhyFa22m/9bAL1uuoGoLzJHH2j9LSEKhoHBT8Mta1V
+ 7HDoKaDcVgvg4/OvCI9aRWzPC9npeIEmS2FxveEZBfyrKRULlV+HpZvWFh+5gNMXcmF0
+ Pjrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706547017; x=1707151817;
+ d=1e100.net; s=20230601; t=1706547190; x=1707151990;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=omKaa0iHW1o+ye+O07qQ9YI+SPw/nbBCLeN2GURIQnI=;
- b=F04EiHlVaRuM/ddWTr17bogOQMGoN+QwJ/774R8CyVEiupYlgAHrjlGZRdKzz6aeOg
- M31cSm4/VFeCeMJuLTNIs9OAfvXfarLa0irehNHbjkdzV/oVuTsP2PixxRSdkBTVmi7r
- xbeXuhDfgEA9WKETbfj8o9NujjXBHUTQAvKBgx0YukN66MGxml78jNPH7qi/gwAYNN4L
- qgYijOdMlRsXCkaGNzPiszmjwcy4hWEfCcOxK52jIJo6mdcFQgKDoJStctkvmvAWoIA9
- yMjQyqCM/2JJ2ihqIN3kscgzHnsZOYL/MzWgM6OixuYI7oTXJfR1MwxNgBqcHhpoumzY
- EIfw==
-X-Gm-Message-State: AOJu0Yw+cXLgm3Xs3W2gD3XuzlgPp8SN0fFB6tq8EAs4vsmF2m3C/Eg0
- n7DJd3TDHwkm4gFUp920BQbP7gtOujwxbzqXzY2k8tsQZz/bZarAudj0ttuXb38AzIXW1gSVOD0
- l
-X-Google-Smtp-Source: AGHT+IENRodsNqBb2ZsMapK29qw3M64BL/PIvqlcP6V/HUTtgCz0m1D+dNQrPnYAHAiX3P1S+64j7w==
-X-Received: by 2002:a05:600c:4e88:b0:40e:5523:e6dd with SMTP id
- f8-20020a05600c4e8800b0040e5523e6ddmr5423979wmq.30.1706547016686; 
- Mon, 29 Jan 2024 08:50:16 -0800 (PST)
+ bh=7zYf6iUNFHrfxMQpPNj1mXN6dt+LxrDt3+/kg2hLKwo=;
+ b=fovge9jeq374wZd41qgOoXsYDGQGUoEavGcZGQTaTEGChODx4TJEEuCNHhh6nlS6pf
+ DDcRdMVodZ242xdGmoEd39wbJ0MezNHZ4kfdxYowu+0zhdJ9kR00cFx8/IZ2bEd7cWcJ
+ d1ADP38Pzf3lwOX/lV33PZtOqyf6TG5Y6S8bDtcPKyNsoa7aP+DofihEzmpgddu3Ud2e
+ b55h3sEEZCt6fFbUTWaxTwFNC4t4ZYPZSZJaZaQsJqcF2LrEZkj05xK0fO5mpCcUfeCk
+ VnBiF34psSgeBb2pb+GQGOUbL2UD6n259P1muVKHKhTWDyf1MONCLwU6YV38sRWM0sNG
+ RTSg==
+X-Gm-Message-State: AOJu0Yx0I1MBzSPTabbD35UjgP2e/hcy6TMRjlyLBIy5Fzhn7RiBPPlJ
+ GPE6ejQd+/nOcpX5akHJ616gNgiME6U+W3B22L6wKnq7KepQtH5D4hagwVW7RgNDFa12X13WTd1
+ T
+X-Google-Smtp-Source: AGHT+IFqDbBCw7yz5nV9RcvTZBX8s1a0hQpdUqa06QWgXja+MJAioJfvQM63rBkNoCDgx4FWDHSl3w==
+X-Received: by 2002:a05:6512:1082:b0:50e:75ee:ec4c with SMTP id
+ j2-20020a056512108200b0050e75eeec4cmr5201521lfg.11.1706547190625; 
+ Mon, 29 Jan 2024 08:53:10 -0800 (PST)
 Received: from [192.168.69.100] ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- iv16-20020a05600c549000b0040e3635ca65sm14633892wmb.2.2024.01.29.08.50.14
+ g8-20020a05600c310800b0040e703ad630sm14516047wmo.22.2024.01.29.08.53.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jan 2024 08:50:16 -0800 (PST)
-Message-ID: <36852ecc-36da-4b8e-bb81-13938a100100@linaro.org>
-Date: Mon, 29 Jan 2024 17:50:13 +0100
+ Mon, 29 Jan 2024 08:53:09 -0800 (PST)
+Message-ID: <bb4ed4c6-ecbb-45a6-af3b-caa4fe04afb8@linaro.org>
+Date: Mon, 29 Jan 2024 17:53:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/29] target/i386: Prefer fast cpu_env() over slower
- CPU QOM cast macro
+Subject: Re: [PATCH v3 05/29] scripts/coccinelle: Add cpu_env.cocci script
 Content-Language: en-US
-To: qemu-devel@nongnu.org
+To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, David Woodhouse
- <dwmw2@infradead.org>, xen-devel@lists.xenproject.org
+ qemu-ppc@nongnu.org, qemu-arm@nongnu.org
 References: <20240129164514.73104-1-philmd@linaro.org>
- <20240129164514.73104-15-philmd@linaro.org>
+ <20240129164514.73104-6-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240129164514.73104-15-philmd@linaro.org>
+In-Reply-To: <20240129164514.73104-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,41 +96,148 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/1/24 17:44, Philippe Mathieu-Daudé wrote:
-> Mechanical patch produced running the command documented
-> in scripts/coccinelle/cpu_env.cocci_template header.
+> Add a Coccinelle script to convert the following slow path
+> (due to the QOM cast macro):
+> 
+>    &ARCH_CPU(..)->env
+> 
+> to the following fast path:
+> 
+>    cpu_env(..)
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/i386/hvf/vmx.h                | 13 ++-------
->   hw/i386/fw_cfg.c                     |  3 +-
->   hw/i386/vmmouse.c                    |  6 ++--
->   hw/i386/xen/xen-hvm.c                |  3 +-
->   target/i386/arch_dump.c              | 11 ++------
->   target/i386/arch_memory_mapping.c    |  3 +-
->   target/i386/cpu-dump.c               |  3 +-
->   target/i386/cpu.c                    | 37 ++++++++----------------
->   target/i386/helper.c                 | 42 ++++++++--------------------
->   target/i386/hvf/hvf.c                |  8 ++----
->   target/i386/hvf/x86.c                |  4 +--
->   target/i386/hvf/x86_emu.c            |  6 ++--
->   target/i386/hvf/x86_task.c           | 10 ++-----
->   target/i386/hvf/x86hvf.c             |  9 ++----
->   target/i386/kvm/kvm.c                |  6 ++--
->   target/i386/kvm/xen-emu.c            | 32 +++++++--------------
->   target/i386/tcg/sysemu/bpt_helper.c  |  3 +-
->   target/i386/tcg/sysemu/excp_helper.c |  3 +-
->   target/i386/tcg/tcg-cpu.c            | 14 +++-------
->   target/i386/tcg/user/excp_helper.c   |  6 ++--
->   target/i386/tcg/user/seg_helper.c    |  3 +-
->   21 files changed, 67 insertions(+), 158 deletions(-)
 
-Actually this one had:
+Changes since v2:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+- Avoid templates by using coccinelle generic types
+- Deal with uaccess API (by skipping functions using it)
 
-But since I addressed Zhao's suggestion in patch 1
-("bulk: Access existing variables initialized to &S->F when available")
-which added more changes to this patch, I dropped the tags.
+>   MAINTAINERS                      |   1 +
+>   scripts/coccinelle/cpu_env.cocci | 100 +++++++++++++++++++++++++++++++
+>   2 files changed, 101 insertions(+)
+>   create mode 100644 scripts/coccinelle/cpu_env.cocci
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dfaca8323e..ca3c8c18ab 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -157,6 +157,7 @@ F: accel/tcg/
+>   F: accel/stubs/tcg-stub.c
+>   F: util/cacheinfo.c
+>   F: util/cacheflush.c
+> +F: scripts/coccinelle/cpu_env.cocci
+>   F: scripts/decodetree.py
+>   F: docs/devel/decodetree.rst
+>   F: docs/devel/tcg*
+> diff --git a/scripts/coccinelle/cpu_env.cocci b/scripts/coccinelle/cpu_env.cocci
+> new file mode 100644
+> index 0000000000..5a70c2211a
+> --- /dev/null
+> +++ b/scripts/coccinelle/cpu_env.cocci
+> @@ -0,0 +1,100 @@
+> +/*
+> + * Convert &ARCH_CPU(..)->env to use cpu_env(..).
+> + *
+> + * Rationale: ARCH_CPU() might be slow, being a QOM cast macro.
+> + *            cpu_env() is its fast equivalent.
+> + *            CPU() macro is a no-op.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * SPDX-FileCopyrightText: Linaro Ltd 2024
+> + * SPDX-FileContributor: Philippe Mathieu-Daudé
+> + */
+> +
+> +@@
+> +type ArchCPU =~ "CPU$";
+> +identifier cpu;
+> +type CPUArchState =~ "^CPU";
+> +identifier env;
+> +@@
+> +     ArchCPU *cpu;
+> +     ...
+> +     CPUArchState *env = &cpu->env;
+> +     <...
+> +-    &cpu->env
+> ++    env
+> +     ...>
+> +
+> +
+> +/*
+> + * Due to commit 8ce5c64499 ("semihosting: Return failure from
+> + * softmmu-uaccess.h functions"), skip functions using softmmu-uaccess.h
+> + * macros (they don't pass 'env' as argument).
+> + */
+> +@ uaccess_api_used exists @
+> +identifier semihosting_func =~ "^(put|get)_user_[us](al|8|16|32)$";
+> +@@
+> +      semihosting_func(...)
+
+Hmm, s/semihosting/uaccess/
+
+> +
+> +
+> +/*
+> + * Argument is CPUState*
+> + */
+> +@ cpustate_arg depends on !uaccess_api_used @
+> +identifier cpu;
+> +type ArchCPU =~ "CPU$";
+> +type CPUArchState;
+> +identifier ARCH_CPU =~ "CPU$";
+> +identifier env;
+> +CPUState *cs;
+> +@@
+> +-    ArchCPU *cpu = ARCH_CPU(cs);
+> +     ...
+> +-    CPUArchState *env = &cpu->env;
+> ++    CPUArchState *env = cpu_env(cs);
+> +     ... when != cpu
+> +
+> +
+> +/*
+> + * Argument is not CPUState* but a related QOM object.
+> + * CPU() is not a QOM macro but a cast (See commit 0d6d1ab499).
+> + */
+> +@ depends on !uaccess_api_used  && !cpustate_arg @
+> +identifier cpu;
+> +type ArchCPU =~ "CPU$";
+> +type CPUArchState;
+> +identifier ARCH_CPU =~ "CPU$";
+> +identifier env;
+> +expression cs;
+> +@@
+> +-    ArchCPU *cpu = ARCH_CPU(cs);
+> +     ...
+> +-    CPUArchState *env = &cpu->env;
+> ++    CPUArchState *env = cpu_env(CPU(cs));
+> +     ... when != cpu
+> +
+> +
+> +/* When single use of 'env', call cpu_env() in place */
+> +@ depends on !uaccess_api_used @
+> +type CPUArchState;
+> +identifier env;
+> +expression cs;
+> +@@
+> +-    CPUArchState *env = cpu_env(cs);
+> +     ... when != env
+> +-     env
+> ++     cpu_env(cs)
+> +     ... when != env
+> +
+> +
+> +/* Both first_cpu/current_cpu are extern CPUState* */
+> +@@
+> +symbol first_cpu;
+> +symbol current_cpu;
+> +@@
+> +(
+> +-    CPU(first_cpu)
+> ++    first_cpu
+> +|
+> +-    CPU(current_cpu)
+> ++    current_cpu
+> +)
+
 
