@@ -2,89 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B1F8409AF
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9575A8409E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:27:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUTQ4-0008G2-Fe; Mon, 29 Jan 2024 10:19:32 -0500
+	id 1rUTX8-0008UF-3e; Mon, 29 Jan 2024 10:26:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTQ2-0008CC-57
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:30 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTQ0-0007YN-8d
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:29 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40e76109cdeso39230965e9.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:19:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706541566; x=1707146366; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zOazw+OwEfzfL7xWrU1RcBd6XD/48I1cQP0Tkf0Wbm4=;
- b=UDWTdALggpM2iCvaYqzk6Kv1P5G+PdJ6kcRtnJOJMwCzwDDUqFmfYNULYbqDAVEEkR
- +9YqQhUOdkKCKuWtiG9yndeJ7SpQe2IjN9qTeIr9gnKeGFKVUQzn95vcHWZJ7dZVm1T0
- bucK6N3bXeZBVV69UimJKcc7aKbzZdKnfZB50txdofVMk8TUSSBzEcxJNchxJy9bhB45
- wgm+5F713+b+CLptNkGlas1rEhAND8eMIW9Q8g/9FsfPI1na9G86WijyvIDlVnz0pgP5
- G0U2uQxk/4WCTflqbgUcNUnA6Eta0959SjBs1UGV56ycT/RQB0ZY+p5NgC5oUkqCMoTP
- GzHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706541566; x=1707146366;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zOazw+OwEfzfL7xWrU1RcBd6XD/48I1cQP0Tkf0Wbm4=;
- b=qtf32cLDxgvANWr3iJThKYivaXvUtJNXCyMV75FNke3k05cTkZb/b96AvMMyhk+lp+
- 2rzBmS2J2roZaOGgypv5OvoC0RbGu1iEecfhF2gNQOALRfW351RowH/qJXIdpG/aZNJ2
- Vxllyw3hC3cIQ6QOdZeY5w1aMRvanavWsH7x++co+cWIvicu4JLtZYQgXV0JlC1thEOi
- fP4TE1Wemv6FvBUCCcNxNK9FlcOWyattiy4ZvDEhR0JKDp/OpFyBd7bjKD0tyqJUUtlF
- 3m1O3DZ8Ijsyb6DzsasaixNlM/hHawQo2hiL4ggGPbXpdwAOalDtShL6nBpBG1Z6v+wf
- lSng==
-X-Gm-Message-State: AOJu0YxBbs2RWGddFk/Nop/jq9nejYfDJGZZ1ujJUzcMiAv/sgBH8zna
- UtUtFQLulAn/oNffwevlYMkoqSF/diedUWj8SYbYoZFBJhLKvJfNsk3cclkeNjRa6wCY4vXb5jP
- g
-X-Google-Smtp-Source: AGHT+IEHf9d5LSynB12HJo6vM6DnllTlOTsYfNxBWoqzJ+0qTcNk76R5+7OGYe8WgFoxKcHG0DlVFQ==
-X-Received: by 2002:a05:600c:4745:b0:40e:701f:d452 with SMTP id
- w5-20020a05600c474500b0040e701fd452mr5391400wmo.7.1706541566703; 
- Mon, 29 Jan 2024 07:19:26 -0800 (PST)
-Received: from m1x-phil.lan ([176.187.219.39])
- by smtp.gmail.com with ESMTPSA id
- u7-20020a05600c138700b0040d8ff79fd8sm10495450wmf.7.2024.01.29.07.19.25
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 07:19:26 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- Igor Mitsyanko <i.mitsyanko@gmail.com>, Hao Wu <wuhaotsh@google.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Rob Herring <robh@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Gavin Shan <gshan@redhat.com>
-Subject: [PATCH v3 9/9] hw/arm/zynq: Check for CPU types in
- machine_run_board_init()
-Date: Mon, 29 Jan 2024 16:18:28 +0100
-Message-ID: <20240129151828.59544-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240129151828.59544-1-philmd@linaro.org>
-References: <20240129151828.59544-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rUTX4-0008U4-Qy
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:26:46 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rUTX2-0000mc-Su
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:26:46 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40TFCS8f006760; Mon, 29 Jan 2024 15:26:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=4CnSOlmJgM2kEWYWncPNst85EqVWUky/63X2kdH10Ro=;
+ b=GWtNVow1pDp9zpFrj1Bp9TwxFsYWUHTivkEcEh+wIPDNiqYfIuzgyLFVabYqKS9h0k5m
+ q7MjsVHiEUXWnx+URvgHFTYTB1+OtpkCkN0AaY886DaGva2XKWiZSJIYosOvc+Ya3AM4
+ uqeTqAccTVa7TD4JkZEhTAFQkIKQbRsUv0VlHaMN+N1oFOdj3QlYdkZTLAONqiHHTcKJ
+ I6ZJGs1kD4cjUB1kgUnzUQJigLS98dIG39i9qEYpy77CUiFgtqXMj1XOzG25ghiaO+aN
+ NgbMbt/uS1uEhZM/XQUEHhDt5nWvTIv0YdKO73e7jDjZ6J6QstxcsUSrD1PArzJRCcB2 jw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vxdy319kv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jan 2024 15:26:42 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40TD3L7G010858; Mon, 29 Jan 2024 15:26:41 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweck8mwc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Jan 2024 15:26:41 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40TFQdZL30933570
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Jan 2024 15:26:39 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D2D622004E;
+ Mon, 29 Jan 2024 15:26:39 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B81DE20043;
+ Mon, 29 Jan 2024 15:26:39 +0000 (GMT)
+Received: from heavy (unknown [9.155.200.166])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 29 Jan 2024 15:26:39 +0000 (GMT)
+Date: Mon, 29 Jan 2024 16:26:38 +0100
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 22/33] linux-user: Split out mmap_h_lt_g
+Message-ID: <ogglz7yhvelvrnmfyhvpx7hjdl5rgl5gh3iioomtagi3mlckcd@qaa6w4javinb>
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-23-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240102015808.132373-23-richard.henderson@linaro.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iOAiOz6qB7mLKmL5xIGcleKUjveSyOBq
+X-Proofpoint-GUID: iOAiOz6qB7mLKmL5xIGcleKUjveSyOBq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_10,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 spamscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=697 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2401290113
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,41 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Leverage the common code introduced in commit c9cf636d48 ("machine:
-Add a valid_cpu_types property") to check for the single valid CPU
-type. Remove the now unused MachineClass::default_cpu_type field.
+On Tue, Jan 02, 2024 at 12:57:57PM +1100, Richard Henderson wrote:
+> Work much harder to get alignment and mapping beyond the end
+> of the file correct.  Both of which are excercised by our
+> test-mmap for alpha (8k pages) on any 4k page host.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  linux-user/mmap.c | 156 +++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 125 insertions(+), 31 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/arm/xilinx_zynq.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+[...]
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 66d0de139f..c57bbccb70 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -355,13 +355,17 @@ static void zynq_init(MachineState *machine)
- 
- static void zynq_machine_class_init(ObjectClass *oc, void *data)
- {
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a9"),
-+        NULL
-+    };
-     MachineClass *mc = MACHINE_CLASS(oc);
-     mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
-     mc->init = zynq_init;
-     mc->max_cpus = 1;
-     mc->no_sdcard = 1;
-     mc->ignore_memory_transaction_failures = true;
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
-+    mc->valid_cpu_types = valid_cpu_types;
-     mc->default_ram_id = "zynq.ext_ram";
- }
- 
--- 
-2.41.0
+> +        if (fileend_adj) {
+> +            void *t = mmap(p, len - fileend_adj, host_prot,
+> +                           (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED,
+> +                           fd, offset);
+> +            assert(t != MAP_FAILED);
 
+Is it possible to recover here? Of course, we are remapping the memory
+we've mapped a few lines earlier, but asserting the syscall result
+looks a bit odd.
+
+[...]
+
+> +        if (!(flags & MAP_ANONYMOUS)) {
+> +            void *t = mmap(p, len - fileend_adj, host_prot,
+> +                           flags | MAP_FIXED, fd, offset);
+> +            assert(t != MAP_FAILED);
+
+Same here.
 
