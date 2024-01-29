@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FED28416E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A770841709
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:39:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb69-0005iW-CH; Mon, 29 Jan 2024 18:31:29 -0500
+	id 1rUb66-0005cR-Px; Mon, 29 Jan 2024 18:31:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5o-0005Sk-94
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:22 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1rUb5p-0005Sl-Gp
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:17 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5l-00051m-VV
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:07 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6de2e24ea87so869034b3a.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:04 -0800 (PST)
+ id 1rUb5o-00051w-0y
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:09 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d74045c463so17491895ad.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571064; x=1707175864; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571066; x=1707175866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3/S1vigBU1gXfX4oI3MWHNHDSQjD4iR9o36lTMrKyJs=;
- b=qi3Z7YOztZneygiaGQC076dOHhEHosSjFBdhJyMcncynnDHcWqauN3yIEvsQ4/lI8w
- onhqDvxt2vJZmTLhQAf5EFvNpCcrQYkp6AGrQMiIy67R0Ae+KAXKrmuHYwfUudyYPWgM
- rM16JSG5sPWzfyItoHW6kxyONCtB7Cjh0xD6yGCU+29fsJNm0xLWJIqEn5/NtBbob1KT
- 79Q8nOa8SZOkIv3dl7ZadVZetNM4lTeiaj1g2s4GzBd8WrGORE0xSKwp8zgeRCA7aF5j
- Ve6zSAibFSE9tjHy4fCQEZxOOX6goRApBLuiE12M/GxBm1AAlocOtE0S0REvm0Q76U5/
- 0sEQ==
+ bh=2DGeNqrAocEQBW3s9u83YvGPr3pag37tdDcMnd/na+Q=;
+ b=UA6D7EO5jXR4QP8vGpycYMlJv+UYl4IzVMN2HB7ELXtmiaTtlTaOnJP+G0WPGOoqSo
+ n/igXfzq2ZhxTL7toyVwIyTfQ9WxTGUvB05OiSHmVv9KDgTMQjrhQqflt9PlfOt8HgnI
+ +pS5vlISP9ufDjQhFOv7PgrH38keO8H2GUrUJ7zNjI/gs99HXPKMEoUNsQGzT6cHFqZY
+ O/VW2HoO892bufSVOzkxVxah+3CB25Em/0hMYsaJgoblyWUdWj0Qy4WrEqPbkjKqnGx6
+ /JMrqzPo1qjj8rLRcReCGzbpoEBRLgUfiso8Sl6LDu7RqzIqtCBwrNPsrkF2h7TLQoTR
+ iO+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571064; x=1707175864;
+ d=1e100.net; s=20230601; t=1706571066; x=1707175866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3/S1vigBU1gXfX4oI3MWHNHDSQjD4iR9o36lTMrKyJs=;
- b=NHjOQLiFwtBS2lPlB4RHm4e5+RIx5lcEU1Px9D+kDQrdEek8cLqpIujc3zG/8aK69G
- ASgV/TdacxSan3NyLy7umHd3c4nCg0AfJzJrmHV9PSvK2/3jO2QFAUESY1cGSjcBuSUI
- /LNB8U4SjRD+wN0bf60ZOuuEmv5AyuzWZXT2sE5wXl4ndxmRqBB20XON+0l00w6SIbKg
- Sh80TaeGZ23zFxmA+nBuobfseXvXiSliusVG2LQM4bxLp1NqGzNuXAn8Nw07Qr71KHsS
- vDgKMtdjer4BhYEyiObChxnE1Ikz83FHH4UMQtf4NWKqtxVjc2VljThGTe5PLQlRZdn9
- I7gg==
-X-Gm-Message-State: AOJu0YwlkEBzbEGAXvMGPch+YuTnDRMOZM4g40TKqzWij/yaogdHF3Yr
- bmjkUgZNbeH7kRd+4tkaQ7UWkcOnraOGbaPozTqLsEFMGiEK8Ae83bMSCHRoAJcmxxiN0ooHkTZ
- IJYU=
-X-Google-Smtp-Source: AGHT+IEhDqRs+HMgxvwZwIs1Z4XoRIAm5ZwFITPjDkzak3YmyAz8MXfGsj61mowBBY+UFDi9Unfjdg==
-X-Received: by 2002:a17:902:684e:b0:1d8:ee41:de7d with SMTP id
- f14-20020a170902684e00b001d8ee41de7dmr2322775pln.111.1706571063996; 
- Mon, 29 Jan 2024 15:31:03 -0800 (PST)
+ bh=2DGeNqrAocEQBW3s9u83YvGPr3pag37tdDcMnd/na+Q=;
+ b=XWQTtrfY790ZywybrRUwB4LHwSTeaFUiLJmhhLfUxio8NEg5g+Ge/Ua4fR2Wo/l55b
+ lvvO6V2wXUI8DpnTcPLW4I89Rf2HLwbAIa7Y0NU68p06RXWwYcmbf6PjtHvuBnCr0dLO
+ MavIguTDsT9CIkTUsdexWQw/PudgNlhSY7j4HKK9KzpKEZP3ZdIMTy1XMeRG54zr5fTh
+ 6jL7F+baLniAqAjz5Y28OlXOCkUpiOxY9WrEqVnvrPCzQYFOREech1aZBmL07LRO+/4T
+ 59n8U8ba4KMRssWEKo1KIaU1LfW3c8MN+lkJLpcVK8ECDC2PFnDDmHK3xu/WUL8qJnCI
+ Ww6A==
+X-Gm-Message-State: AOJu0Yx6+LZs1bscl6ZUIQ76vYtQcp8i1JekiEmymiJTSjPvwKrs3QfE
+ vUvAMyr4ApLPV65nTEFL54/+03H2DFmsWnGaK/gTcNCI+napzQ/6soasuO/qLYVLHsDR2QxG9rf
+ 5ZuM=
+X-Google-Smtp-Source: AGHT+IFolqqLKjKl90ShxfQPNRzkcgQF4TVKPn9szr+T7VPCdxTLmobQvXlJggZHWjne/7HzwAYrEA==
+X-Received: by 2002:a17:902:e548:b0:1d4:4467:97dc with SMTP id
+ n8-20020a170902e54800b001d4446797dcmr4328746plf.6.1706571066295; 
+ Mon, 29 Jan 2024 15:31:06 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.02
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:03 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:05 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 07/33] target/cris: Cache mem_index in DisasContext
-Date: Tue, 30 Jan 2024 09:30:17 +1000
-Message-Id: <20240129233043.34558-8-richard.henderson@linaro.org>
+Subject: [PATCH 08/33] target/cris: Populate CPUClass.mmu_index
+Date: Tue, 30 Jan 2024 09:30:18 +1000
+Message-Id: <20240129233043.34558-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,110 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Compute this value once for each translation.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/cris/translate.c         | 14 +++++---------
- target/cris/translate_v10.c.inc |  6 ++----
- 2 files changed, 7 insertions(+), 13 deletions(-)
+ target/cris/cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index ee1402a9a3..7acea29a01 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -94,6 +94,7 @@ typedef struct DisasContext {
- 
-     CRISCPU *cpu;
-     target_ulong pc, ppc;
-+    int mem_index;
- 
-     /* Decoder.  */
-         unsigned int (*decoder)(CPUCRISState *env, struct DisasContext *dc);
-@@ -1008,37 +1009,31 @@ static inline void cris_prepare_jmp (DisasContext *dc, unsigned int type)
- 
- static void gen_load64(DisasContext *dc, TCGv_i64 dst, TCGv addr)
- {
--    int mem_index = cpu_mmu_index(&dc->cpu->env, false);
--
-     /* If we get a fault on a delayslot we must keep the jmp state in
-        the cpu-state to be able to re-execute the jmp.  */
-     if (dc->delayed_branch == 1) {
-         cris_store_direct_jmp(dc);
-     }
- 
--    tcg_gen_qemu_ld_i64(dst, addr, mem_index, MO_TEUQ);
-+    tcg_gen_qemu_ld_i64(dst, addr, dc->mem_index, MO_TEUQ);
+diff --git a/target/cris/cpu.c b/target/cris/cpu.c
+index 6349148b65..163fb05d58 100644
+--- a/target/cris/cpu.c
++++ b/target/cris/cpu.c
+@@ -56,6 +56,11 @@ static bool cris_cpu_has_work(CPUState *cs)
+     return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
  }
  
- static void gen_load(DisasContext *dc, TCGv dst, TCGv addr, 
-              unsigned int size, int sign)
++static int cris_cpu_mmu_index(CPUState *cs, bool ifetch)
++{
++    return !!(cpu_env(cs)->pregs[PR_CCS] & U_FLAG);
++}
++
+ static void cris_cpu_reset_hold(Object *obj)
  {
--    int mem_index = cpu_mmu_index(&dc->cpu->env, false);
--
-     /* If we get a fault on a delayslot we must keep the jmp state in
-        the cpu-state to be able to re-execute the jmp.  */
-     if (dc->delayed_branch == 1) {
-         cris_store_direct_jmp(dc);
-     }
+     CPUState *s = CPU(obj);
+@@ -274,6 +279,7 @@ static void cris_cpu_class_init(ObjectClass *oc, void *data)
  
--    tcg_gen_qemu_ld_tl(dst, addr, mem_index,
-+    tcg_gen_qemu_ld_tl(dst, addr, dc->mem_index,
-                        MO_TE + ctz32(size) + (sign ? MO_SIGN : 0));
- }
- 
- static void gen_store (DisasContext *dc, TCGv addr, TCGv val,
-                unsigned int size)
- {
--    int mem_index = cpu_mmu_index(&dc->cpu->env, false);
--
-     /* If we get a fault on a delayslot we must keep the jmp state in
-        the cpu-state to be able to re-execute the jmp.  */
-     if (dc->delayed_branch == 1) {
-@@ -1055,7 +1050,7 @@ static void gen_store (DisasContext *dc, TCGv addr, TCGv val,
-         return;
-     }
- 
--    tcg_gen_qemu_st_tl(val, addr, mem_index, MO_TE + ctz32(size));
-+    tcg_gen_qemu_st_tl(val, addr, dc->mem_index, MO_TE + ctz32(size));
- 
-     if (dc->flags_x) {
-         cris_evaluate_flags(dc);
-@@ -2971,6 +2966,7 @@ static void cris_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     dc->cpu = env_archcpu(env);
-     dc->ppc = pc_start;
-     dc->pc = pc_start;
-+    dc->mem_index = cpu_mmu_index(env, false);
-     dc->flags_uptodate = 1;
-     dc->flags_x = tb_flags & X_FLAG;
-     dc->cc_x_uptodate = 0;
-diff --git a/target/cris/translate_v10.c.inc b/target/cris/translate_v10.c.inc
-index 6df599fdce..73fc27c15d 100644
---- a/target/cris/translate_v10.c.inc
-+++ b/target/cris/translate_v10.c.inc
-@@ -91,8 +91,6 @@ static void gen_store_v10_conditional(DisasContext *dc, TCGv addr, TCGv val,
- static void gen_store_v10(DisasContext *dc, TCGv addr, TCGv val,
-                        unsigned int size)
- {
--    int mem_index = cpu_mmu_index(&dc->cpu->env, false);
--
-     /* If we get a fault on a delayslot we must keep the jmp state in
-        the cpu-state to be able to re-execute the jmp.  */
-     if (dc->delayed_branch == 1) {
-@@ -101,11 +99,11 @@ static void gen_store_v10(DisasContext *dc, TCGv addr, TCGv val,
- 
-     /* Conditional writes. */
-     if (dc->flags_x) {
--        gen_store_v10_conditional(dc, addr, val, size, mem_index);
-+        gen_store_v10_conditional(dc, addr, val, size, dc->mem_index);
-         return;
-     }
- 
--    tcg_gen_qemu_st_tl(val, addr, mem_index, ctz32(size) | MO_TE);
-+    tcg_gen_qemu_st_tl(val, addr, dc->mem_index, ctz32(size) | MO_TE);
- }
- 
- 
+     cc->class_by_name = cris_cpu_class_by_name;
+     cc->has_work = cris_cpu_has_work;
++    cc->mmu_index = cris_cpu_mmu_index;
+     cc->dump_state = cris_cpu_dump_state;
+     cc->set_pc = cris_cpu_set_pc;
+     cc->get_pc = cris_cpu_get_pc;
 -- 
 2.34.1
 
