@@ -2,78 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308A78403F0
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 12:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7DD84042A
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 12:52:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUPyF-0001xF-OF; Mon, 29 Jan 2024 06:38:35 -0500
+	id 1rUQ9c-0004H4-JK; Mon, 29 Jan 2024 06:50:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rUPyD-0001qq-2E
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 06:38:33 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rUPyA-0002lO-UV
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 06:38:32 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-55a035669d5so3157909a12.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 03:38:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706528309; x=1707133109; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FYuYnvv5ATwPfPNW6Y7WG2GH0c3ngYPYkwU/wu4yKSE=;
- b=dc1pyoKNim5s5iaWMUrbq+YdEfUjuUZRWtPQlL3+bVDEGlSW+rSoO+mO0tcq7SfF26
- uFeiBxSYK3OufqWjHSKqL0G5F0gm9ZdnBsN3B7OmEiaZVjacxLnHmEMR6gdUvrvpa7YS
- KxyWq3UxKcvaFmO4BLvLfexRsKqBZlebb4Ka9vb+rvlosi/L1a6FwaAv106ufLHDsQJN
- inuBX6vLLmI43Ia9LDA3qC2Ba7OjnQyKBZaf78ilbeIYFSjtI/b1zgLo6Eh9EWsqSFTE
- Pjz1IulXxaF7I7Vc4DVSmm+M9HKaQKWVvFIS1UFVSEagAsNBAIvDkPxBzJ2x+HuIKsY1
- elmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706528309; x=1707133109;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FYuYnvv5ATwPfPNW6Y7WG2GH0c3ngYPYkwU/wu4yKSE=;
- b=lEz583PAjqLCyhEPRMDIY9Oe3rs6+GnkcmsfIOzN36hdDGWIe3rvP59bW0xzhLOBPu
- llEcoIa95LwIwoskNtQ4t8SI+VQEeIuiZT3nUUHYDxPov4LDzaO54vyrtub8kaEu3i5t
- mfsvEVUTrWR7WqrsRw7l5vQPgxt1TPYjn8kcbvVG5Fcnod67EE6TkpoYTijblMmLCAeV
- t+8lk3JwBHgm9QZoT15PPzlFdOUP6fVg2CdvKE2VcdOaseYGEjtgVgjK3MzHJj2ZTW2e
- nJ0Q+opuq2CPSBzi+H+Me20xpxoZ2iyUR7VQQBM6e7LFLm9u+phZ0K8TAJ9E06apKodF
- Tvnw==
-X-Gm-Message-State: AOJu0YwEHvDV+Y4d5U++BEjnYDju5VnSmgH4R/yUZzyod9GJxa5mY+vx
- SSN1GzbTtGbz5Dc53c3vaVVgUlZYUy+ulVT44JWH03YbXy5Dv5KSdMVq5buK2ffYKCi6xFvKluF
- oDKl5ftQaAIo5UdoG35dkH28Kc3qZfTPYAo4S3A==
-X-Google-Smtp-Source: AGHT+IFju2qwTjbqnF/NBGN7ayq+nKdzSdkhoyCNM6p3/gtc2kIu3HDScpRf/Pg/AF8Dd0a5tyfJGvTcMhJItWC6NCE=
-X-Received: by 2002:a05:6402:5245:b0:55e:ece1:4a16 with SMTP id
- t5-20020a056402524500b0055eece14a16mr2758914edd.17.1706528309013; Mon, 29 Jan
- 2024 03:38:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rUQ9Y-0004Fs-M4
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 06:50:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rUQ9V-0005DU-Pw
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 06:50:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706529011;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+X2xemZdM1KKofty2/aYjP98qk0CdYT3hsX+5kchbcE=;
+ b=id4D7J3/AzjtfduBrAJgXznz2iinmklOoTpmv/YgHeGKXyXHoBu6bu5AOaod2Psx9Ma/YI
+ o+yT++oW02ikJy61p2ycuRwoKUGvXj+QhOwuyk1PZGiyyj6/t3lb2nktkvCmzPDNBKJlJs
+ aEgL7RE1DImK9gE6xiq42ugj2fMxFXY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-52-vWJbLMIpM6SCvKOaWxYzfA-1; Mon, 29 Jan 2024 06:50:10 -0500
+X-MC-Unique: vWJbLMIpM6SCvKOaWxYzfA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7E0785A58B;
+ Mon, 29 Jan 2024 11:50:09 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.123])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 83ED92166B31;
+ Mon, 29 Jan 2024 11:50:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8775321E66DA; Mon, 29 Jan 2024 12:50:08 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: eblake@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
+ michael.roth@amd.com, kkostiuk@redhat.com, qemu-block@nongnu.org
+Subject: [PATCH 0/5] qmp: Documentation cleanups
+Date: Mon, 29 Jan 2024 12:50:03 +0100
+Message-ID: <20240129115008.674248-1-armbru@redhat.com>
 MIME-Version: 1.0
-References: <20240116190042.1363717-1-stefanha@redhat.com>
-In-Reply-To: <20240116190042.1363717-1-stefanha@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 29 Jan 2024 11:38:18 +0000
-Message-ID: <CAFEAcA-A-7H7nb++fkCr1O-aCt_U3JzrF_9=Sxp2Mg+kCWD_-w@mail.gmail.com>
-Subject: Re: [PATCH 0/3] monitor: only run coroutine commands in
- qemu_aio_context
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, qemu-block@nongnu.org, 
- Fiona Ebner <f.ebner@proxmox.com>, Hanna Reitz <hreitz@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,37 +78,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Jan 2024 at 19:01, Stefan Hajnoczi <stefanha@redhat.com> wrote:
->
-> Several bugs have been reported related to how QMP commands are rescheduled in
-> qemu_aio_context:
-> - https://gitlab.com/qemu-project/qemu/-/issues/1933
-> - https://issues.redhat.com/browse/RHEL-17369
-> - https://bugzilla.redhat.com/show_bug.cgi?id=2215192
-> - https://bugzilla.redhat.com/show_bug.cgi?id=2214985
->
-> The first instance of the bug interacted with drain_call_rcu() temporarily
-> dropping the BQL and resulted in vCPU threads entering device emulation code
-> simultaneously (something that should never happen). I set out to make
-> drain_call_rcu() safe to use in this environment, but Paolo and Kevin discussed
-> the possibility of avoiding rescheduling the monitor_qmp_dispatcher_co()
-> coroutine for non-coroutine commands. This would prevent monitor commands from
-> running during vCPU thread aio_poll() entirely and addresses the root cause.
->
-> This patch series implements this idea. qemu-iotests is sensitive to the exact
-> order in which QMP events and responses are emitted. Running QMP handlers in
-> the iohandler AioContext causes some QMP events to be ordered differently than
-> before. It is therefore necessary to adjust the reference output in many test
-> cases. The actual QMP code change is small and everything else is just to make
-> qemu-iotests happy.
+Markus Armbruster (5):
+  qapi: Drop redundant documentation of inherited members
+  qapi: Drop redundant documentation of conditional
+  qapi: Elide "Potential additional modes" from generated docs
+  qga: Move type description right after type name
+  qga/qapi-schema: Move command description right after command name
 
-Hi; we have a suspicion that this change has resulted in a flaky-CI
-test: iotest-144 sometimes fails, apparently because a "return"
-result from QMP isn't always returned at the same place in relation
-to other QMP events. Could you have a look at it?
+ qapi/block-core.json   |  6 ++----
+ qapi/block-export.json | 11 ++++++-----
+ qapi/introspect.json   |  2 --
+ qapi/misc-target.json  |  2 --
+ qga/qapi-schema.json   | 18 +++++++++---------
+ 5 files changed, 17 insertions(+), 22 deletions(-)
 
-https://gitlab.com/qemu-project/qemu/-/issues/2126
+-- 
+2.43.0
 
-thanks
--- PMM
 
