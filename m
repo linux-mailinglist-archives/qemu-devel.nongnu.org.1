@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAD084167C
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4880A84169C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:13:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUadV-0005yl-0c; Mon, 29 Jan 2024 18:01:58 -0500
+	id 1rUadO-0005wn-VM; Mon, 29 Jan 2024 18:01:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadJ-0005vX-M4
+ id 1rUadK-0005vZ-PH
  for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:42 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadH-0008O3-Rs
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:41 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6ddc5faeb7fso2586105b3a.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:38 -0800 (PST)
+ id 1rUadJ-0008OH-1z
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:42 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-290fb65531eso1752052a91.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706569297; x=1707174097; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706569299; x=1707174099; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8stgI+xO0LshRlV+dbOXjfDk9OWAAP8Iuj6nGWfVSvI=;
- b=iDnS4hClWK/DxvqZ9MMgNP6ExE3IpFdVbNi+JPAXdyK08gWF8TEqlH35qJqYy+nvHZ
- zRWG+xKYzRWrJsKFjKRlpCOOJMpAYEdG9gJ398/Ra1PablQT4A3qDSvjfDw6dQ58C/Zv
- YXfuGsKM2ZyXMJvLZTbsAjzJTqwYE7c7SQRsBZdD/8AMS/Rajlst/HBtr+v6khySf+Aq
- Q2Qr6Iu+DJr67otHW1ET96jZ53Nk3UvyndJk7FYtdpJGDU5M5H5+AyHq+HthPnmmgCBJ
- KJy0pdOfZwWmauc7nIQRqMXIPovuc7bKfMzOt7bWIvfVvpzLNa40CGaNCspPnbl6xCle
- 1sag==
+ bh=Abpnrf3mk/IImEiBxCwuY+1bvCj+UYnsd1PobWXi05Q=;
+ b=uZ6n8tn5t+JMXA2i/yJSgSFeHaUhJXNqdwRx+J7IwqppiwhWGTwdFw0UNQJyVnuHfU
+ N92imwoBiFmmcnm8SnKzVyeHjthNzmbp7UdKXvOeJMJ1SWU7aCrUWOBQGAHdOjzJXKKq
+ zuGtIMranO5bmETHSpA94Pnh2XWg+3mJxCCrVTNWCd5pZ3Y6RkxRtsBoP6430fI6nXyQ
+ YF1SFtQt9fQNBbXo58wC8Xa6WgxIUtCnXhG+608lfwHehixT0KDwc0ES41LgBQxfVBVK
+ YO/ExHu9Gi0q4RTpMsnVlGSCYGeb6JZATDW8rJLtmj+G2d5cDfHdbiOEqxMp5I0T9n4H
+ c5DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706569297; x=1707174097;
+ d=1e100.net; s=20230601; t=1706569299; x=1707174099;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8stgI+xO0LshRlV+dbOXjfDk9OWAAP8Iuj6nGWfVSvI=;
- b=f/xh5e0INHpwavyztFy9uobO85vx5tjklXGeHxCPwzsVGrmd9kqIuqd2EZGtn3fwU2
- o8kvfL/aDpZyyZ8rGW2A1KxWGS0XLK8iWXZmBrDf5HOMOQfSZTi9aIpU5tO/Bp7EUnEM
- vBD7wMC28fb81vH2HHLtnUPi1WqDYuBp80vx3lwtgyd8GP14vLsDwOR4Wqdp57FXDP+E
- qF67gNzZ8/eNaBFo5CSpycnFnjRY+roruuluIiamFPXPOYa0L5qFvqXnBJXZHVCnnM6L
- Za0/b3oNVmUJy43XHZ9vmgEQtUTL+jIG7A78Y71SvSC2ZqAPFvlL218X82iJMZHDuTZB
- 9xiA==
-X-Gm-Message-State: AOJu0Yz7kqQ+T8wHOIA9/PUIRuuRQ+JJBmEyNGTp9cgVHUvleO1xLEK7
- MU3DHHbyrF/cxxNL58d0qcV9yRWyLn6IQp6JunsyQ1YY15BlM3pyg0XSObAuP0vyNDQWneAYm60
- BKWE=
-X-Google-Smtp-Source: AGHT+IGgMFErPY/vdQjdjE2ZD7eumBf+/6RgbeeCKTCcjWSpd5sC0qlJeMBhOErl3KvnRrYT1BzRYg==
-X-Received: by 2002:a05:6a00:4e58:b0:6d9:c201:66f0 with SMTP id
- gu24-20020a056a004e5800b006d9c20166f0mr4561881pfb.27.1706569297431; 
- Mon, 29 Jan 2024 15:01:37 -0800 (PST)
+ bh=Abpnrf3mk/IImEiBxCwuY+1bvCj+UYnsd1PobWXi05Q=;
+ b=Ay6RgPkidwXzePK/u2W+wDErxctlBmttfhAPlTCYJV+7o2f5vi8HT3ySVbGnWqhAhU
+ mBYXBIbcEmYQzOPBycGkp70BL3rYUhlgX9dESxmxH3axhd/DUlvYi3F4hI3blmZY65Nu
+ quizZ5DpdhVCU+XHeQ+fLArz+i45KP5/8wj0TtvH5rvu3zFmvSe1SdiDRpzEAfpJfjm+
+ zBj4vec5an7SbVF0C5R996PrlwwrlMAwDYrW9CTwVkBojIWzOGNmhCWp7F+FUg6+7Ups
+ HyFmEBX+HmhBSV29DrpDjwOv4vLr7McP4z5Eb+s7xW2wcMEjEIl0wjqO4WkFrZZaVzHV
+ kQiw==
+X-Gm-Message-State: AOJu0YyNb8keWOla8DLzl57WT/m1jL4DXXMpt5Jc6G+CsagcrKEweg8i
+ ptEOxWfifI9xNnucTW+Fgy1aj2DTBBAW9WIYIZp2KfgPElfqXzEV+zgtqsxtiGicOU7QgInBcf+
+ HaP8=
+X-Google-Smtp-Source: AGHT+IFWHDVrCfPNw5E7Z4tqYWzqy1D84bDOoWfso9aYKVcfE7c+mZdbAWzNTdfjXck4JWK4ywRJTw==
+X-Received: by 2002:a05:6a20:9398:b0:19c:999e:b7a5 with SMTP id
+ x24-20020a056a20939800b0019c999eb7a5mr3862829pzh.53.1706569299439; 
+ Mon, 29 Jan 2024 15:01:39 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.35
+ r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:01:37 -0800 (PST)
+ Mon, 29 Jan 2024 15:01:39 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 05/31] include/exec: Use vaddr in DisasContextBase for virtual
- addresses
-Date: Tue, 30 Jan 2024 09:00:55 +1000
-Message-Id: <20240129230121.8091-6-richard.henderson@linaro.org>
+Subject: [PULL 06/31] include/exec: typedef abi_ptr to vaddr
+Date: Tue, 30 Jan 2024 09:00:56 +1000
+Message-Id: <20240129230121.8091-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129230121.8091-1-richard.henderson@linaro.org>
 References: <20240129230121.8091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,123 +93,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-Updates target/ QEMU_LOG macros to use VADDR_PRIx for printing updated
-DisasContextBase fields.
-
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240119144024.14289-10-anjo@rev.ng>
+Message-Id: <20240119144024.14289-11-anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h   |  6 +++---
- target/mips/tcg/translate.h |  3 ++-
- target/hexagon/translate.c  |  3 ++-
- target/m68k/translate.c     |  2 +-
- target/mips/tcg/translate.c | 12 ++++++------
- 5 files changed, 14 insertions(+), 12 deletions(-)
+ include/exec/cpu_ldst.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index b0412ea6b6..51624feb10 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -79,8 +79,8 @@ typedef enum DisasJumpType {
-  */
- typedef struct DisasContextBase {
-     TranslationBlock *tb;
--    target_ulong pc_first;
--    target_ulong pc_next;
-+    vaddr pc_first;
-+    vaddr pc_next;
-     DisasJumpType is_jmp;
-     int num_insns;
-     int max_insns;
-@@ -235,7 +235,7 @@ void translator_fake_ldb(uint8_t insn8, abi_ptr pc);
-  * Translators can use this to enforce the rule that only single-insn
-  * translation blocks are allowed to cross page boundaries.
-  */
--static inline bool is_same_page(const DisasContextBase *db, target_ulong addr)
-+static inline bool is_same_page(const DisasContextBase *db, vaddr addr)
- {
-     return ((addr ^ db->pc_first) & TARGET_PAGE_MASK) == 0;
- }
-diff --git a/target/mips/tcg/translate.h b/target/mips/tcg/translate.h
-index cffcfeab8c..93a78b8121 100644
---- a/target/mips/tcg/translate.h
-+++ b/target/mips/tcg/translate.h
-@@ -202,7 +202,8 @@ extern TCGv bcond;
-     do {                                                                      \
-         if (MIPS_DEBUG_DISAS) {                                               \
-             qemu_log_mask(CPU_LOG_TB_IN_ASM,                                  \
--                          TARGET_FMT_lx ": %08x Invalid %s %03x %03x %03x\n", \
-+                          "%016" VADDR_PRIx                                   \
-+                          ": %08x Invalid %s %03x %03x %03x\n",               \
-                           ctx->base.pc_next, ctx->opcode, op,                 \
-                           ctx->opcode >> 26, ctx->opcode & 0x3F,              \
-                           ((ctx->opcode >> 16) & 0x1F));                      \
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index a14211cf68..f163eefe97 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -234,7 +234,8 @@ static int read_packet_words(CPUHexagonState *env, DisasContext *ctx,
-         g_assert(ctx->base.num_insns == 1);
-     }
- 
--    HEX_DEBUG_LOG("decode_packet: pc = 0x%x\n", ctx->base.pc_next);
-+    HEX_DEBUG_LOG("decode_packet: pc = 0x%" VADDR_PRIx "\n",
-+                  ctx->base.pc_next);
-     HEX_DEBUG_LOG("    words = { ");
-     for (int i = 0; i < nwords; i++) {
-         HEX_DEBUG_LOG("0x%x, ", words[i]);
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 5ec88c5f0d..f886190f88 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -1457,7 +1457,7 @@ DISAS_INSN(undef)
-      * for the 680x0 series, as well as those that are implemented
-      * but actually illegal for CPU32 or pre-68020.
-      */
--    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %08x\n",
-+    qemu_log_mask(LOG_UNIMP, "Illegal instruction: %04x @ %" VADDR_PRIx "\n",
-                   insn, s->base.pc_next);
-     gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
- }
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index e10232738c..12094cc1e7 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -4585,8 +4585,8 @@ static void gen_compute_branch(DisasContext *ctx, uint32_t opc,
- 
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x"
--                  TARGET_FMT_lx "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 6061e33ac9..eb8f3f0595 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -121,8 +121,8 @@ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+     h2g_nocheck(x); \
+ })
+ #else
+-typedef target_ulong abi_ptr;
+-#define TARGET_ABI_FMT_ptr TARGET_FMT_lx
++typedef vaddr abi_ptr;
++#define TARGET_ABI_FMT_ptr VADDR_PRIx
  #endif
-         gen_reserved_instruction(ctx);
-         goto out;
-@@ -9061,8 +9061,8 @@ static void gen_compute_branch1_r6(DisasContext *ctx, uint32_t op,
  
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
--                  "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
- #endif
-         gen_reserved_instruction(ctx);
-         return;
-@@ -11274,8 +11274,8 @@ static void gen_compute_compact_branch(DisasContext *ctx, uint32_t opc,
- 
-     if (ctx->hflags & MIPS_HFLAG_BMASK) {
- #ifdef MIPS_DEBUG_DISAS
--        LOG_DISAS("Branch in delay / forbidden slot at PC 0x" TARGET_FMT_lx
--                  "\n", ctx->base.pc_next);
-+        LOG_DISAS("Branch in delay / forbidden slot at PC 0x%016"
-+                  VADDR_PRIx "\n", ctx->base.pc_next);
- #endif
-         gen_reserved_instruction(ctx);
-         return;
+ uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
 -- 
 2.34.1
 
