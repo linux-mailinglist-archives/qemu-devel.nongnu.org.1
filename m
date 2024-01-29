@@ -2,45 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099ED84131C
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8FF84134D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:23:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUX4X-0003w3-9Q; Mon, 29 Jan 2024 14:13:33 -0500
+	id 1rUXDF-0005iH-UD; Mon, 29 Jan 2024 14:22:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rUX4M-0003tx-9m; Mon, 29 Jan 2024 14:13:22 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rUX4J-0001J1-UP; Mon, 29 Jan 2024 14:13:21 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 64842486A8;
- Mon, 29 Jan 2024 22:14:10 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1B4FB6E5BD;
- Mon, 29 Jan 2024 22:13:17 +0300 (MSK)
-Received: (nullmailer pid 1285726 invoked by uid 1000);
- Mon, 29 Jan 2024 19:13:16 -0000
-Subject: [ANNOUNCE] QEMU 8.1.5 Stable released
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rUXDC-0005ho-2c; Mon, 29 Jan 2024 14:22:30 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1rUXDA-0002dV-DB; Mon, 29 Jan 2024 14:22:29 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33ae3154cf8so1487476f8f.3; 
+ Mon, 29 Jan 2024 11:22:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1706556146; x=1707160946; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=w37w4z8ZiX6T0MrniHH1TZKFqrVjdmfQwDPneQhjUj4=;
+ b=DD2rqE+1/xW+1HACufkc0G+G84wINk9I8i+ug2kDij0UdcLc2oby4DjJf7PMEdPIrU
+ 9Ch9PVjh+UEBEYnataJkvxdmqHbl92CF9rxtDKbLwZFtmb/NeQQ8FofxsFc9hR17v6Rg
+ i42no0jskNN5fKb5DL288tQk4EyI15KPeIzuZKv0Z6ESs2mCIJ4788sqrPZ2aukGIT3R
+ 05ZIDxeVIZ1l2aEp8EymjlG5TB0e7ZgmJ4zG/TNoc9PmYz15rFDn2U1RJPueS4tYQ8y2
+ k4vBHDSJITqFbGzXN2aXQwpvAB8yq8ba47jRkUphq2iUWPG5XTlBE5JzE1zMaNyPefVb
+ OVlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706556146; x=1707160946;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=w37w4z8ZiX6T0MrniHH1TZKFqrVjdmfQwDPneQhjUj4=;
+ b=bwHi+aMX5QdQeIIMneYX7gYG+koPQQnbv0aGPXzDwUAfPRNzYlAPx+pDYYalczRxPp
+ uUUXz9QN76fNRn2D+YF0wZEL7FrkeGFXdRZFQEABECzCJqwmkXa4XPNFCOWd4OW+0FJz
+ KQTgCYEHaADuqpiW16j/etJMIH2bmEgMp+Qzr4Era3mUIwVrJnKtsD5OBL/L5ZdqWbax
+ ceU0b/f1v+VWIfCKJb1nG/whiI1WYgTdhgUEKvaQjb5EkCfSHUmZ3HwaL6A6COzt4MeB
+ pW7YFSq13gstUkAh+K3y5bwj9LZUYt/w8KBAjzb0q0XVw1knDdQ7pq1CWaE+2SnrN/X2
+ Dv1A==
+X-Gm-Message-State: AOJu0YxQaCo5GXtwYXZ3kWKH9eFc06MuOxnxFmXaFXGvKfou67s/C5w5
+ Zjzru6fbYbyF9z5n0kaw+FaHpfEU6b6K1FE6scBcvFoKnC15kGxw
+X-Google-Smtp-Source: AGHT+IFwxSRnFC6RQx1tSPkmB/r1Bhp4mZcV8ND42ggCwee6LwtpuV2gc4TijqvrJGgReDFZdl+GZw==
+X-Received: by 2002:a5d:6283:0:b0:33a:f1e5:b657 with SMTP id
+ k3-20020a5d6283000000b0033af1e5b657mr2032183wru.69.1706556145740; 
+ Mon, 29 Jan 2024 11:22:25 -0800 (PST)
+Received: from freya.midgard (broadband-188-255-126-251.ip.moscow.rt.ru.
+ [188.255.126.251]) by smtp.gmail.com with ESMTPSA id
+ co28-20020a0560000a1c00b0033af0cb2a35sm2577206wrb.108.2024.01.29.11.22.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jan 2024 11:22:25 -0800 (PST)
+From: Alexey Baturo <baturo.alexey@gmail.com>
+X-Google-Original-From: Alexey Baturo <me@deliversmonkey.space>
+To: 
+Cc: baturo.alexey@gmail.com, richard.henderson@linaro.org,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, Alistair.Francis@wdc.com,
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Subject: [PATCH v5 0/6] Pointer Masking update for Zjpm v0.8
+Date: Mon, 29 Jan 2024 19:22:01 +0000
+Message-Id: <20240129192207.2946870-1-me@deliversmonkey.space>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Date: Mon, 29 Jan 2024 22:13:16 +0300
-Message-Id: <1706555596.897651.1285720.nullmailer@tls.msk.ru>
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=baturo.alexey@gmail.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_PH_BODY_ACCOUNTS_POST=0.62, TVD_PH_BODY_META_ALL=2.564,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,112 +91,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+From: Alexey Baturo <baturo.alexey@gmail.com>
 
-Hi everyone,
+Hi,
 
-The QEMU v8.1.5 stable release is now available.
+This patch series targets Zjpm v0.8 extension.
+The spec itself could be found here: https://github.com/riscv/riscv-j-extension/blob/8088461d8d66a7676872b61c908cbeb7cf5c5d1d/zjpm-spec.pdf
+This patch series is updated after the suggested comments:
+- add "x-" to the extension names to indicate experimental
 
-You can grab the tarball from our download page here:
+[v4]:
+Patch series updated after the suggested comments:
+- removed J-letter extension as it's unused
+- renamed and fixed function to detect if address should be sign-extended
+- zeroed unused context variables and moved computation logic to another patch
+- bumped pointer masking version_id and minimum_version_id by 1
 
-  https://www.qemu.org/download/#source
+Thanks
 
-  https://download.qemu.org/qemu-8.1.5.tar.xz
-  https://download.qemu.org/qemu-8.1.5.tar.xz.sig (signature)
+[v3]:
+There patches are updated after Richard's comments:
+- moved new tb flags to the end
+- used tcg_gen_(s)extract to get the final address
+- properly handle CONFIG_USER_ONLY
 
-v8.1.5 is now tagged in the official qemu.git repository, and the
-stable-8.1 branch has been updated accordingly:
+Thanks
 
-  https://gitlab.com/qemu-project/qemu/-/commits/stable-8.1?ref_type=heads
+[v2]:
+As per Richard's suggestion I made pmm field part of tb_flags.
+It allowed to get rid of global variable to store pmlen.
+Also it allowed to simplify all the machinery around it.
 
-Thank you everyone who has been involved and helped with the stable series!
+Thanks
 
-/mjt
+[v1]:
+Hi all,
 
-Changelog (stable-8.1-hash master-hash Author Name: Commmit-Subject):
+It looks like Zjpm v0.8 is almost frozen and we don't expect it change drastically anymore.
+Compared to the original implementation with explicit base and mask CSRs, we now only have
+several fixed options for number of masked bits which are set using existing CSRs.
+The changes have been tested with handwritten assembly tests and LLVM HWASAN
+test suite.
 
-20a1b341a0 Michael Tokarev:
- Update version for 8.1.5 release
-ccdb4cc209 6fffc83785 Peter Maydell:
- target/arm: Fix A64 scalar SQSHRN and SQRSHRN
-b86fa3a4f2 604927e357 Max Filippov:
- target/xtensa: fix OOB TLB entry access
-d24dd10143 e8a12fe31f Daniel P. Berrangé:
- qtest: bump aspeed_smc-test timeout to 6 minutes
-4b02c718b5 effd60c878 Stefan Hajnoczi:
- monitor: only run coroutine commands in qemu_aio_context
-2f5e27eefa 9ee2dd4c22 Stefan Hajnoczi:
- iotests: port 141 to Python for reliable QMP testing
-03bc938fbf da62b507a2 Stefan Hajnoczi:
- iotests: add filter_qmp_generated_node_ids()
-23a512f418 a9c8ea9547 Ari Sundholm:
- block/blklogwrites: Fix a bug when logging "write zeroes" operations.
-dd1d3c8c29 2220e8189f Jason Wang:
- virtio-net: correctly copy vnet header when flushing TX
-c173670033 9f6523e8e4 Joseph Burt:
- tcg/arm: Fix SIGILL in tcg_out_qemu_st_direct
-76a9da39d4 8a9be79924 Fiona Ebner:
- block/io: clear BDRV_BLOCK_RECURSE flag after recursing in bdrv_co_block_status
-4b06bb5826 Paolo Bonzini:
- accel/tcg: Revert mapping of PCREL translation block to multiple virtual addresses
-25ff741fe8 b16a45bc5e Alex Bennée:
- readthodocs: fully specify a build environment
-72694a69c9 c2d7de557d Mark Cave-Ayland:
- hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST command issued
-01db312e3b 1e8e6644e0 Mark Cave-Ayland:
- hw/scsi/esp-pci: synchronise setting of DMA_STAT_DONE with ESP completion interrupt
-e8cb126075 6b41417d93 Mark Cave-Ayland:
- hw/scsi/esp-pci: generate PCI interrupt from separate ESP and PCI sources
-2cd67d013d 84a6835e00 Mark Cave-Ayland:
- hw/scsi/esp-pci: use correct address register for PCI DMA transfers
-2472f8467d 44ce1b5d2f Nick Briggs:
- migration/rdma: define htonll/ntohll only if not predefined
-fcc79f2e09 284a7ee2e2 Gerd Hoffmann:
- hw/pflash: implement update buffer for block writes
-dd25df302e 5dd58358a5 Gerd Hoffmann:
- hw/pflash: use ldn_{be,le}_p and stn_{be,le}_p
-d83b0f64aa 3b14a555fd Gerd Hoffmann:
- hw/pflash: refactor pflash_data_write()
-a8988972cd 484aecf2d3 Philippe Mathieu-Daudé:
- backends/cryptodev: Do not ignore throttle/backends Errors
-7b03b125ee 729ba8e933 Paolo Bonzini:
- target/i386: pcrel: store low bits of physical address in data[0]
-5707858602 2926eab896 guoguangyao:
- target/i386: fix incorrect EIP in PC-relative translation blocks
-99e32260ac a58506b748 Richard Henderson:
- target/i386: Do not re-compute new pc with CF_PCREL
-357b599028 410c2a4d75 Anastasia Belova:
- load_elf: fix iterator's type for elf file processing
-d6488e5186 52a21689cd Peter Maydell:
- .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large
-5e190ed415 e358a25a97 Ilya Leoshkevich:
- target/s390x: Fix LAE setting a wrong access register
-f62b55da87 c98873ee4a Samuel Tardieu:
- tests/qtest/virtio-ccw: Fix device presence checking
-074b769c0b 1d513e06d9 Natanael Copa:
- util: fix build with musl libc on ppc64le
-6eb6bca73f 82a65e3188 Peter Maydell:
- hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
-97d3be7bca 4ad87cd4b2 Michael Tokarev:
- chardev/char.c: fix "abstract device type" error message
-03382b91cb 5cb0e7abe1 Xu Lu:
- target/riscv: Fix mcycle/minstret increment behavior
-6c5dda7850 25145a7d77 Pavel Pisa:
- hw/net/can/sja1000: fix bug for single acceptance filter and standard frame
-60472f719c bb6e2511eb Kevin Wolf:
- iotests: Basic tests for internal snapshots
-4c8315ad50 5a7f21efaf Kevin Wolf:
- vl: Improve error message for conflicting -incoming and -loadvm
------BEGIN PGP SIGNATURE-----
+Thanks
 
-iQEzBAEBCAAdFiEEe3O61ovnosKJMUsicBtPaxppPlkFAmW3+MwACgkQcBtPaxpp
-Plka0Qf7BMlmjRn6lUkNgBryTf8TPWLmDKQo1VF/wUCmSKQuBpwCjr8Xr5rJ9RlS
-J7k1W3xaKMH3JUFO9/apigsRUWW+KuLGevu51yFEpXUwfBKJe+uOu3gA3ilG5cs7
-RDkcQ+IgeahaELZYZx7IkNGotr1Hn94FGdbJrXsc2o6Uw/FSqzVLgvtvUdp+qKGu
-+0CsYSI67x6SnjMNvyyIJQMFRDdWZB+YIyWgXyYI5UweXTpdXKpsKlyqDJj0BNRB
-jSKRfiFBDWwi3F3qWRmQFYmkmW8ajvrq6CWdkWdY7coE13QBbE8nH+j0clq0SXLG
-GPeLwDDkNIU1t1/6Y35Zr0JfhffZeg==
-=KXwl
------END PGP SIGNATURE-----
+Alexey Baturo (6):
+  target/riscv: Remove obsolete pointer masking extension code.
+  target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
+    of Zjpm v0.8
+  target/riscv: Add helper functions to calculate current number of
+    masked bits for pointer masking
+  target/riscv: Add pointer masking tb flags
+  target/riscv: Update address modify functions to take into account
+    pointer masking
+  target/riscv: Enable updates for pointer masking variables and thus
+    enable pointer masking extension
+
+ target/riscv/cpu.c           |  22 ++-
+ target/riscv/cpu.h           |  46 +++--
+ target/riscv/cpu_bits.h      |  90 +---------
+ target/riscv/cpu_cfg.h       |   3 +
+ target/riscv/cpu_helper.c    |  97 +++++-----
+ target/riscv/csr.c           | 337 ++---------------------------------
+ target/riscv/machine.c       |  20 +--
+ target/riscv/pmp.c           |  13 +-
+ target/riscv/pmp.h           |  11 +-
+ target/riscv/tcg/tcg-cpu.c   |   5 +-
+ target/riscv/translate.c     |  46 ++---
+ target/riscv/vector_helper.c |  15 +-
+ 12 files changed, 158 insertions(+), 547 deletions(-)
+
+-- 
+2.34.1
+
 
