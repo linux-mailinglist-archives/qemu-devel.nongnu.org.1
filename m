@@ -2,90 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52D9840970
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7188D8409B0
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:20:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUTJT-000417-FW; Mon, 29 Jan 2024 10:12:43 -0500
+	id 1rUTPE-00073W-60; Mon, 29 Jan 2024 10:18:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rUTJR-00040x-6D
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:12:41 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rUTJO-00068S-Om
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:12:40 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40TF2IEc007309; Mon, 29 Jan 2024 15:12:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=u5peRW+Ttk5hXEgml120vzKHzs0CdlegRpF3+JZyR78=;
- b=pK+h9RcIBRPXGGDbCzU2U6w//T255A3TE7AIXAw77+3sqJW4JMXcG79iz1uQBuhI2MBx
- +6KkpG2L6V7Lg2E5j/nAens+xP5PDTSOBT0t6zNIsmIhZNpbb6jvXf96jo0PwaFWXP5a
- XRkAQddl3Md6xMZyxMwqkknoT+lpZO/jRWNyrIpNSQePlz1zfNwtO/9KUPpjzJRvh/1t
- ZMrz4ck2Qjih6wIcOm7+CpZuBrRWTywU6GXLGomZklou2ooOiLcUJTUGL78OdryHsmdd
- nJXftKCMDJC8dChd1lFuDUSr7vnCgs7rB3IbOY24orD87BTs6io7lGpcBnsWxxokROjG Aw== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vxeabg6us-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 15:12:34 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40TD0WkM011237; Mon, 29 Jan 2024 15:12:30 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweck8juf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 15:12:30 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40TFCT8t38797580
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Jan 2024 15:12:29 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 105B320043;
- Mon, 29 Jan 2024 15:12:29 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74AF120040;
- Mon, 29 Jan 2024 15:12:28 +0000 (GMT)
-Received: from heavy (unknown [9.155.200.166])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 29 Jan 2024 15:12:28 +0000 (GMT)
-Date: Mon, 29 Jan 2024 16:12:27 +0100
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 21/33] linux-user: Split out mmap_h_eq_g
-Message-ID: <3f75hcwrqjos5mnrm3yknx2c7ae5pvh6bofbpvfsjbxiinrnnq@wmyrvxma4uki>
-References: <20240102015808.132373-1-richard.henderson@linaro.org>
- <20240102015808.132373-22-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPA-0006yS-Bt
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:36 -0500
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTP8-0007Pa-BT
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:36 -0500
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-5100cb238bcso5004022e87.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:18:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706541512; x=1707146312; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oz+zTTfGm1MKa4a97HFk11IR2+Bank2vY+LpKIqyLck=;
+ b=pfqxMy28pDWE244/PIe9tpSb1jXdcq6Y0PkLBLQKe2VRKLac706aog4AWxt5L4vgW5
+ 7agX3055VPSRQHentic8SS8iJa/9WY4arv93MU+Z5YcTAYoVNvROVw63MDMNxZXxUi+t
+ 5LZze8NEEsdBMZ32DEmD7FS7eM/1c3//BZn5nH6VjeZmRWwlIkmgZuj2PIMVbk9+XRHy
+ E4CZLqahWCl4sMtR6RLUmNic94nTsHdMLo7dLG0xkqZhOPJWp4w4i2Tzar2qZFeFDHll
+ 37Dci8FUhJPanD5uRYZy6DYFkE8PPPxxY4NvfkpaY8xBdi0Uahy9QtoxxrEZTuSF6iX+
+ tuBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706541512; x=1707146312;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oz+zTTfGm1MKa4a97HFk11IR2+Bank2vY+LpKIqyLck=;
+ b=s5aVPe0G37jFHgF+DJ7dVOtIS+j2GNIJUb9GH/OFUF+9vF2hJLIlHWD2ZPvqvIE2st
+ rx9zpemTLO9Uguw/Vx/ZwaObDX5DP8wQLEcaIQxM4RlRFztIKKc/C+dIHcfcY3af0IU6
+ dMjf6jVpWkWJkhxUlQ5fLdQKMjLQuwxKW4ganGZaK4xPxW8oLCfZr4xJ/dcqBwIofQxb
+ vopuqplgr/MxxwnXxvP223yxjPQiAsmuM+WJb5nRXvUSITzPIWW6O2Xx3CMxssrIBNY3
+ QXVkYnnp7bytwEQmFa5Tc5GwVzleNHp3i+xte1gLzUacnocb5soXulH4M7LArSg7yFtk
+ +vRA==
+X-Gm-Message-State: AOJu0YwChFePnC5BGhmYLx1aO3cgi1iFcShCbDReUfv+k2KJ5w8sWayk
+ mkfWHPZneUcn8EBW1HdqkYKqxei9UlPcQhMwZAbaIt1Q1351tvfB3g9Py3zGGLWsMBFjeEV5bkF
+ K
+X-Google-Smtp-Source: AGHT+IE0eIR3XDm29LRt/ScifzFOIdBA1dWVj2tZnTVrHxrcd1Y0dbC3sWfeg3UxMpAhvtTuzYjH1A==
+X-Received: by 2002:a05:6512:10c2:b0:510:1487:bcb with SMTP id
+ k2-20020a05651210c200b0051014870bcbmr4624283lfg.64.1706541512038; 
+ Mon, 29 Jan 2024 07:18:32 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.219.39])
+ by smtp.gmail.com with ESMTPSA id
+ v3-20020a05600c444300b0040ebfbff33csm14445952wmn.36.2024.01.29.07.18.30
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 29 Jan 2024 07:18:31 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, Hao Wu <wuhaotsh@google.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Rob Herring <robh@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/9] hw/arm: Check for CPU types in machine_run_board_init()
+Date: Mon, 29 Jan 2024 16:18:19 +0100
+Message-ID: <20240129151828.59544-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102015808.132373-22-richard.henderson@linaro.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5wxq7wU4cOhAW_lCX3lZ1shkaED2gSgs
-X-Proofpoint-ORIG-GUID: 5wxq7wU4cOhAW_lCX3lZ1shkaED2gSgs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-29_10,2024-01-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- phishscore=0 mlxscore=0 mlxlogscore=611 adultscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2401290112
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,44 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 02, 2024 at 12:57:56PM +1100, Richard Henderson wrote:
-> Move the MAX_FIXED_NOREPLACE check for reserved_va earlier.
-> Move the computation of host_prot earlier.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  linux-user/mmap.c | 66 +++++++++++++++++++++++++++++++++++++----------
->  1 file changed, 53 insertions(+), 13 deletions(-)
-> 
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index 42eb3eb2b4..00003b8329 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -527,6 +527,31 @@ static abi_long mmap_end(abi_ulong start, abi_ulong last,
->      return start;
->  }
->  
-> +/*
-> + * Special case host page size == target page size,
-> + * where there are no edge conditions.
-> + */
-> +static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
-> +                            int host_prot, int flags, int page_flags,
-> +                            int fd, off_t offset)
-> +{
-> +    void *p, *want_p = g2h_untagged(start);
-> +    abi_ulong last;
-> +
-> +    p = mmap(want_p, len, host_prot, flags, fd, offset);
-> +    if (p == MAP_FAILED) {
-> +        return -1;
-> +    }
-> +    if ((flags & MAP_FIXED_NOREPLACE) && p != want_p) {
+Series fully reviewed.
 
-Should we munmap() here?
-I've seen this situation in some of the previous patches as well, but
-there we were about to exit, and here the program may continue
-running.
+Since v2:
+- Rebased
+- Remove default_cpu_type (Richard)
+- Added R-b tags
 
-[...]
+Since v1:
+- Add missing QOM parent for CPU cores
+- Dropped Aspeed changes (Cédric)
+
+Following Gavin recent CPU type enforcement cleanups,
+restrict more single-CPU ARM machines.
+
+Supersedes: <20240123222508.13826-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (9):
+  hw/arm/exynos: Add missing QOM parent for CPU cores
+  hw/arm/exynos: Check for CPU types in machine_run_board_init()
+  hw/arm/highbank: Add missing QOM parent for CPU cores
+  hw/arm/highbank: Check for CPU types in machine_run_board_init()
+  hw/arm/msf2: Simplify setting MachineClass::valid_cpu_types[]
+  hw/arm/musca: Simplify setting MachineClass::valid_cpu_types[]
+  hw/arm/npcm7xx_boards: Simplify setting
+    MachineClass::valid_cpu_types[]
+  hw/arm/vexpress: Check for CPU types in machine_run_board_init()
+  hw/arm/zynq: Check for CPU types in machine_run_board_init()
+
+ include/hw/arm/msf2-soc.h |  3 ---
+ hw/arm/exynos4210.c       |  1 +
+ hw/arm/exynos4_boards.c   |  8 ++++++++
+ hw/arm/highbank.c         | 11 +++++++++++
+ hw/arm/msf2-soc.c         |  3 +--
+ hw/arm/msf2-som.c         |  4 ----
+ hw/arm/musca.c            |  1 -
+ hw/arm/npcm7xx_boards.c   |  1 -
+ hw/arm/vexpress.c         | 12 ++++++++++--
+ hw/arm/xilinx_zynq.c      |  6 +++++-
+ 10 files changed, 36 insertions(+), 14 deletions(-)
+
+-- 
+2.41.0
+
 
