@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B918416A2
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13688416A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:13:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUae7-0006nS-Au; Mon, 29 Jan 2024 18:02:36 -0500
+	id 1rUafu-0007if-Ct; Mon, 29 Jan 2024 18:04:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadx-0006W5-9D
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:22 -0500
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1rUae1-0006lq-RB
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:26 -0500
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadv-0008US-2b
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:20 -0500
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6de24201aa6so1057966b3a.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:02:18 -0800 (PST)
+ id 1rUadz-0008V9-Sx
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:25 -0500
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6ddc5faeb7fso2586395b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:02:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706569338; x=1707174138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706569342; x=1707174142; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MmzrBNQK2eDwb+/K0EzCDtsTU1SD4iiHNXZIgeBMj8o=;
- b=xlIilcGnalkvK4ddm6B/XB0qAKs/G7/V1tgYnRoWzuOI6wewrCXd0qHsZcgleuCB90
- RQ6H5alWmJA+zCToARsRR6NSLGanS7sEMsutkNUT34iWA5AnoL+Q80kt5iaVlVkqOpe2
- L++uMONxgylKGps1M9om1IP2XKi/GUjD1X9ZQsWHRtLMMavP3hv7XLaaBlfRprhaZzh+
- ABJqcjOf5fFY7SOg+e+mryslldmx8KTANpFbPJNlahNiIRrVr2xklYGxAgho13ZipfAF
- FpGt2sv4SRKQsDjoyuEgNOYy4XtTaviFuf4fyux+m05VwOPF5rfR8jW7/gZjC8Kyr2Uz
- ligw==
+ bh=IeBfHlDAifxu4F1/UNQzzGCEUArq4HbYf2mScaRZKZ4=;
+ b=R+i/ymPyT3LhQ9KcRwcs2NEiEGaDmz3bXPpSK3CmDbTXzujNDRf/qhxw6WfhmjKs7d
+ nE0rSdjhBXYQeXbM3c/01lChxCAEWkXPtrVeo8xsYmVZkH5w0jhNM/+UDT93tboWKneF
+ c3fdlnrqxdX3pL94xTb3QrHMrMPZXYC+zn/oB5EwRLyXDWzHUAZjphgUn7+LDMW213io
+ NhBKd6Dj5+zg/LCCcjcKlDpAVZh6E6TFXDTzL9MP1Zl3iTzN0bJvV5VS3LE85IyJzImY
+ jqTrIrSoqVMwofeBP2012wPWPgqBpY8gxpamoBn7CD8JBav7QTheDIr1cLX86SGjMV5X
+ +yOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706569338; x=1707174138;
+ d=1e100.net; s=20230601; t=1706569342; x=1707174142;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MmzrBNQK2eDwb+/K0EzCDtsTU1SD4iiHNXZIgeBMj8o=;
- b=kw19q5Rh5Jxuo6PbXFXLwSvAI4MN/kIuVHrqPt4HOzTWnj8beMyo8dk9ABjvX9CFvZ
- E+Eotng7COpU4LUncYVSnys3akmTsMOW8GmGQPpfkrTXVwQKKNyoIJ8uW/XtlhbASAU3
- gjqbtT0pIDTtvZVQtDlj0RW0RRuTtSSQoOVczz2JlxVpAs0TLEnXc3ANLiSaETBhPIAy
- TITWZU4aFwHnmSaQm7Lmf08odxfRJJg9Y9wOfurR2rEtBuscrPoRK73ku3SH8+y0rsTj
- rjSWrbLcektrRO10YLJRsgHr8Uj+mx3BQijX4QWYR0wGZ/gwMBHtmRM6TPkM9Q5hte8m
- H0tw==
-X-Gm-Message-State: AOJu0Yzc/GtqLFAHVaICG+k/WNJ6l9plgBQ/PslnX5/bgJel+SLe0Azw
- LXvZz2lOFZqHw8ervl/y7+gP891FWvNBX1ZnaSLxNsjzT5vNw3t8ZzFoGgIP2/WLaOea9Q7XEes
- Ufhc=
-X-Google-Smtp-Source: AGHT+IGkxkirXd/IyFRi4AgJLEbEwLJbjBz7WWsgqnY4gkifuj1lV0YtGWPwZgoomyKUEh/ReSf/Pg==
-X-Received: by 2002:a05:6a00:1798:b0:6db:d5b5:e380 with SMTP id
- s24-20020a056a00179800b006dbd5b5e380mr5067325pfg.24.1706569337663; 
- Mon, 29 Jan 2024 15:02:17 -0800 (PST)
+ bh=IeBfHlDAifxu4F1/UNQzzGCEUArq4HbYf2mScaRZKZ4=;
+ b=WEMcUKWfThRfCTCyHy3ZG/fAwQKWOx6fOtuE+726AAOWAph+z4Nj4eGaJjfL0Fr56N
+ wqgcPvO0C+BXf4CuU+X0tkDf+MUENOJE/894sIahREXtAEAGaqc1xzmaD+GRyV+63lXb
+ ITHFdzXSRqIJaNYgZUK10Hj3fyCovyps5iwKxI0vApcQHuxqjMNSPcFEfsuI5P9DBMN6
+ WOf45V7zdOlm77SZD0nPrNr1wybsp2ig2BBbSP0EgdHDB5Z3mH9+7ZTThVGhhVhKV72a
+ eoiy5bPMfyioi9ftdxUKUvfThBNKxixtzW3yVAiz+R/J/4SogXgAZLqtezFdFsJ46FZ7
+ /93g==
+X-Gm-Message-State: AOJu0YzZSRC1BwaNaloukyZH8PLWLF9GC6bie2plLLTz9Vs1sXU/jG26
+ ztRF8TGdEbg3BehOAw20Unp34wsy64pMER9ZSO/v7OnlA25+aJwJSArJThDq6LhZINmFR9FiZC9
+ 2Pks=
+X-Google-Smtp-Source: AGHT+IElodDrhcfyaV5dBLowKtw8DZw8outmvFYRbBKYomg6QZnZcRGlFXSEbz/OHRPcrZEDPchoxQ==
+X-Received: by 2002:a05:6a00:2d21:b0:6de:2f30:9aa4 with SMTP id
+ fa33-20020a056a002d2100b006de2f309aa4mr2988012pfb.33.1706569342315; 
+ Mon, 29 Jan 2024 15:02:22 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.02.15
+ r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.02.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:02:17 -0800 (PST)
+ Mon, 29 Jan 2024 15:02:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 19/31] accel/tcg: Move perf and debuginfo support to tcg/
-Date: Tue, 30 Jan 2024 09:01:09 +1000
-Message-Id: <20240129230121.8091-20-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [PULL 21/31] accel/tcg: Rename tcg_cpus_destroy() -> tcg_cpu_destroy()
+Date: Tue, 30 Jan 2024 09:01:11 +1000
+Message-Id: <20240129230121.8091-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129230121.8091-1-richard.henderson@linaro.org>
 References: <20240129230121.8091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,242 +93,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-tcg/ should not depend on accel/tcg/, but perf and debuginfo
-support provided by the latter are being used by tcg/tcg.c.
+tcg_cpus_destroy() operates on a single vCPU, rename it
+as 'tcg_cpu_destroy'.
 
-Since that's the only user, move both to tcg/.
-
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20231212003837.64090-5-iii@linux.ibm.com>
-Message-Id: <20240125054631.78867-5-philmd@linaro.org>
+Message-Id: <20240124101639.30056-3-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- {accel => include}/tcg/debuginfo.h | 4 ++--
- {accel => include}/tcg/perf.h      | 4 ++--
- accel/tcg/translate-all.c          | 2 +-
- hw/core/loader.c                   | 2 +-
- linux-user/elfload.c               | 2 +-
- linux-user/exit.c                  | 2 +-
- linux-user/main.c                  | 2 +-
- system/vl.c                        | 2 +-
- {accel/tcg => tcg}/debuginfo.c     | 3 +--
- {accel/tcg => tcg}/perf.c          | 7 +++----
- tcg/tcg.c                          | 2 +-
- accel/tcg/meson.build              | 4 ----
- tcg/meson.build                    | 5 +++++
- 13 files changed, 20 insertions(+), 21 deletions(-)
- rename {accel => include}/tcg/debuginfo.h (96%)
- rename {accel => include}/tcg/perf.h (95%)
- rename {accel/tcg => tcg}/debuginfo.c (98%)
- rename {accel/tcg => tcg}/perf.c (99%)
+ accel/tcg/tcg-accel-ops.h       | 2 +-
+ accel/tcg/tcg-accel-ops-mttcg.c | 2 +-
+ accel/tcg/tcg-accel-ops-rr.c    | 2 +-
+ accel/tcg/tcg-accel-ops.c       | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/debuginfo.h b/include/tcg/debuginfo.h
-similarity index 96%
-rename from accel/tcg/debuginfo.h
-rename to include/tcg/debuginfo.h
-index f064e1c144..858535b5da 100644
---- a/accel/tcg/debuginfo.h
-+++ b/include/tcg/debuginfo.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index f9bc6330e2..17c7ed00eb 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -14,7 +14,7 @@
  
--#ifndef ACCEL_TCG_DEBUGINFO_H
--#define ACCEL_TCG_DEBUGINFO_H
-+#ifndef TCG_DEBUGINFO_H
-+#define TCG_DEBUGINFO_H
+ #include "sysemu/cpus.h"
  
- #include "qemu/bitops.h"
+-void tcg_cpus_destroy(CPUState *cpu);
++void tcg_cpu_destroy(CPUState *cpu);
+ int tcg_cpus_exec(CPUState *cpu);
+ void tcg_handle_interrupt(CPUState *cpu, int mask);
+ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel);
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+index af7307013a..bcba314a65 100644
+--- a/accel/tcg/tcg-accel-ops-mttcg.c
++++ b/accel/tcg/tcg-accel-ops-mttcg.c
+@@ -118,7 +118,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
+         qemu_wait_io_event(cpu);
+     } while (!cpu->unplug || cpu_can_run(cpu));
  
-diff --git a/accel/tcg/perf.h b/include/tcg/perf.h
-similarity index 95%
-rename from accel/tcg/perf.h
-rename to include/tcg/perf.h
-index f92dd52c69..c96b5920a3 100644
---- a/accel/tcg/perf.h
-+++ b/include/tcg/perf.h
-@@ -4,8 +4,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+-    tcg_cpus_destroy(cpu);
++    tcg_cpu_destroy(cpu);
+     bql_unlock();
+     rcu_remove_force_rcu_notifier(&force_rcu.notifier);
+     rcu_unregister_thread();
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 3208035d85..0617f66b5b 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -131,7 +131,7 @@ static void rr_deal_with_unplugged_cpus(void)
  
--#ifndef ACCEL_TCG_PERF_H
--#define ACCEL_TCG_PERF_H
-+#ifndef TCG_PERF_H
-+#define TCG_PERF_H
+     CPU_FOREACH(cpu) {
+         if (cpu->unplug && !cpu_can_run(cpu)) {
+-            tcg_cpus_destroy(cpu);
++            tcg_cpu_destroy(cpu);
+             break;
+         }
+     }
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 813065c0ec..9b84b84218 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -63,7 +63,7 @@ void tcg_cpu_init_cflags(CPUState *cpu, bool parallel)
+     cpu->tcg_cflags |= cflags;
+ }
  
- #if defined(CONFIG_TCG) && defined(CONFIG_LINUX)
- /* Start writing perf-<pid>.map. */
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 1737bb3da5..1c695efe02 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -63,7 +63,7 @@
- #include "tb-context.h"
- #include "internal-common.h"
- #include "internal-target.h"
--#include "perf.h"
-+#include "tcg/perf.h"
- #include "tcg/insn-start-words.h"
- 
- TBContext tb_ctx;
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index e7a9b3775b..b8e52f3fb0 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -62,7 +62,7 @@
- #include "hw/boards.h"
- #include "qemu/cutils.h"
- #include "sysemu/runstate.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #include <zlib.h>
- 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index daf7ef8435..b8eef893d0 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -22,7 +22,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "target_signal.h"
--#include "accel/tcg/debuginfo.h"
-+#include "tcg/debuginfo.h"
- 
- #ifdef TARGET_ARM
- #include "target/arm/cpu-features.h"
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 50266314e0..1ff8fe4f07 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -17,7 +17,7 @@
-  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-  */
- #include "qemu/osdep.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #include "gdbstub/syscalls.h"
- #include "qemu.h"
- #include "user-internals.h"
-diff --git a/linux-user/main.c b/linux-user/main.c
-index c9470eeccf..74b2fbb393 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -54,7 +54,7 @@
- #include "signal-common.h"
- #include "loader.h"
- #include "user-mmap.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- 
- #ifdef CONFIG_SEMIHOSTING
- #include "semihosting/semihost.h"
-diff --git a/system/vl.c b/system/vl.c
-index 788d88ea03..60fd1e56b6 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -96,7 +96,7 @@
- #endif
- #include "sysemu/qtest.h"
- #ifdef CONFIG_TCG
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #endif
- 
- #include "disas/disas.h"
-diff --git a/accel/tcg/debuginfo.c b/tcg/debuginfo.c
-similarity index 98%
-rename from accel/tcg/debuginfo.c
-rename to tcg/debuginfo.c
-index 71c66d04d1..3753f7ef67 100644
---- a/accel/tcg/debuginfo.c
-+++ b/tcg/debuginfo.c
-@@ -6,11 +6,10 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/lockable.h"
-+#include "tcg/debuginfo.h"
- 
- #include <elfutils/libdwfl.h>
- 
--#include "debuginfo.h"
--
- static QemuMutex lock;
- static Dwfl *dwfl;
- static const Dwfl_Callbacks dwfl_callbacks = {
-diff --git a/accel/tcg/perf.c b/tcg/perf.c
-similarity index 99%
-rename from accel/tcg/perf.c
-rename to tcg/perf.c
-index 68a46b1b52..412a987d95 100644
---- a/accel/tcg/perf.c
-+++ b/tcg/perf.c
-@@ -11,13 +11,12 @@
- #include "qemu/osdep.h"
- #include "elf.h"
- #include "exec/target_page.h"
--#include "exec/exec-all.h"
-+#include "exec/translation-block.h"
- #include "qemu/timer.h"
-+#include "tcg/debuginfo.h"
-+#include "tcg/perf.h"
- #include "tcg/tcg.h"
- 
--#include "debuginfo.h"
--#include "perf.h"
--
- static FILE *safe_fopen_w(const char *path)
+-void tcg_cpus_destroy(CPUState *cpu)
++void tcg_cpu_destroy(CPUState *cpu)
  {
-     int saved_errno;
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index e2c38f6d11..eeff4c1d51 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -55,7 +55,7 @@
- #include "tcg/tcg-ldst.h"
- #include "tcg/tcg-temp-internal.h"
- #include "tcg-internal.h"
--#include "accel/tcg/perf.h"
-+#include "tcg/perf.h"
- #ifdef CONFIG_USER_ONLY
- #include "exec/user/guest-base.h"
- #endif
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index c15ac9ac8f..46f7d53eeb 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -16,10 +16,6 @@ tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- if get_option('plugins')
-   tcg_ss.add(files('plugin-gen.c'))
- endif
--tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
--if host_os == 'linux'
--  tcg_ss.add(files('perf.c'))
--endif
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
- 
- specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 5afdec1e1a..8251589fd4 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -22,6 +22,11 @@ if get_option('tcg_interpreter')
-   tcg_ss.add(files('tci.c'))
- endif
- 
-+tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
-+if host_os == 'linux'
-+  tcg_ss.add(files('perf.c'))
-+endif
-+
- tcg_ss = tcg_ss.apply({})
- 
- libtcg_user = static_library('tcg_user',
+     cpu_thread_signal_destroyed(cpu);
+ }
 -- 
 2.34.1
 
