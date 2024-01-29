@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1021841706
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 991188416F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:36:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb70-0006RM-0P; Mon, 29 Jan 2024 18:32:22 -0500
+	id 1rUb72-0006pG-7d; Mon, 29 Jan 2024 18:32:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb6X-000616-7I
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:56 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rUb6a-00067G-IA
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:32:01 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb6V-0005AR-Ay
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:52 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1d7858a469aso17979495ad.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:50 -0800 (PST)
+ id 1rUb6X-0005Ad-Fk
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:55 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d75ea3a9b6so27846465ad.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571110; x=1707175910; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571112; x=1707175912; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qf+wyN5J4o2IlILveqXJ48lvGZmT4w00Bti8er4chv4=;
- b=xFCqZCV6lKvMyyf4v1iDiX2uy5qvLW2xpXUlpdradZLSMCfyura/m2ihRtasXtCJSF
- 0kdyKl0yet0Eo/yXuUlzgeBfWLasJdbDIvDk1tUd/wAZAXE1WFicNtgcfTwTHEdnCR0i
- osHLEzPhyxmxxpB0hvQY5BzulmYDwwnNRC9Z+hLJvJwzs3LgHt56xAj9IceZEHOzLf7V
- I1+UpTJY7piGKia9ot8A+WQcUdg58p8JmW8rVs/E2BqggkuJ0vl9GCS/BKo9JODVFRE+
- lzqNDzTQtctz1UTRVqeMmAx6Rnby47/hPPZ2V28pd4gf5T0HaEpZaAZaXieiLK7HzXa6
- l15A==
+ bh=pNNENKH/HQj+hw6JTH28lUCmFQmGh5or2lvTAvTEZkw=;
+ b=T2Uavm53nWw++xcqq73mP5KT7OM6qbF6z88B3NbCUFLeYLoVT7UYqkQ6EyK2Fknt9S
+ 6xJaqAS6qesioodjSDhEvzp2yUfzVrNtS7xMuyyjQwaNwagrVnCtf1ZfnZMDW8uk/cT9
+ mYDtRbqlA8CGlZ9ZPbiL602IpbORvO9/waI884+D+lFU37b8C4pknZ5ujkgvy2phFLvY
+ LJknPyOSwn5nCEo90K41Ftahj/A3HTIMbSXMf4Y6vysRkCxOdxZWtO9qOwMnQxYoCGMh
+ jhKspJLfqOc4W7cofJyG7OGeavFVLGlH3coJc/9prsq5MhWIERzTcbdOPKnDm+jrYvVc
+ 4aww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571110; x=1707175910;
+ d=1e100.net; s=20230601; t=1706571112; x=1707175912;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qf+wyN5J4o2IlILveqXJ48lvGZmT4w00Bti8er4chv4=;
- b=Apwo5318h0fHlK5uIeUaY2ZDhFzg0cKJaknrhymtlYx3oF/NhCSiH35Ml6zHafnPy4
- t0/JnmNapRF28Ns2TFX2RIoCPYJ6Fg9NjUBg2nXVutkUfp6dCnx+OxrOOiN8IWuSp5Sr
- liTGVtU4HfCMudjA+XiwFk4lxw9hVmCzO8Z0xQaUQ4X2B5D4j1CAK/HHTsa9xqFXA/lo
- lAPUsFUAdab0MnJY+SpJlZAjgtm9h9vP1Wi3J2Db909d1w9bZ7DUfTRDi974uTn/4dWp
- 0gdkqsIEWSwfzsd6vEXJWvri2qSTyMX1qDbxXhz9hZ1aXFYurvvYEvmQReuceyeHEbs/
- On1Q==
-X-Gm-Message-State: AOJu0YyIV1Rr74LK/U+Xx9MIOtDA2FkuOeIfQHAkGmBby2eGRVgSAQlH
- qoUQiZIpdJKHLe8ssIyruhsqq84Hw9g3ojHnmKBsAck0/fxnGe+OcsjFfwvs3LUskXuFybRsNBE
- sRbA=
-X-Google-Smtp-Source: AGHT+IEESU7GSsdJsPn0N2JKg/IIvAKlC32hpaD4ilS3NkZisM7LcwynTdjcrcQPIgbBdU3HpbnNZg==
-X-Received: by 2002:a17:902:e845:b0:1d7:5d88:f9a6 with SMTP id
- t5-20020a170902e84500b001d75d88f9a6mr4079468plg.50.1706571109803; 
- Mon, 29 Jan 2024 15:31:49 -0800 (PST)
+ bh=pNNENKH/HQj+hw6JTH28lUCmFQmGh5or2lvTAvTEZkw=;
+ b=ABAlH/A57X0f3VY6YOuHHxzoJV3JYcZb9XPrdou1vWuAkVK1D6lrjH9Mv0rU8x+cPI
+ G/08oUdDjbwZT7DNiNsTLQ8Ed6ie6oTcsWlWbgbYtMS7USKsI5kDcqr13nlYActF+Ta0
+ /DYhYsES52TodJKb3yY5nWeSJTh4W5jCNwPh7RYHtLMAlm/628Z7TjU5vgcT/aB6QVR9
+ g5T2HAlmkWuG0yhmdOZpsQEnpZPIuuPU0c0sFZyUJNYOu2oEGtrZVqDZXlTBbBE6IBNp
+ I+mbsENBozBrLweWoGxuw8rimmRwL23RXO1dlwiCT2fIC/IkG1dnFczwMb606fhxPQF/
+ MXfg==
+X-Gm-Message-State: AOJu0Yyc7peRGMdMiG57KurPEcBeBbFicl5KXRsx1E5hO2bZNi9pLax7
+ 5kKUjEp+0lLRp5bXVSMWoUxr6NCDFHAmhKaOcbtaChuShfmnJ9BJz2FUq3/pPYVKxAy/dUyZWo/
+ chcU=
+X-Google-Smtp-Source: AGHT+IEA8s3zPLl5CgEhOaWD8vCynTc+bHpj0vi+QeYfCMX2RAAMGsmPDFKousDVnaVic4GBcVC7BQ==
+X-Received: by 2002:a17:903:2351:b0:1d7:428f:50fd with SMTP id
+ c17-20020a170903235100b001d7428f50fdmr7656338plh.31.1706571112105; 
+ Mon, 29 Jan 2024 15:31:52 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.47
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:49 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:51 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 27/33] target/s390x: Populate CPUClass.mmu_index
-Date: Tue, 30 Jan 2024 09:30:37 +1000
-Message-Id: <20240129233043.34558-28-richard.henderson@linaro.org>
+Subject: [PATCH 28/33] target/sh4: Populate CPUClass.mmu_index
+Date: Tue, 30 Jan 2024 09:30:38 +1000
+Message-Id: <20240129233043.34558-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,33 +94,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/sh4/cpu.h | 16 ++++++----------
+ target/sh4/cpu.c | 16 ++++++++++++++++
+ 2 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 7f123863dc..49a2341acc 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -142,6 +142,11 @@ static bool s390_cpu_has_work(CPUState *cs)
-     return s390_cpu_has_int(cpu);
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index 0e6fa65bae..9c5e2b349e 100644
+--- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -273,16 +273,6 @@ void cpu_load_tlb(CPUSH4State * env);
+ 
+ /* MMU modes definitions */
+ #define MMU_USER_IDX 1
+-static inline int cpu_mmu_index (CPUSH4State *env, bool ifetch)
+-{
+-    /* The instruction in a RTE delay slot is fetched in privileged
+-       mode, but executed in user mode.  */
+-    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
+-        return 0;
+-    } else {
+-        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
+-    }
+-}
+ 
+ #include "exec/cpu-all.h"
+ 
+@@ -380,6 +370,12 @@ static inline void cpu_write_sr(CPUSH4State *env, target_ulong sr)
+     env->sr = sr & ~((1u << SR_M) | (1u << SR_Q) | (1u << SR_T));
  }
  
-+static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
++int sh4_cpu_mmu_index(CPUState *cs, bool ifetch);
++static inline int cpu_mmu_index(CPUSH4State *env, bool ifetch)
 +{
-+    return s390x_env_mmu_index(cpu_env(cs), ifetch);
++    return sh4_cpu_mmu_index(env_cpu(env), ifetch);
 +}
 +
- static void s390_query_cpu_fast(CPUState *cpu, CpuInfoFast *value)
+ static inline void cpu_get_tb_cpu_state(CPUSH4State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
  {
-     S390CPU *s390_cpu = S390_CPU(cpu);
-@@ -352,6 +357,7 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
-     scc->reset = s390_cpu_reset;
-     cc->class_by_name = s390_cpu_class_by_name,
-     cc->has_work = s390_cpu_has_work;
-+    cc->mmu_index = s390x_cpu_mmu_index;
-     cc->dump_state = s390_cpu_dump_state;
-     cc->query_cpu_fast = s390_query_cpu_fast;
-     cc->set_pc = s390_cpu_set_pc;
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index 39772955b5..6fead5655f 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -89,6 +89,21 @@ static bool superh_cpu_has_work(CPUState *cs)
+     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+ }
+ 
++int sh4_cpu_mmu_index(CPUState *cs, bool ifetch)
++{
++    CPUSH4State *env = cpu_env(cs);
++
++    /*
++     * The instruction in a RTE delay slot is fetched in privileged mode,
++     * but executed in user mode.
++     */
++    if (ifetch && (env->flags & TB_FLAG_DELAY_SLOT_RTE)) {
++        return 0;
++    } else {
++        return (env->sr & (1u << SR_MD)) == 0 ? 1 : 0;
++    }
++}
++
+ static void superh_cpu_reset_hold(Object *obj)
+ {
+     CPUState *s = CPU(obj);
+@@ -266,6 +281,7 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
+ 
+     cc->class_by_name = superh_cpu_class_by_name;
+     cc->has_work = superh_cpu_has_work;
++    cc->mmu_index = sh4_cpu_mmu_index;
+     cc->dump_state = superh_cpu_dump_state;
+     cc->set_pc = superh_cpu_set_pc;
+     cc->get_pc = superh_cpu_get_pc;
 -- 
 2.34.1
 
