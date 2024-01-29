@@ -2,80 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2055D8416E1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4928416E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:33:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb64-0005SE-7E; Mon, 29 Jan 2024 18:31:24 -0500
+	id 1rUb68-0005fo-28; Mon, 29 Jan 2024 18:31:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5b-0005P6-JV
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:30:56 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rUb5r-0005Sn-6H
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:22 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5Z-000508-UW
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:30:55 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d8e7ebbbadso8416195ad.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:30:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571052; x=1707175852; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GuLjJD6Uv7AUoT7v/CmrWdMUNxFVKqK7N1yrIDiYHSI=;
- b=Mjp+ErrdOjwvT1r7yE+NwAS617+jGXodN1iq92arzoP+Dj1D144MGeJTcZc4YWirAr
- VOmXpwEdrrsHCo/n84Km2n5Zl3/k970dQEs0PAGD8FGnhnV4bz5ya7ONSdPznNNxWODc
- yJG9rO9CrRovnH8FMafz87OjC2TwXNQOAae6c7rWCBGK652lYmXAOZlvaXlNXA0m9YiY
- /Rt6F36fqaG2izT5LxTWnEcT36iDwtFiv5Nm16wjRoDB6izKkeifOIonr+dMp9/ASp1W
- K+jIEkOlHMO4nnjudx6v31zgP6Vgj4nB9gSInYnuI01YO/b5Ie5JPs+SjH7aqi000O4K
- TEbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571052; x=1707175852;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GuLjJD6Uv7AUoT7v/CmrWdMUNxFVKqK7N1yrIDiYHSI=;
- b=BhiPrjxSthQhEK8tIXr58yaXbp3wzZmVnbh2dBbxBIhVotM1KpiMlJ6RFHPFiddgkB
- 8ItXr/s6fRdsZdVY38LlZfArHnwjH0J7rsMQ0LeeS+7OhevrcjU5/eIUtIExGuKFaGzg
- ldah/dh7ZO3aY4uaeO0GUkpkehhtYtMdVFEm302QUqhly3VXSP/JoUgw71WF4PwVKIlW
- 3RjGSZw9v+fdzuB8DagsK5iJbqf1m4OxHh9aViR88Bn1P6/X9n59DsUe7Zq4e03H8E7i
- itg+Jcv3m8SWyzTpYfIr+H1rGvrvFiRxuwLMYXCE7RxExpAg4paminFAwhlUJKAmONen
- XHXA==
-X-Gm-Message-State: AOJu0Ywq1L0VRtikR4oj/LhsrDGNNeccuCxQxSmZVNTT6dNyTYL1U9hM
- kEwwrs8hgfDtlUtoSrxYDjtlbP+ZpWyiM9+ahNXb3ZiDXkkNhHXGk8AQgA9r7dUQc77hk7AE6It
- ICVc=
-X-Google-Smtp-Source: AGHT+IEktvo2+X+OHpoDfnI6CRxmWwjdpQaddSl7mclrMTwuxda8uAaYjYqpnDDWb3/HM698h6y/gA==
-X-Received: by 2002:a17:902:bc44:b0:1d8:fe1e:7c8a with SMTP id
- t4-20020a170902bc4400b001d8fe1e7c8amr1370350plz.106.1706571052578; 
- Mon, 29 Jan 2024 15:30:52 -0800 (PST)
-Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.30.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:30:52 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org,
-	anjo@rev.ng
-Subject: [PATCH 02/33] target/alpha: Split out alpha_env_mmu_index
-Date: Tue, 30 Jan 2024 09:30:12 +1000
-Message-Id: <20240129233043.34558-3-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
-References: <20240129233043.34558-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rUb5o-00051v-13
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:10 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1E4051F810;
+ Mon, 29 Jan 2024 23:31:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706571066; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfrUNpJYEWG+VjoWyqgkRzEj+XoRImb+gGq9nb59qwk=;
+ b=peMh6BVJUNSmQvD/kd0u7fFXdR7cm6uGl1LuBFpEvdsjdH25rya3MpVVwSd6gic6ihD5Ei
+ 6e86JeKk9jhdN9Lo6EZ9tjFhoFEuyV9YhFraTQCHepfimx11GltHNUL9zfCn1+xH/ltj2F
+ eQixEwFQzfIrHKJi8h1yzYlQzmNE+Yk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706571066;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfrUNpJYEWG+VjoWyqgkRzEj+XoRImb+gGq9nb59qwk=;
+ b=uOX9gej4eujAQIQuD7btbbLyma/RUfIlXjKlxGK2CIQNA5G7wne/SiWf9BDCmHnmIDk1fI
+ +SPGmH1XxK3hSMAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706571064; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfrUNpJYEWG+VjoWyqgkRzEj+XoRImb+gGq9nb59qwk=;
+ b=dW2DwkkOBlV93Or/YF87K2bfSMKV7cj2NjDeuI0H6TIVkcCaBZk+RMcn0SMrq7/JnL1mCM
+ zje7m6V2pK0kQch21VC57GKmvpwsv3XLMdnqq4I4oizGPIUOjYd/4DljKh5PiIUyIPSurf
+ e3I+kMCzkXQvch4IipZNrTr4Cw8wYYQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706571064;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfrUNpJYEWG+VjoWyqgkRzEj+XoRImb+gGq9nb59qwk=;
+ b=A9fODNqbjKUsXEoRSWXjTPB1aNvW3lbUoBdAg+wtNiiuQ4X0qt3L2cJT2mVl5iYfT7s+T1
+ 2utEWND87C8AmoDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E8A913647;
+ Mon, 29 Jan 2024 23:31:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VyenGTc1uGXRLQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 29 Jan 2024 23:31:03 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Subject: Re: [PULL 06/15] tests/qtest/migration: Don't use -cpu max for aarch64
+In-Reply-To: <87sf2ge3qu.fsf@suse.de>
+References: <20240126041725.124562-1-peterx@redhat.com>
+ <20240126041725.124562-7-peterx@redhat.com> <87le8c6u1d.fsf@suse.de>
+ <CAFEAcA-x4WqvPsN-KZOA3SPN0F=vvYi=NFZ2qom2iT7-CN0RSg@mail.gmail.com>
+ <87il3g6t7b.fsf@suse.de> <ZbcSqyGNLGu7ugBb@x1n> <87sf2ge3qu.fsf@suse.de>
+Date: Mon, 29 Jan 2024 20:30:13 -0300
+Message-ID: <87y1c7ogze.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dW2DwkkO;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A9fODNqb
+X-Spamd-Result: default: False [-4.31 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_LOW(-1.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 1E4051F810
+X-Spam-Score: -4.31
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,51 +120,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/alpha/cpu.h       | 7 ++++++-
- target/alpha/translate.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+Fabiano Rosas <farosas@suse.de> writes:
 
-diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index ce806587ca..3beff2738a 100644
---- a/target/alpha/cpu.h
-+++ b/target/alpha/cpu.h
-@@ -389,7 +389,7 @@ enum {
- 
- #define TB_FLAG_UNALIGN       (1u << 1)
- 
--static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
-+static inline int alpha_env_mmu_index(CPUAlphaState *env)
- {
-     int ret = env->flags & ENV_FLAG_PS_USER ? MMU_USER_IDX : MMU_KERNEL_IDX;
-     if (env->flags & ENV_FLAG_PAL_MODE) {
-@@ -398,6 +398,11 @@ static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
-     return ret;
- }
- 
-+static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
-+{
-+    return alpha_env_mmu_index(env);
-+}
-+
- enum {
-     IR_V0   = 0,
-     IR_T0   = 1,
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 134eb7225b..4b464f8651 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2875,7 +2875,7 @@ static void alpha_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     int64_t bound;
- 
-     ctx->tbflags = ctx->base.tb->flags;
--    ctx->mem_idx = cpu_mmu_index(env, false);
-+    ctx->mem_idx = alpha_env_mmu_index(env);
-     ctx->implver = env->implver;
-     ctx->amask = env->amask;
- 
--- 
-2.34.1
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Fri, Jan 26, 2024 at 11:54:32AM -0300, Fabiano Rosas wrote:
+>>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>> 
+>>> > On Fri, 26 Jan 2024 at 14:36, Fabiano Rosas <farosas@suse.de> wrote:
+>>> >>
+>>> >> peterx@redhat.com writes:
+>>> >>
+>>> >> > From: Fabiano Rosas <farosas@suse.de>
+>>> >> >
+>>> >> > The 'max' cpu is not expected to be stable in terms of features across
+>>> >> > QEMU versions, so it should not be expected to migrate.
+>>> >> >
+>>> >> > While the tests currently all pass with -cpu max, that is only because
+>>> >> > we're not testing across QEMU versions, which is the more common
+>>> >> > use-case for migration.
+>>> >> >
+>>> >> > We've recently introduced compatibility tests that use two different
+>>> >> > QEMU versions and the tests are now failing for aarch64. The next
+>>> >> > patch adds those tests to CI, so we cannot use the 'max' cpu
+>>> >> > anymore. Replace it with the 'neoverse-n1', which has a fixed set of
+>>> >> > features.
+>>> >> >
+>>> >> > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+>>> >> > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> >> > Link: https://lore.kernel.org/r/20240118164951.30350-2-farosas@suse.de
+>>> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
+>>> >> > ---
+>>> >> >  tests/qtest/migration-test.c | 2 +-
+>>> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>>> >> >
+>>> >> > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>>> >> > index 7675519cfa..15713f3666 100644
+>>> >> > --- a/tests/qtest/migration-test.c
+>>> >> > +++ b/tests/qtest/migration-test.c
+>>> >> > @@ -820,7 +820,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>> >> >          memory_size = "150M";
+>>> >> >          machine_alias = "virt";
+>>> >> >          machine_opts = "gic-version=max";
+>>> >> > -        arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
+>>> >> > +        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
+>>> >> >          start_address = ARM_TEST_MEM_START;
+>>> >> >          end_address = ARM_TEST_MEM_END;
+>>> >> >      } else {
+>>> >>
+>>> >> This breaks the tests on an arm host with KVM support. We could drop
+>>> >> this patch from the PR, it doesn't affect anything else.
+>>> >>
+>>> >> Or squash in:
+>>> >>
+>>> >> -->8--
+>>> >> From b8aa5d8a2b33dcc28e4cd4ce2c4f4eacc3a3b845 Mon Sep 17 00:00:00 2001
+>>> >> From: Fabiano Rosas <farosas@suse.de>
+>>> >> Date: Fri, 26 Jan 2024 11:33:15 -0300
+>>> >> Subject: [PATCH] fixup! tests/qtest/migration: Don't use -cpu max for aarch64
+>>> >>
+>>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>> >> ---
+>>> >>  tests/qtest/migration-test.c | 4 +++-
+>>> >>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>> >>
+>>> >> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>>> >> index 15713f3666..2ba9cab684 100644
+>>> >> --- a/tests/qtest/migration-test.c
+>>> >> +++ b/tests/qtest/migration-test.c
+>>> >> @@ -820,7 +820,9 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>>> >>          memory_size = "150M";
+>>> >>          machine_alias = "virt";
+>>> >>          machine_opts = "gic-version=max";
+>>> >> -        arch_opts = g_strdup_printf("-cpu neoverse-n1 -kernel %s", bootpath);
+>>> >> +        arch_opts = g_strdup_printf("-cpu %s -kernel %s",
+>>> >> +                                    qtest_has_accel("kvm") ?
+>>> >> +                                    "host" : "neoverse-n1", bootpath);
+>>> >>          start_address = ARM_TEST_MEM_START;
+>>> >>          end_address = ARM_TEST_MEM_END;
+>>> >>      } else {
+>>> >
+>>> > If you want to do that then a comment explaining why would be
+>>> > helpful for future readers, I think.
+>>> 
+>>> Ok, let's drop this one then, I'll resend.
+>>
+>> I'll drop this one for now then, thanks.
+>>
+>> Just to double check: Fabiano, you meant that "-cpu host" won't hit the
+>> same issue as what "-cpu max" would have for the new "n-1" CI test, right?
+>
+> Well, no. What we need here is a cpu that works with KVM. Currently
+> that's 'host'. If that breaks the n-1 test, then it's a regression.
+>
+> We also need a cpu that works with TCG. Any of them would do. Except max
+> which changes in incompatible ways (that was the original patch's
+> purpose).
+>
+> The issue that occurs to me now is that 'cpu host' will not work with
+> TCG. We might actually need to go poking /dev/kvm for this to work.
 
+Nevermind this last part. There's not going to be a scenario where we
+build with CONFIG_KVM, but run in an environment that does not support
+KVM.
 
