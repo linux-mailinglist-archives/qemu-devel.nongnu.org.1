@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E48840C4A
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:50:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E30840C4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:50:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUUpB-0008KV-TO; Mon, 29 Jan 2024 11:49:34 -0500
+	id 1rUUpG-0000Pf-FO; Mon, 29 Jan 2024 11:49:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUnk-0003Af-JG
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:48:04 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUno-0003W8-5f
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:48:08 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUnf-0004Vf-CS
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:48:04 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33ae7ae9ec5so979776f8f.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:47:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUnl-0004Xk-84
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:48:07 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33ae3cc8a6aso1568622f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:48:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706546877; x=1707151677; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706546883; x=1707151683; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nDyOJncTz/gz39l44d2jGwByTaW/KG4k2gJ/GNswNnI=;
- b=zF2HpAqjvSq0m0KzUV8Hs2RJ3Ceq+etm4TrzfpUOzNV6gXqzGGcRn7XENC65KK1SPh
- UFkk60YM4MSGBkMUL82Ngbl6YooTb0gmrceFs8XvnHFanImtpxwlpxXvirEzlrxnGPrT
- GkBxCWexNJF9hMmkjgCHMbEtigVn5mM1Ql/s4SQY4ID4X1u06euUWobCcKXQlapz9K6B
- 7uKY70DO5osnApoFIERH67Ck8IHC4LCPdtQdJU6Hr+Bj2NK51equJgvm3zNUau4DCpL6
- d9RDR4CV57ZNRT+WjuK3itOf3O+GTTg89nX/IJmktZjswAIC3NeHkLucdGHmMl9ezxZT
- mOVQ==
+ bh=+rt9340Neq6sQRGPVea3EhCde05ocdRyA3moNLb2tSg=;
+ b=YkYFIbp+RF6vD6BxqmFbxv9clqJUDHcfWwZbycTECtd3JwsNYdWLHaxqehocSRGJut
+ IaScR5HHFzXSu4uqB4hlbnV4vjiGwd2lA7IjXpRZfwx29CPJzgrI2b0FJGUCAOoclPkx
+ H4EB2crXfxPYNKuCZu6TsDTEnhLzLPWaw0rLFPFd+fbEbkeSzcuAjEjn+/UIuLfWQrO8
+ xo7H+vQmf2O9titVdq1f32n5P1lfBCnldZUyD5YXL9iNLOGZx6ER1MVsoNFuTRaMs1ez
+ MIEE36LcTamZ3Ol/jd6/7WId3YmvgRMFdrY3Jp+tDMd1WCl3xhTglUprcp9FkeEpD2Jo
+ eAvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706546877; x=1707151677;
+ d=1e100.net; s=20230601; t=1706546883; x=1707151683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nDyOJncTz/gz39l44d2jGwByTaW/KG4k2gJ/GNswNnI=;
- b=btQ1IQ5axkPN76+IgJJh462izp0MJQrGtM7uU81fyh6b9bwEVLQBCHiz4x2gH2sLXe
- zl2yA3DuD9kdT5uoAtrqQdhQs84EqRWzHaTlAx+CXd8POvZwVygixH93X/NM4VBw7nQu
- e5z52y5ERl7aVsblvAqkEo4RWC7Wh0URsZWaI5vT72pJMktM67iit49nM+2ULRwSRfmh
- ieG5M7KcTxFTywtV4wP/OnMBpIpZ5z1FrMKYitRgjI3YiFr7SyuDvTaRMm6qX/g7Lte1
- sZvMkKHXonendVjH352fJiCeD81xJmKCr6CTqr5RLJBHD66ny+dPVMqdBmzP40wuZbf1
- 2RcA==
-X-Gm-Message-State: AOJu0YxAIeWoMt1aUrCRb1toy8RLRVJVA3yJSB4rRmgKwzvtPK8ve1fs
- SQr7RzlXhGZVts2B1Uc590cc7l1ICeAkd979KGy68vRuLhFHbJdUI5R3sfCYj6lGC8/k6Trq41e
- n
-X-Google-Smtp-Source: AGHT+IGpSP62XxzQ6ZDTlpeFHsIrctZ9h8BZDrmsx+XYzXCe3dEYoh7yTLPt/V9X39N+RCxRJF1Yww==
-X-Received: by 2002:a5d:6812:0:b0:33a:e75e:281c with SMTP id
- w18-20020a5d6812000000b0033ae75e281cmr3295951wru.5.1706546877555; 
- Mon, 29 Jan 2024 08:47:57 -0800 (PST)
+ bh=+rt9340Neq6sQRGPVea3EhCde05ocdRyA3moNLb2tSg=;
+ b=JMwQ/4CjgEbaEhljlp0H48DajX7CDv53UQKXFDJnsmeWJlgprLtdytcAM5q3jIu2oM
+ PIk/brqQR4nV099JKrtdExiUcztt3xrgjumy9VW2ghs8pf2qY+p61e8jqKkm2fRLP7M7
+ KM4KMnimjcvlE8qf9m8ieaxqh480+DPs1Peu2ggIoDUWcEca6LgFD3EZIhBw6nomS/0F
+ zoPWDROy37/AkwYLzcwnjOg8sPt45FTLSv03Mlvdxz1iApY40KEb7ipiBUGo+WyIFeM2
+ g8sHSbHI1QwWJOZd+GRD31tUWwFV+KmxygS5U8s31rWUA6aFMVagk2/2wSTZeYb/WQhk
+ BIZA==
+X-Gm-Message-State: AOJu0YxBLZW3XVIeF72iU2dDDMpx2MuYR1Urwi60qVsAMZv4Suz3fvfO
+ RJ8H/ONwmZJYbmpDJKmr3k+mG7FLzx5wLyCPm3Ows3C8VSM8H6vHFetXD1QUSNpINS9+zwiGWvZ
+ k
+X-Google-Smtp-Source: AGHT+IHwCuq+6yh1m6T7vY3Y2cLEq0q/hPFlPvC2NilRjpgFakRKueneRO9FZiqsXUrqr0KBPgYKVA==
+X-Received: by 2002:a5d:510f:0:b0:33a:e7de:aa8b with SMTP id
+ s15-20020a5d510f000000b0033ae7deaa8bmr2928268wrt.26.1706546883422; 
+ Mon, 29 Jan 2024 08:48:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- a15-20020a056000100f00b0033aee3bfac5sm2738967wrx.16.2024.01.29.08.47.56
+ b3-20020a05600003c300b0033ae46e0f02sm6350998wrg.75.2024.01.29.08.48.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 08:47:57 -0800 (PST)
+ Mon, 29 Jan 2024 08:48:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,20 +62,19 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v3 26/29] target/sparc: Prefer fast cpu_env() over slower CPU
- QOM cast macro
-Date: Mon, 29 Jan 2024 17:45:08 +0100
-Message-ID: <20240129164514.73104-27-philmd@linaro.org>
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v3 27/29] target/tricore: Prefer fast cpu_env() over slower
+ CPU QOM cast macro
+Date: Mon, 29 Jan 2024 17:45:09 +0100
+Message-ID: <20240129164514.73104-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240129164514.73104-1-philmd@linaro.org>
 References: <20240129164514.73104-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,236 +100,129 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Mechanical patch produced running the command documented
 in scripts/coccinelle/cpu_env.cocci_template header.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- target/sparc/cpu.c          | 17 +++++------------
- target/sparc/gdbstub.c      |  3 +--
- target/sparc/int32_helper.c |  3 +--
- target/sparc/int64_helper.c |  3 +--
- target/sparc/ldst_helper.c  |  6 ++----
- target/sparc/mmu_helper.c   | 15 +++++----------
- target/sparc/translate.c    |  9 +++------
- 7 files changed, 18 insertions(+), 38 deletions(-)
+ target/tricore/cpu.c       | 24 +++++-------------------
+ target/tricore/gdbstub.c   |  6 ++----
+ target/tricore/helper.c    |  3 +--
+ target/tricore/translate.c |  3 +--
+ 4 files changed, 9 insertions(+), 27 deletions(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 152bee4f81..72a9b9a285 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -32,9 +32,8 @@
- static void sparc_cpu_reset_hold(Object *obj)
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 9bdaa1593a..7c4a9b41a3 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -36,52 +36,38 @@ static const gchar *tricore_gdb_arch_name(CPUState *cs)
+ 
+ static void tricore_cpu_set_pc(CPUState *cs, vaddr value)
  {
-     CPUState *cs = CPU(obj);
--    SPARCCPU *cpu = SPARC_CPU(cs);
-     SPARCCPUClass *scc = SPARC_CPU_GET_CLASS(obj);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
- 
-     if (scc->parent_phases.hold) {
-         scc->parent_phases.hold(obj);
-@@ -83,8 +82,7 @@ static void sparc_cpu_reset_hold(Object *obj)
- static bool sparc_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
- {
-     if (interrupt_request & CPU_INTERRUPT_HARD) {
--        SPARCCPU *cpu = SPARC_CPU(cs);
--        CPUSPARCState *env = &cpu->env;
-+        CPUSPARCState *env = cpu_env(cs);
- 
-         if (cpu_interrupts_enabled(env) && env->interrupt_index > 0) {
-             int pil = env->interrupt_index & 0xf;
-@@ -613,8 +611,7 @@ static void cpu_print_cc(FILE *f, uint32_t cc)
- 
- static void sparc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     int i, x;
- 
-     qemu_fprintf(f, "pc: " TARGET_FMT_lx "  npc: " TARGET_FMT_lx "\n", env->pc,
-@@ -711,11 +708,8 @@ static void sparc_cpu_synchronize_from_tb(CPUState *cs,
- 
- static bool sparc_cpu_has_work(CPUState *cs)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
 -
-     return (cs->interrupt_request & CPU_INTERRUPT_HARD) &&
--           cpu_interrupts_enabled(env);
-+           cpu_interrupts_enabled(cpu_env(cs));
+-    env->PC = value & ~(target_ulong)1;
++    cpu_env(cs)->PC = value & ~(target_ulong)1;
  }
  
- static char *sparc_cpu_type_name(const char *cpu_model)
-@@ -749,8 +743,7 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-     CPUState *cs = CPU(dev);
-     SPARCCPUClass *scc = SPARC_CPU_GET_CLASS(dev);
-     Error *local_err = NULL;
--    SPARCCPU *cpu = SPARC_CPU(dev);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
- 
- #if defined(CONFIG_USER_ONLY)
-     /* We are emulating the kernel, which will trap and emulate float128. */
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index a1c8fdc4d5..5257c49a0d 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -29,8 +29,7 @@
- 
- int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ static vaddr tricore_cpu_get_pc(CPUState *cs)
  {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+-    return env->PC;
++    return cpu_env(cs)->PC;
+ }
  
-     if (n < 8) {
-         /* g0..g7 */
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 058dd712b5..6b7d65b031 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -99,8 +99,7 @@ void cpu_check_irqs(CPUSPARCState *env)
- 
- void sparc_cpu_do_interrupt(CPUState *cs)
+ static void tricore_cpu_synchronize_from_tb(CPUState *cs,
+                                             const TranslationBlock *tb)
  {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     int cwp, intno = cs->exception_index;
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+     tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
+-    env->PC = tb->pc;
++    cpu_env(cs)->PC = tb->pc;
+ }
  
-     if (qemu_loglevel_mask(CPU_LOG_INT)) {
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index 27df9dba89..bd14c7a0db 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -130,8 +130,7 @@ void cpu_check_irqs(CPUSPARCState *env)
+ static void tricore_restore_state_to_opc(CPUState *cs,
+                                          const TranslationBlock *tb,
+                                          const uint64_t *data)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
+-
+-    env->PC = data[0];
++    cpu_env(cs)->PC = data[0];
+ }
  
- void sparc_cpu_do_interrupt(CPUState *cs)
+ static void tricore_cpu_reset_hold(Object *obj)
  {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     int intno = cs->exception_index;
-     trap_state *tsptr;
+     CPUState *cs = CPU(obj);
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+     TriCoreCPUClass *tcc = TRICORE_CPU_GET_CLASS(obj);
+-    CPUTriCoreState *env = &cpu->env;
  
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 09066d5487..203441bfb2 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -421,8 +421,7 @@ static void sparc_raise_mmu_fault(CPUState *cs, hwaddr addr,
-                                   bool is_write, bool is_exec, int is_asi,
-                                   unsigned size, uintptr_t retaddr)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     int fault_type;
+     if (tcc->parent_phases.hold) {
+         tcc->parent_phases.hold(obj);
+     }
  
- #ifdef DEBUG_UNASSIGNED
-@@ -483,8 +482,7 @@ static void sparc_raise_mmu_fault(CPUState *cs, hwaddr addr,
-                                   bool is_write, bool is_exec, int is_asi,
-                                   unsigned size, uintptr_t retaddr)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
+-    cpu_state_reset(env);
++    cpu_state_reset(cpu_env(cs));
+ }
  
- #ifdef DEBUG_UNASSIGNED
-     printf("Unassigned mem access to " HWADDR_FMT_plx " from " TARGET_FMT_lx
-diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
-index 453498c670..a05ee22315 100644
---- a/target/sparc/mmu_helper.c
-+++ b/target/sparc/mmu_helper.c
-@@ -206,8 +206,7 @@ bool sparc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                         MMUAccessType access_type, int mmu_idx,
-                         bool probe, uintptr_t retaddr)
+ static bool tricore_cpu_has_work(CPUState *cs)
+diff --git a/target/tricore/gdbstub.c b/target/tricore/gdbstub.c
+index e8f8e5e6ea..f9309c5e27 100644
+--- a/target/tricore/gdbstub.c
++++ b/target/tricore/gdbstub.c
+@@ -106,8 +106,7 @@ static void tricore_cpu_gdb_write_csfr(CPUTriCoreState *env, int n,
+ 
+ int tricore_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     CPUTLBEntryFull full = {};
-     target_ulong vaddr;
-     int error_code = 0, access_index;
-@@ -391,8 +390,7 @@ void dump_mmu(CPUSPARCState *env)
- int sparc_cpu_memory_rw_debug(CPUState *cs, vaddr address,
-                               uint8_t *buf, int len, bool is_write)
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+ 
+     if (n < 16) { /* data registers */
+         return gdb_get_reg32(mem_buf, env->gpr_d[n]);
+@@ -121,8 +120,7 @@ int tricore_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ 
+ int tricore_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
  {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     target_ulong addr = address;
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     uint32_t tmp;
+ 
+     tmp = ldl_p(mem_buf);
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 174f666e1e..d328414c99 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -67,8 +67,7 @@ bool tricore_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                           MMUAccessType rw, int mmu_idx,
+                           bool probe, uintptr_t retaddr)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     hwaddr physical;
+     int prot;
+     int ret = 0;
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 66553d1be0..ad314bdf3c 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -95,8 +95,7 @@ enum {
+ 
+ void tricore_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+-    TriCoreCPU *cpu = TRICORE_CPU(cs);
+-    CPUTriCoreState *env = &cpu->env;
++    CPUTriCoreState *env = cpu_env(cs);
+     uint32_t psw;
      int i;
-     int len1;
-@@ -759,8 +757,7 @@ bool sparc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                         MMUAccessType access_type, int mmu_idx,
-                         bool probe, uintptr_t retaddr)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     CPUTLBEntryFull full = {};
-     int error_code = 0, access_index;
- 
-@@ -898,8 +895,7 @@ hwaddr cpu_get_phys_page_nofault(CPUSPARCState *env, target_ulong addr,
- 
- hwaddr sparc_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     hwaddr phys_addr;
-     int mmu_idx = cpu_mmu_index(env, false);
- 
-@@ -916,8 +912,7 @@ G_NORETURN void sparc_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                               int mmu_idx,
-                                               uintptr_t retaddr)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
- 
- #ifdef TARGET_SPARC64
-     env->dmmu.sfsr = build_sfsr(env, mmu_idx, access_type);
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 9387299559..769418d6b0 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -5154,13 +5154,12 @@ TRANS(FCMPEq, ALL, do_fcmpq, a, true)
- static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUSPARCState *env = cpu_env(cs);
-     int bound;
- 
-     dc->pc = dc->base.pc_first;
-     dc->npc = (target_ulong)dc->base.tb->cs_base;
-     dc->mem_idx = dc->base.tb->flags & TB_FLAG_MMU_MASK;
--    dc->def = &env->def;
-+    dc->def = &cpu_env(cs)->def;
-     dc->fpu_enabled = tb_fpu_enabled(dc->base.tb->flags);
-     dc->address_mask_32bit = tb_am_enabled(dc->base.tb->flags);
- #ifndef CONFIG_USER_ONLY
-@@ -5210,10 +5209,9 @@ static void sparc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUSPARCState *env = cpu_env(cs);
-     unsigned int insn;
- 
--    insn = translator_ldl(env, &dc->base, dc->pc);
-+    insn = translator_ldl(cpu_env(cs), &dc->base, dc->pc);
-     dc->base.pc_next += 4;
- 
-     if (!decode(dc, insn)) {
-@@ -5406,8 +5404,7 @@ void sparc_restore_state_to_opc(CPUState *cs,
-                                 const TranslationBlock *tb,
-                                 const uint64_t *data)
- {
--    SPARCCPU *cpu = SPARC_CPU(cs);
--    CPUSPARCState *env = &cpu->env;
-+    CPUSPARCState *env = cpu_env(cs);
-     target_ulong pc = data[0];
-     target_ulong npc = data[1];
  
 -- 
 2.41.0
