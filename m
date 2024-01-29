@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E89841694
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:10:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD4F841696
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUadQ-0005y4-Nj; Mon, 29 Jan 2024 18:01:48 -0500
+	id 1rUadR-0005yG-7t; Mon, 29 Jan 2024 18:01:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadN-0005wV-18
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:45 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1rUadP-0005xq-0c
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:47 -0500
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadL-0008OZ-2C
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:44 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3be44e0a7a5so779286b6e.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:42 -0800 (PST)
+ id 1rUadM-0008Oq-W9
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:46 -0500
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6ddf26eba3cso2121606a34.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706569301; x=1707174101; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706569304; x=1707174104; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rGwTnZnscqahFsCYdn6DyT5/GdGMGcaavMpKxhe75qA=;
- b=QZABSXPqjeBP0DhEvvMmD718jfKE1Vra1hpOD73C+aJW4jYg+9RpCwyhljWByvTi+k
- q0kwh/TWiYER+QKePMqu7wHzq1ZmzmX+Uyc3TlzUO7VLbYeiOcXtcF6x93//pDzRdwc0
- F9HHCGJJ4PfHNhx+5T4kTY0I2ndoc2rnLYMRV77D9uaVb3rr/g8PYzuMuKILRNNHP2Pe
- EvZySRYUiQoobalOMeKE03Rjr4TspZiOtfdtHdNCxc3TYP1XwOqdK7+oveB85rqje9i8
- JiJ7RfD7m2n/ufoooyX59eqgSmHhdw4NWWgsehcQZh8zLSQHK2La7RziQoywvYscr6FN
- lZlA==
+ bh=blFzc6YcDRkiR8B9Edly+GRoesCmaBH2nX316LvuRkc=;
+ b=KCjk9Luj2kwf1EnQVSxcIkrXxyH/tKdy/egGxxDPQbThu5IOqzJ1XtOm933Veg5I38
+ ZOs0ToLj3oN4yoSerUuPTXlUau3n1LpAFzVUQK95eR/NR4fgdx8MuaJYmq+AOZrdMCaI
+ H/DrJtXmZiPa5RzVRGe1EEvs9iNYug0DAdYTd4JndeGfZX+84v4t2sPMsu46h+OQ9sDG
+ bdqvup+A9sMOO/z5GRDZkf0S9s3O7ByRZu5vkZOkvJVkUAVGwsjbRe59284gaWy5mOQD
+ PFYs0IX7b69BbXGzt2rbqirwb1KbVGwfWtSmTjTDjsIUuHfaPVse9lNoJ/5SxEBqAfuN
+ sq5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706569301; x=1707174101;
+ d=1e100.net; s=20230601; t=1706569304; x=1707174104;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rGwTnZnscqahFsCYdn6DyT5/GdGMGcaavMpKxhe75qA=;
- b=L14AodzEojSPtOIlFtN2jNiJL8Sb/AMtR7dzuZ5BLrSd8Q7T81UuJsp4ZSAV4quTk6
- iX4i+X0zwkDhWi3I6gP0c5a4m2ZC3XqdObU6G8LaJJt3onhtYpGnpm+gb8Nezi2bYWpi
- ycY8QrcHdHs3vWT0hIqZJGNQWHUwEC9n9WMvRTczsA8OSFIGWUr+cPVIlQ/Bi/4kwM3m
- /1NWBNCrtweYZxWw4oIplB9o/axtYPmyLlIv9909BC8GLbNIkYWFHMtkx5Sz27D3HXEF
- 7Vq7P32xduy+McEmxPtLTRnmO/MgZkxE0h41UZ3zFQa8mPxy0Of064bmT5PtOB7VM/9Z
- T/Hw==
-X-Gm-Message-State: AOJu0Yxo7e7wypgqIwry5ow1I7X8HaJtow/tPPMd/COSgy0cT8P/YWpU
- dE5fDsM2GcoX0cUxc2iLI1R1jlYc2Doe9bBFjK2Mj42M79QUh89LMDLoCgobwLUULhkRjo43m0x
- ND4Y=
-X-Google-Smtp-Source: AGHT+IFpPy6dD6/hHj6+lY9rJOFOMfZHIGpdqBnBPdtEXUY9yU3Fn5Xgsq9FdwsNnC/Xzdcvrov4oQ==
-X-Received: by 2002:a05:6358:725:b0:176:8a8e:213c with SMTP id
- e37-20020a056358072500b001768a8e213cmr4980535rwj.3.1706569301498; 
- Mon, 29 Jan 2024 15:01:41 -0800 (PST)
+ bh=blFzc6YcDRkiR8B9Edly+GRoesCmaBH2nX316LvuRkc=;
+ b=Kst6v1iEIUNVaV2wSdx9IRwHqp7Ol2Yz80sH/E5H+BxHttL5BqZ/ub1AmlcoX9ppwy
+ xyl+XJRbGWNhtVr3erHGtjydNhEMNsgZBqdnPGUZuLIadmXmQuDpSp81r3Hm16BurvY0
+ PyKsH4mGUled/wtVrUm6PQrSuZFadsS/TVCdpzCW/fUHNgj9nR0Oc46ACEuSq+xRXYaJ
+ +ZN9pL/N8qs86AwZrW8rx8SHmC1VJpqGZI503w5gtE0LRI+2d31jjkdavc70k7OSe0W/
+ p/TyEFAf6H+Zf24ObEOeDNzXNjV1kQ41R0EhByzt2ECqzZNHPI2wqnHcVP5VLSHQu3B7
+ goDA==
+X-Gm-Message-State: AOJu0YyDSnfC+/SeWVGwlK302/7nWLdE/0WmuABEHZQwiPxFnhARvoe1
+ FISlw5ntyTFvzFnrktggxn8q5lBaTGYSfiUheoryOtvS5V7XmzRkiDlx4k/IbgPPk4ctptaQTNV
+ ExsU=
+X-Google-Smtp-Source: AGHT+IF7pWujJumVMn2IoJ2nvf83N6fpWpLtQiwiO6wZuUaxCSc0KBf/tIVhUbpU/p4JD+IJp3oLKw==
+X-Received: by 2002:a05:6358:4b4e:b0:178:7d95:2913 with SMTP id
+ ks14-20020a0563584b4e00b001787d952913mr2074311rwc.34.1706569303886; 
+ Mon, 29 Jan 2024 15:01:43 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.39
+ r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:01:41 -0800 (PST)
+ Mon, 29 Jan 2024 15:01:43 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 07/31] include/exec: Move PAGE_* macros to common header
-Date: Tue, 30 Jan 2024 09:00:57 +1000
-Message-Id: <20240129230121.8091-8-richard.henderson@linaro.org>
+Cc: Anton Johansson <anjo@rev.ng>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/31] include/exec: Move cpu_*()/cpu_env() to common header
+Date: Tue, 30 Jan 2024 09:00:58 +1000
+Message-Id: <20240129230121.8091-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129230121.8091-1-richard.henderson@linaro.org>
 References: <20240129230121.8091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,94 +95,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Anton Johansson <anjo@rev.ng>
 
-These don't vary across targets and are used in soon-to-be common code
-(cputlb.c).
+Functions are target independent.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240119144024.14289-15-anjo@rev.ng>
+Message-Id: <20240119144024.14289-17-anjo@rev.ng>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h    | 24 ------------------------
- include/exec/cpu-common.h | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 24 deletions(-)
+ include/exec/cpu-all.h    | 25 -------------------------
+ include/exec/cpu-common.h | 26 ++++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+), 25 deletions(-)
 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 5340907cfd..edee87d3f4 100644
+index edee87d3f4..8501a33dbf 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -171,34 +171,10 @@ extern const TargetPageBits target_page;
+@@ -384,33 +384,8 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
  
- #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
+ #endif /* !CONFIG_USER_ONLY */
  
--/* same as PROT_xxx */
--#define PAGE_READ      0x0001
--#define PAGE_WRITE     0x0002
--#define PAGE_EXEC      0x0004
--#define PAGE_BITS      (PAGE_READ | PAGE_WRITE | PAGE_EXEC)
--#define PAGE_VALID     0x0008
--/*
-- * Original state of the write flag (used when tracking self-modifying code)
-- */
--#define PAGE_WRITE_ORG 0x0010
--/*
-- * Invalidate the TLB entry immediately, helpful for s390x
-- * Low-Address-Protection. Used with PAGE_WRITE in tlb_set_page_with_attrs()
-- */
--#define PAGE_WRITE_INV 0x0020
--/* For use with page_set_flags: page is being replaced; target_data cleared. */
--#define PAGE_RESET     0x0040
--/* For linux-user, indicates that the page is MAP_ANON. */
--#define PAGE_ANON      0x0080
+-/* accel/tcg/cpu-exec.c */
+-int cpu_exec(CPUState *cpu);
 -
- #if defined(CONFIG_BSD) && defined(CONFIG_USER_ONLY)
- /* FIXME: Code that sets/uses this is broken and needs to go away.  */
- #define PAGE_RESERVED  0x0100
- #endif
--/* Target-specific bits that will be used via page_get_flags().  */
--#define PAGE_TARGET_1  0x0200
--#define PAGE_TARGET_2  0x0400
+ /* Validate correct placement of CPUArchState. */
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+ 
+-/**
+- * env_archcpu(env)
+- * @env: The architecture environment
+- *
+- * Return the ArchCPU associated with the environment.
+- */
+-static inline ArchCPU *env_archcpu(CPUArchState *env)
+-{
+-    return (void *)env - sizeof(CPUState);
+-}
 -
- /*
-  * For linux-user, indicates that the page is mapped with the same semantics
-  * in both guest and host.
+-/**
+- * env_cpu(env)
+- * @env: The architecture environment
+- *
+- * Return the CPUState associated with the environment.
+- */
+-static inline CPUState *env_cpu(CPUArchState *env)
+-{
+-    return (void *)env - sizeof(CPUState);
+-}
+-
+ #endif /* CPU_ALL_H */
 diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 3109c6b67d..608708ea48 100644
+index 608708ea48..dcbd5f5783 100644
 --- a/include/exec/cpu-common.h
 +++ b/include/exec/cpu-common.h
-@@ -206,4 +206,34 @@ G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
- G_NORETURN void cpu_loop_exit(CPUState *cpu);
- G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
+@@ -7,6 +7,7 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "exec/hwaddr.h"
+ #endif
++#include "hw/core/cpu.h"
  
-+/* same as PROT_xxx */
-+#define PAGE_READ      0x0001
-+#define PAGE_WRITE     0x0002
-+#define PAGE_EXEC      0x0004
-+#define PAGE_BITS      (PAGE_READ | PAGE_WRITE | PAGE_EXEC)
-+#define PAGE_VALID     0x0008
-+/*
-+ * Original state of the write flag (used when tracking self-modifying code)
-+ */
-+#define PAGE_WRITE_ORG 0x0010
-+/*
-+ * Invalidate the TLB entry immediately, helpful for s390x
-+ * Low-Address-Protection. Used with PAGE_WRITE in tlb_set_page_with_attrs()
-+ */
-+#define PAGE_WRITE_INV 0x0020
-+/* For use with page_set_flags: page is being replaced; target_data cleared. */
-+#define PAGE_RESET     0x0040
-+/* For linux-user, indicates that the page is MAP_ANON. */
-+#define PAGE_ANON      0x0080
+ #define EXCP_INTERRUPT  0x10000 /* async interruption */
+ #define EXCP_HLT        0x10001 /* hlt instruction reached */
+@@ -236,4 +237,29 @@ G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
+  */
+ #define PAGE_PASSTHROUGH 0x0800
+ 
++/* accel/tcg/cpu-exec.c */
++int cpu_exec(CPUState *cpu);
 +
-+/* Target-specific bits that will be used via page_get_flags().  */
-+#define PAGE_TARGET_1  0x0200
-+#define PAGE_TARGET_2  0x0400
-+
-+/*
-+ * For linux-user, indicates that the page is mapped with the same semantics
-+ * in both guest and host.
++/**
++ * env_archcpu(env)
++ * @env: The architecture environment
++ *
++ * Return the ArchCPU associated with the environment.
 + */
-+#define PAGE_PASSTHROUGH 0x0800
++static inline ArchCPU *env_archcpu(CPUArchState *env)
++{
++    return (void *)env - sizeof(CPUState);
++}
++
++/**
++ * env_cpu(env)
++ * @env: The architecture environment
++ *
++ * Return the CPUState associated with the environment.
++ */
++static inline CPUState *env_cpu(CPUArchState *env)
++{
++    return (void *)env - sizeof(CPUState);
++}
 +
  #endif /* CPU_COMMON_H */
 -- 
