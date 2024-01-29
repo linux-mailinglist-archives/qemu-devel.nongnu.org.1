@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA238409C0
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:21:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2A88409B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:20:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUTPj-0007d1-It; Mon, 29 Jan 2024 10:19:11 -0500
+	id 1rUTPk-0007dU-7a; Mon, 29 Jan 2024 10:19:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPa-0007Xd-Gl
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:04 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPf-0007YX-8r
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:07 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPW-0007ST-G3
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:00 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-51028fadfe2so3118860e87.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:18:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPd-0007T4-Fh
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:19:07 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33926ccbc80so1804999f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:19:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706541536; x=1707146336; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706541543; x=1707146343; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dcxTw0DrdmCPot2iJuF6Ul0G9M2q8XR4FUwWiq3hCFw=;
- b=Kx01oTFgCyTWmyW3LEUdvqAl4WHKUbrvMjaEyiZxNW9xIsriFzf2PLjvdPlLLSQlmW
- 78lEMjdO6StqJ9vk7H3fV9RuO8LF2yVPTEDuR0Mzum6AcWsO5ZdllN+6LYoW69f7u8y3
- 1O32nSXOpPAZgy0cHk9pVoJhB+hVJA4AbaVuuYhK0DpuRfKi41rGXYxp1H7jBdroGosh
- qCytnTWqtiT6WbsrU0x3lKVox6cXMuK8kGJfCN6g0Rk8zDJzhDwasmIem6cxf+7XxHB9
- 6HdViVIuQAygjZGFbeqwr/6B8C0UlyemGje84RU7EajvOHgSZdfzZjgkr8PzQOT2bqlm
- xqCw==
+ bh=qv6tmFjUz5yI+ezdbTnOo4SrqA0F8CpD3AVMoPUpbVM=;
+ b=AKdcK66moimxa0Nec18f+dSiuB/7oZ7PcWFBK7fF1/d9gZtmbw4wWVqQopNASGe+Rd
+ fqtQn893YFb7bKlIKkqZgK/X42p8BYP9LW27dI4btauKk75xb8EtDja6P1TfQ4X0lMrX
+ +sTfx244hMciaqFxSW8ZBFpe6OE5hEUDur/X2Wz3oFLZQpryswYtd6CwSX/eODejsibu
+ lcH1alMFEvZp49yzoM6E5A8yjR+OCJvXogo7qD47Zg+9ykrhXNvYtCPfFkbx8SNbOV3x
+ QWT8kbIpchhjkiHqeLykE/O+bpxP7T2Ob06qDgopZMKY8Une/G/nz3cFGswnkctnUggT
+ wD1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706541536; x=1707146336;
+ d=1e100.net; s=20230601; t=1706541543; x=1707146343;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dcxTw0DrdmCPot2iJuF6Ul0G9M2q8XR4FUwWiq3hCFw=;
- b=OYLUsrOU3agbSPsP1POF546o8n/QG2+xMvc2FbLhBaC7FoCvX47yIqgQrzQd0yIgaY
- BTUnkQsb1MXYDds3y3nE025AhCQwkJHagEDwD7FMiMcw3Itc28dbCrKUlNCbZkUAUq9H
- 3ki3tLpcYz4IEotOVcyYRc2QeifPu1pl0dKDwk8raCjfRFjoeVB+t+F5SGtphmKxgmNo
- Age7MLJqjaBGPHyjHDQ6pWnSBvBttIfaQXBQer6jjiqgXhWgGCCtmbFlpTKPEl/zd1sF
- Scp6QT1AIm7AZ+39xtf5H7+maLumpnoI4ihltSmp8MrCmCFjjWsHUaVkH/USX5eV3K28
- Km2A==
-X-Gm-Message-State: AOJu0YzrNfKpdoBmvMUbWcmWBJabPRgTgvzJ0TGsweuSn2tCcw72ZRVb
- 1PnjXsDAZelzwyoNZujjZCkYyaaXi6Ru+aVimBwLANSQdi657ibdJbv/sG6Y2Wicx9JX1QRdQnr
- 9
-X-Google-Smtp-Source: AGHT+IGJ+K2soQbrnFpE0uHIy3dUelT8wTnsBiwb6mjdWdSQoGzDAWhvlSaahpYUovWRPHn8Lfw8Vg==
-X-Received: by 2002:a05:6512:1194:b0:511:f63:142d with SMTP id
- g20-20020a056512119400b005110f63142dmr2403017lfr.29.1706541536685; 
- Mon, 29 Jan 2024 07:18:56 -0800 (PST)
+ bh=qv6tmFjUz5yI+ezdbTnOo4SrqA0F8CpD3AVMoPUpbVM=;
+ b=K3fmuw6dAAvgiHM1mmp1kJkoJgRGo5JXq9NvFY1KZFzVGDuyQTpva7MY+xbuhI495Q
+ 6VuSQDMBub+1ppIwxcvUuyQ41jwsfxWHrhzDOfISghcyWT5/yPU3tehN/SnEZaSa8MLJ
+ PG/FQ7GppUkPKcSLtxYIB8mTpdg6o5QD4N9muqrjL4kzCeZrMy8J2BKHwpBVLmzongIj
+ AMvu/C/ByXoFXwnucEYvktIlY4TOiaoaMUFCW8p9+5ViY+DbvEGLsLTuZSgmmct7FKsk
+ lMkafx04y052+f6OeOKg++wVjbBOjM3+e0qZjqKNUUEu0pqL9zyg+lWj53ENjXAa8gRy
+ I6GQ==
+X-Gm-Message-State: AOJu0YywS94Zw7lmMwddB03Jiviw1tWqG/+Wu2LWyVG3FF1ruhEFKGxj
+ fprzyHRd0QjPqtvwGvd31sPl/ITIEDE2xT2Qm8uflAzonwCzaPxpJiZlavCEXvdnL91ccUCiuDM
+ A
+X-Google-Smtp-Source: AGHT+IHiDZpeQNPziYqNwMV9zzVoZ0IsryPvguDHX5fqz6IcziphZDLrVSgpLVWKctRvo+Q7Gb2PFw==
+X-Received: by 2002:a5d:64ed:0:b0:33a:e39a:1590 with SMTP id
+ g13-20020a5d64ed000000b0033ae39a1590mr5380182wri.53.1706541543479; 
+ Mon, 29 Jan 2024 07:19:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- fa7-20020a05600c518700b0040ec6d7420csm14208710wmb.14.2024.01.29.07.18.54
+ bo18-20020a056000069200b0033af3aec393sm1623351wrb.38.2024.01.29.07.19.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 07:18:55 -0800 (PST)
+ Mon, 29 Jan 2024 07:19:02 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
@@ -64,20 +64,19 @@ Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>, Rob Herring <robh@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Gavin Shan <gshan@redhat.com>
-Subject: [PATCH v3 4/9] hw/arm/highbank: Check for CPU types in
- machine_run_board_init()
-Date: Mon, 29 Jan 2024 16:18:23 +0100
-Message-ID: <20240129151828.59544-5-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v3 5/9] hw/arm/msf2: Simplify setting
+ MachineClass::valid_cpu_types[]
+Date: Mon, 29 Jan 2024 16:18:24 +0100
+Message-ID: <20240129151828.59544-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240129151828.59544-1-philmd@linaro.org>
 References: <20240129151828.59544-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,67 +99,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Restrict MachineClass::valid_cpu_types[] to the single
-valid CPU types.
+The M2Sxxx SoC family can only be used with Cortex-M3.
+Propagating the CPU type from the board level is pointless.
 
-Instead of ignoring invalid CPU type requested by the user:
+Hard-code the CPU type at the SoC level.
+Remove the now ignored MachineClass::default_cpu_type field.
 
-  $ qemu-system-arm -M midway -cpu cortex-a7 -S -monitor stdio
-  QEMU 8.2.50 monitor - type 'help' for more information
-  (qemu) info qom-tree
-  /machine (midway-machine)
-    /cpu[0] (cortex-a15-arm-cpu)
-    ...
+Use the common code introduced in commit c9cf636d48 ("machine: Add
+a valid_cpu_types property") to check for valid CPU type at the
+board level.
 
-we now display an error:
-
-  $ qemu-system-arm -M midway -cpu cortex-a7
-  qemu-system-arm: Invalid CPU model: cortex-a7
-  The only valid type is: cortex-a15
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/arm/highbank.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/hw/arm/msf2-soc.h | 3 ---
+ hw/arm/msf2-soc.c         | 3 +--
+ hw/arm/msf2-som.c         | 4 ----
+ 3 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index b8d702c82c..0367050697 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -345,10 +345,15 @@ static void midway_init(MachineState *machine)
+diff --git a/include/hw/arm/msf2-soc.h b/include/hw/arm/msf2-soc.h
+index ce417a6266..9300664e8e 100644
+--- a/include/hw/arm/msf2-soc.h
++++ b/include/hw/arm/msf2-soc.h
+@@ -47,13 +47,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(MSF2State, MSF2_SOC)
+ #define MSF2_NUM_TIMERS       2
  
- static void highbank_class_init(ObjectClass *oc, void *data)
- {
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a9"),
-+        NULL
-+    };
-     MachineClass *mc = MACHINE_CLASS(oc);
+ struct MSF2State {
+-    /*< private >*/
+     SysBusDevice parent_obj;
+-    /*< public >*/
  
-     mc->desc = "Calxeda Highbank (ECX-1000)";
-     mc->init = highbank_init;
-+    mc->valid_cpu_types = valid_cpu_types;
-     mc->block_default_type = IF_IDE;
-     mc->units_per_default_bus = 1;
-     mc->max_cpus = 4;
-@@ -364,10 +369,15 @@ static const TypeInfo highbank_type = {
+     ARMv7MState armv7m;
  
- static void midway_class_init(ObjectClass *oc, void *data)
- {
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-a15"),
-+        NULL
-+    };
-     MachineClass *mc = MACHINE_CLASS(oc);
+-    char *cpu_type;
+     char *part_name;
+     uint64_t envm_size;
+     uint64_t esram_size;
+diff --git a/hw/arm/msf2-soc.c b/hw/arm/msf2-soc.c
+index b5fe9f364d..d6eb9ec9ac 100644
+--- a/hw/arm/msf2-soc.c
++++ b/hw/arm/msf2-soc.c
+@@ -134,7 +134,7 @@ static void m2sxxx_soc_realize(DeviceState *dev_soc, Error **errp)
  
-     mc->desc = "Calxeda Midway (ECX-2000)";
-     mc->init = midway_init;
-+    mc->valid_cpu_types = valid_cpu_types;
-     mc->block_default_type = IF_IDE;
-     mc->units_per_default_bus = 1;
-     mc->max_cpus = 4;
+     armv7m = DEVICE(&s->armv7m);
+     qdev_prop_set_uint32(armv7m, "num-irq", 81);
+-    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
++    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
+     qdev_prop_set_bit(armv7m, "enable-bitband", true);
+     qdev_connect_clock_in(armv7m, "cpuclk", s->m3clk);
+     qdev_connect_clock_in(armv7m, "refclk", s->refclk);
+@@ -231,7 +231,6 @@ static Property m2sxxx_soc_properties[] = {
+      * part name specifies the type of SmartFusion2 device variant(this
+      * property is for information purpose only.
+      */
+-    DEFINE_PROP_STRING("cpu-type", MSF2State, cpu_type),
+     DEFINE_PROP_STRING("part-name", MSF2State, part_name),
+     DEFINE_PROP_UINT64("eNVM-size", MSF2State, envm_size, MSF2_ENVM_MAX_SIZE),
+     DEFINE_PROP_UINT64("eSRAM-size", MSF2State, esram_size,
+diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
+index a269cf044b..5c415abe85 100644
+--- a/hw/arm/msf2-som.c
++++ b/hw/arm/msf2-som.c
+@@ -47,7 +47,6 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
+     DeviceState *dev;
+     DeviceState *spi_flash;
+     MSF2State *soc;
+-    MachineClass *mc = MACHINE_GET_CLASS(machine);
+     DriveInfo *dinfo = drive_get(IF_MTD, 0, 0);
+     qemu_irq cs_line;
+     BusState *spi_bus;
+@@ -62,8 +61,6 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
+     dev = qdev_new(TYPE_MSF2_SOC);
+     object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
+     qdev_prop_set_string(dev, "part-name", "M2S010");
+-    qdev_prop_set_string(dev, "cpu-type", mc->default_cpu_type);
+-
+     qdev_prop_set_uint64(dev, "eNVM-size", M2S010_ENVM_SIZE);
+     qdev_prop_set_uint64(dev, "eSRAM-size", M2S010_ESRAM_SIZE);
+ 
+@@ -108,7 +105,6 @@ static void emcraft_sf2_machine_init(MachineClass *mc)
+ 
+     mc->desc = "SmartFusion2 SOM kit from Emcraft (M2S010)";
+     mc->init = emcraft_sf2_s2s010_init;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m3");
+     mc->valid_cpu_types = valid_cpu_types;
+ }
+ 
 -- 
 2.41.0
 
