@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5A283FFD1
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B083FFD4
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:16:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUMnf-00037g-Tk; Mon, 29 Jan 2024 03:15:27 -0500
+	id 1rUMnm-00038j-CR; Mon, 29 Jan 2024 03:15:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
- id 1rUMnS-00036d-Az; Mon, 29 Jan 2024 03:15:17 -0500
+ id 1rUMnc-00037l-BJ; Mon, 29 Jan 2024 03:15:25 -0500
 Received: from mail-bjschn02on2061e.outbound.protection.partner.outlook.cn
  ([2406:e500:4440:2::61e]
  helo=CHN02-BJS-obe.outbound.protection.partner.outlook.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jeeheng.sia@starfivetech.com>)
- id 1rUMnG-0007by-N8; Mon, 29 Jan 2024 03:15:13 -0500
+ id 1rUMnU-0007by-TX; Mon, 29 Jan 2024 03:15:24 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=De4/mWmTR9ZpZ7i+SMGPPYOt3HjAfZiJ7nLZ+iHhzkSw58yVWSF13F+dU72nYUtH8RVrnnEyOhnMQOwYB1gm86qqCHk92ndPkf9itGmV4zq9ZmuzSYcyUHF8PmHpmLDBdW8t39uix47O36Fs45fqtTSmVIV5O8zjr0kIaVEI0AkBmpSxKAvzVyeSCF5pV41NLnfw1jX1JcbQ1gN1+wPBrrLtCejdXr7xDvbXignd+xz1xMuIQ/xOwXoFx+gXZNpWT1DAxhhmJ1yybWm6wBdaDyQSIVUUm69bExpIBGoI19XWcugB2IBhDalW5blcnaBa2HJpZ0BFi6DNdDAdAF6iVw==
+ b=EGpgg/2lM81m5z6gUINozqVgZswqRfp/VZzxtPb+dI02/a13EMFOzuh9nky79IOcVmJrTfwc1vv6Ouk9uCofYnTQIAMe7ZEHSewIO1s5s9YKvsiAo8LXzjAiK+XiLJ0NmnrFsCjFWzGJx9N8G1jRv92UIdbgrS6iakePmwrAOAz8P7upfaO9dKsREDm1iwjI0bDQ+gyJhuZjse2IOJJ54l2QJje3StYaqvNfYlk5zauJ+1yEn84GqPr9r2GlR4gZ8Z2woD7YLZW4Undeob7+1ctL2KFcjrzl87N25hzZdcfBLxilnWFjC4os2YFiSAtpkvoKly9QEbZ27BQE6ijehQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cOK+QbeIBvZavTgQ44cMGtn8EZ+i/+q2X8/r7Te9k1w=;
- b=SYbBJIzL5bPQv1WbC5Xh4LEMZRQSxE+cu7ZEolJaSXwvQYkowsCYSAzUORkn9rT6xwHk95X0QyeGg3erJZPo44iafYDSfu5JfNfVspLIvVLgQfjJXDT4V3nhOzGja/n55Wu1XsD8kc9OMZM+58EriFHED4hmjDJt+k/091Ug242HJZ8SS4lF6TEHkSgOCzTNkFxfccJCkKaXXbw9Hl6/rFQF7PtHbMZ3ypzwt0tCWYs5X4kfaK/svtFuCpQ5cAOZzD+GOiI9dQHWRj+lnYrd9JzvCK8kaQoEanVKZWk3oJ4soFxXjbA/eD6qyZrL6USxWfjWg1KElsCH1BaqLPbIGQ==
+ bh=w7VCP15G1BvqWTdQRPP3FfBZvOzet9rpsAoH/InIbt8=;
+ b=d8L/YazOB1UpuXAncQrSmQYJg83MLYzmsArIxQuuEFTx5ZUwQEwLYGxo1Akn4AzRnIund/U0uvrTqQa8see84DDPPs8Yimo9joNJfCpYnrkpPo19o12rjt7lqAr2GiwVXDpQ22FhpftQlZP4kW3MGUIwR+Ke9t2JbYcJXsCETIeGpVB3db3wH//IRZGjdicifiB8ZsAA6U55TwiOuX2QbNVjj/0nTyFdBFhyfP9YGR/0ngEOxP3+leqJXQyVlRzwrkYMDX1BhiNmYEEW17eSmp5yXMXsL4+tBRqBi30BNaZ6RKOLORcbH6Jhkfgwa/rQSJ2h+c/nSdt5AQzyq057nQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
@@ -34,11 +34,11 @@ Received: from BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:f::16) by BJSPR01MB0721.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:1e::23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Mon, 29 Jan
- 2024 08:14:46 +0000
+ 2024 08:14:52 +0000
 Received: from BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
  ([fe80::3862:65b4:c857:c4a6]) by
  BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn ([fe80::3862:65b4:c857:c4a6%4])
- with mapi id 15.20.7228.029; Mon, 29 Jan 2024 08:14:46 +0000
+ with mapi id 15.20.7228.029; Mon, 29 Jan 2024 08:14:52 +0000
 From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -48,68 +48,67 @@ Cc: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
  peter.maydell@linaro.org, sunilvl@ventanamicro.com, palmer@dabbelt.com,
  alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Subject: [RFC v1 1/3] hw/acpi/aml-build: Add cache structure table creation
- for PPTT table
-Date: Mon, 29 Jan 2024 00:14:21 -0800
-Message-Id: <20240129081423.116615-2-jeeheng.sia@starfivetech.com>
+Subject: [RFC v1 2/3] hw/riscv/virt-acpi-build.c: Generate PPTT table
+Date: Mon, 29 Jan 2024 00:14:22 -0800
+Message-Id: <20240129081423.116615-3-jeeheng.sia@starfivetech.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129081423.116615-1-jeeheng.sia@starfivetech.com>
 References: <20240129081423.116615-1-jeeheng.sia@starfivetech.com>
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: SHXPR01CA0017.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c311:1b::26) To BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:f::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BJSPR01MB0561:EE_|BJSPR01MB0721:EE_
-X-MS-Office365-Filtering-Correlation-Id: ccc0f81a-ef34-4614-29ef-08dc20a25aef
+X-MS-Office365-Filtering-Correlation-Id: 947971c7-38d4-4226-b192-08dc20a25e95
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: anNnbCYFk2lvQo1a+KPvhKSITDp6seaPwWv2Yxn8xial4R57ROKGUUlOgbb8gRBwAjtXtr/fgGvZwhI60h+PO2ATn7X4nsg9wcL+1J1hLBd/5cM7sgPEFbQX9gKSIeErbkYm2FAvfmIUX4mv/YfjnzwY/NkbDqUg4HpRBLFInUViTwuXq9cTbwrULpRYI+HIVTY2eziilkIyuZ77xdFSgNWVzTyzM+9lCnd290VwZPGHgP5CQ0KLYN7goz8rU6kskwvxWYrqpH8QtX1hA+Smj/z1TRuvquwbj4tf08xl1oxBa1DvU792I7Zdu5XDn0esMudO17Y3kCi0MUGWbnbN6Lgk6fU4LFIRhR4oQGllaRqClIFWYi69B84PkapFda/RzDaC/dC9wmijIy8XINY/sNz/r4BMFxyWK1ug0P7K0KVyMEF6dV/w5JbQLs8mQA6SocVNUapJ62Gr9Yd/KF7bAMVJ/NEvff8mvGDAOmXYuMWWBnt1Rjd25xMEu1+LeZGYOrSMzuFYhWucq1zlDaNxQP0L1nSrBTnxwTP9peCqlcdPf9LTbi6vnRJkC4oTsBZG
+X-Microsoft-Antispam-Message-Info: a1q03tYDLfiGcHFOKInCDsyyIrx7wJES32aqNmhfg9Y867n0rAHsbmj+ecvIPVB423XQPMWMBkcPh+tUW2xY0aaIlJfQs1NHdo5dvzzrGm0clRdRdNHaD7L8YQaWBbG+l8YLPYUbdpZITdtKtNySTL6HYvnsS/nzPO9MQUM9sHM4Cj5OW9qZFPnmsMlgtEMkVM4ORpJmuGzjd44Pgc0oqj8Y9786FMxS158KsMrsy1CXijn0JLjxdWVoWje/iYh2wXtP638UpWCMiNv/0he59J7odLhtPVK07tjueIAozrJCv2CyFTeUmJ/5v50326ajYG38MuXWzOjMmKjCgR/e5lSm6wvyDN+X6xHTgcy/ugKTVPIUTnu613ekhtz6zfyms2iPXN9lzFBPiU9nR9vU3GJ8cN1qyoR8FK3dGkQozyAKDcn7GI5ylJ4ec5aPVL+Iy2gKQXnNLadPFSWFXZpWthDgZOZGchx1es3AODlI9t07hDthiPM5YRH5SdKONjJgnTlBpOLVLG7KaoXjPe02fk5iRGyPE87e/KvNiI2gElXWcFI1ySpK4D+SPkxGRVru
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn; PTR:;
  CAT:NONE;
  SFS:(13230031)(136003)(396003)(366004)(346002)(39830400003)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(41320700001)(38100700002)(2906002)(36756003)(41300700001)(83380400001)(1076003)(2616005)(6666004)(26005)(40160700002)(508600001)(52116002)(40180700001)(66476007)(66556008)(66946007)(38350700005)(8676002)(8936002)(4326008)(86362001)(7416002)(5660300002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eRhswpvqpSD/mUanzdnkACQQJlTnIkc78Muq3xXfA5BYzljSJHAjFRmML71O?=
- =?us-ascii?Q?TxxN/D170nPwVlMG7sJzYECKGSoQaYRqQ+Lw3BIZlND4+YfE9kRffDWyO0PO?=
- =?us-ascii?Q?JqZW8oQUDzxyVDuVnP8cF5oi3B+spCcR21CHUGD0WjMRfFRFM0v/8mY04rHP?=
- =?us-ascii?Q?Y+usXGbmOyTyVSUE+MLytQDZ/geWN8joMroNsBMzSRcDCvbXTSMuyVJZ9Wvt?=
- =?us-ascii?Q?fMpPS7/qSfkDHsnoIG+M91OnOw6zcZ6EnAUigATpooozxQGJe0DSJgrGpOvI?=
- =?us-ascii?Q?6JCzCeFIoW7UwGeTEzAwgNCF8mNGXIk4JP9w7j6AuShDrIyQyfT8CWVwz64V?=
- =?us-ascii?Q?eQw1L7cZX17ZwORCAqOtMtWiPHjY6ROOZ4ENnN5i08htmGx1nFkDBO1hsTng?=
- =?us-ascii?Q?ygnolIlveO/mk+9nkMyUmaOepUH8U/Tg9ldrqYS7NqwPjauLUZGQYhma623M?=
- =?us-ascii?Q?J52HSaik/L9I/dy4xJwEMXCszNPp56dQgDqM5vq0mjGfEvUXizq4vZDgkixd?=
- =?us-ascii?Q?Qje9Xd5D34eTPj0It0GaBmGNLD0DbFil4lxs60dyNI8Iy6wARTHr7grY+OPD?=
- =?us-ascii?Q?h98rS6DSP0zWJljKnRq+wBztTkkFLoKjGNG7g4V1zy9vgXVji2XQxOwXJ2pr?=
- =?us-ascii?Q?gYEnmIdp4xNZlnMqfoNXUUc78+pIfWdA+jd5+i/F7eJQUr1PBbZ5Y3H1jqGj?=
- =?us-ascii?Q?91e5ktO5ZuHdsDHOk0tr4gg00Z4cJukjVCeZC9K1Nocyje9XIOnA73FDfs5V?=
- =?us-ascii?Q?t9GH9ZrqM24v/YHfmxaYCnYKyIByG2Ti6LjO9yT+CkthTDP/l7xgvH07BcMI?=
- =?us-ascii?Q?xkP4V6ppE3kUX8ZXST4ojgKDZCPlinb96Fl9guTbk6mG80mm3ixfxMtiI0fH?=
- =?us-ascii?Q?UUf85YlppMqxZG9W/fIJxmQnU6tVa3zgShoBE2zPItorSFg1mmWsAgUWYEix?=
- =?us-ascii?Q?veH2l6e4huxw8OaHXQD8STvU/j7mV/nQcDFZde66E4e/XSvLKbSyLFN1FXIs?=
- =?us-ascii?Q?qk5ZS9n90CCfo/ZMdHC/eD/NWDo5VUWTJ0ggB+GiFsSZADjfg9rFFb1E9THI?=
- =?us-ascii?Q?clhq7odWE3BhuwO9+0bbHaOdTzPRZos13nevVghDovGn3jKClPDtzKP89dx6?=
- =?us-ascii?Q?GxkPjOzEBo0QGtyuFNRdpr91nke60NBOfTw0M6yVVzT2rNkXrBCpvPvOTHV1?=
- =?us-ascii?Q?hBuCkAJMsLcXdxnC+7y1hkXlQc3K8F+6Zz4TESwF1P4eFLV0F/PgPS2dYMke?=
- =?us-ascii?Q?aE8u/Qqj3YhSP/kc9yJ5LfUwkabUzGQFAzR1JkGtionIZfe6IkN9IWKz15/a?=
- =?us-ascii?Q?CDGBkxkS50MFSKxbmXUtsOOmf7nengO/wVMGYzzOOTomb/Xc5i6G2xXTCEo2?=
- =?us-ascii?Q?67yrT5+wfYWRNqj/1K3evbpj2CIp+bLTFPbEW0zt/uzRRO6DYlxXjVnG3Pa3?=
- =?us-ascii?Q?4zqgYXa69oF8z7NItLIcMY1Hwa5oXaXXDD7GGcXthk3/l7xjyKKdFffy+oys?=
- =?us-ascii?Q?0hcYIrRQCplnai6249Nqs/JuSqSHRZ7DTJschBq/Y7pgM5jDhjUhTgWRFBsC?=
- =?us-ascii?Q?6vqgpJ5RcXLPUyZA4Fza406tYjwux7dGLiZVvMdhVqchbk4JVW2qSLFOL25Q?=
- =?us-ascii?Q?XA=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qzwHpw2XuV+5Kg5/TNp5uTCMwp5SVvY+bdUTwUhWwN8LnR2wk0Cwe8PXp9FS?=
+ =?us-ascii?Q?UTvTfaUUIZJogz0CMr3PXpPRXDU2NKQFSsWPCfBuG8VhsxhMESt0qihQWRHK?=
+ =?us-ascii?Q?JxeUlX00dEs/wWWebxBjwx43YbmVLNVe1NfH2aExwmrfQ0eL2cNXpulobWcb?=
+ =?us-ascii?Q?dPZ7IWAbN2BeBrfF/IxGfQyGAKJvCU0HV1qN/BnhJ3R8jfYnLi/qvXAB9+Z8?=
+ =?us-ascii?Q?sEtSNj5q+Sz7PZzy7xi6K7RtpJHnU3f/VTDoX1ztvPxnRsem3USLHSGLdhg4?=
+ =?us-ascii?Q?9Aiqa7nDk5nhuwh5sdAchv5hLJPKb46YqgrYKme8UDdXC/FBaSO93buF+wdY?=
+ =?us-ascii?Q?xjVoqWaYQx2fKJp6AmDiWRxckwxF/lkW/jmxY/V5Gc4VXvSZ5MAodhBUo7v3?=
+ =?us-ascii?Q?B25f/8dDLrdyhqp32Kze0wPu2KJf1BulRwQRSVlF9EgmJ/quaadoGQZUlX5R?=
+ =?us-ascii?Q?Ln3MdIi7XpnI19UVPF0JG2/dm9S0Niddz/k1XdByUdTz9B/T+V8SqEB4vNl9?=
+ =?us-ascii?Q?aVmfFOIzjdTyL1c66HROfcpy7ycPd4J8w5JRSfXugEt+4NfQ+UknLyIcOeKw?=
+ =?us-ascii?Q?k0Xsn90up65sYVbj7MBfuEc9Ftn/y6XAPCrKcYhS+oi9WMgfU9xk9aasX7L9?=
+ =?us-ascii?Q?KyyIIV5YA62oAfZREIgDBbqlG8IJ3fzFL6faRIpaoIjlQ96+Yye3SP1oORkc?=
+ =?us-ascii?Q?RR3wRntu6yLK4MMFZ9+1LThmbdr66ba8mBqqpGGhDaRNW+A+G/Yf8arTCaG1?=
+ =?us-ascii?Q?fEmDfxhqNzzYAl9C9MF2eqJFh+dRwyOy/is0fnXxaB+fvouLqxiihjbugPec?=
+ =?us-ascii?Q?a5Hsi2pz4qmkcyrDFEDgeTzxTPqI/16gXva8Z0V0Fs8h9+0Xsvc2THOsC8wd?=
+ =?us-ascii?Q?P2YrHu/cupMmanutwoO57gWJ1WMBesUhN62gfkodYGCU8XbbX0FN+t9vX+eg?=
+ =?us-ascii?Q?7O3qGzDRz9MA6WD4VpqFTtGdgtufJae3hAzKx/ux8XBLaqPTcbByJ3mLbE/g?=
+ =?us-ascii?Q?Iuxtsk/6koqnTaShYxyTm+D81N1IIMeTmw9QDDvHHyLwaz3gYe6Tf+qwfJPG?=
+ =?us-ascii?Q?MHUSBt+9yyz1ZNu9ElxdLVSmZVHw6ehsc85UQOgchpW4UL7vBKWvNySB6Qm/?=
+ =?us-ascii?Q?rX3IzUw7jk3mMU8L/cLqja1j4slKd6UwCc8XBKkVKcWx9CftlAPMiY4wfqqV?=
+ =?us-ascii?Q?5i0qtc3qVo/vqR9JHaBU6ofSstRmgNPgrHPNyVJK8C7fX4HKV9qKq2NpHoK+?=
+ =?us-ascii?Q?ljauUcTextduLfSPLc623gXslJEJ79BJgz0Efy7MMiyqSSGo1Yikqxw0w3ga?=
+ =?us-ascii?Q?nAZVAVvVLD+q6ZTARCOcl9Ggha5qyIWAZLCwiU/RDT48rPK4/QAXGNbQJErl?=
+ =?us-ascii?Q?5fC6ux/v+2REAov6BDA367DjqmrwHVDKyva2oJuMcAoKw+3k4tp8v6hZCw4o?=
+ =?us-ascii?Q?66ZVt85SLyFnzCIED7rpZUBJ6XqAA2uC9EhuELbqUa+YuDJCE0XvZycwbVSQ?=
+ =?us-ascii?Q?UBsY6PA7HdoE5iD9hAoRPdcPuTJH495UsxjNqNrdVkJjM5Ea9pGMUFyOJAbe?=
+ =?us-ascii?Q?3f3RCpfDP78I1IZ/JlcMNH/ZeDrIJnbr68dzYH236FyjaKM+65xf4zWLt4Vm?=
+ =?us-ascii?Q?Eg=3D=3D?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccc0f81a-ef34-4614-29ef-08dc20a25aef
+X-MS-Exchange-CrossTenant-Network-Message-Id: 947971c7-38d4-4226-b192-08dc20a25e95
 X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0561.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 08:14:46.5113 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 08:14:52.6273 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jDpKBunIt8gKwRpZpYx6n5q3TNWYmc/JpB5LN6YSvFfQCbYzuEZ0ooz6m/pkAMXV+eSBAJQa54hdVt3bMeAZ6qqXFlAEZqUqRBb1C3hH/yo=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2r3szqQr9txzb8Bf0SNtwhoBJ/YQdMnyNLm2WnPAqlWEIY7WgjylopA498tC/6LPs662aHiVq+e3Cdi8J6e7+dOmnV1031SZ+FrTpxuB6/s=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0721
 Received-SPF: pass client-ip=2406:e500:4440:2::61e;
  envelope-from=jeeheng.sia@starfivetech.com;
@@ -134,196 +133,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds cache structure table generation for the Processor Properties
-Topology Table (PPTT) to describe cache hierarchy information for
-ACPI guests.
-
-A 3-level cache topology is employed here, referring to the type 1 cache
-structure according to ACPI spec v6.3. The L1 cache and L2 cache are
-private resources for the core, while the L3 cache is the private
-resource for the cluster.
-
-In the absence of cluster values in the QEMU command, a 2-layer cache is
-expected. The default cache value should be passed in from the
-architecture code.
-
-Examples:
-3-layer: -smp 4,sockets=1,clusters=2,cores=2,threads=1
-2-layer: -smp 4,sockets=1,cores=2,threads=2
+Generate the Processor Properties Topology Table (PPTT) with a
+cache type 1 structure for RISC-V virtual machine. A 3-layer
+cache topology is used.
 
 Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 ---
- hw/acpi/aml-build.c         | 65 ++++++++++++++++++++++++++++++++++---
- include/hw/acpi/aml-build.h | 26 ++++++++++++++-
- 2 files changed, 85 insertions(+), 6 deletions(-)
+ hw/riscv/virt-acpi-build.c | 49 +++++++++++++++++++++++++++++++++++++-
+ hw/riscv/virt.c            |  1 +
+ 2 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-index af66bde0f5..416275fdcc 100644
---- a/hw/acpi/aml-build.c
-+++ b/hw/acpi/aml-build.c
-@@ -1994,18 +1994,48 @@ static void build_processor_hierarchy_node(GArray *tbl, uint32_t flags,
-     }
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index 26c7e4482d..d95ae1cf01 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -38,6 +38,7 @@
+ #include "migration/vmstate.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "qemu/units.h"
+ #include "sysemu/reset.h"
+ 
+ #define ACPI_BUILD_TABLE_SIZE             0x20000
+@@ -528,12 +529,54 @@ static void build_madt(GArray *table_data,
+     acpi_table_end(linker, &table);
  }
  
-+/* ACPI spec, Revision 6.3 Cache type structure (Type 1) */
-+static void build_cache_structure(GArray *tbl,
-+                                  uint32_t next_level,
-+                                  CPUCacheInfo *cache_info)
++static void pptt_setup(GArray *table_data, BIOSLinker *linker, MachineState *ms,
++                       const char *oem_id, const char *oem_table_id)
 +{
-+    /* 1 – Cache type structure */
-+    build_append_byte(tbl, 1);
-+    /* Length */
-+    build_append_byte(tbl, 24);
-+    /* Reserved */
-+    build_append_int_noprefix(tbl, 0, 2);
-+    /* Flags */
-+    build_append_int_noprefix(tbl, 0x7f, 4);
-+    /* Next level cache */
-+    build_append_int_noprefix(tbl, next_level, 4);
-+    /* Size */
-+    build_append_int_noprefix(tbl, cache_info->size, 4);
-+    /* Number of sets */
-+    build_append_int_noprefix(tbl, cache_info->sets, 4);
-+    /* Associativity */
-+    build_append_byte(tbl, cache_info->associativity);
-+    /* Attributes */
-+    build_append_byte(tbl, cache_info->attributes);
-+    /* Line size */
-+    build_append_int_noprefix(tbl, cache_info->line_size, 2);
++    CPUCaches default_cache_info = {
++        .l1d_cache = &(CPUCacheInfo) {
++            .type = DATA_CACHE,
++            .size = 64 * KiB,
++            .line_size = 64,
++            .associativity = 4,
++            .sets = 256,
++            .attributes = 0x02,
++        },
++        .l1i_cache = &(CPUCacheInfo) {
++            .type = INSTRUCTION_CACHE,
++            .size = 64 * KiB,
++            .line_size = 64,
++            .associativity = 4,
++            .sets = 256,
++            .attributes = 0x04,
++        },
++        .l2_cache = &(CPUCacheInfo) {
++            .type = UNIFIED_CACHE,
++            .size = 2048 * KiB,
++            .line_size = 64,
++            .associativity = 8,
++            .sets = 4096,
++            .attributes = 0x0a,
++        },
++        .l3_cache = &(CPUCacheInfo) {
++            .type = UNIFIED_CACHE,
++            .size = 4096 * KiB,
++            .line_size = 64,
++            .associativity = 8,
++            .sets = 8192,
++            .attributes = 0x0a,
++        },
++    };
++
++    build_pptt(table_data, linker, ms, oem_id, oem_table_id,
++               &default_cache_info);
 +}
 +
- /*
-  * ACPI spec, Revision 6.3
-  * 5.2.29 Processor Properties Topology Table (PPTT)
-  */
- void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
--                const char *oem_id, const char *oem_table_id)
-+                const char *oem_id, const char *oem_table_id,
-+                const CPUCaches *CPUCaches)
+ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
  {
-     MachineClass *mc = MACHINE_GET_CLASS(ms);
-     CPUArchIdList *cpus = ms->possible_cpus;
-     int64_t socket_id = -1, cluster_id = -1, core_id = -1;
-     uint32_t socket_offset = 0, cluster_offset = 0, core_offset = 0;
-     uint32_t pptt_start = table_data->len;
-+    uint32_t l3_offset = 0, priv_num = 0;
-+    uint32_t priv_rsrc[3] = {0};
-     int n;
-     AcpiTable table = { .sig = "PPTT", .rev = 2,
-                         .oem_id = oem_id, .oem_table_id = oem_table_id };
-@@ -2024,10 +2054,11 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-             socket_id = cpus->cpus[n].props.socket_id;
-             cluster_id = -1;
-             core_id = -1;
-+            priv_num = 0;
-             socket_offset = table_data->len - pptt_start;
-             build_processor_hierarchy_node(table_data,
-                 (1 << 0), /* Physical package */
--                0, socket_id, NULL, 0);
-+                0, socket_id, NULL, priv_num);
-         }
+     GArray *table_offsets;
+     unsigned dsdt, xsdt;
+     GArray *tables_blob = tables->table_data;
+-
++    MachineState *ms = MACHINE(s);
+     table_offsets = g_array_new(false, true,
+                                 sizeof(uint32_t));
  
-         if (mc->smp_props.clusters_supported && mc->smp_props.has_clusters) {
-@@ -2035,20 +2066,44 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-                 assert(cpus->cpus[n].props.cluster_id > cluster_id);
-                 cluster_id = cpus->cpus[n].props.cluster_id;
-                 core_id = -1;
-+                priv_num = 0;
-+                l3_offset = table_data->len - pptt_start;
-+                /* L3 cache type structure */
-+                if (CPUCaches && CPUCaches->l3_cache) {
-+                    priv_num = 1;
-+                    build_cache_structure(table_data, 0, CPUCaches->l3_cache);
-+                }
-                 cluster_offset = table_data->len - pptt_start;
-                 build_processor_hierarchy_node(table_data,
-                     (0 << 0), /* Not a physical package */
--                    socket_offset, cluster_id, NULL, 0);
-+                    socket_offset, cluster_id, &l3_offset, priv_num);
-             }
-         } else {
-             cluster_offset = socket_offset;
-         }
+@@ -555,6 +598,10 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
+     acpi_add_table(table_offsets, tables_blob);
+     build_rhct(tables_blob, tables->linker, s);
  
-+        if (CPUCaches) {
-+            /* L2 cache type structure */
-+            priv_rsrc[0] = table_data->len - pptt_start;
-+            build_cache_structure(table_data, 0, CPUCaches->l2_cache);
++    acpi_add_table(table_offsets, tables_blob);
++    pptt_setup(tables_blob, tables->linker, ms,
++               s->oem_id, s->oem_table_id);
 +
-+            /* L1d cache type structure */
-+            priv_rsrc[1] = table_data->len - pptt_start;
-+            build_cache_structure(table_data, priv_rsrc[0],
-+                                  CPUCaches->l1d_cache);
-+
-+            /* L1i cache type structure */
-+            priv_rsrc[2] = table_data->len - pptt_start;
-+            build_cache_structure(table_data, priv_rsrc[0],
-+                                  CPUCaches->l1i_cache);
-+
-+            priv_num = 3;
-+        }
-         if (ms->smp.threads == 1) {
-             build_processor_hierarchy_node(table_data,
-                 (1 << 1) | /* ACPI Processor ID valid */
-                 (1 << 3),  /* Node is a Leaf */
--                cluster_offset, n, NULL, 0);
-+                cluster_offset, n, priv_rsrc, priv_num);
-         } else {
-             if (cpus->cpus[n].props.core_id != core_id) {
-                 assert(cpus->cpus[n].props.core_id > core_id);
-@@ -2063,7 +2118,7 @@ void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-                 (1 << 1) | /* ACPI Processor ID valid */
-                 (1 << 2) | /* Processor is a Thread */
-                 (1 << 3),  /* Node is a Leaf */
--                core_offset, n, NULL, 0);
-+                core_offset, n, priv_rsrc, priv_num);
-         }
-     }
- 
-diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
-index ff2a310270..2dd949f41e 100644
---- a/include/hw/acpi/aml-build.h
-+++ b/include/hw/acpi/aml-build.h
-@@ -234,6 +234,29 @@ struct CrsRangeSet {
-     GPtrArray *mem_64bit_ranges;
- } CrsRangeSet;
- 
-+enum CacheType {
-+    DATA_CACHE,
-+    INSTRUCTION_CACHE,
-+    UNIFIED_CACHE
-+};
-+
-+typedef
-+struct CPUCacheInfo {
-+    enum CacheType type;      /* Cache Type*/
-+    uint32_t size;            /* Size of the cache in bytes */
-+    uint32_t sets;            /* Number of sets in the cache */
-+    uint8_t associativity;    /* Cache associativity */
-+    uint8_t attributes;       /* Cache attributes */
-+    uint16_t line_size;       /* Line size in bytes */
-+} CPUCacheInfo;
-+
-+typedef
-+struct CPUCaches {
-+        CPUCacheInfo *l1d_cache;
-+        CPUCacheInfo *l1i_cache;
-+        CPUCacheInfo *l2_cache;
-+        CPUCacheInfo *l3_cache;
-+} CPUCaches;
- 
- /*
-  * ACPI 5.0: 6.4.3.8.2 Serial Bus Connection Descriptors
-@@ -490,7 +513,8 @@ void build_slit(GArray *table_data, BIOSLinker *linker, MachineState *ms,
-                 const char *oem_id, const char *oem_table_id);
- 
- void build_pptt(GArray *table_data, BIOSLinker *linker, MachineState *ms,
--                const char *oem_id, const char *oem_table_id);
-+                const char *oem_id, const char *oem_table_id,
-+                const CPUCaches *CPUCaches);
- 
- void build_fadt(GArray *tbl, BIOSLinker *linker, const AcpiFadtData *f,
-                 const char *oem_id, const char *oem_table_id);
+     acpi_add_table(table_offsets, tables_blob);
+     {
+         AcpiMcfgInfo mcfg = {
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index f9fd1341fc..a6f468fc22 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1710,6 +1710,7 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+     mc->cpu_index_to_instance_props = riscv_numa_cpu_index_to_props;
+     mc->get_default_cpu_node_id = riscv_numa_get_default_cpu_node_id;
+     mc->numa_mem_supported = true;
++    mc->smp_props.clusters_supported = true;
+     /* platform instead of architectural choice */
+     mc->cpu_cluster_has_numa_boundary = true;
+     mc->default_ram_id = "riscv_virt_board.ram";
 -- 
 2.34.1
 
