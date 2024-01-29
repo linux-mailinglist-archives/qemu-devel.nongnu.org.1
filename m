@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19140841351
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:23:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790C784135C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUXDW-0005sG-DY; Mon, 29 Jan 2024 14:22:50 -0500
+	id 1rUXGT-0002rd-Su; Mon, 29 Jan 2024 14:25:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rUXDO-0005m9-2y; Mon, 29 Jan 2024 14:22:43 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rUXGR-0002qy-BL
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:25:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rUXDL-0002ee-LP; Mon, 29 Jan 2024 14:22:41 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1FEC9486AC;
- Mon, 29 Jan 2024 22:23:27 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id C564C6E5C6;
- Mon, 29 Jan 2024 22:22:33 +0300 (MSK)
-Message-ID: <779fde91-80bb-4b74-9c26-a8bd18d42f15@tls.msk.ru>
-Date: Mon, 29 Jan 2024 22:22:33 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rUXGL-0003BL-IM
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:25:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706556343;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1a5lq3tGezRxBJk/+LVp2UFAB6jyIEd+6CeAHZ7V4hk=;
+ b=c2b3FxTKMt7u0Os7rzLcTV4NGH+kZAITAph/3qkWQo9m5u/5ezHzS+mv89Gr7McbIgZjr7
+ se3XIa6js9S20/HmXff62YoTX1FQWL9u6X9MKEwdcwcelFJiQTXCKhYgDMk/aMVzqOi1Xp
+ 0EJB5qndze1QIm4BltTxDlbBNDdcM4I=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512-9MmrefunNZWNMbDCYgjBpg-1; Mon, 29 Jan 2024 14:25:42 -0500
+X-MC-Unique: 9MmrefunNZWNMbDCYgjBpg-1
+Received: by mail-vs1-f70.google.com with SMTP id
+ ada2fe7eead31-46b4fe9f352so206072137.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 11:25:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706556341; x=1707161141;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1a5lq3tGezRxBJk/+LVp2UFAB6jyIEd+6CeAHZ7V4hk=;
+ b=E6ecJm0+sZGzCthuTc7JYq0Zjp6UfACDRfTLYRbapmiudtco5oxSOn4cVCduxCLtLC
+ Mt9vxqVCQjkU64ToIHTJMhUIwGAwLqhGMIPvLDLqVcS5Cf/d0ivYtweKEZ/s+gIxu0bI
+ 3+lHM5WH/XUJHOZEy4FTCZpNfqe2/9qAAcqbwBBQLSeWvEJZ7kAmuWEgJAvvNprac9ET
+ gHU10qXgbzwSON0eZZPvQmBMyFBrv9hoeytSy9oMxKV1SQ7ioATS7JNaFMdi2aOG4QwY
+ BUFXCxtVAdRCpUhB4yOKFdpjoOog7zlUTm3jxhIqEoaLTlBh83fAITrokLrz+b7VmsCn
+ kV4w==
+X-Gm-Message-State: AOJu0Yx7w9hccu55sOjqP5dMga4WtPu+CFgbqP7/bUF8j/nkDva/MmVD
+ DhyRT10eIs1nFsuPUhBJu27UNJPGffTEDlHtLAjuIkuSYZhOcidVr3CWjGTMTH0ye9P9MTe21kB
+ SLWr6RulZyiEyywRQLuP/e3k9sTg36N6t5bWie4IJgwFj+LOCF93iuRue7w+V7Uyj2WlVqpkbP2
+ fwRNUG9n477p0xI66lqzKASTedvnA=
+X-Received: by 2002:a05:6102:d8f:b0:46b:5e9d:9a9f with SMTP id
+ d15-20020a0561020d8f00b0046b5e9d9a9fmr1764887vst.10.1706556341520; 
+ Mon, 29 Jan 2024 11:25:41 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvPdGGuT874QLT7+ArfLxsB3CXun/zgAKBd7efUmi4Sz4+zcEw95/qD9gvuUgnn6D6JO/WIHFaJzLNdn+Fp2U=
+X-Received: by 2002:a05:6102:d8f:b0:46b:5e9d:9a9f with SMTP id
+ d15-20020a0561020d8f00b0046b5e9d9a9fmr1764876vst.10.1706556341269; Mon, 29
+ Jan 2024 11:25:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ANNOUNCE] QEMU 8.1.5 Stable released
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <1706555596.897651.1285720.nullmailer@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <1706555596.897651.1285720.nullmailer@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240125072214.318382-1-aharivel@redhat.com>
+ <20240125072214.318382-2-aharivel@redhat.com>
+ <ZbKOZpi0v3sdKV8q@redhat.com>
+In-Reply-To: <ZbKOZpi0v3sdKV8q@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 29 Jan 2024 20:25:29 +0100
+Message-ID: <CABgObfYbGHS_2drz31kGd_KbQKNwaFVSL4TxoE=AJj-W6jqAAg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] qio: add support for SO_PEERCRED for socket channel
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Anthony Harivel <aharivel@redhat.com>, mtosatti@redhat.com,
+ qemu-devel@nongnu.org, vchundur@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,109 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.01.2024 22:13, Michael Tokarev пишет:
-> Hi everyone,
-> 
-> The QEMU v8.1.5 stable release is now available.
-> 
-> You can grab the tarball from our download page here:
-> 
->    https://www.qemu.org/download/#source
-> 
->    https://download.qemu.org/qemu-8.1.5.tar.xz
->    https://download.qemu.org/qemu-8.1.5.tar.xz.sig (signature)
-> 
-> v8.1.5 is now tagged in the official qemu.git repository, and the
-> stable-8.1 branch has been updated accordingly:
-> 
->    https://gitlab.com/qemu-project/qemu/-/commits/stable-8.1?ref_type=heads
-> 
-> Thank you everyone who has been involved and helped with the stable series!
-> 
-> /mjt
-> 
-> Changelog (stable-8.1-hash master-hash Author Name: Commmit-Subject):
-> 
-> 20a1b341a0 Michael Tokarev:
->   Update version for 8.1.5 release
-> ccdb4cc209 6fffc83785 Peter Maydell:
->   target/arm: Fix A64 scalar SQSHRN and SQRSHRN
-> b86fa3a4f2 604927e357 Max Filippov:
->   target/xtensa: fix OOB TLB entry access
-> d24dd10143 e8a12fe31f Daniel P. Berrangé:
->   qtest: bump aspeed_smc-test timeout to 6 minutes
-> 4b02c718b5 effd60c878 Stefan Hajnoczi:
->   monitor: only run coroutine commands in qemu_aio_context
-> 2f5e27eefa 9ee2dd4c22 Stefan Hajnoczi:
->   iotests: port 141 to Python for reliable QMP testing
-> 03bc938fbf da62b507a2 Stefan Hajnoczi:
->   iotests: add filter_qmp_generated_node_ids()
-> 23a512f418 a9c8ea9547 Ari Sundholm:
->   block/blklogwrites: Fix a bug when logging "write zeroes" operations.
-> dd1d3c8c29 2220e8189f Jason Wang:
->   virtio-net: correctly copy vnet header when flushing TX
-> c173670033 9f6523e8e4 Joseph Burt:
->   tcg/arm: Fix SIGILL in tcg_out_qemu_st_direct
-> 76a9da39d4 8a9be79924 Fiona Ebner:
->   block/io: clear BDRV_BLOCK_RECURSE flag after recursing in bdrv_co_block_status
-> 4b06bb5826 Paolo Bonzini:
->   accel/tcg: Revert mapping of PCREL translation block to multiple virtual addresses
-> 25ff741fe8 b16a45bc5e Alex Bennée:
->   readthodocs: fully specify a build environment
-> 72694a69c9 c2d7de557d Mark Cave-Ayland:
->   hw/scsi/esp-pci: set DMA_STAT_BCMBLT when BLAST command issued
-> 01db312e3b 1e8e6644e0 Mark Cave-Ayland:
->   hw/scsi/esp-pci: synchronise setting of DMA_STAT_DONE with ESP completion interrupt
-> e8cb126075 6b41417d93 Mark Cave-Ayland:
->   hw/scsi/esp-pci: generate PCI interrupt from separate ESP and PCI sources
-> 2cd67d013d 84a6835e00 Mark Cave-Ayland:
->   hw/scsi/esp-pci: use correct address register for PCI DMA transfers
-> 2472f8467d 44ce1b5d2f Nick Briggs:
->   migration/rdma: define htonll/ntohll only if not predefined
-> fcc79f2e09 284a7ee2e2 Gerd Hoffmann:
->   hw/pflash: implement update buffer for block writes
-> dd25df302e 5dd58358a5 Gerd Hoffmann:
->   hw/pflash: use ldn_{be,le}_p and stn_{be,le}_p
-> d83b0f64aa 3b14a555fd Gerd Hoffmann:
->   hw/pflash: refactor pflash_data_write()
-> a8988972cd 484aecf2d3 Philippe Mathieu-Daudé:
->   backends/cryptodev: Do not ignore throttle/backends Errors
-> 7b03b125ee 729ba8e933 Paolo Bonzini:
->   target/i386: pcrel: store low bits of physical address in data[0]
-> 5707858602 2926eab896 guoguangyao:
->   target/i386: fix incorrect EIP in PC-relative translation blocks
-> 99e32260ac a58506b748 Richard Henderson:
->   target/i386: Do not re-compute new pc with CF_PCREL
-> 357b599028 410c2a4d75 Anastasia Belova:
->   load_elf: fix iterator's type for elf file processing
-> d6488e5186 52a21689cd Peter Maydell:
->   .gitlab-ci.d/buildtest.yml: Work around htags bug when environment is large
-> 5e190ed415 e358a25a97 Ilya Leoshkevich:
->   target/s390x: Fix LAE setting a wrong access register
-> f62b55da87 c98873ee4a Samuel Tardieu:
->   tests/qtest/virtio-ccw: Fix device presence checking
-> 074b769c0b 1d513e06d9 Natanael Copa:
->   util: fix build with musl libc on ppc64le
-> 6eb6bca73f 82a65e3188 Peter Maydell:
->   hw/intc/arm_gicv3_cpuif: handle LPIs in in the list registers
-> 97d3be7bca 4ad87cd4b2 Michael Tokarev:
->   chardev/char.c: fix "abstract device type" error message
-> 03382b91cb 5cb0e7abe1 Xu Lu:
->   target/riscv: Fix mcycle/minstret increment behavior
-> 6c5dda7850 25145a7d77 Pavel Pisa:
->   hw/net/can/sja1000: fix bug for single acceptance filter and standard frame
-> 60472f719c bb6e2511eb Kevin Wolf:
->   iotests: Basic tests for internal snapshots
-> 4c8315ad50 5a7f21efaf Kevin Wolf:
->   vl: Improve error message for conflicting -incoming and -loadvm
+On Thu, Jan 25, 2024 at 5:38=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+> > +static void
+> > +qio_channel_socket_get_peerpid(QIOChannel *ioc,
+> > +                               unsigned int *pid,
+> > +                               Error **errp)
+> > +{
+> > +#ifdef CONFIG_LINUX
+> > +    QIOChannelSocket *sioc =3D QIO_CHANNEL_SOCKET(ioc);
+> > +    Error *err =3D NULL;
+> > +    socklen_t len =3D sizeof(struct ucred);
+> > +
+> > +    struct ucred cred;
+> > +    if (getsockopt(sioc->fd,
+> > +               SOL_SOCKET, SO_PEERCRED,
+> > +               &cred, &len) =3D=3D -1) {
+> > +        error_setg_errno(&err, errno, "Unable to get peer credentials"=
+);
+> > +        error_propagate(errp, err);
+> > +    }
+> > +    *pid =3D (unsigned int)cred.pid;
+> > +#else
+> > +    *pid =3D 0;
+>
+> Defaulting 'pid' to 0 is potentially unsafe, because to a caller it
+> now appears that the remote party is 'root' and thus implied to be
+> a privileged account.
 
-Plus this one:
+This is a pid, so 0 cannot be confused; however, I agree that
+returning an error is better.
 
-b769a8e472 d3007d348a Kevin Wolf:
-  block: Fix crash when loading snapshot on inactive node
+Paolo
 
-somehow my script didn't report the very first commit applied to each
-branch.  Here and for 7.2.9.  Fixed now.
-
-/mjt
 
