@@ -2,87 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790C784135C
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C542841380
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:29:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUXGT-0002rd-Su; Mon, 29 Jan 2024 14:25:53 -0500
+	id 1rUXJ8-0003i9-PZ; Mon, 29 Jan 2024 14:28:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rUXGR-0002qy-BL
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:25:51 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXIy-0003gm-Fh
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:28 -0500
+Received: from todd.t-8ch.de ([159.69.126.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rUXGL-0003BL-IM
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:25:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706556343;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1a5lq3tGezRxBJk/+LVp2UFAB6jyIEd+6CeAHZ7V4hk=;
- b=c2b3FxTKMt7u0Os7rzLcTV4NGH+kZAITAph/3qkWQo9m5u/5ezHzS+mv89Gr7McbIgZjr7
- se3XIa6js9S20/HmXff62YoTX1FQWL9u6X9MKEwdcwcelFJiQTXCKhYgDMk/aMVzqOi1Xp
- 0EJB5qndze1QIm4BltTxDlbBNDdcM4I=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-9MmrefunNZWNMbDCYgjBpg-1; Mon, 29 Jan 2024 14:25:42 -0500
-X-MC-Unique: 9MmrefunNZWNMbDCYgjBpg-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-46b4fe9f352so206072137.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 11:25:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706556341; x=1707161141;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1a5lq3tGezRxBJk/+LVp2UFAB6jyIEd+6CeAHZ7V4hk=;
- b=E6ecJm0+sZGzCthuTc7JYq0Zjp6UfACDRfTLYRbapmiudtco5oxSOn4cVCduxCLtLC
- Mt9vxqVCQjkU64ToIHTJMhUIwGAwLqhGMIPvLDLqVcS5Cf/d0ivYtweKEZ/s+gIxu0bI
- 3+lHM5WH/XUJHOZEy4FTCZpNfqe2/9qAAcqbwBBQLSeWvEJZ7kAmuWEgJAvvNprac9ET
- gHU10qXgbzwSON0eZZPvQmBMyFBrv9hoeytSy9oMxKV1SQ7ioATS7JNaFMdi2aOG4QwY
- BUFXCxtVAdRCpUhB4yOKFdpjoOog7zlUTm3jxhIqEoaLTlBh83fAITrokLrz+b7VmsCn
- kV4w==
-X-Gm-Message-State: AOJu0Yx7w9hccu55sOjqP5dMga4WtPu+CFgbqP7/bUF8j/nkDva/MmVD
- DhyRT10eIs1nFsuPUhBJu27UNJPGffTEDlHtLAjuIkuSYZhOcidVr3CWjGTMTH0ye9P9MTe21kB
- SLWr6RulZyiEyywRQLuP/e3k9sTg36N6t5bWie4IJgwFj+LOCF93iuRue7w+V7Uyj2WlVqpkbP2
- fwRNUG9n477p0xI66lqzKASTedvnA=
-X-Received: by 2002:a05:6102:d8f:b0:46b:5e9d:9a9f with SMTP id
- d15-20020a0561020d8f00b0046b5e9d9a9fmr1764887vst.10.1706556341520; 
- Mon, 29 Jan 2024 11:25:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFvPdGGuT874QLT7+ArfLxsB3CXun/zgAKBd7efUmi4Sz4+zcEw95/qD9gvuUgnn6D6JO/WIHFaJzLNdn+Fp2U=
-X-Received: by 2002:a05:6102:d8f:b0:46b:5e9d:9a9f with SMTP id
- d15-20020a0561020d8f00b0046b5e9d9a9fmr1764876vst.10.1706556341269; Mon, 29
- Jan 2024 11:25:41 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXIv-0003Om-RN
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1706556501; bh=FVw+c6Ce+wkmxqh1+XbMbzjBtVo4IHWXj7KAS4yyaNY=;
+ h=From:Subject:Date:To:Cc:From;
+ b=kngt+Q95OEXPv+r9NpH4pFXm5lucSg/36DDFjgNyjlSAI3ak7NwXD3bGBO/+GoCht
+ Bal7Qxv8CY/TRulqb5pRC0xWqa4VLxqbMM0iQ9hxOzKLsgw9hd5BaRyuA9ejrkVMJS
+ FVHqhB9cbn8qDpThS0+l2ZIspL6ToGjm0EDmxtRY=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: [PATCH v5 0/6] hw/misc/pvpanic: add support for normal shutdowns
+Date: Mon, 29 Jan 2024 20:28:08 +0100
+Message-Id: <20240129-pvpanic-shutdown-v5-0-f5a060b87c74@t-8ch.de>
 MIME-Version: 1.0
-References: <20240125072214.318382-1-aharivel@redhat.com>
- <20240125072214.318382-2-aharivel@redhat.com>
- <ZbKOZpi0v3sdKV8q@redhat.com>
-In-Reply-To: <ZbKOZpi0v3sdKV8q@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 29 Jan 2024 20:25:29 +0100
-Message-ID: <CABgObfYbGHS_2drz31kGd_KbQKNwaFVSL4TxoE=AJj-W6jqAAg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] qio: add support for SO_PEERCRED for socket channel
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Anthony Harivel <aharivel@redhat.com>, mtosatti@redhat.com,
- qemu-devel@nongnu.org, vchundur@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEj8t2UC/33NTWrDMBCG4asErasyf6qlrHqP0oUlK7U2trFcN
+ SH47pUDBRNMl9/A885d5TinmNX5dFdzLCmncajDvJxU6NvhK+rU1a0IiBFB9FSmdkhB5/576ca
+ fQQNF8RK8OHGqsmmOl3R9JD8+6+5TXsb59vhQcLv+EyuooRbZMJrGOvTvi7ahf+2i2lqFdp7sg
+ afqLQM79mKCf3vyvPfuwHP1wbVkHV2CIX7y8ucFEJoDL9t/NABtEwUs7vy6rr/jHKfbbwEAAA=
+ =
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, 
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706556500; l=3086;
+ i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
+ bh=FVw+c6Ce+wkmxqh1+XbMbzjBtVo4IHWXj7KAS4yyaNY=;
+ b=mYYA2ig3eRt0XwuRimONDgPLcvniQLeU/hSvGbEwgs1kEnJtMq7jrGuc4HvBEjhhX0ftYMkn9
+ UR/qjSELAr5Bj5NJtB/oLYEaSZ1EqKuakLCn03ax49p2Q/BXQdFSON8
+X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
+ helo=todd.t-8ch.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,37 +71,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jan 25, 2024 at 5:38=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
-> > +static void
-> > +qio_channel_socket_get_peerpid(QIOChannel *ioc,
-> > +                               unsigned int *pid,
-> > +                               Error **errp)
-> > +{
-> > +#ifdef CONFIG_LINUX
-> > +    QIOChannelSocket *sioc =3D QIO_CHANNEL_SOCKET(ioc);
-> > +    Error *err =3D NULL;
-> > +    socklen_t len =3D sizeof(struct ucred);
-> > +
-> > +    struct ucred cred;
-> > +    if (getsockopt(sioc->fd,
-> > +               SOL_SOCKET, SO_PEERCRED,
-> > +               &cred, &len) =3D=3D -1) {
-> > +        error_setg_errno(&err, errno, "Unable to get peer credentials"=
-);
-> > +        error_propagate(errp, err);
-> > +    }
-> > +    *pid =3D (unsigned int)cred.pid;
-> > +#else
-> > +    *pid =3D 0;
->
-> Defaulting 'pid' to 0 is potentially unsafe, because to a caller it
-> now appears that the remote party is 'root' and thus implied to be
-> a privileged account.
+Shutdown requests are normally hardware dependent.
+By extending pvpanic to also handle shutdown requests, guests can
+submit such requests with an easily implementable and cross-platform
+mechanism.
 
-This is a pid, so 0 cannot be confused; however, I agree that
-returning an error is better.
+The background is the usage of minimal Linux kernels with different
+architectures for testing purposes.
+Poweroff support varies highly per architecture and requires a bunch of
+code to be compiled to work.
+pvpanic on the other hand is very small and uniform.
 
-Paolo
+Patch 1, 2 and 3 are general cleanups, that seems useful even without this
+proposal being implemented.
+They should also be ready to be picked up from the series on their own.
+
+A corresponding patch has been submitted for Linux [0].
+This is also where the request was voiced to drop move away from a
+pvpanic uapi header in Linux.
+
+[0] https://lore.kernel.org/lkml/20231104-pvpanic-shutdown-v1-1-5ee7c9b3e301@weissschuh.net/
+
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+---
+Changes in v5:
+- Add patch from Alejandro to emit a QMP event.
+- Update cover letter.
+- Add tests.
+- Link to v4: https://lore.kernel.org/r/20240107-pvpanic-shutdown-v4-0-81500a7e4081@t-8ch.de
+
+Changes in v4:
+- Rebase on 8.2 master
+- Resend after tree reopened and holidays
+- Link to v3: https://lore.kernel.org/r/20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de
+
+Changes in v3:
+- Drop from Linux imported pvpanic header as discussed with Cornelia and
+  requested by Greg
+- Link to v2: https://lore.kernel.org/r/20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de
+
+Changes in v2:
+- Remove RFC status
+- Add Ack from Thomas to 2nd patch
+- Fix typo in title of 2nd patch
+- Link to v1: https://lore.kernel.org/r/20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de
+
+---
+Alejandro Jimenez (1):
+      pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic shutdown signal
+
+Thomas Weißschuh (5):
+      linux-headers: drop pvpanic.h
+      hw/misc/pvpanic: centralize definition of supported events
+      tests/qtest/pvpanic: use centralized definition of supported events
+      hw/misc/pvpanic: add support for normal shutdowns
+      tests/qtest/pvpanic: add tests for pvshutdown event
+
+ docs/specs/pvpanic.rst                   |  2 ++
+ hw/misc/pvpanic-isa.c                    |  3 +--
+ hw/misc/pvpanic-pci.c                    |  3 +--
+ hw/misc/pvpanic.c                        |  8 ++++--
+ include/hw/misc/pvpanic.h                |  5 ++++
+ include/standard-headers/linux/pvpanic.h |  9 -------
+ include/sysemu/runstate.h                |  1 +
+ qapi/run-state.json                      | 14 ++++++++++
+ scripts/update-linux-headers.sh          |  3 +--
+ system/runstate.c                        |  6 +++++
+ tests/qtest/pvpanic-pci-test.c           | 44 ++++++++++++++++++++++++++++++--
+ tests/qtest/pvpanic-test.c               | 34 ++++++++++++++++++++++--
+ 12 files changed, 111 insertions(+), 21 deletions(-)
+---
+base-commit: 11be70677c70fdccd452a3233653949b79e97908
+change-id: 20231104-pvpanic-shutdown-02e4b4cb4949
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas@t-8ch.de>
 
 
