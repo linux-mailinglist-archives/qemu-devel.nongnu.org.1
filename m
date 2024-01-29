@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA44841691
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EC0841698
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:12:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUajf-000307-5x; Mon, 29 Jan 2024 18:08:15 -0500
+	id 1rUajI-0002Uz-T2; Mon, 29 Jan 2024 18:07:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUaeE-0006yO-HI
+ id 1rUaeI-00071f-CF
  for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:03:00 -0500
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUaeC-00005Q-Gu
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:38 -0500
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-59a1896b45eso1149595eaf.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:02:34 -0800 (PST)
+ id 1rUaeD-000063-NJ
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:39 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6ddb1115e82so2246348b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:02:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706569354; x=1707174154; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706569356; x=1707174156; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=7BY3FC/8lb12NjJs4/taRcBSMiYCFRNyNU57iKW6Ebg=;
- b=ZSPB/XlROGKHclBdMiV9WZmy/BzSp409OvFUsbK7VlEU6yndZ27o9WzuUmq6F217UM
- jXZeukLLVKrnwv291ftUWwKb0pM8KWJ2TC8ior9Dwg9l3nEqTzVElsrnNqxHq9TKKLGM
- CA8+bs30O0MuSdCfx7TY1tKxY6aDrCk9dx937GHcf+T7n9XLySJJuQ0Bot+sf4e4reuA
- eTdyCTTwRdv+YbEOxa6pE3tVTBPaK6OGlCRFphSrS66qJYnrteD5eJYpxt755HyGTwpa
- dW6hxOqDfslQd5G0SwBGCSE6G4kovFGY8oznWX7mp5RlR+wYA5nIaw1e8EGpF/DJ1AdU
- 2Rgw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Qg3ZIcWG7UYKvaB8+csAeQhagpxbl+IqGiAj8oTWzCY=;
+ b=PSQjnajTyl9ULQX7bFv2kBA1oMwHCivUIbTfGCN2gAe+oMFDAzSeoTZLhmA7mRUvTP
+ I5sPwSbOFvbB/rf21bJ+r2dpTf2Zf78qKRukIV8T8CR6vh/C4yKx75txJYPrcGxWMlek
+ O5WBYp1kHgfGNSc1M5km9Yul/yht7Xy5HWQ3g+g+/2B7F3t1fRO/e6y1g1tLtKIrthjH
+ uuS2BPVY8NYnrr1FH2TnaoRX91mEH9a7vjgDjWa9WQ7r+uQTzOgSpaHwtfu2sVYZGlMu
+ v74Cdng3e+o7+Hldny/aYRDtfkO+YJBxIVKFVRq44S3W+e1ZSHBgF5HPqpByCydMFTse
+ So1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706569354; x=1707174154;
+ d=1e100.net; s=20230601; t=1706569356; x=1707174156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7BY3FC/8lb12NjJs4/taRcBSMiYCFRNyNU57iKW6Ebg=;
- b=n/l7lVp3JmmRu1DRUfwg/m/8tOaD3CwrDhyaVb2zeYDjY6TT3mPRhv2cy7Q2eekPJK
- vtl/1GS2llTJa/cGFKJpGeve/BmggoAwqWBLAnMcV9JehSX9S4Kqv0P7KVexIPP+yLE7
- AqolnuOBUvfY0jYipG5BSJFIa/xP3Ido0YrMLypBz6vB5d7DDqOs/fOivWSEnr5GKxby
- E7b+oh7IULoGRSZN3ZqBLvxmMy+xxbx3TJIBSUvDnJA72uhGplvWhpKkYczwT9XJ72K3
- 9H0OftusEbjVvsuRR32I8gDNDHpzsY1FDZ8EaKGvk8rgIn2jwBIbqthnzxTzCAoy56pb
- mNcA==
-X-Gm-Message-State: AOJu0YxlVIfy+y3e+eBtMK7RmZJhkIZ5NxwsERDk3/pmUihsB0fEXbee
- qGeQ3YcKITTv741czIZDEoXiggldzg4TGUn14eg0qvumqJYjBrz4ESSNH6wxKIOochgjLR+h+xO
- haeg=
-X-Google-Smtp-Source: AGHT+IHKaEWq3K6xRYFttQ7vmsuYSHO75hEiXZLC7nBIct0Ko59Zqhh3Wcjzhz+00GEtJetrusC0bg==
-X-Received: by 2002:a05:6358:722:b0:178:6463:d40b with SMTP id
- e34-20020a056358072200b001786463d40bmr6929010rwj.17.1706569353860; 
- Mon, 29 Jan 2024 15:02:33 -0800 (PST)
+ bh=Qg3ZIcWG7UYKvaB8+csAeQhagpxbl+IqGiAj8oTWzCY=;
+ b=GWxNwhFCBARH/ZQ5496YhRx0+61ILRZI2YbvCANQVx8ylxem9/67IohZfglSP6OQ1Q
+ JAHn1iv8G5sgpWxpjgnUO+GdGzI5TmfCLazEWVwN8wcagoRM4ztPDZkjhNquGRLDBQSg
+ 9O02DhsIlBzE4Lq33cqlIVwb5HOLGo4uTmBUscZm7GqGk3ZXwN0Pd7uGWaHotJIRZfMu
+ F9ub3wmbgr2WG8h2PZY767bHHMLqZe4UPxpldI+Ap2/2vplIe8Jf2umGqcoEfVAvJJ4u
+ 5phhX/qjWxIQe6xoSX84dNrEUriDPiUZ1Ix/a2FOsmk7OTf1fJhObzvMjq7B+ZXgb3dB
+ JSlA==
+X-Gm-Message-State: AOJu0YwP/1PbJqqecYOrwqYimzi8QdAdeiDRSO49VotfjNF3TDgaFgrQ
+ 1WK9wqY3FqzQQfhOwlbS/coLwkM4x1ezx7GO/Ei6oWk4SlrhHo+7Pn5OutUW1yaWeroRRgiIJJh
+ DmgI=
+X-Google-Smtp-Source: AGHT+IHOwt5Y2iUxnaANB/q8/PiNJll6Q7FnOty1Wca9G4vtbnbzVhPN/gwYjg70gOfbPxFk2ej/xQ==
+X-Received: by 2002:a62:61c4:0:b0:6de:3b41:2877 with SMTP id
+ v187-20020a6261c4000000b006de3b412877mr1265863pfb.25.1706569356416; 
+ Mon, 29 Jan 2024 15:02:36 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.02.32
- for <qemu-devel@nongnu.org>
+ r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.02.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:02:33 -0800 (PST)
+ Mon, 29 Jan 2024 15:02:36 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/31] accel/tcg: Use CPUState.cc instead of CPU_GET_CLASS in
- cpu-exec.c
-Date: Tue, 30 Jan 2024 09:01:16 +1000
-Message-Id: <20240129230121.8091-27-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anton Johansson <anjo@rev.ng>, Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Subject: [PULL 27/31] accel/tcg: Introduce TCGCPUOps::need_replay_interrupt()
+ handler
+Date: Tue, 30 Jan 2024 09:01:17 +1000
+Message-Id: <20240129230121.8091-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129230121.8091-1-richard.henderson@linaro.org>
 References: <20240129230121.8091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,205 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPU_GET_CLASS does runtime type checking; use the cached
-copy of the class instead.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+In order to make accel/tcg/ target agnostic,
+introduce the need_replay_interrupt() handler.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+Message-Id: <20240124101639.30056-7-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 109 ++++++++++++++++++++++---------------------
- 1 file changed, 56 insertions(+), 53 deletions(-)
+ include/hw/core/tcg-cpu-ops.h | 5 +++++
+ accel/tcg/cpu-exec.c          | 8 +++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index 3ed279836f..013867b890 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -166,6 +166,11 @@ struct TCGCPUOps {
+      */
+     bool (*io_recompile_replay_branch)(CPUState *cpu,
+                                        const TranslationBlock *tb);
++    /**
++     * @need_replay_interrupt: Return %true if @interrupt_request
++     * needs to be recorded for replay purposes.
++     */
++    bool (*need_replay_interrupt)(int interrupt_request);
+ #endif /* !CONFIG_USER_ONLY */
+ #endif /* NEED_CPU_H */
+ 
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index f2535a2991..3aebf46849 100644
+index 3aebf46849..34d10eb173 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -343,9 +343,9 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
- #ifdef CONFIG_USER_ONLY
-                 g_assert_not_reached();
+@@ -771,12 +771,14 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+  * "real" interrupt event later. It does not need to be recorded for
+  * replay purposes.
+  */
+-static inline bool need_replay_interrupt(int interrupt_request)
++static inline bool need_replay_interrupt(CPUState *cpu, int interrupt_request)
+ {
+ #if defined(TARGET_I386)
+     return !(interrupt_request & CPU_INTERRUPT_POLL);
  #else
--                CPUClass *cc = CPU_GET_CLASS(cpu);
--                assert(cc->tcg_ops->debug_check_breakpoint);
--                match_bp = cc->tcg_ops->debug_check_breakpoint(cpu);
-+                const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-+                assert(tcg_ops->debug_check_breakpoint);
-+                match_bp = tcg_ops->debug_check_breakpoint(cpu);
+-    return true;
++    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
++    return !tcg_ops->need_replay_interrupt
++           || tcg_ops->need_replay_interrupt(interrupt_request);
  #endif
-             }
- 
-@@ -462,10 +462,11 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
-          * counter hit zero); we must restore the guest PC to the address
-          * of the start of the TB.
-          */
--        CPUClass *cc = CPU_GET_CLASS(cpu);
-+        CPUClass *cc = cpu->cc;
-+        const TCGCPUOps *tcg_ops = cc->tcg_ops;
- 
--        if (cc->tcg_ops->synchronize_from_tb) {
--            cc->tcg_ops->synchronize_from_tb(cpu, last_tb);
-+        if (tcg_ops->synchronize_from_tb) {
-+            tcg_ops->synchronize_from_tb(cpu, last_tb);
-         } else {
-             tcg_debug_assert(!(tb_cflags(last_tb) & CF_PCREL));
-             assert(cc->set_pc);
-@@ -497,19 +498,19 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
- 
- static void cpu_exec_enter(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
- 
--    if (cc->tcg_ops->cpu_exec_enter) {
--        cc->tcg_ops->cpu_exec_enter(cpu);
-+    if (tcg_ops->cpu_exec_enter) {
-+        tcg_ops->cpu_exec_enter(cpu);
-     }
  }
+ #endif /* !CONFIG_USER_ONLY */
+@@ -864,7 +866,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
  
- static void cpu_exec_exit(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
- 
--    if (cc->tcg_ops->cpu_exec_exit) {
--        cc->tcg_ops->cpu_exec_exit(cpu);
-+    if (tcg_ops->cpu_exec_exit) {
-+        tcg_ops->cpu_exec_exit(cpu);
-     }
- }
- 
-@@ -685,7 +686,7 @@ static inline bool cpu_handle_halt(CPUState *cpu)
- 
- static inline void cpu_handle_debug_exception(CPUState *cpu)
- {
--    CPUClass *cc = CPU_GET_CLASS(cpu);
-+    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-     CPUWatchpoint *wp;
- 
-     if (!cpu->watchpoint_hit) {
-@@ -694,8 +695,8 @@ static inline void cpu_handle_debug_exception(CPUState *cpu)
-         }
-     }
- 
--    if (cc->tcg_ops->debug_excp_handler) {
--        cc->tcg_ops->debug_excp_handler(cpu);
-+    if (tcg_ops->debug_excp_handler) {
-+        tcg_ops->debug_excp_handler(cpu);
-     }
- }
- 
-@@ -712,6 +713,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
- #endif
-         return false;
-     }
-+
-     if (cpu->exception_index >= EXCP_INTERRUPT) {
-         /* exit request from the cpu execution loop */
-         *ret = cpu->exception_index;
-@@ -720,43 +722,45 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-         }
-         cpu->exception_index = -1;
-         return true;
--    } else {
--#if defined(CONFIG_USER_ONLY)
--        /* if user mode only, we simulate a fake exception
--           which will be handled outside the cpu execution
--           loop */
--#if defined(TARGET_I386)
--        CPUClass *cc = CPU_GET_CLASS(cpu);
--        cc->tcg_ops->fake_user_interrupt(cpu);
--#endif /* TARGET_I386 */
--        *ret = cpu->exception_index;
--        cpu->exception_index = -1;
--        return true;
--#else
--        if (replay_exception()) {
--            CPUClass *cc = CPU_GET_CLASS(cpu);
--            bql_lock();
--            cc->tcg_ops->do_interrupt(cpu);
--            bql_unlock();
--            cpu->exception_index = -1;
-+    }
- 
--            if (unlikely(cpu->singlestep_enabled)) {
--                /*
--                 * After processing the exception, ensure an EXCP_DEBUG is
--                 * raised when single-stepping so that GDB doesn't miss the
--                 * next instruction.
--                 */
--                *ret = EXCP_DEBUG;
--                cpu_handle_debug_exception(cpu);
--                return true;
--            }
--        } else if (!replay_has_interrupt()) {
--            /* give a chance to iothread in replay mode */
--            *ret = EXCP_INTERRUPT;
-+#if defined(CONFIG_USER_ONLY)
-+    /*
-+     * If user mode only, we simulate a fake exception which will be
-+     * handled outside the cpu execution loop.
-+     */
-+#if defined(TARGET_I386)
-+    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-+    tcg_ops->fake_user_interrupt(cpu);
-+#endif /* TARGET_I386 */
-+    *ret = cpu->exception_index;
-+    cpu->exception_index = -1;
-+    return true;
-+#else
-+    if (replay_exception()) {
-+        const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-+
-+        bql_lock();
-+        tcg_ops->do_interrupt(cpu);
-+        bql_unlock();
-+        cpu->exception_index = -1;
-+
-+        if (unlikely(cpu->singlestep_enabled)) {
-+            /*
-+             * After processing the exception, ensure an EXCP_DEBUG is
-+             * raised when single-stepping so that GDB doesn't miss the
-+             * next instruction.
-+             */
-+            *ret = EXCP_DEBUG;
-+            cpu_handle_debug_exception(cpu);
-             return true;
-         }
--#endif
-+    } else if (!replay_has_interrupt()) {
-+        /* give a chance to iothread in replay mode */
-+        *ret = EXCP_INTERRUPT;
-+        return true;
-     }
-+#endif
- 
-     return false;
- }
-@@ -856,10 +860,10 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
-            True when it is, and we should restart on a new TB,
-            and via longjmp via cpu_loop_exit.  */
-         else {
--            CPUClass *cc = CPU_GET_CLASS(cpu);
-+            const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
- 
--            if (cc->tcg_ops->cpu_exec_interrupt &&
--                cc->tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
-+            if (tcg_ops->cpu_exec_interrupt &&
-+                tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
-                 if (need_replay_interrupt(interrupt_request)) {
+             if (tcg_ops->cpu_exec_interrupt &&
+                 tcg_ops->cpu_exec_interrupt(cpu, interrupt_request)) {
+-                if (need_replay_interrupt(interrupt_request)) {
++                if (need_replay_interrupt(cpu, interrupt_request)) {
                      replay_interrupt();
                  }
-@@ -1078,10 +1082,9 @@ int cpu_exec(CPUState *cpu)
- bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
- {
-     static bool tcg_target_initialized;
--    CPUClass *cc = CPU_GET_CLASS(cpu);
- 
-     if (!tcg_target_initialized) {
--        cc->tcg_ops->initialize();
-+        cpu->cc->tcg_ops->initialize();
-         tcg_target_initialized = true;
-     }
- 
+                 /*
 -- 
 2.34.1
 
