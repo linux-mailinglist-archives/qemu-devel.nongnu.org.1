@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F43841701
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638828416F5
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:36:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb6E-0005r4-A8; Mon, 29 Jan 2024 18:31:34 -0500
+	id 1rUb6E-0005s2-SC; Mon, 29 Jan 2024 18:31:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb64-0005av-7F
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:24 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rUb66-0005eI-9d
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:26 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb62-00054Y-33
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:23 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d746856d85so16089695ad.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:21 -0800 (PST)
+ id 1rUb64-00054x-0z
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:25 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d7858a469aso17977465ad.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571080; x=1707175880; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571082; x=1707175882; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zRmglClgoVHSDx5STL3QfC7K3ahzi83m4KSgoX1Lwpc=;
- b=B8gQYTaCP356ulGZyS3jFeFXnxPJxFM9BMyeGr5c4sYzq0Y5Rn/w3BeRDdAoowfjWk
- s0hOugqtnEj4yNc1or9hsvUA2D97REMoT7YVusnvn8tZuL0jw9FWvt3nVSa0RKAZHeX6
- f0LcHJhin4/pnBattA5UAGsNtqwNUHXWf0h8cElMMxbaQkWeccrbRp31+CZdiE1DA102
- Qi/sbgUHs5Ji0CzwThgRu8zzAfOSh41bnbmM/hcWvLeMKB3MyhWHQOCtnrA2PQlffaOV
- JkDJwzRMWLuNSjd8Ku4XHwTDt9IUwmvuRoQaRVz0KSsM5RmikLl43NSKHBCLZv7sdeID
- QjkQ==
+ bh=cX9p1w8gwSjbvchi0L5D4HF7R4GEOnc6YSNW0pomVF4=;
+ b=rUkNe65LqnioJuFclhbz/U5jKKK+T7A/XFRzHEEkhGKRFueONs0Z8Mo55djOZXjaHV
+ vtnuxWq0J69k+St73ICfcixk6JkNQmcRjP3hK6m873vS+55bMFYuaTm7pvNq4ipHOieT
+ dRW7nUvma8/HuhP9xkGZ2z3HeI555saulk+wueX70BJlDmfZj8a/nQEr2FEEkSSKLLGI
+ NOJ58KOzyZCFkvixAr1xdPGYsJUH1IVWSVoTDQVbxmdiIr6dOr0gdVd4m+A8xRDKRkN1
+ +FzzZB6ymejjmPRugpO6qOkZFugAXIFrKJeRVF3nZYjqWNid7EnCJV9j0Ds/Mg5YoOUx
+ JFTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571080; x=1707175880;
+ d=1e100.net; s=20230601; t=1706571082; x=1707175882;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zRmglClgoVHSDx5STL3QfC7K3ahzi83m4KSgoX1Lwpc=;
- b=h2UVCnRm+HfoADwNSXe4h9Qqja3Xs4Dlo2ytnbrhjFFhSEAmeuv9Nzie/b0o8U61Zu
- YEzJp6XAuwXuO1jUV+Nqw9vGT8uYaf1s9EaATEIGpFjNcTM8om7CtbNpKs/4MroDNJku
- aaF6muXqTS8apZpoqXSWpUuOi+5sc2JDyoGsEUuz0HcF0e12EsTQvL/DRXUVw8SkYnD5
- RmokYHkhuOHCvXNTm8xihn1J6AANrMqEWoFR8cL9GDO7s1qfW9inytHaLnCebuc+THjg
- RJJb3CFHBYPpdXwoEPiA+AMvUs8Wn+vN+cMrWloNl1j/ppAgh5YqKkYnmVd8evBJYH+4
- oqzg==
-X-Gm-Message-State: AOJu0YwXMB4r3H1d06YHnlKiPMF5aM/ymrfROtFS/tSLYPleljbNtm83
- sv/JFjtccvSjeqGEuo4uBp06OWBbPJOU0ebn/KIxMJ4PLC2ZUVp8jXbDKtUW7ei6G+md1DmfwH8
- nuAg=
-X-Google-Smtp-Source: AGHT+IEGxNrvkfLBjUIlgKS13paI38/LZglnh0ErvRhE32K/1eEJPprdtwlBH918W5uh2iE6Ab+QKw==
-X-Received: by 2002:a17:902:b70a:b0:1d4:e237:2c3f with SMTP id
- d10-20020a170902b70a00b001d4e2372c3fmr3036959pls.28.1706571080205; 
- Mon, 29 Jan 2024 15:31:20 -0800 (PST)
+ bh=cX9p1w8gwSjbvchi0L5D4HF7R4GEOnc6YSNW0pomVF4=;
+ b=wmsCq+i9T1KsB3FY+OfFt1Uca1ldo4GyfmdC6FlXknP1bufcLMzoFkvdf0RnQ9ngm7
+ VvX3ifzLTqHeeXwQEquwTyg2nOjITpc1uiXhaljpRQYcKqqNkiPSpg9t3sza2FfDNK5a
+ xgd8wtxrXl3ktGOqTrQCfTuyFgR12T7ACpxYAXqs0zlp/t1vyAdlqgnwUKwq7PifbTnY
+ UydvYtce4QErjRA/pE6Nqs+wUZRBVJB1GnoYIrg7LKd//AfSGyPKgIZejXbOSCj0KkCM
+ vOWWWcAfhy9CjptYbpc4V19YVt6mvR3zQc7Zvekog8ucEiUKgPaTQmcNHnYIndzopadQ
+ hqWQ==
+X-Gm-Message-State: AOJu0YwqSQs8FqnIRjC1UYYLQ1So6oS8qQw1ELkIV5SnKjN71bBpAK7u
+ PNGFxqZQpZ6w0GsYN+EMo/zIV5acQTb44d+mnWrAgE9ge4m3+27IBlMSrIp9MuIZwQaUUBusNC3
+ Ftlo=
+X-Google-Smtp-Source: AGHT+IGlXWUbzVf01GsoCXgRD0LtsZf7FvDzrPLjU3x1SLrtPh7pBHiuG3sfy8qARmrS9JsRc4gM6g==
+X-Received: by 2002:a17:903:a90:b0:1d7:3192:de38 with SMTP id
+ mo16-20020a1709030a9000b001d73192de38mr3697696plb.69.1706571082505; 
+ Mon, 29 Jan 2024 15:31:22 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.18
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:19 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:22 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 14/33] target/microblaze: Populate CPUClass.mmu_index
-Date: Tue, 30 Jan 2024 09:30:24 +1000
-Message-Id: <20240129233043.34558-15-richard.henderson@linaro.org>
+Subject: [PATCH 15/33] target/mips: Pass ptw_mmu_idx down from
+ mips_cpu_tlb_fill
+Date: Tue, 30 Jan 2024 09:30:25 +1000
+Message-Id: <20240129233043.34558-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,74 +93,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Rather than adjust env->hflags so that the value computed
+by cpu_mmu_index() changes, compute the mmu_idx that we
+want directly and pass it down.
+
+Introduce symbolic constants for MMU_{KERNEL,ERL}_IDX.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/microblaze/cpu.h | 13 ++-----------
- target/microblaze/cpu.c | 18 +++++++++++++++++-
- 2 files changed, 19 insertions(+), 12 deletions(-)
+ target/mips/cpu.h                   |  4 +++-
+ target/mips/tcg/sysemu/tlb_helper.c | 32 ++++++++++++-----------------
+ 2 files changed, 16 insertions(+), 20 deletions(-)
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index b5374365f5..90ab796de9 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -434,19 +434,10 @@ void mb_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
-                                MemTxResult response, uintptr_t retaddr);
- #endif
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 1163a71f3c..3ba8dccd2d 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -1242,12 +1242,14 @@ uint32_t cpu_rddsp(uint32_t mask_num, CPUMIPSState *env);
+  * MMU modes definitions. We carefully match the indices with our
+  * hflags layout.
+  */
++#define MMU_KERNEL_IDX 0
+ #define MMU_USER_IDX 2
++#define MMU_ERL_IDX 3
  
-+int mb_cpu_mmu_index(CPUState *cs, bool ifetch);
- static inline int cpu_mmu_index(CPUMBState *env, bool ifetch)
+ static inline int hflags_mmu_index(uint32_t hflags)
  {
--    MicroBlazeCPU *cpu = env_archcpu(env);
--
--    /* Are we in nommu mode?.  */
--    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
--        return MMU_NOMMU_IDX;
--    }
--
--    if (env->msr & MSR_UM) {
--        return MMU_USER_IDX;
--    }
--    return MMU_KERNEL_IDX;
-+    return mb_cpu_mmu_index(env_cpu(env), ifetch);
+     if (hflags & MIPS_HFLAG_ERL) {
+-        return 3; /* ERL */
++        return MMU_ERL_IDX;
+     } else {
+         return hflags & MIPS_HFLAG_KSU;
+     }
+diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
+index 4ede904800..b715449114 100644
+--- a/target/mips/tcg/sysemu/tlb_helper.c
++++ b/target/mips/tcg/sysemu/tlb_helper.c
+@@ -623,7 +623,7 @@ static uint64_t get_tlb_entry_layout(CPUMIPSState *env, uint64_t entry,
+ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+         int directory_index, bool *huge_page, bool *hgpg_directory_hit,
+         uint64_t *pw_entrylo0, uint64_t *pw_entrylo1,
+-        unsigned directory_shift, unsigned leaf_shift)
++        unsigned directory_shift, unsigned leaf_shift, int ptw_mmu_idx)
+ {
+     int dph = (env->CP0_PWCtl >> CP0PC_DPH) & 0x1;
+     int psn = (env->CP0_PWCtl >> CP0PC_PSN) & 0x3F;
+@@ -638,8 +638,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+     uint64_t w = 0;
+ 
+     if (get_physical_address(env, &paddr, &prot, *vaddr, MMU_DATA_LOAD,
+-                             cpu_mmu_index(env, false)) !=
+-                             TLBRET_MATCH) {
++                             ptw_mmu_idx) != TLBRET_MATCH) {
+         /* wrong base address */
+         return 0;
+     }
+@@ -666,8 +665,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+                 *pw_entrylo0 = entry;
+             }
+             if (get_physical_address(env, &paddr, &prot, vaddr2, MMU_DATA_LOAD,
+-                                     cpu_mmu_index(env, false)) !=
+-                                     TLBRET_MATCH) {
++                                     ptw_mmu_idx) != TLBRET_MATCH) {
+                 return 0;
+             }
+             if (!get_pte(env, vaddr2, leafentry_size, &entry)) {
+@@ -690,7 +688,7 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
  }
  
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 2318ad7013..6dad11905b 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -118,6 +118,22 @@ static bool mb_cpu_has_work(CPUState *cs)
-     return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
- }
- 
-+int mb_cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+    CPUMBState *env = cpu_env(cs);
-+    MicroBlazeCPU *cpu = env_archcpu(env);
-+
-+    /* Are we in nommu mode?.  */
-+    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
-+        return MMU_NOMMU_IDX;
-+    }
-+
-+    if (env->msr & MSR_UM) {
-+        return MMU_USER_IDX;
-+    }
-+    return MMU_KERNEL_IDX;
-+}
-+
- #ifndef CONFIG_USER_ONLY
- static void mb_cpu_ns_axi_dp(void *opaque, int irq, int level)
+ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+-                                   int mmu_idx)
++                                   int ptw_mmu_idx)
  {
-@@ -415,7 +431,7 @@ static void mb_cpu_class_init(ObjectClass *oc, void *data)
- 
-     cc->class_by_name = mb_cpu_class_by_name;
-     cc->has_work = mb_cpu_has_work;
--
-+    cc->mmu_index = mb_cpu_mmu_index;
-     cc->dump_state = mb_cpu_dump_state;
-     cc->set_pc = mb_cpu_set_pc;
-     cc->get_pc = mb_cpu_get_pc;
+     int gdw = (env->CP0_PWSize >> CP0PS_GDW) & 0x3F;
+     int udw = (env->CP0_PWSize >> CP0PS_UDW) & 0x3F;
+@@ -776,7 +774,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+         vaddr |= goffset;
+         switch (walk_directory(env, &vaddr, pf_gdw, &huge_page, &hgpg_gdhit,
+                                &pw_entrylo0, &pw_entrylo1,
+-                               directory_shift, leaf_shift))
++                               directory_shift, leaf_shift, ptw_mmu_idx))
+         {
+         case 0:
+             return false;
+@@ -793,7 +791,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+         vaddr |= uoffset;
+         switch (walk_directory(env, &vaddr, pf_udw, &huge_page, &hgpg_udhit,
+                                &pw_entrylo0, &pw_entrylo1,
+-                               directory_shift, leaf_shift))
++                               directory_shift, leaf_shift, ptw_mmu_idx))
+         {
+         case 0:
+             return false;
+@@ -810,7 +808,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+         vaddr |= moffset;
+         switch (walk_directory(env, &vaddr, pf_mdw, &huge_page, &hgpg_mdhit,
+                                &pw_entrylo0, &pw_entrylo1,
+-                               directory_shift, leaf_shift))
++                               directory_shift, leaf_shift, ptw_mmu_idx))
+         {
+         case 0:
+             return false;
+@@ -825,8 +823,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+     /* Leaf Level Page Table - First half of PTE pair */
+     vaddr |= ptoffset0;
+     if (get_physical_address(env, &paddr, &prot, vaddr, MMU_DATA_LOAD,
+-                             cpu_mmu_index(env, false)) !=
+-                             TLBRET_MATCH) {
++                             ptw_mmu_idx) != TLBRET_MATCH) {
+         return false;
+     }
+     if (!get_pte(env, vaddr, leafentry_size, &dir_entry)) {
+@@ -838,8 +835,7 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+     /* Leaf Level Page Table - Second half of PTE pair */
+     vaddr |= ptoffset1;
+     if (get_physical_address(env, &paddr, &prot, vaddr, MMU_DATA_LOAD,
+-                             cpu_mmu_index(env, false)) !=
+-                             TLBRET_MATCH) {
++                             ptw_mmu_idx) != TLBRET_MATCH) {
+         return false;
+     }
+     if (!get_pte(env, vaddr, leafentry_size, &dir_entry)) {
+@@ -944,12 +940,10 @@ bool mips_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+          * Memory reads during hardware page table walking are performed
+          * as if they were kernel-mode load instructions.
+          */
+-        int mode = (env->hflags & MIPS_HFLAG_KSU);
+-        bool ret_walker;
+-        env->hflags &= ~MIPS_HFLAG_KSU;
+-        ret_walker = page_table_walk_refill(env, address, mmu_idx);
+-        env->hflags |= mode;
+-        if (ret_walker) {
++        int ptw_mmu_idx = (env->hflags & MIPS_HFLAG_ERL ?
++                           MMU_ERL_IDX : MMU_KERNEL_IDX);
++
++        if (page_table_walk_refill(env, address, ptw_mmu_idx)) {
+             ret = get_physical_address(env, &physical, &prot, address,
+                                        access_type, mmu_idx);
+             if (ret == TLBRET_MATCH) {
 -- 
 2.34.1
 
