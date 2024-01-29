@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7978416E8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B7B8416E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:32:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb6A-0005k4-Kh; Mon, 29 Jan 2024 18:31:30 -0500
+	id 1rUb69-0005hT-1t; Mon, 29 Jan 2024 18:31:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5t-0005UC-L9
+ id 1rUb5w-0005Uo-Dl
  for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:22 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb5s-00052S-34
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:13 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1d750660a0aso14296275ad.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:11 -0800 (PST)
+ id 1rUb5u-00054B-RB
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:16 -0500
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-29036dc3a63so1642227a91.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571071; x=1707175871; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571073; x=1707175873; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7WexDgLCM7IRsjNLi1wAJoGpQCSOk7DFJRsVIQhRYNU=;
- b=V4X37UqiYFgQMacj6ZogKkU/PG/YvQMsBdg7ZZ+rWOXNrrwpYXbdRoRiRoWUOlsZdd
- Uj9LdFeFPv5f8dfUboX9qVbdelotfsbqjyRKFpsJOZ7jVDuX9HcYDo4i8L8rzrj/9Vog
- wMviTUsHWBo2Kaih4EO+Yxv05iU0RXqbi/QqYXqVrvl7saRdsyIPpGiyi3fWyKg+4i67
- xDwdlX646ZgZ38sXGstYrkSVlXMCMkJDVlbTbLoG60dc+Dj26UkW4xA+gfOtXInvA3x5
- 0yV24hS56+hOzt0m3OYzlUbgwnoXjAqsOKgRmONvg7ZuwQrrvevKSZ2jaI0HGbhnxH4i
- Je7Q==
+ bh=O5n462vNeMjlBZwwraV55qst2NUkc1xnzZuaJY63KTM=;
+ b=RkQ5cQuyy56crGo4k22EZvL1meEcWr52uSbq4/yI5URm1hu2uYo6RemwldGemnFzOb
+ V7R9WrqgeEFKpVwNyUTKD/d06/bGob3H/4wmUEQyL/mnvZa06rPgAh/520uS1F2c8rWn
+ Ll0D0ayrriAGP14lyD4u25FdJAdN2dsxaaptQvSsZO59gu1kb5KHt3UOjj/DDebYSwD8
+ P1yYbO17wjmPD3aXjvNyVT3IcJU1lwbT6Mm2cx9TKvDR7mR/dLygvQ7563BUokk8DfUx
+ tfXOzQ4kkSCmR/wURFKKO17UUHnTFjUJI/XT9rqz2qrGCv1Y7vrj3EWKbO4FlIVLUfhY
+ o/Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571071; x=1707175871;
+ d=1e100.net; s=20230601; t=1706571073; x=1707175873;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7WexDgLCM7IRsjNLi1wAJoGpQCSOk7DFJRsVIQhRYNU=;
- b=CwZZLlS4hhHTqnfRgOQivlP/JOprKfWOmqqqzstdLlByiu6gY1CpUN3jX2gB9XWlvJ
- D0lp48iJJKW3RvbY69LA61Dqjgxaiu31chG7xVnTue+8p11MIT44u+IUY137J6XAsASP
- Nw9gi8JPkMxyThx71KIaYD6A4QAeViWZW/4Y/7eA7rJxBkTeo5K08LuYcRoew3ByIWDm
- BS+Q82pgcLs6b2yWRNI7vb9M8kpKd9Z8Ax3Vm8RhYBqSr/w6/lbjppBhSTU9BPrK2IjQ
- XZcFCJ6Dwj/ZaRHUUdsHXiM69GlecM9KlOzjMUTSwFuolri6jsRLfzaMMmG2IUJseKqQ
- 3aNg==
-X-Gm-Message-State: AOJu0YxF+3fd8+gr5klOeLHWLKPWf5Lw6ylsjnLtMbHrAcxjyGlG2QzT
- wNm9s4CVtxLv/XEtErCLDIsW57Y/ADLli/lW+EUGZfL+/hH984WkQ8r1Qclz8Sizd6wVEuzZbdy
- zVgA=
-X-Google-Smtp-Source: AGHT+IGX4KunhRdM2W849kKN4U/oIfTk9Rslx/McIR9jCzUmlzGLmpW6+Ib5cr2rSDw1vcO2OU8IrQ==
-X-Received: by 2002:a17:903:2449:b0:1d6:9bad:ff88 with SMTP id
- l9-20020a170903244900b001d69badff88mr5100660pls.110.1706571070891; 
- Mon, 29 Jan 2024 15:31:10 -0800 (PST)
+ bh=O5n462vNeMjlBZwwraV55qst2NUkc1xnzZuaJY63KTM=;
+ b=j6PiKUXFpssGErDf3rhEPbRpjwFxgq0N0M5kG1tVQ7JxiQ0cEBMxRUldfqmcmwIemF
+ D37p4J5i2mhInRVF1lI2mywtBtqVDyoVgdhqLY8Zk+YX39tO+rqAfSSbiGtaEkO1G9Qv
+ V3PhoxEHHDbXHIU8+ilnVSj95KgJYb8dqBQ/7JADYUkU+kxR+LP7DyitnlIq7KuN2VyD
+ KIAkzA4ndZOz59Wt+/OLVng+561JlIKaMddwO0gliUj8OXBqcHyLMfO0mJNn3BruBqcG
+ RxaTFjEj2C777KUZyhgNMN8pvH0r0bW4padN1mLUEDZT/1EM/jwPa0dKn90XcO/Hr/TK
+ e9jw==
+X-Gm-Message-State: AOJu0YzQM7vO1tibkOGo0jZdh8nFosIXKmQmj98bMiEqSFx9TjvOroBV
+ l4JwnOQnbC9YdZiK+ARX5+2aYGt1R4+zQii7kz7YV5V/yZfn7rQ9ZCvSiebk9ZEi8FfQG5AWOj3
+ Fy3w=
+X-Google-Smtp-Source: AGHT+IELY0MFDotUzb0ZnwnULgJJCfBL4u6FM9YZk90q0fvV0ateP3RfFoaPG8qPvXkVKi8yOdj9iQ==
+X-Received: by 2002:a17:90a:9d87:b0:290:969:13a2 with SMTP id
+ k7-20020a17090a9d8700b00290096913a2mr4274473pjp.37.1706571073394; 
+ Mon, 29 Jan 2024 15:31:13 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.08
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:10 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:12 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 10/33] target/i386: Populate CPUClass.mmu_index
-Date: Tue, 30 Jan 2024 09:30:20 +1000
-Message-Id: <20240129233043.34558-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/33] target/loongarch: Populate CPUClass.mmu_index
+Date: Tue, 30 Jan 2024 09:30:21 +1000
+Message-Id: <20240129233043.34558-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,69 +94,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/cpu.h | 13 ++++++-------
- target/i386/cpu.c | 10 ++++++++++
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ target/loongarch/cpu.h |  6 ++----
+ target/loongarch/cpu.c | 11 +++++++++++
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 7f0786e8b9..62bdb02378 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2296,13 +2296,6 @@ uint64_t cpu_get_tsc(CPUX86State *env);
- #define MMU_NESTED_IDX  3
- #define MMU_PHYS_IDX    4
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 0fa5e0ca93..5dfcfeb3a4 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -408,15 +408,13 @@ struct LoongArchCPUClass {
+ #define MMU_IDX_USER     MMU_PLV_USER
+ #define MMU_IDX_DA       4
  
--static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
--{
--    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
--        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
--        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
--}
--
- static inline int cpu_mmu_index_kernel(CPUX86State *env)
++int loongarch_cpu_mmu_index(CPUState *cs, bool ifetch);
+ static inline int cpu_mmu_index(CPULoongArchState *env, bool ifetch)
  {
-     return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
-@@ -2322,6 +2315,12 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
- #include "hw/i386/apic.h"
+ #ifdef CONFIG_USER_ONLY
+     return MMU_IDX_USER;
+ #else
+-    if (FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG)) {
+-        return FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
+-    }
+-    return MMU_IDX_DA;
++    return loongarch_cpu_mmu_index(env_cpu(env), ifetch);
  #endif
- 
-+int x86_cpu_mmu_index(CPUState *cs, bool ifetch);
-+static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
-+{
-+    return x86_cpu_mmu_index(env_cpu(env), ifetch);
-+}
-+
- static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
-                                         uint64_t *cs_base, uint32_t *flags)
- {
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 03822d9ba8..280bcb7d00 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7720,6 +7720,15 @@ static bool x86_cpu_has_work(CPUState *cs)
-     return x86_cpu_pending_interrupt(cs, cs->interrupt_request) != 0;
  }
  
-+int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index fb8dde7def..cbecc63213 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -375,6 +375,16 @@ static bool loongarch_cpu_has_work(CPUState *cs)
+ #endif
+ }
+ 
++int loongarch_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    CPUX86State *env = cpu_env(cs);
++    CPULoongArchState *env = cpu_env(cs);
 +
-+    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
-+        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
-+        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
++    if (FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PG)) {
++        return FIELD_EX64(env->CSR_CRMD, CSR_CRMD, PLV);
++    }
++    return MMU_IDX_DA;
 +}
 +
- static void x86_disas_set_info(CPUState *cs, disassemble_info *info)
+ static void loongarch_la464_initfn(Object *obj)
  {
-     X86CPU *cpu = X86_CPU(cs);
-@@ -7954,6 +7963,7 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
-     cc->class_by_name = x86_cpu_class_by_name;
-     cc->parse_features = x86_cpu_parse_featurestr;
-     cc->has_work = x86_cpu_has_work;
-+    cc->mmu_index = x86_cpu_mmu_index;
-     cc->dump_state = x86_cpu_dump_state;
-     cc->set_pc = x86_cpu_set_pc;
-     cc->get_pc = x86_cpu_get_pc;
+     LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+@@ -779,6 +789,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+ 
+     cc->class_by_name = loongarch_cpu_class_by_name;
+     cc->has_work = loongarch_cpu_has_work;
++    cc->mmu_index = loongarch_cpu_mmu_index;
+     cc->dump_state = loongarch_cpu_dump_state;
+     cc->set_pc = loongarch_cpu_set_pc;
+     cc->get_pc = loongarch_cpu_get_pc;
 -- 
 2.34.1
 
