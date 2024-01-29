@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F450840204
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E3C840155
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:23:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUOEP-0007M9-Id; Mon, 29 Jan 2024 04:47:09 -0500
+	id 1rUNrK-0005xz-Av; Mon, 29 Jan 2024 04:23:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rUOEM-0007Lq-9l
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:47:06 -0500
-Received: from zoidberg.rfc1149.net ([195.154.227.159])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rUNrB-0005xf-0U
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:23:09 -0500
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rUOEK-00038e-1D
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:47:06 -0500
-Received: from 127.0.0.1 (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
- server-digest SHA256) (Client did not present a certificate)
- by zoidberg.rfc1149.net (Postfix) with ESMTPSA id DD5E580027;
- Mon, 29 Jan 2024 10:46:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
- t=1706521619; bh=8CksjY3RGc6wJNoiQCe3RBOhEojLng/TbR22PaY7vcQ=;
- h=References:From:To:Cc:Subject:Date:In-reply-to;
- b=wUs1Bgu10NulZgGSi0ey9iPWPC725pDWoLphNkU6MSwXpDJ62Z32UN88/7Uji0NrR
- pfBTWKwWATNCh9XSq00xg/GSDAc2cKWfQcbRuWoaB4zDV52E7mbau/4iFSYn7gJp3U
- snWug9GqE4VI976Av81WpJLTnuM06fu4y/DUz2GTPvjkmowmE0+LtWvHYSBwtZy0Lv
- 1udHN6RiN1ddMXh0IO3CpbCfyO1P26V6C969jebBt+bwr89xLoz5dEx6JkQ0NvkZJN
- jndmcigdTe2XzEIDrOzvkXSgxs07/3swwTIbuMpeVy39Ncae0cHLNZ9vjBlr9RiC7e
- QiRxVmyd3JZKA==
-References: <20231123114026.3589272-1-berrange@redhat.com>
- <20231123114026.3589272-2-berrange@redhat.com>
- <ZbUU6CTgxgCLG0a9@intel.com> <ZbdwhR6h6T97vR8J@redhat.com>
-User-agent: mu4e 1.10.8; emacs 29.1
-From: Samuel Tardieu <sam@rfc1149.net>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, Richard Henderson
- <richard.henderson@linaro.org>, Alexander Graf <agraf@csgraf.de>, Alex
- =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Stefan
- Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>, Kevin Wolf
- <kwolf@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code
- provenance / sign-off
-Date: Mon, 29 Jan 2024 10:35:40 +0100
-In-reply-to: <ZbdwhR6h6T97vR8J@redhat.com>
-Message-ID: <8734uglbe5.fsf@rfc1149.net>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rUNr8-0006RT-7d
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:23:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706520186; x=1738056186;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=kTLO3Eni/9TEzZcTjfgf+2qoJEzSnC+sGPOsJt/kFbA=;
+ b=LIqtXv6DcRIQeuWOtoUM0+0kbTkRseFnxhoihcePMrIU21XEGd/nXzoV
+ PH3ZSxaKBYp+s3eHpk/u9GpHN3hHzH1STu5TWdsByPpsmqQ6pxnSK1Sfx
+ 0EOZ6FelAViJnNsdG9fJ/21MZMquqkTJ9JJUwAw+lD/zJg8dtbUH7rkjf
+ MBP2bQFivGVzQq1maZKNFtXaeBDXeKGRbHWhzEVXR3GiBHr1c4I63/Vch
+ RZ3/U8uXuKsaPMtwFIF+hbdQTDf5y7n4HtZBfTbKSkQRkKeM3I5wbg01w
+ qw0DjQ3OqoCfgZcJob3qmit6cF057M2gRnx2uUoSTRiYWjLLaD5Asmc/n A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="10287596"
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; d="scan'208";a="10287596"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2024 01:22:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
+   d="scan'208";a="3410654"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa004.jf.intel.com with ESMTP; 29 Jan 2024 01:22:54 -0800
+Date: Mon, 29 Jan 2024 17:35:58 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 0/9] hw/core: Cleanup and reorder headers
+Message-ID: <ZbdxfiOaVu3U+sec@intel.com>
+References: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
- helo=zoidberg.rfc1149.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240116074647.3644821-1-zhao1.liu@linux.intel.com>
+Received-SPF: none client-ip=192.198.163.10;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.485,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,81 +79,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Philippe,
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+Thanks for picking the 1st patch. Could you take time for further review
+on other patches?
 
->> Is there any requirement for the order of tags?
->>=20
->> My previous understanding was that if the Reviewed-by/Tested-by=20
->> tags
->> were obtained by the author within his company, then those tags=20
->> should
->> be placed before the signed-off-by of the author. If the=20
->> Reviewed-by/
->> Tested-by were acquired in the community, then they should be=20
->> placed
->> after the author's signed-off-by, right?
->
-> Common practice is for Signed-off-by tags to be kept in time=20
-> order
-> from earliest author to latest author / maintainer. Common case=20
-> is
-> 2 S-o-B, the first from the patch author, and the last from the
-> sub-system maintainer who sends the pull request.
->
-> For other tags I don't see any broadly acceptable pattern. Some=20
-> people
-> add Reviewed-by before the S-o-B, others add Reviewed-by after=20
-> the
-> S-o-B. Either is fine IMHO.
+Thanks,
+Zhao
 
-From what I've seen in other projects, S-o-B means that you accept=20
-accountability for everything above. One scenario would be:
-
-- Send original patch, which has been tested inside the company:
-
-  Tested-by: Tester <tester@example.com>
-  Signed-off-by: Developper <developper@example.com>
-
-- Get some R-b, but need to make some requested minor changes and=20
-  resend a new patch series:
-
-  Tested-by: Tester <tester@example.com>
-  Reviewed-by: Reviewer <reviewer@othercompany.com>
-  Signed-off-by: Developper <developper@example.com>
-
-  This is a way of saying "I guarantee that the R-b still applies=20
-  after the new changes I made to this series"
-
-- Then reviewed and pulled into their tree by the maintainer:
-
-  Tested-by: Tester <tester@example.com>
-  Reviewed-by: Reviewer <reviewer@othercompany.com>
-  Signed-off-by: Developper <developper@example.com>
-  Reviewed-by: Maintainer <maintainer@org.org>
-  Signed-off-by: Maintainer <maintainer@org.org>
-
-If, after being reviewed, the initial patch would not have needed=20
-any change, the order would have been:
-
-  Tested-by: Tester <tester@example.com>
-  Signed-off-by: Developper <developper@example.com>
-  Reviewed-by: Reviewer <reviewer@othercompany.com>
-  Reviewed-by: Maintainer <maintainer@org.org>
-  Signed-off-by: Maintainer <maintainer@org.org>
-
-This is consistent with what software like "b4" do: if the S-o of=20
-the current user is present, it is moved last, as the current user=20
-is the one accepting accountability at this point.
-
-However, this is not what QEMU has been using as far as I can see,=20
-as S-o-b tend to stay in their original positions. I even opened=20
-an issue on b4 a few weeks ago because of this=20
-<https://github.com/mricon/b4/issues/16>, and I reverted to using=20
-git-publish. But if this is ok to use an arbitrary order for=20
-non-S-o-b headers, I can get back to b4.
-
-  Sam
---=20
-Samuel Tardieu
+On Tue, Jan 16, 2024 at 03:46:38PM +0800, Zhao Liu wrote:
+> Date: Tue, 16 Jan 2024 15:46:38 +0800
+> From: Zhao Liu <zhao1.liu@linux.intel.com>
+> Subject: [PATCH v2 0/9] hw/core: Cleanup and reorder headers
+> X-Mailer: git-send-email 2.34.1
+> 
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Identify unused headers by full compilation (tested by "./configure" and
+> then "make") and manually checking if it is a direct inclusion.
+> 
+> Then reorder headers in alphabetical order.
+> 
+> In addition, update a file entry in MAINTAINERS file.
+> 
+> ---
+> Changelog:
+> 
+> v1: Per Peter and Philippe's comments in v1, keep directly included
+>     headers to avoid implicit header inclusions [1].
+> 
+> [1]: https://lore.kernel.org/qemu-devel/06d4179f-76b8-42f0-b147-f4bc2d1f06bd@linaro.org/#t
+> 
+> ---
+> Zhao Liu (9):
+>   MAINTAINERS: Update hw/core/cpu.c entry
+>   hw/core: Cleanup unused included headers in cpu-common.c
+>   hw/core: Reorder included headers in cpu-common.c
+>   hw/core: Reorder included headers in cpu-sysemu.c
+>   hw/core: Cleanup unused included header in machine-qmp-cmds.c
+>   hw/core: Reorder included header in machine.c
+>   hw/core: Reorder included headers in null-machine.c
+>   hw/core: Cleanup unused included headers in numa.c
+>   hw/core: Reorder included headers in numa.c
+> 
+>  MAINTAINERS                |  3 ++-
+>  hw/core/cpu-common.c       | 17 +++++++----------
+>  hw/core/cpu-sysemu.c       |  3 ++-
+>  hw/core/machine-qmp-cmds.c |  2 +-
+>  hw/core/machine.c          | 21 +++++++++++----------
+>  hw/core/null-machine.c     |  5 +++--
+>  hw/core/numa.c             | 22 ++++++++++------------
+>  7 files changed, 36 insertions(+), 37 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
+> 
 
