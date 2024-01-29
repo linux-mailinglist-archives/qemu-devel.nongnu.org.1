@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E338416FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D216E8416EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:34:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUb6E-0005qU-1o; Mon, 29 Jan 2024 18:31:34 -0500
+	id 1rUb6F-0005sH-8a; Mon, 29 Jan 2024 18:31:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb69-0005ll-V8
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:30 -0500
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rUb6C-0005oz-Ba
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:32 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUb68-000561-Bj
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:29 -0500
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1d8ef972451so6312775ad.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:27 -0800 (PST)
+ id 1rUb6A-00056I-MT
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:31:32 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-29026523507so2726891a91.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:31:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706571087; x=1707175887; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706571089; x=1707175889; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p6rIUVmiCr2QYJOV/5BC5dQis1VA2kzsAKeuwEUc9C4=;
- b=ZfNd6T1jpdTRlXn2WntN3L60w9JklpPPdWBlBjCm5L94DcfjHABBKp26Tz5yMBpJlP
- 6AoXAwvq7B+3NoBPjGotAvp2AzijY55j7YS3QBxOoLUNdpRj7n7kDu0Qe+fG0yal94eC
- I2Ar1AKANkYVcA83C6qSY638WwhbkHrnrHt5JyBsHd4eS0ktFqmJsaHOS864lT1mjMlp
- 58Bbj+f+GVT972zKG4P/7BJbvRpJlLAHwe2zU7XYaDIY+1fp7O3spRypSoE0BblnnSk4
- inyE4K1MRYOpUimuZ6vOXfq+R+Vh2dtzTZpmLZGH0FICgA6R0TRB4TJ/O4NXC2Cns8X5
- UbZg==
+ bh=YucELH6fbErp+6umx07QFC7pYx6ueR6ifc1TTKY+quw=;
+ b=Xd1j6lJmmNj4DOrDmW7nywRSnoxJ6Zl+FwrmYAoE5hsGzZKNjiyjaZR+5IEGGOxo+3
+ FgXWr+tcfJqIQ2vs+woBOksP1dslKLj3u4l7bS7gjX91Be2YlRHDs2bGgJgictM8Qxj+
+ dbqfMtBEfoXmdJOAcvJWwoFbs4cjnqv8y1ofypeHEXaCFh4EsCqB7UPkHhLYTxFUoyXa
+ CU7qpaLUP3EFSp4zInVid3wj7zFthWtz6MsMAmbmv1GX8Hzg8/Y5rRFkpvlXdfdeqspM
+ 6UG5hZ3Laun/fcNp78Cjo7jNLDhzyNhMb1k2twXVJBlsIZowkYYGNWmKvLxUJ9RUuHGp
+ qX3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706571087; x=1707175887;
+ d=1e100.net; s=20230601; t=1706571089; x=1707175889;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p6rIUVmiCr2QYJOV/5BC5dQis1VA2kzsAKeuwEUc9C4=;
- b=Rirh/Hvval5lo8ETXGFJ8VCfARGNyCttQHVoV+VVe7stwYglhK5RetMkL4g+ql07Br
- aJ2iOs/eryNoDkR7Qapv5AirPTe9yhM9VT9A8Q1Mbz0PzhZuhrHuui3/3dmr9dzpprM1
- y3+n+s0wBFplEA1AOHSDTnAo5dZaCK8ZHOQFzxXYiWlyl8DycWruzRQROyiAa3ao5ggG
- 0xBTR5WXC0fakWaokAvGt9QCYs/xoown8q5PiuQ9Q9lP6r1BjK/dqwdaQu+ahnjiCpV+
- q20lTCLVdyQthnp4gUEIrw/VguS3hhfYyGWs1VUkPlqfubl7pso6OpfZEDWatoQWiJDj
- oGOw==
-X-Gm-Message-State: AOJu0YxTtUxfqFvLEbXQVrr9gzl5zE6bol2jQfhyP4/ALARqTKAnEZaf
- /vrGWUDWSe3Ob2jimQC+PrlOJEts+D3Escl5Nlk87eWnpUgmGkicbGa9iRGft/3gC+YA0rK+mBE
- ur/g=
-X-Google-Smtp-Source: AGHT+IHUSfkkN9KgUeYMQmd5SAu6t/MoP0bLGRUnDfEOxFGo6yWeCEtmfTFACEyh7eNqIFcJ/30UNw==
-X-Received: by 2002:a17:902:d4d0:b0:1d3:45c8:bc0f with SMTP id
- o16-20020a170902d4d000b001d345c8bc0fmr4325004plg.46.1706571087108; 
- Mon, 29 Jan 2024 15:31:27 -0800 (PST)
+ bh=YucELH6fbErp+6umx07QFC7pYx6ueR6ifc1TTKY+quw=;
+ b=n+gAY0H790DltBIwBxktIff71lOAwkewOQqtKek+a9UuHcTzaM+R01vQ0lH7bdHEgr
+ Ipdt9CBrWbfTDs7P8S+uneGt2/oActIaiSNTiK0Dr3oPP+K8B6IL94kQE6FWRApCgQcq
+ EoZ4/ck3vehGVbr1YcSnlfsNYU4/UAUPwwwfw6D/fOPn+1mOxyyg307dIG2exSV4SP6q
+ qQpsRH4raAaObYjooCNCJpCTM46xyUBH+FnrdQEnFRyf0zo3ULgmzV6KPaWUUxmYQhKC
+ JwJCGyXHl71u24LB6homymt2BGuy2PuehI4MMRWREJ7qCr15u5fsmH0MOcKVwX4+GCDo
+ 5Rtg==
+X-Gm-Message-State: AOJu0YxEjTzwoaB1Rl3g5BVvHtaHpSwB1su3yyGytxkofyMC1jetjyJ2
+ 2k5h0Jz7Di2IxZtS9wkuCr6Ec0yCjlG+QVJMIYdrKDLewkCCtQqNbcwLJ3xdADBOVotKnnPKRl+
+ 9RPo=
+X-Google-Smtp-Source: AGHT+IH5IDqnUWaUif2N5yUmkdlgjzY0Q6qtGXX1Ysho1vm8SpPiLEp8ttnWEZvzI9aMq8QHSf7okw==
+X-Received: by 2002:a17:90a:a581:b0:28f:f19d:e43 with SMTP id
+ b1-20020a17090aa58100b0028ff19d0e43mr4253528pjq.3.1706571089376; 
+ Mon, 29 Jan 2024 15:31:29 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.25
+ l6-20020a170902eb0600b001d8dbb867b1sm2710591plb.179.2024.01.29.15.31.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:31:26 -0800 (PST)
+ Mon, 29 Jan 2024 15:31:29 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH 17/33] target/mips: Populate CPUClass.mmu_index
-Date: Tue, 30 Jan 2024 09:30:27 +1000
-Message-Id: <20240129233043.34558-18-richard.henderson@linaro.org>
+Subject: [PATCH 18/33] target/nios2: Populate CPUClass.mmu_index
+Date: Tue, 30 Jan 2024 09:30:28 +1000
+Message-Id: <20240129233043.34558-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129233043.34558-1-richard.henderson@linaro.org>
 References: <20240129233043.34558-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,33 +94,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/mips/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/nios2/cpu.h | 12 ++++++------
+ target/nios2/cpu.c |  7 +++++++
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index df544ab39b..d644adbc77 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -182,6 +182,11 @@ static bool mips_cpu_has_work(CPUState *cs)
-     return has_work;
- }
+diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
+index 2d79b5b298..9965ff74c1 100644
+--- a/target/nios2/cpu.h
++++ b/target/nios2/cpu.h
+@@ -270,12 +270,6 @@ void do_nios2_semihosting(CPUNios2State *env);
+ #define MMU_SUPERVISOR_IDX  0
+ #define MMU_USER_IDX        1
  
-+static int mips_cpu_mmu_index(CPUState *cs, bool ifunc)
+-static inline int cpu_mmu_index(CPUNios2State *env, bool ifetch)
+-{
+-    return (env->ctrl[CR_STATUS] & CR_STATUS_U) ? MMU_USER_IDX :
+-                                                  MMU_SUPERVISOR_IDX;
+-}
+-
+ #ifndef CONFIG_USER_ONLY
+ hwaddr nios2_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+ bool nios2_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+@@ -292,6 +286,12 @@ FIELD(TBFLAGS, CRS0, 0, 1)  /* Set if CRS == 0. */
+ FIELD(TBFLAGS, U, 1, 1)     /* Overlaps CR_STATUS_U */
+ FIELD(TBFLAGS, R0_0, 2, 1)  /* Set if R0 == 0. */
+ 
++int nios2_cpu_mmu_index(CPUState *cs, bool ifetch);
++static inline int cpu_mmu_index(CPUNios2State *env, bool ifetch)
 +{
-+    return mips_env_mmu_index(cpu_env(cs));
++    return nios2_cpu_mmu_index(env_cpu(env), ifetch);
 +}
 +
- #include "cpu-defs.c.inc"
+ static inline void cpu_get_tb_cpu_state(CPUNios2State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
+ {
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index 596c0c5617..e42885997e 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -57,6 +57,12 @@ static bool nios2_cpu_has_work(CPUState *cs)
+     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+ }
  
- static void mips_cpu_reset_hold(Object *obj)
-@@ -579,6 +584,7 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
++int nios2_cpu_mmu_index(CPUState *cs, bool ifetch)
++{
++    return (cpu_env(cs)->ctrl[CR_STATUS] & CR_STATUS_U
++            ? MMU_USER_IDX : MMU_SUPERVISOR_IDX);
++}
++
+ static void nios2_cpu_reset_hold(Object *obj)
+ {
+     CPUState *cs = CPU(obj);
+@@ -381,6 +387,7 @@ static void nios2_cpu_class_init(ObjectClass *oc, void *data)
  
-     cc->class_by_name = mips_cpu_class_by_name;
-     cc->has_work = mips_cpu_has_work;
-+    cc->mmu_index = mips_cpu_mmu_index;
-     cc->dump_state = mips_cpu_dump_state;
-     cc->set_pc = mips_cpu_set_pc;
-     cc->get_pc = mips_cpu_get_pc;
+     cc->class_by_name = nios2_cpu_class_by_name;
+     cc->has_work = nios2_cpu_has_work;
++    cc->mmu_index = nios2_cpu_mmu_index;
+     cc->dump_state = nios2_cpu_dump_state;
+     cc->set_pc = nios2_cpu_set_pc;
+     cc->get_pc = nios2_cpu_get_pc;
 -- 
 2.34.1
 
