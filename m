@@ -2,105 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446798401C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:35:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F450840204
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:47:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUO2L-0002CG-Nr; Mon, 29 Jan 2024 04:34:41 -0500
+	id 1rUOEP-0007M9-Id; Mon, 29 Jan 2024 04:47:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUO2I-0002Ai-Pd; Mon, 29 Jan 2024 04:34:38 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rUOEM-0007Lq-9l
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:47:06 -0500
+Received: from zoidberg.rfc1149.net ([195.154.227.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUO2C-0008Tz-Rw; Mon, 29 Jan 2024 04:34:38 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40T9WL0W001658; Mon, 29 Jan 2024 09:34:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=hWf8HnN4xTze2R4Ey95SXMooKjiKjraimhDJQ1ivWmM=;
- b=AR83oh47LESTxXIcE6VZ0eyak6DyZyvRxykd/GknoVq46qIyHucjBGiqyLTiNpt1RuWu
- q7mkGvY9X7HVjZ+WJwPnIYURB5S41juGmTOkLsRgfzZ8jIO0w1r6tOYqVALBzsKJeM8v
- BRxb1lZ1FPAA0LRaHlPZdtnfSnXap9Df/gwd6+qF5fVROaW7X6VwtSLd1iz3Bg8cABaw
- AB9KvEJ6H0/MU8TKqFN+AZKMm9em8SRe4jox60X98Pwed6BfthB6hNfa3I5pznNsdr46
- IuR3d7KyrKmJkoR77VPmc2HnnwWbxsNLXXOwYlMhdlUSdEOVhMjCoHJWXbVUpNRC+Sma gg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx9fkr1cj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:26 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T9Wn0n002818;
- Mon, 29 Jan 2024 09:34:26 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx9fkr1c8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:25 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40T6EXEg010884; Mon, 29 Jan 2024 09:34:25 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweck70b2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:24 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40T9YNbu43909844
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Jan 2024 09:34:23 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2D3A320043;
- Mon, 29 Jan 2024 09:34:23 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94D9220040;
- Mon, 29 Jan 2024 09:34:22 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.179.7.240])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 29 Jan 2024 09:34:22 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 3/3] tests/tcg: Add the PROT_NONE gdbstub test
-Date: Mon, 29 Jan 2024 10:32:16 +0100
-Message-ID: <20240129093410.3151-4-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129093410.3151-1-iii@linux.ibm.com>
-References: <20240129093410.3151-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <sam@rfc1149.net>) id 1rUOEK-00038e-1D
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 04:47:06 -0500
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
+ server-digest SHA256) (Client did not present a certificate)
+ by zoidberg.rfc1149.net (Postfix) with ESMTPSA id DD5E580027;
+ Mon, 29 Jan 2024 10:46:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rfc1149.net; s=smtp;
+ t=1706521619; bh=8CksjY3RGc6wJNoiQCe3RBOhEojLng/TbR22PaY7vcQ=;
+ h=References:From:To:Cc:Subject:Date:In-reply-to;
+ b=wUs1Bgu10NulZgGSi0ey9iPWPC725pDWoLphNkU6MSwXpDJ62Z32UN88/7Uji0NrR
+ pfBTWKwWATNCh9XSq00xg/GSDAc2cKWfQcbRuWoaB4zDV52E7mbau/4iFSYn7gJp3U
+ snWug9GqE4VI976Av81WpJLTnuM06fu4y/DUz2GTPvjkmowmE0+LtWvHYSBwtZy0Lv
+ 1udHN6RiN1ddMXh0IO3CpbCfyO1P26V6C969jebBt+bwr89xLoz5dEx6JkQ0NvkZJN
+ jndmcigdTe2XzEIDrOzvkXSgxs07/3swwTIbuMpeVy39Ncae0cHLNZ9vjBlr9RiC7e
+ QiRxVmyd3JZKA==
+References: <20231123114026.3589272-1-berrange@redhat.com>
+ <20231123114026.3589272-2-berrange@redhat.com>
+ <ZbUU6CTgxgCLG0a9@intel.com> <ZbdwhR6h6T97vR8J@redhat.com>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Samuel Tardieu <sam@rfc1149.net>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Alexander Graf <agraf@csgraf.de>, Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Phil =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Stefan
+ Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>, Kevin Wolf
+ <kwolf@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/2] docs: introduce dedicated page about code
+ provenance / sign-off
+Date: Mon, 29 Jan 2024 10:35:40 +0100
+In-reply-to: <ZbdwhR6h6T97vR8J@redhat.com>
+Message-ID: <8734uglbe5.fsf@rfc1149.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JkubJDxknbuiHi_AWmSGSWlB9tynwuM3
-X-Proofpoint-ORIG-GUID: u_0e3XFw6uXLKWdwZcgslyCQwu4Un5FL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-29_05,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 mlxscore=0 malwarescore=0 clxscore=1015 adultscore=0
- bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=907
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401290068
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.154.227.159; envelope-from=sam@rfc1149.net;
+ helo=zoidberg.rfc1149.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,133 +79,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make sure that qemu gdbstub, like gdbserver, allows reading from and
-writing to PROT_NONE pages.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/Makefile.target      |  9 +++++-
- tests/tcg/multiarch/gdbstub/prot-none.py | 36 +++++++++++++++++++++
- tests/tcg/multiarch/prot-none.c          | 40 ++++++++++++++++++++++++
- 3 files changed, 84 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
- create mode 100644 tests/tcg/multiarch/prot-none.c
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index d31ba8d6ae4..315a2e13588 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -101,13 +101,20 @@ run-gdbstub-registers: sha512
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/registers.py, \
- 	checking register enumeration)
- 
-+run-gdbstub-prot-none: prot-none
-+	$(call run-test, $@, env PROT_NONE_PY=1 $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
-+	accessing PROT_NONE memory)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
--	      run-gdbstub-registers
-+	      run-gdbstub-registers run-gdbstub-prot-none
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/gdbstub/prot-none.py b/tests/tcg/multiarch/gdbstub/prot-none.py
-new file mode 100644
-index 00000000000..e829d3ebc5f
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/prot-none.py
-@@ -0,0 +1,36 @@
-+"""Test that GDB can access PROT_NONE pages.
-+
-+This runs as a sourced script (via -x, via run-test.py).
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+import ctypes
-+from test_gdbstub import main, report
-+
-+
-+def probe_proc_self_mem():
-+    buf = ctypes.create_string_buffer(b'aaa')
-+    try:
-+        with open("/proc/self/mem", "rb") as fp:
-+            fp.seek(ctypes.addressof(buf))
-+            return fp.read(3) == b'aaa'
-+    except OSError:
-+        return False
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    if not probe_proc_self_mem:
-+        print("SKIP: /proc/self/mem is not usable")
-+        exit(0)
-+    gdb.Breakpoint("break_here")
-+    gdb.execute("continue")
-+    val = gdb.parse_and_eval("*(char[2] *)q").string()
-+    report(val == "42", "{} == 42".format(val))
-+    gdb.execute("set *(char[3] *)q = \"24\"")
-+    gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/prot-none.c b/tests/tcg/multiarch/prot-none.c
-new file mode 100644
-index 00000000000..dc56aadb3c5
---- /dev/null
-+++ b/tests/tcg/multiarch/prot-none.c
-@@ -0,0 +1,40 @@
-+/*
-+ * Test that GDB can access PROT_NONE pages.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+void break_here(void *q)
-+{
-+}
-+
-+int main(void)
-+{
-+    long pagesize = sysconf(_SC_PAGESIZE);
-+    void *p, *q;
-+    int err;
-+
-+    p = mmap(NULL, pagesize * 2, PROT_READ | PROT_WRITE,
-+             MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+    assert(p != MAP_FAILED);
-+    q = p + pagesize - 1;
-+    strcpy(q, "42");
-+
-+    err = mprotect(p, pagesize * 2, PROT_NONE);
-+    assert(err == 0);
-+
-+    break_here(q);
-+
-+    err = mprotect(p, pagesize * 2, PROT_READ);
-+    assert(err == 0);
-+    if (getenv("PROT_NONE_PY")) {
-+        assert(strcmp(q, "24") == 0);
-+    }
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.43.0
+>> Is there any requirement for the order of tags?
+>>=20
+>> My previous understanding was that if the Reviewed-by/Tested-by=20
+>> tags
+>> were obtained by the author within his company, then those tags=20
+>> should
+>> be placed before the signed-off-by of the author. If the=20
+>> Reviewed-by/
+>> Tested-by were acquired in the community, then they should be=20
+>> placed
+>> after the author's signed-off-by, right?
+>
+> Common practice is for Signed-off-by tags to be kept in time=20
+> order
+> from earliest author to latest author / maintainer. Common case=20
+> is
+> 2 S-o-B, the first from the patch author, and the last from the
+> sub-system maintainer who sends the pull request.
+>
+> For other tags I don't see any broadly acceptable pattern. Some=20
+> people
+> add Reviewed-by before the S-o-B, others add Reviewed-by after=20
+> the
+> S-o-B. Either is fine IMHO.
 
+From what I've seen in other projects, S-o-B means that you accept=20
+accountability for everything above. One scenario would be:
+
+- Send original patch, which has been tested inside the company:
+
+  Tested-by: Tester <tester@example.com>
+  Signed-off-by: Developper <developper@example.com>
+
+- Get some R-b, but need to make some requested minor changes and=20
+  resend a new patch series:
+
+  Tested-by: Tester <tester@example.com>
+  Reviewed-by: Reviewer <reviewer@othercompany.com>
+  Signed-off-by: Developper <developper@example.com>
+
+  This is a way of saying "I guarantee that the R-b still applies=20
+  after the new changes I made to this series"
+
+- Then reviewed and pulled into their tree by the maintainer:
+
+  Tested-by: Tester <tester@example.com>
+  Reviewed-by: Reviewer <reviewer@othercompany.com>
+  Signed-off-by: Developper <developper@example.com>
+  Reviewed-by: Maintainer <maintainer@org.org>
+  Signed-off-by: Maintainer <maintainer@org.org>
+
+If, after being reviewed, the initial patch would not have needed=20
+any change, the order would have been:
+
+  Tested-by: Tester <tester@example.com>
+  Signed-off-by: Developper <developper@example.com>
+  Reviewed-by: Reviewer <reviewer@othercompany.com>
+  Reviewed-by: Maintainer <maintainer@org.org>
+  Signed-off-by: Maintainer <maintainer@org.org>
+
+This is consistent with what software like "b4" do: if the S-o of=20
+the current user is present, it is moved last, as the current user=20
+is the one accepting accountability at this point.
+
+However, this is not what QEMU has been using as far as I can see,=20
+as S-o-b tend to stay in their original positions. I even opened=20
+an issue on b4 a few weeks ago because of this=20
+<https://github.com/mricon/b4/issues/16>, and I reverted to using=20
+git-publish. But if this is ok to use an arbitrary order for=20
+non-S-o-b headers, I can get back to b4.
+
+  Sam
+--=20
+Samuel Tardieu
 
