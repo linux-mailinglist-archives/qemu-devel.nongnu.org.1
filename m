@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B285D840B00
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:12:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B76840B3D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:22:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUUE5-0008OK-IJ; Mon, 29 Jan 2024 11:11:13 -0500
+	id 1rUUNj-0008JJ-2R; Mon, 29 Jan 2024 11:21:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUUE4-0008M4-21
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:11:12 -0500
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUUE1-0002s3-J6
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:11:11 -0500
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-339289fead2so2422206f8f.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:11:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706544666; x=1707149466; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q+5SvWKJw3Pcq7y4wFA0yrN1E0wDdYRB5LHPrLR2R5E=;
- b=VEGoXMxzLsDlP7BfEBye0S4YdQEMbakjMDVJkkJyeO248QTn4VLfRpNfSoHJsfcjiz
- h+7ejUWgPyNhQOwYsbI71hSEGPERVcPICNLPjQ7jUMla+QvF9XhJE/yAXCatu3keY2rn
- /KUU2fUWgYkC4KYGBuR0jTzH2ShSpcCJ/aIIZdQ3RPBpCQ1t9hbsvKxImwfu0jGb5Xta
- FpSPjzBZBs/sIC/iF/jERAhEQYOB79eXGdz5z37X3nLbNGs06LxaxjYFXJv6L+VDnmdI
- 73LlTeMccWttfsH+CJcmrLBztTgMG4L9ejynC4ZWNfZ2ANbbWVA9z6v+PuHtDfkhqfIZ
- nlyg==
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rUUNf-0008Gv-Iv
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:21:07 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1rUUNd-0005U7-Lt
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:21:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706545264;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7Gue4fwWNdyGHyICD4MMWGmgA8ROK5Px0XEwhrlRARY=;
+ b=RUVV9ebspomjbSz828Lj+J1CwkxFi2DMQkkD4GTX8fA2p4pj1M162fDFKxefxXmGA+EcNC
+ KY5PehTZ+k/a35oczHMiM4CBLMEV/QRmXqYF8za75vBUxrVWdBWpBPDLtUCtDWqpxZfJbd
+ TWyF3XBUpGVW3CrZlDHv9w90wMU8Xb4=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-363-Qeu_AkErOc6jpM8AJF3axA-1; Mon, 29 Jan 2024 11:21:01 -0500
+X-MC-Unique: Qeu_AkErOc6jpM8AJF3axA-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5101cd9c910so1975982e87.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:21:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706544666; x=1707149466;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=q+5SvWKJw3Pcq7y4wFA0yrN1E0wDdYRB5LHPrLR2R5E=;
- b=pJcyVu8cw1SPUXnLeyBD5IhhiTDnsOmJL9i0nYgSNZuqTlwoqIsUVZCeGAx9p4GASc
- ZHqGStkMFon/OK4pjVjsbOxlamglzMSq6thtSCOAoNah1vUBk5l8yjgQLXWPRiGQaxuL
- NAk2phQZgoCKESvOI+fcjYGwl6IsYsG0wyEOc+Mrp2Tm/Iozcp75FZW66+l6MVfQMlsR
- nHpRK25XXJhGWlZXPaUZqcISgOIw051PNlEMuilKfAlOdlkUAWnQ+sC4RDsc2FW/CRS5
- Cb+vyi0C21o1ebKiAhUVoXKjkw+uLcfwGFOREjti5y0CpI0rfvtk53WlkzUz5aKeCBzW
- Pw1w==
-X-Gm-Message-State: AOJu0Yx4cLCA08TaEcxzluLzmBtdtMQmlh4PqWeTDg065rkkQLLr29ZT
- sZx0JIAiWBCEnoIMDSTfIfwmW5w+Tj3zvpHiPwzSw8HYvHOzfdMQ4AxidFn4y8T0QxATvc91LSh
- 1Mpo=
-X-Google-Smtp-Source: AGHT+IGZtrvB+zkUJjsAVGqIveytOHVyHqI8Q/vjlorX6vfjVFxTfYDnogBdEEvF9xxE2lcmt0PKdw==
-X-Received: by 2002:adf:cc91:0:b0:33a:f340:d09d with SMTP id
- p17-20020adfcc91000000b0033af340d09dmr1784015wrj.49.1706544666613; 
- Mon, 29 Jan 2024 08:11:06 -0800 (PST)
-Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
- [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- co6-20020a0560000a0600b0033af4df8e1esm1219957wrb.47.2024.01.29.08.11.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 08:11:06 -0800 (PST)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org,
-	qemu-block@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v3 6/6] hw/xen: convert stderr prints to error/warn reports
-Date: Mon, 29 Jan 2024 18:09:42 +0200
-Message-Id: <42a8953553cf68e8bacada966f93af4fbce45919.1706544115.git.manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1706544115.git.manos.pitsidianakis@linaro.org>
-References: <cover.1706544115.git.manos.pitsidianakis@linaro.org>
+ d=1e100.net; s=20230601; t=1706545260; x=1707150060;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7Gue4fwWNdyGHyICD4MMWGmgA8ROK5Px0XEwhrlRARY=;
+ b=jftL/jjkeTQXtUu0+KK3qvjCo06UrMqLb0bIdoiWE9XVHATeD7U4ATX/c1ZT/Jqd0X
+ 2JHxGUeb1skkHHcgDOzw8xI75lzX+CktJyG091JhuyxD7yJFMCK+/PQa2MddI3kcuhtY
+ qEyMUHHVr3FSwCOPyucL/l7cPp7ZTI04azi3z/ORPFo/zNwvoVbD/Fi6nY6u70YeLpLb
+ vrvQ7USa20OxdHj1vWIKQLU9mLmZnGeHN7CaYxU5o+ohdb2AXSdRhEDndAjpRwb99iBJ
+ 62OsGX6WR14MHEaRjWObu2FseZnoG8wIHZu/aIqvDKiUH4XypAa7O5/sC0AsyiFW+yUX
+ Gm8Q==
+X-Gm-Message-State: AOJu0YyrjRuQWqpd6O8JAPtGdruvduTsjUhG8gCzM1h1KCwOkb6qbVmq
+ ulaGQt890VRz9pDNDhcOONWPGt2r9Wr+HslEYm4SgjIU/VLxm6rA6gqppqjtCtRrmG+IsYhAzQm
+ yoyjSogeCcTJdXShlr0ccnvjN/tTtmwwmV9ko1I2LcQklPc4g/m4AkZ+Pfpiw8mxdzIPDFQqqpU
+ kC9fjT1QOfQPl4UvL4JPlFacQ4J2k=
+X-Received: by 2002:a05:6512:33ca:b0:510:e815:7bec with SMTP id
+ d10-20020a05651233ca00b00510e8157becmr4092219lfg.27.1706545259920; 
+ Mon, 29 Jan 2024 08:20:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHCuPEaFCiAq85+o7YB6ubu/OU0nzaNc00wOcn7LsyEEKQIz6ZqUPLMXqX/cqmkYMRZTT0nJKAn+564NH1ZcJc=
+X-Received: by 2002:a05:6512:33ca:b0:510:e815:7bec with SMTP id
+ d10-20020a05651233ca00b00510e8157becmr4092191lfg.27.1706545259604; Mon, 29
+ Jan 2024 08:20:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+References: <20240129115008.674248-1-armbru@redhat.com>
+ <20240129115008.674248-6-armbru@redhat.com>
+In-Reply-To: <20240129115008.674248-6-armbru@redhat.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Mon, 29 Jan 2024 18:20:48 +0200
+Message-ID: <CAPMcbCrWmFvZV6Dshrq2DdWHYOkVSHoLO3FyVu=vEU_Urc7nHA@mail.gmail.com>
+Subject: Re: [PATCH 5/5] qga/qapi-schema: Move command description right after
+ command name
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, eblake@redhat.com, kwolf@redhat.com, 
+ hreitz@redhat.com, michael.roth@amd.com, qemu-block@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000fdfdc206101807a7"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,80 +96,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the QEMU Coding Style document:
+--000000000000fdfdc206101807a7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Do not use printf(), fprintf() or monitor_printf(). Instead, use
-> error_report() or error_vreport() from error-report.h. This ensures the
-> error is reported in the right place (current monitor or stderr), and in
-> a uniform format.
-> Use error_printf() & friends to print additional information.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-This commit changes fprintfs that report warnings and errors to the
-appropriate report functions.
+On Mon, Jan 29, 2024 at 1:50=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/xen/xen-hvm-common.c | 12 ++++++------
- hw/xen/xen-mapcache.c   |  5 ++---
- 2 files changed, 8 insertions(+), 9 deletions(-)
+> Documentation of commands guest-ssh-get-authorized-keys,
+> guest-ssh-add-authorized-keys, and guest-ssh-remove-authorized-keys
+> describes the command's purpose after its arguments.  Everywhere else,
+> we do it the other way round.  Move it for consistency.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>  qga/qapi-schema.json | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index 876e2a8ea8..50b0a558c7 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -1565,11 +1565,11 @@
+>  ##
+>  # @guest-ssh-get-authorized-keys:
+>  #
+> -# @username: the user account to add the authorized keys
+> -#
+>  # Return the public keys from user .ssh/authorized_keys on Unix
+>  # systems (not implemented for other systems).
+>  #
+> +# @username: the user account to add the authorized keys
+> +#
+>  # Returns: @GuestAuthorizedKeys
+>  #
+>  # Since: 5.2
+> @@ -1582,6 +1582,9 @@
+>  ##
+>  # @guest-ssh-add-authorized-keys:
+>  #
+> +# Append public keys to user .ssh/authorized_keys on Unix systems (not
+> +# implemented for other systems).
+> +#
+>  # @username: the user account to add the authorized keys
+>  #
+>  # @keys: the public keys to add (in OpenSSH/sshd(8) authorized_keys
+> @@ -1589,9 +1592,6 @@
+>  #
+>  # @reset: ignore the existing content, set it with the given keys only
+>  #
+> -# Append public keys to user .ssh/authorized_keys on Unix systems (not
+> -# implemented for other systems).
+> -#
+>  # Returns: Nothing on success.
+>  #
+>  # Since: 5.2
+> @@ -1603,15 +1603,15 @@
+>  ##
+>  # @guest-ssh-remove-authorized-keys:
+>  #
+> +# Remove public keys from the user .ssh/authorized_keys on Unix
+> +# systems (not implemented for other systems). It's not an error if
+> +# the key is already missing.
+> +#
+>  # @username: the user account to remove the authorized keys
+>  #
+>  # @keys: the public keys to remove (in OpenSSH/sshd(8) authorized_keys
+>  #     format)
+>  #
+> -# Remove public keys from the user .ssh/authorized_keys on Unix
+> -# systems (not implemented for other systems). It's not an error if
+> -# the key is already missing.
+> -#
+>  # Returns: Nothing on success.
+>  #
+>  # Since: 5.2
+> --
+> 2.43.0
+>
+>
 
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 05a29c6f11..baa1adb9f2 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -20,8 +20,8 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
- 
-     if (runstate_check(RUN_STATE_INMIGRATE)) {
-         /* RAM already populated in Xen */
--        fprintf(stderr, "%s: do not alloc "RAM_ADDR_FMT
--                " bytes of ram at "RAM_ADDR_FMT" when runstate is INMIGRATE\n",
-+        warn_report("%s: do not alloc "RAM_ADDR_FMT
-+                " bytes of ram at "RAM_ADDR_FMT" when runstate is INMIGRATE",
-                 __func__, size, ram_addr);
-         return;
-     }
-@@ -552,9 +552,9 @@ static void cpu_handle_ioreq(void *opaque)
-         req->data = copy.data;
- 
-         if (req->state != STATE_IOREQ_INPROCESS) {
--            fprintf(stderr, "Badness in I/O request ... not in service?!: "
-+            warn_report("Badness in I/O request ... not in service?!: "
-                     "%x, ptr: %x, port: %"PRIx64", "
--                    "data: %"PRIx64", count: %u, size: %u, type: %u\n",
-+                    "data: %"PRIx64", count: %u, size: %u, type: %u",
-                     req->state, req->data_is_ptr, req->addr,
-                     req->data, req->count, req->size, req->type);
-             destroy_hvm_domain(false);
-@@ -758,9 +758,9 @@ void xen_shutdown_fatal_error(const char *fmt, ...)
-     va_list ap;
- 
-     va_start(ap, fmt);
--    vfprintf(stderr, fmt, ap);
-+    error_vreport(fmt, ap);
-     va_end(ap);
--    fprintf(stderr, "Will destroy the domain.\n");
-+    error_report("Will destroy the domain.");
-     /* destroy the domain */
-     qemu_system_shutdown_request(SHUTDOWN_CAUSE_HOST_ERROR);
- }
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 336c212376..4f956d048e 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -347,9 +347,8 @@ tryagain:
-         MapCacheRev *reventry = g_new0(MapCacheRev, 1);
-         entry->lock++;
-         if (entry->lock == 0) {
--            fprintf(stderr,
--                    "mapcache entry lock overflow: "HWADDR_FMT_plx" -> %p\n",
--                    entry->paddr_index, entry->vaddr_base);
-+            error_report("mapcache entry lock overflow: "HWADDR_FMT_plx" -> %p",
-+                         entry->paddr_index, entry->vaddr_base);
-             abort();
-         }
-         reventry->dma = dma;
--- 
-γαῖα πυρί μιχθήτω
+--000000000000fdfdc206101807a7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jan 2=
+9, 2024 at 1:50=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@r=
+edhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">Documentation of commands guest-ssh-get-authori=
+zed-keys,<br>
+guest-ssh-add-authorized-keys, and guest-ssh-remove-authorized-keys<br>
+describes the command&#39;s purpose after its arguments.=C2=A0 Everywhere e=
+lse,<br>
+we do it the other way round.=C2=A0 Move it for consistency.<br>
+<br>
+Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
+arget=3D"_blank">armbru@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0qga/qapi-schema.json | 18 +++++++++---------<br>
+=C2=A01 file changed, 9 insertions(+), 9 deletions(-)<br>
+<br>
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
+index 876e2a8ea8..50b0a558c7 100644<br>
+--- a/qga/qapi-schema.json<br>
++++ b/qga/qapi-schema.json<br>
+@@ -1565,11 +1565,11 @@<br>
+=C2=A0##<br>
+=C2=A0# @guest-ssh-get-authorized-keys:<br>
+=C2=A0#<br>
+-# @username: the user account to add the authorized keys<br>
+-#<br>
+=C2=A0# Return the public keys from user .ssh/authorized_keys on Unix<br>
+=C2=A0# systems (not implemented for other systems).<br>
+=C2=A0#<br>
++# @username: the user account to add the authorized keys<br>
++#<br>
+=C2=A0# Returns: @GuestAuthorizedKeys<br>
+=C2=A0#<br>
+=C2=A0# Since: 5.2<br>
+@@ -1582,6 +1582,9 @@<br>
+=C2=A0##<br>
+=C2=A0# @guest-ssh-add-authorized-keys:<br>
+=C2=A0#<br>
++# Append public keys to user .ssh/authorized_keys on Unix systems (not<br>
++# implemented for other systems).<br>
++#<br>
+=C2=A0# @username: the user account to add the authorized keys<br>
+=C2=A0#<br>
+=C2=A0# @keys: the public keys to add (in OpenSSH/sshd(8) authorized_keys<b=
+r>
+@@ -1589,9 +1592,6 @@<br>
+=C2=A0#<br>
+=C2=A0# @reset: ignore the existing content, set it with the given keys onl=
+y<br>
+=C2=A0#<br>
+-# Append public keys to user .ssh/authorized_keys on Unix systems (not<br>
+-# implemented for other systems).<br>
+-#<br>
+=C2=A0# Returns: Nothing on success.<br>
+=C2=A0#<br>
+=C2=A0# Since: 5.2<br>
+@@ -1603,15 +1603,15 @@<br>
+=C2=A0##<br>
+=C2=A0# @guest-ssh-remove-authorized-keys:<br>
+=C2=A0#<br>
++# Remove public keys from the user .ssh/authorized_keys on Unix<br>
++# systems (not implemented for other systems). It&#39;s not an error if<br=
+>
++# the key is already missing.<br>
++#<br>
+=C2=A0# @username: the user account to remove the authorized keys<br>
+=C2=A0#<br>
+=C2=A0# @keys: the public keys to remove (in OpenSSH/sshd(8) authorized_key=
+s<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0format)<br>
+=C2=A0#<br>
+-# Remove public keys from the user .ssh/authorized_keys on Unix<br>
+-# systems (not implemented for other systems). It&#39;s not an error if<br=
+>
+-# the key is already missing.<br>
+-#<br>
+=C2=A0# Returns: Nothing on success.<br>
+=C2=A0#<br>
+=C2=A0# Since: 5.2<br>
+-- <br>
+2.43.0<br>
+<br>
+</blockquote></div>
+
+--000000000000fdfdc206101807a7--
 
 
