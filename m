@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06853840C24
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7458F840C38
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 17:49:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUUnk-0002sN-AG; Mon, 29 Jan 2024 11:48:04 -0500
+	id 1rUUo9-0003WK-7Z; Mon, 29 Jan 2024 11:48:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmn-0007yD-Q9
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:47:06 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUms-0008Dw-Nq
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:47:10 -0500
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmi-00044x-EV
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:47:05 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40ef6442d60so10427425e9.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:46:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUUmp-00046X-FN
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 11:47:10 -0500
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2d0512f6e32so9054151fa.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 08:47:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706546818; x=1707151618; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706546824; x=1707151624; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ib12xEQ9cS3zFPlxG0XK1YK2Htrv2nPGlK1Cf6JOxPw=;
- b=hajbdEajDl8ARAyj6nzsp5XigyqBzoXrRx/1vIrORkcQIdV4bxJn1xIxqQL/ht6LIo
- GnIZOQ+TyZ5Y44UIQJMhUT4vmMrQOcKxmLzb3lRKY72rG821MMdcxGRiSc434eByY9n+
- cNuQwJTKhuxBrByZqdSSB7ZAP9+Y2HER5LW4E1HK0Drbrb9jkatZMnG77jvV6SH+LNlK
- MkI1T/7P9Wsp94SNshqa+sVVjKKDlBmxzMsWjh5gPc5RzyZ0Wc8ozKvfQ27nPD3f0zQS
- IsT7n/5rXRCvbFpeEmPwx97o5bqoUxQqETgdNHgsByYpfij6gQJOmsJF9U2R+8RlO+Tm
- JexA==
+ bh=ijxQ2ToounQ2YPXKuEdEzzYCdzKOr5SyszX4l6rPtX0=;
+ b=pRUaHsaLfYCa993As447YsVWb8bgI9iiAV1nRGt33cXUVQqRPTTW55OdyNGMhltpTK
+ n8sjLXHIYGOGjw8UOVW/yvhDZ+ycuzAIOycs/fKlsRSf5OwbNswjoRxmdpdY0X5W9acq
+ BNGJi2BRYyhGHa5EXqvOXCZjOWBMdxpuby+Hyezjk8puvZur0doVFP5Ia33FYLW1V7aI
+ UFqrKmAg/x+CEkWjOklBiLgYmEm6ZN0EfxlfMqeFRR/PdaqB0ZZZM8rcPvGiUlNRWBDg
+ sPu7Tw2vFVD7Kd3rlckCOEGXayaB5hCT0VcjRcCPzPVHkF/VBPozgr3siasfK0XzGuM2
+ SKsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706546818; x=1707151618;
+ d=1e100.net; s=20230601; t=1706546824; x=1707151624;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ib12xEQ9cS3zFPlxG0XK1YK2Htrv2nPGlK1Cf6JOxPw=;
- b=IEZVArQyDUVwQYix74/ILwoSLvir92/nllSHvmJJSkemky0TG7d/SGj8XPvBddIla3
- QjPX1StcF03Cpzqy9AgJan72g2CdALhBLrKhw64zfhF3xvlkZsNhejDcGtA3Qxgto25/
- Jhy39gzdl6KX1bF8RdiOVmXims2TCxMNJFiLvOq6pYPOAOH5I/TSK8TEImPPh81U+FpH
- bCY2TBAhn6qyIdRYyCm3sVdPZKV1QZf9QzRF+8fNXD89l55En4gcXtub4lM13ffxqryo
- 7vAThWVeDdNd7/cMFRb47s0Okt0RQv3QCL09zQyOwscg12VNfvEZjmtG/GF+YeFZRAs4
- wGFw==
-X-Gm-Message-State: AOJu0YxHS/dbLES17WpDYpI70rFHcNRZGJXBtcTUkvxpsIM+63JYq0lo
- Du1gM+Z86ULOlQ7PYGuZe/kWsC/bLDGwn6lNvMFJiGE9nVs33Qj1ndBCCvCEE1EsQZqRpQv/3mQ
+ bh=ijxQ2ToounQ2YPXKuEdEzzYCdzKOr5SyszX4l6rPtX0=;
+ b=EmL6bB156rihzHjn6EYWyfEJvy5DXWvxsUStchQKtXYV8foaYq2UHV2hhqe7/SQnBW
+ gjIugzTvOHu2x9f1PMAlp8haA5JzGaPOPupFFAAVHwafaOUYaNzxjxdF9i7C+WF8FD/T
+ A/TQNS+1eKCaBf6NeFScB/GTEYAw/P/e/O1MIa3+HQtsJvvLU45+jCLnVywOjUmsNaIY
+ z7rg93OHSWiP89kG62qmWulTijFmitD4q/bqIIVVlMhGTSTjtaf7FLF6/+str6oElLi6
+ jh5BXDzo/IhXVDWI8Gn2aQQmGbgJPssY7fEPynarEA8P60ve4bjMO6w6rI5xbtbOel/b
+ 4/Ag==
+X-Gm-Message-State: AOJu0Yxz4gv0ckxTaHjjWBcO9hrxIUzDDOEZesZs0RZoUWh3xtKk4qUJ
+ c/+jg1pagHZXGXfVs7DYDnHBtsQH3DcHzjHH4le3/ZxXlbsoJSIYmVosyWlKsCBv0cY04mNgkQ0
  H
-X-Google-Smtp-Source: AGHT+IGVfe+WC+EmpdEquqGJQEaGbV4DU6mu7M5n0LNuNCmfmZ9Sf9Syv280bcWHDh3dOmHki1e+SQ==
-X-Received: by 2002:a05:600c:1396:b0:40e:d425:85a with SMTP id
- u22-20020a05600c139600b0040ed425085amr6002839wmf.17.1706546818295; 
- Mon, 29 Jan 2024 08:46:58 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGXacHRaZvQM48taNZT74NjPJR9kzPP7y3LZ/4p0pddoEr1gt2fuS3L5Ce3XavmaRSix5iy+w==
+X-Received: by 2002:a05:651c:151:b0:2cf:2a82:7871 with SMTP id
+ c17-20020a05651c015100b002cf2a827871mr4062986ljd.26.1706546823949; 
+ Mon, 29 Jan 2024 08:47:03 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- bu25-20020a056000079900b0033ae4f2edb0sm6145102wrb.37.2024.01.29.08.46.56
+ l6-20020a5d4806000000b003392ae3aee8sm8502273wrq.97.2024.01.29.08.47.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 08:46:57 -0800 (PST)
+ Mon, 29 Jan 2024 08:47:03 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,19 +62,19 @@ Cc: qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 16/29] target/m68k: Prefer fast cpu_env() over slower CPU
- QOM cast macro
-Date: Mon, 29 Jan 2024 17:44:58 +0100
-Message-ID: <20240129164514.73104-17-philmd@linaro.org>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH v3 17/29] target/microblaze: Prefer fast cpu_env() over slower
+ CPU QOM cast macro
+Date: Mon, 29 Jan 2024 17:44:59 +0100
+Message-ID: <20240129164514.73104-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240129164514.73104-1-philmd@linaro.org>
 References: <20240129164514.73104-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,254 +101,73 @@ Mechanical patch produced running the command documented
 in scripts/coccinelle/cpu_env.cocci_template header.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/m68k/cpu.c       | 33 +++++++++++----------------------
- target/m68k/gdbstub.c   |  6 ++----
- target/m68k/helper.c    |  6 ++----
- target/m68k/m68k-semi.c |  6 ++----
- target/m68k/op_helper.c | 11 +++--------
- target/m68k/translate.c |  3 +--
- 6 files changed, 21 insertions(+), 44 deletions(-)
+ target/microblaze/gdbstub.c   | 3 +--
+ target/microblaze/helper.c    | 3 +--
+ target/microblaze/translate.c | 6 ++----
+ 3 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 4d14d04c33..4be0f0f33a 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -69,9 +69,8 @@ static void m68k_unset_feature(CPUM68KState *env, int feature)
- static void m68k_cpu_reset_hold(Object *obj)
+diff --git a/target/microblaze/gdbstub.c b/target/microblaze/gdbstub.c
+index 29ac6e9c0f..98660ed950 100644
+--- a/target/microblaze/gdbstub.c
++++ b/target/microblaze/gdbstub.c
+@@ -113,9 +113,8 @@ int mb_cpu_gdb_read_stack_protect(CPUMBState *env, GByteArray *mem_buf, int n)
+ 
+ int mb_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
  {
-     CPUState *cs = CPU(obj);
--    M68kCPU *cpu = M68K_CPU(cs);
-     M68kCPUClass *mcc = M68K_CPU_GET_CLASS(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
-     floatx80 nan = floatx80_default_nan(NULL);
-     int i;
- 
-@@ -117,8 +116,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char *cpu_model)
- 
- static void m5206_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_A);
-     m68k_set_feature(env, M68K_FEATURE_MOVEFROMSR_PRIV);
-@@ -127,8 +125,7 @@ static void m5206_cpu_initfn(Object *obj)
- /* Base feature set, including isns. for m68k family */
- static void m68000_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68k_set_feature(env, M68K_FEATURE_M68K);
-     m68k_set_feature(env, M68K_FEATURE_USP);
-@@ -141,8 +138,7 @@ static void m68000_cpu_initfn(Object *obj)
-  */
- static void m68010_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68000_cpu_initfn(obj);
-     m68k_set_feature(env, M68K_FEATURE_M68010);
-@@ -161,8 +157,7 @@ static void m68010_cpu_initfn(Object *obj)
-  */
- static void m68020_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68010_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68010);
-@@ -192,8 +187,7 @@ static void m68020_cpu_initfn(Object *obj)
-  */
- static void m68030_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68020_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68020);
-@@ -219,8 +213,7 @@ static void m68030_cpu_initfn(Object *obj)
-  */
- static void m68040_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68030_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68030);
-@@ -240,8 +233,7 @@ static void m68040_cpu_initfn(Object *obj)
-  */
- static void m68060_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68040_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68040);
-@@ -254,8 +246,7 @@ static void m68060_cpu_initfn(Object *obj)
- 
- static void m5208_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_A);
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_APLUSC);
-@@ -267,8 +258,7 @@ static void m5208_cpu_initfn(Object *obj)
- 
- static void cfv4e_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_A);
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_B);
-@@ -281,8 +271,7 @@ static void cfv4e_cpu_initfn(Object *obj)
- 
- static void any_cpu_initfn(Object *obj)
- {
--    M68kCPU *cpu = M68K_CPU(obj);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(CPU(obj));
- 
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_A);
-     m68k_set_feature(env, M68K_FEATURE_CF_ISA_B);
-diff --git a/target/m68k/gdbstub.c b/target/m68k/gdbstub.c
-index 1e5f033a12..15547e2313 100644
---- a/target/m68k/gdbstub.c
-+++ b/target/m68k/gdbstub.c
-@@ -23,8 +23,7 @@
- 
- int m68k_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
- 
-     if (n < 8) {
-         /* D0-D7 */
-@@ -50,8 +49,7 @@ int m68k_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
- 
- int m68k_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
+-    MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
+     CPUClass *cc = CPU_GET_CLASS(cs);
+-    CPUMBState *env = &cpu->env;
++    CPUMBState *env = cpu_env(cs);
      uint32_t tmp;
  
-     tmp = ldl_p(mem_buf);
-diff --git a/target/m68k/helper.c b/target/m68k/helper.c
-index a812f328a1..3ec835293a 100644
---- a/target/m68k/helper.c
-+++ b/target/m68k/helper.c
-@@ -894,8 +894,7 @@ txfail:
+     if (n > cc->gdb_num_core_regs) {
+diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+index 98bdb82de8..bf955dd425 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/helper.c
+@@ -253,8 +253,7 @@ hwaddr mb_cpu_get_phys_page_attrs_debug(CPUState *cs, vaddr addr,
  
- hwaddr m68k_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+ bool mb_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
  {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
-     hwaddr phys_addr;
-     int prot;
-     int access_type;
-@@ -943,8 +942,7 @@ bool m68k_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                        MMUAccessType qemu_access_type, int mmu_idx,
-                        bool probe, uintptr_t retaddr)
+-    MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
+-    CPUMBState *env = &cpu->env;
++    CPUMBState *env = cpu_env(cs);
+ 
+     if ((interrupt_request & CPU_INTERRUPT_HARD)
+         && (env->msr & MSR_IE)
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index 49bfb4a0ea..354897c4a2 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -1630,7 +1630,6 @@ static void mb_tr_insn_start(DisasContextBase *dcb, CPUState *cs)
+ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
  {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
-     hwaddr physical;
-     int prot;
-     int access_type;
-diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
-index b4ffb70f8b..546cff2246 100644
---- a/target/m68k/m68k-semi.c
-+++ b/target/m68k/m68k-semi.c
-@@ -77,8 +77,7 @@ static int host_to_gdb_errno(int err)
+     DisasContext *dc = container_of(dcb, DisasContext, base);
+-    CPUMBState *env = cpu_env(cs);
+     uint32_t ir;
  
- static void m68k_semi_u32_cb(CPUState *cs, uint64_t ret, int err)
+     /* TODO: This should raise an exception, not terminate qemu. */
+@@ -1641,7 +1640,7 @@ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
+ 
+     dc->tb_flags_to_set = 0;
+ 
+-    ir = cpu_ldl_code(env, dc->base.pc_next);
++    ir = cpu_ldl_code(cpu_env(cs), dc->base.pc_next);
+     if (!decode(dc, ir)) {
+         trap_illegal(dc, true);
+     }
+@@ -1800,8 +1799,7 @@ void gen_intermediate_code(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+ 
+ void mb_cpu_dump_state(CPUState *cs, FILE *f, int flags)
  {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
- 
-     target_ulong args = env->dregs[1];
-     if (put_user_u32(ret, args) ||
-@@ -95,8 +94,7 @@ static void m68k_semi_u32_cb(CPUState *cs, uint64_t ret, int err)
- 
- static void m68k_semi_u64_cb(CPUState *cs, uint64_t ret, int err)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
- 
-     target_ulong args = env->dregs[1];
-     if (put_user_u32(ret >> 32, args) ||
-diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
-index 1ce850bbc5..851cca640d 100644
---- a/target/m68k/op_helper.c
-+++ b/target/m68k/op_helper.c
-@@ -441,10 +441,7 @@ static void do_interrupt_all(CPUM68KState *env, int is_hw)
- 
- void m68k_cpu_do_interrupt(CPUState *cs)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
--
--    do_interrupt_all(env, 0);
-+    do_interrupt_all(cpu_env(cs), 0);
- }
- 
- static inline void do_interrupt_m68k_hardirq(CPUM68KState *env)
-@@ -457,8 +454,7 @@ void m68k_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
-                                  int mmu_idx, MemTxAttrs attrs,
-                                  MemTxResult response, uintptr_t retaddr)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
- 
-     cpu_restore_state(cs, retaddr);
- 
-@@ -511,8 +507,7 @@ void m68k_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
- 
- bool m68k_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
- 
-     if (interrupt_request & CPU_INTERRUPT_HARD
-         && ((env->sr & SR_I) >> SR_I_SHIFT) < env->pending_level) {
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 4a0b0b2703..9688476a7b 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -6108,8 +6108,7 @@ static double floatx80_to_double(CPUM68KState *env, uint16_t high, uint64_t low)
- 
- void m68k_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
--    M68kCPU *cpu = M68K_CPU(cs);
--    CPUM68KState *env = &cpu->env;
-+    CPUM68KState *env = cpu_env(cs);
+-    MicroBlazeCPU *cpu = MICROBLAZE_CPU(cs);
+-    CPUMBState *env = &cpu->env;
++    CPUMBState *env = cpu_env(cs);
+     uint32_t iflags;
      int i;
-     uint16_t sr;
-     for (i = 0; i < 8; i++) {
+ 
 -- 
 2.41.0
 
