@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19637840081
+	by mail.lfdr.de (Postfix) with ESMTPS id 1623E840080
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:43:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUNDa-0008HG-76; Mon, 29 Jan 2024 03:42:14 -0500
+	id 1rUNDe-0008If-Qa; Mon, 29 Jan 2024 03:42:18 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=2aNT=JH=redhat.com=clg@ozlabs.org>)
- id 1rUNDV-0008H0-Ob
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:42:09 -0500
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1rUNDX-0008HH-BL
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:42:11 -0500
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=2aNT=JH=redhat.com=clg@ozlabs.org>)
- id 1rUNDT-00053B-UI
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:42:09 -0500
+ id 1rUNDT-00053V-UL
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:42:10 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TNhcS41pyz4wyl;
- Mon, 29 Jan 2024 19:42:00 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TNhcV6MTjz4x1s;
+ Mon, 29 Jan 2024 19:42:02 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TNhcR1vwpz4wby;
- Mon, 29 Jan 2024 19:41:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TNhcT0RVlz4wby;
+ Mon, 29 Jan 2024 19:42:00 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/2] vfio: use matching sizeof type
-Date: Mon, 29 Jan 2024 09:41:49 +0100
-Message-ID: <20240129084150.134050-2-clg@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Jing Liu <jing2.liu@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>
+Subject: [PULL 2/2] vfio/pci: Clear MSI-X IRQ index always
+Date: Mon, 29 Jan 2024 09:41:50 +0100
+Message-ID: <20240129084150.134050-3-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129084150.134050-1-clg@redhat.com>
 References: <20240129084150.134050-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=2aNT=JH=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,30 +66,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+When doing device assignment of a physical device, MSI-X can be
+enabled with no vectors enabled and this sets the IRQ index to
+VFIO_PCI_MSIX_IRQ_INDEX. However, when MSI-X is disabled, the IRQ
+index is left untouched if no vectors are in use. Then, when INTx
+is enabled, the IRQ index value is considered incompatible (set to
+MSI-X) and VFIO_DEVICE_SET_IRQS fails. QEMU complains with :
 
-Do not use uint64_t for the type of the declaration and __u64 when
-computing the number of elements in the array.
+qemu-system-x86_64: vfio 0000:08:00.0: Failed to set up TRIGGER eventfd signaling for interrupt INTX-0: VFIO_DEVICE_SET_IRQS failure: Invalid argument
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+To avoid that, unconditionaly clear the IRQ index when MSI-X is
+disabled.
+
+Buglink: https://issues.redhat.com/browse/RHEL-21293
+Fixes: 5ebffa4e87e7 ("vfio/pci: use an invalid fd to enable MSI-X")
+Cc: Jing Liu <jing2.liu@intel.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/vfio/pci.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 4aa86f563c64cab9290efab54d20cb2a30c498aa..059bfdc07a85e2eb908df828c1f42104d683e911 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1118,7 +1118,7 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
- {
-     uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
-                         sizeof(struct vfio_device_feature_dma_logging_report),
--                        sizeof(__u64))] = {};
-+                        sizeof(uint64_t))] = {};
-     struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
-     struct vfio_device_feature_dma_logging_report *report =
-         (struct vfio_device_feature_dma_logging_report *)feature->data;
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index d7fe06715c4b9cde66a68c31aaf405315921b0d6..4fa387f0430d62ca2ba1b5ae5b7037f8f06b33f9 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -826,9 +826,11 @@ static void vfio_msix_disable(VFIOPCIDevice *vdev)
+         }
+     }
+ 
+-    if (vdev->nr_vectors) {
+-        vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+-    }
++    /*
++     * Always clear MSI-X IRQ index. A PF device could have enabled
++     * MSI-X with no vectors. See vfio_msix_enable().
++     */
++    vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+ 
+     vfio_msi_disable_common(vdev);
+     vfio_intx_enable(vdev, &err);
 -- 
 2.43.0
 
