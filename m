@@ -2,85 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3EA840725
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 14:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB4484072C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 14:38:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rURox-00017p-3H; Mon, 29 Jan 2024 08:37:07 -0500
+	id 1rURph-0001wy-4N; Mon, 29 Jan 2024 08:37:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rURoo-00017Q-AE
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 08:36:58 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rURpY-0001m9-W9; Mon, 29 Jan 2024 08:37:46 -0500
+Received: from wout3-smtp.messagingengine.com ([64.147.123.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rURom-0000Zx-Mx
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 08:36:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706535416;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZlayBfl1lG092L3t/mfKlmWwcPTs55S8i54HXtLS20E=;
- b=I1PsP8qcrhDa8vTjOmuOD94c94ESgMLWKomHBpHMTiFPGxHztFn5JO+6Zz/1RDyEVrw6/O
- m4lCqI9I9jnRDvMmVt2z2tnuw44VyOPJOgAjfQU6pUSLJ5BKz8ZVf8X57mqE5Q9puTwW8B
- 5g7Sl0yifvgunD0o9siTu5XupQ5MH74=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-316-SLkDQHaQOvGnar9oF0EBDA-1; Mon, 29 Jan 2024 08:36:54 -0500
-X-MC-Unique: SLkDQHaQOvGnar9oF0EBDA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a34a22e09ccso72653966b.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 05:36:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706535413; x=1707140213;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZlayBfl1lG092L3t/mfKlmWwcPTs55S8i54HXtLS20E=;
- b=Y/WmD98f2UIkoUw50aX6xUKKfF5p/858buStaITFhaYjRijTzdRkJeLXofMxEuBpY2
- WcRAIMoC3EFOZsOOrQmK5zqlTGuDd+RbQtuaoda91FpbDqru3jSavIJdw1wN99kFe8Ie
- kptyAq+EhnRnCwRtUBlB7s7dmVZTee90dn9v+9enyuFTygnlgcVZpeGfJ9w4jt2c1X1i
- gQ4Z0bNORRbhGuxZEHC3FXp5EjXcQE7/QG0WhO0hP4TG1OUmFceSgCVH59UJXG5qeKsd
- MuQ6uZnUBZUSm3ItBXwyox6FAXSNG6mQlXIXCZVyQ5azQ6gwwvr/94jCvPLBVV9PpmhR
- hfOQ==
-X-Gm-Message-State: AOJu0YwoRPmCElOujoxIAf1PQol7on2A+Z8ge6kF2XG3GrPUEmHHzcF/
- WmEnhyAQ3USO5lZLya+e7fOz2dogEJIWiqzOcsRRhtGML7ny4DjxiQYrt4i4jI8NbmmuW6WqdWW
- +X4Fdz+81uSdefQ+PSmzjMqxS4r6NnWp8X417CQ+KTTqd7K1idCuPaT/oSzNzEzZ/pZJ6lRPn+0
- slVphp/B+gbpM2HpMRCBJsN18iTFkQ9B5054sx
-X-Received: by 2002:a17:906:a013:b0:a32:b376:48d8 with SMTP id
- p19-20020a170906a01300b00a32b37648d8mr4244195ejy.18.1706535413088; 
- Mon, 29 Jan 2024 05:36:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH8uEvS9nYL7ZxJZ9fEgiR7N3wuRPAz1exeePoNiCvbi1qkbsOYqISGx64wZFy7S40f/bKY3w==
-X-Received: by 2002:a17:906:a013:b0:a32:b376:48d8 with SMTP id
- p19-20020a170906a01300b00a32b37648d8mr4244183ejy.18.1706535412698; 
- Mon, 29 Jan 2024 05:36:52 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- gx13-20020a1709068a4d00b00a2cf537042asm3880670ejc.192.2024.01.29.05.36.51
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 05:36:52 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] configure: do not create legacy symlinks
-Date: Mon, 29 Jan 2024 14:36:51 +0100
-Message-ID: <20240129133651.1106552-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rURpW-0000iN-EO; Mon, 29 Jan 2024 08:37:44 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.west.internal (Postfix) with ESMTP id 9CF0032004AE;
+ Mon, 29 Jan 2024 08:37:35 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Mon, 29 Jan 2024 08:37:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:subject:subject:to:to; s=fm2; t=1706535455; x=
+ 1706621855; bh=7G/q5eftMZJbKWoTuLpbhCIecgF2pjqJrVq5ekVhyeY=; b=U
+ dVcise4Xd9emKdDy4JPApEc2rNke3DqOPwWJQMv+Yt3TdFHxMuEmuGJaVbaRnHCM
+ seO1zgMs60p0qOgi20ihOUY0PRJP2ChG074WyFsCO+P4Ahl8oL12PJoWKCHPgTA7
+ Qc3etctd30MRLoSNALeWPsPKvNluWJDoeQ/FfT/xeqqau2pd5C9TdwmMKxIPZK/y
+ S6ggYo28vrWIsRUzwKuOXftHxN+MKec7zNyRdul2FpHMJszLlOQvKuEKE9q0mH2L
+ JYUK9gpFv7pX23oxdBOGvBBpCEc1bRGJ22VALra9rjBnQM5Z2wlpm80ngTIkySQ5
+ f9W/jn66O5fYDue/h9GJQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; t=1706535455; x=1706621855; bh=7G/q5eftMZJbKWoTuLpbhCIecgF2
+ pjqJrVq5ekVhyeY=; b=BVECDSJ5uA7mGMHx1HYAeHEXMZZIuAHkwtTqyIZaw8aE
+ YyIwLaoIUOszdnNamxHVTf3SaG27nYfJu/CZuJN/BuDOnEDdhrmZr2c+MfP+njkP
+ vO3VobmPKiHbxcZ472cxhLNNL0gpaYr8fX99rIYQqPVqZPGB3NWNA8DjKhsPS3Y3
+ g9XFWNus0rK7viPcYpXwaBzJnutGqmv5bXZz6ZSthSB8nSWSzW+8rsrFPX7k0aVr
+ Z0zfczfUzuTeKk9w/SEgPnMDRkf1dJ/4L7KUHqWpZaa+ewBavlChXXunE1HUbZ+1
+ kM9v4VWdM0YBnpxw3/7t3SdIqYzTMxpUV50M3UDOKQ==
+X-ME-Sender: <xms:Hqq3ZUHEefUIxI5BpSg3RAIA5D4XPoUSaDm030e29HAWEYOQ_23_Gg>
+ <xme:Hqq3ZdURDX28OOQHwJY7_PaFLT4RtSkljKQw8_23DsctYxhaU3cpOpNQaEREKdF3_
+ ZaFL6QG0B5wRTslHPA>
+X-ME-Received: <xmr:Hqq3ZeJNUhpT3ZbYwJdwJSGUYdpizj0pmeQoJr5xOmpvhXi6_1jXhUVbAoTsmw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtgedggeegucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepmfhlrghu
+ shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
+ htvghrnhepjefgjeefffdvuefhieefhffggfeuleehudekveejvedtuddugeeigeetffff
+ jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+ htshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:Hqq3ZWGhPzQJ4RKQnWdCVTp4E37hbEKViPT-KymUcGQGWIK1fGqBGg>
+ <xmx:Hqq3ZaWgxIkuwEvWHHTKeP7ptOE9BojCGovQPFWiIW28pQjaG1kLpA>
+ <xmx:Hqq3ZZNADwACx8ShDiXjHpRy2EywvM6JQ4-v7R72acJN7yURCgcMhQ>
+ <xmx:H6q3ZepymJXizJrN-ZcmPwIP3m8--6roR42nQ-qCWMVYX48pZRFj0Q>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jan 2024 08:37:33 -0500 (EST)
+Date: Mon, 29 Jan 2024 14:37:28 +0100
+From: Klaus Jensen <its@irrelevant.dk>
+To: Damien Hedde <dhedde@kalrayinc.com>
+Cc: Hannes Reinecke <hare@suse.de>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ qemu-devel <qemu-devel@nongnu.org>, Titouan Huard <thuard@kalrayinc.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: NVME hotplug support ?
+Message-ID: <ZbeqGMdCw2QlHccd@cormorant.local>
+References: <PR2P264MB0861AAF89D0B361A33710261D1742@PR2P264MB0861.FRAP264.PROD.OUTLOOK.COM>
+ <499096d7-1b4d-471b-9abf-5b6f72bb7990@suse.de>
+ <de06e322-37e9-4788-97a2-c9f16a68cd2e@linaro.org>
+ <07625f96-4ca1-479f-b6b9-69c2a191de76@suse.de>
+ <7e35528b-cc66-d2f1-e3e3-7dece5620c52@kalrayinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="lNgLd6U+E1lVc+C+"
+Content-Disposition: inline
+In-Reply-To: <7e35528b-cc66-d2f1-e3e3-7dece5620c52@kalrayinc.com>
+Received-SPF: pass client-ip=64.147.123.19; envelope-from=its@irrelevant.dk;
+ helo=wout3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,43 +108,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With more than three years since Meson was introduced in the build system, people
-have had quite some time to move away from the foo-softmmu/qemu-system-* and
-foo-linux-user/qemu-* symbolic links.  Remove them, and with them another
-instance of the "softmmu" name for system emulators.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 10 ----------
- 1 file changed, 10 deletions(-)
+--lNgLd6U+E1lVc+C+
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/configure b/configure
-index ff058d6c486..9cdb5a6818b 100755
---- a/configure
-+++ b/configure
-@@ -1605,21 +1605,11 @@ echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
- echo "MESON=$meson" >> $config_host_mak
- echo "NINJA=$ninja" >> $config_host_mak
- echo "EXESUF=$EXESUF" >> $config_host_mak
--
- # use included Linux headers for KVM architectures
- if test "$host_os" = "linux" && test -n "$linux_arch"; then
-   symlink "$source_path/linux-headers/asm-$linux_arch" linux-headers/asm
- fi
- 
--for target in $target_list; do
--    target_dir="$target"
--    target_name=$(echo $target | cut -d '-' -f 1)$EXESUF
--    case $target in
--        *-user) symlink "../qemu-$target_name" "$target_dir/qemu-$target_name" ;;
--        *) symlink "../qemu-system-$target_name" "$target_dir/qemu-system-$target_name" ;;
--    esac
--done
--
- if test "$default_targets" = "yes"; then
-   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
- fi
--- 
-2.43.0
+On Jan 29 14:13, Damien Hedde wrote:
+>=20
+>=20
+> On 1/24/24 08:47, Hannes Reinecke wrote:
+> > On 1/24/24 07:52, Philippe Mathieu-Daud=C3=A9 wrote:
+> > > Hi Hannes,
+> > >=20
+> > > [+Markus as QOM/QDev rubber duck]
+> > >=20
+> > > On 23/1/24 13:40, Hannes Reinecke wrote:
+> > > > On 1/23/24 11:59, Damien Hedde wrote:
+> > > > > Hi all,
+> > > > >=20
+> > > > > We are currently looking into hotplugging nvme devices and
+> > > > > it is currently not possible:
+> > > > > When nvme was introduced 2 years ago, the feature was disabled.
+> > > > > > commit cc6fb6bc506e6c47ed604fcb7b7413dff0b7d845
+> > > > > > Author: Klaus Jensen
+> > > > > > Date:=C2=A0=C2=A0 Tue Jul 6 10:48:40 2021 +0200
+> > > > > >=20
+> > > > > > =C2=A0=C2=A0=C2=A0 hw/nvme: mark nvme-subsys non-hotpluggable
+> > > > > > =C2=A0=C2=A0=C2=A0 We currently lack the infrastructure to hand=
+le
+> > > > > > subsystem hotplugging, so
+> > > > > > =C2=A0=C2=A0=C2=A0 disable it.
+> > > > >=20
+> > > > > Do someone know what's lacking or anyone have some tips/idea
+> > > > > of what we should develop to add the support ?
+> > > > >=20
+> > > > Problem is that the object model is messed up. In qemu
+> > > > namespaces are attached to controllers, which in turn are
+> > > > children of the PCI device.
+> > > > There are subsystems, but these just reference the controller.
+> > > >=20
+> > > > So if you hotunplug the PCI device you detach/destroy the
+> > > > controller and detach the namespaces from the controller.
+> > > > But if you hotplug the PCI device again the NVMe controller will
+> > > > be attached to the PCI device, but the namespace are still be
+> > > > detached.
+> > > >=20
+> > > > Klaus said he was going to fix that, and I dimly remember some patc=
+hes
+> > > > floating around. But apparently it never went anywhere.
+> > > >=20
+> > > > Fundamental problem is that the NVMe hierarchy as per spec is
+> > > > incompatible with the qemu object model; qemu requires a strict
+> > > > tree model where every object has exactly _one_ parent.
+> > >=20
+> > > The modelling problem is not clear to me.
+> > > Do you have an example of how the NVMe hierarchy should be?
+> > >=20
+> > Sure.
+> >=20
+> > As per NVMe spec we have this hierarchy:
+> >=20
+> >  =C2=A0=C2=A0=C2=A0=C2=A0 --->=C2=A0 subsys ---
+> >  =C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> >  =C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V
+> > controller=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 namespaces
+> >=20
+> > There can be several controllers, and several
+> > namespaces.
+> > The initiator (ie the linux 'nvme' driver) connects
+> > to a controller, queries the subsystem for the attached
+> > namespaces, and presents each namespace as a block device.
+> >=20
+> > For Qemu we have the problem that every device _must_ be
+> > a direct descendant of the parent (expressed by the fact
+> > that each 'parent' object is embedded in the device object).
+> >=20
+> > So if we were to present a NVMe PCI device, the controller
+> > must be derived from the PCI device:
+> >=20
+> > pci -> controller
+> >=20
+> > but now we have to express the NVMe hierarchy, too:
+> >=20
+> > pci -> ctrl1 -> subsys1 -> namespace1
+> >=20
+> > which actually works.
+> > We can easily attach several namespaces:
+> >=20
+> > pci -> ctrl1 ->subsys1 -> namespace2
+> >=20
+> > For a single controller and a single subsystem.
+> > However, as mentioned above, there can be _several_
+> > controllers attached to the same subsystem.
+> > So we can express the second controller:
+> >=20
+> > pci -> ctrl2
+> >=20
+> > but we cannot attach the controller to 'subsys1'
+> > as then 'subsys1' would need to be derived from
+> > 'ctrl2', and not (as it is now) from 'ctrl1'.
+> >=20
+> > The most logical step would be to have 'subsystems'
+> > their own entity, independent of any controllers.
+> > But then the block devices (which are derived from
+> > the namespaces) could not be traced back
+> > to the PCI device, and a PCI hotplug would not
+> > 'automatically' disconnect the nvme block devices.
+> >=20
+> > Plus the subsystem would be independent from the NVMe
+> > PCI devices, so you could have a subsystem with
+> > no controllers attached. And one would wonder who
+> > should be responsible for cleaning up that.
+> >=20
+>=20
+> Thanks for the details !
+>=20
+> My use case is the simple one with no nvme subsystem/namespaces:
+> - hotplug a pci nvme device (nvme controller) as in the following CLI (wh=
+ich
+> automatically put the drive into a default namespace)
+>=20
+> ./qemu-system-aarch64 -nographic -M virt \
+>    -drive file=3Dnvme0.disk,if=3Dnone,id=3Dnvme-drive0 \
+>    -device nvme,serial=3Dnvme0,id=3Dnvmedev0,drive=3Dnvme-drive0
+>=20
 
+AFAIK, you just need a pci root port to plug the device into.
+
+  -drive file=3Dnvme0.disk,if=3Dnone,id=3Dnvme-drive0 \
+  -device "pcie-root-port,id=3Dpcie_root_port0,chassis=3D1,slot=3D0" \
+  -device nvme,serial=3Dnvme0,id=3Dnvmedev0,drive=3Dnvme-drive0
+
+Then, you can use the qemu monitor to `device_del nvmedev0` and add it
+with `device_add nvme,serial=3Dnvme0,id=3Dnvmedev0,drive=3Dnvme-drive0`. The
+"drive" (blockdev) will stick around after the device_del.
+
+--lNgLd6U+E1lVc+C+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmW3qhgACgkQTeGvMW1P
+DemO3wf9E6x9yr6IZenVktIsLssANisuFmLVe59EoivQyWrcylgp4MJSmCd4et5F
+NPddAIuNfCy/0RZMV+Yec2F/vwz91XpnLaXMMF96vDvcU2Yl4rVBjWkxICevcdwm
+E9SQjuip6buhiiRQm1CQtJpHzwwu8z5BLKjxgLxesNGkB8YOTd3V28SUmeFUwCEi
+k1xfvAXQRYDLSxb+oL9PxoywkBgArJ3xm9rhmUbezcZCImcOmupM31UXovDgBGZk
+S7KfiksSXSZPy0wsFmmqqdlT75pWzwWMvXDvZ0zv81IhddzLLx1qj9vMx16s7FaW
+zrVykjUdNHGy0gb5TV5VjeJLH+PeAw==
+=nXB6
+-----END PGP SIGNATURE-----
+
+--lNgLd6U+E1lVc+C+--
 
