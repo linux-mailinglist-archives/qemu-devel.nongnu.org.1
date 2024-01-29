@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7F38401D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0178401CD
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 10:35:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUO2A-00026v-FR; Mon, 29 Jan 2024 04:34:30 -0500
+	id 1rUO2C-000270-9D; Mon, 29 Jan 2024 04:34:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUO26-00025V-Is; Mon, 29 Jan 2024 04:34:26 -0500
+ id 1rUO26-00025U-F4; Mon, 29 Jan 2024 04:34:26 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUO23-0008SX-OG; Mon, 29 Jan 2024 04:34:26 -0500
+ id 1rUO23-0008Sf-TW; Mon, 29 Jan 2024 04:34:25 -0500
 Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40T85Obw023580; Mon, 29 Jan 2024 09:34:19 GMT
+ 40T85RFo023735; Mon, 29 Jan 2024 09:34:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=Uo/P5DOfd/mC752ox9LxZ0KMLZd6oY1pK+x7qsIkXEY=;
- b=JcrhZhziQPcEz9G4bR4I38kWwu6xhNIdVZxnQCLh9+cUxeEgJekBINWbarWRMZ59UmNT
- n5Fpeqcj3MfkxK+jox2Tfo75cbFYIK5bxku3yWG0jeTcqMBgkB5Jh5L+Y1O+A3kpeWvz
- kQy4XEi4jmxbE++wl+RDsMccHkLdDSQIPlVb+AfKdJhPf4vcppLeZrlUyQBUr4f3XgLW
- x4ETdWLcxoG/XWQUcqd9m6+1O1MUew/nrTR8Uk9oFXskMd3KKX9xpz6O5dsUxuTwtpDP
- 6IBKv4pUYvrVWAFqb8J2h/30+8PVl8nGVFEsRklr/X7v0MIg8tG75FmwFM6d0A+4RNIF GA== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=EMJdS9hKoA7kur7DqvESiD5ICfk5HChs5chrzcRw4VA=;
+ b=iKiG6O065kT97uCxVSERS2RUqwr84bZ5G8ph6PkYQMh4W525rQfTDuTSn8NhhVTxzV6G
+ fmRoaX7wKpsWuJfYMsresSzCtNSCEwpK2rG5LKsK4S2XSBKglXNM9FTNx1HEy53qB7jx
+ Vd+ToIuBIVppy2//ilGKBIl+AKjc+Nv7MTYDuM+sMS8qcRRsfGepwZRVT5FH0FKq4lek
+ wAFGM5oXFKZ66jjxyABF0qHS8z9tNIRFWRiyiQ/TukPCySwWXD4AOWvX/+jGbC18+grv
+ fx4LhyEN7naOX12OThZz+TO7K9uDRVW2YSzNPC2qY/WQ3XFvQ+61gvuRn8HoKF8yDYZJ ew== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx86vsvtm-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx86vsvua-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:19 +0000
+ Mon, 29 Jan 2024 09:34:21 +0000
 Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T8u7ck028262;
- Mon, 29 Jan 2024 09:34:18 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx86vsvtf-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T8tqGD027692;
+ Mon, 29 Jan 2024 09:34:20 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vx86vsvu2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:18 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40T8UkVU010535; Mon, 29 Jan 2024 09:34:17 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwd5nfarg-1
+ Mon, 29 Jan 2024 09:34:20 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40T6jKaV007188; Mon, 29 Jan 2024 09:34:20 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev1xvry-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Jan 2024 09:34:17 +0000
+ Mon, 29 Jan 2024 09:34:20 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40T9YFAT48300434
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40T9YIGH24314388
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Jan 2024 09:34:15 GMT
+ Mon, 29 Jan 2024 09:34:18 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B764120040;
- Mon, 29 Jan 2024 09:34:15 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1870D20043;
+ Mon, 29 Jan 2024 09:34:18 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2B5D22004B;
- Mon, 29 Jan 2024 09:34:15 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7E2DF20040;
+ Mon, 29 Jan 2024 09:34:17 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.7.240])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 29 Jan 2024 09:34:15 +0000 (GMT)
+ Mon, 29 Jan 2024 09:34:17 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
@@ -71,22 +72,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 0/3] linux-user: Allow gdbstub to ignore page protection
-Date: Mon, 29 Jan 2024 10:32:13 +0100
-Message-ID: <20240129093410.3151-1-iii@linux.ibm.com>
+Subject: [PATCH v4 1/3] linux-user: Allow gdbstub to ignore page protection
+Date: Mon, 29 Jan 2024 10:32:14 +0100
+Message-ID: <20240129093410.3151-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zGjFIcyXJaG8wQvH2S_g3kG3RCTnkLbV
-X-Proofpoint-ORIG-GUID: 1r95fTB8Mnr8Fz80ZUVuKMhTv8NHiDgL
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240129093410.3151-1-iii@linux.ibm.com>
+References: <20240129093410.3151-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: R7YmqST-Dcuiy1Fw9vbI2XzNZPN04mln
+X-Proofpoint-ORIG-GUID: wgwPKY-5wCbwjbq3D4rqeYil9sWISlbA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-29_05,2024-01-25_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  impostorscore=0 spamscore=0
- mlxlogscore=829 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ mlxlogscore=951 mlxscore=0 phishscore=0 bulkscore=0 suspectscore=0
  adultscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2401290068
@@ -114,63 +116,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v3: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02907.html
-v3 -> v4: Hide InteractiveConsole behind QEMU_TEST_INTERACTIVE (Alex).
-          Probe /proc/self/mem in the PROT_NONE test.
+gdbserver ignores page protection by virtue of using /proc/$pid/mem.
+Teach qemu gdbstub to do this too. This will not work if /proc is not
+mounted; accept this limitation.
 
-v2: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg01592.html
-v2 -> v3: Add Richard's R-b on [1/3].
-          Fix printing the architecture name and the number of failures
-          in test_gdbstub.py.
-          Patches that need review: [2/3] and [3/3].
+One alternative is to temporarily grant the missing PROT_* bit, but
+this is inherently racy. Another alternative is self-debugging with
+ptrace(POKE), which will break if QEMU itself is being debugged - a
+much more severe limitation.
 
-v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg01314.html
-v1 -> v2: Use /proc/self/mem as a fallback. Handle TB invalidation
-          (Richard).
-          Test cross-page accesses.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ cpu-target.c | 78 ++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 63 insertions(+), 15 deletions(-)
 
-RFC: https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg02044.html
-RFC -> v1: Use /proc/self/mem and accept that this will not work
-           without /proc.
-           Factor out a couple functions for gdbstub testing.
-           Add a test.
-
-Hi,
-
-I've noticed that gdbstub behaves differently from gdbserver in that it
-doesn't allow reading non-readable pages. This series improves the
-situation by using the same mechanism as gdbserver: /proc/self/mem.
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (3):
-  linux-user: Allow gdbstub to ignore page protection
-  tests/tcg: Factor out gdbstub test functions
-  tests/tcg: Add the PROT_NONE gdbstub test
-
- cpu-target.c                                  | 78 +++++++++++++++----
- tests/guest-debug/run-test.py                 |  7 +-
- tests/guest-debug/test_gdbstub.py             | 60 ++++++++++++++
- tests/tcg/aarch64/gdbstub/test-sve-ioctl.py   | 34 +-------
- tests/tcg/aarch64/gdbstub/test-sve.py         | 33 +-------
- tests/tcg/multiarch/Makefile.target           |  9 ++-
- tests/tcg/multiarch/gdbstub/interrupt.py      | 47 ++---------
- tests/tcg/multiarch/gdbstub/memory.py         | 41 +---------
- tests/tcg/multiarch/gdbstub/prot-none.py      | 36 +++++++++
- tests/tcg/multiarch/gdbstub/registers.py      | 41 ++--------
- tests/tcg/multiarch/gdbstub/sha1.py           | 40 ++--------
- .../multiarch/gdbstub/test-proc-mappings.py   | 39 +---------
- .../multiarch/gdbstub/test-qxfer-auxv-read.py | 37 +--------
- .../gdbstub/test-thread-breakpoint.py         | 37 +--------
- tests/tcg/multiarch/prot-none.c               | 40 ++++++++++
- tests/tcg/s390x/gdbstub/test-signals-s390x.py | 42 +---------
- tests/tcg/s390x/gdbstub/test-svc.py           | 39 +---------
- 17 files changed, 247 insertions(+), 413 deletions(-)
- create mode 100644 tests/guest-debug/test_gdbstub.py
- create mode 100644 tests/tcg/multiarch/gdbstub/prot-none.py
- create mode 100644 tests/tcg/multiarch/prot-none.c
-
+diff --git a/cpu-target.c b/cpu-target.c
+index f6e07c3deb1..958d63e8823 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -382,6 +382,9 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+     vaddr l, page;
+     void * p;
+     uint8_t *buf = ptr;
++    ssize_t written;
++    int ret = -1;
++    int fd = -1;
+ 
+     while (len > 0) {
+         page = addr & TARGET_PAGE_MASK;
+@@ -389,30 +392,75 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+         if (l > len)
+             l = len;
+         flags = page_get_flags(page);
+-        if (!(flags & PAGE_VALID))
+-            return -1;
++        if (!(flags & PAGE_VALID)) {
++            goto out_close;
++        }
+         if (is_write) {
+-            if (!(flags & PAGE_WRITE))
+-                return -1;
+-            /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
+-                return -1;
+-            memcpy(p, buf, l);
+-            unlock_user(p, addr, l);
+-        } else {
+-            if (!(flags & PAGE_READ))
+-                return -1;
++            if (flags & PAGE_WRITE) {
++                /* XXX: this code should not depend on lock_user */
++                p = lock_user(VERIFY_WRITE, addr, l, 0);
++                if (!p) {
++                    goto out_close;
++                }
++                memcpy(p, buf, l);
++                unlock_user(p, addr, l);
++            } else {
++                /* Bypass the host page protection using ptrace. */
++                if (fd == -1) {
++                    fd = open("/proc/self/mem", O_WRONLY);
++                    if (fd == -1) {
++                        goto out;
++                    }
++                }
++                /*
++                 * If there is a TranslationBlock and we weren't bypassing the
++                 * host page protection, the memcpy() above would SEGV,
++                 * ultimately leading to page_unprotect(). So invalidate the
++                 * translations manually. Both invalidation and pwrite() must
++                 * be under mmap_lock() in order to prevent the creation of
++                 * another TranslationBlock in between.
++                 */
++                mmap_lock();
++                tb_invalidate_phys_range(addr, addr + l - 1);
++                written = pwrite(fd, buf, l,
++                                 (off_t)(uintptr_t)g2h_untagged(addr));
++                mmap_unlock();
++                if (written != l) {
++                    goto out_close;
++                }
++            }
++        } else if (flags & PAGE_READ) {
+             /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_READ, addr, l, 1)))
+-                return -1;
++            p = lock_user(VERIFY_READ, addr, l, 1);
++            if (!p) {
++                goto out_close;
++            }
+             memcpy(buf, p, l);
+             unlock_user(p, addr, 0);
++        } else {
++            /* Bypass the host page protection using ptrace. */
++            if (fd == -1) {
++                fd = open("/proc/self/mem", O_RDONLY);
++                if (fd == -1) {
++                    goto out;
++                }
++            }
++            if (pread(fd, buf, l,
++                      (off_t)(uintptr_t)g2h_untagged(addr)) != l) {
++                goto out_close;
++            }
+         }
+         len -= l;
+         buf += l;
+         addr += l;
+     }
+-    return 0;
++    ret = 0;
++out_close:
++    if (fd != -1) {
++        close(fd);
++    }
++out:
++    return ret;
+ }
+ #endif
+ 
 -- 
 2.43.0
 
