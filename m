@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A10B841376
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C6F841378
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:29:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUXJ9-0003iA-1V; Mon, 29 Jan 2024 14:28:40 -0500
+	id 1rUXJ6-0003hJ-H9; Mon, 29 Jan 2024 14:28:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXJ0-0003gw-FY
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:30 -0500
-Received: from todd.t-8ch.de ([159.69.126.157])
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXIy-0003gb-6u
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:28 -0500
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXIw-0003Oi-14
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:29 -0500
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rUXIv-0003Ol-Ul
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 14:28:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1706556501; bh=TyE3V4WNTBi5C+FXFjl4iBVhtJ1IqwhgPBjqAGaupiw=;
+ t=1706556501; bh=74QhrVR/63+4QItElafq1F3na7ckc/nS7arttH/g2h8=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=EzimEAnLcAR4XRBQ5a1CKn1wQ+RawXkx4rCpaJ4+a0SZt0MlD+BNsOzEmxI0NSwSy
- msXN6r5AYScH4f/7DgvHLrVyd/3wZAHmdCbfHm7Fdplk1xmCmVMbEkKk/VvqH64YAP
- PTEcduW4AbSDrdsERPFxl4WKDOwu9UbzjrQUsuHQ=
+ b=itwmbLeGnEl5aWJTUb7h459e8cUzqRDzPugVWwoNWBMNMYHsEWJiJiq8bnQG5QhcK
+ jv76xMPh/Rm+YBEZiZwwsqzW9/Vpr5RI6Qh4P3Wddn2FzRbh7V+EeQjGgtCmgCF9oa
+ bmG64Pd1URYSVXlX+xRhRLKqEB/hot8U9lt2pMg8=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Mon, 29 Jan 2024 20:28:10 +0100
-Subject: [PATCH v5 2/6] hw/misc/pvpanic: centralize definition of supported
- events
+Date: Mon, 29 Jan 2024 20:28:11 +0100
+Subject: [PATCH v5 3/6] tests/qtest/pvpanic: use centralized definition of
+ supported events
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240129-pvpanic-shutdown-v5-2-f5a060b87c74@t-8ch.de>
+Message-Id: <20240129-pvpanic-shutdown-v5-3-f5a060b87c74@t-8ch.de>
 References: <20240129-pvpanic-shutdown-v5-0-f5a060b87c74@t-8ch.de>
 In-Reply-To: <20240129-pvpanic-shutdown-v5-0-f5a060b87c74@t-8ch.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -39,15 +39,15 @@ Cc: qemu-devel@nongnu.org,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706556500; l=2517;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1706556500; l=2303;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=TyE3V4WNTBi5C+FXFjl4iBVhtJ1IqwhgPBjqAGaupiw=;
- b=K6+Todg0GcZ+sI/0XQRNhu2SDr+ynDRId9aogthwmenZPRDFfUumerC/d56UCRCa87QFIWL9G
- stn5QqGFoBTB8KL9070gjaDuGXE1SDWk+d1ppDMYoX6jnmQhyOQ0SF6
+ bh=74QhrVR/63+4QItElafq1F3na7ckc/nS7arttH/g2h8=;
+ b=RtsUIaM+FWOnK8O5KZbeeNLbXlbqG27bvxzdVHuL4FwtJOQwLiNXzUY7zVmDxyFdV6PtULuXI
+ q8UH7mOSkguDWM5v3F91Ng8sYkmRpbHHfH41EUa1yuY5EBB5dNik/mi
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
- helo=todd.t-8ch.de
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -69,71 +69,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The different components of pvpanic duplicate the list of supported
-events. Move it to the shared header file to minimize changes when new
-events are added.
+Avoid the necessity to update all tests when new events are added
+to the device.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Cornelia Huck <cohuck@redhat.com>
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
- hw/misc/pvpanic-isa.c     | 2 +-
- hw/misc/pvpanic-pci.c     | 2 +-
- hw/misc/pvpanic.c         | 2 +-
- include/hw/misc/pvpanic.h | 1 +
- 4 files changed, 4 insertions(+), 3 deletions(-)
+ tests/qtest/pvpanic-pci-test.c | 5 +++--
+ tests/qtest/pvpanic-test.c     | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/hw/misc/pvpanic-isa.c b/hw/misc/pvpanic-isa.c
-index ef438a31fbe9..9a923b786907 100644
---- a/hw/misc/pvpanic-isa.c
-+++ b/hw/misc/pvpanic-isa.c
-@@ -101,7 +101,7 @@ static void build_pvpanic_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
- static Property pvpanic_isa_properties[] = {
-     DEFINE_PROP_UINT16(PVPANIC_IOPORT_PROP, PVPanicISAState, ioport, 0x505),
-     DEFINE_PROP_UINT8("events", PVPanicISAState, pvpanic.events,
--                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
-+                      PVPANIC_EVENTS),
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/tests/qtest/pvpanic-pci-test.c b/tests/qtest/pvpanic-pci-test.c
+index 2c05b376ba72..b372caf41dc0 100644
+--- a/tests/qtest/pvpanic-pci-test.c
++++ b/tests/qtest/pvpanic-pci-test.c
+@@ -16,6 +16,7 @@
+ #include "qapi/qmp/qdict.h"
+ #include "libqos/pci.h"
+ #include "libqos/pci-pc.h"
++#include "hw/misc/pvpanic.h"
+ #include "hw/pci/pci_regs.h"
  
-diff --git a/hw/misc/pvpanic-pci.c b/hw/misc/pvpanic-pci.c
-index 01e269b55284..be4063121e1d 100644
---- a/hw/misc/pvpanic-pci.c
-+++ b/hw/misc/pvpanic-pci.c
-@@ -54,7 +54,7 @@ static void pvpanic_pci_realizefn(PCIDevice *dev, Error **errp)
+ static void test_panic_nopause(void)
+@@ -34,7 +35,7 @@ static void test_panic_nopause(void)
+     bar = qpci_iomap(dev, 0, NULL);
  
- static Property pvpanic_pci_properties[] = {
-     DEFINE_PROP_UINT8("events", PVPanicPCIState, pvpanic.events,
--                      PVPANIC_PANICKED | PVPANIC_CRASH_LOADED),
-+                      PVPANIC_EVENTS),
-     DEFINE_PROP_END_OF_LIST(),
- };
+     qpci_memread(dev, bar, 0, &val, sizeof(val));
+-    g_assert_cmpuint(val, ==, 3);
++    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
  
-diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
-index 4915ef256e74..a4982cc5928e 100644
---- a/hw/misc/pvpanic.c
-+++ b/hw/misc/pvpanic.c
-@@ -26,7 +26,7 @@ static void handle_event(int event)
+     val = 1;
+     qpci_memwrite(dev, bar, 0, &val, sizeof(val));
+@@ -67,7 +68,7 @@ static void test_panic(void)
+     bar = qpci_iomap(dev, 0, NULL);
+ 
+     qpci_memread(dev, bar, 0, &val, sizeof(val));
+-    g_assert_cmpuint(val, ==, 3);
++    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
+ 
+     val = 1;
+     qpci_memwrite(dev, bar, 0, &val, sizeof(val));
+diff --git a/tests/qtest/pvpanic-test.c b/tests/qtest/pvpanic-test.c
+index 78f1cf8186b0..ccc603472f5d 100644
+--- a/tests/qtest/pvpanic-test.c
++++ b/tests/qtest/pvpanic-test.c
+@@ -10,6 +10,7 @@
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+ #include "qapi/qmp/qdict.h"
++#include "hw/misc/pvpanic.h"
+ 
+ static void test_panic_nopause(void)
  {
-     static bool logged;
+@@ -20,7 +21,7 @@ static void test_panic_nopause(void)
+     qts = qtest_init("-device pvpanic -action panic=none");
  
--    if (event & ~(PVPANIC_PANICKED | PVPANIC_CRASH_LOADED) && !logged) {
-+    if (event & ~PVPANIC_EVENTS && !logged) {
-         qemu_log_mask(LOG_GUEST_ERROR, "pvpanic: unknown event %#x.\n", event);
-         logged = true;
-     }
-diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index dffca827f77a..48f2ec4c86a1 100644
---- a/include/hw/misc/pvpanic.h
-+++ b/include/hw/misc/pvpanic.h
-@@ -20,6 +20,7 @@
+     val = qtest_inb(qts, 0x505);
+-    g_assert_cmpuint(val, ==, 3);
++    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
  
- #define PVPANIC_PANICKED	(1 << 0)
- #define PVPANIC_CRASH_LOADED	(1 << 1)
-+#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
+     qtest_outb(qts, 0x505, 0x1);
  
- #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
- #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+@@ -43,7 +44,7 @@ static void test_panic(void)
+     qts = qtest_init("-device pvpanic -action panic=pause");
+ 
+     val = qtest_inb(qts, 0x505);
+-    g_assert_cmpuint(val, ==, 3);
++    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
+ 
+     qtest_outb(qts, 0x505, 0x1);
+ 
 
 -- 
 2.43.0
