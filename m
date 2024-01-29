@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FB58409B3
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4AF8409BE
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 16:21:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUTPM-0007HR-FC; Mon, 29 Jan 2024 10:18:49 -0500
+	id 1rUTPg-0007VQ-OG; Mon, 29 Jan 2024 10:19:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPG-00074d-6j
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:42 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPL-0007He-7E
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:47 -0500
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPD-0007QQ-JF
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:41 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40efcb37373so855215e9.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:18:39 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUTPJ-0007R9-Lq
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 10:18:46 -0500
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-33926ccbc80so1804778f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 07:18:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706541518; x=1707146318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706541524; x=1707146324; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xiohzvoKQkqdcbtLDUjaO0ftHSX88xmuo15mOgH42V4=;
- b=GV1Thag2jowJxNoR0Ucdjqkn6n5HzSZ461t5w2PRS1UF83J170gzO87dzjKLdlGmYj
- BetKva+mwTJVvzWUV+JKcz2CalxWfjoHbUAvxRnpgOLaVKNEne/q88DLefUDmc5UYZFz
- XS+Lwkogir2QeTgJecYb93tfOdy41P71Qf1UfE8nAmGmAA5lem+ihJKxZALqax6Q6Tyg
- AijzGNJTZV8Mfr96TsodzkodScsgq+l0+x+kIBjL85juXHRi74qmSluCopUXL/6m3saM
- TOQM36VVh+8DnH15xMbHRw9nrGlr2yP3HzV0QHlMcBaDFoE+kzaqSFs07cCHVwLyD180
- h3hg==
+ bh=r+KuOhvBtJ6ncQuNPO3pijGi7HTXapiP3L5g0Ir3MJk=;
+ b=R4kZi0YQ+OmsBqq0ExBud+W+VOfWZjR8vOe2UAXGyPNZwkJRKEdoC9GQbZcW26Fk24
+ qK0KPhV0KT7Mt20IqiG5b/gUdMKT3YmagLCx84goOTr30Ktn21PSYB7HcHHbaXYSayX2
+ 497ugYmH8bRSfU319pjqB7e1j7rXaK9RRfA5siB7GwI92s9w2iUskQ8hXWDvdHUgXS0l
+ Ah+NY1kNpmmxtumPPXwoa/g7wzOELrVgNSCVJNLXJ6FezLV3XRYacazV7WaMhiAMmv2H
+ dL+0jYh58+YQ4UlDzuyzOZ+yZRJq/ut1Pdz1oiLl4L/yOqA5RTiDewDXtVNEhp495TQ+
+ PjJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706541518; x=1707146318;
+ d=1e100.net; s=20230601; t=1706541524; x=1707146324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xiohzvoKQkqdcbtLDUjaO0ftHSX88xmuo15mOgH42V4=;
- b=Rlwonbu+tRW7BpVeqsMGFDOvhHW99LtXNaITmqSkPDVZIDl2MgAAUuLuf0/8pdaIG0
- cNMnQhwzQqIoVxf1lo10HnkltJaH+sc+fHIjHEnuIccOqPl7GnpfsRKPUbY9znv4uSoq
- eEcPpBeyNMuoTWPq7l+IQDHWNAAt+fTwRwHRhUwSsJfubpDFUWrz3HuKS1rh7YWAu9Ql
- QTgzTQix17jylUQAafb3Ron1UGeERLnd5kcJMfTaXsiD4Pp7HvXXC47sirjkmcFqbFjR
- NksWr7wZVLEx2lx4B4SOrMEXtXwixpuZnurQPCGZTILgzAltrUP3a1Cn6wJj0rrAZcYq
- FeLw==
-X-Gm-Message-State: AOJu0Yz3PpGC8GrYKZm6a81BywrjW5kW18wOyu6uuJXMZomcjhJK6TMX
- +R62yfU8vlpTWhgXYFaUaXMWsAqo+x7nazjSn2hFDItaKayq7O5CBHNjQB+ZqsBEDyqC0ZDPVzD
- B
-X-Google-Smtp-Source: AGHT+IHv6RQ2c65BDR/u3gUcz2HCR15z2MQ/JL9wJfViyb/nctPqS5QwlFFCSXyiMuqmIM9c3k9BZw==
-X-Received: by 2002:a5d:49d1:0:b0:33a:e756:bd21 with SMTP id
- t17-20020a5d49d1000000b0033ae756bd21mr3058604wrs.43.1706541517878; 
- Mon, 29 Jan 2024 07:18:37 -0800 (PST)
+ bh=r+KuOhvBtJ6ncQuNPO3pijGi7HTXapiP3L5g0Ir3MJk=;
+ b=pW0geze4a0muR3/Hu7xKRruLG50qcQaedMk5TruywrclU5+9vnDpo3QhflyaxJmJAB
+ ra+njZ5esHr23zVjBfbS+pRJXZSIR/XIot1nZTbh8b3vUfD1VNam4xyFjJ2f3GaoNrvj
+ DSe8rDFpq9Is9g5CjGf/NfdmXP3TcfY5WQL/fmgeUZJJrwm0e5SkSPfKcexTIWRKESIo
+ iGjvVKMxibUc/L4IxFFx2Bveb7ury3nu5eTThS81FDcu3VaGFZEBAYQ8LTckswuy8Bi/
+ 0BIGPSA2fEtl/Ey650ZguxAGUL3+DW5vvoYjZIxgGlmE4nQAc6KbMe+cgbcXChSmBhpl
+ i4GA==
+X-Gm-Message-State: AOJu0Yw6a1+5Rs30NWW1QBRbwwUKqMsQ6CjSF9UljtZip7KEe6EgSd/R
+ EDobqNtDfOwd11c/mAUWH/6FuehfJTxlYGzxLdBhGUqZO1FWbcKcFwqPqyiMIM4XtsB6dDyYYNC
+ Z
+X-Google-Smtp-Source: AGHT+IEeODkxxpbrCPljFNWp1VHM8RuudqPMG2/D1j2eRJm7r3D1RA1bzUyhPy5F55qoCSDy8cpa7A==
+X-Received: by 2002:a05:6000:184d:b0:33a:f2a8:fcc4 with SMTP id
+ c13-20020a056000184d00b0033af2a8fcc4mr1572589wri.59.1706541523722; 
+ Mon, 29 Jan 2024 07:18:43 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.219.39])
  by smtp.gmail.com with ESMTPSA id
- ba1-20020a0560001c0100b0033ae593e830sm5764355wrb.23.2024.01.29.07.18.36
+ bs14-20020a056000070e00b0033aeba36b7csm3661786wrb.57.2024.01.29.07.18.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Jan 2024 07:18:37 -0800 (PST)
+ Mon, 29 Jan 2024 07:18:43 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
@@ -66,17 +66,18 @@ Cc: qemu-arm@nongnu.org, Tyrone Ting <kfting@nuvoton.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Gavin Shan <gshan@redhat.com>
-Subject: [PATCH v3 1/9] hw/arm/exynos: Add missing QOM parent for CPU cores
-Date: Mon, 29 Jan 2024 16:18:20 +0100
-Message-ID: <20240129151828.59544-2-philmd@linaro.org>
+Subject: [PATCH v3 2/9] hw/arm/exynos: Check for CPU types in
+ machine_run_board_init()
+Date: Mon, 29 Jan 2024 16:18:21 +0100
+Message-ID: <20240129151828.59544-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240129151828.59544-1-philmd@linaro.org>
 References: <20240129151828.59544-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,28 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QDev objects created with qdev_new() need to manually add
-their parent relationship with object_property_add_child().
+Restrict MachineClass::valid_cpu_types[] to the single
+valid CPU type.
+
+Instead of ignoring invalid CPU type requested by the user:
+
+  $ qemu-system-arm -M nuri -cpu cortex-a7 -S -monitor stdio
+  QEMU 8.2.50 monitor - type 'help' for more information
+  (qemu) info qom-tree
+  /machine (nuri-machine)
+    /soc (exynos4210)
+      /cpu[0] (cortex-a9-arm-cpu)
+      ...
+
+We now display an error:
+
+  $ qemu-system-arm -M nuri -cpu cortex-a7
+  qemu-system-arm: Invalid CPU model: cortex-a7
+  The only valid type is: cortex-a9
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 ---
- hw/arm/exynos4210.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/arm/exynos4_boards.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
-index 6c428d8eeb..57c77b140c 100644
---- a/hw/arm/exynos4210.c
-+++ b/hw/arm/exynos4210.c
-@@ -556,6 +556,7 @@ static void exynos4210_realize(DeviceState *socdev, Error **errp)
-     for (n = 0; n < EXYNOS4210_NCPUS; n++) {
-         Object *cpuobj = object_new(ARM_CPU_TYPE_NAME("cortex-a9"));
+diff --git a/hw/arm/exynos4_boards.c b/hw/arm/exynos4_boards.c
+index b0e13eb4f0..01c7618a67 100644
+--- a/hw/arm/exynos4_boards.c
++++ b/hw/arm/exynos4_boards.c
+@@ -34,6 +34,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/boards.h"
+ #include "hw/irq.h"
++#include "target/arm/cpu-qom.h"
  
-+        object_property_add_child(OBJECT(s), "cpu[*]", cpuobj);
-         /* By default A9 CPUs have EL3 enabled.  This board does not currently
-          * support EL3 so the CPU EL3 property is disabled before realization.
-          */
+ #define SMDK_LAN9118_BASE_ADDR      0x05000000
+ 
+@@ -150,12 +151,18 @@ static void smdkc210_init(MachineState *machine)
+     arm_load_kernel(s->soc.cpu[0], machine, &exynos4_board_binfo);
+ }
+ 
++static const char * const valid_cpu_types[] = {
++    ARM_CPU_TYPE_NAME("cortex-a9"),
++    NULL
++};
++
+ static void nuri_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+ 
+     mc->desc = "Samsung NURI board (Exynos4210)";
+     mc->init = nuri_init;
++    mc->valid_cpu_types = valid_cpu_types;
+     mc->max_cpus = EXYNOS4210_NCPUS;
+     mc->min_cpus = EXYNOS4210_NCPUS;
+     mc->default_cpus = EXYNOS4210_NCPUS;
+@@ -174,6 +181,7 @@ static void smdkc210_class_init(ObjectClass *oc, void *data)
+ 
+     mc->desc = "Samsung SMDKC210 board (Exynos4210)";
+     mc->init = smdkc210_init;
++    mc->valid_cpu_types = valid_cpu_types;
+     mc->max_cpus = EXYNOS4210_NCPUS;
+     mc->min_cpus = EXYNOS4210_NCPUS;
+     mc->default_cpus = EXYNOS4210_NCPUS;
 -- 
 2.41.0
 
