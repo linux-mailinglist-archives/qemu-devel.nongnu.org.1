@@ -2,59 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB1783FF28
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 08:41:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7FD83FF91
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:04:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUMFg-0003p4-Nj; Mon, 29 Jan 2024 02:40:20 -0500
+	id 1rUMcK-0000EF-Df; Mon, 29 Jan 2024 03:03:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rUMFe-0003oq-UX
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 02:40:18 -0500
-Received: from madrid.collaboradmins.com ([46.235.227.194])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rUMFd-0001LZ-6N
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 02:40:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1706514014;
- bh=cEd+ECGCQCFiPKvn36Wn5mrHRMjsxsbPAlN+Maxznp4=;
- h=From:To:Cc:Subject:Date:From;
- b=26fC7OqStpx63IMwlBHQwqD+c9x8Pcb/AAlINXK5RVoOtOVB8ik9fcQOcU9EayX1s
- dA/s9PKEV7U26SHKfxIvKjOWYu0FKVWm0LiwkvKkTePe37jk+xNVubZmWR5uJj1dcJ
- db6yqIsgewuLZTok57WZYVSCkgTdLZVc/hTYJm2fVGkQXbAJ8xBGjOybw9qCetdN6x
- h082ETFyi0LCrtMLsK/+xqsEUXYakyS2Jnrt2q/6xyLWeMWlNKtOZzcW8wqud8tNEd
- 9zavdjrbD/ZqRywYA4NmwvZA9W5RAzdTgPyV5q23f3pMiDeJKo/fCQlGRIur+0RyzO
- zdjlwPt583lZQ==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 1BFBB37813FD;
- Mon, 29 Jan 2024 07:40:14 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v2] virtio-gpu: Correct virgl_renderer_resource_get_info()
- error check
-Date: Mon, 29 Jan 2024 10:39:21 +0300
-Message-ID: <20240129073921.446869-1-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rUMcF-0000Dl-MJ
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:03:39 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rUMcD-00055O-Qs
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:03:39 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6de2e24ea87so219781b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 00:03:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706515415; x=1707120215;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=DlAjA2hWhuZzVzg5DMKXwv7DvDcOG/YKmvXs1AqB1+w=;
+ b=v+51pvz6noDK9ymkOdizrEiobr8cKikSjVNMgvMy6wUD9n3Li1dleQ59+c5niP/lap
+ DycIhYR/vKkN2sW2zkz86SwYbg5aL3l5VwWjtoWJS1GEBMf3/uu3adlbCoJ0SGzwSaET
+ nescMbLJpwCc5gJCs+rYJvg/AESVjIOi/CRXbLJQmuYKH+RyWfyGwtAky75xfLjIaIG1
+ qP+tlbBHTF2QMfBV6tcRayGgTjBsvJT1EO8PbGE3vGqnNnV7pPC9hnFy6BdfO66C6cgB
+ gI4nxjPBftCZ3yqI7s+qB8WpJp739CxsYcDYCbQhcbBTSuVZfcmHsd9e54jTH+wbooFT
+ I+8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706515415; x=1707120215;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DlAjA2hWhuZzVzg5DMKXwv7DvDcOG/YKmvXs1AqB1+w=;
+ b=Sef1A2IMWOqk8sCcct+Sy+sjKQRUsdlUl5boC6rvOHFvUyX1CW0f9lyaAKYZDvCvWf
+ qH3jxX1q4ghuy6d+MtdlhvN7TJOWZQr3YwZL26Kh5YJTjJS20f/nicCMBS6noaSSVu+A
+ T9y/rIgxfh1yJvdGd5q5RnNkL0O8tjUh5qRhWyi97NtcDn3WrEEwlYLg7Ux/vHn73Vhu
+ euu8famFUQGaUHY7APDFrBsGizU8OIRN2W6CVx++Bgm7AXlD0A4fD3yz+5FgnsNUTklg
+ nL7u5I7JTy9G/QzDSAW1cFAzqrY2LdV4boO0krhmNCSnZucCLdfAFxZxJjeqQxTQGH88
+ MiYw==
+X-Gm-Message-State: AOJu0Yx258Hss0xQOYh5WUXHvR6ZEbJrCx6z3depvHyh0L8RzTN2KNfj
+ Ckb6/O3TlvRkpBav/BtYVF0RGQ2WcPgStzUCyxFo04HBCHz9m6eFSMytqUjNR3c=
+X-Google-Smtp-Source: AGHT+IHxd6Gv1EwLNThuzkVmcYq76dQOx3xAI22YRiEwz+BNo8xwO5jDAYSb6tG4rSAEQ/kKy2of8A==
+X-Received: by 2002:a05:6a00:2d89:b0:6dd:db87:1947 with SMTP id
+ fb9-20020a056a002d8900b006dddb871947mr2965742pfb.3.1706515415117; 
+ Mon, 29 Jan 2024 00:03:35 -0800 (PST)
+Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with UTF8SMTPSA id
+ q189-20020a632ac6000000b005cfbe445a85sm5591001pgq.70.2024.01.29.00.03.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jan 2024 00:03:34 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 0/2] hw/smbios: Fix option validation
+Date: Mon, 29 Jan 2024 17:03:06 +0900
+Message-Id: <20240129-smbios-v2-0-9ee6fede0d10@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALpbt2UC/2XMyw6CMBCF4Vchs7amLTSCK97DsOhllFlATcc0E
+ NJ3t7J1+Z+cfAcwJkKGe3NAwkxMca2hLw342a4vFBRqg5a6k0r3ghdHkYVD41utwk2ZHur5nfB
+ J2wk9ptoz8Sem/XSz+q1/RFZCCt9aI7thcBbtGOy+0nb1cYGplPIFwwXVKZ0AAAA=
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,65 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virgl_renderer_resource_get_info() returns errno and not -1 on error.
-Correct the return-value check.
+This fixes qemu_smbios_type8_opts and qemu_smbios_type11_opts to have
+list terminators and elements for the type option.
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
+Changes in v2:
+- Fixed messages. (Michael Tokarev)
+- Link to v1: https://lore.kernel.org/r/20240128-smbios-v1-0-c3a50499baea@daynix.com
 
-v2: - Fixed similar incorrect error-checking in vhost-user-gpu
-    - Added r-b from Marc
+---
+Akihiko Odaki (2):
+      hw/smbios: Fix OEM strings table option validation
+      hw/smbios: Fix port connector option validation
 
- contrib/vhost-user-gpu/virgl.c | 6 +++---
- hw/display/virtio-gpu-virgl.c  | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ hw/smbios/smbios.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+---
+base-commit: f614acb7450282a119d85d759f27eae190476058
+change-id: 20240128-smbios-be5c321d7158
 
-diff --git a/contrib/vhost-user-gpu/virgl.c b/contrib/vhost-user-gpu/virgl.c
-index d1ccdf7d0668..51da0e3667f9 100644
---- a/contrib/vhost-user-gpu/virgl.c
-+++ b/contrib/vhost-user-gpu/virgl.c
-@@ -327,7 +327,7 @@ virgl_get_resource_info_modifiers(uint32_t resource_id,
- #ifdef VIRGL_RENDERER_RESOURCE_INFO_EXT_VERSION
-     struct virgl_renderer_resource_info_ext info_ext;
-     ret = virgl_renderer_resource_get_info_ext(resource_id, &info_ext);
--    if (ret < 0) {
-+    if (ret) {
-         return ret;
-     }
- 
-@@ -335,7 +335,7 @@ virgl_get_resource_info_modifiers(uint32_t resource_id,
-     *modifiers = info_ext.modifiers;
- #else
-     ret = virgl_renderer_resource_get_info(resource_id, info);
--    if (ret < 0) {
-+    if (ret) {
-         return ret;
-     }
- 
-@@ -372,7 +372,7 @@ virgl_cmd_set_scanout(VuGpu *g,
-         uint64_t modifiers = 0;
-         ret = virgl_get_resource_info_modifiers(ss.resource_id, &info,
-                                                 &modifiers);
--        if (ret == -1) {
-+        if (ret) {
-             g_critical("%s: illegal resource specified %d\n",
-                        __func__, ss.resource_id);
-             cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 8bb7a2c21fe7..9f34d0e6619c 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -181,7 +181,7 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
-         memset(&info, 0, sizeof(info));
-         ret = virgl_renderer_resource_get_info(ss.resource_id, &info);
- #endif
--        if (ret == -1) {
-+        if (ret) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "%s: illegal resource specified %d\n",
-                           __func__, ss.resource_id);
+Best regards,
 -- 
-2.43.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
