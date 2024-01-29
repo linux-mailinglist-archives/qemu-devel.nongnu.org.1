@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0AC84134F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A2A841353
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 20:24:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUXDU-0005rs-TX; Mon, 29 Jan 2024 14:22:48 -0500
+	id 1rUXDT-0005q4-MI; Mon, 29 Jan 2024 14:22:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rUXDJ-0005kT-J5; Mon, 29 Jan 2024 14:22:39 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1rUXDK-0005l3-D8; Mon, 29 Jan 2024 14:22:39 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
- id 1rUXDG-0002eQ-QN; Mon, 29 Jan 2024 14:22:37 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40e5afc18f5so36139325e9.3; 
- Mon, 29 Jan 2024 11:22:34 -0800 (PST)
+ id 1rUXDI-0002ep-LR; Mon, 29 Jan 2024 14:22:38 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-33934567777so2600764f8f.1; 
+ Mon, 29 Jan 2024 11:22:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706556153; x=1707160953; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1706556154; x=1707160954; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VJNXAbxh5J4Ei6H86PyidDozdFrMhcx4WIs/J6XrOAs=;
- b=Bi2GUebO2r4Zhsde9pV0zSsb/gZloOhHpxOJWEppb2C/PDC5znpA2sgdAkD056Gai6
- 4PIBqQMV1Fd0DmEnN89b247GFNsaX+VaiSlcfDVaK5Ftpj3bWYkSds1tadtDrmyxjeGj
- N4/yHI2Jne9DFO+Wd6/l4Toxz/bXye+D3TnJ49qtZCuiUKlm7Y1Kc03w4ADOBdLcDa7f
- zNGRp9imkj5cLZSGps7G5CmdndYfKQHyTp96ZXPu0csmApUe5M1rJ9qGbCx357S6UBK9
- EiPew0xNQ5sBwwICLCE2xPdb7SPNOP+32xba8A8bZ1TcrJVBT/ZK5WpEJ0+YksuwVev5
- NZoQ==
+ bh=h0GE1uw0zcZ/RbheH52pZpq6ApriTvoaSXwZy9TyWAI=;
+ b=i78QyUkTJAmdZWKpbIzoO5EHiIUbBne58scZHfroRuej0vQ43pe8KxXe5Dp6zVe7wH
+ DShIW/g/ACzs/dMKjGWwZZiSCXTpisldCYLoiILPLpUxTNwvLKEVysY411GBvV0ORdfL
+ ngetIaFPHIpnIs6Oq9OK5WqOmbW26GxmDXCxs/2n85q1awkYVHiQEGFmeGY6FMwqZrGc
+ KdbRFEp/40pWcwio5+EGbkDghXHL8QUltvy9LV9NwFhs14aO4EwH6SvNmQ41Kx4FXFK3
+ iIZnaBUiU8zdHTQJF/EFjit8cLOUUw8V/f9m5uEDwobuVMPRPDsJOhLY3SfPcyfkJtDa
+ IBjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706556153; x=1707160953;
+ d=1e100.net; s=20230601; t=1706556154; x=1707160954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VJNXAbxh5J4Ei6H86PyidDozdFrMhcx4WIs/J6XrOAs=;
- b=Dg4KTB+uB6A0fheeO0mgF6EBRLpXC/7tp/F9DHFKBwg2yollr5YeTGUKN+8b/nwYJr
- PADuEY7X+hPNjyDMb/Wa6LxhbxaUbgiFzen2giYyvH4FnB6cqZBdynCtoy6yaI4GkvZq
- 2EwiNDMFf/M8K3brudTXPBww+YxtAFN6WP5peOV2XsRZQAGRZ7lO8TVMRtFsGIxqxAuv
- i4CQEqWBigvSmzmR9C2tqW/j95MxnXa1nLPAuCyesBvbga+tdtffQjoGBDnRF21gYe4l
- fWMd7gJicOYoCmkwQyn2Rr7J5G5fxrGs+WXFBqCK3YPlK1YnOjm6iRY8RK59F+Z3JYQV
- gG9g==
-X-Gm-Message-State: AOJu0YwLzZRj3n2Ba9I0p4Sp4iI1OQ6eG4iQCtEhomnmlgF4xbG/0pLZ
- 8Gr992VNgm+7VYuKYhGTxdt0XYMcluLzy2FnzXYfNhtntk7Svms0
-X-Google-Smtp-Source: AGHT+IGxuB62qroUeNlwchOrWD4MWwf8zESQy6+5hkXe5W2F4Tg/4m9+wKTXWum8C/7h8moCHMVPhQ==
-X-Received: by 2002:a5d:510f:0:b0:33a:e7de:aa8b with SMTP id
- s15-20020a5d510f000000b0033ae7deaa8bmr3156503wrt.26.1706556152879; 
- Mon, 29 Jan 2024 11:22:32 -0800 (PST)
+ bh=h0GE1uw0zcZ/RbheH52pZpq6ApriTvoaSXwZy9TyWAI=;
+ b=rKlTTMY2R3uqUczc0qJgw0t1VjKkJ+MyjovzqXWutRBO7nxxNDL/xe3Gq1U8Y6FPTm
+ IDFxlMEF/TlxMgiJsRnunQ0/fOYbA3HBU+U28DKsEIrJJ8MV8PMxpfNDe3QgBrDvHvQ4
+ 3o1N5FYBGCOucm0pISEaxkqUjUVHSpji/4GNNGhV8XowizmNAsEdJ3A/rdNYF413c9Ct
+ qDkgXUhh5ITT8zc1/+c5SkYgt/k+qqOz30equ+2KIEOrABK5HxeZfb925WP9+WuIa5oh
+ II6D1vSXMeH6zIDt6+bEzjCyXgtt1ZLDhE7EaBkPJ3oAIKpD+pp3qVrMOjAaXCRdYUAZ
+ 1kNQ==
+X-Gm-Message-State: AOJu0YyAEcCS94ewaFME3ijOUMTxCAkAtQbt8imN9CwcPYRz4Gj6otnJ
+ wirsRFn6Qy+FFQ2osJHfDtccPFnmpAyDlB3Fv4jV9U9KzI4Lz3Y6
+X-Google-Smtp-Source: AGHT+IG/eBTLXleX9J8YCrx1wwwBdptzrnBa5nRSR8J5phi6oVnmb2bfZNR+39wGNqUfODrEkIaj0A==
+X-Received: by 2002:adf:f707:0:b0:337:c50f:386b with SMTP id
+ r7-20020adff707000000b00337c50f386bmr4868145wrp.24.1706556154578; 
+ Mon, 29 Jan 2024 11:22:34 -0800 (PST)
 Received: from freya.midgard (broadband-188-255-126-251.ip.moscow.rt.ru.
  [188.255.126.251]) by smtp.gmail.com with ESMTPSA id
- co28-20020a0560000a1c00b0033af0cb2a35sm2577206wrb.108.2024.01.29.11.22.31
+ co28-20020a0560000a1c00b0033af0cb2a35sm2577206wrb.108.2024.01.29.11.22.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 11:22:32 -0800 (PST)
+ Mon, 29 Jan 2024 11:22:33 -0800 (PST)
 From: Alexey Baturo <baturo.alexey@gmail.com>
 X-Google-Original-From: Alexey Baturo <me@deliversmonkey.space>
 To: 
@@ -62,23 +62,25 @@ Cc: baturo.alexey@gmail.com, richard.henderson@linaro.org,
  sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de,
  qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v5 4/6] target/riscv: Add pointer masking tb flags
-Date: Mon, 29 Jan 2024 19:22:05 +0000
-Message-Id: <20240129192207.2946870-5-me@deliversmonkey.space>
+Subject: [PATCH v5 5/6] target/riscv: Update address modify functions to take
+ into account pointer masking
+Date: Mon, 29 Jan 2024 19:22:06 +0000
+Message-Id: <20240129192207.2946870-6-me@deliversmonkey.space>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129192207.2946870-1-me@deliversmonkey.space>
 References: <20240129192207.2946870-1-me@deliversmonkey.space>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=baturo.alexey@gmail.com; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=baturo.alexey@gmail.com; helo=mail-wr1-x435.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
+X-Spam_bar: +
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ TVD_PH_BODY_ACCOUNTS_POST=0.62, TVD_PH_BODY_META_ALL=2.564,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,69 +103,81 @@ Signed-off-by: Alexey Baturo <baturo.alexey@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h        | 3 +++
- target/riscv/cpu_helper.c | 3 +++
- target/riscv/translate.c  | 5 +++++
- 3 files changed, 11 insertions(+)
+ target/riscv/translate.c     | 22 ++++++++++++++++------
+ target/riscv/vector_helper.c | 13 +++++++++++++
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1c8979c1c8..0284ea418f 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -545,6 +545,9 @@ FIELD(TB_FLAGS, ITRIGGER, 20, 1)
- FIELD(TB_FLAGS, VIRT_ENABLED, 21, 1)
- FIELD(TB_FLAGS, PRIV, 22, 2)
- FIELD(TB_FLAGS, AXL, 24, 2)
-+/* If pointer masking should be applied and address sign extended */
-+FIELD(TB_FLAGS, PM_PMM, 26, 2)
-+FIELD(TB_FLAGS, PM_SIGNEXTEND, 28, 1)
- 
- #ifdef TARGET_RISCV32
- #define riscv_cpu_mxl(env)  ((void)(env), MXL_RV32)
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 9640e4c2c5..67bc51e510 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -68,6 +68,7 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
-     RISCVCPU *cpu = env_archcpu(env);
-     RISCVExtStatus fs, vs;
-     uint32_t flags = 0;
-+    bool pm_signext = riscv_cpu_virt_mem_enabled(env);
- 
-     *pc = env->xl == MXL_RV32 ? env->pc & UINT32_MAX : env->pc;
-     *cs_base = 0;
-@@ -135,6 +136,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
-     flags = FIELD_DP32(flags, TB_FLAGS, VS, vs);
-     flags = FIELD_DP32(flags, TB_FLAGS, XL, env->xl);
-     flags = FIELD_DP32(flags, TB_FLAGS, AXL, cpu_address_xl(env));
-+    flags = FIELD_DP32(flags, TB_FLAGS, PM_PMM, riscv_pm_get_pmm(env));
-+    flags = FIELD_DP32(flags, TB_FLAGS, PM_SIGNEXTEND, pm_signext);
- 
-     *pflags = flags;
- }
 diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 6b4b9a671c..2c89d749c0 100644
+index 2c89d749c0..457de381c7 100644
 --- a/target/riscv/translate.c
 +++ b/target/riscv/translate.c
-@@ -103,6 +103,9 @@ typedef struct DisasContext {
-     bool vl_eq_vlmax;
-     CPUState *cs;
-     TCGv zero;
-+    /* actual address width */
-+    uint8_t addr_width;
-+    bool addr_signed;
-     /* Use icount trigger for native debug */
-     bool itrigger;
-     /* FRM is known to contain a valid value. */
-@@ -1176,6 +1179,8 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+@@ -579,8 +579,10 @@ static TCGv get_address(DisasContext *ctx, int rs1, int imm)
+     TCGv src1 = get_gpr(ctx, rs1, EXT_NONE);
+ 
+     tcg_gen_addi_tl(addr, src1, imm);
+-    if (get_address_xl(ctx) == MXL_RV32) {
+-        tcg_gen_ext32u_tl(addr, addr);
++    if (ctx->addr_signed) {
++        tcg_gen_sextract_tl(addr, addr, 0, ctx->addr_width);
++    } else {
++        tcg_gen_extract_tl(addr, addr, 0, ctx->addr_width);
+     }
+ 
+     return addr;
+@@ -593,8 +595,10 @@ static TCGv get_address_indexed(DisasContext *ctx, int rs1, TCGv offs)
+     TCGv src1 = get_gpr(ctx, rs1, EXT_NONE);
+ 
+     tcg_gen_add_tl(addr, src1, offs);
+-    if (get_xl(ctx) == MXL_RV32) {
+-        tcg_gen_ext32u_tl(addr, addr);
++    if (ctx->addr_signed) {
++        tcg_gen_sextract_tl(addr, addr, 0, ctx->addr_width);
++    } else {
++        tcg_gen_extract_tl(addr, addr, 0, ctx->addr_width);
+     }
+     return addr;
+ }
+@@ -1179,8 +1183,14 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
      ctx->xl = FIELD_EX32(tb_flags, TB_FLAGS, XL);
      ctx->address_xl = FIELD_EX32(tb_flags, TB_FLAGS, AXL);
      ctx->cs = cs;
-+    ctx->addr_width = 0;
-+    ctx->addr_signed = false;
+-    ctx->addr_width = 0;
+-    ctx->addr_signed = false;
++    if (get_xl(ctx) == MXL_RV32) {
++        ctx->addr_width = 32;
++        ctx->addr_signed = false;
++    } else {
++        int pm_pmm = FIELD_EX32(tb_flags, TB_FLAGS, PM_PMM);
++        ctx->addr_width = 64 - riscv_pm_get_pmlen(pm_pmm);
++        ctx->addr_signed = FIELD_EX32(tb_flags, TB_FLAGS, PM_SIGNEXTEND);
++    }
      ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
      ctx->zero = tcg_constant_tl(0);
      ctx->virt_inst_excp = false;
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 8e7a8e80a0..ff1178723c 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -94,6 +94,19 @@ static inline uint32_t vext_max_elems(uint32_t desc, uint32_t log2_esz)
+ 
+ static inline target_ulong adjust_addr(CPURISCVState *env, target_ulong addr)
+ {
++    RISCVPmPmm pmm = riscv_pm_get_pmm(env);
++    if (pmm == PMM_FIELD_DISABLED) {
++        return addr;
++    }
++    int pmlen = riscv_pm_get_pmlen(pmm);
++    bool signext = riscv_cpu_virt_mem_enabled(env);
++    addr = addr << pmlen;
++    /* sign/zero extend masked address by N-1 bit */
++    if (signext) {
++        addr = (target_long)addr >> pmlen;
++    } else {
++        addr = addr >> pmlen;
++    }
+     return addr;
+ }
+ 
 -- 
 2.34.1
 
