@@ -2,78 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696D183FFDF
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E2883FFE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Jan 2024 09:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUMqO-0006FI-NW; Mon, 29 Jan 2024 03:18:16 -0500
+	id 1rUMqt-0006sD-IZ; Mon, 29 Jan 2024 03:18:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rUMqL-0006FA-CU
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:18:13 -0500
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rUMqJ-0008Lw-Qk
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:18:13 -0500
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-42a4516ec46so21303641cf.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 00:18:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706516290; x=1707121090; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sNXSfwPeN+wKRJUQQRfpigstoifqEUq/470KB2cI4qw=;
- b=lwy+k1NaerrbwfLMik0gKXJP/VjvgbZr2QZ0qfbLq/FJbhWMFP68+kyFeKzODlTeoW
- IOF/BmdjyWuad/9cAEgoQaS2Ye6303Pm+l5lJXdFhMmCNtFFbAl6nKniUOh6e5sb5nZq
- SRyBgw9FTe6NVl91nVTdCYVUpi+rDsfdRlJJMSlNLTvnVz7OgIIZLiXTXq1IesqUe/T/
- BzqX3dwxdLkud1J5IhwmAuIwtYZOMKfSLnEcGWQnSCfbl4atEGbkmR2/QE14SgC29pNI
- sR+BYEhNd24N/QPE4cJTaZBr6nIivePRwr7r7oHslyuAJ4GYC1xGwKmg0qr1uf59PpT8
- KroQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706516290; x=1707121090;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sNXSfwPeN+wKRJUQQRfpigstoifqEUq/470KB2cI4qw=;
- b=mNY109LGeRVLaLj1NxUSfEvUI1q1MZ+wlBHqW2tOg/2xfjjYBosGTXcfWbxYX0Ve62
- KGw5hV0iAE+XvhHp0ePlrSZ8CnF/0GySC8cNKGuWJgycrL2GsmLmFSaVoRCMp/vj99rq
- v7+dQaNoGuqFjcl5ruqmNeuob951HZF5w6tyTMQmgPuoa5sYQOoFCviTq4TJaUPFTqzE
- uPLSSAvJKVSCU951vLtGQwf39TuLxPJxOwvJEKMTgn/JPpH6i0p0V8XqW0aKwBxqht50
- zQNQtWYLbUDVb/cPaeuRsua/KdXjSZC1otYw7pgWxBoSVu4vxQ3tFID15G4RP3spO+FX
- v0JQ==
-X-Gm-Message-State: AOJu0YzAGNDq8d+cIlzcviegdLuXV/SsPgSRZLGFQ9R5BhxB4194T1dT
- ho9sZcgyBYO3b9+pfPdUSZw7kqaensJc6K1RL8B8LgcN0wPyEc78gNwa3Ydu/T8vwKjPSbTW3F1
- g9JuA5+7OUcytOfSrTDPjXYbPsaU=
-X-Google-Smtp-Source: AGHT+IHRZzo6jbHdGyFEPxA+VuvMySC27AXBNVyWQqspEZaXBw59c6ksuI64j8jrQ4kCBlo1PtjBdRQbI9i1CVgdnx4=
-X-Received: by 2002:ac8:5c16:0:b0:42a:941a:89be with SMTP id
- i22-20020ac85c16000000b0042a941a89bemr4166522qti.54.1706516289741; Mon, 29
- Jan 2024 00:18:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rUMqr-0006r4-Tk
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:18:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rUMqp-0008Qm-9O
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 03:18:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706516322;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8HJQJUo4VSjo2AnXBNFHPWy/5Vmf3u1DtUE2rhAbHEg=;
+ b=APXbrNemdUWIHcDrZsCblyPWZFAz4C9atKWETUlmNdt011cr1I/jxHb8WBxmjNjWX5FO2G
+ mmkVQ1dLTBOJHLC3l+w8Q58S5Ez4uhq1hYfyyodOh9BYCcy+er9p3obizL6ZVzUkEGMUMB
+ luZCK7BJ6J2kNsrb8M0OinZqf6Dcl2U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-438-dgoIQ84ZPSqLgxScVL2uJg-1; Mon,
+ 29 Jan 2024 03:18:38 -0500
+X-MC-Unique: dgoIQ84ZPSqLgxScVL2uJg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6752C1C0CCB1;
+ Mon, 29 Jan 2024 08:18:38 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.11])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 96FFF1121306;
+ Mon, 29 Jan 2024 08:18:36 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/3] target/arm: Allow compilation without CONFIG_ARM_V7M
+Date: Mon, 29 Jan 2024 09:18:32 +0100
+Message-ID: <20240129081835.137726-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <cover.1706279540.git.manos.pitsidianakis@linaro.org>
- <947fcb0c386e77b5ef59f4a6ca48baeee0d1a980.1706279540.git.manos.pitsidianakis@linaro.org>
-In-Reply-To: <947fcb0c386e77b5ef59f4a6ca48baeee0d1a980.1706279540.git.manos.pitsidianakis@linaro.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 29 Jan 2024 12:17:58 +0400
-Message-ID: <CAJ+F1CJw7unr+Cxnc9uWGmgB9O4vvdPyZntFkb2keyRfX0EOUQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] hw/display/virtio-gpu.c: use reset_bh class method
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.485,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,45 +76,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jan 26, 2024 at 7:43=E2=80=AFPM Manos Pitsidianakis
-<manos.pitsidianakis@linaro.org> wrote:
->
-> While the VirtioGPU type has a reset_bh field to specify a reset
-> callback, it's never used. virtio_gpu_reset() calls the general
-> virtio_gpu_reset_bh() function for all devices that inherit from
-> VirtioGPU.
->
-> While no devices override reset_bh at the moment, a device reset might
-> require special logic for implementations in the future.
->
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+We've got a switch to disable v7m code since a long time - but it
+currently cannot be disabled since linking then fails due to missing
+functions. But thanks to the clean-ups that have been done during the
+past years, it's not that difficult anymore to finally make it possible
+to disable CONFIG_ARM_V7M: We just have to move some v7m-related code
+out of cpu32.c to a separate file (that we only compile if the switch
+CONFIG_ARM_V7M is enabled) and make sure to use the stub functions in
+m_helper.c if it is disabled. Then we can finally remove the hard-coded
+"select ARM_V7M" from the Kconfig file.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+v2:
+- Updated a comment
+- Avoid #ifdef in cpu-v7m.c, handle it via meson.build instead
 
-> ---
->  hw/display/virtio-gpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index f8a675eb30..2b73ae585b 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -1515,7 +1515,7 @@ void virtio_gpu_reset(VirtIODevice *vdev)
->              qemu_cond_wait_bql(&g->reset_cond);
->          }
->      } else {
-> -        virtio_gpu_reset_bh(g);
-> +        aio_bh_call(g->reset_bh);
->      }
->
->      while (!QTAILQ_EMPTY(&g->cmdq)) {
-> --
-> =CE=B3=CE=B1=E1=BF=96=CE=B1 =CF=80=CF=85=CF=81=CE=AF =CE=BC=CE=B9=CF=87=
-=CE=B8=CE=AE=CF=84=CF=89
->
->
+Thomas Huth (3):
+  target/arm: Move v7m-related code from cpu32.c into a separate file
+  target/arm/tcg/m_helper.c: Include the full helpers only with
+    CONFIG_ARM_V7M
+  target/arm/Kconfig: Stop requiring CONFIG_ARM_V7M
 
+ target/arm/tcg/cpu-v7m.c   | 290 +++++++++++++++++++++++++++++++++++++
+ target/arm/tcg/cpu32.c     | 261 ---------------------------------
+ target/arm/tcg/m_helper.c  |   3 +-
+ target/arm/Kconfig         |   4 -
+ target/arm/meson.build     |   3 +
+ target/arm/tcg/meson.build |   3 +
+ 6 files changed, 298 insertions(+), 266 deletions(-)
+ create mode 100644 target/arm/tcg/cpu-v7m.c
 
---=20
-Marc-Andr=C3=A9 Lureau
+-- 
+2.43.0
+
 
