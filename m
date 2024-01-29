@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8C484166E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A26841679
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 00:04:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUadM-0005vY-CG; Mon, 29 Jan 2024 18:01:44 -0500
+	id 1rUae1-0006es-Iq; Mon, 29 Jan 2024 18:02:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadE-0005ue-H5
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:38 -0500
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1rUade-00062w-Ff
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:04 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rUadC-0008N1-MZ
- for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:01:36 -0500
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-5d8b276979aso1294555a12.2
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:32 -0800 (PST)
+ id 1rUada-0008Pd-B3
+ for qemu-devel@nongnu.org; Mon, 29 Jan 2024 18:02:01 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6ddcfbc5a5fso2733087b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 15:01:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706569291; x=1707174091; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706569310; x=1707174110; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M8UjEMO1j2vm3/2aeEMHpkVHZcyY+4Tl4SZGy9Fx+X8=;
- b=A5lTa/SJuGD45c6dyta1F29CneQKXnpI65VRqxIV+cV1lFna0Pttcttkdhhi//XFPd
- LITsH7nK/9BvFoxCDWe5amtNDMHkL03rjOCdmEGLmxOEnqcFkRz1LiqtOg3c7WIGkziN
- ha8zD1llWJoZTtlbW4kSDB0Ia+FdnJ8f68SDMI3SdMYtVuNwe2WihnTCDvMkZv4guhTr
- +8e1meSYyIoh+sDgMSrBef8SkpUGRLmJt4TKTt6OPhHgO3pKkA20L9sVWVLoipQWpjnp
- UXWdgJbw+AEwoT5t1jtw5niEmoxn9OQgkmhvG/3lPsoJ8cGMP+pYsMO5hRCell73snn7
- ilUw==
+ bh=5lOMiA1d/7RQJUfbMVKZZ3ZFzC3WxOo3rdXkjjDSQz4=;
+ b=XT0LggRzRrIApt+Q7m9N/WWu60TPCq1L7O0GtBJTPAYi1w4K5MZJvzQLKVeBZ4q32C
+ QnoNfYpvsb3+2fgXUFwZZY90Kb1idoZjW1K2MiygHx9Q5zap3YyzjwoVsqp9Xi3X2sIJ
+ Qq+6r6+0L7SnQYqMwaLeZNSc9DvtL/DhCTigYQ/opvKzLKAoroIcw87bws5l1vMAsk8V
+ yB9i1GtMmNRPOdSMsTYLoH5x50LrZJTKNZAQkPr3GilKjbFp2vQlqioxFS7i/D992IKb
+ dS0OX8/2z5aIVBYO5853YLNytKoitBBqPEC0Haosa09dTu7snCm5pNH+HzDgc89rR2G1
+ o8ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706569291; x=1707174091;
+ d=1e100.net; s=20230601; t=1706569310; x=1707174110;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M8UjEMO1j2vm3/2aeEMHpkVHZcyY+4Tl4SZGy9Fx+X8=;
- b=TdXDZVEd3+g37Kpox+XNRcq/8UBkc3WUoH9C2ok6G8mzoXTZ376mzMtQqyUffcAXc2
- eoNJu9PK2ot2K7GBrtcMwV3kp9LlPt2lMRRD/QmaVrmyZpBwmKxMc5dqAO5wtyK7yATX
- ijiFpOtQ62WXCnjjqQR73L71ILNKSjmBU7hammviNK8yl5K3Vz4ms7oWMiDItZS0Lpo6
- EFe9leNTinUZEQKLkDv4XPy/PqZPPqUPff8ckOqFW8GaiY4UaxSmZxRo2UEdW7Rl3FVz
- Y8wfjiK3/3T8WuMsJD/IL0QR9qDDu/JUzw3Lqc9bJBZYR6SfqONiWnAlLRaWZVfKQabx
- YXVg==
-X-Gm-Message-State: AOJu0YzLPyaWGYSS/h94hA97zx6rpb2g4oMfX0OYhOW8oFxVMjAqyf9D
- LCr1RARiZRPipuAcQCxo5kPZ1EP2cxtI6XBEkU3gT2sxWpfBORI17c3gx7dORXBAMKnT2n7yCY3
- 8auc=
-X-Google-Smtp-Source: AGHT+IHPhJt8i7vtlXplm8sf40EHpIqlYEZV0xie0de3YXpi5eEPjwrD8a75z1R9KBTGbk9Kr10afg==
-X-Received: by 2002:a05:6a20:252e:b0:19c:8fa7:66da with SMTP id
- j46-20020a056a20252e00b0019c8fa766damr2771537pzd.1.1706569291303; 
- Mon, 29 Jan 2024 15:01:31 -0800 (PST)
+ bh=5lOMiA1d/7RQJUfbMVKZZ3ZFzC3WxOo3rdXkjjDSQz4=;
+ b=Ybhyh6WF0tm8a44AGbwdM7QXdH7iXvK+X7xzFPb4SFTb8omErxNiFMS2/I9opV0k3D
+ Jjg3ydL8yevWYkhIoZWtlUcgoMC8s3xNVCS8GKOb0wbRCndd9WcezB1BjqokI/SZvRdn
+ 6AGMpaHJvYr+MUdO4VIjidux6xm+aZPSboFSf/ZdggwLQu/4FfjtbAzXdQKCbuXrtE2s
+ wIWTgRhMdwpxm4VSbPWz1qzMgA2h2fK400VOn+YqZmySdP2HuDWcsSnslTC9k/v0ss9/
+ LTs+b3CWH3WTmsVLfXLXmvH7LZ6eBT4NyAswvxS6KaIwwbnKEqMYWw7iGJ53YessrK+e
+ o28g==
+X-Gm-Message-State: AOJu0YyrcesB8GPkFUfAxLCYHG/koeyWJCTZebbK4B7uBgTlcDDYzZCl
+ D/ZWqdi+F0vgapSIMsLJ5zNFiTJ00wNgwvDdNZm6GJUTaJ5ePCIYKph9AqWKLKUX1FXouqkXhjK
+ rKAM=
+X-Google-Smtp-Source: AGHT+IEYRSgt4QIqIk2YlDG5pBQVSzxajexuIaxrEM8kcEqjTdGQ8Omq4HfvL7JHkp+DGQ6MaAI6lw==
+X-Received: by 2002:a62:cdcd:0:b0:6db:ca49:9ce3 with SMTP id
+ o196-20020a62cdcd000000b006dbca499ce3mr5257249pfg.6.1706569310012; 
+ Mon, 29 Jan 2024 15:01:50 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.29
+ r10-20020aa78b8a000000b006ddcf56fb78sm6419368pfd.62.2024.01.29.15.01.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 15:01:30 -0800 (PST)
+ Mon, 29 Jan 2024 15:01:49 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-Subject: [PULL 02/31] include/exec: Move vaddr defines to separate file
-Date: Tue, 30 Jan 2024 09:00:52 +1000
-Message-Id: <20240129230121.8091-3-richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 11/31] linux-user: Allow gdbstub to ignore page protection
+Date: Tue, 30 Jan 2024 09:01:01 +1000
+Message-Id: <20240129230121.8091-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240129230121.8091-1-richard.henderson@linaro.org>
 References: <20240129230121.8091-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,81 +91,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Needed to work around circular includes. vaddr is currently defined in
-cpu-common.h and needed by hw/core/cpu.h, but cpu-common.h also need
-cpu.h to know the size of the CPUState.
+gdbserver ignores page protection by virtue of using /proc/$pid/mem.
+Teach qemu gdbstub to do this too. This will not work if /proc is not
+mounted; accept this limitation.
 
-[Maybe we can instead move parts of cpu-common.h w. hw/core/cpu.h to
-sort out the circular inclusion.]
+One alternative is to temporarily grant the missing PROT_* bit, but
+this is inherently racy. Another alternative is self-debugging with
+ptrace(POKE), which will break if QEMU itself is being debugged - a
+much more severe limitation.
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240119144024.14289-7-anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-[rth: Add include of vaddr.h into cpu-common.h]
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240129093410.3151-2-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 13 +------------
- include/exec/vaddr.h      | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+), 12 deletions(-)
- create mode 100644 include/exec/vaddr.h
+ cpu-target.c | 78 ++++++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 63 insertions(+), 15 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index fef3138d29..3109c6b67d 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -3,6 +3,7 @@
+diff --git a/cpu-target.c b/cpu-target.c
+index f6e07c3deb..958d63e882 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -382,6 +382,9 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+     vaddr l, page;
+     void * p;
+     uint8_t *buf = ptr;
++    ssize_t written;
++    int ret = -1;
++    int fd = -1;
  
- /* CPU interfaces that are target independent.  */
- 
-+#include "exec/vaddr.h"
- #ifndef CONFIG_USER_ONLY
- #include "exec/hwaddr.h"
+     while (len > 0) {
+         page = addr & TARGET_PAGE_MASK;
+@@ -389,30 +392,75 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+         if (l > len)
+             l = len;
+         flags = page_get_flags(page);
+-        if (!(flags & PAGE_VALID))
+-            return -1;
++        if (!(flags & PAGE_VALID)) {
++            goto out_close;
++        }
+         if (is_write) {
+-            if (!(flags & PAGE_WRITE))
+-                return -1;
++            if (flags & PAGE_WRITE) {
++                /* XXX: this code should not depend on lock_user */
++                p = lock_user(VERIFY_WRITE, addr, l, 0);
++                if (!p) {
++                    goto out_close;
++                }
++                memcpy(p, buf, l);
++                unlock_user(p, addr, l);
++            } else {
++                /* Bypass the host page protection using ptrace. */
++                if (fd == -1) {
++                    fd = open("/proc/self/mem", O_WRONLY);
++                    if (fd == -1) {
++                        goto out;
++                    }
++                }
++                /*
++                 * If there is a TranslationBlock and we weren't bypassing the
++                 * host page protection, the memcpy() above would SEGV,
++                 * ultimately leading to page_unprotect(). So invalidate the
++                 * translations manually. Both invalidation and pwrite() must
++                 * be under mmap_lock() in order to prevent the creation of
++                 * another TranslationBlock in between.
++                 */
++                mmap_lock();
++                tb_invalidate_phys_range(addr, addr + l - 1);
++                written = pwrite(fd, buf, l,
++                                 (off_t)(uintptr_t)g2h_untagged(addr));
++                mmap_unlock();
++                if (written != l) {
++                    goto out_close;
++                }
++            }
++        } else if (flags & PAGE_READ) {
+             /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_WRITE, addr, l, 0)))
+-                return -1;
+-            memcpy(p, buf, l);
+-            unlock_user(p, addr, l);
+-        } else {
+-            if (!(flags & PAGE_READ))
+-                return -1;
+-            /* XXX: this code should not depend on lock_user */
+-            if (!(p = lock_user(VERIFY_READ, addr, l, 1)))
+-                return -1;
++            p = lock_user(VERIFY_READ, addr, l, 1);
++            if (!p) {
++                goto out_close;
++            }
+             memcpy(buf, p, l);
+             unlock_user(p, addr, 0);
++        } else {
++            /* Bypass the host page protection using ptrace. */
++            if (fd == -1) {
++                fd = open("/proc/self/mem", O_RDONLY);
++                if (fd == -1) {
++                    goto out;
++                }
++            }
++            if (pread(fd, buf, l,
++                      (off_t)(uintptr_t)g2h_untagged(addr)) != l) {
++                goto out_close;
++            }
+         }
+         len -= l;
+         buf += l;
+         addr += l;
+     }
+-    return 0;
++    ret = 0;
++out_close:
++    if (fd != -1) {
++        close(fd);
++    }
++out:
++    return ret;
+ }
  #endif
-@@ -14,18 +15,6 @@
- #define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
- #define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
  
--/**
-- * vaddr:
-- * Type wide enough to contain any #target_ulong virtual address.
-- */
--typedef uint64_t vaddr;
--#define VADDR_PRId PRId64
--#define VADDR_PRIu PRIu64
--#define VADDR_PRIo PRIo64
--#define VADDR_PRIx PRIx64
--#define VADDR_PRIX PRIX64
--#define VADDR_MAX UINT64_MAX
--
- void cpu_exec_init_all(void);
- void cpu_exec_step_atomic(CPUState *cpu);
- 
-diff --git a/include/exec/vaddr.h b/include/exec/vaddr.h
-new file mode 100644
-index 0000000000..b9844afc77
---- /dev/null
-+++ b/include/exec/vaddr.h
-@@ -0,0 +1,18 @@
-+/* Define vaddr.  */
-+
-+#ifndef VADDR_H
-+#define VADDR_H
-+
-+/**
-+ * vaddr:
-+ * Type wide enough to contain any #target_ulong virtual address.
-+ */
-+typedef uint64_t vaddr;
-+#define VADDR_PRId PRId64
-+#define VADDR_PRIu PRIu64
-+#define VADDR_PRIo PRIo64
-+#define VADDR_PRIx PRIx64
-+#define VADDR_PRIX PRIX64
-+#define VADDR_MAX UINT64_MAX
-+
-+#endif
 -- 
 2.34.1
 
