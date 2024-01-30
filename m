@@ -2,85 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C7C841B7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44508841BB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:59:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUgqq-0002uZ-Az; Tue, 30 Jan 2024 00:40:04 -0500
+	id 1rUh8C-0002YV-5r; Tue, 30 Jan 2024 00:58:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqg-0002u0-Ni
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:54 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqb-0001O6-EN
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:54 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5961a2726aaso2031956eaf.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593068; x=1707197868;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QCfSOssekZN4zKobgArXjcljl64GHI25OWtrrgugOcQ=;
- b=ZQJHUY5VAHjuLKOPTQ7/5RIIQTz1yfc7HR7dmqiSDPmDVpQqyc/Ap80QZAB47Am3K0
- a0jEcMLlB/GC5FFONuUx/g6P1MtmmvOO9zPTb9hPLdXLUBXm8NdG4O7ZVVIKchiJn4jH
- BAFz7Zdlbx7Rxv1y9teAS5VW+IkveIp2vxK5HE5Ek7YmTlS5QdkjJ1rb6Uukxz3Z+bTy
- QkwNHhMe55yNc00lBk1wlxmmz8NaJrSFYEZp3BXiTSn1i0/vtaPiReyKuGMjzfkBpiRJ
- ThSIEpVMhK2DxccTN4KTMKymZf4UTnDMcDSetF8TQY5wUjEEiOyorBzeg0hd9n3qIgzB
- /HAA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUh8A-0002YF-65
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:57:58 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rUh88-0005hO-26
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:57:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706594274;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tlmaJTNLauBsRuP/u2vKWQCaKCdoZvxOhcPgMWHUFw8=;
+ b=RWraSKxKDVw/aChEW+AHy2no1TxLCctJ7X2E2m2I9dxT0keb2MMNCUHYF+/rWjaz4S4b2g
+ O/QqAaQaZS6Hv4thKDTmdA5lwSg+2+fB3Ee4f5DccaQUcKHqW7yg/hnfJTR4ERVrcqWolB
+ QXHB67UvcewvKYX6DyQR0WFltMDwp3I=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-208-OrzEbURMPxS6RjSeAr3CNA-1; Tue, 30 Jan 2024 00:57:51 -0500
+X-MC-Unique: OrzEbURMPxS6RjSeAr3CNA-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5d8b4e8033bso672892a12.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:57:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706593068; x=1707197868;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QCfSOssekZN4zKobgArXjcljl64GHI25OWtrrgugOcQ=;
- b=Zpjgtx7vRsslD/RAL1LTgRbkt7+S5IcEmBvPGo8RSysHwhfqX+YMCBGNT+oyQyBfpV
- ggDdbh2N0iv/uD/c5lUN7F8oCXvMFTl9W2m21IbPS8V7/Grm8zxFHwHFKSRaGynLNsB1
- wlymHLIWYR7+0IIIOYxyFl9XRMIgSrpBn3xnvUxe4KeXOcwqnuq9T5MlT5BY2J2VOekz
- g1bzI+qSWFMBQOTkhh511F21//wv1us3bhR63hKIwSUFzr4g1OdN2HoFjyE6AfpJ8+i+
- jOxvqzEQKABhgHIrJqs0KY3nu7OmXITgoE7zV7bIDrDO7yfDBKBQeGZcPwp82rhau/LX
- I/sg==
-X-Gm-Message-State: AOJu0YzgX06MMApGLOhZmfkH0KlL1rmJWp0MLOMMz964MZmtk/hiXNyC
- LdxPpKy0krrqMZBQPB6KK+7uh/oJ04+NO+nWicW6yIg+OfgS4tua/qF9GQ4Z5wEFUYehxk7TkTw
- pt/g=
-X-Google-Smtp-Source: AGHT+IG1xLeQGtKw934ZWtEDgUSX2T++i5eXiXbI5EV/glI55bM1oqNGlPc164gHKLZLOE+GjLWfjA==
-X-Received: by 2002:a05:6358:9216:b0:177:2984:3db8 with SMTP id
- d22-20020a056358921600b0017729843db8mr4205888rwb.20.1706593067526; 
- Mon, 29 Jan 2024 21:37:47 -0800 (PST)
-Received: from anolis-dev.zelin.local ([221.122.98.162])
- by smtp.gmail.com with ESMTPSA id
- bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.45
+ d=1e100.net; s=20230601; t=1706594270; x=1707199070;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tlmaJTNLauBsRuP/u2vKWQCaKCdoZvxOhcPgMWHUFw8=;
+ b=NYTg4N+ppgHv1ezQl09LSkEx2CfLbUQxYMgN0bU/pgbRLuQECJjR+bbK5+V2jsWFVX
+ 7JMg08G+w4mXKWkMZSWn9bgY2Lp4BOew1dhHimg1u71m9rjRAnuvqb0E6Z+NA+CQjHeh
+ 3SV1sYwaxeT47uI0wHkZ69kKsOQY07oXNUWWfEpcyMgxMamPNRbyaIclKRd2AfnmTO+6
+ B9tvlp0Qe4QULbOhA4szP4Vin1v3bcjMfVYpBRLH6neGK5URLH1RF3W5jCUHfFwFvnCI
+ GfOFyoUYf6ZNvcRTya8GZgUpnyUuvvcpHdkehYWTzj5TKviXhAnhndWRJlQxCekLeGQW
+ GzgA==
+X-Gm-Message-State: AOJu0YwdaoJWYQIMjRu/Mp2jNl60Ujfu+/xjWH+Wk6fht1QzcOxi37OA
+ NBRUmXirJBo3Dk1A9V1U0m97o9vb/3iVyvXV6wdd3w6aYbYPqJjm5H3YmamyL0Talvd/nI9L1aG
+ 2mFFef1GKyFeA9O65RrKqDoct6SiEuvQIweH13E+7kSm/gmOc+ZeV
+X-Received: by 2002:a05:6a21:a58a:b0:19c:99f8:b189 with SMTP id
+ gd10-20020a056a21a58a00b0019c99f8b189mr12094879pzc.0.1706594269821; 
+ Mon, 29 Jan 2024 21:57:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFLa2LYi7P1uioKkkq8goXvLelHG2iyAk53x7bRfbhrnuUsTolnDHPKD+yFhGPneRSDuFw0xg==
+X-Received: by 2002:a05:6a21:a58a:b0:19c:99f8:b189 with SMTP id
+ gd10-20020a056a21a58a00b0019c99f8b189mr12094870pzc.0.1706594269405; 
+ Mon, 29 Jan 2024 21:57:49 -0800 (PST)
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ e2-20020a170902744200b001d8fcca6c12sm1155399plt.285.2024.01.29.21.57.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 21:37:47 -0800 (PST)
-From: yong.huang@smartx.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- yong.huang@smartx.com
-Subject: [PATCH v4 7/7] tests: Add case for LUKS volume with detached header
-Date: Tue, 30 Jan 2024 13:37:25 +0800
-Message-Id: <87aa559fbc0c98a5b90ac4f3fa25cb7438a5c181.1706586786.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1706586786.git.yong.huang@smartx.com>
-References: <cover.1706586786.git.yong.huang@smartx.com>
+ Mon, 29 Jan 2024 21:57:49 -0800 (PST)
+Date: Tue, 30 Jan 2024 13:57:40 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 04/17] migration/multifd: Set p->running = true in the
+ right place
+Message-ID: <ZbiP1Ayqxj9BLdY7@x1n>
+References: <20240125162528.7552-1-avihaih@nvidia.com>
+ <20240125162528.7552-5-avihaih@nvidia.com> <87a5otw2ps.fsf@suse.de>
+ <78fa90f7-d062-4f23-8035-841a0ffef8af@nvidia.com>
+ <Zbcm1nXzQ_r0eGG0@x1n>
+ <0f75090d-bbe1-43cb-b649-a0880bc413c4@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+In-Reply-To: <0f75090d-bbe1-43cb-b649-a0880bc413c4@nvidia.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,272 +102,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hyman Huang <yong.huang@smartx.com>
+On Mon, Jan 29, 2024 at 02:20:35PM +0200, Avihai Horon wrote:
+> 
+> On 29/01/2024 6:17, Peter Xu wrote:
+> > External email: Use caution opening links or attachments
+> > 
+> > 
+> > On Sun, Jan 28, 2024 at 05:43:52PM +0200, Avihai Horon wrote:
+> > > On 25/01/2024 22:57, Fabiano Rosas wrote:
+> > > > External email: Use caution opening links or attachments
+> > > > 
+> > > > 
+> > > > Avihai Horon <avihaih@nvidia.com> writes:
+> > > > 
+> > > > > The commit in the fixes line moved multifd thread creation to a
+> > > > > different location, but forgot to move the p->running = true assignment
+> > > > > as well. Thus, p->running is set to true before multifd thread is
+> > > > > actually created.
+> > > > > 
+> > > > > p->running is used in multifd_save_cleanup() to decide whether to join
+> > > > > the multifd thread or not.
+> > > > > 
+> > > > > With TLS, an error in multifd_tls_channel_connect() can lead to a
+> > > > > segmentation fault because p->running is true but p->thread is never
+> > > > > initialized, so multifd_save_cleanup() tries to join an uninitialized
+> > > > > thread.
+> > > > > 
+> > > > > Fix it by moving p->running = true assignment right after multifd thread
+> > > > > creation. Also move qio_channel_set_delay() to there, as this is where
+> > > > > it used to be originally.
+> > > > > 
+> > > > > Fixes: 29647140157a ("migration/tls: add support for multifd tls-handshake")
+> > > > > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> > > > Just for context, I haven't looked at this patch yet, but we were
+> > > > planning to remove p->running altogether:
+> > > > 
+> > > > https://lore.kernel.org/r/20231110200241.20679-1-farosas@suse.de
+> > > Thanks for putting me in the picture.
+> > > I see that there has been a discussion about the multifd creation/treadown
+> > > flow.
+> > > In light of this discussion, I can already see a few problems in my series
+> > > that I didn't notice before (such as the TLS handshake thread leak).
+> > > The thread you mentioned here and some of my patches point out some problems
+> > > in multifd creation/treardown. I guess we can discuss it and see what's the
+> > > best way to solve them.
+> > > 
+> > > Regarding this patch, your solution indeed solves the bug that this patch
+> > > addresses, so maybe this could be dropped (or only noted in your patch).
+> > > 
+> > > Maybe I should also put you (and Peter) in context for this whole series --
+> > > I am writing it as preparation for adding a separate migration channel for
+> > > VFIO device migration, so VFIO devices could be migrated in parallel.
+> > > So this series tries to lay down some foundations to facilitate it.
+> > Avihai, is the throughput the only reason that VFIO would like to have a
+> > separate channel?
+> 
+> Actually, the main reason is to be able to send and load multiple VFIO
+> devices data in parallel.
+> For example, today if we have three VFIO devices, they are migrated
+> sequentially one after another.
+> This particularly hurts during the complete pre-copy phase (downtime), as
+> loading the VFIO data in destination involves FW interaction and resource
+> allocation, which takes time and simply blocks the other devices from
+> sending and loading their data.
+> Providing a separate channel and thread for each VIFO device solves this
+> problem and ideally reduces the VFIO contribution to downtime from sum{VFIO
+> device #1, ..., VFIO device #N} to max{VFIO device #1, ..., VFIO device #N}.
 
-Also, add a section to the MAINTAINERS file for detached
-LUKS header, it only has a test case in it currently.
+I see.
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- MAINTAINERS                                   |   5 +
- tests/qemu-iotests/tests/luks-detached-header | 218 ++++++++++++++++++
- .../tests/luks-detached-header.out            |   5 +
- 3 files changed, 228 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/luks-detached-header
- create mode 100644 tests/qemu-iotests/tests/luks-detached-header.out
+> 
+> > 
+> > I'm wondering if we can also use multifd threads to send vfio data at some
+> > point.  Now multifd indeed is closely bound to ram pages but maybe it'll
+> > change in the near future to take any load?
+> > 
+> > Multifd is for solving the throughput issue already. If vfio has the same
+> > goal, IMHO it'll be good to keep them using the same thread model, instead
+> > of managing different threads in different places.  With that, any user
+> > setting (for example, multifd-n-threads) will naturally apply to all
+> > components, rather than relying on yet-another vfio-migration-threads-num
+> > parameter.
+> 
+> Frankly, I didn't really put much attention to the throughput factor, and my
+> plan is to introduce only a single thread per device.
+> VFIO devices may have many GBs of data to migrate (e.g., vGPUs) and even
+> mlx5 VFs can have a few GBs of data.
+> So what you are saying here is interesting, although I didn't test such
+> scenario to see the actual benefit.
+> 
+> I am trying to think if/how this could work and I have a few concerns:
+> 1. RAM is made of fixed-positioned pages that can be randomly read/written,
+> so sending these pages over multiple channels and loading them in the
+> destination can work pretty naturally without much overhead.
+>    VFIO device data, on the other hand, is just an opaque stream of bytes
+> from QEMU point of view. This means that if we break this data to "packets"
+> and send them over multiple channels, we must preserve the order by which
+> this data was
+>    originally read from the device and write the data in the same order to
+> the destination device.
+>    I am wondering if the overhead of maintaining such order may hurt
+> performance, making it not worthwhile.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfaca8323e..fddd3348c2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3402,6 +3402,11 @@ F: migration/dirtyrate.c
- F: migration/dirtyrate.h
- F: include/sysemu/dirtyrate.h
- 
-+Detached LUKS header
-+M: Hyman Huang <yong.huang@smartx.com>
-+S: Maintained
-+F: tests/qemu-iotests/tests/luks-detached-header
-+
- D-Bus
- M: Marc-André Lureau <marcandre.lureau@redhat.com>
- S: Maintained
-diff --git a/tests/qemu-iotests/tests/luks-detached-header b/tests/qemu-iotests/tests/luks-detached-header
-new file mode 100755
-index 0000000000..f0b5f3921c
---- /dev/null
-+++ b/tests/qemu-iotests/tests/luks-detached-header
-@@ -0,0 +1,218 @@
-+#!/usr/bin/env python3
-+# group: rw auto
-+#
-+# Test LUKS volume with detached header
-+#
-+# Copyright (C) 2024 SmartX Inc.
-+#
-+# Authors:
-+#     Hyman Huang <yong.huang@smartx.com>
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+import os
-+import iotests
-+from iotests import imgfmt, qemu_img_create, img_info_log, qemu_img_info, QMPTestCase
-+
-+
-+image_size = 128 * 1024 * 1024
-+
-+luks_img = os.path.join(iotests.test_dir, 'luks.img')
-+detached_header_img1 = os.path.join(iotests.test_dir, 'detached_header.img1')
-+detached_header_img2 = os.path.join(iotests.test_dir, 'detached_header.img2')
-+detached_payload_raw_img = os.path.join(iotests.test_dir, 'detached_payload_raw.img')
-+detached_payload_qcow2_img = os.path.join(iotests.test_dir, 'detached_payload_qcow2.img')
-+detached_header_raw_img = \
-+    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_raw_img, detached_header_img1)
-+detached_header_qcow2_img = \
-+    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_qcow2_img, detached_header_img2)
-+
-+secret_obj = 'secret,id=sec0,data=foo'
-+luks_opts = 'key-secret=sec0'
-+
-+
-+class TestDetachedLUKSHeader(QMPTestCase):
-+    def setUp(self) -> None:
-+        self.vm = iotests.VM()
-+        self.vm.add_object(secret_obj)
-+        self.vm.launch()
-+
-+        # 1. Create the normal LUKS disk with 128M size
-+        self.vm.blockdev_create({ 'driver': 'file',
-+                                  'filename': luks_img,
-+                                  'size': 0 })
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=luks_img,
-+                         node_name='luks-1-storage')
-+        result = self.vm.blockdev_create({ 'driver': imgfmt,
-+                                           'file': 'luks-1-storage',
-+                                           'key-secret': 'sec0',
-+                                           'size': image_size,
-+                                           'iter-time': 10 })
-+        # None is expected
-+        self.assertEqual(result, None)
-+
-+        # 2. Create the LUKS disk with detached header (raw)
-+
-+        # Create detached LUKS header
-+        self.vm.blockdev_create({ 'driver': 'file',
-+                                  'filename': detached_header_img1,
-+                                  'size': 0 })
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img1,
-+                         node_name='luks-2-header-storage')
-+
-+        # Create detached LUKS raw payload
-+        self.vm.blockdev_create({ 'driver': 'file',
-+                                  'filename': detached_payload_raw_img,
-+                                  'size': 0 })
-+        self.vm.qmp_log('blockdev-add', driver='file',
-+                         filename=detached_payload_raw_img,
-+                         node_name='luks-2-payload-storage')
-+
-+        # Format LUKS disk with detached header
-+        result = self.vm.blockdev_create({ 'driver': imgfmt,
-+                                           'header': 'luks-2-header-storage',
-+                                           'file': 'luks-2-payload-storage',
-+                                           'key-secret': 'sec0',
-+                                           'preallocation': 'full',
-+                                           'size': image_size,
-+                                           'iter-time': 10 })
-+        self.assertEqual(result, None)
-+
-+        self.vm.shutdown()
-+
-+        # 3. Create the LUKS disk with detached header (qcow2)
-+
-+        # Create detached LUKS header using qemu-img
-+        res = qemu_img_create('-f', 'luks', '--object', secret_obj, '-o', luks_opts,
-+                              '-o', "detached-header=true", detached_header_img2)
-+        assert res.returncode == 0
-+
-+        # Create detached LUKS qcow2 payload
-+        res = qemu_img_create('-f', 'qcow2', detached_payload_qcow2_img, str(image_size))
-+        assert res.returncode == 0
-+
-+    def tearDown(self) -> None:
-+        os.remove(luks_img)
-+        os.remove(detached_header_img1)
-+        os.remove(detached_header_img2)
-+        os.remove(detached_payload_raw_img)
-+        os.remove(detached_payload_qcow2_img)
-+
-+        # Check if there was any qemu-io run that failed
-+        if 'Pattern verification failed' in self.vm.get_log():
-+            print('ERROR: Pattern verification failed:')
-+            print(self.vm.get_log())
-+            self.fail('qemu-io pattern verification failed')
-+
-+    def test_img_creation(self) -> None:
-+        # Check if the images created above are expected
-+
-+        data = qemu_img_info(luks_img)['format-specific']
-+        self.assertEqual(data['type'], imgfmt)
-+        self.assertEqual(data['data']['detached-header'], False)
-+
-+        data = qemu_img_info(detached_header_raw_img)['format-specific']
-+        self.assertEqual(data['type'], imgfmt)
-+        self.assertEqual(data['data']['detached-header'], True)
-+
-+        data = qemu_img_info(detached_header_qcow2_img)['format-specific']
-+        self.assertEqual(data['type'], imgfmt)
-+        self.assertEqual(data['data']['detached-header'], True)
-+
-+        # Check if preallocation works
-+        size = qemu_img_info(detached_payload_raw_img)['actual-size']
-+        self.assertGreaterEqual(size, image_size)
-+
-+    def test_detached_luks_header(self) -> None:
-+        self.vm.launch()
-+
-+        # 1. Add the disk created above
-+
-+        # Add normal LUKS disk
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=luks_img,
-+                         node_name='luks-1-storage')
-+        result = self.vm.qmp_log('blockdev-add', driver='luks', file='luks-1-storage',
-+                                  key_secret='sec0', node_name='luks-1-format')
-+
-+        # Expected result{ "return": {} }
-+        self.assert_qmp(result, 'return', {})
-+
-+        # Add detached LUKS header with raw payload
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img1,
-+                         node_name='luks-header1-storage')
-+
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_payload_raw_img,
-+                         node_name='luks-2-payload-raw-storage')
-+
-+        result = self.vm.qmp_log('blockdev-add', driver=imgfmt,
-+                                  header='luks-header1-storage',
-+                                  file='luks-2-payload-raw-storage',
-+                                  key_secret='sec0',
-+                                  node_name='luks-2-payload-raw-format')
-+        self.assert_qmp(result, 'return', {})
-+
-+        # Add detached LUKS header with qcow2 payload
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img2,
-+                         node_name='luks-header2-storage')
-+
-+        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_payload_qcow2_img,
-+                         node_name='luks-3-payload-qcow2-storage')
-+
-+        result = self.vm.qmp_log('blockdev-add', driver=imgfmt,
-+                                  header='luks-header2-storage',
-+                                  file='luks-3-payload-qcow2-storage',
-+                                  key_secret='sec0',
-+                                  node_name='luks-3-payload-qcow2-format')
-+        self.assert_qmp(result, 'return', {})
-+
-+        # 2. Do I/O test
-+
-+        # Do some I/O to the image to see whether it still works
-+        # (Pattern verification will be checked by tearDown())
-+
-+        # Normal LUKS disk
-+        result = self.vm.qmp_log('human-monitor-command',
-+                                  command_line='qemu-io luks-1-format "write -P 40 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        result = self.vm.qmp_log('human-monitor-command',
-+                                 command_line='qemu-io luks-1-format "read -P 40 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Detached LUKS header with raw payload
-+        result = self.vm.qmp('human-monitor-command',
-+                             command_line='qemu-io luks-2-payload-raw-format "write -P 41 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        result = self.vm.qmp('human-monitor-command',
-+                             command_line='qemu-io luks-2-payload-raw-format "read -P 41 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        # Detached LUKS header with qcow2 payload
-+        result = self.vm.qmp('human-monitor-command',
-+                             command_line='qemu-io luks-3-payload-qcow2-format "write -P 42 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        result = self.vm.qmp('human-monitor-command',
-+                             command_line='qemu-io luks-3-payload-qcow2-format "read -P 42 0 64k"')
-+        self.assert_qmp(result, 'return', '')
-+
-+        self.vm.shutdown()
-+
-+
-+if __name__ == '__main__':
-+    # Test image creation and I/O
-+    iotests.main(supported_fmts=['luks'],
-+                 supported_protocols=['file'])
-diff --git a/tests/qemu-iotests/tests/luks-detached-header.out b/tests/qemu-iotests/tests/luks-detached-header.out
-new file mode 100644
-index 0000000000..fbc63e62f8
---- /dev/null
-+++ b/tests/qemu-iotests/tests/luks-detached-header.out
-@@ -0,0 +1,5 @@
-+..
-+----------------------------------------------------------------------
-+Ran 2 tests
-+
-+OK
+Indeed, it seems to me VFIO migration is based on a streaming model where
+there's no easy way to index a chunk of data.
+
+Is there any background on how that kernel interface was designed?  It
+seems pretty unfriendly to concurrency already: even if multiple devices
+can migrate concurrently, each single device can already contain GBs of
+data as you said, which is pretty common here.  I'm a bit surprised to see
+that the kernel interface is designed in this way for such a device.
+
+I was wondering the possibility of whether VFIO can provide data chunks
+with indexes just like RAM (which is represented in ramblock offsets).
+
+> 
+> 2. As I mentioned above, the main motivation for separate VFIO migration
+> channel/thread, as I see today, is to allow parallel migration of VFIO
+> devices.
+>    AFAIU multifd, as it is today, doesn't provide such parallelism (i.e., in
+> the complete pre-copy phase each device, be it RAM or VFIO, will fully send
+> its data over the multifd threads and only after finishing will the next
+> device send its data).
+
+Indeed. That's actually an issue not only to VFIO but also to migration in
+general: we can't migrate device states concurrently, and multifd is out of
+the picture here so far, but maybe there's chance.
+
+Consider huge VMs where there can be already ~500 vCPUs, each need their
+own get()/put() of CPU states from/to KVM.  It'll be nice if we can do this
+in concurrent threads too.  Here VFIO is one of the devices that will also
+benefit from such a design, and greatly.
+
+I added a todo in our wiki for this, which I see it a general improvement,
+and hopefully someone can look into this:
+
+https://wiki.qemu.org/ToDo/LiveMigration#Device_state_concurrency
+
+I hope VFIO can consider resolving this as a generic issue, rather than
+providing its own solution.
+
+> 
+> This is just what came to mind. Maybe we can think this more thoroughly and
+> see if it could work somehow, now or in the future.
+> However, I think making the multifd threads generic so they can send any
+> kind of data is a good thing in general, regardless of VFIO.
+
+Right.
+
+In general, having a VFIO separate channel may solve the immediate issue,
+but it may still won't solve all, meanwhile it may introduce the first
+example of using completely separate channel that migration won't easily
+manage itself, which IMHO can cause migration much harder to maintain in
+the future.
+
+It may also in the future become some technical debt that VFIO will need to
+take even if such a solution merged, because VFIO could have its own model
+of handling a few similar problems that migration has.
+
+I hope there's some way out that we can work together to improve the
+framework, providing a clean approach and consider for the long terms.
+
+Thanks,
+
 -- 
-2.31.1
+Peter Xu
 
 
