@@ -2,96 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47085842A8C
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 18:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4876842A8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 18:12:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUrd1-0002cJ-0V; Tue, 30 Jan 2024 12:10:32 -0500
+	id 1rUre0-0003Cu-ES; Tue, 30 Jan 2024 12:11:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rUrcw-0002c1-TA
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 12:10:26 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rUrdj-0002wZ-EB
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 12:11:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1rUrci-0003KQ-Kj
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 12:10:26 -0500
+ id 1rUrdc-0003Uc-P3
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 12:11:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706634611;
+ s=mimecast20190719; t=1706634664;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f4gyiL6GBsxrat1t5YGcpkO/qMN8yCeTRlhpWQp3Dqg=;
- b=DNHnnN0QITRewkHvaRXYCWAE0uNn4Ubsvdx/6gqDlF4I5NsjuPY9BdjRqA+KwFN1YDyOCu
- HEcBhTwvwnzAA9/GgYnB56oM8K7EPFY5dum4x/jvIqqhfWkBKsg0qBdJ3wRQ3SZyiYkWkF
- jej3+nKhyYjroJB+hXgbKKiU5mVFPrg=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EDpf39m9/K8wpY2UV02GGHmrme+FZzgNAG9ovgKJupE=;
+ b=HIrZcKKD3euqIFbGOzrgf4wZynZRIzywCxN5G+pLEb8VWjW3qc6+frv4490qmyrGdtYcCp
+ 0Vf+3H5dxErSLSOV33sI/ADjumICK2M3OOwFtoGipNJQh9MR61YRvgaJmUWTLEyz4MlJWi
+ OyS3fNwqPs65w2yCyB0Vi/ejxTNDatM=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-Q3wtYW5BMsmPB6Lu-ypTmg-1; Tue, 30 Jan 2024 12:10:08 -0500
-X-MC-Unique: Q3wtYW5BMsmPB6Lu-ypTmg-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-6dde04e1b6aso2311626b3a.2
- for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 09:10:08 -0800 (PST)
+ us-mta-556-i91_Q_NlPZi13gTo6BxjLA-1; Tue, 30 Jan 2024 12:11:02 -0500
+X-MC-Unique: i91_Q_NlPZi13gTo6BxjLA-1
+Received: by mail-pg1-f197.google.com with SMTP id
+ 41be03b00d2f7-5cf35636346so2312382a12.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 09:11:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706634607; x=1707239407;
+ d=1e100.net; s=20230601; t=1706634661; x=1707239461;
  h=to:references:message-id:content-transfer-encoding:cc:date
  :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f4gyiL6GBsxrat1t5YGcpkO/qMN8yCeTRlhpWQp3Dqg=;
- b=HUTF+XNUVKhkkhnGud2vkVws2RYdLozPG4ImuEPbDbIOVPn3E7AOymrVVai7PXQrwW
- Fil6OLV29hB/jsAoT2KBNwCgFpuOztrce6Fe0twgBWpkMHuxsGsb9BX/bNlMC6AptEmI
- WHT6toL0pKepYPUESUXKCWo/sS079U/5BPDQ40q5ihIwDi7fMeBINRVEiwkFwxHwU9I+
- k0ao/RCrQr/aQmzQ9ljkj5qs2zJP/ksAX4ksEJyk5Fb2pcgp7EXYt3hmiKhe1RzL5a6d
- HuiO9mGcQJfhbMId/COD0Y15i5bS90fyrScU/TTQyhGszxPuqnG2NzfpOkT23QjX4arF
- jtYg==
-X-Gm-Message-State: AOJu0Yx0dkql4V1Uqjl+y755+E7Xqz1M7zSPxbglTuZ5FSVmLmS/fi+B
- 9c807+D16W4fP2+lbjV2pbSdUOe5YkuL3G/XOPYRETSytBUzOTtGZ2i+Yb5UswxGchIiud2nbF3
- HvncnxLJuE4HnsFQIdXE0H7vRkIVaGRMdRh6XPOOsuWNbIQlMU2iv
-X-Received: by 2002:a05:6a00:459b:b0:6db:e6b9:4cca with SMTP id
- it27-20020a056a00459b00b006dbe6b94ccamr4752676pfb.14.1706634607535; 
- Tue, 30 Jan 2024 09:10:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGtD9hAYtKmp8IOq9BKPLMalTLv0HaCPe7XQr6KT+pLuxHJwJImJRG/LBu+8m4zXIVL0eAqsA==
-X-Received: by 2002:a05:6a00:459b:b0:6db:e6b9:4cca with SMTP id
- it27-20020a056a00459b00b006dbe6b94ccamr4752653pfb.14.1706634607161; 
- Tue, 30 Jan 2024 09:10:07 -0800 (PST)
+ bh=EDpf39m9/K8wpY2UV02GGHmrme+FZzgNAG9ovgKJupE=;
+ b=JjRhycDBHNJbPSRpYF5h7UEn3W3rIzGkRpTVgsovn30jLkgFMiSBu8mmN/WiKnZmZX
+ 69NgXXnIyetMTk0dE7w2lHdlWBx0nOlTS9Hr+i+RwldQwEAMxOGrwnlco3ryEoOXaYTU
+ su+XPJplDSCj6f7gmyShGaIwtCUaxF4EWpTtEPZEURKfJWLseCxFJ0AvPKrp9LDGniP6
+ 3Ps9lLzMhXTFWY3g2SdUoXGII2oCH8PoHXIAHphgpqbSSDmeiN1Ipyrr+mtvdR/YvdF1
+ YHN1qofzqqiXQKsGx25SoMP1CoBJGyrwBJzFaDo/Y3DOJnrCG2MLU+Zlce5ZcBgrAAk2
+ JsXQ==
+X-Gm-Message-State: AOJu0YwEWnVW/e9uzHZgR6iAWfo8mPSq9tWMxJqFN/uCsvWGv8UVGFlx
+ BFlb3zysWUOxL9E9g1ZWigr7GnjszXqd2vDt18zUziCQ6POgb4xUMYfOjLO/jEwUonAISI8JhCH
+ sy9XDGEZhvQ/N2O90V77JVPQwran5RBiYM2P/IyDdLPe0kr75p0UOyjzlKKKw
+X-Received: by 2002:a05:6a21:61e:b0:19c:7c49:4e6 with SMTP id
+ ll30-20020a056a21061e00b0019c7c4904e6mr4568341pzb.51.1706634661188; 
+ Tue, 30 Jan 2024 09:11:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG0e3Rk42JtixLJLTZ9zbSdmdWx+en0/sXAdE9BlCALwZ1qtT4CgPBYPMxmN3fie6hNZRJTuQ==
+X-Received: by 2002:a05:6a21:61e:b0:19c:7c49:4e6 with SMTP id
+ ll30-20020a056a21061e00b0019c7c4904e6mr4568322pzb.51.1706634660854; 
+ Tue, 30 Jan 2024 09:11:00 -0800 (PST)
 Received: from smtpclient.apple ([115.96.128.50])
  by smtp.gmail.com with ESMTPSA id
- d2-20020aa78682000000b006ddc5d8ecd7sm8002030pfo.32.2024.01.30.09.10.03
+ d2-20020aa78682000000b006ddc5d8ecd7sm8002030pfo.32.2024.01.30.09.10.56
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 30 Jan 2024 09:10:06 -0800 (PST)
+ Tue, 30 Jan 2024 09:11:00 -0800 (PST)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: [PATCH] pc: q35: Bump max_cpus to 1728 vcpus
+Subject: Re: [PATCH v2 3/3] hw/arm: Add `\n` to hint message
 From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <ZbkoOAPo7gmFZw4g@redhat.com>
-Date: Tue, 30 Jan 2024 22:39:51 +0530
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+In-Reply-To: <20240130163741.145925-4-groug@kaod.org>
+Date: Tue, 30 Jan 2024 22:40:45 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>, Gerd Hoffmann <kraxel@redhat.com>
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, qemu-arm@nongnu.org,
+ Song Gao <gaosong@loongson.cn>,
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4CEF526A-5B22-41EA-8634-D4BB5871B739@redhat.com>
-References: <20240130164428.35955-1-anisinha@redhat.com>
- <ZbkoOAPo7gmFZw4g@redhat.com>
-To: =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>
+Message-Id: <93A9587D-E34E-4EB3-924D-6CDC64E1812F@redhat.com>
+References: <20240130163741.145925-1-groug@kaod.org>
+ <20240130163741.145925-4-groug@kaod.org>
+To: Greg Kurz <groug@kaod.org>
 X-Mailer: Apple Mail (2.3774.400.31)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,103 +112,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-> On 30-Jan-2024, at 22:17, Daniel P. Berrang=C3=A9 =
-<berrange@redhat.com> wrote:
+> On 30-Jan-2024, at 22:07, Greg Kurz <groug@kaod.org> wrote:
 >=20
-> On Tue, Jan 30, 2024 at 10:14:28PM +0530, Ani Sinha wrote:
->> Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to =
-allow up to 4096 vCPUs")
->> Linux kernel can support upto a maximum number of 4096 vCPUS when =
-MAXSMP is
->> enabled in the kernel. QEMU has been tested to correctly boot a linux =
-guest
->> with 1728 vcpus both with edk2 and seabios firmwares. So bump up the =
-max_cpus
->> value for q35 machines versions 9 and newer to 1728. Q35 machines =
-versions
->> 8.2 and older continue to support 1024 maximum vcpus as before for
->> compatibility.
+> error_printf() doesn't add newlines.
 >=20
-> Where does the 1728 number come from ?
+> Signed-off-by: Greg Kurz <groug@kaod.org>
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> hw/arm/virt-acpi-build.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> Did something break at 1729, or did the test machine simply not
-> have sufficient resources to do practical larger tests ?
-
-Actual limit currently is 1856 for EDK2. The HPE folks tested QEMU with =
-edk2 and QEMU fails to boot beyond that limit.
-There are RH internal bugs tracking this and Gerd is working on it from =
-RH side [1].
-
-We would ultimately like to go to 8192 vcpus for SAP HANA but 1728 vcpus =
-is our immediate target for now. If you want, I can resend the patch =
-with 1856 since that is currently the tested limit.
-
-1. https://issues.redhat.com/browse/RHEL-22202
-
-
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 17aeec7a6f56..48febde1ccd1 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -1008,7 +1008,7 @@ void virt_acpi_build(VirtMachineState *vms, =
+AcpiBuildTables *tables)
+>                     " migration may not work",
+>                     tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
+>         error_printf("Try removing CPUs, NUMA nodes, memory slots"
+> -                     " or PCI bridges.");
+> +                     " or PCI bridges.\n");
+>     }
+>     acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
 >=20
->>=20
->> If KVM is not able to support the specified number of vcpus, QEMU =
-would
->> return the following error messages:
->>=20
->> $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 1728
->> qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested =
-(1728) exceeds the recommended cpus supported by KVM (12)
->> qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus =
-requested (1728) exceeds the recommended cpus supported by KVM (12)
->> Number of SMP cpus requested (1728) exceeds the maximum cpus =
-supported by KVM (1024)
->>=20
->> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->> Cc: Igor Mammedov <imammedo@redhat.com>
->> Cc: Michael S. Tsirkin <mst@redhat.com>
->> Cc: Julia Suvorova <jusual@redhat.com>
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> hw/i386/pc_q35.c | 3 ++-
->> 1 file changed, 2 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
->> index f43d5142b8..bfa627a70b 100644
->> --- a/hw/i386/pc_q35.c
->> +++ b/hw/i386/pc_q35.c
->> @@ -375,7 +375,7 @@ static void pc_q35_machine_options(MachineClass =
-*m)
->>     m->default_nic =3D "e1000e";
->>     m->default_kernel_irqchip_split =3D false;
->>     m->no_floppy =3D 1;
->> -    m->max_cpus =3D 1024;
->> +    m->max_cpus =3D 1728;
->>     m->no_parallel =3D =
-!module_object_class_by_name(TYPE_ISA_PARALLEL);
->>     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
->>     machine_class_allow_dynamic_sysbus_dev(m, =
-TYPE_INTEL_IOMMU_DEVICE);
->> @@ -396,6 +396,7 @@ static void =
-pc_q35_8_2_machine_options(MachineClass *m)
->> {
->>     pc_q35_9_0_machine_options(m);
->>     m->alias =3D NULL;
->> +    m->max_cpus =3D 1024;
->>     compat_props_add(m->compat_props, hw_compat_8_2, =
-hw_compat_8_2_len);
->>     compat_props_add(m->compat_props, pc_compat_8_2, =
-pc_compat_8_2_len);
->> }
->> --=20
->> 2.42.0
->>=20
->=20
-> With regards,
-> Daniel
 > --=20
-> |: https://berrange.com      -o-    =
-https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            =
-https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    =
-https://www.instagram.com/dberrange :|
-
+> 2.43.0
+>=20
 
 
