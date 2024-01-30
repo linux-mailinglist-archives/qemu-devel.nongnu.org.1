@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED85841D13
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 08:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6409E841D14
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 08:57:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUiyh-0006GI-DJ; Tue, 30 Jan 2024 02:56:19 -0500
+	id 1rUizM-0006bH-Ce; Tue, 30 Jan 2024 02:57:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUiya-0006FG-38
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:56:12 -0500
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUiz8-0006YS-Cc
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:56:46 -0500
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUiyX-0006jv-5H
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:56:11 -0500
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a35d0764076so200815166b.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 23:56:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUiz6-0006q3-Oa
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:56:46 -0500
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-5111f9dfce5so95381e87.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 23:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706601368; x=1707206168; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cuW28c+BYLmiqysCymIstb7NEFQqdWJjjHphmOigLJY=;
- b=WEmqf2IF4Cc7/KKjtAzuctfwbWoq97GGPMWlpHrDOT7DBd9gSNU29PVyyGQsEuLC/c
- 4MrDJfSP9+azu2SKhiYsxHJRJywck8JqOQtG8Uqrjb/scsGHi7zEAWzS17QuGATbhEVW
- Yax0C4l+ujEPmo7DaOTkEtkorcPXITf5zF4ROhMPLgAV3vS2XV42KykF7nwfbKQP7fa7
- KN3pTumBmlnOa08TJQ2GSlityMRvsrBNsLCcdjq8mOaVQtjUWSF+04pquyjwW6XoipJN
- Cb7HzAKylFkwNt/lcyISnGXhn/uLwtLkI5/bY60ufheYVsbp1NsSTBdas2MytOEJyiir
- Rt4w==
+ d=linaro.org; s=google; t=1706601402; x=1707206202; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mg6TyjShrpYfp/GTDz24AlcIXELpEOEnU861NNLRkZs=;
+ b=d4ZrMkXyoYlgIuTYX6dClIiGRF/Bmn40CV03uQMsMdEJz06C8d9x7znqJjq92soX7d
+ jdn8ikQXtu0XtIZPmGaT+5oReg9L7lB73teBackYHaouxjm8PvMYRP/nd5TCqFSuw5GC
+ y9GS3dGvcbiJd4iCjrsrIDyseoHUz6gnTB4SqTPFFkRNdD1ooPcHyztLhKyyXcCYR8e2
+ Og2XKZY0JoT9YpwyCAhIZyeJVyvY5u18CfmF6uXBY0cyin6NdzWpN8jWzyJnYmOa9s6R
+ n+/hUMUIn/ZRzzW6PupphhEjU+tLl+Op6YExiJr+r2y31Orzm8HpjSuufJTTY3XzSye1
+ 17dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706601368; x=1707206168;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cuW28c+BYLmiqysCymIstb7NEFQqdWJjjHphmOigLJY=;
- b=B0Ue7NFPVra9yLuSFtGxFvxP7aAgOUUWeSaBXTL1G9bqnQQRREqrQlRf4nW5p/muln
- AdRx/L1E7dqMNq4Xm1r0+k4bBECaKtnd4C9XOHr5rDDheVq64KE51jgGBByxQ8EnXfDs
- mdQ4GbSgAzXX7jufX7PuZl3+bcWlkbSkf2fy0xMg4tVtunFzrSsjBfRol+aFr/6zd74z
- e8Zp7tX8ZYFJCYBk6n2W/4zxGKUzDc3gtDS8LHzGKuAGBEb+vDckaAvnP9bNTWC9tyu1
- c4delpJDQ1c+9I7FubUcU8ptd1fXd05VcMyhd7sIW6Ksl9WJ3qgUC1TYY6zKt0HrCbqp
- 4gIQ==
-X-Gm-Message-State: AOJu0Yw09G7Y4eSgphS1vqx3habMBDDanU8ViU4zki0LOZH1mepQSLbH
- U6yhqFIKJaPawZTvwsxCH6+1vuWtH4Jrp9t+NBaguTjsYfIyahDgfZfIRpIZdi0=
-X-Google-Smtp-Source: AGHT+IEjyawnpfEx+5oD80MM4Z/UNcuJkBZ0uipar9qYbx8fQI3lSioPjjPHXdyo9GcmRkAKeFNWWA==
-X-Received: by 2002:a17:906:a013:b0:a32:b376:48d8 with SMTP id
- p19-20020a170906a01300b00a32b37648d8mr5802773ejy.18.1706601367702; 
- Mon, 29 Jan 2024 23:56:07 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.218.134])
- by smtp.gmail.com with ESMTPSA id
- bq26-20020a170906d0da00b00a3618de97efsm526540ejb.2.2024.01.29.23.56.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jan 2024 23:56:07 -0800 (PST)
-Message-ID: <525a134c-30e2-4513-b563-8f52100f6c9b@linaro.org>
-Date: Tue, 30 Jan 2024 08:56:06 +0100
+ d=1e100.net; s=20230601; t=1706601402; x=1707206202;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Mg6TyjShrpYfp/GTDz24AlcIXELpEOEnU861NNLRkZs=;
+ b=bdQ93q88JqySDqqb83y+6ZGFm+jaHTR5ec5S2aacwkjD1UL2CLHpKCwbYSIDoXrzfy
+ h9Ib7fWHqMJkG0QSRXUOa27r26/4rkjaVx+dIszqAUoCevXBjSr6kSy6fxP8ejwMeaT/
+ JC3nPJmreuP7eX5r0+7zIBVYBa1AcUjIuGwl9rJ1iOMeOvUVUZMPA+RuAzucSczFiWRU
+ u61/8tEXCIkksJU5m7DngCs6KBrGheC4rGT2qdkSLnf3YRS83Ja2zXHgrr+uIZaxv/E3
+ tn/qk4A0q/1uRpORA2C7Xl1Zf7ku4o2uuen19OrbMNYX2bt5uqaLwFyoo47LIr2OmGel
+ QbGA==
+X-Gm-Message-State: AOJu0YwWTMSD+GveKj7CE3ILtgOE6zmMODsIxhYt2jSKOl3J4hJsCe3J
+ fOcG6tZ9CA6Pl6O+igSVTLTNyw44njqld5tJ+d575Ch9im8uZd6JuErWbnEs34gHSUfdEk1VDMX
+ BSrM=
+X-Google-Smtp-Source: AGHT+IFR5vb7X49oLy8H7v8znuco79+GSYCM+6dH1z2l1+vjPkwB6R5U6FIJmAIXi/k7kMrFsjykQw==
+X-Received: by 2002:a05:6512:2209:b0:50e:4098:3798 with SMTP id
+ h9-20020a056512220900b0050e40983798mr5936742lfu.60.1706601402146; 
+ Mon, 29 Jan 2024 23:56:42 -0800 (PST)
+Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
+ [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
+ u11-20020a05600c138b00b0040e76b60235sm16133400wmf.8.2024.01.29.23.56.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Jan 2024 23:56:41 -0800 (PST)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH v1] scripts/checkpatch.pl: check for placeholders in cover
+ letter patches
+Date: Tue, 30 Jan 2024 09:56:15 +0200
+Message-Id: <20240130075615.181040-1-manos.pitsidianakis@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/22] target/sparc: Introduce gen_{load,store}_fpr_Q
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-References: <20231103173841.33651-1-richard.henderson@linaro.org>
- <20231103173841.33651-5-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20231103173841.33651-5-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,14 +95,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/11/23 18:38, Richard Henderson wrote:
-> Use them for trans_FMOVq.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/sparc/translate.c | 25 +++++++++++++++++++------
->   1 file changed, 19 insertions(+), 6 deletions(-)
+Check if a file argument is a cover letter patch produced by
+git-format-patch --cover-letter; It is initialized with subject suffix "
+*** SUBJECT HERE ***" and body prefix " *** BLURB HERE ***". If they
+exist, warn the user.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
+ scripts/checkpatch.pl | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 7026895074..34f12c9848 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1650,6 +1650,20 @@ sub process {
+ 			$non_utf8_charset = 1;
+ 		}
+ 
++# Check if this is a cover letter patch produced by git-format-patch
++# --cover-letter; It is initialized with subject suffix
++# " *** SUBJECT HERE ***" and body prefix " *** BLURB HERE ***"
++		if ($in_header_lines &&
++		    $rawline =~ /^Subject:.+[*]{3} SUBJECT HERE [*]{3}\s*$/) {
++        WARN("Patch appears to be a cover letter with uninitialized subject" .
++             " '*** SUBJECT HERE ***'\n$hereline\n");
++		}
++
++		if ($rawline =~ /^[*]{3} BLURB HERE [*]{3}\s*$/) {
++        WARN("Patch appears to be a cover letter with leftover placeholder " .
++             "text '*** BLURB HERE ***'\n$hereline\n");
++		}
++
+ 		if ($in_commit_log && $non_utf8_charset && $realfile =~ /^$/ &&
+ 		    $rawline =~ /$NON_ASCII_UTF8/) {
+ 			WARN("8-bit UTF-8 used in possible commit log\n" . $herecurr);
+
+base-commit: 11be70677c70fdccd452a3233653949b79e97908
+-- 
+γαῖα πυρί μιχθήτω
 
 
