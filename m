@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CF6842F2A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 22:53:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7CA842F28
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 22:53:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUw1X-0002Ff-1b; Tue, 30 Jan 2024 16:52:07 -0500
+	id 1rUw1Y-0002Py-10; Tue, 30 Jan 2024 16:52:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw1D-0002AF-Py
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:47 -0500
+ id 1rUw1H-0002CR-OR
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw1C-0005nB-D8
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:47 -0500
+ id 1rUw1F-0005nd-Il
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706651505;
+ s=mimecast20190719; t=1706651507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n1LYsq3H4/MW9xzqn1KNXRss1M84Sf8g1SFg0cOkjFA=;
- b=Yx70bVzY8pIQxOPl3CZ9xHji9WjFD2NLLHuJFbjCBMeVMDYbzKgrPXP4oSCPlNGPdoZ/bF
- moOmqLN7raEjmqCSwp3tRXps6Cm9/TSpG9fTOu7Iz6hJgJfhTGw13qRKomAIGGLWrl418v
- FW0VdDBnKSjEC0w5IIeFPXU7yvS7Olg=
+ bh=XDUgZHDlvWeA7rh+OjrSJr8WhdVme2HVQIvgJAMUWGU=;
+ b=FqCx2UJZf9LBemxJmAtm733DjieYq70pfkVifZ/BX2Vezdzsy26NBK39k1DrtfIXEJjalb
+ MqAx60SlsPl9NVfEI4uQtS1pu59ntesi0Bpajik4NPCZ4jKha0v+Rn7qZXyNXkLzme874b
+ mt7HFAa4Wtxl2HDpdUBNWaJqnxtTEag=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-e4xT4UOsNVGiOaTAoZL8pg-1; Tue,
- 30 Jan 2024 16:51:42 -0500
-X-MC-Unique: e4xT4UOsNVGiOaTAoZL8pg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-692-wHgEU0fUNviTw7PSIP1T_w-1; Tue,
+ 30 Jan 2024 16:51:45 -0500
+X-MC-Unique: wHgEU0fUNviTw7PSIP1T_w-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9C9C28EC10A;
- Tue, 30 Jan 2024 21:51:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FF523869143;
+ Tue, 30 Jan 2024 21:51:44 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0FF1E40C9444;
- Tue, 30 Jan 2024 21:51:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7B7E040C9444;
+ Tue, 30 Jan 2024 21:51:43 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>,
@@ -55,10 +55,11 @@ Cc: John Snow <jsnow@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>, Hanna Reitz <hreitz@redhat.com>,
- "Richard W.M. Jones" <rjones@redhat.com>
-Subject: [PULL 2/5] block/blkio: Make s->mem_region_alignment be 64 bits
-Date: Tue, 30 Jan 2024 16:51:31 -0500
-Message-ID: <20240130215134.346557-3-stefanha@redhat.com>
+ Xiang Zheng <zhengxiang9@huawei.com>
+Subject: [PULL 3/5] pflash: fix sectors vs bytes confusion in
+ blk_pread_nonzeroes()
+Date: Tue, 30 Jan 2024 16:51:32 -0500
+Message-ID: <20240130215134.346557-4-stefanha@redhat.com>
 In-Reply-To: <20240130215134.346557-1-stefanha@redhat.com>
 References: <20240130215134.346557-1-stefanha@redhat.com>
 MIME-Version: 1.0
@@ -90,42 +91,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Richard W.M. Jones" <rjones@redhat.com>
+The following expression is incorrect because blk_pread_nonzeroes()
+deals in units of bytes, not sectors:
 
-With GCC 14 the code failed to compile on i686 (and was wrong for any
-version of GCC):
+  bytes = MIN(size - offset, BDRV_REQUEST_MAX_SECTORS)
+                                              ^^^^^^^
 
-../block/blkio.c: In function ‘blkio_file_open’:
-../block/blkio.c:857:28: error: passing argument 3 of ‘blkio_get_uint64’ from incompatible pointer type [-Wincompatible-pointer-types]
-  857 |                            &s->mem_region_alignment);
-      |                            ^~~~~~~~~~~~~~~~~~~~~~~~
-      |                            |
-      |                            size_t * {aka unsigned int *}
-In file included from ../block/blkio.c:12:
-/usr/include/blkio.h:49:67: note: expected ‘uint64_t *’ {aka ‘long long unsigned int *’} but argument is of type ‘size_t *’ {aka ‘unsigned int *’}
-   49 | int blkio_get_uint64(struct blkio *b, const char *name, uint64_t *value);
-      |                                                         ~~~~~~~~~~^~~~~
+BDRV_REQUEST_MAX_BYTES is the appropriate constant.
 
-Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-Message-id: 20240130122006.2977938-1-rjones@redhat.com
+Fixes: a4b15a8b9ef2 ("pflash: Only read non-zero parts of backend image")
+Cc: Xiang Zheng <zhengxiang9@huawei.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240130002712.257815-1-stefanha@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/blkio.c | 2 +-
+ hw/block/block.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index 0a0a6c0f5f..bc2f21784c 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -68,7 +68,7 @@ typedef struct {
-     CoQueue bounce_available;
+diff --git a/hw/block/block.c b/hw/block/block.c
+index 9f52ee6e72..ff503002aa 100644
+--- a/hw/block/block.c
++++ b/hw/block/block.c
+@@ -30,7 +30,7 @@ static int blk_pread_nonzeroes(BlockBackend *blk, hwaddr size, void *buf)
+     BlockDriverState *bs = blk_bs(blk);
  
-     /* The value of the "mem-region-alignment" property */
--    size_t mem_region_alignment;
-+    uint64_t mem_region_alignment;
- 
-     /* Can we skip adding/deleting blkio_mem_regions? */
-     bool needs_mem_regions;
+     for (;;) {
+-        bytes = MIN(size - offset, BDRV_REQUEST_MAX_SECTORS);
++        bytes = MIN(size - offset, BDRV_REQUEST_MAX_BYTES);
+         if (bytes <= 0) {
+             return 0;
+         }
 -- 
 2.43.0
 
