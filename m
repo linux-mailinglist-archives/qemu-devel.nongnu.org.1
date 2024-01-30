@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958C1841F9E
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 10:34:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDAF841FCE
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 10:40:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUkUV-0000HP-IM; Tue, 30 Jan 2024 04:33:15 -0500
+	id 1rUkaO-0002uR-Nx; Tue, 30 Jan 2024 04:39:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lichao@loongson.cn>)
- id 1rUkUN-0000H9-HP
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:33:07 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lichao@loongson.cn>) id 1rUkUH-0006LQ-N5
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:33:07 -0500
-Received: from loongson.cn (unknown [10.40.24.149])
- by gateway (Coremail) with SMTP id _____8BxnutBwrhl3EoIAA--.25264S3;
- Tue, 30 Jan 2024 17:32:49 +0800 (CST)
-Received: from [10.40.24.149] (unknown [10.40.24.149])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxjhM7wrhlN8EnAA--.34693S3; 
- Tue, 30 Jan 2024 17:32:43 +0800 (CST)
-Content-Type: multipart/alternative;
- boundary="------------isy0rzj4qTAVu8AyJHw006Sx"
-Message-ID: <84256a9a-70b5-474a-b057-73fd8e3dae8e@loongson.cn>
-Date: Tue, 30 Jan 2024 17:32:43 +0800
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rUkaK-0002uI-1m
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:39:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rUkaG-00079Q-PO
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:39:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706607549;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=tA9Of5Sa/Og1+gCuyu7b5Rx1q+qf5Gy0ffsfO4cYnoM=;
+ b=Me2flSLNbswF7/bIrN84xkcLpc39ogy1FsMqPGhUxTOhPLgW3TOYoHfn16IwNd9ol5vyvj
+ eOMyCr4mKy0drhzvKOwPzUzJxZkCDMwOSfJgp5Fth+DRfKe92tD44f0g/0bl5ccB2hc5QM
+ Kamu4+u/pp2OXy9DvcOUvcpFo+eAcJo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-328-ciJh6RQfMzK_H8vf2sR0lw-1; Tue, 30 Jan 2024 04:39:07 -0500
+X-MC-Unique: ciJh6RQfMzK_H8vf2sR0lw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B03CF8493E8
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 09:39:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.52])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BCE3A494;
+ Tue, 30 Jan 2024 09:39:05 +0000 (UTC)
+Date: Tue, 30 Jan 2024 09:39:03 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Anthony Harivel <aharivel@redhat.com>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, qemu-devel@nongnu.org,
+ vchundur@redhat.com
+Subject: Re: [PATCH v3 3/3] Add support for RAPL MSRs in KVM/Qemu
+Message-ID: <ZbjDtytv-_-Bz4-S@redhat.com>
+References: <20240125072214.318382-1-aharivel@redhat.com>
+ <20240125072214.318382-4-aharivel@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [libvirt PATCH V2 0/4] add loongarch support for libvirt
-To: lixianglai <lixianglai@loongson.cn>,
- Andrea Bolognani <abologna@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: devel@lists.libvirt.org, maobibo@loongson.cn, jiyin@redhat.com
-References: <cover.1704369486.git.lixianglai@loongson.cn>
- <CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com>
- <17234d81-cc17-6859-720a-f033206780da@loongson.cn>
-From: Chao Li <lichao@loongson.cn>
-In-Reply-To: <17234d81-cc17-6859-720a-f033206780da@loongson.cn>
-X-CM-TRANSID: AQAAf8AxjhM7wrhlN8EnAA--.34693S3
-X-CM-SenderInfo: xolfxt3r6o00pqjv00gofq/1tbiAQAMCGW4s2EBLwABsl
-X-Coremail-Antispam: 1Uk129KBj9fXoWfGr1DZrykXFW3uryxZrWDGFX_yoW8Xry3Ko
- WruF47Aw4UGr1DGF17Jrs5JFy5A348KrnrX3s7Wa4DGF1UtF4UG3yUW34UGa43Jr1rGryU
- X34xX3s8AFW7Jryfl-sFpf9Il3svdjkaLaAFLSUrUUUU0b8apTn2vfkv8UJUUUU8wcxFpf
- 9Il3svdxBIdaVrn1kqx4xG6xAqzII2Y4kfWbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVr
- nRJUUUBGb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG6r
- Wj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
- z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr
- 1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr0_
- GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I
- 8E6xACxx1l5I8CrVCF54CIxcxKerWlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCjr7xvwVCIw2I0I7
- xG6c02F41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Y
- z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUGVWUWwC20s026x
- 8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
- 2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
- xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
- 7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1xRhUUUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=lichao@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240125072214.318382-4-aharivel@redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,938 +79,361 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------isy0rzj4qTAVu8AyJHw006Sx
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Thu, Jan 25, 2024 at 08:22:14AM +0100, Anthony Harivel wrote:
+> Starting with the "Sandy Bridge" generation, Intel CPUs provide a RAPL
+> interface (Running Average Power Limit) for advertising the accumulated
+> energy consumption of various power domains (e.g. CPU packages, DRAM,
+> etc.).
+> 
+> The consumption is reported via MSRs (model specific registers) like
+> MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are
+> 64 bits registers that represent the accumulated energy consumption in
+> micro Joules. They are updated by microcode every ~1ms.
+> 
+> For now, KVM always returns 0 when the guest requests the value of
+> these MSRs. Use the KVM MSR filtering mechanism to allow QEMU handle
+> these MSRs dynamically in userspace.
+> 
+> To limit the amount of system calls for every MSR call, create a new
+> thread in QEMU that updates the "virtual" MSR values asynchronously.
+> 
+> Each vCPU has its own vMSR to reflect the independence of vCPUs. The
+> thread updates the vMSR values with the ratio of energy consumed of
+> the whole physical CPU package the vCPU thread runs on and the
+> thread's utime and stime values.
+> 
+> All other non-vCPU threads are also taken into account. Their energy
+> consumption is evenly distributed among all vCPUs threads running on
+> the same physical CPU package.
+> 
+> To overcome the problem that reading the RAPL MSR requires priviliged
+> access, a socket communication between QEMU and the qemu-vmsr-helper is
+> mandatory. You can specified the socket path in the parameter.
+> 
+> This feature is activated with -accel kvm,rapl=true,path=/path/sock.sock
+> 
+> Actual limitation:
+> - Works only on Intel host CPU because AMD CPUs are using different MSR
+>   adresses.
+> 
+> - Only the Package Power-Plane (MSR_PKG_ENERGY_STATUS) is reported at
+>   the moment.
+> 
+> Signed-off-by: Anthony Harivel <aharivel@redhat.com>
+> ---
+>  accel/kvm/kvm-all.c           |  27 +++
+>  docs/specs/index.rst          |   1 +
+>  docs/specs/rapl-msr.rst       | 133 +++++++++++++
+>  include/sysemu/kvm_int.h      |  17 ++
+>  target/i386/cpu.h             |   8 +
+>  target/i386/kvm/kvm.c         | 348 ++++++++++++++++++++++++++++++++++
+>  target/i386/kvm/meson.build   |   1 +
+>  target/i386/kvm/vmsr_energy.c | 295 ++++++++++++++++++++++++++++
+>  target/i386/kvm/vmsr_energy.h |  87 +++++++++
+>  9 files changed, 917 insertions(+)
+>  create mode 100644 docs/specs/rapl-msr.rst
+>  create mode 100644 target/i386/kvm/vmsr_energy.c
+>  create mode 100644 target/i386/kvm/vmsr_energy.h
+> 
 
-Hi All,
+> @@ -2509,6 +2558,265 @@ static void register_smram_listener(Notifier *n, void *unused)
+>                                   &smram_address_space, 1, "kvm-smram");
+>  }
+>  
+> +static void *kvm_msr_energy_thread(void *data)
+> +{
+> +    KVMState *s = data;
+> +    struct KVMMsrEnergy *vmsr = &s->msr_energy;
+> +
+> +    g_autofree package_energy_stat *pkg_stat = NULL;
+> +    g_autofree thread_stat *thd_stat = NULL;
+> +    g_autofree pid_t *thread_ids = NULL;
+> +    g_autofree CPUState *cpu = NULL;
+> +    unsigned int maxpkgs, maxcpus, maxticks;
+> +    g_autofree unsigned int *vpkgs_energy_stat = NULL;
+> +    unsigned int num_threads = 0;
+> +    unsigned int tmp_num_threads = 0;
+> +    pid_t pid;
+> +
+> +    X86CPUTopoIDs topo_ids;
+> +
+> +
+> +    rcu_register_thread();
+> +
+> +    /* Get QEMU PID*/
+> +    pid = getpid();
+> +
+> +    /* Nb of CPUS per packages */
+> +    maxcpus = vmsr_get_maxcpus(0);
+> +
+> +    /* Nb of Physical Packages on the system */
+> +    maxpkgs = vmsr_get_max_physical_package(maxcpus);
 
-Added my notes below.
+This function can fail so this needs to be checked & reported.
+
+> +
+> +    /* Those MSR values should not change as well */
+> +    vmsr->msr_unit  = vmsr_read_msr(MSR_RAPL_POWER_UNIT, 0, pid,
+> +                                    s->msr_energy.socket_path);
+> +    vmsr->msr_limit = vmsr_read_msr(MSR_PKG_POWER_LIMIT, 0, pid,
+> +                                    s->msr_energy.socket_path);
+> +    vmsr->msr_info  = vmsr_read_msr(MSR_PKG_POWER_INFO, 0, pid,
+> +                                    s->msr_energy.socket_path);
+
+This function can fail for a variety of reasons, most especially if someone
+gave an incorrect socket path, or if the daemon is not running. This is not
+getting diagnosed, and even if we try to report it here, we're in a background
+thread at this point.
+
+I think we need to connect and report errors before even starting this
+thread, so that QEMU startup gets aborted upon configuration error.
+
+> +
+> +    /* Allocate memory for each package energy status */
+> +    pkg_stat = (package_energy_stat *)
+> +        g_new0(package_energy_stat, maxpkgs);
+> +
+> +    /* Pre-allocate memory for thread stats */
+> +    thd_stat = g_new0(thread_stat, 1);
+> +
+> +    /* Pre-allocate memory for holding Virtual Package Energy counter */
+> +    vpkgs_energy_stat = g_new0(unsigned int, vmsr->sockets);
+> +
+> +    /*
+> +     * Max numbers of ticks per package
+> +     * time in second * number of ticks/second * Number of cores / package
+> +     * ex: for 100 ticks/second/CPU, 12 CPUs per Package gives 1200 ticks max
+> +     */
+> +    maxticks = (MSR_ENERGY_THREAD_SLEEP_US / 1000000)
+> +                    * sysconf(_SC_CLK_TCK) * maxcpus;
+> +
+> +    while (true) {
+> +        /* Get all qemu threads id */
+> +        thread_ids = vmsr_get_thread_ids(pid, &num_threads);
+> +
+> +        if (thread_ids == NULL) {
+> +            goto clean;
+> +        }
+> +
+> +        if (tmp_num_threads < num_threads) {
+> +            thd_stat = g_renew(thread_stat, thd_stat, num_threads);
+> +        }
+> +
+> +        tmp_num_threads = num_threads;
+> +
+> +        /* Populate all the thread stats */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            thd_stat[i].utime = g_new0(unsigned long long, 2);
+> +            thd_stat[i].stime = g_new0(unsigned long long, 2);
+> +            thd_stat[i].thread_id = thread_ids[i];
+> +            vmsr_read_thread_stat(&thd_stat[i], pid, 0);
+
+It is non-obvious that the 3rd parameter here is an index into
+the utime & stime array. This function would be saner to review
+if called as:
+
+            vmsr_read_thread_stat(pid,
+	                          thd_stat[i].thread_id,
+	                          &thd_stat[i].utime[0],
+	                          &thd_stat[i].stime[0],
+	                          &thd_stat[i].cpu_id);
+
+so we see what are input parameters and what are output parameters.
+
+Also this method can fail, eg if the thread has exited already,
+so we need to take that into account and stop trying to get info
+for that thread in later code. eg by setting 'thread_id' to 0
+and then skipping any thread_id == 0 later.
 
 
-Thanks,
-Chao
-On 2024/1/30 16:59, lixianglai wrote:
->
-> Hi Andrea:
->
->     I'm sorry for taking so long to reply you!
->
-> Hi Philippe:
->
->     When developing libvirt on loongarch, we encountered some problems 
-> related to pflash.
->
-> libvirt and qemu met some difficulties in the coordination of UEFI 
-> loading.
->
-> I think we need your suggestions and opinions on the solution.
->
->
->> On Fri, Jan 12, 2024 at 02:32:43PM +0800, Xianglai Li wrote:
->>> Hello, Everyone:
->>>    This patch series adds libvirt support for loongarch.Although the bios
->>> path and name has not been officially integrated into qemu and we think
->>> there are still many shortcomings, we try to push a version of patch to
->>> the community according to the opinions of the community, hoping to
->>> listen to everyone's opinions. Anyway we have a version of libvirt that
->>> supports loongarch.
->>>
->>>    You can also get libvirt's patch from the link below:
->>> https://gitlab.com/lixianglai/libvirt
->>> branch: loongarch
->>>
->>>    Since the patch associated with loongarch has not yet been submitted to
->>> the virt-manager community, we are providing a temporary patch with
->>> loongarch for the time being patch's virt-manager, the open source work
->>> of virt-manager adding loongarch will be followed up later or
->>> synchronized with the open source libvirt.
->>>
->>>    You can get the virt-manager code with loongarch patch from the link below:
->>> https://github.com/lixianglai/virt-manager
->>> branch: loongarch
->> It's really great that you're considering the entire stack, all the
->> way up to virt-manager, while working on this! :)
-> Oh! Thanks!
-> :)
->>>    loongarch's virtual machine bios is not yet available in qemu, so you can get it from the following link
->>> https://github.com/lixianglai/LoongarchVirtFirmware
->>> (Note: You should clone the repository using git instead of downloading the file via wget or you'll get xml)
->>> We named the bios QEMU_EFI.fd, QEMU_VARS.fd is used to store pflash images of non-volatile
->>> variables.After installing qemu-system-loongarch64,You can install the loongarch bios by executing the script
->>> install-loongarch-virt-firmware.sh
->> To clarify, loongarch support has been merged into upstream edk2
->> already, right? And the contents of this repository are just for
->> convenience, since loongarch builds of edk2 have generally not made
->> it into distros yet? I think I might have asked about this already,
->> sorry O:-)
->
-> Don't mention it.
->
-> All right, The loongarch support has been merged into upstream edk2 
-> already.
->
-> And you can see a detailed description of loongarch uefi in the link 
-> below:
->
-> https://github.com/tianocore/edk2-platforms/blob/master/Platform/Loongson/LoongArchQemuPkg/Readme.md
->
-> this repository are just for convenience. :)
+> +            thd_stat[i].numa_node_id = numa_node_of_cpu(thd_stat[i].cpu_id);
+> +        }
+> +
+> +        /* Retrieve all packages power plane energy counter */
+> +        for (int i = 0; i <= maxpkgs; i++) {
+> +            for (int j = 0; j < num_threads; j++) {
+> +                /*
+> +                 * Use the first thread we found that ran on the CPU
+> +                 * of the package to read the packages energy counter
+> +                 */
+> +                if (thd_stat[j].numa_node_id == i) {
 
-BTW, LoongArchVirt under OvmfPkg is being committed to upstream, I guess 
-it will be merged before the stable202402, please refer to:
+'i' is a CPU ID value, while 'numa_node_id' is a NUMA node ID value.
+I don't think it is semantically valid to compare them for equality.
 
-https://bugzilla.tianocore.org/show_bug.cgi?id=4584
+I'm not sure the NUMA node is even relevant, since IIUC from the docs
+earlier, the power values are scoped per package, which would mean per
+CPU socket.
 
-https://edk2.groups.io/g/devel/message/114526
+> +                    pkg_stat[i].e_start =
+> +                    vmsr_read_msr(MSR_PKG_ENERGY_STATUS, i, pid,
+> +                                  s->msr_energy.socket_path);
 
-https://github.com/tianocore/edk2/pull/5208
+> +                    break;
+> +                }
+> +            }
+> +        }
+> +
+> +        /* Sleep a short period while the other threads are working */
+> +        usleep(MSR_ENERGY_THREAD_SLEEP_US);
+> +
+> +        /*
+> +         * Retrieve all packages power plane energy counter
+> +         * Calculate the delta of all packages
+> +         */
+> +        for (int i = 0; i <= maxpkgs; i++) {
+> +            for (int j = 0; j < num_threads; j++) {
+> +                /*
+> +                 * Use the first thread we found that ran on the CPU
+> +                 * of the package to read the packages energy counter
+> +                 */
+> +                if (thd_stat[j].numa_node_id == i) {
+> +                    pkg_stat[i].e_end =
+> +                       vmsr_read_msr(MSR_PKG_ENERGY_STATUS,
+> +                                     thd_stat[j].cpu_id,
+> +                                     thd_stat[j].thread_id,
+> +                                     s->msr_energy.socket_path);
+> +                    /*
+> +                     * Prevent the case we have migrate the VM
+> +                     * during the sleep period or any other cases
+> +                     * were energy counter might be lower after
+> +                     * the sleep.
+> +                     */
+> +                    if (pkg_stat[i].e_end > pkg_stat[i].e_start) {
+> +                        pkg_stat[i].e_delta =
+> +                            pkg_stat[i].e_end - pkg_stat[i].e_start;
+> +                    } else {
+> +                        pkg_stat[i].e_delta = 0;
+> +                    }
+> +                    break;
+> +                }
+> +            }
+> +        }
+> +
+> +        /* Delta of ticks spend by each thread between the sample */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            if (vmsr_read_thread_stat(&thd_stat[i], pid, 1) != 0) {
 
-Most maintainer have completed the review.
+Here we fetch the thread 'cpu_id' again. What is expected behaviour
+if 'cpu_id' has changed since we read it earlier ? The delta ticks
+calculation will be OK is cpu_is is still within the same package
+as earlier, but if it moved to another package it is not valid.
 
->
->> Anyway, I fetched and installed this. The firmware descriptor looks
->> like:
->>
->>    {
->>       "interface-types": [
->>         "uefi"
->>       ],
->>       "mapping": {
->>         "device": "memory",
->>         "filename": "/usr/share/edk2/loongarch64/QEMU_EFI.fd"
->>       },
->>       "targets": [
->>         {
->>           "architecture": "loongarch64",
->>           "machines": [
->>             "virt",
->>             "virt-*"
->>           ]
->>         }
->>       ],
->>       "features": [
->>           "acpi"
->>       ]
->>     }
->>
->> This is not what I expected: specifically, it results in libvirt
->> generating
->>
->>    -bios /usr/share/edk2/loongarch64/QEMU_EFI.fd
->>
->> So only one of the two files is used, in read-only mode, and there is
->> no persistent NVRAM storage that the guest can use.
->>
->> This is what I expected instead:
->>
->>    {
->>       "interface-types": [
->>         "uefi"
->>       ],
->>       "mapping": {
->>         "device": "flash",
->>         "mode": "split",
->>         "executable": {
->>           "filename": "/usr/share/edk2/loongarch64/QEMU_EFI.fd",
->>           "format": "raw"
->>         },
->>         "nvram-template": {
->>           "filename": "/usr/share/edk2/loongarch64/QEMU_VARS.fd",
->>           "format": "raw"
->>         }
->>       },
->>       "targets": [
->>         {
->>           "architecture": "loongarch64",
->>           "machines": [
->>             "virt",
->>             "virt-*"
->>           ]
->>         }
->>       ],
->>       "features": [
->>           "acpi"
->>      ]
->>    }
->>
->> I've tried installing such a descriptor and libvirt picks it up,
->> resulting in the following guest configuration:
->>
->>    <os firmware='efi'>
->>      <type arch='loongarch64' machine='virt'>hvm</type>
->>      <firmware>
->>        <feature enabled='no' name='enrolled-keys'/>
->>        <feature enabled='no' name='secure-boot'/>
->>      </firmware>
->>      <loader readonly='yes'
->> type='pflash'>/usr/share/edk2/loongarch64/QEMU_EFI.fd</loader>
->>      <nvram template='/usr/share/edk2/loongarch64/QEMU_VARS.fd'>/var/lib/libvirt/qemu/nvram/guest_VARS.fd</nvram>
->>      <boot dev='hd'/>
->>    </os>
->>
->> which in turn produces the following QEMU command line options:
->>
->>    -blockdev '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}'
->>    -blockdev '{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}'
->>    -blockdev '{"driver":"file","filename":"/var/lib/libvirt/qemu/nvram/guest_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}'
->>    -blockdev '{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}'
->>
->> Unfortunately, with this configuration the guest fails to start:
->>
->>    qemu-system-loongarch64: Property 'virt-machine.pflash0' not found
->>
->> This error message looked familiar to me, as it is the same that I
->> hit when trying out UEFI support on RISC-V roughly a year ago[1]. In
->> this case, however, it seems that the issue runs deeper: it's not
->> just that the flash devices are not wired up to work as blockdevs,
->> but even the old -drive syntax doesn't work.
->>
->> Looking at the QEMU code, it appears that the loongarch/virt machine
->> only creates a single pflash device and exposes it via -bios. So it
->> seems that there is simply no way to achieve the configuration that
->> we want.
->>
->> I think that this is something that needs to be addressed as soon as
->> possible. In the long run, guest-accessible NVRAM storage is a must,
->> and I'm not sure it would make a lot of sense to merge loongarch
->> support into libvirt until the firmware situation has been sorted out
->> in the lower layers.
->
->
-> In the qemu code, loongarch virt machine does only create a pflash,
->
-> which is used for nvram, and uefi code is loaded by rom.
->
-> In summary, loongarch virt machine can use nvram with the following 
-> command:
->
-> -------------------------------------------------------------------------------------------------------
->
-> /qemu-system-loongarch64 \//
-> //-m 8G \//
-> //-smp 4 \//
-> //-cpu la464   \//
-> //-blockdev 
-> '{"driver":"file","filename":"./QEMU_VARS-pflash.raw","node-name":"libvirt-pflash0-storage","auto-read-only":false,"discard":"unmap"}' 
-> \//
-> //-blockdev 
-> '{"node-name":"libvirt-pflash0-format","read-only":false,"driver":"raw","file":"libvirt-pflash0-storage"}' 
-> \//
-> //-machine virt,pflash=libvirt-pflash0-format  \//
-> //-snapshot \//
-> //-bios ./QEMU_EFI.fd  \//
-> //-serial stdio/
->
-> -------------------------------------------------------------------------------------------------------
->
->
-> This is really a big difference from the following boot method, and it 
-> still looks weird.
->
-> -------------------------------------------------------------------------------------------------------
->
-> /-blockdev 
-> '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}' 
-> -blockdev 
-> '{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}' 
-> -blockdev 
-> '{"driver":"file","filename":"/var/lib/libvirt/qemu/nvram/guest_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}' 
-> -blockdev 
-> '{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}'/
->
-> -------------------------------------------------------------------------------------------------------
->
-> However, during the development of qemu loongarch,
->
-> we also used a RISCV-like solution to create two pflash,
->
-> but the qemu community suggested that we put uefi code in rom for the 
-> following reasons:
->
->
-> https://lore.kernel.org/qemu-devel/2f381d06-842f-ac8b-085c-0419675a4872@linaro.org/
->
-> "
->
-> Since you are starting a virtual machine from scratch, you should take
-> the opportunity to learn from other early mistakes. X86 ended that way
-> due to 1/ old firmwares back-compability and 2/ QEMU pflash block
-> protections not being implemented. IIUC if we were starting with a
-> UEFI firmware today, the layout design (still using QEMU) would be
-> to map the CODE area in a dumb ROM device, and the VARSTORE area
-> in a PFlash device. Since Virt machines don't need to use Capsule
-> update, having the CODE area in ROM drastically simplifies the design
-> and maintainance.
->
-> "
->
-> Well, anyway, now that we have an issue with qemu loongarch using 
-> nvram that is incompatible with libvirt,
->
-> here I have come up with two solutions to solve this problem:
->
->
->     Option 1:
->
-> If the interface type "rom-uefi" is added and the device type 
-> "rom-flash" is added, the json file should be written like this:
->
-> -------------------------------------------------------------------------------------------------------
->
-> /{//
-> //   "interface-types": [//
-> ////"rom-uefi"//
-> //   ],//
-> //   "mapping": {//
-> ////"device": "rom-flash",//
-> //     "executable": {//
-> //       "filename": "/usr/share/edk2/loongarch64/QEMU_EFI.fd",//
-> //       "format": "raw"//
-> //     },//
-> //     "nvram-template": {//
-> //       "filename": "/usr/share/edk2/loongarch64/QEMU_VARS.fd",//
-> //       "format": "raw"//
-> //     }//
-> //   },//
-> //   "targets": [//
-> //     {//
-> //       "architecture": "loongarch64",//
-> //       "machines": [//
-> //         "virt",//
-> //         "virt-*"//
-> //       ]//
-> //     }//
-> //   ],//
-> //   "features": [//
-> //       "acpi"//
-> //   ]/
->
->  -------------------------------------------------------------------------------------------------------
->
-> Then add the parsing of the new interface types in libvirt and load 
-> QEMU_CODE.fd as -bios and QEMU_VARS.fd as nvram
->
-> when creating the command line, generating commands like the following:
->
->  -------------------------------------------------------------------------------------------------------
->
-> /qemu-system-loongarch64 \//
-> //-m 8G \//
-> //-smp 1 \//
-> //-cpu la464   \//
-> //-blockdev 
-> '{"driver":"file","filename":"////usr/share/edk2/loongarch64/QEMU_VARS.fd/","node-name":"libvirt-pflash0-storage","auto-read-only":false,"discard":"unmap"}' 
-> \//
-> //-blockdev 
-> '{"node-name":"libvirt-pflash0-format","read-only":false,"driver":"raw","file":"libvirt-pflash0-storage"}' 
-> \//
-> //-machine virt,pflash=libvirt-pflash0-format  \//
-> //-snapshot \//
-> //-bios /////usr/share/edk2/loongarch64///QEMU_EFI.fd \//
-> //-serial stdio/
->
-> -------------------------------------------------------------------------------------------------------
->
->
->     Option 2:
->
-> Solution 2 mainly starts from qemu. Now the rom that bios is loaded 
-> into is a memory region that cannot be configured with attributes,
->
-> so we imagine abstracting rom as a device, creating it during machine 
-> initialization and setting "pflash0" attribute for it.
->
-> Then create a pflash and set its property to "pflash1", so our startup 
-> command will look like this:
->
->  -------------------------------------------------------------------------------------------------------
->
-> /qemu-system-loongarch64 \//
-> //-m 8G \//
-> //-smp 1 \//
-> //-cpu la464   \//
-> //-blockdev 
-> '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}' 
-> \//
-> //-blockdev 
-> '{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}' 
-> \//
-> //-blockdev 
-> '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}' 
-> \//
-> //-blockdev 
-> '{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}' 
-> \//
-> //-machine 
-> virt,pflash0=libvirt-pflash0-format,pflash1=libvirt-pflash1-format \//
-> //-snapshot \//
-> //-serial stdio/
->
->  -------------------------------------------------------------------------------------------------------
->
-> This way, without modifying libvirt, QEMU_CODE.fd can be loaded into 
-> the rom,
->
-> but it is still a little strange that it is clearly rom but set a 
-> "pflash0" attribute, which can be confusing.
->
->
->>>    Since there is no fedora operating system that supports the loongarch
->>> architecture, you can find an iso that supports loongarch at the link
->>> below for testing purposes:
->>>    https://github.com/fedora-remix-loongarch/releases-info
->>>
->>>    Well, if you have completed the above steps I think you can now install loongarch virtual machine,
->>> you can install it through the virt-manager graphical interface, or install it through vrit-install,
->>> here is an example of installing it using virt-install:
->>>
->>> virt-install  \
->>> --virt-type=qemu \
->>> --name  loongarch-test \
->>> --memory 4096 \
->>> --vcpus=4 \
->>> --arch=loongarch64 \
->>> --boot cdrom \
->>> --disk device=cdrom,bus=scsi,path=/root/livecd-fedora-mate-4.loongarch64.iso \
->>> --disk path=/var/lib/libvirt/images/debian12-loongarch64.qcow2,size=10,format=qcow2,bus=scsi \
->>> --network network=default \
->>> --osinfo archlinux   \
->>> --video=virtio  \
->>> --graphics=vnc,listen=0.0.0.0
->> Regardless of what I said above, this actually worked quite well! I
->> was able to boot the MATE image and, ignoring the expected slowness
->> caused by emulation, things were generally fairly smooth.
->>
->> Note that I tried the LXDE image first, expecting it to be a bit
->> smaller and faster, but in that case I wasn't able to get a
->> successful boot: edk2 loaded up just fine, but the guest OS was never
->> started and I was dropped into the edk2 shell instead. Maybe that's a
->> known issue, but I thought I'd point it out.
->
-> Thank you very much for pointing out the problem,
->
-> lxde iso is missing efiboot.img file so that the virtual machine UEFI 
-> can not recognize efi partition
->
-> caused by the problem has been notified to the relevant personnel,
->
-> I believe that the next version of libvirt patch will be shipped to 
-> use lxde iso.
->
->
-> Thanks,
->
-> Xianglai.
->
->> [1]https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06258.html
---------------isy0rzj4qTAVu8AyJHw006Sx
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><font size="2">Hi All,</font></p>
-    <p><font size="2">Added my notes below.<br>
-      </font></p>
-    <div class="moz-signature"
-      signature-switch-id="18b8a24a-8ce6-4aca-a108-921eeebcd5e9"><br>
-      <div
-style="width:15%;height:1px;background-color:grey;transform:scaleY(0.3)"></div>
-      <div style="color:grey;font-size:11px">Thanks,<br>
-        Chao<br>
-      </div>
-    </div>
-    <div class="moz-cite-prefix">On 2024/1/30 16:59, lixianglai wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:17234d81-cc17-6859-720a-f033206780da@loongson.cn">
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <p>Hi Andrea:</p>
-      <p>    I'm sorry for taking so long to reply you!</p>
-      <p>Hi Philippe:</p>
-      <p>    When developing libvirt on loongarch, we encountered some
-        problems related to pflash. <br>
-      </p>
-      <p>libvirt and qemu met some difficulties in the coordination of
-        UEFI loading.</p>
-      <p> I think we need your suggestions and opinions on the solution.</p>
-      <p><br>
-      </p>
-      <blockquote type="cite"
-cite="mid:CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com">
-        <pre class="moz-quote-pre" wrap="">On Fri, Jan 12, 2024 at 02:32:43PM +0800, Xianglai Li wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Hello, Everyone:
-  This patch series adds libvirt support for loongarch.Although the bios
-path and name has not been officially integrated into qemu and we think
-there are still many shortcomings, we try to push a version of patch to
-the community according to the opinions of the community, hoping to
-listen to everyone's opinions. Anyway we have a version of libvirt that
-supports loongarch.
 
-  You can also get libvirt's patch from the link below:
-<a class="moz-txt-link-freetext"
-          href="https://gitlab.com/lixianglai/libvirt"
-          moz-do-not-send="true">https://gitlab.com/lixianglai/libvirt</a>
-branch: loongarch
+> +                /*
+> +                 * We don't count the dead thread
+> +                 * i.e threads that existed before the sleep
+> +                 * and not anymore
+> +                 */
+> +                thd_stat[i].delta_ticks = 0;
+> +            } else {
+> +                vmsr_delta_ticks(thd_stat, i);
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Identify the vCPU threads
+> +         * Calculate the Number of vCPU per package
+> +         */
+> +        CPU_FOREACH(cpu) {
+> +            for (int i = 0; i < num_threads; i++) {
+> +                if (cpu->thread_id == thd_stat[i].thread_id) {
+> +                    thd_stat[i].is_vcpu = true;
+> +                    thd_stat[i].vcpu_id = cpu->cpu_index;
+> +                    pkg_stat[thd_stat[i].numa_node_id].nb_vcpu++;
 
-  Since the patch associated with loongarch has not yet been submitted to
-the virt-manager community, we are providing a temporary patch with
-loongarch for the time being patch's virt-manager, the open source work
-of virt-manager adding loongarch will be followed up later or
-synchronized with the open source libvirt.
+A numa node isn't a package AFAICT.
 
-  You can get the virt-manager code with loongarch patch from the link below:
-<a class="moz-txt-link-freetext"
-          href="https://github.com/lixianglai/virt-manager"
-          moz-do-not-send="true">https://github.com/lixianglai/virt-manager</a>
-branch: loongarch
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">It's really great that you're considering the entire stack, all the
-way up to virt-manager, while working on this! :)</pre>
-      </blockquote>
-      Oh! Thanks! <br>
-      <pre class="moz-quote-pre" wrap="">:)</pre>
-      <blockquote type="cite"
-cite="mid:CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com">
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">  loongarch's virtual machine bios is not yet available in qemu, so you can get it from the following link
-<a class="moz-txt-link-freetext"
-          href="https://github.com/lixianglai/LoongarchVirtFirmware"
-          moz-do-not-send="true">https://github.com/lixianglai/LoongarchVirtFirmware</a>
-(Note: You should clone the repository using git instead of downloading the file via wget or you'll get xml)
-We named the bios QEMU_EFI.fd, QEMU_VARS.fd is used to store pflash images of non-volatile
-variables.After installing qemu-system-loongarch64,You can install the loongarch bios by executing the script
-install-loongarch-virt-firmware.sh
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">To clarify, loongarch support has been merged into upstream edk2
-already, right? And the contents of this repository are just for
-convenience, since loongarch builds of edk2 have generally not made
-it into distros yet? I think I might have asked about this already,
-sorry O:-)</pre>
-      </blockquote>
-      <p><span
-style="color: rgb(25, 27, 31); font-family: -apple-system,
-        BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang
-        SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans
-        SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro
-        Hei&quot;, sans-serif; font-size: medium; font-style: normal;
-        font-variant-ligatures: normal; font-variant-caps: normal;
-        font-weight: 400; letter-spacing: normal; orphans: 2;
-        text-align: start; text-indent: 0px; text-transform: none;
-        white-space: normal; widows: 2; word-spacing: 0px;
-        -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
-        255); text-decoration-thickness: initial; text-decoration-style:
-        initial; text-decoration-color: initial; display: inline
-        !important; float: none;">Don't mention it. <br>
-        </span></p>
-      <p><span
-style="color: rgb(25, 27, 31); font-family: -apple-system,
-        BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang
-        SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans
-        SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro
-        Hei&quot;, sans-serif; font-size: medium; font-style: normal;
-        font-variant-ligatures: normal; font-variant-caps: normal;
-        font-weight: 400; letter-spacing: normal; orphans: 2;
-        text-align: start; text-indent: 0px; text-transform: none;
-        white-space: normal; widows: 2; word-spacing: 0px;
-        -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
-        255); text-decoration-thickness: initial; text-decoration-style:
-        initial; text-decoration-color: initial; display: inline
-        !important; float: none;"><span
-style="color: rgb(51, 51, 51);
-          font-family: &quot;PingFang SC&quot;, &quot;Lantinghei
-          SC&quot;, &quot;Microsoft YaHei&quot;, arial, 宋体, sans-serif,
-          tahoma; font-size: 16px; font-style: normal;
-          font-variant-ligatures: normal; font-variant-caps: normal;
-          font-weight: 400; letter-spacing: normal; orphans: 2;
-          text-align: start; text-indent: 0px; text-transform: none;
-          white-space: normal; widows: 2; word-spacing: 0px;
-          -webkit-text-stroke-width: 0px; background-color: rgb(255,
-          255, 255); text-decoration-thickness: initial;
-          text-decoration-style: initial; text-decoration-color:
-          initial; display: inline !important; float: none;">All right</span>,</span>
-        The loongarch support has been merged into upstream edk2
-        already.</p>
-      <p>And you can see a detailed description of loongarch uefi in the
-        link below:</p>
-      <p><a class="moz-txt-link-freetext"
-href="https://github.com/tianocore/edk2-platforms/blob/master/Platform/Loongson/LoongArchQemuPkg/Readme.md"
-          moz-do-not-send="true">https://github.com/tianocore/edk2-platforms/blob/master/Platform/Loongson/LoongArchQemuPkg/Readme.md</a><br>
-      </p>
-      <pre class="moz-quote-pre" wrap="">this repository are just for convenience. :)</pre>
-    </blockquote>
-    <p>BTW, LoongArchVirt under OvmfPkg is being committed to upstream,
-      I guess it will be merged before the stable202402, please refer
-      to:</p>
-    <p><a class="moz-txt-link-freetext" href="https://bugzilla.tianocore.org/show_bug.cgi?id=4584">https://bugzilla.tianocore.org/show_bug.cgi?id=4584</a></p>
-    <p><a class="moz-txt-link-freetext" href="https://edk2.groups.io/g/devel/message/114526">https://edk2.groups.io/g/devel/message/114526</a></p>
-    <p><a class="moz-txt-link-freetext" href="https://github.com/tianocore/edk2/pull/5208">https://github.com/tianocore/edk2/pull/5208</a></p>
-    <p>Most maintainer have completed the review.<br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:17234d81-cc17-6859-720a-f033206780da@loongson.cn">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <p><br>
-        <span
-style="color: rgb(25, 27, 31); font-family: -apple-system,
-        BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang
-        SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans
-        SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro
-        Hei&quot;, sans-serif; font-size: medium; font-style: normal;
-        font-variant-ligatures: normal; font-variant-caps: normal;
-        font-weight: 400; letter-spacing: normal; orphans: 2;
-        text-align: start; text-indent: 0px; text-transform: none;
-        white-space: normal; widows: 2; word-spacing: 0px;
-        -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
-        255); text-decoration-thickness: initial; text-decoration-style:
-        initial; text-decoration-color: initial; display: inline
-        !important; float: none;"></span></p>
-      <blockquote type="cite"
-cite="mid:CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com">
-        <pre class="moz-quote-pre" wrap="">Anyway, I fetched and installed this. The firmware descriptor looks
-like:
+> +                    thd_stat[i].acpi_id = kvm_arch_vcpu_id(cpu);
+> +                    break;
+> +                }
+> +            }
+> +        }
+> +
+> +        /* Retrieve the virtual package number of each vCPU */
+> +        for (int i = 0; i < vmsr->x86_cpu_list->len; i++) {
+> +            for (int j = 0; j < num_threads; j++) {
+> +                if ((thd_stat[j].acpi_id == vmsr->x86_cpu_list->cpus[i].arch_id)
+> +                    && (thd_stat[j].is_vcpu == true)) {
+> +                    x86_topo_ids_from_apicid(thd_stat[j].acpi_id,
+> +                        &vmsr->topo_info, &topo_ids);
+> +                    thd_stat[j].vpkg = topo_ids.pkg_id;
+> +                }
+> +            }
+> +        }
+> +
+> +        /* Calculate the total energy of all non-vCPU thread */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            double temp;
+> +            if ((thd_stat[i].is_vcpu != true) &&
+> +                (thd_stat[i].delta_ticks > 0)) {
+> +                temp = vmsr_get_ratio(pkg_stat, thd_stat, maxticks, i);
+> +                pkg_stat[thd_stat[i].numa_node_id].e_ratio
+> +                    += (uint64_t)lround(temp);
+> +            }
+> +        }
+> +
+> +        /* Calculate the ratio per non-vCPU thread of each package */
+> +        for (int i = 0; i <= maxpkgs; i++) {
+> +            if (pkg_stat[i].nb_vcpu > 0) {
+> +                pkg_stat[i].e_ratio = pkg_stat[i].e_ratio / pkg_stat[i].nb_vcpu;
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Calculate the energy for each Package:
+> +         * Energy Package = sum of each vCPU energy that belongs to the package
+> +         */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            double temp;
+> +
+> +            if ((thd_stat[i].is_vcpu == true) && \
+> +                    (thd_stat[i].delta_ticks > 0)) {
+> +                temp = vmsr_get_ratio(pkg_stat, thd_stat, maxticks, i);
+> +
+> +                vpkgs_energy_stat[thd_stat[i].vpkg] += (uint64_t)lround(temp);
+> +                vpkgs_energy_stat[thd_stat[i].vpkg] +=
+> +                    pkg_stat[thd_stat[i].numa_node_id].e_ratio;
+> +            }
+> +        }
+> +
+> +        /*
+> +         * Finally populate the vmsr register of each vCPU with the total
+> +         * package value to emulate the real hardware where each CPU return the
+> +         * value of the package it belongs.
+> +         */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            if ((thd_stat[i].is_vcpu == true) && \
+> +                    (thd_stat[i].delta_ticks > 0)) {
+> +                vmsr->msr_value[thd_stat[i].vcpu_id] = \
+> +                                            vpkgs_energy_stat[thd_stat[i].vpkg];
+> +          }
+> +        }
+> +
+> +        /* Zero out the memory */
+> +        for (int i = 0; i < num_threads; i++) {
+> +            memset(thd_stat[i].utime, 0, 2 * sizeof(unsigned long long));
+> +            memset(thd_stat[i].stime, 0, 2 * sizeof(unsigned long long));
+> +        }
+> +        memset(thd_stat, 0, num_threads * sizeof(thread_stat));
+> +        memset(thread_ids, 0, sizeof(pid_t));
+> +    }
+> +
+> +clean:
+> +    rcu_unregister_thread();
+> +    return NULL;
+> +}
 
-  {
-     "interface-types": [
-       "uefi"
-     ],
-     "mapping": {
-       "device": "memory",
-       "filename": "/usr/share/edk2/loongarch64/QEMU_EFI.fd"
-     },
-     "targets": [
-       {
-         "architecture": "loongarch64",
-         "machines": [
-           "virt",
-           "virt-*"
-         ]
-       }
-     ],
-     "features": [
-         "acpi"
-     ]
-   }
-
-This is not what I expected: specifically, it results in libvirt
-generating
-
-  -bios /usr/share/edk2/loongarch64/QEMU_EFI.fd
-
-So only one of the two files is used, in read-only mode, and there is
-no persistent NVRAM storage that the guest can use.
-
-This is what I expected instead:
-
-  {
-     "interface-types": [
-       "uefi"
-     ],
-     "mapping": {
-       "device": "flash",
-       "mode": "split",
-       "executable": {
-         "filename": "/usr/share/edk2/loongarch64/QEMU_EFI.fd",
-         "format": "raw"
-       },
-       "nvram-template": {
-         "filename": "/usr/share/edk2/loongarch64/QEMU_VARS.fd",
-         "format": "raw"
-       }
-     },
-     "targets": [
-       {
-         "architecture": "loongarch64",
-         "machines": [
-           "virt",
-           "virt-*"
-         ]
-       }
-     ],
-     "features": [
-         "acpi"
-    ]
-  }
-
-I've tried installing such a descriptor and libvirt picks it up,
-resulting in the following guest configuration:
-
-  &lt;os firmware='efi'&gt;
-    &lt;type arch='loongarch64' machine='virt'&gt;hvm&lt;/type&gt;
-    &lt;firmware&gt;
-      &lt;feature enabled='no' name='enrolled-keys'/&gt;
-      &lt;feature enabled='no' name='secure-boot'/&gt;
-    &lt;/firmware&gt;
-    &lt;loader readonly='yes'
-type='pflash'&gt;/usr/share/edk2/loongarch64/QEMU_EFI.fd&lt;/loader&gt;
-    &lt;nvram template='/usr/share/edk2/loongarch64/QEMU_VARS.fd'&gt;/var/lib/libvirt/qemu/nvram/guest_VARS.fd&lt;/nvram&gt;
-    &lt;boot dev='hd'/&gt;
-  &lt;/os&gt;
-
-which in turn produces the following QEMU command line options:
-
-  -blockdev '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}'
-  -blockdev '{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}'
-  -blockdev '{"driver":"file","filename":"/var/lib/libvirt/qemu/nvram/guest_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}'
-  -blockdev '{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}'
-
-Unfortunately, with this configuration the guest fails to start:
-
-  qemu-system-loongarch64: Property 'virt-machine.pflash0' not found
-
-This error message looked familiar to me, as it is the same that I
-hit when trying out UEFI support on RISC-V roughly a year ago[1]. In
-this case, however, it seems that the issue runs deeper: it's not
-just that the flash devices are not wired up to work as blockdevs,
-but even the old -drive syntax doesn't work.
-
-Looking at the QEMU code, it appears that the loongarch/virt machine
-only creates a single pflash device and exposes it via -bios. So it
-seems that there is simply no way to achieve the configuration that
-we want.
-
-I think that this is something that needs to be addressed as soon as
-possible. In the long run, guest-accessible NVRAM storage is a must,
-and I'm not sure it would make a lot of sense to merge loongarch
-support into libvirt until the firmware situation has been sorted out
-in the lower layers.</pre>
-      </blockquote>
-      <p><br>
-      </p>
-      <p>In the qemu code, loongarch virt machine does only create a
-        pflash, <br>
-      </p>
-      <p>which is used for nvram, and uefi code is loaded by rom.</p>
-      <p> In summary, loongarch virt machine can use nvram with the
-        following command:</p>
-      <p>-------------------------------------------------------------------------------------------------------</p>
-      <p><i>qemu-system-loongarch64 \</i><i><br>
-        </i><i>-m 8G \</i><i><br>
-        </i><i>-smp 4 \</i><i><br>
-        </i><i>-cpu la464   \</i><i><br>
-        </i><i>-blockdev
-'{"driver":"file","filename":"./QEMU_VARS-pflash.raw","node-name":"libvirt-pflash0-storage","auto-read-only":false,"discard":"unmap"}' 
-          \</i><i><br>
-        </i><i>-blockdev
-'{"node-name":"libvirt-pflash0-format","read-only":false,"driver":"raw","file":"libvirt-pflash0-storage"}'
-          \</i><i><br>
-        </i><i>-machine virt,pflash=libvirt-pflash0-format  \</i><i><br>
-        </i><i>-snapshot \</i><i><br>
-        </i><i>-bios ./QEMU_EFI.fd  \</i><i><br>
-        </i><i>-serial stdio</i></p>
-      <p>-------------------------------------------------------------------------------------------------------</p>
-      <p><br>
-      </p>
-      <p>This is really a big difference from the following boot method,
-        and it still looks weird.</p>
-      <p>-------------------------------------------------------------------------------------------------------</p>
-      <pre class="moz-quote-pre" wrap=""><i>  -blockdev '{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}'
-  -blockdev '{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}'
-  -blockdev '{"driver":"file","filename":"/var/lib/libvirt/qemu/nvram/guest_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}'
-  -blockdev '{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}'</i>
-</pre>
-      <p>-------------------------------------------------------------------------------------------------------</p>
-      <p>However, during the development of qemu loongarch,</p>
-      <p> we also used a RISCV-like solution to create two pflash,</p>
-      <p> but the qemu community suggested that we put uefi code in rom
-        for the following reasons:</p>
-      <p><br>
-      </p>
-      <p><a class="moz-txt-link-freetext"
-href="https://lore.kernel.org/qemu-devel/2f381d06-842f-ac8b-085c-0419675a4872@linaro.org/"
-          moz-do-not-send="true">https://lore.kernel.org/qemu-devel/2f381d06-842f-ac8b-085c-0419675a4872@linaro.org/</a></p>
-      <p>"</p>
-      <pre id="b"
-style="font-size: 13px; font-family: monospace; background: rgb(255, 255, 255); color: rgb(0, 0, 51); white-space: pre-wrap; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">Since you are starting a virtual machine from scratch, you should take
-the opportunity to learn from other early mistakes. X86 ended that way
-due to 1/ old firmwares back-compability and 2/ QEMU pflash block
-protections not being implemented. IIUC if we were starting with a
-UEFI firmware today, the layout design (still using QEMU) would be
-to map the CODE area in a dumb ROM device, and the VARSTORE area
-in a PFlash device. Since Virt machines don't need to use Capsule
-update, having the CODE area in ROM drastically simplifies the design
-and maintainance.</pre>
-      <p>"</p>
-      <p>Well, anyway, now that we have an issue with qemu loongarch
-        using nvram that is incompatible with libvirt,</p>
-      <p> here I have come up with two solutions to solve this problem:<br>
-      </p>
-      <h2>Option 1:  <br>
-      </h2>
-      <p>If the interface type "rom-uefi" is added and the device type
-        "rom-flash" is added, the json file should be written like this:</p>
-      <p>-------------------------------------------------------------------------------------------------------<br>
-      </p>
-      <i>{</i><i><br>
-      </i><i>   "interface-types": [</i><i><br>
-      </i><i>    </i><i><font color="#ff0000"> "rom-uefi"</font></i><i><br>
-      </i><i>   ],</i><i><br>
-      </i><i>   "mapping": {</i><i><br>
-      </i><i>     </i><i><font color="#ff0000">"device": "rom-flash",</font></i><i><br>
-      </i><i>     "executable": {</i><i><br>
-      </i><i>       "filename":
-        "/usr/share/edk2/loongarch64/QEMU_EFI.fd",</i><i><br>
-      </i><i>       "format": "raw"</i><i><br>
-      </i><i>     },</i><i><br>
-      </i><i>     "nvram-template": {</i><i><br>
-      </i><i>       "filename":
-        "/usr/share/edk2/loongarch64/QEMU_VARS.fd",</i><i><br>
-      </i><i>       "format": "raw"</i><i><br>
-      </i><i>     }</i><i><br>
-      </i><i>   },</i><i><br>
-      </i><i>   "targets": [</i><i><br>
-      </i><i>     {</i><i><br>
-      </i><i>       "architecture": "loongarch64",</i><i><br>
-      </i><i>       "machines": [</i><i><br>
-      </i><i>         "virt",</i><i><br>
-      </i><i>         "virt-*"</i><i><br>
-      </i><i>       ]</i><i><br>
-      </i><i>     }</i><i><br>
-      </i><i>   ],</i><i><br>
-      </i><i>   "features": [</i><i><br>
-      </i><i>       "acpi"</i><i><br>
-      </i><i>   ]</i><br>
-      <p> -------------------------------------------------------------------------------------------------------</p>
-      <p>Then add the parsing of the new interface types in libvirt and
-        load QEMU_CODE.fd as -bios and QEMU_VARS.fd as nvram</p>
-      <p>when creating the command line, generating commands like the
-        following:</p>
-      <p> -------------------------------------------------------------------------------------------------------</p>
-      <p><i>qemu-system-loongarch64 \</i><i><br>
-        </i><i> -m 8G \</i><i><br>
-        </i><i> -smp 1 \</i><i><br>
-        </i><i> -cpu la464   \</i><i><br>
-        </i><i> -blockdev '{"driver":"file","filename":"</i><i><i>/usr/share/edk2/loongarch64/QEMU_VARS.fd</i>","node-name":"libvirt-pflash0-storage","auto-read-only":false,"discard":"unmap"}' 
-          \</i><i><br>
-        </i><i> -blockdev
-'{"node-name":"libvirt-pflash0-format","read-only":false,"driver":"raw","file":"libvirt-pflash0-storage"}'
-          \</i><i><br>
-        </i><i> -machine virt,pflash=libvirt-pflash0-format  \</i><i><br>
-        </i><i> -snapshot \</i><i><br>
-        </i><i> -bios </i><i><i><i>/usr/share/edk2/loongarch64/</i></i>QEMU_EFI.fd 
-          \</i><i><br>
-        </i><i> -serial stdio</i><br>
-      </p>
-      <p>
--------------------------------------------------------------------------------------------------------</p>
-      <h2>Option 2: </h2>
-      <p>Solution 2 mainly starts from qemu. Now the rom that bios is
-        loaded into is a memory region that cannot be configured with
-        attributes,</p>
-      <p> so we imagine abstracting rom as a device, creating it during
-        machine initialization and setting "pflash0" attribute for it. <br>
-      </p>
-      <p>Then create a pflash and set its property to "pflash1", so our
-        startup command will look like this:</p>
-      <p> -------------------------------------------------------------------------------------------------------</p>
-      <p><i>qemu-system-loongarch64 \</i><i><br>
-        </i><i>-m 8G \</i><i><br>
-        </i><i>-smp 1 \</i><i><br>
-        </i><i>-cpu la464   \</i><i><br>
-        </i><i>-blockdev
-'{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_EFI.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"}'
-          \</i><i><br>
-        </i><i>-blockdev
-'{"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"}'
-          \</i><i><br>
-        </i><i>-blockdev
-'{"driver":"file","filename":"/usr/share/edk2/loongarch64/QEMU_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"}'
-          \</i><i><br>
-        </i><i>-blockdev
-'{"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"}'
-          \</i><i><br>
-        </i><i>-machine
-          virt,pflash0=libvirt-pflash0-format,pflash1=libvirt-pflash1-format 
-          \</i><i><br>
-        </i><i>-snapshot \</i><i><br>
-        </i><i>-serial stdio</i><br>
-      </p>
-      <p> -------------------------------------------------------------------------------------------------------</p>
-      <p>This way, without modifying libvirt, QEMU_CODE.fd can be loaded
-        into the rom, <br>
-      </p>
-      <p>but it is still a little strange that it is clearly rom but set
-        a "pflash0" attribute, which can be confusing.</p>
-      <p><br>
-      </p>
-      <blockquote type="cite"
-cite="mid:CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com">
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">  Since there is no fedora operating system that supports the loongarch
-architecture, you can find an iso that supports loongarch at the link
-below for testing purposes:
-  <a class="moz-txt-link-freetext"
-          href="https://github.com/fedora-remix-loongarch/releases-info"
-          moz-do-not-send="true">https://github.com/fedora-remix-loongarch/releases-info</a>
-
-  Well, if you have completed the above steps I think you can now install loongarch virtual machine,
-you can install it through the virt-manager graphical interface, or install it through vrit-install,
-here is an example of installing it using virt-install:
-
-virt-install  \
---virt-type=qemu \
---name  loongarch-test \
---memory 4096 \
---vcpus=4 \
---arch=loongarch64 \
---boot cdrom \
---disk device=cdrom,bus=scsi,path=/root/livecd-fedora-mate-4.loongarch64.iso \
---disk path=/var/lib/libvirt/images/debian12-loongarch64.qcow2,size=10,format=qcow2,bus=scsi \
---network network=default \
---osinfo archlinux   \
---video=virtio  \
---graphics=vnc,listen=0.0.0.0
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">Regardless of what I said above, this actually worked quite well! I
-was able to boot the MATE image and, ignoring the expected slowness
-caused by emulation, things were generally fairly smooth.
-
-Note that I tried the LXDE image first, expecting it to be a bit
-smaller and faster, but in that case I wasn't able to get a
-successful boot: edk2 loaded up just fine, but the guest OS was never
-started and I was dropped into the edk2 shell instead. Maybe that's a
-known issue, but I thought I'd point it out.</pre>
-      </blockquote>
-      <p>Thank you very much for pointing out the problem, <br>
-      </p>
-      <p>lxde iso is missing efiboot.img file so that the virtual
-        machine UEFI can not recognize efi partition</p>
-      <p>caused by the problem has been notified to the relevant
-        personnel,</p>
-      <p> I believe that the next version of libvirt patch will be
-        shipped to use lxde iso.</p>
-      <p><br>
-      </p>
-      <p>Thanks,</p>
-      <p>Xianglai.<br>
-      </p>
-      <blockquote type="cite"
-cite="mid:CABJz62MxNvFfs4aCRyp+7YANupU2T4k7x1C6avm=curjB+NmkA@mail.gmail.com">
-        <pre class="moz-quote-pre" wrap="">[1] <a
-        class="moz-txt-link-freetext"
-href="https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06258.html"
-        moz-do-not-send="true">https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06258.html</a>
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------isy0rzj4qTAVu8AyJHw006Sx--
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
