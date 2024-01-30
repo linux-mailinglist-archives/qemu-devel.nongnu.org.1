@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CAB842219
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 12:00:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C141842225
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 12:02:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUlpo-00063q-AF; Tue, 30 Jan 2024 05:59:20 -0500
+	id 1rUlsx-0001CZ-8k; Tue, 30 Jan 2024 06:02:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rUlpc-000625-0m
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:59:08 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rUlpa-0006th-Ce
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:59:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706612345;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=SS0JWQXZlNALIXUy1t70ZB8BC5t8JZiFF/gSwb9PbiY=;
- b=KMOJWQrXWpzX0YO4N+qj1zyWQiSJe/xaK/gVXXzNCcnepSw0nQoj09ouVJlrlRJ0r7tFRG
- hB6rCUzBzHVrBabCnEojyM5Bti+DNae0JAKKghoMFzaBkDDR8FAPX/9ngZNEkALMVhcWfF
- UQdByUz9TjseDDtxa+Jb/rfc0K9HU4w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-DZTc4_4fMk-ZkYy9zMojng-1; Tue, 30 Jan 2024 05:59:03 -0500
-X-MC-Unique: DZTc4_4fMk-ZkYy9zMojng-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF4B78350E8;
- Tue, 30 Jan 2024 10:59:02 +0000 (UTC)
-Received: from srv1.redhat.com (unknown [10.45.225.61])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 28947494;
- Tue, 30 Jan 2024 10:59:02 +0000 (UTC)
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 4/4] qga: Solaris has net/if_arp.h and netinet/if_ether.h but
- not ETHER_ADDR_LEN
-Date: Tue, 30 Jan 2024 12:58:56 +0200
-Message-ID: <20240130105856.27178-5-kkostiuk@redhat.com>
-In-Reply-To: <20240130105856.27178-1-kkostiuk@redhat.com>
-References: <20240130105856.27178-1-kkostiuk@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUlsu-0001CN-78
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 06:02:32 -0500
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUlsr-0007py-BH
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 06:02:31 -0500
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d043160cd1so25962981fa.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 03:02:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706612545; x=1707217345; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wOSWdDHiLKoLnultCId7x3ld088ShR7cGizs6XpJRQg=;
+ b=M4OKoF4Q3mXgFQQndL0I0Y3/BeByvJfjcX10fjI6JTtXX7PXSXhjUb7dpW1Nmd7YgU
+ QEBe19na0vYfMvzZgpiN1iSF0FhseJ5z3iq367mU8fFFup1dV2DcWu4aT3gZapvUy+Gy
+ UOO3WxRm1G+3t4VOK5r83T2OPWXvffDaJ/sm5s7t/BkKeBm1M5w4KqmEbRGGIIr6klwG
+ hG4tIaiI0G+4Ou8OI1ufCysXfw8e/DBIpqt9zIKuYvh+eoymXibvemXBHgYIPZWFJ2A+
+ 4gCcA5DjYw00dxWORfUvmBmfL7v0oH7IQ769af6ynflnu1+R//5N9+pEOfyBsIX+Zysn
+ vtnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706612545; x=1707217345;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wOSWdDHiLKoLnultCId7x3ld088ShR7cGizs6XpJRQg=;
+ b=ABRpMtuyqVZwAOpUZ0bIztezMwX1+Vt4/5hUsJh0d8KBThEBYyX7YktLTMqksv3Vys
+ ZLaXWPC5N5bVSzsoDfVa0d/i0bnTuqKvkKOdNjqUxaJ/TjQlY7huepPKclYfE+kil5tL
+ /sS/jvYfxHG+eYE8eUBg8TQc9HiymW9jpyNB4FnDli7FQaDcdWE38JAkDHNuboLQt4Nu
+ HfPsbOnfH1AN94fvLF0jjX/lUgVR3RZF0kzGyBj8MdpDPNkhVljbAuhJ/Uz25G/h61It
+ Oo4ZTh/72dTJaKy4xzpFm5xfz+QzakyvwbbWfNa5mL4mkJkXB+TFBh8N2jKMSLe6dKwO
+ NwJw==
+X-Gm-Message-State: AOJu0YyB7i1lHA3o4GdftkTZznr0GPm2WJmgdqbhA0rqWWEj0m2yVI6J
+ Vz0CLMoS6pxd3gqktAhn49Sk3BberJ4Zy03lcrcHqcCW5pRyts2QJH6zDN+0HMZk22uDGJhiUmK
+ apKbFCe+0E7WmWJJpg10Vpa4apoLo93aufp+5+w==
+X-Google-Smtp-Source: AGHT+IFHYY35s16dBNd08NFONKIbOke5fb90r7isoXTK/byJGefwhUx39NagCZTF40LrlkgtrnUDVIU7w7nVKCyGWXU=
+X-Received: by 2002:a2e:9688:0:b0:2d0:5101:2bbb with SMTP id
+ q8-20020a2e9688000000b002d051012bbbmr2751894lji.23.1706612545132; Tue, 30 Jan
+ 2024 03:02:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240130101107.214872-1-manos.pitsidianakis@linaro.org>
+ <CAFEAcA8P-8rRRQJLEFzwVJiKqdd-cu5DgiBdxBXYhq=2Oov9Fg@mail.gmail.com>
+ <CAAjaMXYbm4ANhMEXOc35mJkq7Zr+A_vz8wBY+tPv4rk=dCQEaA@mail.gmail.com>
+ <CAFEAcA_XX07ND82_ZrokBhVDbTot16_SNJNQDQeNnBvRZ4MHkw@mail.gmail.com>
+ <CAAjaMXZsAHQYSotdn0f_3iao=sW3XRiA5iMQO1MMFnVj0cft_w@mail.gmail.com>
+ <CAFEAcA-qa729wTz99fW6ur+FYjkmUjTkjd8eG_dNo7fSzYh_rw@mail.gmail.com>
+In-Reply-To: <CAFEAcA-qa729wTz99fW6ur+FYjkmUjTkjd8eG_dNo7fSzYh_rw@mail.gmail.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Tue, 30 Jan 2024 13:02:09 +0200
+Message-ID: <CAAjaMXZYLCaXK5otq9iC=-D4RrjkcLDrgjhWhWnJDqwJwwfWhw@mail.gmail.com>
+Subject: Re: [PATCH v2] scripts/checkpatch.pl: check for placeholders in cover
+ letter patches
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,37 +95,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nick Briggs <nicholas.h.briggs@gmail.com>
+On Tue, 30 Jan 2024 at 12:57, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Tue, 30 Jan 2024 at 10:51, Manos Pitsidianakis
+> <manos.pitsidianakis@linaro.org> wrote:
+> >
+> > On Tue, 30 Jan 2024 at 12:42, Peter Maydell <peter.maydell@linaro.org> wrote:
+> > >
+> > > On Tue, 30 Jan 2024 at 10:39, Manos Pitsidianakis
+> > > <manos.pitsidianakis@linaro.org> wrote:
+> > > >
+> > > > On Tue, 30 Jan 2024 at 12:34, Peter Maydell <peter.maydell@linaro.org> wrote:
+> > > > >
+> > > > > On Tue, 30 Jan 2024 at 10:11, Manos Pitsidianakis
+> > > > > <manos.pitsidianakis@linaro.org> wrote:
+> > > > > >
+> > > > > > Check if a file argument is a cover letter patch produced by
+> > > > > > git-format-patch --cover-letter; It is initialized with subject suffix "
+> > > > > > *** SUBJECT HERE ***" and body prefix " *** BLURB HERE ***". If they
+> > > > > > exist, warn the user.
+> > > > >
+> > > > > FWIW, as far as I can see from my email archive, this particular
+> > > > > mistake has been made by contributors to qemu-devel perhaps
+> > > > > half a dozen times at most in the last decade...
+> > > > >
+> > > > > thanks
+> > > > > -- PMM
+> > > >
+> > > > Peter, searching for `b:"BLURB HERE"` in lore.kernel.org yields about
+> > > > 170 results including these patches.
+> > > >
+> > > > https://lore.kernel.org/qemu-devel/?q=b%3A%22BLURB+HERE%22
+> > >
+> > > Yes, there's a few more 'blurb here' results than 'subject here'
+> > > results, but they're almost always just where the submitter did
+> > > provide a proper blurb but then forgot to delete the 'BLURB HERE'
+> > > line, rather than where there's no blurb at all.
+> >
+> > Though you said half a dozen times at most.
+>
+> Yes, because I was counting 'subject here'.
+>
+> My question here is really "how much do we care about having
+> checkpatch point out this error?".
+>
+> thanks
+> -- PMM
 
-Solaris has net/if_arp.h and netinet/if_ether.h rather than net/ethernet.h,
-but does not define ETHER_ADDR_LEN, instead providing ETHERADDRL.
+I do, because it gives some peace of mind. But I do not care so much
+that I'd want to continue this conversation further.
 
-Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
----
- qga/commands-posix.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 6169bbf7a0..26008db497 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -45,9 +45,12 @@
- #include <arpa/inet.h>
- #include <sys/socket.h>
- #include <net/if.h>
--#if defined(__NetBSD__) || defined(__OpenBSD__)
-+#if defined(__NetBSD__) || defined(__OpenBSD__) || defined(CONFIG_SOLARIS)
- #include <net/if_arp.h>
- #include <netinet/if_ether.h>
-+#if !defined(ETHER_ADDR_LEN) && defined(ETHERADDRL)
-+#define ETHER_ADDR_LEN ETHERADDRL
-+#endif
- #else
- #include <net/ethernet.h>
- #endif
 -- 
-2.42.0
-
+Manos Pitsidianakis
+Emulation and Virtualization Engineer at Linaro Ltd
 
