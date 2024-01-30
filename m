@@ -2,117 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A982384268A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 14:57:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD458425DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 14:11:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUobX-0007gM-AY; Tue, 30 Jan 2024 08:56:47 -0500
+	id 1rUnsQ-0006jh-SE; Tue, 30 Jan 2024 08:10:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkale@nvidia.com>) id 1rUkwM-0002mO-IO
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:02:02 -0500
-Received: from mail-co1nam11on2061.outbound.protection.outlook.com
- ([40.107.220.61] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkale@nvidia.com>) id 1rUkwK-0002fl-5h
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:02:02 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kXTwW6VPmYElmeYq9wHxjBCT2VPsX7IR0ZOVBIo1HqfKTl8csOHo/ukrKL71neBE50Gm4U7hcscYS4nn+iCsrr35pE/OGC1fzRohxhdPmcXu3U3KSekLnGP0qDm/3tYoTED+pUlvc5QcrvfgZrSkKOXagN/LjApFvJ7QMP9W99pg/noaYSUHpPIyqldIkNUcJSwTQ9acFj6V0YSbfIpiOfvUq1/x6Pv2Oa0SRMKC8hgfOmXD51C2V4QOqpRyzv+f6yaz4d2y1YJG8EqSoGTielb65bcSWdPnQ79+8mStacv8o+tHe/+BMwiZlojoOMms9TtMoG5j86TdI6Q/axKiEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xypyhnSkwSedbMVvCIjthXC8xlimfYnCCpPwbFol3cI=;
- b=f4cl+SdMvmimxg0TIDSg6gPB8eUdiUL2wr+hmNAh0G/O6vc6eNn++PEKoOyY4gN+/TIJDou9RaQEgx4DGT60UbOmEywuxFmp2jNyRyBRIi5kkrovUcEQ5dw+vPaNOBTUvl864Fmxsfwvt30wAf21WqdbwBbMi3RJTFbBB5h4RBoMJyBtsiI+Hl4jShQSxszk7Aw+Ay8vVAun3fJ7yQMege87L0kCs263yb4/fIoIaN3+CMqN0qZR95mC47wrzD3IscEOFwQ/hgCWVG/i05K17fNwRDAN2eaPkJlM0sYOLhGH5NyWOM1Uze97GftK2L8J4aCm4OGJ38eO8TjnaJXOWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xypyhnSkwSedbMVvCIjthXC8xlimfYnCCpPwbFol3cI=;
- b=NiTGqL/9Jv4PzGyTksSBdyTLoWwEFzT+LToz/vOtLvmZUjLNPlQkVNsI2pbKjtisvj5iPTRn7Ny8Wjjjn/BL6xeq36c28Cb4/I2IE/MkwJa8PETmjgX4pCuyF0YSBL89l+FTnAeX5WTxzVewIqT1bMcwOUzPj6EdkiDtKtF5PElubgAW3fe4O2ui1GrN6aTRvVanLvpCIkNGHI4PIs4rtIG+7PLePuJvbLEFBE2I2F5XSTFw315nQyjoMnpwLv3irGbj+HI/GR2Pb19jrheVqgl3LiqUdpaNjqcoyykPL2cBdeKoTQ6zDH+TqGgmOOdn8zmWIlVT9fla4tXfxiKCig==
-Received: from BYAPR05CA0059.namprd05.prod.outlook.com (2603:10b6:a03:74::36)
- by CH3PR12MB8726.namprd12.prod.outlook.com (2603:10b6:610:17b::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.34; Tue, 30 Jan
- 2024 09:56:52 +0000
-Received: from MWH0EPF000989E7.namprd02.prod.outlook.com
- (2603:10b6:a03:74:cafe::81) by BYAPR05CA0059.outlook.office365.com
- (2603:10b6:a03:74::36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22 via Frontend
- Transport; Tue, 30 Jan 2024 09:56:51 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MWH0EPF000989E7.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7249.19 via Frontend Transport; Tue, 30 Jan 2024 09:56:51 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 30 Jan
- 2024 01:56:33 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 30 Jan
- 2024 01:56:32 -0800
-Received: from vkale-dev-linux.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Tue, 30 Jan 2024 01:56:30 -0800
-From: Vinayak Kale <vkale@nvidia.com>
-To: <qemu-devel@nongnu.org>
-CC: <targupta@nvidia.com>, <cjia@nvidia.com>, <acurrid@nvidia.com>,
- <zhiw@nvidia.com>, Vinayak Kale <vkale@nvidia.com>
-Subject: [PATCH] hw/pci: migration: Skip config space check for vendor
- specific capability during restore/load
-Date: Tue, 30 Jan 2024 15:26:17 +0530
-Message-ID: <20240130095617.31661-1-vkale@nvidia.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rUnsO-0006jW-9N
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 08:10:08 -0500
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rUnsM-0001MT-Iu
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 08:10:08 -0500
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-427a3887483so32612841cf.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 05:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1706620205; x=1707225005; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q0h31E0kCECS4oTiRqfvs0SFU9J/5flcJ1xluy0AnZo=;
+ b=UpRkS5V7t/u4zUcCfnQgdUT9PXe6chZLXAPDStYGNocAX/DrHHzbuj4drhAb0Q1Pwz
+ iGlexzaAh8ZTpPWU3cuEnd0E/Pp7ba9tVepNnHDK9D2UlioR7Yty18RXnXm5qvY2l6Th
+ fELL/swLKCC1GUIvy6Fm2UMf2PB7QTYG7JukweLOBefFYZ/3gLDDwjHhAnmYMwgg35rQ
+ rL5lcjhpjErZr6VaH5hiX3WgkzN6YzbDJfx+ghcE3FWZvX3FOkBzwkWHjngBJOCGJDJz
+ DeiNcnKpgR350BBZXouQOI7/snfjOgssWWexQZUXaOgX4w2X1juCv4E54Kpz2hMEr6PQ
+ 9ySg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706620205; x=1707225005;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Q0h31E0kCECS4oTiRqfvs0SFU9J/5flcJ1xluy0AnZo=;
+ b=doX/0dqtMJWGkUkZKya0Ym6JJoSGvFR5o+UVdQoEmHBQ4BGHA5oedFmJXIv5mdkkEo
+ KJ3uubXbUcBINYdsimDTpL3/vF4qh+GbKnFY6nq/If64raw2nDwek6fqVHRl23+7/t59
+ yXrz4dZFKt5djiZ27HBqB4byFeJ86xDrO2gRRLigDhZYIgA7DBtE6hVdg9TZ5+Gnvizh
+ 2vcu0gs2gIovtcQ4kGyi80g8/sxIRwsS3fbBXiYNo0jii+eXkgOW0MKkUM73iYcZVBoy
+ lYNKFHN7wP2M6zjsD5fCKomI6SUSQnuCb7OvPiqqHkOWkx1fvUIFUSfLmaCSNwDuNxOk
+ X8qw==
+X-Gm-Message-State: AOJu0Yyt+ujcoNC4mL8DJBPeUB7K9R9z+tEvTD9SwgVScdV8GtlSdvyZ
+ JVQvQYvfSt6ASUJCEVENvL7xXWZ4T4GABMlOsrRLlHbjeoBcu4xVgOBJqEWg83pdIcSS79Cpxhr
+ 2lfMqsr0dz/11R+tyfZ8WGX0NWfk=
+X-Google-Smtp-Source: AGHT+IHqulAn0KaBIqXOiQA6LJlkbofM/+IyeQnN+IDOMSNoFfoq929v7jZkpRpBgk+N7/8F9ZKrsxEXk5zUGTFpypI=
+X-Received: by 2002:a05:622a:1803:b0:42b:6a2d:fc29 with SMTP id
+ t3-20020a05622a180300b0042b6a2dfc29mr851842qtc.93.1706620205517; Tue, 30 Jan
+ 2024 05:10:05 -0800 (PST)
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989E7:EE_|CH3PR12MB8726:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b68c212-fec1-4998-c14c-08dc2179c88a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XSjgvLI2vhhe53HSgqzVMX1DHp8c5G1EUy5+0DP5qAtprTlHMx7GEqwtlvG/hmFHP6OfFOEE/7g8O2L+Jp5cQa+Jf6/Nffr1a5ldFJ0X9znOfziMoRNWKLk67GFzV+HbLbR/xyKtwCA3gyeozUEh1SR+vCZ9EaOAXaZKABVz5YbeGbdzaySfJHmJJmPokmupMWrPL8HkwK31iz2yq/iGSozieXxcpLI7bOEPADQwJx/WxTMMaVgo9koACRHLfKEUTFY4Ipuw0jtb8MyFyxJqKoKOPK8ZmCIaOJF4E5SO+oETDMlZ6pI/IPAunBZetVPk/sQI81FkUHfEc1flYpI+dFFXanzwXlf7Vwz5S9/NGooMEluoNeE2GaoOVWr5yxEPCWoJKl+Mf3TBnXFtOscF7GdNhIig+sr3aueN0Xg7ikMUwpK636cG8LhKxqs6JKXeyIxuG18HCBRVperN81GQJNXuD8woIRIgDN5fYxWwTDE2U44d9I/imqfeAtGYpiJXxDrYNs1hlN6yNWuf97F0BBG/p7MfHbL4wa/p8kFBPsAcfLkfiMDC2XZ+gyuv5k2XHyTRWegute6CHdH2J6H5S4RJskED278bf2oi50DmUghEfyBUWFqo6noXNOxrGnb0OfzQPaBx7kjkdrvSktrkeXt69Stp/WMn84d7Ya3y+7r+Sg7ZatFYOVtpdhlDj0JF8sRfWDrAiQDNsiRUgu9j8P3+R2jAAMW5aIpy2BiaFtp/otFmdiznr5337EUQF/WQ
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(346002)(136003)(376002)(396003)(230922051799003)(64100799003)(451199024)(82310400011)(1800799012)(186009)(40470700004)(36840700001)(46966006)(336012)(66899024)(316002)(54906003)(36860700001)(47076005)(36756003)(82740400003)(8936002)(41300700001)(356005)(83380400001)(86362001)(478600001)(7636003)(4326008)(70586007)(426003)(26005)(6916009)(70206006)(2616005)(1076003)(6666004)(2906002)(7696005)(5660300002)(8676002)(107886003)(40460700003)(40480700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2024 09:56:51.7501 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b68c212-fec1-4998-c14c-08dc2179c88a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E7.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8726
-Received-SPF: softfail client-ip=40.107.220.61; envelope-from=vkale@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.29,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <cover.1706542958.git.manos.pitsidianakis@linaro.org>
+ <926db899bebc1f9ca575bfd29d140f7658050a82.1706542958.git.manos.pitsidianakis@linaro.org>
+ <CAJ+F1CL-ikZMQzYv_7VydAthTAfSUnYNONg+YUMKhw90+zAgcg@mail.gmail.com>
+ <CAAjaMXbK1huSUTu7T9QnzbABcVLXE2hG=CHgFFOUD-A_6_AOUw@mail.gmail.com>
+In-Reply-To: <CAAjaMXbK1huSUTu7T9QnzbABcVLXE2hG=CHgFFOUD-A_6_AOUw@mail.gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 30 Jan 2024 17:09:53 +0400
+Message-ID: <CAJ+F1CKLSphCvCKr5cnNqHmo7+cUf+STX1QvZkMogkcPVJ9U0A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] virtio-gpu-rutabaga.c: override resource_destroy
+ method
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 30 Jan 2024 08:56:43 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,38 +94,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case of migration, during restore operation, qemu checks the config space of the pci device with the config space
-in the migration stream captured during save operation. In case of config space data mismatch, restore operation is failed.
+Hi
 
-config space check is done in function get_pci_config_device(). By default VSC (vendor-specific-capability) in config space is checked.
+On Tue, Jan 30, 2024 at 5:01=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> On Tue, 30 Jan 2024 at 14:50, Marc-Andr=C3=A9 Lureau
+> <marcandre.lureau@gmail.com> wrote:
+> >
+> > Hi
+> >
+> > On Mon, Jan 29, 2024 at 7:46=E2=80=AFPM Manos Pitsidianakis
+> > <manos.pitsidianakis@linaro.org> wrote:
+> > >
+> > > When the Rutabaga GPU device frees resources, it calls
+> > > rutabaga_resource_unref for that resource_id. However, when the gener=
+ic
+> > > VirtIOGPU functions destroys resources, it only removes the
+> > > virtio_gpu_simple_resource from the device's VirtIOGPU->reslist list.
+> > > The rutabaga resource associated with that resource_id is then leaked=
+.
+> > >
+> > > This commit overrides the resource_destroy class method introduced in
+> > > the previous commit to fix this.
+> > >
+> > > Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> > > ---
+> > >  hw/display/virtio-gpu-rutabaga.c | 51 ++++++++++++++++++++++++------=
+--
+> > >  1 file changed, 39 insertions(+), 12 deletions(-)
+> > >
+> > > diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu=
+-rutabaga.c
+> > > index 9e67f9bd51..6ac0776005 100644
+> > > --- a/hw/display/virtio-gpu-rutabaga.c
+> > > +++ b/hw/display/virtio-gpu-rutabaga.c
+> > > @@ -148,14 +148,42 @@ rutabaga_cmd_create_resource_3d(VirtIOGPU *g,
+> > >  }
+> > >
+> > >  static void
+> > > +virtio_gpu_rutabaga_resource_unref(VirtIOGPU *g,
+> > > +                                   struct virtio_gpu_simple_resource=
+ *res,
+> > > +                                   Error **errp)
+> > > +{
+> > > +    int32_t result;
+> > > +    const char *strerror =3D NULL;
+> > > +    VirtIOGPURutabaga *vr =3D VIRTIO_GPU_RUTABAGA(g);
+> > > +
+> > > +    result =3D rutabaga_resource_unref(vr->rutabaga, res->resource_i=
+d);
+> > > +    if (result) {
+> > > +        error_setg(errp, "%s: rutabaga_resource_unref returned %"PRI=
+i32
+> > > +                   " for resource_id =3D %"PRIu32, __func__, result,
+> > > +                   res->resource_id);
+> > > +        strerror =3D strerrorname_np((int)result);
+> > > +        if (strerror !=3D NULL) {
+> > > +            error_append_hint(errp, "%s: %s\n",
+> > > +                              strerror, strerrordesc_np((int)result)=
+ ? : "");
+> > > +        }
+> > > +    }
+> >
+> > There is error_setg_errno()
+>
+> I did not use it on purpose because I was not certain if rutabaga_gfx
+> starts using other error numbers in the future. I don't like my
+> approach but I don't like assuming it's an errno either to be
+> honest... Which one seems better to you?
+>
 
-Ideally qemu should not check VSC during restore/load. This patch skips the check by not setting pdev->cmask[] for VSC offsets in pci_add_capability().
-If cmask[] is not set for an offset, then qemu skips config space check for that offset.
+In that case, don't use strerrordesc_np() either :)
 
-Signed-off-by: Vinayak Kale <vkale@nvidia.com>
----
- hw/pci/pci.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+I think we can assume they will keep using errno though, unless they
+clearly communicate this and break API, which seems unlikely to me.
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 76080af580..32429109df 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2485,8 +2485,11 @@ int pci_add_capability(PCIDevice *pdev, uint8_t cap_id,
-     memset(pdev->used + offset, 0xFF, QEMU_ALIGN_UP(size, 4));
-     /* Make capability read-only by default */
-     memset(pdev->wmask + offset, 0, size);
--    /* Check capability by default */
--    memset(pdev->cmask + offset, 0xFF, size);
-+
-+    if (cap_id != PCI_CAP_ID_VNDR) {
-+        /* Check non-vendor specific capability by default */
-+        memset(pdev->cmask + offset, 0xFF, size);
-+    }
-     return offset;
- }
- 
--- 
-2.34.1
+> Thanks,
+> Manos
+>
+> > > +
+> > > +    if (res->image) {
+> > > +        pixman_image_unref(res->image);
+> > > +    }
+> > > +
+> > > +    QTAILQ_REMOVE(&g->reslist, res, next);
+> > > +    g_free(res);
+> > > +}
+> > > +
+> > > +static void
+> > >  rutabaga_cmd_resource_unref(VirtIOGPU *g,
+> > >                              struct virtio_gpu_ctrl_command *cmd)
+> > >  {
+> > > -    int32_t result;
+> > > +    int32_t result =3D 0;
+> > >      struct virtio_gpu_simple_resource *res;
+> > >      struct virtio_gpu_resource_unref unref;
+> > > -
+> > > -    VirtIOGPURutabaga *vr =3D VIRTIO_GPU_RUTABAGA(g);
+> > > +    Error *local_err =3D NULL;
+> > >
+> > >      VIRTIO_GPU_FILL_CMD(unref);
+> > >
+> > > @@ -164,15 +192,14 @@ rutabaga_cmd_resource_unref(VirtIOGPU *g,
+> > >      res =3D virtio_gpu_find_resource(g, unref.resource_id);
+> > >      CHECK(res, cmd);
+> > >
+> > > -    result =3D rutabaga_resource_unref(vr->rutabaga, unref.resource_=
+id);
+> > > -    CHECK(!result, cmd);
+> > > -
+> > > -    if (res->image) {
+> > > -        pixman_image_unref(res->image);
+> > > +    virtio_gpu_rutabaga_resource_unref(g, res, &local_err);
+> > > +    if (local_err) {
+> > > +        error_report_err(local_err);
+> > > +        /* local_err was freed, do not reuse it. */
+> > > +        local_err =3D NULL;
+> > > +        result =3D 1;
+> > >      }
+> > > -
+> > > -    QTAILQ_REMOVE(&g->reslist, res, next);
+> > > -    g_free(res);
+> > > +    CHECK(!result, cmd);
+> > >  }
+> > >
+> > >  static void
+> > > @@ -1099,7 +1126,7 @@ static void virtio_gpu_rutabaga_class_init(Obje=
+ctClass *klass, void *data)
+> > >      vgc->handle_ctrl =3D virtio_gpu_rutabaga_handle_ctrl;
+> > >      vgc->process_cmd =3D virtio_gpu_rutabaga_process_cmd;
+> > >      vgc->update_cursor_data =3D virtio_gpu_rutabaga_update_cursor;
+> > > -
+> > > +    vgc->resource_destroy =3D virtio_gpu_rutabaga_resource_unref;
+> > >      vdc->realize =3D virtio_gpu_rutabaga_realize;
+> > >      device_class_set_props(dc, virtio_gpu_rutabaga_properties);
+> > >  }
+> > > --
+> > > =CE=B3=CE=B1=E1=BF=96=CE=B1 =CF=80=CF=85=CF=81=CE=AF =CE=BC=CE=B9=CF=
+=87=CE=B8=CE=AE=CF=84=CF=89
+> > >
+> >
+> >
+> > --
+> > Marc-Andr=C3=A9 Lureau
 
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
