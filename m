@@ -2,92 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB35842C3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 19:59:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B06842C44
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 20:05:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUtJi-0007yf-5Y; Tue, 30 Jan 2024 13:58:42 -0500
+	id 1rUtPJ-0001YG-5j; Tue, 30 Jan 2024 14:04:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1rUtJg-0007yH-Jq
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 13:58:40 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+7af2922fdc4e6c7e46df+7464+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rUtPD-0001Xq-SH
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 14:04:23 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1rUtJe-0007Xb-Tc
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 13:58:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706641117;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ygwQTKzWVwq1rUJ+CoWQ7YcfRPlACm1P4aVkHLVn4j8=;
- b=MzX6NazEokrP90CiyLZa/keaixim67ekaXycSGbwnlKSBnTxXvBqyk3k3QSD+GQbOYA0EM
- K3Dt1ca1X+A/ZZkq+Lxss4yfXOjKGyA1+Us1KGZPSVL3JkTIyaH1dWjgqwkpnl70osSsHt
- Mmh2OkNYoTNmkHbyu/j3SGG6p79HaUE=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-d9XiAhJmMIm-K76zjdbuBA-1; Tue, 30 Jan 2024 13:58:35 -0500
-X-MC-Unique: d9XiAhJmMIm-K76zjdbuBA-1
-Received: by mail-il1-f198.google.com with SMTP id
- e9e14a558f8ab-3610073a306so29145045ab.0
- for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 10:58:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706641115; x=1707245915;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ygwQTKzWVwq1rUJ+CoWQ7YcfRPlACm1P4aVkHLVn4j8=;
- b=cfMeteKSHuVDbqA+kau6+BZ9phr8D5rzdzWcLNF6gvL9Yd8g9uxmhqfq6cVcrCAhuU
- aTx926ZBWYFlkqdz9ZGGQMdAO3jyyjGE4WqZCSMYU0d82xw4mpU7QonCC28FmNWsKCrq
- o6iKYyQH8MC9yEkmLmJgAe3Wv5mTHa6D9TQW2eb/nvMK9cmK7Ya0SxK5/iFGTFespfbs
- 1QHI5VTB1rBzknvHNq+qnsApvYDxoYCoZsJQ9jrjA1VabBkEyUDGIBoUwdW4Lpg5rgZ8
- iJG65csdGUXeyvx2Kx+HVYkYsruOYhlcpalZAg6Y0RMrhIfRypT5buyHx7iAKQlEdrsp
- dAcw==
-X-Gm-Message-State: AOJu0Yw+QsAYIMnf1iu6jp/v2YB2y4vXQsl9Y26Lb6XcwhGmMopGWjeg
- xrwjX9HYntMjmgwxFJKcTF3HHLNLrncZaylydamc26iqreUqLQy4tJfYVM2+zBqOEvLFw7mba4/
- +nV8QS3ZisetBEdQG44uYyUjiyXJtkiojlLFN5lu62wGZF0Nq66n3
-X-Received: by 2002:a05:6e02:ec9:b0:363:91b8:ab7 with SMTP id
- i9-20020a056e020ec900b0036391b80ab7mr65747ilk.1.1706641114976; 
- Tue, 30 Jan 2024 10:58:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHg9ipICFIU0/M1co1BTweQhhnYDIU1RCp6dV8Vu0s7WmeyzMx8u4lgPJkW95Ef/9dVGYLQJQ==
-X-Received: by 2002:a05:6e02:ec9:b0:363:91b8:ab7 with SMTP id
- i9-20020a056e020ec900b0036391b80ab7mr65736ilk.1.1706641114744; 
- Tue, 30 Jan 2024 10:58:34 -0800 (PST)
-Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
- t3-20020a05663836c300b0046eb587003dsm2391340jau.127.2024.01.30.10.58.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jan 2024 10:58:34 -0800 (PST)
-Date: Tue, 30 Jan 2024 11:58:32 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Vinayak Kale <vkale@nvidia.com>
-Cc: qemu-devel@nongnu.org, targupta@nvidia.com, cjia@nvidia.com,
- acurrid@nvidia.com, zhiw@nvidia.com, mst@redhat.com,
- marcel.apfelbaum@gmail.com, avihaih@nvidia.com
-Subject: Re: [PATCH] hw/pci: migration: Skip config space check for vendor
- specific capability during restore/load
-Message-ID: <20240130115832.462e76b7.alex.williamson@redhat.com>
-In-Reply-To: <4d6a45ed-ca8d-4e41-b536-c2502ff1ce8b@nvidia.com>
-References: <20240130095617.31661-1-vkale@nvidia.com>
- <4d6a45ed-ca8d-4e41-b536-c2502ff1ce8b@nvidia.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from
+ <BATV+7af2922fdc4e6c7e46df+7464+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rUtP7-00009a-LX
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 14:04:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=e/eQy+FGPkAXiPNreNmza+angjwwtJFW4FhCcIiyHXg=; b=Vsp0NmWkrXTeP8423IvAYrUo0N
+ 6iHjQDSgHjQRwduuLY/ECBbDTQNp2JqLlMX4d+HvYQ4ofIIBQN7OybnftzxYVvNsJn6X65ntFoHSq
+ y1UCVDRQnP3+3z2rhfbtAHgGRV7bywS0SFBqMkD9ToNByrf0XVQsWp5TugOLsznmbtsiTq1B+6bZu
+ W8C4M5Kt75GKL5pZ7XAd/T6ghnnPGMUbqAKhEJha0hJMfLF4QhXGo3mul6oGfT9fhR02YudFMBTtR
+ /a9S1cn1DT8y1Vk/bFlz73i04POnkSRaYfvxHNnqxWKNLDXdhVjtpKh0q2qV/RMGRY8JldiP6nNEy
+ JXImYasQ==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rUtP1-00000008Tjt-1rbY; Tue, 30 Jan 2024 19:04:11 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
+ Hat Linux)) id 1rUtOy-00000002rgA-0Tlx;
+ Tue, 30 Jan 2024 19:04:08 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Paul Durrant <paul@xen.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v4] doc/sphinx/hxtool.py: add optional label argument to SRST
+ directive
+Date: Tue, 30 Jan 2024 19:01:43 +0000
+Message-ID: <20240130190348.682912-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+7af2922fdc4e6c7e46df+7464+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,58 +75,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 30 Jan 2024 23:32:26 +0530
-Vinayak Kale <vkale@nvidia.com> wrote:
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-> Missed adding Michael, Marcel, Alex and Avihai earlier, apologies.
-> 
-> Regards,
-> Vinayak
-> 
-> On 30/01/24 3:26 pm, Vinayak Kale wrote:
-> > In case of migration, during restore operation, qemu checks the config space of the pci device with the config space
-> > in the migration stream captured during save operation. In case of config space data mismatch, restore operation is failed.
-> > 
-> > config space check is done in function get_pci_config_device(). By default VSC (vendor-specific-capability) in config space is checked.
-> > 
-> > Ideally qemu should not check VSC during restore/load. This patch skips the check by not setting pdev->cmask[] for VSC offsets in pci_add_capability().
-> > If cmask[] is not set for an offset, then qemu skips config space check for that offset.
-> > 
-> > Signed-off-by: Vinayak Kale <vkale@nvidia.com>
-> > ---
-> >   hw/pci/pci.c | 7 +++++--
-> >   1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > index 76080af580..32429109df 100644
-> > --- a/hw/pci/pci.c
-> > +++ b/hw/pci/pci.c
-> > @@ -2485,8 +2485,11 @@ int pci_add_capability(PCIDevice *pdev, uint8_t cap_id,
-> >       memset(pdev->used + offset, 0xFF, QEMU_ALIGN_UP(size, 4));
-> >       /* Make capability read-only by default */
-> >       memset(pdev->wmask + offset, 0, size);
-> > -    /* Check capability by default */
-> > -    memset(pdev->cmask + offset, 0xFF, size);
-> > +
-> > +    if (cap_id != PCI_CAP_ID_VNDR) {
-> > +        /* Check non-vendor specific capability by default */
-> > +        memset(pdev->cmask + offset, 0xFF, size);
-> > +    }
-> >       return offset;
-> >   }
-> >     
-> 
+We can't just embed labels directly into files like qemu-options.hx which
+are included from multiple top-level rST files, because Sphinx sees the
+labels as duplicate: https://github.com/sphinx-doc/sphinx/issues/9707
 
-If there is a possibility that the data within the vendor specific cap
-can be consumed by the driver or diagnostic tools, then it's part of
-the device ABI and should be consistent across migration.  A mismatch
-can certainly cause a migration failure, but why shouldn't it?
+So add an optional argument to the SRST directive which causes a label
+of the form '.. _DOCNAME-HXFILE-LABEL:' to be emitted, where 'DOCNAME'
+is the name of the top level rST file, 'HXFILE' is the filename of the
+.hx file, and 'LABEL' is the text provided within the 'SRST()' directive.
+Using the DOCNAME of the top-level rST document means that it is unique
+even when the .hx file is included from two different documents, as is
+the case for qemu-options.hx
 
-This might be arguably ok (with more details) for a specific device,
-but I don't think it can be the default given the arbitrary data
-vendors can expose here.  Also, if this one, why not also the vendor
-specific extended capability?  Thanks,
+Now where the Xen PV documentation refers to the documentation for the
+-initrd command line option, it can emit a link directly to it as
+'<system/invocation-qemu-options-initrd>'.
 
-Alex
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+---
+v4:
+ • Wrap long lines to shut checkpatch up
+
+v3:
+ • Include DOCNAME in label
+ • Drop emitrefs option which is no longer needed
+
+v2:
+ • Invoke parse_srst() unconditionally
+ • Change emitted label to include basename of .hx file
+ • Describe it in docs/devel/docs.rst
+
+
+ docs/devel/docs.rst      | 12 ++++++++++--
+ docs/sphinx/hxtool.py    | 16 ++++++++++++++++
+ docs/system/i386/xen.rst |  3 ++-
+ qemu-options.hx          |  2 +-
+ 4 files changed, 29 insertions(+), 4 deletions(-)
+
+diff --git a/docs/devel/docs.rst b/docs/devel/docs.rst
+index 7da067905b..50ff0d67f8 100644
+--- a/docs/devel/docs.rst
++++ b/docs/devel/docs.rst
+@@ -30,6 +30,13 @@ nor the documentation output.
+ 
+ ``SRST`` starts a reStructuredText section. Following lines
+ are put into the documentation verbatim, and discarded from the C output.
++The alternative form ``SRST()`` is used to define a label which can be
++referenced from elsewhere in the rST documentation. The label will take
++the form ``<DOCNAME-HXFILE-LABEL>``, where ``DOCNAME`` is the name of the
++top level rST file, ``HXFILE`` is the filename of the .hx file without
++the ``.hx`` extension, and ``LABEL`` is the text provided within the
++``SRST()`` directive. For example,
++``<system/invocation-qemu-options-initrd>``.
+ 
+ ``ERST`` ends the documentation section started with ``SRST``,
+ and switches back to a C code section.
+@@ -53,8 +60,9 @@ text, but in ``hmp-commands.hx`` the C code sections are elements
+ of an array of structs of type ``HMPCommand`` which define the
+ name, behaviour and help text for each monitor command.
+ 
+-In the file ``qemu-options.hx``, do not try to define a
++In the file ``qemu-options.hx``, do not try to explicitly define a
+ reStructuredText label within a documentation section. This file
+ is included into two separate Sphinx documents, and some
+ versions of Sphinx will complain about the duplicate label
+-that results.
++that results. Use the ``SRST()`` directive documented above, to
++emit an unambiguous label.
+diff --git a/docs/sphinx/hxtool.py b/docs/sphinx/hxtool.py
+index 9f6b9d87dc..3729084a36 100644
+--- a/docs/sphinx/hxtool.py
++++ b/docs/sphinx/hxtool.py
+@@ -78,6 +78,14 @@ def parse_archheading(file, lnum, line):
+         serror(file, lnum, "Invalid ARCHHEADING line")
+     return match.group(1)
+ 
++def parse_srst(file, lnum, line):
++    """Handle an SRST directive"""
++    # The input should be either "SRST", or "SRST(label)".
++    match = re.match(r'SRST(\((.*?)\))?', line)
++    if match is None:
++        serror(file, lnum, "Invalid SRST line")
++    return match.group(2)
++
+ class HxtoolDocDirective(Directive):
+     """Extract rST fragments from the specified .hx file"""
+     required_argument = 1
+@@ -113,6 +121,14 @@ def run(self):
+                         serror(hxfile, lnum, 'expected ERST, found SRST')
+                     else:
+                         state = HxState.RST
++                        label = parse_srst(hxfile, lnum, line)
++                        if label:
++                            rstlist.append("", hxfile, lnum - 1)
++                            # Build label as _DOCNAME-HXNAME-LABEL
++                            hx = os.path.splitext(os.path.basename(hxfile))[0]
++                            refline = ".. _" + env.docname + "-" + hx + \
++                                "-" + label + ":"
++                            rstlist.append(refline, hxfile, lnum - 1)
+                 elif directive == 'ERST':
+                     if state == HxState.CTEXT:
+                         serror(hxfile, lnum, 'expected SRST, found ERST')
+diff --git a/docs/system/i386/xen.rst b/docs/system/i386/xen.rst
+index 81898768ba..46db5f34c1 100644
+--- a/docs/system/i386/xen.rst
++++ b/docs/system/i386/xen.rst
+@@ -132,7 +132,8 @@ The example above provides the guest kernel command line after a separator
+ (" ``--`` ") on the Xen command line, and does not provide the guest kernel
+ with an actual initramfs, which would need to listed as a second multiboot
+ module. For more complicated alternatives, see the command line
+-documentation for the ``-initrd`` option.
++:ref:`documentation <system/invocation-qemu-options-initrd>` for the
++``-initrd`` option.
+ 
+ Host OS requirements
+ --------------------
+diff --git a/qemu-options.hx b/qemu-options.hx
+index ced8284863..b3ff06b0b6 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -3994,7 +3994,7 @@ ERST
+ 
+ DEF("initrd", HAS_ARG, QEMU_OPTION_initrd, \
+            "-initrd file    use 'file' as initial ram disk\n", QEMU_ARCH_ALL)
+-SRST
++SRST(initrd)
+ 
+ ``-initrd file``
+     Use file as initial ram disk.
+-- 
+2.43.0
 
 
