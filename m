@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0441C842217
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 12:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A790842218
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 12:00:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUlpg-00063E-Pp; Tue, 30 Jan 2024 05:59:12 -0500
+	id 1rUlpo-00063p-Az; Tue, 30 Jan 2024 05:59:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rUlpa-000621-T8
+ id 1rUlpb-000622-1X
  for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:59:08 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rUlpX-0006rX-GV
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:59:05 -0500
+ id 1rUlpY-0006rr-EQ
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 05:59:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706612341;
+ s=mimecast20190719; t=1706612342;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=krAmzH0JZ6VOqQYOs4PlOILyNh6/3GAroC2fm1GAt6g=;
- b=VXruWM3+YLH5VAcJbtQlUrXXVcIFVauFM0UrYyyB3iPNRZxWmms4cJTVCmuaIXKNrTezAl
- RgMvcvCl6MdB+WQwekDrdYrK11iT98CAwZM+osAdjRuRZaRcve8p0uHmZgUv1hHhG94z9m
- Slg5e31BcrIQqerEgn9txa6uUz3qIME=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-31UuwtC6P-2nMXRkXU7Ggg-1; Tue, 30 Jan 2024 05:58:59 -0500
-X-MC-Unique: 31UuwtC6P-2nMXRkXU7Ggg-1
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=evX1FYUVlrNnELuzOsiJXXgrBwvq+7rJl/I1dXYE4LI=;
+ b=QMQGBG5qHWmftnnxxMLsV53AbsiuNEeSqukNCuIgD8oABPESLecHLIoRigi7lWI1c92nP4
+ X+mEb4M7D+dzqJ1jAjN3CS4Unr8h/0lqVBIeTDHFXsPiKIHLxYMJFVtY2cjzk4udxDHf/z
+ nR1NpJ/2lkMDA3atc/Y1yEy86CKCQ+o=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-596-JLQ8qEv0OPC5enENyNHbFg-1; Tue,
+ 30 Jan 2024 05:59:00 -0500
+X-MC-Unique: JLQ8qEv0OPC5enENyNHbFg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C6465800074;
- Tue, 30 Jan 2024 10:58:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC6152837804;
+ Tue, 30 Jan 2024 10:58:59 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.225.61])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0369F494;
- Tue, 30 Jan 2024 10:58:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 15B09494;
+ Tue, 30 Jan 2024 10:58:58 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 0/4] Misc changes guest agent
-Date: Tue, 30 Jan 2024 12:58:52 +0200
-Message-ID: <20240130105856.27178-1-kkostiuk@redhat.com>
+Subject: [PULL 1/4] guest-agent: improve help for --allow-rpcs and --block-rpcs
+Date: Tue, 30 Jan 2024 12:58:53 +0200
+Message-ID: <20240130105856.27178-2-kkostiuk@redhat.com>
+In-Reply-To: <20240130105856.27178-1-kkostiuk@redhat.com>
+References: <20240130105856.27178-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
@@ -77,42 +79,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 11be70677c70fdccd452a3233653949b79e97908:
+From: "Angel M. Villegas" <anvilleg@cisco.com>
 
-  Merge tag 'pull-vfio-20240129' of https://github.com/legoater/qemu into staging (2024-01-29 10:53:56 +0000)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1757
 
-are available in the Git repository at:
+Updates to qga help output and documentation for --allow-rpcs and --blocks-rpcs
 
-  https://github.com/kostyanf14/qemu.git tags/qga-pull-2024-01-30
-
-for you to fetch changes up to b3e0f64487a4b937d871ce4ce9c259e02ec02191:
-
-  qga: Solaris has net/if_arp.h and netinet/if_ether.h but not ETHER_ADDR_LEN (2024-01-30 12:14:28 +0200)
-
-----------------------------------------------------------------
-qga-pull-2024-01-30
-
-----------------------------------------------------------------
-Angel M. Villegas (1):
-      guest-agent: improve help for --allow-rpcs and --block-rpcs
-
-Nick Briggs (1):
-      qga: Solaris has net/if_arp.h and netinet/if_ether.h but not ETHER_ADDR_LEN
-
-Peng Ji (1):
-      qga-win: Fix guest-get-fsinfo multi-disks collection
-
-Samuel Tardieu (1):
-      tests/unit/test-qga: do not qualify executable paths
-
+Signed-off-by: "Angel M. Villegas" <anvilleg@cisco.com>
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+---
  docs/interop/qemu-ga.rst | 8 ++++----
- qga/commands-posix.c     | 5 ++++-
- qga/commands-win32.c     | 2 ++
  qga/main.c               | 4 ++--
- tests/unit/test-qga.c    | 6 +++---
- 5 files changed, 15 insertions(+), 10 deletions(-)
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+index 461c5a35ee..72fb75a6f5 100644
+--- a/docs/interop/qemu-ga.rst
++++ b/docs/interop/qemu-ga.rst
+@@ -81,13 +81,13 @@ Options
+ 
+ .. option:: -b, --block-rpcs=LIST
+ 
+-  Comma-separated list of RPCs to disable (no spaces, use ``help`` to
+-  list available RPCs).
++  Comma-separated list of RPCs to disable (no spaces, use ``--block-rpcs=help``
++  to list available RPCs).
+ 
+ .. option:: -a, --allow-rpcs=LIST
+ 
+-  Comma-separated list of RPCs to enable (no spaces, use ``help`` to
+-  list available RPCs).
++  Comma-separated list of RPCs to enable (no spaces, use ``--allow-rpcs=help``
++  to list available RPCs).
+ 
+ .. option:: -D, --dump-conf
+ 
+diff --git a/qga/main.c b/qga/main.c
+index 8668b9f3d3..bdf5344584 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -261,9 +261,9 @@ QEMU_COPYRIGHT "\n"
+ "  -s, --service     service commands: install, uninstall, vss-install, vss-uninstall\n"
+ #endif
+ "  -b, --block-rpcs  comma-separated list of RPCs to disable (no spaces,\n"
+-"                    use \"help\" to list available RPCs)\n"
++"                    use \"--block-rpcs=help\" to list available RPCs)\n"
+ "  -a, --allow-rpcs  comma-separated list of RPCs to enable (no spaces,\n"
+-"                    use \"help\" to list available RPCs)\n"
++"                    use \"--allow-rpcs=help\" to list available RPCs)\n"
+ "  -D, --dump-conf   dump a qemu-ga config file based on current config\n"
+ "                    options / command-line parameters to stdout\n"
+ "  -r, --retry-path  attempt re-opening path if it's unavailable or closed\n"
+-- 
 2.42.0
 
 
