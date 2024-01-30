@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7831F841B7F
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C7C841B7D
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:40:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUgqo-0002uX-4Q; Tue, 30 Jan 2024 00:40:03 -0500
+	id 1rUgqq-0002uZ-Az; Tue, 30 Jan 2024 00:40:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqg-0002tq-8d
+ id 1rUgqg-0002u0-Ni
  for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:54 -0500
-Received: from mail-yb1-xb31.google.com ([2607:f8b0:4864:20::b31])
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqZ-0001Nh-1G
+ id 1rUgqb-0001O6-EN
  for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:54 -0500
-Received: by mail-yb1-xb31.google.com with SMTP id
- 3f1490d57ef6-dc608c3718dso2988529276.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:46 -0800 (PST)
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5961a2726aaso2031956eaf.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593066; x=1707197866;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593068; x=1707197868;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=shO/Z0O568FxrbBMQD3Us+o0eIumB7pwZZUUIjpimB0=;
- b=Rj7vF0E2zXvBVHvhLFBbEo8i4pJp3HVVslvd84WzWCj3esd99v4Y76G8OpGFoSlQH1
- Uy3pwouZZFP0HlN7ZCRjFryhhw9s3xJL9v3DjTnrKPG3ccSqvdI5LbvZS20EMDl7uPsv
- MJkpUWenZ3QWNUuuYY4Gym/EvHhZrrH12n9oSpd3HgiPwad/ODPtaTOu7hzCz5Z/I7C1
- uHBV5VZZDjiPFKDn1ukuZ0nbtGV3OW516boHm8ceu8lBQvD02cKARr7ItCZF2YiPK0wR
- WrY0VhiWuws9oNoGILpz1nxC0jydj4jqaimFfk9YAUmV7TeqkEzWyjBe+ReIYSQR6BLM
- TRUQ==
+ bh=QCfSOssekZN4zKobgArXjcljl64GHI25OWtrrgugOcQ=;
+ b=ZQJHUY5VAHjuLKOPTQ7/5RIIQTz1yfc7HR7dmqiSDPmDVpQqyc/Ap80QZAB47Am3K0
+ a0jEcMLlB/GC5FFONuUx/g6P1MtmmvOO9zPTb9hPLdXLUBXm8NdG4O7ZVVIKchiJn4jH
+ BAFz7Zdlbx7Rxv1y9teAS5VW+IkveIp2vxK5HE5Ek7YmTlS5QdkjJ1rb6Uukxz3Z+bTy
+ QkwNHhMe55yNc00lBk1wlxmmz8NaJrSFYEZp3BXiTSn1i0/vtaPiReyKuGMjzfkBpiRJ
+ ThSIEpVMhK2DxccTN4KTMKymZf4UTnDMcDSetF8TQY5wUjEEiOyorBzeg0hd9n3qIgzB
+ /HAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706593066; x=1707197866;
+ d=1e100.net; s=20230601; t=1706593068; x=1707197868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=shO/Z0O568FxrbBMQD3Us+o0eIumB7pwZZUUIjpimB0=;
- b=IRW8Crg4EvOoFeKO7MyyWq99t/EyuImQRgNH+9QfsCdzFn6cXJjftHsStfEA5zY1nm
- sBLajX+YUKgPq5hUJIWn5MSC9dVmbtNloyGwCKAK70DyysJVjYFHJ7Oedom0ZvIMm2iF
- MoP4xM86cItu4sekw5cad9+LpB3U/kNG4jfVWnWFURHTy/+FgPL+iMUbkaAGQjkU1aGC
- NM0SkT7DmdYDWlsRjWNWwULJBcuN3/nXDAS5/wJzhNe30b3Uskf8Q1fvdNhIvRlWbTdt
- eYmpSUXfp4xSG0ssZMAvtm5+YdXxpgLXQGWpq+RnX4nn3dtTK7R00mu954QbDclgOJNP
- 865w==
-X-Gm-Message-State: AOJu0YzU1FnyMh5NTfUtAGeF29b7j5WhG+gChSD+3OtE4UaTcYPJZ8Kj
- s25TzfAvUFkdeh6dY187m6uq8QH+2X7mrhoZBt8cHir7RzGop/qrZY8KW0bFXQ9CMfZ/+YxgIt/
- H0B4=
-X-Google-Smtp-Source: AGHT+IHzHPyU+n+Te9GtlFCtkODPx7Fjq9neQNQSI9Y91jzlXxzjaKDAYxIayDkTypZ2Tp5A2wBz/w==
-X-Received: by 2002:a81:e202:0:b0:600:769:179f with SMTP id
- p2-20020a81e202000000b006000769179fmr6338729ywl.17.1706593065168; 
- Mon, 29 Jan 2024 21:37:45 -0800 (PST)
+ bh=QCfSOssekZN4zKobgArXjcljl64GHI25OWtrrgugOcQ=;
+ b=Zpjgtx7vRsslD/RAL1LTgRbkt7+S5IcEmBvPGo8RSysHwhfqX+YMCBGNT+oyQyBfpV
+ ggDdbh2N0iv/uD/c5lUN7F8oCXvMFTl9W2m21IbPS8V7/Grm8zxFHwHFKSRaGynLNsB1
+ wlymHLIWYR7+0IIIOYxyFl9XRMIgSrpBn3xnvUxe4KeXOcwqnuq9T5MlT5BY2J2VOekz
+ g1bzI+qSWFMBQOTkhh511F21//wv1us3bhR63hKIwSUFzr4g1OdN2HoFjyE6AfpJ8+i+
+ jOxvqzEQKABhgHIrJqs0KY3nu7OmXITgoE7zV7bIDrDO7yfDBKBQeGZcPwp82rhau/LX
+ I/sg==
+X-Gm-Message-State: AOJu0YzgX06MMApGLOhZmfkH0KlL1rmJWp0MLOMMz964MZmtk/hiXNyC
+ LdxPpKy0krrqMZBQPB6KK+7uh/oJ04+NO+nWicW6yIg+OfgS4tua/qF9GQ4Z5wEFUYehxk7TkTw
+ pt/g=
+X-Google-Smtp-Source: AGHT+IG1xLeQGtKw934ZWtEDgUSX2T++i5eXiXbI5EV/glI55bM1oqNGlPc164gHKLZLOE+GjLWfjA==
+X-Received: by 2002:a05:6358:9216:b0:177:2984:3db8 with SMTP id
+ d22-20020a056358921600b0017729843db8mr4205888rwb.20.1706593067526; 
+ Mon, 29 Jan 2024 21:37:47 -0800 (PST)
 Received: from anolis-dev.zelin.local ([221.122.98.162])
  by smtp.gmail.com with ESMTPSA id
- bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.43
+ bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 21:37:44 -0800 (PST)
+ Mon, 29 Jan 2024 21:37:47 -0800 (PST)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v4 6/7] crypto: Introduce 'detached-header' field in
- QCryptoBlockInfoLUKS
-Date: Tue, 30 Jan 2024 13:37:24 +0800
-Message-Id: <722845380ae359b452c525eb95103a1723f5a192.1706586786.git.yong.huang@smartx.com>
+Subject: [PATCH v4 7/7] tests: Add case for LUKS volume with detached header
+Date: Tue, 30 Jan 2024 13:37:25 +0800
+Message-Id: <87aa559fbc0c98a5b90ac4f3fa25cb7438a5c181.1706586786.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1706586786.git.yong.huang@smartx.com>
 References: <cover.1706586786.git.yong.huang@smartx.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::b31;
- envelope-from=yong.huang@smartx.com; helo=mail-yb1-xb31.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,96 +98,269 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-When querying the LUKS disk with the qemu-img tool or other APIs,
-add information about whether the LUKS header is detached.
-
-Additionally, update the test case with the appropriate
-modification.
+Also, add a section to the MAINTAINERS file for detached
+LUKS header, it only has a test case in it currently.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- crypto/block-luks.c        | 2 ++
- qapi/crypto.json           | 3 +++
- tests/qemu-iotests/210.out | 4 ++++
- 3 files changed, 9 insertions(+)
+ MAINTAINERS                                   |   5 +
+ tests/qemu-iotests/tests/luks-detached-header | 218 ++++++++++++++++++
+ .../tests/luks-detached-header.out            |   5 +
+ 3 files changed, 228 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/luks-detached-header
+ create mode 100644 tests/qemu-iotests/tests/luks-detached-header.out
 
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 8ad7cc44a5..3c168aa86f 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -1260,6 +1260,7 @@ qcrypto_block_luks_open(QCryptoBlock *block,
-     block->sector_size = QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
-     block->payload_offset = luks->header.payload_offset_sector *
-         block->sector_size;
-+    block->detached_header = (block->payload_offset == 0) ? true : false;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dfaca8323e..fddd3348c2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3402,6 +3402,11 @@ F: migration/dirtyrate.c
+ F: migration/dirtyrate.h
+ F: include/sysemu/dirtyrate.h
  
-     return 0;
- 
-@@ -1884,6 +1885,7 @@ static int qcrypto_block_luks_get_info(QCryptoBlock *block,
-     info->u.luks.master_key_iters = luks->header.master_key_iterations;
-     info->u.luks.uuid = g_strndup((const char *)luks->header.uuid,
-                                   sizeof(luks->header.uuid));
-+    info->u.luks.detached_header = block->detached_header;
- 
-     for (i = 0; i < QCRYPTO_BLOCK_LUKS_NUM_KEY_SLOTS; i++) {
-         slot = g_new0(QCryptoBlockInfoLUKSSlot, 1);
-diff --git a/qapi/crypto.json b/qapi/crypto.json
-index 62fd145223..f8b00cdc4d 100644
---- a/qapi/crypto.json
-+++ b/qapi/crypto.json
-@@ -314,6 +314,8 @@
- #
- # @hash-alg: the master key hash algorithm
- #
-+# @detached-header: whether the LUKS header is detached (Since 9.0)
++Detached LUKS header
++M: Hyman Huang <yong.huang@smartx.com>
++S: Maintained
++F: tests/qemu-iotests/tests/luks-detached-header
++
+ D-Bus
+ M: Marc-André Lureau <marcandre.lureau@redhat.com>
+ S: Maintained
+diff --git a/tests/qemu-iotests/tests/luks-detached-header b/tests/qemu-iotests/tests/luks-detached-header
+new file mode 100755
+index 0000000000..f0b5f3921c
+--- /dev/null
++++ b/tests/qemu-iotests/tests/luks-detached-header
+@@ -0,0 +1,218 @@
++#!/usr/bin/env python3
++# group: rw auto
 +#
- # @payload-offset: offset to the payload data in bytes
- #
- # @master-key-iters: number of PBKDF2 iterations for key material
-@@ -330,6 +332,7 @@
-            'ivgen-alg': 'QCryptoIVGenAlgorithm',
-            '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
-            'hash-alg': 'QCryptoHashAlgorithm',
-+           'detached-header': 'bool',
-            'payload-offset': 'int',
-            'master-key-iters': 'int',
-            'uuid': 'str',
-diff --git a/tests/qemu-iotests/210.out b/tests/qemu-iotests/210.out
-index 96d9f749dd..94b29b2120 100644
---- a/tests/qemu-iotests/210.out
-+++ b/tests/qemu-iotests/210.out
-@@ -18,6 +18,7 @@ virtual size: 128 MiB (134217728 bytes)
- encrypted: yes
- Format specific information:
-     ivgen alg: plain64
-+    detached header: false
-     hash alg: sha256
-     cipher alg: aes-256
-     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-@@ -70,6 +71,7 @@ virtual size: 64 MiB (67108864 bytes)
- encrypted: yes
- Format specific information:
-     ivgen alg: plain64
-+    detached header: false
-     hash alg: sha1
-     cipher alg: aes-128
-     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-@@ -125,6 +127,7 @@ virtual size: 0 B (0 bytes)
- encrypted: yes
- Format specific information:
-     ivgen alg: plain64
-+    detached header: false
-     hash alg: sha256
-     cipher alg: aes-256
-     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-@@ -195,6 +198,7 @@ virtual size: 0 B (0 bytes)
- encrypted: yes
- Format specific information:
-     ivgen alg: plain64
-+    detached header: false
-     hash alg: sha256
-     cipher alg: aes-256
-     uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
++# Test LUKS volume with detached header
++#
++# Copyright (C) 2024 SmartX Inc.
++#
++# Authors:
++#     Hyman Huang <yong.huang@smartx.com>
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
++
++import os
++import iotests
++from iotests import imgfmt, qemu_img_create, img_info_log, qemu_img_info, QMPTestCase
++
++
++image_size = 128 * 1024 * 1024
++
++luks_img = os.path.join(iotests.test_dir, 'luks.img')
++detached_header_img1 = os.path.join(iotests.test_dir, 'detached_header.img1')
++detached_header_img2 = os.path.join(iotests.test_dir, 'detached_header.img2')
++detached_payload_raw_img = os.path.join(iotests.test_dir, 'detached_payload_raw.img')
++detached_payload_qcow2_img = os.path.join(iotests.test_dir, 'detached_payload_qcow2.img')
++detached_header_raw_img = \
++    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_raw_img, detached_header_img1)
++detached_header_qcow2_img = \
++    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_qcow2_img, detached_header_img2)
++
++secret_obj = 'secret,id=sec0,data=foo'
++luks_opts = 'key-secret=sec0'
++
++
++class TestDetachedLUKSHeader(QMPTestCase):
++    def setUp(self) -> None:
++        self.vm = iotests.VM()
++        self.vm.add_object(secret_obj)
++        self.vm.launch()
++
++        # 1. Create the normal LUKS disk with 128M size
++        self.vm.blockdev_create({ 'driver': 'file',
++                                  'filename': luks_img,
++                                  'size': 0 })
++        self.vm.qmp_log('blockdev-add', driver='file', filename=luks_img,
++                         node_name='luks-1-storage')
++        result = self.vm.blockdev_create({ 'driver': imgfmt,
++                                           'file': 'luks-1-storage',
++                                           'key-secret': 'sec0',
++                                           'size': image_size,
++                                           'iter-time': 10 })
++        # None is expected
++        self.assertEqual(result, None)
++
++        # 2. Create the LUKS disk with detached header (raw)
++
++        # Create detached LUKS header
++        self.vm.blockdev_create({ 'driver': 'file',
++                                  'filename': detached_header_img1,
++                                  'size': 0 })
++        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img1,
++                         node_name='luks-2-header-storage')
++
++        # Create detached LUKS raw payload
++        self.vm.blockdev_create({ 'driver': 'file',
++                                  'filename': detached_payload_raw_img,
++                                  'size': 0 })
++        self.vm.qmp_log('blockdev-add', driver='file',
++                         filename=detached_payload_raw_img,
++                         node_name='luks-2-payload-storage')
++
++        # Format LUKS disk with detached header
++        result = self.vm.blockdev_create({ 'driver': imgfmt,
++                                           'header': 'luks-2-header-storage',
++                                           'file': 'luks-2-payload-storage',
++                                           'key-secret': 'sec0',
++                                           'preallocation': 'full',
++                                           'size': image_size,
++                                           'iter-time': 10 })
++        self.assertEqual(result, None)
++
++        self.vm.shutdown()
++
++        # 3. Create the LUKS disk with detached header (qcow2)
++
++        # Create detached LUKS header using qemu-img
++        res = qemu_img_create('-f', 'luks', '--object', secret_obj, '-o', luks_opts,
++                              '-o', "detached-header=true", detached_header_img2)
++        assert res.returncode == 0
++
++        # Create detached LUKS qcow2 payload
++        res = qemu_img_create('-f', 'qcow2', detached_payload_qcow2_img, str(image_size))
++        assert res.returncode == 0
++
++    def tearDown(self) -> None:
++        os.remove(luks_img)
++        os.remove(detached_header_img1)
++        os.remove(detached_header_img2)
++        os.remove(detached_payload_raw_img)
++        os.remove(detached_payload_qcow2_img)
++
++        # Check if there was any qemu-io run that failed
++        if 'Pattern verification failed' in self.vm.get_log():
++            print('ERROR: Pattern verification failed:')
++            print(self.vm.get_log())
++            self.fail('qemu-io pattern verification failed')
++
++    def test_img_creation(self) -> None:
++        # Check if the images created above are expected
++
++        data = qemu_img_info(luks_img)['format-specific']
++        self.assertEqual(data['type'], imgfmt)
++        self.assertEqual(data['data']['detached-header'], False)
++
++        data = qemu_img_info(detached_header_raw_img)['format-specific']
++        self.assertEqual(data['type'], imgfmt)
++        self.assertEqual(data['data']['detached-header'], True)
++
++        data = qemu_img_info(detached_header_qcow2_img)['format-specific']
++        self.assertEqual(data['type'], imgfmt)
++        self.assertEqual(data['data']['detached-header'], True)
++
++        # Check if preallocation works
++        size = qemu_img_info(detached_payload_raw_img)['actual-size']
++        self.assertGreaterEqual(size, image_size)
++
++    def test_detached_luks_header(self) -> None:
++        self.vm.launch()
++
++        # 1. Add the disk created above
++
++        # Add normal LUKS disk
++        self.vm.qmp_log('blockdev-add', driver='file', filename=luks_img,
++                         node_name='luks-1-storage')
++        result = self.vm.qmp_log('blockdev-add', driver='luks', file='luks-1-storage',
++                                  key_secret='sec0', node_name='luks-1-format')
++
++        # Expected result{ "return": {} }
++        self.assert_qmp(result, 'return', {})
++
++        # Add detached LUKS header with raw payload
++        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img1,
++                         node_name='luks-header1-storage')
++
++        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_payload_raw_img,
++                         node_name='luks-2-payload-raw-storage')
++
++        result = self.vm.qmp_log('blockdev-add', driver=imgfmt,
++                                  header='luks-header1-storage',
++                                  file='luks-2-payload-raw-storage',
++                                  key_secret='sec0',
++                                  node_name='luks-2-payload-raw-format')
++        self.assert_qmp(result, 'return', {})
++
++        # Add detached LUKS header with qcow2 payload
++        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_header_img2,
++                         node_name='luks-header2-storage')
++
++        self.vm.qmp_log('blockdev-add', driver='file', filename=detached_payload_qcow2_img,
++                         node_name='luks-3-payload-qcow2-storage')
++
++        result = self.vm.qmp_log('blockdev-add', driver=imgfmt,
++                                  header='luks-header2-storage',
++                                  file='luks-3-payload-qcow2-storage',
++                                  key_secret='sec0',
++                                  node_name='luks-3-payload-qcow2-format')
++        self.assert_qmp(result, 'return', {})
++
++        # 2. Do I/O test
++
++        # Do some I/O to the image to see whether it still works
++        # (Pattern verification will be checked by tearDown())
++
++        # Normal LUKS disk
++        result = self.vm.qmp_log('human-monitor-command',
++                                  command_line='qemu-io luks-1-format "write -P 40 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        result = self.vm.qmp_log('human-monitor-command',
++                                 command_line='qemu-io luks-1-format "read -P 40 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        # Detached LUKS header with raw payload
++        result = self.vm.qmp('human-monitor-command',
++                             command_line='qemu-io luks-2-payload-raw-format "write -P 41 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        result = self.vm.qmp('human-monitor-command',
++                             command_line='qemu-io luks-2-payload-raw-format "read -P 41 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        # Detached LUKS header with qcow2 payload
++        result = self.vm.qmp('human-monitor-command',
++                             command_line='qemu-io luks-3-payload-qcow2-format "write -P 42 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        result = self.vm.qmp('human-monitor-command',
++                             command_line='qemu-io luks-3-payload-qcow2-format "read -P 42 0 64k"')
++        self.assert_qmp(result, 'return', '')
++
++        self.vm.shutdown()
++
++
++if __name__ == '__main__':
++    # Test image creation and I/O
++    iotests.main(supported_fmts=['luks'],
++                 supported_protocols=['file'])
+diff --git a/tests/qemu-iotests/tests/luks-detached-header.out b/tests/qemu-iotests/tests/luks-detached-header.out
+new file mode 100644
+index 0000000000..fbc63e62f8
+--- /dev/null
++++ b/tests/qemu-iotests/tests/luks-detached-header.out
+@@ -0,0 +1,5 @@
++..
++----------------------------------------------------------------------
++Ran 2 tests
++
++OK
 -- 
 2.31.1
 
