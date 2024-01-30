@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5221841F16
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 10:15:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A0A841F9F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 10:34:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUkDU-0005g5-AP; Tue, 30 Jan 2024 04:15:40 -0500
+	id 1rUkUs-0000Mm-Mr; Tue, 30 Jan 2024 04:33:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUkD8-0005ZN-Uo
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:15:19 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUkUp-0000M5-0o
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:33:36 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rUkD6-00032x-2M
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:15:17 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40ed3101ce3so50775745e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 01:15:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rUkUZ-0006Md-3l
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 04:33:34 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a26ed1e05c7so439000466b.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 01:33:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706606113; x=1707210913; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XfLxFI71XIL2+DXs783wOnsq5mKcs7k1NE3Mgkhwb64=;
- b=OqdgQ1+uTGA20KvCz/5xHOwRatboVVoxpNdWpy7/I1LkVgABKLBkYFPi0458FNGsxB
- 7TzbWAixuu/1maSmKNnsnm48kWiyJdvBy46jv95A6jmRwm6Ow+RudSP+4YernVlbqQnI
- mQfoqeWPPjMp4MG6jSUGLHhcmhBfqTrESqfHAvcYcKGeKosod8+j/obl4qEYHLD6/253
- g2rSNoO4N1ce0HG+riIQJVApeUvaFBAUXidzy06Rlb+7dD+4KbCfDViu3XMw+qjnzVH3
- aMNJZQPzFB0QZDORUy2cKpbiRP5mxM+Ri9vYd3f9NjCzC8lfkyLHV1fWurSdWn/0lkVq
- /vSg==
+ d=linaro.org; s=google; t=1706607197; x=1707211997; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=NSWxcA/nKk7TzxeIRRWBTuF7EWjy0bGqn5EY2KLbYxI=;
+ b=IROgbqZVAvoU82ZwRlH1c/89HHxDt+snoaeinPlptjroxdpJOvO2TDaAFgOhkLHPPW
+ xQ5JfkbF9okllVm+MTKym8YLN+Yf6waJm9woCidcvVbfAd/Ec9/8Oii9Y5GgeHFrEM0v
+ Vr9eLAdiylvvy8EhRkHhQLG1/rCHPuIr+Pph0cIvW+RUSxpqSpYkzJ+LYPDMHxQNaG6x
+ gzWwRyr/A2Dgc9CFFXeQsfZ+xGUXP/g99+8y2hOXuqXOovaKXVHzLfDk89iivxB/+4nw
+ 3dO3w+gcvqGpSXELOvZXgIXmlfFwH9W9lkLyR+4gFFPS6BMuFjLdXALOiLs7w3DveQn2
+ m6aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706606113; x=1707210913;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XfLxFI71XIL2+DXs783wOnsq5mKcs7k1NE3Mgkhwb64=;
- b=sWbbd4iHY8iz67D5P4tZFiffWkdpdH/qGAeHl7jOTaKHH/qzbY5VD4T5LmMBGhEhtg
- TIYIkhtZZ13Wqg7YDBQ0el6aSD60fEXIqJ98P9eKHVtlK6kxd15CW4O0epflG6PmvgmB
- djov2xY4e9j6ZEV3beGO7g+TNk54ngsky3SChQVC+OBqRvHcxcQSE2h2aXaO7leZPF+k
- M6cGf25zGJfgGZJ3nZNm38ldozDLcRJyeVLskjqQzMWNQn2c0DmPpRam6ke+8aLU0cz6
- U9zrMhoKSapgC/rgJf7MmKOz8ZFi9x772K9gK5MmoKX3J9qB/dSmZ8mCuoGzIIhtdr/n
- WuiA==
-X-Gm-Message-State: AOJu0YykLTiSJ9QyUsM45lDfhXF6bPAbKVu3LAK2KmyCdsLOuF8YjnWK
- mdfLOy7wcj7yZOj8RksJnQ0N3DbRbRozswaIte+ChhXXX6VwjAvGCKLj77wwrmg=
-X-Google-Smtp-Source: AGHT+IGC/6N/3WghPptMWVuT4hGgCt69hXwHHV1fqkiLjZLsg0ybuMnX2OSZ30EFAgA3lhpXIF8ulA==
-X-Received: by 2002:a05:600c:3c91:b0:40e:5e25:4099 with SMTP id
- bg17-20020a05600c3c9100b0040e5e254099mr7095730wmb.7.1706606113132; 
- Tue, 30 Jan 2024 01:15:13 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.218.134])
+ d=1e100.net; s=20230601; t=1706607197; x=1707211997;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NSWxcA/nKk7TzxeIRRWBTuF7EWjy0bGqn5EY2KLbYxI=;
+ b=BNC+yxYfuSlrkYL3mDfu7V3QJ0E9anQPTg7KMuFPl7P4rY4+hhGk0d0RhcorhY+WbN
+ 359DCjoR7TGpcR7xBsXXX2USPkqFT7iNd7UcpdKE1TChcPm22dWR7gYpWjgZr22AyBMu
+ ABv4A7l0y72UH0ok7meBebccqYmNXC1VBQ0Uor8Hp0SG21s31lPDIN3hmSo2F9UzcKGl
+ sLOMxBiTWd7FbTStBZYdUgsR/K5i1vfSlLIKAK5nRuyF1xgF/tVPLCCB1n1LvAJXQLSR
+ sjt7kN3RhRf8o3vcBwdlr1rA2/rGiTbMu24pChQHJLdEqynZ7BhHt9q7/WLVuz+d3p7k
+ i8Og==
+X-Gm-Message-State: AOJu0YxILOG5RN+OkyZBUvo+e09bFEIOy6sbyeKkVRCSJrpL0kJ1Ql9J
+ hQmT13G7JkicXLr6xIMmHg/gS0To7og/B6o/4Cp7UxdM/xwGsTN7ystYUeGiOtFvknZ9nhv3mOk
+ I8/0=
+X-Google-Smtp-Source: AGHT+IFRJ6fnj50P1JVyXcFTVDDLKTVfvVY8BAkxnTXhihYyEXoevEjkvRxj99MsizxmFF5VgJ+mQA==
+X-Received: by 2002:a17:906:f349:b0:a35:fea3:c35a with SMTP id
+ hg9-20020a170906f34900b00a35fea3c35amr1633138ejb.17.1706607197285; 
+ Tue, 30 Jan 2024 01:33:17 -0800 (PST)
+Received: from meli.delivery (adsl-245.37.6.163.tellas.gr. [37.6.163.245])
  by smtp.gmail.com with ESMTPSA id
- gw7-20020a05600c850700b0040efc845cb6sm2449364wmb.7.2024.01.30.01.15.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Jan 2024 01:15:12 -0800 (PST)
-Message-ID: <61f637bc-96da-48f6-8798-95426060deff@linaro.org>
-Date: Tue, 30 Jan 2024 10:15:10 +0100
+ bi20-20020a05600c3d9400b0040ef04987e7sm8600854wmb.16.2024.01.30.01.33.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Jan 2024 01:33:17 -0800 (PST)
+Date: Tue, 30 Jan 2024 11:31:40 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-block@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Roman Kagan <rvkagan@yandex-team.ru>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Anton Johansson <anjo@rev.ng>, qemu-block@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH] hw/hyperv: Include missing headers
+User-Agent: meli 0.8.5-rc.3
+References: <20240129170028.74012-1-philmd@linaro.org>
+In-Reply-To: <20240129170028.74012-1-philmd@linaro.org>
+Message-ID: <82ije.c39odxskam2c@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/8] leon3: check cpu_id in the tiny bootloader
-Content-Language: en-US
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>, qemu-devel@nongnu.org
-Cc: Frederic Konrad <konrad.frederic@yahoo.fr>
-References: <20240116130213.172358-1-chigot@adacore.com>
- <20240116130213.172358-8-chigot@adacore.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240116130213.172358-8-chigot@adacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,69 +97,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/1/24 14:02, Clément Chigot wrote:
-> Now that SMP is possible, the asr17 must be checked in the little boot code
-> or the secondary CPU will reinitialize the Timer and the Uart.
+On Mon, 29 Jan 2024 19:00, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>Include missing headers in order to avoid when refactoring
+>unrelated headers:
+>
+>  hw/hyperv/hyperv.c:33:18: error: field ‘msg_page_mr’ has incomplete type
+>    33 |     MemoryRegion msg_page_mr;
+>       |                  ^~~~~~~~~~~
+>  hw/hyperv/hyperv.c: In function ‘synic_update’:
+>  hw/hyperv/hyperv.c:64:13: error: implicit declaration of function ‘memory_region_del_subregion’ [-Werror=implicit-function-declaration]
+>    64 |             memory_region_del_subregion(get_system_memory(),
+>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>  hw/hyperv/hyperv.c: In function ‘hyperv_hcall_signal_event’:
+>  hw/hyperv/hyperv.c:683:17: error: implicit declaration of function ‘ldq_phys’; did you mean ‘ldub_phys’? [-Werror=implicit-function-declaration]
+>   683 |         param = ldq_phys(&address_space_memory, addr);
+>       |                 ^~~~~~~~
+>       |                 ldub_phys
+>  hw/hyperv/hyperv.c:683:17: error: nested extern declaration of ‘ldq_phys’ [-Werror=nested-externs]
+>  hw/hyperv/hyperv.c: In function ‘hyperv_hcall_retreive_dbg_data’:
+>  hw/hyperv/hyperv.c:792:24: error: ‘TARGET_PAGE_SIZE’ undeclared (first use in this function); did you mean ‘TARGET_PAGE_BITS’?
+>   792 |     msg.u.recv.count = TARGET_PAGE_SIZE - sizeof(*debug_data_out);
+>       |                        ^~~~~~~~~~~~~~~~
+>       |                        TARGET_PAGE_BITS
+>  hw/hyperv/hyperv.c: In function ‘hyperv_syndbg_send’:
+>  hw/hyperv/hyperv.c:885:16: error: ‘HV_SYNDBG_STATUS_INVALID’ undeclared (first use in this function)
+>   885 |         return HV_SYNDBG_STATUS_INVALID;
+>       |                ^~~~~~~~~~~~~~~~~~~~~~~~
+>
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
+>BTW who maintains this code?
+>
+>$ ./scripts/get_maintainer.pl -f hw/hyperv/hyperv.c
+>get_maintainer.pl: No maintainers found, printing recent contributors.
+>get_maintainer.pl: Do not blindly cc: them on patches!  Use common sense.
+>---
+> hw/hyperv/hyperv.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+>diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
+>index 57b402b956..6c4a18dd0e 100644
+>--- a/hw/hyperv/hyperv.c
+>+++ b/hw/hyperv/hyperv.c
+>@@ -12,6 +12,7 @@
+> #include "qemu/module.h"
+> #include "qapi/error.h"
+> #include "exec/address-spaces.h"
+>+#include "exec/memory.h"
+> #include "sysemu/kvm.h"
+> #include "qemu/bitops.h"
+> #include "qemu/error-report.h"
+>@@ -21,6 +22,9 @@
+> #include "qemu/rcu_queue.h"
+> #include "hw/hyperv/hyperv.h"
+> #include "qom/object.h"
+>+#include "target/i386/kvm/hyperv-proto.h"
+>+#include "target/i386/cpu.h"
+>+#include "exec/cpu-all.h"
 > 
-> Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
-> Signed-off-by: Clément Chigot <chigot@adacore.com>
-> ---
->   hw/sparc/leon3.c | 22 ++++++++++++++++++++--
->   1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-> index eacd85ee4f..87a8044a3e 100644
-> --- a/hw/sparc/leon3.c
-> +++ b/hw/sparc/leon3.c
-> @@ -100,13 +100,27 @@ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
->   
->   /*
->    * When loading a kernel in RAM the machine is expected to be in a different
-> - * state (eg: initialized by the bootloader). This little code reproduces
-> - * this behavior.
-> + * state (eg: initialized by the bootloader).  This little code reproduces
-> + * this behavior.  Also this code can be executed by the secondary cpus as
-> + * well since it looks at the %asr17 register before doing any
-> + * initialization, it allows to use the same reset address for all the
-> + * cpus.
->    */
->   static void write_bootloader(CPUSPARCState *env, uint8_t *base,
->                                hwaddr kernel_addr)
->   {
->       uint32_t *p = (uint32_t *) base;
-> +    uint32_t *sec_cpu_branch_p = NULL;
-> +
-> +    /* If we are running on a secondary CPU, jump directly to the kernel.  */
-> +
-> +    stl_p(p++, 0x85444000); /* rd %asr17, %g2      */
-> +    stl_p(p++, 0x8530a01c); /* srl  %g2, 0x1c, %g2 */
-> +    stl_p(p++, 0x80908000); /* tst  %g2            */
-> +    /* Fill that later.  */
+> struct SynICState {
+>     DeviceState parent_obj;
+>-- 
+>2.41.0
+>
+>
 
-       /* Filled below. */
-
-> +    sec_cpu_branch_p = p;
-> +    stl_p(p++, 0x0BADC0DE); /* bne xxx             */
-> +    stl_p(p++, 0x01000000); /* nop */
->   
->       /* Initialize the UARTs                                        */
->       /* *UART_CONTROL = UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
-> @@ -120,6 +134,10 @@ static void write_bootloader(CPUSPARCState *env, uint8_t *base,
->       /* *GPTIMER0_CONFIG = GPTIMER_ENABLE | GPTIMER_RESTART;        */
->       p = gen_store_u32(p, 0x80000318, 3);
->   
-> +    /* Now, the relative branch above can be computed.  */
-> +    stl_p(sec_cpu_branch_p, 0x12800000
-> +          + (p - sec_cpu_branch_p));
-> +
->       /* JUMP to the entry point                                     */
->       stl_p(p++, 0x82100000); /* mov %g0, %g1 */
->       stl_p(p++, 0x03000000 + extract32(kernel_addr, 10, 22));
-
-Alternatively have main_cpu_reset / secondary_cpu_reset handlers.
-You could split BL in HWINIT / JUMP, have HWINIT() return # instr
-used and adjust secondary_cpu_reset entry.
-
-Anyway,
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
