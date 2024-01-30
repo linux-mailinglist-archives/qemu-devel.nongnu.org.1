@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C1F842F29
+	by mail.lfdr.de (Postfix) with ESMTPS id 12CF6842F2A
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 22:53:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUw1K-0002CB-Iu; Tue, 30 Jan 2024 16:51:57 -0500
+	id 1rUw1X-0002Ff-1b; Tue, 30 Jan 2024 16:52:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw1C-00026d-5l
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:46 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rUw1D-0002AF-Py
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:47 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw1A-0005mj-2S
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:45 -0500
+ id 1rUw1C-0005nB-D8
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706651503;
+ s=mimecast20190719; t=1706651505;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5+W7J5ZBmy22p3AjnZeYt4XmdqsSkYcD3NIhzrkj5M8=;
- b=AlF5qiIYcJ8VgepnFMyh1D4BmVowdiW+0M4ezMTB6QXDEjXHKzV1hmUpG5wQYpmRQDNPe7
- wGN7ZgMm8zoioBC7cMqXIE9QhaN6YmVhNUISWbMgb8FDGd5ffgwcE95rIVFESRQz3cj4GD
- 4lDr/pWAE/86waji32Bju9jGR257QBo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-KLHiQFW2MEGllSxLfbOtRA-1; Tue, 30 Jan 2024 16:51:39 -0500
-X-MC-Unique: KLHiQFW2MEGllSxLfbOtRA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=n1LYsq3H4/MW9xzqn1KNXRss1M84Sf8g1SFg0cOkjFA=;
+ b=Yx70bVzY8pIQxOPl3CZ9xHji9WjFD2NLLHuJFbjCBMeVMDYbzKgrPXP4oSCPlNGPdoZ/bF
+ moOmqLN7raEjmqCSwp3tRXps6Cm9/TSpG9fTOu7Iz6hJgJfhTGw13qRKomAIGGLWrl418v
+ FW0VdDBnKSjEC0w5IIeFPXU7yvS7Olg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-e4xT4UOsNVGiOaTAoZL8pg-1; Tue,
+ 30 Jan 2024 16:51:42 -0500
+X-MC-Unique: e4xT4UOsNVGiOaTAoZL8pg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48C0010135F2;
- Tue, 30 Jan 2024 21:51:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9C9C28EC10A;
+ Tue, 30 Jan 2024 21:51:41 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9406C2166B33;
- Tue, 30 Jan 2024 21:51:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0FF1E40C9444;
+ Tue, 30 Jan 2024 21:51:40 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>,
@@ -55,25 +55,26 @@ Cc: John Snow <jsnow@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Alistair Francis <alistair@alistair23.me>,
  Peter Maydell <peter.maydell@linaro.org>, Hanna Reitz <hreitz@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PULL 1/5] block/io_uring: improve error message when init fails
-Date: Tue, 30 Jan 2024 16:51:30 -0500
-Message-ID: <20240130215134.346557-2-stefanha@redhat.com>
+ "Richard W.M. Jones" <rjones@redhat.com>
+Subject: [PULL 2/5] block/blkio: Make s->mem_region_alignment be 64 bits
+Date: Tue, 30 Jan 2024 16:51:31 -0500
+Message-ID: <20240130215134.346557-3-stefanha@redhat.com>
 In-Reply-To: <20240130215134.346557-1-stefanha@redhat.com>
 References: <20240130215134.346557-1-stefanha@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,47 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: "Richard W.M. Jones" <rjones@redhat.com>
 
-The man page for io_uring_queue_init states:
+With GCC 14 the code failed to compile on i686 (and was wrong for any
+version of GCC):
 
-> io_uring_queue_init(3) returns 0 on success and -errno on failure.
+../block/blkio.c: In function ‘blkio_file_open’:
+../block/blkio.c:857:28: error: passing argument 3 of ‘blkio_get_uint64’ from incompatible pointer type [-Wincompatible-pointer-types]
+  857 |                            &s->mem_region_alignment);
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                            |
+      |                            size_t * {aka unsigned int *}
+In file included from ../block/blkio.c:12:
+/usr/include/blkio.h:49:67: note: expected ‘uint64_t *’ {aka ‘long long unsigned int *’} but argument is of type ‘size_t *’ {aka ‘unsigned int *’}
+   49 | int blkio_get_uint64(struct blkio *b, const char *name, uint64_t *value);
+      |                                                         ~~~~~~~~~~^~~~~
 
-and the man page for io_uring_setup (which is one of the functions
-where the return value of io_uring_queue_init() can come from) states:
-
-> On error, a negative error code is returned. The caller should not
-> rely on errno variable.
-
-Tested using 'sysctl kernel.io_uring_disabled=2'. Output before this
-change:
-
-> failed to init linux io_uring ring
-
-Output after this change:
-
-> failed to init linux io_uring ring: Operation not permitted
-
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
+Message-id: 20240130122006.2977938-1-rjones@redhat.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240123135044.204985-1-f.ebner@proxmox.com>
 ---
- block/io_uring.c | 2 +-
+ block/blkio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/io_uring.c b/block/io_uring.c
-index d77ae55745..d11b2051ab 100644
---- a/block/io_uring.c
-+++ b/block/io_uring.c
-@@ -432,7 +432,7 @@ LuringState *luring_init(Error **errp)
+diff --git a/block/blkio.c b/block/blkio.c
+index 0a0a6c0f5f..bc2f21784c 100644
+--- a/block/blkio.c
++++ b/block/blkio.c
+@@ -68,7 +68,7 @@ typedef struct {
+     CoQueue bounce_available;
  
-     rc = io_uring_queue_init(MAX_ENTRIES, ring, 0);
-     if (rc < 0) {
--        error_setg_errno(errp, errno, "failed to init linux io_uring ring");
-+        error_setg_errno(errp, -rc, "failed to init linux io_uring ring");
-         g_free(s);
-         return NULL;
-     }
+     /* The value of the "mem-region-alignment" property */
+-    size_t mem_region_alignment;
++    uint64_t mem_region_alignment;
+ 
+     /* Can we skip adding/deleting blkio_mem_regions? */
+     bool needs_mem_regions;
 -- 
 2.43.0
 
