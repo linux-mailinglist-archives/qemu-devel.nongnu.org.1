@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FBD842775
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 16:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA5C842774
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 16:01:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUpb8-0000vt-Fo; Tue, 30 Jan 2024 10:00:27 -0500
+	id 1rUpad-0000lU-Mn; Tue, 30 Jan 2024 09:59:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUpb0-0000sF-Sk
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 10:00:20 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rUpab-0000lH-R4
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 09:59:53 -0500
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUpaq-0008Tw-O2
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 10:00:11 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40e9101b5f9so44750995e9.3
- for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 07:00:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rUpaa-0008Fz-7U
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 09:59:53 -0500
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-40ef6f10b56so16771985e9.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 06:59:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706626806; x=1707231606; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1706626791; x=1707231591; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8rjZNbSKagVpk27PIGKUkuf1AY4K8nKgFwbZ9fsBYzs=;
- b=qwqcktDw9qKwgOTz/NiSwclvKsZbbF6xj8uYaPXwasvad15p2hx1zxan0maSade8dN
- rswW1SLdbySswpKIFTJ923ufpMnEGdW8Mi/C+9bRFu2z5akwY/OBJZAgCmANJTyJdejC
- mFgiIAXa57empY3jnd1OnX+OZsWN4p5VQVfajMqCAl8DoUriY6e7+H2j5Yr8cC6ZVt3Y
- MN/i7FXoy7F7D8HX3zuxo42QM+QQrhTujEIHfusC1SuZGtUix8jQyTpwOwIX0f1EPumb
- INfzQEE2bTSWGZZHYU7mfb3rUtqTiS4Owq2BfzMaya0bpohP4Xii607jhx8b8XRvJmF0
- QiKA==
+ bh=2UiblXSj4QkLRr0+VsvzLHbNebXQPz1ut+cFGEbO/p4=;
+ b=zGNP7oCf+its7V+nstCQFSCtVJrd432t5YduyiFlP0Q39Kcv6W08RyN/pDrzrg3zMe
+ Za/eapHD3WB6xQSJaiM8wUCkY0FxY/40tPPRJVujrnDN8jtZuSFjoW9A+PNMDP8JhxKA
+ yghs07q2WWuj/T9+hjirN0xuRpaBeoKAILF0Rq5fpsPNpVaaDRrggGL5qOdTh2wX3aJs
+ 338aB0jeLBYozNRCayq9p/c2ncxNSZtnxmCgIBjnfzNhpSTJCUafd842O7tNfDZDutOP
+ 5SoJFmvoCugmJryCuyORMl98ZOMaK6Lzi2JxM4jaJhVTLM+G2q6VVHmI2Y6pEHrYvNqm
+ gP8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706626806; x=1707231606;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8rjZNbSKagVpk27PIGKUkuf1AY4K8nKgFwbZ9fsBYzs=;
- b=PZcReZFFMEWyVL9ZBKV02Xp0qO3JuM89phaSIHCsLlokPY86+yn56ep9BHjSho54CF
- qjhrixjjcgeBCfinYX49APa4RPBU7DsyQ/Cl7Q+LWAPLyOdUCYuT/DKeqfkEf09Vc/Q+
- rb6NOfANepNEkeTvGAg0O1NuH8/iQbMpJXVaiL6u0ort/pHGPbrt+FiXIXrUov4fWCP7
- UfKC37mKofD+PvA+eWA0W+bU9EhUG4XcJgSV0wbgVCR/BIEcUjHhNgKsDKtrbW22oYvx
- qhBNRA4rnMpbRwQwiIf6WaF7giaVqk7YkoBB1Yf8euAJKWZJB9+negyIT//Icklh1sl/
- OqCA==
-X-Gm-Message-State: AOJu0YzM5auU8pctEVapgSpB7njJjY87PAGSQqaQX2PAw/NKlsAec4D3
- IVz8rycXhuqwYNUhcrgTQvhRzu0vC7a7jFbXOC6IX3T5CnQW/0Qjo1mlyXc7/3SlNkx/4n8W1Ry
- BHV8=
-X-Google-Smtp-Source: AGHT+IFTJ2neJwlX9DIn8CcretI9x4KupMnOBvM0FhKqxYhPxm2S8EOdP+D6NDikNNMuEIoxOHBB8Q==
-X-Received: by 2002:a05:600c:1396:b0:40e:d425:85a with SMTP id
- u22-20020a05600c139600b0040ed425085amr7978785wmf.17.1706626806620; 
- Tue, 30 Jan 2024 07:00:06 -0800 (PST)
-Received: from localhost.localdomain (adsl-125.37.6.3.tellas.gr. [37.6.3.125])
- by smtp.gmail.com with ESMTPSA id
- fa7-20020a05600c518700b0040ec6d7420csm17078648wmb.14.2024.01.30.07.00.05
+ d=1e100.net; s=20230601; t=1706626791; x=1707231591;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=2UiblXSj4QkLRr0+VsvzLHbNebXQPz1ut+cFGEbO/p4=;
+ b=crtyJxa4N4R8LBOLbfyblWTYG7W3+fGzmMnZmTu8sfZlS1/CqMGEgxA2lde7gYCarX
+ I4tehjgL8ZzJ48TzYbft/2Hux9N1DjFD+pQWS+DGXCw9Lg2MAV3As8k1VEoPJ1Awsc39
+ al5pdjaAT67VxJvHEa3XqUeyveVWQuMTgW09ApanlsgOmO7h58Ubcin5DsvS48ZksMLS
+ o485i5eOeJPmcvGmC9MhK2cBmXWjwjYAm4vRQMT4vnCmR2IJ5ACYUUGXcpBV83POTlAM
+ Q2ZqXZA+H1R1/4GkktRWFoGuqJPg73+NeLxZNCHedBnLqG6Oi+pF77+ncDJmMxkEgQHL
+ Bbqg==
+X-Gm-Message-State: AOJu0YxClzQwqUlxSfq2ptHS3K3zE1tzgC1uuF8xIkMmP5aLzF86tV59
+ MKsBDPhMIS3gP2Q6O2HJ4OHUxPRcmuVBDPnObu5LxsFEJqVgcuezryVBwj5/058=
+X-Google-Smtp-Source: AGHT+IGqYns31rzWU/zCq5Dk2HyK4I6uZ9qoC8TEazn0HOLX38mYn5updaym/ZN0jpp36+sv8LbUhg==
+X-Received: by 2002:adf:f9c4:0:b0:33a:fd2b:bcc0 with SMTP id
+ w4-20020adff9c4000000b0033afd2bbcc0mr902301wrr.5.1706626790729; 
+ Tue, 30 Jan 2024 06:59:50 -0800 (PST)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ i3-20020a05600011c300b0033ae8bdd642sm6554321wrx.114.2024.01.30.06.59.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Jan 2024 07:00:06 -0800 (PST)
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v3 3/3] virtio-gpu-rutabaga.c: override resource_destroy method
-Date: Tue, 30 Jan 2024 16:59:21 +0200
-Message-Id: <e3778e44c98a35839de2f4938e5355449fa3aa14.1706626470.git.manos.pitsidianakis@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1706626470.git.manos.pitsidianakis@linaro.org>
-References: <cover.1706626470.git.manos.pitsidianakis@linaro.org>
+ Tue, 30 Jan 2024 06:59:50 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0E0F95F9D3;
+ Tue, 30 Jan 2024 14:59:50 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Aleksandar Rikalo
+ <aleksandar.rikalo@syrmia.com>,  Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH] target/mips: Use qemu_irq typedef for CPUMIPSState::irq
+ member
+In-Reply-To: <20240130111111.6372-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 30 Jan 2024 12:11:11
+ +0100")
+References: <20240130111111.6372-1-philmd@linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Tue, 30 Jan 2024 14:59:50 +0000
+Message-ID: <87bk92ooih.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,99 +99,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the Rutabaga GPU device frees resources, it calls
-rutabaga_resource_unref for that resource_id. However, when the generic
-VirtIOGPU functions destroys resources, it only removes the
-virtio_gpu_simple_resource from the device's VirtIOGPU->reslist list.
-The rutabaga resource associated with that resource_id is then leaked.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-This commit overrides the resource_destroy class method introduced in
-the previous commit to fix this.
+> Missed during commit d537cf6c86 ("Unify IRQ handling")
+> when qemu_irq typedef was introduced for IRQState.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/display/virtio-gpu-rutabaga.c | 47 ++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 12 deletions(-)
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
-index 9e67f9bd51..17bf701a21 100644
---- a/hw/display/virtio-gpu-rutabaga.c
-+++ b/hw/display/virtio-gpu-rutabaga.c
-@@ -148,14 +148,38 @@ rutabaga_cmd_create_resource_3d(VirtIOGPU *g,
- }
- 
- static void
-+virtio_gpu_rutabaga_resource_unref(VirtIOGPU *g,
-+                                   struct virtio_gpu_simple_resource *res,
-+                                   Error **errp)
-+{
-+    int32_t result;
-+    VirtIOGPURutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
-+
-+    result = rutabaga_resource_unref(vr->rutabaga, res->resource_id);
-+    if (result) {
-+        error_setg_errno(errp,
-+                        (int)result,
-+                        "%s: rutabaga_resource_unref returned %"PRIi32
-+                        " for resource_id = %"PRIu32, __func__, result,
-+                        res->resource_id);
-+    }
-+
-+    if (res->image) {
-+        pixman_image_unref(res->image);
-+    }
-+
-+    QTAILQ_REMOVE(&g->reslist, res, next);
-+    g_free(res);
-+}
-+
-+static void
- rutabaga_cmd_resource_unref(VirtIOGPU *g,
-                             struct virtio_gpu_ctrl_command *cmd)
- {
--    int32_t result;
-+    int32_t result = 0;
-     struct virtio_gpu_simple_resource *res;
-     struct virtio_gpu_resource_unref unref;
--
--    VirtIOGPURutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
-+    Error *local_err = NULL;
- 
-     VIRTIO_GPU_FILL_CMD(unref);
- 
-@@ -164,15 +188,14 @@ rutabaga_cmd_resource_unref(VirtIOGPU *g,
-     res = virtio_gpu_find_resource(g, unref.resource_id);
-     CHECK(res, cmd);
- 
--    result = rutabaga_resource_unref(vr->rutabaga, unref.resource_id);
--    CHECK(!result, cmd);
--
--    if (res->image) {
--        pixman_image_unref(res->image);
-+    virtio_gpu_rutabaga_resource_unref(g, res, &local_err);
-+    if (local_err) {
-+        error_report_err(local_err);
-+        /* local_err was freed, do not reuse it. */
-+        local_err = NULL;
-+        result = 1;
-     }
--
--    QTAILQ_REMOVE(&g->reslist, res, next);
--    g_free(res);
-+    CHECK(!result, cmd);
- }
- 
- static void
-@@ -1099,7 +1122,7 @@ static void virtio_gpu_rutabaga_class_init(ObjectClass *klass, void *data)
-     vgc->handle_ctrl = virtio_gpu_rutabaga_handle_ctrl;
-     vgc->process_cmd = virtio_gpu_rutabaga_process_cmd;
-     vgc->update_cursor_data = virtio_gpu_rutabaga_update_cursor;
--
-+    vgc->resource_destroy = virtio_gpu_rutabaga_resource_unref;
-     vdc->realize = virtio_gpu_rutabaga_realize;
-     device_class_set_props(dc, virtio_gpu_rutabaga_properties);
- }
--- 
-γαῖα πυρί μιχθήτω
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
