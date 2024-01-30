@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4668A841C9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 08:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9D7841C9E
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 08:32:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUiam-0001am-NR; Tue, 30 Jan 2024 02:31:36 -0500
+	id 1rUiaw-0001bw-Tm; Tue, 30 Jan 2024 02:31:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUiah-0001aK-FN
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:31:32 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1rUiaq-0001bT-HI
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:31:40 -0500
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rUiad-0001bB-Aa
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:31:30 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40e7065b7bdso44306275e9.3
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 23:31:26 -0800 (PST)
+ id 1rUian-0001e3-9n
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 02:31:39 -0500
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40e8d3b29f2so44378695e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 23:31:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706599885; x=1707204685; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=30n6jaEjhAngIBes+KzGiKcIVpmNGpONO4vK0jA59Vk=;
- b=A7cStvu57PKEQMT2H26T7YgQ42ue4M9Isscw6AKK4I+zh/BLo7FPa5mPaEArmsHFwc
- CvW27Puw+aaC6NjgVTK0j9q0cs/U6Ff7LBiWsh+zGgxvLz6XKLSvoBi0gGq7lXnXWtjY
- 5IHG2XhUeZU+QpDXXMlLArDSnnlfipTe003glqlxQ70y7sfnQArHMPea+nA5NGtbS92K
- 1PG8z+fOISzF7s8jjgshtumfOiGm8CGq2xQ1CWXNtFkoSinz6PXRrZt6ZPpw9vjeED8f
- t8uyKs8u3M1dvUOpTHjN0bK7Tw+2dUBGbQqB3+5t/lbot1c0rwv6U2pd4INNyF6DE1BQ
- cjmA==
+ d=linaro.org; s=google; t=1706599895; x=1707204695; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wgLnLMEq9BFcqtf5TI/hMLCzDzOSMt8AP/+aiQsKg/o=;
+ b=OoMWvkr9toayhbaEr2F7MUCb75qlJysVRM4mHe6vxoyKlbeS4lxLfleCyciOCgHfEq
+ lc6U077Ij8LjpdA52IsBndhq/z/dnRhq4f79TklcWlPqYYwZYYM77Tm9jhAcrscvxXe0
+ OuTNOFHA2T+KXyjnGT/fnfewzmfW7+nzuE6M0+rA4FRSFS6J1lj3nFi9mRzDRYLYKMAG
+ 5puGCdZl9iVpvXGljyIQbG3xwNiEvGl9NoEKQJqaQ1TAY7FocvawUk8Cz3F3VdUNHj5g
+ SiUx8NZJTuNaUva+zPMxeECNj1H1UeFX5Ynr5qb91MmzEDyBIoraMe3k1EzX3QAO2t0s
+ QktQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706599885; x=1707204685;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=30n6jaEjhAngIBes+KzGiKcIVpmNGpONO4vK0jA59Vk=;
- b=JXDv3pgimIIdSAYq3kbaxEcwDTOJqI0m9fr0cS0Y09U+mknoSCZcMuQ7kHtuYZIbUj
- FdR1cmNdRLt+HWs9N4NGX8zAbAwj5B4+q7/1KVmLXD6fEVdUyvlLmIM8NNVIoResv49+
- WgwblRUtkMTfRQWTMf7Xhcj+T6UVrtvM+I/yFOmtLuBxKLHGiUKUblIBfgnLlo38/0AS
- QuZPaQJsS4Aetl84oUIQV45NoZdSBOGmtBvbZNjrf38YeVGkcrgn4oyXQUZcvXNsu1lC
- XZVeEHzpLarWCfbABXyieuPdm4yNStnLCqImTYWxYiI9sREFb6cB4930p3v4qU9HaM0b
- 7P0g==
-X-Gm-Message-State: AOJu0YwUr2HPvhOGS1xJjeG7J4IJ9/r1JFm50YaHyb9R+jF02fp34Yf4
- vVrkh/7eBwt1LAUTAL4e1z6pWVrfLzG2haQV0mWo4bwUcmwj6uLzSrvRUL+V5nubYGZjPx+eevt
- CTrA=
-X-Google-Smtp-Source: AGHT+IGaep6vaOZkcWKwaQvSERJYNU8R8vkmp9+GlnE0NaMi8F/t3uVvZEza+3n8HIFAG+/hvxLrpg==
-X-Received: by 2002:a05:600c:3595:b0:40e:dbe3:ab8f with SMTP id
- p21-20020a05600c359500b0040edbe3ab8fmr776870wmq.25.1706599885270; 
- Mon, 29 Jan 2024 23:31:25 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706599895; x=1707204695;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wgLnLMEq9BFcqtf5TI/hMLCzDzOSMt8AP/+aiQsKg/o=;
+ b=b+G+HfscPzEMuN+jX7teF5vg/yzbrznWDeLE8DeS92Q9jZmo/0WsvRan0gMuYxXfBZ
+ BZmHc6azGa2nver0ygzHJbVNuNsT20FI/D9sUVueiJ2ntoIE867RCTwZhDaXHsm1Hrsj
+ 8jK+fh0glFE7/fi1fN/UlIH7gzc6GH4n9MouhL4qgmeSPrf3a1CRbHD6n7VI4YQQtvmb
+ bpoCmgdYpi0HEqXjBrErVr0vxrdhNM/IRPENu3V/tvxXWmkrCUSCm4zW/nWR9OWVAQQe
+ dUGa5HZV+ztCiWexWrpOenPUuvpoW3ukO5Nu7HtXWhgSMDBOb47BLi9AuvdQOeK0fCPp
+ 58Bg==
+X-Gm-Message-State: AOJu0YxLXErNpnwTwf8nqjI+xp06v9mQ+a+H6nm0aOBhAwOErKOjZGH5
+ TwKnL1gihWZ/lVZkHG7pD4bvzWCjDrW73Yp6oDzugw5YGnSDw8P8dDyjosy/fQ2kLdZRrcbfcM9
+ H8cQ=
+X-Google-Smtp-Source: AGHT+IFu00wcFIgTDRF3eEPpqgUDrT7NfWMf2WKqCZExcDbTxN49OpVjnuP25AgPpy2OXZho/Vj7Rg==
+X-Received: by 2002:a05:600c:4c11:b0:40e:d4d1:2e0b with SMTP id
+ d17-20020a05600c4c1100b0040ed4d12e0bmr7168103wmp.19.1706599895296; 
+ Mon, 29 Jan 2024 23:31:35 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- bj26-20020a0560001e1a00b0033ae6530969sm7174070wrb.85.2024.01.29.23.31.24
+ bj26-20020a0560001e1a00b0033ae6530969sm7174070wrb.85.2024.01.29.23.31.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 23:31:24 -0800 (PST)
+ Mon, 29 Jan 2024 23:31:35 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 0/2] hw/block/block.c: improve confusing error
-Date: Tue, 30 Jan 2024 09:30:30 +0200
-Message-Id: <cover.1706598705.git.manos.pitsidianakis@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v3 1/2] hw/core/qdev.c: add qdev_get_human_name()
+Date: Tue, 30 Jan 2024 09:30:31 +0200
+Message-Id: <8b566bfced98ae44be1fcc1f8e7215f0c3393aa1.1706598705.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1706598705.git.manos.pitsidianakis@linaro.org>
+References: <cover.1706598705.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,67 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In cases where a device tries to read more bytes than the block device
-contains with the blk_check_size_and_read_all() function, the error is
-vague: "device requires X bytes, block backend provides Y bytes".
+Add a simple method to return some kind of human readable identifier for
+use in error messages.
 
-This patch changes the errors of this function to include the block
-backend name, the device id and device type name where appropriate.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+---
+ include/hw/qdev-core.h | 14 ++++++++++++++
+ hw/core/qdev.c         |  8 ++++++++
+ 2 files changed, 22 insertions(+)
 
-Version 3:
-- Changed phrasing "%s device with id='%s'" to "%s device '%s'" since
-  second parameter might be either device id or device path.
-    (thanks Stefan Hajnoczi <stefanha@redhat.com>)
-
-Version 2:
-- Assert dev is not NULL on qdev_get_human_name
-    (thanks Phil Mathieu-Daudé <philmd@linaro.org>)
-
-Manos Pitsidianakis (2):
-  hw/core/qdev.c: add qdev_get_human_name()
-  hw/block/block.c: improve confusing blk_check_size_and_read_all()
-    error
-
- include/hw/block/block.h |  4 ++--
- include/hw/qdev-core.h   | 14 ++++++++++++++
- hw/block/block.c         | 25 +++++++++++++++----------
- hw/block/m25p80.c        |  3 ++-
- hw/block/pflash_cfi01.c  |  4 ++--
- hw/block/pflash_cfi02.c  |  2 +-
- hw/core/qdev.c           |  8 ++++++++
- 7 files changed, 44 insertions(+), 16 deletions(-)
-
-Range-diff against v2:
-1:  5fb5879708 ! 1:  8b566bfced hw/core/qdev.c: add qdev_get_human_name()
-    @@ Commit message
-         Add a simple method to return some kind of human readable identifier for
-         use in error messages.
-     
-    +    Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-         Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-     
-      ## include/hw/qdev-core.h ##
-2:  8e7eb17fbd ! 2:  7260eadff2 hw/block/block.c: improve confusing blk_check_size_and_read_all() error
-    @@ hw/block/block.c: static int blk_pread_nonzeroes(BlockBackend *blk, hwaddr size,
-     -                   "block backend provides %" PRIu64 " bytes",
-     -                   size, blk_len);
-     +        dev_id = qdev_get_human_name(dev);
-    -+        error_setg(errp, "%s device with id='%s' requires %" HWADDR_PRIu
-    ++        error_setg(errp, "%s device '%s' requires %" HWADDR_PRIu
-     +                   " bytes, %s block backend provides %" PRIu64 " bytes",
-     +                   object_get_typename(OBJECT(dev)), dev_id, size,
-     +                   blk_name(blk), blk_len);
-    @@ hw/block/block.c: bool blk_check_size_and_read_all(BlockBackend *blk, void *buf,
-     -        error_setg_errno(errp, -ret, "can't read block backend");
-     +        dev_id = qdev_get_human_name(dev);
-     +        error_setg_errno(errp, -ret, "can't read %s block backend"
-    -+                         "for %s device with id='%s'",
-    ++                         " for %s device '%s'",
-     +                         blk_name(blk), object_get_typename(OBJECT(dev)),
-     +                         dev_id);
-              return false;
-
-base-commit: 11be70677c70fdccd452a3233653949b79e97908
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 151d968238..66338f479f 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -993,6 +993,20 @@ const char *qdev_fw_name(DeviceState *dev);
+ void qdev_assert_realized_properly(void);
+ Object *qdev_get_machine(void);
+ 
++/**
++ * qdev_get_human_name() - Return a human-readable name for a device
++ * @dev: The device. Must be a valid and non-NULL pointer.
++ *
++ * .. note::
++ *    This function is intended for user friendly error messages.
++ *
++ * Returns: A newly allocated string containing the device id if not null,
++ * else the object canonical path.
++ *
++ * Use g_free() to free it.
++ */
++char *qdev_get_human_name(DeviceState *dev);
++
+ /* FIXME: make this a link<> */
+ bool qdev_set_parent_bus(DeviceState *dev, BusState *bus, Error **errp);
+ 
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index 43d863b0c5..c68d0f7c51 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -879,6 +879,14 @@ Object *qdev_get_machine(void)
+     return dev;
+ }
+ 
++char *qdev_get_human_name(DeviceState *dev)
++{
++    g_assert(dev != NULL);
++
++    return dev->id ?
++           g_strdup(dev->id) : object_get_canonical_path(OBJECT(dev));
++}
++
+ static MachineInitPhase machine_phase;
+ 
+ bool phase_check(MachineInitPhase phase)
 -- 
 γαῖα πυρί μιχθήτω
 
