@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315EC842F2D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 22:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C1F842F29
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 22:53:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUw1H-00027P-2K; Tue, 30 Jan 2024 16:51:51 -0500
+	id 1rUw1K-0002CB-Iu; Tue, 30 Jan 2024 16:51:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw1B-00026T-6y
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rUw1C-00026d-5l
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:46 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rUw19-0005mf-KT
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:44 -0500
+ id 1rUw1A-0005mj-2S
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 16:51:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1706651503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=aaODQ68S45z0LXYKCzC3/t9low2kjHz4u1O0LnZTkco=;
- b=ei4KNp9EckjZkOJ/nHM0PpPyEntAsHr5+vlqHd64mXGlf3erYEpDsCdFgdDnrZvjdGW7B2
- RTlK0Qdd9DGsnQEUzM3hSeqDE0SL0kHDIfQymcVdLLJLnPPwphkWMQe9mxR324GhGfiBAF
- zmcGh7Us7agUh/xbcHsuvAjTIAg/3FM=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5+W7J5ZBmy22p3AjnZeYt4XmdqsSkYcD3NIhzrkj5M8=;
+ b=AlF5qiIYcJ8VgepnFMyh1D4BmVowdiW+0M4ezMTB6QXDEjXHKzV1hmUpG5wQYpmRQDNPe7
+ wGN7ZgMm8zoioBC7cMqXIE9QhaN6YmVhNUISWbMgb8FDGd5ffgwcE95rIVFESRQz3cj4GD
+ 4lDr/pWAE/86waji32Bju9jGR257QBo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-aIV68sjPOVCoRuWxVPV2LQ-1; Tue, 30 Jan 2024 16:51:37 -0500
-X-MC-Unique: aIV68sjPOVCoRuWxVPV2LQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-655-KLHiQFW2MEGllSxLfbOtRA-1; Tue, 30 Jan 2024 16:51:39 -0500
+X-MC-Unique: KLHiQFW2MEGllSxLfbOtRA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13D7B10135EF;
- Tue, 30 Jan 2024 21:51:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48C0010135F2;
+ Tue, 30 Jan 2024 21:51:39 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3314A492BC7;
- Tue, 30 Jan 2024 21:51:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9406C2166B33;
+ Tue, 30 Jan 2024 21:51:38 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>,
@@ -53,22 +54,24 @@ Cc: John Snow <jsnow@redhat.com>,
  qemu-block@nongnu.org, Julia Suvorova <jusual@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Alistair Francis <alistair@alistair23.me>,
- Peter Maydell <peter.maydell@linaro.org>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PULL 0/5] Block patches
-Date: Tue, 30 Jan 2024 16:51:29 -0500
-Message-ID: <20240130215134.346557-1-stefanha@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>, Hanna Reitz <hreitz@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PULL 1/5] block/io_uring: improve error message when init fails
+Date: Tue, 30 Jan 2024 16:51:30 -0500
+Message-ID: <20240130215134.346557-2-stefanha@redhat.com>
+In-Reply-To: <20240130215134.346557-1-stefanha@redhat.com>
+References: <20240130215134.346557-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -86,48 +89,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 11be70677c70fdccd452a3233653949b79e97908:
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-  Merge tag 'pull-vfio-20240129' of https://github.com/legoater/qemu into staging (2024-01-29 10:53:56 +0000)
+The man page for io_uring_queue_init states:
 
-are available in the Git repository at:
+> io_uring_queue_init(3) returns 0 on success and -errno on failure.
 
-  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
+and the man page for io_uring_setup (which is one of the functions
+where the return value of io_uring_queue_init() can come from) states:
 
-for you to fetch changes up to 954b33daee83fe79293fd81c2f7371db48e7d6bd:
+> On error, a negative error code is returned. The caller should not
+> rely on errno variable.
 
-  hw/block/block.c: improve confusing blk_check_size_and_read_all() error (2024-01-30 16:19:00 -0500)
+Tested using 'sysctl kernel.io_uring_disabled=2'. Output before this
+change:
 
-----------------------------------------------------------------
-Pull request
+> failed to init linux io_uring ring
 
-----------------------------------------------------------------
+Output after this change:
 
-Fiona Ebner (1):
-  block/io_uring: improve error message when init fails
+> failed to init linux io_uring ring: Operation not permitted
 
-Manos Pitsidianakis (2):
-  hw/core/qdev.c: add qdev_get_human_name()
-  hw/block/block.c: improve confusing blk_check_size_and_read_all()
-    error
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240123135044.204985-1-f.ebner@proxmox.com>
+---
+ block/io_uring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Richard W.M. Jones (1):
-  block/blkio: Make s->mem_region_alignment be 64 bits
-
-Stefan Hajnoczi (1):
-  pflash: fix sectors vs bytes confusion in blk_pread_nonzeroes()
-
- include/hw/block/block.h |  4 ++--
- include/hw/qdev-core.h   | 14 ++++++++++++++
- block/blkio.c            |  2 +-
- block/io_uring.c         |  2 +-
- hw/block/block.c         | 27 ++++++++++++++++-----------
- hw/block/m25p80.c        |  3 ++-
- hw/block/pflash_cfi01.c  |  4 ++--
- hw/block/pflash_cfi02.c  |  2 +-
- hw/core/qdev.c           |  8 ++++++++
- 9 files changed, 47 insertions(+), 19 deletions(-)
-
+diff --git a/block/io_uring.c b/block/io_uring.c
+index d77ae55745..d11b2051ab 100644
+--- a/block/io_uring.c
++++ b/block/io_uring.c
+@@ -432,7 +432,7 @@ LuringState *luring_init(Error **errp)
+ 
+     rc = io_uring_queue_init(MAX_ENTRIES, ring, 0);
+     if (rc < 0) {
+-        error_setg_errno(errp, errno, "failed to init linux io_uring ring");
++        error_setg_errno(errp, -rc, "failed to init linux io_uring ring");
+         g_free(s);
+         return NULL;
+     }
 -- 
 2.43.0
 
