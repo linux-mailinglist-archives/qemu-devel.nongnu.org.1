@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99220841B82
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AA4841B81
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:41:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUgqV-0002rO-W3; Tue, 30 Jan 2024 00:39:44 -0500
+	id 1rUgqX-0002rv-DX; Tue, 30 Jan 2024 00:39:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqQ-0002qz-Ka
+ id 1rUgqQ-0002r0-Nc
  for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:38 -0500
-Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
+Received: from mail-ua1-x934.google.com ([2607:f8b0:4864:20::934])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqN-0001Lw-P9
+ id 1rUgqO-0001MF-9P
  for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:38 -0500
-Received: by mail-ua1-x930.google.com with SMTP id
- a1e0cc1a2514c-7d2a67daa25so1648543241.0
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:32 -0800 (PST)
+Received: by mail-ua1-x934.google.com with SMTP id
+ a1e0cc1a2514c-7d2dfa3bc64so507823241.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593051; x=1707197851;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593054; x=1707197854;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=r0JbnGU2PJ9V5/UZ/7dTe2x30XpQGh60JsZEGfdgl8M=;
- b=Y+bIn0ZR8ERG4Dwm3R2RqYQruPhNTOEmq+r6BrnHjz3cVFyJgVUQj0quakKJnHB5kB
- NV0O/ZtEPSLZ2yyffkrGnkthhOnrVNi/Tlq0+xkMFheFdQZtVihgXlD/3xf3i5dP2rlP
- 0BT41UF/9RkCihXW8jD0xCYytimRln2dFWABU+Oaj0LVLP+NrY4JE+wVfog4Ip9qV7qN
- xP9txeOZ61FM04FA3aF7//qEfhVErAV70jLvxMSo/DrILwwo28S2rDDnVgFgqGKDEzIw
- bQM8txkNe1jt4UdCV/s3U1MG656Ip9q1/ANQ+3ILOsI1mFvEFuekADPLcPs8KPZ1Au8m
- 2Hng==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mgBjKCmGIw1QzGuAtBe8Fn0BN4xSBkw1xT0mmLT2npc=;
+ b=0we04U9bPNNYh1In4+leZUwv/OtiL6f+JjI5IEifrIWSh8/JQ3bDV7PLovTraKt9aj
+ h+ecFJ76oHqTVeNcms5ybH177SNYbo1fCZtBLiwq+ps0lrIAMfic2pLwawnnLoVmJP7V
+ UUXi6GQTtYLorl85vPRuZ30VMW+uLOE8gWmFt7peKe4+GswXbwYUmi/1BuL5F4Jw1wr/
+ Rg87e5OVZFG4TFRFkSLOOjxlpT5CHeZQVTm6RyduS4E7JAz6QbFS/IzFzWnDKU3gJiNY
+ wQRoCn/l6SsiZvjrpA0cG4wqTbcoep1v97aDxeaqIGHPAd7u2DwmgHQGycw91hzf30/E
+ bhSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706593051; x=1707197851;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=r0JbnGU2PJ9V5/UZ/7dTe2x30XpQGh60JsZEGfdgl8M=;
- b=cz3Dc64JlVNPYEjtZuEBJ+/aFh494Y/AoedeQjHDXlyIbnpfZMaNtvVT0CEmovuF59
- KtFMnjtfVf29goaxy18CWfA2+5jx+bz3CMXCGdVHU5e0vKE8lbJmP8Vq0MQ2NkW5gnjJ
- s2arrZPFv9XH98gWkhm2AMRU4gOTPE2wfGfjre4+De4MFkJWllN4KjAP9bQ1sWvaq9Vc
- c3nRQ831MaHozLjplV/sg7bWCd01iJd88nh1x4M4Ip8BjU9mV9oxIrewD7BHcEGrumV8
- qKizwv+1fpfw27/wK4FVZUuC0ocYB4K35AbGJkYzKiIGVXI3+/Tvi4OnaEa9+AoDWJrO
- OhEg==
-X-Gm-Message-State: AOJu0YyogH/JJho14bSUPrSLDhZGfMrlhe/BJlL/n38qOR+i/ckJASQ+
- 321TE1Plw9nGZ4hSVePEU2O0FMEpO0u1eOytCyMOJvqKy5w9N2fgGjQOVXeaZgGSz4V4VNmFx3q
- RVcE=
-X-Google-Smtp-Source: AGHT+IHAoHVhnc8TFHC45xIfSZifAqAOZg3lb7TQrwaqbQLhtgAPS2jAJE3VsbwYoAfDZsTVueBifA==
-X-Received: by 2002:a05:6102:3c98:b0:46b:62af:d724 with SMTP id
- c24-20020a0561023c9800b0046b62afd724mr3572132vsv.39.1706593050731; 
- Mon, 29 Jan 2024 21:37:30 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706593054; x=1707197854;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mgBjKCmGIw1QzGuAtBe8Fn0BN4xSBkw1xT0mmLT2npc=;
+ b=wgWdSNl+oj0LgR+yK0R1ElSox9lmEzF3tqavqxHiW++PhJ9ja+0EuHBWmuCs68vJvG
+ 9FWUQzyb+P1DlvbkwJI7kWo1/8Is+Lf1iZtBl4ob7OJya3W3B2j/5mkH4jAORe+U+Vot
+ Ns2hLrHzMnX+oC8sOLDPS3BK1+fMBhwUTGsJi5Zh3eNgT6q0CL4Djo6Oi1t5krqvphFh
+ dK+//FE0GDI3cLgmxNfOSerKvyPxbywyG8H8F4ds5Atyd3PlrYzuBMVICZja7lFRTQ7Y
+ yN5BBp+cVuP/FqMbFEhdErNgrW5qsnVqlxZ3FzsgSuqlSzqVRIlWsnZZxJWaqP5ePbuo
+ JCxQ==
+X-Gm-Message-State: AOJu0YwVdTxgO05TYJtaKWj3fv3GjNr9ibjb9yImpNdDhpYXl9xr4S9/
+ XKUAKzkr0yYrZ5Yd+EyVPQJSk0j2XZ9DEuzmi6cN1kXSGr41b/t+9LwBfXpjzmmLyneTNLT1CeJ
+ 79RU=
+X-Google-Smtp-Source: AGHT+IHEdsnnvhbd1i+PHsLhVYF/9HKrKR3440uMhQ7nQMMkJVuPGhsv6/4PbqbLxLLaGualIi3jYw==
+X-Received: by 2002:a05:6102:2143:b0:46b:5b70:dfe1 with SMTP id
+ h3-20020a056102214300b0046b5b70dfe1mr2287376vsg.2.1706593053347; 
+ Mon, 29 Jan 2024 21:37:33 -0800 (PST)
 Received: from anolis-dev.zelin.local ([221.122.98.162])
  by smtp.gmail.com with ESMTPSA id
- bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.28
+ bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 21:37:30 -0800 (PST)
+ Mon, 29 Jan 2024 21:37:32 -0800 (PST)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v4 0/7] Support generic Luks encryption 
-Date: Tue, 30 Jan 2024 13:37:18 +0800
-Message-Id: <cover.1706586786.git.yong.huang@smartx.com>
+Subject: [PATCH v4 1/7] crypto: Support LUKS volume with detached header
+Date: Tue, 30 Jan 2024 13:37:19 +0800
+Message-Id: <d597f01ce328442940f5dd4653cf7ec75fe0ce02.1706586786.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1706586786.git.yong.huang@smartx.com>
+References: <cover.1706586786.git.yong.huang@smartx.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::930;
- envelope-from=yong.huang@smartx.com; helo=mail-ua1-x930.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::934;
+ envelope-from=yong.huang@smartx.com; helo=mail-ua1-x934.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,72 +96,6 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
-
-Sorry for the late post of version 4. The modifications are as follows:
-
-v4:
-- Rebase on master
-
-- squash [PATCH v3 02/10] to [PATCH v3 01/10]
-
-- refactor the logic of block_crypto_open_generic in [PATCH v3 02/10]
-  as Daniel suggestted:
-  a. drop the invalid parameter check for "header" option and use the
-     ERRP_GUARD to probe the error of bdrv_open_child instead.
-  b. add a new emum entry to QCryptoBlockOpenFlags to instruct the  
-     process of LUKS volume open skip the payload overlap check instead
-     of using the macro INVALID_SECTOR_OFFSET.
-
-- drop the detached_header_size field and use local variable instead in
-  [PATCH v3 04/10] 
-
-- drop the detached-header option in [PATCH v3 04/10]
-
-- drop the commit [PATCH v3 05/10]:
-  crypto: Mark the payload_offset_sector invalid for detached LUKS header 
-
-- introduce QCryptoBlockCreateFlags to instruct the creation process to
-  set the payload_offset_sector to 0 in [PATCH v4 03/7]
-
-- refactor the logic of block_crypto_co_create_luks in [PATCH v3 06/10]: 
-  a. fix the compile failure
-  b. use the existing 'fail:' label to handle the error logic
-
-- refine the comment in qapi suggested by Markus.
-
-- modify the test case to accommodate the new implementation. 
-
-Thanks for commenting on this series, please review.
-
-Best regared,
-
-Yong
-
-v3:
-- Rebase on master
-- Add a test case for detached LUKS header
-- Adjust the design to honour preallocation of the payload device
-- Adjust the design to honour the payload offset from the header,
-  even when detached
-- Support detached LUKS header creation using qemu-img
-- Support detached LUKS header querying
-- Do some code clean
-
-v2:
-- Simplify the design by reusing the LUKS driver to implement
-  the generic Luks encryption, thank Daniel for the insightful 
-  advice.
-- rebase on master. 
-
-This functionality was motivated by the following to-do list seen
-in crypto documents:
-https://wiki.qemu.org/Features/Block/Crypto 
-
-The last chapter says we should "separate header volume": 
-
-The LUKS format has ability to store the header in a separate volume
-from the payload. We should extend the LUKS driver in QEMU to support
-this use case.
 
 By enhancing the LUKS driver, it is possible to implement
 the LUKS volume with a detached header.
@@ -239,35 +175,182 @@ somewhat similar to hot-plug in that both maintaining the
 same json command while the starting VM changes the
 "blockdev-add/device_add" parameters to "blockdev/device".
 
-Hyman Huang (7):
-  crypto: Support LUKS volume with detached header
-  qapi: Make parameter 'file' optional for BlockdevCreateOptionsLUKS
-  crypto: Modify the qcrypto_block_create to support creation flags
-  block: Support detached LUKS header creation using blockdev-create
-  block: Support detached LUKS header creation using qemu-img
-  crypto: Introduce 'detached-header' field in QCryptoBlockInfoLUKS
-  tests: Add case for LUKS volume with detached header
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ block/crypto.c         | 21 +++++++++++++++++++--
+ crypto/block-luks.c    | 11 +++++++----
+ include/crypto/block.h |  5 +++++
+ qapi/block-core.json   |  5 ++++-
+ 4 files changed, 35 insertions(+), 7 deletions(-)
 
- MAINTAINERS                                   |   5 +
- block.c                                       |   5 +-
- block/crypto.c                                | 144 ++++++++++--
- block/crypto.h                                |   8 +
- block/qcow.c                                  |   2 +-
- block/qcow2.c                                 |   2 +-
- crypto/block-luks.c                           |  41 +++-
- crypto/block.c                                |   4 +-
- crypto/blockpriv.h                            |   2 +
- include/crypto/block.h                        |  16 ++
- qapi/block-core.json                          |  13 +-
- qapi/crypto.json                              |   8 +-
- tests/qemu-iotests/210.out                    |   4 +
- tests/qemu-iotests/tests/luks-detached-header | 218 ++++++++++++++++++
- .../tests/luks-detached-header.out            |   5 +
- tests/unit/test-crypto-block.c                |   2 +
- 16 files changed, 447 insertions(+), 32 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/luks-detached-header
- create mode 100644 tests/qemu-iotests/tests/luks-detached-header.out
-
+diff --git a/block/crypto.c b/block/crypto.c
+index 921933a5e5..68656158e9 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -39,6 +39,7 @@ typedef struct BlockCrypto BlockCrypto;
+ struct BlockCrypto {
+     QCryptoBlock *block;
+     bool updating_keys;
++    BdrvChild *header;  /* Reference to the detached LUKS header */
+ };
+ 
+ 
+@@ -63,12 +64,14 @@ static int block_crypto_read_func(QCryptoBlock *block,
+                                   Error **errp)
+ {
+     BlockDriverState *bs = opaque;
++    BlockCrypto *crypto = bs->opaque;
+     ssize_t ret;
+ 
+     GLOBAL_STATE_CODE();
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+-    ret = bdrv_pread(bs->file, offset, buflen, buf, 0);
++    ret = bdrv_pread(crypto->header ? crypto->header : bs->file,
++                     offset, buflen, buf, 0);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not read encryption header");
+         return ret;
+@@ -84,12 +87,14 @@ static int block_crypto_write_func(QCryptoBlock *block,
+                                    Error **errp)
+ {
+     BlockDriverState *bs = opaque;
++    BlockCrypto *crypto = bs->opaque;
+     ssize_t ret;
+ 
+     GLOBAL_STATE_CODE();
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+-    ret = bdrv_pwrite(bs->file, offset, buflen, buf, 0);
++    ret = bdrv_pwrite(crypto->header ? crypto->header : bs->file,
++                      offset, buflen, buf, 0);
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "Could not write encryption header");
+         return ret;
+@@ -262,6 +267,8 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+                                      int flags,
+                                      Error **errp)
+ {
++    ERRP_GUARD();
++
+     BlockCrypto *crypto = bs->opaque;
+     QemuOpts *opts = NULL;
+     int ret;
+@@ -276,6 +283,13 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+         return ret;
+     }
+ 
++    crypto->header = bdrv_open_child(NULL, options, "header", bs,
++                                     &child_of_bds, BDRV_CHILD_METADATA,
++                                     true, errp);
++    if (*errp != NULL) {
++        return -EINVAL;
++    }
++
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+ 
+     bs->supported_write_flags = BDRV_REQ_FUA &
+@@ -299,6 +313,9 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+     if (flags & BDRV_O_NO_IO) {
+         cflags |= QCRYPTO_BLOCK_OPEN_NO_IO;
+     }
++    if (crypto->header != NULL) {
++        cflags |= QCRYPTO_BLOCK_OPEN_DETACHED;
++    }
+     crypto->block = qcrypto_block_open(open_opts, NULL,
+                                        block_crypto_read_func,
+                                        bs,
+diff --git a/crypto/block-luks.c b/crypto/block-luks.c
+index fb01ec38bb..10373aaba4 100644
+--- a/crypto/block-luks.c
++++ b/crypto/block-luks.c
+@@ -457,12 +457,15 @@ qcrypto_block_luks_load_header(QCryptoBlock *block,
+  * Does basic sanity checks on the LUKS header
+  */
+ static int
+-qcrypto_block_luks_check_header(const QCryptoBlockLUKS *luks, Error **errp)
++qcrypto_block_luks_check_header(const QCryptoBlockLUKS *luks,
++                                unsigned int flags,
++                                Error **errp)
+ {
+     size_t i, j;
+ 
+     unsigned int header_sectors = QCRYPTO_BLOCK_LUKS_KEY_SLOT_OFFSET /
+         QCRYPTO_BLOCK_LUKS_SECTOR_SIZE;
++    bool detached = flags & QCRYPTO_BLOCK_OPEN_DETACHED;
+ 
+     if (memcmp(luks->header.magic, qcrypto_block_luks_magic,
+                QCRYPTO_BLOCK_LUKS_MAGIC_LEN) != 0) {
+@@ -494,7 +497,7 @@ qcrypto_block_luks_check_header(const QCryptoBlockLUKS *luks, Error **errp)
+         return -1;
+     }
+ 
+-    if (luks->header.payload_offset_sector <
++    if (!detached && luks->header.payload_offset_sector <
+         DIV_ROUND_UP(QCRYPTO_BLOCK_LUKS_KEY_SLOT_OFFSET,
+                      QCRYPTO_BLOCK_LUKS_SECTOR_SIZE)) {
+         error_setg(errp, "LUKS payload is overlapping with the header");
+@@ -543,7 +546,7 @@ qcrypto_block_luks_check_header(const QCryptoBlockLUKS *luks, Error **errp)
+             return -1;
+         }
+ 
+-        if (start1 + len1 > luks->header.payload_offset_sector) {
++        if (!detached && start1 + len1 > luks->header.payload_offset_sector) {
+             error_setg(errp,
+                        "Keyslot %zu is overlapping with the encrypted payload",
+                        i);
+@@ -1203,7 +1206,7 @@ qcrypto_block_luks_open(QCryptoBlock *block,
+         goto fail;
+     }
+ 
+-    if (qcrypto_block_luks_check_header(luks, errp) < 0) {
++    if (qcrypto_block_luks_check_header(luks, flags, errp) < 0) {
+         goto fail;
+     }
+ 
+diff --git a/include/crypto/block.h b/include/crypto/block.h
+index 4f63a37872..d0d97f5d12 100644
+--- a/include/crypto/block.h
++++ b/include/crypto/block.h
+@@ -66,6 +66,7 @@ bool qcrypto_block_has_format(QCryptoBlockFormat format,
+ 
+ typedef enum {
+     QCRYPTO_BLOCK_OPEN_NO_IO = (1 << 0),
++    QCRYPTO_BLOCK_OPEN_DETACHED = (1 << 1),
+ } QCryptoBlockOpenFlags;
+ 
+ /**
+@@ -95,6 +96,10 @@ typedef enum {
+  * metadata such as the payload offset. There will be
+  * no cipher or ivgen objects available.
+  *
++ * If @flags contains QCRYPTO_BLOCK_OPEN_DETACHED then
++ * the open process will be optimized to skip the LUKS
++ * payload overlap check.
++ *
+  * If any part of initializing the encryption context
+  * fails an error will be returned. This could be due
+  * to the volume being in the wrong format, a cipher
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 48c181e55d..ae604c6019 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3365,11 +3365,14 @@
+ #     decryption key (since 2.6). Mandatory except when doing a
+ #     metadata-only probe of the image.
+ #
++# @header: block device holding a detached LUKS header. (since 9.0)
++#
+ # Since: 2.9
+ ##
+ { 'struct': 'BlockdevOptionsLUKS',
+   'base': 'BlockdevOptionsGenericFormat',
+-  'data': { '*key-secret': 'str' } }
++  'data': { '*key-secret': 'str',
++            '*header': 'BlockdevRef'} }
+ 
+ ##
+ # @BlockdevOptionsGenericCOWFormat:
 -- 
 2.31.1
 
