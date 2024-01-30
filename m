@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB7A841B7C
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FC5841B80
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Jan 2024 06:41:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUgqb-0002st-Cb; Tue, 30 Jan 2024 00:39:49 -0500
+	id 1rUgqm-0002uD-5y; Tue, 30 Jan 2024 00:40:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqW-0002rw-In
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:44 -0500
-Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ id 1rUgqe-0002tb-V3
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:52 -0500
+Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rUgqU-0001NJ-OI
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:44 -0500
-Received: by mail-oo1-xc36.google.com with SMTP id
- 006d021491bc7-59502aa878aso1803053eaf.1
- for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:42 -0800 (PST)
+ id 1rUgqW-0001NY-OT
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 00:39:46 -0500
+Received: by mail-yw1-x1134.google.com with SMTP id
+ 00721157ae682-603e7d19725so13626597b3.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Jan 2024 21:37:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593061; x=1707197861;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706593063; x=1707197863;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2Zmg4sbSwcsBk7QBG9lZhae1I6QzpidLZEsTyVPwHJQ=;
- b=WV1D0NjD2ctIOMKVMJ314ln59FkZ0mEObSWnzHGGFniU6UcasUDBV2x76Yjma4um5/
- /gmUa5T8efYDqKoaB8BTanWi0xlv/5Gli1ReLaqvFGhQwpYXuXHS0b/44uTxy2ZzqQfp
- jnYZ7+NSyAqhFDdCmYTaIj2xaxq11BvKnpV0/75hkJHXe7E6ReNwT9jTuXEas6LbACLg
- 1Ycqg8njBpyYT5qe1Y686hPVTHT5JcVgv2K/ZKxs88N1mtHSOInwNUAPag7dT3Zj1vax
- rwB3lgT4kRNPk8XtILX9xKG9t97Dtaacv+cEmCjHEkBUbOyVTGpsDgpO2gNfI0A8S3OW
- YjJw==
+ bh=tzPI5ZhDw6r0Ms2tiVi1ga4ywHBkJRenawMuK5yu+b8=;
+ b=Fx1BLk3Ey4o+HWaGrHLGRVWrFduBY42rza3JIYEOCJuf10gRNOa4t0aiaOvHFckWG9
+ T/j4FEDuNvRO3PvfvLSs09AX1uvnpVF1ZJ8c1YEblmmvZTz8HHVWngXuzewXP0/FY44N
+ uvVbL8qAZN/IQRu3SUSwIpyUme2C1DiQTD3hvekfziFM+xgcXC7WXCkP13nURU76jJAD
+ jlaDoSwaxndzRiZMG/fvr6UFKNyoOw1O3uGG7/hvrmygs+waM56ES+/8dDJcUWeOqKWq
+ AJuuJckp6Xwcck+AWjJM+kNlB3g+mnjZiGeIGOMViGNvUg/vCUu5ekKGliCEyoerqdl9
+ h++Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706593061; x=1707197861;
+ d=1e100.net; s=20230601; t=1706593063; x=1707197863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2Zmg4sbSwcsBk7QBG9lZhae1I6QzpidLZEsTyVPwHJQ=;
- b=lxUqiFPVIwvfNMtAed/PmULCnY1hB7RMU75uRpHnqdAvrGLpdwBwxQdrGe3ssGrWE/
- e7vyK9J9p+bIAXFiWX3/Wh3BmpNjV6ulQtf7GTRXMkI5jwh+ugZxDScgCNcu626hm/nH
- KXzK1fBijqQW4KO4q6crdaHqo69ZaQ1ABQ2wr7ff0HjKKocRHS/2M7Jkg9T/1L0ZrjQ+
- Kh2mVvFn4jI+YA+sWFASk013QByxpFV1dUdxDvzuu5qVYv6qvkh6H+Rv5L3lkVaMv3RM
- GvR/W72rrN5G+HDVYf6yEUNUxDRiXpUYAaO8J7/f0WR5kzhHNQISVmctKTDOBfjtkdnN
- 8xRw==
-X-Gm-Message-State: AOJu0YxzcMIkKdoCwFVHTCFvyUUpmjE8yV8ss3A2IOTKLiU9NgQHr0ZB
- G7RCiusk5k26YvNWTv8QZ+FBveeHv+RXBHIyf7i1VI0G6LgeeorU5V05dtXRWFCiOBHIem4QAwy
- qzI0=
-X-Google-Smtp-Source: AGHT+IH/yItth8XF+5mVj37Yyx7z6K1F1FW6aeEqwAYcvco07wuR+knKc6CpofOhHp2en7k6V7u0JQ==
-X-Received: by 2002:a05:6358:72a4:b0:178:7194:b543 with SMTP id
- w36-20020a05635872a400b001787194b543mr3729757rwf.41.1706593060480; 
- Mon, 29 Jan 2024 21:37:40 -0800 (PST)
+ bh=tzPI5ZhDw6r0Ms2tiVi1ga4ywHBkJRenawMuK5yu+b8=;
+ b=mvV32YhmAOQTuXpOKARP2nZF0oge0r8/3KzK6PnRSOL95p5ULLdcyHYDib5q9W1Rlh
+ DBaaAY2U32HvEmfcvNTz5NsIUxOAywwGemDmAtoSuaicUJIEdpcSGdmXvAdLAqkCUNRh
+ +y0roKq3tHnsNNcunhL1ZaqvSG2bk1uxiBeIrBBJxJCjzjSqzWFCsiY8tSvBChKypRJE
+ 7tnzfeE//PtfGXg9iw3F0iQDCzSVy1OXhvVtgwEBBNAYY/9s8U/X/eVVbnBRTaI5hHQP
+ 6iyMBzJhLUi2GNoBP5OgzKI7gTK/MOXZ7vBsRdo/RzoavHfpadX3WnpwGlw62Gk6EnR+
+ kP2Q==
+X-Gm-Message-State: AOJu0Yyd51sHbwE/vw4WT/6G6RY3sztyzezxQpaRgr7phpc7i5qZjg+K
+ BHzD4sNfpU0Hy2hgY7R6smlCr9rxBBxYNfDUoWjZ2+s9yfgRk4FJrqpxsnNHhx5BqE/Fhd/51SV
+ p4o4=
+X-Google-Smtp-Source: AGHT+IGIUC/LR1n0jPxa3coZEwW292LRhFWh84+rkQTHq9RXPWZD+rZJSG4Au/0kSt/C6acM2Cm8Yw==
+X-Received: by 2002:a5b:d0d:0:b0:dc2:66ab:84b0 with SMTP id
+ y13-20020a5b0d0d000000b00dc266ab84b0mr5707041ybp.64.1706593062808; 
+ Mon, 29 Jan 2024 21:37:42 -0800 (PST)
 Received: from anolis-dev.zelin.local ([221.122.98.162])
  by smtp.gmail.com with ESMTPSA id
- bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.38
+ bv123-20020a632e81000000b005c1ce3c960bsm7343532pgb.50.2024.01.29.21.37.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Jan 2024 21:37:40 -0800 (PST)
+ Mon, 29 Jan 2024 21:37:42 -0800 (PST)
 From: yong.huang@smartx.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  yong.huang@smartx.com
-Subject: [PATCH v4 4/7] block: Support detached LUKS header creation using
- blockdev-create
-Date: Tue, 30 Jan 2024 13:37:22 +0800
-Message-Id: <9e35e621f12478822072e5c740ed65beb77f1238.1706586786.git.yong.huang@smartx.com>
+Subject: [PATCH v4 5/7] block: Support detached LUKS header creation using
+ qemu-img
+Date: Tue, 30 Jan 2024 13:37:23 +0800
+Message-Id: <c573cf4d985b0386e2e419fcccd92245800cdeca.1706586786.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1706586786.git.yong.huang@smartx.com>
 References: <cover.1706586786.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c36;
- envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc36.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1134;
+ envelope-from=yong.huang@smartx.com; helo=mail-yw1-x1134.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,244 +98,151 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang <yong.huang@smartx.com>
 
-Firstly, enable the ability to choose the block device containing
-a detachable LUKS header by adding the 'header' parameter to
-BlockdevCreateOptionsLUKS.
+Even though a LUKS header might be created with cryptsetup,
+qemu-img should be enhanced to accommodate it as well.
 
-Secondly, when formatting the LUKS volume with a detachable header,
-truncate the payload volume to length without a header size.
+Add the 'detached-header' option to specify the creation of
+a detached LUKS header. This is how it is used:
+$ qemu-img create --object secret,id=sec0,data=abc123 -f luks
+> -o cipher-alg=aes-256,cipher-mode=xts -o key-secret=sec0
+> -o detached-header=true header.luks
 
-Using the qmp blockdev command, create the LUKS volume with a
-detachable header as follows:
+Using qemu-img or cryptsetup tools to query information of
+an LUKS header image as follows:
 
-1. add the secret to lock/unlock the cipher stored in the
-   detached LUKS header
-$ virsh qemu-monitor-command vm '{"execute":"object-add",
-> "arguments":{"qom-type": "secret", "id": "sec0", "data": "foo"}}'
+Assume a detached LUKS header image has been created by:
+$ dd if=/dev/zero of=test-header.img bs=1M count=32
+$ dd if=/dev/zero of=test-payload.img bs=1M count=1000
+$ cryptsetup luksFormat --header test-header.img test-payload.img
+> --force-password --type luks1
 
-2. create a header img with 0 size
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-create",
-> "arguments":{"job-id":"job0", "options":{"driver":"file",
-> "filename":"/path/to/detached_luks_header.img", "size":0 }}}'
+Header image information could be queried using cryptsetup:
+$ cryptsetup luksDump test-header.img
 
-3. add protocol blockdev node for header
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments": {"driver":"file", "filename":
-> "/path/to/detached_luks_header.img", "node-name":
-> "detached-luks-header-storage"}}'
+or qemu-img:
+$ qemu-img info 'json:{"driver":"luks","file":{"filename":
+> "test-payload.img"},"header":{"filename":"test-header.img"}}'
 
-4. create a payload img with 0 size
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-create",
-> "arguments":{"job-id":"job1", "options":{"driver":"file",
-> "filename":"/path/to/detached_luks_payload_raw.img", "size":0}}}'
-
-5. add protocol blockdev node for payload
-$ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
-> "arguments": {"driver":"file", "filename":
-> "/path/to/detached_luks_payload_raw.img", "node-name":
-> "luks-payload-raw-storage"}}'
-
-6. do the formatting with 128M size
-$ virsh qemu-monitor-command c81_node1 '{"execute":"blockdev-create",
-> "arguments":{"job-id":"job2", "options":{"driver":"luks", "header":
-> "detached-luks-header-storage", "file":"luks-payload-raw-storage",
-> "size":134217728, "preallocation":"full", "key-secret":"sec0" }}}'
+When using qemu-img, keep in mind that the entire disk
+information specified by the JSON-format string above must be
+supplied on the commandline; if not, an overlay check will reveal
+a problem with the LUKS volume check logic.
 
 Signed-off-by: Hyman Huang <yong.huang@smartx.com>
 ---
- block/crypto.c       | 101 +++++++++++++++++++++++++++++++++++++++----
- qapi/block-core.json |   3 ++
- 2 files changed, 96 insertions(+), 8 deletions(-)
+ block.c          |  5 ++++-
+ block/crypto.c   | 10 +++++++++-
+ block/crypto.h   |  8 ++++++++
+ qapi/crypto.json |  5 ++++-
+ 4 files changed, 25 insertions(+), 3 deletions(-)
 
+diff --git a/block.c b/block.c
+index 30afdcbba6..1ed9214f66 100644
+--- a/block.c
++++ b/block.c
+@@ -7357,7 +7357,10 @@ void bdrv_img_create(const char *filename, const char *fmt,
+         goto out;
+     }
+ 
+-    if (size == -1) {
++    /* Parameter 'size' is not needed for detached LUKS header */
++    if (size == -1 &&
++        !(!strcmp(fmt, "luks") &&
++          qemu_opt_get_bool(opts, "detached-header", false))) {
+         error_setg(errp, "Image creation needs a size parameter");
+         goto out;
+     }
 diff --git a/block/crypto.c b/block/crypto.c
-index 1b3f87922a..8e7ee5e9ac 100644
+index 8e7ee5e9ac..65426d3a16 100644
 --- a/block/crypto.c
 +++ b/block/crypto.c
-@@ -162,6 +162,48 @@ error:
-     return ret;
- }
+@@ -231,6 +231,7 @@ static QemuOptsList block_crypto_create_opts_luks = {
+         BLOCK_CRYPTO_OPT_DEF_LUKS_IVGEN_HASH_ALG(""),
+         BLOCK_CRYPTO_OPT_DEF_LUKS_HASH_ALG(""),
+         BLOCK_CRYPTO_OPT_DEF_LUKS_ITER_TIME(""),
++        BLOCK_CRYPTO_OPT_DEF_LUKS_DETACHED_HEADER(""),
+         { /* end of list */ }
+     },
+ };
+@@ -405,7 +406,7 @@ block_crypto_co_create_generic(BlockDriverState *bs, int64_t size,
  
-+static int coroutine_fn GRAPH_UNLOCKED
-+block_crypto_co_format_luks_payload(BlockdevCreateOptionsLUKS *luks_opts,
-+                                    Error **errp)
-+{
-+    BlockDriverState *bs = NULL;
-+    BlockBackend *blk = NULL;
-+    Error *local_error = NULL;
-+    int ret;
-+
-+    if (luks_opts->size > INT64_MAX) {
-+        return -EFBIG;
-+    }
-+
-+    bs = bdrv_co_open_blockdev_ref(luks_opts->file, errp);
-+    if (bs == NULL) {
-+        return -EIO;
-+    }
-+
-+    blk = blk_co_new_with_bs(bs, BLK_PERM_WRITE | BLK_PERM_RESIZE,
-+                             BLK_PERM_ALL, errp);
-+    if (!blk) {
-+        ret = -EPERM;
-+        goto fail;
-+    }
-+
-+    ret = blk_truncate(blk, luks_opts->size, true,
-+                       luks_opts->preallocation, 0, &local_error);
-+    if (ret < 0) {
-+        if (ret == -EFBIG) {
-+            /* Replace the error message with a better one */
-+            error_free(local_error);
-+            error_setg(errp, "The requested file size is too large");
-+        }
-+        goto fail;
-+    }
-+
-+    ret = 0;
-+
-+fail:
-+    bdrv_co_unref(bs);
-+    return ret;
-+}
+     data = (struct BlockCryptoCreateData) {
+         .blk = blk,
+-        .size = size,
++        .size = flags & QCRYPTO_BLOCK_CREATE_DETACHED ? 0 : size,
+         .prealloc = prealloc,
+     };
  
- static QemuOptsList block_crypto_runtime_opts_luks = {
-     .name = "crypto",
-@@ -341,7 +383,9 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
- static int coroutine_fn GRAPH_UNLOCKED
- block_crypto_co_create_generic(BlockDriverState *bs, int64_t size,
-                                QCryptoBlockCreateOptions *opts,
--                               PreallocMode prealloc, Error **errp)
-+                               PreallocMode prealloc,
-+                               unsigned int flags,
-+                               Error **errp)
- {
-     int ret;
-     BlockBackend *blk;
-@@ -369,7 +413,7 @@ block_crypto_co_create_generic(BlockDriverState *bs, int64_t size,
-                                   block_crypto_create_init_func,
-                                   block_crypto_create_write_func,
-                                   &data,
--                                  0,
-+                                  flags,
-                                   errp);
- 
-     if (!crypto) {
-@@ -656,16 +700,26 @@ static int coroutine_fn GRAPH_UNLOCKED
- block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
- {
-     BlockdevCreateOptionsLUKS *luks_opts;
-+    BlockDriverState *hdr_bs = NULL;
-     BlockDriverState *bs = NULL;
-     QCryptoBlockCreateOptions create_opts;
-     PreallocMode preallocation = PREALLOC_MODE_OFF;
+@@ -791,6 +792,9 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
+     PreallocMode prealloc;
+     char *buf = NULL;
+     int64_t size;
++    bool detached_hdr =
++        qemu_opt_get_bool(opts, "detached-header", false);
 +    unsigned int cflags = 0;
      int ret;
+     Error *local_err = NULL;
  
-     assert(create_options->driver == BLOCKDEV_DRIVER_LUKS);
-     luks_opts = &create_options->u.luks;
- 
--    if (luks_opts->file == NULL) {
--        error_setg(errp, "Formatting LUKS disk requires parameter 'file'");
-+    if (luks_opts->header == NULL && luks_opts->file == NULL) {
-+        error_setg(errp, "Either the parameter 'header' or 'file' must "
-+                   "be specified");
-+        return -EINVAL;
-+    }
-+
-+    if ((luks_opts->preallocation != PREALLOC_MODE_OFF) &&
-+        (luks_opts->file == NULL)) {
-+        error_setg(errp, "Parameter 'preallocation' requires 'file' to be "
-+                   "specified for formatting LUKS disk");
-         return -EINVAL;
-     }
- 
-@@ -678,14 +732,38 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
-         preallocation = luks_opts->preallocation;
-     }
- 
--    if (luks_opts->file) {
-+    if (luks_opts->header) {
-+        /* LUKS volume with detached header */
-+        hdr_bs = bdrv_co_open_blockdev_ref(luks_opts->header, errp);
-+        if (hdr_bs == NULL) {
-+            return -EIO;
-+        }
-+
-+        cflags |= QCRYPTO_BLOCK_CREATE_DETACHED;
-+
-+        /* Format the LUKS header node */
-+        ret = block_crypto_co_create_generic(hdr_bs, 0, &create_opts,
-+                                             PREALLOC_MODE_OFF, cflags, errp);
-+        if (ret < 0) {
-+            goto fail;
-+        }
-+
-+        /* Format the LUKS payload node */
-+        if (luks_opts->file) {
-+            ret = block_crypto_co_format_luks_payload(luks_opts, errp);
-+            if (ret < 0) {
-+                goto fail;
-+            }
-+        }
-+    } else if (luks_opts->file) {
-+        /* LUKS volume with none-detached header */
-         bs = bdrv_co_open_blockdev_ref(luks_opts->file, errp);
-         if (bs == NULL) {
-             return -EIO;
-         }
- 
-         ret = block_crypto_co_create_generic(bs, luks_opts->size, &create_opts,
--                                             preallocation, errp);
-+                                             preallocation, cflags, errp);
-         if (ret < 0) {
-             goto fail;
-         }
-@@ -693,7 +771,13 @@ block_crypto_co_create_luks(BlockdevCreateOptions *create_options, Error **errp)
- 
-     ret = 0;
- fail:
--    bdrv_co_unref(bs);
-+    if (hdr_bs != NULL) {
-+        bdrv_co_unref(hdr_bs);
-+    }
-+
-+    if (bs != NULL) {
-+        bdrv_co_unref(bs);
-+    }
-     return ret;
- }
- 
-@@ -747,7 +831,8 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
-     }
- 
-     /* Create format layer */
--    ret = block_crypto_co_create_generic(bs, size, create_opts, prealloc, errp);
-+    ret = block_crypto_co_create_generic(bs, size, create_opts,
-+                                         prealloc, 0, errp);
-     if (ret < 0) {
+@@ -830,6 +834,10 @@ block_crypto_co_create_opts_luks(BlockDriver *drv, const char *filename,
          goto fail;
      }
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 69a88d613d..eab15d7dd9 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -4960,6 +4960,8 @@
- # @file: Node to create the image format on, mandatory except when
- #        'preallocation' is not requested
- #
-+# @header: Block device holding a detached LUKS header. (since 9.0)
-+#
- # @size: Size of the virtual disk in bytes
- #
- # @preallocation: Preallocation mode for the new image (since: 4.2)
-@@ -4970,6 +4972,7 @@
- { 'struct': 'BlockdevCreateOptionsLUKS',
-   'base': 'QCryptoBlockCreateOptionsLUKS',
-   'data': { '*file':            'BlockdevRef',
-+            '*header':          'BlockdevRef',
-             'size':             'size',
-             '*preallocation':   'PreallocMode' } }
  
++    if (detached_hdr) {
++        cflags |= QCRYPTO_BLOCK_CREATE_DETACHED;
++    }
++
+     /* Create format layer */
+     ret = block_crypto_co_create_generic(bs, size, create_opts,
+                                          prealloc, 0, errp);
+diff --git a/block/crypto.h b/block/crypto.h
+index 72e792c9af..dc3d2d5ed9 100644
+--- a/block/crypto.h
++++ b/block/crypto.h
+@@ -41,6 +41,7 @@
+ #define BLOCK_CRYPTO_OPT_LUKS_IVGEN_HASH_ALG "ivgen-hash-alg"
+ #define BLOCK_CRYPTO_OPT_LUKS_HASH_ALG "hash-alg"
+ #define BLOCK_CRYPTO_OPT_LUKS_ITER_TIME "iter-time"
++#define BLOCK_CRYPTO_OPT_LUKS_DETACHED_HEADER "detached-header"
+ #define BLOCK_CRYPTO_OPT_LUKS_KEYSLOT "keyslot"
+ #define BLOCK_CRYPTO_OPT_LUKS_STATE "state"
+ #define BLOCK_CRYPTO_OPT_LUKS_OLD_SECRET "old-secret"
+@@ -100,6 +101,13 @@
+         .help = "Select new state of affected keyslots (active/inactive)",\
+     }
+ 
++#define BLOCK_CRYPTO_OPT_DEF_LUKS_DETACHED_HEADER(prefix)     \
++    {                                                         \
++        .name = prefix BLOCK_CRYPTO_OPT_LUKS_DETACHED_HEADER, \
++        .type = QEMU_OPT_BOOL,                                \
++        .help = "Create a detached LUKS header",              \
++    }
++
+ #define BLOCK_CRYPTO_OPT_DEF_LUKS_KEYSLOT(prefix)              \
+     {                                                          \
+         .name = prefix BLOCK_CRYPTO_OPT_LUKS_KEYSLOT,          \
+diff --git a/qapi/crypto.json b/qapi/crypto.json
+index fd3d46ebd1..62fd145223 100644
+--- a/qapi/crypto.json
++++ b/qapi/crypto.json
+@@ -223,6 +223,8 @@
+ # @iter-time: number of milliseconds to spend in PBKDF passphrase
+ #     processing.  Currently defaults to 2000. (since 2.8)
+ #
++# @detached-header: create a detached LUKS header. (since 9.0)
++#
+ # Since: 2.6
+ ##
+ { 'struct': 'QCryptoBlockCreateOptionsLUKS',
+@@ -232,7 +234,8 @@
+             '*ivgen-alg': 'QCryptoIVGenAlgorithm',
+             '*ivgen-hash-alg': 'QCryptoHashAlgorithm',
+             '*hash-alg': 'QCryptoHashAlgorithm',
+-            '*iter-time': 'int'}}
++            '*iter-time': 'int',
++            '*detached-header': 'bool'}}
+ 
+ ##
+ # @QCryptoBlockOpenOptions:
 -- 
 2.31.1
 
