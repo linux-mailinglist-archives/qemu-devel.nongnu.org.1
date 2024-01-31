@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E43843EFC
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D21843F06
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9CR-0008Ub-TM; Wed, 31 Jan 2024 06:56:17 -0500
+	id 1rV9Cd-0000Fq-VB; Wed, 31 Jan 2024 06:56:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CL-0008Qe-Mq; Wed, 31 Jan 2024 06:56:09 -0500
+ id 1rV9CQ-00005b-6r; Wed, 31 Jan 2024 06:56:15 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CJ-0003xB-O8; Wed, 31 Jan 2024 06:56:09 -0500
+ id 1rV9CN-0003xX-1q; Wed, 31 Jan 2024 06:56:13 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 504A3490C7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 61344490C8;
  Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8563B70270;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9651870271;
  Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263939 invoked by uid 1000);
+Received: (nullmailer pid 2263942 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 09/21] aspeed: Clean up includes
-Date: Wed, 31 Jan 2024 14:55:37 +0300
-Message-Id: <20240131115549.2263854-10-mjt@tls.msk.ru>
+Subject: [PULL 10/21] acpi: Clean up includes
+Date: Wed, 31 Jan 2024 14:55:38 +0300
+Message-Id: <20240131115549.2263854-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
@@ -62,7 +62,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-This commit was created with scripts/clean-includes.
+This commit was created with scripts/clean-includes:
+ ./scripts/clean-includes --git acpi include/hw/*/*acpi.h hw/*/*acpi.c
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -79,48 +80,60 @@ Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/arm/aspeed_eeprom.c     | 1 +
- hw/arm/aspeed_eeprom.h     | 1 -
- tests/qtest/qtest_aspeed.h | 2 --
- 3 files changed, 1 insertion(+), 3 deletions(-)
+ hw/nvram/fw_cfg-acpi.c          | 1 +
+ hw/virtio/virtio-acpi.c         | 1 +
+ include/hw/nvram/fw_cfg_acpi.h  | 1 -
+ include/hw/virtio/virtio-acpi.h | 1 -
+ 4 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
-index ace5266cec..daa3d329d1 100644
---- a/hw/arm/aspeed_eeprom.c
-+++ b/hw/arm/aspeed_eeprom.c
+diff --git a/hw/nvram/fw_cfg-acpi.c b/hw/nvram/fw_cfg-acpi.c
+index 4e48baeaa0..58cdcd3121 100644
+--- a/hw/nvram/fw_cfg-acpi.c
++++ b/hw/nvram/fw_cfg-acpi.c
 @@ -4,6 +4,7 @@
-  * SPDX-License-Identifier: GPL-2.0-only
+  *
   */
  
 +#include "qemu/osdep.h"
- #include "aspeed_eeprom.h"
+ #include "hw/nvram/fw_cfg_acpi.h"
+ #include "hw/acpi/aml-build.h"
  
- /* Tiogapass BMC FRU */
-diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
-index bbf9e54365..f08c16ef50 100644
---- a/hw/arm/aspeed_eeprom.h
-+++ b/hw/arm/aspeed_eeprom.h
+diff --git a/hw/virtio/virtio-acpi.c b/hw/virtio/virtio-acpi.c
+index e18cb38bdb..230a669500 100644
+--- a/hw/virtio/virtio-acpi.c
++++ b/hw/virtio/virtio-acpi.c
+@@ -4,6 +4,7 @@
+  *
+  */
+ 
++#include "qemu/osdep.h"
+ #include "hw/virtio/virtio-acpi.h"
+ #include "hw/acpi/aml-build.h"
+ 
+diff --git a/include/hw/nvram/fw_cfg_acpi.h b/include/hw/nvram/fw_cfg_acpi.h
+index b6553d86fc..b39eb0490f 100644
+--- a/include/hw/nvram/fw_cfg_acpi.h
++++ b/include/hw/nvram/fw_cfg_acpi.h
 @@ -7,7 +7,6 @@
- #ifndef ASPEED_EEPROM_H
- #define ASPEED_EEPROM_H
+ #ifndef FW_CFG_ACPI_H
+ #define FW_CFG_ACPI_H
  
 -#include "qemu/osdep.h"
+ #include "exec/hwaddr.h"
  
- extern const uint8_t tiogapass_bmc_fruid[];
- extern const size_t tiogapass_bmc_fruid_len;
-diff --git a/tests/qtest/qtest_aspeed.h b/tests/qtest/qtest_aspeed.h
-index 235dfaa186..d35b0c7cba 100644
---- a/tests/qtest/qtest_aspeed.h
-+++ b/tests/qtest/qtest_aspeed.h
-@@ -12,8 +12,6 @@
- #ifndef QTEST_ASPEED_H
- #define QTEST_ASPEED_H
+ void fw_cfg_acpi_dsdt_add(Aml *scope, const MemMapEntry *fw_cfg_memmap);
+diff --git a/include/hw/virtio/virtio-acpi.h b/include/hw/virtio/virtio-acpi.h
+index 844e102569..cace2a315f 100644
+--- a/include/hw/virtio/virtio-acpi.h
++++ b/include/hw/virtio/virtio-acpi.h
+@@ -6,7 +6,6 @@
+ #ifndef VIRTIO_ACPI_H
+ #define VIRTIO_ACPI_H
  
--#include <stdint.h>
--
- #include "libqtest.h"
+-#include "qemu/osdep.h"
+ #include "exec/hwaddr.h"
  
- #define AST2600_ASPEED_I2C_BASE_ADDR 0x1e78a000
+ void virtio_acpi_dsdt_add(Aml *scope, const hwaddr virtio_mmio_base,
 -- 
 2.39.2
 
