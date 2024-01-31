@@ -2,110 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18578844A4C
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 22:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 972AE844A63
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 22:50:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVIMd-0001s2-Bf; Wed, 31 Jan 2024 16:43:23 -0500
+	id 1rVISZ-0004z4-5Q; Wed, 31 Jan 2024 16:49:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVIMZ-0001rm-L1
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 16:43:19 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVIMY-0006Lb-2G
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 16:43:19 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8758D21FF4;
- Wed, 31 Jan 2024 21:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706737396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMp6vxLeBtTgxq/7xBwM0ojy2kgfRThgbtEmweWCUWo=;
- b=CzhyYM6+uikG2exqLXK1Ckk80ECY0wrYRhrBVtKv3+O0FnhrVib7t9W/WzM2iSfhSlUKh1
- vMnn0zPyWCKLy5y935h5CW+QXnWXBkkZjz4Jv/+19j4p3H7i1ySbEqBV9yDXCiDG98WWUl
- pIRXYqYLfP9eK5Q7lTq7uSPjWXb/J8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706737396;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMp6vxLeBtTgxq/7xBwM0ojy2kgfRThgbtEmweWCUWo=;
- b=ncl09W3QAwkHywiZTUvNGobulZOkNePessC754ZMKIieoVNMRaZsyjjqVWKX+ZMiO2lzO+
- DV3/++PlNQJDQ3Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706737396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMp6vxLeBtTgxq/7xBwM0ojy2kgfRThgbtEmweWCUWo=;
- b=CzhyYM6+uikG2exqLXK1Ckk80ECY0wrYRhrBVtKv3+O0FnhrVib7t9W/WzM2iSfhSlUKh1
- vMnn0zPyWCKLy5y935h5CW+QXnWXBkkZjz4Jv/+19j4p3H7i1ySbEqBV9yDXCiDG98WWUl
- pIRXYqYLfP9eK5Q7lTq7uSPjWXb/J8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706737396;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FMp6vxLeBtTgxq/7xBwM0ojy2kgfRThgbtEmweWCUWo=;
- b=ncl09W3QAwkHywiZTUvNGobulZOkNePessC754ZMKIieoVNMRaZsyjjqVWKX+ZMiO2lzO+
- DV3/++PlNQJDQ3Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 070761347F;
- Wed, 31 Jan 2024 21:43:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id Ys7kL/O+umVIcQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 31 Jan 2024 21:43:15 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: peterx@redhat.com, qemu-devel@nongnu.org
-Cc: Bryan Zhang <bryan.zhang@bytedance.com>, Prasad Pandit
- <ppandit@redhat.com>, peterx@redhat.com, Yuan Liu <yuan1.liu@intel.com>,
- Avihai Horon <avihaih@nvidia.com>, Hao Xiang <hao.xiang@bytedance.com>
-Subject: Re: [PATCH 14/14] migration/multifd: Forbid spurious wakeups
-In-Reply-To: <20240131103111.306523-15-peterx@redhat.com>
-References: <20240131103111.306523-1-peterx@redhat.com>
- <20240131103111.306523-15-peterx@redhat.com>
-Date: Wed, 31 Jan 2024 18:43:13 -0300
-Message-ID: <874jetji1a.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rVISX-0004xM-G5
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 16:49:29 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rVISV-00084W-BM
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 16:49:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=PkAjUhH6VeffhCk4g8SmClnsfF20XGc9AVspgFjh6wk=; b=CmqQ1hlqzMkQLMq7Cq0u6mruQk
+ luEyn2SDMnVlsI6Tlm6QHhu4tlkiYQvG1DWWOk+ilUPI9TukwEmcOFwlfq9CgJkbdhtpXAC5clwLO
+ OMrjohyOoRK0QJxfr6cz56IhrMhN6c7tBmwDB7H63EvxNjmgdW+IiKY9I8u9YoIug3RHD/HardULE
+ MUlbAIXJI6x6Hs01Gb/8Xk6sFVaqXD5D+xYTiEOMAtN2P2fuSvBpqC4X/JXhkxOjEVyBihRnI8GYU
+ dQsEa0MH+036x0k38NpcRyug8f+gHLCqBW0dJP5CCg1yVI67W6+gnEH1LIXL5V4NrbqX64FBLiJj1
+ q7WbeMsVACna+xvU9eJQFy72FkYEZMqulxdDde+E+IeJ0+TDjCCk9urdSXat2ARKi9ry8xayxfJQl
+ VjLzNRx4pnbqL+wT847Jdws0HBHmxsaaccCthzS9T+KpOq8SKBwjW6xA6PhCHrDUVgzsTD1sn+qRZ
+ QQYQgl4WYEo5GF7CDa0pWfKL7pQrOCvUWPrn3Ked93noO1xLv1bA19jp9AkIzqz+bKgyTdDgJKtRk
+ KCQ1tKRbMsRnhJtGY/N9jyNARNDa5F04DYQdz7C6r7yWkmy4cUSPxZ/v0Ywnbb0Y46EBS0mST7a+0
+ 1nxw/R9q1pq2Irqrx6BgkcSJUvyUYdXVg7fD4dDMs=;
+Received: from [2a00:23c4:8bb2:1300:abd8:dbb4:d9a1:12c5]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rVIRn-0009Zg-Sk; Wed, 31 Jan 2024 21:48:47 +0000
+Message-ID: <b6ac778b-4a75-4c1d-812d-23e27f9a9b04@ilande.co.uk>
+Date: Wed, 31 Jan 2024 21:49:13 +0000
 MIME-Version: 1.0
-Content-Type: text/plain
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CzhyYM6+;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ncl09W3Q
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.32 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- BAYES_HAM(-2.81)[99.18%]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -6.32
-X-Rspamd-Queue-Id: 8758D21FF4
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20231103173841.33651-1-richard.henderson@linaro.org>
+ <a96a571b-55b7-46b4-a793-bb405ef10467@linaro.org>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <a96a571b-55b7-46b4-a793-bb405ef10467@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:abd8:dbb4:d9a1:12c5
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 00/22] target/sparc: floating-point cleanup
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,19 +102,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-peterx@redhat.com writes:
+On 28/01/2024 06:49, Richard Henderson wrote:
 
-> From: Peter Xu <peterx@redhat.com>
->
-> Now multifd's logic is designed to have no spurious wakeup.  I still
-> remember a talk to Juan and he seems to agree we should drop it now, and if
-> my memory was right it was there because multifd used to hit that when
-> still debugging.
->
-> Let's drop it and see what can explode; as long as it's not reaching
-> soft-freeze.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> On 11/4/23 03:38, Richard Henderson wrote:
+>> Major changes:
+>>
+>> (1) Get rid of the env->qt[01] temporaries and use TCGv_i128 for float128.
+>> (2) Perform ieee exception check within the helpers, before any writeback
+>>      to the floating point registers.
+>> (3) Split env->fsr into pieces to simplify update, especially compares.
+>>
+>>
+>> r~
+>>
+>>
+>> Based-on: 20231101041132.174501-1-richard.henderson@linaro.org
+>> ("[PATCH v2 00/21] target/sparc: Cleanup condition codes etc")
+> 
+> Ping.
+> 
+> Prerequisites are upstream, and it rebases cleanly on master.
+> For reference,
+> 
+>    https://gitlab.com/rth7680/qemu/-/commits/tgt-sparc-fp
+> 
+> 
+> r~
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+I've tested the above branch on my SPARC32 and SPARC64 images, and whilst I don't 
+think they particularly exercise FP instructions, I don't see any regressions so:
+
+Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+I'm happy for you to take this via tcg-next if that's easiest for you.
+
+>> Richard Henderson (22):
+>>    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for ASI_M_BCOPY
+>>    target/sparc: Use tcg_gen_qemu_{ld,st}_i128 for ASI_M_BFILL
+>>    target/sparc: Remove gen_dest_fpr_F
+>>    target/sparc: Introduce gen_{load,store}_fpr_Q
+>>    target/sparc: Inline FNEG, FABS
+>>    target/sparc: Use i128 for FSQRTq
+>>    target/sparc: Use i128 for FADDq, FSUBq, FMULq, FDIVq
+>>    target/sparc: Use i128 for FqTOs, FqTOi
+>>    target/sparc: Use i128 for FqTOd, FqTOx
+>>    target/sparc: Use i128 for FCMPq, FCMPEq
+>>    target/sparc: Use i128 for FsTOq, FiTOq
+>>    target/sparc: Use i128 for FdTOq, FxTOq
+>>    target/sparc: Use i128 for Fdmulq
+>>    target/sparc: Remove qt0, qt1 temporaries
+>>    target/sparc: Introduce cpu_get_fsr, cpu_put_fsr
+>>    target/split: Split ver from env->fsr
+>>    target/sparc: Clear cexc and ftt in do_check_ieee_exceptions
+>>    target/sparc: Merge check_ieee_exceptions with FPop helpers
+>>    target/sparc: Split cexc and ftt from env->fsr
+>>    target/sparc: Remove cpu_fsr
+>>    target/sparc: Split fcc out of env->fsr
+>>    target/sparc: Remove FSR_FTT_NMASK, FSR_FTT_CEXC_NMASK
+>>
+>>   target/sparc/cpu.h          |  39 +-
+>>   target/sparc/helper.h       | 116 ++----
+>>   linux-user/sparc/cpu_loop.c |   2 +-
+>>   linux-user/sparc/signal.c   |  14 +-
+>>   target/sparc/cpu.c          |  32 +-
+>>   target/sparc/fop_helper.c   | 510 +++++++++++++----------
+>>   target/sparc/gdbstub.c      |   8 +-
+>>   target/sparc/ldst_helper.c  |   3 -
+>>   target/sparc/machine.c      |  38 +-
+>>   target/sparc/translate.c    | 799 ++++++++++++------------------------
+>>   10 files changed, 680 insertions(+), 881 deletions(-)
+
+
+ATB,
+
+Mark.
+
 
