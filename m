@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D428431C5
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 01:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 197CF8431E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 01:27:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUyLP-0000kW-Rp; Tue, 30 Jan 2024 19:20:47 -0500
+	id 1rUyPs-0002El-JJ; Tue, 30 Jan 2024 19:25:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUyLN-0000kB-6k; Tue, 30 Jan 2024 19:20:45 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rUyLL-0002gj-HO; Tue, 30 Jan 2024 19:20:44 -0500
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40UMvsin026643; Wed, 31 Jan 2024 00:20:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=XGAEzcsJtQBtV0CR9MG9dsaKQLIQJKcj4JS4UHvcmDg=;
- b=FkqiB8LktRtOGGp/gRm0m2yv7QuLQrMnBTXIX9DCpY1zZwR19YeK38MdmaOztX9HEbS3
- AcQuEzNeGJO+lMvAZl04R6qqnuaupyF3kWrQtGm1yBP7R+Kr6wz7+MTOJEWJ20giU+ly
- dVOZqN9jl4ChxD4gLjiwOp1m42Z92CDpT/vpN5XgzAoW7HzqRrkf4xdWBQ4xqCoOkXjB
- BxLZOnoL7xi+qKaS9UXq2ZyUHiXPwgbm3r3TM/o++bmCVA/yLjZDinELOvk9timWgRyC
- 5fVbeQ6BqA2VQ1Bl8O2mWefc/DSWeivmM0OfeMPae9rbVaDcZlNeijgyTjw3urmAjZsf 3A== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyac91x40-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 00:20:36 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40UNevre011231; Wed, 31 Jan 2024 00:19:00 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweckht8s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 00:19:00 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40V0Iw1q38535528
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Jan 2024 00:18:58 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 949B920043;
- Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E45020040;
- Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
-Received: from heavy.ibm.com (unknown [9.179.12.102])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH] linux-user: Make TARGET_NR_setgroups affect only the current
- thread
-Date: Wed, 31 Jan 2024 01:18:46 +0100
-Message-ID: <20240131001851.15932-1-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lTT5oxqpMHvs5E3DoZWrLBfQfowP74vs
-X-Proofpoint-GUID: lTT5oxqpMHvs5E3DoZWrLBfQfowP74vs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-30_13,2024-01-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=938 bulkscore=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 spamscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401310001
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from
+ <3bpO5ZQwKCq8cPQXWThiTUPcVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--nabihestefan.bounces.google.com>)
+ id 1rUyPq-0002EV-R4
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 19:25:22 -0500
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from
+ <3bpO5ZQwKCq8cPQXWThiTUPcVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--nabihestefan.bounces.google.com>)
+ id 1rUyPo-0003m4-Ho
+ for qemu-devel@nongnu.org; Tue, 30 Jan 2024 19:25:22 -0500
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-5f874219ff9so5771557b3.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Jan 2024 16:25:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1706660718; x=1707265518; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=f40XfUUTa/tJMFfses+Lto4m+MDT9EIZ8dnUNgZSxqQ=;
+ b=rAX198aiFDBCjoj53nt5hXGRmlg+3TibwFfBkcqmsrQaec9JmoRc3NGXTIRsNh14AJ
+ YfqEJ78a/gP9ne21WituTY+AFM2b/d5jjZCfFwc1zZa/GAvbTaHGkVdWkbgCsKF433At
+ 7DOzpJ3svngb1ZcLKVYGXBJbJ9sL1lfrCf0tiRV7EVDwoUI9y/2ZFYNQJ7/bJ0caVpqY
+ 7GxNNGm7uPEztfdRmLAPBOhxzrQV7DmUr8NCGgUqZZCqToZ/zSrgePYwmuTO5TTIvt+F
+ 5dlAMUjJaICZxoI3mi081hY5I9HYGT5m6O9YvRtZP1LnUGF+dBOTM+WKfOFk43E33UF/
+ G2Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706660718; x=1707265518;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=f40XfUUTa/tJMFfses+Lto4m+MDT9EIZ8dnUNgZSxqQ=;
+ b=toajVqo3UvRICPA9gPSrQVuHnDAbuO5FUlJL4hCznCEtVdST+Ev9TpINjheyhl+vRy
+ 2v8dqkZKpZQIM31p8UVzVGal7c2LsxKeRZSesJzpTYV8O5uBzW1yhqtW12NTvc/MK8Hs
+ ii5qJOYCIXi4gnVh0ErE35gaB7aRe80LUXC1tQVBk+wphVD8UJXWvkg3jflxnhg1YSyy
+ gJzuhPcdmL/v0R5TrSugtA40IYnw5eiz1bJI/0I2DQjSHfUL88S3gHXtWGw/FXfhZWwu
+ verUUUG1fYe/HiTba4gQzhBR8IZWt2x08u6J4hh47mVMIIfhQaSi0ejZOlFqmYl7rf+J
+ 4wqw==
+X-Gm-Message-State: AOJu0YwV6uzpo4YnWiwoCmg7mfaYJLybF40yIwiGlGyb6lv01WAD+f+6
+ ndAJRj0/4/itGdQcYVtMSnNWrYkxky5sRoOPznT7aDDhTuLUSdpdJmAi0FzTy4UEejntDMeYHgb
+ pP+GzgSaFD76rMC/GhMX5fgqNpQ==
+X-Google-Smtp-Source: AGHT+IGrB8Gz9DHwuD4CWwpMl4r4MoeMWruWdotyp9zvAoNovgUWzgFc1oezP5RtIdSet7NhyUgH4kzsaJKWLD7bUCs=
+X-Received: from nabihestefan.c.googlers.com
+ ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
+ (user=nabihestefan job=sendgmr) by 2002:a81:af61:0:b0:5ff:83c7:b5a0 with SMTP
+ id x33-20020a81af61000000b005ff83c7b5a0mr598254ywj.5.1706660718543; Tue, 30
+ Jan 2024 16:25:18 -0800 (PST)
+Date: Wed, 31 Jan 2024 00:25:05 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240131002511.986787-1-nabihestefan@google.com>
+Subject: [PATCH v16 0/6] Implementation of NPI Mailbox and GMAC Networking
+ Module
+From: Nabih Estefan <nabihestefan@google.com>
+To: peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
+ nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
+ Hila.Miranda-Kuzi@nuvoton.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3bpO5ZQwKCq8cPQXWThiTUPcVddVaT.RdbfTbj-STkTacdcVcj.dgV@flex--nabihestefan.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,58 +93,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
-calling thread, and not the entire process. Therefore, implement it
-using a syscall, and not a libc call.
+From: Nabih Estefan Diaz <nabihestefan@google.com>
 
-Cc: qemu-stable@nongnu.org
-Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- linux-user/syscall.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+[Changes since v15]
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index ff245dade51..da15d727e16 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -7203,11 +7203,17 @@ static inline int tswapid(int id)
- #else
- #define __NR_sys_setresgid __NR_setresgid
- #endif
-+#ifdef __NR_setgroups32
-+#define __NR_sys_setgroups __NR_setgroups32
-+#else
-+#define __NR_sys_setgroups __NR_setgroups
-+#endif
- 
- _syscall1(int, sys_setuid, uid_t, uid)
- _syscall1(int, sys_setgid, gid_t, gid)
- _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
- _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
-+_syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
- 
- void syscall_init(void)
- {
-@@ -11772,7 +11778,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 unlock_user(target_grouplist, arg2,
-                             gidsetsize * sizeof(target_id));
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
-         }
-     case TARGET_NR_fchown:
-         return get_errno(fchown(arg1, low2highuid(arg2), low2highgid(arg3)));
-@@ -12108,7 +12114,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 }
-                 unlock_user(target_grouplist, arg2, 0);
-             }
--            return get_errno(setgroups(gidsetsize, grouplist));
-+            return get_errno(sys_setgroups(gidsetsize, grouplist));
-         }
- #endif
- #ifdef TARGET_NR_fchown32
+Dropped PCI MBox patches. They were presenting a lot of problems with endianness and are not directly related to the GMAC. Breaking them apart to debug separately and let the GMAC itself be upstreamed faster.
+
+[Changes since v14]
+Expanded comment on chardev device and fixed comment formatting
+
+[Changes since v13]
+Added a couple clarifying comments and documentation about chardev
+device expected protocol for ease of review.
+
+[Changes since v12]
+Fix errors found when testing in big-endian host.
+
+[Changes since v11]
+Branch couldn't be merged with master because of issues in patchset 6.
+Fixed.
+
+[Changes since v10]
+Fixed macOS build issue. Changed imports to not be linux-specific.
+
+[Changes since v9]
+More cleanup and fixes based on suggestions from Peter Maydell
+(peter.maydell@linaro.org) suggestions.
+
+[Changes since v8]
+Suggestions and Fixes from Peter Maydell (peter.maydell@linaro.org),
+also cleaned up changes so nothing is deleted in a later patch that was
+added in an earlier patch. Patch count decresed by 1 because this cleanup
+led to one of the patches being irrelevant.
+
+[Changes since v7]
+Fixed patch 4 declaration of new NIC based on comments by Peter Maydell
+(peter.maydell@linaro.org)
+
+[Changes since v6]
+Remove the Change-Ids from the commit messages.
+
+[Changes since v5]
+Undid remove of some qtests that seem to have been caused by a merge
+conflict.
+
+[Changes since v4]
+Added Signed-off-by tag and fixed patch 4 commit message as suggested by
+Peter Maydell (peter.maydell@linaro.org)
+
+[Changes since v3]
+Fixed comments from Hao Wu (wuhaotsh@google.com)
+
+[Changes since v2]
+Fixed bugs related to the RC functionality of the GMAC. Added and
+squashed patches related to that.
+
+[Changes since v1]
+Fixed some errors in formatting.
+Fixed a merge error that I didn't see in v1.
+Removed Nuvoton 8xx references since that is a separate patch set.
+
+[Original Cover]
+Creates NPI Mailbox Module with data verification for read and write (internal and external),
+wiring to the Nuvoton SoC, and QTests.
+
+Also creates the GMAC Networking Module. Implements read and write functionalities with cooresponding descriptors
+and registers. Also includes QTests for the different functionalities.
+
+Hao Wu (2):
+  hw/net: Add NPCMXXX GMAC device
+  hw/arm: Add GMAC devices to NPCM7XX SoC
+
+Nabih Estefan Diaz (4):
+  tests/qtest: Creating qtest for GMAC Module
+  hw/net: GMAC Rx Implementation
+  hw/net: GMAC Tx Implementation
+  tests/qtest: Adding PCS Module test to GMAC Qtest
+
+ hw/arm/npcm7xx.c             |  37 +-
+ hw/net/meson.build           |   2 +-
+ hw/net/npcm_gmac.c           | 942 +++++++++++++++++++++++++++++++++++
+ hw/net/trace-events          |  19 +
+ include/hw/arm/npcm7xx.h     |   2 +
+ include/hw/net/npcm_gmac.h   | 343 +++++++++++++
+ tests/qtest/meson.build      |   1 +
+ tests/qtest/npcm_gmac-test.c | 344 +++++++++++++
+ 8 files changed, 1687 insertions(+), 3 deletions(-)
+ create mode 100644 hw/net/npcm_gmac.c
+ create mode 100644 include/hw/net/npcm_gmac.h
+ create mode 100644 tests/qtest/npcm_gmac-test.c
+
 -- 
-2.43.0
+2.43.0.429.g432eaa2c6b-goog
 
 
