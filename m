@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6900C843F10
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 121BB843F11
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:02:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9Gu-0008UI-Vt; Wed, 31 Jan 2024 07:00:56 -0500
+	id 1rV9I0-0005FF-Hp; Wed, 31 Jan 2024 07:02:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV9GM-0008CK-6q
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 07:00:18 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV9Hq-0004xI-Eg
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 07:01:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV9GG-0004jP-PI
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 07:00:14 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV9Ho-00052X-86
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 07:01:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706702411;
+ s=mimecast20190719; t=1706702507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=yFNgRz4XN/r1kegOurShcrU2SXLxYs6hWAdLWmlNpCU=;
- b=aN0N22IEWnuFYzTeKIkBOaCM/6THHcKQS8UTTkGB9L2TmHnhC9SrNeyQuXr6WZmxGNkoIF
- vld+C/JYw/7Afx3bbVOptvtJG6n+2wb2iU0jh08nLvBOIjeZuR5Bwpkj3JljrBX04fTUc1
- n9mKjIo2FiqfTp7njAMxVwRHtgrhIBI=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pMYLE184Js9ZDRow5gx15LL1mWvff0WtPo4I9dm+584=;
+ b=iVscvDVUH61OyH1fdZ4hjZoCziWN7g93ZOhjNnjYbTnS/+fqcXi9Xsz9vKi3+24VPMHtIK
+ 5LjFNPhMmvCciGi+5DHn9wVsGyPBP/rVtdEFD/3BVACMm6GjDIMs1ZjMRVEO/0u9rVbJ+I
+ qtV/cqYKqLtcYWg15m/WOwfDhWylQVs=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-Ks8V9E5XPAGRa3u22cyguA-1; Wed, 31 Jan 2024 07:00:09 -0500
-X-MC-Unique: Ks8V9E5XPAGRa3u22cyguA-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-7d3184d4989so2813226241.0
- for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 04:00:09 -0800 (PST)
+ us-mta-193-oOLYy-dyPKiBY333FFnM5g-1; Wed, 31 Jan 2024 07:01:45 -0500
+X-MC-Unique: oOLYy-dyPKiBY333FFnM5g-1
+Received: by mail-ot1-f70.google.com with SMTP id
+ 46e09a7af769-6de2dd25786so6919161a34.3
+ for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 04:01:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706702409; x=1707307209;
+ d=1e100.net; s=20230601; t=1706702504; x=1707307304;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yFNgRz4XN/r1kegOurShcrU2SXLxYs6hWAdLWmlNpCU=;
- b=J73HIOKgiTgDoRQ/lrb7IcHj5gwlxOBNvObGwlNGT2caEjXeWe1hgL5r+5/RE9ZW33
- Kpo0xvSy6NwOMrwnyQy3nJuX+wbso8b750pfIXMl+/VFQwVCDCu8NrNEwN4p2MD8M9jR
- nFMv8cjhda4Ls728zMR1fLo5KyqyYWRBhYYFtd9FsC7woTetHeQjYazYV+8DWU//YeQL
- dJaFT7nOYNDELOrOVxv7rBZKy1fq2yhvfvNC64W1nzh9JwjrXdo3rv+sFYXRWMkTBa4f
- 8AoumoTcN5AtF3yya/O+ItVp7ICHIPEjJLj+RijBHnF93WdjC17habT/66/IVLtR5WvA
- WM+g==
-X-Gm-Message-State: AOJu0YwQRKNhXTELgsazZ1U0+Pydxgsh05urCi6k7ypZ9Nb+tgAgbqRl
- 3Qh+2/K54unmiPJOBNziaW3bMgahoGtKy6aaPuL+sqUybSijQ66i9ptNUiwuzkpitaFDGEOi7Ib
- y8eG5H7WgsfVUhpzxmUtCx921xSpcr1TwmzbzxOKTdTqykwKb4opX
-X-Received: by 2002:a05:6102:240d:b0:46b:4655:4c5e with SMTP id
- j13-20020a056102240d00b0046b46554c5emr1122486vsi.21.1706702409041; 
- Wed, 31 Jan 2024 04:00:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHNBlE3IV8qxU/iV+6yeXF6AOgSKxjZ5suNIa/hhCTBzl6Yi48pXVfL3WncD2P7zZLDN2XfLA==
-X-Received: by 2002:a05:6102:240d:b0:46b:4655:4c5e with SMTP id
- j13-20020a056102240d00b0046b46554c5emr1122398vsi.21.1706702408371; 
- Wed, 31 Jan 2024 04:00:08 -0800 (PST)
+ bh=pMYLE184Js9ZDRow5gx15LL1mWvff0WtPo4I9dm+584=;
+ b=V5J/tJMV0hLXKaB8agZpV3HLK38xxHGOhxNG97aPkdEp/p59Pt6ji5p4Sj5dZKJxB3
+ WROM3wHygN5RwSchSGnGLKVh/XcGGSmVFuqE+YvGwlkuOEr5mGhPC0TWu9QWY2OSMtr2
+ 3cXaqcJ4mJkjK8wETIvrMZ1Pn+3BEu6jLVdkM5KNDekFir+ipLREvoQMN0OTctYm6FOY
+ PSdB6tVmRt2QzyYdHD7hkiSF8h+eeKpNrtMGX8tihwvRARJoCegRrSzvy9MvHl/iFSym
+ Sk5YUyU3/yJETb6H8CxDVPX+9HJ9Qgmv1IsPJAuQ3T73vlw2B38o8h0tTsVDGlVFkUXK
+ 2FCw==
+X-Gm-Message-State: AOJu0YyAYmjJfD5LdDfnpUA30qnp7HEz/pdn4Qg900wjiUXdVoRZ7tYA
+ K9yzSeclRG+Jg3/UvsjrkAY2aY81+HAGR5lO+klRvN6yJLWGfMBqU6dQrEBpachYXIS7FES22Zy
+ wG9kCeRQPlJxUcviXvfkFIBuTlhZlPu7YpIBhPVu8Gxk2z0EF5OJI
+X-Received: by 2002:a05:6830:2645:b0:6dd:f020:4871 with SMTP id
+ f5-20020a056830264500b006ddf0204871mr1421315otu.75.1706702504483; 
+ Wed, 31 Jan 2024 04:01:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFCY6zSrmHpxpNeLpbxc/fUn9bljRLzBGfhtjUgQS14XzochVW0pmTdToHBrAQXYe+/xjB6IQ==
+X-Received: by 2002:a05:6830:2645:b0:6dd:f020:4871 with SMTP id
+ f5-20020a056830264500b006ddf0204871mr1421243otu.75.1706702504072; 
+ Wed, 31 Jan 2024 04:01:44 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-177-196.web.vodafone.de.
  [109.43.177.196]) by smtp.gmail.com with ESMTPSA id
- mf13-20020a0562145d8d00b0068681793468sm66353qvb.36.2024.01.31.03.59.54
+ mf13-20020a0562145d8d00b0068681793468sm66353qvb.36.2024.01.31.04.01.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Jan 2024 04:00:07 -0800 (PST)
-Message-ID: <2f1fae32-b476-453d-94fe-45ca74b13d97@redhat.com>
-Date: Wed, 31 Jan 2024 12:59:52 +0100
+ Wed, 31 Jan 2024 04:01:43 -0800 (PST)
+Message-ID: <2afca706-dbc2-4d28-831f-3f556699fa9e@redhat.com>
+Date: Wed, 31 Jan 2024 13:01:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 37/47] hw/net/lasi_i82596: Re-enable build
+Subject: Re: [PATCH v4 39/47] hw/openrisc/openrisc_sim: use
+ qemu_create_nic_device()
 Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Beniamino Galvani <b.galvani@gmail.com>,
  Peter Maydell <peter.maydell@linaro.org>,
@@ -111,10 +111,10 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, David Woodhouse <dwmw@amazon.co.uk>
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-riscv@nongnu.org,
+ David Woodhouse <dwmw@amazon.co.uk>
 References: <20240126173228.394202-1-dwmw2@infradead.org>
- <20240126173228.394202-38-dwmw2@infradead.org>
+ <20240126173228.394202-40-dwmw2@infradead.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -158,19 +158,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240126173228.394202-38-dwmw2@infradead.org>
+In-Reply-To: <20240126173228.394202-40-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+X-Spam_score_int: 14
+X-Spam_score: 1.4
+X-Spam_bar: +
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -189,44 +189,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 26/01/2024 18.25, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> When converting to the shiny build-system-du-jour, a typo prevented the
-> last_i82596 driver from being built. Correct the config option name to
-> re-enable the build. And include "sysemu/sysemu.h" so it actually builds.
-> 
-> Fixes: b1419fa66558 ("meson: convert hw/net")
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/net/lasi_i82596.c | 1 +
->   hw/net/meson.build   | 2 +-
->   2 files changed, 2 insertions(+), 1 deletion(-)
+>   hw/openrisc/openrisc_sim.c | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
-> index 6a3147fe2d..09e830ba5f 100644
-> --- a/hw/net/lasi_i82596.c
-> +++ b/hw/net/lasi_i82596.c
-> @@ -14,6 +14,7 @@
->   #include "qapi/error.h"
->   #include "qemu/timer.h"
->   #include "hw/sysbus.h"
-> +#include "sysemu/sysemu.h"
->   #include "net/eth.h"
->   #include "hw/net/lasi_82596.h"
->   #include "hw/net/i82596.h"
-> diff --git a/hw/net/meson.build b/hw/net/meson.build
-> index 9afceb0619..2b426d3d5a 100644
-> --- a/hw/net/meson.build
-> +++ b/hw/net/meson.build
-> @@ -33,7 +33,7 @@ system_ss.add(when: 'CONFIG_MARVELL_88W8618', if_true: files('mv88w8618_eth.c'))
->   system_ss.add(when: 'CONFIG_CADENCE', if_true: files('cadence_gem.c'))
->   system_ss.add(when: 'CONFIG_STELLARIS_ENET', if_true: files('stellaris_enet.c'))
->   system_ss.add(when: 'CONFIG_LANCE', if_true: files('lance.c'))
-> -system_ss.add(when: 'CONFIG_LASI_I82596', if_true: files('lasi_i82596.c'))
-> +system_ss.add(when: 'CONFIG_LASI_82596', if_true: files('lasi_i82596.c'))
->   system_ss.add(when: 'CONFIG_I82596_COMMON', if_true: files('i82596.c'))
->   system_ss.add(when: 'CONFIG_SUNHME', if_true: files('sunhme.c'))
->   system_ss.add(when: 'CONFIG_FTGMAC100', if_true: files('ftgmac100.c'))
-
-I'm surprised that it even did not bitrot much further!
+> diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+> index 35da123aef..bffd6f721f 100644
+> --- a/hw/openrisc/openrisc_sim.c
+> +++ b/hw/openrisc/openrisc_sim.c
+> @@ -170,7 +170,7 @@ static void openrisc_create_fdt(Or1ksimState *state,
+>   
+>   static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+>                                     int num_cpus, OpenRISCCPU *cpus[],
+> -                                  int irq_pin, NICInfo *nd)
+> +                                  int irq_pin)
+>   {
+>       void *fdt = state->fdt;
+>       DeviceState *dev;
+> @@ -178,8 +178,10 @@ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+>       char *nodename;
+>       int i;
+>   
+> -    dev = qdev_new("open_eth");
+> -    qdev_set_nic_properties(dev, nd);
+> +    dev = qemu_create_nic_device("open_eth", true, NULL);
+> +    if (!dev) {
+> +        return;
+> +    }
+>   
+>       s = SYS_BUS_DEVICE(dev);
+>       sysbus_realize_and_unref(s, &error_fatal);
+> @@ -313,12 +315,10 @@ static void openrisc_sim_init(MachineState *machine)
+>       openrisc_create_fdt(state, or1ksim_memmap, smp_cpus, machine->ram_size,
+>                           machine->kernel_cmdline);
+>   
+> -    if (nd_table[0].used) {
+> -        openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
+> -                              or1ksim_memmap[OR1KSIM_ETHOC].size,
+> -                              smp_cpus, cpus,
+> -                              OR1KSIM_ETHOC_IRQ, nd_table);
+> -    }
+> +    openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
+> +                          or1ksim_memmap[OR1KSIM_ETHOC].size,
+> +                          smp_cpus, cpus,
+> +                          OR1KSIM_ETHOC_IRQ);
+>   
+>       if (smp_cpus > 1) {
+>           openrisc_sim_ompic_init(state, or1ksim_memmap[OR1KSIM_OMPIC].base,
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
