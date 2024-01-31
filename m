@@ -2,64 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECACA843192
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 00:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D428431C5
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 01:22:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rUxrH-0000qI-FJ; Tue, 30 Jan 2024 18:49:39 -0500
+	id 1rUyLP-0000kW-Rp; Tue, 30 Jan 2024 19:20:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rUxrD-0000pb-Tr
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 18:49:36 -0500
-Received: from mgamail.intel.com ([134.134.136.20])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rUyLN-0000kB-6k; Tue, 30 Jan 2024 19:20:45 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rUxrB-0003Zp-R5
- for qemu-devel@nongnu.org; Tue, 30 Jan 2024 18:49:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706658573; x=1738194573;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=y85khj6V6EsqOOpJ23xy73wtS49z/4+TEmxb+QPXG+0=;
- b=m4TOli8mtBg2ZLU3cIESjTXACVIqhls+Rr+6Oq8EEPuuM4pq2YbyyBGx
- Pc3G3i3asaZoUl6CVNpHECiVZwchleTRAN68YLBMU34uHykocXYoqTfWG
- sm5EI8r9KV+dFIScmqmg9bwRXBCgn2lGV5+aptfGlAqGtR0fHxPX1458E
- S6oGiESgVU7zsl5C9xJvtE6k8X4vE5wkfpdWtK63q+YRDoN3SeYWvQI7p
- UsrRpFusnDt45BfU3/L8/32Wrq36mo2DGEE13fXnnIsq2n8GUAesD3ixA
- GNI8U7SoP2DdLD7eZnDo6SsSI0bg7AXAoDO+NgX/So8PmD08s4riaJj7s w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="393887942"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="393887942"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2024 15:49:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="737919636"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; d="scan'208";a="737919636"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by orsmga003.jf.intel.com with ESMTP; 30 Jan 2024 15:49:23 -0800
-From: dongwon.kim@intel.com
-To: qemu-devel@nongnu.org
-Subject: [PATCH 3/3] ui/gtk: reset visible flag when window is minimized
-Date: Tue, 30 Jan 2024 15:48:40 -0800
-Message-Id: <20240130234840.53122-4-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240130234840.53122-1-dongwon.kim@intel.com>
-References: <20240130234840.53122-1-dongwon.kim@intel.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rUyLL-0002gj-HO; Tue, 30 Jan 2024 19:20:44 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40UMvsin026643; Wed, 31 Jan 2024 00:20:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=XGAEzcsJtQBtV0CR9MG9dsaKQLIQJKcj4JS4UHvcmDg=;
+ b=FkqiB8LktRtOGGp/gRm0m2yv7QuLQrMnBTXIX9DCpY1zZwR19YeK38MdmaOztX9HEbS3
+ AcQuEzNeGJO+lMvAZl04R6qqnuaupyF3kWrQtGm1yBP7R+Kr6wz7+MTOJEWJ20giU+ly
+ dVOZqN9jl4ChxD4gLjiwOp1m42Z92CDpT/vpN5XgzAoW7HzqRrkf4xdWBQ4xqCoOkXjB
+ BxLZOnoL7xi+qKaS9UXq2ZyUHiXPwgbm3r3TM/o++bmCVA/yLjZDinELOvk9timWgRyC
+ 5fVbeQ6BqA2VQ1Bl8O2mWefc/DSWeivmM0OfeMPae9rbVaDcZlNeijgyTjw3urmAjZsf 3A== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyac91x40-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jan 2024 00:20:36 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40UNevre011231; Wed, 31 Jan 2024 00:19:00 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweckht8s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jan 2024 00:19:00 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40V0Iw1q38535528
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 31 Jan 2024 00:18:58 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 949B920043;
+ Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E45020040;
+ Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.179.12.102])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 31 Jan 2024 00:18:58 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
+Subject: [PATCH] linux-user: Make TARGET_NR_setgroups affect only the current
+ thread
+Date: Wed, 31 Jan 2024 01:18:46 +0100
+Message-ID: <20240131001851.15932-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=134.134.136.20;
- envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lTT5oxqpMHvs5E3DoZWrLBfQfowP74vs
+X-Proofpoint-GUID: lTT5oxqpMHvs5E3DoZWrLBfQfowP74vs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_13,2024-01-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=938 bulkscore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 spamscore=0
+ impostorscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401310001
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,85 +102,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+Like TARGET_NR_setuid, TARGET_NR_setgroups should affect only the
+calling thread, and not the entire process. Therefore, implement it
+using a syscall, and not a libc call.
 
-Adding a callback for window-state-event that resets the flag, 'visible'
-when associated window is minimized or restored. When minimizing, it cancels
-any of queued draw events associated with the VC.
-
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 19b84f3c35d7 ("added setgroups and getgroups syscalls")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- ui/gtk.c | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ linux-user/syscall.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 651ed3492f..5bbcb7de62 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -1381,6 +1381,37 @@ static gboolean gd_tab_window_close(GtkWidget *widget, GdkEvent *event,
-     return TRUE;
- }
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index ff245dade51..da15d727e16 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -7203,11 +7203,17 @@ static inline int tswapid(int id)
+ #else
+ #define __NR_sys_setresgid __NR_setresgid
+ #endif
++#ifdef __NR_setgroups32
++#define __NR_sys_setgroups __NR_setgroups32
++#else
++#define __NR_sys_setgroups __NR_setgroups
++#endif
  
-+static gboolean gd_window_state_event(GtkWidget *widget, GdkEvent *event,
-+                                      void *opaque)
-+{
-+    VirtualConsole *vc = opaque;
-+
-+    if (!vc) {
-+        return TRUE;
-+    }
-+
-+    if (event->window_state.new_window_state & GDK_WINDOW_STATE_ICONIFIED) {
-+        vc->gfx.visible = false;
-+        gd_set_ui_size(vc, 0, 0);
-+        if (vc->gfx.guest_fb.dmabuf &&
-+            vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+            vc->gfx.guest_fb.dmabuf->draw_submitted = false;
-+            graphic_hw_gl_block(vc->gfx.dcl.con, false);
-+        }
-+    /* Showing the ui only if window exists except for the current vc as GTK
-+     * window for 's' is being used to display the GUI */
-+    } else if (vc->window || vc == gd_vc_find_current(vc->s)) {
-+        GdkWindow *window;
-+        window = gtk_widget_get_window(vc->gfx.drawing_area);
-+        gd_set_ui_size(vc, gdk_window_get_width(window),
-+                       gdk_window_get_height(window));
-+
-+        vc->gfx.visible = true;
-+    }
-+
-+    return TRUE;
-+}
-+
- static gboolean gd_win_grab(void *opaque)
+ _syscall1(int, sys_setuid, uid_t, uid)
+ _syscall1(int, sys_setgid, gid_t, gid)
+ _syscall3(int, sys_setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
+ _syscall3(int, sys_setresgid, gid_t, rgid, gid_t, egid, gid_t, sgid)
++_syscall2(int, sys_setgroups, int, size, gid_t *, grouplist)
+ 
+ void syscall_init(void)
  {
-     VirtualConsole *vc = opaque;
-@@ -1422,6 +1453,9 @@ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
- 
-         g_signal_connect(vc->window, "delete-event",
-                          G_CALLBACK(gd_tab_window_close), vc);
-+        g_signal_connect(vc->window, "window-state-event",
-+                         G_CALLBACK(gd_window_state_event), vc);
-+
-         gtk_widget_show_all(vc->window);
- 
-         if (qemu_console_is_graphic(vc->gfx.dcl.con)) {
-@@ -2470,6 +2504,11 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
-     }
- 
-     vc = gd_vc_find_current(s);
-+
-+    g_signal_connect(s->window, "window-state-event",
-+                     G_CALLBACK(gd_window_state_event),
-+                     vc);
-+
-     gtk_widget_set_sensitive(s->view_menu, vc != NULL);
- #ifdef CONFIG_VTE
-     gtk_widget_set_sensitive(s->copy_item,
+@@ -11772,7 +11778,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 unlock_user(target_grouplist, arg2,
+                             gidsetsize * sizeof(target_id));
+             }
+-            return get_errno(setgroups(gidsetsize, grouplist));
++            return get_errno(sys_setgroups(gidsetsize, grouplist));
+         }
+     case TARGET_NR_fchown:
+         return get_errno(fchown(arg1, low2highuid(arg2), low2highgid(arg3)));
+@@ -12108,7 +12114,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 }
+                 unlock_user(target_grouplist, arg2, 0);
+             }
+-            return get_errno(setgroups(gidsetsize, grouplist));
++            return get_errno(sys_setgroups(gidsetsize, grouplist));
+         }
+ #endif
+ #ifdef TARGET_NR_fchown32
 -- 
-2.34.1
+2.43.0
 
 
