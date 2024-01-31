@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AFB844929
+	by mail.lfdr.de (Postfix) with ESMTPS id BB264844928
 	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 21:52:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVHXm-00049j-9M; Wed, 31 Jan 2024 15:50:50 -0500
+	id 1rVHXm-00049o-Cx; Wed, 31 Jan 2024 15:50:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVHXj-00049R-96
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVHXj-00049S-IE
  for qemu-devel@nongnu.org; Wed, 31 Jan 2024 15:50:47 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVHXh-0004OG-7T
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVHXg-0004OH-TJ
  for qemu-devel@nongnu.org; Wed, 31 Jan 2024 15:50:47 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40VK2IKK009478; Wed, 31 Jan 2024 20:50:42 GMT
+ 40VJW6JS006967; Wed, 31 Jan 2024 20:50:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=UYFns5Tg6je/SYhOl/b1MELJsg3gXp+xiUbhXtGGmyw=;
- b=dtpJul8Nd6gBAoRZ24Z0jFsD4WSr1fNkA179vFmQ+tGexjDb6/cVA3fh9ahkP6dEoFuF
- hxktg+Uh1qzNA8dGWznsMOsY4ZNDhBu+k9VqsDwNIPKUvKrMRde3uYe2xDeXV+9l2wWJ
- oSm7oy9LCDg9nFiy4pe1Kdz0W3hY+3VcyVfGtyD36xff9M/VSi7qUzWhrrhEKUkI+PZn
- hkyt/XXKYykrhcp/QJS7O4GTRu8yBljWD2r9TxPbyI+iz9DzhyBbALnl0V4u0NJmfD+h
- Q6JpuFFtKLlGqf6QXnaiV6MTDqnn1YqgDQ0E+GHJuxNl9e5Dz0jz+bOQmGwjNO+IcU2S 5g== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyvvws6kd-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=5zyehzTRf2Nijf5aJ3rDg4vBNHwI4XE6X9W1Hh0thkg=;
+ b=b53mzJ3gKYytIKUQA4ZdvNwy9Fzq/a1zWv5GJjViCNpByYMfrFiJlAiM1ye8d+b6ofgp
+ FStDbwerPFl7XiSFOQgqCZhsNiXXGW7OPawpCOOgVJ+O4RmTmrWQK5NXcTF1d1sPDCg3
+ 7HLLv7XpZj9LJnHhskcrFe14ffW01JIdYlpR+iWoWFqH8q7cNw4fBc9qJ5mHlzyvyYTV
+ Cpk+FTYU9edjLTH0DfI7hi6r3K7UyLzJq2dpIgGHjRPsp9f9WgNWyE5KjLiscKR8kIb1
+ DzzVvTWkmPQRc/GctVl0ELhaAOIvWORyXLr/GGvK9j1lzdtf96SkavJF3oyO3xY3iVuI Wg== 
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vytx8vqra-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 31 Jan 2024 20:50:42 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 40VJQRXi007189; Wed, 31 Jan 2024 20:50:41 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2fbhu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 31 Jan 2024 20:50:41 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40VIZTbQ011292; Wed, 31 Jan 2024 20:50:40 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweckqf4h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 20:50:40 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40VKocGp3277322
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 40VKoeVw17564348
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Jan 2024 20:50:38 GMT
+ Wed, 31 Jan 2024 20:50:40 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74D7B20040;
- Wed, 31 Jan 2024 20:50:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0A27220040;
+ Wed, 31 Jan 2024 20:50:40 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 13FBE20043;
- Wed, 31 Jan 2024 20:50:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9E67E20043;
+ Wed, 31 Jan 2024 20:50:39 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.171.74.74])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 Jan 2024 20:50:37 +0000 (GMT)
+ Wed, 31 Jan 2024 20:50:39 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 0/3] gdbstub: Implement follow-fork-mode child
-Date: Wed, 31 Jan 2024 21:43:38 +0100
-Message-ID: <20240131205031.144607-1-iii@linux.ibm.com>
+Subject: [PATCH 1/3] gdbstub: Refactor fork() handling
+Date: Wed, 31 Jan 2024 21:43:39 +0100
+Message-ID: <20240131205031.144607-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: p7_aVqvrB2d-9a5LQ1OXOMLNmBzCMEbm
-X-Proofpoint-ORIG-GUID: p7_aVqvrB2d-9a5LQ1OXOMLNmBzCMEbm
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240131205031.144607-1-iii@linux.ibm.com>
+References: <20240131205031.144607-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NObOGJR_BPq1rZkBNfede-mh6WYqOilt
+X-Proofpoint-GUID: NObOGJR_BPq1rZkBNfede-mh6WYqOilt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-01-31_10,2024-01-31_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0 mlxscore=0
- priorityscore=1501 mlxlogscore=608 spamscore=0 suspectscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401310161
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0 clxscore=1015
+ phishscore=0 adultscore=0 suspectscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ mlxlogscore=866 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401310161
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -104,45 +106,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20240116094411.216665-1-iii@linux.ibm.com>
+Prepare for implementing follow-fork-mode child:
+* Introduce gdbserver_fork_start(), which for now is a no-op.
+* Rename gdbserver_fork() to gdbserver_fork_end(), call it in both
+  parent and child processes, and pass the fork()'s return value to it.
+* Factor out disable_gdbstub().
+* Update ts_tid in the forked child.
 
-Hi,
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ bsd-user/freebsd/os-proc.h  |  6 +++---
+ bsd-user/main.c             |  8 ++++++--
+ bsd-user/qemu.h             |  2 +-
+ gdbstub/user.c              | 25 +++++++++++++++++++------
+ include/gdbstub/user.h      | 11 ++++++++---
+ linux-user/main.c           |  8 ++++++--
+ linux-user/syscall.c        |  4 ++--
+ linux-user/user-internals.h |  2 +-
+ 8 files changed, 46 insertions(+), 20 deletions(-)
 
-I needed to debug a linux-user crash between fork() and exec() [1] and
-realized that gdbstub does not allow this. This series lifts this
-restriction (one still cannot debug past exec() though). Patch 1 is a
-preliminary refactoring, I can split it if necessary. Patch 2 is the
-implementation, and patch 3 is the test.
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06424.html
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (3):
-  gdbstub: Refactor fork() handling
-  gdbstub: Implement follow-fork-mode child
-  tests/tcg: Add two follow-fork-mode tests
-
- bsd-user/freebsd/os-proc.h                    |   6 +-
- bsd-user/main.c                               |   8 +-
- bsd-user/qemu.h                               |   2 +-
- gdbstub/gdbstub.c                             |  29 ++-
- gdbstub/internals.h                           |   3 +
- gdbstub/user.c                                | 225 +++++++++++++++++-
- include/gdbstub/user.h                        |  11 +-
- linux-user/main.c                             |   8 +-
- linux-user/syscall.c                          |   4 +-
- linux-user/user-internals.h                   |   2 +-
- tests/tcg/multiarch/Makefile.target           |  17 +-
- tests/tcg/multiarch/follow-fork-mode.c        |  56 +++++
- .../gdbstub/follow-fork-mode-child.py         |  40 ++++
- .../gdbstub/follow-fork-mode-parent.py        |  16 ++
- 14 files changed, 403 insertions(+), 24 deletions(-)
- create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-
+diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
+index d6418780344..3003c8cb637 100644
+--- a/bsd-user/freebsd/os-proc.h
++++ b/bsd-user/freebsd/os-proc.h
+@@ -208,7 +208,7 @@ static inline abi_long do_freebsd_fork(void *cpu_env)
+      */
+     set_second_rval(cpu_env, child_flag);
+ 
+-    fork_end(child_flag);
++    fork_end(ret);
+ 
+     return ret;
+ }
+@@ -252,7 +252,7 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
+      * value: 0 for parent process, 1 for child process.
+      */
+     set_second_rval(cpu_env, child_flag);
+-    fork_end(child_flag);
++    fork_end(ret);
+ 
+     return ret;
+ 
+@@ -285,7 +285,7 @@ static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
+      * value: 0 for parent process, 1 for child process.
+      */
+     set_second_rval(cpu_env, child_flag);
+-    fork_end(child_flag);
++    fork_end(ret);
+ 
+     return ret;
+ }
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index e5efb7b8458..8ecfa395cc5 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -106,10 +106,13 @@ void fork_start(void)
+     start_exclusive();
+     cpu_list_lock();
+     mmap_fork_start();
++    gdbserver_fork_start();
+ }
+ 
+-void fork_end(int child)
++void fork_end(abi_long pid)
+ {
++    int child = pid == 0;
++
+     if (child) {
+         CPUState *cpu, *next_cpu;
+         /*
+@@ -127,10 +130,11 @@ void fork_end(int child)
+          * state, so we don't need to end_exclusive() here.
+          */
+         qemu_init_cpu_list();
+-        gdbserver_fork(thread_cpu);
++        gdbserver_fork_end(pid);
+     } else {
+         mmap_fork_end(child);
+         cpu_list_unlock();
++        gdbserver_fork_end(pid);
+         end_exclusive();
+     }
+ }
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index dc842fffa7d..2414a87559b 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -180,7 +180,7 @@ void cpu_loop(CPUArchState *env);
+ char *target_strerror(int err);
+ int get_osversion(void);
+ void fork_start(void);
+-void fork_end(int child);
++void fork_end(abi_long pid);
+ 
+ #include "qemu/log.h"
+ 
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 766f7c08848..120eb7fc117 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -356,16 +356,29 @@ int gdbserver_start(const char *port_or_path)
+     return -1;
+ }
+ 
++void gdbserver_fork_start(void)
++{
++}
++
++static void disable_gdbstub(void)
++{
++    CPUState *cpu;
++
++    close(gdbserver_user_state.fd);
++    gdbserver_user_state.fd = -1;
++    CPU_FOREACH(cpu) {
++        cpu_breakpoint_remove_all(cpu, BP_GDB);
++        /* no cpu_watchpoint_remove_all for user-mode */
++    }
++}
++
+ /* Disable gdb stub for child processes.  */
+-void gdbserver_fork(CPUState *cpu)
++void gdbserver_fork_end(pid_t pid)
+ {
+-    if (!gdbserver_state.init || gdbserver_user_state.fd < 0) {
++    if (pid != 0 || !gdbserver_state.init || gdbserver_user_state.fd < 0) {
+         return;
+     }
+-    close(gdbserver_user_state.fd);
+-    gdbserver_user_state.fd = -1;
+-    cpu_breakpoint_remove_all(cpu, BP_GDB);
+-    /* no cpu_watchpoint_remove_all for user-mode */
++    disable_gdbstub();
+ }
+ 
+ /*
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index 68b6534130c..1694d4fd330 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -46,10 +46,15 @@ static inline int gdb_handlesig(CPUState *cpu, int sig)
+ void gdb_signalled(CPUArchState *as, int sig);
+ 
+ /**
+- * gdbserver_fork() - disable gdb stub for child processes.
+- * @cs: CPU
++ * gdbserver_fork_start() - inform gdb of the upcoming fork()
++ */
++void gdbserver_fork_start(void);
++
++/**
++ * gdbserver_fork_end() - disable gdb stub for child processes.
++ * @pid: 0 if in child process, -1 if fork failed, child process pid otherwise
+  */
+-void gdbserver_fork(CPUState *cs);
++void gdbserver_fork_end(pid_t pid);
+ 
+ /**
+  * gdb_syscall_entry() - inform gdb of syscall entry and yield control to it
+diff --git a/linux-user/main.c b/linux-user/main.c
+index c9470eeccfc..b42c8f36a1d 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -144,10 +144,13 @@ void fork_start(void)
+     mmap_fork_start();
+     cpu_list_lock();
+     qemu_plugin_user_prefork_lock();
++    gdbserver_fork_start();
+ }
+ 
+-void fork_end(int child)
++void fork_end(abi_long pid)
+ {
++    int child = pid == 0;
++
+     qemu_plugin_user_postfork(child);
+     mmap_fork_end(child);
+     if (child) {
+@@ -160,10 +163,11 @@ void fork_end(int child)
+             }
+         }
+         qemu_init_cpu_list();
+-        gdbserver_fork(thread_cpu);
++        ((TaskState *)thread_cpu->opaque)->ts_tid = (pid_t)syscall(SYS_gettid);
+     } else {
+         cpu_list_unlock();
+     }
++    gdbserver_fork_end(pid);
+     /*
+      * qemu_init_cpu_list() reinitialized the child exclusive state, but we
+      * also need to keep current_cpu consistent, so call end_exclusive() for
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index e384e142489..8be0bb57778 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -6669,7 +6669,7 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+         if (ret == 0) {
+             /* Child Process.  */
+             cpu_clone_regs_child(env, newsp, flags);
+-            fork_end(1);
++            fork_end(ret);
+             /* There is a race condition here.  The parent process could
+                theoretically read the TID in the child process before the child
+                tid is set.  This would require using either ptrace
+@@ -6701,7 +6701,7 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
+ #endif
+                 put_user_u32(pid_fd, parent_tidptr);
+                 }
+-            fork_end(0);
++            fork_end(ret);
+         }
+         g_assert(!cpu_in_exclusive_context(cpu));
+     }
+diff --git a/linux-user/user-internals.h b/linux-user/user-internals.h
+index c63ef45fc78..9014014d920 100644
+--- a/linux-user/user-internals.h
++++ b/linux-user/user-internals.h
+@@ -71,7 +71,7 @@ const char *target_strerror(int err);
+ int get_osversion(void);
+ void init_qemu_uname_release(void);
+ void fork_start(void);
+-void fork_end(int child);
++void fork_end(abi_long pid);
+ 
+ /**
+  * probe_guest_base:
 -- 
 2.43.0
 
