@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430F98439AC
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 09:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A2D8439BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 09:52:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV6JO-0001rD-Ft; Wed, 31 Jan 2024 03:51:14 -0500
+	id 1rV6JQ-0001s0-CX; Wed, 31 Jan 2024 03:51:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rV6JK-0001r4-BA
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:10 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1rV6JO-0001rn-FB
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:14 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1rV6JH-0007op-Qw
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:09 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40e80046246so3373005e9.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 00:51:07 -0800 (PST)
+ id 1rV6JL-0007pN-MK
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:13 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2cf3ed3b917so58550701fa.1
+ for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 00:51:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1706691065; x=1707295865; darn=nongnu.org;
+ d=adacore.com; s=google; t=1706691069; x=1707295869; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hwpo4Gdo6ndwqVzHgyIgbMFjcV7Bk74avs3plMLuDNI=;
- b=erd5q3ZIFNE/yhocS12ndZn4NfK80ohZPV37takLyD1JkNSav7yrPBh5dHZIvuUl2l
- 0A9QmLO5AqYEoxWQNanb4IeJxO+EjAvZgTyjFqCTx55GvI3+hN57qhTNzSyL60jphgJg
- h2e5BS4fsHD06n+hy7m4GP9AGJH9IgRlwxy5xJiL8vynWyubGwdeRe4x/8vJ4vfRm4ns
- S6kL/WwKk6QdiuTL7O6OlD+0jOL1gUpfpkkg3kzQDtjEtKPASgz0J5J8dR1A8ILLOYNq
- uRiRMK9lyYwpHEQM053VlJH18mNsXT9CZckIMM7xbei6yy1Z00jyWNrzFOFNbNdWZZyb
- 7kkg==
+ bh=MDOC//9rYljv8JbNJSrklqxInCkoTiR/AirLn143wHQ=;
+ b=fvZOpWE35/8nt82L5Fr9x3+foNAUT6sL7QWI27P7QzYzWOLPqPQaU5yD1ks3HNbWj7
+ m1f154i56nuCfy2BTBMc+A+hiHahUdtPF9exSCFU/0RqszxvB14CpK47RH1ayt+mkOUL
+ 5trdq8UW+BN/VnbEcL3UneWd/h2esA3b1lQVZkr3F39N+8mbzz9AfYistPE0FzvJhyl5
+ QNU8qogxdXtu+0E/xw7wElVJol+Lmo7j2cW7NVdeooRFe/7iodrqeGcGwGqvgF/QBT1z
+ /507ATItTySMyZ6+vpRal6eNTWULv9CgMDOzeFgGfweZN441Kh6ef4wpgJCfsSAp/+BS
+ c3pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706691065; x=1707295865;
+ d=1e100.net; s=20230601; t=1706691069; x=1707295869;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hwpo4Gdo6ndwqVzHgyIgbMFjcV7Bk74avs3plMLuDNI=;
- b=QqE+BAy3dgAPYGg04aLrIxdzSAgEJyYFd62N3t10asveHThyb7zzqLXcPxYDt3iUGC
- 26X88ymWEPYICsmtybxbKipGUFP7VWSAYVo2kKpcNytOWNsf10w2SZH3GerAdYlhVnrY
- cihKY1RcFV39LR8DzQ/xTWeT0s/xBvBROeU2ZhZvZ5bxfQWQLHg+NMqa45zx/sk9qSDs
- 7SMKGwPYJEmbmd1n70dqu9vPhxf6/1NXVGpif+VDeCBb+4uBnplasRctQy8ZFyp+BNgl
- FBXNGZeRM151NcYsvMxcCusiHKM+CBXDBCPdyLHiHZA++CP9k3f2Fh2T5jT2Ikws7Fl3
- IHuA==
-X-Gm-Message-State: AOJu0YyHDwsUnyaZxJwFv0Z5WjrNs8GcUk5ObQqrMDP0NDXzSDjY3MP9
- 2rdhR0qDQFbX4uA7vWw+MzOFXen88vd6pSh2gEKCyeL6u42CcEPA6xopTUXy5Lt0+V088tTjSOs
+ bh=MDOC//9rYljv8JbNJSrklqxInCkoTiR/AirLn143wHQ=;
+ b=P2sJPyQYMDv8hUyDe8TD4268JxJt82nZ7jPoERItKAKCelx8Is0LC8zrlxebLlA456
+ DTMomxbFI5JvEDmwIbkmJX7JYhEaBCbSo4kVcvNKtlPb3+xZnDoTohu4joq8APlJ1ZFw
+ tQ4avIgIeVqwZL6/H64R+F0IEEVSN99vQn7ZdkMGzQXge7NUtxS3cU/UVy+38m6T/SJ+
+ w2aS3jWesuZf+V72GNnqSmPSzL3MxMTrPODEz3Vj0TPiM+f/Aiin+CE+aU0phCGwTgpJ
+ NkJLI4C7XpBgpb0dKt71eyAL6aG5xuWd8lhxYGFoWfUw/ELmvU/3ZlN/UtWBva02kWp+
+ G0Xw==
+X-Gm-Message-State: AOJu0YwM0Cg6RjsQtJvqIWkga1wGmAj5SF2Y/n6gSA2Zhi5RW7cxENas
+ eMUNSoBTsyUc/ZJ7lozSn1NgZxFEgj4XqJq0yUaEvH6yvc4359noc5C7FI6+2Pq4TetiRWZg7b0
  =
-X-Google-Smtp-Source: AGHT+IG7AcxHbx8pHdTGYHF0203JbZ8B9liUYYryhPqKBzauNWMel8s/jtwY1WYqSpWQATahn73kcA==
-X-Received: by 2002:a05:600c:4f82:b0:40e:fa51:3526 with SMTP id
- n2-20020a05600c4f8200b0040efa513526mr802828wmq.10.1706691065610; 
- Wed, 31 Jan 2024 00:51:05 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHlY5klwGaOyqwk3P5zy8miktx/NMWNhpGdqiR/I31mZaTsQEnlIZBt/l/ZkLB30hIdm5mQFw==
+X-Received: by 2002:a05:6512:74c:b0:50f:f9b9:f542 with SMTP id
+ c12-20020a056512074c00b0050ff9b9f542mr858980lfs.7.1706691069516; 
+ Wed, 31 Jan 2024 00:51:09 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCV7f3jSmk+Tcz3Whe6BMX9y/7kd7A/3k83Hj53DSUzUzVBXFvjTTF7GdHVEg98rWqBiFojLI+5NiKZ0/D/onJ9c6MbxDZCfoqkZdUYjUnUMhUbCVCPmmFb+sEJK
+ AJvYcCUnop1HaG+EJLNGY2/ijnkLBpWGLiqC4kvAc96rXI5UwuJaTicKlwnqSny2YZNcrlIkRfV4WoZsjvgBd5xvyr6HOvEqMIMktzDF3g4jOj/rkvDKM42gR3GD4l36
 Received: from chigot-Dell.home ([2a01:cb15:8123:8100:aea2:cdf3:9482:a36])
  by smtp.gmail.com with ESMTPSA id
- n28-20020a05600c181c00b0040efd216050sm909926wmp.35.2024.01.31.00.51.04
+ n28-20020a05600c181c00b0040efd216050sm909926wmp.35.2024.01.31.00.51.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 31 Jan 2024 00:51:05 -0800 (PST)
+ Wed, 31 Jan 2024 00:51:08 -0800 (PST)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Frederic Konrad <konrad.frederic@yahoo.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 1/9] sparc/grlib: split out the headers for each peripherals
-Date: Wed, 31 Jan 2024 09:50:39 +0100
-Message-Id: <20240131085047.18458-2-chigot@adacore.com>
+Subject: [PATCH v3 2/9] intc/grlib_irqmp: add ncpus property
+Date: Wed, 31 Jan 2024 09:50:40 +0100
+Message-Id: <20240131085047.18458-3-chigot@adacore.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240131085047.18458-1-chigot@adacore.com>
 References: <20240131085047.18458-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=chigot@adacore.com; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,241 +97,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-... and move them in their right hardware directory.
-
-Update Copyright and add SPDX-License-Identifier at the same time.
+This adds a "ncpus" property to the "grlib-irqmp" device to be used later,
+this required a little refactoring of how we initialize the device (ie: use
+realize instead of init).
 
 Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/char/grlib_apbuart.c                       |  6 ++--
- hw/intc/grlib_irqmp.c                         |  6 ++--
- hw/sparc/leon3.c                              |  8 +++--
- hw/timer/grlib_gptimer.c                      |  6 ++--
- include/hw/char/grlib_uart.h                  | 32 +++++++++++++++++++
- .../hw/{sparc/grlib.h => intc/grlib_irqmp.h}  | 16 ++++------
- include/hw/timer/grlib_gptimer.h              | 32 +++++++++++++++++++
- 7 files changed, 88 insertions(+), 18 deletions(-)
- create mode 100644 include/hw/char/grlib_uart.h
- rename include/hw/{sparc/grlib.h => intc/grlib_irqmp.h} (86%)
- create mode 100644 include/hw/timer/grlib_gptimer.h
+ hw/intc/grlib_irqmp.c | 30 +++++++++++++++++++++---------
+ hw/sparc/leon3.c      |  2 +-
+ 2 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/hw/char/grlib_apbuart.c b/hw/char/grlib_apbuart.c
-index 82ff40a530..515b65bc07 100644
---- a/hw/char/grlib_apbuart.c
-+++ b/hw/char/grlib_apbuart.c
-@@ -1,7 +1,9 @@
- /*
-  * QEMU GRLIB APB UART Emulator
-  *
-- * Copyright (c) 2010-2019 AdaCore
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2010-2024 AdaCore
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-@@ -26,7 +28,7 @@
- #include "hw/irq.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
--#include "hw/sparc/grlib.h"
-+#include "hw/char/grlib_uart.h"
- #include "hw/sysbus.h"
- #include "qemu/module.h"
- #include "chardev/char-fe.h"
 diff --git a/hw/intc/grlib_irqmp.c b/hw/intc/grlib_irqmp.c
-index 3bfe2544b7..11eef62457 100644
+index 11eef62457..744cd64c58 100644
 --- a/hw/intc/grlib_irqmp.c
 +++ b/hw/intc/grlib_irqmp.c
-@@ -3,7 +3,9 @@
+@@ -1,7 +1,7 @@
+ /*
+  * QEMU GRLIB IRQMP Emulator
   *
-  * (Multiprocessor and extended interrupt not supported)
+- * (Multiprocessor and extended interrupt not supported)
++ * (Extended interrupt not supported)
   *
-- * Copyright (c) 2010-2019 AdaCore
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2010-2024 AdaCore
+  * SPDX-License-Identifier: MIT
   *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-@@ -29,7 +31,7 @@
- #include "hw/sysbus.h"
+@@ -63,6 +63,7 @@ struct IRQMP {
  
- #include "hw/qdev-properties.h"
--#include "hw/sparc/grlib.h"
-+#include "hw/intc/grlib_irqmp.h"
+     MemoryRegion iomem;
  
- #include "trace.h"
- #include "qapi/error.h"
++    unsigned int ncpus;
+     IRQMPState *state;
+     qemu_irq irq;
+ };
+@@ -326,33 +327,44 @@ static void grlib_irqmp_reset(DeviceState *d)
+     irqmp->state->parent = irqmp;
+ }
+ 
+-static void grlib_irqmp_init(Object *obj)
++static void grlib_irqmp_realize(DeviceState *dev, Error **errp)
+ {
+-    IRQMP *irqmp = GRLIB_IRQMP(obj);
+-    SysBusDevice *dev = SYS_BUS_DEVICE(obj);
++    IRQMP *irqmp = GRLIB_IRQMP(dev);
+ 
+-    qdev_init_gpio_in(DEVICE(obj), grlib_irqmp_set_irq, MAX_PILS);
+-    qdev_init_gpio_out_named(DEVICE(obj), &irqmp->irq, "grlib-irq", 1);
+-    memory_region_init_io(&irqmp->iomem, obj, &grlib_irqmp_ops, irqmp,
++    if ((!irqmp->ncpus) || (irqmp->ncpus > IRQMP_MAX_CPU)) {
++        error_setg(errp, "Invalid ncpus properties: "
++                   "%u, must be 0 < ncpus =< %u.", irqmp->ncpus,
++                   IRQMP_MAX_CPU);
++    }
++
++    qdev_init_gpio_in(dev, grlib_irqmp_set_irq, MAX_PILS);
++    qdev_init_gpio_out_named(dev, &irqmp->irq, "grlib-irq", 1);
++    memory_region_init_io(&irqmp->iomem, OBJECT(dev), &grlib_irqmp_ops, irqmp,
+                           "irqmp", IRQMP_REG_SIZE);
+ 
+     irqmp->state = g_malloc0(sizeof *irqmp->state);
+ 
+-    sysbus_init_mmio(dev, &irqmp->iomem);
++    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &irqmp->iomem);
+ }
+ 
++static Property grlib_irqmp_properties[] = {
++    DEFINE_PROP_UINT32("ncpus", IRQMP, ncpus, 1),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void grlib_irqmp_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
++    dc->realize = grlib_irqmp_realize;
+     dc->reset = grlib_irqmp_reset;
++    device_class_set_props(dc, grlib_irqmp_properties);
+ }
+ 
+ static const TypeInfo grlib_irqmp_info = {
+     .name          = TYPE_GRLIB_IRQMP,
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_size = sizeof(IRQMP),
+-    .instance_init = grlib_irqmp_init,
+     .class_init    = grlib_irqmp_class_init,
+ };
+ 
 diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 2dfb742566..b7d81c76f3 100644
+index b7d81c76f3..b72761b959 100644
 --- a/hw/sparc/leon3.c
 +++ b/hw/sparc/leon3.c
-@@ -1,7 +1,9 @@
- /*
-  * QEMU Leon3 System Emulator
-  *
-- * Copyright (c) 2010-2019 AdaCore
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2010-2024 AdaCore
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-@@ -40,7 +42,9 @@
- #include "elf.h"
- #include "trace.h"
+@@ -265,11 +265,11 @@ static void leon3_generic_hw_init(MachineState *machine)
  
--#include "hw/sparc/grlib.h"
-+#include "hw/timer/grlib_gptimer.h"
-+#include "hw/char/grlib_uart.h"
-+#include "hw/intc/grlib_irqmp.h"
- #include "hw/misc/grlib_ahb_apb_pnp.h"
- 
- /* Default system clock.  */
-diff --git a/hw/timer/grlib_gptimer.c b/hw/timer/grlib_gptimer.c
-index 5c4923c1e0..4990885451 100644
---- a/hw/timer/grlib_gptimer.c
-+++ b/hw/timer/grlib_gptimer.c
-@@ -1,7 +1,9 @@
- /*
-  * QEMU GRLIB GPTimer Emulator
-  *
-- * Copyright (c) 2010-2019 AdaCore
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2010-2024 AdaCore
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-@@ -23,7 +25,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "hw/sparc/grlib.h"
-+#include "hw/timer/grlib_gptimer.h"
- #include "hw/sysbus.h"
- #include "qemu/timer.h"
- #include "hw/irq.h"
-diff --git a/include/hw/char/grlib_uart.h b/include/hw/char/grlib_uart.h
-new file mode 100644
-index 0000000000..7496f8fd5e
---- /dev/null
-+++ b/include/hw/char/grlib_uart.h
-@@ -0,0 +1,32 @@
-+/*
-+ * QEMU GRLIB UART
-+ *
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2024 AdaCore
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#ifndef GRLIB_UART_H
-+#define GRLIB_UART_H
-+
-+#define TYPE_GRLIB_APB_UART "grlib-apbuart"
-+
-+#endif
-diff --git a/include/hw/sparc/grlib.h b/include/hw/intc/grlib_irqmp.h
-similarity index 86%
-rename from include/hw/sparc/grlib.h
-rename to include/hw/intc/grlib_irqmp.h
-index ef1946c7f8..c5a90cbb3e 100644
---- a/include/hw/sparc/grlib.h
-+++ b/include/hw/intc/grlib_irqmp.h
-@@ -1,7 +1,9 @@
- /*
-  * QEMU GRLIB Components
-  *
-- * Copyright (c) 2010-2019 AdaCore
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2010-2024 AdaCore
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
-@@ -22,8 +24,8 @@
-  * THE SOFTWARE.
-  */
- 
--#ifndef GRLIB_H
--#define GRLIB_H
-+#ifndef GRLIB_IRQMP_H
-+#define GRLIB_IRQMP_H
- 
- #include "hw/sysbus.h"
- 
-@@ -36,10 +38,4 @@
- 
- void grlib_irqmp_ack(DeviceState *dev, int intno);
- 
--/* GPTimer */
--#define TYPE_GRLIB_GPTIMER "grlib-gptimer"
--
--/* APB UART */
--#define TYPE_GRLIB_APB_UART "grlib-apbuart"
--
--#endif /* GRLIB_H */
-+#endif /* GRLIB_IRQMP_H */
-diff --git a/include/hw/timer/grlib_gptimer.h b/include/hw/timer/grlib_gptimer.h
-new file mode 100644
-index 0000000000..e56f1b8bf3
---- /dev/null
-+++ b/include/hw/timer/grlib_gptimer.h
-@@ -0,0 +1,32 @@
-+/*
-+ * QEMU GRLIB GPTimer
-+ *
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Copyright (c) 2024 AdaCore
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#ifndef GRLIB_GPTIMER_H
-+#define GRLIB_GPTIMER_H
-+
-+#define TYPE_GRLIB_GPTIMER "grlib-gptimer"
-+
-+#endif
+     /* Allocate IRQ manager */
+     irqmpdev = qdev_new(TYPE_GRLIB_IRQMP);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(irqmpdev), &error_fatal);
+     qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_set_pil_in,
+                                         env, "pil", 1);
+     qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", 0,
+                                 qdev_get_gpio_in_named(DEVICE(cpu), "pil", 0));
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(irqmpdev), &error_fatal);
+     sysbus_mmio_map(SYS_BUS_DEVICE(irqmpdev), 0, LEON3_IRQMP_OFFSET);
+     env->irq_manager = irqmpdev;
+     env->qemu_irq_ack = leon3_irq_manager;
 -- 
 2.25.1
 
