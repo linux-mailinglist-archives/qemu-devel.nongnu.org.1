@@ -2,101 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EE5844C16
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 00:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2B2844D44
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 00:45:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVJis-0007AV-O5; Wed, 31 Jan 2024 18:10:26 -0500
+	id 1rVKFa-00033y-Vf; Wed, 31 Jan 2024 18:44:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVJiQ-00076b-C7; Wed, 31 Jan 2024 18:10:00 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVJiO-0000Kx-OZ; Wed, 31 Jan 2024 18:09:58 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40VMILbQ006744; Wed, 31 Jan 2024 23:09:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=2QPGWHq4+h1+zRL0qablFV0HHBXadUmRLKNwT+Njx+U=;
- b=SsbSNzH4+swbt44drKDIYXrVyYFUI4v/TkduLsgR4+y+gtRgqVPAfMTwF0Z6WwxlaN0h
- JKrSm3vob81PyuU7r7e14rLMzKHwDK+wRsvUuDhMlLPqNkN7XweXeYApYzShcgXF37z/
- 2WsUvkXaaF8e+chJYTWIMSzH4N4iMvEAXNOyWhGesCOXRLJ7EDqrkDy8kXwvoq0XBwS8
- OrVFS0beXHRZ9TDuK1bECRJjKhiAt/A4NtPKFQvzHeLMoxRBihIGgr76m+MCeUo0j9EV
- wgcjdI7vBMjl5Sc0eNO/jUIHOFtRJwLmX7L+7BpuLxJrlub5je6+9oWnr6Oi9HKx2Uiw KQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyxvq8yhu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 23:09:53 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40VMIMYw006789;
- Wed, 31 Jan 2024 23:09:53 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vyxvq8yhr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 23:09:53 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 40VLBspg010535; Wed, 31 Jan 2024 23:09:52 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwd5p0e4y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 31 Jan 2024 23:09:52 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 40VN9ovX15139428
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 31 Jan 2024 23:09:50 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 981EF20043;
- Wed, 31 Jan 2024 23:09:50 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A24120040;
- Wed, 31 Jan 2024 23:09:50 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.171.74.74])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 31 Jan 2024 23:09:50 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
-Subject: [PATCH v3 4/4] tests/tcg/s390x: Test CONVERT TO BINARY
-Date: Thu,  1 Feb 2024 00:07:13 +0100
-Message-ID: <20240131230938.325919-5-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240131230938.325919-1-iii@linux.ibm.com>
-References: <20240131230938.325919-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rVKFY-00033j-Kc; Wed, 31 Jan 2024 18:44:12 -0500
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rVKFW-00080T-1U; Wed, 31 Jan 2024 18:44:11 -0500
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-4bd84b96feeso151034e0c.1; 
+ Wed, 31 Jan 2024 15:44:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1706744648; x=1707349448; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jezQDAOCtIA5TmKzFts6SW82UAeX4TlzZL8oQ9OuP7w=;
+ b=c6+vuPSv1I4LZCWP9rV1iKeht8bfp91XvhU7QzL1XkRHuI7WjozK5b3iIdnlUmyWqY
+ jZPgGRlNkziW7CwcViq16GRpM5YWnE2B/pol+/clZtknacBiO+wOQvqdBbPuD9TXElW+
+ CxezwQfG5N63OOpT/BK4zql0YSZ3HW2rU3LSRza1X3q8CNCwNH9PSkYhBBloSfM4Bv5u
+ KHTR4LKL7+triC9iKU6cQ9vR2THYo5zdil+6IBgGlGLQEC9LRVuvF4eIrYLxSAcSl8TZ
+ 0jXOf4vFrOhtO+1BfpLkouMNV8Eg5EtdcUzJOJUeAscplJV+khaDwwQotOuF4c0r+CYJ
+ bzng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706744648; x=1707349448;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jezQDAOCtIA5TmKzFts6SW82UAeX4TlzZL8oQ9OuP7w=;
+ b=Qvz5PUIhnNpP+RHnkE/Xm+6ORRzPdT7TOwj/rpQjMuveVl8fpq4t4HVvTCaTknWH6L
+ 4qxrPxROAK77qfIcKMkujskEeE1Hc1mIS8FUutrPQ5OZXklgxoFULUULLRALKXHn3qHn
+ 1FIFXnqVaazG0eiWYud20GhowuGo/uxhMhF97werdeSCKox6clGwS6EL2zjs3KSPFKiK
+ z1ce9L+svQuh0St8t01xcsqnqzmy+H1h+8M1V9/ozIxi9Q1g/Z4uaGutR+pc3KPvcCr4
+ YyO78znIkO9WfuXdl3X5h/FNnIdY8BlYuaOkB8+ET1mRPDAtsy5sDeYm9Z+u3zNn5hho
+ VqlQ==
+X-Gm-Message-State: AOJu0YxJmhRZhvOD0gs1KUpL7WF0Cj+6ZMpRE5ZwAiVqkbIm3U4nN4k0
+ SdKilDm2FGLwImKQEN3Rf8ldN96C2Rpn8W4iWOruoF9axZ3wXQi+MeUdrPqvrx8jxamqoNty4Vb
+ dcEBV9y59zx5htF/MgOHQzicJgPE=
+X-Google-Smtp-Source: AGHT+IHtCdSCZBbHFJTmDNK9FB0RFtLXPFh1OgGrYaMTKcE2gzX+pfBykKSDjbv+Y1pUVueqq2G9bUlOtGhUccXh0UU=
+X-Received: by 2002:ac5:cc58:0:b0:4bd:4ae3:dfce with SMTP id
+ l24-20020ac5cc58000000b004bd4ae3dfcemr2867299vkm.0.1706744648101; Wed, 31 Jan
+ 2024 15:44:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: muIeQsakNJlalcv1Y9XQOvaqAPRkF9_x
-X-Proofpoint-ORIG-GUID: m47RkaQjCvDSq8iHvOHJzWJW6b6xpeMK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-31_10,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxlogscore=785
- spamscore=0 malwarescore=0 priorityscore=1501 impostorscore=0 mlxscore=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401310178
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240125163408.1595135-1-peter.maydell@linaro.org>
+ <20240125163408.1595135-4-peter.maydell@linaro.org>
+In-Reply-To: <20240125163408.1595135-4-peter.maydell@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 1 Feb 2024 09:43:41 +1000
+Message-ID: <CAKmqyKNhLyA=WR3sH0J9x+2kDcM8KjVajcRoBSA6nUV7X3dBeg@mail.gmail.com>
+Subject: Re: [PATCH 03/10] disas/riscv: Clean up includes
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,82 +87,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check the CVB's and CVBG's corner cases.
+On Fri, Jan 26, 2024 at 4:04=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
+>
+> This commit was created with scripts/clean-includes:
+>  ./scripts/clean-includes --git disas/riscv disas/riscv*[ch]
+>
+> All .c should include qemu/osdep.h first.  The script performs three
+> related cleanups:
+>
+> * Ensure .c files include qemu/osdep.h first.
+> * Including it in a .h is redundant, since the .c  already includes
+>   it.  Drop such inclusions.
+> * Likewise, including headers qemu/osdep.h includes is redundant.
+>   Drop these, too.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Co-developed-by: Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/cvb.c           | 47 +++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
- create mode 100644 tests/tcg/s390x/cvb.c
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 04e4bddd83d..e2aba2ec274 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -46,6 +46,7 @@ TESTS+=laalg
- TESTS+=add-logical-with-carry
- TESTS+=lae
- TESTS+=cvd
-+TESTS+=cvb
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/cvb.c b/tests/tcg/s390x/cvb.c
-new file mode 100644
-index 00000000000..47b7a7965f4
---- /dev/null
-+++ b/tests/tcg/s390x/cvb.c
-@@ -0,0 +1,47 @@
-+/*
-+ * Test the CONVERT TO DECIMAL instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+
-+static int32_t cvb(uint64_t x)
-+{
-+    uint32_t ret;
-+
-+    asm("cvb %[ret],%[x]" : [ret] "=r" (ret) : [x] "R" (x));
-+
-+    return ret;
-+}
-+
-+static int64_t cvbg(__uint128_t x)
-+{
-+    int64_t ret;
-+
-+    asm("cvbg %[ret],%[x]" : [ret] "=r" (ret) : [x] "T" (x));
-+
-+    return ret;
-+}
-+
-+int main(void)
-+{
-+    __uint128_t m = (((__uint128_t)0x9223372036854775) << 16) | 0x8070;
-+
-+    assert(cvb(0xc) == 0);
-+    assert(cvb(0x1c) == 1);
-+    assert(cvb(0x25594c) == 25594);
-+    assert(cvb(0x1d) == -1);
-+    assert(cvb(0x2147483647c) == 0x7fffffff);
-+    assert(cvb(0x2147483647d) == -0x7fffffff);
-+
-+    assert(cvbg(0xc) == 0);
-+    assert(cvbg(0x1c) == 1);
-+    assert(cvbg(0x25594c) == 25594);
-+    assert(cvbg(0x1d) == -1);
-+    assert(cvbg(m | 0xc) == 0x7fffffffffffffff);
-+    assert(cvbg(m | 0xd) == -0x7fffffffffffffff);
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.43.0
+Alistair
 
+> ---
+>  disas/riscv.h          | 1 -
+>  disas/riscv-xthead.c   | 1 +
+>  disas/riscv-xventana.c | 1 +
+>  3 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/disas/riscv.h b/disas/riscv.h
+> index 19e5ed2ce63..16a08e4895c 100644
+> --- a/disas/riscv.h
+> +++ b/disas/riscv.h
+> @@ -7,7 +7,6 @@
+>  #ifndef DISAS_RISCV_H
+>  #define DISAS_RISCV_H
+>
+> -#include "qemu/osdep.h"
+>  #include "target/riscv/cpu_cfg.h"
+>
+>  /* types */
+> diff --git a/disas/riscv-xthead.c b/disas/riscv-xthead.c
+> index 99da679d16c..fcca326d1c3 100644
+> --- a/disas/riscv-xthead.c
+> +++ b/disas/riscv-xthead.c
+> @@ -4,6 +4,7 @@
+>   * SPDX-License-Identifier: GPL-2.0-or-later
+>   */
+>
+> +#include "qemu/osdep.h"
+>  #include "disas/riscv.h"
+>  #include "disas/riscv-xthead.h"
+>
+> diff --git a/disas/riscv-xventana.c b/disas/riscv-xventana.c
+> index a0224d1fb31..cd694f15f32 100644
+> --- a/disas/riscv-xventana.c
+> +++ b/disas/riscv-xventana.c
+> @@ -4,6 +4,7 @@
+>   * SPDX-License-Identifier: GPL-2.0-or-later
+>   */
+>
+> +#include "qemu/osdep.h"
+>  #include "disas/riscv.h"
+>  #include "disas/riscv-xventana.h"
+>
+> --
+> 2.34.1
+>
+>
 
