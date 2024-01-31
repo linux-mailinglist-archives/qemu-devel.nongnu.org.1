@@ -2,174 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC318439B3
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 09:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E568439EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 09:57:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV6JV-0001uQ-RA; Wed, 31 Jan 2024 03:51:21 -0500
+	id 1rV6P1-0000q9-Rv; Wed, 31 Jan 2024 03:57:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV6JQ-0001tt-Uo
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:16 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rV6Oz-0000q1-2V
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:57:01 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rV6JO-0007py-7v
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:51:16 -0500
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rV6Ov-0000gH-Km
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 03:57:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706691072;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1706691415;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=aSYh9qkgdH68/vTrBmEMSXdOX8B+uBVyNyQ8m8sSujM=;
- b=Ra1HnEXtskTMdfK71AKJzP7849m1R2U+qKA70ZFXcPPbT+wdPjDRsdcBv0OCHBAQsTBjXi
- Hqv2REYi2NiP/XRRcZau+FV1hZnrx07AdRw7XW6xkT2F3owCNE7e8Fz1t8KCVN88r3MdH1
- dKt6FNjnfWsSje4IPSK/F1cN7xAL7vM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-KEvTLbL_PO-6SBqolH6Mww-1; Wed, 31 Jan 2024 03:51:06 -0500
-X-MC-Unique: KEvTLbL_PO-6SBqolH6Mww-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33aebf85ce9so1486094f8f.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 00:51:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706691065; x=1707295865;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aSYh9qkgdH68/vTrBmEMSXdOX8B+uBVyNyQ8m8sSujM=;
- b=vphARZqqtj+ZElpDK86DLHcj5pL4DK5i2mEDUWSIeYass8VwJMnp5TUtQNoxdBkzRJ
- zzjzEpqOijrdoQT3q2x9HqIEBMHlCzzIVT8Y75+JG28ArqRyJaWgreVIeyv7y21efRN0
- PulO0tulCbnMJGw06HSHDmBKx/qxITY9kkXxfU58k+2FgXfsyn7O7jex7AViAH7mqZwS
- wf+FbWmVgzeHDN80zrMAFbVh4aZgLXEO6kWyay24+cIpOe1uwEUyu26nPSDVkQU0t4dq
- v2nLP7RZN+unKQvwPMT0H4QhF3NoDuDP7jIvzfIkJAiQncEl6afFhWWBfZLuoDKSVp8f
- oIpQ==
-X-Gm-Message-State: AOJu0YxLQ785HH2RJVGohke+ay6gfTfQ7cuzfMEuEme9f//DYOV4QisK
- 6KRiEM20MsPDsDwuJrhtx1oTzzAuT8oW8B8ioTEe1WMF4a6L5qNnyjtcUiiVe4z5QX95kT2aA70
- wThcsMYMnWgBpy7g7khIbwZ3MFu6ib5ksV1A4DcUNW070B593Wmgo
-X-Received: by 2002:adf:f710:0:b0:33a:fd5d:ae40 with SMTP id
- r16-20020adff710000000b0033afd5dae40mr738878wrp.25.1706691065205; 
- Wed, 31 Jan 2024 00:51:05 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEiuQBVJYD01HOD65UG98BbOrQLNZE3UnKvIM5aSZes+b6ZVGOP+R2JokdYLHYx3/tXBfa2vg==
-X-Received: by 2002:adf:f710:0:b0:33a:fd5d:ae40 with SMTP id
- r16-20020adff710000000b0033afd5dae40mr738833wrp.25.1706691064917; 
- Wed, 31 Jan 2024 00:51:04 -0800 (PST)
-Received: from [192.168.0.9] (ip-109-43-177-196.web.vodafone.de.
- [109.43.177.196]) by smtp.gmail.com with ESMTPSA id
- r6-20020adfca86000000b0033aed7423e8sm7490515wrh.11.2024.01.31.00.51.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Jan 2024 00:51:04 -0800 (PST)
-Message-ID: <da60e946-a60d-4754-a869-6c021938d24d@redhat.com>
-Date: Wed, 31 Jan 2024 09:51:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 35/47] hw/mips/mipssim: use qemu_create_nic_device()
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Niek Linnenbank <nieklinnenbank@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Igor Mitsyanko <i.mitsyanko@gmail.com>,
- Jean-Christophe Dubois <jcd@tribudubois.net>,
- Andrey Smirnov <andrew.smirnov@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Subbaraya Sundeep <sundeep.lkml@gmail.com>,
- Jan Kiszka <jan.kiszka@web.de>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Helge Deller <deller@gmx.de>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ in-reply-to:in-reply-to:references:references;
+ bh=swtu9+GCamo+LAafHhqIYs0NU/TqcvXjInatdY9WTdg=;
+ b=aecHblmSPhUKiCTFRRsKCCT24GiQdFbciWqHWdqQxE2mXKKH7Z8bXcqX6VSoGfOUxzB0mZ
+ 0uFOl3rvTb8fSsTibyklsO8dlYV6hT+UYJ7vkGR/NAK0+IVmDSyOJSgf7o6hQUfFdgQcys
+ JXnJ7m1h+3z9dVqYKisKcGcpszd420M=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-674-55VcQfPEMwGMBum9Id3bng-1; Wed,
+ 31 Jan 2024 03:56:52 -0500
+X-MC-Unique: 55VcQfPEMwGMBum9Id3bng-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FC6C2812FE1;
+ Wed, 31 Jan 2024 08:56:51 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 09EC21121306;
+ Wed, 31 Jan 2024 08:56:49 +0000 (UTC)
+Date: Wed, 31 Jan 2024 08:56:47 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Song Gao
- <gaosong@loongson.cn>, Thomas Huth <huth@tuxfamily.org>,
- Laurent Vivier <laurent@vivier.eu>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jason Wang <jasowang@redhat.com>,
- Jia Liu <proljc@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Bin Meng
- <bin.meng@windriver.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Max Filippov <jcmvbkbc@gmail.com>, qemu-arm@nongnu.org,
- David Woodhouse <dwmw@amazon.co.uk>
-References: <20240126173228.394202-1-dwmw2@infradead.org>
- <20240126173228.394202-36-dwmw2@infradead.org>
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240126173228.394202-36-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, kraxel@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] pc: q35: Bump max_cpus to 1856 vcpus
+Message-ID: <ZboLOoFtyGc6AwzZ@redhat.com>
+References: <20240131024906.3920-1-anisinha@redhat.com>
+ <ZbnH9Yehg7bWY+ws@intel.com>
+ <CAK3XEhOOGFtGPr6h1YpSv54QeBBjVnASUk6k59842vCvBt0qLQ@mail.gmail.com>
+ <Zbnum6Mljz6ZoFvx@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zbnum6Mljz6ZoFvx@intel.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -182,21 +90,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/01/2024 18.25, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
+On Wed, Jan 31, 2024 at 02:54:19PM +0800, Zhao Liu wrote:
+> On Wed, Jan 31, 2024 at 10:47:29AM +0530, Ani Sinha wrote:
+> > Date: Wed, 31 Jan 2024 10:47:29 +0530
+> > From: Ani Sinha <anisinha@redhat.com>
+> > Subject: Re: [PATCH v2] pc: q35: Bump max_cpus to 1856 vcpus
+> > 
+> > On Wed, Jan 31, 2024 at 9:27 AM Zhao Liu <zhao1.liu@intel.com> wrote:
+> > >
+> > > Hi Ani,
+> > >
+> > > On Wed, Jan 31, 2024 at 08:19:06AM +0530, Ani Sinha wrote:
+> > > > Date: Wed, 31 Jan 2024 08:19:06 +0530
+> > > > From: Ani Sinha <anisinha@redhat.com>
+> > > > Subject: [PATCH v2] pc: q35: Bump max_cpus to 1856 vcpus
+> > > > X-Mailer: git-send-email 2.42.0
+> > > >
+> > > > Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
+> > > > Linux kernel can support upto a maximum number of 4096 vCPUS when MAXSMP is
+> > > > enabled in the kernel. At present, QEMU has been tested to correctly boot a
+> > > > linux guest with 1856 vcpus and no more both with edk2 and seabios firmwares.
+> > >
+> > > About background, could I ask if there will be Host machines with so
+> > > much CPUs? What are the benefits of vCPUs that far exceed the number
+> > > of Host CPUs?
+> > 
+> > Yes HPE has SAP HANA host machines with large numbers of physical
+> > cores and memory. For example QEMU was tested on a system with 3840
+> > cores.
 > 
-> The MIPS SIM platform instantiates its NIC only if a corresponding
-> configuration exists for it. Use qemu_create_nic_device() function for
-> that.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->   hw/mips/mipssim.c | 13 +++++++------
->   1 file changed, 7 insertions(+), 6 deletions(-)
+> Thanks! For such large system, does the vCPU need the CPU affinity, or
+> just let them run free on the Host's physical cores?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+It depends what you are trying to achieve. The tradeoffs for guest
+placement on small systems still pretty much apply on large systems
+too. There may be factors which alter the balance for the tradeoffs,
+but the theme is still determined by what the guest owner requires
+and what the host owner wants to achieve.
+
+Strict host:guest CPU affinity will give the guest a deterministic
+amount of host CPU time, and lowest latencies. It is wasteful of
+host resources though, because if a guest CPU is idle, a different
+guests' CPU can't use that host CPU time. So letting guests run
+freely across host cores and overcommiting CPUs will maximize
+utilization but give non-deterministic timeslices & latency to
+guests.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
