@@ -2,140 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246A484425B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 15:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4583B8442EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 16:23:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVC1d-0002oK-Ri; Wed, 31 Jan 2024 09:57:17 -0500
+	id 1rVCQO-0007Dd-PZ; Wed, 31 Jan 2024 10:22:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rVC1c-0002o6-E9
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 09:57:16 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rVCQF-0007Bh-EH
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 10:22:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rVC1a-0001mB-TH
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 09:57:16 -0500
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rVCQD-00073U-9z
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 10:22:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706713034;
+ s=mimecast20190719; t=1706714559;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ETGcb5D5wCkdTjFS4wUq3RZooG7XYtSHFFh/E7tLRKE=;
- b=TEXinp6N7nEr8irn7ellOeWW3lx4mmeko2WrreVZKvgpfEh/ge6mL6pfjWJCZUBZGJ7ZeP
- VnEn1miOjyjeHxtrK/b1kPXfyICaUb/HcBHAEd2bsFnLIzbW1Fc4LRLrrrtJsvvMPhze9Z
- z74bO5+86j2j3KduJ7vCc77lxrpuwk4=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=NFS1hnVdyyBfAftv4YLN9PhOlVC7c4KyfDHCOLNRUwQ=;
+ b=KYB8Otc5JU1z8G4RtxPNYuP36BZN0sWyYFqMegvuw9Ry8kTKPkiZH7G6J/kQu+3ShTkZyj
+ 3iGNgRw2fcK1MZ9YIxfC1F+KzcNSHGdz4+TRlQZrBI3Dh6uD3V+ha4pZsXH9oEkml+Gz81
+ kVH4+ERha7B/g9k5p+5MPxbw1a6H8XI=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-550-QdxFuyKxNfu-2ky8bCe9_A-1; Wed, 31 Jan 2024 09:57:12 -0500
-X-MC-Unique: QdxFuyKxNfu-2ky8bCe9_A-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-5111abb53aeso1841693e87.1
- for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 06:57:12 -0800 (PST)
+ us-mta-218-o6ajJPmrO-KvAcMB211afg-1; Wed, 31 Jan 2024 10:22:37 -0500
+X-MC-Unique: o6ajJPmrO-KvAcMB211afg-1
+Received: by mail-vs1-f71.google.com with SMTP id
+ ada2fe7eead31-46b17994ddbso1287682137.0
+ for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 07:22:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706713030; x=1707317830;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ETGcb5D5wCkdTjFS4wUq3RZooG7XYtSHFFh/E7tLRKE=;
- b=UkzrFQxYfRKGLYy/1efAvM7udeY/dN3E9lltWLqiF3n9MKiuCEjk5gxmsBAsk2RpEx
- mgl5OaGZWRNt63LAocNiiGw49JLPl7i0Dw1n1e1XVUOeIfvut0QXYf4Dr9SKbbWi1fyP
- 2Tn6lvStHuedsaXL4DmvniVrrHvlhrvpkRnz+QILnT36YZXdDuRN1SogSwf6jlTEqgXC
- 42PF2DdjRtEjhnHjFtecMpwGxwpQcyXWx+d2f5/e0jg3Hg5oEpWS2g95qgeRjHUkzPih
- TEbP0RKc3kFNKQCCuGQL5SVkifkSqhgiW6yIT+yNxgfWnkOG4INoOHr57r/XlGhFdr36
- 2MYg==
-X-Gm-Message-State: AOJu0Yyj3bqnFP9udXLbZ1QgFsfljhcjyAU6IFOXmrMwzwA3qHkq9g7F
- hGG4UAk/8BGF8UKsB6U9iUT0GrS6CROtg6JR/BSYwCJqjw9hJvtJKY7ReheUYfsl0CCSL/AlAxC
- GSCHGU89r8YQo2tximH6NyWZlm3Kaxi+jUw/zda06w7xu82reEyV/
-X-Received: by 2002:ac2:4e6e:0:b0:511:ecf:e5d5 with SMTP id
- y14-20020ac24e6e000000b005110ecfe5d5mr1224352lfs.6.1706713030648; 
- Wed, 31 Jan 2024 06:57:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGQUJLMV0Tp7KXIxnK+nwruVdWMNVxIF4GUzjHTiuz7T/7QKGBfEgDDmGZq6bJJYKhqE5/0pA==
-X-Received: by 2002:ac2:4e6e:0:b0:511:ecf:e5d5 with SMTP id
- y14-20020ac24e6e000000b005110ecfe5d5mr1224339lfs.6.1706713030207; 
- Wed, 31 Jan 2024 06:57:10 -0800 (PST)
-Received: from [10.32.64.237] (nat-pool-muc-t.redhat.com. [149.14.88.26])
- by smtp.gmail.com with ESMTPSA id
- i3-20020a05600c354300b0040ef79b2fa6sm1836428wmq.33.2024.01.31.06.57.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 31 Jan 2024 06:57:09 -0800 (PST)
-Message-ID: <00584dd7-f89f-4595-903b-54fbff260983@redhat.com>
-Date: Wed, 31 Jan 2024 15:57:09 +0100
+ d=1e100.net; s=20230601; t=1706714557; x=1707319357;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NFS1hnVdyyBfAftv4YLN9PhOlVC7c4KyfDHCOLNRUwQ=;
+ b=l2azKiwrVq2FvKOpSbDwOo1y7Av6bpsL+7S8HOG5GisKk/Csci+I9s+ytuoAnIGeSI
+ mSwbxxMsW2jdeuxRY8L286SaYbdvQ3zf/KaNTjwnfzmjIPVmoHJnDYdG1IrvvFl1EB0w
+ VGjCSy11PleiBnXejTtOAlU7Crds9Ceb2xWWK0cFizBJ8xkqjVAR+hhla8V7Mstjn0YE
+ hiSFD3Y+7IRNqYbftK/WGRmrBXmTeGFwzPLlbq4zkHPNeqwUSWbQtOxSCxYS13QUa0o9
+ ZebqMW9R4jdkbDi8zToDesaPfNyFdlLAQGuNsp2Chh9PjsFyb8kfyrX2iz2ne22dtrqZ
+ T/Zw==
+X-Gm-Message-State: AOJu0YxzPq62lFiLdUWgqayGNJiwMzFhjhOUq2E3DoiM9jakrFUsPZ9l
+ Rf4JOc9ADqig+2bhlHLLr6lYAuzDVrDFUuqf88QPjP3NLOnB++M12lx4BlDqjvhv5glVmJVOFIb
+ dDrOiEKP/f1Ub6UyD5BTxHAJoMCMFgPEjByVSQUeBsfTqmnX4Uoc+/slblPSvwAwPKrdK0vybPZ
+ EyIZKmz7nr70s6D+szSes0a0mEUUtA8Her7ig=
+X-Received: by 2002:a67:eec8:0:b0:469:4f37:8a10 with SMTP id
+ o8-20020a67eec8000000b004694f378a10mr1615930vsp.11.1706714556875; 
+ Wed, 31 Jan 2024 07:22:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF6eUqNuajVvDowBAVSfLk2z4yOlJgZVwM223RYdaBv/cIWoMRGuPM5nXiNL4MWlG01NjipI/s7neOt4ePF3KU=
+X-Received: by 2002:a67:eec8:0:b0:469:4f37:8a10 with SMTP id
+ o8-20020a67eec8000000b004694f378a10mr1615917vsp.11.1706714556580; Wed, 31 Jan
+ 2024 07:22:36 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] oslib-posix: initialize backend memory objects in
- parallel
-Content-Language: en-US
-To: Mark Kanda <mark.kanda@oracle.com>, qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, berrange@redhat.com
-References: <20240131134843.3074922-1-mark.kanda@oracle.com>
- <20240131134843.3074922-2-mark.kanda@oracle.com>
- <46fc0732-8735-4440-b14a-13e2389d7d6c@redhat.com>
- <578395fd-9538-4d3d-85ea-f5e9b95b8bd7@oracle.com>
- <7686daa5-c175-4b2c-a6ad-72d3c78b2249@redhat.com>
- <6a5773e2-6887-4cd6-995a-209affd71b74@oracle.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <6a5773e2-6887-4cd6-995a-209affd71b74@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+References: <20240129121312.1057281-1-pbonzini@redhat.com>
+ <1ff4b856-352b-4eb0-944e-67ab75474be8@linaro.org>
+ <CABgObfZ5r9DRjaxWZcOJ4u5+8zz8LmKtY562-6phu6FiYBV7bA@mail.gmail.com>
+In-Reply-To: <CABgObfZ5r9DRjaxWZcOJ4u5+8zz8LmKtY562-6phu6FiYBV7bA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 31 Jan 2024 15:25:41 +0100
+Message-ID: <CABgObfZeykpBx0fPLfa-11eUdM=qMY4mVNA_co1E4Wxq8TVsbA@mail.gmail.com>
+Subject: Re: [PATCH] mips: allow compiling out CONFIG_MIPS_ITU
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000e0e2e506103f724c"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,61 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31.01.24 15:48, Mark Kanda wrote:
-> On 1/31/24 8:30 AM, David Hildenbrand wrote:
->>>
->>> OK. I'll call it 'PHASE_LATE_BACKENDS_CREATED' (to make it consistent
->>> with code comments/function name).
->>
->> But then, you should set it at the very end of the function (not sure
->> if that would be a problem with the other devices that are getting
->> created in between -- if they would be using one of these memory
->> backends; likely not).
->>
-> 
-> I think I misunderstood your suggestion. I was planning to add it a
-> 'phase_advance(PHASE_LATE_BACKENDS_CREATED)' to qemu_init():
-> 
->      @@ -3703,6 +3703,7 @@ void qemu_init(int argc, char **argv)
->             * over memory-backend-file objects).
->             */
->            qemu_create_late_backends();
->      +    phase_advance(PHASE_LATE_BACKENDS_CREATED);
-> 
-> And use PHASE_LATE_BACKENDS_CREATED (instead of
-> PHASE_MACHINE_INITIALIZED) for the async bool in
-> host_memory_backend_memory_complete().
-> 
-> I was planning to leave this call where it is:
-> 
->      @@ -2009,6 +2009,14 @@ static void qemu_create_late_backends(void)
-> 
->            object_option_foreach_add(object_create_late);
-> 
->      +    /*
->      +     * Wait for any outstanding memory prealloc from created memory
->      +     * backends to complete.
->      +     */
->      +    if (!qemu_finish_async_mem_prealloc(&error_fatal)) {
->      +        exit(1);
->      +    }
->      +
->            if (tpm_init() < 0) {
->                exit(1);
->            }
-> 
+--000000000000e0e2e506103f724c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yes. The only "suboptimal" things is that if someone where to create a 
-memory backend between qemu_finish_async_mem_prealloc() and 
-phase_advance(PHASE_LATE_BACKENDS_CREATED), it would never get preallocated.
+Il lun 29 gen 2024, 14:31 Paolo Bonzini <pbonzini@redhat.com> ha scritto:
 
-That likely won't ever happen by any of the remaining stuff in 
-qemu_create_late_backends(), especially not with "prealloc=on" and 
-thread-contexts set.
+> On Mon, Jan 29, 2024 at 2:30=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+> <philmd@linaro.org> wrote:
+> >
+> > Hi Paolo,
+> >
+> > On 29/1/24 13:13, Paolo Bonzini wrote:
+> > > itu_reconfigure() is referenced from TCG, provide a stub if needed.
+> >
+> > s/itu_reconfigure/itc_reconfigure/
+> >
+> > What are you trying to achieve?
+>
+> I'm trying to build all MIPS boards one by one (to clean up
+> configs/devices/mips*).
+>
 
--- 
-Cheers,
+Is this okay? It's not *required* in order to clean up
+configs/devices/mips*, but it's still a bug.
 
-David / dhildenb
+Paolo
+
+
+> Paolo
+>
+
+--000000000000e0e2e506103f724c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il lun 29 gen 2024, 14:31 Paolo Bonzini &lt;<a href=3D=
+"mailto:pbonzini@redhat.com">pbonzini@redhat.com</a>&gt; ha scritto:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
+:1px #ccc solid;padding-left:1ex">On Mon, Jan 29, 2024 at 2:30=E2=80=AFPM P=
+hilippe Mathieu-Daud=C3=A9<br>
+&lt;<a href=3D"mailto:philmd@linaro.org" target=3D"_blank" rel=3D"noreferre=
+r">philmd@linaro.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Hi Paolo,<br>
+&gt;<br>
+&gt; On 29/1/24 13:13, Paolo Bonzini wrote:<br>
+&gt; &gt; itu_reconfigure() is referenced from TCG, provide a stub if neede=
+d.<br>
+&gt;<br>
+&gt; s/itu_reconfigure/itc_reconfigure/<br>
+&gt;<br>
+&gt; What are you trying to achieve?<br>
+<br>
+I&#39;m trying to build all MIPS boards one by one (to clean up<br>
+configs/devices/mips*).<br></blockquote></div></div><div dir=3D"auto"><br><=
+/div><div dir=3D"auto">Is this okay? It&#39;s not *required* in order to cl=
+ean up configs/devices/mips*, but it&#39;s still a bug.</div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div=
+ dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" =
+style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+<br>
+Paolo<br>
+</blockquote></div></div></div>
+
+--000000000000e0e2e506103f724c--
 
 
