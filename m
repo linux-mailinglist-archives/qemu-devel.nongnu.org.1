@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876EF843CC2
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 501DF843CDC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:34:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV7sU-00054y-JP; Wed, 31 Jan 2024 05:31:34 -0500
+	id 1rV7sV-00055V-6Y; Wed, 31 Jan 2024 05:31:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7sQ-00052L-FH
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:31:31 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7sS-000542-La
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:31:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7sO-0005Zy-3A
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:31:29 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7sQ-0005aP-W6
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:31:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706697087;
+ s=mimecast20190719; t=1706697090;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qzb46DUZSTMJoNeVIqZsw/shF+U8HEgAIFp5xpwtBDY=;
- b=FpMSR3jH7HLKvU/LPpw9tU+RUi0hjc4ignY0D2Uc52fINLzO29W08LRmGrr66R45rA7L+g
- KENISHYf64qmf6RWPYAF83OH4xs6LW3euEFLFDYJ8QDynVQPy+XKEwMLDx1wX7TIow1pqL
- dy3rV82Vs7/Dzi8y10Su6mOirTRvQQE=
+ bh=SMVA61FG00o5F2sgpzvPDSC3j1syRcvDYKyMGntilGw=;
+ b=dRWjTHXnEcrLbQCOhUKLF+PYn3LEhS5/tfXHnmGvB4WJyhbX4Of5ds0PtuI0y3/yudD8Fa
+ JZsOsleq8yVlk35lMx43Hm3EB+p4nvXFu14H6nu3IioKkvB1O4SH7gvNAnW7fYJXFR6Mi5
+ BKTCWRyk9GxIyeUt9EJlIcknGRZMX6A=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-B2wYEq4VNMWf3OzQbJOBHA-1; Wed,
- 31 Jan 2024 05:31:23 -0500
-X-MC-Unique: B2wYEq4VNMWf3OzQbJOBHA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-Ut7W_kosN9S4j-kDh3G0eQ-1; Wed,
+ 31 Jan 2024 05:31:28 -0500
+X-MC-Unique: Ut7W_kosN9S4j-kDh3G0eQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 379861C068D3;
- Wed, 31 Jan 2024 10:31:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3B431C05154;
+ Wed, 31 Jan 2024 10:31:27 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3695D1BDB1;
- Wed, 31 Jan 2024 10:31:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 018801BDB1;
+ Wed, 31 Jan 2024 10:31:23 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Bryan Zhang <bryan.zhang@bytedance.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Yuan Liu <yuan1.liu@intel.com>,
  Avihai Horon <avihaih@nvidia.com>, Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 01/14] migration/multifd: Drop stale comment for multifd zero
- copy
-Date: Wed, 31 Jan 2024 18:30:58 +0800
-Message-ID: <20240131103111.306523-2-peterx@redhat.com>
+Subject: [PATCH 02/14] migration/multifd: multifd_send_kick_main()
+Date: Wed, 31 Jan 2024 18:30:59 +0800
+Message-ID: <20240131103111.306523-3-peterx@redhat.com>
 In-Reply-To: <20240131103111.306523-1-peterx@redhat.com>
 References: <20240131103111.306523-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -83,37 +82,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-We've already done that with multifd_flush_after_each_section, for multifd
-in general.  Drop the stale "TODO-like" comment.
+When a multifd sender thread hit errors, it always needs to kick the main
+thread by kicking all the semaphores that it can be waiting upon.
+
+Provide a helper for it and deduplicate the code.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ migration/multifd.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 25cbc6dc6b..eee2586770 100644
+index eee2586770..b8d2c96533 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -598,17 +598,6 @@ int multifd_send_sync_main(void)
-         }
+@@ -372,6 +372,18 @@ struct {
+     MultiFDMethods *ops;
+ } *multifd_send_state;
+ 
++/*
++ * The migration thread can wait on either of the two semaphores.  This
++ * function can be used to kick the main thread out of waiting on either of
++ * them.  Should mostly only be called when something wrong happened with
++ * the current multifd send thread.
++ */
++static void multifd_send_kick_main(MultiFDSendParams *p)
++{
++    qemu_sem_post(&p->sem_sync);
++    qemu_sem_post(&multifd_send_state->channels_ready);
++}
++
+ /*
+  * How we use multifd_send_state->pages and channel->pages?
+  *
+@@ -739,8 +751,7 @@ out:
+         assert(local_err);
+         trace_multifd_send_error(p->id);
+         multifd_send_terminate_threads(local_err);
+-        qemu_sem_post(&p->sem_sync);
+-        qemu_sem_post(&multifd_send_state->channels_ready);
++        multifd_send_kick_main(p);
+         error_free(local_err);
      }
  
--    /*
--     * When using zero-copy, it's necessary to flush the pages before any of
--     * the pages can be sent again, so we'll make sure the new version of the
--     * pages will always arrive _later_ than the old pages.
--     *
--     * Currently we achieve this by flushing the zero-page requested writes
--     * per ram iteration, but in the future we could potentially optimize it
--     * to be less frequent, e.g. only after we finished one whole scanning of
--     * all the dirty bitmaps.
--     */
--
-     flush_zero_copy = migrate_zero_copy_send();
+@@ -781,8 +792,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+      * is not created, and then tell who pay attention to me.
+      */
+     p->quit = true;
+-    qemu_sem_post(&multifd_send_state->channels_ready);
+-    qemu_sem_post(&p->sem_sync);
++    multifd_send_kick_main(p);
+     error_free(err);
+ }
  
-     for (i = 0; i < migrate_multifd_channels(); i++) {
+@@ -852,8 +862,7 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+ {
+      migrate_set_error(migrate_get_current(), err);
+      /* Error happen, we need to tell who pay attention to me */
+-     qemu_sem_post(&multifd_send_state->channels_ready);
+-     qemu_sem_post(&p->sem_sync);
++     multifd_send_kick_main(p);
+      /*
+       * Although multifd_send_thread is not created, but main migration
+       * thread need to judge whether it is running, so we need to mark
 -- 
 2.43.0
 
