@@ -2,39 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03749843EE3
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084E0843EF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:59:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9CE-0008EF-VM; Wed, 31 Jan 2024 06:56:03 -0500
+	id 1rV9CH-0008Ex-06; Wed, 31 Jan 2024 06:56:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CC-0008DJ-Ea; Wed, 31 Jan 2024 06:56:00 -0500
+ id 1rV9CD-0008ED-QU; Wed, 31 Jan 2024 06:56:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CA-0003vO-QV; Wed, 31 Jan 2024 06:56:00 -0500
+ id 1rV9CC-0003vf-7t; Wed, 31 Jan 2024 06:56:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ED80B490C2;
- Wed, 31 Jan 2024 14:56:46 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 08783490C3;
+ Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2F67C7026B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3E8197026C;
  Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263924 invoked by uid 1000);
+Received: (nullmailer pid 2263927 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Yihuan Pan <xun794@gmail.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 04/21] qemu-docs: Update options for graphical frontends
-Date: Wed, 31 Jan 2024 14:55:32 +0300
-Message-Id: <20240131115549.2263854-5-mjt@tls.msk.ru>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 05/21] mailmap: Fix Stefan Weil email
+Date: Wed, 31 Jan 2024 14:55:33 +0300
+Message-Id: <20240131115549.2263854-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,38 +60,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yihuan Pan <xun794@gmail.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The command line options `-ctrl-grab` and `-alt-grab` have been removed
-in QEMU 7.1. Instead, use the `-display sdl,grab-mod=<modifiers>` option
-to specify the grab modifiers.
+Commit 5204b499a6 ("mailmap: Fix Stefan Weil author email")
+corrected authorship for patch received at qemu-devel@nongnu.org,
+correct now for patch received at qemu-trivial@nongnu.org.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2103
-Signed-off-by: Yihuan Pan <xun794@gmail.com>
+Update other authorship email for Stefan's commits.
+
+Suggested-by: Stefan Weil <sw@weilnetz.de>
+Fixes: d819fc9516 ("virtio-blk: Fix potential nullptr read access")
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- docs/system/keys.rst.inc | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ .mailmap | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/docs/system/keys.rst.inc b/docs/system/keys.rst.inc
-index bd9b8e5f6f..2e2c97aa23 100644
---- a/docs/system/keys.rst.inc
-+++ b/docs/system/keys.rst.inc
-@@ -1,8 +1,9 @@
--During the graphical emulation, you can use special key combinations to
--change modes. The default key mappings are shown below, but if you use
--``-alt-grab`` then the modifier is Ctrl-Alt-Shift (instead of Ctrl-Alt)
--and if you use ``-ctrl-grab`` then the modifier is the right Ctrl key
--(instead of Ctrl-Alt):
-+During the graphical emulation, you can use special key combinations from
-+the following table to change modes. By default the modifier is Ctrl-Alt
-+(used in the table below) which can be changed with ``-display`` suboption
-+``mod=`` where appropriate. For example, ``-display sdl,
-+grab-mod=lshift-lctrl-lalt`` changes the modifier key to Ctrl-Alt-Shift,
-+while ``-display sdl,grab-mod=rctrl`` changes it to the right Ctrl key.
+diff --git a/.mailmap b/.mailmap
+index d94572af05..88fb68143e 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -36,6 +36,8 @@ Marek Dolata <mkdolata@us.ibm.com> mkdolata@us.ibm.com <mkdolata@us.ibm.com>
+ Michael Ellerman <mpe@ellerman.id.au> michael@ozlabs.org <michael@ozlabs.org>
+ Nick Hudson <hnick@vmware.com> hnick@vmware.com <hnick@vmware.com>
+ Timothée Cocault <timothee.cocault@gmail.com> timothee.cocault@gmail.com <timothee.cocault@gmail.com>
++Stefan Weil <sw@weilnetz.de> <weil@mail.berlios.de>
++Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@kiwi.(none)>
  
- Ctrl-Alt-f
-    Toggle full screen
+ # There is also a:
+ #    (no author) <(no author)@c046a42c-6fe2-441c-8c8c-71466251a162>
+@@ -60,6 +62,7 @@ Ian McKellar <ianloic@google.com> Ian McKellar via Qemu-devel <qemu-devel@nongnu
+ Julia Suvorova <jusual@mail.ru> Julia Suvorova via Qemu-devel <qemu-devel@nongnu.org>
+ Justin Terry (VM) <juterry@microsoft.com> Justin Terry (VM) via Qemu-devel <qemu-devel@nongnu.org>
+ Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-devel@nongnu.org>
++Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-trivial@nongnu.org>
+ Andrey Drobyshev <andrey.drobyshev@virtuozzo.com> Andrey Drobyshev via <qemu-block@nongnu.org>
+ BALATON Zoltan <balaton@eik.bme.hu> BALATON Zoltan via <qemu-ppc@nongnu.org>
+ 
+@@ -98,6 +101,7 @@ Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@redhat.com>
+ Philippe Mathieu-Daudé <philmd@linaro.org> <philmd@fungible.com>
+ Roman Bolshakov <rbolshakov@ddn.com> <r.bolshakov@yadro.com>
+ Stefan Brankovic <stefan.brankovic@syrmia.com> <stefan.brankovic@rt-rk.com.com>
++Stefan Weil <sw@weilnetz.de> Stefan Weil <stefan@weilnetz.de>
+ Taylor Simpson <ltaylorsimpson@gmail.com> <tsimpson@quicinc.com>
+ Yongbok Kim <yongbok.kim@mips.com> <yongbok.kim@imgtec.com>
+ 
 -- 
 2.39.2
 
