@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53064843F0B
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4EF843F09
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9Cy-0001JQ-Rv; Wed, 31 Jan 2024 06:56:48 -0500
+	id 1rV9DM-0002KA-Nz; Wed, 31 Jan 2024 06:57:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9Cw-0001IY-Rb; Wed, 31 Jan 2024 06:56:46 -0500
+ id 1rV9DI-0002Hx-3x; Wed, 31 Jan 2024 06:57:08 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9Cv-00041W-5m; Wed, 31 Jan 2024 06:56:46 -0500
+ id 1rV9DG-00041l-Gw; Wed, 31 Jan 2024 06:57:07 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B8080490CE;
+ by isrv.corpit.ru (Postfix) with ESMTP id C6629490CF;
  Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EED4F70277;
- Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263960 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 08EE670278;
+ Wed, 31 Jan 2024 14:55:51 +0300 (MSK)
+Received: (nullmailer pid 2263963 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 16/21] backends/hostmem: Fix block comments style
- (checkpatch.pl warnings)
-Date: Wed, 31 Jan 2024 14:55:44 +0300
-Message-Id: <20240131115549.2263854-17-mjt@tls.msk.ru>
+Cc: Greg Kurz <groug@kaod.org>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 17/21] hw/i386: Add `\n` to hint message
+Date: Wed, 31 Jan 2024 14:55:45 +0300
+Message-Id: <20240131115549.2263854-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,58 +59,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Greg Kurz <groug@kaod.org>
 
-While re-indenting code in host_memory_backend_memory_complete(),
-we triggered various "Block comments use a leading /* on a separate
-line" warnings from checkpatch.pl. Correct the comments style.
+error_printf() doesn't add newlines.
 
-Fixes: e199f7ad4d ("backends: Simplify host_memory_backend_memory_complete()")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- backends/hostmem.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ hw/i386/acpi-build.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 30f69b2cb5..987f6f591e 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -344,9 +344,11 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
-     unsigned long lastbit = find_last_bit(backend->host_nodes, MAX_NODES);
-     /* lastbit == MAX_NODES means maxnode = 0 */
-     unsigned long maxnode = (lastbit + 1) % (MAX_NODES + 1);
--    /* ensure policy won't be ignored in case memory is preallocated
-+    /*
-+     * Ensure policy won't be ignored in case memory is preallocated
-      * before mbind(). note: MPOL_MF_STRICT is ignored on hugepages so
--     * this doesn't catch hugepage case. */
-+     * this doesn't catch hugepage case.
-+     */
-     unsigned flags = MPOL_MF_STRICT | MPOL_MF_MOVE;
-     int mode = backend->policy;
- 
-@@ -363,7 +365,8 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
-         return;
-     }
- 
--    /* We can have up to MAX_NODES nodes, but we need to pass maxnode+1
-+    /*
-+     * We can have up to MAX_NODES nodes, but we need to pass maxnode+1
-      * as argument to mbind() due to an old Linux bug (feature?) which
-      * cuts off the last specified node. This means backend->host_nodes
-      * must have MAX_NODES+1 bits available.
-@@ -391,7 +394,8 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index edc979379c..e990b0ae92 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2697,7 +2697,7 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+                         " migration may not work",
+                         tables_blob->len, legacy_table_size);
+             error_printf("Try removing CPUs, NUMA nodes, memory slots"
+-                         " or PCI bridges.");
++                         " or PCI bridges.\n");
          }
+         g_array_set_size(tables_blob, legacy_table_size);
+     } else {
+@@ -2709,7 +2709,7 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+                         " migration may not work",
+                         tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
+             error_printf("Try removing CPUs, NUMA nodes, memory slots"
+-                         " or PCI bridges.");
++                         " or PCI bridges.\n");
+         }
+         acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
      }
- #endif
--    /* Preallocate memory after the NUMA policy has been instantiated.
-+    /*
-+     * Preallocate memory after the NUMA policy has been instantiated.
-      * This is necessary to guarantee memory is allocated with
-      * specified NUMA policy in place.
-      */
 -- 
 2.39.2
 
