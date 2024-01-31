@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D21843F06
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7417843F0A
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9Cd-0000Fq-VB; Wed, 31 Jan 2024 06:56:28 -0500
+	id 1rV9Cf-0000Ui-It; Wed, 31 Jan 2024 06:56:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CQ-00005b-6r; Wed, 31 Jan 2024 06:56:15 -0500
+ id 1rV9CU-0000B8-1U; Wed, 31 Jan 2024 06:56:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CN-0003xX-1q; Wed, 31 Jan 2024 06:56:13 -0500
+ id 1rV9CR-0003xr-J4; Wed, 31 Jan 2024 06:56:17 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 61344490C8;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6F6F9490C9;
  Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9651870271;
+ by tsrv.corpit.ru (Postfix) with SMTP id A64E370272;
  Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263942 invoked by uid 1000);
+Received: (nullmailer pid 2263945 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/21] acpi: Clean up includes
-Date: Wed, 31 Jan 2024 14:55:38 +0300
-Message-Id: <20240131115549.2263854-11-mjt@tls.msk.ru>
+Subject: [PULL 11/21] m68k: Clean up includes
+Date: Wed, 31 Jan 2024 14:55:39 +0300
+Message-Id: <20240131115549.2263854-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
@@ -63,7 +63,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Peter Maydell <peter.maydell@linaro.org>
 
 This commit was created with scripts/clean-includes:
- ./scripts/clean-includes --git acpi include/hw/*/*acpi.h hw/*/*acpi.c
+./scripts/clean-includes --git m68k include/hw/audio/asc.h include/hw/m68k/*.h
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -76,64 +76,38 @@ related cleanups:
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/nvram/fw_cfg-acpi.c          | 1 +
- hw/virtio/virtio-acpi.c         | 1 +
- include/hw/nvram/fw_cfg_acpi.h  | 1 -
- include/hw/virtio/virtio-acpi.h | 1 -
- 4 files changed, 2 insertions(+), 2 deletions(-)
+ include/hw/audio/asc.h      | 1 -
+ include/hw/m68k/q800-glue.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/hw/nvram/fw_cfg-acpi.c b/hw/nvram/fw_cfg-acpi.c
-index 4e48baeaa0..58cdcd3121 100644
---- a/hw/nvram/fw_cfg-acpi.c
-+++ b/hw/nvram/fw_cfg-acpi.c
-@@ -4,6 +4,7 @@
-  *
-  */
- 
-+#include "qemu/osdep.h"
- #include "hw/nvram/fw_cfg_acpi.h"
- #include "hw/acpi/aml-build.h"
- 
-diff --git a/hw/virtio/virtio-acpi.c b/hw/virtio/virtio-acpi.c
-index e18cb38bdb..230a669500 100644
---- a/hw/virtio/virtio-acpi.c
-+++ b/hw/virtio/virtio-acpi.c
-@@ -4,6 +4,7 @@
-  *
-  */
- 
-+#include "qemu/osdep.h"
- #include "hw/virtio/virtio-acpi.h"
- #include "hw/acpi/aml-build.h"
- 
-diff --git a/include/hw/nvram/fw_cfg_acpi.h b/include/hw/nvram/fw_cfg_acpi.h
-index b6553d86fc..b39eb0490f 100644
---- a/include/hw/nvram/fw_cfg_acpi.h
-+++ b/include/hw/nvram/fw_cfg_acpi.h
-@@ -7,7 +7,6 @@
- #ifndef FW_CFG_ACPI_H
- #define FW_CFG_ACPI_H
+diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
+index 4741f92c46..04fac270b6 100644
+--- a/include/hw/audio/asc.h
++++ b/include/hw/audio/asc.h
+@@ -13,7 +13,6 @@
+ #ifndef HW_AUDIO_ASC_H
+ #define HW_AUDIO_ASC_H
  
 -#include "qemu/osdep.h"
- #include "exec/hwaddr.h"
+ #include "hw/sysbus.h"
+ #include "audio/audio.h"
  
- void fw_cfg_acpi_dsdt_add(Aml *scope, const MemMapEntry *fw_cfg_memmap);
-diff --git a/include/hw/virtio/virtio-acpi.h b/include/hw/virtio/virtio-acpi.h
-index 844e102569..cace2a315f 100644
---- a/include/hw/virtio/virtio-acpi.h
-+++ b/include/hw/virtio/virtio-acpi.h
-@@ -6,7 +6,6 @@
- #ifndef VIRTIO_ACPI_H
- #define VIRTIO_ACPI_H
+diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
+index ceb916d16c..04fac25f6c 100644
+--- a/include/hw/m68k/q800-glue.h
++++ b/include/hw/m68k/q800-glue.h
+@@ -23,7 +23,6 @@
+ #ifndef HW_Q800_GLUE_H
+ #define HW_Q800_GLUE_H
  
 -#include "qemu/osdep.h"
- #include "exec/hwaddr.h"
+ #include "hw/sysbus.h"
  
- void virtio_acpi_dsdt_add(Aml *scope, const hwaddr virtio_mmio_base,
+ #define TYPE_GLUE "q800-glue"
 -- 
 2.39.2
 
