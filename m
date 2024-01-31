@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325A7843F0F
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CDA843EFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:00:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9CI-0008Fr-J5; Wed, 31 Jan 2024 06:56:06 -0500
+	id 1rV9Cf-0000Tp-Ei; Wed, 31 Jan 2024 06:56:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CG-0008F1-Cu; Wed, 31 Jan 2024 06:56:04 -0500
+ id 1rV9CU-0000B2-0p; Wed, 31 Jan 2024 06:56:19 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CD-0003w7-S8; Wed, 31 Jan 2024 06:56:03 -0500
+ id 1rV9CF-0003wN-5L; Wed, 31 Jan 2024 06:56:16 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 16FA8490C4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 320E4490C5;
  Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4D6207026D;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5BE8F7026E;
  Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263930 invoked by uid 1000);
+Received: (nullmailer pid 2263933 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/21] scripts/clean-includes: Update exclude list
-Date: Wed, 31 Jan 2024 14:55:34 +0300
-Message-Id: <20240131115549.2263854-7-mjt@tls.msk.ru>
+Subject: [PULL 07/21] hyperv: Clean up includes
+Date: Wed, 31 Jan 2024 14:55:35 +0300
+Message-Id: <20240131115549.2263854-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
@@ -61,28 +61,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Update the exclude list to exclude some more files which don't follow our
-standard #include policy.
+This commit was created with scripts/clean-includes:
+ ./scripts/clean-includes --git hyperv hw/hyperv/*.[ch]
+
+All .c should include qemu/osdep.h first.  The script performs three
+related cleanups:
+
+* Ensure .c files include qemu/osdep.h first.
+* Including it in a .h is redundant, since the .c  already includes
+  it.  Drop such inclusions.
+* Likewise, including headers qemu/osdep.h includes is redundant.
+  Drop these, too.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- scripts/clean-includes | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/hyperv/hv-balloon-internal.h           | 1 -
+ hw/hyperv/hv-balloon-our_range_memslots.c | 1 +
+ hw/hyperv/hv-balloon-our_range_memslots.h | 1 -
+ hw/hyperv/hv-balloon-page_range_tree.c    | 1 +
+ hw/hyperv/hv-balloon-page_range_tree.h    | 1 -
+ hw/hyperv/hv-balloon.c                    | 1 +
+ 6 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/clean-includes b/scripts/clean-includes
-index 58e1607a82..bdbf404024 100755
---- a/scripts/clean-includes
-+++ b/scripts/clean-includes
-@@ -51,7 +51,7 @@ GIT=no
- DUPHEAD=no
+diff --git a/hw/hyperv/hv-balloon-internal.h b/hw/hyperv/hv-balloon-internal.h
+index 164c2e5825..ee53a28a26 100644
+--- a/hw/hyperv/hv-balloon-internal.h
++++ b/hw/hyperv/hv-balloon-internal.h
+@@ -10,7 +10,6 @@
+ #ifndef HW_HYPERV_HV_BALLOON_INTERNAL_H
+ #define HW_HYPERV_HV_BALLOON_INTERNAL_H
  
- # Extended regular expression defining files to ignore when using --all
--XDIRREGEX='^(tests/tcg|tests/multiboot|pc-bios)'
-+XDIRREGEX='^(tests/tcg|tests/multiboot|tests/fp|tests/plugin|tests/uefi-test-tools|pc-bios|subprojects|contrib/plugins|tools/ebpf|ebpf/rss.bpf.skeleton.h|linux-user/(mips64|x86_64)/(cpu_loop|signal).c)'
+-#include "qemu/osdep.h"
  
- while true
- do
+ #define HV_BALLOON_PFN_SHIFT 12
+ #define HV_BALLOON_PAGE_SIZE (1 << HV_BALLOON_PFN_SHIFT)
+diff --git a/hw/hyperv/hv-balloon-our_range_memslots.c b/hw/hyperv/hv-balloon-our_range_memslots.c
+index 99bae870f3..1505a395cf 100644
+--- a/hw/hyperv/hv-balloon-our_range_memslots.c
++++ b/hw/hyperv/hv-balloon-our_range_memslots.c
+@@ -7,6 +7,7 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#include "qemu/osdep.h"
+ #include "hv-balloon-internal.h"
+ #include "hv-balloon-our_range_memslots.h"
+ #include "trace.h"
+diff --git a/hw/hyperv/hv-balloon-our_range_memslots.h b/hw/hyperv/hv-balloon-our_range_memslots.h
+index b6f592d34b..df3b686bc7 100644
+--- a/hw/hyperv/hv-balloon-our_range_memslots.h
++++ b/hw/hyperv/hv-balloon-our_range_memslots.h
+@@ -10,7 +10,6 @@
+ #ifndef HW_HYPERV_HV_BALLOON_OUR_RANGE_MEMSLOTS_H
+ #define HW_HYPERV_HV_BALLOON_OUR_RANGE_MEMSLOTS_H
+ 
+-#include "qemu/osdep.h"
+ 
+ #include "exec/memory.h"
+ #include "qom/object.h"
+diff --git a/hw/hyperv/hv-balloon-page_range_tree.c b/hw/hyperv/hv-balloon-page_range_tree.c
+index e178d8b413..dfb14852f4 100644
+--- a/hw/hyperv/hv-balloon-page_range_tree.c
++++ b/hw/hyperv/hv-balloon-page_range_tree.c
+@@ -7,6 +7,7 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#include "qemu/osdep.h"
+ #include "hv-balloon-internal.h"
+ #include "hv-balloon-page_range_tree.h"
+ 
+diff --git a/hw/hyperv/hv-balloon-page_range_tree.h b/hw/hyperv/hv-balloon-page_range_tree.h
+index 07a9ae0da6..333772b86d 100644
+--- a/hw/hyperv/hv-balloon-page_range_tree.h
++++ b/hw/hyperv/hv-balloon-page_range_tree.h
+@@ -10,7 +10,6 @@
+ #ifndef HW_HYPERV_HV_BALLOON_PAGE_RANGE_TREE_H
+ #define HW_HYPERV_HV_BALLOON_PAGE_RANGE_TREE_H
+ 
+-#include "qemu/osdep.h"
+ 
+ /* PageRange */
+ typedef struct PageRange {
+diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
+index 66f297c1d7..0238365712 100644
+--- a/hw/hyperv/hv-balloon.c
++++ b/hw/hyperv/hv-balloon.c
+@@ -7,6 +7,7 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++#include "qemu/osdep.h"
+ #include "hv-balloon-internal.h"
+ 
+ #include "exec/address-spaces.h"
 -- 
 2.39.2
 
