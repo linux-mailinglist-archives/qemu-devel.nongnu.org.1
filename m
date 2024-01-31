@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FBC843CDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99D7843CCB
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:32:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV7tL-0006LP-TV; Wed, 31 Jan 2024 05:32:29 -0500
+	id 1rV7tS-0006SQ-8k; Wed, 31 Jan 2024 05:32:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7tF-0006GQ-AS
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:32:21 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7tI-0006NE-L3
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:32:24 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7tD-0005ht-KY
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:32:21 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rV7tG-0005i6-Mm
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:32:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706697139;
+ s=mimecast20190719; t=1706697141;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HItvWTBtuA8FYgr9X67VP5r885DjM/aVflysOooJ0tY=;
- b=ZFmWyE7YhMjPQtedeDs59kyUWrUgSMAFByjmcuZNKRnNaOjr0b2leIz45LHWmYNT94/5io
- awZilmhironf6NMC2gPxDodAaLAes0bfR8+9DrDcQFDEdk0I543LscesLKlHNomVy1STPR
- J6uZF3hnclK8p75piJoJdu3erFngJl4=
+ bh=rIA1XY+uOOYAsKHWK0tJQW8VgD2YTa//k+OTB1l/q0U=;
+ b=GEXjKZVvO4nH1CTRLcbuorSU+Lvee+lhCIKZMNxzTEptuDbJ7C9DKLeaJtI9N5NYr6JlFo
+ SUdnEq7ezHKyOSrEoQxG6bCUwkd5rYG4UonhzcrIFKC2VCLlQj8ileHEGd4XOf+Ya84hMV
+ VPMJYhvKvKpBnt1zVe/h5uR3ChJZY44=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-l-4GCL5eNbWGcMqx_dvLLw-1; Wed, 31 Jan 2024 05:32:15 -0500
-X-MC-Unique: l-4GCL5eNbWGcMqx_dvLLw-1
+ us-mta-534-K_Uhcw_MNEujR9AxGPtkcw-1; Wed, 31 Jan 2024 05:32:19 -0500
+X-MC-Unique: K_Uhcw_MNEujR9AxGPtkcw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B2E5A8B3960;
- Wed, 31 Jan 2024 10:32:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 523A31064C64;
+ Wed, 31 Jan 2024 10:32:19 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.11])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9BF31107BD;
- Wed, 31 Jan 2024 10:32:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 70B5210EA6;
+ Wed, 31 Jan 2024 10:32:15 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Bryan Zhang <bryan.zhang@bytedance.com>,
  Prasad Pandit <ppandit@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Yuan Liu <yuan1.liu@intel.com>,
  Avihai Horon <avihaih@nvidia.com>, Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 12/14] migration/multifd: multifd_send_prepare_header()
-Date: Wed, 31 Jan 2024 18:31:09 +0800
-Message-ID: <20240131103111.306523-13-peterx@redhat.com>
+Subject: [PATCH 13/14] migration/multifd: Move header prepare/fill into
+ send_prepare()
+Date: Wed, 31 Jan 2024 18:31:10 +0800
+Message-ID: <20240131103111.306523-14-peterx@redhat.com>
 In-Reply-To: <20240131103111.306523-1-peterx@redhat.com>
 References: <20240131103111.306523-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -82,75 +83,184 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Introduce a helper multifd_send_prepare_header() to setup the header packet
-for multifd sender.
+This patch redefines the interfacing of ->send_prepare().  It further
+simplifies multifd_send_thread() especially on zero copy.
 
-It's fine to setup the IOV[0] _before_ send_prepare() because the packet
-buffer is already ready, even if the content is to be filled in.
+Now with the new interface, we require the hook to do all the work for
+preparing the IOVs to send.  After it's completed, the IOVs should be ready
+to be dumped into the specific multifd QIOChannel later.
 
-With this helper, we can already slightly clean up the zero copy path.
+So now the API looks like:
 
-Note that I explicitly put it into multifd.h, because I want it inlined
-directly into multifd*.c where necessary later.
+  p->pages ----------->  send_prepare() -------------> IOVs
 
+This also prepares for the case where the input can be extended to even not
+any p->pages.  But that's for later.
+
+This patch will achieve similar goal of what Fabiano used to propose here:
+
+https://lore.kernel.org/r/20240126221943.26628-1-farosas@suse.de
+
+However the send() interface may not be necessary.  I'm boldly attaching a
+"Co-developed-by" for Fabiano.
+
+Co-developed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.h |  8 ++++++++
- migration/multifd.c | 16 ++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ migration/multifd.h      |  1 +
+ migration/multifd-zlib.c |  4 ++++
+ migration/multifd-zstd.c |  4 ++++
+ migration/multifd.c      | 45 ++++++++++++++++++++--------------------
+ 4 files changed, 32 insertions(+), 22 deletions(-)
 
 diff --git a/migration/multifd.h b/migration/multifd.h
-index 2e4ad0dc56..4ec005f53f 100644
+index 4ec005f53f..34a2ecb9f4 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -209,5 +209,13 @@ typedef struct {
+@@ -208,6 +208,7 @@ typedef struct {
+ } MultiFDMethods;
  
  void multifd_register_ops(int method, MultiFDMethods *ops);
++void multifd_send_fill_packet(MultiFDSendParams *p);
  
-+static inline void multifd_send_prepare_header(MultiFDSendParams *p)
-+{
-+    p->iov[0].iov_len = p->packet_len;
-+    p->iov[0].iov_base = p->packet;
-+    p->iovs_num++;
-+}
+ static inline void multifd_send_prepare_header(MultiFDSendParams *p)
+ {
+diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
+index 100809abc1..012e3bdea1 100644
+--- a/migration/multifd-zlib.c
++++ b/migration/multifd-zlib.c
+@@ -123,6 +123,8 @@ static int zlib_send_prepare(MultiFDSendParams *p, Error **errp)
+     int ret;
+     uint32_t i;
+ 
++    multifd_send_prepare_header(p);
 +
+     for (i = 0; i < pages->num; i++) {
+         uint32_t available = z->zbuff_len - out_size;
+         int flush = Z_NO_FLUSH;
+@@ -172,6 +174,8 @@ static int zlib_send_prepare(MultiFDSendParams *p, Error **errp)
+     p->next_packet_size = out_size;
+     p->flags |= MULTIFD_FLAG_ZLIB;
+ 
++    multifd_send_fill_packet(p);
 +
- #endif
+     return 0;
+ }
+ 
+diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
+index 2023edd8cc..dc8fe43e94 100644
+--- a/migration/multifd-zstd.c
++++ b/migration/multifd-zstd.c
+@@ -118,6 +118,8 @@ static int zstd_send_prepare(MultiFDSendParams *p, Error **errp)
+     int ret;
+     uint32_t i;
+ 
++    multifd_send_prepare_header(p);
++
+     z->out.dst = z->zbuff;
+     z->out.size = z->zbuff_len;
+     z->out.pos = 0;
+@@ -161,6 +163,8 @@ static int zstd_send_prepare(MultiFDSendParams *p, Error **errp)
+     p->next_packet_size = z->out.pos;
+     p->flags |= MULTIFD_FLAG_ZSTD;
+ 
++    multifd_send_fill_packet(p);
++
+     return 0;
+ }
  
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 8d4b80f365..1b0035787e 100644
+index 1b0035787e..0f22646f95 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -707,10 +707,14 @@ static void *multifd_send_thread(void *opaque)
-         if (p->pending_job) {
+@@ -88,7 +88,17 @@ static void nocomp_send_cleanup(MultiFDSendParams *p, Error **errp)
+  */
+ static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
+ {
++    bool use_zero_copy_send = migrate_zero_copy_send();
+     MultiFDPages_t *pages = p->pages;
++    int ret;
++
++    if (!use_zero_copy_send) {
++        /*
++         * Only !zero_copy needs the header in IOV; zerocopy will
++         * send it separately.
++         */
++        multifd_send_prepare_header(p);
++    }
+ 
+     for (int i = 0; i < pages->num; i++) {
+         p->iov[p->iovs_num].iov_base = pages->block->host + pages->offset[i];
+@@ -98,6 +108,18 @@ static int nocomp_send_prepare(MultiFDSendParams *p, Error **errp)
+ 
+     p->next_packet_size = pages->num * p->page_size;
+     p->flags |= MULTIFD_FLAG_NOCOMP;
++
++    multifd_send_fill_packet(p);
++
++    if (use_zero_copy_send) {
++        /* Send header first, without zerocopy */
++        ret = qio_channel_write_all(p->c, (void *)p->packet,
++                                    p->packet_len, errp);
++        if (ret != 0) {
++            return -1;
++        }
++    }
++
+     return 0;
+ }
+ 
+@@ -266,7 +288,7 @@ static void multifd_pages_clear(MultiFDPages_t *pages)
+     g_free(pages);
+ }
+ 
+-static void multifd_send_fill_packet(MultiFDSendParams *p)
++void multifd_send_fill_packet(MultiFDSendParams *p)
+ {
+     MultiFDPacket_t *packet = p->packet;
+     MultiFDPages_t *pages = p->pages;
+@@ -683,7 +705,6 @@ static void *multifd_send_thread(void *opaque)
+     MigrationThread *thread = NULL;
+     Error *local_err = NULL;
+     int ret = 0;
+-    bool use_zero_copy_send = migrate_zero_copy_send();
+ 
+     thread = migration_threads_add(p->name, qemu_get_thread_id());
+ 
+@@ -708,15 +729,6 @@ static void *multifd_send_thread(void *opaque)
              MultiFDPages_t *pages = p->pages;
  
--            if (use_zero_copy_send) {
--                p->iovs_num = 0;
--            } else {
--                p->iovs_num = 1;
-+            p->iovs_num = 0;
-+
-+            if (!use_zero_copy_send) {
-+                /*
-+                 * Only !zero_copy needs the header in IOV; zerocopy will
-+                 * send it separately.
-+                 */
-+                multifd_send_prepare_header(p);
-             }
- 
+             p->iovs_num = 0;
+-
+-            if (!use_zero_copy_send) {
+-                /*
+-                 * Only !zero_copy needs the header in IOV; zerocopy will
+-                 * send it separately.
+-                 */
+-                multifd_send_prepare_header(p);
+-            }
+-
              assert(pages->num);
-@@ -730,10 +734,6 @@ static void *multifd_send_thread(void *opaque)
-                 if (ret != 0) {
-                     break;
-                 }
--            } else {
--                /* Send header using the same writev call */
--                p->iov[0].iov_len = p->packet_len;
--                p->iov[0].iov_base = p->packet;
+ 
+             ret = multifd_send_state->ops->send_prepare(p, &local_err);
+@@ -725,17 +737,6 @@ static void *multifd_send_thread(void *opaque)
+                 break;
              }
  
+-            multifd_send_fill_packet(p);
+-
+-            if (use_zero_copy_send) {
+-                /* Send header first, without zerocopy */
+-                ret = qio_channel_write_all(p->c, (void *)p->packet,
+-                                            p->packet_len, &local_err);
+-                if (ret != 0) {
+-                    break;
+-                }
+-            }
+-
              ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
+                                               0, p->write_flags, &local_err);
+             if (ret != 0) {
 -- 
 2.43.0
 
