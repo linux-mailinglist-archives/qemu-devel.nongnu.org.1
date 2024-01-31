@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8100843F04
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:00:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E43843EFC
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:59:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9CK-0008GV-4j; Wed, 31 Jan 2024 06:56:08 -0500
+	id 1rV9CR-0008Ub-TM; Wed, 31 Jan 2024 06:56:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CI-0008GI-Bn; Wed, 31 Jan 2024 06:56:06 -0500
+ id 1rV9CL-0008Qe-Mq; Wed, 31 Jan 2024 06:56:09 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9CG-0003we-OR; Wed, 31 Jan 2024 06:56:06 -0500
+ id 1rV9CJ-0003xB-O8; Wed, 31 Jan 2024 06:56:09 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 401D9490C6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 504A3490C7;
  Wed, 31 Jan 2024 14:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 76E9C7026F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8563B70270;
  Wed, 31 Jan 2024 14:55:50 +0300 (MSK)
-Received: (nullmailer pid 2263936 invoked by uid 1000);
+Received: (nullmailer pid 2263939 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 08/21] disas/riscv: Clean up includes
-Date: Wed, 31 Jan 2024 14:55:36 +0300
-Message-Id: <20240131115549.2263854-9-mjt@tls.msk.ru>
+Subject: [PULL 09/21] aspeed: Clean up includes
+Date: Wed, 31 Jan 2024 14:55:37 +0300
+Message-Id: <20240131115549.2263854-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
 References: <20240131115549.2263854-1-mjt@tls.msk.ru>
@@ -62,8 +62,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-This commit was created with scripts/clean-includes:
- ./scripts/clean-includes --git disas/riscv disas/riscv*[ch]
+This commit was created with scripts/clean-includes.
 
 All .c should include qemu/osdep.h first.  The script performs three
 related cleanups:
@@ -80,47 +79,48 @@ Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- disas/riscv-xthead.c   | 1 +
- disas/riscv-xventana.c | 1 +
- disas/riscv.h          | 1 -
- 3 files changed, 2 insertions(+), 1 deletion(-)
+ hw/arm/aspeed_eeprom.c     | 1 +
+ hw/arm/aspeed_eeprom.h     | 1 -
+ tests/qtest/qtest_aspeed.h | 2 --
+ 3 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/disas/riscv-xthead.c b/disas/riscv-xthead.c
-index 99da679d16..fcca326d1c 100644
---- a/disas/riscv-xthead.c
-+++ b/disas/riscv-xthead.c
+diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+index ace5266cec..daa3d329d1 100644
+--- a/hw/arm/aspeed_eeprom.c
++++ b/hw/arm/aspeed_eeprom.c
 @@ -4,6 +4,7 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
+  * SPDX-License-Identifier: GPL-2.0-only
   */
  
 +#include "qemu/osdep.h"
- #include "disas/riscv.h"
- #include "disas/riscv-xthead.h"
+ #include "aspeed_eeprom.h"
  
-diff --git a/disas/riscv-xventana.c b/disas/riscv-xventana.c
-index a0224d1fb3..cd694f15f3 100644
---- a/disas/riscv-xventana.c
-+++ b/disas/riscv-xventana.c
-@@ -4,6 +4,7 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
-+#include "qemu/osdep.h"
- #include "disas/riscv.h"
- #include "disas/riscv-xventana.h"
- 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 19e5ed2ce6..16a08e4895 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
+ /* Tiogapass BMC FRU */
+diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+index bbf9e54365..f08c16ef50 100644
+--- a/hw/arm/aspeed_eeprom.h
++++ b/hw/arm/aspeed_eeprom.h
 @@ -7,7 +7,6 @@
- #ifndef DISAS_RISCV_H
- #define DISAS_RISCV_H
+ #ifndef ASPEED_EEPROM_H
+ #define ASPEED_EEPROM_H
  
 -#include "qemu/osdep.h"
- #include "target/riscv/cpu_cfg.h"
  
- /* types */
+ extern const uint8_t tiogapass_bmc_fruid[];
+ extern const size_t tiogapass_bmc_fruid_len;
+diff --git a/tests/qtest/qtest_aspeed.h b/tests/qtest/qtest_aspeed.h
+index 235dfaa186..d35b0c7cba 100644
+--- a/tests/qtest/qtest_aspeed.h
++++ b/tests/qtest/qtest_aspeed.h
+@@ -12,8 +12,6 @@
+ #ifndef QTEST_ASPEED_H
+ #define QTEST_ASPEED_H
+ 
+-#include <stdint.h>
+-
+ #include "libqtest.h"
+ 
+ #define AST2600_ASPEED_I2C_BASE_ADDR 0x1e78a000
 -- 
 2.39.2
 
