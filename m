@@ -2,73 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456AC843EE1
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CACCA843F07
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9B1-0007TN-Se; Wed, 31 Jan 2024 06:54:47 -0500
+	id 1rV9CA-0008C2-O9; Wed, 31 Jan 2024 06:55:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rV9Au-0007Sc-No
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 06:54:41 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rV9C7-0008Ai-4R; Wed, 31 Jan 2024 06:55:55 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rV9At-0003YW-4j
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 06:54:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706702077;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mEG5iDPTloHFi6rsZH43saXsxbB8EpUTK7mlc4hoSzE=;
- b=hVdw9TkZ3H0sv5pWwpFBldEEN2+SdSASBP3wS7zebQj9PZtfEeTEmAylnbsDBBbNn5m1t0
- U8AD3vO1lPm0Dxh53gyI3vYpdiDh12zi5+QLc23RBJikCvWQOP88taIaIHc2HHY0klfCLO
- QrSvuiZUclHkTfm/Zq5HEb8ITdGEmXI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-HviO8ehnN2CcjjUtIVRp-g-1; Wed,
- 31 Jan 2024 06:54:33 -0500
-X-MC-Unique: HviO8ehnN2CcjjUtIVRp-g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7FA173816B42;
- Wed, 31 Jan 2024 11:54:33 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.243])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 47BB1107BD;
- Wed, 31 Jan 2024 11:54:33 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 18ABD1800DDC; Wed, 31 Jan 2024 12:54:32 +0100 (CET)
-Date: Wed, 31 Jan 2024 12:54:32 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, 
- Julia Suvorova <jusual@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] pc: q35: Bump max_cpus to 1856 vcpus
-Message-ID: <ulrgo3dqewvffg3okryrsnnwhsdbb4f7sga3agmszfyv4jte7t@fds5d2ww4xyf>
-References: <20240131024906.3920-1-anisinha@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rV9C4-0003t8-K7; Wed, 31 Jan 2024 06:55:54 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id A7164490BE;
+ Wed, 31 Jan 2024 14:56:46 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id D026870267;
+ Wed, 31 Jan 2024 14:55:49 +0300 (MSK)
+Received: (nullmailer pid 2263911 invoked by uid 1000);
+ Wed, 31 Jan 2024 11:55:49 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
+Subject: [PULL 00/21] Trivial patches for 2024-01-31
+Date: Wed, 31 Jan 2024 14:55:28 +0300
+Message-Id: <20240131115549.2263854-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240131024906.3920-1-anisinha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,21 +57,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jan 31, 2024 at 08:19:06AM +0530, Ani Sinha wrote:
- 
-> This error exists only with edk2. Seabios currently can boot a linux guest
-> fine with 4096 vcpus. Since the lowest common denominator for a working VM for
-> both edk2 and seabios is 1856 vcpus, bump up the value max_cpus to 1856 for q35
-> machines versions 9 and newer. Q35 machines versions 8.2 and older continue
-> to support 1024 maximum vcpus as before for compatibility reasons.
+The following changes since commit 11be70677c70fdccd452a3233653949b79e97908:
 
-There is a high chance this limit will be gone soon.
+  Merge tag 'pull-vfio-20240129' of https://github.com/legoater/qemu into staging (2024-01-29 10:53:56 +0000)
 
-https://github.com/kraxel/edk2/commit/7a03c17f0f4f4a9003d77db2660c8e087604b2f0
+are available in the Git repository at:
 
-If 4096 works fine with seabios, I'd suggest to go with 4096 as limit.
+  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
 
-take care,
-  Gerd
+for you to fetch changes up to 54f0058fa7821c391719e69a92804636b2c403ae:
 
+  hw/hyperv: Include missing headers (2024-01-30 21:20:20 +0300)
+
+----------------------------------------------------------------
+trivial patches for 2024-01-31
+
+----------------------------------------------------------------
+Greg Kurz (3):
+      hw/i386: Add `\n` to hint message
+      hw/loongarch: Add `\n` to hint message
+      hw/arm: Add `\n` to hint message
+
+Han Han (1):
+      qapi/migration.json: Fix the member name for MigrationCapability
+
+Markus Armbruster (1):
+      dump: Fix HMP dump-guest-memory -z without -R
+
+Michael Tokarev (1):
+      colo: examples: remove mentions of script= and (wrong) downscript=
+
+Peter Maydell (10):
+      scripts/clean-includes: Update exclude list
+      hyperv: Clean up includes
+      disas/riscv: Clean up includes
+      aspeed: Clean up includes
+      acpi: Clean up includes
+      m68k: Clean up includes
+      include: Clean up includes
+      cxl: Clean up includes
+      riscv: Clean up includes
+      misc: Clean up includes
+
+Philippe Mathieu-Daudé (4):
+      mailmap: Fix Stefan Weil email
+      backends/hostmem: Fix block comments style (checkpatch.pl warnings)
+      hw/intc/xics: Include missing 'cpu.h' header
+      hw/hyperv: Include missing headers
+
+Yihuan Pan (1):
+      qemu-docs: Update options for graphical frontends
+
+ .mailmap                                  |  4 ++++
+ audio/pwaudio.c                           |  1 -
+ backends/hostmem.c                        | 12 ++++++++----
+ disas/riscv-xthead.c                      |  1 +
+ disas/riscv-xventana.c                    |  1 +
+ disas/riscv.h                             |  1 -
+ docs/colo-proxy.txt                       |  6 +++---
+ docs/system/keys.rst.inc                  | 11 ++++++-----
+ dump/dump-hmp-cmds.c                      |  2 +-
+ hw/arm/aspeed_eeprom.c                    |  1 +
+ hw/arm/aspeed_eeprom.h                    |  1 -
+ hw/arm/virt-acpi-build.c                  |  2 +-
+ hw/cxl/cxl-events.c                       |  4 +---
+ hw/hyperv/hv-balloon-internal.h           |  1 -
+ hw/hyperv/hv-balloon-our_range_memslots.c |  1 +
+ hw/hyperv/hv-balloon-our_range_memslots.h |  1 -
+ hw/hyperv/hv-balloon-page_range_tree.c    |  1 +
+ hw/hyperv/hv-balloon-page_range_tree.h    |  1 -
+ hw/hyperv/hv-balloon.c                    |  1 +
+ hw/hyperv/hyperv.c                        |  4 ++++
+ hw/i386/acpi-build.c                      |  4 ++--
+ hw/intc/xics.c                            |  1 +
+ hw/loongarch/acpi-build.c                 |  2 +-
+ hw/nvram/fw_cfg-acpi.c                    |  1 +
+ hw/virtio/virtio-acpi.c                   |  1 +
+ include/hw/arm/raspberrypi-fw-defs.h      |  1 -
+ include/hw/audio/asc.h                    |  1 -
+ include/hw/m68k/q800-glue.h               |  1 -
+ include/hw/mem/memory-device.h            |  1 -
+ include/hw/nvram/fw_cfg_acpi.h            |  1 -
+ include/hw/ppc/spapr_nested.h             |  1 -
+ include/hw/virtio/virtio-acpi.h           |  1 -
+ include/hw/xen/xen-hvm-common.h           |  1 -
+ include/qemu/qtree.h                      |  1 -
+ include/ui/rect.h                         |  2 --
+ net/af-xdp.c                              |  1 -
+ plugins/core.c                            |  1 -
+ plugins/loader.c                          |  1 -
+ qapi/migration.json                       |  2 +-
+ qemu-options.hx                           |  8 ++++----
+ scripts/clean-includes                    |  2 +-
+ target/riscv/vector_internals.c           |  1 +
+ target/riscv/vector_internals.h           |  1 -
+ tests/qtest/qtest_aspeed.h                |  2 --
+ util/userfaultfd.c                        |  1 -
+ 45 files changed, 47 insertions(+), 50 deletions(-)
 
