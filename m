@@ -2,35 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACCA843F07
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 13:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B1D843EFD
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 12:59:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV9CA-0008C2-O9; Wed, 31 Jan 2024 06:55:58 -0500
+	id 1rV9C8-0008BN-VD; Wed, 31 Jan 2024 06:55:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9C7-0008Ai-4R; Wed, 31 Jan 2024 06:55:55 -0500
+ id 1rV9C6-0008AH-Bn; Wed, 31 Jan 2024 06:55:54 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rV9C4-0003t8-K7; Wed, 31 Jan 2024 06:55:54 -0500
+ id 1rV9C4-0003tA-Jt; Wed, 31 Jan 2024 06:55:54 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7164490BE;
+ by isrv.corpit.ru (Postfix) with ESMTP id B53A3490BF;
  Wed, 31 Jan 2024 14:56:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D026870267;
+ by tsrv.corpit.ru (Postfix) with SMTP id EBC8F70268;
  Wed, 31 Jan 2024 14:55:49 +0300 (MSK)
-Received: (nullmailer pid 2263911 invoked by uid 1000);
+Received: (nullmailer pid 2263915 invoked by uid 1000);
  Wed, 31 Jan 2024 11:55:49 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/21] Trivial patches for 2024-01-31
-Date: Wed, 31 Jan 2024 14:55:28 +0300
-Message-Id: <20240131115549.2263854-1-mjt@tls.msk.ru>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 01/21] dump: Fix HMP dump-guest-memory -z without -R
+Date: Wed, 31 Jan 2024 14:55:29 +0300
+Message-Id: <20240131115549.2263854-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240131115549.2263854-1-mjt@tls.msk.ru>
+References: <20240131115549.2263854-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,101 +60,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 11be70677c70fdccd452a3233653949b79e97908:
+From: Markus Armbruster <armbru@redhat.com>
 
-  Merge tag 'pull-vfio-20240129' of https://github.com/legoater/qemu into staging (2024-01-29 10:53:56 +0000)
+-z without -R has no effect: the dump format remains @elf.  Fix the
+logic error so it becomes @kdump-zlib.
 
-are available in the Git repository at:
+Fixes: e6549197f7ed (dump: Add command interface for kdump-raw formats)
+Fixes: CID 1523841
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ dump/dump-hmp-cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+diff --git a/dump/dump-hmp-cmds.c b/dump/dump-hmp-cmds.c
+index b428ec33df..d9340427c3 100644
+--- a/dump/dump-hmp-cmds.c
++++ b/dump/dump-hmp-cmds.c
+@@ -41,7 +41,7 @@ void hmp_dump_guest_memory(Monitor *mon, const QDict *qdict)
+         dump_format = DUMP_GUEST_MEMORY_FORMAT_WIN_DMP;
+     }
+ 
+-    if (zlib && raw) {
++    if (zlib) {
+         if (raw) {
+             dump_format = DUMP_GUEST_MEMORY_FORMAT_KDUMP_RAW_ZLIB;
+         } else {
+-- 
+2.39.2
 
-for you to fetch changes up to 54f0058fa7821c391719e69a92804636b2c403ae:
-
-  hw/hyperv: Include missing headers (2024-01-30 21:20:20 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2024-01-31
-
-----------------------------------------------------------------
-Greg Kurz (3):
-      hw/i386: Add `\n` to hint message
-      hw/loongarch: Add `\n` to hint message
-      hw/arm: Add `\n` to hint message
-
-Han Han (1):
-      qapi/migration.json: Fix the member name for MigrationCapability
-
-Markus Armbruster (1):
-      dump: Fix HMP dump-guest-memory -z without -R
-
-Michael Tokarev (1):
-      colo: examples: remove mentions of script= and (wrong) downscript=
-
-Peter Maydell (10):
-      scripts/clean-includes: Update exclude list
-      hyperv: Clean up includes
-      disas/riscv: Clean up includes
-      aspeed: Clean up includes
-      acpi: Clean up includes
-      m68k: Clean up includes
-      include: Clean up includes
-      cxl: Clean up includes
-      riscv: Clean up includes
-      misc: Clean up includes
-
-Philippe Mathieu-Daudé (4):
-      mailmap: Fix Stefan Weil email
-      backends/hostmem: Fix block comments style (checkpatch.pl warnings)
-      hw/intc/xics: Include missing 'cpu.h' header
-      hw/hyperv: Include missing headers
-
-Yihuan Pan (1):
-      qemu-docs: Update options for graphical frontends
-
- .mailmap                                  |  4 ++++
- audio/pwaudio.c                           |  1 -
- backends/hostmem.c                        | 12 ++++++++----
- disas/riscv-xthead.c                      |  1 +
- disas/riscv-xventana.c                    |  1 +
- disas/riscv.h                             |  1 -
- docs/colo-proxy.txt                       |  6 +++---
- docs/system/keys.rst.inc                  | 11 ++++++-----
- dump/dump-hmp-cmds.c                      |  2 +-
- hw/arm/aspeed_eeprom.c                    |  1 +
- hw/arm/aspeed_eeprom.h                    |  1 -
- hw/arm/virt-acpi-build.c                  |  2 +-
- hw/cxl/cxl-events.c                       |  4 +---
- hw/hyperv/hv-balloon-internal.h           |  1 -
- hw/hyperv/hv-balloon-our_range_memslots.c |  1 +
- hw/hyperv/hv-balloon-our_range_memslots.h |  1 -
- hw/hyperv/hv-balloon-page_range_tree.c    |  1 +
- hw/hyperv/hv-balloon-page_range_tree.h    |  1 -
- hw/hyperv/hv-balloon.c                    |  1 +
- hw/hyperv/hyperv.c                        |  4 ++++
- hw/i386/acpi-build.c                      |  4 ++--
- hw/intc/xics.c                            |  1 +
- hw/loongarch/acpi-build.c                 |  2 +-
- hw/nvram/fw_cfg-acpi.c                    |  1 +
- hw/virtio/virtio-acpi.c                   |  1 +
- include/hw/arm/raspberrypi-fw-defs.h      |  1 -
- include/hw/audio/asc.h                    |  1 -
- include/hw/m68k/q800-glue.h               |  1 -
- include/hw/mem/memory-device.h            |  1 -
- include/hw/nvram/fw_cfg_acpi.h            |  1 -
- include/hw/ppc/spapr_nested.h             |  1 -
- include/hw/virtio/virtio-acpi.h           |  1 -
- include/hw/xen/xen-hvm-common.h           |  1 -
- include/qemu/qtree.h                      |  1 -
- include/ui/rect.h                         |  2 --
- net/af-xdp.c                              |  1 -
- plugins/core.c                            |  1 -
- plugins/loader.c                          |  1 -
- qapi/migration.json                       |  2 +-
- qemu-options.hx                           |  8 ++++----
- scripts/clean-includes                    |  2 +-
- target/riscv/vector_internals.c           |  1 +
- target/riscv/vector_internals.h           |  1 -
- tests/qtest/qtest_aspeed.h                |  2 --
- util/userfaultfd.c                        |  1 -
- 45 files changed, 47 insertions(+), 50 deletions(-)
 
