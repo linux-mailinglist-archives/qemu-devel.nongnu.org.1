@@ -2,76 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB63843BCF
-	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:05:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6AD843C10
+	for <lists+qemu-devel@lfdr.de>; Wed, 31 Jan 2024 11:18:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rV7Rf-0007De-SC; Wed, 31 Jan 2024 05:03:52 -0500
+	id 1rV7es-0007Mz-KB; Wed, 31 Jan 2024 05:17:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rV7QK-0005b2-Hk
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:02:29 -0500
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rV7eq-0007MI-Tx
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:17:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rV7QI-0008UC-Sh
- for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:02:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706695347; x=1738231347;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=fLMMs/SeWi/Vzb8lvrux8mGIdvidsDOqLQrh225b0Qg=;
- b=BqGoKyfo8vIlgoFAcXEIx37NkWBLNR3ro2JrLE5R88i2k5Zj7ihH0b7i
- zMk36sw5VnxHhp4Jd5jvcILpsJ5RxSEyZI/1jbCsKjTFVZeK+RKPoIRon
- 2SMZza9h5LUKx3e4OIdgvhiM8HqZ7pnMswWp1pwhSfoatufZ+0Gk3fnYH
- W0MdiIGCOn8m840By1UdDyd5/OqKEHPI5LxxV54rS1/AuXSlyCdVtO05X
- xShYWefhOwzVr3jtQGGibCEi+S58LeSK4orVl/Z6qNrFpkDQHl4O2EIHc
- /zT7xFMP+QzQafaJjgMv/XlsQgOoGSGsdftXn/Gg72vhMiZbB/FGdBx/W g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="25033127"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; d="scan'208";a="25033127"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 02:02:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="4036401"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 31 Jan 2024 02:02:09 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v8 21/21] i386/cpu: Use CPUCacheInfo.share_level to encode
- CPUID[0x8000001D].EAX[bits 25:14]
-Date: Wed, 31 Jan 2024 18:13:50 +0800
-Message-Id: <20240131101350.109512-22-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240131101350.109512-1-zhao1.liu@linux.intel.com>
-References: <20240131101350.109512-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rV7ef-0002eo-14
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 05:17:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706696234;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TRMAebPlP0o5J+cwha+CSiFm52p5NZNrH4ZFcNtJLN4=;
+ b=HidW1tLgzRH0FmXdOWV1YDIMssa15kv3WKN7iSpgDNY51tOM995Uh/XIR/v0jRFUoJelER
+ f+A7yQOEaWmNktdKjHEZxQNpjLNa+FLDJiBNS35J//ZzBbWwIts1UMjZFFlrHj8rsfTcy3
+ bQeKE1Dd3kYIaGK8dvRswUhOvKR44hE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-SIfuG6KkOxeUUobihJ5Aqw-1; Wed,
+ 31 Jan 2024 05:17:10 -0500
+X-MC-Unique: SIfuG6KkOxeUUobihJ5Aqw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 82F7F3C29A69;
+ Wed, 31 Jan 2024 10:17:10 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.246])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C27DD1C060B1;
+ Wed, 31 Jan 2024 10:17:09 +0000 (UTC)
+Date: Wed, 31 Jan 2024 11:17:08 +0100
+From: Kevin Wolf <kwolf@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PULL 11/33] scsi: only access SCSIDevice->requests from one
+ thread
+Message-ID: <ZboeJIXKDP7OP9YD@redhat.com>
+References: <20231221212339.164439-1-kwolf@redhat.com>
+ <20231221212339.164439-12-kwolf@redhat.com>
+ <73e752b2-a037-4b10-a903-56fa6ad75c6e@redhat.com>
+ <Za_zAj11uwavd2va@redhat.com>
+ <23796a78-e88e-4047-b5a5-7db760c50929@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.7;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
+In-Reply-To: <23796a78-e88e-4047-b5a5-7db760c50929@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,65 +84,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Am 29.01.2024 um 17:30 hat Hanna Czenczek geschrieben:
+> I don’t like using drain as a form of lock specifically against AioContext
+> changes, but maybe Stefan is right, and we should use it in this specific
+> case to get just the single problem fixed.  (Though it’s not quite trivial
+> either.  We’d probably still want to remove the assertion from
+> blk_get_aio_context(), so we don’t have to require all of its callers to
+> hold a count in the in-flight counter.)
 
-CPUID[0x8000001D].EAX[bits 25:14] NumSharingCache: number of logical
-processors sharing cache.
+Okay, fair, maybe fixing the specific problem is more important that
+solving the more generic blk_get_aio_context() race.
 
-The number of logical processors sharing this cache is
-NumSharingCache + 1.
+In this case, wouldn't it be enough to increase the in-flight counter so
+that the drain before switching AioContexts would run the BH before
+anything bad can happen? Does the following work?
 
-After cache models have topology information, we can use
-CPUCacheInfo.share_level to decide which topology level to be encoded
-into CPUID[0x8000001D].EAX[bits 25:14].
+Kevin
 
-Cc: Babu Moger <babu.moger@amd.com>
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since v7:
- * Renamed max_processor_ids_for_cache() to max_thread_ids_for_cache().
- * Dropped Michael/Babu's ACKed/Tested tags since the code change.
- * Re-added Yongwei's Tested tag For his re-testing.
-
-Changes since v3:
- * Explained what "CPUID[0x8000001D].EAX[bits 25:14]" means in the
-   commit message. (Babu)
-
-Changes since v1:
- * Used cache->share_level as the parameter in
-   max_processor_ids_for_cache().
----
- target/i386/cpu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index fbfebdc2caf3..763de2b93c28 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -481,20 +481,12 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-                                        uint32_t *eax, uint32_t *ebx,
-                                        uint32_t *ecx, uint32_t *edx)
- {
--    uint32_t num_sharing_cache;
-     assert(cache->size == cache->line_size * cache->associativity *
-                           cache->partitions * cache->sets);
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 0a2eb11c56..dc09eb8024 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -120,17 +120,11 @@ static void scsi_device_for_each_req_async_bh(void *opaque)
+     SCSIRequest *next;
  
-     *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-                (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
--
--    /* L3 is shared among multiple cores */
--    if (cache->level == 3) {
--        num_sharing_cache = 1 << apicid_die_offset(topo_info);
--    } else {
--        num_sharing_cache = 1 << apicid_core_offset(topo_info);
+     /*
+-     * If the AioContext changed before this BH was called then reschedule into
+-     * the new AioContext before accessing ->requests. This can happen when
+-     * scsi_device_for_each_req_async() is called and then the AioContext is
+-     * changed before BHs are run.
++     * The AioContext can't have changed because we increased the in-flight
++     * counter for s->conf.blk.
+      */
+     ctx = blk_get_aio_context(s->conf.blk);
+-    if (ctx != qemu_get_current_aio_context()) {
+-        aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh,
+-                                g_steal_pointer(&data));
+-        return;
 -    }
--    *eax |= (num_sharing_cache - 1) << 14;
-+    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
++    assert(ctx == qemu_get_current_aio_context());
  
-     assert(cache->line_size > 0);
-     assert(cache->partitions > 0);
--- 
-2.34.1
+     QTAILQ_FOREACH_SAFE(req, &s->requests, next, next) {
+         data->fn(req, data->fn_opaque);
+@@ -138,6 +132,7 @@ static void scsi_device_for_each_req_async_bh(void *opaque)
+ 
+     /* Drop the reference taken by scsi_device_for_each_req_async() */
+     object_unref(OBJECT(s));
++    blk_dec_in_flight(s->conf.blk);
+ }
+ 
+ /*
+@@ -163,6 +158,7 @@ static void scsi_device_for_each_req_async(SCSIDevice *s,
+      */
+     object_ref(OBJECT(s));
+ 
++    blk_inc_in_flight(s->conf.blk);
+     aio_bh_schedule_oneshot(blk_get_aio_context(s->conf.blk),
+                             scsi_device_for_each_req_async_bh,
+                             data);
 
 
