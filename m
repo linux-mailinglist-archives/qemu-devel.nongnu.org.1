@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25288459C1
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 15:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CC78459B5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 15:14:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVXp9-00014C-Q8; Thu, 01 Feb 2024 09:13:51 -0500
+	id 1rVXob-0000vw-8i; Thu, 01 Feb 2024 09:13:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Qo6T=JK=kaod.org=clg@ozlabs.org>)
- id 1rVXoX-0000vM-Nx; Thu, 01 Feb 2024 09:13:13 -0500
+ id 1rVXoV-0000us-Vy; Thu, 01 Feb 2024 09:13:12 -0500
 Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
  helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=Qo6T=JK=kaod.org=clg@ozlabs.org>)
- id 1rVXoR-0007kI-1S; Thu, 01 Feb 2024 09:13:13 -0500
+ id 1rVXoQ-0007kK-Tx; Thu, 01 Feb 2024 09:13:11 -0500
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TQgq138hSz4wcQ;
- Fri,  2 Feb 2024 01:13:01 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TQgq31hwTz4wcR;
+ Fri,  2 Feb 2024 01:13:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TQgq018Kmz4wcM;
- Fri,  2 Feb 2024 01:12:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TQgq16lH9z4wcM;
+ Fri,  2 Feb 2024 01:13:01 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL v2 00/17] aspeed queue
-Date: Thu,  1 Feb 2024 15:12:36 +0100
-Message-ID: <20240201141253.806055-1-clg@kaod.org>
+Subject: [PULL 01/17] tests/avocado/machine_aspeed.py: Update buildroot images
+ to 2023.11
+Date: Thu,  1 Feb 2024 15:12:37 +0100
+Message-ID: <20240201141253.806055-2-clg@kaod.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240201141253.806055-1-clg@kaod.org>
+References: <20240201141253.806055-1-clg@kaod.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -61,101 +64,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit bd2e12310b18b51aefbf834e6d54989fd175976f:
+Compared to mainline buildroot, these images have some customization :
 
-  Merge tag 'qga-pull-2024-01-30' of https://github.com/kostyanf14/qemu into staging (2024-01-30 15:53:46 +0000)
+- Linux version is bumped to 6.6.3 and built with a custom config
+- U-Boot is switched to the one provided by OpenBMC for more support
+- defconfigs extra tools for dev
 
-are available in the Git repository at:
+See branch [1] for more details.
 
-  https://github.com/legoater/qemu/ tags/pull-aspeed-20240201
+There are a few changes since last update, commit ed1f5ff84209. Images
+all have a password now and I2C devices have been updated in the Linux
+ast2600-evb device tree [2]. Do the necessary adjustements.
 
-for you to fetch changes up to 649b8ed20543f1b7f7e3dd8fd409092639bb345e:
+[1] https://github.com/legoater/buildroot/commits/aspeed-2023.11
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9deb10cf160e
 
-  hw/fsi: Update MAINTAINER list (2024-02-01 08:33:18 +0100)
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ tests/avocado/machine_aspeed.py | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-----------------------------------------------------------------
-aspeed queue:
-
-* Update of buildroot images to 2023.11 (6.6.3 kernel)
-* Check of the valid CPU type supported by aspeed machines
-* Simplified models for the IBM's FSI bus and the Aspeed
-  controller bridge
-
-Changes since v1:
-
-- Endianness fix
-- Renamed test file to match other filenames
-- Fixed file list in MAINTAINER
+diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
+index 6fa5459a07bf..cec018142453 100644
+--- a/tests/avocado/machine_aspeed.py
++++ b/tests/avocado/machine_aspeed.py
+@@ -155,6 +155,7 @@ def do_test_arm_aspeed_buildroot_start(self, image, cpu_id, pattern='Aspeed EVB'
+         time.sleep(0.1)
+         exec_command(self, 'root')
+         time.sleep(0.1)
++        exec_command(self, "passw0rd")
  
-----------------------------------------------------------------
-Cédric Le Goater (1):
-      tests/avocado/machine_aspeed.py: Update buildroot images to 2023.11
+     def do_test_arm_aspeed_buildroot_poweroff(self):
+         exec_command_and_wait_for_pattern(self, 'poweroff',
+@@ -167,14 +168,14 @@ def test_arm_ast2500_evb_buildroot(self):
+         """
+ 
+         image_url = ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
+-                     'images/ast2500-evb/buildroot-2022.11-2-g15d3648df9/flash.img')
+-        image_hash = ('f96d11db521fe7a2787745e9e391225deeeec3318ee0fc07c8b799b8833dd474')
++                     'images/ast2500-evb/buildroot-2023.11/flash.img')
++        image_hash = ('c23db6160cf77d0258397eb2051162c8473a56c441417c52a91ba217186e715f')
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+ 
+         self.vm.add_args('-device',
+                          'tmp105,bus=aspeed.i2c.bus.3,address=0x4d,id=tmp-test');
+-        self.do_test_arm_aspeed_buildroot_start(image_path, '0x0')
++        self.do_test_arm_aspeed_buildroot_start(image_path, '0x0', 'Aspeed AST2500 EVB')
+ 
+         exec_command_and_wait_for_pattern(self,
+              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
+@@ -195,8 +196,8 @@ def test_arm_ast2600_evb_buildroot(self):
+         """
+ 
+         image_url = ('https://github.com/legoater/qemu-aspeed-boot/raw/master/'
+-                     'images/ast2600-evb/buildroot-2022.11-2-g15d3648df9/flash.img')
+-        image_hash = ('e598d86e5ea79671ca8b59212a326c911bc8bea728dec1a1f5390d717a28bb8b')
++                     'images/ast2600-evb/buildroot-2023.11/flash.img')
++        image_hash = ('b62808daef48b438d0728ee07662290490ecfa65987bb91294cafb1bb7ad1a68')
+         image_path = self.fetch_asset(image_url, asset_hash=image_hash,
+                                       algorithm='sha256')
+ 
+@@ -206,17 +207,17 @@ def test_arm_ast2600_evb_buildroot(self):
+                          'ds1338,bus=aspeed.i2c.bus.3,address=0x32');
+         self.vm.add_args('-device',
+                          'i2c-echo,bus=aspeed.i2c.bus.3,address=0x42');
+-        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00')
++        self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
+ 
+         exec_command_and_wait_for_pattern(self,
+              'echo lm75 0x4d > /sys/class/i2c-dev/i2c-3/device/new_device',
+              'i2c i2c-3: new_device: Instantiated device lm75 at 0x4d');
+         exec_command_and_wait_for_pattern(self,
+-                             'cat /sys/class/hwmon/hwmon0/temp1_input', '0')
++                             'cat /sys/class/hwmon/hwmon1/temp1_input', '0')
+         self.vm.cmd('qom-set', path='/machine/peripheral/tmp-test',
+                     property='temperature', value=18000);
+         exec_command_and_wait_for_pattern(self,
+-                             'cat /sys/class/hwmon/hwmon0/temp1_input', '18000')
++                             'cat /sys/class/hwmon/hwmon1/temp1_input', '18000')
+ 
+         exec_command_and_wait_for_pattern(self,
+              'echo ds1307 0x32 > /sys/class/i2c-dev/i2c-3/device/new_device',
+@@ -261,7 +262,6 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+         self.vm.add_args('-device',
+                          'tpm-tis-i2c,tpmdev=tpm0,bus=aspeed.i2c.bus.12,address=0x2e')
+         self.do_test_arm_aspeed_buildroot_start(image_path, '0xf00', 'Aspeed AST2600 EVB')
+-        exec_command(self, "passw0rd")
+ 
+         exec_command_and_wait_for_pattern(self,
+             'echo tpm_tis_i2c 0x2e > /sys/bus/i2c/devices/i2c-12/new_device',
+-- 
+2.43.0
 
-Ninad Palsule (11):
-      hw/fsi: Introduce IBM's Local bus
-      hw/fsi: Introduce IBM's scratchpad device
-      hw/fsi: Introduce IBM's FSI Bus
-      hw/fsi: Introduce IBM's fsi-slave model
-      hw/fsi: Introduce IBM's cfam
-      hw/fsi: Introduce IBM's FSI master
-      hw/fsi: Aspeed APB2OPB & On-chip peripheral bus
-      hw/arm: Hook up FSI module in AST2600
-      hw/fsi: Added qtest
-      hw/fsi: Added FSI documentation
-      hw/fsi: Update MAINTAINER list
-
-Philippe Mathieu-Daudé (5):
-      hw/arm/aspeed: Remove dead code
-      hw/arm/aspeed: Set default CPU count using aspeed_soc_num_cpus()
-      hw/arm/aspeed: Init CPU defaults in a common helper
-      hw/arm/aspeed: Introduce aspeed_soc_cpu_type() helper
-      hw/arm/aspeed: Check for CPU types in machine_run_board_init()
-
- MAINTAINERS                     |   9 +
- docs/specs/fsi.rst              | 122 +++++++++++++
- docs/specs/index.rst            |   1 +
- meson.build                     |   1 +
- hw/fsi/trace.h                  |   1 +
- include/hw/arm/aspeed_soc.h     |   8 +-
- include/hw/fsi/aspeed_apb2opb.h |  46 +++++
- include/hw/fsi/cfam.h           |  34 ++++
- include/hw/fsi/fsi-master.h     |  32 ++++
- include/hw/fsi/fsi.h            |  37 ++++
- include/hw/fsi/lbus.h           |  43 +++++
- hw/arm/aspeed.c                 |  70 ++++----
- hw/arm/aspeed_ast10x0.c         |   8 +-
- hw/arm/aspeed_ast2400.c         |  15 +-
- hw/arm/aspeed_ast2600.c         |  28 ++-
- hw/arm/aspeed_soc_common.c      |   8 +
- hw/fsi/aspeed_apb2opb.c         | 367 ++++++++++++++++++++++++++++++++++++++++
- hw/fsi/cfam.c                   | 168 ++++++++++++++++++
- hw/fsi/fsi-master.c             | 170 +++++++++++++++++++
- hw/fsi/fsi.c                    | 102 +++++++++++
- hw/fsi/lbus.c                   | 117 +++++++++++++
- tests/qtest/aspeed_fsi-test.c   | 205 ++++++++++++++++++++++
- hw/Kconfig                      |   1 +
- hw/arm/Kconfig                  |   1 +
- hw/fsi/Kconfig                  |   7 +
- hw/fsi/meson.build              |   2 +
- hw/fsi/trace-events             |  13 ++
- hw/meson.build                  |   1 +
- tests/avocado/machine_aspeed.py |  18 +-
- tests/qtest/meson.build         |   1 +
- 30 files changed, 1578 insertions(+), 58 deletions(-)
- create mode 100644 docs/specs/fsi.rst
- create mode 100644 hw/fsi/trace.h
- create mode 100644 include/hw/fsi/aspeed_apb2opb.h
- create mode 100644 include/hw/fsi/cfam.h
- create mode 100644 include/hw/fsi/fsi-master.h
- create mode 100644 include/hw/fsi/fsi.h
- create mode 100644 include/hw/fsi/lbus.h
- create mode 100644 hw/fsi/aspeed_apb2opb.c
- create mode 100644 hw/fsi/cfam.c
- create mode 100644 hw/fsi/fsi-master.c
- create mode 100644 hw/fsi/fsi.c
- create mode 100644 hw/fsi/lbus.c
- create mode 100644 tests/qtest/aspeed_fsi-test.c
- create mode 100644 hw/fsi/Kconfig
- create mode 100644 hw/fsi/meson.build
- create mode 100644 hw/fsi/trace-events
 
