@@ -2,85 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4228B84527F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44578452B8
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:29:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVSDa-0000DK-76; Thu, 01 Feb 2024 03:14:42 -0500
+	id 1rVSRx-00009P-OF; Thu, 01 Feb 2024 03:29:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rVSDX-0000CS-4e
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:14:39 -0500
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tomoyuki.hirose@igel.co.jp>)
- id 1rVSDV-0002p0-KX
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:14:38 -0500
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6e133d5271cso321367a34.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 00:14:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1706775276; x=1707380076;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LDQr1Y/iBmlF6C2qWRRfab+jRm6FZFW5CoJITyGCHHM=;
- b=przkP6n74q5McpKMY++9uflRWpH3ARXC5y8ZpOP6vEYmqdW8YC/kz/ZiOfh3h5phfQ
- OhVxe31gbWCLEf7I/nTDtaiYPeTmrfEZ/okdzmV37TdpDzKP/nDGB/bOZM8Im0f70qUS
- heC7o3UkNQcsJoR16vZOEx9XFsHNxD0NIVkbb1KYfnWdQCYioA96AQYB7QDd7Q/GWGRa
- Uw67iROnxGwSZKJSvxiy2gJVaN5fHkZFJAa2zf06rSsEP5a6h8aslLFnLCDjk4pfLzUl
- uHjUp5gaZ+rBL5+QI0RpfsukWerGpMpUA6ydF5V2OGn4mixz2ZzrRsBEq9v9yEmZ/him
- Sx9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706775276; x=1707380076;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LDQr1Y/iBmlF6C2qWRRfab+jRm6FZFW5CoJITyGCHHM=;
- b=pmNrt0ZQA3SKnRo6o5ML76hJPsu3GJaftPSE3DM2hsqefpRdxc3tNqMtnmce507VR9
- +SRU0ZGsYIS+dMGFuJSqqNRvwn0jpSJIskaKFH1K9z0FQ0SVQ4Pqp+/XowgbAG/rYGiJ
- REzuAdORs/S1BnDVnMqys2bVDQztmPnNL0XGlhvzYGuO3EuVsgjkfmWea2PKTtb6b7WR
- 1xXldjpJGsCXB5n1TG3SD+01YSnyqnr9oIFLRzx2m8zRXJ7EV53F4FCLpQ3bPSbALXmq
- bKpGn1zGJk0Hl8SUWSeg7jwxyD7LD/98RCVadQsJBtM+l+BS/B4PzYuatPlpDCUq3UrU
- kOOA==
-X-Gm-Message-State: AOJu0YwoL9d6t4MKK8JhMd3eV6CZLhu6ch0RWJpJ9reIYi2SXCXuaBw4
- xI9vriSetUGiMOOnjQxa08mlqnBukv2v/3S6Tt+x3xFvwf+TGokL2o8L5VHMx4GXV0AC7/hBINu
- ngKU=
-X-Google-Smtp-Source: AGHT+IEOGoTLljgb7dltCH4+p6XtiVTgBcpz6YNz5k5LqkthPx2A0d9jqKBalp8pj8RB3X7jDzbpPA==
-X-Received: by 2002:a05:6830:6:b0:6e1:3d7a:a6ce with SMTP id
- c6-20020a056830000600b006e13d7aa6cemr3974694otp.2.1706775276519; 
- Thu, 01 Feb 2024 00:14:36 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCXA0bmWm9Tay1KW0b2ATc+wrSfsEq8Gqvo2gUK5J170KAK6wng/RUQeL8f3Ipy9tmpHneOyBsGuzez8J6wocaz42g==
-Received: from ThinkPad-T14-hirose.hq.igel.co.jp (napt.igel.co.jp.
- [219.106.231.132]) by smtp.gmail.com with ESMTPSA id
- 38-20020a631366000000b005d6c208fbd2sm11943780pgt.35.2024.02.01.00.14.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 00:14:36 -0800 (PST)
-From: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
-To: qemu-devel@nongnu.org
-Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 2/2] hw/usb/hcd-xhci.c: allow unaligned access to
- Capability Registers
-Date: Thu,  1 Feb 2024 17:13:13 +0900
-Message-Id: <20240201081313.1339788-3-tomoyuki.hirose@igel.co.jp>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240201081313.1339788-1-tomoyuki.hirose@igel.co.jp>
-References: <20240201081313.1339788-1-tomoyuki.hirose@igel.co.jp>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSRu-0008RD-NS
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:29:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSRr-0005kt-No
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:29:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706776166;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=FlepMDmt6WiEO6jw75z1Q+ST9CX/bsmyShHy7vV8hKM=;
+ b=SB9ANI0IBhaQ+1FRvH+Doyo7xgxYtffPqM0o7KUnbPDK3FDYXN2I3DbWSFbLmLMRPn4VyZ
+ orAHJOp8FinbTrPymU5SR9l929s4Q1LvaEgkTdYjhneztW3oi2+gsu3DZCyUuBfFSBXqrS
+ /akgbslRPSP6Abv6Zr278EAh/rz6AIs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-lsCoCZvVPnipLNmxWmNISA-1; Thu,
+ 01 Feb 2024 03:29:23 -0500
+X-MC-Unique: lsCoCZvVPnipLNmxWmNISA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71AAF28EC101;
+ Thu,  1 Feb 2024 08:29:23 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.106])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 122C3492BE2;
+ Thu,  1 Feb 2024 08:29:21 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Cc: qemu-block@nongnu.org,
+	Miroslav Rezanina <mrezanin@redhat.com>
+Subject: [PATCH] hw/ide: Add the possibility to disable the CompactFlash
+ device in the build
+Date: Thu,  1 Feb 2024 09:29:16 +0100
+Message-ID: <20240201082916.20857-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=tomoyuki.hirose@igel.co.jp; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,37 +77,250 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to xHCI spec rev 1.2, unaligned access to xHCI Host
-Controller Capability Registers is not prohibited. In Addition, the
-limit of access size is also unspecified. Actually, some real devices
-allow unaligned access and 8-byte access to these registers.
-This commit makes it possible to unaligned access and 8-byte access
-to Host Controller Capability Registers.
+For distros like downstream RHEL, it would be helpful to allow to disable
+the CompactFlash device. For making this possible, we need a separate
+Kconfig switch for this device, and the code should reside in a separate
+file.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/143
-Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/usb/hcd-xhci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/ide/qdev-ide.h  | 41 ++++++++++++++++++++++++++++++++
+ hw/ide/cf.c        | 58 ++++++++++++++++++++++++++++++++++++++++++++++
+ hw/ide/qdev.c      | 51 ++--------------------------------------
+ hw/ide/Kconfig     |  4 ++++
+ hw/ide/meson.build |  1 +
+ 5 files changed, 106 insertions(+), 49 deletions(-)
+ create mode 100644 hw/ide/qdev-ide.h
+ create mode 100644 hw/ide/cf.c
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index ad40232eb6..9e0b24c93e 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -3181,9 +3181,11 @@ static const MemoryRegionOps xhci_cap_ops = {
-     .read = xhci_cap_read,
-     .write = xhci_cap_write,
-     .valid.min_access_size = 1,
--    .valid.max_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .valid.unaligned = true,
-     .impl.min_access_size = 4,
-     .impl.max_access_size = 4,
-+    .impl.unaligned = false,
-     .endianness = DEVICE_LITTLE_ENDIAN,
+diff --git a/hw/ide/qdev-ide.h b/hw/ide/qdev-ide.h
+new file mode 100644
+index 0000000000..3dd977466c
+--- /dev/null
++++ b/hw/ide/qdev-ide.h
+@@ -0,0 +1,41 @@
++/*
++ * ide bus support for qdev.
++ *
++ * Copyright (c) 2009 Gerd Hoffmann <kraxel@redhat.com>
++ *
++ * This code is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#ifndef QDEV_IDE_H
++#define QDEV_IDE_H
++
++#include "hw/qdev-properties.h"
++#include "hw/block/block.h"
++#include "hw/ide/internal.h"
++
++typedef struct IDEDrive {
++    IDEDevice dev;
++} IDEDrive;
++
++#define DEFINE_IDE_DEV_PROPERTIES()                     \
++    DEFINE_BLOCK_PROPERTIES(IDEDrive, dev.conf),        \
++    DEFINE_BLOCK_ERROR_PROPERTIES(IDEDrive, dev.conf),  \
++    DEFINE_PROP_STRING("ver",  IDEDrive, dev.version),  \
++    DEFINE_PROP_UINT64("wwn",  IDEDrive, dev.wwn, 0),   \
++    DEFINE_PROP_STRING("serial",  IDEDrive, dev.serial),\
++    DEFINE_PROP_STRING("model", IDEDrive, dev.model)
++
++void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp);
++
++#endif
+diff --git a/hw/ide/cf.c b/hw/ide/cf.c
+new file mode 100644
+index 0000000000..0b4bb57591
+--- /dev/null
++++ b/hw/ide/cf.c
+@@ -0,0 +1,58 @@
++/*
++ * ide CompactFlash support
++ *
++ * This code is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.1 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/ide/qdev-ide.h"
++#include "qapi/qapi-types-block.h"
++
++static void ide_cf_realize(IDEDevice *dev, Error **errp)
++{
++    ide_dev_initfn(dev, IDE_CFATA, errp);
++}
++
++static Property ide_cf_properties[] = {
++    DEFINE_IDE_DEV_PROPERTIES(),
++    DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
++    DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
++                IDEDrive, dev.chs_trans, BIOS_ATA_TRANSLATION_AUTO),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void ide_cf_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    IDEDeviceClass *k = IDE_DEVICE_CLASS(klass);
++
++    k->realize  = ide_cf_realize;
++    dc->fw_name = "drive";
++    dc->desc    = "virtual CompactFlash card";
++    device_class_set_props(dc, ide_cf_properties);
++}
++
++static const TypeInfo ide_cf_info = {
++    .name          = "ide-cf",
++    .parent        = TYPE_IDE_DEVICE,
++    .instance_size = sizeof(IDEDrive),
++    .class_init    = ide_cf_class_init,
++};
++
++static void ide_cf_register_type(void)
++{
++    type_register_static(&ide_cf_info);
++}
++
++type_init(ide_cf_register_type)
+diff --git a/hw/ide/qdev.c b/hw/ide/qdev.c
+index 1b3b4da01d..a2f2d0ea08 100644
+--- a/hw/ide/qdev.c
++++ b/hw/ide/qdev.c
+@@ -24,12 +24,9 @@
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+-#include "hw/ide/internal.h"
+-#include "hw/qdev-properties.h"
+-#include "hw/qdev-properties-system.h"
++#include "hw/ide/qdev-ide.h"
+ #include "sysemu/block-backend.h"
+ #include "sysemu/blockdev.h"
+-#include "hw/block/block.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
+ #include "qapi/visitor.h"
+@@ -158,11 +155,7 @@ int ide_get_bios_chs_trans(BusState *bus, int unit)
+ 
+ /* --------------------------------- */
+ 
+-typedef struct IDEDrive {
+-    IDEDevice dev;
+-} IDEDrive;
+-
+-static void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp)
++void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp)
+ {
+     IDEBus *bus = DO_UPCAST(IDEBus, qbus, dev->qdev.parent_bus);
+     IDEState *s = bus->ifs + dev->unit;
+@@ -283,19 +276,6 @@ static void ide_cd_realize(IDEDevice *dev, Error **errp)
+     ide_dev_initfn(dev, IDE_CD, errp);
+ }
+ 
+-static void ide_cf_realize(IDEDevice *dev, Error **errp)
+-{
+-    ide_dev_initfn(dev, IDE_CFATA, errp);
+-}
+-
+-#define DEFINE_IDE_DEV_PROPERTIES()                     \
+-    DEFINE_BLOCK_PROPERTIES(IDEDrive, dev.conf),        \
+-    DEFINE_BLOCK_ERROR_PROPERTIES(IDEDrive, dev.conf),  \
+-    DEFINE_PROP_STRING("ver",  IDEDrive, dev.version),  \
+-    DEFINE_PROP_UINT64("wwn",  IDEDrive, dev.wwn, 0),   \
+-    DEFINE_PROP_STRING("serial",  IDEDrive, dev.serial),\
+-    DEFINE_PROP_STRING("model", IDEDrive, dev.model)
+-
+ static Property ide_hd_properties[] = {
+     DEFINE_IDE_DEV_PROPERTIES(),
+     DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
+@@ -346,32 +326,6 @@ static const TypeInfo ide_cd_info = {
+     .class_init    = ide_cd_class_init,
  };
  
+-static Property ide_cf_properties[] = {
+-    DEFINE_IDE_DEV_PROPERTIES(),
+-    DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
+-    DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
+-                IDEDrive, dev.chs_trans, BIOS_ATA_TRANSLATION_AUTO),
+-    DEFINE_PROP_END_OF_LIST(),
+-};
+-
+-static void ide_cf_class_init(ObjectClass *klass, void *data)
+-{
+-    DeviceClass *dc = DEVICE_CLASS(klass);
+-    IDEDeviceClass *k = IDE_DEVICE_CLASS(klass);
+-
+-    k->realize  = ide_cf_realize;
+-    dc->fw_name = "drive";
+-    dc->desc    = "virtual CompactFlash card";
+-    device_class_set_props(dc, ide_cf_properties);
+-}
+-
+-static const TypeInfo ide_cf_info = {
+-    .name          = "ide-cf",
+-    .parent        = TYPE_IDE_DEVICE,
+-    .instance_size = sizeof(IDEDrive),
+-    .class_init    = ide_cf_class_init,
+-};
+-
+ static void ide_device_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *k = DEVICE_CLASS(klass);
+@@ -396,7 +350,6 @@ static void ide_register_types(void)
+     type_register_static(&ide_bus_info);
+     type_register_static(&ide_hd_info);
+     type_register_static(&ide_cd_info);
+-    type_register_static(&ide_cf_info);
+     type_register_static(&ide_device_type_info);
+ }
+ 
+diff --git a/hw/ide/Kconfig b/hw/ide/Kconfig
+index dd85fa3619..b93d6743d5 100644
+--- a/hw/ide/Kconfig
++++ b/hw/ide/Kconfig
+@@ -57,3 +57,7 @@ config IDE_SII3112
+     bool
+     select IDE_PCI
+     select IDE_QDEV
++
++config IDE_CF
++    bool
++    default y if IDE_QDEV
+diff --git a/hw/ide/meson.build b/hw/ide/meson.build
+index e050eef942..d2e5b45c9e 100644
+--- a/hw/ide/meson.build
++++ b/hw/ide/meson.build
+@@ -1,6 +1,7 @@
+ system_ss.add(when: 'CONFIG_AHCI', if_true: files('ahci.c'))
+ system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich.c'))
+ system_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('ahci-allwinner.c'))
++system_ss.add(when: 'CONFIG_IDE_CF', if_true: files('cf.c'))
+ system_ss.add(when: 'CONFIG_IDE_CMD646', if_true: files('cmd646.c'))
+ system_ss.add(when: 'CONFIG_IDE_CORE', if_true: files('core.c', 'atapi.c'))
+ system_ss.add(when: 'CONFIG_IDE_ISA', if_true: files('isa.c', 'ioport.c'))
 -- 
-2.39.2
+2.43.0
 
 
