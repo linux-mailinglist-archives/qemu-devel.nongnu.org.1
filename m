@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313F8845DC5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6833A845DD4
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:55:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaCb-0003yQ-By; Thu, 01 Feb 2024 11:46:15 -0500
+	id 1rVaDp-0007Ck-DV; Thu, 01 Feb 2024 11:47:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaB3-0002vA-4p
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:37 -0500
+ id 1rVaB2-0002tu-1l
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:36 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAt-0002Pq-Vq
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:36 -0500
+ id 1rVaAt-0002Pt-RU
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
- From:Reply-To:Cc:Content-ID:Content-Description;
- bh=OdxzKrubfC0ZaYycLGHWamGW/MHu3AZpCkbdAJlgMyI=; b=c7Q9gZLKv3gFOjxuzCTKtS4S6H
- tsXHqR3S92hJu2aPpNyzNdi7/PZ7h/jk0aOmwbrd7NuWpoAoI/elMeOJlJ6uOW+rXsC6mri2wKBsW
- 7uKpkHe4aF0Y/I9vMemY7eVwaBMY5Ur6L4rur/84mm3b7p7yZ5Rn6pjephA0kh78e4CbSgNX8G0Tj
- 77UNnJLMAX1m2LzZRxAbJfyNhcqqEqomCYSnkYOWA0orEutz+A4ifyFgSIbONeoTaxsR7BKk8619G
- N4EPoR9R7EeOJKBH7JHXoe4Uf23ccLnyZboarvtnLYuFZAm/DFdWn4cwhWqcf0IeI2ITBe3hDuIft
- mEZH/jNg==;
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+ Cc:Content-Type:Content-ID:Content-Description;
+ bh=dpw3DRxnhjEAefg4lwR8FOrDMECu9upnm/FS6/8ckXY=; b=sMhEF2mohBz5yqjxntMPS1FtRH
+ 9iecihKVygOk9WKa3fBgtbjc+oZGxqvMLtie8nHqY7L9a/tQ8K8+VNZIL1PW96f/cL+/S1IFzAxrW
+ aS8tTea7XynpySMhv8OGhbqRf0IrjHSMtBlJS0EKA2LI0icfTshqWL0ACi8KIqmnGHAdxli62P4hF
+ IM3rf7CD2dUANkFtJK+iLLAMcjDvppxDnet97cP8zwOCf8b3E+VhHJnUXrcywK8o11sHCghi7EJ9E
+ de/knMjW+dBsu4GlDYlSotfGGhtFezyt5MBJWoMUDwuscB8O9VhbLB/e6SueQOVuM+zr14YrbHdrH
+ KipP/+eQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAe-0000000GIcv-1p9A for qemu-devel@nongnu.org;
+ id 1rVaAe-0000000GIcw-1g7S for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003ILy-0mkl for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IM2-148m for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/47] net: add qemu_create_nic_bus_devices()
-Date: Thu,  1 Feb 2024 16:43:28 +0000
-Message-ID: <20240201164412.785520-4-dwmw2@infradead.org>
+Subject: [PULL 04/47] hw/pci: add pci_init_nic_devices(),
+ pci_init_nic_in_slot()
+Date: Thu,  1 Feb 2024 16:43:29 +0000
+Message-ID: <20240201164412.785520-5-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
  casper.infradead.org. See http://www.infradead.org/rpr.html
@@ -77,116 +77,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-This will instantiate any NICs which live on a given bus type. Each bus
-is allowed *one* substitution (for PCI it's virtio → virtio-net-pci, for
-Xen it's xen → xen-net-device; no point in overengineering it unless we
-actually want more).
+The loop over nd_table[] to add PCI NICs is repeated in quite a few
+places. Add a helper function to do it.
+
+Some platforms also try to instantiate a specific model in a specific
+slot, to match the real hardware. Add pci_init_nic_in_slot() for that
+purpose.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Paul Durrant <paul@xen.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- include/net/net.h | 22 ++++++++++++++++++++
- net/net.c         | 53 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 75 insertions(+)
+ hw/pci/pci.c         | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ include/hw/pci/pci.h |  4 +++-
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/net.h b/include/net/net.h
-index dff1872b4d..728ca965af 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -248,6 +248,28 @@ bool qemu_configure_nic_device(DeviceState *dev, bool match_default,
-  */
- DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
-                                     const char *alias);
-+
-+/*
-+ * qemu_create_nic_bus_devices: Create configured NIC devices for a given bus
-+ * @bus: Bus on which to create devices
-+ * @parent_type: Object type for devices to be created (e.g. TYPE_PCI_DEVICE)
-+ * @default_model: Object type name for default NIC model (or %NULL)
-+ * @alias: Additional model string to replace, for user convenience
-+ * @alias_target: Actual object type name to be used in place of @alias
-+ *
-+ * Instantiate dynamic NICs on a given bus, typically a PCI bus. This scans
-+ * for available NIC configurations which either specify a model which is
-+ * a child type of @parent_type, or which do not specify a model when
-+ * @default_model is non-NULL. Each device is instantiated on the given @bus.
-+ *
-+ * A single substitution is supported, e.g. "xen" → "xen-net-device" for the
-+ * Xen bus, or "virtio" → "virtio-net-pci" for PCI. This allows the user to
-+ * specify a more understandable "model=" parameter on the command line, not
-+ * only the real object typename.
-+ */
-+void qemu_create_nic_bus_devices(BusState *bus, const char *parent_type,
-+                                 const char *default_model,
-+                                 const char *alias, const char *alias_target);
- void print_net_client(Monitor *mon, NetClientState *nc);
- void net_socket_rs_init(SocketReadState *rs,
-                         SocketReadStateFinalize *finalize,
-diff --git a/net/net.c b/net/net.c
-index 962904eaef..4651b3f443 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -1223,6 +1223,59 @@ DeviceState *qemu_create_nic_device(const char *typename, bool match_default,
-     return dev;
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 76080af580..5849606f66 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1925,6 +1925,51 @@ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+     return pci_dev;
  }
  
-+void qemu_create_nic_bus_devices(BusState *bus, const char *parent_type,
-+                                 const char *default_model,
-+                                 const char *alias, const char *alias_target)
++void pci_init_nic_devices(PCIBus *bus, const char *default_model)
 +{
-+    GPtrArray *nic_models = qemu_get_nic_models(parent_type);
-+    const char *model;
-+    DeviceState *dev;
-+    NICInfo *nd;
-+    int i;
-+
-+    if (nic_model_help) {
-+        if (alias_target) {
-+            add_nic_model_help(alias_target, alias);
-+        }
-+        for (i = 0; i < nic_models->len - 1; i++) {
-+            add_nic_model_help(nic_models->pdata[i], NULL);
-+        }
-+    }
-+
-+    /* Drop the NULL terminator which would make g_str_equal() unhappy */
-+    nic_models->len--;
-+
-+    for (i = 0; i < nb_nics; i++) {
-+        nd = &nd_table[i];
-+
-+        if (!nd->used || nd->instantiated) {
-+            continue;
-+        }
-+
-+        model = nd->model ? nd->model : default_model;
-+        if (!model) {
-+            continue;
-+        }
-+
-+        /* Each bus type is allowed *one* substitution */
-+        if (g_str_equal(model, alias)) {
-+            model = alias_target;
-+        }
-+
-+        if (!g_ptr_array_find_with_equal_func(nic_models, model,
-+                                              g_str_equal, NULL)) {
-+            /* This NIC does not live on this bus. */
-+            continue;
-+        }
-+
-+        dev = qdev_new(model);
-+        qdev_set_nic_properties(dev, nd);
-+        qdev_realize_and_unref(dev, bus, &error_fatal);
-+    }
-+
-+    g_ptr_array_free(nic_models, true);
++    qemu_create_nic_bus_devices(&bus->qbus, TYPE_PCI_DEVICE, default_model,
++                                "virtio", "virtio-net-pci");
 +}
 +
- static int (* const net_client_init_fun[NET_CLIENT_DRIVER__MAX])(
-     const Netdev *netdev,
-     const char *name,
++bool pci_init_nic_in_slot(PCIBus *rootbus, const char *model,
++                          const char *alias, const char *devaddr)
++{
++    NICInfo *nd = qemu_find_nic_info(model, true, alias);
++    int dom, busnr, devfn;
++    PCIDevice *pci_dev;
++    unsigned slot;
++    PCIBus *bus;
++
++    if (!nd) {
++        return false;
++    }
++
++    if (!devaddr || pci_parse_devaddr(devaddr, &dom, &busnr, &slot, NULL) < 0) {
++        error_report("Invalid PCI device address %s for device %s",
++                     devaddr, model);
++        exit(1);
++    }
++
++    if (dom != 0) {
++        error_report("No support for non-zero PCI domains");
++        exit(1);
++    }
++
++    devfn = PCI_DEVFN(slot, 0);
++
++    bus = pci_find_bus_nr(rootbus, busnr);
++    if (!bus) {
++        error_report("Invalid PCI device address %s for device %s",
++                     devaddr, model);
++        exit(1);
++    }
++
++    pci_dev = pci_new(devfn, model);
++    qdev_set_nic_properties(&pci_dev->qdev, nd);
++    pci_realize_and_unref(pci_dev, bus, &error_fatal);
++    return true;
++}
++
+ PCIDevice *pci_vga_init(PCIBus *bus)
+ {
+     vga_interface_created = true;
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index fa6313aabc..6ff0b95a02 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -317,7 +317,9 @@ void pci_device_reset(PCIDevice *dev);
+ PCIDevice *pci_nic_init_nofail(NICInfo *nd, PCIBus *rootbus,
+                                const char *default_model,
+                                const char *default_devaddr);
+-
++void pci_init_nic_devices(PCIBus *bus, const char *default_model);
++bool pci_init_nic_in_slot(PCIBus *rootbus, const char *default_model,
++                          const char *alias, const char *devaddr);
+ PCIDevice *pci_vga_init(PCIBus *bus);
+ 
+ static inline PCIBus *pci_get_bus(const PCIDevice *dev)
 -- 
 2.43.0
 
