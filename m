@@ -2,73 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD7B845201
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 08:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7636845213
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 08:34:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVRYG-0007Hc-Sv; Thu, 01 Feb 2024 02:32:01 -0500
+	id 1rVRZo-000635-VP; Thu, 01 Feb 2024 02:33:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rVRYC-0006ub-VC
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 02:31:58 -0500
-Received: from mgamail.intel.com ([192.55.52.120])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rVRYA-0001hD-C8
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 02:31:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706772714; x=1738308714;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=SxIm2x19TwG5HPffy2XnHOf3K+46VOZDLtqOFlpVjxc=;
- b=Ss97+wJ3i5FPUzbgH8T9QxxGHpRu/SOxDEe4s/XBDSdjHPttAat5BH1U
- xiIkH/inH/mZlC7nM82Y+iYOY8T3M0EKzd4hHL/1H0pcl5uyzSedMjtOI
- /id1AQAFUf4JWMXau+8/1NspKZuwtMDdCm4MW7xVRIxfrB0fjifbjD3j4
- z4UJF3eGF64j9TK9vfxKLd+5BSe4Qi8BDmOAxZBby0Jp04qAE+iZU3F72
- D4Ls8FEGTh8f5pXunhFlqQaOdNcy43bSSqHiKZcUkHxtmmqI7k7zVbVfO
- U+0exeUSvVLpsqrTalPy5HgaXE94c1fSInxHN5RMrL1kp6fnsobLGv9cE A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="402677024"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="402677024"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 23:31:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4443435"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jan 2024 23:31:46 -0800
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rVRZm-0005wv-0j
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 02:33:34 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rVRZk-00022W-6M
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 02:33:33 -0500
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxF+hDSbtl93QJAA--.8154S3;
+ Thu, 01 Feb 2024 15:33:23 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxDc8_Sbtlc40rAA--.36621S2; 
+ Thu, 01 Feb 2024 15:33:20 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH rfcv2 18/18] intel_iommu: Block migration if cap is updated
-Date: Thu,  1 Feb 2024 15:28:18 +0800
-Message-Id: <20240201072818.327930-19-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240201072818.327930-1-zhenzhong.duan@intel.com>
-References: <20240201072818.327930-1-zhenzhong.duan@intel.com>
+Cc: peter.maydell@linaro.org
+Subject: [PULL 0/1] loongarch-to-apply queue
+Date: Thu,  1 Feb 2024 15:33:18 +0800
+Message-Id: <20240201073319.2849107-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.120;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8DxDc8_Sbtlc40rAA--.36621S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,56 +60,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When there is VFIO device and vIOMMU cap/ecap is updated based on host
-IOMMU cap/ecap, migration should be blocked.
+The following changes since commit bd2e12310b18b51aefbf834e6d54989fd175976f:
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+  Merge tag 'qga-pull-2024-01-30' of https://github.com/kostyanf14/qemu into staging (2024-01-30 15:53:46 +0000)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 72cc8b2c71..7f9ff653b2 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -39,6 +39,7 @@
- #include "hw/i386/apic_internal.h"
- #include "kvm/kvm_i386.h"
- #include "migration/vmstate.h"
-+#include "migration/blocker.h"
- #include "trace.h"
- 
- #define S_AW_BITS (VTD_MGAW_FROM_CAP(s->cap) + 1)
-@@ -3829,6 +3830,8 @@ static int vtd_check_legacy_hdev(IntelIOMMUState *s,
-     return 0;
- }
- 
-+static Error *vtd_mig_blocker;
-+
- static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
-                                   IOMMUFDDevice *idev,
-                                   Error **errp)
-@@ -3860,8 +3863,17 @@ static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
-         tmp_cap |= VTD_CAP_MGAW(host_mgaw + 1);
-     }
- 
--    s->cap = tmp_cap;
--    return 0;
-+    if (s->cap != tmp_cap) {
-+        if (vtd_mig_blocker == NULL) {
-+            error_setg(&vtd_mig_blocker,
-+                       "cap/ecap update from host IOMMU block migration");
-+            ret = migrate_add_blocker(&vtd_mig_blocker, errp);
-+        }
-+        if (!ret) {
-+            s->cap = tmp_cap;
-+        }
-+    }
-+    return ret;
- }
- 
- static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
--- 
-2.34.1
+are available in the Git repository at:
+
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240201
+
+for you to fetch changes up to 27edd5040cae63bfa92c68f69883ba81aa3b6cda:
+
+  target/loongarch: Fix qtest test-hmp error when KVM-only build (2024-02-01 15:29:40 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20240201
+
+----------------------------------------------------------------
+Song Gao (1):
+      target/loongarch: Fix qtest test-hmp error when KVM-only build
+
+ target/loongarch/cpu.c            |   2 -
+ target/loongarch/cpu_helper.c     | 231 ++++++++++++++++++++++++++++++++++++++
+ target/loongarch/internals.h      |  20 +++-
+ target/loongarch/meson.build      |   1 +
+ target/loongarch/tcg/tlb_helper.c | 230 -------------------------------------
+ 5 files changed, 250 insertions(+), 234 deletions(-)
+ create mode 100644 target/loongarch/cpu_helper.c
 
 
