@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93648845F82
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456AF845F80
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:11:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVbVg-0006i4-Sc; Thu, 01 Feb 2024 13:10:02 -0500
+	id 1rVbVj-0006i8-5q; Thu, 01 Feb 2024 13:10:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVZ-0006fA-1h
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:53 -0500
+ id 1rVbVa-0006fU-U6
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVX-00044E-Cd
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:52 -0500
+ id 1rVbVX-00044e-D1
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706810987;
+ s=mimecast20190719; t=1706810989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=niXj9OCErQLuoXtxz7xBCDDPgxEdaMBzVC4lM7ANUoU=;
- b=BHdTs7e0h0j/+UFtu9/0oGn7zE+hvzFSYb0Sikj4Ek0ubCyCpKSEEb4t1T0BnAiKFrtiq4
- KD9FU1/uphyjDaEBgSR+PnlA6fbNLqAS6e4AauUQahmmcFkFXOA/puWxHkvnzmEifSLS3E
- QSuWdtsofOIzcqXx8ZvSPDlGzX5yzn8=
+ bh=KcFS3GkW+KWJTL4dPNBzUXJ6mqyuqxcFIlM7dHUGKdI=;
+ b=fYuThJUYTVg7q6f05CCI28DOPcRARK0jJgK2bKWy7mQTSA1Dbc4E92s2il5WakX6FpxnS5
+ Htc2VtSmskmCP4EsxnzZ/UaXtrvIELavEAM0CNeQdvoZGrxYMGyljE+Qw0VS+hdkBSFyVG
+ 6yF9EqzT/Na/TMBP5HkTG2vr9gi09LE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-P33NzO0RMlO7QXsGGHZfGg-1; Thu, 01 Feb 2024 13:09:43 -0500
-X-MC-Unique: P33NzO0RMlO7QXsGGHZfGg-1
+ us-mta-632-JHx9A2rZORuRQLGtKhz-1w-1; Thu, 01 Feb 2024 13:09:45 -0500
+X-MC-Unique: JHx9A2rZORuRQLGtKhz-1w-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3B472827D89;
- Thu,  1 Feb 2024 18:09:43 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39054101A526;
+ Thu,  1 Feb 2024 18:09:45 +0000 (UTC)
 Received: from eperezma-thinkpadt480s.rmtes.csb (unknown [10.39.193.103])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7C8FD2026D66;
- Thu,  1 Feb 2024 18:09:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 79CD1200AD62;
+ Thu,  1 Feb 2024 18:09:43 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -51,9 +51,9 @@ Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Parav Pandit <parav@mellanox.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Si-Wei Liu <si-wei.liu@oracle.com>, Zhu Lingshan <lingshan.zhu@intel.com>
-Subject: [PATCH v2 6/7] vdpa: move iova_tree allocation to net_vhost_vdpa_init
-Date: Thu,  1 Feb 2024 19:09:23 +0100
-Message-ID: <20240201180924.487579-7-eperezma@redhat.com>
+Subject: [PATCH v2 7/7] vdpa: move memory listener register to vhost_vdpa_init
+Date: Thu,  1 Feb 2024 19:09:24 +0100
+Message-ID: <20240201180924.487579-8-eperezma@redhat.com>
 In-Reply-To: <20240201180924.487579-1-eperezma@redhat.com>
 References: <20240201180924.487579-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -85,131 +85,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As we are moving to keep the mapping through all the vdpa device life
-instead of resetting it at VirtIO reset, we need to move all its
-dependencies to the initialization too.  In particular devices with
-x-svq=on need a valid iova_tree from the beginning.
+Current memory operations like pinning may take a lot of time at the
+destination.  Currently they are done after the source of the migration is
+stopped, and before the workload is resumed at the destination.  This is a
+period where neigher traffic can flow, nor the VM workload can continue
+(downtime).
 
-Simplify the code also consolidating the two creation points: the first
-data vq in case of SVQ active and CVQ start in case only CVQ uses it.
+We can do better as we know the memory layout of the guest RAM at the
+destination from the moment that all devices are initializaed.  So
+moving that operation allows QEMU to communicate the kernel the maps
+while the workload is still running in the source, so Linux can start
+mapping them.
 
-Suggested-by: Si-Wei Liu <si-wei.liu@oracle.com>
+As a small drawback, there is a time in the initialization where QEMU
+cannot respond to QMP etc.  By some testing, this time is about
+0.2seconds.  This may be further reduced (or increased) depending on the
+vdpa driver and the platform hardware, and it is dominated by the cost
+of memory pinning.
+
+This matches the time that we move out of the called downtime window.
+The downtime is measured as checking the trace timestamp from the moment
+the source suspend the device to the moment the destination starts the
+eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
+secs to 2.0949.
+
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
- include/hw/virtio/vhost-vdpa.h | 16 ++++++++++++++-
- net/vhost-vdpa.c               | 36 +++-------------------------------
- 2 files changed, 18 insertions(+), 34 deletions(-)
+--
+v2:
+Move the memory listener registration to vhost_vdpa_set_owner function.
+In case of hotplug the vdpa device, the memory is already set up, and
+leaving memory listener register call in the init function made maps
+occur before set owner call.
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 03ed2f2be3..ad754eb803 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -37,7 +37,21 @@ typedef struct vhost_vdpa_shared {
-     struct vhost_vdpa_iova_range iova_range;
-     QLIST_HEAD(, vdpa_iommu) iommu_list;
+To be 100% safe, let's put it right after set_owner call.
+
+Reported-by: Lei Yang <leiyang@redhat.com>
+---
+ hw/virtio/vhost-vdpa.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 521a889104..232e06e18b 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -1331,6 +1331,11 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+                          "IOMMU and try again");
+             return -1;
+         }
++        if (v->shared->listener_registered &&
++            dev->vdev->dma_as != v->shared->listener.address_space) {
++            memory_listener_unregister(&v->shared->listener);
++            v->shared->listener_registered = false;
++        }
+         if (!v->shared->listener_registered) {
+             memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
+             v->shared->listener_registered = true;
+@@ -1480,12 +1485,27 @@ static int vhost_vdpa_get_features(struct vhost_dev *dev,
  
--    /* IOVA mapping used by the Shadow Virtqueue */
-+    /*
-+     * IOVA mapping used by the Shadow Virtqueue
-+     *
-+     * It is shared among all ASID for simplicity, whether CVQ shares ASID with
-+     * guest or not:
-+     * - Memory listener need access to guest's memory addresses allocated in
-+     *   the IOVA tree.
-+     * - There should be plenty of IOVA address space for both ASID not to
-+     *   worry about collisions between them.  Guest's translations are still
-+     *   validated with virtio virtqueue_pop so there is no risk for the guest
-+     *   to access memory that it shouldn't.
-+     *
-+     * To allocate a iova tree per ASID is doable but it complicates the code
-+     * and it is not worth it for the moment.
-+     */
-     VhostIOVATree *iova_tree;
- 
-     /* Copy of backend features */
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index cc589dd148..57edcf34d0 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -232,6 +232,7 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
-         return;
-     }
-     qemu_close(s->vhost_vdpa.shared->device_fd);
-+    g_clear_pointer(&s->vhost_vdpa.shared->iova_tree, vhost_iova_tree_delete);
-     g_free(s->vhost_vdpa.shared);
- }
- 
-@@ -329,16 +330,8 @@ static void vdpa_net_migration_state_notifier(Notifier *notifier, void *data)
- 
- static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+ static int vhost_vdpa_set_owner(struct vhost_dev *dev)
  {
--    struct vhost_vdpa *v = &s->vhost_vdpa;
--
-     migration_add_notifier(&s->migration_state,
-                            vdpa_net_migration_state_notifier);
--
--    /* iova_tree may be initialized by vhost_vdpa_net_load_setup */
--    if (v->shadow_vqs_enabled && !v->shared->iova_tree) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
--                                                   v->shared->iova_range.last);
--    }
- }
- 
- static int vhost_vdpa_net_data_start(NetClientState *nc)
-@@ -383,19 +376,12 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
- static void vhost_vdpa_net_client_stop(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
--    struct vhost_dev *dev;
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
-     if (s->vhost_vdpa.index == 0) {
-         migration_remove_notifier(&s->migration_state);
-     }
--
--    dev = s->vhost_vdpa.dev;
--    if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
--        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
--                        vhost_iova_tree_delete);
--    }
- }
- 
- static NetClientInfo net_vhost_vdpa_info = {
-@@ -557,24 +543,6 @@ out:
++    int r;
++    struct vhost_vdpa *v;
++
+     if (!vhost_vdpa_first_dev(dev)) {
          return 0;
      }
  
--    /*
--     * If other vhost_vdpa already have an iova_tree, reuse it for simplicity,
--     * whether CVQ shares ASID with guest or not, because:
--     * - Memory listener need access to guest's memory addresses allocated in
--     *   the IOVA tree.
--     * - There should be plenty of IOVA address space for both ASID not to
--     *   worry about collisions between them.  Guest's translations are still
--     *   validated with virtio virtqueue_pop so there is no risk for the guest
--     *   to access memory that it shouldn't.
--     *
--     * To allocate a iova tree per ASID is doable but it complicates the code
--     * and it is not worth it for the moment.
--     */
--    if (!v->shared->iova_tree) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
--                                                   v->shared->iova_range.last);
--    }
--
-     r = vhost_vdpa_cvq_map_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer,
-                                vhost_vdpa_net_cvq_cmd_page_len(), false);
-     if (unlikely(r < 0)) {
-@@ -1674,6 +1642,8 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shared->device_fd = vdpa_device_fd;
-         s->vhost_vdpa.shared->iova_range = iova_range;
-         s->vhost_vdpa.shared->shadow_data = svq;
-+        s->vhost_vdpa.shared->iova_tree = vhost_iova_tree_new(iova_range.first,
-+                                                              iova_range.last);
-     } else if (!is_datapath) {
-         s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-                                      PROT_READ | PROT_WRITE,
+     trace_vhost_vdpa_set_owner(dev);
+-    return vhost_vdpa_call(dev, VHOST_SET_OWNER, NULL);
++    r = vhost_vdpa_call(dev, VHOST_SET_OWNER, NULL);
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
++    /*
++     * Being optimistic and listening address space memory. If the device
++     * uses vIOMMU, it is changed at vhost_vdpa_dev_start.
++     */
++    v = dev->opaque;
++    memory_listener_register(&v->shared->listener, &address_space_memory);
++    v->shared->listener_registered = true;
++    return 0;
+ }
+ 
+ static int vhost_vdpa_vq_get_addr(struct vhost_dev *dev,
 -- 
 2.43.0
 
