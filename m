@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214F38452B5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A45F98452B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:29:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVSQH-0005Rt-FI; Thu, 01 Feb 2024 03:27:49 -0500
+	id 1rVSQJ-0005Sq-2h; Thu, 01 Feb 2024 03:27:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rVSPr-0005Hc-35; Thu, 01 Feb 2024 03:27:26 -0500
+ id 1rVSPt-0005Li-2z; Thu, 01 Feb 2024 03:27:26 -0500
 Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rVSPp-0005Fp-8w; Thu, 01 Feb 2024 03:27:22 -0500
+ id 1rVSPr-0005Dg-MA; Thu, 01 Feb 2024 03:27:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706776041; x=1738312041;
+ t=1706776043; x=1738312043;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dfciqPxL/AH0dsGMoETl0DkYoZU6V2u2WYz2kQeiFVs=;
- b=K2Jknt6jZZYH6ClPSp8iMrJuzgFVoqNlGGXOnoPnvMdDP8g20NbWsdwZ
- m1ENpCY82XcKyrx9c4rxLHADhVkiDXNu1wkmF+Q5oILrllFnMObAUKISF
- mlY7lATiLVkPl1HUuTtdI9YyT6oH+ucNTjtuBL+E9wHRGnM+87L6zCbAh
- IcLO1+dqgwOEsP08uiwiYMRZYSqNJwlf2tuLZPhzP/mQUAyD3AYXzjc0f
- NbzPJFGjoW0YJh3UDQjV7jD5djENAVODfONbvU8Ly3N2hPVv5IXKmm6L8
- QwxWXe+u5795c/P5Ij8x0++NT3JGU76FXNVSyMYwUvjd8L8utoQv+logd A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="468077718"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="468077718"
+ bh=1nl3+K8pURSX0PIUZSsR4an8ZGi/KzhHvmfuQLv3Au4=;
+ b=AL6Tl+ZQ6lqM+1v6+fuh7BD99V9K//CbKUbkzfZ/+hgEZrsTvgIFzyDL
+ T2v1zrynr8D7yneoAJlC/J+K8u3iQ0+uxruWZXoAHgzJTsKFCmJMU0nLm
+ DIqAvf57vlRudEg2LreQfWtGA1pMgo6518/gBywULjTDieA3ALjDr95sh
+ gxwNn4ZvAGiRrkwENipMCJ8tqb6KuzkDWL1XhBV/6K9YrRMZSBfwdrdMs
+ CVbWYH1JIU7S6eVS4exiS6M3UNt3wWNC5lqB7cbIG0FDZ6RNA2+1LXL0s
+ HmGCM4CO7lCcHpEdGRZIDun2RwwImZuwk4gHxjPNuHHS2HfTXAKe8qmGp w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="468077736"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; d="scan'208";a="468077736"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Feb 2024 00:27:17 -0800
+ 01 Feb 2024 00:27:21 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4348442"
+   d="scan'208";a="4348457"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 01 Feb 2024 00:27:13 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 01 Feb 2024 00:27:17 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eric Auger <eric.auger@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
@@ -51,10 +51,10 @@ To: Eric Auger <eric.auger@redhat.com>,
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/4] hw/isa/pc87312: Consolidate the use of
+Subject: [PATCH 3/4] hw/intc/s390_flic: Consolidate the use of
  device_class_set_parent_realize()
-Date: Thu,  1 Feb 2024 16:40:25 +0800
-Message-Id: <20240201084027.345459-3-zhao1.liu@linux.intel.com>
+Date: Thu,  1 Feb 2024 16:40:26 +0800
+Message-Id: <20240201084027.345459-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240201084027.345459-1-zhao1.liu@linux.intel.com>
 References: <20240201084027.345459-1-zhao1.liu@linux.intel.com>
@@ -90,26 +90,26 @@ Use device_class_set_parent_realize() to set parent realize() directly.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/isa/pc87312.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/intc/s390_flic_kvm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/isa/pc87312.c b/hw/isa/pc87312.c
-index ee23f3e164df..64dd17b537f2 100644
---- a/hw/isa/pc87312.c
-+++ b/hw/isa/pc87312.c
-@@ -338,10 +338,10 @@ static void pc87312_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     ISASuperIOClass *sc = ISA_SUPERIO_CLASS(klass);
+diff --git a/hw/intc/s390_flic_kvm.c b/hw/intc/s390_flic_kvm.c
+index 4d5cbb2a2fb6..baaa30dcb734 100644
+--- a/hw/intc/s390_flic_kvm.c
++++ b/hw/intc/s390_flic_kvm.c
+@@ -646,9 +646,10 @@ static void kvm_s390_flic_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+     S390FLICStateClass *fsc = S390_FLIC_COMMON_CLASS(oc);
++    KVMS390FLICStateClass *kfsc = KVM_S390_FLIC_CLASS(oc);
  
--    sc->parent_realize = dc->realize;
--    dc->realize = pc87312_realize;
-     dc->reset = pc87312_reset;
-     dc->vmsd = &vmstate_pc87312;
-+    device_class_set_parent_realize(dc, pc87312_realize,
-+                                    &sc->parent_realize);
-     device_class_set_props(dc, pc87312_properties);
- 
-     sc->parallel = (ISASuperIOFuncs){
+-    KVM_S390_FLIC_CLASS(oc)->parent_realize = dc->realize;
+-    dc->realize = kvm_s390_flic_realize;
++    device_class_set_parent_realize(dc, kvm_s390_flic_realize,
++                                    &kfsc->parent_realize);
+     dc->vmsd = &kvm_s390_flic_vmstate;
+     dc->reset = kvm_s390_flic_reset;
+     fsc->register_io_adapter = kvm_s390_register_io_adapter;
 -- 
 2.34.1
 
