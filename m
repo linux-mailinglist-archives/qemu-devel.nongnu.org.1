@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0385A845DEE
+	by mail.lfdr.de (Postfix) with ESMTPS id 0929C845DEF
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaB2-0002tZ-Le; Thu, 01 Feb 2024 11:44:36 -0500
+	id 1rVaDg-0006P4-CN; Thu, 01 Feb 2024 11:47:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAn-0002pw-6u
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:21 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaB7-0002xi-44
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:41 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAk-0002TR-7w
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:20 -0500
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAv-0002Ud-2B
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:40 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=IXEZX2HEBbMBwUhayue76+vBPs8XLNbiy1LneqBnSSQ=; b=Y107nbmpkS+UHJVhwfdj5/jMEC
- VRijhUDwEfrhSuftAMm3mom1il52hKxAXBiTMoHa0KZM99D178pWT1BBDT7nztU1qo49EP8VxsF1W
- 51bcCFvN32AsatgZF5/Ov33bBSP5qs1lA7wbMPfPl2DLUgRfH8v1eyAvk/I1+38acde4d+v3UIrUu
- 4Qs7VP+hbJzYe7bGEMsdTZmYoglQU8DfhY8akLlQXWzdzfLxajD2trPWEvYksIh4/ktJpjlGbK7fx
- p+3891Pu5Z1kj7/bOdQJ0EKKBMIPdyeozQgymi2YNuHT18oBzV2/fuPT+KoUWBmsZud//3lolcppi
- UoxvQHVQ==;
+ bh=OcUPxqWmRn2W/vBLc1vAUxfRYXil4peX6g1xYhANngU=; b=YB5FdLaVXMAp71+NowjXjAty7x
+ b6NT5HuscTzgh6sC6DXXw8sbcCagEDEeRsn8RybNb4+bOFlPLgXXA5J+hcXaSrQ+uIfwb9c9+PpnY
+ /JNnFnd4pLNbEbzxW66YYFdDj5oxwauR1pd/jDHGi+VWHCWNra7696keIaXbJm9clVlXhoPweHHAf
+ dR4x1FC9MbDl0vMn8yxODNTF7gfq8TQI87CImZw/XrCz1mcZQ54wu4CpZ9ip4taJ8RBSMMlDQHFuk
+ twvdeNIXWQ7VsooW2oEMiS10m/mvr8C6xivP+M/hyUY9BiSMLZpDQZ8mP3YiZ+ueAk2RnhlbbPGsq
+ /UVEF6Bw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAf-0000000GIdk-2gKd for qemu-devel@nongnu.org;
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAh-00000009cMN-1pv8 for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:15 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003IOc-3AQU for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003IOg-3GaH for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/47] hw/riscv: use qemu_configure_nic_device()
-Date: Thu,  1 Feb 2024 16:44:05 +0000
-Message-ID: <20240201164412.785520-41-dwmw2@infradead.org>
+Subject: [PULL 41/47] hw/s390x/s390-virtio-ccw: use qemu_create_nic_device()
+Date: Thu,  1 Feb 2024 16:44:06 +0000
+Message-ID: <20240201164412.785520-42-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -77,69 +77,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/riscv/microchip_pfsoc.c | 14 ++------------
- hw/riscv/sifive_u.c        |  7 +------
- 2 files changed, 3 insertions(+), 18 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index b775aa8946..7725dfbde5 100644
---- a/hw/riscv/microchip_pfsoc.c
-+++ b/hw/riscv/microchip_pfsoc.c
-@@ -202,7 +202,6 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
-     MemoryRegion *envm_data = g_new(MemoryRegion, 1);
-     MemoryRegion *qspi_xip_mem = g_new(MemoryRegion, 1);
-     char *plic_hart_config;
--    NICInfo *nd;
-     int i;
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index c99682b07d..62804cc228 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -229,16 +229,9 @@ static void s390_init_ipl_dev(const char *kernel_filename,
  
-     sysbus_realize(SYS_BUS_DEVICE(&s->e_cpus), &error_abort);
-@@ -411,17 +410,8 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
-         memmap[MICROCHIP_PFSOC_USB].size);
- 
-     /* GEMs */
+ static void s390_create_virtio_net(BusState *bus, const char *name)
+ {
+-    int i;
 -
--    nd = &nd_table[0];
--    if (nd->used) {
--        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
--        qdev_set_nic_properties(DEVICE(&s->gem0), nd);
--    }
--    nd = &nd_table[1];
--    if (nd->used) {
--        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
--        qdev_set_nic_properties(DEVICE(&s->gem1), nd);
--    }
-+    qemu_configure_nic_device(DEVICE(&s->gem0), true, NULL);
-+    qemu_configure_nic_device(DEVICE(&s->gem1), true, NULL);
+-    for (i = 0; i < nb_nics; i++) {
+-        NICInfo *nd = &nd_table[i];
+-        DeviceState *dev;
+-
+-        qemu_check_nic_model(nd, "virtio");
++    DeviceState *dev;
  
-     object_property_set_int(OBJECT(&s->gem0), "revision", GEM_REVISION, errp);
-     object_property_set_int(OBJECT(&s->gem0), "phy-addr", 8, errp);
-diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
-index ec76dce6c9..5207ec1fa5 100644
---- a/hw/riscv/sifive_u.c
-+++ b/hw/riscv/sifive_u.c
-@@ -789,7 +789,6 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
-     MemoryRegion *l2lim_mem = g_new(MemoryRegion, 1);
-     char *plic_hart_config;
-     int i, j;
--    NICInfo *nd = &nd_table[0];
- 
-     qdev_prop_set_uint32(DEVICE(&s->u_cpus), "num-harts", ms->smp.cpus - 1);
-     qdev_prop_set_uint32(DEVICE(&s->u_cpus), "hartid-base", 1);
-@@ -893,11 +892,7 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+-        dev = qdev_new(name);
+-        qdev_set_nic_properties(dev, nd);
++    while ((dev = qemu_create_nic_device(name, true, "virtio"))) {
+         qdev_realize_and_unref(dev, bus, &error_fatal);
      }
-     sysbus_mmio_map(SYS_BUS_DEVICE(&s->otp), 0, memmap[SIFIVE_U_DEV_OTP].base);
- 
--    /* FIXME use qdev NIC properties instead of nd_table[] */
--    if (nd->used) {
--        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
--        qdev_set_nic_properties(DEVICE(&s->gem), nd);
--    }
-+    qemu_configure_nic_device(DEVICE(&s->gem), true, NULL);
-     object_property_set_int(OBJECT(&s->gem), "revision", GEM_REVISION,
-                             &error_abort);
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gem), errp)) {
+ }
 -- 
 2.43.0
 
