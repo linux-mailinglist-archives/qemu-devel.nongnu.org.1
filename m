@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24646845D93
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:46:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CCB845D88
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaB1-0002tA-Dl; Thu, 01 Feb 2024 11:44:35 -0500
+	id 1rVaBE-0002vN-EV; Thu, 01 Feb 2024 11:44:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAq-0002qi-To
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaAq-0002qh-Rx
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:25 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAm-0002Uq-9b
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:24 -0500
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaAj-0002SU-Gb
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=TA17OVi49hCfDCSb/FocGIXS9Sfw+etv8YHmfCgYILA=; b=aCMip3eP7NY1og3yZWUHI9qERA
- o0rZx2ET/NFIHjfYEAZUbizWkoOCs2BKgY55ujW4lsSD7y919NWhMBf99wQWfQ5CdJdV0ifzAaPLl
- 6Q+Vo/pmfgL/9UmjNIrJztUyAsQrIvdgHbS/iOM1difqzz4ZwnNe4DQ6sg4HDwPLLFsGFS/mLBWCD
- 11q0685D+smrusQLuk6eBA7if/xR18ERt/toF+IsayaK88arMt6QktDy+UTcsFzrKCcg7HO3S1WWE
- /KPEuevNZNb8zQ7ccuBOpJNtTKmgrwywWBiZf0cyLUBN+hazTlzNs5Ltg/dSxOTTrId9orduY7c4Y
- QSqGSmFQ==;
+ bh=Qspogv9stZB79QEZpJwewrrR9VbTKEbvJpFBcADIitI=; b=oiTRvCcC0RbEWdhP1WAkNJlFHP
+ m34ojOv1OSTpspO9HvBgKhWRuHv6qkEBKbHSrqZmVy2CVjd9rDWzr+KqtkZSmiuVOKOYctlj0Cfkt
+ uXMATvUCCPSKlaDKtnKNFFl3oLqP7jtNLsxO0HGkhXtUeiQsROJ14rQ0wijU1Dkw1uaNQORIrJGpe
+ c90fykPIB7ENun1osAamC74cFQQVm3u6VJl8kVt3LIOBjNnGQtYcE4NOc+4wII+nhAxWowAIK3kse
+ A5jU5IAZoHHWR0aZCUDmKNhaiZLCaROcSdJI2L/nARJx2okFYvm64zbU74KGwlzQOSTe9NJezfXAw
+ 5EsnOxfw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAh-00000009cM7-1xcE for qemu-devel@nongnu.org;
- Thu, 01 Feb 2024 16:44:15 +0000
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAf-0000000GIdK-1IdB for qemu-devel@nongnu.org;
+ Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003INU-11KH for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003INZ-1IT5 for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/47] hw/net/smc91c111: use qemu_configure_nic_device()
-Date: Thu,  1 Feb 2024 16:43:50 +0000
-Message-ID: <20240201164412.785520-26-dwmw2@infradead.org>
+Subject: [PULL 26/47] hw/net/lan9118: use qemu_configure_nic_device()
+Date: Thu,  1 Feb 2024 16:43:51 +0000
+Message-ID: <20240201164412.785520-27-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -78,188 +78,118 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 
 Some callers instantiate the device unconditionally, others will do so only
 if there is a NICInfo to go with it. This appears to be fairly random, but
-preserve the existing behaviour of each caller for now.
+preseve the existing behaviour for now.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/arm/gumstix.c           |  6 ++----
- hw/arm/integratorcp.c      |  5 +++--
- hw/arm/mainstone.c         |  3 +--
- hw/arm/realview.c          | 25 ++++++++++---------------
- hw/arm/versatilepb.c       | 15 ++++-----------
- hw/net/smc91c111.c         |  5 ++---
- include/hw/net/smc91c111.h |  2 +-
- 7 files changed, 23 insertions(+), 38 deletions(-)
+ hw/arm/kzm.c             | 4 ++--
+ hw/arm/mps2.c            | 2 +-
+ hw/arm/realview.c        | 6 ++----
+ hw/arm/vexpress.c        | 4 ++--
+ hw/net/lan9118.c         | 5 ++---
+ include/hw/net/lan9118.h | 2 +-
+ 6 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/hw/arm/gumstix.c b/hw/arm/gumstix.c
-index 3f2bcaa24e..d5de5409e1 100644
---- a/hw/arm/gumstix.c
-+++ b/hw/arm/gumstix.c
-@@ -73,8 +73,7 @@ static void connex_init(MachineState *machine)
-                           FLASH_SECTOR_SIZE, 2, 0, 0, 0, 0, 0);
+diff --git a/hw/arm/kzm.c b/hw/arm/kzm.c
+index 9be91ebeaa..2ccd6f8a76 100644
+--- a/hw/arm/kzm.c
++++ b/hw/arm/kzm.c
+@@ -113,8 +113,8 @@ static void kzm_init(MachineState *machine)
+         alias_offset += ram[i].size;
+     }
  
-     /* Interrupt line of NIC is connected to GPIO line 36 */
--    smc91c111_init(&nd_table[0], 0x04000300,
--                    qdev_get_gpio_in(cpu->gpio, 36));
-+    smc91c111_init(0x04000300, qdev_get_gpio_in(cpu->gpio, 36));
- }
+-    if (nd_table[0].used) {
+-        lan9118_init(&nd_table[0], KZM_LAN9118_ADDR,
++    if (qemu_find_nic_info("lan9118", true, NULL)) {
++        lan9118_init(KZM_LAN9118_ADDR,
+                      qdev_get_gpio_in(DEVICE(&s->soc.avic), 52));
+     }
  
- static void verdex_init(MachineState *machine)
-@@ -97,8 +96,7 @@ static void verdex_init(MachineState *machine)
-                           FLASH_SECTOR_SIZE, 2, 0, 0, 0, 0, 0);
+diff --git a/hw/arm/mps2.c b/hw/arm/mps2.c
+index bd873cc5de..50919ee46d 100644
+--- a/hw/arm/mps2.c
++++ b/hw/arm/mps2.c
+@@ -456,7 +456,7 @@ static void mps2_common_init(MachineState *machine)
+     /* In hardware this is a LAN9220; the LAN9118 is software compatible
+      * except that it doesn't support the checksum-offload feature.
+      */
+-    lan9118_init(&nd_table[0], mmc->ethernet_base,
++    lan9118_init(mmc->ethernet_base,
+                  qdev_get_gpio_in(armv7m,
+                                   mmc->fpga_type == FPGA_AN511 ? 47 : 13));
  
-     /* Interrupt line of NIC is connected to GPIO line 99 */
--    smc91c111_init(&nd_table[0], 0x04000300,
--                    qdev_get_gpio_in(cpu->gpio, 99));
-+    smc91c111_init(0x04000300, qdev_get_gpio_in(cpu->gpio, 99));
- }
- 
- static void connex_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/arm/integratorcp.c b/hw/arm/integratorcp.c
-index 793262eca8..f016d20485 100644
---- a/hw/arm/integratorcp.c
-+++ b/hw/arm/integratorcp.c
-@@ -666,8 +666,9 @@ static void integratorcp_init(MachineState *machine)
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x1d000000);
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[25]);
- 
--    if (nd_table[0].used)
--        smc91c111_init(&nd_table[0], 0xc8000000, pic[27]);
-+    if (qemu_find_nic_info("smc91c111", true, NULL)) {
-+        smc91c111_init(0xc8000000, pic[27]);
-+    }
- 
-     sysbus_create_simple("pl110", 0xc0000000, pic[22]);
- 
-diff --git a/hw/arm/mainstone.c b/hw/arm/mainstone.c
-index fc14e05060..d2e2e68aa3 100644
---- a/hw/arm/mainstone.c
-+++ b/hw/arm/mainstone.c
-@@ -152,8 +152,7 @@ static void mainstone_common_init(MachineState *machine,
-             qdev_get_gpio_in(mst_irq, S1_IRQ),
-             qdev_get_gpio_in(mst_irq, S1_CD_IRQ));
- 
--    smc91c111_init(&nd_table[0], MST_ETH_PHYS,
--                    qdev_get_gpio_in(mst_irq, ETHERNET_IRQ));
-+    smc91c111_init(MST_ETH_PHYS, qdev_get_gpio_in(mst_irq, ETHERNET_IRQ));
- 
-     mainstone_binfo.board_id = arm_id;
-     arm_load_kernel(mpu->cpu, machine, &mainstone_binfo);
 diff --git a/hw/arm/realview.c b/hw/arm/realview.c
-index 566deff9ce..c6bd6e5961 100644
+index c6bd6e5961..9058f5b414 100644
 --- a/hw/arm/realview.c
 +++ b/hw/arm/realview.c
-@@ -90,7 +90,6 @@ static void realview_init(MachineState *machine,
-     I2CBus *i2c;
-     int n;
-     unsigned int smp_cpus = machine->smp.cpus;
--    int done_nic = 0;
-     qemu_irq cpu_irq[4];
-     int is_mpcore = 0;
-     int is_pb = 0;
-@@ -296,24 +295,20 @@ static void realview_init(MachineState *machine,
-             n--;
-         }
-     }
--    for(n = 0; n < nb_nics; n++) {
--        nd = &nd_table[n];
--
--        if (!done_nic && (!nd->model ||
--                    strcmp(nd->model, is_pb ? "lan9118" : "smc91c111") == 0)) {
--            if (is_pb) {
--                lan9118_init(nd, 0x4e000000, pic[28]);
--            } else {
--                smc91c111_init(nd, 0x4e000000, pic[28]);
--            }
--            done_nic = 1;
-+
-+    nd = qemu_find_nic_info(is_pb ? "lan9118" : "smc91c111", true, NULL);
-+    if (nd) {
-+        if (is_pb) {
-+            lan9118_init(nd, 0x4e000000, pic[28]);
-         } else {
--            if (pci_bus) {
--                pci_nic_init_nofail(nd, pci_bus, "rtl8139", NULL);
--            }
-+            smc91c111_init(0x4e000000, pic[28]);
-         }
-     }
- 
-+    if (pci_bus) {
-+        pci_init_nic_devices(pci_bus, "rtl8139");
-+    }
-+
-     dev = sysbus_create_simple(TYPE_ARM_SBCON_I2C, 0x10002000, NULL);
-     i2c = (I2CBus *)qdev_get_child_bus(dev, "i2c");
-     i2c_slave_create_simple(i2c, "ds1338", 0x68);
-diff --git a/hw/arm/versatilepb.c b/hw/arm/versatilepb.c
-index 1d813aa23b..d10b75dfdb 100644
---- a/hw/arm/versatilepb.c
-+++ b/hw/arm/versatilepb.c
-@@ -192,10 +192,8 @@ static void versatile_init(MachineState *machine, int board_id)
+@@ -85,7 +85,6 @@ static void realview_init(MachineState *machine,
      SysBusDevice *busdev;
-     DeviceState *pl041;
-     PCIBus *pci_bus;
+     qemu_irq pic[64];
+     PCIBus *pci_bus = NULL;
 -    NICInfo *nd;
+     DriveInfo *dinfo;
      I2CBus *i2c;
      int n;
--    int done_smc = 0;
-     DriveInfo *dinfo;
- 
-     if (machine->ram_size > 0x10000000) {
-@@ -263,16 +261,11 @@ static void versatile_init(MachineState *machine, int board_id)
-     sysbus_connect_irq(busdev, 3, sic[30]);
-     pci_bus = (PCIBus *)qdev_get_child_bus(dev, "pci");
- 
--    for(n = 0; n < nb_nics; n++) {
--        nd = &nd_table[n];
--
--        if (!done_smc && (!nd->model || strcmp(nd->model, "smc91c111") == 0)) {
--            smc91c111_init(nd, 0x10010000, sic[25]);
--            done_smc = 1;
--        } else {
--            pci_nic_init_nofail(nd, pci_bus, "rtl8139", NULL);
--        }
-+    if (qemu_find_nic_info("smc91c111", true, NULL)) {
-+        smc91c111_init(0x10010000, sic[25]);
+@@ -296,10 +295,9 @@ static void realview_init(MachineState *machine,
+         }
      }
-+    pci_init_nic_devices(pci_bus, "rtl8139");
-+
-     if (machine_usb(machine)) {
-         pci_create_simple(pci_bus, -1, "pci-ohci");
+ 
+-    nd = qemu_find_nic_info(is_pb ? "lan9118" : "smc91c111", true, NULL);
+-    if (nd) {
++    if (qemu_find_nic_info(is_pb ? "lan9118" : "smc91c111", true, NULL)) {
+         if (is_pb) {
+-            lan9118_init(nd, 0x4e000000, pic[28]);
++            lan9118_init(0x4e000000, pic[28]);
+         } else {
+             smc91c111_init(0x4e000000, pic[28]);
+         }
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index f1b45245d5..e5fb3ab1f9 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -679,8 +679,8 @@ static void vexpress_common_init(MachineState *machine)
+     memory_region_add_subregion(sysmem, map[VE_VIDEORAM], &vms->vram);
+ 
+     /* 0x4e000000 LAN9118 Ethernet */
+-    if (nd_table[0].used) {
+-        lan9118_init(&nd_table[0], map[VE_ETHERNET], pic[15]);
++    if (qemu_find_nic_info("lan9118", true, NULL)) {
++        lan9118_init(map[VE_ETHERNET], pic[15]);
      }
-diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
-index 49b7c26102..702d0e8e83 100644
---- a/hw/net/smc91c111.c
-+++ b/hw/net/smc91c111.c
-@@ -818,14 +818,13 @@ static void smc91c111_register_types(void)
+ 
+     /* VE_USB: not modelled */
+diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
+index 598dd79e17..47ff25b441 100644
+--- a/hw/net/lan9118.c
++++ b/hw/net/lan9118.c
+@@ -1408,14 +1408,13 @@ static void lan9118_register_types(void)
  
  /* Legacy helper function.  Should go away when machine config files are
     implemented.  */
--void smc91c111_init(NICInfo *nd, uint32_t base, qemu_irq irq)
-+void smc91c111_init(uint32_t base, qemu_irq irq)
+-void lan9118_init(NICInfo *nd, uint32_t base, qemu_irq irq)
++void lan9118_init(uint32_t base, qemu_irq irq)
  {
      DeviceState *dev;
      SysBusDevice *s;
  
--    qemu_check_nic_model(nd, "smc91c111");
-     dev = qdev_new(TYPE_SMC91C111);
+-    qemu_check_nic_model(nd, "lan9118");
+     dev = qdev_new(TYPE_LAN9118);
 -    qdev_set_nic_properties(dev, nd);
 +    qemu_configure_nic_device(dev, true, NULL);
      s = SYS_BUS_DEVICE(dev);
      sysbus_realize_and_unref(s, &error_fatal);
      sysbus_mmio_map(s, 0, base);
-diff --git a/include/hw/net/smc91c111.h b/include/hw/net/smc91c111.h
-index df5b11dcef..dba32a233f 100644
---- a/include/hw/net/smc91c111.h
-+++ b/include/hw/net/smc91c111.h
-@@ -13,6 +13,6 @@
+diff --git a/include/hw/net/lan9118.h b/include/hw/net/lan9118.h
+index 3d0c67f339..4bf9da7a63 100644
+--- a/include/hw/net/lan9118.h
++++ b/include/hw/net/lan9118.h
+@@ -15,6 +15,6 @@
  
- #include "net/net.h"
+ #define TYPE_LAN9118 "lan9118"
  
--void smc91c111_init(NICInfo *, uint32_t, qemu_irq);
-+void smc91c111_init(uint32_t, qemu_irq);
+-void lan9118_init(NICInfo *, uint32_t, qemu_irq);
++void lan9118_init(uint32_t, qemu_irq);
  
  #endif
 -- 
