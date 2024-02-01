@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3A4845D8A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787C7845DA9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:48:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaAt-0002qR-HF; Thu, 01 Feb 2024 11:44:27 -0500
+	id 1rVaDB-0005h3-3W; Thu, 01 Feb 2024 11:46:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAl-0002pC-K8
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:19 -0500
+ id 1rVaB4-0002vI-2I
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:39 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAj-0002Pr-5N
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:19 -0500
+ id 1rVaAt-0002Pp-Sq
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=C7nZq/xI+tHeWx5EE1R48ZvurCMfWCSLsOC+/dyJjdk=; b=TehMQsDu/jhHwwMBE+S3qYecIw
- nhAARAec1eqZpmfNr/jZchOOFGH1y7Fnb4xka6QBfisYBXDYJZkNJj524wvbXQ3obd9FicChslbLn
- NLuF8fYQvwTlFiXsmkF/sysMeJmz6tWL88vZ6MLGAl/vDMLfrei7DRHd3MSlimAPmj5HrinbkapPd
- 0k8iVSnxZNB2A73NuK5DcXtc2VeinRNR8r/DHu+kLqwCPgfzAUFtCzxqyrN75d5hBsJKJCNs4miK5
- WJyblrfFcU8/1t9G601AykuMS2rBe9Fm2vv4XskWmrPLTkxSlDaQ1C/Sal473FDuMT2ton4DwCJb/
- SjikzJ4A==;
+ bh=5UKFkHiz+IiNYOcDnAfWAdDSJCkk6kLbMMON/gDXwYM=; b=PRo09XwWz4rY3IcEXHXbqll7eq
+ U2yd34Nh5YdErMvdu2x4J/LA1wBy8rokt50v09pDmmzjGlk6FmrBRut8SqDMzVpz6T3ck3zUVHXCd
+ N+Ov+D+hUfedvuR6JX6RzdTHP4CkV+58aO2FbTn8V/cKet91IqWlI+C5LZKRkrKw/aeAKQBY+4Fr/
+ TQmEFyDNw3rEbU0yjUcgLRW6+bdgOhbt2FQDVIo14PQD4R1n4xGT10gwcY9JhvrlknArtchlO1Fwl
+ DH759daDTzLoywdE2WSnkLLxTOWKWi7UmlCgeLfaNib1S5F1/c2u1yswgPS25E34UL0bx+KVqcdcI
+ SD7CYoWA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAe-0000000GIcx-1gwe for qemu-devel@nongnu.org;
- Thu, 01 Feb 2024 16:44:13 +0000
+ id 1rVaAe-0000000GIcy-2hSt for qemu-devel@nongnu.org;
+ Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003IMG-1yMG for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IMK-253F for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/47] hw/alpha/dp264: use pci_init_nic_devices()
-Date: Thu,  1 Feb 2024 16:43:32 +0000
-Message-ID: <20240201164412.785520-8-dwmw2@infradead.org>
+Subject: [PULL 08/47] hw/arm/sbsa-ref: use pci_init_nic_devices()
+Date: Thu,  1 Feb 2024 16:43:33 +0000
+Message-ID: <20240201164412.785520-9-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
@@ -77,26 +77,26 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: David Woodhouse <dwmw@amazon.co.uk>
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 ---
- hw/alpha/dp264.c | 4 +---
+ hw/arm/sbsa-ref.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/alpha/dp264.c b/hw/alpha/dp264.c
-index 03495e1e60..52a1fa310b 100644
---- a/hw/alpha/dp264.c
-+++ b/hw/alpha/dp264.c
-@@ -124,9 +124,7 @@ static void clipper_init(MachineState *machine)
-     pci_vga_init(pci_bus);
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 85cb68d546..f2adf30337 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -673,9 +673,7 @@ static void create_pcie(SBSAMachineState *sms)
  
-     /* Network setup.  e1000 is good enough, failing Tulip support.  */
--    for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
+     pci = PCI_HOST_BRIDGE(dev);
+     if (pci->bus) {
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci->bus, mc->default_nic, NULL);
+-        }
++        pci_init_nic_devices(pci->bus, mc->default_nic);
+     }
  
-     /* Super I/O */
-     isa_create_simple(isa_bus, TYPE_SMC37C669_SUPERIO);
+     pci_create_simple(pci->bus, -1, "bochs-display");
 -- 
 2.43.0
 
