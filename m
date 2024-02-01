@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D60D845DEB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB44845DD9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:55:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaDx-0007j0-Et; Thu, 01 Feb 2024 11:47:37 -0500
+	id 1rVaDv-0007cd-Ex; Thu, 01 Feb 2024 11:47:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaB7-0002yW-Fw
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:42 -0500
+ id 1rVaB4-0002vJ-2b
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:39 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAv-0002Qb-7z
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:41 -0500
+ id 1rVaAt-0002RZ-Kb
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=IsEBwT+a/9aBHnvV7Yr1FI82jfvo4oBFxfzxJeL3Zis=; b=rq42cqYzyWxFpDk3fm0+D3DIqe
- VK1STEYJ77v7+NF9huhIY+AYda4YwZQvK/W58FLTDkrpWeBLXZxNBGNHrj1YauZ67yTV9rgSk7F0V
- 2bnyAgMI4aUno8y0OZDWpL4BwkugYz3mTx8zNY03FnAPO1bRgS7ucdMliGt4tTH1thW82T2DymWEF
- tlucJlU0z3wAguqvk51CJ9Truvhyfbnh8XC71J/VdufAUxaQO5KifEOhUYgp0ITM4epWvTqrwmVDZ
- XRG13UdhJgM0wrdXY6kKW0vpBNZs05L77A/VdY9oj+HAPe+Fc3iiyRMUz098E8r2NKSqrjeSsptb+
- +D8xgfQQ==;
+ bh=11Xexm/zfEQsP0C5lVH66y3jNuSB03J3oevWpWV4QDE=; b=i5olHCjlVv4bTBrMOtoK/4xAeC
+ Dku4TLDNLXJbIQOJnYpFjOcRxwy4poIXeAP+8+MlZ4IVPSAAb8IGJVm7j/FPlz2Og0cdLd9NtaEYh
+ UfNGXkU3XZauVQQ3355ekUG1f3srPSFVZDuH683+Do4s8eg/QwHmVlOlatdVJTGmkMR97BLTg4tuE
+ 3IR/uqY5a/gSDfJNLxPjMD3a2UjPt2goQsVHtZsQsNeJYAhJ39q2dWe1iGdTZ3Wn0eTkApk1Iz1ps
+ RvnZ36eENp1tnaLpXAwuUKLVLmjtThz+Q7aw/XkmaxG4i8A3X14CIqpy7I0fxTZaKP7i6B1DSeX1Y
+ 2lGHgMLA==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAe-0000000GId6-3eDE for qemu-devel@nongnu.org;
+ id 1rVaAf-0000000GId7-0H8y for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003IMq-3uLu for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IMu-41Jc for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/47] hw/ppc/spapr: use qemu_get_nic_info() and
- pci_init_nic_devices()
-Date: Thu,  1 Feb 2024 16:43:41 +0000
-Message-ID: <20240201164412.785520-17-dwmw2@infradead.org>
+Subject: [PULL 17/47] hw/ppc: use pci_init_nic_devices()
+Date: Thu,  1 Feb 2024 16:43:42 +0000
+Message-ID: <20240201164412.785520-18-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
@@ -77,56 +76,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Avoid directly referencing nd_table[] by first instantiating any
-spapr-vlan devices using a qemu_get_nic_info() loop, then calling
-pci_init_nic_devices() to do the rest.
-
-No functional change intended.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/ppc/spapr.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ hw/ppc/e500.c          |  4 +---
+ hw/ppc/mac_newworld.c  |  4 +---
+ hw/ppc/mac_oldworld.c  |  4 +---
+ hw/ppc/ppc440_bamboo.c | 14 +++++---------
+ 4 files changed, 8 insertions(+), 18 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index e8dabc8614..0d72d286d8 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2796,6 +2796,7 @@ static void spapr_machine_init(MachineState *machine)
-     MemoryRegion *sysmem = get_system_memory();
-     long load_limit, fw_size;
-     Error *resize_hpt_err = NULL;
-+    NICInfo *nd;
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 566f1200dd..3bd12b54ab 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -1079,9 +1079,7 @@ void ppce500_init(MachineState *machine)
  
-     if (!filename) {
-         error_report("Could not find LPAR firmware '%s'", bios_name);
-@@ -2996,21 +2997,12 @@ static void spapr_machine_init(MachineState *machine)
+     if (pci_bus) {
+         /* Register network interfaces. */
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+-        }
++        pci_init_nic_devices(pci_bus, mc->default_nic);
+     }
  
-     phb = spapr_create_default_phb();
+     /* Register spinning region */
+diff --git a/hw/ppc/mac_newworld.c b/hw/ppc/mac_newworld.c
+index 535710314a..b36dbaf2b6 100644
+--- a/hw/ppc/mac_newworld.c
++++ b/hw/ppc/mac_newworld.c
+@@ -444,9 +444,7 @@ static void ppc_core99_init(MachineState *machine)
+         graphic_depth = 15;
+     }
  
 -    for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--
--        if (!nd->model) {
--            nd->model = g_strdup("spapr-vlan");
--        }
--
--        if (g_str_equal(nd->model, "spapr-vlan") ||
--            g_str_equal(nd->model, "ibmveth")) {
--            spapr_vlan_create(spapr->vio_bus, nd);
--        } else {
--            pci_nic_init_nofail(&nd_table[i], phb->bus, nd->model, NULL);
--        }
-+    while ((nd = qemu_find_nic_info("spapr-vlan", true, "ibmveth"))) {
-+        spapr_vlan_create(spapr->vio_bus, nd);
+-        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+-    }
++    pci_init_nic_devices(pci_bus, mc->default_nic);
+ 
+     /* The NewWorld NVRAM is not located in the MacIO device */
+     if (kvm_enabled() && qemu_real_host_page_size() > 4096) {
+diff --git a/hw/ppc/mac_oldworld.c b/hw/ppc/mac_oldworld.c
+index 9acc7adfc9..1981d3d8f6 100644
+--- a/hw/ppc/mac_oldworld.c
++++ b/hw/ppc/mac_oldworld.c
+@@ -277,9 +277,7 @@ static void ppc_heathrow_init(MachineState *machine)
+ 
+     pci_vga_init(pci_bus);
+ 
+-    for (i = 0; i < nb_nics; i++) {
+-        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
+-    }
++    pci_init_nic_devices(pci_bus, mc->default_nic);
+ 
+     /* MacIO IDE */
+     ide_drive_get(hd, ARRAY_SIZE(hd));
+diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
+index a189942de4..c75c3083e6 100644
+--- a/hw/ppc/ppc440_bamboo.c
++++ b/hw/ppc/ppc440_bamboo.c
+@@ -161,7 +161,6 @@ static void bamboo_init(MachineState *machine)
+     DeviceState *uicdev;
+     SysBusDevice *uicsbd;
+     int success;
+-    int i;
+ 
+     if (kvm_enabled()) {
+         error_report("machine %s does not support the KVM accelerator",
+@@ -234,14 +233,11 @@ static void bamboo_init(MachineState *machine)
      }
  
-+    pci_init_nic_devices(phb->bus, NULL);
-+
-     for (i = 0; i <= drive_get_max_bus(IF_SCSI); i++) {
-         spapr_vscsi_create(spapr->vio_bus);
+     if (pcibus) {
+-        /* Register network interfaces. */
+-        for (i = 0; i < nb_nics; i++) {
+-            /*
+-             * There are no PCI NICs on the Bamboo board, but there are
+-             * PCI slots, so we can pick whatever default model we want.
+-             */
+-            pci_nic_init_nofail(&nd_table[i], pcibus, mc->default_nic, NULL);
+-        }
++        /*
++         * There are no PCI NICs on the Bamboo board, but there are
++         * PCI slots, so we can pick whatever default model we want.
++         */
++        pci_init_nic_devices(pcibus, mc->default_nic);
      }
+ 
+     /* Load kernel. */
 -- 
 2.43.0
 
