@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8862F845E00
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 18:01:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D60D845DEB
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaB2-0002tb-Lg; Thu, 01 Feb 2024 11:44:36 -0500
+	id 1rVaDx-0007j0-Et; Thu, 01 Feb 2024 11:47:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAq-0002ql-Ug
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:25 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaB7-0002yW-Fw
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:42 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAm-0002Ss-8i
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:22 -0500
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaAv-0002Qb-7z
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=g6ItrTH6xUERJPwo+cm9fCEJutLCoak9PKJqL8zqcI4=; b=c+inkfXLw6SLtGwj6q+ZPhgFmH
- l/alEf3s8a6oHniM3Q6x0cYlCOjMlDH1xopwZ9tA/rGdtgEHe0dSc5z6aJEw6PDG8S9RVXT6W85y5
- +e+hHQKinAgQCGwJTx9CIFKQtcmuWl36v/+CcJJHmgxgud+K/h5SBYZTddRkNhQKfrY62BWwLdBr/
- KAqqGMUdQyjsmzbnZn+0ubOANxWtOdjTNzsEVVdf5HyeEhHvW2nZIrhOogx0vyACW+U+QbRy3lKFE
- xmeDWEjKRlUTZtHI+TkUnlrxD30BkHMN4w1TIxB+C9e0gBWqwFvUGGXB0M+tmQoNrU1RjSk33XOeI
- W59nvlOw==;
+ bh=IsEBwT+a/9aBHnvV7Yr1FI82jfvo4oBFxfzxJeL3Zis=; b=rq42cqYzyWxFpDk3fm0+D3DIqe
+ VK1STEYJ77v7+NF9huhIY+AYda4YwZQvK/W58FLTDkrpWeBLXZxNBGNHrj1YauZ67yTV9rgSk7F0V
+ 2bnyAgMI4aUno8y0OZDWpL4BwkugYz3mTx8zNY03FnAPO1bRgS7ucdMliGt4tTH1thW82T2DymWEF
+ tlucJlU0z3wAguqvk51CJ9Truvhyfbnh8XC71J/VdufAUxaQO5KifEOhUYgp0ITM4epWvTqrwmVDZ
+ XRG13UdhJgM0wrdXY6kKW0vpBNZs05L77A/VdY9oj+HAPe+Fc3iiyRMUz098E8r2NKSqrjeSsptb+
+ +D8xgfQQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAg-00000009cM4-0sa7 for qemu-devel@nongnu.org;
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAe-0000000GId6-3eDE for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003IMm-3d5L for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IMq-3uLu for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/47] hw/ppc/prep: use pci_init_nic_devices()
-Date: Thu,  1 Feb 2024 16:43:40 +0000
-Message-ID: <20240201164412.785520-16-dwmw2@infradead.org>
+Subject: [PULL 16/47] hw/ppc/spapr: use qemu_get_nic_info() and
+ pci_init_nic_devices()
+Date: Thu,  1 Feb 2024 16:43:41 +0000
+Message-ID: <20240201164412.785520-17-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -76,47 +77,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Previously, the first PCI NIC would be placed in PCI slot 3 and the rest
-would be dynamically assigned. Even if the user overrode the default NIC
-type and made it something other than PCNet.
+Avoid directly referencing nd_table[] by first instantiating any
+spapr-vlan devices using a qemu_get_nic_info() loop, then calling
+pci_init_nic_devices() to do the rest.
 
-Now, the first PCNet NIC (that is, anything not explicitly specified
-to be anything different) will go to slot 3 even if it isn't the first
-NIC specified on the command line. And anything else will be dynamically
-assigned.
+No functional change intended.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/ppc/prep.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ hw/ppc/spapr.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 137276bcb9..1a6cd05c61 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -241,7 +241,6 @@ static void ibm_40p_init(MachineState *machine)
-     ISADevice *isa_dev;
-     ISABus *isa_bus;
-     void *fw_cfg;
--    int i;
-     uint32_t kernel_base = 0, initrd_base = 0;
-     long kernel_size = 0, initrd_size = 0;
-     char boot_device;
-@@ -336,10 +335,9 @@ static void ibm_40p_init(MachineState *machine)
-         /* XXX: s3-trio at PCI_DEVFN(2, 0) */
-         pci_vga_init(pci_bus);
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index e8dabc8614..0d72d286d8 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2796,6 +2796,7 @@ static void spapr_machine_init(MachineState *machine)
+     MemoryRegion *sysmem = get_system_memory();
+     long load_limit, fw_size;
+     Error *resize_hpt_err = NULL;
++    NICInfo *nd;
  
--        for (i = 0; i < nb_nics; i++) {
--            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic,
--                                i == 0 ? "3" : NULL);
+     if (!filename) {
+         error_report("Could not find LPAR firmware '%s'", bios_name);
+@@ -2996,21 +2997,12 @@ static void spapr_machine_init(MachineState *machine)
+ 
+     phb = spapr_create_default_phb();
+ 
+-    for (i = 0; i < nb_nics; i++) {
+-        NICInfo *nd = &nd_table[i];
+-
+-        if (!nd->model) {
+-            nd->model = g_strdup("spapr-vlan");
 -        }
-+        /* First PCNET device at PCI_DEVFN(3, 0) */
-+        pci_init_nic_in_slot(pci_bus, mc->default_nic, NULL, "3");
-+        pci_init_nic_devices(pci_bus, mc->default_nic);
+-
+-        if (g_str_equal(nd->model, "spapr-vlan") ||
+-            g_str_equal(nd->model, "ibmveth")) {
+-            spapr_vlan_create(spapr->vio_bus, nd);
+-        } else {
+-            pci_nic_init_nofail(&nd_table[i], phb->bus, nd->model, NULL);
+-        }
++    while ((nd = qemu_find_nic_info("spapr-vlan", true, "ibmveth"))) {
++        spapr_vlan_create(spapr->vio_bus, nd);
      }
  
-     /* Prepare firmware configuration for OpenBIOS */
++    pci_init_nic_devices(phb->bus, NULL);
++
+     for (i = 0; i <= drive_get_max_bus(IF_SCSI); i++) {
+         spapr_vscsi_create(spapr->vio_bus);
+     }
 -- 
 2.43.0
 
