@@ -2,107 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A916B845720
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 420198457B5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:29:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVVwj-0002Zf-BK; Thu, 01 Feb 2024 07:13:33 -0500
+	id 1rVWBO-0007oU-G1; Thu, 01 Feb 2024 07:28:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVVwf-0002Ys-66
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:13:29 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1rVWBL-0007nC-Bx
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:39 -0500
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVVwd-0007lN-GF
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:13:28 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33b0e5d1e89so574279f8f.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:13:23 -0800 (PST)
+ id 1rVWBJ-0002AK-Nv
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:39 -0500
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a358ec50b7cso155137466b.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706789601; x=1707394401; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Zn+/ye7RxQyRlRw4WUUebXTDcinacfZIyX6zTAbaIn4=;
- b=mN1GUcHMLJz8f9p4gtnnkCL7a2HPifNBUPrHdwz33jSNWnCpRPa/m7Ec0qGis/S+vi
- /FnFT2NU8BQ1ZJydRWoC9CjKbAppdJY8Ydw8qVXei33nj4P9ZOMQOv+ndSC/IUyt0V0T
- Mg2wazmZZ1RPQwsn6/CmTSW4FFSgXpiAq42BdbHY6yeSBSc1FfwRhPOksF5vC8zuVRAD
- vp2ZggvtvdWqVa/BRnVQQqibOsPiYuJdxjfpY0baC3JWZPdAydm3NPFYlRfmUBgS2Mvo
- ACqxW3IYzMO/bMDje/yUHvHIQGziJ9Ye6PIdfwklE2MbaSdlO2J890zBH/1WUwZTreeB
- Wrbw==
+ d=linaro.org; s=google; t=1706790516; x=1707395316; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=49bETIGAGO5DtX3RKiRXyAPOmtwqu8Y4dqTuszg5to0=;
+ b=LTgKz/dHzw5t5KWqIe8ddWPfv8RM/2egrrmpk6cZHzokhDx49AD/7VAgDaSSsQlgxU
+ s16CMYsHS6ai8Lh7VRZ+qrOtEpBU0jvcUNomfdoFas41Kp8hPIAw52jQ0oldtBjE0F9T
+ I15r/E80ecLqk7cKV5dYA99apI0Tjsld/KMl3orlic5Hd++lIutj81cc4pDfYiIKr+b9
+ IeusIIObluuDNNZQkzgLpbSD+rnrdt7Q/JsqX/vhfyC/3N+y9VwLCi7UnAGFtVV/tipT
+ ygaq4TyaTj9vKdhBo1iuw67LtW3LCxz72Kn5sdtgrcNG276HZ0fYJZKNhwK5qrQhwSud
+ K6zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706789601; x=1707394401;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=Zn+/ye7RxQyRlRw4WUUebXTDcinacfZIyX6zTAbaIn4=;
- b=u9obhgRJga0iOHi/ZLFDqAazKwLIpT6UQ0/qGdhMQQa/fQBGEaQ9KWGhfrHtuJxdOO
- dbwBP6Q80+Tt34QkpM33g7yrSNT0TsyR+dWZSCQ5KzyrvySPPrJCxfoUIRPMWXDRcZdC
- A10I5+N5UphMikWdz06TqgwyXbiq1ZCA9MvbFtdjdo+WGvT5oPgXSOcgXp8AeY4volWP
- /Md7up5NHq79vjL0hpo4Wnw7cWDZepKEKGFGtPTDD50JA/cLK3IwLLhhq99rML9GY2t8
- YbsThtEQoOMNdTvKFezU9SIlbi28f7CJwJZeCHmw7CEN5VwvQ7p5kKw11hg+VhQ2j3vN
- vJMw==
-X-Gm-Message-State: AOJu0YwaqLTf3fQlfr7ohnZqzIC5GC6o3qiBez9OV5vgER/Iowe80eGs
- eKULL6iKEnxHjHjepLpPbi07MvjjNONNYgj6I1LmYEUnPAeKJrVBaxiFEo75AhU=
-X-Google-Smtp-Source: AGHT+IGB+c/lx7/rnRNnfJu4qEBVda7ddx4u1ulU2BJtZyQ/78w2aLdMTk84i0f+BuwBtVoebq2VoA==
-X-Received: by 2002:a5d:4447:0:b0:33b:3b3:f486 with SMTP id
- x7-20020a5d4447000000b0033b03b3f486mr1480105wrr.35.1706789601434; 
- Thu, 01 Feb 2024 04:13:21 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706790516; x=1707395316;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=49bETIGAGO5DtX3RKiRXyAPOmtwqu8Y4dqTuszg5to0=;
+ b=V6aMo+6ljQUsjEZfYxzLU9KTBxCvOxqEQgTpHkrrZeMCbPXwYw0ojetEECPj0sFaPx
+ LSDKwuwqorgQE4Idsqoa7Qp4jLJfIoqxNdV7E63C3U/IJzlydbjaexbITf62E6Pzu1nZ
+ LWNW2Ubrteu6LP+lDogLLyNvr/MhM18BjkbSiNo6nb6/AefhLyN+8DHZ0pDnJDFPOHtE
+ qcoZNbIQ9y89qoHMWADr1/iy+5Ry3DnupQOQvFGwFlYmTkR3I/dAVo+0U/Pji6gSxatF
+ YwcdJwETYbwhf1TznBtp9h9zzlHdzUtOsvA+XjlmvBRxrX/FZpep56UQknBk728HQq5g
+ uTZQ==
+X-Gm-Message-State: AOJu0YxLrVxA1/Yco8NZozSYmwTlOMqE98JkZwnqVVLSjWR32c+B77Rt
+ INQYnnWRZr7LdnjgmZpTPMG5yh+xQm74btAM13yMWjQrwPRAhTKUhcgIbj+zF3A=
+X-Google-Smtp-Source: AGHT+IGDT0QG9z9p0hjOVy6dSp0VihBWe3jNXj6RR0DQczI/chFTjsfXSJkiCUi1EyVkpzbFBf+Viw==
+X-Received: by 2002:a17:907:c01c:b0:a36:a8bb:28fd with SMTP id
+ ss28-20020a170907c01c00b00a36a8bb28fdmr2189180ejc.1.1706790515940; 
+ Thu, 01 Feb 2024 04:28:35 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCW7NpIoj1nuyTbHJHNrUV1q1+a+ZoQR0ItTb3f/oQYUUZVrgXtgpm3dkNBK5rXiaKfVm8BWuAMykidDaVGuytEQcsOmVz3tGkXSERqR4dwFZKUnUCzV73xTpbE83xBeiETdeImZKHNIH6ea+u4r6lVOZSFjWhHnzVp9uavqI3sa+2ZzA94ITDsauWVt6gD9CopbZ0pS6h8LhBE5Dwaz1HFO7jCKyf0EdxrfYQVVBBXTB8ee/iZHtx2qomM0/TuuO8QrspDq/Ztpwq+MqHo2qezd/bng15nSGVZqYvQYNb3PR4834i+tTqsm9P4SoH4PR10YH7An0ikm/TzFFu6yR0qqV5bmi3WZQfTygoiUa09D1v4g56ixhODzhl3OFwHuZOldnZKzaOQb1NYUBew36RPn5udbwnYJERL4+FHQ39t0eyJeIjq1CjBMeHkCOHWQd8lT+ECKM0BwVOgobJZ+MO5BC5F2R9WAhzYWzVw2aVjP7OypX/LJmZaiDMyl0ONRtF1pOw87XGLmtR1qnmwragJTwVAL9leH5V+n5Hj9DZIajRpdJBR/tuUbXmRLdQVbxG/BikYO6RFDZmQUfLuSVk1Bzein4A9LnBD/jncArDmdsKk94Q0RnTT996Gohnki8u6WvdJauVFrxqB2gYoTqXswVn9p6XJufLoBtCnCRA8vzHJdfUufve46X8awnnSXqr7pHZSQidZcSh0sL/FJMrw3tHKBC0HlP3kNx6GDIV8ZjTXbOgpQmMeEyB9SHxJG1eMMmtY/tRdiGEOa5LOMzkbFsPv9twF4L0Lh6y0P8bJE6LrdA21AWQ++jemdxkcjh21HGKKozF9yNEwCCJfFBdJuJWHaaNpUTR/3r+OelPo8N6aCRzO+nFCvPhFDUUv2YLtNzDrJsouhblvhfhnRNVg/Y7K3plK+Wey+gm7jyw0hfg3kAbOIR/O1MWv7BcpJeKz1iG
- bIYk94twoIFM6+aoGniZxwXfBzBiioRQSkd5j4D5FRUEeyW5f+BYSNn9Vi9A0R+u+gK0gf3uxfmLo4Z2yTaC1KSKjbsaIlxiCI+5DJCOceZnk14NZZKJVofGzfzzlNqczLaZOnw8uxrudRktM9ecWFOZvMZ6C6ZcgmvxCaqkQPYr9HzE9B7lXSZ++cy5whD3U0pdEQGuLpYZ9U17w4b22FnOeL/8OZLjS8br6ktHWkGqKhg6AKd+HxvzIpiZy2W/07Q20R/H2+tCBoNDKoNu4It9y5FrykveU=
+ AJvYcCV8khX4qBOXnuvtgFeQen1+WuFzW/0/MV6otlRRlqvVBGNrv+36vzpti7EAJFFGUbyOWqO3DW0k9lP7EK4kZjTDpM7qmWAlHgiAfExNyNFDESFeHCSZZfsJU68upWFxXd7ViPfG9A6mySL/QifQW65UNL9c+aV8dEXDYCqBNionyOfQ+0terOCTMvxc0vYBBM0wqiOy8vvIi6//AJwJprFJyH3XAGDRs9PFndxfzk9uAZxMxushgMez+ePx3c044aTYH9bJeKfOFQW2QWn1Kgj6H2KIxrHOLpLUdvhWLo2XabN7gfoJ3wBY2jD/C9LDJIFS/+54tUV3VkJXar8ZFZ/GOSJDpNvLVxnrk4vCWnz/uUYzQGC73A3grY8/txIUmcPOrVzUtIstthkYhoGlPaQDM86X3/9qtPzpRH7MzEu6yKBgA8fYhbheE4gsuRHhocUpDlR4AowONhon+ex6hJs4CCA6ZYaGmlAzaLBXwSmOXAcFLmFtj1Bm4xlEUjr56ZzJeuzskAN+Q+upGEanst0dMfwUfKORru9YpoQ7CE0YhyTXSViYnzIiWRPTutIDygL78d0dfmATyyf9LConT9QWmF4OcHyUeHj+txPefKFobBZk11no3WVESOOV5u6H2Tpb8aIqHoU=
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u18-20020a5d4352000000b003392b1ebf5csm15989811wrr.59.2024.02.01.04.13.20
+ m1-20020a1709062b8100b00a363e8be473sm2346985ejg.143.2024.02.01.04.28.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 04:13:20 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id EDD6A5F7AF;
- Thu,  1 Feb 2024 12:13:19 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+ Thu, 01 Feb 2024 04:28:35 -0800 (PST)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 447715F7AF;
+ Thu,  1 Feb 2024 12:28:35 +0000 (GMT)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  "Edgar E. Iglesias"
- <edgar.iglesias@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
- kvm@vger.kernel.org,  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,  Palmer Dabbelt
- <palmer@dabbelt.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,  Laurent
- Vivier <laurent@vivier.eu>,  Yanan Wang <wangyanan55@huawei.com>,
- qemu-ppc@nongnu.org,  Weiwei Li <liwei1518@gmail.com>,
- qemu-s390x@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Peter Maydell
- <peter.maydell@linaro.org>,  Alexandre Iooss <erdnaxe@crans.org>,  John
- Snow <jsnow@redhat.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Wainer
- dos Santos Moschetta <wainersm@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
- Alistair Francis <alistair.francis@wdc.com>,  David Woodhouse
- <dwmw2@infradead.org>,  Cleber Rosa <crosa@redhat.com>,  Beraldo Leal
- <bleal@redhat.com>,  Bin Meng <bin.meng@windriver.com>,  Nicholas Piggin
- <npiggin@gmail.com>,  Aurelien Jarno <aurelien@aurel32.net>,  Daniel
- Henrique Barboza <danielhb413@gmail.com>,  Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>,  Thomas Huth <thuth@redhat.com>,  David
- Hildenbrand <david@redhat.com>,  qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Song Gao
- <gaosong@loongson.cn>,  Eduardo Habkost <eduardo@habkost.net>,  Brian Cain
- <bcain@quicinc.com>,  Paul Durrant <paul@xen.org>
-Subject: Re: [PATCH v3 00/21] plugin updates (register access) for 9.0
- (pre-PR?)
-In-Reply-To: <20240122145610.413836-1-alex.bennee@linaro.org> ("Alex
- =?utf-8?Q?Benn=C3=A9e=22's?=
- message of "Mon, 22 Jan 2024 14:55:49 +0000")
-References: <20240122145610.413836-1-alex.bennee@linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Thu, 01 Feb 2024 12:13:19 +0000
-Message-ID: <871q9wmlgg.fsf@draig.linaro.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Weiwei Li <liwei1518@gmail.com>, Bin Meng <bin.meng@windriver.com>,
+ Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, devel@lists.libvirt.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Marek Vasut <marex@denx.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-riscv@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Chris Wulff <crwulff@gmail.com>
+Subject: [PATCH 0/5] maintainer updates for 9.0 (docker, plugin tests,
+ deprecation, elf, semihosting)
+Date: Thu,  1 Feb 2024 12:28:30 +0000
+Message-Id: <20240201122835.1712347-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,36 +107,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+A fairly random collection of fixes in this tree. I've still got a
+report of openbsd rebuilding which is confusing me but I didn't want
+to hold up getting eyes on real fixes.
 
-> Akihiko requested the register support not be merged in its current
-> state so it's time for another round of review. I've made a few tweaks
-> to simplify the register and CPU tracking code in execlog and removed
-> some stale API functions. However from my point of view its ready to
-> merge.
->
-> v3
-> --
->   - split from testing bits (merged)
->   - removed unused api funcs
->   - keep CPUs in a GArray instead of doing by hand
->
-> v2
-> --
->
->  - Review feedback for register API
->  - readthedocs update
->  - add expectation docs for plugins
->
-> The following still need review:
->
->   contrib/plugins: extend execlog to track register changes
->   gdbstub: expose api to find registers
+The plugins register support may get added to the PR if it gets any
+review.
 
-Gentle ping. I'm ready to merge but more review was requested:
+The following need review:
 
+  Revert "hw/elf_ops: Ignore loadable segments with zero size"
+  docs: mark CRIS support as deprecated
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Alex.
+
+Alex Bennée (2):
+  docs: mark CRIS support as deprecated
+  Revert "hw/elf_ops: Ignore loadable segments with zero size"
+
+Fabiano Rosas (1):
+  tests/docker: Add sqlite3 module to openSUSE Leap container
+
+Paolo Bonzini (2):
+  configure: run plugin TCG tests again
+  kconfig: use "select" to enable semihosting
+
+ docs/about/deprecated.rst                     |  8 ++
+ configure                                     |  3 +
+ configs/devices/m68k-softmmu/default.mak      |  2 -
+ configs/devices/mips-softmmu/common.mak       |  3 -
+ configs/devices/nios2-softmmu/default.mak     |  2 -
+ configs/devices/riscv32-softmmu/default.mak   |  2 -
+ configs/devices/riscv64-softmmu/default.mak   |  2 -
+ configs/devices/xtensa-softmmu/default.mak    |  2 -
+ include/hw/elf_ops.h                          | 75 +++++++++----------
+ target/m68k/Kconfig                           |  1 +
+ target/mips/Kconfig                           |  1 +
+ target/nios2/Kconfig                          |  1 +
+ target/riscv/Kconfig                          |  2 +
+ target/xtensa/Kconfig                         |  1 +
+ tests/docker/dockerfiles/opensuse-leap.docker |  1 +
+ tests/lcitool/mappings.yml                    |  4 +
+ tests/lcitool/projects/qemu.yml               |  1 +
+ 17 files changed, 59 insertions(+), 52 deletions(-)
+
+-- 
+2.39.2
+
 
