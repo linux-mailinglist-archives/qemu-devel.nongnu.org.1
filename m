@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6C9845DA7
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02419845DF0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaBj-0003Lh-U0; Thu, 01 Feb 2024 11:45:20 -0500
+	id 1rVaDn-0006i1-43; Thu, 01 Feb 2024 11:47:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAn-0002q5-QN
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:22 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAq-0002qg-Rk
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:25 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAj-0002Qc-5X
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:21 -0500
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAm-0002Sz-9a
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=1By8MLkJQQ5aDNY2GpLO8Lg7eMBepYz9kIQOUj3RWg4=; b=tH7fBugHc7cnkncQebfFsrKPhe
- 4xOK7lcuYgqDdmUf0q9T2VzD3zkKPyxoJO989Fr3YNLd409DfhNmOpYNBif/X5KRMcf5sBn+BqlKE
- Pu66Ukotosqh6BjcUtB4grmPgXuxUD5gNmm4g8ixkpTxPF+47idpPhWp99KPAoQ2fKfR9mRJcGIZ3
- mL3zkN+V5z48i8t4g4y3lApXCri3OoIWPqD14wysly520QZfvJDIMjCFEhqopETMwTpAP8AzQC2Wm
- nXqx9Wom3oqocm7ItGFAWkPgWQA18qz+l50Pti1CVR4mr9rM/D80x/3F3aipkAI5G2/fqLNzsbrHM
- 7QdqQL2A==;
+ bh=7Uppd3XmmgMw4XasqXjrqhb0RWV0UlzHWXb7dMHxQkk=; b=ZZEanmBS960hi51lWxEiSCFaL2
+ O1lw3xcimaMRZx+0WkPyuqi01AX6j0AOAc/Ey1lrqrV4GB+9f3tTq/hvnfTBRQ4bHksx+qzsod1Ka
+ u5umNPHDAPx3qH5RquTze8WcCnjYFwUlh/P9iFyYUk2qiYJxQgAcGvLSs/QgSI/8O+C2s0pkT8Yr2
+ jYFvFRxKDPU+ExKNTNpZf+QbqfUgSthoPaf8nse7F/UgRZ/9siEXo8C6Dimku4wpe/s5LiF7z3MkK
+ DdPhjB2gJC8in36kkp+98XsXGpAgRdbZD+HyLooqSBjk51CcFmrULCwlGUvfV6n4CTC8dAaYDbwEz
+ 7d6jadIw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAe-0000000GId1-3i6Q for qemu-devel@nongnu.org;
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAg-00000009cM3-0tA8 for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003IMe-38HG for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IMi-3QZg for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/47] hw/mips/malta: use pci_init_nic_devices()
-Date: Thu,  1 Feb 2024 16:43:38 +0000
-Message-ID: <20240201164412.785520-14-dwmw2@infradead.org>
+Subject: [PULL 14/47] hw/mips/loongson3_virt: use pci_init_nic_devices()
+Date: Thu,  1 Feb 2024 16:43:39 +0000
+Message-ID: <20240201164412.785520-15-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -76,45 +76,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The Malta board setup code would previously place the first NIC into PCI
-slot 11 if was a PCNet card, and the rest (including the first if it was
-anything other than a PCNet card) would be dynamically assigned.
-
-Now it will place any PCNet NIC into slot 11, and then anything else will
-be dynamically assigned.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/mips/malta.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ hw/mips/loongson3_virt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index d22bb1edef..af74008c82 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -612,18 +612,9 @@ static MaltaFPGAState *malta_fpga_init(MemoryRegion *address_space,
- /* Network support */
- static void network_init(PCIBus *pci_bus)
- {
--    int i;
--
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 33eae01eca..caedde2df0 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -451,9 +451,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
+         usb_create_simple(usb_bus_find(-1), "usb-tablet");
+     }
+ 
 -    for (i = 0; i < nb_nics; i++) {
--        NICInfo *nd = &nd_table[i];
--        const char *default_devaddr = NULL;
--
--        if (i == 0 && (!nd->model || strcmp(nd->model, "pcnet") == 0))
--            /* The malta board has a PCNet card using PCI SLOT 11 */
--            default_devaddr = "0b";
--
--        pci_nic_init_nofail(nd, pci_bus, "pcnet", default_devaddr);
+-        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
 -    }
-+    /* The malta board has a PCNet card using PCI SLOT 11 */
-+    pci_init_nic_in_slot(pci_bus, "pcnet", NULL, "0b");
-+    pci_init_nic_devices(pci_bus, "pcnet");
++    pci_init_nic_devices(pci_bus, mc->default_nic);
  }
  
- static void bl_setup_gt64120_jump_kernel(void **p, uint64_t run_addr,
+ static void mips_loongson3_virt_init(MachineState *machine)
 -- 
 2.43.0
 
