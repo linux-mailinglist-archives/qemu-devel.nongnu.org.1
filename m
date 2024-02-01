@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09828845D14
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA407845D31
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:26:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVZpI-0007Bq-QF; Thu, 01 Feb 2024 11:22:08 -0500
+	id 1rVZsp-0000aA-1A; Thu, 01 Feb 2024 11:25:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rVZpG-0007BR-FU
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:22:06 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVZsd-0000X8-L0
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:25:37 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rVZpD-0004L6-4i
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:22:06 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TQkcD1MwJz688sb;
- Fri,  2 Feb 2024 00:18:52 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EC08F140D26;
- Fri,  2 Feb 2024 00:21:51 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 1 Feb
- 2024 16:21:51 +0000
-Date: Thu, 1 Feb 2024 16:21:50 +0000
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, Sajjan Rao
- <sajjanr@gmail.com>, Gregory Price <gregory.price@memverge.com>, "Dimitrios
- Palyvos" <dimitrios.palyvos@zptcorp.com>, <linux-cxl@vger.kernel.org>,
- <qemu-devel@nongnu.org>, <richard.henderson@linaro.org>
-Subject: Re: Crash with CXL + TCG on 8.2: Was Re: qemu cxl memory expander
- shows numa_node -1
-Message-ID: <20240201162150.000022cf@huawei.com>
-In-Reply-To: <CAFEAcA_a_AyQ=Epz3_+CheAT8Crsk9mOu894wbNW_FywamkZiw@mail.gmail.com>
-References: <CAAg4PaqsGZvkDk_=PH+Oz-yeEUVcVsrumncAgegRKuxe_YoFhA@mail.gmail.com>
- <CAAg4Pard=zh_5p650UcNdQEoQWZLM6G7KRqdPQHLmaR4oZMJ3w@mail.gmail.com>
- <CAGEDW0dVEk-QXuL=DPVvSP4t5cafz6N-r_SrCxgFnBfFOsixSA@mail.gmail.com>
- <CAAg4PaqgZcTXkWuys7FZjQdRChTkKj-ZnJQCdxpTMCxy4Hghow@mail.gmail.com>
- <20230823175056.00001a84@Huawei.com>
- <CAAg4ParSB4_2FU2bu96A=3tSNuwHqZwK0wCS18EJoPAq9kYEkw@mail.gmail.com>
- <CAAg4Pap9KzkgX=fgE7vNJYxEpGbHA-NVsgBY5npXizUbMhjp9A@mail.gmail.com>
- <20240126123926.000051bd@Huawei.com>
- <ZbPTL00WOo7UC0e6@memverge.com>
- <20240126171233.00002a2e@Huawei.com>
- <CAAg4ParQKj9FUe0DRX0Wmk1KT0bnxx2F7W=ic38781j7eVz+OQ@mail.gmail.com>
- <20240201130438.00001384@Huawei.com>
- <CAFEAcA-rgFmaE4Ea7hZ-On4uyaqjWoo-OwwfNrUOdp=+Q5ckXA@mail.gmail.com>
- <20240201140100.000016ce@huawei.com>
- <CAFEAcA9DW8AuMwDr_qyDXPWJcLsvD773XTr1stwuagHWc6p72g@mail.gmail.com>
- <87msskkyce.fsf@draig.linaro.org>
- <CAFEAcA_a_AyQ=Epz3_+CheAT8Crsk9mOu894wbNW_FywamkZiw@mail.gmail.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVZsX-00051A-8q
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:25:33 -0500
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 411Fp1Qh022947; Thu, 1 Feb 2024 16:25:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=nDNOHMYVOO3zdJqGH59gQiExbN3A/PPuCaFylZoOcFM=;
+ b=bCOIL86lLgjxwzcvPUf6diQp5iPSNpb9Hu1+Uy9gq4g/IhhgZhydSA62M4KLhhON8jsB
+ OlcF0lhTTbGRFzjmz+OfGSXTzW7LT/iPExIzZq12E2LEkrxmQ6qieuC61JnR5tVmCvWG
+ DAG6Wz9/zTYtR3A02SZ3fVezGH933kb6IQz4TpE74XgeRXkzvBVxFBeqv5ruu3nZlmsV
+ PKD7iLQhMmddqrLYEGvqFyYNDadvkbQXWK6mOAuHWNdZCc0Kxrzplt73Py3xAHSHum0k
+ 8Iavn7QUTJkyL3wXUvixLFF4fEMgYKuve2Q4U6s1oxcajG9CVk3MHBkKuTqIymSIHhFI 4w== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0e5x19g4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Feb 2024 16:25:18 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 411EIvEm010858; Thu, 1 Feb 2024 16:22:10 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vweckw391-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 01 Feb 2024 16:22:10 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 411GM8FA42008864
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 1 Feb 2024 16:22:08 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5DA8B20043;
+ Thu,  1 Feb 2024 16:22:08 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 04E7620040;
+ Thu,  1 Feb 2024 16:22:08 +0000 (GMT)
+Received: from [9.171.74.74] (unknown [9.171.74.74])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  1 Feb 2024 16:22:07 +0000 (GMT)
+Message-ID: <bd14786900838155c9f1d2e82adc5e4d68207ee9.camel@linux.ibm.com>
+Subject: Re: [PATCH 2/3] gdbstub: Implement follow-fork-mode child
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Date: Thu, 01 Feb 2024 17:22:07 +0100
+In-Reply-To: <877cjomlk9.fsf@draig.linaro.org>
+References: <20240131205031.144607-1-iii@linux.ibm.com>
+ <20240131205031.144607-3-iii@linux.ibm.com>
+ <877cjomlk9.fsf@draig.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8d2HYAKkcaRXZ0TB5BHp9VY_J-02ClMJ
+X-Proofpoint-ORIG-GUID: 8d2HYAKkcaRXZ0TB5BHp9VY_J-02ClMJ
 Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-01_04,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 suspectscore=0 mlxscore=0 adultscore=0 clxscore=1015
+ impostorscore=0 phishscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402010128
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,156 +106,276 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 1 Feb 2024 16:00:56 +0000
-Peter Maydell <peter.maydell@linaro.org> wrote:
+On Thu, 2024-02-01 at 12:11 +0000, Alex Benn=C3=A9e wrote:
+> Ilya Leoshkevich <iii@linux.ibm.com> writes:
+>=20
+> > Currently it's not possible to use gdbstub for debugging linux-user
+> > code that runs in a forked child, which is normally done using the
+> > `set
+> > follow-fork-mode child` GDB command. Purely on the protocol level,
+> > the
+> > missing piece is the fork-events feature.
+> >=20
+> > However, a deeper problem is supporting $Hg switching between
+> > different
+> > processes - right now it can do only threads. Implementing this for
+> > the
+> > general case would be quite complicated, but, fortunately, for the
+> > follow-fork-mode case there are a few factors that greatly simplify
+> > things: fork() happens in the exclusive section, there are only two
+> > processes involved, and before one of them is resumed, the second
+> > one
+> > is detached.
+> >=20
+> > This makes it possible to implement a simplified scheme: the parent
+> > and
+> > the child share the gdbserver socket, it's used only by one of them
+> > at
+> > any given time, which is coordinated through a separate socketpair.
+> > The
+> > processes can read from the gdbserver socket only one byte at a
+> > time,
+> > which is not great for performance, but, fortunately, the
+> > follow-fork-mode involves only a few messages.
+> >=20
+> > Add the hooks for the user-specific handling of $qSupported, $Hg,
+> > and
+> > $D. Advertise the fork-events support, and remember whether GDB has
+> > it
+> > as well. Implement the state machine that is initialized on fork(),
+> > decides the current owner of the gdbserver socket, and is
+> > terminated
+> > when one of the two processes is detached. The logic for the parent
+> > and
+> > the child is the same, only the initial state is different.
+> >=20
+> > Handle the `stepi` of a syscall corner case by disabling the
+> > single-stepping in detached processes.
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0gdbstub/gdbstub.c=C2=A0=C2=A0 |=C2=A0 29 ++++--
+> > =C2=A0gdbstub/internals.h |=C2=A0=C2=A0 3 +
+> > =C2=A0gdbstub/user.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 210
+> > +++++++++++++++++++++++++++++++++++++++++++-
+> > =C2=A03 files changed, 234 insertions(+), 8 deletions(-)
 
-> On Thu, 1 Feb 2024 at 15:17, Alex Benn=E9e <alex.bennee@linaro.org> wrote:
-> >
-> > Peter Maydell <peter.maydell@linaro.org> writes: =20
-> > > So, that looks like:
-> > >  * we call cpu_tb_exec(), which executes some generated code
-> > >  * that generated code calls the lookup_tb_ptr helper to see
-> > >    if we have a generated TB already for the address we're going
-> > >    to execute next
-> > >  * lookup_tb_ptr probes the TLB to see if we know the host RAM
-> > >    address for the guest address
-> > >  * this results in a TLB walk for an instruction fetch
-> > >  * the page table descriptor load is to IO memory
-> > >  * io_prepare assumes it needs to do a TLB recompile, because
-> > >    can_do_io is clear
-> > >
-> > > I am not surprised that the corner case of "the guest put its
-> > > page tables in an MMIO device" has not yet come up :-)
-> > >
-> > > I'm really not sure how the icount handling should interact
-> > > with that... =20
-> >
-> > Its not just icount - we need to handle it for all modes now. That said
-> > seeing as we are at the end of a block shouldn't can_do_io be set? =20
+[...]
+=C2=A0
+> > diff --git a/gdbstub/user.c b/gdbstub/user.c
+> > index 120eb7fc117..962f4cb74e7 100644
+> > --- a/gdbstub/user.c
+> > +++ b/gdbstub/user.c
+> > @@ -10,6 +10,7 @@
+> > =C2=A0 */
+> > =C2=A0
+> > =C2=A0#include "qemu/osdep.h"
+> > +#include <sys/syscall.h>
+> > =C2=A0#include "qemu/bitops.h"
+> > =C2=A0#include "qemu/cutils.h"
+> > =C2=A0#include "qemu/sockets.h"
+> > @@ -25,6 +26,41 @@
+> > =C2=A0#define GDB_NR_SYSCALLS 1024
+> > =C2=A0typedef unsigned long
+> > GDBSyscallsMask[BITS_TO_LONGS(GDB_NR_SYSCALLS)];
+> > =C2=A0
+> > +/*
+> > + * Forked child talks to its parent in order to let GDB enforce
+> > the
+> > + * follow-fork-mode. This happens inside a start_exclusive()
+> > section, so that
+> > + * the other threads, which may be forking too, do not interfere.
+> > The
+> > + * implementation relies on GDB not sending $vCont until it has
+> > detached
+> > + * either from the parent (follow-fork-mode child) or from the
+> > child
+> > + * (follow-fork-mode parent).
+> > + *
+> > + * The parent and the child share the GDB socket; at any given
+> > time only one
+> > + * of them is allowed to use it, as is reflected in the respective
+> > fork_state.
+> > + * This is negotiated via the fork_sockets pair as a reaction to
+> > $Hg.
+> > + */
+> > +enum GDBForkState {
+> > +=C2=A0=C2=A0=C2=A0 /* Fully owning the GDB socket. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_ENABLED,
+> > +=C2=A0=C2=A0=C2=A0 /* Working with the GDB socket; the peer is inactiv=
+e. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_ACTIVE,
+> > +=C2=A0=C2=A0=C2=A0 /* Handing off the GDB socket to the peer. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_DEACTIVATING,
+> > +=C2=A0=C2=A0=C2=A0 /* The peer is working with the GDB socket. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_INACTIVE,
+> > +=C2=A0=C2=A0=C2=A0 /* Asking the peer to close its GDB socket fd. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_ENABLING,
+> > +=C2=A0=C2=A0=C2=A0 /* Asking the peer to take over, closing our GDB so=
+cket fd. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_DISABLING,
+> > +=C2=A0=C2=A0=C2=A0 /* The peer has taken over, our GDB socket fd is cl=
+osed. */
+> > +=C2=A0=C2=A0=C2=A0 GDB_FORK_DISABLED,
+> > +};
 >=20
-> The lookup_tb_ptr helper gets called from tcg_gen_goto_tb(),
-> which happens earlier than the tb_stop callback (it can
-> happen in the trans function for branch etc insns, for
-> example).
->=20
-> I think it should be OK to clear can_do_io at the start
-> of the lookup_tb_ptr helper, something like:
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index 977576ca143..7818537f318 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -396,6 +396,15 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
->      uint64_t cs_base;
->      uint32_t flags, cflags;
->=20
-> +    /*
-> +     * By definition we've just finished a TB, so I/O is OK.
-> +     * Avoid the possibility of calling cpu_io_recompile() if
-> +     * a page table walk triggered by tb_lookup() calling
-> +     * probe_access_internal() happens to touch an MMIO device.
-> +     * The next TB, if we chain to it, will clear the flag again.
-> +     */
-> +    cpu->neg.can_do_io =3D true;
-> +
->      cpu_get_tb_cpu_state(env, &pc, &cs_base, &flags);
->=20
->      cflags =3D curr_cflags(cpu);
->=20
-> -- PMM
+> gulp - thats a potentially fairly complex state diagram. Do we just
+> work
+> through the states sequentially?
 
-No joy.  Seems like a very similar backtrace.
+Unfortunately no. I had less states at some point, but then realized
+it was better to have these things laid out explicitly. Let me try to
+summarize the possible transitions:
 
-Thread 5 "qemu-system-x86" received signal SIGABRT, Aborted.
-[Switching to Thread 0x7ffff4efe6c0 (LWP 23937)]
-__pthread_kill_implementation (no_tid=3D0, signo=3D6, threadid=3D<optimized=
- out>) at ./nptl/pthread_kill.c:44
-44      ./nptl/pthread_kill.c: No such file or directory.
-(gdb) bt
-#0  __pthread_kill_implementation (no_tid=3D0, signo=3D6, threadid=3D<optim=
-ized out>) at ./nptl/pthread_kill.c:44
-#1  __pthread_kill_internal (signo=3D6, threadid=3D<optimized out>) at ./np=
-tl/pthread_kill.c:78
-#2  __GI___pthread_kill (threadid=3D<optimized out>, signo=3Dsigno@entry=3D=
-6) at ./nptl/pthread_kill.c:89
-#3  0x00007ffff77c43b6 in __GI_raise (sig=3Dsig@entry=3D6) at ../sysdeps/po=
-six/raise.c:26
-#4  0x00007ffff77aa87c in __GI_abort () at ./stdlib/abort.c:79
-#5  0x0000555555c4d19e in cpu_abort (cpu=3Dcpu@entry=3D0x5555578e0cb0, fmt=
-=3Dfmt@entry=3D0x555556048ee8 "cpu_io_recompile: could not find TB for pc=
-=3D%p") at ../../cpu-target.c:373
-#6  0x0000555555c9cb25 in cpu_io_recompile (cpu=3Dcpu@entry=3D0x5555578e0cb=
-0, retaddr=3Dretaddr@entry=3D0) at ../../accel/tcg/translate-all.c:611
-#7  0x0000555555c9f744 in io_prepare (retaddr=3D0, addr=3D19595790664, attr=
-s=3D..., xlat=3D<optimized out>, cpu=3D0x5555578e0cb0, out_offset=3D<synthe=
-tic pointer>) at ../../accel/tcg/cputlb.c:1339
-#8  do_ld_mmio_beN (cpu=3D0x5555578e0cb0, full=3D0x7ffe88012890, ret_be=3Dr=
-et_be@entry=3D0, addr=3D19595790664, size=3Dsize@entry=3D8, mmu_idx=3D4, ty=
-pe=3DMMU_DATA_LOAD, ra=3D0) at ../../accel/tcg/cputlb.c:2030
-#9  0x0000555555ca0ecd in do_ld_8 (cpu=3Dcpu@entry=3D0x5555578e0cb0, p=3Dp@=
-entry=3D0x7ffff4efcdd0, mmu_idx=3D<optimized out>, type=3Dtype@entry=3DMMU_=
-DATA_LOAD, memop=3D<optimized out>, ra=3Dra@entry=3D0) at ../../accel/tcg/c=
-putlb.c:2356
-#10 0x0000555555ca332f in do_ld8_mmu (cpu=3Dcpu@entry=3D0x5555578e0cb0, add=
-r=3Daddr@entry=3D19595790664, oi=3Doi@entry=3D52, ra=3Dra@entry=3D0, access=
-_type=3Daccess_type@entry=3DMMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2439
-#11 0x0000555555ca5e69 in cpu_ldq_mmu (ra=3D0, oi=3D52, addr=3D19595790664,=
- env=3D0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:169
-#12 cpu_ldq_le_mmuidx_ra (env=3D0x5555578e3470, addr=3D19595790664, mmu_idx=
-=3D<optimized out>, ra=3Dra@entry=3D0) at ../../accel/tcg/ldst_common.c.inc=
-:301
-#13 0x0000555555b4b5de in ptw_ldq (in=3D0x7ffff4efcf10) at ../../target/i38=
-6/tcg/sysemu/excp_helper.c:98
-#14 ptw_ldq (in=3D0x7ffff4efcf10) at ../../target/i386/tcg/sysemu/excp_help=
-er.c:93
-#15 mmu_translate (env=3Denv@entry=3D0x5555578e3470, in=3D0x7ffff4efcfd0, o=
-ut=3D0x7ffff4efcfa0, err=3Derr@entry=3D0x7ffff4efcfb0) at ../../target/i386=
-/tcg/sysemu/excp_helper.c:173
-#16 0x0000555555b4c3f3 in get_physical_address (err=3D0x7ffff4efcfb0, out=
-=3D0x7ffff4efcfa0, mmu_idx=3D0, access_type=3DMMU_DATA_STORE, addr=3D183864=
-91786698339392, env=3D0x5555578e3470) at ../../target/i386/tcg/sysemu/excp_=
-helper.c:578
-#17 x86_cpu_tlb_fill (cs=3D0x5555578e0cb0, addr=3D18386491786698339392, siz=
-e=3D<optimized out>, access_type=3DMMU_DATA_STORE, mmu_idx=3D0, probe=3D<op=
-timized out>, retaddr=3D140736029817822) at ../../target/i386/tcg/sysemu/ex=
-cp_helper.c:604
-#18 0x0000555555ca0df9 in tlb_fill (retaddr=3D140736029817822, mmu_idx=3D0,=
- access_type=3DMMU_DATA_STORE, size=3D<optimized out>, addr=3D1838649178669=
-8339392, cpu=3D0x7ffff4efd120) at ../../accel/tcg/cputlb.c:1315
-#19 mmu_lookup1 (cpu=3Dcpu@entry=3D0x5555578e0cb0, data=3Ddata@entry=3D0x7f=
-fff4efd120, mmu_idx=3D0, access_type=3Daccess_type@entry=3DMMU_DATA_STORE, =
-ra=3Dra@entry=3D140736029817822) at ../../accel/tcg/cputlb.c:1713
-#20 0x0000555555ca2b71 in mmu_lookup (cpu=3D0x5555578e0cb0, addr=3D18386491=
-786698339392, oi=3D<optimized out>, ra=3D140736029817822, type=3DMMU_DATA_S=
-TORE, l=3D0x7ffff4efd120) at ../../accel/tcg/cputlb.c:1803
-#21 0x0000555555ca3e5d in do_st8_mmu (cpu=3D0x5555578e0cb0, addr=3D23937, v=
-al=3D18386491784638059520, oi=3D6, ra=3D140736029817822) at ../../accel/tcg=
-/cputlb.c:2853
-#22 0x00007fffa9107c63 in code_gen_buffer ()
-#23 0x0000555555c9395b in cpu_tb_exec (cpu=3Dcpu@entry=3D0x5555578e0cb0, it=
-b=3Ditb@entry=3D0x7fffa9107980 <code_gen_buffer+17856851>, tb_exit=3Dtb_exi=
-t@entry=3D0x7ffff4efd718) at ../../accel/tcg/cpu-exec.c:442
-#24 0x0000555555c93ec0 in cpu_loop_exec_tb (tb_exit=3D0x7ffff4efd718, last_=
-tb=3D<synthetic pointer>, pc=3D<optimized out>, tb=3D0x7fffa9107980 <code_g=
-en_buffer+17856851>, cpu=3D0x5555578e0cb0) at ../../accel/tcg/cpu-exec.c:897
-#25 cpu_exec_loop (cpu=3Dcpu@entry=3D0x5555578e0cb0, sc=3Dsc@entry=3D0x7fff=
-f4efd7b0) at ../../accel/tcg/cpu-exec.c:1012
-#26 0x0000555555c946d1 in cpu_exec_setjmp (cpu=3Dcpu@entry=3D0x5555578e0cb0=
-, sc=3Dsc@entry=3D0x7ffff4efd7b0) at ../../accel/tcg/cpu-exec.c:1029
-#27 0x0000555555c94ebc in cpu_exec (cpu=3Dcpu@entry=3D0x5555578e0cb0) at ..=
-/../accel/tcg/cpu-exec.c:1055
-#28 0x0000555555cb8f53 in tcg_cpu_exec (cpu=3Dcpu@entry=3D0x5555578e0cb0) a=
-t ../../accel/tcg/tcg-accel-ops.c:76
-#29 0x0000555555cb90b0 in mttcg_cpu_thread_fn (arg=3Darg@entry=3D0x5555578e=
-0cb0) at ../../accel/tcg/tcg-accel-ops-mttcg.c:95
-#30 0x0000555555e57180 in qemu_thread_start (args=3D0x555557956000) at ../.=
-./util/qemu-thread-posix.c:541
-#31 0x00007ffff78176ba in start_thread (arg=3D<optimized out>) at ./nptl/pt=
-hread_create.c:444
-#32 0x00007ffff78a60d0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/cl=
-one3.S:81
+GDB_FORK_ENABLED: Terminal state; GDB follows the current process.
+GDB_FORK_DISABLED: Terminal state; GDB follows the other process.
+GDB_FORK_ACTIVE -> GDB_FORK_DEACTIVATING: On $Hg.
+GDB_FORK_ACTIVE -> GDB_FORK_ENABLING: On $D.
+GDB_FORK_ACTIVE -> GDB_FORK_DISABLING: On $D.
+GDB_FORK_ACTIVE -> GDB_FORK_DISABLED: On communication error.
+GDB_FORK_DEACTIVATING -> GDB_FORK_INACTIVE: On gdb_read_byte() return.
+GDB_FORK_DEACTIVATING -> GDB_FORK_DISABLED: On communication error.
+GDB_FORK_INACTIVE -> GDB_FORK_ACTIVE: On $Hg in peer.
+GDB_FORK_INACTIVE -> GDB_FORK_ENABLE: On $D in peer.
+GDB_FORK_INACTIVE -> GDB_FORK_DISABLE: On $D in peer.
+GDB_FORK_INACTIVE -> GDB_FORK_DISABLED: On communication error.
+GDB_FORK_ENABLING -> GDB_FORK_ENABLED: On gdb_read_byte() return.
+GDB_FORK_ENABLING -> GDB_FORK_DISABLED: On communication error.
+GDB_FORK_DISABLING -> GDB_FORK_DISABLED: On gdb_read_byte() return.
+
+Some states have only one meaningful transition:
+
+GDB_FORK_DEACTIVATING -> GDB_FORK_INACTIVE
+GDB_FORK_ENABLING -> GDB_FORK_ENABLED
+
+and can in theory be squashed, but then the socketpair communication
+would have to be moved to the respective user-hook, which would
+complicate the error handling.
+
+[...]
+
+> > @@ -369,16 +421,168 @@ static void disable_gdbstub(void)
+> > =C2=A0=C2=A0=C2=A0=C2=A0 CPU_FOREACH(cpu) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_breakpoint_remove_=
+all(cpu, BP_GDB);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* no cpu_watchpoint_r=
+emove_all for user-mode */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_single_step(cpu, 0);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tb_flush(cpu);
+> > =C2=A0=C2=A0=C2=A0=C2=A0 }
+> > =C2=A0}
+> > =C2=A0
+> > -/* Disable gdb stub for child processes.=C2=A0 */
+> > =C2=A0void gdbserver_fork_end(pid_t pid)
+> > =C2=A0{
+> > -=C2=A0=C2=A0=C2=A0 if (pid !=3D 0 || !gdbserver_state.init ||
+> > gdbserver_user_state.fd < 0) {
+> > +=C2=A0=C2=A0=C2=A0 char b;
+> > +=C2=A0=C2=A0=C2=A0 int fd;
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (!gdbserver_state.init || gdbserver_user_state.f=
+d < 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (pid =3D=3D -1) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (gdbserver_user_state.fo=
+rk_state !=3D GDB_FORK_DISABLED)
+> > {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_a=
+ssert(gdbserver_user_state.fork_state =3D=3D
+> > GDB_FORK_INACTIVE);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clo=
+se(gdbserver_user_state.fork_sockets[0]);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clo=
+se(gdbserver_user_state.fork_sockets[1]);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > =C2=A0=C2=A0=C2=A0=C2=A0 }
+> > -=C2=A0=C2=A0=C2=A0 disable_gdbstub();
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (gdbserver_user_state.fork_state =3D=3D GDB_FORK=
+_DISABLED) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pid =3D=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dis=
+able_gdbstub();
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (pid =3D=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 close(gdbserver_user_state.=
+fork_sockets[0]);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fd =3D gdbserver_user_state=
+.fork_sockets[1];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert(gdbserver_state.pr=
+ocess_num =3D=3D 1);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert(gdbserver_state.pr=
+ocesses[0].pid =3D=3D
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.fo=
+rk_peer_pid);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert(gdbserver_state.pr=
+ocesses[0].attached);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_state.processes[0=
+].pid =3D getpid();
+> > +=C2=A0=C2=A0=C2=A0 } else {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 close(gdbserver_user_state.=
+fork_sockets[1]);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fd =3D gdbserver_user_state=
+.fork_sockets[0];
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.fork_s=
+tate =3D GDB_FORK_ACTIVE;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.fork_p=
+eer_pid =3D pid;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.fork_p=
+eer_tid =3D pid;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!gdbserver_state.allow_=
+stop_reply) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 got=
+o fail;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_string_printf(gdbserver_s=
+tate.str_buf,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "T%02=
+xfork:p%02x.%02x;thread:p%02x.%02x;",
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > gdb_target_signal_to_gdb(gdb_target_sigtrap()),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pid, =
+pid, (int)getpid(),
+> > qemu_get_thread_id());
+>=20
+> I don't think I messed up the merge but:
+>=20
+> ../../gdbstub/user.c: In function =E2=80=98gdbserver_fork_end=E2=80=99:
+> ../../gdbstub/user.c:461:50: error: implicit declaration of function
+> =E2=80=98gdb_target_sigtrap=E2=80=99 [-Werror=3Dimplicit-function-declara=
+tion]
+> =C2=A0 461 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0
+> gdb_target_signal_to_gdb(gdb_target_sigtrap()),
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> ^~~~~~~~~~~~~~~~~~
+> ../../gdbstub/user.c:461:50: error: nested extern declaration of
+> =E2=80=98gdb_target_sigtrap=E2=80=99 [-Werror=3Dnested-externs]
+> cc1: all warnings being treated as errors
+>=20
+> I cant see where gdb_target_sigtrap is from?
+
+This is from [1], which this series is Based-on. I can make one series
+with both features if it's more convenient to review.
+
+[1] https://patchew.org/QEMU/20240116094411.216665-1-iii@linux.ibm.com/
 
