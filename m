@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD5484638F
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 23:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE98463A1
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 23:46:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVfmC-0006JE-FS; Thu, 01 Feb 2024 17:43:20 -0500
+	id 1rVfm3-0006Ds-SF; Thu, 01 Feb 2024 17:43:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rVflv-0006Bw-TQ
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 17:43:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rVflr-0006bE-IQ
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rVflu-00069W-GE
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 17:43:03 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rVflp-0006ax-NV
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 17:43:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706827377;
+ s=mimecast20190719; t=1706827376;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DVFoZ/Rsyf1nthjiaWDGV3YhhUd/pqd4dL0Tcw9dEzE=;
- b=Cmdgi6RlOe8Z7H/hys3Dl/oPmCByUUDQa3e9MfCdezaQZH41sNVIY3rZxPTa7WX1zxCJja
- ux/S4FEiRtBqp8TI1ClmuW9ShQdp0IpPMktU+NUOIlWRSkpVMMkCSOfnivnOXU2kZ8Ph3q
- rK4O6qZ7aX+AtEsYJjYmDqSd077f5I8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-Pe8z7Z2jMiyvRkcxHxjQUQ-1; Thu,
- 01 Feb 2024 17:42:53 -0500
-X-MC-Unique: Pe8z7Z2jMiyvRkcxHxjQUQ-1
+ bh=5+26PLIPvM3Oisqg4ogbTbDDIV6O7Q7VSuQek0MQVgo=;
+ b=a17pTLN6m3xzS6hOd8I/4iBlGfXhfazLQOjLpHHbCPQsvc10ZErvgW1y+UuQkpeLn5gseG
+ S1eOclvrINNPCgTVBnEiaYkZUYq6ILqieO+VY8Q3OteV9z52LtrGzRHNCNy7BGSOuPmv/m
+ 6tmotpr6nvdu1TLlsZ6aYOeyHpufugw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-680-NrAVeYnFO3Sy_URW33ziUA-1; Thu, 01 Feb 2024 17:42:53 -0500
+X-MC-Unique: NrAVeYnFO3Sy_URW33ziUA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24AED3C00084;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B19985A589;
  Thu,  1 Feb 2024 22:42:53 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.18.40])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ED9692166B33;
- Thu,  1 Feb 2024 22:42:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2F22C2166B33;
+ Thu,  1 Feb 2024 22:42:53 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v3 11/20] qapi/schema: fix QAPISchemaArrayType.check's call to
- resolve_type
-Date: Thu,  1 Feb 2024 17:42:37 -0500
-Message-ID: <20240201224246.39480-12-jsnow@redhat.com>
+Subject: [PATCH v3 12/20] qapi/schema: assert info is present when necessary
+Date: Thu,  1 Feb 2024 17:42:38 -0500
+Message-ID: <20240201224246.39480-13-jsnow@redhat.com>
 In-Reply-To: <20240201224246.39480-1-jsnow@redhat.com>
 References: <20240201224246.39480-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,33 +79,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adjust the expression at the callsite to work around mypy's weak type
-introspection that believes this expression can resolve to
-QAPISourceInfo; it cannot.
-
-(Fundamentally: self.info only resolves to false in a boolean expression
-when it is None; therefore this expression may only ever produce
-Optional[str]. mypy does not know that 'info', when it is a
-QAPISourceInfo object, cannot ever be false.)
+QAPISchemaInfo arguments can often be None because built-in definitions
+don't have such information.  The type hint can only be
+Optional[QAPISchemaInfo] then.  But, mypy gets upset about all the
+places where we exploit that it can't actually be None there.  Add
+assertions that will help mypy over the hump, to enable adding type
+hints in a forthcoming commit.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/qapi/schema.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 074897ee4fb..ae350f64a8f 100644
+index ae350f64a8f..d4d3c3bbcee 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -403,7 +403,7 @@ def check(self, schema):
-         super().check(schema)
-         self.element_type = schema.resolve_type(
-             self._element_type_name, self.info,
--            self.info and self.info.defn_meta)
-+            self.info.defn_meta if self.info else None)
-         assert not isinstance(self.element_type, QAPISchemaArrayType)
+@@ -758,6 +758,7 @@ def describe(self, info):
+             else:
+                 assert False
  
-     def set_module(self, schema):
++        assert info is not None
+         if defined_in != info.defn_name:
+             return "%s '%s' of %s '%s'" % (role, self.name, meta, defined_in)
+         return "%s '%s'" % (role, self.name)
+@@ -848,6 +849,7 @@ def __init__(self, name, info, doc, ifcond, features,
+         self.coroutine = coroutine
+ 
+     def check(self, schema):
++        assert self.info is not None
+         super().check(schema)
+         if self._arg_type_name:
+             arg_type = schema.resolve_type(
 -- 
 2.43.0
 
