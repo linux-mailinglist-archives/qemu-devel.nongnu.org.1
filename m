@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2C5845DC7
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:53:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181F1845DB5
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:50:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaDp-0007CU-8d; Thu, 01 Feb 2024 11:47:29 -0500
+	id 1rVaAw-0002rx-R9; Thu, 01 Feb 2024 11:44:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaB6-0002xh-Mc
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:41 -0500
+ id 1rVaAm-0002pg-Qc
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:20 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAv-0002Tk-1Y
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:40 -0500
+ id 1rVaAk-0002Tl-7y
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=/MTEStVe8JsIJfw31uF1pPqlJs68QbDUjigCzt5wrRY=; b=MN83k/OsTtGDYfxCHsF1QRBpBS
- H6KVR1OH6b7fXUxXcBrbp8Cf51izgrrmCF9bRph7zPJ6kqu5d8ZE+lMZTHsu8s44Ty1oWBzBEbWtZ
- iF2RUzru7uTVMDB1soWEEm63xgjjlq8IiFZ3fXYf926158X3qyqN8U2nPoNgaMHvNCh58pdCZwDH4
- MdT6ruEOjCzJCWqHW1QQ5yiT1ZYBbBYpLeVetd0uFOU1byMhKRoWi2BAY9cmwOlFsqDlexp1x0ehm
- 6gMeq/DfiYT0tb7mX/04pJiZfh2WPoFUf06sxbbgoJ1armnu4kUQMuV0aGCPgrYhplKeZxttjg5cn
- oete+4wA==;
+ bh=3fkwqn/oQ2lTIBRIwv3DeL/yQVsijuQk7CJbx2zLVp8=; b=eMq0A9+n0tUeL8fppCRvG+lUdJ
+ U4UX2Zpv1In6Grmzt5aEKij6RhapBwFaoiE9Dhf0ek1kLN3Ag/VMY6VYRHai271TzDcQPADklJ7tZ
+ XIB4bDqJug3ETnSzKjPzbgYdQMIHSsNu9cKOx9RR9c2xq9HE8EDyHpP5sGGgz6EBNB53LNuIWvG9M
+ V7KePstZo+ApiVudse15L037G8v2FGPKlToCH+SfHpbzXDfWsv/1qf1Z+dp/paMeBxew1hXn6J/mX
+ jDxXczK058XhDYpOElLbBr0ilJhNaj4Leiji5EaiOOdY9SGd1WBR26WWUKr2sPb5FL/6hRUHuwE5s
+ kMpQhcQg==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAf-0000000GIdi-2iUh for qemu-devel@nongnu.org;
+ id 1rVaAf-0000000GIdj-2cKU for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:15 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003IOT-2wV4 for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003IOY-33aJ for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/47] hw/net/lasi_i82596: use qemu_create_nic_device()
-Date: Thu,  1 Feb 2024 16:44:03 +0000
-Message-ID: <20240201164412.785520-39-dwmw2@infradead.org>
+Subject: [PULL 39/47] hw/openrisc/openrisc_sim: use qemu_create_nic_device()
+Date: Thu,  1 Feb 2024 16:44:04 +0000
+Message-ID: <20240201164412.785520-40-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
@@ -76,91 +76,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Create the device only if there is a corresponding NIC config for it.
-Remove the explicit check on nd_table[0].used from hw/hppa/machine.c
-which (since commit d8a3220005d7) tries to do the same thing.
-
-The lasi_82596 support has been disabled since it was first introduced,
-since enable_lasi_lan() has always been zero. This allows the user to
-enable it by explicitly requesting a NIC model 'lasi_82596' or just
-using the alias 'lasi'. Otherwise, it defaults to a PCI NIC as before.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/hppa/machine.c           | 11 ++++-------
- hw/net/lasi_i82596.c        | 12 +++++++-----
- include/hw/net/lasi_82596.h |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ hw/openrisc/openrisc_sim.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index a1045b48cc..5ae4f176f6 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -362,14 +362,11 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     }
+diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
+index 35da123aef..bffd6f721f 100644
+--- a/hw/openrisc/openrisc_sim.c
++++ b/hw/openrisc/openrisc_sim.c
+@@ -170,7 +170,7 @@ static void openrisc_create_fdt(Or1ksimState *state,
  
-     /* Network setup. */
--    if (nd_table[0].used && enable_lasi_lan()) {
--        lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
--                        qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
--    }
-+    lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
-+                    qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA),
-+                    enable_lasi_lan());
- 
--    if (!enable_lasi_lan()) {
--        pci_init_nic_devices(pci_bus, mc->default_nic);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
- 
-     /* BMC board: HP Powerbar SP2 Diva (with console only) */
-     pci_dev = pci_new(-1, "pci-serial");
-diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
-index 09e830ba5f..fcf7fae941 100644
---- a/hw/net/lasi_i82596.c
-+++ b/hw/net/lasi_i82596.c
-@@ -118,19 +118,21 @@ static void lasi_82596_realize(DeviceState *dev, Error **errp)
-     i82596_common_init(dev, s, &net_lasi_82596_info);
- }
- 
--SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
--                  hwaddr hpa, qemu_irq lan_irq)
-+SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space, hwaddr hpa,
-+                                   qemu_irq lan_irq, gboolean match_default)
+ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+                                   int num_cpus, OpenRISCCPU *cpus[],
+-                                  int irq_pin, NICInfo *nd)
++                                  int irq_pin)
  {
+     void *fdt = state->fdt;
      DeviceState *dev;
-     SysBusI82596State *s;
-     static const MACAddr HP_MAC = {
-         .a = { 0x08, 0x00, 0x09, 0xef, 0x34, 0xf6 } };
+@@ -178,8 +178,10 @@ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
+     char *nodename;
+     int i;
  
--    qemu_check_nic_model(&nd_table[0], TYPE_LASI_82596);
--    dev = qdev_new(TYPE_LASI_82596);
-+    dev = qemu_create_nic_device(TYPE_LASI_82596, match_default, "lasi");
+-    dev = qdev_new("open_eth");
+-    qdev_set_nic_properties(dev, nd);
++    dev = qemu_create_nic_device("open_eth", true, NULL);
 +    if (!dev) {
-+        return NULL;
++        return;
 +    }
-+
-     s = SYSBUS_I82596(dev);
-     s->state.irq = lan_irq;
--    qdev_set_nic_properties(dev, &nd_table[0]);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     s->state.conf.macaddr = HP_MAC; /* set HP MAC prefix */
  
-diff --git a/include/hw/net/lasi_82596.h b/include/hw/net/lasi_82596.h
-index 3ef2f47ba2..439356ec19 100644
---- a/include/hw/net/lasi_82596.h
-+++ b/include/hw/net/lasi_82596.h
-@@ -25,7 +25,7 @@ struct SysBusI82596State {
-     int val_index:1;
- };
+     s = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(s, &error_fatal);
+@@ -313,12 +315,10 @@ static void openrisc_sim_init(MachineState *machine)
+     openrisc_create_fdt(state, or1ksim_memmap, smp_cpus, machine->ram_size,
+                         machine->kernel_cmdline);
  
--SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
--                                    hwaddr hpa, qemu_irq irq);
-+SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space, hwaddr hpa,
-+                                   qemu_irq irq, gboolean match_default);
+-    if (nd_table[0].used) {
+-        openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
+-                              or1ksim_memmap[OR1KSIM_ETHOC].size,
+-                              smp_cpus, cpus,
+-                              OR1KSIM_ETHOC_IRQ, nd_table);
+-    }
++    openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
++                          or1ksim_memmap[OR1KSIM_ETHOC].size,
++                          smp_cpus, cpus,
++                          OR1KSIM_ETHOC_IRQ);
  
- #endif
+     if (smp_cpus > 1) {
+         openrisc_sim_ompic_init(state, or1ksim_memmap[OR1KSIM_OMPIC].base,
 -- 
 2.43.0
 
