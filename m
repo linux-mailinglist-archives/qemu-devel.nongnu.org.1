@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02419845DF0
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8862F845E00
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 18:01:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaDn-0006i1-43; Thu, 01 Feb 2024 11:47:27 -0500
+	id 1rVaB2-0002tb-Lg; Thu, 01 Feb 2024 11:44:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAq-0002qg-Rk
+ id 1rVaAq-0002ql-Ug
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:25 -0500
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAm-0002Sz-9a
+ id 1rVaAm-0002Ss-8i
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=7Uppd3XmmgMw4XasqXjrqhb0RWV0UlzHWXb7dMHxQkk=; b=ZZEanmBS960hi51lWxEiSCFaL2
- O1lw3xcimaMRZx+0WkPyuqi01AX6j0AOAc/Ey1lrqrV4GB+9f3tTq/hvnfTBRQ4bHksx+qzsod1Ka
- u5umNPHDAPx3qH5RquTze8WcCnjYFwUlh/P9iFyYUk2qiYJxQgAcGvLSs/QgSI/8O+C2s0pkT8Yr2
- jYFvFRxKDPU+ExKNTNpZf+QbqfUgSthoPaf8nse7F/UgRZ/9siEXo8C6Dimku4wpe/s5LiF7z3MkK
- DdPhjB2gJC8in36kkp+98XsXGpAgRdbZD+HyLooqSBjk51CcFmrULCwlGUvfV6n4CTC8dAaYDbwEz
- 7d6jadIw==;
+ bh=g6ItrTH6xUERJPwo+cm9fCEJutLCoak9PKJqL8zqcI4=; b=c+inkfXLw6SLtGwj6q+ZPhgFmH
+ l/alEf3s8a6oHniM3Q6x0cYlCOjMlDH1xopwZ9tA/rGdtgEHe0dSc5z6aJEw6PDG8S9RVXT6W85y5
+ +e+hHQKinAgQCGwJTx9CIFKQtcmuWl36v/+CcJJHmgxgud+K/h5SBYZTddRkNhQKfrY62BWwLdBr/
+ KAqqGMUdQyjsmzbnZn+0ubOANxWtOdjTNzsEVVdf5HyeEhHvW2nZIrhOogx0vyACW+U+QbRy3lKFE
+ xmeDWEjKRlUTZtHI+TkUnlrxD30BkHMN4w1TIxB+C9e0gBWqwFvUGGXB0M+tmQoNrU1RjSk33XOeI
+ W59nvlOw==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAg-00000009cM3-0tA8 for qemu-devel@nongnu.org;
+ id 1rVaAg-00000009cM4-0sa7 for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAf-00000003IMi-3QZg for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAf-00000003IMm-3d5L for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:13 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/47] hw/mips/loongson3_virt: use pci_init_nic_devices()
-Date: Thu,  1 Feb 2024 16:43:39 +0000
-Message-ID: <20240201164412.785520-15-dwmw2@infradead.org>
+Subject: [PULL 15/47] hw/ppc/prep: use pci_init_nic_devices()
+Date: Thu,  1 Feb 2024 16:43:40 +0000
+Message-ID: <20240201164412.785520-16-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
@@ -76,27 +76,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+Previously, the first PCI NIC would be placed in PCI slot 3 and the rest
+would be dynamically assigned. Even if the user overrode the default NIC
+type and made it something other than PCNet.
+
+Now, the first PCNet NIC (that is, anything not explicitly specified
+to be anything different) will go to slot 3 even if it isn't the first
+NIC specified on the command line. And anything else will be dynamically
+assigned.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/mips/loongson3_virt.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/ppc/prep.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 33eae01eca..caedde2df0 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -451,9 +451,7 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
-         usb_create_simple(usb_bus_find(-1), "usb-tablet");
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 137276bcb9..1a6cd05c61 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -241,7 +241,6 @@ static void ibm_40p_init(MachineState *machine)
+     ISADevice *isa_dev;
+     ISABus *isa_bus;
+     void *fw_cfg;
+-    int i;
+     uint32_t kernel_base = 0, initrd_base = 0;
+     long kernel_size = 0, initrd_size = 0;
+     char boot_device;
+@@ -336,10 +335,9 @@ static void ibm_40p_init(MachineState *machine)
+         /* XXX: s3-trio at PCI_DEVFN(2, 0) */
+         pci_vga_init(pci_bus);
+ 
+-        for (i = 0; i < nb_nics; i++) {
+-            pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic,
+-                                i == 0 ? "3" : NULL);
+-        }
++        /* First PCNET device at PCI_DEVFN(3, 0) */
++        pci_init_nic_in_slot(pci_bus, mc->default_nic, NULL, "3");
++        pci_init_nic_devices(pci_bus, mc->default_nic);
      }
  
--    for (i = 0; i < nb_nics; i++) {
--        pci_nic_init_nofail(&nd_table[i], pci_bus, mc->default_nic, NULL);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
- }
- 
- static void mips_loongson3_virt_init(MachineState *machine)
+     /* Prepare firmware configuration for OpenBIOS */
 -- 
 2.43.0
 
