@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181F1845DB5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0385A845DEE
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:59:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaAw-0002rx-R9; Thu, 01 Feb 2024 11:44:30 -0500
+	id 1rVaB2-0002tZ-Le; Thu, 01 Feb 2024 11:44:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAm-0002pg-Qc
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:20 -0500
+ id 1rVaAn-0002pw-6u
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:21 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAk-0002Tl-7y
+ id 1rVaAk-0002TR-7w
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=3fkwqn/oQ2lTIBRIwv3DeL/yQVsijuQk7CJbx2zLVp8=; b=eMq0A9+n0tUeL8fppCRvG+lUdJ
- U4UX2Zpv1In6Grmzt5aEKij6RhapBwFaoiE9Dhf0ek1kLN3Ag/VMY6VYRHai271TzDcQPADklJ7tZ
- XIB4bDqJug3ETnSzKjPzbgYdQMIHSsNu9cKOx9RR9c2xq9HE8EDyHpP5sGGgz6EBNB53LNuIWvG9M
- V7KePstZo+ApiVudse15L037G8v2FGPKlToCH+SfHpbzXDfWsv/1qf1Z+dp/paMeBxew1hXn6J/mX
- jDxXczK058XhDYpOElLbBr0ilJhNaj4Leiji5EaiOOdY9SGd1WBR26WWUKr2sPb5FL/6hRUHuwE5s
- kMpQhcQg==;
+ bh=IXEZX2HEBbMBwUhayue76+vBPs8XLNbiy1LneqBnSSQ=; b=Y107nbmpkS+UHJVhwfdj5/jMEC
+ VRijhUDwEfrhSuftAMm3mom1il52hKxAXBiTMoHa0KZM99D178pWT1BBDT7nztU1qo49EP8VxsF1W
+ 51bcCFvN32AsatgZF5/Ov33bBSP5qs1lA7wbMPfPl2DLUgRfH8v1eyAvk/I1+38acde4d+v3UIrUu
+ 4Qs7VP+hbJzYe7bGEMsdTZmYoglQU8DfhY8akLlQXWzdzfLxajD2trPWEvYksIh4/ktJpjlGbK7fx
+ p+3891Pu5Z1kj7/bOdQJ0EKKBMIPdyeozQgymi2YNuHT18oBzV2/fuPT+KoUWBmsZud//3lolcppi
+ UoxvQHVQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAf-0000000GIdj-2cKU for qemu-devel@nongnu.org;
+ id 1rVaAf-0000000GIdk-2gKd for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:15 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003IOY-33aJ for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003IOc-3AQU for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 39/47] hw/openrisc/openrisc_sim: use qemu_create_nic_device()
-Date: Thu,  1 Feb 2024 16:44:04 +0000
-Message-ID: <20240201164412.785520-40-dwmw2@infradead.org>
+Subject: [PULL 40/47] hw/riscv: use qemu_configure_nic_device()
+Date: Thu,  1 Feb 2024 16:44:05 +0000
+Message-ID: <20240201164412.785520-41-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
@@ -79,52 +79,67 @@ From: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/openrisc/openrisc_sim.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/riscv/microchip_pfsoc.c | 14 ++------------
+ hw/riscv/sifive_u.c        |  7 +------
+ 2 files changed, 3 insertions(+), 18 deletions(-)
 
-diff --git a/hw/openrisc/openrisc_sim.c b/hw/openrisc/openrisc_sim.c
-index 35da123aef..bffd6f721f 100644
---- a/hw/openrisc/openrisc_sim.c
-+++ b/hw/openrisc/openrisc_sim.c
-@@ -170,7 +170,7 @@ static void openrisc_create_fdt(Or1ksimState *state,
- 
- static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
-                                   int num_cpus, OpenRISCCPU *cpus[],
--                                  int irq_pin, NICInfo *nd)
-+                                  int irq_pin)
- {
-     void *fdt = state->fdt;
-     DeviceState *dev;
-@@ -178,8 +178,10 @@ static void openrisc_sim_net_init(Or1ksimState *state, hwaddr base, hwaddr size,
-     char *nodename;
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index b775aa8946..7725dfbde5 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -202,7 +202,6 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
+     MemoryRegion *envm_data = g_new(MemoryRegion, 1);
+     MemoryRegion *qspi_xip_mem = g_new(MemoryRegion, 1);
+     char *plic_hart_config;
+-    NICInfo *nd;
      int i;
  
--    dev = qdev_new("open_eth");
--    qdev_set_nic_properties(dev, nd);
-+    dev = qemu_create_nic_device("open_eth", true, NULL);
-+    if (!dev) {
-+        return;
-+    }
+     sysbus_realize(SYS_BUS_DEVICE(&s->e_cpus), &error_abort);
+@@ -411,17 +410,8 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
+         memmap[MICROCHIP_PFSOC_USB].size);
  
-     s = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-@@ -313,12 +315,10 @@ static void openrisc_sim_init(MachineState *machine)
-     openrisc_create_fdt(state, or1ksim_memmap, smp_cpus, machine->ram_size,
-                         machine->kernel_cmdline);
- 
--    if (nd_table[0].used) {
--        openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
--                              or1ksim_memmap[OR1KSIM_ETHOC].size,
--                              smp_cpus, cpus,
--                              OR1KSIM_ETHOC_IRQ, nd_table);
+     /* GEMs */
+-
+-    nd = &nd_table[0];
+-    if (nd->used) {
+-        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+-        qdev_set_nic_properties(DEVICE(&s->gem0), nd);
 -    }
-+    openrisc_sim_net_init(state, or1ksim_memmap[OR1KSIM_ETHOC].base,
-+                          or1ksim_memmap[OR1KSIM_ETHOC].size,
-+                          smp_cpus, cpus,
-+                          OR1KSIM_ETHOC_IRQ);
+-    nd = &nd_table[1];
+-    if (nd->used) {
+-        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+-        qdev_set_nic_properties(DEVICE(&s->gem1), nd);
+-    }
++    qemu_configure_nic_device(DEVICE(&s->gem0), true, NULL);
++    qemu_configure_nic_device(DEVICE(&s->gem1), true, NULL);
  
-     if (smp_cpus > 1) {
-         openrisc_sim_ompic_init(state, or1ksim_memmap[OR1KSIM_OMPIC].base,
+     object_property_set_int(OBJECT(&s->gem0), "revision", GEM_REVISION, errp);
+     object_property_set_int(OBJECT(&s->gem0), "phy-addr", 8, errp);
+diff --git a/hw/riscv/sifive_u.c b/hw/riscv/sifive_u.c
+index ec76dce6c9..5207ec1fa5 100644
+--- a/hw/riscv/sifive_u.c
++++ b/hw/riscv/sifive_u.c
+@@ -789,7 +789,6 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+     MemoryRegion *l2lim_mem = g_new(MemoryRegion, 1);
+     char *plic_hart_config;
+     int i, j;
+-    NICInfo *nd = &nd_table[0];
+ 
+     qdev_prop_set_uint32(DEVICE(&s->u_cpus), "num-harts", ms->smp.cpus - 1);
+     qdev_prop_set_uint32(DEVICE(&s->u_cpus), "hartid-base", 1);
+@@ -893,11 +892,7 @@ static void sifive_u_soc_realize(DeviceState *dev, Error **errp)
+     }
+     sysbus_mmio_map(SYS_BUS_DEVICE(&s->otp), 0, memmap[SIFIVE_U_DEV_OTP].base);
+ 
+-    /* FIXME use qdev NIC properties instead of nd_table[] */
+-    if (nd->used) {
+-        qemu_check_nic_model(nd, TYPE_CADENCE_GEM);
+-        qdev_set_nic_properties(DEVICE(&s->gem), nd);
+-    }
++    qemu_configure_nic_device(DEVICE(&s->gem), true, NULL);
+     object_property_set_int(OBJECT(&s->gem), "revision", GEM_REVISION,
+                             &error_abort);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->gem), errp)) {
 -- 
 2.43.0
 
