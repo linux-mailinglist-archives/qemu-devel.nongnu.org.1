@@ -2,77 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B8D844EF6
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 03:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCCE844F42
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 03:58:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVMPY-0007G7-16; Wed, 31 Jan 2024 21:02:40 -0500
+	id 1rVNFx-0008CC-J1; Wed, 31 Jan 2024 21:56:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rVMPV-0007Fq-S4; Wed, 31 Jan 2024 21:02:37 -0500
-Received: from mail-vs1-xe34.google.com ([2607:f8b0:4864:20::e34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rVMPT-0006Ny-U1; Wed, 31 Jan 2024 21:02:37 -0500
-Received: by mail-vs1-xe34.google.com with SMTP id
- ada2fe7eead31-46b2e88a808so162489137.0; 
- Wed, 31 Jan 2024 18:02:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706752953; x=1707357753; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LU10jKjpHLrMn1M9rCn0l6ewu1910EPFvmlq9YgmiBk=;
- b=LbHhbficgCsKK1mcgvjvVJb2/INyi68VT+9O+nILpRNeSjNxS0UU/9bnqf1jFMHzok
- JnMmalmqvs3Bo1trUBxB8Co9pM2lgxAIhF2HLOblXIBnNxO3oeAGKnlO+r6Z7dBNXQpR
- R7RaoBULyaNg+jEPKvE1UEvvSfPFvjVOJrbkHi5iR0kzpETFuglk0+OBLaKehKuH0aZ+
- 27U9prj3O2AEl+ZZ78ibeX8cR1YHU1Irl/27itxp/Gi9MXxVjCbeLx0Eqx5Quqbfgfxh
- f/+o2wBLSonU2SLPD/ocbHfwLv0hpQ0SRMdDa7fKJ/Sgx4aNWzxsDGeonSN3K5xy8rOl
- Pf+w==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVNFt-0008Bw-Rk
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 21:56:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVNFs-00082A-Cn
+ for qemu-devel@nongnu.org; Wed, 31 Jan 2024 21:56:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706756203;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jKi8/XIw9hAyaHEYNFNIVgGNgyrD8Np/zamw5fJ8Ru8=;
+ b=ht3q/sxnLFeJSmruhtDnZX++HOigKRbzQwxauHtuUljk0SNwUilDSE8TjsUPjHk2MDwPxe
+ 6sapsn+FD1+k+NW9cFIIotJXlQdZ3UcSjFkKhqsnajqSlIudHgQuMeLAhHXxOe9IldG0To
+ 68D25T9UBj/K5DjKsRYTv92V51xGT/I=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-502-8LtXEkmZNcmecsDfoir_fQ-1; Wed, 31 Jan 2024 21:56:40 -0500
+X-MC-Unique: 8LtXEkmZNcmecsDfoir_fQ-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-6dde498715fso58205b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 31 Jan 2024 18:56:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706752953; x=1707357753;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LU10jKjpHLrMn1M9rCn0l6ewu1910EPFvmlq9YgmiBk=;
- b=dPUlQVIK61QZ0mR0JANe3v1Dpoz8tFSJb1FYkLworg9nqMCkzd2dvKVjKkuYxgscHS
- /Ceqwl9eCEYDH/tkjHTeurbiurQYXmrjLIcty9yP74I/gTQdaLv1gXlinlBtZyBSPtES
- dEqWZRlqOV1Z1YhxOAiFMy514GnNsRhE4Se1hkaNBNou5dexKBJUK1YUcxDZvudhAEax
- f2jbU8tk8kmbvoi6QaMR5vm+I5dDN5ukN4fZ0I84WtyPrK1Ql1L7fjg7yxH0z+uE1RGs
- Tee22nIsi6YMtAw8Yf3xsZ7j18wvtTIZxllpUd/MNYpPapxLS9ixs84vovkkVF4d7bCi
- JtXg==
-X-Gm-Message-State: AOJu0YyrCwjUbGaaQ+YgMYjKzM08YCxZn/hbzf+tJewB3XIe6Jh2Ix5P
- OrwifOs913CX/XS6s6KCBHlsHUMB+Ss2t0nVTkCPVpnZiafk5ZbMjQDxut8m37S8MpU9L64b+LL
- 0Z6+dUGoi4AC8+5VIaHoe/FguBXs=
-X-Google-Smtp-Source: AGHT+IGjiqrmLriMQ5vYEfob5BTRNv8uirAO6DMAxGHbcDbP+AFxRdDqEhj24jc2cmcPHz9APnvmEc4IB5C9PPHEviM=
-X-Received: by 2002:a05:6102:1958:b0:469:94f8:1249 with SMTP id
- jl24-20020a056102195800b0046994f81249mr3463444vsb.16.1706752953432; Wed, 31
- Jan 2024 18:02:33 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706756199; x=1707360999;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jKi8/XIw9hAyaHEYNFNIVgGNgyrD8Np/zamw5fJ8Ru8=;
+ b=fSW+KOmA824whBr8Z/czmKlXFazcszn5Jr0mLuo+iXuSt6solEK5dTS7M7t5W7ZkEG
+ Rd+1uyTby8D9JBc+bhTmaY8p2XtiX0vGf2pjGlHxM4D3TgeFL7mIPJrv8WLNjei8jINn
+ M3YU3aVO8kemfCEC+mj0OrhB2IOBGmHuYWjDAAWB2myN+tZSnFjjXSAFb8N+WKmf3SOO
+ HbI0Ksk1Gufl2tZsy9/o2Dwqgzfhqpf4Z1rqZtimVtzQ8Ru4qjr87a1Wc0iquf7I1a7y
+ v1qDb3TjBR50KOkttSYgQDQ/SE62GbjqhAO1zelZ1DeK+Ep1Bj10zHiP6Yn3bMvC1vc+
+ Z5HQ==
+X-Gm-Message-State: AOJu0Yy7wDvlgVwD4F9Na/5lxtr30SRKzuBIBop860ddiSvI/DGM2mmD
+ Gxdd/4iYrpNjeY1zP3gPY3z++6IyxREZKb0v9RdYCW2ni64tjrr21Bw2HrLjkacuB4EzzHOWUCT
+ 9c0h++gsOTaZMzUjV8kF4TDRK2s4GCjfvt0TK6K3sYQ8tyB+kijekGS3TOl/tCRM=
+X-Received: by 2002:a05:6a20:7d8c:b0:19e:3390:4a42 with SMTP id
+ v12-20020a056a207d8c00b0019e33904a42mr1414306pzj.3.1706756199611; 
+ Wed, 31 Jan 2024 18:56:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFUprg4ub1ydaklmz0bCu9z9Mxn9V7xJ+/hJ+Mwm7hjJlqKFJ2foP2G3+nNfrrSvnEAouKg2w==
+X-Received: by 2002:a05:6a20:7d8c:b0:19e:3390:4a42 with SMTP id
+ v12-20020a056a207d8c00b0019e33904a42mr1414299pzj.3.1706756199260; 
+ Wed, 31 Jan 2024 18:56:39 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCXiON8FoJqDOAB/0mUlmyiUp5MQamwjOizdOfkVr0wH9CKbhRGpNrEHqMwve0Vj0WSei68nVuMQ1vCCcuotuUdps1Lbn88TsoE6NgMZXGfM4heMpz1Ik+YhURptlOh/7g==
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ o18-20020a17090323d200b001d8cb103327sm7205999plh.215.2024.01.31.18.56.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 31 Jan 2024 18:56:38 -0800 (PST)
+Date: Thu, 1 Feb 2024 10:56:32 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>, Eric Auger <eric.auger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL 06/15] tests/qtest/migration: Don't use -cpu max for aarch64
+Message-ID: <ZbsIYKJ5fYG6zsVi@x1n>
+References: <CAFEAcA-x4WqvPsN-KZOA3SPN0F=vvYi=NFZ2qom2iT7-CN0RSg@mail.gmail.com>
+ <87il3g6t7b.fsf@suse.de> <ZbcSqyGNLGu7ugBb@x1n>
+ <87sf2ge3qu.fsf@suse.de> <87y1c7ogze.fsf@suse.de>
+ <CAFEAcA_BPf4LSh-JF1NVVVdaLoKgUcsnGeP7sHt-f73r4zyh7g@mail.gmail.com>
+ <ZbjT5OYpzNJjkMw9@x1n> <87wmrqbjnl.fsf@suse.de>
+ <ZbnG3qkMBPdsQxan@x1n> <878r45lkeb.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240129192207.2946870-1-me@deliversmonkey.space>
-In-Reply-To: <20240129192207.2946870-1-me@deliversmonkey.space>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 1 Feb 2024 12:02:06 +1000
-Message-ID: <CAKmqyKMoumWhQKkT4UW8h-UPah-8Z39gGzmTnza-BPktpct-LA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] Pointer Masking update for Zjpm v0.8
-To: Alexey Baturo <baturo.alexey@gmail.com>
-Cc: richard.henderson@linaro.org, zhiwei_liu@linux.alibaba.com, 
- palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu, 
- kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e34;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe34.google.com
-X-Spam_score_int: 13
-X-Spam_score: 1.3
-X-Spam_bar: +
-X-Spam_report: (1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, TVD_PH_BODY_ACCOUNTS_POST=0.602, TVD_PH_BODY_META_ALL=2.567,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <878r45lkeb.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,93 +103,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jan 30, 2024 at 5:23=E2=80=AFAM Alexey Baturo <baturo.alexey@gmail.=
-com> wrote:
->
-> From: Alexey Baturo <baturo.alexey@gmail.com>
->
-> Hi,
->
-> This patch series targets Zjpm v0.8 extension.
-> The spec itself could be found here: https://github.com/riscv/riscv-j-ext=
-ension/blob/8088461d8d66a7676872b61c908cbeb7cf5c5d1d/zjpm-spec.pdf
-> This patch series is updated after the suggested comments:
-> - add "x-" to the extension names to indicate experimental
+On Wed, Jan 31, 2024 at 10:09:16AM -0300, Fabiano Rosas wrote:
+> If we ask for KVM and it falls back to TCG, we need a cpu that supports
+> both. We don't have that. I've put some command-line combinations at the
+> end of the email[1], take a look.
 
-Do you mind rebasing this on
-https://github.com/alistair23/qemu/tree/riscv-to-apply.next ?
+Thanks a lot, Fabiano.  I think I have a better picture now.
 
-Alistair
+Now the question is whether it'll be worthwhile we (migration) explicitly
+provide code to workaround such issue in qtest, or we wait for ARM side
+until we have a processor that can be both stable and support KVM+TCG.
 
->
-> [v4]:
-> Patch series updated after the suggested comments:
-> - removed J-letter extension as it's unused
-> - renamed and fixed function to detect if address should be sign-extended
-> - zeroed unused context variables and moved computation logic to another =
-patch
-> - bumped pointer masking version_id and minimum_version_id by 1
->
-> Thanks
->
-> [v3]:
-> There patches are updated after Richard's comments:
-> - moved new tb flags to the end
-> - used tcg_gen_(s)extract to get the final address
-> - properly handle CONFIG_USER_ONLY
->
-> Thanks
->
-> [v2]:
-> As per Richard's suggestion I made pmm field part of tb_flags.
-> It allowed to get rid of global variable to store pmlen.
-> Also it allowed to simplify all the machinery around it.
->
-> Thanks
->
-> [v1]:
-> Hi all,
->
-> It looks like Zjpm v0.8 is almost frozen and we don't expect it change dr=
-astically anymore.
-> Compared to the original implementation with explicit base and mask CSRs,=
- we now only have
-> several fixed options for number of masked bits which are set using exist=
-ing CSRs.
-> The changes have been tested with handwritten assembly tests and LLVM HWA=
-SAN
-> test suite.
->
-> Thanks
->
-> Alexey Baturo (6):
->   target/riscv: Remove obsolete pointer masking extension code.
->   target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
->     of Zjpm v0.8
->   target/riscv: Add helper functions to calculate current number of
->     masked bits for pointer masking
->   target/riscv: Add pointer masking tb flags
->   target/riscv: Update address modify functions to take into account
->     pointer masking
->   target/riscv: Enable updates for pointer masking variables and thus
->     enable pointer masking extension
->
->  target/riscv/cpu.c           |  22 ++-
->  target/riscv/cpu.h           |  46 +++--
->  target/riscv/cpu_bits.h      |  90 +---------
->  target/riscv/cpu_cfg.h       |   3 +
->  target/riscv/cpu_helper.c    |  97 +++++-----
->  target/riscv/csr.c           | 337 ++---------------------------------
->  target/riscv/machine.c       |  20 +--
->  target/riscv/pmp.c           |  13 +-
->  target/riscv/pmp.h           |  11 +-
->  target/riscv/tcg/tcg-cpu.c   |   5 +-
->  target/riscv/translate.c     |  46 ++---
->  target/riscv/vector_helper.c |  15 +-
->  12 files changed, 158 insertions(+), 547 deletions(-)
->
-> --
-> 2.34.1
->
->
+I actually personally prefer to wait - it's not too bad after all, because
+it only affects the new "n-1" migration test.  Most of the migration
+functionality will still be covered there in CI for ARM.
+
+Meanwhile, AFAIU we do have a plan upstream to have a stable aarch64 cpu
+model sooner or later that at least support KVM.  If that will also be able
+to support TCG then goal achieved.  Or vice versa, if we would be able to
+add KVM support to some stable TCG-only cores (like neoverse-n1).
+
+Do we have a plan in this area?  Copy both Peter & Eric.
+
+If we can have that in 9.0 then that'll be perfect; we can already start to
+switch migration tests to use the cpu model.
+
+As of now, maybe we can (1) fix the gic-version in migration-test.c to be
+stable; this seems a separate issue just to get prepared when a new model
+comes, then (2) document above decision in migration-compat-aarch64 test in
+.gitlab-ci.d/, if we can reach consensus.  Then we only rely on x86 for
+"n-1" migration tests until later.
+
+-- 
+Peter Xu
+
 
