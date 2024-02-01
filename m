@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DEA845F81
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:11:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D988845FC1
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:23:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVbX6-0000zG-0I; Thu, 01 Feb 2024 13:11:28 -0500
+	id 1rVbhT-0001wq-Nd; Thu, 01 Feb 2024 13:22:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nicholas.h.briggs@gmail.com>)
- id 1rVbX1-0000SO-04
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:11:25 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVbhR-0001wf-CU
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:22:09 -0500
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nicholas.h.briggs@gmail.com>)
- id 1rVbWz-0004lo-8d
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:11:22 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6ddd19552e6so699388b3a.1
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 10:11:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVbhH-0001fx-Ka
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:22:09 -0500
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-55ee686b5d5so1732365a12.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 10:21:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1706811079; x=1707415879; darn=nongnu.org;
- h=message-id:to:cc:subject:date:mime-version:from:from:to:cc:subject
- :date:message-id:reply-to;
- bh=ILQRObGwz6JehoNJM2hA6rPy+W1sDYepGEieXi9kJ3g=;
- b=fr3HsQWHAhg33l6+OWKx01brQhGWbuNYcME+daVRqkAgOKm6uv/qP8Y4wlEUP+VLFM
- +n9WXDAvJ0Hz/QTQgxNf09bs0KvOqMqOnUW4ivhoCGXKF/EdBYBpkdJ5DHrcgY0RxSAZ
- nqAaHXIXyL140LxqMjON29Iwn0gNVOw07PP8QiLlq046wq0Y7AxEl07dHt+IkMivaFT1
- ABBKAxHa2amQfZCz8QSNxpPmIGxon/FcShinOLsKskXE/3Z1UtM3N84NdQxRWhqtFWCz
- 85h5aIXtkgkZGkYBAMQcX4wlrujOzl8M0DCK6jaibKggJcjXREL1n0iPD0MijAgjDTxG
- q4cQ==
+ d=linaro.org; s=google; t=1706811718; x=1707416518; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=91BllZ7POQ90lr6bMJfgFD6cEaGrdm2GYAT6IrOL3PU=;
+ b=yZhLCJLmJkGAhl6qa4fqkt1x9gX7JRsXd/m1g/32D+HeCzjjot+ZYa3fmE1kQEh9HQ
+ OnAxHfOHJE0/Ii9YSXaHEhiFM2kIeywlAzfhZRYmtKlU3UaGtxUvCc/pqzMzgsllztas
+ uufc5cfOMHPzaq5g2vTaQmu2yPM676eUlVOv3M9ugiYBAwolgmTegNHLxrB1gmg/gtJb
+ gKlXL/zUCVsOpiYxmP0iuKQvjtcG6aec7UfFOFJrU0Suh3cqvu2l6S3ipHtb0rd8VeM2
+ O/ZFoYfA+DC7BnXQtDaCdCWujVLQuzMjquGKg4Gs5aDHyAsHGISX14RnEPSI7CReXZqu
+ lz7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706811079; x=1707415879;
- h=message-id:to:cc:subject:date:mime-version:from:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ILQRObGwz6JehoNJM2hA6rPy+W1sDYepGEieXi9kJ3g=;
- b=bJeynxtCcjZjBqs5JWdeAlFXQUx5LQVpDXVPn2I4ZOsgffjE6Keyz9IiS7DbVbCQpq
- VD5DIC869rHz1v5bs78WCjtUcSx3MWbdp9fliW1CUpNTZfotKR88mYyGPWmIX2+Wnb6l
- 9N/izpLQ09eL5Mw9K88y2wYj5BHufL00rCSO4EmbBIiBNA9LWavNleKfvIN0v+Xxbp9z
- 01KmWdAV+q2dQPMvKp1CIESahQPCjU921joyPvsMtnm8Fd3mTUTs+C0QTqZozbuHy6cG
- KBHf7AiD+zF1DsECUnok6yI3wrDHhYpq6h5jBgJMbQgHMRvn1wMvg1lbX8PamFuy5xTU
- 5CQQ==
-X-Gm-Message-State: AOJu0YzKEJAWosRqDW14YAcfRE7UgvM3VjWKakQX825y1ywswrVGFl3Y
- k4cOVZNGU9zHBquzhSnE8BK416Ydk3yNRJ6PI+S8PVzCKApjeu1zgndPd7nqUds=
-X-Google-Smtp-Source: AGHT+IH1jVvHWHxKawDZs3lHZMMLe/8Fko/95uvRHmvhu4dqtpMo0Li7ppKg7wWRECZEZj/as+1yrg==
-X-Received: by 2002:a62:f209:0:b0:6dd:a0af:7b0d with SMTP id
- m9-20020a62f209000000b006dda0af7b0dmr5342437pfh.30.1706811078592; 
- Thu, 01 Feb 2024 10:11:18 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCX81UUUJOhSanCf5x3PI9hB3aBntvVvKsN/C7sVC+BB8DrRWDaVSla7LwUP0RqYNDmYvNej+XgbybHrE8tzxo1lsYpjVNKVhnRp9Qw=
-Received: from smtpclient.apple ([2601:647:4481:77f0:30f6:e699:d7aa:38e1])
- by smtp.gmail.com with ESMTPSA id
- w23-20020aa78597000000b006dde44a2d16sm28406pfn.199.2024.02.01.10.11.17
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 01 Feb 2024 10:11:18 -0800 (PST)
-From: Nick Briggs <nicholas.h.briggs@gmail.com>
-Content-Type: multipart/alternative;
- boundary="Apple-Mail=_B83639D9-65C1-4433-B874-B3FD0F5651BC"
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.15\))
-Date: Thu, 1 Feb 2024 10:11:17 -0800
-Subject: [PATCH] Avoid unaligned fetch in ladr_match()
-Cc: Jason Wang <jasowang@redhat.com>
-To: qemu-devel@nongnu.org
-Message-Id: <833CE971-9EBB-4B41-8CFD-6DC6827FDE4C@gmail.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.15)
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=nicholas.h.briggs@gmail.com; helo=mail-pf1-x434.google.com
+ d=1e100.net; s=20230601; t=1706811718; x=1707416518;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=91BllZ7POQ90lr6bMJfgFD6cEaGrdm2GYAT6IrOL3PU=;
+ b=SAbNurrkOHl7gi7Ccsgalf3QbKXKnQy+9FarHFyr1+qze4Sh+qr4et/ztpKlQbx6c2
+ AtEp2k9vIVuZiyioJjAjsnJFO4ctHlKWQXk087b8xJUQaaBP4H8zk5dKimRuFHBRtCDz
+ 2L1mpHIzOlypX61+thYjAu+qj25Vq0WEvyuzVgKNpkGpJ/+yczjZQEOKySaQjlrKCYhq
+ RSHj91mpb8GMx5Lri5HuYbKwJF7xOe37xxkAT6kLK+4oa1jEXEOPqie3r+kQJnFhRFSL
+ BasFDIxY1RBGFPkXK/5eqt9V4o42obdiqrTOgd6KQ9NX2VZM6RMUd2rOfuZ9NJcx2HgT
+ bk3g==
+X-Gm-Message-State: AOJu0YwRAkbscM6qn4VDJPjZRKYZPs4rALFQOOLtz7a+Zi7Qf3qDhJ/g
+ aunyaeGkUO62b6sTgJjHYmsmMc3JfrCjVuifh0Pk5IaXQi2aGwLP4Kx2tL1rxHBMPg+ktFNk5Hq
+ eAPwXoCGNKZlBQNpTLTvZ/xUDkIupTc3VSyXU2Q==
+X-Google-Smtp-Source: AGHT+IF+3w2ejJI2MKS3rlCU9L6JzUAVhxTtSClJd4qzRb3KZkR/+FlUb9LlXyNRN3o7v8FZzMohKkiyAWKWPBnDT34=
+X-Received: by 2002:a50:fc19:0:b0:55f:e4b3:4b73 with SMTP id
+ i25-20020a50fc19000000b0055fe4b34b73mr136512edr.39.1706811717739; Thu, 01 Feb
+ 2024 10:21:57 -0800 (PST)
+MIME-Version: 1.0
+References: <833CE971-9EBB-4B41-8CFD-6DC6827FDE4C@gmail.com>
+In-Reply-To: <833CE971-9EBB-4B41-8CFD-6DC6827FDE4C@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 1 Feb 2024 18:21:47 +0000
+Message-ID: <CAFEAcA9LrexR_OZTXfC5CxsjDya3fJiw53y95K6as+iBc2MA-w@mail.gmail.com>
+Subject: Re: [PATCH] Avoid unaligned fetch in ladr_match()
+To: Nick Briggs <nicholas.h.briggs@gmail.com>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,147 +85,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---Apple-Mail=_B83639D9-65C1-4433-B874-B3FD0F5651BC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
-
-There is no guarantee that the PCNetState is allocated such that
-csr[8] is allocated on an 8-byte boundary.  Since not all hosts are
-capable of unaligned fetches the 16-bit elements need to be fetched
-individually to avoid a potential fault.  Closes issue #2143
-
-Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
----
- hw/net/pcnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/net/pcnet.c b/hw/net/pcnet.c
-index 494eab8479..ad675ab29d 100644
---- a/hw/net/pcnet.c
-+++ b/hw/net/pcnet.c
-@@ -632,7 +632,7 @@ static inline int ladr_match(PCNetState *s, const =
-uint8_t *buf, int size)
- {
-     struct qemu_ether_header *hdr =3D (void *)buf;
-     if ((*(hdr->ether_dhost)&0x01) &&
--        ((uint64_t *)&s->csr[8])[0] !=3D 0LL) {
-+        (s->csr[8] | s->csr[9] | s->csr[10] | s->csr[11]) !=3D 0) {
-         uint8_t ladr[8] =3D {
-             s->csr[8] & 0xff, s->csr[8] >> 8,
-             s->csr[9] & 0xff, s->csr[9] >> 8,
---=20
-2.31.1
+On Thu, 1 Feb 2024 at 18:11, Nick Briggs <nicholas.h.briggs@gmail.com> wrote:
+>
+> There is no guarantee that the PCNetState is allocated such that
+> csr[8] is allocated on an 8-byte boundary.  Since not all hosts are
+> capable of unaligned fetches the 16-bit elements need to be fetched
+> individually to avoid a potential fault.  Closes issue #2143
 
 
---Apple-Mail=_B83639D9-65C1-4433-B874-B3FD0F5651BC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html;
-	charset=us-ascii
+The way to mark that a commit fixes an issue is to have:
 
-<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
-charset=3Dus-ascii"></head><body style=3D"word-wrap: break-word; =
--webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D"">There is no =
-guarantee that the PCNetState is allocated such that</div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" class=3D"">csr[8] =
-is allocated on an 8-byte boundary.&nbsp; Since not all hosts =
-are</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">capable of unaligned fetches the 16-bit elements need to be =
-fetched</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">individually to avoid a potential fault.&nbsp; Closes issue =
-#2143</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco; min-height: =
-15px;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D""></span><br class=3D""></div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">Signed-off-by: Nick Briggs &lt;<a =
-href=3D"mailto:nicholas.h.briggs@gmail.com" =
-class=3D"">nicholas.h.briggs@gmail.com</a>&gt;</span></div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">---</span></div><div style=3D"margin: 0px; font-stretch: =
-normal; font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">&nbsp;hw/net/pcnet.c | 2 +-</span></div><div style=3D"margin: =
-0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;1 file changed, 1 insertion(+), 1 =
-deletion(-)</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco; min-height: =
-15px;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D""></span><br class=3D""></div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" class=3D"">diff =
---git a/hw/net/pcnet.c b/hw/net/pcnet.c</span></div><div style=3D"margin: =
-0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">index 494eab8479..ad675ab29d =
-100644</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">--- a/hw/net/pcnet.c</span></div><div style=3D"margin: 0px; =
-font-stretch: normal; font-size: 11px; line-height: normal; font-family: =
-Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">+++ b/hw/net/pcnet.c</span></div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" class=3D"">@@ =
--632,7 +632,7 @@ static inline int ladr_match(PCNetState *s, const =
-uint8_t *buf, int size)</span></div><div style=3D"margin: 0px; =
-font-stretch: normal; font-size: 11px; line-height: normal; font-family: =
-Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;{</span></div><div style=3D"margin: =
-0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;&nbsp; &nbsp; struct =
-qemu_ether_header *hdr =3D (void *)buf;</span></div><div style=3D"margin: =
-0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;&nbsp; &nbsp; if =
-((*(hdr-&gt;ether_dhost)&amp;0x01) &amp;&amp;</span></div><div =
-style=3D"margin: 0px; font-stretch: normal; font-size: 11px; =
-line-height: normal; font-family: Monaco;" class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" class=3D"">-&nbsp; =
-&nbsp; &nbsp; &nbsp; ((uint64_t *)&amp;s-&gt;csr[8])[0] !=3D 0LL) =
-{</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">+&nbsp; &nbsp; &nbsp; &nbsp; (s-&gt;csr[8] | s-&gt;csr[9] | =
-s-&gt;csr[10] | s-&gt;csr[11]) !=3D 0) {</span></div><div style=3D"margin:=
- 0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; =
-uint8_t ladr[8] =3D {</span></div><div style=3D"margin: 0px; =
-font-stretch: normal; font-size: 11px; line-height: normal; font-family: =
-Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; s-&gt;csr[8] &amp; 0xff, s-&gt;csr[8] &gt;&gt; =
-8,</span></div><div style=3D"margin: 0px; font-stretch: normal; =
-font-size: 11px; line-height: normal; font-family: Monaco;" =
-class=3D""><span style=3D"font-variant-ligatures: no-common-ligatures" =
-class=3D"">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; s-&gt;csr[9] =
-&amp; 0xff, s-&gt;csr[9] &gt;&gt; 8,</span></div><div style=3D"margin: =
-0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">--&nbsp;</span></div><div style=3D"margin:=
- 0px; font-stretch: normal; font-size: 11px; line-height: normal; =
-font-family: Monaco;" class=3D""><span style=3D"font-variant-ligatures: =
-no-common-ligatures" class=3D"">2.31.1</span></div><div class=3D""><span =
-style=3D"font-variant-ligatures: no-common-ligatures" class=3D""><br =
-class=3D""></span></div></body></html>=
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2143
 
---Apple-Mail=_B83639D9-65C1-4433-B874-B3FD0F5651BC--
+just above the Signed-off-by: line.
+
+> Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
+> ---
+>  hw/net/pcnet.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/net/pcnet.c b/hw/net/pcnet.c
+> index 494eab8479..ad675ab29d 100644
+> --- a/hw/net/pcnet.c
+> +++ b/hw/net/pcnet.c
+> @@ -632,7 +632,7 @@ static inline int ladr_match(PCNetState *s, const uint8_t *buf, int size)
+>  {
+>      struct qemu_ether_header *hdr = (void *)buf;
+>      if ((*(hdr->ether_dhost)&0x01) &&
+> -        ((uint64_t *)&s->csr[8])[0] != 0LL) {
+> +        (s->csr[8] | s->csr[9] | s->csr[10] | s->csr[11]) != 0) {
+>          uint8_t ladr[8] = {
+>              s->csr[8] & 0xff, s->csr[8] >> 8,
+>              s->csr[9] & 0xff, s->csr[9] >> 8,
+
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+(The whole function feels kind of clunky, eg I have
+a feeling you could index directly into the csr[]
+arrays rather than constructing the ladr[] byte array,
+but this is the simple fix for the problem at hand.)
+
+thanks
+-- PMM
 
