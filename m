@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4762A845DF4
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 18:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CEA845D92
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:46:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaD7-0005Ms-EH; Thu, 01 Feb 2024 11:46:45 -0500
+	id 1rVaBE-0002vM-OX; Thu, 01 Feb 2024 11:44:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaB2-0002v7-Vp
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:37 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAq-0002qk-Tw
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:25 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVaAt-0002Ts-RX
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:36 -0500
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAm-0002U1-9u
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=mX/hl3L+uzP16qDkLnKIjlw9AZT6Th7nY6ik791ai64=; b=KeAFudZpNkpdLQhrbPEchfbIzn
- cj5W54SNpt/VZF5MMo6prJlIJgIl8Kcht8oD5KDcUE41ZKfs0yDfmzVxxwQc6uqmIGwYLOxx+KJqR
- D9D+THyPneXQaSQc2yxDi3J0J7jA6Avmfz6/Q2DDyzNYfx7E8YdhdVquQzdYbXxDKvYJJheoWSn4e
- KjEBp8xt5fH8RqUpIabgG2wgfptt/2jqezX4aQapW9YQqn0HzC4L6gWRSSm1xGoFsnz/g4VXANAJo
- d/bxCoovG2Lg7JgifVz960uusavMY8biHFVVlXO4UJhKY88BScXwh2k4EWWWcenfYmk07+vkOyyBy
- gF71dMvg==;
+ bh=bWvWof/1cmcc1j4iR+WvmK21dtpKtWiHn2Gmk5c5D+g=; b=VUnPwvHEyNOBgqxJMYIf/eC+QF
+ EUrvA3SmO+CPVnw6i0BKegDC63H4tk76q9kq/7PvPZLubieq7VP/vzQeN7kEe72s0Uhet0REyGXzp
+ jIHGtK0+5FSBA/wCLEqtcyWlGv+Id4iqhqifmnTnIDDT50/DJVl4KymmhZMlrOw8MtIYee4TSXc1v
+ siKdGDQemduNxuAWX4TcNkaCAsINPd/9/Paa/V1W6JNuztTsOYxNd1qs3NJTGoQEA55XKURqBXSNg
+ stVYhdwGucYiOQU+hCir6POp7NFrrCaZFXaU+EOHvhCVOI+uwh6wYdURtIpLE5zIdoIzeioTiC+Zm
+ 2ayKhZ6A==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAf-0000000GIdo-3E7W for qemu-devel@nongnu.org;
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAh-00000009cMP-1qSw for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:15 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003IOo-3SlE for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003IOs-3Ygv for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 43/47] hw/xtensa/xtfpga: use qemu_create_nic_device()
-Date: Thu,  1 Feb 2024 16:44:08 +0000
-Message-ID: <20240201164412.785520-44-dwmw2@infradead.org>
+Subject: [PULL 44/47] net: remove qemu_check_nic_model()
+Date: Thu,  1 Feb 2024 16:44:09 +0000
+Message-ID: <20240201164412.785520-45-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -76,48 +76,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
+There are no callers of this function any more, as they have all been
+converted to qemu_{create,configure}_nic_device().
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/xtensa/xtfpga.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ include/net/net.h |  1 -
+ net/net.c         | 13 -------------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
-index fbad1c83a3..f49e6591dc 100644
---- a/hw/xtensa/xtfpga.c
-+++ b/hw/xtensa/xtfpga.c
-@@ -141,14 +141,16 @@ static void xtfpga_net_init(MemoryRegion *address_space,
-         hwaddr base,
-         hwaddr descriptors,
-         hwaddr buffers,
--        qemu_irq irq, NICInfo *nd)
-+        qemu_irq irq)
+diff --git a/include/net/net.h b/include/net/net.h
+index 728ca965af..00ee1af7ab 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -204,7 +204,6 @@ int qemu_set_vnet_le(NetClientState *nc, bool is_le);
+ int qemu_set_vnet_be(NetClientState *nc, bool is_be);
+ void qemu_macaddr_default_if_unset(MACAddr *macaddr);
+ int qemu_show_nic_models(const char *arg, const char *const *models);
+-void qemu_check_nic_model(NICInfo *nd, const char *model);
+ int qemu_find_nic_model(NICInfo *nd, const char * const *models,
+                         const char *default_model);
+ /**
+diff --git a/net/net.c b/net/net.c
+index 4651b3f443..ffd4b42d5a 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -992,19 +992,6 @@ int qemu_show_nic_models(const char *arg, const char *const *models)
+     return 1;
+ }
+ 
+-void qemu_check_nic_model(NICInfo *nd, const char *model)
+-{
+-    const char *models[2];
+-
+-    models[0] = model;
+-    models[1] = NULL;
+-
+-    if (qemu_show_nic_models(nd->model, models))
+-        exit(0);
+-    if (qemu_find_nic_model(nd, models, model) < 0)
+-        exit(1);
+-}
+-
+ int qemu_find_nic_model(NICInfo *nd, const char * const *models,
+                         const char *default_model)
  {
-     DeviceState *dev;
-     SysBusDevice *s;
-     MemoryRegion *ram;
- 
--    dev = qdev_new("open_eth");
--    qdev_set_nic_properties(dev, nd);
-+    dev = qemu_create_nic_device("open_eth", true, NULL);
-+    if (!dev) {
-+        return;
-+    }
- 
-     s = SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(s, &error_fatal);
-@@ -301,10 +303,7 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
-         memory_region_add_subregion(system_memory, board->io[1], io);
-     }
-     xtfpga_fpga_init(system_io, 0x0d020000, freq);
--    if (nd_table[0].used) {
--        xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000,
--                        extints[1], nd_table);
--    }
-+    xtfpga_net_init(system_io, 0x0d030000, 0x0d030400, 0x0d800000, extints[1]);
- 
-     serial_mm_init(system_io, 0x0d050020, 2, extints[0],
-                    115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
 -- 
 2.43.0
 
