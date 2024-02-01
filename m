@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5124B8457B0
+	by mail.lfdr.de (Postfix) with ESMTPS id D60C38457B3
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:29:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVWBP-0007p3-3g; Thu, 01 Feb 2024 07:28:43 -0500
+	id 1rVWBR-0007qX-QY; Thu, 01 Feb 2024 07:28:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBM-0007nU-QQ
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:40 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1rVWBO-0007oa-C3
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:42 -0500
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBK-0002AQ-AL
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:40 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-51124d43943so1279335e87.2
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:37 -0800 (PST)
+ id 1rVWBM-0002B1-Mi
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:42 -0500
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-51025cafb51so1315933e87.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706790516; x=1707395316; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706790519; x=1707395319; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L7ej3O0CatCEUFzw6u9SlCujsXb/1bH6cTaIS9kjyEM=;
- b=DcJVJsNwB8DCM9XbjtWJUjtpTSJKAN4jxMh5Hu6Qx94XqnfmPWI5EqqbGGbv4bdS+Z
- 4jTPpIT0sDQnbaT1gwJ1aVVsQkPg4rQ+rJ6vGVDP1ZToqA+ETnu27MOI2YJVQXLkHAx2
- u3MOoN/z7gO7LWAWJj231bTdP0+qTAyXb7BASbgjhSDbFkZCVMKl6AIyK5oTrrXbV3GO
- RUwTcacYKSw0/tW8nVmWi6UUQcEDMLjse5Kixaaz2EmfQGt3J/VDbYU14Ba217S/2Mwb
- 3qbPeF/iNtkFvhyjjHd+lBCem9VKHcYytyggtyqDv1HZWnxx5E3XlXGTHtf4mc60eRTw
- qIXw==
+ bh=4XrdlyPxX7fzqYNhg32fjbzatjpy7oOVQl+tyM0KqaA=;
+ b=Be7QVy0OcsXBX1JPeM0ie50iabaVOI5Ci8al4DAkdGDMo8wWIIvs7GDvWXnuHwl9Oi
+ Xuv+uQLz+QTkOD9H5fZOWlUPHVk/j74nk37WUWNIJoP4F1e88QLAPD8ilqz+DtbOnfFP
+ EhJsSJ3Ip/5JXjJt1KfjZ9WBUHBzSuQauWMKhKIrgk3q9Z0jggx6THDscO/PVi7TVBYJ
+ sxQ/DTmgPcn+tNhRbI0hc4bn9KtOp4HhwW3VBF+iZAoLaHF0RHHWWoYztBYI22iSlCVG
+ 6rMNIejYIfdsknIfIxuYaYlwpsxgZgFstHW82edp2rkkOITU6CgI8Vil3Bqr43oEgbtp
+ +p/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706790516; x=1707395316;
+ d=1e100.net; s=20230601; t=1706790519; x=1707395319;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L7ej3O0CatCEUFzw6u9SlCujsXb/1bH6cTaIS9kjyEM=;
- b=LzzEkuymR+lc2mtHi3WwG49E0vQ4N+Y2sz8FBrhylNoje+0sFeRKe8RmHajtFYKBMO
- Hynxt0qJgmstvyzYvN0N77t/d8gmsh3CdCdkOeSmdDUbaPZTy9jMrYdJbSPRCHEpg3Ac
- RC1Hl+WQo4sBu6oQe8svMJrXHNBlnHTz67sRbDOj5EqpU5HIDLxRrxZDT5CXHW2mryyj
- +paEPvbIVL95EnFReG4FEis4CD8l4K4NIgvPZmg+mTPYCZkI5SvYU30QR+dxLk8S/fbV
- eKZ3w3IcGv2ss+oYMU1UDPnGK2j6NGGnGSFq+C650sNh1bxQJn5uk7T51CkgQo8LnYVA
- Ph1g==
-X-Gm-Message-State: AOJu0YxVp2QuBzuzGwpJiBDzq4U79blWNh3T/4f5OpUlxmz6psIJQVHo
- XYtG2B+mRZq+CYaZe1eKN/XyJktW5G4x5ALjHroRdGpcTdE0k7B1HbErXwXVzXs=
-X-Google-Smtp-Source: AGHT+IHP0mABYouNTu71cKwDBRpd2QRAo8oLlojZlhwluTRNbtk02YRAxjLwNLev3VJghPf6bUW5AQ==
-X-Received: by 2002:a05:6512:3108:b0:50e:7410:d5b0 with SMTP id
- n8-20020a056512310800b0050e7410d5b0mr1823269lfb.28.1706790516272; 
- Thu, 01 Feb 2024 04:28:36 -0800 (PST)
+ bh=4XrdlyPxX7fzqYNhg32fjbzatjpy7oOVQl+tyM0KqaA=;
+ b=EsrMJFE6gb6MDXOkNp7JfELyqcIdaYGUFpDQMVzgB8libgL9aUYnMBX9oBNDsz4L1l
+ 0bNEzRRFo9e8J+aW1WOEXmlkO7jAFJXd68P/7kU5Lb2VKAx1FSOvMCdR+ksbJUp1JbJx
+ A6XYzJzeDEp5qeMZwD69gZDyx6tflY7+Qg4nCj40lNxc3XFUr6zdq8toiIch5u20BSBQ
+ fcgllsqtrmfzFXdFMRFLWbcOHgH1rzJS/TE2qHtGW3uzkKImPSDlB4TeKb30PHj+cuc0
+ Pyi9HgXFZ76wJ0LeObQGxDC1dcZMovsUgKN0q7Vm5NjCQxy9zMqTkRBYmPgdByOTV41M
+ 1W1Q==
+X-Gm-Message-State: AOJu0YyI68gzANym5y0h++c6iZMUKDkl4QHib3z5Nv9OH9sq15w48UIy
+ GfwBhMQj1QRk5060snQY14R2PtWsmwb8/0fs/kKMA2qQxuCxh+EFar4KhOvl7Xo=
+X-Google-Smtp-Source: AGHT+IF4VcnBRVksAEaw+w29deD3wP0OybtEz/LnWIH0KI7WMl2EBZtalb8UQUF3rE+TntGNlHCZpw==
+X-Received: by 2002:a2e:87da:0:b0:2cd:10be:cf14 with SMTP id
+ v26-20020a2e87da000000b002cd10becf14mr2986281ljj.19.1706790519075; 
+ Thu, 01 Feb 2024 04:28:39 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCUqHmfQR05i1hUXpvu6XJ3nk3m+oD1xBJvBqXZTlf9ELO0FIzgYSIGYk2juoJHsriUZdemPFUMcsxblSldot1XjoGjQYlTEj9/cHmz1yyPhENYnoVornVoJews+UxIeaV6/UpePqE8fhlFLGZ/6IEJqnWsnxhfhi73dJIm48/qjQABeFO7BajwCy3VNFbJ6SaaFjol5GDoBU5KBkpFmfO3in53/f386MFPuqx5W6Q3xwDdguIKp4a0gwjO3g0Z8rKtLd/5Wppx/1LMLloBJSD/eXkY9GYF9XUurLbeJ8p0MFmChruyxjebOIMShFLr2gpZBW/67tWCgG9120qMIfxR9OE1y/sq7IqukHBcjy7XS/Tk+8cSlWbFGcysVnDHgZOQ/f9JUx4a6dw8PRn8n6wpfyKieCQpB9mzW500GQsf4L6rNN72LDLxcKUcaLr1uoPKHDM5cULnvpr4KcsrRxZwVnqDLujLqX9ePCzITrno6abjzt9kDmoBJT0irZgl1ui1DVSB6qJrgaRoRAIuAN/MJZry4wzHEbjJg/QNiJLQMHZKftyF28MjAYbxsFG+Q1z6hlW6Tvq8OCmbUaXs83FA4NQQWwnu10ldK8J9OWOp/sCx394tMNv01Ax9+q1fcMGuFncu/prbRhJ+KNRVOc9776KW3e9OOalrM9IodriOvzhAhSKQpVYy17EyfW2JuxPAvkA==
+ AJvYcCUGFVNVFdNJffY+qNu7kMHsI1cqvd+apCOb/5CIEuNPVG4EavFeHAk3NTyJHf5zaJNOfMrfgh4k7ZPJXgGfH4WrHl4hVB7GHGfmnuUlZnxeTfkdK9pW3LNcvwoxzk4ug/6biWTBAQYzZynRXXDTe0+8oFBXgwsftNgksnrkilkI1jih2IDR1Mi2AuJ5gct7o5l0aqWtpTGrm73maDTsMAU/UZwSZqtwHV1c39dFZUrsFGPC6K8F7kErwWetM7jlVqsJEYUJCV+E7mRTpGQ79btH0QZL6OybOxKvOvfZYxEfGdcsJIULa16xehR9T+BR1aPC2UCJaCU+BoqoThGbN6Y8DEDr7PSVtB66LvjqY1hrjS3FV2g1zM2kz1A2Nw6kJLCPGHuuiQV0AR+yPnROccX+mq67ySiWo3i7ZLHen2k7i6cFbXP0NQNhsbgdGapwYSZLWKbW/tk+1kkgCijNBatX6a3Z+Yz8ZrOeFJ4qMQ4fog+2NDg0UgrwFwm0ymWjKvPcHRuPlxluXz8BGYICB5pe7j+dXoZmxD+l3JUvyFV035phMHj1PpRkUYQgVZn2zig+j0MAResXhmQxoPKW20BqPnv8qIKvu4cWVmn1B0KXeZonvnfZ35NAdsIYbObWnAz/xOJnWBw=
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- vh12-20020a170907d38c00b00a3687cde34asm1335366ejc.5.2024.02.01.04.28.35
+ h11-20020aa7c94b000000b00558a3268bbcsm6705553edt.53.2024.02.01.04.28.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 04:28:35 -0800 (PST)
+ Thu, 01 Feb 2024 04:28:36 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 761A65F9DA;
+ by draig.lan (Postfix) with ESMTP id 8E3D55F9DB;
  Thu,  1 Feb 2024 12:28:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,26 +75,25 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chris Wulff <crwulff@gmail.com>, Rabin Vincent <rabinv@axis.com>,
- "Edgar E . Iglesias" <edgar.iglesias@xilinx.com>
-Subject: [PATCH 2/5] docs: mark CRIS support as deprecated
-Date: Thu,  1 Feb 2024 12:28:32 +0000
-Message-Id: <20240201122835.1712347-3-alex.bennee@linaro.org>
+ Chris Wulff <crwulff@gmail.com>
+Subject: [PATCH 3/5] configure: run plugin TCG tests again
+Date: Thu,  1 Feb 2024 12:28:33 +0000
+Message-Id: <20240201122835.1712347-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240201122835.1712347-1-alex.bennee@linaro.org>
 References: <20240201122835.1712347-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,40 +109,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This might be premature but while streamling the avocado tests I
-realised the only tests we have are "check-tcg" ones. The aging
-fedora-criss-cross image works well enough for developers but can't be
-used in CI as we need supported build platforms to build QEMU.
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Does this mean the writing is on the wall for this architecture?
+Commit 39fb3cfc28b ("configure: clean up plugin option handling", 2023-10-18)
+dropped the CONFIG_PLUGIN line from tests/tcg/config-host.mak, due to confusion
+caused by the shadowing of $config_host_mak.  However, TCG tests were still
+expecting it.  Oops.
 
+Put it back, in the meanwhile the shadowing is gone so it's clear that it goes
+in the tests/tcg configuration.
+
+Cc:  <alex.bennee@linaro.org>
+Fixes: 39fb3cfc28b ("configure: clean up plugin option handling", 2023-10-18)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <20240124115332.612162-1-pbonzini@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Rabin Vincent <rabinv@axis.com>
-Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
-Message-Id: <20230925144854.1872513-5-alex.bennee@linaro.org>
 ---
- docs/about/deprecated.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ configure | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index d4492b94604..82922476d72 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -183,6 +183,14 @@ Nios II CPU (since 8.2)
- The Nios II architecture is orphan. The ``nios2`` guest CPU support is
- deprecated and will be removed in a future version of QEMU.
+diff --git a/configure b/configure
+index 3d8e24ae011..ff058d6c486 100755
+--- a/configure
++++ b/configure
+@@ -1644,6 +1644,9 @@ fi
+ mkdir -p tests/tcg
+ echo "# Automatically generated by configure - do not modify" > tests/tcg/$config_host_mak
+ echo "SRC_PATH=$source_path" >> tests/tcg/$config_host_mak
++if test "$plugins" = "yes" ; then
++    echo "CONFIG_PLUGIN=y" >> tests/tcg/$config_host_mak
++fi
  
-+CRIS CPU architecture (since 9.0)
-+'''''''''''''''''''''''''''''''''
-+
-+The CRIS architecture was pulled from Linux in 4.17 and the compiler
-+is no longer packaged in any distro making it harder to run the
-+``check-tcg`` tests. Unless we can improve the testing situation there
-+is a chance the code will bitrot without anyone noticing.
-+
- 
- System emulator machines
- ------------------------
+ tcg_tests_targets=
+ for target in $target_list; do
 -- 
 2.39.2
 
