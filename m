@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBF3845D30
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F11D845D3B
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:29:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVZs0-00009m-Ul; Thu, 01 Feb 2024 11:24:56 -0500
+	id 1rVZvV-0001zw-OB; Thu, 01 Feb 2024 11:28:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVZrj-0008VM-C8
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:24:45 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ id 1rVZvT-0001zg-F2
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:28:31 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVZre-0004hy-Is
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:24:37 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2d051fb89fbso15822691fa.2
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 08:24:34 -0800 (PST)
+ id 1rVZvR-0005XU-2J
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:28:30 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2cf33035d1dso11572721fa.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 08:28:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706804672; x=1707409472; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706804907; x=1707409707; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=46NHSLFImFJJig2UxV3k7PaJBS9adhECauo8jMROZHI=;
- b=XO5/dXmrrYLRl48fa2VAc3qzqz115Kd2dsHsM73r52RnieePXMB6p14XkyxEVf+NN2
- lJHH8CgA1j1i+afuckmaf+qWL39pYvnBu2cbj06YMCKMaBvXXhNiXUOrD/4gzekOl+mS
- iYZ1tkd9fmD8ir2Gg/8lo34c/bWYPo8LDdw5jGonyHSgps7b3P6dBVHsh9mIUK/Jzbjq
- JeA/Ju8fqDU8GyEm8u0/N/+cd63/YMAEJ/sBGe1TpiPg+8PIxgrJeiqtkUi6SGSmRJu6
- tfO/W18gxczfCaWO8LceOv8EsLKFG2oFyZR5rWwZu//Hcc5GUGGMpA673e70WeAHb/1f
- xWtQ==
+ bh=GdRWbu5FXaABeFEoDyxusWA9wF0lQKWgC0yG9ay+aEg=;
+ b=wbAd4qT/UIpcVVOM/Gv3RtWwDmZK0eYybvWx99lvFuakn98xI+T3hqEmx0Cwx0u5zz
+ HBkQ4BFXEnqH05C/aJ3LA7VYuVrNSxyobyflrKWV04NOw3ZXrFtw8a1DZUQmXZu4P+iq
+ 9Ijt6OlCT72sVzrbGYn2S5fotQN5Ti1uf1aXbcyJILE/x5wOfMw2JulJ2I3VIO1Nz/25
+ ISsX4f3Xc91Cq0rGMobq0EuLJoIoRly8O4ySR2/LsgCJM8NoLmA0CfzPVQ9YEctdwTuT
+ jmrqFWKbzUY6pD3ljYZNP16eHEC3d20SvbxwdgFLWpI2cmzMIac4uoG39Ekb/b7wnha7
+ vFVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706804672; x=1707409472;
+ d=1e100.net; s=20230601; t=1706804907; x=1707409707;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=46NHSLFImFJJig2UxV3k7PaJBS9adhECauo8jMROZHI=;
- b=pKsilGA5jC4Npr+dT3hiV/KlcRX4rBv3qaxRkG2ouWbLsCkuTRiiz3GzH3YCfqspXN
- v5OA6xjFTjNk2zSBdCFOt2bU+WruV+5WHqh4kQ8tbmaBL2X7E/r46DiJEQPP30t6LSaR
- sr4RVX1e3+fca0ht87sHkrHRzHF2FijAVpN8LGXjGSlO5Bk+pgabR4ABTI1Ajl1GDGuN
- Cjvi1SyTR18plPljvieiLJQvGN0jjp76BlibeAXC1D3iCQs3bPIsorBeRvJiGHFfqB9+
- v1Ng0VmaKRmee1soC/O2Gn6BOxpHsDBQQhCfclmbbtbBija75yIsicTk5L3zMsmbaiPE
- A+og==
-X-Gm-Message-State: AOJu0YypzLFTEkvtSs42N1HF6scTjabcQjtzUGQKpDKo4c8JxY/okHsd
- o9F8nev23vYGDu+ck3M2X/1rn/enOjuc0261iZjl15oARWzHveUxr7J4DG1LQXebu4LN1kvJhV0
- Jk0I6p86dcXIfeZejwpzISK/2+BesODMLsT67AIov39JddHkm
-X-Google-Smtp-Source: AGHT+IFL14x9oeiZfjzo5pV0Y4YN2i74qoc5RaH/iXnJx8Y+gyHy/8PO5QCVcVXSZeJ558W0dqbWPEn/gF4tVMS1ZTQ=
-X-Received: by 2002:a2e:3318:0:b0:2d0:770d:5c1c with SMTP id
- d24-20020a2e3318000000b002d0770d5c1cmr1712965ljc.11.1706804672528; Thu, 01
- Feb 2024 08:24:32 -0800 (PST)
+ bh=GdRWbu5FXaABeFEoDyxusWA9wF0lQKWgC0yG9ay+aEg=;
+ b=VCP6K5/mq7OQBIkjf+oOw/CE49QSL7bUQl1VIJtjahaNChK7ngxhGDGKXiLiTrRrB1
+ vqdhvtnwYJ8VMAsbiepmVvgQy0RsCdifv3sbfcl+L/gh1EcafjEwBbyg+iO5sXP8hqqQ
+ NTOsw8UKYdvSdcWQfQtJI3ymil/P6QadEnIPcr7WhUTO+b/DJiVlrWgMlCJ/heX+JwTz
+ dv3sxRLMwQO9E2PFGGwI+djylws6AkmUg2tNbqkUIF+fhY9wktU1/QYnS0s5XYyCr43H
+ 8SkxPNhQkyqgO+dgn55F3mW1JyDoKM3je9/VsxbfMvs0xGLzudtrM4X4Rd1uIiAsNq1J
+ LU2g==
+X-Gm-Message-State: AOJu0YxNwhNPT03JlSphD2L3wUH26LUCJEYQZ+wi4T6tYARmLfBzyOII
+ 5i/W4xDzb4w3nks0j+NHW7NrGZALRA5iwnqe+kp2XMdWNtv9lqR/obpn0Vf8I3oyKzQJDc14B5/
+ wDuAJ483XT812R3Ev0H6BULvb403HXgBB8VTP0Q==
+X-Google-Smtp-Source: AGHT+IFDx61ru6IEuGzNC4RP+/4dltN5SIdQ08c90ryVxk9iU5UdLlxx4hBdxMKN11Ir1BiBHx1HK1zHBtoIn+LGdWE=
+X-Received: by 2002:a2e:b5a8:0:b0:2d0:6d69:7d25 with SMTP id
+ f8-20020a2eb5a8000000b002d06d697d25mr2730187ljn.11.1706804907040; Thu, 01 Feb
+ 2024 08:28:27 -0800 (PST)
 MIME-Version: 1.0
 References: <20240130190317.25692-1-philmd@linaro.org>
- <20240130190317.25692-3-philmd@linaro.org>
-In-Reply-To: <20240130190317.25692-3-philmd@linaro.org>
+ <20240130190317.25692-4-philmd@linaro.org>
+In-Reply-To: <20240130190317.25692-4-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 1 Feb 2024 16:24:21 +0000
-Message-ID: <CAFEAcA_e3QOvfvJScUgtmjGacKZX1OHyY5a-BWSAhNURyO2Rgg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] hw/arm/stellaris: Convert I2C controller to
- Resettable interface
+Date: Thu, 1 Feb 2024 16:28:16 +0000
+Message-ID: <CAFEAcA-w+=dy3_oiz63eg2AcS-vu93ZFrV1ZKF7iTC3eSYRHTQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] hw/arm/stellaris: Add missing QOM 'machine' parent
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, 
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -68,8 +67,8 @@ Cc: qemu-devel@nongnu.org,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,68 +94,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, 30 Jan 2024 at 19:03, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
+> QDev objects created with qdev_new() need to manually add
+> their parent relationship with object_property_add_child().
+>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/arm/stellaris.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+>  hw/arm/stellaris.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
 > diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-> index afbc83f1e6..284b95005f 100644
+> index 284b95005f..bb88b3ebde 100644
 > --- a/hw/arm/stellaris.c
 > +++ b/hw/arm/stellaris.c
-> @@ -607,8 +607,11 @@ static void stellaris_i2c_write(void *opaque, hwaddr=
- offset,
->      stellaris_i2c_update(s);
->  }
+> @@ -1247,10 +1247,13 @@ static void stellaris_init(MachineState *ms, stel=
+laris_board_info *board)
+>                                     &error_fatal);
 >
-> -static void stellaris_i2c_reset(stellaris_i2c_state *s)
-> +static void stellaris_i2c_reset_exit(Object *obj)
->  {
-> +    stellaris_i2c_state *s =3D STELLARIS_I2C(obj);
-> +
-> +    /* ??? For now we only implement the master interface.  */
->      if (s->mcs & STELLARIS_I2C_MCS_BUSBSY)
->          i2c_end_transfer(s->bus);
+>              ssddev =3D qdev_new("ssd0323");
+> +            object_property_add_child(OBJECT(ms), "oled", OBJECT(ssddev)=
+);
+>              qdev_prop_set_uint8(ssddev, "cs", 1);
+>              qdev_realize_and_unref(ssddev, bus, &error_fatal);
 >
-> @@ -658,8 +661,6 @@ static void stellaris_i2c_init(Object *obj)
->      memory_region_init_io(&s->iomem, obj, &stellaris_i2c_ops, s,
->                            "i2c", 0x1000);
->      sysbus_init_mmio(sbd, &s->iomem);
-> -    /* ??? For now we only implement the master interface.  */
-
-I'm not 100%, but I think this comment is a general one,
-not reset specific, so it should stay in the init function.
-
-> -    stellaris_i2c_reset(s);
->  }
-
-I think that the i2c_end_transfer() should be in the
-"enter" phase, and the clearing of the state fields in
-"hold", and then the stellaris_i2c_update() call in "exit".
-Though usually we don't bother to do an update in reset
-if it's just "device has reset and now its outbound IRQ
-line is not set", so we could alternatively just delete that.
-
->  /* Analogue to Digital Converter.  This is only partially implemented,
-> @@ -1382,7 +1383,9 @@ type_init(stellaris_machine_init)
->  static void stellaris_i2c_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc =3D DEVICE_CLASS(klass);
-> +    ResettableClass *rc =3D RESETTABLE_CLASS(klass);
+>              gpio_d_splitter =3D qdev_new(TYPE_SPLIT_IRQ);
+> +            object_property_add_child(OBJECT(ms), "splitter",
+> +                                      OBJECT(gpio_d_splitter));
+>              qdev_prop_set_uint32(gpio_d_splitter, "num-lines", 2);
+>              qdev_realize_and_unref(gpio_d_splitter, NULL, &error_fatal);
+>              qdev_connect_gpio_out(
+> @@ -1287,6 +1290,7 @@ static void stellaris_init(MachineState *ms, stella=
+ris_board_info *board)
+>          DeviceState *gpad;
 >
-> +    rc->phases.exit =3D stellaris_i2c_reset_exit;
->      dc->vmsd =3D &vmstate_stellaris_i2c;
->  }
+>          gpad =3D qdev_new(TYPE_STELLARIS_GAMEPAD);
+> +        object_property_add_child(OBJECT(ms), "gamepad", OBJECT(gpad));
+>          for (i =3D 0; i < ARRAY_SIZE(gpad_keycode); i++) {
+>              qlist_append_int(gpad_keycode_list, gpad_keycode[i]);
+>          }
+> --
 
-Also on the subject of resetting i2c controllers and buses:
-https://patchew.org/QEMU/20240126005541.1839038-1-komlodi@google.com/
-That patchset proposes that the bus should basically drop
-any pending transactions on the floor at reset; it would
-also be possible for the bus to do the "end any transfer
-in progress", so the individual controller model doesn't
-have to. No idea what the overall Right Thing is, so
-let's not block this tidyup on figuring out general i2c reset
-cleanups.
+We create almost all the devices in this board with
+qdev_new(), and we don't use object_property_add_child()
+on any of them. What is it about these three devices in
+particular that means we need to call that function?
 
 thanks
 -- PMM
