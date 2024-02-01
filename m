@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB678845DE6
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:57:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D0E845D95
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:46:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVaE0-0007o2-Lj; Thu, 01 Feb 2024 11:47:40 -0500
+	id 1rVaBk-0003Qj-Mv; Thu, 01 Feb 2024 11:45:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaB5-0002wE-Fa
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaB5-0002wD-Dn
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:39 -0500
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1rVaAu-0002V1-Mc
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:39 -0500
+ <BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVaAu-0002Tr-LZ
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
  Cc:Content-Type:Content-ID:Content-Description;
- bh=Tq1LmBh+MmuhiCak6nrzlmMj512p18L5BwdUzqW/HzI=; b=SYkgSu89QcvLc653lXLhzKzzG2
- NQ2rZW4l0JGzAfTHkVHzlV5tJCVq/lD+p+QYtkiaCipHYa4azvZhYyJWdpQEcZtJz3WaNntTPPqGl
- MZXlQxadRumaR5aeflF3UeCuOO8HgMN5T3VvbKH67bVKj8Cj0yHctUDrbTVvUifcTdqe4LwbNe8aH
- PJFEb+A/2LJMDNQUWyJ/0b8rIKpQccyCsPNa3g0FousN2sfdqgabBTz0kLNLSTfTdh6ng3ukx6lHb
- cTpc4hUnahKkvwlO4rDzIT+EVHwcqTlAhrbBhpjR5KTk6tgErNr3IItkzDR3ux8SUmHRDD5KGBr5+
- EwsXbrCg==;
+ bh=mMqmzYHdP9y/z29knSdyyl/j1smIAiKPsHboaiDoM8A=; b=NF+mzlBi2DUXjLUWt2oYxQ5rNg
+ fth1fWhQUWyxt2PZmJuQ1ufN6827/piC0i8d/6HReljxKQVkfpxzPcctqdUHGK+Jwz2F0gHyiHn4k
+ kdSqnWLIEX+Dz9ps2/tBxmu7y0ZhAbhIyBCrDAJWDnwXPx6UdclCe3kWaykmnMnsWGcua1jomAykM
+ JX9f2eRCPG+WYcJniqroBmwoE1hUIXO4jvAYFGfwQPrzA06pZDhoxyIYLudDObUSFAMQJO0MBcnS1
+ zgtvsmz+KsR9FGlJmyTsntPapzQCG0dnmuMUkYs3hq8rAczC6H8V7OrCoviQt0tcjv4GKgJqCDwqQ
+ Ijwf66rQ==;
 Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVaAh-00000009cMQ-1wQe for qemu-devel@nongnu.org;
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAf-0000000GIdt-3p4J for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:15 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVaAg-00000003IP1-3k3W for qemu-devel@nongnu.org;
+ Hat Linux)) id 1rVaAg-00000003IP6-3ppq for qemu-devel@nongnu.org;
  Thu, 01 Feb 2024 16:44:14 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 46/47] net: remove qemu_show_nic_models(), qemu_find_nic_model()
-Date: Thu,  1 Feb 2024 16:44:11 +0000
-Message-ID: <20240201164412.785520-47-dwmw2@infradead.org>
+Subject: [PULL 47/47] net: make nb_nics and nd_table[] static in net/net.c
+Date: Thu,  1 Feb 2024 16:44:12 +0000
+Message-ID: <20240201164412.785520-48-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240201164412.785520-1-dwmw2@infradead.org>
 References: <20240201164412.785520-1-dwmw2@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+16c2638fe4346fda554c+7466+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -76,91 +76,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-These old functions can be removed now too. Let net_param_nic() print
-the full set of network devices directly, and also make it note that a
-list more specific to this platform/config will be available by using
-'-nic model=help' instead.
+Also remove the stale declaration of host_net_devices; the actual
+definition was removed long ago in commit 7cc28cb06104 ("net: Remove
+the deprecated 'host_net_add' and 'host_net_remove' HMP commands")
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- include/net/net.h |  3 ---
- net/net.c         | 39 ++++++---------------------------------
- 2 files changed, 6 insertions(+), 36 deletions(-)
+ include/net/net.h | 4 ----
+ net/net.c         | 3 +++
+ system/globals.c  | 2 --
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/include/net/net.h b/include/net/net.h
-index 00ee1af7ab..588ee55f28 100644
+index 588ee55f28..b1f9b35fcc 100644
 --- a/include/net/net.h
 +++ b/include/net/net.h
-@@ -203,9 +203,6 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len);
- int qemu_set_vnet_le(NetClientState *nc, bool is_le);
- int qemu_set_vnet_be(NetClientState *nc, bool is_be);
- void qemu_macaddr_default_if_unset(MACAddr *macaddr);
--int qemu_show_nic_models(const char *arg, const char *const *models);
--int qemu_find_nic_model(NICInfo *nd, const char * const *models,
--                        const char *default_model);
- /**
-  * qemu_find_nic_info: Obtain NIC configuration information
-  * @typename: Name of device object type
+@@ -301,10 +301,6 @@ struct NICInfo {
+     int nvectors;
+ };
+ 
+-extern int nb_nics;
+-extern NICInfo nd_table[MAX_NICS];
+-extern const char *host_net_devices[];
+-
+ /* from net.c */
+ extern NetClientStateList net_clients;
+ bool netdev_is_modern(const char *optstr);
 diff --git a/net/net.c b/net/net.c
-index ffd4b42d5a..d705e9b0fd 100644
+index d705e9b0fd..a2f0c828bb 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -977,38 +977,6 @@ GPtrArray *qemu_get_nic_models(const char *device_type)
-     return nic_models;
- }
+@@ -77,6 +77,9 @@ static NetdevQueue nd_queue = QSIMPLEQ_HEAD_INITIALIZER(nd_queue);
  
--int qemu_show_nic_models(const char *arg, const char *const *models)
--{
--    int i;
--
--    if (!arg || !is_help_option(arg)) {
--        return 0;
--    }
--
--    printf("Available NIC models:\n");
--    for (i = 0 ; models[i]; i++) {
--        printf("%s\n", models[i]);
--    }
--    return 1;
--}
--
--int qemu_find_nic_model(NICInfo *nd, const char * const *models,
--                        const char *default_model)
--{
--    int i;
--
--    if (!nd->model)
--        nd->model = g_strdup(default_model);
--
--    for (i = 0 ; models[i]; i++) {
--        if (strcmp(nd->model, models[i]) == 0)
--            return i;
--    }
--
--    error_report("Unsupported NIC model: %s", nd->model);
--    return -1;
--}
--
- static int net_init_nic(const Netdev *netdev, const char *name,
-                         NetClientState *peer, Error **errp)
- {
-@@ -1791,9 +1759,14 @@ static int net_param_nic(void *dummy, QemuOpts *opts, Error **errp)
-         }
-         if (is_help_option(type)) {
-             GPtrArray *nic_models = qemu_get_nic_models(TYPE_DEVICE);
-+            int i;
-             show_netdevs();
-             printf("\n");
--            qemu_show_nic_models(type, (const char **)nic_models->pdata);
-+            printf("Available NIC models "
-+                   "(use -nic model=help for a filtered list):\n");
-+            for (i = 0 ; nic_models->pdata[i]; i++) {
-+                printf("%s\n", (char *)nic_models->pdata[i]);
-+            }
-             g_ptr_array_free(nic_models, true);
-             exit(0);
-         }
+ static GHashTable *nic_model_help;
+ 
++static int nb_nics;
++static NICInfo nd_table[MAX_NICS];
++
+ /***********************************************************/
+ /* network device redirectors */
+ 
+diff --git a/system/globals.c b/system/globals.c
+index e83b5428d1..b6d4e72530 100644
+--- a/system/globals.c
++++ b/system/globals.c
+@@ -36,8 +36,6 @@ int display_opengl;
+ const char* keyboard_layout;
+ bool enable_mlock;
+ bool enable_cpu_pm;
+-int nb_nics;
+-NICInfo nd_table[MAX_NICS];
+ int autostart = 1;
+ int vga_interface_type = VGA_NONE;
+ bool vga_interface_created;
 -- 
 2.43.0
 
