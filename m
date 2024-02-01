@@ -2,46 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F5F84583B
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:54:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFAF845850
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:58:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVWa3-0006Xo-EM; Thu, 01 Feb 2024 07:54:11 -0500
+	id 1rVWdI-0003Ro-Ir; Thu, 01 Feb 2024 07:57:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1rVWZy-0006Wx-VT; Thu, 01 Feb 2024 07:54:06 -0500
-Received: from jedlik.phy.bme.hu ([152.66.102.83])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
- id 1rVWZw-00071v-Uo; Thu, 01 Feb 2024 07:54:06 -0500
-Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
- id 4FB4BA00ED; Thu,  1 Feb 2024 13:54:02 +0100 (CET)
-Date: Thu, 1 Feb 2024 13:54:02 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Thomas Huth <thuth@redhat.com>
-cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- John Snow <jsnow@redhat.com>, qemu-block@nongnu.org, 
- Miroslav Rezanina <mrezanin@redhat.com>
-Subject: Re: [PATCH] hw/ide: Add the possibility to disable the CompactFlash
- device in the build
-In-Reply-To: <13ab647c-df89-49ab-8f76-8ce57d519aab@redhat.com>
-Message-ID: <alpine.LMD.2.03.2402011352080.16176@eik.bme.hu>
-References: <20240201082916.20857-1-thuth@redhat.com>
- <alpine.LMD.2.03.2402011326360.16176@eik.bme.hu>
- <13ab647c-df89-49ab-8f76-8ce57d519aab@redhat.com>
-User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVWdG-0003PF-Bb
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:57:30 -0500
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVWdE-000876-QB
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:57:30 -0500
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2cf595d5b4aso12660371fa.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:57:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706792247; x=1707397047; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=tf8h3/gbSdNJTpt3E/ws1mjedr29y2lcAd5CCf0+6e8=;
+ b=nLlwPU2lPjjixLEYqYkVA+OdMfjcasHj+a3wQgvNm7kaAdJNv5Iv8XdaDCcgqm8jXF
+ nkfMabxDX1awW2kTexysit2Wi1dcIqn3J19dt9MDxTK2+hNLQXTzcdERbZKBowQjKOTb
+ 22jgVYORqTth+uWXBz59Wf9cPFK6daqc4E9YBhCwDC16NQcNkHv3NaSgFwFVdN/5ArlY
+ qOg8pgBqAahvK7814SoCfaC+XHYirj8GjJfxMnoQCBtd5edyL2BXnoW36GpbEBjX07Yd
+ JpPvPk+kot+HbV9FC4kj4dE5OGp2mb1P+1jo3gZGVSRPOHn1YrxErT0VevsSXvmyXC5m
+ pVwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706792247; x=1707397047;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tf8h3/gbSdNJTpt3E/ws1mjedr29y2lcAd5CCf0+6e8=;
+ b=XZRPmvr05qqJVDqjQaucwen87cpO+4GTitwju+kelcJ6jHqfnqxbWzvrjhYNWvFNB1
+ 7sxnmxRWvGRX3BwVgQ1lne9oJ6FK97FDUi6zTj7BaOVxqBrZmqpnRx/zGoKbPXtIs/HX
+ s2Rvn+xD/FT8WlC8Z3D48MXheRvK49q1sDANZhyCk51HBbpZce6FtBE9o9k1IIJBCCr4
+ +045+HY8IO/XpiMirSTTyoOl3QNm7VcEc3UsHCj+Tc0Jdnx1iefv4zLAQ6F5sFDeYA+e
+ zjoYMEq2MX9M15kPSb7GLSRwrLr9GNnjF3YEfQciv3jOW4lDB37oRat/u7D+mNOE49Sj
+ 537A==
+X-Gm-Message-State: AOJu0YyLLubxJgYyR9/vaHku6g543LenIScTEAaZ4nODqpt5ILdb6SfT
+ JNywOG4mLPJPfmRc5eh13TKo/Uf8TeKW0wxJKU0eW79w8fCCBMVgQSAt/Dx8V/cBYKef6b0MfFA
+ 3mOdBkMSFkecsw/OyEN50BTGDq8xXwzcTZJpJCg==
+X-Google-Smtp-Source: AGHT+IFQvoV9R2p/LXDg5qfKqHI1FsFopWTKT6MFILKjKRWvHRSZ7UGjw2vSBotpdjD6GmnhJOsW7JFXQPA1ghK8sFo=
+X-Received: by 2002:a2e:7a0a:0:b0:2d0:5d79:7438 with SMTP id
+ v10-20020a2e7a0a000000b002d05d797438mr1170968ljc.52.1706792246778; Thu, 01
+ Feb 2024 04:57:26 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED;
- BOUNDARY="1117279078-1045938643-1706792042=:16176"
-Received-SPF: pass client-ip=152.66.102.83;
- envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <94cf974b-05ec-41c2-8d0b-43ffbc8bdeac@gmail.com>
+ <904ef958-0e3d-48da-a4a7-5c1514c04472@tls.msk.ru>
+ <e441b771-0a08-4f2c-b7a7-f6fdd787bc1c@tls.msk.ru>
+In-Reply-To: <e441b771-0a08-4f2c-b7a7-f6fdd787bc1c@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 1 Feb 2024 12:57:15 +0000
+Message-ID: <CAFEAcA-C-pGGYY1bfE0ZatZP-imGmq=4-579TEnEZWFLeLxZLQ@mail.gmail.com>
+Subject: Re: building qemu on a system with libxkbcommon installed but not
+ xkeyboard-config produces an core dump
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Zhang Wen <zhw2101024@gmail.com>, qemu-trivial@nongnu.org,
+ pbonzini@redhat.com, 
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com, 
+ philmd@linaro.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,77 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---1117279078-1045938643-1706792042=:16176
-Content-Type: TEXT/PLAIN; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Thu, 1 Feb 2024, Thomas Huth wrote:
-> On 01/02/2024 13.39, BALATON Zoltan wrote:
->> On Thu, 1 Feb 2024, Thomas Huth wrote:
->>> For distros like downstream RHEL, it would be helpful to allow to disab=
-le
->>> the CompactFlash device. For making this possible, we need a separate
->>> Kconfig switch for this device, and the code should reside in a separat=
-e
->>> file.
->>>=20
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>> hw/ide/qdev-ide.h=C2=A0 | 41 ++++++++++++++++++++++++++++++++
->>> hw/ide/cf.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 58 ++++++++++++=
-++++++++++++++++++++++++++++++++++
->>> hw/ide/qdev.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 51 ++--------------------=
-------------------
->>> hw/ide/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++++
->>> hw/ide/meson.build |=C2=A0 1 +
->>> 5 files changed, 106 insertions(+), 49 deletions(-)
->>> create mode 100644 hw/ide/qdev-ide.h
->>> create mode 100644 hw/ide/cf.c
->>>=20
->>> diff --git a/hw/ide/qdev-ide.h b/hw/ide/qdev-ide.h
->>> new file mode 100644
->>> index 0000000000..3dd977466c
->>> --- /dev/null
->>> +++ b/hw/ide/qdev-ide.h
->>=20
->> This may be unrelated to this patch but we already have=20
->> include/hw/ide/internal.h which may be a place these should go in but th=
-at=20
->> header is in inlcude because some files outside hw/ide include it. I've=
-=20
->> found three places that include ide/internal.h: hw/arm/sbsa-ref.c,=20
->> hw/i386/pc.c and hw/misc/macio.h. Only macio is really needing internal =
-IDE=20
->> parts the other two just uses some functions so macio is probably the=20
->> reason this wasn't cleaned up yet. In any case, maybe this could go in=
-=20
->> include/hw/ide/internal.h to avoid introducing a new header or somehow m=
-ake=20
->> this a local header where non-public parts of hw/ide/internal.h could be=
-=20
->> moved in the future. Such as rename include/hw/ide/internal.h to ide.h a=
-nd=20
->> name this one internal.h maybe?
+On Thu, 1 Feb 2024 at 12:50, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >
-> I don't like headers that much that just collect a lot of only slightly=
-=20
-> related things. That only causes problems again when you have to unentang=
-le=20
-> the stuff one day. So what's wrong with having a dedicated header for the=
-=20
-> stuff in hw/ide/qdev.c ?
+> 01.02.2024 15:11, Michael Tokarev wrote:
+> > 31.01.2024 11:13, Zhang Wen:
+> >> With this patch, qemu requires keyboard-config when libxkbcommon is found on the system. So if the qemu is configured when libxkbcommon is installed
+> >> but not keyboard-config, the configure stage will produce an error message, thus avoid coredump in the build stage.
+> >
+> > I'm not sure what you're talking about.  What *is* keyboard-config anyway?
+> >
+> > On a debian system there's no such thing.  There's keyboard-configuration
+> > package but it has nothing to do with that.  It looks like if we apply
+> > such patch, it will be impossible to build qemu on debian.
+>
+> Aha, I found it.  On debian it is /usr/share/pkgconfig/keyboard-config.pc,
+> which is a part of xkb-data package.  And libxkbcommon Depends on xkb-data.
+> It looks like the distribution here is wrong, there should be no libxkbcommon
+> without xkb-data which includes keyboard-config.
 
-Maybe that it's not obvious from the name that it belongs to qdev.c as the=
-=20
-names are not the same. Also some of the qdev stuff that should be in this=
-=20
-header are in include/hw/ide/internal.h so these will still be split=20
-arbitrarily.
+Are we talking about "keyboard-config" or "xkeyboard-config" here?
+The commit message says "keyboard-config" but the patch itself
+says "xkeyboard-config".
 
-Regards,
-BALATON Zoltan
---1117279078-1045938643-1706792042=:16176--
+Zhang: it would be helpful if you could tell us which distro
+you are building on where you see this problem.
+
+thanks
+-- PMM
 
