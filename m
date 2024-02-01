@@ -2,73 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BB2845711
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A916B845720
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:14:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVVuZ-000140-JT; Thu, 01 Feb 2024 07:11:19 -0500
+	id 1rVVwj-0002Zf-BK; Thu, 01 Feb 2024 07:13:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rVVuX-00013l-ES; Thu, 01 Feb 2024 07:11:17 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rVVuV-0007Uf-KA; Thu, 01 Feb 2024 07:11:17 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 55AC749650;
- Thu,  1 Feb 2024 15:12:10 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7134B7150E;
- Thu,  1 Feb 2024 15:11:11 +0300 (MSK)
-Message-ID: <904ef958-0e3d-48da-a4a7-5c1514c04472@tls.msk.ru>
-Date: Thu, 1 Feb 2024 15:11:11 +0300
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rVVwf-0002Ys-66
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:13:29 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rVVwd-0007lN-GF
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:13:28 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33b0e5d1e89so574279f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:13:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706789601; x=1707394401; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Zn+/ye7RxQyRlRw4WUUebXTDcinacfZIyX6zTAbaIn4=;
+ b=mN1GUcHMLJz8f9p4gtnnkCL7a2HPifNBUPrHdwz33jSNWnCpRPa/m7Ec0qGis/S+vi
+ /FnFT2NU8BQ1ZJydRWoC9CjKbAppdJY8Ydw8qVXei33nj4P9ZOMQOv+ndSC/IUyt0V0T
+ Mg2wazmZZ1RPQwsn6/CmTSW4FFSgXpiAq42BdbHY6yeSBSc1FfwRhPOksF5vC8zuVRAD
+ vp2ZggvtvdWqVa/BRnVQQqibOsPiYuJdxjfpY0baC3JWZPdAydm3NPFYlRfmUBgS2Mvo
+ ACqxW3IYzMO/bMDje/yUHvHIQGziJ9Ye6PIdfwklE2MbaSdlO2J890zBH/1WUwZTreeB
+ Wrbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706789601; x=1707394401;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Zn+/ye7RxQyRlRw4WUUebXTDcinacfZIyX6zTAbaIn4=;
+ b=u9obhgRJga0iOHi/ZLFDqAazKwLIpT6UQ0/qGdhMQQa/fQBGEaQ9KWGhfrHtuJxdOO
+ dbwBP6Q80+Tt34QkpM33g7yrSNT0TsyR+dWZSCQ5KzyrvySPPrJCxfoUIRPMWXDRcZdC
+ A10I5+N5UphMikWdz06TqgwyXbiq1ZCA9MvbFtdjdo+WGvT5oPgXSOcgXp8AeY4volWP
+ /Md7up5NHq79vjL0hpo4Wnw7cWDZepKEKGFGtPTDD50JA/cLK3IwLLhhq99rML9GY2t8
+ YbsThtEQoOMNdTvKFezU9SIlbi28f7CJwJZeCHmw7CEN5VwvQ7p5kKw11hg+VhQ2j3vN
+ vJMw==
+X-Gm-Message-State: AOJu0YwaqLTf3fQlfr7ohnZqzIC5GC6o3qiBez9OV5vgER/Iowe80eGs
+ eKULL6iKEnxHjHjepLpPbi07MvjjNONNYgj6I1LmYEUnPAeKJrVBaxiFEo75AhU=
+X-Google-Smtp-Source: AGHT+IGB+c/lx7/rnRNnfJu4qEBVda7ddx4u1ulU2BJtZyQ/78w2aLdMTk84i0f+BuwBtVoebq2VoA==
+X-Received: by 2002:a5d:4447:0:b0:33b:3b3:f486 with SMTP id
+ x7-20020a5d4447000000b0033b03b3f486mr1480105wrr.35.1706789601434; 
+ Thu, 01 Feb 2024 04:13:21 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCW7NpIoj1nuyTbHJHNrUV1q1+a+ZoQR0ItTb3f/oQYUUZVrgXtgpm3dkNBK5rXiaKfVm8BWuAMykidDaVGuytEQcsOmVz3tGkXSERqR4dwFZKUnUCzV73xTpbE83xBeiETdeImZKHNIH6ea+u4r6lVOZSFjWhHnzVp9uavqI3sa+2ZzA94ITDsauWVt6gD9CopbZ0pS6h8LhBE5Dwaz1HFO7jCKyf0EdxrfYQVVBBXTB8ee/iZHtx2qomM0/TuuO8QrspDq/Ztpwq+MqHo2qezd/bng15nSGVZqYvQYNb3PR4834i+tTqsm9P4SoH4PR10YH7An0ikm/TzFFu6yR0qqV5bmi3WZQfTygoiUa09D1v4g56ixhODzhl3OFwHuZOldnZKzaOQb1NYUBew36RPn5udbwnYJERL4+FHQ39t0eyJeIjq1CjBMeHkCOHWQd8lT+ECKM0BwVOgobJZ+MO5BC5F2R9WAhzYWzVw2aVjP7OypX/LJmZaiDMyl0ONRtF1pOw87XGLmtR1qnmwragJTwVAL9leH5V+n5Hj9DZIajRpdJBR/tuUbXmRLdQVbxG/BikYO6RFDZmQUfLuSVk1Bzein4A9LnBD/jncArDmdsKk94Q0RnTT996Gohnki8u6WvdJauVFrxqB2gYoTqXswVn9p6XJufLoBtCnCRA8vzHJdfUufve46X8awnnSXqr7pHZSQidZcSh0sL/FJMrw3tHKBC0HlP3kNx6GDIV8ZjTXbOgpQmMeEyB9SHxJG1eMMmtY/tRdiGEOa5LOMzkbFsPv9twF4L0Lh6y0P8bJE6LrdA21AWQ++jemdxkcjh21HGKKozF9yNEwCCJfFBdJuJWHaaNpUTR/3r+OelPo8N6aCRzO+nFCvPhFDUUv2YLtNzDrJsouhblvhfhnRNVg/Y7K3plK+Wey+gm7jyw0hfg3kAbOIR/O1MWv7BcpJeKz1iG
+ bIYk94twoIFM6+aoGniZxwXfBzBiioRQSkd5j4D5FRUEeyW5f+BYSNn9Vi9A0R+u+gK0gf3uxfmLo4Z2yTaC1KSKjbsaIlxiCI+5DJCOceZnk14NZZKJVofGzfzzlNqczLaZOnw8uxrudRktM9ecWFOZvMZ6C6ZcgmvxCaqkQPYr9HzE9B7lXSZ++cy5whD3U0pdEQGuLpYZ9U17w4b22FnOeL/8OZLjS8br6ktHWkGqKhg6AKd+HxvzIpiZy2W/07Q20R/H2+tCBoNDKoNu4It9y5FrykveU=
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ u18-20020a5d4352000000b003392b1ebf5csm15989811wrr.59.2024.02.01.04.13.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Feb 2024 04:13:20 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id EDD6A5F7AF;
+ Thu,  1 Feb 2024 12:13:19 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  "Edgar E. Iglesias"
+ <edgar.iglesias@gmail.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Michael Rolnik <mrolnik@gmail.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
+ kvm@vger.kernel.org,  Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,  Palmer Dabbelt
+ <palmer@dabbelt.com>,  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,  Laurent
+ Vivier <laurent@vivier.eu>,  Yanan Wang <wangyanan55@huawei.com>,
+ qemu-ppc@nongnu.org,  Weiwei Li <liwei1518@gmail.com>,
+ qemu-s390x@nongnu.org,  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Peter Maydell
+ <peter.maydell@linaro.org>,  Alexandre Iooss <erdnaxe@crans.org>,  John
+ Snow <jsnow@redhat.com>,  Mahmoud Mandour <ma.mandourr@gmail.com>,  Wainer
+ dos Santos Moschetta <wainersm@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Ilya Leoshkevich <iii@linux.ibm.com>,
+ Alistair Francis <alistair.francis@wdc.com>,  David Woodhouse
+ <dwmw2@infradead.org>,  Cleber Rosa <crosa@redhat.com>,  Beraldo Leal
+ <bleal@redhat.com>,  Bin Meng <bin.meng@windriver.com>,  Nicholas Piggin
+ <npiggin@gmail.com>,  Aurelien Jarno <aurelien@aurel32.net>,  Daniel
+ Henrique Barboza <danielhb413@gmail.com>,  Daniel Henrique Barboza
+ <dbarboza@ventanamicro.com>,  Thomas Huth <thuth@redhat.com>,  David
+ Hildenbrand <david@redhat.com>,  qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Song Gao
+ <gaosong@loongson.cn>,  Eduardo Habkost <eduardo@habkost.net>,  Brian Cain
+ <bcain@quicinc.com>,  Paul Durrant <paul@xen.org>
+Subject: Re: [PATCH v3 00/21] plugin updates (register access) for 9.0
+ (pre-PR?)
+In-Reply-To: <20240122145610.413836-1-alex.bennee@linaro.org> ("Alex
+ =?utf-8?Q?Benn=C3=A9e=22's?=
+ message of "Mon, 22 Jan 2024 14:55:49 +0000")
+References: <20240122145610.413836-1-alex.bennee@linaro.org>
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Thu, 01 Feb 2024 12:13:19 +0000
+Message-ID: <871q9wmlgg.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: building qemu on a system with libxkbcommon installed but not
- xkeyboard-config produces an core dump
-Content-Language: en-US
-To: Zhang Wen <zhw2101024@gmail.com>, qemu-trivial@nongnu.org
-Cc: pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, qemu-devel@nongnu.org
-References: <94cf974b-05ec-41c2-8d0b-43ffbc8bdeac@gmail.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <94cf974b-05ec-41c2-8d0b-43ffbc8bdeac@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,15 +125,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-31.01.2024 11:13, Zhang Wen:
-> With this patch, qemu requires keyboard-config when libxkbcommon is found on the system. So if the qemu is configured when libxkbcommon is installed 
-> but not keyboard-config, the configure stage will produce an error message, thus avoid coredump in the build stage.
+Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
 
-I'm not sure what you're talking about.  What *is* keyboard-config anyway?
+> Akihiko requested the register support not be merged in its current
+> state so it's time for another round of review. I've made a few tweaks
+> to simplify the register and CPU tracking code in execlog and removed
+> some stale API functions. However from my point of view its ready to
+> merge.
+>
+> v3
+> --
+>   - split from testing bits (merged)
+>   - removed unused api funcs
+>   - keep CPUs in a GArray instead of doing by hand
+>
+> v2
+> --
+>
+>  - Review feedback for register API
+>  - readthedocs update
+>  - add expectation docs for plugins
+>
+> The following still need review:
+>
+>   contrib/plugins: extend execlog to track register changes
+>   gdbstub: expose api to find registers
 
-On a debian system there's no such thing.  There's keyboard-configuration
-package but it has nothing to do with that.  It looks like if we apply
-such patch, it will be impossible to build qemu on debian.
+Gentle ping. I'm ready to merge but more review was requested:
 
-/mjt
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
