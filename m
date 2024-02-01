@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4EF845F78
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F76845F86
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:11:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVbVQ-0006at-Lk; Thu, 01 Feb 2024 13:09:44 -0500
+	id 1rVbVR-0006cn-8j; Thu, 01 Feb 2024 13:09:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVL-0006a5-MI
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:39 -0500
+ id 1rVbVP-0006aS-7Y
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVI-00042f-Dr
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:38 -0500
+ id 1rVbVL-000436-Gb
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706810973;
+ s=mimecast20190719; t=1706810978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=X9AwAT/X3e91vBIu5yfOJLHyDQ53DDJSMLLJHQX3Z38=;
- b=jK/f74MIzehBM7ctUKp3lckR5IM3e02Z01E/1OdiyXOAAeW5lCWOBrssAFVO2Xsz3nD1gI
- p1F+DED0/usC07D3VVRvb7mVJ4OV5dEWAWlCUcjgArmidOcgn/Mj2JqIvbTJo+PeGM4lSV
- OtDersKhDBiQ+5E435ehzpS8f31ZPLY=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cDWNg3C6NEX8lkZW8RXIgVx2mtSqL2XFiTzcumQCrrw=;
+ b=bXGHRnyOXjr7pUPnMgwRLvZYT70eLxIiTq4bw+BrRM7l6ZF2bHDPL+qk/M8DAPjqbVrjlH
+ 3k7zBxpZA0/xvn4jWVSRkAh7qVF91Jf61m0luxIder8/cAF3h6gyzATiHoUxu8e/Hwu4mY
+ 8+2GAxlueYYgj/WX7IlQKRxivAG5ch0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-NfBBir4KMgKPZ0uF1_rB0A-1; Thu,
- 01 Feb 2024 13:09:31 -0500
-X-MC-Unique: NfBBir4KMgKPZ0uF1_rB0A-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-7nMxl59zPkCloDfQKfJFqA-1; Thu,
+ 01 Feb 2024 13:09:33 -0500
+X-MC-Unique: 7nMxl59zPkCloDfQKfJFqA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 56E491C54022;
- Thu,  1 Feb 2024 18:09:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5535B280A9AE;
+ Thu,  1 Feb 2024 18:09:33 +0000 (UTC)
 Received: from eperezma-thinkpadt480s.rmtes.csb (unknown [10.39.193.103])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 745182028CD2;
- Thu,  1 Feb 2024 18:09:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9718E2026D66;
+ Thu,  1 Feb 2024 18:09:31 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -50,11 +51,14 @@ Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Parav Pandit <parav@mellanox.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Si-Wei Liu <si-wei.liu@oracle.com>, Zhu Lingshan <lingshan.zhu@intel.com>
-Subject: [PATCH v2 0/7] Move memory listener register to vhost_vdpa_init
-Date: Thu,  1 Feb 2024 19:09:17 +0100
-Message-ID: <20240201180924.487579-1-eperezma@redhat.com>
+Subject: [PATCH v2 1/7] vdpa: check for iova tree initialized at
+ net_client_start
+Date: Thu,  1 Feb 2024 19:09:18 +0100
+Message-ID: <20240201180924.487579-2-eperezma@redhat.com>
+In-Reply-To: <20240201180924.487579-1-eperezma@redhat.com>
+References: <20240201180924.487579-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
@@ -81,65 +85,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current memory operations like pinning may take a lot of time at the
-destination.  Currently they are done after the source of the migration is
-stopped, and before the workload is resumed at the destination.  This is a
-period where neigher traffic can flow, nor the VM workload can continue
-(downtime).
+To map the guest memory while it is migrating we need to create the
+iova_tree, as long as the destination uses x-svq=on. Checking to not
+override it.
 
-We can do better as we know the memory layout of the guest RAM at the
-destination from the moment that all devices are initializaed.  So
-moving that operation allows QEMU to communicate the kernel the maps
-while the workload is still running in the source, so Linux can start
-mapping them.
+The function vhost_vdpa_net_client_stop clear it if the device is
+stopped. If the guest starts the device again, the iova tree is
+recreated by vhost_vdpa_net_data_start_first or vhost_vdpa_net_cvq_start
+if needed, so old behavior is kept.
 
-As a small drawback, there is a time in the initialization where QEMU
-cannot respond to QMP etc.  By some testing, this time is about
-0.2seconds.  This may be further reduced (or increased) depending on the
-vdpa driver and the platform hardware, and it is dominated by the cost
-of memory pinning.
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ net/vhost-vdpa.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-This matches the time that we move out of the called downtime window.
-The downtime is measured as checking the trace timestamp from the moment
-the source suspend the device to the moment the destination starts the
-eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
-secs to 2.0949.
-
-Future directions on top of this series may include to move more things ahead
-of the migration time, like set DRIVER_OK or perform actual iterative migration
-of virtio-net devices.
-
-Comments are welcome.
-
-This series is a different approach of series [1]. As the title does not
-reflect the changes anymore, please refer to the previous one to know the
-series history.
-
-This series is based on [2], it must be applied after it.
-
-v2:
-* Move the memory listener registration to vhost_vdpa_set_owner function.
-* Move the iova_tree allocation to net_vhost_vdpa_init.
-
-v1 at https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02136.html .
-
-[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.2540987-1-eperezma@redhat.com/
-[2] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05910.html
-
-Eugenio Pérez (7):
-  vdpa: check for iova tree initialized at net_client_start
-  vdpa: reorder vhost_vdpa_set_backend_cap
-  vdpa: set backend capabilities at vhost_vdpa_init
-  vdpa: add listener_registered
-  vdpa: reorder listener assignment
-  vdpa: move iova_tree allocation to net_vhost_vdpa_init
-  vdpa: move memory listener register to vhost_vdpa_init
-
- hw/virtio/vhost-vdpa.c         | 98 ++++++++++++++++++++++------------
- include/hw/virtio/vhost-vdpa.h | 22 +++++++-
- net/vhost-vdpa.c               | 34 ++----------
- 3 files changed, 88 insertions(+), 66 deletions(-)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 64825136a3..cc589dd148 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -333,7 +333,9 @@ static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+ 
+     migration_add_notifier(&s->migration_state,
+                            vdpa_net_migration_state_notifier);
+-    if (v->shadow_vqs_enabled) {
++
++    /* iova_tree may be initialized by vhost_vdpa_net_load_setup */
++    if (v->shadow_vqs_enabled && !v->shared->iova_tree) {
+         v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
+                                                    v->shared->iova_range.last);
+     }
 -- 
 2.43.0
 
