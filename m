@@ -2,105 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD4F845B26
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 16:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF9B845AE9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 16:07:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVYpb-0002Nb-BZ; Thu, 01 Feb 2024 10:18:23 -0500
+	id 1rVYe0-0006nW-7o; Thu, 01 Feb 2024 10:06:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbhat@linux.ibm.com>)
- id 1rVYpZ-0002N2-DN; Thu, 01 Feb 2024 10:18:21 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sbhat@linux.ibm.com>)
- id 1rVYpX-0005HK-KY; Thu, 01 Feb 2024 10:18:21 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 411F2TbD011713; Thu, 1 Feb 2024 15:18:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=8fkg77FbDWy0hbvoBxffAB6euUeRDNQrJo+6qYBrAoY=;
- b=szJNy4Q4qfhamIZHu8njY8BosCVZs+Au0zy2u6rYmPIbHNtjUquWv4LfJtNT/M4eGJJc
- Sd6fg2TAcNyyIdpq18f4ZKu1WFhTr3qv726veH69XQkbXoWB74rZqwfiGAlp/S2DjfXx
- JACYMOg2GHX8nVRkqGNdbOlhPLQphw0LiRoP9K4nTcOSfE9watlWvElF72eJ8s7WYYQq
- UQCL/tUxkvwMgxnT1uXF6WbLBUgNqXc4caumIyzs3fuKZedTM/KySa4ghw6HeyDe9Fk0
- Zi495VjK9FoIm6nXPf/wqU5SOe5tL5/6xSdQvL9jiWUhdKGLC+PGoaPLiDKfp7YYPzub YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0dkagh7g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Feb 2024 15:18:06 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 411F2axA012276;
- Thu, 1 Feb 2024 15:18:06 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0dkagh4h-3
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Feb 2024 15:18:06 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 411C5WcF007168; Thu, 1 Feb 2024 14:53:10 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2mc16-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 01 Feb 2024 14:53:10 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 411Er8gN22086272
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 1 Feb 2024 14:53:08 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6D7F820040;
- Thu,  1 Feb 2024 14:53:08 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5FF6F20043;
- Thu,  1 Feb 2024 14:53:06 +0000 (GMT)
-Received: from [9.109.208.159] (unknown [9.109.208.159])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  1 Feb 2024 14:53:06 +0000 (GMT)
-Message-ID: <3d4a6a18-c81c-420e-948a-35746c1988ca@linux.ibm.com>
-Date: Thu, 1 Feb 2024 20:23:05 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7] ppc: Enable 2nd DAWR support on p10
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com, clg@kaod.org, 
- david@gibson.dropbear.id.au, harshpb@linux.ibm.com,
- pbonzini@redhat.com, qemu-ppc@nongnu.org, kvm@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-References: <170063834599.621665.9541440879278084501.stgit@ltcd48-lp2.aus.stglab.ibm.com>
- <CYM2N4QA6ZDB.8JC8WRV7JPK3@wheely>
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-In-Reply-To: <CYM2N4QA6ZDB.8JC8WRV7JPK3@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nVm7AfGLWHKW8pLAI1svBmbSMGd2tnkv
-X-Proofpoint-GUID: JuKde7F9O9QJRtCoMD5umU3Y3KzS4JfL
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rVYdy-0006mV-Li
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:06:22 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rVYdw-00038m-Er
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:06:22 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a357cba4a32so139031066b.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 07:06:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1706799977; x=1707404777; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ydodzi5mkvIz5Auw1VR9isoTRD7y8azWMN5eCfOjOF0=;
+ b=FXRVASPJ4qucc0MmM0o9xum++FI4PZ98SYQNgwrayqulJbWNpYr5EcT6F3ZtU2DJgm
+ CoAp1LpZoGj07+hFV0ubedEx6xzrdExsfg87gXv2sdvTrHNf5HYyj6YBTnLq78NnoTxF
+ jiSiWDYt3oy8e50HBKxZs59lZ42ajorQYpEidmcesMVDMSQ6Q0xIdsBHt0TKIP0N1X9z
+ b1iv9oqj72uWxXNYg+925DCWBN4ftJwGDb+a3H5q4rlbHEaZwiv+xYXw3hnMcehVA4Px
+ rLck8wnS/4OODssWveUSqTJmbYVSPr+Rwc2rbWnY17FXg1f+zSCeDRyZp/2gGfU0aeX2
+ TKgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706799977; x=1707404777;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ydodzi5mkvIz5Auw1VR9isoTRD7y8azWMN5eCfOjOF0=;
+ b=GK2QcOZmHeBEPE1QHKn9njWbAaRMcofUMDN9s1MMq/XFLKWX9NiBnssE1xd3Ifipcr
+ DpfNLADU8UkadrUfwP9i+c5c750i92mhA9VLa8KzbU6KjizvP2TS+bJxQyeUOfkt6GaC
+ 9ISvZF4KxJdGZyFYn9/rXSrqHinX93fefFJoSYQ5sdNqkoMRCfH/O+2dHAdCjSO5QTlV
+ mF1hTDFU70D4KfGf+TfWXJE7ivQx8aaNXuDEwytnVTDMB7OsVze7tpRmC9H/34gGrS0u
+ a282NgEGWhzrxf3sQ2V3jizpBxRwKqGF8jlilv9alIM7i6x/b3OjYIPIgMK60XzuA5Yl
+ uWxQ==
+X-Gm-Message-State: AOJu0Yx91RUvkZv0kpchB/cAeNyLK/i0zjiHCUCphMuYT6HpF/4AlpaN
+ nEZmxtHWv9AAOE5tZOAGR36tsBSVTOSQtGmQ8nnzm7BN5HzjzzrP3aZhKEfhYqIflWdYu3Hc9xR
+ 0
+X-Google-Smtp-Source: AGHT+IE8sD+VdVVE7FFoCQVjCTmbbhNHmt2sqqgsRrLwvlbD7DZIaHNx6CbxE2JNh3hF3G+szMXvdA==
+X-Received: by 2002:a17:906:408b:b0:a36:3edb:aeac with SMTP id
+ u11-20020a170906408b00b00a363edbaeacmr2217948ejj.17.1706799977076; 
+ Thu, 01 Feb 2024 07:06:17 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCW3A1XS/cQlV8EzzwB6cq0s5gVWNKTEWASrx1xq41Fys63qEU7WOr8g3ICi4rl/m8f8ubbs854AUjEnTcPsKcL1Vnm13oQ=
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
+ [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ by smtp.gmail.com with ESMTPSA id
+ vw16-20020a170907a71000b00a354f8fc19fsm5982481ejc.214.2024.02.01.07.06.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 Feb 2024 07:06:16 -0800 (PST)
+Date: Thu, 1 Feb 2024 16:06:15 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH] RISC-V: Report the QEMU vendor/arch IDs on virtual CPUs
+Message-ID: <20240201-65329fd8836e03549298b340@orel>
+References: <20240131182430.20174-1-palmer@rivosinc.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_03,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=922 spamscore=0
- mlxscore=0 phishscore=0 suspectscore=0 impostorscore=0 clxscore=1015
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402010120
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=sbhat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131182430.20174-1-palmer@rivosinc.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,83 +94,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for the review Nick!
+On Wed, Jan 31, 2024 at 10:24:30AM -0800, Palmer Dabbelt wrote:
+> Right now we just report 0 for marchid/mvendorid in QEMU.  That's legal,
+> but it's tricky for users that want to check if they're running on QEMU
+> to do so.  This sets marchid to 42, which I've proposed as the QEMU
+> architecture ID (mvendorid remains 0, just explicitly set, as that's how
+> the ISA handles open source implementations).
 
-On 1/23/24 17:36, Nicholas Piggin wrote:
-> On Wed Nov 22, 2023 at 5:32 PM AEST, Shivaprasad G Bhat wrote:
->> Extend the existing watchpoint facility from TCG DAWR0 emulation
->> to DAWR1 on POWER10.
->>
->> As per the PAPR, bit 0 of byte 64 in pa-features property
->> indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
->> DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
->> whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
->> the pa-feature bit in guest DT using cap-dawr1 machine capability.
-<snip>
-> I don't really like the macros. I have nightmares from Linux going
-> overboard with defining functions using spaghetti of generator macros.
->
-> Could you just make most functions accept either SPR number or number
-> (0, 1), or simply use if/else, to select between them?
->
-> Splitting the change in 2 would be good, first add regs + TCG, then the
-> spapr bits.
-Sure.
-> [snip]
->
->> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
->> index a05bdf78c9..022b984e00 100644
->> --- a/target/ppc/misc_helper.c
->> +++ b/target/ppc/misc_helper.c
->> @@ -204,16 +204,24 @@ void helper_store_ciabr(CPUPPCState *env, target_ulong value)
->>       ppc_store_ciabr(env, value);
->>   }
->>
->> -void helper_store_dawr0(CPUPPCState *env, target_ulong value)
->> -{
->> -    ppc_store_dawr0(env, value);
->> +#define HELPER_STORE_DAWR(id)                                                 \
->> +void helper_store_dawr##id(CPUPPCState *env, target_ulong value)              \
->> +{                                                                             \
->> +    env->spr[SPR_DAWR##id] = value;                                           \
->>   }
->>
->> -void helper_store_dawrx0(CPUPPCState *env, target_ulong value)
->> -{
->> -    ppc_store_dawrx0(env, value);
->> +#define HELPER_STORE_DAWRX(id)                                                \
->> +void helper_store_dawrx##id(CPUPPCState *env, target_ulong value)             \
->> +{                                                                             \
->> +    env->spr[SPR_DAWRX##id] = value;                                          \
->>   }
-> Did we lose the calls to ppc_store_dawr*? That will
-> break direct register access (i.e., powernv) if so.
+Hi Palmer,
 
-Yes. My test cases were more focussed on caps-dawr1 with pSeries
+marchid has this text
 
-usecases, and missed this. I have taken care in the next version.
+"""
+Open-source project architecture IDs are allocated globally by RISC-V
+International, and have non-zero architecture IDs with a zero
+most-significant-bit (MSB). Commercial architecture IDs are allocated
+by each commercial vendor independently, but must have the MSB set and
+cannot contain zero in the remaining MXLEN-1 bits.
+"""
 
->> +HELPER_STORE_DAWR(0)
->> +HELPER_STORE_DAWRX(0)
->> +
->> +HELPER_STORE_DAWR(1)
->> +HELPER_STORE_DAWRX(1)
-> I would say open-code all these too instead of generating. If we
-> ever grew to >= 4 of them maybe, but as is this saves 2 lines,
-> and makes 'helper_store_dawrx0' more difficult to grep for.
+and mvendorid has this text
 
-I open coded all of the functions with barely 12 lines more adding up
+"""
+...a value of 0 can be
+returned to indicate the field is not implemented or that this is a
+non-commercial implementation.
+"""
 
-without macros.
-
-
-The next version posted at
-
-https://lore.kernel.org/qemu-devel/170679876639.188422.11634974895844092362.stgit@ltc-boston1.aus.stglabs.ibm.com/T/#t
-
+We must select zero for mvendorid, since we're a non-commercial
+implementation, and that means we can't set the marchid to a commercial
+ID of our choosing, i.e. some ID with the MSB set. We also can't select
+an archid without the MSB set, though, because RVI needs to allocate
+us that ID. Long story short, I think we need to use mvendorid=0,marchid=0
+unless we ask for and receive an marchid from RVI. Now, looking at mimpid,
+I think we're free to set that to whatever we want, even if the other IDs
+must be zero, but we should probably consider if we also want some bits
+reserved for revisions or something before settling on an ID. Actually,
+my vote would be to get an official marchid from RVI and then mimpid can
+be reserved for other uses.
 
 Thanks,
+drew
 
-Shivaprasad
 
+
+> 
+> Link: https://github.com/riscv/riscv-isa-manual/pull/1213
+> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> ---
+>  target/riscv/cpu.c          | 16 ++++++++++++++++
+>  target/riscv/cpu_vendorid.h |  3 +++
+>  2 files changed, 19 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 8cbfc7e781..1aef186f87 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -415,6 +415,9 @@ static void riscv_any_cpu_init(Object *obj)
+>      cpu->cfg.ext_zicsr = true;
+>      cpu->cfg.mmu = true;
+>      cpu->cfg.pmp = true;
+> +
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  
+>  static void riscv_max_cpu_init(Object *obj)
+> @@ -432,6 +435,8 @@ static void riscv_max_cpu_init(Object *obj)
+>      set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
+>                                  VM_1_10_SV32 : VM_1_10_SV57);
+>  #endif
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  
+>  #if defined(TARGET_RISCV64)
+> @@ -445,6 +450,8 @@ static void rv64_base_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+>  #endif
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  
+>  static void rv64_sifive_u_cpu_init(Object *obj)
+> @@ -569,6 +576,8 @@ static void rv128_base_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+>  #endif
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  
+>  static void rv64i_bare_cpu_init(Object *obj)
+> @@ -591,6 +600,8 @@ static void rv64i_bare_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV64);
+>  #endif
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  #else
+>  static void rv32_base_cpu_init(Object *obj)
+> @@ -603,6 +614,8 @@ static void rv32_base_cpu_init(Object *obj)
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
+>  #endif
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  
+>  static void rv32_sifive_u_cpu_init(Object *obj)
+> @@ -672,6 +685,9 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
+>      cpu->cfg.ext_zifencei = true;
+>      cpu->cfg.ext_zicsr = true;
+>      cpu->cfg.pmp = true;
+> +
+> +    cpu->cfg.mvendorid = QEMU_MVENDORID;
+> +    cpu->cfg.marchid = QEMU_MARCHID;
+>  }
+>  #endif
+>  
+> diff --git a/target/riscv/cpu_vendorid.h b/target/riscv/cpu_vendorid.h
+> index 96b6b9c2cb..486832cd53 100644
+> --- a/target/riscv/cpu_vendorid.h
+> +++ b/target/riscv/cpu_vendorid.h
+> @@ -7,4 +7,7 @@
+>  #define VEYRON_V1_MIMPID        0x111
+>  #define VEYRON_V1_MVENDORID     0x61f
+>  
+> +#define QEMU_VIRT_MVENDORID     0
+> +#define QEMU_VIRT_MARCHID       42
+> +
+>  #endif /*  TARGET_RISCV_CPU_VENDORID_H */
+> -- 
+> 2.43.0
+> 
+> 
 
