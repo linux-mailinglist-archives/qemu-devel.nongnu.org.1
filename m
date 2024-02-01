@@ -2,104 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FA0845B20
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 16:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8524C845B4B
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 16:22:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVYpF-0002H2-8m; Thu, 01 Feb 2024 10:18:01 -0500
+	id 1rVYsk-0004KQ-4K; Thu, 01 Feb 2024 10:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVYpD-0002Gf-Bf
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:17:59 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVYsi-0004KC-HX
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:21:36 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVYpB-0005Fr-FR
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:17:59 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40ef6f10b56so8797575e9.2
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 07:17:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706800674; x=1707405474; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FUJvKbgUShvcNix3bLT53w7WZVTT9v8XQDwDHAtkVak=;
- b=sHj15k5WMep/bBrZRnOR3/KR0vGxcYUWGzt09ZKJhy74JTd/V0+xuGGR7V0ROOp+g+
- OQdJUnNWwl0+I/Si4BOY//jo991Iih+4hDBDgMDc/ZR919vSNZhgbt2ihRlyGWO3Pwhx
- dULaGHsnrSPF78M3zy42PMLI4xXwMs9C84VXQe7fspl5BYx4mn/fXR3FX6S+1RbbnV7n
- 9GN8Fl/VNXoz+K3lPHxiUKs/px3dlfggueS2Y+OmSb1DDe2+EpVcckYziBqmGNEU/2uq
- lnXqonseVTHQJ8/s/F02gCH4iapOkJbiSLsHeSJZXiP9IwvjIRw3HpIH2k6xHpEYwMmv
- usRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706800674; x=1707405474;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FUJvKbgUShvcNix3bLT53w7WZVTT9v8XQDwDHAtkVak=;
- b=MMdc8EdCSsFa4Y7ZlvNO6sOmZvF0DAFzZqPh/bcUbR8CQRxql1Vor7EMiET9kKgHiQ
- UhdXqvVAwYpdfkHqE88aMs2h0GzjLB0ktYxjs65zXEHCfLbqS5FTXgGCph1PF8HufrRZ
- CXksDpKoSQaQ1buepE6fAOREZI9IUS18l/p7IWOInEN+j9mMav/SljP9ZXNSE8Dy0Lp9
- hQEDfBk5JVvea/zFx5l90MUb0NRlEVSfDGT1DxUw5EPAeKlqxZyo7iS9Y6PtuJbN073g
- 8nHSiUI3Q1EE+/2V7tulnYprMDeWLUyGSRJSr13L7VCUiVR2+dTMxZfkU5JiJReQkqoF
- S4uQ==
-X-Gm-Message-State: AOJu0Yx9bqcP2TwuLI3IOmOCOwiwjdldbgKCnwY4oGqA/UgmJMqtMJVI
- ZKO+qO4Qm9mBb2Ub/Lhz7G0NdWj+klurB9iLZaXnm/JZo69esPNPy+GrLyQqRgg=
-X-Google-Smtp-Source: AGHT+IHqNwbRTDKuNiWXp7JHfZveH2s2JcoTDYTaoUHFAp2OjWDl1l6e2VV1HDTAk/opSHtq1uXvtA==
-X-Received: by 2002:a05:600c:358b:b0:40e:af03:5f8d with SMTP id
- p11-20020a05600c358b00b0040eaf035f8dmr1847495wmq.8.1706800674616; 
- Thu, 01 Feb 2024 07:17:54 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCUwc5clXq2gzWSAW4WkBMQ3Rd7Wh/mSXpU5AAOkNNm4b3xrwJaIRZUQMBRubhJk87/NO5ZUUkLzSB6nJCH+rFR9OcohTIhDWN1TDdVk4QgFbQxF4lhlFfpgtzi5pWljpmOBobzfqnWJBFfSW+xMC+5p0UVXLPSkZ8I6ZPGYH0D5uAW3y+Km0jk+vhYgk3wDqqkEJVYOtWAAuENEx1Swrw0pJCIA4ETONZ74dRAeEAAcATVjAcVP5b9IBAaOGV1rDaNE02SUAjE3qcUNh/U=
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- m39-20020a05600c3b2700b0040fb7695620sm3086165wms.0.2024.02.01.07.17.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 07:17:54 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CCD655F7AF;
- Thu,  1 Feb 2024 15:17:53 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,  Sajjan Rao
- <sajjanr@gmail.com>,  Gregory Price <gregory.price@memverge.com>,
- Dimitrios Palyvos <dimitrios.palyvos@zptcorp.com>,
- linux-cxl@vger.kernel.org,  qemu-devel@nongnu.org,
- richard.henderson@linaro.org
-Subject: Re: Crash with CXL + TCG on 8.2: Was Re: qemu cxl memory expander
- shows numa_node -1
-In-Reply-To: <CAFEAcA9DW8AuMwDr_qyDXPWJcLsvD773XTr1stwuagHWc6p72g@mail.gmail.com>
- (Peter Maydell's message of "Thu, 1 Feb 2024 14:35:56 +0000")
-References: <CAAg4PaqsGZvkDk_=PH+Oz-yeEUVcVsrumncAgegRKuxe_YoFhA@mail.gmail.com>
- <CAGEDW0fWCfuG3KrNSwDjNVGAZVL9NJgF26Jqyd840HfQdNGLbA@mail.gmail.com>
- <CAAg4Pard=zh_5p650UcNdQEoQWZLM6G7KRqdPQHLmaR4oZMJ3w@mail.gmail.com>
- <CAGEDW0dVEk-QXuL=DPVvSP4t5cafz6N-r_SrCxgFnBfFOsixSA@mail.gmail.com>
- <CAAg4PaqgZcTXkWuys7FZjQdRChTkKj-ZnJQCdxpTMCxy4Hghow@mail.gmail.com>
- <20230823175056.00001a84@Huawei.com>
- <CAAg4ParSB4_2FU2bu96A=3tSNuwHqZwK0wCS18EJoPAq9kYEkw@mail.gmail.com>
- <CAAg4Pap9KzkgX=fgE7vNJYxEpGbHA-NVsgBY5npXizUbMhjp9A@mail.gmail.com>
- <20240126123926.000051bd@Huawei.com> <ZbPTL00WOo7UC0e6@memverge.com>
- <20240126171233.00002a2e@Huawei.com>
- <CAAg4ParQKj9FUe0DRX0Wmk1KT0bnxx2F7W=ic38781j7eVz+OQ@mail.gmail.com>
- <20240201130438.00001384@Huawei.com>
- <CAFEAcA-rgFmaE4Ea7hZ-On4uyaqjWoo-OwwfNrUOdp=+Q5ckXA@mail.gmail.com>
- <20240201140100.000016ce@huawei.com>
- <CAFEAcA9DW8AuMwDr_qyDXPWJcLsvD773XTr1stwuagHWc6p72g@mail.gmail.com>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Thu, 01 Feb 2024 15:17:53 +0000
-Message-ID: <87msskkyce.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVYsf-0005sz-ST
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 10:21:36 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CB56721ECA;
+ Thu,  1 Feb 2024 15:21:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706800891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Shg7GlnfacQWIH9dyQDG8RBCnql+b1e/gmiGjBli29Y=;
+ b=gBPv97v1Vmb3swWCMNwNFDnfuvvEdsSTEeLfBXNYlk5W0lduEZPWK4bCX0S/yyWEj8Jg/J
+ Iura96cE4tesdCZuIwDdksPD8X82hhwxFYRF/k/6xzqej8GU2CDhkKvzMVd4oALF+wM2aT
+ 2ltt2d40IBsJT03KFVUwFHOt4RgmFo4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706800891;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Shg7GlnfacQWIH9dyQDG8RBCnql+b1e/gmiGjBli29Y=;
+ b=oXcMmE4eCqKrU8yXRMEjNIz2qJiy0k0V5eBL/XXQ4S+Ine0zWUBUd3xcU+J2Afv0qFKGHZ
+ 29vGNQbPp1Dl7oCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706800890; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Shg7GlnfacQWIH9dyQDG8RBCnql+b1e/gmiGjBli29Y=;
+ b=rbwjrnptogfcvoEhoXaKfHxYLoEsA6ejJq1cgaQKKuvDinzTT0MbX8OYvDuTtg9d16AEPI
+ jLKqcD+4bezOhhuPhoEL0lWSVQkmpniVvJGy6DlKspWedOPB6LTPo9/L6wa5veE0F4zwv3
+ /IJ6AyBF3gbbtDcmhWPa+BRU25UYjOo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706800890;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Shg7GlnfacQWIH9dyQDG8RBCnql+b1e/gmiGjBli29Y=;
+ b=GDTglfDG1XqBR4xfztzYV50UJ948saj51wjJvLdr1pJXtx5KiB1x0YOGR3gVS4Jky7TCeU
+ adqYY03maM9PjtCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5396E139AB;
+ Thu,  1 Feb 2024 15:21:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id Rq8CB/q2u2XNbgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 01 Feb 2024 15:21:30 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Bryan Zhang <bryan.zhang@bytedance.com>, Prasad
+ Pandit <ppandit@redhat.com>, Yuan Liu <yuan1.liu@intel.com>, Avihai Horon
+ <avihaih@nvidia.com>, Hao Xiang <hao.xiang@bytedance.com>
+Subject: Re: [PATCH 04/14] migration/multifd: Postpone reset of MultiFDPages_t
+In-Reply-To: <ZbtsCsBFuMj1fx-q@x1n>
+References: <20240131103111.306523-1-peterx@redhat.com>
+ <20240131103111.306523-5-peterx@redhat.com> <87wmrpjzew.fsf@suse.de>
+ <ZbtsCsBFuMj1fx-q@x1n>
+Date: Thu, 01 Feb 2024 12:21:27 -0300
+Message-ID: <87plxgi51k.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rbwjrnpt;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=GDTglfDG
+X-Spamd-Result: default: False [-3.31 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ RCPT_COUNT_SEVEN(0.00)[7]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]; ARC_NA(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: CB56721ECA
+X-Spam-Score: -3.31
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,115 +121,430 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Peter Xu <peterx@redhat.com> writes:
 
-> On Thu, 1 Feb 2024 at 14:01, Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
->> > Can you run QEMU under gdb and give the backtrace when it stops
->> > on the abort() ? That will probably have a helpful clue. I
->> > suspect something is failing to pass a valid retaddr in
->> > when it calls a load/store function.
+> On Wed, Jan 31, 2024 at 12:27:51PM -0300, Fabiano Rosas wrote:
+>> > +/* Reset a MultiFDPages_t* object for the next use */
+>> > +static void multifd_pages_reset(MultiFDPages_t *pages)
+>> > +{
+>> > +    /*
+>> > +     * We don't need to touch offset[] array, because it will be
+>> > +     * overwritten later when reused.
+>> > +     */
+>> > +    pages->num = 0;
+>> > +    pages->block = NULL;
+>> 
+>> Having to do this at all is a huge overloading of this field. This not
+>> only resets it, but it also communicates to multifd_queue_page() that
+>> the previous payload has been sent. Otherwise, multifd_queue_page()
+>> wouldn't know whether the previous call to multifd_queue_page() has
+>> called multifd_send_pages() or if it has exited early. So this basically
+>> means "the block that was previously here has been sent".
+>> 
+>> That's why we need the changed=true logic. A
+>> multifd_send_state->pages->block still has a few pages left to send, but
+>> because it's less than pages->allocated, it skips
+>> multifd_send_pages(). The next call to multifd_queue_page() already has
+>> the next ramblock. So we set changed=true, call multifd_send_pages() to
+>> send the remaining pages of that block and recurse into
+>> multifd_queue_page() once more to send the new block.
 >
->> [Switching to Thread 0x7ffff56ff6c0 (LWP 21916)]
->> __pthread_kill_implementation (no_tid=3D0, signo=3D6, threadid=3D<optimi=
-zed out>) at ./nptl/pthread_kill.c:44
->> 44      ./nptl/pthread_kill.c: No such file or directory.
->> (gdb) bt
->> #0  __pthread_kill_implementation (no_tid=3D0, signo=3D6, threadid=3D<op=
-timized out>) at ./nptl/pthread_kill.c:44
->> #1  __pthread_kill_internal (signo=3D6, threadid=3D<optimized out>) at .=
-/nptl/pthread_kill.c:78
->> #2  __GI___pthread_kill (threadid=3D<optimized out>, signo=3Dsigno@entry=
-=3D6) at ./nptl/pthread_kill.c:89
->> #3  0x00007ffff77c43b6 in __GI_raise (sig=3Dsig@entry=3D6) at ../sysdeps=
-/posix/raise.c:26
->> #4  0x00007ffff77aa87c in __GI_abort () at ./stdlib/abort.c:79
->> #5  0x0000555555c0d4ce in cpu_abort
->>     (cpu=3Dcpu@entry=3D0x555556fd9000, fmt=3Dfmt@entry=3D0x555555fe3378 =
-"cpu_io_recompile: could not find TB for pc=3D%p")
->>     at ../../cpu-target.c:359
->> #6  0x0000555555c59435 in cpu_io_recompile (cpu=3Dcpu@entry=3D0x555556fd=
-9000, retaddr=3Dretaddr@entry=3D0) at ../../accel/tcg/translate-all.c:611
->> #7  0x0000555555c5c956 in io_prepare
->>     (retaddr=3D0, addr=3D19595792376, attrs=3D..., xlat=3D<optimized out=
->, cpu=3D0x555556fd9000, out_offset=3D<synthetic pointer>)
->>     at ../../accel/tcg/cputlb.c:1339
-<snip>
->> #21 tb_htable_lookup (cpu=3D<optimized out>, pc=3Dpc@entry=3D18446744072=
-116178925, cs_base=3D0, flags=3D415285936, cflags=3D4278353920)
->>     at ../../accel/tcg/cpu-exec.c:231
->> #22 0x0000555555c50c08 in tb_lookup
->>     (cpu=3Dcpu@entry=3D0x555556fd9000, pc=3Dpc@entry=3D18446744072116178=
-925, cs_base=3Dcs_base@entry=3D0, flags=3D<optimized out>, cflags=3D<optimi=
-zed out>) at ../../accel/tcg/cpu-exec.c:267
->> #23 0x0000555555c51e23 in helper_lookup_tb_ptr (env=3D0x555556fdb7c0) at=
- ../../accel/tcg/cpu-exec.c:423
->> #24 0x00007fffa9076ead in code_gen_buffer ()
->> #25 0x0000555555c50fab in cpu_tb_exec (cpu=3Dcpu@entry=3D0x555556fd9000,=
- itb=3D<optimized out>, tb_exit=3Dtb_exit@entry=3D0x7ffff56fe708)
->>     at ../../accel/tcg/cpu-exec.c:458
->> #26 0x0000555555c51492 in cpu_loop_exec_tb
->>     (tb_exit=3D0x7ffff56fe708, last_tb=3D<synthetic pointer>, pc=3D18446=
-744072116179169, tb=3D<optimized out>, cpu=3D0x555556fd9000)
->>     at ../../accel/tcg/cpu-exec.c:920
->> #27 cpu_exec_loop (cpu=3Dcpu@entry=3D0x555556fd9000, sc=3Dsc@entry=3D0x7=
-ffff56fe7a0) at ../../accel/tcg/cpu-exec.c:1041
->> #28 0x0000555555c51d11 in cpu_exec_setjmp (cpu=3Dcpu@entry=3D0x555556fd9=
-000, sc=3Dsc@entry=3D0x7ffff56fe7a0) at ../../accel/tcg/cpu-exec.c:1058
->> #29 0x0000555555c523b4 in cpu_exec (cpu=3Dcpu@entry=3D0x555556fd9000) at=
- ../../accel/tcg/cpu-exec.c:1084
->> #30 0x0000555555c74053 in tcg_cpus_exec (cpu=3Dcpu@entry=3D0x555556fd900=
-0) at ../../accel/tcg/tcg-accel-ops.c:76
->> #31 0x0000555555c741a0 in mttcg_cpu_thread_fn (arg=3Darg@entry=3D0x55555=
-6fd9000) at ../../accel/tcg/tcg-accel-ops-mttcg.c:95
->> #32 0x0000555555dfb580 in qemu_thread_start (args=3D0x55555703c3e0) at .=
-./../util/qemu-thread-posix.c:541
->> #33 0x00007ffff78176ba in start_thread (arg=3D<optimized out>) at ./nptl=
-/pthread_create.c:444
->> #34 0x00007ffff78a60d0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64=
-/clone3.S:81
+> I agree, the queue page routines are not easy to follow as well.
 >
-> So, that looks like:
->  * we call cpu_tb_exec(), which executes some generated code
->  * that generated code calls the lookup_tb_ptr helper to see
->    if we have a generated TB already for the address we're going
->    to execute next
->  * lookup_tb_ptr probes the TLB to see if we know the host RAM
->    address for the guest address
->  * this results in a TLB walk for an instruction fetch
->  * the page table descriptor load is to IO memory
->  * io_prepare assumes it needs to do a TLB recompile, because
->    can_do_io is clear
+> How do you like a rewrite of the queue logic, like this?
 >
-> I am not surprised that the corner case of "the guest put its
-> page tables in an MMIO device" has not yet come up :-)
+> =====
+> bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+> {
+>     MultiFDPages_t *pages;
 >
-> I'm really not sure how the icount handling should interact
-> with that...
+> retry:
+>     pages = multifd_send_state->pages;
+>
+>     /* If the queue is empty, we can already enqueue now */
+>     if (multifd_queue_empty(pages)) {
+>         pages->block = block;
+>         multifd_enqueue(pages, offset);
+>         return true;
+>     }
+>
+>     /*
+>      * Not empty, meanwhile we need a flush.  It can because of either:
+>      *
+>      * (1) The page is not on the same ramblock of previous ones, or,
+>      * (2) The queue is full.
+>      *
+>      * After flush, always retry.
+>      */
+>     if (pages->block != block || multifd_queue_full(pages)) {
+>         if (!multifd_send_pages()) {
+>             return false;
+>         }
+>         goto retry;
+>     }
+>
+>     /* Not empty, and we still have space, do it! */
+>     multifd_enqueue(pages, offset);
+>     return true;
+> }
+> =====
+>
+> Would this be clearer?  With above, we can drop the ->ramblock reset,
+> afaict.
+>
+> I attached three patches if you agree it's better, then I'll include them
+> in v2.
 
-Its not just icount - we need to handle it for all modes now. That said
-seeing as we are at the end of a block shouldn't can_do_io be set?
+Yes, let's do it.
 
-Does:
+>
+> -- 
+> Peter Xu
+> From c5dc2052794efd6da6a1e6f4b49f25d5b32879f7 Mon Sep 17 00:00:00 2001
+> From: Peter Xu <peterx@redhat.com>
+> Date: Thu, 1 Feb 2024 17:50:21 +0800
+> Subject: [PATCH 1/3] migration/multifd: Change retval of multifd_queue_page()
+>
+> Using int is an overkill when there're only two options.  Change it to a
+> boolean.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/multifd.h | 2 +-
+>  migration/multifd.c | 9 +++++----
+>  migration/ram.c     | 2 +-
+>  3 files changed, 7 insertions(+), 6 deletions(-)
+>
+> diff --git a/migration/multifd.h b/migration/multifd.h
+> index 34a2ecb9f4..a320c53a6f 100644
+> --- a/migration/multifd.h
+> +++ b/migration/multifd.h
+> @@ -22,7 +22,7 @@ bool multifd_recv_all_channels_created(void);
+>  void multifd_recv_new_channel(QIOChannel *ioc, Error **errp);
+>  void multifd_recv_sync_main(void);
+>  int multifd_send_sync_main(void);
+> -int multifd_queue_page(RAMBlock *block, ram_addr_t offset);
+> +bool multifd_queue_page(RAMBlock *block, ram_addr_t offset);
+>  
+>  /* Multifd Compression flags */
+>  #define MULTIFD_FLAG_SYNC (1 << 0)
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 91be6d2fc4..d0a3b4e062 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -505,7 +505,8 @@ static int multifd_send_pages(void)
+>      return 1;
+>  }
+>  
+> -int multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+> +/* Returns true if enqueue successful, false otherwise */
+> +bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+>  {
+>      MultiFDPages_t *pages = multifd_send_state->pages;
+>      bool changed = false;
+> @@ -519,21 +520,21 @@ int multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+>          pages->num++;
+>  
+>          if (pages->num < pages->allocated) {
+> -            return 1;
+> +            return true;
+>          }
+>      } else {
+>          changed = true;
+>      }
+>  
+>      if (multifd_send_pages() < 0) {
+> -        return -1;
+> +        return false;
+>      }
+>  
+>      if (changed) {
+>          return multifd_queue_page(block, offset);
+>      }
+>  
+> -    return 1;
+> +    return true;
+>  }
+>  
+>  /* Multifd send side hit an error; remember it and prepare to quit */
+> diff --git a/migration/ram.c b/migration/ram.c
+> index d5b7cd5ac2..4649a81204 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -1252,7 +1252,7 @@ static int ram_save_page(RAMState *rs, PageSearchStatus *pss)
+>  
+>  static int ram_save_multifd_page(RAMBlock *block, ram_addr_t offset)
+>  {
+> -    if (multifd_queue_page(block, offset) < 0) {
+> +    if (!multifd_queue_page(block, offset)) {
+>          return -1;
+>      }
+>      stat64_add(&mig_stats.normal_pages, 1);
+> -- 
+> 2.43.0
+>
+> From f393f1cfe95d79bed72e6043903ee4c4cb298c21 Mon Sep 17 00:00:00 2001
+> From: Peter Xu <peterx@redhat.com>
+> Date: Thu, 1 Feb 2024 17:51:38 +0800
+> Subject: [PATCH 2/3] migration/multifd: Change retval of multifd_send_pages()
+>
+> Using int is an overkill when there're only two options.  Change it to a
+> boolean.
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/multifd.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+>
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index d0a3b4e062..d2b0f0eda9 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -449,9 +449,10 @@ static void multifd_send_kick_main(MultiFDSendParams *p)
+>   * thread is using the channel mutex when changing it, and the channel
+>   * have to had finish with its own, otherwise pending_job can't be
+>   * false.
+> + *
+> + * Returns true if succeed, false otherwise.
+>   */
+> -
+> -static int multifd_send_pages(void)
+> +static bool multifd_send_pages(void)
+>  {
+>      int i;
+>      static int next_channel;
+> @@ -459,7 +460,7 @@ static int multifd_send_pages(void)
+>      MultiFDPages_t *pages = multifd_send_state->pages;
+>  
+>      if (multifd_send_should_exit()) {
+> -        return -1;
+> +        return false;
+>      }
+>  
+>      /* We wait here, until at least one channel is ready */
+> @@ -473,7 +474,7 @@ static int multifd_send_pages(void)
+>      next_channel %= migrate_multifd_channels();
+>      for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
+>          if (multifd_send_should_exit()) {
+> -            return -1;
+> +            return false;
+>          }
+>          p = &multifd_send_state->params[i];
+>          /*
+> @@ -502,7 +503,7 @@ static int multifd_send_pages(void)
+>      qemu_mutex_unlock(&p->mutex);
+>      qemu_sem_post(&p->sem);
+>  
+> -    return 1;
+> +    return true;
+>  }
+>  
+>  /* Returns true if enqueue successful, false otherwise */
+> @@ -526,7 +527,7 @@ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+>          changed = true;
+>      }
+>  
+> -    if (multifd_send_pages() < 0) {
+> +    if (!multifd_send_pages()) {
+>          return false;
+>      }
+>  
+> @@ -666,7 +667,7 @@ int multifd_send_sync_main(void)
+>          return 0;
+>      }
+>      if (multifd_send_state->pages->num) {
+> -        if (multifd_send_pages() < 0) {
+> +        if (!multifd_send_pages()) {
+>              error_report("%s: multifd_send_pages fail", __func__);
+>              return -1;
+>          }
+> -- 
+> 2.43.0
+>
+> From fcddc942cb31bc9d395d67a555d9a2281da452b1 Mon Sep 17 00:00:00 2001
+> From: Peter Xu <peterx@redhat.com>
+> Date: Thu, 1 Feb 2024 17:55:42 +0800
+> Subject: [PATCH 3/3] migration/multifd: Rewrite multifd_queue_page()
+>
+> The current multifd_queue_page() is not easy to read and follow.  It is not
+> good with a few reasons:
+>
+>   - No helper at all to show what exactly does a condition mean; in short,
+>   readability is low.
+>
+>   - Rely on pages->ramblock being cleared to detect an empty queue.  It's
+>   slightly an overload of the ramblock pointer, per Fabiano [1], which I
+>   also agree.
+>
+>   - Contains a self recursion, even if not necessary..
+>
+> Rewrite this function.  We add some comments to make it even clearer on
+> what it does.
+>
+> [1] https://lore.kernel.org/r/87wmrpjzew.fsf@suse.de
+>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/multifd.c | 56 ++++++++++++++++++++++++++++++---------------
+>  1 file changed, 37 insertions(+), 19 deletions(-)
+>
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index d2b0f0eda9..5a64a9c2e2 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -506,35 +506,53 @@ static bool multifd_send_pages(void)
+>      return true;
+>  }
+>  
+> +static inline bool multifd_queue_empty(MultiFDPages_t *pages)
+> +{
+> +    return pages->num == 0;
+> +}
 
-modified   accel/tcg/translator.c
-@@ -201,6 +201,8 @@ void translator_loop(CPUState *cpu, TranslationBlock *t=
-b, int *max_insns,
+Good, because we can later switch from pages to something else entirely.
+
+> +
+> +static inline bool multifd_queue_full(MultiFDPages_t *pages)
+> +{
+> +    return pages->num == pages->allocated;
+> +}
+
+Pages allocated is nonsense. See if you agree with its removal:
+https://gitlab.com/farosas/qemu/-/commit/7cfff1a3e31b271e901a6c08d8b5d8c01b680e4d
+
+---
+From 7cfff1a3e31b271e901a6c08d8b5d8c01b680e4d Mon Sep 17 00:00:00 2001
+From: Fabiano Rosas <farosas@suse.de>
+Date: Tue, 24 Oct 2023 19:03:41 -0300
+Subject: [PATCH] multifd: Remove MultiFDPage_t:allocated
+
+When dealing with RAM, having a field called 'allocated' is
+confusing. This field simply holds number of pages that fit in a
+multifd packet.
+
+Since it is a constant dependent on the size of the multifd packet,
+remove it and instead use the page size and MULTIFD_PACKET_SIZE
+directly.
+
+This is another step in the direction of having no mentions of 'page'
+in the multifd send thread.
+
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/multifd.c | 6 ++----
+ migration/multifd.h | 2 --
+ 2 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/migration/multifd.c b/migration/multifd.c
+index bdefce27706..83fb2caab04 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -241,7 +241,6 @@ static MultiFDPages_t *multifd_pages_init(uint32_t n)
+ {
+     MultiFDPages_t *pages = g_new0(MultiFDPages_t, 1);
+ 
+-    pages->allocated = n;
+     pages->offset = g_new0(ram_addr_t, n);
+     pages->page_size = qemu_target_page_size();
+ 
+@@ -251,7 +250,6 @@ static MultiFDPages_t *multifd_pages_init(uint32_t n)
+ static void multifd_pages_clear(MultiFDPages_t *pages)
+ {
+     pages->num = 0;
+-    pages->allocated = 0;
+     pages->block = NULL;
+     g_free(pages->offset);
+     pages->offset = NULL;
+@@ -264,7 +262,7 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
+     int i;
+ 
+     packet->flags = cpu_to_be32(p->flags);
+-    packet->pages_alloc = cpu_to_be32(p->pages->allocated);
++    packet->pages_alloc = cpu_to_be32(MULTIFD_PACKET_SIZE / p->pages->page_size);
+     packet->normal_pages = cpu_to_be32(p->pages->num);
+     packet->next_packet_size = cpu_to_be32(p->next_packet_size);
+     packet->packet_num = cpu_to_be64(p->packet_num);
+@@ -451,7 +449,7 @@ int multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+         pages->offset[pages->num] = offset;
+         pages->num++;
+ 
+-        if (pages->num < pages->allocated) {
++        if (pages->num * pages->page_size < MULTIFD_PACKET_SIZE) {
+             return 1;
          }
-     }
-=20
-+    set_can_do_io(db, true);
-+
-     /* Emit code to exit the TB, as indicated by db->is_jmp.  */
-     ops->tb_stop(db, cpu);
-     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+     } else {
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 655f8d5eeb4..d1342296d63 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -56,8 +56,6 @@ typedef struct {
+ typedef struct {
+     /* number of used pages */
+     uint32_t num;
+-    /* number of allocated pages */
+-    uint32_t allocated;
+     /* guest page size */
+     uint32_t page_size;
+     /* offset of each page */
+-- 
 
-do the trick?
-
->
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +
+> +static inline void multifd_enqueue(MultiFDPages_t *pages, ram_addr_t offset)
+> +{
+> +    pages->offset[pages->num++] = offset;
+> +}
+> +
+>  /* Returns true if enqueue successful, false otherwise */
+>  bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+>  {
+> -    MultiFDPages_t *pages = multifd_send_state->pages;
+> -    bool changed = false;
+> +    MultiFDPages_t *pages;
+> +
+> +retry:
+> +    pages = multifd_send_state->pages;
+>  
+> -    if (!pages->block) {
+> +    /* If the queue is empty, we can already enqueue now */
+> +    if (multifd_queue_empty(pages)) {
+>          pages->block = block;
+> +        multifd_enqueue(pages, offset);
+> +        return true;
+>      }
+>  
+> -    if (pages->block == block) {
+> -        pages->offset[pages->num] = offset;
+> -        pages->num++;
+> -
+> -        if (pages->num < pages->allocated) {
+> -            return true;
+> +    /*
+> +     * Not empty, meanwhile we need a flush.  It can because of either:
+> +     *
+> +     * (1) The page is not on the same ramblock of previous ones, or,
+> +     * (2) The queue is full.
+> +     *
+> +     * After flush, always retry.
+> +     */
+> +    if (pages->block != block || multifd_queue_full(pages)) {
+> +        if (!multifd_send_pages()) {
+> +            return false;
+>          }
+> -    } else {
+> -        changed = true;
+> -    }
+> -
+> -    if (!multifd_send_pages()) {
+> -        return false;
+> -    }
+> -
+> -    if (changed) {
+> -        return multifd_queue_page(block, offset);
+> +        goto retry;
+>      }
+>  
+> +    /* Not empty, and we still have space, do it! */
+> +    multifd_enqueue(pages, offset);
+>      return true;
+>  }
 
