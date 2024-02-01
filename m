@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F76845F86
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43438845F7A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 19:10:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVbVR-0006cn-8j; Thu, 01 Feb 2024 13:09:45 -0500
+	id 1rVbVX-0006ed-HD; Thu, 01 Feb 2024 13:09:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVP-0006aS-7Y
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:43 -0500
+ id 1rVbVQ-0006cq-W9
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:45 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rVbVL-000436-Gb
+ id 1rVbVJ-00042w-T1
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 13:09:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706810978;
+ s=mimecast20190719; t=1706810977;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cDWNg3C6NEX8lkZW8RXIgVx2mtSqL2XFiTzcumQCrrw=;
- b=bXGHRnyOXjr7pUPnMgwRLvZYT70eLxIiTq4bw+BrRM7l6ZF2bHDPL+qk/M8DAPjqbVrjlH
- 3k7zBxpZA0/xvn4jWVSRkAh7qVF91Jf61m0luxIder8/cAF3h6gyzATiHoUxu8e/Hwu4mY
- 8+2GAxlueYYgj/WX7IlQKRxivAG5ch0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-7nMxl59zPkCloDfQKfJFqA-1; Thu,
- 01 Feb 2024 13:09:33 -0500
-X-MC-Unique: 7nMxl59zPkCloDfQKfJFqA-1
+ bh=E8el8gCCXuVhCjpc7ukkrfGoeG+69dxznubjIiYUZLM=;
+ b=FsaxtPManklnGKkUMqJkP1JT+fm6nQGO9da2X5QtGEeqTqVSHYxaRf4zA5mV7qS4x7W9b4
+ EKGqVsMgediOZis3xQcyLenrJr97QjiJ0Y8goeWBOE0lYpOaNiVS0JWfi1cHPnNwBkIZSU
+ bSaNyT/JkKquympiIuAwFz/bsmJT4RU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-351-E0q4a43hPhO9Cksu64n_mQ-1; Thu, 01 Feb 2024 13:09:35 -0500
+X-MC-Unique: E0q4a43hPhO9Cksu64n_mQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5535B280A9AE;
- Thu,  1 Feb 2024 18:09:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4FD1C101A526;
+ Thu,  1 Feb 2024 18:09:35 +0000 (UTC)
 Received: from eperezma-thinkpadt480s.rmtes.csb (unknown [10.39.193.103])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9718E2026D66;
- Thu,  1 Feb 2024 18:09:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 91F122026D66;
+ Thu,  1 Feb 2024 18:09:33 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -51,10 +51,9 @@ Cc: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Parav Pandit <parav@mellanox.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Si-Wei Liu <si-wei.liu@oracle.com>, Zhu Lingshan <lingshan.zhu@intel.com>
-Subject: [PATCH v2 1/7] vdpa: check for iova tree initialized at
- net_client_start
-Date: Thu,  1 Feb 2024 19:09:18 +0100
-Message-ID: <20240201180924.487579-2-eperezma@redhat.com>
+Subject: [PATCH v2 2/7] vdpa: reorder vhost_vdpa_set_backend_cap
+Date: Thu,  1 Feb 2024 19:09:19 +0100
+Message-ID: <20240201180924.487579-3-eperezma@redhat.com>
 In-Reply-To: <20240201180924.487579-1-eperezma@redhat.com>
 References: <20240201180924.487579-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -85,35 +84,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To map the guest memory while it is migrating we need to create the
-iova_tree, as long as the destination uses x-svq=on. Checking to not
-override it.
-
-The function vhost_vdpa_net_client_stop clear it if the device is
-stopped. If the guest starts the device again, the iova tree is
-recreated by vhost_vdpa_net_data_start_first or vhost_vdpa_net_cvq_start
-if needed, so old behavior is kept.
+It will be used directly by vhost_vdpa_init.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- net/vhost-vdpa.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/virtio/vhost-vdpa.c | 60 +++++++++++++++++++++---------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 64825136a3..cc589dd148 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -333,7 +333,9 @@ static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index ddae494ca8..33ae285f87 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -580,6 +580,36 @@ static void vhost_vdpa_init_svq(struct vhost_dev *hdev, struct vhost_vdpa *v)
+     v->shadow_vqs = g_steal_pointer(&shadow_vqs);
+ }
  
-     migration_add_notifier(&s->migration_state,
-                            vdpa_net_migration_state_notifier);
--    if (v->shadow_vqs_enabled) {
++static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
++{
++    struct vhost_vdpa *v = dev->opaque;
 +
-+    /* iova_tree may be initialized by vhost_vdpa_net_load_setup */
-+    if (v->shadow_vqs_enabled && !v->shared->iova_tree) {
-         v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
-                                                    v->shared->iova_range.last);
-     }
++    uint64_t features;
++    uint64_t f = 0x1ULL << VHOST_BACKEND_F_IOTLB_MSG_V2 |
++        0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH |
++        0x1ULL << VHOST_BACKEND_F_IOTLB_ASID |
++        0x1ULL << VHOST_BACKEND_F_SUSPEND;
++    int r;
++
++    if (vhost_vdpa_call(dev, VHOST_GET_BACKEND_FEATURES, &features)) {
++        return -EFAULT;
++    }
++
++    features &= f;
++
++    if (vhost_vdpa_first_dev(dev)) {
++        r = vhost_vdpa_call(dev, VHOST_SET_BACKEND_FEATURES, &features);
++        if (r) {
++            return -EFAULT;
++        }
++    }
++
++    dev->backend_cap = features;
++    v->shared->backend_cap = features;
++
++    return 0;
++}
++
+ static int vhost_vdpa_init(struct vhost_dev *dev, void *opaque, Error **errp)
+ {
+     struct vhost_vdpa *v = opaque;
+@@ -827,36 +857,6 @@ static int vhost_vdpa_set_features(struct vhost_dev *dev,
+     return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_FEATURES_OK);
+ }
+ 
+-static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
+-{
+-    struct vhost_vdpa *v = dev->opaque;
+-
+-    uint64_t features;
+-    uint64_t f = 0x1ULL << VHOST_BACKEND_F_IOTLB_MSG_V2 |
+-        0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH |
+-        0x1ULL << VHOST_BACKEND_F_IOTLB_ASID |
+-        0x1ULL << VHOST_BACKEND_F_SUSPEND;
+-    int r;
+-
+-    if (vhost_vdpa_call(dev, VHOST_GET_BACKEND_FEATURES, &features)) {
+-        return -EFAULT;
+-    }
+-
+-    features &= f;
+-
+-    if (vhost_vdpa_first_dev(dev)) {
+-        r = vhost_vdpa_call(dev, VHOST_SET_BACKEND_FEATURES, &features);
+-        if (r) {
+-            return -EFAULT;
+-        }
+-    }
+-
+-    dev->backend_cap = features;
+-    v->shared->backend_cap = features;
+-
+-    return 0;
+-}
+-
+ static int vhost_vdpa_get_device_id(struct vhost_dev *dev,
+                                     uint32_t *device_id)
+ {
 -- 
 2.43.0
 
