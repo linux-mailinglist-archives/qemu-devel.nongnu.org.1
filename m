@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94BF8452C3
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:33:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E37A58452C9
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 09:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVSVU-0002r1-VV; Thu, 01 Feb 2024 03:33:13 -0500
+	id 1rVSVy-0003Rk-11; Thu, 01 Feb 2024 03:33:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSVN-0002f0-Ox
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:33:06 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSVn-0003BJ-RR
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:33:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSVL-0006q2-4O
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:33:05 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rVSVl-0006tV-Ma
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 03:33:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706776382;
+ s=mimecast20190719; t=1706776408;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Zb1e7rtk1xUP/I/nFiGIoNW9JPRvL3+u/XnxeX49f/U=;
- b=ZyjNujlwmnhd6dw6eC2yfiqswsPmXgV9lZhRDtuYLmSLt7QOmYb0DAwWCOVs49uTm1UAYu
- kmR1qP4jm81y916DWsRuVLMruPIuMUXyPKGWImRwRYkii7p2+5OjFB31o4WY8v4kXKzXpb
- PNqdyZbWtkDFBw6CMPI3FEnBYFhx/PE=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kN88OiUwlfiz9QVAM5hctUirK570ivcJojG41q0xe9c=;
+ b=eY3Uq5ymSXHOU3UOzqbtWVX+OAxhEL7tmmv8/oHb4K5TGXKYZtySG1WqTGKvBmw3Sx4XIn
+ YC7mjS0ecgzR+GRXk+C1eIBKu2nCYjyL1NEMzkLUaqCZsLN8CTd01kywXuG9pNa944mEgv
+ 5rnaVk0vG+te7a4rmOXwOk1zJiyeqHY=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-hQjpvGYfOcOxITKCnaWJ4w-1; Thu, 01 Feb 2024 03:33:00 -0500
-X-MC-Unique: hQjpvGYfOcOxITKCnaWJ4w-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2cf2ea2d70dso6077261fa.3
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 00:33:00 -0800 (PST)
+ us-mta-393-waptMEtgNOSQ9sFkET00SA-1; Thu, 01 Feb 2024 03:33:26 -0500
+X-MC-Unique: waptMEtgNOSQ9sFkET00SA-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d07b30b9faso1848271fa.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 00:33:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706776379; x=1707381179;
+ d=1e100.net; s=20230601; t=1706776405; x=1707381205;
  h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
  :to:content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zb1e7rtk1xUP/I/nFiGIoNW9JPRvL3+u/XnxeX49f/U=;
- b=YZ5W8F4ec2WctHObGCwBEs1SbaH2BtuZVxXuLEXXxlrFUoKRzduBHGBg9P9nPTmxyj
- JV5k4YUBrS6ETC361vvYY7BoSsLAZbEx/vcYle4G26zuvw+8Zg/sFzdIWuYWDlHnd1bc
- eIGHYuzxNyDv+/ovTCVE+NKil3kUgA8SRC877ucqSc7aUPygf0CFXYdeQnb87zTjC+Gg
- +5wc+CBEgOd3ak0JlszhXJWBWxTJWFmcYcp0gRDhb5YJVPtSTs+HxmCsvafzwXht5eHI
- ANskXHrdmcBvw5/UL1PJWedXJ9MlKsZjTSIm9mNnI0Eq1vQK/nsCsk47FDQZYekH2IQT
- uJQw==
-X-Gm-Message-State: AOJu0YyuHEtz7BEAUE9NgG1D5CQem16WhSMfVpCKqnCle3kL9SnhRzul
- wswAX5w0N7r3SSdjCg3wtPlf3IUf65L5SUyzcHS7x6+2KXoameZtR0SGcz7t0EybBGvqufvlbFh
- 2Pv3qkJBM111yaHnPO/zpEUuU/zCDT9628elm8ZXsBlWozRNhLPJ7
-X-Received: by 2002:a2e:9059:0:b0:2d0:5225:6100 with SMTP id
- n25-20020a2e9059000000b002d052256100mr3171038ljg.38.1706776379300; 
- Thu, 01 Feb 2024 00:32:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGH0B4n0YLzRBU/NKsTPhWWOykHozTMxWSaNS95BLCkIkZ9RB5G6S371RRJc19DNpHAFuW9nQ==
-X-Received: by 2002:a2e:9059:0:b0:2d0:5225:6100 with SMTP id
- n25-20020a2e9059000000b002d052256100mr3171026ljg.38.1706776378997; 
- Thu, 01 Feb 2024 00:32:58 -0800 (PST)
+ bh=kN88OiUwlfiz9QVAM5hctUirK570ivcJojG41q0xe9c=;
+ b=rrHas44j2+/URRnoVQeKDJlWBVACs8jgXNgQLeKQT/+XqyYAo0hWf6ErpUqTohX7ir
+ eWz8YsHG3AOpOJJ6SLkuOeb+q+1w0DOBRflW9i0Y9ATsln2u4q2yApTtNwmIucLDpeCu
+ ewYxftfJvK4Rs/lIBz//zsJUQySp3lnrQAsbVk9AnN+IR52CEJjvNM39/JcRNbsY6AUN
+ MVNFe0HgLbew5zTG8g9lFJnSJyWTWtdvAh0JnUYAQP7ttvLTpQZeXMPNiQILj5jU2KCR
+ gjOQ083uNhbovqWAAk5287k0jWb3QOnb63yyZ/BFWe+JcP1e6DW1WMij4KKm7dyWOvDR
+ Iu5Q==
+X-Gm-Message-State: AOJu0Yz7Va9Au7i10W2KmkUB7durWqVYVujNgzYKREy0j8iCEbUZvKA5
+ V/Tm73evprjus7d4oQrMkdijhcSvzNvWCcgCI47jz0beQ4/LnNpvmceKfxjAx0xMxLGhgweWXIz
+ XClGvJEnShxGbttdqOXS9BQpNxBpotaZUshuJ0RrX0o6BszBH4SUA
+X-Received: by 2002:a2e:958d:0:b0:2d0:60f0:ce7f with SMTP id
+ w13-20020a2e958d000000b002d060f0ce7fmr2510966ljh.26.1706776405413; 
+ Thu, 01 Feb 2024 00:33:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEGH7Tw7dXiD8rSSGY0EmyTzNWjqCXb0yxcmJTTCx94Go1scNl3Plevsj75IBTKKr8UofZ8Fw==
+X-Received: by 2002:a2e:958d:0:b0:2d0:60f0:ce7f with SMTP id
+ w13-20020a2e958d000000b002d060f0ce7fmr2510942ljh.26.1706776405231; 
+ Thu, 01 Feb 2024 00:33:25 -0800 (PST)
 Received: from [192.168.0.9] (ip-109-43-177-196.web.vodafone.de.
  [109.43.177.196]) by smtp.gmail.com with ESMTPSA id
- h9-20020a05600016c900b0033aedb71269sm10265216wrf.88.2024.02.01.00.32.57
+ h9-20020a05600016c900b0033aedb71269sm10265216wrf.88.2024.02.01.00.33.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 Feb 2024 00:32:58 -0800 (PST)
-Message-ID: <ebf3b065-2fc2-4e49-a066-ecc756958776@redhat.com>
-Date: Thu, 1 Feb 2024 09:32:57 +0100
+ Thu, 01 Feb 2024 00:33:24 -0800 (PST)
+Message-ID: <9007b675-1f23-4b2a-96d5-d19d8f2874e6@redhat.com>
+Date: Thu, 1 Feb 2024 09:33:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] hw/arm/smmuv3: Consolidate the use of
+Subject: Re: [PATCH 2/4] hw/isa/pc87312: Consolidate the use of
  device_class_set_parent_realize()
 Content-Language: en-US
 To: Zhao Liu <zhao1.liu@linux.intel.com>, Eric Auger <eric.auger@redhat.com>, 
@@ -78,7 +78,7 @@ To: Zhao Liu <zhao1.liu@linux.intel.com>, Eric Auger <eric.auger@redhat.com>,
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org, qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
 References: <20240201084027.345459-1-zhao1.liu@linux.intel.com>
- <20240201084027.345459-5-zhao1.liu@linux.intel.com>
+ <20240201084027.345459-3-zhao1.liu@linux.intel.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -122,7 +122,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240201084027.345459-5-zhao1.liu@linux.intel.com>
+In-Reply-To: <20240201084027.345459-3-zhao1.liu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -157,24 +157,26 @@ On 01/02/2024 09.40, Zhao Liu wrote:
 > 
 > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->   hw/arm/smmuv3.c | 4 ++--
+>   hw/isa/pc87312.c | 4 ++--
 >   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-> index 68eeef3e1d4c..b3d8642a4990 100644
-> --- a/hw/arm/smmuv3.c
-> +++ b/hw/arm/smmuv3.c
-> @@ -1857,8 +1857,8 @@ static void smmuv3_class_init(ObjectClass *klass, void *data)
->       dc->vmsd = &vmstate_smmuv3;
->       resettable_class_set_parent_phases(rc, NULL, smmu_reset_hold, NULL,
->                                          &c->parent_phases);
-> -    c->parent_realize = dc->realize;
-> -    dc->realize = smmu_realize;
-> +    device_class_set_parent_realize(dc, smmu_realize,
-> +                                    &c->parent_realize);
->       device_class_set_props(dc, smmuv3_properties);
->   }
+> diff --git a/hw/isa/pc87312.c b/hw/isa/pc87312.c
+> index ee23f3e164df..64dd17b537f2 100644
+> --- a/hw/isa/pc87312.c
+> +++ b/hw/isa/pc87312.c
+> @@ -338,10 +338,10 @@ static void pc87312_class_init(ObjectClass *klass, void *data)
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>       ISASuperIOClass *sc = ISA_SUPERIO_CLASS(klass);
 >   
+> -    sc->parent_realize = dc->realize;
+> -    dc->realize = pc87312_realize;
+>       dc->reset = pc87312_reset;
+>       dc->vmsd = &vmstate_pc87312;
+> +    device_class_set_parent_realize(dc, pc87312_realize,
+> +                                    &sc->parent_realize);
+>       device_class_set_props(dc, pc87312_properties);
+>   
+>       sc->parallel = (ISASuperIOFuncs){
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 
