@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420198457B5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FED8457BB
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:30:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVWBO-0007oU-G1; Thu, 01 Feb 2024 07:28:42 -0500
+	id 1rVWBR-0007ph-3e; Thu, 01 Feb 2024 07:28:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBL-0007nC-Bx
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:39 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ id 1rVWBM-0007nV-Rd
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:41 -0500
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBJ-0002AK-Nv
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:39 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a358ec50b7cso155137466b.0
+ id 1rVWBK-0002AS-Bs
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:40 -0500
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2d051fb89fbso12224041fa.2
  for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706790516; x=1707395316; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=49bETIGAGO5DtX3RKiRXyAPOmtwqu8Y4dqTuszg5to0=;
- b=LTgKz/dHzw5t5KWqIe8ddWPfv8RM/2egrrmpk6cZHzokhDx49AD/7VAgDaSSsQlgxU
- s16CMYsHS6ai8Lh7VRZ+qrOtEpBU0jvcUNomfdoFas41Kp8hPIAw52jQ0oldtBjE0F9T
- I15r/E80ecLqk7cKV5dYA99apI0Tjsld/KMl3orlic5Hd++lIutj81cc4pDfYiIKr+b9
- IeusIIObluuDNNZQkzgLpbSD+rnrdt7Q/JsqX/vhfyC/3N+y9VwLCi7UnAGFtVV/tipT
- ygaq4TyaTj9vKdhBo1iuw67LtW3LCxz72Kn5sdtgrcNG276HZ0fYJZKNhwK5qrQhwSud
- K6zQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JB4Epfg8EtaZj5aKH+XSQiP5F2xLNHDHewznk8QZ/uQ=;
+ b=Mhf5eHhMd9726iLRgT9RJF6EXSLQojnDqkZb8e2c211DUlYi6jvHaOobEIPayuK+1e
+ Kkje8KSPxT0kbWE9vX6bjuJirXQ6Ooj+K5dtWmZcKSu/OTDQ8SQzuausiIOnzVK4jFuD
+ ba4i6bcLl8lYfrVl3QP7ZGgqMj9WZIfH/DgsJAqdGaA0ySMbyvOsiqT/fzozR4sSyt6I
+ M4Y+e5oZQhq8WP0WGAhsCv+q/yW8Mq9FG4Jw4O53fS77j43bTDQVr3B8f578MkiYsJsA
+ wOfeINeedt0DzSJfUKzqYn+u2afXlSK3KrWAmnLFBQpIhxQX6upHRiq6rA7lSEnw4VcO
+ 71gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706790516; x=1707395316;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=49bETIGAGO5DtX3RKiRXyAPOmtwqu8Y4dqTuszg5to0=;
- b=V6aMo+6ljQUsjEZfYxzLU9KTBxCvOxqEQgTpHkrrZeMCbPXwYw0ojetEECPj0sFaPx
- LSDKwuwqorgQE4Idsqoa7Qp4jLJfIoqxNdV7E63C3U/IJzlydbjaexbITf62E6Pzu1nZ
- LWNW2Ubrteu6LP+lDogLLyNvr/MhM18BjkbSiNo6nb6/AefhLyN+8DHZ0pDnJDFPOHtE
- qcoZNbIQ9y89qoHMWADr1/iy+5Ry3DnupQOQvFGwFlYmTkR3I/dAVo+0U/Pji6gSxatF
- YwcdJwETYbwhf1TznBtp9h9zzlHdzUtOsvA+XjlmvBRxrX/FZpep56UQknBk728HQq5g
- uTZQ==
-X-Gm-Message-State: AOJu0YxLrVxA1/Yco8NZozSYmwTlOMqE98JkZwnqVVLSjWR32c+B77Rt
- INQYnnWRZr7LdnjgmZpTPMG5yh+xQm74btAM13yMWjQrwPRAhTKUhcgIbj+zF3A=
-X-Google-Smtp-Source: AGHT+IGDT0QG9z9p0hjOVy6dSp0VihBWe3jNXj6RR0DQczI/chFTjsfXSJkiCUi1EyVkpzbFBf+Viw==
-X-Received: by 2002:a17:907:c01c:b0:a36:a8bb:28fd with SMTP id
- ss28-20020a170907c01c00b00a36a8bb28fdmr2189180ejc.1.1706790515940; 
- Thu, 01 Feb 2024 04:28:35 -0800 (PST)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JB4Epfg8EtaZj5aKH+XSQiP5F2xLNHDHewznk8QZ/uQ=;
+ b=k/w+nczmLmxiTGLpRrX9/Menny1Gy02SiXZWhZT/Vj4xTlbtLuKiBEd/zrmFpDDwXC
+ Z3szGCu+oZeuUQj8ilNzLDNa4H0Hg5wOcPHVRDRG2Y/vembGf/z3XM8+F9TuOACeC/Hv
+ dUtrHkMlm0qXwEezqMGRj+/6ZoEj46jE7JaXmCOe/7z0AtrqfQN7qRnQPuf9ouzdVA7g
+ 4PuxVqYJf4HFRmfvZFK6tQPL1eGD+3nITR1AvPBlWq96Gkd5eZxUKpSv/nZNTYgKUyMr
+ SRJi65JuYPRVG8hJFOvhFqwz4naX6/a9Z01TUxHiCbW/UpHgbeRWzgh9/0x271d7Pjqr
+ UO/A==
+X-Gm-Message-State: AOJu0YwCQPN/vQerzF0R6HkCtqeHB5imJhRPvG+N+11AWFKO9+d7yi+L
+ fCho8okQ63XQxakc2PXF8V3NqgNQGeQEjfNgntj0hNTrjbOimehsAw0D2eT6vbc=
+X-Google-Smtp-Source: AGHT+IHfQ3BAlodQIwg5MRRVv6skMju6Ub91ft3nNbR41ng8DNcgl413x6yoHbvU+Yn7FTp+gi8niw==
+X-Received: by 2002:a2e:924a:0:b0:2d0:58b9:2bf3 with SMTP id
+ v10-20020a2e924a000000b002d058b92bf3mr3633384ljg.20.1706790516372; 
+ Thu, 01 Feb 2024 04:28:36 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCV8khX4qBOXnuvtgFeQen1+WuFzW/0/MV6otlRRlqvVBGNrv+36vzpti7EAJFFGUbyOWqO3DW0k9lP7EK4kZjTDpM7qmWAlHgiAfExNyNFDESFeHCSZZfsJU68upWFxXd7ViPfG9A6mySL/QifQW65UNL9c+aV8dEXDYCqBNionyOfQ+0terOCTMvxc0vYBBM0wqiOy8vvIi6//AJwJprFJyH3XAGDRs9PFndxfzk9uAZxMxushgMez+ePx3c044aTYH9bJeKfOFQW2QWn1Kgj6H2KIxrHOLpLUdvhWLo2XabN7gfoJ3wBY2jD/C9LDJIFS/+54tUV3VkJXar8ZFZ/GOSJDpNvLVxnrk4vCWnz/uUYzQGC73A3grY8/txIUmcPOrVzUtIstthkYhoGlPaQDM86X3/9qtPzpRH7MzEu6yKBgA8fYhbheE4gsuRHhocUpDlR4AowONhon+ex6hJs4CCA6ZYaGmlAzaLBXwSmOXAcFLmFtj1Bm4xlEUjr56ZzJeuzskAN+Q+upGEanst0dMfwUfKORru9YpoQ7CE0YhyTXSViYnzIiWRPTutIDygL78d0dfmATyyf9LConT9QWmF4OcHyUeHj+txPefKFobBZk11no3WVESOOV5u6H2Tpb8aIqHoU=
+ AJvYcCW6RyN6yqTxhJY7XB2eZbbKlZIoLtk+r8yMdvLzY//FuqQrAuQ7u0YYnST4sLz8+61z2D8dpgSyB1g0nZ0tXJW6lRmu2IOYksW1fyeB1unTTlNhsqe8u6khODW4tPeV5Z4s8kpAVPs0gup8vF+lUi4poTgztrZxyyhsZhVUUpEiIoMAH+LY2XKySSFme6372RZy7IHmeegM9iEyRpltzlRTm+4w11T0fH6yUARFfE3WaxUP3WHqMgSHvoBqoO1EZcIbtiUF+oThrBMFchCZuGdOKF7ghEkrlnZIgxAy88D9+7Hjl0yWjVlaZw7ceJIEMYuUasajWOfOFYoSge+n/XJcAqIAbIslaDC9vguj6YihichrLEgHcEqdYVAvzAokB51wc3gUnNeG+EtFo35c9xHURio3Ia+YRdnUjBbhrIKMEvVbXJa6l3t56LIYoIEG0mjn8pninNcfgOavxm10wDTCusy6P9kwyjsYy5udPsFnm4vQ3iyx+UEnilNivv85nXmmAJ6vEX9knNoKzAICZanprhpfOitjbn2Q0YOvPHWDdvZCoCBNeAZH8aoN2Hrwbg7Y2mOk0Pan5PqXwacn1XKB6HMXAB+LEAu/ACSTxNrLZM6/zIbXDsSQnXKIhbnD/IZ6NCIntvbTsrtE4JXT1SoIECEjaHphMfRjzhIE8niZ7khzdRohSsgLcueVjA==
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- m1-20020a1709062b8100b00a363e8be473sm2346985ejg.143.2024.02.01.04.28.35
+ cs10-20020a0564020c4a00b0055d37af4d20sm6621335edb.74.2024.02.01.04.28.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 01 Feb 2024 04:28:35 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 447715F7AF;
+ by draig.lan (Postfix) with ESMTP id 5E4DF5F9D9;
  Thu,  1 Feb 2024 12:28:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -74,17 +75,20 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 0/5] maintainer updates for 9.0 (docker, plugin tests,
- deprecation, elf, semihosting)
-Date: Thu,  1 Feb 2024 12:28:30 +0000
-Message-Id: <20240201122835.1712347-1-alex.bennee@linaro.org>
+ Chris Wulff <crwulff@gmail.com>, Fabiano Rosas <farosas@suse.de>,
+ Andrea Bolognani <abologna@redhat.com>
+Subject: [PATCH 1/5] tests/docker: Add sqlite3 module to openSUSE Leap
+ container
+Date: Thu,  1 Feb 2024 12:28:31 +0000
+Message-Id: <20240201122835.1712347-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240201122835.1712347-1-alex.bennee@linaro.org>
+References: <20240201122835.1712347-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,50 +111,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A fairly random collection of fixes in this tree. I've still got a
-report of openbsd rebuilding which is confusing me but I didn't want
-to hold up getting eyes on real fixes.
+From: Fabiano Rosas <farosas@suse.de>
 
-The plugins register support may get added to the PR if it gets any
-review.
+Avocado needs sqlite3:
 
-The following need review:
+  Failed to load plugin from module "avocado.plugins.journal":
+  ImportError("Module 'sqlite3' is not installed.
+  Use: sudo zypper install python311 to install it")
 
-  Revert "hw/elf_ops: Ignore loadable segments with zero size"
-  docs: mark CRIS support as deprecated
+>From 'zypper info python311':
+  "This package supplies rich command line features provided by
+  readline, and sqlite3 support for the interpreter core, thus forming
+  a so called "extended" runtime."
 
-Alex.
+Include the appropriate package in the lcitool mappings which will
+guarantee the dockerfile gets properly updated when lcitool is
+run. Also include the updated dockerfile.
 
-Alex Bennée (2):
-  docs: mark CRIS support as deprecated
-  Revert "hw/elf_ops: Ignore loadable segments with zero size"
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Suggested-by: Andrea Bolognani <abologna@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240117164227.32143-1-farosas@suse.de>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/docker/dockerfiles/opensuse-leap.docker | 1 +
+ tests/lcitool/mappings.yml                    | 4 ++++
+ tests/lcitool/projects/qemu.yml               | 1 +
+ 3 files changed, 6 insertions(+)
 
-Fabiano Rosas (1):
-  tests/docker: Add sqlite3 module to openSUSE Leap container
-
-Paolo Bonzini (2):
-  configure: run plugin TCG tests again
-  kconfig: use "select" to enable semihosting
-
- docs/about/deprecated.rst                     |  8 ++
- configure                                     |  3 +
- configs/devices/m68k-softmmu/default.mak      |  2 -
- configs/devices/mips-softmmu/common.mak       |  3 -
- configs/devices/nios2-softmmu/default.mak     |  2 -
- configs/devices/riscv32-softmmu/default.mak   |  2 -
- configs/devices/riscv64-softmmu/default.mak   |  2 -
- configs/devices/xtensa-softmmu/default.mak    |  2 -
- include/hw/elf_ops.h                          | 75 +++++++++----------
- target/m68k/Kconfig                           |  1 +
- target/mips/Kconfig                           |  1 +
- target/nios2/Kconfig                          |  1 +
- target/riscv/Kconfig                          |  2 +
- target/xtensa/Kconfig                         |  1 +
- tests/docker/dockerfiles/opensuse-leap.docker |  1 +
- tests/lcitool/mappings.yml                    |  4 +
- tests/lcitool/projects/qemu.yml               |  1 +
- 17 files changed, 59 insertions(+), 52 deletions(-)
-
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index dc0e36ce488..cf753383a45 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -90,6 +90,7 @@ RUN zypper update -y && \
+            pcre-devel-static \
+            pipewire-devel \
+            pkgconfig \
++           python311 \
+            python311-base \
+            python311-pip \
+            python311-setuptools \
+diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
+index 0b908882f1d..407c03301bf 100644
+--- a/tests/lcitool/mappings.yml
++++ b/tests/lcitool/mappings.yml
+@@ -59,6 +59,10 @@ mappings:
+     CentOSStream8:
+     OpenSUSELeap15:
+ 
++  python3-sqlite3:
++    CentOSStream8: python38
++    OpenSUSELeap15: python311
++
+   python3-tomli:
+     # test using tomllib
+     apk:
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 82092c9f175..149b15de57b 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -97,6 +97,7 @@ packages:
+  - python3-pip
+  - python3-sphinx
+  - python3-sphinx-rtd-theme
++ - python3-sqlite3
+  - python3-tomli
+  - python3-venv
+  - rpm2cpio
 -- 
 2.39.2
 
