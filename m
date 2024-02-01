@@ -2,72 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8494C845D5B
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 17:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC411845E04
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 18:02:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVa0X-0004V7-HA; Thu, 01 Feb 2024 11:33:45 -0500
+	id 1rVaC2-0003Y9-RE; Thu, 01 Feb 2024 11:45:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rVa0V-0004TZ-Iq
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:33:43 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaB6-0002wT-0G
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:40 -0500
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rVa0U-0006x0-2d
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:33:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706805221;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=v7DZE+s2i2KbZeYEYOMdIz2ytMOea1x+BGZ16J/V5Qs=;
- b=Cre9w6Ld5A0VpN3Pr0fQbRRVdu1dvFCFzu1lmZmsVoR3jWAcna7mJbbjmOlxXrrhLEqZYN
- XEVNSVDHOnQgjKjkth2O5j71EA1/IvClphMlg9fAF60ud8ntnZvYCJg93jEMdYJq2l4xH1
- IrjQUdtfycunPbLj9od5oegKXYzBAlA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-77-cosXeOKANn-wrVv28Ut2cQ-1; Thu, 01 Feb 2024 11:33:39 -0500
-X-MC-Unique: cosXeOKANn-wrVv28Ut2cQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8354B85A588;
- Thu,  1 Feb 2024 16:33:39 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0A98A492BC6;
- Thu,  1 Feb 2024 16:33:36 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, jean-philippe@linaro.org, alex.williamson@redhat.com,
- peter.maydell@linaro.org, zhenzhong.duan@intel.com, yanghliu@redhat.com
-Cc: mst@redhat.com,
-	clg@redhat.com,
-	jasowang@redhat.com
-Subject: [PATCH v2 3/3] hw: Set virtio-iommu aw-bits default value on
- pc_q35_9.0 and arm virt
-Date: Thu,  1 Feb 2024 17:32:24 +0100
-Message-ID: <20240201163324.564525-4-eric.auger@redhat.com>
-In-Reply-To: <20240201163324.564525-1-eric.auger@redhat.com>
-References: <20240201163324.564525-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1rVaAu-0002So-Mn
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 11:44:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=jd7g6IHpRiMyiuk8bntAQoe/Mkf1tAuNhkfsz/0vGNs=; b=WJ+AzqG8AzZ0D2s5XIaAUQIX8S
+ s2yaEXjOeyZjj0HoverFDRQTTwmH3Hd3aPOMuvLlRfS1OBBmITqFzh73F4QAbrAISp9+uX8mEB+sT
+ FZAANR7Ln1Jlkc8DGWEEpdFRf7y9mYI916UUFVCA0y9QZoD/+hfgRRWa8x0Q5fi+JFdw9Oc9SgKOn
+ 1b9DwIOHs4Cw9W2y+8tLiVTcs0ewBzl80djwYq6mE4f23eQDsm1iSi7HRrQpLdFm+FJeculj5PCTA
+ CO3N67WOnkO0eVfCfl4DTWx9n2WLtQTRFTf8XixS0BIUR7HrsCkdcCFSoGZohcmMmTU7FWWVqhYDv
+ 7q+0JTHw==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVaAg-00000009cLw-0pMA for qemu-devel@nongnu.org;
+ Thu, 01 Feb 2024 16:44:14 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
+ Hat Linux)) id 1rVaAf-00000003ILn-02A9 for qemu-devel@nongnu.org;
+ Thu, 01 Feb 2024 16:44:13 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/47] nic-config.for-upstream queue
+Date: Thu,  1 Feb 2024 16:43:25 +0000
+Message-ID: <20240201164412.785520-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+1220c4869a9b484313cc+7466+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,111 +73,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the default input range can extend to 64 bits. On x86,
-when the virtio-iommu protects vfio devices, the physical iommu
-may support only 39 bits. Let's set the default to 39, as done
-for the intel-iommu. On ARM we set 48b as a default (matching
-SMMUv3 SMMU_IDR5.VAX == 0).
+The following changes since commit 14639717bf379480e937716fcaf1e72b47fd4c5f:
 
-We use hw_compat_8_2 to handle the compatibility for machines
-before 9.0 which used to have a virtio-iommu default input range
-of 64 bits.
+  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-01-31 19:53:45 +0000)
 
-Of course if aw-bits is set from the command line, the default
-is overriden.
+are available in the Git repository at:
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
+  git://git.infradead.org/users/dwmw2/qemu.git tags/pull-nic-config.for-upstream-20240201
 
----
+for you to fetch changes up to 5382a24c9b0be4391ea91b020bb72ad15c05cc88:
 
-v1 -> v2:
-- set aw-bits to 48b on ARM
-- use hw_compat_8_2 to handle the compat for older machines
-  which used 64b as a default
----
- hw/arm/virt.c            | 6 ++++++
- hw/core/machine.c        | 5 ++++-
- hw/i386/pc.c             | 6 ++++++
- hw/virtio/virtio-iommu.c | 2 +-
- 4 files changed, 17 insertions(+), 2 deletions(-)
+  net: make nb_nics and nd_table[] static in net/net.c (2024-02-01 16:21:52 +0000)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index e6ead2c5c8..56539f2fc5 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2718,10 +2718,16 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-+                                                   "aw-bits", NULL);
-         hwaddr db_start = 0, db_end = 0;
-         QList *reserved_regions;
-         char *resv_prop_str;
- 
-+        if (!aw_bits) {
-+            qdev_prop_set_uint8(dev, "aw-bits", 48);
-+        }
-+
-         if (vms->iommu != VIRT_IOMMU_NONE) {
-             error_setg(errp, "virt machine does not support multiple IOMMUs");
-             return;
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index fb5afdcae4..70ac96954c 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -30,9 +30,12 @@
- #include "exec/confidential-guest-support.h"
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
-+#include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_8_2[] = {};
-+GlobalProperty hw_compat_8_2[] = {
-+    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-+};
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
- 
- GlobalProperty hw_compat_8_1[] = {
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 803244e5cc..0e2bcb4840 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1458,6 +1458,8 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-         virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-+        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-+                                                   "aw-bits", NULL);
-         /* Declare the APIC range as the reserved MSI region */
-         char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
-                                               VIRTIO_IOMMU_RESV_MEM_T_MSI);
-@@ -1466,6 +1468,10 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-         qlist_append_str(reserved_regions, resv_prop_str);
-         qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
- 
-+        if (!aw_bits) {
-+            qdev_prop_set_uint8(dev, "aw-bits", 39);
-+        }
-+
-         g_free(resv_prop_str);
-     }
- 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 7870bdbeee..c468e9b13b 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1529,7 +1529,7 @@ static Property virtio_iommu_properties[] = {
-     DEFINE_PROP_LINK("primary-bus", VirtIOIOMMU, primary_bus,
-                      TYPE_PCI_BUS, PCIBus *),
-     DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
--    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
-+    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
--- 
-2.41.0
+----------------------------------------------------------------
+Rework matching of network devices to -nic options
 
+----------------------------------------------------------------
+David Woodhouse (47):
+      net: add qemu_{configure,create}_nic_device(), qemu_find_nic_info()
+      net: report list of available models according to platform
+      net: add qemu_create_nic_bus_devices()
+      hw/pci: add pci_init_nic_devices(), pci_init_nic_in_slot()
+      hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/xen: use qemu_create_nic_bus_devices() to instantiate Xen NICs
+      hw/alpha/dp264: use pci_init_nic_devices()
+      hw/arm/sbsa-ref: use pci_init_nic_devices()
+      hw/arm/virt: use pci_init_nic_devices()
+      hw/hppa: use pci_init_nic_devices()
+      hw/loongarch: use pci_init_nic_devices()
+      hw/mips/fuloong2e: use pci_init_nic_devices()
+      hw/mips/malta: use pci_init_nic_devices()
+      hw/mips/loongson3_virt: use pci_init_nic_devices()
+      hw/ppc/prep: use pci_init_nic_devices()
+      hw/ppc/spapr: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/ppc: use pci_init_nic_devices()
+      hw/sh4/r2d: use pci_init_nic_devices()
+      hw/sparc64/sun4u: use pci_init_nic_devices()
+      hw/xtensa/virt: use pci_init_nic_devices()
+      hw/arm/allwinner: use qemu_configure_nic_device()
+      hw/arm/aspeed: use qemu_configure_nic_device()
+      hw/arm/exynos4: use qemu_create_nic_device()
+      hw/arm/fsl: use qemu_configure_nic_device()
+      hw/net/smc91c111: use qemu_configure_nic_device()
+      hw/net/lan9118: use qemu_configure_nic_device()
+      hw/arm/highbank: use qemu_create_nic_device()
+      hw/arm/npcm7xx: use qemu_configure_nic_device, allow emc0/emc1 as aliases
+      hw/arm/stellaris: use qemu_find_nic_info()
+      hw/arm: use qemu_configure_nic_device()
+      hw/net/etraxfs-eth: use qemu_configure_nic_device()
+      hw/m68k/mcf5208: use qemu_create_nic_device()
+      hw/m68k/q800: use qemu_find_nic_info()
+      hw/microblaze: use qemu_configure_nic_device()
+      hw/mips/mipssim: use qemu_create_nic_device()
+      hw/mips/jazz: use qemu_find_nic_info()
+      hw/net/lasi_i82596: Re-enable build
+      hw/net/lasi_i82596: use qemu_create_nic_device()
+      hw/openrisc/openrisc_sim: use qemu_create_nic_device()
+      hw/riscv: use qemu_configure_nic_device()
+      hw/s390x/s390-virtio-ccw: use qemu_create_nic_device()
+      hw/sparc/sun4m: use qemu_find_nic_info()
+      hw/xtensa/xtfpga: use qemu_create_nic_device()
+      net: remove qemu_check_nic_model()
+      hw/pci: remove pci_nic_init_nofail()
+      net: remove qemu_show_nic_models(), qemu_find_nic_model()
+      net: make nb_nics and nd_table[] static in net/net.c
+
+ hw/alpha/dp264.c                         |   4 +-
+ hw/arm/allwinner-a10.c                   |   6 +-
+ hw/arm/allwinner-h3.c                    |   6 +-
+ hw/arm/allwinner-r40.c                   |  27 +---
+ hw/arm/aspeed.c                          |   9 +-
+ hw/arm/exynos4_boards.c                  |   6 +-
+ hw/arm/fsl-imx25.c                       |   2 +-
+ hw/arm/fsl-imx6.c                        |   2 +-
+ hw/arm/fsl-imx6ul.c                      |   2 +-
+ hw/arm/fsl-imx7.c                        |   2 +-
+ hw/arm/gumstix.c                         |   6 +-
+ hw/arm/highbank.c                        |  12 +-
+ hw/arm/integratorcp.c                    |   5 +-
+ hw/arm/kzm.c                             |   4 +-
+ hw/arm/mainstone.c                       |   3 +-
+ hw/arm/mps2-tz.c                         |   8 +-
+ hw/arm/mps2.c                            |   2 +-
+ hw/arm/msf2-soc.c                        |   6 +-
+ hw/arm/musicpal.c                        |   3 +-
+ hw/arm/npcm7xx.c                         |  16 +-
+ hw/arm/realview.c                        |  25 ++-
+ hw/arm/sbsa-ref.c                        |   4 +-
+ hw/arm/stellaris.c                       |  30 +++-
+ hw/arm/versatilepb.c                     |  15 +-
+ hw/arm/vexpress.c                        |   4 +-
+ hw/arm/virt.c                            |   4 +-
+ hw/arm/xilinx_zynq.c                     |  11 +-
+ hw/arm/xlnx-versal.c                     |   7 +-
+ hw/arm/xlnx-zynqmp.c                     |   8 +-
+ hw/cris/axis_dev88.c                     |   9 +-
+ hw/hppa/machine.c                        |  14 +-
+ hw/i386/pc.c                             |  38 +++--
+ hw/i386/pc_piix.c                        |   2 +-
+ hw/i386/pc_q35.c                         |   2 +-
+ hw/loongarch/virt.c                      |   4 +-
+ hw/m68k/mcf5208.c                        |  19 +--
+ hw/m68k/q800.c                           |  29 ++--
+ hw/microblaze/petalogix_ml605_mmu.c      |   3 +-
+ hw/microblaze/petalogix_s3adsp1800_mmu.c |   3 +-
+ hw/mips/fuloong2e.c                      |  16 +-
+ hw/mips/jazz.c                           |  15 +-
+ hw/mips/loongson3_virt.c                 |   4 +-
+ hw/mips/malta.c                          |  15 +-
+ hw/mips/mipssim.c                        |  13 +-
+ hw/net/etraxfs_eth.c                     |   5 +-
+ hw/net/lan9118.c                         |   5 +-
+ hw/net/lasi_i82596.c                     |  13 +-
+ hw/net/meson.build                       |   2 +-
+ hw/net/smc91c111.c                       |   5 +-
+ hw/openrisc/openrisc_sim.c               |  18 +--
+ hw/pci/pci.c                             |  73 +++------
+ hw/ppc/e500.c                            |   4 +-
+ hw/ppc/mac_newworld.c                    |   4 +-
+ hw/ppc/mac_oldworld.c                    |   4 +-
+ hw/ppc/ppc440_bamboo.c                   |  14 +-
+ hw/ppc/prep.c                            |   8 +-
+ hw/ppc/spapr.c                           |  18 +--
+ hw/riscv/microchip_pfsoc.c               |  14 +-
+ hw/riscv/sifive_u.c                      |   7 +-
+ hw/s390x/s390-virtio-ccw.c               |  11 +-
+ hw/sh4/r2d.c                             |   6 +-
+ hw/sparc/sun4m.c                         |  20 ++-
+ hw/sparc64/sun4u.c                       |  27 +---
+ hw/xen/xen-bus.c                         |   6 +-
+ hw/xen/xen_devconfig.c                   |  25 ---
+ hw/xenpv/xen_machine_pv.c                |   9 --
+ hw/xtensa/virt.c                         |   4 +-
+ hw/xtensa/xtfpga.c                       |  13 +-
+ include/hw/cris/etraxfs.h                |   2 +-
+ include/hw/i386/pc.h                     |   4 +-
+ include/hw/net/lan9118.h                 |   2 +-
+ include/hw/net/lasi_82596.h              |   4 +-
+ include/hw/net/ne2000-isa.h              |   2 -
+ include/hw/net/smc91c111.h               |   2 +-
+ include/hw/pci/pci.h                     |   7 +-
+ include/hw/xen/xen-bus.h                 |   2 +-
+ include/hw/xen/xen-legacy-backend.h      |   1 -
+ include/net/net.h                        |  70 ++++++++-
+ net/net.c                                | 253 +++++++++++++++++++++++++------
+ system/globals.c                         |   2 -
+ tests/qtest/npcm7xx_emc-test.c           |  18 +--
+ 81 files changed, 547 insertions(+), 562 deletions(-)
 
