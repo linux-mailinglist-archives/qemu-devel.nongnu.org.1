@@ -2,98 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92FD8457B2
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BE28457F2
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:41:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVWBU-0007ry-27; Thu, 01 Feb 2024 07:28:48 -0500
+	id 1rVWMZ-0006Qk-Kk; Thu, 01 Feb 2024 07:40:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBR-0007qZ-4T
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:45 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBP-0002Bf-2C
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:44 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-55a90a0a1a1so1234211a12.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706790521; x=1707395321; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=j3+17aNm4Vprn5dUFdZGH0//LOKhFu0gJMaab5yZQOU=;
- b=xIioCV5/4kypAF5I4N0sFp48lHBk+K1/3Zf1HiT7ZoZ5tddrTcYIMiJUB8etzGz1D0
- U2VaIHAlWSEIpr5IGjwBze7BDCn5Op6HdZQZ63vCkXKN93fRAjqxeWEtNI9ua79sikTY
- p2EqCUJBaWVSGwHnQMtSN7xcN9ZPHVWLzgfo4Cb45vOIZeF8vcldvMSHlO13EL9ZuHW/
- vefVcwolh8CCVDzP3uXBp9da4jp8XB9MT934LS1nJ90E3LWPMuX8BX+t1sKnvoG8zaqU
- Vfg5abR1uSov1Af7MJUWNFEHOh0uPWcHqfxYj2tt56v70Ne9oZh9Nj3EllI4Ivdw76bf
- BTSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706790521; x=1707395321;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j3+17aNm4Vprn5dUFdZGH0//LOKhFu0gJMaab5yZQOU=;
- b=SnqrpnkivRPOLrnDyFAn2j1JWkoaQViO2WYkl48hC1GVKRHpB1JmablcA+642k+8SF
- BhPWR7rTt047RQKmLGnkDDvqiyBoFpdb//gk21MIMbeXDrn3WzA54EJep5mq2iiLoVLY
- hr/wjlCYEREGDQuc1JK/bLc80A6+uBgdYXaaQWgi3KydtrRYFdtekDKyf0sBFfJZ99jP
- iqtdtwhGdu1MW8flCtdEyRCdZ23uE+MxgU1TXSMqSTt0NNLqkwLQdjIyrHCTPw29Wka9
- e1jyyI7XwBAqpi9w8IoO3C+ALsarSY1Ymgy8fNflVrFpd5eLFeq/gOoXdW9vOCto8FQ5
- FZaw==
-X-Gm-Message-State: AOJu0YwkvAAz/S46DAaJdbHWYi3JIzQkaiuNAOolIu+JbEg3tk102fFF
- VnbKF7bYrplEkyn0gI9tKVOtoyR/LT+xPFRPOGet/ZH/y7g68ATU6ABDMPjiJE8=
-X-Google-Smtp-Source: AGHT+IE518aY9Zg+eW0NfNaa71Yqv2oSN/GwSxcHSYmRth6EnOr9d0+vlls0ehMypywlOjfWcp9eSA==
-X-Received: by 2002:a05:6402:4584:b0:55f:a534:cac9 with SMTP id
- ig4-20020a056402458400b0055fa534cac9mr2654210edb.5.1706790521395; 
- Thu, 01 Feb 2024 04:28:41 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCUnNVDM+JdlDDIQig7S6oprTdpmYSyTZijeGzcAI+jkLqJ1FqUcmr3lHzWTvaWs6+7pIaS0izkUppDkh2b5xcrOJwjXMar9S3OKr4SIIFh73tWmBrh6fX16mTRi1qGNADIFwHOjBCGcHRR/cRU0gwlhVOxJEnrgCYIQJjX2WvLkssMTzFC23h5XguiqGhzVffzcYqf6qp2+lEH/GtgZIBeyxtF1HZxqdWlJjWKMjs6ZaQNhg9ZbEvZEFFFkzCseUNIIAgsj2a7Z43uIy6vIRCUjx1dySRh21n0t133gnT9WZU+PQMxjCM8Hn5hcyhfK4yB7XgSG3NotnX8uKH4IUN4vBUPBswWwzcDGRx/Jm15pMUx/f+N3px1QajvMd+3jPz3mtL+NFm/EGQAbpoylSknRrbJyxQiPjTwVFS7mjUpdAh2UGS8KLNeAoLLfH0WaMQ6+YU7ML9ureVgUs09wHFmsa7vzskLpOnt2BKMecUwKwavtJdDKvVId/w0Gdwfy4bSKZfHCNEO5goCFJzswkNmiXfDaJEhVLTyXumJfFl+1TsgGDbFcCf5JWPnaUlI7unvtrQshkLZLPzhy5pJe+cTQLNqhNP0zP5yRcgLfhCm8KuPWdA9YX9GwxyOSx+xOK8HHkCds6LA=
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- p14-20020a056402500e00b0055c67e6454asm6815985eda.70.2024.02.01.04.28.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 04:28:39 -0800 (PST)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C67425F9DD;
- Thu,  1 Feb 2024 12:28:35 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Weiwei Li <liwei1518@gmail.com>, Bin Meng <bin.meng@windriver.com>,
- Laurent Vivier <laurent@vivier.eu>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, devel@lists.libvirt.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Marek Vasut <marex@denx.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Thomas Huth <thuth@redhat.com>,
- qemu-riscv@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chris Wulff <crwulff@gmail.com>
-Subject: [PATCH 5/5] kconfig: use "select" to enable semihosting
-Date: Thu,  1 Feb 2024 12:28:35 +0000
-Message-Id: <20240201122835.1712347-6-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240201122835.1712347-1-alex.bennee@linaro.org>
-References: <20240201122835.1712347-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rVWMW-0006QE-Q7
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:40:12 -0500
+Received: from jedlik.phy.bme.hu ([152.66.102.83])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@jedlik.phy.bme.hu>)
+ id 1rVWMT-0004HU-4b
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:40:12 -0500
+Received: by jedlik.phy.bme.hu (Postfix, from userid 1000)
+ id 7799FA00ED; Thu,  1 Feb 2024 13:39:56 +0100 (CET)
+Date: Thu, 1 Feb 2024 13:39:56 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Thomas Huth <thuth@redhat.com>
+cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ John Snow <jsnow@redhat.com>, qemu-block@nongnu.org, 
+ Miroslav Rezanina <mrezanin@redhat.com>
+Subject: Re: [PATCH] hw/ide: Add the possibility to disable the CompactFlash
+ device in the build
+In-Reply-To: <20240201082916.20857-1-thuth@redhat.com>
+Message-ID: <alpine.LMD.2.03.2402011326360.16176@eik.bme.hu>
+References: <20240201082916.20857-1-thuth@redhat.com>
+User-Agent: Alpine 2.03 (LMD 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.102.83;
+ envelope-from=balaton@jedlik.phy.bme.hu; helo=jedlik.phy.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,152 +56,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+On Thu, 1 Feb 2024, Thomas Huth wrote:
+> For distros like downstream RHEL, it would be helpful to allow to disable
+> the CompactFlash device. For making this possible, we need a separate
+> Kconfig switch for this device, and the code should reside in a separate
+> file.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+> hw/ide/qdev-ide.h  | 41 ++++++++++++++++++++++++++++++++
+> hw/ide/cf.c        | 58 ++++++++++++++++++++++++++++++++++++++++++++++
+> hw/ide/qdev.c      | 51 ++--------------------------------------
+> hw/ide/Kconfig     |  4 ++++
+> hw/ide/meson.build |  1 +
+> 5 files changed, 106 insertions(+), 49 deletions(-)
+> create mode 100644 hw/ide/qdev-ide.h
+> create mode 100644 hw/ide/cf.c
+>
+> diff --git a/hw/ide/qdev-ide.h b/hw/ide/qdev-ide.h
+> new file mode 100644
+> index 0000000000..3dd977466c
+> --- /dev/null
+> +++ b/hw/ide/qdev-ide.h
 
-Just like all other dependencies, these can be expressed in Kconfig
-files rather than in the default configurations.
+This may be unrelated to this patch but we already have 
+include/hw/ide/internal.h which may be a place these should go in but that 
+header is in inlcude because some files outside hw/ide include it. I've 
+found three places that include ide/internal.h: hw/arm/sbsa-ref.c, 
+hw/i386/pc.c and hw/misc/macio.h. Only macio is really needing internal 
+IDE parts the other two just uses some functions so macio is probably the 
+reason this wasn't cleaned up yet. In any case, maybe this could go in 
+include/hw/ide/internal.h to avoid introducing a new header or somehow 
+make this a local header where non-public parts of hw/ide/internal.h could 
+be moved in the future. Such as rename include/hw/ide/internal.h to ide.h 
+and name this one internal.h maybe?
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20240129115809.1039924-1-pbonzini@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- configs/devices/m68k-softmmu/default.mak    | 2 --
- configs/devices/mips-softmmu/common.mak     | 3 ---
- configs/devices/nios2-softmmu/default.mak   | 2 --
- configs/devices/riscv32-softmmu/default.mak | 2 --
- configs/devices/riscv64-softmmu/default.mak | 2 --
- configs/devices/xtensa-softmmu/default.mak  | 2 --
- target/m68k/Kconfig                         | 1 +
- target/mips/Kconfig                         | 1 +
- target/nios2/Kconfig                        | 1 +
- target/riscv/Kconfig                        | 2 ++
- target/xtensa/Kconfig                       | 1 +
- 11 files changed, 6 insertions(+), 13 deletions(-)
+Regards,
+BALATON Zoltan
 
-diff --git a/configs/devices/m68k-softmmu/default.mak b/configs/devices/m68k-softmmu/default.mak
-index 7f8619e4278..8dcaa28ed38 100644
---- a/configs/devices/m68k-softmmu/default.mak
-+++ b/configs/devices/m68k-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for m68k-softmmu
- 
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_AN5206=y
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index 7da99327a77..1a853841b27 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -1,8 +1,5 @@
- # Common mips*-softmmu CONFIG defines
- 
--# CONFIG_SEMIHOSTING is always required on this architecture
--CONFIG_SEMIHOSTING=y
--
- CONFIG_ISA_BUS=y
- CONFIG_PCI=y
- CONFIG_PCI_DEVICES=y
-diff --git a/configs/devices/nios2-softmmu/default.mak b/configs/devices/nios2-softmmu/default.mak
-index 1bc4082ea99..e130d024e62 100644
---- a/configs/devices/nios2-softmmu/default.mak
-+++ b/configs/devices/nios2-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for nios2-softmmu
- 
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_NIOS2_10M50=y
-diff --git a/configs/devices/riscv32-softmmu/default.mak b/configs/devices/riscv32-softmmu/default.mak
-index d847bd5692e..94a236c9c25 100644
---- a/configs/devices/riscv32-softmmu/default.mak
-+++ b/configs/devices/riscv32-softmmu/default.mak
-@@ -3,8 +3,6 @@
- # Uncomment the following lines to disable these optional devices:
- #
- #CONFIG_PCI_DEVICES=n
--CONFIG_SEMIHOSTING=y
--CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
- 
- # Boards:
- #
-diff --git a/configs/devices/riscv64-softmmu/default.mak b/configs/devices/riscv64-softmmu/default.mak
-index bc69301fa4a..3f680594484 100644
---- a/configs/devices/riscv64-softmmu/default.mak
-+++ b/configs/devices/riscv64-softmmu/default.mak
-@@ -3,8 +3,6 @@
- # Uncomment the following lines to disable these optional devices:
- #
- #CONFIG_PCI_DEVICES=n
--CONFIG_SEMIHOSTING=y
--CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
- 
- # Boards:
- #
-diff --git a/configs/devices/xtensa-softmmu/default.mak b/configs/devices/xtensa-softmmu/default.mak
-index 4fe1bf00c94..49e4c9da88c 100644
---- a/configs/devices/xtensa-softmmu/default.mak
-+++ b/configs/devices/xtensa-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for Xtensa
- 
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_XTENSA_SIM=y
-diff --git a/target/m68k/Kconfig b/target/m68k/Kconfig
-index 23debad519a..9eae71486ff 100644
---- a/target/m68k/Kconfig
-+++ b/target/m68k/Kconfig
-@@ -1,2 +1,3 @@
- config M68K
-     bool
-+    select SEMIHOSTING
-diff --git a/target/mips/Kconfig b/target/mips/Kconfig
-index 6adf1453548..eb19c94c7d4 100644
---- a/target/mips/Kconfig
-+++ b/target/mips/Kconfig
-@@ -1,5 +1,6 @@
- config MIPS
-     bool
-+    select SEMIHOSTING
- 
- config MIPS64
-     bool
-diff --git a/target/nios2/Kconfig b/target/nios2/Kconfig
-index 1529ab8950d..c65550c861a 100644
---- a/target/nios2/Kconfig
-+++ b/target/nios2/Kconfig
-@@ -1,2 +1,3 @@
- config NIOS2
-     bool
-+    select SEMIHOSTING
-diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
-index b9e5932f13f..adb7de3f37d 100644
---- a/target/riscv/Kconfig
-+++ b/target/riscv/Kconfig
-@@ -1,5 +1,7 @@
- config RISCV32
-     bool
-+    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
- 
- config RISCV64
-     bool
-+    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
-diff --git a/target/xtensa/Kconfig b/target/xtensa/Kconfig
-index a3c8dc7f6d7..5e46049262d 100644
---- a/target/xtensa/Kconfig
-+++ b/target/xtensa/Kconfig
-@@ -1,2 +1,3 @@
- config XTENSA
-     bool
-+    select SEMIHOSTING
--- 
-2.39.2
-
+> @@ -0,0 +1,41 @@
+> +/*
+> + * ide bus support for qdev.
+> + *
+> + * Copyright (c) 2009 Gerd Hoffmann <kraxel@redhat.com>
+> + *
+> + * This code is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public
+> + * License as published by the Free Software Foundation; either
+> + * version 2.1 of the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef QDEV_IDE_H
+> +#define QDEV_IDE_H
+> +
+> +#include "hw/qdev-properties.h"
+> +#include "hw/block/block.h"
+> +#include "hw/ide/internal.h"
+> +
+> +typedef struct IDEDrive {
+> +    IDEDevice dev;
+> +} IDEDrive;
+> +
+> +#define DEFINE_IDE_DEV_PROPERTIES()                     \
+> +    DEFINE_BLOCK_PROPERTIES(IDEDrive, dev.conf),        \
+> +    DEFINE_BLOCK_ERROR_PROPERTIES(IDEDrive, dev.conf),  \
+> +    DEFINE_PROP_STRING("ver",  IDEDrive, dev.version),  \
+> +    DEFINE_PROP_UINT64("wwn",  IDEDrive, dev.wwn, 0),   \
+> +    DEFINE_PROP_STRING("serial",  IDEDrive, dev.serial),\
+> +    DEFINE_PROP_STRING("model", IDEDrive, dev.model)
+> +
+> +void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp);
+> +
+> +#endif
+> diff --git a/hw/ide/cf.c b/hw/ide/cf.c
+> new file mode 100644
+> index 0000000000..0b4bb57591
+> --- /dev/null
+> +++ b/hw/ide/cf.c
+> @@ -0,0 +1,58 @@
+> +/*
+> + * ide CompactFlash support
+> + *
+> + * This code is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU Lesser General Public
+> + * License as published by the Free Software Foundation; either
+> + * version 2.1 of the License, or (at your option) any later version.
+> + *
+> + * This library is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * Lesser General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU Lesser General Public
+> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/ide/qdev-ide.h"
+> +#include "qapi/qapi-types-block.h"
+> +
+> +static void ide_cf_realize(IDEDevice *dev, Error **errp)
+> +{
+> +    ide_dev_initfn(dev, IDE_CFATA, errp);
+> +}
+> +
+> +static Property ide_cf_properties[] = {
+> +    DEFINE_IDE_DEV_PROPERTIES(),
+> +    DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
+> +    DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
+> +                IDEDrive, dev.chs_trans, BIOS_ATA_TRANSLATION_AUTO),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void ide_cf_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    IDEDeviceClass *k = IDE_DEVICE_CLASS(klass);
+> +
+> +    k->realize  = ide_cf_realize;
+> +    dc->fw_name = "drive";
+> +    dc->desc    = "virtual CompactFlash card";
+> +    device_class_set_props(dc, ide_cf_properties);
+> +}
+> +
+> +static const TypeInfo ide_cf_info = {
+> +    .name          = "ide-cf",
+> +    .parent        = TYPE_IDE_DEVICE,
+> +    .instance_size = sizeof(IDEDrive),
+> +    .class_init    = ide_cf_class_init,
+> +};
+> +
+> +static void ide_cf_register_type(void)
+> +{
+> +    type_register_static(&ide_cf_info);
+> +}
+> +
+> +type_init(ide_cf_register_type)
+> diff --git a/hw/ide/qdev.c b/hw/ide/qdev.c
+> index 1b3b4da01d..a2f2d0ea08 100644
+> --- a/hw/ide/qdev.c
+> +++ b/hw/ide/qdev.c
+> @@ -24,12 +24,9 @@
+> #include "qemu/error-report.h"
+> #include "qemu/main-loop.h"
+> #include "qemu/module.h"
+> -#include "hw/ide/internal.h"
+> -#include "hw/qdev-properties.h"
+> -#include "hw/qdev-properties-system.h"
+> +#include "hw/ide/qdev-ide.h"
+> #include "sysemu/block-backend.h"
+> #include "sysemu/blockdev.h"
+> -#include "hw/block/block.h"
+> #include "sysemu/sysemu.h"
+> #include "sysemu/runstate.h"
+> #include "qapi/visitor.h"
+> @@ -158,11 +155,7 @@ int ide_get_bios_chs_trans(BusState *bus, int unit)
+>
+> /* --------------------------------- */
+>
+> -typedef struct IDEDrive {
+> -    IDEDevice dev;
+> -} IDEDrive;
+> -
+> -static void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp)
+> +void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp)
+> {
+>     IDEBus *bus = DO_UPCAST(IDEBus, qbus, dev->qdev.parent_bus);
+>     IDEState *s = bus->ifs + dev->unit;
+> @@ -283,19 +276,6 @@ static void ide_cd_realize(IDEDevice *dev, Error **errp)
+>     ide_dev_initfn(dev, IDE_CD, errp);
+> }
+>
+> -static void ide_cf_realize(IDEDevice *dev, Error **errp)
+> -{
+> -    ide_dev_initfn(dev, IDE_CFATA, errp);
+> -}
+> -
+> -#define DEFINE_IDE_DEV_PROPERTIES()                     \
+> -    DEFINE_BLOCK_PROPERTIES(IDEDrive, dev.conf),        \
+> -    DEFINE_BLOCK_ERROR_PROPERTIES(IDEDrive, dev.conf),  \
+> -    DEFINE_PROP_STRING("ver",  IDEDrive, dev.version),  \
+> -    DEFINE_PROP_UINT64("wwn",  IDEDrive, dev.wwn, 0),   \
+> -    DEFINE_PROP_STRING("serial",  IDEDrive, dev.serial),\
+> -    DEFINE_PROP_STRING("model", IDEDrive, dev.model)
+> -
+> static Property ide_hd_properties[] = {
+>     DEFINE_IDE_DEV_PROPERTIES(),
+>     DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
+> @@ -346,32 +326,6 @@ static const TypeInfo ide_cd_info = {
+>     .class_init    = ide_cd_class_init,
+> };
+>
+> -static Property ide_cf_properties[] = {
+> -    DEFINE_IDE_DEV_PROPERTIES(),
+> -    DEFINE_BLOCK_CHS_PROPERTIES(IDEDrive, dev.conf),
+> -    DEFINE_PROP_BIOS_CHS_TRANS("bios-chs-trans",
+> -                IDEDrive, dev.chs_trans, BIOS_ATA_TRANSLATION_AUTO),
+> -    DEFINE_PROP_END_OF_LIST(),
+> -};
+> -
+> -static void ide_cf_class_init(ObjectClass *klass, void *data)
+> -{
+> -    DeviceClass *dc = DEVICE_CLASS(klass);
+> -    IDEDeviceClass *k = IDE_DEVICE_CLASS(klass);
+> -
+> -    k->realize  = ide_cf_realize;
+> -    dc->fw_name = "drive";
+> -    dc->desc    = "virtual CompactFlash card";
+> -    device_class_set_props(dc, ide_cf_properties);
+> -}
+> -
+> -static const TypeInfo ide_cf_info = {
+> -    .name          = "ide-cf",
+> -    .parent        = TYPE_IDE_DEVICE,
+> -    .instance_size = sizeof(IDEDrive),
+> -    .class_init    = ide_cf_class_init,
+> -};
+> -
+> static void ide_device_class_init(ObjectClass *klass, void *data)
+> {
+>     DeviceClass *k = DEVICE_CLASS(klass);
+> @@ -396,7 +350,6 @@ static void ide_register_types(void)
+>     type_register_static(&ide_bus_info);
+>     type_register_static(&ide_hd_info);
+>     type_register_static(&ide_cd_info);
+> -    type_register_static(&ide_cf_info);
+>     type_register_static(&ide_device_type_info);
+> }
+>
+> diff --git a/hw/ide/Kconfig b/hw/ide/Kconfig
+> index dd85fa3619..b93d6743d5 100644
+> --- a/hw/ide/Kconfig
+> +++ b/hw/ide/Kconfig
+> @@ -57,3 +57,7 @@ config IDE_SII3112
+>     bool
+>     select IDE_PCI
+>     select IDE_QDEV
+> +
+> +config IDE_CF
+> +    bool
+> +    default y if IDE_QDEV
+> diff --git a/hw/ide/meson.build b/hw/ide/meson.build
+> index e050eef942..d2e5b45c9e 100644
+> --- a/hw/ide/meson.build
+> +++ b/hw/ide/meson.build
+> @@ -1,6 +1,7 @@
+> system_ss.add(when: 'CONFIG_AHCI', if_true: files('ahci.c'))
+> system_ss.add(when: 'CONFIG_AHCI_ICH9', if_true: files('ich.c'))
+> system_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('ahci-allwinner.c'))
+> +system_ss.add(when: 'CONFIG_IDE_CF', if_true: files('cf.c'))
+> system_ss.add(when: 'CONFIG_IDE_CMD646', if_true: files('cmd646.c'))
+> system_ss.add(when: 'CONFIG_IDE_CORE', if_true: files('core.c', 'atapi.c'))
+> system_ss.add(when: 'CONFIG_IDE_ISA', if_true: files('isa.c', 'ioport.c'))
+> -- 
+> 2.43.0
+>
+>
+>
 
