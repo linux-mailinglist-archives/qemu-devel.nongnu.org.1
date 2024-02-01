@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FED8457BB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:30:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5124B8457B0
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 Feb 2024 13:29:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVWBR-0007ph-3e; Thu, 01 Feb 2024 07:28:45 -0500
+	id 1rVWBP-0007p3-3g; Thu, 01 Feb 2024 07:28:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBM-0007nV-Rd
- for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:41 -0500
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1rVWBM-0007nU-QQ
+ for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:40 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rVWBK-0002AS-Bs
+ id 1rVWBK-0002AQ-AL
  for qemu-devel@nongnu.org; Thu, 01 Feb 2024 07:28:40 -0500
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2d051fb89fbso12224041fa.2
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-51124d43943so1279335e87.2
  for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 04:28:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706790516; x=1707395316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JB4Epfg8EtaZj5aKH+XSQiP5F2xLNHDHewznk8QZ/uQ=;
- b=Mhf5eHhMd9726iLRgT9RJF6EXSLQojnDqkZb8e2c211DUlYi6jvHaOobEIPayuK+1e
- Kkje8KSPxT0kbWE9vX6bjuJirXQ6Ooj+K5dtWmZcKSu/OTDQ8SQzuausiIOnzVK4jFuD
- ba4i6bcLl8lYfrVl3QP7ZGgqMj9WZIfH/DgsJAqdGaA0ySMbyvOsiqT/fzozR4sSyt6I
- M4Y+e5oZQhq8WP0WGAhsCv+q/yW8Mq9FG4Jw4O53fS77j43bTDQVr3B8f578MkiYsJsA
- wOfeINeedt0DzSJfUKzqYn+u2afXlSK3KrWAmnLFBQpIhxQX6upHRiq6rA7lSEnw4VcO
- 71gg==
+ bh=L7ej3O0CatCEUFzw6u9SlCujsXb/1bH6cTaIS9kjyEM=;
+ b=DcJVJsNwB8DCM9XbjtWJUjtpTSJKAN4jxMh5Hu6Qx94XqnfmPWI5EqqbGGbv4bdS+Z
+ 4jTPpIT0sDQnbaT1gwJ1aVVsQkPg4rQ+rJ6vGVDP1ZToqA+ETnu27MOI2YJVQXLkHAx2
+ u3MOoN/z7gO7LWAWJj231bTdP0+qTAyXb7BASbgjhSDbFkZCVMKl6AIyK5oTrrXbV3GO
+ RUwTcacYKSw0/tW8nVmWi6UUQcEDMLjse5Kixaaz2EmfQGt3J/VDbYU14Ba217S/2Mwb
+ 3qbPeF/iNtkFvhyjjHd+lBCem9VKHcYytyggtyqDv1HZWnxx5E3XlXGTHtf4mc60eRTw
+ qIXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706790516; x=1707395316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JB4Epfg8EtaZj5aKH+XSQiP5F2xLNHDHewznk8QZ/uQ=;
- b=k/w+nczmLmxiTGLpRrX9/Menny1Gy02SiXZWhZT/Vj4xTlbtLuKiBEd/zrmFpDDwXC
- Z3szGCu+oZeuUQj8ilNzLDNa4H0Hg5wOcPHVRDRG2Y/vembGf/z3XM8+F9TuOACeC/Hv
- dUtrHkMlm0qXwEezqMGRj+/6ZoEj46jE7JaXmCOe/7z0AtrqfQN7qRnQPuf9ouzdVA7g
- 4PuxVqYJf4HFRmfvZFK6tQPL1eGD+3nITR1AvPBlWq96Gkd5eZxUKpSv/nZNTYgKUyMr
- SRJi65JuYPRVG8hJFOvhFqwz4naX6/a9Z01TUxHiCbW/UpHgbeRWzgh9/0x271d7Pjqr
- UO/A==
-X-Gm-Message-State: AOJu0YwCQPN/vQerzF0R6HkCtqeHB5imJhRPvG+N+11AWFKO9+d7yi+L
- fCho8okQ63XQxakc2PXF8V3NqgNQGeQEjfNgntj0hNTrjbOimehsAw0D2eT6vbc=
-X-Google-Smtp-Source: AGHT+IHfQ3BAlodQIwg5MRRVv6skMju6Ub91ft3nNbR41ng8DNcgl413x6yoHbvU+Yn7FTp+gi8niw==
-X-Received: by 2002:a2e:924a:0:b0:2d0:58b9:2bf3 with SMTP id
- v10-20020a2e924a000000b002d058b92bf3mr3633384ljg.20.1706790516372; 
+ bh=L7ej3O0CatCEUFzw6u9SlCujsXb/1bH6cTaIS9kjyEM=;
+ b=LzzEkuymR+lc2mtHi3WwG49E0vQ4N+Y2sz8FBrhylNoje+0sFeRKe8RmHajtFYKBMO
+ Hynxt0qJgmstvyzYvN0N77t/d8gmsh3CdCdkOeSmdDUbaPZTy9jMrYdJbSPRCHEpg3Ac
+ RC1Hl+WQo4sBu6oQe8svMJrXHNBlnHTz67sRbDOj5EqpU5HIDLxRrxZDT5CXHW2mryyj
+ +paEPvbIVL95EnFReG4FEis4CD8l4K4NIgvPZmg+mTPYCZkI5SvYU30QR+dxLk8S/fbV
+ eKZ3w3IcGv2ss+oYMU1UDPnGK2j6NGGnGSFq+C650sNh1bxQJn5uk7T51CkgQo8LnYVA
+ Ph1g==
+X-Gm-Message-State: AOJu0YxVp2QuBzuzGwpJiBDzq4U79blWNh3T/4f5OpUlxmz6psIJQVHo
+ XYtG2B+mRZq+CYaZe1eKN/XyJktW5G4x5ALjHroRdGpcTdE0k7B1HbErXwXVzXs=
+X-Google-Smtp-Source: AGHT+IHP0mABYouNTu71cKwDBRpd2QRAo8oLlojZlhwluTRNbtk02YRAxjLwNLev3VJghPf6bUW5AQ==
+X-Received: by 2002:a05:6512:3108:b0:50e:7410:d5b0 with SMTP id
+ n8-20020a056512310800b0050e7410d5b0mr1823269lfb.28.1706790516272; 
  Thu, 01 Feb 2024 04:28:36 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCW6RyN6yqTxhJY7XB2eZbbKlZIoLtk+r8yMdvLzY//FuqQrAuQ7u0YYnST4sLz8+61z2D8dpgSyB1g0nZ0tXJW6lRmu2IOYksW1fyeB1unTTlNhsqe8u6khODW4tPeV5Z4s8kpAVPs0gup8vF+lUi4poTgztrZxyyhsZhVUUpEiIoMAH+LY2XKySSFme6372RZy7IHmeegM9iEyRpltzlRTm+4w11T0fH6yUARFfE3WaxUP3WHqMgSHvoBqoO1EZcIbtiUF+oThrBMFchCZuGdOKF7ghEkrlnZIgxAy88D9+7Hjl0yWjVlaZw7ceJIEMYuUasajWOfOFYoSge+n/XJcAqIAbIslaDC9vguj6YihichrLEgHcEqdYVAvzAokB51wc3gUnNeG+EtFo35c9xHURio3Ia+YRdnUjBbhrIKMEvVbXJa6l3t56LIYoIEG0mjn8pninNcfgOavxm10wDTCusy6P9kwyjsYy5udPsFnm4vQ3iyx+UEnilNivv85nXmmAJ6vEX9knNoKzAICZanprhpfOitjbn2Q0YOvPHWDdvZCoCBNeAZH8aoN2Hrwbg7Y2mOk0Pan5PqXwacn1XKB6HMXAB+LEAu/ACSTxNrLZM6/zIbXDsSQnXKIhbnD/IZ6NCIntvbTsrtE4JXT1SoIECEjaHphMfRjzhIE8niZ7khzdRohSsgLcueVjA==
+ AJvYcCUqHmfQR05i1hUXpvu6XJ3nk3m+oD1xBJvBqXZTlf9ELO0FIzgYSIGYk2juoJHsriUZdemPFUMcsxblSldot1XjoGjQYlTEj9/cHmz1yyPhENYnoVornVoJews+UxIeaV6/UpePqE8fhlFLGZ/6IEJqnWsnxhfhi73dJIm48/qjQABeFO7BajwCy3VNFbJ6SaaFjol5GDoBU5KBkpFmfO3in53/f386MFPuqx5W6Q3xwDdguIKp4a0gwjO3g0Z8rKtLd/5Wppx/1LMLloBJSD/eXkY9GYF9XUurLbeJ8p0MFmChruyxjebOIMShFLr2gpZBW/67tWCgG9120qMIfxR9OE1y/sq7IqukHBcjy7XS/Tk+8cSlWbFGcysVnDHgZOQ/f9JUx4a6dw8PRn8n6wpfyKieCQpB9mzW500GQsf4L6rNN72LDLxcKUcaLr1uoPKHDM5cULnvpr4KcsrRxZwVnqDLujLqX9ePCzITrno6abjzt9kDmoBJT0irZgl1ui1DVSB6qJrgaRoRAIuAN/MJZry4wzHEbjJg/QNiJLQMHZKftyF28MjAYbxsFG+Q1z6hlW6Tvq8OCmbUaXs83FA4NQQWwnu10ldK8J9OWOp/sCx394tMNv01Ax9+q1fcMGuFncu/prbRhJ+KNRVOc9776KW3e9OOalrM9IodriOvzhAhSKQpVYy17EyfW2JuxPAvkA==
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- cs10-20020a0564020c4a00b0055d37af4d20sm6621335edb.74.2024.02.01.04.28.35
+ vh12-20020a170907d38c00b00a3687cde34asm1335366ejc.5.2024.02.01.04.28.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 01 Feb 2024 04:28:35 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5E4DF5F9D9;
+ by draig.lan (Postfix) with ESMTP id 761A65F9DA;
  Thu,  1 Feb 2024 12:28:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -75,20 +75,19 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chris Wulff <crwulff@gmail.com>, Fabiano Rosas <farosas@suse.de>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH 1/5] tests/docker: Add sqlite3 module to openSUSE Leap
- container
-Date: Thu,  1 Feb 2024 12:28:31 +0000
-Message-Id: <20240201122835.1712347-2-alex.bennee@linaro.org>
+ Chris Wulff <crwulff@gmail.com>, Rabin Vincent <rabinv@axis.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@xilinx.com>
+Subject: [PATCH 2/5] docs: mark CRIS support as deprecated
+Date: Thu,  1 Feb 2024 12:28:32 +0000
+Message-Id: <20240201122835.1712347-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240201122835.1712347-1-alex.bennee@linaro.org>
 References: <20240201122835.1712347-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,73 +110,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+This might be premature but while streamling the avocado tests I
+realised the only tests we have are "check-tcg" ones. The aging
+fedora-criss-cross image works well enough for developers but can't be
+used in CI as we need supported build platforms to build QEMU.
 
-Avocado needs sqlite3:
+Does this mean the writing is on the wall for this architecture?
 
-  Failed to load plugin from module "avocado.plugins.journal":
-  ImportError("Module 'sqlite3' is not installed.
-  Use: sudo zypper install python311 to install it")
-
->From 'zypper info python311':
-  "This package supplies rich command line features provided by
-  readline, and sqlite3 support for the interpreter core, thus forming
-  a so called "extended" runtime."
-
-Include the appropriate package in the lcitool mappings which will
-guarantee the dockerfile gets properly updated when lcitool is
-run. Also include the updated dockerfile.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Suggested-by: Andrea Bolognani <abologna@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240117164227.32143-1-farosas@suse.de>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Cc: Rabin Vincent <rabinv@axis.com>
+Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
+Message-Id: <20230925144854.1872513-5-alex.bennee@linaro.org>
 ---
- tests/docker/dockerfiles/opensuse-leap.docker | 1 +
- tests/lcitool/mappings.yml                    | 4 ++++
- tests/lcitool/projects/qemu.yml               | 1 +
- 3 files changed, 6 insertions(+)
+ docs/about/deprecated.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
-index dc0e36ce488..cf753383a45 100644
---- a/tests/docker/dockerfiles/opensuse-leap.docker
-+++ b/tests/docker/dockerfiles/opensuse-leap.docker
-@@ -90,6 +90,7 @@ RUN zypper update -y && \
-            pcre-devel-static \
-            pipewire-devel \
-            pkgconfig \
-+           python311 \
-            python311-base \
-            python311-pip \
-            python311-setuptools \
-diff --git a/tests/lcitool/mappings.yml b/tests/lcitool/mappings.yml
-index 0b908882f1d..407c03301bf 100644
---- a/tests/lcitool/mappings.yml
-+++ b/tests/lcitool/mappings.yml
-@@ -59,6 +59,10 @@ mappings:
-     CentOSStream8:
-     OpenSUSELeap15:
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index d4492b94604..82922476d72 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -183,6 +183,14 @@ Nios II CPU (since 8.2)
+ The Nios II architecture is orphan. The ``nios2`` guest CPU support is
+ deprecated and will be removed in a future version of QEMU.
  
-+  python3-sqlite3:
-+    CentOSStream8: python38
-+    OpenSUSELeap15: python311
++CRIS CPU architecture (since 9.0)
++'''''''''''''''''''''''''''''''''
 +
-   python3-tomli:
-     # test using tomllib
-     apk:
-diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 82092c9f175..149b15de57b 100644
---- a/tests/lcitool/projects/qemu.yml
-+++ b/tests/lcitool/projects/qemu.yml
-@@ -97,6 +97,7 @@ packages:
-  - python3-pip
-  - python3-sphinx
-  - python3-sphinx-rtd-theme
-+ - python3-sqlite3
-  - python3-tomli
-  - python3-venv
-  - rpm2cpio
++The CRIS architecture was pulled from Linux in 4.17 and the compiler
++is no longer packaged in any distro making it harder to run the
++``check-tcg`` tests. Unless we can improve the testing situation there
++is a chance the code will bitrot without anyone noticing.
++
+ 
+ System emulator machines
+ ------------------------
 -- 
 2.39.2
 
