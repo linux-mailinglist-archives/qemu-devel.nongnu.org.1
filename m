@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1D484735A
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D63F7847377
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:40:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvbB-0000iP-VX; Fri, 02 Feb 2024 10:37:02 -0500
+	id 1rVvb6-0000Nh-Nf; Fri, 02 Feb 2024 10:36:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb5-0000NX-HA
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:55 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1rVvb4-0000Mf-JS
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:54 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb1-0004WR-KD
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:55 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40e800461baso19228755e9.3
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:51 -0800 (PST)
+ id 1rVvb2-0004Wr-Eu
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:54 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2d07d74be60so19392301fa.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888210; x=1707493010; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706888211; x=1707493011; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=amHR5O3giydBqIG5HDDnvSZQyLiZ0je93DEkkg1t/tA=;
- b=w8ju74AHvXW50ncEU+Cdawd3Yvn7JL/sTcsaoYjb+jIOAnxXNFuWejBR37BFhYDR4c
- 0gWo0LXPYp2nnJ5eYSz6anIqlH+0SW5O9LAe5uD++2M/L4WSjccQkPdQB87teKcEKFJI
- OKhjrGFj4tA4vRNK725+nuDfKn/xrwGdmXEqGrEaVQQJimRVhDrZudBxBB5yA7PM3m18
- Th2BF4uBSr6shL8b98p9UIKVbhH8Dub2HYDlT9xJxF5Rg0BcR+Q8d1rEWztIA0X9JV6u
- tmx4ro9+0MMaZlcqEUIRO2MJuKJw1ZgfY2MrnyccNgt4174LWkLEPzHTnH+x+owQgoCV
- 2eUg==
+ :reply-to; bh=w0fahzk6p7Uj8He02ARe/ArkwaOEVmzA6eqTYfNKviw=;
+ b=Wnu6+r8GvE5IDJ53s2pb5aC7dR5eqXIG5/abg6yoqM5Qk03hFwGRI7XRwi0XVND8NK
+ 3iStqFR95a00qB1jPV4bV3hHWJ37tl5HzAj/BdXd6mHpr3w2e0fUZnAK65Zd4lktP9sm
+ kfnKirE6FLNm40w7IiKfRXIDctJoMeAMCYgtyHXtMxTiV7wpI26yZj8PiHeks4ZJmneD
+ Uip10XVjMcUm6zwpi+2A3aP2RvRgohxxkToaVAhn97YY6D42ori0XgFBK4OGK/X3Ba4y
+ rLUvB6h2IwUW8DVqVlJlGvoXZJK/+48xpaxObTc93AYsLW71pDmcTogq/BIZFygezkZR
+ iveA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888210; x=1707493010;
+ d=1e100.net; s=20230601; t=1706888211; x=1707493011;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=amHR5O3giydBqIG5HDDnvSZQyLiZ0je93DEkkg1t/tA=;
- b=l13rMCfZApHvCkILBwJ+nHJdfdEo71gSyPiTjz3/OMpcjV6vaZi/o1RDHASgKh+sRx
- dgcNtwEDmkUHgXPaPr9HIkGx0aC9lIpiXPOo6gPBRfi3m5YSfWc88QfZeOpNVMglGj+K
- dfAlIxxzes6ptVeDdgeBxo+Y6w2IW3AhWnWDe9vZ4lUAUMc84pEU+x87c881t6NJ7p0t
- 7JBFVscQgeJQmpQvoZPIBaUR0BEXoISbZzIz7POuEz+8k1iD/qVp4CEBmQYYwfjmU82J
- qItXRUu1DYQmmmnKetFt82En3S5l5VUNdSx3h6XF5RQcPSLvXjtDT51Nc0ckGRhAl0O+
- zJug==
-X-Gm-Message-State: AOJu0Yz/4F1a8EMiFEzs6OMAG4unk8GTdGxTNrnq5T1ySs1Ag+5MlZFP
- KxP+Hu3JuS3EFz19T2GRvFYiDWBN7PiKnXXDyzWYI5rENlXl1Ah0eYOMODnL1EHvynLV0LAqYhU
- d
-X-Google-Smtp-Source: AGHT+IH7ytEEMSxthew7rK8gwnndRuqrW3Ez/AXnyQzL2TzsMcUq06kHyT0HOQUwcN65gnTcbTc2tA==
-X-Received: by 2002:a05:600c:3594:b0:40f:b691:d374 with SMTP id
- p20-20020a05600c359400b0040fb691d374mr5828583wmq.17.1706888210244; 
+ bh=w0fahzk6p7Uj8He02ARe/ArkwaOEVmzA6eqTYfNKviw=;
+ b=LMF9s0v8H39A78xDT+cJKaEHbQW5Jk2kJX8FZZXfWEguWuundgAEjZXPYfReB20TiL
+ psBcZeMNXQwcrEqXE9gebukR9+jXlWSuzySiEMgd/l4qMYxCCAKzPI9Y9qkiMAqKMRi8
+ U5Mxu8nWKFoTDe0s+U5GcEn95PR8JHoc8NNqcVqn0yh3Ss+54OzwlRfbf0LgjJzokhex
+ wWJ3b1OsLow8RHblrlYwKQYHKZ4GkorM2HU6j9trVjvnTODZslaR8YUUqSb2l3/4HRYP
+ GbcJydccIN8eF5s0mYgAsHVh7HrlBK14yIsKm4lsJIHiy5rp13FXTXeh1kSCj0kz18VS
+ e8IA==
+X-Gm-Message-State: AOJu0YwiBJuZyT4K/9IvoUZP3vEWYtgsentYOmH6FlKIu2S0bBLN7mX/
+ +jgk90gprPUEHaMNCKV4wQYjeA9IEqzEP0jQbOu+FGSZ12Vu/4AichAE1YCQBX6bhziXumNh1JA
+ M
+X-Google-Smtp-Source: AGHT+IGT17CBaIEaX3yRzq7jGWA6DoOCrslONo1XwrI7bYvL93AHgRGZGREqgmRf0KJuArfofAqL3Q==
+X-Received: by 2002:ac2:4549:0:b0:511:34ff:2bb6 with SMTP id
+ j9-20020ac24549000000b0051134ff2bb6mr1293871lfm.41.1706888210700; 
  Fri, 02 Feb 2024 07:36:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.49
+ k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 02 Feb 2024 07:36:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/36] hw/arm/xen_arm.c: convert DPRINTF to trace events and
- error/warn reports
-Date: Fri,  2 Feb 2024 15:36:26 +0000
-Message-Id: <20240202153637.3710444-26-peter.maydell@linaro.org>
+Subject: [PULL 26/36] hw/xen/xen-mapcache.c: convert DPRINTF to tracepoints
+Date: Fri,  2 Feb 2024 15:36:27 +0000
+Message-Id: <20240202153637.3710444-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,122 +95,182 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
 Tracing DPRINTFs to stderr might not be desired. A developer that relies
-on trace events should be able to opt-in to each trace event and rely on
+on tracepoints should be able to opt-in to each tracepoint and rely on
 QEMU's log redirection, instead of stderr by default.
 
 This commit converts DPRINTFs in this file that are used for tracing
-into trace events. Errors or warnings are converted to error_report and
-warn_report calls.
+into tracepoints.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: fe5e3bd54231abe933f95a24e0e88208cd8cfd8f.1706544115.git.manos.pitsidianakis@linaro.org
+Message-id: 2fbe1fbc59078e384761c932e97cfa4276a53d75.1706544115.git.manos.pitsidianakis@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/xen_arm.c    | 23 +++++++++++------------
- hw/arm/trace-events |  5 +++++
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ hw/xen/xen-mapcache.c | 54 +++++++++++++++++++------------------------
+ hw/xen/trace-events   | 11 +++++++++
+ 2 files changed, 35 insertions(+), 30 deletions(-)
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index a5631529d09..32776d94dfe 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -34,6 +34,7 @@
- #include "hw/xen/xen-hvm-common.h"
- #include "sysemu/tpm.h"
- #include "hw/xen/arch_hvm.h"
-+#include "trace.h"
+diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+index f7d974677d1..336c2123767 100644
+--- a/hw/xen/xen-mapcache.c
++++ b/hw/xen/xen-mapcache.c
+@@ -22,16 +22,6 @@
+ #include "trace.h"
  
- #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
- OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
-@@ -91,8 +92,9 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
  
-         sysbus_create_simple("virtio-mmio", base, irq);
- 
--        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
--                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
-+        trace_xen_create_virtio_mmio_devices(i,
-+                                             GUEST_VIRTIO_MMIO_SPI_FIRST + i,
-+                                             base);
-     }
- }
- 
-@@ -101,6 +103,7 @@ static void xen_init_ram(MachineState *machine)
-     MemoryRegion *sysmem = get_system_memory();
-     ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
- 
-+    trace_xen_init_ram(machine->ram_size);
-     if (machine->ram_size <= GUEST_RAM0_SIZE) {
-         ram_size[0] = machine->ram_size;
-         ram_size[1] = 0;
-@@ -117,15 +120,10 @@ static void xen_init_ram(MachineState *machine)
-     memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-                              GUEST_RAM0_BASE, ram_size[0]);
-     memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
--    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
--            GUEST_RAM0_BASE, ram_size[0]);
+-//#define MAPCACHE_DEBUG
 -
-     if (ram_size[1] > 0) {
-         memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-                                  GUEST_RAM1_BASE, ram_size[1]);
-         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
--        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
--                GUEST_RAM1_BASE, ram_size[1]);
-     }
+-#ifdef MAPCACHE_DEBUG
+-#  define DPRINTF(fmt, ...) do { \
+-    fprintf(stderr, "xen_mapcache: " fmt, ## __VA_ARGS__); \
+-} while (0)
+-#else
+-#  define DPRINTF(fmt, ...) do { } while (0)
+-#endif
+-
+ #if HOST_LONG_BITS == 32
+ #  define MCACHE_BUCKET_SHIFT 16
+ #  define MCACHE_MAX_SIZE     (1UL<<31) /* 2GB Cap */
+@@ -145,8 +135,7 @@ void xen_map_cache_init(phys_offset_to_gaddr_t f, void *opaque)
+ 
+     size = mapcache->nr_buckets * sizeof (MapCacheEntry);
+     size = (size + XC_PAGE_SIZE - 1) & ~(XC_PAGE_SIZE - 1);
+-    DPRINTF("%s, nr_buckets = %lx size %lu\n", __func__,
+-            mapcache->nr_buckets, size);
++    trace_xen_map_cache_init(mapcache->nr_buckets, size);
+     mapcache->entry = g_malloc0(size);
  }
  
-@@ -158,7 +156,7 @@ static void xen_enable_tpm(XenArmState *xam)
- 
-     TPMBackend *be = qemu_find_tpm_be("tpm0");
-     if (be == NULL) {
--        DPRINTF("Couldn't fine the backend for tpm0\n");
-+        error_report("Couldn't find tmp0 backend");
-         return;
+@@ -286,7 +275,9 @@ tryagain:
+         test_bits(address_offset >> XC_PAGE_SHIFT,
+                   test_bit_size >> XC_PAGE_SHIFT,
+                   mapcache->last_entry->valid_mapping)) {
+-        trace_xen_map_cache_return(mapcache->last_entry->vaddr_base + address_offset);
++        trace_xen_map_cache_return(
++            mapcache->last_entry->vaddr_base + address_offset
++        );
+         return mapcache->last_entry->vaddr_base + address_offset;
      }
-     dev = qdev_new(TYPE_TPM_TIS_SYSBUS);
-@@ -168,7 +166,7 @@ static void xen_enable_tpm(XenArmState *xam)
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, xam->cfg.tpm_base_addr);
  
--    DPRINTF("Connected tpmdev at address 0x%lx\n", xam->cfg.tpm_base_addr);
-+    trace_xen_enable_tpm(xam->cfg.tpm_base_addr);
+@@ -368,7 +359,9 @@ tryagain:
+         QTAILQ_INSERT_HEAD(&mapcache->locked_entries, reventry, next);
+     }
+ 
+-    trace_xen_map_cache_return(mapcache->last_entry->vaddr_base + address_offset);
++    trace_xen_map_cache_return(
++        mapcache->last_entry->vaddr_base + address_offset
++    );
+     return mapcache->last_entry->vaddr_base + address_offset;
  }
- #endif
  
-@@ -179,8 +177,9 @@ static void xen_arm_init(MachineState *machine)
-     xam->state =  g_new0(XenIOState, 1);
- 
-     if (machine->ram_size == 0) {
--        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
--                "(no emulated devices including Virtio)\n");
-+        warn_report("%s non-zero ram size not specified. QEMU machine started"
-+                    " without IOREQ (no emulated devices including virtio)",
-+                    MACHINE_CLASS(object_get_class(OBJECT(machine)))->desc);
-         return;
+@@ -402,10 +395,10 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
+         }
      }
- 
-@@ -194,7 +193,7 @@ static void xen_arm_init(MachineState *machine)
-     if (xam->cfg.tpm_base_addr) {
-         xen_enable_tpm(xam);
+     if (!found) {
+-        fprintf(stderr, "%s, could not find %p\n", __func__, ptr);
++        trace_xen_ram_addr_from_mapcache_not_found(ptr);
+         QTAILQ_FOREACH(reventry, &mapcache->locked_entries, next) {
+-            DPRINTF("   "HWADDR_FMT_plx" -> %p is present\n", reventry->paddr_index,
+-                    reventry->vaddr_req);
++            trace_xen_ram_addr_from_mapcache_found(reventry->paddr_index,
++                                                   reventry->vaddr_req);
+         }
+         abort();
+         return 0;
+@@ -416,7 +409,7 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
+         entry = entry->next;
+     }
+     if (!entry) {
+-        DPRINTF("Trying to find address %p that is not in the mapcache!\n", ptr);
++        trace_xen_ram_addr_from_mapcache_not_in_cache(ptr);
+         raddr = 0;
      } else {
--        DPRINTF("tpm-base-addr is not provided. TPM will not be enabled\n");
-+        warn_report("tpm-base-addr is not provided. TPM will not be enabled");
+         raddr = (reventry->paddr_index << MCACHE_BUCKET_SHIFT) +
+@@ -443,9 +436,12 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
+         }
      }
- #endif
- }
-diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-index 0ff41e6c780..fd0d92762e4 100644
---- a/hw/arm/trace-events
-+++ b/hw/arm/trace-events
-@@ -65,3 +65,8 @@ z2_lcd_enable_disable_result(const char *result) "LCD %s"
- z2_aer915_send_too_long(int8_t msg) "message too long (%i bytes)"
- z2_aer915_send(uint8_t reg, uint8_t value) "reg %d value 0x%02x"
- z2_aer915_event(int8_t event, int8_t len) "i2c event =0x%x len=%d bytes"
-+
-+# xen_arm.c
-+xen_create_virtio_mmio_devices(int i, int irq, uint64_t base) "Created virtio-mmio device %d: irq %d base 0x%"PRIx64
-+xen_init_ram(uint64_t machine_ram_size) "Initialized xen ram with size 0x%"PRIx64
-+xen_enable_tpm(uint64_t addr) "Connected tpmdev at address 0x%"PRIx64
+     if (!found) {
+-        DPRINTF("%s, could not find %p\n", __func__, buffer);
++        trace_xen_invalidate_map_cache_entry_unlocked_not_found(buffer);
+         QTAILQ_FOREACH(reventry, &mapcache->locked_entries, next) {
+-            DPRINTF("   "HWADDR_FMT_plx" -> %p is present\n", reventry->paddr_index, reventry->vaddr_req);
++            trace_xen_invalidate_map_cache_entry_unlocked_found(
++                reventry->paddr_index,
++                reventry->vaddr_req
++            );
+         }
+         return;
+     }
+@@ -463,7 +459,7 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
+         entry = entry->next;
+     }
+     if (!entry) {
+-        DPRINTF("Trying to unmap address %p that is not in the mapcache!\n", buffer);
++        trace_xen_invalidate_map_cache_entry_unlocked_miss(buffer);
+         return;
+     }
+     entry->lock--;
+@@ -502,9 +498,8 @@ void xen_invalidate_map_cache(void)
+         if (!reventry->dma) {
+             continue;
+         }
+-        fprintf(stderr, "Locked DMA mapping while invalidating mapcache!"
+-                " "HWADDR_FMT_plx" -> %p is present\n",
+-                reventry->paddr_index, reventry->vaddr_req);
++        trace_xen_invalidate_map_cache(reventry->paddr_index,
++                                       reventry->vaddr_req);
+     }
+ 
+     for (i = 0; i < mapcache->nr_buckets; i++) {
+@@ -562,24 +557,23 @@ static uint8_t *xen_replace_cache_entry_unlocked(hwaddr old_phys_addr,
+         entry = entry->next;
+     }
+     if (!entry) {
+-        DPRINTF("Trying to update an entry for "HWADDR_FMT_plx \
+-                "that is not in the mapcache!\n", old_phys_addr);
++        trace_xen_replace_cache_entry_unlocked(old_phys_addr);
+         return NULL;
+     }
+ 
+     address_index  = new_phys_addr >> MCACHE_BUCKET_SHIFT;
+     address_offset = new_phys_addr & (MCACHE_BUCKET_SIZE - 1);
+ 
+-    fprintf(stderr, "Replacing a dummy mapcache entry for "HWADDR_FMT_plx \
+-            " with "HWADDR_FMT_plx"\n", old_phys_addr, new_phys_addr);
++    trace_xen_replace_cache_entry_dummy(old_phys_addr, new_phys_addr);
+ 
+     xen_remap_bucket(entry, entry->vaddr_base,
+                      cache_size, address_index, false);
+     if (!test_bits(address_offset >> XC_PAGE_SHIFT,
+                 test_bit_size >> XC_PAGE_SHIFT,
+                 entry->valid_mapping)) {
+-        DPRINTF("Unable to update a mapcache entry for "HWADDR_FMT_plx"!\n",
+-                old_phys_addr);
++        trace_xen_replace_cache_entry_unlocked_could_not_update_entry(
++            old_phys_addr
++        );
+         return NULL;
+     }
+ 
+diff --git a/hw/xen/trace-events b/hw/xen/trace-events
+index 67a6c419260..a65dc0e55fd 100644
+--- a/hw/xen/trace-events
++++ b/hw/xen/trace-events
+@@ -60,3 +60,14 @@ cpu_ioreq_config_write(void *req, uint32_t sbdf, uint32_t reg, uint32_t size, ui
+ xen_map_cache(uint64_t phys_addr) "want 0x%"PRIx64
+ xen_remap_bucket(uint64_t index) "index 0x%"PRIx64
+ xen_map_cache_return(void* ptr) "%p"
++xen_map_cache_init(uint64_t nr_buckets, uint64_t size) "nr_buckets = 0x%"PRIx64" size 0x%"PRIx64
++xen_replace_cache_entry_dummy(uint64_t old_phys_addr, uint64_t new_phys_addr) "Replacing a dummy mapcache entry for 0x%"PRIx64" with 0x%"PRIx64
++xen_invalidate_map_cache_entry_unlocked_not_found(void *p) "could not find %p"
++xen_invalidate_map_cache_entry_unlocked_found(uint64_t addr, void *p) "   0x%"PRIx64" -> %p is present"
++xen_invalidate_map_cache_entry_unlocked_miss(void *buffer) "Trying to unmap address %p that is not in the mapcache"
++xen_replace_cache_entry_unlocked_could_not_update_entry(uint64_t old_phys_addr) "Unable to update a mapcache entry for 0x%"PRIx64
++xen_ram_addr_from_mapcache_not_found(void *p) "could not find %p"
++xen_ram_addr_from_mapcache_found(uint64_t addr, void *p) "   0x%"PRIx64" -> %p is present"
++xen_ram_addr_from_mapcache_not_in_cache(void *p) "Trying to find address %p that is not in the mapcache"
++xen_replace_cache_entry_unlocked(uint64_t old_phys_addr) "Trying to update an entry for 0x%"PRIx64" that is not in the mapcache"
++xen_invalidate_map_cache(uint64_t paddr_index, void *vaddr_req) "Locked DMA mapping while invalidating mapcache 0x%"PRIx64" -> %p is present"
 -- 
 2.34.1
 
