@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5681A8467B8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CA88467C6
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:58:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmWh-0007AE-S7; Fri, 02 Feb 2024 00:55:47 -0500
+	id 1rVmWj-0007Bz-Iz; Fri, 02 Feb 2024 00:55:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmWe-00077J-Th
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:44 -0500
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1rVmWg-0007A7-0V
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:46 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmWb-0003BG-29
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:43 -0500
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5cedfc32250so1544110a12.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:55:40 -0800 (PST)
+ id 1rVmWd-0003KD-4n
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:45 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d71cb97937so16372295ad.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:55:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853340; x=1707458140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853342; x=1707458142; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7AylhPAzokYF6U/UTbXWxwoj6D/cluPyL97dZpdbCYU=;
- b=Fc6KuBctc/n97LnFQnq/9PcnKr5mpORB1nkbu1riY3di0OhNk6szLtP8PpRfE4qW6N
- QjuPVGv/JDVOyW85C6ORLJuoUtGyFAEwljeVPArveekB87SbcIk4Z3F+sDMrjow3/bEr
- zSI1pMrg/Juh7pwiF0sOR1b2ahlQr1aAGIjobpJ+pOiQZD/MTGAFnO80+1NaGQheBx87
- DRFMGbZa8FmS6UBLj+a5VPn4Tj0PbaNxQt7fKYDKQn9p+L/6A+EIcLr4jvKYfGGpYfKw
- oKa1EUsWbZJcjkNrbkjFaLSFADc9xRrmEPrdqTk/PjhWQ4ABZWmGx3B5c+WyhORBAfbn
- 8SJg==
+ bh=ULiNZjMoC+ixiCPJhcdGEZXbCkj2T5rK3rV/1qTi1po=;
+ b=u79Jo7YIqDuLXv+XVa4GCyQV+PT+kXd1jBRA/Yf6xvEtcTVq5ZgM0myPzwxndIkJf6
+ WPcshgVn5xN90YwlPUkcg/mLEkJcZdzsVnYPe8fVufUqpXiMWSNUBL/LPyn/YDgHoJx1
+ EjTql9ZsQxuFlWuYP/yqBH6Ru3KLa9nMB8qMbfXJnfPMVB4raGhkc3HmDSFilgtldMNa
+ Gqe0fAlJbFs5xdxjCWZ9eaYdCkVVDPT4KqTabRMSEEm57pDRBXkIm2DG+zYuvsksFjOk
+ Vp0JQ691qciy+HbTD5TmV974Ouru1eeonVhTVfOiMGQ0XCDGkDWthjZHNNRlYpuky/FU
+ cpgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853340; x=1707458140;
+ d=1e100.net; s=20230601; t=1706853342; x=1707458142;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7AylhPAzokYF6U/UTbXWxwoj6D/cluPyL97dZpdbCYU=;
- b=CfN3P3I0MVzA77qviQMGMp+I6faGg62z/Na2nqrv6y9zDM5/W6/EkxtnCzwRaJQWgS
- exhAmiOALe76vOJQhs/n7Yg7lD3voC6CFUB3Km+jDoBh9x3a+wBYCRxC02/X+GTNCUEO
- as6iAFcqF3WpoYFiMhltz8yzC1ymcJyvb/FodbI0OWj0R4sdiGrOuIx1XsBc3kOy3xov
- w4Y5Qzpy3kwB6W6scHk6ZFpFq8YudydXE7xaXMR4OuQRgAmlWCD8UoM6M88dcInm6C9p
- s6Y2rmgqjARvogEY22t6vChT8BF7VL5nJQZNCz/6Qvpea5oE+ApE+Bb1Fr996BrvTE6j
- u3Sw==
-X-Gm-Message-State: AOJu0YyPbew1nYUDacnmFu8JfAkbezcXeqEb+mSHSmzehmHY17vUFXvy
- jTg357tq44y0YUHOJtE7NJJTEsnSk3i4EwBJTfCcKOEslp71k3ohFig36Y2xrWIjr+zQWepcsBi
- 7jyw=
-X-Google-Smtp-Source: AGHT+IF4SVGy02SNFjfLQS9WfOhVQp6+eqjmiRPx4Ks9SB1MRv7VPP3NLjBvzhQJOHa+FUKPULSg2w==
-X-Received: by 2002:a05:6a20:bf17:b0:19c:8939:64ca with SMTP id
- gc23-20020a056a20bf1700b0019c893964camr945456pzb.29.1706853339769; 
- Thu, 01 Feb 2024 21:55:39 -0800 (PST)
+ bh=ULiNZjMoC+ixiCPJhcdGEZXbCkj2T5rK3rV/1qTi1po=;
+ b=ovCYxH2S2hepYJYEE7yfw3J8E3tkoaUsD/Bt32O8y2gqBSyaYIJSBBDXETg8OYmk53
+ f93zsABbGJ2OnFDtPNKqN/iRG8/USH0C7D+cZ6tStY+L7OleBwNLm4yyi9YbLTdwd+xY
+ buAQNhfGWI8CQ7ikV9OFFB7Q/C8xYBKmvoy+H6R9evS31hMLqLxsm3mzEqoRMrNWy9ge
+ DojofZ7lUPZCmQlvcjrgVia1yiFxFX5obaqj6rmU+tNRleTcmuevYLK+B8/0CY4R+jfK
+ du+dsbMXkTRoS7OXTJ3IV30R2sISDm8aNBYO1DKQLBVWLDSOxpgt4qJFrQXRgOEVVP20
+ C74A==
+X-Gm-Message-State: AOJu0YwkWNibOlJQDGTzD6vQT/xBvr68IBGPYCQ3kE1BT4lIOWKkklRl
+ 7AkxHgw8QZwGHs7MGjzK+S2apKfIBNT9ki5Fg7/KCAP6j8V6DztvSBZebmv3RVDXgmNiyxSpv38
+ NZFc=
+X-Google-Smtp-Source: AGHT+IEeVfdJzDAMouV3533MpWnvoDaurVMMDayuDEpske9cP5pKJCxOeXcmlC+Z5II5Cv+lSlhY+A==
+X-Received: by 2002:a17:902:bf4c:b0:1d7:3067:aab5 with SMTP id
+ u12-20020a170902bf4c00b001d73067aab5mr6327651pls.57.1706853341769; 
+ Thu, 01 Feb 2024 21:55:41 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001d8a80cbb15sm752059plb.238.2024.02.01.21.55.38
+ je5-20020a170903264500b001d8a80cbb15sm752059plb.238.2024.02.01.21.55.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:55:39 -0800 (PST)
+ Thu, 01 Feb 2024 21:55:41 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 53/57] target/sparc: Merge check_ieee_exceptions with FPop
- helpers
-Date: Fri,  2 Feb 2024 15:50:32 +1000
-Message-Id: <20240202055036.684176-55-richard.henderson@linaro.org>
+Subject: [PULL 54/57] target/sparc: Split cexc and ftt from env->fsr
+Date: Fri,  2 Feb 2024 15:50:33 +1000
+Message-Id: <20240202055036.684176-56-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,639 +91,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If an exception is to be raised, the destination fp register
-should be unmodified.  The current implementation is incorrect,
-in that double results will be written back before calling
-gen_helper_check_ieee_exceptions, despite the placement of
-gen_store_fpr_D, since gen_dest_fpr_D returns cpu_fpr[].
-
-We can simplify the entire implementation by having each
-FPOp helper call check_ieee_exceptions.  For the moment this
-requires that all FPop helpers write to the TCG global cpu_fsr,
-so remove TCG_CALL_NO_WG from the DEF_HELPER_FLAGS_*.
+These two fields are adjusted by all FPop insns.
+Having them separate makes it easier to set without masking.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231103173841.33651-19-richard.henderson@linaro.org>
+Message-Id: <20231103173841.33651-20-richard.henderson@linaro.org>
 ---
- target/sparc/helper.h     | 119 +++++++++++----------
- target/sparc/fop_helper.c | 215 ++++++++++++++++++++++++++++----------
- target/sparc/translate.c  |  14 ---
- 3 files changed, 219 insertions(+), 129 deletions(-)
+ target/sparc/cpu.h        |  7 +++++-
+ target/sparc/helper.h     |  2 +-
+ target/sparc/fop_helper.c | 46 ++++++++++++++++++---------------------
+ target/sparc/translate.c  | 31 ++++++++++++++++----------
+ 4 files changed, 48 insertions(+), 38 deletions(-)
 
+diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
+index 216155d231..c5be9e37de 100644
+--- a/target/sparc/cpu.h
++++ b/target/sparc/cpu.h
+@@ -176,6 +176,7 @@ enum {
+ #define FSR_DZM   (1ULL << 24)
+ #define FSR_NXM   (1ULL << 23)
+ #define FSR_TEM_MASK (FSR_NVM | FSR_OFM | FSR_UFM | FSR_DZM | FSR_NXM)
++#define FSR_TEM_SHIFT  23
+ 
+ #define FSR_NVA   (1ULL << 9)
+ #define FSR_OFA   (1ULL << 8)
+@@ -183,6 +184,7 @@ enum {
+ #define FSR_DZA   (1ULL << 6)
+ #define FSR_NXA   (1ULL << 5)
+ #define FSR_AEXC_MASK (FSR_NVA | FSR_OFA | FSR_UFA | FSR_DZA | FSR_NXA)
++#define FSR_AEXC_SHIFT 5
+ 
+ #define FSR_NVC   (1ULL << 4)
+ #define FSR_OFC   (1ULL << 3)
+@@ -464,7 +466,10 @@ struct CPUArchState {
+     target_ulong cond; /* conditional branch result (XXX: save it in a
+                           temporary register when possible) */
+ 
+-    target_ulong fsr;      /* FPU state register */
++    /* FPU State Register, in parts */
++    target_ulong fsr;       /* rm, tem, aexc, fcc* */
++    uint32_t fsr_cexc_ftt;  /* cexc, ftt */
++
+     CPU_DoubleU fpr[TARGET_DPREGS];  /* floating point registers */
+     uint32_t cwp;      /* index of current register window (extracted
+                           from PSR) */
 diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index cc8db50d75..7c688edd62 100644
+index 7c688edd62..7466164468 100644
 --- a/target/sparc/helper.h
 +++ b/target/sparc/helper.h
-@@ -35,81 +35,80 @@ DEF_HELPER_3(tsubcctv, tl, env, tl, tl)
- DEF_HELPER_FLAGS_4(ld_asi, TCG_CALL_NO_WG, i64, env, tl, int, i32)
+@@ -36,7 +36,7 @@ DEF_HELPER_FLAGS_4(ld_asi, TCG_CALL_NO_WG, i64, env, tl, int, i32)
  DEF_HELPER_FLAGS_5(st_asi, TCG_CALL_NO_WG, void, env, tl, i64, int, i32)
  #endif
--DEF_HELPER_FLAGS_1(check_ieee_exceptions, TCG_CALL_NO_WG, tl, env)
  DEF_HELPER_FLAGS_1(get_fsr, TCG_CALL_NO_WG_SE, tl, env)
- DEF_HELPER_FLAGS_2(set_fsr, TCG_CALL_NO_RWG, void, env, tl)
--DEF_HELPER_FLAGS_2(fsqrts, TCG_CALL_NO_RWG, f32, env, f32)
--DEF_HELPER_FLAGS_2(fsqrtd, TCG_CALL_NO_RWG, f64, env, f64)
--DEF_HELPER_FLAGS_3(fcmps, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmpd, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmpes, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmped, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_2(fsqrtq, TCG_CALL_NO_RWG, i128, env, i128)
--DEF_HELPER_FLAGS_3(fcmpq, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpeq, TCG_CALL_NO_WG, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_2(fsqrts, 0, f32, env, f32)
-+DEF_HELPER_FLAGS_2(fsqrtd, 0, f64, env, f64)
-+DEF_HELPER_FLAGS_2(fsqrtq, 0, i128, env, i128)
-+DEF_HELPER_FLAGS_3(fcmps, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmpd, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpes, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmped, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpq, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpeq, 0, tl, env, i128, i128)
- #ifdef TARGET_SPARC64
--DEF_HELPER_FLAGS_3(fcmps_fcc1, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmps_fcc2, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmps_fcc3, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmpd_fcc1, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmpd_fcc2, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmpd_fcc3, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmpes_fcc1, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmpes_fcc2, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmpes_fcc3, TCG_CALL_NO_WG, tl, env, f32, f32)
--DEF_HELPER_FLAGS_3(fcmped_fcc1, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmped_fcc2, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmped_fcc3, TCG_CALL_NO_WG, tl, env, f64, f64)
--DEF_HELPER_FLAGS_3(fcmpq_fcc1, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpq_fcc2, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpq_fcc3, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpeq_fcc1, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpeq_fcc2, TCG_CALL_NO_WG, tl, env, i128, i128)
--DEF_HELPER_FLAGS_3(fcmpeq_fcc3, TCG_CALL_NO_WG, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmps_fcc1, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmps_fcc2, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmps_fcc3, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmpd_fcc1, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpd_fcc2, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpd_fcc3, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpes_fcc1, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmpes_fcc2, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmpes_fcc3, 0, tl, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fcmped_fcc1, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmped_fcc2, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmped_fcc3, 0, tl, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fcmpq_fcc1, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpq_fcc2, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpq_fcc3, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpeq_fcc1, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpeq_fcc2, 0, tl, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fcmpeq_fcc3, 0, tl, env, i128, i128)
- #endif
- DEF_HELPER_2(raise_exception, noreturn, env, int)
- 
--DEF_HELPER_FLAGS_3(faddd, TCG_CALL_NO_RWG, f64, env, f64, f64)
--DEF_HELPER_FLAGS_3(fsubd, TCG_CALL_NO_RWG, f64, env, f64, f64)
--DEF_HELPER_FLAGS_3(fmuld, TCG_CALL_NO_RWG, f64, env, f64, f64)
--DEF_HELPER_FLAGS_3(fdivd, TCG_CALL_NO_RWG, f64, env, f64, f64)
-+DEF_HELPER_FLAGS_3(faddd, 0, f64, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fsubd, 0, f64, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fmuld, 0, f64, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fdivd, 0, f64, env, f64, f64)
- 
--DEF_HELPER_FLAGS_3(faddq, TCG_CALL_NO_RWG, i128, env, i128, i128)
--DEF_HELPER_FLAGS_3(fsubq, TCG_CALL_NO_RWG, i128, env, i128, i128)
--DEF_HELPER_FLAGS_3(fmulq, TCG_CALL_NO_RWG, i128, env, i128, i128)
--DEF_HELPER_FLAGS_3(fdivq, TCG_CALL_NO_RWG, i128, env, i128, i128)
-+DEF_HELPER_FLAGS_3(faddq, 0, i128, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fsubq, 0, i128, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fmulq, 0, i128, env, i128, i128)
-+DEF_HELPER_FLAGS_3(fdivq, 0, i128, env, i128, i128)
- 
--DEF_HELPER_FLAGS_3(fadds, TCG_CALL_NO_RWG, f32, env, f32, f32)
--DEF_HELPER_FLAGS_3(fsubs, TCG_CALL_NO_RWG, f32, env, f32, f32)
--DEF_HELPER_FLAGS_3(fmuls, TCG_CALL_NO_RWG, f32, env, f32, f32)
--DEF_HELPER_FLAGS_3(fdivs, TCG_CALL_NO_RWG, f32, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fadds, 0, f32, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fsubs, 0, f32, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fmuls, 0, f32, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fdivs, 0, f32, env, f32, f32)
- 
--DEF_HELPER_FLAGS_3(fsmuld, TCG_CALL_NO_RWG, f64, env, f32, f32)
--DEF_HELPER_FLAGS_3(fdmulq, TCG_CALL_NO_RWG, i128, env, f64, f64)
-+DEF_HELPER_FLAGS_3(fsmuld, 0, f64, env, f32, f32)
-+DEF_HELPER_FLAGS_3(fdmulq, 0, i128, env, f64, f64)
- 
--DEF_HELPER_FLAGS_2(fitod, TCG_CALL_NO_RWG_SE, f64, env, s32)
--DEF_HELPER_FLAGS_2(fitoq, TCG_CALL_NO_RWG, i128, env, s32)
-+DEF_HELPER_FLAGS_2(fitod, 0, f64, env, s32)
-+DEF_HELPER_FLAGS_2(fitoq, 0, i128, env, s32)
- 
--DEF_HELPER_FLAGS_2(fitos, TCG_CALL_NO_RWG, f32, env, s32)
-+DEF_HELPER_FLAGS_2(fitos, 0, f32, env, s32)
- 
- #ifdef TARGET_SPARC64
--DEF_HELPER_FLAGS_2(fxtos, TCG_CALL_NO_RWG, f32, env, s64)
--DEF_HELPER_FLAGS_2(fxtod, TCG_CALL_NO_RWG, f64, env, s64)
--DEF_HELPER_FLAGS_2(fxtoq, TCG_CALL_NO_RWG, i128, env, s64)
-+DEF_HELPER_FLAGS_2(fxtos, 0, f32, env, s64)
-+DEF_HELPER_FLAGS_2(fxtod, 0, f64, env, s64)
-+DEF_HELPER_FLAGS_2(fxtoq, 0, i128, env, s64)
- #endif
--DEF_HELPER_FLAGS_2(fdtos, TCG_CALL_NO_RWG, f32, env, f64)
--DEF_HELPER_FLAGS_2(fstod, TCG_CALL_NO_RWG, f64, env, f32)
--DEF_HELPER_FLAGS_2(fqtos, TCG_CALL_NO_RWG, f32, env, i128)
--DEF_HELPER_FLAGS_2(fstoq, TCG_CALL_NO_RWG, i128, env, f32)
--DEF_HELPER_FLAGS_2(fqtod, TCG_CALL_NO_RWG, f64, env, i128)
--DEF_HELPER_FLAGS_2(fdtoq, TCG_CALL_NO_RWG, i128, env, f64)
--DEF_HELPER_FLAGS_2(fstoi, TCG_CALL_NO_RWG, s32, env, f32)
--DEF_HELPER_FLAGS_2(fdtoi, TCG_CALL_NO_RWG, s32, env, f64)
--DEF_HELPER_FLAGS_2(fqtoi, TCG_CALL_NO_RWG, s32, env, i128)
-+DEF_HELPER_FLAGS_2(fdtos, 0, f32, env, f64)
-+DEF_HELPER_FLAGS_2(fstod, 0, f64, env, f32)
-+DEF_HELPER_FLAGS_2(fqtos, 0, f32, env, i128)
-+DEF_HELPER_FLAGS_2(fstoq, 0, i128, env, f32)
-+DEF_HELPER_FLAGS_2(fqtod, 0, f64, env, i128)
-+DEF_HELPER_FLAGS_2(fdtoq, 0, i128, env, f64)
-+DEF_HELPER_FLAGS_2(fstoi, 0, s32, env, f32)
-+DEF_HELPER_FLAGS_2(fdtoi, 0, s32, env, f64)
-+DEF_HELPER_FLAGS_2(fqtoi, 0, s32, env, i128)
- #ifdef TARGET_SPARC64
--DEF_HELPER_FLAGS_2(fstox, TCG_CALL_NO_RWG, s64, env, f32)
--DEF_HELPER_FLAGS_2(fdtox, TCG_CALL_NO_RWG, s64, env, f64)
--DEF_HELPER_FLAGS_2(fqtox, TCG_CALL_NO_RWG, s64, env, i128)
-+DEF_HELPER_FLAGS_2(fstox, 0, s64, env, f32)
-+DEF_HELPER_FLAGS_2(fdtox, 0, s64, env, f64)
-+DEF_HELPER_FLAGS_2(fqtox, 0, s64, env, i128)
- 
- DEF_HELPER_FLAGS_2(fpmerge, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(fmul8x16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+-DEF_HELPER_FLAGS_2(set_fsr, TCG_CALL_NO_RWG, void, env, tl)
++DEF_HELPER_FLAGS_2(set_fsr_noftt, 0, void, env, tl)
+ DEF_HELPER_FLAGS_2(fsqrts, 0, f32, env, f32)
+ DEF_HELPER_FLAGS_2(fsqrtd, 0, f64, env, f64)
+ DEF_HELPER_FLAGS_2(fsqrtq, 0, i128, env, i128)
 diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
-index 64f20e78f1..755117ea08 100644
+index 755117ea08..ac30f88810 100644
 --- a/target/sparc/fop_helper.c
 +++ b/target/sparc/fop_helper.c
-@@ -45,7 +45,7 @@ static inline Int128 f128_ret(float128 f)
-     return u.i;
- }
- 
--static target_ulong do_check_ieee_exceptions(CPUSPARCState *env, uintptr_t ra)
-+static void check_ieee_exceptions(CPUSPARCState *env, uintptr_t ra)
+@@ -48,9 +48,7 @@ static inline Int128 f128_ret(float128 f)
+ static void check_ieee_exceptions(CPUSPARCState *env, uintptr_t ra)
  {
      target_ulong status = get_float_exception_flags(&env->fp_status);
-     target_ulong fsr = env->fsr;
-@@ -89,162 +89,265 @@ static target_ulong do_check_ieee_exceptions(CPUSPARCState *env, uintptr_t ra)
+-    target_ulong fsr = env->fsr;
+-
+-    fsr &= FSR_FTT_CEXC_NMASK;
++    uint32_t cexc = 0;
+ 
+     if (unlikely(status)) {
+         /* Keep exception flags clear for next time.  */
+@@ -58,38 +56,33 @@ static void check_ieee_exceptions(CPUSPARCState *env, uintptr_t ra)
+ 
+         /* Copy IEEE 754 flags into FSR */
+         if (status & float_flag_invalid) {
+-            fsr |= FSR_NVC;
++            cexc |= FSR_NVC;
          }
+         if (status & float_flag_overflow) {
+-            fsr |= FSR_OFC;
++            cexc |= FSR_OFC;
+         }
+         if (status & float_flag_underflow) {
+-            fsr |= FSR_UFC;
++            cexc |= FSR_UFC;
+         }
+         if (status & float_flag_divbyzero) {
+-            fsr |= FSR_DZC;
++            cexc |= FSR_DZC;
+         }
+         if (status & float_flag_inexact) {
+-            fsr |= FSR_NXC;
++            cexc |= FSR_NXC;
+         }
+ 
+-        if ((fsr & FSR_CEXC_MASK) & ((fsr & FSR_TEM_MASK) >> 23)) {
+-            CPUState *cs = env_cpu(env);
+-
+-            /* Unmasked exception, generate a trap.  Note that while
+-               the helper is marked as NO_WG, we can get away with
+-               writing to cpu state along the exception path, since
+-               TCG generated code will never see the write.  */
+-            env->fsr = fsr | FSR_FTT_IEEE_EXCP;
+-            cs->exception_index = TT_FP_EXCP;
+-            cpu_loop_exit_restore(cs, ra);
+-        } else {
+-            /* Accumulate exceptions */
+-            fsr |= (fsr & FSR_CEXC_MASK) << 5;
++        if (cexc & (env->fsr >> FSR_TEM_SHIFT)) {
++            /* Unmasked exception, generate an IEEE trap. */
++            env->fsr_cexc_ftt = cexc | FSR_FTT_IEEE_EXCP;
++            cpu_raise_exception_ra(env, TT_FP_EXCP, ra);
+         }
++
++        /* Accumulate exceptions */
++        env->fsr |= cexc << FSR_AEXC_SHIFT;
      }
  
--    return fsr;
-+    env->fsr = fsr;
+-    env->fsr = fsr;
++    /* No trap, so FTT is cleared. */
++    env->fsr_cexc_ftt = cexc;
  }
  
--target_ulong helper_check_ieee_exceptions(CPUSPARCState *env)
-+float32 helper_fadds(CPUSPARCState *env, float32 src1, float32 src2)
+ float32 helper_fadds(CPUSPARCState *env, float32 src1, float32 src2)
+@@ -456,7 +449,7 @@ GEN_FCMP(fcmpeq_fcc3, float128, 26, 1);
+ 
+ target_ulong cpu_get_fsr(CPUSPARCState *env)
  {
--    return do_check_ieee_exceptions(env, GETPC());
-+    float32 ret = float32_add(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
+-    target_ulong fsr = env->fsr;
++    target_ulong fsr = env->fsr | env->fsr_cexc_ftt;
  
--#define F_BINOP(name)                                                \
--    float32 helper_f ## name ## s (CPUSPARCState *env, float32 src1, \
--                                   float32 src2)                     \
--    {                                                                \
--        return float32_ ## name (src1, src2, &env->fp_status);       \
--    }                                                                \
--    float64 helper_f ## name ## d (CPUSPARCState * env, float64 src1,\
--                                   float64 src2)                     \
--    {                                                                \
--        return float64_ ## name (src1, src2, &env->fp_status);       \
--    }                                                                \
--    Int128 helper_f ## name ## q(CPUSPARCState * env, Int128 src1,   \
--                                 Int128 src2)                        \
--    {                                                                \
--        return f128_ret(float128_ ## name (f128_in(src1), f128_in(src2), \
--                                           &env->fp_status));        \
--    }
-+float32 helper_fsubs(CPUSPARCState *env, float32 src1, float32 src2)
-+{
-+    float32 ret = float32_sub(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
- 
--F_BINOP(add);
--F_BINOP(sub);
--F_BINOP(mul);
--F_BINOP(div);
--#undef F_BINOP
-+float32 helper_fmuls(CPUSPARCState *env, float32 src1, float32 src2)
-+{
-+    float32 ret = float32_mul(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+float32 helper_fdivs(CPUSPARCState *env, float32 src1, float32 src2)
-+{
-+    float32 ret = float32_div(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+float64 helper_faddd(CPUSPARCState *env, float64 src1, float64 src2)
-+{
-+    float64 ret = float64_add(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+float64 helper_fsubd(CPUSPARCState *env, float64 src1, float64 src2)
-+{
-+    float64 ret = float64_sub(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+float64 helper_fmuld(CPUSPARCState *env, float64 src1, float64 src2)
-+{
-+    float64 ret = float64_mul(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+float64 helper_fdivd(CPUSPARCState *env, float64 src1, float64 src2)
-+{
-+    float64 ret = float64_div(src1, src2, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
-+}
-+
-+Int128 helper_faddq(CPUSPARCState *env, Int128 src1, Int128 src2)
-+{
-+    float128 ret = float128_add(f128_in(src1), f128_in(src2), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
-+}
-+
-+Int128 helper_fsubq(CPUSPARCState *env, Int128 src1, Int128 src2)
-+{
-+    float128 ret = float128_sub(f128_in(src1), f128_in(src2), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
-+}
-+
-+Int128 helper_fmulq(CPUSPARCState *env, Int128 src1, Int128 src2)
-+{
-+    float128 ret = float128_mul(f128_in(src1), f128_in(src2), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
-+}
-+
-+Int128 helper_fdivq(CPUSPARCState *env, Int128 src1, Int128 src2)
-+{
-+    float128 ret = float128_div(f128_in(src1), f128_in(src2), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
-+}
- 
- float64 helper_fsmuld(CPUSPARCState *env, float32 src1, float32 src2)
+     /* VER is kept completely separate until re-assembly. */
+     fsr |= env->def.fpu_version;
+@@ -473,7 +466,7 @@ static void set_fsr_nonsplit(CPUSPARCState *env, target_ulong fsr)
  {
--    return float64_mul(float32_to_float64(src1, &env->fp_status),
--                       float32_to_float64(src2, &env->fp_status),
--                       &env->fp_status);
-+    float64 ret = float64_mul(float32_to_float64(src1, &env->fp_status),
-+                              float32_to_float64(src2, &env->fp_status),
-+                              &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
+     int rnd_mode;
  
- Int128 helper_fdmulq(CPUSPARCState *env, float64 src1, float64 src2)
+-    env->fsr = fsr & ~FSR_VER_MASK;
++    env->fsr = fsr & ~(FSR_VER_MASK | FSR_CEXC_MASK | FSR_FTT_MASK);
+ 
+     switch (fsr & FSR_RD_MASK) {
+     case FSR_RD_NEAREST:
+@@ -495,10 +488,13 @@ static void set_fsr_nonsplit(CPUSPARCState *env, target_ulong fsr)
+ 
+ void cpu_put_fsr(CPUSPARCState *env, target_ulong fsr)
  {
--    return f128_ret(float128_mul(float64_to_float128(src1, &env->fp_status),
--                                 float64_to_float128(src2, &env->fp_status),
--                                 &env->fp_status));
-+    float128 ret = float128_mul(float64_to_float128(src1, &env->fp_status),
-+                                float64_to_float128(src2, &env->fp_status),
-+                                &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
++    env->fsr_cexc_ftt = fsr & (FSR_CEXC_MASK | FSR_FTT_MASK);
+     set_fsr_nonsplit(env, fsr);
  }
  
- /* Integer to float conversion.  */
- float32 helper_fitos(CPUSPARCState *env, int32_t src)
+-void helper_set_fsr(CPUSPARCState *env, target_ulong fsr)
++void helper_set_fsr_noftt(CPUSPARCState *env, target_ulong fsr)
  {
--    return int32_to_float32(src, &env->fp_status);
-+    float32 ret = int32_to_float32(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
++    env->fsr_cexc_ftt &= FSR_FTT_MASK;
++    env->fsr_cexc_ftt |= fsr & FSR_CEXC_MASK;
+     set_fsr_nonsplit(env, fsr);
  }
- 
- float64 helper_fitod(CPUSPARCState *env, int32_t src)
- {
--    return int32_to_float64(src, &env->fp_status);
-+    float64 ret = int32_to_float64(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- Int128 helper_fitoq(CPUSPARCState *env, int32_t src)
- {
--    return f128_ret(int32_to_float128(src, &env->fp_status));
-+    float128 ret = int32_to_float128(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
- }
- 
- #ifdef TARGET_SPARC64
- float32 helper_fxtos(CPUSPARCState *env, int64_t src)
- {
--    return int64_to_float32(src, &env->fp_status);
-+    float32 ret = int64_to_float32(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- float64 helper_fxtod(CPUSPARCState *env, int64_t src)
- {
--    return int64_to_float64(src, &env->fp_status);
-+    float64 ret = int64_to_float64(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- Int128 helper_fxtoq(CPUSPARCState *env, int64_t src)
- {
--    return f128_ret(int64_to_float128(src, &env->fp_status));
-+    float128 ret = int64_to_float128(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
- }
- #endif
- 
- /* floating point conversion */
- float32 helper_fdtos(CPUSPARCState *env, float64 src)
- {
--    return float64_to_float32(src, &env->fp_status);
-+    float32 ret = float64_to_float32(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- float64 helper_fstod(CPUSPARCState *env, float32 src)
- {
--    return float32_to_float64(src, &env->fp_status);
-+    float64 ret = float32_to_float64(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- float32 helper_fqtos(CPUSPARCState *env, Int128 src)
- {
--    return float128_to_float32(f128_in(src), &env->fp_status);
-+    float32 ret = float128_to_float32(f128_in(src), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- Int128 helper_fstoq(CPUSPARCState *env, float32 src)
- {
--    return f128_ret(float32_to_float128(src, &env->fp_status));
-+    float128 ret = float32_to_float128(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
- }
- 
- float64 helper_fqtod(CPUSPARCState *env, Int128 src)
- {
--    return float128_to_float64(f128_in(src), &env->fp_status);
-+    float64 ret = float128_to_float64(f128_in(src), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- Int128 helper_fdtoq(CPUSPARCState *env, float64 src)
- {
--    return f128_ret(float64_to_float128(src, &env->fp_status));
-+    float128 ret = float64_to_float128(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
- }
- 
- /* Float to integer conversion.  */
- int32_t helper_fstoi(CPUSPARCState *env, float32 src)
- {
--    return float32_to_int32_round_to_zero(src, &env->fp_status);
-+    int32_t ret = float32_to_int32_round_to_zero(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- int32_t helper_fdtoi(CPUSPARCState *env, float64 src)
- {
--    return float64_to_int32_round_to_zero(src, &env->fp_status);
-+    int32_t ret = float64_to_int32_round_to_zero(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- int32_t helper_fqtoi(CPUSPARCState *env, Int128 src)
- {
--    return float128_to_int32_round_to_zero(f128_in(src), &env->fp_status);
-+    int32_t ret = float128_to_int32_round_to_zero(f128_in(src),
-+                                                  &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- #ifdef TARGET_SPARC64
- int64_t helper_fstox(CPUSPARCState *env, float32 src)
- {
--    return float32_to_int64_round_to_zero(src, &env->fp_status);
-+    int64_t ret = float32_to_int64_round_to_zero(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- int64_t helper_fdtox(CPUSPARCState *env, float64 src)
- {
--    return float64_to_int64_round_to_zero(src, &env->fp_status);
-+    int64_t ret = float64_to_int64_round_to_zero(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- int64_t helper_fqtox(CPUSPARCState *env, Int128 src)
- {
--    return float128_to_int64_round_to_zero(f128_in(src), &env->fp_status);
-+    int64_t ret = float128_to_int64_round_to_zero(f128_in(src),
-+                                                  &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- #endif
- 
- float32 helper_fsqrts(CPUSPARCState *env, float32 src)
- {
--    return float32_sqrt(src, &env->fp_status);
-+    float32 ret = float32_sqrt(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- float64 helper_fsqrtd(CPUSPARCState *env, float64 src)
- {
--    return float64_sqrt(src, &env->fp_status);
-+    float64 ret = float64_sqrt(src, &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return ret;
- }
- 
- Int128 helper_fsqrtq(CPUSPARCState *env, Int128 src)
- {
--    return f128_ret(float128_sqrt(f128_in(src), &env->fp_status));
-+    float128 ret = float128_sqrt(f128_in(src), &env->fp_status);
-+    check_ieee_exceptions(env, GETPC());
-+    return f128_ret(ret);
- }
- 
- #define GEN_FCMP(name, size, FS, E)                                     \
-@@ -261,7 +364,8 @@ Int128 helper_fsqrtq(CPUSPARCState *env, Int128 src)
-             ret = glue(size, _compare_quiet)(reg1, reg2,                \
-                                              &env->fp_status);          \
-         }                                                               \
--        fsr = do_check_ieee_exceptions(env, GETPC());                   \
-+        check_ieee_exceptions(env, GETPC());                            \
-+        fsr = env->fsr;                                                 \
-         switch (ret) {                                                  \
-         case float_relation_unordered:                                  \
-             fsr |= (FSR_FCC1 | FSR_FCC0) << FS;                         \
-@@ -292,7 +396,8 @@ Int128 helper_fsqrtq(CPUSPARCState *env, Int128 src)
-             ret = glue(size, _compare_quiet)(src1, src2,                \
-                                              &env->fp_status);          \
-         }                                                               \
--        fsr = do_check_ieee_exceptions(env, GETPC());                   \
-+        check_ieee_exceptions(env, GETPC());                            \
-+        fsr = env->fsr;                                                 \
-         switch (ret) {                                                  \
-         case float_relation_unordered:                                  \
-             fsr |= (FSR_FCC1 | FSR_FCC0) << FS;                         \
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 67bac6f65f..25f93ec44a 100644
+index 25f93ec44a..5b9bbeb8ff 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4526,7 +4526,6 @@ static bool do_env_ff(DisasContext *dc, arg_r_r *a,
+@@ -1199,7 +1199,8 @@ static bool gen_compare_reg(DisasCompare *cmp, int cond, TCGv r_src)
  
-     tmp = gen_load_fpr_F(dc, a->rs);
-     func(tmp, tcg_env, tmp);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_F(dc, a->rd, tmp);
-     return advance_pc(dc);
+ static void gen_op_clear_ieee_excp_and_FTT(void)
+ {
+-    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, FSR_FTT_CEXC_NMASK);
++    tcg_gen_st_i32(tcg_constant_i32(0), tcg_env,
++                   offsetof(CPUSPARCState, fsr_cexc_ftt));
  }
-@@ -4548,7 +4547,6 @@ static bool do_env_fd(DisasContext *dc, arg_r_r *a,
-     dst = tcg_temp_new_i32();
-     src = gen_load_fpr_D(dc, a->rs);
-     func(dst, tcg_env, src);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_F(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4591,7 +4589,6 @@ static bool do_env_dd(DisasContext *dc, arg_r_r *a,
-     dst = gen_dest_fpr_D(dc, a->rd);
-     src = gen_load_fpr_D(dc, a->rs);
-     func(dst, tcg_env, src);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_D(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4613,7 +4610,6 @@ static bool do_env_df(DisasContext *dc, arg_r_r *a,
-     dst = gen_dest_fpr_D(dc, a->rd);
-     src = gen_load_fpr_F(dc, a->rs);
-     func(dst, tcg_env, src);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_D(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4659,7 +4655,6 @@ static bool do_env_qq(DisasContext *dc, arg_r_r *a,
  
-     t = gen_load_fpr_Q(dc, a->rs);
-     func(t, tcg_env, t);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_Q(dc, a->rd, t);
-     return advance_pc(dc);
+ static void gen_op_fmovs(TCGv_i32 dst, TCGv_i32 src)
+@@ -1400,10 +1401,15 @@ static void gen_op_fcmpeq(int fccno, TCGv_i128 r_rs1, TCGv_i128 r_rs2)
  }
-@@ -4682,7 +4677,6 @@ static bool do_env_fq(DisasContext *dc, arg_r_r *a,
-     src = gen_load_fpr_Q(dc, a->rs);
-     dst = tcg_temp_new_i32();
-     func(dst, tcg_env, src);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_F(dc, a->rd, dst);
-     return advance_pc(dc);
+ #endif
+ 
+-static void gen_op_fpexception_im(DisasContext *dc, int fsr_flags)
++static void gen_op_fpexception_im(DisasContext *dc, int ftt)
+ {
+-    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, FSR_FTT_NMASK);
+-    tcg_gen_ori_tl(cpu_fsr, cpu_fsr, fsr_flags);
++    /*
++     * CEXC is only set when succesfully completing an FPop,
++     * or when raising FSR_FTT_IEEE_EXCP, i.e. check_ieee_exception.
++     * Thus we can simply store FTT into this field.
++     */
++    tcg_gen_st_i32(tcg_constant_i32(ftt), tcg_env,
++                   offsetof(CPUSPARCState, fsr_cexc_ftt));
+     gen_exception(dc, TT_FP_EXCP);
  }
-@@ -4706,7 +4700,6 @@ static bool do_env_dq(DisasContext *dc, arg_r_r *a,
-     src = gen_load_fpr_Q(dc, a->rs);
-     dst = gen_dest_fpr_D(dc, a->rd);
-     func(dst, tcg_env, src);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_D(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4727,7 +4720,6 @@ static bool do_env_qf(DisasContext *dc, arg_r_r *a,
+ 
+@@ -4395,19 +4401,22 @@ static bool trans_STDFQ(DisasContext *dc, arg_STDFQ *a)
+ static bool do_ldfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop,
+                      target_ulong new_mask, target_ulong old_mask)
+ {
+-    TCGv tmp, addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
++    TCGv addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
++    TCGv tnew, told;
++
+     if (addr == NULL) {
+         return false;
+     }
+     if (gen_trap_ifnofpu(dc)) {
          return true;
      }
+-    tmp = tcg_temp_new();
+-    tcg_gen_qemu_ld_tl(tmp, addr, dc->mem_idx, mop | MO_ALIGN);
+-    tcg_gen_andi_tl(tmp, tmp, new_mask);
+-    tcg_gen_andi_tl(cpu_fsr, cpu_fsr, old_mask);
+-    tcg_gen_or_tl(cpu_fsr, cpu_fsr, tmp);
+-    gen_helper_set_fsr(tcg_env, cpu_fsr);
++    tnew = tcg_temp_new();
++    told = tcg_temp_new();
++    tcg_gen_qemu_ld_tl(tnew, addr, dc->mem_idx, mop | MO_ALIGN);
++    tcg_gen_andi_tl(tnew, tnew, new_mask);
++    tcg_gen_andi_tl(told, cpu_fsr, old_mask);
++    tcg_gen_or_tl(tnew, tnew, told);
++    gen_helper_set_fsr_noftt(tcg_env, tnew);
+     return advance_pc(dc);
+ }
  
--    gen_op_clear_ieee_excp_and_FTT();
-     src = gen_load_fpr_F(dc, a->rs);
-     dst = tcg_temp_new_i128();
-     func(dst, tcg_env, src);
-@@ -4751,7 +4743,6 @@ static bool do_env_qd(DisasContext *dc, arg_r_r *a,
-         return true;
-     }
- 
--    gen_op_clear_ieee_excp_and_FTT();
-     src = gen_load_fpr_D(dc, a->rs);
-     dst = tcg_temp_new_i128();
-     func(dst, tcg_env, src);
-@@ -4803,7 +4794,6 @@ static bool do_env_fff(DisasContext *dc, arg_r_r_r *a,
-     src1 = gen_load_fpr_F(dc, a->rs1);
-     src2 = gen_load_fpr_F(dc, a->rs2);
-     func(src1, tcg_env, src1, src2);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_F(dc, a->rd, src1);
-     return advance_pc(dc);
- }
-@@ -4898,7 +4888,6 @@ static bool do_env_ddd(DisasContext *dc, arg_r_r_r *a,
-     src1 = gen_load_fpr_D(dc, a->rs1);
-     src2 = gen_load_fpr_D(dc, a->rs2);
-     func(dst, tcg_env, src1, src2);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_D(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4924,7 +4913,6 @@ static bool trans_FsMULd(DisasContext *dc, arg_r_r_r *a)
-     src1 = gen_load_fpr_F(dc, a->rs1);
-     src2 = gen_load_fpr_F(dc, a->rs2);
-     gen_helper_fsmuld(dst, tcg_env, src1, src2);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_D(dc, a->rd, dst);
-     return advance_pc(dc);
- }
-@@ -4964,7 +4952,6 @@ static bool do_env_qqq(DisasContext *dc, arg_r_r_r *a,
-     src1 = gen_load_fpr_Q(dc, a->rs1);
-     src2 = gen_load_fpr_Q(dc, a->rs2);
-     func(src1, tcg_env, src1, src2);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_Q(dc, a->rd, src1);
-     return advance_pc(dc);
- }
-@@ -4990,7 +4977,6 @@ static bool trans_FdMULq(DisasContext *dc, arg_r_r_r *a)
-     src2 = gen_load_fpr_D(dc, a->rs2);
-     dst = tcg_temp_new_i128();
-     gen_helper_fdmulq(dst, tcg_env, src1, src2);
--    gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
-     gen_store_fpr_Q(dc, a->rd, dst);
-     return advance_pc(dc);
- }
 -- 
 2.34.1
 
