@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116FE8467B7
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242528467A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:53:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmTW-0003Wt-OF; Fri, 02 Feb 2024 00:52:30 -0500
+	id 1rVmTI-00034Z-NP; Fri, 02 Feb 2024 00:52:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmTG-000389-Bv
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:14 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1rVmT7-00033T-QU
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:05 -0500
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmT4-00028v-5S
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:10 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6de0ba30994so344593b3a.1
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:52:01 -0800 (PST)
+ id 1rVmT6-00029R-CS
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:05 -0500
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3bbb4806f67so1238114b6e.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:52:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853121; x=1707457921; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853123; x=1707457923; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wxeXPbX6hjz+X/sMPb06TGA1YfBXK5OBxElnE5+fhQk=;
- b=aTTRVFbtUh3abWgsKDMitp0GxcizuJ3r723wzdPOlQNPXkyTsy2QN0eBK7O9XF3tou
- H4++dgQDLZ2Yk5j8/z2+I0aSGjRBAugyPz9D3QeepnnXw6wQohQ3eGffautB65KXm0Gd
- RG6fValmWdFYP/wgxGLNNaYk19KZctv/atXAn102lBZV4CdQ9UrPEYDV4NUhNdkH7xc5
- 0vsRsuYsbQ9R0J8Fnw9Zb+GT/HcZ2LEGHMbTP69uNqz1ZKQg6Jmf8BYcIZkiTGn8g4Da
- mIT4ZXmeVNDIIOtwjyHlHUSruLVKRGnv/B7bYNa/kraAWX1bIwenD/ax6GymwOiVFcGA
- OSmQ==
+ bh=HYTSRpCGethKLnoY2fpF4KOBgpBDTTihXu+DADLRFZw=;
+ b=SxbBIAnh+mEUJfXX2oqKYBbyLGbvAW+0NnQIVH9c3VpmCsvcov3R7SzXdDjB1B9kZI
+ 19w2NzjMGcVknhgAyWTJnfHVt6q1eiAT5ds7LySd0unjZWX8MOhsnXT6M2XLexo2mUg+
+ L0Z+XzDx6PQpXRS716I0w5y7woHfowNl94B8SRmAfEEpD+1dQD6C1KlVrfik/dEKFlG5
+ A+i7dmqYd3yrcWZVb98CuiVn+fo35iiOieT7yVzlNXIVf1ehFsSHFV6oGcpGbrc9r5oe
+ CnmpmtJt+JaWJz22RDHvrH1W11c6hPnY+MCwkEyPAKAWV8dtw++l2LM9HpL46NPBOuh2
+ 11xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853121; x=1707457921;
+ d=1e100.net; s=20230601; t=1706853123; x=1707457923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wxeXPbX6hjz+X/sMPb06TGA1YfBXK5OBxElnE5+fhQk=;
- b=iFtCvtLnK2J3ftFL9F400Goyg78CqhVnzjELs8inSbLK0x254FNpcjGgFWBxtdXha1
- z2pf0WBiy+5IlJkol9E3Ssx+j69Acq6JPNe8VXRmRl9nv001LMb+pRaoeNAsfPwjYepY
- jHO/UXgx2fgHTNit5gueyFqHMeM3rwrCuaZtyStDmmcYj+wnX+NXZzrob1igWCr4cfB1
- t5EcyvhfNb9QoJM9f23ksWCdarq29UUR33FS/ICzTi15tAWmPhhufEtMwXmo+rRG1wO7
- dBcMzGAwIJnZwipLNlRnQeLA6rjRYqDbKXt0WHeK7C1LRqzTmG6ny8+QHOQW9uLk1+HW
- lUyg==
-X-Gm-Message-State: AOJu0YyA5WX+LrJoowOIdW2P4JBqJVI3Vl7qUYzewvpdmznniHQYpVlq
- lgOoUOArOnbLp8xGuEbAivX3k7xxXV2xB5f1i9iXwfzYWKBNecR0gwCTUJZAKBqXx4J2WlyQGlM
- pPTA=
-X-Google-Smtp-Source: AGHT+IEo3AxLlqY/rOQUXGn/vh1xXLquTT+qBhXvXMs839/3HUI8pICyiWIXLbF0zzVFRQvnnQFjqg==
-X-Received: by 2002:a05:6a00:3cc8:b0:6dd:c5c2:3536 with SMTP id
- ln8-20020a056a003cc800b006ddc5c23536mr2073286pfb.2.1706853120866; 
- Thu, 01 Feb 2024 21:52:00 -0800 (PST)
+ bh=HYTSRpCGethKLnoY2fpF4KOBgpBDTTihXu+DADLRFZw=;
+ b=d8VNViicoa+2O+Ch5IhACgueXmBlRVBsSadQxOS0RZlAk/Ihx8AO0ou0U2VZwMFNRV
+ CCFjhvGYRfn5/k1+XDJc4/J1l4ss4TwwgUYpDRXwwVf4fxfweh3bbGiiHT6+9RVdNsEh
+ /z6Z3/8C6KgB9koVxYq8nioUjqZvusv/qoPUwWCP9JN22WgekMbaHJvzAy3XI6COO2Y2
+ 7zaSXRTuOj9DxTsu5Tn/GUvhWJdhdvBBlLqnDZm96ppVLyRyzgJnorJx2LJsDk5Kx+6J
+ rwhc/IOsDx/uLwhldAFEdCQYgnu4Tc06cCBwo/6AyK2NlmxUHns0o9YEJtzOHPG45A5W
+ dh8w==
+X-Gm-Message-State: AOJu0YwlUO/azNgNqLDT2G88Mak+KAY1Iu9SBo68Np+1y/sFW6Kk23Fj
+ 76KDA4iR52aHSlvB3ooshr/YvWmWcTLEhZR3mrB2/MF5qkvJXC+FX6L+3HU6nyny7LziHxsiP4v
+ +xi4=
+X-Google-Smtp-Source: AGHT+IHNLNOvT7g2SZcmtcnLr1nMOTxMbyrvCp1UgsHd1DFD2mecBtm35Bmq7TrYGzxKUmteoR764w==
+X-Received: by 2002:a05:6808:3089:b0:3bf:be81:923f with SMTP id
+ bl9-20020a056808308900b003bfbe81923fmr1122993oib.24.1706853123218; 
+ Thu, 01 Feb 2024 21:52:03 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCW4syu0BZIlc+TjlkGmv7yZ5hSe9DZKQ16WLTrqXy1Nk4iXOJx97MF/uN8v52uJ2sb94CZoXXyvPpeMEGShj28XxTsm9wBdCQ+WTjLCug==
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.59
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.52.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:52:00 -0800 (PST)
+ Thu, 01 Feb 2024 21:52:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 37/57] target/sparc: Use tcg_gen_qemu_{ld,
- st}_i128 for ASI_M_BFILL
-Date: Fri,  2 Feb 2024 15:50:16 +1000
-Message-Id: <20240202055036.684176-39-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PULL 38/57] target/sparc: Remove gen_dest_fpr_F
+Date: Fri,  2 Feb 2024 15:50:17 +1000
+Message-Id: <20240202055036.684176-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,59 +95,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Align the operation to the 32-byte cacheline.
-Use 2 i128 instead of 4 i64.
+Replace with tcg_temp_new_i32.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231103173841.33651-3-richard.henderson@linaro.org>
+Message-Id: <20231103173841.33651-4-richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ target/sparc/translate.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 1082aabc14..3a59262c9a 100644
+index 3a59262c9a..6824b5d835 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -2172,23 +2172,22 @@ static void gen_stda_asi(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
+@@ -246,11 +246,6 @@ static void gen_store_fpr_F(DisasContext *dc, unsigned int dst, TCGv_i32 v)
+     gen_update_fprs_dirty(dc, dst);
+ }
  
-     case GET_ASI_BFILL:
-         assert(TARGET_LONG_BITS == 32);
--        /* Store 32 bytes of T64 to ADDR.  */
--        /* ??? The original qemu code suggests 8-byte alignment, dropping
--           the low bits, but the only place I can see this used is in the
--           Linux kernel with 32 byte alignment, which would make more sense
--           as a cacheline-style operation.  */
-+        /*
-+         * Store 32 bytes of [rd:rd+1] to ADDR.
-+         * See comments for GET_ASI_COPY above.
-+         */
-         {
--            TCGv_i64 t64 = tcg_temp_new_i64();
--            TCGv d_addr = tcg_temp_new();
--            TCGv eight = tcg_constant_tl(8);
--            int i;
-+            MemOp mop = MO_TE | MO_128 | MO_ATOM_IFALIGN_PAIR;
-+            TCGv_i64 t8 = tcg_temp_new_i64();
-+            TCGv_i128 t16 = tcg_temp_new_i128();
-+            TCGv daddr = tcg_temp_new();
+-static TCGv_i32 gen_dest_fpr_F(DisasContext *dc)
+-{
+-    return tcg_temp_new_i32();
+-}
+-
+ static TCGv_i64 gen_load_fpr_D(DisasContext *dc, unsigned int src)
+ {
+     src = DFPREG(src);
+@@ -1873,7 +1868,7 @@ static void gen_ldf_asi(DisasContext *dc, DisasASI *da, MemOp orig_size,
+         memop |= MO_ALIGN_4;
+         switch (size) {
+         case MO_32:
+-            d32 = gen_dest_fpr_F(dc);
++            d32 = tcg_temp_new_i32();
+             tcg_gen_qemu_ld_i32(d32, addr, da->mem_idx, memop);
+             gen_store_fpr_F(dc, rd, d32);
+             break;
+@@ -1938,7 +1933,7 @@ static void gen_ldf_asi(DisasContext *dc, DisasASI *da, MemOp orig_size,
+             case MO_32:
+                 d64 = tcg_temp_new_i64();
+                 gen_helper_ld_asi(d64, tcg_env, addr, r_asi, r_mop);
+-                d32 = gen_dest_fpr_F(dc);
++                d32 = tcg_temp_new_i32();
+                 tcg_gen_extrl_i64_i32(d32, d64);
+                 gen_store_fpr_F(dc, rd, d32);
+                 break;
+@@ -2228,7 +2223,7 @@ static void gen_fmovs(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
  
--            tcg_gen_concat_tl_i64(t64, lo, hi);
--            tcg_gen_andi_tl(d_addr, addr, -8);
--            for (i = 0; i < 32; i += 8) {
--                tcg_gen_qemu_st_i64(t64, d_addr, da->mem_idx, da->memop);
--                tcg_gen_add_tl(d_addr, d_addr, eight);
--            }
-+            tcg_gen_concat_tl_i64(t8, lo, hi);
-+            tcg_gen_concat_i64_i128(t16, t8, t8);
-+            tcg_gen_andi_tl(daddr, addr, -32);
-+            tcg_gen_qemu_st_i128(t16, daddr, da->mem_idx, mop);
-+            tcg_gen_addi_tl(daddr, daddr, 16);
-+            tcg_gen_qemu_st_i128(t16, daddr, da->mem_idx, mop);
-         }
-         break;
+     s1 = gen_load_fpr_F(dc, rs);
+     s2 = gen_load_fpr_F(dc, rd);
+-    dst = gen_dest_fpr_F(dc);
++    dst = tcg_temp_new_i32();
+     zero = tcg_constant_i32(0);
  
+     tcg_gen_movcond_i32(TCG_COND_NE, dst, c32, zero, s1, s2);
+@@ -4497,7 +4492,7 @@ static bool do_fd(DisasContext *dc, arg_r_r *a,
+         return true;
+     }
+ 
+-    dst = gen_dest_fpr_F(dc);
++    dst = tcg_temp_new_i32();
+     src = gen_load_fpr_D(dc, a->rs);
+     func(dst, src);
+     gen_store_fpr_F(dc, a->rd, dst);
+@@ -4539,7 +4534,7 @@ static bool do_env_fd(DisasContext *dc, arg_r_r *a,
+     }
+ 
+     gen_op_clear_ieee_excp_and_FTT();
+-    dst = gen_dest_fpr_F(dc);
++    dst = tcg_temp_new_i32();
+     src = gen_load_fpr_D(dc, a->rs);
+     func(dst, tcg_env, src);
+     gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
+@@ -4697,7 +4692,7 @@ static bool do_env_fq(DisasContext *dc, arg_r_r *a,
+ 
+     gen_op_clear_ieee_excp_and_FTT();
+     gen_op_load_fpr_QT1(QFPREG(a->rs));
+-    dst = gen_dest_fpr_F(dc);
++    dst = tcg_temp_new_i32();
+     func(dst, tcg_env);
+     gen_helper_check_ieee_exceptions(cpu_fsr, tcg_env);
+     gen_store_fpr_F(dc, a->rd, dst);
 -- 
 2.34.1
 
