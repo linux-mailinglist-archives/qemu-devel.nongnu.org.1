@@ -2,86 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB8284720A
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:35:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52CC847222
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:44:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVuck-0007H4-Ai; Fri, 02 Feb 2024 09:34:34 -0500
+	id 1rVukN-0004F1-80; Fri, 02 Feb 2024 09:42:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rVucj-0007Fl-3K
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:34:33 -0500
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVukK-0004EC-Pq
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:42:24 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1rVuch-0003Xi-Lt
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:34:32 -0500
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5dbd519bde6so1831502a12.1
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 06:32:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1706884350; x=1707489150;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xAFMx/3dfUbawmFigzJK21LcfSzUA2GsILyY+5SKPng=;
- b=oDv1DQ5xNsp4AV5YOxmfUIV1zlGbzuQbYn1AjowxsWFuVBKMPgpXW9UkYiYJ/1ScON
- E2FNlmgFQ+Y8zN9LKrjj36ahZ+h9Z+hHmWNmIFcmtx1ntg3nHcRMIduOS0V/TQLS0kcP
- dWzfHVDs5o/sU9utPrEV6KOJhDKrr/2MtuOIf5M2BHEol77GPWv8Nii7UxF/jLAQa8Oe
- 2ZZ5MWQeBZuIBszqP9UJFlaZ+GNuTq9rwTDz/PcFYaL7M9iaIfwSNvdTegns9BiFVl9P
- 9IA9S6zGtoVzqcWzfmTxXkPuQJauv54RDBznLi0Kzq7KzKHLFW9dtIti9FVpOZXmPIn6
- YAlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706884350; x=1707489150;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xAFMx/3dfUbawmFigzJK21LcfSzUA2GsILyY+5SKPng=;
- b=ZDg56jydFuoZ1FagYi6ywYehn9NB+KprpedgkW4+rIHHtWG6qXtdpDE9OH6NXLRsd0
- JifT/aKSetEALxJwxl8rUdeFWzEEKe9XiOUwbiS/ODLFWoomY0PpF1hEc6fXvLWFEPEX
- 1qPyFeZ+SmvIcn7OCmGVbweFf4UJddOtpr9L3wqGENBllzOOMcsskLo5133bm9Yow6wj
- 44bYwwJs67sRFBqmiP6T07/5MKqnXgdyQ0zKxSAnt46JzzgVBTjM5bNKVA+ExqjzH1PC
- 2c03AYtXbohkGWFsg/tuwTSo06Dt5qsvt3OkhXoA1OG07/lNShGut849bNkUskVOBGKf
- 63cg==
-X-Gm-Message-State: AOJu0YxtEt4bb3cVDEkPB+LxpSiBahsMsYje+q4tDTPPv6OsYuEXXqS3
- Dp7ljzw80x2KAWdahiIfGDuFr+CA69ZcB7wxSCH6XWjL9UmmkMxUQNa3A7nlYj2ERCw9l9/4lBa
- AltDsww==
-X-Google-Smtp-Source: AGHT+IHgq2Mv2XkcRvCXDJ0KaFTULXjZmhDEh4PpqKMqh2OQKtB7+iR+2wUmkTzSRCONypa9Y2sQTQ==
-X-Received: by 2002:a62:e311:0:b0:6d9:b588:2053 with SMTP id
- g17-20020a62e311000000b006d9b5882053mr7944872pfh.2.1706884349175; 
- Fri, 02 Feb 2024 06:32:29 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCUbL/8Rp1oxBqyoqLzA0VftqHDyU8QAHgeFHxvvIT8eLp8I1EjroL9U58/rqiulSmgHpvaYcNdozYRV+kAQjsb9281ERajm8KwghHIkuqtl7zdHM0uEYnLjpdfmTnRdyunf4hENb06P5A==
-Received: from anolis-dev.zelin.local ([221.122.98.162])
- by smtp.gmail.com with ESMTPSA id
- f32-20020a056a000b2000b006dde023cce8sm1684703pfu.57.2024.02.02.06.32.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 06:32:28 -0800 (PST)
-From: Hyman Huang <yong.huang@smartx.com>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Eric Blake <eblake@redhat.com>,
- yong.huang@smartx.com
-Subject: [PATCH v3 3/3] qapi: Define VhostDeviceProtocols and
- VirtioDeviceFeatures as plain C types
-Date: Fri,  2 Feb 2024 22:32:17 +0800
-Message-Id: <4ce51ef3d64fe2b09443cd0529da91115476b35a.1706883915.git.yong.huang@smartx.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1706883915.git.yong.huang@smartx.com>
-References: <cover.1706883915.git.yong.huang@smartx.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVukJ-0006cq-78
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:42:24 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 72B8921F49;
+ Fri,  2 Feb 2024 14:42:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706884941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XByFp0tN1lhC2tz96rcg5uagoABY6WaXAQKzaeoA+fU=;
+ b=1RwgAQSEmMH5HrQ0tEVmgtpkJqaDJx9Vgf5NVugFMRZtf3f/wYY3UBQmslrzdpZAWPyzO7
+ gxJ5WT3OnTFA8R5oXm7SmHBfZ/ZdGag0i3TpsuWlIsgMsvlnnufny7jBGjsASWvOCjBW0h
+ nhE7vF6xvNBWW0alP4o81Go7+MuIKM0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706884941;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XByFp0tN1lhC2tz96rcg5uagoABY6WaXAQKzaeoA+fU=;
+ b=l2Fa33B3QtkilOZ/fBRstgPoLVucHHkhpNiGIO9qCeOrqDr0e8z1X3JUd/Vv0PnV4HJ9C6
+ DtfY2mi7QFkpGoDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1706884941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XByFp0tN1lhC2tz96rcg5uagoABY6WaXAQKzaeoA+fU=;
+ b=1RwgAQSEmMH5HrQ0tEVmgtpkJqaDJx9Vgf5NVugFMRZtf3f/wYY3UBQmslrzdpZAWPyzO7
+ gxJ5WT3OnTFA8R5oXm7SmHBfZ/ZdGag0i3TpsuWlIsgMsvlnnufny7jBGjsASWvOCjBW0h
+ nhE7vF6xvNBWW0alP4o81Go7+MuIKM0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1706884941;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XByFp0tN1lhC2tz96rcg5uagoABY6WaXAQKzaeoA+fU=;
+ b=l2Fa33B3QtkilOZ/fBRstgPoLVucHHkhpNiGIO9qCeOrqDr0e8z1X3JUd/Vv0PnV4HJ9C6
+ DtfY2mi7QFkpGoDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E791913A58;
+ Fri,  2 Feb 2024 14:42:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id wDY6K0z/vGV+JAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 02 Feb 2024 14:42:20 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>
+Subject: Re: [PATCH 2/2] migration: Fix return-path thread exit
+In-Reply-To: <20240201184853.890471-3-clg@redhat.com>
+References: <20240201184853.890471-1-clg@redhat.com>
+ <20240201184853.890471-3-clg@redhat.com>
+Date: Fri, 02 Feb 2024 11:42:18 -0300
+Message-ID: <8734ubhqr9.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::535;
- envelope-from=yong.huang@smartx.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-2.66 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.56)[98.02%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -2.66
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,94 +116,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VhostDeviceProtocols and VirtioDeviceFeatures are only used in
-virtio-hmp-cmds.c.  So define them as plain C types there, and drop
-them from the QAPI schema.
+C=C3=A9dric Le Goater <clg@redhat.com> writes:
 
-Signed-off-by: Hyman Huang <yong.huang@smartx.com>
----
- hw/virtio/virtio-hmp-cmds.c | 16 +++++++++++++++
- qapi/virtio.json            | 39 -------------------------------------
- 2 files changed, 16 insertions(+), 39 deletions(-)
+> In case of error, close_return_path_on_source() can perform a shutdown
+> to exit the return-path thread.  However, in migrate_fd_cleanup(),
+> 'to_dst_file' is closed before calling close_return_path_on_source()
+> and the shutdown fails, leaving the source and destination waiting for
+> an event to occur.
 
-diff --git a/hw/virtio/virtio-hmp-cmds.c b/hw/virtio/virtio-hmp-cmds.c
-index f95bad0069..045b472228 100644
---- a/hw/virtio/virtio-hmp-cmds.c
-+++ b/hw/virtio/virtio-hmp-cmds.c
-@@ -29,6 +29,22 @@
- 
- #include CONFIG_DEVICES
- 
-+typedef struct VhostDeviceProtocols VhostDeviceProtocols;
-+struct VhostDeviceProtocols {
-+    strList *protocols;
-+    bool has_unknown_protocols;
-+    uint64_t unknown_protocols;
-+};
-+
-+typedef struct VirtioDeviceFeatures VirtioDeviceFeatures;
-+struct VirtioDeviceFeatures {
-+    strList *transports;
-+    bool has_dev_features;
-+    strList *dev_features;
-+    bool has_unknown_dev_features;
-+    uint64_t unknown_dev_features;
-+};
-+
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
-diff --git a/qapi/virtio.json b/qapi/virtio.json
-index 26516fb29c..42dbc87f2f 100644
---- a/qapi/virtio.json
-+++ b/qapi/virtio.json
-@@ -300,45 +300,6 @@
-   'data': { 'statuses': [ 'str' ],
-             '*unknown-statuses': 'uint8' } }
- 
--##
--# @VhostDeviceProtocols:
--#
--# A structure defined to list the vhost user protocol features of a
--# Vhost User device
--#
--# @protocols: List of decoded vhost user protocol features of a vhost
--#     user device
--#
--# @unknown-protocols: Vhost user device protocol features bitmap that
--#     have not been decoded
--#
--# Since: 7.2
--##
--{ 'struct': 'VhostDeviceProtocols',
--  'data': { 'protocols': [ 'str' ],
--            '*unknown-protocols': 'uint64' } }
--
--##
--# @VirtioDeviceFeatures:
--#
--# The common fields that apply to most Virtio devices.  Some devices
--# may not have their own device-specific features (e.g. virtio-rng).
--#
--# @transports: List of transport features of the virtio device
--#
--# @dev-features: List of device-specific features (if the device has
--#     unique features)
--#
--# @unknown-dev-features: Virtio device features bitmap that have not
--#     been decoded
--#
--# Since: 7.2
--##
--{ 'struct': 'VirtioDeviceFeatures',
--  'data': { 'transports': [ 'str' ],
--            '*dev-features': [ 'str' ],
--            '*unknown-dev-features': 'uint64' } }
--
- ##
- # @VirtQueueStatus:
- #
--- 
-2.31.1
+At close_return_path_on_source, qemu_file_shutdown() and checking
+ms->to_dst_file are done under the qemu_file_lock, so how could
+migrate_fd_cleanup() have cleared the pointer but the ms->to_dst_file
+check have passed?
 
+>
+> Close the file after calling close_return_path_on_source() so that the
+> shutdown succeeds and the return-path thread exits.
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  migration/migration.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+>
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 2c3362235c7651c11d581f3c3639571f1f9636ef..1e0b6acaedc272e8ce26ad40b=
+e2c42177f5fd14e 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1314,6 +1314,7 @@ void migrate_set_state(int *state, int old_state, i=
+nt new_state)
+>  static void migrate_fd_cleanup(MigrationState *s)
+>  {
+>      int file_error =3D 0;
+> +    QEMUFile *tmp =3D NULL;
+>=20=20
+>      g_free(s->hostname);
+>      s->hostname =3D NULL;
+> @@ -1323,8 +1324,6 @@ static void migrate_fd_cleanup(MigrationState *s)
+>      qemu_savevm_state_cleanup();
+>=20=20
+>      if (s->to_dst_file) {
+> -        QEMUFile *tmp;
+> -
+>          trace_migrate_fd_cleanup();
+>          bql_unlock();
+>          if (s->migration_thread_running) {
+> @@ -1344,15 +1343,14 @@ static void migrate_fd_cleanup(MigrationState *s)
+>           * critical section won't block for long.
+>           */
+>          migration_ioc_unregister_yank_from_file(tmp);
+> -        qemu_fclose(tmp);
+>      }
+>=20=20
+> -    /*
+> -     * We already cleaned up to_dst_file, so errors from the return
+> -     * path might be due to that, ignore them.
+> -     */
+>      close_return_path_on_source(s, file_error);
+>=20=20
+> +    if (tmp) {
+> +        qemu_fclose(tmp);
+> +    }
+> +
+>      assert(!migration_is_active(s));
+>=20=20
+>      if (s->state =3D=3D MIGRATION_STATUS_CANCELLING) {
 
