@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EC18467B5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05F08467A0
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:53:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmT2-0002SI-B9; Fri, 02 Feb 2024 00:52:00 -0500
+	id 1rVmT6-0002o4-1K; Fri, 02 Feb 2024 00:52:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSz-0002Bh-4s
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:57 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1rVmT1-0002UZ-UX
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:59 -0500
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSx-00026o-Jf
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:56 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3bd72353d9fso1332417b6e.3
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:55 -0800 (PST)
+ id 1rVmT0-00027i-2a
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:59 -0500
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6ddfb0dac4dso1335739b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853114; x=1707457914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853117; x=1707457917; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vVBvMUdV2y5YTBfcwLaxMR/FCDaPatuMxQEr9twVZ58=;
- b=dX3VzSusWEkCgUa/O/PzpYWdkRaLI7czUC2/HhPhVGHSV8aLGnce1mAFmQoxD+Hdsg
- eUanpu92U4M4YupjtLuvGwLipSCG+olri0b1XFbVMKnJqYqDpW/R3tlT9324dwuW8pWW
- CXDrBmptVVQ5VzJxMx2OvcmWdVfUlFLcT5y/8uAztPZha7A1SiZrM/DyTgbTEQohavEE
- ssh7DptjkO6EwrEIATXY9TKeVySckThhMgbDsejyuDX9EHR7wBc2d562xNLSvUwQbPRd
- sbnWKnT/TB7gm0I/LyWv/T+JRXyQoles1DRpmhUNa+sBlHxzhjlVaH32qT8OHV6UIj56
- 7ktg==
+ bh=enqyHM/qlHAKrvGyjKOBiar72kS5zHVgEoJYNNdlxDQ=;
+ b=JXxiM572DonvC6pArZSCdO9ss2EdgaYX4Oby+VV0dfvqEkVm74IoH7KEh9wVPoS9j/
+ 7Ekb5ehy+NIntaYl09LA8WnbT+uQQjKoT2sjz8Q9yvqkykYqEhmV/N9h0oHgO87k3gyz
+ NDvWwtsxYJN7a95y6cZYbQiXjVpOxwguSFm1/qNv0JvNXZRJSZIrtc13YwQc38QZvQax
+ UEW46OzHK0117lMBDVlcZaa/UDvDX4qfl8bS8RxiWchOp4SYsBwfrZieBW5Kj3PghsOR
+ AWckP7Yv6Td27j2FHeb/Rfh3HwxJFlR51gFRse025uqcB3T/4aOosIwuHbVza5CuVTsd
+ drMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853114; x=1707457914;
+ d=1e100.net; s=20230601; t=1706853117; x=1707457917;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vVBvMUdV2y5YTBfcwLaxMR/FCDaPatuMxQEr9twVZ58=;
- b=hK+t6QpbXe7QmdQjFeVNFR5gHEUyjxOkZYQpKEYJodAfvgpPe2TH1J1HGoSHKSVN+s
- R0e7afqLKZW+HBszPZKlVCEi9EEH4mf54sTJ9z/4MJo9n2gksGiBg3IWphV25wORjWF0
- kYBKGA4Vs9fgTD8gEdJa2aQtqmk/GT2gjnYCEfH/DCevImlfepRH8PEt5AykqTh4o+NL
- cCKJGpBItw+87pBAcjFP1FaT66OdA0Cqxk/UBpv85kTBXOUEB73uYEG9JT7JCL+KhE+M
- 0vj3Ougshj5yED46mSHg6sSOkd28u2hWjFmwg78CtgNW+xmKic0jj3JJMAr0T7ETtnMd
- iUAA==
-X-Gm-Message-State: AOJu0YwSz9Y4FhfkfVP3NnV2AndguOHSD2ULJC7dY0v1K3HkAdV4IdVO
- Wq7tb4vZyg1HdIGOZYZ/vXFKl8Xfcux0bKa9wnQVsihc42+tx+YG3TvHeqoFvHKQd+5w62mdHzl
- +NL4=
-X-Google-Smtp-Source: AGHT+IH+3EqlMUXcqpwAHRpFFo7sCd1J0Ih23UbXmfaLoh0ZS7v3BZp0r2MlwQMzOjyoDPbQgxcK/g==
-X-Received: by 2002:a05:6808:1889:b0:3bf:bcba:6d57 with SMTP id
- bi9-20020a056808188900b003bfbcba6d57mr1673498oib.41.1706853114422; 
- Thu, 01 Feb 2024 21:51:54 -0800 (PST)
+ bh=enqyHM/qlHAKrvGyjKOBiar72kS5zHVgEoJYNNdlxDQ=;
+ b=oYVWoxCVT3Vgx9bFJCWG8ztqbAil6U4w/xIa/CmZ+ll7EM/TjwQII8bgDIeaOkFBDT
+ 8HxPf/npsUlryTf9jG8sTCDXVHnyuQasv8ZUQSECs72TPyeFCviIms4s1EV9xtMPdXWG
+ 5fqzQVme/rKhVCMMR2EbrYrN34XGl8d/EyZQNBT5CDfkwgQr5yJWwZr6gJgjda5LRsr2
+ WV8R7tXyPn/ONgQaPO3Z+lEMcS91OqhU5Wsj2/ZzfzkDXPKQnDHfOSEv1Wd5DbRg9P5+
+ ku94uDf94Opo0/O5gnxTthc6cI2d4clLDlP7/xBtMxkkG54GAtscWN0aC4fiUFdn6OCA
+ dbjQ==
+X-Gm-Message-State: AOJu0Yz61p1Zg8ZECz5gTo9AUBLAE08oRAOaTdOozH776ujZWpwuPraC
+ pFG4B8aFHb9MLCTrkmfZZqYqqBgfFAQPOB4p4ufya2wbX9PL6LINJxvYPS/i0Eq5zRK5zZ9TnlR
+ nAV4=
+X-Google-Smtp-Source: AGHT+IGWY2ek1R607E9nacg77ESi2+0UNpHrIvzu5L90MyGCd9oJ+mgsclxBBOx/BbeEkuRARZ3ZEg==
+X-Received: by 2002:a05:6a00:23cb:b0:6db:d978:9047 with SMTP id
+ g11-20020a056a0023cb00b006dbd9789047mr8634401pfc.1.1706853116815; 
+ Thu, 01 Feb 2024 21:51:56 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCVK//GlkMYx7LaQShTPiCXe/LPvnqxRn4jv2adJfhkGn5Na3Hy/8W+8VmaHIFaGC/PfEs492ETnUQkJMi9N5Pt/HVo2
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.52
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:54 -0800 (PST)
+ Thu, 01 Feb 2024 21:51:56 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 34/57] tests/tcg: Fix the /proc/self/mem probing in the
- PROT_NONE gdbstub test
-Date: Fri,  2 Feb 2024 15:50:13 +1000
-Message-Id: <20240202055036.684176-36-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+	Song Gao <gaosong@loongson.cn>
+Subject: [PULL 35/57] tcg/loongarch64: Set vector registers call clobbered
+Date: Fri,  2 Feb 2024 15:50:14 +1000
+Message-Id: <20240202055036.684176-37-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,33 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+Because there are more call clobbered registers than
+call saved registers, we begin with all registers as
+call clobbered and then reset those that are saved.
 
-The `if not probe_proc_self_mem` check never passes, because
-probe_proc_self_mem is a function object, which is a truthy value.
-Add parentheses in order to perform a function call.
+This was missed when we introduced the LSX support.
 
-Fixes: dc84d50a7f9b ("tests/tcg: Add the PROT_NONE gdbstub test")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240131220245.235993-1-iii@linux.ibm.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 16288ded944 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2136
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240201233414.500588-1-richard.henderson@linaro.org>
 ---
- tests/tcg/multiarch/gdbstub/prot-none.py | 2 +-
+ tcg/loongarch64/tcg-target.c.inc | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/tcg/multiarch/gdbstub/prot-none.py b/tests/tcg/multiarch/gdbstub/prot-none.py
-index e829d3ebc5..7e264589cb 100644
---- a/tests/tcg/multiarch/gdbstub/prot-none.py
-+++ b/tests/tcg/multiarch/gdbstub/prot-none.py
-@@ -20,7 +20,7 @@ def probe_proc_self_mem():
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index bab0a173a3..dcf0205458 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -2327,7 +2327,7 @@ static void tcg_target_init(TCGContext *s)
+     tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
+     tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
  
- def run_test():
-     """Run through the tests one by one"""
--    if not probe_proc_self_mem:
-+    if not probe_proc_self_mem():
-         print("SKIP: /proc/self/mem is not usable")
-         exit(0)
-     gdb.Breakpoint("break_here")
+-    tcg_target_call_clobber_regs = ALL_GENERAL_REGS;
++    tcg_target_call_clobber_regs = ALL_GENERAL_REGS | ALL_VECTOR_REGS;
+     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S0);
+     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S1);
+     tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S2);
 -- 
 2.34.1
 
