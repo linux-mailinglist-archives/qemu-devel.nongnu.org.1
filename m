@@ -2,71 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F29184737C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:40:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C388473C3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:56:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVveU-0002LJ-6J; Fri, 02 Feb 2024 10:40:26 -0500
+	id 1rVvsw-0002jO-HM; Fri, 02 Feb 2024 10:55:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVveQ-0002GV-4a
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:40:22 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rVvsv-0002jE-Ip
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:55:21 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVveN-00058V-6e
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:40:21 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2cf42ca9bb2so24497851fa.1
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:40:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rVvst-0000Ha-Ta
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:55:21 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40fc65783e5so6420005e9.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:55:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888417; x=1707493217; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=wn5GjeSfLpdancttFflyj3wiQ0WnOWkvXBBOTXvGHyw=;
- b=YfvvMhNPq3HMb8au3MlZCpaGtP3Qhts/LqPrBZLoNTWuGVP83luMDHiGE8CHEgpF51
- 2KxA7qH1pXLIGnLDC8qJi16rXo9X72y1TAR864uH672Uh5+w1aEhqCscruqVg1fmxAoe
- y+hnYiuPPrMbfN5rCqxIon6uixMY1TbUTHa8QLjMCQb2hBvlotEwaL39+RVYpUcedJXB
- mlzU/0lCPF8r5m/A7gkASbh3NxSB9sdsQohcRFhuS9G9lwas78tpoUb8JTjCIHqMNbB7
- M2W38coobUQE9DW6JONdacDhtBORSwlP0wse0zpiFGdy6ISiKwLhN0WXEW6ED6gN/3sW
- h0DA==
+ d=linaro.org; s=google; t=1706889318; x=1707494118; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9YCGNLX6VVZ4ROjQfemGqIeAfklglJZiiRwXx6Ag3EY=;
+ b=aGrR/nxvbMsJ9rmgRQcm4ImBOrC8Uxwzn7Oz/Hb+u2lvSZNcS3NgpWam+iLa/0gxvn
+ V0HmRvNrgzopcIz/3eiouCSmytG2l8NFf5GTFUGB7xzzt1KO0BVEHLBwbhzZjw1qK8fE
+ us3i+4KlP22xD3XBsN+fOVXKp524jueouFr1fuXTPDODLy7JlbhbCDAZjHemEXl4bu/J
+ 5iykhdz7kAZPb7cWwEQMLy/5qpMTn3zLD8JMrijoK385NgHyBplB6VR/NkdFMGL8tnHY
+ XZyjvwBPRvyPZ+X/HKLZ7zT7F1vebKWBXl0QsRDs8uXQuAdEsCB1nxMB/PLextpW9nIs
+ Oqog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888417; x=1707493217;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wn5GjeSfLpdancttFflyj3wiQ0WnOWkvXBBOTXvGHyw=;
- b=DSnZavwECu0/liw1zDeH9WAqeeXcsacB1a2WucDE3NDW7ZTmohXKrhGisGr8CWtcYT
- xAF+ZKQprhYnAYoS60x/JJWxaE3Q/pQHM238Pe1QNgg2wOEK4vebJ5q+sw+wQAmHy8du
- 4TJfBSl8dISqVv617h46TSxM6e9LgZ6Pf2/11KDHHIQbHQina+ipybThKx+5zc5M9O2h
- a23j9hCISwKaNf2cqU74PLl+ilnv6WpGDXP5pERBZEPdROlTRIajmwv1hXX954hbw7Pf
- NC9+oH/MAHXWLdJlFInuF+p04siV6p3blvz/RXXhAHVeMSrculwWqWncmVduebKvlROL
- 2BCQ==
-X-Gm-Message-State: AOJu0Yxvovs48apLnmMZS9qI4Rj+MTh8+EqsL432hTQXpF9W7m+DFDqz
- KodEb3wuy4SiTlCfD5agxI+wU55E+b9tliMhrfm0kMF3xcQF5A2p2zBRv3RQzBZH1/jxQN1ni/T
- F5hsEZx/sUs8cDJIub1/qbc/xjbPUo/+It/SdJQ==
-X-Google-Smtp-Source: AGHT+IHZozv/oq7kdF2HE3OMsATt7+BqvQSGhHxNAI8rcrJ96f03sYzay0QuQUuXGN6LPmj3z3JZuAOQM7+3zcq1o5c=
-X-Received: by 2002:a2e:8509:0:b0:2d0:6fb5:46b with SMTP id
- j9-20020a2e8509000000b002d06fb5046bmr1443868lji.23.1706888416835; Fri, 02 Feb
- 2024 07:40:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1706889318; x=1707494118;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9YCGNLX6VVZ4ROjQfemGqIeAfklglJZiiRwXx6Ag3EY=;
+ b=AmtlG4RiaOs7lF4bsOJEQixJFuXo43DXczlUuj8+yIJp2QZM7kNpGaNJ7zTsHunpfm
+ CBVxVk0fdUKuqQivxgIvmBTAHcy2yKnbDtO1dCXEEYQSPt0vHOlC2XINkSgkUim+vtp9
+ 0DQx9Y53oKNNg+toS1SqiJyEDglfp39+UnYS5vFQf+gu/P1WKblsDQE6rpoB8Rcd2e9h
+ JpJsdzXV4tuzwE412JQGL3j2GcyYLGIOGFw51js881e6SufNtPexZe8Fd21KDHwnzlk4
+ Q9pAW6RXOTQSBHs3kKzR0ZqF0Fvv0tfG2sKwa9/F6f6jsg/yeXDPx+kuNbICl6Nkge8o
+ ZBuw==
+X-Gm-Message-State: AOJu0YzkOsBLU0HP/hv+wlu9hfRnrc1v9rZ3+9C4U9h3j5NogPkYomoR
+ DnrQAK0eB1IOxRo31KlJWS2ld6WiR/W4oi17kSIYEPzOMYUdTKIDWX17HotSHEk=
+X-Google-Smtp-Source: AGHT+IE5b7hBINj4H0Cr1O7HwDMv2orpahi3twhEyqapVo/h/aZm55v2D9WrusilBk2Hxydr4Z4Tnw==
+X-Received: by 2002:a05:600c:4589:b0:40e:8fe8:a173 with SMTP id
+ r9-20020a05600c458900b0040e8fe8a173mr4260233wmo.4.1706889317819; 
+ Fri, 02 Feb 2024 07:55:17 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCUJN8H7K7IXl5JtyI4JUrny6Lr3fP/6+YqsHnen6fXJSioe2RhbTbcLjXTrEfE9U9+STvID2xN8U7P8+0t4UEQ+K23GkPIkzmPCAyP80/Zg1ARrMLdyMzbYipzG
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ t15-20020a05600c450f00b0040fb01d61a3sm267722wmo.18.2024.02.02.07.55.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Feb 2024 07:55:17 -0800 (PST)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1BF3A5F9D3;
+ Fri,  2 Feb 2024 15:55:17 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Markus Armbruster <armbru@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?=
+ <philmd@linaro.org>, Mark Burton <mburton@qti.qualcomm.com>
+Subject: KVM/QEMU Community Call 6th Feb Agenda Items
+User-Agent: mu4e 1.11.27; emacs 29.1
+Date: Fri, 02 Feb 2024 15:55:17 +0000
+Message-ID: <87mssij1y2.fsf@draig.linaro.org>
 MIME-Version: 1.0
-References: <20240201164412.785520-1-dwmw2@infradead.org>
- <CAFEAcA9-e=hzN62vkq-P575yMvjqmm1sNwNMswUDnqj1gCRmOA@mail.gmail.com>
- <4e86dd4daebb3c15d1585ff8d7316f61f122d827.camel@infradead.org>
-In-Reply-To: <4e86dd4daebb3c15d1585ff8d7316f61f122d827.camel@infradead.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Feb 2024 15:40:06 +0000
-Message-ID: <CAFEAcA-Xbjpg8NUWnxq7Mkz5b+aUFUTsmZspBqWQ3N9Q76xhYQ@mail.gmail.com>
-Subject: Re: [PULL 00/47] nic-config.for-upstream queue
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,30 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2 Feb 2024 at 15:36, David Woodhouse <dwmw2@infradead.org> wrote:
->
-> On Fri, 2024-02-02 at 15:32 +0000, Peter Maydell wrote:
-> >
-> > This fails "make check' because some of the qom-test and
-> > test-hmp checks fail when the QEMU binary segfaults.
-> >
-> > https://gitlab.com/qemu-project/qemu/-/jobs/6084552256
-> > https://gitlab.com/qemu-project/qemu/-/jobs/6084044180
->
-> Thanks.  Any idea why that didn't show up in my own pipeline?
-> https://gitlab.com/dwmw2/qemu/-/pipelines/1160949234
+Hi,
 
-I think because the failing runners are the aarch64 and
-s390 host ones, which we don't let run for anything
-except real merge-pullreq test runs because they're
-limited resource. I guess that perhaps we have at some point
-said "we don't need to run all the guest architectures
-on all jobs" and not noticed that this leaves the
-coverage for the submaintainer only-uses-the-public-runners
-CI testing with gaps.
+The KVM/QEMU community call is at:
 
-CCing Alex and Thomas for possible suggestions.
+  https://meet.jit.si/kvmcallmeeting
+  @
+  6/2/2024 14:00 UTC
 
-thanks
--- PMM
+As I'll be away Philippe has volunteered to run the meeting.
+
+So far we have one agenda item which is to discuss next steps from
+Markus' post about dynamic modelling:
+
+  Message-ID: <87o7d1i7ky.fsf@pond.sub.org>
+  Date: Wed, 31 Jan 2024 21:14:21 +0100
+  Subject: Dynamic & heterogeneous machines, initial configuration: problems
+
+If there are any other agenda items you would like to discuss then
+please respond to this email.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
