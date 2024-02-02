@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F89846790
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF238467AE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmRw-00014K-Pv; Fri, 02 Feb 2024 00:50:52 -0500
+	id 1rVmRy-00016o-RW; Fri, 02 Feb 2024 00:50:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRt-00012n-QO
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:49 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1rVmRx-000165-5i
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:53 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRs-0001bf-Co
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:49 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6de2735151cso1229867b3a.1
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:48 -0800 (PST)
+ id 1rVmRu-0001cQ-Ay
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:52 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5d8df34835aso320193a12.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853047; x=1707457847; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853049; x=1707457849; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ih9kNFtuKNhrUdysAgLO3jiT9TTjcwOFp1g4b3mJWUA=;
- b=QgTHM0Vpf1nqXtlqGFg5C7e4Br9r1TKRpZOw9aXUsKNrai2KIVbkEFgsuPAS68soK0
- 7p0wlEEWUObisjPvHWkwhe7+AS1bCSxHjwZGSDwW3Kgdz+KDpfwjbFcXP6/9kWnyVBWb
- 2DQwMLyG5OT40aBxZ45MxHXR9CYIxsK2SnqmZLX11SQn8DyouDJ8Z5TDZo1KFM5u3oT8
- 4bKcTesW5WneG0e+Dtx4DtAzhtgqObHas4eSs0BlZ5PTwY8BCLFO+4n4Pvz/M7hmqpt7
- rEGKyCVKwn/Iwjh5FYes0ckMDXobWEPInET5C6I8gHj5SygyARYoxIFLro44n2EbHsVt
- 5NRA==
+ bh=9zf0HbVX8gvUwqhja+dnyq/HEcNPpSpWkMmM6ss3Zow=;
+ b=YnnonL4dfILdH4WWHiCC2VZVGZvGDqCOIwfg68aklOHD7NUwrWiJcuIhiaXkh05QSk
+ W97giU4a8gm5jc3LbHyvLpekTqosExf45HurDMcXViVVB7Xe+8VbaT3RbkPrwzEyZ9Bj
+ XyeA2ukjRRHg+6ITpAMyVJgDSwIu5aJG5Ne1r6OE7iq5isUPG5VAZ7/D3gsXQE57OYZZ
+ VpWN0cPZ8g8LqrxvBBC7XAteSWP82tZLqVvOIAEorOZy7LLLOqPNEPL2z7MKQbFL/fDY
+ Ceotu180+Jt/xo4rQhhylXzfP5+rzjECJ20P7cc9iauZY/aRvOC2WaPs0YRjZ2Q/0LIq
+ +DvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853047; x=1707457847;
+ d=1e100.net; s=20230601; t=1706853049; x=1707457849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ih9kNFtuKNhrUdysAgLO3jiT9TTjcwOFp1g4b3mJWUA=;
- b=Q+72sb3ojkyei69D85Wep8zKL20nuNrwGKdWJAOXytN8kv5II0jb3j2Z3wLXYIrNNs
- dqEXWToXgifZ3/LLagor8yYQuudYpDUMPVyc6+9XS8eJlzSYjgzr89nXXfMcxgAv9PCa
- LxUKzVyhNi2WTjukU1ZZ6f6NuAXOGf8nhy1LnCBqqxwYDYdj7G3Q1oq2eZ9IHSn1h6is
- haqR7/LzNoOlIRlT+sMXkbRFBG3j1w0rHhjTipOhPjCtlHVBIJBuKKZThaWpW63VUcXh
- zjwtAGkV/7P8lzuFyManh3LStf2iOyvw2RlP+7pwRQbQ7OMIrpDTvWsZJD8Zlw7QOnEA
- h1+Q==
-X-Gm-Message-State: AOJu0YyDB9Sb7fQZqU8kMfz/h4UgqeJfGelj/5/lWGr7pTN1P7DNn+Zf
- KAA/drOOpXHHwgQFuY90PXJjYA/8jxelSUjMReeU7r8+xXMc3hlYLRtb+1sDJRWEpIGdTKMGODu
- neAw=
-X-Google-Smtp-Source: AGHT+IE76fgrLlqvPpz21UuQ/1qw55eyXaHWy7qxfQ78uUHMw6z/hAHi2P1wjaeLZbBlbGpQDlS/Sw==
-X-Received: by 2002:a05:6a00:1407:b0:6df:f634:4f83 with SMTP id
- l7-20020a056a00140700b006dff6344f83mr1776559pfu.2.1706853046932; 
- Thu, 01 Feb 2024 21:50:46 -0800 (PST)
+ bh=9zf0HbVX8gvUwqhja+dnyq/HEcNPpSpWkMmM6ss3Zow=;
+ b=tG4oVPXRIcTZE28nzcYJ/u4J1llVb4UAcFCqh348Wcz5pcLXx3BcgYvcayUdz43Ctg
+ uIhpVXhQwxt/K/R7Z90rjCqipArVJ+/jJ4N/K5CoeazeX7op03pG47v3Pl99+4EGo37Z
+ U3lyV9bMj7JYwa/MQvpTXAJFNevkl72ovDaG3Oyy6r+ht/Xw8l9xuTmXxiGxbgMTc5wd
+ k3gR71CxzY8ulHXPI8bjVH8xmnT2SlC5RKLX90UV09EIOzHJuo/pz99r8+MXputqxweb
+ EGGA2nD7j1/cqJSrgcwrTnKtZ6MmFMWRrLa4ovGEZu5jnl3TGzwxe2JkapPlQjLHrLIq
+ x6Bw==
+X-Gm-Message-State: AOJu0YwtXhkBECMXbRR9a4i4wQP/+v8oK41ea+D0kxGJhaFP0vmvzH3O
+ PLvbnmnell4YYZEYl+cogpyYMvjrXSrsaeF9+RbxueDBEzO2dKnvgh4ybsDlPAgKr/TJAjmAfbX
+ oAAE=
+X-Google-Smtp-Source: AGHT+IFU+C/slZTYWO8/Q8Peb+y3BiqaW28VQygYOUBInclJcnP6vaNquTc/CilY3urv68iw3pa2XA==
+X-Received: by 2002:a05:6a20:6b9c:b0:19c:9a00:1351 with SMTP id
+ bu28-20020a056a206b9c00b0019c9a001351mr1778846pzb.25.1706853048999; 
+ Thu, 01 Feb 2024 21:50:48 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.45
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:50:46 -0800 (PST)
+ Thu, 01 Feb 2024 21:50:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/57] target/alpha: Split out alpha_env_mmu_index
-Date: Fri,  2 Feb 2024 15:49:41 +1000
-Message-Id: <20240202055036.684176-4-richard.henderson@linaro.org>
+Subject: [PULL 03/57] target/alpha: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:49:42 +1000
+Message-Id: <20240202055036.684176-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,48 +95,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/alpha/cpu.h       | 7 ++++++-
- target/alpha/translate.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ target/alpha/cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/alpha/cpu.h b/target/alpha/cpu.h
-index ce806587ca..3beff2738a 100644
---- a/target/alpha/cpu.h
-+++ b/target/alpha/cpu.h
-@@ -389,7 +389,7 @@ enum {
- 
- #define TB_FLAG_UNALIGN       (1u << 1)
- 
--static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
-+static inline int alpha_env_mmu_index(CPUAlphaState *env)
- {
-     int ret = env->flags & ENV_FLAG_PS_USER ? MMU_USER_IDX : MMU_KERNEL_IDX;
-     if (env->flags & ENV_FLAG_PAL_MODE) {
-@@ -398,6 +398,11 @@ static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
-     return ret;
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index de705c3703..bf70173a25 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -64,6 +64,11 @@ static bool alpha_cpu_has_work(CPUState *cs)
+                                     | CPU_INTERRUPT_MCHK);
  }
  
-+static inline int cpu_mmu_index(CPUAlphaState *env, bool ifetch)
++static int alpha_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return alpha_env_mmu_index(env);
++    return alpha_env_mmu_index(cpu_env(cs));
 +}
 +
- enum {
-     IR_V0   = 0,
-     IR_T0   = 1,
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 134eb7225b..4b464f8651 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2875,7 +2875,7 @@ static void alpha_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     int64_t bound;
+ static void alpha_cpu_disas_set_info(CPUState *cpu, disassemble_info *info)
+ {
+     info->mach = bfd_mach_alpha_ev6;
+@@ -230,6 +235,7 @@ static void alpha_cpu_class_init(ObjectClass *oc, void *data)
  
-     ctx->tbflags = ctx->base.tb->flags;
--    ctx->mem_idx = cpu_mmu_index(env, false);
-+    ctx->mem_idx = alpha_env_mmu_index(env);
-     ctx->implver = env->implver;
-     ctx->amask = env->amask;
- 
+     cc->class_by_name = alpha_cpu_class_by_name;
+     cc->has_work = alpha_cpu_has_work;
++    cc->mmu_index = alpha_cpu_mmu_index;
+     cc->dump_state = alpha_cpu_dump_state;
+     cc->set_pc = alpha_cpu_set_pc;
+     cc->get_pc = alpha_cpu_get_pc;
 -- 
 2.34.1
 
