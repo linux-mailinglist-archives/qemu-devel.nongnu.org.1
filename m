@@ -2,95 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D565C84731D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5507A84733A
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:33:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvQD-0005g0-BR; Fri, 02 Feb 2024 10:25:41 -0500
+	id 1rVvWn-0003vq-Mz; Fri, 02 Feb 2024 10:32:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvQ5-0005Uu-FU
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:25:34 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rVvWj-0003vF-RU
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:32:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvQ2-00073p-P3
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:25:32 -0500
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412EQ9pW026113; Fri, 2 Feb 2024 15:25:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=ThK0J2z926TCL3KX9DE5uwvh5Uu6dZYanJiPNY0QH38=;
- b=JVSMP+wIUriuN41ijVL0leUdOm+OAdS6OVmIYcSuDV3cpqPXMorWCBUeCsiUHMCAQrE1
- ewOwfeQX94npTqKgd3rJrFYTpwHZ3w3Ya5DQxiULgA8JKacl0EVKsgVya/hbQU//6Dr9
- 12BmiUnQKeKxKlKOVRWpeAhgkFPi/7F8RqjbIQHWpWeG0595JCNvkiwFbpAhnFXpl5qY
- hQoC1ZgbFLRe+TZ3c+pa9lCPuevOtGtVEFq1YpOKtUlVFIbiXwrkL3cK57TL3iuy/px9
- 5FuBo1Y2Av7JF+BscoUFUImUfNcDB4Y/I7mJyMX+XCEeFd0ltX1dgyD0f7FMcvszqJGP tw== 
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11xrht84-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 15:25:14 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412ECCUl007189; Fri, 2 Feb 2024 15:25:13 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2unyt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 15:25:13 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 412FPCcX36045548
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Feb 2024 15:25:12 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F2B802004F;
- Fri,  2 Feb 2024 15:25:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BDD8C2004E;
- Fri,  2 Feb 2024 15:25:11 +0000 (GMT)
-Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Feb 2024 15:25:11 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Riku Voipio <riku.voipio@iki.fi>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 5/5] tests/tcg: Add the syscall catchpoint gdbstub test
-Date: Fri,  2 Feb 2024 16:23:47 +0100
-Message-ID: <20240202152506.279476-6-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202152506.279476-1-iii@linux.ibm.com>
-References: <20240202152506.279476-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1rVvWi-0000C3-EH
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:32:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1706887943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nTVW0ex8r7dGzT2U4Ccj8kElbtM0N6FAXXTnFzTz3so=;
+ b=hvq1Y2EqHXo+D/qQToSP4CZcFxU1DutfntOf1ffzqN0OjSviZe/4dDMZdfO14DdFQvGKxe
+ JPp00JDqzbGGSa7XrkHRJIgZ8liCXUhGr0Zw1RgqerTYKhFek88NziFIxDJpvVG13MdvuW
+ fD0meWmvjJO0RQ2pYyq4z0z68Sj7xAE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-206-DjKHpWLeNNOYxbLs4s7pJQ-1; Fri, 02 Feb 2024 10:32:20 -0500
+X-MC-Unique: DjKHpWLeNNOYxbLs4s7pJQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61CDE85CBA4;
+ Fri,  2 Feb 2024 15:32:20 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B2E193C2E;
+ Fri,  2 Feb 2024 15:32:19 +0000 (UTC)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
+ qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Subject: [PATCH v2 0/3] virtio: Re-enable notifications after drain
+Date: Fri,  2 Feb 2024 16:31:55 +0100
+Message-ID: <20240202153158.788922-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: C8R0RJuowzVEYgkl4Aox3qJKE4WTBr60
-X-Proofpoint-GUID: C8R0RJuowzVEYgkl4Aox3qJKE4WTBr60
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-02_08,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
- bulkscore=0 suspectscore=0 spamscore=0 impostorscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402020112
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.276,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,161 +79,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check that adding/removing syscall catchpoints works.
+v1:
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/Makefile.target           | 10 +++-
- tests/tcg/multiarch/catch-syscalls.c          | 51 ++++++++++++++++++
- tests/tcg/multiarch/gdbstub/catch-syscalls.py | 53 +++++++++++++++++++
- 3 files changed, 113 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/catch-syscalls.c
- create mode 100644 tests/tcg/multiarch/gdbstub/catch-syscalls.py
+https://lists.nongnu.org/archive/html/qemu-block/2024-01/msg00336.html
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index 315a2e13588..e10951a8016 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -108,13 +108,21 @@ run-gdbstub-prot-none: prot-none
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/prot-none.py, \
- 	accessing PROT_NONE memory)
- 
-+run-gdbstub-catch-syscalls: catch-syscalls
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/catch-syscalls.py, \
-+	hitting a syscall catchpoint)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
- endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
--	      run-gdbstub-registers run-gdbstub-prot-none
-+	      run-gdbstub-registers run-gdbstub-prot-none \
-+	      run-gdbstub-catch-syscalls
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/catch-syscalls.c b/tests/tcg/multiarch/catch-syscalls.c
-new file mode 100644
-index 00000000000..d1ff1936a7a
---- /dev/null
-+++ b/tests/tcg/multiarch/catch-syscalls.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Test GDB syscall catchpoints.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#define _GNU_SOURCE
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+const char *catch_syscalls_state = "start";
-+
-+void end_of_main(void)
-+{
-+}
-+
-+int main(void)
-+{
-+    int ret = EXIT_FAILURE;
-+    char c0 = 'A', c1;
-+    int fd[2];
-+
-+    catch_syscalls_state = "pipe2";
-+    if (pipe2(fd, 0)) {
-+        goto out;
-+    }
-+
-+    catch_syscalls_state = "write";
-+    if (write(fd[1], &c0, sizeof(c0)) != sizeof(c0)) {
-+        goto out_close;
-+    }
-+
-+    catch_syscalls_state = "read";
-+    if (read(fd[0], &c1, sizeof(c1)) != sizeof(c1)) {
-+        goto out_close;
-+    }
-+
-+    catch_syscalls_state = "check";
-+    if (c0 == c1) {
-+        ret = EXIT_SUCCESS;
-+    }
-+
-+out_close:
-+    catch_syscalls_state = "close";
-+    close(fd[0]);
-+    close(fd[1]);
-+
-+out:
-+    catch_syscalls_state = "end";
-+    end_of_main();
-+    return ret;
-+}
-diff --git a/tests/tcg/multiarch/gdbstub/catch-syscalls.py b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
-new file mode 100644
-index 00000000000..ccce35902fb
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/catch-syscalls.py
-@@ -0,0 +1,53 @@
-+"""Test GDB syscall catchpoints.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def check_state(expected):
-+    """Check the catch_syscalls_state value"""
-+    actual = gdb.parse_and_eval("catch_syscalls_state").string()
-+    report(actual == expected, "{} == {}".format(actual, expected))
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.Breakpoint("main")
-+    gdb.execute("continue")
-+
-+    # Check that GDB stops for pipe2/read calls/returns, but not for write.
-+    gdb.execute("delete")
-+    try:
-+        gdb.execute("catch syscall pipe2 read")
-+    except gdb.error as exc:
-+        exc_str = str(exc)
-+        if "not supported on this architecture" in exc_str:
-+            print("SKIP: {}".format(exc_str))
-+            return
-+        raise
-+    for _ in range(2):
-+        gdb.execute("continue")
-+        check_state("pipe2")
-+    for _ in range(2):
-+        gdb.execute("continue")
-+        check_state("read")
-+
-+    # Check that deletion works.
-+    gdb.execute("delete")
-+    gdb.Breakpoint("end_of_main")
-+    gdb.execute("continue")
-+    check_state("end")
-+
-+    # Check that catch-all works (libc should at least call exit).
-+    gdb.execute("delete")
-+    gdb.execute("catch syscall")
-+    gdb.execute("continue")
-+    gdb.execute("delete")
-+    gdb.execute("continue")
-+
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
+
+Hi,
+
+This is basically the same series as v1: When using
+aio_set_event_notifier_poll(), the io_poll_end() callback is only
+invoked when polling ends, not when the notifier is being removed while
+in a polling section.  This can leave the virtqueue notifier disabled
+during drained sections, which however is not a bad thing.  We just need
+to ensure they are re-enabled after the drain, and kick the virtqueue
+once to pick up all the requests that came in during the drained
+section.
+
+Patch 1 is a technically unrelated fix, but addresses a problem that
+became visible with patch 2 applied.
+
+Patch 3 is a small (optional) clean-up patch.
+
+
+v2:
+- Changed the title of this series and patch 2 (was: "Keep notifications
+  disabled durin drain"): Keeping the notifier disabled was something
+  the initial RFC did, this version (v1 too) just ensures the notifier
+  is enabled after the drain, regardless of its state before.
+
+- Use event_notifier_set() instead of virtio_queue_notify() in patch 2
+
+- Added patch 3
+
+
+Hanna Czenczek (3):
+  virtio-scsi: Attach event vq notifier with no_poll
+  virtio: Re-enable notifications after drain
+  virtio-blk: Use ioeventfd_attach in start_ioeventfd
+
+ include/block/aio.h   |  7 ++++++-
+ hw/block/virtio-blk.c | 21 ++++++++++-----------
+ hw/scsi/virtio-scsi.c |  7 ++++++-
+ hw/virtio/virtio.c    | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 64 insertions(+), 13 deletions(-)
+
 -- 
 2.43.0
 
