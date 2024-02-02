@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D4C8467CC
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F6D8467BC
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:57:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmWV-0006dx-Jp; Fri, 02 Feb 2024 00:55:35 -0500
+	id 1rVmWS-0006KK-I9; Fri, 02 Feb 2024 00:55:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmWS-0006LU-6t
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:32 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rVmWO-00061g-Hn
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:29 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmWK-00030v-Dj
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:31 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d91397bd22so14198135ad.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:55:24 -0800 (PST)
+ id 1rVmWM-00031X-Pz
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:55:28 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d94323d547so14573665ad.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:55:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853323; x=1707458123; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853325; x=1707458125; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qq++rIr45iSkpBC0Q6O8O5vjzYxl8Bl9TQVIq1ySmoA=;
- b=CYN4p7rX+4PZaLtVcys8sEdVrWfCVIGP/+X1dISu3th52EUxiY95po8sLltaTRlBKq
- 7a6YE6L/eYbU7f6V0fkTgZdYg8oZgIP1+/HRhi8OXON4Gd4gi7Srex0/ItEt873fUJw4
- svRJocT7bXnUUTiyhrH6C42estTfjBr79vl4OEKofwCkMGyaswgOOvr41QT+Qbu/Vsfb
- Wju5YrZWygscsDV0Gua+Qs/ySMeFQmANwegUQqPOLMh7KogaQz/QhWtsH+bLyQtggnEQ
- x2Ll+3u85vRUKpFy81XiG3DO8qAaWrUXPS7aM5oF0yNKRmM7RSwNt9eTBEJUYfY16HlE
- /rRw==
+ bh=HAHI25rPn7Uj+PwV0eCufYpY6JQ7XRihAqNNYP+dM2A=;
+ b=YFy5hoJH8JzCgM6N1NJUTfjHWKPr6FirBd411Y8Ksf2ys1xID4RB7vf2a18mWxxyq1
+ rHdpOb6vH/4vozcCGIUznY+PydPPKrHZgr0K+EZuKFQKLMYbZqWLCq0oCDjpIqNIHj/C
+ 83ROgX0Ehj6WgcNbksbf/+kDo8RwktvK+L5VAUNIXFzcPrx39wQGRlRCqHBvuzvuAsND
+ VcczUpFNr4HY1mKMeYgAz07k9T1ymFaixzYDDI74z9W89zVgXzTBFFmMUDeF9SxYluFF
+ c9OhLK+vkrcfZozA2Cjwbuqbn2e03opVpLYzRGNS2GK6/JvV6Zcqp9BqL78s2tIOWHkT
+ C3Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853323; x=1707458123;
+ d=1e100.net; s=20230601; t=1706853325; x=1707458125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qq++rIr45iSkpBC0Q6O8O5vjzYxl8Bl9TQVIq1ySmoA=;
- b=FXFeHl/ZpRTvYvI8yMMjdfsTfUyRi72h5MKJlvt+5szVKxzQFTn0BgT1SLtjrfiGGB
- 5exbCd7sZ27pFNtiTpszQlmUrhouy0zzgcK4oRT3tycmve8XfyMVCwVxG3A57DoNRigh
- uz5df/+Kryi2UTB0l68BPzR9tHftLyjPN9Ywj0Vl5oa6cWO0KFGGlbP6d6Anu3LyaIIn
- e/PrroPdKDDaBqaNcFXvDu3T4SAzCCSioEAHnlRynAIi7fHIwYPl8/tqe2FE8nYGIHDu
- uZBvESll3hTZqbD+g96JvD90lWRhbkMD8OTh2oNT+tf8IC2PERGDhCz6HvQKrgxsRCiI
- pcjw==
-X-Gm-Message-State: AOJu0Yy2wySlrnhhqBNDyDtyPRSw44VuyaHOErssSkqFVJvXdDNcxOd6
- 4n6x9Ld1KzNzyUH7tyykeiq7HBvg+VlbH5ckjU2H/79qlsx/jt56wskDJVv2E63PJpdjgKFpM2O
- iclk=
-X-Google-Smtp-Source: AGHT+IG+QBfW+BaMQ11yxVhE4XvK1idLSMhvw88lejsvqhbHyOmp/+ZJUuuGyVqPQC3RDJpzde7QoA==
-X-Received: by 2002:a17:903:2303:b0:1d9:6cb5:a818 with SMTP id
- d3-20020a170903230300b001d96cb5a818mr1648261plh.30.1706853323203; 
- Thu, 01 Feb 2024 21:55:23 -0800 (PST)
+ bh=HAHI25rPn7Uj+PwV0eCufYpY6JQ7XRihAqNNYP+dM2A=;
+ b=vvxsxxia10yLPu21tv9pwTviMF/VJANJuibyLMUK9dwrhnvp4U41JNlx7dra4q3hQf
+ MBK1ag/+U2pOwSzmAbXQdNp9eKxjSBIaWu1N5/2ZhuDcXNn5yrvmT88uU+Y+Qlw1kJe0
+ DzON22dsS3sMd3H6YO3fb3ZkKvuOFDn/ZbrQFnDb34EWNcJhZoHJXZH7yKVWM5azC0Ct
+ hEl4C0lDBvzke+ADqq151CuAfzN2Q6Gi3wyMgEhjSfBiNp8KgTVBbbAhPMzuIVMYbVrL
+ 3F6ZGD9dYI0/SAEwjGvTYlU4anZhBEV4gR5l4g6iFa+wSrcgjRwKVYx4mZWpy1m7Cqx/
+ FB+Q==
+X-Gm-Message-State: AOJu0YycILwFwAq41IHgM5yaGvqVI2XGEWsB0xCnEz0j81qNbgrBZNk3
+ W3mEASGJ1bhKKdcudjkAxWKuFB/3Xksx0IfORNODTmzfvzgHP45hJdpn4LEwv3Eiid2fN/gG55r
+ NOBs=
+X-Google-Smtp-Source: AGHT+IEI/y1eovlZ8uBUJ5VPOtuBrLM9ewEwB9jXtNkx+4a/M7WrCng4Tj57s3eB6Gxc7cIvrTljDg==
+X-Received: by 2002:a17:902:e5c6:b0:1d5:ad95:f30f with SMTP id
+ u6-20020a170902e5c600b001d5ad95f30fmr1540163plf.1.1706853325196; 
+ Thu, 01 Feb 2024 21:55:25 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- je5-20020a170903264500b001d8a80cbb15sm752059plb.238.2024.02.01.21.55.21
+ je5-20020a170903264500b001d8a80cbb15sm752059plb.238.2024.02.01.21.55.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:55:22 -0800 (PST)
+ Thu, 01 Feb 2024 21:55:24 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 46/57] target/sparc: Use i128 for FsTOq, FiTOq
-Date: Fri,  2 Feb 2024 15:50:25 +1000
-Message-Id: <20240202055036.684176-48-richard.henderson@linaro.org>
+Subject: [PULL 47/57] target/sparc: Use i128 for FdTOq, FxTOq
+Date: Fri,  2 Feb 2024 15:50:26 +1000
+Message-Id: <20240202055036.684176-49-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,7 +94,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231103173841.33651-12-richard.henderson@linaro.org>
+Message-Id: <20231103173841.33651-13-richard.henderson@linaro.org>
 ---
  target/sparc/helper.h     | 4 ++--
  target/sparc/fop_helper.c | 8 ++++----
@@ -102,75 +102,74 @@ Message-Id: <20231103173841.33651-12-richard.henderson@linaro.org>
  3 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index 7caae9a441..5e93342583 100644
+index 5e93342583..20f67f89b0 100644
 --- a/target/sparc/helper.h
 +++ b/target/sparc/helper.h
-@@ -87,7 +87,7 @@ DEF_HELPER_FLAGS_3(fsmuld, TCG_CALL_NO_RWG, f64, env, f32, f32)
- DEF_HELPER_FLAGS_3(fdmulq, TCG_CALL_NO_RWG, void, env, f64, f64)
- 
- DEF_HELPER_FLAGS_2(fitod, TCG_CALL_NO_RWG_SE, f64, env, s32)
--DEF_HELPER_FLAGS_2(fitoq, TCG_CALL_NO_RWG, void, env, s32)
-+DEF_HELPER_FLAGS_2(fitoq, TCG_CALL_NO_RWG, i128, env, s32)
- 
- DEF_HELPER_FLAGS_2(fitos, TCG_CALL_NO_RWG, f32, env, s32)
- 
-@@ -99,7 +99,7 @@ DEF_HELPER_FLAGS_2(fxtoq, TCG_CALL_NO_RWG, void, env, s64)
+@@ -94,14 +94,14 @@ DEF_HELPER_FLAGS_2(fitos, TCG_CALL_NO_RWG, f32, env, s32)
+ #ifdef TARGET_SPARC64
+ DEF_HELPER_FLAGS_2(fxtos, TCG_CALL_NO_RWG, f32, env, s64)
+ DEF_HELPER_FLAGS_2(fxtod, TCG_CALL_NO_RWG, f64, env, s64)
+-DEF_HELPER_FLAGS_2(fxtoq, TCG_CALL_NO_RWG, void, env, s64)
++DEF_HELPER_FLAGS_2(fxtoq, TCG_CALL_NO_RWG, i128, env, s64)
+ #endif
  DEF_HELPER_FLAGS_2(fdtos, TCG_CALL_NO_RWG, f32, env, f64)
  DEF_HELPER_FLAGS_2(fstod, TCG_CALL_NO_RWG, f64, env, f32)
  DEF_HELPER_FLAGS_2(fqtos, TCG_CALL_NO_RWG, f32, env, i128)
--DEF_HELPER_FLAGS_2(fstoq, TCG_CALL_NO_RWG, void, env, f32)
-+DEF_HELPER_FLAGS_2(fstoq, TCG_CALL_NO_RWG, i128, env, f32)
+ DEF_HELPER_FLAGS_2(fstoq, TCG_CALL_NO_RWG, i128, env, f32)
  DEF_HELPER_FLAGS_2(fqtod, TCG_CALL_NO_RWG, f64, env, i128)
- DEF_HELPER_FLAGS_2(fdtoq, TCG_CALL_NO_RWG, void, env, f64)
+-DEF_HELPER_FLAGS_2(fdtoq, TCG_CALL_NO_RWG, void, env, f64)
++DEF_HELPER_FLAGS_2(fdtoq, TCG_CALL_NO_RWG, i128, env, f64)
  DEF_HELPER_FLAGS_2(fstoi, TCG_CALL_NO_RWG, s32, env, f32)
+ DEF_HELPER_FLAGS_2(fdtoi, TCG_CALL_NO_RWG, s32, env, f64)
+ DEF_HELPER_FLAGS_2(fqtoi, TCG_CALL_NO_RWG, s32, env, i128)
 diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
-index faf75e651f..c7dc835d28 100644
+index c7dc835d28..9a0110e201 100644
 --- a/target/sparc/fop_helper.c
 +++ b/target/sparc/fop_helper.c
-@@ -147,9 +147,9 @@ float64 helper_fitod(CPUSPARCState *env, int32_t src)
-     return int32_to_float64(src, &env->fp_status);
+@@ -163,9 +163,9 @@ float64 helper_fxtod(CPUSPARCState *env, int64_t src)
+     return int64_to_float64(src, &env->fp_status);
  }
  
--void helper_fitoq(CPUSPARCState *env, int32_t src)
-+Int128 helper_fitoq(CPUSPARCState *env, int32_t src)
+-void helper_fxtoq(CPUSPARCState *env, int64_t src)
++Int128 helper_fxtoq(CPUSPARCState *env, int64_t src)
  {
--    QT0 = int32_to_float128(src, &env->fp_status);
-+    return f128_ret(int32_to_float128(src, &env->fp_status));
+-    QT0 = int64_to_float128(src, &env->fp_status);
++    return f128_ret(int64_to_float128(src, &env->fp_status));
+ }
+ #endif
+ 
+@@ -195,9 +195,9 @@ float64 helper_fqtod(CPUSPARCState *env, Int128 src)
+     return float128_to_float64(f128_in(src), &env->fp_status);
  }
  
- #ifdef TARGET_SPARC64
-@@ -185,9 +185,9 @@ float32 helper_fqtos(CPUSPARCState *env, Int128 src)
-     return float128_to_float32(f128_in(src), &env->fp_status);
- }
- 
--void helper_fstoq(CPUSPARCState *env, float32 src)
-+Int128 helper_fstoq(CPUSPARCState *env, float32 src)
+-void helper_fdtoq(CPUSPARCState *env, float64 src)
++Int128 helper_fdtoq(CPUSPARCState *env, float64 src)
  {
--    QT0 = float32_to_float128(src, &env->fp_status);
-+    return f128_ret(float32_to_float128(src, &env->fp_status));
+-    QT0 = float64_to_float128(src, &env->fp_status);
++    return f128_ret(float64_to_float128(src, &env->fp_status));
  }
  
- float64 helper_fqtod(CPUSPARCState *env, Int128 src)
+ /* Float to integer conversion.  */
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 6c003eed7c..6522a9b0c8 100644
+index 6522a9b0c8..d478a2fcd0 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4726,9 +4726,10 @@ TRANS(FqTOd, ALL, do_env_dq, a, gen_helper_fqtod)
- TRANS(FqTOx, 64, do_env_dq, a, gen_helper_fqtox)
+@@ -4750,9 +4750,10 @@ TRANS(FiTOq, ALL, do_env_qf, a, gen_helper_fitoq)
+ TRANS(FsTOq, ALL, do_env_qf, a, gen_helper_fstoq)
  
- static bool do_env_qf(DisasContext *dc, arg_r_r *a,
--                      void (*func)(TCGv_env, TCGv_i32))
-+                      void (*func)(TCGv_i128, TCGv_env, TCGv_i32))
+ static bool do_env_qd(DisasContext *dc, arg_r_r *a,
+-                      void (*func)(TCGv_env, TCGv_i64))
++                      void (*func)(TCGv_i128, TCGv_env, TCGv_i64))
  {
-     TCGv_i32 src;
+     TCGv_i64 src;
 +    TCGv_i128 dst;
  
      if (gen_trap_ifnofpu(dc)) {
          return true;
-@@ -4739,9 +4740,9 @@ static bool do_env_qf(DisasContext *dc, arg_r_r *a,
+@@ -4763,9 +4764,9 @@ static bool do_env_qd(DisasContext *dc, arg_r_r *a,
  
      gen_op_clear_ieee_excp_and_FTT();
-     src = gen_load_fpr_F(dc, a->rs);
+     src = gen_load_fpr_D(dc, a->rs);
 -    func(tcg_env, src);
 -    gen_op_store_QT0_fpr(QFPREG(a->rd));
 -    gen_update_fprs_dirty(dc, QFPREG(a->rd));
