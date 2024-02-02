@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC84846DFE
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:32:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB76846DED
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:30:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVqng-00087d-Lg; Fri, 02 Feb 2024 05:29:36 -0500
+	id 1rVqng-00087Q-Ao; Fri, 02 Feb 2024 05:29:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqne-00086r-9T
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqne-00086z-IW
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:29:34 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqnc-0001WJ-76
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqnd-0001Xc-7v
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:29:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706869768;
+ s=mimecast20190719; t=1706869772;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=uAzEGb+J/AkRTlKgn4Q+UQOBOrQwlPrCK4S8wbDak54=;
- b=RVBaivthOlZnij5xoi3O+UrVpoeKdUi9S83wg+obvnPtHVSS+Z4/cY5+evXkd1/GNNejKv
- 5M5dVK4pu7oJF0wP3VXBK7tp5ibX40yHnCHtjVzF5/+dZXlC9iROw/7i7thpCM/8H/e5LQ
- QbIStKT/VIcaHuglG5E4bzRXXwQQXlg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-306-bVQAquUqN36rs66pSEA-hg-1; Fri,
- 02 Feb 2024 05:29:24 -0500
-X-MC-Unique: bVQAquUqN36rs66pSEA-hg-1
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qzb46DUZSTMJoNeVIqZsw/shF+U8HEgAIFp5xpwtBDY=;
+ b=JFm5MIc4iQzffzZWR3d+6997wm3OJ3vDCxoYvg6tQvMrWG/OAGH1eUjA2xm+iYQbFPjIRg
+ uA3jSPQ+sUgSOffVHUvSZD+98nNKe6BFDaE8kVrQmjEdCEKv404c9Fz+LKYqmi4P6Uqa+O
+ 153+OAyYsxCZ+hIUaIN39Pwh0NJzUSw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-106-WzK2ITtNOGKWR79D4gfjtg-1; Fri, 02 Feb 2024 05:29:28 -0500
+X-MC-Unique: WzK2ITtNOGKWR79D4gfjtg-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D20DB3C0BE4D;
- Fri,  2 Feb 2024 10:29:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 717A8185A784;
+ Fri,  2 Feb 2024 10:29:28 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 37A2340C9444;
- Fri,  2 Feb 2024 10:29:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A20A240C9444;
+ Fri,  2 Feb 2024 10:29:24 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>,
  Bryan Zhang <bryan.zhang@bytedance.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Yuan Liu <yuan1.liu@intel.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 00/23] migration/multifd: Refactor ->send_prepare() and
- cleanups
-Date: Fri,  2 Feb 2024 18:28:34 +0800
-Message-ID: <20240202102857.110210-1-peterx@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v2 01/23] migration/multifd: Drop stale comment for multifd
+ zero copy
+Date: Fri,  2 Feb 2024 18:28:35 +0800
+Message-ID: <20240202102857.110210-2-peterx@redhat.com>
+In-Reply-To: <20240202102857.110210-1-peterx@redhat.com>
+References: <20240202102857.110210-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
@@ -81,123 +83,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-v1: https://lore.kernel.org/r/20240131103111.306523-1-peterx@redhat.com
+We've already done that with multifd_flush_after_each_section, for multifd
+in general.  Drop the stale "TODO-like" comment.
 
-This v2 patchset contains quite a few refactorings to current multifd:
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/multifd.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
- 1) Redefines send_prepare() interface, to be:
-
-      p->pages ----------->  send_prepare() -------------> IOVs
-
-    A major goal of it is to get prepared for others to add quite a few new
-    hardware accelerators for multifd compression, or adding zeropage
-    detection accelerators.
-
-    It turns out we don't yet need more hooks to achieve that, so hopefully
-    most new accelerator codes do not need a lot of changes if rebase onto
-    this (please still wait until this series fully reviewed and merged;
-    hopefully this should happen soon).  Please note that p->normal[] is
-    dropped; now please use p->pages->offset[] for the same purpose.
-    Please check the code for details.
-
-    We may want a separate OPs for file later, which I'll leave that
-    decision to Fabiano.
-
-    This also prepares any possibility of replacing p->pages to raw
-    buffers (VFIO usage).  But that's left for later too.  Logically with
-    this patchset applied, it should be much easier.
-
- 2) [new in v2] Fixed one more race usage of MultiFDSendParams.packet_num,
-    as reported by Fabiano during his review on v1.  This is mostly done in
-    the single patch:
-
- 3) [new in v2] Made multifd sender side lockless, by dropping the mutex,
-    as suggested by Fabiano in his review in v1.  This is mostly done in a
-    single patch:
-
- 4) A lot of cleanups to multifd code, it picked up some patches from an
-    old series of mine [0] (the last patches were dropped, though; I did
-    the cleanup slightly differently), and added a bunch of other cleanups
-    either I got to see when doing that, or requested when Fabiano reviewed
-    v1.
-
-    Note: when I worked on this I even found more things to cleanup.  But I
-    decided to stop at only what mostly requested from Fabiano in v1 to
-    stop growing this series.
-
-1) above is mostly done in:
-
-    migration/multifd: Move header prepare/fill into send_prepare()
-
-2) above is mostly done in:
-
-    migration/multifd: Fix MultiFDSendParams.packet_num race
-
-3) above is mostly done in:
-
-    migration/multifd: Optimize sender side to be lockless
-
-The rest patches all fall into 4) category.  Please have a look, thanks.
-
-Avihai/Fabiano, I hope my understanding is right that we can still consider
-this series before a separate patchset to fix the dangling thread issue.
-If not, please shoot.
-
-v2 changelog:
-
-- When spurious wakeup happens for multifd sender thread, crash hard rather
-  than causing a deadlock later.
-- Always use atomic operations on pending_job / pending_sync
-- Moved the setup of zerocopy write_flags from multifd_save_setup() into
-  no-comp setup() phase.
-- Added below patches, some form of request here and there from Fabiano:
-  migration/multifd: Split multifd_send_terminate_threads()
-  migration/multifd: Change retval of multifd_queue_page()
-  migration/multifd: Change retval of multifd_send_pages()
-  migration/multifd: Rewrite multifd_queue_page()
-  migration/multifd: Cleanup multifd_save_cleanup()
-  migration/multifd: Cleanup multifd_load_cleanup()
-  migration/multifd: Stick with send/recv on function names
-  migration/multifd: Fix MultiFDSendParams.packet_num race
-  migration/multifd: Optimize sender side to be lockless
-
-[0] https://lore.kernel.org/r/20231022201211.452861-1-peterx@redhat.com
-[1] https://lore.kernel.org/qemu-devel/20240126221943.26628-1-farosas@suse.de
-
-Peter Xu (23):
-  migration/multifd: Drop stale comment for multifd zero copy
-  migration/multifd: multifd_send_kick_main()
-  migration/multifd: Drop MultiFDSendParams.quit, cleanup error paths
-  migration/multifd: Postpone reset of MultiFDPages_t
-  migration/multifd: Drop MultiFDSendParams.normal[] array
-  migration/multifd: Separate SYNC request with normal jobs
-  migration/multifd: Simplify locking in sender thread
-  migration/multifd: Drop pages->num check in sender thread
-  migration/multifd: Rename p->num_packets and clean it up
-  migration/multifd: Move total_normal_pages accounting
-  migration/multifd: Move trace_multifd_send|recv()
-  migration/multifd: multifd_send_prepare_header()
-  migration/multifd: Move header prepare/fill into send_prepare()
-  migration/multifd: Forbid spurious wakeups
-  migration/multifd: Split multifd_send_terminate_threads()
-  migration/multifd: Change retval of multifd_queue_page()
-  migration/multifd: Change retval of multifd_send_pages()
-  migration/multifd: Rewrite multifd_queue_page()
-  migration/multifd: Cleanup multifd_save_cleanup()
-  migration/multifd: Cleanup multifd_load_cleanup()
-  migration/multifd: Stick with send/recv on function names
-  migration/multifd: Fix MultiFDSendParams.packet_num race
-  migration/multifd: Optimize sender side to be lockless
-
- migration/multifd.h      |  50 ++--
- migration/migration.c    |  12 +-
- migration/multifd-zlib.c |  11 +-
- migration/multifd-zstd.c |  11 +-
- migration/multifd.c      | 630 ++++++++++++++++++++++-----------------
- migration/ram.c          |   2 +-
- migration/trace-events   |   2 +-
- 7 files changed, 404 insertions(+), 314 deletions(-)
-
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 25cbc6dc6b..eee2586770 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -598,17 +598,6 @@ int multifd_send_sync_main(void)
+         }
+     }
+ 
+-    /*
+-     * When using zero-copy, it's necessary to flush the pages before any of
+-     * the pages can be sent again, so we'll make sure the new version of the
+-     * pages will always arrive _later_ than the old pages.
+-     *
+-     * Currently we achieve this by flushing the zero-page requested writes
+-     * per ram iteration, but in the future we could potentially optimize it
+-     * to be less frequent, e.g. only after we finished one whole scanning of
+-     * all the dirty bitmaps.
+-     */
+-
+     flush_zero_copy = migrate_zero_copy_send();
+ 
+     for (i = 0; i < migrate_multifd_channels(); i++) {
 -- 
 2.43.0
 
