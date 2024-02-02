@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EF584735F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F29184737C
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:40:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvbD-0000oi-Qv; Fri, 02 Feb 2024 10:37:03 -0500
+	id 1rVveU-0002LJ-6J; Fri, 02 Feb 2024 10:40:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb8-0000Re-PP
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:58 -0500
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ id 1rVveQ-0002GV-4a
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:40:22 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb6-0004Z2-VS
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:58 -0500
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5112a04c7acso3670821e87.3
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:56 -0800 (PST)
+ id 1rVveN-00058V-6e
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:40:21 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2cf42ca9bb2so24497851fa.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:40:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888215; x=1707493015; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=e6ecdA6XprRoNkA0wb02c6VKGclESqrERe4VSdnbqBk=;
- b=LzsxvyviCi2kTBG/iVhLeILp2s+n2VAjVzl7/HEvuglzogZxrrLndYa6QL/eWURllq
- nOc5w2LhNIJuLuPprSgahdFMOO5nhIBD/UpOGaxCXRkyfTB4i9mQCbPGp9jd41bK3MQG
- cHDmnvLf92vMsiZiPSdySlAhp9b/eabOPIfTr/+NP0BjGwmDU8lsupNFbvP4Vt9wNm8G
- MMMxk6LzqPRTJW1rQki711ikpPVPvy9Uj7OyWwYlhp2H7bxdquNLDpb+inWOGi4F6a8Z
- I3dsVj8eMoHk7I5SkOkwTUFl43bcNVU1iKI3YZkP969wxr9y6pzrHAAlbLcPim6grrNl
- BUTA==
+ d=linaro.org; s=google; t=1706888417; x=1707493217; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wn5GjeSfLpdancttFflyj3wiQ0WnOWkvXBBOTXvGHyw=;
+ b=YfvvMhNPq3HMb8au3MlZCpaGtP3Qhts/LqPrBZLoNTWuGVP83luMDHiGE8CHEgpF51
+ 2KxA7qH1pXLIGnLDC8qJi16rXo9X72y1TAR864uH672Uh5+w1aEhqCscruqVg1fmxAoe
+ y+hnYiuPPrMbfN5rCqxIon6uixMY1TbUTHa8QLjMCQb2hBvlotEwaL39+RVYpUcedJXB
+ mlzU/0lCPF8r5m/A7gkASbh3NxSB9sdsQohcRFhuS9G9lwas78tpoUb8JTjCIHqMNbB7
+ M2W38coobUQE9DW6JONdacDhtBORSwlP0wse0zpiFGdy6ISiKwLhN0WXEW6ED6gN/3sW
+ h0DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888215; x=1707493015;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=e6ecdA6XprRoNkA0wb02c6VKGclESqrERe4VSdnbqBk=;
- b=ju3XJfONWi/Om/Xb7+Acgqx/nVUoJXNhDBKSLcwNkdz2DmamKYIb5Q0KZYGs+jmjn1
- G1cZSMibxGWclkouOc2hFmEXDMTinGCtDwrDcFa1LsN5eYCgkq9M4sXii0CBRqtxqyAZ
- dbN+oDXofXF5x7jwvqZHdri+jETd4c5dJ1vdVNum5U4UMGZLVcjoDZjYlRXfWMz7XXPg
- AlxjmwX5JAwhSzskFNhtJhmiiNGGjulPg/Ivdm8Xwn6fs6NolidEJeRlOc5xKtRhsz5+
- kW+cwrsOBQCTjQXMmkknAIP0hDG3wfw1Vuph8WiKWw4HfyxnhbIBTEgVc82V2hgRVyuz
- lS2g==
-X-Gm-Message-State: AOJu0YzKjX/z3I+DfGozMFwBItN82n4K6ludfAu6fciV1jv13V9DEQz7
- qeWICQKJpn9yAXipJLnQlhfhkV5S/+EcqQILX798/nvJ+B6b6u6P9lx/LX22cdeARnjqKwRgfgx
- R
-X-Google-Smtp-Source: AGHT+IHavksK5pw5zPNT6iQaJcvadijdzn84/FbwsSXNS9NyNYmaZRrpENdNaueSB0IXmxYtChtJww==
-X-Received: by 2002:a19:6912:0:b0:50e:50ee:f378 with SMTP id
- e18-20020a196912000000b0050e50eef378mr1492125lfc.65.1706888215271; 
- Fri, 02 Feb 2024 07:36:55 -0800 (PST)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.54
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:55 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 36/36] hw/arm: Connect SPI Controller to BCM2835
-Date: Fri,  2 Feb 2024 15:36:37 +0000
-Message-Id: <20240202153637.3710444-37-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
-References: <20240202153637.3710444-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1706888417; x=1707493217;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wn5GjeSfLpdancttFflyj3wiQ0WnOWkvXBBOTXvGHyw=;
+ b=DSnZavwECu0/liw1zDeH9WAqeeXcsacB1a2WucDE3NDW7ZTmohXKrhGisGr8CWtcYT
+ xAF+ZKQprhYnAYoS60x/JJWxaE3Q/pQHM238Pe1QNgg2wOEK4vebJ5q+sw+wQAmHy8du
+ 4TJfBSl8dISqVv617h46TSxM6e9LgZ6Pf2/11KDHHIQbHQina+ipybThKx+5zc5M9O2h
+ a23j9hCISwKaNf2cqU74PLl+ilnv6WpGDXP5pERBZEPdROlTRIajmwv1hXX954hbw7Pf
+ NC9+oH/MAHXWLdJlFInuF+p04siV6p3blvz/RXXhAHVeMSrculwWqWncmVduebKvlROL
+ 2BCQ==
+X-Gm-Message-State: AOJu0Yxvovs48apLnmMZS9qI4Rj+MTh8+EqsL432hTQXpF9W7m+DFDqz
+ KodEb3wuy4SiTlCfD5agxI+wU55E+b9tliMhrfm0kMF3xcQF5A2p2zBRv3RQzBZH1/jxQN1ni/T
+ F5hsEZx/sUs8cDJIub1/qbc/xjbPUo/+It/SdJQ==
+X-Google-Smtp-Source: AGHT+IHZozv/oq7kdF2HE3OMsATt7+BqvQSGhHxNAI8rcrJ96f03sYzay0QuQUuXGN6LPmj3z3JZuAOQM7+3zcq1o5c=
+X-Received: by 2002:a2e:8509:0:b0:2d0:6fb5:46b with SMTP id
+ j9-20020a2e8509000000b002d06fb5046bmr1443868lji.23.1706888416835; Fri, 02 Feb
+ 2024 07:40:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+References: <20240201164412.785520-1-dwmw2@infradead.org>
+ <CAFEAcA9-e=hzN62vkq-P575yMvjqmm1sNwNMswUDnqj1gCRmOA@mail.gmail.com>
+ <4e86dd4daebb3c15d1585ff8d7316f61f122d827.camel@infradead.org>
+In-Reply-To: <4e86dd4daebb3c15d1585ff8d7316f61f122d827.camel@infradead.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 Feb 2024 15:40:06 +0000
+Message-ID: <CAFEAcA-Xbjpg8NUWnxq7Mkz5b+aUFUTsmZspBqWQ3N9Q76xhYQ@mail.gmail.com>
+Subject: Re: [PULL 00/47] nic-config.for-upstream queue
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,98 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
+On Fri, 2 Feb 2024 at 15:36, David Woodhouse <dwmw2@infradead.org> wrote:
+>
+> On Fri, 2024-02-02 at 15:32 +0000, Peter Maydell wrote:
+> >
+> > This fails "make check' because some of the qom-test and
+> > test-hmp checks fail when the QEMU binary segfaults.
+> >
+> > https://gitlab.com/qemu-project/qemu/-/jobs/6084552256
+> > https://gitlab.com/qemu-project/qemu/-/jobs/6084044180
+>
+> Thanks.  Any idea why that didn't show up in my own pipeline?
+> https://gitlab.com/dwmw2/qemu/-/pipelines/1160949234
 
-This patch will allow the SPI controller to be accessible from BCM2835 based
-boards as SPI0. SPI driver is usually disabled by default and config.txt does
-not work.
+I think because the failing runners are the aarch64 and
+s390 host ones, which we don't let run for anything
+except real merge-pullreq test runs because they're
+limited resource. I guess that perhaps we have at some point
+said "we don't need to run all the guest architectures
+on all jobs" and not noticed that this leaves the
+coverage for the submaintainer only-uses-the-public-runners
+CI testing with gaps.
 
-Instead, dtmerge can be used to apply spi=on on a bcm2835 dtb file.
+CCing Alex and Thomas for possible suggestions.
 
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
-Message-id: 20240129221807.2983148-3-rayhan.faizel@gmail.com
-[PMM: indent tweak]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/hw/arm/bcm2835_peripherals.h |  3 ++-
- hw/arm/bcm2835_peripherals.c         | 17 ++++++++++++++++-
- hw/arm/Kconfig                       |  1 +
- 3 files changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/include/hw/arm/bcm2835_peripherals.h b/include/hw/arm/bcm2835_peripherals.h
-index d724a2fc28a..0203bb79d8c 100644
---- a/include/hw/arm/bcm2835_peripherals.h
-+++ b/include/hw/arm/bcm2835_peripherals.h
-@@ -31,6 +31,7 @@
- #include "hw/gpio/bcm2835_gpio.h"
- #include "hw/timer/bcm2835_systmr.h"
- #include "hw/usb/hcd-dwc2.h"
-+#include "hw/ssi/bcm2835_spi.h"
- #include "hw/misc/unimp.h"
- #include "qom/object.h"
- 
-@@ -66,7 +67,7 @@ struct BCM2835PeripheralState {
-     BCM2835GpioState gpio;
-     Bcm2835ThermalState thermal;
-     UnimplementedDeviceState i2s;
--    UnimplementedDeviceState spi[1];
-+    BCM2835SPIState spi[1];
-     UnimplementedDeviceState i2c[3];
-     UnimplementedDeviceState otp;
-     UnimplementedDeviceState dbus;
-diff --git a/hw/arm/bcm2835_peripherals.c b/hw/arm/bcm2835_peripherals.c
-index 0233038b957..d5573fd9545 100644
---- a/hw/arm/bcm2835_peripherals.c
-+++ b/hw/arm/bcm2835_peripherals.c
-@@ -144,6 +144,10 @@ static void bcm2835_peripherals_init(Object *obj)
-     /* Power Management */
-     object_initialize_child(obj, "powermgt", &s->powermgt,
-                             TYPE_BCM2835_POWERMGT);
-+
-+    /* SPI */
-+    object_initialize_child(obj, "bcm2835-spi0", &s->spi[0],
-+                            TYPE_BCM2835_SPI);
- }
- 
- static void bcm2835_peripherals_realize(DeviceState *dev, Error **errp)
-@@ -402,11 +406,22 @@ static void bcm2835_peripherals_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->peri_mr, PM_OFFSET,
-                 sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->powermgt), 0));
- 
-+    /* SPI */
-+    if (!sysbus_realize(SYS_BUS_DEVICE(&s->spi[0]), errp)) {
-+        return;
-+    }
-+
-+    memory_region_add_subregion(&s->peri_mr, SPI0_OFFSET,
-+                sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->spi[0]), 0));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&s->spi[0]), 0,
-+                       qdev_get_gpio_in_named(DEVICE(&s->ic),
-+                                              BCM2835_IC_GPU_IRQ,
-+                                              INTERRUPT_SPI));
-+
-     create_unimp(s, &s->txp, "bcm2835-txp", TXP_OFFSET, 0x1000);
-     create_unimp(s, &s->armtmr, "bcm2835-sp804", ARMCTRL_TIMER0_1_OFFSET, 0x40);
-     create_unimp(s, &s->i2s, "bcm2835-i2s", I2S_OFFSET, 0x100);
-     create_unimp(s, &s->smi, "bcm2835-smi", SMI_OFFSET, 0x100);
--    create_unimp(s, &s->spi[0], "bcm2835-spi0", SPI0_OFFSET, 0x20);
-     create_unimp(s, &s->bscsl, "bcm2835-spis", BSC_SL_OFFSET, 0x100);
-     create_unimp(s, &s->i2c[0], "bcm2835-i2c0", BSC0_OFFSET, 0x20);
-     create_unimp(s, &s->i2c[1], "bcm2835-i2c1", BSC1_OFFSET, 0x20);
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index db08a00a45b..980b14d58dc 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -429,6 +429,7 @@ config RASPI
-     select PL011 # UART
-     select SDHCI
-     select USB_DWC2
-+    select BCM2835_SPI
- 
- config STM32F100_SOC
-     bool
--- 
-2.34.1
-
+thanks
+-- PMM
 
