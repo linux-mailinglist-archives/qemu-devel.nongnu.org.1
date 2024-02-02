@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A500E847359
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A917F847358
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvaz-0000FT-7v; Fri, 02 Feb 2024 10:36:49 -0500
+	id 1rVvb0-0000Ge-Tw; Fri, 02 Feb 2024 10:36:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvav-0000Az-Ha
+ id 1rVvav-0000Bd-TE
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:45 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvat-0004Rt-PJ
+ id 1rVvau-0004Ry-Cz
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:45 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40ef64d8955so19934225e9.3
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40e8d3b29f2so18558905e9.1
  for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706888202; x=1707493002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zT33TDQSpbP682JXm0Djn4kZLyqr6gakrEoe9mM4ahM=;
- b=mm6mWc1L1bgPHg0tfzdhYBnDCCOQ6pKKcrpkOOryFWamXhrG2ji3uRFYEBgVKyZRfO
- 5IJEZZHtGn0fnLNJDzOReLyh1z5WM3MB5eWVbgg+h73pTrU/rPhq0f29+bWPI4LhsFmX
- cVwGFIy0hsb3o/tOPREyP8RgiyapJAY8KiySCdoUnOLq8w4Ai6Ec4eAismbDOFkTH3PT
- wQg1Y9X5HcdXBHVZU0/bAZ/dD7VGcvH+qynGRP2NHX35tKROzMkJnglanWsOFT3kqllR
- 3N+FZ6wP8hdLsTXgzHvgqZvR0HqbqJ+NxEA9zH09vemP26jOHUAhOPvlvqg7Im7bUj0j
- e3OQ==
+ :reply-to; bh=Y9n/AEkxgug8LnVgrJ59ksyGPxf9vBmtyi9ED3ze10g=;
+ b=KtFlnEfD0ebWGaD1JzH11fi3nzN0vd1hVmOnHbNaI4gCXo5KKK9Z+1MhLWW1BD15Zq
+ q4Q0xyy04horfOohhW0qEASezMBKzFZtfk7VqLwjsVhb3+gJgRNZsrWs97igWjmd2QMM
+ 5xuLxD1RrJpmguPRF5J9fE57WNTCMm44RAuTQbGLzR/HZQvRE+83DDRiPTjZBN/7mIV2
+ UIFPYGCKPO50gQY/IYRixZNIV8bAzi3JlyA1hbbyDZpSuENAWmfN1kUKYCxn560ZPfmL
+ h1TQfhAmsSqAsHTuTAom+kDob1YOSPnXHPeD8jORTDmzDPUBVEGfoONHK8GcXth1si8d
+ og/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706888202; x=1707493002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zT33TDQSpbP682JXm0Djn4kZLyqr6gakrEoe9mM4ahM=;
- b=l/8QvXLArPScobkvYXJ8IsaMZ7ev14sh7TEIuS/eRjNvKA4UG87OeCeMY9t/XK7gbE
- VOEQ0/BPL9MjXZOqa6S26OtF20nzkp3wZFaLC+Wsy6oqI9Ae1A9vfScc2pskkUBlSW9N
- rReRZibegjGZXTk1UbJfsB213T5pULpBNAKTGAk4IvdAQzRSyTytQKwby70FaZ+SFcBr
- sEVx14XR1hCmLuyoKQuv8atW2d5FWqiU651OgOLQ+kWbBa5bNQjlF0OGy/35PtYDrwyc
- f9Q85UalAntmytuSqb9IWP3fwIjhw7jvynYEqLIqG59IOT6winYP1y4zsn4JwVfVfBh9
- iH9w==
-X-Gm-Message-State: AOJu0Yym8PnOFlqPS6XfS3NbnURZIeXYH9xqQH3+DAe1iJ3+NC7FacZd
- SUW6Q+YSoRyAGbG4qc92sZhgWsicMriOERDwaWzFwzfiYIeLuEepv0oBt30pzmshi5GG+4PM1C0
- o
-X-Google-Smtp-Source: AGHT+IHjKEMfHHK6OQMK4cAorQm+MYbaCF9hw2XQyr9vYsc19vjLZWeqS0deCXcTTZs6h2GL5h+75w==
-X-Received: by 2002:a05:600c:45d1:b0:40f:b0ca:2b2d with SMTP id
- s17-20020a05600c45d100b0040fb0ca2b2dmr6271565wmo.1.1706888202323; 
+ bh=Y9n/AEkxgug8LnVgrJ59ksyGPxf9vBmtyi9ED3ze10g=;
+ b=MoZzDo8VHZKHeh87mVkKZWJFwHdV7iNERouqOMvnd6KWCnM456rTpV5pHpf0OS++A5
+ E/QOG4iLUBx29UNH45cSKfHjAHrHTsEwN37BsbyyJ4c4tjJd62nCMtPuyn5qEtsc5KjI
+ kj3AumEaB2C43Dp/NKKXu3bu+317aIGsuzw/HLoQY+z/qyGz52Dw1jeWi7ZbE7C8vZdB
+ weez693gSCFSNtHpjQc6n0KVX4epzBYJRPZMJB8biOE9AB4LGTQt+5oupcfAoIAG7QYh
+ DRHFwSrnb7x06gmELNqiw8UvwM4daJM+ph/RXJNMc4RtBU7ksgS6fX8OQq4uQnSLGI0Q
+ nuOQ==
+X-Gm-Message-State: AOJu0YyRNnBJdA9Yjs+mEjAey1gTMJ5kKIV8BZDeMN3zd3geWWfiL6Lc
+ YCcn+C4cUMO40HQLYATTlr05k+HcKipMn44TrfI10KdHhedU5a5TJnuQzryTkyJ1XawKlhUPEst
+ k
+X-Google-Smtp-Source: AGHT+IEbre5vRsT8iOCWBqioeE41PYliJhhdBjr6PNNkM+ZEkY3/+QZVnyDdRZMUFAUK/JDY96orbA==
+X-Received: by 2002:a05:600c:314a:b0:40e:7232:bdf9 with SMTP id
+ h10-20020a05600c314a00b0040e7232bdf9mr4624655wmo.16.1706888202722; 
  Fri, 02 Feb 2024 07:36:42 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.41
+ k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:41 -0800 (PST)
+ Fri, 02 Feb 2024 07:36:42 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/36] system/vl.c: Fix handling of '-serial none -serial
- something'
-Date: Fri,  2 Feb 2024 15:36:08 +0000
-Message-Id: <20240202153637.3710444-8-peter.maydell@linaro.org>
+Subject: [PULL 08/36] qemu-options.hx: Improve -serial option documentation
+Date: Fri,  2 Feb 2024 15:36:09 +0000
+Message-Id: <20240202153637.3710444-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,81 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently if the user passes multiple -serial options on the command
-line, we mostly treat those as applying to the different serial
-devices in order, so that for example
- -serial stdio -serial file:filename
-will connect the first serial port to stdio and the second to the
-named file.
+The -serial option documentation is a bit brief about '-serial none'
+and '-serial null'. In particular it's not very clear about the
+difference between them, and it doesn't mention that it's up to
+the machine model whether '-serial none' means "don't create the
+serial port" or "don't wire the serial port up to anything".
 
-The exception to this is the '-serial none' serial device type.  This
-means "don't allocate this serial device", but a bug means that
-following -serial options are not correctly handled, so that
- -serial none -serial stdio
-has the unexpected effect that stdio is connected to the first serial
-port, not the second.
+Expand on these points.
 
-This is a very long-standing bug that dates back at least as far as
-commit 998bbd74b9d81 from 2009.
-
-Make the 'none' serial type move forward in the indexing of serial
-devices like all the other serial types, so that any subsequent
--serial options are correctly handled.
-
-Note that if your commandline mistakenly had a '-serial none' that
-was being overridden by a following '-serial something' option, you
-should delete the unnecessary '-serial none'.  This will give you the
-same behaviour as before, on QEMU versions both with and without this
-bug fix.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Bohdan Kostiv <bohdan.kostiv@tii.ae>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240122163607.459769-2-peter.maydell@linaro.org
-Fixes: 998bbd74b9d81 ("default devices: core code & serial lines")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240122163607.459769-3-peter.maydell@linaro.org
 ---
- system/vl.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ qemu-options.hx | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 60fd1e56b6b..bb959cbc440 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1439,18 +1439,22 @@ static void qemu_create_default_devices(void)
- static int serial_parse(const char *devname)
- {
-     int index = num_serial_hds;
--    char label[32];
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 484cc21c1fd..40e938c4877 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -4129,7 +4129,8 @@ SRST
+     This option can be used several times to simulate up to 4 serial
+     ports.
  
--    if (strcmp(devname, "none") == 0)
--        return 0;
--    snprintf(label, sizeof(label), "serial%d", index);
-     serial_hds = g_renew(Chardev *, serial_hds, index + 1);
+-    Use ``-serial none`` to disable all serial ports.
++    You can use ``-serial none`` to suppress the creation of default
++    serial devices.
  
--    serial_hds[index] = qemu_chr_new_mux_mon(label, devname, NULL);
--    if (!serial_hds[index]) {
--        error_report("could not connect serial device"
--                     " to character backend '%s'", devname);
--        return -1;
-+    if (strcmp(devname, "none") == 0) {
-+        /* Don't allocate a serial device for this index */
-+        serial_hds[index] = NULL;
-+    } else {
-+        char label[32];
-+        snprintf(label, sizeof(label), "serial%d", index);
-+
-+        serial_hds[index] = qemu_chr_new_mux_mon(label, devname, NULL);
-+        if (!serial_hds[index]) {
-+            error_report("could not connect serial device"
-+                         " to character backend '%s'", devname);
-+            return -1;
-+        }
-     }
-     num_serial_hds++;
-     return 0;
+     Available character devices are:
+ 
+@@ -4151,10 +4152,17 @@ SRST
+         [Linux only] Pseudo TTY (a new PTY is automatically allocated)
+ 
+     ``none``
+-        No device is allocated.
++        No device is allocated. Note that for machine types which
++        emulate systems where a serial device is always present in
++        real hardware, this may be equivalent to the ``null`` option,
++        in that the serial device is still present but all output
++        is discarded. For boards where the number of serial ports is
++        truly variable, this suppresses the creation of the device.
+ 
+     ``null``
+-        void device
++        A guest will see the UART or serial device as present in the
++        machine, but all output is discarded, and there is no input.
++        Conceptually equivalent to redirecting the output to ``/dev/null``.
+ 
+     ``chardev:id``
+         Use a named character device defined with the ``-chardev``
 -- 
 2.34.1
 
