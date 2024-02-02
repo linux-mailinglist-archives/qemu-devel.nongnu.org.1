@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA950846DF5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:31:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531C0846DFD
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:32:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVqpS-0002ok-MQ; Fri, 02 Feb 2024 05:31:26 -0500
+	id 1rVqpw-0003nv-S7; Fri, 02 Feb 2024 05:31:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqpH-0002Nz-HI
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:31:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqpU-0003GI-VY
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:31:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqpF-00022f-1O
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:31:14 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqpJ-00022p-1C
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:31:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706869872;
+ s=mimecast20190719; t=1706869876;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=az32UV8VrqPke7SS/YPfcmNKt+JQAFwDg1s4v7TUxsQ=;
- b=aewlZBTyofevG2p46v9b+L+b8KDNDS1DREiME5DlvdI3sx/anu2iHx8CmrNAAnuWlOpOoc
- yVO2LHMif2yCJDbrJllF7gO43dH4tLRZBYhxVm59XVDaq7zzp77WZ7LQHfDK4y6AYxDB4U
- e4tqALnTSB29T0cSjuWeA5iNzRwJNpU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-M2If6aGKPPaOBzIoR_GTpQ-1; Fri,
- 02 Feb 2024 05:31:09 -0500
-X-MC-Unique: M2If6aGKPPaOBzIoR_GTpQ-1
+ bh=CbWhraHYG7bp+m3rSnby9URLY7zcB1qtBbP2QwE9kHI=;
+ b=f4BF8SghhyKtx7dPdBKxGxcAI8ojue6PRSTi7WfFZayGMjz67yhZINyqTcG1AflMciepO0
+ Q4a3fTSQ2Mz/b5tvRS3SUW1kXZ4GibBg9okFEjnd41fC/7sXrHBx+FWN4h252pFfIqOIaf
+ DZcgpwOXZu4ZTq1qffzTl/I3FBLfhqk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-323-kOOOh0iGMpGsbeVmteh_wQ-1; Fri, 02 Feb 2024 05:31:14 -0500
+X-MC-Unique: kOOOh0iGMpGsbeVmteh_wQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C84173869154;
- Fri,  2 Feb 2024 10:31:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D151185A780;
+ Fri,  2 Feb 2024 10:31:13 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C65EB40C95AD;
- Fri,  2 Feb 2024 10:31:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 985A7400D783;
+ Fri,  2 Feb 2024 10:31:09 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>,
  Bryan Zhang <bryan.zhang@bytedance.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Yuan Liu <yuan1.liu@intel.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 22/23] migration/multifd: Fix MultiFDSendParams.packet_num
- race
-Date: Fri,  2 Feb 2024 18:28:56 +0800
-Message-ID: <20240202102857.110210-23-peterx@redhat.com>
+Subject: [PATCH v2 23/23] migration/multifd: Optimize sender side to be
+ lockless
+Date: Fri,  2 Feb 2024 18:28:57 +0800
+Message-ID: <20240202102857.110210-24-peterx@redhat.com>
 In-Reply-To: <20240202102857.110210-1-peterx@redhat.com>
 References: <20240202102857.110210-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.292,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,159 +82,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-As reported correctly by Fabiano [1], MultiFDSendParams.packet_num is buggy
-to be assigned and stored.  Consider two consequent operations of: (1)
-queue a job into multifd send thread X, then (2) queue another sync request
-to the same send thread X.  Then the MultiFDSendParams.packet_num will be
-assigned twice, and the first assignment can get lost already.
+When reviewing my attempt to refactor send_prepare(), Fabiano suggested we
+try out with dropping the mutex in multifd code [1].
 
-To avoid that, we move the packet_num assignment from p->packet_num into
-where the thread will fill in the packet.  Use atomic operations to protect
-the field, making sure there's no race.
+I thought about that before but I never tried to change the code.  Now
+maybe it's time to give it a stab.  This only optimizes the sender side.
 
-Note that atomic fetch_add() may not be good for scaling purposes, however
-multifd should be fine as number of threads should normally not go beyond
-16 threads.  Let's leave that concern for later but fix the issue first.
+The trick here is multifd has a clear provider/consumer model, that the
+migration main thread publishes requests (either pending_job/pending_sync),
+while the multifd sender threads are consumers.  Here we don't have a lot
+of comlicated data sharing, and the jobs can logically be submitted lockless.
 
-There's also a trick on how to make it always work even on 32 bit hosts for
-uint64_t packet number.  Switching to uintptr_t as of now to simply the
-case.  It will cause packet number to overflow easier on 32 bit, but that
-shouldn't be a major concern for now as 32 bit systems is not the major
-audience for any performance concerns like what multifd wants to address.
+Arm the code with atomic weapons.  Two things worth mentioning:
 
-We also need to move multifd_send_state definition upper, so that
-multifd_send_fill_packet() can reference it.
+  - For multifd_send_pages(): we can use qatomic_load_acquire() when trying
+  to find a free channel, but that's expensive if we attach one ACQUIRE per
+  channel.  Instead, make it atomic_read() on the pending_job flag, but
+  merge the ACQUIRE into one single smp_mb_acquire() later.
+
+  - For pending_sync: it doesn't have any extra data required since now
+  p->flags are never touched, it should be safe to not use memory barrier.
+  That's different from pending_sync.
+
+Provide rich comments for all the lockless operations to state how they are
+paired.  With that, we can remove the mutex.
 
 [1] https://lore.kernel.org/r/87o7d1jlu5.fsf@suse.de
 
-Reported-by: Fabiano Rosas <farosas@suse.de>
+Suggested-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
  migration/multifd.h |  2 --
- migration/multifd.c | 56 +++++++++++++++++++++++++++------------------
- 2 files changed, 34 insertions(+), 24 deletions(-)
+ migration/multifd.c | 51 +++++++++++++++++++++++----------------------
+ 2 files changed, 26 insertions(+), 27 deletions(-)
 
 diff --git a/migration/multifd.h b/migration/multifd.h
-index 9b40a53cb6..98876ff94a 100644
+index 98876ff94a..78a2317263 100644
 --- a/migration/multifd.h
 +++ b/migration/multifd.h
-@@ -97,8 +97,6 @@ typedef struct {
+@@ -91,8 +91,6 @@ typedef struct {
+     /* syncs main thread and channels */
+     QemuSemaphore sem_sync;
+ 
+-    /* this mutex protects the following parameters */
+-    QemuMutex mutex;
+     /* is this channel thread running */
      bool running;
      /* multifd flags for each packet */
-     uint32_t flags;
--    /* global number of generated multifd packets */
--    uint64_t packet_num;
-     /*
-      * The sender thread has work to do if either of below boolean is set.
-      *
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 130f86a1fb..b317d57d61 100644
+index b317d57d61..ef13e2e781 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -45,6 +45,35 @@ typedef struct {
-     uint64_t unused2[4];    /* Reserved for future use */
- } __attribute__((packed)) MultiFDInit_t;
+@@ -501,19 +501,19 @@ static bool multifd_send_pages(void)
+         }
+     }
  
-+struct {
-+    MultiFDSendParams *params;
-+    /* array of pages to sent */
-+    MultiFDPages_t *pages;
-+    /*
-+     * Global number of generated multifd packets.
-+     *
-+     * Note that we used 'uintptr_t' because it'll naturally support atomic
-+     * operations on both 32bit / 64 bits hosts.  It means on 32bit systems
-+     * multifd will overflow the packet_num easier, but that should be
-+     * fine.
-+     *
-+     * Another option is to use QEMU's Stat64 then it'll be 64 bits on all
-+     * hosts, however so far it does not support atomic fetch_add() yet.
-+     * Make it easy for now.
-+     */
-+    uintptr_t packet_num;
-+    /* send channels ready */
-+    QemuSemaphore channels_ready;
-+    /*
-+     * Have we already run terminate threads.  There is a race when it
-+     * happens that we got one error while we are exiting.
-+     * We will use atomic operations.  Only valid values are 0 and 1.
-+     */
-+    int exiting;
-+    /* multifd ops */
-+    MultiFDMethods *ops;
-+} *multifd_send_state;
-+
- /* Multifd without compression */
- 
- /**
-@@ -292,13 +321,16 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
- {
-     MultiFDPacket_t *packet = p->packet;
-     MultiFDPages_t *pages = p->pages;
-+    uint64_t packet_num;
-     int i;
- 
-     packet->flags = cpu_to_be32(p->flags);
-     packet->pages_alloc = cpu_to_be32(p->pages->allocated);
-     packet->normal_pages = cpu_to_be32(pages->num);
-     packet->next_packet_size = cpu_to_be32(p->next_packet_size);
--    packet->packet_num = cpu_to_be64(p->packet_num);
-+
-+    packet_num = qatomic_fetch_inc(&multifd_send_state->packet_num);
-+    packet->packet_num = cpu_to_be64(packet_num);
- 
-     if (pages->block) {
-         strncpy(packet->ramblock, pages->block->idstr, 256);
-@@ -314,7 +346,7 @@ void multifd_send_fill_packet(MultiFDSendParams *p)
-     p->packets_sent++;
-     p->total_normal_pages += pages->num;
- 
--    trace_multifd_send(p->id, p->packet_num, pages->num, p->flags,
-+    trace_multifd_send(p->id, packet_num, pages->num, p->flags,
-                        p->next_packet_size);
- }
- 
-@@ -398,24 +430,6 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-     return 0;
- }
- 
--struct {
--    MultiFDSendParams *params;
--    /* array of pages to sent */
--    MultiFDPages_t *pages;
--    /* global number of generated multifd packets */
--    uint64_t packet_num;
--    /* send channels ready */
--    QemuSemaphore channels_ready;
--    /*
--     * Have we already run terminate threads.  There is a race when it
--     * happens that we got one error while we are exiting.
--     * We will use atomic operations.  Only valid values are 0 and 1.
--     */
--    int exiting;
--    /* multifd ops */
--    MultiFDMethods *ops;
--} *multifd_send_state;
--
- static bool multifd_send_should_exit(void)
- {
-     return qatomic_read(&multifd_send_state->exiting);
-@@ -497,7 +511,6 @@ static bool multifd_send_pages(void)
+-    qemu_mutex_lock(&p->mutex);
+-    assert(!p->pages->num);
+-    assert(!p->pages->block);
+     /*
+-     * Double check on pending_job==false with the lock.  In the future if
+-     * we can have >1 requester thread, we can replace this with a "goto
+-     * retry", but that is for later.
++     * Make sure we read p->pending_job before all the rest.  Pairs with
++     * qatomic_store_release() in multifd_send_thread().
       */
-     assert(qatomic_read(&p->pending_job) == false);
-     qatomic_set(&p->pending_job, true);
--    p->packet_num = multifd_send_state->packet_num++;
+-    assert(qatomic_read(&p->pending_job) == false);
+-    qatomic_set(&p->pending_job, true);
++    smp_mb_acquire();
++    assert(!p->pages->num);
      multifd_send_state->pages = p->pages;
      p->pages = pages;
-     qemu_mutex_unlock(&p->mutex);
-@@ -730,7 +743,6 @@ int multifd_send_sync_main(void)
+-    qemu_mutex_unlock(&p->mutex);
++    /*
++     * Making sure p->pages is setup before marking pending_job=true. Pairs
++     * with the qatomic_load_acquire() in multifd_send_thread().
++     */
++    qatomic_store_release(&p->pending_job, true);
+     qemu_sem_post(&p->sem);
+ 
+     return true;
+@@ -648,7 +648,6 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
+     }
+     multifd_send_channel_destroy(p->c);
+     p->c = NULL;
+-    qemu_mutex_destroy(&p->mutex);
+     qemu_sem_destroy(&p->sem);
+     qemu_sem_destroy(&p->sem_sync);
+     g_free(p->name);
+@@ -742,14 +741,12 @@ int multifd_send_sync_main(void)
+ 
          trace_multifd_send_sync_main_signal(p->id);
  
-         qemu_mutex_lock(&p->mutex);
--        p->packet_num = multifd_send_state->packet_num++;
+-        qemu_mutex_lock(&p->mutex);
          /*
           * We should be the only user so far, so not possible to be set by
           * others concurrently.
+          */
+         assert(qatomic_read(&p->pending_sync) == false);
+         qatomic_set(&p->pending_sync, true);
+-        qemu_mutex_unlock(&p->mutex);
+         qemu_sem_post(&p->sem);
+     }
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+@@ -796,9 +793,12 @@ static void *multifd_send_thread(void *opaque)
+         if (multifd_send_should_exit()) {
+             break;
+         }
+-        qemu_mutex_lock(&p->mutex);
+ 
+-        if (qatomic_read(&p->pending_job)) {
++        /*
++         * Read pending_job flag before p->pages.  Pairs with the
++         * qatomic_store_release() in multifd_send_pages().
++         */
++        if (qatomic_load_acquire(&p->pending_job)) {
+             MultiFDPages_t *pages = p->pages;
+ 
+             p->iovs_num = 0;
+@@ -806,14 +806,12 @@ static void *multifd_send_thread(void *opaque)
+ 
+             ret = multifd_send_state->ops->send_prepare(p, &local_err);
+             if (ret != 0) {
+-                qemu_mutex_unlock(&p->mutex);
+                 break;
+             }
+ 
+             ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
+                                               0, p->write_flags, &local_err);
+             if (ret != 0) {
+-                qemu_mutex_unlock(&p->mutex);
+                 break;
+             }
+ 
+@@ -822,24 +820,31 @@ static void *multifd_send_thread(void *opaque)
+ 
+             multifd_pages_reset(p->pages);
+             p->next_packet_size = 0;
+-            qatomic_set(&p->pending_job, false);
+-            qemu_mutex_unlock(&p->mutex);
++
++            /*
++             * Making sure p->pages is published before saying "we're
++             * free".  Pairs with the qatomic_load_acquire() in
++             * multifd_send_pages().
++             */
++            qatomic_store_release(&p->pending_job, false);
+         } else {
+-            /* If not a normal job, must be a sync request */
++            /*
++             * If not a normal job, must be a sync request.  Note that
++             * pending_sync is a standalone flag (unlike pending_job), so
++             * it doesn't require explicit memory barriers.
++             */
+             assert(qatomic_read(&p->pending_sync));
+             p->flags = MULTIFD_FLAG_SYNC;
+             multifd_send_fill_packet(p);
+             ret = qio_channel_write_all(p->c, (void *)p->packet,
+                                         p->packet_len, &local_err);
+             if (ret != 0) {
+-                qemu_mutex_unlock(&p->mutex);
+                 break;
+             }
+             /* p->next_packet_size will always be zero for a SYNC packet */
+             stat64_add(&mig_stats.multifd_bytes, p->packet_len);
+             p->flags = 0;
+             qatomic_set(&p->pending_sync, false);
+-            qemu_mutex_unlock(&p->mutex);
+             qemu_sem_post(&p->sem_sync);
+         }
+     }
+@@ -853,10 +858,7 @@ out:
+         error_free(local_err);
+     }
+ 
+-    qemu_mutex_lock(&p->mutex);
+     p->running = false;
+-    qemu_mutex_unlock(&p->mutex);
+-
+     rcu_unregister_thread();
+     migration_threads_remove(thread);
+     trace_multifd_send_thread_end(p->id, p->packets_sent, p->total_normal_pages);
+@@ -998,7 +1000,6 @@ int multifd_send_setup(Error **errp)
+     for (i = 0; i < thread_count; i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
+-        qemu_mutex_init(&p->mutex);
+         qemu_sem_init(&p->sem, 0);
+         qemu_sem_init(&p->sem_sync, 0);
+         p->id = i;
 -- 
 2.43.0
 
