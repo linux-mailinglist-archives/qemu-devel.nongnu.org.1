@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B488467BB
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116FE8467B7
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmT6-0002zw-TP; Fri, 02 Feb 2024 00:52:04 -0500
+	id 1rVmTW-0003Wt-OF; Fri, 02 Feb 2024 00:52:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmT3-0002ks-Um
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:01 -0500
+ id 1rVmTG-000389-Bv
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:14 -0500
 Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmT2-00028J-4q
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:01 -0500
+ id 1rVmT4-00028v-5S
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:52:10 -0500
 Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6ddc1fad6ddso1462886b3a.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:59 -0800 (PST)
+ d2e1a72fcca58-6de0ba30994so344593b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:52:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853119; x=1707457919; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853121; x=1707457921; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UsEJ2g0LpvdUYy2sbV8u3yNlPUAlmvtjJu3b7/RUdbU=;
- b=sa/jom/Sl1nEyGR/1Rqq05zFugo2ObJAduqWhzQ5401X8H5UM7Zmslfy1T1HMw9HE3
- MD+655gITkh3ZePcTUY8aMAx9WvUv3xXt7OfDDh0vk/vH5/PTNgBbDqn/+I1hSu8vN5r
- e832zS9tvNyPRs93YuAj0WrA/VWAim2dZo9eQaAUkEJK2/QzMQQpPdazuFxph5n+7r+O
- 5dY1Rb8ujo6FDd6TqL6n79EyZMPmZwnSfgygnfjzOKXGtM5O81xgOZn6aQL5kUJY2wC4
- IUIOMfcKLpiqVJlXx6FeBA+fEmgs53P4qPBksjZTlqIukwzd5gs0bhf9AK7ufptTQlsO
- p+Nw==
+ bh=wxeXPbX6hjz+X/sMPb06TGA1YfBXK5OBxElnE5+fhQk=;
+ b=aTTRVFbtUh3abWgsKDMitp0GxcizuJ3r723wzdPOlQNPXkyTsy2QN0eBK7O9XF3tou
+ H4++dgQDLZ2Yk5j8/z2+I0aSGjRBAugyPz9D3QeepnnXw6wQohQ3eGffautB65KXm0Gd
+ RG6fValmWdFYP/wgxGLNNaYk19KZctv/atXAn102lBZV4CdQ9UrPEYDV4NUhNdkH7xc5
+ 0vsRsuYsbQ9R0J8Fnw9Zb+GT/HcZ2LEGHMbTP69uNqz1ZKQg6Jmf8BYcIZkiTGn8g4Da
+ mIT4ZXmeVNDIIOtwjyHlHUSruLVKRGnv/B7bYNa/kraAWX1bIwenD/ax6GymwOiVFcGA
+ OSmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853119; x=1707457919;
+ d=1e100.net; s=20230601; t=1706853121; x=1707457921;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UsEJ2g0LpvdUYy2sbV8u3yNlPUAlmvtjJu3b7/RUdbU=;
- b=b1CqAcZlCQMsEhMRYRBwg1U8o7+JKmI/UxLYH90t6poe5oGL6k6yl4trBXit2ZzO82
- 9XzguV3zASa/SyiL/DYZwBZ7jkthgFXsKkEQBzNBONt4S/ZH2TjRjENyzrQVKIDCL1ed
- 5QckRaVS3/b1jta68b0IAyPs1rHzjs2zCHMquTSwCZ2MIXW11GTW9XAmDJg3gyLNH31K
- W0jAECHBOvHr1upfOrETAKz2uIyZc3ksDQhHggeXi+UkivfmdGYIULukahH1g5gjhWXw
- yZWtdC/3Br4+43Jo2e5KsT0qypUlrQDMg5jq9PW3ZtHFSdO8kvj0dgUCvsGq8bmroAA+
- y3eQ==
-X-Gm-Message-State: AOJu0Yw1Jqk8YkUSYprtZw6yidLa770W47XMx2YRIhGeRuJyw4Xy9FwB
- LLAzJYFJ3koKihrh8dSLBqfYcUIa0QCU+2VDCVM4eHh7PuoZCVkWM2P3VoF9eYLxgQfC2g+b5P3
- HTHw=
-X-Google-Smtp-Source: AGHT+IGVWnMN0S7UWXe2NedOWawYsbLtQSlXWXKbcT6d7BLH7/obx2ckMvkk8sIqAFBbgnzGyz45gA==
-X-Received: by 2002:a05:6a00:3cc9:b0:6dd:b12f:12ef with SMTP id
- ln9-20020a056a003cc900b006ddb12f12efmr5751673pfb.1.1706853118840; 
- Thu, 01 Feb 2024 21:51:58 -0800 (PST)
+ bh=wxeXPbX6hjz+X/sMPb06TGA1YfBXK5OBxElnE5+fhQk=;
+ b=iFtCvtLnK2J3ftFL9F400Goyg78CqhVnzjELs8inSbLK0x254FNpcjGgFWBxtdXha1
+ z2pf0WBiy+5IlJkol9E3Ssx+j69Acq6JPNe8VXRmRl9nv001LMb+pRaoeNAsfPwjYepY
+ jHO/UXgx2fgHTNit5gueyFqHMeM3rwrCuaZtyStDmmcYj+wnX+NXZzrob1igWCr4cfB1
+ t5EcyvhfNb9QoJM9f23ksWCdarq29UUR33FS/ICzTi15tAWmPhhufEtMwXmo+rRG1wO7
+ dBcMzGAwIJnZwipLNlRnQeLA6rjRYqDbKXt0WHeK7C1LRqzTmG6ny8+QHOQW9uLk1+HW
+ lUyg==
+X-Gm-Message-State: AOJu0YyA5WX+LrJoowOIdW2P4JBqJVI3Vl7qUYzewvpdmznniHQYpVlq
+ lgOoUOArOnbLp8xGuEbAivX3k7xxXV2xB5f1i9iXwfzYWKBNecR0gwCTUJZAKBqXx4J2WlyQGlM
+ pPTA=
+X-Google-Smtp-Source: AGHT+IEo3AxLlqY/rOQUXGn/vh1xXLquTT+qBhXvXMs839/3HUI8pICyiWIXLbF0zzVFRQvnnQFjqg==
+X-Received: by 2002:a05:6a00:3cc8:b0:6dd:c5c2:3536 with SMTP id
+ ln8-20020a056a003cc800b006ddc5c23536mr2073286pfb.2.1706853120866; 
+ Thu, 01 Feb 2024 21:52:00 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.57
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:58 -0800 (PST)
+ Thu, 01 Feb 2024 21:52:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 36/57] target/sparc: Use tcg_gen_qemu_{ld,
- st}_i128 for ASI_M_BCOPY
-Date: Fri,  2 Feb 2024 15:50:15 +1000
-Message-Id: <20240202055036.684176-38-richard.henderson@linaro.org>
+Subject: [PULL 37/57] target/sparc: Use tcg_gen_qemu_{ld,
+ st}_i128 for ASI_M_BFILL
+Date: Fri,  2 Feb 2024 15:50:16 +1000
+Message-Id: <20240202055036.684176-39-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
@@ -93,71 +93,55 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Align the operation to the 32-byte cacheline.
-Use 2 pair of i128 instead of 8 pair of i32.
+Use 2 i128 instead of 4 i64.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Tested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20231103173841.33651-2-richard.henderson@linaro.org>
+Message-Id: <20231103173841.33651-3-richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 43 +++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ target/sparc/translate.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 97184fa403..1082aabc14 100644
+index 1082aabc14..3a59262c9a 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -1727,28 +1727,35 @@ static void gen_st_asi(DisasContext *dc, DisasASI *da, TCGv src, TCGv addr)
+@@ -2172,23 +2172,22 @@ static void gen_stda_asi(DisasContext *dc, DisasASI *da, TCGv addr, int rd)
  
-     case GET_ASI_BCOPY:
+     case GET_ASI_BFILL:
          assert(TARGET_LONG_BITS == 32);
--        /* Copy 32 bytes from the address in SRC to ADDR.  */
--        /* ??? The original qemu code suggests 4-byte alignment, dropping
+-        /* Store 32 bytes of T64 to ADDR.  */
+-        /* ??? The original qemu code suggests 8-byte alignment, dropping
 -           the low bits, but the only place I can see this used is in the
 -           Linux kernel with 32 byte alignment, which would make more sense
 -           as a cacheline-style operation.  */
 +        /*
-+         * Copy 32 bytes from the address in SRC to ADDR.
-+         *
-+         * From Ross RT625 hyperSPARC manual, section 4.6:
-+         * "Block Copy and Block Fill will work only on cache line boundaries."
-+         *
-+         * It does not specify if an unaliged address is truncated or trapped.
-+         * Previous qemu behaviour was to truncate to 4 byte alignment, which
-+         * is obviously wrong.  The only place I can see this used is in the
-+         * Linux kernel which begins with page alignment, advancing by 32,
-+         * so is always aligned.  Assume truncation as the simpler option.
-+         *
-+         * Since the loads and stores are paired, allow the copy to happen
-+         * in the host endianness.  The copy need not be atomic.
++         * Store 32 bytes of [rd:rd+1] to ADDR.
++         * See comments for GET_ASI_COPY above.
 +         */
          {
-+            MemOp mop = MO_128 | MO_ATOM_IFALIGN_PAIR;
-             TCGv saddr = tcg_temp_new();
-             TCGv daddr = tcg_temp_new();
--            TCGv four = tcg_constant_tl(4);
--            TCGv_i32 tmp = tcg_temp_new_i32();
+-            TCGv_i64 t64 = tcg_temp_new_i64();
+-            TCGv d_addr = tcg_temp_new();
+-            TCGv eight = tcg_constant_tl(8);
 -            int i;
-+            TCGv_i128 tmp = tcg_temp_new_i128();
++            MemOp mop = MO_TE | MO_128 | MO_ATOM_IFALIGN_PAIR;
++            TCGv_i64 t8 = tcg_temp_new_i64();
++            TCGv_i128 t16 = tcg_temp_new_i128();
++            TCGv daddr = tcg_temp_new();
  
--            tcg_gen_andi_tl(saddr, src, -4);
--            tcg_gen_andi_tl(daddr, addr, -4);
--            for (i = 0; i < 32; i += 4) {
--                /* Since the loads and stores are paired, allow the
--                   copy to happen in the host endianness.  */
--                tcg_gen_qemu_ld_i32(tmp, saddr, da->mem_idx, MO_UL);
--                tcg_gen_qemu_st_i32(tmp, daddr, da->mem_idx, MO_UL);
--                tcg_gen_add_tl(saddr, saddr, four);
--                tcg_gen_add_tl(daddr, daddr, four);
+-            tcg_gen_concat_tl_i64(t64, lo, hi);
+-            tcg_gen_andi_tl(d_addr, addr, -8);
+-            for (i = 0; i < 32; i += 8) {
+-                tcg_gen_qemu_st_i64(t64, d_addr, da->mem_idx, da->memop);
+-                tcg_gen_add_tl(d_addr, d_addr, eight);
 -            }
-+            tcg_gen_andi_tl(saddr, src, -32);
++            tcg_gen_concat_tl_i64(t8, lo, hi);
++            tcg_gen_concat_i64_i128(t16, t8, t8);
 +            tcg_gen_andi_tl(daddr, addr, -32);
-+            tcg_gen_qemu_ld_i128(tmp, saddr, da->mem_idx, mop);
-+            tcg_gen_qemu_st_i128(tmp, daddr, da->mem_idx, mop);
-+            tcg_gen_addi_tl(saddr, saddr, 16);
++            tcg_gen_qemu_st_i128(t16, daddr, da->mem_idx, mop);
 +            tcg_gen_addi_tl(daddr, daddr, 16);
-+            tcg_gen_qemu_ld_i128(tmp, saddr, da->mem_idx, mop);
-+            tcg_gen_qemu_st_i128(tmp, daddr, da->mem_idx, mop);
++            tcg_gen_qemu_st_i128(t16, daddr, da->mem_idx, mop);
          }
          break;
  
