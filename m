@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AE68467C1
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:58:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4238467B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmS1-000196-Ne; Fri, 02 Feb 2024 00:50:57 -0500
+	id 1rVmS3-00019i-Iq; Fri, 02 Feb 2024 00:50:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmS0-00017w-0u
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:56 -0500
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1rVmS1-00019N-Rr
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:57 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRy-0001dU-IF
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:55 -0500
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3bbbc6bcc78so1205110b6e.1
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:53 -0800 (PST)
+ id 1rVmS0-0001e5-Dd
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:57 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-53fbf2c42bfso1404574a12.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853053; x=1707457853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853055; x=1707457855; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vAFj9xK8iYl2K7L1Y8DNUJSyua1dAxxrWDyOxstfeWU=;
- b=VJk2m61Vp9CO1VTeGJGFjs0BMu41c1fLQfT7zk0XQX9/OyakPNwH/RN1/IwL32E3VO
- zFQlyVz95J6tdOtfZ+ogF6Wgg9613r/aas+/OVXQJvsvTngTM8M601pEFSQ7LTLzei7w
- Xx7n+Ugvi5BV/AmErY4WvUMbrpLQ6IAx/knW61AheoHz1nPZJfpkDsUxSkL/fQIJnIOF
- YkzgS5kOD20oq4Li2FYXIuhPhjAEzARYv3oFOp8FZj9PymAzmnEjOtdS9mOgLKLvg9Wp
- GCsGS6tDmExJ2W9QiRsXu079kt2Okrfraol685wBXvXTtbw9C+VYGNX321DjsNyZa/mY
- INeQ==
+ bh=Yw2P2PO5VlSnBjLMn3wVhUzylUVudEj93tNb1F3kdv4=;
+ b=pX4WnSb6Uv0oECWgI4HaxBazN6LiMv9a1dufowbwDmp2NJJwhraUeBooeWpmVb+kAy
+ p0Cq5WBoNQCKhSEHehxDgEmubMBbxLZq4l/U+po3W4+KNvg70YFIDxdd5yjcJciN+KP8
+ 1c5KcBqi5ttie4rF57K+8c+c1MjcLlH2XZFUza/YSI7N//G9xh3+0GUsRGONjRHdzY6I
+ GUTqQovrzAMFCfvfyFhrgBvW3v00XvYZkJOCL5sW9RYpPMlOqfm8O9ZjmYYuq6ASCYw1
+ D89Nuo+NJNTcl7ruoH6q1p0rn4e6qYLQnUnz8sAyqv7pfXHQPOQaDD+p3zADxNXAIXKz
+ 6dLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853053; x=1707457853;
+ d=1e100.net; s=20230601; t=1706853055; x=1707457855;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vAFj9xK8iYl2K7L1Y8DNUJSyua1dAxxrWDyOxstfeWU=;
- b=uXK8tSd8/zZCR8SznAClCATlOID3+C94NBRrScHGvbSaT6cSFG5Saf81Wvy+AKB8qF
- SNpkA50TyUauc5pW+YV9cn0vOeR/0oQ4j9ddgLYCP2Zwkl5JmpZx2uAyibzevva8oBXr
- r20eY6OyyV/PjdykRGVOr90fypFiGG9EoVHv0HyIoERrojonDGTHCV1L+4Keew8hxNbe
- lQH4M/HEh4M3snnwanblkUsjKKw7wz9B+uvSLSauvCCEl22XM8/uJZDgvQP8lcZ2xXCW
- I4tiT/9mkrgYCKDQhuFptdg1k/J2viglxepu3ljZBXKt5Z3qKcSccBo2He+hHIoDW7r8
- 2pyA==
-X-Gm-Message-State: AOJu0YwCJHFDIuMQBJMSQ1uIkulJZJYz4YYks9VrqiZJ8Js44F+hyCsp
- WEUohOSYI42GkXXXXrDUlw7K4ASIx02arQMUIvQit4m7hPz/SGfzG6LOx/GgvJ/uVsyq3UZqPOX
- WSco=
-X-Google-Smtp-Source: AGHT+IHsf3chNcFWm0+gSeZcQCRuT75UVkB4SfmiS52SbMpSobfsimQOJkmmvxB6z2y1hKIJOcJF3Q==
-X-Received: by 2002:a05:6808:14d6:b0:3bf:c3bf:ffcb with SMTP id
- f22-20020a05680814d600b003bfc3bfffcbmr50321oiw.46.1706853053172; 
- Thu, 01 Feb 2024 21:50:53 -0800 (PST)
+ bh=Yw2P2PO5VlSnBjLMn3wVhUzylUVudEj93tNb1F3kdv4=;
+ b=c03chpBQT+5wZeC99p+vs82o5pqcXxAznPuNuDG83XQF1FYQnzvfp5fCZWXUWiSG3y
+ D0r0+mImxhuRNfoe/he4u8kdglNZnkuhQIz3ODiDD03wkv4dukWOIszcmjzGwykpxoyI
+ FxYE3JG2bysxBaQyusMul/7cC+uESBYYtqTmc4H5DUqB2+C1ph1JLJOrEhD2XWbq7Cxe
+ m+7zFtxrMWgByi6zxTTYPc1KBpzYp/zEsqhfFZePWxXoxcgKlpfFpzk9BsDIyvjdDiX4
+ kdFuDkTn4gZ2vDcwMB8ojzdwdFgbpSdegOYFOAew0q/+6yltPLhHzH3VFgMuCIcurox6
+ PbLw==
+X-Gm-Message-State: AOJu0YzIRIgs6V7f37ZBGDBReosNGxcSNjI1I8K9lkmCPPE5OxLGfBVE
+ 9OoR0rzaJ4d98R9/2y6ShRUbiL4IH7PYrU6o0aojJNC+iXgucQ/R/Gi4LCaS3I15bbX40c8Bb8h
+ WdB0=
+X-Google-Smtp-Source: AGHT+IEmi7bqO5BtyUgH0b09kOqLL5QNdC3uwyMB8SjraD1jYMWz/A7KqVPZ5qWyTSJsbZImYC3SJQ==
+X-Received: by 2002:a05:6a20:dda2:b0:19c:9af5:a472 with SMTP id
+ kw34-20020a056a20dda200b0019c9af5a472mr4862414pzb.62.1706853055179; 
+ Thu, 01 Feb 2024 21:50:55 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.51
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:50:52 -0800 (PST)
+ Thu, 01 Feb 2024 21:50:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/57] target/arm: Populate CPUClass.mmu_index
-Date: Fri,  2 Feb 2024 15:49:44 +1000
-Message-Id: <20240202055036.684176-7-richard.henderson@linaro.org>
+Subject: [PULL 06/57] target/avr: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:49:45 +1000
+Message-Id: <20240202055036.684176-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,33 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/avr/cpu.h | 4 +---
+ target/avr/cpu.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 6a96b245f2..1f9ea622bd 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -133,6 +133,11 @@ static bool arm_cpu_has_work(CPUState *cs)
-          | CPU_INTERRUPT_EXITTB);
+diff --git a/target/avr/cpu.h b/target/avr/cpu.h
+index 7d5dd42575..4595c6bb18 100644
+--- a/target/avr/cpu.h
++++ b/target/avr/cpu.h
+@@ -184,9 +184,7 @@ static inline void set_avr_feature(CPUAVRState *env, int feature)
+     env->features |= (1U << feature);
  }
  
-+static int arm_cpu_mmu_index(CPUState *cs, bool ifetch)
+-#define cpu_mmu_index avr_cpu_mmu_index
+-
+-static inline int avr_cpu_mmu_index(CPUAVRState *env, bool ifetch)
++static inline int cpu_mmu_index(CPUAVRState *env, bool ifetch)
+ {
+     return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
+ }
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index 1c68748b24..a40f445af2 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -50,6 +50,11 @@ static bool avr_cpu_has_work(CPUState *cs)
+             && cpu_interrupts_enabled(env);
+ }
+ 
++static int avr_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return arm_env_mmu_index(cpu_env(cs));
++    return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
 +}
 +
- void arm_register_pre_el_change_hook(ARMCPU *cpu, ARMELChangeHookFn *hook,
-                                  void *opaque)
+ static void avr_cpu_synchronize_from_tb(CPUState *cs,
+                                         const TranslationBlock *tb)
  {
-@@ -2497,6 +2502,7 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
+@@ -236,6 +241,7 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
+     cc->class_by_name = avr_cpu_class_by_name;
  
-     cc->class_by_name = arm_cpu_class_by_name;
-     cc->has_work = arm_cpu_has_work;
-+    cc->mmu_index = arm_cpu_mmu_index;
-     cc->dump_state = arm_cpu_dump_state;
-     cc->set_pc = arm_cpu_set_pc;
-     cc->get_pc = arm_cpu_get_pc;
+     cc->has_work = avr_cpu_has_work;
++    cc->mmu_index = avr_cpu_mmu_index;
+     cc->dump_state = avr_cpu_dump_state;
+     cc->set_pc = avr_cpu_set_pc;
+     cc->get_pc = avr_cpu_get_pc;
 -- 
 2.34.1
 
