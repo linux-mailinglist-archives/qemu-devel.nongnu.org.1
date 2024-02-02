@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744F3846DF4
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79235846E00
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:32:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVqp6-0001bF-2t; Fri, 02 Feb 2024 05:31:04 -0500
+	id 1rVqp5-0001VD-Bx; Fri, 02 Feb 2024 05:31:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqoy-00018j-7r
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:58 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqp1-0001Cz-3V
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqov-00020m-Ni
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:55 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqoy-00021A-M6
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706869853;
+ s=mimecast20190719; t=1706869856;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QCMu/h0Uagcfb4ObsHyaNRe66JC3h0/VZ/U7Orz2xOU=;
- b=i+7kKx3ckhTOhNzCHix+P/Q8v2shZJKPNqhrif8/bGDFbM6iTz1iInWfZWGKYK21Uca0MU
- ySc29LaTFtim5jL65oGaRgGPT4aiyOL0AjX8xm4G2ieZWG8JM1QzSNsGFUVYiaYKw7Cm/m
- smIwLFYkyXSMwQZgNCyqui3okDt9IQk=
+ bh=DVnRs6jVq1WYjkMyJMr1yedgY17NJRMJkVJ6DINU1rc=;
+ b=bV5AhrejiM5ie6sA/AkxsXv5SvG1z7soLlzIGYTxg9wkZlXvJcKGT1+lG23Yj1bIHWnFuC
+ UsMH8KqiMBblBqzOeLl0lWdS5aXvx0dvt7HjPv57byRRX77C2nDNMMrLUDWFCVaPQY16CN
+ bI/BvIDxxPHFCO7jr5Hhro4yk37bNTw=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-260-hZP7jx5fNCCqUNBLQ28FHw-1; Fri,
- 02 Feb 2024 05:30:49 -0500
-X-MC-Unique: hZP7jx5fNCCqUNBLQ28FHw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-E-G0JIS-MyW-baiX_lViog-1; Fri,
+ 02 Feb 2024 05:30:54 -0500
+X-MC-Unique: E-G0JIS-MyW-baiX_lViog-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58B973C0BE50;
- Fri,  2 Feb 2024 10:30:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4480E3C0BE50;
+ Fri,  2 Feb 2024 10:30:54 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3D5F740C9444;
- Fri,  2 Feb 2024 10:30:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 291D640C9444;
+ Fri,  2 Feb 2024 10:30:49 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>,
  Bryan Zhang <bryan.zhang@bytedance.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Yuan Liu <yuan1.liu@intel.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 18/23] migration/multifd: Rewrite multifd_queue_page()
-Date: Fri,  2 Feb 2024 18:28:52 +0800
-Message-ID: <20240202102857.110210-19-peterx@redhat.com>
+Subject: [PATCH v2 19/23] migration/multifd: Cleanup multifd_save_cleanup()
+Date: Fri,  2 Feb 2024 18:28:53 +0800
+Message-ID: <20240202102857.110210-20-peterx@redhat.com>
 In-Reply-To: <20240202102857.110210-1-peterx@redhat.com>
 References: <20240202102857.110210-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -82,105 +82,152 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-The current multifd_queue_page() is not easy to read and follow.  It is not
-good with a few reasons:
+Shrink the function by moving relevant works into helpers: move the thread
+join()s into multifd_send_terminate_threads(), then create two more helpers
+to cover channel/state cleanups.
 
-  - No helper at all to show what exactly does a condition mean; in short,
-  readability is low.
+Add a TODO entry for the thread terminate process because p->running is
+still buggy.  We need to fix it at some point but not yet covered.
 
-  - Rely on pages->ramblock being cleared to detect an empty queue.  It's
-  slightly an overload of the ramblock pointer, per Fabiano [1], which I
-  also agree.
-
-  - Contains a self recursion, even if not necessary..
-
-Rewrite this function.  We add some comments to make it even clearer on
-what it does.
-
-[1] https://lore.kernel.org/r/87wmrpjzew.fsf@suse.de
-
+Suggested-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 56 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 19 deletions(-)
+ migration/multifd.c | 91 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 59 insertions(+), 32 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 35d4e8ad1f..4ab8e6eff2 100644
+index 4ab8e6eff2..4cb0d2cc17 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -506,35 +506,53 @@ static bool multifd_send_pages(void)
-     return true;
- }
- 
-+static inline bool multifd_queue_empty(MultiFDPages_t *pages)
-+{
-+    return pages->num == 0;
-+}
+@@ -593,6 +593,11 @@ static void multifd_send_terminate_threads(void)
+      * always set it.
+      */
+     qatomic_set(&multifd_send_state->exiting, 1);
 +
-+static inline bool multifd_queue_full(MultiFDPages_t *pages)
-+{
-+    return pages->num == pages->allocated;
-+}
-+
-+static inline void multifd_enqueue(MultiFDPages_t *pages, ram_addr_t offset)
-+{
-+    pages->offset[pages->num++] = offset;
-+}
-+
- /* Returns true if enqueue successful, false otherwise */
- bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
- {
--    MultiFDPages_t *pages = multifd_send_state->pages;
--    bool changed = false;
-+    MultiFDPages_t *pages;
-+
-+retry:
-+    pages = multifd_send_state->pages;
- 
--    if (!pages->block) {
-+    /* If the queue is empty, we can already enqueue now */
-+    if (multifd_queue_empty(pages)) {
-         pages->block = block;
-+        multifd_enqueue(pages, offset);
-+        return true;
-     }
- 
--    if (pages->block == block) {
--        pages->offset[pages->num] = offset;
--        pages->num++;
--
--        if (pages->num < pages->allocated) {
--            return true;
 +    /*
-+     * Not empty, meanwhile we need a flush.  It can because of either:
-+     *
-+     * (1) The page is not on the same ramblock of previous ones, or,
-+     * (2) The queue is full.
-+     *
-+     * After flush, always retry.
++     * Firstly, kick all threads out; no matter whether they are just idle,
++     * or blocked in an IO system call.
 +     */
-+    if (pages->block != block || multifd_queue_full(pages)) {
-+        if (!multifd_send_pages()) {
-+            return false;
-         }
--    } else {
--        changed = true;
--    }
--
--    if (!multifd_send_pages()) {
--        return false;
--    }
--
--    if (changed) {
--        return multifd_queue_page(block, offset);
-+        goto retry;
-     }
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
  
-+    /* Not empty, and we still have space, do it! */
-+    multifd_enqueue(pages, offset);
-     return true;
+@@ -601,6 +606,21 @@ static void multifd_send_terminate_threads(void)
+             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
+         }
+     }
++
++    /*
++     * Finally recycle all the threads.
++     *
++     * TODO: p->running is still buggy, e.g. we can reach here without the
++     * corresponding multifd_new_send_channel_async() get invoked yet,
++     * then a new thread can even be created after this function returns.
++     */
++    for (i = 0; i < migrate_multifd_channels(); i++) {
++        MultiFDSendParams *p = &multifd_send_state->params[i];
++
++        if (p->running) {
++            qemu_thread_join(&p->thread);
++        }
++    }
  }
  
+ static int multifd_send_channel_destroy(QIOChannel *send)
+@@ -608,6 +628,41 @@ static int multifd_send_channel_destroy(QIOChannel *send)
+     return socket_send_channel_destroy(send);
+ }
+ 
++static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
++{
++    if (p->registered_yank) {
++        migration_ioc_unregister_yank(p->c);
++    }
++    multifd_send_channel_destroy(p->c);
++    p->c = NULL;
++    qemu_mutex_destroy(&p->mutex);
++    qemu_sem_destroy(&p->sem);
++    qemu_sem_destroy(&p->sem_sync);
++    g_free(p->name);
++    p->name = NULL;
++    multifd_pages_clear(p->pages);
++    p->pages = NULL;
++    p->packet_len = 0;
++    g_free(p->packet);
++    p->packet = NULL;
++    g_free(p->iov);
++    p->iov = NULL;
++    multifd_send_state->ops->send_cleanup(p, errp);
++
++    return *errp == NULL;
++}
++
++static void multifd_send_cleanup_state(void)
++{
++    qemu_sem_destroy(&multifd_send_state->channels_ready);
++    g_free(multifd_send_state->params);
++    multifd_send_state->params = NULL;
++    multifd_pages_clear(multifd_send_state->pages);
++    multifd_send_state->pages = NULL;
++    g_free(multifd_send_state);
++    multifd_send_state = NULL;
++}
++
+ void multifd_save_cleanup(void)
+ {
+     int i;
+@@ -615,48 +670,20 @@ void multifd_save_cleanup(void)
+     if (!migrate_multifd()) {
+         return;
+     }
++
+     multifd_send_terminate_threads();
+-    for (i = 0; i < migrate_multifd_channels(); i++) {
+-        MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
+-        if (p->running) {
+-            qemu_thread_join(&p->thread);
+-        }
+-    }
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+         Error *local_err = NULL;
+ 
+-        if (p->registered_yank) {
+-            migration_ioc_unregister_yank(p->c);
+-        }
+-        multifd_send_channel_destroy(p->c);
+-        p->c = NULL;
+-        qemu_mutex_destroy(&p->mutex);
+-        qemu_sem_destroy(&p->sem);
+-        qemu_sem_destroy(&p->sem_sync);
+-        g_free(p->name);
+-        p->name = NULL;
+-        multifd_pages_clear(p->pages);
+-        p->pages = NULL;
+-        p->packet_len = 0;
+-        g_free(p->packet);
+-        p->packet = NULL;
+-        g_free(p->iov);
+-        p->iov = NULL;
+-        multifd_send_state->ops->send_cleanup(p, &local_err);
+-        if (local_err) {
++        if (!multifd_send_cleanup_channel(p, &local_err)) {
+             migrate_set_error(migrate_get_current(), local_err);
+             error_free(local_err);
+         }
+     }
+-    qemu_sem_destroy(&multifd_send_state->channels_ready);
+-    g_free(multifd_send_state->params);
+-    multifd_send_state->params = NULL;
+-    multifd_pages_clear(multifd_send_state->pages);
+-    multifd_send_state->pages = NULL;
+-    g_free(multifd_send_state);
+-    multifd_send_state = NULL;
++
++    multifd_send_cleanup_state();
+ }
+ 
+ static int multifd_zero_copy_flush(QIOChannel *c)
 -- 
 2.43.0
 
