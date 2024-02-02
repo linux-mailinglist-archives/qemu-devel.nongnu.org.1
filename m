@@ -2,115 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486F28472C3
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B578D847314
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:23:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvCH-0005rq-1v; Fri, 02 Feb 2024 10:11:17 -0500
+	id 1rVvMn-0008JL-P0; Fri, 02 Feb 2024 10:22:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVvCF-0005rE-Fj
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:11:15 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rVvMj-0008Io-2Z
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:22:05 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rVvCE-0001M6-1E
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:11:15 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A488321A04;
- Fri,  2 Feb 2024 15:11:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706886672; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Khk/eqE/ZU6GiguRMAKHVNh1YhqZBPyvzK++566dyi0=;
- b=ACIjbDgQs5vLiQcvmND4cC1cyBtKMqGx38qSqYUpNQqdTzmPJ9h9ZGT/XiGsC4HI7eO2sx
- tWmyphMwamLVXw4ncHemUeStE5ai+QV8bqmDMwrnoA2aAbKTXWrhTLamOZWrMwJKdIvX0y
- McCwCMgQ5FSFmESkKgW9nb+cWR6AluA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706886672;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Khk/eqE/ZU6GiguRMAKHVNh1YhqZBPyvzK++566dyi0=;
- b=VOIgrjjGUcW1wM9Sn5JAvHbcwzn0XZ4SzDvotO2PXXLigWdTOY05DCEC+gwe4J8U3hYbxi
- nZ/X+qUR/pdIUgDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1706886672; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Khk/eqE/ZU6GiguRMAKHVNh1YhqZBPyvzK++566dyi0=;
- b=ACIjbDgQs5vLiQcvmND4cC1cyBtKMqGx38qSqYUpNQqdTzmPJ9h9ZGT/XiGsC4HI7eO2sx
- tWmyphMwamLVXw4ncHemUeStE5ai+QV8bqmDMwrnoA2aAbKTXWrhTLamOZWrMwJKdIvX0y
- McCwCMgQ5FSFmESkKgW9nb+cWR6AluA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1706886672;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Khk/eqE/ZU6GiguRMAKHVNh1YhqZBPyvzK++566dyi0=;
- b=VOIgrjjGUcW1wM9Sn5JAvHbcwzn0XZ4SzDvotO2PXXLigWdTOY05DCEC+gwe4J8U3hYbxi
- nZ/X+qUR/pdIUgDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25787139AB;
- Fri,  2 Feb 2024 15:11:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id FUWfNw8GvWXULAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 02 Feb 2024 15:11:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH 2/2] migration: Fix return-path thread exit
-In-Reply-To: <d2d0314a-494f-4ace-ba73-e14019fb4fd3@redhat.com>
-References: <20240201184853.890471-1-clg@redhat.com>
- <20240201184853.890471-3-clg@redhat.com> <8734ubhqr9.fsf@suse.de>
- <d2d0314a-494f-4ace-ba73-e14019fb4fd3@redhat.com>
-Date: Fri, 02 Feb 2024 12:11:09 -0300
-Message-ID: <87zfwihpf6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rVvMh-0004Sd-Ej
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:22:04 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1d70b0e521eso16290035ad.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:22:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1706887321; x=1707492121; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GBbkUmGgx8mTUMw/EXn5Nhc9JPgfhYY/3fJIlzsS7fM=;
+ b=IRlh5EGBEtx3Aji1C6SeZ/6m4jyeBtSck24hlaGZZLLWO07VbsEheSDlfoJIGMekmq
+ czh9cupbCLFK3/n3E4iKyiuRd2dUayBgN9IQN+vI4vqsYxTUdkeWatwFb5wjnbWw2sC2
+ qZS3innO6/dg/u1HlbQ4zFnisMVftBRtBbdxvLM8Fs8zMzi+GDF9+UXjpbsT2FTrwe1t
+ XiaqBie3qicpfY9mE5pryRCNPydEJqBsRMwVcFrMVyGnXaTNYT70PenmCukC2rQuAEWx
+ 0xGc0pjbr13qbkp5fv6jjCMbaDXByyt7tBPfN5/AsP0rNUgL3P6h0tP9xi1y2pZat18Q
+ IpXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706887321; x=1707492121;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GBbkUmGgx8mTUMw/EXn5Nhc9JPgfhYY/3fJIlzsS7fM=;
+ b=KghUHcMba3JkfEwBc1LAenGBHUuZDuHLK1od5dNPCLVoKYPcwI3pQ3I3H2mLrsCgOu
+ cu4LKuyVES8pEHu/ojuXqBVtCnlDeV4SWePQKUNW6gpSxe82ClyOeNmAJvkWN5RoL0Ve
+ HqdHrsA/xNfYVnU+hUrUxCSQ2Hxt+GN2DWsCNiNH7Jr9mPHwcpcsprzwE0rZHfrlTAOa
+ qMvUdlP5AFExfakaMG0UczgxSv5EmmKu5PvWk1kSgd1XtovwQRoAsLq+0dC1PeFlTfUq
+ e2NOr3UQjXweab3z97OdmrooNq7D1kc9gtCJee3Mdns+R/ok0NaMX1v4hxsFxz6/9KRg
+ WiTw==
+X-Gm-Message-State: AOJu0Yzvy4y3G1k1c2JpRuevJIay2Huisnm8w+KFPqa87SeNm4wZInu+
+ kf64GUQaF9P09ekptMf3EHzKtYhRWOx2q4LooZw1MgSyi89e8ODP0rLvjazEnKdylFzi5UfTxOw
+ T
+X-Google-Smtp-Source: AGHT+IE7yMUq6iJgFNRUllzhqmqmOsXME7PmjTg6U7gH17l7aVMqmKJn0lTznpcBAjEksyLpf/YNoQ==
+X-Received: by 2002:a17:903:32d2:b0:1d8:e079:ce16 with SMTP id
+ i18-20020a17090332d200b001d8e079ce16mr2569025plr.1.1706887321072; 
+ Fri, 02 Feb 2024 07:22:01 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCV9uKo/JE3Q5eSNps9IUhONs61rwHTSIAhqqg0vMC4tZU3tEKoocS9l57EwNlUsdTCO7VBCX5zu9UnsL5iaDoSYt/szQ2unqOMetBJ4Ci/U4o4Y3e7txlACFeWKSN8njasnixORATKyn2ckkfHBxwx7KtVWgnFgt7S7xeVwNFoL+d/n5OXEGL46tj7R+FpQ9YMuSA80BoF4tPPAzO1Tb9++sQzbyI7T6o/SXNrJE43HcWhjLYwnYVlM4ERm4MCX8+DKuNssHuDJw53yQZFBx5BgPtBMn4YBYQ==
+Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
+ j3-20020a170902f24300b001d714a1530bsm1734381plc.176.2024.02.02.07.21.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 Feb 2024 07:22:00 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/6] riscv: named features riscv,isa, 'svade' rework
+Date: Fri,  2 Feb 2024 12:21:48 -0300
+Message-ID: <20240202152154.773253-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ACIjbDgQ;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VOIgrjjG
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.02 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; BAYES_HAM(-0.51)[80.08%];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -4.02
-X-Rspamd-Queue-Id: A488321A04
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,37 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
+Hi,
 
-> On 2/2/24 15:42, Fabiano Rosas wrote:
->> C=C3=A9dric Le Goater <clg@redhat.com> writes:
->>=20
->>> In case of error, close_return_path_on_source() can perform a shutdown
->>> to exit the return-path thread.  However, in migrate_fd_cleanup(),
->>> 'to_dst_file' is closed before calling close_return_path_on_source()
->>> and the shutdown fails, leaving the source and destination waiting for
->>> an event to occur.
->>=20
->> At close_return_path_on_source, qemu_file_shutdown() and checking
->> ms->to_dst_file are done under the qemu_file_lock, so how could
->> migrate_fd_cleanup() have cleared the pointer but the ms->to_dst_file
->> check have passed?
->
-> This is not a locking issue, it's much simpler. migrate_fd_cleanup()
-> clears the ms->to_dst_file pointer and closes the QEMUFile and then
-> calls close_return_path_on_source() which then tries to use resources
-> which are not available anymore.
+In this new version we changed patch 3 as suggested by Alistair in v1
+[1]. Instead of creating individual always-true bool for each named
+feature, create a bool flag will be always 'true' to be used as config
+offset for these named extensions.
 
-I'm missing something here. Which resources? I assume you're talking
-about this:
+Patches based on riscv-to-apply.next.
 
-    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
-            qemu_file_get_error(ms->to_dst_file)) {
-            qemu_file_shutdown(ms->rp_state.from_dst_file);
-        }
-    }
+Patches missing acks: patch 3.
 
-How do we get past the 'if (ms->to_dst_file)'?
+Changes from v2:
+- patch 3:
+  - 'ext_always_enabled' bool added
+  - individual always-enabled named features bools removed
+- v2 link: https://lore.kernel.org/qemu-riscv/20240126133101.61344-8-ajones@ventanamicro.com/
+
+
+[1] https://lore.kernel.org/qemu-riscv/20240125195319.329181-1-dbarboza@ventanamicro.com/
+
+Andrew Jones (3):
+  target/riscv: Reset henvcfg to zero
+  target/riscv: Gate hardware A/D PTE bit updating
+  target/riscv: Promote svade to a normal extension
+
+Daniel Henrique Barboza (3):
+  target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
+  target/riscv: add riscv,isa to named features
+  target/riscv: add remaining named features
+
+ target/riscv/cpu.c         | 70 +++++++++++++++++++++++++++-----------
+ target/riscv/cpu_cfg.h     | 12 +++++--
+ target/riscv/cpu_helper.c  | 19 ++++++++---
+ target/riscv/csr.c         |  2 +-
+ target/riscv/tcg/tcg-cpu.c | 34 +++++++++---------
+ 5 files changed, 94 insertions(+), 43 deletions(-)
+
+-- 
+2.43.0
 
 
