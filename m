@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077A584678E
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDDC8467C0
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmSS-0001Fi-4r; Fri, 02 Feb 2024 00:51:24 -0500
+	id 1rVmSX-0001GR-J9; Fri, 02 Feb 2024 00:51:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSJ-0001De-3a
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:15 -0500
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1rVmSK-0001FM-GL
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:19 -0500
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSE-0001j2-TI
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:13 -0500
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3bda4bd14e2so1399450b6e.2
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:10 -0800 (PST)
+ id 1rVmSH-0001k4-S4
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:16 -0500
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6daf694b439so1369188b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853070; x=1707457870; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853072; x=1707457872; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mJNaEL6q2/07U1Rp9ME1A8CbXMNqHRbwoUgEMBnXwIs=;
- b=SrEQ0d9EM9DBbzKXxXh/oLclf0LUmK3iEVBmVEcyWiWYT5Z6HzgKQxTW53SIU3LTBF
- ocGTPQf2wstPvG80/Jgk2eGvpuRFNkMrCD7kzp3D2VbI0aw9KV54DjU0cVZ5TMUA7wvD
- c0Rsazvt5DpdSxQ4rZV5D1i/6BC3QZqyqKOoVGecSwjuTAywwtFK0SWsUKcowqS8sjyI
- FUM5LTbfcXKDKDUkeSTKXJWrYBPY5n1OPPbh+LiHJakXZVXg8y/gS/bMNXKXrIGZdgNa
- 4o+wF5YcETnIzCH5RIXef3NznO/bmUbDlJoNIIY718zKlIuMBCQlz/LCkm9KEIwm4MTx
- +V2Q==
+ bh=voMoBx+DmSX4jwUUR+hNTm+Nb2/rGq7GF3Qy4EBDmqw=;
+ b=N05zfNNWmVD7zurq195LhbXtXMayMfUJ1KME1DyFJk8NAjE0Bcm4CDVoX2w2LlCqDQ
+ ophazy0uruAH1YBAaj/i2lfSl83tNgKp6c8HALU0RYwkUJisrFgcZcEFi8cfGMwjUVoM
+ fG3bnLj+u62FYRjb5FCHyc0yJPYq6vnFBSQSnkAzV7DJbPybNQiUd4mlUi4/4d04KKWi
+ AqeaMGtz4yjukf/gJ4/pSxuTUmWgrn1xXx2E74HuBZsPOwHXoR5Iw4vt47s8hok7+I9b
+ Ibk61lBedKDRGK0E2TWoDIPa/xRLSjF0fCZOx0NKLH4FYbKKIs3TgC2TYKZulr32Wuyd
+ 299g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853070; x=1707457870;
+ d=1e100.net; s=20230601; t=1706853072; x=1707457872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mJNaEL6q2/07U1Rp9ME1A8CbXMNqHRbwoUgEMBnXwIs=;
- b=bO3JsNHr9FOVPJFqd8Sy23fpqKOJYlYPIGPm4RAJOZRozmhTNWv2tHpAU3+bmJoCdg
- Q2TBtJl3beEHB26kwv1gSaBdV7R5warHaB0bn9WfFzL4kQtAfZmhdp6bpk06UD7oS/Ge
- XboZiStO0vhMwNpEMiURI3CrToSH5CiE1HyK4zfZ6zWNoSX1yjMNYBLC1GbYpHfXRtZY
- sR6fgdsvA0nMfAgNHjCuJBiOYRl8IOzbbRK0jWXnS/NTSPKq1trp0K30dXvOvn8SYkjy
- lSiYfiKDMsPRCO5WamzAPQhChUBVG0puXn2lIlOnOLAQLAKgcmsRGvx5BJblua7Ux1p9
- yzTw==
-X-Gm-Message-State: AOJu0YzJoTdxJBxVOIu+UjWbjSdfSAnTTrKyluM5AJSZl0kL7GOarVwZ
- YrVdEouPRFZn3MdFOSgtW1j7IzHUmwMNApGv5szgQgJ8f4QJE9Mwr22CxD6PHAsB+RWa6IA1F0/
- sM1M=
-X-Google-Smtp-Source: AGHT+IH2ERz2cD9E7sMTYnoaRCE2+AER0N8Y3lg4+6BawYjNo8UZTIeCy6ZP+7kBDWSSDZdsrCkRsw==
-X-Received: by 2002:a05:6808:2089:b0:3be:a295:c54a with SMTP id
- s9-20020a056808208900b003bea295c54amr8355631oiw.0.1706853069909; 
- Thu, 01 Feb 2024 21:51:09 -0800 (PST)
+ bh=voMoBx+DmSX4jwUUR+hNTm+Nb2/rGq7GF3Qy4EBDmqw=;
+ b=RH6sQN/y0Wruq3MXIizEm5NFewKC3OZSYEgCibUUPnL49nme8o96i8J9Jqd5N/BtiA
+ pbb4bWLz0ZHHc4U+QYDjrBUb8eiwThiVV09V/xT3IIzQfMeyDQtLGLOaF4mqM8AW7zsn
+ TL673bhlo9MW5dd1Zq1rpijK54Eck31+foxI2ymr2Wd4L331C8bZZMRh8NDMU+feUAF0
+ V33SUGCexEIWvCrE5tY3sv7n91td3kOQi4QymJE8+fQTlG5nyTiy57xT1vCf5UIom8wU
+ drWEspNd9S3yckrRcwErHa/pOzLiSUchV+X/YgBsHbtpQaBt8RVuRl8j1w/VHzfWorSL
+ D5xg==
+X-Gm-Message-State: AOJu0Yz2AgK2vvoDKVfB5npsLlYOolyQgALs9nXieZjUbUVP0FfzTyyh
+ 5qNMLCAMyGc8hmaAXj9HnaWW28J01KrZyAPEK6kXSnts/T6sgPK2AQoGBNobGtqO+U1rCqqENy9
+ 90h4=
+X-Google-Smtp-Source: AGHT+IGKQyGmzzqcCIimDmP8oXYIXHSqdkEPUZ3hmDg2VFDsk2PZ1QTegQpmACAgtEBmHb1pRz7N5A==
+X-Received: by 2002:a05:6a00:3d53:b0:6df:f6a2:508d with SMTP id
+ lp19-20020a056a003d5300b006dff6a2508dmr1578803pfb.22.1706853071934; 
+ Thu, 01 Feb 2024 21:51:11 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.08
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:09 -0800 (PST)
+ Thu, 01 Feb 2024 21:51:11 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/57] target/m68k: Populate CPUClass.mmu_index
-Date: Fri,  2 Feb 2024 15:49:52 +1000
-Message-Id: <20240202055036.684176-15-richard.henderson@linaro.org>
+Subject: [PULL 14/57] target/microblaze: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:49:53 +1000
+Message-Id: <20240202055036.684176-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,33 +95,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/microblaze/cpu.h | 13 ++-----------
+ target/microblaze/cpu.c | 18 +++++++++++++++++-
+ 2 files changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 44000f5869..8a8392e694 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -56,6 +56,11 @@ static bool m68k_cpu_has_work(CPUState *cs)
-     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index b5374365f5..90ab796de9 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -434,19 +434,10 @@ void mb_cpu_transaction_failed(CPUState *cs, hwaddr physaddr, vaddr addr,
+                                MemTxResult response, uintptr_t retaddr);
+ #endif
+ 
++int mb_cpu_mmu_index(CPUState *cs, bool ifetch);
+ static inline int cpu_mmu_index(CPUMBState *env, bool ifetch)
+ {
+-    MicroBlazeCPU *cpu = env_archcpu(env);
+-
+-    /* Are we in nommu mode?.  */
+-    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
+-        return MMU_NOMMU_IDX;
+-    }
+-
+-    if (env->msr & MSR_UM) {
+-        return MMU_USER_IDX;
+-    }
+-    return MMU_KERNEL_IDX;
++    return mb_cpu_mmu_index(env_cpu(env), ifetch);
  }
  
-+static int m68k_cpu_mmu_index(CPUState *cs, bool ifetch)
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 2318ad7013..6dad11905b 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -118,6 +118,22 @@ static bool mb_cpu_has_work(CPUState *cs)
+     return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
+ }
+ 
++int mb_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return cpu_env(cs)->sr & SR_S ? MMU_KERNEL_IDX : MMU_USER_IDX;
++    CPUMBState *env = cpu_env(cs);
++    MicroBlazeCPU *cpu = env_archcpu(env);
++
++    /* Are we in nommu mode?.  */
++    if (!(env->msr & MSR_VM) || !cpu->cfg.use_mmu) {
++        return MMU_NOMMU_IDX;
++    }
++
++    if (env->msr & MSR_UM) {
++        return MMU_USER_IDX;
++    }
++    return MMU_KERNEL_IDX;
 +}
 +
- static void m68k_set_feature(CPUM68KState *env, int feature)
+ #ifndef CONFIG_USER_ONLY
+ static void mb_cpu_ns_axi_dp(void *opaque, int irq, int level)
  {
-     env->features |= BIT_ULL(feature);
-@@ -551,6 +556,7 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
+@@ -415,7 +431,7 @@ static void mb_cpu_class_init(ObjectClass *oc, void *data)
  
-     cc->class_by_name = m68k_cpu_class_by_name;
-     cc->has_work = m68k_cpu_has_work;
-+    cc->mmu_index = m68k_cpu_mmu_index;
-     cc->dump_state = m68k_cpu_dump_state;
-     cc->set_pc = m68k_cpu_set_pc;
-     cc->get_pc = m68k_cpu_get_pc;
+     cc->class_by_name = mb_cpu_class_by_name;
+     cc->has_work = mb_cpu_has_work;
+-
++    cc->mmu_index = mb_cpu_mmu_index;
+     cc->dump_state = mb_cpu_dump_state;
+     cc->set_pc = mb_cpu_set_pc;
+     cc->get_pc = mb_cpu_get_pc;
 -- 
 2.34.1
 
