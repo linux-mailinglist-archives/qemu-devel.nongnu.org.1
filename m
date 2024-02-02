@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB7E847372
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1D484735A
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvb6-0000Nj-Vz; Fri, 02 Feb 2024 10:36:57 -0500
+	id 1rVvbB-0000iP-VX; Fri, 02 Feb 2024 10:37:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb3-0000L0-Bn
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:53 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1rVvb5-0000NX-HA
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:55 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb1-0004Vb-0k
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:52 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40ef64d8955so19935335e9.3
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:50 -0800 (PST)
+ id 1rVvb1-0004WR-KD
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:55 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40e800461baso19228755e9.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888209; x=1707493009; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706888210; x=1707493010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0ckJcvEZZioCWfSyoKKpMeIjUpIBSh7xStPy/wW7duI=;
- b=K3/xOFgS7m2TX0kCCBQJ7EAfKIRUl6oZRxlCwIGps9nW34w6pWBvLl2euAj6ZPmSU3
- ZPh6iLC7Ku383Jqs0BUdjTcIyjTspDaR2XOWERrP088pvTG+C8gGJ/2H6ZfxLgQ//1av
- lg/ENYj57fZdsqZujToAiEVsIkEu9JWrvTi2CkOR28unJUT92/i+ywBCs+/89DjFHaSn
- 4IEODlZX3QdkwqV03ukbhalfYRUQ5R7+GRX+ojVQ3YII+EeQT/eQ0XiiWwdW20kNypdu
- J4wu+UADBc83cAYFHb3x6LQMLZO7rYtSZrKDjvPEE6CXB0QfW+NMXdY/so4KRZjLAqgN
- UbTw==
+ :reply-to; bh=amHR5O3giydBqIG5HDDnvSZQyLiZ0je93DEkkg1t/tA=;
+ b=w8ju74AHvXW50ncEU+Cdawd3Yvn7JL/sTcsaoYjb+jIOAnxXNFuWejBR37BFhYDR4c
+ 0gWo0LXPYp2nnJ5eYSz6anIqlH+0SW5O9LAe5uD++2M/L4WSjccQkPdQB87teKcEKFJI
+ OKhjrGFj4tA4vRNK725+nuDfKn/xrwGdmXEqGrEaVQQJimRVhDrZudBxBB5yA7PM3m18
+ Th2BF4uBSr6shL8b98p9UIKVbhH8Dub2HYDlT9xJxF5Rg0BcR+Q8d1rEWztIA0X9JV6u
+ tmx4ro9+0MMaZlcqEUIRO2MJuKJw1ZgfY2MrnyccNgt4174LWkLEPzHTnH+x+owQgoCV
+ 2eUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888209; x=1707493009;
+ d=1e100.net; s=20230601; t=1706888210; x=1707493010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0ckJcvEZZioCWfSyoKKpMeIjUpIBSh7xStPy/wW7duI=;
- b=hoNzaokKff51zXcVDu0qh2eKbgj3dxIr6/Rd1thx2TT7zzvLFJYuW+tZvlKOcjDy1g
- RhZ4ovXYqqKELPA2tp0eZdsBllErZ3ZUmd5hWGlqxeBoINn8wSOXawwdzSbf2+LrHrbi
- bcUgkuSWTNhfazUiv/4AUMtRzRf1upPUXNAO1DGTqfU9sfADRxyj5nsXZHORgHDXi5vH
- XUQ9UN3tKatBeFEzFStxF42aCK7VpvK0lXJ2V/tg7lpTDf/Lmmr8gQsHoCsp00yfur2e
- QhuN7nVggDo6YMGgILBYLL1q3FinRuABMYxK8O67J96Bz/MDmR9kKMrmg7wfIrKgpnTy
- MF1Q==
-X-Gm-Message-State: AOJu0Yw5ogFTsu7W1efwhOerHIcks0IWbf2kHxrfP094KZQ/RQJjO0e4
- vQl1rhC/S8DYAb6TwEsBMJA5gspfrQj1e8TeKNiIlkp3gN55tD8RjD3b1WSblCyCeaIa+vHghJL
- Z
-X-Google-Smtp-Source: AGHT+IEve3ErRb438/blgbLsuASqlGGbOAddwHvvWzX/ZxMXR2sOXKvI2DfFGfwVMUOFE8xGUn+Emw==
-X-Received: by 2002:a05:600c:3107:b0:40f:86:fea with SMTP id
- g7-20020a05600c310700b0040f00860feamr6376123wmo.13.1706888209632; 
- Fri, 02 Feb 2024 07:36:49 -0800 (PST)
+ bh=amHR5O3giydBqIG5HDDnvSZQyLiZ0je93DEkkg1t/tA=;
+ b=l13rMCfZApHvCkILBwJ+nHJdfdEo71gSyPiTjz3/OMpcjV6vaZi/o1RDHASgKh+sRx
+ dgcNtwEDmkUHgXPaPr9HIkGx0aC9lIpiXPOo6gPBRfi3m5YSfWc88QfZeOpNVMglGj+K
+ dfAlIxxzes6ptVeDdgeBxo+Y6w2IW3AhWnWDe9vZ4lUAUMc84pEU+x87c881t6NJ7p0t
+ 7JBFVscQgeJQmpQvoZPIBaUR0BEXoISbZzIz7POuEz+8k1iD/qVp4CEBmQYYwfjmU82J
+ qItXRUu1DYQmmmnKetFt82En3S5l5VUNdSx3h6XF5RQcPSLvXjtDT51Nc0ckGRhAl0O+
+ zJug==
+X-Gm-Message-State: AOJu0Yz/4F1a8EMiFEzs6OMAG4unk8GTdGxTNrnq5T1ySs1Ag+5MlZFP
+ KxP+Hu3JuS3EFz19T2GRvFYiDWBN7PiKnXXDyzWYI5rENlXl1Ah0eYOMODnL1EHvynLV0LAqYhU
+ d
+X-Google-Smtp-Source: AGHT+IH7ytEEMSxthew7rK8gwnndRuqrW3Ez/AXnyQzL2TzsMcUq06kHyT0HOQUwcN65gnTcbTc2tA==
+X-Received: by 2002:a05:600c:3594:b0:40f:b691:d374 with SMTP id
+ p20-20020a05600c359400b0040fb691d374mr5828583wmq.17.1706888210244; 
+ Fri, 02 Feb 2024 07:36:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.49
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:49 -0800 (PST)
+ Fri, 02 Feb 2024 07:36:50 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/36] hw/arm/z2: convert DPRINTF to trace events and guest
- errors
-Date: Fri,  2 Feb 2024 15:36:25 +0000
-Message-Id: <20240202153637.3710444-25-peter.maydell@linaro.org>
+Subject: [PULL 25/36] hw/arm/xen_arm.c: convert DPRINTF to trace events and
+ error/warn reports
+Date: Fri,  2 Feb 2024 15:36:26 +0000
+Message-Id: <20240202153637.3710444-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,119 +100,118 @@ on trace events should be able to opt-in to each trace event and rely on
 QEMU's log redirection, instead of stderr by default.
 
 This commit converts DPRINTFs in this file that are used for tracing
-into trace events. DPRINTFs that report guest errors are logged with
-LOG_GUEST_ERROR.
+into trace events. Errors or warnings are converted to error_report and
+warn_report calls.
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 799c5141c5751cf2341e1d095349612e046424a8.1706544115.git.manos.pitsidianakis@linaro.org
+Message-id: fe5e3bd54231abe933f95a24e0e88208cd8cfd8f.1706544115.git.manos.pitsidianakis@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/z2.c         | 27 ++++++++-------------------
- hw/arm/trace-events |  7 +++++++
- 2 files changed, 15 insertions(+), 19 deletions(-)
+ hw/arm/xen_arm.c    | 23 +++++++++++------------
+ hw/arm/trace-events |  5 +++++
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/hw/arm/z2.c b/hw/arm/z2.c
-index a67fba2cfd2..eb2ff8dbc84 100644
---- a/hw/arm/z2.c
-+++ b/hw/arm/z2.c
-@@ -27,13 +27,7 @@
- #include "exec/address-spaces.h"
- #include "qom/object.h"
- #include "qapi/error.h"
--
--#ifdef DEBUG_Z2
--#define DPRINTF(fmt, ...) \
--        printf(fmt, ## __VA_ARGS__)
--#else
--#define DPRINTF(fmt, ...)
--#endif
+diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
+index a5631529d09..32776d94dfe 100644
+--- a/hw/arm/xen_arm.c
++++ b/hw/arm/xen_arm.c
+@@ -34,6 +34,7 @@
+ #include "hw/xen/xen-hvm-common.h"
+ #include "sysemu/tpm.h"
+ #include "hw/xen/arch_hvm.h"
 +#include "trace.h"
  
- static const struct keymap map[0x100] = {
-     [0 ... 0xff] = { -1, -1 },
-@@ -119,6 +113,8 @@ static uint32_t zipit_lcd_transfer(SSIPeripheral *dev, uint32_t value)
- {
-     ZipitLCD *z = ZIPIT_LCD(dev);
-     uint16_t val;
-+
-+    trace_z2_lcd_reg_update(z->cur_reg, z->buf[0], z->buf[1], z->buf[2], value);
-     if (z->selected) {
-         z->buf[z->pos] = value & 0xff;
-         z->pos++;
-@@ -126,22 +122,19 @@ static uint32_t zipit_lcd_transfer(SSIPeripheral *dev, uint32_t value)
-     if (z->pos == 3) {
-         switch (z->buf[0]) {
-         case 0x74:
--            DPRINTF("%s: reg: 0x%.2x\n", __func__, z->buf[2]);
-             z->cur_reg = z->buf[2];
-             break;
-         case 0x76:
-             val = z->buf[1] << 8 | z->buf[2];
--            DPRINTF("%s: value: 0x%.4x\n", __func__, val);
-             if (z->cur_reg == 0x22 && val == 0x0000) {
-                 z->enabled = 1;
--                printf("%s: LCD enabled\n", __func__);
-+                trace_z2_lcd_enable_disable_result("enabled");
-             } else if (z->cur_reg == 0x10 && val == 0x0000) {
-                 z->enabled = 0;
--                printf("%s: LCD disabled\n", __func__);
-+                trace_z2_lcd_enable_disable_result("disabled");
-             }
-             break;
-         default:
--            DPRINTF("%s: unknown command!\n", __func__);
-             break;
-         }
-         z->pos = 0;
-@@ -211,14 +204,12 @@ static int aer915_send(I2CSlave *i2c, uint8_t data)
+ #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
+ OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
+@@ -91,8 +92,9 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
  
-     s->buf[s->len] = data;
-     if (s->len++ > 2) {
--        DPRINTF("%s: message too long (%i bytes)\n",
--            __func__, s->len);
-+        trace_z2_aer915_send_too_long(s->len);
-         return 1;
+         sysbus_create_simple("virtio-mmio", base, irq);
+ 
+-        DPRINTF("Created virtio-mmio device %d: irq %d base 0x%lx\n",
+-                i, GUEST_VIRTIO_MMIO_SPI_FIRST + i, base);
++        trace_xen_create_virtio_mmio_devices(i,
++                                             GUEST_VIRTIO_MMIO_SPI_FIRST + i,
++                                             base);
+     }
+ }
+ 
+@@ -101,6 +103,7 @@ static void xen_init_ram(MachineState *machine)
+     MemoryRegion *sysmem = get_system_memory();
+     ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
+ 
++    trace_xen_init_ram(machine->ram_size);
+     if (machine->ram_size <= GUEST_RAM0_SIZE) {
+         ram_size[0] = machine->ram_size;
+         ram_size[1] = 0;
+@@ -117,15 +120,10 @@ static void xen_init_ram(MachineState *machine)
+     memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
+                              GUEST_RAM0_BASE, ram_size[0]);
+     memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
+-    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
+-            GUEST_RAM0_BASE, ram_size[0]);
+-
+     if (ram_size[1] > 0) {
+         memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
+                                  GUEST_RAM1_BASE, ram_size[1]);
+         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
+-        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
+-                GUEST_RAM1_BASE, ram_size[1]);
+     }
+ }
+ 
+@@ -158,7 +156,7 @@ static void xen_enable_tpm(XenArmState *xam)
+ 
+     TPMBackend *be = qemu_find_tpm_be("tpm0");
+     if (be == NULL) {
+-        DPRINTF("Couldn't fine the backend for tpm0\n");
++        error_report("Couldn't find tmp0 backend");
+         return;
+     }
+     dev = qdev_new(TYPE_TPM_TIS_SYSBUS);
+@@ -168,7 +166,7 @@ static void xen_enable_tpm(XenArmState *xam)
+     sysbus_realize_and_unref(busdev, &error_fatal);
+     sysbus_mmio_map(busdev, 0, xam->cfg.tpm_base_addr);
+ 
+-    DPRINTF("Connected tpmdev at address 0x%lx\n", xam->cfg.tpm_base_addr);
++    trace_xen_enable_tpm(xam->cfg.tpm_base_addr);
+ }
+ #endif
+ 
+@@ -179,8 +177,9 @@ static void xen_arm_init(MachineState *machine)
+     xam->state =  g_new0(XenIOState, 1);
+ 
+     if (machine->ram_size == 0) {
+-        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
+-                "(no emulated devices including Virtio)\n");
++        warn_report("%s non-zero ram size not specified. QEMU machine started"
++                    " without IOREQ (no emulated devices including virtio)",
++                    MACHINE_CLASS(object_get_class(OBJECT(machine)))->desc);
+         return;
      }
  
-     if (s->len == 2) {
--        DPRINTF("%s: reg %d value 0x%02x\n", __func__,
--                s->buf[0], s->buf[1]);
-+        trace_z2_aer915_send(s->buf[0], s->buf[1]);
+@@ -194,7 +193,7 @@ static void xen_arm_init(MachineState *machine)
+     if (xam->cfg.tpm_base_addr) {
+         xen_enable_tpm(xam);
+     } else {
+-        DPRINTF("tpm-base-addr is not provided. TPM will not be enabled\n");
++        warn_report("tpm-base-addr is not provided. TPM will not be enabled");
      }
- 
-     return 0;
-@@ -228,14 +219,12 @@ static int aer915_event(I2CSlave *i2c, enum i2c_event event)
- {
-     AER915State *s = AER915(i2c);
- 
-+    trace_z2_aer915_event(s->len, event);
-     switch (event) {
-     case I2C_START_SEND:
-         s->len = 0;
-         break;
-     case I2C_START_RECV:
--        if (s->len != 1) {
--            DPRINTF("%s: short message!?\n", __func__);
--        }
-         break;
-     case I2C_FINISH:
-         break;
+ #endif
+ }
 diff --git a/hw/arm/trace-events b/hw/arm/trace-events
-index 7c569432150..0ff41e6c780 100644
+index 0ff41e6c780..fd0d92762e4 100644
 --- a/hw/arm/trace-events
 +++ b/hw/arm/trace-events
-@@ -58,3 +58,10 @@ smmuv3_inv_notifiers_iova(const char *name, uint16_t asid, uint16_t vmid, uint64
- # strongarm.c
- strongarm_uart_update_parameters(const char *label, int speed, char parity, int data_bits, int stop_bits) "%s speed=%d parity=%c data=%d stop=%d"
- strongarm_ssp_read_underrun(void) "SSP rx underrun"
+@@ -65,3 +65,8 @@ z2_lcd_enable_disable_result(const char *result) "LCD %s"
+ z2_aer915_send_too_long(int8_t msg) "message too long (%i bytes)"
+ z2_aer915_send(uint8_t reg, uint8_t value) "reg %d value 0x%02x"
+ z2_aer915_event(int8_t event, int8_t len) "i2c event =0x%x len=%d bytes"
 +
-+# z2.c
-+z2_lcd_reg_update(uint8_t cur, uint8_t i_0, uint8_t i_1, uint8_t i_2, uint32_t value) "cur_reg = 0x%x, buf = [0x%x, 0x%x, 0x%x], value = 0x%x"
-+z2_lcd_enable_disable_result(const char *result) "LCD %s"
-+z2_aer915_send_too_long(int8_t msg) "message too long (%i bytes)"
-+z2_aer915_send(uint8_t reg, uint8_t value) "reg %d value 0x%02x"
-+z2_aer915_event(int8_t event, int8_t len) "i2c event =0x%x len=%d bytes"
++# xen_arm.c
++xen_create_virtio_mmio_devices(int i, int irq, uint64_t base) "Created virtio-mmio device %d: irq %d base 0x%"PRIx64
++xen_init_ram(uint64_t machine_ram_size) "Initialized xen ram with size 0x%"PRIx64
++xen_enable_tpm(uint64_t addr) "Connected tpmdev at address 0x%"PRIx64
 -- 
 2.34.1
 
