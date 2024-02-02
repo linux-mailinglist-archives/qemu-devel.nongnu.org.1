@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7020D84731C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5E384731A
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:25:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvPx-0005Rr-GK; Fri, 02 Feb 2024 10:25:25 -0500
+	id 1rVvQ5-0005SF-CD; Fri, 02 Feb 2024 10:25:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvPu-0005R5-5l
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvPu-0005R3-2x
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:25:22 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvPq-0006li-LC
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:25:20 -0500
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVvPr-0006qZ-3I
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:25:21 -0500
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412EbLnA002317; Fri, 2 Feb 2024 15:25:12 GMT
+ 412EIwoG018590; Fri, 2 Feb 2024 15:25:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=dX6OAz56GcsfHGfTlCOxQc9W+Ow+S5BivmfYoD3O3dA=;
- b=MEWDs8V5i84lz1a1czZ0k2sOnslBowg8eleL/2hEl+e+1Q95uB3vEGmZ/t4cFVS3OEND
- dghuFXQ3L85h0wgh9vZt/75U77uOCIQkSzn4fTy3G1CdcJQIg+iCzYSqEYsK77tYeuzi
- 8tIcEtLLMYwnnno1ncpMpFhVTQJp8E7P/dcjEGFgm7QLI5za+iHlkhqBEZoJ0kFCtuOn
- xE0SdUwhSC60IRfS90FZYIebEZIS7O24CJ+yQTwDnGCigwpzq7wLuDr2FsTYQcOaHpUn
- Exmo18AZvoD2v/rgWMWg67myq+Az95xP/Er/ICFUHy6em82Y37LZWqYD6LQ2c534A0VH Lw== 
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w10704r2k-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=OQo91iZmvNk611L8ybyJ1axOZbex8oBEkfPXN0s0S/8=;
+ b=e/ntawsh6wvMgq+i/16LhuwI0RspiPkpd3FpzJo9ToOBDZF74ubeQryDfyCyWOhxWckx
+ YxgJojhzb5R+ZjGE+2wKg11XwUdvVXoMUIkLmTC5dLgDFNUqm3td3LMU4+JMDFXFidDq
+ eBWXh15PxoMbtShABhdKePuvwOB+zr0D4ySry3hDpTLXYbSbF9Sidre6MuckL2qlzzUf
+ hh7u0Qseg4tlPLUrj7i4INaNw2uU2OAo2ICHJoEztE8LuJiy2rjYl2Wv4jjP6M0R/xth
+ mnE8e2WaP6WmtyNqwpa1j5NOX0cNpX2KLyhWgI1wPwex7UaLpr8O27aXdhgUJKKF0NVU xg== 
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w121vskbk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Feb 2024 15:25:12 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 412F1AxU017746; Fri, 2 Feb 2024 15:25:11 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwcj0c8b9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 02 Feb 2024 15:25:11 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412CtDqb010833; Fri, 2 Feb 2024 15:25:10 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwd5pc2dt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 15:25:10 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 412FP8SL7996084
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 412FP9rr6554250
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Feb 2024 15:25:08 GMT
+ Fri, 2 Feb 2024 15:25:09 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F0052004E;
- Fri,  2 Feb 2024 15:25:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7AD0E2004D;
+ Fri,  2 Feb 2024 15:25:09 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 697F720043;
- Fri,  2 Feb 2024 15:25:08 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3BDB220043;
+ Fri,  2 Feb 2024 15:25:09 +0000 (GMT)
 Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
  by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Feb 2024 15:25:08 +0000 (GMT)
+ Fri,  2 Feb 2024 15:25:09 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Riku Voipio <riku.voipio@iki.fi>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 0/5] gdbstub: Implement catching syscalls
-Date: Fri,  2 Feb 2024 16:23:42 +0100
-Message-ID: <20240202152506.279476-1-iii@linux.ibm.com>
+Subject: [PATCH v3 1/5] gdbstub: Expose TARGET_SIGTRAP in a target-agnostic way
+Date: Fri,  2 Feb 2024 16:23:43 +0100
+Message-ID: <20240202152506.279476-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S3sYQCDh5vswcykvVZqMrDtHOgEP67ox
-X-Proofpoint-ORIG-GUID: S3sYQCDh5vswcykvVZqMrDtHOgEP67ox
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240202152506.279476-1-iii@linux.ibm.com>
+References: <20240202152506.279476-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jcakCqSg2ceAbzN2gvkP7uy16vyDc_g4
+X-Proofpoint-GUID: jcakCqSg2ceAbzN2gvkP7uy16vyDc_g4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-02_08,2024-01-31_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- spamscore=0 mlxlogscore=627 impostorscore=0 bulkscore=0 clxscore=1015
- adultscore=0 priorityscore=1501 malwarescore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402020112
+ clxscore=1015 phishscore=0
+ mlxscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 mlxlogscore=962
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402020112
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -104,47 +105,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02980.html
-v2 -> v3: Simplify the catchpoint state by making "don't catch" a
-          subset of "catch some".
-          Factor out several prep patches;
-          Don't use snprintf;
-          Add some comments (Alex).
+The upcoming syscall catchpoint support needs to send SIGTRAP stop
+packets to GDB. Being able to compile this support only once for all
+targets is a good thing, and it requires hiding TARGET_SIGTRAP behind
+a function call.
 
-v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02911.html
-v1 -> v2: Avoid touching the system gdbstub.
-          Advertise QCatchSyscalls+ only on Linux.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ gdbstub/internals.h   | 1 +
+ gdbstub/user-target.c | 5 +++++
+ 2 files changed, 6 insertions(+)
 
-Hi,
-
-I noticed that GDB's "catch syscall" does not work with qemu-user.
-This series adds the missing bits in [1/2] and a test in [2/2].
-I'm basing this on my other series, since it contains useful gdbstub
-test refactorings.
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (5):
-  gdbstub: Expose TARGET_SIGTRAP in a target-agnostic way
-  gdbstub: Allow specifying a reason in stop packets
-  gdbstub: Add syscall entry/return hooks
-  gdbstub: Implement catching syscalls
-  tests/tcg: Add the syscall catchpoint gdbstub test
-
- gdbstub/gdbstub.c                             |   9 ++
- gdbstub/internals.h                           |   2 +
- gdbstub/user-target.c                         |   5 +
- gdbstub/user.c                                | 108 +++++++++++++++++-
- include/gdbstub/user.h                        |  29 ++++-
- include/user/syscall-trace.h                  |   7 +-
- tests/tcg/multiarch/Makefile.target           |  10 +-
- tests/tcg/multiarch/catch-syscalls.c          |  51 +++++++++
- tests/tcg/multiarch/gdbstub/catch-syscalls.py |  53 +++++++++
- 9 files changed, 268 insertions(+), 6 deletions(-)
- create mode 100644 tests/tcg/multiarch/catch-syscalls.c
- create mode 100644 tests/tcg/multiarch/gdbstub/catch-syscalls.py
-
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 5c0c725e54c..aeb0d9b5377 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -136,6 +136,7 @@ void gdb_append_thread_id(CPUState *cpu, GString *buf);
+ int gdb_get_cpu_index(CPUState *cpu);
+ unsigned int gdb_get_max_cpus(void); /* both */
+ bool gdb_can_reverse(void); /* softmmu, stub for user */
++int gdb_target_sigtrap(void); /* user */
+ 
+ void gdb_create_default_process(GDBState *s);
+ 
+diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
+index c4bba4c72c7..b7d4c37cd81 100644
+--- a/gdbstub/user-target.c
++++ b/gdbstub/user-target.c
+@@ -418,3 +418,8 @@ void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx)
+                     ts->bprm->filename + offset);
+     gdb_put_strbuf();
+ }
++
++int gdb_target_sigtrap(void)
++{
++    return TARGET_SIGTRAP;
++}
 -- 
 2.43.0
 
