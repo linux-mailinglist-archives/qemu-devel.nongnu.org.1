@@ -2,62 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A33847511
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 17:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F27847553
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 17:48:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVwYW-0001jv-Vn; Fri, 02 Feb 2024 11:38:21 -0500
+	id 1rVwhQ-0006WW-MN; Fri, 02 Feb 2024 11:47:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVwYV-0001jl-0Q
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:38:19 -0500
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rVwYI-0001YQ-Pu
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:38:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description;
- bh=uDTCPfAYahEvxqWU9JWXhEPfndqYC3LTBjqt59kqCOY=; b=HDssOFkEWBMMeFlPl6iBywP4DD
- GW5qg8g9cCDD6K3kgwMQvJDgzgifI+1fTU793brdmdmmmZK388H3i5kH+HEWhsff+FBJ2zqJxraYL
- j+8bjpBjAD31q/5ROnLKCl3ZPXM5kXc6k/c2VeqNkz33LTR8B2VjqhTg6eRE0/lZzxHRRgxksz7Ai
- 0mti+Z536p5zUau5Sf7KwIHf6d2dXfNcLOOvnoPy9r5yO2TzPrH0DIFA8zU9YNdtuyE5pZqbtKko2
- Cq+N5Nah2CRfuZFvTFF7In1rMRjf0ydKRUrbMjTimYrRjT5bn1dt44ma6wj0qR2jMeSqEu3Mbw6QK
- WScREVRQ==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
- by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rVwYE-00000001Y1M-0jYN; Fri, 02 Feb 2024 16:38:03 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
- Hat Linux)) id 1rVwYD-00000003pu5-1QWw;
- Fri, 02 Feb 2024 16:38:01 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: [PULL v2 38/47] hw/net/lasi_i82596: use qemu_create_nic_device()
-Date: Fri,  2 Feb 2024 16:38:01 +0000
-Message-ID: <20240202163801.914495-2-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202163801.914495-1-dwmw2@infradead.org>
-References: <20240202163801.914495-1-dwmw2@infradead.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVwhO-0006W8-Sy
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:47:30 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rVwhN-0000By-AX
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:47:30 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-55f0b2c79cdso2964984a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 08:47:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706892447; x=1707497247; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=EcUXBbTtMchfawxPaITGM7DwfiSqeenaYcEERiay7iM=;
+ b=T4YbU+if8wgkrRLQzEIs6nFgHR2PKmRI9IoptesbgHpnmYWj4mevy7mqkgi7nYavzp
+ QY4qUrPOrI9xlL4NjbO5ICT/VoH/uuFoLVL4zYeoJKa200hJ1RO1ufH/Px//Cp5bYCEp
+ /7pCi68U8vCCEBkazceEJEBoQs8HGEiKM1BoEPuavHmzZdPEm/tI0nSffeVBazd+IuEl
+ YkdqrftKm4Jn7oB4dHiJdErzbUyNj56l7STmXElEFntXMcx3Wb1KhJbblnmDgz1bfAM9
+ 8Kb04As/DIJAqyZ9Oz3SvqQ3MNdDaiSaQC+OcNoOlxSLz+TnoPlSwxM3dB/7glIpeTVz
+ Il/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706892447; x=1707497247;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EcUXBbTtMchfawxPaITGM7DwfiSqeenaYcEERiay7iM=;
+ b=cAxZA9tjSjdmZnnXZIt3LXsUF+iBfYPgwftqxa83iteReP7fr2yAIJyIAyJvMEdU9I
+ f4Q/dacKidMSLHR7y0EgbZ7dm58by4RDaTmZ3ulcvPnB5XBYrqIGP7qqQFkbcK7fY+2V
+ +VVsyT7Ls46ZepRkJSr675zc5Ibs6hm8iGnVHq3q6NyZNMeaMPaiOvjE/HIGdqX6XC0l
+ affKw9eVqN1Ecg1+OFCbc8UzVoplKUfqf0mNF8PbEmehE/aUN9IU1FDUkWehrz/PE1G4
+ JkiJ0HlCEjR1JG2v2XAqOjmA5NqWCGE5H7X87ezlMImzRe8dNQfqKuaBRfaAftEuUDHZ
+ uw1Q==
+X-Gm-Message-State: AOJu0YzPzcBrBIDkWzgXA3Hjg0mAXphoTAgBbxHSBX4E5Eb70zteXB4/
+ XThgjysi7hKn3mTn9jGgUh3MQtlwBlmi0FKTqr0RQUXDBpoNIu1+/NLhzAsRPKGv5OW6Ih2ZDSK
+ KMu/X9TsqyLqncC+XjpYufDuAnJ473ReGbJ48OA==
+X-Google-Smtp-Source: AGHT+IGds9BKFLmIIzbx7i+wit5PzRbeY+upV2xwIXboi27QGA484SSe7DdmtbZ/Q+u3yFf9W3Vgu75re9py9kQtqI0=
+X-Received: by 2002:aa7:df0e:0:b0:55f:95ac:d698 with SMTP id
+ c14-20020aa7df0e000000b0055f95acd698mr146907edy.32.1706892447100; Fri, 02 Feb
+ 2024 08:47:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1236::1;
- envelope-from=BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org;
- helo=casper.infradead.org
+References: <20240202055036.684176-1-richard.henderson@linaro.org>
+In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 Feb 2024 16:47:16 +0000
+Message-ID: <CAFEAcA_5Pa=_C2FRbeo=G=rhyzo9FUMao-RMHa2UibzNmdw5wA@mail.gmail.com>
+Subject: Re: [PULL 00/57] tcg patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,94 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, 2 Feb 2024 at 05:52, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The following changes since commit 14639717bf379480e937716fcaf1e72b47fd4c5f:
+>
+>   Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2024-01-31 19:53:45 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240202
+>
+> for you to fetch changes up to 73e095fc71dfeb8f5f767d9ac71078e562d935b0:
+>
+>   target/sparc: Remove FSR_FTT_NMASK, FSR_FTT_CEXC_NMASK (2024-02-02 14:40:06 +1000)
+>
+> ----------------------------------------------------------------
+> tests/tcg: Fix multiarch/gdbstub/prot-none.py
+> hw/core: Convert cpu_mmu_index to a CPUClass hook
+> tcg/loongarch64: Set vector registers call clobbered
+> target/sparc: floating-point cleanup
+>
 
-Create the device only if there is a corresponding NIC config for it.
-Remove the explicit check on nd_table[0].used from hw/hppa/machine.c
-which (since commit d8a3220005d7) tries to do the same thing.
+Hi; I'm afraid this seems to have collided with the loongarch
+pullreq that went in yesterday. It had a merge conflict, which
+I tried making a resolution to, but that failed to build.
+(I think the problem is some code which your pullreq wants
+to modify was moved from one file to another.)
 
-The lasi_82596 support has been disabled since it was first introduced,
-since enable_lasi_lan() has always been zero. This allows the user to
-enable it by explicitly requesting a NIC model 'lasi_82596' or just
-using the alias 'lasi'. Otherwise, it defaults to a PCI NIC as before.
+Could you rebase and resend, please?
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
----
- hw/hppa/machine.c           |  9 ++++-----
- hw/net/lasi_i82596.c        | 12 +++++++-----
- include/hw/net/lasi_82596.h |  4 ++--
- 3 files changed, 13 insertions(+), 12 deletions(-)
-
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index a1045b48cc..eb78c46ff1 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -362,14 +362,13 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     }
- 
-     /* Network setup. */
--    if (nd_table[0].used && enable_lasi_lan()) {
-+    if (lasi_dev) {
-         lasi_82596_init(addr_space, translate(NULL, LASI_LAN_HPA),
--                        qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA));
-+                        qdev_get_gpio_in(lasi_dev, LASI_IRQ_LAN_HPA),
-+                        enable_lasi_lan());
-     }
- 
--    if (!enable_lasi_lan()) {
--        pci_init_nic_devices(pci_bus, mc->default_nic);
--    }
-+    pci_init_nic_devices(pci_bus, mc->default_nic);
- 
-     /* BMC board: HP Powerbar SP2 Diva (with console only) */
-     pci_dev = pci_new(-1, "pci-serial");
-diff --git a/hw/net/lasi_i82596.c b/hw/net/lasi_i82596.c
-index 09e830ba5f..fcf7fae941 100644
---- a/hw/net/lasi_i82596.c
-+++ b/hw/net/lasi_i82596.c
-@@ -118,19 +118,21 @@ static void lasi_82596_realize(DeviceState *dev, Error **errp)
-     i82596_common_init(dev, s, &net_lasi_82596_info);
- }
- 
--SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
--                  hwaddr hpa, qemu_irq lan_irq)
-+SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space, hwaddr hpa,
-+                                   qemu_irq lan_irq, gboolean match_default)
- {
-     DeviceState *dev;
-     SysBusI82596State *s;
-     static const MACAddr HP_MAC = {
-         .a = { 0x08, 0x00, 0x09, 0xef, 0x34, 0xf6 } };
- 
--    qemu_check_nic_model(&nd_table[0], TYPE_LASI_82596);
--    dev = qdev_new(TYPE_LASI_82596);
-+    dev = qemu_create_nic_device(TYPE_LASI_82596, match_default, "lasi");
-+    if (!dev) {
-+        return NULL;
-+    }
-+
-     s = SYSBUS_I82596(dev);
-     s->state.irq = lan_irq;
--    qdev_set_nic_properties(dev, &nd_table[0]);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     s->state.conf.macaddr = HP_MAC; /* set HP MAC prefix */
- 
-diff --git a/include/hw/net/lasi_82596.h b/include/hw/net/lasi_82596.h
-index 3ef2f47ba2..439356ec19 100644
---- a/include/hw/net/lasi_82596.h
-+++ b/include/hw/net/lasi_82596.h
-@@ -25,7 +25,7 @@ struct SysBusI82596State {
-     int val_index:1;
- };
- 
--SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space,
--                                    hwaddr hpa, qemu_irq irq);
-+SysBusI82596State *lasi_82596_init(MemoryRegion *addr_space, hwaddr hpa,
-+                                   qemu_irq irq, gboolean match_default);
- 
- #endif
--- 
-2.43.0
-
+thanks
+-- PMM
 
