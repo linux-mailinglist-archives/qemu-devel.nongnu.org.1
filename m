@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367BA84736F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE794847368
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvb6-0000Nf-99; Fri, 02 Feb 2024 10:36:56 -0500
+	id 1rVvb5-0000NN-M9; Fri, 02 Feb 2024 10:36:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvb1-0000KC-Mf
+ id 1rVvb1-0000KB-M3
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:51 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvaz-0004Td-2s
+ id 1rVvaz-0004To-HO
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:51 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40ef6bbb61fso18648525e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:47 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40fc22f372cso13027445e9.1
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888206; x=1707493006; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706888207; x=1707493007; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ROIbqMmLLVZq9UdAkCxZXU8hJKBW1wxg/fAMDNbM68c=;
- b=IGet7IlDwj4Ui/UZE57ZGCl1SS5abanvzzFkqCo1tOH4Ba7WBZczRUtCoLmJS5IVMv
- oK+OkfirXXGaxbgD4tFb2uz8zz+GhMBmJku4qk6Abaak6/8bWdVTM5PukkeXaATgaSzg
- 2QpeLcdovTXHGSIeXzLDSaoYjt2QwVng0XD7sODfMvpf6ApLB1z/Ipo5nms1wQr02m2u
- 6M1xgtQFGINMj1kgTDcZ5OUC64GtqFEd7z98FawEZpZ72Qyd4kuSdJJOwjqwIjbarR4f
- d3IwRtmTezzTqdm/RE2NfURB16JLCjCRWuc/+vm3NCuoXtMwKXUH7y85aLjHtqNe1cAs
- 2vyA==
+ :reply-to; bh=ZWs5NQ83i9qIQWdiDsw7uY28XWqWXL7f3H4Vv5HjyFk=;
+ b=oWy1M/0+YRXxnBTR9lTl5NwH3CaBOQO/Xo8d138qwTz6fx7QxX3Hw6t2zZaDL1fuEt
+ k5ZCX3xfumf1hvNWqBEC+nPuqE1t08/odr5JmtzyqeVgjhDPCTapZojiqNpMQJNbxbHq
+ PRr495DWl1Ue8gQxYTnGkMeyNb9wsqK183qg6VOj1G1YmdO9Nyq8v2Ke+p2Zx5pWN/Cl
+ 1rcQu1Y88JzvpeF9KfQjGn9Y29j3YjhqVxuECetDH9kuF/fk/RMg/u8j4BF8Qf7jU9NJ
+ 2mBvSb20z6yprHbWOuLfafPaoldrPYZh2AOswYa/6LU8xZ80SkbyTNw1J6Grs06I2BwT
+ Oxeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888206; x=1707493006;
+ d=1e100.net; s=20230601; t=1706888207; x=1707493007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ROIbqMmLLVZq9UdAkCxZXU8hJKBW1wxg/fAMDNbM68c=;
- b=SlfBfGLsTtw4Qx4g4kVjao0kNNGkiK2SOCfG+DyRBvYgmD0BeKVb1Ld+9G0q7VIiNL
- fM+Oaceu8LnmprlACdM7n36bUjXXO2xwkDdO/2+nbQdmUbdCgmhyC7GDa8Jex5ovoWph
- ZswPQneqzFKjsP7IJRaC5Zf0HNIReCNEf57I32qjdXo5yLGLHh6ylUPNXlznfEsWtLdx
- s1ZYRn2eI86a30knJ9Q3Ss58OMVI9DWFNwJ+6Mkjm/OQaQ2M1JW08H9Rc9aa+fii67OB
- u7D6h65rmqu9YpEHTwQXxk/8+Uj+Gl3xLAr+OXXva3ut+4iakWMH7n+ieFdqryL5rP65
- 5wjw==
-X-Gm-Message-State: AOJu0YxCZgePFgvjQV4PGu2VE7Po5iAbPM9f0okyZAfe8F0sbyeDof+L
- nQtgiGNq4/STnLA8B2FI92yO0mqLlZ0iuQXki/iyt1zBTJ6SvDoWGFdanpFJCU/mKKVHxhvm7dX
- E
-X-Google-Smtp-Source: AGHT+IHKi0TpxKIIYngtLZ+5DBdnVqlEwkrX/qtVnN4sRNZhhdK4EjgGPtHqweEBU6Rqo6BZVki3BA==
-X-Received: by 2002:a05:600c:a3a5:b0:40f:c655:aaf0 with SMTP id
- hn37-20020a05600ca3a500b0040fc655aaf0mr1390701wmb.23.1706888206713; 
- Fri, 02 Feb 2024 07:36:46 -0800 (PST)
+ bh=ZWs5NQ83i9qIQWdiDsw7uY28XWqWXL7f3H4Vv5HjyFk=;
+ b=k1OfqBbpAzmFFyg4K3SFjesbjC/mHQL2ta078S0EHWL/5On+PEgnhgSoIrw6r88JRw
+ xYTa+SYaJT6NhtiuTxx3RvNJ16sTuBsunuxEJfx+BZCFWaXP0YwqgegFao18wlg/zWsh
+ rg5gNZmLMGFuxnGZrN78pLfOD3mze5+Q9zPptwvuFJz8rCdY8B1Ag9p3rICcXrxUuLR2
+ eDzCk6VWVYqfW0zBLhZ8gYTdjyqofKXC/ui+m3R4fupwj/3e+xYd+vuceM++RwtQBdrB
+ fuBIbNQnNKOUvuCsbGnwrpG9RRwgsptWi0Gka9oBkXnVtV2ihKy9bCPI4WyeB1C9lccz
+ lbMA==
+X-Gm-Message-State: AOJu0YzQoF6vjccjIgDEU2p8cNqdxdKyomFyR1xAz4I8TmHJk2jeLvhO
+ KySkdZbzvcDD8w2ky31Khb+sXKY1stcUg3ZL1jhD4X+b5dW10mNBhx/9q9GZct+ldhuPL5mPWjv
+ V
+X-Google-Smtp-Source: AGHT+IHYqN0mgP1AKwNRqrle4dSLA2BlefKdWaul/a4T3jBkJGdElOV+nuNrbS+ES44Jr+iPySCIqg==
+X-Received: by 2002:a05:600c:4f0f:b0:40f:bde5:763e with SMTP id
+ l15-20020a05600c4f0f00b0040fbde5763emr3450154wmq.32.1706888207230; 
+ Fri, 02 Feb 2024 07:36:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.46
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 02 Feb 2024 07:36:46 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/36] hw/arm/msf2: Simplify setting
+Subject: [PULL 18/36] hw/arm/musca: Simplify setting
  MachineClass::valid_cpu_types[]
-Date: Fri,  2 Feb 2024 15:36:18 +0000
-Message-Id: <20240202153637.3710444-18-peter.maydell@linaro.org>
+Date: Fri,  2 Feb 2024 15:36:19 +0000
+Message-Id: <20240202153637.3710444-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,94 +95,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The M2Sxxx SoC family can only be used with Cortex-M3.
-Propagating the CPU type from the board level is pointless.
-
-Hard-code the CPU type at the SoC level.
-Remove the now ignored MachineClass::default_cpu_type field.
+Musca boards use the embedded subsystems (SSE) tied to a specific
+Cortex core. Our models only use the Cortex-M33.
 
 Use the common code introduced in commit c9cf636d48 ("machine: Add
 a valid_cpu_types property") to check for valid CPU type at the
 board level.
 
+Remove the now unused MachineClass::default_cpu_type field.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240129151828.59544-6-philmd@linaro.org
+Message-id: 20240129151828.59544-7-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/msf2-soc.h | 3 ---
- hw/arm/msf2-soc.c         | 3 +--
- hw/arm/msf2-som.c         | 4 ----
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ hw/arm/musca.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/hw/arm/msf2-soc.h b/include/hw/arm/msf2-soc.h
-index ce417a6266a..9300664e8ea 100644
---- a/include/hw/arm/msf2-soc.h
-+++ b/include/hw/arm/msf2-soc.h
-@@ -47,13 +47,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(MSF2State, MSF2_SOC)
- #define MSF2_NUM_TIMERS       2
- 
- struct MSF2State {
--    /*< private >*/
-     SysBusDevice parent_obj;
--    /*< public >*/
- 
-     ARMv7MState armv7m;
- 
--    char *cpu_type;
-     char *part_name;
-     uint64_t envm_size;
-     uint64_t esram_size;
-diff --git a/hw/arm/msf2-soc.c b/hw/arm/msf2-soc.c
-index b5fe9f364d5..d6eb9ec9ac1 100644
---- a/hw/arm/msf2-soc.c
-+++ b/hw/arm/msf2-soc.c
-@@ -134,7 +134,7 @@ static void m2sxxx_soc_realize(DeviceState *dev_soc, Error **errp)
- 
-     armv7m = DEVICE(&s->armv7m);
-     qdev_prop_set_uint32(armv7m, "num-irq", 81);
--    qdev_prop_set_string(armv7m, "cpu-type", s->cpu_type);
-+    qdev_prop_set_string(armv7m, "cpu-type", ARM_CPU_TYPE_NAME("cortex-m3"));
-     qdev_prop_set_bit(armv7m, "enable-bitband", true);
-     qdev_connect_clock_in(armv7m, "cpuclk", s->m3clk);
-     qdev_connect_clock_in(armv7m, "refclk", s->refclk);
-@@ -231,7 +231,6 @@ static Property m2sxxx_soc_properties[] = {
-      * part name specifies the type of SmartFusion2 device variant(this
-      * property is for information purpose only.
-      */
--    DEFINE_PROP_STRING("cpu-type", MSF2State, cpu_type),
-     DEFINE_PROP_STRING("part-name", MSF2State, part_name),
-     DEFINE_PROP_UINT64("eNVM-size", MSF2State, envm_size, MSF2_ENVM_MAX_SIZE),
-     DEFINE_PROP_UINT64("eSRAM-size", MSF2State, esram_size,
-diff --git a/hw/arm/msf2-som.c b/hw/arm/msf2-som.c
-index a269cf044b9..5c415abe852 100644
---- a/hw/arm/msf2-som.c
-+++ b/hw/arm/msf2-som.c
-@@ -47,7 +47,6 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
-     DeviceState *dev;
-     DeviceState *spi_flash;
-     MSF2State *soc;
--    MachineClass *mc = MACHINE_GET_CLASS(machine);
-     DriveInfo *dinfo = drive_get(IF_MTD, 0, 0);
-     qemu_irq cs_line;
-     BusState *spi_bus;
-@@ -62,8 +61,6 @@ static void emcraft_sf2_s2s010_init(MachineState *machine)
-     dev = qdev_new(TYPE_MSF2_SOC);
-     object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-     qdev_prop_set_string(dev, "part-name", "M2S010");
--    qdev_prop_set_string(dev, "cpu-type", mc->default_cpu_type);
--
-     qdev_prop_set_uint64(dev, "eNVM-size", M2S010_ENVM_SIZE);
-     qdev_prop_set_uint64(dev, "eSRAM-size", M2S010_ESRAM_SIZE);
- 
-@@ -108,7 +105,6 @@ static void emcraft_sf2_machine_init(MachineClass *mc)
- 
-     mc->desc = "SmartFusion2 SOM kit from Emcraft (M2S010)";
-     mc->init = emcraft_sf2_s2s010_init;
--    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m3");
+diff --git a/hw/arm/musca.c b/hw/arm/musca.c
+index 770ec1a15ca..e2c9d49af58 100644
+--- a/hw/arm/musca.c
++++ b/hw/arm/musca.c
+@@ -605,7 +605,6 @@ static void musca_class_init(ObjectClass *oc, void *data)
+     mc->default_cpus = 2;
+     mc->min_cpus = mc->default_cpus;
+     mc->max_cpus = mc->default_cpus;
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-m33");
      mc->valid_cpu_types = valid_cpu_types;
+     mc->init = musca_init;
  }
- 
 -- 
 2.34.1
 
