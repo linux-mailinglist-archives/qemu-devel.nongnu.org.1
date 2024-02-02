@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0076B847369
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15823847363
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvav-0000Aj-CE; Fri, 02 Feb 2024 10:36:45 -0500
+	id 1rVvav-0000At-Vs; Fri, 02 Feb 2024 10:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvat-00008F-GF
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:43 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1rVvau-00008v-0T
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:44 -0500
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvar-0004R9-9Y
+ id 1rVvas-0004RN-Bz
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:43 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40fafae5532so19305155e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:40 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-50eac018059so2770019e87.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706888199; x=1707492999; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706888200; x=1707493000; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SHSPShdHTgayZl7MMTSLF+LQqIks/NtrtDdxuxWI+Xo=;
- b=TBq21PaddtOAxHYpHNO+3IPnRLAE4kDz9h5U3qFyGIr3C9dr+naLxcxUbe584dS35W
- JzAEbaJ3teZR3UqekhcohcDxan8akgLQ7Dm5wj1Is5+qG4UPTeEUKxf/ByZAcfYRw1la
- VRg2Sf8Br1qTEKsm3WLGwdjw2vbdBGzFsC5DwXoxQj2zNqxuQBuS+HCYSDNAdzNltk5z
- 9aOk/0qj1ghIgZ7Gss28Jr5pJ8TuVM/lhYAqId0+LFZm7VJdIGAY5jjGiifWraXxA77h
- p6cqjmDauG4iR05OCznO3K9E83yWaAXxKCK+EGH6F9tRdy5HvYuXs8M3jHORyb+mPXd3
- rQTA==
+ :reply-to; bh=90Q19bchD51USuhMKJ6oc+v8LKqSGaGapSq6FK0X6bc=;
+ b=UlaSDmyX8ijizOgRy2fP018Ugd63Xo7W9rx3XUe8WlwUTHd1D8X8ro1mWe3kMD3wWY
+ 3RgBDVjpQga5U2HezKazlR/IkAtO3IvnISzsCYq3ijML1xOoXi6fKRBBrFO/WGriwjz5
+ iLQ4WmKORkBmWuV8DQDO0+08PawOjEAccYvHvtRj27TxUZZQEKwiKqre+NtnS36sl9B1
+ uFZY8f+boWAKB/T5LizJi7RN6nYTSvFo1g73tLtlWyq4vExzOCH+ejvpDkz+Fi8IKPIz
+ UoOY4lJInxHtdBKgj+X/gro3l/3TIvSsaVnAH13h9i8yv1wkKdkwodkY0UStIM2kWU8X
+ CPLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706888199; x=1707492999;
+ d=1e100.net; s=20230601; t=1706888200; x=1707493000;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SHSPShdHTgayZl7MMTSLF+LQqIks/NtrtDdxuxWI+Xo=;
- b=Bl1vADmx8k9nvWHJymGMH7D1n4thDKN13ldPsGy9NLI/VTSg/BdVK4rtX6H7bPRF56
- Jxy9JtE+5uVX0SbJas7BLwZrZ374hu5RtFMuqFAYjAEdhq4ESZm12uuGePaPULIP8n1z
- 2Y3Qu6OW3phLxMQY7+azcRMGwHPCaRfDrBxhnUc3dOOeLB2fWzo9b6i0pptoOLITueRQ
- TQPW1oYYFu/o4HclgxDk5Eap8ie5bEMn1YC1Nigd2m/DsPTgjBqhpxMg/9KRsnnEGocO
- tHSdDL2+C1X6Aqq1NrOfSCRKpKO5lbL8NCiYfxyQM5sQEI9MxwrR+KL0RZJSwPxUwPJx
- c4YA==
-X-Gm-Message-State: AOJu0YyCTVAlQm82jBOTrWsEzxpWed5+BBcpDi6iyY8oTvK7FKsDazAx
- QmkDcrN14jW7N1y44XNtSgVkEZP2VONgeV+52CIDPDt8HF9JNuHj9cQUGtX02b6ow0UTMzWCVVD
- N
-X-Google-Smtp-Source: AGHT+IGGf07eY7CvFXzGxvc34R2T7rJNnmaFJEK4I3sVNR5A7NdWhDdJ/nGDUlUd8KSr8LXq1u7q4g==
-X-Received: by 2002:a05:600c:1f81:b0:40f:b283:bb00 with SMTP id
- je1-20020a05600c1f8100b0040fb283bb00mr6376045wmb.18.1706888199623; 
- Fri, 02 Feb 2024 07:36:39 -0800 (PST)
+ bh=90Q19bchD51USuhMKJ6oc+v8LKqSGaGapSq6FK0X6bc=;
+ b=SRjBb6zzedbscSih8zq2+Ua+Et5Ak+0g8ZkCjd6yGwm+Zuvk868PX896xolPAI/AMG
+ kLRSywVJvhwNa5+U4PV609aN/ZafWRkr39ZAGd/julhh+zz7jNhk+lOBRATer9rnrDLz
+ IP+Q1plasiIpaqTRqhOlQ8zNpI4Cg1SQrieDHKev6cjLD18etm/uGHkXglh5ysA8RKTl
+ 7P6tCLFXKKcZ8+JlXJmJpIpiJwVrQI447u4casRs/kr7hpGEbnEWV1oVkAQEUL8mucM3
+ ozrdoU/ZSvLbpP9Jjcg9ptsdia4wrGItlSyMihBVx88n6TNEpx0osRuGp1J09G+9CxkJ
+ Cuww==
+X-Gm-Message-State: AOJu0YxHxOiaWX/wvsL3hXD3Ha+bfBX30X3dm3A8WAhJTSkHCdVf++8O
+ x+jiRlJfVqcTWDV67f8HyfHTOWgMahAUsHFUvObdUjO4P73I6QLaGg3S76XuS+cS7qNTxZ5UEYd
+ l
+X-Google-Smtp-Source: AGHT+IFBDYiBD9rkr7X7DA90g1gmK9qdSHDYwfljVwgp3MpPyLu9YL36ld7IkzDw3oHk6yxAVeEz8w==
+X-Received: by 2002:a19:f81a:0:b0:511:e8f:45ca with SMTP id
+ a26-20020a19f81a000000b005110e8f45camr1680573lff.31.1706888200760; 
+ Fri, 02 Feb 2024 07:36:40 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.39
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 02 Feb 2024 07:36:39 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/36] vmbus: Switch bus reset to 3-phase-reset
-Date: Fri,  2 Feb 2024 15:36:04 +0000
-Message-Id: <20240202153637.3710444-4-peter.maydell@linaro.org>
+Subject: [PULL 04/36] adb: Switch bus reset to 3-phase-reset
+Date: Fri,  2 Feb 2024 15:36:05 +0000
+Message-Id: <20240202153637.3710444-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,7 +92,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Switch vmbus from using BusClass::reset to the Resettable interface.
+Switch the ADB bus from using BusClass::reset to the Resettable
+interface.
 
 This has no behavioural change, because the BusClass code to support
 subclasses that use the legacy BusClass::reset will call that method
@@ -103,43 +104,42 @@ Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Cédric Le Goater <clg@redhat.com>
 Acked-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Tested-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-id: 20240119163512.3810301-3-peter.maydell@linaro.org
+Message-id: 20240119163512.3810301-4-peter.maydell@linaro.org
 ---
- hw/hyperv/vmbus.c | 7 ++++---
+ hw/input/adb.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
-index c86d1895bae..380239af2c7 100644
---- a/hw/hyperv/vmbus.c
-+++ b/hw/hyperv/vmbus.c
-@@ -2453,9 +2453,9 @@ static void vmbus_unrealize(BusState *bus)
-     qemu_mutex_destroy(&vmbus->rx_queue_lock);
- }
+diff --git a/hw/input/adb.c b/hw/input/adb.c
+index 0f3c73d6d00..98f39b4281a 100644
+--- a/hw/input/adb.c
++++ b/hw/input/adb.c
+@@ -231,9 +231,9 @@ static const VMStateDescription vmstate_adb_bus = {
+     }
+ };
  
--static void vmbus_reset(BusState *bus)
-+static void vmbus_reset_hold(Object *obj)
+-static void adb_bus_reset(BusState *qbus)
++static void adb_bus_reset_hold(Object *obj)
  {
--    vmbus_deinit(VMBUS(bus));
-+    vmbus_deinit(VMBUS(obj));
- }
+-    ADBBusState *adb_bus = ADB_BUS(qbus);
++    ADBBusState *adb_bus = ADB_BUS(obj);
  
- static char *vmbus_get_dev_path(DeviceState *dev)
-@@ -2476,12 +2476,13 @@ static char *vmbus_get_fw_dev_path(DeviceState *dev)
- static void vmbus_class_init(ObjectClass *klass, void *data)
+     adb_bus->autopoll_enabled = false;
+     adb_bus->autopoll_mask = 0xffff;
+@@ -262,10 +262,11 @@ static void adb_bus_unrealize(BusState *qbus)
+ static void adb_bus_class_init(ObjectClass *klass, void *data)
  {
      BusClass *k = BUS_CLASS(klass);
 +    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
-     k->get_dev_path = vmbus_get_dev_path;
-     k->get_fw_dev_path = vmbus_get_fw_dev_path;
-     k->realize = vmbus_realize;
-     k->unrealize = vmbus_unrealize;
--    k->reset = vmbus_reset;
-+    rc->phases.hold = vmbus_reset_hold;
+     k->realize = adb_bus_realize;
+     k->unrealize = adb_bus_unrealize;
+-    k->reset = adb_bus_reset;
++    rc->phases.hold = adb_bus_reset_hold;
  }
  
- static int vmbus_pre_load(void *opaque)
+ static const TypeInfo adb_bus_type_info = {
 -- 
 2.34.1
 
