@@ -2,88 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF9A8474DE
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 17:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73718847512
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 17:39:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVwTy-0007IS-V1; Fri, 02 Feb 2024 11:33:38 -0500
+	id 1rVwYa-0001kQ-8A; Fri, 02 Feb 2024 11:38:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVwTv-0007I1-Na
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:33:35 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVwTt-0007d1-Ti
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:33:35 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-55a035669d5so3354540a12.2
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 08:33:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706891611; x=1707496411; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9LdZ7rTnVWaosibzs/+L1FpeFFK86dFXb7hh0F2lbe0=;
- b=XTnVzl/iGEWYqlmUCETpdhHdrfLpwp8SMkp+E8kJyt/2NrX6u2HP1kyeahc7bsKbMh
- nOZJrD9Kaxb+qprJD20MzJ3FcY0T5kzCymClqSpVKY0bHLWESjUgkjVSenr3Wsoi0/fK
- Kd2GOv9+wpc9EcK/bWzG//govE9S1ukLDZhP9Z3zOyPBU68O7jFQAb09hTSqpTpnP3EM
- DtCTdzanOcNXVfnFOIKD85QIOYxhehHebLF0pf39fUyUel9edn8uoJqVWC5iPhsBzryR
- 8hEZOGIYfEwexYQsPM3LDH58hTmJPKZRuBmXyyJPbBMW5PjK3bIJ0Ux+haCcLiMR8dPt
- ubTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706891611; x=1707496411;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9LdZ7rTnVWaosibzs/+L1FpeFFK86dFXb7hh0F2lbe0=;
- b=FZF5ldoCKuMOXpMlhq8sINd8Utg2hQY0vrkLZA0cPtjhmAuhr3Medlvnk58RDfNi3j
- rCpUOmAxHn35IsJ744Ns7EpkINo9M+TjaJxFTSY1MJmZ3CHpa1O7ck+eV+/vPqcp7OYX
- kB8/PMRTo+ubdaRJvGn0UUc2vT1vtFb/xJfsTOyCcohHZihF4avaMOmFZu/heP2a23Qy
- NL7SKclou1WKnvJJj2tGmaqtSsXxHV+JhidqTv21Jq8n4wDxudT00S7VXfO2wKLb+npa
- w3A+2B7kmGn8+ajU/1vuuUOOSRl2tcyOcqStrCt00oS9UilmgFTSylwvtpBWHNzoOToj
- 9TMA==
-X-Gm-Message-State: AOJu0YxXKkQOJvZ50TNl3K4gjy4a8+gbwjyT8o1JJgyAJrtNjRnHJq3T
- MeLvrmcTlnVxzYEU7L77azvLnSm7U9Hw+FlOkEclwipO3tkFe9yf5eGLOfvGI472NEwKvB2KHHW
- U63m4Upp6LZwtlE8sSVRIEbvPD3a4xpofyJCailOUm/ZdX6wI
-X-Google-Smtp-Source: AGHT+IEkuQlF2nzi7pqzt6rtEWIlxA9lyO3nPuKmyFQIY/i7wWrNdMAS4XMS4MFp2yEFCWNSw9QDPeR5Y8FvIiylZl8=
-X-Received: by 2002:aa7:d71a:0:b0:55f:fd77:7b2d with SMTP id
- t26-20020aa7d71a000000b0055ffd777b2dmr141937edq.5.1706891611313; Fri, 02 Feb
- 2024 08:33:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVwYX-0001k2-0T
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:38:21 -0500
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from
+ <BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1rVwYI-0001YP-SA
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 11:38:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=yRiD8Qlk372+ZFme0AMNy/sLNCBp3tPRv6qgSu2Rq2E=; b=DnyShdKqPXjoYjRJDn9jsboprK
+ n8Kvyi1a5fp95l8/iNV/J3rR7SHey64l40/59TyY2jUI5ZoFS5jFluuTjWc6B2E158b/cqYIEfACb
+ Jo/iso6RAHkGTXdl1P7xnZxTUjJQAL9bqzju2T6TCg/Lft/QeGA0qTlttpYO6/8+Gsqq9Z6K0I8Cw
+ BbV/Cqq2kQpSqVvW3cwdz/EP/m1wdhYHPWDaeq9ekT1CQaRwGMI5rzrOwTMmh5vnOTcQT32m+PTK0
+ K5HDPJLYpHQkhjt61NgCs9POHOOGBGFhLe6pjbmjuwZKrpmtkA1m9GQATI1tpZqT8D1NxQCXj6ap2
+ wiY5n4eg==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+ by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+ id 1rVwYE-00000001Y1L-0jgo; Fri, 02 Feb 2024 16:38:03 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red
+ Hat Linux)) id 1rVwYD-00000003pu2-16Jg;
+ Fri, 02 Feb 2024 16:38:01 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: [PULL v2 00/47] nic-config-2 queue
+Date: Fri,  2 Feb 2024 16:38:00 +0000
+Message-ID: <20240202163801.914495-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CAFEAcA-rgFmaE4Ea7hZ-On4uyaqjWoo-OwwfNrUOdp=+Q5ckXA@mail.gmail.com>
- <20240201140100.000016ce@huawei.com>
- <CAFEAcA9DW8AuMwDr_qyDXPWJcLsvD773XTr1stwuagHWc6p72g@mail.gmail.com>
- <87msskkyce.fsf@draig.linaro.org>
- <CAFEAcA_a_AyQ=Epz3_+CheAT8Crsk9mOu894wbNW_FywamkZiw@mail.gmail.com>
- <20240201162150.000022cf@huawei.com> <87h6iskuad.fsf@draig.linaro.org>
- <20240201170822.00005bad@Huawei.com> <87r0hwjdvl.fsf@draig.linaro.org>
- <CAFEAcA_xDH=rZzXnjNMQTKGJ+-E4Q=A_bEtKLgYYx6x04h0Jkw@mail.gmail.com>
- <ZbvpSaOXzZkqDd6c@memverge.com> <20240202162633.0000453c@huawei.com>
-In-Reply-To: <20240202162633.0000453c@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Feb 2024 16:33:20 +0000
-Message-ID: <CAFEAcA-32--EmbzewL8WfAPanoWQ-eRpkjKuDLc5uV04wpOCpw@mail.gmail.com>
-Subject: Re: Crash with CXL + TCG on 8.2: Was Re: qemu cxl memory expander
- shows numa_node -1
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gregory Price <gregory.price@memverge.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Sajjan Rao <sajjanr@gmail.com>,
- Dimitrios Palyvos <dimitrios.palyvos@zptcorp.com>, 
- linux-cxl@vger.kernel.org, qemu-devel@nongnu.org, 
- richard.henderson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+836f8942eaadfea8137c+7467+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,60 +73,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2 Feb 2024 at 16:26, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> New exciting trace...
-> Thread 5 "qemu-system-x86" received signal SIGABRT, Aborted.
-> [Switching to Thread 0x7ffff4efe6c0 (LWP 16503)]
-> __pthread_kill_implementation (no_tid=0, signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:44
-> Download failed: Invalid argument.  Continuing without source file ./nptl/./nptl/pthread_kill.c.
-> 44      ./nptl/pthread_kill.c: No such file or directory.
-> (gdb) bt
-> #0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:44
-> #1  __pthread_kill_internal (signo=6, threadid=<optimized out>) at ./nptl/pthread_kill.c:78
-> #2  __GI___pthread_kill (threadid=<optimized out>, signo=signo@entry=6) at ./nptl/pthread_kill.c:89
-> #3  0x00007ffff77c43b6 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
-> #4  0x00007ffff77aa87c in __GI_abort () at ./stdlib/abort.c:79
-> #5  0x00007ffff7b2ed1e in  () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
-> #6  0x00007ffff7b9622e in g_assertion_message_expr () at /lib/x86_64-linux-gnu/libglib-2.0.so.0
-> #7  0x0000555555ab1929 in bql_lock_impl (file=0x555556049122 "../../accel/tcg/cputlb.c", line=2033) at ../../system/cpus.c:524
-> #8  bql_lock_impl (file=file@entry=0x555556049122 "../../accel/tcg/cputlb.c", line=line@entry=2033) at ../../system/cpus.c:520
-> #9  0x0000555555c9f7d6 in do_ld_mmio_beN (cpu=0x5555578e0cb0, full=0x7ffe88012950, ret_be=ret_be@entry=0, addr=19595792376, size=size@entry=8, mmu_idx=4, type=MMU_DATA_LOAD, ra=0) at ../../accel/tcg/cputlb.c:2033
-> #10 0x0000555555ca0fbd in do_ld_8 (cpu=cpu@entry=0x5555578e0cb0, p=p@entry=0x7ffff4efd1d0, mmu_idx=<optimized out>, type=type@entry=MMU_DATA_LOAD, memop=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:2356
-> #11 0x0000555555ca341f in do_ld8_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=19595792376, oi=oi@entry=52, ra=0, ra@entry=52, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2439
-> #12 0x0000555555ca5f59 in cpu_ldq_mmu (ra=52, oi=52, addr=19595792376, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:169
-> #13 cpu_ldq_le_mmuidx_ra (env=0x5555578e3470, addr=19595792376, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:301
-> #14 0x0000555555b4b5fc in ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:98
-> #15 ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:93
-> #16 mmu_translate (env=env@entry=0x5555578e3470, in=0x7ffff4efd3e0, out=0x7ffff4efd3b0, err=err@entry=0x7ffff4efd3c0, ra=ra@entry=0) at ../../target/i386/tcg/sysemu/excp_helper.c:174
-> #17 0x0000555555b4c4b3 in get_physical_address (ra=0, err=0x7ffff4efd3c0, out=0x7ffff4efd3b0, mmu_idx=0, access_type=MMU_DATA_LOAD, addr=18446741874686299840, env=0x5555578e3470) at ../../target/i386/tcg/sysemu/excp_helper.c:580
-> #18 x86_cpu_tlb_fill (cs=0x5555578e0cb0, addr=18446741874686299840, size=<optimized out>, access_type=MMU_DATA_LOAD, mmu_idx=0, probe=<optimized out>, retaddr=0) at ../../target/i386/tcg/sysemu/excp_helper.c:606
-> #19 0x0000555555ca0ee9 in tlb_fill (retaddr=0, mmu_idx=0, access_type=MMU_DATA_LOAD, size=<optimized out>, addr=18446741874686299840, cpu=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1315
-> #20 mmu_lookup1 (cpu=cpu@entry=0x5555578e0cb0, data=data@entry=0x7ffff4efd540, mmu_idx=0, access_type=access_type@entry=MMU_DATA_LOAD, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:1713
-> #21 0x0000555555ca2c61 in mmu_lookup (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1803
-> #22 0x0000555555ca3165 in do_ld4_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2416
-> #23 0x0000555555ca5ef9 in cpu_ldl_mmu (ra=0, oi=32, addr=18446741874686299840, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:158
-> #24 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555578e3470, addr=addr@entry=18446741874686299840, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:294
-> #25 0x0000555555bb6cdd in do_interrupt64 (is_hw=1, next_eip=18446744072399775809, error_code=0, is_int=0, intno=236, env=0x5555578e3470) at ../../target/i386/tcg/seg_helper.c:889
-> #26 do_interrupt_all (cpu=cpu@entry=0x5555578e0cb0, intno=236, is_int=is_int@entry=0, error_code=error_code@entry=0, next_eip=next_eip@entry=0, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1130
-> #27 0x0000555555bb87da in do_interrupt_x86_hardirq (env=env@entry=0x5555578e3470, intno=<optimized out>, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1162
-> #28 0x0000555555b5039c in x86_cpu_exec_interrupt (cs=0x5555578e0cb0, interrupt_request=<optimized out>) at ../../target/i386/tcg/sysemu/seg_helper.c:197
-> #29 0x0000555555c94480 in cpu_handle_interrupt (last_tb=<synthetic pointer>, cpu=0x5555578e0cb0) at ../../accel/tcg/cpu-exec.c:844
-> #30 cpu_exec_loop (cpu=cpu@entry=0x5555578e0cb0, sc=sc@entry=0x7ffff4efd7b0) at ../../accel/tcg/cpu-exec.c:951
-> #31 0x0000555555c94791 in cpu_exec_setjmp (cpu=cpu@entry=0x5555578e0cb0, sc=sc@entry=0x7ffff4efd7b0) at ../../accel/tcg/cpu-exec.c:1029
-> #32 0x0000555555c94f7c in cpu_exec (cpu=cpu@entry=0x5555578e0cb0) at ../../accel/tcg/cpu-exec.c:1055
-> #33 0x0000555555cb9043 in tcg_cpu_exec (cpu=cpu@entry=0x5555578e0cb0) at ../../accel/tcg/tcg-accel-ops.c:76
-> #34 0x0000555555cb91a0 in mttcg_cpu_thread_fn (arg=arg@entry=0x5555578e0cb0) at ../../accel/tcg/tcg-accel-ops-mttcg.c:95
-> #35 0x0000555555e57270 in qemu_thread_start (args=0x555557956000) at ../../util/qemu-thread-posix.c:541
-> #36 0x00007ffff78176ba in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:444
-> #37 0x00007ffff78a60d0 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
->
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Here we are trying to take an interrupt. This isn't related to the
-other can_do_io stuff, it's happening because do_ld_mmio_beN assumes
-it's called with the BQL not held, but in fact there are some
-situations where we call into the memory subsystem and we do
-already have the BQL.
+The following changes since commit c3709fde5955d13f6d4f86ab46ef3cc2288ca65e:
 
--- PMM
+  Merge tag 'pull-aspeed-20240201' of https://github.com/legoater/qemu into staging (2024-02-01 14:42:11 +0000)
+
+are available in the Git repository at:
+
+  git://git.infradead.org/users/dwmw2/qemu.git tags/pull-nic-config-2-20240202
+
+for you to fetch changes up to e8c5c4525cbbd7207c085732cfd1e67d8f3d662a:
+
+  net: make nb_nics and nd_table[] static in net/net.c (2024-02-02 16:23:48 +0000)
+
+----------------------------------------------------------------
+Rework matching of network devices to -nic options (v2)
+
+----------------------------------------------------------------
+David Woodhouse (47):
+      net: add qemu_{configure,create}_nic_device(), qemu_find_nic_info()
+      net: report list of available models according to platform
+      net: add qemu_create_nic_bus_devices()
+      hw/pci: add pci_init_nic_devices(), pci_init_nic_in_slot()
+      hw/i386/pc: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/xen: use qemu_create_nic_bus_devices() to instantiate Xen NICs
+      hw/alpha/dp264: use pci_init_nic_devices()
+      hw/arm/sbsa-ref: use pci_init_nic_devices()
+      hw/arm/virt: use pci_init_nic_devices()
+      hw/hppa: use pci_init_nic_devices()
+      hw/loongarch: use pci_init_nic_devices()
+      hw/mips/fuloong2e: use pci_init_nic_devices()
+      hw/mips/malta: use pci_init_nic_devices()
+      hw/mips/loongson3_virt: use pci_init_nic_devices()
+      hw/ppc/prep: use pci_init_nic_devices()
+      hw/ppc/spapr: use qemu_get_nic_info() and pci_init_nic_devices()
+      hw/ppc: use pci_init_nic_devices()
+      hw/sh4/r2d: use pci_init_nic_devices()
+      hw/sparc64/sun4u: use pci_init_nic_devices()
+      hw/xtensa/virt: use pci_init_nic_devices()
+      hw/arm/allwinner: use qemu_configure_nic_device()
+      hw/arm/aspeed: use qemu_configure_nic_device()
+      hw/arm/exynos4: use qemu_create_nic_device()
+      hw/arm/fsl: use qemu_configure_nic_device()
+      hw/net/smc91c111: use qemu_configure_nic_device()
+      hw/net/lan9118: use qemu_configure_nic_device()
+      hw/arm/highbank: use qemu_create_nic_device()
+      hw/arm/npcm7xx: use qemu_configure_nic_device, allow emc0/emc1 as aliases
+      hw/arm/stellaris: use qemu_find_nic_info()
+      hw/arm: use qemu_configure_nic_device()
+      hw/net/etraxfs-eth: use qemu_configure_nic_device()
+      hw/m68k/mcf5208: use qemu_create_nic_device()
+      hw/m68k/q800: use qemu_find_nic_info()
+      hw/microblaze: use qemu_configure_nic_device()
+      hw/mips/mipssim: use qemu_create_nic_device()
+      hw/mips/jazz: use qemu_find_nic_info()
+      hw/net/lasi_i82596: Re-enable build
+      hw/net/lasi_i82596: use qemu_create_nic_device()
+      hw/openrisc/openrisc_sim: use qemu_create_nic_device()
+      hw/riscv: use qemu_configure_nic_device()
+      hw/s390x/s390-virtio-ccw: use qemu_create_nic_device()
+      hw/sparc/sun4m: use qemu_find_nic_info()
+      hw/xtensa/xtfpga: use qemu_create_nic_device()
+      net: remove qemu_check_nic_model()
+      hw/pci: remove pci_nic_init_nofail()
+      net: remove qemu_show_nic_models(), qemu_find_nic_model()
+      net: make nb_nics and nd_table[] static in net/net.c
+
+ hw/alpha/dp264.c                         |   4 +-
+ hw/arm/allwinner-a10.c                   |   6 +-
+ hw/arm/allwinner-h3.c                    |   6 +-
+ hw/arm/allwinner-r40.c                   |  27 +---
+ hw/arm/aspeed.c                          |   9 +-
+ hw/arm/exynos4_boards.c                  |   6 +-
+ hw/arm/fsl-imx25.c                       |   2 +-
+ hw/arm/fsl-imx6.c                        |   2 +-
+ hw/arm/fsl-imx6ul.c                      |   2 +-
+ hw/arm/fsl-imx7.c                        |   2 +-
+ hw/arm/gumstix.c                         |   6 +-
+ hw/arm/highbank.c                        |  12 +-
+ hw/arm/integratorcp.c                    |   5 +-
+ hw/arm/kzm.c                             |   4 +-
+ hw/arm/mainstone.c                       |   3 +-
+ hw/arm/mps2-tz.c                         |   8 +-
+ hw/arm/mps2.c                            |   2 +-
+ hw/arm/msf2-soc.c                        |   6 +-
+ hw/arm/musicpal.c                        |   3 +-
+ hw/arm/npcm7xx.c                         |  16 +-
+ hw/arm/realview.c                        |  25 ++-
+ hw/arm/sbsa-ref.c                        |   4 +-
+ hw/arm/stellaris.c                       |  30 +++-
+ hw/arm/versatilepb.c                     |  15 +-
+ hw/arm/vexpress.c                        |   4 +-
+ hw/arm/virt.c                            |   4 +-
+ hw/arm/xilinx_zynq.c                     |  11 +-
+ hw/arm/xlnx-versal.c                     |   7 +-
+ hw/arm/xlnx-zynqmp.c                     |   8 +-
+ hw/cris/axis_dev88.c                     |   9 +-
+ hw/hppa/machine.c                        |  12 +-
+ hw/i386/pc.c                             |  38 +++--
+ hw/i386/pc_piix.c                        |   2 +-
+ hw/i386/pc_q35.c                         |   2 +-
+ hw/loongarch/virt.c                      |   4 +-
+ hw/m68k/mcf5208.c                        |  19 +--
+ hw/m68k/q800.c                           |  29 ++--
+ hw/microblaze/petalogix_ml605_mmu.c      |   3 +-
+ hw/microblaze/petalogix_s3adsp1800_mmu.c |   3 +-
+ hw/mips/fuloong2e.c                      |  16 +-
+ hw/mips/jazz.c                           |  15 +-
+ hw/mips/loongson3_virt.c                 |   4 +-
+ hw/mips/malta.c                          |  15 +-
+ hw/mips/mipssim.c                        |  13 +-
+ hw/net/etraxfs_eth.c                     |   5 +-
+ hw/net/lan9118.c                         |   5 +-
+ hw/net/lasi_i82596.c                     |  13 +-
+ hw/net/meson.build                       |   2 +-
+ hw/net/smc91c111.c                       |   5 +-
+ hw/openrisc/openrisc_sim.c               |  18 +--
+ hw/pci/pci.c                             |  73 +++------
+ hw/ppc/e500.c                            |   4 +-
+ hw/ppc/mac_newworld.c                    |   4 +-
+ hw/ppc/mac_oldworld.c                    |   4 +-
+ hw/ppc/ppc440_bamboo.c                   |  14 +-
+ hw/ppc/prep.c                            |   8 +-
+ hw/ppc/spapr.c                           |  18 +--
+ hw/riscv/microchip_pfsoc.c               |  14 +-
+ hw/riscv/sifive_u.c                      |   7 +-
+ hw/s390x/s390-virtio-ccw.c               |  11 +-
+ hw/sh4/r2d.c                             |   6 +-
+ hw/sparc/sun4m.c                         |  20 ++-
+ hw/sparc64/sun4u.c                       |  27 +---
+ hw/xen/xen-bus.c                         |   6 +-
+ hw/xen/xen_devconfig.c                   |  25 ---
+ hw/xenpv/xen_machine_pv.c                |   9 --
+ hw/xtensa/virt.c                         |   4 +-
+ hw/xtensa/xtfpga.c                       |  13 +-
+ include/hw/cris/etraxfs.h                |   2 +-
+ include/hw/i386/pc.h                     |   4 +-
+ include/hw/net/lan9118.h                 |   2 +-
+ include/hw/net/lasi_82596.h              |   4 +-
+ include/hw/net/ne2000-isa.h              |   2 -
+ include/hw/net/smc91c111.h               |   2 +-
+ include/hw/pci/pci.h                     |   7 +-
+ include/hw/xen/xen-bus.h                 |   2 +-
+ include/hw/xen/xen-legacy-backend.h      |   1 -
+ include/net/net.h                        |  70 ++++++++-
+ net/net.c                                | 253 +++++++++++++++++++++++++------
+ system/globals.c                         |   2 -
+ tests/qtest/npcm7xx_emc-test.c           |  18 +--
+ 81 files changed, 547 insertions(+), 560 deletions(-)
 
