@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A367846DF6
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:31:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741A6846DF0
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 11:30:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVqoA-0008Co-EL; Fri, 02 Feb 2024 05:30:06 -0500
+	id 1rVqoJ-0008Du-0c; Fri, 02 Feb 2024 05:30:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqo5-0008CV-Rs
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqoF-0008DM-K0
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:11 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqo4-0001c5-BJ
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:01 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rVqoE-0001oo-4N
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 05:30:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1706869799;
+ s=mimecast20190719; t=1706869809;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B2hVNr5Dad1adIDm1bSbcW5cF6eL0qWPX8iO45Hx+VI=;
- b=Z22dsqa+WjLjfpJO/32EohYlIEC8ejU8JJ5gArmrilKHrhHlPQDEDEa8CdmvGqqu+P91Su
- 4AM7/Z7vxH4M5gKAA6q0aFyswt9l0Oankg4NYKOItRWVK6ZNoyRSbEvrSxXiFOzbU9a9eW
- HwRynx91Sq6T6NzhVbJRhAOgCsGpPCk=
+ bh=ZezFfAc9khgs7hj27BwXSI87lihBOShkrXxYtsGi1i8=;
+ b=QX14E3GX8CiDo5VQwKJgufEBBzjCa63B7kwp5O5suh6/5NnWPW/TQhA6bQVcgeIb/3FVUz
+ 5N5CIc+E207+E+/Eo/ivJQftH4qpDV9fv+cO54+A6ctqU1+wtB6dnRJR/yNXIKg1WqqD0v
+ MOUcbKS2W5JA76V3M+Ei6jW5iFCpYaY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-47-lLAjFLQtPFK4mHBCAWpvvA-1; Fri, 02 Feb 2024 05:29:56 -0500
-X-MC-Unique: lLAjFLQtPFK4mHBCAWpvvA-1
+ us-mta-175-eTppH7PPPISzg2vN_vHX6g-1; Fri, 02 Feb 2024 05:30:01 -0500
+X-MC-Unique: eTppH7PPPISzg2vN_vHX6g-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C58768353E1;
- Fri,  2 Feb 2024 10:29:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B161085A58F;
+ Fri,  2 Feb 2024 10:30:00 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C339440CD14B;
- Fri,  2 Feb 2024 10:29:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 94F1540C95AD;
+ Fri,  2 Feb 2024 10:29:56 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@bytedance.com>,
  Bryan Zhang <bryan.zhang@bytedance.com>, Fabiano Rosas <farosas@suse.de>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Yuan Liu <yuan1.liu@intel.com>, Prasad Pandit <ppandit@redhat.com>
-Subject: [PATCH v2 07/23] migration/multifd: Simplify locking in sender thread
-Date: Fri,  2 Feb 2024 18:28:41 +0800
-Message-ID: <20240202102857.110210-8-peterx@redhat.com>
+Subject: [PATCH v2 08/23] migration/multifd: Drop pages->num check in sender
+ thread
+Date: Fri,  2 Feb 2024 18:28:42 +0800
+Message-ID: <20240202102857.110210-9-peterx@redhat.com>
 In-Reply-To: <20240202102857.110210-1-peterx@redhat.com>
 References: <20240202102857.110210-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,92 +82,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-The sender thread will yield the p->mutex before IO starts, trying to not
-block the requester thread.  This may be unnecessary lock optimizations,
-because the requester can already read pending_job safely even without the
-lock, because the requester is currently the only one who can assign a
-task.
+Now with a split SYNC handler, we always have pages->num set for
+pending_job==true.  Assert it instead.
 
-Drop that lock complication on both sides:
-
-  (1) in the sender thread, always take the mutex until job done
-  (2) in the requester thread, check pending_job clear lockless
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ migration/multifd.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index ea25bbe6bd..4d5a01ed93 100644
+index 4d5a01ed93..518f9de723 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -429,7 +429,9 @@ static int multifd_send_pages(void)
-         return -1;
-     }
+@@ -710,13 +710,14 @@ static void *multifd_send_thread(void *opaque)
+                 p->iovs_num = 1;
+             }
  
-+    /* We wait here, until at least one channel is ready */
-     qemu_sem_wait(&multifd_send_state->channels_ready);
+-            if (pages->num) {
+-                ret = multifd_send_state->ops->send_prepare(p, &local_err);
+-                if (ret != 0) {
+-                    qemu_mutex_unlock(&p->mutex);
+-                    break;
+-                }
++            assert(pages->num);
 +
-     /*
-      * next_channel can remain from a previous migration that was
-      * using more channels, so ensure it doesn't overflow if the
-@@ -441,17 +443,26 @@ static int multifd_send_pages(void)
-             return -1;
-         }
-         p = &multifd_send_state->params[i];
--        qemu_mutex_lock(&p->mutex);
-+        /*
-+         * Lockless read to p->pending_job is safe, because only multifd
-+         * sender thread can clear it.
-+         */
-         if (qatomic_read(&p->pending_job) == false) {
--            qatomic_set(&p->pending_job, true);
-             next_channel = (i + 1) % migrate_multifd_channels();
-             break;
-         }
--        qemu_mutex_unlock(&p->mutex);
-     }
++            ret = multifd_send_state->ops->send_prepare(p, &local_err);
++            if (ret != 0) {
++                qemu_mutex_unlock(&p->mutex);
++                break;
+             }
 +
-+    qemu_mutex_lock(&p->mutex);
-     assert(!p->pages->num);
-     assert(!p->pages->block);
--
-+    /*
-+     * Double check on pending_job==false with the lock.  In the future if
-+     * we can have >1 requester thread, we can replace this with a "goto
-+     * retry", but that is for later.
-+     */
-+    assert(qatomic_read(&p->pending_job) == false);
-+    qatomic_set(&p->pending_job, true);
-     p->packet_num = multifd_send_state->packet_num++;
-     multifd_send_state->pages = p->pages;
-     p->pages = pages;
-@@ -709,8 +720,6 @@ static void *multifd_send_thread(void *opaque)
              multifd_send_fill_packet(p);
              p->num_packets++;
              p->total_normal_pages += pages->num;
--            qemu_mutex_unlock(&p->mutex);
--
-             trace_multifd_send(p->id, packet_num, pages->num, p->flags,
-                                p->next_packet_size);
- 
-@@ -730,6 +739,7 @@ static void *multifd_send_thread(void *opaque)
-             ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num, NULL,
-                                               0, p->write_flags, &local_err);
-             if (ret != 0) {
-+                qemu_mutex_unlock(&p->mutex);
-                 break;
-             }
- 
-@@ -738,7 +748,6 @@ static void *multifd_send_thread(void *opaque)
- 
-             multifd_pages_reset(p->pages);
-             p->next_packet_size = 0;
--            qemu_mutex_lock(&p->mutex);
-             qatomic_set(&p->pending_job, false);
-             qemu_mutex_unlock(&p->mutex);
-         } else if (qatomic_read(&p->pending_sync)) {
 -- 
 2.43.0
 
