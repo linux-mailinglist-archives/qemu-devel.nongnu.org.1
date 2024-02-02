@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5DE846791
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87838467A5
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:55:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmSB-0001C9-3j; Fri, 02 Feb 2024 00:51:07 -0500
+	id 1rVmSE-0001CW-7Y; Fri, 02 Feb 2024 00:51:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmS8-0001Bs-QM
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:04 -0500
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rVmSC-0001CO-DN
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:08 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmS7-0001gP-2j
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:04 -0500
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6ddcfda697cso1373119b3a.2
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:02 -0800 (PST)
+ id 1rVmS9-0001gy-2V
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:06 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6ddc5faeb7fso1441422b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853062; x=1707457862; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853063; x=1707457863; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Nvj1miDV4d0e4aC2ZaNqUMG+jiO2D2TtjbXo5NKm+xI=;
- b=udJ5MTjalup/znrV01+HT2HHuBlifRHAAwQcOvkdb9QPs3pX/W5v/zVmQfae1J18Uc
- hGUTDcanSfHFsEgXv/XwB52NAMNqHa1qIo58bn0sRx07W4G6wC3UYrfYCPQJDlahQCxE
- XNLdJ0dIn9rt+4Lx77AfVylGqbDfFsI3tjN/riXEvZOr6VdrrRl62JvD1uXtY/xZj0cM
- iKARpTvgm8r0gghHnaXWJhB9oeeh5VIl4NUQLGkFEtPBwJ9V4sKkJeEHpUJPlDaDlhVF
- msolhVhh7GWRfNzXrXmEJstq3UOZvj/VvVNtysRnaXoIuY0las7Pa+d056qfFAx90D+h
- TVfQ==
+ bh=qhgRzqqv/s/Iq4v6+M5jYHJ7Q0ZBinPRbaKXKXc9JsM=;
+ b=Vpv9DpClyoAwEQVHT9X6/F1Pfd7RzfLgWqsnrGs2bIRbbXIcOtVqPwYA19T5h1TxS9
+ yaGMU6LJNKbzipykA5+rofisntFUsuILVpvPYUtKAPCdnTxsmMIgIqQnew8z0VnZUI+H
+ xpRFoSCAaDm1MMSdzCuBhrrw0cnuerIV3pqFjESoCqIOyd9iiP17/DD4JfmcLzWU6t+F
+ M9vywLtrxnbko6sPf1lW+bxwQiw24mvEDY+4WjLoq3X7zYQJjI1CLxJ0jOIbR0zIcQVn
+ OEJJM6QpU6jsT+eTUiqLsAi71j25S59y6riYOh6BRAosI6XZ7ese5gxUDk5qwNx5q2up
+ ImHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853062; x=1707457862;
+ d=1e100.net; s=20230601; t=1706853063; x=1707457863;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Nvj1miDV4d0e4aC2ZaNqUMG+jiO2D2TtjbXo5NKm+xI=;
- b=afzdqYFJzZ2XnC5yjQC8CD/FNQsXFtQWP7yPR5M2JU23kv9lm03bVds2Qc37PsKDZO
- M/GsQFK1im5MmGVYtfAqlJHJQawdoujPO2pJTZYMj6kjsSEt0pqR51xNvzNJjibGh27Y
- 6NV7oEGL5DRWMCetDnPLbaNqGekFE6m7Z54N3LUZkJ2jEVwrpqx4ke4+MyMji1nsYiUM
- sPerdS6w3FB94ByIhvxt4d7cWpvltRR/z1pClBwymgJWYcRWKD7sqYWIHT02JsXYTw+f
- Uqp54Mp8jTueE9EZ5Sj3aWDOoAB004mMhZabOp6IuF6jUFj/lIBr1dyH0mMAUxbe4F/s
- F4Gw==
-X-Gm-Message-State: AOJu0Yy1AfLBeTAlbuRO+suxhyjWwn0w3jB0Vux3ImrP2G3QZW7nJErK
- a4FqJycm7eZiaMyd/ajPzPr2cTUcubWb/q6K0GnD5VBWO2nXs8JvlxKdQuXTzf+wrcc2dMMKvMJ
- kWuY=
-X-Google-Smtp-Source: AGHT+IFtNLv1eOyVKzCDtTR7jPFM4IA9yXy+AwbWb3RSb89DKVcD3BgQK036qdgX/cKwxAb/NaTTMQ==
-X-Received: by 2002:a62:cdca:0:b0:6dd:c61e:2026 with SMTP id
- o193-20020a62cdca000000b006ddc61e2026mr7402503pfg.9.1706853061701; 
- Thu, 01 Feb 2024 21:51:01 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCXRsuNE6gMFdIYwCiZ8pkv8TEZiTHBhzVURFjm7PQHRdv883hJ8FKIjnwq97yrUp2Dvgf7jlPeHnGPq5bfkGSeTEg==
+ bh=qhgRzqqv/s/Iq4v6+M5jYHJ7Q0ZBinPRbaKXKXc9JsM=;
+ b=ZDeL1fPvD1uxElFTclek7N0VLt8G2HE/ikacfTE/3tExKWTQB4l8igoN0YEtkKNXnz
+ ZThMX6P4Ic7DPkKzdI5mnZgqFOtadkj2nUt1RIsDyVWtZTWdzqPRcRn5knPOpya9P8Ye
+ FXPW9vwf/ZMzCHrXagC18Dg+y9HtOcT93oSY+xmzcTBt2WlUesg9aXwE7tZNmdPxORwz
+ pPF1AYiYn6cBYu+JvW9ViCRnTF8RwxGQlWZMpb5qk0XOvwO2nKemQfyV5lk2v/cGNaTP
+ nN9yDFIBtoZ7GVZa521kAGKBp0fn2NEpC/a5BpJg79ZUB5EZkzVRMPuDlad1Qbjop/Mb
+ pefg==
+X-Gm-Message-State: AOJu0YwdTcVWnawxm4B1Pg+0DkjZ3ENJXSpgKdERyqT0VOPd3+G0PY1r
+ 1p05RX6/t5+tx3gwGIfco/RWe1inMcPDm6FLiuEpcz9o7IzwkqVnwuFvTVxpv0KHN7eyFeIKh3e
+ RaoU=
+X-Google-Smtp-Source: AGHT+IHlLedb+90ytSvxU8vznETy98ZnPOnnihBo9YDTnH9W7A1xbKOCM9ePUcSvbutZDcLcopUKFg==
+X-Received: by 2002:aa7:86d2:0:b0:6de:3319:ac22 with SMTP id
+ h18-20020aa786d2000000b006de3319ac22mr7553191pfo.2.1706853063710; 
+ Thu, 01 Feb 2024 21:51:03 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.59
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:01 -0800 (PST)
+ Thu, 01 Feb 2024 21:51:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/57] target/hppa: Populate CPUClass.mmu_index
-Date: Fri,  2 Feb 2024 15:49:48 +1000
-Message-Id: <20240202055036.684176-11-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/57] target/i386: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:49:49 +1000
+Message-Id: <20240202055036.684176-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,67 +92,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h |  7 ++-----
- target/hppa/cpu.c | 12 ++++++++++++
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ target/i386/cpu.h | 13 ++++++-------
+ target/i386/cpu.c | 10 ++++++++++
+ 2 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 6a153405d2..04439f247d 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -281,16 +281,13 @@ static inline int HPPA_BTLB_ENTRIES(CPUHPPAState *env)
-     return hppa_is_pa20(env) ? 0 : PA10_BTLB_FIXED + PA10_BTLB_VARIABLE;
- }
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 7f0786e8b9..62bdb02378 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2296,13 +2296,6 @@ uint64_t cpu_get_tsc(CPUX86State *env);
+ #define MMU_NESTED_IDX  3
+ #define MMU_PHYS_IDX    4
  
-+int hppa_cpu_mmu_index(CPUState *cs, bool ifetch);
- static inline int cpu_mmu_index(CPUHPPAState *env, bool ifetch)
+-static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
+-{
+-    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
+-        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
+-        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
+-}
+-
+ static inline int cpu_mmu_index_kernel(CPUX86State *env)
  {
- #ifdef CONFIG_USER_ONLY
-     return MMU_USER_IDX;
- #else
--    if (env->psw & (ifetch ? PSW_C : PSW_D)) {
--        return PRIV_P_TO_MMU_IDX(env->iaoq_f & 3, env->psw & PSW_P);
--    }
--    /* mmu disabled */
--    return env->psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX;
-+    return hppa_cpu_mmu_index(env_cpu(env), ifetch);
+     return !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP_IDX :
+@@ -2322,6 +2315,12 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
+ #include "hw/i386/apic.h"
  #endif
- }
  
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 3c019855b4..fbb37e541e 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -94,6 +94,17 @@ static bool hppa_cpu_has_work(CPUState *cs)
-     return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
- }
- 
-+int hppa_cpu_mmu_index(CPUState *cs, bool ifetch)
++int x86_cpu_mmu_index(CPUState *cs, bool ifetch);
++static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
 +{
-+    CPUHPPAState *env = cpu_env(cs);
-+
-+    if (env->psw & (ifetch ? PSW_C : PSW_D)) {
-+        return PRIV_P_TO_MMU_IDX(env->iaoq_f & 3, env->psw & PSW_P);
-+    }
-+    /* mmu disabled */
-+    return env->psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX;
++    return x86_cpu_mmu_index(env_cpu(env), ifetch);
 +}
 +
- static void hppa_cpu_disas_set_info(CPUState *cs, disassemble_info *info)
+ static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
+                                         uint64_t *cs_base, uint32_t *flags)
  {
-     info->mach = bfd_mach_hppa20;
-@@ -194,6 +205,7 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 03822d9ba8..280bcb7d00 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7720,6 +7720,15 @@ static bool x86_cpu_has_work(CPUState *cs)
+     return x86_cpu_pending_interrupt(cs, cs->interrupt_request) != 0;
+ }
  
-     cc->class_by_name = hppa_cpu_class_by_name;
-     cc->has_work = hppa_cpu_has_work;
-+    cc->mmu_index = hppa_cpu_mmu_index;
-     cc->dump_state = hppa_cpu_dump_state;
-     cc->set_pc = hppa_cpu_set_pc;
-     cc->get_pc = hppa_cpu_get_pc;
++int x86_cpu_mmu_index(CPUState *cs, bool ifetch)
++{
++    CPUX86State *env = cpu_env(cs);
++
++    return (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER_IDX :
++        (!(env->hflags & HF_SMAP_MASK) || (env->eflags & AC_MASK))
++        ? MMU_KNOSMAP_IDX : MMU_KSMAP_IDX;
++}
++
+ static void x86_disas_set_info(CPUState *cs, disassemble_info *info)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+@@ -7954,6 +7963,7 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
+     cc->class_by_name = x86_cpu_class_by_name;
+     cc->parse_features = x86_cpu_parse_featurestr;
+     cc->has_work = x86_cpu_has_work;
++    cc->mmu_index = x86_cpu_mmu_index;
+     cc->dump_state = x86_cpu_dump_state;
+     cc->set_pc = x86_cpu_set_pc;
+     cc->get_pc = x86_cpu_get_pc;
 -- 
 2.34.1
 
