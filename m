@@ -2,75 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342D684716D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 14:51:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D64B8471BE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:18:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVtx7-0002e7-7b; Fri, 02 Feb 2024 08:51:33 -0500
+	id 1rVuMW-0002NI-TY; Fri, 02 Feb 2024 09:17:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVtx0-0002VI-H5
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 08:51:26 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVtwz-0004rS-1O
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 08:51:26 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55a035669d5so3090847a12.2
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 05:51:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706881883; x=1707486683; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=gbtRmvNq3shEGyYoYnnp/hVL/MwE8wg+HWsl74QhMu0=;
- b=tzbiN3fi3VoaHReOJmJKGxQVVunQspFFWK2H2Z9eqwSEsWjHu9QF815LTic8+I/fuM
- Tca7vShHAJOsNvjynRMQcIESoiN7UpazZgcDy+7ncSLXkIVBqMno48xa76lZO0Lqy9yj
- A0bEf3PeAiGJ7yv45B5Fp2rXSW32km50TXo0i1gyFXlajrpc1SQfGIrl97T6FoG3JV3o
- MQSArXbXzGF2W4yiWWwLKW5p7IiYWGEI4tKRHwZ6xvULz2lKr4JYFw+crPKHrvKhPW+T
- 3+XKdqULcJ2O+GQTYxmYixknjOoJ7CsIeNIXsr88aF+/WiH4VLL4n22zppSPi5H6dOlX
- PArg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706881883; x=1707486683;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gbtRmvNq3shEGyYoYnnp/hVL/MwE8wg+HWsl74QhMu0=;
- b=rUldgv05gg5FGfipQb0Xp+CNYNuQpX7a4JVtBYZcjty7fTcWz5UjNQV55NQ44xKzrZ
- c+xlOKfmoOKO09NqDW4deeAsgALB6I5y7ehXPyyC8qpOoubFfyLAGkpqU9qjxBJXfeoc
- Jy/pHp+GrDDmCUK3vgyWcpHJtjMs7I2p1pwNtGZWUoSbnv13c6suSHttT7RYVpXAEgjA
- fD07lfttUqhNuUQNbTNu18HhJss6Md007mNbiLHpvV70RwiVoWl5Kv2UFFGRhheFVGZk
- JOKu/tfwywMTI1mzejOBAFAkHYjOYNV3Qoza8Phu8/SuXx4YpvWl3PXmeYVbTBoeLeGz
- SeFA==
-X-Gm-Message-State: AOJu0Yw7j1B5UT0QBPNtBQDoF8OD3SHrqD/CFPFCDo0oRMv6KS8YzNlM
- /TMZd1oJsC/1gJL8wAksb9r7nQ7Oi5ZbxVjBYdvz3NY4/lgvEanFH0+vQE9OnHYfMUo5wyaXfiA
- NPbo2faSkx8dWs80uWeJh8LXLHLdZHytFtWeZkQ==
-X-Google-Smtp-Source: AGHT+IGZ6NBcWhnHyc8f9chhazbkb9eGz3krZR1sRf2b6vMrIf7tBWIbxHPjiC1kOaqUifIulk5iuFr17hTuTq0SJ/4=
-X-Received: by 2002:aa7:d505:0:b0:55f:2be4:61d with SMTP id
- y5-20020aa7d505000000b0055f2be4061dmr1333180edq.14.1706881883309; Fri, 02 Feb
- 2024 05:51:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rVuMT-0002Mr-QC; Fri, 02 Feb 2024 09:17:45 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rVuMS-00056R-2u; Fri, 02 Feb 2024 09:17:45 -0500
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 412DbLN3005934; Fri, 2 Feb 2024 14:17:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=WBi/J5dzfRNOfQcH5Ztt1IjyTpNkfpqem2rsFOtHk1A=;
+ b=SHHURLRnH6bT1zlPLbGDeDOQUYnnZeid/i5P4OQbDRu/dnA9lxodhI3K1Beg7ROSDhNn
+ eDvTdOoKXGCrMKiuca7dNJOV3rTIMYe0C2CqFm4UkHFkmioa0cKxx2wy/W18W8J0VwFu
+ hXSnVURd1X7OitomgwYJwt9kncVuU0Y6PmV6+dBL+g0Qhe1tmUaQRGVAJ+SBHlIpIHCf
+ 8Wks3AvTvpxXdFAyMFJLs4HxSgLa0Tl5qyTPhKjfmNwZ7T2NwuHvfNO88gi7A83ibDK1
+ uGjT1phJ8dIG/okuey+SHWDbgeJ9PoJVVmKnKLJxDmTcX0fqfryqGT8guz93FOdRgrZs qw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11egs14w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Feb 2024 14:17:41 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412EEFFW021638;
+ Fri, 2 Feb 2024 14:17:41 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11egs13r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Feb 2024 14:17:40 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 412E7SsV011266; Fri, 2 Feb 2024 14:13:23 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwecm3dsb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 Feb 2024 14:13:23 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 412EDMCR49414498
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 Feb 2024 14:13:22 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 096F720043;
+ Fri,  2 Feb 2024 14:13:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D344F2004D;
+ Fri,  2 Feb 2024 14:13:21 +0000 (GMT)
+Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Feb 2024 14:13:21 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v4 0/4] target/s390x: Emulate CVDG and CVB*
+Date: Fri,  2 Feb 2024 15:11:56 +0100
+Message-ID: <20240202141318.95962-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VaM4g8h26nLIrUeOWwexuKcenqCvkeT2
+X-Proofpoint-ORIG-GUID: cAfLZGxjNgasV0j5icW14KfyBi8Ri0RM
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20240129221807.2983148-1-rayhan.faizel@gmail.com>
-In-Reply-To: <20240129221807.2983148-1-rayhan.faizel@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 Feb 2024 13:51:12 +0000
-Message-ID: <CAFEAcA_=2LoYGsNKMWnKu--suyK3n2jP+UvA4pU-R8vVc9Ag4g@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Add BCM2835-SPI0 to BCM2835
-To: Rayhan Faizel <rayhan.faizel@gmail.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, alistair@alistair23.me, 
- pbonzini@redhat.com, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_08,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=473 phishscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402020104
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,12 +110,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 29 Jan 2024 at 22:19, Rayhan Faizel <rayhan.faizel@gmail.com> wrote:
->
-> This patch series implements the SPI controller for BCM2835 boards.
+v3: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06664.html
+v3 -> v4: Implement CVB error handling (David/Thomas).
 
+v2: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05048.html
+v2 -> v3: Resurrect an old CVB* patch (Thomas).
+          Add Richard's R-b.
 
-Applied to target-arm.next, thanks.
+v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02865.html
+v1 -> v2: Fix !CONFIG_INT128 builds (Richard).
 
--- PMM
+Hi,
+
+Ido reported that we are missing the CVDG emulation (which is very
+similar to the existing CVD emulation). This series adds it along with
+a test.
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (4):
+  target/s390x: Emulate CVDG
+  target/s390x: Emulate CVB, CVBY and CVBG
+  tests/tcg/s390x: Test CONVERT TO DECIMAL
+  tests/tcg/s390x: Test CONVERT TO BINARY
+
+ target/s390x/helper.h            |   3 +
+ target/s390x/tcg/insn-data.h.inc |   5 ++
+ target/s390x/tcg/int_helper.c    |  93 ++++++++++++++++++++++++++++
+ target/s390x/tcg/translate.c     |  24 ++++++++
+ tests/tcg/s390x/Makefile.target  |   2 +
+ tests/tcg/s390x/cvb.c            | 102 +++++++++++++++++++++++++++++++
+ tests/tcg/s390x/cvd.c            |  63 +++++++++++++++++++
+ 7 files changed, 292 insertions(+)
+ create mode 100644 tests/tcg/s390x/cvb.c
+ create mode 100644 tests/tcg/s390x/cvd.c
+
+-- 
+2.43.0
+
 
