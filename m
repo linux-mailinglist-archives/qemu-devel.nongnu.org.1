@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC71C84735D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F4384736C
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:39:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvau-00008j-QT; Fri, 02 Feb 2024 10:36:44 -0500
+	id 1rVvav-0000Am-Eq; Fri, 02 Feb 2024 10:36:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvas-000067-2r
+ id 1rVvas-00006B-8j
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:42 -0500
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvaq-0004Qu-Gy
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:41 -0500
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-5113e895660so77666e87.0
+ id 1rVvaq-0004R3-LV
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:42 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40fb804e330so19839685e9.0
  for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706888199; x=1707492999; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QRkC6R0A/Ijw4AEfBzkD0qNh2L8zWNNbkytmxmpXoIc=;
- b=gU2miu2P7k7oQubb/N2xRy5//kpVWeCfItUx0o3bso+9Kp+W/fTpYnxYpYzrKPciW1
- g+EyYIurLAeP9UBM53YltsFACJnimnqehCXy1vtkBcJ/OD5UWF423wXBLie1S/g8f8Zz
- 52M0CnP4I58jaSMkP9BYcQnlL9jv0sOQFT9ZXDpThsSeBivKVd/N0vfTJixukNXpjqP5
- HamczlptatubjCKAfXMWlGL4mZTCf5NGyHQddxc/+VKn6xCuowfncsn+Z159hKl7yK+j
- iztd7eN7AAztW13R4DdHa7iai8JYTV1alNHsv57Kl0G6toxK53jxVWIv1A60EnPdw4oW
- T7Tw==
+ :reply-to; bh=fNKMg/ZJY1ZR/wqUXxwkSX5uKgQGaWhsDdzDVMFs6JA=;
+ b=eBxRUWviyRJKrmMJ5jL7eI7MQG27cqRh9/OmsryNURJIYoesqwKL7LH6rdJ8aGrwsP
+ RfQpqOTblLmJZZSRBERooG2OuPiq4P4jW43B8UGl8AvFwRPQSBmkCSUZDUgqbR9QGPtm
+ cSG8AgB1Thk7qKLh0BysvoMngUnhfwPSGALkbNX3sgc/8NNzzS6oeO1+pO8OiBQ1GMVX
+ yvyIZBfjUS5tS9lvRwLlPoBJH4Dg/gAQqoeP/B4JY1pwXqmSpYKAg+qJePJGN1qiU5mo
+ mvk4l7llveiEQtozRI3xlCgmgLXHmrcIpG+B4Q5uXDD+GTopO+x1ZJX5xFJx4u1zcP8o
+ vgfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706888199; x=1707492999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QRkC6R0A/Ijw4AEfBzkD0qNh2L8zWNNbkytmxmpXoIc=;
- b=Mssz7xn6eKMChls9Do9TVnT8OrtRvCbn8fFapkjuxJVzkTz8ifPwFwJkup+jKKCz4A
- KyE5Mj2EwB6795oWxZ77z6JoN/rO6J2nHwLm3HUH120VJHgi5ROqKl/xMfSbCvuzLVK4
- mCRG7iPTb5e6NaTYjinTM6XtLVm1Z/bngS5X8NLij4NLx+cf7gDon70KUIS+iMHHBmwz
- 7QosW3Ujs97mkYhGyAzH6g3c8DibH+87bXG4yALXvmak6Ymmwxf/SDfFoGR/XZY6Z/a0
- RF6yVP9EpxmhlsfuwLnGwbZ5pHRCaxwl/Ff9IWjpu00K62aqnbOmnPPIOUVZlW36mrcZ
- gsWQ==
-X-Gm-Message-State: AOJu0YzEZh9OhSxqApQtgroglVp2p6B6mLI7TERRKr/qPpVly96OFi2x
- cFAQX7iCNOAsdVrSyEiiuJ78uCR3dIUsqA1wlruwLgxCq2FouTd8DTjaqB183WuWNSV/nQ1wuE+
- 6
-X-Google-Smtp-Source: AGHT+IHFR30meajtkVe46CiVUIqFDI83OgR7aQCJY2+NIyZbuIy9vXr5yrN321+7fWIzlPFpI5r4Xg==
-X-Received: by 2002:ac2:5ed9:0:b0:511:325a:948b with SMTP id
- d25-20020ac25ed9000000b00511325a948bmr1652424lfq.30.1706888198784; 
- Fri, 02 Feb 2024 07:36:38 -0800 (PST)
+ bh=fNKMg/ZJY1ZR/wqUXxwkSX5uKgQGaWhsDdzDVMFs6JA=;
+ b=l1A20Ww7LHcLQKydv6kIxsFSFsynheWUs6AADbVyPxPcCkpGuO54UYrKI2vy+XXRtL
+ SFWhwHlDn/M7rJFUfa6RtpqQ/Ist79V1E76fhn01vSCqPvuYgvVi/w23DrHTGkWzoc9v
+ a56RUD7DFpWaU+xRNPygiC6B4pwlgnqZtjicEeR6/mIE3DjGpbUXNuyiKDOrVjHG8x/v
+ ddwmcmu2IBoSZSsLcAsqPK7jn1yYDtQi8tlfs4sejWKejOtrRiKqqTO+l26KgIRfQlu+
+ SIf4F/jDEkEdt5f7Ys4YVxAR/HTzFdtV0FJTv0/w9dyEWhgH4DwnlTEyWYy7JKNkoJdZ
+ 3TcQ==
+X-Gm-Message-State: AOJu0YwEU+CADU0DwJwl4z4Ak5HwmlM9PI/R/jFixNEF7xNI/DZ+aNbX
+ ZsDvU29DHq9Pm+1j5wwbbhr2HUni8Lput7/bkdBY2n7MMgkw0pbU+kaEhyj93juawym7Ln+Arj3
+ g
+X-Google-Smtp-Source: AGHT+IEZtUOeWfpc403KiSe8H004+a6L1umJQdBcmxFPFyn8FXGuS1fNUn6FWMDEJDsPPHEeiVOqMQ==
+X-Received: by 2002:a05:600c:4f95:b0:40f:b01d:6194 with SMTP id
+ n21-20020a05600c4f9500b0040fb01d6194mr6283911wmq.30.1706888199186; 
+ Fri, 02 Feb 2024 07:36:39 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:38 -0800 (PST)
+ Fri, 02 Feb 2024 07:36:39 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/36] target/arm: fix exception syndrome for AArch32 bkpt insn
-Date: Fri,  2 Feb 2024 15:36:02 +0000
-Message-Id: <20240202153637.3710444-2-peter.maydell@linaro.org>
+Subject: [PULL 02/36] pci: Switch bus reset to 3-phase-reset
+Date: Fri,  2 Feb 2024 15:36:03 +0000
+Message-Id: <20240202153637.3710444-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,85 +92,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jan Klötzke <jan.kloetzke@kernkonzept.com>
+Switch the PCI bus from using BusClass::reset to the Resettable
+interface.
 
-Debug exceptions that target AArch32 Hyp mode are reported differently
-than on AAarch64. Internally, Qemu uses the AArch64 syndromes. Therefore
-such exceptions need to be either converted to a prefetch abort
-(breakpoints, vector catch) or a data abort (watchpoints).
+This has no behavioural change, because the BusClass code to support
+subclasses that use the legacy BusClass::reset will call that method
+in the hold phase of 3-phase reset.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Jan Klötzke <jan.kloetzke@kernkonzept.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240127202758.3326381-1-jan.kloetzke@kernkonzept.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Cédric Le Goater <clg@redhat.com>
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-id: 20240119163512.3810301-2-peter.maydell@linaro.org
 ---
- target/arm/syndrome.h |  8 ++++++++
- target/arm/helper.c   | 18 ++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ hw/pci/pci.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 1a49767479f..3244e0740dd 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -25,6 +25,8 @@
- #ifndef TARGET_ARM_SYNDROME_H
- #define TARGET_ARM_SYNDROME_H
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 76080af580d..05c2e46bda5 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -64,7 +64,7 @@ bool pci_available = true;
  
-+#include "qemu/bitops.h"
+ static char *pcibus_get_dev_path(DeviceState *dev);
+ static char *pcibus_get_fw_dev_path(DeviceState *dev);
+-static void pcibus_reset(BusState *qbus);
++static void pcibus_reset_hold(Object *obj);
+ static bool pcie_has_upstream_port(PCIDevice *dev);
+ 
+ static Property pci_props[] = {
+@@ -202,13 +202,15 @@ static void pci_bus_class_init(ObjectClass *klass, void *data)
+ {
+     BusClass *k = BUS_CLASS(klass);
+     PCIBusClass *pbc = PCI_BUS_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
+ 
+     k->print_dev = pcibus_dev_print;
+     k->get_dev_path = pcibus_get_dev_path;
+     k->get_fw_dev_path = pcibus_get_fw_dev_path;
+     k->realize = pci_bus_realize;
+     k->unrealize = pci_bus_unrealize;
+-    k->reset = pcibus_reset;
 +
- /* Valid Syndrome Register EC field values */
- enum arm_exception_class {
-     EC_UNCATEGORIZED          = 0x00,
-@@ -80,6 +82,7 @@ typedef enum {
-     SME_ET_InactiveZA,
- } SMEExceptionType;
++    rc->phases.hold = pcibus_reset_hold;
  
-+#define ARM_EL_EC_LENGTH 6
- #define ARM_EL_EC_SHIFT 26
- #define ARM_EL_IL_SHIFT 25
- #define ARM_EL_ISV_SHIFT 24
-@@ -94,6 +97,11 @@ static inline uint32_t syn_get_ec(uint32_t syn)
-     return syn >> ARM_EL_EC_SHIFT;
- }
+     pbc->bus_num = pcibus_num;
+     pbc->numa_node = pcibus_numa_node;
+@@ -424,9 +426,9 @@ void pci_device_reset(PCIDevice *dev)
+  * Called via bus_cold_reset on RST# assert, after the devices
+  * have been reset device_cold_reset-ed already.
+  */
+-static void pcibus_reset(BusState *qbus)
++static void pcibus_reset_hold(Object *obj)
+ {
+-    PCIBus *bus = DO_UPCAST(PCIBus, qbus, qbus);
++    PCIBus *bus = PCI_BUS(obj);
+     int i;
  
-+static inline uint32_t syn_set_ec(uint32_t syn, uint32_t ec)
-+{
-+    return deposit32(syn, ARM_EL_EC_SHIFT, ARM_EL_EC_LENGTH, ec);
-+}
-+
- /*
-  * Utility functions for constructing various kinds of syndrome value.
-  * Note that in general we follow the AArch64 syndrome values; in a
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 945d8571a61..a0041aa0ec7 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11015,6 +11015,24 @@ static void arm_cpu_do_interrupt_aarch32(CPUState *cs)
-     }
- 
-     if (env->exception.target_el == 2) {
-+        /* Debug exceptions are reported differently on AArch32 */
-+        switch (syn_get_ec(env->exception.syndrome)) {
-+        case EC_BREAKPOINT:
-+        case EC_BREAKPOINT_SAME_EL:
-+        case EC_AA32_BKPT:
-+        case EC_VECTORCATCH:
-+            env->exception.syndrome = syn_insn_abort(arm_current_el(env) == 2,
-+                                                     0, 0, 0x22);
-+            break;
-+        case EC_WATCHPOINT:
-+            env->exception.syndrome = syn_set_ec(env->exception.syndrome,
-+                                                 EC_DATAABORT);
-+            break;
-+        case EC_WATCHPOINT_SAME_EL:
-+            env->exception.syndrome = syn_set_ec(env->exception.syndrome,
-+                                                 EC_DATAABORT_SAME_EL);
-+            break;
-+        }
-         arm_cpu_do_interrupt_aarch32_hyp(cs);
-         return;
-     }
+     for (i = 0; i < ARRAY_SIZE(bus->devices); ++i) {
 -- 
 2.34.1
 
