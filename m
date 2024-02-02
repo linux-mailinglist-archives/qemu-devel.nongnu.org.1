@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01008846796
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:52:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE138467AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmRs-000124-Gp; Fri, 02 Feb 2024 00:50:48 -0500
+	id 1rVmRu-00012m-Ji; Fri, 02 Feb 2024 00:50:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRp-00011l-Nr
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:45 -0500
-Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
+ id 1rVmRs-00012J-4v
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:48 -0500
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRo-0001aA-5t
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:45 -0500
-Received: by mail-oi1-x234.google.com with SMTP id
- 5614622812f47-3be6ff4f660so1016763b6e.3
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:43 -0800 (PST)
+ id 1rVmRq-0001b8-Gl
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:47 -0500
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6ddb807e23bso1212472b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853043; x=1707457843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853045; x=1707457845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PumilLrArPZLdXkeLrIHmsOcHqv6B2J+77pEclyDIK0=;
- b=mHeK0vW7SeG8bGL4TCIaLkRjZpA1J6cqgtRKNOCopJ8UsPmpe1y4bSlXG3ONzYhfVX
- 99M8yeuzulnov4Xv4s7OoIOrQofevMLO3dg7/4iiyFf4uwrTmjQH4HCzT/VJA0BY8h2A
- g/iJaXQVXcVGnsALy0V/PIVcO8F5Zh9rO91E5+XjNx9euAm/sci1M08F97TP/ggOWJS5
- HkPQydM0rA400wO2AxRi6e+JZ2tMNmYzwrPbhJcU/yAfHqIqWbMsk8gL2f9N2puj0BDn
- 38GXkNHGAzOnelTpZBmCZubhfFqCxxCbUhEjHUuZBHmnW3DBaTRE5Ep4iC7gzhZzTigt
- kLWA==
+ bh=Kq0J8Afnqo7enZSunt87RCQsJ4GxKCY2HEoeL1qsLBQ=;
+ b=pCqcBld0yov0Vh/iMZGpt/nhYT8+xPPr4tiphnbp9WhENAlS+w9PEeT8IwR+Aceaji
+ 8EspkphOPsvj+27rCm2x5BUjX1Aq6TEJVtWVd9rXQt2NKYWavwBkL5yNziCmCsa29NG8
+ dm125HF8kacEtwiaou5OKarTEIDkHZLyDfM4PRZkE5ItaaMoUZl5esICN8m9x0q1kiR6
+ AWhnePSkmuwx20+ymIPlFZOJZol0e46enXQk2qvA/eK4mKHUKzorm9Kt4+3hagQmXOxL
+ sFdUw8LVMMowctHiU+JkjsZpz1uvPGc/dF4jDdPxj9P2PRLUCxG+76S36CReRcmQ6BkD
+ ia7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853043; x=1707457843;
+ d=1e100.net; s=20230601; t=1706853045; x=1707457845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PumilLrArPZLdXkeLrIHmsOcHqv6B2J+77pEclyDIK0=;
- b=KIz6OXBUw0D7n4h+AzPGoGhOZuFZ5CKU8nOhiZhJGbG4P4IMgqB45qilZ+AEwtl4Ia
- 1MPrZPlPVAYeTzey1VMVOqirK7mqdFUqsIiJgq9fB1nd6Z4wtpCPg9jADKZPcGjiaSCw
- 6m6dyq7WvmPAwbqD8wYHnxuhvCOl11f3T3cs8wpzdNje4P3MuNy+4jbZzQtW9L2oo1XS
- JKdwzcokcKKLkY64pKng5W/3t+xqNPtuWQBKZ2GwEd0bruQMQtSXwjeGsivojl8c3a/n
- iKWrOW977CWiUadxoTXuADm2mCukkmYoXdEOCi5HU6O16x5tszXIciHeMOKC1toQUHe2
- wxdg==
-X-Gm-Message-State: AOJu0Yw2aAXgN1400DUNCh1lWFy9+tQ2aqCqfruBaHsvwqHoYCG8tbZS
- rQu1vMDTLqA3R8Mw+MUCOx2D9AelezTJBAQMGkewLzW170GRssgQqyAOj2Z6IkPAvT1go9kzfpj
- /KRU=
-X-Google-Smtp-Source: AGHT+IGt9MSIOmTnSEMnO5y+U1uG5LUD6cC88TAg/GGOpyBEn6suXyGW4OBxpAnuc8ZvFRxZvXvTxw==
-X-Received: by 2002:a05:6808:4493:b0:3bd:e392:fab9 with SMTP id
- eq19-20020a056808449300b003bde392fab9mr1737515oib.38.1706853042852; 
- Thu, 01 Feb 2024 21:50:42 -0800 (PST)
+ bh=Kq0J8Afnqo7enZSunt87RCQsJ4GxKCY2HEoeL1qsLBQ=;
+ b=BJk4nvlbbxYhmnHLy+qZRaeGMLeDzasb97/I8oFuzuoszswAuJQQO2kdPOvzPxL2y5
+ beuprR4ZkJS1Lwh4A7Cijo5y7TwVVWSmvTHnaKdNGGAl4DlMq+WZqov5CuHAgOKLMSKc
+ +LPlQ2V7Y6vjLcVYnzKoKHsr2Caur3P+YvK4r/hgRoe3vOCTXPDwDlxDzD/CaLdYW6eT
+ vOfa3JslSsjvAnB4snissjZc3FcSU19f2Q0WVX0wNyaKjuRqdA2JG8puq1gbDvUN/vz+
+ h/m7CCEuTRvRynQAqy0XYMKKMk0/uF7DJ0iA0rQs3q3Ktv8aNDkzESVsVgc3lBnOq3v1
+ 3s3A==
+X-Gm-Message-State: AOJu0YwehneeP7FSIMZZ0kq0zLJJzhX+8Y6tFjc5kk89T7SY63xjF/rW
+ pQtqltpiU8eEBuew9+RmdSxP/G/m0KODMDlhOtFKSdb4GKkhdY0IA88p8iFkZrbUE29bH9kWUtz
+ kqrQ=
+X-Google-Smtp-Source: AGHT+IHvG0Blh1Fm6y2We/h3S+PXtYOhejH0DtZKI76iwiP66Xh47IwkmKqSU1/qpxKHXePR4auw0Q==
+X-Received: by 2002:a05:6a00:4c93:b0:6df:e035:5549 with SMTP id
+ eb19-20020a056a004c9300b006dfe0355549mr7634554pfb.15.1706853044886; 
+ Thu, 01 Feb 2024 21:50:44 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.41
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:50:42 -0800 (PST)
+ Thu, 01 Feb 2024 21:50:44 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/57] include/hw/core: Add mmu_index to CPUClass
-Date: Fri,  2 Feb 2024 15:49:39 +1000
-Message-Id: <20240202055036.684176-2-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] linux-user/aarch64: Add padding before __kernel_rt_sigreturn
+Date: Fri,  2 Feb 2024 15:49:40 +1000
+Message-Id: <20240202055036.684176-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,35 +91,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To be used after all targets have populated the hook.
+Without this padding, an unwind through the signal handler
+will pick up the unwind info for the preceding syscall.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This fixes gcc's 30_threads/thread/native_handle/cancel.cc.
+
+Cc: qemu-stable@nongnu.org
+Fixes: ee95fae075c6 ("linux-user/aarch64: Add vdso")
+Resolves: https://linaro.atlassian.net/browse/GNU-974
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h | 3 +++
- 1 file changed, 3 insertions(+)
+ linux-user/aarch64/vdso-be.so | Bin 3216 -> 3224 bytes
+ linux-user/aarch64/vdso-le.so | Bin 3216 -> 3224 bytes
+ linux-user/aarch64/vdso.S     |   4 ++++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 2c284d6397..4385ce54c9 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -103,6 +103,8 @@ struct SysemuCPUOps;
-  * @parse_features: Callback to parse command line arguments.
-  * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
-  * @has_work: Callback for checking if there is work to do.
-+ * @mmu_index: Callback for choosing softmmu mmu index;
-+ *       may be used internally by memory_rw_debug without TCG.
-  * @memory_rw_debug: Callback for GDB memory access.
-  * @dump_state: Callback for dumping state.
-  * @query_cpu_fast:
-@@ -150,6 +152,7 @@ struct CPUClass {
-     void (*parse_features)(const char *typename, char *str, Error **errp);
- 
-     bool (*has_work)(CPUState *cpu);
-+    int (*mmu_index)(CPUState *cpu, bool ifetch);
-     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
-                            uint8_t *buf, int len, bool is_write);
-     void (*dump_state)(CPUState *cpu, FILE *, int flags);
+diff --git a/linux-user/aarch64/vdso-be.so b/linux-user/aarch64/vdso-be.so
+index 6084f3d1a701316004894fcdd739c4e1e0463b68..808206ade824b09d786f6cc34f7cddf80b63130e 100755
+GIT binary patch
+delta 121
+zcmbOrIYV-SKI4pu2Kk&{7{Gw#%fuBAMC1c?^>~k}v|avdxNjSSLfftVb3bgJ!|2S&
+z_-6A1CJrVZc?IUH8G;R$7#SF@Om<{a*v!K!&BXX-vIe^~TWO|cva$K*Om;sOMw`hy
+ZxXl@VO#Z-a&zLdUfXALuXmSCM0s#EKC)of1
+
+delta 116
+zcmbOsIYDxQKI4Rm2Kk&H7{Gw#!^9O2L>8U?-5V_M@!kH(Sx4vJn|*ujLPgija~Pc&
+z8DDIEz{J5c`3;N8W)W6tCdL<&4cM*OEF8_<v%@zRviq?xT1-B`ZO-^%@(*r%#)Qch
+RJocPi5ThAdCO2?N002V6C;<Qf
+
+diff --git a/linux-user/aarch64/vdso-le.so b/linux-user/aarch64/vdso-le.so
+index 947d534ec1899740edbd6921da6bc6e70e2ecd09..941aaf29931193300de1f62097867c282a7e0c74 100755
+GIT binary patch
+delta 129
+zcmbOrIYV-S2IGv0n)#exSQx<I%fyAxMZTVBQ(04AP_*V|Vxp|@=@;x8zb9;-!)U|E
+z_-6A>CVnO!c?IUH8G;R$7#SF@Om<{a*v!K!!o>JyvLd?^n`3BUW_royOm=q`Mw`hS
+dxy>1WOn%92&zLb;lgFM@hy!9z%j7~Xc>tTxDQW-!
+
+delta 108
+zcmbOsIYDxQ2IGW@n)#d`SQx<I!^DNpMK&+G&+g_}w9WI@dn@@euKVesZ-h6`VYFdn
+ze6jf^6F<}BH!LcfMOa0c7+*}*WOrgKEO1Fl%G+GX?#{w!F?lDqIpc@PAGz%r6DAw-
+M*fVlXF62=M06owo?*IS*
+
+diff --git a/linux-user/aarch64/vdso.S b/linux-user/aarch64/vdso.S
+index 34d3a9ebd2..a0ac1487b0 100644
+--- a/linux-user/aarch64/vdso.S
++++ b/linux-user/aarch64/vdso.S
+@@ -63,7 +63,11 @@ vdso_syscall __kernel_clock_getres, __NR_clock_getres
+  * For now, elide the unwind info for __kernel_rt_sigreturn and rely on
+  * the libgcc fallback routine as we have always done.  This requires
+  * that the code sequence used be exact.
++ *
++ * Add a nop as a spacer to ensure that unwind does not pick up the
++ * unwind info from the preceding syscall.
+  */
++	nop
+ __kernel_rt_sigreturn:
+ 	/* No BTI C insn here -- we arrive via RET. */
+ 	mov	x8, #__NR_rt_sigreturn
 -- 
 2.34.1
 
