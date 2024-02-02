@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16FD8467B1
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B150D8467A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:55:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmSu-0001jf-9t; Fri, 02 Feb 2024 00:51:52 -0500
+	id 1rVmSx-000223-D0; Fri, 02 Feb 2024 00:51:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSq-0001aO-HJ
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:48 -0500
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
+ id 1rVmSr-0001jM-P0
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:49 -0500
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSl-0001wQ-Hj
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:48 -0500
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3bbc649c275so1029806b6e.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:36 -0800 (PST)
+ id 1rVmSl-0001y9-I0
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:49 -0500
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3bd4e6a7cb0so1051201b6e.3
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853096; x=1707457896; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853098; x=1707457898; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6HOOME8FRq7OakS6NFzHSp/K+z8pT26NgXnqvXCF5X4=;
- b=xGaPjMB0vH3QIjG8gvOb2+w06JM+/JgcPSjh0JEROYAB7c2wAc0xJlV6I9YCuv1k5z
- gGhOq3WOj+ekoaF3RA1bNPC0vV3JI3ldoEpQ+/np7KTpU+huEoEwnKNazAhg0Am70Mmd
- 9GPKlhe6uRmWmVYXBn36doE0nm5kEz+D+TkusN+tlhXQQrU3s/RgH1uLRBlBBzstyDFS
- 2lEc3EFbYN4rxwym6rAPUd32N5MiGYOjjALfPUfp/G4duL1tiH38KW+yPco5yEcRK7Ux
- Kg+tZQffoKL8yJo0bS92LDOeIJftn69i9JzLW77ZooTyn4NsqKjY73cijkTzCXqvJfxF
- 3NMg==
+ bh=KU7EStZth3E9tctrbtwNvpcpJNElX8vZOQySN4oq7zk=;
+ b=mLz0s/zHn7NggBD1j/fcpnmiaxWqeikMoTaQb8Sw0aS0+ABrd30DURMwY4HZ2jE8C2
+ dluXpHMUHmBrTU0PlwYusfaHUOR7+2GRNg6OprEPe0cf0f5z96yD+O+vE2xUuXhKZyax
+ i+MRc1+fKXyAVX83z0OXfghxe4WubaXMtWNztu5iqb2n5uxH1l84P2QiXQADqltG0M/l
+ DtceC5cpOBQuVnF0NNKNqUIEmwlPJUABwY8RgwSECwdN3H9S8bTzcnP8KyOmmaJ1nsxB
+ kQ00I3e3Nh16scJ3e8qdFVR/Pz6+UtvXJxGd6P862TG/xODgQnsuJY5mqpKRrNVLsYWj
+ U5Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853096; x=1707457896;
+ d=1e100.net; s=20230601; t=1706853098; x=1707457898;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6HOOME8FRq7OakS6NFzHSp/K+z8pT26NgXnqvXCF5X4=;
- b=uyXAcWR8+sqtO63iSfn8BqbXz/JMfZPos2HR/h1EyUi92Fx4UFSGfHbiPyYk7JXJh+
- X9tseg+dMY3R/tJ0gsSYLx2b7IEN2vA11oOF6kd8t8WeSS4jSeLco01IEcHZXuwpAkM3
- xIl2F1Hk+1PoQxZLTGHFNDrf34Q0cfJPurC/tXcChnl7wqKiocHXEhisc5hic5HIOXds
- jAzJSO66wW8Cn/qcImC3u8Lzvk/DhVLSl14W5r2nqAxK+xJha5n9NmpESQbsEylqLL6I
- hIQ6ZvII6mBKUqSRnlXEswzmfKZ/cGfEAmJOaWiS+7JxK3DTe8mzwDNAv08FgbBPnIt+
- Q0/A==
-X-Gm-Message-State: AOJu0YzEj8fVMmUiefjwZRYuNKN50P0DpxpR9R0Nk6W9NeKUIMoxRWOj
- rroN7+nBH+UqOTXY/gRyn+o9Nswds7NQPxxgEGLMYyEKKyZSyyHU6Ffqm9YWduqKt1XoEP+4jee
- WmuI=
-X-Google-Smtp-Source: AGHT+IEvTEIUi1V9V9a7aDAORczDWCsqXRb0ke6UUx4Mtdbyxvwx0Ol8vWlcjjEU9/HhTd4q7HHw5A==
-X-Received: by 2002:a05:6808:3990:b0:3bf:bbda:9db9 with SMTP id
- gq16-20020a056808399000b003bfbbda9db9mr2051606oib.15.1706853095816; 
- Thu, 01 Feb 2024 21:51:35 -0800 (PST)
+ bh=KU7EStZth3E9tctrbtwNvpcpJNElX8vZOQySN4oq7zk=;
+ b=C4rj58U/A9cdyCAd69KDVQdtlkl2r1mqO77BjjqsrIizww8Wuapt+oAYh5NsXnPjZl
+ le/K4gMneQhXchiKN332csLcuBUs0vQ23RuVp0jKNY+kPSrJQ5FOrAd9ss3jxTSd9pm2
+ 0GVKM2M0kri9nDA3JtvnGDos77n/H/cjm4Kv+4agSuK0uW7eunplk3YyBBZYXW507ET/
+ OyC55GknN0M+q/xfrRdZcz4awzcjnN6ZofyGmrnYcyEQSS4idEgNzZ0PurfLwQsNH4+h
+ Hi2dtAaKJiwJ8UsVEnufb1/C/mCkAmL0V6ych7CT1p0iUhZD6456lSVMoWC9OuusuiC4
+ JP+g==
+X-Gm-Message-State: AOJu0YwHbm6yBN5jXaofj86jtw9xJ9Jv3b/vdFTkgcuErXpawNrGo6+J
+ 3M5ZXCOMgISAg4vGCN6t1FxmBqQWPIV6QRTeHPo/bYS4h5MOIrPM0ycy7Q/SJhCp8tUCucn1yos
+ YEq8=
+X-Google-Smtp-Source: AGHT+IEi/U/kbG0qTOHZ65kSItJb12lQaAk8Ng50u6qotqKenrxQYzN6e5upmMel9TtnE8KzKeUrKQ==
+X-Received: by 2002:a05:6808:30a5:b0:3bf:c0e7:6a29 with SMTP id
+ bl37-20020a05680830a500b003bfc0e76a29mr462346oib.0.1706853097882; 
+ Thu, 01 Feb 2024 21:51:37 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.34
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:35 -0800 (PST)
+ Thu, 01 Feb 2024 21:51:37 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 25/57] target/rx: Populate CPUClass.mmu_index
-Date: Fri,  2 Feb 2024 15:50:04 +1000
-Message-Id: <20240202055036.684176-27-richard.henderson@linaro.org>
+Subject: [PULL 26/57] target/s390x: Split out s390x_env_mmu_index
+Date: Fri,  2 Feb 2024 15:50:05 +1000
+Message-Id: <20240202055036.684176-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +95,187 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/rx/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/s390x/cpu.h            |  4 +++-
+ target/s390x/tcg/mem_helper.c | 34 ++++++++++++++++++----------------
+ 2 files changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 353132dac2..5205167da1 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -64,6 +64,11 @@ static bool rx_cpu_has_work(CPUState *cs)
-         (CPU_INTERRUPT_HARD | CPU_INTERRUPT_FIR);
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index fa3aac4f97..f0fed5d6ad 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -381,7 +381,7 @@ extern const VMStateDescription vmstate_s390_cpu;
+ #define MMU_HOME_IDX            2
+ #define MMU_REAL_IDX            3
+ 
+-static inline int cpu_mmu_index(CPUS390XState *env, bool ifetch)
++static inline int s390x_env_mmu_index(CPUS390XState *env, bool ifetch)
+ {
+ #ifdef CONFIG_USER_ONLY
+     return MMU_USER_IDX;
+@@ -412,6 +412,8 @@ static inline int cpu_mmu_index(CPUS390XState *env, bool ifetch)
+ #endif
  }
  
-+static int riscv_cpu_mmu_index(CPUState *cs, bool ifunc)
-+{
-+    return 0;
-+}
++#define cpu_mmu_index s390x_env_mmu_index
 +
- static void rx_cpu_reset_hold(Object *obj)
- {
-     RXCPU *cpu = RX_CPU(obj);
-@@ -204,6 +209,7 @@ static void rx_cpu_class_init(ObjectClass *klass, void *data)
+ #ifdef CONFIG_TCG
  
-     cc->class_by_name = rx_cpu_class_by_name;
-     cc->has_work = rx_cpu_has_work;
-+    cc->mmu_index = riscv_cpu_mmu_index;
-     cc->dump_state = rx_cpu_dump_state;
-     cc->set_pc = rx_cpu_set_pc;
-     cc->get_pc = rx_cpu_get_pc;
+ #include "tcg/tcg_s390x.h"
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 84103251b9..557831def4 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -358,7 +358,7 @@ static int mmu_idx_from_as(uint8_t as)
+ static uint32_t do_helper_nc(CPUS390XState *env, uint32_t l, uint64_t dest,
+                              uint64_t src, uintptr_t ra)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca1, srca2, desta;
+     uint32_t i;
+     uint8_t c = 0;
+@@ -392,7 +392,7 @@ uint32_t HELPER(nc)(CPUS390XState *env, uint32_t l, uint64_t dest,
+ static uint32_t do_helper_xc(CPUS390XState *env, uint32_t l, uint64_t dest,
+                              uint64_t src, uintptr_t ra)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca1, srca2, desta;
+     uint32_t i;
+     uint8_t c = 0;
+@@ -433,7 +433,7 @@ uint32_t HELPER(xc)(CPUS390XState *env, uint32_t l, uint64_t dest,
+ static uint32_t do_helper_oc(CPUS390XState *env, uint32_t l, uint64_t dest,
+                              uint64_t src, uintptr_t ra)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca1, srca2, desta;
+     uint32_t i;
+     uint8_t c = 0;
+@@ -467,7 +467,7 @@ uint32_t HELPER(oc)(CPUS390XState *env, uint32_t l, uint64_t dest,
+ static uint32_t do_helper_mvc(CPUS390XState *env, uint32_t l, uint64_t dest,
+                               uint64_t src, uintptr_t ra)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca, desta;
+     uint32_t i;
+ 
+@@ -508,7 +508,7 @@ void HELPER(mvc)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ /* move right to left */
+ void HELPER(mvcrl)(CPUS390XState *env, uint64_t l, uint64_t dest, uint64_t src)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     const uint64_t ra = GETPC();
+     S390Access srca, desta;
+     int32_t i;
+@@ -529,7 +529,7 @@ void HELPER(mvcrl)(CPUS390XState *env, uint64_t l, uint64_t dest, uint64_t src)
+ /* move inverse  */
+ void HELPER(mvcin)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca, desta;
+     uintptr_t ra = GETPC();
+     int i;
+@@ -550,7 +550,7 @@ void HELPER(mvcin)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ /* move numerics  */
+ void HELPER(mvn)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca1, srca2, desta;
+     uintptr_t ra = GETPC();
+     int i;
+@@ -572,7 +572,7 @@ void HELPER(mvn)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ /* move with offset  */
+ void HELPER(mvo)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     /* MVO always processes one more byte than specified - maximum is 16 */
+     const int len_dest = (l >> 4) + 1;
+     const int len_src = (l & 0xf) + 1;
+@@ -606,7 +606,7 @@ void HELPER(mvo)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ /* move zones  */
+ void HELPER(mvz)(CPUS390XState *env, uint32_t l, uint64_t dest, uint64_t src)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     S390Access srca1, srca2, desta;
+     uintptr_t ra = GETPC();
+     int i;
+@@ -669,7 +669,7 @@ uint32_t HELPER(clm)(CPUS390XState *env, uint32_t r1, uint32_t mask,
+ 
+     if (!mask) {
+         /* Recognize access exceptions for the first byte */
+-        probe_read(env, addr, 1, cpu_mmu_index(env, false), ra);
++        probe_read(env, addr, 1, s390x_env_mmu_index(env, false), ra);
+     }
+ 
+     while (mask) {
+@@ -893,7 +893,7 @@ uint32_t HELPER(mvpg)(CPUS390XState *env, uint64_t r0, uint32_t r1, uint32_t r2)
+ {
+     const uint64_t src = get_address(env, r2) & TARGET_PAGE_MASK;
+     const uint64_t dst = get_address(env, r1) & TARGET_PAGE_MASK;
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     const bool f = extract64(r0, 11, 1);
+     const bool s = extract64(r0, 10, 1);
+     const bool cco = extract64(r0, 8, 1);
+@@ -946,7 +946,7 @@ inject_exc:
+ /* string copy */
+ uint32_t HELPER(mvst)(CPUS390XState *env, uint32_t r1, uint32_t r2)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     const uint64_t d = get_address(env, r1);
+     const uint64_t s = get_address(env, r2);
+     const uint8_t c = env->regs[0];
+@@ -1027,7 +1027,7 @@ static inline uint32_t do_mvcl(CPUS390XState *env,
+                                uint64_t *src, uint64_t *srclen,
+                                uint16_t pad, int wordsize, uintptr_t ra)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     int len = MIN(*destlen, -(*dest | TARGET_PAGE_MASK));
+     S390Access srca, desta;
+     int i, cc;
+@@ -1084,7 +1084,7 @@ static inline uint32_t do_mvcl(CPUS390XState *env,
+ /* move long */
+ uint32_t HELPER(mvcl)(CPUS390XState *env, uint32_t r1, uint32_t r2)
+ {
+-    const int mmu_idx = cpu_mmu_index(env, false);
++    const int mmu_idx = s390x_env_mmu_index(env, false);
+     uintptr_t ra = GETPC();
+     uint64_t destlen = env->regs[r1 + 1] & 0xffffff;
+     uint64_t dest = get_address(env, r1);
+@@ -1742,7 +1742,7 @@ uint32_t HELPER(trXX)(CPUS390XState *env, uint32_t r1, uint32_t r2,
+ static uint32_t do_csst(CPUS390XState *env, uint32_t r3, uint64_t a1,
+                         uint64_t a2, bool parallel)
+ {
+-    uint32_t mem_idx = cpu_mmu_index(env, false);
++    uint32_t mem_idx = s390x_env_mmu_index(env, false);
+     MemOpIdx oi16 = make_memop_idx(MO_TE | MO_128, mem_idx);
+     MemOpIdx oi8 = make_memop_idx(MO_TE | MO_64, mem_idx);
+     MemOpIdx oi4 = make_memop_idx(MO_TE | MO_32, mem_idx);
+@@ -2867,12 +2867,14 @@ uint32_t HELPER(cu42)(CPUS390XState *env, uint32_t r1, uint32_t r2, uint32_t m3)
+ void probe_write_access(CPUS390XState *env, uint64_t addr, uint64_t len,
+                         uintptr_t ra)
+ {
++    const int mmu_idx = s390x_env_mmu_index(env, false);
++
+     /* test the actual access, not just any access to the page due to LAP */
+     while (len) {
+         const uint64_t pagelen = -(addr | TARGET_PAGE_MASK);
+         const uint64_t curlen = MIN(pagelen, len);
+ 
+-        probe_write(env, addr, curlen, cpu_mmu_index(env, false), ra);
++        probe_write(env, addr, curlen, mmu_idx, ra);
+         addr = wrap_address(env, addr + curlen);
+         len -= curlen;
+     }
 -- 
 2.34.1
 
