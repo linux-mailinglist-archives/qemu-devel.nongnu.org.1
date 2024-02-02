@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441198471BD
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FB08471B4
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:14:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVuMY-0002NM-4X; Fri, 02 Feb 2024 09:17:50 -0500
+	id 1rVuIW-0007mA-BE; Fri, 02 Feb 2024 09:13:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVuMU-0002N3-Ai; Fri, 02 Feb 2024 09:17:46 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rVuIO-0007kf-04; Fri, 02 Feb 2024 09:13:33 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVuMS-00056U-M7; Fri, 02 Feb 2024 09:17:46 -0500
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ id 1rVuIM-00048M-1j; Fri, 02 Feb 2024 09:13:31 -0500
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412DaCsb020042; Fri, 2 Feb 2024 14:17:42 GMT
+ 412DoVKa030823; Fri, 2 Feb 2024 14:13:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=TWaAYzedoDmwSo+VdLBPaFxuqPcfOVTInVXJb7c9NXw=;
- b=MO+hB+d3cyBff3QB8zoWveKm+CTsmcVFnjVoNzTXn34FhU8dBsBs0eLMVbjWJkvIM+8I
- BDnn6MdlN28hUyLhlHBxRetjvCwfgYAOcGpzAW5yjFcD68H95epw+IqXVtIT/bijVyrk
- +Js2ILmLyjau2EAARJI8zmDvK5CQfK5zK4+JY8m4IZt+tYo8Vd2zBEUo+2T9CqGa6vsx
- fpqNbqodXGjXRTFo/i+HgOLvombYKIAfAmKaXODxJuHUTtNzElVyOjIv8CVEUtdDbpJv
- QFYUKtgxPDgaldB8cpVyk/R+lb+KfF7e43CWBsB+83Efedw3g4NGTiduaiBL0MW+IJ9i 6Q== 
+ bh=JHGGu5VK0Qk9ffsN0tt8P10AYR/ZYGJq76N48EeA1yE=;
+ b=r4n3mWquKK69NNvqv3xYBMiWTl76Z0cA1rIjCJamweUo5UuHrGFOubHGG/2qLl9aojGc
+ otWufgf3j9rRiXvDkzG+qLEvZgxhpDOQxRfgpwREq0BUk7r7JvZW40QtFH/K9mtRkE3k
+ zgRFDFWqrkx4L5u3aAnsoRbvxZBIGWK7xcNVliXTDnASV/WkfmdPnsNwevWYBC1nGrGs
+ 5G/lVJtl2wsEtZqtir9zQemUrxZaf/5I7AAVELheiNrykYmWtRrP70U4awq5d7/6qj+j
+ m0ZvUqZYTFuyHHrGzRXGAnqVLAMvTtnhJA5OpMTxSS+6RxptpNWfmzv9EarZF2nHGR5I ig== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0yhecawt-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11mh0j3f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 14:17:41 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412E1ZxI027349;
- Fri, 2 Feb 2024 14:17:41 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0yhecavu-1
+ Fri, 02 Feb 2024 14:13:27 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412Dqx75004260;
+ Fri, 2 Feb 2024 14:13:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11mh0j2e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 14:17:41 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412DSENQ007955; Fri, 2 Feb 2024 14:13:25 GMT
+ Fri, 02 Feb 2024 14:13:27 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 412CpGUN010569; Fri, 2 Feb 2024 14:13:26 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwdnmkk70-1
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vwd5pbq90-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 02 Feb 2024 14:13:25 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
  by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 412EDNW640764046
+ 412EDN1o38208106
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Feb 2024 14:13:23 GMT
+ Fri, 2 Feb 2024 14:13:24 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BABD2004B;
+ by IMSVA (Postfix) with ESMTP id CEE4A2004B;
  Fri,  2 Feb 2024 14:13:23 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D282620040;
- Fri,  2 Feb 2024 14:13:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A163F20043;
+ Fri,  2 Feb 2024 14:13:23 +0000 (GMT)
 Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Feb 2024 14:13:22 +0000 (GMT)
+ Fri,  2 Feb 2024 14:13:23 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Ido Plat <Ido.Plat@ibm.com>
-Subject: [PATCH v4 1/4] target/s390x: Emulate CVDG
-Date: Fri,  2 Feb 2024 15:11:57 +0100
-Message-ID: <20240202141318.95962-2-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
+Subject: [PATCH v4 2/4] target/s390x: Emulate CVB, CVBY and CVBG
+Date: Fri,  2 Feb 2024 15:11:58 +0100
+Message-ID: <20240202141318.95962-3-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240202141318.95962-1-iii@linux.ibm.com>
 References: <20240202141318.95962-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CQdebTMC6BlUO0aGJzOAgzMVccDa2DtL
-X-Proofpoint-ORIG-GUID: 1FHVPn4Kij0nPHISUUTtrjQUlC85acHB
+X-Proofpoint-ORIG-GUID: H8cO1kBfneb5W71r6yYvBeSeGziXa1PJ
+X-Proofpoint-GUID: By-ew7AgQAcRkeAxtmFkrjsWux4WHplP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-02_08,2024-01-31_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- spamscore=0 impostorscore=0 clxscore=1015 mlxlogscore=531 suspectscore=0
+ suspectscore=0 adultscore=0
+ mlxlogscore=786 phishscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015
+ mlxscore=0 malwarescore=0 bulkscore=0 impostorscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
  definitions=main-2402020104
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -112,95 +113,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CVDG is the same as CVD, except that it converts 64 bits into 128,
-rather than 32 into 64. Create a new helper, which uses Int128
-wrappers.
+Convert to Binary - counterparts of the already implemented Convert
+to Decimal (CVD*) instructions.
+Example from the Principles of Operation: 25594C becomes 63FA.
 
-Reported-by: Ido Plat <Ido.Plat@ibm.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Co-developed-by: Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/helper.h            |  1 +
- target/s390x/tcg/insn-data.h.inc |  1 +
- target/s390x/tcg/int_helper.c    | 21 +++++++++++++++++++++
- target/s390x/tcg/translate.c     |  8 ++++++++
- 4 files changed, 31 insertions(+)
+ target/s390x/helper.h            |  2 +
+ target/s390x/tcg/insn-data.h.inc |  4 ++
+ target/s390x/tcg/int_helper.c    | 72 ++++++++++++++++++++++++++++++++
+ target/s390x/tcg/translate.c     | 16 +++++++
+ 4 files changed, 94 insertions(+)
 
 diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-index 05102578fc9..332a9a9c632 100644
+index 332a9a9c632..cc1c20e9e3f 100644
 --- a/target/s390x/helper.h
 +++ b/target/s390x/helper.h
-@@ -89,6 +89,7 @@ DEF_HELPER_FLAGS_2(sqeb, TCG_CALL_NO_WG, i64, env, i64)
+@@ -88,6 +88,8 @@ DEF_HELPER_FLAGS_3(tcxb, TCG_CALL_NO_RWG_SE, i32, env, i128, i64)
+ DEF_HELPER_FLAGS_2(sqeb, TCG_CALL_NO_WG, i64, env, i64)
  DEF_HELPER_FLAGS_2(sqdb, TCG_CALL_NO_WG, i64, env, i64)
  DEF_HELPER_FLAGS_2(sqxb, TCG_CALL_NO_WG, i128, env, i128)
++DEF_HELPER_3(cvb, void, env, i32, i64)
++DEF_HELPER_FLAGS_2(cvbg, TCG_CALL_NO_WG, i64, env, i128)
  DEF_HELPER_FLAGS_1(cvd, TCG_CALL_NO_RWG_SE, i64, s32)
-+DEF_HELPER_FLAGS_1(cvdg, TCG_CALL_NO_RWG_SE, i128, s64)
+ DEF_HELPER_FLAGS_1(cvdg, TCG_CALL_NO_RWG_SE, i128, s64)
  DEF_HELPER_FLAGS_4(pack, TCG_CALL_NO_WG, void, env, i32, i64, i64)
- DEF_HELPER_FLAGS_4(pka, TCG_CALL_NO_WG, void, env, i64, i64, i32)
- DEF_HELPER_FLAGS_4(pku, TCG_CALL_NO_WG, void, env, i64, i64, i32)
 diff --git a/target/s390x/tcg/insn-data.h.inc b/target/s390x/tcg/insn-data.h.inc
-index 2f07f39d9cb..388dcb8dbbc 100644
+index 388dcb8dbbc..e7d61cdec28 100644
 --- a/target/s390x/tcg/insn-data.h.inc
 +++ b/target/s390x/tcg/insn-data.h.inc
-@@ -296,6 +296,7 @@
+@@ -293,6 +293,10 @@
+     D(0xec73, CLFIT,   RIE_a, GIE, r1_32u, i2_16u, 0, 0, ct, 0, 1)
+     D(0xec71, CLGIT,   RIE_a, GIE, r1_o, i2_16u, 0, 0, ct, 0, 1)
+ 
++/* CONVERT TO BINARY */
++    C(0x4f00, CVB,     RX_a,  Z,   la2, 0, 0, 0, cvb, 0)
++    C(0xe306, CVBY,    RXY_a, LD,  la2, 0, 0, 0, cvb, 0)
++    C(0xe30e, CVBG,    RXY_a, Z,   la2, 0, r1, 0, cvbg, 0)
  /* CONVERT TO DECIMAL */
      C(0x4e00, CVD,     RX_a,  Z,   r1_o, a2, 0, 0, cvd, 0)
      C(0xe326, CVDY,    RXY_a, LD,  r1_o, a2, 0, 0, cvd, 0)
-+    C(0xe32e, CVDG,    RXY_a, Z,   r1_o, a2, 0, 0, cvdg, 0)
- /* CONVERT TO FIXED */
-     F(0xb398, CFEBR,   RRF_e, Z,   0, e2, new, r1_32, cfeb, 0, IF_BFP)
-     F(0xb399, CFDBR,   RRF_e, Z,   0, f2, new, r1_32, cfdb, 0, IF_BFP)
 diff --git a/target/s390x/tcg/int_helper.c b/target/s390x/tcg/int_helper.c
-index eb8e6dd1b57..121e3006a65 100644
+index 121e3006a65..17974375e98 100644
 --- a/target/s390x/tcg/int_helper.c
 +++ b/target/s390x/tcg/int_helper.c
-@@ -118,6 +118,27 @@ uint64_t HELPER(cvd)(int32_t reg)
-     return dec;
+@@ -25,6 +25,7 @@
+ #include "exec/exec-all.h"
+ #include "qemu/host-utils.h"
+ #include "exec/helper-proto.h"
++#include "exec/cpu_ldst.h"
+ 
+ /* #define DEBUG_HELPER */
+ #ifdef DEBUG_HELPER
+@@ -98,6 +99,77 @@ Int128 HELPER(divu64)(CPUS390XState *env, uint64_t ah, uint64_t al, uint64_t b)
+     tcg_s390_program_interrupt(env, PGM_FIXPT_DIVIDE, GETPC());
  }
  
-+Int128 HELPER(cvdg)(int64_t reg)
++void HELPER(cvb)(CPUS390XState *env, uint32_t r1, uint64_t dec)
 +{
-+    /* positive 0 */
-+    Int128 dec = int128_make64(0x0c);
-+    Int128 bin = int128_makes64(reg);
-+    Int128 base = int128_make64(10);
-+    int shift;
++    int64_t pow10 = 1, bin = 0;
++    int digit, sign;
 +
-+    if (!int128_nonneg(bin)) {
-+        bin = int128_neg(bin);
-+        dec = int128_make64(0x0d);
++    sign = dec & 0xf;
++    if (sign < 0xa) {
++        tcg_s390_data_exception(env, 0, GETPC());
++    }
++    dec >>= 4;
++
++    while (dec) {
++        digit = dec & 0xf;
++        if (digit > 0x9) {
++            tcg_s390_data_exception(env, 0, GETPC());
++        }
++        dec >>= 4;
++        bin += digit * pow10;
++        pow10 *= 10;
 +    }
 +
-+    for (shift = 4; (shift < 128) && int128_nz(bin); shift += 4) {
-+        dec = int128_or(dec, int128_lshift(int128_remu(bin, base), shift));
-+        bin = int128_divu(bin, base);
++    if (sign == 0xb || sign == 0xd) {
++        bin = -bin;
 +    }
 +
-+    return dec;
++    /* R1 is updated even on fixed-point-divide exception. */
++    env->regs[r1] = (env->regs[r1] & 0xffffffff00000000ULL) | (uint32_t)bin;
++    if (bin != (int32_t)bin) {
++        tcg_s390_program_interrupt(env, PGM_FIXPT_DIVIDE, GETPC());
++    }
 +}
 +
- uint64_t HELPER(popcnt)(uint64_t val)
++uint64_t HELPER(cvbg)(CPUS390XState *env, Int128 dec)
++{
++    uint64_t dec64[] = {int128_getlo(dec), int128_gethi(dec)};
++    int64_t bin = 0, pow10, tmp;
++    int digit, i, sign;
++
++    sign = dec64[0] & 0xf;
++    if (sign < 0xa) {
++        tcg_s390_data_exception(env, 0, GETPC());
++    }
++    dec64[0] >>= 4;
++    pow10 = (sign == 0xb || sign == 0xd) ? -1 : 1;
++
++    for (i = 1; i < 20; i++) {
++        digit = dec64[i >> 4] & 0xf;
++        if (digit > 0x9) {
++            tcg_s390_data_exception(env, 0, GETPC());
++        }
++        dec64[i >> 4] >>= 4;
++        tmp = pow10 * digit;
++        if (digit && ((tmp ^ pow10) < 0)) {
++            tcg_s390_program_interrupt(env, PGM_FIXPT_DIVIDE, GETPC());
++        }
++        tmp = bin + tmp;
++        if (bin && ((tmp ^ bin) < 0)) {
++            tcg_s390_program_interrupt(env, PGM_FIXPT_DIVIDE, GETPC());
++        }
++        bin = tmp;
++        pow10 *= 10;
++    }
++
++    g_assert(!dec64[0]);
++    if (dec64[1]) {
++        tcg_s390_program_interrupt(env, PGM_FIXPT_DIVIDE, GETPC());
++    }
++
++    return bin;
++}
++
+ uint64_t HELPER(cvd)(int32_t reg)
  {
-     /* Note that we don't fold past bytes. */
+     /* positive 0 */
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index a5fd9cccaa5..c2fdc920a50 100644
+index c2fdc920a50..325b25959d3 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -2233,6 +2233,14 @@ static DisasJumpType op_cvd(DisasContext *s, DisasOps *o)
-     return DISAS_NEXT;
+@@ -2223,6 +2223,22 @@ static DisasJumpType op_csp(DisasContext *s, DisasOps *o)
  }
+ #endif
  
-+static DisasJumpType op_cvdg(DisasContext *s, DisasOps *o)
++static DisasJumpType op_cvb(DisasContext *s, DisasOps *o)
 +{
-+    TCGv_i128 t = tcg_temp_new_i128();
-+    gen_helper_cvdg(t, o->in1);
-+    tcg_gen_qemu_st_i128(t, o->in2, get_mem_index(s), MO_TE | MO_128);
++    TCGv_i64 t = tcg_temp_new_i64();
++    tcg_gen_qemu_ld_i64(t, o->addr1, get_mem_index(s), MO_TEUQ);
++    gen_helper_cvb(tcg_env, tcg_constant_i32(get_field(s, r1)), t);
 +    return DISAS_NEXT;
 +}
 +
- static DisasJumpType op_ct(DisasContext *s, DisasOps *o)
++static DisasJumpType op_cvbg(DisasContext *s, DisasOps *o)
++{
++    TCGv_i128 t = tcg_temp_new_i128();
++    tcg_gen_qemu_ld_i128(t, o->addr1, get_mem_index(s), MO_TE | MO_128);
++    gen_helper_cvbg(o->out, tcg_env, t);
++    return DISAS_NEXT;
++}
++
+ static DisasJumpType op_cvd(DisasContext *s, DisasOps *o)
  {
-     int m3 = get_field(s, m3);
+     TCGv_i64 t1 = tcg_temp_new_i64();
 -- 
 2.43.0
 
