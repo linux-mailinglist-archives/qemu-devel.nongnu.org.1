@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA951847370
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AA8847367
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:38:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvax-0000Cb-Im; Fri, 02 Feb 2024 10:36:47 -0500
+	id 1rVvb1-0000Jz-Lp; Fri, 02 Feb 2024 10:36:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvav-0000Ba-Rn
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:45 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1rVvaw-0000CS-QZ
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:46 -0500
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvau-0004S5-9F
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:45 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40e8fec0968so20018835e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:43 -0800 (PST)
+ id 1rVvav-0004SQ-7D
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:46 -0500
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-40fcb4ef7bcso3124685e9.0
+ for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706888203; x=1707493003; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=XXyoo0uTxQx7WIeKUGD+qu1FchhSMRmgTj+B/msMnZw=;
- b=EmC/UTeMd9TjGy6IaNnt1SAJVwIgBxUoO+HXzXpbuuQN+uSIuQio2DKIECEJQvNGAe
- 9i0dtuvUs2f6d2ilYN8mCkWarD0TtI+9+mytIS465LhkROdwWSSVyZPmUpQAzu0p4ZYK
- f+XiFQqJdTw7/qhKPgqd1jOKLQe4z70VAXwYq4D1hBuGWK9S5aGgBkKgMFUL3XJdHEuq
- mWeWnp7RSMcKE6knD9G6o4RyS0eT8u+8ZdLvVXx1KZwiCg1ld1krV+dVSx9uCMxY9BNr
- 0kl8npRYeGw13eIS3llok32FLyr+jsXdWSrbRDpJfzFlMK2xHkfGY4rvk0YoMIolzC5s
- X05A==
+ :reply-to; bh=yhQX2lsO6sUMNlz849ghUPa03+uYKB43z4lr+2t+Z6I=;
+ b=gX/lDcsEJwwg8hCxnTaBQ6o1cGLATxsb4aOkRP9a7AN8x01yZlR2S0LxxDZKOTJPcG
+ wlDxk+0jdP5SX/L+Fi5tPj9bWTPYzcPgLOMiYXSL3ztOA8NRYINqjqEFZp1tiZHhS7ct
+ PcA6HYcw6zqCZqMRvXAo0Y3Iit2id93Od/YzEygICUeohky6Okb2NVG24VErXzjaxmFH
+ ShNVz3df2Hdo76IJBQnNHy9NRkGddEX+V5CHeOW/9jnRondXYCenhS2pqJp5dX8RW3vL
+ THF+DLB3trSuTx7EmfvK+FIrbpRx5QTERoWoFvkbK6BpqqbVvrA0S5whwfK8Fz3tK8im
+ C+fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706888203; x=1707493003;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XXyoo0uTxQx7WIeKUGD+qu1FchhSMRmgTj+B/msMnZw=;
- b=sT24o46trVSCtBM3vrjTVVpCtHlVI2fnedrFI7Ujo8JKz7bcEgkIHzR3qqfJDxpxkq
- u56bisYBr8fMdC6VRIbIA9RNUm7U25pu3hc7wNE14CT+bimI1/6H/2Z/CqmxhKu21Kzp
- MJfqImJ2rabGiIZ97W8Kvh3dU/cLsN/4hvFwTP3sAEXLOD4Tg/Zyipm5dKcpNmUxckwH
- 1T+cBQvEoKzJOkRypQXAcoR4TkZuEvIyWcRwkeLcLQ1FW1Gm+6fd1u57qzhD8FiILN3Y
- 2T3Ew7m8Fqgs1tYNEXCsOaabBvb7TpU41rbBVqmO4yZdJtsBVJp46B0YZN9JH3z/K4QS
- JoXg==
-X-Gm-Message-State: AOJu0YxF4O/TBRkBFzZ513goU16vUTLhvToW6gfdmQDi6MMp27HuMffr
- L85finve5pDixJnoBm9zVCKgSLm+vl1i+kCjGdGvdkuF8bkYsyAt0mNoiFD3Ete8JJJZQqIDQ/5
- B
-X-Google-Smtp-Source: AGHT+IGwMhcfy7lfme8yuzsYCldGdu6eGi4FEeZk9pd4ZTXJhxIA/5d8vUZEAeFx7jpiPOFewfkDww==
-X-Received: by 2002:a05:600c:3b93:b0:40f:b64e:d28a with SMTP id
- n19-20020a05600c3b9300b0040fb64ed28amr6246744wms.10.1706888203082; 
+ bh=yhQX2lsO6sUMNlz849ghUPa03+uYKB43z4lr+2t+Z6I=;
+ b=bXHYelEBKtv8bf/OCP0g6BYdz1ia/ulLU0G+guSQBPZcSBZHdcpz856MuvNR6wHTPy
+ DE88HMXA6/UTO9HHxbq9+14nASrPcnAo+RRoMExSdW4ERTw80XQ/Qn08jjATDRKMm5ez
+ raxsuha71w3Hg0h3tIfmPziillCbdDct6Hh4/dZPkODOOBUBoTWkUkSsSGB52BEs+unY
+ bAI2FfvXH+78+W9jLiSSanood8V/ttn3JD7FB1ZkUab7g/bnxdm+Xr6uMYBQhx6M1PHq
+ v64IkdjtmsZSTLZNa2J2429Um3iX/BheigOimJ5V8RWQsAinMkCN3ehivNtEgEQAnr9O
+ p0ig==
+X-Gm-Message-State: AOJu0YxdSnW/n3nX2xf1J8O8dNF9PbUoO4vIsoiZjGadRFU/5OAu9jco
+ +OAf2j6ad9flZI0w8N0ZKeLUMZ78qKsHl2F9B8fyIdjmGXVZKKiZWIIRgXj4bd4eeE1uZxEYy4N
+ T
+X-Google-Smtp-Source: AGHT+IGr9rlgGS/EPQPRmOZ/rsqBL+RwLgZr17qhF4E/XsAI9DNXwPB7XoCyqI3Z6BDcapfOo7JNpA==
+X-Received: by 2002:a05:600c:470c:b0:40e:fa18:f888 with SMTP id
+ v12-20020a05600c470c00b0040efa18f888mr4062171wmo.14.1706888203589; 
  Fri, 02 Feb 2024 07:36:43 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.42
+ k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.43
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:42 -0800 (PST)
+ Fri, 02 Feb 2024 07:36:43 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/36] target/arm: Add ID_AA64ZFR0_EL1.B16B16 to the
- exposed-to-userspace set
-Date: Fri,  2 Feb 2024 15:36:10 +0000
-Message-Id: <20240202153637.3710444-10-peter.maydell@linaro.org>
+Subject: [PULL 10/36] tests/qtest/xlnx-versal-trng-test.c: Drop use of
+ variable length array
+Date: Fri,  2 Feb 2024 15:36:11 +0000
+Message-Id: <20240202153637.3710444-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,47 +92,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In kernel commit 5d5b4e8c2d9ec ("arm64/sve: Report FEAT_SVE_B16B16 to
-userspace") Linux added ID_AA64ZFR0_el1.B16B16 to the set of ID
-register fields which it exposes to userspace.  Update our
-exported_bits mask to include this.
+This test program is the last use of any variable length array in the
+codebase.  If we can get rid of all uses of VLAs we can make the
+compiler error on new additions.  This is a defensive measure against
+security bugs where an on-stack dynamic allocation isn't correctly
+size-checked (e.g.  CVE-2021-3527).
 
-(This doesn't yet change any behaviour for us, because we don't yet
-have any CPUs that implement this feature, which is part of SVE2.)
+In this case the test code didn't even want a variable-sized
+array, it was just accidentally using syntax that gave it one.
+(The array size for C has to be an actual constant expression,
+not just something that happens to be known to be constant...)
+
+Remove the VLA usage.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240125134304.1470404-1-peter.maydell@linaro.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-id: 20240125173211.1786196-2-peter.maydell@linaro.org
 ---
- target/arm/helper.c         | 1 +
- tests/tcg/aarch64/sysregs.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ tests/qtest/xlnx-versal-trng-test.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index a0041aa0ec7..d51093a7c44 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -8897,6 +8897,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-                                R_ID_AA64ZFR0_AES_MASK |
-                                R_ID_AA64ZFR0_BITPERM_MASK |
-                                R_ID_AA64ZFR0_BFLOAT16_MASK |
-+                               R_ID_AA64ZFR0_B16B16_MASK |
-                                R_ID_AA64ZFR0_SHA3_MASK |
-                                R_ID_AA64ZFR0_SM4_MASK |
-                                R_ID_AA64ZFR0_I8MM_MASK |
-diff --git a/tests/tcg/aarch64/sysregs.c b/tests/tcg/aarch64/sysregs.c
-index f7a055f1d5f..301e61d0dd4 100644
---- a/tests/tcg/aarch64/sysregs.c
-+++ b/tests/tcg/aarch64/sysregs.c
-@@ -137,7 +137,7 @@ int main(void)
-     /* all hidden, DebugVer fixed to 0x6 (ARMv8 debug architecture) */
-     get_cpu_reg_check_mask(id_aa64dfr0_el1,  _m(0000,0000,0000,0006));
-     get_cpu_reg_check_zero(id_aa64dfr1_el1);
--    get_cpu_reg_check_mask(SYS_ID_AA64ZFR0_EL1,  _m(0ff0,ff0f,00ff,00ff));
-+    get_cpu_reg_check_mask(SYS_ID_AA64ZFR0_EL1,  _m(0ff0,ff0f,0fff,00ff));
-     get_cpu_reg_check_mask(SYS_ID_AA64SMFR0_EL1, _m(8ff1,fcff,0000,0000));
+diff --git a/tests/qtest/xlnx-versal-trng-test.c b/tests/qtest/xlnx-versal-trng-test.c
+index cef4e575bba..ba86f39d13c 100644
+--- a/tests/qtest/xlnx-versal-trng-test.c
++++ b/tests/qtest/xlnx-versal-trng-test.c
+@@ -298,10 +298,13 @@ static size_t trng_collect(uint32_t *rnd, size_t cnt)
+     return i;
+ }
  
-     get_cpu_reg_check_zero(id_aa64afr0_el1);
++/* These tests all generate 512 bits of random data with the device */
++#define TEST_DATA_WORDS (512 / 32)
++
+ static void trng_test_autogen(void)
+ {
+-    const size_t cnt = 512 / 32;
+-    uint32_t rng[cnt], prng[cnt];
++    const size_t cnt = TEST_DATA_WORDS;
++    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
+     size_t n;
+ 
+     trng_reset();
+@@ -343,8 +346,8 @@ static void trng_test_autogen(void)
+ 
+ static void trng_test_oneshot(void)
+ {
+-    const size_t cnt = 512 / 32;
+-    uint32_t rng[cnt];
++    const size_t cnt = TEST_DATA_WORDS;
++    uint32_t rng[TEST_DATA_WORDS];
+     size_t n;
+ 
+     trng_reset();
+@@ -370,8 +373,8 @@ static void trng_test_oneshot(void)
+ 
+ static void trng_test_per_str(void)
+ {
+-    const size_t cnt = 512 / 32;
+-    uint32_t rng[cnt], prng[cnt];
++    const size_t cnt = TEST_DATA_WORDS;
++    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
+     size_t n;
+ 
+     trng_reset();
+@@ -415,8 +418,8 @@ static void trng_test_forced_prng(void)
+     const char *prop = "forced-prng";
+     const uint64_t seed = 0xdeadbeefbad1bad0ULL;
+ 
+-    const size_t cnt = 512 / 32;
+-    uint32_t rng[cnt], prng[cnt];
++    const size_t cnt = TEST_DATA_WORDS;
++    uint32_t rng[TEST_DATA_WORDS], prng[TEST_DATA_WORDS];
+     size_t n;
+ 
+     trng_reset();
 -- 
 2.34.1
 
