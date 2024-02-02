@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C2084734E
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:37:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFD3847352
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 16:37:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVvaw-0000CM-PW; Fri, 02 Feb 2024 10:36:46 -0500
+	id 1rVvaw-0000CP-V9; Fri, 02 Feb 2024 10:36:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvau-0000AR-LC
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:44 -0500
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1rVvav-0000Ap-72
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:45 -0500
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rVvas-0004RT-IX
+ id 1rVvat-0004Rl-8Z
  for qemu-devel@nongnu.org; Fri, 02 Feb 2024 10:36:44 -0500
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-40fafae5532so19305315e9.1
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-51137c8088dso969502e87.1
  for <qemu-devel@nongnu.org>; Fri, 02 Feb 2024 07:36:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1706888201; x=1707493001; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1V7+Q0KTyYvIAHFDW7/i7eB7p3uahpOup8LdNc0Y8Zc=;
- b=QS0BjLb7N2WSVl501ICpWCcR+xYQt0/Or6RbTBNuXEiQQg+qI53iirlCw5jrIwMit1
- ejoq8/T+kZWotM9999k0SqoKt+UDbVZTEeR7UUkuW4Q0ElDIjutAf2XKSQigP6tVp9lE
- i4dqHG6D1v61Y3X8uDesM5gsr1ywvQ0KJco1FyfP0T2pZETGLlhRZIMgyTwyPBDQDTKB
- omcRFBwvDbEKKDSQFbajz2fTzKHs/2DZSiFGp0+R3Omg9PTF9cap6vjdjGClMrPJnkm+
- gLT1GrrQ8bfr/evRpTJIAKlM2/bX2MNUAH/ooodtspB8K6PK6PBLR1Ic5CiLUHB0BIA6
- 7Ypg==
+ :reply-to; bh=wyZDr1Zjb+maiQcAIaO52bka0IE0OhCst2zFuC2UbQo=;
+ b=b0z5QJf5n801ia+vPvZL7ACABnaDb5foj0OyL+Ex8sLrV2C4NonUypHEeD3XoeDgoa
+ ZmsrR8jIz8s0OzXK6qI9Pg87p226j9C+WdadVSOYZis6pB50Jsa5uJB1OTKtl4g8pDL8
+ p0SPr+Nm262+s6dOF9xIQsQIQdEE/I9lc8Qa2rHEBGCg7fw4rBXlN3p7zp+skJmt9RzJ
+ q4VzS2NSmK/OKxkAXStk1y65Ze/5DEONVU4fWv4CAKET9z6Wx+WbA8zyc1KoOrCXqOof
+ PwhWKoweG97FStyI1YXDnXfxMsvGImdmYK0sncBboYjBCNLm7nBnCDSxs2l23g7LXVrQ
+ pD9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1706888201; x=1707493001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1V7+Q0KTyYvIAHFDW7/i7eB7p3uahpOup8LdNc0Y8Zc=;
- b=Nu67VZ9ogpDCSzn9hOKu8GaZ8B6hGVZSVoM591kV5dDxEaYNb7B7tEF5jYfSKFBJ82
- MzdYUMXxpyZliGTapWR4/gz9TnL9jW+15UC89h5zd3v6kMEJ72wwVcDcXr78bwaHK9BT
- 6meNw35HBl8Z4dJKUj0eNZDm5ukABHTyqfVvUlFs5DGoQBZn/o1/1F8QF74pBYw0zpHy
- 532A75y9J0Sk0kh3g1KVgkVdU94vfVljChSXf5X5xbBZ/2xY8XvRXts1zOAtSoUVN45w
- ysjv8jCTlZllZ5jJy0/s7uFoBOSJZXxNpuSVs7nGhAMCMqdpzDnAuGVh4fKduEJ5hoIF
- R4AQ==
-X-Gm-Message-State: AOJu0YxcPbuTbcaJbL6mJRUO8gztMZCOuwhmgkW9mBPM5r7CD/hTIptj
- LaJJPgxRtl5cswdQFiT0zCWm8a9U2ZYeMzzP303DbMSUyoI+K/UrW42Ott3Hw1P48B7TMZqx/fZ
- m
-X-Google-Smtp-Source: AGHT+IFUtj4qWAJ6L354Y967i9IQdvvF8HqHsYKGG884+2RxmfXkG9vi0ZAHxHol6BJbGppXGA/eQw==
-X-Received: by 2002:a05:600c:a39e:b0:40f:b680:3e84 with SMTP id
- hn30-20020a05600ca39e00b0040fb6803e84mr5893811wmb.2.1706888201257; 
+ bh=wyZDr1Zjb+maiQcAIaO52bka0IE0OhCst2zFuC2UbQo=;
+ b=fNisH3LFbtEKjebGX0HH4KxT4stJqPYRu81gLi+ZM7UCRh7onpszNaHCizTHqHaIZr
+ D4Fszif5x1+QFrf4UKmGuOEDxS8un8T5nDEfgjqUTG/aBgmEfEpxt1HyaXtJ7DaB+G2N
+ 3C056nl++MkvgMCPQsEvOUcBVIORQfMRl4dfUKz67FOl4VGAdgQGzhhPSsdaSBQUjQoe
+ Jh401zIU/0iUMkpAZwMGJBU5aDpAhMzS2y8YJQqakYOHY/KBwoRTzZDioNjDMi0H0c/z
+ F13YQCF54k+sZLR2k77vKmYKtF9eNoI/B0Ua/OlSsaerMTmnAYU/EIrtLWTDFPjvcNum
+ 7myQ==
+X-Gm-Message-State: AOJu0YxLrmNTAi9uSOFkmlbSl4v84OlL5ULiJ9EHoerE4zg0jbdok0SV
+ bvX77zyY40zJPrkukT/J5fOX4Pyh6XxLo1dIwwz5nfieNR4sFCamHvLoVBNsP4XD8GeisryTTP9
+ W
+X-Google-Smtp-Source: AGHT+IFITSKcmbr2aPKEAwhYEqRNg30i3qZZuxTmDP6+9SBvsrM4tCnLiXFcJNiect9eL6AmcpUcEQ==
+X-Received: by 2002:ac2:5101:0:b0:510:1b65:dd97 with SMTP id
+ q1-20020ac25101000000b005101b65dd97mr3929634lfb.17.1706888201673; 
  Fri, 02 Feb 2024 07:36:41 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.40
+ k2-20020a05600c1c8200b0040fafd84095sm214735wms.41.2024.02.02.07.36.41
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 Feb 2024 07:36:40 -0800 (PST)
+ Fri, 02 Feb 2024 07:36:41 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/36] hw/s390x/css-bridge: switch virtual-css bus to
- 3-phase-reset
-Date: Fri,  2 Feb 2024 15:36:06 +0000
-Message-Id: <20240202153637.3710444-6-peter.maydell@linaro.org>
+Subject: [PULL 06/36] hw/core: Remove transitional infrastructure from BusClass
+Date: Fri,  2 Feb 2024 15:36:07 +0000
+Message-Id: <20240202153637.3710444-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202153637.3710444-1-peter.maydell@linaro.org>
 References: <20240202153637.3710444-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,50 +92,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Switch the s390x virtual-css bus from using BusClass::reset to the
-Resettable interface.
-
-This has no behavioural change, because the BusClass code to support
-subclasses that use the legacy BusClass::reset will call that method
-in the hold phase of 3-phase reset.
+BusClass currently has transitional infrastructure to support
+subclasses which implement the legacy BusClass::reset method rather
+than the Resettable interface.  We have now removed all the users of
+BusClass::reset in the tree, so we can remove the transitional
+infrastructure.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Acked-by: Cédric Le Goater <clg@redhat.com>
 Acked-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Tested-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-id: 20240119163512.3810301-5-peter.maydell@linaro.org
+Message-id: 20240119163512.3810301-6-peter.maydell@linaro.org
 ---
- hw/s390x/css-bridge.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/hw/qdev-core.h |  2 --
+ hw/core/bus.c          | 67 ------------------------------------------
+ 2 files changed, 69 deletions(-)
 
-diff --git a/hw/s390x/css-bridge.c b/hw/s390x/css-bridge.c
-index 15d26efc951..34639f21435 100644
---- a/hw/s390x/css-bridge.c
-+++ b/hw/s390x/css-bridge.c
-@@ -56,7 +56,7 @@ static void ccw_device_unplug(HotplugHandler *hotplug_dev,
-     qdev_unrealize(dev);
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 66338f479fe..d47536eadb1 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -329,8 +329,6 @@ struct BusClass {
+      */
+     char *(*get_fw_dev_path)(DeviceState *dev);
+ 
+-    void (*reset)(BusState *bus);
+-
+     /*
+      * Return whether the device can be added to @bus,
+      * based on the address that was set (via device properties)
+diff --git a/hw/core/bus.c b/hw/core/bus.c
+index c7831b5293b..b9d89495cdf 100644
+--- a/hw/core/bus.c
++++ b/hw/core/bus.c
+@@ -232,57 +232,6 @@ static char *default_bus_get_fw_dev_path(DeviceState *dev)
+     return g_strdup(object_get_typename(OBJECT(dev)));
  }
  
--static void virtual_css_bus_reset(BusState *qbus)
-+static void virtual_css_bus_reset_hold(Object *obj)
+-/**
+- * bus_phases_reset:
+- * Transition reset method for buses to allow moving
+- * smoothly from legacy reset method to multi-phases
+- */
+-static void bus_phases_reset(BusState *bus)
+-{
+-    ResettableClass *rc = RESETTABLE_GET_CLASS(bus);
+-
+-    if (rc->phases.enter) {
+-        rc->phases.enter(OBJECT(bus), RESET_TYPE_COLD);
+-    }
+-    if (rc->phases.hold) {
+-        rc->phases.hold(OBJECT(bus));
+-    }
+-    if (rc->phases.exit) {
+-        rc->phases.exit(OBJECT(bus));
+-    }
+-}
+-
+-static void bus_transitional_reset(Object *obj)
+-{
+-    BusClass *bc = BUS_GET_CLASS(obj);
+-
+-    /*
+-     * This will call either @bus_phases_reset (for multi-phases transitioned
+-     * buses) or a bus's specific method for not-yet transitioned buses.
+-     * In both case, it does not reset children.
+-     */
+-    if (bc->reset) {
+-        bc->reset(BUS(obj));
+-    }
+-}
+-
+-/**
+- * bus_get_transitional_reset:
+- * check if the bus's class is ready for multi-phase
+- */
+-static ResettableTrFunction bus_get_transitional_reset(Object *obj)
+-{
+-    BusClass *dc = BUS_GET_CLASS(obj);
+-    if (dc->reset != bus_phases_reset) {
+-        /*
+-         * dc->reset has been overridden by a subclass,
+-         * the bus is not ready for multi phase yet.
+-         */
+-        return bus_transitional_reset;
+-    }
+-    return NULL;
+-}
+-
+ static void bus_class_init(ObjectClass *class, void *data)
  {
-     /* This should actually be modelled via the generic css */
-     css_reset();
-@@ -81,8 +81,9 @@ static char *virtual_css_bus_get_dev_path(DeviceState *dev)
- static void virtual_css_bus_class_init(ObjectClass *klass, void *data)
- {
-     BusClass *k = BUS_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
+     BusClass *bc = BUS_CLASS(class);
+@@ -293,22 +242,6 @@ static void bus_class_init(ObjectClass *class, void *data)
  
--    k->reset = virtual_css_bus_reset;
-+    rc->phases.hold = virtual_css_bus_reset_hold;
-     k->get_dev_path = virtual_css_bus_get_dev_path;
+     rc->get_state = bus_get_reset_state;
+     rc->child_foreach = bus_reset_child_foreach;
+-
+-    /*
+-     * @bus_phases_reset is put as the default reset method below, allowing
+-     * to do the multi-phase transition from base classes to leaf classes. It
+-     * allows a legacy-reset Bus class to extend a multi-phases-reset
+-     * Bus class for the following reason:
+-     * + If a base class B has been moved to multi-phase, then it does not
+-     *   override this default reset method and may have defined phase methods.
+-     * + A child class C (extending class B) which uses
+-     *   bus_class_set_parent_reset() (or similar means) to override the
+-     *   reset method will still work as expected. @bus_phases_reset function
+-     *   will be registered as the parent reset method and effectively call
+-     *   parent reset phases.
+-     */
+-    bc->reset = bus_phases_reset;
+-    rc->get_transitional_function = bus_get_transitional_reset;
  }
  
+ static void qbus_finalize(Object *obj)
 -- 
 2.34.1
 
