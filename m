@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADDF846794
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A4D846798
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:52:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmSv-0001q9-3G; Fri, 02 Feb 2024 00:51:53 -0500
+	id 1rVmSv-0001w9-Su; Fri, 02 Feb 2024 00:51:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSr-0001gH-Gv
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:49 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1rVmSt-0001kj-1C
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:51 -0500
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmSp-000230-Bx
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:49 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6dddf4fc85dso1354927b3a.0
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:46 -0800 (PST)
+ id 1rVmSr-00023x-De
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:51:50 -0500
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6de287449f1so1222022b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853106; x=1707457906; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853108; x=1707457908; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mMDUR8YTjAtFg0favVwCF9fiRHHGxe41Pc5h5Qu3z9s=;
- b=gXixLQXqSO7rcz5ExIWeC6rEiB5vJJqG/j2KOTBX0eth7PjvpIV5zt41TxK0WM+BCt
- TjXTi+oWAdUlN4tYeog65Ls7UUNkjzHJsY/leVOV4OPv6LYwswMViobEJjiy4dXXVroF
- e3WGBiQXyoJ7s9UeVd4kCN0DoJhuMrlRhHg8sO0c8FcQRHUGWBC4XUbJ6NBtONiGiqD/
- 3+u5MK7uwGlY0mGDno+ibNboZYBQ9WZyGfvOZlJLC7mNP8KumyDCL7QmF1hpqI+pHp6n
- HC7eo5kWgprNdKsvjiT2bqvim0bKzztMYGxhw+cMncUBVQ6f36KM+IuCaoqVXkGDstHa
- wbxg==
+ bh=+PC40RdxCsq43L7ljbEAmMpAkaTqLbVzOzu0xDoUXTU=;
+ b=YLODSh54pKB41W2nSWh/1dk/2+Ehqt5d/h/YpDE0kv576QqSftb4hj7QudlK55drfV
+ 0msek67w6QDVuDEvnNyNmS/L0x+267Qla0nyORXFxSzcY6P9d7Z+ktu/StBQwwE9bqRV
+ wemLRFkNImxrtIef/Puaar9I9j+1wko3rT1jxuIia0D1NNxGZZZBxMRkQAtzrj+BuNeO
+ amBMisSoOUdqMbi149lHXxeD0F8Wdu6hfoXk9IBret00/RProiNID79ulCL4Amk0RRLe
+ Rpkwc5iGhjlj2tgwhBQ14yWK1/GZx2S8P3MYXbkcvWKthnNnnNdXjgEXkCDQZh7m4diD
+ xSCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853106; x=1707457906;
+ d=1e100.net; s=20230601; t=1706853108; x=1707457908;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mMDUR8YTjAtFg0favVwCF9fiRHHGxe41Pc5h5Qu3z9s=;
- b=hephT0qJ8rCqe5xcISXjvcRJtR0uTXS2SCFQ0EDcFBNyr5sAK/wJUPFJwRZYXPxzBY
- VWAoV/RWjSs86RYujaNTuPy2vcVB63jRFE+lJelwWe73jcHs2L4YvbbSzK6gqB8eMgsp
- PkFFUGXIOGyxzJaqZYRpC1hRNnUvPrBluRmydlRK7P9zEOz2hK3fHL6R5ReKkFWeIe4Q
- E5hNxug77jgEeIyKFrrlhgwopfAV3p7znT18FcVGL9JLZQN6N1FILuXUlOfVfIdErnhG
- qSCmMGQWClhncDKWibDA94fNKIdSfFXKgotdHWRvcAmn3H4Oe7i4r31xc5Bxb0WEFXC/
- V0vA==
-X-Gm-Message-State: AOJu0Yw6Rf2clndkuULByHRYJ1VEBUBHwnMRpTi+LFlrNpyrvi0AqmPx
- 2SHKQh/HLoc9w3R/ozLHsEdI0oI1FFPlEGZs/GUXR02atjDT30BT6jWLoVDvtNEk4HPIY6t0hGE
- mLeQ=
-X-Google-Smtp-Source: AGHT+IH9UsEV6xL9Rdp0pgC0XnurkbuxHRTyOC1RMTPIPi8Bdzex8eFd6ObN+ngwpD/ogSYYuPPw5g==
-X-Received: by 2002:a05:6a00:b55:b0:6dd:8522:5005 with SMTP id
- p21-20020a056a000b5500b006dd85225005mr1968086pfo.2.1706853106006; 
- Thu, 01 Feb 2024 21:51:46 -0800 (PST)
+ bh=+PC40RdxCsq43L7ljbEAmMpAkaTqLbVzOzu0xDoUXTU=;
+ b=OOlzeSf+Xm+JOOSqF7b9WlmtrtHnun/tWPJ9auduwcnAbqXRmnGNXdtcdW8a+wmDo8
+ DfxH54cMumDScVysNsaryvFvR7cwm9mu2lZo46cJFcfZOLNUQsgBAdSTbNZ6KjYklBro
+ Rkg/MWPA4fqvFAOdV/jODdMmvvf1yPBX1cAEUOgCh5YmG/A5G29bZgt2epucB4SwCEC6
+ 7DBmkVWCtXer6U+mdt6HZFKOOyWUFD0StK09kPO3eYEGQ5tGeOUCDWdAGMRe2STgJ/DE
+ ChwOTOBrU2TqZiLCjeHTiIFCc546J+B4AlnezInlLZc73o5fGRB6HuxtliVVSvwMqsJB
+ nwhg==
+X-Gm-Message-State: AOJu0YzcWhjkyu6jbrsgoWZrl9r1sWIWJrO3ZyIViC2mUSbQeVyOjbT8
+ HKp9T3MKekxxdeeywM1Kaa6M471KYcsEJargWAmxH/MTZUTxIbLaQ4nuGdDMep81gRBLB5A0bM6
+ If0Q=
+X-Google-Smtp-Source: AGHT+IH/DtqpK8uC5w9oWNCpEt/99cZpq97VkJw03JRh5MD6u4Cawxe/nAofKlqcJKnhoVFveWyelA==
+X-Received: by 2002:aa7:844d:0:b0:6db:8b3a:ec0d with SMTP id
+ r13-20020aa7844d000000b006db8b3aec0dmr7285194pfn.9.1706853108043; 
+ Thu, 01 Feb 2024 21:51:48 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.44
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.51.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:51:45 -0800 (PST)
+ Thu, 01 Feb 2024 21:51:47 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 30/57] target/tricore: Populate CPUClass.mmu_index
-Date: Fri,  2 Feb 2024 15:50:09 +1000
-Message-Id: <20240202055036.684176-32-richard.henderson@linaro.org>
+Subject: [PULL 31/57] target/xtensa: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:50:10 +1000
+Message-Id: <20240202055036.684176-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,33 +95,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/tricore/cpu.c | 6 ++++++
+ target/xtensa/cpu.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index e6d91c74b5..74e8a22b86 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -89,6 +89,11 @@ static bool tricore_cpu_has_work(CPUState *cs)
-     return true;
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index 62020b1f33..79f91819df 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -74,6 +74,11 @@ static bool xtensa_cpu_has_work(CPUState *cs)
+ #endif
  }
  
-+static int tricore_cpu_mmu_index(CPUState *cs, bool ifetch)
++static int xtensa_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return 0;
++    return xtensa_get_cring(cpu_env(cs));
 +}
 +
- static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
- {
-     CPUState *cs = CPU(dev);
-@@ -194,6 +199,7 @@ static void tricore_cpu_class_init(ObjectClass *c, void *data)
-                                        &mcc->parent_phases);
-     cc->class_by_name = tricore_cpu_class_by_name;
-     cc->has_work = tricore_cpu_has_work;
-+    cc->mmu_index = tricore_cpu_mmu_index;
+ #ifdef CONFIG_USER_ONLY
+ static bool abi_call0;
  
-     cc->gdb_read_register = tricore_cpu_gdb_read_register;
-     cc->gdb_write_register = tricore_cpu_gdb_write_register;
+@@ -252,6 +257,7 @@ static void xtensa_cpu_class_init(ObjectClass *oc, void *data)
+ 
+     cc->class_by_name = xtensa_cpu_class_by_name;
+     cc->has_work = xtensa_cpu_has_work;
++    cc->mmu_index = xtensa_cpu_mmu_index;
+     cc->dump_state = xtensa_cpu_dump_state;
+     cc->set_pc = xtensa_cpu_set_pc;
+     cc->get_pc = xtensa_cpu_get_pc;
 -- 
 2.34.1
 
