@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B78B8471B5
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 390468471F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 15:31:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVuIT-0007lU-RE; Fri, 02 Feb 2024 09:13:37 -0500
+	id 1rVuYm-0005By-DN; Fri, 02 Feb 2024 09:30:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVuIQ-0007ky-TJ; Fri, 02 Feb 2024 09:13:35 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVuYa-0005Be-AI
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:30:17 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1rVuIO-00048a-No; Fri, 02 Feb 2024 09:13:34 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rVuYX-00030E-KA
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 09:30:16 -0500
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412Dqe9C026143; Fri, 2 Feb 2024 14:13:28 GMT
+ 412DqkxO026267; Fri, 2 Feb 2024 14:30:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=fAScaTNRMCZarWKXn2J2iMtXgXaYIfZjQ8qJiL/ahYY=;
- b=I8yYEOAiqxnWRZL5TW3SydgZz6FqSiDheMAS5xdXSNOlgeYQy3vAwutTTjIOBG4bsPMS
- UNXgsJqL9WBY2Z072tLs/Sbf0m1zhmdsrKd7Pjxk3F2kdNTyO9yZh6gOexHW0Jcq//0n
- 0A8+iNAFU637lWqOfSuzYKdwYto+npjSltc9iuzcLJi4cWlFg1q/RGG9yoj9qUOCaBLg
- 6LCux+Gucj8iZ7HXkYM59DlS5sSyhpP7riaUgBYHUc1eHRc4mK+ZAY1EBiQChbfEmAw4
- RqJOj0mer23sJoGxNgORK3+32vK/Hvthue7/MLczE9kxOhesTuoY0/wG7z/NkMokKfll Xg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11ng0jt7-1
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=tBxLPmLGvEtNx6c9VPjEN/ez6mpDL0mYh8iNzgu5+zk=;
+ b=jT7KYlUThmiztqZQYhQYiOKkV6rAl7mbmbkQQNi/aErL8GbrBadBb8Gp6F1KMRj2IdfW
+ Ez7aF2HkjMBvjzk6D8c//FNSsB+bg2TTScfGMgAXRO+xUGFH6tk13UyKDGb3eD3VcLLJ
+ RiKkz5KKOjiIvh2dLK7OkyNTYV4co1y04YUieHTTcKIFL+KzzwP1A9dFNb7pIHBoaAkF
+ 8VhvkLVab3fSZTc5ejLD9Lm9VC41zj+RqiOZ7CbvpGYzYcM/6/Rs0zGZN2Flf/b4VAme
+ JbDbnRHvo0euTwsucHVG+MRMJQ2fwvkq4CtiX8SmG41BmPP5wBtQAGTIcDr/luVC2JeD Ag== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11ng0x5n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 14:13:28 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 412Dr6aN027608;
- Fri, 2 Feb 2024 14:13:28 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w11ng0jsp-1
+ Fri, 02 Feb 2024 14:30:07 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 412EDl77011237; Fri, 2 Feb 2024 14:30:06 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwecm3g45-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 14:13:27 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 412BaP4X002223; Fri, 2 Feb 2024 14:13:27 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwc5tuyd7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 02 Feb 2024 14:13:26 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 412EDPwA14549642
+ Fri, 02 Feb 2024 14:30:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 412EU5BF14615188
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 2 Feb 2024 14:13:25 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 12A7B20043;
- Fri,  2 Feb 2024 14:13:25 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9DD720040;
- Fri,  2 Feb 2024 14:13:24 +0000 (GMT)
-Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  2 Feb 2024 14:13:24 +0000 (GMT)
+ Fri, 2 Feb 2024 14:30:05 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 092A52004B;
+ Fri,  2 Feb 2024 14:30:05 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CE40920040;
+ Fri,  2 Feb 2024 14:30:04 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  2 Feb 2024 14:30:04 +0000 (GMT)
+Message-ID: <15c1169df667446df5d2fa10ed51d4ae8c6d1f56.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] gdbstub: Implement catching syscalls
 From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>,
- Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
-Subject: [PATCH v4 4/4] tests/tcg/s390x: Test CONVERT TO BINARY
-Date: Fri,  2 Feb 2024 15:12:00 +0100
-Message-ID: <20240202141318.95962-5-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202141318.95962-1-iii@linux.ibm.com>
-References: <20240202141318.95962-1-iii@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: Riku Voipio <riku.voipio@iki.fi>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Date: Fri, 02 Feb 2024 15:30:04 +0100
+In-Reply-To: <8734uckswx.fsf@draig.linaro.org>
+References: <20240116094411.216665-1-iii@linux.ibm.com>
+ <20240116094411.216665-2-iii@linux.ibm.com>
+ <8734uckswx.fsf@draig.linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eCmjBOpOqXv3n3xdx9856kkdkPpBO6xv
-X-Proofpoint-ORIG-GUID: 6O-T1QDB-wMfa-a1nmCEy94nAFviShlJ
+X-Proofpoint-GUID: JQWNwypOukMc7X838ztgGxLSpef0Mtaf
+X-Proofpoint-ORIG-GUID: JQWNwypOukMc7X838ztgGxLSpef0Mtaf
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-02_08,2024-01-31_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  adultscore=0 phishscore=0
  impostorscore=0 malwarescore=0 suspectscore=0 bulkscore=0 spamscore=0
- clxscore=1015 mlxlogscore=723 lowpriorityscore=0 priorityscore=1501
+ clxscore=1011 mlxlogscore=999 lowpriorityscore=0 priorityscore=1501
  mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402020104
+ engine=8.12.0-2311290000 definitions=main-2402020105
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -113,137 +108,349 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Check the CVB's, CVBY's, and CVBG's corner cases.
+On Thu, 2024-02-01 at 17:15 +0000, Alex Benn=C3=A9e wrote:
+> Ilya Leoshkevich <iii@linux.ibm.com> writes:
+>=20
+> > GDB supports stopping on syscall entry and exit using the "catch
+> > syscall" command. It relies on 3 packets, which are currently not
+> > supported by QEMU:
+> >=20
+> > * qSupported:QCatchSyscalls+ [1]
+> > * QCatchSyscalls: [2]
+> > * T05syscall_entry: and T05syscall_return: [3]
+> >=20
+> > Implement generation and handling of these packets.
+> >=20
+> > [1]
+> > https://sourceware.org/gdb/current/onlinedocs/gdb.html/General-Query-Pa=
+ckets.html#qSupported
+> > [2]
+> > https://sourceware.org/gdb/current/onlinedocs/gdb.html/General-Query-Pa=
+ckets.html#QCatchSyscalls
+> > [3]
+> > https://sourceware.org/gdb/current/onlinedocs/gdb.html/Stop-Reply-Packe=
+ts.html
+> >=20
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0gdbstub/gdbstub.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 9 +++
+> > =C2=A0gdbstub/internals.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0=C2=A0 2 +
+> > =C2=A0gdbstub/user-target.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0=C2=A0 5 ++
+> > =C2=A0gdbstub/user.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 104
+> > ++++++++++++++++++++++++++++++++++-
+> > =C2=A0include/gdbstub/user.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 29 +++++++++-
+> > =C2=A0include/user/syscall-trace.h |=C2=A0=C2=A0 7 ++-
+> > =C2=A06 files changed, 151 insertions(+), 5 deletions(-)
 
-Co-developed-by: Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |   1 +
- tests/tcg/s390x/cvb.c           | 102 ++++++++++++++++++++++++++++++++
- 2 files changed, 103 insertions(+)
- create mode 100644 tests/tcg/s390x/cvb.c
+[...]
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 04e4bddd83d..e2aba2ec274 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -46,6 +46,7 @@ TESTS+=laalg
- TESTS+=add-logical-with-carry
- TESTS+=lae
- TESTS+=cvd
-+TESTS+=cvb
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/cvb.c b/tests/tcg/s390x/cvb.c
-new file mode 100644
-index 00000000000..e1735f6b81c
---- /dev/null
-+++ b/tests/tcg/s390x/cvb.c
-@@ -0,0 +1,102 @@
-+/*
-+ * Test the CONVERT TO BINARY instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <signal.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+static int signum;
-+
-+static void signal_handler(int n)
-+{
-+    signum = n;
-+}
-+
-+#define FAIL 0x1234567887654321
-+#define OK32(x) (0x1234567800000000 | (uint32_t)(x))
-+
-+static int64_t cvb(uint64_t x)
-+{
-+    int64_t ret = FAIL;
-+
-+    signum = -1;
-+    asm("cvb %[ret],%[x]" : [ret] "+r" (ret) : [x] "R" (x));
-+
-+    return ret;
-+}
-+
-+static int64_t cvby(uint64_t x)
-+{
-+    int64_t ret = FAIL;
-+
-+    signum = -1;
-+    asm("cvby %[ret],%[x]" : [ret] "+r" (ret) : [x] "T" (x));
-+
-+    return ret;
-+}
-+
-+static int64_t cvbg(__uint128_t x)
-+{
-+    int64_t ret = FAIL;
-+
-+    signum = -1;
-+    asm("cvbg %[ret],%[x]" : [ret] "+r" (ret) : [x] "T" (x));
-+
-+    return ret;
-+}
-+
-+int main(void)
-+{
-+    __uint128_t m = (((__uint128_t)0x9223372036854775) << 16) | 0x8070;
-+    struct sigaction act;
-+    int err;
-+
-+    memset(&act, 0, sizeof(act));
-+    act.sa_handler = signal_handler;
-+    err = sigaction(SIGFPE, &act, NULL);
-+    assert(err == 0);
-+    err = sigaction(SIGILL, &act, NULL);
-+    assert(err == 0);
-+
-+    assert(cvb(0xc) == OK32(0) && signum == -1);
-+    assert(cvb(0x1c) == OK32(1) && signum == -1);
-+    assert(cvb(0x25594c) == OK32(25594) && signum == -1);
-+    assert(cvb(0x1d) == OK32(-1) && signum == -1);
-+    assert(cvb(0x2147483647c) == OK32(0x7fffffff) && signum == -1);
-+    assert(cvb(0x2147483648d) == OK32(-0x80000000) && signum == -1);
-+    assert(cvb(0x7) == FAIL && signum == SIGILL);
-+    assert(cvb(0x2147483648c) == OK32(0x80000000) && signum == SIGFPE);
-+    assert(cvb(0x3000000000c) == OK32(0xb2d05e00) && signum == SIGFPE);
-+    assert(cvb(0x2147483649d) == OK32(0x7fffffff) && signum == SIGFPE);
-+    assert(cvb(0x3000000000d) == OK32(0x4d2fa200) && signum == SIGFPE);
-+
-+    assert(cvby(0xc) == OK32(0));
-+    assert(cvby(0x1c) == OK32(1));
-+    assert(cvby(0x25594c) == OK32(25594));
-+    assert(cvby(0x1d) == OK32(-1));
-+    assert(cvby(0x2147483647c) == OK32(0x7fffffff));
-+    assert(cvby(0x2147483648d) == OK32(-0x80000000));
-+    assert(cvby(0x7) == FAIL && signum == SIGILL);
-+    assert(cvby(0x2147483648c) == OK32(0x80000000) && signum == SIGFPE);
-+    assert(cvby(0x3000000000c) == OK32(0xb2d05e00) && signum == SIGFPE);
-+    assert(cvby(0x2147483649d) == OK32(0x7fffffff) && signum == SIGFPE);
-+    assert(cvby(0x3000000000d) == OK32(0x4d2fa200) && signum == SIGFPE);
-+
-+    assert(cvbg(0xc) == 0);
-+    assert(cvbg(0x1c) == 1);
-+    assert(cvbg(0x25594c) == 25594);
-+    assert(cvbg(0x1d) == -1);
-+    assert(cvbg(m + 0xc) == 0x7fffffffffffffff);
-+    assert(cvbg(m + 0x1d) == -0x8000000000000000);
-+    assert(cvbg(0x7) == FAIL && signum == SIGILL);
-+    assert(cvbg(m + 0x1c) == FAIL && signum == SIGFPE);
-+    assert(cvbg(m + 0x2d) == FAIL && signum == SIGFPE);
-+    assert(cvbg(((__uint128_t)1 << 80) + 0xc) == FAIL && signum == SIGFPE);
-+    assert(cvbg(((__uint128_t)1 << 80) + 0xd) == FAIL && signum == SIGFPE);
-+
-+    return EXIT_SUCCESS;
-+}
--- 
-2.43.0
+> > @@ -499,3 +517,87 @@ void gdb_syscall_handling(const char
+> > *syscall_packet)
+> > =C2=A0=C2=A0=C2=A0=C2=A0 gdb_put_packet(syscall_packet);
+> > =C2=A0=C2=A0=C2=A0=C2=A0 gdb_handlesig(gdbserver_state.c_cpu, 0);
+> > =C2=A0}
+> > +
+> > +static bool should_catch_syscall(int num)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 switch (gdbserver_user_state.catch_syscalls_state) {
+> > +=C2=A0=C2=A0=C2=A0 case GDB_CATCH_SYSCALLS_NONE:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> > +=C2=A0=C2=A0=C2=A0 case GDB_CATCH_SYSCALLS_ALL:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return true;
+> > +=C2=A0=C2=A0=C2=A0 case GDB_CATCH_SYSCALLS_SELECTED:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (num < 0 || num >=3D GDB=
+_NR_SYSCALLS) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+urn false;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+urn test_bit(num,
+> > gdbserver_user_state.catch_syscalls_mask);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0 default:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_assert_not_reached();
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > +
+> > +void gdb_syscall_entry(CPUState *cs, int num)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 char reason[32];
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (should_catch_syscall(num)) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snprintf(reason, sizeof(rea=
+son), "syscall_entry:%x;",
+> > num);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_handlesig_reason(cs, gd=
+b_target_sigtrap(), reason);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > +
+> > +void gdb_syscall_return(CPUState *cs, int num)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 char reason[32];
+> > +
+> > +=C2=A0=C2=A0=C2=A0 if (should_catch_syscall(num)) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snprintf(reason, sizeof(rea=
+son), "syscall_return:%x;",
+> > num);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_handlesig_reason(cs, gd=
+b_target_sigtrap(), reason);
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+>=20
+> I'm not super keen on re-introducing snprintf's as we've been slowly
+> eradicating them from the code base. How about:
+>=20
+> =C2=A0=C2=A0=C2=A0 g_autoptr(GString) reason =3D g_string_printf("syscall=
+_return:%x;",
+> num);
+> =C2=A0=C2=A0=C2=A0 gdb_handlesig_reason(cs, gdb_target_sigtrap(), reason);
+
+Ok.
+
+> > +
+> > +void gdb_handle_set_catch_syscalls(GArray *params, void *user_ctx)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 enum GDBCatchSyscallsState catch_syscalls_state;
+> > +=C2=A0=C2=A0=C2=A0 const char *param =3D get_param(params, 0)->data;
+> > +=C2=A0=C2=A0=C2=A0 GDBSyscallsMask catch_syscalls_mask;
+> > +=C2=A0=C2=A0=C2=A0 bool catch_syscalls_none;
+> > +=C2=A0=C2=A0=C2=A0 unsigned int num;
+> > +=C2=A0=C2=A0=C2=A0 const char *p;
+> > +
+>=20
+> Perhaps a little comment:
+>=20
+> =C2=A0 /* terminating with 0/1 to disable/enable all */
+>=20
+> > +=C2=A0=C2=A0=C2=A0 catch_syscalls_none =3D strcmp(param, "0") =3D=3D 0;
+> > +=C2=A0=C2=A0=C2=A0 if (catch_syscalls_none || strcmp(param, "1") =3D=
+=3D 0) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.catch_=
+syscalls_state =3D
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat=
+ch_syscalls_none ? GDB_CATCH_SYSCALLS_NONE :
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 GDB_CATCH_SYSCALLS_A=
+LL;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_put_packet("OK");
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+>=20
+> =C2=A0 /* otherwise decode the following list of syscalls... */
+>=20
+> ?
+
+Ok.
+
+>=20
+> > +=C2=A0=C2=A0=C2=A0 if (param[0] =3D=3D '1' && param[1] =3D=3D ';') {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 catch_syscalls_state =3D GD=
+B_CATCH_SYSCALLS_SELECTED;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memset(catch_syscalls_mask,=
+ 0,
+> > sizeof(catch_syscalls_mask));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (p =3D &param[2];; p++)=
+ {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(qemu_strtoui(p, &p, 16, &num) || (*p && *p !=3D
+> > ';')) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 goto err;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(num >=3D GDB_NR_SYSCALLS) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 /* Fall back to reporting all syscalls. */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 catch_syscalls_state =3D GDB_CATCH_SYSCALLS_ALL;
+>=20
+> Is this the right thing or maybe we should error because gdb sent us
+> something strange? In fact you could do:
+
+I would keep this, because the size of GDBSyscallsMask is chosen
+somewhat arbitrarily, and it's nice to have a fallback. The spec allows
+this:
+
+    Note that if a syscall not in the list is reported, GDB will still
+    filter the event according to its own list from all corresponding
+    catch syscall commands. However, it is more efficient to only
+    report the requested syscalls.=20
+
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (qemu_str=
+toui(p, &p, 16, &num) ||
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 (*p && *p !=3D ';') ||
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 num >=3D GDB_NR_SYSCALLS) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 gdb_put_packet("E00");
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 return;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> and skip the goto err
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } e=
+lse {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 set_bit(num, catch_syscalls_mask);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(!*p) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 break;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> Could this be in the for loop?
+>=20
+> =C2=A0 for(p =3D &param[2]; *p; p++)
+
+The idea behind this is to catch the empty syscall list, which I
+believe is not a valid syntax. I will add a comment.
+
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdbserver_user_state.catch_=
+syscalls_state =3D
+> > catch_syscalls_state;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memcpy(gdbserver_user_state=
+.catch_syscalls_mask,
+> > catch_syscalls_mask,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 sizeof(catch_syscalls_mask));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gdb_put_packet("OK");
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +err:
+> > +=C2=A0=C2=A0=C2=A0 gdb_put_packet("E00");
+> > +}
+> > diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+> > index d392e510c59..68b6534130c 100644
+> > --- a/include/gdbstub/user.h
+> > +++ b/include/gdbstub/user.h
+> > @@ -10,9 +10,10 @@
+> > =C2=A0#define GDBSTUB_USER_H
+> > =C2=A0
+> > =C2=A0/**
+> > - * gdb_handlesig() - yield control to gdb
+> > + * gdb_handlesig_reason() - yield control to gdb
+> > =C2=A0 * @cpu: CPU
+> > =C2=A0 * @sig: if non-zero, the signal number which caused us to stop
+> > + * @reason: stop reason for stop reply packet or NULL
+> > =C2=A0 *
+> > =C2=A0 * This function yields control to gdb, when a user-mode-only
+> > target
+> > =C2=A0 * needs to stop execution. If @sig is non-zero, then we will send
+> > a
+> > @@ -24,7 +25,18 @@
+> > =C2=A0 * or 0 if no signal should be delivered, ie the signal that
+> > caused
+> > =C2=A0 * us to stop should be ignored.
+> > =C2=A0 */
+> > -int gdb_handlesig(CPUState *, int);
+> > +int gdb_handlesig_reason(CPUState *, int, const char *);
+> > +
+> > +/**
+> > + * gdb_handlesig() - yield control to gdb
+> > + * @cpu CPU
+> > + * @sig: if non-zero, the signal number which caused us to stop
+> > + * @see gdb_handlesig_reason()
+> > + */
+> > +static inline int gdb_handlesig(CPUState *cpu, int sig)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0 return gdb_handlesig_reason(cpu, sig, NULL);
+> > +}
+> > =C2=A0
+> > =C2=A0/**
+> > =C2=A0 * gdb_signalled() - inform remote gdb of sig exit
+> > @@ -39,5 +51,18 @@ void gdb_signalled(CPUArchState *as, int sig);
+> > =C2=A0 */
+> > =C2=A0void gdbserver_fork(CPUState *cs);
+> > =C2=A0
+> > +/**
+> > + * gdb_syscall_entry() - inform gdb of syscall entry and yield
+> > control to it
+> > + * @cs: CPU
+> > + * @num: syscall number
+> > + */
+> > +void gdb_syscall_entry(CPUState *cs, int num);
+> > +
+> > +/**
+> > + * gdb_syscall_entry() - inform gdb of syscall return and yield
+> > control to it
+> > + * @cs: CPU
+> > + * @num: syscall number
+> > + */
+> > +void gdb_syscall_return(CPUState *cs, int num);
+> > =C2=A0
+> > =C2=A0#endif /* GDBSTUB_USER_H */
+> > diff --git a/include/user/syscall-trace.h b/include/user/syscall-
+> > trace.h
+> > index 557f881a79b..b48b2b2d0ae 100644
+> > --- a/include/user/syscall-trace.h
+> > +++ b/include/user/syscall-trace.h
+> > @@ -11,6 +11,7 @@
+> > =C2=A0#define SYSCALL_TRACE_H
+> > =C2=A0
+> > =C2=A0#include "exec/user/abitypes.h"
+> > +#include "gdbstub/user.h"
+> > =C2=A0#include "qemu/plugin.h"
+> > =C2=A0#include "trace/trace-root.h"
+> > =C2=A0
+> > @@ -20,7 +21,7 @@
+> > =C2=A0 * could potentially unify the -strace code here as well.
+> > =C2=A0 */
+> > =C2=A0
+> > -static inline void record_syscall_start(void *cpu, int num,
+> > +static inline void record_syscall_start(CPUState *cpu, int num,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 abi_long arg1, abi_long
+> > arg2,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 abi_long arg3, abi_long
+> > arg4,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 abi_long arg5, abi_long
+> > arg6,
+> > @@ -29,11 +30,13 @@ static inline void record_syscall_start(void
+> > *cpu, int num,
+> > =C2=A0=C2=A0=C2=A0=C2=A0 qemu_plugin_vcpu_syscall(cpu, num,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg1, arg2, arg3, arg4,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arg5, arg6, arg7, arg8);
+> > +=C2=A0=C2=A0=C2=A0 gdb_syscall_entry(cpu, num);
+> > =C2=A0}
+> > =C2=A0
+> > -static inline void record_syscall_return(void *cpu, int num,
+> > abi_long ret)
+> > +static inline void record_syscall_return(CPUState *cpu, int num,
+> > abi_long ret)
+> > =C2=A0{
+> > =C2=A0=C2=A0=C2=A0=C2=A0 qemu_plugin_vcpu_syscall_ret(cpu, num, ret);
+> > +=C2=A0=C2=A0=C2=A0 gdb_syscall_return(cpu, num);
+>=20
+> This clean-up belongs in a separate patch.
+
+Ok.
+
+>=20
+> > =C2=A0}
+>=20
 
 
