@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E498467A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AE68467C1
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 Feb 2024 06:58:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rVmS0-00017q-5r; Fri, 02 Feb 2024 00:50:56 -0500
+	id 1rVmS1-000196-Ne; Fri, 02 Feb 2024 00:50:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRy-00016p-FQ
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:54 -0500
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1rVmS0-00017w-0u
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:56 -0500
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rVmRw-0001d7-J0
- for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:54 -0500
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3bbbc6e51d0so1137084b6e.3
- for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:52 -0800 (PST)
+ id 1rVmRy-0001dU-IF
+ for qemu-devel@nongnu.org; Fri, 02 Feb 2024 00:50:55 -0500
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3bbbc6bcc78so1205110b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 01 Feb 2024 21:50:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1706853051; x=1707457851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1706853053; x=1707457853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=svD0DyA2m73gq/Ge9byYTLFCXR2+v+Cj9UWYFuKF40Y=;
- b=E7rjE4vdx+SRFzxMUGjYPvOEWmfJ7FU6VHpSQk+l+BD6XJ4ojJbvxvw0LPzsqIz5dT
- ugvWQVzJCdDXP5/FXfw1zOIRtR7wRYCuDV1LUjMVc6QcPtnu8miY8dTac2Fg6hiBqr/t
- w/AXy0jADET55x91Dk5npMwiW674lXkDf7D4j2TlX8My1RngRjSLMCItwwG3K4CkeZuW
- 4OEWhgClPaxrcnyKoKPO0xcXxeRm7hEDT+/giME/DqthoVCpKOJoBroNsxsbFBSVg8ir
- aLwWBROw2Bqj8wqdAd92F5GDrIopKlBs0PwuPKx7MReWoGu0DT8C686xEMItZvMmrDAe
- D6wA==
+ bh=vAFj9xK8iYl2K7L1Y8DNUJSyua1dAxxrWDyOxstfeWU=;
+ b=VJk2m61Vp9CO1VTeGJGFjs0BMu41c1fLQfT7zk0XQX9/OyakPNwH/RN1/IwL32E3VO
+ zFQlyVz95J6tdOtfZ+ogF6Wgg9613r/aas+/OVXQJvsvTngTM8M601pEFSQ7LTLzei7w
+ Xx7n+Ugvi5BV/AmErY4WvUMbrpLQ6IAx/knW61AheoHz1nPZJfpkDsUxSkL/fQIJnIOF
+ YkzgS5kOD20oq4Li2FYXIuhPhjAEzARYv3oFOp8FZj9PymAzmnEjOtdS9mOgLKLvg9Wp
+ GCsGS6tDmExJ2W9QiRsXu079kt2Okrfraol685wBXvXTtbw9C+VYGNX321DjsNyZa/mY
+ INeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1706853051; x=1707457851;
+ d=1e100.net; s=20230601; t=1706853053; x=1707457853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=svD0DyA2m73gq/Ge9byYTLFCXR2+v+Cj9UWYFuKF40Y=;
- b=ADYirDWKRSrJh2shaVKbFKX730Jes3nDNZ+03q1VPAjN2kIVRu4g5+POambTjAL3Og
- /4bT8t5j5WCZexQZcZ5UFh5ELfqoI0v4FjfiNjkViielb8sl6HPO2GY2xtur0kj7C/Xx
- GNH/bSsAhrvOT3hRu5mPZEpixVOUA5LZGI0xXe4+ZN2qmQKsU5hbJsEdL/4JbnhZZuGR
- sdNAgEX+KPrNDCfmBhNdl+ZIL9xKuHrOKWndS2jy7xgvAF2F3w29HEybsMBXYISvxa6Z
- pA/87QjGKvnBc+x9r0eArj6dxZrgh38sLvkxtwIOcHxSDJ8anGuml/FWvBDsDP2FAP8M
- QuJw==
-X-Gm-Message-State: AOJu0Yw3ARHHmKrRB7/0lOE47eCOBtPNa41igsj2Bcdaqm1uoH4+MWDC
- uEQqhc4cjkxfmr33VsRjp6zb2uaRgFpGx2thlSN3Qeq4GU9EFcx3yxRK/bvjn+caebG8omS+l8u
- 06pw=
-X-Google-Smtp-Source: AGHT+IH2mcKxZhWMpCrWPzcQrFyvi4gs2k0b23AVSefYZDD0DxqAFDncJZN8/pwL0qcqLqrGPgalgQ==
-X-Received: by 2002:a05:6808:1587:b0:3bf:c3d5:c68f with SMTP id
- t7-20020a056808158700b003bfc3d5c68fmr20167oiw.0.1706853051087; 
- Thu, 01 Feb 2024 21:50:51 -0800 (PST)
+ bh=vAFj9xK8iYl2K7L1Y8DNUJSyua1dAxxrWDyOxstfeWU=;
+ b=uXK8tSd8/zZCR8SznAClCATlOID3+C94NBRrScHGvbSaT6cSFG5Saf81Wvy+AKB8qF
+ SNpkA50TyUauc5pW+YV9cn0vOeR/0oQ4j9ddgLYCP2Zwkl5JmpZx2uAyibzevva8oBXr
+ r20eY6OyyV/PjdykRGVOr90fypFiGG9EoVHv0HyIoERrojonDGTHCV1L+4Keew8hxNbe
+ lQH4M/HEh4M3snnwanblkUsjKKw7wz9B+uvSLSauvCCEl22XM8/uJZDgvQP8lcZ2xXCW
+ I4tiT/9mkrgYCKDQhuFptdg1k/J2viglxepu3ljZBXKt5Z3qKcSccBo2He+hHIoDW7r8
+ 2pyA==
+X-Gm-Message-State: AOJu0YwCJHFDIuMQBJMSQ1uIkulJZJYz4YYks9VrqiZJ8Js44F+hyCsp
+ WEUohOSYI42GkXXXXrDUlw7K4ASIx02arQMUIvQit4m7hPz/SGfzG6LOx/GgvJ/uVsyq3UZqPOX
+ WSco=
+X-Google-Smtp-Source: AGHT+IHsf3chNcFWm0+gSeZcQCRuT75UVkB4SfmiS52SbMpSobfsimQOJkmmvxB6z2y1hKIJOcJF3Q==
+X-Received: by 2002:a05:6808:14d6:b0:3bf:c3bf:ffcb with SMTP id
+ f22-20020a05680814d600b003bfc3bfffcbmr50321oiw.46.1706853053172; 
+ Thu, 01 Feb 2024 21:50:53 -0800 (PST)
 Received: from stoup.. ([103.210.27.218]) by smtp.gmail.com with ESMTPSA id
- h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.49
+ h2-20020aa79f42000000b006dab0d72cd0sm715111pfr.214.2024.02.01.21.50.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 Feb 2024 21:50:50 -0800 (PST)
+ Thu, 01 Feb 2024 21:50:52 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/57] target/arm: Split out arm_env_mmu_index
-Date: Fri,  2 Feb 2024 15:49:43 +1000
-Message-Id: <20240202055036.684176-6-richard.henderson@linaro.org>
+Subject: [PULL 05/57] target/arm: Populate CPUClass.mmu_index
+Date: Fri,  2 Feb 2024 15:49:44 +1000
+Message-Id: <20240202055036.684176-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240202055036.684176-1-richard.henderson@linaro.org>
 References: <20240202055036.684176-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,203 +95,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/internals.h      |  5 +++++
- target/arm/helper.c         |  2 +-
- target/arm/tcg/helper-a64.c |  4 ++--
- target/arm/tcg/mte_helper.c | 18 +++++++++---------
- target/arm/tcg/sve_helper.c |  8 ++++----
- target/arm/tcg/tlb_helper.c |  2 +-
- 6 files changed, 22 insertions(+), 17 deletions(-)
+ target/arm/cpu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 71d6c70bf3..fc337fe40e 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -40,6 +40,11 @@
- #define BANK_HYP    6
- #define BANK_MON    7
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 6a96b245f2..1f9ea622bd 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -133,6 +133,11 @@ static bool arm_cpu_has_work(CPUState *cs)
+          | CPU_INTERRUPT_EXITTB);
+ }
  
-+static inline int arm_env_mmu_index(CPUARMState *env)
++static int arm_cpu_mmu_index(CPUState *cs, bool ifetch)
 +{
-+    return EX_TBFLAG_ANY(env->hflags, MMUIDX);
++    return arm_env_mmu_index(cpu_env(cs));
 +}
 +
- static inline bool excp_is_internal(int excp)
+ void arm_register_pre_el_change_hook(ARMCPU *cpu, ARMELChangeHookFn *hook,
+                                  void *opaque)
  {
-     /* Return true if this exception number represents a QEMU-internal
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 945d8571a6..b0488caf40 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7841,7 +7841,7 @@ static void dccvap_writefn(CPUARMState *env, const ARMCPRegInfo *opaque,
-     uint64_t vaddr_in = (uint64_t) value;
-     uint64_t vaddr = vaddr_in & ~(dline_size - 1);
-     void *haddr;
--    int mem_idx = cpu_mmu_index(env, false);
-+    int mem_idx = arm_env_mmu_index(env);
+@@ -2497,6 +2502,7 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
  
-     /* This won't be crossing page boundaries */
-     haddr = probe_read(env, vaddr, dline_size, mem_idx, GETPC());
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 198b975f20..ebaa7f00df 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -856,7 +856,7 @@ void HELPER(exception_return)(CPUARMState *env, uint64_t new_pc)
-         tbii = EX_TBFLAG_A64(env->hflags, TBII);
-         if ((tbii >> extract64(new_pc, 55, 1)) & 1) {
-             /* TBI is enabled. */
--            int core_mmu_idx = cpu_mmu_index(env, false);
-+            int core_mmu_idx = arm_env_mmu_index(env);
-             if (regime_has_2_ranges(core_to_aa64_mmu_idx(core_mmu_idx))) {
-                 new_pc = sextract64(new_pc, 0, 56);
-             } else {
-@@ -925,7 +925,7 @@ void HELPER(dc_zva)(CPUARMState *env, uint64_t vaddr_in)
-      */
-     int blocklen = 4 << env_archcpu(env)->dcz_blocksize;
-     uint64_t vaddr = vaddr_in & ~(blocklen - 1);
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     void *mem;
- 
-     /*
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index ffb8ea1c34..d971b81370 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -291,7 +291,7 @@ static int load_tag1(uint64_t ptr, uint8_t *mem)
- 
- uint64_t HELPER(ldg)(CPUARMState *env, uint64_t ptr, uint64_t xt)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uint8_t *mem;
-     int rtag = 0;
- 
-@@ -311,7 +311,7 @@ static void check_tag_aligned(CPUARMState *env, uint64_t ptr, uintptr_t ra)
- {
-     if (unlikely(!QEMU_IS_ALIGNED(ptr, TAG_GRANULE))) {
-         arm_cpu_do_unaligned_access(env_cpu(env), ptr, MMU_DATA_STORE,
--                                    cpu_mmu_index(env, false), ra);
-+                                    arm_env_mmu_index(env), ra);
-         g_assert_not_reached();
-     }
- }
-@@ -344,7 +344,7 @@ typedef void stg_store1(uint64_t, uint8_t *, int);
- static inline void do_stg(CPUARMState *env, uint64_t ptr, uint64_t xt,
-                           uintptr_t ra, stg_store1 store1)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uint8_t *mem;
- 
-     check_tag_aligned(env, ptr, ra);
-@@ -371,7 +371,7 @@ void HELPER(stg_parallel)(CPUARMState *env, uint64_t ptr, uint64_t xt)
- 
- void HELPER(stg_stub)(CPUARMState *env, uint64_t ptr)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uintptr_t ra = GETPC();
- 
-     check_tag_aligned(env, ptr, ra);
-@@ -381,7 +381,7 @@ void HELPER(stg_stub)(CPUARMState *env, uint64_t ptr)
- static inline void do_st2g(CPUARMState *env, uint64_t ptr, uint64_t xt,
-                            uintptr_t ra, stg_store1 store1)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     int tag = allocation_tag_from_addr(xt);
-     uint8_t *mem1, *mem2;
- 
-@@ -429,7 +429,7 @@ void HELPER(st2g_parallel)(CPUARMState *env, uint64_t ptr, uint64_t xt)
- 
- void HELPER(st2g_stub)(CPUARMState *env, uint64_t ptr)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uintptr_t ra = GETPC();
-     int in_page = -(ptr | TARGET_PAGE_MASK);
- 
-@@ -445,7 +445,7 @@ void HELPER(st2g_stub)(CPUARMState *env, uint64_t ptr)
- 
- uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uintptr_t ra = GETPC();
-     int gm_bs = env_archcpu(env)->gm_blocksize;
-     int gm_bs_bytes = 4 << gm_bs;
-@@ -505,7 +505,7 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
- 
- void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uintptr_t ra = GETPC();
-     int gm_bs = env_archcpu(env)->gm_blocksize;
-     int gm_bs_bytes = 4 << gm_bs;
-@@ -555,7 +555,7 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
- void HELPER(stzgm_tags)(CPUARMState *env, uint64_t ptr, uint64_t val)
- {
-     uintptr_t ra = GETPC();
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     int log2_dcz_bytes, log2_tag_bytes;
-     intptr_t dcz_bytes, tag_bytes;
-     uint8_t *mem;
-diff --git a/target/arm/tcg/sve_helper.c b/target/arm/tcg/sve_helper.c
-index f006d152cc..bce4295d28 100644
---- a/target/arm/tcg/sve_helper.c
-+++ b/target/arm/tcg/sve_helper.c
-@@ -5481,7 +5481,7 @@ bool sve_cont_ldst_pages(SVEContLdSt *info, SVEContFault fault,
-                          CPUARMState *env, target_ulong addr,
-                          MMUAccessType access_type, uintptr_t retaddr)
- {
--    int mmu_idx = cpu_mmu_index(env, false);
-+    int mmu_idx = arm_env_mmu_index(env);
-     int mem_off = info->mem_off_first[0];
-     bool nofault = fault == FAULT_NO;
-     bool have_work = true;
-@@ -6529,7 +6529,7 @@ void sve_ld1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
-                sve_ldst1_host_fn *host_fn,
-                sve_ldst1_tlb_fn *tlb_fn)
- {
--    const int mmu_idx = cpu_mmu_index(env, false);
-+    const int mmu_idx = arm_env_mmu_index(env);
-     const intptr_t reg_max = simd_oprsz(desc);
-     const int scale = simd_data(desc);
-     ARMVectorReg scratch;
-@@ -6715,7 +6715,7 @@ void sve_ldff1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
-                  sve_ldst1_host_fn *host_fn,
-                  sve_ldst1_tlb_fn *tlb_fn)
- {
--    const int mmu_idx = cpu_mmu_index(env, false);
-+    const int mmu_idx = arm_env_mmu_index(env);
-     const intptr_t reg_max = simd_oprsz(desc);
-     const int scale = simd_data(desc);
-     const int esize = 1 << esz;
-@@ -6920,7 +6920,7 @@ void sve_st1_z(CPUARMState *env, void *vd, uint64_t *vg, void *vm,
-                sve_ldst1_host_fn *host_fn,
-                sve_ldst1_tlb_fn *tlb_fn)
- {
--    const int mmu_idx = cpu_mmu_index(env, false);
-+    const int mmu_idx = arm_env_mmu_index(env);
-     const intptr_t reg_max = simd_oprsz(desc);
-     const int scale = simd_data(desc);
-     void *host[ARM_MAX_VQ * 4];
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 5477c7fb7d..885bf4ec14 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -281,7 +281,7 @@ void helper_exception_pc_alignment(CPUARMState *env, target_ulong pc)
- {
-     ARMMMUFaultInfo fi = { .type = ARMFault_Alignment };
-     int target_el = exception_target_el(env);
--    int mmu_idx = cpu_mmu_index(env, true);
-+    int mmu_idx = arm_env_mmu_index(env);
-     uint32_t fsc;
- 
-     env->exception.vaddress = pc;
+     cc->class_by_name = arm_cpu_class_by_name;
+     cc->has_work = arm_cpu_has_work;
++    cc->mmu_index = arm_cpu_mmu_index;
+     cc->dump_state = arm_cpu_dump_state;
+     cc->set_pc = arm_cpu_set_pc;
+     cc->get_pc = arm_cpu_get_pc;
 -- 
 2.34.1
 
