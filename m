@@ -2,68 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384678484F7
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Feb 2024 10:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA98848507
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Feb 2024 10:33:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWC9o-0006GG-6N; Sat, 03 Feb 2024 04:17:52 -0500
+	id 1rWCNr-0003xO-HK; Sat, 03 Feb 2024 04:32:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rWC9m-0006G6-6y
- for qemu-devel@nongnu.org; Sat, 03 Feb 2024 04:17:50 -0500
-Received: from mgamail.intel.com ([198.175.65.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rWC9k-0001Wo-M4
- for qemu-devel@nongnu.org; Sat, 03 Feb 2024 04:17:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1706951869; x=1738487869;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=868VAJN89eGkinOq4EOD+Tl9/QzBYeTq2J6+WiPTTIA=;
- b=bbJTLblXoKRA2p1Ni5UbMuuHn4RNuSpuX4hVlvingkJ8MNH/xFrj7HjR
- h5NnoS7pC63Zso/xt5nSCLosYBHOihdigmXpRWyUfzcOWuEIu7nwjCu8C
- G8JE8HuiLUtq0uqpAM76XX2UJn4i9jcqcd2bdyaDVBllMDI6LpcUf+NYb
- W0yjTXiWniN5gaZrS/4Ganx7g5bYePeGS1kCCx2/tOnU93zZnwJiKnHGZ
- e1Z5ZPfPQFkUtcyN4iODzhyHUNhLRIGPOWHtJBNondPnQmgh9GhA4Au/y
- lXWcoYgs48sT+Gr1EJKu24qke4zMP6ldsm2V5uwyvF24lwZXOXaqE9WNZ g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10971"; a="216390"
-X-IronPort-AV: E=Sophos;i="6.05,240,1701158400"; 
-   d="scan'208";a="216390"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2024 01:17:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,240,1701158400"; d="scan'208";a="31379033"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa001.fm.intel.com with ESMTP; 03 Feb 2024 01:17:38 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-Cc: Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Yanting Jiang <yanting.jiang@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 6/6] i386: Add a new property to set ITD related feature bits
- for Guest
-Date: Sat,  3 Feb 2024 17:30:54 +0800
-Message-Id: <20240203093054.412135-7-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240203093054.412135-1-zhao1.liu@linux.intel.com>
-References: <20240203093054.412135-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rWCNm-0003wo-Jf
+ for qemu-devel@nongnu.org; Sat, 03 Feb 2024 04:32:21 -0500
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rWCNk-0005fz-BL
+ for qemu-devel@nongnu.org; Sat, 03 Feb 2024 04:32:18 -0500
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6daf694b439so2154599b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 03 Feb 2024 01:32:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1706952735; x=1707557535;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TSpNm8azFWhXBT2yZYpwHfmfJNfPYLIR+KNRBuf5yRw=;
+ b=vRGoA5fy6mTTi68F2F35kRjZBER10393WfkOVVEgicwS+/FG8llJpA8c3bM7W972q2
+ vQHcua4w7O+TIdUyfmaHiFcUKUYfqRKxbM1qxI7JFS2ZIpJkCo64oVSE6RFwV+iyR3Y8
+ E4e9YOASPPLdUWr1NaM104kXeVFPElM0pcuDHaDXbhwGl26EDMu1qPIA86GqzckTxIM2
+ ZLuQfsJiJXkbYd2n1R70gZs/P3AFeXC7e5OdIgmEPTqwy11w9De5bTYyfNcLjmzzX1pA
+ hRvqDNQm9wptmoydihnF8U0LhWX7P3vKAi0JRbWgC+Zug4Z1V4X2kItoKApq+xltH/5n
+ O/Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706952735; x=1707557535;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TSpNm8azFWhXBT2yZYpwHfmfJNfPYLIR+KNRBuf5yRw=;
+ b=AOB7jSIGcFL/VVaPRv+P7j4XApaHlxPZA9JPDXIJCM2DZ0IKlx08Ru9PgiBFQvU4un
+ +3hjOgmt1fpSKQ65OXy6wzKT5BoYsaRolK2FtoWPhUDZvKH4btRMNklWeH9BrA4ETVKa
+ iEFm03TWLQXawNUYx3SrPwDZnp5zwAz4tHCRmfk9Z6VekYlPIwCk2HeXcb51wz1wUOtt
+ 0XVmilGIkZzJQXg1RAcbe1al8T53/gQ327yORepkJ23jmD1YGB8SIhEgbK73BY7caaB3
+ PveJR5iLZYzv193YdY5yhcf5Y8PfAZErlB2pDqYeH0ezujMry6xtBqXJJcsqSbOZ7ySJ
+ v6ag==
+X-Gm-Message-State: AOJu0Yx33Fwxw0wp0I3AuWjdw5Z715vw+NRrf/TrQGlAWUC5pAUK1hPi
+ OG/gnjRfCQwo/RFDtcTgYNjMfcebMDrCTxffvS3e0chh1rVqrMAPTLjB897YKRM=
+X-Google-Smtp-Source: AGHT+IHOvNXHhDrCdtEx8gcbTm++qn2Bivv9TZ8wlpuLusTXJ0kTfEEtd4ak7okd6FEDOtbDLRXjkA==
+X-Received: by 2002:a05:6a20:d495:b0:19b:a07a:344d with SMTP id
+ im21-20020a056a20d49500b0019ba07a344dmr12999619pzb.7.1706952734642; 
+ Sat, 03 Feb 2024 01:32:14 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCU0SEnJcTsL5zdCugNBf+rJc3g7iCYMKyYLibx7vA/EANjzqfz2we7/WVa0tYRnRyLbRmV/2PnfDz1hQdYvFx/brOgHky07+Mhg5a/QWxUB3M8Kmqbgw1UpCFqSg4ZXBAt3f8303ikKbvSsYyHrfGSz33RT1ZXmwNQUWAj+oGewNhdqUwPBasY0PuPOKxlYxwokyibePUtGgOGz1ESfRNyhn5qIWG+tIIBTzj1kN0T+pqM8BWnTSRGjPRavsJQKuvON9itqCgDf/d0uRSUqyDd24zUyWMj31s7nLgEwCT9ibMudZGDSCAtGWTQ4JYmoQqqVpOzJAzlDw0mhVXPTrb/H0FT0p/09K0Z1bIV9OIkbkBBX/jlexHG+tcZA1qy9D0MITwDnEYpsyYEOYnEkCKGZPINYEKeTGwYOYB2MJg==
+Received: from localhost ([157.82.200.138])
+ by smtp.gmail.com with UTF8SMTPSA id
+ ku12-20020a170903288c00b001d7284b9461sm2888350plb.128.2024.02.03.01.32.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 03 Feb 2024 01:32:14 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 0/6] hw/pci: SR-IOV related fixes and improvements
+Date: Sat, 03 Feb 2024 18:31:54 +0900
+Message-Id: <20240203-reuse-v1-0-5be8c5ce6338@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.20;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.276,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAsIvmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQyNL3aLU0uJU3bTExFQjoyRDQ0tjEyWg2oKi1LTMCrA50bG1tQAUgI2
+ DVwAAAA==
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
+ Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::430;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,98 +105,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+I submitted a RFC series[1] to add support for SR-IOV emulation to
+virtio-net-pci. During the development of the series, I fixed some
+trivial bugs and made improvements that I think are independently
+useful. This series extracts those fixes and improvements from the RFC
+series. Below is an explanation of the patches:
 
-The property enable-itd will be used to set ITD related feature bits
-for Guest, which includes PTS, HFI, ITD and HRESET.
+Patch 1 adds a function to check if ROM BAR is explicitly enabled. It
+is used in the RFC series to report an error if the user requests to
+enable ROM BAR for SR-IOV VF. Patch 2 and 3 use it for vfio to remove
+hacky device option dictionary inspection.
 
-Now PTS, HFI, ITD and HRESET are marked as no_autoenable_flags, since
-PTS, HFI and ITD have additional restrictions on CPU topology, and
-HRESET is only used in ITD case. If user wants to enable ITD for Guest,
-he need to specify PTS, HFI, ITD and HRESET explicitly in the -cpu
-command.
+Patch 4 adds SR-IOV NumVFs validation to fix potential buffer overflow.
 
-Thus it's necessary to introduce "-cpu enable-itd" to help set these
-feature bits.
+Patch 5 changes to realize SR-IOV VFs when the PF is being realized to
+validate VF configuration.
 
-Tested-by: Yanting Jiang <yanting.jiang@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Patch 6 fixes memory leak that occurs if a SR-IOV VF fails to realize.
+
+[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- target/i386/cpu.c | 20 +++++++++++++++-----
- target/i386/cpu.h |  3 +++
- 2 files changed, 18 insertions(+), 5 deletions(-)
+Akihiko Odaki (6):
+      hw/pci: Determine if rombar is explicitly enabled
+      vfio: Avoid inspecting option QDict for rombar
+      hw/qdev: Remove opts member
+      pcie_sriov: Validate NumVFs
+      pcie_sriov: Reuse SR-IOV VF device instances
+      pcie_sriov: Release VFs failed to realize
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3b26b471b861..070f7ff43a1b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7304,6 +7304,12 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-      */
-     x86_cpu_hyperv_realize(cpu);
- 
-+    if (cpu->enable_itd) {
-+        env->features[FEAT_6_EAX] |= CPUID_6_EAX_PTS | CPUID_6_EAX_HFI |
-+                                     CPUID_6_EAX_ITD;
-+        env->features[FEAT_7_1_EAX] |= CPUID_7_1_EAX_HRESET;
-+    }
-+
-     x86_cpu_expand_features(cpu, &local_err);
-     if (local_err) {
-         goto out;
-@@ -7494,22 +7500,25 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
-     if (env->features[FEAT_6_EAX] & CPUID_6_EAX_PTS && ms->smp.sockets > 1) {
-         error_setg(errp,
--                   "PTS currently only supports 1 package, "
--                   "please set by \"-smp ...,sockets=1\"");
-+                   "%s currently only supports 1 package, "
-+                   "please set by \"-smp ...,sockets=1\"",
-+                   cpu->enable_itd ? "enable-itd" : "PTS");
-         return;
-     }
- 
-     if (env->features[FEAT_6_EAX] & (CPUID_6_EAX_HFI | CPUID_6_EAX_ITD) &&
-         (ms->smp.dies > 1 || ms->smp.sockets > 1)) {
-         error_setg(errp,
--                   "HFI/ITD currently only supports die/package, "
--                   "please set by \"-smp ...,sockets=1,dies=1\"");
-+                   "%s currently only supports 1 die/package, "
-+                   "please set by \"-smp ...,sockets=1,dies=1\"",
-+                   cpu->enable_itd ? "enable-itd" : "HFI/ITD");
-         return;
-     }
- 
-     if (env->features[FEAT_6_EAX] & (CPUID_6_EAX_PTS | CPUID_6_EAX_HFI) &&
-         !(env->features[FEAT_6_EAX] & CPUID_6_EAX_ITD)) {
--        error_setg(errp,
-+        error_setg(errp, "%s", cpu->enable_itd ?
-+                   "Host doesn't support ITD" :
-                    "In the absence of ITD, Guest does "
-                    "not need PTS/HFI");
-         return;
-@@ -8003,6 +8012,7 @@ static Property x86_cpu_properties[] = {
-                      false),
-     DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
-                      true),
-+    DEFINE_PROP_BOOL("enable-itd", X86CPU, enable_itd, false),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index a68c9d8a8660..009ec66dead0 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2071,6 +2071,9 @@ struct ArchCPU {
-     int32_t hv_max_vps;
- 
-     bool xen_vapic;
-+
-+    /* Set ITD and related feature bits (PTS, HFI and HRESET) for Guest. */
-+    bool enable_itd;
- };
- 
- typedef struct X86CPUModel X86CPUModel;
+ docs/pcie_sriov.txt         |   8 ++--
+ include/hw/pci/pci.h        |   2 +-
+ include/hw/pci/pci_device.h |   7 ++-
+ include/hw/pci/pcie_sriov.h |   6 +--
+ include/hw/qdev-core.h      |   4 --
+ hw/core/qdev.c              |   1 -
+ hw/net/igb.c                |  13 ++++--
+ hw/nvme/ctrl.c              |  29 ++++++------
+ hw/pci/pci.c                |  20 +++++----
+ hw/pci/pci_host.c           |   4 +-
+ hw/pci/pcie.c               |   4 +-
+ hw/pci/pcie_sriov.c         | 105 +++++++++++++++++++++-----------------------
+ hw/vfio/pci.c               |   3 +-
+ system/qdev-monitor.c       |  12 ++---
+ 14 files changed, 116 insertions(+), 102 deletions(-)
+---
+base-commit: 4a4efae44f19528589204581e9e2fab69c5d39aa
+change-id: 20240129-reuse-faae22b11934
+
+Best regards,
 -- 
-2.34.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
