@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E3E84871D
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 Feb 2024 16:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7913B848776
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 Feb 2024 17:28:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWHxt-0005G3-CL; Sat, 03 Feb 2024 10:29:57 -0500
+	id 1rWIrc-00076q-34; Sat, 03 Feb 2024 11:27:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu-devel@gudrian.org>)
- id 1rWHxh-0005DV-QN
- for qemu-devel@nongnu.org; Sat, 03 Feb 2024 10:29:47 -0500
-Received: from mout.kundenserver.de ([212.227.126.133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu-devel@gudrian.org>)
- id 1rWHxe-0004yE-9m
- for qemu-devel@nongnu.org; Sat, 03 Feb 2024 10:29:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gudrian.org;
- s=s1-ionos; t=1706974176; x=1707578976; i=qemu-devel@gudrian.org;
- bh=HPUmUh0I2csvO4PkMsQVJL0AjHMCs+1q5y6XYiRX+X8=;
- h=X-UI-Sender-Class:Date:To:From:Subject;
- b=GrhzBo9y7XTj8ZqSCZr0a8iYgrnRpfbsbjvWcZ66zcpGl2RCK17q0vvj9wJuiJVU
- 0czQCtaogka4kOxzOrzouz2fIXlcuonvX6IlztZ3uvjhYuDXkNWHZzWOWdaQVdy6Q
- Kl2R8wwsRahjk/5LrP3Vqj+8inw8UkoB0Dslb1PC3Y8jaK+Kpvz7H+BTVOiTij1a4
- +Luna9tdFNM5dKaJwVESok0CscfPr5j4ujec9ztysDE7Za2JEyzJB778WZVH6vut9
- GGyMWyivp2d8HMGko0UlPuyoE78Mf84QwSvZU/yEhKw4kfcoindoc0Ena3msuplt8
- ZyeyH0SGhrWBXpWyXQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from [192.168.178.208] ([92.200.167.19]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MRk8w-1rcIDS2IoM-00TAFN for <qemu-devel@nongnu.org>; Sat, 03 Feb 2024
- 16:29:36 +0100
-Message-ID: <441d024e-9d3f-b410-2e3c-3323af841b8e@gudrian.org>
-Date: Sat, 3 Feb 2024 16:29:36 +0100
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rWIra-00076Z-3e
+ for qemu-devel@nongnu.org; Sat, 03 Feb 2024 11:27:30 -0500
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rWIrX-0000tm-O7
+ for qemu-devel@nongnu.org; Sat, 03 Feb 2024 11:27:29 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5600c43caddso1014947a12.2
+ for <qemu-devel@nongnu.org>; Sat, 03 Feb 2024 08:27:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1706977646; x=1707582446; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=0Ci9vG8YGLyJYMOSKzLmaGmMLOOPb6Y8LRkEkvYKcgw=;
+ b=CoZDgI+PxCznUQwnptiPJ8ONZB49thxMeJRKrbDLpbDdnXU9C+EPXo8C174bxYrK0a
+ cal1vAPAMnUYOusAvCL7eLemQsc/KZRVi6XjLgCHYpiLSLtqP4/D5pz0P0iFEpFlEAUm
+ iffDWXGTFEKqcjsqSFiK/RIowpl7O+8ty1t0MfGGHq9Dpn2Q1DzhsCvsyAvmXYqyd45D
+ H/NlQsk35tqQBmArwC+eNCLhhlfE5o+Jzz0D7cS7jWYg+opf0MGZb/2Ya1Uu5e0kG60d
+ 5eeauLj/OxFb4HcVmPHTIrFsTxmaz+c2Zh+zIkD9kfgJqDNBvRIbTGIccfZz2rxsUA2D
+ ar6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1706977646; x=1707582446;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0Ci9vG8YGLyJYMOSKzLmaGmMLOOPb6Y8LRkEkvYKcgw=;
+ b=iMrzw22w9sbxj5AKk34Dv1CmjwEmDyBSyH9VK6QhqmE/EtIScQBca+sneSlkBxvdVz
+ D2T32XW3JT+/bVuPkeom4/N/6bOF4WV2tPWApMJopU3Xi7KGUhbltzdeN0xCem917/vL
+ hPKBrNlPcW1rrgVzNnbC42tdd3re/s9vvxp/2l+AWWqsaSCYuV0KRZutiXHPm96ejicU
+ giNFTIQr4epq4biXGkHePue31hLjyi8tCkN7x1j4IDNR48UMh1w1mn2GppnV6I+/8TtN
+ oNwZCq2qKkeGyluxwWhY1JhnRqpFyn3jhdRuVILnOtuDrm25VpOQ9/gav+yalUADxQkV
+ ufWg==
+X-Gm-Message-State: AOJu0YzoFubGzMLo0TIcbbkOOtKWkr17fqgnpUHzMc+UZJifPo9gtsD2
+ i9M5ce8aaV43GzzkYC7mRO0lOf4/CAUCfCRll8oWwRzguhzddrUG2BOVbILsFMr1/cQG8Vijei0
+ mxk7uheva/ogz1HgZzYt36FxeVrmh3gxjBUvtdw==
+X-Google-Smtp-Source: AGHT+IHcJs5lBXIMlcmYukTOlpXnFEEkUKjFzwvKVHNnoBK+PGU5XGvlu2gWmdyvGjQVAmpxPH3h30PvWOAbQTt0IsE=
+X-Received: by 2002:aa7:d6d7:0:b0:55f:aff5:49a3 with SMTP id
+ x23-20020aa7d6d7000000b0055faff549a3mr1827197edr.8.1706977645784; Sat, 03 Feb
+ 2024 08:27:25 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To: qemu-devel@nongnu.org
-From: Christian Gudrian <qemu-devel@gudrian.org>
-Subject: ehci: more than 16 ITDs
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mkN1ZUWGH0qV2FMnXkAlbm0m1YYClZK4GOR448Y1B1p01koLi0I
- 2BW2pi+UkQoexPITwtISAUenGNrRrLntnOEXZaCcegVXpUbnBQL7+hrUkRAQKP7xqAuW8Je
- iuCCeBEqLd6xDbgSSuBewf0G0JvJAEwCAZdaAqFpKLpELdxRkkMoshH4GF4otuZ/CHxdFPM
- +Kfg7PHXIY+jfYrbpvtWw==
-UI-OutboundReport: notjunk:1;M01:P0:4qKc6Qn+Ays=;GzYMz3fqSqSRKDwmGMNowzVXXpn
- JAqNY0BbFsQHEyHHZ4QgU/lN/JACu9QcrmXJPg2tsoOHvyHXKuXbNpd4VtqMki59ZsMmCqX5o
- 1GXhPqLitmDrbjBGpKSHeQqtgUPEPU7aXFPMhG2VDFqHHC3TlUf/iLhonNXoFFamFRxIMW5eC
- kJIqdrXUgAFwUvkyiLA62g/nuoDoarAwv1u1wOObYiD2qekEj3epz64qyaK6eGaHJh5xk9Akg
- +Mc0r6GtVlKQE9QxYhnFu4/CPqGsXn4DNx4bT+FesEZMkudp8OxydTB2+nKn2gL1yx/2fpozm
- O0ePKbNZTA6mY+0WnhDhf0YFT1bvYy7a5tw/fRM8uf5u241W9KTJTLGAPf/MHleOIxPOwbLkd
- VmmsfxsOpPJdABFh3Dm4AdtUuOMOe8JJWrZND9nrWZ4rRVscpth/bta7w6lluSI4Lmv0SWkB6
- 7b0Yrq5CaRlN4HK6NpWOLLykE5sPaiPKh6ppLbgjh11T8VD9uZBABydE40UIXdlE7bfDGsd/F
- 4dpSW9g5TfzDz7GfB4Nh4WC979kj6Kt2oL/V0c8y4jowwxJNC8tkS/wTiM0BagkIif3sJ22gk
- /komzoNHbmCrkzT9uv47jkGmR/G6eEFIWuuIX6yMGFTc6KY78XvUQA15y+O4UjATgBW/y0M28
- BpMUsi1vxiu1w9o3tx3mkwnxwvO4tkBvZqumhNxNX+qOCdmA1+qMKhXdVrBg2cZwmnd6Ij4kj
- aZ0Ramx4CYUrIoJKBhZ+ad7D8yhrVkfGesINdDGTuDqswOycNiBd9o=
-Received-SPF: pass client-ip=212.227.126.133;
- envelope-from=qemu-devel@gudrian.org; helo=mout.kundenserver.de
+References: <20240203083415.2937003-1-armbru@redhat.com>
+In-Reply-To: <20240203083415.2937003-1-armbru@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 3 Feb 2024 16:27:14 +0000
+Message-ID: <CAFEAcA_8F_N9A4awQZH=0FyZzzLtiqO5VJ+DNEsvzwC5BYdc_A@mail.gmail.com>
+Subject: Re: [PULL 0/5] QAPI patches patches for 2024-02-03
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,24 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello!
+On Sat, 3 Feb 2024 at 08:34, Markus Armbruster <armbru@redhat.com> wrote:
+>
+> The following changes since commit 29b008927ef6e3fbb70e6607b25d3fcae26a5190:
+>
+>   Merge tag 'pull-nic-config-2-20240202' of git://git.infradead.org/users/dwmw2/qemu into staging (2024-02-02 16:47:36 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://repo.or.cz/qemu/armbru.git tags/pull-qapi-2024-02-03
+>
+> for you to fetch changes up to 3424ed6caf9759eb57405d965537fd5f3d70026b:
+>
+>   qga/qapi-schema: Move command description right after command name (2024-02-03 09:20:33 +0100)
+>
+> ----------------------------------------------------------------
+> QAPI patches patches for 2024-02-03
+>
+> ----------------------------------------------------------------
+> Markus Armbruster (5):
+>       qapi: Drop redundant documentation of inherited members
+>       qapi: Drop redundant documentation of conditional
+>       qapi: Elide "Potential additional modes" from generated docs
+>       qga: Move type description right after type name
+>       qga/qapi-schema: Move command description right after command name
 
-I am trying to access a USB audio hardware (a Korg Kronos synthesizer)
-running an ancient 2.6.32.11 kernel (due to the binary only Korg driver
-modules) via USB pass through. Loading the audio driver immediately
-leads to a reset of the EHCI controller due to a "processing error"
-caused by the 17th ITD being fetched.
 
-Entirely ignorant of what I'm doing I've patched hcd-ehci.c to accept
-this 17th ITD. Needless to say that this attempt didn't work: the
-refcount warning in the qh_get function (in ehci-mem.c) triggers and the
-system halts.
+Applied, thanks.
 
-Is this a direct consequence of me allowing 17 ITDs or is this caused by
-another part of the Korg driver misbehaving or a bug in the EHCI
-emulation of QEMU? How can I find out, what's going wrong?
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-Thanks for any hints!
-
-Christian
+-- PMM
 
