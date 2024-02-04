@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0678490BE
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABBD8490CB
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:43:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWkEc-000216-G2; Sun, 04 Feb 2024 16:41:06 -0500
+	id 1rWkEm-00022P-Gu; Sun, 04 Feb 2024 16:41:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEa-00020p-8e
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:04 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rWkEd-00021b-2a
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:07 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEY-0003Ug-K1
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:04 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d9bd8fa49eso664925ad.1
- for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:02 -0800 (PST)
+ id 1rWkEa-0003Us-JC
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:05 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d746856d85so27597875ad.0
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707082861; x=1707687661; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707082863; x=1707687663; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Vr5ZAc/RjPXfmKZRK62DlWwG7Va6xrXif7VnM9K+hHM=;
- b=Bsy/aPQEcr4pBLQG/x0WxXKTHkwRI1/q0jnghxEJnHDdlOYcsPJ6wHtYO/ZMRf0Jwl
- c8l14jz7bmKs/FoDn3Xj3ekBD6Uhl9z/Mnz6hreCiegKOXhojZkdnO6mA0G5eIuzu9GI
- +OIHhD80ikWXLk72Fq4Jq+b05+WqpgFLLo37daZFMlwxmebUpkTEvDW3n2dmYV4+F3S3
- Udvd7k8H/lYyxanUx4fXGR3yBYLoZw+Dsckh6Psc1aWlTN/T/qCuN1ZuWqVqKc7BYQth
- pxELiIO+WaBlmTcHtHbmmL0OEz7A7zmk488A00Q/L8kv8MbtWH6CHi1BdWxOdLFttcAs
- aYyQ==
+ bh=XRwgTLH7x4qjGJwvWHPC6iD3rpKsmYUOnQgcGsFZM2o=;
+ b=uBW8IHuqRwly/Aj6D2IGvXNk2hLAALkGiWqjZzK4dWmH5ZtyiItzGW7hSLpgtdBxKm
+ Jhzf1eorGyeH1c9gvSeroHi+UI+U5oLYtD/dRrYcYGuY1SozxLxQVTOFipWxpknWm7de
+ eS3J35OrAwbYUqUqaB2K7LH668lsGWELf+6gf/duGHT/cvmQqZCrW0QQwDjj/Zf7C2n0
+ ZnM7kjGokUcKPuDWLVELyJErmFyaD+Ug6l1B5fl3K3/CjDfMo9TYMc4/TEvIXlfg1vUG
+ 9gtkabZmaH8EWH/XrblhDi6FvD5do3f7U/7sH2RRBF5SUNJlflrQTv0TZ1Z8N5VQ8Iyu
+ R4ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707082861; x=1707687661;
+ d=1e100.net; s=20230601; t=1707082863; x=1707687663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vr5ZAc/RjPXfmKZRK62DlWwG7Va6xrXif7VnM9K+hHM=;
- b=DfHo3IRkcvWgFfoVjUsfMoPnb475c1LH4Ydr1+rmm7u/2WI+Z0d1i/hGWYzhMEjCXY
- su3cxaTO1UxID09e0HKuBgT/54+3FIYV3gG8vIkc7qCmGnJ1fO6FAQzn3NWX72qP2PgR
- jkoZskIEnzIquuQg0oAkCkxAXfQByaJrkZoO8df6reOHXw+h5XmNqibuw3I41DulxDuO
- aBk+J72nYBWLF/el7mw2p6TwiJ2zCDbkeWWyCcyuZFNvUllh7J3LV/XSq1gNlEjm5GBm
- E/gqTsGblIb6BJ1GG5pb1dkCVtqTiB8WyLU79QQVyQLoxTetvc6kY8WYTzzmx5xP0Dnf
- g0hw==
-X-Gm-Message-State: AOJu0YwYu532eeIFHsjMqPSMcbj9nAcJZ6H1REKcc6cp5RSFFPlSf3mA
- +Q5KGzYMfbskcVH548PwzuPTWGtydjDSV/716mp1x9kY6JzFCtoVJHaSW0Gb+aXaM9KWVXeH/0B
- ppfg=
-X-Google-Smtp-Source: AGHT+IEGiZYWKuTZhpW2ri0TdffIZYuVtwHFX8Axhnsm9C89hQVHN6sVdArdKkGDNieb/5vvibvd/g==
-X-Received: by 2002:a17:903:120c:b0:1d7:35ba:6a39 with SMTP id
- l12-20020a170903120c00b001d735ba6a39mr7574018plh.69.1707082861092; 
- Sun, 04 Feb 2024 13:41:01 -0800 (PST)
+ bh=XRwgTLH7x4qjGJwvWHPC6iD3rpKsmYUOnQgcGsFZM2o=;
+ b=GVOyDl4nLPURxcmrkwmFcaAuHTdVTkcb79mSQmxrSSd/JWMW3v2N+5i5poWbxq20Qt
+ NHjGUBcnzN4gKoi3sG/eqxcdFZuHN+gef9jtDbSKM0HDQD48m9HVOQ1/BA0YM7WF3Kvo
+ buf3CF39wJuvWWJA14t/BU5QzgN36z3PMUnnuKbQHhQ1ZSDuksDTG1KrDEZrqG9s4lZm
+ +kF4cFkJNBteAttI0UNT5CmW0wlCGKeuFzPv05GtFCXlCjOC2h1NExVaqZGw3eOqS02b
+ C75u9jTM82HPwJaO8rA0clQY8UZg5r8nIX/4WMAqo7IfuQefCWnTPFaoUSyHmqKlk4tO
+ 4u7g==
+X-Gm-Message-State: AOJu0YxU2avhzrv1lofKBhUyaweGoLPiofdveGKXWjuTExhyS3z86MaV
+ UnIODfuBB7JW/u8vTwyqbGz76QM1aOevDhmznmus/BE6KMwEXKnS9R520aOpqUZK0+gI6gaLmNd
+ Yrhc=
+X-Google-Smtp-Source: AGHT+IHray5+pl80wOGeHbcXvMgKjx8d894RuLPF2jwNypSG7gJ/dAadiOrKGX1Zgos5ZDzb+iQj3w==
+X-Received: by 2002:a17:902:d905:b0:1d4:e237:2c3f with SMTP id
+ c5-20020a170902d90500b001d4e2372c3fmr6042973plz.28.1707082863123; 
+ Sun, 04 Feb 2024 13:41:03 -0800 (PST)
 Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
- mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.40.59
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Feb 2024 13:41:00 -0800 (PST)
+ Sun, 04 Feb 2024 13:41:02 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/39] tcg: Introduce TCG_TARGET_HAS_tst
-Date: Mon,  5 Feb 2024 07:40:15 +1000
-Message-Id: <20240204214052.5639-3-richard.henderson@linaro.org>
+Subject: [PULL 03/39] tcg/optimize: Split out arg_is_const_val
+Date: Mon,  5 Feb 2024 07:40:16 +1000
+Message-Id: <20240204214052.5639-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204214052.5639-1-richard.henderson@linaro.org>
 References: <20240204214052.5639-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,153 +92,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define as 0 for all tcg backends.
-
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.h     | 2 ++
- tcg/arm/tcg-target.h         | 2 ++
- tcg/i386/tcg-target.h        | 2 ++
- tcg/loongarch64/tcg-target.h | 2 ++
- tcg/mips/tcg-target.h        | 2 ++
- tcg/ppc/tcg-target.h         | 2 ++
- tcg/riscv/tcg-target.h       | 2 ++
- tcg/s390x/tcg-target.h       | 2 ++
- tcg/sparc64/tcg-target.h     | 2 ++
- tcg/tci/tcg-target.h         | 2 ++
- 10 files changed, 20 insertions(+)
+ tcg/optimize.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index 33f15a564a..b4ac13be7b 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -138,6 +138,8 @@ typedef enum {
- #define TCG_TARGET_HAS_qemu_ldst_i128   1
- #endif
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index f2d01654c5..73019b9996 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -124,11 +124,22 @@ static inline bool ts_is_const(TCGTemp *ts)
+     return ts_info(ts)->is_const;
+ }
  
-+#define TCG_TARGET_HAS_tst              0
++static inline bool ts_is_const_val(TCGTemp *ts, uint64_t val)
++{
++    TempOptInfo *ti = ts_info(ts);
++    return ti->is_const && ti->val == val;
++}
 +
- #define TCG_TARGET_HAS_v64              1
- #define TCG_TARGET_HAS_v128             1
- #define TCG_TARGET_HAS_v256             0
-diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
-index a712cc80ad..7bf42045a7 100644
---- a/tcg/arm/tcg-target.h
-+++ b/tcg/arm/tcg-target.h
-@@ -125,6 +125,8 @@ extern bool use_neon_instructions;
+ static inline bool arg_is_const(TCGArg arg)
+ {
+     return ts_is_const(arg_temp(arg));
+ }
  
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_tst              0
++static inline bool arg_is_const_val(TCGArg arg, uint64_t val)
++{
++    return ts_is_const_val(arg_temp(arg), val);
++}
 +
- #define TCG_TARGET_HAS_v64              use_neon_instructions
- #define TCG_TARGET_HAS_v128             use_neon_instructions
- #define TCG_TARGET_HAS_v256             0
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index fa34deec47..1dd917a680 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -198,6 +198,8 @@ typedef enum {
- #define TCG_TARGET_HAS_qemu_ldst_i128 \
-     (TCG_TARGET_REG_BITS == 64 && (cpuinfo & CPUINFO_ATOMIC_VMOVDQA))
+ static inline bool ts_is_copy(TCGTemp *ts)
+ {
+     return ts_info(ts)->next_copy != ts;
+@@ -689,7 +700,7 @@ static int do_constant_folding_cond(TCGType type, TCGArg x,
+         }
+     } else if (args_are_copies(x, y)) {
+         return do_constant_folding_cond_eq(c);
+-    } else if (arg_is_const(y) && arg_info(y)->val == 0) {
++    } else if (arg_is_const_val(y, 0)) {
+         switch (c) {
+         case TCG_COND_LTU:
+             return 0;
+@@ -954,7 +965,7 @@ static bool fold_to_not(OptContext *ctx, TCGOp *op, int idx)
+ /* If the binary operation has first argument @i, fold to @i. */
+ static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
++    if (arg_is_const_val(op->args[1], i)) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
+     }
+     return false;
+@@ -963,7 +974,7 @@ static bool fold_ix_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has first argument @i, fold to NOT. */
+ static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[1]) && arg_info(op->args[1])->val == i) {
++    if (arg_is_const_val(op->args[1], i)) {
+         return fold_to_not(ctx, op, 2);
+     }
+     return false;
+@@ -972,7 +983,7 @@ static bool fold_ix_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to @i. */
+ static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
+     }
+     return false;
+@@ -981,7 +992,7 @@ static bool fold_xi_to_i(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to identity. */
+ static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
+     }
+     return false;
+@@ -990,7 +1001,7 @@ static bool fold_xi_to_x(OptContext *ctx, TCGOp *op, uint64_t i)
+ /* If the binary operation has second argument @i, fold to NOT. */
+ static bool fold_xi_to_not(OptContext *ctx, TCGOp *op, uint64_t i)
+ {
+-    if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == i) {
++    if (arg_is_const_val(op->args[2], i)) {
+         return fold_to_not(ctx, op, 1);
+     }
+     return false;
+@@ -1223,8 +1234,8 @@ static bool fold_brcond2(OptContext *ctx, TCGOp *op)
+          * Simplify LT/GE comparisons vs zero to a single compare
+          * vs the high word of the input.
+          */
+-        if (arg_is_const(op->args[2]) && arg_info(op->args[2])->val == 0 &&
+-            arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0) {
++        if (arg_is_const_val(op->args[2], 0) &&
++            arg_is_const_val(op->args[3], 0)) {
+             goto do_brcond_high;
+         }
+         break;
+@@ -1448,9 +1459,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+     }
  
-+#define TCG_TARGET_HAS_tst              0
-+
- /* We do not support older SSE systems, only beginning with AVX1.  */
- #define TCG_TARGET_HAS_v64              have_avx1
- #define TCG_TARGET_HAS_v128             have_avx1
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index 9c70ebfefc..fede627bf7 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -169,6 +169,8 @@ typedef enum {
+     /* Inserting a value into zero at offset 0. */
+-    if (arg_is_const(op->args[1])
+-        && arg_info(op->args[1])->val == 0
+-        && op->args[3] == 0) {
++    if (arg_is_const_val(op->args[1], 0) && op->args[3] == 0) {
+         uint64_t mask = MAKE_64BIT_MASK(0, op->args[4]);
  
- #define TCG_TARGET_HAS_qemu_ldst_i128   (cpuinfo & CPUINFO_LSX)
+         op->opc = and_opc;
+@@ -1461,8 +1470,7 @@ static bool fold_deposit(OptContext *ctx, TCGOp *op)
+     }
  
-+#define TCG_TARGET_HAS_tst              0
-+
- #define TCG_TARGET_HAS_v64              0
- #define TCG_TARGET_HAS_v128             (cpuinfo & CPUINFO_LSX)
- #define TCG_TARGET_HAS_v256             0
-diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
-index b98ffae1d0..a996aa171d 100644
---- a/tcg/mips/tcg-target.h
-+++ b/tcg/mips/tcg-target.h
-@@ -194,6 +194,8 @@ extern bool use_mips32r2_instructions;
+     /* Inserting zero into a value. */
+-    if (arg_is_const(op->args[2])
+-        && arg_info(op->args[2])->val == 0) {
++    if (arg_is_const_val(op->args[2], 0)) {
+         uint64_t mask = deposit64(-1, op->args[3], op->args[4], 0);
  
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_tst              0
-+
- #define TCG_TARGET_DEFAULT_MO           0
- #define TCG_TARGET_NEED_LDST_LABELS
- #define TCG_TARGET_NEED_POOL_LABELS
-diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
-index 5295e4f9ab..60ce49e672 100644
---- a/tcg/ppc/tcg-target.h
-+++ b/tcg/ppc/tcg-target.h
-@@ -143,6 +143,8 @@ typedef enum {
- #define TCG_TARGET_HAS_qemu_ldst_i128   \
-     (TCG_TARGET_REG_BITS == 64 && have_isa_2_07)
- 
-+#define TCG_TARGET_HAS_tst              0
-+
- /*
-  * While technically Altivec could support V64, it has no 64-bit store
-  * instruction and substituting two 32-bit stores makes the generated
-diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
-index a4edc3dc74..2c1b680b93 100644
---- a/tcg/riscv/tcg-target.h
-+++ b/tcg/riscv/tcg-target.h
-@@ -158,6 +158,8 @@ extern bool have_zbb;
- 
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_tst              0
-+
- #define TCG_TARGET_DEFAULT_MO (0)
- 
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
-index e69b0d2ddd..53bed8c8d2 100644
---- a/tcg/s390x/tcg-target.h
-+++ b/tcg/s390x/tcg-target.h
-@@ -138,6 +138,8 @@ extern uint64_t s390_facilities[3];
- 
- #define TCG_TARGET_HAS_qemu_ldst_i128 1
- 
-+#define TCG_TARGET_HAS_tst            0
-+
- #define TCG_TARGET_HAS_v64            HAVE_FACILITY(VECTOR)
- #define TCG_TARGET_HAS_v128           HAVE_FACILITY(VECTOR)
- #define TCG_TARGET_HAS_v256           0
-diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
-index f8cf145266..ae2910c4ee 100644
---- a/tcg/sparc64/tcg-target.h
-+++ b/tcg/sparc64/tcg-target.h
-@@ -149,6 +149,8 @@ extern bool use_vis3_instructions;
- 
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_tst              0
-+
- #define TCG_AREG0 TCG_REG_I0
- 
- #define TCG_TARGET_DEFAULT_MO (0)
-diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
-index 2a13816c8e..609b2f4e4a 100644
---- a/tcg/tci/tcg-target.h
-+++ b/tcg/tci/tcg-target.h
-@@ -117,6 +117,8 @@
- 
- #define TCG_TARGET_HAS_qemu_ldst_i128   0
- 
-+#define TCG_TARGET_HAS_tst              0
-+
- /* Number of registers available. */
- #define TCG_TARGET_NB_REGS 16
- 
+         op->opc = and_opc;
+@@ -2000,8 +2008,8 @@ static bool fold_setcond2(OptContext *ctx, TCGOp *op)
+          * Simplify LT/GE comparisons vs zero to a single compare
+          * vs the high word of the input.
+          */
+-        if (arg_is_const(op->args[3]) && arg_info(op->args[3])->val == 0 &&
+-            arg_is_const(op->args[4]) && arg_info(op->args[4])->val == 0) {
++        if (arg_is_const_val(op->args[3], 0) &&
++            arg_is_const_val(op->args[4], 0)) {
+             goto do_setcond_high;
+         }
+         break;
 -- 
 2.34.1
 
