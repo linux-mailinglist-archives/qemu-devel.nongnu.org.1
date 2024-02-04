@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDE88490C2
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:42:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 648E18490C0
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:42:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWkEt-00024G-74; Sun, 04 Feb 2024 16:41:23 -0500
+	id 1rWkEx-00026f-FL; Sun, 04 Feb 2024 16:41:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEo-000238-9R
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:18 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rWkEr-00023r-3B
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:22 -0500
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEm-0003W2-Od
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:17 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1d934c8f8f7so30947585ad.2
- for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:16 -0800 (PST)
+ id 1rWkEp-0003WE-IA
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:20 -0500
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1d751bc0c15so32846495ad.2
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707082875; x=1707687675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707082877; x=1707687677; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ql63af8QTrJWvJEiTJspYZ98jeTo0xtPlbE2bH3uphk=;
- b=gw/nLbpQ+FEkCeqFGK+JPc/TSOtb7pX07V43Wg8pUKDfXXB82il/E0MOiQ0ryc2TBZ
- O1CIlz/KZ607DS2QB4GMBGE/4u/sYAHe2LwQF62zxKcmC8zhqBlImd3ahdoRbJOyggFc
- cS9+koBkMrrHlzzn2m927nfELa4zsKgQ9214czhSKSWcU+ombl04qTe3shwJiXl7bIf9
- 2u25N5nmRlBGvqoEsun7Th4D2r+CVbwFpbjLuG+/QPsIqGFdNxnPd75J8DJlljORkwp9
- Bz+EibhHMLDN4Od/0gCmSF6qDpLwdaDMG3NvkMt5k8a/3/zhAv0zIwgF1iYdScX6o9bk
- UUCg==
+ bh=flGmqvYthRKnWcX4jGxDQrsUCR7InVU8Hdnql3IBa7U=;
+ b=f+Re3r5KhUFK/XfQHWLhvLWnl/cMGJqmLTnIsmlA+rZV9khswLsZohCLKoFxUH3vPP
+ Xc40sQmwxcEO6ckkygohwBW1TSp1SeSJxqC7B077SL8nsKrROl1yP1PAnEjhqA8eRkKN
+ pdOxYEkYWHASta6RNHpCfp+NZ/33pRBIak/cPPSohvz+dtgDUhdDZF+fEd1uUOUO4iet
+ q5u3+2sA6FO9nCt+z53IP4QWIBm5Kn8KZe5v/GfCRmPewbNFQoByo4vCQ7lJRwV/JBrQ
+ +4W7Byo9JAzbFDKWVAlLgWDKsf8Iv8Kpj04SXBDTqXxn9tlEfWt3JBYN4rPV5kOX4XGs
+ rM1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707082875; x=1707687675;
+ d=1e100.net; s=20230601; t=1707082877; x=1707687677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ql63af8QTrJWvJEiTJspYZ98jeTo0xtPlbE2bH3uphk=;
- b=BY37e/M0Ki33yHdhzRPljg1yYCnuE7esd0h8T3+5UfQdpcmYLKosCG86yuGe6GgHkB
- oyNquHht/osI2WEoV6D8vSCx79KrdlWfgwXOH4oUveTIg/K8v6IHuk6TeuOh9ycpfnJ6
- sD6+vc4/nN5IpnNyL48k7jqCeqGm0Zfmrk+IwLiIAstgGbs9ha8NkjmnoWBQzT5Ly2Iy
- XQWiVAV/EDIjFNWl1o8jnEGThHMYhvIYwMAFZPoqSkX7m9ifdaQP1JCz9E9YRv9tFvpX
- DdkDaZnoPSy2DfolisD/z/F2nxpcnAyIuCDE5VBv6pqWzX19sl7ds5XV/w/RLGaiS4is
- Ngwg==
-X-Gm-Message-State: AOJu0YwxPlP8+64uvzV9vNk+YYR7pzy4PUOmJXTc8V/ZHl//Y7ALzrUd
- jCaG0b1+ESHMdUzakNv4A4Ma+MT82bG4TsX9HlOVrVfQWL5OBYZp1o76T97nvXSDR8oUXg94Qsa
- 5IHU=
-X-Google-Smtp-Source: AGHT+IEEf5u/9NcD0Fp8CCqU4OKxh9eCmcAKSrLVCrxMdIWU0KGArbw/Pzx4p1xtcOAooEq+WcR47A==
-X-Received: by 2002:a17:902:8602:b0:1d3:45c8:bc0f with SMTP id
- f2-20020a170902860200b001d345c8bc0fmr10970356plo.46.1707082875496; 
- Sun, 04 Feb 2024 13:41:15 -0800 (PST)
+ bh=flGmqvYthRKnWcX4jGxDQrsUCR7InVU8Hdnql3IBa7U=;
+ b=QRlMgGo1a1TEGr69pu2dnQWuPBGa8Rbkb0zcEfBq3wMkoveKWND+S0e9D0iwWmFS8D
+ 1jryfaozehOCoTr/5/CG2dGlNh3SaSKdMaJUHhGJgUkoGPEjwwdxqenJ7b7faGonEC8E
+ tVZCHelFZFfCUwyYcO0336Ipv+9tuKSPSJHuYkUjCMm0iBUofMnNZqzanoKvMr5uDaL6
+ F1H7kSmX3i+zGNvYfRvPLdVwntun3x8JDfokC9tie0H+1lzh2hUMzrmYzOFq69BH1nxg
+ q/8l5hcWRms5VpLRm54aDjbRDt9ZV4J6XL1OMdspCySqBVVuvZJUN56uQyC8a1cjC0ds
+ +/7A==
+X-Gm-Message-State: AOJu0YzxiqBenCYvp2XkUhN5Ml3W1R4RgHRSimZWVQGyCbFKP5KqmAIO
+ Eqe+9HacnJU1XkgaxGHfRF+IAvHD7igFa0Dp3gb5ob5v2DL7bdGGStu2YX4laCjRjFUFvniQAuL
+ oO2w=
+X-Google-Smtp-Source: AGHT+IG5HxryNPSWyVsLucNjuaR9qrHiivJzo4AozZs9re51VHbB+6IdpaC08lTc2YzlX2AxSjKtqQ==
+X-Received: by 2002:a17:902:eb82:b0:1d9:8082:4573 with SMTP id
+ q2-20020a170902eb8200b001d980824573mr9357779plg.2.1707082877528; 
+ Sun, 04 Feb 2024 13:41:17 -0800 (PST)
 Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
- mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.13
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Feb 2024 13:41:15 -0800 (PST)
+ Sun, 04 Feb 2024 13:41:17 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/39] target/alpha: Use TCG_COND_TST{EQ,NE} for BLB{C,S}
-Date: Mon,  5 Feb 2024 07:40:22 +1000
-Message-Id: <20240204214052.5639-10-richard.henderson@linaro.org>
+Subject: [PULL 10/39] target/alpha: Use TCG_COND_TST{EQ,NE} for CMOVLB{C,S}
+Date: Mon,  5 Feb 2024 07:40:23 +1000
+Message-Id: <20240204214052.5639-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204214052.5639-1-richard.henderson@linaro.org>
 References: <20240204214052.5639-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,75 +94,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231028194522.245170-33-richard.henderson@linaro.org>
-[PMD: Split from bigger patch, part 2/2]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20231108205247.83234-2-philmd@linaro.org>
 ---
- target/alpha/translate.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ target/alpha/translate.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index e9cb623277..566adc4cd6 100644
+index 566adc4cd6..220eda2137 100644
 --- a/target/alpha/translate.c
 +++ b/target/alpha/translate.c
-@@ -482,10 +482,10 @@ static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
- }
- 
- static DisasJumpType gen_bcond(DisasContext *ctx, TCGCond cond, int ra,
--                               int32_t disp, int mask)
-+                               int32_t disp)
- {
-     return gen_bcond_internal(ctx, cond, load_gpr(ctx, ra),
--                              mask, disp);
-+                              is_tst_cond(cond), disp);
- }
- 
- /* Fold -0.0 for comparison with COND.  */
-@@ -2820,35 +2820,35 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
-         break;
-     case 0x38:
-         /* BLBC */
--        ret = gen_bcond(ctx, TCG_COND_EQ, ra, disp21, 1);
-+        ret = gen_bcond(ctx, TCG_COND_TSTEQ, ra, disp21);
-         break;
-     case 0x39:
-         /* BEQ */
--        ret = gen_bcond(ctx, TCG_COND_EQ, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_EQ, ra, disp21);
-         break;
-     case 0x3A:
-         /* BLT */
--        ret = gen_bcond(ctx, TCG_COND_LT, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_LT, ra, disp21);
-         break;
-     case 0x3B:
-         /* BLE */
--        ret = gen_bcond(ctx, TCG_COND_LE, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_LE, ra, disp21);
-         break;
-     case 0x3C:
-         /* BLBS */
--        ret = gen_bcond(ctx, TCG_COND_NE, ra, disp21, 1);
-+        ret = gen_bcond(ctx, TCG_COND_TSTNE, ra, disp21);
-         break;
-     case 0x3D:
-         /* BNE */
--        ret = gen_bcond(ctx, TCG_COND_NE, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_NE, ra, disp21);
-         break;
-     case 0x3E:
-         /* BGE */
--        ret = gen_bcond(ctx, TCG_COND_GE, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_GE, ra, disp21);
-         break;
-     case 0x3F:
-         /* BGT */
--        ret = gen_bcond(ctx, TCG_COND_GT, ra, disp21, 0);
-+        ret = gen_bcond(ctx, TCG_COND_GT, ra, disp21);
-         break;
-     invalid_opc:
-         ret = gen_invalid(ctx);
+@@ -1676,16 +1676,12 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
+             break;
+         case 0x14:
+             /* CMOVLBS */
+-            tmp = tcg_temp_new();
+-            tcg_gen_andi_i64(tmp, va, 1);
+-            tcg_gen_movcond_i64(TCG_COND_NE, vc, tmp, load_zero(ctx),
++            tcg_gen_movcond_i64(TCG_COND_TSTNE, vc, va, tcg_constant_i64(1),
+                                 vb, load_gpr(ctx, rc));
+             break;
+         case 0x16:
+             /* CMOVLBC */
+-            tmp = tcg_temp_new();
+-            tcg_gen_andi_i64(tmp, va, 1);
+-            tcg_gen_movcond_i64(TCG_COND_EQ, vc, tmp, load_zero(ctx),
++            tcg_gen_movcond_i64(TCG_COND_TSTEQ, vc, va, tcg_constant_i64(1),
+                                 vb, load_gpr(ctx, rc));
+             break;
+         case 0x20:
 -- 
 2.34.1
 
