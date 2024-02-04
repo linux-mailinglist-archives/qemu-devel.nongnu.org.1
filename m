@@ -2,140 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D45584908B
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457B18490C3
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:42:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWjgO-0006Rd-GE; Sun, 04 Feb 2024 16:05:44 -0500
+	id 1rWkEY-0001zw-A3; Sun, 04 Feb 2024 16:41:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <j.granados@samsung.com>)
- id 1rWjgL-0006Os-9R
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:05:41 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <j.granados@samsung.com>)
- id 1rWjgI-0006ZV-BS
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:05:41 -0500
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
- by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20240204210528euoutp01f3d0a7a127f539df03606cc9d41dce4d~wxOC0f4D_2274722747euoutp01y;
- Sun,  4 Feb 2024 21:05:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20240204210528euoutp01f3d0a7a127f539df03606cc9d41dce4d~wxOC0f4D_2274722747euoutp01y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1707080728;
- bh=PazXnPOtn4VGM9aNtaeuVnKux77yDa9bjwgj1wTWalo=;
- h=Date:From:To:CC:Subject:In-Reply-To:References:From;
- b=XJGvI1l6E0Ft4a8zy85oW1xavd8UBH47O4S3ptEQZ0ay8+OHEaGdA20Snwogj8E0v
- WF7gNiP9n3WZtL8Dd+S+E9g7bNLZcMVEbJjgr5pgnczblCMV6qd9H0xeyTD8SC+O7g
- Tmntit9JfErSnqPIcYkHI+XJVQWtaLxWeUz/d9Qs=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20240204210527eucas1p2c3dcae4c62a405f85b6d3dcb312dc60d~wxOCUdFZb1758517585eucas1p28;
- Sun,  4 Feb 2024 21:05:27 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
- eusmges2new.samsung.com (EUCPMTA) with SMTP id 22.D8.09814.71CFFB56; Sun,  4
- Feb 2024 21:05:27 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
- 20240204210526eucas1p1d0812ae575dc28577afaee1224fd4f9b~wxOBpz4ep2535225352eucas1p1E;
- Sun,  4 Feb 2024 21:05:26 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20240204210526eusmtrp198ce926de78579e951936ad631924e79~wxOBkYyrE1314513145eusmtrp1D;
- Sun,  4 Feb 2024 21:05:26 +0000 (GMT)
-X-AuditID: cbfec7f4-727ff70000002656-ba-65bffc170bf0
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms2.samsung.com (EUCPMTA) with SMTP id A3.E2.10702.61CFFB56; Sun,  4
- Feb 2024 21:05:26 +0000 (GMT)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
- eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20240204210526eusmtip2386c474d056ea3c3e412bc1888af0ba2~wxOBX_BdU0699206992eusmtip2C;
- Sun,  4 Feb 2024 21:05:26 +0000 (GMT)
-Received: from localhost (106.210.248.184) by CAMSVWEXC02.scsc.local
- (2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
- Sun, 4 Feb 2024 21:05:25 +0000
-Date: Sun, 4 Feb 2024 22:05:22 +0100
-From: Joel Granados <j.granados@samsung.com>
-To: Yi Liu <yi.l.liu@intel.com>
-CC: Zhenzhong Duan <zhenzhong.duan@intel.com>, <qemu-devel@nongnu.org>,
- <alex.williamson@redhat.com>, <clg@redhat.com>, <eric.auger@redhat.com>,
- <peterx@redhat.com>, <jasowang@redhat.com>, <mst@redhat.com>,
- <jgg@nvidia.com>, <nicolinc@nvidia.com>, <joao.m.martins@oracle.com>,
- <kevin.tian@intel.com>, <yi.y.sun@intel.com>, <chao.p.peng@intel.com>, Yi
- Sun <yi.y.sun@linux.intel.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard
- Henderson <richard.henderson@linaro.org>, Eduardo Habkost
- <eduardo@habkost.net>
-Subject: Re: [PATCH rfcv1 23/23] intel_iommu: modify x-scalable-mode to be
- string option
-Message-ID: <20240204210522.ypkmf6edlepcwicf@joelS2.panther.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rWkEW-0001yC-P5
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:00 -0500
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rWkEU-0003UL-T3
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:00 -0500
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1d7232dcb3eso27233895ad.2
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:40:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707082857; x=1707687657; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BO7ye0I5KwmMd79Dh/cCt2byDtv4Iy/BkUn+Jt/H9/o=;
+ b=V4SHaXQbBrCV6rXhn5PPgoqFMpAfKi7o4Ti+sfKrkLGgvKJUwmiQ67t7x9v1CUBZZ3
+ n6dxANtYeYhJAUDX9UWyqWi5Lw9y+mYTq84Z34PTQSL0qTC/20vEJkc6QNzHEAfLjLwF
+ hzuvlOwHy5CSNYDd2TQz1uRZyu4urOd1YCGRVmqsP/8l2xJgSzKxggKrG16jR78W0DPK
+ mTNQjunhDuWBCNE9j11RtuMaeXhPWL82GE8xLr3NiwhrIoEzEZuul57S46BxVSfYPL1V
+ vsaXYfZuAn4vxU2JtDj/BQqRFX0ut8XwNAuaT6av7YDfDr3LeXm9LIw6JxG+f0/saQMb
+ qr/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707082857; x=1707687657;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BO7ye0I5KwmMd79Dh/cCt2byDtv4Iy/BkUn+Jt/H9/o=;
+ b=EWWdyy8B0Amo6wbwVHzr5aux6iBi9+kwAN8KKi+GcifGFZ9Uj2JAwcwL9mf8GlI903
+ eAhLYGhZscQF6sFZ2Gr+jnvflsEhXiAZpslKabL7oo+8l9B8mvQBpZe0z3LleifbeZ+v
+ cMo3t43QdIq/osXm0K52+dKCsLwtfYtfiNivn00HToKwWsKC0z3XJkA9dr/4kVDuCtAJ
+ aWmaG1FgX6uDMryF7eGTYNns1i9mwSDZsReDyIAN+wvG3qWtSWGwVRtbE1QlNrOgQtsD
+ OehoSyYYmY/CDOzYco/mfLMh2oNYpdeo5+Gt+EXsCzduhqP9g+7CbwdUuiHdxBvfz2TY
+ Or5Q==
+X-Gm-Message-State: AOJu0YyWg9VleSkyvjpQ3AXXI/lkF/0xNkwRKYZ6NpwFK1Py+U2fLc1y
+ xr+JkkVtUbnVwhEjhAvm6qPYPEG4Xpht5JCQAQp8SiBCh1k4I+76UZgjCLASV+/y8hwYnM/hRT1
+ 6xJ8=
+X-Google-Smtp-Source: AGHT+IGZFC8tSK7hLuhfrtbKrI1rBMq5DyKzsZnRlcSH9Fdmt8+D+AcJBzTCxnY1xsr1UjddVUlHtQ==
+X-Received: by 2002:a17:903:22c4:b0:1d9:8cd8:acff with SMTP id
+ y4-20020a17090322c400b001d98cd8acffmr5585384plg.62.1707082856789; 
+ Sun, 04 Feb 2024 13:40:56 -0800 (PST)
+Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.40.55
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 04 Feb 2024 13:40:56 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/39] tcg patch queue
+Date: Mon,  5 Feb 2024 07:40:13 +1000
+Message-Id: <20240204214052.5639-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg="pgp-sha512";
- protocol="application/pgp-signature"; boundary="blom46uwy3q7jgq5"
-Content-Disposition: inline
-In-Reply-To: <4b92ba16-5839-4c93-bd07-46e177de7d18@intel.com>
-X-Originating-IP: [106.210.248.184]
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
- CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA2WSfUxTVxjGPffe3n6YkttC1pNiwlbdR6RDmBJOsulqMFkzNNH9s9lIsFnv
- KAFabGHKFjeYG2MOZgshZDWFAtKClY+ND0FRTNmgDlwd69BVQDNKSAuKlQ/XWctaLmYm++/3
- Pu/znDxvcji40EKKOTmaQlqnUeZJSB7ROxx0vS4KDdLJ35S9iFbXKkhUarmKo7pQGwvN1TRj
- aHL8JWQdX8KQOzwAkHNuCUfN93vYyPe1E0dr//hZ6MrsDIkGe8Ms1D24ykYjlX0EOnetn43M
- wQkCGWsbSXTvKwo1eVxAFifvN02x5eU3hzF504APk09ODJDyuuuH5N6JLkxeeeoBKQ/Megj5
- 4tU/yINcBe8tFZ2X8zGt27HnKE/t7mwFBcPSE0OuSlACnkpOAy4HUrtgfe0afhrwOEKqBcDf
- Wy4TzLAM4Hy7GY+6hNQSgHfd6c8SFyr8bMZkA/DXi6GNRMT0wHhrY9MNoD/4hIxGCGob7Jm9
- DaJMUlLoWphcfzaOSoA3+j3raZy6RMCep2YsuoilFLDFPL9u4lMyaD7TARgWwOvfe4ko49QJ
- ONZWGvFzIhwPbWFOVOZSu2G/1cJiqm6FJmsJzvBJ+Eu3B2O4hgcDUzkM74PfesvYDMdC/0j3
- Bm+Bo9UV690gVQ3gYPghmxnsAFpLVzZeehN+6fayoyUgtRe2VicyGANv3xcwNWNgVW8tzsh8
- WF4mZIKvQPv0AmEAW03PHWZ67jDTf4cxshRaLj8i/ycnQmvDPM7wbtjevkhYAPs8ENFF+vxs
- Wv+Ghj6epFfm64s02UkfavN/BJGPOxoeWe4DNn8gyQEwDnCAbZHwX532m0BMaLQaWhLHN8Re
- oYV8lbL4E1qnzdIV5dF6B4jnEBIR/2VVAi2kspWFdC5NF9C6Z1uMwxWXYMdb74j+/Lu4bqfF
- sE+lTVMDQUdLqjHl0rTx0+W95z8rXAj2rW3ZGSvptdhkRypjZDe88R/UfTTWiKcYYFu6jSAd
- 2ty2w6q74ZDQOFQynXVA/MJiVsEPPn94nBvfrC7PFB+9yHry6s8sX65019mZldmm7R61YIfA
- qWPZveVV+8+8ffKdoYQVbslY59mM/XPBUz6d2iDre3hnJlk1Vpz2bmb6NdFjZ8MmReLBrsOO
- lap7Ew0dn3OPZdSPHgkYFYc6ftJiGc6AcvX9zbL5gAFvtNcrzAeOjWLW1Cnpo3OvJReF5lyQ
- rsmc9FS4Uzcbupy/3XrPlPn4uz0XSr9I09g3SQi9WpmyHdfplf8CNMAgQDMEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrPKsWRmVeSWpSXmKPExsVy+t/xe7pif/anGsxeqWPx7X8Pm0Xjgn3M
- FvP+rGW1eD51KZPFnUuKFssufWayuPJvD6PFieefmS2Wvt3KbvGy/QSzxf9fr1gt9j59zGax
- f9s/Vost+7+xWxzv3cFiseTATnaLuT+vsVhMnL6IzeJBq4DF4lvnGR1EPHbOusvu0XHhGJPH
- 4j0vmTzuXNvD5jHvZKDHk2ubmTx6m9+xeXx8eovF4/2+q2wBnFF6NkX5pSWpChn5xSW2StGG
- FkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6GV/vbGMrOKJT0bltM3MD42+lLkZO
- DgkBE4k1Pa/Yuxi5OIQEljJK7F/Vyg6RkJHY+OUqK4QtLPHnWhcbRNFHRolLb9cyQzhbGCX+
- 7JvHDFLFIqAisfXpDUYQm01AR+L8mztgcREBeYmzO2+xgDQwC+xgkfj3uROsSFggSmLF3Ndg
- RbwCDhJz+9czQkxdySRx9eNPqISgxMmZT1hAbGaBMokLtx4BxTmAbGmJ5f84QMKcArYSO5ct
- gDpVWWLWsgZmCLtW4vPfZ4wTGIVnIZk0C8mkWQiTIMJaEjf+vWTCENaWWLbwNTOEbSuxbt17
- lgWM7KsYRVJLi3PTc4uN9IoTc4tL89L1kvNzNzECU8+2Yz+37GBc+eqj3iFGJg7GQ4wqQJ2P
- Nqy+wCjFkpefl6okwjtBeG+qEG9KYmVValF+fFFpTmrxIUZTYDBOZJYSTc4HJsW8knhDMwNT
- QxMzSwNTSzNjJXFez4KORCGB9MSS1OzU1ILUIpg+Jg5OqQamdOnj03bxSojbuJ580rWBM/2o
- cgKPv4SvWZBLZr/b5ivGe1Jsjl9YohJ7OPmhcrhk4a9j7OeeiKyRtvv5y+CTQMdrm/L7/tZb
- dJ89m7iqYqVJQqniumt2a1YePPha0llwbnja2jy3kP+Cx0LrQwrNv0+bf2TK5qOvf7VNmdNU
- Om3TlQw2iW9rVZ0Lbv4+/C3Sf9cZjevJ18KTTvyPL7bvC2N+uH0+87Z97vmSZzgPTm05uTJ5
- 0bvZVzfueZDOUTfrzwqW+hehftvjLljd8MyYrHtIWC981oIXxh7rqt9ULnZmY73CfsMkQsgl
- /bOIxxbRaqepAltNVhbP3l42Q7HljMvcT+cmO7BtfsbHcXVSnRJLcUaioRZzUXEiAEW34FfS
- AwAA
-X-CMS-MailID: 20240204210526eucas1p1d0812ae575dc28577afaee1224fd4f9b
-X-Msg-Generator: CA
-X-RootMTR: 20240131144013eucas1p22d46339ae42f54dd59c23e8b95502dda
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240131144013eucas1p22d46339ae42f54dd59c23e8b95502dda
-References: <20240115103735.132209-1-zhenzhong.duan@intel.com>
- <20240115103735.132209-24-zhenzhong.duan@intel.com>
- <CGME20240131144013eucas1p22d46339ae42f54dd59c23e8b95502dda@eucas1p2.samsung.com>
- <20240131144011.onhavz2bl2ch7vkv@localhost>
- <4b92ba16-5839-4c93-bd07-46e177de7d18@intel.com>
-Received-SPF: pass client-ip=210.118.77.11;
- envelope-from=j.granados@samsung.com; helo=mailout1.w1.samsung.com
-X-Spam_score_int: -74
-X-Spam_score: -7.5
-X-Spam_bar: -------
-X-Spam_report: (-7.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -152,152 +88,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---blom46uwy3q7jgq5
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
 
-On Wed, Jan 31, 2024 at 11:24:18PM +0800, Yi Liu wrote:
-> On 2024/1/31 22:40, Joel Granados wrote:
-> > On Mon, Jan 15, 2024 at 06:37:35PM +0800, Zhenzhong Duan wrote:
-> >> From: Yi Liu <yi.l.liu@intel.com>
-> >>
-> >> Intel VT-d 3.0 introduces scalable mode, and it has a bunch of capabil=
-ities
-> >> related to scalable mode translation, thus there are multiple combinat=
-ions.
-> >> While this vIOMMU implementation wants to simplify it for user by prov=
-iding
-> >> typical combinations. User could config it by "x-scalable-mode" option=
-=2E The
-> >> usage is as below:
-> >>
-> >> "-device intel-iommu,x-scalable-mode=3D["legacy"|"modern"|"off"]"
-> >>
-> >>   - "legacy": gives support for stage-2 page table
-> >>   - "modern": gives support for stage-1 page table
-> >>   - "off": no scalable mode support
-> >>   -  if not configured, means no scalable mode support, if not proper
-> >>      configured, will throw error
-> >>
-> >> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> >> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> >> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> >> ---
-> >>   include/hw/i386/intel_iommu.h |  1 +
-> >>   hw/i386/intel_iommu.c         | 25 +++++++++++++++++++++++--
-> >>   2 files changed, 24 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iom=
-mu.h
-> >> index f3e75263b7..9cbd568171 100644
-> >> --- a/include/hw/i386/intel_iommu.h
-> >> +++ b/include/hw/i386/intel_iommu.h
-> >> @@ -320,6 +320,7 @@ struct IntelIOMMUState {
-> >>  =20
-> >>       bool caching_mode;              /* RO - is cap CM enabled? */
-> >>       bool scalable_mode;             /* RO - is Scalable Mode support=
-ed? */
-> >> +    char *scalable_mode_str;        /* RO - admin's Scalable Mode con=
-fig */
-> >>       bool scalable_modern;           /* RO - is modern SM supported? =
-*/
-> >>       bool snoop_control;             /* RO - is SNP filed supported? =
-*/
-> >>  =20
-> >> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> >> index e418305f6e..b507112069 100644
-> >> --- a/hw/i386/intel_iommu.c
-> >> +++ b/hw/i386/intel_iommu.c
-> >> @@ -5111,7 +5111,7 @@ static Property vtd_properties[] =3D {
-> >>       DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
-> >>                         VTD_HOST_ADDRESS_WIDTH),
-> >>       DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, =
-FALSE),
-> >> -    DEFINE_PROP_BOOL("x-scalable-mode", IntelIOMMUState, scalable_mod=
-e, FALSE),
-> >> +    DEFINE_PROP_STRING("x-scalable-mode", IntelIOMMUState, scalable_m=
-ode_str),
-> >>       DEFINE_PROP_BOOL("snoop-control", IntelIOMMUState, snoop_control=
-, false),
-> >>       DEFINE_PROP_BOOL("x-pasid-mode", IntelIOMMUState, pasid, false),
-> >>       DEFINE_PROP_BOOL("dma-drain", IntelIOMMUState, dma_drain, true),
-> >> @@ -6122,7 +6122,28 @@ static bool vtd_decide_config(IntelIOMMUState *=
-s, Error **errp)
-> >>           }
-> >>       }
-> >>  =20
-> >> -    /* Currently only address widths supported are 39 and 48 bits */
-> >> +    if (s->scalable_mode_str &&
-> >> +        (strcmp(s->scalable_mode_str, "off") &&
-> >> +         strcmp(s->scalable_mode_str, "modern") &&
-> >> +         strcmp(s->scalable_mode_str, "legacy"))) {
-> >> +        error_setg(errp, "Invalid x-scalable-mode config,"
-> >> +                         "Please use \"modern\", \"legacy\" or \"off\=
-"");
-> >> +        return false;
-> >> +    }
-> >> +
-> >> +    if (s->scalable_mode_str &&
-> >> +        !strcmp(s->scalable_mode_str, "legacy")) {
-> >> +        s->scalable_mode =3D true;
-> >> +        s->scalable_modern =3D false;
-> >> +    } else if (s->scalable_mode_str &&
-> >> +        !strcmp(s->scalable_mode_str, "modern")) {
-> >> +        s->scalable_mode =3D true;
-> >> +        s->scalable_modern =3D true;
-> >> +    } else {
-> >> +        s->scalable_mode =3D false;
-> >> +        s->scalable_modern =3D false;
-> >> +    }
-> >> +
-> >>       if ((s->aw_bits !=3D VTD_HOST_AW_39BIT) &&
-> >>           (s->aw_bits !=3D VTD_HOST_AW_48BIT) &&
-> >>           !s->scalable_modern) {
-> >> --=20
-> >> 2.34.1
-> >>
-> >>
-> >=20
-> > I noticed that this patch changes quite a bit from the previous version
-> > that you had. I Specifically noticed that you dropped VTD_ECAP_PRS from
-> > intel_iommu_internal.h. I was under the impression that this set the
-> > Page Request Servicves capability in the IOMMU effectively enabling PRI
-> > in the iommu.
-> >=20
-> > Why did you remove it from your original patch?
->=20
-> It is because this series does not cover the PRS support. It should come
-> in a future series.
+  Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
 
-ok. Thx for getting back to me.
+are available in the Git repository at:
 
-Best
->=20
-> Regards,
-> Yi Liu
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240205
 
---=20
+for you to fetch changes up to 867db6870a6f5d4e0915822d6a84e665bec1f22e:
 
-Joel Granados
+  tcg/tci: Support TCG_COND_TST{EQ,NE} (2024-02-03 23:53:49 +0000)
 
---blom46uwy3q7jgq5
-Content-Type: application/pgp-signature; name="signature.asc"
+----------------------------------------------------------------
+tcg: Introduce TCG_COND_TST{EQ,NE}
+target/alpha: Use TCG_COND_TST{EQ,NE}
+target/m68k: Use TCG_COND_TST{EQ,NE} in gen_fcc_cond
+target/sparc: Use TCG_COND_TSTEQ in gen_op_mulscc
+target/s390x: Use TCG_COND_TSTNE for CC_OP_{TM,ICM}
+target/s390x: Improve general case of disas_jcc
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+Paolo Bonzini (1):
+      tcg/i386: Use TEST r,r to test 8/16/32 bits
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmW//BAACgkQupfNUreW
-QU+a7gwAlebvVhHVGke89oE8szAHzNmMvjRRfw3ABmlSq70+Y1rBc+YTknC4wdvW
-U/RQ0UadnQQaiEsaqkgEHfBWjrUH8s8hQcR8GevjCD/t4JTrzC+ZVH5wQ8fB6+Qb
-S4cxO++/Yh63cmY/IdUfGgHkhwi0ZgMUzZ8Ge5lG1Xp+shZKLVRJlOmC6Tawp9vZ
-lTOVrndesPCyKliMO3FSRJ1hmwU9G+jLF4XiyuGoLYb5EwVF13u+crO/HiW2X/YS
-UDcdnFaB5CNGXM/GjrCtHR3gIxoftmeDQpHXskvxW+qhA9tJaTqxwlaG90CYyiRO
-6CaxTK+5WRI5Jg2fGYxJ2GBj2AKfVqIrq+nufWVgq/N7sJKd4eN+eDTrpeACMsaj
-F+ralM/1o5Lm8JIDIiGC53Evtipm7CeD2ccCmREpPk8F8m+eZ25KLKd5Z8HtD1DO
-Wb4V7fMzVaxb8dqkobfyVcki/PDFz7sNRD6MTolSmg2q8yUt9vwxrZhQe4mMp+oO
-ADaqBaxm
-=FODF
------END PGP SIGNATURE-----
+Philippe Mathieu-Daudé (1):
+      tcg/aarch64: Massage tcg_out_brcond()
 
---blom46uwy3q7jgq5--
+Richard Henderson (37):
+      tcg: Introduce TCG_COND_TST{EQ,NE}
+      tcg: Introduce TCG_TARGET_HAS_tst
+      tcg/optimize: Split out arg_is_const_val
+      tcg/optimize: Split out do_constant_folding_cond1
+      tcg/optimize: Do swap_commutative2 in do_constant_folding_cond2
+      tcg/optimize: Handle TCG_COND_TST{EQ,NE}
+      tcg/optimize: Lower TCG_COND_TST{EQ,NE} if unsupported
+      target/alpha: Pass immediate value to gen_bcond_internal()
+      target/alpha: Use TCG_COND_TST{EQ,NE} for BLB{C,S}
+      target/alpha: Use TCG_COND_TST{EQ,NE} for CMOVLB{C,S}
+      target/alpha: Use TCG_COND_TSTNE for gen_fold_mzero
+      target/m68k: Use TCG_COND_TST{EQ,NE} in gen_fcc_cond
+      target/sparc: Use TCG_COND_TSTEQ in gen_op_mulscc
+      target/s390x: Use TCG_COND_TSTNE for CC_OP_{TM,ICM}
+      target/s390x: Improve general case of disas_jcc
+      tcg: Add TCGConst argument to tcg_target_const_match
+      tcg/aarch64: Support TCG_COND_TST{EQ,NE}
+      tcg/aarch64: Generate TBZ, TBNZ
+      tcg/aarch64: Generate CBNZ for TSTNE of UINT32_MAX
+      tcg/arm: Split out tcg_out_cmp()
+      tcg/arm: Support TCG_COND_TST{EQ,NE}
+      tcg/i386: Pass x86 condition codes to tcg_out_cmov
+      tcg/i386: Move tcg_cond_to_jcc[] into tcg_out_cmp
+      tcg/i386: Support TCG_COND_TST{EQ,NE}
+      tcg/i386: Improve TSTNE/TESTEQ vs powers of two
+      tcg/sparc64: Hoist read of tcg_cond_to_rcond
+      tcg/sparc64: Pass TCGCond to tcg_out_cmp
+      tcg/sparc64: Support TCG_COND_TST{EQ,NE}
+      tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
+      tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
+      tcg/ppc: Tidy up tcg_target_const_match
+      tcg/ppc: Add TCG_CT_CONST_CMP
+      tcg/ppc: Support TCG_COND_TST{EQ,NE}
+      tcg/s390x: Split constraint A into J+U
+      tcg/s390x: Add TCG_CT_CONST_CMP
+      tcg/s390x: Support TCG_COND_TST{EQ,NE}
+      tcg/tci: Support TCG_COND_TST{EQ,NE}
+
+ include/tcg/tcg-cond.h           |  74 ++++--
+ tcg/aarch64/tcg-target-con-set.h |   5 +-
+ tcg/aarch64/tcg-target-con-str.h |   1 +
+ tcg/aarch64/tcg-target.h         |   2 +
+ tcg/arm/tcg-target.h             |   2 +
+ tcg/i386/tcg-target-con-set.h    |   6 +-
+ tcg/i386/tcg-target-con-str.h    |   1 +
+ tcg/i386/tcg-target.h            |   2 +
+ tcg/loongarch64/tcg-target.h     |   2 +
+ tcg/mips/tcg-target.h            |   2 +
+ tcg/ppc/tcg-target-con-set.h     |   5 +-
+ tcg/ppc/tcg-target-con-str.h     |   1 +
+ tcg/ppc/tcg-target.h             |   2 +
+ tcg/riscv/tcg-target.h           |   2 +
+ tcg/s390x/tcg-target-con-set.h   |   8 +-
+ tcg/s390x/tcg-target-con-str.h   |   3 +-
+ tcg/s390x/tcg-target.h           |   2 +
+ tcg/sparc64/tcg-target.h         |   2 +
+ tcg/tcg-internal.h               |   2 +
+ tcg/tci/tcg-target.h             |   2 +
+ target/alpha/translate.c         |  94 ++++----
+ target/m68k/translate.c          |  74 +++---
+ target/s390x/tcg/translate.c     | 100 +++------
+ target/sparc/translate.c         |   4 +-
+ tcg/optimize.c                   | 474 ++++++++++++++++++++++++++++++---------
+ tcg/tcg.c                        |  40 +++-
+ tcg/tci.c                        |  14 ++
+ docs/devel/tcg-ops.rst           |   2 +
+ tcg/aarch64/tcg-target.c.inc     | 166 +++++++++++---
+ tcg/arm/tcg-target.c.inc         |  62 +++--
+ tcg/i386/tcg-target.c.inc        | 201 ++++++++++++-----
+ tcg/loongarch64/tcg-target.c.inc |   3 +-
+ tcg/mips/tcg-target.c.inc        |   3 +-
+ tcg/ppc/tcg-target.c.inc         | 294 ++++++++++++++++++------
+ tcg/riscv/tcg-target.c.inc       |   3 +-
+ tcg/s390x/tcg-target.c.inc       | 246 +++++++++++++-------
+ tcg/sparc64/tcg-target.c.inc     |  65 ++++--
+ tcg/tci/tcg-target.c.inc         |   3 +-
+ 38 files changed, 1379 insertions(+), 595 deletions(-)
 
