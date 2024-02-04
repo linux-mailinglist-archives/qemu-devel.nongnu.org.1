@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53FD08490D0
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B27B58490DB
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:45:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWkFe-0003On-5J; Sun, 04 Feb 2024 16:42:10 -0500
+	id 1rWkFh-0003n2-Aq; Sun, 04 Feb 2024 16:42:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkFY-00035R-Qo
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:42:06 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rWkFb-00039W-0E
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:42:07 -0500
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkFW-0003bW-Lo
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:42:04 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d94323d547so29787715ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:42:02 -0800 (PST)
+ id 1rWkFY-0003bp-QA
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:42:06 -0500
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1d93f2c3701so18200935ad.3
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:42:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707082921; x=1707687721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707082923; x=1707687723; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Njou8078FZIGaih/KmoVshAEm+KpvJ/TDJRnizv9npg=;
- b=mGOBDGLka1XKGdc3MJgsMNDRaFXaVQxBL6kfRdYeD8Rtdks5aGeoLiKU0Vo/s7dik6
- noq5ZPVlH7uATwV3RoTUTH7AkHJHQgL1uRU/vQuzOQIBClgIXfI/KYLJl8x1QmQYyTXo
- qoKs/66Qlb2T2weeoSRtJ2t0lUkVMRPr7uHcI7D+C+jyXK+U8H84LzyqhtfEoyRxR1R9
- gGQQR4AQRP7nyGKkvUDJvi9ekYShUvEgzzMGFJvXnx9ZIiNEqMAThPCHNeNrqBoLYKWy
- 9aPOzG8GX+Yq+arP8CKw7j2CRTbTNlyYcDEacNOlimAQO5mgol3V66rh4sLrBedCtNOe
- snjg==
+ bh=fgCYLBH8uYmmefd9XnbslI9mkFGYtv19hEE6tS0wKb8=;
+ b=tCZvKOSc6HSbp1LmLrm1SdRzpfhRfqcimvPhd/R3+36n4Bb0ynBh6K37btBW8dozuJ
+ 0EDC5WVvxPy/HCfN8Ml3qJl5g3hW6yYZ7vhAxF3B0OPHmMGjLoxTH27XJAX5gZSqwie8
+ fh8vOcLIekxC+DFRbZvfDkwVoHAREJLSmBcSjFJ04tyovQgG4+wn56eJzITSiXPea01L
+ vCJif13rae3nqxrUA1aw9vc7X7jLLcsNlmOF1QQM+Lv1rsAIVIypaLgMsY0lO0nOjK3L
+ Y5nCAH9kHisd9zBjO2XqsRQwdwbXCPQq2nv5wWrW/QPNk4LlWRDnSAb2N9gTrLrx3SEw
+ ih1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707082921; x=1707687721;
+ d=1e100.net; s=20230601; t=1707082923; x=1707687723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Njou8078FZIGaih/KmoVshAEm+KpvJ/TDJRnizv9npg=;
- b=uN3WHiwxJA0npAhF1u5oTkcCGiLj2wEDI/48RsQkMu2sB9BR1c6U6+QB7lJ6TWLNML
- /AmyJd7rvtXZM5bMZ7XrNE3+IBhtqlJVOtxdvVSPN4DFh5++g/6QoLCCICUyqnu1RC9g
- 0yOfj6enYZLWHrPcNNM3CiC2grlzsjWAnVjyn4AgFNLeX0AdFphm07bZ13/xdwvuwJym
- dMN8bw9WUBThMNkIvgLVOuEybZ1cAOQsxVVsPLvS2QZXV7l97M4xMZKoIRT96XheTZij
- RSXvcuumkbWm4Jf+LVnuvbTTh/H1ma5QRklmqyunJuhRRZsVF2PtMLVNsfuGkgMmhAbu
- BNuQ==
-X-Gm-Message-State: AOJu0YylKk8kQh/j2K/ozq6Ty26Q8GKgdcqCHvQyD3AN3ZrwLacIwJGI
- +ptw5cIx2VVawmYXyramCqDmpVKuXfQVUlnrqvY5Ky6pJ2jk/CmRh2WOKCQO/gm0TQ0IvXRIC3I
- F2+k=
-X-Google-Smtp-Source: AGHT+IGkShMsME+17YGJovzi742eWvFHsCD3lBqB8iMPpJGBWkjxsNtuoSbKsW3XYSOn0wQyRyL7xQ==
-X-Received: by 2002:a17:902:f545:b0:1d9:a674:aa77 with SMTP id
- h5-20020a170902f54500b001d9a674aa77mr1951226plf.24.1707082921409; 
- Sun, 04 Feb 2024 13:42:01 -0800 (PST)
+ bh=fgCYLBH8uYmmefd9XnbslI9mkFGYtv19hEE6tS0wKb8=;
+ b=rlyHqr3QlDv1Wnh/2ReMVQhaYZ9kX2dTSdFj5LtVHO7qwUG9/CDGStpSc/fNKgNPgT
+ m/Be/1RgFAl0iXas4253A8YcyA6qVOc+/ihgYnkGdAevD31JNvJcxYSePNObxDeuAhAv
+ hr/OYnziirS4ZLq45gmVk45NXk5t/Re2Vik1NT5DafsnfQeXvBBWSsbIvcQ0i0SYlwdr
+ yXJA8ZQGx5JriGdIjUSVY1nQak6AidK/6hb2UBKrqzYrIvrndJvo5y2gmDvWMOaOnx/q
+ XtA6srbJHIM+h0qrA7VSrJlIs7UMtBe2ZN754c9MdUiqqkfuYMyhM5BHiUsHMJuBLYJF
+ nBCA==
+X-Gm-Message-State: AOJu0YyLdvfFxmqzrSDbKozen1Bew1sQdRbC34pLex0zIy7rdmn5bjAA
+ nMMtSVuZzakdWHamNXoetRJl/sRQwj0LUbR7qSCzcoVVm77QQKM8jN3T/vDyJ8NpMqMWRK+EHsM
+ hoQ4=
+X-Google-Smtp-Source: AGHT+IHJCoBYoub+AZDspwH0LuCavPB4Q50UGkKyMjk86C8vaHYngmcHfoDX46jL2C6Rm+Z+XUfDgA==
+X-Received: by 2002:a17:902:ba98:b0:1d9:620b:89cb with SMTP id
+ k24-20020a170902ba9800b001d9620b89cbmr8309754pls.13.1707082923450; 
+ Sun, 04 Feb 2024 13:42:03 -0800 (PST)
 Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
- mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.59
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.42.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Feb 2024 13:42:01 -0800 (PST)
+ Sun, 04 Feb 2024 13:42:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 31/39] tcg/ppc: Sink tcg_to_bc usage into tcg_out_bc
-Date: Mon,  5 Feb 2024 07:40:44 +1000
-Message-Id: <20240204214052.5639-32-richard.henderson@linaro.org>
+Subject: [PULL 32/39] tcg/ppc: Use cr0 in tcg_to_bc and tcg_to_isel
+Date: Mon,  5 Feb 2024 07:40:45 +1000
+Message-Id: <20240204214052.5639-33-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204214052.5639-1-richard.henderson@linaro.org>
 References: <20240204214052.5639-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,99 +92,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the current tcg_out_bc function to tcg_out_bc_lab, and
-create a new function that takes an integer displacement + link.
+Using cr0 means we could choose to use rc=1 to compute the condition.
+Adjust the tables and tcg_out_cmp that feeds them.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/ppc/tcg-target.c.inc | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ tcg/ppc/tcg-target.c.inc | 68 ++++++++++++++++++++--------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
 diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-index 850ace98b2..830d2fe73a 100644
+index 830d2fe73a..b9323baa86 100644
 --- a/tcg/ppc/tcg-target.c.inc
 +++ b/tcg/ppc/tcg-target.c.inc
-@@ -1946,14 +1946,20 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
-     }
- }
+@@ -671,30 +671,30 @@ enum {
+ };
  
--static void tcg_out_bc(TCGContext *s, int bc, TCGLabel *l)
-+static void tcg_out_bc(TCGContext *s, TCGCond cond, int bd)
- {
-+    tcg_out32(s, tcg_to_bc[cond] | bd);
-+}
-+
-+static void tcg_out_bc_lab(TCGContext *s, TCGCond cond, TCGLabel *l)
-+{
-+    int bd = 0;
-     if (l->has_value) {
--        bc |= reloc_pc14_val(tcg_splitwx_to_rx(s->code_ptr), l->u.value_ptr);
-+        bd = reloc_pc14_val(tcg_splitwx_to_rx(s->code_ptr), l->u.value_ptr);
-     } else {
-         tcg_out_reloc(s, s->code_ptr, R_PPC_REL14, l, 0);
-     }
--    tcg_out32(s, bc);
-+    tcg_out_bc(s, cond, bd);
- }
+ static const uint32_t tcg_to_bc[] = {
+-    [TCG_COND_EQ]  = BC | BI(7, CR_EQ) | BO_COND_TRUE,
+-    [TCG_COND_NE]  = BC | BI(7, CR_EQ) | BO_COND_FALSE,
+-    [TCG_COND_LT]  = BC | BI(7, CR_LT) | BO_COND_TRUE,
+-    [TCG_COND_GE]  = BC | BI(7, CR_LT) | BO_COND_FALSE,
+-    [TCG_COND_LE]  = BC | BI(7, CR_GT) | BO_COND_FALSE,
+-    [TCG_COND_GT]  = BC | BI(7, CR_GT) | BO_COND_TRUE,
+-    [TCG_COND_LTU] = BC | BI(7, CR_LT) | BO_COND_TRUE,
+-    [TCG_COND_GEU] = BC | BI(7, CR_LT) | BO_COND_FALSE,
+-    [TCG_COND_LEU] = BC | BI(7, CR_GT) | BO_COND_FALSE,
+-    [TCG_COND_GTU] = BC | BI(7, CR_GT) | BO_COND_TRUE,
++    [TCG_COND_EQ]  = BC | BI(0, CR_EQ) | BO_COND_TRUE,
++    [TCG_COND_NE]  = BC | BI(0, CR_EQ) | BO_COND_FALSE,
++    [TCG_COND_LT]  = BC | BI(0, CR_LT) | BO_COND_TRUE,
++    [TCG_COND_GE]  = BC | BI(0, CR_LT) | BO_COND_FALSE,
++    [TCG_COND_LE]  = BC | BI(0, CR_GT) | BO_COND_FALSE,
++    [TCG_COND_GT]  = BC | BI(0, CR_GT) | BO_COND_TRUE,
++    [TCG_COND_LTU] = BC | BI(0, CR_LT) | BO_COND_TRUE,
++    [TCG_COND_GEU] = BC | BI(0, CR_LT) | BO_COND_FALSE,
++    [TCG_COND_LEU] = BC | BI(0, CR_GT) | BO_COND_FALSE,
++    [TCG_COND_GTU] = BC | BI(0, CR_GT) | BO_COND_TRUE,
+ };
  
- static void tcg_out_brcond(TCGContext *s, TCGCond cond,
-@@ -1961,7 +1967,7 @@ static void tcg_out_brcond(TCGContext *s, TCGCond cond,
+ /* The low bit here is set if the RA and RB fields must be inverted.  */
+ static const uint32_t tcg_to_isel[] = {
+-    [TCG_COND_EQ]  = ISEL | BC_(7, CR_EQ),
+-    [TCG_COND_NE]  = ISEL | BC_(7, CR_EQ) | 1,
+-    [TCG_COND_LT]  = ISEL | BC_(7, CR_LT),
+-    [TCG_COND_GE]  = ISEL | BC_(7, CR_LT) | 1,
+-    [TCG_COND_LE]  = ISEL | BC_(7, CR_GT) | 1,
+-    [TCG_COND_GT]  = ISEL | BC_(7, CR_GT),
+-    [TCG_COND_LTU] = ISEL | BC_(7, CR_LT),
+-    [TCG_COND_GEU] = ISEL | BC_(7, CR_LT) | 1,
+-    [TCG_COND_LEU] = ISEL | BC_(7, CR_GT) | 1,
+-    [TCG_COND_GTU] = ISEL | BC_(7, CR_GT),
++    [TCG_COND_EQ]  = ISEL | BC_(0, CR_EQ),
++    [TCG_COND_NE]  = ISEL | BC_(0, CR_EQ) | 1,
++    [TCG_COND_LT]  = ISEL | BC_(0, CR_LT),
++    [TCG_COND_GE]  = ISEL | BC_(0, CR_LT) | 1,
++    [TCG_COND_LE]  = ISEL | BC_(0, CR_GT) | 1,
++    [TCG_COND_GT]  = ISEL | BC_(0, CR_GT),
++    [TCG_COND_LTU] = ISEL | BC_(0, CR_LT),
++    [TCG_COND_GEU] = ISEL | BC_(0, CR_LT) | 1,
++    [TCG_COND_LEU] = ISEL | BC_(0, CR_GT) | 1,
++    [TCG_COND_GTU] = ISEL | BC_(0, CR_GT),
+ };
+ 
+ static bool patch_reloc(tcg_insn_unit *code_ptr, int type,
+@@ -1827,7 +1827,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
+     if (have_isa_3_10) {
+         tcg_insn_unit bi, opc;
+ 
+-        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
++        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
+ 
+         /* Re-use tcg_to_bc for BI and BO_COND_{TRUE,FALSE}. */
+         bi = tcg_to_bc[cond] & (0x1f << 16);
+@@ -1880,7 +1880,7 @@ static void tcg_out_setcond(TCGContext *s, TCGType type, TCGCond cond,
+     if (have_isel) {
+         int isel, tab;
+ 
+-        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
++        tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
+ 
+         isel = tcg_to_isel[cond];
+ 
+@@ -1966,7 +1966,7 @@ static void tcg_out_brcond(TCGContext *s, TCGCond cond,
+                            TCGArg arg1, TCGArg arg2, int const_arg2,
                             TCGLabel *l, TCGType type)
  {
-     tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
--    tcg_out_bc(s, tcg_to_bc[cond], l);
-+    tcg_out_bc_lab(s, cond, l);
+-    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 7, type);
++    tcg_out_cmp(s, cond, arg1, arg2, const_arg2, 0, type);
+     tcg_out_bc_lab(s, cond, l);
  }
  
- static void tcg_out_movcond(TCGContext *s, TCGType type, TCGCond cond,
-@@ -2003,7 +2009,7 @@ static void tcg_out_movcond(TCGContext *s, TCGType type, TCGCond cond,
-             }
-         }
-         /* Branch forward over one insn */
--        tcg_out32(s, tcg_to_bc[cond] | 8);
-+        tcg_out_bc(s, cond, 8);
-         if (v2 == 0) {
-             tcg_out_movi(s, type, dest, 0);
-         } else {
-@@ -2024,11 +2030,11 @@ static void tcg_out_cntxz(TCGContext *s, TCGType type, uint32_t opc,
+@@ -1980,7 +1980,7 @@ static void tcg_out_movcond(TCGContext *s, TCGType type, TCGCond cond,
+         return;
+     }
+ 
+-    tcg_out_cmp(s, cond, c1, c2, const_c2, 7, type);
++    tcg_out_cmp(s, cond, c1, c2, const_c2, 0, type);
+ 
+     if (have_isel) {
+         int isel = tcg_to_isel[cond];
+@@ -2024,7 +2024,7 @@ static void tcg_out_cntxz(TCGContext *s, TCGType type, uint32_t opc,
+     if (const_a2 && a2 == (type == TCG_TYPE_I32 ? 32 : 64)) {
+         tcg_out32(s, opc | RA(a0) | RS(a1));
+     } else {
+-        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 7, type);
++        tcg_out_cmp(s, TCG_COND_EQ, a1, 0, 1, 0, type);
+         /* Note that the only other valid constant for a2 is 0.  */
+         if (have_isel) {
              tcg_out32(s, opc | RA(TCG_REG_R0) | RS(a1));
-             tcg_out32(s, tcg_to_isel[TCG_COND_EQ] | TAB(a0, a2, TCG_REG_R0));
-         } else if (!const_a2 && a0 == a2) {
--            tcg_out32(s, tcg_to_bc[TCG_COND_EQ] | 8);
-+            tcg_out_bc(s, TCG_COND_EQ, 8);
-             tcg_out32(s, opc | RA(a0) | RS(a1));
-         } else {
-             tcg_out32(s, opc | RA(a0) | RS(a1));
--            tcg_out32(s, tcg_to_bc[TCG_COND_NE] | 8);
-+            tcg_out_bc(s, TCG_COND_NE, 8);
-             if (const_a2) {
-                 tcg_out_movi(s, type, a0, 0);
-             } else {
-@@ -2108,11 +2114,11 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
-     tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, 31, 31, 31);
- }
+@@ -2079,7 +2079,7 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+     do_equality:
+         tcg_out_cmp(s, cond, al, bl, blconst, 6, TCG_TYPE_I32);
+         tcg_out_cmp(s, cond, ah, bh, bhconst, 7, TCG_TYPE_I32);
+-        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
++        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
+         break;
  
--static void tcg_out_brcond2 (TCGContext *s, const TCGArg *args,
--                             const int *const_args)
-+static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
-+                            const int *const_args)
+     case TCG_COND_LT:
+@@ -2097,8 +2097,8 @@ static void tcg_out_cmp2(TCGContext *s, const TCGArg *args,
+ 
+         tcg_out_cmp(s, cond, ah, bh, bhconst, 6, TCG_TYPE_I32);
+         tcg_out_cmp(s, cond2, al, bl, blconst, 7, TCG_TYPE_I32);
+-        tcg_out32(s, op | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
+-        tcg_out32(s, CROR | BT(7, CR_EQ) | BA(6, bit1) | BB(7, CR_EQ));
++        tcg_out32(s, op | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, bit2));
++        tcg_out32(s, CROR | BT(0, CR_EQ) | BA(6, bit1) | BB(0, CR_EQ));
+         break;
+ 
+     default:
+@@ -2110,8 +2110,8 @@ static void tcg_out_setcond2(TCGContext *s, const TCGArg *args,
+                              const int *const_args)
  {
-     tcg_out_cmp2(s, args, const_args);
--    tcg_out_bc(s, BC | BI(7, CR_EQ) | BO_COND_TRUE, arg_label(args[5]));
-+    tcg_out_bc_lab(s, TCG_COND_EQ, arg_label(args[5]));
+     tcg_out_cmp2(s, args + 1, const_args + 1);
+-    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(7));
+-    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, 31, 31, 31);
++    tcg_out32(s, MFOCRF | RT(TCG_REG_R0) | FXM(0));
++    tcg_out_rlw(s, RLWINM, args[0], TCG_REG_R0, CR_EQ + 0*4 + 1, 31, 31);
  }
  
- static void tcg_out_mb(TCGContext *s, TCGArg a0)
-@@ -2446,7 +2452,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+ static void tcg_out_brcond2(TCGContext *s, const TCGArg *args,
+@@ -2442,12 +2442,12 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+             tcg_out_cmp(s, TCG_COND_EQ, addrhi, TCG_REG_TMP2,
+                         0, 6, TCG_TYPE_I32);
+ 
+-            /* Combine comparisons into cr7. */
+-            tcg_out32(s, CRAND | BT(7, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
++            /* Combine comparisons into cr0. */
++            tcg_out32(s, CRAND | BT(0, CR_EQ) | BA(6, CR_EQ) | BB(7, CR_EQ));
+         } else {
+-            /* Full comparison into cr7. */
++            /* Full comparison into cr0. */
+             tcg_out_cmp(s, TCG_COND_EQ, TCG_REG_R0, TCG_REG_TMP2,
+-                        0, 7, addr_type);
++                        0, 0, addr_type);
+         }
  
          /* Load a pointer into the current opcode w/conditional branch-link. */
-         ldst->label_ptr[0] = s->code_ptr;
--        tcg_out32(s, BC | BI(7, CR_EQ) | BO_COND_FALSE | LK);
-+        tcg_out_bc(s, TCG_COND_NE, LK);
- 
-         h->base = TCG_REG_TMP1;
-     } else {
 -- 
 2.34.1
 
