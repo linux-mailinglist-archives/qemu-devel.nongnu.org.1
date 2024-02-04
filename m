@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F488490CF
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B62D8490D4
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:44:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWkFc-0003D5-HI; Sun, 04 Feb 2024 16:42:08 -0500
+	id 1rWkFe-0003Ow-3Q; Sun, 04 Feb 2024 16:42:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkFR-0002jD-3k
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:58 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rWkFS-0002t5-Nn
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:42:00 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkFO-0003ar-Dg
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:56 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d9b2400910so1721715ad.0
- for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:54 -0800 (PST)
+ id 1rWkFQ-0003b3-Ka
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:58 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d9b2400910so1721775ad.0
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707082913; x=1707687713; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707082915; x=1707687715; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=edCRhkheTbWQuXgwAiS/gonGTZ3kw+g3zID7Qd9CYvo=;
- b=P2pMkmVleiDXoiuFTahCg5mvh2hAR+xZ09QwFEeFbTls1C+G1pf8jFYT5Uz3u5lv4S
- S3vkFh2bNkDPAgzkCfw8yjzjVqQuhWg77uP1CU5YgeGgDWdxVLjOC9bzmZNTqvS0wf51
- NNyZZSboJiMOy+IH2WnShGlbMh5OvtK1OQ6BAPY5dYGdL+VF96rP9QfIBkWRz6qm6018
- 00n0JXJhsFv5U3VLIFvQGNNJooluQ4KZXNAF66sjLCsXxNaHxuqoh89o4OajZl5fb2DD
- lwCYCCp/ENROXI+TLbKmaR2szu4IK0X9ry3q5bMQQo7ErdmosR/SOEch8dEzrqjOsys3
- lwnA==
+ bh=w7DMJgHEIfczGa+x10sgEDsRXfwUGwOd6p01k71b3vA=;
+ b=HlO9ieAYYe4uZC/h/HF3D/TWoMKTK1/YXtGVoBBEA1p+8roAmbjhGWETFPOUMeQreq
+ ZZ1BOemCAP55GZ8E+uhleKjfbRAfnUG2JZMyuwqJc8ZvP8LQM1d15AG6vM/3BqWkbiWT
+ b0naTO3CfUE6P5hMlcBtTqwkn3uwnl71Vl2/60aHEUJ8+Hq3vBJdZmJQHP2E0qnnjuwI
+ ijJx3t+5P9spkpXDEpyAm8OOIa4mEq70Uk3INY3cvHaX7jbhWjYzlxPvas3SEbiqm85R
+ XM+4k+p9QzrFeLbI/qgdL9TFeCEnmUCe9FGB3atIxhI2cmKylTn63KwbaH+77rfRrS90
+ WgTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707082913; x=1707687713;
+ d=1e100.net; s=20230601; t=1707082915; x=1707687715;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=edCRhkheTbWQuXgwAiS/gonGTZ3kw+g3zID7Qd9CYvo=;
- b=GQkCkWzlDUjaazyfTA65DS31L0xwmGmER46QFl/E/syt5abf5eucwdxGXgZlJAIrY0
- ug9KHlhUYXXrgUFSVKKXPS/U6Yf0MqUZxej8TIh9bjk3ZXVE4ojf2+AJFDzDUTe9YCpw
- VvR39QoxyUipuMWsMH2K+/PDynkfzuTDzO3tF+82Ddp4Edz6zRSoohNl9F4uzdPGf/Dw
- USCCztDhERur8tbd6ey9jSHn3rU4kIRN/ZFaiDmJUbuuY4cTBvzsUUyEmZM5Ksvfpay6
- Gv6jWd1PHZ0xt0jOFJ9fdMBpixZL3b1AacDTLEqX61coO3HNB1FuSHANXdoOghpRNNvH
- RVVw==
-X-Gm-Message-State: AOJu0YyZ/Sxf+cLa0TJrwGNE9J3m4aGEYGMCcBaQzTIFrkVpvuW5wuCi
- AMhjn3LGq3yGtY6NSjyDN94kIIU1KTZafnpLsVMwfQAjCiwPlozNZOh1KoDQ58XDmU+crVQnh+v
- ehUM=
-X-Google-Smtp-Source: AGHT+IGr8HlsKi6KYTko4/mA65HOA1/HbzBY8gh89/9e1ucZCPZPpR8OhOaFE/0hZ4llU7VI6SovZQ==
-X-Received: by 2002:a17:903:41c6:b0:1d8:f6af:77db with SMTP id
- u6-20020a17090341c600b001d8f6af77dbmr5557498ple.12.1707082913232; 
- Sun, 04 Feb 2024 13:41:53 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCVidpJ+iI7gT50DufGL5Yz0fogQzJnYYlDnMat1HNEPWOygrhd1OQdNFQPT0psZRb2sWlmZ5G+wKa/mImin3RZb+A==
+ bh=w7DMJgHEIfczGa+x10sgEDsRXfwUGwOd6p01k71b3vA=;
+ b=f49TXlGuB8x40f7DtfnxAq14aqB/xO5hOguBjHam4NBFiaMqk1f0xAfW/wsenlr51T
+ q+jXmqJcLPiRApgcVwFfckV9AlvWwOdYuvWTnGn81wzVyUGnrN/de93EdpIRf8XfxPDp
+ LdiGadMLZ6JHsjm+q3jr4AIIHbVDY6mXhT7NON0Pe4gWXzI5SyBwqsr3nJ4bqfAV3FcL
+ u5jGtU+W5pgXXH5y2SJBwTzpCfioXG2piTCfQxsPigkIlcofQSV3S5FM3I2hxK6KtHNV
+ 44zDyeSakM/5+HOTcXHjU/enWztnflV+qlvMQ+RYvdKBfvDKCS0ROoRU0QtsiT81ClIP
+ v+Zw==
+X-Gm-Message-State: AOJu0YyMSP2vSW5WlM5JxNNmhRh+IkkgWqMVj5+YZ5Rt4sRN7Fi+BkOS
+ eLM4yWqWmSsjcs/uCn1Oex+USUwG5HlmbCTP7e4qbi6uJ+RyD2mOFxXPioY/ZnZGXL5xiIG3F/c
+ bZeg=
+X-Google-Smtp-Source: AGHT+IHvr13lbzos7CeV9v+NVbxs5FVXKcfkBppDgloL0zZZpuScfeM2mE1lYbfCd4Wn2gJhJekySA==
+X-Received: by 2002:a17:902:e882:b0:1d9:30e3:ea84 with SMTP id
+ w2-20020a170902e88200b001d930e3ea84mr5965524plg.2.1707082915311; 
+ Sun, 04 Feb 2024 13:41:55 -0800 (PST)
 Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
- mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.51
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.41.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Feb 2024 13:41:52 -0800 (PST)
+ Sun, 04 Feb 2024 13:41:54 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/39] tcg/i386: Use TEST r,r to test 8/16/32 bits
-Date: Mon,  5 Feb 2024 07:40:40 +1000
-Message-Id: <20240204214052.5639-28-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 28/39] tcg/sparc64: Hoist read of tcg_cond_to_rcond
+Date: Mon,  5 Feb 2024 07:40:41 +1000
+Message-Id: <20240204214052.5639-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204214052.5639-1-richard.henderson@linaro.org>
 References: <20240204214052.5639-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,59 +92,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+Use a non-zero value here (an illegal encoding) as a better
+condition than is_unsigned_cond for when MOVR/BPR is usable.
 
-Just like when testing against the sign bits, TEST r,r can be used when the
-immediate is 0xff, 0xff00, 0xffff, 0xffffffff.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tcg/sparc64/tcg-target.c.inc | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 0b8c60d021..c6ba498623 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1501,6 +1501,10 @@ static int tcg_out_cmp(TCGContext *s, TCGCond cond, TCGArg arg1,
-             tcg_out_modrm(s, OPC_TESTB | P_REXB_R, arg1, arg1);
-             return js;
-         }
-+        if (arg2 == 0xff) {
-+            tcg_out_modrm(s, OPC_TESTB | P_REXB_R, arg1, arg1);
-+            return jz;
-+        }
-         tcg_out_modrm(s, OPC_GRP3_Eb | P_REXB_RM, EXT3_TESTi, arg1);
-         tcg_out8(s, arg2);
-         return jz;
-@@ -1511,11 +1515,24 @@ static int tcg_out_cmp(TCGContext *s, TCGCond cond, TCGArg arg1,
-             tcg_out_modrm(s, OPC_TESTB, arg1 + 4, arg1 + 4);
-             return js;
-         }
-+        if (arg2 == 0xff00) {
-+            tcg_out_modrm(s, OPC_TESTB, arg1 + 4, arg1 + 4);
-+            return jz;
-+        }
-         tcg_out_modrm(s, OPC_GRP3_Eb, EXT3_TESTi, arg1 + 4);
-         tcg_out8(s, arg2 >> 8);
-         return jz;
-     }
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index ac86b92b75..e16b25e309 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -620,7 +620,7 @@ static const uint8_t tcg_cond_to_bcond[] = {
+     [TCG_COND_GTU] = COND_GU,
+ };
  
-+    if (arg2 == 0xffff) {
-+        tcg_out_modrm(s, OPC_TESTL | P_DATA16, arg1, arg1);
-+        return jz;
-+    }
-+    if (arg2 == 0xffffffffu) {
-+        tcg_out_modrm(s, OPC_TESTL, arg1, arg1);
-+        return jz;
-+    }
+-static const uint8_t tcg_cond_to_rcond[] = {
++static const uint8_t tcg_cond_to_rcond[16] = {
+     [TCG_COND_EQ] = RCOND_Z,
+     [TCG_COND_NE] = RCOND_NZ,
+     [TCG_COND_LT] = RCOND_LZ,
+@@ -679,7 +679,8 @@ static void tcg_out_brcond_i64(TCGContext *s, TCGCond cond, TCGReg arg1,
+                                int32_t arg2, int const_arg2, TCGLabel *l)
+ {
+     /* For 64-bit signed comparisons vs zero, we can avoid the compare.  */
+-    if (arg2 == 0 && !is_unsigned_cond(cond)) {
++    int rcond = tcg_cond_to_rcond[cond];
++    if (arg2 == 0 && rcond) {
+         int off16 = 0;
+ 
+         if (l->has_value) {
+@@ -688,7 +689,7 @@ static void tcg_out_brcond_i64(TCGContext *s, TCGCond cond, TCGReg arg1,
+             tcg_out_reloc(s, s->code_ptr, R_SPARC_WDISP16, l, 0);
+         }
+         tcg_out32(s, INSN_OP(0) | INSN_OP2(3) | BPR_PT | INSN_RS1(arg1)
+-                  | INSN_COND(tcg_cond_to_rcond[cond]) | off16);
++                  | INSN_COND(rcond) | off16);
+     } else {
+         tcg_out_cmp(s, arg1, arg2, const_arg2);
+         tcg_out_bpcc(s, tcg_cond_to_bcond[cond], BPCC_XCC | BPCC_PT, l);
+@@ -696,11 +697,10 @@ static void tcg_out_brcond_i64(TCGContext *s, TCGCond cond, TCGReg arg1,
+     tcg_out_nop(s);
+ }
+ 
+-static void tcg_out_movr(TCGContext *s, TCGCond cond, TCGReg ret, TCGReg c1,
++static void tcg_out_movr(TCGContext *s, int rcond, TCGReg ret, TCGReg c1,
+                          int32_t v1, int v1const)
+ {
+-    tcg_out32(s, ARITH_MOVR | INSN_RD(ret) | INSN_RS1(c1)
+-              | (tcg_cond_to_rcond[cond] << 10)
++    tcg_out32(s, ARITH_MOVR | INSN_RD(ret) | INSN_RS1(c1) | (rcond << 10)
+               | (v1const ? INSN_IMM10(v1) : INSN_RS2(v1)));
+ }
+ 
+@@ -711,9 +711,9 @@ static void tcg_out_movcond_i64(TCGContext *s, TCGCond cond, TCGReg ret,
+     /* For 64-bit signed comparisons vs zero, we can avoid the compare.
+        Note that the immediate range is one bit smaller, so we must check
+        for that as well.  */
+-    if (c2 == 0 && !is_unsigned_cond(cond)
+-        && (!v1const || check_fit_i32(v1, 10))) {
+-        tcg_out_movr(s, cond, ret, c1, v1, v1const);
++    int rcond = tcg_cond_to_rcond[cond];
++    if (c2 == 0 && rcond && (!v1const || check_fit_i32(v1, 10))) {
++        tcg_out_movr(s, rcond, ret, c1, v1, v1const);
+     } else {
+         tcg_out_cmp(s, c1, c2, c2const);
+         tcg_out_movcc(s, cond, MOVCC_XCC, ret, v1, v1const);
+@@ -788,6 +788,8 @@ static void tcg_out_setcond_i32(TCGContext *s, TCGCond cond, TCGReg ret,
+ static void tcg_out_setcond_i64(TCGContext *s, TCGCond cond, TCGReg ret,
+                                 TCGReg c1, int32_t c2, int c2const, bool neg)
+ {
++    int rcond;
 +
-     if (is_power_of_2(rexw ? arg2 : (uint32_t)arg2)) {
-         int jc = (cond == TCG_COND_TSTNE ? JCC_JB : JCC_JAE);
-         int sh = ctz64(arg2);
+     if (use_vis3_instructions && !neg) {
+         switch (cond) {
+         case TCG_COND_NE:
+@@ -807,9 +809,10 @@ static void tcg_out_setcond_i64(TCGContext *s, TCGCond cond, TCGReg ret,
+ 
+     /* For 64-bit signed comparisons vs zero, we can avoid the compare
+        if the input does not overlap the output.  */
+-    if (c2 == 0 && !is_unsigned_cond(cond) && c1 != ret) {
++    rcond = tcg_cond_to_rcond[cond];
++    if (c2 == 0 && rcond && c1 != ret) {
+         tcg_out_movi_s13(s, ret, 0);
+-        tcg_out_movr(s, cond, ret, c1, neg ? -1 : 1, 1);
++        tcg_out_movr(s, rcond, ret, c1, neg ? -1 : 1, 1);
+     } else {
+         tcg_out_cmp(s, c1, c2, c2const);
+         tcg_out_movi_s13(s, ret, 0);
 -- 
 2.34.1
 
