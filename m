@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6938490BC
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0678490BE
 	for <lists+qemu-devel@lfdr.de>; Sun,  4 Feb 2024 22:41:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWkEY-00020I-VQ; Sun, 04 Feb 2024 16:41:02 -0500
+	id 1rWkEc-000216-G2; Sun, 04 Feb 2024 16:41:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEX-000203-Tz
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:01 -0500
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1rWkEa-00020p-8e
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:04 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rWkEW-0003US-8f
- for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:01 -0500
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1d74045c463so29331815ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:40:59 -0800 (PST)
+ id 1rWkEY-0003Ug-K1
+ for qemu-devel@nongnu.org; Sun, 04 Feb 2024 16:41:04 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d9bd8fa49eso664925ad.1
+ for <qemu-devel@nongnu.org>; Sun, 04 Feb 2024 13:41:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707082859; x=1707687659; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707082861; x=1707687661; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+2xt3v9hngTFbwI41n9Aj+nylg/m+N+vO+1fc4NZ/KE=;
- b=L1CJLyLOL8xuN5b59GI+Nscww4WKGYBIbCIiJBJfvu+1hLJO2LiSIPNZhZFZ9hv3XH
- yClFCRFo0ZhE0DQ8q0GxA65rfyInEn9tWFVN1lnXQmAzRs1DzdaKG3y8K8yYuNmrsG+M
- +YVbNvJBc5sAZmxDKelbY68aFF5UQzpDUYNehMQCr8Zawfs7tSjhKawLxffbDJePda4V
- rYl/kzE7nnLLnUc0RwsY3wBMjpEBVniu7BqegR1BjXc9mcPpwhmG9v5oabQ4oiF6KleM
- FkR2SZgZBCyZJNYcA+ynEWgjM0RxwSnNbmwU4FRH/Ni1ll9GQKj1Z1K6ic7GF16dhcCs
- 7+bg==
+ bh=Vr5ZAc/RjPXfmKZRK62DlWwG7Va6xrXif7VnM9K+hHM=;
+ b=Bsy/aPQEcr4pBLQG/x0WxXKTHkwRI1/q0jnghxEJnHDdlOYcsPJ6wHtYO/ZMRf0Jwl
+ c8l14jz7bmKs/FoDn3Xj3ekBD6Uhl9z/Mnz6hreCiegKOXhojZkdnO6mA0G5eIuzu9GI
+ +OIHhD80ikWXLk72Fq4Jq+b05+WqpgFLLo37daZFMlwxmebUpkTEvDW3n2dmYV4+F3S3
+ Udvd7k8H/lYyxanUx4fXGR3yBYLoZw+Dsckh6Psc1aWlTN/T/qCuN1ZuWqVqKc7BYQth
+ pxELiIO+WaBlmTcHtHbmmL0OEz7A7zmk488A00Q/L8kv8MbtWH6CHi1BdWxOdLFttcAs
+ aYyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707082859; x=1707687659;
+ d=1e100.net; s=20230601; t=1707082861; x=1707687661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+2xt3v9hngTFbwI41n9Aj+nylg/m+N+vO+1fc4NZ/KE=;
- b=Pp8gLHwyZlGy+51AISnXejRUSkrPwClud8vd4VRm0JndD2OFiYi2cvFThnR+EAL1Zl
- LKY8QMEI66lJ08R0XZpXMksCl/eI6ROTlfivxCCAKxBX50QZK8C/2QhIPna0hLn3UT9e
- TUp/9sn4cf4QUpO2lU2l9SR2vbstPpe0VYM3MkKCpgT0FH/VQKfCvO+u9/7jUAUpAved
- 8JQqb4ZorC+k/yJoEs7RYCb+KFyenv1dJBjwrKYk6G/9SRjdZVJuDOw/QWis2j2tXU7G
- Jp8sxKUO13seJGALzacWNUmls2agbcnp0MCrlu1STm5GQafyLyXJRtxFZDBaFTJJVTQM
- 3G/g==
-X-Gm-Message-State: AOJu0YzIOa+k27tHjIYTj4B2cQmOMXpoyMw1ZMSZlf7+NEyFTLd3SeV2
- FZKwwrXobv9AcQt6F0eQn4COLKD1JDQW2txQM4LvpyJ/+ftTwsNzeExMcjAVhJmoT/2p+1p1rwI
- CaVM=
-X-Google-Smtp-Source: AGHT+IE41lNFMvmPTtKp4rHlt7RPWJ8LedG7eSOtxX3qOGLqOoeS971NSozcUC8UZ/Ni2j+DUjYEVA==
-X-Received: by 2002:a17:902:f551:b0:1d9:95c5:296e with SMTP id
- h17-20020a170902f55100b001d995c5296emr3751432plf.53.1707082858825; 
- Sun, 04 Feb 2024 13:40:58 -0800 (PST)
+ bh=Vr5ZAc/RjPXfmKZRK62DlWwG7Va6xrXif7VnM9K+hHM=;
+ b=DfHo3IRkcvWgFfoVjUsfMoPnb475c1LH4Ydr1+rmm7u/2WI+Z0d1i/hGWYzhMEjCXY
+ su3cxaTO1UxID09e0HKuBgT/54+3FIYV3gG8vIkc7qCmGnJ1fO6FAQzn3NWX72qP2PgR
+ jkoZskIEnzIquuQg0oAkCkxAXfQByaJrkZoO8df6reOHXw+h5XmNqibuw3I41DulxDuO
+ aBk+J72nYBWLF/el7mw2p6TwiJ2zCDbkeWWyCcyuZFNvUllh7J3LV/XSq1gNlEjm5GBm
+ E/gqTsGblIb6BJ1GG5pb1dkCVtqTiB8WyLU79QQVyQLoxTetvc6kY8WYTzzmx5xP0Dnf
+ g0hw==
+X-Gm-Message-State: AOJu0YwYu532eeIFHsjMqPSMcbj9nAcJZ6H1REKcc6cp5RSFFPlSf3mA
+ +Q5KGzYMfbskcVH548PwzuPTWGtydjDSV/716mp1x9kY6JzFCtoVJHaSW0Gb+aXaM9KWVXeH/0B
+ ppfg=
+X-Google-Smtp-Source: AGHT+IEGiZYWKuTZhpW2ri0TdffIZYuVtwHFX8Axhnsm9C89hQVHN6sVdArdKkGDNieb/5vvibvd/g==
+X-Received: by 2002:a17:903:120c:b0:1d7:35ba:6a39 with SMTP id
+ l12-20020a170903120c00b001d735ba6a39mr7574018plh.69.1707082861092; 
+ Sun, 04 Feb 2024 13:41:01 -0800 (PST)
 Received: from stoup.. ([43.252.112.156]) by smtp.gmail.com with ESMTPSA id
- mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.40.57
+ mf11-20020a170902fc8b00b001d8f5560503sm4953670plb.222.2024.02.04.13.40.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 Feb 2024 13:40:58 -0800 (PST)
+ Sun, 04 Feb 2024 13:41:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 01/39] tcg: Introduce TCG_COND_TST{EQ,NE}
-Date: Mon,  5 Feb 2024 07:40:14 +1000
-Message-Id: <20240204214052.5639-2-richard.henderson@linaro.org>
+Subject: [PULL 02/39] tcg: Introduce TCG_TARGET_HAS_tst
+Date: Mon,  5 Feb 2024 07:40:15 +1000
+Message-Id: <20240204214052.5639-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240204214052.5639-1-richard.henderson@linaro.org>
 References: <20240204214052.5639-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,163 +92,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the enumerators, adjust the helpers to match, and dump.
-Not supported anywhere else just yet.
+Define as 0 for all tcg backends.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg-cond.h | 74 ++++++++++++++++++++++++++++++------------
- tcg/tcg.c              |  4 ++-
- docs/devel/tcg-ops.rst |  2 ++
- 3 files changed, 58 insertions(+), 22 deletions(-)
+ tcg/aarch64/tcg-target.h     | 2 ++
+ tcg/arm/tcg-target.h         | 2 ++
+ tcg/i386/tcg-target.h        | 2 ++
+ tcg/loongarch64/tcg-target.h | 2 ++
+ tcg/mips/tcg-target.h        | 2 ++
+ tcg/ppc/tcg-target.h         | 2 ++
+ tcg/riscv/tcg-target.h       | 2 ++
+ tcg/s390x/tcg-target.h       | 2 ++
+ tcg/sparc64/tcg-target.h     | 2 ++
+ tcg/tci/tcg-target.h         | 2 ++
+ 10 files changed, 20 insertions(+)
 
-diff --git a/include/tcg/tcg-cond.h b/include/tcg/tcg-cond.h
-index 2a38a386d4..5cadbd6ff2 100644
---- a/include/tcg/tcg-cond.h
-+++ b/include/tcg/tcg-cond.h
-@@ -29,26 +29,34 @@
-  * Conditions.  Note that these are laid out for easy manipulation by
-  * the functions below:
-  *    bit 0 is used for inverting;
-- *    bit 1 is signed,
-- *    bit 2 is unsigned,
-- *    bit 3 is used with bit 0 for swapping signed/unsigned.
-+ *    bit 1 is used for conditions that need swapping (signed/unsigned).
-+ *    bit 2 is used with bit 1 for swapping.
-+ *    bit 3 is used for unsigned conditions.
-  */
- typedef enum {
-     /* non-signed */
-     TCG_COND_NEVER  = 0 | 0 | 0 | 0,
-     TCG_COND_ALWAYS = 0 | 0 | 0 | 1,
-+
-+    /* equality */
-     TCG_COND_EQ     = 8 | 0 | 0 | 0,
-     TCG_COND_NE     = 8 | 0 | 0 | 1,
-+
-+    /* "test" i.e. and then compare vs 0 */
-+    TCG_COND_TSTEQ  = 8 | 4 | 0 | 0,
-+    TCG_COND_TSTNE  = 8 | 4 | 0 | 1,
-+
-     /* signed */
-     TCG_COND_LT     = 0 | 0 | 2 | 0,
-     TCG_COND_GE     = 0 | 0 | 2 | 1,
--    TCG_COND_LE     = 8 | 0 | 2 | 0,
--    TCG_COND_GT     = 8 | 0 | 2 | 1,
-+    TCG_COND_GT     = 0 | 4 | 2 | 0,
-+    TCG_COND_LE     = 0 | 4 | 2 | 1,
-+
-     /* unsigned */
--    TCG_COND_LTU    = 0 | 4 | 0 | 0,
--    TCG_COND_GEU    = 0 | 4 | 0 | 1,
--    TCG_COND_LEU    = 8 | 4 | 0 | 0,
--    TCG_COND_GTU    = 8 | 4 | 0 | 1,
-+    TCG_COND_LTU    = 8 | 0 | 2 | 0,
-+    TCG_COND_GEU    = 8 | 0 | 2 | 1,
-+    TCG_COND_GTU    = 8 | 4 | 2 | 0,
-+    TCG_COND_LEU    = 8 | 4 | 2 | 1,
- } TCGCond;
+diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
+index 33f15a564a..b4ac13be7b 100644
+--- a/tcg/aarch64/tcg-target.h
++++ b/tcg/aarch64/tcg-target.h
+@@ -138,6 +138,8 @@ typedef enum {
+ #define TCG_TARGET_HAS_qemu_ldst_i128   1
+ #endif
  
- /* Invert the sense of the comparison.  */
-@@ -60,25 +68,49 @@ static inline TCGCond tcg_invert_cond(TCGCond c)
- /* Swap the operands in a comparison.  */
- static inline TCGCond tcg_swap_cond(TCGCond c)
- {
--    return c & 6 ? (TCGCond)(c ^ 9) : c;
-+    return (TCGCond)(c ^ ((c & 2) << 1));
- }
++#define TCG_TARGET_HAS_tst              0
++
+ #define TCG_TARGET_HAS_v64              1
+ #define TCG_TARGET_HAS_v128             1
+ #define TCG_TARGET_HAS_v256             0
+diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
+index a712cc80ad..7bf42045a7 100644
+--- a/tcg/arm/tcg-target.h
++++ b/tcg/arm/tcg-target.h
+@@ -125,6 +125,8 @@ extern bool use_neon_instructions;
  
--/* Create an "unsigned" version of a "signed" comparison.  */
--static inline TCGCond tcg_unsigned_cond(TCGCond c)
-+/* Must a comparison be considered signed?  */
-+static inline bool is_signed_cond(TCGCond c)
- {
--    return c & 2 ? (TCGCond)(c ^ 6) : c;
--}
--
--/* Create a "signed" version of an "unsigned" comparison.  */
--static inline TCGCond tcg_signed_cond(TCGCond c)
--{
--    return c & 4 ? (TCGCond)(c ^ 6) : c;
-+    return (c & (8 | 2)) == 2;
- }
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
  
- /* Must a comparison be considered unsigned?  */
- static inline bool is_unsigned_cond(TCGCond c)
- {
--    return (c & 4) != 0;
-+    return (c & (8 | 2)) == (8 | 2);
-+}
++#define TCG_TARGET_HAS_tst              0
 +
-+/* Must a comparison be considered a test?  */
-+static inline bool is_tst_cond(TCGCond c)
-+{
-+    return (c | 1) == TCG_COND_TSTNE;
-+}
-+
-+/* Create an "unsigned" version of a "signed" comparison.  */
-+static inline TCGCond tcg_unsigned_cond(TCGCond c)
-+{
-+    return is_signed_cond(c) ? (TCGCond)(c + 8) : c;
-+}
-+
-+/* Create a "signed" version of an "unsigned" comparison.  */
-+static inline TCGCond tcg_signed_cond(TCGCond c)
-+{
-+    return is_unsigned_cond(c) ? (TCGCond)(c - 8) : c;
-+}
-+
-+/* Create the eq/ne version of a tsteq/tstne comparison.  */
-+static inline TCGCond tcg_tst_eqne_cond(TCGCond c)
-+{
-+    return is_tst_cond(c) ? (TCGCond)(c - 4) : c;
-+}
-+
-+/* Create the lt/ge version of a tstne/tsteq comparison of the sign.  */
-+static inline TCGCond tcg_tst_ltge_cond(TCGCond c)
-+{
-+    return is_tst_cond(c) ? (TCGCond)(c ^ 0xf) : c;
- }
+ #define TCG_TARGET_HAS_v64              use_neon_instructions
+ #define TCG_TARGET_HAS_v128             use_neon_instructions
+ #define TCG_TARGET_HAS_v256             0
+diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
+index fa34deec47..1dd917a680 100644
+--- a/tcg/i386/tcg-target.h
++++ b/tcg/i386/tcg-target.h
+@@ -198,6 +198,8 @@ typedef enum {
+ #define TCG_TARGET_HAS_qemu_ldst_i128 \
+     (TCG_TARGET_REG_BITS == 64 && (cpuinfo & CPUINFO_ATOMIC_VMOVDQA))
  
++#define TCG_TARGET_HAS_tst              0
++
+ /* We do not support older SSE systems, only beginning with AVX1.  */
+ #define TCG_TARGET_HAS_v64              have_avx1
+ #define TCG_TARGET_HAS_v128             have_avx1
+diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
+index 9c70ebfefc..fede627bf7 100644
+--- a/tcg/loongarch64/tcg-target.h
++++ b/tcg/loongarch64/tcg-target.h
+@@ -169,6 +169,8 @@ typedef enum {
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   (cpuinfo & CPUINFO_LSX)
+ 
++#define TCG_TARGET_HAS_tst              0
++
+ #define TCG_TARGET_HAS_v64              0
+ #define TCG_TARGET_HAS_v128             (cpuinfo & CPUINFO_LSX)
+ #define TCG_TARGET_HAS_v256             0
+diff --git a/tcg/mips/tcg-target.h b/tcg/mips/tcg-target.h
+index b98ffae1d0..a996aa171d 100644
+--- a/tcg/mips/tcg-target.h
++++ b/tcg/mips/tcg-target.h
+@@ -194,6 +194,8 @@ extern bool use_mips32r2_instructions;
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+ 
++#define TCG_TARGET_HAS_tst              0
++
+ #define TCG_TARGET_DEFAULT_MO           0
+ #define TCG_TARGET_NEED_LDST_LABELS
+ #define TCG_TARGET_NEED_POOL_LABELS
+diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
+index 5295e4f9ab..60ce49e672 100644
+--- a/tcg/ppc/tcg-target.h
++++ b/tcg/ppc/tcg-target.h
+@@ -143,6 +143,8 @@ typedef enum {
+ #define TCG_TARGET_HAS_qemu_ldst_i128   \
+     (TCG_TARGET_REG_BITS == 64 && have_isa_2_07)
+ 
++#define TCG_TARGET_HAS_tst              0
++
  /*
-@@ -92,7 +124,7 @@ static inline TCGCond tcg_high_cond(TCGCond c)
-     case TCG_COND_LE:
-     case TCG_COND_GEU:
-     case TCG_COND_LEU:
--        return (TCGCond)(c ^ 8);
-+        return (TCGCond)(c ^ (4 | 1));
-     default:
-         return c;
-     }
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index eeff4c1d51..eeeb9b0c70 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -2482,7 +2482,9 @@ static const char * const cond_name[] =
-     [TCG_COND_LTU] = "ltu",
-     [TCG_COND_GEU] = "geu",
-     [TCG_COND_LEU] = "leu",
--    [TCG_COND_GTU] = "gtu"
-+    [TCG_COND_GTU] = "gtu",
-+    [TCG_COND_TSTEQ] = "tsteq",
-+    [TCG_COND_TSTNE] = "tstne",
- };
+  * While technically Altivec could support V64, it has no 64-bit store
+  * instruction and substituting two 32-bit stores makes the generated
+diff --git a/tcg/riscv/tcg-target.h b/tcg/riscv/tcg-target.h
+index a4edc3dc74..2c1b680b93 100644
+--- a/tcg/riscv/tcg-target.h
++++ b/tcg/riscv/tcg-target.h
+@@ -158,6 +158,8 @@ extern bool have_zbb;
  
- static const char * const ldst_name[(MO_BSWAP | MO_SSIZE) + 1] =
-diff --git a/docs/devel/tcg-ops.rst b/docs/devel/tcg-ops.rst
-index 8ae59ea02b..d46b625e0e 100644
---- a/docs/devel/tcg-ops.rst
-+++ b/docs/devel/tcg-ops.rst
-@@ -253,6 +253,8 @@ Jumps/Labels
-        |   ``TCG_COND_GEU /* unsigned */``
-        |   ``TCG_COND_LEU /* unsigned */``
-        |   ``TCG_COND_GTU /* unsigned */``
-+       |   ``TCG_COND_TSTEQ /* t1 & t2 == 0 */``
-+       |   ``TCG_COND_TSTNE /* t1 & t2 != 0 */``
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
  
- Arithmetic
- ----------
++#define TCG_TARGET_HAS_tst              0
++
+ #define TCG_TARGET_DEFAULT_MO (0)
+ 
+ #define TCG_TARGET_NEED_LDST_LABELS
+diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
+index e69b0d2ddd..53bed8c8d2 100644
+--- a/tcg/s390x/tcg-target.h
++++ b/tcg/s390x/tcg-target.h
+@@ -138,6 +138,8 @@ extern uint64_t s390_facilities[3];
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128 1
+ 
++#define TCG_TARGET_HAS_tst            0
++
+ #define TCG_TARGET_HAS_v64            HAVE_FACILITY(VECTOR)
+ #define TCG_TARGET_HAS_v128           HAVE_FACILITY(VECTOR)
+ #define TCG_TARGET_HAS_v256           0
+diff --git a/tcg/sparc64/tcg-target.h b/tcg/sparc64/tcg-target.h
+index f8cf145266..ae2910c4ee 100644
+--- a/tcg/sparc64/tcg-target.h
++++ b/tcg/sparc64/tcg-target.h
+@@ -149,6 +149,8 @@ extern bool use_vis3_instructions;
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+ 
++#define TCG_TARGET_HAS_tst              0
++
+ #define TCG_AREG0 TCG_REG_I0
+ 
+ #define TCG_TARGET_DEFAULT_MO (0)
+diff --git a/tcg/tci/tcg-target.h b/tcg/tci/tcg-target.h
+index 2a13816c8e..609b2f4e4a 100644
+--- a/tcg/tci/tcg-target.h
++++ b/tcg/tci/tcg-target.h
+@@ -117,6 +117,8 @@
+ 
+ #define TCG_TARGET_HAS_qemu_ldst_i128   0
+ 
++#define TCG_TARGET_HAS_tst              0
++
+ /* Number of registers available. */
+ #define TCG_TARGET_NB_REGS 16
+ 
 -- 
 2.34.1
 
