@@ -2,107 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BB984A457
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 20:51:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B576284A67D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 22:00:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX4yf-0008QC-VF; Mon, 05 Feb 2024 14:50:01 -0500
+	id 1rX638-0007QO-LO; Mon, 05 Feb 2024 15:58:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rX4yT-0008P0-J2
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 14:49:49 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rX4yQ-0004TY-Qb
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 14:49:49 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 62E3F220B0;
- Mon,  5 Feb 2024 19:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707162585; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2lg7cB8YIcXh7f3PfQZ6/xyxWHPayFlMCHdRy8M13C0=;
- b=JwL17qYzCiV5tEpL/GBelU/XXi/WoNCoQY2EW5buhmo4q5BLNiDBb23M10W7KiOjecz6kH
- BCoWVeP2L6tTmwTHPbHBbFyY5gYv1EjOrQ9ijJsa1bAPEG+FKEJzJIfoxQ447NRnbnI8ny
- Hc2xQLRhCFrjblcSSDRXHHEXXN4sdlY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707162585;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2lg7cB8YIcXh7f3PfQZ6/xyxWHPayFlMCHdRy8M13C0=;
- b=I+0BNzHBUmyH3chrpjxvSGeXe1/W8N85hkGf+mnUpeTDMS9S0Hfad5m80NE+Z5lJ9JeJCO
- 7on+XUMiQVXuBCBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707162585; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2lg7cB8YIcXh7f3PfQZ6/xyxWHPayFlMCHdRy8M13C0=;
- b=JwL17qYzCiV5tEpL/GBelU/XXi/WoNCoQY2EW5buhmo4q5BLNiDBb23M10W7KiOjecz6kH
- BCoWVeP2L6tTmwTHPbHBbFyY5gYv1EjOrQ9ijJsa1bAPEG+FKEJzJIfoxQ447NRnbnI8ny
- Hc2xQLRhCFrjblcSSDRXHHEXXN4sdlY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707162585;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2lg7cB8YIcXh7f3PfQZ6/xyxWHPayFlMCHdRy8M13C0=;
- b=I+0BNzHBUmyH3chrpjxvSGeXe1/W8N85hkGf+mnUpeTDMS9S0Hfad5m80NE+Z5lJ9JeJCO
- 7on+XUMiQVXuBCBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 03919136F5;
- Mon,  5 Feb 2024 19:49:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id iND/Ltc7wWWYQAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 05 Feb 2024 19:49:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 6/6] migration/multifd: Add a synchronization point for
- channel creation
-Date: Mon,  5 Feb 2024 16:49:29 -0300
-Message-Id: <20240205194929.28963-7-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240205194929.28963-1-farosas@suse.de>
-References: <20240205194929.28963-1-farosas@suse.de>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rX636-0007Po-Nx; Mon, 05 Feb 2024 15:58:40 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rX634-00037n-1J; Mon, 05 Feb 2024 15:58:40 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 415KgC3h022319; Mon, 5 Feb 2024 20:58:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=K1N2J01iDo0TTtTYwFYAgKh7B3Zv8ONaQ4h5jfWTu6Q=;
+ b=kX83G5L/bMWqHFRaj33tY0VMeiV2Nt6rIYVK7QbYm9A1/8yQiLXrs7re8SpX65B9qIOl
+ MCZnMRhfBECxlgIHkhQ0s/2GnI9uZlE3XovmYQTFuIohBWu7eqGjl3pdjNXZwgLvKFN/
+ 0HA5Rwior53cQILcfmGtAdycyzbLEpYLjJ/ATcRm/d4ukBqVJThYy04+O11eweaBtisq
+ lj4khE0P3XJ+gI5daRbSHh7k8BTB1uHgYPOnzJZGWqDz2td7uQNjkH7T7xecc7tmpZ3V
+ s/APIDLn9Cax7wM04kA3B6YaM1ILsw/GqUjkJFstapYFiywqTtiJg0QFZnXaWnzb5u4t Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w36xj8aff-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Feb 2024 20:58:34 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415KswU7020725;
+ Mon, 5 Feb 2024 20:58:34 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w36xj8aex-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Feb 2024 20:58:34 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 415J4YOp020383; Mon, 5 Feb 2024 20:58:33 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w1ytsu4sq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Feb 2024 20:58:33 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 415KwVtt27066804
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 5 Feb 2024 20:58:31 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ADF2920040;
+ Mon,  5 Feb 2024 20:58:31 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4742620043;
+ Mon,  5 Feb 2024 20:58:31 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.57.170])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  5 Feb 2024 20:58:31 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v5 0/4] target/s390x: Emulate CVDG and CVB*
+Date: Mon,  5 Feb 2024 21:54:52 +0100
+Message-ID: <20240205205830.6425-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 7mne-fiFW2MdbvXiZbI8Z_z0-e3yotH4
+X-Proofpoint-GUID: vS41bha-1rMXVF4ceIpaTYtfSWBBuO6c
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: 0.77
-X-Spamd-Result: default: False [0.77 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_THREE(0.00)[4]; R_MISSING_CHARSET(2.50)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- BROKEN_CONTENT_TYPE(1.50)[]; TO_DN_SOME(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.13)[-0.642]; MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-3.00)[100.00%]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-05_14,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ malwarescore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=508 spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402050157
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,127 +110,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is possible that one of the multifd channels fails to be created at
-multifd_new_send_channel_async() while the rest of the channel
-creation tasks are still in flight.
+v4: https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00434.html
+v4 -> v5: Remove a redundant CVBG overflow check;
+          Write the comment explaining the remaining CVBG overflow
+          check;
+          Add R-bs to the tests (Thomas).
 
-This could lead to multifd_save_cleanup() executing the
-qemu_thread_join() loop too early and not waiting for the threads
-which haven't been created yet, leading to the freeing of resources
-that the newly created threads will try to access and crash.
+v3: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06664.html
+v3 -> v4: Implement CVB error handling (David/Thomas).
 
-Add a synchronization point after which there will be no attempts at
-thread creation and therefore calling multifd_save_cleanup() past that
-point will ensure it properly waits for the threads.
+v2: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05048.html
+v2 -> v3: Resurrect an old CVB* patch (Thomas).
+          Add Richard's R-b.
 
-A note about performance: Prior to this patch, if a channel took too
-long to be established, other channels could finish connecting first
-and already start taking load. Now we're bounded by the
-slowest-connecting channel.
+v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02865.html
+v1 -> v2: Fix !CONFIG_INT128 builds (Richard).
 
-Reported-by: Avihai Horon <avihaih@nvidia.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/multifd.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+Hi,
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 89d39fa67c..a2b73c9946 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -62,6 +62,11 @@ struct {
-      * Make it easy for now.
-      */
-     uintptr_t packet_num;
-+    /*
-+     * Synchronization point past which no more channels will be
-+     * created.
-+     */
-+    QemuSemaphore channels_created;
-     /* send channels ready */
-     QemuSemaphore channels_ready;
-     /*
-@@ -622,10 +627,6 @@ static void multifd_send_terminate_threads(void)
- 
-     /*
-      * Finally recycle all the threads.
--     *
--     * TODO: p->running is still buggy, e.g. we can reach here without the
--     * corresponding multifd_new_send_channel_async() get invoked yet,
--     * then a new thread can even be created after this function returns.
-      */
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-@@ -670,6 +671,7 @@ static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
- 
- static void multifd_send_cleanup_state(void)
- {
-+    qemu_sem_destroy(&multifd_send_state->channels_created);
-     qemu_sem_destroy(&multifd_send_state->channels_ready);
-     g_free(multifd_send_state->params);
-     multifd_send_state->params = NULL;
-@@ -934,7 +936,6 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
-     MultiFDSendParams *p = opaque;
-     QIOChannel *ioc = QIO_CHANNEL(qio_task_get_source(task));
-     Error *local_err = NULL;
--
-     bool ret;
- 
-     trace_multifd_new_send_channel_async(p->id);
-@@ -951,18 +952,26 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
- 
-     if (migrate_channel_requires_tls_upgrade(ioc)) {
-         ret = multifd_tls_channel_connect(p, ioc, &local_err);
-+        if (ret) {
-+            return;
-+        }
-     } else {
-         ret = multifd_channel_connect(p, ioc, &local_err);
-     }
- 
-+out:
-+    /*
-+     * Here we're not interested whether creation succeeded, only that
-+     * it happened at all.
-+     */
-+    qemu_sem_post(&multifd_send_state->channels_created);
-+
-     if (ret) {
-         return;
-     }
- 
--out:
-     trace_multifd_new_send_channel_async_error(p->id, local_err);
-     multifd_send_set_error(local_err);
--    multifd_send_kick_main(p);
-     object_unref(OBJECT(ioc));
-     error_free(local_err);
- }
-@@ -988,6 +997,7 @@ bool multifd_send_setup(void)
-     multifd_send_state = g_malloc0(sizeof(*multifd_send_state));
-     multifd_send_state->params = g_new0(MultiFDSendParams, thread_count);
-     multifd_send_state->pages = multifd_pages_init(page_count);
-+    qemu_sem_init(&multifd_send_state->channels_created, 0);
-     qemu_sem_init(&multifd_send_state->channels_ready, 0);
-     qatomic_set(&multifd_send_state->exiting, 0);
-     multifd_send_state->ops = multifd_ops[migrate_multifd_compression()];
-@@ -1013,6 +1023,15 @@ bool multifd_send_setup(void)
-         multifd_new_send_channel_create(p);
-     }
- 
-+    /*
-+     * Wait until channel creation has started for all channels. The
-+     * creation can still fail, but no more channels will be created
-+     * past this point.
-+     */
-+    for (i = 0; i < thread_count; i++) {
-+        qemu_sem_wait(&multifd_send_state->channels_created);
-+    }
-+
-     for (i = 0; i < thread_count; i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
- 
+Ido reported that we are missing the CVDG emulation (which is very
+similar to the existing CVD emulation). This series adds it along with
+a test.
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (4):
+  target/s390x: Emulate CVDG
+  target/s390x: Emulate CVB, CVBY and CVBG
+  tests/tcg/s390x: Test CONVERT TO DECIMAL
+  tests/tcg/s390x: Test CONVERT TO BINARY
+
+ target/s390x/helper.h            |   3 +
+ target/s390x/tcg/insn-data.h.inc |   5 ++
+ target/s390x/tcg/int_helper.c    |  97 +++++++++++++++++++++++++++++
+ target/s390x/tcg/translate.c     |  24 ++++++++
+ tests/tcg/s390x/Makefile.target  |   2 +
+ tests/tcg/s390x/cvb.c            | 102 +++++++++++++++++++++++++++++++
+ tests/tcg/s390x/cvd.c            |  63 +++++++++++++++++++
+ 7 files changed, 296 insertions(+)
+ create mode 100644 tests/tcg/s390x/cvb.c
+ create mode 100644 tests/tcg/s390x/cvd.c
+
 -- 
-2.35.3
+2.43.0
 
 
