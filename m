@@ -2,94 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B9284968A
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 10:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCB18496CA
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 10:40:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWvM4-0000nJ-UA; Mon, 05 Feb 2024 04:33:32 -0500
+	id 1rWvRv-000235-Pl; Mon, 05 Feb 2024 04:39:35 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rWvM3-0000mN-5t
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:33:31 -0500
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1rWvRt-00022I-Ew
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:39:33 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rWvM1-0003AL-91
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:33:30 -0500
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1rWvRd-0004Dv-A3
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:39:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707125608;
+ s=mimecast20190719; t=1707125955;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0Kej3aUtVc5CRwaWUishz6Is/8cmnAUBsCJhmP6/MZI=;
- b=JxYXlT+MCxYIgPTulEavm6hDy19mAVwI1nWDzSTfsFPJO9jC5c7KAH4JE8clFjmw6hNkgy
- FvtPftrkVSMMPfMwQ1J5sZq9u4J3sSDMiLk+mVW7kqMrzDZ3UQZ9GZBfVH4qUAreRuc98u
- PgrFOTmbvdNUVW8RJuZMxFLqRN31opk=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ERmY7qem4Q2D4/HV/GjHiOsfvOcjqwjHtU5TyWyW89g=;
+ b=Pv52N9suuBbf+N0ojnc1KCIfT9nAcWg4cP1qio5VGviH08MweznEeRanSG5H2WFDwMhzSZ
+ b3a8hrssKNvJfVXSFI6ERtJoj1sD8ZWOdm78MQtoA3vMDyrrxflvmlEn8nm+cH9YDur/U0
+ dRwCUX0uLNvTxwpOIEji1o4gl526P4c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-nY-_fDCIOAma56w9Ab2I9g-1; Mon, 05 Feb 2024 04:33:25 -0500
-X-MC-Unique: nY-_fDCIOAma56w9Ab2I9g-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-dc6ba69e803so7130453276.2
- for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 01:33:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707125605; x=1707730405;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0Kej3aUtVc5CRwaWUishz6Is/8cmnAUBsCJhmP6/MZI=;
- b=n2ZN677YDVF0C5zPkxiFhqcl83kYuubGQTQSOV5GW3w87f45sYpDmAG9I2nkW1n+XF
- /RKSdpFG0YAGdDVpNQTXeXNQo1dLoeFVCiymM3yuuKFpm70b1DCvrC6PBUQ0VLi/tqwC
- EYsLvp6mKH0YrmFxfSCZo0IXmluDSHhOXovYySG3q3SdNlbHVDiXy18XHKdiXh/D7Inn
- w6/MikLGdCYyjzA1FfFJq1NoTCcUxlp39RtpuvSjhGex9M/oUqEFSmEKzrPZyEU/Y8CF
- KDtYXWpMNOsgIpzIpg26fRMODmIZ3l63uT/TLSNWb7MnuIMKmiJGtBmoi3v+Abt90Ss8
- aYVA==
-X-Gm-Message-State: AOJu0Yz69VThrzRmDbRJysz1Kud8AFu9Ijra1OygRBY+SwRY/5djg/NG
- vgyCYA3Q89GzHZCzX2TewfJ8neHCTjFjZMLle/Bu+kDGfyvIZ2D+3pmR14X2U59SH3oDWF2x8zg
- z8CEw+tbEFEiPj0+iH78JNr4B1Z5wyQ0Nv1taVA/QXl1dvD+kvBMm
-X-Received: by 2002:a25:ae46:0:b0:dc6:528c:b3f8 with SMTP id
- g6-20020a25ae46000000b00dc6528cb3f8mr7693583ybe.3.1707125605166; 
- Mon, 05 Feb 2024 01:33:25 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH3BpdomOWCY7IHS0I2Siw1yW9BRAgQ6A85PqgR0b7A/DMNcoM8GUUHyPJzYezTu1iFGcK3Ow==
-X-Received: by 2002:a25:ae46:0:b0:dc6:528c:b3f8 with SMTP id
- g6-20020a25ae46000000b00dc6528cb3f8mr7693570ybe.3.1707125604884; 
- Mon, 05 Feb 2024 01:33:24 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCUYRS1RVBDq8KFcDw/Qd5MQh52i3KfQZayfg2UNxDehDl1VHJfZarc/jIGF5nFy7P4x9P09NsVb7P8mM055Lu8uPdAKoKg8g6vla/EoAzCqaisSjXRz+QV07ZV4Zy8t6Ne49UEaD0kUCSqPSphe1dWyVEKbTHpAop9977fRvDWGSDdM2wDHYSkzX/Sqa91Qbc5s1pLLv5kcQVdusfYSctHW8Dj4zPWlnKgQMj70aeAU/rPG7CGXkYFV1PfqFXERCD9ilX/RfXGJLo4HsZuA4tkUzYwnjAg1v/i7RKYPpHQt+daE4N0KofSfH6RGcy+fvtZNbN29tYM2sasEvpaA5Fo2MwMFMap0Ejk=
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ay14-20020a05620a178e00b00783df78821dsm2810809qkb.25.2024.02.05.01.33.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 Feb 2024 01:33:24 -0800 (PST)
-Message-ID: <d4571370-0fcc-4065-8571-60ccc18f4982@redhat.com>
-Date: Mon, 5 Feb 2024 10:33:21 +0100
+ us-mta-511--6PHku0oNJ-7EFzFrWH70Q-1; Mon, 05 Feb 2024 04:38:04 -0500
+X-MC-Unique: -6PHku0oNJ-7EFzFrWH70Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDF4B83514B;
+ Mon,  5 Feb 2024 09:38:03 +0000 (UTC)
+Received: from fedora (unknown [10.45.226.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4CF0B5012;
+ Mon,  5 Feb 2024 09:38:02 +0000 (UTC)
+Date: Mon, 5 Feb 2024 10:37:59 +0100
+From: =?iso-8859-1?B?SuFu?= Tomko <jtomko@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, pbonzini@redhat.com,
+ devel@lists.libvirt.org, eblake@redhat.com
+Subject: Re: [PATCH 4/4] qapi/char: Deprecate backend type "memory"
+Message-ID: <ZcCsdw6entrmSDr4@fedora>
+References: <20240203080228.2766159-1-armbru@redhat.com>
+ <20240203080228.2766159-5-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] hw: Set virtio-iommu aw-bits default value on
- pc_q35_9.0 and arm virt
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, jean-philippe@linaro.org,
- alex.williamson@redhat.com, peter.maydell@linaro.org,
- zhenzhong.duan@intel.com, yanghliu@redhat.com
-Cc: mst@redhat.com, jasowang@redhat.com
-References: <20240201163324.564525-1-eric.auger@redhat.com>
- <20240201163324.564525-4-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240201163324.564525-4-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="14xzESOV8s6/ww9D"
+Content-Disposition: inline
+In-Reply-To: <20240203080228.2766159-5-armbru@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jtomko@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -107,124 +79,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/1/24 17:32, Eric Auger wrote:
-> Currently the default input range can extend to 64 bits. On x86,
-> when the virtio-iommu protects vfio devices, the physical iommu
-> may support only 39 bits. Let's set the default to 39, as done
-> for the intel-iommu. On ARM we set 48b as a default (matching
-> SMMUv3 SMMU_IDR5.VAX == 0).
-> 
-> We use hw_compat_8_2 to handle the compatibility for machines
-> before 9.0 which used to have a virtio-iommu default input range
-> of 64 bits.
-> 
-> Of course if aw-bits is set from the command line, the default
-> is overriden.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> 
-> ---
-> 
-> v1 -> v2:
-> - set aw-bits to 48b on ARM
-> - use hw_compat_8_2 to handle the compat for older machines
->    which used 64b as a default
-> ---
->   hw/arm/virt.c            | 6 ++++++
->   hw/core/machine.c        | 5 ++++-
->   hw/i386/pc.c             | 6 ++++++
->   hw/virtio/virtio-iommu.c | 2 +-
->   4 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index e6ead2c5c8..56539f2fc5 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -2718,10 +2718,16 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->       } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
->           virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
->       } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-> +        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-> +                                                   "aw-bits", NULL);
 
-object_property_get_uint() should not fail. Please use &error_abort.
+--14xzESOV8s6/ww9D
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->           hwaddr db_start = 0, db_end = 0;
->           QList *reserved_regions;
->           char *resv_prop_str;
->   
-> +        if (!aw_bits) {
-> +            qdev_prop_set_uint8(dev, "aw-bits", 48);
-> +        }
-> +
->           if (vms->iommu != VIRT_IOMMU_NONE) {
->               error_setg(errp, "virt machine does not support multiple IOMMUs");
->               return;
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index fb5afdcae4..70ac96954c 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -30,9 +30,12 @@
->   #include "exec/confidential-guest-support.h"
->   #include "hw/virtio/virtio-pci.h"
->   #include "hw/virtio/virtio-net.h"
-> +#include "hw/virtio/virtio-iommu.h"
->   #include "audio/audio.h"
->   
-> -GlobalProperty hw_compat_8_2[] = {};
-> +GlobalProperty hw_compat_8_2[] = {
-> +    { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-> +};
->   const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
->   
->   GlobalProperty hw_compat_8_1[] = {
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 803244e5cc..0e2bcb4840 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -1458,6 +1458,8 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->       } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
->           virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
->       } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-> +        uint8_t aw_bits = object_property_get_uint(OBJECT(dev),
-> +                                                   "aw-bits", NULL);
->           /* Declare the APIC range as the reserved MSI region */
->           char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
->                                                 VIRTIO_IOMMU_RESV_MEM_T_MSI);
-> @@ -1466,6 +1468,10 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->           qlist_append_str(reserved_regions, resv_prop_str);
->           qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
->   
-> +        if (!aw_bits) {
-> +            qdev_prop_set_uint8(dev, "aw-bits", 39);
+On a Saturday in 2024, Markus Armbruster wrote:
+>It's an alias for "ringbuf" we kept for backward compatibility; see
+>commit 3a1da42eb35 (qapi: Rename ChardevBackend member "memory" to
+>"ringbuf").  Deprecation is long overdue.
+>
+>Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>---
+> docs/about/deprecated.rst | 8 ++++++++
+> qapi/char.json            | 8 +++++---
+> 2 files changed, 13 insertions(+), 3 deletions(-)
+>
+>diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>index d4492b9460..ae1a520c26 100644
+>--- a/docs/about/deprecated.rst
+>+++ b/docs/about/deprecated.rst
+>@@ -371,6 +371,14 @@ Specifying the iSCSI password in plain text on the co=
+mmand line using the
+> used instead, to refer to a ``--object secret...`` instance that provides
+> a password via a file, or encrypted.
+>
+>+Character device options
+>+''''''''''''''''''''''''
+>+
+>+Backend ``memory`` (since 9.0)
+>+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>+
+>+``memory`` is a deprecated synonym for ``ringbuf``.
+>+
 
-May be use VTD_HOST_AW_39BIT instead of 39 ? This would make it
-easier to find uses of certain defaults values and would clarify
-that the default AW of virtio-iommu is set as intel-iommu.
+For libvirt:
+Reviewed-by: J=E1n Tomko <jtomko@redhat.com>
 
-Thanks,
+(We don't support either of those)
 
-C.
+Jano
 
+--14xzESOV8s6/ww9D
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-> +        }
-> +
->           g_free(resv_prop_str);
->       }
->   
-> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-> index 7870bdbeee..c468e9b13b 100644
-> --- a/hw/virtio/virtio-iommu.c
-> +++ b/hw/virtio/virtio-iommu.c
-> @@ -1529,7 +1529,7 @@ static Property virtio_iommu_properties[] = {
->       DEFINE_PROP_LINK("primary-bus", VirtIOIOMMU, primary_bus,
->                        TYPE_PCI_BUS, PCIBus *),
->       DEFINE_PROP_BOOL("boot-bypass", VirtIOIOMMU, boot_bypass, true),
-> -    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 64),
-> +    DEFINE_PROP_UINT8("aw-bits", VirtIOIOMMU, aw_bits, 0),
->       DEFINE_PROP_END_OF_LIST(),
->   };
->   
+iHUEARYKAB0WIQT+Rn5j0qdK2hQgnuAU0rOr/y4PvAUCZcCscwAKCRAU0rOr/y4P
+vGLOAP4yGZSR53HAIfAcO2ySMePRe+xYVWObeUD7q7kj7PzKpwEAomsCD47nupu8
+lYYTufZ8dCpszZ0rTu6jCa/Z4d9pPwo=
+=1F9E
+-----END PGP SIGNATURE-----
+
+--14xzESOV8s6/ww9D--
 
 
