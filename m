@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5685884A00B
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5F984A00E
 	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX2FZ-0003qq-Lf; Mon, 05 Feb 2024 11:55:17 -0500
+	id 1rX2FZ-0003qt-Sc; Mon, 05 Feb 2024 11:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FW-0003qO-2O
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FW-0003qP-2J
  for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:14 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FL-0000Vt-Nb
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:13 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a358ec50b7cso595256766b.0
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FM-0000WN-7d
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:11 -0500
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-55a8fd60af0so6167048a12.1
  for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152101; x=1707756901;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152102; x=1707756902;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0rMmDjSiGyECuYPwrOF9gTLiEHicLAPkrFRPryZWGJ8=;
- b=f9yvxUpUHH9exiBfNhoPjr7CyGEY1vjb8Ya/7y+xThSq6VHojFDP2OaNPeORUDf4FL
- SjsVzPoZWGWGpRupzTPxWqvkwf8GEODucD5jFaDhNfqbyqo2qQyaOhNfNeJYjMWkUMJ+
- rFPYCdUzJHPsZGLkPfxGtN8D/kMBlXoRmpvuIK5+Z/boDekX5sWFCGF1Bobzm4YkUTDa
- yYSPNbZxONJOmGS4N6ft0G5uGCr3ZARcvHSw4ynswhTyQr8PUofjPC8R0SOtQWRARFfc
- C/cgbaswE0Wc/X55wg6uL+Zbl6h5rKYE9K6+Tgs5LzzNdhtBVx4zF+uaLqHOGgCCUbi4
- ODCQ==
+ bh=WLzi1hLFj9Oj83pbHMUpxHfzT5tkFuOtYwzSLXsw2fQ=;
+ b=qg0pc7eJ68Nl/APtPX67gcb6TMh8wkNe/nmemFA7PSNJ0AUK8f99ZZ8vTmJi1O85XM
+ c74YU5RFr7Q8+/4dr/eh4cEbJeD/TMYPBJlanjK9gys6AyjM6KGkKzEyW5SQ3NPpF0FI
+ qW+bLmtqyoZsgLFr2UXhmHd2472UlT4Iu+KBDFf2gUTlIr9xwXc11brqk2CS5jTzVCt6
+ Dey3DLp0SI7Qh6gO00yJnwb0D9HnUnhzIpn/lyXXoX7o/YeiMPWSzRKNvLM0DmKaaLJv
+ wL2UlQmVFxrkIZELpGhVFSaaEW4DIbnEVEV+p+BKDsBnSjZKPtb6jCCK9BOzJE5M62aR
+ AbYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707152101; x=1707756901;
+ d=1e100.net; s=20230601; t=1707152102; x=1707756902;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0rMmDjSiGyECuYPwrOF9gTLiEHicLAPkrFRPryZWGJ8=;
- b=QtY9Bk3qddR9OVUKcnm47sWTc8Xm/w8j/dlwXYbT/j1QPx2FFBnNhysg54F56JqJ86
- IhXjmkBtHBdEEp/ljEAe/wuwtKTYwyxfqCnr3PXHrDUhel/rpy0kIkNHfPLGNSSSpcpn
- F9wtD+xRTbp8uqby5cd7LSxZfOVEzjHKUVZQcuBpZIrA/3vn37blaZyoRGJF3Ka86siL
- TrxA0gzNlUeiLTVORCJgqU8uM7yrMUrpcd7V/IMi/da2P35VS9Q82Mys94kb6cXxtpqh
- Lfi6+mBOWuFMv8tXNpiOF40RtMbo2nobEjps+AMfcTLeJiCpluhoBuDWNpj4fcCf0n6I
- /qEg==
-X-Gm-Message-State: AOJu0YwoqSEEPtZfpwoFgbai17uovDYTXziHFHRF1u3cgoyBn4Di+bLG
- Q5YxiYIaJW44hzFKRX0b7xI1NlrJNaRNUCkmKAFrwHz1Halx2jOYaK8jTjrpcyQ=
-X-Google-Smtp-Source: AGHT+IE/REQp1hrFldnVfmT/xvBHi4t1H6oDQk8kvGkx3R0AgU/6VLSWhTjMprxToysCmvLY/N+rVw==
-X-Received: by 2002:a17:906:40d9:b0:a37:aeab:76d0 with SMTP id
- a25-20020a17090640d900b00a37aeab76d0mr271175ejk.3.1707152100973; 
- Mon, 05 Feb 2024 08:55:00 -0800 (PST)
+ bh=WLzi1hLFj9Oj83pbHMUpxHfzT5tkFuOtYwzSLXsw2fQ=;
+ b=mSYFPfosK4yKopseYmFzf2gI6p3/XVsc+XSqJUJ5q2qmooAIikXCYSQ+Y+p3Dcp3V6
+ HtVnMdoyNWoQGKoABlCOIWEZ94o0x1isXaxsAvG5xjrVrGI1kOEL1oLTNC9iill0l+Wl
+ j0RjOtu1PiBbpbCER0sytZVvwUMwVVZU5O0+UAqEGPXoC1fEORHUbHlvfDRX/1kwky9M
+ UEICG+2Q5J5vsQzGRkXspjK65+gKj2P0n89l9jkemecsP5WRdHbUMJkRVwFfcTREqosw
+ lGCclCGS1octeJ3/RQqPX/obtIAl5E4ukYLkDP1AKMG+cMznvlsgX70W9lULHKZybmjR
+ RsEg==
+X-Gm-Message-State: AOJu0YxTeMvH9jtdN8MFw/s0l025Ej862pPH5yvfNwdllbembQrMFnX4
+ 49ievXdTvM85hHh25yN/FMdonN7mJ07Hy/VQT02Lt5hzZ3O/4LHq90HPxs7eEEvXcmoQlNgMutI
+ I
+X-Google-Smtp-Source: AGHT+IGELN2bBQEhF2hCATJDdU6Cxry7cm+G10DzU6mE13A/3fMfKYUlMnUjeZ60Aq+RiA/0ziE27Q==
+X-Received: by 2002:a17:906:5ac6:b0:a38:6d3:ac54 with SMTP id
+ x6-20020a1709065ac600b00a3806d3ac54mr14108ejs.23.1707152102381; 
+ Mon, 05 Feb 2024 08:55:02 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCX9Qw4RcvirVzLJEC4rradImiUcZ/Vk3bsm+auLg+fOchOBUIzybUbSj8zakaMtAlYF4/mODUVAiyX5VPEkA2a+NUaPZIdcdn+BAP8Is08DXAq4ZeggoFzu8JmYeQsq9Ro0hloW5sM4tKTzt9pG/o/4AXiehZjlrRgosM9ri3S7wV6djCdPTc55pmhLvdXjQ2+x5KvdNa0VPVuMKDGE3eRer/3Rmul9rhD9YFPidJ+TlPqYd8v8a3u2qbM=
+ AJvYcCVUVqgYc2HYb7MeS1MdXkf3USvSIpewUPxRGeW7yNx5mk98OGDT6U3M8v2BhnhayBaARb5pEY1u0TV38bSQtIap6M6cZZM6haAyAEYd1ogG6PtssvFG2Ciy3l4slnccd5widEpB86d5tObNlZbPPi/o2x6lP4D7cqmJmRvkAMjfc5Asu8T/Y+8a2/SJ0y6snxT8KX6+E47Zv8aDwtgxJBHUwLirzr3jLRcXZCr6pg3dwHMqcX3MxJnb6bw=
 Received: from navi.cosmonova.net.ua ([95.67.24.131])
  by smtp.gmail.com with ESMTPSA id
- z14-20020a170906074e00b00a370a76d3a0sm20580ejb.123.2024.02.05.08.55.00
+ z14-20020a170906074e00b00a370a76d3a0sm20580ejb.123.2024.02.05.08.55.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Feb 2024 08:55:00 -0800 (PST)
+ Mon, 05 Feb 2024 08:55:01 -0800 (PST)
 From: Andrew Melnychenko <andrew@daynix.com>
 To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
  qemu-devel@nongnu.org, berrange@redhat.com
 Cc: yuri.benditovich@daynix.com,
 	yan@daynix.com,
 	akihiko.odaki@daynix.com
-Subject: [PATCH v9 3/5] virtio-net: Added property to load eBPF RSS with fds.
-Date: Mon,  5 Feb 2024 18:54:33 +0200
-Message-ID: <20240205165437.1965981-4-andrew@daynix.com>
+Subject: [PATCH v9 4/5] qmp: Added new command to retrieve eBPF blob.
+Date: Mon,  5 Feb 2024 18:54:34 +0200
+Message-ID: <20240205165437.1965981-5-andrew@daynix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240205165437.1965981-1-andrew@daynix.com>
 References: <20240205165437.1965981-1-andrew@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::630;
- envelope-from=andrew@daynix.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: none client-ip=2a00:1450:4864:20::533;
+ envelope-from=andrew@daynix.com; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,118 +95,295 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-eBPF RSS program and maps may now be passed during initialization.
-Initially was implemented for libvirt to launch qemu without permissions,
-and initialized eBPF program through the helper.
+Now, the binary objects may be retrieved by id.
+It would require for future qmp commands that may require specific
+eBPF blob.
+
+Added command "request-ebpf". This command returns
+eBPF program encoded base64. The program taken from the
+skeleton and essentially is an ELF object that can be
+loaded in the future with libbpf.
+
+The reason to use the command to provide the eBPF object
+instead of a separate artifact was to avoid issues related
+to finding the eBPF itself. eBPF object is an ELF binary
+that contains the eBPF program and eBPF map description(BTF).
+Overall, eBPF object should contain the program and enough
+metadata to create/load eBPF with libbpf. As the eBPF
+maps/program should correspond to QEMU, the eBPF can't
+be used from different QEMU build.
+
+The first solution was a helper that comes with QEMU
+and loads appropriate eBPF objects. And the issue is
+to find a proper helper if the system has several
+different QEMUs installed and/or built from the source,
+which helpers may not be compatible.
+
+Another issue is QEMU updating while there is a running
+QEMU instance. With an updated helper, it may not be
+possible to hotplug virtio-net device to the already
+running QEMU. Overall, requesting the eBPF object from
+QEMU itself solves possible failures with acceptable effort.
+
+Links:
+[PATCH 3/5] qmp: Added the helper stamp check.
+https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
 
 Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 ---
- hw/net/virtio-net.c            | 54 ++++++++++++++++++++++++++++++----
- include/hw/virtio/virtio-net.h |  2 ++
- 2 files changed, 50 insertions(+), 6 deletions(-)
+ ebpf/ebpf.c           | 69 +++++++++++++++++++++++++++++++++++++++++++
+ ebpf/ebpf.h           | 29 ++++++++++++++++++
+ ebpf/ebpf_rss.c       |  6 ++++
+ ebpf/meson.build      |  2 +-
+ qapi/ebpf.json        | 66 +++++++++++++++++++++++++++++++++++++++++
+ qapi/meson.build      |  1 +
+ qapi/qapi-schema.json |  1 +
+ 7 files changed, 173 insertions(+), 1 deletion(-)
+ create mode 100644 ebpf/ebpf.c
+ create mode 100644 ebpf/ebpf.h
+ create mode 100644 qapi/ebpf.json
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 5a79bc3a3a..d6dc5ff2ea 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -42,6 +42,7 @@
- #include "sysemu/sysemu.h"
- #include "trace.h"
- #include "monitor/qdev.h"
-+#include "monitor/monitor.h"
- #include "hw/pci/pci_device.h"
- #include "net_rx_pkt.h"
- #include "hw/virtio/vhost.h"
-@@ -1328,14 +1329,53 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n)
-     virtio_net_attach_ebpf_to_backend(n->nic, -1);
- }
- 
--static bool virtio_net_load_ebpf(VirtIONet *n)
-+static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
- {
--    if (!virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
--        /* backend doesn't support steering ebpf */
--        return false;
-+    int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
-+    int ret = true;
-+    int i = 0;
+diff --git a/ebpf/ebpf.c b/ebpf/ebpf.c
+new file mode 100644
+index 0000000000..2d73beb479
+--- /dev/null
++++ b/ebpf/ebpf.c
+@@ -0,0 +1,69 @@
++/*
++ * QEMU eBPF binary declaration routine.
++ *
++ * Developed by Daynix Computing LTD (http://www.daynix.com)
++ *
++ * Authors:
++ *  Andrew Melnychenko <andrew@daynix.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-+    ERRP_GUARD();
++#include "qemu/osdep.h"
++#include "qemu/queue.h"
++#include "qapi/error.h"
++#include "qapi/qapi-commands-ebpf.h"
++#include "ebpf/ebpf.h"
 +
-+    if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
-+        error_setg(errp,
-+                  "Expected %d file descriptors but got %d",
-+                  EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
-+       return false;
-+   }
++typedef struct ElfBinaryDataEntry {
++    int id;
++    const void *data;
++    size_t datalen;
 +
-+    for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
-+        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i], errp);
-+        if (*errp) {
-+            ret = false;
-+            goto exit;
-+        }
-+    }
++    QSLIST_ENTRY(ElfBinaryDataEntry) node;
++} ElfBinaryDataEntry;
 +
-+    ret = ebpf_rss_load_fds(&n->ebpf_rss, fds[0], fds[1], fds[2], fds[3]);
++static QSLIST_HEAD(, ElfBinaryDataEntry) ebpf_elf_obj_list =
++                                            QSLIST_HEAD_INITIALIZER();
 +
-+exit:
-+    if (!ret || *errp) {
-+        for (i = 0; i < n->nr_ebpf_rss_fds && fds[i] != -1; i++) {
-+            close(fds[i]);
-+        }
-     }
- 
--    return ebpf_rss_load(&n->ebpf_rss);
-+    return ret;
++void ebpf_register_binary_data(int id, const void *data, size_t datalen)
++{
++    struct ElfBinaryDataEntry *dataentry = NULL;
++
++    dataentry = g_new0(struct ElfBinaryDataEntry, 1);
++    dataentry->data = data;
++    dataentry->datalen = datalen;
++    dataentry->id = id;
++
++    QSLIST_INSERT_HEAD(&ebpf_elf_obj_list, dataentry, node);
 +}
 +
-+static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
++const void *ebpf_find_binary_by_id(int id, size_t *sz, Error **errp)
 +{
-+    bool ret = false;
-+
-+    if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
-+        if (!(n->ebpf_rss_fds
-+                && virtio_net_load_ebpf_fds(n, errp))) {
-+            ret = ebpf_rss_load(&n->ebpf_rss);
++    struct ElfBinaryDataEntry *it = NULL;
++    QSLIST_FOREACH(it, &ebpf_elf_obj_list, node) {
++        if (id == it->id) {
++            *sz = it->datalen;
++            return it->data;
 +        }
 +    }
 +
++    error_setg(errp, "can't find eBPF object with id: %d", id);
++
++    return NULL;
++}
++
++EbpfObject *qmp_request_ebpf(EbpfProgramID id, Error **errp)
++{
++    EbpfObject *ret = NULL;
++    size_t size = 0;
++    const void *data = ebpf_find_binary_by_id(id, &size, errp);
++    if (!data) {
++        return NULL;
++    }
++
++    ret = g_new0(EbpfObject, 1);
++    ret->object = g_base64_encode(data, size);
++
 +    return ret;
++}
+diff --git a/ebpf/ebpf.h b/ebpf/ebpf.h
+new file mode 100644
+index 0000000000..378d4e9c70
+--- /dev/null
++++ b/ebpf/ebpf.h
+@@ -0,0 +1,29 @@
++/*
++ * QEMU eBPF binary declaration routine.
++ *
++ * Developed by Daynix Computing LTD (http://www.daynix.com)
++ *
++ * Authors:
++ *  Andrew Melnychenko <andrew@daynix.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef EBPF_H
++#define EBPF_H
++
++
++void ebpf_register_binary_data(int id, const void *data,
++                               size_t datalen);
++const void *ebpf_find_binary_by_id(int id, size_t *sz,
++                                   struct Error **errp);
++
++#define ebpf_binary_init(id, fn)                                           \
++static void __attribute__((constructor)) ebpf_binary_init_ ## fn(void)     \
++{                                                                          \
++    size_t datalen = 0;                                                    \
++    const void *data = fn(&datalen);                                       \
++    ebpf_register_binary_data(id, data, datalen);                          \
++}
++
++#endif /* EBPF_H */
+diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+index 150aa40813..c8a68da2c5 100644
+--- a/ebpf/ebpf_rss.c
++++ b/ebpf/ebpf_rss.c
+@@ -13,6 +13,8 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
++#include "qapi/qapi-types-misc.h"
++#include "qapi/qapi-commands-ebpf.h"
+ 
+ #include <bpf/libbpf.h>
+ #include <bpf/bpf.h>
+@@ -21,6 +23,8 @@
+ 
+ #include "ebpf/ebpf_rss.h"
+ #include "ebpf/rss.bpf.skeleton.h"
++#include "ebpf/ebpf.h"
++
+ #include "trace.h"
+ 
+ void ebpf_rss_init(struct EBPFRSSContext *ctx)
+@@ -261,3 +265,5 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
+     ctx->map_toeplitz_key = -1;
+     ctx->map_indirections_table = -1;
  }
- 
- static void virtio_net_unload_ebpf(VirtIONet *n)
-@@ -3767,7 +3807,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     net_rx_pkt_init(&n->rx_pkt);
- 
-     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_load_ebpf(n);
-+        virtio_net_load_ebpf(n, errp);
-     }
- }
- 
-@@ -3929,6 +3969,8 @@ static Property virtio_net_properties[] = {
-                     VIRTIO_NET_F_RSS, false),
-     DEFINE_PROP_BIT64("hash", VirtIONet, host_features,
-                     VIRTIO_NET_F_HASH_REPORT, false),
-+    DEFINE_PROP_ARRAY("ebpf-rss-fds", VirtIONet, nr_ebpf_rss_fds,
-+                      ebpf_rss_fds, qdev_prop_string, char*),
-     DEFINE_PROP_BIT64("guest_rsc_ext", VirtIONet, host_features,
-                     VIRTIO_NET_F_RSC_EXT, false),
-     DEFINE_PROP_UINT32("rsc_interval", VirtIONet, rsc_timeout,
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index 55977f01f0..566ec53e7e 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -225,6 +225,8 @@ struct VirtIONet {
-     VirtioNetRssData rss_data;
-     struct NetRxPkt *rx_pkt;
-     struct EBPFRSSContext ebpf_rss;
-+    uint32_t nr_ebpf_rss_fds;
-+    char **ebpf_rss_fds;
- };
- 
- size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
++
++ebpf_binary_init(EBPF_PROGRAMID_RSS, rss_bpf__elf_bytes)
+diff --git a/ebpf/meson.build b/ebpf/meson.build
+index 2f627d6c7d..c5bf9295a2 100644
+--- a/ebpf/meson.build
++++ b/ebpf/meson.build
+@@ -1 +1 @@
+-system_ss.add(when: libbpf, if_true: files('ebpf_rss.c'), if_false: files('ebpf_rss-stub.c'))
++common_ss.add(when: libbpf, if_true: files('ebpf.c', 'ebpf_rss.c'), if_false: files('ebpf_rss-stub.c'))
+diff --git a/qapi/ebpf.json b/qapi/ebpf.json
+new file mode 100644
+index 0000000000..f413d00154
+--- /dev/null
++++ b/qapi/ebpf.json
+@@ -0,0 +1,66 @@
++# -*- Mode: Python -*-
++# vim: filetype=python
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
++
++##
++# = eBPF Objects
++#
++# eBPF object is an ELF binary that contains the eBPF
++# program and eBPF map description(BTF). Overall, eBPF
++# object should contain the program and enough metadata
++# to create/load eBPF with libbpf. As the eBPF maps/program
++# should correspond to QEMU, the eBPF can't be used from
++# different QEMU build.
++#
++# Currently, there is a possible eBPF for receive-side scaling (RSS).
++#
++##
++
++##
++# @EbpfObject:
++#
++# An eBPF ELF object.
++#
++# @object: the eBPF object encoded in base64
++#
++# Since: 9.0
++##
++{ 'struct': 'EbpfObject',
++  'data': {'object': 'str'},
++  'if': 'CONFIG_EBPF' }
++
++##
++# @EbpfProgramID:
++#
++# The eBPF programs that can be gotten with request-ebpf.
++#
++# @rss: Receive side scaling, technology that allows steering traffic
++#     between queues by calculation hash.  Users may set up
++#     indirection table and hash/packet types configurations.  Used
++#     with virtio-net.
++#
++# Since: 9.0
++##
++{ 'enum': 'EbpfProgramID',
++  'if': 'CONFIG_EBPF',
++  'data': [ { 'name': 'rss' } ] }
++
++##
++# @request-ebpf:
++#
++# Retrieve an eBPF object that can be loaded with libbpf.  Management
++# applications (g.e. libvirt) may load it and pass file descriptors to
++# QEMU, so they can run running QEMU without BPF capabilities.
++#
++# @id: The ID of the program to return.
++#
++# Returns: eBPF object encoded in base64.
++#
++# Since: 9.0
++##
++{ 'command': 'request-ebpf',
++  'data': { 'id': 'EbpfProgramID' },
++  'returns': 'EbpfObject',
++  'if': 'CONFIG_EBPF' }
+diff --git a/qapi/meson.build b/qapi/meson.build
+index f81a37565c..375d564277 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -33,6 +33,7 @@ qapi_all_modules = [
+   'crypto',
+   'cxl',
+   'dump',
++  'ebpf',
+   'error',
+   'introspect',
+   'job',
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index c01ec335e6..8304d45625 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -53,6 +53,7 @@
+ { 'include': 'char.json' }
+ { 'include': 'dump.json' }
+ { 'include': 'net.json' }
++{ 'include': 'ebpf.json' }
+ { 'include': 'rdma.json' }
+ { 'include': 'rocker.json' }
+ { 'include': 'tpm.json' }
 -- 
 2.43.0
 
