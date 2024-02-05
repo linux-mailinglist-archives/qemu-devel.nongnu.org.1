@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A59A784A00D
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F7684A00A
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:56:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX2F4-0003n1-B9; Mon, 05 Feb 2024 11:54:46 -0500
+	id 1rX2FQ-0003p3-38; Mon, 05 Feb 2024 11:55:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2F0-0003ms-88
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:54:42 -0500
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FM-0003oP-5d
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:04 -0500
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2Ex-0000TP-Oa
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:54:41 -0500
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a2a17f3217aso622214266b.2
- for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:54:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FI-0000Vb-3k
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:02 -0500
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-5114b2b3b73so1716749e87.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:54:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152078; x=1707756878;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152098; x=1707756898;
  darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AWshMZuaQU6ApJW4M686vXIXabvTwj1m/34vJ8RbgzU=;
- b=MQw5B5LJCWQwntZg3Ivzo5Gs6+jhgP4shFeG1xlpvWqhAOMSrBzPdMgyLnCXPdyUM1
- RQvu94by4DmxSHz89bKx/w/Alh7oYF1qXUobmKuj1+CYcnyHl24MLfW3l0apf+af+wp3
- Lppow56ncvondWaKyD9HuRQ9BGBkw8Uwa7AvtsKKCTxqmwh4NUnmtd/bwQ9185CtonVN
- AbvkRIKXlczHBNqTMBzKatc9n71NibrWXsNOcysrekHTW+ekdLfC8dKCw+AGNN+p9788
- MeTPx5BuTY+xWzOIVnc7Tfj6dy/3mZYMMRFtLY3n61XU+3SWuKz2LEmcpc/XTPBHDLcY
- eajA==
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ObC4GQhzvkCDDT9YI/kGoXO5UObtpyBnHo12Ka1aGv8=;
+ b=fTbxw5N4FR7r/ON3lo5NoHweJKDo3OwEg/7zfWds3h1IJmzy6PsbOWr73S7mDmSStM
+ ZpYH66DVnG0sb2ssTU3BL3Brinf8V+iH67zxzkNNapnfaJ3z7WQl/x/LF6gl2/nK3o0h
+ eJ6/xzrzfiXJarojTFpzRS1dge/PN6dfrGb83FYhXcGyM3EjQ+GDZgcS+P4C+W4xfYrD
+ SSKzbnx8lODrkgGmNl/2TCitboJ3mYrZ6p5ci0U37G/tqAfxpucfgMCmvOwXN7aCv1e5
+ gDRX8E5yho368D/7XR38v4FS8e+gYV27cJIaBtn/YDftTI0+A2BFefKd27cnUZBaLIHB
+ X4gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707152078; x=1707756878;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AWshMZuaQU6ApJW4M686vXIXabvTwj1m/34vJ8RbgzU=;
- b=mb5J2Vx0TVgivnQDfDOxnwooWeToJ/tPkpwcCrrOfo9M3IgSYv7YdBpa+T1tPmt01B
- az06WdVA3aCnNj6TRXYtn2hO4h3JQfbeN1vMTDtyLP1kSya95T/iSngZc+O6LQ8mlcyA
- iBZd/WXRNz+tJpsB3ADJSEKBDPfQzWwshu7SV61vBy7xA4Y/MzWMKpymHfBItOEbg+GZ
- 6lTNUkRNPO1r8yUNJq104YYAFpmWVZQaBuOiXggGdIBXoLKS8ufuWZvAOAskDWkvebC9
- n3CGA57niufy6bHQ+UGQybR/P/X07vSAoD0v++oBohCp2u6ioEbNJbtFwcWKZX9wu2PA
- jBPw==
-X-Gm-Message-State: AOJu0Yyrs0stkuJ1xBIwFldYxPCIN+PXxKCpxSw1VLmcv2Zod/Oc5oze
- zNJRPKZyG8/KbxdZCxD53Z7ARfYt5HQThno8TkbKD8v0C5x0vkBoFJwqGTVCrDK5JnJsTcIAkY2
- 2lhs/ohqoyEZfEn4B0Mde+tv71TVuhtfZDd0lGIHT1nacMEV+
-X-Google-Smtp-Source: AGHT+IESB1GdWyfCmwevFndSFSWvnx36muJEb+cQwadBvNdBlqsXe8MZr/IRiwTByN3YiVEkWMAZnrLa+4LvEPUKTk4=
-X-Received: by 2002:a17:906:e252:b0:a36:927e:cc0 with SMTP id
- gq18-20020a170906e25200b00a36927e0cc0mr17894ejb.9.1707152077826; Mon, 05 Feb
- 2024 08:54:37 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707152098; x=1707756898;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ObC4GQhzvkCDDT9YI/kGoXO5UObtpyBnHo12Ka1aGv8=;
+ b=k9nm/v95mML9SFRbmpvY9fy++7vk40vxVU/JQAP3ZN+dJ2BGXzONuouomzzuZlLKnY
+ 55oYrpFbrnd+JV9emT0yno8TpYjbITKgHM1xOhqrX/P9lg4gwMYY3jlwg9VpqjxBvCCt
+ LkdQTzL7nWyWKdz9EGUzfJo0gxeSKSn4ErYm5x3FMWE2xmAmHq2aZ7TOSzE6Xxc8K8h2
+ EqJ1QIIA7QFFSZsmq58nZHOMf79fWkDJEAwCqiRlse/szVv37wqnzSCuXAYMFEhXDEMM
+ bPh5id3Qb2dRbmhaLKmdSFotE1jkQCL6CmGJDQ7f8yULRW3JXhOjxzHHzoewWnIaqNyF
+ /aPQ==
+X-Gm-Message-State: AOJu0Yyd9RvLh68CqY8ccGwU+gtuw9LcQrIlDkVs9YW5BfOE5MiszbcR
+ M8tBG++h7d0yYdSH0aTISWhKzMhkQexCIhajiDxZFdqdoVGT4WaZGhvTFUoRXXyux4U/GTl+Dpa
+ k
+X-Google-Smtp-Source: AGHT+IEue6+iNSGIPd6sVpbfihbeLRwoX4Rn20lF4uIyJDKtR3Cjklzh9blxhFFJRk8Db67BlQQ0Og==
+X-Received: by 2002:a19:ad45:0:b0:511:5353:2ace with SMTP id
+ s5-20020a19ad45000000b0051153532acemr147429lfd.22.1707152098171; 
+ Mon, 05 Feb 2024 08:54:58 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCUtIxZtyrLu7GK7WjakJn1ZVGsdwKQ7bwLgDldjwIi1+2ZtDrf5p4IGhtbLGJVkxCIY+jHMh48m1PPkd68TTDB77oZB0FZcxWbRN3UuV9I4vgYFbAaB7qD7uk0IHOxnjzbyvOVcQdhMdaKjLq5YPp9R5XOjcyzKZB4Psk9RaiHajocZA1Pr2VjohBwq5noyd46V79u7lYgl0q3PMf6hFJggtOvgvtV89scZF1D5E+cT6jJ1hAXBfME/1V0=
+Received: from navi.cosmonova.net.ua ([95.67.24.131])
+ by smtp.gmail.com with ESMTPSA id
+ z14-20020a170906074e00b00a370a76d3a0sm20580ejb.123.2024.02.05.08.54.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Feb 2024 08:54:57 -0800 (PST)
+From: Andrew Melnychenko <andrew@daynix.com>
+To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
+ qemu-devel@nongnu.org, berrange@redhat.com
+Cc: yuri.benditovich@daynix.com,
+	yan@daynix.com,
+	akihiko.odaki@daynix.com
+Subject: [PATCH v9 0/5] eBPF RSS through QMP support.
+Date: Mon,  5 Feb 2024 18:54:30 +0200
+Message-ID: <20240205165437.1965981-1-andrew@daynix.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240125130656.425607-1-andrew@daynix.com>
- <20240125130656.425607-2-andrew@daynix.com>
- <ZbjRhyNtjajkYQ8i@redhat.com>
-In-Reply-To: <ZbjRhyNtjajkYQ8i@redhat.com>
-From: Andrew Melnichenko <andrew@daynix.com>
-Date: Mon, 5 Feb 2024 18:54:26 +0200
-Message-ID: <CABcq3pHikAHdaMN5k-gLktD_k1LODJuH-ZOojzyxNyv+iuevdQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/5] ebpf: Added eBPF map update through mmap.
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
- qemu-devel@nongnu.org, yuri.benditovich@daynix.com, yan@daynix.com, 
- akihiko.odaki@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::62c;
- envelope-from=andrew@daynix.com; helo=mail-ej1-x62c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2a00:1450:4864:20::130;
+ envelope-from=andrew@daynix.com; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,70 +92,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
-I'll revert the license changes and leave SPDX ids only for new files.
+This series of patches provides the ability to retrieve eBPF program
+through qmp, so management application may load bpf blob with proper capabilities.
+Now, virtio-net devices can accept eBPF programs and maps through properties
+as external file descriptors. Access to the eBPF map is direct through mmap()
+call, so it should not require additional capabilities to bpf* calls.
+eBPF file descriptors can be passed to QEMU from parent process or by unix
+socket with sendfd() qmp command.
 
-On Tue, Jan 30, 2024 at 12:38=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> On Thu, Jan 25, 2024 at 03:06:50PM +0200, Andrew Melnychenko wrote:
-> > Changed eBPF map updates through mmaped array.
-> > Mmaped arrays provide direct access to map data.
-> > It should omit using bpf_map_update_elem() call,
-> > which may require capabilities that are not present.
-> >
-> > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> > ---
-> >  ebpf/ebpf_rss.c | 120 ++++++++++++++++++++++++++++++++++++++----------
-> >  ebpf/ebpf_rss.h |   8 +++-
-> >  2 files changed, 101 insertions(+), 27 deletions(-)
-> >
-> > diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-> > index cee658c158..c6e10265a7 100644
-> > --- a/ebpf/ebpf_rss.c
-> > +++ b/ebpf/ebpf_rss.c
-> > @@ -7,8 +7,7 @@
-> >   *  Andrew Melnychenko <andrew@daynix.com>
-> >   *  Yuri Benditovich <yuri.benditovich@daynix.com>
-> >   *
-> > - * This work is licensed under the terms of the GNU GPL, version 2.  S=
-ee
-> > - * the COPYING file in the top-level directory.
-> > + * SPDX-License-Identifier: GPL-2.0-or-later
->
->
-> > diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-> > index bf3f2572c7..404cf53613 100644
-> > --- a/ebpf/ebpf_rss.h
-> > +++ b/ebpf/ebpf_rss.h
-> > @@ -7,8 +7,7 @@
-> >   *  Andrew Melnychenko <andrew@daynix.com>
-> >   *  Yuri Benditovich <yuri.benditovich@daynix.com>
-> >   *
-> > - * This work is licensed under the terms of the GNU GPL, version 2.  S=
-ee
-> > - * the COPYING file in the top-level directory.
-> > + * SPDX-License-Identifier: GPL-2.0-or-later
-> >   */
-> >
-> >  #ifndef QEMU_EBPF_RSS_H
->
-> Thee are changing the file license. This *must* be done as a
-> standalone commit and show agreement from all contributors
-> who could hold copyright over the code. Fortunately I only
-> see one other contributor to these file, and the scope of
-> their change isn't copyrightable IMHO.
->
->
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
+Changes since v8:
+ * rebased and refactored QMP interface
+ * license SPDX id only for new files
+
+Changes since v7:
+ * rebased and refactored
+ * used SPDX license identifier
+ * used DEFINE_PROP_ARRAY() for virtio-net "ebpf-rss-fds" property
+
+Changes since v6:
+ * added comments to ebpf.json
+ * added libbpf version requirements to meson script with BPF_F_MMAPABLE check
+
+Changes since v5:
+ * refactored ebpf.json
+
+Changes since v4:
+ * refactored commit hunks
+ * added explicit BPF_F_MMAPABLE declaration
+
+Changes since v3:
+ * fixed issue with the build if bpf disabled
+ * rebased to the last master
+ * refactored according to review
+
+Changes since v2:
+ * moved/refactored QMP command
+ * refactored virtio-net
+
+Changes since v1:
+ * refactored virtio-net
+ * moved hunks for ebpf mmap()
+ * added qmp enum for eBPF id.
+
+Andrew Melnychenko (5):
+  ebpf: Added eBPF map update through mmap.
+  ebpf: Added eBPF initialization by fds.
+  virtio-net: Added property to load eBPF RSS with fds.
+  qmp: Added new command to retrieve eBPF blob.
+  ebpf: Updated eBPF program and skeleton.
+
+ ebpf/ebpf.c                    |   69 ++
+ ebpf/ebpf.h                    |   29 +
+ ebpf/ebpf_rss-stub.c           |    6 +
+ ebpf/ebpf_rss.c                |  150 +++-
+ ebpf/ebpf_rss.h                |   10 +
+ ebpf/meson.build               |    2 +-
+ ebpf/rss.bpf.skeleton.h        | 1343 ++++++++++++++++----------------
+ hw/net/virtio-net.c            |   54 +-
+ include/hw/virtio/virtio-net.h |    2 +
+ meson.build                    |   10 +-
+ qapi/ebpf.json                 |   66 ++
+ qapi/meson.build               |    1 +
+ qapi/qapi-schema.json          |    1 +
+ tools/ebpf/rss.bpf.c           |    7 +-
+ 14 files changed, 1047 insertions(+), 703 deletions(-)
+ create mode 100644 ebpf/ebpf.c
+ create mode 100644 ebpf/ebpf.h
+ create mode 100644 qapi/ebpf.json
+
+-- 
+2.43.0
+
 
