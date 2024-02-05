@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7518494CF
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 08:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2079D8494CC
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 08:49:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWtj1-0004eX-OO; Mon, 05 Feb 2024 02:49:07 -0500
+	id 1rWtiB-0003KC-7c; Mon, 05 Feb 2024 02:48:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthN-000337-Oa
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthN-000334-NP
  for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthF-000630-6f
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:21 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthE-00062x-Vy
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707119236;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ND0x3p3iuq2cuPfkUG05E4VZFd/JDGusCGJgHlpMh/4=;
- b=dBd1BaZWnRNIFtVae7TvlA/N1pP73FOga9luzYzgGsBkWYbGTFyq+brtmTJB4BcCLk1JIK
- qTDgJE/iky64eHFOfYLb7hCqn9umn7dRlH4i56xlamsHSGng4ScQQcx0DAT3fJAkPo1RpD
- ha4JJG/VzD0l4j5U8+EOWwEogxx9uXY=
+ bh=QNynqkKX4qBeTYspk/1SN2AngUmIP8zYz3tbq++y9GA=;
+ b=JVGnN6ChoiB7XJqvkaDohYpVpGwNfp1LvoOQuVgBu3McWvd7qOWiMUmZuJDFkGgz14+794
+ s0Ba0ViN3bPnYPVCyY569R7wSgzwoH3PMFETsWRn5H5M6D5T8vd5ej/U0sLupkbu0RaKpN
+ +0HPMTWiz3FSZJhBr6eXIsehahbNFvg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-hbL-30tgOAmquVcAbHX6fQ-1; Mon, 05 Feb 2024 02:47:13 -0500
-X-MC-Unique: hbL-30tgOAmquVcAbHX6fQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-144-7OHGOt5UNOekdql2fumkMg-1; Mon, 05 Feb 2024 02:47:13 -0500
+X-MC-Unique: 7OHGOt5UNOekdql2fumkMg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6169683B834;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23B8D85A597;
  Mon,  5 Feb 2024 07:47:12 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.123])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EC00DC15E6A;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EFF8A2026F95;
  Mon,  5 Feb 2024 07:47:11 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5905421E60F4; Mon,  5 Feb 2024 08:47:09 +0100 (CET)
+ id 5B8D221E60F5; Mon,  5 Feb 2024 08:47:09 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, armbru@redhat.com, berrange@redhat.com,
@@ -54,26 +54,25 @@ Cc: arei.gonglei@huawei.com, armbru@redhat.com, berrange@redhat.com,
  pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
  philmd@linaro.org, pizhenwei@bytedance.com, qemu-block@nongnu.org,
  stefanb@linux.ibm.com, wangyanan55@huawei.com
-Subject: [PATCH 08/15] qga/qapi-schema: Clean up documentation of
- guest-set-vcpus
-Date: Mon,  5 Feb 2024 08:47:02 +0100
-Message-ID: <20240205074709.3613229-9-armbru@redhat.com>
+Subject: [PATCH 09/15] qga/qapi-schema: Plug trivial documentation holes
+Date: Mon,  5 Feb 2024 08:47:03 +0100
+Message-ID: <20240205074709.3613229-10-armbru@redhat.com>
 In-Reply-To: <20240205074709.3613229-1-armbru@redhat.com>
 References: <20240205074709.3613229-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,52 +88,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The command's doc comment describes the argument, but it's not marked
-up as such.  Easy enough to fix.
+Add missing return member documentation of guest-get-disks,
+guest-get-devices, guest-get-diskstats, and guest-get-cpustats.
+
+The NVMe SMART information returned by guest-getdisks remains
+undocumented.  Add a TODO there.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/qapi-schema.json | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ qga/qapi-schema.json | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 35bde36a1f..f3d168d542 100644
+index f3d168d542..b8efe31897 100644
 --- a/qga/qapi-schema.json
 +++ b/qga/qapi-schema.json
-@@ -42,8 +42,7 @@
-         'GuestDeviceType',
-         'GuestDiskSmart',
-         'GuestDiskStatsInfo',
--        'GuestNVMeSmart',
--        'guest-set-vcpus' ] } }
-+        'GuestNVMeSmart' ] } }
+@@ -36,12 +36,6 @@
+         'guest-sync-delimited' ],
+     # Types and commands with undocumented members:
+     'documentation-exceptions': [
+-        'GuestCpuStats',
+-        'GuestCpuStatsType',
+-        'GuestDeviceId',
+-        'GuestDeviceType',
+-        'GuestDiskSmart',
+-        'GuestDiskStatsInfo',
+         'GuestNVMeSmart' ] } }
  
  ##
- # @guest-sync-delimited:
-@@ -786,14 +785,15 @@
- # Attempt to reconfigure (currently: enable/disable) logical
- # processors inside the guest.
+@@ -944,6 +938,8 @@
+ # NVMe smart information, based on NVMe specification, section
+ # <SMART / Health Information (Log Identifier 02h)>
  #
--# The input list is processed node by node in order.  In each node
--# @logical-id is used to look up the guest VCPU, for which @online
--# specifies the requested state.  The set of distinct @logical-id's is
--# only required to be a subset of the guest-supported identifiers.
--# There's no restriction on list length or on repeating the same
--# @logical-id (with possibly different @online field). Preferably the
--# input list should describe a modified subset of @guest-get-vcpus'
--# return value.
-+# @vcpus: The logical processors to be reconfigured.  This list is
-+#     processed node by node in order.  In each node @logical-id is
-+#     used to look up the guest VCPU, for which @online specifies the
-+#     requested state.  The set of distinct @logical-id's is only
-+#     required to be a subset of the guest-supported identifiers.
-+#     There's no restriction on list length or on repeating the same
-+#     @logical-id (with possibly different @online field).  Preferably
-+#     the input list should describe a modified subset of
-+#     @guest-get-vcpus' return value.
++# TODO: document members briefly
++#
+ # Since: 7.1
+ ##
+ { 'struct': 'GuestNVMeSmart',
+@@ -978,7 +974,7 @@
  #
- # Returns: The length of the initial sublist that has been
- #     successfully processed.  The guest agent maximizes this value.
+ # Disk type related smart information.
+ #
+-# - @nvme: NVMe disk smart
++# @type: disk bus type
+ #
+ # Since: 7.1
+ ##
+@@ -1499,6 +1495,8 @@
+ 
+ ##
+ # @GuestDeviceType:
++#
++# @pci: PCI device
+ ##
+ { 'enum': 'GuestDeviceType',
+   'data': [ 'pci' ] }
+@@ -1518,7 +1516,9 @@
+ ##
+ # @GuestDeviceId:
+ #
+-# Id of the device - @pci: PCI ID, since: 5.2
++# Id of the device
++#
++# @type: device type
+ #
+ # Since: 5.2
+ ##
+@@ -1700,6 +1700,8 @@
+ # @major: major device number of disk
+ #
+ # @minor: minor device number of disk
++#
++# @stats: I/O statistics
+ ##
+ { 'struct': 'GuestDiskStatsInfo',
+   'data': {'name': 'str',
+@@ -1723,7 +1725,9 @@
+ ##
+ # @GuestCpuStatsType:
+ #
+-# An enumeration of OS type
++# Guest operating systems supporting CPU statistics
++#
++# @linux: Linux
+ #
+ # Since: 7.1
+ ##
+@@ -1780,7 +1784,7 @@
+ #
+ # Get statistics of each CPU in millisecond.
+ #
+-# - @linux: Linux style CPU statistics
++# @type: guest operating system
+ #
+ # Since: 7.1
+ ##
 -- 
 2.43.0
 
