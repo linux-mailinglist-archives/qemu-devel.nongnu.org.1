@@ -2,83 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B78849726
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 11:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD6184974B
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 11:04:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWvka-0005sD-0v; Mon, 05 Feb 2024 04:58:52 -0500
+	id 1rWvpm-0007XS-83; Mon, 05 Feb 2024 05:04:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1rWvkX-0005ry-Iv
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:58:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1rWvkT-0008Ih-Eq
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 04:58:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707127124;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=UV5hHSakWv+rtuHOvv5Zcyn8okUkefKpkqhHokMj8eY=;
- b=N8wt90VlYG7YzxmGyGrzSpP8TIFebVS6cZrPqHBoIDYzwH5S0cvR01pB9/UvDdVe30f8YZ
- PV01Y+0VPyS67BMq3d5NJrOPgUnQarXhj6S85Qwqso9dNGJY5Ssi7IUBL/UIXMClXhX27M
- x0ulUhfDOMVnkXDveSfrEoTF4EfSd20=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-Rls5mdfmOP-Fx882oIDLzw-1; Mon, 05 Feb 2024 04:58:42 -0500
-X-MC-Unique: Rls5mdfmOP-Fx882oIDLzw-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-6e0382c0448so1334970b3a.0
- for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 01:58:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rWvpk-0007X9-G8
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 05:04:12 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rWvph-0000ma-Bp
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 05:04:12 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40fccd090c2so19093215e9.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 02:04:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707127447; x=1707732247; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=MkdkvJQftVnKaY82EdCy5JeXX30Cnmo5Kyr9u/FMSvk=;
+ b=tR0W7v5uJiZhCC0R5DCTITdS2/H99hOKrRmZfC/SKq1GnYNcwse4dJPLo6s2uNBHYu
+ vXZTg6eQeT9BzEDbyKy9qnanWfuA71jFyewELaeK5Qfh1zW7C7MFwzMA/GNQtDJQr9DW
+ +AXTn+R2sK8FzK6hr5q5GdzOmZyVwuTA0JUAb0GAkDNDUozrbnvect46hhMwkG2m9QMy
+ cTEYPxIzk6bExP3lpoDoikxPCH15xvPWHqTrRIYRixU04jjBWIxcSQydo+dpGxUuOHOp
+ qO+rLQZ717djpfLF285P3zI+U23F43iWBFLxeO4O+0F0bmXMLwjOQn4meahOMfZOwetR
+ 8EdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707127121; x=1707731921;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UV5hHSakWv+rtuHOvv5Zcyn8okUkefKpkqhHokMj8eY=;
- b=oA5eBQEs0CShqJQn79as0yJ1ej1fqmucaFdzLD7HdJ6rvpcGQr2cmrRvtS2NfFPXHg
- ADR9OzK30NcpRivcQZPng6soqNlB/V8ousQ00hV5MAQef2OEekLosQdZz6DgZAYgKiZx
- sW4mXS4+6kYJ01Qs+hL6La/ZWtO6iyZqfrE8WUUYjH1+RcnJtKcVhFAeY7No1keYLXwA
- lXH+2Mwgu76HZ4nIBjzSI6TmOIHtCAYhSUMztVr81+3vMLu2xjZIB5GwQ/psK8JDLF9S
- E2ZV3slLKNhQoXOCajvJw1ch/xuyXf42CjOKqAsVcfH/skahg/2DCU4NGOZWTEl3HjAN
- UP6Q==
-X-Gm-Message-State: AOJu0YwL10TgHQb+3KV9QNAGKfJnTvXI321aBjxVJHyytPldmnnFlxKM
- kpA1kLjXVfIZxOqt/YFRIfeNGFX/eM3vQw+IZ4sfIKBGqQbnQEnHMspXTILtLW6xlmoZtENrsi0
- 8s9y0O+sPsrNMZjlfIVchcqhWTLWeUFpsEzr51EtRUSMGfXZXrLo7f1o8j8C8Kp46O7Xdbbmoe9
- NPU/JEbp2+7r9zHA2Xxs0qgFW97j7Am9VzBgQ=
-X-Received: by 2002:a05:6a20:c526:b0:19c:74d1:b314 with SMTP id
- gm38-20020a056a20c52600b0019c74d1b314mr10686705pzb.17.1707127121491; 
- Mon, 05 Feb 2024 01:58:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEBP5C449axAAAWRdG3CePLpBokWQjf2wllyArv/HYft55gg4w4llPPqR7ww5x33qd6o0rCrLxx8c/NWWGoDmg=
-X-Received: by 2002:a05:6a20:c526:b0:19c:74d1:b314 with SMTP id
- gm38-20020a056a20c52600b0019c74d1b314mr10686695pzb.17.1707127121173; Mon, 05
- Feb 2024 01:58:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707127447; x=1707732247;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MkdkvJQftVnKaY82EdCy5JeXX30Cnmo5Kyr9u/FMSvk=;
+ b=qI7+NiXWQtCtszDAuvkMuzHQRiSxmgVo3qVxUYAth9BMOroDWhpyS3ajD8teRqK4c1
+ 6FXB7zU2FJbe4eD2rjWJf7D2JDcCdPcS3OIDcEiDS0N8Of6I6i642Krrvsa2vvx7NRMv
+ o+zsNkvZNskPdyGvUFEHlKZfINa89V9uCmAsxrQ1B3f7qt9VzD1G4nOdfTYe2l28Hpf8
+ PYos+JOa5t0GJGOlkVCw9S/aG2+stGrxb7hqVTnwGF3yt6S8/jLJPxk6TLz+A3OI6JgB
+ mM+v1E/AefvHOFHoqcr1ARMdWhGRVABnKRs9BqtJVlvoFk+41bxaju315jdYfE5NJDF1
+ cWfQ==
+X-Gm-Message-State: AOJu0Yyb77x0J7Nd/1Ywpo5RSQ9cvp+IEF2a70qn4js5WFXHHQPwg0L7
+ zSQrR394fxLCnKsMH33wAq1HJUnL8HDn1KhtTxR4uUCueN4UhqM7fMjah/pfbRs=
+X-Google-Smtp-Source: AGHT+IGM3ptTmB9qPfAviYIKwlw15mjRd4IbG1pf4jmWokNTmAc6WcdZEQzldUCXsBapKOEJdAx+5w==
+X-Received: by 2002:a05:600c:4ec7:b0:40e:5ed3:ccf4 with SMTP id
+ g7-20020a05600c4ec700b0040e5ed3ccf4mr4398883wmq.16.1707127447199; 
+ Mon, 05 Feb 2024 02:04:07 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCUtKZUM2z/oiJ59vug8nNg6UXO9pzKBtFnJaDjZdBoFR7OnqIPMqr+lXBfyUzbdXl4V3AXDqm0lxDb91QCLZUpS+iSR97Aguyv62XIeIj2Y+SQmCA7z6NKC5JXLIbWeym+AiFzp/D3PkJ52q2Vnu6onzjQujoA718b/gQnIVsFfuFhtqc9CJ4g34Ml5vv8HmXyfha3EUhPTJ/Kad6iOl6KBKlWRQkJi5UjmFwy8m97WDCtPzJeRHf7aWaNt6Eg6mmTgT94GaD4hst87Y2MHxoBg7VkO7xjIteA0vweufM/qX6bojs4/cvonxj8awGECNmV29U+kgGev5JJXKLjUdLXBW3HMmv3p2r35761Nm/Bbo63k5jvb795acjUVONliqwlKZeWaoqfYfDtWkUnLXhxFDqfIjWNVzzLyFf5vzW/symbJrXup8e/5eCQc0hvXG7rrDqdApQVEwy6ZFRk34E9dgJyJLAUR3HULIKaQzbOS7d36zh/rQL9h5g==
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ j18-20020adfe512000000b0033946c0f9e7sm7705992wrm.17.2024.02.05.02.04.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 Feb 2024 02:04:06 -0800 (PST)
+Message-ID: <612315ae-2132-4e41-8d16-6635dab54a1b@linaro.org>
+Date: Mon, 5 Feb 2024 14:03:59 +0400
 MIME-Version: 1.0
-References: <20240109125614.220293-1-aesteve@redhat.com>
-In-Reply-To: <20240109125614.220293-1-aesteve@redhat.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Mon, 5 Feb 2024 10:58:29 +0100
-Message-ID: <CADSE00+9aokGPszqqr_EMWuR_KZ_fVR-aQSuW3JDDRrOB-6cHw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Virtio dmabuf improvements
-To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, "Michael S. Tsirkin" <mst@redhat.com>,
- marcandre.lureau@gmail.com, kraxel@redhat.com
-Content-Type: multipart/alternative; boundary="000000000000a4f04b06109f81e5"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.361,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 0/3] gdbstub and TCG plugin improvements
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Fabiano Rosas <farosas@suse.de>,
+ Andrew Jones <ajones@ventanamicro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240203-riscv-v11-0-a23f4848a628@daynix.com>
+ <87bk8xpzyl.fsf@draig.linaro.org>
+ <b34c4013-1aca-466e-b94e-55d9802928b3@daynix.com>
+ <87zfwhodit.fsf@draig.linaro.org>
+ <7fae3d1a-5af2-4557-a2b3-13b911e73382@daynix.com>
+ <8734u7gsv0.fsf@draig.linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <8734u7gsv0.fsf@draig.linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,113 +110,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a4f04b06109f81e5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Friendly reminder & bump
-
-Is this series waiting to be picked up, or is there anything left to do?
-
-BR,
-Albert
-
-
-
-
-On Tue, Jan 9, 2024 at 1:56=E2=80=AFPM Albert Esteve <aesteve@redhat.com> w=
-rote:
-
-> v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1005257.html
-> v2: https://www.mail-archive.com/qemu-devel@nongnu.org/msg1014615.html
-> v2 -> v3
->   - Documented the new owner check for shared object removal
->   - Updated test function names error in the last patch
->
-> Various improvements for the virtio-dmabuf module.
-> This patch includes:
->
-> - Check for ownership before allowing a vhost device
->   to remove an object from the table.
-> - Properly cleanup shared resources if a vhost device
->   object gets cleaned up.
-> - Rename virtio dmabuf functions to `virtio_dmabuf_*`
->
-> Albert Esteve (3):
->   hw/virtio: check owner for removing objects
->   hw/virtio: cleanup shared resources
->   hw/virtio: rename virtio dmabuf API
->
->  docs/interop/vhost-user.rst       |  4 +-
->  hw/display/virtio-dmabuf.c        | 36 ++++++++++++---
->  hw/virtio/vhost-user.c            | 31 ++++++++++---
->  hw/virtio/vhost.c                 |  3 ++
->  include/hw/virtio/virtio-dmabuf.h | 43 ++++++++++-------
->  tests/unit/test-virtio-dmabuf.c   | 77 ++++++++++++++++++++++---------
->  6 files changed, 141 insertions(+), 53 deletions(-)
->
-> --
-> 2.43.0
->
->
-
---000000000000a4f04b06109f81e5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Friendly reminder &amp; bump<div><br></div><div>Is this se=
-ries waiting to be picked up, or is there anything left=C2=A0to do?</div><d=
-iv><br></div><div>BR,</div><div>Albert<br clear=3D"all"><div><div dir=3D"lt=
-r" class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D=
-"ltr"><p style=3D"color:rgb(0,0,0);font-family:RedHatText,sans-serif;font-w=
-eight:bold;margin:0px;padding:0px;font-size:14px"><br></p></div></div></div=
-><br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"g=
-mail_attr">On Tue, Jan 9, 2024 at 1:56=E2=80=AFPM Albert Esteve &lt;<a href=
-=3D"mailto:aesteve@redhat.com">aesteve@redhat.com</a>&gt; wrote:<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft:1px solid rgb(204,204,204);padding-left:1ex">v1: <a href=3D"https://www=
-.mail-archive.com/qemu-devel@nongnu.org/msg1005257.html" rel=3D"noreferrer"=
- target=3D"_blank">https://www.mail-archive.com/qemu-devel@nongnu.org/msg10=
-05257.html</a><br>
-v2: <a href=3D"https://www.mail-archive.com/qemu-devel@nongnu.org/msg101461=
-5.html" rel=3D"noreferrer" target=3D"_blank">https://www.mail-archive.com/q=
-emu-devel@nongnu.org/msg1014615.html</a><br>
-v2 -&gt; v3<br>
-=C2=A0 - Documented the new owner check for shared object removal<br>
-=C2=A0 - Updated test function names error in the last patch<br>
-<br>
-Various improvements for the virtio-dmabuf module.<br>
-This patch includes:<br>
-<br>
-- Check for ownership before allowing a vhost device<br>
-=C2=A0 to remove an object from the table.<br>
-- Properly cleanup shared resources if a vhost device<br>
-=C2=A0 object gets cleaned up.<br>
-- Rename virtio dmabuf functions to `virtio_dmabuf_*`<br>
-<br>
-Albert Esteve (3):<br>
-=C2=A0 hw/virtio: check owner for removing objects<br>
-=C2=A0 hw/virtio: cleanup shared resources<br>
-=C2=A0 hw/virtio: rename virtio dmabuf API<br>
-<br>
-=C2=A0docs/interop/vhost-user.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 4 +-<br=
->
-=C2=A0hw/display/virtio-dmabuf.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 36 ++++++++++=
-++---<br>
-=C2=A0hw/virtio/vhost-user.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 31 =
-++++++++++---<br>
-=C2=A0hw/virtio/vhost.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0|=C2=A0 3 ++<br>
-=C2=A0include/hw/virtio/virtio-dmabuf.h | 43 ++++++++++-------<br>
-=C2=A0tests/unit/test-virtio-dmabuf.c=C2=A0 =C2=A0| 77 ++++++++++++++++++++=
-++---------<br>
-=C2=A06 files changed, 141 insertions(+), 53 deletions(-)<br>
-<br>
--- <br>
-2.43.0<br>
-<br>
-</blockquote></div>
-
---000000000000a4f04b06109f81e5--
+T24gMi81LzI0IDEzOjMxLCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+IEFraWhpa28gT2Rha2kg
+PGFraWhpa28ub2Rha2lAZGF5bml4LmNvbT4gd3JpdGVzOg0KPiANCj4+IE9uIDIwMjQvMDIv
+MDMgMjI6NTgsIEFsZXggQmVubsOpZSB3cm90ZToNCj4+PiBBa2loaWtvIE9kYWtpIDxha2lo
+aWtvLm9kYWtpQGRheW5peC5jb20+IHdyaXRlczoNCj4+Pg0KPj4+PiBPbiAyMDI0LzAyLzAz
+IDIwOjA4LCBBbGV4IEJlbm7DqWUgd3JvdGU6DQo+Pj4+PiBBa2loaWtvIE9kYWtpIDxha2lo
+aWtvLm9kYWtpQGRheW5peC5jb20+IHdyaXRlczoNCj4+Pj4+DQo+Pj4+Pj4gVGhpcyBzZXJp
+ZXMgZXh0cmFjdHMgZml4ZXMgYW5kIHJlZmFjdG9yaW5ncyB0aGF0IGNhbiBiZSBhcHBsaWVk
+DQo+Pj4+Pj4gaW5kZXBlbmRlbnRseSBmcm9tICJbUEFUQ0ggdjkgMDAvMjNdIHBsdWdpbnM6
+IEFsbG93IHRvIHJlYWQgcmVnaXN0ZXJzIi4NCj4+Pj4+Pg0KPj4+Pj4+IFRoZSBwYXRjaCAi
+dGFyZ2V0L3Jpc2N2OiBNb3ZlIE1JU0EgbGltaXRzIHRvIGNsYXNzIiB3YXMgcmVwbGFjZWQg
+d2l0aA0KPj4+Pj4+IHBhdGNoICJ0YXJnZXQvcmlzY3Y6IE1vdmUgbWlzYV9teGxfbWF4IHRv
+IGNsYXNzIiBzaW5jZSBJIGZvdW5kIGluc3RhbmNlcw0KPj4+Pj4+IG1heSBoYXZlIGRpZmZl
+cmVudCBtaXNhX2V4dF9tYXNrLg0KPj4+Pj4gQXMgdGhpcyBpcyByZS1iYXNlZCBvbiBBbGlz
+dGFpcidzIHJpc2N2LXRvLWFwcGx5Lm5leHQgdHJlZSBJJ2xsIHdhaXQNCj4+Pj4+IGZvcg0K
+Pj4+Pj4gdGhpcyB0byBnbyB0aHJvdWdoIHRoZSBSaXNjViB0cmVlcyBhbmQgdGhlbiByZS1i
+YXNlIHRoZSBwbHVnaW4gcGF0Y2hlcw0KPj4+Pj4gYW5kIGRyb3BwaW5nIHRoZSBtZXJnZWQg
+cmlzY3YgcGF0Y2hlcyBmcm9tIG15IHRyZWUuDQo+Pj4+PiBJbiB0aGUgbWVhbnRpbWUgZmVl
+bCBmcmVlIHRvIHJldmlldzoNCj4+Pj4+ICAgICAgTWVzc2FnZS1JZDogPDIwMjQwMTIyMTQ1
+NjEwLjQxMzgzNi0xLWFsZXguYmVubmVlQGxpbmFyby5vcmc+DQo+Pj4+PiAgICAgIERhdGU6
+IE1vbiwgMjIgSmFuIDIwMjQgMTQ6NTU6NDkgKzAwMDANCj4+Pj4+ICAgICAgU3ViamVjdDog
+W1BBVENIIHYzIDAwLzIxXSBwbHVnaW4gdXBkYXRlcyAocmVnaXN0ZXIgYWNjZXNzKSBmb3Ig
+OS4wIChwcmUtUFI/KQ0KPj4+Pj4gICAgICBGcm9tOiA9P1VURi04P3E/QWxleD0yMEJlbm49
+QzM9QTllPz0gPGFsZXguYmVubmVlQGxpbmFyby5vcmc+DQo+Pj4+PiBGb3I6DQo+Pj4+PiAg
+ICAgIGNvbnRyaWIvcGx1Z2luczogZXh0ZW5kIGV4ZWNsb2cgdG8gdHJhY2sgcmVnaXN0ZXIg
+Y2hhbmdlcw0KPj4+Pj4gICAgICBnZGJzdHViOiBleHBvc2UgYXBpIHRvIGZpbmQgcmVnaXN0
+ZXJzDQo+Pj4+PiBTbyBJIGNhbiBhZGQgdGhpcyB0byBteSBtYWludGFpbmVyIG9tbmlidXMg
+c2VyaWVzIGZvciB0aGUgbmV4dCBQUiBJDQo+Pj4+PiBzZW5kLg0KPj4+Pg0KPj4+PiBJIGFk
+ZGVkIG9uZSB0cml2aWFsIGNvbW1lbnQgdG86ICJnZGJzdHViOiBleHBvc2UgYXBpIHRvIGZp
+bmQgcmVnaXN0ZXJzIg0KPj4+Pg0KPj4+PiAiY29udHJpYi9wbHVnaW5zOiBleHRlbmQgZXhl
+Y2xvZyB0byB0cmFjayByZWdpc3RlciBjaGFuZ2VzIiBkZXBlbmRzIG9uDQo+Pj4+ICJwbHVn
+aW5zOiBhZGQgYW4gQVBJIHRvIHJlYWQgcmVnaXN0ZXJzIi4gVGhlIGNvbW1lbnRzIGZvciB0
+aGUgcGF0Y2ggaW4NCj4+Pj4gdGhlIGZvbGxvd2luZyBlbWFpbCBhcmUgbm90IGFkZHJlc3Nl
+ZCB5ZXQ6DQo+Pj4+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC80YjIxNTZlZC02ODhk
+LTQ2MTctYjUyZC0yMDA0MTNmMDExNTZAZGF5bml4LmNvbS8NCj4+PiBJIGRvbid0IHRoaW5r
+IHdlIG5lZWQgdG8gc2VyaWFsaXNlIHdpdGggdGhlIEJRTCBhcyB0aGUgc3RydWN0dXJlcw0K
+Pj4+IGFyZQ0KPj4+IHBlci1DUFUgKGFuZCBjcmVhdGVkIG9uIHZDUFUgY3JlYXRpb24pLg0K
+Pj4NCj4+IHFlbXVfcGx1Z2luX2dldF9yZWdpc3RlcnMoKSBoYXMgdmNwdSBwYXJhbWV0ZXIs
+IHdoaWNoIGNhbiByZWZlciB0byBhDQo+PiBkaWZmZXJlbnQgdmNwdSB0aGUgY2FsbGVyIGlz
+IG9uIChvciB0aGUgY2FsbGVyIG1heSBub3QgYmUgaW4gYSB2Y3B1DQo+PiBjb250ZXh0IGF0
+IGFsbCkuDQo+IA0KPiBJdCBzaG91bGQgb25seSBiZSBjYWxsZWQgZnJvbSB0aGUgY3VycmVu
+dCBjcHUgY29udGV4dC4gV2UgY2FuIGVpdGhlcg0KPiBhc3NlcnQgdGhhdCBvciBtYWtlIGl0
+IGltcGxpY2l0IGxpa2UgcWVtdV9wbHVnaW5faW5zbl9kaXNhcyBkb2VzLg0KPiBIb3dldmVy
+IHdlIHdpbGwgbmVlZCB0byBlbnN1cmUgY3VycmVudF9jcHUgaXMgc2V0IGJlZm9yZSB0aGUg
+dmNwdV9pbml0DQo+IGNhbGxiYWNrLg0KPiANCj4gUGllcnJpY2sgaGFzIGhhZCB0byBtb3Zl
+IHRoZXNlIGluaXRpYWxpc2F0aW9ucyBhcm91bmQgZm9yIHRoZSBzY29yZWJvYXJkDQo+IHdv
+cmsgc28gdGhleSBhcmUgbm93IHJ1biB3aXRoIHNhZmUgd29yayBvbmNlIHRoZSB0aHJlYWQg
+c3RhcnRzLg0KPiANCg0KQXMgYSBjb21wbGVtZW50LCBpbiB0aGUgc2VyaWVzIEknbGwgcG9z
+dCwgdGhlIHdvcmsgaXMgcnVuIA0KYXN5bmNocm9ub3VzbHksIGJ1dCBub3QgInNhZmVfYXN5
+bmMiLCB3aGljaCBtZWFucyBpdCdzIG5vdCB1bmRlciBhbiANCmV4Y2x1c2l2ZSBzZWN0aW9u
+Lg0KDQpJZiB5b3UgbmVlZCB0aGlzIGd1YXJhbnRlZSBmb3IgcmVnaXN0ZXJzIEFQSSwgaXQn
+cyBiZXR0ZXIgdG8gYWRkIHRoaXMuDQoNCj4+DQo+Pj4gQXMgZmFyIGFzIHRoZSByZXN0cnVj
+dHVyaW5nIHdlIGNhbiBtb3ZlIGl0IGludG8gZ2Ric3R1YiBsYXRlciBpZg0KPj4+IHRoZXJl
+DQo+Pj4gaXMgYSBuZWVkIHRvLiBBdCB0aGUgbW9tZW50IHRoZSBzdHJ1Y3R1cmUgaXMganVz
+dCBob3VzZWtlZXBpbmcgZm9yDQo+Pj4gcGx1Z2lucy4NCj4+DQo+PiBDZXJ0YWlubHkgd2Ug
+Y2FuIG1vdmUgaXQgbGF0ZXIsIGJ1dCBhZGRpbmcgdGhlIGNvZGUgaW4gdGhlIHBsdWdpbg0K
+Pj4gaW5mcmFzdHJ1Y3R1cmUgbm93IHdvbid0IGhlbHAgaW4gdGhhdCBjYXNlLg0KPiANCg==
 
 
