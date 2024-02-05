@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2079D8494CC
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 08:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C96958494D7
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 08:50:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rWtiB-0003KC-7c; Mon, 05 Feb 2024 02:48:15 -0500
+	id 1rWtj0-0004SO-Bx; Mon, 05 Feb 2024 02:49:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthN-000334-NP
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:25 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthN-00033K-RM
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthE-00062x-Vy
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rWthE-000631-VJ
  for qemu-devel@nongnu.org; Mon, 05 Feb 2024 02:47:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707119236;
@@ -22,27 +22,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QNynqkKX4qBeTYspk/1SN2AngUmIP8zYz3tbq++y9GA=;
- b=JVGnN6ChoiB7XJqvkaDohYpVpGwNfp1LvoOQuVgBu3McWvd7qOWiMUmZuJDFkGgz14+794
- s0Ba0ViN3bPnYPVCyY569R7wSgzwoH3PMFETsWRn5H5M6D5T8vd5ej/U0sLupkbu0RaKpN
- +0HPMTWiz3FSZJhBr6eXIsehahbNFvg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-7OHGOt5UNOekdql2fumkMg-1; Mon, 05 Feb 2024 02:47:13 -0500
-X-MC-Unique: 7OHGOt5UNOekdql2fumkMg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=OQzW0p+QT9LYzfWwmryF3MrznKJEe76HrPn3qNYU0x0=;
+ b=h/YuMfaWjR50dJzBQLFZSwop4tP7UWHoGZZ2dNbSZ/q0L+qTmpbn2UB+C4TQ29x+cMzNWv
+ dPwe7fTliRiW8004cQ4kijrlg4NTkJbAiWMbdd6p+mtlsL/QIq6k34jHs2rOsVwsq9vbQS
+ V/1jObs3tzU3cfP1sNJsdD4oesCuzjI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-Pi0tI1IUNBen1y80-2RCKQ-1; Mon,
+ 05 Feb 2024 02:47:13 -0500
+X-MC-Unique: Pi0tI1IUNBen1y80-2RCKQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23B8D85A597;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 270413816B61;
  Mon,  5 Feb 2024 07:47:12 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.123])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EFF8A2026F95;
- Mon,  5 Feb 2024 07:47:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 008C72166B32;
+ Mon,  5 Feb 2024 07:47:12 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5B8D221E60F5; Mon,  5 Feb 2024 08:47:09 +0100 (CET)
+ id 5F61021E5A40; Mon,  5 Feb 2024 08:47:09 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: arei.gonglei@huawei.com, armbru@redhat.com, berrange@redhat.com,
@@ -54,15 +54,15 @@ Cc: arei.gonglei@huawei.com, armbru@redhat.com, berrange@redhat.com,
  pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
  philmd@linaro.org, pizhenwei@bytedance.com, qemu-block@nongnu.org,
  stefanb@linux.ibm.com, wangyanan55@huawei.com
-Subject: [PATCH 09/15] qga/qapi-schema: Plug trivial documentation holes
-Date: Mon,  5 Feb 2024 08:47:03 +0100
-Message-ID: <20240205074709.3613229-10-armbru@redhat.com>
+Subject: [PATCH 10/15] qapi/yank: Clean up documentaion of yank
+Date: Mon,  5 Feb 2024 08:47:04 +0100
+Message-ID: <20240205074709.3613229-11-armbru@redhat.com>
 In-Reply-To: <20240205074709.3613229-1-armbru@redhat.com>
 References: <20240205074709.3613229-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
@@ -88,101 +88,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add missing return member documentation of guest-get-disks,
-guest-get-devices, guest-get-diskstats, and guest-get-cpustats.
-
-The NVMe SMART information returned by guest-getdisks remains
-undocumented.  Add a TODO there.
+The command's doc comment describes the argument, but it's not marked
+up as such.  Easy enough to fix.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qga/qapi-schema.json | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ qapi/pragma.json | 3 +--
+ qapi/yank.json   | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index f3d168d542..b8efe31897 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -36,12 +36,6 @@
-         'guest-sync-delimited' ],
-     # Types and commands with undocumented members:
-     'documentation-exceptions': [
--        'GuestCpuStats',
--        'GuestCpuStatsType',
--        'GuestDeviceId',
--        'GuestDeviceType',
--        'GuestDiskSmart',
--        'GuestDiskStatsInfo',
-         'GuestNVMeSmart' ] } }
- 
- ##
-@@ -944,6 +938,8 @@
- # NVMe smart information, based on NVMe specification, section
- # <SMART / Health Information (Log Identifier 02h)>
+diff --git a/qapi/pragma.json b/qapi/pragma.json
+index 0fa64742b5..544f138afa 100644
+--- a/qapi/pragma.json
++++ b/qapi/pragma.json
+@@ -148,8 +148,7 @@
+         'query-rocker',
+         'query-rocker-ports',
+         'query-stats-schemas',
+-        'watchdog-set-action',
+-        'yank' ],
++        'watchdog-set-action' ],
+     # Externally visible types whose member names may use uppercase
+     'member-name-exceptions': [     # visible in:
+         'ACPISlotType',             # query-acpi-ospm-status
+diff --git a/qapi/yank.json b/qapi/yank.json
+index 60eda20816..bfc71a07a6 100644
+--- a/qapi/yank.json
++++ b/qapi/yank.json
+@@ -74,7 +74,7 @@
+ # Try to recover from hanging QEMU by yanking the specified instances.
+ # See @YankInstance for more information.
  #
-+# TODO: document members briefly
-+#
- # Since: 7.1
- ##
- { 'struct': 'GuestNVMeSmart',
-@@ -978,7 +974,7 @@
+-# Takes a list of @YankInstance as argument.
++# @instances: the instances to be yanked
  #
- # Disk type related smart information.
- #
--# - @nvme: NVMe disk smart
-+# @type: disk bus type
- #
- # Since: 7.1
- ##
-@@ -1499,6 +1495,8 @@
- 
- ##
- # @GuestDeviceType:
-+#
-+# @pci: PCI device
- ##
- { 'enum': 'GuestDeviceType',
-   'data': [ 'pci' ] }
-@@ -1518,7 +1516,9 @@
- ##
- # @GuestDeviceId:
- #
--# Id of the device - @pci: PCI ID, since: 5.2
-+# Id of the device
-+#
-+# @type: device type
- #
- # Since: 5.2
- ##
-@@ -1700,6 +1700,8 @@
- # @major: major device number of disk
- #
- # @minor: minor device number of disk
-+#
-+# @stats: I/O statistics
- ##
- { 'struct': 'GuestDiskStatsInfo',
-   'data': {'name': 'str',
-@@ -1723,7 +1725,9 @@
- ##
- # @GuestCpuStatsType:
- #
--# An enumeration of OS type
-+# Guest operating systems supporting CPU statistics
-+#
-+# @linux: Linux
- #
- # Since: 7.1
- ##
-@@ -1780,7 +1784,7 @@
- #
- # Get statistics of each CPU in millisecond.
- #
--# - @linux: Linux style CPU statistics
-+# @type: guest operating system
- #
- # Since: 7.1
- ##
+ # Returns:
+ #     - Nothing on success
 -- 
 2.43.0
 
