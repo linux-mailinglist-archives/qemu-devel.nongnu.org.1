@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A116C84A00C
+	by mail.lfdr.de (Postfix) with ESMTPS id 5685884A00B
 	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX2FU-0003q3-6c; Mon, 05 Feb 2024 11:55:12 -0500
+	id 1rX2FZ-0003qq-Lf; Mon, 05 Feb 2024 11:55:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FR-0003pR-1x
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:09 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FW-0003qO-2O
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:14 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FK-0000Vm-La
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:08 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a26ed1e05c7so647057166b.2
- for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:55:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2FL-0000Vt-Nb
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:55:13 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a358ec50b7cso595256766b.0
+ for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:55:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152100; x=1707756900;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152101; x=1707756901;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GE9FQp5IqKdaxvICnBK99j0uS0woDRaiB8rUGevheDU=;
- b=2O5VzVjS5r8fQO4AfqDoRIl9E5+091BKn2hbcBGeAlFsL/4Erj+QhpfUZfSKChamlj
- WzD7Hv31BdEJtNspbIeJcz1DIHH1uffF/q5UdbgVNv3TWfQJRmE5JCOxgLn9W5jY1M67
- SKDIETReJCHL29HLv6xpgggta4ED5HB/lwVKDknCn3B9hOVrDUasfY3XhLPflNK4Hni1
- iSujTl8zMQ4ky9ODQ5bDYD6x/OxTCnWXKetCt+j87MkVcMum6q+mKGZB7BLf15J1NWLb
- gPNPHqa5qzkhoHIFnjPF9f6Vo0koD6vW0iEeDPIuTHo1b2i3zgAE4oUsh8vkNt8/+uL7
- TUjQ==
+ bh=0rMmDjSiGyECuYPwrOF9gTLiEHicLAPkrFRPryZWGJ8=;
+ b=f9yvxUpUHH9exiBfNhoPjr7CyGEY1vjb8Ya/7y+xThSq6VHojFDP2OaNPeORUDf4FL
+ SjsVzPoZWGWGpRupzTPxWqvkwf8GEODucD5jFaDhNfqbyqo2qQyaOhNfNeJYjMWkUMJ+
+ rFPYCdUzJHPsZGLkPfxGtN8D/kMBlXoRmpvuIK5+Z/boDekX5sWFCGF1Bobzm4YkUTDa
+ yYSPNbZxONJOmGS4N6ft0G5uGCr3ZARcvHSw4ynswhTyQr8PUofjPC8R0SOtQWRARFfc
+ C/cgbaswE0Wc/X55wg6uL+Zbl6h5rKYE9K6+Tgs5LzzNdhtBVx4zF+uaLqHOGgCCUbi4
+ ODCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707152100; x=1707756900;
+ d=1e100.net; s=20230601; t=1707152101; x=1707756901;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GE9FQp5IqKdaxvICnBK99j0uS0woDRaiB8rUGevheDU=;
- b=w9pTrGsmhR+7q5hNmg7VTtSM3s7GIEAf/UAO+iQLV2qFJvfWmEoD8NNAlXjYKVzIqJ
- UcC5uDR3LjmObhkfahFetUpokujopE3CaTq1zMjneR0x5qiMHswZEsPdoY84oW37CBuA
- jv1dTnmngOPe80Z6dhkkg8Z3+NcL7RY8xhwpACRyVI5ldXoF8GiNMebi/Wf+FOFtnRWR
- qIWPYDntocSqQ3Y9PSAdzjSjUzAZYFeC/lopY7HcM1LpLzW7jGVdiL62e8H3JGPduKEl
- OgW3IlsjjbYa00xrSZlzd7lw+EckyHB9lNWoM168xUCbfgcXle+6lfJ6z4nVAs/h1VCm
- JV0w==
-X-Gm-Message-State: AOJu0Yxhdk6R0DfBvCZaBAp3Loh4nO/cWUyXRKbDpyfBNLwZk8w2Lq/l
- yPyPSNmM8hiratt084Fw6e6s9PoythfxLD8eUrjh2okjrfE+bOkfjD4mX8P97ISIik2TN/QUSZR
- W
-X-Google-Smtp-Source: AGHT+IETP2Pws+k5yTJ65XAWi6U5TGzI86Ndt0MYkDQHVvBUOCnjA3mPWSkMb2t2QGnoSwcxYc0jpA==
-X-Received: by 2002:a17:907:3e8f:b0:a36:696e:c542 with SMTP id
- hs15-20020a1709073e8f00b00a36696ec542mr14076ejc.33.1707152100157; 
+ bh=0rMmDjSiGyECuYPwrOF9gTLiEHicLAPkrFRPryZWGJ8=;
+ b=QtY9Bk3qddR9OVUKcnm47sWTc8Xm/w8j/dlwXYbT/j1QPx2FFBnNhysg54F56JqJ86
+ IhXjmkBtHBdEEp/ljEAe/wuwtKTYwyxfqCnr3PXHrDUhel/rpy0kIkNHfPLGNSSSpcpn
+ F9wtD+xRTbp8uqby5cd7LSxZfOVEzjHKUVZQcuBpZIrA/3vn37blaZyoRGJF3Ka86siL
+ TrxA0gzNlUeiLTVORCJgqU8uM7yrMUrpcd7V/IMi/da2P35VS9Q82Mys94kb6cXxtpqh
+ Lfi6+mBOWuFMv8tXNpiOF40RtMbo2nobEjps+AMfcTLeJiCpluhoBuDWNpj4fcCf0n6I
+ /qEg==
+X-Gm-Message-State: AOJu0YwoqSEEPtZfpwoFgbai17uovDYTXziHFHRF1u3cgoyBn4Di+bLG
+ Q5YxiYIaJW44hzFKRX0b7xI1NlrJNaRNUCkmKAFrwHz1Halx2jOYaK8jTjrpcyQ=
+X-Google-Smtp-Source: AGHT+IE/REQp1hrFldnVfmT/xvBHi4t1H6oDQk8kvGkx3R0AgU/6VLSWhTjMprxToysCmvLY/N+rVw==
+X-Received: by 2002:a17:906:40d9:b0:a37:aeab:76d0 with SMTP id
+ a25-20020a17090640d900b00a37aeab76d0mr271175ejk.3.1707152100973; 
  Mon, 05 Feb 2024 08:55:00 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCVZAbbvUgkCRTWjxdL5G784WEQoeB4zMmi20eNjQtHOjsX0KF3W7PKTtavJrCTumbZuDxjZpw/ssfd94EEKM2bV8TjGEZI2EmphBZJsGCjf0Lhcn/eBjYZxOiaA9Vl/sG9GaOk4Wew0NnR4JuvgKnCqCNfVgRqWts5bL4E1lZgJ54Z+gv39aWvCW7Ht7uCkcIhbGoM8ESWDp+WcTDd4dQUJi0hkIUWKWaiDMXH1lry7dd8hyXeVbp77Zkk=
+ AJvYcCX9Qw4RcvirVzLJEC4rradImiUcZ/Vk3bsm+auLg+fOchOBUIzybUbSj8zakaMtAlYF4/mODUVAiyX5VPEkA2a+NUaPZIdcdn+BAP8Is08DXAq4ZeggoFzu8JmYeQsq9Ro0hloW5sM4tKTzt9pG/o/4AXiehZjlrRgosM9ri3S7wV6djCdPTc55pmhLvdXjQ2+x5KvdNa0VPVuMKDGE3eRer/3Rmul9rhD9YFPidJ+TlPqYd8v8a3u2qbM=
 Received: from navi.cosmonova.net.ua ([95.67.24.131])
  by smtp.gmail.com with ESMTPSA id
- z14-20020a170906074e00b00a370a76d3a0sm20580ejb.123.2024.02.05.08.54.59
+ z14-20020a170906074e00b00a370a76d3a0sm20580ejb.123.2024.02.05.08.55.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 Feb 2024 08:54:59 -0800 (PST)
+ Mon, 05 Feb 2024 08:55:00 -0800 (PST)
 From: Andrew Melnychenko <andrew@daynix.com>
 To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
  qemu-devel@nongnu.org, berrange@redhat.com
 Cc: yuri.benditovich@daynix.com,
 	yan@daynix.com,
 	akihiko.odaki@daynix.com
-Subject: [PATCH v9 2/5] ebpf: Added eBPF initialization by fds.
-Date: Mon,  5 Feb 2024 18:54:32 +0200
-Message-ID: <20240205165437.1965981-3-andrew@daynix.com>
+Subject: [PATCH v9 3/5] virtio-net: Added property to load eBPF RSS with fds.
+Date: Mon,  5 Feb 2024 18:54:33 +0200
+Message-ID: <20240205165437.1965981-4-andrew@daynix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240205165437.1965981-1-andrew@daynix.com>
 References: <20240205165437.1965981-1-andrew@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::62d;
- envelope-from=andrew@daynix.com; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: none client-ip=2a00:1450:4864:20::630;
+ envelope-from=andrew@daynix.com; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,96 +94,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It allows using file descriptors of eBPF provided
-outside of QEMU.
-QEMU may be run without capabilities for eBPF and run
-RSS program provided by management tool(g.e. libvirt).
+eBPF RSS program and maps may now be passed during initialization.
+Initially was implemented for libvirt to launch qemu without permissions,
+and initialized eBPF program through the helper.
 
 Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 ---
- ebpf/ebpf_rss-stub.c |  6 ++++++
- ebpf/ebpf_rss.c      | 27 +++++++++++++++++++++++++++
- ebpf/ebpf_rss.h      |  5 +++++
- 3 files changed, 38 insertions(+)
+ hw/net/virtio-net.c            | 54 ++++++++++++++++++++++++++++++----
+ include/hw/virtio/virtio-net.h |  2 ++
+ 2 files changed, 50 insertions(+), 6 deletions(-)
 
-diff --git a/ebpf/ebpf_rss-stub.c b/ebpf/ebpf_rss-stub.c
-index e71e229190..8d7fae2ad9 100644
---- a/ebpf/ebpf_rss-stub.c
-+++ b/ebpf/ebpf_rss-stub.c
-@@ -28,6 +28,12 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
-     return false;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 5a79bc3a3a..d6dc5ff2ea 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -42,6 +42,7 @@
+ #include "sysemu/sysemu.h"
+ #include "trace.h"
+ #include "monitor/qdev.h"
++#include "monitor/monitor.h"
+ #include "hw/pci/pci_device.h"
+ #include "net_rx_pkt.h"
+ #include "hw/virtio/vhost.h"
+@@ -1328,14 +1329,53 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n)
+     virtio_net_attach_ebpf_to_backend(n->nic, -1);
  }
  
-+bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
-+                       int config_fd, int toeplitz_fd, int table_fd)
-+{
-+    return false;
+-static bool virtio_net_load_ebpf(VirtIONet *n)
++static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
+ {
+-    if (!virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
+-        /* backend doesn't support steering ebpf */
+-        return false;
++    int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
++    int ret = true;
++    int i = 0;
++
++    ERRP_GUARD();
++
++    if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
++        error_setg(errp,
++                  "Expected %d file descriptors but got %d",
++                  EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
++       return false;
++   }
++
++    for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
++        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i], errp);
++        if (*errp) {
++            ret = false;
++            goto exit;
++        }
++    }
++
++    ret = ebpf_rss_load_fds(&n->ebpf_rss, fds[0], fds[1], fds[2], fds[3]);
++
++exit:
++    if (!ret || *errp) {
++        for (i = 0; i < n->nr_ebpf_rss_fds && fds[i] != -1; i++) {
++            close(fds[i]);
++        }
+     }
+ 
+-    return ebpf_rss_load(&n->ebpf_rss);
++    return ret;
 +}
 +
- bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
-                       uint16_t *indirections_table, uint8_t *toeplitz_key)
- {
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index f774d9636b..150aa40813 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -146,6 +146,33 @@ error:
-     return false;
++static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
++{
++    bool ret = false;
++
++    if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
++        if (!(n->ebpf_rss_fds
++                && virtio_net_load_ebpf_fds(n, errp))) {
++            ret = ebpf_rss_load(&n->ebpf_rss);
++        }
++    }
++
++    return ret;
  }
  
-+bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
-+                       int config_fd, int toeplitz_fd, int table_fd)
-+{
-+    if (ebpf_rss_is_loaded(ctx)) {
-+        return false;
-+    }
-+
-+    if (program_fd < 0 || config_fd < 0 || toeplitz_fd < 0 || table_fd < 0) {
-+        return false;
-+    }
-+
-+    ctx->program_fd = program_fd;
-+    ctx->map_configuration = config_fd;
-+    ctx->map_toeplitz_key = toeplitz_fd;
-+    ctx->map_indirections_table = table_fd;
-+
-+    if (!ebpf_rss_mmap(ctx)) {
-+        ctx->program_fd = -1;
-+        ctx->map_configuration = -1;
-+        ctx->map_toeplitz_key = -1;
-+        ctx->map_indirections_table = -1;
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
-                                 struct EBPFRSSConfig *config)
- {
-diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-index ab08a7266d..239242b0d2 100644
---- a/ebpf/ebpf_rss.h
-+++ b/ebpf/ebpf_rss.h
-@@ -14,6 +14,8 @@
- #ifndef QEMU_EBPF_RSS_H
- #define QEMU_EBPF_RSS_H
+ static void virtio_net_unload_ebpf(VirtIONet *n)
+@@ -3767,7 +3807,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     net_rx_pkt_init(&n->rx_pkt);
  
-+#define EBPF_RSS_MAX_FDS 4
-+
- struct EBPFRSSContext {
-     void *obj;
-     int program_fd;
-@@ -41,6 +43,9 @@ bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx);
+     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
+-        virtio_net_load_ebpf(n);
++        virtio_net_load_ebpf(n, errp);
+     }
+ }
  
- bool ebpf_rss_load(struct EBPFRSSContext *ctx);
+@@ -3929,6 +3969,8 @@ static Property virtio_net_properties[] = {
+                     VIRTIO_NET_F_RSS, false),
+     DEFINE_PROP_BIT64("hash", VirtIONet, host_features,
+                     VIRTIO_NET_F_HASH_REPORT, false),
++    DEFINE_PROP_ARRAY("ebpf-rss-fds", VirtIONet, nr_ebpf_rss_fds,
++                      ebpf_rss_fds, qdev_prop_string, char*),
+     DEFINE_PROP_BIT64("guest_rsc_ext", VirtIONet, host_features,
+                     VIRTIO_NET_F_RSC_EXT, false),
+     DEFINE_PROP_UINT32("rsc_interval", VirtIONet, rsc_timeout,
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 55977f01f0..566ec53e7e 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -225,6 +225,8 @@ struct VirtIONet {
+     VirtioNetRssData rss_data;
+     struct NetRxPkt *rx_pkt;
+     struct EBPFRSSContext ebpf_rss;
++    uint32_t nr_ebpf_rss_fds;
++    char **ebpf_rss_fds;
+ };
  
-+bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
-+                       int config_fd, int toeplitz_fd, int table_fd);
-+
- bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
-                       uint16_t *indirections_table, uint8_t *toeplitz_key);
- 
+ size_t virtio_net_handle_ctrl_iov(VirtIODevice *vdev,
 -- 
 2.43.0
 
