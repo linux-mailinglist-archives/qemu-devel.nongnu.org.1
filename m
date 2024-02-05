@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA4C84A1DF
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 19:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C9484A1E7
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 19:15:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX3Tt-0005zy-7e; Mon, 05 Feb 2024 13:14:10 -0500
+	id 1rX3Tu-00060g-SK; Mon, 05 Feb 2024 13:14:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rX3Tq-0005zb-Vk
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rX3Tr-0005zj-GW
  for qemu-devel@nongnu.org; Mon, 05 Feb 2024 13:14:07 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rX3Tn-0005tb-VG
- for qemu-devel@nongnu.org; Mon, 05 Feb 2024 13:14:06 -0500
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rX3Tq-0005vC-0w
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 13:14:07 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 415HuU4N020446; Mon, 5 Feb 2024 18:14:01 GMT
+ 415HfKdY030782; Mon, 5 Feb 2024 18:14:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=+tlkukPWLeQ6WDnmUAlPzilmjd4qxQFNB9qyvD8yiI8=;
- b=X8PgDf6dAmuK2QkD+t/c0u6xb9k7QliqWWM6yvqJ4pz0drPCPL1oGvwJEsPygnfIOc4Y
- FyLNxaWZmQGtaxKvqWe5DEx7kDtcDPdS0rJtq+H81rNnwnzYhAeoq+qFfslSny4YsDJ6
- nyvvIui+UF7exp/2IEnBahHuYHZQB4WqsqvYtPRJgFJ6NmlaiCBkm+axvMOh9fKnrvLP
- ZsOEUjddjCG98u7qoONVR17wMYfzSFeCCpzyaxIrNX6qYXYCkcbM115MSv0Bb1jTErmL
- NNHnkfkP1cX3DpHXBtaz6sPqoklqkXA+4CxJkaNt72WxM4sxwpl1gktW01Q2rjntO6IL Zg== 
+ bh=OjpwU5KDoZLOFP+X0NzCRTTWcd2Mc/m/SMvsZ+X6Cz4=;
+ b=eVXSaxcxGEAvx0zLCorm3fGgWkbyZ920kOS/DMWIBo/jxuuSdjBfgLkBJUSAVXtQ6/aV
+ gfK3fLt5D3VQtQM0bSa37aivupVrNJe1FPhhSmqXKxcuL29GQaSLZjHcRJ7zTs7ur1CB
+ Dohr2cKNyPvorCgHFqeCtMGBTYNOdmRkl+lKhpfWQA50Fh9nY30kieLmImEkXxgwpk0c
+ 5spr89X/bfeihLdxO/5v+CQUrsj7juKRepn1Yb6Mqema4ix7pBOKzbqXPIjDP3QCFc2V
+ Gg3ePnKg9Pa5RrTQXyuw3Wt8ojDrUPdQUxLAQb9eBSnoqXQGw6dnbCHt8ydjzqJU9D3W ZQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w34gyge8s-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w341c17fm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Feb 2024 18:14:02 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415HQ6au005911;
+ Mon, 5 Feb 2024 18:14:01 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w341c17ey-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 05 Feb 2024 18:14:01 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 415I2jBP008478; Mon, 5 Feb 2024 18:14:00 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w221jsrya-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 05 Feb 2024 18:14:00 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415HwZ21025664;
- Mon, 5 Feb 2024 18:14:00 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w34gyge82-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Feb 2024 18:14:00 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 415HILbW005756; Mon, 5 Feb 2024 18:13:59 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w21aka0bh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 Feb 2024 18:13:59 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 415IDv2W22610466
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 415IDwZ237814786
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 5 Feb 2024 18:13:57 GMT
+ Mon, 5 Feb 2024 18:13:58 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 61D3420043;
+ by IMSVA (Postfix) with ESMTP id 6AD8A20040;
+ Mon,  5 Feb 2024 18:13:58 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9C3E20043;
  Mon,  5 Feb 2024 18:13:57 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AECA520040;
- Mon,  5 Feb 2024 18:13:56 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.171.57.170])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  5 Feb 2024 18:13:56 +0000 (GMT)
+ Mon,  5 Feb 2024 18:13:57 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -75,25 +75,26 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Kyle Evans <kevans@freebsd.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/4] tests/vm/freebsd: Reload the sshd configuration
-Date: Mon,  5 Feb 2024 19:11:33 +0100
-Message-ID: <20240205181352.1567-3-iii@linux.ibm.com>
+Subject: [PATCH v2 3/4] tests/test-util-filemonitor: Adapt to FreeBSD inotify
+ rename semantics
+Date: Mon,  5 Feb 2024 19:11:34 +0100
+Message-ID: <20240205181352.1567-4-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240205181352.1567-1-iii@linux.ibm.com>
 References: <20240205181352.1567-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8AU3CE_MnLRwABmgbaFRk__gSP-v-e9N
-X-Proofpoint-ORIG-GUID: cAynI-UH-Rb65ZTzm-z57feTwjfjpvOv
+X-Proofpoint-ORIG-GUID: TKvzF6rb8w3FB_1-6OVzMt_oO24HccLN
+X-Proofpoint-GUID: i1yEtzIAmxO4G28gF1ajzyA9y5ZTgwvz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-05_12,2024-01-31_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- bulkscore=0 mlxlogscore=999 clxscore=1015 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402050137
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -119,71 +120,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After console_sshd_config(), the SSH server needs to be nudged to pick
-up the new configs. The scripts for the other BSD flavors already do
-this with a reboot, but a simple reload is sufficient.
+Unlike on Linux, on FreeBSD renaming a file when the destination
+already exists results in IN_DELETE event for that existing file:
 
+    $ FILEMONITOR_DEBUG=1 build/tests/unit/test-util-filemonitor
+    Rename /tmp/test-util-filemonitor-K13LI2/fish/one.txt -> /tmp/test-util-filemonitor-K13LI2/two.txt
+    Event id=200000000 event=2 file=one.txt
+    Queue event id 200000000 event 2 file one.txt
+    Queue event id 100000000 event 2 file two.txt
+    Queue event id 100000002 event 2 file two.txt
+    Queue event id 100000000 event 0 file two.txt
+    Queue event id 100000002 event 0 file two.txt
+    Event id=100000000 event=0 file=two.txt
+    Expected event 0 but got 2
+
+This difference in behavior is not expected to break the real users, so
+teach the test to accept it.
+
+Suggested-by: Daniel P. Berrange <berrange@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- tests/vm/freebsd | 1 +
- 1 file changed, 1 insertion(+)
+ tests/unit/test-util-filemonitor.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-index b581bd17fb7..1247f40a385 100755
---- a/tests/vm/freebsd
-+++ b/tests/vm/freebsd
-@@ -81,50 +81,51 @@ class FreeBSDVM(basevm.BaseVM):
-         self.console_wait("Full name")
-         self.console_send("%s\n" % self._config["guest_user"])
-         self.console_wait_send("Uid",                   "\n")
-         self.console_wait_send("Login group",           "\n")
-         self.console_wait_send("Login group",           "\n")
-         self.console_wait_send("Login class",           "\n")
-         self.console_wait_send("Shell",                 "\n")
-         self.console_wait_send("Home directory",        "\n")
-         self.console_wait_send("Home directory perm",   "\n")
-         self.console_wait_send("Use password",          "\n")
-         self.console_wait_send("Use an empty password", "\n")
-         self.console_wait_send("Use a random password", "\n")
-         self.console_wait("Enter password:")
-         self.console_send("%s\n" % self._config["guest_pass"])
-         self.console_wait("Enter password again:")
-         self.console_send("%s\n" % self._config["guest_pass"])
-         self.console_wait_send("Lock out",              "\n")
-         self.console_wait_send("OK",                    "yes\n")
-         self.console_wait_send("Add another user",      "no\n")
-         self.console_wait_send("~ #", "exit\n")
+diff --git a/tests/unit/test-util-filemonitor.c b/tests/unit/test-util-filemonitor.c
+index a22de275955..02e67fc96ac 100644
+--- a/tests/unit/test-util-filemonitor.c
++++ b/tests/unit/test-util-filemonitor.c
+@@ -333,60 +333,68 @@ test_file_monitor_events(void)
  
-         # setup qemu user
-         prompt = "$"
-         self.console_ssh_init(prompt, self._config["guest_user"], self._config["guest_pass"])
-         self.console_wait_send(prompt, "exit\n")
  
-         # setup root user
-         prompt = "root@freebsd:~ #"
-         self.console_ssh_init(prompt, "root", self._config["root_pass"])
-         self.console_sshd_config(prompt)
-+        self.console_wait_send(prompt, "service sshd reload\n")
+         { .type = QFILE_MONITOR_TEST_OP_MKDIR,
+           .filesrc = "fish", },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "fish", .watchid = &watch0,
+           .eventid = QFILE_MONITOR_EVENT_CREATED },
  
-         # setup virtio-blk #1 (tarfile)
-         self.console_wait(prompt)
-         self.console_send("echo 'chmod 666 /dev/vtbd1' >> /etc/rc.local\n")
  
-         pkgs = self.get_qemu_packages_from_lcitool_json()
-         self.print_step("Installing packages")
-         self.ssh_root_check("pkg install -y %s\n" % " ".join(pkgs))
+         { .type = QFILE_MONITOR_TEST_OP_ADD_WATCH,
+           .filesrc = "fish/", .watchid = &watch4 },
+         { .type = QFILE_MONITOR_TEST_OP_ADD_WATCH,
+           .filesrc = "fish/one.txt", .watchid = &watch5 },
+         { .type = QFILE_MONITOR_TEST_OP_CREATE,
+           .filesrc = "fish/one.txt", },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "one.txt", .watchid = &watch4,
+           .eventid = QFILE_MONITOR_EVENT_CREATED },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "one.txt", .watchid = &watch5,
+           .eventid = QFILE_MONITOR_EVENT_CREATED },
  
-         # shutdown
-         self.ssh_root(self.poweroff)
-         self.wait()
  
-         if os.path.exists(img):
-             os.remove(img)
-         os.rename(img_tmp, img)
-         self.print_step("All done")
+         { .type = QFILE_MONITOR_TEST_OP_DEL_WATCH,
+           .filesrc = "fish/one.txt", .watchid = &watch5 },
+         { .type = QFILE_MONITOR_TEST_OP_RENAME,
+           .filesrc = "fish/one.txt", .filedst = "two.txt", },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "one.txt", .watchid = &watch4,
+           .eventid = QFILE_MONITOR_EVENT_DELETED },
++#ifdef __FreeBSD__
++        { .type = QFILE_MONITOR_TEST_OP_EVENT,
++          .filesrc = "two.txt", .watchid = &watch0,
++          .eventid = QFILE_MONITOR_EVENT_DELETED },
++        { .type = QFILE_MONITOR_TEST_OP_EVENT,
++          .filesrc = "two.txt", .watchid = &watch2,
++          .eventid = QFILE_MONITOR_EVENT_DELETED },
++#endif
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "two.txt", .watchid = &watch0,
+           .eventid = QFILE_MONITOR_EVENT_CREATED },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "two.txt", .watchid = &watch2,
+           .eventid = QFILE_MONITOR_EVENT_CREATED },
  
- if __name__ == "__main__":
-     sys.exit(basevm.main(FreeBSDVM, config=FREEBSD_CONFIG))
+ 
+         { .type = QFILE_MONITOR_TEST_OP_RMDIR,
+           .filesrc = "fish", },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "", .watchid = &watch4,
+           .eventid = QFILE_MONITOR_EVENT_IGNORED,
+           .swapnext = true },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "fish", .watchid = &watch0,
+           .eventid = QFILE_MONITOR_EVENT_DELETED },
+         { .type = QFILE_MONITOR_TEST_OP_DEL_WATCH,
+           .filesrc = "fish", .watchid = &watch4 },
+ 
+ 
+         { .type = QFILE_MONITOR_TEST_OP_UNLINK,
+           .filesrc = "two.txt", },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "two.txt", .watchid = &watch0,
+           .eventid = QFILE_MONITOR_EVENT_DELETED },
+         { .type = QFILE_MONITOR_TEST_OP_EVENT,
+           .filesrc = "two.txt", .watchid = &watch2,
+           .eventid = QFILE_MONITOR_EVENT_DELETED },
+ 
 -- 
 2.43.0
 
