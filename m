@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2383B849FA9
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A59A784A00D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 Feb 2024 17:56:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rX23U-0001rD-Df; Mon, 05 Feb 2024 11:42:48 -0500
+	id 1rX2F4-0003n1-B9; Mon, 05 Feb 2024 11:54:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rX23R-0001qi-Tr; Mon, 05 Feb 2024 11:42:45 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rX23Q-0005np-5D; Mon, 05 Feb 2024 11:42:45 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 05A8B4A8BF;
- Mon,  5 Feb 2024 19:43:47 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1AFB9743B0;
- Mon,  5 Feb 2024 19:42:39 +0300 (MSK)
-Message-ID: <d0f48917-40e1-42cf-8c8a-6cb97597918f@tls.msk.ru>
-Date: Mon, 5 Feb 2024 19:42:38 +0300
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2F0-0003ms-88
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:54:42 -0500
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rX2Ex-0000TP-Oa
+ for qemu-devel@nongnu.org; Mon, 05 Feb 2024 11:54:41 -0500
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a2a17f3217aso622214266b.2
+ for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 08:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707152078; x=1707756878;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AWshMZuaQU6ApJW4M686vXIXabvTwj1m/34vJ8RbgzU=;
+ b=MQw5B5LJCWQwntZg3Ivzo5Gs6+jhgP4shFeG1xlpvWqhAOMSrBzPdMgyLnCXPdyUM1
+ RQvu94by4DmxSHz89bKx/w/Alh7oYF1qXUobmKuj1+CYcnyHl24MLfW3l0apf+af+wp3
+ Lppow56ncvondWaKyD9HuRQ9BGBkw8Uwa7AvtsKKCTxqmwh4NUnmtd/bwQ9185CtonVN
+ AbvkRIKXlczHBNqTMBzKatc9n71NibrWXsNOcysrekHTW+ekdLfC8dKCw+AGNN+p9788
+ MeTPx5BuTY+xWzOIVnc7Tfj6dy/3mZYMMRFtLY3n61XU+3SWuKz2LEmcpc/XTPBHDLcY
+ eajA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707152078; x=1707756878;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AWshMZuaQU6ApJW4M686vXIXabvTwj1m/34vJ8RbgzU=;
+ b=mb5J2Vx0TVgivnQDfDOxnwooWeToJ/tPkpwcCrrOfo9M3IgSYv7YdBpa+T1tPmt01B
+ az06WdVA3aCnNj6TRXYtn2hO4h3JQfbeN1vMTDtyLP1kSya95T/iSngZc+O6LQ8mlcyA
+ iBZd/WXRNz+tJpsB3ADJSEKBDPfQzWwshu7SV61vBy7xA4Y/MzWMKpymHfBItOEbg+GZ
+ 6lTNUkRNPO1r8yUNJq104YYAFpmWVZQaBuOiXggGdIBXoLKS8ufuWZvAOAskDWkvebC9
+ n3CGA57niufy6bHQ+UGQybR/P/X07vSAoD0v++oBohCp2u6ioEbNJbtFwcWKZX9wu2PA
+ jBPw==
+X-Gm-Message-State: AOJu0Yyrs0stkuJ1xBIwFldYxPCIN+PXxKCpxSw1VLmcv2Zod/Oc5oze
+ zNJRPKZyG8/KbxdZCxD53Z7ARfYt5HQThno8TkbKD8v0C5x0vkBoFJwqGTVCrDK5JnJsTcIAkY2
+ 2lhs/ohqoyEZfEn4B0Mde+tv71TVuhtfZDd0lGIHT1nacMEV+
+X-Google-Smtp-Source: AGHT+IESB1GdWyfCmwevFndSFSWvnx36muJEb+cQwadBvNdBlqsXe8MZr/IRiwTByN3YiVEkWMAZnrLa+4LvEPUKTk4=
+X-Received: by 2002:a17:906:e252:b0:a36:927e:cc0 with SMTP id
+ gq18-20020a170906e25200b00a36927e0cc0mr17894ejb.9.1707152077826; Mon, 05 Feb
+ 2024 08:54:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iotests: give tempdir an identifying name
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
-References: <20240205155158.1843304-1-berrange@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240205155158.1843304-1-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240125130656.425607-1-andrew@daynix.com>
+ <20240125130656.425607-2-andrew@daynix.com>
+ <ZbjRhyNtjajkYQ8i@redhat.com>
+In-Reply-To: <ZbjRhyNtjajkYQ8i@redhat.com>
+From: Andrew Melnichenko <andrew@daynix.com>
+Date: Mon, 5 Feb 2024 18:54:26 +0200
+Message-ID: <CABcq3pHikAHdaMN5k-gLktD_k1LODJuH-ZOojzyxNyv+iuevdQ@mail.gmail.com>
+Subject: Re: [PATCH v8 1/5] ebpf: Added eBPF map update through mmap.
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
+ qemu-devel@nongnu.org, yuri.benditovich@daynix.com, yan@daynix.com, 
+ akihiko.odaki@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: none client-ip=2a00:1450:4864:20::62c;
+ envelope-from=andrew@daynix.com; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,34 +89,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-05.02.2024 18:51, Daniel P. Berrangé wrote:
-> If something goes wrong causing the iotests not to cleanup their
-> temporary directory, it is useful if the dir had an identifying
-> name to show what is to blame.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Hi all,
+I'll revert the license changes and leave SPDX ids only for new files.
 
-Revieved-by: Michael Tokarev <mjt@tls.msk.ru>
-
-Thank you again for the quick good work!
-
-/mjt
-
->   tests/qemu-iotests/testenv.py | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qemu-iotests/testenv.py b/tests/qemu-iotests/testenv.py
-> index 3ff38f2661..588f30a4f1 100644
-> --- a/tests/qemu-iotests/testenv.py
-> +++ b/tests/qemu-iotests/testenv.py
-> @@ -126,7 +126,7 @@ def init_directories(self) -> None:
->               self.tmp_sock_dir = False
->               Path(self.sock_dir).mkdir(parents=True, exist_ok=True)
->           except KeyError:
-> -            self.sock_dir = tempfile.mkdtemp()
-> +            self.sock_dir = tempfile.mkdtemp(prefix="qemu-iotests-")
->               self.tmp_sock_dir = True
->   
->           self.sample_img_dir = os.getenv('SAMPLE_IMG_DIR',
-
+On Tue, Jan 30, 2024 at 12:38=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
+redhat.com> wrote:
+>
+> On Thu, Jan 25, 2024 at 03:06:50PM +0200, Andrew Melnychenko wrote:
+> > Changed eBPF map updates through mmaped array.
+> > Mmaped arrays provide direct access to map data.
+> > It should omit using bpf_map_update_elem() call,
+> > which may require capabilities that are not present.
+> >
+> > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> > ---
+> >  ebpf/ebpf_rss.c | 120 ++++++++++++++++++++++++++++++++++++++----------
+> >  ebpf/ebpf_rss.h |   8 +++-
+> >  2 files changed, 101 insertions(+), 27 deletions(-)
+> >
+> > diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+> > index cee658c158..c6e10265a7 100644
+> > --- a/ebpf/ebpf_rss.c
+> > +++ b/ebpf/ebpf_rss.c
+> > @@ -7,8 +7,7 @@
+> >   *  Andrew Melnychenko <andrew@daynix.com>
+> >   *  Yuri Benditovich <yuri.benditovich@daynix.com>
+> >   *
+> > - * This work is licensed under the terms of the GNU GPL, version 2.  S=
+ee
+> > - * the COPYING file in the top-level directory.
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+>
+>
+> > diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
+> > index bf3f2572c7..404cf53613 100644
+> > --- a/ebpf/ebpf_rss.h
+> > +++ b/ebpf/ebpf_rss.h
+> > @@ -7,8 +7,7 @@
+> >   *  Andrew Melnychenko <andrew@daynix.com>
+> >   *  Yuri Benditovich <yuri.benditovich@daynix.com>
+> >   *
+> > - * This work is licensed under the terms of the GNU GPL, version 2.  S=
+ee
+> > - * the COPYING file in the top-level directory.
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+> >   */
+> >
+> >  #ifndef QEMU_EBPF_RSS_H
+>
+> Thee are changing the file license. This *must* be done as a
+> standalone commit and show agreement from all contributors
+> who could hold copyright over the code. Fortunately I only
+> see one other contributor to these file, and the scope of
+> their change isn't copyrightable IMHO.
+>
+>
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
+ge :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
+om :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
+ge :|
+>
 
