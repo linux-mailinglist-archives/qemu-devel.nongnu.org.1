@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D3684AE95
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 08:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAD784AEA2
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 08:10:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXFTu-0002A4-7W; Tue, 06 Feb 2024 02:02:58 -0500
+	id 1rXFZX-0004Yt-Am; Tue, 06 Feb 2024 02:08:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rXFTs-00029p-Fd
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:02:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rXFZU-0004Yh-K8; Tue, 06 Feb 2024 02:08:44 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rXFTq-0003F9-SM
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:02:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707202973;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yYQLNt3ySIw2/ay8d3vGJbaWL+4EsM3JD4ciODknu9Y=;
- b=TpRvl/X9sSNzGZK9Md1izQFxoF7LShtHz3MJBoZFvAF2lHhEtAn8ShABe2ZlljtfWr4iRf
- pvKCXw6WnZjYPNLhHRiOAHu6RuaLgbDT1mUxSYpBaDxmPnD0iLCrVZiVvDhErf9ZNwFwxA
- Hk74rUg0VYMRZEHRYK1SS+fAOS1UJR8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-iBwGSwGqOAOM1nOJRV_NlQ-1; Tue,
- 06 Feb 2024 02:02:52 -0500
-X-MC-Unique: iBwGSwGqOAOM1nOJRV_NlQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B89381C07F32;
- Tue,  6 Feb 2024 07:02:51 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64658C1596E;
- Tue,  6 Feb 2024 07:02:50 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PULL 1/3] hv-balloon: use get_min_alignment() to express 32 GiB
- alignment
-Date: Tue,  6 Feb 2024 08:02:45 +0100
-Message-ID: <20240206070247.15107-2-david@redhat.com>
-In-Reply-To: <20240206070247.15107-1-david@redhat.com>
-References: <20240206070247.15107-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rXFZS-0004Go-Lk; Tue, 06 Feb 2024 02:08:44 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3540F4AB64;
+ Tue,  6 Feb 2024 10:09:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 809FE748AA;
+ Tue,  6 Feb 2024 10:08:39 +0300 (MSK)
+Message-ID: <e292f18b-18cb-4b67-9db4-df938aa19d3d@tls.msk.ru>
+Date: Tue, 6 Feb 2024 10:08:39 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.285,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: building qemu on a system with libxkbcommon installed but not
+ xkeyboard-config produces an core dump
+Content-Language: en-US
+To: Zhang Wen <zhw2101024@gmail.com>, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-trivial@nongnu.org, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, qemu-devel@nongnu.org
+References: <94cf974b-05ec-41c2-8d0b-43ffbc8bdeac@gmail.com>
+ <904ef958-0e3d-48da-a4a7-5c1514c04472@tls.msk.ru>
+ <e441b771-0a08-4f2c-b7a7-f6fdd787bc1c@tls.msk.ru>
+ <CAFEAcA-C-pGGYY1bfE0ZatZP-imGmq=4-579TEnEZWFLeLxZLQ@mail.gmail.com>
+ <CAKjfnjrCu1R6LE46AYf0+SGXs6994APhRvgSNWR8wfp=mnp3Fw@mail.gmail.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAKjfnjrCu1R6LE46AYf0+SGXs6994APhRvgSNWR8wfp=mnp3Fw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,81 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's implement the get_min_alignment() callback for memory devices, and
-copy for the device memory region the alignment of the host memory
-region. This mimics what virtio-mem does, and allows for re-introducing
-proper alignment checks for the memory region size (where we don't care
-about additional device requirements) in memory device core.
+06.02.2024 09:35, Zhang Wen:
+...
+> I'm so sorry for the misspelling in my initial post and the confusion
+> caused by that.
 
-Message-ID: <20240117135554.787344-2-david@redhat.com>
-Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/hyperv/hv-balloon.c | 37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+That's no problem, things happen.
 
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 0238365712..ade283335a 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -1477,22 +1477,7 @@ static void hv_balloon_ensure_mr(HvBalloon *balloon)
-     balloon->mr = g_new0(MemoryRegion, 1);
-     memory_region_init(balloon->mr, OBJECT(balloon), TYPE_HV_BALLOON,
-                        memory_region_size(hostmem_mr));
--
--    /*
--     * The VM can indicate an alignment up to 32 GiB. Memory device core can
--     * usually only handle/guarantee 1 GiB alignment. The user will have to
--     * specify a larger maxmem eventually.
--     *
--     * The memory device core will warn the user in case maxmem might have to be
--     * increased and will fail plugging the device if there is not sufficient
--     * space after alignment.
--     *
--     * TODO: we could do the alignment ourselves in a slightly bigger region.
--     * But this feels better, although the warning might be annoying. Maybe
--     * we can optimize that in the future (e.g., with such a device on the
--     * cmdline place/size the device memory region differently.
--     */
--    balloon->mr->align = MAX(32 * GiB, memory_region_get_alignment(hostmem_mr));
-+    balloon->mr->align = memory_region_get_alignment(hostmem_mr);
- }
- 
- static void hv_balloon_free_mr(HvBalloon *balloon)
-@@ -1654,6 +1639,25 @@ static MemoryRegion *hv_balloon_md_get_memory_region(MemoryDeviceState *md,
-     return balloon->mr;
- }
- 
-+static uint64_t hv_balloon_md_get_min_alignment(const MemoryDeviceState *md)
-+{
-+    /*
-+     * The VM can indicate an alignment up to 32 GiB. Memory device core can
-+     * usually only handle/guarantee 1 GiB alignment. The user will have to
-+     * specify a larger maxmem eventually.
-+     *
-+     * The memory device core will warn the user in case maxmem might have to be
-+     * increased and will fail plugging the device if there is not sufficient
-+     * space after alignment.
-+     *
-+     * TODO: we could do the alignment ourselves in a slightly bigger region.
-+     * But this feels better, although the warning might be annoying. Maybe
-+     * we can optimize that in the future (e.g., with such a device on the
-+     * cmdline place/size the device memory region differently.
-+     */
-+    return 32 * GiB;
-+}
-+
- static void hv_balloon_md_fill_device_info(const MemoryDeviceState *md,
-                                            MemoryDeviceInfo *info)
- {
-@@ -1766,5 +1770,6 @@ static void hv_balloon_class_init(ObjectClass *klass, void *data)
-     mdc->get_memory_region = hv_balloon_md_get_memory_region;
-     mdc->decide_memslots = hv_balloon_decide_memslots;
-     mdc->get_memslots = hv_balloon_get_memslots;
-+    mdc->get_min_alignment = hv_balloon_md_get_min_alignment;
-     mdc->fill_device_info = hv_balloon_md_fill_device_info;
- }
--- 
-2.43.0
+> I'm building my own system following the Linux From Scratch package, which is at
+> https://www.linuxfromscratch.org.
+> I accidently built libxkbcommon package but not xkeyboard-config
+> package, and then
+> while building qemu I saw this problem. it's a little difficult to
+> find the root cause from
+> this error message, so I sent this patch to seek for help from upstream.
 
+Okay, so it is mostly a self-built/self-installed linux.  That works too.
+
+So how the problem manifests itself?  What the actual error message is?
+You mentioned some segfault iirc, care to share some details?
+
+It's not a problem at all to pick this change up, but I'd love to know
+more details about this first :)
+
+Thanks,
+
+/mjt
 
