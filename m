@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F42684BF7D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 22:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE20284BF87
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 22:51:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXTIL-00072a-P8; Tue, 06 Feb 2024 16:47:57 -0500
+	id 1rXTLU-0007wq-D0; Tue, 06 Feb 2024 16:51:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXTIC-00070c-3k
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 16:47:50 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1rXTLP-0007wC-JZ
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 16:51:07 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXTI7-0007R1-D7
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 16:47:47 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1d51ba18e1bso63155ad.0
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 13:47:43 -0800 (PST)
+ id 1rXTLN-00086i-35
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 16:51:06 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d93edfa76dso8725ad.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 13:51:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707256062; x=1707860862; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707256263; x=1707861063; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=kiK++jBGLDa1a8zX6shw5bWxNOTq00UVzWc3Tp1TsKo=;
- b=VmQ/+O9w587DGpvNYjvQGy1rcA0aU+HBqdgbqk6wm18jQzDIWocOJeLmtt+QY40Ccd
- r998T6NrlocXsoHdY1PrpMJ0zWEZIx9epB8KvwGlmqAk+fSzUxksJMm8v31c6qR3IfxZ
- GN1z1AMYqMM5++YmhxWNcWQ7ZjJp9e+dUOYyeY47cTQ03v+Jq4xTp/6fGqouHD/hJu9b
- 7fKVro9CLJcOQX0+cpVAbSTQ7cjmV6/JJTnTF7bblntSQhhUH7imo18F3d85ckn/OvI5
- glvzuDDW/n6hStbqygyUUPtxeOJHEn1ouobCRC0ltUvxyKQ7LPfoZzzLU5LpE8xLTCl4
- xENA==
+ bh=lO1js4YTTotuzqoFGlHNRmsl+7c1P8LmWDHVkpLbSHI=;
+ b=lbtlw7KmMi20NjBqpOVD9+xyoIddHpaQZyFHIkyQkSAZIABPrP5Sr0nxz/TG3ThoEv
+ ThXX1N/40J5XfWgk96fv0SjF72v0tqm/t3u49fZMM3PoF4SBhdjsFeiP2DQUHOZnDhl4
+ pFCxzEXTVIXVBnZGIF+0PbtuDHzoskyBghxz3Xc9IC5Lx35mUtENxdhC/r+dQfOIZZXN
+ YpL7LMku2k4vtXPKYzIHmhCdCYtgyeU4+U++e2rojckuO9Ph+MaN2Y5i1Ik+KDW70aFJ
+ wcr/30jQqGsxGwhSn1sYYxH8UdOGsGpP3iLM+jRpytFjd5E2yaPRosPrBPGeBFQDDubf
+ Fk1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707256062; x=1707860862;
+ d=1e100.net; s=20230601; t=1707256263; x=1707861063;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kiK++jBGLDa1a8zX6shw5bWxNOTq00UVzWc3Tp1TsKo=;
- b=BzS5HE59/Q9mRHDPgb3ij1G+qYtah7jfGSCKhU/Zr+CiCY7rvJnohuShpUAOsFUDXk
- /vpNfojmM0w56crBlMnjMvhkO67b1HpMWa9MwkFhtIyLI1chVv0HL68R62SKh3vaQECx
- elJX5VGhCAso/D22Ujk9z54MGhQhd/ajSBr7ZyC5IOvP3E0FpQu8mYaZwyFF10qLkWnV
- GKx9ZlMJE3JHBhhfB27R6W/ekR/iJxMgCwOtYEUEwxQMYAUzxh0O6xzP1Sy7m4phZWrM
- oQZKqkMcm3jiWLX66FQ3bx0hKHNgfSlQuosL6Ruf9Ty2vdrBXtjvuD3nVtxphiNchFqs
- 5pcQ==
-X-Gm-Message-State: AOJu0YzdHImjazRuzeAe8xMfbdj8Iy5o9DLU59OSaHACWAhbUKwyEi2C
- ImlpgvU2HyltDmp/fwXpWm9FzurD9gCGNEr8P3qxsRchtFtfX/7WjqLtTDWy6pBOmzl3HYPjPsQ
- rLB0=
-X-Google-Smtp-Source: AGHT+IEQEPeXgo4lfPUdA973hS1l/T5WuiWBCzLCxOTVvASNBPtwc8q5QXdNsFerXIk371SIPa02lg==
-X-Received: by 2002:a17:902:7847:b0:1d9:af81:8b2b with SMTP id
- e7-20020a170902784700b001d9af818b2bmr2685619pln.67.1707256062201; 
- Tue, 06 Feb 2024 13:47:42 -0800 (PST)
+ bh=lO1js4YTTotuzqoFGlHNRmsl+7c1P8LmWDHVkpLbSHI=;
+ b=qWO2fpwwj0+JsFArJnsz9aPp6unMiYpF3zpGdlBSYdXhubn5MUvB38AfI6uE4l0Zo1
+ a3dQycPOqzVTT+2EzpV7LtusiAN/ildEGppO6a2nPj+L0qsPbvwVazvhgVOx9O1++qpc
+ 0lc53DxmUxSuIKwAhRyjeoCJr7L1S7n1TTjdidDRpArMrVxs9mKFmVU0ETTXwRUvCiNl
+ Zpo1GhppzK1FOIlCEX1JGtMZx5oKF8UMrQba2iIw1aQhsl88h+3g9ggatayR2hhcdclE
+ w5zWSMbXX7KtKEHbrtbrJ4CSuJmSL6K8FkNGX722V+dWV+s8/X9UG2uRU/m8dQkiyneV
+ nAgQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVV1mzXebNBWplciZLGcJ1+iF4llbktVJDhJ70QRrkYDv4k+o2RLyWclVbUNe4cRA/w1o+igPkGcKb9ktC8XEOcsDvaDcc=
+X-Gm-Message-State: AOJu0Yz50M9Tg7eSh4TH0/h2PNjfZ3ePdBVbpfXw/UFdeHUuWUMW3U5B
+ kuR8wAHLZEB2g7lT6DTwUsJo/F3HnheZJrlx10JeH5azb939F87NmDtwdzhE+2E=
+X-Google-Smtp-Source: AGHT+IEDMDHcUmUOvYS/3nReiYVopWTOOH/b6dJ+5JlL8vYSAs5DaR808NlPjys2MtU/tb7YgAubIA==
+X-Received: by 2002:a17:902:ebcd:b0:1d9:df9d:bcd3 with SMTP id
+ p13-20020a170902ebcd00b001d9df9dbcd3mr2959332plg.46.1707256263382; 
+ Tue, 06 Feb 2024 13:51:03 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCWfTmOg4fn+HQMO9+MwAsF8YV8sgy2oAzydkUwBrkIWhhJKR5+3QaZ/SRF9cj6xx4qBywPVmYQ78DIt2YwmHTrEMXIRj/o9Q7UIthylzDl3r+ee1Gb9trXO48U=
+ AJvYcCXGYuJvgQhJAFPd1hdveV1BRy/oT3lQISqzU7j+vB/SnKytt98ny8Ch3LxXSrIrOdAOTIgxKKXyreOwibEHF02ubfjOHdfkTRZ9uG2zBXHISza/WAhL8t+bDJQ=
 Received: from [192.168.0.100] ([43.252.112.200])
  by smtp.gmail.com with ESMTPSA id
- e11-20020a170902ed8b00b001d940ae8ffasm2382196plj.6.2024.02.06.13.47.40
+ o9-20020a17090323c900b001d94a3f3987sm2356974plh.184.2024.02.06.13.51.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 Feb 2024 13:47:41 -0800 (PST)
-Message-ID: <949bdebc-86b3-4714-8dba-59a3a0b1b920@linaro.org>
-Date: Wed, 7 Feb 2024 07:47:39 +1000
+ Tue, 06 Feb 2024 13:51:03 -0800 (PST)
+Message-ID: <94d96365-1d93-40f4-96ee-e3fcb14a8040@linaro.org>
+Date: Wed, 7 Feb 2024 07:50:57 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/13] hw/misc/mps2-scc: Factor out which-board
- conditionals
+Subject: Re: [PATCH 07/13] hw/misc/mps2-scc: Make changes needed for AN536
+ FPGA image
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20240206132931.38376-1-peter.maydell@linaro.org>
- <20240206132931.38376-7-peter.maydell@linaro.org>
+ <20240206132931.38376-8-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240206132931.38376-7-peter.maydell@linaro.org>
+In-Reply-To: <20240206132931.38376-8-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,19 +100,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2/6/24 23:29, Peter Maydell wrote:
-> The MPS SCC device has a lot of different flavours for the various
-> different MPS FPGA images, which look mostly similar but have
-> differences in how particular registers are handled.  Currently we
-> deal with this with a lot of open-coded checks on scc_partno(), but
-> as we add more board types this is getting a bit hard to read.
+> The MPS2 SCC device is broadly the same for all FPGA images, but has
+> minor differences in the behaviour of the CFG registers depending on
+> the image. In many cases we don't really care about the functionality
+> controlled by these registers and a reads-as-written or similar
+> behaviour is sufficient for the moment.
 > 
-> Factor out the conditions into some functions which we can
-> give more descriptive names to.
+> For the AN536 the required behaviour is:
+> 
+>   * A_CFG0 has CPU reset and halt bits
+>      - implement as reads-as-written for the moment
+>   * A_CFG1 has flash or ATCM address 0 remap handling
+>      - QEMU doesn't model this; implement as reads-as-written
+>   * A_CFG2 has QSPI select (like AN524)
+>      - implemented (no behaviour, as with AN524)
+>   * A_CFG3 is MCC_MSB_ADDR "additional MCC addressing bits"
+>      - QEMU doesn't care about these, so use the existing
+>        RAZ behaviour for convenience
+>   * A_CFG4 is board rev (like all other images)
+>      - no change needed
+>   * A_CFG5 is ACLK frq in hz (like AN524)
+>      - implemented as reads-as-written, as for other boards
+>   * A_CFG6 is core 0 vector table base address
+>      - implemented as reads-as-written for the moment
+>   * A_CFG7 is core 1 vector table base address
+>      - implemented as reads-as-written for the moment
+> 
+> Make the changes necessary for this; leave TODO comments where
+> appropriate to indicate where we might want to come back and
+> implement things like CPU reset.
+> 
+> The other aspects of the device specific to this FPGA image (like the
+> values of the board ID and similar registers) will be set via the
+> device's qdev properties.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   hw/misc/mps2-scc.c | 45 +++++++++++++++++++++++++++++++--------------
->   1 file changed, 31 insertions(+), 14 deletions(-)
+>   include/hw/misc/mps2-scc.h |   1 +
+>   hw/misc/mps2-scc.c         | 101 +++++++++++++++++++++++++++++++++----
+>   2 files changed, 92 insertions(+), 10 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
