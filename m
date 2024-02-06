@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C7B84C0D2
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 00:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EE884C0D0
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 00:21:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXUjt-0006CS-L4; Tue, 06 Feb 2024 18:20:29 -0500
+	id 1rXUk4-0006Ec-Hc; Tue, 06 Feb 2024 18:20:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rXUjr-0006Bx-Tn
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 18:20:27 -0500
-Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ id 1rXUjz-0006EF-U0
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 18:20:35 -0500
+Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rXUjk-0005mP-Qo
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 18:20:27 -0500
-Received: by mail-vs1-xe2c.google.com with SMTP id
- ada2fe7eead31-46d3b3e0671so594295137.1
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 15:20:19 -0800 (PST)
+ id 1rXUjk-0005n5-Sc
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 18:20:35 -0500
+Received: by mail-vs1-xe2d.google.com with SMTP id
+ ada2fe7eead31-46d49b31e76so330025137.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 15:20:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1707261617; x=1707866417; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1707261619; x=1707866419; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=leJ95zOxaZBV0dR1eA9xS1nffMJu6UFCj/XCjWoCKsQ=;
- b=JFsKLcQRGb1RpTfnJ3rShMCcw1csajRjY4TPGfaVmJgaQmtGylulC8odKUiHv/g0Ex
- z6N05cM2j1SSixnUv8uyv3D+HX8emJo6QQpJxG19ypjELCKU6Kly9TPXTyAhRm+wefhW
- AT1nwBJhdYrPhvAVLdNd5DLfi9Ftv8NWcxTs2co3PggqMBNEK+8uQAPHcVkycGMuak1X
- VbrdkDyKfb0Zhxld+tlWG7i5AYlW7Y5Smk7V6tdIrEr3xfi/B04LcW4fHEDydMQ5an1p
- JfOpxFFgMHytw/1cnG8PWxi0QVc4VJwx3TROl4aYbocHPin40TSPm4cuqqglMbRYxNXJ
- FlQw==
+ bh=RlfCHJI8BMYL5xByh2htwg446RRZbeVbn6VxSty6oBo=;
+ b=EY/lQetEeYfkoO6PrHKm+JJkmpv7HQ46F/X4Jtf0e3SRWv00MLlE122QbmfGnvVUPP
+ 1g4nucOVTHHMYOg172AJnuOIABlhCkgS3vEs6q4CeHFqHLUhN06P2M4i6OJhZLg65Zw6
+ dWRepjF01CVnSxZi2EQYFNQ1FdgVfXrjYR0XFaUcQmnWXGoU7eXVT36L6oOalG27k4r9
+ 42hn+BujkmWd3z8yFtN8hHhztC7KaVaUdvA6LtbI/eFjL3g5RpDSgMw/2AscYPQVgYrJ
+ r60YMZ/KkbDyVTLAe2TQuaL+UlUgXDQgFS4vDND3OPJ7Cmvq63Fq6beMlJhhS24Yut95
+ p/OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707261617; x=1707866417;
+ d=1e100.net; s=20230601; t=1707261619; x=1707866419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=leJ95zOxaZBV0dR1eA9xS1nffMJu6UFCj/XCjWoCKsQ=;
- b=mTyMcgbKCCndZmXWa1WxVavlDWaNC+2GQ/c8XCaBlMyZg4LhMHm/ikqqVHWzjd6B5c
- UXeWxEoXSWat1NnJ7a4BbE0UeGN60d+dIAFqHRHx+hGyrx/VZm8yyzCc4Oa0UK/9196M
- 42mj+57EfUc1+a0sQtWs6ZhGVcpZA2Zz2VT9UA0g8SCOpoFNSJmRsli+R0NLDKlPgZog
- z7JoePLf5WAkVNXDpX8usg02Jj/SjI+y0me9rKg8FnBgru2X0mLczPa1MUmF+xp0e/mL
- +1o8ja+SAaRNXJMuSOYDQGJYg0sA6D2zYdPvY+MtH9vcoSfMaxcB5JSdczCQOfCq/rwP
- vYEA==
-X-Gm-Message-State: AOJu0YyW45U4yhNi68L+1PK93YzJme+uBXBqJ5Fo+1A6jsDGSB21zz5F
- SSR1zxFD715c+CB0ppYJiJIzslkaeoODUKOL9QpMrNgJQjVqRVl5nI0Covf8+URunalJjH/O7sQ
- XxLo=
-X-Google-Smtp-Source: AGHT+IEP1+8U0KedU2ehuuQBQhmBQyACXw8o+IFCofqxVbAMWadc7ZCtzV6sNtW5k5wB2HzEBE+9eQ==
-X-Received: by 2002:a05:6102:408:b0:46c:f977:4f9f with SMTP id
- d8-20020a056102040800b0046cf9774f9fmr999583vsq.0.1707261617743; 
- Tue, 06 Feb 2024 15:20:17 -0800 (PST)
+ bh=RlfCHJI8BMYL5xByh2htwg446RRZbeVbn6VxSty6oBo=;
+ b=qGHFkx9t0nVNZj1t5BnLuWNuiCx9WvDD3cU3sfRV9FsAK/XzF9zMthtZpNZwpKhIfk
+ SC52K7xIQ6yCGdaV0zgNr0Xg22C2/spXhCojOAFHCC+7smwnEZHspzsPKw35rNRzc5QS
+ ZWqtdrGqF6UvqwpPeGAGqJv6nii331PMGAHqcHJNcmp76zxf+JdUnZLcmBNtasZqZWwj
+ AdUftDf+iPQyGRf/SgvCXiWfcy84VczZq/d1YxMeClcwYvmchXqBf9uDVuMMzbzgNJHT
+ p7FBcBKq5359onaTle/aiJMRBxiJ70en8SVUGv00nZhURWFkb/1ln/dIFjL2izK7pOiI
+ rwpA==
+X-Gm-Message-State: AOJu0YztXAbby2auAAImMC4w96VKWLVXwGEDosshrhbWYyzvtxdkzMo1
+ +QIngkgD/Wj9T26vjvHOcNw5lYPTncbUsIsIE9ERprBO7OV+rtGndKsfO6GnDFqgb96BcY10hoO
+ 5oHs=
+X-Google-Smtp-Source: AGHT+IGgnPZosJsxkryP7wd6hhRRfBOsvVRx0ahS3t6fNKP3NUw7efGHioXEx/i6cy0Ids1IjhOgAA==
+X-Received: by 2002:a05:6102:21ba:b0:46d:372a:d114 with SMTP id
+ i26-20020a05610221ba00b0046d372ad114mr683387vsb.16.1707261619181; 
+ Tue, 06 Feb 2024 15:20:19 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVYOK1ZYEhlaL+Zu4x9ak6NOXgumqrLo5h2thw1yEh09d+ogGEKZ2NvllIctKVNqGdyT2pjtqyIugtZwYpLB34Wf++JWqYP95cubUFO/6kZ0hXa
+ AJvYcCXnZ8LT2OnrNb13AB1D0zIynOW9qnioXJFSJT76IUOjlxBnPXn/NvL1FVyd66yZpoe5+pGoGOH+p/JsLCcc4LI4xgmvcD3tZycVEx/wAKl8dDOg
 Received: from n231-230-216.byted.org ([130.44.215.112])
  by smtp.gmail.com with ESMTPSA id
- d11-20020a67b60b000000b0046d20ce8886sm2352vsm.1.2024.02.06.15.20.16
+ d11-20020a67b60b000000b0046d20ce8886sm2352vsm.1.2024.02.06.15.20.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 15:20:17 -0800 (PST)
+ Tue, 06 Feb 2024 15:20:18 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: qemu-devel@nongnu.org,
 	farosas@suse.de,
 	peterx@redhat.com
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH 4/6] migration/multifd: Zero page transmission on the multifd
- thread.
-Date: Tue,  6 Feb 2024 23:19:06 +0000
-Message-Id: <20240206231908.1792529-5-hao.xiang@bytedance.com>
+Subject: [PATCH 5/6] migration/multifd: Enable zero page checking from multifd
+ threads.
+Date: Tue,  6 Feb 2024 23:19:07 +0000
+Message-Id: <20240206231908.1792529-6-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240206231908.1792529-1-hao.xiang@bytedance.com>
 References: <20240206231908.1792529-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
- envelope-from=hao.xiang@bytedance.com; helo=mail-vs1-xe2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-vs1-xe2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,152 +97,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the zero page detection and handling on the multifd
-threads.
+This change adds a dedicated handler for MigrationOps::ram_save_target_page in
+multifd live migration. Now zero page checking can be done in the multifd threads
+and this becomes the default configuration. We still provide backward compatibility
+where zero page checking is done from the migration main thread.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- migration/multifd.c | 62 +++++++++++++++++++++++++++++++++++++++++----
- migration/multifd.h |  5 ++++
- 2 files changed, 62 insertions(+), 5 deletions(-)
+ migration/multifd.c |  3 ++-
+ migration/ram.c     | 49 ++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 42 insertions(+), 10 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index a20d0ed10e..c031f947c7 100644
+index c031f947c7..c6833ccb07 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -11,6 +11,7 @@
-  */
- 
+@@ -13,6 +13,7 @@
  #include "qemu/osdep.h"
-+#include "qemu/cutils.h"
+ #include "qemu/cutils.h"
  #include "qemu/rcu.h"
++#include "qemu/cutils.h"
  #include "exec/target_page.h"
  #include "sysemu/sysemu.h"
-@@ -278,6 +279,12 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
+ #include "exec/ramblock.h"
+@@ -458,7 +459,6 @@ static int multifd_send_pages(void)
+     p->packet_num = multifd_send_state->packet_num++;
+     multifd_send_state->pages = p->pages;
+     p->pages = pages;
+-
+     qemu_mutex_unlock(&p->mutex);
+     qemu_sem_post(&p->sem);
  
-         packet->offset[i] = cpu_to_be64(temp);
+@@ -733,6 +733,7 @@ static void *multifd_send_thread(void *opaque)
+         if (p->pending_job) {
+             uint64_t packet_num = p->packet_num;
+             uint32_t flags;
++
+             p->normal_num = 0;
+             p->zero_num = 0;
+ 
+diff --git a/migration/ram.c b/migration/ram.c
+index d5b7cd5ac2..e6742c9593 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1252,6 +1252,10 @@ static int ram_save_page(RAMState *rs, PageSearchStatus *pss)
+ 
+ static int ram_save_multifd_page(RAMBlock *block, ram_addr_t offset)
+ {
++    assert(migrate_multifd());
++    assert(!migrate_compress());
++    assert(!migration_in_postcopy());
++
+     if (multifd_queue_page(block, offset) < 0) {
+         return -1;
      }
-+    for (i = 0; i < p->zero_num; i++) {
-+        /* there are architectures where ram_addr_t is 32 bit */
-+        uint64_t temp = p->zero[i];
-+
-+        packet->offset[p->normal_num + i] = cpu_to_be64(temp);
-+    }
- }
+@@ -2043,7 +2047,6 @@ static bool save_compress_page(RAMState *rs, PageSearchStatus *pss,
+  */
+ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
+ {
+-    RAMBlock *block = pss->block;
+     ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
+     int res;
  
- static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-@@ -360,6 +367,18 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-         p->normal[i] = offset;
+@@ -2059,17 +2062,40 @@ static int ram_save_target_page_legacy(RAMState *rs, PageSearchStatus *pss)
+         return 1;
      }
  
-+    for (i = 0; i < p->zero_num; i++) {
-+        uint64_t offset = be64_to_cpu(packet->offset[p->normal_num + i]);
-+
-+        if (offset > (p->block->used_length - p->page_size)) {
-+            error_setg(errp, "multifd: offset too long %" PRIu64
-+                       " (max " RAM_ADDR_FMT ")",
-+                       offset, p->block->used_length);
-+            return -1;
-+        }
-+        p->zero[i] = offset;
-+    }
-+
-     return 0;
- }
- 
-@@ -658,13 +677,37 @@ int multifd_send_sync_main(void)
-     return 0;
- }
- 
-+static void zero_page_check_send(MultiFDSendParams *p)
-+{
-+    /*
-+     * QEMU older than 9.0 don't understand zero page
-+     * on multifd channel. This switch is required to
-+     * maintain backward compatibility.
-+     */
-+    bool use_multifd_zero_page = migrate_multifd_zero_page();
-+    RAMBlock *rb = p->pages->block;
-+
-+    for (int i = 0; i < p->pages->num; i++) {
-+        uint64_t offset = p->pages->offset[i];
-+        if (use_multifd_zero_page &&
-+            buffer_is_zero(rb->host + offset, p->page_size)) {
-+            p->zero[p->zero_num] = offset;
-+            p->zero_num++;
-+            ram_release_page(rb->idstr, offset);
-+        } else {
-+            p->normal[p->normal_num] = offset;
-+            p->normal_num++;
-+        }
-+    }
++    return ram_save_page(rs, pss);
 +}
 +
- static void *multifd_send_thread(void *opaque)
- {
-     MultiFDSendParams *p = opaque;
-     MigrationThread *thread = NULL;
-     Error *local_err = NULL;
--    int ret = 0;
-     bool use_zero_copy_send = migrate_zero_copy_send();
-+    int ret = 0;
++/**
++ * ram_save_target_page_multifd: save one target page
++ *
++ * Returns the number of pages written
++ *
++ * @rs: current RAM state
++ * @pss: data about the page we want to send
++ */
++static int ram_save_target_page_multifd(RAMState *rs, PageSearchStatus *pss)
++{
++    RAMBlock *block = pss->block;
++    ram_addr_t offset = ((ram_addr_t)pss->page) << TARGET_PAGE_BITS;
++
++    /* Multifd is not compatible with old compression. */
++    assert(!migrate_compress());
++
++    /* Multifd is not compabible with postcopy. */
++    assert(!migration_in_postcopy());
++
+     /*
+-     * Do not use multifd in postcopy as one whole host page should be
+-     * placed.  Meanwhile postcopy requires atomic update of pages, so even
+-     * if host page size == guest page size the dest guest during run may
+-     * still see partially copied pages which is data corruption.
++     * Backward compatibility support. While using multifd live
++     * migration, we still need to handle zero page checking on the
++     * migration main thread.
+      */
+-    if (migrate_multifd() && !migration_in_postcopy()) {
+-        return ram_save_multifd_page(block, offset);
++    if (!migrate_multifd_zero_page()) {
++        if (save_zero_page(rs, pss, offset)) {
++            return 1;
++        }
+     }
  
-     thread = migration_threads_add(p->name, qemu_get_thread_id());
- 
-@@ -699,10 +742,7 @@ static void *multifd_send_thread(void *opaque)
-                 p->iovs_num = 1;
-             }
- 
--            for (int i = 0; i < p->pages->num; i++) {
--                p->normal[p->normal_num] = p->pages->offset[i];
--                p->normal_num++;
--            }
-+            zero_page_check_send(p);
- 
-             if (p->normal_num) {
-                 ret = multifd_send_state->ops->send_prepare(p, &local_err);
-@@ -1107,6 +1147,16 @@ void multifd_recv_sync_main(void)
-     trace_multifd_recv_sync_main(multifd_recv_state->packet_num);
+-    return ram_save_page(rs, pss);
++    return ram_save_multifd_page(block, offset);
  }
  
-+static void zero_page_check_recv(MultiFDRecvParams *p)
-+{
-+    for (int i = 0; i < p->zero_num; i++) {
-+        void *page = p->host + p->zero[i];
-+        if (!buffer_is_zero(page, p->page_size)) {
-+            memset(page, 0, p->page_size);
-+        }
+ /* Should be called before sending a host page */
+@@ -2981,7 +3007,12 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     }
+ 
+     migration_ops = g_malloc0(sizeof(MigrationOps));
+-    migration_ops->ram_save_target_page = ram_save_target_page_legacy;
++
++    if (migrate_multifd()) {
++        migration_ops->ram_save_target_page = ram_save_target_page_multifd;
++    } else {
++        migration_ops->ram_save_target_page = ram_save_target_page_legacy;
 +    }
-+}
-+
- static void *multifd_recv_thread(void *opaque)
- {
-     MultiFDRecvParams *p = opaque;
-@@ -1153,6 +1203,8 @@ static void *multifd_recv_thread(void *opaque)
-             }
-         }
  
-+        zero_page_check_recv(p);
-+
-         if (flags & MULTIFD_FLAG_SYNC) {
-             qemu_sem_post(&multifd_recv_state->sem_sync);
-             qemu_sem_wait(&p->sem_sync);
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 6be9b2f6c1..7448cb1aa9 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -53,6 +53,11 @@ typedef struct {
-     uint32_t unused32[1];    /* Reserved for future use */
-     uint64_t unused64[3];    /* Reserved for future use */
-     char ramblock[256];
-+    /*
-+     * This array contains the pointers to:
-+     *  - normal pages (initial normal_pages entries)
-+     *  - zero pages (following zero_pages entries)
-+     */
-     uint64_t offset[];
- } __attribute__((packed)) MultiFDPacket_t;
- 
+     bql_unlock();
+     ret = multifd_send_sync_main();
 -- 
 2.30.2
 
