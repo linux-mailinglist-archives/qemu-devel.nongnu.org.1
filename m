@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD0084B2B1
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 11:45:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8345A84B2BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 11:46:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXIw1-0006vy-F9; Tue, 06 Feb 2024 05:44:13 -0500
+	id 1rXIw3-0006y2-Qf; Tue, 06 Feb 2024 05:44:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvz-0006vd-OC
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:44:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIw1-0006wF-9t
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:44:13 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvy-0003Dy-5t
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:44:11 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvy-0003EO-62
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:44:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707216244;
+ s=mimecast20190719; t=1707216246;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LGZZO9ES01M1eLb8cjBZeC4p/SbElxMoWsEHPrWTT40=;
- b=EWTZ8zFY3pNlCN7pfKlI9QlawTB95JNbrFgqU/9BdXhHZEcxqERwIYU+XO7avYjwwYPIWW
- 9LaEKe7x0V9Ya8iTIhY2AgenCDWpbB/0TNsyMvYQxXwxk3LHI359D3I3HUIQY3WctIhdZX
- gCbS2vGeZWWjAjglQtK6o5CuqPHgEZ4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-mySQl5q0NCurK_4ZKgm4jQ-1; Tue,
- 06 Feb 2024 05:44:00 -0500
-X-MC-Unique: mySQl5q0NCurK_4ZKgm4jQ-1
+ bh=Gw1GdGhiSZCRfVvN19txv0e6ILB4Z/YReWhCQVwyc4s=;
+ b=OAypWjVytg7c1IW/CIPHtTzi/B360UDhndM1RW37B4ZQsYBv0TFc0VMRrx4jV8GARR1psn
+ zSVdYv7eIuVnooAuxNy4mcD/hk+t6JQpb1g8WE9fhKHQ9OB4VWk+9wjRgjwJnF2+fE7Hat
+ esaCRHry/QSTE8FxD1MI0cTRUb5Tids=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-383-6JdNDj7DMYaWHDqGEuN_Yw-1; Tue, 06 Feb 2024 05:44:02 -0500
+X-MC-Unique: 6JdNDj7DMYaWHDqGEuN_Yw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 885B938143AA;
- Tue,  6 Feb 2024 10:44:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B25284AC68;
+ Tue,  6 Feb 2024 10:44:02 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.195.21])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 731D5492BF0;
- Tue,  6 Feb 2024 10:43:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C9E0C492BF0;
+ Tue,  6 Feb 2024 10:44:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 06/12] tests/tcg/s390x: Test CONVERT TO DECIMAL
-Date: Tue,  6 Feb 2024 11:43:41 +0100
-Message-ID: <20240206104347.238825-7-thuth@redhat.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
+Subject: [PULL 07/12] tests/tcg/s390x: Test CONVERT TO BINARY
+Date: Tue,  6 Feb 2024 11:43:42 +0100
+Message-ID: <20240206104347.238825-8-thuth@redhat.com>
 In-Reply-To: <20240206104347.238825-1-thuth@redhat.com>
 References: <20240206104347.238825-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,56 +80,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Check the CVD's, CVDY's, and CVDG's corner cases.
+Check the CVB's, CVBY's, and CVBG's corner cases.
 
+Co-developed-by: Pavel Zbitskiy <pavel.zbitskiy@gmail.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-ID: <20240205205830.6425-4-iii@linux.ibm.com>
+Message-ID: <20240205205830.6425-5-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/tcg/s390x/cvd.c           | 63 +++++++++++++++++++++++++++++++++
- tests/tcg/s390x/Makefile.target |  1 +
- 2 files changed, 64 insertions(+)
- create mode 100644 tests/tcg/s390x/cvd.c
+ tests/tcg/s390x/cvb.c           | 102 ++++++++++++++++++++++++++++++++
+ tests/tcg/s390x/Makefile.target |   1 +
+ 2 files changed, 103 insertions(+)
+ create mode 100644 tests/tcg/s390x/cvb.c
 
-diff --git a/tests/tcg/s390x/cvd.c b/tests/tcg/s390x/cvd.c
+diff --git a/tests/tcg/s390x/cvb.c b/tests/tcg/s390x/cvb.c
 new file mode 100644
-index 0000000000..d776688985
+index 0000000000..e1735f6b81
 --- /dev/null
-+++ b/tests/tcg/s390x/cvd.c
-@@ -0,0 +1,63 @@
++++ b/tests/tcg/s390x/cvb.c
+@@ -0,0 +1,102 @@
 +/*
-+ * Test the CONVERT TO DECIMAL instruction.
++ * Test the CONVERT TO BINARY instruction.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +#include <assert.h>
++#include <signal.h>
 +#include <stdint.h>
 +#include <stdlib.h>
++#include <string.h>
 +
-+static uint64_t cvd(int32_t x)
++static int signum;
++
++static void signal_handler(int n)
 +{
-+    uint64_t ret;
++    signum = n;
++}
 +
-+    asm("cvd %[x],%[ret]" : [ret] "=R" (ret) : [x] "r" (x));
++#define FAIL 0x1234567887654321
++#define OK32(x) (0x1234567800000000 | (uint32_t)(x))
++
++static int64_t cvb(uint64_t x)
++{
++    int64_t ret = FAIL;
++
++    signum = -1;
++    asm("cvb %[ret],%[x]" : [ret] "+r" (ret) : [x] "R" (x));
 +
 +    return ret;
 +}
 +
-+static uint64_t cvdy(int32_t x)
++static int64_t cvby(uint64_t x)
 +{
-+    uint64_t ret;
++    int64_t ret = FAIL;
 +
-+    asm("cvdy %[x],%[ret]" : [ret] "=T" (ret) : [x] "r" (x));
++    signum = -1;
++    asm("cvby %[ret],%[x]" : [ret] "+r" (ret) : [x] "T" (x));
 +
 +    return ret;
 +}
 +
-+static __uint128_t cvdg(int64_t x)
++static int64_t cvbg(__uint128_t x)
 +{
-+    __uint128_t ret;
++    int64_t ret = FAIL;
 +
-+    asm("cvdg %[x],%[ret]" : [ret] "=T" (ret) : [x] "r" (x));
++    signum = -1;
++    asm("cvbg %[ret],%[x]" : [ret] "+r" (ret) : [x] "T" (x));
 +
 +    return ret;
 +}
@@ -136,39 +154,63 @@ index 0000000000..d776688985
 +int main(void)
 +{
 +    __uint128_t m = (((__uint128_t)0x9223372036854775) << 16) | 0x8070;
++    struct sigaction act;
++    int err;
 +
-+    assert(cvd(0) == 0xc);
-+    assert(cvd(1) == 0x1c);
-+    assert(cvd(25594) == 0x25594c);
-+    assert(cvd(-1) == 0x1d);
-+    assert(cvd(0x7fffffff) == 0x2147483647c);
-+    assert(cvd(-0x80000000) == 0x2147483648d);
++    memset(&act, 0, sizeof(act));
++    act.sa_handler = signal_handler;
++    err = sigaction(SIGFPE, &act, NULL);
++    assert(err == 0);
++    err = sigaction(SIGILL, &act, NULL);
++    assert(err == 0);
 +
-+    assert(cvdy(0) == 0xc);
-+    assert(cvdy(1) == 0x1c);
-+    assert(cvdy(25594) == 0x25594c);
-+    assert(cvdy(-1) == 0x1d);
-+    assert(cvdy(0x7fffffff) == 0x2147483647c);
-+    assert(cvdy(-0x80000000) == 0x2147483648d);
++    assert(cvb(0xc) == OK32(0) && signum == -1);
++    assert(cvb(0x1c) == OK32(1) && signum == -1);
++    assert(cvb(0x25594c) == OK32(25594) && signum == -1);
++    assert(cvb(0x1d) == OK32(-1) && signum == -1);
++    assert(cvb(0x2147483647c) == OK32(0x7fffffff) && signum == -1);
++    assert(cvb(0x2147483648d) == OK32(-0x80000000) && signum == -1);
++    assert(cvb(0x7) == FAIL && signum == SIGILL);
++    assert(cvb(0x2147483648c) == OK32(0x80000000) && signum == SIGFPE);
++    assert(cvb(0x3000000000c) == OK32(0xb2d05e00) && signum == SIGFPE);
++    assert(cvb(0x2147483649d) == OK32(0x7fffffff) && signum == SIGFPE);
++    assert(cvb(0x3000000000d) == OK32(0x4d2fa200) && signum == SIGFPE);
 +
-+    assert(cvdg(0) == 0xc);
-+    assert(cvdg(1) == 0x1c);
-+    assert(cvdg(25594) == 0x25594c);
-+    assert(cvdg(-1) == 0x1d);
-+    assert(cvdg(0x7fffffffffffffff) == (m + 0xc));
-+    assert(cvdg(-0x8000000000000000) == (m + 0x1d));
++    assert(cvby(0xc) == OK32(0));
++    assert(cvby(0x1c) == OK32(1));
++    assert(cvby(0x25594c) == OK32(25594));
++    assert(cvby(0x1d) == OK32(-1));
++    assert(cvby(0x2147483647c) == OK32(0x7fffffff));
++    assert(cvby(0x2147483648d) == OK32(-0x80000000));
++    assert(cvby(0x7) == FAIL && signum == SIGILL);
++    assert(cvby(0x2147483648c) == OK32(0x80000000) && signum == SIGFPE);
++    assert(cvby(0x3000000000c) == OK32(0xb2d05e00) && signum == SIGFPE);
++    assert(cvby(0x2147483649d) == OK32(0x7fffffff) && signum == SIGFPE);
++    assert(cvby(0x3000000000d) == OK32(0x4d2fa200) && signum == SIGFPE);
++
++    assert(cvbg(0xc) == 0);
++    assert(cvbg(0x1c) == 1);
++    assert(cvbg(0x25594c) == 25594);
++    assert(cvbg(0x1d) == -1);
++    assert(cvbg(m + 0xc) == 0x7fffffffffffffff);
++    assert(cvbg(m + 0x1d) == -0x8000000000000000);
++    assert(cvbg(0x7) == FAIL && signum == SIGILL);
++    assert(cvbg(m + 0x1c) == FAIL && signum == SIGFPE);
++    assert(cvbg(m + 0x2d) == FAIL && signum == SIGFPE);
++    assert(cvbg(((__uint128_t)1 << 80) + 0xc) == FAIL && signum == SIGFPE);
++    assert(cvbg(((__uint128_t)1 << 80) + 0xd) == FAIL && signum == SIGFPE);
 +
 +    return EXIT_SUCCESS;
 +}
 diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 30994dcf9c..04e4bddd83 100644
+index 04e4bddd83..e2aba2ec27 100644
 --- a/tests/tcg/s390x/Makefile.target
 +++ b/tests/tcg/s390x/Makefile.target
-@@ -45,6 +45,7 @@ TESTS+=clc
- TESTS+=laalg
+@@ -46,6 +46,7 @@ TESTS+=laalg
  TESTS+=add-logical-with-carry
  TESTS+=lae
-+TESTS+=cvd
+ TESTS+=cvd
++TESTS+=cvb
  
  cdsg: CFLAGS+=-pthread
  cdsg: LDFLAGS+=-pthread
