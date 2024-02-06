@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C6184BDE4
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 20:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A20F84BDE2
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 20:07:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXQmI-0008MM-Bv; Tue, 06 Feb 2024 14:06:42 -0500
+	id 1rXQmI-0008MY-Cm; Tue, 06 Feb 2024 14:06:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rXQm7-0008Jt-UU
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 14:06:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rXQm9-0008LZ-QW
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 14:06:35 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rXQm6-0000gL-Fn
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 14:06:31 -0500
+ id 1rXQm8-0000gk-9O
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 14:06:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707246389;
+ s=mimecast20190719; t=1707246391;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BspMP2XhVnuC25UhdGg6B1NiDSHrFczqg/Tx0/MfIc4=;
- b=Ah1+k8bj+6HZef3RW8DUZlzvZPS/xKpmJ3MetwOIz2ZIWeQxAuNSRw/7KteOM1izz98U0N
- Gh+i0Tq/5jjxABDiYhD5zC/k8HISpLGi180t53Qqha9UYQ+uhsyQysxqaU5JNvXxfz07mg
- 8EHvBRIMx/SL4SsehJjjmbg5d8JYis8=
+ bh=jHxx7Y1CaQKC5d5CZ/TuSjaYs36sXCT1kADYNwNRTnM=;
+ b=MiRP5/imbsxu5ddbyXoYkLugmUmoWwe9G7Wz4sTpChuLkhqJ//R5dABGwpZrqTFw8UoZwV
+ DrzvHFEGY3mTXu0uWBBgASejiqyqdTiPGll0sDEdOk2hlw7zvH2+NYzN6Ox/Ev0CB+PGre
+ nbSTBSC8binvKmzBvBrskqlwwS3LUFA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-5kxhLAlGMFG_OWzupPn1mQ-1; Tue,
- 06 Feb 2024 14:06:27 -0500
-X-MC-Unique: 5kxhLAlGMFG_OWzupPn1mQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-SDy16ovqN7OUT7FEDmw9nA-1; Tue,
+ 06 Feb 2024 14:06:26 -0500
+X-MC-Unique: SDy16ovqN7OUT7FEDmw9nA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1332628EC120;
- Tue,  6 Feb 2024 19:06:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6EAD43804539;
+ Tue,  6 Feb 2024 19:06:25 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.41])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 77C111C0652C;
- Tue,  6 Feb 2024 19:06:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CACE9112132A;
+ Tue,  6 Feb 2024 19:06:24 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Kevin Wolf <kwolf@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v2 4/5] virtio-blk: declare VirtIOBlock::rq with a type
-Date: Tue,  6 Feb 2024 14:06:09 -0500
-Message-ID: <20240206190610.107963-5-stefanha@redhat.com>
+Subject: [PATCH v2 5/5] monitor: use aio_co_reschedule_self()
+Date: Tue,  6 Feb 2024 14:06:10 -0500
+Message-ID: <20240206190610.107963-6-stefanha@redhat.com>
 In-Reply-To: <20240206190610.107963-1-stefanha@redhat.com>
 References: <20240206190610.107963-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,37 +82,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtIOBlock::rq field has had the type void * since its introduction
-in commit 869a5c6df19a ("Stop VM on error in virtio-blk. (Gleb
-Natapov)").
+The aio_co_reschedule_self() API is designed to avoid the race
+condition between scheduling the coroutine in another AioContext and
+yielding.
 
-Perhaps this was done to avoid the forward declaration of
-VirtIOBlockReq.
+The QMP dispatch code uses the open-coded version that appears
+susceptible to the race condition at first glance:
 
-Hanna Czenczek <hreitz@redhat.com> pointed out the missing type. Specify
-the actual type because there is no need to use void * here.
+  aio_co_schedule(qemu_get_aio_context(), qemu_coroutine_self());
+  qemu_coroutine_yield();
 
-Suggested-by: Hanna Czenczek <hreitz@redhat.com>
+The code is actually safe because the iohandler and qemu_aio_context
+AioContext run under the Big QEMU Lock. Nevertheless, set a good example
+and use aio_co_reschedule_self() so it's obvious that there is no race.
+
+Suggested-by: Hanna Reitz <hreitz@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- include/hw/virtio/virtio-blk.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/qmp-dispatch.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
-index 833a9a344f..5c14110c4b 100644
---- a/include/hw/virtio/virtio-blk.h
-+++ b/include/hw/virtio/virtio-blk.h
-@@ -55,7 +55,7 @@ struct VirtIOBlock {
-     VirtIODevice parent_obj;
-     BlockBackend *blk;
-     QemuMutex rq_lock;
--    void *rq; /* protected by rq_lock */
-+    struct VirtIOBlockReq *rq; /* protected by rq_lock */
-     VirtIOBlkConf conf;
-     unsigned short sector_mask;
-     bool original_wce;
+diff --git a/qapi/qmp-dispatch.c b/qapi/qmp-dispatch.c
+index 176b549473..f3488afeef 100644
+--- a/qapi/qmp-dispatch.c
++++ b/qapi/qmp-dispatch.c
+@@ -212,8 +212,7 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
+              * executing the command handler so that it can make progress if it
+              * involves an AIO_WAIT_WHILE().
+              */
+-            aio_co_schedule(qemu_get_aio_context(), qemu_coroutine_self());
+-            qemu_coroutine_yield();
++            aio_co_reschedule_self(qemu_get_aio_context());
+         }
+ 
+         monitor_set_cur(qemu_coroutine_self(), cur_mon);
+@@ -227,9 +226,7 @@ QDict *coroutine_mixed_fn qmp_dispatch(const QmpCommandList *cmds, QObject *requ
+              * Move back to iohandler_ctx so that nested event loops for
+              * qemu_aio_context don't start new monitor commands.
+              */
+-            aio_co_schedule(iohandler_get_aio_context(),
+-                            qemu_coroutine_self());
+-            qemu_coroutine_yield();
++            aio_co_reschedule_self(iohandler_get_aio_context());
+         }
+     } else {
+        /*
 -- 
 2.43.0
 
