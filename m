@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E6584BEE9
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 21:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4239984BEE7
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 21:49:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXSNU-0004un-92; Tue, 06 Feb 2024 15:49:12 -0500
+	id 1rXSNT-0004uK-CH; Tue, 06 Feb 2024 15:49:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rXSNS-0004uE-MK
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:49:10 -0500
+ id 1rXSNR-0004tt-C9
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:49:09 -0500
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rXSNN-0001c5-73
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:49:10 -0500
+ id 1rXSNN-0001cB-74
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:49:09 -0500
 Received: from localhost.intra.ispras.ru (unknown [10.10.3.121])
- by mail.ispras.ru (Postfix) with ESMTP id 07BD84076728;
+ by mail.ispras.ru (Postfix) with ESMTP id 2C3094076729;
  Tue,  6 Feb 2024 20:48:41 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 07BD84076728
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 2C3094076729
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
  s=default; t=1707252521;
- bh=LKlsP9qffl5TmFXf/YIJKHAGRdE7XUamBGJVaa+posg=;
+ bh=VFrTWUlG2vqWX9RDmzX8dOxdM4X5eGzOS6RJxjiMu2o=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=k2pmwYm0+tmnjh2Wza3wmePZA+Yw2DRnQ3OVmU60RRqVfPe1nHjz8E+IuMw9cDZip
- iY5ZzwriTkhLQExaupI5D983L4TOcDx3UPyPr8Fo84YHYIkGORI7w6qwX9uONJstAf
- R7hVf2W8c8+MC8XJaPHbshXkv8svzsdp1Fjj/0DM=
+ b=MvS/sCN7GSp4MF0lMpJkTKokikr4L+sbUSh9kXOC01mf7klPhtp2xzQCemckKKtak
+ i6pqC3altfKaZa96P50v4rkqIlvBpTwZISqAYVkxSkuVWrz3oR/duq01gqOum2XNQM
+ SDHMqgXg9/zQO4FPMM0i2zb4wcatETzlym8WKAAA=
 From: Alexander Monakov <amonakov@ispras.ru>
 To: qemu-devel@nongnu.org
 Cc: Mikhail Romanov <mmromanov@ispras.ru>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexander Monakov <amonakov@ispras.ru>
-Subject: [PATCH v3 3/6] util/bufferiszero: remove AVX512 variant
-Date: Tue,  6 Feb 2024 23:48:06 +0300
-Message-Id: <20240206204809.9859-4-amonakov@ispras.ru>
+Subject: [PATCH v3 4/6] util/bufferiszero: remove useless prefetches
+Date: Tue,  6 Feb 2024 23:48:07 +0300
+Message-Id: <20240206204809.9859-5-amonakov@ispras.ru>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240206204809.9859-1-amonakov@ispras.ru>
 References: <20240206204809.9859-1-amonakov@ispras.ru>
@@ -65,87 +65,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks to early checks in the inline buffer_is_zero wrapper, the SIMD
-routines are invoked much more rarely in normal use when most buffers
-are non-zero. This makes use of AVX512 unprofitable, as it incurs extra
-frequency and voltage transition periods during which the CPU operates
-at reduced performance, as described in
-https://travisdowns.github.io/blog/2020/01/17/avxfreq1.html
+Use of prefetching in bufferiszero.c is quite questionable:
 
-Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
+- prefetches are issued just a few CPU cycles before the corresponding
+  line would be hit by demand loads;
+
+- they are done for simple access patterns, i.e. where hardware
+  prefetchers can perform better;
+
+- they compete for load ports in loops that should be limited by load
+  port throughput rather than ALU throughput.
+
 Signed-off-by: Alexander Monakov <amonakov@ispras.ru>
+Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
 ---
- util/bufferiszero.c | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ util/bufferiszero.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 01050694a6..c037d11d04 100644
+index c037d11d04..cb3eb2543f 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -64,7 +64,7 @@ buffer_is_zero_len_4_plus(const void *buf, size_t len)
-     }
- }
+@@ -49,7 +49,6 @@ buffer_is_zero_len_4_plus(const void *buf, size_t len)
+         const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
  
--#if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
-+#if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
- #include <immintrin.h>
+         for (; p + 8 <= e; p += 8) {
+-            __builtin_prefetch(p + 8);
+             if (t) {
+                 return false;
+             }
+@@ -79,7 +78,6 @@ buffer_zero_sse2(const void *buf, size_t len)
  
- /* Note that each of these vectorized functions require len >= 64.  */
-@@ -128,35 +128,6 @@ buffer_zero_avx2(const void *buf, size_t len)
- }
- #endif /* CONFIG_AVX2_OPT */
- 
--#ifdef CONFIG_AVX512F_OPT
--static bool __attribute__((target("avx512f")))
--buffer_zero_avx512(const void *buf, size_t len)
--{
--    /* Begin with an unaligned head of 64 bytes.  */
--    __m512i t = _mm512_loadu_si512(buf);
--    __m512i *p = (__m512i *)(((uintptr_t)buf + 5 * 64) & -64);
--    __m512i *e = (__m512i *)(((uintptr_t)buf + len) & -64);
--
--    /* Loop over 64-byte aligned blocks of 256.  */
--    while (p <= e) {
+     /* Loop over 16-byte aligned blocks of 64.  */
+     while (likely(p <= e)) {
 -        __builtin_prefetch(p);
--        if (unlikely(_mm512_test_epi64_mask(t, t))) {
--            return false;
--        }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    }
--
--    t |= _mm512_loadu_si512(buf + len - 4 * 64);
--    t |= _mm512_loadu_si512(buf + len - 3 * 64);
--    t |= _mm512_loadu_si512(buf + len - 2 * 64);
--    t |= _mm512_loadu_si512(buf + len - 1 * 64);
--
--    return !_mm512_test_epi64_mask(t, t);
--
--}
--#endif /* CONFIG_AVX512F_OPT */
--
- static unsigned __attribute__((noinline))
- select_accel_cpuinfo(unsigned info)
- {
-@@ -165,9 +136,6 @@ select_accel_cpuinfo(unsigned info)
-         unsigned bit;
-         bool (*fn)(const void *, size_t);
-     } all[] = {
--#ifdef CONFIG_AVX512F_OPT
--        { CPUINFO_AVX512F, buffer_zero_avx512 },
--#endif
- #ifdef CONFIG_AVX2_OPT
-         { CPUINFO_AVX2,    buffer_zero_avx2 },
- #endif
-@@ -191,7 +159,7 @@ static unsigned used_accel
-     = 0;
- #endif
+         t = _mm_cmpeq_epi8(t, zero);
+         if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
+             return false;
+@@ -110,7 +108,6 @@ buffer_zero_avx2(const void *buf, size_t len)
  
--#if defined(CONFIG_AVX512F_OPT) || defined(CONFIG_AVX2_OPT)
-+#if defined(CONFIG_AVX2_OPT)
- static void __attribute__((constructor)) init_accel(void)
- {
-     used_accel = select_accel_cpuinfo(cpuinfo_init());
+     /* Loop over 32-byte aligned blocks of 128.  */
+     while (p <= e) {
+-        __builtin_prefetch(p);
+         if (unlikely(!_mm256_testz_si256(t, t))) {
+             return false;
+         }
 -- 
 2.32.0
 
