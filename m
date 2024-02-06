@@ -2,52 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BEF84B2B5
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 11:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FB884B2AB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 11:45:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXIvx-0006u6-5Q; Tue, 06 Feb 2024 05:44:09 -0500
+	id 1rXIvv-0006tP-8p; Tue, 06 Feb 2024 05:44:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvl-0006sK-P2
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvl-0006sJ-P7
  for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:43:59 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvj-00039C-8P
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rXIvj-00039B-8H
  for qemu-devel@nongnu.org; Tue, 06 Feb 2024 05:43:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707216233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=384goALF7mJoNK4zopP4QQRoFyK7PhD2ZUnkGFAJ2Ns=;
- b=Je/vjv5jHwDAeGrd+wCrf8C96gbEw1SH/mMSRiU3l0BMs1MyqGXn9W4ZIZOlDywZlj9DS9
- MOPk/76trOsSLKI72OYElg79EQCbMSZJ/46z+GAD/t7DonrSjqtb1DHdcYFq6LfwjsU8S4
- mRNotAxqmtQ4fdofD1K0B+DzBohC2go=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=x+uzC8Z4gSLL8Q72zuWcwUQ+UBRU55ra9QewclI0m2c=;
+ b=VmT+cnpBu5VpABTwyD84HjHOIug7atBTOy+ddiUXMZneIr+v6iCEks2sQ8MkD1f4O1+0bc
+ UcvdYn6RfMqLTYw5NsrN8zWLjNOAvGKuEZwLZgjuo86tUpTdrZvsIwFZPQ/9W8PyyVjo0X
+ UFNABzoQQW0u28u2ieJQPvOTL6p5vVI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-W96iBOKTOOK6_EgnXSrLnA-1; Tue, 06 Feb 2024 05:43:49 -0500
-X-MC-Unique: W96iBOKTOOK6_EgnXSrLnA-1
+ us-mta-638-MMOe4FHBPdiGnpUHFO_f2A-1; Tue, 06 Feb 2024 05:43:51 -0500
+X-MC-Unique: MMOe4FHBPdiGnpUHFO_f2A-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AEB61025622;
- Tue,  6 Feb 2024 10:43:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F20785A589;
+ Tue,  6 Feb 2024 10:43:51 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.195.21])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B94C9492BF0;
- Tue,  6 Feb 2024 10:43:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AA6BA492BF0;
+ Tue,  6 Feb 2024 10:43:49 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 00/12] s390x, tests and misc. patches
-Date: Tue,  6 Feb 2024 11:43:35 +0100
-Message-ID: <20240206104347.238825-1-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>
+Subject: [PULL 01/12] hw/scsi/lsi53c895a: add missing decrement of reentrancy
+ counter
+Date: Tue,  6 Feb 2024 11:43:36 +0100
+Message-ID: <20240206104347.238825-2-thuth@redhat.com>
+In-Reply-To: <20240206104347.238825-1-thuth@redhat.com>
+References: <20240206104347.238825-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -75,70 +79,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
+From: Sven Schnelle <svens@stackframe.org>
 
-  Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
+When the maximum count of SCRIPTS instructions is reached, the code
+stops execution and returns, but fails to decrement the reentrancy
+counter. This effectively renders the SCSI controller unusable
+because on next entry the reentrancy counter is still above the limit.
 
-are available in the Git repository at:
+This bug was seen on HP-UX 10.20 which seems to trigger SCRIPTS
+loops.
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-02-06
+Fixes: b987718bbb ("hw/scsi/lsi53c895a: Fix reentrancy issues in the LSI controller (CVE-2023-0330)")
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Message-ID: <20240128202214.2644768-1-svens@stackframe.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/scsi/lsi53c895a.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-for you to fetch changes up to a1a9800e9721f7a4b0762b97ff8961473870bc54:
-
-  meson: Link with libinotify on FreeBSD (2024-02-06 10:27:50 +0100)
-
-----------------------------------------------------------------
-* Emulate CVB, CVBY, CVBG and CVDG s390x instructions
-* Fix bug in lsi53c895a reentrancy counter
-* Deprecate the "power5+" and "power7+" CPU names
-* Fix problems in the freebsd VM test
-
-----------------------------------------------------------------
-Ilya Leoshkevich (8):
-      target/s390x: Emulate CVDG
-      target/s390x: Emulate CVB, CVBY and CVBG
-      tests/tcg/s390x: Test CONVERT TO DECIMAL
-      tests/tcg/s390x: Test CONVERT TO BINARY
-      tests/vm: Set UseDNS=no in the sshd configuration
-      tests/vm/freebsd: Reload the sshd configuration
-      test-util-filemonitor: Adapt to the FreeBSD inotify rename semantics
-      meson: Link with libinotify on FreeBSD
-
-Philippe Mathieu-Daudé (1):
-      target/s390x: Prefer fast cpu_env() over slower CPU QOM cast macro
-
-Sven Schnelle (1):
-      hw/scsi/lsi53c895a: add missing decrement of reentrancy counter
-
-Thomas Huth (2):
-      target/ppc/cpu-models: Rename power5+ and power7+ for new QOM naming rules
-      docs/about: Deprecate the old "power5+" and "power7+" CPU names
-
- docs/about/deprecated.rst          |   9 ++++
- meson.build                        |  23 +++++++--
- target/s390x/helper.h              |   3 ++
- target/s390x/tcg/insn-data.h.inc   |   5 ++
- hw/ppc/spapr_cpu_core.c            |   4 +-
- hw/scsi/lsi53c895a.c               |   1 +
- qom/object.c                       |   4 --
- target/ppc/cpu-models.c            |  10 ++--
- target/s390x/cpu-dump.c            |   3 +-
- target/s390x/gdbstub.c             |   6 +--
- target/s390x/helper.c              |   3 +-
- target/s390x/kvm/kvm.c             |   6 +--
- target/s390x/tcg/excp_helper.c     |  11 ++--
- target/s390x/tcg/int_helper.c      |  97 +++++++++++++++++++++++++++++++++++
- target/s390x/tcg/misc_helper.c     |   4 +-
- target/s390x/tcg/translate.c       |  27 +++++++++-
- tests/tcg/s390x/cvb.c              | 102 +++++++++++++++++++++++++++++++++++++
- tests/tcg/s390x/cvd.c              |  63 +++++++++++++++++++++++
- tests/unit/test-util-filemonitor.c |   8 +++
- tests/tcg/s390x/Makefile.target    |   2 +
- tests/vm/basevm.py                 |   2 +
- tests/vm/freebsd                   |   1 +
- util/meson.build                   |   6 ++-
- 23 files changed, 360 insertions(+), 40 deletions(-)
- create mode 100644 tests/tcg/s390x/cvb.c
- create mode 100644 tests/tcg/s390x/cvd.c
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index 34e3b89287..d607a5f9fb 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -1159,6 +1159,7 @@ again:
+         lsi_script_scsi_interrupt(s, LSI_SIST0_UDC, 0);
+         lsi_disconnect(s);
+         trace_lsi_execute_script_stop();
++        reentrancy_level--;
+         return;
+     }
+     insn = read_dword(s, s->dsp);
+-- 
+2.43.0
 
 
