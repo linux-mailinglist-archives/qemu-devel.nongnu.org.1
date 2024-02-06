@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA87F84BC2D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 18:37:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741E984BC30
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 18:37:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXPMw-0005RX-U8; Tue, 06 Feb 2024 12:36:27 -0500
+	id 1rXPMw-0005R3-LN; Tue, 06 Feb 2024 12:36:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+952dfae3dd70343bec29+7471+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rXPMv-0005Qw-74; Tue, 06 Feb 2024 12:36:25 -0500
+ id 1rXPMu-0005Qk-0s; Tue, 06 Feb 2024 12:36:24 -0500
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+952dfae3dd70343bec29+7471+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1rXPMr-000081-E4; Tue, 06 Feb 2024 12:36:24 -0500
+ id 1rXPMr-00008G-DK; Tue, 06 Feb 2024 12:36:23 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=+FBlnK1/3x4953l0IybrOmTRjofFr/dRgy1asqIxoig=; b=pVoDAPaMVPcVveE58fM0BlQ6ni
- rdvBzmleVeKcQtdB3lohCsZRN8Z8yonEvbLcHAiUyXeDci0nritCjvB2zUoD0MC3g3mT5Lxu6+OdJ
- m5eMJrIL0CEl4pAXG6qLRGscxON3y6SRqGMkkgrHTShEA+23FU/YVr4p24QPVxBBv3rzaLagsCVh4
- Q6GAFBRfvl9n8+IfnDypAZ6F7FQK6Rh1PfzLfdgbTAbtm1N/ayf9nNiWDClmCNENWKhsnSYZBFQgq
- XCX5famJJ19OUEbe+tUGMz6q5oaGfJSM8dNXiaMEDm0A9V8CDAV5VyBQ1f5NZ9+eiiDVowXAvvwty
- Z6Y6gIaQ==;
-Received: from 72-21-198-67.amazon.com ([72.21.198.67]
+ bh=SZPt5XEvll13IeCnbJRQ+6sQ7r02rGEWDnsy3n7Ng+I=; b=FOG9gOkwf1d3GUtsMdQH7N+MRV
+ fqiTpVFLYL6m45IMYWM90/zSsOBu6yC4m332DvEl+18aUq9Rs4Hy3Cd3LAUnUBwdvGRJFIqUoWfvL
+ MzvvIzT6CI4H+DhslAQV4j9SaanixQTK0hD2imqZWx+PaVqH9Llzfiw32V8crx+o+SRHkEFe/Ag2N
+ sZel9Zl8itWTcRaTmNqrUyZfLbQ6MAJL8xJ7nUE04AqBXXxnDUWlos+LjilPELbZav/PEjYwqcI/i
+ lVeJY3H6syiYrprpDS87IX8uA5I4I5Pkh8DWGMQ6TmM+B40PdIxqsBZ6C9eo6DzpJ8AJqUJQ7grtl
+ VA8H+bJA==;
+Received: from 72-21-196-67.amazon.com ([72.21.196.67]
  helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
- id 1rXPMj-0000000Cq5B-2ZOO; Tue, 06 Feb 2024 17:36:15 +0000
-Message-ID: <624db586bcc44a78917b1cb801e6481ce47f426d.camel@infradead.org>
-Subject: Re: [PATCH 1/2] hw/arm/npcm7xx: Call qemu_configure_nic_device()
- for GMAC modules
+ id 1rXPMm-0000000Cq5a-46dE; Tue, 06 Feb 2024 17:36:18 +0000
+Message-ID: <bfbeda026f49803025e2a90e41c5e043c93d1a59.camel@infradead.org>
+Subject: Re: [PATCH 2/2] tests/qtest/npcm7xx_emc-test: Connect all NICs to a
+ backend
 From: David Woodhouse <dwmw2@infradead.org>
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
  qemu-devel@nongnu.org
 Cc: Nabih Estefan <nabihestefan@google.com>, Hao Wu <wuhaotsh@google.com>
-Date: Tue, 06 Feb 2024 09:36:11 -0800
-In-Reply-To: <20240206171231.396392-2-peter.maydell@linaro.org>
+Date: Tue, 06 Feb 2024 09:36:14 -0800
+In-Reply-To: <20240206171231.396392-3-peter.maydell@linaro.org>
 References: <20240206171231.396392-1-peter.maydell@linaro.org>
- <20240206171231.396392-2-peter.maydell@linaro.org>
+ <20240206171231.396392-3-peter.maydell@linaro.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-WTGzkdJjslIxpj3h/qyg"
+ boundary="=-LKC9ZO6YRnFDjQqJX639"
 User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -76,25 +76,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-WTGzkdJjslIxpj3h/qyg
+--=-LKC9ZO6YRnFDjQqJX639
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, 2024-02-06 at 17:12 +0000, Peter Maydell wrote:
-> The patchset adding the GMAC ethernet to this SoC crossed in the
-> mail with the patchset cleaning up the NIC handling. When we
-> create the GMAC modules we must call qemu_configure_nic_device()
-> so that the user has the opportunity to use the -nic commandline
-> option to create a network backend and connect it to the GMACs.
+> Currently QEMU will warn if there is a NIC on the board that
+> is not connected to a backend. By default the '-nic user' will
+> get used for all NICs, but if you manually connect a specific
+> NIC to a specific backend, then the other NICs on the board
+> have no backend and will be warned about:
 >=20
-> Add the missing call.
+> qemu-system-arm: warning: nic npcm7xx-emc.1 has no peer
+> qemu-system-arm: warning: nic npcm-gmac.0 has no peer
+> qemu-system-arm: warning: nic npcm-gmac.1 has no peer
 >=20
-> Fixes: 21e5326a7c ("hw/arm: Add GMAC devices to NPCM7XX SoC")
+> So suppress those warnings by manually connecting every NIC
+> on the board to some backend.
+>=20
 > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
---=-WTGzkdJjslIxpj3h/qyg
+
+... although do we want to expand this test to cover the GMACs?=20
+
+--=-LKC9ZO6YRnFDjQqJX639
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -186,25 +193,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwMjA2MTczNjExWjAvBgkqhkiG9w0BCQQxIgQgejTLieb3
-xUbNq9/LyKGiBiCWSglSVOVzbABq5FqiW0swgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQwMjA2MTczNjE0WjAvBgkqhkiG9w0BCQQxIgQgo4DSYP3P
+2rb5UxsM4DamdwrXPZ8NC6bjsSkiANdd66wwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgBP6qJnbjyEzQQXaj3gEynsgJ4v50EMrX7B
-ZUyecIW2EwOsZ+WcZIxfW2h9ofm2wKnQCFbnQTEMIduDEVHOo447v9VupaoB6we2+t58tKIrFrSh
-h9eJzFeypIuwQX94khsJYYFJX3IzLS/D68dvk1+QKtXreFzckYDwa9LFViEiv2/FM83GAJmUK0Qj
-HcVF8dR5Cej1A2DxliXInrgfa9iolXP4E3rS2UISKw69cEFRFr+TbSI7vuxbR3NsK6G6XbCKZxjS
-PKe9sHldACpCQrD3ioUw/svn1ijmnuczkzYFIgvLj6a12PsIMM76SAmuarLgVxb8RKpTjRSHI1vV
-iokti6IdydNVv+Rv3zI35JEyPCveiW9/wURcay+ZRjog9Ou1yeI3PvS6LhnDtfRbquDHdiaJlVUi
-lYuVF+6FbWfsv2FKouVSPvpRXcwFa4nufEE39fMPKegWKMQ3k6j7mFtgqp1XyVnwRu0NGPh/t32C
-R0QRqjQQO2cm4I7pmzOREosm/pKLK8BtQQO5mVzV/dBhBGzfG/nnft4BBQv418xJQMQOUo6/pDO8
-BiQFHvf57/JS38yB9Kyil8UxUVndvf6wVH3psEmrvR1g8esw/JXJXrZYGTuU5zmG6tgQpwKyGFga
-6KWM1hKdsGA/zIOsE//3wVWKJFewQECYYJRTYmWvcgAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCc5qzM9vHZorJ/FMn2umm56DGvIYrSYv0A
+OMzWFnADuWSepvMis6yyvUOrIpLmXercWTnidPzVgdImVmxhMQBosExpRxW2lp2dzN4+BXw7Hbf8
+uNuPa54G2zxGUS7PDk07fwLrGIk93RuTlHIiZVppthrUkTW4MRMWoFzeClXbtKEk1DKScA/xy6V9
+QPdTszMco3kDPhrBegBqyPB9Xp1WOQAArjSwAGbx+YJoi69aAQWqGwqclGD8H1b/AzborGU5qpUs
+8ute86cK+djKSg3K2MOdply7GpzUB9pMbAgT0FR9xIraNeVdVIub05673pLAdGvx8gplsWXMekbj
+wzL680hFQNjvuYByiR3QcS/7sPM4SChBP57buCyCMa04CS2Di2yw2+P4prJSq5ipF82RGyTh5ddE
+KytO5vvX+TmwUZy7wxF0UhaO3EDKe4mzLoiA9d867gtEBNuk+uGgoV0Zr4a4+aJd/w4a/QrxVzRo
+GQlRFJmRmlKlGujlfu85wlp62ZUyQ0SBMHei1I2DfTRPSK80OCt2WGHwcPKNldKCToxNdNiGYbrN
+K86VBQkszR3on8Fcq9LAwqc1MbbXHghziise9Ayx5B48LCHc1S6cBpPvKkhKP6fO0u/Pmnqs29+/
+Z2dOHhnCEkQZfzZyhWtP/2F+y1She9GmacFr5mJJQwAAAAAAAA==
 
 
---=-WTGzkdJjslIxpj3h/qyg--
+--=-LKC9ZO6YRnFDjQqJX639--
 
