@@ -2,82 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3803884B672
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B27684B694
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:40:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXLWK-0000rA-K0; Tue, 06 Feb 2024 08:29:52 -0500
+	id 1rXLex-00036Y-3Q; Tue, 06 Feb 2024 08:38:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rXLWE-0000iQ-D0
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:46 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rXLW8-0008G2-4G
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:46 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33aeb088324so4188339f8f.2
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:29:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707226179; x=1707830979; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=i5+zyl23hVZuAKNLfLW8qwmlrpXibq7GbXzW+djyeAc=;
- b=Wy8dvwnGA+5VjV6Wv+iaQcV03x9idvLGSikV0kCTYNIZt0KW4dAjwwXAbFYf2Rge+d
- 7sWIqwT5Y+WA2oRF573VqPxISh04iFFFza+WfVC/AT5ePT3xwxFaxXUkV0ZJ/h4AjEtA
- nzc+si36ZYBp8HDqqItibgVtM/GPXQTQeNkzedaclAyrx2RZ2WVctqcN4xRl74Qfqz/x
- bxbgOKNeMa9bqncz2R2fVruu5A093CuG2NJZf88o9r+FUQT3ZthbsokMhawdN+k+izcA
- ZtM6nSTFerdUVewf8Jwgq5Sd9Cm74QPCM0qrCH0PAy3ZK/5dyZtXi9RHUlYYcJCS1Ek7
- mmWA==
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1rXLet-00036G-8h
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:38:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1rXLer-0001Ym-MQ
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:38:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707226719;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=dRNUGvj0O6Sq5KZdyYr9owqpW87BNjR7MV51I+Ab3c0=;
+ b=avo/ALe8B97YZ3BZ3EfB5jUnpem556jI8d+Iw+WR54Kr0gah8nDaG72dZsqTsy8zvnM7hx
+ kKxuU0gO4rLLebQ/OpJYMCv3xD9+QNVj+ExcCL3Q017GPLlYGsUCk99cS7KmZQP/yVHbqi
+ Do/c/JiB5IEOaQ9cneFRChODoDt+kG8=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-231-1ro20DHZP-a9_aaAiwREhQ-1; Tue, 06 Feb 2024 08:38:37 -0500
+X-MC-Unique: 1ro20DHZP-a9_aaAiwREhQ-1
+Received: by mail-ot1-f72.google.com with SMTP id
+ 46e09a7af769-6e2b25d1fe8so314403a34.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:38:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707226179; x=1707830979;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=i5+zyl23hVZuAKNLfLW8qwmlrpXibq7GbXzW+djyeAc=;
- b=e0ZXkxLQ5JqbbIs/ZQXIz4m8vXEjv9Z3FB0dTYKhI8rmJXZw5rOucD3yubpP5vt7w/
- obMcwPM7vIG234VkgZf7BWs3Dj/LVGCVVF6JNpjTQhGXYb1+ZhDOu2ViQCxgbovZuanP
- dMdYxsHkp64Dkg9dZxBTJ2uBa5EnMj4Iq1q/CogMTaYFQt5ZXD9KuK6V3NS5vuUqccI/
- ODJ7MTaMajHttWckVim2T7TlJXd/IUSDmmNEtLmpEoOWxOCPKoZDESUOy1Y/PoBTKlzw
- TWokKlwuKeyrv3R13+0pg0YbgHymHgelm9P+NLjLAuwf/uPeDXEue3tCmYPdpL9/0kmr
- 61Og==
-X-Gm-Message-State: AOJu0YwjpXtvS+dtFMwD635f8oQyksbVLpmkzLSHSRZSZHROcf11FkXu
- TXTfTuzi7R3Glrn/uvzQBJtz7DJVSLaods6CTSHKFhQP4Ls0kp2gYyGldh6e/rk=
-X-Google-Smtp-Source: AGHT+IEUNUKb00BcI1fnhcPPBrN7Qlo+KuxbtaxhIbMJgMr6QynFawMmCKhdfACAvv/j6RFNO/ejwg==
-X-Received: by 2002:a05:6000:1208:b0:33b:3ceb:99cf with SMTP id
- e8-20020a056000120800b0033b3ceb99cfmr1167924wrx.67.1707226178817; 
- Tue, 06 Feb 2024 05:29:38 -0800 (PST)
-X-Forwarded-Encrypted: i=0;
- AJvYcCWC4xecCLiqv1PUBtXswhEAx7qbwncmvQ70KK11G8lL00ywQnQzlU0WOfEqVkp9ASqU8Jo/BZ6hJbUfKnPvMK/LLtOboNM=
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- y7-20020a056000108700b0033b470a137esm1492932wrw.79.2024.02.06.05.29.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 05:29:38 -0800 (PST)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 13/13] docs: Add documentation for the mps3-an536 board
-Date: Tue,  6 Feb 2024 13:29:31 +0000
-Message-Id: <20240206132931.38376-14-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240206132931.38376-1-peter.maydell@linaro.org>
-References: <20240206132931.38376-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20230601; t=1707226717; x=1707831517;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+ :mime-version:references:from:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=dRNUGvj0O6Sq5KZdyYr9owqpW87BNjR7MV51I+Ab3c0=;
+ b=wehZvwTCBwL0iD2MkMwSfo6E5xr9YVPSJ8CSlq4fCW24h3osmwd3R5qDxCHo1gbCc5
+ pXSvnJ38eE4YegqObOcdjgIovnR6VV5HrRLeY2BAeJ4VQp7xwr9BALuoZiATyqJ+1ziR
+ IpK0g68h8DCIr4ofe6uPE2OoY7H2Z6Cy17rT9bS1Q4NLG9rCjaMF/VFKb/6tFoQUoFaq
+ vHdsVtpjAvJ01lqid+GqSSN8lBZikAh7W8LTxCsH85jYIXPQd5naBiwVRQo7yrOgjWKC
+ ETll4On2i5JRIu9prg3DjV2T+eCRjh4EG1KUt7urO8CJsHfnz+UV9MX4ddwDqZZNnABa
+ CLLQ==
+X-Gm-Message-State: AOJu0Yzv6aSNBNxMsvANXF3u6MqBhURw+ziSUQWIv0cIy0+GW4wDwxZ6
+ o1SQkfeGJQ4H5rUYjYfhEKx8keA6T6cSYpz0+S/kDbtHXk7gY0S/fkE7AraLmrvOqf8omcl0BXI
+ +r2njA/1hltI+NFvNeYX87Yj5j3a3amEN6Mo1nBFlSgmxvb6ns5zMh/P34p9/mKKmVhJIGtzAZs
+ zUehaqp73mY/zu7NJrlL0Fn09khvc=
+X-Received: by 2002:a05:6830:1e3b:b0:6e0:d4d0:eece with SMTP id
+ t27-20020a0568301e3b00b006e0d4d0eecemr2428281otr.19.1707226717277; 
+ Tue, 06 Feb 2024 05:38:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFlssJpHIJowTBjKMq7ovb50bJCUXz7BftbzkIhm4EJDC5iuU3WayNOg4rwTXc9UTFIC/sllRLr6kZaZpeN7yc=
+X-Received: by 2002:a05:6830:1e3b:b0:6e0:d4d0:eece with SMTP id
+ t27-20020a0568301e3b00b006e0d4d0eecemr2428267otr.19.1707226716994; Tue, 06
+ Feb 2024 05:38:36 -0800 (PST)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 6 Feb 2024 05:38:35 -0800
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20240206021002.208805-1-lixianglai@loongson.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_QUOTING=0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20240206021002.208805-1-lixianglai@loongson.cn>
+Date: Tue, 6 Feb 2024 05:38:35 -0800
+Message-ID: <CABJz62MEUeWw2pL9TYKxD8E2qWOrzPegCbRVaAd0P+0=5_46mQ@mail.gmail.com>
+Subject: Re: [PATCH V2] loongarch: Change the UEFI loading mode to loongarch
+To: Xianglai Li <lixianglai@loongson.cn>
+Cc: qemu-devel@nongnu.org, maobibo@loongson.cn, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Song Gao <gaosong@loongson.cn>, zhaotianrui@loongson.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SORBS_WEB=1.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,81 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add documentation for the mps3-an536 board type.
+On Tue, Feb 06, 2024 at 10:10:02AM +0800, Xianglai Li wrote:
+> The UEFI loading mode in loongarch is very different
+> from that in other architectures:loongarch's UEFI code
+> is in rom, while other architectures' UEFI code is in flash.
+>
+> loongarch UEFI can be loaded as follows:
+> -machine virt,pflash=3Dpflash0-format
+> -bios ./QEMU_EFI.fd
+>
+> Other architectures load UEFI using the following methods:
+> -machine virt,pflash0=3Dpflash0-format,pflash1=3Dpflash1-format
+>
+> loongarch's UEFI loading method makes qemu and libvirt incompatible
+> when using NVRAM, and the cost of loongarch's current loading method
+> far outweighs the benefits, so we decided to use the same UEFI loading
+> scheme as other architectures.
+>
+> Cc: Andrea Bolognani <abologna@redhat.com>
+> Cc: maobibo@loongson.cn
+> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Cc: Song Gao <gaosong@loongson.cn>
+> Cc: zhaotianrui@loongson.cn
+> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> ---
+>  hw/loongarch/acpi-build.c   |  29 +++++++++--
+>  hw/loongarch/virt.c         | 101 ++++++++++++++++++++++++++----------
+>  include/hw/loongarch/virt.h |  10 ++--
+>  3 files changed, 107 insertions(+), 33 deletions(-)
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/mps2.rst | 37 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
+For future reference, it's usually good practice to keep track of
+changes between subsequent versions of the same patchset.
 
-diff --git a/docs/system/arm/mps2.rst b/docs/system/arm/mps2.rst
-index 8a75beb3a08..a305935cc49 100644
---- a/docs/system/arm/mps2.rst
-+++ b/docs/system/arm/mps2.rst
-@@ -1,7 +1,7 @@
--Arm MPS2 and MPS3 boards (``mps2-an385``, ``mps2-an386``, ``mps2-an500``, ``mps2-an505``, ``mps2-an511``, ``mps2-an521``, ``mps3-an524``, ``mps3-an547``)
--=========================================================================================================================================================
-+Arm MPS2 and MPS3 boards (``mps2-an385``, ``mps2-an386``, ``mps2-an500``, ``mps2-an505``, ``mps2-an511``, ``mps2-an521``, ``mps3-an524``, ``mps3-an536``, ``mps3-an547``)
-+=========================================================================================================================================================================
- 
--These board models all use Arm M-profile CPUs.
-+These board models use Arm M-profile or R-profile CPUs.
- 
- The Arm MPS2, MPS2+ and MPS3 dev boards are FPGA based (the 2+ has a
- bigger FPGA but is otherwise the same as the 2; the 3 has a bigger
-@@ -13,6 +13,8 @@ FPGA image.
- 
- QEMU models the following FPGA images:
- 
-+FPGA images using M-profile CPUs:
-+
- ``mps2-an385``
-   Cortex-M3 as documented in Arm Application Note AN385
- ``mps2-an386``
-@@ -30,6 +32,11 @@ QEMU models the following FPGA images:
- ``mps3-an547``
-   Cortex-M55 on an MPS3, as documented in Arm Application Note AN547
- 
-+FPGA images using R-profile CPUs:
-+
-+``mps3-an536``
-+  Dual Cortex-R52 on an MPS3, as documented in Arm Application Note AN536
-+
- Differences between QEMU and real hardware:
- 
- - AN385/AN386 remapping of low 16K of memory to either ZBT SSRAM1 or to
-@@ -45,6 +52,30 @@ Differences between QEMU and real hardware:
-   flash, but only as simple ROM, so attempting to rewrite the flash
-   from the guest will fail
- - QEMU does not model the USB controller in MPS3 boards
-+- AN536 does not support runtime control of CPU reset and halt via
-+  the SCC CFG_REG0 register.
-+- AN536 does not support enabling or disabling the flash and ATCM
-+  interfaces via the SCC CFG_REG1 register.
-+- AN536 does not support setting of the initial vector table
-+  base address via the SCC CFG_REG6 and CFG_REG7 register config,
-+  and does not provide a mechanism for specifying these values at
-+  startup, so all guest images must be built to start from TCM
-+  (i.e. to expect the interrupt vector base at 0 from reset).
-+- AN536 defaults to only creating a single CPU; this is the equivalent
-+  of the way the real FPGA image usually runs with the second Cortex-R52
-+  held in halt via the initial SCC CFG_REG0 register setting. You can
-+  create the second CPU with ``-smp 2``; both CPUs will then start
-+  execution immediately on startup.
-+
-+Note that for the AN536 the first UART is accessible only by
-+CPU0, and the second UART is accessible only by CPU1. The
-+first UART accessible shared between both CPUs is the third
-+UART. Guest software might therefore be built to use either
-+the first UART or the third UART; if you don't see any output
-+from the UART you are looking at, try one of the others.
-+(Even if the AN536 machine is started with a single CPU and so
-+no "CPU1-only UART", the UART numbering remains the same,
-+with the third UART being the first of the shared ones.)
- 
- Machine-specific options
- """"""""""""""""""""""""
--- 
-2.34.1
+Can you please confirm that the build of edk2 added with [1] is
+intended to work with a version of QEMU that contains these changes?
+I'd like to test things out as soon as I get a moment.
+
+Thanks.
+
+
+[1] https://github.com/lixianglai/LoongarchVirtFirmware/commit/985ce19438d9=
+544968c7e921c6acf2c74fd4713e
+--=20
+Andrea Bolognani / Red Hat / Virtualization
 
 
