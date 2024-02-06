@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F4684BEE6
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 21:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 367D784BEEB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 21:50:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXSNQ-0004t8-1j; Tue, 06 Feb 2024 15:49:08 -0500
+	id 1rXSNQ-0004ts-Ll; Tue, 06 Feb 2024 15:49:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rXSND-0004sn-EM
+ id 1rXSND-0004so-Go
  for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:48:55 -0500
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rXSNB-0001eU-Or
+ id 1rXSNB-0001eS-OA
  for qemu-devel@nongnu.org; Tue, 06 Feb 2024 15:48:55 -0500
 Received: from localhost.intra.ispras.ru (unknown [10.10.3.121])
- by mail.ispras.ru (Postfix) with ESMTP id 50E36407672A;
+ by mail.ispras.ru (Postfix) with ESMTP id 73AA4407672D;
  Tue,  6 Feb 2024 20:48:41 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 50E36407672A
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 73AA4407672D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
  s=default; t=1707252521;
- bh=ETvOydZy8vnkWXRDCKf0mg+cgfZMi9kB2kJ9DVxrF2k=;
+ bh=W6EAekkBjy9x2cgLMjMZlCKw0B9qmi55hLClRB6gYtw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=igCv2iXCaIWP1l3kVX7mQv/WCTK0G0E9xbMdyaElMjupXKXbcHm4rhqJbvQFmVHRI
- RTLRjm2voPlqX9L3rRyCkG1/ii8iDf9WLjaNpSV3cPYIri+wYm8wPGTxFEsLkcMOs/
- Vc5zsOeRh3Df5nX1pW4lv3yR2+FAzgYNHIIR/PtY=
+ b=Ig2MPlqgvp1AsoB2P6yxYnJQngGebIorQ5g5xdtrp+72uh5Ui3aCaK23ir1cxGGd9
+ nKKQAh6bDb1QHB4AGzqzYikh5511lXCWUFEl8mRbeiFe0O77oDJ3qlCdrrsjWn7vvL
+ hViUTBmg5UOnkiLKiu1l7t2b5yzN8AKsd96i2ywI=
 From: Alexander Monakov <amonakov@ispras.ru>
 To: qemu-devel@nongnu.org
 Cc: Mikhail Romanov <mmromanov@ispras.ru>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexander Monakov <amonakov@ispras.ru>
-Subject: [PATCH v3 5/6] util/bufferiszero: optimize SSE2 and AVX2 variants
-Date: Tue,  6 Feb 2024 23:48:08 +0300
-Message-Id: <20240206204809.9859-6-amonakov@ispras.ru>
+Subject: [PATCH v3 6/6] util/bufferiszero: improve scalar variant
+Date: Tue,  6 Feb 2024 23:48:09 +0300
+Message-Id: <20240206204809.9859-7-amonakov@ispras.ru>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240206204809.9859-1-amonakov@ispras.ru>
 References: <20240206204809.9859-1-amonakov@ispras.ru>
@@ -65,157 +65,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Increase unroll factor in SIMD loops from 4x to 8x in order to move
-their bottlenecks from ALU port contention to load issue rate (two loads
-per cycle on popular x86 implementations).
+Take into account that the inline wrapper ensures len >= 4.
 
-Avoid using out-of-bounds pointers in loop boundary conditions.
+Use __attribute__((may_alias)) for accesses via non-char pointers.
 
-Follow SSE2 implementation strategy in the AVX2 variant. Avoid use of
-PTEST, which is not profitable there (like in the removed SSE4 variant).
+Avoid using out-of-bounds pointers in loop boundary conditions by
+reformulating the 'for' loop as 'if (...) do { ... } while (...)'.
 
 Signed-off-by: Alexander Monakov <amonakov@ispras.ru>
 Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
 ---
- util/bufferiszero.c | 108 ++++++++++++++++++++++++++++----------------
- 1 file changed, 69 insertions(+), 39 deletions(-)
+ util/bufferiszero.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index cb3eb2543f..d752edd8cc 100644
+index d752edd8cc..1f4cbfaea4 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -66,62 +66,92 @@ buffer_is_zero_len_4_plus(const void *buf, size_t len)
- #if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
- #include <immintrin.h>
- 
--/* Note that each of these vectorized functions require len >= 64.  */
-+/* Helper for preventing the compiler from reassociating
-+   chains of binary vector operations.  */
-+#define SSE_REASSOC_BARRIER(vec0, vec1) asm("" : "+x"(vec0), "+x"(vec1))
-+
-+/* Note that these vectorized functions may assume len >= 256.  */
- 
- static bool __attribute__((target("sse2")))
- buffer_zero_sse2(const void *buf, size_t len)
+@@ -29,35 +29,27 @@
+ bool
+ buffer_is_zero_len_4_plus(const void *buf, size_t len)
  {
--    __m128i t = _mm_loadu_si128(buf);
--    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
--    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
--    __m128i zero = _mm_setzero_si128();
+-    if (unlikely(len < 8)) {
+-        /* For a very small buffer, simply accumulate all the bytes.  */
+-        const unsigned char *p = buf;
+-        const unsigned char *e = buf + len;
+-        unsigned char t = 0;
 -
--    /* Loop over 16-byte aligned blocks of 64.  */
--    while (likely(p <= e)) {
--        t = _mm_cmpeq_epi8(t, zero);
--        if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
-+    /* Unaligned loads at head/tail.  */
-+    __m128i v = *(__m128i_u *)(buf);
-+    __m128i w = *(__m128i_u *)(buf + len - 16);
-+    /* Align head/tail to 16-byte boundaries.  */
-+    __m128i *p = (void *)(((uintptr_t)buf + 16) & -16);
-+    __m128i *e = (void *)(((uintptr_t)buf + len - 1) & -16);
-+    __m128i zero = { 0 };
-+
-+    /* Collect a partial block at tail end.  */
-+    v |= e[-1]; w |= e[-2];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-3]; w |= e[-4];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-5]; w |= e[-6];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-7]; v |= w;
-+
-+    /* Loop over complete 128-byte blocks.  */
-+    for (; p < e - 7; p += 8) {
-+        v = _mm_cmpeq_epi8(v, zero);
-+        if (unlikely(_mm_movemask_epi8(v) != 0xFFFF)) {
-             return false;
+-        do {
+-            t |= *p++;
+-        } while (p < e);
+-
+-        return t == 0;
++    if (unlikely(len <= 8)) {
++        /* Our caller ensures len >= 4.  */
++        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
+     } else {
+-        /* Otherwise, use the unaligned memory access functions to
+-           handle the beginning and end of the buffer, with a couple
++        /* Use unaligned memory access functions to handle
++           the beginning and end of the buffer, with a couple
+            of loops handling the middle aligned section.  */
+-        uint64_t t = ldq_he_p(buf);
+-        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
+-        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
++        uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++        typedef uint64_t uint64_a __attribute__((may_alias));
++        const uint64_a *p = (void *)(((uintptr_t)buf + 8) & -8);
++        const uint64_a *e = (void *)(((uintptr_t)buf + len - 1) & -8);
+ 
+-        for (; p + 8 <= e; p += 8) {
++        if (e - p >= 8) do {
+             if (t) {
+                 return false;
+             }
+             t = p[0] | p[1] | p[2] | p[3] | p[4] | p[5] | p[6] | p[7];
+-        }
++        } while ((p += 8) <= e - 8);
+         while (p < e) {
+             t |= *p++;
          }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
-+        v = p[0]; w = p[1];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[2]; w |= p[3];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[4]; w |= p[5];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[6]; w |= p[7];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= w;
+-        t |= ldq_he_p(buf + len - 8);
+ 
+         return t == 0;
      }
- 
--    /* Finish the aligned tail.  */
--    t |= e[-3];
--    t |= e[-2];
--    t |= e[-1];
--
--    /* Finish the unaligned tail.  */
--    t |= _mm_loadu_si128(buf + len - 16);
--
--    return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
-+    return _mm_movemask_epi8(_mm_cmpeq_epi8(v, zero)) == 0xFFFF;
- }
- 
- #ifdef CONFIG_AVX2_OPT
- static bool __attribute__((target("avx2")))
- buffer_zero_avx2(const void *buf, size_t len)
- {
--    /* Begin with an unaligned head of 32 bytes.  */
--    __m256i t = _mm256_loadu_si256(buf);
--    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
--    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
--
--    /* Loop over 32-byte aligned blocks of 128.  */
--    while (p <= e) {
--        if (unlikely(!_mm256_testz_si256(t, t))) {
-+    /* Unaligned loads at head/tail.  */
-+    __m256i v = *(__m256i_u *)(buf);
-+    __m256i w = *(__m256i_u *)(buf + len - 32);
-+    /* Align head/tail to 32-byte boundaries.  */
-+    __m256i *p = (void *)(((uintptr_t)buf + 32) & -32);
-+    __m256i *e = (void *)(((uintptr_t)buf + len - 1) & -32);
-+    __m256i zero = { 0 };
-+
-+    /* Collect a partial block at tail end.  */
-+    v |= e[-1]; w |= e[-2];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-3]; w |= e[-4];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-5]; w |= e[-6];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-7]; v |= w;
-+
-+    /* Loop over complete 256-byte blocks.  */
-+    for (; p < e - 7; p += 8) {
-+        /* PTEST is not profitable here.  */
-+        v = _mm256_cmpeq_epi8(v, zero);
-+        if (unlikely(_mm256_movemask_epi8(v) != 0xFFFFFFFF)) {
-             return false;
-         }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    } ;
--
--    /* Finish the last block of 128 unaligned.  */
--    t |= _mm256_loadu_si256(buf + len - 4 * 32);
--    t |= _mm256_loadu_si256(buf + len - 3 * 32);
--    t |= _mm256_loadu_si256(buf + len - 2 * 32);
--    t |= _mm256_loadu_si256(buf + len - 1 * 32);
-+        v = p[0]; w = p[1];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[2]; w |= p[3];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[4]; w |= p[5];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[6]; w |= p[7];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= w;
-+    }
- 
--    return _mm256_testz_si256(t, t);
-+    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, zero)) == 0xFFFFFFFF;
- }
- #endif /* CONFIG_AVX2_OPT */
- 
 -- 
 2.32.0
 
