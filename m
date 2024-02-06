@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8863F84B664
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BF484B662
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:31:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXLWN-0000wt-Lw; Tue, 06 Feb 2024 08:29:55 -0500
+	id 1rXLWV-0000yt-J3; Tue, 06 Feb 2024 08:30:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rXLWC-0000eb-TX
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:44 -0500
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1rXLWD-0000g6-9g
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:45 -0500
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rXLW7-0008Fa-92
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:44 -0500
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33b4b121de1so22089f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:29:38 -0800 (PST)
+ id 1rXLW7-0008Fl-Mz
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:45 -0500
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33b4b121de1so22093f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:29:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1707226178; x=1707830978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=J5yMl9ruByZ2cE+u8xokLZN5yHG5tcwG0U9htQdpN5s=;
- b=C4jwr3tIuzk9Hwwqph03lWD6AOZ2oaIWffPAJIgdU4w3QiokXpr78aDkunZpiYA7+l
- FMZQ6RspLhjjsJBUM2kRSKZ+NgvVaJAYqYmemYEC39MdvKY0mFNsKkMCalxaNHsdeR36
- v8sSsBol54JRttECsE3yyFPV5/6Iwo13y7HrbGRhW1tMZYLiecS6V6XkaOZKEOX1FTnI
- pTWPm3lFukf4kvVmZqCWlu3dHomci5A1qWcn8UX0VkwzrYGLne4LjBXhkvhd/cB6h1s4
- 6LxDKIO1UXoIgO8Bwgs52FkZbVha0UESX5SjZlamLnXH6hOeXOzqw7f2bdZwBnFGNMQq
- 7tsg==
+ :reply-to; bh=Wky0NbjSBXe8xyXxuk64LeUJZz8/Cho+tc6oZQXhuNY=;
+ b=GHkJ8vqbDp1Ucoz2HI2+pnQj3iHs597OQab+9zoAQpO13JyR2+cXAvvFNmqjrslGxl
+ O+S9KZdWcYvTbsCX9nmYSbkM5Bs32tAcjIc8cZ4qXesAENkLAbDcz3el7qSG6l6m3dYz
+ /EOeaiWMsfdfigzTlDh1XAAgNoY3uhljuLLxviu6m+N2dD7+k8SX5RdmA5GacN9N39cT
+ ETs8pUIV7FWx1anPQmhcyRxegkoNEJkKeD4IsCr7nUKeFBYjPr5Sxqr3JdrU1vD01NME
+ b+BYJC/B0O0i2f2TQEtspvWsB3guJsCMdJ97lcrJKQEcbtTVL/6RKbO4ldNrTO4lM8x5
+ kVbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1707226178; x=1707830978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J5yMl9ruByZ2cE+u8xokLZN5yHG5tcwG0U9htQdpN5s=;
- b=BjZHT7k9BWfYX/wjFnkrVMA9rYQnpyMoMwUiCTlNohAaA9w3fTCSJ5B750mCEl9+VI
- Lg5E6kRGkoeL0Bki9LoIQ1et5b/hz7vQp7JW8HSjgh4AOtsqF/Ugy3h7V71a342XXwpq
- Ut6JDX/25QZh2nzoKCPfPWlP395pw4A63ZMXb3J0vf5Eed/gEZHzjk3NQ4s0X8lt0Ggg
- iGt4IEOLrJ5o3UxzwuJJtJHsUiacdJrSqb75sZM/aaEHSj4rf/8jLPTXP2FrU+tDW7Q2
- 8tViKpbLP1psgQUTZ8lWIrHA28r8QzJVlx4xvsdpDirv32BEGwz2B+2fEMmyy0bhXwld
- MOOw==
-X-Gm-Message-State: AOJu0YygHyacwK7OJnnwWCC1Qc0XDFesAaXHg1XH3yzzXGE6Z9EbFkIL
- qgcHzfDLrXHZnLb09VuuSxFPLkaByJmN3R6P/IKLFEUsJljvyCcsaF/dIjkRKM1/fdo/Cp845t/
+ bh=Wky0NbjSBXe8xyXxuk64LeUJZz8/Cho+tc6oZQXhuNY=;
+ b=Gh876kzj9JkPabSfyjiUhFZSKyEt9iusSdL6PnquxOFFntgrZiIBuC+dINxl6az+x2
+ +K6sK4spUogepr4o7lMo2Rp4UEKLGCexQ0WNuPibMxMez/jhA3kpnj2TgPMFYdAKXyay
+ JKCFyZfOqAbycCliIWOPvFO1Vl4uThfXoGKVgKn0Jp2zd26HfWUoLU/RXvTr0WGeQXIZ
+ 08Vz95/oXp2rJwC95SlKXd6xb92iUUVHsMvw+wuvDrDxdmykHM9+b5t7Eeb9kbFhtVQP
+ dELiLDn2os/bcyTYxbj5wlScQW2guqD2s+WGD/3IGXsXdvBtpc9CRYLAPa8O5GqKSljg
+ 6JqA==
+X-Gm-Message-State: AOJu0YxgMXLJz64dF6ARZwDjm7pzK/T6pkJuyghxR5L+i7/rAWsvjuTy
+ Z6IjNvPFxZ8NSERe5Xp9ptFeVy01r2iBaGquq9HDKUffw0kOC3MBiq0CT4OWYYWIQlTEE7ykwg9
  6
-X-Google-Smtp-Source: AGHT+IGJvFe6XqFhA1xaBxWHBA9Ghh+clmTanKzRnQWuoyED9yHlze9foDMZt4bqJnLnA9CxxQlUVA==
-X-Received: by 2002:a5d:6149:0:b0:33b:3bad:d3ee with SMTP id
- y9-20020a5d6149000000b0033b3badd3eemr1086210wrt.43.1707226177904; 
- Tue, 06 Feb 2024 05:29:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHyIKX9jYkSJiRdRK0ixVf7Z+PN+74KD1aYcK0qZdF0W3zX8C1Ytjl05pWmQ+7L5NsfHxiHww==
+X-Received: by 2002:adf:f342:0:b0:33b:14e8:c97d with SMTP id
+ e2-20020adff342000000b0033b14e8c97dmr1292890wrp.48.1707226178334; 
+ Tue, 06 Feb 2024 05:29:38 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCUm3OJ+YgXMLd6kJSMRIxqT4sbIwJIZMJrMnDjLXvXMlACoLZFW3VVz/n6UR6uveoXDeeEmUZtD2D6m5ViNreTKdhtzkc4=
+ AJvYcCXzGhvixY55YakPdRc8p3LtYr7Re3CfE/LnM7LEwuZNB6sy5cK2+/E7yCfTDDHDpemc+J1Idw9U77+J92AQEpSnKWNIrd8=
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  y7-20020a056000108700b0033b470a137esm1492932wrw.79.2024.02.06.05.29.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 05:29:37 -0800 (PST)
+ Tue, 06 Feb 2024 05:29:38 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 11/13] hw/arm/mps3r: Add GPIO, watchdog, dual-timer,
- I2C devices
-Date: Tue,  6 Feb 2024 13:29:29 +0000
-Message-Id: <20240206132931.38376-12-peter.maydell@linaro.org>
+Subject: [PATCH 12/13] hw/arm/mps3r: Add remaining devices
+Date: Tue,  6 Feb 2024 13:29:30 +0000
+Message-Id: <20240206132931.38376-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240206132931.38376-1-peter.maydell@linaro.org>
 References: <20240206132931.38376-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,107 +93,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the GPIO, watchdog, dual-timer and I2C devices to the mps3-an536
-board.  These are all simple devices that just need to be created and
-wired up.
+Add the remaining devices (or unimplemented-device stubs) for
+this board: SPI controllers, SCC, FPGAIO, I2S, RTC, the
+QSPI write-config block, and ethernet.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/mps3r.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ hw/arm/mps3r.c | 74 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
-index 8c790313790..803ed0ffb5c 100644
+index 803ed0ffb5c..4d55a6564c6 100644
 --- a/hw/arm/mps3r.c
 +++ b/hw/arm/mps3r.c
-@@ -33,11 +33,16 @@
- #include "sysemu/sysemu.h"
- #include "hw/boards.h"
- #include "hw/or-irq.h"
-+#include "hw/qdev-clock.h"
- #include "hw/qdev-properties.h"
- #include "hw/arm/boot.h"
- #include "hw/arm/bsa.h"
+@@ -40,7 +40,12 @@
  #include "hw/char/cmsdk-apb-uart.h"
-+#include "hw/i2c/arm_sbcon_i2c.h"
+ #include "hw/i2c/arm_sbcon_i2c.h"
  #include "hw/intc/arm_gicv3.h"
-+#include "hw/misc/unimp.h"
-+#include "hw/timer/cmsdk-apb-dualtimer.h"
-+#include "hw/watchdog/cmsdk-apb-watchdog.h"
++#include "hw/misc/mps2-scc.h"
++#include "hw/misc/mps2-fpgaio.h"
+ #include "hw/misc/unimp.h"
++#include "hw/net/lan9118.h"
++#include "hw/rtc/pl031.h"
++#include "hw/ssi/pl022.h"
+ #include "hw/timer/cmsdk-apb-dualtimer.h"
+ #include "hw/watchdog/cmsdk-apb-watchdog.h"
  
- /* Define the layout of RAM and ROM in a board */
- typedef struct RAMInfo {
-@@ -97,6 +102,10 @@ struct MPS3RMachineState {
-     CMSDKAPBUART uart[MPS3R_CPU_MAX + MPS3R_UART_MAX];
-     OrIRQState cpu_uart_oflow[MPS3R_CPU_MAX];
-     OrIRQState uart_oflow;
-+    CMSDKAPBWatchdog watchdog;
-+    CMSDKAPBDualTimer dualtimer;
-+    ArmSbconI2CState i2c[5];
-+    Clock *clk;
+@@ -105,6 +110,11 @@ struct MPS3RMachineState {
+     CMSDKAPBWatchdog watchdog;
+     CMSDKAPBDualTimer dualtimer;
+     ArmSbconI2CState i2c[5];
++    PL022State spi[3];
++    MPS2SCC scc;
++    MPS2FPGAIO fpgaio;
++    UnimplementedDeviceState i2s_audio;
++    PL031State rtc;
+     Clock *clk;
  };
  
- #define TYPE_MPS3R_MACHINE "mps3r"
-@@ -329,6 +338,9 @@ static void mps3r_common_init(MachineState *machine)
+@@ -178,6 +188,16 @@ static const RAMInfo an536_raminfo[] = {
+     }
+ };
+ 
++static const int an536_oscclk[] = {
++    24000000, /* 24MHz reference for RTC and timers */
++    50000000, /* 50MHz ACLK */
++    50000000, /* 50MHz MCLK */
++    50000000, /* 50MHz GPUCLK */
++    24576000, /* 24.576MHz AUDCLK */
++    23750000, /* 23.75MHz HDLCDCLK */
++    100000000, /* 100MHz DDR4_REF_CLK */
++};
++
+ static MemoryRegion *mr_for_raminfo(MPS3RMachineState *mms,
+                                     const RAMInfo *raminfo)
+ {
+@@ -337,6 +357,7 @@ static void mps3r_common_init(MachineState *machine)
+     MPS3RMachineClass *mmc = MPS3R_MACHINE_GET_CLASS(mms);
      MemoryRegion *sysmem = get_system_memory();
      DeviceState *gicdev;
++    QList *oscclk;
  
-+    mms->clk = clock_new(OBJECT(machine), "CLK");
-+    clock_set_hz(mms->clk, CLK_FRQ);
-+
-     for (const RAMInfo *ri = mmc->raminfo; ri->name; ri++) {
-         MemoryRegion *mr = mr_for_raminfo(mms, ri);
-         memory_region_add_subregion(sysmem, ri->base, mr);
-@@ -421,6 +433,53 @@ static void mps3r_common_init(MachineState *machine)
-                     qdev_get_gpio_in(gicdev, combirq));
+     mms->clk = clock_new(OBJECT(machine), "CLK");
+     clock_set_hz(mms->clk, CLK_FRQ);
+@@ -480,6 +501,59 @@ static void mps3r_common_init(MachineState *machine)
+         }
      }
  
-+    for (int i = 0; i < 4; i++) {
-+        /* CMSDK GPIO controllers */
-+        g_autofree char *s = g_strdup_printf("gpio%d", i);
-+        create_unimplemented_device(s, 0xe0000000 + i * 0x1000, 0x1000);
++    for (int i = 0; i < ARRAY_SIZE(mms->spi); i++) {
++        g_autofree char *s = g_strdup_printf("spi%d", i);
++        hwaddr baseaddr = 0xe0104000 + i * 0x1000;
++
++        object_initialize_child(OBJECT(mms), s, &mms->spi[i], TYPE_PL022);
++        sysbus_realize(SYS_BUS_DEVICE(&mms->spi[i]), &error_fatal);
++        sysbus_mmio_map(SYS_BUS_DEVICE(&mms->spi[i]), 0, baseaddr);
++        sysbus_connect_irq(SYS_BUS_DEVICE(&mms->spi[i]), 0,
++                           qdev_get_gpio_in(gicdev, 22 + i));
 +    }
 +
-+    object_initialize_child(OBJECT(mms), "watchdog", &mms->watchdog,
-+                            TYPE_CMSDK_APB_WATCHDOG);
-+    qdev_connect_clock_in(DEVICE(&mms->watchdog), "WDOGCLK", mms->clk);
-+    sysbus_realize(SYS_BUS_DEVICE(&mms->watchdog), &error_fatal);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->watchdog), 0,
-+                       qdev_get_gpio_in(gicdev, 0));
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->watchdog), 0, 0xe0100000);
-+
-+    object_initialize_child(OBJECT(mms), "dualtimer", &mms->dualtimer,
-+                            TYPE_CMSDK_APB_DUALTIMER);
-+    qdev_connect_clock_in(DEVICE(&mms->dualtimer), "TIMCLK", mms->clk);
-+    sysbus_realize(SYS_BUS_DEVICE(&mms->dualtimer), &error_fatal);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 0,
-+                       qdev_get_gpio_in(gicdev, 3));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 1,
-+                       qdev_get_gpio_in(gicdev, 1));
-+    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 2,
-+                       qdev_get_gpio_in(gicdev, 2));
-+    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->dualtimer), 0, 0xe0101000);
-+
-+    for (int i = 0; i < ARRAY_SIZE(mms->i2c); i++) {
-+        static const hwaddr i2cbase[] = {0xe0102000,    /* Touch */
-+                                         0xe0103000,    /* Audio */
-+                                         0xe0107000,    /* Shield0 */
-+                                         0xe0108000,    /* Shield1 */
-+                                         0xe0109000};   /* DDR4 EEPROM */
-+        g_autofree char *s = g_strdup_printf("i2c%d", i);
-+
-+        object_initialize_child(OBJECT(mms), s, &mms->i2c[i],
-+                                TYPE_ARM_SBCON_I2C);
-+        sysbus_realize(SYS_BUS_DEVICE(&mms->i2c[i]), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(&mms->i2c[i]), 0, i2cbase[i]);
-+        if (i != 2 && i != 3) {
-+            /*
-+             * internal-only bus: mark it full to avoid user-created
-+             * i2c devices being plugged into it.
-+             */
-+            qbus_mark_full(qdev_get_child_bus(DEVICE(&mms->i2c[i]), "i2c"));
-+        }
++    object_initialize_child(OBJECT(mms), "scc", &mms->scc, TYPE_MPS2_SCC);
++    qdev_prop_set_uint32(DEVICE(&mms->scc), "scc-cfg0", 0);
++    qdev_prop_set_uint32(DEVICE(&mms->scc), "scc-cfg4", 0x2);
++    qdev_prop_set_uint32(DEVICE(&mms->scc), "scc-aid", 0x00200008);
++    qdev_prop_set_uint32(DEVICE(&mms->scc), "scc-id", 0x41055360);
++    oscclk = qlist_new();
++    for (int i = 0; i < ARRAY_SIZE(an536_oscclk); i++) {
++        qlist_append_int(oscclk, an536_oscclk[i]);
 +    }
++    qdev_prop_set_array(DEVICE(&mms->scc), "oscclk", oscclk);
++    sysbus_realize(SYS_BUS_DEVICE(&mms->scc), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->scc), 0, 0xe0200000);
++
++    create_unimplemented_device("i2s-audio", 0xe0201000, 0x1000);
++
++    object_initialize_child(OBJECT(mms), "fpgaio", &mms->fpgaio,
++                            TYPE_MPS2_FPGAIO);
++    qdev_prop_set_uint32(DEVICE(&mms->fpgaio), "prescale-clk", an536_oscclk[1]);
++    qdev_prop_set_uint32(DEVICE(&mms->fpgaio), "num-leds", 10);
++    qdev_prop_set_bit(DEVICE(&mms->fpgaio), "has-switches", true);
++    qdev_prop_set_bit(DEVICE(&mms->fpgaio), "has-dbgctrl", false);
++    sysbus_realize(SYS_BUS_DEVICE(&mms->fpgaio), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->fpgaio), 0, 0xe0202000);
++
++    create_unimplemented_device("clcd", 0xe0209000, 0x1000);
++
++    object_initialize_child(OBJECT(mms), "rtc", &mms->rtc, TYPE_PL031);
++    sysbus_realize(SYS_BUS_DEVICE(&mms->rtc), &error_fatal);
++    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->rtc), 0, 0xe020a000);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->rtc), 0,
++                       qdev_get_gpio_in(gicdev, 4));
++
++    /*
++     * In hardware this is a LAN9220; the LAN9118 is software compatible
++     * except that it doesn't support the checksum-offload feature.
++     */
++    lan9118_init(0xe0300000,
++                 qdev_get_gpio_in(gicdev, 18));
++
++    create_unimplemented_device("usb", 0xe0301000, 0x1000);
++    create_unimplemented_device("qspi-write-config", 0xe0600000, 0x1000);
 +
      mms->bootinfo.ram_size = machine->ram_size;
      mms->bootinfo.board_id = -1;
