@@ -2,68 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8166B84AEB3
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 08:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC7184AEDC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 08:19:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXFfA-0006rS-Ur; Tue, 06 Feb 2024 02:14:36 -0500
+	id 1rXFjj-0000db-Cz; Tue, 06 Feb 2024 02:19:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rXFf5-0006po-8i
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:14:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rXFf3-0005ME-NB
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:14:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707203669;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yYQLNt3ySIw2/ay8d3vGJbaWL+4EsM3JD4ciODknu9Y=;
- b=igsxquNeh0CBKI594CDfpRT6EY0QfX6HHUPWYKii50/mdUv4moVT1Nzh/6yCt5DfLkOMek
- FTSEywiovoViDC0FIWf5V0zHaOJEC4wIp+HmOEko1ZcBzg/Au8d97otBBqArnFYGQZBuDG
- yGLidUGFPwo+QLy+NAfPyK56LlnbQLw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-jQpLU0OQPuWwnOkKDzyBmg-1; Tue,
- 06 Feb 2024 02:14:26 -0500
-X-MC-Unique: jQpLU0OQPuWwnOkKDzyBmg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DE7328EC104;
- Tue,  6 Feb 2024 07:14:26 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 003C1400D6D2;
- Tue,  6 Feb 2024 07:14:24 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PULL v2 1/3] hv-balloon: use get_min_alignment() to express 32 GiB
- alignment
-Date: Tue,  6 Feb 2024 08:14:20 +0100
-Message-ID: <20240206071422.18658-2-david@redhat.com>
-In-Reply-To: <20240206071422.18658-1-david@redhat.com>
-References: <20240206071422.18658-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rXFjc-0000b1-5Q
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:19:12 -0500
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rXFjZ-00060Y-6l
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 02:19:11 -0500
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a3832a61a79so16512666b.1
+ for <qemu-devel@nongnu.org>; Mon, 05 Feb 2024 23:19:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707203945; x=1707808745; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=wwvO77buz/C6Ye6CqMYu9OPrrxj5zzuo2P2AYFXew54=;
+ b=TURkCBsfy2o+naCg5lOJ6nKUGnbga4G5Q4gCImTEtOv43GkAOU/Wsu/V/aeMj8uIAO
+ FjXR6y14OJbEkYmuKWmGvFOVxzwouqcOs/2TkxxjSdiIUfeJvIIwMN2aZ64mQy65ENmN
+ PNf0aNuFX+JekWnv5O2cUTGgA+iPAz1v1rW6RNN7qwWhWSDdzndvmP8HNJxiIJmkD2Bs
+ 28oFg1pW/XDNnRW76mZ0vhtGRLvwKPg/cTO+cPxhBEU/3xyUO1v8yE/EZ9U+AopWs8gw
+ VxSySwsonvlZ89nCK49l4izM4+ytXMlbfG9csMBB2t9UftLdK1lJkAr/opS+65NunT8c
+ da6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707203945; x=1707808745;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wwvO77buz/C6Ye6CqMYu9OPrrxj5zzuo2P2AYFXew54=;
+ b=R8lnd9WHPm2elW0WRTuehMl1yAcTQb72wlB/ghELOM5zlzHpYXOW2wIv41zOxq1yo5
+ xMe+rO0g05aJJmeDMggVL3i5ImxYOBi2FMM4MHwGPcn1xmf9xjqRj12Qgw69UIjkkVnu
+ 680ye7wOVJCsN0Lg3aVCk25ULeTqB3HX9AJ02mNPwN1ZWEEHBW6cazDPKujkSPYtYhbY
+ DnFPvtwnEE3/+YHleyDj5xjYeLf3zrLjQ26JF0x5Crt7PiphIJmBTv8LSMdhREa0oWTh
+ +1ti26xAF3qoPz+p364F11XGxMHyTe0BIioKtWmaPvLthM2thzOZhxf/5ouQoCW7PiBP
+ i04g==
+X-Gm-Message-State: AOJu0YyublP7/hn9ACEY7ZKZZWFTGIOMyg7bjGTUCfD+9w3JRXBj1pU7
+ YTfk+hL36Fp8SyjVfokmrXdgJAkry8Dqtivyhl79xutSd5WpftGOIPBZ+dqwViE=
+X-Google-Smtp-Source: AGHT+IGHmOeM0hMovAHY9oZRNIz8VxSNsjkFIoRYuBFZZju9aOyf2No0XTrCjat0DTMeyWQiCwFAoQ==
+X-Received: by 2002:a17:906:b30b:b0:a37:28e9:bfdc with SMTP id
+ n11-20020a170906b30b00b00a3728e9bfdcmr1220199ejz.27.1707203945441; 
+ Mon, 05 Feb 2024 23:19:05 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCWitvALn/CxAg1Y0ZJETohecJsObSaYtrlu+GfuSrDpDCaUzugFiYiR/0ub6WWc4plNP3chLk3cGyBLe9Fv94hBLUEXCEkFzD9NOQlGW8BCo8WCB/wPQASQpRgnv4xX5bzr3jhbCPGgIuOhMhDfZ118QX1HJotJNhVK51FzFISk43Br6KRDivqU2I9FaAl3r8iq+rQDT5RcCMnKnL1gNdvSopZ5bFOG
+Received: from meli.delivery (adsl-245.37.6.163.tellas.gr. [37.6.163.245])
+ by smtp.gmail.com with ESMTPSA id
+ k4-20020a1709063fc400b00a34c07816e3sm789842ejj.73.2024.02.05.23.19.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 05 Feb 2024 23:19:05 -0800 (PST)
+Date: Tue, 06 Feb 2024 09:16:02 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Markus Armbruster <armbru@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH 4/5] virtio-blk: declare VirtIOBlock::rq with a type
+User-Agent: meli 0.8.5-rc.3
+References: <20240205172659.476970-1-stefanha@redhat.com>
+ <20240205172659.476970-5-stefanha@redhat.com>
+In-Reply-To: <20240205172659.476970-5-stefanha@redhat.com>
+Message-ID: <8fazq.207jmrshdmjy@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.285,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,81 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's implement the get_min_alignment() callback for memory devices, and
-copy for the device memory region the alignment of the host memory
-region. This mimics what virtio-mem does, and allows for re-introducing
-proper alignment checks for the memory region size (where we don't care
-about additional device requirements) in memory device core.
+On Mon, 05 Feb 2024 19:26, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>The VirtIOBlock::rq field has had the type void * since its introduction
+>in commit 869a5c6df19a ("Stop VM on error in virtio-blk. (Gleb
+>Natapov)").
+>
+>Perhaps this was done to avoid the forward declaration of
+>VirtIOBlockReq.
+>
+>Hanna Czenczek <hreitz@redhat.com> pointed out the missing type. Specify
+>the actual type because there is no need to use void * here.
+>
+>Suggested-by: Hanna Czenczek <hreitz@redhat.com>
+>Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>---
+> include/hw/virtio/virtio-blk.h | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+>index 833a9a344f..5c14110c4b 100644
+>--- a/include/hw/virtio/virtio-blk.h
+>+++ b/include/hw/virtio/virtio-blk.h
+>@@ -55,7 +55,7 @@ struct VirtIOBlock {
+>     VirtIODevice parent_obj;
+>     BlockBackend *blk;
+>     QemuMutex rq_lock;
+>-    void *rq; /* protected by rq_lock */
+>+    struct VirtIOBlockReq *rq; /* protected by rq_lock */
+>     VirtIOBlkConf conf;
+>     unsigned short sector_mask;
+>     bool original_wce;
+>-- 
+>2.43.0
+>
 
-Message-ID: <20240117135554.787344-2-david@redhat.com>
-Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/hyperv/hv-balloon.c | 37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
-
-diff --git a/hw/hyperv/hv-balloon.c b/hw/hyperv/hv-balloon.c
-index 0238365712..ade283335a 100644
---- a/hw/hyperv/hv-balloon.c
-+++ b/hw/hyperv/hv-balloon.c
-@@ -1477,22 +1477,7 @@ static void hv_balloon_ensure_mr(HvBalloon *balloon)
-     balloon->mr = g_new0(MemoryRegion, 1);
-     memory_region_init(balloon->mr, OBJECT(balloon), TYPE_HV_BALLOON,
-                        memory_region_size(hostmem_mr));
--
--    /*
--     * The VM can indicate an alignment up to 32 GiB. Memory device core can
--     * usually only handle/guarantee 1 GiB alignment. The user will have to
--     * specify a larger maxmem eventually.
--     *
--     * The memory device core will warn the user in case maxmem might have to be
--     * increased and will fail plugging the device if there is not sufficient
--     * space after alignment.
--     *
--     * TODO: we could do the alignment ourselves in a slightly bigger region.
--     * But this feels better, although the warning might be annoying. Maybe
--     * we can optimize that in the future (e.g., with such a device on the
--     * cmdline place/size the device memory region differently.
--     */
--    balloon->mr->align = MAX(32 * GiB, memory_region_get_alignment(hostmem_mr));
-+    balloon->mr->align = memory_region_get_alignment(hostmem_mr);
- }
- 
- static void hv_balloon_free_mr(HvBalloon *balloon)
-@@ -1654,6 +1639,25 @@ static MemoryRegion *hv_balloon_md_get_memory_region(MemoryDeviceState *md,
-     return balloon->mr;
- }
- 
-+static uint64_t hv_balloon_md_get_min_alignment(const MemoryDeviceState *md)
-+{
-+    /*
-+     * The VM can indicate an alignment up to 32 GiB. Memory device core can
-+     * usually only handle/guarantee 1 GiB alignment. The user will have to
-+     * specify a larger maxmem eventually.
-+     *
-+     * The memory device core will warn the user in case maxmem might have to be
-+     * increased and will fail plugging the device if there is not sufficient
-+     * space after alignment.
-+     *
-+     * TODO: we could do the alignment ourselves in a slightly bigger region.
-+     * But this feels better, although the warning might be annoying. Maybe
-+     * we can optimize that in the future (e.g., with such a device on the
-+     * cmdline place/size the device memory region differently.
-+     */
-+    return 32 * GiB;
-+}
-+
- static void hv_balloon_md_fill_device_info(const MemoryDeviceState *md,
-                                            MemoryDeviceInfo *info)
- {
-@@ -1766,5 +1770,6 @@ static void hv_balloon_class_init(ObjectClass *klass, void *data)
-     mdc->get_memory_region = hv_balloon_md_get_memory_region;
-     mdc->decide_memslots = hv_balloon_decide_memslots;
-     mdc->get_memslots = hv_balloon_get_memslots;
-+    mdc->get_min_alignment = hv_balloon_md_get_min_alignment;
-     mdc->fill_device_info = hv_balloon_md_fill_device_info;
- }
--- 
-2.43.0
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
