@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D011C84B633
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7A584B66F
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 14:31:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXLMU-0003i0-CT; Tue, 06 Feb 2024 08:19:42 -0500
+	id 1rXLWE-0000gt-OA; Tue, 06 Feb 2024 08:29:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1rXLMO-0003fs-Q0
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:19:37 -0500
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rXLW6-0000OQ-Do
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:38 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1rXLMJ-0005yB-CD
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:19:36 -0500
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-5cddfe0cb64so4380842a12.0
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:19:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rXLW4-0008Ck-DB
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 08:29:38 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40ff28388a6so1647565e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 05:29:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1707225567; x=1707830367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GMvi22rkrBmsZVwZknytn23922K4Y1Z689E1EhIiGOc=;
- b=Hcqr4uCGAGuDP70DhZPuPQaTfMGcqFW90vsvqtVLOKqsatxnEtgxZIUxKK0VvLzabL
- 5fYypeN2fPq2SOx4PIjdQ8gXfKkpn5Doo9UDR/Ft9pIeQz2/VCDluhZ7v7JUmbhoOJPX
- 1CFf2GyfaCXeQKmKxcrmJ7K6FuL+hFXxwIKeD7WbraYOLFBusE+LZM/XjmB/2/Y0MbEh
- 2RVhmbQtTvkLoCeTxuMPmSzq2OM54h0LvtTNlcA0/4Rx1CPVPfyvUKQm4D7lmqfy6sjH
- lq7juArQT2wJ2ZmfMMhTkDBotj3P9VkULOFOjHD9B/VU6O3uqu7MXfrEsGfmw/BTcVob
- lwng==
+ d=linaro.org; s=google; t=1707226172; x=1707830972; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fNE7QdrRujfmA6rkr1e587aBe1A8RQAGklHXsRx7cDA=;
+ b=YBhmf+9ri3IwtOIFNqY6s6IQYth1pOSdu9Z30PjvQaI42ZQmSnfd5oDdzhD/RmKfty
+ rCZwYcsLdSY57j0bTqMewXuXqc+iBi44UScZPjpg1UKUvZai6wLd18HA+oVek2yThQXY
+ BDhu9x1/QZ0w4XoG/1W7OpdSxjvDU/D5A11l5vVV2f/4C8yZb367FMgQuC5IiifCgGMd
+ KeL+R8VjSKHrYMl5udVhZRxsggIg3n4EDKndl2ANLCYQUQ8c7/Hq4wgMCRaYNHoEtqSS
+ wMa2DG3k4LIkJB+72+xi0rcYfItbVnZ5TnmzzdQSXxVzAJk+uGlhJQnw06hcw1kOPh5D
+ JjTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707225567; x=1707830367;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GMvi22rkrBmsZVwZknytn23922K4Y1Z689E1EhIiGOc=;
- b=YDw1iJM3O4tXOCv+sKH35vtqVhTWQYW6rhTwWbdNlgLMyz1xCNcKMF9p73CGA5e/hO
- 6NANnYtHVPFXGx+uqs/XZXJ+vp0KSlts0YhEAwox5TdoqAB5+6tUzdsCCI/QzlFFclhy
- SAN9Y/Fnz4D4rJAkx6WtvvbQAygad8sWY/7p7TfwHtrE/8Y5Hb9kOtA2VFNOZ2wcPFIv
- lZtmjix2YR7v0uwWtWGXPgiKw8rGKzeHHe8k7yeCDtpngQX8KbL+odZ6hKA6Z8Su5rAK
- lBejWZNqe+6nEyhQppmuSVmAXUrp9EigFvCLGhiGmzY6waNfFZas0KbWoULv1a9l5W5Q
- 3X8w==
-X-Gm-Message-State: AOJu0YytPE7L7/VzS0gY6A3BGHQw5AQhxTa0AB9C7QRTC9QA5FdPdBmS
- 4h0slNrD0RQDPkRFJpmvwFuy9O2jc4lVUjTawRfhKAQ9qLFj7cyGbx9TWEbdJvIXiwFa7EmoaC9
- MNPVa2mXUkH6iy3Y3rF+JMwSwZgqLXcQS4z2AK9lyubqvDhy+ZoT5vbXAoaRRjPc/hwVzC7iCAy
- DqcUWQCTytqQl34ywa1AhejUgFyBqaUC72dyytNyk=
-X-Google-Smtp-Source: AGHT+IGK05hxnLosC4RZVktCIsUlf65XRFm/EGNDcVQpcrKir8UrYZ5T/PAeDySXuKiGn46NSVD+mg==
-X-Received: by 2002:a05:6a00:9a0:b0:6db:d59c:a5b7 with SMTP id
- u32-20020a056a0009a000b006dbd59ca5b7mr3317383pfg.20.1707225567203; 
- Tue, 06 Feb 2024 05:19:27 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707226172; x=1707830972;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fNE7QdrRujfmA6rkr1e587aBe1A8RQAGklHXsRx7cDA=;
+ b=qWbh2uBcRNL67DcOgd32I1+Gkwwhkr9HU4RfA0OiZrWJA8Bb+jndVNMGlwc8hA9zcv
+ ltg3Ih/w5CVN2DsN+f7f0mjCdvnA7WnviUQxBNyQBWsqpeNB+rkIP7Bt+ye924KELk22
+ QiniuqD8tQXR+8jAc3qbSh3Wxa44e3ZzoK7Bw0n6Ejd08aoPO20tIV386zEZUtgioiZO
+ dJ953a9k0BrBBYq/0fbddQSNE6k6Lpfr9SHXcYlsJCBSPP9ztWN1HPVCd3dARuYdHL8c
+ j19nN05yU6/mh9sJvvGWiRQsMntYK3PFqQyxRcKPxkyghlsH5QFqrsoNs4pCKOmypo5n
+ wXHA==
+X-Gm-Message-State: AOJu0Yx2gkV6WjYRnvY24XUaqc+dL1pnI1WIqPA24esKpsi+9Cbwxwma
+ s8Yo+6hJaUBi5+t61CO7ZcmAINjJNC01Lh/rvWLbc2ylvvvqC8ZFmr1xJ+bnBghCxQhjYCYl8/R
+ D
+X-Google-Smtp-Source: AGHT+IFPBnH33j5+zMuv64i4PVbejkXACDKaSEWUpqILXxdvwINingI2emHnGHL0N7f/O2HZ5W9xXg==
+X-Received: by 2002:adf:f182:0:b0:33b:247c:d61a with SMTP id
+ h2-20020adff182000000b0033b247cd61amr1469999wro.31.1707226172631; 
+ Tue, 06 Feb 2024 05:29:32 -0800 (PST)
 X-Forwarded-Encrypted: i=0;
- AJvYcCUjUImBatw7bAKJ5cUfYtKwc2S7NnfFZOd0Pl5sDSdoys1vyScsAAHFP0A5s6j1zuwi2yuetV9kv2mU3ujsrptfE2UwCeF/DgTMdMLk05GQhM078Be248qo/y+U2FXvE02ufdi+WO9BKzq54ZPiTQ88q1u4KHW/PhqeY45ehLHTOTdklpD2Fz7IC0imdQ+b3zxmASjgmzbg2jmHeHt6CUAEptRkpQz1ply0YFg+FHxyZ6zMYITHrHEcnYSwoqeLQE6nYDLbWWVhDzB6HWWK9qnxYsRG+ZN2Q1nIPt7Qxw6z4s4lkmHgAxleFuOzaL/awwfDz0wscDDLKGnzTkxljkA2KD5XQThDZ2VjBqTJrvEaRyNT
-Received: from hsinchu16.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
+ AJvYcCXkSzNCI/rGQCxZV82kKiAKiun6DbeFLEygQHxJDnbVDkkSzkBzuJvH+BT/AGKClLHxqR9udBSYcJIOvC+R2hC0amBBpUI=
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- e11-20020aa798cb000000b006e04ddf97f7sm1837105pfm.107.2024.02.06.05.19.24
+ y7-20020a056000108700b0033b470a137esm1492932wrw.79.2024.02.06.05.29.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 05:19:26 -0800 (PST)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] target/riscv: Update $pc after linking to $ra in
- trans_cm_jalt()
-Date: Tue,  6 Feb 2024 21:18:42 +0800
-Message-ID: <20240206131911.10998-1-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.43.0
+ Tue, 06 Feb 2024 05:29:32 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH 00/13] hw/arm: Implement new machine mps3-an536 (Cortex-R52
+ MPS3 AN536 FPGA image)
+Date: Tue,  6 Feb 2024 13:29:18 +0000
+Message-Id: <20240206132931.38376-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=jason.chien@sifive.com; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,53 +91,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The original implementation sets $pc to the address read from the jump
-vector table first and links $ra with the address of the next instruction
-after the updated $pc. After jumping to the updated $pc and executing the
-next ret instruction, the program jumps to $ra, which is in the same
-function currently executing, which results in an infinite loop.
-This commit reverses the two action. Firstly, $ra is updated with the
-address of the next instruction after $pc, and sets $pc to the address
-read from the jump vector table.
+This patchset implements a new machine type, mps3-an536.  This is
+similar to our existing mps2-* and mps3-* machine types in that it is
+a model of an FPGA image for the Arm MPS3 development board.  It
+differs from our current machine types in being based around an
+R-profile CPU, the Cortex-R52, rather than an M-profile CPU.
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
----
- target/riscv/insn_trans/trans_rvzce.c.inc | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+This patchset implements the board support to a similar level as that
+of our M-profile MPS machine types: most but not all devices are
+supported.  Some minor missing features are documented in the docs
+patch (and already in mps2.rst where they apply to all boards in this
+family).  If there's demand (specifically from the Xen development
+use case which is motivating this board model) we can look at adding
+them.
 
-diff --git a/target/riscv/insn_trans/trans_rvzce.c.inc b/target/riscv/insn_trans/trans_rvzce.c.inc
-index 8d8a64f493..a185e2315f 100644
---- a/target/riscv/insn_trans/trans_rvzce.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzce.c.inc
-@@ -293,13 +293,6 @@ static bool trans_cm_jalt(DisasContext *ctx, arg_cm_jalt *a)
- {
-     REQUIRE_ZCMT(ctx);
- 
--    /*
--     * Update pc to current for the non-unwinding exception
--     * that might come from cpu_ld*_code() in the helper.
--     */
--    gen_update_pc(ctx, 0);
--    gen_helper_cm_jalt(cpu_pc, cpu_env, tcg_constant_i32(a->index));
--
-     /* c.jt vs c.jalt depends on the index. */
-     if (a->index >= 32) {
-         TCGv succ_pc = dest_gpr(ctx, xRA);
-@@ -307,6 +300,13 @@ static bool trans_cm_jalt(DisasContext *ctx, arg_cm_jalt *a)
-         gen_set_gpr(ctx, xRA, succ_pc);
-     }
- 
-+    /*
-+     * Update pc to current for the non-unwinding exception
-+     * that might come from cpu_ld*_code() in the helper.
-+     */
-+    gen_update_pc(ctx, 0);
-+    gen_helper_cm_jalt(cpu_pc, cpu_env, tcg_constant_i32(a->index));
-+
-     tcg_gen_lookup_and_goto_ptr();
-     ctx->base.is_jmp = DISAS_NORETURN;
-     return true;
+I have tested with the "selftest" binary supplied with the FPGA
+image, and also with a Linux kernel. (The kernel support for this
+board is not upstream, but the patches can be found in this lakml thread
+https://lore.kernel.org/all/20220630083641.21835-1-vladimir.murzin@arm.com/
+or at the git branch
+https://gitlab.arm.com/linux-arm/linux-vm/-/tree/staging/rclass-5.19 )
+To get some of this guest code to boot I had to make some improvements
+to our Cortex-R52 emulation; these are in the first four patches.
+
+thanks
+-- PMM
+
+Peter Maydell (13):
+  target/arm: Use new CBAR encoding for all v8 CPUs, not all aarch64
+    CPUs
+  target/arm: The Cortex-R52 has a read-only CBAR
+  target/arm: Add Cortex-R52 IMPDEF sysregs
+  target/arm: Allow access to SPSR_hyp from hyp mode
+  hw/misc/mps2-scc: Fix condition for CFG3 register
+  hw/misc/mps2-scc: Factor out which-board conditionals
+  hw/misc/mps2-scc: Make changes needed for AN536 FPGA image
+  hw/arm/mps3r: Initial skeleton for mps3-an536 board
+  hw/arm/mps3r: Add CPUs, GIC, and per-CPU RAM
+  hw/arm/mps3r: Add UARTs
+  hw/arm/mps3r: Add GPIO, watchdog, dual-timer, I2C devices
+  hw/arm/mps3r: Add remaining devices
+  docs: Add documentation for the mps3-an536 board
+
+ MAINTAINERS                             |   3 +-
+ docs/system/arm/mps2.rst                |  37 +-
+ configs/devices/arm-softmmu/default.mak |   1 +
+ include/hw/misc/mps2-scc.h              |   1 +
+ hw/arm/mps3r.c                          | 640 ++++++++++++++++++++++++
+ hw/misc/mps2-scc.c                      | 138 ++++-
+ target/arm/helper.c                     |   2 +-
+ target/arm/tcg/cpu32.c                  | 109 ++++
+ target/arm/tcg/op_helper.c              |  43 +-
+ target/arm/tcg/translate.c              |  19 +-
+ hw/arm/Kconfig                          |   5 +
+ hw/arm/meson.build                      |   1 +
+ 12 files changed, 955 insertions(+), 44 deletions(-)
+ create mode 100644 hw/arm/mps3r.c
+
 -- 
-2.43.0
+2.34.1
 
 
