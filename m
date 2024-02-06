@@ -2,78 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F4F84AFEE
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B2184AFF5
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:31:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXGqU-0005Q2-Ke; Tue, 06 Feb 2024 03:30:23 -0500
+	id 1rXGrR-00078d-EA; Tue, 06 Feb 2024 03:31:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rXGpr-00057F-7R; Tue, 06 Feb 2024 03:29:49 -0500
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXGqw-0006mn-Oc
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 03:30:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rXGpk-00027S-DU; Tue, 06 Feb 2024 03:29:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707208177; x=1738744177;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=um4seLNBv6j3FzXLxVESLddln+TO+T61efHjiUtn9Ts=;
- b=N3/wtjwQog69LacOZh/vd3r6BWHCP2oHB5flB5n/SkkKWKG8IJfc2rmf
- DBIVT1eIzzvDPjKFGISEw1V/JlWqm8WA70n3siP8M1DSyRimhEIA4Myt0
- hrwXpR8/kEs0yLHKR5XrikNY7bRWVPONXP1T/KXjhdRz6Ipe5k/xIGY5Y
- KCg9qwMXL+BkX07GEpgrka56M1OwfxwayrrGfqQgLJ2Unah1Uaeoqp2Af
- GFl9V35raZ1+VGrxayeuJHnQtXOoxFFJkTVAorWIP43LggP9zx4UCQHKn
- I+YkP6DZ/3n3Pr/+tyRm4RU2eQKgP9FOLTQWdUrL2ttqj14VJR+ivZRDN g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4578313"
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
-   d="scan'208";a="4578313"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2024 00:29:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824112826"
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="824112826"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga001.jf.intel.com with ESMTP; 06 Feb 2024 00:29:14 -0800
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	qemu-ppc@nongnu.org,
-	qemu-s390x@nongnu.org
-Subject: [RFC PATCH 4/4] s390: Switch to use confidential_guest_kvm_init()
-Date: Tue,  6 Feb 2024 03:28:52 -0500
-Message-Id: <20240206082852.3333299-5-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240206082852.3333299-1-xiaoyao.li@intel.com>
-References: <20240206082852.3333299-1-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXGqu-0002UB-Ry
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 03:30:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707208245;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=X6ibFY7ILh3MyXkCDps7rbm2bh/UUeHMKKlbm+gWsNI=;
+ b=KGbGDXVbqi1UKfaWGqyqiV+IrsGkKBvgA+EwtQvlPNMRyH+9zJYxbGxvmw5ANLRKJBP+ox
+ cprngZb3OZZSFsOY5tHeunYQxbbcVd1uVsPKDUUL+gDMgElq2U9GsQSf7MJm5wElybs5Gc
+ Rj/VlzHsFtenM54sQ2LyS9YF7t42i+8=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-572-AE8jsYe9OHmun76Isu53Bg-1; Tue, 06 Feb 2024 03:30:43 -0500
+X-MC-Unique: AE8jsYe9OHmun76Isu53Bg-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2966922adc2so602677a91.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 00:30:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707208243; x=1707813043;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=X6ibFY7ILh3MyXkCDps7rbm2bh/UUeHMKKlbm+gWsNI=;
+ b=iVAxlw1VgmbPDmrZssqPrKDmjT98XYfi2UmSx4InQCkJKd2PftGbf0LZRvL7agOG0e
+ D9V624s7yL/cKVlu7/afNsy7Y2W+mNjIovkE9w2iqiaWIoBJXuJyy30rz1fwrC21e1xr
+ 7Yy5LxEJkZ/P7+vUvty4rHAzwnzYT+2UmT08jV1tkQppD+eaNtvqQEOTvYjFbyT/G5tw
+ o0QqQ/rc2u7OnMBO0TAF6oG+Sih/cTV96c51FHsJTImnz4skDgUgW4RoctsorxJLQYGU
+ cIF0TzkBXmFV/hMVFvFnUxs0srcVOs6V/Hm8h7We4HOAIPupZZbUSxJ9NdzpCX+j+Wn6
+ BWoQ==
+X-Gm-Message-State: AOJu0YyTb+zltS8e9G2zy8I33ZT1IGY4/E1H7uwMRVuBkLJP22XxmtJj
+ HRwjrhkayAT6CrOyRNriEvXSYKcuxTb+B0Z67RJ2gphtYsxF+S8kZXDx5vIsU28bUCer1imK+R3
+ KMQ1p8LmyhFkcejG853JUfgSObQFcxo6I+sRoUPH04FRkTGXWfhEe
+X-Received: by 2002:a17:90a:df06:b0:296:cc9e:89f5 with SMTP id
+ gp6-20020a17090adf0600b00296cc9e89f5mr519553pjb.4.1707208242740; 
+ Tue, 06 Feb 2024 00:30:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHWVzQFJII15Js2DOFss7LSBFH7hjlx7Ht/1jOdmg8Tgn0omClrT3+Dhf8kLUZTW1FS9hlV3w==
+X-Received: by 2002:a17:90a:df06:b0:296:cc9e:89f5 with SMTP id
+ gp6-20020a17090adf0600b00296cc9e89f5mr519535pjb.4.1707208242357; 
+ Tue, 06 Feb 2024 00:30:42 -0800 (PST)
+X-Forwarded-Encrypted: i=0;
+ AJvYcCVRJvBYPV6dxJFTtUvebDYZ5qKp6poEp02TexbbmiloBvTuxAFPIjg9OxsVqxZDI1IvPjKEss0eu11dt+7gVO8O4DbzlEIVtFJpK08AdWHCWZX/0XhBZUn04gDhr4MprtLW6yEnx+uWmkrUEMObmE2hRWmE07EeYCOR60mGr6s45ae40w==
+Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
+ sb14-20020a17090b50ce00b0029082d10fc4sm910827pjb.39.2024.02.06.00.30.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 Feb 2024 00:30:42 -0800 (PST)
+Date: Tue, 6 Feb 2024 16:30:34 +0800
+From: Peter Xu <peterx@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eric Auger <eric.auger@redhat.com>, Sebastian Ott <sebott@redhat.com>
+Subject: Re: [PATCH 2/3] ci: Remove tag dependency for build-previous-qemu
+Message-ID: <ZcHuKlTQ3kEiDfui@x1n>
+References: <20240206063151.215986-1-peterx@redhat.com>
+ <20240206063151.215986-3-peterx@redhat.com>
+ <ZcHpzsLYCPwFPMUq@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+In-Reply-To: <ZcHpzsLYCPwFPMUq@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.285,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,87 +103,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use unified confidential_guest_kvm_init(), to avoid exposing specific
-functions.
+On Tue, Feb 06, 2024 at 08:11:58AM +0000, Daniel P. Berrangé wrote:
+> On Tue, Feb 06, 2024 at 02:31:50PM +0800, peterx@redhat.com wrote:
+> > From: Peter Xu <peterx@redhat.com>
+> > 
+> > The new build-previous-qemu job relies on QEMU release tag being present,
+> > while that may not be always true for personal git repositories since by
+> > default tag is not pushed.  The job can fail on those CI kicks, as reported
+> > by Peter Maydell.
+> > 
+> > Fix it by fetching the tags remotely from the official repository, as
+> > suggested by Dan.
+> > 
+> > [1] https://lore.kernel.org/r/ZcC9ScKJ7VvqektA@redhat.com
+> > 
+> > Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> > Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >  .gitlab-ci.d/buildtest.yml | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+> > index 79bbc8585b..df48c9d31d 100644
+> > --- a/.gitlab-ci.d/buildtest.yml
+> > +++ b/.gitlab-ci.d/buildtest.yml
+> > @@ -189,6 +189,8 @@ build-previous-qemu:
+> >      TARGETS: x86_64-softmmu aarch64-softmmu
+> >    before_script:
+> >      - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
+> > +    - git remote add upstream https://gitlab.com/qemu-project/qemu
+> > +    - git fetch upstream $QEMU_PRRV_VERSION
+> 
+>                               Typo^^^
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
----
- hw/s390x/s390-virtio-ccw.c |  3 ++-
- target/s390x/kvm/pv.c      |  8 ++++++++
- target/s390x/kvm/pv.h      | 14 --------------
- 3 files changed, 10 insertions(+), 15 deletions(-)
+Interestingly, this typo won't affect the function, as QEMU_PRRV_VERSION
+will be an empty string, and this cmd will simply pull in all the tags..
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 62804cc2281d..27096ccd9409 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -14,6 +14,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "exec/ram_addr.h"
-+#include "exec/confidential-guest-support.h"
- #include "hw/s390x/s390-virtio-hcall.h"
- #include "hw/s390x/sclp.h"
- #include "hw/s390x/s390_flic.h"
-@@ -260,7 +261,7 @@ static void ccw_init(MachineState *machine)
-     s390_init_cpus(machine);
- 
-     /* Need CPU model to be determined before we can set up PV */
--    s390_pv_init(machine->cgs, &error_fatal);
-+    confidential_guest_kvm_init(machine->cgs, &error_fatal);
- 
-     s390_flic_init();
- 
-diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
-index 7ca7faec73e9..c04d53753bfa 100644
---- a/target/s390x/kvm/pv.c
-+++ b/target/s390x/kvm/pv.c
-@@ -340,6 +340,11 @@ int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-         return 0;
-     }
- 
-+    if (!kvm_enabled()) {
-+        error_setg(errp, "Protected Virtualization requires KVM");
-+        return -1;
-+    }
-+
-     if (!s390_has_feat(S390_FEAT_UNPACK)) {
-         error_setg(errp,
-                    "CPU model does not support Protected Virtualization");
-@@ -364,6 +369,9 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(S390PVGuest,
- 
- static void s390_pv_guest_class_init(ObjectClass *oc, void *data)
- {
-+    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-+
-+    klass->kvm_init = s390_pv_kvm_init;
- }
- 
- static void s390_pv_guest_init(Object *obj)
-diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
-index 5877d28ff10a..4b408174391a 100644
---- a/target/s390x/kvm/pv.h
-+++ b/target/s390x/kvm/pv.h
-@@ -80,18 +80,4 @@ static inline int kvm_s390_dump_mem_state(uint64_t addr, size_t len,
- static inline int kvm_s390_dump_completion_data(void *buff) { return 0; }
- #endif /* CONFIG_KVM */
- 
--int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
--static inline int s390_pv_init(ConfidentialGuestSupport *cgs, Error **errp)
--{
--    if (!cgs) {
--        return 0;
--    }
--    if (kvm_enabled()) {
--        return s390_pv_kvm_init(cgs, errp);
--    }
--
--    error_setg(errp, "Protected Virtualization requires KVM");
--    return -1;
--}
--
- #endif /* HW_S390_PV_H */
+After the fix, it should only fetch the tag that we need.
+
+> 
+> >      - git checkout $QEMU_PREV_VERSION
+> >    after_script:
+> >      - mv build build-previous
+> 
+> With that typo fixed, then
+> 
+>   Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+
+Thanks.
+
 -- 
-2.34.1
+Peter Xu
 
 
