@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FFF84AFED
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A0684AFF1
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:30:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXGpK-00051o-2k; Tue, 06 Feb 2024 03:29:10 -0500
+	id 1rXGpM-00052E-DF; Tue, 06 Feb 2024 03:29:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rXGpH-00051J-Md; Tue, 06 Feb 2024 03:29:07 -0500
+ id 1rXGpI-00051a-Qj; Tue, 06 Feb 2024 03:29:08 -0500
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1rXGpE-000235-ET; Tue, 06 Feb 2024 03:29:07 -0500
+ id 1rXGpH-00023T-8c; Tue, 06 Feb 2024 03:29:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1707208145; x=1738744145;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4WR9izcgYukFF3F7vycbVdYquEAc1jz79lr3UwTHfTM=;
- b=aFw0+T5BdqQ1bNwC+iAcSKxVboruWIuUnwTHoc1emfs1hXZxyWa9l150
- YTk4qvoPK4BkBRrEIsE2e8i6VM0gg7RHH+NLaf07LdPZwPWUwNX/XViyL
- QITTV+NCZhirS2izM8+RU/CpSfKMNn8aWNGIAis3xIoujG1cU4crxaNzm
- etF6jplUBJ67q33HWFoeMCJ1OvXfOU4uc6559rPrz6z09/HjJDGTTYato
- WuTuba6AN/2lCMDY9GOmr7XbuW1lpzZhnoRI/D2y5G86rIdL27qpVkMVA
- WR7zicBXx6HySN/0ine+hyIfkIYpC158mIKlSXVDNCQ4yukALiIP6FPCb A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4578222"
+ t=1707208148; x=1738744148;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ORLsYIrX434K64t7KoSOv6XzRl/gB3m2JYbyMfbauuQ=;
+ b=XgO2wO3+TW6Qm7DOm7+QX8y8rIWRBVxugQi64XzmbrruiKXOT+t9Wa5X
+ 9UyXVy4OBaJS1L/JZnvxe3Z1d3D95Kx2BN8Miwb+nhTdiTcyG4S7yL+Og
+ 1WIi66PCD/qjZmsx6/9mMy2stCcZ6/k5JBlwjzov7s9ysVSGDCPRrOK/v
+ xZncQANFY1PFzngnfm1W4BiCXutJCIGUWZfurtSR4sHNWh7itP7/+Su5t
+ nN4KhIPY3ZR4ba8mY7OHv5YjKq9Z8rxXMQQyPUejOOfSd8eWZ8WRyMRgZ
+ UcuAk/UxI44fVZibjk0QnJkN6U6fOP9dbA8Oo7sSGv/P9FZsl1xcu+zwS w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4578234"
 X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
-   d="scan'208";a="4578222"
+   d="scan'208";a="4578234"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2024 00:29:00 -0800
+ 06 Feb 2024 00:29:05 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824112652"
-X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="824112652"
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824112662"
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="824112662"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orsmga001.jf.intel.com with ESMTP; 06 Feb 2024 00:28:55 -0800
+ by orsmga001.jf.intel.com with ESMTP; 06 Feb 2024 00:28:59 -0800
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>,
@@ -56,11 +56,13 @@ To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 Cc: qemu-devel@nongnu.org,
 	qemu-ppc@nongnu.org,
 	qemu-s390x@nongnu.org
-Subject: [RFC PATCH 0/4] Confidential Guest Support: Introduce kvm_init() and
- kvm_reset() virtual functions 
-Date: Tue,  6 Feb 2024 03:28:48 -0500
-Message-Id: <20240206082852.3333299-1-xiaoyao.li@intel.com>
+Subject: [RFC PATCH 1/4] confidential guest support: Add kvm_init() and
+ kvm_reset() in class
+Date: Tue,  6 Feb 2024 03:28:49 -0500
+Message-Id: <20240206082852.3333299-2-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240206082852.3333299-1-xiaoyao.li@intel.com>
+References: <20240206082852.3333299-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.15; envelope-from=xiaoyao.li@intel.com;
@@ -87,56 +89,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series is inspired and suggested by Daniel:
-https://lore.kernel.org/qemu-devel/ZbfoQsEuv6_zwl3b@redhat.com/
+Different confidential VMs in different architectures all have the same
+needs to do their specific initialization (and maybe resetting) stuffs
+with KVM. Currently each of them exposes individual *_kvm_init()
+functions and let machine code or kvm code to call it.
 
-Currently, different confidential VMs in different architectures have
-their own specific *_kvm_init() (and some have *_kvm_reset()) exposed
-for KVM stuff when it's a confidential VM. e.g., sev_kmv_init() for x86
-SEV, pef_kvm_init() and pef_kvm_reset() for PPC PEF, and s390_pv_init()
-for s390 PV VMs.
+To make it more object oriented, add two virtual functions, kvm_init()
+and kvm_reset() in ConfidentialGuestSupportClass, and expose two helpers
+functions for invodking them.
 
-Introduce a generic .kvm_init() and .kvm_reset() functions in
-ConfidentialGuestSupportClass, so that different cgs technologies in
-different architectures can implement their own, while common interface
-of cgs can be used.
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+---
+ include/exec/confidential-guest-support.h | 42 ++++++++++++++++++++++-
+ 1 file changed, 41 insertions(+), 1 deletion(-)
 
-This RFC implements two helper functions confidential_guest_kvm_init()
-and confidential_guest_kvm_reset() in Patch 1. In the following patches,
-they are called in arch specific implementation. X86 will benefit more
-for the generic implementation when TDX support is added.
-
-There is one step forward possible, that calling
-confidential_guest_kvm_init() before kvm_arch_init() in kvm_int() in
-accel/kvm/kvm-all.c. This way, each arch doesn't need to call in their
-arch specific code.
-	
-X86 fits it, however I'm not sure if ppc and s390 fit it as well.
-Because currently, ppc calls it in machine->init()
-and s390 calls in MachineClass->init(). I'm not sure if there is any
-order dependency. 
-
-Xiaoyao Li (4):
-  confidential guest support: Add kvm_init() and kvm_reset() in class
-  i386/sev: Switch to use confidential_guest_kvm_init()
-  ppc/pef: switch to use confidential_guest_kvm_init/reset()
-  s390: Switch to use confidential_guest_kvm_init()
-
- hw/ppc/pef.c                              |   9 +-
- hw/ppc/spapr.c                            |   6 +-
- hw/s390x/s390-virtio-ccw.c                |   3 +-
- include/exec/confidential-guest-support.h |  42 +++++++-
- include/hw/ppc/pef.h                      |  17 ---
- target/i386/kvm/kvm.c                     |   2 +-
- target/i386/kvm/meson.build               |   2 -
- target/i386/kvm/sev-stub.c                |   5 -
- target/i386/sev.c                         | 120 +++++++++++-----------
- target/i386/sev.h                         |   2 -
- target/s390x/kvm/pv.c                     |   8 ++
- target/s390x/kvm/pv.h                     |  14 ---
- 12 files changed, 123 insertions(+), 107 deletions(-)
- delete mode 100644 include/hw/ppc/pef.h
-
+diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
+index ba2dd4b5dfc4..ff0bfb26ad7a 100644
+--- a/include/exec/confidential-guest-support.h
++++ b/include/exec/confidential-guest-support.h
+@@ -23,7 +23,10 @@
+ #include "qom/object.h"
+ 
+ #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
+-OBJECT_DECLARE_SIMPLE_TYPE(ConfidentialGuestSupport, CONFIDENTIAL_GUEST_SUPPORT)
++OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
++                    ConfidentialGuestSupportClass,
++                    CONFIDENTIAL_GUEST_SUPPORT)
++
+ 
+ struct ConfidentialGuestSupport {
+     Object parent;
+@@ -55,8 +58,45 @@ struct ConfidentialGuestSupport {
+ 
+ typedef struct ConfidentialGuestSupportClass {
+     ObjectClass parent;
++
++    int (*kvm_init)(ConfidentialGuestSupport *cgs, Error **errp);
++    int (*kvm_reset)(ConfidentialGuestSupport *cgs, Error **errp);
+ } ConfidentialGuestSupportClass;
+ 
++static inline int confidential_guest_kvm_init(ConfidentialGuestSupport *cgs,
++                                              Error **errp)
++{
++    ConfidentialGuestSupportClass *klass;
++
++    if (!cgs) {
++        return 0;
++    }
++
++    klass = CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs);
++    if (klass->kvm_init) {
++        return klass->kvm_init(cgs, errp);
++    }
++
++    return 0;
++}
++
++static inline int confidential_guest_kvm_reset(ConfidentialGuestSupport *cgs,
++                                               Error **errp)
++{
++    ConfidentialGuestSupportClass *klass;
++
++    if (!cgs) {
++        return 0;
++    }
++
++    klass = CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs);
++    if (klass->kvm_reset) {
++        return klass->kvm_reset(cgs, errp);
++    }
++
++    return 0;
++}
++
+ #endif /* !CONFIG_USER_ONLY */
+ 
+ #endif /* QEMU_CONFIDENTIAL_GUEST_SUPPORT_H */
 -- 
 2.34.1
 
