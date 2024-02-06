@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5082384AFB1
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:13:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FFF84AFED
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 Feb 2024 09:30:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXGZt-0008EN-9V; Tue, 06 Feb 2024 03:13:13 -0500
+	id 1rXGpK-00051o-2k; Tue, 06 Feb 2024 03:29:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXGZq-0008B8-8E
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 03:13:10 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rXGpH-00051J-Md; Tue, 06 Feb 2024 03:29:07 -0500
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXGZo-0007dB-MZ
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 03:13:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707207188;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rmJdKfeqak3YaEcbY2a6W9nKhIzoWfXGEIxFjlMf+C0=;
- b=e67/s0FoHKRPRewtNNOuSi+yjJhxK0Wcaq5rj1SypUpZee8AJcua++iwzgIXtBicwZBhki
- 5l8WVZXZKFJFkI36Fl3A5rf3AjX55W6Np3X7VXP20FBRoMYZE4/dI2vozDgYB+d2fVLxVE
- KtwSJ0l2PG8AREr4qgFjPVnMf7nTODk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-UTHDSbw0MOqOLzRywnULhg-1; Tue,
- 06 Feb 2024 03:13:04 -0500
-X-MC-Unique: UTHDSbw0MOqOLzRywnULhg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF3C3282477D;
- Tue,  6 Feb 2024 08:13:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.53])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DD740492BF0;
- Tue,  6 Feb 2024 08:13:02 +0000 (UTC)
-Date: Tue, 6 Feb 2024 08:13:00 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: peterx@redhat.com
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>, Sebastian Ott <sebott@redhat.com>
-Subject: Re: [PATCH 1/3] tests/migration-test: Stick with gicv3 in aarch64 test
-Message-ID: <ZcHqDLsGQ-X6RSVZ@redhat.com>
-References: <20240206063151.215986-1-peterx@redhat.com>
- <20240206063151.215986-2-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rXGpE-000235-ET; Tue, 06 Feb 2024 03:29:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1707208145; x=1738744145;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4WR9izcgYukFF3F7vycbVdYquEAc1jz79lr3UwTHfTM=;
+ b=aFw0+T5BdqQ1bNwC+iAcSKxVboruWIuUnwTHoc1emfs1hXZxyWa9l150
+ YTk4qvoPK4BkBRrEIsE2e8i6VM0gg7RHH+NLaf07LdPZwPWUwNX/XViyL
+ QITTV+NCZhirS2izM8+RU/CpSfKMNn8aWNGIAis3xIoujG1cU4crxaNzm
+ etF6jplUBJ67q33HWFoeMCJ1OvXfOU4uc6559rPrz6z09/HjJDGTTYato
+ WuTuba6AN/2lCMDY9GOmr7XbuW1lpzZhnoRI/D2y5G86rIdL27qpVkMVA
+ WR7zicBXx6HySN/0ine+hyIfkIYpC158mIKlSXVDNCQ4yukALiIP6FPCb A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4578222"
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; 
+   d="scan'208";a="4578222"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2024 00:29:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="824112652"
+X-IronPort-AV: E=Sophos;i="6.05,246,1701158400"; d="scan'208";a="824112652"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orsmga001.jf.intel.com with ESMTP; 06 Feb 2024 00:28:55 -0800
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	qemu-ppc@nongnu.org,
+	qemu-s390x@nongnu.org
+Subject: [RFC PATCH 0/4] Confidential Guest Support: Introduce kvm_init() and
+ kvm_reset() virtual functions 
+Date: Tue,  6 Feb 2024 03:28:48 -0500
+Message-Id: <20240206082852.3333299-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240206063151.215986-2-peterx@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.285,
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -3
+X-Spam_score: -0.4
+X-Spam_bar: /
+X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.285,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,43 +84,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 06, 2024 at 02:31:49PM +0800, peterx@redhat.com wrote:
-> From: Peter Xu <peterx@redhat.com>
-> 
-> Recently we introduced cross-binary migration test.  It's always wanted
-> that migration-test uses stable guest ABI for both QEMU binaries in this
-> case, so that both QEMU binaries will be compatible on the migration
-> stream with the cmdline specified.
-> 
-> Switch to a static gic version "3" rather than using version "max", so that
-> GIC should be stable now across any future QEMU binaries for migration-test.
-> 
-> Here the version can actually be anything as long as the ABI is stable.  We
-> choose "3" because it's the majority of what we already use in QEMU while
-> still new enough: "git grep gic-version=3" shows 6 hit, while version 4 has
-> no direct user yet besides "max".
-> 
-> Note that even with this change, aarch64 won't be able to work yet with
-> migration cross binary test, but then the only missing piece will be the
-> stable CPU model.
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  tests/qtest/migration-test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+This series is inspired and suggested by Daniel:
+https://lore.kernel.org/qemu-devel/ZbfoQsEuv6_zwl3b@redhat.com/
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Currently, different confidential VMs in different architectures have
+their own specific *_kvm_init() (and some have *_kvm_reset()) exposed
+for KVM stuff when it's a confidential VM. e.g., sev_kmv_init() for x86
+SEV, pef_kvm_init() and pef_kvm_reset() for PPC PEF, and s390_pv_init()
+for s390 PV VMs.
 
+Introduce a generic .kvm_init() and .kvm_reset() functions in
+ConfidentialGuestSupportClass, so that different cgs technologies in
+different architectures can implement their own, while common interface
+of cgs can be used.
 
-With regards,
-Daniel
+This RFC implements two helper functions confidential_guest_kvm_init()
+and confidential_guest_kvm_reset() in Patch 1. In the following patches,
+they are called in arch specific implementation. X86 will benefit more
+for the generic implementation when TDX support is added.
+
+There is one step forward possible, that calling
+confidential_guest_kvm_init() before kvm_arch_init() in kvm_int() in
+accel/kvm/kvm-all.c. This way, each arch doesn't need to call in their
+arch specific code.
+	
+X86 fits it, however I'm not sure if ppc and s390 fit it as well.
+Because currently, ppc calls it in machine->init()
+and s390 calls in MachineClass->init(). I'm not sure if there is any
+order dependency. 
+
+Xiaoyao Li (4):
+  confidential guest support: Add kvm_init() and kvm_reset() in class
+  i386/sev: Switch to use confidential_guest_kvm_init()
+  ppc/pef: switch to use confidential_guest_kvm_init/reset()
+  s390: Switch to use confidential_guest_kvm_init()
+
+ hw/ppc/pef.c                              |   9 +-
+ hw/ppc/spapr.c                            |   6 +-
+ hw/s390x/s390-virtio-ccw.c                |   3 +-
+ include/exec/confidential-guest-support.h |  42 +++++++-
+ include/hw/ppc/pef.h                      |  17 ---
+ target/i386/kvm/kvm.c                     |   2 +-
+ target/i386/kvm/meson.build               |   2 -
+ target/i386/kvm/sev-stub.c                |   5 -
+ target/i386/sev.c                         | 120 +++++++++++-----------
+ target/i386/sev.h                         |   2 -
+ target/s390x/kvm/pv.c                     |   8 ++
+ target/s390x/kvm/pv.h                     |  14 ---
+ 12 files changed, 123 insertions(+), 107 deletions(-)
+ delete mode 100644 include/hw/ppc/pef.h
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
