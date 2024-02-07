@@ -2,102 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07FA84CEC0
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:17:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D3D84CEDD
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:27:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkae-0001xL-MW; Wed, 07 Feb 2024 11:16:00 -0500
+	id 1rXklI-0006tq-DX; Wed, 07 Feb 2024 11:27:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rXkaT-0001vN-1p
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:15:49 -0500
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1rXklD-0006tc-P5
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:26:55 -0500
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rXkaQ-0001vL-Mo
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:15:48 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
+ id 1rXklB-0003le-9u
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:26:55 -0500
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 417FbDeh024934; Wed, 7 Feb 2024 16:15:32 GMT
+ 417G2NUH030828; Wed, 7 Feb 2024 16:26:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=xkdBSKWeI0YNU0fcFh2/lK5lgYj7W18YVvd1hRFT69k=;
- b=eDlGUF7rT0gytau6QcFMJive2bnnV37kx/GP80LI2IW4tSxA56us0B6hjt85N0oIvEGn
- TELzTNuD4PFmfs2/Z98bYHrD+tbDHezWDpU1b9jTrVihA2Q8LQbBhINkrqMj4pDuZ8v9
- YQwA4dmnzOaFXzUQryWu2vTKcHynqnBHVvMPU4kDqjwEELLoobc88RyXwHKYR1kWvdCb
- AYoZurSJJDW86MP2vYDG50be0NZ5YRhfK8FL7drtkFeAlkZF7XS6Jl/7rnwnVlu5r1vw
- zKH7JictvfuocDCe6GeXjYzrXg/79QLvQb/WOZc0XhVBuOgVZ/ObkreCs3BQmjrcUApz XQ== 
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=rUb3FcMzuYRxe8g/qvn766zgWDWSXzicqWs4WSPiBcg=;
+ b=o0ZLeWvJ+OMBUDMo8E7Vl3qp4nWc5AzwZWrTpRiOY4wHpy9HCV6+Ve7USykdXo8DOPJ8
+ R6K1HScByZNk7dTXIztRyw6Xrf/Ub0DTn4WszQIJwaC4PAAIi7sspzuqqV9RxD4voPMn
+ 8E+6Jb1vPH95qvSnyawPEkJLTBywdLqhKCTMD24i2ckVypqkXgnEZV7U9ZtP8TRLqP+5
+ ALBFyngHS0xWqnylgEX+VgY1fUrBbcTumgPoepI+E1lDkh71uZKtMRW/jXa8pR76q8Jk
+ IJLFCAuIWB7Sc4gVbRqnfOo7+sL57Odv/qQV2d9NDXwpvcXDuwzFc8hsDKPb4zsRoUI5 Sw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cnkh397-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4d1drqyw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:15:32 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 417GAuIJ015671;
- Wed, 7 Feb 2024 16:15:31 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cnkh38s-1
+ Wed, 07 Feb 2024 16:26:48 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 417GPW9R018032;
+ Wed, 7 Feb 2024 16:26:47 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4d1drqy6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:15:31 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 417FVqku016148; Wed, 7 Feb 2024 16:15:30 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w22h26957-1
+ Wed, 07 Feb 2024 16:26:47 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 417Du0ik005417; Wed, 7 Feb 2024 16:26:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w21akpn8x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:15:30 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 417GFSX28979110
+ Wed, 07 Feb 2024 16:26:46 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 417GQiU128836360
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Feb 2024 16:15:28 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 966CB2004B;
- Wed,  7 Feb 2024 16:15:28 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F77420040;
- Wed,  7 Feb 2024 16:15:28 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  7 Feb 2024 16:15:28 +0000 (GMT)
-Message-ID: <be8001fa50db711d0d5d9cbcfb6a752d2b057749.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 0/4] make vm-build-freebsd fixes
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Alex =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Ed Maste <emaste@freebsd.org>,
- Li-Wen Hsu <lwhsu@freebsd.org>, Warner Losh <imp@bsdimp.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>, "Daniel
- P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Kyle Evans <kevans@freebsd.org>,
- qemu-devel@nongnu.org
-Date: Wed, 07 Feb 2024 17:15:27 +0100
-In-Reply-To: <87sf24l3l9.fsf@draig.linaro.org>
-References: <20240206002344.12372-1-iii@linux.ibm.com>
- <87sf24l3l9.fsf@draig.linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Q8ERSkGN-9yn6Ek_Mqbxc5qVm6jX-DzG
-X-Proofpoint-ORIG-GUID: Da5nEe6SjoGKFnqMLONVFs62JEDx5bf2
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ Wed, 7 Feb 2024 16:26:44 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7438C20049;
+ Wed,  7 Feb 2024 16:26:44 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5324A20040;
+ Wed,  7 Feb 2024 16:26:44 +0000 (GMT)
+Received: from [9.152.224.222] (unknown [9.152.224.222])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Feb 2024 16:26:44 +0000 (GMT)
+Message-ID: <bf670821-38f3-463f-8ca8-118c520cd150@linux.ibm.com>
+Date: Wed, 7 Feb 2024 17:26:43 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL v2 00/39] tcg patch queue
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+References: <20240206032151.174516-1-richard.henderson@linaro.org>
+ <CAFEAcA-HOfLk9RHQpR40xz98V5r7cG5Me7_Y=1ZSoFPpHXudWw@mail.gmail.com>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <CAFEAcA-HOfLk9RHQpR40xz98V5r7cG5Me7_Y=1ZSoFPpHXudWw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wCrHmONLnj10wQ_Di0R2XhRvwWI99vgD
+X-Proofpoint-ORIG-GUID: CWxgS5cpEF9IiqtG0hpDxqNrGtItBvC0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-07_06,2024-02-07_01,2023-05-22_02
+ definitions=2024-02-07_07,2024-02-07_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=889
- lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 suspectscore=0 spamscore=0 adultscore=0 malwarescore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402070119
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ clxscore=1011 phishscore=0
+ impostorscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ mlxlogscore=806 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402070121
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=borntraeger@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -120,38 +116,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-02-07 at 15:02 +0000, Alex Benn=C3=A9e wrote:
-> Ilya Leoshkevich <iii@linux.ibm.com> writes:
->=20
-> > v2:
-> > https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00890.html
-> > v2 -> v3: Structure the meson check similar to have_asan_fiber;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Reduce the conte=
-xt size a little (Philippe).
-> >=20
-> > v1:
-> > https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05155.html
-> > v1 -> v2: Link with libinotify instead of disabling the inotify
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 support (Daniel).
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Use a bit more c=
-ontext lines in order to prevent the
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 incorrect applic=
-ation of the test patch.
-> >=20
-> > Hi,
-> >=20
-> > I needed to verify that my qemu-user changes didn't break BSD, and
-> > Daniel Berrange suggested vm-build-freebsd on IRC. I had several
-> > problems with it, which this series resolves.
->=20
-> Queued to testing/next, thanks.
 
-Hi Alex,
 
-thanks! But I think Thomas already took it into his tree:
+Am 06.02.24 um 22:24 schrieb Peter Maydell:
+[..]
+> Christian: this is on the s390x machine we have. Does the
+> VM setup for that share IO or CPU with other VMs somehow?
 
-https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg01015.html
-
-Best regards,
-Ilya
+Yes it does, this is a shared system. I will talk to the team if there is anything that we can do about this.
 
