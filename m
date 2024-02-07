@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0746B84CBAE
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 14:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7CA84CBB3
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 14:36:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXi4R-0006yS-MN; Wed, 07 Feb 2024 08:34:35 -0500
+	id 1rXi4Q-0006wU-PW; Wed, 07 Feb 2024 08:34:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=zwZg=JQ=redhat.com=clg@ozlabs.org>)
- id 1rXi4N-0006ow-5c
+ id 1rXi4N-0006qm-EN
  for qemu-devel@nongnu.org; Wed, 07 Feb 2024 08:34:31 -0500
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=zwZg=JQ=redhat.com=clg@ozlabs.org>)
- id 1rXi4J-0008Tm-9Z
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 08:34:29 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4TVLgj1kN5z4x1k;
- Thu,  8 Feb 2024 00:34:25 +1100 (AEDT)
+ id 1rXi4L-0008U4-Od
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 08:34:31 -0500
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4TVLgl3qZQz4x1n;
+ Thu,  8 Feb 2024 00:34:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4TVLgg3FHtz4x1H;
- Thu,  8 Feb 2024 00:34:23 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4TVLgj5M1vz4x1m;
+ Thu,  8 Feb 2024 00:34:25 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH 12/14] migration: Report error when shutdown fails
-Date: Wed,  7 Feb 2024 14:33:45 +0100
-Message-ID: <20240207133347.1115903-13-clg@redhat.com>
+Subject: [PATCH 13/14] migration: Use migrate_has_error() in
+ close_return_path_on_source()
+Date: Wed,  7 Feb 2024 14:33:46 +0100
+Message-ID: <20240207133347.1115903-14-clg@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207133347.1115903-1-clg@redhat.com>
 References: <20240207133347.1115903-1-clg@redhat.com>
@@ -67,36 +67,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will help detect issues regarding I/O channels usage.
+close_return_path_on_source() retrieves the migration error from the
+the QEMUFile '->to_dst_file' to know if a shutdown is required. This
+shutdown is required to exit the return-path thread. However, in
+migrate_fd_cleanup(), '->to_dst_file' is cleaned up before calling
+close_return_path_on_source() and the shutdown is never performed,
+leaving the source and destination waiting for an event to occur.
 
+Avoid relying on '->to_dst_file' and use migrate_has_error() instead.
+
+Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- migration/qemu-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ migration/migration.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 94231ff2955c80b3d0fab11a40510d34c334a826..b69e0c62e2fcf21d346a3687df7eebee23791fdc 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -62,6 +62,8 @@ struct QEMUFile {
-  */
- int qemu_file_shutdown(QEMUFile *f)
- {
-+    Error *err = NULL;
-+
-     /*
-      * We must set qemufile error before the real shutdown(), otherwise
-      * there can be a race window where we thought IO all went though
-@@ -90,7 +92,8 @@ int qemu_file_shutdown(QEMUFile *f)
-         return -ENOSYS;
+diff --git a/migration/migration.c b/migration/migration.c
+index d5f705ceef4c925589aa49335969672c0d761fa2..5f55af3d7624750ca416c4177781241b3e291e5d 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2372,8 +2372,7 @@ static bool close_return_path_on_source(MigrationState *ms)
+      * cause it to unblock if it's stuck waiting for the destination.
+      */
+     WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
+-        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
+-            qemu_file_get_error(ms->to_dst_file)) {
++        if (migrate_has_error(ms) && ms->rp_state.from_dst_file) {
+             qemu_file_shutdown(ms->rp_state.from_dst_file);
+         }
      }
- 
--    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL) < 0) {
-+    if (qio_channel_shutdown(f->ioc, QIO_CHANNEL_SHUTDOWN_BOTH, &err) < 0) {
-+        error_report_err(err);
-         return -EIO;
-     }
- 
 -- 
 2.43.0
 
