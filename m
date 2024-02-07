@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16A284D4FF
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC8684D4FE
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXpu7-00078u-Jl; Wed, 07 Feb 2024 16:56:27 -0500
+	id 1rXpu8-0007AC-U2; Wed, 07 Feb 2024 16:56:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu5-00076b-Fv
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:25 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu6-00077J-4W
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:26 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu3-0007df-Ss
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu4-0007dz-Cw
  for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707342983;
@@ -22,32 +22,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8BQqB4BeiIyhQrJc8xaOLSyDo++SAOO6jR1bmPek5CY=;
- b=iycHx7EaiulMzmISBWS8GB1+zvZamV75R8NpH0E8E2lB3P+4tafnVqKVw6ilwVwRobkx3Z
- vVKjZtI4kgG0AW5kMlaI9kAUoCtlCTiuiCqX9C/8r7j1Nsh7pFa4MPFK+dcZ9vulpyZXx5
- bfg2aQ0UhdGeut/tHV8cMoQvYqR5H9Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-b2GkzHU4P62f4D1f6XwLGA-1; Wed, 07 Feb 2024 16:56:19 -0500
-X-MC-Unique: b2GkzHU4P62f4D1f6XwLGA-1
+ bh=7mQJ5DC1wsfQgh7/jquzUVLwaHKif1MulGs6+1cbpeY=;
+ b=DqL84J9/oZ0X2HHLixEi/ncRed60C99wUIcP3Kp/YChQeoGxehWfLaW28qY5S051hOGftH
+ KJqlCcsHbkQkF5taNuse8QEWfrHiTDrBNlKiUJ8fopDFUGRq/ebx8IJAhqzKcgoITSLVh0
+ MrXNwxnl0AeHnmB6iGnAaJSjJj8IDQg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-PZvfr3LeM_SaAJOu33T6UA-1; Wed,
+ 07 Feb 2024 16:56:20 -0500
+X-MC-Unique: PZvfr3LeM_SaAJOu33T6UA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A35A985A58C;
- Wed,  7 Feb 2024 21:56:19 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70FEF2825BA6;
+ Wed,  7 Feb 2024 21:56:20 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 172EC492BC6;
- Wed,  7 Feb 2024 21:56:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D875B492BC6;
+ Wed,  7 Feb 2024 21:56:19 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 10/16] virtio-blk: do not use C99 mixed declarations
-Date: Wed,  7 Feb 2024 22:56:00 +0100
-Message-ID: <20240207215606.206038-11-kwolf@redhat.com>
+Subject: [PULL 11/16] scsi: Don't ignore most usb-storage properties
+Date: Wed,  7 Feb 2024 22:56:01 +0100
+Message-ID: <20240207215606.206038-12-kwolf@redhat.com>
 In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
 References: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -78,95 +78,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+usb-storage is for the most part just a wrapper around an internally
+created scsi-disk device. It uses DEFINE_BLOCK_PROPERTIES() to offer all
+of the usual block device properties to the user, but then only forwards
+a few select properties to the internal device while the rest is
+silently ignored.
 
-QEMU's coding style generally forbids C99 mixed declarations.
+This changes scsi_bus_legacy_add_drive() to accept a whole BlockConf
+instead of some individual values inside of it so that usb-storage can
+now pass the whole configuration to the internal scsi-disk. This enables
+the remaining block device properties, e.g. logical/physical_block_size
+or discard_granularity.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240206140410.65650-1-stefanha@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Buglink: https://issues.redhat.com/browse/RHEL-22375
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20240131130607.24117-1-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/block/virtio-blk.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ include/hw/scsi/scsi.h       |  5 +----
+ hw/scsi/scsi-bus.c           | 33 +++++++++++++--------------------
+ hw/usb/dev-storage-classic.c |  5 +----
+ 3 files changed, 15 insertions(+), 28 deletions(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 31212506ca..bda5c117d4 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -661,6 +661,9 @@ static void virtio_blk_zone_report_complete(void *opaque, int ret)
-     int64_t zrp_size, n, j = 0;
-     int64_t nz = data->zone_report_data.nr_zones;
-     int8_t err_status = VIRTIO_BLK_S_OK;
-+    struct virtio_blk_zone_report zrp_hdr = (struct virtio_blk_zone_report) {
-+        .nr_zones = cpu_to_le64(nz),
+diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+index 10c4e8288d..c3d5e17e38 100644
+--- a/include/hw/scsi/scsi.h
++++ b/include/hw/scsi/scsi.h
+@@ -199,10 +199,7 @@ static inline SCSIBus *scsi_bus_from_device(SCSIDevice *d)
+ }
+ 
+ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+-                                      int unit, bool removable, int bootindex,
+-                                      bool share_rw,
+-                                      BlockdevOnError rerror,
+-                                      BlockdevOnError werror,
++                                      int unit, bool removable, BlockConf *conf,
+                                       const char *serial, Error **errp);
+ void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense);
+ void scsi_bus_legacy_handle_cmdline(SCSIBus *bus);
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 230313022c..9e40b0c920 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -376,15 +376,13 @@ static void scsi_qdev_unrealize(DeviceState *qdev)
+ 
+ /* handle legacy '-drive if=scsi,...' cmd line args */
+ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+-                                      int unit, bool removable, int bootindex,
+-                                      bool share_rw,
+-                                      BlockdevOnError rerror,
+-                                      BlockdevOnError werror,
++                                      int unit, bool removable, BlockConf *conf,
+                                       const char *serial, Error **errp)
+ {
+     const char *driver;
+     char *name;
+     DeviceState *dev;
++    SCSIDevice *s;
+     DriveInfo *dinfo;
+ 
+     if (blk_is_sg(blk)) {
+@@ -402,11 +400,10 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+     object_property_add_child(OBJECT(bus), name, OBJECT(dev));
+     g_free(name);
+ 
++    s = SCSI_DEVICE(dev);
++    s->conf = *conf;
++
+     qdev_prop_set_uint32(dev, "scsi-id", unit);
+-    if (bootindex >= 0) {
+-        object_property_set_int(OBJECT(dev), "bootindex", bootindex,
+-                                &error_abort);
+-    }
+     if (object_property_find(OBJECT(dev), "removable")) {
+         qdev_prop_set_bit(dev, "removable", removable);
+     }
+@@ -417,19 +414,12 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+         object_unparent(OBJECT(dev));
+         return NULL;
+     }
+-    if (!object_property_set_bool(OBJECT(dev), "share-rw", share_rw, errp)) {
+-        object_unparent(OBJECT(dev));
+-        return NULL;
+-    }
+-
+-    qdev_prop_set_enum(dev, "rerror", rerror);
+-    qdev_prop_set_enum(dev, "werror", werror);
+ 
+     if (!qdev_realize_and_unref(dev, &bus->qbus, errp)) {
+         object_unparent(OBJECT(dev));
+         return NULL;
+     }
+-    return SCSI_DEVICE(dev);
++    return s;
+ }
+ 
+ void scsi_bus_legacy_handle_cmdline(SCSIBus *bus)
+@@ -437,6 +427,12 @@ void scsi_bus_legacy_handle_cmdline(SCSIBus *bus)
+     Location loc;
+     DriveInfo *dinfo;
+     int unit;
++    BlockConf conf = {
++        .bootindex = -1,
++        .share_rw = false,
++        .rerror = BLOCKDEV_ON_ERROR_AUTO,
++        .werror = BLOCKDEV_ON_ERROR_AUTO,
 +    };
  
-     trace_virtio_blk_zone_report_complete(vdev, req, nz, ret);
-     if (ret) {
-@@ -668,9 +671,6 @@ static void virtio_blk_zone_report_complete(void *opaque, int ret)
-         goto out;
+     loc_push_none(&loc);
+     for (unit = 0; unit <= bus->info->max_target; unit++) {
+@@ -446,10 +442,7 @@ void scsi_bus_legacy_handle_cmdline(SCSIBus *bus)
+         }
+         qemu_opts_loc_restore(dinfo->opts);
+         scsi_bus_legacy_add_drive(bus, blk_by_legacy_dinfo(dinfo),
+-                                  unit, false, -1, false,
+-                                  BLOCKDEV_ON_ERROR_AUTO,
+-                                  BLOCKDEV_ON_ERROR_AUTO,
+-                                  NULL, &error_fatal);
++                                  unit, false, &conf, NULL, &error_fatal);
      }
- 
--    struct virtio_blk_zone_report zrp_hdr = (struct virtio_blk_zone_report) {
--        .nr_zones = cpu_to_le64(nz),
--    };
-     zrp_size = sizeof(struct virtio_blk_zone_report)
-                + sizeof(struct virtio_blk_zone_descriptor) * nz;
-     n = iov_from_buf(in_iov, in_num, 0, &zrp_hdr, sizeof(zrp_hdr));
-@@ -898,13 +898,14 @@ static int virtio_blk_handle_zone_append(VirtIOBlockReq *req,
- 
-     int64_t offset = virtio_ldq_p(vdev, &req->out.sector) << BDRV_SECTOR_BITS;
-     int64_t len = iov_size(out_iov, out_num);
-+    ZoneCmdData *data;
- 
-     trace_virtio_blk_handle_zone_append(vdev, req, offset >> BDRV_SECTOR_BITS);
-     if (!check_zoned_request(s, offset, len, true, &err_status)) {
-         goto out;
-     }
- 
--    ZoneCmdData *data = g_malloc(sizeof(ZoneCmdData));
-+    data = g_malloc(sizeof(ZoneCmdData));
-     data->req = req;
-     data->in_iov = in_iov;
-     data->in_num = in_num;
-@@ -1191,14 +1192,15 @@ static void virtio_blk_dma_restart_cb(void *opaque, bool running,
- {
-     VirtIOBlock *s = opaque;
-     uint16_t num_queues = s->conf.num_queues;
-+    g_autofree VirtIOBlockReq **vq_rq = NULL;
-+    VirtIOBlockReq *rq;
- 
-     if (!running) {
+     loc_pop(&loc);
+ }
+diff --git a/hw/usb/dev-storage-classic.c b/hw/usb/dev-storage-classic.c
+index 84d19752b5..50a3ad6285 100644
+--- a/hw/usb/dev-storage-classic.c
++++ b/hw/usb/dev-storage-classic.c
+@@ -67,10 +67,7 @@ static void usb_msd_storage_realize(USBDevice *dev, Error **errp)
+     scsi_bus_init(&s->bus, sizeof(s->bus), DEVICE(dev),
+                  &usb_msd_scsi_info_storage);
+     scsi_dev = scsi_bus_legacy_add_drive(&s->bus, blk, 0, !!s->removable,
+-                                         s->conf.bootindex, s->conf.share_rw,
+-                                         s->conf.rerror, s->conf.werror,
+-                                         dev->serial,
+-                                         errp);
++                                         &s->conf, dev->serial, errp);
+     blk_unref(blk);
+     if (!scsi_dev) {
          return;
-     }
- 
-     /* Split the device-wide s->rq request list into per-vq request lists */
--    g_autofree VirtIOBlockReq **vq_rq = g_new0(VirtIOBlockReq *, num_queues);
--    VirtIOBlockReq *rq;
-+    vq_rq = g_new0(VirtIOBlockReq *, num_queues);
- 
-     WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
-         rq = s->rq;
-@@ -1961,6 +1963,7 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VirtIOBlock *s = VIRTIO_BLK(dev);
-     VirtIOBlkConf *conf = &s->conf;
-+    BlockDriverState *bs;
-     Error *err = NULL;
-     unsigned i;
- 
-@@ -2006,7 +2009,7 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    BlockDriverState *bs = blk_bs(conf->conf.blk);
-+    bs = blk_bs(conf->conf.blk);
-     if (bs->bl.zoned != BLK_Z_NONE) {
-         virtio_add_feature(&s->host_features, VIRTIO_BLK_F_ZONED);
-         if (bs->bl.zoned == BLK_Z_HM) {
 -- 
 2.43.0
 
