@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F0684D4F4
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F3784D4FC
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXpuB-0007E9-Eo; Wed, 07 Feb 2024 16:56:31 -0500
+	id 1rXpuC-0007EO-Ii; Wed, 07 Feb 2024 16:56:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu9-0007BR-35
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:29 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpuA-0007CX-5U
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:30 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu7-0007ff-MM
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:28 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu8-0007fu-HB
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707342987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4GLF3wa8P9xkb87QUi5+BupCGdFUx0NiGcKNyw5i1Qo=;
- b=A9+B7mOc0LfXmw2kNGlFhRoFTIE9P3FPqFUf1q08H9LfpjSvrhmB7+N6On1KUmtEYz+taB
- DwXdputpqOSBdU3hFndedYqmjjzDruAcabXKLHCUgG5xFawz6L1o+wazzKy/IhEyttIIkI
- 9hdkL7B9cEJjnRfDAKwk3t2Pu5RVg4c=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-298-CZEDogdCOCSS-1XeEANisQ-1; Wed,
- 07 Feb 2024 16:56:23 -0500
-X-MC-Unique: CZEDogdCOCSS-1XeEANisQ-1
+ bh=v5hLZjXPLz2i52+WyQndxjGB7fi9mqlD8TwVgMsKkE4=;
+ b=SwjqBSh3o+x3NqMEu2gXL92qbUJejme3IT6V5r20EDLrqUgwaYg6TtvyuPc/3EyzsbLmFT
+ 11Yv9DmdiyDYpuV7aJVasW/Qh+G14PRY1J97YMi1Tm3gehE4hHorhDU+OuofKV/m50YH1m
+ 1LpPrjklHLP42H6GmWbcw4KgdKsx0BI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497-oEWy9C-dPea95u43nFg6Fg-1; Wed, 07 Feb 2024 16:56:24 -0500
+X-MC-Unique: oEWy9C-dPea95u43nFg6Fg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97BB338143B2;
- Wed,  7 Feb 2024 21:56:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6360E8F4126;
+ Wed,  7 Feb 2024 21:56:24 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0AE2F492BC6;
- Wed,  7 Feb 2024 21:56:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CB172492BC6;
+ Wed,  7 Feb 2024 21:56:23 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 15/16] virtio-blk: Use ioeventfd_attach in start_ioeventfd
-Date: Wed,  7 Feb 2024 22:56:05 +0100
-Message-ID: <20240207215606.206038-16-kwolf@redhat.com>
+Subject: [PULL 16/16] virtio-blk: avoid using ioeventfd state in irqfd
+ conditional
+Date: Wed,  7 Feb 2024 22:56:06 +0100
+Message-ID: <20240207215606.206038-17-kwolf@redhat.com>
 In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
 References: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,67 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hanna Czenczek <hreitz@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Commit d3f6f294aeadd5f88caf0155e4360808c95b3146 ("virtio-blk: always set
-ioeventfd during startup") has made virtio_blk_start_ioeventfd() always
-kick the virtqueue (set the ioeventfd), regardless of whether the BB is
-drained.  That is no longer necessary, because attaching the host
-notifier will now set the ioeventfd, too; this happens either
-immediately right here in virtio_blk_start_ioeventfd(), or later when
-the drain ends, in virtio_blk_ioeventfd_attach().
+Requests that complete in an IOThread use irqfd to notify the guest
+while requests that complete in the main loop thread use the traditional
+qdev irq code path. The reason for this conditional is that the irq code
+path requires the BQL:
 
-With event_notifier_set() removed, the code becomes the same as the one
-in virtio_blk_ioeventfd_attach(), so we can reuse that function.
+  if (s->ioeventfd_started && !s->ioeventfd_disabled) {
+      virtio_notify_irqfd(vdev, req->vq);
+  } else {
+      virtio_notify(vdev, req->vq);
+  }
 
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20240202153158.788922-4-hreitz@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+There is a corner case where the conditional invokes the irq code path
+instead of the irqfd code path:
+
+  static void virtio_blk_stop_ioeventfd(VirtIODevice *vdev)
+  {
+      ...
+      /*
+       * Set ->ioeventfd_started to false before draining so that host notifiers
+       * are not detached/attached anymore.
+       */
+      s->ioeventfd_started = false;
+
+      /* Wait for virtio_blk_dma_restart_bh() and in flight I/O to complete */
+      blk_drain(s->conf.conf.blk);
+
+During blk_drain() the conditional produces the wrong result because
+ioeventfd_started is false.
+
+Use qemu_in_iothread() instead of checking the ioeventfd state.
+
+Buglink: https://issues.redhat.com/browse/RHEL-15394
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240122172625.415386-1-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/block/virtio-blk.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ hw/block/virtio-blk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index bda5c117d4..4ca5e632ea 100644
+index 4ca5e632ea..738cb2ac36 100644
 --- a/hw/block/virtio-blk.c
 +++ b/hw/block/virtio-blk.c
-@@ -37,6 +37,8 @@
- #include "hw/virtio/virtio-blk-common.h"
- #include "qemu/coroutine.h"
- 
-+static void virtio_blk_ioeventfd_attach(VirtIOBlock *s);
-+
- static void virtio_blk_init_request(VirtIOBlock *s, VirtQueue *vq,
-                                     VirtIOBlockReq *req)
- {
-@@ -1847,17 +1849,14 @@ static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
-     s->ioeventfd_started = true;
-     smp_wmb(); /* paired with aio_notify_accept() on the read side */
- 
--    /* Get this show started by hooking up our callbacks */
--    for (i = 0; i < nvqs; i++) {
--        VirtQueue *vq = virtio_get_queue(vdev, i);
--        AioContext *ctx = s->vq_aio_context[i];
--
--        /* Kick right away to begin processing requests already in vring */
--        event_notifier_set(virtio_queue_get_host_notifier(vq));
--
--        if (!blk_in_drain(s->conf.conf.blk)) {
--            virtio_queue_aio_attach_host_notifier(vq, ctx);
--        }
-+    /*
-+     * Get this show started by hooking up our callbacks.  If drained now,
-+     * virtio_blk_drained_end() will do this later.
-+     * Attaching the notifier also kicks the virtqueues, processing any requests
-+     * they may already have.
-+     */
-+    if (!blk_in_drain(s->conf.conf.blk)) {
-+        virtio_blk_ioeventfd_attach(s);
-     }
-     return 0;
- 
+@@ -66,7 +66,7 @@ static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
+     iov_discard_undo(&req->inhdr_undo);
+     iov_discard_undo(&req->outhdr_undo);
+     virtqueue_push(req->vq, &req->elem, req->in_len);
+-    if (s->ioeventfd_started && !s->ioeventfd_disabled) {
++    if (qemu_in_iothread()) {
+         virtio_notify_irqfd(vdev, req->vq);
+     } else {
+         virtio_notify(vdev, req->vq);
 -- 
 2.43.0
 
