@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F70D84C2BB
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 03:53:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D619884C2BD
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 03:54:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXY2v-0003Ax-UA; Tue, 06 Feb 2024 21:52:21 -0500
+	id 1rXY30-0003By-CX; Tue, 06 Feb 2024 21:52:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXY2u-0003Aa-L6
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:20 -0500
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1rXY2y-0003BW-HD
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:24 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXY2t-0000Wj-85
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:20 -0500
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1d93edfa76dso1740315ad.1
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 18:52:18 -0800 (PST)
+ id 1rXY2x-0000aa-2A
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:24 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d7881b1843so1870695ad.3
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 18:52:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707274338; x=1707879138; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dEU/hJw5TC1eOVwox4NRRVOneFO8qr/5FlNmbbEKaKg=;
- b=aKlXbKT4EN0YtR/Pi66WdOjVtZ6bj7KTMJUyUPpsPsT98SF0y7Z0lo1AT2XDoqJCHy
- UN/9SDwHIbXwPP9TxCP6C5lqkyOk/uE51E5m/AABW4DpjwQhlDKVPTVEfDSkvebQ+zhf
- nsyADu+er3PXhrPuwtfDalwauuhhgxZW9+86pxEpI0hPk4Ig3LzLQVXiAyw7dXbOh86n
- MhFTLhnsgKlSt4FAPCzI9JUq92P73MhtOPyKtqtQwuqy9bamaYEFzeXlnGWFLCuvyXVE
- axDucYdKpYKBuTLgcLY0Bp4hO6r8z9RcN8q5fHGGbKBvX+1zmFackRj6kcsTN9/qSXiR
- kcig==
+ d=linaro.org; s=google; t=1707274342; x=1707879142; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XeR3jaWaGEublhkyds5zMH3a9rvdTlNi440zus838qM=;
+ b=jPPRtVt2qlWbOd4dk8tsixl03xv5kvn5NHQcsSVcWLuy4CDw+BoDGX5N2AOSphQeLc
+ ebJIA9APqAoOLUhm+S5LjZQwsRB3VlnGlSLbO2bUqG9D92qtRk90LWg+3b9ie9N3qKoR
+ uEl5IQBSrew7npzOBNC53EijHBVkITqLaQRA22TdBcatZpr+9MI7kFO9KbRvTYc4RGtx
+ tFHF82FgVnn7S5j41vogvK9/u2hODsk6aZ+Vx31hOHJ70We+r5TbdtwNVGrXdDCpnQzj
+ 6x8BlXYj79dqrnm5tL9gXvzx30VitpOxJzX1ZfoXxjb79KfFkx0TZ9i3dagBL7jyYhp6
+ 7eBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707274338; x=1707879138;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dEU/hJw5TC1eOVwox4NRRVOneFO8qr/5FlNmbbEKaKg=;
- b=e5yU2vopLAyWP2VJkIBSdzFvj7GmuBpQwTB6A5lwsKWAY/YM95phdNlYW+3g8nuyiG
- ct8GGrEhnl5qnNXlkl+nWHb11A/zEYGpd0wTjzu5RQozwPZ1AZf9Py2xZbDHGy2Ovrfh
- KVG6JB5ZzoiWGk44DZ5UqIlZguAXoCmBvNCyHopiGWByLzsn2QnokJQsiC/qGlmL+lV1
- Cnpu9zMXZr6Oy9OMNLSX8JCuPouXrwLM/UNVYfRX9o46ei47aTU0Eh2yeGOEcrjz+smi
- t9HgBo2VABn3a34TNA4uzloptnoa/tLSMt76xeZgTMih1GqrOfbiZ95zVb0AsCvvsC+P
- zr3w==
-X-Gm-Message-State: AOJu0YzUruB1GE1UWcF2S7wq1FK30Npgh7HWi2nxh7sUiH6WiEiL5b42
- qPwF2sNKjrpcx2sNF8N4d3Px3mZZ82+FqV3pc1Ij8xB4el54JCDr1Pr8pJ/q0v8vinl5eeRoeEF
- jPUo=
-X-Google-Smtp-Source: AGHT+IE76AitspInymkiLeb0q+TTupwnRT5oaqVMIl/gEb+46TEC1D5Jt86M4ESBypOMuq4HufvaAA==
-X-Received: by 2002:a17:902:d2c4:b0:1d9:21bc:c607 with SMTP id
- n4-20020a170902d2c400b001d921bcc607mr3939106plc.60.1707274337716; 
- Tue, 06 Feb 2024 18:52:17 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707274342; x=1707879142;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XeR3jaWaGEublhkyds5zMH3a9rvdTlNi440zus838qM=;
+ b=V2+SGZNJHcsTpRFo/0s6xFPpErPVZC6uupN+KHpBjBTnObC9hzN6ET2PRs6kbmWdgQ
+ XQsAEztsnYam5WhwqCk8D8aUom7/38qhAqpuTk+wfDQk1n/uqJbBWbIrHdVLJE3tOCHf
+ 2U7D102lQPlREQHsOFvQwjZxoZA1092h91+J7/7QiHJ7dAEwhtxW2EHOhQIUQqhRspNO
+ cGU5Nk6K+hhUce3MnyqrL1e5BlBJpdVo/+v9OaW0BqWxcNd1KaEoxzGIUvnyXMNL6EmA
+ PcQt+JB8fDLLZepopntbxEare/n72CWcRShuYpBjtQAPg+MfRmldBesLCbcaeDEFmgcz
+ ekTw==
+X-Gm-Message-State: AOJu0YxdixF026KpPodR5zRkCKyjn+Ims4PharsiloZ3n6Dhe71pixBc
+ V8w5l9B1Ch8HMKRDd27u8WPTzjGKY+bRjvuXqEm+mvaJCBYiqZYvCofTENZp134fzckK5ibXLBb
+ 17hg=
+X-Google-Smtp-Source: AGHT+IHsdTQac/xAkNwdXpFXHf7g8N4a4Z8LjqetWStt8M2KpmdhbIOZSNj/TC2ducnl4/lfaWsmEQ==
+X-Received: by 2002:a17:902:f544:b0:1d9:cded:4ef1 with SMTP id
+ h4-20020a170902f54400b001d9cded4ef1mr4766316plf.13.1707274341606; 
+ Tue, 06 Feb 2024 18:52:21 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5y9TJR0Viu/ojyg8rbSkzcmPJW90jAOcq5R6982PxtOEJHZr48SWfBKspMXoASfh1QBseFwbwLPnBRMaZVtK2YgRPZ6wQbfmq
+ AJvYcCU5m2j9cgPXpIuWFfZLH0bgymEtyndClnEul0XDonZ3RMXQEcItZrvl/TiYj0n+tgcVJd7B1yCWirZp6UXIFJJmhtvoRkXoQpZJmy3xkZEgBzw6X6OQssd/BoxDvXXS/YY/
 Received: from stoup.. (60-242-98-186.static.tpgi.com.au. [60.242.98.186])
  by smtp.gmail.com with ESMTPSA id
- kr8-20020a170903080800b001d8ef97de4asm255435plb.38.2024.02.06.18.52.14
+ kr8-20020a170903080800b001d8ef97de4asm255435plb.38.2024.02.06.18.52.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 18:52:17 -0800 (PST)
+ Tue, 06 Feb 2024 18:52:21 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org,
-	gustavo.romero@linaro.org
-Subject: [PATCH v3 0/6] target/arm: assorted mte fixes
-Date: Wed,  7 Feb 2024 12:52:04 +1000
-Message-Id: <20240207025210.8837-1-richard.henderson@linaro.org>
+	gustavo.romero@linaro.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH v3 1/6] linux-user/aarch64: Choose SYNC as the preferred MTE
+ mode
+Date: Wed,  7 Feb 2024 12:52:05 +1000
+Message-Id: <20240207025210.8837-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240207025210.8837-1-richard.henderson@linaro.org>
+References: <20240207025210.8837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,33 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes for v3:
-  - As if /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred is "sync".
-  - Fix do_st_zpa as well as do_ld_zpa.  Oops.
+The API does not generate an error for setting ASYNC | SYNC; that merely
+constrains the selection vs the per-cpu default.  For qemu linux-user,
+choose SYNC as the default.
 
-Because of the above, I dropped Gustavo's t-b.
+Cc: qemu-stable@nongnu.org
+Reported-by: Gustavo Romero <gustavo.romero@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/aarch64/target_prctl.h | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-
-r~
-
-
-Richard Henderson (6):
-  linux-user/aarch64: Choose SYNC as the preferred MTE mode
-  target/arm: Fix nregs computation in do_{ld,st}_zpa
-  target/arm: Adjust and validate mtedesc sizem1
-  target/arm: Split out make_svemte_desc
-  target/arm: Handle mte in do_ldrq, do_ldro
-  target/arm: Fix SVE/SME gross MTE suppression checks
-
- linux-user/aarch64/target_prctl.h | 29 ++++++-----
- target/arm/internals.h            |  2 +-
- target/arm/tcg/translate-a64.h    |  2 +
- target/arm/tcg/sme_helper.c       |  8 +--
- target/arm/tcg/sve_helper.c       | 12 ++---
- target/arm/tcg/translate-sme.c    | 15 ++----
- target/arm/tcg/translate-sve.c    | 83 ++++++++++++++++++-------------
- 7 files changed, 83 insertions(+), 68 deletions(-)
-
+diff --git a/linux-user/aarch64/target_prctl.h b/linux-user/aarch64/target_prctl.h
+index 5067e7d731..aa8e203c15 100644
+--- a/linux-user/aarch64/target_prctl.h
++++ b/linux-user/aarch64/target_prctl.h
+@@ -173,21 +173,26 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
+     env->tagged_addr_enable = arg2 & PR_TAGGED_ADDR_ENABLE;
+ 
+     if (cpu_isar_feature(aa64_mte, cpu)) {
+-        switch (arg2 & PR_MTE_TCF_MASK) {
+-        case PR_MTE_TCF_NONE:
+-        case PR_MTE_TCF_SYNC:
+-        case PR_MTE_TCF_ASYNC:
+-            break;
+-        default:
+-            return -EINVAL;
+-        }
+-
+         /*
+          * Write PR_MTE_TCF to SCTLR_EL1[TCF0].
+-         * Note that the syscall values are consistent with hw.
++         *
++         * The kernel has a per-cpu configuration for the sysadmin,
++         * /sys/devices/system/cpu/cpu<N>/mte_tcf_preferred,
++         * which qemu does not implement.
++         *
++         * Because there is no performance difference between the modes, and
++         * because SYNC is most useful for debugging MTE errors, choose SYNC
++         * as the preferred mode.  With this preference, and the way the API
++         * uses only two bits, there is no way for the program to select
++         * ASYMM mode.
+          */
+-        env->cp15.sctlr_el[1] =
+-            deposit64(env->cp15.sctlr_el[1], 38, 2, arg2 >> PR_MTE_TCF_SHIFT);
++        unsigned tcf = 0;
++        if (arg2 & PR_MTE_TCF_SYNC) {
++            tcf = 1;
++        } else if (arg2 & PR_MTE_TCF_ASYNC) {
++            tcf = 2;
++        }
++        env->cp15.sctlr_el[1] = deposit64(env->cp15.sctlr_el[1], 38, 2, tcf);
+ 
+         /*
+          * Write PR_MTE_TAG to GCR_EL1[Exclude].
 -- 
 2.34.1
 
