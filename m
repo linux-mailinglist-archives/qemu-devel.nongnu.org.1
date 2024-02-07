@@ -2,72 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86CF84D0D0
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E391B84D11D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:22:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXmMX-0002Lk-Ck; Wed, 07 Feb 2024 13:09:33 -0500
+	id 1rXmXI-0004iJ-90; Wed, 07 Feb 2024 13:20:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXmMV-0002Jn-CU
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:09:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXF-0004fp-0e
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:37 -0500
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXmMR-0005vG-CT
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:09:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707329365;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=trnJhRVUZyaGd/s5n18vTEdyW5bFb3V+hVw56AdJVis=;
- b=N07woZc0re/oJVHTBGvpNSatmzPui6IGnuk0c6Ah2vbrtkPo8+SxQvi6ELSDNfklOo040W
- Tur56SVE+YjfcNBLkqBEMoinAdx2qJ4PwFeywFYGvzVySIqNddZYtAoL8ugV3OpTFABMZ4
- ByJLbuJUHjwJKf5qF3LU40joQcxRH9o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-159-CEdWug8jO1iTvZmXhBuoXg-1; Wed, 07 Feb 2024 13:09:21 -0500
-X-MC-Unique: CEdWug8jO1iTvZmXhBuoXg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 87C7083B821;
- Wed,  7 Feb 2024 18:09:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.29])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 04DBB492BF0;
- Wed,  7 Feb 2024 18:09:20 +0000 (UTC)
-Date: Wed, 7 Feb 2024 18:09:19 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: Re: [RFC/INCOMPLETE PATCH 0/8] Attempt to make qemu-img options
- consistent and --help working
-Message-ID: <ZcPHQIt8cz2ZxIvT@redhat.com>
-References: <cover.1707328606.git.mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXD-00084w-9i
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:36 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id EBABF61A14;
+ Wed,  7 Feb 2024 18:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF80C433C7;
+ Wed,  7 Feb 2024 18:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1707330026;
+ bh=fyx4t/wd+HoBgs+powsZLo9dv0JfIOTv2vwESQtk0ZA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=sI6ql0aJemkxW3cnykTz/+RwZ2dQSB9pRrEc0v/AP6NeV81IlkJk5k8BiYSLsw/gG
+ l3qBekj4JmFA3RxCYBRCplKSNSB8bqZHvyNGlSDch64BMAGpVgpLcViOxQUolDeVBM
+ C3152jq+JD/2S9pQ+//+vLmwwGW76uyJE7o4vBPP1a4sQACYmP3eto7oaNxqNKIqJ/
+ GsZs2eEZldIQnbD5gewkuwjAq08ykla2G3pKqN8f5VLiNUK8uN7BSx30OLq/oFLswx
+ 3GfP8NQ7OzhOsrSv36l+1emq/PtRTGya1HCJxQd3z7aPfT6A6GxZLPQwX0VpANhuH+
+ kVpMA/+SyOobA==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH 00/13] target/hppa: Enhancements and fixes
+Date: Wed,  7 Feb 2024 19:20:10 +0100
+Message-ID: <20240207182023.36316-1-deller@kernel.org>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1707328606.git.mjt@tls.msk.ru>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,81 +63,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 07, 2024 at 08:58:09PM +0300, Michael Tokarev wrote:
+From: Helge Deller <deller@gmx.de>
 
->  - create more or less consistent set of options between different
->    subcommands
->  - provide long options which can be used without figuring out which
->    -T/-t, -f|-F|-O etc to use for which of the two images given
->  - have qemu-img --help provide just a list of subcommands
->  - have qemu-img COMMAND --help to describe just this subcommand
->  - get rid of qemu-img-opts.hx, instead finish documentation in
->    qemu-img.rst based on the actual options implemented in
->    qemu-img.c.
+Some enhancements and fixes for the hppa target.
 
-Yes, yes, yes, yes & more yes :-)
+The major change is, that this patchset adds a new SeaBIOS-hppa firmware
+which is built as 32- and 64-bit firmware.
+The new 64-bit firmware is necessary to fully support 64-bit operating systems
+(HP-UX, Linux, NetBSD,...).
 
-I cry every time I have to read the qemu-img --help output,
-and I'm not much of a fan of the man page either to be fair,
-as I don't like the global list of options at the top which
-is divorced from which commands actually use them.
+Please review!
 
-These days I see many programs with subcommands switching to
-a separate man page per sub-command. Still, I'm not asking
-you todo that too, its just an idea for the gallery.
+Helge
 
-> I started converting subcommands one by one, providing long options
-> and --help output.  And immediately faced some questions which needs
-> wider discussion.
-> 
->  o We have --image-opts and --target-image-opts.  Do we really need both?
->    In my view, --image-opts should be sort of global, turning *all*
->    filenames on this command line into complete image specifications,
->    there's no need to have separate image-opts and --target-image-opts.
->    Don't know what to do wrt compatibility though.  It shouldn't be made
->    this way from the beginning.  As a possible solution, introduce a new
->    option and deprecate current set.
+Helge Deller (13):
+  disas/hppa: Add disassembly for qemu specific instructions
+  target/hppa: Add "diag 0x101" for console output support
+  target/hppa: Fix PSW_W and PSW_E bits in rsm, ssm and mtsm
+  hw/pci-host/astro: Avoid aborting on access failure
+  hw/pci-host/astro: Implement Hard Fail and Soft Fail mode
+  lasi: allow access to LAN MAC address registers
+  target/hppa: Implement do_transaction_failed handler for I/O errors
+  lasi: Add reset I/O ports for LASI audio and FDC
+  target/hppa: Allow read-access to PSW with rsm 0,reg instruction
+  target/hppa: Check privilege only when PSW.P is set
+  target/hppa: PDC_BTLB_INFO uses 32-bit ints
+  target/hppa: Update SeaBIOS-hppa to version 16
+  hw/hppa/machine: Load 64-bit firmware on 64-bit machines
 
-This is basically a crutch for incomplete conversion of the block
-layer APIs, which meant we had a situation where we wanted to use
-image opts syntax for the source, but were unable todo so for
-the target:
+ disas/hppa.c                |   4 +++
+ hw/hppa/machine.c           |  11 ++++++--
+ hw/misc/lasi.c              |  13 +++++++++
+ hw/pci-host/astro.c         |  41 +++++++++++++++------------
+ include/hw/misc/lasi.h      |   2 ++
+ include/hw/pci-host/astro.h |   2 ++
+ pc-bios/hppa-firmware.img   | Bin 163324 -> 167836 bytes
+ pc-bios/hppa-firmware64.img | Bin 0 -> 205944 bytes
+ roms/seabios-hppa           |   2 +-
+ target/hppa/cpu.c           |   1 +
+ target/hppa/cpu.h           |   7 +++++
+ target/hppa/helper.h        |   5 +++-
+ target/hppa/mem_helper.c    |  21 +++++++++++++-
+ target/hppa/op_helper.c     |  32 +++++++++++++++++++++
+ target/hppa/sys_helper.c    |  46 ++++++++++++++++++++++++++++--
+ target/hppa/translate.c     |  54 ++++++++++++++++++++++++++----------
+ 16 files changed, 200 insertions(+), 41 deletions(-)
+ mode change 100644 => 100755 pc-bios/hppa-firmware.img
+ create mode 100755 pc-bios/hppa-firmware64.img
 
-  commit 305b4c60f200ee8e6267ac75f3f5b5d09fda1079
-  Author: Daniel P. Berrangé <berrange@redhat.com>
-  Date:   Mon May 15 17:47:11 2017 +0100
-
-    qemu-img: introduce --target-image-opts for 'convert' command
-    
-    The '--image-opts' flag indicates whether the source filename
-    includes options. The target filename has to remain in the
-    plain filename format though, since it needs to be passed to
-    bdrv_create().  When using --skip-create though, it would be
-    possible to use image-opts syntax. This adds --target-image-opts
-    to indicate that the target filename includes options. Currently
-    this mandates use of the --skip-create flag too.
-
-we do have internal support for creating block devices using
-the full QAPI schema, via BlockdevCreateOptions.
-
-I'm not sure if bdrv_create can be made to create using the
-image-opts syntax. If it can, there is still the additional
-problem that after creation it then needs to re-open the
-file, and the image-opts for open is defined by BlockdevOptions
-not BlockdevCreateOptions. So we would need a way to convert
-from the latter to the former.
-
-
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
