@@ -2,93 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2699C84CEAB
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03FA84CEA2
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:10:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkUH-0003r2-OI; Wed, 07 Feb 2024 11:09:25 -0500
+	id 1rXkUG-0003oR-SZ; Wed, 07 Feb 2024 11:09:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1rXkU9-0003fm-GK; Wed, 07 Feb 2024 11:09:18 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rXkUA-0003fl-Ft; Wed, 07 Feb 2024 11:09:19 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1rXkU3-0000ls-Fh; Wed, 07 Feb 2024 11:09:16 -0500
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ id 1rXkU5-0000mK-DB; Wed, 07 Feb 2024 11:09:16 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 417G2K2K030680; Wed, 7 Feb 2024 16:09:02 GMT
+ 417FvV9Z020150; Wed, 7 Feb 2024 16:09:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=K7iBYniCofC4gpovL8UgQezjR8NEML3PDA1/A+RJhsQ=;
- b=bM0VZa/j7HQHSUeBTlOazNelprG66DM2Z/G5PVkOtP7p2SEOEJSGBVBe5hVn28UFVwdz
- z3zGjF6FJ2kWswF9/JYFNpv+GX94nAVBHkZhFzZtFzRhNxRl/GDLSE6jOONHc6c5e4lj
- wyjCIWYlAMSy3jwbF7CV+/XKhUx8R2IDMU0M/C2eqy2eMj0JPpWFipAtpFnS7fDOEmWU
- JbCfsr9iui7KACm79greo7D0ULIzKSjG4dxIKthJF5WftqAtJpFKKBBe6OCM5Maw8gaP
- zcgHbBIrzBOLfI5cVRL1fvDRJglaFWyiTHf2/1UsKeqi7kkhGQ0grjazerMKESXTo8kM dg== 
+ bh=Gv1BfOnmXJQuk9c5ZetVzpZ8PktFhdTVVvoltBjaS+o=;
+ b=oYEnA3pnqJj7DVmg7h67EpcNIdV6GtwYuqW5h1lPfGWaxNRPNAiwnKHjzWxpyXmt5Uz9
+ jiDcHk3ac5rKOJ8DkincQZAPs0mpoZMcbmJ9ZmPmBsygthw75X+QEtKsP5ewnEjE2T9z
+ H0vw916gjuhIhdQ4fjIpaBkt9gOli+QsGleZOxBkk2S5ARXnbIQeMET/dprSaQizTEU5
+ zabbSO2PeOOlRaDV7sjdJHcXOeZrCKPAERRuKIQHwHvRu0dzvTjJUvGzMJp+Bab6MxTF
+ VRT6K95BJZSjG+8Yi9BV+BspY0u4+2I+vWhqCa4JrmaULhu549eixDLYhCRXubzYmWI+ ug== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4d1dr8ng-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cu5rn2s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:09:00 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 417G59jM012297;
- Wed, 7 Feb 2024 16:09:00 GMT
+ Wed, 07 Feb 2024 16:09:03 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 417FvvuL023175;
+ Wed, 7 Feb 2024 16:09:03 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4d1dr8mh-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cu5rn2c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:09:00 +0000
+ Wed, 07 Feb 2024 16:09:03 +0000
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
  by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 417FS9pw016195; Wed, 7 Feb 2024 16:08:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w22h2680t-1
+ 417FS9px016195; Wed, 7 Feb 2024 16:09:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w22h26811-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 07 Feb 2024 16:08:59 +0000
+ Wed, 07 Feb 2024 16:09:02 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 417G8t6I1835748
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 417G8xnu28705138
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Feb 2024 16:08:55 GMT
+ Wed, 7 Feb 2024 16:08:59 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B413F20043;
- Wed,  7 Feb 2024 16:08:55 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 20DFC20043;
+ Wed,  7 Feb 2024 16:08:59 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D177520040;
- Wed,  7 Feb 2024 16:08:53 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 5110920040;
+ Wed,  7 Feb 2024 16:08:57 +0000 (GMT)
 Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  7 Feb 2024 16:08:53 +0000 (GMT)
+ Wed,  7 Feb 2024 16:08:57 +0000 (GMT)
 From: Chalapathi V <chalapathi.v@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
  clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
  chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
-Subject: [PATCH v1 3/5] hw/ppc: SPI controller model - sequencer and shifter
-Date: Wed,  7 Feb 2024 10:08:31 -0600
-Message-Id: <20240207160833.3437779-4-chalapathi.v@linux.ibm.com>
+Subject: [PATCH v1 4/5] hw/ppc: SPI SEEPROM model
+Date: Wed,  7 Feb 2024 10:08:32 -0600
+Message-Id: <20240207160833.3437779-5-chalapathi.v@linux.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20240207160833.3437779-1-chalapathi.v@linux.ibm.com>
 References: <20240207160833.3437779-1-chalapathi.v@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hws7pUlBopXTKtKJAgxFGo2VuL4Jod7J
-X-Proofpoint-ORIG-GUID: VGZe_ToihdwV--j5aQeXG8e33mEOzNPn
+X-Proofpoint-GUID: X0YspNJluhAQpNZWYDzM3RGVBCGUtxhS
+X-Proofpoint-ORIG-GUID: q46Q9QbGFLSGBsYIsTJrq09wBcfJZV3P
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-07_06,2024-02-07_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311290000 definitions=main-2402070119
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ phishscore=0 malwarescore=0
+ mlxscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402070119
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -111,1414 +112,1106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this commit SPI shift engine and sequencer logic is implemented.
-Shift engine performs serialization and de-serialization according to the
-control by the sequencer and according to the setup defined in the
-configuration registers. Sequencer implements the main control logic and
-FSM to handle data transmit and data receive control of the shift engine.
+This commit implements a Serial EEPROM utilizing the Serial Peripheral
+Interface (SPI) compatible bus.
+Currently implemented SEEPROM is Microchip's 25CSM04 which provides 4 Mbits
+of Serial EEPROM utilizing the Serial Peripheral Interface (SPI) compatible
+bus. The device is organized as 524288 bytes of 8 bits each (512Kbyte) and
+is optimized for use in consumer and industrial applications where reliable
+and dependable nonvolatile memory storage is essential.
 
 Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
 ---
- include/hw/ppc/pnv_spi_controller.h |   58 ++
- hw/ppc/pnv_spi_controller.c         | 1274 ++++++++++++++++++++++++++-
- 2 files changed, 1331 insertions(+), 1 deletion(-)
+ include/hw/ppc/pnv_spi_seeprom.h |  70 +++
+ hw/ppc/pnv_spi_seeprom.c         | 989 +++++++++++++++++++++++++++++++
+ hw/ppc/meson.build               |   1 +
+ 3 files changed, 1060 insertions(+)
+ create mode 100644 include/hw/ppc/pnv_spi_seeprom.h
+ create mode 100644 hw/ppc/pnv_spi_seeprom.c
 
-diff --git a/include/hw/ppc/pnv_spi_controller.h b/include/hw/ppc/pnv_spi_controller.h
-index 8afaabdd1b..8160c35f5c 100644
---- a/include/hw/ppc/pnv_spi_controller.h
-+++ b/include/hw/ppc/pnv_spi_controller.h
-@@ -8,6 +8,14 @@
-  * This model Supports a connection to a single SPI responder.
-  * Introduced for P10 to provide access to SPI seeproms, TPM, flash device
-  * and an ADC controller.
+diff --git a/include/hw/ppc/pnv_spi_seeprom.h b/include/hw/ppc/pnv_spi_seeprom.h
+new file mode 100644
+index 0000000000..9739e411b5
+--- /dev/null
++++ b/include/hw/ppc/pnv_spi_seeprom.h
+@@ -0,0 +1,70 @@
++/*
++ * QEMU PowerPC SPI SEEPROM model
 + *
-+ * All SPI function control is mapped into the SPI register space to enable
-+ * full control by firmware.
++ * Copyright (c) 2024, IBM Corporation.
 + *
-+ * SPI Controller has sequencer and shift engine. The SPI shift engine
-+ * performs serialization and de-serialization according to the control by
-+ * the sequencer and according to the setup defined in the configuration
-+ * registers and the SPI sequencer implements the main control logic.
-  */
- 
- #ifndef PPC_PNV_SPI_CONTROLLER_H
-@@ -20,6 +28,7 @@
- #define SPI_CONTROLLER_REG_SIZE 8
- 
- typedef struct SpiBus SpiBus;
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * This model implements a Serial EEPROM utilizing the Serial Peripheral
++ * Interface (SPI) compatible bus.
++ * Currently supported variants: 25CSM04.
++ * The Microchip Technology Inc. 25CSM04 provides 4 Mbits of Serial EEPROM
++ * utilizing the Serial Peripheral Interface (SPI) compatible bus. The device
++ * is organized as 524288 bytes of 8 bits each (512Kbyte) and is optimized
++ * for use in consumer and industrial applications where reliable and
++ * dependable nonvolatile memory storage is essential
++ */
++
++#ifndef PPC_PNV_SPI_SEEPROM_H
++#define PPC_PNV_SPI_SEEPROM_H
++
++#include "hw/ppc/pnv_spi_responder.h"
++#include "qom/object.h"
++
++#define TYPE_PNV_SPI_SEEPROM "pnv-spi-seeprom"
++
++OBJECT_DECLARE_SIMPLE_TYPE(PnvSpiSeeprom, PNV_SPI_SEEPROM)
++
 +typedef struct xfer_buffer xfer_buffer;
- 
- typedef struct PnvSpiController {
-     DeviceState parent;
-@@ -28,6 +37,39 @@ typedef struct PnvSpiController {
-     MemoryRegion    xscom_spic_regs;
-     /* SPI controller object number */
-     uint32_t        spic_num;
-+    uint8_t         responder_select;
-+    /* To verify if shift_n1 happens prior to shift_n2 */
-+    bool            shift_n1_done;
++
++typedef struct PnvSpiSeeprom {
++    PnvSpiResponder resp;
++
++    char            *file; /* SEEPROM image file */
++    uint8_t         opcode; /* SEEPROM Opcode */
++    uint32_t        addr; /* SEEPROM Command Address */
++    uint8_t         rd_state; /* READ State Machine state variable */
++    bool            locked; /* Security Register Locked */
++    bool            controller_connected; /* Flag for master connection */
 +    /*
-+     * Internal flags for the first and last indicators for the SPI
-+     * interface methods
++     * Device registers
++     * The 25CSM04 contains four types of registers that modulate device
++     * operation and/or report on the current status of the device. These
++     * registers are:
++     * STATUS register
++     * Security register
++     * Memory Partition registers (eight total)
++     * Identification register
 +     */
-+    uint8_t         first;
-+    uint8_t         last;
-+    /* Loop counter for branch operation opcode Ex/Fx */
-+    uint8_t         loop_counter_1;
-+    uint8_t         loop_counter_2;
-+    /* N1/N2_bits specifies the size of the N1/N2 segment of a frame in bits.*/
-+    uint8_t         N1_bits;
-+    uint8_t         N2_bits;
-+    /* Number of bytes in a payload for the N1/N2 frame segment.*/
-+    uint8_t         N1_bytes;
-+    uint8_t         N2_bytes;
-+    /* Number of N1/N2 bytes marked for transmit */
-+    uint8_t         N1_tx;
-+    uint8_t         N2_tx;
-+    /* Number of N1/N2 bytes marked for receive */
-+    uint8_t         N1_rx;
-+    uint8_t         N2_rx;
++    uint8_t         status0;
++    uint8_t         status1;
 +    /*
-+     * Setting this attribute to true will cause the engine to reverse the
-+     * bit order of each byte it appends to a payload before sending the
-+     * payload to a device. There may be cases where an end device expects
-+     * a reversed order, like in the case of the Nuvoton TPM device. The
-+     * order of bytes in the payload is not reversed, only the order of the
-+     * 8 bits in each payload byte.
++     * The Security register is split into
++     * 1. user-programmable lockable ID page section.
++     * 2. The read-only section contains a preprogrammed, globally unique,
++     *    128-bit serial number.
 +     */
-+    bool            reverse_bits;
- 
-     /* SPI Controller registers */
-     uint64_t        error_reg;
-@@ -40,4 +82,20 @@ typedef struct PnvSpiController {
-     uint8_t         sequencer_operation_reg[SPI_CONTROLLER_REG_SIZE];
-     uint64_t        status_reg;
- } PnvSpiController;
++    uint8_t         uplid[256];
++    uint8_t         dsn[16];
++    uint8_t         mpr[8];
++    uint8_t         idr[5];
++} PnvSpiSeeprom;
 +
-+void log_all_N_counts(PnvSpiController *spi_controller);
-+void spi_response(PnvSpiController *spi_controller, int bits,
-+                xfer_buffer *rsp_payload);
-+void operation_sequencer(PnvSpiController *spi_controller);
-+bool operation_shiftn1(PnvSpiController *spi_controller, uint8_t opcode,
-+                       xfer_buffer **payload, bool send_n1_alone);
-+bool operation_shiftn2(PnvSpiController *spi_controller, uint8_t opcode,
-+                       xfer_buffer **payload);
-+bool does_rdr_match(PnvSpiController *spi_controller);
-+uint8_t get_from_offset(PnvSpiController *spi_controller, uint8_t offset);
-+void shift_byte_in(PnvSpiController *spi_controller, uint8_t byte);
-+void calculate_N1(PnvSpiController *spi_controller, uint8_t opcode);
-+void calculate_N2(PnvSpiController *spi_controller, uint8_t opcode);
-+void do_reset(PnvSpiController *spi_controller);
-+uint8_t reverse_bits8(uint8_t x);
- #endif /* PPC_PNV_SPI_CONTROLLER_H */
-diff --git a/hw/ppc/pnv_spi_controller.c b/hw/ppc/pnv_spi_controller.c
-index 0f2bc25e82..ef48af5d03 100644
---- a/hw/ppc/pnv_spi_controller.c
-+++ b/hw/ppc/pnv_spi_controller.c
-@@ -9,7 +9,6 @@
- #include "qemu/osdep.h"
- #include "qemu/log.h"
- #include "hw/qdev-properties.h"
--#include "hw/ppc/pnv.h"
- #include "hw/ppc/pnv_xscom.h"
- #include "hw/ppc/pnv_spi_controller.h"
- #include "hw/ppc/pnv_spi_responder.h"
-@@ -155,6 +154,12 @@ static uint64_t pnv_spi_controller_read(void *opaque, hwaddr addr,
-                            val));
-         sc->status_reg = SETFIELD(STATUS_REG_RDR_FULL, sc->status_reg, 0);
-         SPI_DEBUG(qemu_log("RDR being read, RDR_full set to 0\n"));
-+        if (GETFIELD(STATUS_REG_SHIFTER_FSM, sc->status_reg) == FSM_WAIT) {
-+                /* call $operation_sequencer(); */
-+            SPI_DEBUG(qemu_log("RDR being read while shifter is waiting, "
-+                           "starting sequencer\n"));
-+            operation_sequencer(sc);
-+        }
-         break;
-     case SEQUENCER_OPERATION_REG:
-         for (int i = 0; i < SPI_CONTROLLER_REG_SIZE; i++) {
-@@ -227,6 +232,9 @@ static void pnv_spi_controller_write(void *opaque, hwaddr addr,
-         sc->status_reg = SETFIELD(STATUS_REG_TDR_UNDERRUN, sc->status_reg, 0);
-         SPI_DEBUG(qemu_log("TDR being written, TDR_underrun set to 0\n"));
-         SPI_DEBUG(qemu_log("TDR being written, starting sequencer\n"));
-+        /* call $operation_sequencer(); */
-+        operation_sequencer(sc);
++xfer_buffer *seeprom_spi_request(PnvSpiResponder *resp, int first, int last,
++                int bits, xfer_buffer *payload);
++void seeprom_connect_controller(PnvSpiResponder *resp, const char *port);
++void seeprom_disconnect_controller(PnvSpiResponder *resp);
++bool compute_addr(PnvSpiSeeprom *spi_resp, xfer_buffer *req_payload,
++                   xfer_buffer *rsp_payload, int bits, uint32_t *data_offset);
++bool validate_addr(PnvSpiSeeprom *spi_resp);
++#endif /* PPC_PNV_SPI_SEEPROM_H */
+diff --git a/hw/ppc/pnv_spi_seeprom.c b/hw/ppc/pnv_spi_seeprom.c
+new file mode 100644
+index 0000000000..ae46610045
+--- /dev/null
++++ b/hw/ppc/pnv_spi_seeprom.c
+@@ -0,0 +1,989 @@
++/*
++ * QEMU PowerPC SPI SEEPROM model
++ *
++ * Copyright (c) 2024, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
-         break;
-     case RECEIVE_DATA_REG:
-         sc->receive_data_reg = val;
-@@ -264,8 +272,1272 @@ static const MemoryRegionOps pnv_spi_controller_xscom_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
-+uint8_t reverse_bits8(uint8_t x)
++#include "qemu/osdep.h"
++#include "qemu/log.h"
++#include "hw/ppc/pnv_spi_seeprom.h"
++#include <math.h>
++
++#define SPI_DEBUG(x)
++
++/*
++ * 2-byte STATUS register which is a combination of six nonvolatile bits of
++ * EEPROM and five volatile latches.
++ *
++ * status 0:
++ * bit 7 WPEN: Write-Protect Enable bit
++ * 1 = Write-Protect pin is enabled, 0 = Write-Protect pin is ignored
++ *
++ * bit 3-2 BP<1:0>: Block Protection bits
++ * 00 = No array write protection
++ * 01 = Upper quarter memory array protection
++ * 10 = Upper half memory array protection
++ * 11 = Entire memory array protection
++ *
++ * bit 1 WEL: Write Enable Latch bit
++ * 1 = WREN has been executed and device is enabled for writing
++ * 0 = Device is not write-enabled
++ *
++ * bit 0 RDY/BSY: Ready/Busy Status Latch bit
++ * 1 = Device is busy with an internal write cycle
++ * 0 = Device is ready for a new sequence
++ */
++#define STATUS0_WPEN        0x7
++#define STATUS0_BP          0x2
++#define STATUS0_WEL         0x1
++#define STATUS0_BUSY        0x0
++
++/*
++ * status 1:
++ * bit 7 WPM: Write Protection Mode bit(1)
++ * 1 = Enhanced Write Protection mode selected (factory default)
++ * 0 = Legacy Write Protection mode selected
++ *
++ * bit 6 ECS: Error Correction State Latch bit
++ * 1 = The previously executed read sequence did require the ECC
++ * 0 = The previous executed read sequence did not require the ECC
++ *
++ * bit 5 FMPC: Freeze Memory Protection Configuration bit(2)
++ * 1 = Memory Partition registers and write protection mode are permanently
++ *     frozen and cannot be modified
++ * 0 = Memory Partition registers and write protection mode are not frozen
++ *     and are modifiable
++ *
++ * bit 4 PREL: Partition Register Write Enable Latch bit
++ * 1 = PRWE has been executed and WMPR, FRZR and PPAB instructions are enabled
++ * 0 = WMPR, FRZR and PPAB instructions are disabled
++ *
++ * bit 3 PABP: Partition Address Boundary Protection bit
++ * 1 = Partition Address Endpoints set in Memory Partition registers
++ *     cannot be modified
++ * 0 = Partition Address Endpoints set in Memory Partition registers
++ *     are modifiable
++ *
++ * bit 0 RDY/BSY: Ready/Busy Status Latch bit
++ * 1 = Device is busy with an internal write cycle
++ * 0 = Device is ready for a new sequence
++ */
++#define STATUS1_WPM             0x7
++#define STATUS1_ECS             0x6
++#define STATUS1_FMPC            0x5
++#define STATUS1_PREL            0x4
++#define STATUS1_PABP            0x3
++#define STATUS1_BUSY            0x0
++
++/*
++ * MEMORY PARTITION REGISTERS
++ * Note 1: The MPR cannot be written if the FMPC bit has been set.
++ *      2: The Partition Endpoint Address bits cannot be written if the PABP
++ *         bit has been set.
++ *
++ * bits 7-6 PB<1:0>: Partition Behavior bits(1)
++ * 00 = Partition is open and writing is permitted
++ *      factory default is unprotected.
++ * 01 = Partition is always write-protected but can be reversed at a later
++ *      time (software write-protected).
++ * 10 = Partition is write-protected only when WP pin is asserted
++ *      (hardware write-protected).
++ * 11 = Partition is software write-protected and MPR is permanently locked
++ *
++ * bit 5-0 A<18:13>: Partition Endpoint Address bits(1, 2)
++ * 000000 = Endpoint address of partition is set to 01FFFh.
++ * 000001 = Endpoint address of partition is set to 03FFFh.
++ * ----
++ * 111110 = Endpoint address of partition is set to 7DFFFh.
++ * 111111 = Endpoint address of partition is set to 7FFFFh.
++ */
++#define MPR_PB                  0x6
++#define MPR_PEA                 0x5
++
++/* INSTRUCTION SET FOR 25CSM04 */
++#define RDSR        0x05
++#define WRBP        0x08
++#define WREN        0x06
++#define WRDI        0x04
++#define WRSR        0x01
++#define READ        0x03
++#define WRITE       0x0
++#define RDEX_CHLK   0x83
++#define WREX_LOCK   0x82
++#define RMPR        0x31
++#define PRWE        0x07
++#define PRWD        0x0A
++#define WMPR        0x32
++#define PPAB        0x34
++#define FRZR        0x37
++#define SPID        0x9F
++#define SRST        0x7C
++
++/* READ FSM state */
++#define ST_IDLE     0
++#define ST_READ     1
++#define ST_SEC_READ 2
++
++xfer_buffer *seeprom_spi_request(PnvSpiResponder *resp,
++        int first, int last, int bits, xfer_buffer *payload)
 +{
-+    x = (x << 4) | (x >> 4);
-+    x = ((x & 0x33) << 2) | ((x & 0xcc) >> 2);
-+    x = ((x & 0x55) << 1) | ((x & 0xaa) >> 1);
-+    return x;
-+}
-+
-+bool does_rdr_match(PnvSpiController *sc)
-+{
-+    /*
-+     * The mask bits that are 0 are compared and the
-+     * bits that are 1 are ignored.
-+     */
-+    uint16_t rdr_match_mask = GETFIELD(MEMORY_MAPPING_REG_RDR_MATCH_MASK,
-+                                        sc->memory_mapping_reg);
-+    uint16_t rdr_match_val = GETFIELD(MEMORY_MAPPING_REG_RDR_MATCH_VAL,
-+                                        sc->memory_mapping_reg);
-+    if ((~rdr_match_mask & rdr_match_val) == ((~rdr_match_mask) &
-+            GETFIELD(PPC_BITMASK(48, 63), sc->receive_data_reg))) {
-+        SPI_DEBUG(qemu_log("RDR match successful, match=0x%4.4x, "
-+                                 "mask=0x%4.4x, RDR[48:63]=0x%4.4llx\n",
-+                           rdr_match_val, rdr_match_mask,
-+                                  GETFIELD(PPC_BITMASK(48, 63),
-+                                   sc->receive_data_reg)));
-+        return true;
-+    } else {
-+        SPI_DEBUG(qemu_log("RDR match failed, match=0x%4.4x, mask=0x%4.4x, "
-+              "RDR[48:63]=0x%4.4llx\n", rdr_match_val, rdr_match_mask,
-+               GETFIELD(PPC_BITMASK(48, 63), sc->receive_data_reg)));
-+        return false;
-+    }
-+}
-+
-+uint8_t get_from_offset(PnvSpiController *sc, uint8_t offset)
-+{
-+    uint8_t byte;
-+    /*
-+     * Offset is an index between 0 and SPI_CONTROLLER_REG_SIZE - 1
-+     * Check the offset before using it.
-+     */
-+    if (offset < SPI_CONTROLLER_REG_SIZE) {
-+        byte = GETFIELD(PPC_BITMASK(offset * 8 , (offset * 8) + 7),
-+                        sc->transmit_data_reg);
-+    } else {
-+        /*
-+         * Log an error and return a 0xFF since we have to assign something
-+         * to byte before returning.
-+         */
-+        qemu_log_mask(LOG_GUEST_ERROR, "Invalid offset = %d used to get byte "
-+                      "from TDR\n", offset);
-+        byte = 0xff;
-+    }
-+    return byte;
-+}
-+
-+void shift_byte_in(PnvSpiController *sc, uint8_t byte)
-+{
-+    sc->receive_data_reg = (sc->receive_data_reg << 8) | byte;
-+    SPI_DEBUG(qemu_log("0x%2.2x shifted in, RDR now = 0x%16.16lx\n", byte,
-+                    sc->receive_data_reg));
-+}
-+
-+void spi_response(PnvSpiController *sc, int bits, xfer_buffer *rsp_payload)
-+{
++    PnvSpiSeeprom *seeprom = PNV_SPI_SEEPROM(resp);
++    uint32_t data_offset = 0;
++    int data_len = 0;
++    xfer_buffer *rsp_payload = NULL;
 +    uint8_t *read_buf = NULL;
++    uint8_t *buf = NULL;
++    uint16_t idx;
++    bool failed = false;
++    SPI_DEBUG(qemu_log("Received SPI request, first=%d, last=%d, bits=%d, "
++              "payload length=%d\n", first, last, bits, payload->len));
++    if (seeprom->controller_connected == false) {
++        qemu_log_mask(LOG_GUEST_ERROR, "Controller is disconnected, invoke "
++                      "connect method of spi_responder interface\n");
++        return rsp_payload;
++    }
++    if (rsp_payload == NULL) {
++        rsp_payload = xfer_buffer_new();
++    }
++    buf = xfer_buffer_write_ptr(rsp_payload, 0, payload->len);
++    memset(buf, 0xFF, payload->len);
 +    /*
-+     * Processing here must handle:
-+     * - Which bytes in the payload we should move to the RDR
-+     * - Explicit mode counter configuration settings
-+     * - RDR full and RDR overrun status
++     * SPI communication is always full-duplex, so the controller receives as
++     * many bits as it sends, although often both the responder and controller
++     * device ignores some incoming bits. To simulate half-duplex the controller
++     * sends zeros to the responder when controller is receiving and ignores
++     * incoming data when the controller transmitting. So, a SPI response should
++     * always have the same length in bits as the corresponding request.
++     */
++    if ((payload->len != ceil(bits / 8)) || (payload->len <= 0)) {
++        qemu_log_mask(LOG_GUEST_ERROR, "Incorrect Payload size bits(%d) "
++                      "Payload_len(%d bytes)\n", bits, payload->len);
++        return rsp_payload;
++    }
++    if ((bits % 8) != 0) {
++        qemu_log_mask(LOG_GUEST_ERROR, "non-8bit aligned SPI transfer is "
++                      "unimplemented\n");
++        return rsp_payload;
++    }
++    /*
++     * Different scenarios for first and last SPI interface method parameters
++     *
++     * first(1) and last(1)
++     * SPI Controller can invoke spi_request with parameters first(1) and
++     * last(1), which indicates this is first and last spi_request in this
++     * transaction. This can be used when the valid data (excluding fake bytes)
++     * transmitted or received over SPI is less than or equal to 8 Bytes
++     *
++     * first(1) and last(0), # (required) first request
++     * first(0) and last(0), # (optional) in-between requests
++     * first(0) and last(0), # (optional) in-between requests
++     * ..
++     * ..
++     * first(0) and last(1), # (required) last request in the transaction
++     * SPI Controller can invoke spi_request multiple times with parameters
++     * first and last as shown in the sequence above for a transaction. This
++     * can be used when the valid data(excluding fake bytes) transmitted or
++     * received over SPI is more than 8 Bytes, SPI controller splits the
++     * transaction into multiple requests, this is due to TDR and RDR size(8B)
++     * restriction in SPI Controller.
 +     */
 +
 +    /*
-+     * First check that the response payload is the exact same
-+     * number of bytes as the request payload was
++     * check if first is "1", indicates a new incoming command sequence fetch
++     * the opcode and address from payload.
 +     */
-+    if (rsp_payload->len != (sc->N1_bytes + sc->N2_bytes)) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Invalid response payload size in "
-+                       "bytes, expected %d, got %d\n",
-+                       (sc->N1_bytes + sc->N2_bytes), rsp_payload->len);
-+    } else {
-+        SPI_DEBUG(qemu_log("SPI response received, payload len = %d\n",
-+                       rsp_payload->len));
-+        log_all_N_counts(sc);
++    if (first == 1) {
++        /* Fetch opcode from offset 0 of payload */
++        xfer_buffer_read_ptr(payload, &read_buf, 0, 1);
++        seeprom->opcode = read_buf[0];
++        SPI_DEBUG(qemu_log("Command Opcode (0x%x)\n", seeprom->opcode));
 +        /*
-+         * Adding an ECC count let's us know when we have found a payload byte
-+         * that was shifted in but cannot be loaded into RDR.  Bits 29-30
-+         * equal to either 0b00 or 0b10 indicate that we are taking in data
-+         * with ECC and either applying the ECC or discarding it.
++         * Check if device is busy with internal write cycle, During this
++         * time, only the Read STATUS Register (RDSR) and the Write Ready/Busy
++         * Poll (WRBP) instructions will be executed by the device.
 +         */
-+        uint8_t ecc_count = 0;
-+        uint8_t ecc_control = GETFIELD(CLOCK_CONFIG_REG_ECC_CONTROL,
-+                                    sc->clock_config_reset_control);
-+        uint8_t ecc_control_1_2 = GETFIELD(PPC_BITMASK8(1, 2), ecc_control);
-+        if (ecc_control_1_2 == 0 || ecc_control_1_2 == 2) {
-+            ecc_count = 1;
++        bool status0_busy = extract8(seeprom->status0, STATUS0_BUSY, 1);
++        bool status1_busy = extract8(seeprom->status1, STATUS1_BUSY, 1);
++        if (((status0_busy == 1) || (status1_busy == 1)) &&
++            ((seeprom->opcode != RDSR) || (seeprom->opcode != WRBP))) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Busy with Internal Write Cycle, "
++                           "opcode(0x%x) not executed\n", seeprom->opcode);
++            return rsp_payload;
 +        }
 +        /*
-+         * Use the N1_rx and N2_rx counts to control shifting data from the
-+         * payload into the RDR.  Keep an overall count of the number of bytes
-+         * shifted into RDR so we can discard every 9th byte when ECC is
-+         * enabled.
++         * Implement a state machine for READ sequence, to catch an error
++         * scenario when controller generates a new command sequence, with out
++         * properly terminating the READ sequence, as shown below
++         * first(1) and last(0), # READ command
++         * first(0) and last(0), # READ command continues
++         * ...
++         * first(1) and last(0,1), # New command sequence
++         * Not required to implement a state machine for write sequence as
++         * we can leverage status register for it
 +         */
-+        uint8_t shift_in_count = 0;
-+        /* Handle the N1 portion of the frame first */
-+        if (sc->N1_rx != 0) {
-+            uint8_t n1_count = 0;
-+            while (n1_count < sc->N1_bytes) {
-+                shift_in_count++;
-+                xfer_buffer_read_ptr(rsp_payload, &read_buf, n1_count, 1);
-+                if ((ecc_count != 0) &&
-+                    (shift_in_count == (SPI_CONTROLLER_REG_SIZE + ecc_count))) {
-+                    SPI_DEBUG(qemu_log("Discarding rx N1 ECC byte = 0x%2.2x at "
-+                           "payload index = %d\n", read_buf[0], n1_count));
-+                    shift_in_count = 0;
-+                } else {
-+                    uint8_t n1_byte = 0x00;
-+                    n1_byte = read_buf[0];
-+                    SPI_DEBUG(qemu_log("Extracting rx n1_byte = 0x%2.2x from "
-+                            "payload at index = %d\n", n1_byte, n1_count));
-+                    if (sc->reverse_bits) {
-+                        SPI_DEBUG(qemu_log("Reversing bit order of rx "
-+                                            "n1_byte\n"));
-+                        n1_byte = reverse_bits8(n1_byte);
-+                    }
-+                    SPI_DEBUG(qemu_log("Shifting rx N1 byte = 0x%2.2x into "
-+                                   "RDR\n", n1_byte));
-+                    shift_byte_in(sc, n1_byte);
-+                }
-+                n1_count++;
-+            } /* end of while */
-+        }
-+        /* Handle the N2 portion of the frame */
-+        if (sc->N2_rx != 0) {
-+            uint8_t n2_count = 0;
-+            while (n2_count < sc->N2_bytes) {
-+                shift_in_count++;
-+                xfer_buffer_read_ptr(rsp_payload, &read_buf,
-+                                (sc->N1_bytes + n2_count), 1);
-+                if ((ecc_count != 0) &&
-+                    (shift_in_count == (SPI_CONTROLLER_REG_SIZE + ecc_count))) {
-+                    SPI_DEBUG(qemu_log("Discarding rx N1 ECC byte = 0x%2.2x at "
-+                           "payload index = %d\n", read_buf[0],
-+                           (sc->N1_bytes + n2_count)));
-+                    shift_in_count = 0;
-+                } else {
-+                    /*
-+                     * The code handles shifting data from the payload received
-+                     * from the responder into the responder's RDR.  Since this
-+                     * is an N2 frame segment it is safe to assume that there
-+                     * was a preceding N1 segment which was combined with an N2
-+                     * segment to create a single frame. The response data will
-+                     * then have N1_bytes of data in the payload representing a
-+                     * responder response to the N1 section of the frame. If N2
-+                     * is set to receive the shifting for N2 data begins after
-+                     * the N1 bytes regardless of whether or not N1 was marked
-+                     * for transmit or receive.
-+                     */
-+                    uint8_t n2_byte = 0x00;
-+                    n2_byte = read_buf[0];
-+                    SPI_DEBUG(qemu_log("Extracting rx n2_byte = 0x%2.2x from "
-+                            "payload at index = %d\n", n2_byte,
-+                            (sc->N1_bytes + n2_count)));
-+                    if (sc->reverse_bits) {
-+                        SPI_DEBUG(qemu_log("Reversing bit order of rx "
-+                                            "n2_byte\n"));
-+                        n2_byte = reverse_bits8(n2_byte);
-+                    }
-+                    SPI_DEBUG(qemu_log("Shifting rx N2 byte = 0x%2.2x into "
-+                              "RDR\n", n2_byte));
-+                    shift_byte_in(sc, n2_byte);
-+                }
-+                n2_count++;
-+            }
-+        }
-+        if ((sc->N1_rx + sc->N2_rx) > 0) {
++        if (seeprom->rd_state != ST_IDLE) {
++            qemu_log_mask(LOG_GUEST_ERROR, "New Command Sequence with "
++                           "opcode(0x%x)is ignored Previous READ sequence is "
++                           "not terminated properly!!! Continuing the previous "
++                           "READ sequence\n", seeprom->opcode);
++            seeprom->opcode = (seeprom->rd_state == ST_READ) ? READ :
++                                                                 RDEX_CHLK;
++        } else {
 +            /*
-+             * Data was received so handle RDR status.
-+             * It is easier to handle RDR_full and RDR_overrun status here
-+             * since the RDR register's shift_byte_in method is called
-+             * multiple times in a row. Controlling RDR status is done here
-+             * instead of in the RDR scoped methods for that reason.
++             * For a new command sequence compute Address and data offset in
++             * xfer_buffer.
 +             */
-+            if (GETFIELD(STATUS_REG_RDR_FULL, sc->status_reg) == 1) {
-+                /*
-+                 * Data was shifted into the RDR before having been read
-+                 * causing previous data to have been overrun.
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_RDR_OVERRUN,
-+                                sc->status_reg, 1);
-+            } else {
-+                /*
-+                 * Set status to indicate that the received data register is
-+                 * full. This flag is only cleared once the RDR is unloaded.
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_RDR_FULL,
-+                                sc->status_reg, 1);
-+                SPI_DEBUG(qemu_log("RDR_full set to 1\n"));
++            failed = compute_addr(seeprom, payload, rsp_payload, bits,
++                            &data_offset);
++            /*
++             * Address computation failed, nothing to do further, just send
++             * response and return from here.
++             */
++            if (failed == true) {
++                return rsp_payload;
 +            }
 +        }
-+    } /* end of else */
-+} /* end of spi_response() */
++    } /* end of branch if (first == 1) */
++    switch (seeprom->opcode) {
++    case READ:
++        SPI_DEBUG(qemu_log("READ(0x%x), addr(0x%x)\n",
++                  seeprom->opcode, seeprom->addr));
++        seeprom->rd_state = ST_READ;
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB), "
++                           "should be at least 1 Byte\n", data_len);
++            break;
++        }
++        /* Fill the buffer with the data read from image */
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, data_len);
++        FILE *f;
++        if (seeprom->file) {
++            f = fopen(seeprom->file, "rb+");
++            if (f) {
++                fseek(f, seeprom->addr, SEEK_SET);
++                int read_len = fread(buf, sizeof(uint8_t), data_len, f);
++                if (read_len == data_len) {
++                    SPI_DEBUG(qemu_log("Read %d bytes from seeprom\n",
++                                            read_len));
++                } else {
++                    if (ferror(f)) {
++                        SPI_DEBUG(qemu_log("Error reading seeprom\n"));
++                    }
++                }
++            }
++            fclose(f);
++        }
++        /* Check if last is 0 and increase address by data length */
++        if (last == 0) {
++            seeprom->addr = (seeprom->addr & 0x7FFFF) + data_len;
++        } else {
++            seeprom->rd_state = ST_IDLE;
++        }
++        break;
 +
-+void log_all_N_counts(PnvSpiController *sc)
++    case RDSR:
++        SPI_DEBUG(qemu_log("READ Status Register RDSR(0x%x)\n",
++                    seeprom->opcode));
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB), "
++                           "should be at least 1 Byte\n", data_len);
++            break;
++        }
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, data_len);
++        buf[0] = seeprom->status0;
++        if (data_len == 2) {
++            buf[1] = seeprom->status1;
++        }
++        break;
++
++    case WRBP:
++        SPI_DEBUG(qemu_log("Write Ready/Busy Poll WRBP(0x%x)\n",
++                    seeprom->opcode));
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB), "
++                           "should be at least 1 Byte\n", data_len);
++            break;
++        }
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, 0x1);
++        bool status0_busy = extract8(seeprom->status0, STATUS0_BUSY, 1);
++        bool status1_busy = extract8(seeprom->status1, STATUS1_BUSY, 1);
++        if ((status0_busy == 1) || (status1_busy == 1)) {
++            buf[0] = 0xFF;
++        } else {
++            buf[0] = 0x00;
++        }
++        break;
++
++    case WREN:
++        SPI_DEBUG(qemu_log("Set Write Enable Latch (WEL) WREN(0x%x)\n",
++                    seeprom->opcode));
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 1);
++        break;
++
++    case WRDI:
++        SPI_DEBUG(qemu_log("Set Write Enable Latch (WEL) WRDI(0x%x)\n",
++                    seeprom->opcode));
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        break;
++
++    case WRSR:
++        SPI_DEBUG(qemu_log("Write STATUS Register WRSR(0x%x)\n",
++                    seeprom->opcode));
++        if (extract8(seeprom->status0, STATUS0_WEL, 1) == 1) {
++            data_len = payload->len - data_offset;
++            /* Make sure data is at least 1 Byte */
++            if (data_len <= 0) {
++                qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                                 " should be at least 1 Byte\n", data_len);
++                break;
++            }
++            /* Mask and update status0/1 bytes */
++            xfer_buffer_read_ptr(payload, &read_buf, 1, 2);
++            seeprom->status0 = read_buf[0] & 0x8C;
++            /* 2nd Status Byte is optional */
++            if (data_len == 2) {
++                seeprom->status1 = read_buf[1] & 0x80;
++            }
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Set Write Enable Latch (WEL) "
++                            "before doing WRSR\n");
++        }
++        break;
++
++    case SPID:
++        SPI_DEBUG(qemu_log("READ IDENTIFICATION REGISTER, SPID(0x%x)\n",
++                    seeprom->opcode));
++        data_len = payload->len - data_offset;
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, data_len);
++        for (idx = 0; idx < data_len; idx++) {
++            buf[idx] = seeprom->idr[idx];
++        }
++        break;
++
++    case SRST:
++        SPI_DEBUG(qemu_log("Software Device Reset, SRST(0x%x)\n",
++                    seeprom->opcode));
++        /*
++         * Note: The SRST instruction cannot interrupt the device while it is
++         * in a Busy state (Section 6.1.4 Ready/Busy Status Latch).
++         * This is already taken care when the command opcode is fetched
++         *
++         * 1.2 Device Default State
++         * 1.2.1 POWER-UP DEFAULT STATE
++         * The 25CSM04 default state upon power-up consists of:
++         * - Standby Power mode (CS = HIGH)
++         * - A high-to-low level transition on CS is required to enter the
++         *   active state
++         `* - WEL bit in the STATUS register = 0
++         * - ECS bit in the STATUS register = 0
++         * - PREL bit in the STATUS register = 0
++         * - Ready/Busy (RDY/BUSY) bit in the STATUS register = 0, indicating
++         *   the device is ready to accept a new instruction.
++         */
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_ECS, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 0);
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_BUSY, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_BUSY, 1, 0);
++        break;
++
++    case WRITE:
++        SPI_DEBUG(qemu_log("WRITE(0x%x), addr(0x%x)\n",
++                    seeprom->opcode, seeprom->addr));
++        if (extract8(seeprom->status0, STATUS0_WEL, 1) != 1) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Device is not Write Enabled, "
++                            "ignoring WRITE instruction\n");
++            break;
++        }
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            /*
++             * first   last    comment
++             * 0       0       data length cannot be 0
++             * 0       1       data length cannot be 0
++             * 1       0       data length can be 0, don't log error
++             * 1       1       data length cannot be 0
++             */
++            if (!(first == 1 && (last == 0))) {
++                qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                                    " should be at least 1 Byte\n", data_len);
++                break;
++            }
++        }
++        /* Write into SEEPROM Array */
++        SPI_DEBUG(qemu_log("(%d)%s Write sequence\n", data_len,
++                            (data_len == 1) ? "Byte" : "Bytes Page"));
++        xfer_buffer_read_ptr(payload, &read_buf, data_offset, data_len);
++        if (seeprom->file) {
++            f = fopen(seeprom->file, "rb+");
++            if (f) {
++                fseek(f, seeprom->addr, SEEK_SET);
++                int write_len = fwrite(read_buf, sizeof(uint8_t), data_len, f);
++                if (write_len == data_len) {
++                    SPI_DEBUG(qemu_log("Write %d bytes to seeprom\n",
++                                            write_len));
++                } else {
++                    SPI_DEBUG(qemu_log("Failed to write seeprom\n"));
++                }
++            }
++            fclose(f);
++        }
++        /* Increase offset in the page */
++        seeprom->addr += data_len;
++        /* Check if last is 1 and end the sequence */
++        if (last == 1) {
++            seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        }
++        break;
++
++    case RMPR:
++        SPI_DEBUG(qemu_log("RMPR(0x%x) for MPR[%d]\n", seeprom->opcode,
++                  extract8(seeprom->addr, 16, 2)));
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, 0x1);
++        buf[0] = seeprom->mpr[extract8(seeprom->addr, 16, 2)];
++        break;
++
++    case PRWE:
++        SPI_DEBUG(qemu_log("Set Memory Partition Write Enable Latch "
++                    "PRWE(0x%x)\n", seeprom->opcode));
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 1);
++        break;
++
++    case PRWD:
++        SPI_DEBUG(qemu_log("Reset Memory Partition Write Enable Latch "
++                    "PRWD(0x%x)\n", seeprom->opcode));
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 0);
++        break;
++
++    case WMPR:
++        SPI_DEBUG(qemu_log("Write Memory Partition Register[%d] WMPR(0x%x)\n",
++                    extract8(seeprom->addr, 16, 2), seeprom->opcode));
++        /*
++         * Once the WEL and PREL bits in the STATUS register have been set to
++         * 1, the Memory Partition registers can be programmed provided that
++         * the FMPC bit in the STATUS register has not already been set to a
++         * logic 1.
++         */
++        if ((extract8(seeprom->status0, STATUS0_WEL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_PREL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_FMPC, 1) == 1)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "ignoring Write to MPR\n");
++            break;
++        }
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        xfer_buffer_read_ptr(payload, &read_buf, data_offset, 0x1);
++        if (extract8(seeprom->status1, STATUS1_PABP, 1) == 1) {
++            /* Partition Address Boundaries Protected */
++            seeprom->mpr[extract8(seeprom->addr, 16, 2)] =
++                ((read_buf[0] >> 6) & 0x3);
++        } else {
++            seeprom->mpr[extract8(seeprom->addr, 16, 2)] = read_buf[0];
++        }
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 0);
++        break;
++
++    case PPAB:
++        SPI_DEBUG(qemu_log("Protect Partition Address Boundaries PPAB(0x%x)\n",
++                            seeprom->opcode));
++        if ((extract8(seeprom->status0, STATUS0_WEL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_PREL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_FMPC, 1) == 1)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Ignoring PPAB command\n");
++            break;
++        }
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        xfer_buffer_read_ptr(payload, &read_buf, data_offset, 0x1);
++        if (read_buf[0] == 0xFF) {
++            seeprom->status1 = deposit32(seeprom->status1,
++                                            STATUS1_PABP, 1, 1);
++        } else if (read_buf[0] == 0x0) {
++            seeprom->status1 = deposit32(seeprom->status1,
++                                            STATUS1_PABP, 1, 0);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Incorrect Data Byte(0x%x), "
++                            "should be 0x0 or 0xFF\n", read_buf[0]);
++        }
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 0);
++        break;
++
++    case FRZR:
++        SPI_DEBUG(qemu_log("Freeze Memory Protection Configuration "
++                                "FRZR(0x%x)\n", seeprom->opcode));
++        if ((extract8(seeprom->status0, STATUS0_WEL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_PREL, 1) != 1) ||
++            (extract8(seeprom->status1, STATUS1_FMPC, 1) == 1)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "ignoring FRZR command\n");
++            break;
++        }
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        xfer_buffer_read_ptr(payload, &read_buf, data_offset, 0x1);
++        if (read_buf[0] == 0xD2) {
++            seeprom->status1 = deposit32(seeprom->status1,
++                                            STATUS1_FMPC, 1, 1);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Invalid Confirmation Data "
++                            "byte(0x%x), expecting 0xD2", read_buf[0]);
++        }
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
++        seeprom->status1 = deposit32(seeprom->status1, STATUS1_PREL, 1, 0);
++        break;
++
++    case RDEX_CHLK:
++        SPI_DEBUG(qemu_log("OPCODE = (0x%x)\n", seeprom->opcode));
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        buf = xfer_buffer_write_ptr(rsp_payload, data_offset, data_len);
++        if (extract8(seeprom->addr, 10, 1) == 0) {
++            /* RDEX */
++            seeprom->rd_state = ST_SEC_READ;
++            for (idx = 0; idx < data_len; idx++) {
++                if (extract32(seeprom->addr, 0, 9) <= 0xFF) {
++                    buf[idx] = seeprom->dsn[extract8(seeprom->addr, 0, 8)];
++                } else {
++                    buf[idx] = seeprom->uplid[extract8(seeprom->addr, 0, 8)];
++                }
++                seeprom->addr = deposit32(seeprom->addr, 0, 9,
++                                 ((extract32(seeprom->addr, 0, 9)) + 1));
++            }
++            if (last == 1) {
++                seeprom->rd_state = ST_IDLE;
++            } else {
++                /* CHLK */
++                if (seeprom->locked == true) {
++                    buf[0] = 0x01;
++                } else {
++                    buf[0] = 0x00;
++                }
++            }
++        }
++        break;
++
++    case WREX_LOCK:
++        SPI_DEBUG(qemu_log("OPCODE = (0x%x)\n", seeprom->opcode));
++        if (seeprom->locked == true) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Device is already Locked, "
++                            "command is ignored\n");
++            break;
++        }
++        if (extract8(seeprom->status0, STATUS0_WEL, 1) != 1) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Device is not Write Enabled, "
++                            "command is ignored\n");
++            break;
++        }
++        data_len = payload->len - data_offset;
++        /* Make sure data is at least 1 Byte */
++        if (data_len <= 0) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Insufficient Data Bytes(%dB),"
++                             " should be at least 1 Byte\n", data_len);
++            break;
++        }
++        xfer_buffer_read_ptr(payload, &read_buf, data_offset, data_len);
++        if (extract8(seeprom->addr, 10, 1) == 0) {
++            /* WREX */
++            for (idx = 0; idx < data_len; idx++) {
++                seeprom->uplid[extract8(seeprom->addr, 0, 8)] = read_buf[idx];
++                /* Increase address with the page, and let it rool over */
++                seeprom->addr = deposit32(seeprom->addr, 0, 8,
++                                 ((extract32(seeprom->addr, 0, 8)) + 1));
++            }
++        } else {
++            /*
++             * LOCK (82h) instruction is clocked in on the  SI line, followed
++             * by a fake address where  bits A[23:0] are don't care bits with
++             * the exception that bit A10 must be set to 1. Finally, a
++             * confirmation data byte of xxxx_xx1xb  is  sent
++             */
++            if ((buf[0] & 0x02) == 0x2) {
++                seeprom->locked = true;
++            }
++        }
++        break;
++
++    default:
++        qemu_log_mask(LOG_GUEST_ERROR, "Invalid instruction(0x%x)\n",
++                        seeprom->opcode);
++    } /* end of switch */
++    return rsp_payload;
++} /* end of seeprom_spi_request */
++
++void seeprom_connect_controller(PnvSpiResponder *resp, const char *port)
 +{
-+    SPI_DEBUG(qemu_log("N1_bits = %d, N1_bytes = %d, N1_tx = %d, N1_rx = %d, "
-+          "N2_bits = %d, N2_bytes = %d, N2_tx = %d, N2_rx = %d\n",
-+           sc->N1_bits, sc->N1_bytes, sc->N1_tx, sc->N1_rx, sc->N2_bits,
-+           sc->N2_bytes, sc->N2_tx, sc->N2_rx));
++    PnvSpiSeeprom *seeprom = PNV_SPI_SEEPROM(resp);
++    seeprom->controller_connected = true;
 +}
 +
-+void operation_sequencer(PnvSpiController *sc)
++void seeprom_disconnect_controller(PnvSpiResponder *resp)
 +{
-+    /*
-+     * Loop through each sequencer operation ID and perform the requested
-+     *  operations.
-+     * Flag for indicating if we should send the N1 frame or wait to combine
-+     * it with a preceding N2 frame.
-+     */
-+    bool send_n1_alone = true;
-+    /* Flag to stop the sequencer */
-+    bool stop = false;
-+
-+    /*
-+     * xfer_buffer for containing the payload of the SPI frame.
-+     * This is a static because there are cases where a sequence has to stop
-+     * and wait for the target application to unload the RDR.  If this occurs
-+     * during a sequence where N1 is not sent alone and instead combined with
-+     * N2 since the N1 tx length + the N2 tx length is less than the size of
-+     * the TDR.
-+     */
-+    static xfer_buffer *payload;
-+    if (payload == NULL) {
-+        payload = xfer_buffer_new();
++    PnvSpiSeeprom *seeprom = PNV_SPI_SEEPROM(resp);
++    /* This method is invoked when Controller wants to deslect responder */
++    seeprom->controller_connected = false;
++    seeprom->rd_state = ST_IDLE; /* Reset Read state */
++    if (seeprom->opcode == WRITE) { /* Reset Write enable */
++        seeprom->status0 = deposit32(seeprom->status0, STATUS0_WEL, 1, 0);
 +    }
-+    /*
-+     * Clear the sequencer FSM error bit - general_SPI_status[3]
-+     * before starting a sequence.
-+     */
-+    sc->status_reg = SETFIELD(PPC_BIT(35), sc->status_reg, 0);
-+    /*
-+     * If the FSM is idle set the sequencer index to 0
-+     * (new/restarted sequence)
-+     */
-+    if (GETFIELD(STATUS_REG_SEQUENCER_FSM, sc->status_reg) ==
-+                    SEQ_STATE_IDLE) {
-+        sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                  sc->status_reg, 0);
-+    }
-+    /*
-+     * There are only 8 possible operation IDs to iterate through though
-+     * some operations may cause more than one frame to be sequenced.
-+     */
-+    while (GETFIELD(STATUS_REG_SEQUENCER_INDEX, sc->status_reg) < 8) {
-+        uint8_t opcode = 0;
-+        uint8_t masked_opcode = 0;
++}
 +
-+        opcode = sc->sequencer_operation_reg[GETFIELD(
-+                        STATUS_REG_SEQUENCER_INDEX, sc->status_reg)];
-+        /* Set sequencer state to decode */
-+        sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM, sc->status_reg,
-+                                  SEQ_STATE_DECODE);
++/*
++ * Method : compute_addr
++ * This method is used to compute address and data offset for supported
++ * opcodes and only invoked when a valid new command sequence starts aka
++ * first is 1.
++ */
++bool compute_addr(PnvSpiSeeprom *seeprom, xfer_buffer *req_payload,
++                  xfer_buffer *rsp_payload, int bits, uint32_t  *data_offset)
++{
++    bool addr_wr_protected = false;
++    uint8_t *read_buf = NULL;
++    *data_offset = 0;
++    bool failed = false;
++
++    xfer_buffer_read_ptr(req_payload, &read_buf, 1, 3);
++    switch (seeprom->opcode) {
++    case READ:
++    case WRITE:
++        SPI_DEBUG(qemu_log("Compute address and payload buffer data offset "
++                  "for %s\n", (seeprom->opcode == READ) ? "READ" : "WRITE"));
++        /* command size is 4 bytes for READ/WRITE, data_offset is 4 */
++        *data_offset = 4;
++
++        /* Make sure buffer length is at least 4 Bytes */
++        if (req_payload->len >= 4) {
++            /*
++             * Fetch address from size 24 bit from offset 1,2,3 of payload
++             * and mask of higher 5 bits as valid memory array size is 512KB
++             */
++            seeprom->addr = deposit32(seeprom->addr, 0, 8, read_buf[2]);
++            seeprom->addr = deposit32(seeprom->addr, 8, 8, read_buf[1]);
++            seeprom->addr = deposit32(seeprom->addr, 16, 8,
++                            (read_buf[0] & 0x7));
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Payload_len(0x%x) should be at "
++                          "least 4Bytes to fetch Address\n", req_payload->len);
++            failed = true;
++        }
++        if (seeprom->opcode == WRITE) {
++            addr_wr_protected = validate_addr(seeprom);
++            if (addr_wr_protected) {
++                qemu_log_mask(LOG_GUEST_ERROR, "SEEPROM Address(0x%x) is Write "
++                              "protected\n", seeprom->addr);
++                failed = true;
++            }
++        }
++        break;
++
++    case RDSR:
++    case WRBP:
++    case WRSR:
++    case SPID:
 +        /*
-+         * Only the upper nibble of the operation ID is needed to know what
-+         * kind of operation is requested.
++         * command size is 1 bytes for RDSR, WRBP, WRSR, SPID. So data_offset
++         * is 1
 +         */
-+        masked_opcode = opcode & 0xF0;
-+        switch (masked_opcode) {
++        *data_offset = 1;
++        break;
++
++    case RMPR:
++    case WMPR:
++        SPI_DEBUG(qemu_log("Compute MPR address for %s MPR\n",
++                  (seeprom->opcode == RMPR) ? "READ" : "WRITE"));
++        /* command size is 4 bytes for WMPR/RMPR, data_offset is 4 */
++        *data_offset = 4;
++
++        /* Make sure buffer length is at least 4 Bytes */
++        if (req_payload->len >= 4) {
++            /*
++             * The address for each Memory Partition register is embedded into
++             * the first address byte sent to the device,in bit positions A18
++             * through A16.
++             */
++            seeprom->addr = deposit32(seeprom->addr, 0, 15, 0);
++            seeprom->addr = deposit32(seeprom->addr, 16, 8,
++                                    (read_buf[0] & 0x7));
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Payload_len(0x%x) should be at "
++                          "least 4Bytes to fetch Address\n", req_payload->len);
++            failed = true;
++        }
++        break;
++
++    case PPAB:
++    case FRZR:
++        SPI_DEBUG(qemu_log("Validate if addr[15:0] is %s\n",
++                  (seeprom->opcode == PPAB) ? "0xCCFF for PPAB" :
++                                               "0xAA40 for FRZR"));
++        /* command size is 4 bytes for PPAB/FRZR, data_offset is 4 */
++        *data_offset = 4;
++        /* Make sure buffer length is at least 4 Bytes */
++        if (req_payload->len >= 4) {
++            /* Address bits A23-A16 are ignored. */
++            seeprom->addr = deposit32(seeprom->addr, 0, 8, read_buf[2]);
++            seeprom->addr = deposit32(seeprom->addr, 8, 8, read_buf[1]);
++            seeprom->addr = deposit32(seeprom->addr, 16, 8, 0);
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Payload_len(0x%x) should be at "
++                          "least 4Bytes to fetch Address\n", req_payload->len);
++            failed = true;
++            break;
++        }
++        /* Address bits A15-A0 must be set to CC55h. */
++        if ((seeprom->opcode == PPAB) &&
++            (extract32(seeprom->addr, 0, 15) != 0xCC55)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Invalid addr[15:0] = 0x%x sent for "
++                          "PPAB\n", extract32(seeprom->addr, 0, 15));
++            failed = true;
++        }
++        /* Address bits A15-A0 must be set to AA40h. */
++        if ((seeprom->opcode == FRZR) &&
++            (extract32(seeprom->addr, 0, 15) != 0xAA40)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "Invalid addr[15:0] = 0x%x sent for "
++                          "FRZR\n", extract32(seeprom->addr, 0, 15));
++            failed = true;
++        }
++        break;
++
++    case RDEX_CHLK:
++    case WREX_LOCK:
++        SPI_DEBUG(qemu_log("Compute Address for Security reg command\n"));
++        /* command size is 4 bytes for PPAB/FRZR, data_offset is 4 */
++        *data_offset = 4;
++
++        /* Make sure buffer length is at least 4 Bytes */
++        if (req_payload->len >= 4) {
++            /*
++             * RDEX : A[23:9] are don't care bits, except A10 which must be a
++             *        logic 0.
++             * WREX : A[23:9] are don't care bits, except A10 which must be a
++             *        logic 0 and A8 which must be a logic 1 to address the
++             *        second Security register byte that is user programmable.
++             * CHLK : A[23:0] are don't care bits, except A10 which must be a
++             *        logic 1.
++             * LOCK : A[23:0] are don't care bits, except A10 which must be a
++             *        logic 1.
++             */
++            seeprom->addr = deposit32(seeprom->addr, 0, 8, read_buf[2]);
++            seeprom->addr = deposit32(seeprom->addr, 8, 8,
++                                    (read_buf[1] & 0x05));
++            seeprom->addr = deposit32(seeprom->addr, 16, 8, 0);
++            SPI_DEBUG(qemu_log("Received Command %s\n",
++                      (seeprom->opcode == RDEX_CHLK)
++                       ? (extract32(seeprom->addr, 10, 1) ?
++                          "CHLK : Check Lock Status of Security Register" :
++                          "RDEX : Read from the Security Register")
++                       : (extract32(seeprom->addr, 10, 1) ?
++                          "LOCK : Lock the Security Register (permanent)" :
++                          "WREX : Write to the Security Register")));
++        } else {
++            qemu_log_mask(LOG_GUEST_ERROR, "Payload_len(0x%x) should be at "
++                          "least 4Bytes to fetch Address\n", req_payload->len);
++            failed = true;
++        }
++
++        if ((seeprom->opcode == WREX_LOCK) &&
++            (extract32(seeprom->addr, 10, 1) == 0)) {
++            /*
++             * WREX
++             * In Legacy Write Protection mode, the Security register is
++             * write-protected when the BP <1:0> bits (bits 3-2 byte0) of
++             * the STATUS register = 11.
++             */
++            if (extract8(seeprom->status1, STATUS1_WPM, 1) == 0) {
++                addr_wr_protected = validate_addr(seeprom);
++            } else {
++                if (extract32(seeprom->addr, 0, 9) <= 0xFF) {
++                    addr_wr_protected = true;
++                }
++            }
++            if (addr_wr_protected) {
++                qemu_log_mask(LOG_GUEST_ERROR, "SEEPROM Address(0x%x) is "
++                              "Write protected\n", seeprom->addr);
++                failed = true;
++            }
++        }
++        break;
++    } /* end of switch */
++    return failed;
++} /* end of method compute_addr */
++
++/*
++ * Method : validate_addr
++ * This method validates whether SEEPROM address is write protected or not
++ */
++
++bool validate_addr(PnvSpiSeeprom *seeprom)
++{
++    bool addr_wr_protected = false;
++    uint8_t mpr_idx = 0;
++
++    if (extract8(seeprom->status1, STATUS1_WPM, 1) == 1) {
 +        /*
-+         * Increment the operation index in each case instead of just
-+         * once at the end in case an operation like the branch
-+         * operation needs to change the index.
++         * enhanced write protection
++         * Memory partition register Bit5  through  bit0 contain the Partition
++         * Endpoint Address of A18:A13, where A12:A0 are a logic "1". For
++         * example, if the first partition of the memory array is desired to
++         * stop after 128-Kbit of memory, that end point address is 03FFFh. The
++         * corresponding A18:A13 address bits to be loaded into MPR0 are
++         * therefore 000001b. The eight MPRs are each decoded sequentially by
++         * the device, starting with MPR0. Each MPR should be set to a
++         * Partition Endpoint Address greater than the ending address of the
++         * previous MPR. If a higher order MPR sets a Partition Endpoint Address
++         * less than or equal to the ending address of a lower order MPR, that
++         * higher order MPR is ignored and no protection is set by it's
++         * contents.
 +         */
-+        case SEQ_OP_STOP:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            /* A stop operation in any position stops the sequencer */
-+            SPI_DEBUG(qemu_log("Sequencer STOP at index = 0x%llx, sequencer "
-+                               "idling\n", GETFIELD(
-+                               STATUS_REG_SEQUENCER_INDEX,
-+                               sc->status_reg)));
-+            stop = true;
-+            sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM, sc->status_reg,
-+                                          FSM_IDLE);
-+            sc->loop_counter_1 = 0;
-+            sc->loop_counter_2 = 0;
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_IDLE);
-+            break;
-+
-+        case SEQ_OP_SELECT_SLAVE:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer SELECT_SLAVE at index = 0x%llx\n",
-+                GETFIELD(STATUS_REG_SEQUENCER_INDEX, sc->status_reg)));
-+            /*
-+             * This device currently only supports a single responder
-+             * connection at position 0.  De-selecting a responder is fine
-+             * and expected at the end of a sequence but selecting any
-+             * responder other than 0 should cause an error.
-+             */
-+            sc->responder_select = opcode & 0x0F;
-+            if (sc->responder_select == 0) {
-+                if (spi_disconnect_controller(sc->spi_bus)) {
-+                    SPI_DEBUG(qemu_log("Slave (present) de-selected, "
-+                                       "shifter done\n"));
-+                } else {
-+                   SPI_DEBUG(qemu_log("Slave (not-present) de-selected "
-+                                      "(no-op), shifter done\n"));
-+                }
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg,
-+                                          (GETFIELD(
-+                                          STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg) + 1));
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                          sc->status_reg, FSM_DONE);
-+            } else if (sc->responder_select != 1) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "Slave selection other than 1 "
-+                              "not supported, select = 0x%x\n",
-+                               sc->responder_select);
-+                SPI_DEBUG(qemu_log("Sequencer stop requested due to invalid "
-+                                        "responder select at index = 0x%llx, "
-+                                   "shifter idling\n", GETFIELD(
-+                                   STATUS_REG_SEQUENCER_INDEX,
-+                                   sc->status_reg)));
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                          sc->status_reg, FSM_IDLE);
-+                stop = true;
-+            } else {
-+                /*
-+                 * Only allow an FSM_START state when a responder is
-+                 * selected
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                          sc->status_reg, FSM_START);
-+                if (spi_connect_controller(sc->spi_bus, NULL)) {
-+                    SPI_DEBUG(qemu_log("Slave 0x%x (present) selected, "
-+                                       "shifter starting\n",
-+                                       sc->responder_select));
-+                } else {
-+                    SPI_DEBUG(qemu_log("Slave 0x%x (not-present) selected "
-+                                        "(no-op), shifter starting\n",
-+                                       sc->responder_select));
-+                }
-+                sc->first = 1;
-+                sc->last = 0;
-+                /*
-+                 * A Shift_N2 operation is only valid after a Shift_N1. We
-+		 * will track the occurrence of a Shift_N1 to enforce this
-+		 * requirement in the most generic way possible by assuming
-+		 * that the rule applies once a valid responder select has
-+		 * occurred.
-+                 */
-+                sc->shift_n1_done = false;
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                          sc->status_reg,
-+                                          SEQ_STATE_INDEX_INCREMENT);
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg,
-+                                (GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg) + 1));
-+            }
-+            break;
-+
-+        case SEQ_OP_SHIFT_N1:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer SHIFT_N1 at index = 0x%llx\n",
-+                GETFIELD(STATUS_REG_SEQUENCER_INDEX, sc->status_reg)));
-+            /*
-+             * Only allow a shift_n1 when the state is not IDLE or DONE.
-+             * In either of those two cases the sequencer is not in a proper
-+             * state to perform shift operations because the sequencer has:
-+             * - processed a responder deselect (DONE)
-+             * - processed a stop opcode (IDLE)
-+             * - encountered an error (IDLE)
-+             */
-+            if ((GETFIELD(STATUS_REG_SHIFTER_FSM,
-+                               sc->status_reg) == FSM_IDLE) ||
-+                (GETFIELD(STATUS_REG_SHIFTER_FSM,
-+                               sc->status_reg) == FSM_DONE)) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "Shift_N1 not allowed in "
-+                              "shifter state = 0x%llx", GETFIELD(
-+                        STATUS_REG_SHIFTER_FSM, sc->status_reg));
-+                /*
-+                 * Set sequencer FSM error bit 3 (general_SPI_status[3])
-+                 * in status reg.
-+                 */
-+                sc->status_reg = SETFIELD(PPC_BIT(35), sc->status_reg, 1);
-+                SPI_DEBUG(qemu_log("Sequencer stop requested due to invalid "
-+                      "shifter state at index = 0x%llx\n", GETFIELD(
-+                         STATUS_REG_SEQUENCER_INDEX, sc->status_reg)));
-+                stop = true;
-+            } else {
-+                /*
-+                 * Look for the special case where there is a shift_n1 set for
-+                 * transmit and it is followed by a shift_n2 set for transmit
-+                 * AND the combined transmit length of the two operations is
-+                 * less than or equal to the size of the TDR register. In this
-+                 * case we want to use both this current shift_n1 opcode and the
-+                 * following shift_n2 opcode to assemble the frame for
-+                 * transmission to the responder without requiring a refill of
-+                 * the TDR between the two operations.
-+                 */
-+                if ((sc->sequencer_operation_reg[GETFIELD(
-+                     STATUS_REG_SEQUENCER_INDEX, sc->status_reg) + 1] & 0xF0)
-+                                == SEQ_OP_SHIFT_N2) {
-+                    SPI_DEBUG(qemu_log("Not sending N1 alone\n"));
-+                    send_n1_alone = false;
-+                }
-+                /*
-+                 * If the next opcode is 0x10, which deselects the SPI device
-+                 * then this is the last shift
-+                 */
-+                if (sc->sequencer_operation_reg[GETFIELD(
-+                    STATUS_REG_SEQUENCER_INDEX, sc->status_reg) + 1] ==
-+                                SEQ_OP_SELECT_SLAVE) {
-+                    sc->last = 1;
-+                }
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                sc->status_reg, FSM_SHIFT_N1);
-+                stop = operation_shiftn1(sc, opcode, &payload, send_n1_alone);
-+                if (stop) {
++        for (mpr_idx = 0; mpr_idx < 8; mpr_idx++) {
++            if ((extract32(seeprom->addr, 13, 6)) <=
++                (extract8(seeprom->mpr[mpr_idx], MPR_PEA, 1))) {
++                switch (extract8(seeprom->mpr[mpr_idx], MPR_PB, 1)) {
++                case 0:
 +                    /*
-+                     *  The operation code says to stop, this can occur if:
-+                     * (1) RDR is full and the N1 shift is set for receive
-+                     * (2) TDR was empty at the time of the N1 shift so we need
-+                     * to wait for data.
-+                     * (3) Neither 1 nor 2 are occurring and we aren't sending
-+                     * N1 alone and N2 counter reload is set (bit 0 of the N2
-+                     * counter reload field).  In this case TDR_underrun will
-+                     * will be set and the Payload has been loaded so it is
-+                     * ok to advance the sequencer.
++                     * 0b00 = Partition is open and writing is permitted
++                     * (factory default is unprotected).
 +                     */
-+                    if (GETFIELD(STATUS_REG_TDR_UNDERRUN, sc->status_reg)) {
-+                        SPI_DEBUG(qemu_log("Sequencer stop requested due to N2 "
-+                              "counter reload active.\n"));
-+                        sc->shift_n1_done = true;
-+                        sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                                  sc->status_reg,
-+                                                  FSM_SHIFT_N2);
-+                        sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                                  sc->status_reg,
-+                                                  (GETFIELD(
-+                                                  STATUS_REG_SEQUENCER_INDEX,
-+                                                  sc->status_reg) + 1));
-+                        SPI_DEBUG(qemu_log("Set new sequencer index to = "
-+                                           "0x%llx\n", GETFIELD(
-+                                           STATUS_REG_SEQUENCER_INDEX,
-+                                           sc->status_reg)));
-+                    } else {
-+                        /*
-+                         * This is case (1) or (2) so the sequencer needs to
-+                         * wait and NOT go to the next sequence yet.
-+                         */
-+                        sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                                  sc->status_reg, FSM_WAIT);
-+                    }
-+                } else {
-+                    /* Ok to move on to the next index */
-+                    sc->shift_n1_done = true;
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                sc->status_reg, SEQ_STATE_INDEX_INCREMENT);
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg,
-+                                              (GETFIELD(
-+                                              STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg) + 1));
-+                }
-+            }
-+            break;
-+
-+        case SEQ_OP_SHIFT_N2:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer SHIFT_N2 at index = %lld\n",
-+                                GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                         sc->status_reg)));
-+            if (!sc->shift_n1_done) {
-+                qemu_log_mask(LOG_GUEST_ERROR, "Shift_N2 is not allowed if a "
-+                              "Shift_N1 is not done, shifter state = 0x%llx",
-+                              GETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                       sc->status_reg));
-+                /*
-+                 * In case the sequencer actually stops if an N2 shift is
-+                 * requested before any N1 shift is done. Set sequencer FSM
-+                 * error bit 3 (general_SPI_status[3]) in status reg.
-+                 */
-+                sc->status_reg = SETFIELD(PPC_BIT(35), sc->status_reg, 1);
-+                SPI_DEBUG(qemu_log("Sequencer stop requested due to shift_n2 "
-+                                    "w/no shift_n1 done at index = 0x%llx\n",
-+                                   GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                            sc->status_reg)));
-+                stop = true;
-+            } else {
-+                /*
-+                 * If the next opcode is 0x10, which deselects the SPI device
-+                 * then this is the last shift
-+                 */
-+                if (sc->sequencer_operation_reg[GETFIELD(
-+                    STATUS_REG_SEQUENCER_INDEX,
-+                    sc->status_reg) + 1] == SEQ_OP_SELECT_SLAVE) {
-+                    sc->last = 1;
-+                }
-+                /* Ok to do a Shift_N2 */
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                          sc->status_reg, FSM_SHIFT_N2);
-+                stop = operation_shiftn2(sc, opcode, &payload);
-+                /*
-+                 * If the operation code says to stop set the shifter state to
-+                 * wait and stop
-+                 */
-+                if (stop) {
-+                    sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                              sc->status_reg, FSM_WAIT);
-+                } else {
-+                    /* Ok to move on to the next index */
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                              sc->status_reg,
-+                                              SEQ_STATE_INDEX_INCREMENT);
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg,
-+                                              (GETFIELD(
-+                                              STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg) + 1));
-+                }
-+            }
-+            break;
-+
-+        case SEQ_OP_BRANCH_IFNEQ_RDR:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer BRANCH_IFNEQ_RDR at "
-+                               "index = 0x%llx\n", GETFIELD(
-+                               STATUS_REG_SEQUENCER_INDEX, sc->status_reg)));
-+            /*
-+             * The memory mapping register RDR match value is compared against
-+             * the 16 rightmost bytes of the RDR (potentially with masking).
-+             * Since this comparison is performed against the contents of the
-+             * RDR then a receive must have previously occurred otherwise
-+             * there is no data to compare and the operation cannot be
-+             * completed and will stop the sequencer until RDR full is set to
-+             * 1.
-+             */
-+            if (GETFIELD(STATUS_REG_RDR_FULL, sc->status_reg) == 1) {
-+                bool rdr_matched = false;
-+                rdr_matched = does_rdr_match(sc);
-+                if (rdr_matched) {
-+                    SPI_DEBUG(qemu_log("Proceed to next sequencer index "
-+                                   "(increment on RDR match)\n"));
-+                    /* A match occurred, increment the sequencer index. */
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                              sc->status_reg,
-+                                              SEQ_STATE_INDEX_INCREMENT);
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg,
-+                                              (GETFIELD(
-+                                              STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg) + 1));
-+                } else {
-+                    SPI_DEBUG(qemu_log("Proceed to sequencer index=0x%x "
-+                          "(branch on RDR match fail)\n", (opcode & 0x7)));
++                    addr_wr_protected = false;
++                    break;
++                case 1:
 +                    /*
-+                     * Branch the sequencer to the index coded into the op
-+                     * code.
++                     * 0b01 = Partition is always write-protected but can be
++                     * reversed at a later time (software write-protected).
 +                     */
-+                    sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                              sc->status_reg, (opcode & 0x7));
-+                }
-+                /*
-+                 * Regardless of where the branch ended up we want the
-+                 * sequencer to continue shifting so we have to clear
-+                 * RDR_full.
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_RDR_FULL,
-+                                sc->status_reg, 0);
-+            } else {
-+                SPI_DEBUG(qemu_log("RDR not full for 0x6x opcode! Stopping "
-+                      "sequencer.\n"));
-+                stop = true;
-+                sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM,
-+                                         sc->status_reg, FSM_WAIT);
++                    addr_wr_protected = true;
++                    break;
++                case 2:
++                    /*
++                     * 0b10 = Partition is write-protected only when WP pin is
++                     * asserted (hardware write-protected).
++                     */
++                    addr_wr_protected = false;
++                    break;
++                case 3:
++                    /*
++                     * 0b11 = Partition is software write-protected and Memory
++                     * Partition register is permanently locked.
++                     */
++                    addr_wr_protected = true;
++                    break;
++                } /* end of switch */
++                break; /* break from for loop. */
 +            }
-+            break;
-+
-+        case SEQ_OP_TRANSFER_TDR:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            qemu_log_mask(LOG_GUEST_ERROR, "Transfer TDR is not supported\n");
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg,
-+                                      SEQ_STATE_INDEX_INCREMENT);
-+            /* status_reg.sequencer_index++ */
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                      sc->status_reg,
-+                                      (GETFIELD(
-+                                      STATUS_REG_SEQUENCER_INDEX,
-+                                      sc->status_reg) + 1));
-+            break;
-+
-+        case SEQ_OP_BRANCH_IFNEQ_INC_1:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer BRANCH_IFNEQ_INC_1 at index = "
-+                               "0x%llx, next index = %d, count_compare_1 = "
-+                               "0x%llx, loop_counter_1 = %d\n", GETFIELD(
-+                               STATUS_REG_SEQUENCER_INDEX, sc->status_reg),
-+                               (opcode & 0x07),
-+                  GETFIELD(COUNTER_CONFIG_REG_COUNT_COMPARE1,
-+                  sc->status_reg), sc->loop_counter_1));
-+            if (sc->loop_counter_1 !=
-+                GETFIELD(COUNTER_CONFIG_REG_COUNT_COMPARE1,
-+                                sc->counter_config_reg)) {
-+                /*
-+                 * If the next opcode is 0x10, which deselects the SPI device
-+                 * and we know that the next opcode is the last one in the
-+                 * loop then the next shift is the last shift
-+                 */
-+                uint8_t condition1 = sc->sequencer_operation_reg[
-+                                     GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                     sc->status_reg) + 1];
-+                uint8_t condition2 =
-+                        GETFIELD(COUNTER_CONFIG_REG_COUNT_COMPARE1,
-+                                 sc->counter_config_reg);
-+                if ((condition1 == SEQ_OP_SELECT_SLAVE) &&
-+                    ((sc->loop_counter_1 + 1) == condition2)) {
-+                    sc->last = 1;
-+                }
-+                /*
-+                 * Next index is the lower nibble of the branch operation ID,
-+                 * mask off all but the first three bits so we don't try to
-+                 * access beyond the sequencer_operation_reg boundary.
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg, (opcode & 0x7));
-+                sc->loop_counter_1++;
-+                SPI_DEBUG(qemu_log("Branching to index = %d, loop_counter_1 = "
-+                      "%d\n", (opcode & 0x7), sc->loop_counter_1));
-+            } else {
-+                /* Continue to next index if loop counter is reached */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                          sc->status_reg,
-+                                          SEQ_STATE_INDEX_INCREMENT);
-+                /* status_reg.sequencer_index++ */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg,
-+                                          (GETFIELD(
-+                                          STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg) + 1));
-+                SPI_DEBUG(qemu_log("loop counter 1 achieved, next sequencer "
-+                      "index = 0x%llx\n", GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                                  sc->status_reg)));
-+            }
-+            break;
-+
-+        case SEQ_OP_BRANCH_IFNEQ_INC_2:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            SPI_DEBUG(qemu_log("Sequencer BRANCH_IFNEQ_INC_2 at index = "
-+                               "0x%llx, next index = %d, count_compare_2 = "
-+                               "0x%llx, loop_counter_2 = %d\n", GETFIELD(
-+                               STATUS_REG_SEQUENCER_INDEX, sc->status_reg),
-+                               (opcode & 0x07), GETFIELD(
-+                               COUNTER_CONFIG_REG_COUNT_COMPARE2,
-+                               sc->status_reg), sc->loop_counter_2));
++        } /* end of for loop */
++    } else {
++        /* Legacy write protection mode */
++        switch (extract8(seeprom->status0, STATUS0_BP, 2)) {
++        case 0:
 +            /*
-+             * If the next opcode is 0x10, which deselects the SPI device
-+             * and we know that the next opcode is the last one in the
-+             * loop then the next shift is the last shift
++             * 0b00 = No array write protection
++             * EEPROM None
++             * Security Register 00000h - 000FFh
 +             */
-+            uint8_t condition1 = sc->sequencer_operation_reg[
-+                                 GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg) + 1];
-+
-+            uint8_t condition2 = GETFIELD(COUNTER_CONFIG_REG_COUNT_COMPARE2,
-+                              sc->counter_config_reg);
-+
-+            if ((condition1 == SEQ_OP_SELECT_SLAVE) &&
-+                ((sc->loop_counter_2 + 1) == condition2)) {
-+                sc->last = 1;
-+            }
-+            if (sc->loop_counter_2 != condition2) {
-+                /*
-+                 * Next index is the lower nibble of the branch operation ID,
-+                 * mask off all but the first three bits so we don't try to
-+                 * access beyond the sequencer_operation_reg boundary.
-+                 */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg,
-+                                          (opcode & 0x7));
-+                sc->loop_counter_2++;
-+                SPI_DEBUG(qemu_log("Branching to index = %d, loop_counter_2 "
-+                                   "= %d", (opcode & 0x7),
-+                                   sc->loop_counter_2));
-+            } else {
-+                /* Continue to next index if loop counter is reached */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                          sc->status_reg,
-+                                          SEQ_STATE_INDEX_INCREMENT);
-+                /* status_reg.sequencer_index++ */
-+                sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg,
-+                                          (GETFIELD(
-+                                          STATUS_REG_SEQUENCER_INDEX,
-+                                          sc->status_reg) + 1));
-+                SPI_DEBUG(qemu_log("loop counter 2 achieved, next sequencer "
-+                      "index = 0x%llx\n", GETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                                 sc->status_reg)));
++            if ((seeprom->opcode == WREX_LOCK) &&
++                (extract32(seeprom->addr, 0, 9)  <= 0xFF)) {
++                addr_wr_protected = true;
 +            }
 +            break;
-+
-+        default:
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_EXECUTE);
-+            qemu_log_mask(LOG_GUEST_ERROR, "Sequencer opcode 0x%x is not "
-+                      "supported\n", opcode);
-+            /* Ignore unsupported operations. */
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg,
-+                                      SEQ_STATE_INDEX_INCREMENT);
-+            /* status_reg.sequencer_index++ */
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                      sc->status_reg,
-+                                      (GETFIELD(
-+                                      STATUS_REG_SEQUENCER_INDEX,
-+                                      sc->status_reg) + 1));
++        case 1:
++            /*
++             * 0b01 = Upper quarter memory array protection
++             * EEPROM 60000h - 7FFFFh
++             * Security Register 00000h - 000FFh
++             */
++            if ((seeprom->opcode == WREX_LOCK) &&
++                (extract32(seeprom->addr, 0, 9)  <= 0xFF)) {
++                addr_wr_protected = true;
++            } else if ((seeprom->opcode == WRITE) &&
++                       (extract32(seeprom->addr, 0, 19)  <= 0x60000)) {
++                addr_wr_protected = true;
++            }
++            break;
++        case 2:
++            /*
++             * 0b10 = Upper half memory array protection
++             * EEPROM 40000h - 7FFFFh
++             * Security Register 00000h - 000FFh
++             */
++            if ((seeprom->opcode == WREX_LOCK) &&
++                (extract32(seeprom->addr, 0, 9)  <= 0xFF)) {
++                addr_wr_protected = true;
++            } else if ((seeprom->opcode == WRITE) &&
++                       (extract32(seeprom->addr, 0, 19)  <= 0x40000)) {
++                addr_wr_protected = true;
++            }
++            break;
++        case 3:
++            /*
++             * 0b11 = Entire memory array protection
++             * EEPROM 00000h - 7FFFFh
++             * Security Register 00000h - 001FFh
++             */
++            addr_wr_protected = true;
 +            break;
 +        } /* end of switch */
-+        /*
-+         * If we used all 8 opcodes without seeing a 00 - STOP in the sequence
-+         * we need to go ahead and end things as if there was a STOP at the
-+         * end.
-+         */
-+        if (GETFIELD(STATUS_REG_SEQUENCER_INDEX, sc->status_reg) == 8) {
-+            SPI_DEBUG(qemu_log("All 8 opcodes completed, sequencer "
-+                               "idling\n"));
-+            sc->status_reg = SETFIELD(STATUS_REG_SHIFTER_FSM, sc->status_reg,
-+                                      FSM_IDLE);
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_INDEX,
-+                                      sc->status_reg, 0);
-+            sc->loop_counter_1 = 0;
-+            sc->loop_counter_2 = 0;
-+            sc->status_reg = SETFIELD(STATUS_REG_SEQUENCER_FSM,
-+                                      sc->status_reg, SEQ_STATE_IDLE);
-+            break;
-+        }
-+        /* Break the loop if a stop was requested */
-+        if (stop) {
-+            break;
-+        }
-+    } /* end of while */
-+    return;
-+} /* end of operation_sequencer() */
++    }
++    return addr_wr_protected;
++} /* end of validate_addr */
 +
-+/*
-+ * Calculate the N1 counters based on passed in opcode and
-+ * internal register values.
-+ * The method assumes that the opcode is a Shift_N1 opcode
-+ * and doesn't test it.
-+ * The counters returned are:
-+ * N1 bits: Number of bits in the payload data that are significant
-+ * to the responder.
-+ * N1_bytes: Total count of payload bytes for the N1 (portion of the) frame.
-+ * N1_tx: Total number of bytes taken from TDR for N1
-+ * N1_rx: Total number of bytes taken from the payload for N1
-+ */
-+void calculate_N1(PnvSpiController *sc, uint8_t opcode)
++static void pnv_spi_seeprom_class_init(ObjectClass *klass, void *data)
 +{
-+    /*
-+     * Shift_N1 opcode form: 0x3M
-+     * Implicit mode:
-+     * If M != 0 the shift count is M bytes and M is the number of tx bytes.
-+     * Forced Implicit mode:
-+     * M is the shift count but tx and rx is determined by the count control
-+     * register fields.  Note that we only check for forced Implicit mode when
-+     * M != 0 since the mode doesn't make sense when M = 0.
-+     * Explicit mode:
-+     * If M == 0 then shift count is number of bits defined in the
-+     * Counter Configuration Register's shift_count_N1 field.
-+     */
-+    if (GETFIELD(PPC_BITMASK8(4, 7), opcode) == 0) {
-+        /* Explicit mode */
-+        sc->N1_bits = GETFIELD(COUNTER_CONFIG_REG_SHIFT_COUNT_N1,
-+                                       sc->counter_config_reg);
-+        sc->N1_bytes = ceil(sc->N1_bits / 8);
-+        sc->N1_tx = 0;
-+        sc->N1_rx = 0;
-+        /* If tx count control for N1 is set, load the tx value */
-+        if (GETFIELD(PPC_BIT(50), sc->counter_config_reg) == 1) {
-+            sc->N1_tx = sc->N1_bytes;
-+        }
-+        /* If rx count control for N1 is set, load the rx value */
-+        if (GETFIELD(PPC_BIT(51), sc->counter_config_reg) == 1) {
-+            sc->N1_rx = sc->N1_bytes;
-+        }
-+    } else {
-+        /* Implicit mode/Forced Implicit mode, use M field from opcode */
-+        sc->N1_bytes = GETFIELD(PPC_BITMASK8(4, 7), opcode);
-+        sc->N1_bits = sc->N1_bytes * 8;
-+        /*
-+         * Assume that we are going to transmit the count
-+         * (pure Implicit only)
-+         */
-+        sc->N1_tx = sc->N1_bytes;
-+        sc->N1_rx = 0;
-+        /* Let Forced Implicit mode have an effect on the counts */
-+        if (GETFIELD(PPC_BIT(49), sc->counter_config_reg) == 1) {
-+            /*
-+             * If Forced Implicit mode and count control doesn't
-+             * indicate transmit then reset the tx count to 0
-+             */
-+            if (GETFIELD(PPC_BIT(50), sc->counter_config_reg) == 0) {
-+                sc->N1_tx = 0;
-+            }
-+            /* If rx count control for N1 is set, load the rx value */
-+            if (GETFIELD(PPC_BIT(51), sc->counter_config_reg) == 1) {
-+                sc->N1_rx = sc->N1_bytes;
-+            }
-+        }
-+    }
-+    /*
-+     * Enforce an upper limit on the size of N1 that is equal to the known size
-+     * of the shift register, 64 bits or 72 bits if ECC is enabled.
-+     * If the size exceeds 72 bits it is a user error so log an error,
-+     * cap the size at a max of 64 bits or 72 bits and set the sequencer FSM
-+     * error bit.
-+     */
-+    uint8_t ecc_control = GETFIELD(CLOCK_CONFIG_REG_ECC_CONTROL,
-+                                   sc->clock_config_reset_control);
-+    uint8_t ecc_control_1_2 = GETFIELD(PPC_BITMASK8(1, 2), ecc_control);
-+    if (ecc_control_1_2 == 0 || ecc_control_1_2 == 2) {
-+        if (sc->N1_bytes > (SPI_CONTROLLER_REG_SIZE + 1)) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "Unsupported N1 shift size when "
-+                          "ECC enabled, bytes = 0x%x, bits = 0x%x\n",
-+                          sc->N1_bytes, sc->N1_bits);
-+            sc->N1_bytes = SPI_CONTROLLER_REG_SIZE + 1;
-+            sc->N1_bits = sc->N1_bytes * 8;
-+        }
-+    } else if (sc->N1_bytes > SPI_CONTROLLER_REG_SIZE) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Unsupported N1 shift size, "
-+                      "bytes = 0x%x, bits = 0x%x\n",
-+                      sc->N1_bytes, sc->N1_bits);
-+        sc->N1_bytes = SPI_CONTROLLER_REG_SIZE;
-+        sc->N1_bits = sc->N1_bytes * 8;
-+    }
-+} /* end of calculate_N1 */
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PnvSpiResponderClass *resp_class = PNV_SPI_RESPONDER_CLASS(klass);
 +
-+/*
-+ * Shift_N1 operation handler method
-+ */
-+bool operation_shiftn1(PnvSpiController *sc, uint8_t opcode,
-+                       xfer_buffer **payload, bool send_n1_alone)
-+{
-+    bool stop = false;
-+    /*
-+     * If there isn't a current payload left over from a stopped sequence
-+     * create a new one.
-+     */
-+    if (*payload == NULL) {
-+        SPI_DEBUG(qemu_log("Creating new payload xfer_buffer\n"));
-+        *payload = xfer_buffer_new();
-+    }
-+    /*
-+     * Use a combination of N1 counters to build the N1 portion of the
-+     * transmit payload.
-+     * We only care about transmit at this time since the request payload
-+     * only represents data going out on the controller output line.
-+     * Leave mode specific considerations in the calculate function since
-+     * all we really care about are counters that tell use exactly how
-+     * many bytes are in the payload and how many of those bytes to
-+     * include from the TDR into the payload.
-+     */
-+    calculate_N1(sc, opcode);
-+    SPI_DEBUG(qemu_log("Shift N1 started..\n"));
-+    log_all_N_counts(sc);
-+    /*
-+     * Zero out the N2 counters here in case there is no N2 operation following
-+     * the N1 operation in the sequencer.  This keeps leftover N2 information
-+     * from interfering with spi_response logic.
-+     */
-+    sc->N2_bits = 0;
-+    sc->N2_bytes = 0;
-+    sc->N2_tx = 0;
-+    sc->N2_rx = 0;
-+    /*
-+     * N1_bytes is the overall size of the N1 portion of the frame regardless of
-+     * whether N1 is used for tx, rx or both.  Loop over the size to build a
-+     * payload that is N1_bytes long.
-+     * N1_tx is the count of bytes to take from the TDR and "shift" into the
-+     * frame which means append those bytes to the payload for the N1 portion
-+     * of the frame.
-+     * If N1_tx is 0 or if the count exceeds the size of the TDR append 0xFF to
-+     * the frame until the overall N1 count is reached.
-+     */
-+    uint8_t n1_count = 0;
-+    while (n1_count < sc->N1_bytes) {
-+        /*
-+         * Assuming that if N1_tx is not equal to 0 then it is the same as
-+         * N1_bytes.
-+         */
-+        if ((sc->N1_tx != 0) && (n1_count < SPI_CONTROLLER_REG_SIZE)) {
++    resp_class->connect_controller = seeprom_connect_controller;
++    resp_class->disconnect_controller = seeprom_disconnect_controller;
++    resp_class->request = seeprom_spi_request;
 +
-+            if (GETFIELD(STATUS_REG_TDR_FULL, sc->status_reg) == 1) {
-+                /*
-+                 * Note that we are only appending to the payload IF the TDR
-+                 * is full otherwise we don't touch the payload because we are
-+                 * going to NOT send the payload and instead tell the sequencer
-+                 * that called us to stop and wait for a TDR write so we have
-+                 * data to load into the payload.
-+                 */
-+                uint8_t n1_byte = 0x00;
-+                n1_byte = get_from_offset(sc, n1_count);
-+                SPI_DEBUG(qemu_log("Extracting tx n1_byte = 0x%2.2x at index "
-+                                   "%d from TDR\n", n1_byte, n1_count));
-+                if (sc->reverse_bits) {
-+                    SPI_DEBUG(qemu_log("Reversing bit order of tx n1_byte\n"));
-+                    n1_byte = reverse_bits8(n1_byte);
-+                }
-+                SPI_DEBUG(qemu_log("Appending tx n1_byte = 0x%2.2x to Payload\n"
-+                                , n1_byte));
-+                *(xfer_buffer_write_ptr(*payload, (*payload)->len, 1)) =
-+                        n1_byte;
-+            } else {
-+                /*
-+                 * We hit a shift_n1 opcode TX but the TDR is empty, tell the
-+                 * sequencer to stop and break this loop.
-+                 */
-+                SPI_DEBUG(qemu_log("Shift N1 set for transmit but TDR is empty,"
-+                      " requesting sequencer stop\n"));
-+                stop = true;
-+                break;
-+            }
-+        } else {
-+            /*
-+             * Cases here:
-+             * - we are receiving during the N1 frame segment and the RDR
-+             *   is full so we need to stop until the RDR is read
-+             * - we are transmitting and we don't care about RDR status
-+             *   since we won't be loading RDR during the frame segment.
-+             * - we are receiving and the RDR is empty so we allow the operation
-+             *   to proceed.
-+             */
-+            if ((sc->N1_rx != 0) && (GETFIELD(STATUS_REG_RDR_FULL,
-+                                           sc->status_reg) == 1)) {
-+                SPI_DEBUG(qemu_log("Shift N1 set for receive but RDR is full, "
-+                      "requesting sequencer stop\n"));
-+                stop = true;
-+                break;
-+            } else {
-+                SPI_DEBUG(qemu_log("Appending tx n1_byte = 0xFF to Payload\n"));
-+                *(xfer_buffer_write_ptr(*payload, (*payload)->len, 1)) = 0xff;
-+            }
-+        }
-+        n1_count++;
-+    } /* end of while */
-+    /*
-+     * If we are not stopping due to an empty TDR and we are doing an N1 TX
-+     * and the TDR is full we need to clear the TDR_full status.
-+     * Do this here instead of up in the loop above so we don't log the message
-+     * in every loop iteration.
-+     * Ignore the send_n1_alone flag, all that does is defer the TX until the N2
-+     * operation, which was found immediately after the current opcode.  The TDR
-+     * was unloaded and will be shifted so we have to clear the TDR_full status.
-+     */
-+    if (!stop && (sc->N1_tx != 0) &&
-+        (GETFIELD(STATUS_REG_TDR_FULL, sc->status_reg) == 1)) {
-+
-+        sc->status_reg = SETFIELD(STATUS_REG_TDR_FULL, sc->status_reg, 0);
-+        SPI_DEBUG(qemu_log("TDR_full set to 0\n"));
-+    }
-+    /*
-+     * There are other reasons why the shifter would stop, such as a TDR empty
-+     * or RDR full condition with N1 set to receive.  If we haven't stopped due
-+     * to either one of those conditions then check if the send_n1_alone flag is
-+     * equal to False, indicating the next opcode is an N2 operation, AND if
-+     * the N2 counter reload switch (bit 0 of the N2 count control field) is
-+     * set.  This condition requires a pacing write to "kick" off the N2
-+     * shift which includes the N1 shift as well when send_n1_alone is False.
-+     */
-+    if (!stop && !send_n1_alone &&
-+       (GETFIELD(PPC_BIT(52), sc->counter_config_reg) == 1)) {
-+        SPI_DEBUG(qemu_log("N2 counter reload active, stop N1 shift, "
-+              "TDR_underrun set to 1\n"));
-+        stop = true;
-+        sc->status_reg = SETFIELD(STATUS_REG_TDR_UNDERRUN, sc->status_reg, 1);
-+    }
-+    /*
-+     * If send_n1_alone is set AND we have a full TDR then this is the first and
-+     * last payload to send and we don't have an N2 frame segment to add to the
-+     * payload.
-+     */
-+    if (send_n1_alone && !stop) {
-+        /* We have a TX and a full TDR or an RX and an empty RDR */
-+        SPI_DEBUG(qemu_log("Shifting N1 frame: first = %d, last = %d, "
-+                           "n1 bits = %d\n", sc->first, sc->last,
-+                           sc->N1_bits));
-+        xfer_buffer *rsp_payload = NULL;
-+        rsp_payload = spi_request(sc->spi_bus, sc->first, sc->last,
-+                                  sc->N1_bits, *payload);
-+        if (rsp_payload != NULL) {
-+            spi_response(sc, sc->N1_bits, rsp_payload);
-+        }
-+        sc->first = 0;
-+        sc->last = 0;
-+        /* The N1 frame shift is complete so reset the N1 counters */
-+        sc->N2_bits = 0;
-+        sc->N2_bytes = 0;
-+        sc->N2_tx = 0;
-+        sc->N2_rx = 0;
-+        xfer_buffer_free(*payload);
-+        *payload = NULL;
-+        SPI_DEBUG(qemu_log("Payload buffer freed\n"));
-+    } else {
-+        SPI_DEBUG(qemu_log("Not shifting N1, send_n1_alone = %d, stop = %d\n",
-+              send_n1_alone, stop));
-+    }
-+    return stop;
-+} /* end of operation_shiftn1() */
-+
-+/*
-+ * Calculate the N2 counters based on passed in opcode and
-+ * internal register values.
-+ * The method assumes that the opcode is a Shift_N2 opcode
-+ * and doesn't test it.
-+ * The counters returned are:
-+ * N2 bits: Number of bits in the payload data that are significant
-+ * to the responder.
-+ * N2_bytes: Total count of payload bytes for the N2 frame.
-+ * N2_tx: Total number of bytes taken from TDR for N2
-+ * N2_rx: Total number of bytes taken from the payload for N2
-+ */
-+void calculate_N2(PnvSpiController *sc, uint8_t opcode)
-+{
-+    /*
-+     * Shift_N2 opcode form: 0x4M
-+     * Implicit mode:
-+     * If M!=0 the shift count is M bytes and M is the number of rx bytes.
-+     * Forced Implicit mode:
-+     * M is the shift count but tx and rx is determined by the count control
-+     * register fields.  Note that we only check for Forced Implicit mode when
-+     * M != 0 since the mode doesn't make sense when M = 0.
-+     * Explicit mode:
-+     * If M==0 then shift count is number of bits defined in the
-+     * Counter Configuration Register's shift_count_N1 field.
-+     */
-+    if (GETFIELD(PPC_BITMASK8(4, 7), opcode) == 0) {
-+        /* Explicit mode */
-+        sc->N2_bits = GETFIELD(COUNTER_CONFIG_REG_SHIFT_COUNT_N2,
-+                               sc->counter_config_reg);
-+        sc->N2_bytes = ceil(sc->N2_bits / 8);
-+        sc->N2_tx = 0;
-+        sc->N2_rx = 0;
-+        /* If tx count control for N2 is set, load the tx value */
-+        if (GETFIELD(PPC_BIT(54), sc->counter_config_reg) == 1) {
-+            sc->N2_tx = sc->N2_bytes;
-+        }
-+        /* If rx count control for N2 is set, load the rx value */
-+        if (GETFIELD(PPC_BIT(55), sc->counter_config_reg) == 1) {
-+            sc->N2_rx = sc->N2_bytes;
-+        }
-+    } else {
-+        /* Implicit mode/Forced Implicit mode, use M field from opcode */
-+        sc->N2_bytes = GETFIELD(PPC_BITMASK8(4, 7), opcode);
-+        sc->N2_bits = sc->N2_bytes * 8;
-+        /* Assume that we are going to receive the count */
-+        sc->N2_rx = sc->N2_bytes;
-+        sc->N2_tx = 0;
-+        /* Let Forced Implicit mode have an effect on the counts */
-+        if (GETFIELD(PPC_BIT(53), sc->counter_config_reg) == 1) {
-+            /*
-+             * If Forced Implicit mode and count control doesn't
-+             * indicate a receive then reset the rx count to 0
-+             */
-+            if (GETFIELD(PPC_BIT(55), sc->counter_config_reg) == 0) {
-+                sc->N2_rx = 0;
-+            }
-+            /* If tx count control for N2 is set, load the tx value */
-+            if (GETFIELD(PPC_BIT(54), sc->counter_config_reg) == 1) {
-+                sc->N2_tx = sc->N2_bytes;
-+            }
-+        }
-+    }
-+    /*
-+     * Enforce an upper limit on the size of N1 that is equal to the
-+     * known size of the shift register, 64 bits or 72 bits if ECC
-+     * is enabled.
-+     * If the size exceeds 72 bits it is a user error so log an error,
-+     * cap the size at a max of 64 bits or 72 bits and set the sequencer FSM
-+     * error bit.
-+     */
-+    uint8_t ecc_control = GETFIELD(CLOCK_CONFIG_REG_ECC_CONTROL,
-+                                   sc->clock_config_reset_control);
-+    uint8_t ecc_control_1_2 = GETFIELD(PPC_BITMASK8(1, 2), ecc_control);
-+    if (ecc_control_1_2 == 0 || ecc_control_1_2 == 2) {
-+        if (sc->N2_bytes > (SPI_CONTROLLER_REG_SIZE + 1)) {
-+            SPI_DEBUG(qemu_log("Unsupported N2 shift size when ECC enabled, "
-+                                     "bytes = 0x%x, bits = 0x%x\n",
-+                               sc->N2_bytes, sc->N2_bits));
-+            sc->N2_bytes = SPI_CONTROLLER_REG_SIZE + 1;
-+            sc->N2_bits = sc->N2_bytes * 8;
-+        }
-+    } else if (sc->N2_bytes > SPI_CONTROLLER_REG_SIZE) {
-+        SPI_DEBUG(qemu_log("Unsupported N2 shift size, bytes = 0x%x, "
-+                           "bits = 0x%x\n", sc->N2_bytes, sc->N2_bits));
-+        sc->N2_bytes = SPI_CONTROLLER_REG_SIZE;
-+        sc->N2_bits = sc->N2_bytes * 8;
-+    }
-+} /* end of calculate_N2 */
-+
-+/*
-+ * Shift_N2 operation handler method
-+ */
-+
-+bool operation_shiftn2(PnvSpiController *sc, uint8_t opcode,
-+                       xfer_buffer **payload)
-+{
-+    bool stop = false;
-+    /*
-+     * If there isn't a current payload left over from a stopped sequence
-+     * create a new one.
-+     */
-+    if (*payload == NULL) {
-+        SPI_DEBUG(qemu_log("Creating new payload xfer_buffer\n"));
-+        *payload = xfer_buffer_new();
-+    }
-+    /*
-+     * Use a combination of N2 counters to build the N2 portion of the
-+     * transmit payload.
-+     */
-+    calculate_N2(sc, opcode);
-+    SPI_DEBUG(qemu_log("Shift N2 started\n"));
-+    log_all_N_counts(sc);
-+    /*
-+     * The only difference between this code and the code for shift N1 is
-+     * that this code has to account for the possible presence of N1 transmit
-+     * bytes already taken from the TDR.
-+     * If there are bytes to be transmitted for the N2 portion of the frame
-+     * and there are still bytes in TDR that have not been copied into the
-+     * TX data of the payload, this code will handle transmitting those
-+     * remaining bytes.
-+     * If for some reason the transmit count(s) add up to more than the size
-+     * of the TDR we will just append 0xFF to the transmit payload data until
-+     * the payload is N1 + N2 bytes long.
-+     */
-+    uint8_t n2_count = 0;
-+    while (n2_count < sc->N2_bytes) {
-+        /*
-+         * If the RDR is full and we need to RX just bail out, letting the
-+         * code continue will end up building the payload twice in the same
-+         * buffer since RDR full causes a sequence stop and restart.
-+         */
-+        if ((sc->N2_rx != 0) &&
-+            (GETFIELD(STATUS_REG_RDR_FULL, sc->status_reg) == 1)) {
-+            SPI_DEBUG(qemu_log("Shift N2 set for receive but RDR is full, "
-+                  "requesting sequencer stop\n"));
-+            stop = true;
-+            break;
-+        }
-+        if ((sc->N2_tx != 0) && ((sc->N1_tx + n2_count) <
-+                                SPI_CONTROLLER_REG_SIZE)) {
-+            /* Always append data for the N2 segment if it is set for TX */
-+            uint8_t n2_byte = 0x00;
-+            n2_byte = get_from_offset(sc, (sc->N1_tx + n2_count));
-+            SPI_DEBUG(qemu_log("Extracting tx n2_byte = 0x%2.2x at index %d "
-+                  "from TDR\n", n2_byte, (sc->N1_tx + n2_count)));
-+            if (sc->reverse_bits) {
-+                SPI_DEBUG(qemu_log("Reversing bit order of tx n2_byte\n"));
-+                n2_byte = reverse_bits8(n2_byte);
-+            }
-+            SPI_DEBUG(qemu_log("Appending tx n2_byte = 0x%2.2x to Payload\n",
-+                            n2_byte));
-+            *(xfer_buffer_write_ptr(*payload, (*payload)->len, 1)) = n2_byte;
-+        } else {
-+            /*
-+             * Regardless of whether or not N2 is set for TX or RX, we need
-+             * the number of bytes in the payload to match the overall length
-+             * of the operation.
-+             */
-+            SPI_DEBUG(qemu_log("Appending tx n2_byte = 0xFF to Payload\n"));
-+            *(xfer_buffer_write_ptr(*payload, (*payload)->len, 1)) = 0xff;
-+        }
-+        n2_count++;
-+    } /* end of while */
-+    if (!stop) {
-+        /* We have a TX and a full TDR or an RX and an empty RDR */
-+        SPI_DEBUG(qemu_log("Shifting N2 frame: first = %d, last = %d, "
-+              "n1+n2 bits = %d\n", sc->first, sc->last,
-+              (sc->N1_bits + sc->N2_bits)));
-+        xfer_buffer *rsp_payload = NULL;
-+        rsp_payload = spi_request(sc->spi_bus, sc->first, sc->last,
-+                        (sc->N1_bits + sc->N2_bits), *payload);
-+        if (rsp_payload != NULL) {
-+            spi_response(sc, (sc->N1_bits + sc->N2_bits), rsp_payload);
-+        }
-+        sc->first = 0;
-+        sc->last = 0;
-+        /*
-+         * If we are doing an N2 TX and the TDR is full we need to clear the
-+         * TDR_full status. Do this here instead of up in the loop above so we
-+         * don't log the message in every loop iteration.
-+         */
-+        if ((sc->N2_tx != 0) &&
-+            (GETFIELD(STATUS_REG_TDR_FULL, sc->status_reg) == 1)) {
-+            sc->status_reg = SETFIELD(STATUS_REG_TDR_FULL, sc->status_reg, 0);
-+            SPI_DEBUG(qemu_log("TDR_full set to 0\n"));
-+        }
-+        /*
-+         * The N2 frame shift is complete so reset the N2 counters.
-+         * Reset the N1 counters also in case the frame was a combination of
-+         * N1 and N2 segments.
-+         */
-+        sc->N2_bits = 0;
-+        sc->N2_bytes = 0;
-+        sc->N2_tx = 0;
-+        sc->N2_rx = 0;
-+        sc->N1_bits = 0;
-+        sc->N1_bytes = 0;
-+        sc->N1_tx = 0;
-+        sc->N1_rx = 0;
-+        xfer_buffer_free(*payload);
-+        *payload = NULL;
-+        SPI_DEBUG(qemu_log("Payload buffer freed\n"));
-+    } else {
-+        SPI_DEBUG(qemu_log("Not shifting N2, stop = %d\n", stop));
-+    }
-+    return stop;
-+} /*  end of operation_shiftn2()*/
-+
-+/*
-+ * The SPIC engine and its internal sequencer can be interrupted and reset by
-+ * a hardware signal, the sbe_spicst_hard_reset bits from Pervasive
-+ * Miscellaneous Register of sbe_register_bo device.
-+ * Reset immediately aborts any SPI transaction in progress and returns the
-+ * sequencer and state machines to idle state.
-+ * The configuration register values are not changed. The status register is
-+ * not reset. The engine registers are not reset.
-+ * The SPIC engine reset does not have any affect on the attached devices.
-+ * Reset handling of any attached devices is beyond the scope of the engine.
-+ */
-+void do_reset(PnvSpiController *sc)
-+{
-+    SPI_DEBUG(qemu_log("Resetting spic engine sequencer configuration and spi "
-+                           "communication\n"));
-+    /* Reset all N1 and N2 counters, and other constants */
-+    sc->first = 0;
-+    sc->last = 0;
-+    sc->N2_bits = 0;
-+    sc->N2_bytes = 0;
-+    sc->N2_tx = 0;
-+    sc->N2_rx = 0;
-+    sc->N1_bits = 0;
-+    sc->N1_bytes = 0;
-+    sc->N1_tx = 0;
-+    sc->N1_rx = 0;
-+    sc->loop_counter_1 = 0;
-+    sc->loop_counter_2 = 0;
-+    if (spi_disconnect_controller(sc->spi_bus)) {
-+        SPI_DEBUG(qemu_log("Disconnected from responder\n"));
-+    }
++    dc->desc = "PowerNV SPI SEEPROM";
++    dc->bus_type = TYPE_SPI_BUS;
 +}
 +
- static Property pnv_spi_controller_properties[] = {
-     DEFINE_PROP_UINT32("spic_num", PnvSpiController, spic_num, 0),
-+    DEFINE_PROP_BOOL("reverse_bits", PnvSpiController, reverse_bits, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
++static const TypeInfo pnv_spi_seeprom_info = {
++    .name          = TYPE_PNV_SPI_SEEPROM,
++    .parent        = TYPE_PNV_SPI_RESPONDER,
++    .instance_size = sizeof(PnvSpiSeeprom),
++    .class_init    = pnv_spi_seeprom_class_init,
++};
++
++static void pnv_spi_seeprom_register_types(void)
++{
++    type_register_static(&pnv_spi_seeprom_info);
++}
++
++type_init(pnv_spi_seeprom_register_types);
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index de25cac763..2c1ef0c937 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -55,6 +55,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+   'pnv_pnor.c',
+   'pnv_spi_responder.c',
+   'pnv_spi_controller.c',
++  'pnv_spi_seeprom.c',
+ ))
+ # PowerPC 4xx boards
+ ppc_ss.add(when: 'CONFIG_PPC405', if_true: files(
 -- 
 2.31.1
 
