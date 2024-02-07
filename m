@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C76784C193
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 01:55:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D1D84C194
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 01:55:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXWCn-0008Eb-5Y; Tue, 06 Feb 2024 19:54:25 -0500
+	id 1rXWCs-0008FG-ND; Tue, 06 Feb 2024 19:54:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCl-0008EC-Ut
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCq-0008F2-Ey
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:28 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCk-0004JE-Ey
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:23 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCp-0004JU-20
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:28 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707267261;
+ s=mimecast20190719; t=1707267266;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hU5zjw6EFttKCSPPjm6PlK8gRiimdr5Ox23B8xCBgSs=;
- b=JUKbExPTm7btXJgMFI8j+j9uT1fNKuynIiYu38EYTssA23P+a2n0tSZ1IMWRnEuzZyxbr8
- qx3qkZOlIabPeXLKJ+QHppqz/XJaaJvhEeAQ5UJiPHtPvuyfskBqC27aPR0pR+nIxBr8lh
- OxILIxrkNOMeQy/A/X4CdVlXyOuLNoM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-443-6aq-oAQPPBiySKKBDLYOKg-1; Tue,
- 06 Feb 2024 19:54:18 -0500
-X-MC-Unique: 6aq-oAQPPBiySKKBDLYOKg-1
+ bh=kY4kFt0RFODOJijiahBmsTG0vcYi7hrcFSKXEvN3+Ys=;
+ b=LhDZhit7rbioDwCfkmAb9FBeOv1BLvAWBBKq4tcdLimi9xIXoSizGqTaX9VOPlUQhL1qvh
+ +mceT5KmVRsqoFKHlDwr4nEoAyBbtJsYqCcZG2clultdZy43hv0T1y8VFD9sSsRnLAfo9s
+ 8DHbI6VMpDNg/auoY3VCmTw3D9BdQZY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-mP8Fd9KROHOxXXakoa6YMQ-1; Tue, 06 Feb 2024 19:54:22 -0500
+X-MC-Unique: mP8Fd9KROHOxXXakoa6YMQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23FD63813F28;
- Wed,  7 Feb 2024 00:54:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 857F310201E8;
+ Wed,  7 Feb 2024 00:54:22 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6BB161121312;
- Wed,  7 Feb 2024 00:54:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E732F1121312;
+ Wed,  7 Feb 2024 00:54:18 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -48,9 +48,9 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Sebastian Ott <sebott@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v2 2/3] ci: Remove tag dependency for build-previous-qemu
-Date: Wed,  7 Feb 2024 08:54:02 +0800
-Message-ID: <20240207005403.242235-3-peterx@redhat.com>
+Subject: [PATCH v2 3/3] ci: Update comment for migration-compat-aarch64
+Date: Wed,  7 Feb 2024 08:54:03 +0800
+Message-ID: <20240207005403.242235-4-peterx@redhat.com>
 In-Reply-To: <20240207005403.242235-1-peterx@redhat.com>
 References: <20240207005403.242235-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -83,37 +83,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-The new build-previous-qemu job relies on QEMU release tag being present,
-while that may not be always true for personal git repositories since by
-default tag is not pushed.  The job can fail on those CI kicks, as reported
-by Peter Maydell.
+It turns out that we may not be able to enable this test even for the
+upcoming v9.0.  Document what we're still missing.
 
-Fix it by fetching the tags remotely from the official repository, as
-suggested by Dan.
-
-[1] https://lore.kernel.org/r/ZcC9ScKJ7VvqektA@redhat.com
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 2 ++
- 1 file changed, 2 insertions(+)
+ .gitlab-ci.d/buildtest.yml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 79bbc8585b..cfe95c1b17 100644
+index cfe95c1b17..f56df59c94 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -189,6 +189,8 @@ build-previous-qemu:
-     TARGETS: x86_64-softmmu aarch64-softmmu
-   before_script:
-     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
-+    - git remote add upstream https://gitlab.com/qemu-project/qemu
-+    - git fetch upstream $QEMU_PREV_VERSION
-     - git checkout $QEMU_PREV_VERSION
-   after_script:
-     - mv build build-previous
+@@ -219,9 +219,10 @@ build-previous-qemu:
+     - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
+           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
+ 
+-# This job is disabled until we release 9.0. The existing
+-# migration-test in 8.2 is broken on aarch64. The fix was already
+-# commited, but it will only take effect once 9.0 is out.
++# This job needs to be disabled until we can have an aarch64 CPU model that
++# will both (1) support both KVM and TCG, and (2) provide a stable ABI.
++# Currently only "-cpu max" can provide (1), however it doesn't guarantee
++# (2).  Mark this test skipped until later.
+ migration-compat-aarch64:
+   extends: .migration-compat-common
+   variables:
 -- 
 2.43.0
 
