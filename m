@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027BF84C66C
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 09:42:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 811BE84C697
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 09:49:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXdVe-0004Ly-7J; Wed, 07 Feb 2024 03:42:23 -0500
+	id 1rXdar-0006TT-OX; Wed, 07 Feb 2024 03:47:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXdVV-0004HY-OD
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 03:42:13 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rXdap-0006So-9a
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 03:47:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rXdVU-0001zN-6O
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 03:42:13 -0500
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rXdam-0003Fn-6Z
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 03:47:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707295331;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1707295659;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9euMdI1JentFYHbJTWpDyc7H7JzSg9DiYjcStOMDP+U=;
- b=TUm59PmLPmEA5we/hbeI52PXzA3U1X80MYPNKHZLFOyq7UZAwoEA759TGyuEd6ASxGnPcY
- /1khDxN28eS1WSAztw+Co/o1xsFKEXCqM5XC0SoWALMVEn+nrwFZ7aFC9dAp6X/llsG5P7
- jJQxXIAh/nbwCf6om9GwWhIgULULJ0g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zEvQLM1h4MSzXSsMkzI7t4txX76UnmaBFFtX2v8zkKk=;
+ b=LFazrdzuIKjSwO94QDU4bOHxA0bHrAywyfvS8WOnAtz/ZUVm7df16WFgwWc7vFJolOa78v
+ V4Hrdxk+p0sBJlevBTjQAdnjYEcTYBQOULrOs1GdxVP9/TZRYijxpa+6wv9qS27Q5LaR+p
+ BQPuvySbjlN3G/nJMWHWvNoPOaMOqbc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-214-DZdxH055P_KAsFTEia5QxA-1; Wed, 07 Feb 2024 03:42:09 -0500
-X-MC-Unique: DZdxH055P_KAsFTEia5QxA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5A4F101FA2A;
- Wed,  7 Feb 2024 08:42:08 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.54])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3044EAC1A;
- Wed,  7 Feb 2024 08:42:05 +0000 (UTC)
-Date: Wed, 7 Feb 2024 08:42:03 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, arei.gonglei@huawei.com, eblake@redhat.com,
- eduardo@habkost.net, fan.ni@samsung.com, farosas@suse.de,
- hreitz@redhat.com, jasowang@redhat.com, jiri@resnulli.us,
- jonathan.cameron@huawei.com, kkostiuk@redhat.com, kraxel@redhat.com,
- kwolf@redhat.com, lukasstraub2@web.de, marcandre.lureau@redhat.com,
- marcel.apfelbaum@gmail.com, michael.roth@amd.com, mst@redhat.com,
- pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
- philmd@linaro.org, pizhenwei@bytedance.com, qemu-block@nongnu.org,
- stefanb@linux.ibm.com, wangyanan55@huawei.com
-Subject: Re: [PATCH 15/15] qapi: Add missing union tag documentation
-Message-ID: <ZcNCW-j9mC2v2qwv@redhat.com>
-References: <20240205074709.3613229-1-armbru@redhat.com>
- <20240205074709.3613229-16-armbru@redhat.com>
+ us-mta-584-DnxxYdiHMWioVh291YgXZw-1; Wed, 07 Feb 2024 03:47:37 -0500
+X-MC-Unique: DnxxYdiHMWioVh291YgXZw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a3766d9570cso19943066b.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 00:47:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707295656; x=1707900456;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zEvQLM1h4MSzXSsMkzI7t4txX76UnmaBFFtX2v8zkKk=;
+ b=NtEzRPvy/2utXFP5j4tpPAOwc71XG7VYAEe/P6V8qFQ2v1Mitu2XjHhPMLsuuwZA2d
+ MGA0ZHPtwm2RTn4Zwjp8ZYHX62yK/fayPlxl0X8VqBPcvv88f214IBlGdGQUuNmnftCN
+ hr4CG8KvFOsxYoKzjcdKkl5tIJbckmvW4WCza65yyudqWez/h/Vqs9DvM/V6I0MX8jzG
+ A4c3A8JPZoITJp5ebQunmAxYx9i4qlp7lAbpN+vuvu0TorSlXyCtOP120e5FI/TO5cn/
+ wpynTppZI7Tao7kiD+RGABqu9EiZC7SI6Vc/Bjpj9MX3enFmGqwyb4RQiamjtLY8Itl3
+ BxZA==
+X-Gm-Message-State: AOJu0YxaiCi3FHrg2nwZ6No/tJFQdPu2JZ/4lVE2d7xr0iEWJTIepBwl
+ 8Cv4N6RRkDR/D/KEAJM6ker/JFPzZPy0qreXfFJ4/1YQAU0COkzb30uunESHqM1oXvAiz9DTlh0
+ DuKLxE68HCJ+I/sfXua23aCQQRYdnushNWrg9QDsMeR1zuI3ILDFr
+X-Received: by 2002:a17:906:5ad2:b0:a38:4b66:4201 with SMTP id
+ x18-20020a1709065ad200b00a384b664201mr2338901ejs.43.1707295656665; 
+ Wed, 07 Feb 2024 00:47:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGHGoOENiihbrqACqZ5c2nQLHKipwDQ+pRfWIwAaHXKHyfE9+R9PaBaMB1AEqP3FTTY4HFfkA==
+X-Received: by 2002:a17:906:5ad2:b0:a38:4b66:4201 with SMTP id
+ x18-20020a1709065ad200b00a384b664201mr2338879ejs.43.1707295656256; 
+ Wed, 07 Feb 2024 00:47:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX6KFpwmPzx58u4n4ZH0hp1zpNs/zUWTz5xM2x9nQHLvUgzyGVjJxntdzDe70SMuJbdVWRkfFqxmelb27AgPd3gKFUZGS9cSm7Tau38B0PEj9SAZDawrofo4BJGSAfBD+//I6OIqGvZpq8vqj5vuaEesMQFrNoo01BJf/O6/Yp/ysBGFMr8ubJvA/v8DEEYE0BTt98WrJXmQI0nH0HVY7QMsqlyCn7PJ4TDng==
+Received: from sgarzare-redhat (host-87-12-25-87.business.telecomitalia.it.
+ [87.12.25.87]) by smtp.gmail.com with ESMTPSA id
+ sa5-20020a1709076d0500b00a370158ff2asm501515ejc.69.2024.02.07.00.47.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 Feb 2024 00:47:35 -0800 (PST)
+Date: Wed, 7 Feb 2024 09:47:28 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, 
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, qemu-block@nongnu.org,
+ mst@redhat.com, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org, Cindy Lu <lulu@redhat.com>
+Subject: Re: Re: Re: [PATCH] vdpa-dev: Fix initialisation order to restore
+ VDUSE compatibility
+Message-ID: <npcki5ojmtrr6znychok5l6w7zcmip347c5gd5dexlxpkac7qs@cwwyon5t4z3a>
+References: <20240202132521.32714-1-kwolf@redhat.com>
+ <zmopxf5zt6m36nfujntn72idlinm7qmx23wjvwiazmq4b75lsa@a2omit34pjif>
+ <CACGkMEvLpg+nPgHsE_6stFM1OGXbHpuE=j7XLwt_YxpxhWJgZw@mail.gmail.com>
+ <nvk6n7ln3ryga2ww4a6evbprauptzcn7uz34ar3uecbxjfre2z@msikqqpuk2vh>
+ <CACGkMEtODf_NGGa-XbyDMM7=z6CsCkazV9A-4z8W7oCOnu-Ybg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240205074709.3613229-16-armbru@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <CACGkMEtODf_NGGa-XbyDMM7=z6CsCkazV9A-4z8W7oCOnu-Ybg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -76,7 +94,7 @@ X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,38 +107,158 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Feb 05, 2024 at 08:47:09AM +0100, Markus Armbruster wrote:
-> Low-hanging fruit, and except for StatsFilter, the only members of
-> these unions lacking documentation.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  qapi/block-core.json   | 12 ++++++++++++
->  qapi/block-export.json |  2 ++
->  qapi/char.json         |  2 ++
->  qapi/crypto.json       |  2 ++
->  qapi/machine.json      |  4 ++++
->  qapi/migration.json    |  2 ++
->  qapi/pragma.json       | 16 ----------------
->  qapi/sockets.json      |  2 ++
->  qapi/stats.json        |  2 ++
->  qapi/transaction.json  |  2 ++
->  qapi/ui.json           |  2 ++
->  qapi/yank.json         |  2 ++
->  12 files changed, 34 insertions(+), 16 deletions(-)
+On Wed, Feb 07, 2024 at 11:17:34AM +0800, Jason Wang wrote:
+>On Tue, Feb 6, 2024 at 4:31 PM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>
+>> On Tue, Feb 06, 2024 at 10:47:40AM +0800, Jason Wang wrote:
+>> >On Mon, Feb 5, 2024 at 6:51 PM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>> >>
+>> >> On Fri, Feb 02, 2024 at 02:25:21PM +0100, Kevin Wolf wrote:
+>> >> >VDUSE requires that virtqueues are first enabled before the DRIVER_OK
+>> >> >status flag is set; with the current API of the kernel module, it is
+>> >> >impossible to enable the opposite order in our block export code because
+>> >> >userspace is not notified when a virtqueue is enabled.
+>> >
+>> >Did this mean virtio-blk will enable a virtqueue after DRIVER_OK?
+>>
+>> It's not specific to virtio-blk, but to the generic vdpa device we have
+>> in QEMU (i.e. vhost-vdpa-device). Yep, after commit
+>> 6c4825476a4351530bcac17abab72295b75ffe98, virtqueues are enabled after
+>> DRIVER_OK.
+>
+>Right.
+>
+>>
+>> >Sepc is not clear about this and that's why we introduce
+>> >VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK.
+>>
+>> Ah, I didn't know about this new feature. So after commit
+>> 6c4825476a4351530bcac17abab72295b75ffe98 the vhost-vdpa-device is not
+>> complying with the specification, right?
+>
+>Kind of, but as stated, it's just because spec is unclear about the
+>behaviour. There's a chance that spec will explicitly support it in
+>the future.
+>
+>>
+>> >
+>> >>
+>> >> Yeah, IMHO the VDUSE protocol is missing a VDUSE_SET_VQ_READY message,
+>> >
+>> >I think you meant when VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is
+>> >negotiated.
+>>
+>> At this point yes. But if VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not
+>> negotiated, should we return an error in vhost-vdpa kernel module if
+>> VHOST_VDPA_SET_VRING_ENABLE is called when DRIVER_OK is already set?
+>
+>I'm not sure if this can break some setups or not. It might be better
+>to leave it as is?
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+As I also answered in the kernel patch, IMHO we have to return an error, 
+because any setups are broken anyway (see the problem we're fixing with 
+this patch), so at this point it's better to return an error, so they 
+don't spend time figuring out why the VDUSE device doesn't work.
+
+>
+>Without VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK, we don't know if
+>parent support vq_ready after driver_ok.
+
+So we have to assume that it doesn't support it, to be more 
+conservative, right?
+
+>With VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK, we know parent support
+>vq_ready after driver_ok.
+>
+>>
+>> >If this is truth, it seems a little more complicated, for
+>> >example the get_backend_features needs to be forward to the userspace?
+>>
+>> I'm not understanding, don't we already have VHOST_GET_BACKEND_FEATURES
+>> for this? Or do you mean userspace on the VDUSE side?
+>
+>Yes, since in this case the parent is in the userspace, there's no way
+>for VDUSE to know if user space supports vq_ready after driver_ok or
+>not.
+>
+>As you may have noticed, we don't have a message for vq_ready which
+>implies that vq_ready after driver_ok can't be supported.
+
+Yep, I see.
+
+>
+>>
+>> >This seems suboptimal to implement this in the spec first and then we
+>> >can leverage the features. Or we can have another parameter for the
+>> >ioctl that creates the vduse device.
+>>
+>> I got a little lost, though in vhost-user, the device can always expect
+>> a vring_enable/disable, so I thought it was not complicated in VDUSE.
+>
+>Yes, the problem is assuming we have a message for vq_ready, there
+>could be  a "legacy" userspace that doesn't support that.  So in that
+>case, VDUSE needs to know if the userspace parent can support that or
+>not.
+
+I think VDUSE needs to negotiate features (if it doesn't already) as 
+vhost-user does with the backend. Also for new future functionality.
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>
+>>
+>> >
+>> >> I'll start another thread about that, but in the meantime I agree that
+>> >> we should fix QEMU since we need to work properly with old kernels as
+>> >> well.
+>> >>
+>> >> >
+>> >> >This requirement also mathces the normal initialisation order as done by
+>> >> >the generic vhost code in QEMU. However, commit 6c482547 accidentally
+>> >> >changed the order for vdpa-dev and broke access to VDUSE devices with
+>> >> >this.
+>> >> >
+>> >> >This changes vdpa-dev to use the normal order again and use the standard
+>> >> >vhost callback .vhost_set_vring_enable for this. VDUSE devices can be
+>> >> >used with vdpa-dev again after this fix.
+>> >>
+>> >> I like this approach and the patch LGTM, but I'm a bit worried about
+>> >> this function in hw/net/vhost_net.c:
+>> >>
+>> >>      int vhost_set_vring_enable(NetClientState *nc, int enable)
+>> >>      {
+>> >>          VHostNetState *net = get_vhost_net(nc);
+>> >>          const VhostOps *vhost_ops = net->dev.vhost_ops;
+>> >>
+>> >>          nc->vring_enable = enable;
+>> >>
+>> >>          if (vhost_ops && vhost_ops->vhost_set_vring_enable) {
+>> >>              return vhost_ops->vhost_set_vring_enable(&net->dev, enable);
+>> >>          }
+>> >>
+>> >>          return 0;
+>> >>      }
+>> >>
+>> >> @Eugenio, @Jason, should we change some things there if vhost-vdpa
+>> >> implements the vhost_set_vring_enable callback?
+>> >
+>> >Eugenio may know more, I remember we need to enable cvq first for
+>> >shadow virtqueue to restore some states.
+>> >
+>> >>
+>> >> Do you remember why we didn't implement it from the beginning?
+>> >
+>> >It seems the vrings parameter is introduced after vhost-vdpa is
+>> >implemented.
+>>
+>> Sorry, I mean why we didn't implement the vhost_set_vring_enable
+>> callback for vhost-vdpa from the beginning.
+>
+>Adding Cindy who writes those codes for more thoughts.
+
+Thanks,
+Stefano
 
 
