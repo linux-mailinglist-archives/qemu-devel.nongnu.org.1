@@ -2,58 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACE484D14A
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D0B84CFC5
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 18:26:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXmnM-0000T8-3y; Wed, 07 Feb 2024 13:37:16 -0500
+	id 1rXlfm-0001zz-UZ; Wed, 07 Feb 2024 12:25:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bobby825@126.com>) id 1rXleX-0001sS-Le
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 12:24:05 -0500
-Received: from m16.mail.126.com ([220.197.31.6])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <bobby825@126.com>) id 1rXleV-0006SP-Bu
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 12:24:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=At/vQ
- S/IiNbcY/YL8bRCfI4EX/uYYWgWOhkgxUFUX9M=; b=HTCy9V/9hoAY7NX5LU1Bg
- Rbu6jkx9MJ/f2aPubL18d9B9ysvrm8NYewQ9eNHo9yvmbt1MkZpOUoPqFsgJYzLD
- HycvdzBqky2YprmEb36zqqK0EvGMbJV7Cjsmfc0X0eFL5jypIs23VBH/tLCME/Ae
- k70b4TVRigUHh97B+sDji8=
-Received: from localhost.localdomain (unknown [101.88.177.236])
- by gzga-smtp-mta-g0-3 (Coremail) with SMTP id _____wB3OoGkvMNllK2bAQ--.77S2;
- Thu, 08 Feb 2024 01:23:49 +0800 (CST)
-From: Tianlan Zhou <bobby825@126.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Tianlan Zhou <bobby825@126.com>
-Subject: [PATCH] ui/console: Fix console resize with placeholder surface
-Date: Thu,  8 Feb 2024 01:20:25 +0800
-Message-Id: <20240207172024.8-1-bobby825@126.com>
-X-Mailer: git-send-email 2.38.1.windows.1
+ (Exim 4.90_1) (envelope-from <ivarhol-21@enst.fr>)
+ id 1rXlfi-0001zK-QF; Wed, 07 Feb 2024 12:25:18 -0500
+Received: from zproxy4.enst.fr ([137.194.2.223])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ivarhol-21@enst.fr>)
+ id 1rXlfg-0006jF-BA; Wed, 07 Feb 2024 12:25:18 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id DF7D220711;
+ Wed,  7 Feb 2024 18:25:10 +0100 (CET)
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id gdFCzteI6p0S; Wed,  7 Feb 2024 18:25:10 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 061F720719;
+ Wed,  7 Feb 2024 18:25:10 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy4.enst.fr 061F720719
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1707326710;
+ bh=Wq2Af0a9zWJ82wJuePhM6JjSsKF7cUO4CiI/Rp2Xnus=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=jbAi6WTlGo/ubt8rfG90vkSH0OpJNoUuLxJQ/JTUzEXKHv/etcPkWtC7TmRf99Wcw
+ pKkoviF2NL4BFc7/H/npVoJjtsR1iPON5qTPizgYudLDubuPAsowKnQVff1eaeHS3z
+ YKZXi44MnZ3u1e7sSqc9t4D7GLfRX59t9G6TtK38=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy4.enst.fr ([IPv6:::1])
+ by localhost (zproxy4.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id y114GT9DGWV2; Wed,  7 Feb 2024 18:25:09 +0100 (CET)
+Received: from zmail-tp2.enst.fr (zmail-tp2.enst.fr [137.194.2.199])
+ by zproxy4.enst.fr (Postfix) with ESMTP id 3F42020711;
+ Wed,  7 Feb 2024 18:25:09 +0100 (CET)
+Date: Wed, 7 Feb 2024 18:25:08 +0100 (CET)
+From: =?utf-8?B?SW7DqHM=?= Varhol <ines.varhol@telecom-paris.fr>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm <qemu-arm@nongnu.org>, 
+ Samuel Tardieu <sam@rfc1149.net>, 
+ peter maydell <peter.maydell@linaro.org>, 
+ Alistair Francis <alistair@alistair23.me>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Message-ID: <2124605303.230522.1707326708850.JavaMail.zimbra@enst.fr>
+In-Reply-To: <22defe7a-6c67-4aae-b028-838ee6aa4e1a@linaro.org>
+References: <20240126193657.792005-1-ines.varhol@telecom-paris.fr>
+ <20240126193657.792005-3-ines.varhol@telecom-paris.fr>
+ <22defe7a-6c67-4aae-b028-838ee6aa4e1a@linaro.org>
+Subject: Re: [PATCH 2/3] hw/arm : Connect DM163 to STM32L4x5
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wB3OoGkvMNllK2bAQ--.77S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GF1rXF1UXFyrZw4xGFWDXFb_yoWkurb_Aa
- 4UZayUAw1rZr9xXa4DKFZ5CF4Sg3s3Crn3uFn7tF13tw1UWFsFqF4UtrySg3ZFyw4Iqr92
- 9r18C347CrnxKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRitkuDUUUUU==
-X-Originating-IP: [101.88.177.236]
-X-CM-SenderInfo: xereu5qysvqiyswou0bp/1tbiHBl9UmV20Oj7cAAAsK
-Received-SPF: pass client-ip=220.197.31.6; envelope-from=bobby825@126.com;
- helo=m16.mail.126.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [::ffff:80.125.0.74]
+X-Mailer: Zimbra 9.0.0_GA_4583 (ZimbraWebClient - FF122 (Linux)/9.0.0_GA_4583)
+Thread-Topic: hw/arm : Connect DM163 to STM32L4x5
+Thread-Index: Az504CBTFdo4vraccJ8mb6QpSnn+eQ==
+Received-SPF: pass client-ip=137.194.2.223; envelope-from=ivarhol-21@enst.fr;
+ helo=zproxy4.enst.fr
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 07 Feb 2024 13:37:14 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,34 +87,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In `qemu_console_resize()`, the old surface of the console is keeped if the new
-console size is the same as the old one. If the old surface is a placeholder,
-and the new size of console is the same as the placeholder surface (640*480),
-the surface won't be replace.
-In this situation, the surface's `QEMU_PLACEHOLDER_FLAG` flag is still set, so
-the console won't be displayed in SDL display mode.
-This patch fixes this problem by forcing a new surface if the old one is a
-placeholder.
+Hello !
 
-Signed-off-by: Tianlan Zhou <bobby825@126.com>
----
- ui/console.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> De: "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org>
+> Envoy=C3=A9: Lundi 5 F=C3=A9vrier 2024 14:46:58
+>
+> Hi In=C3=A8s,
+>=20
+> On 26/1/24 20:31, In=C3=A8s Varhol wrote:
+> > Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> > Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> > ---
+> >   hw/arm/Kconfig                 |  1 +
+> >   hw/arm/stm32l4x5_soc.c         | 55 +++++++++++++++++++++++++++++++++=
+-
+> >   include/hw/arm/stm32l4x5_soc.h |  3 ++
+> >   3 files changed, 58 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+> > index 3e49b913f8..818aa2f1a2 100644
+> > --- a/hw/arm/Kconfig
+> > +++ b/hw/arm/Kconfig
+> > @@ -463,6 +463,7 @@ config STM32L4X5_SOC
+> >       select STM32L4X5_SYSCFG
+> >       select STM32L4X5_RCC
+> >       select STM32L4X5_GPIO
+> > +    select DM163
+>=20
+>=20
+> > +/*
+> > + * There are actually 14 input pins in the DM163 device.
+> > + * Here the DM163 input pin EN isn't connected to the STM32L4x5
+> > + * GPIOs as the IM120417002 colors shield doesn't actually use
+> > + * this pin to drive the RGB matrix.
+> > + */
+> > +#define NUM_DM163_INPUTS 13
+> > +
+> > +static const int dm163_input[NUM_DM163_INPUTS] =3D {
+> > +    1 * 16 + 2,  /* ROW0  PB2       */
+> > +    0 * 16 + 15, /* ROW1  PA15      */
+> > +    0 * 16 + 2,  /* ROW2  PA2       */
+> > +    0 * 16 + 7,  /* ROW3  PA7       */
+> > +    0 * 16 + 6,  /* ROW4  PA6       */
+> > +    0 * 16 + 5,  /* ROW5  PA5       */
+> > +    1 * 16 + 0,  /* ROW6  PB0       */
+> > +    0 * 16 + 3,  /* ROW7  PA3       */
+> > +    0 * 16 + 4,  /* SIN (SDA) PA4   */
+> > +    1 * 16 + 1,  /* DCK (SCK) PB1   */
+> > +    2 * 16 + 3,  /* RST_B (RST) PC3 */
+> > +    2 * 16 + 4,  /* LAT_B (LAT) PC4 */
+> > +    2 * 16 + 5,  /* SELBK (SB)  PC5 */
+> > +};
+> > +
+> > +
+> >   static const uint32_t gpio_addr[] =3D {
+> >       0x48000000,
+> >       0x48000400,
+> > @@ -116,6 +143,8 @@ static void stm32l4x5_soc_initfn(Object *obj)
+> >           g_autofree char *name =3D g_strdup_printf("gpio%c", 'a' + i);
+> >           object_initialize_child(obj, name, &s->gpio[i], TYPE_STM32L4X=
+5_GPIO);
+> >       }
+> > +
+> > +    object_initialize_child(obj, "dm163", &s->dm163, TYPE_DM163);
+>=20
+> The DM163 is another chip, not a component part of the SoC;
+> it belongs to the machine and should be created/wired in
+> b_l475e_iot01a_init(). Similarly to the IRQ splitters.
+>=20
+> Keeping board component states in a Bl475eMachineState structure
+> could help organizing your model. You can find an example on how
+> extend the MachineState in hw/avr/arduino.c.
+>=20
 
-diff --git a/ui/console.c b/ui/console.c
-index 7db921e3b7..832055675c 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1577,7 +1577,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
-     assert(QEMU_IS_GRAPHIC_CONSOLE(s));
- 
-     if ((s->scanout.kind != SCANOUT_SURFACE ||
--         (surface && surface->flags & QEMU_ALLOCATED_FLAG)) &&
-+         (surface && !is_buffer_shared(surface) && !is_placeholder(surface))) &&
-         qemu_console_get_width(s, -1) == width &&
-         qemu_console_get_height(s, -1) == height) {
-         return;
--- 
-2.38.1.windows.1
+Yes thank you ! that's done :)
 
+> You might call qdev_pass_gpios() to exposes the SysCfg lines out
+> of the SoC.
+
+I was wondering what's the reason to expose Syscfg lines and not Gpio lines=
+?
+(Should GPIOs also be moved to the machine ?)
+
+Best regards,
+
+Ines
 
