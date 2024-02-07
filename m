@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D577684D4EE
+	by mail.lfdr.de (Postfix) with ESMTPS id DED3F84D4EF
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:57:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXptz-0006w6-NV; Wed, 07 Feb 2024 16:56:19 -0500
+	id 1rXpu2-0006zx-Lp; Wed, 07 Feb 2024 16:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptx-0006tq-5u
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpty-0006vm-Ar
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:18 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptv-0007aI-Ne
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:16 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptw-0007b8-4t
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707342975;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZSKRmVm70sbawPnc3LB1RgSk9cDzZ9crgmPEQfxf4xc=;
- b=T0T5Waku4PlL4mFQBdGA96KER28Bl+Df8h4/yHJ1qF3gZ97NAqrjXqNY6w0uNi39R7YT5H
- ofj7pWGGfYMLvPxlyooStEdSjtyfo/BiqPqEZReGuCeF5Oiv4NyKYlm/gQdKe2guFem8QR
- NZbTx8hkKrKFTiR41+B8c67Zie7Pq2Y=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-I_kEr9VJN4SKqv-zij_O6Q-1; Wed,
- 07 Feb 2024 16:56:11 -0500
-X-MC-Unique: I_kEr9VJN4SKqv-zij_O6Q-1
+ bh=6ulCP5y1bPV8WD14M42aT1AWi4MtKmD+olFOV6aACBU=;
+ b=beBGTWl8RtHDENHfL/pf9OAi1NS0gZW0aghrtSnqZ8mux4jIDdFy1B6tvKEV4d9PWy9Kp8
+ B0VdgYqJvi/VCK+9kRHd/mqjzqi+8PPX2iH5a0irMu95hi3tyMY/VG5YYsj7keDAQl+E9H
+ Q9lN7FnoY3Q6ysU6REhl8zSBJS8tM6Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-665-MmW3uiGkO66nrsAXKpVFHg-1; Wed, 07 Feb 2024 16:56:12 -0500
+X-MC-Unique: MmW3uiGkO66nrsAXKpVFHg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52F701C05AA5;
- Wed,  7 Feb 2024 21:56:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 219B684AE41;
+ Wed,  7 Feb 2024 21:56:12 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B9E85492BC6;
- Wed,  7 Feb 2024 21:56:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 87E13492BC7;
+ Wed,  7 Feb 2024 21:56:11 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 02/16] virtio-blk: clarify that there is at least 1 virtqueue
-Date: Wed,  7 Feb 2024 22:55:52 +0100
-Message-ID: <20240207215606.206038-3-kwolf@redhat.com>
+Subject: [PULL 03/16] virtio-blk: add vq_rq[] bounds check in
+ virtio_blk_dma_restart_cb()
+Date: Wed,  7 Feb 2024 22:55:53 +0100
+Message-ID: <20240207215606.206038-4-kwolf@redhat.com>
 In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
 References: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,45 +81,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefan Hajnoczi <stefanha@redhat.com>
 
-It is not possible to instantiate a virtio-blk device with 0 virtqueues.
-The following check is located in ->realize():
+Hanna Czenczek <hreitz@redhat.com> noted that the array index in
+virtio_blk_dma_restart_cb() is not bounds-checked:
 
-  if (!conf->num_queues) {
-      error_setg(errp, "num-queues property must be larger than 0");
-      return;
-  }
+  g_autofree VirtIOBlockReq **vq_rq = g_new0(VirtIOBlockReq *, num_queues);
+  ...
+  while (rq) {
+      VirtIOBlockReq *next = rq->next;
+      uint16_t idx = virtio_get_queue_index(rq->vq);
 
-Later on we access s->vq_aio_context[0] under the assumption that there
-is as least one virtqueue. Hanna Czenczek <hreitz@redhat.com> noted that
-it would help to show that the array index is already valid.
+      rq->next = vq_rq[idx];
+                 ^^^^^^^^^^
 
-Add an assertion to document that s->vq_aio_context[0] is always
-safe...and catch future code changes that break this assumption.
+The code is correct because both rq->vq and vq_rq[] depend on
+num_queues, but this is indirect and not 100% obvious. Add an assertion.
 
 Suggested-by: Hanna Czenczek <hreitz@redhat.com>
 Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240206190610.107963-3-stefanha@redhat.com>
+Message-ID: <20240206190610.107963-4-stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/block/virtio-blk.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/block/virtio-blk.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 6e3e3a23ee..e430ba583c 100644
+index e430ba583c..31212506ca 100644
 --- a/hw/block/virtio-blk.c
 +++ b/hw/block/virtio-blk.c
-@@ -1824,6 +1824,7 @@ static int virtio_blk_start_ioeventfd(VirtIODevice *vdev)
-      * Try to change the AioContext so that block jobs and other operations can
-      * co-locate their activity in the same AioContext. If it fails, nevermind.
-      */
-+    assert(nvqs > 0); /* enforced during ->realize() */
-     r = blk_set_aio_context(s->conf.conf.blk, s->vq_aio_context[0],
-                             &local_err);
-     if (r < 0) {
+@@ -1209,6 +1209,8 @@ static void virtio_blk_dma_restart_cb(void *opaque, bool running,
+         VirtIOBlockReq *next = rq->next;
+         uint16_t idx = virtio_get_queue_index(rq->vq);
+ 
++        /* Only num_queues vqs were created so vq_rq[idx] is within bounds */
++        assert(idx < num_queues);
+         rq->next = vq_rq[idx];
+         vq_rq[idx] = rq;
+         rq = next;
 -- 
 2.43.0
 
