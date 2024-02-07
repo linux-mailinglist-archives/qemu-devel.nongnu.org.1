@@ -2,91 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE29584CE93
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 019D384CEA3
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:10:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkRH-0002Gz-ER; Wed, 07 Feb 2024 11:06:19 -0500
+	id 1rXkU0-0003d9-6x; Wed, 07 Feb 2024 11:09:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkRF-0002Gb-2a
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:06:17 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkRB-000051-BX
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:06:16 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33b4e58102fso414698f8f.0
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:06:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707321970; x=1707926770; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ljf3BYdJSa7DAc88F22C+FjPwOpQu7o1gFWU5dokdZE=;
- b=lkMrCY+IQV/J0qd+YNL41kV+w58AxAEFRUaypZ8aJcOrkLdsBRe//CSqEwmoE1jCnv
- uCXTqH9byqoQr0Xxtq4dbdbuLWBRJZPxFZfCKn4S2IYtsYQ8f2ks7pTjIULaknTyZTPQ
- gEPMpWYvTdmldSUKBmzkdxAdoWHbRI1OC5Fgqt/TItLxbpuXuNtKZB75HgXiKhu6CjEL
- zmM0vuDMVDKIWyhXv9ZJBb+t0BEM37wFHD7PdeMISxYCPgEvLftjHC6WzcNrHAZ770VG
- U0EVklIdFPXx8g7J0fv1NlkQWPFue8WDUAcw4+hTLSWEt3SMr3Mbze+axb5Ngps9kIm6
- Yh6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707321970; x=1707926770;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=ljf3BYdJSa7DAc88F22C+FjPwOpQu7o1gFWU5dokdZE=;
- b=dKSH8f056KhWO4aPTDPDu3iaD/5E70J1GZq6DjtQ7NiRnMrKGfcqWEce5I8DcMuyK1
- 3D6+Kz+71RU6a8oR2ZD4j4i0LKnCvTw3cQr0iTQ2mQQbQvzt82WDDcgmFaedrB5Wrcnf
- K87x/PKw2AKBlR9SKy2mSsTbLWyVjutZZVrj5iBOveWgq2RtNntx3LOivsIaj6o69ey0
- mwmXVLAatFv/ykdnDAvYmUwyFKJDCoN1MZph6aomjO1VUTkWV4iZdYsmCZ7rXQMEjeMa
- pmXPri0LvgTKqratIEtinHdbhd6/Y7jF8CHSV4sOFSKtQO7UDLrG7FyNjCKPt6ZlSMKu
- Y8qA==
-X-Gm-Message-State: AOJu0Yz81dJcsmgsEROGegc+UJ5iSeyzY5BHIpYlnOu8CkYy825RsGlO
- 9KmmdVBl9wuoj7zBkzrAf/orL0qIiXoXMOPsoxruO7gxbgjrHaM48j6h7NCgeck=
-X-Google-Smtp-Source: AGHT+IEpiqdd9JMceRnVCtznKW7WpWVmuGj4Cki/UrY5l4iru7vLfzHB4km3+q3t9u7ZoQx0WkLRIQ==
-X-Received: by 2002:adf:cc8c:0:b0:33b:4d13:30aa with SMTP id
- p12-20020adfcc8c000000b0033b4d1330aamr1899826wrj.1.1707321970457; 
- Wed, 07 Feb 2024 08:06:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXU1vmMlfQwxQrM4JCAG2KCHAPUhTy2lw3IV0qBUQfIfZa8gOk3iNNJ84LzpyNz4VWlr2gGJtdh69BCGfNcMEU1kH5EJ2xxkS6ZpkJpX5FF87qghhC+qwN6iw+gPuLk464Ca8tDAfyEf9wJHs8Iow5b6JHjtnw05ND0T52Pb3eCXOtmy4fFzt/eY6dbaFzdcQg+k8FFC12eMrxBIhugJBUwyOLEz7VI41Z6AiNUSIvRytOFJzED9RxEkJfv25fP9tHQ0x4VUQ/fWeLDf9NDHjZwGBs75KaKZoJ3q00jlxRphL3JzdfzOhI=
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- s1-20020a5d69c1000000b0033b4719eb6esm1784675wrw.27.2024.02.07.08.06.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 08:06:10 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 9806B5F7B1;
- Wed,  7 Feb 2024 16:06:09 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,
- Alexandre Iooss <erdnaxe@crans.org>,  Richard Henderson
- <richard.henderson@linaro.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Yanan Wang
- <wangyanan55@huawei.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v3 00/17] TCG Plugin inline operation enhancement
-In-Reply-To: <87msscl1l5.fsf@draig.linaro.org> ("Alex =?utf-8?Q?Benn=C3=A9?=
- =?utf-8?Q?e=22's?= message of "Wed, 07 Feb 2024 15:45:58 +0000")
-References: <20240206092423.3005995-1-pierrick.bouvier@linaro.org>
- <87msscl1l5.fsf@draig.linaro.org>
-User-Agent: mu4e 1.11.27; emacs 29.1
-Date: Wed, 07 Feb 2024 16:06:09 +0000
-Message-ID: <87h6ikl0ni.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1rXkTy-0003cW-J7; Wed, 07 Feb 2024 11:09:06 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
+ id 1rXkTx-0000cJ-2b; Wed, 07 Feb 2024 11:09:06 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 417FTiEH018520; Wed, 7 Feb 2024 16:08:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=HYZEQs2+hlaIXt6gfP6+BJ104LBMfnN57cpmzTyu2Ns=;
+ b=TxGGzy88aWbF4FjQYpAg8uC+wzP1HwEFZW2n/JDJtWnXOmJG33gNbrQ7NlmmIl4/kWY8
+ zUr3ONjv7+RDupUz1Jr6nibcY5f3gzzdlgU0SQRaUaMPhMMo3CxDQm8xsH2JMYG19xXW
+ iIzo4J6PH0piyiNb62FsA/FyAv4Sp9CdmxVZwhcFmOrt0WgmLZDKKBevXT0Jq+K6GHFA
+ UUuxYlJd62WyIfi2Vm+vZTBreA1Byk+wzTLFYgDp3p9Ff0/QcnhGIH52RvtxQzepysy5
+ p1MX6myyN5LbWKkZWq2hTxxlGaI/E0JsMOrBQ0QEXvH+KiJ/NoTfvGAa5sPgbefAVeHa Rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cj6h4kk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Feb 2024 16:08:49 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 417FTu0W019733;
+ Wed, 7 Feb 2024 16:08:48 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w4cj6h4kb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Feb 2024 16:08:48 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 417E3Tuh014761; Wed, 7 Feb 2024 16:08:48 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w20tnxqje-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 07 Feb 2024 16:08:48 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 417G8isB28508890
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 7 Feb 2024 16:08:45 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DF81E2004B;
+ Wed,  7 Feb 2024 16:08:44 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3DBAA20040;
+ Wed,  7 Feb 2024 16:08:43 +0000 (GMT)
+Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  7 Feb 2024 16:08:43 +0000 (GMT)
+From: Chalapathi V <chalapathi.v@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
+ chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com
+Subject: [PATCH v1 0/5] hw/ppc: SPI model
+Date: Wed,  7 Feb 2024 10:08:28 -0600
+Message-Id: <20240207160833.3437779-1-chalapathi.v@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zrCBmPI5JvXmlJ0Db-YzOhXry2D8oJ55
+X-Proofpoint-ORIG-GUID: QDGOYR1b1F4cM9ISPSovHRKwNrtxFJ-N
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-07_06,2024-02-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=17
+ clxscore=1011 mlxscore=17
+ lowpriorityscore=0 impostorscore=0 mlxlogscore=69 priorityscore=1501
+ suspectscore=0 spamscore=17 adultscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402070119
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,152 +109,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+Hello,
 
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
->
->> This series adds a new thread-safe API to declare inline operation
->> inside plugins. As well, it removes the existing non thread-safe API,
->> and migrates all existing plugins to use it.
->
-> I've cherry-picked 3 and 4 into plugins/next so I can re-base the
-> registers work. I'll have a look at the rest of the series once I'm back
-> at my desk.
+In this series of patchset, SPI controller and responder models
+for Power10 processor are modelled.
 
-Actually belay that, I'm caught in a circular dependency because this is
-based on the registers series. I'll sort it out tomorrow.
+Serial peripheral interface provides full-duplex synchronous serial
+communication between single controller and multiple responder devices.
 
->
->>
->> Tested on Linux (user, system) for i386, x86_64 and aarch64.
->>
->> To give some context, this a long term series of work around plugins,
->> with the goal to be able to do basic operations in a more performant and
->> accurate way. This will mean to add more inline operations and
->> conditional callbacks.
->>
->> One final target of this work is to implement a plugin that implements
->> the icount=3Dauto feature, and allow QEMU to run at a given "frequency"
->> based on number of instructions executed, without QEMU needing to keep
->> track of this.
->>
->> Another final target is to be able to detect control flow changes in an
->> efficient and elegant way, by combining inline operation and conditional
->> callbacks.
->>
->> v2
->> --
->>
->> Implement scoreboard API (cpu local storage), so plugins don't have to d=
-eal
->> with how many cpus are used.
->>
->> Since plugins have been modified again, I didn't transfer any reviewed-b=
-y on
->> those commits.
->>
->> v3
->> --
->>
->> - introduce qemu_plugin_num_vcpus (how many cpus were initialized)
->> - fix order of plugin init/idle/resume callbacks
->> - scoreboard:
->>   - renamed qemu_plugin_u64_t -> qemu_plugin_u64
->>   - some functions rename for scoreboard api
->>   - qemu_plugin_u64 has only value based function (vs address before)
->> - various cleanup thanks to review of previous series
->>
->> Based-on: 20240122145610.413836-1-alex.bennee@linaro.org
->>
->>  Version number: 3
->>  Branches:
->>           base:  plugin_registers_v3_20240122145610.413836-1-alex.bennee=
-@linaro.org
->>           topic: plugin_inline_per_vcpu
->>
->>  To: qemu-devel@nongnu.org
->>
->>  Pierrick Bouvier (17):
->>        plugins: remove previous n_vcpus functions from API
->>        plugins: add qemu_plugin_num_vcpus function
->>        plugins: fix order of init/idle/resume callback
->>        cpu: call plugin init hook asynchronously
->>        plugins: scoreboard API
->>        docs/devel: plugins can trigger a tb flush
->>        plugins: implement inline operation relative to cpu_index
->>        plugins: add inline operation per vcpu
->>        tests/plugin: add test plugin for inline operations
->>        tests/plugin/mem: migrate to new per_vcpu API
->>        tests/plugin/insn: migrate to new per_vcpu API
->>        tests/plugin/bb: migrate to new per_vcpu API
->>        contrib/plugins/hotblocks: migrate to new per_vcpu API
->>        contrib/plugins/howvec: migrate to new per_vcpu API
->>        plugins: remove non per_vcpu inline operation from API
->>        plugins: cleanup codepath for previous inline operation
->>        MAINTAINERS: Add myself as reviewer for TCG Plugins
->>
->>   MAINTAINERS                     |   1 +
->>   docs/devel/multi-thread-tcg.rst |   1 +
->>   include/qemu/plugin.h           |   6 ++
->>   include/qemu/qemu-plugin.h      | 151 ++++++++++++++++++++++++--------
->>   plugins/plugin.h                |  24 ++++--
->>   accel/tcg/plugin-gen.c          |  65 +++++++++++---
->>   contrib/plugins/cache.c         |   2 +-
->>   contrib/plugins/hotblocks.c     |  50 ++++++-----
->>   contrib/plugins/howvec.c        |  53 ++++++++----
->>   hw/core/cpu-common.c            |   9 +-
->>   plugins/api.c                   | 121 ++++++++++++++++----------
->>   plugins/core.c                  | 104 +++++++++++++++++++---
->>   tests/plugin/bb.c               |  63 ++++++--------
->>   tests/plugin/inline.c           | 186 ++++++++++++++++++++++++++++++++=
-++++++++
->>   tests/plugin/insn.c             | 106 +++++++++++------------
->>   tests/plugin/mem.c              |  40 +++++----
->>   plugins/qemu-plugins.symbols    |  16 ++--
->>   tests/plugin/meson.build        |   2 +-
->>   18 files changed, 745 insertions(+), 255 deletions(-)
->>
->> Pierrick Bouvier (17):
->>   plugins: remove previous n_vcpus functions from API
->>   plugins: add qemu_plugin_num_vcpus function
->>   plugins: fix order of init/idle/resume callback
->>   cpu: call plugin init hook asynchronously
->>   plugins: scoreboard API
->>   docs/devel: plugins can trigger a tb flush
->>   plugins: implement inline operation relative to cpu_index
->>   plugins: add inline operation per vcpu
->>   tests/plugin: add test plugin for inline operations
->>   tests/plugin/mem: migrate to new per_vcpu API
->>   tests/plugin/insn: migrate to new per_vcpu API
->>   tests/plugin/bb: migrate to new per_vcpu API
->>   contrib/plugins/hotblocks: migrate to new per_vcpu API
->>   contrib/plugins/howvec: migrate to new per_vcpu API
->>   plugins: remove non per_vcpu inline operation from API
->>   plugins: cleanup codepath for previous inline operation
->>   MAINTAINERS: Add myself as reviewer for TCG Plugins
->>
->>  MAINTAINERS                     |   1 +
->>  docs/devel/multi-thread-tcg.rst |   1 +
->>  include/qemu/plugin.h           |   6 ++
->>  include/qemu/qemu-plugin.h      | 151 ++++++++++++++++++++------
->>  plugins/plugin.h                |  24 +++--
->>  accel/tcg/plugin-gen.c          |  65 +++++++++--
->>  contrib/plugins/cache.c         |   2 +-
->>  contrib/plugins/hotblocks.c     |  50 +++++----
->>  contrib/plugins/howvec.c        |  53 ++++++---
->>  hw/core/cpu-common.c            |   9 +-
->>  plugins/api.c                   | 121 +++++++++++++--------
->>  plugins/core.c                  | 104 ++++++++++++++++--
->>  tests/plugin/bb.c               |  63 +++++------
->>  tests/plugin/inline.c           | 186 ++++++++++++++++++++++++++++++++
->>  tests/plugin/insn.c             | 106 +++++++++---------
->>  tests/plugin/mem.c              |  40 ++++---
->>  plugins/qemu-plugins.symbols    |  16 ++-
->>  tests/plugin/meson.build        |   2 +-
->>  18 files changed, 745 insertions(+), 255 deletions(-)
->>  create mode 100644 tests/plugin/inline.c
+The current configuration supports a single SPI controller reside on the
+SPI bus. In p10, SPI controller device model supports a connection to a
+single SPI responder such as SPI seeproms, TPM, flash device and an ADC
+controller.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+SPI controller model is divided into configuration unit, sequencer FSM
+and shifter engine. All SPI function control is mapped into the SPI register
+space to enable full control by firmware.
+
+SPI configuration component is modelled which contains all SPI configuration
+and status registers as well as the hold registers for data to be sent or
+having been received.
+Shift engine performs serialization and de-serialization according to the
+control by the sequencer and according to the setup defined in the
+configuration registers.
+Sequencer implements the main control logic and
+FSM to handle data transmit and data receive control of the shift engine.
+
+Microchip's 25CSM04 SEEPROM device is modelled and connected to SPI bus
+"spi_bus2" of SPI controller "PIB_SPIC[2]".
+
+Patches overview in V1.
+PATCH1: Create a SPI responder model which includes responder methods
+        and SPI bus implementation.
+PATCH2: Create a SPI controller model and implement configuration unit
+        to model SCOM registers.
+PATCH3: SPI controller model: implement sequencer FSM and shift engine.
+PATCH4: create SPI SEEPROM model.
+PATCH5: Connect SPI controllers to p10 chip and create keystore seeprom
+        device on spi_bus2 of PIB_SPIC[2].
+
+Thank You,
+Chalapathi
+
+Chalapathi V (5):
+  hw/ppc: SPI responder model
+  hw/ppc: SPI controller model - registers implementation
+  hw/ppc: SPI controller model - sequencer and shifter
+  hw/ppc: SPI SEEPROM model
+  hw/ppc: SPI controller wiring to P10 chip and create seeprom device
+
+ include/hw/ppc/pnv_chip.h           |    4 +
+ include/hw/ppc/pnv_spi_controller.h |  101 ++
+ include/hw/ppc/pnv_spi_responder.h  |  109 ++
+ include/hw/ppc/pnv_spi_seeprom.h    |   70 ++
+ include/hw/ppc/pnv_xscom.h          |    3 +
+ hw/ppc/pnv.c                        |   32 +
+ hw/ppc/pnv_spi_controller.c         | 1609 +++++++++++++++++++++++++++
+ hw/ppc/pnv_spi_responder.c          |  166 +++
+ hw/ppc/pnv_spi_seeprom.c            |  989 ++++++++++++++++
+ hw/ppc/meson.build                  |    3 +
+ 10 files changed, 3086 insertions(+)
+ create mode 100644 include/hw/ppc/pnv_spi_controller.h
+ create mode 100644 include/hw/ppc/pnv_spi_responder.h
+ create mode 100644 include/hw/ppc/pnv_spi_seeprom.h
+ create mode 100644 hw/ppc/pnv_spi_controller.c
+ create mode 100644 hw/ppc/pnv_spi_responder.c
+ create mode 100644 hw/ppc/pnv_spi_seeprom.c
+
+-- 
+2.31.1
+
 
