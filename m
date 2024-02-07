@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184A484D117
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3415D84D11F
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:23:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXmXR-0004lV-KN; Wed, 07 Feb 2024 13:20:49 -0500
+	id 1rXmXT-0004mx-5F; Wed, 07 Feb 2024 13:20:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXK-0004kV-Ig
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXL-0004kv-LY
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:43 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXI-0008AI-Uj
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXK-0008BV-9Z
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:43 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 61CF9619D7;
+ by dfw.source.kernel.org (Postfix) with ESMTP id B78AA61999;
+ Wed,  7 Feb 2024 18:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BC7C433C7;
  Wed,  7 Feb 2024 18:20:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393C2C433C7;
- Wed,  7 Feb 2024 18:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707330040;
- bh=vLEiE8lhlyiRwJ4cJo1am9Zz8JhSgVENwn64GYYsBD0=;
+ s=k20201202; t=1707330041;
+ bh=jX62TxfEqLvc+tH4WJBgE1waEPWqXlZDPP4oMNujLmU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Ucl7fOfxxecmxSmjqqKU3SBIT/G+EY87oPkwY6UtyMLsnhiQdxN+HpAiKPvLiqxdh
- tDtdqOd34UjKDBqU1Pyc8pRo8c+Q/5OWF+T8v3eOx2bErtxI8j26K0w2UOOmYvW4TX
- nljNqKtiaHz/Rjoditl4h/fr5jqebI4fUxf5aX2t4eN929mdBjtvQjOS/HohVnL9hH
- F05bNn88goGc4FkpWM76MhRb7p4DXZPXJBHnVwJimMlkOjpyPFrXcd+Y5i7KjgejEB
- JnzcXRPKBMWJGz9gJOgbCkcUKMqxeFkke/g1g07VHA1yOjzb9EBneXzOKxU5ScEMeg
- 8f2d76RgcTnJA==
+ b=nS0hN+O2mWzzm/VWB6tLudvzRUdTxgNHEqIEij5nl+/lo1gnsC0mFb8LO41xmHj+P
+ J0OXHWI0PjYGPSQ37szI3Zq8cJwqrpm/j/0pX96C7FOpJPSWg48ZgHCqiLuEiBQDgk
+ CGVnNBveGGy1+D5BSjcUqOI3JEWA2sXSb8HIoUh3SkQ/5krYvrrUVGN93ItwaqvdD3
+ /Selhb64KdFRaDt0lxon9fT26+Vjjqle06QyToExvIsTz0iU6bZix0haaBKlBhkFup
+ nr+WgMQQ0i0IgCMyG2wzrarh2jTlB45qEvd252fOPNJq17MBEzr/CnJoYtpcYYq9CV
+ DL5/XFlaLNM2g==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 10/13] target/hppa: Check privilege only when PSW.P is set
-Date: Wed,  7 Feb 2024 19:20:20 +0100
-Message-ID: <20240207182023.36316-11-deller@kernel.org>
+Subject: [PATCH 11/13] target/hppa: PDC_BTLB_INFO uses 32-bit ints
+Date: Wed,  7 Feb 2024 19:20:21 +0100
+Message-ID: <20240207182023.36316-12-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207182023.36316-1-deller@kernel.org>
 References: <20240207182023.36316-1-deller@kernel.org>
@@ -69,27 +69,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-CHECK_MOST_PRIVILEGED() should check the privilege level only when the PSW.P
-bit is set.
+The BTLB helper function stores the BTLB info (four 32-bit ints) into
+the memory of the guest. They are only available when emulating a 32-bit
+CPU in the guest, so use "uint32_t" instead of "target_ulong" here.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/translate.c | 2 +-
+ target/hppa/mem_helper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 7e58775bbf..21c2734a1f 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -604,7 +604,7 @@ static bool gen_illegal(DisasContext *ctx)
- #else
- #define CHECK_MOST_PRIVILEGED(EXCP) \
-     do {                                     \
--        if (ctx->privilege != 0) {           \
-+        if (ctx->privilege != 0 && (ctx->tb_flags & PSW_P)) { \
-             return gen_excp_iir(ctx, EXCP);  \
-         }                                    \
-     } while (0)
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 676c0b3003..66b8fa7d72 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -684,7 +684,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+     case 0:
+         /* return BTLB parameters */
+         qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INFO\n");
+-        vaddr = probe_access(env, env->gr[24], 4 * sizeof(target_ulong),
++        vaddr = probe_access(env, env->gr[24], 4 * sizeof(uint32_t),
+                              MMU_DATA_STORE, mmu_idx, ra);
+         if (vaddr == NULL) {
+             env->gr[28] = -10; /* invalid argument */
 -- 
 2.43.0
 
