@@ -2,73 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0278384D375
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E849084D4F1
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:57:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXp8Z-0005CL-3Q; Wed, 07 Feb 2024 16:07:19 -0500
+	id 1rXptx-0006tR-G6; Wed, 07 Feb 2024 16:56:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rXp8W-000567-B4; Wed, 07 Feb 2024 16:07:16 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptv-0006sY-Ek
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rXp8U-0007lH-Jf; Wed, 07 Feb 2024 16:07:16 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B6CEB4B509;
- Thu,  8 Feb 2024 00:08:22 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D6D2B764A3;
- Thu,  8 Feb 2024 00:07:10 +0300 (MSK)
-Message-ID: <516017c2-55c8-46b3-8a16-abfab1e2511e@tls.msk.ru>
-Date: Thu, 8 Feb 2024 00:07:10 +0300
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptt-0007Zg-RG
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707342973;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gFHdAOVQTsRaSOUgVQ8b6/e4QuLEvB+ID/BFiR7oHGo=;
+ b=fnbylmaaCw+vP51upr44E9n3ExVaYll6RkrMX37qjaUOqV1ecz0QkQ7ToQyzlMCSD7FPCt
+ WKDCCQsizzc9LNiTdBiSpv98i9rTRIbKc/4ZxwLwKkwAGJfPRk31gU5EARo17/Kllc95pB
+ 6qZbY3VmDjJ+G+vWlAN8C7i4AKRSInk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-264-Fhi8y22NORapfBnM2CDIEA-1; Wed, 07 Feb 2024 16:56:10 -0500
+X-MC-Unique: Fhi8y22NORapfBnM2CDIEA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3766185A780;
+ Wed,  7 Feb 2024 21:56:09 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.192.31])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 25926492BC6;
+ Wed,  7 Feb 2024 21:56:08 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PULL 00/16] Block layer patches
+Date: Wed,  7 Feb 2024 22:55:50 +0100
+Message-ID: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/console: Fix console resize with placeholder surface
-Content-Language: en-US
-To: Tianlan Zhou <bobby825@126.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20240207172024.8-1-bobby825@126.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240207172024.8-1-bobby825@126.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,17 +76,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-07.02.2024 20:20, Tianlan Zhou :
-> In `qemu_console_resize()`, the old surface of the console is keeped if the new
-> console size is the same as the old one. If the old surface is a placeholder,
-> and the new size of console is the same as the placeholder surface (640*480),
-> the surface won't be replace.
-> In this situation, the surface's `QEMU_PLACEHOLDER_FLAG` flag is still set, so
-> the console won't be displayed in SDL display mode.
-> This patch fixes this problem by forcing a new surface if the old one is a
-> placeholder.
+The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
 
-Cc qemu-stable
+  Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
 
-/mjt
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
+
+for you to fetch changes up to 7ccd0415f2d67e6739da756241f60d98d5c80bf8:
+
+  virtio-blk: avoid using ioeventfd state in irqfd conditional (2024-02-07 21:59:07 +0100)
+
+----------------------------------------------------------------
+Block layer patches
+
+- Allow concurrent BB context changes
+- virtio: Re-enable notifications after drain
+- virtio-blk: Fix missing use of irqfd
+- scsi: Don't ignore most usb-storage properties
+- blkio: Respect memory-alignment for bounce buffer allocations
+- iotests tmpdir fixes
+- virtio-blk: Code cleanups
+
+----------------------------------------------------------------
+Daniel P. Berrangé (2):
+      iotests: fix leak of tmpdir in dry-run mode
+      iotests: give tempdir an identifying name
+
+Hanna Czenczek (5):
+      block-backend: Allow concurrent context changes
+      scsi: Await request purging
+      virtio-scsi: Attach event vq notifier with no_poll
+      virtio: Re-enable notifications after drain
+      virtio-blk: Use ioeventfd_attach in start_ioeventfd
+
+Kevin Wolf (2):
+      scsi: Don't ignore most usb-storage properties
+      blkio: Respect memory-alignment for bounce buffer allocations
+
+Stefan Hajnoczi (7):
+      virtio-blk: enforce iothread-vq-mapping validation
+      virtio-blk: clarify that there is at least 1 virtqueue
+      virtio-blk: add vq_rq[] bounds check in virtio_blk_dma_restart_cb()
+      virtio-blk: declare VirtIOBlock::rq with a type
+      monitor: use aio_co_reschedule_self()
+      virtio-blk: do not use C99 mixed declarations
+      virtio-blk: avoid using ioeventfd state in irqfd conditional
+
+ include/block/aio.h            |   7 +-
+ include/hw/scsi/scsi.h         |   5 +-
+ include/hw/virtio/virtio-blk.h |   2 +-
+ block/blkio.c                  |   3 +
+ block/block-backend.c          |  22 ++--
+ hw/block/virtio-blk.c          | 226 +++++++++++++++++++++++------------------
+ hw/scsi/scsi-bus.c             |  63 ++++++------
+ hw/scsi/virtio-scsi.c          |   7 +-
+ hw/usb/dev-storage-classic.c   |   5 +-
+ hw/virtio/virtio.c             |  42 ++++++++
+ qapi/qmp-dispatch.c            |   7 +-
+ tests/qemu-iotests/testenv.py  |   2 +-
+ tests/qemu-iotests/check       |   3 +-
+ 13 files changed, 236 insertions(+), 158 deletions(-)
+
 
