@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BC984CF14
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:39:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3836584CF24
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:40:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkwQ-0002wu-CD; Wed, 07 Feb 2024 11:38:30 -0500
+	id 1rXkwT-00030O-Tj; Wed, 07 Feb 2024 11:38:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwM-0002ty-EC
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:26 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1rXkwR-0002yg-EB
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:31 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwK-00068e-Br
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:26 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40fdc63f4feso7868025e9.3
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:23 -0800 (PST)
+ id 1rXkwO-0006CG-Sl
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:31 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40ff28388a6so7630565e9.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707323902; x=1707928702; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707323907; x=1707928707; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oWoGzkk5jlTntsP9Fp0ezGwzMskb1JgO0OTcfpG0rf4=;
- b=mCvzwygqxhve/FdYw7vM+UBP6w6qu/Tz7WK/foIeEyrQVW6k/i4Ydkb9gF9Qt+WT4W
- ZY+OwC1/9TBVMyJzGILuzy3eG6GdfU2obtNtfUgM3kJwqmCqO3QL+8Zi6G+Bt10t4MxO
- uhKQxhRJZZ+42XRpdAVF3IN43nBvmecRovbPNOlnS0yszWLs0PRHwsdndJLWfQK0Ol6E
- 24x9UiLhmUgPe2vTpvwHQaXuBMbpzTcB37XU3qhkjF/Jg4k6xkFg4Fbh1RFFZGl1uqnG
- Bu/xlEid0XNNnp0iZAqf/10Il2gEJll+T6o1DKJrWjTGrKEV4IyVJHKuA7WW53cr25xq
- qZvQ==
+ bh=NZEnJqnRtjHTYADU54FKGw8u/qLIoqp7a6/Lc+0JhOI=;
+ b=gfcUw6FdsXwGE1FD/EB8khiaSdJWBLoVSCkCwzub66Pt9ORycJw6qomC4Ax0KEkTg+
+ 5pVXQwcuZxwr4HBP0vFIKWf02jbs/vDZ/Zslg+EyWGXoLuhpbBJKR+FfnTBc/Iy09MqB
+ k/Vcl8lSdoG0koikOSBl1HNosyZTkED0pKCUY1qxahZoTCMCb2U/r674Y+v+ezb32kxA
+ Wv3ZbEnZTGYFd8YxQqRerN5ELJR8so8nNUZyVAXvQme0IwOzHt/gvhgM1YSxXmJD/f3Y
+ 4ECXlDQGaprGub9HHWStS46XBRUGsOZQxJYk/Pv+Va8NX25tYLSK3oC3y1sK9dTqk/pV
+ 352A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707323902; x=1707928702;
+ d=1e100.net; s=20230601; t=1707323907; x=1707928707;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oWoGzkk5jlTntsP9Fp0ezGwzMskb1JgO0OTcfpG0rf4=;
- b=jFHwJqxov0MJTJ4i+/gXSMN15RNEWYUxOPJhcAkSbSybJ7BTKUygBwlJ7NBvjAWpWR
- mSaOvfvbIebxm278bBaJrJbJCNvUah+gHUcf+KbOH8GfnYbKAaitEFy3dOQEjF2YlIVn
- p3jRwv45AuXx55UDatYtIYpJGESsBckU4XgntcUZRzdVbva/XfbODJPoI2qkwd1+BQ2w
- I0L5GgM5TTvPpiJvD1U1Ofyd8JcR9cYZdhhiqDe/sFqt6bLpY+cPEEt0JFY28+ah6G/P
- 4gGcfbOEc9Z3LISj8aK0JidzLmVrdN47XeUEr4uof6n1ZUmrXOnhpQI/jNOyFTA49r9u
- pM8Q==
-X-Gm-Message-State: AOJu0YyubnYky8f/2AgyzTJDyFO/VDH7HpLXauQMdSjoyZlkZm3YmQXu
- Q5nXVmrs/Ao/mkFqNc6LTdMiRjcfYmz3kZ3qjOf9XQb7IFoigIgB/YVPuZCw628=
-X-Google-Smtp-Source: AGHT+IFKZDWPp/Oeqr5xIx+FWTBf9UOkRI8o5K1IWgBIDljwhDfnmXTooMPXmAX57B0O5y42TgwpXA==
-X-Received: by 2002:a05:600c:4691:b0:40e:f154:752 with SMTP id
- p17-20020a05600c469100b0040ef1540752mr5391678wmo.20.1707323902442; 
- Wed, 07 Feb 2024 08:38:22 -0800 (PST)
+ bh=NZEnJqnRtjHTYADU54FKGw8u/qLIoqp7a6/Lc+0JhOI=;
+ b=Rc+oORgAvldGKjsUd/36/udxOjq32YKfCos1CV0JVccCu9m88WLCTeCgWPrasgHUXB
+ KyvVC34gJQNFV+m+ImU1MCTxhopXHw+WM2Zal0Z0gImywsvYX44+9EyEdNL5k17VJZlv
+ 9vV7uqfmFMxR/ehfclzQjfp4ms1E95tKVEUhLSkdS5tzCob2odJTuLn/JmpUDMVgZdOH
+ y7WSI7xZ1JfvL+v6syNc6q11r3ofHeEY1jO6JuUYdsTzQPd9ZMSZNR4Qw9BfCzr+3AkD
+ WWbUn5LyAlHVJyQvz+djbXLipZVPFDBJa7g2eTO4sxu96fy2GodgeOxAwVBPD+TQXtPK
+ wo1w==
+X-Gm-Message-State: AOJu0Yw0FaBl7ioFoeMh8bDMECloRdFwc3Vbr9RtwwT7vHPxdZXwQRCX
+ rEFA7dM1zkJ3B5bnM93BvJ9bENpd1vn39tOtRuqqFNur1lUMkd0kvJ/q4OHkYsY=
+X-Google-Smtp-Source: AGHT+IEs5VzykUrPZZ/a8E0suhAGYeAe+JVPGaxzI2YNKpjCClE233UfaCR0f5RWvU2Zj+QL6HW2hg==
+X-Received: by 2002:a05:600c:1553:b0:410:2496:ccdd with SMTP id
+ f19-20020a05600c155300b004102496ccddmr522761wmg.27.1707323907446; 
+ Wed, 07 Feb 2024 08:38:27 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWOTJ4esVaJckcJFrE2pkVh9RazJTeGt3av8oiPaGyDUIvMc4VJ5oqaZ5tCa3BM8uZeFYMPxrQ1xyVLHqFEn6qa5SARefa9pJ5qL555GzP5dh9DKCE1zeJQ47UzXpPEYVLaFCDA/smQoWpD+GHLMZguXFhoZSXuPMsBW3j4JCQ3n8J0SbbSVTktdMHmWTRj9cyAtm/QpON5VaD7RYqy4AC8n0RrRqrxS4ux4is6eApPuPkuCIy3ucmZ1k6bHnLFbYoPFIIrp24fNRF4XjExn/s7eZRZAdiNl8fwLbV3VI34ry3MosOI5SmU8V14cGJaS2sL1voYPm8z4BQiod08YKblO37LwlInE+j+DIhiFInFmHe+cjT79vgauLX3H6DKPlkicMxuXIy6nvgOIl99r9I5kWsib7cLX7XXhm0itfdcnwmu4aNBh+YqVb0EvyAbsuzzw61/YN9POghP1NBE5l34ClIzTyoi5lZJ00p+Hf3xCk9CSjIIs5LOxmkrPD7gGZGYlF49qJRTL6XnBqoMvUbSaMlg8mn5OlcQK+Q1aUUKD9v81sfmcGM0tr69WnUKVkLHsYDTCfU373ZIsWDxVtcZf+0jP30FWAbHfHyH0bP/cLJsUqgjLjw1r8Wb1xPuTgHwi1LgbOHm8O4DOGxP1hvaNaTHGM6dG2EfOLgySUQo5vYtBXQvbNLNvN7TGqnvsLsH22U/WLGATVK7jNwQ4GQHQiCJ/4Wmbr3FK9dbwciDQL3bW+yVZa6GlmQeeYv8C2P0LDavkCzuNoGq/eq0hYwXk3c1uUExTvH5UNUAlUjbM5jlQSu+2hLinU/D75agOpn+Iy5geOmZJgCsqovJUhKt+juyNPkjOzKL922q
+ AJvYcCX2twQPA/imKU8TXnjh8RXEOe87TDnJV7LjaUystw7Iipdfu4tRqFIR6jmxZLiZvq8iJJbbUyUtf4zHNMB+e5LW+khol3VhtpuFOqOUoMbF+Ko03I6/r0pPjSAi88ffV7sVliFGwb/eZPufsf8tCuUYnjAh3OSskNSFkveT6EDZnMUBxAVjRlepPxNHnShJRn4PAxzXvomj4+CEuuqmNKkaZ2xJGAkNDuCj+6E2siTpTHVmlmd803nIe2OOGdGmF2q6lvmZ6r6bkk62g8fNRCw4JlH14azS1pNP8cC8mQf7FwSN9zcG4lLVKf5B9Ekhrv+o+Itxh1PI5Jro2/byTmwEGc5FRkH1Eb6B6cqzY701LO6UFFaFuh17a86Z3T8+0E8nrrxERyZ8pXL29bE8FYLrqY25Hy8kdElo/ajUHWuovys/uUIbtFVhhUtGBd/3XtAtNgPBlI0Q5X/Md9xsDm60zH/AOhMRye27qoo6Fiprj6T9WjnolNhmvELVKO+G9TFQKJKh0BCWSfjdZbNOIZLZ+4zHTshILfRU+VUcd5VWRuvow+/9w9pbyt4NFOY3hspWqanUGC0lnuDKrrSufHDhu74Xccrhvx9w9mQl0PCYa+HjGCS3rn2RouU7i28kQCH49irLXqLCiB0ewuQHIvGHN6YuNk5xk5chcipTG/0xgjy1P3t/iWKx704X1yCDuwB0yOHbmaA8twCpazeb8Kt0Fe+ReQ8FNk6t6h3dlkV91fTvdgdtSu1Po+NKixtglHHqO+TqKeueteFkLYiJwFWA1gEkgfp+hrHfo4g/YQOFp0Lp+7HiD3yqsny4W6jiFe4qAnoFonlWW4OQwdl+U+pi1MNw8g7pAT5JgiL8
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- fl16-20020a05600c0b9000b004101f27737asm1077895wmb.29.2024.02.07.08.38.15
+ b15-20020a05600010cf00b0033b4e58746asm1809148wrx.69.2024.02.07.08.38.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 08:38:17 -0800 (PST)
+ Wed, 07 Feb 2024 08:38:24 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 13B8A5F949;
+ by draig.lan (Postfix) with ESMTP id 292D85F7B1;
  Wed,  7 Feb 2024 16:38:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,18 +82,17 @@ Cc: devel@lists.libvirt.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Kyle Evans <kevans@freebsd.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 10/14] gdbstub: Expose TARGET_SIGTRAP in a target-agnostic
- way
-Date: Wed,  7 Feb 2024 16:38:08 +0000
-Message-Id: <20240207163812.3231697-11-alex.bennee@linaro.org>
+Subject: [PATCH v2 11/14] gdbstub: Allow specifying a reason in stop packets
+Date: Wed,  7 Feb 2024 16:38:09 +0000
+Message-Id: <20240207163812.3231697-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240207163812.3231697-1-alex.bennee@linaro.org>
 References: <20240207163812.3231697-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,44 +117,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-The upcoming syscall catchpoint support needs to send SIGTRAP stop
-packets to GDB. Being able to compile this support only once for all
-targets is a good thing, and it requires hiding TARGET_SIGTRAP behind
-a function call.
+The upcoming syscall catchpoint support needs to send stop packets with
+an associated reason to GDB. Add an extra parameter to gdb_handlesig()
+for that, and rename it to gdb_handlesig_reason(). Provide a
+compatibility wrapper with an old name.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240202152506.279476-2-iii@linux.ibm.com>
+Message-Id: <20240202152506.279476-3-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- gdbstub/internals.h   | 1 +
- gdbstub/user-target.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ include/gdbstub/user.h | 16 ++++++++++++++--
+ gdbstub/user.c         |  5 ++++-
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 5c0c725e54c..aeb0d9b5377 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -136,6 +136,7 @@ void gdb_append_thread_id(CPUState *cpu, GString *buf);
- int gdb_get_cpu_index(CPUState *cpu);
- unsigned int gdb_get_max_cpus(void); /* both */
- bool gdb_can_reverse(void); /* softmmu, stub for user */
-+int gdb_target_sigtrap(void); /* user */
+diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
+index d392e510c59..1fc43e04af5 100644
+--- a/include/gdbstub/user.h
++++ b/include/gdbstub/user.h
+@@ -10,9 +10,10 @@
+ #define GDBSTUB_USER_H
  
- void gdb_create_default_process(GDBState *s);
- 
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index c4bba4c72c7..b7d4c37cd81 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -418,3 +418,8 @@ void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx)
-                     ts->bprm->filename + offset);
-     gdb_put_strbuf();
- }
+ /**
+- * gdb_handlesig() - yield control to gdb
++ * gdb_handlesig_reason() - yield control to gdb
+  * @cpu: CPU
+  * @sig: if non-zero, the signal number which caused us to stop
++ * @reason: stop reason for stop reply packet or NULL
+  *
+  * This function yields control to gdb, when a user-mode-only target
+  * needs to stop execution. If @sig is non-zero, then we will send a
+@@ -24,7 +25,18 @@
+  * or 0 if no signal should be delivered, ie the signal that caused
+  * us to stop should be ignored.
+  */
+-int gdb_handlesig(CPUState *, int);
++int gdb_handlesig_reason(CPUState *, int, const char *);
 +
-+int gdb_target_sigtrap(void)
++/**
++ * gdb_handlesig() - yield control to gdb
++ * @cpu CPU
++ * @sig: if non-zero, the signal number which caused us to stop
++ * @see gdb_handlesig_reason()
++ */
++static inline int gdb_handlesig(CPUState *cpu, int sig)
 +{
-+    return TARGET_SIGTRAP;
++    return gdb_handlesig_reason(cpu, sig, NULL);
 +}
+ 
+ /**
+  * gdb_signalled() - inform remote gdb of sig exit
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index dbe1d9b8875..63edca131ab 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -121,7 +121,7 @@ void gdb_qemu_exit(int code)
+     exit(code);
+ }
+ 
+-int gdb_handlesig(CPUState *cpu, int sig)
++int gdb_handlesig_reason(CPUState *cpu, int sig, const char *reason)
+ {
+     char buf[256];
+     int n;
+@@ -141,6 +141,9 @@ int gdb_handlesig(CPUState *cpu, int sig)
+                             "T%02xthread:", gdb_target_signal_to_gdb(sig));
+             gdb_append_thread_id(cpu, gdbserver_state.str_buf);
+             g_string_append_c(gdbserver_state.str_buf, ';');
++            if (reason) {
++                g_string_append(gdbserver_state.str_buf, reason);
++            }
+             gdb_put_strbuf();
+             gdbserver_state.allow_stop_reply = false;
+         }
 -- 
 2.39.2
 
