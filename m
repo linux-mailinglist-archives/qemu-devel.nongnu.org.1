@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE8F84D508
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B1084D50A
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXpu3-000720-Hi; Wed, 07 Feb 2024 16:56:23 -0500
+	id 1rXpu2-00070G-Sk; Wed, 07 Feb 2024 16:56:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu1-0006z0-Ae
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu0-0006ye-UF
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:20 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptz-0007cV-OV
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:21 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXptz-0007cK-BM
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707342979;
+ s=mimecast20190719; t=1707342978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wAx0RdZYogkrfCKJZGl1P9CU2kkEBXzY+du27/JRMO8=;
- b=YVVsfKaHaEvjp8KSMnlVm+x4apxAFWbioew4sfkeWcpFbOfq5tpJxwdDrOIyRZV8UwoJGb
- MhXLGf90stDlTqwZLOxTiIcTV3Bk5EgIBdEWINoV/ms/VqHTNFswmF1JJ6u+cKWVe6Ua5O
- CqmmJZ1STn7ug85KDzRslKS6Gsmqti0=
+ bh=XDIzmmWE/ZB05/go2POBMcN6FbyjA18O7Soilm/47Zg=;
+ b=YceXCv6/XpYm/Lk+T+I3d6vJSl41jKDy6H8gl2uj0lpqUlfIhLHD+ZN/ucRNOq0Jqmx2j/
+ 614i/DeiR66hhSLXe3NO29GC7I9spuamUXbK+Qlaes50u68JFBk4vBHMp3lRhuPoR5IcqW
+ CZbmkHoOcfDskdifIBzDsWAhFkbN5PQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-WvBTDAXEPwynSGxeqv-rmg-1; Wed,
- 07 Feb 2024 16:56:15 -0500
-X-MC-Unique: WvBTDAXEPwynSGxeqv-rmg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-6WX5j1NCOBOROVPL2k1TLw-1; Wed,
+ 07 Feb 2024 16:56:16 -0500
+X-MC-Unique: 6WX5j1NCOBOROVPL2k1TLw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BFC93C11C77;
- Wed,  7 Feb 2024 21:56:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47AEA29AC00E;
+ Wed,  7 Feb 2024 21:56:16 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E32AA492BC6;
- Wed,  7 Feb 2024 21:56:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AF64F492BC6;
+ Wed,  7 Feb 2024 21:56:15 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 06/16] block-backend: Allow concurrent context changes
-Date: Wed,  7 Feb 2024 22:55:56 +0100
-Message-ID: <20240207215606.206038-7-kwolf@redhat.com>
+Subject: [PULL 07/16] scsi: Await request purging
+Date: Wed,  7 Feb 2024 22:55:57 +0100
+Message-ID: <20240207215606.206038-8-kwolf@redhat.com>
 In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
 References: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -61,8 +61,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,94 +79,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hanna Czenczek <hreitz@redhat.com>
 
-Since AioContext locks have been removed, a BlockBackend's AioContext
-may really change at any time (only exception is that it is often
-confined to a drained section, as noted in this patch).  Therefore,
-blk_get_aio_context() cannot rely on its root node's context always
-matching that of the BlockBackend.
+scsi_device_for_each_req_async() currently does not provide any way to
+be awaited.  One of its callers is scsi_device_purge_requests(), which
+therefore currently does not guarantee that all requests are fully
+settled when it returns.
 
-In practice, whether they match does not matter anymore anyway: Requests
-can be sent to BDSs from any context, so anyone who requests the BB's
-context should have no reason to require the root node to have the same
-context.  Therefore, we can and should remove the assertion to that
-effect.
+We want all requests to be settled, because scsi_device_purge_requests()
+is called through the unrealize path, including the one invoked by
+virtio_scsi_hotunplug() through qdev_simple_device_unplug_cb(), which
+most likely assumes that all SCSI requests are done then.
 
-In addition, because the context can be set and queried from different
-threads concurrently, it has to be accessed with atomic operations.
+In fact, scsi_device_purge_requests() already contains a blk_drain(),
+but this will not fully await scsi_device_for_each_req_async(), only the
+I/O requests it potentially cancels (not the non-I/O requests).
+However, we can have scsi_device_for_each_req_async() increment the BB
+in-flight counter, and have scsi_device_for_each_req_async_bh()
+decrement it when it is done.  This way, the blk_drain() will fully
+await all SCSI requests to be purged.
 
-Buglink: https://issues.redhat.com/browse/RHEL-19381
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
+This also removes the need for scsi_device_for_each_req_async_bh() to
+double-check the current context and potentially re-schedule itself,
+should it now differ from the BB's context: Changing a BB's AioContext
+with a root node is done through bdrv_try_change_aio_context(), which
+creates a drained section.  With this patch, we keep the BB in-flight
+counter elevated throughout, so we know the BB's context cannot change.
+
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-Message-ID: <20240202144755.671354-2-hreitz@redhat.com>
+Message-ID: <20240202144755.671354-3-hreitz@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/block-backend.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ hw/scsi/scsi-bus.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 209eb07528..9c4de79e6b 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -44,7 +44,7 @@ struct BlockBackend {
-     char *name;
-     int refcnt;
-     BdrvChild *root;
--    AioContext *ctx;
-+    AioContext *ctx; /* access with atomic operations only */
-     DriveInfo *legacy_dinfo;    /* null unless created by drive_new() */
-     QTAILQ_ENTRY(BlockBackend) link;         /* for block_backends */
-     QTAILQ_ENTRY(BlockBackend) monitor_link; /* for monitor_block_backends */
-@@ -2414,22 +2414,22 @@ void blk_op_unblock_all(BlockBackend *blk, Error *reason)
-     }
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index 0a2eb11c56..230313022c 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -120,17 +120,13 @@ static void scsi_device_for_each_req_async_bh(void *opaque)
+     SCSIRequest *next;
+ 
+     /*
+-     * If the AioContext changed before this BH was called then reschedule into
+-     * the new AioContext before accessing ->requests. This can happen when
+-     * scsi_device_for_each_req_async() is called and then the AioContext is
+-     * changed before BHs are run.
++     * The BB cannot have changed contexts between this BH being scheduled and
++     * now: BBs' AioContexts, when they have a node attached, can only be
++     * changed via bdrv_try_change_aio_context(), in a drained section.  While
++     * we have the in-flight counter incremented, that drain must block.
+      */
+     ctx = blk_get_aio_context(s->conf.blk);
+-    if (ctx != qemu_get_current_aio_context()) {
+-        aio_bh_schedule_oneshot(ctx, scsi_device_for_each_req_async_bh,
+-                                g_steal_pointer(&data));
+-        return;
+-    }
++    assert(ctx == qemu_get_current_aio_context());
+ 
+     QTAILQ_FOREACH_SAFE(req, &s->requests, next, next) {
+         data->fn(req, data->fn_opaque);
+@@ -138,11 +134,16 @@ static void scsi_device_for_each_req_async_bh(void *opaque)
+ 
+     /* Drop the reference taken by scsi_device_for_each_req_async() */
+     object_unref(OBJECT(s));
++
++    /* Paired with blk_inc_in_flight() in scsi_device_for_each_req_async() */
++    blk_dec_in_flight(s->conf.blk);
+ }
+ 
+ /*
+  * Schedule @fn() to be invoked for each enqueued request in device @s. @fn()
+  * runs in the AioContext that is executing the request.
++ * Keeps the BlockBackend's in-flight counter incremented until everything is
++ * done, so draining it will settle all scheduled @fn() calls.
+  */
+ static void scsi_device_for_each_req_async(SCSIDevice *s,
+                                            void (*fn)(SCSIRequest *, void *),
+@@ -163,6 +164,8 @@ static void scsi_device_for_each_req_async(SCSIDevice *s,
+      */
+     object_ref(OBJECT(s));
+ 
++    /* Paired with blk_dec_in_flight() in scsi_device_for_each_req_async_bh() */
++    blk_inc_in_flight(s->conf.blk);
+     aio_bh_schedule_oneshot(blk_get_aio_context(s->conf.blk),
+                             scsi_device_for_each_req_async_bh,
+                             data);
+@@ -1728,11 +1731,20 @@ static void scsi_device_purge_one_req(SCSIRequest *req, void *opaque)
+     scsi_req_cancel_async(req, NULL);
  }
  
 +/**
-+ * Return BB's current AioContext.  Note that this context may change
-+ * concurrently at any time, with one exception: If the BB has a root node
-+ * attached, its context will only change through bdrv_try_change_aio_context(),
-+ * which creates a drained section.  Therefore, incrementing such a BB's
-+ * in-flight counter will prevent its context from changing.
++ * Cancel all requests, and block until they are deleted.
 + */
- AioContext *blk_get_aio_context(BlockBackend *blk)
+ void scsi_device_purge_requests(SCSIDevice *sdev, SCSISense sense)
  {
--    BlockDriverState *bs;
-     IO_CODE();
+     scsi_device_for_each_req_async(sdev, scsi_device_purge_one_req, NULL);
  
-     if (!blk) {
-         return qemu_get_aio_context();
-     }
- 
--    bs = blk_bs(blk);
--    if (bs) {
--        AioContext *ctx = bdrv_get_aio_context(blk_bs(blk));
--        assert(ctx == blk->ctx);
--    }
--
--    return blk->ctx;
-+    return qatomic_read(&blk->ctx);
++    /*
++     * Await all the scsi_device_purge_one_req() calls scheduled by
++     * scsi_device_for_each_req_async(), and all I/O requests that were
++     * cancelled this way, but may still take a bit of time to settle.
++     */
+     blk_drain(sdev->conf.blk);
++
+     scsi_device_set_ua(sdev, sense);
  }
  
- int blk_set_aio_context(BlockBackend *blk, AioContext *new_context,
-@@ -2442,7 +2442,7 @@ int blk_set_aio_context(BlockBackend *blk, AioContext *new_context,
-     GLOBAL_STATE_CODE();
- 
-     if (!bs) {
--        blk->ctx = new_context;
-+        qatomic_set(&blk->ctx, new_context);
-         return 0;
-     }
- 
-@@ -2471,7 +2471,7 @@ static void blk_root_set_aio_ctx_commit(void *opaque)
-     AioContext *new_context = s->new_ctx;
-     ThrottleGroupMember *tgm = &blk->public.throttle_group_member;
- 
--    blk->ctx = new_context;
-+    qatomic_set(&blk->ctx, new_context);
-     if (tgm->throttle_state) {
-         throttle_group_detach_aio_context(tgm);
-         throttle_group_attach_aio_context(tgm, new_context);
 -- 
 2.43.0
 
