@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD34484C2B6
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 03:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7292E84C2B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 03:53:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXY34-0003E0-A8; Tue, 06 Feb 2024 21:52:30 -0500
+	id 1rXY38-0003FO-06; Tue, 06 Feb 2024 21:52:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXY32-0003DG-75
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:28 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rXY36-0003Eo-6n
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:32 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rXY30-0000dB-OU
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:27 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d7431e702dso1939615ad.1
- for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 18:52:26 -0800 (PST)
+ id 1rXY34-0000fr-Po
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:52:31 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d9b2400910so1415855ad.0
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 18:52:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707274345; x=1707879145; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707274349; x=1707879149; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8/3IB+SoDAzkmHVKlFR4bQnh/JTWAMai5rQK+rwyNyA=;
- b=DoKQseycYOVQwr8krjmQ/jUO33B5km8OCt6v40vdaxCfDT46uM3ssBhtel4LeuRK5S
- GLQmwxNXhqrBvXRUcPWhOSdPwN6OHoTWdbQPQ/aDfErS20vlni2CbK4wkEPqQg0uWFdW
- 2QCG/O2+1OLb1/FgWOOYqx1IO46FOu6rjQN01D+LP11RQnbvlcRxAEnKISfAkJSnSrhi
- V3gDmej5hSGoVM7YgDH4SoKzlbUEO133qQOIVRFRMWkrf2pFmvihEKxODYC38aR+B0ai
- NroTP2ZbBhBaxyJ14swTgFBAvNYpYi9suR23pj5+LZYbJOGqpVyilCvlScwTDNarYkYW
- lTgw==
+ bh=TlKFEqZAqQ3pAY5dLOI6DMwcM/4p9lbYDIei9Bg0M3Q=;
+ b=OEIty088a7D36IEO+R5MgPgwJIIQ3+uCYUbjTCxIecylIh92NxRpSqSKSpjmZJN5io
+ kEhpBdm/XetUZaR/WiL9tBLQnp7+FCcuwrVQRt/ZXa7oF0vdd9O1CV85/r3NfABFhYql
+ HNpfnDWmSI6sd7scS5asTGUEcVOi1z089WE/Eyvpl5qdpc7ngR0dLaaGzTrCmvT3I4Wo
+ 7Ev2RBZQwE43SX44rqhqEOL+IpB9aYvNFDPqv3K6Ldc2v7+YHe3P7yPRjC+Mt2jiRKNu
+ QXDSd+t6UNJIGsR8sB2qZ1h0z7RPTlSgBQf+X/zI8IZvTI/TR9Xk7Ejr+4RnBDluER2b
+ yRFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707274345; x=1707879145;
+ d=1e100.net; s=20230601; t=1707274349; x=1707879149;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8/3IB+SoDAzkmHVKlFR4bQnh/JTWAMai5rQK+rwyNyA=;
- b=mU/aKKvYGb+g5y7s+E+KflQNQ6Dwey8pBoI5RqZUOna48GHwK1XlXezfYqUwpzQw1P
- ILdb1AlR1dpNmkrkypQxOC8Zv/DMO2KrXgZppv2alc8EH9dTlcTSzEjWKCjVz9wx3Tc/
- 1JGmzT6ok3io4xz7SRFwyvy3G/HWCUGeMe1NSy3G9likeVjDHczTACyLhJJU6IbOYC4C
- 7Uo+sRFAL3YnRXxbi1pJzJW0+694OW6RnQ8tjVIvb1e7vkOVuBf1jGKAd3GopXjg7eQm
- t3fOFm5fAQ0G9iLQ62KLHtLHyIPLgo6Lvvb5kRR69LkbvwGxFjPz9o1DQl/j+7xPPbNc
- hY+g==
-X-Gm-Message-State: AOJu0Yy412HdV9+YKyV33oqVLcEtCz2fY9kJCVaZ/PbrUtjNECFhJ9aa
- mCsJ1J+eclGMhYi+vZCg9eKJww/gLseEwuJRWh1vh1SKX720neHF++DB7jNBA9zbBgqrtmC2HXz
- J7w4=
-X-Google-Smtp-Source: AGHT+IHKgVQkntaiRoJm4UCcgGjBjKoxvqU9peXhBjkUf7LKe8lpr3yH1vttfuO/2ReORC5DIr38Ng==
-X-Received: by 2002:a17:903:41c9:b0:1d9:e1e3:8639 with SMTP id
- u9-20020a17090341c900b001d9e1e38639mr3687125ple.62.1707274345389; 
- Tue, 06 Feb 2024 18:52:25 -0800 (PST)
+ bh=TlKFEqZAqQ3pAY5dLOI6DMwcM/4p9lbYDIei9Bg0M3Q=;
+ b=GU59q+MAt97dTjk8Ijrao6UIIqGewXGzVUWdzzeLAzGCysoJRPywbK7LsKcUU4y7p+
+ GJ+Wh47LPZq/JHgggBTOPxNhphSezq7n0QHfEjlzR/a6fHPStytFxrSGfDaBsAt1keUC
+ 3+yG+5lrfA7YRPfeKjM2zHFQqXqrBy4rbkOAitUg1CXfWa2ii8gj99nmBv48F2EplUNt
+ jR4wNrNGJ7j1YOfAu3UkpMd47zyKETJr6eHpg31K77YO0JCVGBVURJ7XihOp8F81se85
+ mxXXKvMb3o+a5X9vV+VQRNDNzhAiBeeY9l/xZ8HXFMNPTH/juOqB6B7M3yZQ5ktqZPo7
+ fDig==
+X-Gm-Message-State: AOJu0YwY44OgyLGPy6CEuTZP8fnQsoU5G0phwpIhf4/23zzHtYKB4fzn
+ 15hzgR2WqOPMCoymIw2KkZdWxbqisxzDRL91n1LmBQegti4Yyc1z7ZScnvCOwGkZTYoAbYBypIK
+ Vk0s=
+X-Google-Smtp-Source: AGHT+IFVOOLPXu/SnNsLtDFlNQ2iuKF6CoW2Y0oSOWJ1AV+LinfmGwyWpxXCGkDX0Y4mGD5nYQ3kWg==
+X-Received: by 2002:a17:902:e802:b0:1d9:3edf:1e2 with SMTP id
+ u2-20020a170902e80200b001d93edf01e2mr5648247plg.3.1707274349017; 
+ Tue, 06 Feb 2024 18:52:29 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUAfiWzBiEt+kkkM9AN4fJ9p671JGoUeySNOU45usbl6NeaLO/FoX2gbZsuaQ8j6WIGE5bI9ADxzEBFkh4fDKXffqTFLcO+SG+kTwEKX4Jb4z5JusfDZQS+JuKObEdtmvy3
+ AJvYcCV/9fEBvxZ179Rf5XzajD3RWE0SQCCajNCrcLVa3rq5LTAoZgPOW38YKYCJyhuvDjR7UBZu1RuofMr40qUAJ1NAwK0MDYdCrAFv9Y8/sanyn7tVQt0n01YzpFK4LVKMlVxmw0NbBb/IE//GrUaTxbZNDiVIHPFYrhVhTTY=
 Received: from stoup.. (60-242-98-186.static.tpgi.com.au. [60.242.98.186])
  by smtp.gmail.com with ESMTPSA id
- kr8-20020a170903080800b001d8ef97de4asm255435plb.38.2024.02.06.18.52.22
+ kr8-20020a170903080800b001d8ef97de4asm255435plb.38.2024.02.06.18.52.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 Feb 2024 18:52:25 -0800 (PST)
+ Tue, 06 Feb 2024 18:52:28 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	gustavo.romero@linaro.org,
-	qemu-stable@nongnu.org
-Subject: [PATCH v3 2/6] target/arm: Fix nregs computation in do_{ld,st}_zpa
-Date: Wed,  7 Feb 2024 12:52:06 +1000
-Message-Id: <20240207025210.8837-3-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, gustavo.romero@linaro.org, qemu-stable@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v3 3/6] target/arm: Adjust and validate mtedesc sizem1
+Date: Wed,  7 Feb 2024 12:52:07 +1000
+Message-Id: <20240207025210.8837-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240207025210.8837-1-richard.henderson@linaro.org>
 References: <20240207025210.8837-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,74 +95,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The field is encoded as [0-3], which is convenient for
-indexing our array of function pointers, but the true
-value is [1-4].  Adjust before calling do_mem_zpa.
-
-Add an assert, and move the comment re passing ZT to
-the helper back next to the relevant code.
+When we added SVE_MTEDESC_SHIFT, we effectively limited the
+maximum size of MTEDESC.  Adjust SIZEM1 to consume the remaining
+bits (32 - 10 - 5 - 12 == 5).  Assert that the data to be stored
+fits within the field (expecting 8 * 4 - 1 == 31, exact fit).
 
 Cc: qemu-stable@nongnu.org
-Fixes: 206adacfb8d ("target/arm: Add mte helpers for sve scalar + int loads")
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate-sve.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/arm/internals.h         | 2 +-
+ target/arm/tcg/translate-sve.c | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index fc337fe40e..50bff44549 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1278,7 +1278,7 @@ FIELD(MTEDESC, TBI,   4, 2)
+ FIELD(MTEDESC, TCMA,  6, 2)
+ FIELD(MTEDESC, WRITE, 8, 1)
+ FIELD(MTEDESC, ALIGN, 9, 3)
+-FIELD(MTEDESC, SIZEM1, 12, SIMD_DATA_BITS - 12)  /* size - 1 */
++FIELD(MTEDESC, SIZEM1, 12, SIMD_DATA_BITS - SVE_MTEDESC_SHIFT - 12)  /* size - 1 */
+ 
+ bool mte_probe(CPUARMState *env, uint32_t desc, uint64_t ptr);
+ uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra);
 diff --git a/target/arm/tcg/translate-sve.c b/target/arm/tcg/translate-sve.c
-index 296e7d1ce2..7108938251 100644
+index 7108938251..a88e523cba 100644
 --- a/target/arm/tcg/translate-sve.c
 +++ b/target/arm/tcg/translate-sve.c
-@@ -4445,11 +4445,7 @@ static void do_mem_zpa(DisasContext *s, int zt, int pg, TCGv_i64 addr,
+@@ -4443,17 +4443,18 @@ static void do_mem_zpa(DisasContext *s, int zt, int pg, TCGv_i64 addr,
+ {
+     unsigned vsz = vec_full_reg_size(s);
      TCGv_ptr t_pg;
++    uint32_t sizem1;
      int desc = 0;
  
--    /*
--     * For e.g. LD4, there are not enough arguments to pass all 4
--     * registers as pointers, so encode the regno into the data field.
--     * For consistency, do this even for LD1.
--     */
-+    assert(mte_n >= 1 && mte_n <= 4);
+     assert(mte_n >= 1 && mte_n <= 4);
++    sizem1 = (mte_n << dtype_msz(dtype)) - 1;
++    assert(sizem1 <= R_MTEDESC_SIZEM1_MASK >> R_MTEDESC_SIZEM1_SHIFT);
      if (s->mte_active[0]) {
-         int msz = dtype_msz(dtype);
- 
-@@ -4463,6 +4459,11 @@ static void do_mem_zpa(DisasContext *s, int zt, int pg, TCGv_i64 addr,
-         addr = clean_data_tbi(s, addr);
-     }
- 
-+    /*
-+     * For e.g. LD4, there are not enough arguments to pass all 4
-+     * registers as pointers, so encode the regno into the data field.
-+     * For consistency, do this even for LD1.
-+     */
-     desc = simd_desc(vsz, vsz, zt | desc);
-     t_pg = tcg_temp_new_ptr();
- 
-@@ -4600,7 +4601,7 @@ static void do_ld_zpa(DisasContext *s, int zt, int pg,
-      * accessible via the instruction encoding.
-      */
-     assert(fn != NULL);
--    do_mem_zpa(s, zt, pg, addr, dtype, nreg, false, fn);
-+    do_mem_zpa(s, zt, pg, addr, dtype, nreg + 1, false, fn);
- }
- 
- static bool trans_LD_zprr(DisasContext *s, arg_rprr_load *a)
-@@ -5168,14 +5169,13 @@ static void do_st_zpa(DisasContext *s, int zt, int pg, TCGv_i64 addr,
-     if (nreg == 0) {
-         /* ST1 */
-         fn = fn_single[s->mte_active[0]][be][msz][esz];
--        nreg = 1;
+-        int msz = dtype_msz(dtype);
+-
+         desc = FIELD_DP32(desc, MTEDESC, MIDX, get_mem_index(s));
+         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
+         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
+         desc = FIELD_DP32(desc, MTEDESC, WRITE, is_write);
+-        desc = FIELD_DP32(desc, MTEDESC, SIZEM1, (mte_n << msz) - 1);
++        desc = FIELD_DP32(desc, MTEDESC, SIZEM1, sizem1);
+         desc <<= SVE_MTEDESC_SHIFT;
      } else {
-         /* ST2, ST3, ST4 -- msz == esz, enforced by encoding */
-         assert(msz == esz);
-         fn = fn_multiple[s->mte_active[0]][be][nreg - 1][msz];
-     }
-     assert(fn != NULL);
--    do_mem_zpa(s, zt, pg, addr, msz_dtype(s, msz), nreg, true, fn);
-+    do_mem_zpa(s, zt, pg, addr, msz_dtype(s, msz), nreg + 1, true, fn);
- }
- 
- static bool trans_ST_zprr(DisasContext *s, arg_rprr_store *a)
+         addr = clean_data_tbi(s, addr);
 -- 
 2.34.1
 
