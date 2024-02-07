@@ -2,92 +2,173 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59A484C957
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:15:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DBB84C986
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:22:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXft4-0002tx-6H; Wed, 07 Feb 2024 06:14:43 -0500
+	id 1rXfzm-0000TR-Kd; Wed, 07 Feb 2024 06:21:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsz-0002tM-Ts
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1rXfzY-0000Sx-RO
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:21:27 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsy-0003S1-AC
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707304475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LYJ8/tFAmrh3VcWdElUpsPrqIWISPJqBMUPEWn4+ITY=;
- b=YvgT/9jiMsqoPdL2cP2Qu5AuyGHRuNSsUPq6p/ElzKSnYegQErt63+5alO/TFX4VgeSUSV
- 9LzCo1kbyVKHS+ir0E+FFvlj5hR5UE/QMLQJ51pFPF0qb5VGEgOcSLelMFCE0Vq4vwwpf8
- RllXJscE5sy9gQD0ECQvNyFqlGSdg18=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-zrJ0iPp5NpipG2Z8S5kTNQ-1; Wed, 07 Feb 2024 06:14:33 -0500
-X-MC-Unique: zrJ0iPp5NpipG2Z8S5kTNQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3821399b38so28030666b.0
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 03:14:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707304472; x=1707909272;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LYJ8/tFAmrh3VcWdElUpsPrqIWISPJqBMUPEWn4+ITY=;
- b=WAnw7UNj1sXixR0EDZbOCx3yvilbyU0qxxMTWHWzKPh1Ua5HhwTNlvjUjiEMB6KZlt
- nITtkpOfte2TIHu/PmVur9LDK2+7djuFOm6MYGAty4386THBNX7I1WtG9lgwnGrjERYL
- BKFNceJBLYwrPIQoyyYjv/kmwcT8hX1ey2J+FPEJ8karPurKmLlg2s0w4NpdLTtte+YL
- H+25Ciybh4a6ogPvm4mNMnJ8oWGM0iJ7dQ8a+lQ8Vtn52gGdosEp/cLv6RqIWYdNNCbf
- 45iZaFHJ90qYWeqQ9UzOPzvDdgLn/hm5ZP/aF5g/XjWonhfyyTCI+V4ITRYsxbTND1we
- hn8Q==
-X-Gm-Message-State: AOJu0YzpjUfIm80Hx4NFaK5i4IHqesLbaOhgYyfvBb01dxcygahtTrBh
- P4RSLl6rDmlmMrgmxb0NuL9xcb5QgrLjhXLevCfGNAF5BiwAUSRZOOBLp0denfzfMY7f1dSoRvx
- Ea4yeGHpk3ffdYNtte76JXAsAIg3TFjtavC1XFHnIJCqtfES7CuPvoQ7YT0JPdMHbkc6uQSbIIV
- obS7/5oB3LC7y/RRFgcxvSS5edwwq4eU4uNJ4G
-X-Received: by 2002:a17:906:710e:b0:a36:5079:d6c9 with SMTP id
- x14-20020a170906710e00b00a365079d6c9mr3434321ejj.76.1707304472282; 
- Wed, 07 Feb 2024 03:14:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFt7d4EUP9ian+AzAurGomldHgYv/TOxXdYxnsVEfgwtCbrhkVmhIs/bTF4DV+is4tnLJFb9g==
-X-Received: by 2002:a17:906:710e:b0:a36:5079:d6c9 with SMTP id
- x14-20020a170906710e00b00a365079d6c9mr3434303ejj.76.1707304471966; 
- Wed, 07 Feb 2024 03:14:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJTewOuL7R/I4PQlNiLbtrZ0paX3w1QGY9OKOKEXs53zrJ+BvTOeoDukpggfQsDeXSp1CyxA2BD77zequ1CO1QfQ==
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
- by smtp.gmail.com with ESMTPSA id
- ty13-20020a170907c70d00b00a338fedb9ebsm650303ejc.54.2024.02.07.03.14.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 03:14:30 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: shentey@gmail.com,
-	philmd@linaro.org
-Subject: [PATCH v2 8/8] mips: do not list individual devices from configs/
-Date: Wed,  7 Feb 2024 12:14:10 +0100
-Message-ID: <20240207111411.115040-9-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207111411.115040-1-pbonzini@redhat.com>
-References: <20240207111411.115040-1-pbonzini@redhat.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1rXfzV-0005QW-Ri
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:21:24 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 417AE1tA003043; Wed, 7 Feb 2024 11:21:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=//YKp1jae141N4ZXpHBgaZjI+C6BpvObtKNGxnA3zHA=;
+ b=QCOkAy2EVnAxqBHNHWU8It11TsPd7WWCgT4T/PIvsFoWOLsnsUGPLwHISpQOT3U8HaRU
+ w1FJiVJL8/KuKX3u3mc4BClS4XCPN8d1nx8lQRY4UuhEj+BbPvZ70Bfw8ycx2jGCzx61
+ z79gZkvN/MKwFJ6dsC1JGzomDwx4HFv67tOpOdD1mwqr1kgFNF/VuwcOgLqW79YjXhFH
+ 5EbTbZVRfXhTF2ofoNEX1sA3uriF8frpmGtSlISfhGop9SuRZjuzncDW1CpPWPYIUlVP
+ ecFhoin0z6aOblROdkKutD/b9qDMmNLLpevQG1HcODLeN9VYcXVWCimaCm1tDqyF68qq bQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1dhdhk6y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 Feb 2024 11:21:16 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 417AXYNd040219; Wed, 7 Feb 2024 11:21:15 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2100.outbound.protection.outlook.com [104.47.55.100])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3w1bxf4r4v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 Feb 2024 11:21:15 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JhOuvNS86MLLRuJ+143bpTNU2eosBZka68kBoSXZlI9jcOQ3x/R8UxJdaWCwTTDht2OfP+Zr7ER3b1vcJ4tvPKzDgviIrqc+X7GKzSUzx5s8aPmXsKVHDk4lf2e/Mw/Rn6C4hadBzDZDb3Mmt29Po5aLjNP8W5XKK+GWFQGKsOjOHlVJg8YCEhc2Hv4vMWWWbnocAMcah99TWn6/UqxXG3SnlFiiMptbJ8kASCT1lHTCOkOaqh3Yat2L75HDHflyB/ijJJ+IJF8GX7Ja0sW0Kj0L6FR63LjHEW6bYMbHJMX1b/qi0tNfsNabpQoyq3Y+HPWGjd7zqho4niOxuf6lGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=//YKp1jae141N4ZXpHBgaZjI+C6BpvObtKNGxnA3zHA=;
+ b=dSjR4/od6tl7CVbBE1M3XEWrw3VLIARxoUUjGRMS7+q4xj5WggiXIZ9oHjHlI6Q7LQvd7Om5ub5o+E3kxJw6gaXNhee2pQN1UJzaL0Rfuh08L2rf60tt8eWF80LlazyqKywUvp6/lOZI7dt/BQ0D1XfhVOyNYkAwq1xSLzYwu7H+4DKYhV52Ufz6g9cP0/hBfomamJop6SXRPEvKeTngv8mMjY0+mmQt0ZEFzSolLd9uLRGLF4H4qe3yvJ+rBAYmqG1Rhp9OyJ9DJxUxp3j2jOgWRPXkf0tIiyrrauM7pAamXwHIm1aV9KfzI/8wdZYnqTR157qTzgmi7L0W9uNGgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=//YKp1jae141N4ZXpHBgaZjI+C6BpvObtKNGxnA3zHA=;
+ b=G+VNMEN1DaQhjI25UcZg6JprvRfVvuHsRcEox2UHJfN9h3oyyiM/J3bwXRR4UVZrEbAoYnkxhkyxrOzXjpnRIG5xuva6AdMSQW8oWG1QXRNB31WRRO+CzPYBLeJHC9xpLAtAFM22sXitM3ipBS/V0D/OH1KHiGszjWLhlvzrZOc=
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
+ by SA1PR10MB7855.namprd10.prod.outlook.com (2603:10b6:806:3a7::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Wed, 7 Feb
+ 2024 11:21:12 +0000
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::b787:9523:eb1b:4413]) by PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::b787:9523:eb1b:4413%7]) with mapi id 15.20.7249.035; Wed, 7 Feb 2024
+ 11:21:11 +0000
+Message-ID: <afc99063-1916-4a0c-a763-f515a4595e73@oracle.com>
+Date: Wed, 7 Feb 2024 11:21:05 +0000
+Subject: Re: [PATCH v4 0/3] Fix MCE handling on AMD hosts
+Content-Language: en-US
+To: John Allen <john.allen@amd.com>, pbonzini@redhat.com,
+ william.roche@oracle.com
+Cc: yazen.ghannam@amd.com, michael.roth@amd.com, babu.moger@amd.com,
+ richard.henderson@linaro.org, eduardo@habkost.net,
+ qemu-devel@nongnu.org, "peterx@redhat.com" <peterx@redhat.com>
+References: <20230912211824.90952-1-john.allen@amd.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <20230912211824.90952-1-john.allen@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0574.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:276::12) To PH0PR10MB5893.namprd10.prod.outlook.com
+ (2603:10b6:510:149::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|SA1PR10MB7855:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5f4172a-4074-48a2-f4ee-08dc27cee398
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Vjqlev1TEct3QPxx4tsj5vNa8gW0mBzSU7aRv7PA4lR2ZA1KsNc5L5R+vdprLEzTll6t1ae8uDwxed5TUxzXKc4H0un2tZOjHvmKVmpQsqXf+qTxr5B50rhYK0qaGWt/+NWK0LDilj3yN9A6zBaahhCiU8ukKBtVfVOXKP6ENNlGeN3D1P1lnBqAWclfL9We5ajGK+T31075Zd0YeBr8gOA26phT7H4GMcErPYVfes+AeKXJQogOxlwqleFR0Zr6SdkCHaO/YONCaMbGNTC11xbqBMQFeNLrsPryTeftJa4FH33+GKEaJu3uG/HprrB0uZrxxnz9LgG9nWhBLu6zEc0SQ7azsYnxAzBp8ZKYA8ipaTieDY4AK+pvT8KxPSODhTbMLDJJTyvHje6vOfW+k2nFJ9fptfTO/n4LzrjhQsnVnqJsw4k3G/PdIYvUSPbRsBK5nA4UqsRWM+PMQsPlReKUBiOaZPZIyXd8i9kYW5e1vp+XE/9sWqPE53ys96lvXN2xtOlTXN1wZvjDi/XC0WPeySALLpBb07BaU0Y8PVTKNPHSx1VjhZMX/C9LuEs7c/1IDELMVSrGO3LhMUeWJl2m8Af1uMIE0dca/E8OvXk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(136003)(39860400002)(376002)(396003)(366004)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(31686004)(38100700002)(83380400001)(6486002)(966005)(2616005)(86362001)(31696002)(6666004)(478600001)(6506007)(26005)(6512007)(53546011)(36756003)(66899024)(66946007)(316002)(6636002)(41300700001)(66476007)(66556008)(8676002)(4326008)(2906002)(8936002)(5660300002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RStUYTVYbkJFVjhxM3E3MksyR1dNMEdJUktEY1lDbzB5YjdBcFVYOEJyZ2lU?=
+ =?utf-8?B?QzF0RVRNUXFZcmtXOG1sZGZOUDlkeUM1TWNRNWJTTS9FMjE1VTcrYUdVRC9B?=
+ =?utf-8?B?QitoWFFYQmlFaFNzZjd2YmFEcVgwOEJxVUVnbVZPQUlyM1FWR1hrSzJXZkdR?=
+ =?utf-8?B?MURUeHlDbmZrdTI5Zjd0QzJTS09TZFBsNE1tcFdYTUFYVUlaRVFSZ09aYXFp?=
+ =?utf-8?B?L2UxU2lxZ3lJY0R3NHdRNHRROUVhUzdVSXdlMm1SVWNTak5Qa2lBcVh4SEVs?=
+ =?utf-8?B?N3dlMThpdnl5ZkFGRHBjZEVkUUZ1ZU1QNEt5SG1RSEFZZFpjVzRJaUMxYnZj?=
+ =?utf-8?B?YWV6T2tBSUEyYU8xUThyWkExZWZVQXpMUWM2ZXJMT1lQRUtob3JaZ3lPVFhK?=
+ =?utf-8?B?L1J3ZTJIMnozakVuclByUHJkMy9PcmVVM3czeE1kWTN4Y2ZoZVhBOXFuSDZN?=
+ =?utf-8?B?Znl0VkZxT0hUVnlhL0M1aU9IMFBZQml2SEtBVVJuc0VrVkdGWjU3SVFpOGJJ?=
+ =?utf-8?B?OXduMXIvcW1EQ3dScnFsUjA5QnozLzJFWXdvTnUxL1M2aGUwTzVIYVhPL29J?=
+ =?utf-8?B?UnRwZ0hYRXhoTks4MTRoZHJmQmRKcmRQSk9JbncxWm9kaUIzdFU1NXlyTVFr?=
+ =?utf-8?B?ZU1rRy9RVkFiVHhaUHdIL3Jzc2Y4K3VxY2h1UFNGTnlTeGRXemVzTU82R0o0?=
+ =?utf-8?B?Z2RwRUdsUjhEUGg2YVN1TFRuRFMzdDN6bGtGYUlnWWVmZFVrVHRZUWo2a2VU?=
+ =?utf-8?B?eWxkbGJST3FuZTJUMlhDVlR2cVJQdHNmNlNmYjl6cU93SHlnSXY1L0VRViti?=
+ =?utf-8?B?aVkzOGNpSURzd1BKcnM2cTJlWG9oVmxRc1N6YTBrNVJXRGhYUHZVTTRsVlcr?=
+ =?utf-8?B?NVpmTnhNTDN5SGtoTVRuS3ZpbEJodG5QbXFoZXV1OGYxT3dXTWgzekV3aEFS?=
+ =?utf-8?B?QjRBbzREU3prWmhBL0lMaWljOWRBTlZmVEJFNzUvTlhuUk5aS212QVMxNG90?=
+ =?utf-8?B?WnlqZnZYeHRTQ3E4cjIvendWN0dlSUdzWDB0YmN2Vk04QzlhZDhhVGhQL3po?=
+ =?utf-8?B?REIyTFpWdHNLK2tPU3hyMVNSRlVWSlRJcGpPZ2NRdzNwbU1FWjg4K203NXNR?=
+ =?utf-8?B?bDNaaFlXRGV2UlR0UzlvZGdXNU5SVTRiaVJpMDdpYzNOVisxMTA1Q1ZVTjdF?=
+ =?utf-8?B?anM2a29YbzVnY3BNTXZFY0pKVFExUVEvRlZaZDFUYW1MMXFUSWw0dTVsY2pp?=
+ =?utf-8?B?a3JMSXQ4QmFSbVE1L0NuZS9aRjBaNks2TU9Jek9SWjBOYlFQeHJJcENkUFdL?=
+ =?utf-8?B?YTBaS2dEbld4RndTZEJZNEEvWHRhbHlpYzVqNW9Ca0l0ZVNrSGE5My9lL25q?=
+ =?utf-8?B?VnE1UjJ5S1VYSmtrUHYxcWF3ekhUdkFDMHZ4RGRGOFovNFBGNTFLVGFrU281?=
+ =?utf-8?B?aDVvN2VJdE5raElHUmhGd0VaKzc0K1A3cEhYa2hLSlkydUlpZ24zUDZKUGMx?=
+ =?utf-8?B?TGQ1WDUwNTBLU01JQkw2TS9Od1BNbERzQlFMbzNpQ1gxZ081VytFZHdwL3F5?=
+ =?utf-8?B?U2w5dnJWTFdLZXlzejlpL1NRcE5HZHBocHR1bTdWZEh3YVcvUlFYbnNLUENk?=
+ =?utf-8?B?MWlscU9ickl3SGtTbFFTNVFrK3N0c2FIdkdXQ2xMLzFnZXJnU3luRzAwRVZm?=
+ =?utf-8?B?dEE2NlBpM2txSWFYWDBqTGNqZlNoaEY0QklndHRTR0tYaVhIcURydFJlWXF5?=
+ =?utf-8?B?QXdxZkllSmJ0aDNwWnF4dm4rbXYyTnhiRTVyMzcrTVRaeHlqQTRDaXlnQytQ?=
+ =?utf-8?B?K2xVOVdXcUhqeDNBRXQwM0xsWkd6SVhnR3ZhNlpGT0dpUVVzUkc0OXlFRVlZ?=
+ =?utf-8?B?UW9EMEFRMUd2K1FsVWtzMzhBVjJSRUJsbE04NnZRZTE3SUZXYWhsV3UzTTVx?=
+ =?utf-8?B?dEl5SnZiYlBvU0NQSGJua3BycnZERzU0Z3NkdWFrMlVlWTB0a3RtRXFhdldv?=
+ =?utf-8?B?RjEyaytZZUdoeklyc0ZrVkx4Z1c5MzRQdkpxMzZtdFdjL09GOWYyVWNMMlZI?=
+ =?utf-8?B?OW9yZ043b0NVQm9KT0prU3hoYWd5WFA2VGVkanpNeUxCTjFZU2RMSHVvVnAy?=
+ =?utf-8?B?dFY2NjBETW55NGNIMkZRd3Y2dkdnMmdCQk1jUXZVeUtqZGUrVDBpVkpZZG1H?=
+ =?utf-8?B?Tnc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: IaeJhwTwjSQOx9ZviGV8HzTsTWnm7ASvwETn8HZHSn6ysPI7r8PxKOjQMfAAd0E/wEDs1ndm76FF1HQEjVDIj2cDetz6amuNHxzBtG7rc5pgXElkDyKXx8sWkQZGzBlvElmtB+FD3tY4TE7p8xpEfj4xeKQHOFZVkLPd4oJlD9hNK99iFj+45urY/QXt1ls5C+wqSlotWLU2aBYYreJ2KUUxU9bKd+BxLCHh1rbDVepU0DWDIAOpzdR5mREQldJTzxH/tn8Na/Wm92PzkibGLkm1WXh84SOovTeKwkkYM0MG1pb6Wkiaz1IzmI4pFWOuk3fRdZWNGtmQ5hgqtmfX1YdsH6kHgbR8fH+nKhyjEfrzcT0d75TVYwxHaQGpDSkpEPZU4viZxFVO9q1w74i1PPknkPv2VWN2KWhh7PWj8yBJfVOrADxWECbBtoRZu/OV1teCa8BTTlI9sSITUEhxvuV13kPikS7Jc7g4B8hUa+Z7AbwzHxtpAiz9Yzgor6p4Q7zQMb7ROJNtdMjYnVtRBErnuf3DAAY8HkyFZsZxJ3Jew80rewnYOqpGC8mABO/9E/WBLFwYJqVDnsRumoNfgBpOvorteH4j69B+TI/+9RY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5f4172a-4074-48a2-f4ee-08dc27cee398
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2024 11:21:11.7277 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZmupHWSpuerFGOs1t3o9Hu9i0c/M9kx4VGad5CnkpbFJAjqygVxXBS8A9a5EbJClJED/r9FWEWQwfGrVvT2yBRBuAdchW4Qd0ITAhN8B95E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB7855
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-07_04,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ suspectscore=0 mlxscore=0
+ adultscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2402070084
+X-Proofpoint-GUID: uMW62mc91SVmJhUEbZw-fYGMwV3cPp4z
+X-Proofpoint-ORIG-GUID: uMW62mc91SVmJhUEbZw-fYGMwV3cPp4z
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,155 +184,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new "select" and "imply" directives if needed.  The resulting
-config-devices.mak files are the same as before.
+On 12/09/2023 22:18, John Allen wrote:
+> In the event that a guest process attempts to access memory that has
+> been poisoned in response to a deferred uncorrected MCE, an AMD system
+> will currently generate a SIGBUS error which will result in the entire
+> guest being shutdown. Ideally, we only want to kill the guest process
+> that accessed poisoned memory in this case.
+> 
+> This support has been included in qemu for Intel hosts for a long time,
+> but there are a couple of changes needed for AMD hosts. First, we will
+> need to expose the SUCCOR cpuid bit to guests. Second, we need to modify
+> the MCE injection code to avoid Intel specific behavior when we are
+> running on an AMD host.
+> 
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configs/devices/mips-softmmu/common.mak      | 28 +++-----------------
- configs/devices/mips64el-softmmu/default.mak |  3 ---
- hw/mips/loongson3_virt.c                     |  5 ++--
- hw/display/Kconfig                           |  2 +-
- hw/mips/Kconfig                              | 20 +++++++++++++-
- 5 files changed, 27 insertions(+), 31 deletions(-)
+Is there any update with respect to this series?
 
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index 1a853841b27..416a5d353e8 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -1,28 +1,8 @@
- # Common mips*-softmmu CONFIG defines
- 
--CONFIG_ISA_BUS=y
--CONFIG_PCI=y
--CONFIG_PCI_DEVICES=y
--CONFIG_VGA_ISA=y
--CONFIG_VGA_MMIO=y
--CONFIG_VGA_CIRRUS=y
--CONFIG_VMWARE_VGA=y
--CONFIG_SERIAL=y
--CONFIG_SERIAL_ISA=y
--CONFIG_PARALLEL=y
--CONFIG_I8254=y
--CONFIG_PCSPK=y
--CONFIG_PCKBD=y
--CONFIG_FDC=y
--CONFIG_I8257=y
--CONFIG_IDE_ISA=y
--CONFIG_PFLASH_CFI01=y
--CONFIG_I8259=y
--CONFIG_MC146818RTC=y
--CONFIG_MIPS_CPS=y
--CONFIG_MIPS_ITU=y
-+# Uncomment the following lines to disable these optional devices:
-+# CONFIG_PCI_DEVICES=n
-+# CONFIG_TEST_DEVICES=n
-+
- CONFIG_MALTA=y
--CONFIG_PCNET_PCI=y
- CONFIG_MIPSSIM=y
--CONFIG_SMBUS_EEPROM=y
--CONFIG_TEST_DEVICES=y
-diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
-index d5188f7ea58..88a37cf27f1 100644
---- a/configs/devices/mips64el-softmmu/default.mak
-+++ b/configs/devices/mips64el-softmmu/default.mak
-@@ -3,8 +3,5 @@
- include ../mips-softmmu/common.mak
- CONFIG_FULOONG=y
- CONFIG_LOONGSON3V=y
--CONFIG_ATI_VGA=y
--CONFIG_RTL8139_PCI=y
- CONFIG_JAZZ=y
--CONFIG_VT82C686=y
- CONFIG_MIPS_BOSTON=y
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index 33eae01eca2..da47af2fa71 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -447,8 +447,9 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
- 
-     if (defaults_enabled() && object_class_by_name("pci-ohci")) {
-         pci_create_simple(pci_bus, -1, "pci-ohci");
--        usb_create_simple(usb_bus_find(-1), "usb-kbd");
--        usb_create_simple(usb_bus_find(-1), "usb-tablet");
-+        Object *usb_bus = object_resolve_path_type("", TYPE_USB_BUS, NULL);
-+        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
-+        usb_create_simple(USB_BUS(usb_bus), "usb-tablet");
-     }
- 
-     for (i = 0; i < nb_nics; i++) {
-diff --git a/hw/display/Kconfig b/hw/display/Kconfig
-index 1aafe1923d2..5b2b3840f7a 100644
---- a/hw/display/Kconfig
-+++ b/hw/display/Kconfig
-@@ -55,7 +55,7 @@ config VGA_MMIO
- 
- config VMWARE_VGA
-     bool
--    default y if PCI_DEVICES && PC_PCI
-+    default y if PCI_DEVICES && (PC_PCI || MIPS)
-     depends on PCI
-     select VGA
- 
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index e57db4f6412..5c83ef49cf6 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -1,8 +1,15 @@
- config MALTA
-     bool
-+    imply PCNET_PCI
-+    imply PCI_DEVICES
-+    imply TEST_DEVICES
-     select FDC37M81X
-     select GT64120
-+    select MIPS_CPS
-     select PIIX
-+    select PFLASH_CFI01
-+    select SERIAL
-+    select SMBUS_EEPROM
- 
- config MIPSSIM
-     bool
-@@ -31,17 +38,26 @@ config JAZZ
- 
- config FULOONG
-     bool
-+    imply PCI_DEVICES
-+    imply TEST_DEVICES
-+    imply ATI_VGA
-+    imply RTL8139_PCI
-     select PCI_BONITO
-+    select SMBUS_EEPROM
-     select VT82C686
- 
- config LOONGSON3V
-     bool
-+    imply PCI_DEVICES
-+    imply TEST_DEVICES
-+    imply VIRTIO_PCI
-+    imply VIRTIO_NET
-     imply VIRTIO_VGA
-     imply QXL if SPICE
-+    imply USB_OHCI_PCI
-     select SERIAL
-     select GOLDFISH_RTC
-     select LOONGSON_LIOINTC
--    select PCI_DEVICES
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     select MSI_NONBROKEN
-     select FW_CFG_MIPS
-@@ -53,6 +69,8 @@ config MIPS_CPS
- 
- config MIPS_BOSTON
-     bool
-+    imply PCI_DEVICES
-+    imply TEST_DEVICES
-     select FITLOADER
-     select MIPS_CPS
-     select PCI_EXPRESS_XILINX
--- 
-2.43.0
+John's series should fix MCE injection on AMD; as today it is just crashing the
+guest (sadly) when an MCE happens in the hypervisor.
+
+William, Paolo, I think the sort-of-dependency(?) of this where we block
+migration if there was a poisoned page on is already in Peter's migration
+tree[1] (CC'ed). So perhaps this series just needs John to resend it given that
+it's been a couple months since v4?
+
+[1]
+https://lore.kernel.org/qemu-devel/20240130190640.139364-2-william.roche@oracle.com/
+
+> v2:
+>   - Add "succor" feature word.
+>   - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
+> 
+> v3:
+>   - Reorder series. Only enable SUCCOR after bugs have been fixed.
+>   - Introduce new patch ignoring AO errors.
+> 
+> v4:
+>   - Remove redundant check for AO errors.
+> 
+> John Allen (2):
+>   i386: Fix MCE support for AMD hosts
+>   i386: Add support for SUCCOR feature
+> 
+> William Roche (1):
+>   i386: Explicitly ignore unsupported BUS_MCEERR_AO MCE on AMD guest
+> 
+>  target/i386/cpu.c     | 18 +++++++++++++++++-
+>  target/i386/cpu.h     |  4 ++++
+>  target/i386/helper.c  |  4 ++++
+>  target/i386/kvm/kvm.c | 28 ++++++++++++++++++++--------
+>  4 files changed, 45 insertions(+), 9 deletions(-)
+> 
 
 
