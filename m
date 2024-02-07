@@ -2,90 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD3B84C74B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 10:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2506B84C785
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 10:36:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXeDB-0003v5-5R; Wed, 07 Feb 2024 04:27:21 -0500
+	id 1rXeLE-0005Na-Gs; Wed, 07 Feb 2024 04:35:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rXeD6-0003tY-A4
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 04:27:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rXeLB-0005MT-Ru; Wed, 07 Feb 2024 04:35:37 -0500
+Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
+ helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rXeD3-00039N-Ek
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 04:27:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707298032;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=2AHfDip28ceCoNEc/Nk5bgpaUjQg31c33ri4gjGsWyk=;
- b=PsaPQ4sUp0QVnPF/C2ZCsKDLzBM9oOfvNchP+S6F//xoKUZF3kkO+Ca87idG58ZzV2N03r
- 3Qed06Am2gg00oWqx6KTEy79C9V/owoy+Iy3FsnmjHHraHWYpg6iZFQdr+6yMkvF0uHnuD
- uCr9aKqj+GU8Me/MC+/PkWG/XXG7h0o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-k-HD7a5YNHqUhOCQTdlH4Q-1; Wed, 07 Feb 2024 04:27:11 -0500
-X-MC-Unique: k-HD7a5YNHqUhOCQTdlH4Q-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a3120029877so155158566b.1
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 01:27:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707298030; x=1707902830;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2AHfDip28ceCoNEc/Nk5bgpaUjQg31c33ri4gjGsWyk=;
- b=vlL+rAsKoyeSrDEFSe+ff5zsGcdOE7y8WOs94x1w7Xl0cpbiremaLY6rQm9Nwa2XR2
- 98j8GVKm7i1zlMGeOaCqx8v0UtM6W6QvL0570MWLcuGvUqh1N0YkduflPkiiQnAmm06a
- DEp1GUxBhUEw/pf3pCQYyE/GWVBmPIBqswITsJ1u6J5jd3bZenhNAzI2I46nJR0HU1TM
- 0Fosc77z8kA0izQLYTkBfZ6n6K6jY6iQRDABD398WxaA0RJ0HFyRANlmpaUqBKI4WsGN
- W7L1ZEdQmSqeJMKxLQQOT9QB4Lb8Mj5Km/YIHX3unVNyiOf6pcwt6Jm4lQ3DDXYaeiI2
- Rpxg==
-X-Gm-Message-State: AOJu0YzwF7rCk4zUqAmMAHpap7uOnwi1LArlXrQH5MH6b6vi/bdMXlxm
- rjl9Emmka9QXKfZRxxIve0qUApEbgQjVoNoiT+BdF0mHD5PGUYhXOqQSYOlECyQyrKc3M0zENp+
- x7PeRUb2O8GloJcjzYTFUJgORHgAL4yXeEBnfUZVkWJhuO51rqoIdT5mMGuUErq29xdWgTV3sbh
- JMvegdOVHmkktRSmKjXq0QMdKlVBXOuvXc2CH2
-X-Received: by 2002:a17:906:aac9:b0:a38:4634:b922 with SMTP id
- kt9-20020a170906aac900b00a384634b922mr3282190ejb.34.1707298029819; 
- Wed, 07 Feb 2024 01:27:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGaD6Q9PY8w2alrSII+6OoT4DeV1pUsM4kIpmzgchotiRIhUlQaYlyBTnmi0v/xM6W9gt5k7g==
-X-Received: by 2002:a17:906:aac9:b0:a38:4634:b922 with SMTP id
- kt9-20020a170906aac900b00a384634b922mr3282168ejb.34.1707298029416; 
- Wed, 07 Feb 2024 01:27:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCX4hv2Lujo+0aJqlyDG6G9x0zAPdRGxgGutRMPjHcWqlLWATkr1Xh8h4PQJcwEzUK/eY43qI31F4VP4iEE5nf0y5ajYKEDpdpHyj4f9MdX4oT8JeqRkLPN2tQuXDF+ifv2SJPJ3nYyadz2TiSENnAcah0wkP2z57bxDBdU1GWMSsn1kVbr0YIfqwIZhC691Wag=
-Received: from localhost.localdomain
- (host-87-12-25-87.business.telecomitalia.it. [87.12.25.87])
- by smtp.gmail.com with ESMTPSA id
- vw4-20020a170907a70400b00a3881262235sm310369ejc.78.2024.02.07.01.27.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 01:27:08 -0800 (PST)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, lulu@redhat.com, kwolf@redhat.com, eperezma@redhat.com,
- Jason Wang <jasowang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH] vhost-vdpa: check vhost_vdpa_set_vring_ready() return value
-Date: Wed,  7 Feb 2024 10:27:02 +0100
-Message-ID: <20240207092702.25242-1-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <ethan84@andestech.com>)
+ id 1rXeL1-0005Gh-DX; Wed, 07 Feb 2024 04:35:36 -0500
+Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
+ by Atcsqr.andestech.com with ESMTP id 4179Z4lU091824;
+ Wed, 7 Feb 2024 17:35:04 +0800 (+08)
+ (envelope-from ethan84@andestech.com)
+Received: from ethan84-VirtualBox.andestech.com (10.0.12.22) by
+ ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
+ Wed, 7 Feb 2024 17:35:04 +0800
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
+ <bin.meng@windriver.com>, <liwei1518@gmail.com>,
+ <dbarboza@ventanamicro.com>, <zhiwei_liu@linux.alibaba.com>,
+ <qemu-riscv@nongnu.org>, Ethan Chen <ethan84@andestech.com>
+Subject: [PATCH v6 0/3] Support RISC-V IOPMP
+Date: Wed, 7 Feb 2024 17:34:41 +0800
+Message-ID: <20240207093444.249112-1-ethan84@andestech.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.0.12.22]
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL: Atcsqr.andestech.com 4179Z4lU091824
+Received-SPF: pass client-ip=60.248.80.70; envelope-from=ethan84@andestech.com;
+ helo=Atcsqr.andestech.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, TVD_RCVD_IP=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,97 +60,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Ethan Chen <ethan84@andestech.com>
+From:  Ethan Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost_vdpa_set_vring_ready() could already fail, but if Linux's
-patch [1] will be merged, it may fail with more chance if
-userspace does not activate virtqueues before DRIVER_OK when
-VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
+This series implements IOPMP specification v1.0.0-draft4 rapid-k model and add
+IOPMP device to RISC-V virt machine.
 
-So better check its return value anyway.
+Patch 1 add config STREAM make other device can reuse /hw/core/stream.c, IOPMP
+implementation will use it. Patch 2 implement IOPMP deivce. Patch 3 add IOPMP
+device to RISC-V virt machine.
 
-[1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarzare@redhat.com/T/#u
+The IOPMP specification url:
+https://github.com/riscv-non-isa/iopmp-spec/blob/main/riscv_iopmp_specification.pdf
 
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
-Note: This patch conflicts with [2], but the resolution is simple,
-so for now I sent a patch for the current master, but I'll rebase
-this patch if we merge the other one first.
+Changes for v6:
+  - Rebased
+  - IOPMP: Fix MDLCK_MD and ENTRYLCK_F did not lock correspond registers
+           Fix iopmp_write for ENTRY_ADDRH and ENTRYLCK_L
+  - Refine coding style (Daniel Henrique Barboza)
 
-[2] https://lore.kernel.org/qemu-devel/20240202132521.32714-1-kwolf@redhat.com/
----
- hw/virtio/vdpa-dev.c |  8 +++++++-
- net/vhost-vdpa.c     | 15 ++++++++++++---
- 2 files changed, 19 insertions(+), 4 deletions(-)
+Thanks,
+Ethan Chen
 
-diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-index eb9ecea83b..d57cd76c18 100644
---- a/hw/virtio/vdpa-dev.c
-+++ b/hw/virtio/vdpa-dev.c
-@@ -259,7 +259,11 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev, Error **errp)
-         goto err_guest_notifiers;
-     }
-     for (i = 0; i < s->dev.nvqs; ++i) {
--        vhost_vdpa_set_vring_ready(&s->vdpa, i);
-+        ret = vhost_vdpa_set_vring_ready(&s->vdpa, i);
-+        if (ret < 0) {
-+            error_setg_errno(errp, -ret, "Error starting vring %d", i);
-+            goto err_dev_stop;
-+        }
-     }
-     s->started = true;
- 
-@@ -274,6 +278,8 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev, Error **errp)
- 
-     return ret;
- 
-+err_dev_stop:
-+    vhost_dev_stop(&s->dev, vdev, false);
- err_guest_notifiers:
-     k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false);
- err_host_notifiers:
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 3726ee5d67..e3d8036479 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -381,7 +381,10 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
-     }
- 
-     for (int i = 0; i < v->dev->nvqs; ++i) {
--        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        int ret = vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-     return 0;
- }
-@@ -1213,7 +1216,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
--    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    r = vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    if (unlikely(r < 0)) {
-+        return r;
-+    }
- 
-     if (v->shadow_vqs_enabled) {
-         n = VIRTIO_NET(v->dev->vdev);
-@@ -1252,7 +1258,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
--        vhost_vdpa_set_vring_ready(v, i);
-+        r = vhost_vdpa_set_vring_ready(v, i);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-     }
- 
-     return 0;
+Ethan Chen (3):
+  hw/core: Add config stream
+  Add RISC-V IOPMP support
+  hw/riscv/virt: Add IOPMP support
+
+ docs/system/riscv/virt.rst                    |   12 +
+ hw/Kconfig                                    |    1 +
+ hw/core/Kconfig                               |    3 +
+ hw/core/meson.build                           |    2 +-
+ hw/misc/Kconfig                               |    4 +
+ hw/misc/meson.build                           |    1 +
+ hw/misc/riscv_iopmp.c                         | 1202 +++++++++++++++++
+ hw/misc/trace-events                          |    4 +
+ hw/riscv/Kconfig                              |    1 +
+ hw/riscv/virt.c                               |  110 +-
+ include/hw/misc/riscv_iopmp.h                 |  187 +++
+ .../hw/misc/riscv_iopmp_transaction_info.h    |   28 +
+ include/hw/riscv/virt.h                       |    8 +-
+ 13 files changed, 1559 insertions(+), 4 deletions(-)
+ create mode 100644 hw/misc/riscv_iopmp.c
+ create mode 100644 include/hw/misc/riscv_iopmp.h
+ create mode 100644 include/hw/misc/riscv_iopmp_transaction_info.h
+
 -- 
-2.43.0
+2.34.1
 
 
