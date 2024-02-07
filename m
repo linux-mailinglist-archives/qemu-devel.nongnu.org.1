@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E22484D11C
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A2484D11E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:23:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXmXR-0004lk-N2; Wed, 07 Feb 2024 13:20:49 -0500
+	id 1rXmXK-0004jV-97; Wed, 07 Feb 2024 13:20:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXK-0004kf-Jn
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXG-0004hk-MD
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:38 -0500
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXI-00085K-B8
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXE-00085Q-3I
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:38 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 1F156CE1985;
- Wed,  7 Feb 2024 18:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7E3C433C7;
- Wed,  7 Feb 2024 18:20:28 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 72ADDCE1ACF;
+ Wed,  7 Feb 2024 18:20:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D070BC43390;
+ Wed,  7 Feb 2024 18:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707330029;
- bh=nnPIll0WdUGBb3j9AjVCaV/yzNrk7pTlwf5F7MC2D1E=;
+ s=k20201202; t=1707330030;
+ bh=29/fLpf59A6CPqN/LYYXpn2/AuRJvOzTiNJ4whGi5vI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=bo3xWjXa6k2JT0ZXRFb1MV8jgnMTXIlAXTeehNB3Gmoqr0TTubp9LjafookidUmhh
- ChmqCC+6pa0sQXgGbyPdaebzEStSoePZXHSn/onJa3KW29BbeMzLm/deZcQUd7fdtH
- 1ADJhIZqSwm/m4QbWQeFYjVoVgFVhoCRTDSPEg9jz7bQj9D+0JgaOsK/sh79/xqHxw
- uyb2CmgrEVtRv7lT7ZCTMIv2NP05z4bEwAD20inhbwVGlTbxCe6zAHwYOC1Z4VDEQB
- ogftnKEGXK/8bYjcJg+Y79npFsE/alWGZ9R32TkETHJf3nlRnobVQsOYfabV3nHe+K
- jqz8q3f61N70Q==
+ b=AUWcHwt7/HnC9M/DblhHLFjycmhf6WXSTeFzEKDgCTRVPDx84gAKWm3bms1UFKv4C
+ nVlIXbXH4c4Zoh1lSiTtPVjwnwnqRZb3NAOSHmAOJDY52HZ9McMm2cqACer0VSgq41
+ wOkKrGqI3gf0NswXLtSNeDrUEWHKZoiLjIPG8BJ+fhKYbQF6HeeiRCde2IrF6Ys8yb
+ 5CzZnejwEXbQPKlzkZBodb9nBHNJsx/pawjMigmf6k/51hQCqqaTCrHgA2C/au5z8a
+ wxipSJ/jvXCiQkTQK/PaBWGZSdP8oZBJNNyPklnzxRcCyO/MOyuO5PGXvqXQDJs3T2
+ uanEL/FYJkwgg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 02/13] target/hppa: Add "diag 0x101" for console output support
-Date: Wed,  7 Feb 2024 19:20:12 +0100
-Message-ID: <20240207182023.36316-3-deller@kernel.org>
+Subject: [PATCH 03/13] target/hppa: Fix PSW_W and PSW_E bits in rsm,
+ ssm and mtsm
+Date: Wed,  7 Feb 2024 19:20:13 +0100
+Message-ID: <20240207182023.36316-4-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207182023.36316-1-deller@kernel.org>
 References: <20240207182023.36316-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
- helo=sin.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -44
 X-Spam_score: -4.5
 X-Spam_bar: ----
@@ -69,103 +70,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-For debugging purposes at the early stage of the bootup process,
-the SeaBIOS-hppa firmware sometimes needs to output characters to the
-serial console. Note that the serial console is the default output
-method for parisc machines.
+The ssm and rsm instructions number the PSW_W and PSW_E bits differently
+than how they are actually in the PSW. Both bits are relevant on 64-bit
+CPUs only.
 
-At this stage PCI busses and other devices haven't been initialized
-yet. So, SeaBIOS-hppa will not be able to find the correct I/O ports
-for the serial ports yet.
+Fix the existing ssm and rsm instructions to handle the bits correctly.
+For that drop the swap_system_mask() helper function in favour of new
+helper functions get_system_mask, set_system_mask and mtsm_system_mask.
 
-Instead, add an emulation for the "diag 0x101" opcode to assist here.
-Without any other dependencies, SeaBIOS-hppa can then load the character
-to be printed in register %r26 and issue the diag assembly instruction.
+get_system_mask() returns the PSW bits how they should be returned in
+the target register of the ssm and rsm instructions.
+set_system_mask() sets the PSW bits without any further modification.
 
-The qemu diag_console_output() helper function will then print
-that character to the first serial port.
+Note that the a->i constant value of ssm and rsm have already been
+converted to match the physical PSW bits by expand_sm_imm() in the
+instruction decoder.
+
+The mtsm instruction is different, as it takes the new PSW from a
+register at runtime, and as such the PSW.E and PSW.W bits are moved at
+runtime to the right bit positions before setting the PSW.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/helper.h    |  1 +
- target/hppa/op_helper.c | 32 ++++++++++++++++++++++++++++++++
- target/hppa/translate.c |  6 ++++++
- 3 files changed, 39 insertions(+)
+ target/hppa/cpu.h        |  2 ++
+ target/hppa/helper.h     |  4 +++-
+ target/hppa/sys_helper.c | 46 +++++++++++++++++++++++++++++++++++++---
+ target/hppa/translate.c  | 38 +++++++++++++++++++++------------
+ 4 files changed, 73 insertions(+), 17 deletions(-)
 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 7a181e8f33..06b65f2258 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -122,7 +122,9 @@
+ #define PSW_T            0x01000000
+ #define PSW_S            0x02000000
+ #define PSW_E            0x04000000
++#define PSW_E_BIT                37 /* PA2.0 only */
+ #define PSW_W            0x08000000 /* PA2.0 only */
++#define PSW_W_BIT                36 /* PA2.0 only */
+ #define PSW_Z            0x40000000 /* PA1.x only */
+ #define PSW_Y            0x80000000 /* PA1.x only */
+ 
 diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index 20698f68ed..1bdbcd8f98 100644
+index 1bdbcd8f98..abffd3f531 100644
 --- a/target/hppa/helper.h
 +++ b/target/hppa/helper.h
-@@ -103,4 +103,5 @@ DEF_HELPER_FLAGS_1(ptlbe, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(lpa, TCG_CALL_NO_WG, tl, env, tl)
- DEF_HELPER_FLAGS_1(change_prot_id, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_1(diag_btlb, void, env)
-+DEF_HELPER_1(diag_console_output, void, env)
- #endif
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index b1f24a5aad..2c2c4aa183 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -24,6 +24,8 @@
- #include "exec/helper-proto.h"
- #include "exec/cpu_ldst.h"
- #include "qemu/timer.h"
-+#include "sysemu/sysemu.h"
-+#include "chardev/char-fe.h"
- #include "trace.h"
- 
- G_NORETURN void HELPER(excp)(CPUHPPAState *env, int excp)
-@@ -484,3 +486,33 @@ uint64_t HELPER(hshradd)(uint64_t r1, uint64_t r2, uint32_t sh)
-     }
-     return ret;
+@@ -92,7 +92,9 @@ DEF_HELPER_1(rfi_r, void, env)
+ DEF_HELPER_FLAGS_2(write_interval_timer, TCG_CALL_NO_RWG, void, env, tl)
+ DEF_HELPER_FLAGS_2(write_eirr, TCG_CALL_NO_RWG, void, env, tl)
+ DEF_HELPER_FLAGS_2(write_eiem, TCG_CALL_NO_RWG, void, env, tl)
+-DEF_HELPER_FLAGS_2(swap_system_mask, TCG_CALL_NO_RWG, tl, env, tl)
++DEF_HELPER_FLAGS_1(get_system_mask, TCG_CALL_NO_RWG, tl, env)
++DEF_HELPER_FLAGS_2(set_system_mask, TCG_CALL_NO_RWG, void, env, tl)
++DEF_HELPER_FLAGS_2(mtsm_system_mask, TCG_CALL_NO_RWG, void, env, tl)
+ DEF_HELPER_FLAGS_3(itlba_pa11, TCG_CALL_NO_RWG, void, env, tl, tl)
+ DEF_HELPER_FLAGS_3(itlbp_pa11, TCG_CALL_NO_RWG, void, env, tl, tl)
+ DEF_HELPER_FLAGS_3(idtlbt_pa20, TCG_CALL_NO_RWG, void, env, tl, tl)
+diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
+index a59245eed3..88ba99f0d4 100644
+--- a/target/hppa/sys_helper.c
++++ b/target/hppa/sys_helper.c
+@@ -58,7 +58,27 @@ void HELPER(reset)(CPUHPPAState *env)
+     helper_excp(env, EXCP_HLT);
  }
-+
-+/*
-+ * diag_console_output() is a helper function used during the initial bootup
-+ * process of the SeaBIOS-hppa firmware.  During the bootup phase, addresses of
-+ * serial ports on e.g. PCI busses are unknown and most other devices haven't
-+ * been initialized and configured yet.  With help of a simple "diag" assembler
-+ * instruction and an ASCII character code in register %r26 firmware can easily
-+ * print debug output without any dependencies to the first serial port and use
-+ * that as serial console.
-+ */
-+void HELPER(diag_console_output)(CPUHPPAState *env)
+ 
+-target_ulong HELPER(swap_system_mask)(CPUHPPAState *env, target_ulong nsm)
++target_ulong HELPER(get_system_mask)(CPUHPPAState *env)
 +{
-+    CharBackend *serial_backend;
-+    Chardev *serial_port;
-+    unsigned char c;
++    target_ulong psw = env->psw;
 +
-+    /* find first serial port */
-+    serial_port = serial_hd(0);
-+    if (!serial_port)
-+        return;
++    /* mask out invalid bits */
++    target_ulong psw_new = psw & PSW_SM;
 +
-+    /* get serial_backend for the serial port */
-+    serial_backend = serial_port->be;
-+    if (!serial_backend ||
-+        !qemu_chr_fe_backend_connected(serial_backend))
-+        return;
++    /* ssm/rsm instructions number PSW_W and PSW_E differently */
++    psw_new &= ~PSW_W;
++    if (psw & PSW_W) {
++        psw_new |= 1ull << (63 - PSW_W_BIT);
++    }
++    psw_new &= ~PSW_E;
++    if (psw & PSW_E) {
++        psw_new |= 1ull << (63 - PSW_E_BIT);
++    }
 +
-+    c = (unsigned char)env->gr[26];
-+    qemu_chr_fe_write(serial_backend, &c, sizeof(c));
++    return psw_new;
 +}
++
++void HELPER(set_system_mask)(CPUHPPAState *env, target_ulong nsm)
+ {
+     target_ulong psw = env->psw;
+     /*
+@@ -70,8 +90,28 @@ target_ulong HELPER(swap_system_mask)(CPUHPPAState *env, target_ulong nsm)
+      * machines set the Q bit from 0 to 1 without an exception,
+      * so let this go without comment.
+      */
+-    env->psw = (psw & ~PSW_SM) | (nsm & PSW_SM);
+-    return psw & PSW_SM;
++
++    cpu_hppa_put_psw(env, (psw & ~PSW_SM) | (nsm & PSW_SM));
++}
++
++void HELPER(mtsm_system_mask)(CPUHPPAState *env, target_ulong nsm)
++{
++    target_ulong psw_new;
++
++    /* mask out invalid bits */
++    psw_new = nsm & PSW_SM;
++
++    /* set PSW_E and PSW_W */
++    psw_new &= ~PSW_W;
++    if (nsm & (1ull << (63 - PSW_W_BIT))) {
++        psw_new |= PSW_W;
++    }
++    psw_new &= ~PSW_E;
++    if (nsm & (1ull << (63 - PSW_E_BIT))) {
++        psw_new |= PSW_E;
++    }
++
++    helper_set_system_mask(env, psw_new);
+ }
+ 
+ void HELPER(rfi)(CPUHPPAState *env)
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 08d09d50d7..53ec57ee86 100644
+index 53ec57ee86..10fdc0813d 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -4411,6 +4411,12 @@ static bool trans_diag(DisasContext *ctx, arg_diag *a)
-         gen_helper_diag_btlb(tcg_env);
-         return nullify_end(ctx);
-     }
-+    if (a->i == 0x101) {
-+        /* print char in %r26 to first serial console, used by SeaBIOS-hppa */
-+        nullify_over(ctx);
-+        gen_helper_diag_console_output(tcg_env);
-+        return nullify_end(ctx);
+@@ -2163,13 +2163,20 @@ static bool trans_rsm(DisasContext *ctx, arg_rsm *a)
+     nullify_over(ctx);
+ 
+     tmp = tcg_temp_new_i64();
+-    tcg_gen_ld_i64(tmp, tcg_env, offsetof(CPUHPPAState, psw));
+-    tcg_gen_andi_i64(tmp, tmp, ~a->i);
+-    gen_helper_swap_system_mask(tmp, tcg_env, tmp);
+-    save_gpr(ctx, a->t, tmp);
++    if (a->t != 0) {
++        gen_helper_get_system_mask(tmp, tcg_env);
++        save_gpr(ctx, a->t, tmp);
 +    }
++
++    if (a->i) {
++        tcg_gen_ld_i64(tmp, tcg_env, offsetof(CPUHPPAState, psw));
++        tcg_gen_andi_i64(tmp, tmp, ~a->i);
++        gen_helper_set_system_mask(tcg_env, tmp);
++
++        /* Exit, check e.g. for new interrupts */
++        ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
++    }
+ 
+-    /* Exit the TB to recognize new interrupts, e.g. PSW_M.  */
+-    ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
+     return nullify_end(ctx);
  #endif
-     qemu_log_mask(LOG_UNIMP, "DIAG opcode 0x%04x ignored\n", a->i);
-     return true;
+ }
+@@ -2183,11 +2190,17 @@ static bool trans_ssm(DisasContext *ctx, arg_ssm *a)
+     nullify_over(ctx);
+ 
+     tmp = tcg_temp_new_i64();
+-    tcg_gen_ld_i64(tmp, tcg_env, offsetof(CPUHPPAState, psw));
+-    tcg_gen_ori_i64(tmp, tmp, a->i);
+-    gen_helper_swap_system_mask(tmp, tcg_env, tmp);
+-    save_gpr(ctx, a->t, tmp);
++    if (a->t != 0) {
++        gen_helper_get_system_mask(tmp, tcg_env);
++        save_gpr(ctx, a->t, tmp);
++    }
++
++    if (a->i) {
++        tcg_gen_ld_i64(tmp, tcg_env, offsetof(CPUHPPAState, psw));
++        tcg_gen_ori_i64(tmp, tmp, a->i);
++        gen_helper_set_system_mask(tcg_env, tmp);
+ 
++    }
+     /* Exit the TB to recognize new interrupts, e.g. PSW_I.  */
+     ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
+     return nullify_end(ctx);
+@@ -2198,12 +2211,11 @@ static bool trans_mtsm(DisasContext *ctx, arg_mtsm *a)
+ {
+     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
+ #ifndef CONFIG_USER_ONLY
+-    TCGv_i64 tmp, reg;
++    TCGv_i64 reg;
+     nullify_over(ctx);
+ 
+     reg = load_gpr(ctx, a->r);
+-    tmp = tcg_temp_new_i64();
+-    gen_helper_swap_system_mask(tmp, tcg_env, reg);
++    gen_helper_mtsm_system_mask(tcg_env, reg);
+ 
+     /* Exit the TB to recognize new interrupts.  */
+     ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
 -- 
 2.43.0
 
