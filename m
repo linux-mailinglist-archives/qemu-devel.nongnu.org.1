@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F3784D4FC
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46EB684D534
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 23:03:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXpuC-0007EO-Ii; Wed, 07 Feb 2024 16:56:32 -0500
+	id 1rXpzv-0001H3-8h; Wed, 07 Feb 2024 17:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpuA-0007CX-5U
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:30 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu8-0007fu-HB
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707342987;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=v5hLZjXPLz2i52+WyQndxjGB7fi9mqlD8TwVgMsKkE4=;
- b=SwjqBSh3o+x3NqMEu2gXL92qbUJejme3IT6V5r20EDLrqUgwaYg6TtvyuPc/3EyzsbLmFT
- 11Yv9DmdiyDYpuV7aJVasW/Qh+G14PRY1J97YMi1Tm3gehE4hHorhDU+OuofKV/m50YH1m
- 1LpPrjklHLP42H6GmWbcw4KgdKsx0BI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-oEWy9C-dPea95u43nFg6Fg-1; Wed, 07 Feb 2024 16:56:24 -0500
-X-MC-Unique: oEWy9C-dPea95u43nFg6Fg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6360E8F4126;
- Wed,  7 Feb 2024 21:56:24 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CB172492BC6;
- Wed,  7 Feb 2024 21:56:23 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 16/16] virtio-blk: avoid using ioeventfd state in irqfd
- conditional
-Date: Wed,  7 Feb 2024 22:56:06 +0100
-Message-ID: <20240207215606.206038-17-kwolf@redhat.com>
-In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
-References: <20240207215606.206038-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rXpzs-0001Ga-VQ
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 17:02:25 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rXpzr-00008R-5r
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 17:02:24 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a30e445602cso60075366b.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 14:02:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707343341; x=1707948141; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uAc1wvIUDxU1I9G8ZSlaEAqd9DpOun06YT3b5GbCdSU=;
+ b=kWW7DxjJa2vJ24DjjHbrZI8NITOkxJPieqDFLWKG+2hR6mHF6jXXiFIWbYk4FK390C
+ TyufxgNW1MxtmgduK6TTf2ZMc+zfXL1X+dBkxdPU5m6sCmVvlXNo1bw55vvlZ8PDp9bP
+ vNN7ebrE256xWe/toazem+aowTsFDpBFFP9mO6gMiBO29+em0nndxOpDd5fsQzHZ108w
+ 21TYkC1h139SZcnjwokEC/eBp7ypIUYluxnH83jZNlvmRW0vM6ODirSDFXmo3w4PMjXS
+ 1W4OY+Deb5jeMLLX1UHaqxhb1Ck3wJIV3xXglXMdlwtC2CHs1hr6SCXZGa70iXRabj2U
+ JMfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707343341; x=1707948141;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uAc1wvIUDxU1I9G8ZSlaEAqd9DpOun06YT3b5GbCdSU=;
+ b=EttQII5WPsoRzo+DBIDVleKSaORZT9n6ds7ExsWsw5VxinV7BHNBjx0aTom3syWkK2
+ D09+89AFqvkp0c538HaC8Smphhn5Sxb0oTHzfQ4PjrYXr9KQIpndTv2mYwgnK6bowxWe
+ S1x3VXPit/4LKIBBii/heLhDQGzT8tTJm4PL13e272frVwJrrzM/uv/iaW11DHMQRI/w
+ MeHYRtCxDlDyJ7mhwT9xhcUJRe+v4UXrrEzMrOP7CTIAmvkYLHTyR+36dAhVFHfIcywK
+ o8Ig9N/cYLU51YpQWnKBzizHojzb1YkitCikj5gRc/9hogQ0znnSzgscJxwk03T/fQho
+ ttZg==
+X-Gm-Message-State: AOJu0YxIaHtBvnbAkJwmDBF0e6PACKp8D1GRtC9twuaxFi/hZhuJP3z4
+ kqga/m2vwUcrutRBNOBpTqaPsBQgsqK9vKYcoCLNEKqDA2FepgvbHXg1fOs6iVE=
+X-Google-Smtp-Source: AGHT+IFRukTQdds0W/rmZrELSCKmQHRV4Q+xo29lgsdHx7j4JvKjnRL98byTtnBUT/5/kpoD9lszDg==
+X-Received: by 2002:a17:906:5fc2:b0:a38:3fbb:9186 with SMTP id
+ k2-20020a1709065fc200b00a383fbb9186mr762517ejv.29.1707343341330; 
+ Wed, 07 Feb 2024 14:02:21 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWl3SMw5VtZQQCXPxiwYwN+K16ID0LOiFhUeQQ2r5Ya87rQzjq78EvmAHDqYFLNu20g0JmBKykityhVJCZ4bkcPrjq6OwBBB5zEugKP/86GOIkChdCyvkwpQtBoxm3Dt9CUZWkHLfpltfSABbNEShMXOfFJTOsRS0SrS193oKYIpTIKXaRM+ZqG06PtwFrP5Pt4o9/2iWNSpRBEj5oK63wpxHR0t6exGfSYPIsW9ZAVz3lQHwPddA1Js1kbLu6sYWIisJGGcXZW3CXgQvrbOCbfjei8kjwoj2u6tuBvSMomzMUOkj1hnFA1QBDO1yALocFcCHNcI5S7bS3Q16+egt7XM4v4GSWNHiLKmKs=
+Received: from [192.168.69.100] ([176.187.214.82])
+ by smtp.gmail.com with ESMTPSA id
+ jt20-20020a170906ca1400b00a3843b13729sm1195671ejb.35.2024.02.07.14.02.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 Feb 2024 14:02:20 -0800 (PST)
+Message-ID: <5a7594d9-3fbd-4d90-a5f9-81b7b845fba7@linaro.org>
+Date: Wed, 7 Feb 2024 23:02:18 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/3] hw/arm: Connect STM32L4x5 EXTI to STM32L4x5 SoC
+Content-Language: en-US
+To: Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Alistair Francis <alistair.francis@wdc.com>
+References: <20240109160658.311932-1-ines.varhol@telecom-paris.fr>
+ <20240109160658.311932-3-ines.varhol@telecom-paris.fr>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240109160658.311932-3-ines.varhol@telecom-paris.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,62 +101,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+Hi Inès,
 
-Requests that complete in an IOThread use irqfd to notify the guest
-while requests that complete in the main loop thread use the traditional
-qdev irq code path. The reason for this conditional is that the irq code
-path requires the BQL:
+(this is now commit 52671f69f7).
 
-  if (s->ioeventfd_started && !s->ioeventfd_disabled) {
-      virtio_notify_irqfd(vdev, req->vq);
-  } else {
-      virtio_notify(vdev, req->vq);
-  }
+On 9/1/24 17:06, Inès Varhol wrote:
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+> ---
+>   hw/arm/Kconfig                 |  1 +
+>   hw/arm/stm32l4x5_soc.c         | 52 +++++++++++++++++++++++++++++++++-
+>   include/hw/arm/stm32l4x5_soc.h |  3 ++
+>   3 files changed, 55 insertions(+), 1 deletion(-)
 
-There is a corner case where the conditional invokes the irq code path
-instead of the irqfd code path:
 
-  static void virtio_blk_stop_ioeventfd(VirtIODevice *vdev)
-  {
-      ...
-      /*
-       * Set ->ioeventfd_started to false before draining so that host notifiers
-       * are not detached/attached anymore.
-       */
-      s->ioeventfd_started = false;
+> +#define NUM_EXTI_IRQ 40
+> +/* Match exti line connections with their CPU IRQ number */
+> +/* See Vector Table (Reference Manual p.396) */
+> +static const int exti_irq[NUM_EXTI_IRQ] = {
+> +    6,                      /* GPIO[0]                 */
+> +    7,                      /* GPIO[1]                 */
+> +    8,                      /* GPIO[2]                 */
+> +    9,                      /* GPIO[3]                 */
+> +    10,                     /* GPIO[4]                 */
+> +    23, 23, 23, 23, 23,     /* GPIO[5..9]              */
+> +    40, 40, 40, 40, 40, 40, /* GPIO[10..15]            */
 
-      /* Wait for virtio_blk_dma_restart_bh() and in flight I/O to complete */
-      blk_drain(s->conf.conf.blk);
+I'm sorry because I missed that earlier, and I'm surprised
+you aren't chasing weird bugs. Due to how QEMU IRQs are
+implemented, we can not wire multiple input lines to the same
+output without using an intermediate "OR gate". We model it
+as TYPE_OR_IRQ. See the comment in "hw/qdev-core.h" added in
+commit cd07d7f9f5 ("qdev: Document GPIO related functions"):
 
-During blk_drain() the conditional produces the wrong result because
-ioeventfd_started is false.
+  * It is not valid to try to connect one outbound GPIO to multiple
+  * qemu_irqs at once, or to connect multiple outbound GPIOs to the
+  * same qemu_irq. (Warning: there is no assertion or other guard to
+  * catch this error: the model will just not do the right thing.)
+  * Instead, for fan-out you can use the TYPE_SPLIT_IRQ device: connect
+  * a device's outbound GPIO to the splitter's input, and connect each
+  * of the splitter's outputs to a different device.  For fan-in you
+  * can use the TYPE_OR_IRQ device, which is a model of a logical OR
+  * gate with multiple inputs and one output.
 
-Use qemu_in_iothread() instead of checking the ioeventfd state.
+So for example for the GPIO[10..15] you need to create a 6-line
+OR gate as (totally untested):
 
-Buglink: https://issues.redhat.com/browse/RHEL-15394
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240122172625.415386-1-stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- hw/block/virtio-blk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+   /* 6-line OR IRQ gate */
+   Object *orgate40 = object_new(TYPE_OR_IRQ);
+   object_property_set_int(orgate40, "num-lines", 6, &error_fatal);
+   qdev_realize(DEVICE(orgate), NULL, &error_fatal);
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 4ca5e632ea..738cb2ac36 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -66,7 +66,7 @@ static void virtio_blk_req_complete(VirtIOBlockReq *req, unsigned char status)
-     iov_discard_undo(&req->inhdr_undo);
-     iov_discard_undo(&req->outhdr_undo);
-     virtqueue_push(req->vq, &req->elem, req->in_len);
--    if (s->ioeventfd_started && !s->ioeventfd_disabled) {
-+    if (qemu_in_iothread()) {
-         virtio_notify_irqfd(vdev, req->vq);
-     } else {
-         virtio_notify(vdev, req->vq);
--- 
-2.43.0
+   /* OR gate -> IRQ #40 */
+   qdev_connect_gpio_out(DEVICE(orgate40), 0,
+                         qdev_get_gpio_in(armv7m, 40));
 
+   /* EXTI GPIO[10..15] -> OR gate */
+   for (unsigned i = 0; i < 6; i++) {
+       sysbus_connect_irq(SYS_BUS_DEVICE(&s->exti), 10 + i,
+                          qdev_get_gpio_in(DEVICE(orgate40), i));
+   }
+
+> +    1,                      /* PVD                     */
+> +    67,                     /* OTG_FS_WKUP, Direct     */
+> +    41,                     /* RTC_ALARM               */
+> +    2,                      /* RTC_TAMP_STAMP2/CSS_LSE */
+> +    3,                      /* RTC wakeup timer        */
+> +    63,                     /* COMP1                   */
+> +    63,                     /* COMP2                   */
+> +    31,                     /* I2C1 wakeup, Direct     */
+> +    33,                     /* I2C2 wakeup, Direct     */
+> +    72,                     /* I2C3 wakeup, Direct     */
+> +    37,                     /* USART1 wakeup, Direct   */
+> +    38,                     /* USART2 wakeup, Direct   */
+> +    39,                     /* USART3 wakeup, Direct   */
+> +    52,                     /* UART4 wakeup, Direct    */
+> +    53,                     /* UART4 wakeup, Direct    */
+> +    70,                     /* LPUART1 wakeup, Direct  */
+> +    65,                     /* LPTIM1, Direct          */
+> +    66,                     /* LPTIM2, Direct          */
+> +    76,                     /* SWPMI1 wakeup, Direct   */
+> +    1,                      /* PVM1 wakeup             */
+> +    1,                      /* PVM2 wakeup             */
+> +    1,                      /* PVM3 wakeup             */
+> +    1,                      /* PVM4 wakeup             */
+> +    78                      /* LCD wakeup, Direct      */
+> +};
+
+> +    busdev = SYS_BUS_DEVICE(&s->exti);
+> +    if (!sysbus_realize(busdev, errp)) {
+> +        return;
+> +    }
+> +    sysbus_mmio_map(busdev, 0, EXTI_ADDR);
+> +    for (unsigned i = 0; i < NUM_EXTI_IRQ; i++) {
+> +        sysbus_connect_irq(busdev, i, qdev_get_gpio_in(armv7m, exti_irq[i]));
+
+                                                               ^^^^^^^^^^
+> +    }
+Regards,
+
+Phil.
 
