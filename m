@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9070684C96B
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C59A484C957
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:15:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXft0-0002tE-8I; Wed, 07 Feb 2024 06:14:38 -0500
+	id 1rXft4-0002tx-6H; Wed, 07 Feb 2024 06:14:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsx-0002sx-FR
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:35 -0500
+ id 1rXfsz-0002tM-Ts
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsv-0003Rb-Oh
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:35 -0500
+ id 1rXfsy-0003S1-AC
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707304473;
+ s=mimecast20190719; t=1707304475;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R0KI2721IFtb4WAKrG3+R+L2haa/vmvr3mnGCgCOoT4=;
- b=VeJ2nHOA0XqLRqeyo5W1ikbjRCjt+IXFB9PHzM3Jsv8xWTSjQ87DWytdRhiKrQOlB3pxBs
- /CTPKx5AKJSAy6VA5PXj0SBn5JoiCFp4YKAEvzMBA/4pcQCQYIKbtWKTdp1dz1V6jX2eDk
- 7y6sNLeICkTkPqCBgJxP0YY76a2aSq4=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LYJ8/tFAmrh3VcWdElUpsPrqIWISPJqBMUPEWn4+ITY=;
+ b=YvgT/9jiMsqoPdL2cP2Qu5AuyGHRuNSsUPq6p/ElzKSnYegQErt63+5alO/TFX4VgeSUSV
+ 9LzCo1kbyVKHS+ir0E+FFvlj5hR5UE/QMLQJ51pFPF0qb5VGEgOcSLelMFCE0Vq4vwwpf8
+ RllXJscE5sy9gQD0ECQvNyFqlGSdg18=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-RGmsWFqNODaAKBZkFEfNEg-1; Wed, 07 Feb 2024 06:14:32 -0500
-X-MC-Unique: RGmsWFqNODaAKBZkFEfNEg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d0c1aa652eso5957221fa.2
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 03:14:31 -0800 (PST)
+ us-mta-349-zrJ0iPp5NpipG2Z8S5kTNQ-1; Wed, 07 Feb 2024 06:14:33 -0500
+X-MC-Unique: zrJ0iPp5NpipG2Z8S5kTNQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a3821399b38so28030666b.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 03:14:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707304470; x=1707909270;
+ d=1e100.net; s=20230601; t=1707304472; x=1707909272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R0KI2721IFtb4WAKrG3+R+L2haa/vmvr3mnGCgCOoT4=;
- b=NbCB21tDg8DXEYcQhUTA4ancCwfPPSH+RPdAqrol8ceJmVdkBdIUkZtYlmnEU9tes/
- 456YSux8xh1J6bBLPSS7SZbGPjNKvpqTqvcESfnbPJpiNL3OAGvM46NXxwcMRTS9f0QQ
- Wq7aue7aS3NSbClBXOc0qR5gqoLXowzK+0uCjjBj5+RUp7IXk3WCoWtOQTZ9aFlG6NKX
- CsyRYotfO2FvMn4HjyGPKpr68uxVN35ZtEgvGtf8CrjSpWx6rj8DIh9kA+u55zqyhevK
- 1+76ZQBcbIXRxOlFimVhaUoOPCbWN4pmb1gheIVMkZk5KFld5RWDyXPyq96zLlQGhBby
- NC9A==
-X-Gm-Message-State: AOJu0YzHNT4dTmRlxoNwtW/tkxvvUxGozPEcGAmnJWDbc+dLsdHAfuax
- bqXNaFNLuj19w0GV7F7JAEKiLxsVv2Uvs32VZFkAKUD738o6yfECE8eH1YYLyDeZZKbtruCCXYW
- eA1DbMY7M5qlmD2dHv8mKHSdfoJPX9oiU6vU+BzW2YDpzTXsugp+EkqMIICWaj+Hg+NEowJor3o
- q+N+tiy4t4k+oV+nkw7TZXnrtfCVnnY65lKkEJ
-X-Received: by 2002:a05:651c:695:b0:2d0:b025:f1ee with SMTP id
- x21-20020a05651c069500b002d0b025f1eemr3027851ljb.21.1707304470016; 
- Wed, 07 Feb 2024 03:14:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEY0eYuSBAGKAd1+PxkefcHY7yc6nAL7p53a+kSRfZYZVtqDT6Dxj9Yw63JP+R7Ed7wIN+BZw==
-X-Received: by 2002:a05:651c:695:b0:2d0:b025:f1ee with SMTP id
- x21-20020a05651c069500b002d0b025f1eemr3027835ljb.21.1707304469595; 
- Wed, 07 Feb 2024 03:14:29 -0800 (PST)
+ bh=LYJ8/tFAmrh3VcWdElUpsPrqIWISPJqBMUPEWn4+ITY=;
+ b=WAnw7UNj1sXixR0EDZbOCx3yvilbyU0qxxMTWHWzKPh1Ua5HhwTNlvjUjiEMB6KZlt
+ nITtkpOfte2TIHu/PmVur9LDK2+7djuFOm6MYGAty4386THBNX7I1WtG9lgwnGrjERYL
+ BKFNceJBLYwrPIQoyyYjv/kmwcT8hX1ey2J+FPEJ8karPurKmLlg2s0w4NpdLTtte+YL
+ H+25Ciybh4a6ogPvm4mNMnJ8oWGM0iJ7dQ8a+lQ8Vtn52gGdosEp/cLv6RqIWYdNNCbf
+ 45iZaFHJ90qYWeqQ9UzOPzvDdgLn/hm5ZP/aF5g/XjWonhfyyTCI+V4ITRYsxbTND1we
+ hn8Q==
+X-Gm-Message-State: AOJu0YzpjUfIm80Hx4NFaK5i4IHqesLbaOhgYyfvBb01dxcygahtTrBh
+ P4RSLl6rDmlmMrgmxb0NuL9xcb5QgrLjhXLevCfGNAF5BiwAUSRZOOBLp0denfzfMY7f1dSoRvx
+ Ea4yeGHpk3ffdYNtte76JXAsAIg3TFjtavC1XFHnIJCqtfES7CuPvoQ7YT0JPdMHbkc6uQSbIIV
+ obS7/5oB3LC7y/RRFgcxvSS5edwwq4eU4uNJ4G
+X-Received: by 2002:a17:906:710e:b0:a36:5079:d6c9 with SMTP id
+ x14-20020a170906710e00b00a365079d6c9mr3434321ejj.76.1707304472282; 
+ Wed, 07 Feb 2024 03:14:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFt7d4EUP9ian+AzAurGomldHgYv/TOxXdYxnsVEfgwtCbrhkVmhIs/bTF4DV+is4tnLJFb9g==
+X-Received: by 2002:a17:906:710e:b0:a36:5079:d6c9 with SMTP id
+ x14-20020a170906710e00b00a365079d6c9mr3434303ejj.76.1707304471966; 
+ Wed, 07 Feb 2024 03:14:31 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXx/zhrZv/znHdBPtHtBcJzixxiO/iDTu5fY95DbYdFU+ti5g30/O9V+kXE0PAEmVk5UPCOePrYHE9+YFeRi5F2kA==
+ AJvYcCUJTewOuL7R/I4PQlNiLbtrZ0paX3w1QGY9OKOKEXs53zrJ+BvTOeoDukpggfQsDeXSp1CyxA2BD77zequ1CO1QfQ==
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- v2-20020aa7d802000000b0055efaddeafdsm552613edq.86.2024.02.07.03.14.27
+ ty13-20020a170907c70d00b00a338fedb9ebsm650303ejc.54.2024.02.07.03.14.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 03:14:28 -0800 (PST)
+ Wed, 07 Feb 2024 03:14:30 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: shentey@gmail.com,
 	philmd@linaro.org
-Subject: [PATCH v2 7/8] mips: allow compiling out CONFIG_MIPS_ITU
-Date: Wed,  7 Feb 2024 12:14:09 +0100
-Message-ID: <20240207111411.115040-8-pbonzini@redhat.com>
+Subject: [PATCH v2 8/8] mips: do not list individual devices from configs/
+Date: Wed,  7 Feb 2024 12:14:10 +0100
+Message-ID: <20240207111411.115040-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207111411.115040-1-pbonzini@redhat.com>
 References: <20240207111411.115040-1-pbonzini@redhat.com>
@@ -103,61 +103,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-itc_reconfigure() is referenced from TCG, provide a stub if needed.
-This makes it possible to build a QEMU binary that only includes
-boards without a CPS device (only Malta and Boston create one).
+Add new "select" and "imply" directives if needed.  The resulting
+config-devices.mak files are the same as before.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/mips/mips_itu-stub.c | 26 ++++++++++++++++++++++++++
- hw/mips/meson.build     |  1 +
- 2 files changed, 27 insertions(+)
- create mode 100644 hw/mips/mips_itu-stub.c
+ configs/devices/mips-softmmu/common.mak      | 28 +++-----------------
+ configs/devices/mips64el-softmmu/default.mak |  3 ---
+ hw/mips/loongson3_virt.c                     |  5 ++--
+ hw/display/Kconfig                           |  2 +-
+ hw/mips/Kconfig                              | 20 +++++++++++++-
+ 5 files changed, 27 insertions(+), 31 deletions(-)
 
-diff --git a/hw/mips/mips_itu-stub.c b/hw/mips/mips_itu-stub.c
-new file mode 100644
-index 00000000000..4cc82b8461f
---- /dev/null
-+++ b/hw/mips/mips_itu-stub.c
-@@ -0,0 +1,26 @@
-+/*
-+ * Inter-Thread Communication Unit emulation.
-+ *
-+ * Copyright (c) 2016 Imagination Technologies
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2.1 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/misc/mips_itu.h"
-+
-+void itc_reconfigure(MIPSITUState *tag)
-+{
-+    abort();
-+}
-diff --git a/hw/mips/meson.build b/hw/mips/meson.build
-index f06d88f3430..2b1b96147a6 100644
---- a/hw/mips/meson.build
-+++ b/hw/mips/meson.build
-@@ -4,6 +4,7 @@ mips_ss.add(when: 'CONFIG_FW_CFG_MIPS', if_true: files('fw_cfg.c'))
- mips_ss.add(when: 'CONFIG_LOONGSON3V', if_true: files('loongson3_bootp.c', 'loongson3_virt.c'))
- mips_ss.add(when: 'CONFIG_MALTA', if_true: files('malta.c'))
- mips_ss.add(when: 'CONFIG_MIPS_CPS', if_true: files('cps.c'))
-+mips_ss.add(when: 'CONFIG_MIPS_ITU', if_false: files('mips_itu-stub.c'))
+diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
+index 1a853841b27..416a5d353e8 100644
+--- a/configs/devices/mips-softmmu/common.mak
++++ b/configs/devices/mips-softmmu/common.mak
+@@ -1,28 +1,8 @@
+ # Common mips*-softmmu CONFIG defines
  
- if 'CONFIG_TCG' in config_all_accel
- mips_ss.add(when: 'CONFIG_JAZZ', if_true: files('jazz.c'))
+-CONFIG_ISA_BUS=y
+-CONFIG_PCI=y
+-CONFIG_PCI_DEVICES=y
+-CONFIG_VGA_ISA=y
+-CONFIG_VGA_MMIO=y
+-CONFIG_VGA_CIRRUS=y
+-CONFIG_VMWARE_VGA=y
+-CONFIG_SERIAL=y
+-CONFIG_SERIAL_ISA=y
+-CONFIG_PARALLEL=y
+-CONFIG_I8254=y
+-CONFIG_PCSPK=y
+-CONFIG_PCKBD=y
+-CONFIG_FDC=y
+-CONFIG_I8257=y
+-CONFIG_IDE_ISA=y
+-CONFIG_PFLASH_CFI01=y
+-CONFIG_I8259=y
+-CONFIG_MC146818RTC=y
+-CONFIG_MIPS_CPS=y
+-CONFIG_MIPS_ITU=y
++# Uncomment the following lines to disable these optional devices:
++# CONFIG_PCI_DEVICES=n
++# CONFIG_TEST_DEVICES=n
++
+ CONFIG_MALTA=y
+-CONFIG_PCNET_PCI=y
+ CONFIG_MIPSSIM=y
+-CONFIG_SMBUS_EEPROM=y
+-CONFIG_TEST_DEVICES=y
+diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
+index d5188f7ea58..88a37cf27f1 100644
+--- a/configs/devices/mips64el-softmmu/default.mak
++++ b/configs/devices/mips64el-softmmu/default.mak
+@@ -3,8 +3,5 @@
+ include ../mips-softmmu/common.mak
+ CONFIG_FULOONG=y
+ CONFIG_LOONGSON3V=y
+-CONFIG_ATI_VGA=y
+-CONFIG_RTL8139_PCI=y
+ CONFIG_JAZZ=y
+-CONFIG_VT82C686=y
+ CONFIG_MIPS_BOSTON=y
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 33eae01eca2..da47af2fa71 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -447,8 +447,9 @@ static inline void loongson3_virt_devices_init(MachineState *machine,
+ 
+     if (defaults_enabled() && object_class_by_name("pci-ohci")) {
+         pci_create_simple(pci_bus, -1, "pci-ohci");
+-        usb_create_simple(usb_bus_find(-1), "usb-kbd");
+-        usb_create_simple(usb_bus_find(-1), "usb-tablet");
++        Object *usb_bus = object_resolve_path_type("", TYPE_USB_BUS, NULL);
++        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
++        usb_create_simple(USB_BUS(usb_bus), "usb-tablet");
+     }
+ 
+     for (i = 0; i < nb_nics; i++) {
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index 1aafe1923d2..5b2b3840f7a 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -55,7 +55,7 @@ config VGA_MMIO
+ 
+ config VMWARE_VGA
+     bool
+-    default y if PCI_DEVICES && PC_PCI
++    default y if PCI_DEVICES && (PC_PCI || MIPS)
+     depends on PCI
+     select VGA
+ 
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index e57db4f6412..5c83ef49cf6 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -1,8 +1,15 @@
+ config MALTA
+     bool
++    imply PCNET_PCI
++    imply PCI_DEVICES
++    imply TEST_DEVICES
+     select FDC37M81X
+     select GT64120
++    select MIPS_CPS
+     select PIIX
++    select PFLASH_CFI01
++    select SERIAL
++    select SMBUS_EEPROM
+ 
+ config MIPSSIM
+     bool
+@@ -31,17 +38,26 @@ config JAZZ
+ 
+ config FULOONG
+     bool
++    imply PCI_DEVICES
++    imply TEST_DEVICES
++    imply ATI_VGA
++    imply RTL8139_PCI
+     select PCI_BONITO
++    select SMBUS_EEPROM
+     select VT82C686
+ 
+ config LOONGSON3V
+     bool
++    imply PCI_DEVICES
++    imply TEST_DEVICES
++    imply VIRTIO_PCI
++    imply VIRTIO_NET
+     imply VIRTIO_VGA
+     imply QXL if SPICE
++    imply USB_OHCI_PCI
+     select SERIAL
+     select GOLDFISH_RTC
+     select LOONGSON_LIOINTC
+-    select PCI_DEVICES
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     select MSI_NONBROKEN
+     select FW_CFG_MIPS
+@@ -53,6 +69,8 @@ config MIPS_CPS
+ 
+ config MIPS_BOSTON
+     bool
++    imply PCI_DEVICES
++    imply TEST_DEVICES
+     select FITLOADER
+     select MIPS_CPS
+     select PCI_EXPRESS_XILINX
 -- 
 2.43.0
 
