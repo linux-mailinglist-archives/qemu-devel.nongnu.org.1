@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AD584D502
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:58:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AED84D4F0
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 22:57:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXpu8-00079f-M7; Wed, 07 Feb 2024 16:56:28 -0500
+	id 1rXpu9-0007BQ-FU; Wed, 07 Feb 2024 16:56:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu6-000783-Jd
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:26 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu7-00079C-F4
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu5-0007eF-1I
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:26 -0500
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rXpu6-0007eq-1L
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 16:56:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707342984;
+ s=mimecast20190719; t=1707342985;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a7p5x2fcwKWLwW7RHE3p8xiZBd6Y/sYtDmGs1L7gZkM=;
- b=ir0LrAVobarVXe8STN7Ar1rR7bKM2DkLLeC1BZO5rfcFjT9B87eGXYfpujyFS8nSnG/HFn
- eCuBbwZ3LcF1kbkfn8qnNUc7UzmSg8ZmiHEeGtxFqyL//RihVwGD+VA6lVe5g9XvPo+z0S
- zW4Yidb7zOUj4Mrlh3xDNOuHyvxPOoo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-fu3H8selNy-p459LkpqW2Q-1; Wed,
- 07 Feb 2024 16:56:21 -0500
-X-MC-Unique: fu3H8selNy-p459LkpqW2Q-1
+ bh=JbU056kLoXoRm7h5K8GxjR/gfn+HBp+DDVDlrl0e37Q=;
+ b=FYN3UawnCEDU80ndlUZDn9LBlKn8VvCs2/u6hxwXT38Vm5ahmkXz3bmCXAbAEJdrRGI88R
+ ABbbsOqsoTw8sYfde+RctqFv9isEoqqbPwMYsa7E1g/uGwbECJrKsTp9SNq0M5vjfPlygn
+ ggHJOqPq+MxYISo/vfMPpaC1NukcYtU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-KuGvm5ytM3KJwxvZyD7mHg-1; Wed, 07 Feb 2024 16:56:22 -0500
+X-MC-Unique: KuGvm5ytM3KJwxvZyD7mHg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DCBD3C11C74;
- Wed,  7 Feb 2024 21:56:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09CE1185A780;
+ Wed,  7 Feb 2024 21:56:22 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.31])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A58DC492BC6;
- Wed,  7 Feb 2024 21:56:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 71ABA492BC6;
+ Wed,  7 Feb 2024 21:56:21 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 12/16] blkio: Respect memory-alignment for bounce buffer
- allocations
-Date: Wed,  7 Feb 2024 22:56:02 +0100
-Message-ID: <20240207215606.206038-13-kwolf@redhat.com>
+Subject: [PULL 13/16] virtio-scsi: Attach event vq notifier with no_poll
+Date: Wed,  7 Feb 2024 22:56:03 +0100
+Message-ID: <20240207215606.206038-14-kwolf@redhat.com>
 In-Reply-To: <20240207215606.206038-1-kwolf@redhat.com>
 References: <20240207215606.206038-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -79,41 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-blkio_alloc_mem_region() requires that the requested buffer size is a
-multiple of the memory-alignment property. If it isn't, the allocation
-fails with a return value of -EINVAL.
+From: Hanna Czenczek <hreitz@redhat.com>
 
-Fix the call in blkio_resize_bounce_pool() to make sure the requested
-size is properly aligned.
+As of commit 38738f7dbbda90fbc161757b7f4be35b52205552 ("virtio-scsi:
+don't waste CPU polling the event virtqueue"), we only attach an io_read
+notifier for the virtio-scsi event virtqueue instead, and no polling
+notifiers.  During operation, the event virtqueue is typically
+non-empty, but none of the buffers are intended to be used immediately.
+Instead, they only get used when certain events occur.  Therefore, it
+makes no sense to continuously poll it when non-empty, because it is
+supposed to be and stay non-empty.
 
-I observed this problem with vhost-vdpa, which requires page aligned
-memory. As the virtio-blk device behind it still had 512 byte blocks, we
-got bs->bl.request_alignment = 512, but actually any request that needed
-a bounce buffer and was not aligned to 4k would fail without this fix.
+We do this by using virtio_queue_aio_attach_host_notifier_no_poll()
+instead of virtio_queue_aio_attach_host_notifier() for the event
+virtqueue.
 
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240131173140.42398-1-kwolf@redhat.com>
+Commit 766aa2de0f29b657148e04599320d771c36fd126 ("virtio-scsi: implement
+BlockDevOps->drained_begin()") however has virtio_scsi_drained_end() use
+virtio_queue_aio_attach_host_notifier() for all virtqueues, including
+the event virtqueue.  This can lead to it being polled again, undoing
+the benefit of commit 38738f7dbbda90fbc161757b7f4be35b52205552.
+
+Fix it by using virtio_queue_aio_attach_host_notifier_no_poll() for the
+event virtqueue.
+
+Reported-by: Fiona Ebner <f.ebner@proxmox.com>
+Fixes: 766aa2de0f29b657148e04599320d771c36fd126
+       ("virtio-scsi: implement BlockDevOps->drained_begin()")
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+Message-ID: <20240202153158.788922-2-hreitz@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/blkio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/scsi/virtio-scsi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index bc2f21784c..882e1c297b 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -89,6 +89,9 @@ static int blkio_resize_bounce_pool(BDRVBlkioState *s, int64_t bytes)
-     /* Pad size to reduce frequency of resize calls */
-     bytes += 128 * 1024;
+diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+index 690aceec45..9f02ceea09 100644
+--- a/hw/scsi/virtio-scsi.c
++++ b/hw/scsi/virtio-scsi.c
+@@ -1149,6 +1149,7 @@ static void virtio_scsi_drained_begin(SCSIBus *bus)
+ static void virtio_scsi_drained_end(SCSIBus *bus)
+ {
+     VirtIOSCSI *s = container_of(bus, VirtIOSCSI, bus);
++    VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(s);
+     VirtIODevice *vdev = VIRTIO_DEVICE(s);
+     uint32_t total_queues = VIRTIO_SCSI_VQ_NUM_FIXED +
+                             s->parent_obj.conf.num_queues;
+@@ -1166,7 +1167,11 @@ static void virtio_scsi_drained_end(SCSIBus *bus)
  
-+    /* Align the pool size to avoid blkio_alloc_mem_region() failure */
-+    bytes = QEMU_ALIGN_UP(bytes, s->mem_region_alignment);
-+
-     WITH_QEMU_LOCK_GUARD(&s->blkio_lock) {
-         int ret;
+     for (uint32_t i = 0; i < total_queues; i++) {
+         VirtQueue *vq = virtio_get_queue(vdev, i);
+-        virtio_queue_aio_attach_host_notifier(vq, s->ctx);
++        if (vq == vs->event_vq) {
++            virtio_queue_aio_attach_host_notifier_no_poll(vq, s->ctx);
++        } else {
++            virtio_queue_aio_attach_host_notifier(vq, s->ctx);
++        }
+     }
+ }
  
 -- 
 2.43.0
