@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3836584CF24
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:40:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB1C84CF22
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:40:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkwT-00030O-Tj; Wed, 07 Feb 2024 11:38:33 -0500
+	id 1rXkwR-0002yd-TL; Wed, 07 Feb 2024 11:38:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwR-0002yg-EB
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:31 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1rXkwP-0002wi-9B
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:29 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwO-0006CG-Sl
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:31 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40ff28388a6so7630565e9.1
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:28 -0800 (PST)
+ id 1rXkwM-0006BN-KO
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:29 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-40fc22f372cso7350405e9.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707323907; x=1707928707; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707323905; x=1707928705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NZEnJqnRtjHTYADU54FKGw8u/qLIoqp7a6/Lc+0JhOI=;
- b=gfcUw6FdsXwGE1FD/EB8khiaSdJWBLoVSCkCwzub66Pt9ORycJw6qomC4Ax0KEkTg+
- 5pVXQwcuZxwr4HBP0vFIKWf02jbs/vDZ/Zslg+EyWGXoLuhpbBJKR+FfnTBc/Iy09MqB
- k/Vcl8lSdoG0koikOSBl1HNosyZTkED0pKCUY1qxahZoTCMCb2U/r674Y+v+ezb32kxA
- Wv3ZbEnZTGYFd8YxQqRerN5ELJR8so8nNUZyVAXvQme0IwOzHt/gvhgM1YSxXmJD/f3Y
- 4ECXlDQGaprGub9HHWStS46XBRUGsOZQxJYk/Pv+Va8NX25tYLSK3oC3y1sK9dTqk/pV
- 352A==
+ bh=nUnXcCSSh6U29fLbXe/wbWbJ/XTPO8jPvZXYeKxJYts=;
+ b=dYPKpNZat1kg7Bzk79dTrSh7xTWlZIFoV++5iZaestZEIoNvUJVpF5OK1mRVtEVluy
+ rLdi0lYkpY7PPq0pyN4utdzDI0zI6n8ofDCsmQRYN8CpSh8My1m99ShWnuRkcIe7W8EQ
+ fj+QxCv0eIAq1fNAmj4djbNJSKFiYyTRXPMFd45TpZ3fiZriYiNb/fXsF+Wn+bJIggzD
+ syxZdBWg9TJkIxqvwAq9nK11Xk4jMjX/D0vxV9EfntcdwSZmkA2n/bQibSt82FVWLU1+
+ rp2ZiRYH47yn6IyVRRkzlwYXoL8cYieQw4uuE56IzO1hlDM9/yZAmmS/5XwuCrWgjsZn
+ IHMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707323907; x=1707928707;
+ d=1e100.net; s=20230601; t=1707323905; x=1707928705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NZEnJqnRtjHTYADU54FKGw8u/qLIoqp7a6/Lc+0JhOI=;
- b=Rc+oORgAvldGKjsUd/36/udxOjq32YKfCos1CV0JVccCu9m88WLCTeCgWPrasgHUXB
- KyvVC34gJQNFV+m+ImU1MCTxhopXHw+WM2Zal0Z0gImywsvYX44+9EyEdNL5k17VJZlv
- 9vV7uqfmFMxR/ehfclzQjfp4ms1E95tKVEUhLSkdS5tzCob2odJTuLn/JmpUDMVgZdOH
- y7WSI7xZ1JfvL+v6syNc6q11r3ofHeEY1jO6JuUYdsTzQPd9ZMSZNR4Qw9BfCzr+3AkD
- WWbUn5LyAlHVJyQvz+djbXLipZVPFDBJa7g2eTO4sxu96fy2GodgeOxAwVBPD+TQXtPK
- wo1w==
-X-Gm-Message-State: AOJu0Yw0FaBl7ioFoeMh8bDMECloRdFwc3Vbr9RtwwT7vHPxdZXwQRCX
- rEFA7dM1zkJ3B5bnM93BvJ9bENpd1vn39tOtRuqqFNur1lUMkd0kvJ/q4OHkYsY=
-X-Google-Smtp-Source: AGHT+IEs5VzykUrPZZ/a8E0suhAGYeAe+JVPGaxzI2YNKpjCClE233UfaCR0f5RWvU2Zj+QL6HW2hg==
-X-Received: by 2002:a05:600c:1553:b0:410:2496:ccdd with SMTP id
- f19-20020a05600c155300b004102496ccddmr522761wmg.27.1707323907446; 
- Wed, 07 Feb 2024 08:38:27 -0800 (PST)
+ bh=nUnXcCSSh6U29fLbXe/wbWbJ/XTPO8jPvZXYeKxJYts=;
+ b=CdxpRqCyWwZ/8P3qlk/rVTuBTYUun3zxUxB5iflr8bp5lptoNhf0n55KG34E5cC3MV
+ RvbggMhzUwN3LdvC6OQktnlJFTFFzRGmg3fDnrvvT2wN1ZoUKzZJo9RE75amqOTwGXlk
+ ulRIM4NDGHZuvR0GmpiB57Q1oEZ9ezmgW02xM8+JHXj/21scNnQRhONqlZWpOoFO6N2X
+ oLhmpnb/1CgIplIZ5dSn5EmTVesAoJ8MCUe/ub7sdwuQqB+cWZJ0gGWzToP3fb0FcgOa
+ DphPK4DHw+JPKN1iBkEww+TBqq55Ywi6JxNZhRaTIQn2nxeIGnnT3NnWMQ7LcIyQenOg
+ yh9g==
+X-Gm-Message-State: AOJu0YyuOF+B9SK1lSptlLXdxXbWNzi/eo9hDJJ/rWOx5O4qCvDFGOv5
+ QN60x7GqKtfCpVF+JRbRg0mZ/YAQsmVcnDvotg3IUijZm/HvJaXihUe8j6NeVl4=
+X-Google-Smtp-Source: AGHT+IHWOH3+Y6dzVMWPSwfE1ua+TKP+nXGejC30x3sF+o/N8E89jj4nClzW6MEa8GwnWbdEZrfvoA==
+X-Received: by 2002:a05:600c:1910:b0:40e:c6a6:5111 with SMTP id
+ j16-20020a05600c191000b0040ec6a65111mr4417992wmq.11.1707323905332; 
+ Wed, 07 Feb 2024 08:38:25 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2twQPA/imKU8TXnjh8RXEOe87TDnJV7LjaUystw7Iipdfu4tRqFIR6jmxZLiZvq8iJJbbUyUtf4zHNMB+e5LW+khol3VhtpuFOqOUoMbF+Ko03I6/r0pPjSAi88ffV7sVliFGwb/eZPufsf8tCuUYnjAh3OSskNSFkveT6EDZnMUBxAVjRlepPxNHnShJRn4PAxzXvomj4+CEuuqmNKkaZ2xJGAkNDuCj+6E2siTpTHVmlmd803nIe2OOGdGmF2q6lvmZ6r6bkk62g8fNRCw4JlH14azS1pNP8cC8mQf7FwSN9zcG4lLVKf5B9Ekhrv+o+Itxh1PI5Jro2/byTmwEGc5FRkH1Eb6B6cqzY701LO6UFFaFuh17a86Z3T8+0E8nrrxERyZ8pXL29bE8FYLrqY25Hy8kdElo/ajUHWuovys/uUIbtFVhhUtGBd/3XtAtNgPBlI0Q5X/Md9xsDm60zH/AOhMRye27qoo6Fiprj6T9WjnolNhmvELVKO+G9TFQKJKh0BCWSfjdZbNOIZLZ+4zHTshILfRU+VUcd5VWRuvow+/9w9pbyt4NFOY3hspWqanUGC0lnuDKrrSufHDhu74Xccrhvx9w9mQl0PCYa+HjGCS3rn2RouU7i28kQCH49irLXqLCiB0ewuQHIvGHN6YuNk5xk5chcipTG/0xgjy1P3t/iWKx704X1yCDuwB0yOHbmaA8twCpazeb8Kt0Fe+ReQ8FNk6t6h3dlkV91fTvdgdtSu1Po+NKixtglHHqO+TqKeueteFkLYiJwFWA1gEkgfp+hrHfo4g/YQOFp0Lp+7HiD3yqsny4W6jiFe4qAnoFonlWW4OQwdl+U+pi1MNw8g7pAT5JgiL8
+ AJvYcCWhyaD1vupT/FNfVmORb9ZE7cv2foxFCinjPT9uXP8f9AAyFqzRcblYR8DkLUd4MRMpU80Kh9knP9Xp/N34knFALV1YwEDmfa7ufQFAswE8J+cey7zgurjX40sWDb76CMmQcWtgjhFid5dPrZ5F2JaYOv/gOeuJsNN+t0mwV+O98nDgqrr3vwyLp32/1OFZSInOM2CG9HHeV2CTPvZdVgjiruo0DPrSV3mKh/zx2iI1QWEZtR/RHTvC2exI9SZ1vivntZkp/LBWNESzL1xpg0XskBO1mkpcDf4N6XHvg6plb46ZKMlqtC+7x9yodxM8lUmdOMvZSB4cioBZlM4vXpWRmDkDM8Z03bdZYU4ueKRd0YCkV4kdotAwoSOZ7NmhY+B4cBlQSsnO+8VeVCJw3VKwELEOfjAdIPU3E4S47HZYsUAoGierf4mcmpttDPyD3Gqe601N75ZrTi9RiFD0zbekxRnK9NhLq3KjxF8RgGi5Cc9vN1+JgXylYaf0RY+0ivn1hx3SKXnE3cbJo4BNiArQ4JEGvoa8XfYBg2LTky/dTVCUfFQU2j4OK/l4cWDJCty0CONgxKRZxHLPhbCY+kDxa7u/FLQCjkXlzixFKruSeGJ+4y2acbF7QQxx7zPkkp63gM2cQZQzT0lexbqWcJ/hRVXfkM9kxgT4d3jlzF9O70i9EB728P9UP87Ok2RdcRE59YC02MTk3hW5QDMs/8cKlKdjfP06gRSarINiDPiiOd1mwPBx8oawc1HxlAPqZPcZo1pjaqesKNLItT6FGKhoi2IKFo6lDgaM5VOZVMhJxzwSlNvFs0+wBuDqIMJa9j49ehzX0nmZN0MBRaZr8MmTuLCaswIYsTk3GI1l
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- b15-20020a05600010cf00b0033b4e58746asm1809148wrx.69.2024.02.07.08.38.17
+ w8-20020a05600c474800b00410219f126bsm779121wmo.37.2024.02.07.08.38.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 08:38:24 -0800 (PST)
+ Wed, 07 Feb 2024 08:38:22 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 292D85F7B1;
+ by draig.lan (Postfix) with ESMTP id 424755F94A;
  Wed,  7 Feb 2024 16:38:13 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -82,17 +82,17 @@ Cc: devel@lists.libvirt.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Kyle Evans <kevans@freebsd.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 11/14] gdbstub: Allow specifying a reason in stop packets
-Date: Wed,  7 Feb 2024 16:38:09 +0000
-Message-Id: <20240207163812.3231697-12-alex.bennee@linaro.org>
+Subject: [PATCH v2 12/14] gdbstub: Add syscall entry/return hooks
+Date: Wed,  7 Feb 2024 16:38:10 +0000
+Message-Id: <20240207163812.3231697-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240207163812.3231697-1-alex.bennee@linaro.org>
 References: <20240207163812.3231697-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,78 +117,94 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-The upcoming syscall catchpoint support needs to send stop packets with
-an associated reason to GDB. Add an extra parameter to gdb_handlesig()
-for that, and rename it to gdb_handlesig_reason(). Provide a
-compatibility wrapper with an old name.
+The upcoming syscall catchpoint support needs to get control on syscall
+entry and return. Provide the necessary hooks for that, which are
+no-ops for now.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240202152506.279476-3-iii@linux.ibm.com>
+Message-Id: <20240202152506.279476-4-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/gdbstub/user.h | 16 ++++++++++++++--
- gdbstub/user.c         |  5 ++++-
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ include/gdbstub/user.h       | 13 +++++++++++++
+ include/user/syscall-trace.h |  7 +++++--
+ gdbstub/user.c               |  8 ++++++++
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
 diff --git a/include/gdbstub/user.h b/include/gdbstub/user.h
-index d392e510c59..1fc43e04af5 100644
+index 1fc43e04af5..68b6534130c 100644
 --- a/include/gdbstub/user.h
 +++ b/include/gdbstub/user.h
-@@ -10,9 +10,10 @@
- #define GDBSTUB_USER_H
- 
- /**
-- * gdb_handlesig() - yield control to gdb
-+ * gdb_handlesig_reason() - yield control to gdb
-  * @cpu: CPU
-  * @sig: if non-zero, the signal number which caused us to stop
-+ * @reason: stop reason for stop reply packet or NULL
-  *
-  * This function yields control to gdb, when a user-mode-only target
-  * needs to stop execution. If @sig is non-zero, then we will send a
-@@ -24,7 +25,18 @@
-  * or 0 if no signal should be delivered, ie the signal that caused
-  * us to stop should be ignored.
+@@ -51,5 +51,18 @@ void gdb_signalled(CPUArchState *as, int sig);
   */
--int gdb_handlesig(CPUState *, int);
-+int gdb_handlesig_reason(CPUState *, int, const char *);
+ void gdbserver_fork(CPUState *cs);
+ 
++/**
++ * gdb_syscall_entry() - inform gdb of syscall entry and yield control to it
++ * @cs: CPU
++ * @num: syscall number
++ */
++void gdb_syscall_entry(CPUState *cs, int num);
 +
 +/**
-+ * gdb_handlesig() - yield control to gdb
-+ * @cpu CPU
-+ * @sig: if non-zero, the signal number which caused us to stop
-+ * @see gdb_handlesig_reason()
++ * gdb_syscall_entry() - inform gdb of syscall return and yield control to it
++ * @cs: CPU
++ * @num: syscall number
 + */
-+static inline int gdb_handlesig(CPUState *cpu, int sig)
-+{
-+    return gdb_handlesig_reason(cpu, sig, NULL);
-+}
++void gdb_syscall_return(CPUState *cs, int num);
  
- /**
-  * gdb_signalled() - inform remote gdb of sig exit
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index dbe1d9b8875..63edca131ab 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -121,7 +121,7 @@ void gdb_qemu_exit(int code)
-     exit(code);
+ #endif /* GDBSTUB_USER_H */
+diff --git a/include/user/syscall-trace.h b/include/user/syscall-trace.h
+index 557f881a79b..b48b2b2d0ae 100644
+--- a/include/user/syscall-trace.h
++++ b/include/user/syscall-trace.h
+@@ -11,6 +11,7 @@
+ #define SYSCALL_TRACE_H
+ 
+ #include "exec/user/abitypes.h"
++#include "gdbstub/user.h"
+ #include "qemu/plugin.h"
+ #include "trace/trace-root.h"
+ 
+@@ -20,7 +21,7 @@
+  * could potentially unify the -strace code here as well.
+  */
+ 
+-static inline void record_syscall_start(void *cpu, int num,
++static inline void record_syscall_start(CPUState *cpu, int num,
+                                         abi_long arg1, abi_long arg2,
+                                         abi_long arg3, abi_long arg4,
+                                         abi_long arg5, abi_long arg6,
+@@ -29,11 +30,13 @@ static inline void record_syscall_start(void *cpu, int num,
+     qemu_plugin_vcpu_syscall(cpu, num,
+                              arg1, arg2, arg3, arg4,
+                              arg5, arg6, arg7, arg8);
++    gdb_syscall_entry(cpu, num);
  }
  
--int gdb_handlesig(CPUState *cpu, int sig)
-+int gdb_handlesig_reason(CPUState *cpu, int sig, const char *reason)
+-static inline void record_syscall_return(void *cpu, int num, abi_long ret)
++static inline void record_syscall_return(CPUState *cpu, int num, abi_long ret)
  {
-     char buf[256];
-     int n;
-@@ -141,6 +141,9 @@ int gdb_handlesig(CPUState *cpu, int sig)
-                             "T%02xthread:", gdb_target_signal_to_gdb(sig));
-             gdb_append_thread_id(cpu, gdbserver_state.str_buf);
-             g_string_append_c(gdbserver_state.str_buf, ';');
-+            if (reason) {
-+                g_string_append(gdbserver_state.str_buf, reason);
-+            }
-             gdb_put_strbuf();
-             gdbserver_state.allow_stop_reply = false;
-         }
+     qemu_plugin_vcpu_syscall_ret(cpu, num, ret);
++    gdb_syscall_return(cpu, num);
+ }
+ 
+ 
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 63edca131ab..2ba01c17faf 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -502,3 +502,11 @@ void gdb_syscall_handling(const char *syscall_packet)
+     gdb_put_packet(syscall_packet);
+     gdb_handlesig(gdbserver_state.c_cpu, 0);
+ }
++
++void gdb_syscall_entry(CPUState *cs, int num)
++{
++}
++
++void gdb_syscall_return(CPUState *cs, int num)
++{
++}
 -- 
 2.39.2
 
