@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56C884CF29
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB5084CF21
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 17:40:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXkwK-0002r6-QV; Wed, 07 Feb 2024 11:38:24 -0500
+	id 1rXkwK-0002sA-RR; Wed, 07 Feb 2024 11:38:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwH-0002pQ-Ln
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:21 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1rXkwJ-0002q4-0B
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:23 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rXkwE-00067G-Cr
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:21 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4101d096c92so4429365e9.1
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:17 -0800 (PST)
+ id 1rXkwG-00067i-7x
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 11:38:22 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40fc6578423so7467315e9.0
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 08:38:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707323897; x=1707928697; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707323898; x=1707928698; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=al2EF5joR1GpZYix/IJ7sorp1km6Nnx+serOjQtc33w=;
- b=N+kFrznvTJ0P9ZboHnXtaevVALylMSNP24w386OGQE+l3iK6kH3jvDND58pQkemXD0
- a+GoRlPmPN07imDVS90HOho+O3UdnuIfGczSDciXexfPguAVP/Gbd8jNI7CiuuUlpaC6
- rtFDbQs3FQeBNND6Bnt32VlVXThcQ0BPlXDHTj8F66R5qvjErPqOVRA4fyuP2QqBfeNo
- LoVkw0rVcXMLpqXRLnOJuDRVHi9D3bB+OvHbMMNCzqeuIitE6A7NAKJqXbCy1SaX5cR1
- 5ly7UNsiDcxJfg4jkKNJXZIgNJYZxLKlIfQOduwbXnJYldB7Edb6BDqIWW1s+WjIsh+r
- rQMA==
+ bh=7r6TD7yChzqzHwHFrhbxu1OMWzC/pBSk9CaZVccyvoc=;
+ b=D0d76ixfydzCvymGynM4XSeC/0Wr35r779jBaRwDgQuzgPaugYpmhsOwAM1ajh0Qm7
+ YzgwGdAabvggaKK4uXEutdysALzzt29sUlg21F6pwohiA1ohmuvmOtodQM9/iQi88d+2
+ q/aB9R1dvBkka6410p/DaEFi+7xi38Lqi3IIfhUk6RMHSLFrXLqlLNDx05tBfdbyeyZX
+ NpY/dVI3W6we2/O4RxnglDSn+pTYGVsHKYUjgENItTm8vZ62WMXEP+WwGsKp0fFPPfpO
+ ECkIvZt74vY6PKBToTb6I1JQ/k7K8KehOl8KVSHk80B0938gW6ZqvsrpFyY7mSmb04eY
+ 2Y5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707323897; x=1707928697;
+ d=1e100.net; s=20230601; t=1707323898; x=1707928698;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=al2EF5joR1GpZYix/IJ7sorp1km6Nnx+serOjQtc33w=;
- b=GGvcpTemdTbemJhzqwSmH/SEzqQDYML9aTFa4WZrvM0dpaAe2G2qSXoYDbDJ9W/r0P
- 3B69I6D/2pE9iEfgyU4E+UF17kPANRjs50ukn7qUaRXH81kxKt9+1zmo44Ur+UP0MiP8
- evidrwoUKtyrbPGZtvrbtuwdv0PRX6kvh3ljE01b7saVLeCCgyjbXYfC9WNUkTzMjwZi
- Ui0zzKD5OPszsNsPN/hRXP2FZjvAq2erMMF2FkpFWKk4au0avGk/z4lDQvr+ZTupwF2a
- vrgnl8wHw/l5b9w2BS6OjthmMgTq+JpchUoFi0J9noDRDwXP9LhnplGScYPfr2qeECql
- w0vg==
-X-Gm-Message-State: AOJu0YwCzNcM73ga5dGZRN8IprctjfMdRC+ewmiXDmKThHuXNnJ0ecfv
- Rv1Sky1ddQ8+4X45nfl4r74D8pKpqei/s59eRwTAIciNUEOwZcKY7ZHisAxGirw=
-X-Google-Smtp-Source: AGHT+IEllApoBVS2Af8bGtwiTxz/SrARQDrYzHCX+zMsLKLvVQIjfNdJUEgGbhM6ZEDvEQgUjp9vOQ==
-X-Received: by 2002:a5d:6703:0:b0:33b:1ae4:10b1 with SMTP id
- o3-20020a5d6703000000b0033b1ae410b1mr3549305wru.47.1707323896841; 
- Wed, 07 Feb 2024 08:38:16 -0800 (PST)
+ bh=7r6TD7yChzqzHwHFrhbxu1OMWzC/pBSk9CaZVccyvoc=;
+ b=wlTcgluXIkoHiQTHTASLiO0NiYw5JytGCRh0cZ04sQM48sii6g/r1ywVGWA0uS0FNG
+ EPb+LwA8dw5WEiSIySzxtf9rZoQGUKWT/EOzi9xb3BMquewCD1E85DzlAdk4Lgg8xOk8
+ PmQzUONolYIBkewRdDYxhZaxVvb1bQh4uLB5BowfaiTRuPg1rkQSZkzqdMV8+8wcYpIC
+ A9S49CCK3PGrKBaN+M4zifJbWK+NGnqVrnHU5XBPe0qallPXS+Fiil9hgXyybIzZ49y1
+ Bmmzu1tzcwBVnX3dX1KjzPIiXFQGrwA8ovhMiI2Mrtzg8+DfM00tsgTUcZ2GSKxkmp2c
+ KyAQ==
+X-Gm-Message-State: AOJu0YwYZbpx31XORdTgJ8dTf0ofir4RtHwCcO+P2aVq3skbakz6JSi/
+ HCV1oUhhY0WVphNRCmTPZlgpmejnW+SdrkBpPrF+4vBfYwUUV/4FAUjeCC7FzRU=
+X-Google-Smtp-Source: AGHT+IGHwl3tW2nUX2wfBLHUrlSOM6cjxqlwmBBgVdwDbJmr/R/vGDi2c3wnvq3QzxKL6BY7CYBQug==
+X-Received: by 2002:a05:600c:4509:b0:40e:61d4:5d3b with SMTP id
+ t9-20020a05600c450900b0040e61d45d3bmr5501081wmo.20.1707323898707; 
+ Wed, 07 Feb 2024 08:38:18 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCU4pOfHiiGwCo4OdHghcmtkfTz/YfCpp7vi1P0k0xuEn7MMyfZkDp5SuiQyA+Dalk1TdFnzHYKAox7Cy2JBgUZvuV7AZWigReJq216WwBzezxWAcZ9bhnJQRXY2r0SV3mP8Tdnhel2lFPGIg2QKfsoGxAX6bATIC7y+sY9yBvBzKf8e/0ixlUCJFHy2ET3h4d9K4yPGT+UlK5zEtL3cEY0lRAFrRNFSNAEkudXO0jP81UW4Zl2AhKcYL6trJCRRZsToazF0RfHIgM+0nifwnqbafeCwP8Q+icMq2dVZkrxchd8ENxvMq3gtJWLuWTWIR0JNrfgc7BuLg4iQEYhNDmsRkTBnC6lqKreHleXYUqIkuoO17HJqdfmypDi+GS61iYaGNm6QSX95W4vqYBgJMLw1ukGO2Ziq3+aGhI+imBOSZ8HdelrkoaPUfJ/G2LGEGqCGLhvJk0RsOWyf8rUYpNr4E5VqVSNYF8rS7HI6wFQASzJeiVWZHPg2nrSjR+2USFDTG8FhgsMl/oWzZ2At9aXfcqxrwy9JRw9S71iJpLlNI6r1wkTvYKpgdcb3loyeVSRdBF9wk5mVZcMUCNprRJ7n6+OQbwWezf0y3wM7TNy6UYvOeKNQOSY8M76BnlFCy3Wfd0jYtU47cp02K7Vk1fw6bPr44uKVeyZQlwXfZFidPwYQESasogOqF1TYk/R/tCiAz4xyHqahKHEwaxfSwq7EGp5ChGqGqv8PakDLFUbxjElwOLUZ8halcTPZ2Fh72XskZVGrX/coi08kcBIduLGN3gKulq+c3/782DnwQc0MeM1LAPV+uT+DdlDYBBmjUDooTTp6Uu9WTxk=
+ AJvYcCU85CmzezWXYjs7d04q56iflk3XNrfO92Z/yFqfgWD8aHJHO0wKepHAKyLrXeM78NoyCem0hOqWjs//+iigpEwll3DGDCdotjlWHO9Vlii+1KZoYVv4UpRFTx4A9R1nWwBtPU6gkjW11JZpfg5QBcgJe/6k/KSCeNC/iTnLyYKckSeBQ4HBPXTiueMLYb9mXjJhcR08zAVu9VQxQp4UkWD/Xmmx0pjD+hoCVsRyIkIcFpuuK7pZVh3pUSkzB7MeuCtIQPARuUOrv4Krsd7lbteVU5RKdCfZF1q2ZAB0/lUlAQM68BJ6yfqiKfguHEjv5H6v1K5vzuLBzuwVT7Fk8iQQGYB8d7RMIFQ42UGsF3eUJCGD0Fz7MqH/+nhApqx4R6q2CMxmsOY/Lln/3x46LUWky2QZYHduRTqcBgkrUnLALtczONlSCTSdAYDy43qlUacDkffDWuflJ/HDF8LzeGvOqlArR9A13QYSQRuVgNGRgmBmIU2et8X6Q1qrKoJyJ1xZ27+fdqzaRMHwb85Pc2Z/g5KF6w15ZAzvFGzkzkMaDqFdPISrK5NpaGsHUC2YvZzzrJ/P6hHgYj+NzcGVT0mGSpUlzBPPP5kOpByjGwBfDGAzacgRz00mH+/E5QZrAIin44MdlWRsuBR0NGXi2EhjfLgRpfXNK6g1Ju5cyXCbfdmi3dmu8ldCMNNuL0P2c1uwLAthHHpcXA6uDiewoiFDufeM/G6Gnea/RyV9lXjjx7Xw8TxSKgQsbLrQHw4TBTVG4gOVTpoXlrE8ZiXUKZLj5FEnzYe5m4JHpWdhXJ7MPZgECXZFVgEP9aImd0lCwLjtf2hMMjLQW71uDBcRTCMdlG2MjzdGj8XHOg3c
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- az2-20020a05600c600200b00410141aa57csm2062945wmb.15.2024.02.07.08.38.12
+ m14-20020a05600c3b0e00b004100826da82sm2653264wms.21.2024.02.07.08.38.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 08:38:13 -0800 (PST)
+ Wed, 07 Feb 2024 08:38:17 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 7A6545F895;
+ by draig.lan (Postfix) with ESMTP id 8F7AA5F8DA;
  Wed,  7 Feb 2024 16:38:12 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -81,19 +81,18 @@ Cc: devel@lists.libvirt.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Li-Wen Hsu <lwhsu@freebsd.org>, Laurent Vivier <laurent@vivier.eu>,
  Kyle Evans <kevans@freebsd.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Riku Voipio <riku.voipio@iki.fi>
-Subject: [PATCH v2 04/14] Revert "hw/elf_ops: Ignore loadable segments with
- zero size"
-Date: Wed,  7 Feb 2024 16:38:02 +0000
-Message-Id: <20240207163812.3231697-5-alex.bennee@linaro.org>
+ Riku Voipio <riku.voipio@iki.fi>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 05/14] tests/vm: Set UseDNS=no in the sshd configuration
+Date: Wed,  7 Feb 2024 16:38:03 +0000
+Message-Id: <20240207163812.3231697-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240207163812.3231697-1-alex.bennee@linaro.org>
 References: <20240207163812.3231697-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,124 +115,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This regressed qemu-system-xtensa:
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-    TEST    test_load_store on xtensa
-  qemu-system-xtensa: Some ROM regions are overlapping
-  These ROM regions might have been loaded by direct user request or by default.
-  They could be BIOS/firmware images, a guest kernel, initrd or some other file loaded into guest memory.
-  Check whether you intended to load all this guest code, and whether it has been built to load to the correct addresses.
+make vm-build-freebsd sometimes fails with "Connection timed out during
+banner exchange". The client strace shows:
 
-  The following two regions overlap (in the memory address space):
-    test_load_store ELF program header segment 1 (addresses 0x0000000000001000 - 0x0000000000001f26)
-    test_load_store ELF program header segment 2 (addresses 0x0000000000001ab8 - 0x0000000000001ab8)
-  make[1]: *** [Makefile:187: run-test_load_store] Error 1
+    13:59:30 write(3, "SSH-2.0-OpenSSH_9.3\r\n", 21) = 21
+    13:59:30 getpid()                       = 252655
+    13:59:30 poll([{fd=3, events=POLLIN}], 1, 5000) = 1 ([{fd=3, revents=POLLIN}])
+    13:59:32 read(3, "S", 1)                = 1
+    13:59:32 poll([{fd=3, events=POLLIN}], 1, 3625) = 1 ([{fd=3, revents=POLLIN}])
+    13:59:32 read(3, "S", 1)                = 1
+    13:59:32 poll([{fd=3, events=POLLIN}], 1, 3625) = 1 ([{fd=3, revents=POLLIN}])
+    13:59:32 read(3, "H", 1)                = 1
 
-This reverts commit 62570f1434160d356311e1c217537e24a4ac85cd.
+There is a 2s delay during connection, and ConnectTimeout is set to 1.
+Raising it makes the issue go away, but we can do better. The server
+truss shows:
 
-Message-Id: <20240201122835.1712347-5-alex.bennee@linaro.org>
+    888: 27.811414714 socket(PF_INET,SOCK_DGRAM|SOCK_CLOEXEC,0) = 5 (0x5)
+    888: 27.811765030 connect(5,{ AF_INET 10.0.2.3:53 },16) = 0 (0x0)
+    888: 27.812166941 sendto(5,"\^Z/\^A\0\0\^A\0\0\0\0\0\0\^A2"...,39,0,NULL,0) = 39 (0x27)
+    888: 29.363970743 poll({ 5/POLLRDNORM },1,5000) = 1 (0x1)
+
+So the delay is due to a DNS query. Disable DNS queries in the server
+config.
+
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240206002344.12372-2-iii@linux.ibm.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/elf_ops.h | 75 +++++++++++++++++++++-----------------------
- 1 file changed, 36 insertions(+), 39 deletions(-)
+ tests/vm/basevm.py | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/elf_ops.h b/include/hw/elf_ops.h
-index 3e966ddd5a1..9c35d1b9da6 100644
---- a/include/hw/elf_ops.h
-+++ b/include/hw/elf_ops.h
-@@ -427,16 +427,6 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
-             file_size = ph->p_filesz; /* Size of the allocated data */
-             data_offset = ph->p_offset; /* Offset where the data is located */
- 
--            /*
--             * Some ELF files really do have segments of zero size;
--             * just ignore them rather than trying to set the wrong addr,
--             * or create empty ROM blobs, because the zero-length blob can
--             * falsely trigger the overlapping-ROM-blobs check.
--             */
--            if (mem_size == 0) {
--                continue;
--            }
--
-             if (file_size > 0) {
-                 if (g_mapped_file_get_length(mapped_file) <
-                     file_size + data_offset) {
-@@ -540,38 +530,45 @@ static ssize_t glue(load_elf, SZ)(const char *name, int fd,
-                 *pentry = ehdr.e_entry - ph->p_vaddr + ph->p_paddr;
-             }
- 
--            if (load_rom) {
--                g_autofree char *label =
--                    g_strdup_printf("%s ELF program header segment %d",
--                                    name, i);
--
--                /*
--                 * rom_add_elf_program() takes its own reference to
--                 * 'mapped_file'.
--                 */
--                rom_add_elf_program(label, mapped_file, data, file_size,
--                                    mem_size, addr, as);
--            } else {
--                MemTxResult res;
--
--                res = address_space_write(as ? as : &address_space_memory,
--                                          addr, MEMTXATTRS_UNSPECIFIED,
--                                          data, file_size);
--                if (res != MEMTX_OK) {
--                    goto fail;
--                }
--                /*
--                 * We need to zero'ify the space that is not copied
--                 * from file
--                 */
--                if (file_size < mem_size) {
--                    res = address_space_set(as ? as : &address_space_memory,
--                                            addr + file_size, 0,
--                                            mem_size - file_size,
--                                            MEMTXATTRS_UNSPECIFIED);
-+            /* Some ELF files really do have segments of zero size;
-+             * just ignore them rather than trying to create empty
-+             * ROM blobs, because the zero-length blob can falsely
-+             * trigger the overlapping-ROM-blobs check.
-+             */
-+            if (mem_size != 0) {
-+                if (load_rom) {
-+                    g_autofree char *label =
-+                        g_strdup_printf("%s ELF program header segment %d",
-+                                        name, i);
-+
-+                    /*
-+                     * rom_add_elf_program() takes its own reference to
-+                     * 'mapped_file'.
-+                     */
-+                    rom_add_elf_program(label, mapped_file, data, file_size,
-+                                        mem_size, addr, as);
-+                } else {
-+                    MemTxResult res;
-+
-+                    res = address_space_write(as ? as : &address_space_memory,
-+                                              addr, MEMTXATTRS_UNSPECIFIED,
-+                                              data, file_size);
-                     if (res != MEMTX_OK) {
-                         goto fail;
-                     }
-+                    /*
-+                     * We need to zero'ify the space that is not copied
-+                     * from file
-+                     */
-+                    if (file_size < mem_size) {
-+                        res = address_space_set(as ? as : &address_space_memory,
-+                                                addr + file_size, 0,
-+                                                mem_size - file_size,
-+                                                MEMTXATTRS_UNSPECIFIED);
-+                        if (res != MEMTX_OK) {
-+                            goto fail;
-+                        }
-+                    }
-                 }
-             }
- 
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index 61725b83254..c0d62c08031 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -423,6 +423,8 @@ def console_ssh_init(self, prompt, user, pw):
+     def console_sshd_config(self, prompt):
+         self.console_wait(prompt)
+         self.console_send("echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config\n")
++        self.console_wait(prompt)
++        self.console_send("echo 'UseDNS no' >> /etc/ssh/sshd_config\n")
+         for var in self.envvars:
+             self.console_wait(prompt)
+             self.console_send("echo 'AcceptEnv %s' >> /etc/ssh/sshd_config\n" % var)
 -- 
 2.39.2
 
