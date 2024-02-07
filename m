@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635F484D118
+	by mail.lfdr.de (Postfix) with ESMTPS id 184A484D117
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 19:22:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXmXO-0004ku-3j; Wed, 07 Feb 2024 13:20:46 -0500
+	id 1rXmXR-0004lV-KN; Wed, 07 Feb 2024 13:20:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXJ-0004jW-Ci
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:41 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXK-0004kV-Ig
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXH-0008BV-Ts
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:41 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rXmXI-0008AI-Uj
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 13:20:42 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 05F6B61A14;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 61CF9619D7;
+ Wed,  7 Feb 2024 18:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393C2C433C7;
  Wed,  7 Feb 2024 18:20:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA70FC433F1;
- Wed,  7 Feb 2024 18:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707330038;
- bh=KoFYV1cuiAvIfsT/+E/M7QzFRHRdtCx8I9CYomiWxOQ=;
+ s=k20201202; t=1707330040;
+ bh=vLEiE8lhlyiRwJ4cJo1am9Zz8JhSgVENwn64GYYsBD0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=dhFnrxvI0FODuvGp03xWec7LxBlbciVZNt4O4Codv3Di2CCXiSU+4N4D8+vsr4BeB
- IZJGcLfZIRPuODDtVcVs9vjyddagdYNRzr7fQfmX9MB5a3WyPXpfvY6U9gZauG/Vzh
- OIg3Zq3EW3Tx6lv0blXDYYxYAcPi6yfa7gvWtqtdxHVDTazz0DNTP8nlTEP96E7p3Y
- UHMBbbcUk0YKwMj5FBH3HBS0IDGCmHrBzI0DKnzdfS+4SMcJcoLzLO4fVr7Sd6/AKP
- XSZc0D+goeGIXH9BExZCZJD6yqQsXL19Vtjfsu40nzC+RQXwfYHpOhEtrlzuQjHfej
- NPidzhQZw3Lqw==
+ b=Ucl7fOfxxecmxSmjqqKU3SBIT/G+EY87oPkwY6UtyMLsnhiQdxN+HpAiKPvLiqxdh
+ tDtdqOd34UjKDBqU1Pyc8pRo8c+Q/5OWF+T8v3eOx2bErtxI8j26K0w2UOOmYvW4TX
+ nljNqKtiaHz/Rjoditl4h/fr5jqebI4fUxf5aX2t4eN929mdBjtvQjOS/HohVnL9hH
+ F05bNn88goGc4FkpWM76MhRb7p4DXZPXJBHnVwJimMlkOjpyPFrXcd+Y5i7KjgejEB
+ JnzcXRPKBMWJGz9gJOgbCkcUKMqxeFkke/g1g07VHA1yOjzb9EBneXzOKxU5ScEMeg
+ 8f2d76RgcTnJA==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Helge Deller <deller@gmx.de>
-Subject: [PATCH 09/13] target/hppa: Allow read-access to PSW with rsm 0,
- reg instruction
-Date: Wed,  7 Feb 2024 19:20:19 +0100
-Message-ID: <20240207182023.36316-10-deller@kernel.org>
+Subject: [PATCH 10/13] target/hppa: Check privilege only when PSW.P is set
+Date: Wed,  7 Feb 2024 19:20:20 +0100
+Message-ID: <20240207182023.36316-11-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207182023.36316-1-deller@kernel.org>
 References: <20240207182023.36316-1-deller@kernel.org>
@@ -70,38 +69,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-HP-UX 11 and HP ODE tools use the "rsm 0,%reg" instruction in not priviledged
-code paths to get the current PSW flags. The constant 0 means that no bits of
-the PSW shall be reset, so this is effectively a read-only access to the PSW.
-Allow this read-only access even for not privileged code.
+CHECK_MOST_PRIVILEGED() should check the privilege level only when the PSW.P
+bit is set.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/translate.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ target/hppa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 10fdc0813d..7e58775bbf 100644
+index 7e58775bbf..21c2734a1f 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2156,10 +2156,16 @@ static bool trans_ldsid(DisasContext *ctx, arg_ldsid *a)
- 
- static bool trans_rsm(DisasContext *ctx, arg_rsm *a)
- {
-+#ifdef CONFIG_USER_ONLY
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
--#ifndef CONFIG_USER_ONLY
-+#else
-     TCGv_i64 tmp;
- 
-+    /* HP-UX 11i and HP ODE use rsm for read-access to PSW */
-+    if (a->i) {
-+        CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+    }
-+
-     nullify_over(ctx);
- 
-     tmp = tcg_temp_new_i64();
+@@ -604,7 +604,7 @@ static bool gen_illegal(DisasContext *ctx)
+ #else
+ #define CHECK_MOST_PRIVILEGED(EXCP) \
+     do {                                     \
+-        if (ctx->privilege != 0) {           \
++        if (ctx->privilege != 0 && (ctx->tb_flags & PSW_P)) { \
+             return gen_excp_iir(ctx, EXCP);  \
+         }                                    \
+     } while (0)
 -- 
 2.43.0
 
