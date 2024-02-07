@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCC384C96D
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F264284C95A
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 12:15:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXfsn-0002qd-Lu; Wed, 07 Feb 2024 06:14:25 -0500
+	id 1rXfss-0002rp-QK; Wed, 07 Feb 2024 06:14:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsl-0002qB-5K
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:23 -0500
+ id 1rXfsp-0002qu-Ns
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:27 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rXfsj-0003P6-QK
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:22 -0500
+ id 1rXfsn-0003Pk-Aw
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 06:14:26 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707304461;
+ s=mimecast20190719; t=1707304463;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BbG1UcNnrJXHseB/1jw2t7pVf1ZGHlpH133WcB15Tq4=;
- b=IVdb1D+2Rf0T260n1ZMjeoEjCusAwCEDqNcKzVxs5VLE/L5pfEVvtD0yoJlyWfKvtNe5hU
- s0eSbZWL5jLY/AtGegyC7eB+BnlJXhWGqwwuqmB4kp8bJgU6Jmvf7gEAmAzOiLWnjgkCH8
- jKZiuT0Yg6oS29Diq5uxNF9sX6sf630=
+ bh=22m3lVs8Rcr/AULyQQp7muXracEJFhELmG8wj9R5NH4=;
+ b=FxQ4ktehlXv73nFlibaxDnIqpRZvvXquqf/AwUYyMie08yEphlrZIFy2KRhlvoojVx24lX
+ LX5Hc+0CjyN4JCUndhWzRy4NtwEf9ikrRFqr/dtiNfwcB8CUW24Fnk7Mv/fG2GAxNn+NDV
+ ZqZuP80aY0wWJ4d+SozI1goRJFHcW7Y=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-6E1RqNE-O9Kiw8EjYSpLSg-1; Wed, 07 Feb 2024 06:14:20 -0500
-X-MC-Unique: 6E1RqNE-O9Kiw8EjYSpLSg-1
+ us-mta-403-t3CRKQajOYGoYuJb9QAtTQ-1; Wed, 07 Feb 2024 06:14:22 -0500
+X-MC-Unique: t3CRKQajOYGoYuJb9QAtTQ-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a384e39d0d4so26958266b.1
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 03:14:19 -0800 (PST)
+ a640c23a62f3a-a3120029877so165163466b.1
+ for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 03:14:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707304458; x=1707909258;
+ d=1e100.net; s=20230601; t=1707304460; x=1707909260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BbG1UcNnrJXHseB/1jw2t7pVf1ZGHlpH133WcB15Tq4=;
- b=dgfYDCjA4zLeEEzPyAbiDcDdW4bKmkLQUH3GdW4yz76KUCChvV4ATskRkVHF0mZuAg
- ZxQQ1AUK2psIvJ/qqJIXT709d73yzw2GQoKmJ2/+ezNsg+A6x8k4+PvJXWF1dfsYsjqH
- aUk9/+NqZqtt0AYRK7cYS+DCJsXAxtoAUTQCmzLVXs89ZPjywK1IHjpQ4AIFoCK2sydj
- SqTm7qASDoH6CTnTAZEsOkOaRM9/gjz+eYLcTVLw7iBL4ldbaM+6iYD44RaZX0fQ0hJJ
- 5GAmHE33PBhL+b2YPwQ6YTkDqtV0xiV/uSNnNjpi83P6HPRBqlQKAcqDioOtbm04ynrJ
- zCgQ==
-X-Gm-Message-State: AOJu0YxS11CzOdnO8ZA++4qpw6yBo07oM9s8M2Whp48A+1e/a9Lk09yN
- 9CxdYG28rZnOiKOFy3fY8yfSjmtNDT3i3gXON5E5xyZdhk1ynt86P+fjLIKdHYsXnjRbc+08mAh
- hIFELIr1tPjG4GTW19Lp7K/Ay85/j17aHSwN9b6mvN8PaYLdqs/sr9vqBVB4t1TBW0ex7JNxkxQ
- AlrNLzhcB0PxL/nzC1NVNPUonzp27ZGPzveH99
-X-Received: by 2002:a17:907:3c1e:b0:a38:916e:a4fe with SMTP id
- gh30-20020a1709073c1e00b00a38916ea4femr303719ejc.39.1707304458268; 
- Wed, 07 Feb 2024 03:14:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4TiO4hr1rmyq0zBji3b49kdjYr3FQdBJWf/tJk+1bI5hHuiXssMaxi7fY8TvQKc6GK7MHOA==
-X-Received: by 2002:a17:907:3c1e:b0:a38:916e:a4fe with SMTP id
- gh30-20020a1709073c1e00b00a38916ea4femr303707ejc.39.1707304457891; 
- Wed, 07 Feb 2024 03:14:17 -0800 (PST)
+ bh=22m3lVs8Rcr/AULyQQp7muXracEJFhELmG8wj9R5NH4=;
+ b=badnLYxzFsK/AeY5/04quUv4kS1qeJjyCpArZW3/ZZvtc3E6hLS9s4fixDQCe3yxFq
+ bcZIAJoBY9mmZU3R/mB1jOcXBaSiq/LnI4DMr31keAa2ygUPrjernd7IPzTLaUEH1g7F
+ WJo/ssKbqoIYzTaVLa73g6SUgAHcUTEV0JzpYuBmjoPDuQ9il6GF2jEeOoFoXMzvDn7/
+ ceFWJki+Tv+k0/Ub1xbUajaQFL5dO8ie/SdlVIqDwR79zb6Yc7xAXulhoUUk8495EXPx
+ +Kz8ePPK7t4GjBdbXnfCQiw1n6eVRF4WaqVKhsaAbyO+ysw8Bun8O5Y310I2DsCPBpR5
+ pipQ==
+X-Gm-Message-State: AOJu0YzbHiLxNVjA/z8rQ4Q5pc3v8MKYBPmvT7tZZLPjc13qKh2FS4Qh
+ vPRqjiG9834OVJzZ9W/R0BNTR09mLMfdwc0E9N21GsllYZABz6Is67ALbLTmPr3BJmApOerN2/g
+ 5QtIa0PkLOIzOfNwECFDbM7WiC85WmN5VANAEsMrv65DiVJMDjR2krPQ1PXokKLvUBlqiNYldwA
+ Mj3NZ8yK3BQmLggJJ9k4tDNSudT7IJB6kqw10+
+X-Received: by 2002:a17:906:168e:b0:a38:1a75:787d with SMTP id
+ s14-20020a170906168e00b00a381a75787dmr5437713ejd.24.1707304460600; 
+ Wed, 07 Feb 2024 03:14:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+I7UvQuCkfJeT8qsOzxYAqKKLeb7PoknbBgk4/TOSfQKpvFWvy72K2CNdbrVtFZZl7h+qOA==
+X-Received: by 2002:a17:906:168e:b0:a38:1a75:787d with SMTP id
+ s14-20020a170906168e00b00a381a75787dmr5437695ejd.24.1707304460306; 
+ Wed, 07 Feb 2024 03:14:20 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUilhRUYNNqt83bzv7acwUt0ciWI+oVTAeW7vMfbwR0ufSyIvdkuEeN9WVuteHyjdRqRLcV134QoPlKIxErUTrkgdfJm8a9MwhTPcUAF+MYtkneU5WgebiygdDaDggzA==
+ AJvYcCUgqgYbl1+17M7diVzr2FFiJixDLFvi0YQa6XeDNW7vw0elNJ59mDOMMS02EM71wo0ljmfyu7szxOttHJg1gPIUbw==
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- i16-20020a1709061cd000b00a36c3e2e52dsm639263ejh.61.2024.02.07.03.14.16
+ p14-20020a056402500e00b0055edfb81384sm573133eda.60.2024.02.07.03.14.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 03:14:16 -0800 (PST)
+ Wed, 07 Feb 2024 03:14:18 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: shentey@gmail.com, philmd@linaro.org,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 2/8] isa: clean up Kconfig selections for ISA_SUPERIO
-Date: Wed,  7 Feb 2024 12:14:04 +0100
-Message-ID: <20240207111411.115040-3-pbonzini@redhat.com>
+Cc: shentey@gmail.com,
+	philmd@linaro.org
+Subject: [PATCH v2 3/8] hw/mips/Kconfig: Remove ISA dependencies from MIPSsim
+ board
+Date: Wed,  7 Feb 2024 12:14:05 +0100
+Message-ID: <20240207111411.115040-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207111411.115040-1-pbonzini@redhat.com>
 References: <20240207111411.115040-1-pbonzini@redhat.com>
@@ -103,67 +104,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All users of ISA_SUPERIO include a floppy disk controller, serial port
-and parallel port via the automatic creation mechanism of isa-superio.c.
+From: Bernhard Beschow <shentey@gmail.com>
 
-Select the symbol and remove it from the dependents.
+The board doesn't seem to have an ISA bus at all.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-ID: <20230109204124.102592-3-shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/isa/Kconfig | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ hw/mips/mipssim.c | 1 -
+ hw/mips/Kconfig   | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
-index 040a18c0709..7884179d08b 100644
---- a/hw/isa/Kconfig
-+++ b/hw/isa/Kconfig
-@@ -17,7 +17,11 @@ config ISA_SUPERIO
-     bool
-     select ISA_BUS
-     select PCKBD
-+    select PARALLEL
-+    select SERIAL_ISA
-     select FDC_ISA
-+    # Some users of ISA_SUPERIO do not use it
-+    #select IDE_ISA
+diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
+index 01e323904d9..abbeb6390e1 100644
+--- a/hw/mips/mipssim.c
++++ b/hw/mips/mipssim.c
+@@ -31,7 +31,6 @@
+ #include "hw/clock.h"
+ #include "hw/mips/mips.h"
+ #include "hw/char/serial.h"
+-#include "hw/isa/isa.h"
+ #include "net/net.h"
+ #include "sysemu/sysemu.h"
+ #include "hw/boards.h"
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index ab61af209a0..afcfb2b8eca 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -6,8 +6,7 @@ config MALTA
  
- config PC87312
+ config MIPSSIM
      bool
-@@ -26,9 +30,6 @@ config PC87312
-     select I8254
-     select I8257
-     select MC146818RTC
+-    select ISA_BUS
 -    select SERIAL_ISA
--    select PARALLEL
--    select FDC_ISA
-     select IDE_ISA
++    select SERIAL
+     select MIPSNET
  
- config PIIX
-@@ -49,8 +50,6 @@ config VT82C686
-     select ISA_SUPERIO
-     select ACPI
-     select ACPI_SMBUS
--    select SERIAL_ISA
--    select FDC_ISA
-     select USB_UHCI
-     select APM
-     select I8254
-@@ -58,14 +57,10 @@ config VT82C686
-     select I8259
-     select IDE_VIA
-     select MC146818RTC
--    select PARALLEL
- 
- config SMC37C669
-     bool
-     select ISA_SUPERIO
--    select SERIAL_ISA
--    select PARALLEL
--    select FDC_ISA
- 
- config LPC_ICH9
-     bool
+ config JAZZ
 -- 
 2.43.0
 
