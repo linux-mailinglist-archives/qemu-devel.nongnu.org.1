@@ -2,70 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D1D84C194
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 01:55:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941F484C247
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 Feb 2024 03:11:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXWCs-0008FG-ND; Tue, 06 Feb 2024 19:54:30 -0500
+	id 1rXXOb-00026H-1p; Tue, 06 Feb 2024 21:10:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCq-0008F2-Ey
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXWCp-0004JU-20
- for qemu-devel@nongnu.org; Tue, 06 Feb 2024 19:54:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707267266;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kY4kFt0RFODOJijiahBmsTG0vcYi7hrcFSKXEvN3+Ys=;
- b=LhDZhit7rbioDwCfkmAb9FBeOv1BLvAWBBKq4tcdLimi9xIXoSizGqTaX9VOPlUQhL1qvh
- +mceT5KmVRsqoFKHlDwr4nEoAyBbtJsYqCcZG2clultdZy43hv0T1y8VFD9sSsRnLAfo9s
- 8DHbI6VMpDNg/auoY3VCmTw3D9BdQZY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-mP8Fd9KROHOxXXakoa6YMQ-1; Tue, 06 Feb 2024 19:54:22 -0500
-X-MC-Unique: mP8Fd9KROHOxXXakoa6YMQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 857F310201E8;
- Wed,  7 Feb 2024 00:54:22 +0000 (UTC)
-Received: from x1n.redhat.com (unknown [10.72.116.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E732F1121312;
- Wed,  7 Feb 2024 00:54:18 +0000 (UTC)
-From: peterx@redhat.com
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Sebastian Ott <sebott@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH v2 3/3] ci: Update comment for migration-compat-aarch64
-Date: Wed,  7 Feb 2024 08:54:03 +0800
-Message-ID: <20240207005403.242235-4-peterx@redhat.com>
-In-Reply-To: <20240207005403.242235-1-peterx@redhat.com>
-References: <20240207005403.242235-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rXXOT-00025Z-K9
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:10:33 -0500
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rXXOG-0000BV-3f
+ for qemu-devel@nongnu.org; Tue, 06 Feb 2024 21:10:33 -0500
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-5d8b519e438so84710a12.1
+ for <qemu-devel@nongnu.org>; Tue, 06 Feb 2024 18:10:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707271818; x=1707876618; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EVQKN/Pi5kHdlmu4AcjjVSVeVN6r0rU/9RwRvbWg3Z0=;
+ b=edNGb1audfszmPie/yYSY3G2FTJE+JiWgGu/TPZ0O1sfEv1LfdbvHWvUE5cGkFKf8X
+ g6oQTpiB8txZNUXzLTGxwbm2TCKHZYSpSXfOh4rT1xLyZ8KtNaRC/zYOs7CXrdHIpwdV
+ 9rRNaPleTjiTGgMitVw8MSaxsXHfhoxlULJdFz8Zj6H2g8q5oYx5366SRUArwrCFFPAu
+ UfgrEO5fwjKFE4Nb259BL+Vxv+wF1dcvoP79+5Z4S70ZRQdpmf2iao1r1ID5hggrBAtm
+ jtXjNwSLtBwvUJrS4AVNHzONSJzatoFvv3PgR1dWF2d5z/RnmcMY6i8ii3QCTVSn1bkI
+ gEGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707271818; x=1707876618;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EVQKN/Pi5kHdlmu4AcjjVSVeVN6r0rU/9RwRvbWg3Z0=;
+ b=cspoOc8K/OvEB5qJQi/Il6ZsrB8kwR0cExt2CKocjV2EVUcxw/apSlx0j1SPgmmAc5
+ IMsHNuMdCh0CHRfEU+/83TQLNKBjdFSlJMOy/LU9r14ZRIVCx8JmRFnjXRWhpWzmCuOp
+ V2AMgYqq0rKktpOY00wQ2X8sVrMFN4OS9WtA5NpNRaUOyBhwg1WEjjS7hDesGzI/jpAz
+ wtXhKVczmOJfqEIVvxlCU0P2xZYzaSesakNbHca14bwcuOTgJVwMrojpO8wXCKaUcO2b
+ prsGH63CyCuNA6PwxUGfEc87RNQk0zgUG3J7EmbJt8S2HRDsqa64PRI+tRibcnrb9MRy
+ CWMA==
+X-Gm-Message-State: AOJu0Yy+NZF3Zgiy6iLrXzdbkH00iin/g8muMiBZd6+Hkc0E/mUhIYAm
+ QiaaQQ5CxTg5EYE6+289U2NgE57/HApRuGPIQGc6tCTy4O498mYu11t55/f+kX0=
+X-Google-Smtp-Source: AGHT+IEygj9i+Mow0bgAwAORug8a3JjkCSd976MJ4bJwepFgX6NB3iRkgZtwoDaX3URQQ2jjIkbgyQ==
+X-Received: by 2002:a05:6a21:2d86:b0:19e:9f2d:9818 with SMTP id
+ ty6-20020a056a212d8600b0019e9f2d9818mr2058491pzb.57.1707271818288; 
+ Tue, 06 Feb 2024 18:10:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWd85tV07kuOwngxEoHDV0qR2G6YXMBmCgv63M3LBtxbcU6Tb4QkXxuUglNFeOJy/kh2G3T/zlKp5jz4UQRf9TdpjpFby/LCo7PRRx1KTeOFc5R2wCW/ZKZZVCnBAd2
+Received: from [192.168.188.227] (60-242-98-186.static.tpgi.com.au.
+ [60.242.98.186]) by smtp.gmail.com with ESMTPSA id
+ sl12-20020a17090b2e0c00b0029649f4ceb9sm244090pjb.54.2024.02.06.18.10.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 Feb 2024 18:10:17 -0800 (PST)
+Message-ID: <4fee3af5-eeab-42b8-b5e0-1f36235ebc3d@linaro.org>
+Date: Wed, 7 Feb 2024 12:10:11 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] linux-user/aarch64: Extend PR_SET_TAGGED_ADDR_CTRL
+ for FEAT_MTE3
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, gustavo.romero@linaro.org
+References: <20240206030527.169147-1-richard.henderson@linaro.org>
+ <20240206030527.169147-2-richard.henderson@linaro.org>
+ <CAFEAcA8AuQZNbT=7WFXVPDzDywPPp1YZ=Bkow7Dgq2pC9=9X-g@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA8AuQZNbT=7WFXVPDzDywPPp1YZ=Bkow7Dgq2pC9=9X-g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,36 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+On 2/7/24 00:23, Peter Maydell wrote:
+>> +++ b/linux-user/aarch64/target_prctl.h
+>> @@ -173,21 +173,22 @@ static abi_long do_prctl_set_tagged_addr_ctrl(CPUArchState *env, abi_long arg2)
+>>       env->tagged_addr_enable = arg2 & PR_TAGGED_ADDR_ENABLE;
+>>
+>>       if (cpu_isar_feature(aa64_mte, cpu)) {
+>> -        switch (arg2 & PR_MTE_TCF_MASK) {
+>> -        case PR_MTE_TCF_NONE:
+>> -        case PR_MTE_TCF_SYNC:
+>> -        case PR_MTE_TCF_ASYNC:
+>> -            break;
+>> -        default:
+>> -            return -EINVAL;
+>> -        }
+> 
+> We should probably check here and reject unknown bits being
+> set in arg2, as set_tagged_addr_ctrl() does; but the old
+> code didn't get that right either.
 
-It turns out that we may not be able to enable this test even for the
-upcoming v9.0.  Document what we're still missing.
+This is done higher up in this function:
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- .gitlab-ci.d/buildtest.yml | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+     if (arg2 & ~valid_mask) {
+         return -TARGET_EINVAL;
+     }
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index cfe95c1b17..f56df59c94 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -219,9 +219,10 @@ build-previous-qemu:
-     - QTEST_QEMU_BINARY_DST=./qemu-system-${TARGET}
-           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
- 
--# This job is disabled until we release 9.0. The existing
--# migration-test in 8.2 is broken on aarch64. The fix was already
--# commited, but it will only take effect once 9.0 is out.
-+# This job needs to be disabled until we can have an aarch64 CPU model that
-+# will both (1) support both KVM and TCG, and (2) provide a stable ABI.
-+# Currently only "-cpu max" can provide (1), however it doesn't guarantee
-+# (2).  Mark this test skipped until later.
- migration-compat-aarch64:
-   extends: .migration-compat-common
-   variables:
--- 
-2.43.0
+The rejection of ASYNC | SYNC here was either a bug in my original implementation, or the 
+kernel API changed since the initial implementation in June 2020 (not worth digging to 
+find out).
+
+
+r~
 
 
