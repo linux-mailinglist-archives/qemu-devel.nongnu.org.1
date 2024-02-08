@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9FB84E87A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:55:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4391184E889
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:56:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY9Xc-0001b8-Vi; Thu, 08 Feb 2024 13:54:33 -0500
+	id 1rY9Xe-0001bm-HM; Thu, 08 Feb 2024 13:54:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9Xb-0001aj-Gi
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:31 -0500
+ id 1rY9Xc-0001b9-MN
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:32 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9Xa-0005pS-0s
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:31 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1rY9Xa-0005pe-QS
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:32 -0500
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 418Ijxwk009881; Thu, 8 Feb 2024 18:54:28 GMT
+ 418Ijvi3002703; Thu, 8 Feb 2024 18:54:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=gsBCfpYo6nRhd1lyMEyOJxnbTlx2IARryMCqC21aU7A=;
- b=L7tQhorEBYhiOU4EewcJixD4HApcBzArDmO9jqrtWsxue6QNklFBYCS6tAQeFLQFuYZK
- a9hf2gcgD9tyjX1eMot5o4mXnSu9sBv97pg8IYP3eYCeVBwujfwAJcE9gSua+QjD2ZfL
- 6y+uNnG9fPA1HMJFg0K+TRILSPPfEUofR+khdc22IA1kvjQkK8WLKkuKS+DURqml/Rzf
- XjvKP62RO6Ur6WmqtC4LhlMBguA5PnAsoK0uWmLBmN7ipZToXeOF7+IAqIZ6587G0pdn
- /X/+WzXEAkUt7ajPMeXETuC+U0dv9wFPt9llqU+XbYe4gVTXT0VQv4CVzGaYLIS7mnGf +w== 
+ bh=ta4RajXp4A5/tKccMGjZ7rIh6kE+PS4323ZhW1w6QlQ=;
+ b=CeoSY2hzZTjGdO2BAy68dCkXoEWvbYS3vcYl/4M/d8JW3lWsoVpRzB2yWHnYiQtOs9zT
+ OWWHA3evuLyjKCniX4qWjCt1qRVh90raxOpkIfXlhB/JBJAJqnz7sCCrmIIm4k8Kdc9e
+ mIfyewp+nBgwGFC+IB2lqxeIFOXqz1U+nSDHP3yNGSNzJSLU7cOzv2sjXdla743Y+4/U
+ F4F6mHv1aWOp8zt02CB99TAalSHa4ZLjeOt2gELTB/RB6pcNW0P7hV+QwgVhFQ9RB6kb
+ x+u2P/pQVDBi1WZjdZBq/CMtWBaHHNe4gaS1H1BUVnfHnmu1ujP/WzbkCwjVgJITbZ8o 4Q== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1c945qax-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1dhdnqyk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:28 +0000
+ Thu, 08 Feb 2024 18:54:29 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 418IfoeF038357; Thu, 8 Feb 2024 18:54:27 GMT
+ with ESMTP id 418Iikfi038387; Thu, 8 Feb 2024 18:54:29 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w1bxawnke-1
+ 3w1bxawnmv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:27 +0000
+ Thu, 08 Feb 2024 18:54:29 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36L013534;
- Thu, 8 Feb 2024 18:54:27 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36N013534;
+ Thu, 8 Feb 2024 18:54:28 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3w1bxawmw9-13; Thu, 08 Feb 2024 18:54:27 +0000
+ ESMTP id 3w1bxawmw9-14; Thu, 08 Feb 2024 18:54:28 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -60,9 +60,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 12/13] vfio: allow cpr-reboot migration if suspended
-Date: Thu,  8 Feb 2024 10:54:05 -0800
-Message-Id: <1707418446-134863-13-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 13/13] migration: update cpr-reboot description
+Date: Thu,  8 Feb 2024 10:54:06 -0800
+Message-Id: <1707418446-134863-14-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
 References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
@@ -74,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402080099
-X-Proofpoint-ORIG-GUID: XBX4lnxbA_a-yYBgDpne9D8xZX0P2RPB
-X-Proofpoint-GUID: XBX4lnxbA_a-yYBgDpne9D8xZX0P2RPB
+X-Proofpoint-GUID: r3XyUTUAsIrAl3DENq1TPxr9BtdmWjcN
+X-Proofpoint-ORIG-GUID: r3XyUTUAsIrAl3DENq1TPxr9BtdmWjcN
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -101,99 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
-guest drivers' suspend methods flush outstanding requests and re-initialize
-the devices, and thus there is no device state to save and restore.  The
-user is responsible for suspending the guest before initiating cpr, such as
-by issuing guest-suspend-ram to the qemu guest agent.
-
-Relax the vfio blocker so it does not apply to cpr, and add a notifier that
-verifies the guest is suspended.
+Clarify qapi for cpr-reboot migration mode, and add vfio support.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/common.c                      |  2 +-
- hw/vfio/cpr.c                         | 20 ++++++++++++++++++++
- hw/vfio/migration.c                   |  2 +-
- include/hw/vfio/vfio-container-base.h |  1 +
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ qapi/migration.json | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 059bfdc..ff88c3f 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -128,7 +128,7 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
-     error_setg(&multiple_devices_migration_blocker,
-                "Multiple VFIO devices migration is supported only if all of "
-                "them support P2P migration");
--    ret = migrate_add_blocker(&multiple_devices_migration_blocker, errp);
-+    ret = migrate_add_blocker_normal(&multiple_devices_migration_blocker, errp);
- 
-     return ret;
- }
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index 3bede54..392c2dd 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -7,13 +7,33 @@
- 
- #include "qemu/osdep.h"
- #include "hw/vfio/vfio-common.h"
-+#include "migration/misc.h"
- #include "qapi/error.h"
-+#include "sysemu/runstate.h"
-+
-+static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-+                                    MigrationEvent *e, Error **errp)
-+{
-+    if (e->type == MIG_EVENT_PRECOPY_SETUP &&
-+        !runstate_check(RUN_STATE_SUSPENDED) && !vm_get_suspended()) {
-+
-+        error_setg(errp,
-+            "VFIO device only supports cpr-reboot for runstate suspended");
-+
-+        return -1;
-+    }
-+    return 0;
-+}
- 
- int vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
- {
-+    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
-+                                vfio_cpr_reboot_notifier,
-+                                MIG_MODE_CPR_REBOOT);
-     return 0;
- }
- 
- void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
- {
-+    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
- }
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 50140ed..2050ac8 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -889,7 +889,7 @@ static int vfio_block_migration(VFIODevice *vbasedev, Error *err, Error **errp)
-     vbasedev->migration_blocker = error_copy(err);
-     error_free(err);
- 
--    return migrate_add_blocker(&vbasedev->migration_blocker, errp);
-+    return migrate_add_blocker_normal(&vbasedev->migration_blocker, errp);
- }
- 
- /* ---------------------------------------------------------------------- */
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index b2813b0..3582d5f 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -49,6 +49,7 @@ typedef struct VFIOContainerBase {
-     QLIST_ENTRY(VFIOContainerBase) next;
-     QLIST_HEAD(, VFIODevice) device_list;
-     GList *iova_ranges;
-+    NotifierWithReturn cpr_reboot_notifier;
- } VFIOContainerBase;
- 
- typedef struct VFIOGuestIOMMU {
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8197083..c83e0c0 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -636,19 +636,29 @@
+ #
+ # @normal: the original form of migration. (since 8.2)
+ #
+-# @cpr-reboot: The migrate command saves state to a file, allowing one to
+-#              quit qemu, reboot to an updated kernel, and restart an updated
+-#              version of qemu.  The caller must specify a migration URI
+-#              that writes to and reads from a file.  Unlike normal mode,
+-#              the use of certain local storage options does not block the
+-#              migration, but the caller must not modify guest block devices
+-#              between the quit and restart.  To avoid saving guest RAM to the
+-#              file, the memory backend must be shared, and the @x-ignore-shared
+-#              migration capability must be set.  Guest RAM must be non-volatile
+-#              across reboot, such as by backing it with a dax device, but this
+-#              is not enforced.  The restarted qemu arguments must match those
+-#              used to initially start qemu, plus the -incoming option.
+-#              (since 8.2)
++# @cpr-reboot: The migrate command stops the VM, saves state to the URI,
++#     and qemu exits.  After qemu exits, the user resumes by running
++#     qemu -incoming.
++#
++#     This mode allows the user to quit qemu, and restart an updated version
++#     of qemu.  The user may even update and reboot the OS before restarting,
++#     as long as the URI persists across a reboot.
++#
++#     Unlike normal mode, the use of certain local storage options does not
++#     block the migration, but the user must not modify guest block devices
++#     between the quit and restart.
++#
++#     This mode supports vfio devices provided the user first puts the guest
++#     in the suspended runstate, such as by issuing guest-suspend-ram to the
++#     qemu guest agent.
++#
++#     Best performance is achieved when the memory backend is shared and the
++#     @x-ignore-shared migration capability is set, but this is not required.
++#     Further, if the user reboots before restarting such a configuration, the
++#     shared backend must be be non-volatile across reboot, such as by backing
++#     it with a dax device.
++#
++#     (since 8.2)
+ ##
+ { 'enum': 'MigMode',
+   'data': [ 'normal', 'cpr-reboot' ] }
 -- 
 1.8.3.1
 
