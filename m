@@ -2,67 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC8684E2CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 15:08:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D04E84E16B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 14:09:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY53M-0004iQ-5N; Thu, 08 Feb 2024 09:07:00 -0500
+	id 1rY489-0007W8-3C; Thu, 08 Feb 2024 08:07:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nathan@kolpa.me>) id 1rY2Jq-00074Z-Ol
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 06:11:51 -0500
-Received: from dane.soverin.net ([185.233.34.31])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY487-0007Vk-Gu
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:07:51 -0500
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nathan@kolpa.me>) id 1rY2Jo-0001qI-5c
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 06:11:49 -0500
-Received: from mail2.mijndomein.nl (unknown [10.10.4.74])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY485-0006fu-W7
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:07:51 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by dane.soverin.net (Postfix) with ESMTPS id 4TVvSX10wwz2xW4;
- Thu,  8 Feb 2024 11:11:40 +0000 (UTC)
-Received: from mail2.mijndomein.nl (mail2.mijndomein.nl [10.10.4.133]) by
- mijndomein.nl (Postfix) with ESMTPSA id 4TVvSW3hDGzyP1; 
- Thu,  8 Feb 2024 11:11:39 +0000 (UTC)
-Authentication-Results: mail2.mijndomein.nl; dkim=pass (2048-bit key;
- unprotected) header.d=kolpa.me header.i=@kolpa.me header.a=rsa-sha256
- header.s=soverin1 header.b=ruzVELs3; dkim-atps=neutral
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kolpa.me; s=soverin1; 
- t=1707390699;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=A0GJtQM9byRWqwr/UNXL/dr0YjOjdeS7cQERAt/3XBk=;
- b=ruzVELs3sFXZw54H1K6Rvtkl213BiLOnS2yJmK9g13e5RfMAE/ATCxQDu+UUSaPhquVT9n
- 52s5z35cAkC5lL7E5jPJQ64OoU2lrTWoft4bwCIyEz6iOS86CarKgnsAM9FJzETt5/QkpY
- Mop5A48wnTxFfyUN+JqmCGWKECUao5dTu1opAt2PQEn9FFlsAizAz3S8sHF5LOjCe01MMA
- 57g6AiY8keShCMeHrq82cdypqdhl9kbD/14wWDrL2eAqyATCpnLihn7wVUxjp8PTpiexcG
- PgXewQkgNADaz8cS2P06sf2ylH7UC4QyFy1yQkTTGcH3RaV+cEtfLC06cM3Igw==
-Mime-Version: 1.0
-Date: Thu, 08 Feb 2024 11:11:39 +0000
-Content-Type: text/plain; charset="utf-8"
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3CCA11FCEA;
+ Thu,  8 Feb 2024 13:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1707397668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
+ b=DIOzHxNCr22pCHdcjCjmbd7PeRgbNZEvi52qilwqTSaLR9fNXwNo1kr3B6R6FDoH5cq4Ym
+ aa1rN/wIB/bbNHI0849Iu1z/ghORtLtkCfPanic0HeKzTAdXvdAKNrGKTZQPNQXRAsq3Gw
+ jUokkzoxjw9kz3nefKZLgNGFQm7zpKA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1707397668;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
+ b=AQL27z5qYrV0OM2wTWYB7Sm2bzSslRT7gq9mRuGOdk8e688OzpFWzPB6GLJtPiSjIYeK0f
+ BfVwNQY6bcr3C7AQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1707397668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
+ b=DIOzHxNCr22pCHdcjCjmbd7PeRgbNZEvi52qilwqTSaLR9fNXwNo1kr3B6R6FDoH5cq4Ym
+ aa1rN/wIB/bbNHI0849Iu1z/ghORtLtkCfPanic0HeKzTAdXvdAKNrGKTZQPNQXRAsq3Gw
+ jUokkzoxjw9kz3nefKZLgNGFQm7zpKA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1707397668;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
+ b=AQL27z5qYrV0OM2wTWYB7Sm2bzSslRT7gq9mRuGOdk8e688OzpFWzPB6GLJtPiSjIYeK0f
+ BfVwNQY6bcr3C7AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BCEE513984;
+ Thu,  8 Feb 2024 13:07:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id GxgJICPSxGURUQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 08 Feb 2024 13:07:47 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Alex Williamson
+ <alex.williamson@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@redhat.com>
+Subject: Re: [PATCH 13/14] migration: Use migrate_has_error() in
+ close_return_path_on_source()
+In-Reply-To: <20240207133347.1115903-14-clg@redhat.com>
+References: <20240207133347.1115903-1-clg@redhat.com>
+ <20240207133347.1115903-14-clg@redhat.com>
+Date: Thu, 08 Feb 2024 10:07:44 -0300
+Message-ID: <87y1bvayu7.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-ID: <9939bfcd6fad908c21bbfb751a2896d7@email.mijndomein.nl>
-X-Soverin-Authenticated: true
-From: nathan@kolpa.me
-Subject: [PATCH] hw/i386: return an error message when mb magic/pvh note
- could  not be found
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com
-X-Priority: 3 (Normal)
-Received-SPF: pass client-ip=185.233.34.31; envelope-from=nathan@kolpa.me;
- helo=dane.soverin.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DIOzHxNC;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQL27z5q
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-6.00 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ BAYES_HAM(-2.99)[99.97%]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
+ DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -6.00
+X-Rspamd-Queue-Id: 3CCA11FCEA
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 Feb 2024 09:06:47 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,18 +130,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When using a non-linux kernel where the multiboot magic is=0Amisconfigure=
-d the following message would display: "linux kernel too old to load a ra=
-m=0Adisk".=0A=0AThis patch instead, displays a more descriptive error mes=
-sage: "could not find multiboot magic or PVH ELF Note". The linux specifi=
-c boot sequence is skipped because earlier it is asserted that the linux =
-protocol magic field could not be found.=0A=0ASigned-off-by: Nathan Kolpa=
- <nathan@kolpa.me>=0A---=0A hw/i386/x86.c | 5 ++++-=0A 1 file changed, 4 =
-insertions(+), 1 deletion(-)=0A=0Adiff --git a/hw/i386/x86.c b/hw/i386/x8=
-6.c=0Aindex 2b6291ad8d..b59f1180f5 100644=0A--- a/hw/i386/x86.c=0A+++ b/h=
-w/i386/x86.c=0A@@ -902,7 +902,10 @@ void x86_load_linux(X86MachineState *=
-x86ms,=0A =0A             return;=0A         }=0A-        protocol =3D 0;=
-=0A+=0A+        fprintf(stderr, "qemu: could not find multiboot magic or =
-"=0A+                "PVH ELF Note.\n");=0A+        exit(1);=0A     }=0A =
-=0A     if (protocol < 0x200 || !(header[0x211] & 0x01)) {=0A-- =0A2.43.0
+C=C3=A9dric Le Goater <clg@redhat.com> writes:
+
+> close_return_path_on_source() retrieves the migration error from the
+> the QEMUFile '->to_dst_file' to know if a shutdown is required. This
+> shutdown is required to exit the return-path thread. However, in
+> migrate_fd_cleanup(), '->to_dst_file' is cleaned up before calling
+> close_return_path_on_source() and the shutdown is never performed,
+> leaving the source and destination waiting for an event to occur.
+>
+> Avoid relying on '->to_dst_file' and use migrate_has_error() instead.
+>
+> Suggested-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  migration/migration.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/migration/migration.c b/migration/migration.c
+> index d5f705ceef4c925589aa49335969672c0d761fa2..5f55af3d7624750ca416c4177=
+781241b3e291e5d 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -2372,8 +2372,7 @@ static bool close_return_path_on_source(MigrationSt=
+ate *ms)
+>       * cause it to unblock if it's stuck waiting for the destination.
+>       */
+>      WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
+> -        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
+> -            qemu_file_get_error(ms->to_dst_file)) {
+> +        if (migrate_has_error(ms) && ms->rp_state.from_dst_file) {
+>              qemu_file_shutdown(ms->rp_state.from_dst_file);
+>          }
+>      }
+
+Hm, maybe Peter can help defend this, but this assumes that every
+function that takes an 'f' and sets the file error also sets
+migrate_set_error(). I'm not sure we have determined that, have we?
 
