@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA23F84E2AB
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 14:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE0784E2D0
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 15:09:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY4u9-00024S-N9; Thu, 08 Feb 2024 08:57:29 -0500
+	id 1rY55X-0006SR-FA; Thu, 08 Feb 2024 09:09:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY4u2-000249-Ax
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:57:22 -0500
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY4u0-0001I9-Hq
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:57:22 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 3F46922050;
- Thu,  8 Feb 2024 13:57:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707400637; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3okzcNd2pbTzVrJCDw1TuwzJrfbMEn484edIC7mIoB4=;
- b=pNS4nk9WLIZEVqHnCHawXp9vcmqmtl5QNkZboP8r+MQh81eEaKRQIdGLBzV0hk9Zme0R55
- qLvuDq0R6QZgY7rQNudH5P58WXaa8b3/wNhKFdkZz3YDjYqCwlHEkV6Dg8DI3ejdkLke5B
- MPrgR802RqcBp9A0kVxjWzEm5hRjNlo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707400637;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3okzcNd2pbTzVrJCDw1TuwzJrfbMEn484edIC7mIoB4=;
- b=Dd4PwNLJc9OzQXDNecUxAk9zQGshLiFUEXSmxRyiZym58d1jenjNFhzlvWouUOYzSGsKIK
- P9TzeqJLrVTdOhBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707400637; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3okzcNd2pbTzVrJCDw1TuwzJrfbMEn484edIC7mIoB4=;
- b=pNS4nk9WLIZEVqHnCHawXp9vcmqmtl5QNkZboP8r+MQh81eEaKRQIdGLBzV0hk9Zme0R55
- qLvuDq0R6QZgY7rQNudH5P58WXaa8b3/wNhKFdkZz3YDjYqCwlHEkV6Dg8DI3ejdkLke5B
- MPrgR802RqcBp9A0kVxjWzEm5hRjNlo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707400637;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3okzcNd2pbTzVrJCDw1TuwzJrfbMEn484edIC7mIoB4=;
- b=Dd4PwNLJc9OzQXDNecUxAk9zQGshLiFUEXSmxRyiZym58d1jenjNFhzlvWouUOYzSGsKIK
- P9TzeqJLrVTdOhBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BEC6313984;
- Thu,  8 Feb 2024 13:57:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id R089IbzdxGVVXgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 08 Feb 2024 13:57:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH 13/14] migration: Use migrate_has_error() in
- close_return_path_on_source()
-In-Reply-To: <fbdb9fbc-c3de-4b0a-be1f-2bed405dfd86@redhat.com>
-References: <20240207133347.1115903-1-clg@redhat.com>
- <20240207133347.1115903-14-clg@redhat.com> <87y1bvayu7.fsf@suse.de>
- <fbdb9fbc-c3de-4b0a-be1f-2bed405dfd86@redhat.com>
-Date: Thu, 08 Feb 2024 10:57:14 -0300
-Message-ID: <87sf23awjp.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rY55U-0006Qb-JC
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 09:09:12 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rY55S-0003fF-Tx
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 09:09:12 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CF0CF4B8B2;
+ Thu,  8 Feb 2024 17:10:21 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 77AB776EF0;
+ Thu,  8 Feb 2024 17:09:08 +0300 (MSK)
+Message-ID: <e44ffc21-bd27-4cac-a5fd-719f3b475d80@tls.msk.ru>
+Date: Thu, 8 Feb 2024 17:09:07 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -3.61
-X-Spamd-Result: default: False [-3.61 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.31)[96.76%];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: pc-bios/optionrom can't be built anymore since 33ab4787422b04
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <d35607b0-0abe-4074-9bea-b27f14bdb146@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <d35607b0-0abe-4074-9bea-b27f14bdb146@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,56 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
+08.02.2024 16:38, Michael Tokarev:
+> Commit v7.0.0-1454-g33ab478742 "configure: enable cross-compilation of optionrom"
+> effectively broke building of optionroms on anything but real i386 or using
+> newly supported cross/docker image.  Before that, it was trivial to do that
+> using native x86_64 tools.
+> 
+> # Mac OS X ships with a broken assembler
+> if have_target i386-softmmu x86_64-softmmu && \
+>          test "$targetos" != "darwin" && test "$targetos" != "sunos" && \
+>          test "$targetos" != "haiku" && \
+>          probe_target_compiler i386-softmmu; then
+>      subdirs="$subdirs pc-bios/optionrom"
+> ...
+> 
+> There, when run on x86_64 system, `probe_target_compiler i386-softmmu' return
+> false immediately, so whole thing gets skipped.
 
-> On 2/8/24 14:07, Fabiano Rosas wrote:
->> C=C3=A9dric Le Goater <clg@redhat.com> writes:
->>=20
->>> close_return_path_on_source() retrieves the migration error from the
->>> the QEMUFile '->to_dst_file' to know if a shutdown is required. This
->>> shutdown is required to exit the return-path thread. However, in
->>> migrate_fd_cleanup(), '->to_dst_file' is cleaned up before calling
->>> close_return_path_on_source() and the shutdown is never performed,
->>> leaving the source and destination waiting for an event to occur.
->>>
->>> Avoid relying on '->to_dst_file' and use migrate_has_error() instead.
->>>
->>> Suggested-by: Peter Xu <peterx@redhat.com>
->>> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
->>> ---
->>>   migration/migration.c | 3 +--
->>>   1 file changed, 1 insertion(+), 2 deletions(-)
->>>
->>> diff --git a/migration/migration.c b/migration/migration.c
->>> index d5f705ceef4c925589aa49335969672c0d761fa2..5f55af3d7624750ca416c41=
-77781241b3e291e5d 100644
->>> --- a/migration/migration.c
->>> +++ b/migration/migration.c
->>> @@ -2372,8 +2372,7 @@ static bool close_return_path_on_source(Migration=
-State *ms)
->>>        * cause it to unblock if it's stuck waiting for the destination.
->>>        */
->>>       WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
->>> -        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
->>> -            qemu_file_get_error(ms->to_dst_file)) {
->>> +        if (migrate_has_error(ms) && ms->rp_state.from_dst_file) {
->>>               qemu_file_shutdown(ms->rp_state.from_dst_file);
->>>           }
->>>       }
->>=20
->> Hm, maybe Peter can help defend this, but this assumes that every
->> function that takes an 'f' and sets the file error also sets
->> migrate_set_error(). I'm not sure we have determined that, have we?
->
-> How could we check all the code path ? I agree it is difficult when
-> looking at the code :/
+Okay, this is a bit more complex.
 
-It would help if the thing wasn't called 'f' for the most part of the
-code to begin with.
+probe_target_compiler i386-softmmu actually tries to build i386 code, which -
+in this restricted environment - does not work (missing 32bit libs etc).
+This has always been enough to build bios/rom code, because it does not use
+standard C library or even startup files.  And installing support for building
+hello.c is something else due to an unrelated bug ;)
 
-Whenever there's a file error at to_dst_file there's the chance that the
-rp_state.from_dst_file got stuck. So we cannot ignore the file error.
+Sigh.
 
-Would it work if we checked it earlier during cleanup as you did
-previously and then set the migration error?
+/mjt
+
 
