@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A64E84D81C
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB684D82C
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXujg-00068W-B1; Wed, 07 Feb 2024 22:06:00 -0500
+	id 1rXujm-0006Ck-KL; Wed, 07 Feb 2024 22:06:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujT-0005xj-4X
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujX-000616-WF
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujR-0004J5-HS
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:46 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujV-0004JQ-T9
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707361544;
+ s=mimecast20190719; t=1707361549;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nDtOh6EyR1FRlMPetryL8BQxGR+uScxl+Gq8KTSlZg4=;
- b=bGD6v8DiXL7n0p9AElbLtfCpE9VfmKpCRo1/56s/4+QfTkSeBACxyTbfTrxOze6K6QXJRF
- ojBsn1jkZV+SBc9HuBAF7HhSaz+RL6WLN7SmCjYvH09NfsAhu+qXnCfL7Gg5kFjCEGjqZp
- C7tj5RIZo+we8EpI8/REyNT7UYAnsjo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-ML1HRWBwNECzr6qH0ZDDdg-1; Wed, 07 Feb 2024 22:05:42 -0500
-X-MC-Unique: ML1HRWBwNECzr6qH0ZDDdg-1
+ bh=+E2Rwct9Es94xaZWN9ER664YfyJACLQgAotPE03pOCU=;
+ b=CYmLf0W2OfiJurL/g4LkB4pvqvSH8fibtjlSjR2SJrdL/N4Y7htmchyuS3J5KizBbtZUQT
+ Di6rhGrQhbF4YER0M+iZJZu5NqdnLzIAj5e+eJLB5PKEubX4SorZk1MHqpb3kmvLCAbhbF
+ KAxIqT60NXz2Tmer9oQdd2FXz0XMCNw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-bSBXAprWPC61iRTvwbqtfA-1; Wed,
+ 07 Feb 2024 22:05:45 -0500
+X-MC-Unique: bSBXAprWPC61iRTvwbqtfA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D5E2870821;
- Thu,  8 Feb 2024 03:05:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 623A33C0F18A;
+ Thu,  8 Feb 2024 03:05:45 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 23B08492BC7;
- Thu,  8 Feb 2024 03:05:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0E177492BC7;
+ Thu,  8 Feb 2024 03:05:42 +0000 (UTC)
 From: peterx@redhat.com
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 03/34] migration/multifd: multifd_send_kick_main()
-Date: Thu,  8 Feb 2024 11:04:57 +0800
-Message-ID: <20240208030528.368214-4-peterx@redhat.com>
+Subject: [PULL 04/34] migration/multifd: Drop MultiFDSendParams.quit,
+ cleanup error paths
+Date: Thu,  8 Feb 2024 11:04:58 +0800
+Message-ID: <20240208030528.368214-5-peterx@redhat.com>
 In-Reply-To: <20240208030528.368214-1-peterx@redhat.com>
 References: <20240208030528.368214-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.106,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,71 +81,245 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-When a multifd sender thread hit errors, it always needs to kick the main
-thread by kicking all the semaphores that it can be waiting upon.
+Multifd send side has two fields to indicate error quits:
 
-Provide a helper for it and deduplicate the code.
+  - MultiFDSendParams.quit
+  - &multifd_send_state->exiting
+
+Merge them into the global one.  The replacement is done by changing all
+p->quit checks into the global var check.  The global check doesn't need
+any lock.
+
+A few more things done on top of this altogether:
+
+  - multifd_send_terminate_threads()
+
+    Moving the xchg() of &multifd_send_state->exiting upper, so as to cover
+    the tracepoint, migrate_set_error() and migrate_set_state().
+
+  - multifd_send_sync_main()
+
+    In the 2nd loop, add one more check over the global var to make sure we
+    don't keep the looping if QEMU already decided to quit.
+
+  - multifd_tls_outgoing_handshake()
+
+    Use multifd_send_terminate_threads() to set the error state.  That has
+    a benefit of updating MigrationState.error to that error too, so we can
+    persist that 1st error we hit in that specific channel.
+
+  - multifd_new_send_channel_async()
+
+    Take similar approach like above, drop the migrate_set_error() because
+    multifd_send_terminate_threads() already covers that.  Unwrap the helper
+    multifd_new_send_channel_cleanup() along the way; not really needed.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240202102857.110210-3-peterx@redhat.com
+Link: https://lore.kernel.org/r/20240202102857.110210-4-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ migration/multifd.h |  2 --
+ migration/multifd.c | 85 ++++++++++++++++++---------------------------
+ 2 files changed, 33 insertions(+), 54 deletions(-)
 
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 35d11f103c..7c040cb85a 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -95,8 +95,6 @@ typedef struct {
+     QemuMutex mutex;
+     /* is this channel thread running */
+     bool running;
+-    /* should this thread finish */
+-    bool quit;
+     /* multifd flags for each packet */
+     uint32_t flags;
+     /* global number of generated multifd packets */
 diff --git a/migration/multifd.c b/migration/multifd.c
-index eee2586770..b8d2c96533 100644
+index b8d2c96533..2c98023d67 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -372,6 +372,18 @@ struct {
+@@ -372,6 +372,11 @@ struct {
      MultiFDMethods *ops;
  } *multifd_send_state;
  
-+/*
-+ * The migration thread can wait on either of the two semaphores.  This
-+ * function can be used to kick the main thread out of waiting on either of
-+ * them.  Should mostly only be called when something wrong happened with
-+ * the current multifd send thread.
-+ */
-+static void multifd_send_kick_main(MultiFDSendParams *p)
++static bool multifd_send_should_exit(void)
 +{
-+    qemu_sem_post(&p->sem_sync);
-+    qemu_sem_post(&multifd_send_state->channels_ready);
++    return qatomic_read(&multifd_send_state->exiting);
 +}
 +
  /*
-  * How we use multifd_send_state->pages and channel->pages?
-  *
-@@ -739,8 +751,7 @@ out:
-         assert(local_err);
-         trace_multifd_send_error(p->id);
-         multifd_send_terminate_threads(local_err);
--        qemu_sem_post(&p->sem_sync);
--        qemu_sem_post(&multifd_send_state->channels_ready);
-+        multifd_send_kick_main(p);
-         error_free(local_err);
+  * The migration thread can wait on either of the two semaphores.  This
+  * function can be used to kick the main thread out of waiting on either of
+@@ -409,7 +414,7 @@ static int multifd_send_pages(void)
+     MultiFDSendParams *p = NULL; /* make happy gcc */
+     MultiFDPages_t *pages = multifd_send_state->pages;
+ 
+-    if (qatomic_read(&multifd_send_state->exiting)) {
++    if (multifd_send_should_exit()) {
+         return -1;
      }
  
-@@ -781,8 +792,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
-      * is not created, and then tell who pay attention to me.
+@@ -421,14 +426,11 @@ static int multifd_send_pages(void)
       */
-     p->quit = true;
--    qemu_sem_post(&multifd_send_state->channels_ready);
--    qemu_sem_post(&p->sem_sync);
-+    multifd_send_kick_main(p);
-     error_free(err);
+     next_channel %= migrate_multifd_channels();
+     for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
+-        p = &multifd_send_state->params[i];
+-
+-        qemu_mutex_lock(&p->mutex);
+-        if (p->quit) {
+-            error_report("%s: channel %d has already quit!", __func__, i);
+-            qemu_mutex_unlock(&p->mutex);
++        if (multifd_send_should_exit()) {
+             return -1;
+         }
++        p = &multifd_send_state->params[i];
++        qemu_mutex_lock(&p->mutex);
+         if (!p->pending_job) {
+             p->pending_job++;
+             next_channel = (i + 1) % migrate_multifd_channels();
+@@ -483,6 +485,16 @@ static void multifd_send_terminate_threads(Error *err)
+ {
+     int i;
+ 
++    /*
++     * We don't want to exit each threads twice.  Depending on where
++     * we get the error, or if there are two independent errors in two
++     * threads at the same time, we can end calling this function
++     * twice.
++     */
++    if (qatomic_xchg(&multifd_send_state->exiting, 1)) {
++        return;
++    }
++
+     trace_multifd_send_terminate_threads(err != NULL);
+ 
+     if (err) {
+@@ -497,26 +509,13 @@ static void multifd_send_terminate_threads(Error *err)
+         }
+     }
+ 
+-    /*
+-     * We don't want to exit each threads twice.  Depending on where
+-     * we get the error, or if there are two independent errors in two
+-     * threads at the same time, we can end calling this function
+-     * twice.
+-     */
+-    if (qatomic_xchg(&multifd_send_state->exiting, 1)) {
+-        return;
+-    }
+-
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
+-        qemu_mutex_lock(&p->mutex);
+-        p->quit = true;
+         qemu_sem_post(&p->sem);
+         if (p->c) {
+             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
+         }
+-        qemu_mutex_unlock(&p->mutex);
+     }
  }
  
-@@ -852,8 +862,7 @@ static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+@@ -615,16 +614,13 @@ int multifd_send_sync_main(void)
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
+-        trace_multifd_send_sync_main_signal(p->id);
+-
+-        qemu_mutex_lock(&p->mutex);
+-
+-        if (p->quit) {
+-            error_report("%s: channel %d has already quit", __func__, i);
+-            qemu_mutex_unlock(&p->mutex);
++        if (multifd_send_should_exit()) {
+             return -1;
+         }
+ 
++        trace_multifd_send_sync_main_signal(p->id);
++
++        qemu_mutex_lock(&p->mutex);
+         p->packet_num = multifd_send_state->packet_num++;
+         p->flags |= MULTIFD_FLAG_SYNC;
+         p->pending_job++;
+@@ -634,6 +630,10 @@ int multifd_send_sync_main(void)
+     for (i = 0; i < migrate_multifd_channels(); i++) {
+         MultiFDSendParams *p = &multifd_send_state->params[i];
+ 
++        if (multifd_send_should_exit()) {
++            return -1;
++        }
++
+         qemu_sem_wait(&multifd_send_state->channels_ready);
+         trace_multifd_send_sync_main_wait(p->id);
+         qemu_sem_wait(&p->sem_sync);
+@@ -671,7 +671,7 @@ static void *multifd_send_thread(void *opaque)
+         qemu_sem_post(&multifd_send_state->channels_ready);
+         qemu_sem_wait(&p->sem);
+ 
+-        if (qatomic_read(&multifd_send_state->exiting)) {
++        if (multifd_send_should_exit()) {
+             break;
+         }
+         qemu_mutex_lock(&p->mutex);
+@@ -786,12 +786,7 @@ static void multifd_tls_outgoing_handshake(QIOTask *task,
+ 
+     trace_multifd_tls_outgoing_handshake_error(ioc, error_get_pretty(err));
+ 
+-    migrate_set_error(migrate_get_current(), err);
+-    /*
+-     * Error happen, mark multifd_send_thread status as 'quit' although it
+-     * is not created, and then tell who pay attention to me.
+-     */
+-    p->quit = true;
++    multifd_send_terminate_threads(err);
+     multifd_send_kick_main(p);
+     error_free(err);
+ }
+@@ -857,22 +852,6 @@ static bool multifd_channel_connect(MultiFDSendParams *p,
+     return true;
+ }
+ 
+-static void multifd_new_send_channel_cleanup(MultiFDSendParams *p,
+-                                             QIOChannel *ioc, Error *err)
+-{
+-     migrate_set_error(migrate_get_current(), err);
+-     /* Error happen, we need to tell who pay attention to me */
+-     multifd_send_kick_main(p);
+-     /*
+-      * Although multifd_send_thread is not created, but main migration
+-      * thread need to judge whether it is running, so we need to mark
+-      * its status.
+-      */
+-     p->quit = true;
+-     object_unref(OBJECT(ioc));
+-     error_free(err);
+-}
+-
+ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
  {
-      migrate_set_error(migrate_get_current(), err);
-      /* Error happen, we need to tell who pay attention to me */
--     qemu_sem_post(&multifd_send_state->channels_ready);
--     qemu_sem_post(&p->sem_sync);
-+     multifd_send_kick_main(p);
-      /*
-       * Although multifd_send_thread is not created, but main migration
-       * thread need to judge whether it is running, so we need to mark
+     MultiFDSendParams *p = opaque;
+@@ -889,7 +868,10 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
+     }
+ 
+     trace_multifd_new_send_channel_async_error(p->id, local_err);
+-    multifd_new_send_channel_cleanup(p, ioc, local_err);
++    multifd_send_terminate_threads(local_err);
++    multifd_send_kick_main(p);
++    object_unref(OBJECT(ioc));
++    error_free(local_err);
+ }
+ 
+ static void multifd_new_send_channel_create(gpointer opaque)
+@@ -921,7 +903,6 @@ int multifd_save_setup(Error **errp)
+         qemu_mutex_init(&p->mutex);
+         qemu_sem_init(&p->sem, 0);
+         qemu_sem_init(&p->sem_sync, 0);
+-        p->quit = false;
+         p->pending_job = 0;
+         p->id = i;
+         p->pages = multifd_pages_init(page_count);
 -- 
 2.43.0
 
