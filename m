@@ -2,78 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727A484D809
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5D484D815
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXufP-0003dB-Kj; Wed, 07 Feb 2024 22:01:35 -0500
+	id 1rXujd-000617-Mz; Wed, 07 Feb 2024 22:05:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXufN-0003cj-Nj
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:01:33 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujO-0005xO-9V
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:43 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXufI-0003d9-Fy
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:01:33 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujL-0004IG-Li
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:05:42 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707361287;
+ s=mimecast20190719; t=1707361538;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=W16T7E/Sp7m0u0mJzBIZzC/1ggXDnZUTAvF49M9WktE=;
- b=HksdNPhEXKZLu9fKY06vgZAy2hk+fXDwugcZ2UOqOFUh4JEWheyDgr7t4gw7brda9inyLn
- xn5EJqxI3HcI+XZMmdOLbxqO9InfxGTj0Yv5y0wH9cNiVn1lIiqcnjcQOUYeEBOK/6VgIq
- jyugYcmyjlhul3g0BjMOm+0MewY30qY=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-eeQXyx-wN2uUT2kE4B7_pw-1; Wed, 07 Feb 2024 22:01:25 -0500
-X-MC-Unique: eeQXyx-wN2uUT2kE4B7_pw-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-29692c99979so283089a91.1
- for <qemu-devel@nongnu.org>; Wed, 07 Feb 2024 19:01:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707361284; x=1707966084;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=W16T7E/Sp7m0u0mJzBIZzC/1ggXDnZUTAvF49M9WktE=;
- b=FMTB0aeLKGS/aYCbP3e9h3Hp8srswqe9mKyb02riltvaWlkWimJNBwEKum3xMIV0jP
- eCLLimoP7j5U7coECoo7EdJhEwxx+uK9kQIXMkqeOONLPucM+LpS240D6MLZVMxX5DKy
- N32ZGCY6xYoSw9uK0pWe1DhQJjbJ7794cqnvfrYDSAH270dpg/GZ5WIt1u/P5KwrFca2
- bnKGbMPphgUOCA2iG4JJ6WYu9OzN4qygmRRWbB201s0PVmesrKXUUIOLWvaPrQjJKs27
- gIsXWBq2lEZ8f2ffVeqHkMkW2P0QqMlFyT/5bou7edyCrlUe7LENN4++e/3sz+lIMLuU
- Dfvg==
-X-Gm-Message-State: AOJu0YwuIT5YJB1ZC5cVK7w74G7qLH4V9bW4sY61WnlUos1CyLig3nhW
- AkIia/91HZko+Its/vwSvWXt4Un8MiEY07RFjb6p2kACi+fszdZKFQbnl/OEmk+SLkVZRWLjKFm
- vlnjFx5+x6K6HIlvHYyXuGZTDILkrQQsusWKi1jEmXwory3n3uDbv8x30bfmAI3A=
-X-Received: by 2002:a17:90a:2f42:b0:296:faf0:988c with SMTP id
- s60-20020a17090a2f4200b00296faf0988cmr147072pjd.3.1707361282547; 
- Wed, 07 Feb 2024 19:01:22 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IExnt0XW9qFJgoqekTD1opPvjVZBB0fyg7uqYoZ0YluL8ezzCNvsS+ZwaKJBH9A/bWz+Er4Wg==
-X-Received: by 2002:a17:90a:2f42:b0:296:faf0:988c with SMTP id
- s60-20020a17090a2f4200b00296faf0988cmr147049pjd.3.1707361282098; 
- Wed, 07 Feb 2024 19:01:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCW2js8d90J5Yd3sxFebwmRS4+/OqQTRyg1GAC604pEo+w0XhK3rOwIFBUi3YgyC91hLdrxayF/K6wePd3PPfwE6zkrRj4dlUnivrEGl7rtD8i0seurVJI0=
-Received: from x1n ([43.228.180.230]) by smtp.gmail.com with ESMTPSA id
- s93-20020a17090a2f6600b00296ba96cda9sm227299pjd.55.2024.02.07.19.01.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 Feb 2024 19:01:21 -0800 (PST)
-Date: Thu, 8 Feb 2024 11:01:17 +0800
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Avihai Horon <avihaih@nvidia.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 0/6] migration/multifd: Fix channel creation vs.
- cleanup races
-Message-ID: <ZcRD_R0lR6MwHZe6@x1n>
-References: <20240206215118.6171-1-farosas@suse.de>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=v/eMfJIioqa0tTdNDp2gc8xAH60cvubs+J5nlx1PTes=;
+ b=DArZMtABKXToRHxP5HecmwIJFuoUx9atrzcdWVU2ESA4zmbFCkXU0LxWOAnVgEu6Gwb2pQ
+ IklWTg3Uwrc7k1hfqBB8wfOZlE79KC88map7IVF6ZBLLtBVh4LJakr+jNFQkF9gx8d0gAa
+ UV0FYbBTJRzhRwF8dh5aDLA7z/2N//A=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-JOg9-jnYNbWFo0aE2_r2fA-1; Wed,
+ 07 Feb 2024 22:05:33 -0500
+X-MC-Unique: JOg9-jnYNbWFo0aE2_r2fA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 51CF13806710;
+ Thu,  8 Feb 2024 03:05:33 +0000 (UTC)
+Received: from x1n.redhat.com (unknown [10.72.116.45])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A1BBA492BC7;
+ Thu,  8 Feb 2024 03:05:30 +0000 (UTC)
+From: peterx@redhat.com
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: peterx@redhat.com,
+	Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 00/34] Migration staging patches
+Date: Thu,  8 Feb 2024 11:04:54 +0800
+Message-ID: <20240208030528.368214-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240206215118.6171-1-farosas@suse.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -98,28 +76,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 06, 2024 at 06:51:12PM -0300, Fabiano Rosas wrote:
-> Based-on: 20240202102857.110210-1-peterx@redhat.com
-> [PATCH v2 00/23] migration/multifd: Refactor ->send_prepare() and cleanups
-> https://lore.kernel.org/r/20240202102857.110210-1-peterx@redhat.com
-> 
-> Hi,
-> 
-> For v3 I fixed the refcounting issue spotted by Avihai. The situation
-> there is a bit clunky due to historical reasons. The gist is that we
-> have an assumption that channel creation never fails after p->c has
-> been set, so when 'p->c == NULL' we have to unref and when 'p->c !=
-> NULL' the cleanup code will do the unref.
-> 
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1166889341
+From: Peter Xu <peterx@redhat.com>
 
-Apologize if I queue this too fast, but i'll disappear tomorrow, so I want
-to have this thread race fixed soon.  I hope that's already complete from
-angle of all race can happen, but if otherwise we work on top.
+The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
 
-queued, thanks.
+  Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
+
+are available in the Git repository at:
+
+  https://gitlab.com/peterx/qemu.git tags/migration-staging-pull-request
+
+for you to fetch changes up to 940bf8ff1ca82aa458c553d9aa9dd7671ed15a4d:
+
+  ci: Update comment for migration-compat-aarch64 (2024-02-07 10:51:27 +0800)
+
+----------------------------------------------------------------
+Migration pull
+
+- William's fix on hwpoison migration which used to crash QEMU
+- Peter's multifd cleanup + bugfix + optimizations
+- Avihai's fix on multifd crash over non-socket channels
+- Fabiano's multifd thread-race fix
+- Peter's CI fix series
+
+----------------------------------------------------------------
+
+Avihai Horon (1):
+  migration: Fix logic of channels and transport compatibility check
+
+Fabiano Rosas (6):
+  migration/multifd: Join the TLS thread
+  migration/multifd: Remove p->running
+  migration/multifd: Move multifd_send_setup error handling in to the
+    function
+  migration/multifd: Move multifd_send_setup into migration thread
+  migration/multifd: Unify multifd and TLS connection paths
+  migration/multifd: Add a synchronization point for channel creation
+
+Peter Xu (26):
+  migration/multifd: Drop stale comment for multifd zero copy
+  migration/multifd: multifd_send_kick_main()
+  migration/multifd: Drop MultiFDSendParams.quit, cleanup error paths
+  migration/multifd: Postpone reset of MultiFDPages_t
+  migration/multifd: Drop MultiFDSendParams.normal[] array
+  migration/multifd: Separate SYNC request with normal jobs
+  migration/multifd: Simplify locking in sender thread
+  migration/multifd: Drop pages->num check in sender thread
+  migration/multifd: Rename p->num_packets and clean it up
+  migration/multifd: Move total_normal_pages accounting
+  migration/multifd: Move trace_multifd_send|recv()
+  migration/multifd: multifd_send_prepare_header()
+  migration/multifd: Move header prepare/fill into send_prepare()
+  migration/multifd: Forbid spurious wakeups
+  migration/multifd: Split multifd_send_terminate_threads()
+  migration/multifd: Change retval of multifd_queue_page()
+  migration/multifd: Change retval of multifd_send_pages()
+  migration/multifd: Rewrite multifd_queue_page()
+  migration/multifd: Cleanup multifd_save_cleanup()
+  migration/multifd: Cleanup multifd_load_cleanup()
+  migration/multifd: Stick with send/recv on function names
+  migration/multifd: Fix MultiFDSendParams.packet_num race
+  migration/multifd: Optimize sender side to be lockless
+  tests/migration-test: Stick with gicv3 in aarch64 test
+  ci: Remove tag dependency for build-previous-qemu
+  ci: Update comment for migration-compat-aarch64
+
+William Roche (1):
+  migration: prevent migration when VM has poisoned memory
+
+ include/sysemu/kvm.h         |   6 +
+ migration/multifd.h          |  59 +--
+ accel/kvm/kvm-all.c          |  10 +
+ accel/stubs/kvm-stub.c       |   5 +
+ migration/migration.c        |  48 ++-
+ migration/multifd-zlib.c     |  11 +-
+ migration/multifd-zstd.c     |  11 +-
+ migration/multifd.c          | 778 ++++++++++++++++++++---------------
+ migration/ram.c              |   2 +-
+ tests/qtest/migration-test.c |   2 +-
+ .gitlab-ci.d/buildtest.yml   |   9 +-
+ migration/trace-events       |   2 +-
+ 12 files changed, 547 insertions(+), 396 deletions(-)
 
 -- 
-Peter Xu
+2.43.0
 
 
