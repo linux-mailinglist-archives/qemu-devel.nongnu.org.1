@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7E684D81B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D27B84D824
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:08:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXukz-00075d-Pc; Wed, 07 Feb 2024 22:07:22 -0500
+	id 1rXulK-0000H6-TB; Wed, 07 Feb 2024 22:07:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukJ-0006eE-9N
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:42 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukR-0006is-Vj
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukH-0004OJ-FC
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:39 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukO-0004Oj-RH
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707361596;
+ s=mimecast20190719; t=1707361604;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Xy7kP91cNG/oDUYircRk5JGvj6nwWok6Sax1Yx9kn2g=;
- b=i6qa5CR/Hp+PK5UvwCgrOPUpyt0B7Zyf0LIjKpvR1OX5Z9Ppm2RJIlxmAKfZnNcXur6AbD
- xNIJEfbtoniFz+/Yu3ADiRQQjX6djrWW+OGFSoQcEI9H9m+p/vRbfY9ZQF1kC/KVKrOCB8
- iRlFogFoDuehN5Fav2j2D+bImDupI0Y=
+ bh=p+rWOiKRGfKYYD4s1CHnnYWpK5RIZrtTAQJmSTL7WeM=;
+ b=WxpRdtBB86r/j0PjHAleuK5HjGT/H4BER6VybbVKco3mjx7ujZaJMdoV4rzjsotzrray5s
+ MSTISSRXRisqtboSWpGfOn8hc9onMYKsPiusjv+XTfh99zrj3k8rFTEaNrZG3fg9/BrTOp
+ sCYfdpcgHxHazBZvYO50F8cBl4BXkcM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-292-t2z2_s14M8if-Roub_6gGg-1; Wed,
- 07 Feb 2024 22:06:35 -0500
-X-MC-Unique: t2z2_s14M8if-Roub_6gGg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-386-ozsVZ_xCO7WTkUf-mRaTRA-1; Wed,
+ 07 Feb 2024 22:06:38 -0500
+X-MC-Unique: ozsVZ_xCO7WTkUf-mRaTRA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 468663806622;
- Thu,  8 Feb 2024 03:06:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FC2D1C051A6;
+ Thu,  8 Feb 2024 03:06:38 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF082492BC7;
- Thu,  8 Feb 2024 03:06:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 15A66492BC7;
+ Thu,  8 Feb 2024 03:06:35 +0000 (UTC)
 From: peterx@redhat.com
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 20/34] migration/multifd: Cleanup multifd_save_cleanup()
-Date: Thu,  8 Feb 2024 11:05:14 +0800
-Message-ID: <20240208030528.368214-21-peterx@redhat.com>
+Subject: [PULL 21/34] migration/multifd: Cleanup multifd_load_cleanup()
+Date: Thu,  8 Feb 2024 11:05:15 +0800
+Message-ID: <20240208030528.368214-22-peterx@redhat.com>
 In-Reply-To: <20240208030528.368214-1-peterx@redhat.com>
 References: <20240208030528.368214-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,154 +81,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Shrink the function by moving relevant works into helpers: move the thread
-join()s into multifd_send_terminate_threads(), then create two more helpers
-to cover channel/state cleanups.
+Use similar logic to cleanup the recv side.
 
-Add a TODO entry for the thread terminate process because p->running is
-still buggy.  We need to fix it at some point but not yet covered.
+Note that multifd_recv_terminate_threads() may need some similar rework
+like the sender side, but let's leave that for later.
 
-Suggested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240202102857.110210-20-peterx@redhat.com
+Link: https://lore.kernel.org/r/20240202102857.110210-21-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 91 +++++++++++++++++++++++++++++----------------
- 1 file changed, 59 insertions(+), 32 deletions(-)
+ migration/multifd.c | 52 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 22 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 4ab8e6eff2..4cb0d2cc17 100644
+index 4cb0d2cc17..e2dd2f6e04 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -593,6 +593,11 @@ static void multifd_send_terminate_threads(void)
-      * always set it.
-      */
-     qatomic_set(&multifd_send_state->exiting, 1);
-+
-+    /*
-+     * Firstly, kick all threads out; no matter whether they are just idle,
-+     * or blocked in an IO system call.
-+     */
-     for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
- 
-@@ -601,6 +606,21 @@ static void multifd_send_terminate_threads(void)
-             qio_channel_shutdown(p->c, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-         }
+@@ -1070,6 +1070,34 @@ void multifd_load_shutdown(void)
      }
-+
-+    /*
-+     * Finally recycle all the threads.
-+     *
-+     * TODO: p->running is still buggy, e.g. we can reach here without the
-+     * corresponding multifd_new_send_channel_async() get invoked yet,
-+     * then a new thread can even be created after this function returns.
-+     */
-+    for (i = 0; i < migrate_multifd_channels(); i++) {
-+        MultiFDSendParams *p = &multifd_send_state->params[i];
-+
-+        if (p->running) {
-+            qemu_thread_join(&p->thread);
-+        }
-+    }
  }
  
- static int multifd_send_channel_destroy(QIOChannel *send)
-@@ -608,6 +628,41 @@ static int multifd_send_channel_destroy(QIOChannel *send)
-     return socket_send_channel_destroy(send);
- }
- 
-+static bool multifd_send_cleanup_channel(MultiFDSendParams *p, Error **errp)
++static void multifd_recv_cleanup_channel(MultiFDRecvParams *p)
 +{
-+    if (p->registered_yank) {
-+        migration_ioc_unregister_yank(p->c);
-+    }
-+    multifd_send_channel_destroy(p->c);
++    migration_ioc_unregister_yank(p->c);
++    object_unref(OBJECT(p->c));
 +    p->c = NULL;
 +    qemu_mutex_destroy(&p->mutex);
-+    qemu_sem_destroy(&p->sem);
 +    qemu_sem_destroy(&p->sem_sync);
 +    g_free(p->name);
 +    p->name = NULL;
-+    multifd_pages_clear(p->pages);
-+    p->pages = NULL;
 +    p->packet_len = 0;
 +    g_free(p->packet);
 +    p->packet = NULL;
 +    g_free(p->iov);
 +    p->iov = NULL;
-+    multifd_send_state->ops->send_cleanup(p, errp);
-+
-+    return *errp == NULL;
++    g_free(p->normal);
++    p->normal = NULL;
++    multifd_recv_state->ops->recv_cleanup(p);
 +}
 +
-+static void multifd_send_cleanup_state(void)
++static void multifd_recv_cleanup_state(void)
 +{
-+    qemu_sem_destroy(&multifd_send_state->channels_ready);
-+    g_free(multifd_send_state->params);
-+    multifd_send_state->params = NULL;
-+    multifd_pages_clear(multifd_send_state->pages);
-+    multifd_send_state->pages = NULL;
-+    g_free(multifd_send_state);
-+    multifd_send_state = NULL;
++    qemu_sem_destroy(&multifd_recv_state->sem_sync);
++    g_free(multifd_recv_state->params);
++    multifd_recv_state->params = NULL;
++    g_free(multifd_recv_state);
++    multifd_recv_state = NULL;
 +}
 +
- void multifd_save_cleanup(void)
+ void multifd_load_cleanup(void)
  {
      int i;
-@@ -615,48 +670,20 @@ void multifd_save_cleanup(void)
-     if (!migrate_multifd()) {
-         return;
+@@ -1092,29 +1120,9 @@ void multifd_load_cleanup(void)
+         qemu_thread_join(&p->thread);
      }
-+
-     multifd_send_terminate_threads();
--    for (i = 0; i < migrate_multifd_channels(); i++) {
--        MultiFDSendParams *p = &multifd_send_state->params[i];
- 
--        if (p->running) {
--            qemu_thread_join(&p->thread);
--        }
--    }
      for (i = 0; i < migrate_multifd_channels(); i++) {
-         MultiFDSendParams *p = &multifd_send_state->params[i];
-         Error *local_err = NULL;
- 
--        if (p->registered_yank) {
--            migration_ioc_unregister_yank(p->c);
--        }
--        multifd_send_channel_destroy(p->c);
+-        MultiFDRecvParams *p = &multifd_recv_state->params[i];
+-
+-        migration_ioc_unregister_yank(p->c);
+-        object_unref(OBJECT(p->c));
 -        p->c = NULL;
 -        qemu_mutex_destroy(&p->mutex);
--        qemu_sem_destroy(&p->sem);
 -        qemu_sem_destroy(&p->sem_sync);
 -        g_free(p->name);
 -        p->name = NULL;
--        multifd_pages_clear(p->pages);
--        p->pages = NULL;
 -        p->packet_len = 0;
 -        g_free(p->packet);
 -        p->packet = NULL;
 -        g_free(p->iov);
 -        p->iov = NULL;
--        multifd_send_state->ops->send_cleanup(p, &local_err);
--        if (local_err) {
-+        if (!multifd_send_cleanup_channel(p, &local_err)) {
-             migrate_set_error(migrate_get_current(), local_err);
-             error_free(local_err);
-         }
+-        g_free(p->normal);
+-        p->normal = NULL;
+-        multifd_recv_state->ops->recv_cleanup(p);
++        multifd_recv_cleanup_channel(&multifd_recv_state->params[i]);
      }
--    qemu_sem_destroy(&multifd_send_state->channels_ready);
--    g_free(multifd_send_state->params);
--    multifd_send_state->params = NULL;
--    multifd_pages_clear(multifd_send_state->pages);
--    multifd_send_state->pages = NULL;
--    g_free(multifd_send_state);
--    multifd_send_state = NULL;
-+
-+    multifd_send_cleanup_state();
+-    qemu_sem_destroy(&multifd_recv_state->sem_sync);
+-    g_free(multifd_recv_state->params);
+-    multifd_recv_state->params = NULL;
+-    g_free(multifd_recv_state);
+-    multifd_recv_state = NULL;
++    multifd_recv_cleanup_state();
  }
  
- static int multifd_zero_copy_flush(QIOChannel *c)
+ void multifd_recv_sync_main(void)
 -- 
 2.43.0
 
