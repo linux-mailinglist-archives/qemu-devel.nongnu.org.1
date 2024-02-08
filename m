@@ -2,56 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299F984E7BC
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEC984E886
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:56:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY9DG-00036T-Od; Thu, 08 Feb 2024 13:33:30 -0500
+	id 1rY9XV-0001Y4-Kk; Thu, 08 Feb 2024 13:54:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rY9DC-00033X-DJ; Thu, 08 Feb 2024 13:33:26 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rY9XN-0001Qb-Bg
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:17 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rY9DA-0002Gc-GD; Thu, 08 Feb 2024 13:33:26 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CB81B4E604B;
- Thu,  8 Feb 2024 19:33:20 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id MzLNKbdOU6OX; Thu,  8 Feb 2024 19:33:18 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DC99C4E6049; Thu,  8 Feb 2024 19:33:18 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DA1DC745708;
- Thu,  8 Feb 2024 19:33:18 +0100 (CET)
-Date: Thu, 8 Feb 2024 19:33:18 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org, 
- Eduardo Habkost <eduardo@habkost.net>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v3 06/11] hw/misc/macio: Realize IDE controller before
- accessing it
-In-Reply-To: <20240208181245.96617-7-philmd@linaro.org>
-Message-ID: <4f25c957-3019-2dcf-56ac-cf34a2fb6c53@eik.bme.hu>
-References: <20240208181245.96617-1-philmd@linaro.org>
- <20240208181245.96617-7-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1599874485-1707417198=:22368"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1rY9XJ-0005n5-LG
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:15 -0500
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 418Ik7KT003413; Thu, 8 Feb 2024 18:54:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-11-20;
+ bh=i9fTPNpbGMGifbwNd+613IxTuOiqu2hiQIheLp1zIvA=;
+ b=SjEatag/qUKPv+QIFUMHoePCar5TXD3xotuJi01O9hSL0Gt4UsZK42Zkerx69INw0b9K
+ fnJQI/oFoeQSah8kRwyqqkikp3qyI/A/u40g28crPSv+Vc+t3T2AwPQYMQ/02u9OaK6E
+ im0EQJg0Hs/J+z+B4vClSvBv4z2ycxPoHyQcrTJ9nXJVC4Oaq4POsbDXV6+GVmTAlwg6
+ vz5KVr1zXqI/WjTYK7qB2EncYQM+g9oVljrNVZncayxvfrIdbQgmATY96iYIrwJ2FiWE
+ D0Y+k/ndy8o7A+oW27Anz28l6bTmD1+mju273YxAp2Zv0aBBgltZERJXQfy3m/AxWNyP 1g== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1c32wnqc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 08 Feb 2024 18:54:09 +0000
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 418HcD5a038384; Thu, 8 Feb 2024 18:54:08 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3w1bxawmy2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 08 Feb 2024 18:54:08 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq35v013534;
+ Thu, 8 Feb 2024 18:54:07 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3w1bxawmw9-1; Thu, 08 Feb 2024 18:54:07 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Marc-Andre Lureau <marcandre.lureau@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V3 00/13] allow cpr-reboot for vfio
+Date: Thu,  8 Feb 2024 10:53:53 -0800
+Message-Id: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-08_08,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ spamscore=0
+ mlxlogscore=778 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402080099
+X-Proofpoint-GUID: KBgMFSLuVJs0mNHyPkhwJQQZtULWfjk0
+X-Proofpoint-ORIG-GUID: KBgMFSLuVJs0mNHyPkhwJQQZtULWfjk0
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,55 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Allow cpr-reboot for vfio if the guest is in the suspended runstate.  The
+guest drivers' suspend methods flush outstanding requests and re-initialize
+the devices, and thus there is no device state to save and restore.  The
+user is responsible for suspending the guest before initiating cpr, such as
+by issuing guest-suspend-ram to the qemu guest agent.
 
---3866299591-1599874485-1707417198=:22368
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Most of the patches in this series enhance migration notifiers so they can
+return an error status and message.  The last few patches register a notifier
+for vfio that returns an error if the guest is not suspended.
 
-On Thu, 8 Feb 2024, Philippe Mathieu-Daudé wrote:
-> We should not wire IRQs on unrealized device.
->
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-> hw/misc/macio/macio.c | 8 +++++---
-> 1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
-> index c9f22f8515..db662a2065 100644
-> --- a/hw/misc/macio/macio.c
-> +++ b/hw/misc/macio/macio.c
-> @@ -122,15 +122,17 @@ static bool macio_realize_ide(MacIOState *s, MACIOIDEState *ide,
->                               Error **errp)
-> {
->     SysBusDevice *sbd = SYS_BUS_DEVICE(ide);
-> +    bool success;
->
-> -    sysbus_connect_irq(sbd, 0, irq0);
-> -    sysbus_connect_irq(sbd, 1, irq1);
->     qdev_prop_set_uint32(DEVICE(ide), "channel", dmaid);
->     object_property_set_link(OBJECT(ide), "dbdma", OBJECT(&s->dbdma),
->                              &error_abort);
->     macio_ide_register_dma(ide);
-> +    success = qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp);
+Changes in V3:
+  * update to tip, add RB's
+  * replace MigrationStatus with new enum MigrationEventType
+  * simplify migrate_fd_connect error recovery
+  * support vfio iommufd containers
+  * add patches:
+      migration: stop vm for cpr
+      migration: update cpr-reboot description
 
-If realize is unsuccessful can you connect irqs if device may be 
-unrealized? So maybe either the next two lines should be in an if block or 
-drop the success flag and return false here if (!qdev_realize) and true at 
-end of func?
+Steve Sistare (13):
+  notify: pass error to notifier with return
+  migration: remove error from notifier data
+  migration: convert to NotifierWithReturn
+  migration: MigrationEvent for notifiers
+  migration: remove postcopy_after_devices
+  migration: MigrationNotifyFunc
+  migration: per-mode notifiers
+  migration: refactor migrate_fd_connect failures
+  migration: notifier error checking
+  migration: stop vm for cpr
+  vfio: register container for cpr
+  vfio: allow cpr-reboot migration if suspended
+  migration: update cpr-reboot description
 
-Regards,
-BALATON Zoltan
+ hw/net/virtio-net.c                   |  13 ++--
+ hw/vfio/common.c                      |   2 +-
+ hw/vfio/container.c                   |  11 ++-
+ hw/vfio/cpr.c                         |  39 +++++++++++
+ hw/vfio/iommufd.c                     |   6 ++
+ hw/vfio/meson.build                   |   1 +
+ hw/vfio/migration.c                   |  15 ++--
+ hw/vfio/trace-events                  |   2 +-
+ hw/virtio/vhost-user.c                |  10 +--
+ hw/virtio/virtio-balloon.c            |   3 +-
+ include/hw/vfio/vfio-common.h         |   5 +-
+ include/hw/vfio/vfio-container-base.h |   1 +
+ include/hw/virtio/virtio-net.h        |   2 +-
+ include/migration/misc.h              |  31 ++++++--
+ include/qemu/notify.h                 |   8 ++-
+ migration/migration.c                 | 128 +++++++++++++++++++++++-----------
+ migration/migration.h                 |   2 -
+ migration/postcopy-ram.c              |   3 +-
+ migration/postcopy-ram.h              |   1 -
+ migration/ram.c                       |   3 +-
+ net/vhost-vdpa.c                      |  14 ++--
+ qapi/migration.json                   |  36 ++++++----
+ ui/spice-core.c                       |  17 +++--
+ util/notify.c                         |   5 +-
+ 24 files changed, 244 insertions(+), 114 deletions(-)
+ create mode 100644 hw/vfio/cpr.c
 
-> +    sysbus_connect_irq(sbd, 0, irq0);
-> +    sysbus_connect_irq(sbd, 1, irq1);
->
-> -    return qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp);
-> +    return success;
-> }
->
-> static void macio_oldworld_realize(PCIDevice *d, Error **errp)
->
---3866299591-1599874485-1707417198=:22368--
+-- 
+1.8.3.1
+
 
