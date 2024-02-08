@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CAB84E773
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B584E77B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:14:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY8tw-00055i-EO; Thu, 08 Feb 2024 13:13:32 -0500
+	id 1rY8uL-0005ZZ-PH; Thu, 08 Feb 2024 13:13:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8tt-0004x6-0x
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:29 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8u1-0005Me-71
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:38 -0500
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8tr-0006o6-5L
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:28 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a293f2280c7so10569366b.1
- for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 10:13:26 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8tx-0006os-Qx
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:35 -0500
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-a39e31e1aa9so12210066b.0
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 10:13:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707416005; x=1708020805; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707416011; x=1708020811; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ARLLZN1q9jOO5ilFbs0xhNVpC6mVoYo93eKHvwmo3rg=;
- b=BzItl0TNbV4E0X7V0XOnMZ7urtn+gtlgFpoTFPRJ1NJ5VU6tLcQqtPDV4sUfSaOo23
- k6ddd4bp+gRU1jj4Z8F9I9R235GQ/gm95sHD5KUaB7GCbJibLqH3BGemRQ1rruRt050I
- 3SkpMn1B2XIA/e+DzRgJ/RiNLbRJ9+7qpk2eCnNRzvYJszndfRtipvFVWVxBQMYMC8Wp
- 1XEpHmp7Iw7PCtnkivcDk94cO/uG99PoE3zMyd7EKwbb4TDqUS3h7ZVV3lHyQcRGnLWs
- jewIrUuNzNTDrUMKME4/LGuvg9iUOp0E3qlERButSOtdWdqyF5INfu5KEuYr6Bwr3S8S
- MRMw==
+ bh=49ud5Yjb30rn8SP9Mr5OVYTkrS5yFB+17IJ/cfY04ss=;
+ b=LIMfBEEIRCYqMVNfECDt9W/Oy3qom2pvaKtrUCP2zzx/dfbyupZbdvTiFl5XZODU//
+ /lqR4op+YrNaoB5XhpFaskWz8qTo+Ff5rOyq78BSIhrCmLU07+uGvJOKVTzAHeVFg8Ly
+ RY8RK2HJFa5XE+F12yZ1yJis3fai+trNMAIot4gQDR/eNIXDpUk72kfHIXRHgWGIJVWI
+ gq8Y7I804gASPjdwVKgn/PDVbCjcvW2KuZhXS3gNfliPtj8DDVsUwrf8/IgHV2sSfa8Z
+ Nt24uHzHJV5SNHnvwl/LT4O6oWLC3h5kklXRjN3l3+QHP3M2dOvbYKS3eFPqn/Dn1PfB
+ MrRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707416005; x=1708020805;
+ d=1e100.net; s=20230601; t=1707416011; x=1708020811;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ARLLZN1q9jOO5ilFbs0xhNVpC6mVoYo93eKHvwmo3rg=;
- b=iJFa83rZZ4zuKkpN80rgeGIWtTSgdJC/+QBoM7tnM2jx9oIOV3gvq81g/3W3fJkKth
- RcGGl2hVDVdWkUCKNCG8QzdNiYUYRGoR1sS+7F6X4he6L45LYVLsvpG5UzEtgNYmKnY4
- Jw4/4zolkXnI1bvs81uDHaA4yUyjYVbnePhPa90t9Z1EpWzOpaty0s9yWjCq9CrKH/ms
- KT6JORh5kcynlXwWcaMAGWcUYVlYeWA8zu2RVNiuVgcVWtRHR2+wXWJbY6AsinVhQsBv
- buwz0MqoGGUX0lJgf8MfbEIALd0pKNuqRy6xfzlICphCayKPxvPK4tN6SHv0dMwK93dO
- R59A==
-X-Gm-Message-State: AOJu0YzCMxtQwNUiqRd4iYz7nFSrDrAygfQj0sXt/c6RXSPM26ae8aya
- hsIR27POv1/j8+QOhtRhyEP+EIBjl06hzXmmt4EvjrxICkQghw7no8i0AH54FF4Hju21o8iCZZ1
- kKTo=
-X-Google-Smtp-Source: AGHT+IFNJmzKp+Nd6YSYk5g8osOTKPbq5lQ123BcB5EbAp/PILwUbhYygEwBBRtx0q770AkE0FLs8w==
-X-Received: by 2002:a17:906:6d55:b0:a38:4cd:7e13 with SMTP id
- a21-20020a1709066d5500b00a3804cd7e13mr76621ejt.35.1707416005261; 
- Thu, 08 Feb 2024 10:13:25 -0800 (PST)
+ bh=49ud5Yjb30rn8SP9Mr5OVYTkrS5yFB+17IJ/cfY04ss=;
+ b=adr/9dPLNU0dX5W3r9sHpFR04fghqKAjeThLd5HVTW7La+iEEvp4S0Kfvne73LQuA/
+ MzOsMXcWsJBqNwCCBI3Uwn1YXNt23sKNjLkWAQzBZBXnBAKzseFgFlyMLWemCF5o6MhP
+ MxRy3jXwC0hivMug6o3yReFFqn8KUXis0h8Q0yZ+e2NtuZBmQncsTh96oq/OMF/z5oCl
+ DjuWoD2+Sj+uH2Nj+wmIU/DJQkJTiVP/aMUe23ZFx6DBsuULmw/V4oj1+jdeEwSREf4r
+ 6Uxc40paqJU7U0M7hTKBBKSfGX2M8Vr0DGVEPOsExsejE8Q8Z645zIHPUhFTFbQgVtSD
+ 4HdQ==
+X-Gm-Message-State: AOJu0YwGRDSxMVUNnr7jp80vKKtrkkKsrl8PWfjMgtn5ng1T8xzzjlbf
+ zeJZ5iDReEz/JdMk/2ZA8dvFPttOJ6cqbp1p4SyC3VskugtTWcPJ1hNDH6bcyJEwSkSzhNlERM/
+ YOhY=
+X-Google-Smtp-Source: AGHT+IElKnKnfr2w+uv+DJybwknWUt2WS+hrduCNrzndqBMvy8oa1xWESV1rOzmK5yYbgzhIAsV8yA==
+X-Received: by 2002:a17:906:1cc3:b0:a38:6b3e:8bd with SMTP id
+ i3-20020a1709061cc300b00a386b3e08bdmr93193ejh.37.1707416011498; 
+ Thu, 08 Feb 2024 10:13:31 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVKe3bkGBFJH1vsY8ebsqIn9hao/dFktYpQkK5HaFuys/YJBAzFebHkOxcimAX7Go3ZEvuRwo1u+NVl8xiGCMRpmSTYos5UyKpbUY237ApkQjomiiyhLZT1g9WAR0YpJWsQ8CIAYWYK1eBJvxE5+VrRY6E3zorRYGmg6MQpuVwKVpOfQJlmDrkZL8eW1aFHU+0zYxpo8nYEMEzlyeUcXzv+Nj1M1YgJYyDFemp9WeaPn18/yTyxs3+t3NdlFDYKbr9YugckyonlUDvRz60Nc3LM+Hr/ESOJ1SNUeRxGUcwgmwNLEKTJmCPv0AqB0aw96EJdzCUm4A==
+ AJvYcCWu2EbPuE4dOdkSp7nul+FpNq+9PE8jv5D0KfYqhDgArRE57ave53OHf/heI6zT4eJVrEkTNtyt8x4aN5C8rpwpzxSAv30Klpc+CgZqcaiftxlryebGJ8pjHyG8tT6XHnkoJecs+aHlKKLCxaK116PUB3ASLy7jpH9MVM3oSvV5BEy7HyJu8p6NmBwvotGQxRETSqJzIGXSGfKdfM155VlEXgpmzOkeHd4yt1ptNA7svbf5rnhIc0mNhetgZIFJFJTAxcTlXvxH/7ioqra/jiOUh0uxs0d3v9rEOGgpDLS1gfqpHD1/Mj1Wuey+PrIaLqJZTnSLSrHzX1++NMw91yJOnHQGB+aB7TriTyefKhM4eaMBoKvo4jANJQv/RTvFp+2tS++EzcPAmg==
 Received: from m1x-phil.lan ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- vb5-20020a170907d04500b00a38103ab710sm298607ejc.125.2024.02.08.10.13.23
+ e3-20020a17090681c300b00a3826937a33sm292715ejx.211.2024.02.08.10.13.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 08 Feb 2024 10:13:24 -0800 (PST)
+ Thu, 08 Feb 2024 10:13:31 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -65,19 +65,21 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 06/11] hw/misc/macio: Realize IDE controller before
- accessing it
-Date: Thu,  8 Feb 2024 19:12:39 +0100
-Message-ID: <20240208181245.96617-7-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>
+Subject: [PATCH v3 07/11] hw/sh4/r2d: Realize IDE controller before accessing
+ it
+Date: Thu,  8 Feb 2024 19:12:40 +0100
+Message-ID: <20240208181245.96617-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240208181245.96617-1-philmd@linaro.org>
 References: <20240208181245.96617-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,34 +106,24 @@ We should not wire IRQs on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/macio/macio.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ hw/sh4/r2d.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
-index c9f22f8515..db662a2065 100644
---- a/hw/misc/macio/macio.c
-+++ b/hw/misc/macio/macio.c
-@@ -122,15 +122,17 @@ static bool macio_realize_ide(MacIOState *s, MACIOIDEState *ide,
-                               Error **errp)
- {
-     SysBusDevice *sbd = SYS_BUS_DEVICE(ide);
-+    bool success;
- 
--    sysbus_connect_irq(sbd, 0, irq0);
--    sysbus_connect_irq(sbd, 1, irq1);
-     qdev_prop_set_uint32(DEVICE(ide), "channel", dmaid);
-     object_property_set_link(OBJECT(ide), "dbdma", OBJECT(&s->dbdma),
-                              &error_abort);
-     macio_ide_register_dma(ide);
-+    success = qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp);
-+    sysbus_connect_irq(sbd, 0, irq0);
-+    sysbus_connect_irq(sbd, 1, irq1);
- 
--    return qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp);
-+    return success;
- }
- 
- static void macio_oldworld_realize(PCIDevice *d, Error **errp)
+diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
+index e9f316a6ce..c73e8f49b8 100644
+--- a/hw/sh4/r2d.c
++++ b/hw/sh4/r2d.c
+@@ -285,9 +285,9 @@ static void r2d_init(MachineState *machine)
+     dinfo = drive_get(IF_IDE, 0, 0);
+     dev = qdev_new("mmio-ide");
+     busdev = SYS_BUS_DEVICE(dev);
+-    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
+     qdev_prop_set_uint32(dev, "shift", 1);
+     sysbus_realize_and_unref(busdev, &error_fatal);
++    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
+     sysbus_mmio_map(busdev, 0, 0x14001000);
+     sysbus_mmio_map(busdev, 1, 0x1400080c);
+     mmio_ide_init_drives(dev, dinfo, NULL);
 -- 
 2.41.0
 
