@@ -2,89 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4391184E889
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA8084E8A8
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 20:05:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY9Xe-0001bm-HM; Thu, 08 Feb 2024 13:54:34 -0500
+	id 1rY9gu-0003nT-Ev; Thu, 08 Feb 2024 14:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9Xc-0001b9-MN
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:32 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9Xa-0005pe-QS
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:32 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 418Ijvi3002703; Thu, 8 Feb 2024 18:54:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=ta4RajXp4A5/tKccMGjZ7rIh6kE+PS4323ZhW1w6QlQ=;
- b=CeoSY2hzZTjGdO2BAy68dCkXoEWvbYS3vcYl/4M/d8JW3lWsoVpRzB2yWHnYiQtOs9zT
- OWWHA3evuLyjKCniX4qWjCt1qRVh90raxOpkIfXlhB/JBJAJqnz7sCCrmIIm4k8Kdc9e
- mIfyewp+nBgwGFC+IB2lqxeIFOXqz1U+nSDHP3yNGSNzJSLU7cOzv2sjXdla743Y+4/U
- F4F6mHv1aWOp8zt02CB99TAalSHa4ZLjeOt2gELTB/RB6pcNW0P7hV+QwgVhFQ9RB6kb
- x+u2P/pQVDBi1WZjdZBq/CMtWBaHHNe4gaS1H1BUVnfHnmu1ujP/WzbkCwjVgJITbZ8o 4Q== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1dhdnqyk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:29 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 418Iikfi038387; Thu, 8 Feb 2024 18:54:29 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w1bxawnmv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:29 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36N013534;
- Thu, 8 Feb 2024 18:54:28 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3w1bxawmw9-14; Thu, 08 Feb 2024 18:54:28 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 13/13] migration: update cpr-reboot description
-Date: Thu,  8 Feb 2024 10:54:06 -0800
-Message-Id: <1707418446-134863-14-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
-References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-08_08,2024-02-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- spamscore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402080099
-X-Proofpoint-GUID: r3XyUTUAsIrAl3DENq1TPxr9BtdmWjcN
-X-Proofpoint-ORIG-GUID: r3XyUTUAsIrAl3DENq1TPxr9BtdmWjcN
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rY9gs-0003nH-5R
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:04:06 -0500
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
+ id 1rY9gp-0007Wu-5v
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:04:05 -0500
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5611e54a92dso302748a12.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 11:04:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1707419040; x=1708023840; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=T+yNJxtcDiWuh/CSH68/DxwAc5LA4FKKC3pmjG+yvaI=;
+ b=lhPklEv+OGCh6XaP24uk2jU3gGTb1b0ifnNspf8dBUS9cQO34qBE8R22AOteH/d9Wk
+ CEzJLFCAQNvElNaFIhVIRuw2cgrckM//8+vu2T7Kd7a5wytM8TNn812ORpvHbNuLwksM
+ Fk/jnezHUmBmyGrR+5jl73C04B3zat+sgkD1SxpAvytCBMbL4UiR390LxOEH5dO9beAD
+ zChdIRzro1SM3Qme0KXGpo/RQVf1JV0APre9ub6hQdV1rpcsUqmZloM9djHMsk6cSlsg
+ wJJKthwUMt0CfodweJhl7FCSpouWl80G17SLxiJH3je32ZsaCOOrByFultq1bGG+CXii
+ XNkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707419040; x=1708023840;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T+yNJxtcDiWuh/CSH68/DxwAc5LA4FKKC3pmjG+yvaI=;
+ b=Qdgr5LdfwSzNPHd5E4uViWB37KzKhTnhhyYdsaiMSl+qlwPQZ1pcvx1awpnF4IWdi3
+ 99yWlDx4GwR1/hD6x+uXckUCmvthmOFpqJKY7Anp2+WImLwEuAc1mY0dNdbWDO+kB1Hq
+ RktxQbsSiXZ+UEi3AhLGT6GOqPRNr96ODn/fk9IApLrsxYwgYvqfGqCE5bLIeDgZWTjE
+ at5/ygI93iXCLtXpp+6sDwCErC1/+3hWd/lXEOHZzn0Hwkk7s+fbIqCvGA6ocMpX/ea8
+ s22vb3F5UqgV2W73u/5gypdaNuYtTizLwdM2nS1SIDoV+wWvy0PaIT+tPQyYqEwZNTow
+ D0iQ==
+X-Gm-Message-State: AOJu0YyFT9sQvC6M23yXUUg/RbRN9D7hLD1d2gUwfachtPOWd2EHKzZM
+ ctHTO6eQHhcaD1uhm01slCcP8OofR1qPyRNs0CATssrLyj1K8k8mvU2ZdU9EJIlRt0fi84Iq9Th
+ lJTITGrrhUx4NSrtbeqtbOT2LswpBm0EB++30fw==
+X-Google-Smtp-Source: AGHT+IFsaRUg6J90o2zZdxMnnLt7RU0lG3p4G55Z3KAojbRhanSFeUMaFc3JUF70KuoJcGRxDo8/8aj32SCrUWIthuI=
+X-Received: by 2002:a05:6402:5172:b0:55f:a7d6:fd6a with SMTP id
+ d18-20020a056402517200b0055fa7d6fd6amr124288ede.5.1707419040611; Thu, 08 Feb
+ 2024 11:04:00 -0800 (PST)
+MIME-Version: 1.0
+References: <20240206231908.1792529-1-hao.xiang@bytedance.com>
+ <20240206231908.1792529-4-hao.xiang@bytedance.com> <ZcMGHeXkV-079vVX@x1n>
+In-Reply-To: <ZcMGHeXkV-079vVX@x1n>
+From: Hao Xiang <hao.xiang@bytedance.com>
+Date: Thu, 8 Feb 2024 11:03:49 -0800
+Message-ID: <CAAYibXifj50FiZ_0Le=FesKnTYpdVnD6qci1r0DFjY40H==gcw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH 3/6] migration/multifd: Support for zero
+ pages transmission in multifd format.
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, farosas@suse.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,61 +89,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Clarify qapi for cpr-reboot migration mode, and add vfio support.
+On Tue, Feb 6, 2024 at 8:25=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Tue, Feb 06, 2024 at 11:19:05PM +0000, Hao Xiang wrote:
+> > diff --git a/migration/multifd.c b/migration/multifd.c
+> > index 25cbc6dc6b..a20d0ed10e 100644
+> > --- a/migration/multifd.c
+> > +++ b/migration/multifd.c
+> > @@ -264,6 +264,7 @@ static void multifd_send_fill_packet(MultiFDSendPar=
+ams *p)
+> >      packet->flags =3D cpu_to_be32(p->flags);
+> >      packet->pages_alloc =3D cpu_to_be32(p->pages->allocated);
+> >      packet->normal_pages =3D cpu_to_be32(p->normal_num);
+> > +    packet->zero_pages =3D cpu_to_be32(p->zero_num);
+>
+> This doesn't look right..
+>
+> If to fill up the zero accounting only, we shouldn't be touching multifd
+> packet at all since multifd zero page detection is not yet supported.
+>
+> We should only reference mig_stats.zero_pages.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- qapi/migration.json | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+p->zero_num will always be 0 because multifd zero page checking is not
+yet enabled. The next commit will contain the code to calculate
+p->zero_num for each packet. This is just a preparation for the next
+commit that enables the feature. Main migration thread zero page goes
+through a different format. We are using the same counter
+mig_stats.zero_pages to track zero pages for both the legacy zero page
+checking and multifd zero page checking. These two are mutually
+exclusive so zero page will not be double counted.
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8197083..c83e0c0 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -636,19 +636,29 @@
- #
- # @normal: the original form of migration. (since 8.2)
- #
--# @cpr-reboot: The migrate command saves state to a file, allowing one to
--#              quit qemu, reboot to an updated kernel, and restart an updated
--#              version of qemu.  The caller must specify a migration URI
--#              that writes to and reads from a file.  Unlike normal mode,
--#              the use of certain local storage options does not block the
--#              migration, but the caller must not modify guest block devices
--#              between the quit and restart.  To avoid saving guest RAM to the
--#              file, the memory backend must be shared, and the @x-ignore-shared
--#              migration capability must be set.  Guest RAM must be non-volatile
--#              across reboot, such as by backing it with a dax device, but this
--#              is not enforced.  The restarted qemu arguments must match those
--#              used to initially start qemu, plus the -incoming option.
--#              (since 8.2)
-+# @cpr-reboot: The migrate command stops the VM, saves state to the URI,
-+#     and qemu exits.  After qemu exits, the user resumes by running
-+#     qemu -incoming.
-+#
-+#     This mode allows the user to quit qemu, and restart an updated version
-+#     of qemu.  The user may even update and reboot the OS before restarting,
-+#     as long as the URI persists across a reboot.
-+#
-+#     Unlike normal mode, the use of certain local storage options does not
-+#     block the migration, but the user must not modify guest block devices
-+#     between the quit and restart.
-+#
-+#     This mode supports vfio devices provided the user first puts the guest
-+#     in the suspended runstate, such as by issuing guest-suspend-ram to the
-+#     qemu guest agent.
-+#
-+#     Best performance is achieved when the memory backend is shared and the
-+#     @x-ignore-shared migration capability is set, but this is not required.
-+#     Further, if the user reboots before restarting such a configuration, the
-+#     shared backend must be be non-volatile across reboot, such as by backing
-+#     it with a dax device.
-+#
-+#     (since 8.2)
- ##
- { 'enum': 'MigMode',
-   'data': [ 'normal', 'cpr-reboot' ] }
--- 
-1.8.3.1
+Let me know if I am missing something.
 
+>
+> >      packet->next_packet_size =3D cpu_to_be32(p->next_packet_size);
+> >      packet->packet_num =3D cpu_to_be64(p->packet_num);
+>
+> --
+> Peter Xu
+>
 
