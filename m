@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B6184EA47
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 22:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 623E784EB1F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 23:05:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYBpr-0005fW-IB; Thu, 08 Feb 2024 16:21:32 -0500
+	id 1rYCV1-0007Dn-7R; Thu, 08 Feb 2024 17:04:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rYBpd-0005f6-SQ; Thu, 08 Feb 2024 16:21:18 -0500
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rYCUz-0007C6-Hk
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 17:04:01 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1rYBpc-0006FW-CL; Thu, 08 Feb 2024 16:21:17 -0500
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2d0d100336cso4065281fa.2; 
- Thu, 08 Feb 2024 13:21:15 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rYCUx-0005DP-Rl
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 17:04:01 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a28a6cef709so38342966b.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 14:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707427274; x=1708032074; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=uZymY1Qjp5Lp12gcMuovrao293iSuz7ISh3C4KkHEhE=;
- b=ODREEcS/MN2yuRXO6dcJF2XBVOgd7IM98jeWHH6C4uBlPit3B2SUX5wYvaGWdq9mIA
- +kEma1wtuUr4JrHdiOARw+rL5qjisVyBusAIV1QnbJnQF0XA0ru/d0o6SbBqQkU7hgRx
- GoVCR+4aka4/34r6RAtsojoCBNSv5KU+B8LO/fjVjmUOFf0ZipunTQW3pnkuHKbAG2Vv
- K8NVp3dKswDkK0a6GHji+u6wSIVBv5mFNjDDk8ZIsp+RD/EcQgIQu+5ea07eo1lyPXdG
- nWtTrLT6QO90QWfv7wbhKwo91Qs1E+sIa2h1y3TJ036afkKU5+Vs0/Y6NQ9h2e0rRxLB
- kEdg==
+ d=gmail.com; s=20230601; t=1707429837; x=1708034637; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AroTFz7StupzYFRerkeRQ1hym90slEK4YvkM8vhuirw=;
+ b=OWKHkSCN+dxAMSGsR4G4iidrQeYWJcjYH1g6co5IGlx4nPG0OFQUMoT+yxgog0m2jL
+ Zk1BMFYiYgStmwMuNxsj5i+/EbuD4KeH/xqwBRUQs/pmExMujFk3TbmsjsPPo6KOUlgM
+ RML6FbArqQ8hcfNZUOXkOGB7cy90YtBxKREB6CmZPOOcJBjRreepA26GiL9uIYo0KF2g
+ eVWZ85cCVL8ZX1TItkgc1voZRzC8FQzbyEr0REOauVwQGpj4s3sprYFF/t3/Kn/3K8qt
+ kP5WqkMzwOAAuAKrhVdxORDIbgr7d4cvG+4fyyqnM7/f9AghydD7SluJvZAh7vfgKYvM
+ PBHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707427274; x=1708032074;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1707429837; x=1708034637;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uZymY1Qjp5Lp12gcMuovrao293iSuz7ISh3C4KkHEhE=;
- b=QkRPF9YG2yHdehM0CIHSori4wtHQ6G7x5X2lAG6kO3TP0OD4cOJEyqxvNwDOchaXYq
- WD2DjJIh754SZvE7gqeTT5CLHFR3e3+N5efjnjD5m7SCghTuPTVJq3NdvF1WfWkiLGod
- UbYjz061geOP1kkxf+joG+ULivV6ymgQwH7I0gKvEvqfd+Ck8xZ1VTcRjZmyz7s0GPKP
- 24A83ckwinjFeSEcygDU6hzCewFjIx+vaWCX16/qAua/ggZQNrAv9T+k/Mmpw1zGr7eZ
- oBhdAHHCqOeFjxKa0CE6cC3ShPmGotUEmlnHz8MpfT7oCee2V2s5VqEiNKuAuYhrxkHv
- ozJA==
-X-Gm-Message-State: AOJu0YyzMhj9YmDwEfSAfbwS1Dwsn4UiI4KKQacUTjmpgwGrDjK+9KNw
- hMP44jAK0mv6x+9h8Qre11A3hWzgVXm3Vvtdhz4euPS9bX19A8Q/TB/AwSwg2cg4a2ICSp2el3l
- j7N2UTmuZgt16k622TxzPWQtF/ko=
-X-Google-Smtp-Source: AGHT+IGy1dZGeB0fTE+glKvEih/tpc6LeV0+WUZCG6AHYcFDfQOLxBfVBD1BLSRUjDxflRUI0wtmnxTZl6xRUgLnUj4=
-X-Received: by 2002:a2e:911a:0:b0:2d0:99e5:84b with SMTP id
- m26-20020a2e911a000000b002d099e5084bmr411971ljg.9.1707427273906; Thu, 08 Feb
- 2024 13:21:13 -0800 (PST)
+ bh=AroTFz7StupzYFRerkeRQ1hym90slEK4YvkM8vhuirw=;
+ b=Ay3v2ne0z3tFqxoFpP2Z1cku6YoJvLeI5c+kDu9mwCt6ti/phaRCyyoEcHZOzOCoC4
+ aggA9cMSsELmygzmA3A+FpkwQAWNZPiIR1XP93evTqGdxzejZS2c+uTyQEC372SmTDXo
+ PhsXVXpx5hvFzqzlGLjlySiCiBcr2F13jM9kyYIbvHEskFt2Oe8JR1WjoayGsuXV9YxL
+ d4ERacmvx9qS4lsY2EgQvYS2A2Ibwn6FEPtvPCihZqeIQreD8YVsefoEmY0hckMVL8tN
+ b64dWV/LUKvsM/DMsA7whlzdfhBWE1+D+bjotBa5xd5AKoUqhlU7GPNeq16iNpybTAEc
+ +wQQ==
+X-Gm-Message-State: AOJu0YxN+86J3SRGiB3n7N1ijjiXSXZn1Sy/UOQceyvoW2Y8ToYu96CK
+ 7kPv9YI6rniHod9CxKUMkVPCGxeSMPEpwJ5Ue0OJveeiYoUGjeIVMhtU4upb
+X-Google-Smtp-Source: AGHT+IGlmW+wJwauUvEoGPCe7RlNtkU1lnMqNIo/EpMgdM1+hVzcO8ltu7TugQOl0Sib4tzwKIx1UA==
+X-Received: by 2002:a17:907:689:b0:a37:8a2c:316a with SMTP id
+ wn9-20020a170907068900b00a378a2c316amr434541ejb.45.1707429837250; 
+ Thu, 08 Feb 2024 14:03:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUZNnDFNUhr+l9DKhqyDfJgrbQUHYG+6OSLaKlh7psFGw61RODaNQQcFzrhuLwlwBJrggBUBq4ghbBY7FoUabzt2zD/ECoBtRBBg4aJzYZ0SlyPoGRtvI+inAFMsPCBqok4u4c8dYjdMFQt3UWUepYB/daiqYMMxvxcDdQH7ZEsdSh6+egMtYXeCrpg5u1w81IM1BFqsRjYK1MFLq1rn7ABI724GOctpctpQXh8BJkZtxwo/WCv
+Received: from archlinux.. (pd95ed842.dip0.t-ipconnect.de. [217.94.216.66])
+ by smtp.gmail.com with ESMTPSA id
+ ti9-20020a170907c20900b00a3109a492d4sm109753ejc.20.2024.02.08.14.03.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 Feb 2024 14:03:56 -0800 (PST)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sergio Lopez <slp@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH 0/9] Simplify initialization of PC machines
+Date: Thu,  8 Feb 2024 23:03:40 +0100
+Message-ID: <20240208220349.4948-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20240130002712.257815-1-stefanha@redhat.com>
- <08d8afac-d807-4fe1-9ef4-b7a338c145b2@tls.msk.ru>
-In-Reply-To: <08d8afac-d807-4fe1-9ef4-b7a338c145b2@tls.msk.ru>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 8 Feb 2024 16:21:00 -0500
-Message-ID: <CAJSP0QUsq1hOQW-Fr1rXsF2XDQvXjUSn1bNfKBB+Gyv6vT5amA@mail.gmail.com>
-Subject: Re: [PATCH] pflash: fix sectors vs bytes confusion in
- blk_pread_nonzeroes()
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- John Snow <jsnow@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, 
- Hanna Reitz <hreitz@redhat.com>, Xiang Zheng <zhengxiang9@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=stefanha@gmail.com; helo=mail-lj1-x233.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,43 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 1 Feb 2024 at 06:37, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> 30.01.2024 03:27, Stefan Hajnoczi wrote:
-> > The following expression is incorrect because blk_pread_nonzeroes()
-> > deals in units of bytes, not sectors:
-> >
-> >    bytes = MIN(size - offset, BDRV_REQUEST_MAX_SECTORS)
-> >                                                ^^^^^^^
-> >
-> > BDRV_REQUEST_MAX_BYTES is the appropriate constant.
-> >
-> > Fixes: a4b15a8b9ef2 ("pflash: Only read non-zero parts of backend image")
-> > Cc: Xiang Zheng <zhengxiang9@huawei.com>
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >   hw/block/block.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/hw/block/block.c b/hw/block/block.c
-> > index 9f52ee6e72..ff503002aa 100644
-> > --- a/hw/block/block.c
-> > +++ b/hw/block/block.c
-> > @@ -30,7 +30,7 @@ static int blk_pread_nonzeroes(BlockBackend *blk, hwaddr size, void *buf)
-> >       BlockDriverState *bs = blk_bs(blk);
-> >
-> >       for (;;) {
-> > -        bytes = MIN(size - offset, BDRV_REQUEST_MAX_SECTORS);
-> > +        bytes = MIN(size - offset, BDRV_REQUEST_MAX_BYTES);
->
-> Hmm.  This smells like a -stable material, but you know better not
-> to Cc: qemu-stable@ for unrelated stuff...  Is it not for stable?
-
-This is not a user-visible bug. The code still works with the smaller
-MAX_SECTORS value thanks to the loop.
-
-It doesn't hurt to include it in -stable but I also think it doesn't
-help :-). It's just an inconsistency in the code.
-
-Stefan
+The series aims to simplify the initialization process of all PC-based mach=
+ines.=0D
+=0D
+It consists of streamlining redundant code, as well as consolidating the se=
+tup=0D
+of system flash and generation of smbios data which are currently fairly=0D
+distributed.=0D
+=0D
+These changes are expected to make the code easier to understand and mainta=
+in.=0D
+=0D
+Best regards,=0D
+Bernhard=0D
+=0D
+Bernhard Beschow (9):=0D
+  hw/i386/x86: Let ioapic_init_gsi() take parent as pointer=0D
+  hw/i386/pc_piix: Share pc_cmos_init() invocation between pc and isapc=0D
+    machines=0D
+  hw/i386/x86: Turn apic_xrupt_override into class attribute=0D
+  hw/i386/pc: Merge pc_guest_info_init() into pc_machine_initfn()=0D
+  hw/i386/pc: Defer smbios_set_defaults() to machine_done=0D
+  hw/i386/pc: Confine system flash handling to pc_sysfw=0D
+  hw/i386/pc_sysfw: Inline pc_system_flash_create() and remove it=0D
+  hw/i386/pc: Populate RTC attribute directly=0D
+  hw/i386/pc_{piix,q35}: Eliminate local pci_bus/pci_host variables=0D
+=0D
+ hw/i386/fw_cfg.h      |  3 ++-=0D
+ include/hw/i386/pc.h  |  5 ----=0D
+ include/hw/i386/x86.h |  5 ++--=0D
+ hw/i386/acpi-common.c |  3 ++-=0D
+ hw/i386/fw_cfg.c      | 12 +++++++++-=0D
+ hw/i386/microvm.c     |  2 +-=0D
+ hw/i386/pc.c          | 25 +++++---------------=0D
+ hw/i386/pc_piix.c     | 55 ++++++++++++++-----------------------------=0D
+ hw/i386/pc_q35.c      | 38 ++++++++++--------------------=0D
+ hw/i386/pc_sysfw.c    | 17 ++++---------=0D
+ hw/i386/x86.c         |  7 +++---=0D
+ 11 files changed, 62 insertions(+), 110 deletions(-)=0D
+=0D
+-- =0D
+2.43.0=0D
+=0D
 
