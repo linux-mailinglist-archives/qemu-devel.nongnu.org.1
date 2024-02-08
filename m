@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2C084D92B
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB1B84D92A
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:52:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXvRr-0003SD-MD; Wed, 07 Feb 2024 22:51:39 -0500
+	id 1rXvRs-0003SM-7R; Wed, 07 Feb 2024 22:51:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXvRp-0003Rb-L2
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:51:37 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXvRq-0003Rq-GV
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:51:38 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXvRl-0003IT-Uv
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:51:37 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXvRo-0003Il-TZ
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:51:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707364292;
+ s=mimecast20190719; t=1707364296;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=FzjtqD9g1P0GMG1W2aQTqyesNTs9euHE6BFk6r+XxDc=;
- b=XBitjq27J+6gwLs3JHjb/zwyB3ocKPAZ2nOk4nuGRw3vF6yxvPF2JeNahg+js4Q21fdggm
- MEqTazg5D+ILc32Fx5xHPHQNw5et5kkhPXNQdwlNacQ+Anh8TdKkyS+EY9N4Im7OInVDVO
- HSKfVdXLzhOPG2YGz872qu/6YOXSi9Y=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DuB/gS1fw5l58cDPYHu69lovXZ7IfV/xWWrobYs13f0=;
+ b=cnsxrRxA6qmgpVD/LACE1T6tYYPjx+/ya93G8FHR0tw+ylt49gc7DITO9i9ZmYUHZxSkW/
+ 17nA3MZMNGSZ/wKJQJmkV6UwyXS51uKzpR1/52VkGZc+qxdZuDSlr5+KX0neSeeIymMzl7
+ WbeqfW4KRDUD2O9Afy4reevq/VTpe9c=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-tm-fnEsTMLiEYneP5-vqtw-1; Wed,
- 07 Feb 2024 22:51:31 -0500
-X-MC-Unique: tm-fnEsTMLiEYneP5-vqtw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-4rZejjg4P2-4HbCLSLQjPQ-1; Wed,
+ 07 Feb 2024 22:51:34 -0500
+X-MC-Unique: 4rZejjg4P2-4HbCLSLQjPQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0103B1C0512D;
- Thu,  8 Feb 2024 03:51:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F24C29AC018;
+ Thu,  8 Feb 2024 03:51:34 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3AFAC2026D08;
- Thu,  8 Feb 2024 03:51:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AB966200A2F4;
+ Thu,  8 Feb 2024 03:51:31 +0000 (UTC)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Avihai Horon <avihaih@nvidia.com>,
  peterx@redhat.com,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/2] migration: cleanup TLS channel referencing
-Date: Thu,  8 Feb 2024 11:51:24 +0800
-Message-ID: <20240208035126.370620-1-peterx@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/2] migration/multifd: Cleanup TLS iochannel referencing
+Date: Thu,  8 Feb 2024 11:51:25 +0800
+Message-ID: <20240208035126.370620-2-peterx@redhat.com>
+In-Reply-To: <20240208035126.370620-1-peterx@redhat.com>
+References: <20240208035126.370620-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
@@ -79,28 +81,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Based-on: <20240208030528.368214-1-peterx@redhat.com>
+Commit a1af605bd5 ("migration/multifd: fix hangup with TLS-Multifd due to
+blocking handshake") introduced a thread for TLS channels, which will
+resolve the issue on blocking the main thread.  However in the same commit
+p->c is slightly abused just to be able to pass over the pointer "p" into
+the thread.
 
-The patchset is based on the latest migration pull request.  This is a
-small cleanup patchset to firstly cleanup tls iochannel deref on error
-paths, then further remove one unused var on yank if the cleanup applies.
+That's the major reason we'll need to conditionally free the io channel in
+the fault paths.
 
-These are exactly the same patch I attached here in this email reply:
+To clean it up, using a separate structure to pass over both "p" and "tioc"
+in the tls handshake thread.  Then we can make it a rule that p->c will
+never be set until the channel is completely setup.  With that, we can drop
+the tricky conditional unref of the io channel in the error path.
 
-https://lore.kernel.org/r/ZcLrF5HN920rUTSw@x1n
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/multifd.c | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
-It's just a formal post, collecting one R-b from Fabiano in patch 2.
-
-Please feel free to have a look, thanks.
-
-Peter Xu (2):
-  migration/multifd: Cleanup TLS iochannel referencing
-  migration/multifd: Drop registered_yank
-
- migration/multifd.h |  2 --
- migration/multifd.c | 44 ++++++++++++++++++++++++++------------------
- 2 files changed, 26 insertions(+), 20 deletions(-)
-
+diff --git a/migration/multifd.c b/migration/multifd.c
+index adfe8c9a0a..4a85a6b7b3 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -873,16 +873,22 @@ out:
+ 
+ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque);
+ 
++typedef struct {
++    MultiFDSendParams *p;
++    QIOChannelTLS *tioc;
++} MultiFDTLSThreadArgs;
++
+ static void *multifd_tls_handshake_thread(void *opaque)
+ {
+-    MultiFDSendParams *p = opaque;
+-    QIOChannelTLS *tioc = QIO_CHANNEL_TLS(p->c);
++    MultiFDTLSThreadArgs *args = opaque;
+ 
+-    qio_channel_tls_handshake(tioc,
++    qio_channel_tls_handshake(args->tioc,
+                               multifd_new_send_channel_async,
+-                              p,
++                              args->p,
+                               NULL,
+                               NULL);
++    g_free(args);
++
+     return NULL;
+ }
+ 
+@@ -892,6 +898,7 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
+ {
+     MigrationState *s = migrate_get_current();
+     const char *hostname = s->hostname;
++    MultiFDTLSThreadArgs *args;
+     QIOChannelTLS *tioc;
+ 
+     tioc = migration_tls_client_create(ioc, hostname, errp);
+@@ -906,11 +913,14 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
+     object_unref(OBJECT(ioc));
+     trace_multifd_tls_outgoing_handshake_start(ioc, tioc, hostname);
+     qio_channel_set_name(QIO_CHANNEL(tioc), "multifd-tls-outgoing");
+-    p->c = QIO_CHANNEL(tioc);
++
++    args = g_new0(MultiFDTLSThreadArgs, 1);
++    args->tioc = tioc;
++    args->p = p;
+ 
+     p->tls_thread_created = true;
+     qemu_thread_create(&p->tls_thread, "multifd-tls-handshake-worker",
+-                       multifd_tls_handshake_thread, p,
++                       multifd_tls_handshake_thread, args,
+                        QEMU_THREAD_JOINABLE);
+     return true;
+ }
+@@ -923,6 +933,7 @@ static bool multifd_channel_connect(MultiFDSendParams *p,
+ 
+     migration_ioc_register_yank(ioc);
+     p->registered_yank = true;
++    /* Setup p->c only if the channel is completely setup */
+     p->c = ioc;
+ 
+     p->thread_created = true;
+@@ -976,14 +987,12 @@ out:
+ 
+     trace_multifd_new_send_channel_async_error(p->id, local_err);
+     multifd_send_set_error(local_err);
+-    if (!p->c) {
+-        /*
+-         * If no channel has been created, drop the initial
+-         * reference. Otherwise cleanup happens at
+-         * multifd_send_channel_destroy()
+-         */
+-        object_unref(OBJECT(ioc));
+-    }
++    /*
++     * For error cases (TLS or non-TLS), IO channel is always freed here
++     * rather than when cleanup multifd: since p->c is not set, multifd
++     * cleanup code doesn't even know its existance.
++     */
++    object_unref(OBJECT(ioc));
+     error_free(local_err);
+ }
+ 
 -- 
 2.43.0
 
