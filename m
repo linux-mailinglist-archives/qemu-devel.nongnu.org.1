@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BB984D821
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46C484D837
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:11:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXulJ-0008C3-5G; Wed, 07 Feb 2024 22:07:41 -0500
+	id 1rXulQ-0000zN-5j; Wed, 07 Feb 2024 22:07:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukF-0006bV-41
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:36 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukG-0006cU-L6
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:37 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukD-0004Ny-GF
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:34 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXukE-0004O3-Sw
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:36 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707361592;
+ s=mimecast20190719; t=1707361594;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PDKyUbSmLP6Qcr0DTtmBT55sngUFPePIR6zJW4JRhd0=;
- b=K2//3/Zy6/uP+NGA1FMRGVsdzNXS98BCUzZ95rWoPqEETiakHPTrnIQw78AAE5VocVQ0C+
- PEqzP3rT1FsM2Y193dragglsJPnndyxM/uPzmsZkiVy5/qbcrbTRD6Bjf2uvNaOYtuGnKw
- VDLNbH81ULv+BgNM03vN4sf4VDr0LoA=
+ bh=BjEECB6U8e4HSNn1mocHtFPk1eY0mOC4/hjT4mwFxKs=;
+ b=bOBOPKRVzLMeSFvFg04WSuXMuikBib0wJTLz4Q4WTCWoyWzcBtoa8ruHXErO4AhhHlwdE2
+ KJ53FevZF4E+b0SHj8KKw12Z8XFHo7744lFS0JWDIsvoS1gLRqy6K95YXK46T0+G7xQW3M
+ cDBPIBzPGpLsDYXM8oN+u/EHLLVR9MU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-KTfRADHdNPWZY86ykG-oVw-1; Wed, 07 Feb 2024 22:06:29 -0500
-X-MC-Unique: KTfRADHdNPWZY86ykG-oVw-1
+ us-mta-511-zMFkFRQmOouuQj2iL_oCoA-1; Wed, 07 Feb 2024 22:06:32 -0500
+X-MC-Unique: zMFkFRQmOouuQj2iL_oCoA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4D6D811E81;
- Thu,  8 Feb 2024 03:06:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BD4B101FA2C;
+ Thu,  8 Feb 2024 03:06:32 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BC1E6492BC7;
- Thu,  8 Feb 2024 03:06:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B43BC492BC7;
+ Thu,  8 Feb 2024 03:06:29 +0000 (UTC)
 From: peterx@redhat.com
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 18/34] migration/multifd: Change retval of multifd_send_pages()
-Date: Thu,  8 Feb 2024 11:05:12 +0800
-Message-ID: <20240208030528.368214-19-peterx@redhat.com>
+Subject: [PULL 19/34] migration/multifd: Rewrite multifd_queue_page()
+Date: Thu,  8 Feb 2024 11:05:13 +0800
+Message-ID: <20240208030528.368214-20-peterx@redhat.com>
 In-Reply-To: <20240208030528.368214-1-peterx@redhat.com>
 References: <20240208030528.368214-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -80,78 +80,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-Using int is an overkill when there're only two options.  Change it to a
-boolean.
+The current multifd_queue_page() is not easy to read and follow.  It is not
+good with a few reasons:
+
+  - No helper at all to show what exactly does a condition mean; in short,
+  readability is low.
+
+  - Rely on pages->ramblock being cleared to detect an empty queue.  It's
+  slightly an overload of the ramblock pointer, per Fabiano [1], which I
+  also agree.
+
+  - Contains a self recursion, even if not necessary..
+
+Rewrite this function.  We add some comments to make it even clearer on
+what it does.
+
+[1] https://lore.kernel.org/r/87wmrpjzew.fsf@suse.de
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240202102857.110210-18-peterx@redhat.com
+Link: https://lore.kernel.org/r/20240202102857.110210-19-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ migration/multifd.c | 56 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 19 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 12e587fda8..35d4e8ad1f 100644
+index 35d4e8ad1f..4ab8e6eff2 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -449,9 +449,10 @@ static void multifd_send_kick_main(MultiFDSendParams *p)
-  * thread is using the channel mutex when changing it, and the channel
-  * have to had finish with its own, otherwise pending_job can't be
-  * false.
-+ *
-+ * Returns true if succeed, false otherwise.
-  */
--
--static int multifd_send_pages(void)
-+static bool multifd_send_pages(void)
- {
-     int i;
-     static int next_channel;
-@@ -459,7 +460,7 @@ static int multifd_send_pages(void)
-     MultiFDPages_t *pages = multifd_send_state->pages;
- 
-     if (multifd_send_should_exit()) {
--        return -1;
-+        return false;
-     }
- 
-     /* We wait here, until at least one channel is ready */
-@@ -473,7 +474,7 @@ static int multifd_send_pages(void)
-     next_channel %= migrate_multifd_channels();
-     for (i = next_channel;; i = (i + 1) % migrate_multifd_channels()) {
-         if (multifd_send_should_exit()) {
--            return -1;
-+            return false;
-         }
-         p = &multifd_send_state->params[i];
-         /*
-@@ -502,7 +503,7 @@ static int multifd_send_pages(void)
-     qemu_mutex_unlock(&p->mutex);
-     qemu_sem_post(&p->sem);
- 
--    return 1;
-+    return true;
+@@ -506,35 +506,53 @@ static bool multifd_send_pages(void)
+     return true;
  }
  
++static inline bool multifd_queue_empty(MultiFDPages_t *pages)
++{
++    return pages->num == 0;
++}
++
++static inline bool multifd_queue_full(MultiFDPages_t *pages)
++{
++    return pages->num == pages->allocated;
++}
++
++static inline void multifd_enqueue(MultiFDPages_t *pages, ram_addr_t offset)
++{
++    pages->offset[pages->num++] = offset;
++}
++
  /* Returns true if enqueue successful, false otherwise */
-@@ -526,7 +527,7 @@ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
-         changed = true;
+ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+ {
+-    MultiFDPages_t *pages = multifd_send_state->pages;
+-    bool changed = false;
++    MultiFDPages_t *pages;
++
++retry:
++    pages = multifd_send_state->pages;
+ 
+-    if (!pages->block) {
++    /* If the queue is empty, we can already enqueue now */
++    if (multifd_queue_empty(pages)) {
+         pages->block = block;
++        multifd_enqueue(pages, offset);
++        return true;
      }
  
--    if (multifd_send_pages() < 0) {
-+    if (!multifd_send_pages()) {
-         return false;
-     }
- 
-@@ -666,7 +667,7 @@ int multifd_send_sync_main(void)
-         return 0;
-     }
-     if (multifd_send_state->pages->num) {
--        if (multifd_send_pages() < 0) {
+-    if (pages->block == block) {
+-        pages->offset[pages->num] = offset;
+-        pages->num++;
+-
+-        if (pages->num < pages->allocated) {
+-            return true;
++    /*
++     * Not empty, meanwhile we need a flush.  It can because of either:
++     *
++     * (1) The page is not on the same ramblock of previous ones, or,
++     * (2) The queue is full.
++     *
++     * After flush, always retry.
++     */
++    if (pages->block != block || multifd_queue_full(pages)) {
 +        if (!multifd_send_pages()) {
-             error_report("%s: multifd_send_pages fail", __func__);
-             return -1;
++            return false;
          }
+-    } else {
+-        changed = true;
+-    }
+-
+-    if (!multifd_send_pages()) {
+-        return false;
+-    }
+-
+-    if (changed) {
+-        return multifd_queue_page(block, offset);
++        goto retry;
+     }
+ 
++    /* Not empty, and we still have space, do it! */
++    multifd_enqueue(pages, offset);
+     return true;
+ }
+ 
 -- 
 2.43.0
 
