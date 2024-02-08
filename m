@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9B584E77B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 351A084E77F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:15:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY8uL-0005ZZ-PH; Thu, 08 Feb 2024 13:13:57 -0500
+	id 1rY8uL-0005fh-Uo; Thu, 08 Feb 2024 13:13:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8u1-0005Me-71
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:38 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8u6-0005Tx-4E
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:46 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8tx-0006os-Qx
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:35 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a39e31e1aa9so12210066b.0
- for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 10:13:33 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rY8u3-0006qv-DL
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:13:41 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-55f50cf2021so264889a12.1
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 10:13:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707416011; x=1708020811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707416017; x=1708020817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=49ud5Yjb30rn8SP9Mr5OVYTkrS5yFB+17IJ/cfY04ss=;
- b=LIMfBEEIRCYqMVNfECDt9W/Oy3qom2pvaKtrUCP2zzx/dfbyupZbdvTiFl5XZODU//
- /lqR4op+YrNaoB5XhpFaskWz8qTo+Ff5rOyq78BSIhrCmLU07+uGvJOKVTzAHeVFg8Ly
- RY8RK2HJFa5XE+F12yZ1yJis3fai+trNMAIot4gQDR/eNIXDpUk72kfHIXRHgWGIJVWI
- gq8Y7I804gASPjdwVKgn/PDVbCjcvW2KuZhXS3gNfliPtj8DDVsUwrf8/IgHV2sSfa8Z
- Nt24uHzHJV5SNHnvwl/LT4O6oWLC3h5kklXRjN3l3+QHP3M2dOvbYKS3eFPqn/Dn1PfB
- MrRw==
+ bh=Bt8SkwfuTwRhmfpWk+aV3Q70u7eITNuY2Qk9HyWSpOY=;
+ b=GkEu/7x+LhvgzxvFrsBqg7xz3XLOIbH/ygPjY28GJMXoLCQh6bO52acPOf9bL0yyKj
+ vJZauE2fIz6VOSkuwgU65o6cn61M2FZ3yZu/OPfKoRd8Onh4W3rVR0D1Fxo+wIQ72Lsl
+ iPNtLBgZkGJrJjElyLNAzXAtJTwXvJCBqkZntuVrlThXccdh5ETmm0mvvP3BANvcj+jL
+ kqbKpE7ri3CVm/pvZCj2Hl5OKA9Bvg1WcMS6aN5M1UXDE/5vZrkaHF8lmNrdCAiY9xBy
+ gp7yN8dsYZheUaZvw1QOFSFW3xSef9M4B6zxGN/1z+nyOn948Lz82q5X8UyHCSPu2riG
+ muTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707416011; x=1708020811;
+ d=1e100.net; s=20230601; t=1707416017; x=1708020817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=49ud5Yjb30rn8SP9Mr5OVYTkrS5yFB+17IJ/cfY04ss=;
- b=adr/9dPLNU0dX5W3r9sHpFR04fghqKAjeThLd5HVTW7La+iEEvp4S0Kfvne73LQuA/
- MzOsMXcWsJBqNwCCBI3Uwn1YXNt23sKNjLkWAQzBZBXnBAKzseFgFlyMLWemCF5o6MhP
- MxRy3jXwC0hivMug6o3yReFFqn8KUXis0h8Q0yZ+e2NtuZBmQncsTh96oq/OMF/z5oCl
- DjuWoD2+Sj+uH2Nj+wmIU/DJQkJTiVP/aMUe23ZFx6DBsuULmw/V4oj1+jdeEwSREf4r
- 6Uxc40paqJU7U0M7hTKBBKSfGX2M8Vr0DGVEPOsExsejE8Q8Z645zIHPUhFTFbQgVtSD
- 4HdQ==
-X-Gm-Message-State: AOJu0YwGRDSxMVUNnr7jp80vKKtrkkKsrl8PWfjMgtn5ng1T8xzzjlbf
- zeJZ5iDReEz/JdMk/2ZA8dvFPttOJ6cqbp1p4SyC3VskugtTWcPJ1hNDH6bcyJEwSkSzhNlERM/
- YOhY=
-X-Google-Smtp-Source: AGHT+IElKnKnfr2w+uv+DJybwknWUt2WS+hrduCNrzndqBMvy8oa1xWESV1rOzmK5yYbgzhIAsV8yA==
-X-Received: by 2002:a17:906:1cc3:b0:a38:6b3e:8bd with SMTP id
- i3-20020a1709061cc300b00a386b3e08bdmr93193ejh.37.1707416011498; 
- Thu, 08 Feb 2024 10:13:31 -0800 (PST)
+ bh=Bt8SkwfuTwRhmfpWk+aV3Q70u7eITNuY2Qk9HyWSpOY=;
+ b=qWm7hbts1FCW7pEWzTyemdtbfikb+hWCdGlcf7HpCr1vl/MaVnGADBAhhOKE4MCNos
+ 5sRsZ142XjwOZaOcQJjK8ZEQypoK0W5Yt62Ta1eSfG1f0X8UeA8qXyD6PNdMGHBqcM8H
+ xM96EdRP/yGjLedY5/uCFLVppAk/cH+U9teJrF0p9zsL4JkchKmWT556YYZgyplYdIUq
+ FA5FoJPjY2GUVVXXq2n52azG6iSCzBhtHRMeUBdEfstmft/dpQn+b1il6fsxT5S4SEqh
+ LWbgeaG8R3jJyrCoUsEopWqqT/UdyEzapDsWFpEoMenj+6inwywcYrxreDxEAe8yXQmu
+ WqIQ==
+X-Gm-Message-State: AOJu0Yz/qXQLzLReTvMUOXAKdutknuT+cloQxMFhz7sarIKVFJ38a+0I
+ pOwqpJEbYyjOv8tWRpmVwT2CxU3IveW359o3KsRzPZklDNIc1BRWkVcJb/GqUfl1nipeyekFcJT
+ G2SU=
+X-Google-Smtp-Source: AGHT+IEO9hvP8BoYbCyHzDXzQraYCBWkEIwgd3aORT/MjaRQ6yDlfWlwQOA1/E+meaN/XOHZ1OSlyQ==
+X-Received: by 2002:aa7:d8d9:0:b0:55f:6b8:b2fb with SMTP id
+ k25-20020aa7d8d9000000b0055f06b8b2fbmr37282eds.1.1707416017744; 
+ Thu, 08 Feb 2024 10:13:37 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWu2EbPuE4dOdkSp7nul+FpNq+9PE8jv5D0KfYqhDgArRE57ave53OHf/heI6zT4eJVrEkTNtyt8x4aN5C8rpwpzxSAv30Klpc+CgZqcaiftxlryebGJ8pjHyG8tT6XHnkoJecs+aHlKKLCxaK116PUB3ASLy7jpH9MVM3oSvV5BEy7HyJu8p6NmBwvotGQxRETSqJzIGXSGfKdfM155VlEXgpmzOkeHd4yt1ptNA7svbf5rnhIc0mNhetgZIFJFJTAxcTlXvxH/7ioqra/jiOUh0uxs0d3v9rEOGgpDLS1gfqpHD1/Mj1Wuey+PrIaLqJZTnSLSrHzX1++NMw91yJOnHQGB+aB7TriTyefKhM4eaMBoKvo4jANJQv/RTvFp+2tS++EzcPAmg==
+ AJvYcCUpB0LftIgS+0pSlh5T06px9JNZoGmicjknWgOUCNyXDg3pA9Cl5j1vOEGW0J0cCxOWON2wrXxumcpuuJlDciXXTO17pbGNqwun1BY+A3KhPilgtsdTOSmnpJ/2NwvB90kZ4LnWogY0Mfz1PlLcXc2gz8YN/4pLIZnvq2AD6XXnb7eEoj4Y+FoB+AncOnWHNRhGIEUz1vTejgWw0K89MX9Oz2E/VZkafWyt4e9CNNUzqDt1JO1QEbafSZHyjM2mQiafWzcFIQs5iwa8EPCW8CCZ7MSCciBnca1vQhiGPUwXHJRTVMMS8AHYmizeUJE8rK7SjdhoFqL3EYk1L8C4ykwr9/+0cWrzYuWA9A==
 Received: from m1x-phil.lan ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- e3-20020a17090681c300b00a3826937a33sm292715ejx.211.2024.02.08.10.13.29
+ g19-20020a056402091300b00560dbcd61a8sm1059949edz.94.2024.02.08.10.13.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 08 Feb 2024 10:13:31 -0800 (PST)
+ Thu, 08 Feb 2024 10:13:37 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
@@ -66,20 +66,19 @@ Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Subject: [PATCH v3 07/11] hw/sh4/r2d: Realize IDE controller before accessing
- it
-Date: Thu,  8 Feb 2024 19:12:40 +0100
-Message-ID: <20240208181245.96617-8-philmd@linaro.org>
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PATCH v3 08/11] hw/sparc/sun4m: Realize DMA controller before
+ accessing it
+Date: Thu,  8 Feb 2024 19:12:41 +0100
+Message-ID: <20240208181245.96617-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240208181245.96617-1-philmd@linaro.org>
 References: <20240208181245.96617-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,24 +105,39 @@ We should not wire IRQs on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/sh4/r2d.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/sparc/sun4m.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index e9f316a6ce..c73e8f49b8 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -285,9 +285,9 @@ static void r2d_init(MachineState *machine)
-     dinfo = drive_get(IF_IDE, 0, 0);
-     dev = qdev_new("mmio-ide");
-     busdev = SYS_BUS_DEVICE(dev);
--    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
-     qdev_prop_set_uint32(dev, "shift", 1);
-     sysbus_realize_and_unref(busdev, &error_fatal);
-+    sysbus_connect_irq(busdev, 0, irq[CF_IDE]);
-     sysbus_mmio_map(busdev, 0, 0x14001000);
-     sysbus_mmio_map(busdev, 1, 0x1400080c);
-     mmio_ide_init_drives(dev, dinfo, NULL);
+diff --git a/hw/sparc/sun4m.c b/hw/sparc/sun4m.c
+index e782c8ec7a..d52e6a7213 100644
+--- a/hw/sparc/sun4m.c
++++ b/hw/sparc/sun4m.c
+@@ -312,13 +312,11 @@ static void *sparc32_dma_init(hwaddr dma_base,
+     dma = qdev_new(TYPE_SPARC32_DMA);
+     espdma = SPARC32_ESPDMA_DEVICE(object_resolve_path_component(
+                                    OBJECT(dma), "espdma"));
+-    sysbus_connect_irq(SYS_BUS_DEVICE(espdma), 0, espdma_irq);
+ 
+     esp = SYSBUS_ESP(object_resolve_path_component(OBJECT(espdma), "esp"));
+ 
+     ledma = SPARC32_LEDMA_DEVICE(object_resolve_path_component(
+                                  OBJECT(dma), "ledma"));
+-    sysbus_connect_irq(SYS_BUS_DEVICE(ledma), 0, ledma_irq);
+ 
+     lance = SYSBUS_PCNET(object_resolve_path_component(
+                          OBJECT(ledma), "lance"));
+@@ -332,6 +330,11 @@ static void *sparc32_dma_init(hwaddr dma_base,
+     }
+ 
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dma), &error_fatal);
++
++    sysbus_connect_irq(SYS_BUS_DEVICE(espdma), 0, espdma_irq);
++
++    sysbus_connect_irq(SYS_BUS_DEVICE(ledma), 0, ledma_irq);
++
+     sysbus_mmio_map(SYS_BUS_DEVICE(dma), 0, dma_base);
+ 
+     sysbus_mmio_map(SYS_BUS_DEVICE(esp), 0, esp_base);
 -- 
 2.41.0
 
