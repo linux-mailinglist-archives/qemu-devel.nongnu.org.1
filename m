@@ -2,120 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D04E84E16B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 14:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F484E2CF
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 15:08:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY489-0007W8-3C; Thu, 08 Feb 2024 08:07:53 -0500
+	id 1rY53E-0004gi-II; Thu, 08 Feb 2024 09:06:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY487-0007Vk-Gu
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:07:51 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rY485-0006fu-W7
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:07:51 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 3CCA11FCEA;
- Thu,  8 Feb 2024 13:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707397668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
- b=DIOzHxNCr22pCHdcjCjmbd7PeRgbNZEvi52qilwqTSaLR9fNXwNo1kr3B6R6FDoH5cq4Ym
- aa1rN/wIB/bbNHI0849Iu1z/ghORtLtkCfPanic0HeKzTAdXvdAKNrGKTZQPNQXRAsq3Gw
- jUokkzoxjw9kz3nefKZLgNGFQm7zpKA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707397668;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
- b=AQL27z5qYrV0OM2wTWYB7Sm2bzSslRT7gq9mRuGOdk8e688OzpFWzPB6GLJtPiSjIYeK0f
- BfVwNQY6bcr3C7AQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707397668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
- b=DIOzHxNCr22pCHdcjCjmbd7PeRgbNZEvi52qilwqTSaLR9fNXwNo1kr3B6R6FDoH5cq4Ym
- aa1rN/wIB/bbNHI0849Iu1z/ghORtLtkCfPanic0HeKzTAdXvdAKNrGKTZQPNQXRAsq3Gw
- jUokkzoxjw9kz3nefKZLgNGFQm7zpKA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707397668;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lUDtob154dX8v1JdMZuJBS4348b9J2foKTyIIdHhvq8=;
- b=AQL27z5qYrV0OM2wTWYB7Sm2bzSslRT7gq9mRuGOdk8e688OzpFWzPB6GLJtPiSjIYeK0f
- BfVwNQY6bcr3C7AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BCEE513984;
- Thu,  8 Feb 2024 13:07:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GxgJICPSxGURUQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 08 Feb 2024 13:07:47 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Alex Williamson
- <alex.williamson@redhat.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@redhat.com>
-Subject: Re: [PATCH 13/14] migration: Use migrate_has_error() in
- close_return_path_on_source()
-In-Reply-To: <20240207133347.1115903-14-clg@redhat.com>
-References: <20240207133347.1115903-1-clg@redhat.com>
- <20240207133347.1115903-14-clg@redhat.com>
-Date: Thu, 08 Feb 2024 10:07:44 -0300
-Message-ID: <87y1bvayu7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <foss@defmacro.it>) id 1rY4H2-0000tg-S7
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:17:05 -0500
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <foss@defmacro.it>) id 1rY4H0-0008MU-94
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 08:17:04 -0500
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 81D6F3200A11;
+ Thu,  8 Feb 2024 08:16:58 -0500 (EST)
+Received: from imap47 ([10.202.2.97])
+ by compute2.internal (MEProxy); Thu, 08 Feb 2024 08:16:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defmacro.it; h=
+ cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm3; t=1707398218; x=1707484618; bh=GcTFIGjp1H
+ ZF57B3ATWWJsqJ4rPfGRtDxhfX1DqCbbE=; b=IwQUPrpi/o9J/RsNTwHgYo03WT
+ 4KFZrtjL89b7z1HnDbUh/RLGgNrKFAPlYcg2LSLmOukD6bugCtVZYh2q6Vx1EzOM
+ yP7YPDobOB+vSRkCubWEK8n+TW6EeF/9PTme5WLoYrSRbW1PXamfCvV3D+tX2mfO
+ bUlLOUAEXBPjnq8ntOw6tcuWI03IPmE+ZTywQE38yuxGTPzjtm3ZedLc+ceBeSAj
+ gOYjMrOUGFkKArWVSNJMYRqMugDJATbimu7znB8iJ2VW+iVG7N4j0yEb3wfbrsjA
+ 3Q/5jYpKjqpJiSFf3ny64Xfack0Gw5yMqia3quJPjngnQaGEa8NfYXFucQtg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm3; t=1707398218; x=1707484618; bh=GcTFIGjp1HZF57B3ATWWJsqJ4rPf
+ GRtDxhfX1DqCbbE=; b=mdk4DIqBqc/6qDk+z1VqR6tBpuShjP3498Lh64bgC1Lq
+ qenSUdAcl6u68wtA5Hoql+Z0Xbr/d7CpaQEAWQucNdW8gna5yLzLBJQ4UtKSZGgA
+ txsBPZdrJWI38vJ3W5MzL47myVGJ0y5ETi4TNwY0WHx9jsimJZUD3fgb5LKadFBR
+ Dx9w7GBpVJY05Y0QPFDJ6STwuCSDHMhsnp+p3CAZiGGhh1yNFwlSsaNDQJfK7VVl
+ VU6XbS/TXrxm3mutVj5u94ZHHCa+wvaohaP9OF7zHoIp27xc9VdWpcdwnFmDQcc3
+ /JjyQi3NS/iQXkJAL5qz6oJ67qx48ia4UsWQGKW9mg==
+X-ME-Sender: <xms:SdTEZbDveNLWSbUVFgf0oMBxVs4qoA9VKOFeQlO7Z6J9JAXOQBJIxA>
+ <xme:SdTEZRhKDCOqfNie8eqGin7DiEVDiIfS2bP8nitVSrDxebVq1v0TxX5jhevcDHxVZ
+ 96lTfNQVMnU5eFuEnU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrtdeggdegkecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdflvghs
+ phgvrhcuffgvvhgrnhhtihgvrhdfuceofhhoshhsseguvghfmhgrtghrohdrihhtqeenuc
+ ggtffrrghtthgvrhhnpedviedtjeekvddtffevudelhfeuveegveegudfghfffueeutdel
+ gfdtudehjeejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
+ hrohhmpehfohhsshesuggvfhhmrggtrhhordhith
+X-ME-Proxy: <xmx:SdTEZWl0TQyZMZwGfM6xWXBiB7w0I3Xqh0qaphHaHzt-4D3Br04UNw>
+ <xmx:SdTEZdxSQHfSbdvD3DvteLdblild1Ip03Ypi4hvH6VXFSTfAPPCDxw>
+ <xmx:SdTEZQS06Pc4IWEp3gNLVxxqFiK1TxpLQuVYEaYxWUYPYNsYVzsvZQ>
+ <xmx:StTEZbJd5AvBcrGp0qIW4nBkVgtc4U0HmzJ6O0kJOPKullVG5atyhg>
+Feedback-ID: ic0014905:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id 64D10A6007D; Thu,  8 Feb 2024 08:16:57 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DIOzHxNC;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=AQL27z5q
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.00 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- BAYES_HAM(-2.99)[99.97%]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:97:from];
- RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -6.00
-X-Rspamd-Queue-Id: 3CCA11FCEA
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Message-Id: <34b12113-a105-464d-8a8c-73286d29b4a4@app.fastmail.com>
+In-Reply-To: <20240208-maintainers-add-jesper-v1-1-1ed7eb9f8291@samsung.com>
+References: <20240208-maintainers-add-jesper-v1-1-1ed7eb9f8291@samsung.com>
+Date: Thu, 08 Feb 2024 14:16:17 +0100
+From: "Jesper Devantier" <foss@defmacro.it>
+To: "Klaus Jensen" <its@irrelevant.dk>, qemu-devel@nongnu.org
+Cc: "Klaus Jensen" <k.jensen@samsung.com>
+Subject: Re: [PATCH] MAINTAINERS: add Jesper as reviewer on hw/nvme
+Content-Type: text/plain
+Received-SPF: pass client-ip=64.147.123.24; envelope-from=foss@defmacro.it;
+ helo=wout1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 08 Feb 2024 09:06:46 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,41 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
+On Thu, Feb 8, 2024, at 1:54 PM, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen@samsung.com>
+> 
+> My colleague, Jesper, will be assiting with hw/nvme related reviews. Add
+> him with R: so he gets automatically bugged going forward.
+> 
+> Cc: Jesper Devantier <foss@defmacro.it>
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
 
-> close_return_path_on_source() retrieves the migration error from the
-> the QEMUFile '->to_dst_file' to know if a shutdown is required. This
-> shutdown is required to exit the return-path thread. However, in
-> migrate_fd_cleanup(), '->to_dst_file' is cleaned up before calling
-> close_return_path_on_source() and the shutdown is never performed,
-> leaving the source and destination waiting for an event to occur.
->
-> Avoid relying on '->to_dst_file' and use migrate_has_error() instead.
->
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+Acked-by: Jesper Devantier <foss@defmacro.it>
+
 > ---
->  migration/migration.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/migration/migration.c b/migration/migration.c
-> index d5f705ceef4c925589aa49335969672c0d761fa2..5f55af3d7624750ca416c4177=
-781241b3e291e5d 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -2372,8 +2372,7 @@ static bool close_return_path_on_source(MigrationSt=
-ate *ms)
->       * cause it to unblock if it's stuck waiting for the destination.
->       */
->      WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
-> -        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
-> -            qemu_file_get_error(ms->to_dst_file)) {
-> +        if (migrate_has_error(ms) && ms->rp_state.from_dst_file) {
->              qemu_file_shutdown(ms->rp_state.from_dst_file);
->          }
->      }
-
-Hm, maybe Peter can help defend this, but this assumes that every
-function that takes an 'f' and sets the file error also sets
-migrate_set_error(). I'm not sure we have determined that, have we?
+> MAINTAINERS | 1 +
+> 1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2f9741b898e8..ef70cc9f4166 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2378,6 +2378,7 @@ F: docs/system/devices/virtio-snd.rst
+> nvme
+> M: Keith Busch <kbusch@kernel.org>
+> M: Klaus Jensen <its@irrelevant.dk>
+> +R: Jesper Devantier <foss@defmacro.it>
+> L: qemu-block@nongnu.org
+> S: Supported
+> F: hw/nvme/*
+> 
+> ---
+> base-commit: 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440
+> change-id: 20240208-maintainers-add-jesper-d10e88ef88ee
+> 
+> Best regards,
+> -- 
+> Klaus Jensen <k.jensen@samsung.com>
+> 
+> 
 
