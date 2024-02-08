@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FA784E882
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AB484E87E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:55:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY9Xe-0001bu-Sq; Thu, 08 Feb 2024 13:54:34 -0500
+	id 1rY9Xe-0001bq-TM; Thu, 08 Feb 2024 13:54:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9XY-0001Zz-Ou
+ id 1rY9Xa-0001a3-8x
  for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:30 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9XW-0005os-Jx
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:27 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rY9XY-0005pC-GX
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:29 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 418IkQVu020283; Thu, 8 Feb 2024 18:54:25 GMT
+ 418IjwHE009585; Thu, 8 Feb 2024 18:54:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=AKrGyHd5sYvDWxNgBylMHS2Y8gYn4BTh9nzo3WKhqw8=;
- b=eKWrlmOTruS35o/V5auHxz5kB/HkUjGnxT3+IQtWgsnzpcvK7algYuK0PFHDeGGYxX6f
- ckP9MyYXemmIzTLgNDKY00GkKNUasRZOtLXMKGjwTW2ra2P6cAxsOGRJk/sq41/puzKl
- qs9VHQLdws0vmeCXtCv/+X7djLZY4lRV3jF1y4UJC0GM2jWiyKvgsY2F8yYU+8AZ9I+m
- /OyTAa9LfxLuQTZYLHuCCmFSnEOdJ5w6H288CtTb483wLyLlUmZXs/ugL8QcosgnbfrW
- 9bbaz2BAIbaszIJo+d78zI+bE9gQRjpAiC+7cAZO1jh9ewc9F6l4uVOLYWmpspQ9mOSo uw== 
+ bh=rH7BH7+m4emVEj2RIKS77Ga1/IdPcieuJjzqzULPCFo=;
+ b=nS7I2Oktgb98yXIMPtrQ5f+RjvXFO0111ebOvFhhNxvXuxkyIKU0XwIDONg16kWKWskM
+ qrrP9EE9dRwD4u9i2XF8+dNKjPLeflWYXnWYO8N+0s+/9R5a/LcO3TvuIc07eHbSobmT
+ qTYAYPKpJ+UUFeJ2Q/Mb03PVQPF798IJiAyIxKBgkoIjQRXtoxN1ZPQXLRbDU6G4w5S8
+ UYjOyUph6JXiBDu2hZrbofwv9kjIhhRwDzYycbX61zgbXLaGR4DhwmFzCDgqjrQilrCm
+ MADvwO5HyONtz3B08srkbmi4a8gOKpsmMWMim39dKR+RdfdAYVRiqEDC/05bdoV0uv8n QQ== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1bwewdes-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1d3unk2v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:24 +0000
+ Thu, 08 Feb 2024 18:54:26 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 418HcD5q038384; Thu, 8 Feb 2024 18:54:24 GMT
+ with ESMTP id 418HUj5R038399; Thu, 8 Feb 2024 18:54:26 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w1bxawneh-1
+ 3w1bxawnha-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:24 +0000
+ Thu, 08 Feb 2024 18:54:25 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36H013534;
- Thu, 8 Feb 2024 18:54:23 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36J013534;
+ Thu, 8 Feb 2024 18:54:25 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3w1bxawmw9-11; Thu, 08 Feb 2024 18:54:23 +0000
+ ESMTP id 3w1bxawmw9-12; Thu, 08 Feb 2024 18:54:25 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -60,9 +60,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 10/13] migration: stop vm for cpr
-Date: Thu,  8 Feb 2024 10:54:03 -0800
-Message-Id: <1707418446-134863-11-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 11/13] vfio: register container for cpr
+Date: Thu,  8 Feb 2024 10:54:04 -0800
+Message-Id: <1707418446-134863-12-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
 References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
@@ -74,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402080099
-X-Proofpoint-ORIG-GUID: swgr-NiT0Q330me73bx0eP6ODAqfvc9m
-X-Proofpoint-GUID: swgr-NiT0Q330me73bx0eP6ODAqfvc9m
+X-Proofpoint-ORIG-GUID: Ql8SJR7j1vEuUaoZze8ZTxbBaHRdNXz9
+X-Proofpoint-GUID: Ql8SJR7j1vEuUaoZze8ZTxbBaHRdNXz9
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -101,94 +101,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When migration for cpr is initiated, stop the vm and set state
-RUN_STATE_FINISH_MIGRATE before ram is saved.  This eliminates the
-possibility of ram and device state being out of sync, and guarantees
-that a guest in the suspended state remains suspended, because qmp_cont
-rejects a cont command in the RUN_STATE_FINISH_MIGRATE state.
+Define entry points to perform per-container cpr-specific initialization
+and teardown.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/migration/misc.h |  1 +
- migration/migration.c    | 32 +++++++++++++++++++++++++-------
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ hw/vfio/container.c           | 11 ++++++++++-
+ hw/vfio/cpr.c                 | 19 +++++++++++++++++++
+ hw/vfio/iommufd.c             |  6 ++++++
+ hw/vfio/meson.build           |  1 +
+ include/hw/vfio/vfio-common.h |  3 +++
+ 5 files changed, 39 insertions(+), 1 deletion(-)
+ create mode 100644 hw/vfio/cpr.c
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 6dc234b..54c99a3 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -60,6 +60,7 @@ void migration_object_init(void);
- void migration_shutdown(void);
- bool migration_is_idle(void);
- bool migration_is_active(MigrationState *);
-+bool migrate_mode_is_cpr(MigrationState *);
- 
- typedef enum MigrationEventType {
-     MIG_EVENT_PRECOPY_SETUP,
-diff --git a/migration/migration.c b/migration/migration.c
-index d1fce9e..fc5c587 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1603,6 +1603,11 @@ bool migration_is_active(MigrationState *s)
-             s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE);
- }
- 
-+bool migrate_mode_is_cpr(MigrationState *s)
-+{
-+    return s->parameters.mode == MIG_MODE_CPR_REBOOT;
-+}
-+
- int migrate_init(MigrationState *s, Error **errp)
- {
-     int ret;
-@@ -2651,13 +2656,14 @@ static int migration_completion_precopy(MigrationState *s,
-     bql_lock();
-     migration_downtime_start(s);
- 
--    s->vm_old_state = runstate_get();
--    global_state_store();
--
--    ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
--    trace_migration_completion_vm_stop(ret);
--    if (ret < 0) {
--        goto out_unlock;
-+    if (!migrate_mode_is_cpr(s)) {
-+        s->vm_old_state = runstate_get();
-+        global_state_store();
-+        ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
-+        trace_migration_completion_vm_stop(ret);
-+        if (ret < 0) {
-+            goto out_unlock;
-+        }
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index bd25b9f..096d77e 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -621,10 +621,15 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+         goto free_container_exit;
      }
  
-     ret = migration_maybe_pause(s, current_active_state,
-@@ -3576,6 +3582,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-     Error *local_err = NULL;
-     uint64_t rate_limit;
-     bool resume = s->state == MIGRATION_STATUS_POSTCOPY_PAUSED;
-+    int ret;
- 
-     /*
-      * If there's a previous error, free it and prepare for another one.
-@@ -3651,6 +3658,17 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-         goto fail;
-     }
- 
-+    if (migrate_mode_is_cpr(s)) {
-+        s->vm_old_state = runstate_get();
-+        global_state_store();
-+        ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
-+        trace_migration_completion_vm_stop(ret);
-+        if (ret < 0) {
-+            error_setg(&local_err, "migration_stop_vm failed, error %d", -ret);
-+            goto fail;
-+        }
++    ret = vfio_cpr_register_container(bcontainer, errp);
++    if (ret) {
++        goto free_container_exit;
 +    }
 +
-     if (migrate_background_snapshot()) {
-         qemu_thread_create(&s->thread, "bg_snapshot",
-                 bg_migration_thread, s, QEMU_THREAD_JOINABLE);
+     ret = vfio_ram_block_discard_disable(container, true);
+     if (ret) {
+         error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
+-        goto free_container_exit;
++        goto unregister_container_exit;
+     }
+ 
+     assert(bcontainer->ops->setup);
+@@ -667,6 +672,9 @@ listener_release_exit:
+ enable_discards_exit:
+     vfio_ram_block_discard_disable(container, false);
+ 
++unregister_container_exit:
++    vfio_cpr_unregister_container(bcontainer);
++
+ free_container_exit:
+     g_free(container);
+ 
+@@ -710,6 +718,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+         vfio_container_destroy(bcontainer);
+ 
+         trace_vfio_disconnect_container(container->fd);
++        vfio_cpr_unregister_container(bcontainer);
+         close(container->fd);
+         g_free(container);
+ 
+diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+new file mode 100644
+index 0000000..3bede54
+--- /dev/null
++++ b/hw/vfio/cpr.c
+@@ -0,0 +1,19 @@
++/*
++ * Copyright (c) 2021-2024 Oracle and/or its affiliates.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/vfio/vfio-common.h"
++#include "qapi/error.h"
++
++int vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
++{
++    return 0;
++}
++
++void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
++{
++}
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 9bfddc1..e1be224 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -411,6 +411,11 @@ found_container:
+         goto err_listener_register;
+     }
+ 
++    ret = vfio_cpr_register_container(bcontainer, errp);
++    if (ret) {
++        goto err_listener_register;
++    }
++
+     /*
+      * TODO: examine RAM_BLOCK_DISCARD stuff, should we do group level
+      * for discarding incompatibility check as well?
+@@ -461,6 +466,7 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+         iommufd_cdev_ram_block_discard_disable(false);
+     }
+ 
++    vfio_cpr_unregister_container(bcontainer);
+     iommufd_cdev_detach_container(vbasedev, container);
+     iommufd_cdev_container_destroy(container);
+     vfio_put_address_space(space);
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index bb98493..bba776f 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -5,6 +5,7 @@ vfio_ss.add(files(
+   'container-base.c',
+   'container.c',
+   'migration.c',
++  'cpr.c',
+ ))
+ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+ vfio_ss.add(when: 'CONFIG_IOMMUFD', if_true: files(
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 4a6c262..b9da6c0 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -205,6 +205,9 @@ void vfio_detach_device(VFIODevice *vbasedev);
+ int vfio_kvm_device_add_fd(int fd, Error **errp);
+ int vfio_kvm_device_del_fd(int fd, Error **errp);
+ 
++int vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
++void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
++
+ extern const MemoryRegionOps vfio_region_ops;
+ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
 -- 
 1.8.3.1
 
