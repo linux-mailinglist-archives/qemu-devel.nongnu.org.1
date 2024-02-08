@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2BB84D81E
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:07:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5F484D834
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 04:10:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rXukl-0006ed-Hc; Wed, 07 Feb 2024 22:07:09 -0500
+	id 1rXukr-0006pw-UI; Wed, 07 Feb 2024 22:07:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujr-0006HP-8s
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:13 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujt-0006Hi-HJ
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:15 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujo-0004MH-PB
- for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:10 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rXujr-0004MV-Vd
+ for qemu-devel@nongnu.org; Wed, 07 Feb 2024 22:06:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707361568;
+ s=mimecast20190719; t=1707361571;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P4rGGjiReFA5mbRKiKXV4StIfVcFiiaCslJt4eb0ZT8=;
- b=Z1j/x7gPKs8SPYYVN+reyENZdX1a0UvQVgtKKcMWyBOOG0Fn5nuCPRY+doBKt2Aa053GNG
- kOmcoU4I4XbvWP0ieIXiXxDPPave41ZT+Cdm4qYkTf7ryBXCkiwU7aAGmP7zDSHWQ0PyrW
- dHFVXtcEw57ofgvJtokCitxGPWFUOt4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-XlWzly5BNKqsLxuWT7Fj9w-1; Wed,
- 07 Feb 2024 22:06:04 -0500
-X-MC-Unique: XlWzly5BNKqsLxuWT7Fj9w-1
+ bh=Wch729pW3cWXDkHx07WlSRgxQRZ8MhkzYhr59IzkERo=;
+ b=fC/lTdKX8bQYP66T5POYMmFDFyEcPMMwkYyDHGQpp38QdmqD7C18WPV4Dpd54YF6yPHSdW
+ vhwrELWuv18lj+WWkDA9NwLFdWjzNl4vOn0qR2ykAphQ5FOWg1D830aSu3cjGvHGnRvfFS
+ n4nhGxtWUCd3Ya8EiHhWpIzZQK+FCCM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-3W1o2FTuMGaMz0r94OfvRQ-1; Wed, 07 Feb 2024 22:06:07 -0500
+X-MC-Unique: 3W1o2FTuMGaMz0r94OfvRQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 586D03806710;
- Thu,  8 Feb 2024 03:06:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6978B101FA2D;
+ Thu,  8 Feb 2024 03:06:07 +0000 (UTC)
 Received: from x1n.redhat.com (unknown [10.72.116.45])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 15FDF492BC7;
- Thu,  8 Feb 2024 03:06:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 27CA7492BC7;
+ Thu,  8 Feb 2024 03:06:04 +0000 (UTC)
 From: peterx@redhat.com
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: peterx@redhat.com,
 	Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 10/34] migration/multifd: Rename p->num_packets and clean it up
-Date: Thu,  8 Feb 2024 11:05:04 +0800
-Message-ID: <20240208030528.368214-11-peterx@redhat.com>
+Subject: [PULL 11/34] migration/multifd: Move total_normal_pages accounting
+Date: Thu,  8 Feb 2024 11:05:05 +0800
+Message-ID: <20240208030528.368214-12-peterx@redhat.com>
 In-Reply-To: <20240208030528.368214-1-peterx@redhat.com>
 References: <20240208030528.368214-1-peterx@redhat.com>
 MIME-Version: 1.0
@@ -81,135 +81,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Xu <peterx@redhat.com>
 
-This field, no matter whether on src or dest, is only used for debugging
-purpose.
-
-They can even be removed already, unless it still more or less provide some
-accounting on "how many packets are sent/recved for this thread".  The
-other more important one is called packet_num, which is embeded in the
-multifd packet headers (MultiFDPacket_t).
-
-So let's keep them for now, but make them much easier to understand, by
-doing below:
-
-  - Rename both of them to packets_sent / packets_recved, the old
-  name (num_packets) are waaay too confusing when we already have
-  MultiFDPacket_t.packets_num.
-
-  - Avoid worrying on the "initial packet": we know we will send it, that's
-  good enough.  The accounting won't matter a great deal to start with 0 or
-  with 1.
-
-  - Move them to where we send/recv the packets.  They're:
-
-    - multifd_send_fill_packet() for senders.
-    - multifd_recv_unfill_packet() for receivers.
+Just like the previous patch, move the accounting for total_normal_pages on
+both src/dst sides into the packet fill/unfill procedures.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240202102857.110210-10-peterx@redhat.com
+Link: https://lore.kernel.org/r/20240202102857.110210-11-peterx@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/multifd.h |  6 +++---
- migration/multifd.c | 13 +++++--------
- 2 files changed, 8 insertions(+), 11 deletions(-)
+ migration/multifd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 08f26ef3fe..2e4ad0dc56 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -124,7 +124,7 @@ typedef struct {
-     /* size of the next packet that contains pages */
-     uint32_t next_packet_size;
-     /* packets sent through this channel */
--    uint64_t num_packets;
-+    uint64_t packets_sent;
-     /* non zero pages sent through this channel */
-     uint64_t total_normal_pages;
-     /* buffers to send */
-@@ -174,8 +174,8 @@ typedef struct {
-     MultiFDPacket_t *packet;
-     /* size of the next packet that contains pages */
-     uint32_t next_packet_size;
--    /* packets sent through this channel */
--    uint64_t num_packets;
-+    /* packets received through this channel */
-+    uint64_t packets_recved;
-     /* ramblock */
-     RAMBlock *block;
-     /* ramblock host address */
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 518f9de723..eca76e2c18 100644
+index eca76e2c18..94a0124934 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -288,6 +288,8 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
- 
-         packet->offset[i] = cpu_to_be64(temp);
+@@ -290,6 +290,7 @@ static void multifd_send_fill_packet(MultiFDSendParams *p)
      }
-+
-+    p->packets_sent++;
+ 
+     p->packets_sent++;
++    p->total_normal_pages += pages->num;
  }
  
  static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
-@@ -335,6 +337,7 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
- 
+@@ -338,6 +339,7 @@ static int multifd_recv_unfill_packet(MultiFDRecvParams *p, Error **errp)
      p->next_packet_size = be32_to_cpu(packet->next_packet_size);
      p->packet_num = be64_to_cpu(packet->packet_num);
-+    p->packets_recved++;
+     p->packets_recved++;
++    p->total_normal_pages += p->normal_num;
  
      if (p->normal_num == 0) {
          return 0;
-@@ -688,8 +691,6 @@ static void *multifd_send_thread(void *opaque)
-         ret = -1;
-         goto out;
-     }
--    /* initial packet */
--    p->num_packets = 1;
- 
-     while (true) {
-         qemu_sem_post(&multifd_send_state->channels_ready);
-@@ -719,7 +720,6 @@ static void *multifd_send_thread(void *opaque)
+@@ -720,7 +722,6 @@ static void *multifd_send_thread(void *opaque)
              }
  
              multifd_send_fill_packet(p);
--            p->num_packets++;
-             p->total_normal_pages += pages->num;
+-            p->total_normal_pages += pages->num;
              trace_multifd_send(p->id, packet_num, pages->num, p->flags,
                                 p->next_packet_size);
-@@ -787,7 +787,7 @@ out:
  
-     rcu_unregister_thread();
-     migration_threads_remove(thread);
--    trace_multifd_send_thread_end(p->id, p->num_packets, p->total_normal_pages);
-+    trace_multifd_send_thread_end(p->id, p->packets_sent, p->total_normal_pages);
- 
-     return NULL;
- }
-@@ -1124,7 +1124,6 @@ static void *multifd_recv_thread(void *opaque)
+@@ -1124,7 +1125,6 @@ static void *multifd_recv_thread(void *opaque)
          p->flags &= ~MULTIFD_FLAG_SYNC;
          trace_multifd_recv(p->id, p->packet_num, p->normal_num, flags,
                             p->next_packet_size);
--        p->num_packets++;
-         p->total_normal_pages += p->normal_num;
+-        p->total_normal_pages += p->normal_num;
          qemu_mutex_unlock(&p->mutex);
  
-@@ -1150,7 +1149,7 @@ static void *multifd_recv_thread(void *opaque)
-     qemu_mutex_unlock(&p->mutex);
- 
-     rcu_unregister_thread();
--    trace_multifd_recv_thread_end(p->id, p->num_packets, p->total_normal_pages);
-+    trace_multifd_recv_thread_end(p->id, p->packets_recved, p->total_normal_pages);
- 
-     return NULL;
- }
-@@ -1252,8 +1251,6 @@ void multifd_recv_new_channel(QIOChannel *ioc, Error **errp)
-     }
-     p->c = ioc;
-     object_ref(OBJECT(ioc));
--    /* initial packet */
--    p->num_packets = 1;
- 
-     p->running = true;
-     qemu_thread_create(&p->thread, p->name, multifd_recv_thread, p,
+         if (p->normal_num) {
 -- 
 2.43.0
 
