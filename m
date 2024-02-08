@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEFE84E906
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 20:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C5984E921
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 20:49:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYADS-0007dh-3w; Thu, 08 Feb 2024 14:37:46 -0500
+	id 1rYANU-0001Zv-N3; Thu, 08 Feb 2024 14:48:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3fi3FZQwKCiMM9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com>)
- id 1rYADN-0007dZ-0s
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:37:41 -0500
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
+ <38i_FZQwKCpsI56DC9NO9A5IBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--nabihestefan.bounces.google.com>)
+ id 1rYANS-0001ZS-Ci
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:48:06 -0500
+Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3fi3FZQwKCiMM9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com>)
- id 1rYADI-0005FM-Rv
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:37:40 -0500
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-6048e351290so4958027b3.1
- for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 11:37:35 -0800 (PST)
+ <38i_FZQwKCpsI56DC9NO9A5IBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--nabihestefan.bounces.google.com>)
+ id 1rYANR-00071Q-1T
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 14:48:06 -0500
+Received: by mail-pg1-x54a.google.com with SMTP id
+ 41be03b00d2f7-5cfd94f9433so111091a12.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 11:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1707421054; x=1708025854; darn=nongnu.org;
+ d=google.com; s=20230601; t=1707421682; x=1708026482; darn=nongnu.org;
  h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
  :date:message-id:reply-to;
- bh=92fOOnHCkanWg80V2hAwSCwodLG+3/RgTATFlOBrVEc=;
- b=uonYE1leyPJN8S+akq0QDUYFPONU5tPfve28krn6TzSaKYLgF+Cx8aDlWuBnXOaPbb
- ZLV379hCmNvJXdXhOiB+O3/DmHkVwTmS/XZ49mr9y+1jaxGQm64urFhfvhx1OPyKKVHg
- TiStClUO0161Xt4ksYwk35Ne4mQp2IzvmHd534E0K99QUN+y7ICiy7ejOcs/Jo4QkKpb
- 6CbyOBxo8PJ1HZDCbVAiFh1FkisScjAidADcJNbrkVX++vLeR5RU2nwiz3WtlSmFXPQV
- Wr8VkK7mc9cWVF6DgI5s4FLCGaL/BkT910iczaMOkL/DxBkZAr+17Tc6QFOn9dA1CsMW
- jtkQ==
+ bh=/dUY9x+67FvkVBEF/XyJqYKGwZN4xMXS3WjbK5pVzbc=;
+ b=S2AjgUKHrV7pdHsSVlx4EaFbK7Ke4FHKIUe/rozzJSDQ/2wVXOFMAAD8fPzTRq48rb
+ 9fjOCXOhDCXna7mU22OAoC24bel+LxSPpgKmbHKd2p8cX3rugngn3cpK3Ox/hW2aa4Vs
+ FsbT4MF+P55uiKCiLWrYu9SDrsh7ZlxDbQgoeVcaySY0hPYp21h61yEVrbupKCwSq/bt
+ wySfJPpZeitkUsesUXKV0Mkqr9WvkfCCC8nV66ckw72p1ozj7E0DQlqVusNamXAWTucY
+ CvroyW0hSsaxab0Tq6ltk3pg7hJeWFTHM4m3GH3pAf9pbdJJiun9ci2GaU30JCjnwyV5
+ fCSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707421054; x=1708025854;
+ d=1e100.net; s=20230601; t=1707421682; x=1708026482;
  h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=92fOOnHCkanWg80V2hAwSCwodLG+3/RgTATFlOBrVEc=;
- b=sBZEJ8TrAJjVHXDAi0BrPTlxQ1kldkYSTmbBay0XOHPJKA/TIOn1J38A/owVEJCHhr
- K8ipkLemP3s0Hm3sBdWl+KBCUOXQNNETNwOYon3ydfBZRN5MwUp0Xg4b996jsDb0ogvb
- 7KHSP1v1sWc25f9wxDXJ7mdvgRksX5HgIReeSWwIEWh46nElgz1N5vslYGUoc3cj4mMn
- Z0a7VMWruQK0v2RLnFXknbrV3QkKuo9AyrubwLSbGjQyDrMkF2qt8EkH8ynWQHTOoNTC
- eOjmSKaKskGKwirZpBK+75cUU5vTE46INNMywg7acwAG1s1Yt4iU68PGd+hRQIMM8R2T
- Korw==
+ bh=/dUY9x+67FvkVBEF/XyJqYKGwZN4xMXS3WjbK5pVzbc=;
+ b=l2P2+c6Fs8/q83sfTP3BI9db+h3dTykPMlJm/ke3opMapOXHtl6VlDeZHvVIpgKhxT
+ /QdUbb8goC1XHN4IY6OI8Isa4roAuSZBBwI9qIDNbT+NniIsR1olWVYw7JURbmjHaTtn
+ xrWZESuNQP4YM/nu4E5EJAP7l6ShSd884bANQUPsP/NAcmjAzilGDq3e2FsPr3fn/Mh9
+ KvwvuqBHinf8FRxgBgPLxadW0Q2uY/ryaAQYCX0oldkUN8oCvSeRd6tjRWUGAJLDK6oD
+ 9JPVSE2TeWYBXxpQ4ra7OgvkxDjvuMfFabMRtHSWyCvmCsgxg3rwjITCg2LPDA6DKeto
+ EbNg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXvRkxEIjVL+hpm1IcCufuXPcBOVR7IUAL6hGpvbiCNL3z2mlHU9i9Ki5QdgYApEiZJ4ddsXdW78OivKO2zKVY74EskKW0=
-X-Gm-Message-State: AOJu0YyU7EknQkmYlwXpwa0BwM1BYKErkvgTZIl/CrgIMw0GDJlMGokJ
- iJIh8Rl1VdwQcYGBwOZPnHerYCw7+U8SCfj6yMVub2ygKfsY2onlZxdm+Zy2Ct4SfXaCAwpF2In
- nraMz3na8vlRljoy1MvZvjQEhrg==
-X-Google-Smtp-Source: AGHT+IFp5/JNx1/wJ9qGd6+e5wyyt+anSDRgDvq+T0XiT94rz7Tt4azDKdWGvBrS//dyCm2/jF61Sr9mQNM8+am0C7Q=
+ AJvYcCV8/4f09zDGn6TtaKftI3chDIIsLkhe4G2U0dRo+YR61FLkLRctxYAJNgLE+GuWbv7WZM+qOMNk8EaMTFNs9Y5WG+uSX7s=
+X-Gm-Message-State: AOJu0YwM1EkWa5wlHgBFrmgLNeiwf51QgD8hu6uKj753Nj+p4omAkum2
+ B4kE/uPRpr+hNUJV6QzOLETR9xJSeEligoJ0WPuttmDLI+850B38O5+z9+QYTVrh8SLlJCZAzwG
+ vFplvNKpAD/rg8cHebCYtiz8+EA==
+X-Google-Smtp-Source: AGHT+IG5OKPfZ2YeSNzH3d7SBRKQcbfBY6z7vKn3AUyCnHZDFns78YqnPJdt27FjPkyU9ecJM5GdZAA1hXO8JR2pqhs=
 X-Received: from nabihestefan.c.googlers.com
  ([fda3:e722:ac3:cc00:20:ed76:c0a8:2737])
- (user=nabihestefan job=sendgmr) by 2002:a81:9284:0:b0:602:d17a:7f60 with SMTP
- id j126-20020a819284000000b00602d17a7f60mr58779ywg.10.1707421054552; Thu, 08
- Feb 2024 11:37:34 -0800 (PST)
-Date: Thu,  8 Feb 2024 19:37:26 +0000
+ (user=nabihestefan job=sendgmr) by 2002:a05:6a02:f98:b0:5dc:1cc9:36ab with
+ SMTP id dq24-20020a056a020f9800b005dc1cc936abmr8705pgb.12.1707421682224; Thu,
+ 08 Feb 2024 11:48:02 -0800 (PST)
+Date: Thu,  8 Feb 2024 19:47:58 +0000
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
-Message-ID: <20240208193730.2777982-1-nabihestefan@google.com>
-Subject: [PATCH v2 0/1] Sending small fix for NPCM GMAC test to properly test
+Message-ID: <20240208194759.2858582-1-nabihestefan@google.com>
+Subject: [PATCH v3 0/1] Sending small fix for NPCM GMAC test to properly test
  on Nuvoton 7xx
 From: Nabih Estefan <nabihestefan@google.com>
 To: peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Avi.Fishman@nuvoton.com, 
- kfting@nuvoton.com, Nabih Estefan <nabihestefan@google.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kfting@nuvoton.com, 
+ wuhaotsh@google.com, jasowang@redhat.com, avi.fishman@nuvoton.com, 
+ nabihestefan@google.com, kwliu@nuvoton.com, tomer.maimon@nuvoton.com, 
+ Hila.Miranda-Kuzi@nuvoton.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3fi3FZQwKCiMM9AHGDRSDE9MFNNFKD.BNLPDLT-CDUDKMNMFMT.NQF@flex--nabihestefan.bounces.google.com;
- helo=mail-yw1-x1149.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
+ envelope-from=38i_FZQwKCpsI56DC9NO9A5IBJJBG9.7JHL9HP-89Q9GIJIBIP.JMB@flex--nabihestefan.bounces.google.com;
+ helo=mail-pg1-x54a.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -93,16 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Accidentally added extra file to v2 that broke email sending (and was
+not meant to be upstreamed). Sending our v3 to skip that confusion.
+
 Removing testing for PCS registers since that doesn't exist on 7xx.
 
 Nabih Estefan (1):
   tests/qtest: Fixing GMAC test to run in 7xx
 
- obmc-phosphor-image-gsj.static.mtd | Bin 0 -> 33554432 bytes
- tests/qtest/meson.build            |   4 +-
- tests/qtest/npcm_gmac-test.c       |  84 +----------------------------
- 3 files changed, 4 insertions(+), 84 deletions(-)
- create mode 100644 obmc-phosphor-image-gsj.static.mtd
+ tests/qtest/meson.build      |  4 +-
+ tests/qtest/npcm_gmac-test.c | 84 +-----------------------------------
+ 2 files changed, 4 insertions(+), 84 deletions(-)
 
 -- 
 2.43.0.687.g38aa6559b0-goog
