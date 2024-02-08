@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B561484E888
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C594184E87D
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 Feb 2024 19:55:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rY9Xb-0001ai-PA; Thu, 08 Feb 2024 13:54:31 -0500
+	id 1rY9Xd-0001bB-7y; Thu, 08 Feb 2024 13:54:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9XW-0001YL-4v
+ id 1rY9XW-0001Yj-SG
  for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:26 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1rY9XU-0005ob-Li
- for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:25 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ id 1rY9XU-0005oh-Lw
+ for qemu-devel@nongnu.org; Thu, 08 Feb 2024 13:54:26 -0500
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 418IkIrU009749; Thu, 8 Feb 2024 18:54:22 GMT
+ 418Ik6d0020088; Thu, 8 Feb 2024 18:54:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=iSIfqSBMc39ZjucLn8EacCTbQQWpPMUX085KAVl1IGM=;
- b=IL1JbLelLUeso9PLL7MacPOediwnKpy/VtqBaLLnM+WuPuyTdaLYDZM1Jzk3kbAlzdmE
- HopwsK1kBbRKmuWRDryulHko4cy5FRqUZKrANIG3LXZBHbp/eldoafeoP2xJv1G6sYbQ
- s8zxljC2qOrPDa4xYw9cAJ8sMQAfbiFUbCRZMu4B14keYo+77T4sQa1uafLNP3WE2Xbg
- hgDPt3lV36OTDlijckMjjoCg4kp/Q1+iZ2ymjT1Sua5qlw3IdtD/2x8Oy7V2SY/CNodW
- o15bANMM3ZGsv3x0R/PUYQAycwDrYgqT/9dY2iuSRwVSOQe1Y2LZDiywQtgTxiKCoF/e 5Q== 
+ bh=zPAMmVxL+ok2jMGzEmCWKDz75wO7j7NGVcD7kUCLI9A=;
+ b=G7kwu6Mp4/SCK+W3t0ozWFce+bulZjFHj3NKb+WYWZ8MEFfEwqtD9grd+uqVobovSkXl
+ wf7G1yrlrTd/2/U/5Wby0figemuhj9ehh5sg9zyDWgxqfC/ZPt66QDXwC8TV7AZAw9Bl
+ iJ9y4nA6vbA9yuh3MdNJCbJOnZ7Po8pVWaETN/TXLpfdrlfJWGASL+5hb8UCP09XitJn
+ S889quMLW3SwzWs3fFZCcw9jNwatjy+QeKdJq/zlx5loscBBNOE3tKJ3UNGYV2P0K2LN
+ ToF+jzaVp5y3ss27HeqFrSfZEjC0sDhY1ad2PddaSKU613+ofmjt3QY2mNANsElFIIHY LQ== 
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1d3unk2q-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1bwewdeq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:22 +0000
+ Thu, 08 Feb 2024 18:54:23 +0000
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 418IKM3j038388; Thu, 8 Feb 2024 18:54:22 GMT
+ with ESMTP id 418HWkMx038686; Thu, 8 Feb 2024 18:54:22 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w1bxawnay-1
+ 3w1bxawncg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 08 Feb 2024 18:54:21 +0000
+ Thu, 08 Feb 2024 18:54:22 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36D013534;
- Thu, 8 Feb 2024 18:54:20 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418Iq36F013534;
+ Thu, 8 Feb 2024 18:54:22 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 3w1bxawmw9-9; Thu, 08 Feb 2024 18:54:20 +0000
+ ESMTP id 3w1bxawmw9-10; Thu, 08 Feb 2024 18:54:21 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -60,9 +60,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Marc-Andre Lureau <marcandre.lureau@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 08/13] migration: refactor migrate_fd_connect failures
-Date: Thu,  8 Feb 2024 10:54:01 -0800
-Message-Id: <1707418446-134863-9-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 09/13] migration: notifier error checking
+Date: Thu,  8 Feb 2024 10:54:02 -0800
+Message-Id: <1707418446-134863-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
 References: <1707418446-134863-1-git-send-email-steven.sistare@oracle.com>
@@ -74,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402080099
-X-Proofpoint-ORIG-GUID: rhJ4gMNuKswg2sT0ZgQ9UURrhVakP2Lm
-X-Proofpoint-GUID: rhJ4gMNuKswg2sT0ZgQ9UURrhVakP2Lm
+X-Proofpoint-ORIG-GUID: L_HM-5lXPE70miD4wBHITZEjCcxr9mrH
+X-Proofpoint-GUID: L_HM-5lXPE70miD4wBHITZEjCcxr9mrH
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -101,60 +101,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move common code for the error path in migrate_fd_connect to a shared
-fail label.  No functional change.
+Check the status returned by migration notifiers and report errors.
+If notifiers fail, call the notifiers again so they can clean up.
+None of the notifiers return an error status at this time.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ include/migration/misc.h |  3 ++-
+ migration/migration.c    | 40 +++++++++++++++++++++++++++++-----------
+ 2 files changed, 31 insertions(+), 12 deletions(-)
 
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index 0ea1902..6dc234b 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -82,7 +82,8 @@ void migration_add_notifier(NotifierWithReturn *notify,
+ void migration_add_notifier_mode(NotifierWithReturn *notify,
+                                  MigrationNotifyFunc func, MigMode mode);
+ void migration_remove_notifier(NotifierWithReturn *notify);
+-void migration_call_notifiers(MigrationState *s, MigrationEventType type);
++int migration_call_notifiers(MigrationState *s, MigrationEventType type,
++                             Error **errp);
+ bool migration_in_setup(MigrationState *);
+ bool migration_has_finished(MigrationState *);
+ bool migration_has_failed(MigrationState *);
 diff --git a/migration/migration.c b/migration/migration.c
-index 1601a03..01d8867 100644
+index 01d8867..d1fce9e 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -3608,11 +3608,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-     if (migrate_postcopy_ram() || migrate_return_path()) {
-         if (open_return_path_on_source(s)) {
-             error_setg(&local_err, "Unable to open return-path for postcopy");
--            migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
--            migrate_set_error(s, local_err);
--            error_report_err(local_err);
--            migrate_fd_cleanup(s);
--            return;
-+            goto fail;
-         }
-     }
+@@ -1318,6 +1318,8 @@ void migrate_set_state(int *state, int old_state, int new_state)
  
-@@ -3634,12 +3630,7 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-     }
- 
-     if (multifd_save_setup(&local_err) != 0) {
--        migrate_set_error(s, local_err);
--        error_report_err(local_err);
--        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                          MIGRATION_STATUS_FAILED);
--        migrate_fd_cleanup(s);
--        return;
-+        goto fail;
-     }
- 
-     if (migrate_background_snapshot()) {
-@@ -3650,6 +3641,13 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
-                 migration_thread, s, QEMU_THREAD_JOINABLE);
-     }
-     s->migration_thread_running = true;
-+    return;
+ static void migrate_fd_cleanup(MigrationState *s)
+ {
++    Error *local_err = NULL;
 +
-+fail:
-+    migrate_set_error(s, local_err);
-+    migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
-+    error_report_err(local_err);
-+    migrate_fd_cleanup(s);
+     g_free(s->hostname);
+     s->hostname = NULL;
+     json_writer_free(s->vmdesc);
+@@ -1362,13 +1364,23 @@ static void migrate_fd_cleanup(MigrationState *s)
+                           MIGRATION_STATUS_CANCELLED);
+     }
+ 
++    if (!migration_has_failed(s) &&
++        migration_call_notifiers(s, MIG_EVENT_PRECOPY_DONE, &local_err)) {
++
++        migrate_set_state(&s->state, s->state, MIGRATION_STATUS_FAILED);
++        migrate_set_error(s, local_err);
++        error_free(local_err);
++    }
++
+     if (s->error) {
+         /* It is used on info migrate.  We can't free it */
+         error_report_err(error_copy(s->error));
+     }
+-    migration_call_notifiers(s, s->state == MIGRATION_STATUS_COMPLETED ?
+-                             MIG_EVENT_PRECOPY_DONE :
+-                             MIG_EVENT_PRECOPY_FAILED);
++
++    if (migration_has_failed(s)) {
++        migration_call_notifiers(s, MIG_EVENT_PRECOPY_FAILED, NULL);
++    }
++
+     block_cleanup_parameters();
+     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
+ }
+@@ -1481,13 +1493,15 @@ void migration_remove_notifier(NotifierWithReturn *notify)
+     }
  }
  
- static void migration_class_init(ObjectClass *klass, void *data)
+-void migration_call_notifiers(MigrationState *s, MigrationEventType type)
++int migration_call_notifiers(MigrationState *s, MigrationEventType type,
++                             Error **errp)
+ {
+     MigMode mode = s->parameters.mode;
+     MigrationEvent e;
+ 
+     e.type = type;
+-    notifier_with_return_list_notify(&migration_state_notifiers[mode], &e, 0);
++    return notifier_with_return_list_notify(&migration_state_notifiers[mode],
++                                            &e, errp);
+ }
+ 
+ bool migration_in_setup(MigrationState *s)
+@@ -2535,7 +2549,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+      * at the transition to postcopy and after the device state; in particular
+      * spice needs to trigger a transition now
+      */
+-    migration_call_notifiers(ms, MIG_EVENT_PRECOPY_DONE);
++    if (migration_call_notifiers(ms, MIG_EVENT_PRECOPY_DONE, errp)) {
++        goto fail;
++    }
+ 
+     migration_downtime_end(ms);
+ 
+@@ -2555,11 +2571,10 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+ 
+     ret = qemu_file_get_error(ms->to_dst_file);
+     if (ret) {
+-        error_setg(errp, "postcopy_start: Migration stream errored");
+-        migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
+-                              MIGRATION_STATUS_FAILED);
++        error_setg_errno(errp, -ret, "postcopy_start: Migration stream error");
++        bql_lock();
++        goto fail;
+     }
+-
+     trace_postcopy_preempt_enabled(migrate_postcopy_preempt());
+ 
+     return ret;
+@@ -2580,6 +2595,7 @@ fail:
+             error_report_err(local_err);
+         }
+     }
++    migration_call_notifiers(ms, MIG_EVENT_PRECOPY_FAILED, NULL);
+     bql_unlock();
+     return -1;
+ }
+@@ -3594,7 +3610,9 @@ void migrate_fd_connect(MigrationState *s, Error *error_in)
+         rate_limit = migrate_max_bandwidth();
+ 
+         /* Notify before starting migration thread */
+-        migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP);
++        if (migration_call_notifiers(s, MIG_EVENT_PRECOPY_SETUP, &local_err)) {
++            goto fail;
++        }
+     }
+ 
+     migration_rate_set(rate_limit);
 -- 
 1.8.3.1
 
