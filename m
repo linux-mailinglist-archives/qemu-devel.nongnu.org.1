@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78AC84FEC2
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4B584FEC6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:26:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYYKs-0006f5-PW; Fri, 09 Feb 2024 16:23:02 -0500
+	id 1rYYKu-0006go-OP; Fri, 09 Feb 2024 16:23:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYKq-0006eH-50; Fri, 09 Feb 2024 16:23:00 -0500
+ id 1rYYKr-0006f3-9x; Fri, 09 Feb 2024 16:23:01 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYKo-00007U-Mj; Fri, 09 Feb 2024 16:22:59 -0500
+ id 1rYYKp-00007h-TZ; Fri, 09 Feb 2024 16:23:01 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 90C794BF5D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9E92E4BF5E;
  Sat, 10 Feb 2024 00:24:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7DADF77ED7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8B61877ED8;
  Sat, 10 Feb 2024 00:22:47 +0300 (MSK)
-Received: (nullmailer pid 1123154 invoked by uid 1000);
+Received: (nullmailer pid 1123157 invoked by uid 1000);
  Fri, 09 Feb 2024 21:22:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 05/23] qemu-img: simplify --repair error message
-Date: Sat, 10 Feb 2024 00:22:26 +0300
-Message-Id: <33b6a64202469681f7b27892f2c1c5fe4884a60e.1707513011.git.mjt@tls.msk.ru>
+Subject: [PATCH 06/23] qemu-img: refresh options/--help for "commit" command
+Date: Sat, 10 Feb 2024 00:22:27 +0300
+Message-Id: <a2f9dcca38d210ede3fbebccfcb4ea72aa105507.1707513011.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1707513011.git.mjt@tls.msk.ru>
 References: <cover.1707513011.git.mjt@tls.msk.ru>
@@ -58,26 +58,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add missing long options and --help output.
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-img.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qemu-img.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 3ae07bfae0..ad7fa033b1 100644
+index ad7fa033b1..eabf45c423 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -843,8 +843,8 @@ static int img_check(const img_cmd_t *ccmd, int argc, char **argv)
-             } else if (!strcmp(optarg, "all")) {
-                 fix = BDRV_FIX_LEAKS | BDRV_FIX_ERRORS;
-             } else {
--                error_exit(ccmd, "Unknown option value for -r "
--                           "(expecting 'leaks' or 'all'): %s", optarg);
-+                error_exit(ccmd,
-+                           "--repair expects 'leaks' or 'all' not '%s'", optarg);
-             }
+@@ -1029,8 +1029,15 @@ static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
+     for(;;) {
+         static const struct option long_options[] = {
+             {"help", no_argument, 0, 'h'},
++            {"quiet", no_argument, 0, 'q'},
+             {"object", required_argument, 0, OPTION_OBJECT},
++            {"format", required_argument, 0, 'f'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
++            {"cache", required_argument, 0, 't'},
++            {"drop", no_argument, 0, 'd'},
++            {"base", required_argument, 0, 'b'},
++            {"progress", no_argument, 0, 'p'},
++            {"rate", required_argument, 0, 'r'},
+             {0, 0, 0, 0}
+         };
+         c = getopt_long(argc, argv, ":f:ht:b:dpqr:",
+@@ -1046,7 +1053,23 @@ static int img_commit(const img_cmd_t *ccmd, int argc, char **argv)
+             unrecognized_option(ccmd, argv[optind - 1]);
              break;
-         case OPTION_OUTPUT:
+         case 'h':
+-            help();
++            cmd_help(ccmd,
++"[-f FMT | --image-opts] [-t CACHE_MODE] [-b BASE_IMG] [-d]\n"
++"	[-r RATE] [--object OBJDEF] FILENAME\n"
++,
++" -q|--quiet - quiet operations\n"
++" -p|--progress - show operation progress\n"
++" -f|--format FMT - specify FILENAME image format explicitly\n"
++" --image-opts - indicates that FILENAME is a complete image specification\n"
++"  instead of a file name (incompatible with --format)\n"
++" -t|--cache CACHE_MODE cache mode when opening image (" BDRV_DEFAULT_CACHE ")\n"
++" -d|--drop - skip emptying FILENAME on completion\n"
++" -b|--base BASE_IMG - image in the backing chain to which to commit\n"
++"  changes instead of the previous one (implies --drop)\n"
++" -r|--rate RATE - I/O rate limit\n"
++" --object OBJDEF - QEMU user-creatable object (eg encryption key)\n"
++" FILENAME - name of the image file to operate on\n"
++);
+             break;
+         case 'f':
+             fmt = optarg;
 -- 
 2.39.2
 
