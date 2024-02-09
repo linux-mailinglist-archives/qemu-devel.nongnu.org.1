@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503DB84F3F6
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F5284F40E
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:02:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOad-0008HB-Qd; Fri, 09 Feb 2024 05:58:39 -0500
+	id 1rYOai-0008IO-FY; Fri, 09 Feb 2024 05:58:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOac-0008H3-Sh
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:38 -0500
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1rYOag-0008Hp-GB
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:42 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOab-0000BF-A9
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:38 -0500
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-599f5e71d85so462957eaf.3
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:37 -0800 (PST)
+ id 1rYOaf-0000Bd-3I
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:42 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-5986d902ae6so404212eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476316; x=1708081116; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476319; x=1708081119; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eGFNqUWHagsaOWtdN93//bJdHobk+bd1c/qcwnIUmSs=;
- b=mKC68Ga2vajVLKOtcSy8+rrJDnEG7KKjGWyq+NgnPSX6M1fdMeIDk3QEtirV8+trn2
- DQm1mHBYqK71rCqO8hgUMRQrUnhCa3qXqxkuujRAR0urcsfLEUY+8Blzwx9cdus2aN6y
- xMrtoqq3LOlTB5BVNBzWzEfng74wSrNfnFiyk+9JmPjebPppB73T99DjZemz6k+kgRkE
- g8YwvVvk0b2RWJgPuNtOm4p03GDHxykrdXObLG49llwyaztjdLzZV2LlLNGOsyLn/Y89
- l7H9pdIlylBFC1l3KW+eEuYovsMkrCftGr5N8nbkHD/yT8TmbHVaooKSnv9T0yz6qFrV
- h7TA==
+ bh=qUXKBuZ8Cb3nqQgihfy7eqaegjmyQPsSLDGYh00UV8A=;
+ b=TwS0Atza9O9Ib3IRrwNFdFEOKxq9sF1YPhepJXglmllk7g+C04ISzwWa0bKEDj/pEV
+ 8EY1BIeTjdhndwtZqe4CG7PTR6fQXjOaA7qnYSdh8EssTQqDenkbfcYaZitI1jfQRDcB
+ HNVyX8Q8lR42jVjYL42T9UKlxVpstB4BTzENlDInaJ7Bz1MvandQ23LHWQblabdx0VmL
+ MPE0UvCsnFDezNTXI53LpAMtONBDM6DZx5cXF6aiRtTm4Eph9kQYmJGE/i+TbWAq0MwG
+ 6jI904fENLfohuFPlP0dmt5gX4DrD+vY1lVkNf7+K1Tt/GcEzPNXgDdh+XS/R65evnVh
+ x1fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476316; x=1708081116;
+ d=1e100.net; s=20230601; t=1707476319; x=1708081119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eGFNqUWHagsaOWtdN93//bJdHobk+bd1c/qcwnIUmSs=;
- b=dqopj5fi6tfk9RuXq472zVQkfyeEqfrxh3T8TuM76cFcYPtyaZromNKwSniXwSVOSG
- EIi62bZLToBJCJCwHZ1R533Qvk+NL4HWTscgaHKX9NSZTr4pCFfEsv/WjvJoPcFOQfcn
- FpOIQJu7lw71E0Jr4l0EzY1wH9vHziyaFls4BKA8QelNXp2ZK8U9JXcwBN0KDo+cuY6n
- HYY4f/pnLoUhfNol6PjCjWwjlHo14ydAjl37B09eJe+dFMBA3iRlOCAGTTQGiHtD5VZS
- QCw6UzTd+hMvlOqsE28A+4UG1QwJDz/wi7aoOsqR4kT7p27ySm3m+r76I7Xbit8htVdk
- cO/A==
-X-Gm-Message-State: AOJu0Ywq/j1NPZvT4h+D3jqjc5X2JkBULOKRuyQOE2O8ksta2jz34UIY
- cyYuQ4b1LA0F7Mte3+kzM7IzDLg6NVk9BjtufctZDrTs+MIW3E77R+cB1G8bjtmBWA==
-X-Google-Smtp-Source: AGHT+IEx3CrnsUs/r83EpPRbS+YrvDVSE21eNPz6TrJYTVj/4/wRns90mDx7vXaEnJymDZfeggcNfA==
-X-Received: by 2002:a05:6358:726:b0:176:9e87:412c with SMTP id
- e38-20020a056358072600b001769e87412cmr1220330rwj.7.1707476315772; 
- Fri, 09 Feb 2024 02:58:35 -0800 (PST)
+ bh=qUXKBuZ8Cb3nqQgihfy7eqaegjmyQPsSLDGYh00UV8A=;
+ b=pOHrLZ4vTfEzK9JlsoN+9lqi/Kg0uJhbYX8iC+Xlottea/GqL/YtapSbL1r4Nel10V
+ 9RX+W4I36ZTo2ad+CRcqsloujD9BYSR0Jx+gPvtDzbl2oiM83KpPhOWc3oo/ZhJPr6n7
+ cqXr4ZAahiKb+D3JV+EJpzLiu9gvr1OWnEEdO9PADozkrdtctxpAOUNDpXqwyfgHx9SU
+ gzwcZM+/rPo8/TjoYwbrYTxCOproEECbUFSE47/DMC2H3BQBzYrDpyDtXPnWWufG4ivR
+ CpiuH/krcVhos8fdK2HFWW5jZjzmfnIWoqWxn7URc+7Wr9PSIh457m9gWoS33mH+SB8K
+ kG6g==
+X-Gm-Message-State: AOJu0Yx4U1VjWOYmTmjCZ2YErn3TyuIPfGRHjb2t1OH5uFxS3GK+C4ZW
+ +oSkWraPos8RZKt3oUlDFEVChxy4DSU1hBCfbPlOS+P025BaQtGzYR/nbWVlq7VFoQ==
+X-Google-Smtp-Source: AGHT+IHJS7Nsm+pC7VKwXDUc9A9db+ReVvl6LbhjotKloNRSMjjr5hODUjv++1jHAfExWyxmvTsnNg==
+X-Received: by 2002:a05:6358:5908:b0:176:5bef:d337 with SMTP id
+ g8-20020a056358590800b001765befd337mr1333744rwf.3.1707476318908; 
+ Fri, 09 Feb 2024 02:58:38 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3TpPPNBXQFD9C0Gtx+cd1Uymdn/74NqSwTgQreb2c31EdCPqCZ5YAhgtOCQHw8KXObBbOeVWs9AwpPOIWTN8s6WT3Pqo6+fO49cveOX7O+K6zNenMYBlQa63jA7q7UqwgldEARqrKfVzoS8MbiQTq7x9RabL5n7iwJI0l7EM3Owqa5G7XF7W1fegNNyOZTOSrNZp1
+ AJvYcCUUfczttgQcOkTj1G1Z9C8HoI/2wP0XOmkUXL7uTptH0Mj51kcryC3ccFa7/npO58Gg3QQHwovQSCgU7+BKxFH1yKkBwRt4Gg5uf26DiNahqDXf8gat3quTD4Ax3xV/O6qeToREZ7SYMaS9kjJYKcYlTXBEZhmZ3/QHdGMN+qiFC7Q=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.32
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:58:35 -0800 (PST)
+ Fri, 09 Feb 2024 02:58:38 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 03/61] target/riscv: Add step to validate 'B' extension
-Date: Fri,  9 Feb 2024 20:57:15 +1000
-Message-ID: <20240209105813.3590056-4-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Vladimir Isaev <vladimir.isaev@syntacore.com>
+Subject: [PULL 04/61] target/riscv/cpu_cfg.h: remove unused fields
+Date: Fri,  9 Feb 2024 20:57:16 +1000
+Message-ID: <20240209105813.3590056-5-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=alistair23@gmail.com; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,73 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-If the B extension is enabled warn if the user has disabled any of the
-required extensions that are part of the 'B' extension. Conversely
-enable the extensions that make up the 'B' extension if it is enabled.
+user_spec, bext_spec and bext_ver aren't being used.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240111161644.33630-3-rbradford@rivosinc.com>
+Tested-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
+Message-ID: <20240105230546.265053-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ target/riscv/cpu.h     | 1 -
+ target/riscv/cpu_cfg.h | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index baecfa7672..bf8e72a0e8 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -442,6 +442,35 @@ static void riscv_cpu_validate_g(RISCVCPU *cpu)
-     }
- }
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 136fc1de73..52648e3af0 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -181,7 +181,6 @@ struct CPUArchState {
+     target_ulong guest_phys_fault_addr;
  
-+static void riscv_cpu_validate_b(RISCVCPU *cpu)
-+{
-+    const char *warn_msg = "RVB mandates disabled extension %s";
-+
-+    if (!cpu->cfg.ext_zba) {
-+        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zba))) {
-+            cpu->cfg.ext_zba = true;
-+        } else {
-+            warn_report(warn_msg, "zba");
-+        }
-+    }
-+
-+    if (!cpu->cfg.ext_zbb) {
-+        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbb))) {
-+            cpu->cfg.ext_zbb = true;
-+        } else {
-+            warn_report(warn_msg, "zbb");
-+        }
-+    }
-+
-+    if (!cpu->cfg.ext_zbs) {
-+        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbs))) {
-+            cpu->cfg.ext_zbs = true;
-+        } else {
-+            warn_report(warn_msg, "zbs");
-+        }
-+    }
-+}
-+
- /*
-  * Check consistency between chosen extensions while setting
-  * cpu->cfg accordingly.
-@@ -455,6 +484,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         riscv_cpu_validate_g(cpu);
-     }
+     target_ulong priv_ver;
+-    target_ulong bext_ver;
+     target_ulong vext_ver;
  
-+    if (riscv_has_ext(env, RVB)) {
-+        riscv_cpu_validate_b(cpu);
-+    }
-+
-     if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
-         error_setg(errp,
-                    "I and E extensions are incompatible");
+     /* RISCVMXL, but uint32_t for vmstate migration */
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 780ae6ef17..0612668144 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -140,8 +140,6 @@ struct RISCVCPUConfig {
+ 
+     uint32_t pmu_mask;
+     char *priv_spec;
+-    char *user_spec;
+-    char *bext_spec;
+     char *vext_spec;
+     uint16_t vlen;
+     uint16_t elen;
 -- 
 2.43.0
 
