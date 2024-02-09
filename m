@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C441284F539
+	by mail.lfdr.de (Postfix) with ESMTPS id CC68284F53A
 	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:34:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYQ4S-0008DV-Ap; Fri, 09 Feb 2024 07:33:32 -0500
+	id 1rYQ4U-0008T0-GD; Fri, 09 Feb 2024 07:33:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ45-00086K-CD
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:33:09 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ49-00087O-OP
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:33:18 -0500
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ42-0001wg-SP
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:33:08 -0500
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ47-0001xg-DJ
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:33:13 -0500
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4107ed0c536so766095e9.2
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:33:05 -0800 (PST)
+ 5b1f17b1804b1-4107d76dfa8so1174745e9.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:33:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707481984; x=1708086784; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707481990; x=1708086790; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EzmCAZqDnP2GixBxkCB+iCs3cLSrfN0BzrHq0xGFwRw=;
- b=O3StNvGaCW5pR50S+3/8bugspf+NpvrYo2inwabPaLaGhb1D0NR0E2UfPzXgRTKjQz
- C2jw26s7AMjngnf9v6Tmm73YiaxJHPZbzP58LFQS6Fut6ZqFn+yL8ie50h8Mywd2PN90
- FXPE5wCgPO7QUaSyNzE/Lg+ug4Mw+V+NnlJZCNwxDO9jmwJkwGrlrACgau0Vb7Bv8yn1
- 2wO+cR0lIQJeoSriyfJj/HedoqdMBoR+lxtxppnjjsyKrbPEsjPtE9I8Ogyf1KJnVw3T
- NkdviWAf2qDHpTqzt5hy72fTnqJKuz4OSqxWvC8X1CrfRMIWyw7db9oBxzUD4WSIMZ3W
- D6xA==
+ bh=JcayKF0S5fuq4dnazv16i3De/3X7znpGdXMiaRyrsN4=;
+ b=XCRm0powtD18ImmQOnuaDlzHAu+kJi3KZG8PWL/Qsk528rduJwThTRRXKaJT9sTYrc
+ Tqrl4w7LGWypUE4C9UiH7x6TFfTOqyCYwwgXuSZzZhes50mF3heweyWE1jxOXUn15aYa
+ iRclmcF3hb7vFlVe4lFirDQrL6p1B6qlQBrcQd3EZbhqabzbMeH0YD8BVuXZnx/an8Z2
+ oIzdMdUMFN6FHTjOsblg2HZ6wLw0YraEefbFLuN+InA49Jx6+2gRw6vJYKVTHO9dlQBQ
+ +d8QBSISALzvLKaKNJWUH3/YICE//sjsva+ZML1fIIxYMyfF3T1IfpLtDYQubQih6c8I
+ e9CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707481984; x=1708086784;
+ d=1e100.net; s=20230601; t=1707481990; x=1708086790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EzmCAZqDnP2GixBxkCB+iCs3cLSrfN0BzrHq0xGFwRw=;
- b=HAmRrk+axQx65guHkqtV3RkLl8hVmfRFnZlMmX44R1duoNX6Ts8Gtdgis6uyKEugF0
- 3cMc/fiaI3x97I65KRnzxPxjlRVp7hqPhk1e8ua0E0MFeiNjqjB2vM+VgQ1YySj09Qsm
- eUnYu3B/pBgdAhK0v9bp0vdnmlpJprhNG4SlRfnhhXgcLrqILJ8ZM/fwzvNBEomAG4oJ
- rXG6IQ1oYBeXuinJHkLekno3fxljKbHgl96V5e+AdW+qbpnUtc4Yy/FuKd/ifb13xqzX
- toU7+YG7EH1Bbw3oMw7PLcUDl/uGAGfD/bo2ZFSsfwKriQsmk5/76avb6giu8O/doJo1
- JOaA==
-X-Gm-Message-State: AOJu0YwdC3IcOUE32uerljMpz281NPrBN8kNoi+yR/e76F/nwd/1/UhT
- R+hK8lZvgBDrK5pXeA6vWE4F0wo8ky0d65LxY414JsxKx840sG4egSUbOfRMv/42n+Z4yFNrzBM
- Z
-X-Google-Smtp-Source: AGHT+IFFniHgzTURLnYglT2Uf75r2lJLrVzOD6Zm8Bv/u5mrekpnhWZ1KZ33dJ8yDe2BK21x7bT0Ug==
-X-Received: by 2002:a05:600c:35cc:b0:40f:dc50:aea5 with SMTP id
- r12-20020a05600c35cc00b0040fdc50aea5mr1230765wmq.22.1707481984432; 
- Fri, 09 Feb 2024 04:33:04 -0800 (PST)
+ bh=JcayKF0S5fuq4dnazv16i3De/3X7znpGdXMiaRyrsN4=;
+ b=Al2v4tp5wgv5xFfmLkJ+R973D3Xfrg/zomZQ6a9K8WpoaFUgnwxFCgaSp+lJe0Phhi
+ 6F3Z4ny9OdZY3Amzj+yyjVYrLWhLUZhm5S48dxBr5JFOz6ugaYVw3MXHiIy+YuY2fRxQ
+ WBth+qB217G4Om3IFjurHNVRvqH+TCDWelbIB5y9rHf4BMkdk3tZIjBURjsTPu0zP39d
+ 8Uq/E81o/9WRxKycJz6KsHgEcLX/KfrqQPxuPeRxEUG5kEVq4KSyIqm8Fgm5fV5IxIJ1
+ H7hA/rDJUeJlx3SU7gHe7zxdAm8RaUGsmqkZi3iyY12GtyTMGYBwSaSGUwCtpXvl5jiX
+ V29Q==
+X-Gm-Message-State: AOJu0YzvjD4iIgsiKPmnQmeBwRv0XFKh1rmoshfdmHgZrpdNbxg6jiF2
+ AU5AFi80bWJOeR7KRLEAycA/AhnlTekiAiVo8Q7QIOwsF6Zh1kbWyAOnnuX95aqlrIVnFAu7YhG
+ y
+X-Google-Smtp-Source: AGHT+IHymHyBHrI56TJOBErn7HMGdIbLtD9MmfpU76aiMBRb6xVnr1Dh9YBJV+bjjR2Z+7Xj6ET4WQ==
+X-Received: by 2002:a05:600c:474a:b0:40e:f632:494c with SMTP id
+ w10-20020a05600c474a00b0040ef632494cmr1082594wmo.30.1707481989975; 
+ Fri, 09 Feb 2024 04:33:09 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWXEEO6MR0jNSBaQ5p3sBdVfhNDOQv+N8rvHqTksw8HLNFUba8y0enrZEmMbRvtARpx8UGiGpZ9GoGHaQSXrLcMd78ZhvjzYc/2CmKvvVspbTDqsZEEiq+A8Xv6/Fi2PGsILNbSfLGVlU0KZzW3h/9SgoQ6X4h+W/9/rHyo8ix8162J5gbvi+Gj+xO7c8rCiIjvS7yH0BOOu50owsAcS83l0F2cO91lIt5B0wONiwUZyd8ZhZEL4kPDJZrrzkhoqhr1S1BpF2e5xmjUWAtm7p30SS4GZ6ZMkgZlzC/akWb53O6Wy1R85E8wi03gXRa6eEiqm49eRzWSPZY=
+ AJvYcCWm7AlHq26PilrZzGO+lwC+lnCRy4B0mshbZq/Z/Vz/tNNgW7nFvgHSEn3NR4kNBb1QD1bYsB9sbTCQkuIplJZ2vp9wxhLxJ2K3GM700Ez9NaVI54aJS8pvb27MxRewqDqmPyV6XX8JX6NJR4CFxRuIk0nKUBCz9Tu73w0MVJP/g/uTEy2H8/Q29lGIP3sPfaP5lHgQAq28YDAttTHR8JOJsF9QPi8M916fOKpYfk+PGy7LswYbdFiAG4IFdlY/lQ+jYeehao+iI7x1u/l3AZxsOrPT38dPcNvKFKcyYfMGHcHS51TINF0/9eO8AGsu08buzgh7OtDd/xs=
 Received: from m1x-phil.lan ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- jr6-20020a05600c560600b0041079d336c7sm484051wmb.39.2024.02.09.04.33.02
+ l4-20020a05600c4f0400b0040ecdd672fasm540810wmq.13.2024.02.09.04.33.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Feb 2024 04:33:04 -0800 (PST)
+ Fri, 09 Feb 2024 04:33:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -66,10 +66,10 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC PATCH 6/7] hw/intc/mips_gic: Initialize IRQ array once device is
- realized
-Date: Fri,  9 Feb 2024 13:32:24 +0100
-Message-ID: <20240209123226.32576-7-philmd@linaro.org>
+Subject: [RFC PATCH 7/7] hw/misc/mac_via: Have VIA1 child access parent IRQ
+ once realized
+Date: Fri,  9 Feb 2024 13:32:25 +0100
+Message-ID: <20240209123226.32576-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240209123226.32576-1-philmd@linaro.org>
 References: <20240209123226.32576-1-philmd@linaro.org>
@@ -104,45 +104,43 @@ We shouldn't call qdev_get_gpio_in() on unrealized devices.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/mips_gic.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ hw/misc/mac_via.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/mips_gic.c b/hw/intc/mips_gic.c
-index 77ba7348a3..05c8b8f4c4 100644
---- a/hw/intc/mips_gic.c
-+++ b/hw/intc/mips_gic.c
-@@ -419,7 +419,6 @@ static void mips_gic_realize(DeviceState *dev, Error **errp)
-         return;
+diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
+index db6142b5f4..67e51430bf 100644
+--- a/hw/misc/mac_via.c
++++ b/hw/misc/mac_via.c
+@@ -1246,7 +1246,6 @@ static void mos6522_q800_via1_realize(DeviceState *dev, Error **errp)
+     v1s->tick_offset = (uint32_t)mktimegm(&tm) + RTC_OFFSET;
+ 
+     adb_register_autopoll_callback(adb_bus, adb_via_poll, v1s);
+-    v1s->adb_data_ready = qdev_get_gpio_in(dev, VIA1_IRQ_ADB_READY_BIT);
+ 
+     if (v1s->blk) {
+         int64_t len = blk_getlength(v1s->blk);
+@@ -1270,6 +1269,13 @@ static void mos6522_q800_via1_realize(DeviceState *dev, Error **errp)
      }
-     s->vps = g_new(MIPSGICVPState, s->num_vps);
--    s->irq_state = g_new(MIPSGICIRQState, s->num_irq);
-     /* Register the env for all VPs with the GIC */
-     for (i = 0; i < s->num_vps; i++) {
-         if (cs != NULL) {
-@@ -433,7 +432,14 @@ static void mips_gic_realize(DeviceState *dev, Error **errp)
-     }
-     s->gic_timer = mips_gictimer_init(s, s->num_vps, gic_timer_expire_cb);
-     qdev_init_gpio_in(dev, gic_set_irq, s->num_irq);
--    for (i = 0; i < s->num_irq; i++) {
+ }
+ 
++static void mos6522_q800_via1_wire(DeviceState *dev)
++{
++    MOS6522Q800VIA1State *v1s = MOS6522_Q800_VIA1(dev);
++
++    v1s->adb_data_ready = qdev_get_gpio_in(dev, VIA1_IRQ_ADB_READY_BIT);
 +}
 +
-+static void mips_gic_wire(DeviceState *dev)
-+{
-+    MIPSGICState *s = MIPS_GIC(dev);
-+
-+    s->irq_state = g_new(MIPSGICIRQState, s->num_irq);
-+    for (unsigned i = 0; i < s->num_irq; i++) {
-         s->irq_state[i].irq = qdev_get_gpio_in(dev, i);
-     }
- }
-@@ -450,6 +456,7 @@ static void mips_gic_class_init(ObjectClass *klass, void *data)
+ static void mos6522_q800_via1_init(Object *obj)
+ {
+     MOS6522Q800VIA1State *v1s = MOS6522_Q800_VIA1(obj);
+@@ -1336,6 +1342,7 @@ static void mos6522_q800_via1_class_init(ObjectClass *oc, void *data)
+     MOS6522DeviceClass *mdc = MOS6522_CLASS(oc);
  
-     device_class_set_props(dc, mips_gic_properties);
-     dc->realize = mips_gic_realize;
-+    dc->wire = mips_gic_wire;
- }
- 
- static const TypeInfo mips_gic_info = {
+     dc->realize = mos6522_q800_via1_realize;
++    dc->wire = mos6522_q800_via1_wire;
+     resettable_class_set_parent_phases(rc, NULL, mos6522_q800_via1_reset_hold,
+                                        NULL, &mdc->parent_phases);
+     dc->vmsd = &vmstate_q800_via1;
 -- 
 2.41.0
 
