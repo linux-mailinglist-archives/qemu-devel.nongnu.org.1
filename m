@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFCB84F918
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 17:03:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF9084F916
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 17:03:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYTJR-00016g-CE; Fri, 09 Feb 2024 11:01:13 -0500
+	id 1rYTJR-00016d-BT; Fri, 09 Feb 2024 11:01:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rYTJM-00015a-JT
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:01:09 -0500
+ id 1rYTJL-000134-DL
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:01:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rYTJC-000656-82
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:01:08 -0500
+ id 1rYTJC-000654-3q
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:01:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707494457;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NBtPtUTLr4gACY8ONXPAct8+BhGOhDuuMtWRt+FduVo=;
- b=dLHvi3gSBwgZwAc/BSXaX//O/wM6fjcDrECX33z6a6TYioo8zYHzYrf06PhUiYecsYMBpk
- 2SMW5uwCuRJ1/C+NeyvRnA3rwx96ScGYOJT2Ddxihb7dvDVyz6mLLWsh7agd/oMq3+kUnh
- M2v7cV6Es8Q9hoke4NPffex0GY4fG8Q=
+ bh=3kjxrz9LaiJzI3z0kfZ3ZqqP0YF4vwjkJCjW49jLgJg=;
+ b=AVHFl/xrrIk0nRHl/XqKsE7rZEeEICvVlv63qW5D7cNyweKu7QtuHZnIy0XykeNROjqgJ+
+ 9mF5fr1vpoG2Ou6b55I4uTeomIABcWKn4jY9X8Dtsb9zzfu9a2ZtrHCPRJSf5lNjeDiHQa
+ n3DUhNcDSZaibdPt+d3Q5kpnQRvMA0Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-532-LLLbaW6yNa-XtsvAFpG_rw-1; Fri, 09 Feb 2024 11:00:54 -0500
-X-MC-Unique: LLLbaW6yNa-XtsvAFpG_rw-1
+ us-mta-594-wwBfNdwVM1WkJLbp7j0hdQ-1; Fri, 09 Feb 2024 11:00:53 -0500
+X-MC-Unique: wwBfNdwVM1WkJLbp7j0hdQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F8E48489A0;
- Fri,  9 Feb 2024 16:00:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 81B298489A5;
+ Fri,  9 Feb 2024 16:00:52 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.197])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A82BF492BC6;
- Fri,  9 Feb 2024 16:00:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B5833492BC6;
+ Fri,  9 Feb 2024 16:00:50 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, miguel.luis@oracle.com, haibo.xu@linaro.org,
  peter.maydell@linaro.org, richard.henderson@linaro.org, maz@kernel.org,
  gkulkarni@amperecomputing.com
-Subject: [RFC v2 3/5] target/arm/kvm: Add helper to detect EL2 when using KVM
-Date: Fri,  9 Feb 2024 16:59:15 +0100
-Message-ID: <20240209160039.677865-4-eric.auger@redhat.com>
+Subject: [RFC v2 4/5] target/arm: Enable feature ARM_FEATURE_EL2 if EL2 is
+ supported
+Date: Fri,  9 Feb 2024 16:59:16 +0100
+Message-ID: <20240209160039.677865-5-eric.auger@redhat.com>
 In-Reply-To: <20240209160039.677865-1-eric.auger@redhat.com>
 References: <20240209160039.677865-1-eric.auger@redhat.com>
 MIME-Version: 1.0
@@ -83,63 +84,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Haibo Xu <haibo.xu@linaro.org>
 
-Introduce query support for KVM_CAP_ARM_EL2.
+KVM_CAP_ARM_EL2 must be supported by the cpu to enable ARM_FEATURE_EL2.
+In case the host does support NV, expose the feature.
 
 Signed-off-by: Haibo Xu <haibo.xu@linaro.org>
 Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 ---
- target/arm/kvm.c     |  5 +++++
- target/arm/kvm_arm.h | 12 ++++++++++++
- 2 files changed, 17 insertions(+)
+
+v1 -> v2:
+- remove isar_feature_aa64_aa32_el2 modif in target/arm/cpu.h
+  [Richard] and use el2_supported in kvm_arch_init_vcpu
+---
+ target/arm/kvm.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 81813030a5..0996866afe 100644
+index 0996866afe..a08bc68a3f 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -1791,6 +1791,11 @@ bool kvm_arm_aarch32_supported(void)
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL1_32BIT);
- }
+@@ -238,6 +238,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+      */
+     int fdarray[3];
+     bool sve_supported;
++    bool el2_supported;
+     bool pmu_supported = false;
+     uint64_t features = 0;
+     int err;
+@@ -268,6 +269,14 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         init.features[0] |= 1 << KVM_ARM_VCPU_SVE;
+     }
  
-+bool kvm_arm_el2_supported(void)
-+{
-+    return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL2);
-+}
++    /*
++     * Ask for EL2 if supported.
++     */
++    el2_supported = kvm_arm_el2_supported();
++    if (el2_supported) {
++        init.features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
++    }
 +
- bool kvm_arm_sve_supported(void)
- {
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_SVE);
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index cfaa0d9bc7..36e4b37ec0 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -188,6 +188,13 @@ bool kvm_arm_pmu_supported(void);
-  */
- bool kvm_arm_sve_supported(void);
+     /*
+      * Ask for Pointer Authentication if supported, so that we get
+      * the unsanitized field values for AA64ISAR1_EL1.
+@@ -449,6 +458,10 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     features |= 1ULL << ARM_FEATURE_PMU;
+     features |= 1ULL << ARM_FEATURE_GENERIC_TIMER;
  
-+/**
-+ * kvm_arm_el2_supported:
-+ *
-+ * Returns true if KVM can enable EL2 and false otherwise.
-+ */
-+bool kvm_arm_el2_supported(void);
++    if (el2_supported) {
++        features |= 1ULL << ARM_FEATURE_EL2;
++    }
 +
- /**
-  * kvm_arm_get_max_vm_ipa_size:
-  * @ms: Machine state handle
-@@ -235,6 +242,11 @@ static inline bool kvm_arm_sve_supported(void)
-     return false;
- }
+     ahcf->features = features;
  
-+static inline bool kvm_arm_el2_supported(void)
-+{
-+    return false;
-+}
-+
- /*
-  * These functions should never actually be called without KVM support.
-  */
+     return true;
+@@ -1912,6 +1925,9 @@ int kvm_arch_init_vcpu(CPUState *cs)
+         cpu->kvm_init_features[0] |= (1 << KVM_ARM_VCPU_PTRAUTH_ADDRESS |
+                                       1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
+     }
++    if (kvm_arm_el2_supported()) {
++        cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
++    }
+ 
+     /* Do KVM_ARM_VCPU_INIT ioctl */
+     ret = kvm_arm_vcpu_init(cpu);
 -- 
 2.41.0
 
