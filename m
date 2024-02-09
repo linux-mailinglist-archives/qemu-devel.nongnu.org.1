@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDA984F4AA
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0656884F4BA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:35:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYP5K-0003AA-2g; Fri, 09 Feb 2024 06:30:22 -0500
+	id 1rYP9M-0006al-3J; Fri, 09 Feb 2024 06:34:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYP5H-00034S-8f
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:30:19 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ id 1rYP9G-0006Zy-0h
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:34:26 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYP5B-00065B-2J
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:30:18 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-56001b47285so1186856a12.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:30:12 -0800 (PST)
+ id 1rYP9D-00072l-MF
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:34:25 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-561519f8698so59256a12.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:34:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707478211; x=1708083011; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707478461; x=1708083261; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0ri4mIJKLylno5ut36UFgzwPNY/6AYr7Kmyuxr9TDeU=;
- b=zs8DCv0vTmOg/FXc/HgCQqlCq+nskcq0PkW2bcar9I+EM/uit7x9UrfqMX9DSAXa4t
- CRGhEb71Y/ZIOB7S9bt732A9eaSlwL3zgxK467rm3GNRSNeoNuPo4ASjndDmBFuHoLWi
- DDnIbQSlymgBU87bwwCv+ig2UWx39TndfE+Zo/f2ELo7JDrvYhwZn6vRocVUtDnWjgKY
- vmbL4Y7t1iMOcqI9UK1bJ3+EB8O7oIuWkEErFU4juMK8ow79s6CWtDeDwH14M8OwVL8x
- pjlI2qhmNB6fqJ8snwcZa/iTOo5STa1Fsso/rnlgdoaAqcoBLXKmfXTGMlUjN4OIR4+w
- qzGg==
+ bh=73iO4c+i9wnBB96XwVHe+I47pyjo1KSVQ1dMP1mpyFQ=;
+ b=oH04UQ1F9f7gYjADO8ScX8/yXBJjZ5FQez+2TQB1fCUJOnW6SQCBQ/k4g76KY0M01A
+ GDVMfqwmcqI0/coQ3F8sWcitI90p0T6NWU5huJSp734usl5OX0Hvy6QPhYT1bkIBOsT+
+ DH5jRrhe9mLOqn6NttqYjvdYz9bQNJVIG3xpE+y5v4D2BUtF1r34n3kEHwQRNShGv4HO
+ SPBjN+NW29HZNeekoo/wSI5Xz8DzSaOxTPQ4PKr455k18O7J1E43LM274HlyqVJdZjpz
+ 3HTQejcgObQ4jtbtDCeRy+NBC2pvSiTya1EVNyBlGEmmE4rxrAo1bnmQ5zsNgB+J/zM1
+ 1Qeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707478211; x=1708083011;
+ d=1e100.net; s=20230601; t=1707478461; x=1708083261;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0ri4mIJKLylno5ut36UFgzwPNY/6AYr7Kmyuxr9TDeU=;
- b=miFWEQaduSzhZMs1p2yTmhuTk+MJO+AajzJX6SzxTbNQHNLFDJeeOI4jORKsGF+7s7
- 1q3SiZAxU+lhXhG+qgcKdPHSrG7x0SB08cWRHFG9KfZTFl7XYAu72Axd7J/DmOngT6wT
- vVpkMWINkJdOKSvIc6JsQ3TBGgdIGsiLilhLz3wBodLWNo02U1ywKn0L7sghCnp4ZMzY
- h89n84VuaYNN8/JQT4uGm7ri2ubbeO8fwt9Ovff+O4ViT9w0haZGEVm6V8uU7aq82TdD
- D8tvbyCgHwC9JkXQzeptVJKKHP3RhmM/7k5R7RoX0gw014btjOGysQzdABnCBm+HxPtU
- ktGA==
-X-Gm-Message-State: AOJu0Yy+gGeqaGf7VttAQEc93mNsQB+7KhaSokjdY4OdyXj99G+cgSxm
- Gt5j572w99aqjctO46v9/ryZojV779irUGNdTT9zIY2p08d4eIQA2Uxo3PlRr5GyFf5ra/C4Czw
- Mf+kHtf+O6GkAWY+XnSRHjqVcQKODDQiY3GArfg==
-X-Google-Smtp-Source: AGHT+IHUpniXvn6D9Mp51N05Y/sOzEKBCLcC3nksSsXZhoCwpMqrcV5GCAh54ffGLH8lri3aaAhzTjAEcCMARg29Y8A=
-X-Received: by 2002:a05:6402:356:b0:560:eaa8:9654 with SMTP id
- r22-20020a056402035600b00560eaa89654mr1059211edw.12.1707478211419; Fri, 09
- Feb 2024 03:30:11 -0800 (PST)
+ bh=73iO4c+i9wnBB96XwVHe+I47pyjo1KSVQ1dMP1mpyFQ=;
+ b=V8cB7KrBlBftSj7FgDqLUTRWGp9NWlJnxxZEx6pTtX63RV/AZmZylXN6tC9uaCKmJD
+ yamvOT8ctNUii58RuKQjAJktyGSL0p60jfFlphzLCAlMjff/YchDNgG091BCWA4yWMZI
+ Mge0GD/aRT87PUuZB8IoJIoXiqNYX7ceR2wsMS5TTq70U7WcA6nSyupGYlOSlkw6IcPh
+ qrMm6nwpZsRlxugFu+BsD2x/sDVg8BpN+E5kq9GLV1D13gDLvwEV9unJK4jC8YSAYtP6
+ pbZnSYGkgDxWh/jHLVRXdcEN7PxZ38H7Gvy1bSM0QEyvAd66uBANxNZoF8mud61AySre
+ j8YA==
+X-Gm-Message-State: AOJu0Yw1uIYvrAqghuCiFxO4qjIeRd4kd7cf1gwsSTO4IrwOsi8yE2V1
+ HpyorEgmp1h3ZCIo2nyA0s9cHIKFxLj2o3XpRTRb75DuU8k9qKC2pNe6UcJNRIfGtP8E57Y31l0
+ YJgZj5kdWzyjYQxm5oAE8ARO+uUK7EZzsBGnQUQ==
+X-Google-Smtp-Source: AGHT+IEXhDYMtXFZegdJf6cc7C07e9wzKcREENIRK9X9xal5aNJh4A+5Jwr7NY3sgHI6Dk/mtKuXOv/XYWxARoh+DTU=
+X-Received: by 2002:a05:6402:2902:b0:561:3dcd:3e09 with SMTP id
+ ee2-20020a056402290200b005613dcd3e09mr1302227edb.31.1707478461675; Fri, 09
+ Feb 2024 03:34:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20240208181245.96617-1-philmd@linaro.org>
- <20240208181245.96617-8-philmd@linaro.org>
-In-Reply-To: <20240208181245.96617-8-philmd@linaro.org>
+ <20240208181245.96617-12-philmd@linaro.org>
+In-Reply-To: <20240208181245.96617-12-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 Feb 2024 11:30:00 +0000
-Message-ID: <CAFEAcA9EWzBK68BrKfwRsv761ds6TVf-QPySg9d3jSPm1v_QxQ@mail.gmail.com>
-Subject: Re: [PATCH v3 07/11] hw/sh4/r2d: Realize IDE controller before
- accessing it
+Date: Fri, 9 Feb 2024 11:34:10 +0000
+Message-ID: <CAFEAcA8XF4i7qNWRAO2PjiNxecLY8qfGzYK-ZDE8fvy7mpf-4Q@mail.gmail.com>
+Subject: Re: [PATCH v3 11/11] hw/sparc64/cpu: Initialize GPIO before realizing
+ CPU devices
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
  Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org, 
  Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, 
- Magnus Damm <magnus.damm@gmail.com>
+ Markus Armbruster <armbru@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,14 +97,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Thu, 8 Feb 2024 at 18:14, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 > wrote:
 >
-> We should not wire IRQs on unrealized device.
+> Inline cpu_create() in order to call
+> qdev_init_gpio_in_named_with_opaque()
+> before the CPU is realized.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/sh4/r2d.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  hw/sparc64/sparc64.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
+> diff --git a/hw/sparc64/sparc64.c b/hw/sparc64/sparc64.c
+> index 72f0849f50..3091cde586 100644
+> --- a/hw/sparc64/sparc64.c
+> +++ b/hw/sparc64/sparc64.c
+> @@ -24,6 +24,7 @@
+>
+>
+>  #include "qemu/osdep.h"
+> +#include "qapi/error.h"
+>  #include "cpu.h"
+>  #include "hw/boards.h"
+>  #include "hw/sparc/sparc64.h"
+> @@ -271,9 +272,10 @@ SPARCCPU *sparc64_cpu_devinit(const char *cpu_type, =
+uint64_t prom_addr)
+>      uint32_t  stick_frequency =3D 100 * 1000000;
+>      uint32_t hstick_frequency =3D 100 * 1000000;
+>
+> -    cpu =3D SPARC_CPU(cpu_create(cpu_type));
+> +    cpu =3D SPARC_CPU(object_new(cpu_type));
+>      qdev_init_gpio_in_named(DEVICE(cpu), sparc64_cpu_set_ivec_irq,
+>                              "ivec-irq", IVEC_MAX);
+> +    qdev_realize(DEVICE(cpu), NULL, &error_fatal);
+>      env =3D &cpu->env;
+>
+>      env->tick =3D cpu_timer_create("tick", cpu, tick_irq,
+> --
+> 2.41.0
+
+For the purposes of letting us enforce the "init GPIOs
+before realize, not after" rule,
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+but it looks like this code is adding a GPIO to a
+device from code that's not actually part of the
+implementation of the device. Ideally most of the code in
+this file should be rolled into the CPU itself in target/sparc.
 
 thanks
 -- PMM
