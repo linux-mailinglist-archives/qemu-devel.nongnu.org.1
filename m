@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D1E84FEB6
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C9C84FEB9
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:25:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYYLV-0007Al-Qv; Fri, 09 Feb 2024 16:23:41 -0500
+	id 1rYYLZ-0007Ei-2Q; Fri, 09 Feb 2024 16:23:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLT-00079A-Cs; Fri, 09 Feb 2024 16:23:39 -0500
+ id 1rYYLW-0007EA-9v; Fri, 09 Feb 2024 16:23:42 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLR-0000Cw-T1; Fri, 09 Feb 2024 16:23:39 -0500
+ id 1rYYLU-0000D9-PD; Fri, 09 Feb 2024 16:23:42 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2EA934BF67;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3B74F4BF68;
  Sat, 10 Feb 2024 00:24:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1B87F77EE1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 287DC77EE2;
  Sat, 10 Feb 2024 00:22:48 +0300 (MSK)
-Received: (nullmailer pid 1123184 invoked by uid 1000);
+Received: (nullmailer pid 1123187 invoked by uid 1000);
  Fri, 09 Feb 2024 21:22:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 15/23] qemu-img: resize: do not always eat last argument
-Date: Sat, 10 Feb 2024 00:22:36 +0300
-Message-Id: <7e0e7cb2470d572e8c0a48ba85c993be3bdb1c07.1707513011.git.mjt@tls.msk.ru>
+Subject: [PATCH 16/23] qemu-img: refresh options/--help for "resize" command
+Date: Sat, 10 Feb 2024 00:22:37 +0300
+Message-Id: <4025c554219a66f0b539df7d15bdd1874317cacb.1707513011.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1707513011.git.mjt@tls.msk.ru>
 References: <cover.1707513011.git.mjt@tls.msk.ru>
@@ -58,55 +58,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'qemu-img resize --help' does not work, since it wants more arguments.
-Only eat last option at the beginning if it starts like -N.., and allow
-getopt() to do its work, and eat it up at the end if not already eaten.
-This will not allow to mix options and size anyway, but it is better
-than now.
-
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Add missing long options and --help output.
 ---
- qemu-img.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ qemu-img.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 69d41e0a92..929a25a021 100644
+index 929a25a021..e552401074 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4271,13 +4271,13 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
- 
-     /* Remove size from argv manually so that negative numbers are not treated
-      * as options by getopt. */
--    if (argc < 3) {
--        error_exit(ccmd, "Not enough arguments");
--        return 1;
-+    if (argc > 1 && argv[argc - 1][0] == '-'
-+        && argv[argc-1][1] >= '0' && argv[argc-1][1] <= '9') {
-+        size = argv[--argc];
-+    } else {
-+        size = NULL;
-     }
- 
--    size = argv[--argc];
--
-     /* Parse getopt arguments */
-     fmt = NULL;
+@@ -4283,7 +4283,9 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
      for(;;) {
-@@ -4329,10 +4329,13 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+         static const struct option long_options[] = {
+             {"help", no_argument, 0, 'h'},
++            {"quiet", no_argument, 0, 'q'},
+             {"object", required_argument, 0, OPTION_OBJECT},
++            {"format", required_argument, 0, 'f'},
+             {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+             {"preallocation", required_argument, 0, OPTION_PREALLOCATION},
+             {"shrink", no_argument, 0, OPTION_SHRINK},
+@@ -4302,8 +4304,21 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+             unrecognized_option(ccmd, argv[optind - 1]);
              break;
-         }
-     }
--    if (optind != argc - 1) {
-+    if (optind + 1 + (size == NULL) != argc) {
-         error_exit(ccmd, "Expecting image file name and size");
-     }
-     filename = argv[optind++];
-+    if (!size) {
-+        size = argv[optind++];
-+    }
- 
-     /* Choose grow, shrink, or absolute resize mode */
-     switch (size[0]) {
+         case 'h':
+-            help();
+-            break;
++            cmd_help(ccmd,
++"[-f FMT | --image-opts] [--preallocation PREALLOC] [--shrink]\n"
++"	[--object OBJECTDEF] [-q] FILENAME [+|-]SIZE\n"
++,
++" -q|--quiet - quiet operation\n"
++" -f|--format FMT - specify FILENAME format explicitly\n"
++" --image-opts - indicates that FILENAME is a complete image specification\n"
++"  instead of a file name (incompatible with --format)\n"
++" --shrink - allow operation when new size is smaller than original\n"
++" --preallocation PREALLOC - specify preallocation type for the new areas\n"
++" --object OBJDEF - QEMU user-creatable object (eg encryption key)\n"
++" FILENAME - image file (specification) to resize\n"
++" SIZE - new image size or amount by which to shrink/grow\n"
++);
++            return 0;
+         case 'f':
+             fmt = optarg;
+             break;
 -- 
 2.39.2
 
