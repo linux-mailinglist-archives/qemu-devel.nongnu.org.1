@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD5E84F915
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 17:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C2284F947
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 17:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYTKh-0002Kn-Il; Fri, 09 Feb 2024 11:02:31 -0500
+	id 1rYTOT-0006pn-CM; Fri, 09 Feb 2024 11:06:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYTKE-0001xD-1A
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:02:11 -0500
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1rYTOK-0006pR-Ge
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:06:16 -0500
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYTKB-0006It-2I
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:02:01 -0500
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-558f523c072so1706932a12.2
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 08:01:52 -0800 (PST)
+ id 1rYTOH-0007Am-M5
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 11:06:15 -0500
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5610cc8cc1aso1267258a12.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 08:06:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707494511; x=1708099311; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707494771; x=1708099571; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lezDAMlBpM8fielSqHbLTkkmpxf2SLdKNWZUmn314Vk=;
- b=ke9Dx7NgiXTBo07cr7LnJGVSB0B8CT9I3nmPeGN5MeJ4WCmlmQoCvF1ksEQbuobOb6
- VbGvvCDL00hRwsNrFrPk8r8lIdTBFQS+dv+5enGQluoYQKQz8KJaRrrdRn87vcRYnaRo
- uo52Btl5wGhqGuqCutTFHCqnYO3oakby+hKVpzo8oAo2jzr1gEQIFa9y2MRdHROJRYSt
- kf0sy3hrCt5ciaHMcg/BxtQCT1YnL5NBmjORNfOeh1P4T3Kr6ZmMVzKgXPm6BvpHoyJZ
- 7Wl4Y11Uwf7cbYeczD/nLEzt8FNGI/s52cytvMQJZAWf2J5JwqS5W/y9tpvWTw9fXtNB
- SG/g==
+ bh=Mg5RFUOUe7RalfkyKcnfi0VZ1gLs9xSMYE3MEXz1jp8=;
+ b=fQMoKfNmIWHkATWmwzXq6ZTXMI+9CxGpkfurPejeVY4SdnUJZTw+lZYGIFuWj4UpM1
+ zvFxafv2CAGnmZMTp4SPphJfqnPLv8BFeFCEyNSPhvVUQ7qhcJQubuh2EF3E5dZQXpT+
+ cowbzcIjBKK+J79ZxHB02t1z4YI3jUhoQNvo1v7QiMWcloBeV1b+csBEg9Gfb2+1F6LJ
+ PeceBIj8IzkbK0/GWUtop3418FjX0OenqXyTKPPK1gzUQgLGdP9OoWHwakoqkrHSoDVV
+ 6XSEHkcJeAQn6Z1jpZ7jZWSGkubgfZeqCyjZ9wj6BqtoqDVCLo/L/cdt4mb1DmiR52r4
+ og1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707494511; x=1708099311;
+ d=1e100.net; s=20230601; t=1707494771; x=1708099571;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lezDAMlBpM8fielSqHbLTkkmpxf2SLdKNWZUmn314Vk=;
- b=Ko+ArpxJN9FQxg9yg/QIM/zp/QAKJK3MJQpq0rib2elY0KiFBD9Y9EWbbaOm8o7Fxm
- 4fX0uQtA17fhAr1kDkAY7XwfIusk0TKtyjPInlqCShY3AOtb4beNnLWRYKFJ6p60V5/P
- bKQPG4JTWw2VcHjHpG1SUwnNug2AEbGscBzRWwVS3dF1hsgwPFYLXurk/lcQw/vozTo+
- GJnQocDLTfwSmE1uvqKNqWbug7xHKdv2sNv1yjPCbM2aZ/DEDe1FstkYXjrelcwcutbB
- TZaBoxzzwiJ7MC79PFKmirG4j5/TccKYEfLj95g30is5DDLfkXwIhUGI9ivrWDPGsaWv
- wpfA==
-X-Gm-Message-State: AOJu0YzkDpvyyYvA4S34jLtyK5J66J+D3QdG42ZuULHJa2/eHWr6AYoQ
- wx25TEb4wKsBtd3mFSY1DqyfxV+KRLPvyqnqIke3IouVn9pcRTkfI6bQMGzZFj3gUXDE8c4zqnl
- tJ1LYE86Wzd024X8oHxlJoJxJBCmNMMWtCGpMTg==
-X-Google-Smtp-Source: AGHT+IHTWrTSv71O2Pyu15n1vuqvZUfNe7KUZFomMQjZglGedv9It5RW7g+FpkjhUgw6Kwg7Wh6wSNrfAHHxXCjYkTk=
-X-Received: by 2002:aa7:d350:0:b0:55f:8bba:d0ae with SMTP id
- m16-20020aa7d350000000b0055f8bbad0aemr1893609edr.23.1707494511382; Fri, 09
- Feb 2024 08:01:51 -0800 (PST)
+ bh=Mg5RFUOUe7RalfkyKcnfi0VZ1gLs9xSMYE3MEXz1jp8=;
+ b=wjZM0QkCHhMfg9cjhVkQxsdT/NJUtjYg0XHkgspSGiyvex3sl72++dZCc1WVXef7nH
+ 6/X3PbgquVQ0WvvNjtdSBTKGFRbpzxaKOgV/BPCwm19OMj/v/RKKX3nKrcQqM67pjO5e
+ p6vXeTFrUJtQrj7038Mm6NuVCuhhJGTUEC+hhSMreAu2JwFFwR9sCh+jrrJGnQv6M+zJ
+ xSUKeEXjBHIxHpB/1ucDfMrLbvyGHBjCnhhucfur1VXrD96vmFEbFe0VgY7Jt2dLETfh
+ 07kl6cSrPHZwGLVSqH72tsAnkXLyitT7mXCDki+OZoMGw9q+7BYjI2z1iVG5HPEXM2IQ
+ hrhg==
+X-Gm-Message-State: AOJu0Yxi5xsYAWhy/M3IMQyjuSuqtjQ3Fl871bYi4UeG0Z9VNgE9Z5w6
+ A557UCgvcTRimMtjGFmpSb5T7elmpDLDjSZUJNCqRkLxSTV2SFB0yPQZ0TAuompcs9euVWpOyWo
+ LZS3FT5/cdUV3n0X9lFPyrna3UL4R+iXHcEJhfw==
+X-Google-Smtp-Source: AGHT+IGHTe8170YhYTSF6boEZhlvI+Dnd1iLSqveqoyRCbU/AHrHT5cTXaW7wzqAedohF5BZnF2ecdQaVD4iLKHrZkI=
+X-Received: by 2002:aa7:c653:0:b0:560:b488:d9bd with SMTP id
+ z19-20020aa7c653000000b00560b488d9bdmr1531881edr.8.1707494771656; Fri, 09 Feb
+ 2024 08:06:11 -0800 (PST)
 MIME-Version: 1.0
 References: <20240209150039.22211-1-philmd@linaro.org>
- <20240209150039.22211-3-philmd@linaro.org>
-In-Reply-To: <20240209150039.22211-3-philmd@linaro.org>
+ <20240209150039.22211-4-philmd@linaro.org>
+In-Reply-To: <20240209150039.22211-4-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 Feb 2024 16:01:40 +0000
-Message-ID: <CAFEAcA8QYv-CckneF=o7j=vN1=UvFqE0EZPO4+u4daXgOAjBPg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] monitor/target: Include missing 'exec/memory.h' header
+Date: Fri, 9 Feb 2024 16:06:00 +0000
+Message-ID: <CAFEAcA9+6aK_uPa6tFV2-yh3g_2oeuvFaOs=nd=2dexm=uxN9Q@mail.gmail.com>
+Subject: Re: [PATCH 3/3] system/physmem: Assign global system I/O Memory to
+ machine
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Peter Xu <peterx@redhat.com>, 
@@ -69,8 +70,8 @@ Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Laurent Vivier <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,40 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Feb 2024 at 15:02, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+On Fri, 9 Feb 2024 at 15:01, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 > wrote:
 >
-> Include "exec/memory.h" in order to avoid:
->
->   monitor/hmp-cmds-target.c:263:10: error: call to undeclared function 'm=
-emory_region_is_ram';
->   ISO C99 and later do not support implicit function declarations [-Wimpl=
-icit-function-declaration]
->       if (!memory_region_is_ram(mrs.mr) && !memory_region_is_romd(mrs.mr)=
-) {
->            ^
+> So far there is only one system I/O and one system
+> memory per machine.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  monitor/hmp-cmds-target.c | 1 +
->  1 file changed, 1 insertion(+)
+>  system/physmem.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 >
-> diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-> index d9fbcac08d..9338ae8440 100644
-> --- a/monitor/hmp-cmds-target.c
-> +++ b/monitor/hmp-cmds-target.c
-> @@ -25,6 +25,7 @@
->  #include "qemu/osdep.h"
->  #include "disas/disas.h"
->  #include "exec/address-spaces.h"
-> +#include "exec/memory.h"
->  #include "monitor/hmp-target.h"
->  #include "monitor/monitor-internal.h"
->  #include "qapi/error.h"
-> --
-> 2.41.0
+> diff --git a/system/physmem.c b/system/physmem.c
+> index 5e66d9ae36..50947a374e 100644
+> --- a/system/physmem.c
+> +++ b/system/physmem.c
+> @@ -2554,12 +2554,13 @@ static void memory_map_init(void)
+>  {
+>      system_memory =3D g_malloc(sizeof(*system_memory));
+>
+> -    memory_region_init(system_memory, NULL, "system", UINT64_MAX);
+> +    memory_region_init(system_memory, OBJECT(current_machine),
+> +                       "system", UINT64_MAX);
+>      address_space_init(&address_space_memory, system_memory, "memory");
+>
+>      system_io =3D g_malloc(sizeof(*system_io));
+> -    memory_region_init_io(system_io, NULL, &unassigned_io_ops, NULL, "io=
+",
+> -                          65536);
+> +    memory_region_init_io(system_io, OBJECT(current_machine),
+> +                          &unassigned_io_ops, NULL, "io", 65535);
+>      address_space_init(&address_space_io, system_io, "I/O");
+>  }
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+What's the intention in doing this? What does it change?
+
+It seems to be OK to pass a non-Device owner in for
+memory_region_init() (whereas it is *not* OK to do that
+for memory_region_init_ram()), but this seems to be
+getting a bit tricky.
 
 thanks
 -- PMM
