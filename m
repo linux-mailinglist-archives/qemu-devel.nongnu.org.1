@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B94784F43D
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37B284F44D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:10:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOgF-000259-Un; Fri, 09 Feb 2024 06:04:30 -0500
+	id 1rYOgW-00032x-Pf; Fri, 09 Feb 2024 06:04:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOdW-0007bo-IY
+ id 1rYOdW-0007bp-Qs
  for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:44 -0500
 Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOdS-0000uD-LT
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:36 -0500
+ id 1rYOdT-0000uc-Mn
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:37 -0500
 Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6e0518c83c6so526741b3a.0
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:29 -0800 (PST)
+ d2e1a72fcca58-6e0507eb60cso548278b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476488; x=1708081288; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476491; x=1708081291; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IO41j0oXhlMR5wVsqGAyByLINIm4VmbCDcDESGIYuqk=;
- b=SBq1S4xZxo7gPUuEcTjvZOyNM+G/pqTmWEVX9iCLkRVcYca23dN+b2RvbOk+EpJ/44
- OzHhl8KSfK0MLRsjxtIXRtkF4v3m/ITyYbF6G0N3EW9mt4P2O5JRSgtG8JMyD6kI3Qyb
- cnWgOqPI5F9pdyJJA+CzuPOsCerzsJ3a4w7u7LHztPF3JZXMe5Raz+qNaHd7sde++WLd
- gKSVMEWRx2sWWxyWP7Sg3BUgCK/KKT7woICZwz1NkX2dq3d1ngJz4tOFiXNn4DIBc1oi
- paOy6qsTatoL94F1UB0YdFRm5HAfYt9B/Rf/C7oT6vAK791ZBFLIHLfQDkH68PCMvhN3
- ZR0A==
+ bh=THLH44KZ0Lw73EwXc5lGcpB+FJn+KEQb4YaOtb3i2FM=;
+ b=TMddkavk6exxw49wz9fuXq9cax3hgh7RGhofF7HEFxRjvSdRuHBVPJUOPuV9KZaNHi
+ 8KtxJOhrEYFZ1TLXItGOcRkPMRNLE2soAS//NTNXYAPu692a0Hy1O+kATz36vqv66lIx
+ fJIcOJ6UUDaAX2hCr8OeGW0lcKDglC2PU4Mi8INNr+SyfKS5HAM7ltVPLOzPlZAShJqr
+ SQIBq8SCRpVymvAUD2uvr+ykRfggcuYK2FeqtiPxHI7vpxFrOozA7xQKCpXdd1n+pCLC
+ /zH3oWWrPCPmMPU3TP8lH0wIF6K36mvhXh3h49Ka3mtV1vPdLPvaLPCPl3LXahtmm00h
+ TkfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476488; x=1708081288;
+ d=1e100.net; s=20230601; t=1707476491; x=1708081291;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IO41j0oXhlMR5wVsqGAyByLINIm4VmbCDcDESGIYuqk=;
- b=HlyqI/DXfWL51gfvD5xctsNZIVyrOG5wrDLXqlcU+Aupza69nfZ8u38FhKRAoAYhS1
- J9VoZWyxzGHTL2W2icfPuoegTxDFGSGenMo8koszGi9bG+IOzbUS/Hr5HMbKp2GTT0xh
- tTbLBYX3kXcb8b2Tw12s0/nO718t5iG+a8YgpR4Zgnbmaew+n4EQHpoSU4Ar4SQVFf/C
- GGlB9Y0rXKbkhNbkU5R/vd56wsIa35fI0k5WuMlA5cPyiPLrqI8inVxZQuzts9i97Z+K
- l4IjpXa9LGjPIzkICn3sv8uV9zWR2MjZhrSnMveTNkNgcC1JUhey3wz0TN2SwHrjuiIL
- kxtw==
-X-Gm-Message-State: AOJu0YwGqP4FdJ7tUYjPC1afdPZfWZeKHELZ9thXKokmifRaf5UAeSyS
- d0ivaEXkCCmv29dMCdHtHSNEBhNRQSG7TpDvAJQ2614upoH5P0AlqDUdL0FPhJYr4A==
-X-Google-Smtp-Source: AGHT+IEqp0JTyO4X3NafDheZkSuwT7WClcbFpszVAEx1E3DtaOiAurYhbg8KxP8694cIYkKjmR2VKA==
-X-Received: by 2002:a05:6a21:9217:b0:19e:34ea:36ab with SMTP id
- tl23-20020a056a21921700b0019e34ea36abmr1668281pzb.16.1707476488325; 
- Fri, 09 Feb 2024 03:01:28 -0800 (PST)
+ bh=THLH44KZ0Lw73EwXc5lGcpB+FJn+KEQb4YaOtb3i2FM=;
+ b=NtGfLzrvdMsB4JDAT0Av+IDVGCpJ4yFlymAuh5+WsP4kodAAxu3ff1wUXGjXx8Tvm7
+ xRmGRGCor8tHsKfXi3kMysGhT1LMZ88us94uwZX2n3f2fHjFox+MhSrrnQHm/9k5fATT
+ BQkuTAFWTduvJYWGhLRy5KsQxgfCZypR66+l+dNCGd+lamss8Eu5DyVuVrgoomuaAwu9
+ zNTxQizM8/1LzIk19r446GelYAvd5pTf0s7Bw13WihE4/HdgL1Rw9IbYibORqJmFqPGM
+ TdhfDrwpdAgebhfSMtJubhX6MqqaTCKLOYOo7fPWV+kIwtIQ3annIUy5PW00Y9pYP/vi
+ ZdgA==
+X-Gm-Message-State: AOJu0YwGwmmiVCXjBx/TZB9Hn3Mzjjcwq8XheUxrxacswCfPNUewJOkW
+ IXhYcii2qOiOwBmjxwmhbM77moteDIRKBgo9XR+qXB0gBJ6xvrtwDYsqOB64zslh8Q==
+X-Google-Smtp-Source: AGHT+IE2ePe1J4Hh0SeCVQJFdQnFPc6wtjG1DCy+gI24sVZEixoYtpAsgtItsO6bUkkXNlq/t4BX9w==
+X-Received: by 2002:a05:6a21:2d88:b0:19c:9d4d:7d7 with SMTP id
+ ty8-20020a056a212d8800b0019c9d4d07d7mr1887797pzb.41.1707476491422; 
+ Fri, 09 Feb 2024 03:01:31 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVa4HrWZYgkMrvUh401nf0uffcFVDvcExVN9MfFSHn128kbqPl/h8COrpbfFmVsGEB0GanvLEg5a1/N624BZLeeODs41xk//Xr/AHrmoseFqgt+drDt8lWBugnwz9Eev/uRUEB/DSfmLQg2WEsTxN/VXSDKRp1U7Y0OQj3ICtu3TFqEVkY=
+ AJvYcCXO+tLZ95mlTG+4XWJ8AkSx8wRPuRqHv09DM6Io4+ZzOvPpvz9wlocuHj8FFj83vUuBjbgEDqM25wgwo8sCP4j4UceywujybqiywIqoLzvNcNQlyJaFLJM6VLmGNQvtS5q9o8eqUBQBUGYonIfUNZpKz4S5agULe19ilb3Az63tz+dZis0=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.25
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:01:27 -0800 (PST)
+ Fri, 09 Feb 2024 03:01:30 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -67,9 +67,9 @@ Cc: alistair23@gmail.com,
  Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 56/61] smbios: function to set default processor family
-Date: Fri,  9 Feb 2024 20:58:08 +1000
-Message-ID: <20240209105813.3590056-57-alistair.francis@wdc.com>
+Subject: [PULL 57/61] target/riscv: SMBIOS support for RISC-V virt machine
+Date: Fri,  9 Feb 2024 20:58:09 +1000
+Message-ID: <20240209105813.3590056-58-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
@@ -102,47 +102,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-Provide a function to set the default processor family.
+Generate SMBIOS tables for the RISC-V mach-virt.
+Add CONFIG_SMBIOS=y to the RISC-V default config.
+Set the default processor family in the type 4 table.
+
+The implementation is based on the corresponding ARM and Loongson code.
+
+With the patch the following firmware tables are provided:
+
+    etc/smbios/smbios-anchor
+    etc/smbios/smbios-tables
 
 Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20240123184229.10415-3-heinrich.schuchardt@canonical.com>
+Message-ID: <20240123184229.10415-4-heinrich.schuchardt@canonical.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/firmware/smbios.h | 1 +
- hw/smbios/smbios.c           | 7 +++++++
- 2 files changed, 8 insertions(+)
+ hw/riscv/virt.c  | 42 ++++++++++++++++++++++++++++++++++++++++++
+ hw/riscv/Kconfig |  1 +
+ 2 files changed, 43 insertions(+)
 
-diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
-index 7f3259a630..6e514982d4 100644
---- a/include/hw/firmware/smbios.h
-+++ b/include/hw/firmware/smbios.h
-@@ -295,6 +295,7 @@ void smbios_set_cpuid(uint32_t version, uint32_t features);
- void smbios_set_defaults(const char *manufacturer, const char *product,
-                          const char *version, bool legacy_mode,
-                          bool uuid_encoded, SmbiosEntryPointType ep_type);
-+void smbios_set_default_processor_family(uint16_t processor_family);
- uint8_t *smbios_get_table_legacy(MachineState *ms, size_t *length);
- void smbios_get_tables(MachineState *ms,
-                        const struct smbios_phys_mem_area *mem_array,
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 647bc6d603..c0c5a81e66 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -989,6 +989,13 @@ void smbios_set_cpuid(uint32_t version, uint32_t features)
-         field = value;                                                    \
-     }
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index b4e80b0b0d..fd35c74781 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -36,6 +36,7 @@
+ #include "hw/riscv/boot.h"
+ #include "hw/riscv/numa.h"
+ #include "kvm/kvm_riscv.h"
++#include "hw/firmware/smbios.h"
+ #include "hw/intc/riscv_aclint.h"
+ #include "hw/intc/riscv_aplic.h"
+ #include "hw/intc/sifive_plic.h"
+@@ -1221,6 +1222,45 @@ static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
+                                 sysbus_mmio_get_region(sysbus, 0));
+ }
  
-+void smbios_set_default_processor_family(uint16_t processor_family)
++static void virt_build_smbios(RISCVVirtState *s)
 +{
-+    if (type4.processor_family <= 0x01) {
-+        type4.processor_family = processor_family;
++    MachineClass *mc = MACHINE_GET_CLASS(s);
++    MachineState *ms = MACHINE(s);
++    uint8_t *smbios_tables, *smbios_anchor;
++    size_t smbios_tables_len, smbios_anchor_len;
++    struct smbios_phys_mem_area mem_array;
++    const char *product = "QEMU Virtual Machine";
++
++    if (kvm_enabled()) {
++        product = "KVM Virtual Machine";
++    }
++
++    smbios_set_defaults("QEMU", product, mc->name, false,
++                        true, SMBIOS_ENTRY_POINT_TYPE_64);
++
++    if (riscv_is_32bit(&s->soc[0])) {
++        smbios_set_default_processor_family(0x200);
++    } else {
++        smbios_set_default_processor_family(0x201);
++    }
++
++    /* build the array of physical mem area from base_memmap */
++    mem_array.address = s->memmap[VIRT_DRAM].base;
++    mem_array.length = ms->ram_size;
++
++    smbios_get_tables(ms, &mem_array, 1,
++                      &smbios_tables, &smbios_tables_len,
++                      &smbios_anchor, &smbios_anchor_len,
++                      &error_fatal);
++
++    if (smbios_anchor) {
++        fw_cfg_add_file(s->fw_cfg, "etc/smbios/smbios-tables",
++                        smbios_tables, smbios_tables_len);
++        fw_cfg_add_file(s->fw_cfg, "etc/smbios/smbios-anchor",
++                        smbios_anchor, smbios_anchor_len);
 +    }
 +}
 +
- void smbios_set_defaults(const char *manufacturer, const char *product,
-                          const char *version, bool legacy_mode,
-                          bool uuid_encoded, SmbiosEntryPointType ep_type)
+ static void virt_machine_done(Notifier *notifier, void *data)
+ {
+     RISCVVirtState *s = container_of(notifier, RISCVVirtState,
+@@ -1309,6 +1349,8 @@ static void virt_machine_done(Notifier *notifier, void *data)
+         riscv_setup_direct_kernel(kernel_entry, fdt_load_addr);
+     }
+ 
++    virt_build_smbios(s);
++
+     if (virt_is_acpi_enabled(s)) {
+         virt_acpi_setup(s);
+     }
+diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+index a50717be87..5d644eb7b1 100644
+--- a/hw/riscv/Kconfig
++++ b/hw/riscv/Kconfig
+@@ -41,6 +41,7 @@ config RISCV_VIRT
+     select RISCV_IMSIC
+     select SIFIVE_PLIC
+     select SIFIVE_TEST
++    select SMBIOS
+     select VIRTIO_MMIO
+     select FW_CFG_DMA
+     select PLATFORM_BUS
 -- 
 2.43.0
 
