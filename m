@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8D384F41D
+	by mail.lfdr.de (Postfix) with ESMTPS id BF91B84F420
 	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:05:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOfH-0008Sc-3K; Fri, 09 Feb 2024 06:03:27 -0500
+	id 1rYOg1-0000DJ-GB; Fri, 09 Feb 2024 06:04:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOdE-00072X-AQ
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:20 -0500
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1rYOdI-0007G7-Ki
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:25 -0500
+Received: from mail-io1-xd36.google.com ([2607:f8b0:4864:20::d36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOdA-0000rb-KV
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:18 -0500
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5cedfc32250so604496a12.0
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:16 -0800 (PST)
+ id 1rYOdF-0000s3-Qm
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:23 -0500
+Received: by mail-io1-xd36.google.com with SMTP id
+ ca18e2360f4ac-7c3e01a7fdeso28611939f.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476475; x=1708081275; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476480; x=1708081280; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dmHSNdHnhDq2AJSaiR4KwkctodRIy3iOT2bNdgCNIKY=;
- b=dFQJMgmxb72PV1SPwS/f8AS6AqPtAalCXXf91Sywpg4elJPLPc0eul82m5kglY5D8A
- BD3kGGxof20wQAkPvGslht2qtmUqOCWAHEcurxl5PPKD8LW8mR/P2rK7PdZA5IEtkmrC
- e6RWUwOfkC0LciYSaV7PzWAbXPBvNZXGkWYDc5NV6IytdzdTwJrefbGgOIlQyJpqmSsq
- xSuih7ywsxeLqd1gKGAnq5ixcIkmCObeSHnzBwtipgJxHAG9Uth0DenJ/GLVtLmVYxUA
- xa3oqjVSH0TW9O0Slsr1nG/TrQ9X5QmQzUdRirHy4RXUgh/T4r/7ZFSOyhBFm8vp8Tun
- J2UQ==
+ bh=PFfabkqZ7+KZbRfwTJjM37aj+onUUvLrbV1BgbFXOZk=;
+ b=Qw+oTd7egFkyQ/xUSnuzEwY8Gf9oh0SsDHXl+VqFyYPm1abgk1JPQ+dpuMdu0W69qi
+ 7F/OUytVlBi1ctRGNEnpi2y68RYc7L6oH7rLFkUDjeOMyc4VPOTyaEz9gv47rym+4O3P
+ ue+9M6ntHaDaKTtpfrWND7NmFaK0wFB6C36vA1CAjVyC8JT3t+1xwmaHZplJDsa/pqCT
+ ZH9LELn2+GFWDwBbp3T28v3PnyOTOyITO8Y1KlH9pBCrhbkK27yOQV1hdu7CI1Yac/+W
+ 3YJk5kCdCCA7vAsKaauv/PyEfZhHFVSYPfVbq8s3r8BWZAby2cvN2HLW8aBgShm03epD
+ ioPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476475; x=1708081275;
+ d=1e100.net; s=20230601; t=1707476480; x=1708081280;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dmHSNdHnhDq2AJSaiR4KwkctodRIy3iOT2bNdgCNIKY=;
- b=YXKr3ODC+e7f+ocXCsey2m7AyzY2VFMNFV/RVPQyS9YxyQXCiffqelChq+ujUhz+8v
- 8xS5Ggi3o3WO8moH1IQogXMwhsEzk2t0NAdZZYJh15e9u4FKG/EE/LCyl2AKy/6RDhAD
- 5wIrW1VQ3ALc+A0VI8ArysgnydIheCOrEJT9Bn4y+oV6M1T2NpZYJ/HiWfdyp+axtbpU
- Jlq989HB9ctrF0jBt/nPy+WX2uyBgc3ZC23JYAPlfUFa43WIdgskpHCNsydKofEojTHe
- 3J1D38xpR8CXlRmHNqQWebVE9Uu2077rSQ8Rwcv+5T9OOm+IP/eds3kFUtexn7osbKx2
- k37A==
-X-Gm-Message-State: AOJu0YygRB/oxy8R6fJwriYBMnTAe30Af/WQXr7LpO6PblH8a1MhE6Ee
- T7QITJ0goDuKTc+ZJjuSyslUzq5goxelppvm6IoJAbrCYGr7YuKVOVrYnP/gWXpL1g==
-X-Google-Smtp-Source: AGHT+IFwKovQTZmUQBtvmCP5TTvQ5GLxEiQJb2REFjbMg/XQgKPHHILdoAzg7t0rhX3KB134nVcmVg==
-X-Received: by 2002:a05:6a20:6f07:b0:19e:5fe5:ff98 with SMTP id
- gt7-20020a056a206f0700b0019e5fe5ff98mr1683221pzb.52.1707476474624; 
- Fri, 09 Feb 2024 03:01:14 -0800 (PST)
+ bh=PFfabkqZ7+KZbRfwTJjM37aj+onUUvLrbV1BgbFXOZk=;
+ b=VYDW+W+sN8cYxZLQsUWOlsW0mq7qfy3mf/txvSW+KaWRX76tkJgB6PViNXJZpDqfg2
+ CETmEWJEEOM9wEiLcbZMPqAFn3HhsKmV2S2Lr6raiJKqIOD/in2M0M7ht+ASFxsZspqh
+ 4OsqMvsRbI2tJACpBM07Zv+fdlGCZVd8cZe5GDvORZjGUpNtHG3UNPopEB+Lrh2xuQ0l
+ 5K038OOOhg0Qa0SnpchQNwdgQVgb4hJktq5mESiHQoiVViTgDHowJZTIIhA8YWxI6mI3
+ XESrNN6Wy23ioy5+oDYCO8X4fXEcY+9IQ0+UfTvd+lXDW21wwgBtGhitfbD1c0TRSqru
+ 3Big==
+X-Gm-Message-State: AOJu0YztLCMDwidolVksCjBAOWlR7pz3nb1TA3bWy5UWq/1hqGeWpnVi
+ TuoniolWJTe3gD2XovKNd+axYG65XWuRpfCaz7r2yQ7VEcqLUBuIAJ+zH1UrMkBWMA==
+X-Google-Smtp-Source: AGHT+IFThFb+lQJki51H4Ge6C95UaiWODlmhSzulL28urTvO38HivEEnyoYdGuzxC33bKxBru6jGCA==
+X-Received: by 2002:a05:6e02:d03:b0:363:c181:ab8b with SMTP id
+ g3-20020a056e020d0300b00363c181ab8bmr1514592ilj.5.1707476478274; 
+ Fri, 09 Feb 2024 03:01:18 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCV95rijoMr4d+pA5wKbDKu7eclQwjXJFHTXAMRqcTIma6ai4GQXskGB9J3QwqE+1M3pBNXyZWnSPlrM6uHJVEhJK+6EBkAy4dI81yCRNp/oP8Mj4pDNNa2Ag5D2OsfvgOmejcnz3DVPPpxwETM5l+e9Z9CfyS6dF9dbkRc=
+ AJvYcCW0O4k65EE+1FatG8ycXJuwD1VowPdz11odf9NEagFmARgxGpbCD21Mfmk/8VuyNr+8dBUF6AZLLjHvS2RnD/fag68hFDfq42RRgREGy37wPSLFPPXjwRe/jwM4Ado2DyXOTTGBVe9xcvIFC/xEo0SIql2fdlkva82oeuSNoFf1xuF/RomHPb5ItBRg3sGJFLR88eXdwZwFMw==
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.11
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:01:14 -0800 (PST)
+ Fri, 09 Feb 2024 03:01:17 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
+Cc: alistair23@gmail.com, Conor Dooley <conor.dooley@microchip.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 52/61] target/riscv: Expose Zaamo and Zalrsc extensions
-Date: Fri,  9 Feb 2024 20:58:04 +1000
-Message-ID: <20240209105813.3590056-53-alistair.francis@wdc.com>
+Subject: [PULL 53/61] target/riscv: use misa_mxl_max to populate isa string
+ rather than TARGET_LONG_BITS
+Date: Fri,  9 Feb 2024 20:58:05 +1000
+Message-ID: <20240209105813.3590056-54-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d36;
+ envelope-from=alistair23@gmail.com; helo=mail-io1-xd36.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,43 +101,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Expose the newly added extensions to the guest and allow their control
-through the CPU properties.
+A cpu may not have the same xlen as the compile time target, and
+misa_mxl_max is the source of truth for what the hart supports.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+The conversion from misa_mxl_max to xlen already has one user, so
+introduce a helper and use that to populate the isa string.
+
+Link: https://lore.kernel.org/qemu-riscv/20240108-efa3f83dcd3997dc0af458d7@orel/
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240123111030.15074-4-rbradford@rivosinc.com>
+Message-ID: <20240124-swear-monthly-56c281f809a6@spud>
+[ Changes by AF:
+ - Convert to use RISCVCPUClass *mcc
+]
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/riscv/cpu.h     |  1 +
+ target/riscv/cpu.c     | 10 +++++++++-
+ target/riscv/gdbstub.c |  2 +-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 285a247368..9bc14056fa 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -511,6 +511,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                         MMUAccessType access_type, int mmu_idx,
+                         bool probe, uintptr_t retaddr);
+ char *riscv_isa_string(RISCVCPU *cpu);
++int riscv_cpu_max_xlen(RISCVCPUClass *mcc);
+ bool riscv_cpu_option_set(const char *optname);
+ 
+ #ifndef CONFIG_USER_ONLY
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index be3ec5a25d..84902be070 100644
+index 84902be070..7fc45660d7 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -108,7 +108,9 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_zihpm),
-     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
-+    ISA_EXT_DATA_ENTRY(zaamo, PRIV_VERSION_1_12_0, ext_zaamo),
-     ISA_EXT_DATA_ENTRY(zacas, PRIV_VERSION_1_12_0, ext_zacas),
-+    ISA_EXT_DATA_ENTRY(zalrsc, PRIV_VERSION_1_12_0, ext_zalrsc),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-@@ -1514,6 +1516,9 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     MULTI_EXT_CFG_BOOL("x-smaia", ext_smaia, false),
-     MULTI_EXT_CFG_BOOL("x-ssaia", ext_ssaia, false),
+@@ -308,6 +308,11 @@ void riscv_cpu_set_misa_ext(CPURISCVState *env, uint32_t ext)
+     env->misa_ext_mask = env->misa_ext = ext;
+ }
  
-+    MULTI_EXT_CFG_BOOL("x-zaamo", ext_zaamo, false),
-+    MULTI_EXT_CFG_BOOL("x-zalrsc", ext_zalrsc, false),
++int riscv_cpu_max_xlen(RISCVCPUClass *mcc)
++{
++    return 16 << mcc->misa_mxl_max;
++}
 +
-     MULTI_EXT_CFG_BOOL("x-zvfh", ext_zvfh, false),
-     MULTI_EXT_CFG_BOOL("x-zvfhmin", ext_zvfhmin, false),
+ #ifndef CONFIG_USER_ONLY
+ static uint8_t satp_mode_from_str(const char *satp_mode_str)
+ {
+@@ -2357,10 +2362,13 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
  
+ char *riscv_isa_string(RISCVCPU *cpu)
+ {
++    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
+     int i;
+     const size_t maxlen = sizeof("rv128") + sizeof(riscv_single_letter_exts);
+     char *isa_str = g_new(char, maxlen);
+-    char *p = isa_str + snprintf(isa_str, maxlen, "rv%d", TARGET_LONG_BITS);
++    int xlen = riscv_cpu_max_xlen(mcc);
++    char *p = isa_str + snprintf(isa_str, maxlen, "rv%d", xlen);
++
+     for (i = 0; i < sizeof(riscv_single_letter_exts) - 1; i++) {
+         if (cpu->env.misa_ext & RV(riscv_single_letter_exts[i])) {
+             *p++ = qemu_tolower(riscv_single_letter_exts[i]);
+diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+index 0ae0c47df1..ca9b71f7bb 100644
+--- a/target/riscv/gdbstub.c
++++ b/target/riscv/gdbstub.c
+@@ -221,7 +221,7 @@ static int riscv_gen_dynamic_csr_xml(CPUState *cs, int base_reg)
+     CPURISCVState *env = &cpu->env;
+     GString *s = g_string_new(NULL);
+     riscv_csr_predicate_fn predicate;
+-    int bitsize = 16 << mcc->misa_mxl_max;
++    int bitsize = riscv_cpu_max_xlen(mcc);
+     int i;
+ 
+ #if !defined(CONFIG_USER_ONLY)
 -- 
 2.43.0
 
