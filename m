@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3363784F402
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A80A784F3F7
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOaY-0008GT-9s; Fri, 09 Feb 2024 05:58:34 -0500
+	id 1rYOaa-0008Gf-Rt; Fri, 09 Feb 2024 05:58:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOaW-0008Fo-Bg
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:32 -0500
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ id 1rYOaZ-0008GW-L3
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:35 -0500
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOaU-0000Ai-QD
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:32 -0500
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3bfd40ff56fso290165b6e.2
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:30 -0800 (PST)
+ id 1rYOaY-0000Ay-4Q
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:35 -0500
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-219108b8e9cso430873fac.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476309; x=1708081109; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476312; x=1708081112; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Iq0LH3PHYyZB1cpshHA/QA9WLsuadbC8shEkZDLm1cY=;
- b=koIKoHJR0LfYQ5ZwBeWOgHL5C8nevoeiXAIh3QCoIrOggqz0Rzo340ZZMMQNc3Tr8H
- 9s+TsUjP0x8w9Xocon2P6suBhfrg2+9UNP9pFVMxzGedGc93ny8SyQGm8ZT3j/xWb8g3
- LjISIKrrptjQ6IXt/hIdH97QWLIOg8T0sELhdGpRVOpH908C+7eSSufRRbKFRuJdp9HU
- HTXXb5uW/PMXNyUjL26csgAEIUwKMgYI22NqAPdUk6H6i4mh9onM1cBO7vrU/TDfRVlZ
- DOPqNdP9K3imOP10GutG2V5jQEcHyaDden7i/8S1lZnnbvr26pq1rvY3gAVRznjptZAT
- ZLvA==
+ bh=nQCs+odaNl3yO/t48S28H1Q/4KUtJWYHdC+h6upI0Ds=;
+ b=Kady0kDpu26FqofSSb9vWfgaSPgIEO99ItEKHEGFYVNcba/rawddTh4SXNlRRo8TJ7
+ GV4xMhX/CEmI9OhGyIsYOoH2pxFru/AKGI7u7ujjB/SXbF88215DEZbDWyfVYWCEO+KD
+ dI/xYlX3p//V9t9AgJY0RjN6Z+eJghr+CvseuYNIK2ZHZQ+EpRRaUw+RxUYs3f35sg3X
+ robStMHg7tXd6Wr5Rp2HVs/ageYJVgQHQzodX4XqFNGyTGsSq2pE+wULqb2wwzBhQZ4T
+ HPKIxwYjfRcCVrAhZUBGJvHe+uv873P20hnK41X26qK/4xl4/NtL8yPfRighVtkTd2B1
+ 44OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476309; x=1708081109;
+ d=1e100.net; s=20230601; t=1707476312; x=1708081112;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Iq0LH3PHYyZB1cpshHA/QA9WLsuadbC8shEkZDLm1cY=;
- b=JY+IZ4P84VV3i7TrDkO5HMbK0UFtxM2bZp4MidLIO+KOA1VUr+ImfSO/nHlow+mWfZ
- 4Htbpke6yj9ncJgWan4dCJnxN5MBFtWFiwg0IGwfWMOiFrTTXI/z47+BSKosQwWQZMhB
- vybsFmg3E8Wg+Lt+u54/9N7l4o2YOus8PzOfUqV+2baFamuF40k7iyTYAX8/rJW/7wBX
- 3FSIvclQb/ZHlcNwKLPeM00XW2UeMIInFmLPPwaksVP3BCfNbrlHj4MaaYxv2ws/JWdF
- 7njEgwCaNjG434NP230dV1bJXnQOolPC8sGo5CRe1IbKHQxS4F46ZmilJDKtQne2WQF5
- XE2g==
-X-Gm-Message-State: AOJu0YzCr40AJ4H8Jg5nCGmFU8CUmPGEdxPxyR6fjhIyEdAOWO60EJq4
- MDvUH7Uu3aainFCAy6YHsYqvCLI8XcPBShN9SpLmyxrZIZAmtoPuV7C5KicQ5H4M4g==
-X-Google-Smtp-Source: AGHT+IF/zQTjqfZtv5E1gPPtCkXCsi7yA76Ttt8t6OIUHEC9Z0+sGe2jlTkJw9CGHLFLRvlJiqHYyg==
-X-Received: by 2002:a05:6358:33a2:b0:179:24b4:4204 with SMTP id
- i34-20020a05635833a200b0017924b44204mr1160808rwd.2.1707476309162; 
- Fri, 09 Feb 2024 02:58:29 -0800 (PST)
+ bh=nQCs+odaNl3yO/t48S28H1Q/4KUtJWYHdC+h6upI0Ds=;
+ b=BLDZQZu5893tn7F3uJcZWKygb8tq+vqwjFSRAz258S70gSjut7K/Qod8pQCHVckDlR
+ dfwoQS0t34dE539m3kkdCXSwMXMHkesuHkJ5kPIP1QUT4mGktgXFyJeDoSV3+ZuaBSKE
+ /EBI4tLgV17XWNpBxJO0+z+u6nbTFghs49WX6Y2q9BtQXJqpwLZnyKi34yhnTlxLWUsF
+ ggNbn0ZPQ/ACZNjtiIe/FFH8FyBmt0kCsol/6O/rQKdnXfYqGnqvIUwtye870kd8Bu5g
+ MDdo+BLuAZ+sIHgNsFmESyLp8EFczZfP/dtj4HdPjrrwUrABcSXngoUTmi8pUR+OgNXx
+ UJdg==
+X-Gm-Message-State: AOJu0Yy4qrhwUSMKTegZyHkCD6fCVYltX/ru6folky3Fmcht783pwBZE
+ 9BW6DrWVRQ65dbQP/7dkofe+gLH7/ljJn95W9CCcCtBKG681VZWJSxe8SCl93SZQ0A==
+X-Google-Smtp-Source: AGHT+IEobRDnRCDy8JhU2rBFiAnD3roYAZyXHh17os9/b0ULULGuWC6HNCEWrkUoTzRljUhVCtYKSw==
+X-Received: by 2002:a05:6870:7008:b0:219:3db3:243 with SMTP id
+ u8-20020a056870700800b002193db30243mr1309968oae.11.1707476312484; 
+ Fri, 09 Feb 2024 02:58:32 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWqRnPjbgRdqt8EvGkiiBZ3D6BmbkCQYgQr3WfaR78zMPwuvxdbExAeWExGNy84wsOqGmkel9WkH9TsNNFZSkYURffD80U26I/fK+bXZ+stUjwT6gqsVaOVmzgJrPs38XxmQf5ixqwFICFPuEpWaVqT8KCMbzcwQzSmH0c=
+ AJvYcCVCkMG4ytStqgWwLWfhgo4AmwqzA6/vrI2d+pPv8KpY70mbYvtgcI8ZFD4L5MRDBC92L8/iS/bUO8gcu3huRl6vViUUKoGDJ1R+hya5cROt8fdLTzhe9GE6ntcPG02Rri9K/opWMop1VBPrxvYf2YtyYWh5TvmbVrnnAn8xjmYqXUzQQU68lGIcX3+f8Vubr3EelYS8
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.26
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:58:28 -0800 (PST)
+ Fri, 09 Feb 2024 02:58:31 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 01/61] target/riscv: Check for 'A' extension on all atomic
- instructions
-Date: Fri,  9 Feb 2024 20:57:13 +1000
-Message-ID: <20240209105813.3590056-2-alistair.francis@wdc.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 02/61] target/riscv: Add infrastructure for 'B' MISA extension
+Date: Fri,  9 Feb 2024 20:57:14 +1000
+Message-ID: <20240209105813.3590056-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,100 +102,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rob Bradford <rbradford@rivosinc.com>
 
-Add requirement that 'A' is enabled for all atomic instructions that
-lack the check. This makes the 64-bit versions consistent with the
-32-bit versions in the same file.
+Add the infrastructure for the 'B' extension which is the union of the
+Zba, Zbb and Zbs instructions.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240110163959.31291-1-rbradford@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240111161644.33630-2-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_rva.c.inc | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/riscv/cpu.h         | 1 +
+ target/riscv/cpu.c         | 5 +++--
+ target/riscv/tcg/tcg-cpu.c | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
-index 5f194a447b..f0368de3e4 100644
---- a/target/riscv/insn_trans/trans_rva.c.inc
-+++ b/target/riscv/insn_trans/trans_rva.c.inc
-@@ -163,65 +163,76 @@ static bool trans_amomaxu_w(DisasContext *ctx, arg_amomaxu_w *a)
- static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
- }
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index f63ee9cc58..136fc1de73 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -69,6 +69,7 @@ typedef struct CPUArchState CPURISCVState;
+ #define RVH RV('H')
+ #define RVJ RV('J')
+ #define RVG RV('G')
++#define RVB RV('B')
  
- static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
- }
+ extern const uint32_t misa_bits[];
+ const char *riscv_get_misa_ext_name(uint32_t bit);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index be21fa09c6..8a2fd7d031 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -38,9 +38,9 @@
+ #include "tcg/tcg.h"
  
- static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ));
- }
+ /* RISC-V CPU definitions */
+-static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
++static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
+ const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
+-                              RVC, RVS, RVU, RVH, RVJ, RVG, 0};
++                              RVC, RVS, RVU, RVH, RVJ, RVG, RVB, 0};
  
- static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TEUQ));
- }
+ /*
+  * From vector_helper.c
+@@ -1304,6 +1304,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
+     MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
+     MISA_EXT_INFO(RVV, "v", "Vector operations"),
+     MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
++    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
+ };
  
- static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TEUQ));
- }
+ static int riscv_validate_misa_info_idx(uint32_t bit)
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index b7da92783b..baecfa7672 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1056,6 +1056,7 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+     MISA_CFG(RVJ, false),
+     MISA_CFG(RVV, false),
+     MISA_CFG(RVG, false),
++    MISA_CFG(RVB, false),
+ };
  
- static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TEUQ));
- }
- 
- static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
- {
-     REQUIRE_64BIT(ctx);
-+    REQUIRE_EXT(ctx, RVA);
-     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TEUQ));
- }
+ /*
 -- 
 2.43.0
 
