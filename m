@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF7384FEBD
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A0484FED1
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:27:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYYMG-0000TE-EL; Fri, 09 Feb 2024 16:24:28 -0500
+	id 1rYYMH-0000la-Ss; Fri, 09 Feb 2024 16:24:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLv-00009R-VM; Fri, 09 Feb 2024 16:24:08 -0500
+ id 1rYYLy-0000Ek-Fm; Fri, 09 Feb 2024 16:24:11 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLu-0000Eg-GU; Fri, 09 Feb 2024 16:24:07 -0500
+ id 1rYYLx-0000Eu-0c; Fri, 09 Feb 2024 16:24:10 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6373F4BF6B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 70AD94BF6C;
  Sat, 10 Feb 2024 00:24:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5039977EE5;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5D86777EE6;
  Sat, 10 Feb 2024 00:22:48 +0300 (MSK)
-Received: (nullmailer pid 1123196 invoked by uid 1000);
+Received: (nullmailer pid 1123199 invoked by uid 1000);
  Fri, 09 Feb 2024 21:22:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 19/23] qemu-img: refresh options/--help for "bitmap" command
-Date: Sat, 10 Feb 2024 00:22:40 +0300
-Message-Id: <c3f4c1f2eafe6d71e691663d0aee2dd593f155a5.1707513011.git.mjt@tls.msk.ru>
+Subject: [PATCH 20/23] qemu-img: refresh options/--help for "dd" command
+Date: Sat, 10 Feb 2024 00:22:41 +0300
+Message-Id: <6a731eabb363cc93289ace19eed055f5e06c71cd.1707513011.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1707513011.git.mjt@tls.msk.ru>
 References: <cover.1707513011.git.mjt@tls.msk.ru>
@@ -60,39 +60,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add missing long options and --help output.
 ---
- qemu-img.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ qemu-img.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 3be365cd07..9a0cd05d42 100644
+index 9a0cd05d42..db1f80e15d 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -5103,7 +5103,24 @@ static int img_bitmap(const img_cmd_t *ccmd, int argc, char **argv)
+@@ -5417,6 +5417,8 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
+     const struct option long_options[] = {
+         { "help", no_argument, 0, 'h'},
+         { "object", required_argument, 0, OPTION_OBJECT},
++        { "format", required_argument, 0, 'f'},
++        { "output-format", required_argument, 0, 'O'},
+         { "image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
+         { "force-share", no_argument, 0, 'U'},
+         { 0, 0, 0, 0 }
+@@ -5427,12 +5429,6 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
+             break;
+         }
+         switch (c) {
+-        case 'O':
+-            out_fmt = optarg;
+-            break;
+-        case 'f':
+-            fmt = optarg;
+-            break;
+         case ':':
+             missing_argument(ccmd, argv[optind - 1]);
+             break;
+@@ -5440,7 +5436,26 @@ static int img_dd(const img_cmd_t *ccmd, int argc, char **argv)
              unrecognized_option(ccmd, argv[optind - 1]);
              break;
          case 'h':
 -            help();
 +            cmd_help(ccmd,
-+"( --merge SOURCE | --add | --remove | --clear |\n"
-+"		--enable | --disable ).. [-f FMT | --image-opts]\n"
-+"	[ -b SRC_FILENAME [-F SOURCE_FMT]] [-g GRANULARITY] [--object OBJDEF]\n"
-+"	FILENAME BITMAP\n"
++"[-f FMT|--image-opts] [-O OUTPUT_FMT] [-U]\n"
++" [bs=BLOCK_SIZE] [count=BLOCKS] if=INPUT of=OUTPUT\n"
 +,
-+" -f|--format FMT - specify FILENAME format explicitly\n"
-+" --image-opts - indicates that FILENAME is a complete image specification\n"
++" -f|--format FMT - specify format for INPUT explicitly\n"
++" --image-opts - indicates that INPUT is a complete image specification\n"
 +"  instead of a file name (incompatible with --format)\n"
-+" --add - creates BITMAP, enables to record future edits\n"
-+"  -g|--granularity GRANULARITY - sets non-default granularity for --add\n"
-+" --remove - removes BITMAP\n"
-+" --clear - clears BITMAP\n"
-+" --enable, --disable - starts and stops recording future edits to BITMAP\n"
-+" --merge SRC_FILENAME - merges contents of SRC_FILENAME bitmap into BITMAP\n"
-+"  -b|--source-file SRC_FILENAME - select alternative source file for --merge\n"
-+"  -F|--source-format SRC_FMT - specify format for SRC_FILENAME explicitly\n"
++" -O|--output-format OUTPUT_FMT - format of the OUTPUT (default raw)\n"
++" -U|--force-share - open images in shared mode for concurrent access\n"
++" bs=BLOCK_SIZE - size of I/O block (default 512)\n"
++" count=COUNT - number of blocks to convert (default whole INPUT)\n"
++" if=INPUT - input file name or image specification (with --image-opts)\n"
++" of=OUTPUT - output file name to create\n"
 +);
++            break;
++        case 'O':
++            out_fmt = optarg;
++            break;
++        case 'f':
++            fmt = optarg;
              break;
-         case 'b':
-             src_filename = optarg;
+         case 'U':
+             force_share = true;
 -- 
 2.39.2
 
