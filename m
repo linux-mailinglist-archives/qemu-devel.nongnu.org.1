@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A096784F419
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9BE84F431
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:07:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOeb-0007on-38; Fri, 09 Feb 2024 06:02:46 -0500
+	id 1rYOau-0000A3-09; Fri, 09 Feb 2024 05:58:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOcd-00063N-9n
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:00:45 -0500
-Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
+ id 1rYOas-00009U-SE
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:54 -0500
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOcb-0000nx-13
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:00:42 -0500
-Received: by mail-il1-x12d.google.com with SMTP id
- e9e14a558f8ab-363d85fda93so2280265ab.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:00:40 -0800 (PST)
+ id 1rYOar-0000D2-8r
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:54 -0500
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6e118b528aeso254826a34.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476439; x=1708081239; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476332; x=1708081132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Fg+LZAt5OtmBmqmGwDnU/PTtHPHeBRQ/ECrQKN68ExI=;
- b=YK7UlrLWEWWs8i5GekGVetwWNdOKkbf35FeT0pEFXR35HAG5Q9zP+S7SoWUkHw5PsB
- j9QBgXWL1n8WKTaaxrWB6t9izYy9cbKbKrO/0UxJBIHH+h4CMuxNGgkarQUL0ojt6OZH
- 6jCMm2e+F7SC7GTHzFh2tBKjwgPGv0c0gn8sF3gb6EVcAi7pz/uK17z+RDNBv3WejctE
- vv/GzBe0mnrNv+vnGzeXeZQZPu243nNPJ+OS/so38sNPa3fy68wRedqr/aSkyuU0pAl/
- KOUwyY5n+hJMwe9Ym6BgZmP6C02z6DpriBrqOr/d5wUSmtj/eJATlMJX1+sCBGUpRaJS
- CKXw==
+ bh=DpYfulibsC2nJKxZOB6BiIy+pD8HSIE5x1ruXzaKsXQ=;
+ b=doak1F3AlnRSg7L3sWajtBAwKKjlU2Mr4mmySQwfugkC4i8LbQiX5zRw5WE3VohKNm
+ HTj+wDoeLGzq5yJ3/DCV0AacpQN1NTybAhPMt0wNabM20sIx2hLZrT75hn0JarZM0pmm
+ otbJfG0+LH1WwOr020QPmq3MAS+DKFx7DF5uVYcDAm71pVDmj94CBZrFh1mRjbqSPwqF
+ Fzz2/E4YoBlHJDqLVphbqC/h14Wsx73GxOgEocCr+yj86+/QHWEkAJ9TbLHZf3ZO0e8x
+ 3f1800gQ6tmRkXTbry/kfwPjfCCWC6rm5XTYWGYFuczssgfECXMvcwbIbT6jpeKUp3pv
+ JUhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476439; x=1708081239;
+ d=1e100.net; s=20230601; t=1707476332; x=1708081132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Fg+LZAt5OtmBmqmGwDnU/PTtHPHeBRQ/ECrQKN68ExI=;
- b=ptK8fpJeHeoZPzT7/pC8YbsQEtNw65q6kaldNBur1otF8NmYWirIVMIU9dv2utZUyn
- h3c3maPU3cauPxnjcypk0p2ifhtL2QyxrwM7v2OAzJ+1rYU52qid7ddNIQnIyyr2sJ83
- vpM/RIePV+DpGl8tzuzrfgCrCBbszROAEnQ3iJOjs9e2pjQ7B70XLU1+A0AkCfMMR+lB
- UtjYv7XGZ9LSRQOOnTA78s38dYJ2WCvVROHrOIgsvGwUq/qVylLxuYRqo8+9PxPMETwW
- HORI7b2Yssy2zdVwj5+oLej+5UorhlM/9oU/WMIXesRYXTR8B8JB4212dO4Th9LuxrqC
- znkw==
-X-Gm-Message-State: AOJu0YwU/yd0KUakqUrRoZsmHvbhiGTic19AVIRqXneoZ4pNkcCrO3C4
- Ic0zYwoYG5Jv5wkyAwIFjaXYA0BnVfuQ24ybYP1z6lWrfF7Ll1pwLvX2TIx0453nCQ==
-X-Google-Smtp-Source: AGHT+IHpZzgmCG5f9p0TN64q2p5IQ+18hIExwAAdACsaZtTtT0qxcua5n7QHSyUlekj8kfAlQ+eqng==
-X-Received: by 2002:a05:6e02:812:b0:363:e31f:eb0e with SMTP id
- u18-20020a056e02081200b00363e31feb0emr1518748ilm.7.1707476439672; 
- Fri, 09 Feb 2024 03:00:39 -0800 (PST)
+ bh=DpYfulibsC2nJKxZOB6BiIy+pD8HSIE5x1ruXzaKsXQ=;
+ b=bLwwjA0+TPTE3NLJF2nRSB9CAy5GPRDop4un8tsl+k14UcfzWm0QrGxqdYlr03nCCv
+ 5YYefzq3APR5NWPjNjNMsf9BeS+mC4AEXvn9MeooOBNa5Uuj50dTXNja0+HOcyteYtuV
+ xDN2Gdc47dOrPr4ee/Ig0Rn6kYGh4Yl4uIvEMsGor8CGuVpe1JbtPjIMz4SLuwjUSnj4
+ tFsn79ajuDGk3KQehPuErdbvcNKRIE6noLL3NXsVwLWvGEPqo+tl8k4UHqxOPvA1SFPG
+ +U3Xc1q7h3FpVsuTmBLHBUSJXeMFNkgYgIfPY1mcRanjP0Ka14pbM45d4IlMj2MSblG5
+ Fp9Q==
+X-Gm-Message-State: AOJu0YwdvifsC76hW0VWrMH0mOgVJV3hUuCKRMZ6kjmbHeqgyCyAmvRs
+ 9iXdpnmU6HW3HKLZeO+oenTIHnIRGm2uxtfRw2X2Xaqr3vCylq7j418t7zCFrnCoGQ==
+X-Google-Smtp-Source: AGHT+IG7TLn/tTpjOO1z0el73WEsYlm1NDeADbLUcDsGsfrEd/LNCbVbT/QhJuoTsgXtP30ZW1kgLg==
+X-Received: by 2002:a9d:7b49:0:b0:6e1:12fb:aa27 with SMTP id
+ f9-20020a9d7b49000000b006e112fbaa27mr1082087oto.12.1707476331770; 
+ Fri, 09 Feb 2024 02:58:51 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJFOTdJQ+C7RtfhPACr6ZqX0Mls2ZmZJ4qaX6qksp3jek+q60m89KVXb0abkqFchwA88vj0CbvevUPfu/A8KtqBkksjodDRHDZQv0ADOgbuQLbtBbSPjy7YCGZCi9aJ+WeIKN1hmkSeqb4V66nKeWXn8qj2e/mf3qAhF2RC9urO14=
+ AJvYcCWIALWHW3Lfzo/RvnW/ppvbsRE2sZlVSpGEA87UXqOlJtR4m0SLdcfXGl7ru/xQGV6cdm+kJLr0hTUqGU6et77IbWKBkUFSzhH7mIZlq07QDA2vxOOstdmUatHyNc04RJvn2tzttz6JmD9AyDgXcDWHd32XaMTEV7k3Oyp59xhMW5E=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.00.36
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:00:39 -0800 (PST)
+ Fri, 09 Feb 2024 02:58:51 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 41/61] target/riscv: FCSR doesn't contain vxrm and vxsat
-Date: Fri,  9 Feb 2024 20:57:53 +1000
-Message-ID: <20240209105813.3590056-42-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Vladimir Isaev <vladimir.isaev@syntacore.com>
+Subject: [PULL 08/61] target/riscv: move 'pmp' to riscv_cpu_properties[]
+Date: Fri,  9 Feb 2024 20:57:20 +1000
+Message-ID: <20240209105813.3590056-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
- envelope-from=alistair23@gmail.com; helo=mail-il1-x12d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,38 +99,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-vxrm and vxsat have been moved into a special register vcsr since
-RVV v1.0. So remove them from FCSR for vector 1.0.
+Move 'pmp' to riscv_cpu_properties[], creating a new setter() for it
+that forbids 'pmp' to be changed in vendor CPUs, like we did with the
+'mmu' option.
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240130110945.486-1-zhiwei_liu@linux.alibaba.com>
+We'll also have to manually set 'pmp = true' to generic CPUs that were
+still relying on the previous default to set it.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Tested-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
+Message-ID: <20240105230546.265053-6-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h | 8 --------
- 1 file changed, 8 deletions(-)
+ target/riscv/cpu.c | 38 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 3296648a1f..fc2068ee4d 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -32,14 +32,6 @@
- #define FSR_NXA             (FPEXC_NX << FSR_AEXC_SHIFT)
- #define FSR_AEXC            (FSR_NVA | FSR_OFA | FSR_UFA | FSR_DZA | FSR_NXA)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 3b5d6da736..6723db4544 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -438,6 +438,7 @@ static void riscv_max_cpu_init(Object *obj)
+     RISCVMXL mlx = MXL_RV64;
  
--/* Vector Fixed-Point round model */
--#define FSR_VXRM_SHIFT      9
--#define FSR_VXRM            (0x3 << FSR_VXRM_SHIFT)
--
--/* Vector Fixed-Point saturation flag */
--#define FSR_VXSAT_SHIFT     8
--#define FSR_VXSAT           (0x1 << FSR_VXSAT_SHIFT)
--
- /* Control and Status Registers */
+     cpu->cfg.mmu = true;
++    cpu->cfg.pmp = true;
  
- /* User Trap Setup */
+ #ifdef TARGET_RISCV32
+     mlx = MXL_RV32;
+@@ -457,6 +458,7 @@ static void rv64_base_cpu_init(Object *obj)
+     CPURISCVState *env = &cpu->env;
+ 
+     cpu->cfg.mmu = true;
++    cpu->cfg.pmp = true;
+ 
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV64, 0);
+@@ -586,6 +588,7 @@ static void rv128_base_cpu_init(Object *obj)
+     }
+ 
+     cpu->cfg.mmu = true;
++    cpu->cfg.pmp = true;
+ 
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV128, 0);
+@@ -624,6 +627,7 @@ static void rv32_base_cpu_init(Object *obj)
+     CPURISCVState *env = &cpu->env;
+ 
+     cpu->cfg.mmu = true;
++    cpu->cfg.pmp = true;
+ 
+     /* We set this in the realise function */
+     riscv_cpu_set_misa(env, MXL_RV32, 0);
+@@ -1651,9 +1655,38 @@ static const PropertyInfo prop_mmu = {
+     .set = prop_mmu_set,
+ };
+ 
+-Property riscv_cpu_options[] = {
+-    DEFINE_PROP_BOOL("pmp", RISCVCPU, cfg.pmp, true),
++static void prop_pmp_set(Object *obj, Visitor *v, const char *name,
++                         void *opaque, Error **errp)
++{
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    bool value;
++
++    visit_type_bool(v, name, &value, errp);
+ 
++    if (cpu->cfg.pmp != value && riscv_cpu_is_vendor(obj)) {
++        cpu_set_prop_err(cpu, name, errp);
++        return;
++    }
++
++    cpu_option_add_user_setting(name, value);
++    cpu->cfg.pmp = value;
++}
++
++static void prop_pmp_get(Object *obj, Visitor *v, const char *name,
++                         void *opaque, Error **errp)
++{
++    bool value = RISCV_CPU(obj)->cfg.pmp;
++
++    visit_type_bool(v, name, &value, errp);
++}
++
++static const PropertyInfo prop_pmp = {
++    .name = "pmp",
++    .get = prop_pmp_get,
++    .set = prop_pmp_set,
++};
++
++Property riscv_cpu_options[] = {
+     DEFINE_PROP_STRING("priv_spec", RISCVCPU, cfg.priv_spec),
+     DEFINE_PROP_STRING("vext_spec", RISCVCPU, cfg.vext_spec),
+ 
+@@ -1741,6 +1774,7 @@ static Property riscv_cpu_properties[] = {
+     {.name = "pmu-num", .info = &prop_pmu_num}, /* Deprecated */
+ 
+     {.name = "mmu", .info = &prop_mmu},
++    {.name = "pmp", .info = &prop_pmp},
+ 
+ #ifndef CONFIG_USER_ONLY
+     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
 -- 
 2.43.0
 
