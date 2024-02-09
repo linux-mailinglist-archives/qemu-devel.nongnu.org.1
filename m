@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D04A84F1EF
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 10:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB26B84F21F
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 10:17:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYMq2-0006AX-1W; Fri, 09 Feb 2024 04:06:26 -0500
+	id 1rYMyv-0006r3-3S; Fri, 09 Feb 2024 04:15:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYMpz-00060U-IE
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 04:06:23 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYMys-0006qW-Ei
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 04:15:34 -0500
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYMpx-0000k1-H6
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 04:06:23 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4106ccf0effso2198355e9.3
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 01:06:21 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYMyq-00033x-Ff
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 04:15:34 -0500
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5116b540163so1136375e87.1
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 01:15:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707469579; x=1708074379; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yoZvEPhif8MxqPqYvi0f+lZWa93ax0j+gUCJerzTQQw=;
- b=L/DsYVm/rCvK+mekIUPycmaUjBqq5sKtuWHqRy2RrnSRcrkDzMXOJjmJRRMZgjuBeO
- PILdSj8/9GQLrnzs1C6RL45RMEM0rml2yt1vxU0hxWOkbVJgW4MkGJ2qgulCjm/DuFdE
- sUqcviKSZUergDgw2XL5p2fy1onqfTuOq6lim/Cu1tCdUe/NwHWmkkXW48EIEXnJDvTi
- xNo5eK9qCkCus3AC+9qYaqlui3mlhOJ9ICQday6FogsH6aojKVhpZh9AASrbxmrqDeyp
- n+i4l0tneUzQwpRdxHExuN3GhXT1fIM533ic7Bca2q9Yrd9rqDU+e3A+TS7mvAl2OO+i
- aC3Q==
+ d=linaro.org; s=google; t=1707470130; x=1708074930; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nNLpIx87pB0K/AvDr5H7oRXa+DzGtWVK8bg3cbWp7L8=;
+ b=p1Eh/TGT3P7SzuKkwo2oH1gMnp9Lkb/7MXZVPQeJO6WyC6oIH0Mf4gyrsrJXiMXaA1
+ M3IpTYM3dYUMYdyxZW4UwfNrC1/OjI122gxLlB09LOnTGXHiH0ogMCmOrERXirKaKdZk
+ wbwWQqBhohhAuLccBMv8DvOtWJ0O+FsvtwTbYkJv7hIQ+wVBjsEQ6kt+3wmGBHOiaFSL
+ /6+ypN8FywVT3YXMBtrV0jy6iNjtwC53Gm4UvqwRof50wdIoIOqiKUFuKZGxgtj6pLRa
+ Z38zEiYYNigxay/r6d6AySW7PaLKW4k363qTWbhy/AOo4VJQZrWnXZRybNdF2EUE/i8W
+ CikA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707469579; x=1708074379;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yoZvEPhif8MxqPqYvi0f+lZWa93ax0j+gUCJerzTQQw=;
- b=eKTF46mnty1ItVJFu7oUUmsWlr0nA0ua7knQabLXSeVQJid2qpyOaKX5RQO/0Qqx9q
- BOX2y+nogHrwHr/TS2kmouevwse4+/B85CbYLCQy58HMsljxvmRbZbJ5WmiGNGuKHe+Y
- rVfLOn4Px5FSRXuLKhwwOIsA9CKhP6vsqcQx6ecagXG06njAPVEGs6PJsFS6WJhK6fa1
- WagnYyapspu0Z87/mIyMztDg4LUnV+vSgQOEsNGnqhosfXM50B+8Ko8sNM4syPVtmiE4
- vNTz3Q8u0w2eInBnaWlbPp2JWXCfgVRm9aDYH2R7KSsxirk1GkYQwbf/ufWWwEBS1Adl
- WcMQ==
-X-Gm-Message-State: AOJu0YxDXcJx9wICXOS5Qrkhq9GyC726iEI206bO7VDT4E/OEB+2Y/CF
- lg10L/ImMd6tzPn8eszOM7v7VqI88YJtFK4r6wxBKst/4h2RsGmI2y1AAaeDeJeFPDUFyZcGOvR
- XAwA=
-X-Google-Smtp-Source: AGHT+IEmXdF8rRsssY91LA0tX1MN+Dl7bs4tGKLyQkHrB+9gOp0J/NI53qrkrthNwuCOeS5uTYdPtQ==
-X-Received: by 2002:a05:600c:4688:b0:40f:ddc8:f283 with SMTP id
- p8-20020a05600c468800b0040fddc8f283mr717277wmo.38.1707469579539; 
- Fri, 09 Feb 2024 01:06:19 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707470130; x=1708074930;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nNLpIx87pB0K/AvDr5H7oRXa+DzGtWVK8bg3cbWp7L8=;
+ b=cHrQZNqBNeSL7Wd7Nf5s0g/4YE+89Z3PX0FDFPLbELhbyZchOxUajFckmFj6V7JA/D
+ 2nR1OPM5wUlXQvtktFEC/jp+w+bwNsCEaavglEsWzpdTEprra0uEeuyoAu5CWF/8EVId
+ nu8b1HeeaDtD4FhXIdm9htA126sabrCkbZqFbMnvniOu/uETivnSSEzVkDzHx/f1H5hF
+ sjKZUEJnnk88u684AGkU1Vv/fTxIJfW5u6zbJflGOvPcGGYtE7qPI1XzLAphRa7eYaqu
+ 2lch7wJFi9vuDocE2aJZaVENRK5n+lbgkW0LmBeyhkpV4m4hgOF4SCUnVj/nVUK1CBQn
+ +vEg==
+X-Gm-Message-State: AOJu0YwYfqvFB3ehn+VaWmxI4YIAa9SbEs7TuUta6zX3kNh36zCGxqJZ
+ 5KYuisl42rv6XHp/FehXbONXjffqdLyzACjb3pq9KMnCxk3eTf0LpEoi7b7pYpc=
+X-Google-Smtp-Source: AGHT+IGmwHnnKORxtBUZqjVaNSttBk4br7gqWc28lsfRX1CmgJDYzwmIcjvL/3fDSvZaFePI74vmFw==
+X-Received: by 2002:a05:6512:2397:b0:511:60d9:dd47 with SMTP id
+ c23-20020a056512239700b0051160d9dd47mr716823lfv.61.1707470130585; 
+ Fri, 09 Feb 2024 01:15:30 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXba0bkHEBVCjQNvRx1q2Nyy1RCIXN2+qbY3wMawd5vW8KefPyxQZtoRKCwm2YTNMjWaL6UQGqa60SkXsCL1UI7lKrpUt6B5I/bPdKjHoEAKz07aIOK+SQ7NlXVRj1kJaPVgDjnmyFmkJmjkPXYtzolEM14QXS5SCl+pMQRdUIw+3gr8G8k2nRRaqb4AseREJ1qrDc7JF+11uUm0YuetxxQQ4MujXLJeaLYhBqD27SBz+V+iHGMNXdrDt+H0kLdQdesGAeJzb4PfsRNLf9H1jK6Q1MIF6o7z9s3zacfNEw8sB9egUiGmiru6EbMKqI3vJWTCdQQaj/S7/Nk9HEQDvmqbWLnq1I=
-Received: from m1x-phil.lan ([176.187.218.105])
+ AJvYcCUgEMCkTCxn/LUkJtWe2rvqwnIUtLAHHmxEXbVBQwwqaUr8SqUeL7+/boTTFJ27GxfAQz0z26aKVct2jrt/BRPfzsWRMRaahWiCRm3AtlNQyIk3E69zB4fs8WHML8ffVsv/AeYws3CioYtlvlFXSB+xEuUKT68jVMPO
+Received: from [192.168.69.100] ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- u15-20020a05600c19cf00b0041044e130bfsm1930482wmq.33.2024.02.09.01.06.18
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Feb 2024 01:06:19 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Laurent Vivier <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [RFC PATCH 11/11] target/mips: Remove I6500 CPU definition
-Date: Fri,  9 Feb 2024 10:05:12 +0100
-Message-ID: <20240209090513.9401-12-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240209090513.9401-1-philmd@linaro.org>
-References: <20240209090513.9401-1-philmd@linaro.org>
+ iv12-20020a05600c548c00b004100c0882fdsm1962301wmb.31.2024.02.09.01.15.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 09 Feb 2024 01:15:30 -0800 (PST)
+Message-ID: <9c40cbb8-c652-409f-a718-b6381b96ba89@linaro.org>
+Date: Fri, 9 Feb 2024 10:15:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/8] mips: allow compiling out CONFIG_MIPS_ITU
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, shentey@gmail.com,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240207111411.115040-1-pbonzini@redhat.com>
+ <20240207111411.115040-8-pbonzini@redhat.com>
+ <81d117a3-ed1d-4023-a9ce-128729ec2e73@linaro.org>
+ <CABgObfaop4uLqpjt8bXaL6=WoAz+M-sLiU0U+F=gtHkZMTo8aw@mail.gmail.com>
+ <75ede98a-db0d-4b8c-88ff-df2f46875466@linaro.org>
+In-Reply-To: <75ede98a-db0d-4b8c-88ff-df2f46875466@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,97 +99,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I6500 support is incomplete as it lacks SAAR (Special Address
-Access Register) and DSPRAM (Data Scratch Pad RAM) features.
+On 9/2/24 08:22, Philippe Mathieu-Daudé wrote:
+> On 8/2/24 09:26, Paolo Bonzini wrote:
+>> On Wed, Feb 7, 2024 at 8:12 PM Philippe Mathieu-Daudé 
+>> <philmd@linaro.org> wrote:
+>>>
+>>> Hi Paolo,
+>>>
+>>> On 7/2/24 12:14, Paolo Bonzini wrote:
+>>>> itc_reconfigure() is referenced from TCG, provide a stub if needed.
+>>>> This makes it possible to build a QEMU binary that only includes
+>>>> boards without a CPS device (only Malta and Boston create one).
+>>>>
+>>>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>>>> ---
+>>>>    hw/mips/mips_itu-stub.c | 26 ++++++++++++++++++++++++++
+>>>>    hw/mips/meson.build     |  1 +
+>>>>    2 files changed, 27 insertions(+)
+>>>>    create mode 100644 hw/mips/mips_itu-stub.c
+>>>>
+>>>> diff --git a/hw/mips/mips_itu-stub.c b/hw/mips/mips_itu-stub.c
+>>>> new file mode 100644
+>>>> index 00000000000..4cc82b8461f
+>>>> --- /dev/null
+>>>> +++ b/hw/mips/mips_itu-stub.c
+>>>> @@ -0,0 +1,26 @@
+>>>> +/*
+>>>> + * Inter-Thread Communication Unit emulation.
+>>>> + *
+>>>> + * Copyright (c) 2016 Imagination Technologies
+>>>> + *
+>>>> + * This library is free software; you can redistribute it and/or
+>>>> + * modify it under the terms of the GNU Lesser General Public
+>>>> + * License as published by the Free Software Foundation; either
+>>>> + * version 2.1 of the License, or (at your option) any later version.
+>>>> + *
+>>>> + * This library is distributed in the hope that it will be useful,
+>>>> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+>>>> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+>>>> + * Lesser General Public License for more details.
+>>>> + *
+>>>> + * You should have received a copy of the GNU Lesser General Public
+>>>> + * License along with this library; if not, see 
+>>>> <http://www.gnu.org/licenses/>.
+>>>
+>>> This is your code addition, so "Inter-Thread Communication Unit stubs" /
+>>> RH / SPDX GPLv2-or-later.
+>>>
+>>>> + */
+>>>> +
+>>>> +#include "qemu/osdep.h"
+>>>> +#include "hw/misc/mips_itu.h"
+>>>> +
+>>>> +void itc_reconfigure(MIPSITUState *tag)
+>>>> +{
+>>>> +    abort();
+>>>
+>>> As Zoltan suggested, g_assert_not_reached(). Indeed this path
+>>> can't be reached without ITU, TCG won't emit anything and will
+>>> call instead:
+>>>
+>>>       qemu_log_mask(LOG_UNIMP, "mthc0 %s (reg %d sel %d)\n",
+>>>                     register_name, reg, sel);
+>>>
+>>> I'm reluctant to add stubs, but since it helps you (hoping we
+>>> can figure a clean way to split architectural access to hw/ from
+>>> tcg/ one day):
+>>
+>> Not sure how it's reached anyway, because the saar field of
+>> DisasContext is never written...
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- docs/about/removed-features.rst |  5 +++++
- tests/qtest/machine-none-test.c |  2 +-
- target/mips/cpu-defs.c.inc      | 40 ---------------------------------
- 3 files changed, 6 insertions(+), 41 deletions(-)
+Alternatively:
+https://lore.kernel.org/qemu-devel/20240209090513.9401-3-philmd@linaro.org/
 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 54081a6c19..d61b4c92dd 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -727,6 +727,11 @@ x86 ``Icelake-Client`` CPU (removed in 7.1)
- There isn't ever Icelake Client CPU, it is some wrong and imaginary one.
- Use ``Icelake-Server`` instead.
- 
-+MIPS I6500 CPU (removed in 9.0)
-+'''''''''''''''''''''''''''''''
-+
-+The I6500 support was never fully contributed.
-+
- System accelerators
- -------------------
- 
-diff --git a/tests/qtest/machine-none-test.c b/tests/qtest/machine-none-test.c
-index 31cc0bfb01..b653a0dd5c 100644
---- a/tests/qtest/machine-none-test.c
-+++ b/tests/qtest/machine-none-test.c
-@@ -37,7 +37,7 @@ static struct arch2cpu cpus_map[] = {
-     { "mips", "4Kc" },
-     { "mipsel", "I7200" },
-     { "mips64", "20Kc" },
--    { "mips64el", "I6500" },
-+    { "mips64el", "I6400" },
-     { "nios2", "FIXME" },
-     { "or1k", "or1200" },
-     { "ppc", "604" },
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index fbf787d8ce..ce2c01cbfa 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -778,46 +778,6 @@ const mips_def_t mips_defs[] =
-         .insn_flags = CPU_MIPS64R6,
-         .mmu_type = MMU_TYPE_R4000,
-     },
--    {
--        .name = "I6500",
--        .CP0_PRid = 0x1B000,
--        .CP0_Config0 = MIPS_CONFIG0 | (0x2 << CP0C0_AR) | (0x2 << CP0C0_AT) |
--                       (MMU_TYPE_R4000 << CP0C0_MT),
--        .CP0_Config1 = MIPS_CONFIG1 | (1 << CP0C1_FP) | (15 << CP0C1_MMU) |
--                       (2 << CP0C1_IS) | (5 << CP0C1_IL) | (3 << CP0C1_IA) |
--                       (2 << CP0C1_DS) | (5 << CP0C1_DL) | (3 << CP0C1_DA) |
--                       (0 << CP0C1_PC) | (1 << CP0C1_WR) | (1 << CP0C1_EP),
--        .CP0_Config2 = MIPS_CONFIG2,
--        .CP0_Config3 = MIPS_CONFIG3 | (1U << CP0C3_M) |
--                       (1 << CP0C3_CMGCR) | (1 << CP0C3_MSAP) |
--                       (1 << CP0C3_BP) | (1 << CP0C3_BI) | (1 << CP0C3_ULRI) |
--                       (1 << CP0C3_RXI) | (1 << CP0C3_LPA) | (1 << CP0C3_VInt),
--        .CP0_Config4 = MIPS_CONFIG4 | (1U << CP0C4_M) | (3 << CP0C4_IE) |
--                       (1 << CP0C4_AE) | (0xfc << CP0C4_KScrExist),
--        .CP0_Config5 = MIPS_CONFIG5 | (1 << CP0C5_XNP) | (1 << CP0C5_VP) |
--                       (1 << CP0C5_LLB) | (1 << CP0C5_MRP) | (3 << CP0C5_GI),
--        .CP0_Config5_rw_bitmask = (1 << CP0C5_MSAEn) | (1 << CP0C5_SBRI) |
--                                  (1 << CP0C5_FRE) | (1 << CP0C5_UFE),
--        .CP0_LLAddr_rw_bitmask = 0,
--        .CP0_LLAddr_shift = 0,
--        .SYNCI_Step = 64,
--        .CCRes = 2,
--        .CP0_Status_rw_bitmask = 0x30D8FFFF,
--        .CP0_PageGrain = (1 << CP0PG_IEC) | (1 << CP0PG_XIE) |
--                         (1U << CP0PG_RIE),
--        .CP0_PageGrain_rw_bitmask = (1 << CP0PG_ELPA),
--        .CP0_EBaseWG_rw_bitmask = (1 << CP0EBase_WG),
--        .CP1_fcr0 = (1 << FCR0_FREP) | (1 << FCR0_HAS2008) | (1 << FCR0_F64) |
--                    (1 << FCR0_L) | (1 << FCR0_W) | (1 << FCR0_D) |
--                    (1 << FCR0_S) | (0x03 << FCR0_PRID) | (0x0 << FCR0_REV),
--        .CP1_fcr31 = (1 << FCR31_ABS2008) | (1 << FCR31_NAN2008),
--        .CP1_fcr31_rw_bitmask = 0x0103FFFF,
--        .MSAIR = 0x03 << MSAIR_ProcID,
--        .SEGBITS = 48,
--        .PABITS = 48,
--        .insn_flags = CPU_MIPS64R6,
--        .mmu_type = MMU_TYPE_R4000,
--    },
-     {
-         .name = "Loongson-2E",
-         .CP0_PRid = 0x6302,
--- 
-2.41.0
+> Commit 5fb2dcd179 ("target/mips: Provide R/W access to SAARI
+> and SAAR CP0 registers") is an incomplete frontport of
+> https://github.com/MIPS/qemu/commit/c9340491cc.
+> 
+> Commit 043715d1e0 ("target/mips: Update ITU to utilize SAARI
+> and SAAR CP0 registers") is an incomplete frontport of
+> https://github.com/MIPS/qemu/commit/e03079c699.
+> 
+> So this feature is working in MIPS fork since 2017, and during
+> 2019 mainstream only got part of it merged but never completed.
+> 
+> 5 years passed.
 
 
