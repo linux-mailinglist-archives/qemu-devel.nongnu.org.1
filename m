@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3586084FD23
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 20:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9269D84FD21
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 20:48:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYWqd-0005Vo-Sq; Fri, 09 Feb 2024 14:47:43 -0500
+	id 1rYWr2-0005WS-ND; Fri, 09 Feb 2024 14:48:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rYWqc-0005Ul-7Z
+ id 1rYWqc-0005Um-7e
  for qemu-devel@nongnu.org; Fri, 09 Feb 2024 14:47:42 -0500
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rYWqa-0005BI-I0
+ id 1rYWqa-0005BA-Ho
  for qemu-devel@nongnu.org; Fri, 09 Feb 2024 14:47:41 -0500
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-33b0e5d1e89so830169f8f.0
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-33b6847df67so312477f8f.3
  for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 11:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1707508059; x=1708112859; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A5tqpuQsjOSCV46teFHGbLfU2/LuhZbJZLNOyxR8wfM=;
- b=z3c6egYOaZFh8YSHsVkcTglBB5WjWD13xmWt54tLDQvPsW4gUWCJqzQxawPqgyT4Vf
- jpTwWJzWWYExQw1596CVLTntsuAIFz7qUU5VKUjDrcDhDfnWXH0/pO2iIqgl6ZlTUVwk
- 4LuipOysoPGNLWL8QeEd7zUSw3pUEjBpTFinwghFhZa78w6yEzLwDjOC9u5G+dDCzBA7
- i5C2eqLH3S1/ndxRim9M/tzD25/NCx8U3iau9KAUYPQv+W/sWzino+JNF9UK8w8gYvlS
- ej1gcIljvN4SIqY9mP8Y+Fm9XMx9qxtanMwZ+LLC4e/j5B+BNlc+FnejEvrN+luP+yAQ
- j5sg==
+ bh=0LL5Dv7JkupzeOyiQ5GcSbTiVFGuPgwqizfiHIcw9nM=;
+ b=FTnPI0QcXFKV28UZit3ZqGXqOt7tENnFzzeb/ROMzVJKqhbsW5d3e1Lqdx82aMuTzA
+ sdR9+Mai/FRpO9dEl8PBLsR31yqJB1atP0iYr6EdVPsj950bxKKzo2v421Cr3zBMN4bo
+ g0C1l4ZSvWgTecX7tYYT1A02vZIfAnn5EsRb4ix6Z0NuQ325i+AeDtco1yXn7TIxvoWA
+ JXVJgw+iRAF1qotYc73D/y6oq6f4lpjmX8eoftdh5mLNNWJtwfRFzzWglkPpuo8dDYx6
+ VbFG84lvgDzcBauHzszt6tPejVcAlY+x2sZwLF58oWFtSLuPTcD4MbWbvMJKuv/WmpKH
+ t94Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1707508059; x=1708112859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A5tqpuQsjOSCV46teFHGbLfU2/LuhZbJZLNOyxR8wfM=;
- b=rGnEWP7dfEcrv8FhzwQxjxAXm1qp277cXHzO55IRxan6il0kV+W8Qqsd3ivw7rxHmJ
- Hv+GEtiYxVd+zdQYXQDZgjZF+V1Ske+0izCeno/amiHVWVWTQfN8tE7uw8wLIrigZJ6R
- MHALM1IbVqXQNGi0tgS4sDR+VjfBDyc4Rclp5hA9f0qQob+Dk/3Q4QMhLJ84eoKY8DTy
- RHKRQEc+d69uujtncTPHitgfNKUAIMDLNfe6WoopWzyABDa1+VWw28MCZ4kRNraLPGN4
- k43t91asjh+f2GG/ek9rPDSMTcc4dPLx/JHptKE4VHTd+OaQUDLO6hwjOzf7ceMWo/Xa
- /BTg==
-X-Gm-Message-State: AOJu0YzO4o+uoa9j1yoddZzHHlhPJ34b9B/05VB94ME/RCvzHulx4T0n
- W+GHBLVbIxnkwYn9L1KHhg7cU6/nXVwbU1C0biNJz3qlYB71x4Ncc8BQ9oVwDrs=
-X-Google-Smtp-Source: AGHT+IHkLnwY1nKtl9ZnfzHH2zcQXhtxFBh/PGdnQaCkZTVKoHePlz+d7CCDMuTFrAp17YnI5B4kfQ==
-X-Received: by 2002:adf:e7c7:0:b0:33a:ff90:77ca with SMTP id
- e7-20020adfe7c7000000b0033aff9077camr11062wrn.29.1707508059299; 
+ bh=0LL5Dv7JkupzeOyiQ5GcSbTiVFGuPgwqizfiHIcw9nM=;
+ b=UAfoOjjC5Qsz/MfAOEq03+nNjj3NfvFJlLj8O2gsne9H2PChrET5elFS6PsiKSf3BB
+ MA+YCirISWxinV2lGxdspylc7o6RAgAdTw/7fOlZBQve56oAtOJ7gIoiNzQw62IHHPRf
+ 5I6roHktmyYRvmr/2a7Dh97rVw/skCSWTk/SrPRdIh96YR3OqnkeG0zqSVWQoGDqmS2G
+ K87qCQzmH0ZeMFkOZVxbVjxFGajPsji+vKVbeOrpl1zIjG2iXm1nVrf+tGUoYZNQCw2w
+ ND0kQcks45SZG3eCJr7xXAVv+05uyBIdglqQNVaBeGam41Ty4sl4/OTkEPTVJzdTQB/c
+ wGwg==
+X-Gm-Message-State: AOJu0Yybv3VgP4wiCEsYcRbmlVrgnT2Ib6hmBjuGCWhNIY1ejwv4H+zE
+ XjtOSN4Pg8powKSeaDhI6npf00VlqHpHntfhMrwb0f5ahiCM69DPBEVUwHOZv04=
+X-Google-Smtp-Source: AGHT+IHhUr7jlZSyd8MxDc8iM71Wp8qP7pk5LeVG5rPXId8WvYLxbmfOV0hDpIp5RieM3tK04ma/xQ==
+X-Received: by 2002:a5d:55d0:0:b0:33b:4020:8710 with SMTP id
+ i16-20020a5d55d0000000b0033b40208710mr3336wrw.61.1707508059066; 
  Fri, 09 Feb 2024 11:47:39 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXtYP2yMbUmNpzljPhpPogBDIDrVhr3RrjB4JGeXC29ZnDUGyVQHl39yAAhaEZ6tK0PkiV+eUlMxhW2/97+V3mEQqdW9h770RZxPLNd6Q4i5WXuE4vYoNAAPLOg9KQUCKdAlrgNamNtln06nHTEcDPZxIRd2IcES3Ade6lna3tYxPQvvJuR+mwGVHt6gloBF2YCjJrd9evixN9REsM0kgnp1B0RW2xVEiDzLxr4uaA2vbgMQZ00xY0HTyGVceusHpBgBQmvfaATz0RNLncFhEwCK6Bnwd3fofjX37PiIg5rHQ8z0D0/rDfMz3IazIBh5Rtd6KODrNPEByvT5KvuO+zdfvI2gPm6bMaBzoAcRYpQgTMHjRvjpS7ou15V4ESjfFsmMP+MWn2PVSzF092NUChFO8EDnuESsDCPAxjCLW1tEgWagLWMA5nly/wPX9M58hlen8dBytLGmWMQBAW0Xfi/WeCY2PhXb6OgqK9n40zzbRaZxicphz8Q5kMYfGKvY8wlHRgn3X6ITbigi+ZIROWwxz1d2RfgjcwjBqKdrwL21cugdmsLtppJ30wvWQ==
+ AJvYcCW4E5RUiUi04GFWYcpsLZbwepDjXv1N7PkVQBPlXi/KPMY6ok8yIAr/7rjgPzlcK1fSBe/MuQGW5zvCGhGMjM6RWwnLUXuWPOophNCfD74vPuO22H2wC2NIKw==
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- i19-20020a05600c355300b0040ff2933959sm1550368wmq.7.2024.02.09.11.47.35
+ y12-20020a056000108c00b0033b40a3f92asm56264wrw.25.2024.02.09.11.47.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 09 Feb 2024 11:47:37 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 2CFCA5F8A9;
+ by draig.lan (Postfix) with ESMTP id 45A9C5F8AB;
  Fri,  9 Feb 2024 19:47:35 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Max Filippov <jcmvbkbc@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
-Subject: [PULL 05/10] kconfig: use "select" to enable semihosting
-Date: Fri,  9 Feb 2024 19:47:29 +0000
-Message-Id: <20240209194734.3424785-6-alex.bennee@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 06/10] gdbstub: Expose TARGET_SIGTRAP in a target-agnostic way
+Date: Fri,  9 Feb 2024 19:47:30 +0000
+Message-Id: <20240209194734.3424785-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240209194734.3424785-1-alex.bennee@linaro.org>
 References: <20240209194734.3424785-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,140 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Just like all other dependencies, these can be expressed in Kconfig
-files rather than in the default configurations.
+The upcoming syscall catchpoint support needs to send SIGTRAP stop
+packets to GDB. Being able to compile this support only once for all
+targets is a good thing, and it requires hiding TARGET_SIGTRAP behind
+a function call.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240129115809.1039924-1-pbonzini@redhat.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240202152506.279476-2-iii@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240207163812.3231697-10-alex.bennee@linaro.org>
+Message-Id: <20240207163812.3231697-11-alex.bennee@linaro.org>
 
-diff --git a/configs/devices/m68k-softmmu/default.mak b/configs/devices/m68k-softmmu/default.mak
-index 7f8619e4278..8dcaa28ed38 100644
---- a/configs/devices/m68k-softmmu/default.mak
-+++ b/configs/devices/m68k-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for m68k-softmmu
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index 5c0c725e54c..aeb0d9b5377 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -136,6 +136,7 @@ void gdb_append_thread_id(CPUState *cpu, GString *buf);
+ int gdb_get_cpu_index(CPUState *cpu);
+ unsigned int gdb_get_max_cpus(void); /* both */
+ bool gdb_can_reverse(void); /* softmmu, stub for user */
++int gdb_target_sigtrap(void); /* user */
  
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_AN5206=y
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index 7da99327a77..1a853841b27 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -1,8 +1,5 @@
- # Common mips*-softmmu CONFIG defines
+ void gdb_create_default_process(GDBState *s);
  
--# CONFIG_SEMIHOSTING is always required on this architecture
--CONFIG_SEMIHOSTING=y
--
- CONFIG_ISA_BUS=y
- CONFIG_PCI=y
- CONFIG_PCI_DEVICES=y
-diff --git a/configs/devices/nios2-softmmu/default.mak b/configs/devices/nios2-softmmu/default.mak
-index 1bc4082ea99..e130d024e62 100644
---- a/configs/devices/nios2-softmmu/default.mak
-+++ b/configs/devices/nios2-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for nios2-softmmu
- 
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_NIOS2_10M50=y
-diff --git a/configs/devices/riscv32-softmmu/default.mak b/configs/devices/riscv32-softmmu/default.mak
-index d847bd5692e..94a236c9c25 100644
---- a/configs/devices/riscv32-softmmu/default.mak
-+++ b/configs/devices/riscv32-softmmu/default.mak
-@@ -3,8 +3,6 @@
- # Uncomment the following lines to disable these optional devices:
- #
- #CONFIG_PCI_DEVICES=n
--CONFIG_SEMIHOSTING=y
--CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
- 
- # Boards:
- #
-diff --git a/configs/devices/riscv64-softmmu/default.mak b/configs/devices/riscv64-softmmu/default.mak
-index bc69301fa4a..3f680594484 100644
---- a/configs/devices/riscv64-softmmu/default.mak
-+++ b/configs/devices/riscv64-softmmu/default.mak
-@@ -3,8 +3,6 @@
- # Uncomment the following lines to disable these optional devices:
- #
- #CONFIG_PCI_DEVICES=n
--CONFIG_SEMIHOSTING=y
--CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
- 
- # Boards:
- #
-diff --git a/configs/devices/xtensa-softmmu/default.mak b/configs/devices/xtensa-softmmu/default.mak
-index 4fe1bf00c94..49e4c9da88c 100644
---- a/configs/devices/xtensa-softmmu/default.mak
-+++ b/configs/devices/xtensa-softmmu/default.mak
-@@ -1,7 +1,5 @@
- # Default configuration for Xtensa
- 
--CONFIG_SEMIHOSTING=y
--
- # Boards:
- #
- CONFIG_XTENSA_SIM=y
-diff --git a/target/m68k/Kconfig b/target/m68k/Kconfig
-index 23debad519a..9eae71486ff 100644
---- a/target/m68k/Kconfig
-+++ b/target/m68k/Kconfig
-@@ -1,2 +1,3 @@
- config M68K
-     bool
-+    select SEMIHOSTING
-diff --git a/target/mips/Kconfig b/target/mips/Kconfig
-index 6adf1453548..eb19c94c7d4 100644
---- a/target/mips/Kconfig
-+++ b/target/mips/Kconfig
-@@ -1,5 +1,6 @@
- config MIPS
-     bool
-+    select SEMIHOSTING
- 
- config MIPS64
-     bool
-diff --git a/target/nios2/Kconfig b/target/nios2/Kconfig
-index 1529ab8950d..c65550c861a 100644
---- a/target/nios2/Kconfig
-+++ b/target/nios2/Kconfig
-@@ -1,2 +1,3 @@
- config NIOS2
-     bool
-+    select SEMIHOSTING
-diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
-index b9e5932f13f..adb7de3f37d 100644
---- a/target/riscv/Kconfig
-+++ b/target/riscv/Kconfig
-@@ -1,5 +1,7 @@
- config RISCV32
-     bool
-+    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
- 
- config RISCV64
-     bool
-+    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
-diff --git a/target/xtensa/Kconfig b/target/xtensa/Kconfig
-index a3c8dc7f6d7..5e46049262d 100644
---- a/target/xtensa/Kconfig
-+++ b/target/xtensa/Kconfig
-@@ -1,2 +1,3 @@
- config XTENSA
-     bool
-+    select SEMIHOSTING
+diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
+index c4bba4c72c7..b7d4c37cd81 100644
+--- a/gdbstub/user-target.c
++++ b/gdbstub/user-target.c
+@@ -418,3 +418,8 @@ void gdb_handle_query_xfer_exec_file(GArray *params, void *user_ctx)
+                     ts->bprm->filename + offset);
+     gdb_put_strbuf();
+ }
++
++int gdb_target_sigtrap(void)
++{
++    return TARGET_SIGTRAP;
++}
 -- 
 2.39.2
 
