@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C49784F43B
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C5384F444
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:08:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOgY-00039Y-35; Fri, 09 Feb 2024 06:04:46 -0500
+	id 1rYOeI-0007cB-4g; Fri, 09 Feb 2024 06:02:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOd7-0006ur-C5
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:14 -0500
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rYOdB-0006z3-6G
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:19 -0500
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOd3-0000r9-TN
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:11 -0500
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6daf694b439so672738b3a.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:09 -0800 (PST)
+ id 1rYOd7-0000rM-8k
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:15 -0500
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-5dbcfa0eb5dso692645a12.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476468; x=1708081268; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476471; x=1708081271; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lbKGrat/lCDlPEyoj856v0npAYQ2ocn+FKM8NUnh6fo=;
- b=Yo8HwfJRWAWSCFetTCGPMrW3Ud5dYFnF1pAFwBMSdY87iMHvzS18ohmb3xG12G2YTk
- DqhXbXIs3vhieU0VuKHksqpS7Og5qlHhEsXLTbDK0+/FhGa8Pa3FuSwfPbf2YTSzmnm4
- sVTV8nQCsINXxtVFb9bJE8NYS7p5xXbgpQoQ7QeqqMCGkTc99os6zVwgRxv6vb8cOrK5
- g0yhnXknbAB3GViTyukSdRMnSfeL+q+Lb9sPhmbnwFfbKLCGmkp2zRGAjRvPL5l0AcLW
- Vrq3fDPDjzzPq9i/XGUHFxwi4Q7HDDm/i/2AOof5hVX7OPK5K5mm4XDevW4WuU9p1Qti
- FndQ==
+ bh=YGZZ3wBBPXzkhU51BAbT8JEgnl/RISp7+8LCgpoAm60=;
+ b=GfuMivA1y5bwOI3iLKMQV7Zs9oWLAeuWQJpIafNIxgGpqMleU58bjHoHHDK3fx9CQe
+ HCAhkW5kXtNyQVeXyVa3RrNjQN03DJaXHg5OSiyP7EhQjg/6UgWzpyqHwOHkf93bo3tT
+ gjju7faBwmRAe9o0YYmJqYnjk8ISBUbB/fT7w034H+5xeHAGk7SMBDiR9l5UeNOPvAT6
+ OiFSyBOPS+ae1uElQG5CfSXG0HdQYEvmICt/j7fYcWvZDL6rOOdDI7lQFz3r+Dd1Hiel
+ 8BdRiXooQQygdbYyadOe9YHuIhlEYM3eklb4r/RgXB614Y5AepPu/3sQgGbRpLVrtfyM
+ WNXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476468; x=1708081268;
+ d=1e100.net; s=20230601; t=1707476471; x=1708081271;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lbKGrat/lCDlPEyoj856v0npAYQ2ocn+FKM8NUnh6fo=;
- b=WUWMpizOADxoF4+wHWqC2kE6vuH5uoDBA/3zlLiG5e7XgFxW1bvKlSuvxnM5ucVR7f
- MfLv+p7NEmG0qNffqMXr4WjyAQC8vwdZtOew1JgLi12sXSmbSkc2JqERC1uhrP8LwRVJ
- QSRr9rFjpFFVNXqVVSDcNUKbP3feZjoIQHl9+yY+rSQd9hEyQz1kKoZpjehPLMUUNcfT
- /P9JhjL1Tj08IU8ucm/TjiT2YO+zoN9xDiDfO9nqEN5WSfcYiM4WykgFfozupjYeLHty
- F7xjSgE1L2jxHugX4u/C3ZhiUI1SN0j6PVZRz66/zGAlT9Q55HT6Tr1KyoKHq4U54WBV
- BpfA==
-X-Gm-Message-State: AOJu0YyEDk4N/YhZo3LKNf2bfM+xOnEksjQ9CIad+L0bcisPH+V1FgWD
- 3fSqrZOJlqmTV/1TrQzJRTrrEezEOvzaH9aINapTUAALNL5zHZ9Q7GnhDsNzL/0wSw==
-X-Google-Smtp-Source: AGHT+IHv9esL89bmHG73FipokPIPQQBeQJ5pqHm2wm54ORI0cedZzLnJEblI4GWlwslk+43rbQLhyw==
-X-Received: by 2002:a05:6a00:2716:b0:6de:12ae:68d6 with SMTP id
- x22-20020a056a00271600b006de12ae68d6mr918425pfv.17.1707476468163; 
- Fri, 09 Feb 2024 03:01:08 -0800 (PST)
+ bh=YGZZ3wBBPXzkhU51BAbT8JEgnl/RISp7+8LCgpoAm60=;
+ b=k0EhmgVB8WoXaHxKhBVhTaUd/icCOFiSp2elad1ehPQ7IB6B5QELXaAyFQKSMSDI3F
+ F6dxQjw9SmsUsK16ODYThhxJCAbjdugm7p1IUcxIipiIUvchJxagiub1/oSK5wyoXKcG
+ Zdqbw1sEAQwHL2AcDJGw7KAPwJRV+Lp1ha/sbXCUKRgceU4MJdIZXb5ywURIwCDqSK/Y
+ sf2JS/p7ncaEedzMSyZ6yrlPEklGvIlXbn+bQb9UUtPixdczE+URqlpWewzCuEQDgH4t
+ xUHa/Xj0xtVPH008H+XNXSeXZMQViZyQ51a6qfBsrHnKTK7Qh0UwjHwsxfAgV9ihIkcv
+ FfRQ==
+X-Gm-Message-State: AOJu0YwQbEj/TB58LRrxeNtM7TtJR0wx/RZRdt7aWnwr6pKGHLXBfuOa
+ qB8sVdP4TgmH2cqFg67ylTBOdU/rksr4OlbuJVKgHIoYNosawmQI3otPDSPyuYBP/Q==
+X-Google-Smtp-Source: AGHT+IEVVeAxXIEHgbS+GHSViLM+lxzr70k8cjsMNTaNHW2CJHlvqPiWYneRZTPqZ4A/+cag3TeFWg==
+X-Received: by 2002:a05:6a21:680d:b0:19c:ac7f:c3e4 with SMTP id
+ wr13-20020a056a21680d00b0019cac7fc3e4mr1260298pzb.42.1707476471413; 
+ Fri, 09 Feb 2024 03:01:11 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWNZ1b4a0KotDm54uUqP499hPip2S0vqB8jMQnKr8jHg4aBCb1qsf3SxWFcsBwhw0gAFMJ57Gsa1dKfYDPyjkeC+0dWdJMdENdgkO1SpoCU3EVr1tB+KdkkGeMvgmutG1tAj/fSWVIG2oUKLvV4blSLaoDX/hib/FONR90=
+ AJvYcCWSyhxrKS6v4DbOepFVpGps2GvVv7Dm0hRJMasmR80oQdBH/TdbuqpL7Twxcm6/la7m2QLSOKFtQLHonUepavs5WosEZKiZ88UiRYLhTOFfB7I3X2Ilnlf0J3X3cw4tgNZy3FbMqkpzAidJgsBVbQanvXjPzNUZ+iktx9g=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.05
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:01:07 -0800 (PST)
+ Fri, 09 Feb 2024 03:01:10 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 50/61] target/riscv: Add Zaamo and Zalrsc extension
- infrastructure
-Date: Fri,  9 Feb 2024 20:58:02 +1000
-Message-ID: <20240209105813.3590056-51-alistair.francis@wdc.com>
+Subject: [PULL 51/61] target/riscv: Check 'A' and split extensions for atomic
+ instructions
+Date: Fri,  9 Feb 2024 20:58:03 +1000
+Message-ID: <20240209105813.3590056-52-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,31 +102,207 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rob Bradford <rbradford@rivosinc.com>
 
-These extensions represent the atomic operations from A (Zaamo) and the
-Load-Reserved/Store-Conditional operations from A (Zalrsc)
+Following the pattern for 'M' and Zmmul check if either the 'A'
+extension is enabled or the appropriate split extension for the
+instruction.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240123111030.15074-2-rbradford@rivosinc.com>
+Message-ID: <20240123111030.15074-3-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h | 2 ++
- 1 file changed, 2 insertions(+)
+ target/riscv/insn_trans/trans_rva.c.inc | 56 +++++++++++++++----------
+ 1 file changed, 34 insertions(+), 22 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index e241922f89..833bf58217 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -78,7 +78,9 @@ struct RISCVCPUConfig {
-     bool ext_svnapot;
-     bool ext_svpbmt;
-     bool ext_zdinx;
-+    bool ext_zaamo;
-     bool ext_zacas;
-+    bool ext_zalrsc;
-     bool ext_zawrs;
-     bool ext_zfa;
-     bool ext_zfbfmin;
+diff --git a/target/riscv/insn_trans/trans_rva.c.inc b/target/riscv/insn_trans/trans_rva.c.inc
+index f0368de3e4..267930e5bc 100644
+--- a/target/riscv/insn_trans/trans_rva.c.inc
++++ b/target/riscv/insn_trans/trans_rva.c.inc
+@@ -18,6 +18,18 @@
+  * this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#define REQUIRE_A_OR_ZAAMO(ctx) do {                      \
++    if (!ctx->cfg_ptr->ext_zaamo && !has_ext(ctx, RVA)) { \
++        return false;                                     \
++    }                                                     \
++} while (0)
++
++#define REQUIRE_A_OR_ZALRSC(ctx) do {                      \
++    if (!ctx->cfg_ptr->ext_zalrsc && !has_ext(ctx, RVA)) { \
++        return false;                                     \
++    }                                                     \
++} while (0)
++
+ static bool gen_lr(DisasContext *ctx, arg_atomic *a, MemOp mop)
+ {
+     TCGv src1;
+@@ -96,143 +108,143 @@ static bool gen_amo(DisasContext *ctx, arg_atomic *a,
+ 
+ static bool trans_lr_w(DisasContext *ctx, arg_lr_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZALRSC(ctx);
+     return gen_lr(ctx, a, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_sc_w(DisasContext *ctx, arg_sc_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZALRSC(ctx);
+     return gen_sc(ctx, a, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amoswap_w(DisasContext *ctx, arg_amoswap_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amoadd_w(DisasContext *ctx, arg_amoadd_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amoxor_w(DisasContext *ctx, arg_amoxor_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amoand_w(DisasContext *ctx, arg_amoand_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amoor_w(DisasContext *ctx, arg_amoor_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amomin_w(DisasContext *ctx, arg_amomin_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amomax_w(DisasContext *ctx, arg_amomax_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amominu_w(DisasContext *ctx, arg_amominu_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_amomaxu_w(DisasContext *ctx, arg_amomaxu_w *a)
+ {
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TESL));
+ }
+ 
+ static bool trans_lr_d(DisasContext *ctx, arg_lr_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZALRSC(ctx);
+     return gen_lr(ctx, a, MO_ALIGN | MO_TEUQ);
+ }
+ 
+ static bool trans_sc_d(DisasContext *ctx, arg_sc_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZALRSC(ctx);
+     return gen_sc(ctx, a, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoswap_d(DisasContext *ctx, arg_amoswap_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_xchg_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoadd_d(DisasContext *ctx, arg_amoadd_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_add_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoxor_d(DisasContext *ctx, arg_amoxor_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_xor_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoand_d(DisasContext *ctx, arg_amoand_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_and_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amoor_d(DisasContext *ctx, arg_amoor_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_or_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomin_d(DisasContext *ctx, arg_amomin_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smin_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomax_d(DisasContext *ctx, arg_amomax_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_smax_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amominu_d(DisasContext *ctx, arg_amominu_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umin_tl, (MO_ALIGN | MO_TEUQ));
+ }
+ 
+ static bool trans_amomaxu_d(DisasContext *ctx, arg_amomaxu_d *a)
+ {
+     REQUIRE_64BIT(ctx);
+-    REQUIRE_EXT(ctx, RVA);
++    REQUIRE_A_OR_ZAAMO(ctx);
+     return gen_amo(ctx, a, &tcg_gen_atomic_fetch_umax_tl, (MO_ALIGN | MO_TEUQ));
+ }
 -- 
 2.43.0
 
