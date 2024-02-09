@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B46584F538
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:34:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A744A84F536
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:34:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYQ3v-0007vj-N2; Fri, 09 Feb 2024 07:33:00 -0500
+	id 1rYQ3y-0007zN-E9; Fri, 09 Feb 2024 07:33:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3h-0007mx-AO
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:46 -0500
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3m-0007rx-Jn
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:58 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3f-0001qe-9N
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:45 -0500
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-33b6489b593so368792f8f.3
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:32:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3k-0001sz-Gm
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:50 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33b401fd72bso495714f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:32:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707481961; x=1708086761; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707481967; x=1708086767; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=69j+RQz2yVIlaeXDXqDQZrASP/0yIinBEEqkOClQG7M=;
- b=P4wzSV+a6sgmuzRwokbfT6ciRLCDEo8QN2qpDkMLMpLZBhDi/0cmCuKNyGLa/atwVM
- ksTwrrLX5O7b/dzPsQ/eOmZBb/UQDSB1TE5RBBTkrpvZAm3FVU0fp/5OX98n8vasSKnw
- i96RVyNWmubCz3HRaQHw0+VadVgae994EY02SqTJHZ5IYxqF6a/1VS+Xx1fUB4+n+8n8
- thksn+dGt72By4gDIZDl67Qyq3mAUSk8Gi2VbkSXwAecjzZRz/lr4YBXGCCLbANY/UCH
- W56K6r1ZJFadbuRfMM6mC6znZ/cFrSC8PAof4XUBoldZWU2S1G7SRrk7jPssL4FU2Yar
- M2fQ==
+ bh=DoeBrV+EEZMMsB2lJU5mfdts4xYAcXXfL7ZG+bYHvck=;
+ b=mwVIjU74L8EpSrWA9GC+FnmdAzyXxTT+Lmx3qbxkNBpXeQNry7PU83htKlu1nn7i9H
+ 1r7eYgQtRMlPOJLy8llHaVrF6xz/76bzXwk4XNw4OFmcnP9/KT13MKipzjidpP8N69RQ
+ OXTQmLmy2hcMeuDpCw9U7t3TjJYDNmXVFLYskXvsV4OfvjhGUR3vgFiWmWnacJbMBJ2/
+ fO+ZlLNoqGThDsntD1pI5UnH1jB6GDhBW9vWXjmU9aHoAkRgpAC7Kgw6gm4eRhqBJ1KU
+ 6S9Hcm8GHebNSjsVzpmCMsw8jMijph3XdtGHkRJ4TBlIHeJQvwSVoEn4xJQXEC2PYMSq
+ o/Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707481961; x=1708086761;
+ d=1e100.net; s=20230601; t=1707481967; x=1708086767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=69j+RQz2yVIlaeXDXqDQZrASP/0yIinBEEqkOClQG7M=;
- b=GdxaAoXTuEXwF1PjLcAPvBLeRSYB7+G5zf+wl0Jdeg89xcEIImSnJqphZoP36Uzl9c
- FBsnb+Pp1Jew/EXWIygQtrOGKVXvI+BwtvaUbNuDmRpUfI16ioSnusNH2eTV1hE3Wgee
- vI5tIdBFwzFDJ+qCi75xGmo3ruNoY9REV03WFTP+CP1fTlzIVcocf2HcNYCgabQh9ctM
- 7P369oUjrLXK/Q9XC2gweYbJLDWe+ey71mtAqQ0gIeAJX8XBf+nZrRMabGPo93d6GnYH
- zJvN2D1HfhoeH8f9HJrsvUzuIjXh8Q+H31jd7Kj7Naykv3r4vzRjfIkiRzrhkIWOegOT
- PVvw==
-X-Gm-Message-State: AOJu0YxhBuRH3uDVHecnF/5/EXHViA95gNNt15TNCL1orV1KhVcjK49d
- 9vRjgPpV35aYKmiqFGrdiCMS0olCjai7vhMvFZRKnBxHUR1R/y1/hhYGyLcDymUwbIItCXhPogk
- 0
-X-Google-Smtp-Source: AGHT+IFrojkLy+30hPSoP396FCQnrQzJLM/6A1dVhEbU25punV2uYzj4wgsn5X35GgtrYq50fE+Kzw==
-X-Received: by 2002:adf:fec6:0:b0:33b:2fba:1eab with SMTP id
- q6-20020adffec6000000b0033b2fba1eabmr1153828wrs.30.1707481961213; 
- Fri, 09 Feb 2024 04:32:41 -0800 (PST)
+ bh=DoeBrV+EEZMMsB2lJU5mfdts4xYAcXXfL7ZG+bYHvck=;
+ b=gQE94tbzNMowQ6OT1nhldu8pprgMFZmnmfVxT3Jv9BAHaOngRZov17L2OlH4iIqsms
+ YdCSRTIINiFPYrF211VKO3dQ+QIH82/8ce0AVGo0wwgyb73PryQ7xo1CjealweQPkCNo
+ 47GkQEt5tydtQQKa+M87PqC80nzhG0BLTZU7ISO1kl9fxgTEafhdLibFRpqeZfHpEd52
+ XejBtMSsMmzVoQ9h4sJ5X0jadQaN7URMZz8Whc8CmwZP6x1/pUJsjU6KRLxS/3mpBfR+
+ wPChhNn/wEg/rxnblDzJhWTVysLVKpa01yXsMj3FW3TA4W83tWRZV63uSohCD8tNiKyI
+ 4uzQ==
+X-Gm-Message-State: AOJu0YxAfyVcSnL3iHe/J/wJcl2wlW+y6x7pubmfbwz/+VAvLUTct93x
+ 1SJp65f7QLFVZakQkVhVZxy/vd/5R/+mzHi8LDfo4z+qOpkOMx77FJr0lJkPkj8F8B0yUu5w28h
+ Y
+X-Google-Smtp-Source: AGHT+IH6ARJjacuRf08FpRNTvoF3O1HvWResn8vP28ypStmZYCDHLC/5YVi242T8Fhhh+agYdxqLmw==
+X-Received: by 2002:adf:a442:0:b0:33b:61ed:b899 with SMTP id
+ e2-20020adfa442000000b0033b61edb899mr892320wra.56.1707481966785; 
+ Fri, 09 Feb 2024 04:32:46 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWKpUTsflMN6iBfwhdcCPB7CZWVS28YAPQUX5KuMdLc6vQUFRlw1ZEbpa9mXhNLkTOgl+4BDQfy04mgkEVY5W6yfOlUiFVDo6iAZ26OCVWeGW7bGfdBLk5FiRL5d0920LEYFWgK8WBwBrebO1U5bP8pmbvxEyYUH9udoA1f/84+D4AvwzO6Pae760UO4YCGD8R/46vh2kCQz2jek0u1AvfShDr1eFTod5RBIFt35Hxq537j85RrunFND8Hmput79yJLeM2ykzNQZEYJnL0hpYNk+D30bQM3HQCvmMh7S3Jn689lKLJ56MqBCf672h+nMmPAS07URRIXpCc=
+ AJvYcCXzfgXHMN47aQ/KCNhBxpV4Z3YyKPRl2YquyCugn1MlusU6NZEj5P66bCUgW3gpussgOGP+xANi+EeuF+NG8em8JEZKUh2yttWi4MnxBqiDLxQXopMjKPdXDU+90V/3v1NeIbXhr7cdmnh+hWKmOxADeH7HtF5hNd7e76gOgYou3cfEjEDdRk0c+QcWPz3/262htCsWFmn+KBJU1JLprRzmorl+uwiCJUo2oI/k3WcCdoAjeAQItdLyJ/52aEZiEzRw9bBmS3lOoAqbutHOB55EsKbgx5dz8wxZghUYOmrRhr5bCp5lQMfS68bjY1wAAGbWm/bDS0GNpFc=
 Received: from m1x-phil.lan ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- dw8-20020a0560000dc800b0033b0d2ba3a1sm1703790wrb.63.2024.02.09.04.32.39
+ d23-20020adfa357000000b0033ae50e2c6asm1712299wrb.83.2024.02.09.04.32.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Feb 2024 04:32:40 -0800 (PST)
+ Fri, 09 Feb 2024 04:32:46 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -66,18 +66,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC PATCH 2/7] hw/input/pckbd: Connect i8042 GPIOs once
- mouse/keyboard are realized
-Date: Fri,  9 Feb 2024 13:32:20 +0100
-Message-ID: <20240209123226.32576-3-philmd@linaro.org>
+Subject: [RFC PATCH 3/7] hw/ide/cmd646: Configure IDE bus IRQs after
+ realization
+Date: Fri,  9 Feb 2024 13:32:21 +0100
+Message-ID: <20240209123226.32576-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240209123226.32576-1-philmd@linaro.org>
 References: <20240209123226.32576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,107 +100,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While a device is not realized, we shouldn't call:
- - qdev_get_gpio_in_named()
- - qdev_connect_gpio_out()
- - isa_connect_gpio_out()
+We shouldn't call qdev_get_gpio_in() on unrealized devices.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-Probably better would be to declare the ISA wiring handlers
-in ISADeviceClass, but such class doesn't exist yet.
+Ideally we should rework the current IDE bus model to really
+use QOM and not globals. Left for later.
 ---
- hw/input/pckbd.c | 38 +++++++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ hw/ide/cmd646.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
-index 90a4d9eb40..76175f6fe8 100644
---- a/hw/input/pckbd.c
-+++ b/hw/input/pckbd.c
-@@ -707,6 +707,12 @@ static void i8042_mmio_realize(DeviceState *dev, Error **errp)
-     if (!sysbus_realize(SYS_BUS_DEVICE(&ks->ps2mouse), errp)) {
-         return;
-     }
+diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
+index c0bcfa4414..92e1e7a4fc 100644
+--- a/hw/ide/cmd646.c
++++ b/hw/ide/cmd646.c
+@@ -291,9 +291,18 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
+     /* TODO: RST# value should be 0 */
+     pci_conf[PCI_INTERRUPT_PIN] = 0x01; // interrupt on pin 1
+ 
+-    qdev_init_gpio_in(ds, cmd646_set_irq, 2);
+     for (i = 0; i < 2; i++) {
+         ide_bus_init(&d->bus[i], sizeof(d->bus[i]), ds, i, 2);
++    }
 +}
 +
-+static void i8042_mmio_wire(DeviceState *dev)
++static void pci_cmd646_ide_wire(DeviceState *dev)
 +{
-+    MMIOKBDState *s = I8042_MMIO(dev);
-+    KBDState *ks = &s->kbd;
- 
-     qdev_connect_gpio_out(DEVICE(&ks->ps2kbd), PS2_DEVICE_IRQ,
-                           qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
-@@ -756,6 +762,7 @@ static void i8042_mmio_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
- 
-     dc->realize = i8042_mmio_realize;
-+    dc->wire = i8042_mmio_wire;
-     dc->reset = i8042_mmio_reset;
-     dc->vmsd = &vmstate_kbd_mmio;
-     device_class_set_props(dc, i8042_mmio_properties);
-@@ -878,9 +885,6 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    isa_connect_gpio_out(isadev, I8042_KBD_IRQ, isa_s->kbd_irq);
--    isa_connect_gpio_out(isadev, I8042_MOUSE_IRQ, isa_s->mouse_irq);
--
-     isa_register_ioport(isadev, isa_s->io + 0, 0x60);
-     isa_register_ioport(isadev, isa_s->io + 1, 0x64);
- 
-@@ -888,18 +892,10 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    qdev_connect_gpio_out(DEVICE(&s->ps2kbd), PS2_DEVICE_IRQ,
--                          qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
--                                                 0));
--
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ps2mouse), errp)) {
-         return;
-     }
- 
--    qdev_connect_gpio_out(DEVICE(&s->ps2mouse), PS2_DEVICE_IRQ,
--                          qdev_get_gpio_in_named(dev, "ps2-mouse-input-irq",
--                                                 0));
--
-     if (isa_s->kbd_throttle && !isa_s->kbd.extended_state) {
-         warn_report(TYPE_I8042 ": can't enable kbd-throttle without"
-                     " extended-state, disabling kbd-throttle");
-@@ -909,6 +905,25 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
-     }
- }
- 
-+static void i8042_wire(DeviceState *dev)
-+{
-+    ISADevice *isadev = ISA_DEVICE(dev);
-+    ISAKBDState *i8042 = I8042(dev);
-+    KBDState *s = &i8042->kbd;
++    PCIIDEState *d = PCI_IDE(dev);
++    DeviceState *ds = DEVICE(dev);
 +
-+    isa_connect_gpio_out(isadev, I8042_KBD_IRQ, i8042->kbd_irq);
-+    isa_connect_gpio_out(isadev, I8042_MOUSE_IRQ, i8042->mouse_irq);
-+
-+
-+    qdev_connect_gpio_out(DEVICE(&s->ps2kbd), PS2_DEVICE_IRQ,
-+                          qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
-+                                                 0));
-+
-+    qdev_connect_gpio_out(DEVICE(&s->ps2mouse), PS2_DEVICE_IRQ,
-+                          qdev_get_gpio_in_named(dev, "ps2-mouse-input-irq",
-+                                                 0));
-+}
-+
- static void i8042_build_aml(AcpiDevAmlIf *adev, Aml *scope)
- {
-     ISAKBDState *isa_s = I8042(adev);
-@@ -954,6 +969,7 @@ static void i8042_class_initfn(ObjectClass *klass, void *data)
-     device_class_set_props(dc, i8042_properties);
-     dc->reset = i8042_reset;
-     dc->realize = i8042_realizefn;
-+    dc->wire = i8042_wire;
-     dc->vmsd = &vmstate_kbd_isa;
-     adevc->build_dev_aml = i8042_build_aml;
-     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
++    qdev_init_gpio_in(ds, cmd646_set_irq, 2);
++    for (unsigned i = 0; i < 2; i++) {
+         ide_bus_init_output_irq(&d->bus[i], qdev_get_gpio_in(ds, i));
+ 
+         bmdma_init(&d->bus[i], &d->bmdma[i], d);
+@@ -324,6 +333,7 @@ static void cmd646_ide_class_init(ObjectClass *klass, void *data)
+ 
+     dc->reset = cmd646_reset;
+     dc->vmsd = &vmstate_ide_pci;
++    dc->wire = pci_cmd646_ide_wire;
+     k->realize = pci_cmd646_ide_realize;
+     k->exit = pci_cmd646_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_CMD;
 -- 
 2.41.0
 
