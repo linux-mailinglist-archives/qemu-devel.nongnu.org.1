@@ -2,62 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157EF84F05E
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 07:42:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8B384F05D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 07:42:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYKZw-0005tp-QN; Fri, 09 Feb 2024 01:41:40 -0500
+	id 1rYKa0-0005yf-Pj; Fri, 09 Feb 2024 01:41:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1rYKZo-0005mq-PA
+ id 1rYKZq-0005oG-SD
  for qemu-devel@nongnu.org; Fri, 09 Feb 2024 01:41:34 -0500
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
- id 1rYKZm-0002Oc-Nf
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 01:41:32 -0500
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a3916c1f9b0so73545566b.1
- for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 22:41:30 -0800 (PST)
+ id 1rYKZo-0002P0-5u
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 01:41:33 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a2f79e79f0cso81094466b.2
+ for <qemu-devel@nongnu.org>; Thu, 08 Feb 2024 22:41:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=vrull.eu; s=google; t=1707460889; x=1708065689; darn=nongnu.org;
+ d=vrull.eu; s=google; t=1707460890; x=1708065690; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ytTPrgvmcSAVYKXxwo9D3fPgoAujr29L9BQ2PXjBjJU=;
- b=GUwlIrfMJLi+m0QhrP+rDM9csRnx8WhKzdvziezTCKCl4/Hyzfg0oJHXxvsLPa6UkC
- vw+2g7YcD9C9XE2W5RliUMejAb5qA4cabirr2q1i87/P9t0VCiFdo2YMcWHUGpBe4/oD
- 4WbQFiUKMqjI6Urq6VaTBQ/mn7QXz178lismOKkYi9l8/1c51AHOdzC5z16sW+VR1eF+
- gbxMtxadjIGI5BI1Kt03UFRQKJbNcN6cDeCNyeJ3vQ0aKSfW9Iatyp97h5N/PBR8DIM0
- r3A7Ie+83zib4EhQk0CwDkxyVEOrm0n5HIr0u15Cmr64mJ9rw4EvffXAe5+wCTwfM3+1
- MKMQ==
+ bh=/nJiaJKCuzUzPChMbWkGwMdFArNUhgZ5ZSPilG6i32Y=;
+ b=L18zqnmRJprRX6etLHTSu+b+1+a0S8nO8BxVQqlYTurrpwXJlR/JYn+Bb1sbINWqva
+ /0/bWN5sXbKN14iH6+uhB839YbfDTbmReS+XlnWKBJwTNI+HmF8pL9+QNr/S2/tdFKjc
+ IZQug9fgYr5ZHFknCNoGsSm5ltBHxEDmOEuEwnx7R7wZ5v8R9O61cp6PeuwQc7EdVWhN
+ UA+5qGj7K0GffMIgKs0rrzejEhukyNb7rqBRgLWXaJen3xiBI2PvuP8wcSY5WF38tX1C
+ WWwBpMFo7ChQLzmLKxPDwHHKD2Zz2d7gM71mYy66XT4lUE9XenCDb2rFooQzwncVZ7qK
+ i9QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707460889; x=1708065689;
+ d=1e100.net; s=20230601; t=1707460890; x=1708065690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ytTPrgvmcSAVYKXxwo9D3fPgoAujr29L9BQ2PXjBjJU=;
- b=bvdAQ96STLoZ6JYCyW3n34KQFX1I8vORF0FASpqM4uBRyIQeEeZaF6+zWbDqsZoScD
- wtjQtxJv1iWBygACXf9FYuv+ZehLujxR3EMwOhXyTDJpWCGlNFISDTI+8fq/D1vG7gm8
- J2LtrW0OG2p2etvTGyVSQLI/WAqnwb+M2bCBMSK4OgRSyPM5xf15AYucrnScJG8ZCaOc
- iRkIMfsBUhvtM3dkk4LWodY6qSIOVrC3PbAi5JT8Rrl7Cu2FvFEBI3fTg/enuODpVpBU
- i/r00c3GBI2g7ibpREr76R7z8yl5Hl23lJZcEl1oybc98NSdWsv2X+YFmAhVT+hermNg
- dAWg==
-X-Gm-Message-State: AOJu0Yzj295KE9T4WOjccZcG6k3GiyxAmWtmSLOm18QY8hb3RkLup0ec
- 3ZYL6aMlFp62A74Y7B3knPmuOjJg5sHJhEExJKXm+/U9n5NMrncdiCOKK3HOMIM=
-X-Google-Smtp-Source: AGHT+IFVg4lO8zkHhRZCGeDc2MDr2YQcPD8It/U0CsIDnPbxPJxfIBzw6pOBCu/rKHCc+ukuID9cwQ==
-X-Received: by 2002:a17:906:3b5a:b0:a3b:721a:9162 with SMTP id
- h26-20020a1709063b5a00b00a3b721a9162mr409548ejf.66.1707460889359; 
- Thu, 08 Feb 2024 22:41:29 -0800 (PST)
+ bh=/nJiaJKCuzUzPChMbWkGwMdFArNUhgZ5ZSPilG6i32Y=;
+ b=FRw31ZwMXXBewbJtSTwFjuU5HT+F2giCiM3HSEoji0io0P7/KwPYrY2DRejks/FhSV
+ 2Q7Kf5MvlX4nJ67DHhHk0l8BrECzet1vXdR8pulhHYyCe9D5yIoMb6HsY3LWFWJI85qd
+ bsP+boD+t6S5f2il6gt7vjKd4pjCdvTxhc/u3yZmhBOW70nScc6SDnhWyqmdTAariyKt
+ ySRPU6pIwH+31Ara4uRO0tHQ4Mtz5AYv/NC3r6kS+A7mtosfjhPS58svWn8BR49sBbA/
+ 2lAxuMurRNnV32YQ6QjLZyIYKpBbQQ3v3/7WvVCuBRpPD764Ae9aRIgzdkVccqepfG3V
+ xtMA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWR+BGDglxI4JrKwy7PM9PtB7wk/zlH9clO2KU+SaMEc5HYGP6818LRYYzni3w9RdJNoXM91X8rVEr5nFYgjOIIoZB0f99OlA4LQ3LGVCpO6eqW7bv9lj+ElVSDNGrEE1uJcq9QvOJhO2C43pMYwn7oP3VU/SCF0Gs45ZvTINicfDhEItIi1K6p7xy0HLGlWL/JsInD6RN5f17TlbR2Oom/RpL1VjEQRnwWD1gr5KxC14yPlp+TYobLea7Lz4QsCNP2Alo0GyMQgr6g8qhycZvbs7o4AxOUBVem2ahTmphQf7Y6VI/0kK4lIo/2R2ytHRhv3iz9bpVHsWxJLi2CoA8jgZxakVm4JK1KHg==
+ AJvYcCV2kA4XXMC6lIdWG8UbrTTgwLBeON6w5/976spgXt6CJFGcCR5r0yxHCflfAJjdVIqoA0RzYo1pDDFtEC7AWT6g6Turud8=
+X-Gm-Message-State: AOJu0YxtkPLMFQQ/PoS82Vwm+3L2jQt8cmQ9W999tNjNLY4fxsqpmbpI
+ +9dMmIO+7iECBiWKFp3LObqcdrBn3h+VGbs4bk3n3Emt2EewAHUPR/C90ZaMaow=
+X-Google-Smtp-Source: AGHT+IFB6zbDt8USaW4Fygr3gycFlYc5raNVU0XxxE2AGBqm/iK0fLZo6dSrSq4P4mhQz/mhYpHKWQ==
+X-Received: by 2002:a17:906:407:b0:a38:421c:876c with SMTP id
+ d7-20020a170906040700b00a38421c876cmr449361eja.19.1707460890727; 
+ Thu, 08 Feb 2024 22:41:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWXFfFzEpbv5Ch2UC92cQCDa2zHx/3tdtlK6A8FVdI7yPzKl8rdHrd2Bnw/HKp1ikdfErtTDOJQ5MucBZCrzk3ww5GSdWtIrd9K5U1Rks0RQ3TSvicTEqocH/EOoPe11ABThfFQ5ZIEVL8n1tH6HcOtAdxUst7fiq36nqH59Pbx5ayy0Huq1sLUqj7qhCHUxiP187tt20JBWunGQBRWlEQOb44YLHuEneXdLu4GKVj4/Oulnxpj3wISzkdbGRpZv+QMYDq8e0yMavreAaD+S2VkawSCXgi+FBHwXkf2Rf+e8MqVGrTdwHttK9nY90l02N8MVSsLvhYStc2XTTSoQmGMJEMU1Ne+aYJPOHhCPi4jnK29EFHXRLXDmIMVo9RpMF2/MyiV1jF33DJoj+iS5BgjwN+KkWbmTugJoRdhug==
 Received: from beast.fritz.box (62-178-148-172.cable.dynamic.surfer.at.
  [62.178.148.172]) by smtp.gmail.com with ESMTPSA id
- vk9-20020a170907cbc900b00a36c499c935sm450575ejc.43.2024.02.08.22.41.28
+ vk9-20020a170907cbc900b00a36c499c935sm450575ejc.43.2024.02.08.22.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 Feb 2024 22:41:28 -0800 (PST)
+ Thu, 08 Feb 2024 22:41:30 -0800 (PST)
 From: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>
 To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Alistair Francis <alistair.francis@wdc.com>,
@@ -68,19 +70,20 @@ To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>
 Cc: =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [RFC PATCH v2 3/4] linux-user/prctl: Add dynamic memory consistency
- model prctl API
-Date: Fri,  9 Feb 2024 07:41:16 +0100
-Message-ID: <20240209064117.2746701-4-christoph.muellner@vrull.eu>
+ Laurent Vivier <laurent@vivier.eu>, Weiwei Li <liwei1518@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [RFC PATCH v2 4/4] linux-user/riscv: Implement dynamic memory
+ consistency model support
+Date: Fri,  9 Feb 2024 07:41:17 +0100
+Message-ID: <20240209064117.2746701-5-christoph.muellner@vrull.eu>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209064117.2746701-1-christoph.muellner@vrull.eu>
 References: <20240209064117.2746701-1-christoph.muellner@vrull.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,57 +106,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch implements the prctl calls to set and get the current memory
-consistency model. This patch does not implement any real functionality
-but just defines the relevant hooks, where target code take over.
+This patch implements the dynamic memory consistency model prctl calls
+for RISC-V. The implementation introduces a single boolean variable to
+keep the DTSO state.
 
 Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
 ---
- linux-user/syscall.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ linux-user/riscv/target_prctl.h | 76 ++++++++++++++++++++++++++++++++-
+ target/riscv/cpu.c              |  5 +++
+ target/riscv/cpu.h              |  1 +
+ 3 files changed, 81 insertions(+), 1 deletion(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index bf0d66b8a8..cf0845a074 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6309,6 +6309,12 @@ abi_long do_arch_prctl(CPUX86State *env, int code, abi_ulong addr)
- # define PR_SME_VL_LEN_MASK  0xffff
- # define PR_SME_VL_INHERIT   (1 << 17)
- #endif
-+#ifndef PR_SET_MEMORY_CONSISTENCY_MODEL
-+# define PR_SET_MEMORY_CONSISTENCY_MODEL        71
-+# define PR_GET_MEMORY_CONSISTENCY_MODEL        72
-+# define PR_MEMORY_CONSISTENCY_MODEL_RISCV_WMO  1
-+# define PR_MEMORY_CONSISTENCY_MODEL_RISCV_TSO  2
-+#endif
- 
- #include "target_prctl.h"
- 
-@@ -6355,6 +6361,12 @@ static abi_long do_prctl_inval1(CPUArchState *env, abi_long arg2)
- #ifndef do_prctl_sme_set_vl
- #define do_prctl_sme_set_vl do_prctl_inval1
- #endif
-+#ifndef do_prctl_set_memory_consistency_model
-+#define do_prctl_set_memory_consistency_model do_prctl_inval1
-+#endif
-+#ifndef do_prctl_get_memory_consistency_model
-+#define do_prctl_get_memory_consistency_model do_prctl_inval0
-+#endif
- 
- static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-                          abi_long arg3, abi_long arg4, abi_long arg5)
-@@ -6481,6 +6493,11 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
-         /* Disable to prevent the target disabling stuff we need. */
-         return -TARGET_EINVAL;
- 
-+    case PR_SET_MEMORY_CONSISTENCY_MODEL:
-+        return do_prctl_set_memory_consistency_model(env, arg2);
-+    case PR_GET_MEMORY_CONSISTENCY_MODEL:
-+	return do_prctl_get_memory_consistency_model(env);
+diff --git a/linux-user/riscv/target_prctl.h b/linux-user/riscv/target_prctl.h
+index eb53b31ad5..e54321d872 100644
+--- a/linux-user/riscv/target_prctl.h
++++ b/linux-user/riscv/target_prctl.h
+@@ -1 +1,75 @@
+-/* No special prctl support required. */
++/*
++ * RISC-V specific prctl functions for linux-user
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef RISCV_TARGET_PRCTL_H
++#define RISCV_TARGET_PRCTL_H
 +
-     default:
-         qemu_log_mask(LOG_UNIMP, "Unsupported prctl: " TARGET_ABI_FMT_ld "\n",
-                       option);
++static inline void riscv_dtso_set_enable(CPURISCVState *env, bool enable)
++{
++    env->dtso_ena = enable;
++}
++
++static inline bool riscv_dtso_is_enabled(CPURISCVState *env)
++{
++    return env->dtso_ena;
++}
++
++static abi_long do_prctl_set_memory_consistency_model(CPUArchState *cpu_env,
++                                                      abi_long arg2)
++{
++    RISCVCPU *cpu = env_archcpu(cpu_env);
++    bool dtso_ena_old = riscv_dtso_is_enabled(cpu_env);
++    bool dtso_ena_new;
++    bool has_dtso = cpu->cfg.ext_ssdtso;
++
++    switch (arg2) {
++        case PR_MEMORY_CONSISTENCY_MODEL_RISCV_WMO:
++            dtso_ena_new = false;
++            break;
++        case PR_MEMORY_CONSISTENCY_MODEL_RISCV_TSO:
++	    dtso_ena_new = true;
++            break;
++        default:
++            return -TARGET_EINVAL;
++    }
++
++    /* No change requested. */
++    if (dtso_ena_old == dtso_ena_new)
++	    return 0;
++
++    /* Enabling TSO only works if DTSO is available. */
++    if (dtso_ena_new && !has_dtso)
++	    return -TARGET_EINVAL;
++
++    /* Switchin TSO->WMO is not allowed. */
++    if (!dtso_ena_new)
++	    return -TARGET_EINVAL;
++
++    riscv_dtso_set_enable(cpu_env, dtso_ena_new);
++
++    /*
++     * No need to reschedule other threads, because the emulation
++     * of DTSO is fine (from a memory model view) if they are out
++     * of sync until they will eventually reschedule.
++     */
++
++    return 0;
++}
++
++#define do_prctl_set_memory_consistency_model \
++        do_prctl_set_memory_consistency_model
++
++static abi_long do_prctl_get_memory_consistency_model(CPUArchState *cpu_env)
++{
++    if (riscv_dtso_is_enabled(cpu_env))
++	    return PR_MEMORY_CONSISTENCY_MODEL_RISCV_TSO;
++
++    return PR_MEMORY_CONSISTENCY_MODEL_RISCV_WMO;
++}
++
++#define do_prctl_get_memory_consistency_model \
++        do_prctl_get_memory_consistency_model
++
++#endif /* RISCV_TARGET_PRCTL_H */
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index ee90c09600..2e2aac73dc 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -922,6 +922,11 @@ static void riscv_cpu_reset_hold(Object *obj)
+     if (mcc->parent_phases.hold) {
+         mcc->parent_phases.hold(obj);
+     }
++#ifdef CONFIG_USER_ONLY
++    /* Default is true if Ztso is enabled, false otherwise. */
++    env->dtso_ena = cpu->cfg.ext_ztso;
++#endif
++
+ #ifndef CONFIG_USER_ONLY
+     env->misa_mxl = mcc->misa_mxl_max;
+     env->priv = PRV_M;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index f52dce78ba..69420b2ae3 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -200,6 +200,7 @@ struct CPUArchState {
+ 
+ #ifdef CONFIG_USER_ONLY
+     uint32_t elf_flags;
++    bool dtso_ena; /* Dynamic TSO enable */
+ #endif
+ 
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.43.0
 
