@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B74384F678
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 15:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 636DD84F67D
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 15:07:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYRVO-0002Yy-2j; Fri, 09 Feb 2024 09:05:26 -0500
+	id 1rYRVS-0002d4-Bp; Fri, 09 Feb 2024 09:05:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rYRVM-0002XR-1O
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 09:05:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rYRVP-0002ac-Bl
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 09:05:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rYRVK-0004Cy-9P
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 09:05:23 -0500
+ id 1rYRVN-0004FU-Oa
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 09:05:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707487521;
+ s=mimecast20190719; t=1707487525;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ptL+oHXVBy8DlXSzsfQVfnlB3RTXWG51Oa2V+tLPA8w=;
- b=KwS07WUqYTW7FTOe3Q8pClHXrAfu91z/5MoBHS5FxGdvxQ/ILC4hn/7xLHFx7yn4NweL+o
- z37LgWO3bd8KPsNBbzzl2fvlSrZ9OS0PUO1HfGtu2URSzzz63U4beSPIkgKzp0jgxoC3WS
- 7df3g1teTo1r36ceUcwpUP3D2QFb5iE=
+ bh=59s3VRSA6AJJC3CBzqVZ7uJT8l4H2XwxYERxSuEO6nk=;
+ b=RTh/5rsrORHwereVTUwKGEtgIvaR4We/dB6gAw0S1W3MIeIiFNUcMl6nqePOGjniz3FWlE
+ 0OhBnIRCZMLdIlUooJhtS0cgqdU4jEdsbsBQKdHUmNXlhJFZhO53Zp4Tgz8VeLfiGZOFYI
+ Vggxd4X/mweW7x7nea7z1/eFTp2aqVA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-ho0vSErHNvKzAYTubmMZvA-1; Fri, 09 Feb 2024 09:05:18 -0500
-X-MC-Unique: ho0vSErHNvKzAYTubmMZvA-1
+ us-mta-290-9lw5ee3qNkO7IBCqS0VpEw-1; Fri, 09 Feb 2024 09:05:20 -0500
+X-MC-Unique: 9lw5ee3qNkO7IBCqS0VpEw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0711085A597;
- Fri,  9 Feb 2024 14:05:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E7FB8F9205;
+ Fri,  9 Feb 2024 14:05:19 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5A720112A1;
- Fri,  9 Feb 2024 14:05:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4F10F111FF;
+ Fri,  9 Feb 2024 14:05:17 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
@@ -55,26 +55,26 @@ Cc: Hanna Reitz <hreitz@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Hyman Huang <yong.huang@smartx.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PULL 03/17] qemu_init: increase NOFILE soft limit on POSIX
-Date: Fri,  9 Feb 2024 14:04:51 +0000
-Message-ID: <20240209140505.2536635-4-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 04/17] ui: drop VNC feature _MASK constants
+Date: Fri,  9 Feb 2024 14:04:52 +0000
+Message-ID: <20240209140505.2536635-5-berrange@redhat.com>
 In-Reply-To: <20240209140505.2536635-1-berrange@redhat.com>
 References: <20240209140505.2536635-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
 X-Spam_bar: --
 X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.269,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,120 +90,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+Each VNC feature enum entry has a corresponding _MASK constant
+which is the bit-shifted value. It is very easy for contributors
+to accidentally use the _MASK constant, instead of the non-_MASK
+constant, or the reverse. No compiler warning is possible and
+it'll just silently do the wrong thing at runtime.
 
-In many configurations, e.g. multiple vNICs with multiple queues or
-with many Ceph OSDs, the default soft limit of 1024 is not enough.
-QEMU is supposed to work fine with file descriptors >= 1024 and does
-not use select() on POSIX. Bump the soft limit to the allowed hard
-limit to avoid issues with the aforementioned configurations.
+By introducing the vnc_set_feature helper method, we can drop
+all the _MASK constants and thus prevent any future accidents.
 
-Of course the limit could be raised from the outside, but the man page
-of systemd.exec states about 'LimitNOFILE=':
-
-> Don't use.
-> [...]
-> Typically applications should increase their soft limit to the hard
-> limit on their own, if they are OK with working with file
-> descriptors above 1023,
-
-If the soft limit is already the same as the hard limit, avoid the
-superfluous setrlimit call. This can avoid a warning with a strict
-seccomp filter blocking setrlimit if NOFILE was already raised before
-executing QEMU.
-
-Buglink: https://bugzilla.proxmox.com/show_bug.cgi?id=4507
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/sysemu/os-posix.h |  1 +
- include/sysemu/os-win32.h |  5 +++++
- os-posix.c                | 22 ++++++++++++++++++++++
- system/vl.c               |  2 ++
- 4 files changed, 30 insertions(+)
+ ui/vnc.c | 34 +++++++++++++++++-----------------
+ ui/vnc.h | 22 +++++-----------------
+ 2 files changed, 22 insertions(+), 34 deletions(-)
 
-diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-index dff32ae185..b881ac6c6f 100644
---- a/include/sysemu/os-posix.h
-+++ b/include/sysemu/os-posix.h
-@@ -51,6 +51,7 @@ bool is_daemonized(void);
- void os_daemonize(void);
- bool os_set_runas(const char *user_id);
- void os_set_chroot(const char *path);
-+void os_setup_limits(void);
- void os_setup_post(void);
- int os_mlock(void);
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 4f23a0fa79..3db87fd89c 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2144,16 +2144,16 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
+             vs->vnc_encoding = enc;
+             break;
+         case VNC_ENCODING_HEXTILE:
+-            vs->features |= VNC_FEATURE_HEXTILE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_HEXTILE);
+             vs->vnc_encoding = enc;
+             break;
+         case VNC_ENCODING_TIGHT:
+-            vs->features |= VNC_FEATURE_TIGHT_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_TIGHT);
+             vs->vnc_encoding = enc;
+             break;
+ #ifdef CONFIG_PNG
+         case VNC_ENCODING_TIGHT_PNG:
+-            vs->features |= VNC_FEATURE_TIGHT_PNG_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_TIGHT_PNG);
+             vs->vnc_encoding = enc;
+             break;
+ #endif
+@@ -2163,57 +2163,57 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
+              * So prioritize ZRLE, even if the client hints that it prefers
+              * ZLIB.
+              */
+-            if ((vs->features & VNC_FEATURE_ZRLE_MASK) == 0) {
+-                vs->features |= VNC_FEATURE_ZLIB_MASK;
++            if (!vnc_has_feature(vs, VNC_FEATURE_ZRLE)) {
++                vnc_set_feature(vs, VNC_FEATURE_ZLIB);
+                 vs->vnc_encoding = enc;
+             }
+             break;
+         case VNC_ENCODING_ZRLE:
+-            vs->features |= VNC_FEATURE_ZRLE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_ZRLE);
+             vs->vnc_encoding = enc;
+             break;
+         case VNC_ENCODING_ZYWRLE:
+-            vs->features |= VNC_FEATURE_ZYWRLE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_ZYWRLE);
+             vs->vnc_encoding = enc;
+             break;
+         case VNC_ENCODING_DESKTOPRESIZE:
+-            vs->features |= VNC_FEATURE_RESIZE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_RESIZE);
+             break;
+         case VNC_ENCODING_DESKTOP_RESIZE_EXT:
+-            vs->features |= VNC_FEATURE_RESIZE_EXT_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_RESIZE_EXT);
+             break;
+         case VNC_ENCODING_POINTER_TYPE_CHANGE:
+-            vs->features |= VNC_FEATURE_POINTER_TYPE_CHANGE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_POINTER_TYPE_CHANGE);
+             break;
+         case VNC_ENCODING_RICH_CURSOR:
+-            vs->features |= VNC_FEATURE_RICH_CURSOR_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_RICH_CURSOR);
+             break;
+         case VNC_ENCODING_ALPHA_CURSOR:
+-            vs->features |= VNC_FEATURE_ALPHA_CURSOR_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_ALPHA_CURSOR);
+             break;
+         case VNC_ENCODING_EXT_KEY_EVENT:
+             send_ext_key_event_ack(vs);
+             break;
+         case VNC_ENCODING_AUDIO:
+             if (vs->vd->audio_state) {
+-                vs->features |= VNC_FEATURE_AUDIO_MASK;
++                vnc_set_feature(vs, VNC_FEATURE_AUDIO);
+                 send_ext_audio_ack(vs);
+             }
+             break;
+         case VNC_ENCODING_WMVi:
+-            vs->features |= VNC_FEATURE_WMVI_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_WMVI);
+             break;
+         case VNC_ENCODING_LED_STATE:
+-            vs->features |= VNC_FEATURE_LED_STATE_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_LED_STATE);
+             break;
+         case VNC_ENCODING_XVP:
+             if (vs->vd->power_control) {
+-                vs->features |= VNC_FEATURE_XVP_MASK;
++                vnc_set_feature(vs, VNC_FEATURE_XVP);
+                 send_xvp_message(vs, VNC_XVP_CODE_INIT);
+             }
+             break;
+         case VNC_ENCODING_CLIPBOARD_EXT:
+-            vs->features |= VNC_FEATURE_CLIPBOARD_EXT_MASK;
++            vnc_set_feature(vs, VNC_FEATURE_CLIPBOARD_EXT);
+             vnc_server_cut_text_caps(vs);
+             break;
+         case VNC_ENCODING_COMPRESSLEVEL0 ... VNC_ENCODING_COMPRESSLEVEL0 + 9:
+diff --git a/ui/vnc.h b/ui/vnc.h
+index 96d19dce19..4521dc88f7 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -467,23 +467,6 @@ enum VncFeatures {
+     VNC_FEATURE_AUDIO,
+ };
  
-diff --git a/include/sysemu/os-win32.h b/include/sysemu/os-win32.h
-index 1047d260cb..b82a5d3ad9 100644
---- a/include/sysemu/os-win32.h
-+++ b/include/sysemu/os-win32.h
-@@ -128,6 +128,11 @@ static inline int os_mlock(void)
-     return -ENOSYS;
+-#define VNC_FEATURE_RESIZE_MASK              (1 << VNC_FEATURE_RESIZE)
+-#define VNC_FEATURE_RESIZE_EXT_MASK          (1 << VNC_FEATURE_RESIZE_EXT)
+-#define VNC_FEATURE_HEXTILE_MASK             (1 << VNC_FEATURE_HEXTILE)
+-#define VNC_FEATURE_POINTER_TYPE_CHANGE_MASK (1 << VNC_FEATURE_POINTER_TYPE_CHANGE)
+-#define VNC_FEATURE_WMVI_MASK                (1 << VNC_FEATURE_WMVI)
+-#define VNC_FEATURE_TIGHT_MASK               (1 << VNC_FEATURE_TIGHT)
+-#define VNC_FEATURE_ZLIB_MASK                (1 << VNC_FEATURE_ZLIB)
+-#define VNC_FEATURE_RICH_CURSOR_MASK         (1 << VNC_FEATURE_RICH_CURSOR)
+-#define VNC_FEATURE_ALPHA_CURSOR_MASK        (1 << VNC_FEATURE_ALPHA_CURSOR)
+-#define VNC_FEATURE_TIGHT_PNG_MASK           (1 << VNC_FEATURE_TIGHT_PNG)
+-#define VNC_FEATURE_ZRLE_MASK                (1 << VNC_FEATURE_ZRLE)
+-#define VNC_FEATURE_ZYWRLE_MASK              (1 << VNC_FEATURE_ZYWRLE)
+-#define VNC_FEATURE_LED_STATE_MASK           (1 << VNC_FEATURE_LED_STATE)
+-#define VNC_FEATURE_XVP_MASK                 (1 << VNC_FEATURE_XVP)
+-#define VNC_FEATURE_CLIPBOARD_EXT_MASK       (1 <<  VNC_FEATURE_CLIPBOARD_EXT)
+-#define VNC_FEATURE_AUDIO_MASK               (1 <<  VNC_FEATURE_AUDIO)
+-
+ 
+ /* Client -> Server message IDs */
+ #define VNC_MSG_CLIENT_SET_PIXEL_FORMAT           0
+@@ -599,6 +582,11 @@ static inline uint32_t vnc_has_feature(VncState *vs, int feature) {
+     return (vs->features & (1 << feature));
  }
  
-+static inline void os_setup_limits(void)
++static inline void vnc_set_feature(VncState *vs, enum VncFeatures feature)
 +{
-+    return;
++    vs->features |= (1 << feature);
 +}
 +
- #define fsync _commit
- 
- #if !defined(lseek)
-diff --git a/os-posix.c b/os-posix.c
-index 52ef6990ff..a4284e2c07 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -24,6 +24,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include <sys/resource.h>
- #include <sys/wait.h>
- #include <pwd.h>
- #include <grp.h>
-@@ -256,6 +257,27 @@ void os_daemonize(void)
-     }
- }
- 
-+void os_setup_limits(void)
-+{
-+    struct rlimit nofile;
-+
-+    if (getrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to query NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+
-+    if (nofile.rlim_cur == nofile.rlim_max) {
-+        return;
-+    }
-+
-+    nofile.rlim_cur = nofile.rlim_max;
-+
-+    if (setrlimit(RLIMIT_NOFILE, &nofile) < 0) {
-+        warn_report("unable to set NOFILE limit: %s", strerror(errno));
-+        return;
-+    }
-+}
-+
- void os_setup_post(void)
- {
-     int fd = 0;
-diff --git a/system/vl.c b/system/vl.c
-index 2a0bd08ff1..95cd2d91c4 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2778,6 +2778,8 @@ void qemu_init(int argc, char **argv)
-     error_init(argv[0]);
-     qemu_init_exec_dir(argv[0]);
- 
-+    os_setup_limits();
-+
-     qemu_init_arch_modules();
- 
-     qemu_init_subsystems();
+ /* Framebuffer */
+ void vnc_framebuffer_update(VncState *vs, int x, int y, int w, int h,
+                             int32_t encoding);
 -- 
 2.43.0
 
