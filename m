@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80A784F3F7
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 503DB84F3F6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOaa-0008Gf-Rt; Fri, 09 Feb 2024 05:58:36 -0500
+	id 1rYOad-0008HB-Qd; Fri, 09 Feb 2024 05:58:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOaZ-0008GW-L3
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:35 -0500
-Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
+ id 1rYOac-0008H3-Sh
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:38 -0500
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOaY-0000Ay-4Q
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:35 -0500
-Received: by mail-oa1-x2d.google.com with SMTP id
- 586e51a60fabf-219108b8e9cso430873fac.2
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:33 -0800 (PST)
+ id 1rYOab-0000BF-A9
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:58:38 -0500
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-599f5e71d85so462957eaf.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:58:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476312; x=1708081112; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476316; x=1708081116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nQCs+odaNl3yO/t48S28H1Q/4KUtJWYHdC+h6upI0Ds=;
- b=Kady0kDpu26FqofSSb9vWfgaSPgIEO99ItEKHEGFYVNcba/rawddTh4SXNlRRo8TJ7
- GV4xMhX/CEmI9OhGyIsYOoH2pxFru/AKGI7u7ujjB/SXbF88215DEZbDWyfVYWCEO+KD
- dI/xYlX3p//V9t9AgJY0RjN6Z+eJghr+CvseuYNIK2ZHZQ+EpRRaUw+RxUYs3f35sg3X
- robStMHg7tXd6Wr5Rp2HVs/ageYJVgQHQzodX4XqFNGyTGsSq2pE+wULqb2wwzBhQZ4T
- HPKIxwYjfRcCVrAhZUBGJvHe+uv873P20hnK41X26qK/4xl4/NtL8yPfRighVtkTd2B1
- 44OA==
+ bh=eGFNqUWHagsaOWtdN93//bJdHobk+bd1c/qcwnIUmSs=;
+ b=mKC68Ga2vajVLKOtcSy8+rrJDnEG7KKjGWyq+NgnPSX6M1fdMeIDk3QEtirV8+trn2
+ DQm1mHBYqK71rCqO8hgUMRQrUnhCa3qXqxkuujRAR0urcsfLEUY+8Blzwx9cdus2aN6y
+ xMrtoqq3LOlTB5BVNBzWzEfng74wSrNfnFiyk+9JmPjebPppB73T99DjZemz6k+kgRkE
+ g8YwvVvk0b2RWJgPuNtOm4p03GDHxykrdXObLG49llwyaztjdLzZV2LlLNGOsyLn/Y89
+ l7H9pdIlylBFC1l3KW+eEuYovsMkrCftGr5N8nbkHD/yT8TmbHVaooKSnv9T0yz6qFrV
+ h7TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476312; x=1708081112;
+ d=1e100.net; s=20230601; t=1707476316; x=1708081116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nQCs+odaNl3yO/t48S28H1Q/4KUtJWYHdC+h6upI0Ds=;
- b=BLDZQZu5893tn7F3uJcZWKygb8tq+vqwjFSRAz258S70gSjut7K/Qod8pQCHVckDlR
- dfwoQS0t34dE539m3kkdCXSwMXMHkesuHkJ5kPIP1QUT4mGktgXFyJeDoSV3+ZuaBSKE
- /EBI4tLgV17XWNpBxJO0+z+u6nbTFghs49WX6Y2q9BtQXJqpwLZnyKi34yhnTlxLWUsF
- ggNbn0ZPQ/ACZNjtiIe/FFH8FyBmt0kCsol/6O/rQKdnXfYqGnqvIUwtye870kd8Bu5g
- MDdo+BLuAZ+sIHgNsFmESyLp8EFczZfP/dtj4HdPjrrwUrABcSXngoUTmi8pUR+OgNXx
- UJdg==
-X-Gm-Message-State: AOJu0Yy4qrhwUSMKTegZyHkCD6fCVYltX/ru6folky3Fmcht783pwBZE
- 9BW6DrWVRQ65dbQP/7dkofe+gLH7/ljJn95W9CCcCtBKG681VZWJSxe8SCl93SZQ0A==
-X-Google-Smtp-Source: AGHT+IEobRDnRCDy8JhU2rBFiAnD3roYAZyXHh17os9/b0ULULGuWC6HNCEWrkUoTzRljUhVCtYKSw==
-X-Received: by 2002:a05:6870:7008:b0:219:3db3:243 with SMTP id
- u8-20020a056870700800b002193db30243mr1309968oae.11.1707476312484; 
- Fri, 09 Feb 2024 02:58:32 -0800 (PST)
+ bh=eGFNqUWHagsaOWtdN93//bJdHobk+bd1c/qcwnIUmSs=;
+ b=dqopj5fi6tfk9RuXq472zVQkfyeEqfrxh3T8TuM76cFcYPtyaZromNKwSniXwSVOSG
+ EIi62bZLToBJCJCwHZ1R533Qvk+NL4HWTscgaHKX9NSZTr4pCFfEsv/WjvJoPcFOQfcn
+ FpOIQJu7lw71E0Jr4l0EzY1wH9vHziyaFls4BKA8QelNXp2ZK8U9JXcwBN0KDo+cuY6n
+ HYY4f/pnLoUhfNol6PjCjWwjlHo14ydAjl37B09eJe+dFMBA3iRlOCAGTTQGiHtD5VZS
+ QCw6UzTd+hMvlOqsE28A+4UG1QwJDz/wi7aoOsqR4kT7p27ySm3m+r76I7Xbit8htVdk
+ cO/A==
+X-Gm-Message-State: AOJu0Ywq/j1NPZvT4h+D3jqjc5X2JkBULOKRuyQOE2O8ksta2jz34UIY
+ cyYuQ4b1LA0F7Mte3+kzM7IzDLg6NVk9BjtufctZDrTs+MIW3E77R+cB1G8bjtmBWA==
+X-Google-Smtp-Source: AGHT+IEx3CrnsUs/r83EpPRbS+YrvDVSE21eNPz6TrJYTVj/4/wRns90mDx7vXaEnJymDZfeggcNfA==
+X-Received: by 2002:a05:6358:726:b0:176:9e87:412c with SMTP id
+ e38-20020a056358072600b001769e87412cmr1220330rwj.7.1707476315772; 
+ Fri, 09 Feb 2024 02:58:35 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCkMG4ytStqgWwLWfhgo4AmwqzA6/vrI2d+pPv8KpY70mbYvtgcI8ZFD4L5MRDBC92L8/iS/bUO8gcu3huRl6vViUUKoGDJ1R+hya5cROt8fdLTzhe9GE6ntcPG02Rri9K/opWMop1VBPrxvYf2YtyYWh5TvmbVrnnAn8xjmYqXUzQQU68lGIcX3+f8Vubr3EelYS8
+ AJvYcCV3TpPPNBXQFD9C0Gtx+cd1Uymdn/74NqSwTgQreb2c31EdCPqCZ5YAhgtOCQHw8KXObBbOeVWs9AwpPOIWTN8s6WT3Pqo6+fO49cveOX7O+K6zNenMYBlQa63jA7q7UqwgldEARqrKfVzoS8MbiQTq7x9RabL5n7iwJI0l7EM3Owqa5G7XF7W1fegNNyOZTOSrNZp1
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.29
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.58.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:58:31 -0800 (PST)
+ Fri, 09 Feb 2024 02:58:35 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -67,16 +67,16 @@ Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 02/61] target/riscv: Add infrastructure for 'B' MISA extension
-Date: Fri,  9 Feb 2024 20:57:14 +1000
-Message-ID: <20240209105813.3590056-3-alistair.francis@wdc.com>
+Subject: [PULL 03/61] target/riscv: Add step to validate 'B' extension
+Date: Fri,  9 Feb 2024 20:57:15 +1000
+Message-ID: <20240209105813.3590056-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2d;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=alistair23@gmail.com; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,69 +102,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rob Bradford <rbradford@rivosinc.com>
 
-Add the infrastructure for the 'B' extension which is the union of the
-Zba, Zbb and Zbs instructions.
+If the B extension is enabled warn if the user has disabled any of the
+required extensions that are part of the 'B' extension. Conversely
+enable the extensions that make up the 'B' extension if it is enabled.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240111161644.33630-2-rbradford@rivosinc.com>
+Message-ID: <20240111161644.33630-3-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h         | 1 +
- target/riscv/cpu.c         | 5 +++--
- target/riscv/tcg/tcg-cpu.c | 1 +
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index f63ee9cc58..136fc1de73 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -69,6 +69,7 @@ typedef struct CPUArchState CPURISCVState;
- #define RVH RV('H')
- #define RVJ RV('J')
- #define RVG RV('G')
-+#define RVB RV('B')
- 
- extern const uint32_t misa_bits[];
- const char *riscv_get_misa_ext_name(uint32_t bit);
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index be21fa09c6..8a2fd7d031 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -38,9 +38,9 @@
- #include "tcg/tcg.h"
- 
- /* RISC-V CPU definitions */
--static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
-+static const char riscv_single_letter_exts[] = "IEMAFDQCBPVH";
- const uint32_t misa_bits[] = {RVI, RVE, RVM, RVA, RVF, RVD, RVV,
--                              RVC, RVS, RVU, RVH, RVJ, RVG, 0};
-+                              RVC, RVS, RVU, RVH, RVJ, RVG, RVB, 0};
- 
- /*
-  * From vector_helper.c
-@@ -1304,6 +1304,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
-     MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
-     MISA_EXT_INFO(RVV, "v", "Vector operations"),
-     MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
-+    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
- };
- 
- static int riscv_validate_misa_info_idx(uint32_t bit)
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index b7da92783b..baecfa7672 100644
+index baecfa7672..bf8e72a0e8 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1056,6 +1056,7 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-     MISA_CFG(RVJ, false),
-     MISA_CFG(RVV, false),
-     MISA_CFG(RVG, false),
-+    MISA_CFG(RVB, false),
- };
+@@ -442,6 +442,35 @@ static void riscv_cpu_validate_g(RISCVCPU *cpu)
+     }
+ }
  
++static void riscv_cpu_validate_b(RISCVCPU *cpu)
++{
++    const char *warn_msg = "RVB mandates disabled extension %s";
++
++    if (!cpu->cfg.ext_zba) {
++        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zba))) {
++            cpu->cfg.ext_zba = true;
++        } else {
++            warn_report(warn_msg, "zba");
++        }
++    }
++
++    if (!cpu->cfg.ext_zbb) {
++        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbb))) {
++            cpu->cfg.ext_zbb = true;
++        } else {
++            warn_report(warn_msg, "zbb");
++        }
++    }
++
++    if (!cpu->cfg.ext_zbs) {
++        if (!cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_zbs))) {
++            cpu->cfg.ext_zbs = true;
++        } else {
++            warn_report(warn_msg, "zbs");
++        }
++    }
++}
++
  /*
+  * Check consistency between chosen extensions while setting
+  * cpu->cfg accordingly.
+@@ -455,6 +484,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         riscv_cpu_validate_g(cpu);
+     }
+ 
++    if (riscv_has_ext(env, RVB)) {
++        riscv_cpu_validate_b(cpu);
++    }
++
+     if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
+         error_setg(errp,
+                    "I and E extensions are incompatible");
 -- 
 2.43.0
 
