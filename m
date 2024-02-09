@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B0084F534
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B46584F538
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:34:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYQ3f-0007kC-1n; Fri, 09 Feb 2024 07:32:43 -0500
+	id 1rYQ3v-0007vj-N2; Fri, 09 Feb 2024 07:33:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3c-0007ix-H5
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:40 -0500
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3h-0007mx-AO
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:46 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3Z-0001pS-BW
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:40 -0500
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-5116b017503so1145525e87.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:32:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rYQ3f-0001qe-9N
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:32:45 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33b6489b593so368792f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 04:32:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707481955; x=1708086755; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707481961; x=1708086761; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D/EF0ukeLn1gu/zaqcDjARqMaoRLvmGATkelLRoHEzw=;
- b=wT9dB7Rhhr4feEQsUkJWsAoMzDnk41S7aB+GfGEB3NbzKbD0wHCMFP13HKpJbtgAA0
- ghkiupFWJVmKDTUiONufcOStB4jeLiq1EWrXTS2j55bKa7+ZLHxk9U/dz5WYTVCuX/Uv
- lYu1BAj2L/Paw9V27JHKe5cGTMCDsr9dE3wKpwTF16RcyzAxOX01yBOWmcNnJAWxP5pZ
- em4qyLDBvRLHEGUzft2q2lrBXGebRz1T4+WpI1SyOvc+pDkN6sCoQrYeuFfl2TVR62bF
- fQyc5TV+vgHtOi4trnfnU53dGldDnTCbKkc8EQlUCc3WN2O6yzYb1QTdUjBgIL1E/SGb
- x7mQ==
+ bh=69j+RQz2yVIlaeXDXqDQZrASP/0yIinBEEqkOClQG7M=;
+ b=P4wzSV+a6sgmuzRwokbfT6ciRLCDEo8QN2qpDkMLMpLZBhDi/0cmCuKNyGLa/atwVM
+ ksTwrrLX5O7b/dzPsQ/eOmZBb/UQDSB1TE5RBBTkrpvZAm3FVU0fp/5OX98n8vasSKnw
+ i96RVyNWmubCz3HRaQHw0+VadVgae994EY02SqTJHZ5IYxqF6a/1VS+Xx1fUB4+n+8n8
+ thksn+dGt72By4gDIZDl67Qyq3mAUSk8Gi2VbkSXwAecjzZRz/lr4YBXGCCLbANY/UCH
+ W56K6r1ZJFadbuRfMM6mC6znZ/cFrSC8PAof4XUBoldZWU2S1G7SRrk7jPssL4FU2Yar
+ M2fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707481955; x=1708086755;
+ d=1e100.net; s=20230601; t=1707481961; x=1708086761;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D/EF0ukeLn1gu/zaqcDjARqMaoRLvmGATkelLRoHEzw=;
- b=rxI7jjhf2aLhuNCaS7fIfe4QLD5fqEkWXm+vtERA7DeoS7PyNcA3iplubWxjmnweEv
- yYjXxNX9MLsQe0e1/2bxGt8BEoDIWmStFbxE/Vi4trjY8ENejrc+kCNLEzohUxHxilCu
- zx8K8nSOyW2NjEZC9kvZqL4DckC2gHBQINie26Bn5P0yIC6RHySEgo9tJz7+Rfh5o0yM
- vDbnWDUTtZEZJrrX0C4ZkN3KZGCiXkPhWK4asFbZCL+XPGjo22QqkdDVG/NcCNSRD76E
- YnF3j4+UntQbAms3xXuCAWN94E+1DguEespzXGstSn6/mDTnsj0PtBFn1rtlxlLLG93A
- lpSQ==
-X-Gm-Message-State: AOJu0YxvwrLVjbckowGudeApXBBQrjqaXHlM43omR/ef0DiIUf823lay
- Y8uMTLGGKJ9tpqa62wBZpi4efXwzO5on3/yv7p0ppK6XGnJrIC6BaOFnocAUTDtV4rKpQ5hxPQ3
- A
-X-Google-Smtp-Source: AGHT+IFzNlLJIV6KFJNI6HMcsm4k41Q4sAMQPIqNmxYPKb1MoiNw7vxYC8cczpLfscF0PI7UTQ8IrQ==
-X-Received: by 2002:ac2:5213:0:b0:511:78bb:a9da with SMTP id
- a19-20020ac25213000000b0051178bba9damr1050764lfl.39.1707481955364; 
- Fri, 09 Feb 2024 04:32:35 -0800 (PST)
+ bh=69j+RQz2yVIlaeXDXqDQZrASP/0yIinBEEqkOClQG7M=;
+ b=GdxaAoXTuEXwF1PjLcAPvBLeRSYB7+G5zf+wl0Jdeg89xcEIImSnJqphZoP36Uzl9c
+ FBsnb+Pp1Jew/EXWIygQtrOGKVXvI+BwtvaUbNuDmRpUfI16ioSnusNH2eTV1hE3Wgee
+ vI5tIdBFwzFDJ+qCi75xGmo3ruNoY9REV03WFTP+CP1fTlzIVcocf2HcNYCgabQh9ctM
+ 7P369oUjrLXK/Q9XC2gweYbJLDWe+ey71mtAqQ0gIeAJX8XBf+nZrRMabGPo93d6GnYH
+ zJvN2D1HfhoeH8f9HJrsvUzuIjXh8Q+H31jd7Kj7Naykv3r4vzRjfIkiRzrhkIWOegOT
+ PVvw==
+X-Gm-Message-State: AOJu0YxhBuRH3uDVHecnF/5/EXHViA95gNNt15TNCL1orV1KhVcjK49d
+ 9vRjgPpV35aYKmiqFGrdiCMS0olCjai7vhMvFZRKnBxHUR1R/y1/hhYGyLcDymUwbIItCXhPogk
+ 0
+X-Google-Smtp-Source: AGHT+IFrojkLy+30hPSoP396FCQnrQzJLM/6A1dVhEbU25punV2uYzj4wgsn5X35GgtrYq50fE+Kzw==
+X-Received: by 2002:adf:fec6:0:b0:33b:2fba:1eab with SMTP id
+ q6-20020adffec6000000b0033b2fba1eabmr1153828wrs.30.1707481961213; 
+ Fri, 09 Feb 2024 04:32:41 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWOxnzVCCy/U/2x4P2+0KM350C3xhqnQsKdrTEyWhR73+BTmRLGIr6ib1IOOGp8wKrXY3m5Ew8fI8vgpaeHbL58EZ67MtBtC8SAyviYbCiAEUENUfRQfJ/P6+oCFZ/SDCVW+jowkVVQpahRotlAHzlXntDPh+V4kyIcFvk2fn9NtyDKRB1tfyPkL2iUgnumUkj0dmzIw9NHNuupSJoQnAW9MvqNWNXQVEAvkvRqi7Pp17CIMioFku4/J5iKUM/eOpuP6FHQIxOdTXf7szYJBcdmc9CU4p+y1aFO6F22dVzl7X07kreNMoNiJs/pN42aV3jh7DXLWNuh3FE=
+ AJvYcCWKpUTsflMN6iBfwhdcCPB7CZWVS28YAPQUX5KuMdLc6vQUFRlw1ZEbpa9mXhNLkTOgl+4BDQfy04mgkEVY5W6yfOlUiFVDo6iAZ26OCVWeGW7bGfdBLk5FiRL5d0920LEYFWgK8WBwBrebO1U5bP8pmbvxEyYUH9udoA1f/84+D4AvwzO6Pae760UO4YCGD8R/46vh2kCQz2jek0u1AvfShDr1eFTod5RBIFt35Hxq537j85RrunFND8Hmput79yJLeM2ykzNQZEYJnL0hpYNk+D30bQM3HQCvmMh7S3Jn689lKLJ56MqBCf672h+nMmPAS07URRIXpCc=
 Received: from m1x-phil.lan ([176.187.218.105])
  by smtp.gmail.com with ESMTPSA id
- 7-20020a05600c248700b0040fddaf9ff4sm482987wms.40.2024.02.09.04.32.33
+ dw8-20020a0560000dc800b0033b0d2ba3a1sm1703790wrb.63.2024.02.09.04.32.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 09 Feb 2024 04:32:34 -0800 (PST)
+ Fri, 09 Feb 2024 04:32:40 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -66,17 +66,18 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [RFC PATCH 1/7] hw/qdev: Introduce DeviceClass::[un]wire() handlers
-Date: Fri,  9 Feb 2024 13:32:19 +0100
-Message-ID: <20240209123226.32576-2-philmd@linaro.org>
+Subject: [RFC PATCH 2/7] hw/input/pckbd: Connect i8042 GPIOs once
+ mouse/keyboard are realized
+Date: Fri,  9 Feb 2024 13:32:20 +0100
+Message-ID: <20240209123226.32576-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240209123226.32576-1-philmd@linaro.org>
 References: <20240209123226.32576-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,79 +100,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+While a device is not realized, we shouldn't call:
+ - qdev_get_gpio_in_named()
+ - qdev_connect_gpio_out()
+ - isa_connect_gpio_out()
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/qdev-core.h |  8 +++++++-
- hw/core/qdev.c         | 21 ++++++++++++++++++++-
- 2 files changed, 27 insertions(+), 2 deletions(-)
+Probably better would be to declare the ISA wiring handlers
+in ISADeviceClass, but such class doesn't exist yet.
+---
+ hw/input/pckbd.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index d47536eadb..2ca33aea3b 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -101,8 +101,12 @@ typedef void (*BusUnrealize)(BusState *bus);
-  * @props: Properties accessing state fields.
-  * @realize: Callback function invoked when the #DeviceState:realized
-  * property is changed to %true.
-+ * @wire: Callback function called after @realize to connect IRQs,
-+ * clocks and map memories. Can not fail.
-+ * @unwire: Callback function to undo @wire. Called before @unrealize.
-+ * Can not fail.
-  * @unrealize: Callback function invoked when the #DeviceState:realized
-- * property is changed to %false.
-+ * property is changed to %false. Can not fail.
-  * @hotpluggable: indicates if #DeviceClass is hotpluggable, available
-  * as readonly "hotpluggable" property of #DeviceState instance
-  *
-@@ -161,6 +165,8 @@ struct DeviceClass {
-      */
-     DeviceReset reset;
-     DeviceRealize realize;
-+    void (*wire)(DeviceState *dev);
-+    void (*unwire)(DeviceState *dev);
-     DeviceUnrealize unrealize;
- 
-     /**
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c68d0f7c51..1d399aae71 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -303,6 +303,16 @@ bool qdev_realize_and_unref(DeviceState *dev, BusState *bus, Error **errp)
- 
- void qdev_unrealize(DeviceState *dev)
- {
-+    DeviceClass *dc = DEVICE_GET_CLASS(dev);
+diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
+index 90a4d9eb40..76175f6fe8 100644
+--- a/hw/input/pckbd.c
++++ b/hw/input/pckbd.c
+@@ -707,6 +707,12 @@ static void i8042_mmio_realize(DeviceState *dev, Error **errp)
+     if (!sysbus_realize(SYS_BUS_DEVICE(&ks->ps2mouse), errp)) {
+         return;
+     }
++}
 +
-+    if (dc->unwire) {
-+        if (!dc->wire) {
-+            error_report("disconnect() without connect() for type '%s'",
-+                         object_get_typename(OBJECT(dev)));
-+            abort();
-+        }
-+        dc->unwire(dev);
-+    }
-     object_property_set_bool(OBJECT(dev), "realized", false, &error_abort);
++static void i8042_mmio_wire(DeviceState *dev)
++{
++    MMIOKBDState *s = I8042_MMIO(dev);
++    KBDState *ks = &s->kbd;
+ 
+     qdev_connect_gpio_out(DEVICE(&ks->ps2kbd), PS2_DEVICE_IRQ,
+                           qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
+@@ -756,6 +762,7 @@ static void i8042_mmio_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+ 
+     dc->realize = i8042_mmio_realize;
++    dc->wire = i8042_mmio_wire;
+     dc->reset = i8042_mmio_reset;
+     dc->vmsd = &vmstate_kbd_mmio;
+     device_class_set_props(dc, i8042_mmio_properties);
+@@ -878,9 +885,6 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    isa_connect_gpio_out(isadev, I8042_KBD_IRQ, isa_s->kbd_irq);
+-    isa_connect_gpio_out(isadev, I8042_MOUSE_IRQ, isa_s->mouse_irq);
+-
+     isa_register_ioport(isadev, isa_s->io + 0, 0x60);
+     isa_register_ioport(isadev, isa_s->io + 1, 0x64);
+ 
+@@ -888,18 +892,10 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    qdev_connect_gpio_out(DEVICE(&s->ps2kbd), PS2_DEVICE_IRQ,
+-                          qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
+-                                                 0));
+-
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->ps2mouse), errp)) {
+         return;
+     }
+ 
+-    qdev_connect_gpio_out(DEVICE(&s->ps2mouse), PS2_DEVICE_IRQ,
+-                          qdev_get_gpio_in_named(dev, "ps2-mouse-input-irq",
+-                                                 0));
+-
+     if (isa_s->kbd_throttle && !isa_s->kbd.extended_state) {
+         warn_report(TYPE_I8042 ": can't enable kbd-throttle without"
+                     " extended-state, disabling kbd-throttle");
+@@ -909,6 +905,25 @@ static void i8042_realizefn(DeviceState *dev, Error **errp)
+     }
  }
  
-@@ -601,8 +611,17 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
-         dev->pending_deleted_event = true;
-         DEVICE_LISTENER_CALL(unrealize, Reverse, dev);
-     }
--
-     assert(local_err == NULL);
++static void i8042_wire(DeviceState *dev)
++{
++    ISADevice *isadev = ISA_DEVICE(dev);
++    ISAKBDState *i8042 = I8042(dev);
++    KBDState *s = &i8042->kbd;
 +
-+    if (dc->wire) {
-+        if (!dc->unwire) {
-+            warn_report_once("wire() without unwire() for type '%s'",
-+                             object_get_typename(OBJECT(dev)));
-+        }
-+        dc->wire(dev);
-+    }
++    isa_connect_gpio_out(isadev, I8042_KBD_IRQ, i8042->kbd_irq);
++    isa_connect_gpio_out(isadev, I8042_MOUSE_IRQ, i8042->mouse_irq);
 +
-+    /* At this point the device is "guest visible". */
-     return;
- 
- child_realize_fail:
++
++    qdev_connect_gpio_out(DEVICE(&s->ps2kbd), PS2_DEVICE_IRQ,
++                          qdev_get_gpio_in_named(dev, "ps2-kbd-input-irq",
++                                                 0));
++
++    qdev_connect_gpio_out(DEVICE(&s->ps2mouse), PS2_DEVICE_IRQ,
++                          qdev_get_gpio_in_named(dev, "ps2-mouse-input-irq",
++                                                 0));
++}
++
+ static void i8042_build_aml(AcpiDevAmlIf *adev, Aml *scope)
+ {
+     ISAKBDState *isa_s = I8042(adev);
+@@ -954,6 +969,7 @@ static void i8042_class_initfn(ObjectClass *klass, void *data)
+     device_class_set_props(dc, i8042_properties);
+     dc->reset = i8042_reset;
+     dc->realize = i8042_realizefn;
++    dc->wire = i8042_wire;
+     dc->vmsd = &vmstate_kbd_isa;
+     adevc->build_dev_aml = i8042_build_aml;
+     set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
 -- 
 2.41.0
 
