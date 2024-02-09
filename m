@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C9C84FEB9
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 371C984FECA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 22:26:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYYLZ-0007Ei-2Q; Fri, 09 Feb 2024 16:23:45 -0500
+	id 1rYYLx-00009F-Vs; Fri, 09 Feb 2024 16:24:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLW-0007EA-9v; Fri, 09 Feb 2024 16:23:42 -0500
+ id 1rYYLt-00006a-4S; Fri, 09 Feb 2024 16:24:05 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rYYLU-0000D9-PD; Fri, 09 Feb 2024 16:23:42 -0500
+ id 1rYYLr-0000DM-Mv; Fri, 09 Feb 2024 16:24:04 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3B74F4BF68;
+ by isrv.corpit.ru (Postfix) with ESMTP id 486E94BF69;
  Sat, 10 Feb 2024 00:24:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 287DC77EE2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3558377EE3;
  Sat, 10 Feb 2024 00:22:48 +0300 (MSK)
-Received: (nullmailer pid 1123187 invoked by uid 1000);
+Received: (nullmailer pid 1123190 invoked by uid 1000);
  Fri, 09 Feb 2024 21:22:47 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 16/23] qemu-img: refresh options/--help for "resize" command
-Date: Sat, 10 Feb 2024 00:22:37 +0300
-Message-Id: <4025c554219a66f0b539df7d15bdd1874317cacb.1707513011.git.mjt@tls.msk.ru>
+Subject: [PATCH 17/23] qemu-img: refresh options/--help for "amend" command
+Date: Sat, 10 Feb 2024 00:22:38 +0300
+Message-Id: <6f4e3f9ae4b0b08322bab26485207c81d1c4e76f.1707513011.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1707513011.git.mjt@tls.msk.ru>
 References: <cover.1707513011.git.mjt@tls.msk.ru>
@@ -60,47 +60,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add missing long options and --help output.
 ---
- qemu-img.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ qemu-img.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 929a25a021..e552401074 100644
+index e552401074..f598eba3a8 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -4283,7 +4283,9 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
-     for(;;) {
+@@ -4493,7 +4493,12 @@ static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
+     for (;;) {
          static const struct option long_options[] = {
              {"help", no_argument, 0, 'h'},
 +            {"quiet", no_argument, 0, 'q'},
++            {"progress", no_argument, 0, 'p'},
              {"object", required_argument, 0, OPTION_OBJECT},
 +            {"format", required_argument, 0, 'f'},
++            {"cache", required_argument, 0, 't'},
++            {"options", required_argument, 0, 'o'},
              {"image-opts", no_argument, 0, OPTION_IMAGE_OPTS},
-             {"preallocation", required_argument, 0, OPTION_PREALLOCATION},
-             {"shrink", no_argument, 0, OPTION_SHRINK},
-@@ -4302,8 +4304,21 @@ static int img_resize(const img_cmd_t *ccmd, int argc, char **argv)
+             {"force", no_argument, 0, OPTION_FORCE},
+             {0, 0, 0, 0}
+@@ -4512,7 +4517,18 @@ static int img_amend(const img_cmd_t *ccmd, int argc, char **argv)
              unrecognized_option(ccmd, argv[optind - 1]);
              break;
          case 'h':
 -            help();
--            break;
 +            cmd_help(ccmd,
-+"[-f FMT | --image-opts] [--preallocation PREALLOC] [--shrink]\n"
-+"	[--object OBJECTDEF] [-q] FILENAME [+|-]SIZE\n"
++"[-f FMT | --image-opts] [t CACHE] [--force] [-p] [-q]\n"
++"	[--object OBJDEF -o OPTIONS FILENAME\n"
 +,
 +" -q|--quiet - quiet operation\n"
++" -p|--progres - show progress\n"
 +" -f|--format FMT - specify FILENAME format explicitly\n"
 +" --image-opts - indicates that FILENAME is a complete image specification\n"
 +"  instead of a file name (incompatible with --format)\n"
-+" --shrink - allow operation when new size is smaller than original\n"
-+" --preallocation PREALLOC - specify preallocation type for the new areas\n"
-+" --object OBJDEF - QEMU user-creatable object (eg encryption key)\n"
-+" FILENAME - image file (specification) to resize\n"
-+" SIZE - new image size or amount by which to shrink/grow\n"
++" -t|--cache CACHE - cache mode for FILENAME (" BDRV_DEFAULT_CACHE ")\n"
++" --force - allow certain unsafe operations\n" 
 +);
-+            return 0;
-         case 'f':
-             fmt = optarg;
              break;
+         case 'o':
+             if (accumulate_options(&options, optarg) < 0) {
 -- 
 2.39.2
 
