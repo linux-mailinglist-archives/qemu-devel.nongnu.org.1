@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BD784F4EE
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C64084F4F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:58:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYPUy-0003Yc-HL; Fri, 09 Feb 2024 06:56:52 -0500
+	id 1rYPUu-0003WH-Tg; Fri, 09 Feb 2024 06:56:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUt-0003Vg-OX
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:47 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUs-0003UH-K6
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:46 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUr-0002PO-7S
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:47 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUq-0002PW-TJ
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:46 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id EE13D62063;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 9CC2562037;
+ Fri,  9 Feb 2024 11:56:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A524C433C7;
  Fri,  9 Feb 2024 11:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2ABC433F1;
- Fri,  9 Feb 2024 11:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707479801;
- bh=eKd3LfJAQ+UZw+rrOrT83UdSOdoxCGW0LqJcz2pG0sA=;
+ s=k20201202; t=1707479803;
+ bh=ubbnHP6CQJX6H46ApufgbUTl/GyRa/bvBIBXu8fglok=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=HHRYkUSAHdrIKhs5JC4/f+pbOd6j+d+WG1S6qp7JXZuuQP6tf9ojDGbtudlzWWao3
- 58UVQ30VqVIqeKCNknDCs/AkHMtGG+qB/ZTiVwVxHotZeEiSgayR4IOlgUF0l4n0UF
- U0RUJDoTZ+vRdhtp8mq9m9DWL4TZfUEqSzYpwEsNzB40yRF2L2OMRdj0pnMBcsKqjd
- c8Eb80nFwrxLR2H3UeT8UzCIiCJIyIEeUhwxBM7VG1E1LbM2kwDhlmqR4KelRxkDe+
- j2T/5qNomd9ZbIM9b5Xzsu+rYfxKv/0rgQ0TDU+UVGqGSB6JDFc5ZOj2Ni7O3zOtR7
- XETb00ObNoQ4Q==
+ b=lWl0fC8vR6X5eG6pH7xkNpXuXhEWMGNxNN0N0GkRNnIkDvZixdFDSNNX1C6uY8ib6
+ u/MA+dl4cQ/VksTeWlOZFs8HfdBqvCOIXIsNnqMM/Y60RlfBs8o2j/qOSyqTDcPfzh
+ IppCwu5zrH9GqMgd45xlfBj8N73mPYBN+Y2E5pT/ekHorycSWPpd49n56GFsAdOndM
+ HVR8CXnATEgZarJHHu5yuqRQ+fdEuUk08gh5K/9LECqG6H4AdsCmKQ/Caw2m8XFuE4
+ g/9l9SinprOsQIAkIBTm6QUfhFNCWGjkWAymLgyx9Q2FaLoKxW5lOPLR/HkfpmqpbS
+ CxTdKAHj53IOw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 03/12] hw/pci-host/astro: Avoid aborting on access failure
-Date: Fri,  9 Feb 2024 12:56:24 +0100
-Message-ID: <20240209115633.55823-4-deller@kernel.org>
+Subject: [PATCH v2 04/12] hw/pci-host/astro: Implement Hard Fail and Soft Fail
+ mode
+Date: Fri,  9 Feb 2024 12:56:25 +0100
+Message-ID: <20240209115633.55823-5-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209115633.55823-1-deller@kernel.org>
 References: <20240209115633.55823-1-deller@kernel.org>
@@ -70,100 +71,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Instead of stopping the emulation, report a MEMTX_DECODE_ERROR if the OS
-tries to access non-existent registers.
+The Astro/Elroy chip can work in either Hard-Fail or Soft-Fail mode.
+
+Hard fail means the system bus will send an HPMC (=crash) to the
+processor, soft fail means the system bus will ignore timeouts of
+MMIO-reads or MMIO-writes and return -1ULL.
+
+The HF mode is controlled by a bit in the status register and is usually
+programmed by the OS. Return the corresponing values based on the current
+value of that bit.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/pci-host/astro.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ hw/pci-host/astro.c         | 21 +++++++++++++++------
+ include/hw/pci-host/astro.h |  2 ++
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
 diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 37d271118c..96d655f5fb 100644
+index 96d655f5fb..e3e589ceac 100644
 --- a/hw/pci-host/astro.c
 +++ b/hw/pci-host/astro.c
-@@ -122,10 +122,6 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case 0x0800:                /* IOSAPIC_REG_SELECT */
-         val = s->iosapic_reg_select;
-         break;
--    case 0x0808:
--        val = UINT64_MAX;            /* XXX: tbc. */
--        g_assert_not_reached();
--        break;
-     case 0x0810:                /* IOSAPIC_REG_WINDOW */
-         switch (s->iosapic_reg_select) {
-         case 0x01:              /* IOSAPIC_REG_VERSION */
-@@ -135,15 +131,15 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
+@@ -131,15 +131,21 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
              if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
                  val = s->iosapic_reg[s->iosapic_reg_select];
              } else {
--                trace_iosapic_reg_read(s->iosapic_reg_select, size, val);
--                g_assert_not_reached();
-+                val = 0;
-+                ret = MEMTX_DECODE_ERROR;
+-                val = 0;
+-                ret = MEMTX_DECODE_ERROR;
++                goto check_hf;
              }
          }
          trace_iosapic_reg_read(s->iosapic_reg_select, size, val);
          break;
      default:
--        trace_elroy_read(addr, size, val);
--        g_assert_not_reached();
-+        val = 0;
-+        ret = MEMTX_DECODE_ERROR;
+-        val = 0;
+-        ret = MEMTX_DECODE_ERROR;
++    check_hf:
++        if (s->status_control & HF_ENABLE) {
++            val = 0;
++            ret = MEMTX_DECODE_ERROR;
++        } else {
++            /* return -1ULL if HardFail is disabled */
++            val = ~0;
++            ret = MEMTX_OK;
++        }
      }
      trace_elroy_read(addr, size, val);
  
-@@ -191,7 +187,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+@@ -187,7 +193,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
          if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
              s->iosapic_reg[s->iosapic_reg_select] = val;
          } else {
--            g_assert_not_reached();
-+            return MEMTX_DECODE_ERROR;
+-            return MEMTX_DECODE_ERROR;
++            goto check_hf;
          }
          break;
      case 0x0840:                /* IOSAPIC_REG_EOI */
-@@ -204,7 +200,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+@@ -200,7 +206,10 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
          }
          break;
      default:
--        g_assert_not_reached();
-+        return MEMTX_DECODE_ERROR;
+-        return MEMTX_DECODE_ERROR;
++    check_hf:
++        if (s->status_control & HF_ENABLE) {
++            return MEMTX_DECODE_ERROR;
++        }
      }
      return MEMTX_OK;
  }
-@@ -594,8 +590,8 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
- #undef EMPTY_PORT
+diff --git a/include/hw/pci-host/astro.h b/include/hw/pci-host/astro.h
+index f63fd220f3..e2966917cd 100644
+--- a/include/hw/pci-host/astro.h
++++ b/include/hw/pci-host/astro.h
+@@ -27,6 +27,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ElroyState, ELROY_PCI_HOST_BRIDGE)
+ #define IOS_DIST_BASE_ADDR      0xfffee00000ULL
+ #define IOS_DIST_BASE_SIZE           0x10000ULL
  
-     default:
--        trace_astro_chip_read(addr, size, val);
--        g_assert_not_reached();
-+        val = 0;
-+        ret = MEMTX_DECODE_ERROR;
-     }
++#define HF_ENABLE       0x40    /* enable HF mode (default is -1 mode) */
++
+ struct AstroState;
  
-     /* for 32-bit accesses mask return value */
-@@ -610,6 +606,7 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
-                                               uint64_t val, unsigned size,
-                                               MemTxAttrs attrs)
- {
-+    MemTxResult ret = MEMTX_OK;
-     AstroState *s = opaque;
- 
-     trace_astro_chip_write(addr, size, val);
-@@ -686,11 +683,9 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
- #undef EMPTY_PORT
- 
-     default:
--        /* Controlled by astro_chip_mem_valid above.  */
--        trace_astro_chip_write(addr, size, val);
--        g_assert_not_reached();
-+        ret = MEMTX_DECODE_ERROR;
-     }
--    return MEMTX_OK;
-+    return ret;
- }
- 
- static const MemoryRegionOps astro_chip_ops = {
+ struct ElroyState {
 -- 
 2.43.0
 
