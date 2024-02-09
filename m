@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606C584F428
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CF484F432
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:07:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOfJ-00006A-5H; Fri, 09 Feb 2024 06:03:29 -0500
+	id 1rYOfH-0008TU-9t; Fri, 09 Feb 2024 06:03:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOde-0007cD-3k
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:49 -0500
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ id 1rYOdj-0007hs-64
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:54 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOda-0000vP-B0
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:43 -0500
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-599fc25071bso524383eaf.3
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:39 -0800 (PST)
+ id 1rYOdd-0000vg-Lt
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:48 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e0518c83c6so526832b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476498; x=1708081298; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476501; x=1708081301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=teOr56nysygkArJLfbemVfbfCqk3Hq8Cj+dj8nqNSbM=;
- b=SIrqIsjhfz531NU1XMgOXAEYPhGDI8/BduxZHixff1FgwX9+QworcnROuvwHX8TLOM
- e/8pVA7elpTxJ4fv0vmHkWz9BlTXiCzNCpKj0A80EkCYEQLukaUCETJiyjdvfLCdr3f+
- lnrhMw/ncNZBb+tjeNUpXHJt2JIp7yD7CCO7xclUYbauDpyrDA1rsDfOWIodi0uzXTfr
- oluD67qw4TQU8CCLaaTXdIEdXi6JRmcCuUUcOVeQICkCEmlajdADc+KdCp1Iq52AGgsB
- nNgpoRtHNqzqnA0Z4TMP2CU6p4RoY9fbqli3ITtQqJ2C5E2lr0zKATVrVeUJZgTQiEKu
- MIIA==
+ bh=JrmiXcpe1bZMLQTSTIo9vxkWrCjtZwGRKfh570INs5g=;
+ b=lQOHlUBQMP12DTujDulgV3kze3fpQk9+KMbnyQjBExraLaUbZ31ebvw/vf7RUm/yxn
+ LgJqD8XAq8xIMoD/9yLoK3qJCncWqIbRkH4iyexqatJM2QScbl0lxRuTkuxN2UzGtpkO
+ F73utTlJ1gKQtJpUi4bhDqlgMhPBwtzWL5KvhF9obkmkcLNeFbL82/iYSFZu/j/65Qh/
+ A0KxkVsUj6Qh+vKPhKUcy9pPpoPn+Ii41iHaqGQnBCbXkXu1qSkc7e4KCOIChbfhiS9q
+ Ka0Bjcg8HYjgCxmPMEIvO22hU+jDXvja5wn0vbp/HeoeOJmGTYRCFDaQ+NZrEz2TtpJ2
+ l27A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476498; x=1708081298;
+ d=1e100.net; s=20230601; t=1707476501; x=1708081301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=teOr56nysygkArJLfbemVfbfCqk3Hq8Cj+dj8nqNSbM=;
- b=R8chAXaEsefvrSKwFrAnLtuEauhcbYqVoDVSOfEePFttwI089kl66CEr1JPUVafHxz
- FRFEvaBHDLpG/CHHoexLVVPSqZ7VKNsk+PriXhKMgYRlcIexF56EBe/OB4ursal6WPZH
- Bk3oBMTcfI2gqQvWRLaf5uVcmMSYcDrUowmzDdEd7WztdU/VPtbE6QvGj3P8dTvpN/q3
- jI91BT5MT/lNLVOn2iAzb5r4p3aeq9RUcMo1h5j1IOMun3VaMFXCri/NOxXTr7mO4q6B
- POvWq6LrKlAPfLBC6nfy/qRl9JMShmrDUMjkXm0f9BZ3xdwgo55may2aIwUjN2xJdCqa
- qCng==
-X-Gm-Message-State: AOJu0YzrIW4kO64lncKzokySyxNDDH31rJgJlVYL1rhnSu6sfkckNvTY
- Y3OZBj54HA0KMgCwriHTXrliSMj67dAD8qt45kpS9zwQNxztxJXxV7Sz5APPf1+2nA==
-X-Google-Smtp-Source: AGHT+IHaJejPsGG686dYe7cJknD6r3yxvNZyhNpTqqLQzhd8kPwZn3asUhPCrMwR27vka3Um/nDwdQ==
-X-Received: by 2002:a05:6358:896:b0:176:3e0d:8a36 with SMTP id
- m22-20020a056358089600b001763e0d8a36mr1387554rwj.0.1707476498383; 
- Fri, 09 Feb 2024 03:01:38 -0800 (PST)
+ bh=JrmiXcpe1bZMLQTSTIo9vxkWrCjtZwGRKfh570INs5g=;
+ b=UmeGP1PUEh99lw9UVTKxbeRZbwsT4p1lqeE8OqJ5uC7AerpUnfbSLrcPLuJNKkGvFm
+ ZHvNTngu6KcsX34n42zH1s8h6LkbGQito2QjT22gX+Aof86SmjzzWuBOy7ANw2tuhRSz
+ p5J4oQeQJ5buV6pjviTEbw5I3BhhIaGc07mVQX3yU7i1d+HDzDawMB7qZBUUp/2rBhIo
+ JEiYXDkAJ9/jHm3FmY+EX+R046wMqB+nTyCrjrk5AaUh0SEOwBg/dlDBVq1Ut7+Y6i8y
+ qIF9h3nroj/haCXUUVn1eFwfFV+jTROH0SgHRsAHnSxRKu806bXkBlez/G6bEfNpPzcW
+ zSig==
+X-Gm-Message-State: AOJu0Ywadb63pg8cxwW3l2TUkd1jTFsHkv0eSuHI/lIYwGv/0SfOEmWk
+ uKg3DKF7lBtC1ULc3krw7AYfaWHy59Cqns8W4MBaEBolMBDl4TocfGbhWeGIVWFnEA==
+X-Google-Smtp-Source: AGHT+IEoym8TtjJE0CbCJkSLq50VB7hI5mJ1Z37RQnTZ2i9gYKW9L1iyUQl2oLSdRYpmdVZyMGbsyA==
+X-Received: by 2002:a05:6a00:3a97:b0:6e0:5281:e0d1 with SMTP id
+ fk23-20020a056a003a9700b006e05281e0d1mr1288582pfb.1.1707476501436; 
+ Fri, 09 Feb 2024 03:01:41 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXvDZnQpNOnDE+4fcoxFXL63zVqiRjVLhNowymYAnJSCHrVVxFqhIom/yTU+gjjF77FDofYJcztoI4O0ljZEmSU018aTWz3Mw2rACBknKwMSBxFNl7aAmEm009t8PRIxJGi0rsX+oY=
+ AJvYcCXoVICyZ5QsGp5jjM725+Sc0E1WKd8J7qHbLvbELVws65DEHtEYGAcWM0fur8R+evFFYVSDDdokzFFepzd+U4m5E8jY2JxMBuRuAvBHVKGbV7Wa8nmGuWAeEB95zh8uQRj+Uq8=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.35
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.01.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:01:37 -0800 (PST)
+ Fri, 09 Feb 2024 03:01:40 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 59/61] target/riscv: Enable xtheadsync under user mode
-Date: Fri,  9 Feb 2024 20:58:11 +1000
-Message-ID: <20240209105813.3590056-60-alistair.francis@wdc.com>
+Subject: [PULL 60/61] target/riscv/cpu.c: add riscv_bare_cpu_init()
+Date: Fri,  9 Feb 2024 20:58:12 +1000
+Message-ID: <20240209105813.3590056-61-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,77 +98,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-According to xtheadsync[1][2] documentation, it can be used in user mode and
-the behavior is same with other priviledges.
+Next patch will add more bare CPUs. Their cpu_init() functions would be
+glorified copy/pastes of rv64i_bare_cpu_init(), differing only by a
+riscv_cpu_set_misa() call.
 
-[1]:https://github.com/T-head-Semi/thead-extension-spec/blob/master/xtheadsync/sync.adoc
-[2]:https://github.com/T-head-Semi/thead-extension-spec/blob/master/xtheadsync/sync_i.adoc
+Add a new .instance_init for the TYPE_RISCV_BARE_CPU typ to avoid this
+code repetition. While we're at it, add a better explanation on why
+we're disabling the timing extensions for bare CPUs.
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240204055228.900-1-zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240122123348.973288-2-dbarboza@ventanamicro.com>
+[ Changes by AF:
+ - Rebase on latest changes
+]
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_xthead.c.inc | 10 ----------
- 1 file changed, 10 deletions(-)
+ target/riscv/cpu.c | 45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_xthead.c.inc b/target/riscv/insn_trans/trans_xthead.c.inc
-index dbb6411239..22488412d4 100644
---- a/target/riscv/insn_trans/trans_xthead.c.inc
-+++ b/target/riscv/insn_trans/trans_xthead.c.inc
-@@ -992,7 +992,6 @@ static bool trans_th_sfence_vmas(DisasContext *ctx, arg_th_sfence_vmas *a)
- #endif
- }
- 
--#ifndef CONFIG_USER_ONLY
- static void gen_th_sync_local(DisasContext *ctx)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 6b5878c603..08fc24c3f4 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -605,22 +605,6 @@ static void rv64i_bare_cpu_init(Object *obj)
  {
-     /*
-@@ -1003,14 +1002,12 @@ static void gen_th_sync_local(DisasContext *ctx)
-     tcg_gen_exit_tb(NULL, 0);
-     ctx->base.is_jmp = DISAS_NORETURN;
- }
--#endif
- 
- static bool trans_th_sync(DisasContext *ctx, arg_th_sync *a)
- {
-     (void) a;
-     REQUIRE_XTHEADSYNC(ctx);
- 
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+     riscv_cpu_set_misa_ext(env, RVI);
+-
+-    /* Remove the defaults from the parent class */
+-    RISCV_CPU(obj)->cfg.ext_zicntr = false;
+-    RISCV_CPU(obj)->cfg.ext_zihpm = false;
+-
+-    /* Set to QEMU's first supported priv version */
+-    env->priv_ver = PRIV_VERSION_1_10_0;
+-
+-    /*
+-     * Support all available satp_mode settings. The default
+-     * value will be set to MBARE if the user doesn't set
+-     * satp_mode manually (see set_satp_mode_default()).
+-     */
 -#ifndef CONFIG_USER_ONLY
-     REQUIRE_PRIV_MSU(ctx);
- 
-     /*
-@@ -1019,9 +1016,6 @@ static bool trans_th_sync(DisasContext *ctx, arg_th_sync *a)
-     gen_th_sync_local(ctx);
- 
-     return true;
--#else
--    return false;
+-    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV64);
 -#endif
  }
- 
- static bool trans_th_sync_i(DisasContext *ctx, arg_th_sync_i *a)
-@@ -1029,7 +1023,6 @@ static bool trans_th_sync_i(DisasContext *ctx, arg_th_sync_i *a)
-     (void) a;
-     REQUIRE_XTHEADSYNC(ctx);
- 
--#ifndef CONFIG_USER_ONLY
-     REQUIRE_PRIV_MSU(ctx);
- 
-     /*
-@@ -1038,9 +1031,6 @@ static bool trans_th_sync_i(DisasContext *ctx, arg_th_sync_i *a)
-     gen_th_sync_local(ctx);
- 
-     return true;
--#else
--    return false;
--#endif
+ #else
+ static void rv32_base_cpu_init(Object *obj)
+@@ -1329,6 +1313,34 @@ static void riscv_cpu_init(Object *obj)
+     cpu->env.vext_ver = VEXT_VERSION_1_00_0;
  }
  
- static bool trans_th_sync_is(DisasContext *ctx, arg_th_sync_is *a)
++static void riscv_bare_cpu_init(Object *obj)
++{
++    RISCVCPU *cpu = RISCV_CPU(obj);
++
++    /*
++     * Bare CPUs do not inherit the timer and performance
++     * counters from the parent class (see riscv_cpu_init()
++     * for info on why the parent enables them).
++     *
++     * Users have to explicitly enable these counters for
++     * bare CPUs.
++     */
++    cpu->cfg.ext_zicntr = false;
++    cpu->cfg.ext_zihpm = false;
++
++    /* Set to QEMU's first supported priv version */
++    cpu->env.priv_ver = PRIV_VERSION_1_10_0;
++
++    /*
++     * Support all available satp_mode settings. The default
++     * value will be set to MBARE if the user doesn't set
++     * satp_mode manually (see set_satp_mode_default()).
++     */
++#ifndef CONFIG_USER_ONLY
++    set_satp_mode_max_supported(cpu, VM_1_10_SV64);
++#endif
++}
++
+ typedef struct misa_ext_info {
+     const char *name;
+     const char *description;
+@@ -2505,6 +2517,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     {
+         .name = TYPE_RISCV_BARE_CPU,
+         .parent = TYPE_RISCV_CPU,
++        .instance_init = riscv_bare_cpu_init,
+         .abstract = true,
+     },
+ #if defined(TARGET_RISCV32)
 -- 
 2.43.0
 
