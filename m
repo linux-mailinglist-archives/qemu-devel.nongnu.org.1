@@ -2,84 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A23384F4C1
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384DC84F4F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYPD2-0001e7-Pj; Fri, 09 Feb 2024 06:38:20 -0500
+	id 1rYPUu-0003VU-8E; Fri, 09 Feb 2024 06:56:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYPCx-0001cf-S2
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:38:15 -0500
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rYPCv-0007eZ-6i
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:38:15 -0500
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2d0aabed735so11578361fa.0
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:38:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707478691; x=1708083491; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pCFjZ63NE6kiKIue25LSKxMqWgDxTEwFg2x09lhs4q8=;
- b=caB8b/y2YnBqyKhcl8OEzGb/6iHgLQ40/A1iAz7PQLhnAoSTDnlq6lrJnKqfHXoIp9
- TQ3F7Oy2hxqafMAK/81CyxwqWOEsgqmf44Y2HcRhQGPpW2JYkrsjO4E6DtZjAk7EyDH1
- 2HgraKqNE2Gh69cwSvOM8C0NuzjXncj/6wfX06nyc5J1+lC2C7zR4Z+6QcOGAHht0Qi/
- zJH2YP9/mDRgufivlNDsXO01r9IH3x/iQz40oYsF4r4qdR+Vj+Ml7vjecyCNYvc4OCP7
- bOpjAH9caGoTgDn76tgvnXThM30JTCdo58U4Pty2oQTceT8A+Y+C2l4CyvtMAE5eq+qf
- IwLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707478691; x=1708083491;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pCFjZ63NE6kiKIue25LSKxMqWgDxTEwFg2x09lhs4q8=;
- b=GlGYqeuFrHEKtXHDeHRekTPixd8A0qH3vsVpMl+7fE6xRyUYGY25hVEadgOe6DBA6j
- XxkyW2D719QPaTPtdZPmVFHlQCrCJJYHMq6vtLybwbnVUac2N+u2EFyAeIHGFzsYp8LD
- NuyvdYTueBh0aosmaSFFDBBvOkCwzwBPrGs3IZnXBvIYrDA1L0h5ZYgPoLameVYsygpt
- /HU9DrL3+jQGdc5tK40cftql7mUH9dCRUlZsdtscBw9j1WTbXUS3hDB6NePnHJhqAdCS
- /MFzDlNWZhg0TEzkjc23OyE461EnlQfwAF3aQtZCfKOdwjATZ4S6aV7dJvfi/stZUHW/
- TcSQ==
-X-Gm-Message-State: AOJu0YzNK1KS2RDcJ60xRRMgQQKb8GQECWepfIzRTzducmI/EZtQwhkG
- /z4NPJdfwIiNWdjIGtt4nAsGjPwEg6pUYkmK2yvkC3s/s+dr35s6DKzId0N3zLU10LeP6BiKA2O
- CklpjwxGNp6gJeghXm/EFUH+2ObgyOrXo2MKqag==
-X-Google-Smtp-Source: AGHT+IHUy1PQ4fx4xqjQTx5lJVryV6Wr4PGapkimMRUDdKQ7C1q+X75yd6Oyvbx5RoTgf0nVXCMNVSvhqeQy0fc/HIc=
-X-Received: by 2002:a2e:8814:0:b0:2d0:dfa1:6f53 with SMTP id
- x20-20020a2e8814000000b002d0dfa16f53mr944808ljh.43.1707478691519; Fri, 09 Feb
- 2024 03:38:11 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUs-0003UF-GR
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:46 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUq-0002On-Ry
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:46 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id EE85D6153B;
+ Fri,  9 Feb 2024 11:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677E9C433C7;
+ Fri,  9 Feb 2024 11:56:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1707479796;
+ bh=CRAhizHXgmBxKYA1z7YB/8lE3siLM2aru+2FUkC4VaY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=tkMGhFzfd31kGWUOr3N/CqstNv0k1zMRLjllTHfRRtJEsS/pP+algmZP9KMJg/NNv
+ h8wR9xNmAjAn4idJYTJFeButIcOhDsKx1CSxpOM9FEJo38qt/qS7130MjG3yaag2zx
+ o4aX2pNY+EuDUQfnf9FyVLyeAmOdmWIPVN+JBfjzqALpmdH2pCUcuokGL5zfTDm+SC
+ dPRZa2ommb4trLVVQO0fSTaMQr/LiEl5F6hiTXBLuS+U/Ck1o0WG1OO6DvpGYE26/D
+ yCc476WxfmA/tb7DACsrAwkV1+oE2xVqYWE0Gl6SgpMxiMrKG2125w97rR532CeVnw
+ 3yMaxr1Xg2yTA==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PATCH v2 00/12] target/hppa: Enhancements and fixes
+Date: Fri,  9 Feb 2024 12:56:21 +0100
+Message-ID: <20240209115633.55823-1-deller@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240208181245.96617-1-philmd@linaro.org>
- <20240208181245.96617-10-philmd@linaro.org>
-In-Reply-To: <20240208181245.96617-10-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 Feb 2024 11:38:00 +0000
-Message-ID: <CAFEAcA9OeGDCR5F_4DMhZvk1AFgYUG0VuADkZj0ZNhNawTftcg@mail.gmail.com>
-Subject: Re: [PATCH v3 09/11] hw/sparc/leon3: Realize GRLIB IRQ controller
- before accessing it
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>, qemu-ppc@nongnu.org, 
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>, Fabien Chouteau <chouteau@adacore.com>, 
- Frederic Konrad <konrad.frederic@yahoo.fr>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -72
+X-Spam_score: -7.3
+X-Spam_bar: -------
+X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.213,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,19 +67,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 Feb 2024 at 18:15, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> We should not wire IRQs on unrealized device.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  hw/sparc/leon3.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
+From: Helge Deller <deller@gmx.de>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Some enhancements and fixes for the hppa target.
 
-thanks
--- PMM
+The major change is, that this patchset adds a new SeaBIOS-hppa firmware
+which is built as 32- and 64-bit firmware.
+The new 64-bit firmware is necessary to fully support 64-bit operating systems
+(HP-UX, Linux, NetBSD,...).
+
+v2:
+- included all suggested changes from Richard
+- dropped mtsm/rsm/ssm patch
+- include tulip patch from Sven Schnelle
+- dropped SeaBIOS binary files in v2 review series, will be included in final pull request
+
+Patches 2,3,5,6,7 still miss a review.
+
+Helge
+
+Helge Deller (11):
+  disas/hppa: Add disassembly for qemu specific instructions
+  target/hppa: Add "diag 0x101" for console output support
+  hw/pci-host/astro: Avoid aborting on access failure
+  hw/pci-host/astro: Implement Hard Fail and Soft Fail mode
+  lasi: allow access to LAN MAC address registers
+  target/hppa: Implement do_transaction_failed handler for I/O errors
+  lasi: Add reset I/O ports for LASI audio and FDC
+  target/hppa: Allow read-access to PSW with rsm 0,reg instruction
+  target/hppa: PDC_BTLB_INFO uses 32-bit ints
+  target/hppa: Update SeaBIOS-hppa to version 16
+  hw/hppa/machine: Load 64-bit firmware on 64-bit machines
+
+Sven Schnelle (1):
+  hw/net/tulip: add chip status register values
+
+ disas/hppa.c                |  4 ++++
+ hw/hppa/machine.c           | 11 ++++++++---
+ hw/misc/lasi.c              | 13 +++++++++++++
+ hw/net/tulip.c              |  4 ++--
+ hw/pci-host/astro.c         | 36 ++++++++++++++++++++----------------
+ include/hw/misc/lasi.h      |  2 ++
+ include/hw/pci-host/astro.h |  2 ++
+ roms/seabios-hppa           |  2 +-
+ target/hppa/cpu.c           |  1 +
+ target/hppa/cpu.h           |  5 +++++
+ target/hppa/helper.h        |  1 +
+ target/hppa/mem_helper.c    | 21 ++++++++++++++++++++-
+ target/hppa/sys_helper.c    | 36 ++++++++++++++++++++++++++++++++++++
+ target/hppa/translate.c     | 14 +++++++++++++-
+ 14 files changed, 128 insertions(+), 24 deletions(-)
+
+-- 
+2.43.0
+
 
