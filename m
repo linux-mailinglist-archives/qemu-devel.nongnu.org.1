@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FC284F447
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4449584F43E
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:08:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOf6-0008PH-4D; Fri, 09 Feb 2024 06:03:17 -0500
+	id 1rYOf1-0008Ov-FE; Fri, 09 Feb 2024 06:03:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOd7-0006uq-Bx
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:14 -0500
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1rYOd0-0006h7-TJ
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:07 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOcu-0000qG-8e
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:11 -0500
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5dc13cbce45so601990a12.2
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:00:59 -0800 (PST)
+ id 1rYOcy-0000qg-CQ
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:01:06 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5d4a1e66750so532038a12.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:01:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476458; x=1708081258; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476462; x=1708081262; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uFMNQVYSj3JmsAY5zowmVJht6YkGb2y2yywXB+6zt8g=;
- b=T3ETrBhuoPSrJmfLKxqLm+XvFPy5eXBw6FFeBTbK65IsXKJDcty6Se1v9Gnx4c6ViP
- BFK6LGkl3sqUfvItu96h6M7xVJkfwbSSn/K0z7Nyh+nPkK94Mkie8+gLLF8MkNZG/FRc
- qCISUifNgE0aw65DTNmSEwA0iroAb0AK5i3kxysWThDprfUai6xFxl89I7LL7JBAP1LQ
- ZQeCB5QQqDSXf6SxGdw1Gu4Vrq8MorX5QSQBA3v7LaVtiTejID8DW+FD8FjSvt8i6SOn
- 4KLB7tovcNZtTJMvj3iBoDuz3AQJUblD61kzkzjxxkBzKciH/oOeON64YO5+n4rieojR
- OfVQ==
+ bh=sLRgqwjIVn0iuzCfsLW3wDkzvW40xNFmjWObr7B4NP4=;
+ b=BhuSCDzAcE/W7sdJzxMfJHcsmne8wd8Emh+AwhXvbjdWm0FDSwlc1gnsC6y7KCRPk0
+ YxJKSPucZnDgxm1irJ1T1otcgRbms5Nn4fhA2A0AsV4vod+lpGTnt7yRHfGquqbmXcj4
+ 7pzFvk9TE+RR6ZFjQ+zerrqaTNIdyEaZKE8udhzZjJrgYNfyDyg3DjWFobYTu/UlOALf
+ cricOjIj21AvhmrES47M5wliG3ujc4wFj+oNELTbLkxkFEWy1O0AftasmV/o8/V7Vj+c
+ HUXhr3cc48r4aUExprVBI+SSHo5d9zPAnir3sCqeHcTxtUU7b4dX3IbQ1ifpsQ4RECPK
+ jPnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476458; x=1708081258;
+ d=1e100.net; s=20230601; t=1707476462; x=1708081262;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uFMNQVYSj3JmsAY5zowmVJht6YkGb2y2yywXB+6zt8g=;
- b=vSkbAIVeYEpLDdjJv7JsKd/+rPy2VHui888/songYzFAkkVLG8BQIfJ6s1wBF3b0L0
- M5TD6FX6Yz4qo7m88+vXMf3PxNhYz1GpAaRuOpDlipQ1IbSLgzU+WPC7ChkF4uPEAdMB
- hVUcxUPyLwmFR4nPtVBUiWoFWLHnmTlGwCqoqhZmBOo+bd4G0KhgU+btxVd/+s3fEwFT
- gMn5FirdpeskemtYZvfyBzIXeEAnh2TuBiY8PTFGKhyR+4UDvVfF6NfKloDXH8ST7Ent
- +n6wnBFivR2P7tiOE6pBa3nKmWFtmDCqY+IfQo8UKt7IFF1FP2ZFTOW17hIW/C2anGLN
- wC5A==
-X-Gm-Message-State: AOJu0YylS6xN0phQBZPpiYb5qoG+Per9QRnvzgeLJ6FaJKor69CCVa7W
- ZSyeoTB58EBeVwP1k1McJ8M5008/rOq9sB5saFaTKDNk4X5lCjDQAJWZgZo9h5r60w==
-X-Google-Smtp-Source: AGHT+IHTEeS51xXF9TvWpvDnmwYGl1cbjQhHzEBUKkaaM3z1Sms5Y1p9absLzutbMwV9WETR3DHJMg==
-X-Received: by 2002:a17:90a:ce14:b0:296:2d01:ed47 with SMTP id
- f20-20020a17090ace1400b002962d01ed47mr995013pju.35.1707476458637; 
- Fri, 09 Feb 2024 03:00:58 -0800 (PST)
+ bh=sLRgqwjIVn0iuzCfsLW3wDkzvW40xNFmjWObr7B4NP4=;
+ b=IukSYtXAFR403d+mUu0FaaQQ9muaDs8MihMvzjKTGNA4x56fn38jQVgkuNFg0RzjYR
+ JSVokD5Fc4f7O1O2xWw8c6MjbYtURlG9ZnMn0M4S2tXT4XpBH3PP8pNmKPVI9wJvrRs2
+ nM4QzfgyY0XEl2NFuC7y4OEwHsrvcntP9WGP6A4xFJtgcGQItRWJJo9JFKTQWhq8CclA
+ zdHXM6tTAPgZfYuwUqEnyNvjCsTQ6X9SvPU3cml/JEUQkkUSPvf5tirWy/xnhult9llX
+ 0845sg15o3nWquJHttFJqRgPduVUKZ2KK4vrE3o6TWp/Aeneujrih8DS1rWKmBeMB5F7
+ +dyw==
+X-Gm-Message-State: AOJu0Yw2GBMs/qDHSEZ/sRxNE/dER6SobPlEzzU3vSOrn1C+vD7BSf0w
+ ZW6EhhIVIKXbbl6MOPq8PgQ/eeP/fZ+vJ2R3mpMed49NsJtfbVIs9MC53LTmCUccJw==
+X-Google-Smtp-Source: AGHT+IHskMlx2M1H02Rptbk5d5PxAK1w0589ZIRrujn00bLA/o2pX/0ydt7AxdPqhFLy2beqlYQGpQ==
+X-Received: by 2002:a05:6a20:e68c:b0:19e:b196:c8dc with SMTP id
+ mz12-20020a056a20e68c00b0019eb196c8dcmr1387699pzb.20.1707476461896; 
+ Fri, 09 Feb 2024 03:01:01 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUCsZ6KqkGNPqBTRtQl6x+jG9P80EXla5H4DWs5pYpQ7LNZWvIkJpYh9Msd1EjqvHoKVBEpYmS1TFOHxfoIJUHVKvgp8avGG57Lw/M5W5RwXMNI50FdxOWUBJ2HNeUBjMCw9QztLItEq/NkoHyUaTwqZUhRujZZ
+ AJvYcCWwm9ByLLbhKzOWcfWAhpdyWAAiBBcgTAsINo82PcK2MUGg/KDm4v1ZyylrgnhhsSOLHWUb1bhzKujORNNEXHM4DY0xTNxRDYuVMY+los1cPTc1TtfyoqJG8+yLA1NIzblUX1078L4Wr4pEd1/c0KwZJjuARJku
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.00.55
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 03:00:58 -0800 (PST)
+ Fri, 09 Feb 2024 03:01:01 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 47/61] hw/riscv/virt.c: use g_autofree in create_fdt_virtio()
-Date: Fri,  9 Feb 2024 20:57:59 +1000
-Message-ID: <20240209105813.3590056-48-alistair.francis@wdc.com>
+Subject: [PULL 48/61] hw/riscv/virt.c: use g_autofree in virt_machine_init()
+Date: Fri,  9 Feb 2024 20:58:00 +1000
+Message-ID: <20240209105813.3590056-49-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,45 +102,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Put 'name' declaration inside the loop, with g_autofree, to avoid
-manually doing g_free() in each iteration.
+Move 'soc_name' to the loop, and give it g_autofree, to avoid the manual
+g_free().
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240122221529.86562-6-dbarboza@ventanamicro.com>
+Message-ID: <20240122221529.86562-7-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
  hw/riscv/virt.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index d0f402e0d5..f8278df83f 100644
+index f8278df83f..710fbbda2c 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -820,12 +820,12 @@ static void create_fdt_virtio(RISCVVirtState *s, const MemMapEntry *memmap,
-                               uint32_t irq_virtio_phandle)
- {
-     int i;
--    char *name;
-     MachineState *ms = MACHINE(s);
- 
-     for (i = 0; i < VIRTIO_COUNT; i++) {
--        name = g_strdup_printf("/soc/virtio_mmio@%lx",
-+        g_autofree char *name =  g_strdup_printf("/soc/virtio_mmio@%lx",
-             (long)(memmap[VIRT_VIRTIO].base + i * memmap[VIRT_VIRTIO].size));
+@@ -1356,7 +1356,6 @@ static void virt_machine_init(MachineState *machine)
+     RISCVVirtState *s = RISCV_VIRT_MACHINE(machine);
+     MemoryRegion *system_memory = get_system_memory();
+     MemoryRegion *mask_rom = g_new(MemoryRegion, 1);
+-    char *soc_name;
+     DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip;
+     int i, base_hartid, hart_count;
+     int socket_count = riscv_socket_count(machine);
+@@ -1376,6 +1375,8 @@ static void virt_machine_init(MachineState *machine)
+     /* Initialize sockets */
+     mmio_irqchip = virtio_irqchip = pcie_irqchip = NULL;
+     for (i = 0; i < socket_count; i++) {
++        g_autofree char *soc_name = g_strdup_printf("soc%d", i);
 +
-         qemu_fdt_add_subnode(ms->fdt, name);
-         qemu_fdt_setprop_string(ms->fdt, name, "compatible", "virtio,mmio");
-         qemu_fdt_setprop_cells(ms->fdt, name, "reg",
-@@ -840,7 +840,6 @@ static void create_fdt_virtio(RISCVVirtState *s, const MemMapEntry *memmap,
-             qemu_fdt_setprop_cells(ms->fdt, name, "interrupts",
-                                    VIRTIO_IRQ + i, 0x4);
+         if (!riscv_socket_check_hartids(machine, i)) {
+             error_report("discontinuous hartids in socket%d", i);
+             exit(1);
+@@ -1393,10 +1394,8 @@ static void virt_machine_init(MachineState *machine)
+             exit(1);
          }
--        g_free(name);
-     }
- }
  
+-        soc_name = g_strdup_printf("soc%d", i);
+         object_initialize_child(OBJECT(machine), soc_name, &s->soc[i],
+                                 TYPE_RISCV_HART_ARRAY);
+-        g_free(soc_name);
+         object_property_set_str(OBJECT(&s->soc[i]), "cpu-type",
+                                 machine->cpu_type, &error_abort);
+         object_property_set_int(OBJECT(&s->soc[i]), "hartid-base",
 -- 
 2.43.0
 
