@@ -2,106 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A5C84F548
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D437684F556
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 13:44:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYQ8F-0006UG-HL; Fri, 09 Feb 2024 07:37:27 -0500
+	id 1rYQDz-00020Q-UY; Fri, 09 Feb 2024 07:43:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rYQ8D-0006Ts-GG
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:37:25 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rYQ8B-0002kt-6h
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:37:25 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rYQDy-00020I-CV
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:43:22 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rYQDv-0003T7-La
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 07:43:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707482598;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=BYkzwTp7qpaea3U10Rh4C78Bl6YrrexAzFxZ32/joBM=;
+ b=CLQuuCED/h0AXqzLFI2YfOLU3oAbklWs5RQTUAvCVDBnGrRt8wo0VN9ZuF3YToxKcqHIoy
+ /p4U28T6roBX6Q6lpjEfxWJ5IHPdfr6IrP/fkX0jBljSZuCWCSVOem2xl2jmLFiUWB7uGa
+ m0RJchK0PLCNS5oa015WK5N0Jv5Ywok=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-4__y5-pnPgyNr5UrVv2zCQ-1; Fri, 09 Feb 2024 07:43:09 -0500
+X-MC-Unique: 4__y5-pnPgyNr5UrVv2zCQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5E3111F804;
- Fri,  9 Feb 2024 12:37:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707482241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qYzLcaELdCI/QsPsEDecQU+OVEsCLyO0mLfkR+K2aFs=;
- b=LWLe4WDOqOq92bnNkW9Wem233rkpvpucj3AYPz8671Qe00XOJVTJC7BzJHvcRgfS5kDOCc
- 4ebwFm/xmp5C1ezZ0sU2kGZT/eRYA6U/DH9Ie1jPd7Bz9SaNJK12y2oxx58UVhYyMaBBps
- vrdZmvF0GoQ6Y+6dBblVQ+op6sQ7Iy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707482241;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qYzLcaELdCI/QsPsEDecQU+OVEsCLyO0mLfkR+K2aFs=;
- b=2guRbS3KYCewgL4f3t2yetjj3Y6OE+YZ9J+BvrYAwZyMgE0TKC2kwczUo+Nzr0I8JP5f/K
- 7aB6cro+VGcPQEBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1707482241; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qYzLcaELdCI/QsPsEDecQU+OVEsCLyO0mLfkR+K2aFs=;
- b=LWLe4WDOqOq92bnNkW9Wem233rkpvpucj3AYPz8671Qe00XOJVTJC7BzJHvcRgfS5kDOCc
- 4ebwFm/xmp5C1ezZ0sU2kGZT/eRYA6U/DH9Ie1jPd7Bz9SaNJK12y2oxx58UVhYyMaBBps
- vrdZmvF0GoQ6Y+6dBblVQ+op6sQ7Iy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1707482241;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qYzLcaELdCI/QsPsEDecQU+OVEsCLyO0mLfkR+K2aFs=;
- b=2guRbS3KYCewgL4f3t2yetjj3Y6OE+YZ9J+BvrYAwZyMgE0TKC2kwczUo+Nzr0I8JP5f/K
- 7aB6cro+VGcPQEBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2E401326D;
- Fri,  9 Feb 2024 12:37:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id e7ZIJoAcxmUHTQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 09 Feb 2024 12:37:20 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, berrange@redhat.com, peterx@redhat.com
-Subject: Re: [PATCH] qtest: migration: Add failure test for 'uri' and
- 'channels' combination in 'migrate' QAPI
-In-Reply-To: <6be21f72-35e6-4b4a-a670-51465c12c0ac@nutanix.com>
-References: <20240209075128.226237-1-het.gala@nutanix.com>
- <42395f38-d3e6-43a6-97eb-7f5cd6c2b3f3@nutanix.com>
- <6be21f72-35e6-4b4a-a670-51465c12c0ac@nutanix.com>
-Date: Fri, 09 Feb 2024 09:37:18 -0300
-Message-ID: <87y1btbypt.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 828DE881C82;
+ Fri,  9 Feb 2024 12:43:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 90A331103A;
+ Fri,  9 Feb 2024 12:43:08 +0000 (UTC)
+Date: Fri, 9 Feb 2024 12:43:06 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: yong.huang@smartx.com
+Cc: qemu-devel@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH v4 7/7] tests: Add case for LUKS volume with detached
+ header
+Message-ID: <ZcYd2pYRjCOPWgDA@redhat.com>
+References: <cover.1706586786.git.yong.huang@smartx.com>
+ <87aa559fbc0c98a5b90ac4f3fa25cb7438a5c181.1706586786.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.00 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TO_DN_SOME(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_THREE(0.00)[3]; MIME_BASE64_TEXT(0.10)[];
- FROM_EQ_ENVFROM(0.00)[]; MIME_TRACE(0.00)[0:+];
- MID_RHS_MATCH_FROM(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -3.00
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Disposition: inline
+In-Reply-To: <87aa559fbc0c98a5b90ac4f3fa25cb7438a5c181.1706586786.git.yong.huang@smartx.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.269,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,196 +80,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGV0IEdhbGEgPGhldC5nYWxhQG51dGFuaXguY29tPiB3cml0ZXM6DQoNCj4gT24gMDkvMDIvMjQg
-MTozMyBwbSwgSGV0IEdhbGEgd3JvdGU6DQoNCkhpIEhldCwNCg0KPj4gSSB3YW50ZWQgdG8gc2hh
-cmUgYW4gdXBkYXRlIHJlZ2FyZGluZyB0aGUgcGF0Y2ggSSd2ZSBiZWVuIHdvcmtpbmcgb24uIA0K
-Pj4gSXQgc2VlbXMgdGhhdCB0aGUgcGF0Y2ggaXMgbm90IHlldCBmdWxseSByZWFkeSBhcyBpdCBl
-bmNvdW50ZXJlZCBzb21lIA0KPj4gaXNzdWVzIGR1cmluZyB0aGUgY2hlY2stcXRlc3QgYnVpbGRz
-Lg0KPg0KPiBUZXN0IGZhaWxzIHdpdGggZXJyb3I6DQo+DQo+IDU1LzU5IHFlbXU6cXRlc3QrcXRl
-c3QteDg2XzY0IC8gcXRlc3QteDg2XzY0L21pZ3JhdGlvbi10ZXN0wqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgRVJST1LCoMKgwqDCoMKgwqDCoMKgwqDCoCAyNS43N3PCoMKgIGtpbGxl
-ZCBieSBzaWduYWwgNiBTSUdBQlJUDQo+Pj4+IEdfVEVTVF9EQlVTX0RBRU1PTj0vcnBtYnVpbGQv
-U09VUkNFUy9xZW11L3Rlc3RzL2RidXMtdm1zdGF0ZS1kYWVtb24uc2ggUVRFU1RfUUVNVV9TVE9S
-QUdFX0RBRU1PTl9CSU5BUlk9Li9zdG9yYWdlLWRhZW1vbi9xZW11LXN0b3JhZ2UtZGFlbW9uDQo+
-IFFURVNUX1FFTVVfSU1HPS4vcWVtdS1pbWcgUFlUSE9OPS9ycG1idWlsZC9TT1VSQ0VTL3FlbXUv
-YnVpbGQvcHl2ZW52L2Jpbi9weXRob24zIFFURVNUX1FFTVVfQklOQVJZPS4vcWVtdS1zeXN0ZW0t
-eDg2XzY0DQo+IE1BTExPQ19QRVJUVVJCXz03MSAvcnBtYnVpbGQvU09VUkNFUy9xZW11L2J1aWxk
-L3Rlc3RzL3F0ZXN0L21pZ3JhdGlvbi10ZXN0IC0tdGFwIC1rDQoNClJ1biB0aGlzIGFnYWluIHdp
-dGg6DQoNClFURVNUX0xPRz0xIFFURVNUX1FFTVVfQklOQVJZPS4vcWVtdS1zeXN0ZW0teDg2XzY0
-IFwNCi9ycG1idWlsZC9TT1VSQ0VTL3FlbXUvYnVpbGQvdGVzdHMvcXRlc3QvbWlncmF0aW9uLXRl
-c3QgLXAgXA0KL3g4Nl82NC9taWdyYXRpb24vdmFsaWRhdGVfdXJpX2NoYW5uZWxfYm90aF9zZXQN
-Cg0KVGhlIFFURVNUX0xPRyBvcHRpb24gc2hvdWxkIGFsbG93IHlvdSB0byBzZWUgaWYgdGhlIGd1
-ZXN0IGhhcyBwcmludGVkDQphbnkgZXJyb3IgbWVzc2FnZSAoeW91IG1pZ2h0IG5lZWQgdG8gYWRq
-dXN0IGhpZGVfc3RkZXJyIGFzIHdlbGwpLg0KDQo+IOKAleKAleKAleKAleKAleKAleKAleKAleKA
-leKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKA
-leKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKAleKA
-lSDinIDCoCDigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXi
-gJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXi
-gJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJXigJUNCj4gc3RkZXJyOg0KPiBDb3Vs
-ZCBub3QgYWNjZXNzIEtWTSBrZXJuZWwgbW9kdWxlOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5
-DQo+IENvdWxkIG5vdCBhY2Nlc3MgS1ZNIGtlcm5lbCBtb2R1bGU6IE5vIHN1Y2ggZmlsZSBvciBk
-aXJlY3RvcnkNCj4gQ291bGQgbm90IGFjY2VzcyBLVk0ga2VybmVsIG1vZHVsZTogTm8gc3VjaCBm
-aWxlIG9yIGRpcmVjdG9yeQ0KPiBDb3VsZCBub3QgYWNjZXNzIEtWTSBrZXJuZWwgbW9kdWxlOiBO
-byBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5DQo+IENvdWxkIG5vdCBhY2Nlc3MgS1ZNIGtlcm5lbCBt
-b2R1bGU6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkNCj4gQ291bGQgbm90IGFjY2VzcyBLVk0g
-a2VybmVsIG1vZHVsZTogTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeQ0KPiBCcm9rZW4gcGlwZQ0K
-PiAuLi90ZXN0cy9xdGVzdC9saWJxdGVzdC5jOjE5NToga2lsbF9xZW11KCkgdHJpZWQgdG8gdGVy
-bWluYXRlIFFFTVUgcHJvY2VzcyBidXQgZW5jb3VudGVyZWQgZXhpdCBzdGF0dXMgMSAoZXhwZWN0
-ZWQgMCkNCj4NCj4gKHRlc3QgcHJvZ3JhbSBleGl0ZWQgd2l0aCBzdGF0dXMgY29kZSAtNikNCj4N
-Cj4gVEFQIHBhcnNpbmcgZXJyb3I6IFRvbyBmZXcgdGVzdHMgcnVuIChleHBlY3RlZCAyMSwgZ290
-IDcpDQo+DQo+Pg0KPj4gVGhpcyBpcyBteSBmaXJzdCBhdHRlbXB0IGF0IHdyaXRpbmcgYSB0ZXN0
-IGNhc2UgcmVsYXRlZCB0byBtaWdyYXRpb24sIA0KPj4gYW5kIEknbSBhd2FyZSB0aGF0IHRoZXJl
-IG1heSBiZSBhcmVhcyB3aGVyZSBJIGNvdWxkIHVzZSBzb21lIGd1aWRhbmNlLiANCj4+IElmIHRo
-ZXJlIGFyZSBhbnkgZ2FwcyBpbiBteSB1bmRlcnN0YW5kaW5nIG9mIGhvdyB0byBwcm9wZXJseSBt
-b2NrIGEgDQo+PiBtaWdyYXRpb24gb3IgaWYgdGhlcmUgYXJlIGFueSBvdGhlciBpc3N1ZXMgd2l0
-aCB0aGUgdGVzdCBjYXNlLCBJIHdvdWxkIA0KPj4gZ3JlYXRseSBhcHByZWNpYXRlIHlvdXIgYXNz
-aXN0YW5jZS4gSSdtIGFsc28gc3RydWdnbGluZyB0byB1bmRlcnN0YW5kIA0KPj4gd2h5IHRoZSB0
-ZXN0IGlzIGZhaWxpbmcuIElmIGFueW9uZSBjb3VsZCBwcm92aWRlIHNvbWUgaW5zaWdodCBvciAN
-Cj4+IGFzc2lzdGFuY2Ugd2l0aCB0cm91Ymxlc2hvb3RpbmcsIGl0IHdvdWxkIGJlIGdyZWF0bHkg
-YXBwcmVjaWF0ZWQuDQo+Pg0KPj4gSSd2ZSBjYydkIEZhYmlubywgRGFuaWVsLCBhcyBJIGJlbGll
-dmUgdGhleSBtYXkgaGF2ZSBleHBlcnRpc2UgaW4gDQo+PiBtaWdyYXRpb24gdGVzdGluZyBhbmQg
-Y291bGQgb2ZmZXIgc29tZSB2YWx1YWJsZSBpbnNpZ2h0cy4NCj4+DQo+PiBUaGFuayB5b3UgZm9y
-IHlvdXIgaGVscCB3aXRoIHRoaXMsIGFuZCBJIGxvb2sgZm9yd2FyZCB0byBhbnkgZmVlZGJhY2sg
-DQo+PiBvciBhc3Npc3RhbmNlIHlvdSBjYW4gcHJvdmlkZS4NCj4+DQo+PiBPbiAwOS8wMi8yNCAx
-OjIxIHBtLCBIZXQgR2FsYSB3cm90ZToNCj4+PiBFbnN1cmUgZmFpbHVyZSBvY2N1cnMgd2hpbGUg
-YWRkaW5nIHZhbGlkYXRpb24gdGVzdCBmb3IgJ3VyaScgYW5kIA0KPj4+ICdjaGFubmVscycgYXJn
-dW1lbnRzDQo+Pj4gdXNlZCBzaW11bHRhbmVvdXNseSBpbiB0aGUgJ21pZ3JhdGUnIFFBUEkgY29t
-bWFuZC4NCj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6IEhldCBHYWxhIDxoZXQuZ2FsYUBudXRhbml4
-LmNvbT4NCj4+PiAtLS0NCj4+PiDCoCB0ZXN0cy9xdGVzdC9taWdyYXRpb24taGVscGVycy5jIHwg
-MTQgKysrKysrLS0NCj4+PiDCoCB0ZXN0cy9xdGVzdC9taWdyYXRpb24taGVscGVycy5oIHzCoCA1
-ICstLQ0KPj4+IMKgIHRlc3RzL3F0ZXN0L21pZ3JhdGlvbi10ZXN0LmPCoMKgwqAgfCA2MCArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0NCj4+PiDCoCAzIGZpbGVzIGNoYW5nZWQsIDcy
-IGluc2VydGlvbnMoKyksIDcgZGVsZXRpb25zKC0pDQo+Pj4NCj4+PiBkaWZmIC0tZ2l0IGEvdGVz
-dHMvcXRlc3QvbWlncmF0aW9uLWhlbHBlcnMuYyANCj4+PiBiL3Rlc3RzL3F0ZXN0L21pZ3JhdGlv
-bi1oZWxwZXJzLmMNCj4+PiBpbmRleCBlNDUxZGJkYmVkLi4yZGJiMDFlNDEzIDEwMDY0NA0KPj4+
-IC0tLSBhL3Rlc3RzL3F0ZXN0L21pZ3JhdGlvbi1oZWxwZXJzLmMNCj4+PiArKysgYi90ZXN0cy9x
-dGVzdC9taWdyYXRpb24taGVscGVycy5jDQo+Pj4gQEAgLTQzLDcgKzQzLDggQEAgYm9vbCBtaWdy
-YXRlX3dhdGNoX2Zvcl9ldmVudHMoUVRlc3RTdGF0ZSAqd2hvLCANCj4+PiBjb25zdCBjaGFyICpu
-YW1lLA0KPj4+IMKgwqDCoMKgwqAgcmV0dXJuIGZhbHNlOw0KPj4+IMKgIH0NCj4+PiDCoCAtdm9p
-ZCBtaWdyYXRlX3FtcF9mYWlsKFFUZXN0U3RhdGUgKndobywgY29uc3QgY2hhciAqdXJpLCBjb25z
-dCBjaGFyIA0KPj4+ICpmbXQsIC4uLikNCj4+PiArdm9pZCBtaWdyYXRlX3FtcF9mYWlsKFFUZXN0
-U3RhdGUgKndobywgY29uc3QgY2hhciAqdXJpLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgY29uc3QgY2hhciAqY2hhbm5lbHMsIGNvbnN0IGNoYXIgKmZt
-dCwgLi4uKQ0KPj4+IMKgIHsNCj4+PiDCoMKgwqDCoMKgIHZhX2xpc3QgYXA7DQo+Pj4gwqDCoMKg
-wqDCoCBRRGljdCAqYXJncywgKmVycjsNCj4+PiBAQCAtNTIsOCArNTMsMTUgQEAgdm9pZCBtaWdy
-YXRlX3FtcF9mYWlsKFFUZXN0U3RhdGUgKndobywgY29uc3QgY2hhciANCj4+PiAqdXJpLCBjb25z
-dCBjaGFyICpmbXQsIC4uLikNCj4+PiDCoMKgwqDCoMKgIGFyZ3MgPSBxZGljdF9mcm9tX3Zqc29u
-Zl9ub2ZhaWwoZm10LCBhcCk7DQo+Pj4gwqDCoMKgwqDCoCB2YV9lbmQoYXApOw0KPj4+IMKgIC3C
-oMKgwqAgZ19hc3NlcnQoIXFkaWN0X2hhc2tleShhcmdzLCAidXJpIikpOw0KPj4+IC3CoMKgwqAg
-cWRpY3RfcHV0X3N0cihhcmdzLCAidXJpIiwgdXJpKTsNCj4+PiArwqDCoMKgIGlmICh1cmkpIHsN
-Cj4+PiArwqDCoMKgwqDCoMKgwqAgZ19hc3NlcnQoIXFkaWN0X2hhc2tleShhcmdzLCAidXJpIikp
-Ow0KPj4+ICvCoMKgwqDCoMKgwqDCoCBxZGljdF9wdXRfc3RyKGFyZ3MsICJ1cmkiLCB1cmkpOw0K
-Pj4+ICvCoMKgwqAgfQ0KPj4+ICsNCj4+PiArwqDCoMKgIGlmIChjaGFubmVscykgew0KPj4+ICvC
-oMKgwqDCoMKgwqDCoCBnX2Fzc2VydCghcWRpY3RfaGFza2V5KGFyZ3MsICJjaGFubmVscyIpKTsN
-Cj4+PiArwqDCoMKgwqDCoMKgwqAgcWRpY3RfcHV0X3N0cihhcmdzLCAiY2hhbm5lbHMiLCBjaGFu
-bmVscyk7DQo+Pj4gK8KgwqDCoCB9DQo+Pj4gwqAgwqDCoMKgwqDCoCBlcnIgPSBxdGVzdF9xbXBf
-YXNzZXJ0X2ZhaWx1cmVfcmVmKA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB3aG8sICJ7ICdleGVj
-dXRlJzogJ21pZ3JhdGUnLCAnYXJndW1lbnRzJzogJXB9IiwgYXJncyk7DQo+Pj4gZGlmZiAtLWdp
-dCBhL3Rlc3RzL3F0ZXN0L21pZ3JhdGlvbi1oZWxwZXJzLmggDQo+Pj4gYi90ZXN0cy9xdGVzdC9t
-aWdyYXRpb24taGVscGVycy5oDQo+Pj4gaW5kZXggM2JmN2RlZDFiOS4uZDQ5ZTI4OWM1MSAxMDA2
-NDQNCj4+PiAtLS0gYS90ZXN0cy9xdGVzdC9taWdyYXRpb24taGVscGVycy5oDQo+Pj4gKysrIGIv
-dGVzdHMvcXRlc3QvbWlncmF0aW9uLWhlbHBlcnMuaA0KPj4+IEBAIC0zMiw4ICszMiw5IEBAIEdf
-R05VQ19QUklOVEYoMywgNCkNCj4+PiDCoCB2b2lkIG1pZ3JhdGVfaW5jb21pbmdfcW1wKFFUZXN0
-U3RhdGUgKndobywgY29uc3QgY2hhciAqdXJpLA0KPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb25zdCBjaGFyICpmbXQsIC4uLik7DQo+
-Pj4gwqAgLUdfR05VQ19QUklOVEYoMywgNCkNCj4+PiAtdm9pZCBtaWdyYXRlX3FtcF9mYWlsKFFU
-ZXN0U3RhdGUgKndobywgY29uc3QgY2hhciAqdXJpLCBjb25zdCBjaGFyIA0KPj4+ICpmbXQsIC4u
-Lik7DQo+Pj4gK0dfR05VQ19QUklOVEYoNCwgNSkNCj4+PiArdm9pZCBtaWdyYXRlX3FtcF9mYWls
-KFFUZXN0U3RhdGUgKndobywgY29uc3QgY2hhciAqdXJpLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29uc3QgY2hhciAqY2hhbm5lbHMsIGNvbnN0IGNo
-YXIgKmZtdCwgLi4uKTsNCj4+PiDCoCDCoCB2b2lkIG1pZ3JhdGVfc2V0X2NhcGFiaWxpdHkoUVRl
-c3RTdGF0ZSAqd2hvLCBjb25zdCBjaGFyICpjYXBhYmlsaXR5LA0KPj4+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYm9vbCB2YWx1ZSk7
-DQo+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3F0ZXN0L21pZ3JhdGlvbi10ZXN0LmMgYi90ZXN0cy9x
-dGVzdC9taWdyYXRpb24tdGVzdC5jDQo+Pj4gaW5kZXggZDMwNjZlMTE5Zi4uM2FhZmZjMjY2NyAx
-MDA2NDQNCj4+PiAtLS0gYS90ZXN0cy9xdGVzdC9taWdyYXRpb24tdGVzdC5jDQo+Pj4gKysrIGIv
-dGVzdHMvcXRlc3QvbWlncmF0aW9uLXRlc3QuYw0KPj4+IEBAIC0xOCw2ICsxOCw3IEBADQo+Pj4g
-wqAgI2luY2x1ZGUgInFlbXUvbW9kdWxlLmgiDQo+Pj4gwqAgI2luY2x1ZGUgInFlbXUvb3B0aW9u
-LmgiDQo+Pj4gwqAgI2luY2x1ZGUgInFlbXUvcmFuZ2UuaCINCj4+PiArI2luY2x1ZGUgIm1pZ3Jh
-dGlvbi9taWdyYXRpb24uaCINCj4+PiDCoCAjaW5jbHVkZSAicWVtdS9zb2NrZXRzLmgiDQo+Pj4g
-wqAgI2luY2x1ZGUgImNoYXJkZXYvY2hhci5oIg0KPj4+IMKgICNpbmNsdWRlICJxYXBpL3FhcGkt
-dmlzaXQtc29ja2V0cy5oIg0KPj4+IEBAIC0xNzczLDcgKzE3NzQsNyBAQCBzdGF0aWMgdm9pZCB0
-ZXN0X3ByZWNvcHlfY29tbW9uKE1pZ3JhdGVDb21tb24gDQo+Pj4gKmFyZ3MpDQo+Pj4gwqDCoMKg
-wqDCoCB9DQo+Pj4gwqAgwqDCoMKgwqDCoCBpZiAoYXJncy0+cmVzdWx0ID09IE1JR19URVNUX1FN
-UF9FUlJPUikgew0KPj4+IC3CoMKgwqDCoMKgwqDCoCBtaWdyYXRlX3FtcF9mYWlsKGZyb20sIGNv
-bm5lY3RfdXJpLCAie30iKTsNCj4+PiArwqDCoMKgwqDCoMKgwqAgbWlncmF0ZV9xbXBfZmFpbChm
-cm9tLCBjb25uZWN0X3VyaSwgTlVMTCwgInt9Iik7DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGdv
-dG8gZmluaXNoOw0KPj4+IMKgwqDCoMKgwqAgfQ0KPj4+IMKgIEBAIC0xODY5LDcgKzE4NzAsNyBA
-QCBzdGF0aWMgdm9pZCB0ZXN0X2ZpbGVfY29tbW9uKE1pZ3JhdGVDb21tb24gDQo+Pj4gKmFyZ3Ms
-IGJvb2wgc3RvcF9zcmMpDQo+Pj4gwqDCoMKgwqDCoCB9DQo+Pj4gwqAgwqDCoMKgwqDCoCBpZiAo
-YXJncy0+cmVzdWx0ID09IE1JR19URVNUX1FNUF9FUlJPUikgew0KPj4+IC3CoMKgwqDCoMKgwqDC
-oCBtaWdyYXRlX3FtcF9mYWlsKGZyb20sIGNvbm5lY3RfdXJpLCAie30iKTsNCj4+PiArwqDCoMKg
-wqDCoMKgwqAgbWlncmF0ZV9xbXBfZmFpbChmcm9tLCBjb25uZWN0X3VyaSwgTlVMTCwgInt9Iik7
-DQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGdvdG8gZmluaXNoOw0KPj4+IMKgwqDCoMKgwqAgfQ0K
-Pj4+IMKgIEBAIC0yNTA4LDYgKzI1MDksNTkgQEAgc3RhdGljIHZvaWQgDQo+Pj4gdGVzdF92YWxp
-ZGF0ZV91dWlkX2RzdF9ub3Rfc2V0KHZvaWQpDQo+Pj4gwqDCoMKgwqDCoCBkb190ZXN0X3ZhbGlk
-YXRlX3V1aWQoJmFyZ3MsIGZhbHNlKTsNCj4+PiDCoCB9DQo+Pj4gwqAgK3N0YXRpYyB2b2lkIGRv
-X3Rlc3RfdmFsaWRhdGVfdXJpX2NoYW5uZWwoTWlncmF0ZUNvbW1vbiAqYXJncywgYm9vbCANCj4+
-PiBzaG91bGRfZmFpbCkNCj4+IE5vdCBzdXJlIGlmIHNob3VsZF9mYWlsIGlzIG9mIGFueSB2YWx1
-ZSBoZXJlLiBUaGUgdGVzdCBpZGVhbGx5IHNob3VsZCANCj4+IG5vdCBlbnRlciBtaWdyYXRpb24g
-YWxzby4gU2hvdWxkIGp1c3QgZmFpbCBldmVuIGJlZm9yZSBtYWtpbmcgdGhlIA0KPj4gY29ubmVj
-dGlvbiwgYXQgdGhlIFFNUCBsZXZlbCBpdHNlbGYuIEkgYWRkZWQgaXQgaGVyZSwgYnkgdGFraW5n
-IHRoZSANCj4+IHJlZmVyZW5jZSBvZiB2YWxpZGF0ZV91dWlkIHRlc3RzLg0KDQpJdCBtaWdodCBi
-ZSBpZiB5b3UgZGVjaWRlIHRvIGFkZCBwb3NpdGl2ZSB0ZXN0cyBhcyB3ZWxsLg0KDQo+Pj4gK3sN
-Cj4+PiArwqDCoMKgIGdfYXV0b2ZyZWUgY29uc3QgY2hhciAqdXJpID0gIjEyNy4wLjAuMTowIjsN
-Cj4+PiArwqDCoMKgIGdfYXV0b2ZyZWUgY29uc3QgY2hhciAqY2hhbm5lbHMgPSAieyINCj4+PiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiwqDCoCAnY2hhbm5lbHMnOiBbIHsgJ2NoYW5u
-ZWwtdHlwZSc6ICdtYWluJywiDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIsKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAnYWRkcic6IHsgJ3RyYW5zcG9ydCc6
-ICdzb2NrZXQnLCINCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJ3R5cGUnOiAn
-aW5ldCcsIg0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICLCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAnaG9zdCc6ICcxMjcu
-MC4wLjEnLCINCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAiwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJ3BvcnQnOiAnMCcg
-fSB9IF0gfSI7DQo+Pj4gK8KgwqDCoCBRVGVzdFN0YXRlICpmcm9tLCAqdG87DQo+Pj4gKw0KPj4+
-ICvCoMKgwqAgaWYgKHRlc3RfbWlncmF0ZV9zdGFydCgmZnJvbSwgJnRvLCB1cmksICZhcmdzLT5z
-dGFydCkpIHsNCj4+PiArwqDCoMKgwqDCoMKgwqAgcmV0dXJuOw0KPj4+ICvCoMKgwqAgfQ0KPj4+
-ICsNCj4+PiArwqDCoMKgIC8qIFdhaXQgZm9yIHRoZSBmaXJzdCBzZXJpYWwgb3V0cHV0IGZyb20g
-dGhlIHNvdXJjZSAqLw0KPj4+ICvCoMKgwqAgd2FpdF9mb3Jfc2VyaWFsKCJzcmNfc2VyaWFsIik7
-DQo+Pj4gKw0KPj4+ICvCoMKgwqAgLyoNCj4+PiArwqDCoMKgwqAgKiAndXJpJyBhbmQgJ2NoYW5u
-ZWxzJyB2YWxpZGF0aW9uIGlzIGNoZWNrZWQgZXZlbiBiZWZvcmUgdGhlIA0KPj4+IG1pZ3JhdGlv
-bg0KPj4+ICvCoMKgwqDCoCAqIHN0YXJ0cy4NCj4+PiArwqDCoMKgwqAgKi8NCj4+PiArwqDCoMKg
-IGlmIChhcmdzLT5yZXN1bHQgPT0gTUlHX1RFU1RfUU1QX0VSUk9SKSB7DQo+Pj4gK8KgwqDCoMKg
-wqDCoMKgIG1pZ3JhdGVfcW1wX2ZhaWwoZnJvbSwgdXJpLCBjaGFubmVscywgInt9Iik7DQo+Pj4g
-K8KgwqDCoMKgwqDCoMKgIGdvdG8gZmluaXNoOw0KPj4+ICvCoMKgwqAgfQ0KPj4+ICsNCj4+PiAr
-wqDCoMKgIG1pZ3JhdGVfcW1wKGZyb20sIHVyaSwgInt9Iik7DQo+Pj4gKw0KPj4+ICvCoMKgwqAg
-aWYgKHNob3VsZF9mYWlsKSB7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIHF0ZXN0X3NldF9leHBlY3Rl
-ZF9zdGF0dXModG8sIEVYSVRfRkFJTFVSRSk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIHdhaXRfZm9y
-X21pZ3JhdGlvbl9mYWlsKGZyb20sIGZhbHNlKTsNCg0KVGhpcyBpcyBwcm9iYWJseSBub3QgdXNl
-ZnVsIGlmIHRoZSBRTVAgY29tbWFuZCBoYXMgZmFpbGVkIGFscmVhZHkuIFNlZQ0KdGVzdF9wcmVj
-b3B5X2ZpbGVfb2Zmc2V0X2JhZCBhcyBhbiBleGFtcGxlLg0KDQo+Pj4gK8KgwqDCoCB9IGVsc2Ug
-ew0KPj4+ICvCoMKgwqDCoMKgwqDCoCB3YWl0X2Zvcl9taWdyYXRpb25fY29tcGxldGUoZnJvbSk7
-DQo+Pj4gK8KgwqDCoCB9DQo+Pj4gKw0KPj4+ICtmaW5pc2g6DQo+Pj4gK8KgwqDCoCB0ZXN0X21p
-Z3JhdGVfZW5kKGZyb20sIHRvLCBhcmdzLT5yZXN1bHQgPT0gTUlHX1RFU1RfUU1QX0VSUk9SKTsN
-Cj4+PiArfQ0KPj4+ICsNCj4+PiArc3RhdGljIHZvaWQNCj4+PiArdGVzdF92YWxpZGF0ZV91cmlf
-Y2hhbm5lbF9ib3RoX3NldCh2b2lkKQ0KPj4+ICt7DQo+Pj4gK8KgwqDCoCBNaWdyYXRlQ29tbW9u
-IGFyZ3MgPSB7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIC5zdGFydCA9IHsNCj4+PiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCAuaGlkZV9zdGRlcnIgPSB0cnVlLA0KPj4+ICvCoMKgwqDCoMKgwqDCoCB9
-LA0KPj4+ICvCoMKgwqDCoMKgwqDCoCAucmVzdWx0ID0gTUlHX1RFU1RfUU1QX0VSUk9SLA0KPj4+
-ICvCoMKgwqAgfTsNCj4+PiArDQo+Pj4gK8KgwqDCoCBkb190ZXN0X3ZhbGlkYXRlX3VyaV9jaGFu
-bmVsKCZhcmdzLCB0cnVlKTsNCj4+PiArfQ0KPj4+ICsNCj4+PiDCoCAvKg0KPj4+IMKgwqAgKiBU
-aGUgd2F5IGF1dG9fY29udmVyZ2Ugd29ya3MsIHdlIG5lZWQgdG8gZG8gdG9vIG1hbnkgcGFzc2Vz
-IHRvDQo+Pj4gwqDCoCAqIHJ1biB0aGlzIHRlc3QuwqAgQXV0b19jb252ZXJnZSBsb2dpYyBpcyBv
-bmx5IHJ1biBvbmNlIGV2ZXJ5DQo+Pj4gQEAgLTM1MzYsNiArMzU5MCw4IEBAIGludCBtYWluKGlu
-dCBhcmdjLCBjaGFyICoqYXJndikNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgdGVzdF92YWxpZGF0ZV91dWlkX3NyY19ub3Rfc2V0KTsNCj4+PiDC
-oMKgwqDCoMKgIG1pZ3JhdGlvbl90ZXN0X2FkZCgiL21pZ3JhdGlvbi92YWxpZGF0ZV91dWlkX2Rz
-dF9ub3Rfc2V0IiwNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgdGVzdF92YWxpZGF0ZV91dWlkX2RzdF9ub3Rfc2V0KTsNCj4+PiArIG1pZ3JhdGlv
-bl90ZXN0X2FkZCgiL21pZ3JhdGlvbi92YWxpZGF0ZV91cmlfY2hhbm5lbF9ib3RoX3NldCIsDQo+
-Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHRlc3RfdmFs
-aWRhdGVfdXJpX2NoYW5uZWxfYm90aF9zZXQpOw0KDQpIZXJlIEknZCBhZGQgc29tZSBzdWJkaXZp
-c2lvbnMgc28gd2UgY2FuIGluIHRoZSBmdXR1cmUgYWRkIG1vcmUgdGVzdHMNCmZvciB0aGlzOg0K
-DQptaWdyYXRpb25fdGVzdF9hZGQoIi9taWdyYXRpb24vdmFsaWRhdGVfdXJpL2NoYW5uZWwiLCAu
-Li4pOw0KbWlncmF0aW9uX3Rlc3RfYWRkKCIvbWlncmF0aW9uL3ZhbGlkYXRlX3VyaS9jaGFubmVs
-L2JvdGhfc2V0IiwNCiAgICAgICAgICAgICAgICAgICB0ZXN0X3ZhbGlkYXRlX3VyaV9jaGFubmVs
-X2JvdGhfc2V0KTsNCg0KVGhlIGZpcnN0IG9uZSBjb3VsZCBiZSBhIHBvc2l0aXZlIHRlc3QgZm9y
-IGluc3RhbmNlLiBJdCdzIG5vdCByZXF1aXJlZCwNCmp1c3QgYSBzdWdnZXN0aW9uLg0KDQo+Pj4g
-wqDCoMKgwqDCoCAvKg0KPj4+IMKgwqDCoMKgwqDCoCAqIFNlZSBleHBsYW5hdGlvbiB3aHkgdGhp
-cyB0ZXN0IGlzIHNsb3cgb24gZnVuY3Rpb24gZGVmaW5pdGlvbg0KPj4+IMKgwqDCoMKgwqDCoCAq
-Lw0K
+On Tue, Jan 30, 2024 at 01:37:25PM +0800, yong.huang@smartx.com wrote:
+> From: Hyman Huang <yong.huang@smartx.com>
+> 
+> Also, add a section to the MAINTAINERS file for detached
+> LUKS header, it only has a test case in it currently.
+> 
+> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+> ---
+>  MAINTAINERS                                   |   5 +
+>  tests/qemu-iotests/tests/luks-detached-header | 218 ++++++++++++++++++
+>  .../tests/luks-detached-header.out            |   5 +
+>  3 files changed, 228 insertions(+)
+>  create mode 100755 tests/qemu-iotests/tests/luks-detached-header
+>  create mode 100644 tests/qemu-iotests/tests/luks-detached-header.out
+
+Pylint has some complaints on this which I needed to fix. Most of the
+issues were long line length related.
+
+Rather than manmually fix it, I decided to run it through the
+'black -l 80' to bulk reformat in a standard style. There were
+a few bits black didn't want to fix, so I refactored a couple.
+
+> diff --git a/tests/qemu-iotests/tests/luks-detached-header b/tests/qemu-iotests/tests/luks-detached-header
+> new file mode 100755
+> index 0000000000..f0b5f3921c
+> --- /dev/null
+> +++ b/tests/qemu-iotests/tests/luks-detached-header
+> @@ -0,0 +1,218 @@
+> +#!/usr/bin/env python3
+> +# group: rw auto
+> +#
+> +# Test LUKS volume with detached header
+> +#
+> +# Copyright (C) 2024 SmartX Inc.
+> +#
+> +# Authors:
+> +#     Hyman Huang <yong.huang@smartx.com>
+> +#
+> +# This program is free software; you can redistribute it and/or modify
+> +# it under the terms of the GNU General Public License as published by
+> +# the Free Software Foundation; either version 2 of the License, or
+> +# (at your option) any later version.
+> +#
+> +# This program is distributed in the hope that it will be useful,
+> +# but WITHOUT ANY WARRANTY; without even the implied warranty of
+> +# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> +# GNU General Public License for more details.
+> +#
+> +# You should have received a copy of the GNU General Public License
+> +# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> +#
+> +
+> +import os
+> +import iotests
+> +from iotests import imgfmt, qemu_img_create, img_info_log, qemu_img_info, QMPTestCase
+
+img_info_log si unused, so I dropped that.
+
+> +
+> +
+> +image_size = 128 * 1024 * 1024
+> +
+> +luks_img = os.path.join(iotests.test_dir, 'luks.img')
+> +detached_header_img1 = os.path.join(iotests.test_dir, 'detached_header.img1')
+> +detached_header_img2 = os.path.join(iotests.test_dir, 'detached_header.img2')
+> +detached_payload_raw_img = os.path.join(iotests.test_dir, 'detached_payload_raw.img')
+> +detached_payload_qcow2_img = os.path.join(iotests.test_dir, 'detached_payload_qcow2.img')
+> +detached_header_raw_img = \
+> +    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_raw_img, detached_header_img1)
+> +detached_header_qcow2_img = \
+> +    "json:{\"driver\":\"luks\",\"file\":{\"filename\":\"%s\"},\"header\":{\"filename\":\"%s\"}}" % (detached_payload_qcow2_img, detached_header_img2)
+
+Black doesn't like to break strings, so I decided to turn
+this into python objects and get rid of the formatting:
+
+detached_header_raw_img = "json:" + json.dumps(
+    {
+        "driver": "luks",
+        "file": {"filename": detached_payload_raw_img},
+        "header": {
+            "filename": detached_header_img1,
+        },
+    }
+)
+
+
+
+> +        # Detached LUKS header with raw payload
+> +        result = self.vm.qmp('human-monitor-command',
+> +                             command_line='qemu-io luks-2-payload-raw-format "write -P 41 0 64k"')
+> +        self.assert_qmp(result, 'return', '')
+
+Here, I just declared the qemu-io command ahead of time
+
+        cmd = 'qemu-io luks-2-payload-raw-format "write -P 41 0 64k"'
+        result = self.vm.qmp(
+            "human-monitor-command",
+            command_line=cmd
+        )
+
+
+> +
+> +        result = self.vm.qmp('human-monitor-command',
+> +                             command_line='qemu-io luks-2-payload-raw-format "read -P 41 0 64k"')
+> +        self.assert_qmp(result, 'return', '')
+> +
+> +        # Detached LUKS header with qcow2 payload
+> +        result = self.vm.qmp('human-monitor-command',
+> +                             command_line='qemu-io luks-3-payload-qcow2-format "write -P 42 0 64k"')
+> +        self.assert_qmp(result, 'return', '')
+> +
+> +        result = self.vm.qmp('human-monitor-command',
+> +                             command_line='qemu-io luks-3-payload-qcow2-format "read -P 42 0 64k"')
+> +        self.assert_qmp(result, 'return', '')
+> +
+> +        self.vm.shutdown()
+> +
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
