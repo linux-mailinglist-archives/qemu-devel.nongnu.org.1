@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7EC84F45C
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BD184F450
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:11:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYObX-0001vS-9W; Fri, 09 Feb 2024 05:59:35 -0500
+	id 1rYObi-00032K-6y; Fri, 09 Feb 2024 05:59:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYObU-0001dr-Ow
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:32 -0500
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ id 1rYObd-0002kE-7a
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:41 -0500
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYObO-0000Gz-DF
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:31 -0500
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-21920c78c9fso390985fac.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:59:26 -0800 (PST)
+ id 1rYObb-0000JU-HN
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:40 -0500
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6e1226b30ffso427222a34.0
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:59:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476365; x=1708081165; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476378; x=1708081178; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X3esT2gP09ngePOxl0aGtsw5fdTayTD8DyvGQ56mj7k=;
- b=EsefeuVxbdyRCFXjiJnONfJJqMHrQREXtCXqJRPXb1GzKuIeu//4P3gUrC/JVoXUAh
- s7tRiALFdKS3YKgFlnfGsf9XyVUFmNaeeKQESwaqwSZmlym1ooWMWd70QUac0v8n6gZD
- OWrKa74mZu7dsesB+0ppp0AA1GOwa9sTrEELIeuZJXkz/mhMTzkKThC0kTJqL9pqIBZ8
- nIJG1NhSY2dtm2sbMTNgrzghLhPi5XXvcMzIm0aexLtgcDjTtzYX3h6jnd+i0/TAO510
- 4laVJ60dKwqHeQLXBKXjHaVmxsF6N1q2oQji/9ZoIUQrrQ4kWAOC4gxKuEfRsvFeONwS
- JRbQ==
+ bh=SH/MPhbggH4z6PFbdxlGS1PoYoIe5/dIBNiVpNq4DEQ=;
+ b=F2XuqGYCT9JmfeJ+aaYFdv4RLOrMk+xFOIcIMy/BMGel/FN8L9ZuTpf4THRiAnzUqP
+ Pr0/Z2ylvGYcIQrUuwJCkNgqKhKml4eoUDl6HWfJ+2IOsYdvhnhhJunocQB+kUFnlX+U
+ C2djxSXkLf7UmlzqLngM8viRL7/29tA+Rh4iuAYmUoEsYepItNF6azKBKKm7Rl3yNvzk
+ pHKBK32yDOkpa1qKIOkghB7maFN/KgkrNXuj2pHGnymRAbzzL/I1wtFMV3j9St5XVYMz
+ 3TD/iRjPdwGLG9yZqwe5gAe7aJVGMKLH0t0qpqTQobRdujgKaovcb5hJMNjSCebRkYDJ
+ cLaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476365; x=1708081165;
+ d=1e100.net; s=20230601; t=1707476378; x=1708081178;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X3esT2gP09ngePOxl0aGtsw5fdTayTD8DyvGQ56mj7k=;
- b=OJ6Td6HkJA90M2N8dy1hIdyxRaCtJm3t+aSEs8uMichrCUlR34MNSfBdI0MydriUmT
- jtOxtNorWsQ3dLBYRjhyQOIQio49JF+rteV2I4LhMLqB1f4JRMjEd2rnYqjPES6chVbc
- u6tIjjx1zC47RG8McNNWl3mvGVDZscWLCoD20YAwHpzlZsm5G7Ri6sKUtrUmvhN9ttKy
- hgXBgVNu662d93pAuq/7IZiwcclpW2L3xahikKlVbZM8JS98jHE/D8RbjaZ/EKG9P2Gv
- CQ/9SYPEYaKyqQ0pgCvdAvPIONLmmGDNwVLEMQMUqf1+ADyXp1tKuA1zTDo1ZXj4v8pu
- Duug==
-X-Gm-Message-State: AOJu0Yz08YWjSOJfykzu58QeA8G94KHXm5mIDtte4uk1FYa76oFPsYVI
- m1e5c3MJKHlqahj0cmX8GPckomJ6Vp3cIuDH7Zw0VygegRiqpmgkhSNApj6x8TjSiw==
-X-Google-Smtp-Source: AGHT+IFriOg2blq9IPpSn7J7JYmen3GmfR7x41cNiK1WYmHMXPrhlnihCVNpIFlyyXiK5eRBPDRlWg==
-X-Received: by 2002:a05:6870:468c:b0:21a:293:d22d with SMTP id
- a12-20020a056870468c00b0021a0293d22dmr1157373oap.23.1707476364956; 
- Fri, 09 Feb 2024 02:59:24 -0800 (PST)
+ bh=SH/MPhbggH4z6PFbdxlGS1PoYoIe5/dIBNiVpNq4DEQ=;
+ b=l3/vmoN3dE5JnOZoNxD3G3UZL9esieU3MUiG/d7DKUKMs/i6PVJV+tDSd33p//KrfH
+ YDQzfe82cfHi7RHecQQctVLANtUZdaLjTYJne+f7r0LfGnoY/fzqoacIYhdXAduJe6uG
+ Ijzuaju6sZEi/9rS2Ou3A2cPZYM/l1Z3qgBZStsCwfGeLkHicvEhxW1MAWG1Shjkw6jI
+ 91gNDDYs/6CqUJjIqlaCAv/+Ln/sppchVINYOISTPxTX19Y9riHtKsROOq9TqvDXd0e6
+ y3AwUw5Wa3v24uxRTAxekQQ7h2kSFTeBd8ZJsxu0CV+Awbq/sqxsUz5I9wbLvoXFCann
+ MCsw==
+X-Gm-Message-State: AOJu0YywiAM2Pw/ABVSIOAP54WOuGg7oDNam4fkwjMMAkKDVhUinPV2V
+ mT5R7Xv+Ji03JuFYaeQYe4HWWIjeizc6kVUpA8QQ3QrUCaBrbHWYcXuBEQOEEriFcA==
+X-Google-Smtp-Source: AGHT+IGdCRwbY0jksoHnsEB8+OjdzgBXG57ay4YItaHeGljkPCllQLbva16Q+qxYfkmhoWfJVuizEg==
+X-Received: by 2002:a05:6358:7e42:b0:176:8101:7573 with SMTP id
+ p2-20020a0563587e4200b0017681017573mr1160460rwm.22.1707476378004; 
+ Fri, 09 Feb 2024 02:59:38 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVY5JrA/T0eHyB8y0nSioZ50nt1QLF3nd7bCtpTE0FFwgcbXBcTaq0sZW1ydwoqEmiolWP/mpYF2aCSfD75Vrte9euNMB2V/SW8uksGVJ6JLMvL34VSNWJnpKiy0Dp4Q7ZO+vPQBD1zs6SmT2tvZ6aK/t/mc6b7vh369EFr2VoTKqA=
+ AJvYcCUhDy7CN0cxNJ0RKrn4igr0GP6Yt9S8GVQCNjTw2rNoEAkJM8rRII6kJNE7u5D0pq3Y2wKkVXAp6VMmy6gjT4LXl3Cd2EP4iYQA56J1apFH9qgBedga9FzBsvVPb4p/mK1QWOYgoDqgsLxT03MqQEX4qnefNOerLBTNyXx6ZCKG3Vs=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.59.22
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.59.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:59:24 -0800 (PST)
+ Fri, 09 Feb 2024 02:59:37 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Vladimir Isaev <vladimir.isaev@syntacore.com>
-Subject: [PULL 18/61] target/riscv/cpu.c: move 'mvendorid' to
- riscv_cpu_properties[]
-Date: Fri,  9 Feb 2024 20:57:30 +1000
-Message-ID: <20240209105813.3590056-19-alistair.francis@wdc.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 22/61] target/riscv: add 'vlenb' field in cpu->cfg
+Date: Fri,  9 Feb 2024 20:57:34 +1000
+Message-ID: <20240209105813.3590056-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,119 +101,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Keep all class properties in riscv_cpu_properties[].
+Our usage of 'vlenb' is overwhelming superior than the use of 'vlen'.
+We're using 'vlenb' most of the time, having to do 'vlen >> 3' or
+'vlen / 8' in every instance.
+
+In hindsight we would be better if the 'vlenb' property  was introduced
+instead of 'vlen'. That's not what happened, and now we can't easily get
+rid of it due to user scripts all around. What we can do, however, is to
+change our internal representation to use 'vlenb'.
+
+Add a 'vlenb' field in cpu->cfg. It'll be set via the existing 'vlen'
+property, i.e. setting 'vlen' will also set 'vlenb'.
+
+We'll replace all 'vlen >> 3' code to use 'vlenb' directly. Start with
+the single instance we have in target/riscv/cpu.c.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Tested-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
-tested-by tags added, rebased with Alistair's riscv-to-apply.next.
-Message-ID: <20240112140201.127083-7-dbarboza@ventanamicro.com>
+Message-ID: <20240122161107.26737-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 69 +++++++++++++++++++++++++---------------------
- 1 file changed, 37 insertions(+), 32 deletions(-)
+ target/riscv/cpu_cfg.h | 1 +
+ target/riscv/cpu.c     | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index fea14c275f..50479dd72f 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -140,6 +140,7 @@ struct RISCVCPUConfig {
+ 
+     uint32_t pmu_mask;
+     uint16_t vlen;
++    uint16_t vlenb;
+     uint16_t elen;
+     uint16_t cbom_blocksize;
+     uint16_t cbop_blocksize;
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f0e3cfda33..a14d7da11d 100644
+index cce75aec3e..d34e87684d 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1985,6 +1985,41 @@ static const PropertyInfo prop_cboz_blksize = {
-     .set = prop_cboz_blksize_set,
- };
+@@ -852,7 +852,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+                              csr_ops[csrno].name, val);
+             }
+         }
+-        uint16_t vlenb = cpu->cfg.vlen >> 3;
++        uint16_t vlenb = cpu->cfg.vlenb;
  
-+static void prop_mvendorid_set(Object *obj, Visitor *v, const char *name,
-+                               void *opaque, Error **errp)
-+{
-+    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint32_t prev_val = cpu->cfg.mvendorid;
-+    uint32_t value;
-+
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (!dynamic_cpu && prev_val != value) {
-+        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
-+                   object_get_typename(obj), prev_val);
-+        return;
-+    }
-+
-+    cpu->cfg.mvendorid = value;
-+}
-+
-+static void prop_mvendorid_get(Object *obj, Visitor *v, const char *name,
-+                               void *opaque, Error **errp)
-+{
-+    uint32_t value = RISCV_CPU(obj)->cfg.mvendorid;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+}
-+
-+static const PropertyInfo prop_mvendorid = {
-+    .name = "mvendorid",
-+    .get = prop_mvendorid_get,
-+    .set = prop_mvendorid_set,
-+};
-+
- /*
-  * RVA22U64 defines some 'named features' or 'synthetic extensions'
-  * that are cache related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
-@@ -2071,6 +2106,8 @@ static Property riscv_cpu_properties[] = {
-     {.name = "cbop_blocksize", .info = &prop_cbop_blksize},
-     {.name = "cboz_blocksize", .info = &prop_cboz_blksize},
+         for (i = 0; i < 32; i++) {
+             qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
+@@ -1325,6 +1325,7 @@ static void riscv_cpu_init(Object *obj)
+     /* Default values for non-bool cpu properties */
+     cpu->cfg.pmu_mask = MAKE_64BIT_MASK(3, 16);
+     cpu->cfg.vlen = 128;
++    cpu->cfg.vlenb = 128 >> 3;
+     cpu->cfg.elen = 64;
+     cpu->cfg.cbom_blocksize = 64;
+     cpu->cfg.cbop_blocksize = 64;
+@@ -1824,6 +1825,7 @@ static void prop_vlen_set(Object *obj, Visitor *v, const char *name,
  
-+     {.name = "mvendorid", .info = &prop_mvendorid},
-+
- #ifndef CONFIG_USER_ONLY
-     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
- #endif
-@@ -2151,35 +2188,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
- #endif
+     cpu_option_add_user_setting(name, value);
+     cpu->cfg.vlen = value;
++    cpu->cfg.vlenb = value >> 3;
+ }
  
--static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
--                              void *opaque, Error **errp)
--{
--    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
--    RISCVCPU *cpu = RISCV_CPU(obj);
--    uint32_t prev_val = cpu->cfg.mvendorid;
--    uint32_t value;
--
--    if (!visit_type_uint32(v, name, &value, errp)) {
--        return;
--    }
--
--    if (!dynamic_cpu && prev_val != value) {
--        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
--                   object_get_typename(obj), prev_val);
--        return;
--    }
--
--    cpu->cfg.mvendorid = value;
--}
--
--static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
--                              void *opaque, Error **errp)
--{
--    uint32_t value = RISCV_CPU(obj)->cfg.mvendorid;
--
--    visit_type_uint32(v, name, &value, errp);
--}
--
- static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
-                            void *opaque, Error **errp)
- {
-@@ -2290,9 +2298,6 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
-     cc->gdb_arch_name = riscv_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
- 
--    object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
--                              cpu_set_mvendorid, NULL, NULL);
--
-     object_class_property_add(c, "mimpid", "uint64", cpu_get_mimpid,
-                               cpu_set_mimpid, NULL, NULL);
- 
+ static void prop_vlen_get(Object *obj, Visitor *v, const char *name,
 -- 
 2.43.0
 
