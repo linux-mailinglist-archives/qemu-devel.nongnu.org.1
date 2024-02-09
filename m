@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3817784F3FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5615684F408
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:01:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYObe-0002ij-Bq; Fri, 09 Feb 2024 05:59:42 -0500
+	id 1rYOcJ-0005VU-3E; Fri, 09 Feb 2024 06:00:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYOba-0002WC-G2
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:38 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1rYOc3-0005Fe-Ry
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:00:08 -0500
+Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYObY-0000JD-Ej
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:38 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-214dbe25f8aso360266fac.3
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:59:35 -0800 (PST)
+ id 1rYOc1-0000Vm-Qj
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:00:07 -0500
+Received: by mail-oo1-xc2e.google.com with SMTP id
+ 006d021491bc7-59a87156cb8so296248eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 03:00:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476375; x=1708081175; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476404; x=1708081204; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6JBUOj8h6++JZn4T6C29bkIxqoHAHIzdYcbETRGZIy4=;
- b=bNDs1aSz3oySADh2sBW7iO4f9HEFE8B1ZFzpp3JJWkLjiCmn2Uj4JFJDWMkOKAUn8E
- STvuQgMV0h6oVdqIPovcDWAXPeD0R//er0j5SwcYW2Wv0v/GZUhHKtXJvK+E5a1eBL+a
- rwH7Ortdf9FtT4lV4crpK4RPeuQRWYoiL68enrGyEpYwXg5ZuPlHDbivwEBZCDM6HPL1
- xYLIU9Ln3qjgELB0PJfSLMkbVAMHofj1IclrWgs+BofSBfWxSbiCQdVkytAEYbhfmaZz
- 0njozeZNj0yHKSRU/1x1IGxFtTn8DHoOHegoEeL+dYkLDZgchvGUWJYq+ib/m6Q2o6n9
- bofg==
+ bh=aspT/yStwOjA8Zs21ikdtZZGlWfkyKgdWczVX8G9hZU=;
+ b=C1K8TivY3snxgrZn8CLHXN3UfSAFPR4T31o8khGYO/W9Yt78YYIlZwuIlbXKXNkx1l
+ tU3EOfoq1GYk2kcBxXi6WVGhZNwtJybbcDyzFCsB8ycD9f6W4+UwTP7fg2/thtlDoHER
+ XcRmToEWL8ZA1sf8Asv6xKwDi8C6AKKUIi/ZXDHkTK+dYQrCN003RreZPcg5zStoRvZv
+ jwIlgMOPFSb2kF4r66+8WvVo7CVmHNhYfCqlPwFtkxkRxL7jsMRJxes6DjPSEUIvZsUq
+ YafAVZRP4k85yQ8ZXrMPZvM+LpVZuy4D+gEukvVAhJhmo0g1Q1FUnz55prHbz8RKXIqW
+ kjGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476375; x=1708081175;
+ d=1e100.net; s=20230601; t=1707476404; x=1708081204;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6JBUOj8h6++JZn4T6C29bkIxqoHAHIzdYcbETRGZIy4=;
- b=w6Ao0m2UoLWdn4m2oKBzUJqyjtqw8N4HVKY8Tjl0tvK7iytmBbtG1M9ZE+XhVfzRsg
- IRzB3yUFfr8TbTSh5xogkR5WkHEyvFKVGUc+hRnVn3aOXkkOSP+Futfqr3B6xucwJqY0
- hMP5+cjTsDu4/mvEv+h/rEVI9ToaFsKMMfogpGBrbMYNG2Y4Ay+Hk7X9NodILQfQ3g4f
- KnT8N6oD9NDtj07c73bA2ldE9A1drakISL0pdqX9HAir1Ucy5pl6sUz1gRMy6HKygVZc
- pek+tdWJ8xv4c97Vf9GJ4/rkNebnrqJ+2Uh9ef19Zshw1ET3hgqRaAUBRx+qd+WekX2U
- D2Mg==
-X-Gm-Message-State: AOJu0YwbHqai8vEbeFDgoyJV34vLz2kHu0PY7YiUV5rIbfJdDFHYefDM
- 2TA+1B42xI45hjDMdtzX8b3q3sl2t7N+t3gQU/PavEJS8YFSsTCXxvANcOGLDn2xoA==
-X-Google-Smtp-Source: AGHT+IHJs/ZBhUmN83/1ycA6ZDykvNXjF32fZwVCDvvpJENDASlLLVGMeWbL+aSBnM/+VbnDuMfaKg==
-X-Received: by 2002:a05:6870:1713:b0:21a:c53:273a with SMTP id
- h19-20020a056870171300b0021a0c53273amr1216128oae.5.1707476374779; 
- Fri, 09 Feb 2024 02:59:34 -0800 (PST)
+ bh=aspT/yStwOjA8Zs21ikdtZZGlWfkyKgdWczVX8G9hZU=;
+ b=CoYQrrNBaoWIL5//h5XjxKDvGW81UR9/VD0iHaR6gqwW7hKlT9zRGiDQNcWJUD5bQy
+ 00NCNXRwq2ShsiXP4+zRPYoU12OC0/rwzG8GZbJh3kO37Cp1QUdDUcIWyd0vbUK6j1nU
+ gY0je91M8yELb4rDTtACYIycztSOfaja6GVmDnTcs/zh9E9BqwhOj46dyLWy4GQOcPSh
+ 1YgtQy4NQUjqowIMBZyQEjyvCCcHjtacP+VoeiZBqV+Q6heG2rv4nSEoWMwBPWsORe8R
+ rBLiU4yC4H3S3CnZ9OL9uYWZZ5wihyR3Y53xVsAOpYEUoNr4t6+Z7PnLS0jn175/BR7J
+ Fu8g==
+X-Gm-Message-State: AOJu0Yw42GYn9YRuGSL4Vg0z9B2OY+PpyoomPrduGvUxhVPHyAHnPvN7
+ baIVWplpmOYDbBEWxqlMCVAwb2+f/rsSuCYyP4uTCTU1z1XjWqOxvdQGMEeEgTdcQQ==
+X-Google-Smtp-Source: AGHT+IHAURR+iXsS7NGiZSSyOEADMr7C3W5ZioXFEu8vEAQ0FMVGVE2SIvDodYmVCm+LfxvVb37aBQ==
+X-Received: by 2002:a05:6358:5288:b0:178:20ea:abb5 with SMTP id
+ g8-20020a056358528800b0017820eaabb5mr1289873rwa.26.1707476404496; 
+ Fri, 09 Feb 2024 03:00:04 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWRdLt9RlAfmV/FdaZxWDjlc9wgmpqLvpCRCU3lZGKFm67R8hDAtdGMA/+8YeoCxIwrEi12YegI0N5xVixdpJSjHcVsXv7pAbLyu/fVsTNYQvRUb/wCnyiiP0VRl43dLa8wlHCULpBr/1loJgCkyTKgqbZ6+wT8NzJFUg==
+ AJvYcCVqoS1ICn2qy9a5XYpmiZD9p+kiSWHwnb5cFSU34I51ONWAiziSu+cVnWFqqq4vlvXQaj0j7d1GD9UOM7FT/n9/3U/jwxIKLafYgc+C9ROjmXFmbOW/OllUSpDXeh5W7ozakllbPt/82w7ebP4/pHq1LaJYYqOzSD77ynPtFOl0muY=
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.59.31
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.03.00.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:59:34 -0800 (PST)
+ Fri, 09 Feb 2024 03:00:04 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alvin Chang <alvinga@andestech.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 21/61] target/riscv: Implement optional CSR mcontext of debug
- Sdtrig extension
-Date: Fri,  9 Feb 2024 20:57:33 +1000
-Message-ID: <20240209105813.3590056-22-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 30/61] target/riscv/insn_trans/trans_rvv.c.inc: use 'vlenb' in
+ MAXSZ()
+Date: Fri,  9 Feb 2024 20:57:42 +1000
+Message-ID: <20240209105813.3590056-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
+ envelope-from=alistair23@gmail.com; helo=mail-oo1-xc2e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,124 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alvin Chang <alvinga@andestech.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The debug Sdtrig extension defines an CSR "mcontext". This commit
-implements its predicate and read/write operations into CSR table.
-Its value is reset as 0 when the trigger module is reset.
+Calculate the maximum vector size possible, 'max_sz', which is the size
+in bytes 'vlenb' multiplied by the max value of LMUL (LMUL = 8, when
+s->lmul = 3).
 
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
+'max_sz' is then shifted right by 'scale', expressed as '3 - s->lmul',
+which is clearer than doing 'scale = lmul - 3' and then using '-scale'
+in the shift right.
+
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20231219123244.290935-1-alvinga@andestech.com>
+Message-ID: <20240122161107.26737-10-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.h      |  1 +
- target/riscv/cpu_bits.h |  7 +++++++
- target/riscv/csr.c      | 36 +++++++++++++++++++++++++++++++-----
- target/riscv/debug.c    |  2 ++
- 4 files changed, 41 insertions(+), 5 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index a744b2372b..20997b0886 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -365,6 +365,7 @@ struct CPUArchState {
-     target_ulong tdata1[RV_MAX_TRIGGERS];
-     target_ulong tdata2[RV_MAX_TRIGGERS];
-     target_ulong tdata3[RV_MAX_TRIGGERS];
-+    target_ulong mcontext;
-     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
-     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
-     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index ebd7917d49..3296648a1f 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -361,6 +361,7 @@
- #define CSR_TDATA2          0x7a2
- #define CSR_TDATA3          0x7a3
- #define CSR_TINFO           0x7a4
-+#define CSR_MCONTEXT        0x7a8
- 
- /* Debug Mode Registers */
- #define CSR_DCSR            0x7b0
-@@ -905,4 +906,10 @@ typedef enum RISCVException {
- /* JVT CSR bits */
- #define JVT_MODE                           0x3F
- #define JVT_BASE                           (~0x3F)
-+
-+/* Debug Sdtrig CSR masks */
-+#define MCONTEXT32                         0x0000003F
-+#define MCONTEXT64                         0x0000000000001FFFULL
-+#define MCONTEXT32_HCONTEXT                0x0000007F
-+#define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
- #endif
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 674ea075a4..d666620e48 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -3906,6 +3906,31 @@ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
-     return RISCV_EXCP_NONE;
- }
- 
-+static RISCVException read_mcontext(CPURISCVState *env, int csrno,
-+                                    target_ulong *val)
-+{
-+    *val = env->mcontext;
-+    return RISCV_EXCP_NONE;
-+}
-+
-+static RISCVException write_mcontext(CPURISCVState *env, int csrno,
-+                                     target_ulong val)
-+{
-+    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32 ? true : false;
-+    int32_t mask;
-+
-+    if (riscv_has_ext(env, RVH)) {
-+        /* Spec suggest 7-bit for RV32 and 14-bit for RV64 w/ H extension */
-+        mask = rv32 ? MCONTEXT32_HCONTEXT : MCONTEXT64_HCONTEXT;
-+    } else {
-+        /* Spec suggest 6-bit for RV32 and 13-bit for RV64 w/o H extension */
-+        mask = rv32 ? MCONTEXT32 : MCONTEXT64;
-+    }
-+
-+    env->mcontext = val & mask;
-+    return RISCV_EXCP_NONE;
-+}
-+
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index d743675262..b4663b6e1f 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -1160,12 +1160,12 @@ GEN_LDST_WHOLE_TRANS(vs8r_v, 8, 1, true)
  /*
-  * Functions to access Pointer Masking feature registers
-  * We have to check if current priv lvl could modify
-@@ -4800,11 +4825,12 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
-     [CSR_PMPADDR15] =  { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
- 
-     /* Debug CSRs */
--    [CSR_TSELECT]   =  { "tselect", debug, read_tselect, write_tselect },
--    [CSR_TDATA1]    =  { "tdata1",  debug, read_tdata,   write_tdata   },
--    [CSR_TDATA2]    =  { "tdata2",  debug, read_tdata,   write_tdata   },
--    [CSR_TDATA3]    =  { "tdata3",  debug, read_tdata,   write_tdata   },
--    [CSR_TINFO]     =  { "tinfo",   debug, read_tinfo,   write_ignore  },
-+    [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
-+    [CSR_TDATA1]    =  { "tdata1",   debug, read_tdata,    write_tdata    },
-+    [CSR_TDATA2]    =  { "tdata2",   debug, read_tdata,    write_tdata    },
-+    [CSR_TDATA3]    =  { "tdata3",   debug, read_tdata,    write_tdata    },
-+    [CSR_TINFO]     =  { "tinfo",    debug, read_tinfo,    write_ignore   },
-+    [CSR_MCONTEXT]  =  { "mcontext", debug, read_mcontext, write_mcontext },
- 
-     /* User Pointer Masking */
-     [CSR_UMTE]    =    { "umte",    pointer_masking, read_umte,  write_umte },
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 4945d1a1f2..e30d99cc2f 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -940,4 +940,6 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
-         env->cpu_watchpoint[i] = NULL;
-         timer_del(env->itrigger_timer[i]);
-     }
-+
-+    env->mcontext = 0;
+  * MAXSZ returns the maximum vector size can be operated in bytes,
+  * which is used in GVEC IR when vl_eq_vlmax flag is set to true
+- * to accerlate vector operation.
++ * to accelerate vector operation.
+  */
+ static inline uint32_t MAXSZ(DisasContext *s)
+ {
+-    int scale = s->lmul - 3;
+-    return s->cfg_ptr->vlen >> -scale;
++    int max_sz = s->cfg_ptr->vlenb * 8;
++    return max_sz >> (3 - s->lmul);
  }
+ 
+ static bool opivv_check(DisasContext *s, arg_rmrr *a)
 -- 
 2.43.0
 
