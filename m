@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AB884F409
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3817784F3FA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 11:59:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYOba-0002Ab-Ga; Fri, 09 Feb 2024 05:59:38 -0500
+	id 1rYObe-0002ij-Bq; Fri, 09 Feb 2024 05:59:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYObW-0001wt-TE
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:34 -0500
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1rYOba-0002WC-G2
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:38 -0500
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rYObU-0000Ij-V3
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:34 -0500
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-21920c78c9fso391027fac.1
- for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:59:32 -0800 (PST)
+ id 1rYObY-0000JD-Ej
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 05:59:38 -0500
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-214dbe25f8aso360266fac.3
+ for <qemu-devel@nongnu.org>; Fri, 09 Feb 2024 02:59:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707476371; x=1708081171; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707476375; x=1708081175; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OOf62pxwajXdelK5+pHplTSF3EihEn5ntNS6KqedNMU=;
- b=NwQGJKAgHvs44LanShO7SMoJWkZOMZNmZ75zHm04L4qa6dYKC+p9cq6VUj7RxNbS2N
- N4Zx7uH2fnOyZZwJeSgzKiyZuDyAtc490wWiRc2nnodpBwnoQHfZzi0q07GkLPTOQHLj
- cGbCFk1DBtRGYc9uwsBnysTveiZB0TyEcP0SRNOsmu9VnUxNY07h8qO/VBz58g6J8gFQ
- P2mqciWmsghC62mW38BmqwXECnaiShu4PSKadZaICYrFHdVl89JAuZp6t1brnOSMgfSi
- oOfLNLmerUMvKvjSLQ7M0KK/zTLb2+po2JG7pq828wndxG3ofnx9O8ryhw1S33b4bBqT
- rYIQ==
+ bh=6JBUOj8h6++JZn4T6C29bkIxqoHAHIzdYcbETRGZIy4=;
+ b=bNDs1aSz3oySADh2sBW7iO4f9HEFE8B1ZFzpp3JJWkLjiCmn2Uj4JFJDWMkOKAUn8E
+ STvuQgMV0h6oVdqIPovcDWAXPeD0R//er0j5SwcYW2Wv0v/GZUhHKtXJvK+E5a1eBL+a
+ rwH7Ortdf9FtT4lV4crpK4RPeuQRWYoiL68enrGyEpYwXg5ZuPlHDbivwEBZCDM6HPL1
+ xYLIU9Ln3qjgELB0PJfSLMkbVAMHofj1IclrWgs+BofSBfWxSbiCQdVkytAEYbhfmaZz
+ 0njozeZNj0yHKSRU/1x1IGxFtTn8DHoOHegoEeL+dYkLDZgchvGUWJYq+ib/m6Q2o6n9
+ bofg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707476371; x=1708081171;
+ d=1e100.net; s=20230601; t=1707476375; x=1708081175;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OOf62pxwajXdelK5+pHplTSF3EihEn5ntNS6KqedNMU=;
- b=SWDbpomsZ7t0hRUg2Pugs+gPRpHQIzB4zNnx+YtJIYzZn45ABFOocWsCt5IZ6mRr+0
- u7MnsA8Q+C9OUVGajuUyfULJB3zcSGVRIVx/rE3+cxvlxpTtNHCQRaWCx3jDB7BktMm9
- y50tk38bXiZ4T5boR8DU3AXLQe2xwK/dIpJf35U93hz1S5roZr0tEpZjvrkux1gogwGs
- ItWDhnNDB3OkXZ4w51EF+Ap0nvuQhdDzTdBAK+KtkDqFGi/pi5Pbyuti1RhCs4TGTJEc
- rjqbS6NWSQVxLOAGdXXitbbggbC0D01YUyIOTPv+6JeviYjF2g67FIlStkMNhfCsAkKK
- lW+A==
-X-Gm-Message-State: AOJu0YyEhcIO3RWlZ3KD8tbAWy9nx+FKboRQGY1qQo5G98vkcAEB7AQV
- CRfF+2pOUbtOtKtx3NSC9ftlLM9VzQnl1gnSt42iFMiRw3lnLVkgmBz0VEcL+TAvsA==
-X-Google-Smtp-Source: AGHT+IFeKFGBwGVHc3lORk/PQcxC1UVUb7PRPSj/5/HSEl+XulLXwLiJhKonioqDLQxAKY5Cf570vA==
-X-Received: by 2002:a05:6870:c1d3:b0:219:ab97:4a5b with SMTP id
- i19-20020a056870c1d300b00219ab974a5bmr1192944oad.57.1707476371484; 
- Fri, 09 Feb 2024 02:59:31 -0800 (PST)
+ bh=6JBUOj8h6++JZn4T6C29bkIxqoHAHIzdYcbETRGZIy4=;
+ b=w6Ao0m2UoLWdn4m2oKBzUJqyjtqw8N4HVKY8Tjl0tvK7iytmBbtG1M9ZE+XhVfzRsg
+ IRzB3yUFfr8TbTSh5xogkR5WkHEyvFKVGUc+hRnVn3aOXkkOSP+Futfqr3B6xucwJqY0
+ hMP5+cjTsDu4/mvEv+h/rEVI9ToaFsKMMfogpGBrbMYNG2Y4Ay+Hk7X9NodILQfQ3g4f
+ KnT8N6oD9NDtj07c73bA2ldE9A1drakISL0pdqX9HAir1Ucy5pl6sUz1gRMy6HKygVZc
+ pek+tdWJ8xv4c97Vf9GJ4/rkNebnrqJ+2Uh9ef19Zshw1ET3hgqRaAUBRx+qd+WekX2U
+ D2Mg==
+X-Gm-Message-State: AOJu0YwbHqai8vEbeFDgoyJV34vLz2kHu0PY7YiUV5rIbfJdDFHYefDM
+ 2TA+1B42xI45hjDMdtzX8b3q3sl2t7N+t3gQU/PavEJS8YFSsTCXxvANcOGLDn2xoA==
+X-Google-Smtp-Source: AGHT+IHJs/ZBhUmN83/1ycA6ZDykvNXjF32fZwVCDvvpJENDASlLLVGMeWbL+aSBnM/+VbnDuMfaKg==
+X-Received: by 2002:a05:6870:1713:b0:21a:c53:273a with SMTP id
+ h19-20020a056870171300b0021a0c53273amr1216128oae.5.1707476374779; 
+ Fri, 09 Feb 2024 02:59:34 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWR4ha7di0IHt4APjtaFI2uB9c+MnoDViZvcw4swe0M1sU+b7g6mS1V6lzPUBQAkNKusw65BLAKsoVoEDhAgOrUe4NB3krOvPDTgQj2VtsXPjLjjuL3SZ8OFBBrI5fnqo+sGxaaNypyj1tdBnQkY/bj3/lUI/axqwgZFwLKPshgX3E=
+ AJvYcCWRdLt9RlAfmV/FdaZxWDjlc9wgmpqLvpCRCU3lZGKFm67R8hDAtdGMA/+8YeoCxIwrEi12YegI0N5xVixdpJSjHcVsXv7pAbLyu/fVsTNYQvRUb/wCnyiiP0VRl43dLa8wlHCULpBr/1loJgCkyTKgqbZ6+wT8NzJFUg==
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.59.28
+ d20-20020a637354000000b005d3bae243bbsm1473623pgn.4.2024.02.09.02.59.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 09 Feb 2024 02:59:30 -0800 (PST)
+ Fri, 09 Feb 2024 02:59:34 -0800 (PST)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Alvin Chang <alvinga@andestech.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Vladimir Isaev <vladimir.isaev@syntacore.com>
-Subject: [PULL 20/61] target/riscv/cpu.c: move 'marchid' to
- riscv_cpu_properties[]
-Date: Fri,  9 Feb 2024 20:57:32 +1000
-Message-ID: <20240209105813.3590056-21-alistair.francis@wdc.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 21/61] target/riscv: Implement optional CSR mcontext of debug
+ Sdtrig extension
+Date: Fri,  9 Feb 2024 20:57:33 +1000
+Message-ID: <20240209105813.3590056-22-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209105813.3590056-1-alistair.francis@wdc.com>
 References: <20240209105813.3590056-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,162 +100,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Alvin Chang <alvinga@andestech.com>
 
-Keep all class properties in riscv_cpu_properties[].
+The debug Sdtrig extension defines an CSR "mcontext". This commit
+implements its predicate and read/write operations into CSR table.
+Its value is reset as 0 when the trigger module is reset.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Alvin Chang <alvinga@andestech.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Tested-by: Vladimir Isaev <vladimir.isaev@syntacore.com>
-tested-by tags added, rebased with Alistair's riscv-to-apply.next.
-Message-ID: <20240112140201.127083-9-dbarboza@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20231219123244.290935-1-alvinga@andestech.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 110 +++++++++++++++++++++++----------------------
- 1 file changed, 57 insertions(+), 53 deletions(-)
+ target/riscv/cpu.h      |  1 +
+ target/riscv/cpu_bits.h |  7 +++++++
+ target/riscv/csr.c      | 36 +++++++++++++++++++++++++++++++-----
+ target/riscv/debug.c    |  2 ++
+ 4 files changed, 41 insertions(+), 5 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 1a6524f01f..cce75aec3e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -2055,6 +2055,62 @@ static const PropertyInfo prop_mimpid = {
-     .set = prop_mimpid_set,
- };
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index a744b2372b..20997b0886 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -365,6 +365,7 @@ struct CPUArchState {
+     target_ulong tdata1[RV_MAX_TRIGGERS];
+     target_ulong tdata2[RV_MAX_TRIGGERS];
+     target_ulong tdata3[RV_MAX_TRIGGERS];
++    target_ulong mcontext;
+     struct CPUBreakpoint *cpu_breakpoint[RV_MAX_TRIGGERS];
+     struct CPUWatchpoint *cpu_watchpoint[RV_MAX_TRIGGERS];
+     QEMUTimer *itrigger_timer[RV_MAX_TRIGGERS];
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index ebd7917d49..3296648a1f 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -361,6 +361,7 @@
+ #define CSR_TDATA2          0x7a2
+ #define CSR_TDATA3          0x7a3
+ #define CSR_TINFO           0x7a4
++#define CSR_MCONTEXT        0x7a8
  
-+static void prop_marchid_set(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint64_t prev_val = cpu->cfg.marchid;
-+    uint64_t value, invalid_val;
-+    uint32_t mxlen = 0;
+ /* Debug Mode Registers */
+ #define CSR_DCSR            0x7b0
+@@ -905,4 +906,10 @@ typedef enum RISCVException {
+ /* JVT CSR bits */
+ #define JVT_MODE                           0x3F
+ #define JVT_BASE                           (~0x3F)
 +
-+    if (!visit_type_uint64(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (!dynamic_cpu && prev_val != value) {
-+        error_setg(errp, "Unable to change %s marchid (0x%" PRIu64 ")",
-+                   object_get_typename(obj), prev_val);
-+        return;
-+    }
-+
-+    switch (riscv_cpu_mxl(&cpu->env)) {
-+    case MXL_RV32:
-+        mxlen = 32;
-+        break;
-+    case MXL_RV64:
-+    case MXL_RV128:
-+        mxlen = 64;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    invalid_val = 1LL << (mxlen - 1);
-+
-+    if (value == invalid_val) {
-+        error_setg(errp, "Unable to set marchid with MSB (%u) bit set "
-+                         "and the remaining bits zero", mxlen);
-+        return;
-+    }
-+
-+    cpu->cfg.marchid = value;
-+}
-+
-+static void prop_marchid_get(Object *obj, Visitor *v, const char *name,
-+                             void *opaque, Error **errp)
-+{
-+    uint64_t value = RISCV_CPU(obj)->cfg.marchid;
-+
-+    visit_type_uint64(v, name, &value, errp);
-+}
-+
-+static const PropertyInfo prop_marchid = {
-+    .name = "marchid",
-+    .get = prop_marchid_get,
-+    .set = prop_marchid_set,
-+};
-+
- /*
-  * RVA22U64 defines some 'named features' or 'synthetic extensions'
-  * that are cache related: Za64rs, Zic64b, Ziccif, Ziccrse, Ziccamoa
-@@ -2143,6 +2199,7 @@ static Property riscv_cpu_properties[] = {
- 
-      {.name = "mvendorid", .info = &prop_mvendorid},
-      {.name = "mimpid", .info = &prop_mimpid},
-+     {.name = "marchid", .info = &prop_marchid},
- 
- #ifndef CONFIG_USER_ONLY
-     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
-@@ -2224,56 +2281,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
++/* Debug Sdtrig CSR masks */
++#define MCONTEXT32                         0x0000003F
++#define MCONTEXT64                         0x0000000000001FFFULL
++#define MCONTEXT32_HCONTEXT                0x0000007F
++#define MCONTEXT64_HCONTEXT                0x0000000000003FFFULL
  #endif
- 
--static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
--                            void *opaque, Error **errp)
--{
--    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
--    RISCVCPU *cpu = RISCV_CPU(obj);
--    uint64_t prev_val = cpu->cfg.marchid;
--    uint64_t value, invalid_val;
--    uint32_t mxlen = 0;
--
--    if (!visit_type_uint64(v, name, &value, errp)) {
--        return;
--    }
--
--    if (!dynamic_cpu && prev_val != value) {
--        error_setg(errp, "Unable to change %s marchid (0x%" PRIu64 ")",
--                   object_get_typename(obj), prev_val);
--        return;
--    }
--
--    switch (riscv_cpu_mxl(&cpu->env)) {
--    case MXL_RV32:
--        mxlen = 32;
--        break;
--    case MXL_RV64:
--    case MXL_RV128:
--        mxlen = 64;
--        break;
--    default:
--        g_assert_not_reached();
--    }
--
--    invalid_val = 1LL << (mxlen - 1);
--
--    if (value == invalid_val) {
--        error_setg(errp, "Unable to set marchid with MSB (%u) bit set "
--                         "and the remaining bits zero", mxlen);
--        return;
--    }
--
--    cpu->cfg.marchid = value;
--}
--
--static void cpu_get_marchid(Object *obj, Visitor *v, const char *name,
--                           void *opaque, Error **errp)
--{
--    uint64_t value = RISCV_CPU(obj)->cfg.marchid;
--
--    visit_type_uint64(v, name, &value, errp);
--}
--
- static void riscv_cpu_class_init(ObjectClass *c, void *data)
- {
-     RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
-@@ -2305,9 +2312,6 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
-     cc->gdb_arch_name = riscv_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
- 
--    object_class_property_add(c, "marchid", "uint64", cpu_get_marchid,
--                              cpu_set_marchid, NULL, NULL);
--
-     device_class_set_props(dc, riscv_cpu_properties);
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 674ea075a4..d666620e48 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -3906,6 +3906,31 @@ static RISCVException read_tinfo(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
  }
  
++static RISCVException read_mcontext(CPURISCVState *env, int csrno,
++                                    target_ulong *val)
++{
++    *val = env->mcontext;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_mcontext(CPURISCVState *env, int csrno,
++                                     target_ulong val)
++{
++    bool rv32 = riscv_cpu_mxl(env) == MXL_RV32 ? true : false;
++    int32_t mask;
++
++    if (riscv_has_ext(env, RVH)) {
++        /* Spec suggest 7-bit for RV32 and 14-bit for RV64 w/ H extension */
++        mask = rv32 ? MCONTEXT32_HCONTEXT : MCONTEXT64_HCONTEXT;
++    } else {
++        /* Spec suggest 6-bit for RV32 and 13-bit for RV64 w/o H extension */
++        mask = rv32 ? MCONTEXT32 : MCONTEXT64;
++    }
++
++    env->mcontext = val & mask;
++    return RISCV_EXCP_NONE;
++}
++
+ /*
+  * Functions to access Pointer Masking feature registers
+  * We have to check if current priv lvl could modify
+@@ -4800,11 +4825,12 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_PMPADDR15] =  { "pmpaddr15", pmp, read_pmpaddr, write_pmpaddr },
+ 
+     /* Debug CSRs */
+-    [CSR_TSELECT]   =  { "tselect", debug, read_tselect, write_tselect },
+-    [CSR_TDATA1]    =  { "tdata1",  debug, read_tdata,   write_tdata   },
+-    [CSR_TDATA2]    =  { "tdata2",  debug, read_tdata,   write_tdata   },
+-    [CSR_TDATA3]    =  { "tdata3",  debug, read_tdata,   write_tdata   },
+-    [CSR_TINFO]     =  { "tinfo",   debug, read_tinfo,   write_ignore  },
++    [CSR_TSELECT]   =  { "tselect",  debug, read_tselect,  write_tselect  },
++    [CSR_TDATA1]    =  { "tdata1",   debug, read_tdata,    write_tdata    },
++    [CSR_TDATA2]    =  { "tdata2",   debug, read_tdata,    write_tdata    },
++    [CSR_TDATA3]    =  { "tdata3",   debug, read_tdata,    write_tdata    },
++    [CSR_TINFO]     =  { "tinfo",    debug, read_tinfo,    write_ignore   },
++    [CSR_MCONTEXT]  =  { "mcontext", debug, read_mcontext, write_mcontext },
+ 
+     /* User Pointer Masking */
+     [CSR_UMTE]    =    { "umte",    pointer_masking, read_umte,  write_umte },
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 4945d1a1f2..e30d99cc2f 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -940,4 +940,6 @@ void riscv_trigger_reset_hold(CPURISCVState *env)
+         env->cpu_watchpoint[i] = NULL;
+         timer_del(env->itrigger_timer[i]);
+     }
++
++    env->mcontext = 0;
+ }
 -- 
 2.43.0
 
