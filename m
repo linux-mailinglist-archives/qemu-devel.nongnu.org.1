@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E64E84EE30
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 01:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33A384EE2F
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 01:06:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYEOJ-0006JJ-UK; Thu, 08 Feb 2024 19:05:15 -0500
+	id 1rYEOJ-0006JL-Uh; Thu, 08 Feb 2024 19:05:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rYEOI-0006It-03; Thu, 08 Feb 2024 19:05:14 -0500
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1rYEOI-0006Iu-0Z; Thu, 08 Feb 2024 19:05:14 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rYEOG-000750-6J; Thu, 08 Feb 2024 19:05:13 -0500
+ id 1rYEOG-000755-5r; Thu, 08 Feb 2024 19:05:13 -0500
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A861A4E604D;
- Fri,  9 Feb 2024 01:05:07 +0100 (CET)
+ by zero.eik.bme.hu (Postfix) with ESMTP id ADC4B4E604F;
+ Fri,  9 Feb 2024 01:05:08 +0100 (CET)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id kd76zS2JKoyO; Fri,  9 Feb 2024 01:05:05 +0100 (CET)
+ with ESMTP id dryXCcEGfYOx; Fri,  9 Feb 2024 01:05:06 +0100 (CET)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B07D04E6049; Fri,  9 Feb 2024 01:05:05 +0100 (CET)
+ id BCE1B4E604C; Fri,  9 Feb 2024 01:05:06 +0100 (CET)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] system: Move memory_ldst.c.inc to system
+Subject: [PATCH] qemu-options.hx: Add zoom-to-fit to option summary for gtk
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 To: qemu-devel@nongnu.org,
     qemu-trivial@nongnu.org
-Message-Id: <20240209000505.B07D04E6049@zero.eik.bme.hu>
-Date: Fri,  9 Feb 2024 01:05:05 +0100 (CET)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Message-Id: <20240209000506.BCE1B4E604C@zero.eik.bme.hu>
+Date: Fri,  9 Feb 2024 01:05:06 +0100 (CET)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -56,18 +56,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This file is only used by system/physmem.c so move them together.
+The detailed help lists zoom-to-fit as valid option but it is missing
+from the short option summary. Add it there too.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- memory_ldst.c.inc => system/memory_ldst.c.inc | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- rename memory_ldst.c.inc => system/memory_ldst.c.inc (100%)
+ qemu-options.hx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/memory_ldst.c.inc b/system/memory_ldst.c.inc
-similarity index 100%
-rename from memory_ldst.c.inc
-rename to system/memory_ldst.c.inc
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 5adbed1101..c5b82ec660 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2085,7 +2085,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
+ #if defined(CONFIG_GTK)
+     "-display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]\n"
+     "            [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]\n"
+-    "            [,show-menubar=on|off]\n"
++    "            [,show-menubar=on|off][,zoom-to-fit=on|off]\n"
+ #endif
+ #if defined(CONFIG_VNC)
+     "-display vnc=<display>[,<optargs>]\n"
 -- 
 2.30.9
 
