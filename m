@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A86884F4ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 465B684F4E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 Feb 2024 12:58:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rYPUv-0003WN-6q; Fri, 09 Feb 2024 06:56:49 -0500
+	id 1rYPVB-0003db-Jd; Fri, 09 Feb 2024 06:57:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUt-0003Vx-Vg
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:47 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPV1-0003by-KV
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:55 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUs-0002Pn-AU
- for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:47 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rYPUx-0002RC-Hy
+ for qemu-devel@nongnu.org; Fri, 09 Feb 2024 06:56:54 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 503B062072;
+ by sin.source.kernel.org (Postfix) with ESMTP id 8B939CE2005;
+ Fri,  9 Feb 2024 11:56:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDF6C433C7;
  Fri,  9 Feb 2024 11:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2D1C43390;
- Fri,  9 Feb 2024 11:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707479805;
- bh=FaxA3mFrSxmY5kTESFNBYrTItNp7faYaL5jQs64YYHE=;
+ s=k20201202; t=1707479806;
+ bh=pgNJchBQDIBYjxxSFSCpASqiLdg+D2giuu+TbQVVM78=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=BRbq8kaNvvEcEq9U9ggHBchdZSYN9OkAa6pBJm9LGkUAaYcsC90sWYTodFTaNkUfH
- F3wKiC93IGW2oEH4ERZByVJglhP8XL8ltZ2Ktnt6zJbm9MYl7HFrB8zJnxTcTj6RIq
- IlijTNusHeDJH5fS3xLsE2RYhOkwIDPHXgVXdxdy8EpqLQRTG+VAhqR6FGNwTKKESz
- MZ9ML7hIlzkOOA9MIHTqO9f+fLjxbHzbb5ahR6CCJpeT9sJ+8px1utMyzVVP6Mo47u
- EV8gmDdluLcPPiCaKi2EuVMZ1HbaJ2e7XNtU9/GX28HbaN+ib4t67eSQHx5+REZPpF
- vMBDr1HEFANMA==
+ b=QSdeAehM98EJwcZIYBpXhiB2Brkg3n18TXLII5ZPzugtyhGqSSU4d+ADUNb0UYNwE
+ VajWA5QrFboVK5zQpz/eC3Onitgruv71AzmwmYsV46vhBzBpy0lX8zD+8SeC5b0TsG
+ zEyOiI1Vi+ArjBHjCtokG7LDCzXbWOre40ILA+9G2M4clpEeN7htHY/MtndHy4GTBy
+ dVL7OjCT9vPPvWvlWJuX+3XunR6nQ2lRU/eT36p7vSJzg3lkr5uTff27ds9/VbauG7
+ czn9/AHX+qpCdvXoyDGlnwcF+1lnXWnUlm4hd+MVJGmuUcVvF11zDj74dtGthEmAjz
+ ocQyFjLRjfl+A==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Sven Schnelle <svens@stackframe.org>, Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 05/12] lasi: allow access to LAN MAC address registers
-Date: Fri,  9 Feb 2024 12:56:26 +0100
-Message-ID: <20240209115633.55823-6-deller@kernel.org>
+Subject: [PATCH v2 06/12] target/hppa: Implement do_transaction_failed handler
+ for I/O errors
+Date: Fri,  9 Feb 2024 12:56:27 +0100
+Message-ID: <20240209115633.55823-7-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240209115633.55823-1-deller@kernel.org>
 References: <20240209115633.55823-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -72
-X-Spam_score: -7.3
-X-Spam_bar: -------
-X-Spam_report: (-7.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.213,
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.213,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,35 +71,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Firmware and qemu reads and writes the MAC address for the LASI LAN via
-registers in LASI. Allow those accesses and return zero even if LASI
-LAN isn't enabled to avoid HPMCs (=crashes).
+Add the do_transaction_failed() handler to tigger a HPMC to the CPU
+in case of I/O transaction errors.
+
+This is a preparation commit.
+We still lack implementation for some registers, so do not yet enable sending
+HPMCs.  Having this hunk here now nevertheless helps for the further
+development, so that it can easily be enabled later on.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- hw/misc/lasi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/hppa/cpu.c        |  1 +
+ target/hppa/cpu.h        |  5 +++++
+ target/hppa/mem_helper.c | 19 +++++++++++++++++++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/hw/misc/lasi.c b/hw/misc/lasi.c
-index 003f5b5ed8..9cfa5bb316 100644
---- a/hw/misc/lasi.c
-+++ b/hw/misc/lasi.c
-@@ -38,6 +38,7 @@ static bool lasi_chip_mem_valid(void *opaque, hwaddr addr,
-     case LASI_LPT:
-     case LASI_UART:
-     case LASI_LAN:
-+    case LASI_LAN + 12: /* LASI LAN MAC */
-     case LASI_RTC:
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 5f87c1b12a..afe73d4474 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -191,6 +191,7 @@ static const TCGCPUOps hppa_tcg_ops = {
+     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
+     .do_interrupt = hppa_cpu_do_interrupt,
+     .do_unaligned_access = hppa_cpu_do_unaligned_access,
++    .do_transaction_failed = hppa_cpu_do_transaction_failed,
+ #endif /* !CONFIG_USER_ONLY */
+ };
  
-     case LASI_PCR ... LASI_AMR:
-@@ -78,6 +79,7 @@ static MemTxResult lasi_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case LASI_LPT:
-     case LASI_UART:
-     case LASI_LAN:
-+    case LASI_LAN + 12:
-         val = 0;
-         break;
-     case LASI_RTC:
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 7a181e8f33..a92dc352cb 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -381,6 +381,11 @@ bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+                               int type, hwaddr *pphys, int *pprot,
+                               HPPATLBEntry **tlb_entry);
++void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
++                                     vaddr addr, unsigned size,
++                                     MMUAccessType access_type,
++                                     int mmu_idx, MemTxAttrs attrs,
++                                     MemTxResult response, uintptr_t retaddr);
+ extern const MemoryRegionOps hppa_io_eir_ops;
+ extern const VMStateDescription vmstate_hppa_cpu;
+ void hppa_cpu_alarm_timer(void *);
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 629a9d90ef..676c0b3003 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -353,6 +353,25 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
+     cpu_loop_exit_restore(cs, retaddr);
+ }
+ 
++void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
++                                     vaddr addr, unsigned size,
++                                     MMUAccessType access_type,
++                                     int mmu_idx, MemTxAttrs attrs,
++                                     MemTxResult response, uintptr_t retaddr)
++{
++    CPUHPPAState *env = cpu_env(cs);
++
++    qemu_log_mask(LOG_GUEST_ERROR, "HPMC at " TARGET_FMT_lx ":" TARGET_FMT_lx
++                " while accessing I/O at %#08" HWADDR_PRIx "\n",
++                env->iasq_f, env->iaoq_f, physaddr);
++
++    /* FIXME: Enable HPMC exceptions when firmware has clean device probing */
++    if (0) {
++        raise_exception_with_ior(env, EXCP_HPMC, retaddr, addr,
++                                 MMU_IDX_MMU_DISABLED(mmu_idx));
++    }
++}
++
+ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+                        MMUAccessType type, int mmu_idx,
+                        bool probe, uintptr_t retaddr)
 -- 
 2.43.0
 
