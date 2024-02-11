@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC1385090B
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 Feb 2024 13:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A84FB850905
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 Feb 2024 13:31:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZ8xk-00069d-32; Sun, 11 Feb 2024 07:29:36 -0500
+	id 1rZ8xe-000671-Bv; Sun, 11 Feb 2024 07:29:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZ8xg-000686-Aj
- for qemu-devel@nongnu.org; Sun, 11 Feb 2024 07:29:32 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZ8xc-00066j-HZ
+ for qemu-devel@nongnu.org; Sun, 11 Feb 2024 07:29:28 -0500
 Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZ8xe-0006FH-2i
- for qemu-devel@nongnu.org; Sun, 11 Feb 2024 07:29:31 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZ8xa-0006FU-4R
+ for qemu-devel@nongnu.org; Sun, 11 Feb 2024 07:29:27 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id AE24D60C3C;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 8A9AF60C56;
+ Sun, 11 Feb 2024 12:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC436C433F1;
  Sun, 11 Feb 2024 12:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06295C433F1;
- Sun, 11 Feb 2024 12:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707654560;
- bh=ubbnHP6CQJX6H46ApufgbUTl/GyRa/bvBIBXu8fglok=;
+ s=k20201202; t=1707654562;
+ bh=FaxA3mFrSxmY5kTESFNBYrTItNp7faYaL5jQs64YYHE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IcXMrNV7nRA2xKAYJIIxaHMXV1znn+08SRA+2wtrCFnuFLXD7SB0LAIkDuJ7sWBf4
- cDU3yIJ6OUyMkOn9vVh4PchIxOk53o+xBxfp7JkZnhg/uU/TFRkDUv3th5P3D2R2Mj
- uZuJ7emkD/rKuuMzWIyUK8xKpBYhpQ4+1y2zIBT6r2oHtonsfQM8L9racg+ui6haa1
- n6WaomdHWzmeI4LbnyKvMWYWiL4GMhdebP7AS1h3SwTSD82w8ZQFc4MoSwcr+Uj/rS
- 7dZoJcxjLM8TcsM/nv3h3IUXZOwF9pXQSIVQuoaQSZWVuCKuGMHpUj++nByi4xMNcU
- GJXzTuyLTEbXw==
+ b=PKu9KHhx8io9Jlg9RvfX5Rg6PAKQ/xEMz7/jTF/0pUdp8tUpURHtyn5zrDcYZKShC
+ krXRderYZoqppZqkKLYOPcsm8/gADSp6/2864XCJJVc9HHUbp1SqbIlsfPaR1ejeF2
+ uqocH3wD3JUzdG6QhOB42+lOxwDsqIZplOY1DX5EVTCakcpMqju3o9vQV4utoPx3uc
+ GPmenh9u34yufWb37HhJeEW0FILXMTFQduslXnGmISWTo24cG6Nt0kb3OzooZpeOXf
+ Q9cuXXS3xAqZEc3FciOl4DVbVpakQ7qJNq5Clph5DC5Tx7QZNzpTc45O/guw9NFpsn
+ vSpPbgYSABvkA==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 04/12] hw/pci-host/astro: Implement Hard Fail and Soft Fail mode
-Date: Sun, 11 Feb 2024 13:29:01 +0100
-Message-ID: <20240211122909.5807-5-deller@kernel.org>
+Subject: [PULL 05/12] lasi: allow access to LAN MAC address registers
+Date: Sun, 11 Feb 2024 13:29:02 +0100
+Message-ID: <20240211122909.5807-6-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240211122909.5807-1-deller@kernel.org>
 References: <20240211122909.5807-1-deller@kernel.org>
@@ -70,87 +70,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The Astro/Elroy chip can work in either Hard-Fail or Soft-Fail mode.
-
-Hard fail means the system bus will send an HPMC (=crash) to the
-processor, soft fail means the system bus will ignore timeouts of
-MMIO-reads or MMIO-writes and return -1ULL.
-
-The HF mode is controlled by a bit in the status register and is usually
-programmed by the OS. Return the corresponing values based on the current
-value of that bit.
+Firmware and qemu reads and writes the MAC address for the LASI LAN via
+registers in LASI. Allow those accesses and return zero even if LASI
+LAN isn't enabled to avoid HPMCs (=crashes).
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/pci-host/astro.c         | 21 +++++++++++++++------
- include/hw/pci-host/astro.h |  2 ++
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ hw/misc/lasi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
-index 96d655f5fb..e3e589ceac 100644
---- a/hw/pci-host/astro.c
-+++ b/hw/pci-host/astro.c
-@@ -131,15 +131,21 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
-             if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
-                 val = s->iosapic_reg[s->iosapic_reg_select];
-             } else {
--                val = 0;
--                ret = MEMTX_DECODE_ERROR;
-+                goto check_hf;
-             }
-         }
-         trace_iosapic_reg_read(s->iosapic_reg_select, size, val);
-         break;
-     default:
--        val = 0;
--        ret = MEMTX_DECODE_ERROR;
-+    check_hf:
-+        if (s->status_control & HF_ENABLE) {
-+            val = 0;
-+            ret = MEMTX_DECODE_ERROR;
-+        } else {
-+            /* return -1ULL if HardFail is disabled */
-+            val = ~0;
-+            ret = MEMTX_OK;
-+        }
-     }
-     trace_elroy_read(addr, size, val);
+diff --git a/hw/misc/lasi.c b/hw/misc/lasi.c
+index 003f5b5ed8..9cfa5bb316 100644
+--- a/hw/misc/lasi.c
++++ b/hw/misc/lasi.c
+@@ -38,6 +38,7 @@ static bool lasi_chip_mem_valid(void *opaque, hwaddr addr,
+     case LASI_LPT:
+     case LASI_UART:
+     case LASI_LAN:
++    case LASI_LAN + 12: /* LASI LAN MAC */
+     case LASI_RTC:
  
-@@ -187,7 +193,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-         if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
-             s->iosapic_reg[s->iosapic_reg_select] = val;
-         } else {
--            return MEMTX_DECODE_ERROR;
-+            goto check_hf;
-         }
+     case LASI_PCR ... LASI_AMR:
+@@ -78,6 +79,7 @@ static MemTxResult lasi_chip_read_with_attrs(void *opaque, hwaddr addr,
+     case LASI_LPT:
+     case LASI_UART:
+     case LASI_LAN:
++    case LASI_LAN + 12:
+         val = 0;
          break;
-     case 0x0840:                /* IOSAPIC_REG_EOI */
-@@ -200,7 +206,10 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
-         }
-         break;
-     default:
--        return MEMTX_DECODE_ERROR;
-+    check_hf:
-+        if (s->status_control & HF_ENABLE) {
-+            return MEMTX_DECODE_ERROR;
-+        }
-     }
-     return MEMTX_OK;
- }
-diff --git a/include/hw/pci-host/astro.h b/include/hw/pci-host/astro.h
-index f63fd220f3..e2966917cd 100644
---- a/include/hw/pci-host/astro.h
-+++ b/include/hw/pci-host/astro.h
-@@ -27,6 +27,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(ElroyState, ELROY_PCI_HOST_BRIDGE)
- #define IOS_DIST_BASE_ADDR      0xfffee00000ULL
- #define IOS_DIST_BASE_SIZE           0x10000ULL
- 
-+#define HF_ENABLE       0x40    /* enable HF mode (default is -1 mode) */
-+
- struct AstroState;
- 
- struct ElroyState {
+     case LASI_RTC:
 -- 
 2.43.0
 
