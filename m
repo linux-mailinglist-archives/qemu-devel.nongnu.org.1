@@ -2,44 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4F58522CC
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA988522C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:49:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1a-0003CN-5d; Mon, 12 Feb 2024 18:47:46 -0500
+	id 1rZg1c-0003DG-Cv; Mon, 12 Feb 2024 18:47:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1X-0003Bz-DQ
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:43 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-0003CO-KU
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
 Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1U-000086-B1
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:42 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1X-00008P-4i
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id AF14ECE17E5;
+ by sin.source.kernel.org (Postfix) with ESMTP id 69DA0CE17E6;
+ Mon, 12 Feb 2024 23:47:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADBCC433F1;
  Mon, 12 Feb 2024 23:47:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF80AC433C7;
- Mon, 12 Feb 2024 23:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781657;
- bh=pgNJchBQDIBYjxxSFSCpASqiLdg+D2giuu+TbQVVM78=;
+ s=k20201202; t=1707781658;
+ bh=vqjS4Tn8JsTETJjKAhscWBmZAWUWeDAIiHK9Uvc1mpY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cBbofxaRm8bt2vde0cDOlFgjFDzRhov6+t5OuHButCqLp8pS4lJl5BTrvUFaQ0ZU9
- eTZQ2WytK3S5TRSb30khLjHWfPZpxLu4dijyaJ3xX3NDfIuiPyuWSNNmoTjR83s4nz
- UGiKKYzA3QDryrhLaBZ8+5eD2V0lU1xhugBYe1kd8aVbfD2oqRFixU4wOfbOHneYNp
- 3Gop4BkviOnJFJbdOe1lO38EU6LIevTxortqfbgR4Wf8PltyPAfnmtPkm7iGgGJWqQ
- DJWHBqe8no0YWlnA+5hITLsZT6nt6OEqIjGZg8S0+GOIiVsAfmoOb6by1zftzXPWJJ
- 9MBg9SgEQW49Q==
+ b=NtPjrtq+hvNwgMVahFvUmUaA4tlGLNc6VAQe9oxFkepfJswZURWRuLstexr5dPHdL
+ Gyfs2dIdeUOzuB6sNx8B1wDfChmlzwaCcYhLVu8+IOvhl8GudDfddSvgydvtxtIRiw
+ HJwJzs6JWrsPHKYBIZ0f0eg1k3xk5G5hcOpigbxYQXDxTLDwyXv8KS2IbwFCm4Pxku
+ YtAWLLwyCm9fAPAuhJyZk2M0MEe5L+RTywZY3w/rNijK9Pg+hb/bMKltRI50ekL/w/
+ q9VcvbwxBwpw7lIPiE7smQbcOmy9SW/h9iAQrUXQHnKViTEovBA3f+fpHz2knn1KT+
+ FIxDLDRqL84fQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 06/12] target/hppa: Implement do_transaction_failed handler for
- I/O errors
-Date: Tue, 13 Feb 2024 00:47:17 +0100
-Message-ID: <20240212234723.222847-7-deller@kernel.org>
+Subject: [PULL 07/12] lasi: Add reset I/O ports for LASI audio and FDC
+Date: Tue, 13 Feb 2024 00:47:18 +0100
+Message-ID: <20240212234723.222847-8-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
 References: <20240212234723.222847-1-deller@kernel.org>
@@ -71,79 +70,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Add the do_transaction_failed() handler to tigger a HPMC to the CPU
-in case of I/O transaction errors.
-
-This is a preparation commit.
-We still lack implementation for some registers, so do not yet enable sending
-HPMCs.  Having this hunk here now nevertheless helps for the further
-development, so that it can easily be enabled later on.
+Linux writes zeroes at bootup into the default ports for LASI audio and
+LASI floppy controller to reset those devices.  Allow writing to those
+registers to avoid HPMCs.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/cpu.c        |  1 +
- target/hppa/cpu.h        |  5 +++++
- target/hppa/mem_helper.c | 19 +++++++++++++++++++
- 3 files changed, 25 insertions(+)
+ hw/misc/lasi.c         | 11 +++++++++++
+ include/hw/misc/lasi.h |  2 ++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 5f87c1b12a..afe73d4474 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -191,6 +191,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
-     .do_interrupt = hppa_cpu_do_interrupt,
-     .do_unaligned_access = hppa_cpu_do_unaligned_access,
-+    .do_transaction_failed = hppa_cpu_do_transaction_failed,
- #endif /* !CONFIG_USER_ONLY */
- };
+diff --git a/hw/misc/lasi.c b/hw/misc/lasi.c
+index 9cfa5bb316..970fc98b5c 100644
+--- a/hw/misc/lasi.c
++++ b/hw/misc/lasi.c
+@@ -36,10 +36,13 @@ static bool lasi_chip_mem_valid(void *opaque, hwaddr addr,
+     case LASI_IAR:
  
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 7a181e8f33..a92dc352cb 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -381,6 +381,11 @@ bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-                               int type, hwaddr *pphys, int *pprot,
-                               HPPATLBEntry **tlb_entry);
-+void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-+                                     vaddr addr, unsigned size,
-+                                     MMUAccessType access_type,
-+                                     int mmu_idx, MemTxAttrs attrs,
-+                                     MemTxResult response, uintptr_t retaddr);
- extern const MemoryRegionOps hppa_io_eir_ops;
- extern const VMStateDescription vmstate_hppa_cpu;
- void hppa_cpu_alarm_timer(void *);
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 629a9d90ef..676c0b3003 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -353,6 +353,25 @@ raise_exception_with_ior(CPUHPPAState *env, int excp, uintptr_t retaddr,
-     cpu_loop_exit_restore(cs, retaddr);
- }
+     case LASI_LPT:
++    case LASI_AUDIO:
++    case LASI_AUDIO + 4:
+     case LASI_UART:
+     case LASI_LAN:
+     case LASI_LAN + 12: /* LASI LAN MAC */
+     case LASI_RTC:
++    case LASI_FDC:
  
-+void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-+                                     vaddr addr, unsigned size,
-+                                     MMUAccessType access_type,
-+                                     int mmu_idx, MemTxAttrs attrs,
-+                                     MemTxResult response, uintptr_t retaddr)
-+{
-+    CPUHPPAState *env = cpu_env(cs);
-+
-+    qemu_log_mask(LOG_GUEST_ERROR, "HPMC at " TARGET_FMT_lx ":" TARGET_FMT_lx
-+                " while accessing I/O at %#08" HWADDR_PRIx "\n",
-+                env->iasq_f, env->iaoq_f, physaddr);
-+
-+    /* FIXME: Enable HPMC exceptions when firmware has clean device probing */
-+    if (0) {
-+        raise_exception_with_ior(env, EXCP_HPMC, retaddr, addr,
-+                                 MMU_IDX_MMU_DISABLED(mmu_idx));
-+    }
-+}
-+
- bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-                        MMUAccessType type, int mmu_idx,
-                        bool probe, uintptr_t retaddr)
+     case LASI_PCR ... LASI_AMR:
+         ret = true;
+@@ -80,6 +83,7 @@ static MemTxResult lasi_chip_read_with_attrs(void *opaque, hwaddr addr,
+     case LASI_UART:
+     case LASI_LAN:
+     case LASI_LAN + 12:
++    case LASI_FDC:
+         val = 0;
+         break;
+     case LASI_RTC:
+@@ -145,12 +149,19 @@ static MemTxResult lasi_chip_write_with_attrs(void *opaque, hwaddr addr,
+     case LASI_LPT:
+         /* XXX: reset parallel port */
+         break;
++    case LASI_AUDIO:
++    case LASI_AUDIO + 4:
++        /* XXX: reset audio port */
++        break;
+     case LASI_UART:
+         /* XXX: reset serial port */
+         break;
+     case LASI_LAN:
+         /* XXX: reset LAN card */
+         break;
++    case LASI_FDC:
++        /* XXX: reset Floppy controller */
++        break;
+     case LASI_RTC:
+         s->rtc_ref = val - time(NULL);
+         break;
+diff --git a/include/hw/misc/lasi.h b/include/hw/misc/lasi.h
+index 0a8c7352be..f01c0f680a 100644
+--- a/include/hw/misc/lasi.h
++++ b/include/hw/misc/lasi.h
+@@ -26,9 +26,11 @@ OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
+ #define LASI_IAR        0x10
+ 
+ #define LASI_LPT        0x02000
++#define LASI_AUDIO      0x04000
+ #define LASI_UART       0x05000
+ #define LASI_LAN        0x07000
+ #define LASI_RTC        0x09000
++#define LASI_FDC        0x0A000
+ 
+ #define LASI_PCR        0x0C000 /* LASI Power Control register */
+ #define LASI_ERRLOG     0x0C004 /* LASI Error Logging register */
 -- 
 2.43.0
 
