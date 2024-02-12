@@ -2,56 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7EC8522C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50038522D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:56:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1m-0003Rj-5M; Mon, 12 Feb 2024 18:47:58 -0500
+	id 1rZg9D-0002ww-9o; Mon, 12 Feb 2024 18:55:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1k-0003Nt-GV
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:56 -0500
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1f-0000Ai-3h
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:56 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id C72FCCE17B9;
- Mon, 12 Feb 2024 23:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9191C433C7;
- Mon, 12 Feb 2024 23:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781668;
- bh=6vagHqBoZ2ubfTZKUJlBmt9pcsuk146jYOR+LVQKiDI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SUWWxuQROHVEckTClXdTvOu57+6Y1zQAML+UNxakMYpIL7agShrEg4a2MTL2Amxeo
- mtlnV9c3EbGO0EkKA9JJ9gBeHbpyVGFF6eoKAoaCqaMdfZ8lCBcQHdRGCWFQvGXHBO
- YOu78pZ/FtVoUvmd02ZXBWeErtu7kAAz3r+Shf5V/Bm1fKJ3DNQS9BdUdHu8UL4rjp
- KCcr/b23jl8k5KdR0UcW4vQwwd4IvGOQMIBbArrx35lq6nQ0yDwJtOJx3lh8TnCkAS
- TtLS4Fwtbw6QotBwbulSagtaghw8yo/dUJuZq0At4GzI4QZGROJpX8Mzw1P9xRdLP2
- +a9PJO+I6qb8Q==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
- Helge Deller <deller@gmx.de>
-Subject: [PULL 12/12] hw/hppa/machine: Load 64-bit firmware on 64-bit machines
-Date: Tue, 13 Feb 2024 00:47:23 +0100
-Message-ID: <20240212234723.222847-13-deller@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
-References: <20240212234723.222847-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <dionnaglaze@google.com>)
+ id 1rZg9B-0002wj-Gf
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:55:37 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dionnaglaze@google.com>)
+ id 1rZg99-0001LS-Ap
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:55:37 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-56101dee221so2080a12.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 15:55:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1707782133; x=1708386933; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d6itQQaR2Z/L3i+JBfSfEyke1YwBxirzhzf8c6oLKsE=;
+ b=1VR10UPNATU+zsTJKFvOuk74GEih+c/cNeTEW6NMMqBk38Zm9jr+rMOQ7vybLbNU6L
+ GUHuP/P/wZrUDbszgcmjZdD4U6JWZbfXmUCH5Jz32QytXSsl7iNWApR1fejryKONGodp
+ 29c15MgWCerOzrlOUuWUjFq/Icu6Zc5Kx8xf/hz/DFh4v3/a5px7GsXOhBmOya9AgsTc
+ sUBK8rTmB3KGsNx+7qWaQ/df25VSR8n/clpR6somauK2UuMVo59bOu3mDC2dUnNyIzSv
+ Gq5PyF2jjX7LMTg5hczipYLQqsVuwbPFbAlGG8yu9l+39BzM9rLLCe3l0+tX8LG+reGN
+ Ua3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707782133; x=1708386933;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=d6itQQaR2Z/L3i+JBfSfEyke1YwBxirzhzf8c6oLKsE=;
+ b=WWNLcn+rp2ZzNnCN2vqWdVCv0BwbTqBZ7zkcP6F+hxsCqveLVc/9KE3NHuqIf1G72K
+ lKr2gF2wBvs/jVK2I5ZPpA7nfktRPFJpKPw7p1NUN2y4omNdXHam7BopIVFQTe/RRfN5
+ ayCafZ24qCdj8bNNwHTgGTC3yTcnPN74/DOabiXINsl+TC1ni3kqnDStb/TtWQs1SX1i
+ CqcB4QVfIhCbqkTe+nw+e+LbwXrFwTa01EHYqBPlng5NW6sE/aQil8cY6wqyDTzLy92p
+ ZuZxhgnCgrD6N1LHNXPGFLFi+tYERKVozseNOIkS/k73qIhPWYYcUfRJvMTGiu64kpWu
+ K24Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWmSVjER3VlG9Y34xe99RmdYF0QyV8cXGOCrIp+0ffxIbHandhLjv7Niyfv4drB6Y0Cv9wMnWCWUoXSkNOhi8zivROqQpY=
+X-Gm-Message-State: AOJu0YwLLIbzuWEZbn5ezgOc5Q87USrZuj1UqR13s19Ecx/Ewqk3ALfB
+ zVTxOlgUGOXiTk/1qVnpxOu8LvKzJ8n6r3ftDmea1rvYIjMoZqEwh/4+q/ObgSVWJb/JA7HBcPD
+ tywjXjH7nq7kEAVk9a0oQuHcRe0jksZl3uPNn
+X-Google-Smtp-Source: AGHT+IElqLLLW1Sy0FbZolFbhKcmTG5wWxvmA/bwKStHdf/ve72fN7Llqv+kMypZ7iUfUTtyvM1C9tHY7rL7tkrIxi4=
+X-Received: by 2002:a50:c05c:0:b0:561:e7d8:50a8 with SMTP id
+ u28-20020a50c05c000000b00561e7d850a8mr44841edd.0.1707782133332; Mon, 12 Feb
+ 2024 15:55:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=deller@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <CAAH4kHY+JHSznw_t52rwBckfcZpzvX28b9Cu3eyXLMShnj3NBg@mail.gmail.com>
+ <f845a5689475d4698cbb16efa942a53636cd4385.camel@linux.ibm.com>
+In-Reply-To: <f845a5689475d4698cbb16efa942a53636cd4385.camel@linux.ibm.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 12 Feb 2024 15:55:20 -0800
+Message-ID: <CAAH4kHYMnmt=LaLx36KED_S1M+3q=PMQ639i5cLZzybBS=Kqxg@mail.gmail.com>
+Subject: Re: RFC i386/sev: kernel-hashes, reference measurements and event logs
+To: jejb@linux.ibm.com
+Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>, npiggin@gmail.com, 
+ Gerd Hoffmann <kraxel@redhat.com>, "Draper, Andrew" <andrew.draper@intel.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Chong Cai <chongc@google.com>, 
+ qemu-devel@nongnu.org, clg@kaod.org, danielhb413@gmail.com, 
+ harshpb@linux.ibm.com, david@gibson.dropbear.id.au, borntraeger@linux.ibm.com, 
+ farman@linux.ibm.com, Richard Henderson <richard.henderson@linaro.org>, 
+ David Hildenbrand <david@redhat.com>, iii@linux.ibm.com, thuth@redhat.com, 
+ "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=dionnaglaze@google.com; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,107 +100,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+On Mon, Feb 12, 2024 at 12:57=E2=80=AFPM James Bottomley <jejb@linux.ibm.co=
+m> wrote:
+>
+> On Mon, 2024-02-12 at 12:16 -0800, Dionna Amalie Glaze wrote:
+> > This is not a patch but it felt inappropriate to derail a recent
+> > patch that's just refactoring the kernel-hashes object_class_property
+> > definition. Apologies if this has been discussed before, as I'm not
+> > particularly active here.
+>
+> I haven't seen that patch, but I presume it's not relevant?
+>
+> > Regarding kernel-hashes, how is that load-time information passed
+> > along to the guest beyond, say, OVMF? Can we require that these
+> > hashes
+> > are also present in fw_cfg so they can be read from the kernel? In
+> > Linux it'd be nice to have /sys/firmware/qemu_fw_cfg/sev_kernel_hash,
+> > /sys/firmware/qemu_fw_cfg/sev_cmdline_hash,
+> > /sys/firmware/qemu_fw_cfg/sev_initrd_hash
+>
+> Are you referring to measured direct boot?  In that case, there's no
+> point having hashes in the fw_cfg, because OVMF in the guest needs to
+> hash the kernel itself and then compare to a trusted source (which the
+> fw_cfg file wouldn't be because it's under the control of the
 
-Load the 64-bit SeaBIOS-hppa firmware by default when running on a 64-bit
-machine. This will enable us to later support more than 4GB of RAM and is
-required that the OS (or PALO bootloader) will start or install a 64-bit kernel
-instead of a 32-bit kernel.
+I'm not suggesting that OVMF uses the fw_cfg files to check, just to
+use an interface that is readable by the guest OS. If the values are
+wrong, then you can't reconstruct the measurement in the attestation
+report and the host just DoSes the guest, which is already possible
+without this change.
 
-Note that SeaBIOS-hppa v16 provides the "-fw_cfg opt/OS64,string=3" option with
-which the user can control what the firmware shall report back to the OS:
-Support of 32-bit OS, support of a 64-bit OS, or support for both (default).
+> hypervisor).  For SEV, the trusted source is a table in the launch
+> measured ROM, but I'm sure TDX does something similar.
 
-Wrap firmware loading inside !qtest_enabled() to avoid this warning with
-qtest: "qemu-system-hppa: no firmware provided".
+TDX measures information after launch into RTMRs, which SEV-SNP doesn't hav=
+e.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
----
- hw/hppa/machine.c | 52 +++++++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
+>
+> > I'm working on how to use standard document formats for providing
+> > reference measurements of the Google Compute Engine virtual firmware
+> > for remote attestation, and these hashes have an impact not just on
+> > the measurement but on the entire model that the IETF RATS working
+> > group is considering for authorizing attestation measurements.
+> >
+> > If you're assembling a VM launch configuration with firmware provided
+> > by a trusted vendor (say Google), and your hashes are passed in from
+> > an API, there's no easy rendezvous to state that the combination
+> > produces the expected hardware measurement. This makes adding
+> > kernel-hashes support unappetizing, since it makes the hardware
+> > attestation report's measurement have no meaning, or at least, it
+> > makes life difficult for people trying to assign it meaning.
+>
+> Well, no, since firmware tends to update on a longer timeframe than the
+> kernel and the cmdline and initrd tend to have quicker update cycles
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index eb78c46ff1..5fcaf5884b 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -13,6 +13,7 @@
- #include "qemu/error-report.h"
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/qtest.h"
- #include "sysemu/runstate.h"
- #include "hw/rtc/mc146818rtc.h"
- #include "hw/timer/i8254.h"
-@@ -333,6 +334,7 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
-     const char *kernel_filename = machine->kernel_filename;
-     const char *kernel_cmdline = machine->kernel_cmdline;
-     const char *initrd_filename = machine->initrd_filename;
-+    const char *firmware = machine->firmware;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     DeviceState *dev;
-     PCIDevice *pci_dev;
-@@ -408,31 +410,37 @@ static void machine_HP_common_init_tail(MachineState *machine, PCIBus *pci_bus,
- 
-     /* Load firmware.  Given that this is not "real" firmware,
-        but one explicitly written for the emulation, we might as
--       well load it directly from an ELF image.  */
--    firmware_filename = qemu_find_file(QEMU_FILE_TYPE_BIOS,
--                                       machine->firmware ?: "hppa-firmware.img");
--    if (firmware_filename == NULL) {
--        error_report("no firmware provided");
--        exit(1);
--    }
-+       well load it directly from an ELF image. Load the 64-bit
-+       firmware on 64-bit machines by default if not specified
-+       on command line. */
-+    if (!qtest_enabled()) {
-+        if (!firmware) {
-+            firmware = lasi_dev ? "hppa-firmware.img" : "hppa-firmware64.img";
-+        }
-+        firmware_filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, firmware);
-+        if (firmware_filename == NULL) {
-+            error_report("no firmware provided");
-+            exit(1);
-+        }
- 
--    size = load_elf(firmware_filename, NULL, translate, NULL,
--                    &firmware_entry, &firmware_low, &firmware_high, NULL,
--                    true, EM_PARISC, 0, 0);
-+        size = load_elf(firmware_filename, NULL, translate, NULL,
-+                        &firmware_entry, &firmware_low, &firmware_high, NULL,
-+                        true, EM_PARISC, 0, 0);
- 
--    if (size < 0) {
--        error_report("could not load firmware '%s'", firmware_filename);
--        exit(1);
--    }
--    qemu_log_mask(CPU_LOG_PAGE, "Firmware loaded at 0x%08" PRIx64
--                  "-0x%08" PRIx64 ", entry at 0x%08" PRIx64 ".\n",
--                  firmware_low, firmware_high, firmware_entry);
--    if (firmware_low < translate(NULL, FIRMWARE_START) ||
--        firmware_high >= translate(NULL, FIRMWARE_END)) {
--        error_report("Firmware overlaps with memory or IO space");
--        exit(1);
-+        if (size < 0) {
-+            error_report("could not load firmware '%s'", firmware_filename);
-+            exit(1);
-+        }
-+        qemu_log_mask(CPU_LOG_PAGE, "Firmware loaded at 0x%08" PRIx64
-+                      "-0x%08" PRIx64 ", entry at 0x%08" PRIx64 ".\n",
-+                      firmware_low, firmware_high, firmware_entry);
-+        if (firmware_low < translate(NULL, FIRMWARE_START) ||
-+            firmware_high >= translate(NULL, FIRMWARE_END)) {
-+            error_report("Firmware overlaps with memory or IO space");
-+            exit(1);
-+        }
-+        g_free(firmware_filename);
-     }
--    g_free(firmware_filename);
- 
-     rom_region = g_new(MemoryRegion, 1);
-     memory_region_init_ram(rom_region, NULL, "firmware",
--- 
-2.43.0
+This is not true of our environment, where every release of the
+hypervisor includes a fresh build of the firmware, which may have
+codegen differences for multiple reasons. We don't have a way to
+announce ahead of time which firmware an instance will get for them to
+sign an initial measurement derived from it.
 
+> than the kernel.  Thus there's no one golden reference.  Instead you
+> give a tool (say the virtee sev_snp_measure tool
+>
+> https://github.com/virtee/sev-snp-measure
+>
+> ) the hashes of the firmware, kernel, command line and initrd and it
+> caclulates the expected launch measure
+
+Yes indeed, I've written one myself. Publishing it has been a bit
+Kafkaesque as opposed to the go-sev-guest and go-configfs-tsm
+libraries.
+The problem is still preauthorization when it'd be much more
+preferable to authorize components of a measurement and derive the
+SEV-SNP attestation from the components.
+
+>
+> > The measurement is the product of two different entities as assembled
+> > by the VMM given a trusted firmware and the kernel hashes. It's a bit
+> > of a sandwich of (GCE) core firmware, (User) SEV hashes, (GCE) BSP
+> > VMSA, AP VMSA*.
+> >
+> > When you collect "evidence" to verify locally or pass along to a
+> > verification service, you need more than just the hardware
+> > attestation report to make sense of the combined bits. You have a PCR
+> > situation like with TPM, so you need an event log for these different
+> > aspects of the ultimate measurement. There is no event log for this
+> > -kernel-hashes construction.
+>
+> That's because it's a pre-launch measure.  The TCG log is only for post
+> launch.  The idea being those values are needed for you to approve
+> something in pre-launch, like key release, before the TPM starts
+> running.
+>
+> That's not to say we shouldn't have log entries for pre-launch, but
+> that's a generic problem and not specific to measured direct boot.
+>
+
+Okay, do you know which direction the solution is moving? I know
+there's a measured TPM firmware change proposed to the TCG, but that's
+a bit too specific.
+
+> > We can use the TCG TPM event log to post EV_NO_ACTION events about
+> > the PlatformRIM, specifically, to point at a UEFI variable that we
+> > populate to store our signed document about the expected measurements
+> > with the Qemu-SEV-SNP-boot-protocol, but I don't see how we might
+> > collect the kernel-hashes values as extra evidence to combine and
+> > derive the attestation report's MEASUREMENT field to accept
+> > "evidence" objects for the core firmware component and the kernel
+> > hashes component.
+>
+> This sounds like a first measurement thing.  In many ways, the pre-
+> launch measurement is equivalent to the SRTM of a physical system which
+> is collected in the EV_S_CRTM_* events.  But for that to happen, I
+> think the TCG would have to bless it in some form.
+>
+
+Is that the pathway you'd recommend? I'm not sure a new EV_S_CRTM_*
+event for each SEV hash table entry for Qemu (say) is going to be
+ratified.
+
+> James
+>
+> > So my question is if this feature is to be a long term feature, how
+> > do you expect to collect the SEV hashes as a separate evidence object
+> > to play nicely with IETF RATS?
+> >
+> > Is this a long term feature, or are we expecting it to be deprecated
+> > by SVSM?
+> >
+> > I've tagged in people in CC that I could imagine would have something
+> > to say about this.
+> >
+> > Thanks y'all
+> >
+> > --
+> > -Dionna Glaze, PhD (she/her)
+>
+
+
+--=20
+-Dionna Glaze, PhD (she/her)
 
