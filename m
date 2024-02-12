@@ -2,46 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939FD8522C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B7B8522BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:47:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1O-0003A1-3F; Mon, 12 Feb 2024 18:47:34 -0500
+	id 1rZg1O-0003AO-MD; Mon, 12 Feb 2024 18:47:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1L-00039V-F6
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:31 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1M-00039c-2S
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:32 -0500
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1J-00007C-Ji
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1K-00007G-Hd
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:31 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id EBBF06117F;
+ by dfw.source.kernel.org (Postfix) with ESMTP id AE117611C3;
+ Mon, 12 Feb 2024 23:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D37C433F1;
  Mon, 12 Feb 2024 23:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E5FC433C7;
- Mon, 12 Feb 2024 23:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781646;
- bh=YaIoEXiZmAWD90yvUSHBh9yHf8dD8ng/dQA6IDTeBNw=;
- h=From:To:Cc:Subject:Date:From;
- b=i8sHoVcZdDnvM2AuZPmItf5Xr8NufvOhvpZTRORHFUY5Rtv8FAfw38VrLnPP5Q6Pr
- V1X3LOwG8jDRyh0H17yrHsv/WAdvOA4EchuBxSrXWuj5xjMLvOAxe7yAiVy0+z8Xug
- 7odoAIowLBjmZpw3NH/mlOAJFzMKwe4xpMKitMGtfIXIySLPcszf7FijtH1mQytJNK
- zgnBSDu9dIKRM6USMROJLbI1Hr258wW81AIFuip2tc/zkOEzi3O+qUa87HCTFNcrPG
- ALfHHvPffk8CO5nqdkI3rQRgPWf47kE0LuIwocCbMNbToaDKoImlphz7JTQ3b/5tUd
- rj2kZe56FMTfQ==
+ s=k20201202; t=1707781648;
+ bh=vx4xC5M+DPAKkeJWujimrHUf61MEn29t9idgCCP1zPY=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=fbCokjKfPlvwkBJLbqAzLnuIMmN0U9OTvmKkjqzLO1umIA05nZQ6N7ZxSRxRNZVGx
+ srkDPPRx+NY6svPPmCxhaO1AV2zULZvzYwcq6WB49NqllHgb09+PqpgWzWLMaxm2Nh
+ VDoiBuAOw51UdBwVNiyyvvBNaFBHy6mgxPj4mzf0C38zU5kyXogWUh0oX8q8zQmKMd
+ aglAB4/3hwBTVPA8z3E9nLQ/5NJWqKRx1vAlzPZYmekwVkYxoTSGOJofTtPimUJOuf
+ SI96+H0oXqtq2UbMHIiXtOHm6FzUN2mdYFPAoU9fsnXrZOsvZ6Kxi4UYEN/RbvW0gt
+ +xTL5wfqtp8OA==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 00/12] Hppa64 patches
-Date: Tue, 13 Feb 2024 00:47:11 +0100
-Message-ID: <20240212234723.222847-1-deller@kernel.org>
+Subject: [PULL 01/12] disas/hppa: Add disassembly for qemu specific
+ instructions
+Date: Tue, 13 Feb 2024 00:47:12 +0100
+Message-ID: <20240212234723.222847-2-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
+References: <20240212234723.222847-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2604:1380:4641:c500::1;
  envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
@@ -69,66 +71,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
+Add disassembly of opcodes for "HALT QEMU", "RESET QEMU" and
+"RESTORE SHR" (restore shadow registers).
 
-  Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ disas/hppa.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-are available in the Git repository at:
-
-  https://github.com/hdeller/qemu-hppa.git tags/hppa64-pull-request
-
-for you to fetch changes up to a9314795f068515ff5925d0f68adf0a3215f6d2d:
-
-  hw/hppa/machine: Load 64-bit firmware on 64-bit machines (2024-02-13 00:44:06 +0100)
-
-----------------------------------------------------------------
-target/hppa: Enhancements and fixes
-
-Some enhancements and fixes for the hppa target.
-
-The major change is, that this patchset adds a new SeaBIOS-hppa firmware
-which is built as 32- and 64-bit firmware.
-The new 64-bit firmware is necessary to fully support 64-bit operating systems
-(HP-UX, Linux, NetBSD,...).
-
-----------------------------------------------------------------
-
-Helge Deller (11):
-  disas/hppa: Add disassembly for qemu specific instructions
-  target/hppa: Add "diag 0x101" for console output support
-  hw/pci-host/astro: Avoid aborting on access failure
-  hw/pci-host/astro: Implement Hard Fail and Soft Fail mode
-  lasi: allow access to LAN MAC address registers
-  target/hppa: Implement do_transaction_failed handler for I/O errors
-  lasi: Add reset I/O ports for LASI audio and FDC
-  target/hppa: Allow read-access to PSW with rsm 0,reg instruction
-  target/hppa: PDC_BTLB_INFO uses 32-bit ints
-  target/hppa: Update SeaBIOS-hppa to version 16
-  hw/hppa/machine: Load 64-bit firmware on 64-bit machines
-
-Sven Schnelle (1):
-  hw/net/tulip: add chip status register values
-
- disas/hppa.c                |   4 +++
- hw/hppa/machine.c           |  52 +++++++++++++++++++++---------------
- hw/misc/lasi.c              |  13 +++++++++
- hw/net/tulip.c              |   4 +--
- hw/pci-host/astro.c         |  36 ++++++++++++++-----------
- include/hw/misc/lasi.h      |   2 ++
- include/hw/pci-host/astro.h |   2 ++
- pc-bios/hppa-firmware.img   | Bin 163324 -> 167820 bytes
- pc-bios/hppa-firmware64.img | Bin 0 -> 206024 bytes
- roms/seabios-hppa           |   2 +-
- target/hppa/cpu.c           |   1 +
- target/hppa/cpu.h           |   5 ++++
- target/hppa/helper.h        |   1 +
- target/hppa/mem_helper.c    |  21 ++++++++++++++-
- target/hppa/sys_helper.c    |  36 +++++++++++++++++++++++++
- target/hppa/translate.c     |  14 +++++++++-
- 16 files changed, 150 insertions(+), 43 deletions(-)
- mode change 100644 => 100755 pc-bios/hppa-firmware.img
- create mode 100755 pc-bios/hppa-firmware64.img
-
+diff --git a/disas/hppa.c b/disas/hppa.c
+index cce4f4aa37..22dce9b41b 100644
+--- a/disas/hppa.c
++++ b/disas/hppa.c
+@@ -1609,6 +1609,10 @@ static const struct pa_opcode pa_opcodes[] =
+ { "call",	0xe800a000, 0xffe0e000, "nW", pa10, FLAG_STRICT},
+ { "ret",	0xe840d000, 0xfffffffd, "n", pa20, FLAG_STRICT},
+ 
++/* Opcodes assigned to QEMU, used by SeaBIOS firmware and Linux kernel */
++{ "HALT QEMU",	0xfffdead0, 0xfffffffd, "n", pa10, FLAG_STRICT},
++{ "RESET QEMU",	0xfffdead1, 0xfffffffd, "n", pa10, FLAG_STRICT},
++{ "RESTORE SHR",0xfffdead2, 0xfffffffd, "n", pa10, FLAG_STRICT},
+ };
+ 
+ #define NUMOPCODES ((sizeof pa_opcodes)/(sizeof pa_opcodes[0]))
 -- 
 2.43.0
 
