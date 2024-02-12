@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF06A850FA9
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C7C850F87
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:15:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZSP1-0006QA-T1; Mon, 12 Feb 2024 04:15:03 -0500
+	id 1rZSP9-0006Rf-17; Mon, 12 Feb 2024 04:15:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOl-0006My-PP
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:48 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOl-0006MU-G0
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOi-0003dR-2E
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOh-0003dE-J3
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1707729283;
@@ -22,40 +22,41 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wAASYPpKs3dJd/vyfe9gvtPXeOUGAwex3i8Y8M61kN8=;
- b=GYGMVGOVQm562/GnxZOcUAjgbGFIclRrk9Qhz1oFjxajXe0MnOQJq/ueMGe6qiE8qivrt0
- SAuPpi8y/3joi09O+rzAJ+fO5Z2hwBlGc4Kx3jY5CjnqQrwVNsw+H4AH+BPrfKobI17XpP
- ecGnKJTs0vPnf/Pi8qukJFNh/xBq83s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-362-_OQGfqLBMZKIBbyyXK3t8w-1; Mon,
- 12 Feb 2024 04:14:39 -0500
-X-MC-Unique: _OQGfqLBMZKIBbyyXK3t8w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=nA662FSlwJ8MMJtEUYa6cafVAqng+dVMZ1XETRVtwiU=;
+ b=JdgXftHgfAcS0q/jhy2rOyw4jzXK5CWjwbt+1d4DU7XBAsVcQ3nv64aiTRtC4o9pQK1pGv
+ 9WOGbJk7tHHEdBwxcyxWE/C+Zs87gJAYOVAa9MJViCNpZ1+mQSMk+Z0LXgdcNzjRBjYoz/
+ qkjcU6OXNlVQ1jetykf7DwrgJzY34o0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-QpqOXDd_OsKRrhljsammUg-1; Mon, 12 Feb 2024 04:14:39 -0500
+X-MC-Unique: QpqOXDd_OsKRrhljsammUg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12AA63C0FC81;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 15842831017;
  Mon, 12 Feb 2024 09:14:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E4BDA1054899;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E674458EA82;
  Mon, 12 Feb 2024 09:14:38 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 934F021E60F5; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
+ id 9621C21E5A41; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 10/18] qapi/yank: Clean up documentaion of yank
-Date: Mon, 12 Feb 2024 10:14:28 +0100
-Message-ID: <20240212091436.688598-11-armbru@redhat.com>
+Subject: [PULL 11/18] qapi/dump: Clean up documentation of
+ DumpGuestMemoryCapability
+Date: Mon, 12 Feb 2024 10:14:29 +0100
+Message-ID: <20240212091436.688598-12-armbru@redhat.com>
 In-Reply-To: <20240212091436.688598-1-armbru@redhat.com>
 References: <20240212091436.688598-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -81,44 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The command's doc comment describes the argument, but it's not marked
-up as such.  Easy enough to fix.
+The type's doc comment describes its member, but it's not marked up as
+such.  Easy enough to fix.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240205074709.3613229-11-armbru@redhat.com>
+Message-ID: <20240205074709.3613229-12-armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qapi/pragma.json | 3 +--
- qapi/yank.json   | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ qapi/dump.json   | 2 +-
+ qapi/pragma.json | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/qapi/dump.json b/qapi/dump.json
+index 5cbc237ad9..1997c1d1d4 100644
+--- a/qapi/dump.json
++++ b/qapi/dump.json
+@@ -186,7 +186,7 @@
+ ##
+ # @DumpGuestMemoryCapability:
+ #
+-# A list of the available formats for dump-guest-memory
++# @formats: the available formats for dump-guest-memory
+ #
+ # Since: 2.0
+ ##
 diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 0fa64742b5..544f138afa 100644
+index 544f138afa..aea6384255 100644
 --- a/qapi/pragma.json
 +++ b/qapi/pragma.json
-@@ -148,8 +148,7 @@
-         'query-rocker',
-         'query-rocker-ports',
-         'query-stats-schemas',
--        'watchdog-set-action',
--        'yank' ],
-+        'watchdog-set-action' ],
-     # Externally visible types whose member names may use uppercase
-     'member-name-exceptions': [     # visible in:
-         'ACPISlotType',             # query-acpi-ospm-status
-diff --git a/qapi/yank.json b/qapi/yank.json
-index 60eda20816..bfc71a07a6 100644
---- a/qapi/yank.json
-+++ b/qapi/yank.json
-@@ -74,7 +74,7 @@
- # Try to recover from hanging QEMU by yanking the specified instances.
- # See @YankInstance for more information.
- #
--# Takes a list of @YankInstance as argument.
-+# @instances: the instances to be yanked
- #
- # Returns:
- #     - Nothing on success
+@@ -74,7 +74,6 @@
+         'DummyBlockCoreForceArrays',
+         'DummyForceArrays',
+         'DummyVirtioForceArrays',
+-        'DumpGuestMemoryCapability',
+         'GrabToggleKeys',
+         'GuestPanicInformationHyperV',
+         'HotKeyMod',
 -- 
 2.43.0
 
