@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3542F8522BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456E18522C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1c-0003EE-UA; Mon, 12 Feb 2024 18:47:48 -0500
+	id 1rZg1e-0003Eg-HU; Mon, 12 Feb 2024 18:47:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-0003CP-NO
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1b-0003DI-AB
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:47 -0500
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1X-00008u-W6
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-00009B-Hv
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:47 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 2A5E7CE17E7;
- Mon, 12 Feb 2024 23:47:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BEAC433C7;
- Mon, 12 Feb 2024 23:47:38 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id D9F85CE17B9;
+ Mon, 12 Feb 2024 23:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8EBC433F1;
+ Mon, 12 Feb 2024 23:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781660;
- bh=QEDKIdARto+ZCseIU47VCEGfs+CMVMZ3Lv39zKgePHQ=;
+ s=k20201202; t=1707781662;
+ bh=bMGiugQoc2DhmTSqm+CZs/LiSubHUzCkUMZHroTlcng=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=g/Xq8CG+QSRseydqktWIUlAXviVy4BX3/1N/U11esSI5DYPwlCj/NGrJc2D15Nyf2
- B1Ms25z1CUQB2IRfAknEZnJXr3JByKPsTsUpmwPzPUVJDAL74vx/I4+pSlXnVa7J+1
- tB6t4YZQk1TrT83wSyIgD/pEe1Ch800wlyQ+z+/gJTE+XkBictZMpET0pjDWCUewku
- I3qRgHECvTvuy2vd6MfNI2T9WqkHOS+7eKFx0NTciA/0Eq8FFC6XSdJEmvRtLwI9kU
- 7402YM/xq/PztlQlTQHhTt+WJmgmPBicAGJzxRyKz6GGVfHZ2oGhUq5JDEX9DY3r89
- Oj09MqD7NvSGg==
+ b=fIpLKn27e3vkTT3s8QIyNGitEgRIQfytmGeQxiRoDTld4daoEBeq3WPKqzQIi0hG9
+ a5t/vpA1lcPBUbfujQigHUr8IpcuuyBH285GoHf0wJGVkXoQZFMwNwwY25SiO6Ig00
+ HwHw3bAypzHJi3yWD5TL986yr09WPVoTvvT7Hg/9dljyUStvlnL8wQmsr1wmQoGtNH
+ SVJTD0ruWMrmbYfzW6SEYsF+bt5INVunajvv5OIVp9hnqyfBXeAfeCQPe7uOPZLozt
+ 9j+c0z7M481tAOa4daX9qPVw04xEyuT4wtJ6TazIDJylNzSveqtZRatWaklNNhwvWa
+ GxaySBZG/GVLg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 08/12] target/hppa: Allow read-access to PSW with rsm 0,
- reg instruction
-Date: Tue, 13 Feb 2024 00:47:19 +0100
-Message-ID: <20240212234723.222847-9-deller@kernel.org>
+Subject: [PULL 09/12] target/hppa: PDC_BTLB_INFO uses 32-bit ints
+Date: Tue, 13 Feb 2024 00:47:20 +0100
+Message-ID: <20240212234723.222847-10-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
 References: <20240212234723.222847-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
- helo=sin.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -51
 X-Spam_score: -5.2
 X-Spam_bar: -----
@@ -71,39 +70,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-HP-UX 11 and HP ODE tools use the "rsm 0,%reg" instruction in not priviledged
-code paths to get the current PSW flags. The constant 0 means that no bits of
-the PSW shall be reset, so this is effectively a read-only access to the PSW.
-Allow this read-only access even for not privileged code.
+The BTLB helper function stores the BTLB info (four 32-bit ints) into
+the memory of the guest. They are only available when emulating a 32-bit
+CPU in the guest, so use "uint32_t" instead of "target_ulong" here.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ target/hppa/mem_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 53ec57ee86..01f3188656 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2156,10 +2156,16 @@ static bool trans_ldsid(DisasContext *ctx, arg_ldsid *a)
- 
- static bool trans_rsm(DisasContext *ctx, arg_rsm *a)
- {
-+#ifdef CONFIG_USER_ONLY
-     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
--#ifndef CONFIG_USER_ONLY
-+#else
-     TCGv_i64 tmp;
- 
-+    /* HP-UX 11i and HP ODE use rsm for read-access to PSW */
-+    if (a->i) {
-+        CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+    }
-+
-     nullify_over(ctx);
- 
-     tmp = tcg_temp_new_i64();
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 676c0b3003..66b8fa7d72 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -684,7 +684,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
+     case 0:
+         /* return BTLB parameters */
+         qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INFO\n");
+-        vaddr = probe_access(env, env->gr[24], 4 * sizeof(target_ulong),
++        vaddr = probe_access(env, env->gr[24], 4 * sizeof(uint32_t),
+                              MMU_DATA_STORE, mmu_idx, ra);
+         if (vaddr == NULL) {
+             env->gr[28] = -10; /* invalid argument */
 -- 
 2.43.0
 
