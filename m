@@ -2,50 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345918522BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C76198522CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:49:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1S-0003B5-2m; Mon, 12 Feb 2024 18:47:38 -0500
+	id 1rZg1Z-0003Bj-56; Mon, 12 Feb 2024 18:47:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1P-0003Ai-Ld
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:36 -0500
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1T-0003BO-MC
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:39 -0500
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1M-00007V-MF
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:34 -0500
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Q-00007i-Io
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:39 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 2F631611C5;
- Mon, 12 Feb 2024 23:47:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B2AC43390;
- Mon, 12 Feb 2024 23:47:28 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 87492CE0ED1;
+ Mon, 12 Feb 2024 23:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86834C433C7;
+ Mon, 12 Feb 2024 23:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781650;
- bh=7qAJa6D5seczT2BjZtyKXdtgQQtPHSe7FBlQvtuMc80=;
+ s=k20201202; t=1707781651;
+ bh=RjBu0t65VIh4q8pCxLppdwA9o9NQdQjXfzNg8fayLiM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Pa6QHCtFcOOZbBoDZL9FhdHxmmpvzMCnJr+bniPp4A96v9dBlLRGTMVZ9FZXRDsMl
- pDpBMC1Oc1ZuoJouBweMDype8m7AgJzkCniRGwL+7hRPrviJtPq6Wrs9YfmKzo66zx
- WpaX+JKFmwBxfJLvPphH3x+sbkuL/U2CzNDgHwQmhZVc0PiePSsgyuwPVsIWz7D/6Z
- vA4BndNVW8uDgAiFXvidEEY6TFWmB1SFlQLn3DsoIArlPMo2zOA338rNjbDtuvp6A/
- /JODbnYgw4xZj1L8RSkEXFZuqrWeWQTA8Q7FHTb9U5gzfApcrCWTlzQyaWP5YL0MeR
- Y0ybWyTfdwwxw==
+ b=tVfusdODgAS0/YSH3PTLm4WfPybzKljhzn8X0Jsrv/UIg2BAwrBAZ76aJ87zZ/98g
+ BThkWf89FaAVTW4w2WQOuvmqBi9GGRsFvXQRkNu1pd2n2CsAnppO06G/9Sec6CZdDs
+ XTE0yPVtLFlilgdZiHyhAuaPQm1VuN8N6xKfcTH8Y01nM/aKCEvvkp5ybLnUdzYJYD
+ KTOyxgI4/ocTzQOo/V4ZXDb8byYBuizC0b0QHvSSQZJl97qtVg9EzxAEOdiH8gq91d
+ YBTRhWT0JA++tVNss0lAJYkvoIjNViFZG0qzvZV8Li3cyCvxniYEaSRfH5o63VHcMf
+ BbMJwWOzLLwzw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 02/12] target/hppa: Add "diag 0x101" for console output support
-Date: Tue, 13 Feb 2024 00:47:13 +0100
-Message-ID: <20240212234723.222847-3-deller@kernel.org>
+Subject: [PULL 03/12] hw/pci-host/astro: Avoid aborting on access failure
+Date: Tue, 13 Feb 2024 00:47:14 +0100
+Message-ID: <20240212234723.222847-4-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
 References: <20240212234723.222847-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -51
 X-Spam_score: -5.2
 X-Spam_bar: -----
@@ -70,108 +70,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-For debugging purposes at the early stage of the bootup process,
-the SeaBIOS-hppa firmware sometimes needs to output characters to the
-serial console. Note that the serial console is the default output
-method for parisc machines.
-
-At this stage PCI busses and other devices haven't been initialized
-yet. So, SeaBIOS-hppa will not be able to find the correct I/O ports
-for the serial ports yet.
-
-Instead, add an emulation for the "diag 0x101" opcode to assist here.
-Without any other dependencies, SeaBIOS-hppa can then load the character
-to be printed in register %r26 and issue the diag assembly instruction.
-
-The qemu diag_console_output() helper function will then print
-that character to the first serial port.
+Instead of stopping the emulation, report a MEMTX_DECODE_ERROR if the OS
+tries to access non-existent registers.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/helper.h     |  1 +
- target/hppa/sys_helper.c | 36 ++++++++++++++++++++++++++++++++++++
- target/hppa/translate.c  |  6 ++++++
- 3 files changed, 43 insertions(+)
+ hw/pci-host/astro.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index 20698f68ed..1bdbcd8f98 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -103,4 +103,5 @@ DEF_HELPER_FLAGS_1(ptlbe, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(lpa, TCG_CALL_NO_WG, tl, env, tl)
- DEF_HELPER_FLAGS_1(change_prot_id, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_1(diag_btlb, void, env)
-+DEF_HELPER_1(diag_console_output, void, env)
- #endif
-diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
-index a59245eed3..4a31748342 100644
---- a/target/hppa/sys_helper.c
-+++ b/target/hppa/sys_helper.c
-@@ -23,6 +23,8 @@
- #include "exec/helper-proto.h"
- #include "qemu/timer.h"
- #include "sysemu/runstate.h"
-+#include "sysemu/sysemu.h"
-+#include "chardev/char-fe.h"
- 
- void HELPER(write_interval_timer)(CPUHPPAState *env, target_ulong val)
- {
-@@ -109,3 +111,37 @@ void HELPER(rfi_r)(CPUHPPAState *env)
-     helper_getshadowregs(env);
-     helper_rfi(env);
- }
-+
-+#ifndef CONFIG_USER_ONLY
-+/*
-+ * diag_console_output() is a helper function used during the initial bootup
-+ * process of the SeaBIOS-hppa firmware.  During the bootup phase, addresses of
-+ * serial ports on e.g. PCI busses are unknown and most other devices haven't
-+ * been initialized and configured yet.  With help of a simple "diag" assembler
-+ * instruction and an ASCII character code in register %r26 firmware can easily
-+ * print debug output without any dependencies to the first serial port and use
-+ * that as serial console.
-+ */
-+void HELPER(diag_console_output)(CPUHPPAState *env)
-+{
-+    CharBackend *serial_backend;
-+    Chardev *serial_port;
-+    unsigned char c;
-+
-+    /* find first serial port */
-+    serial_port = serial_hd(0);
-+    if (!serial_port) {
-+        return;
-+    }
-+
-+    /* get serial_backend for the serial port */
-+    serial_backend = serial_port->be;
-+    if (!serial_backend ||
-+        !qemu_chr_fe_backend_connected(serial_backend)) {
-+        return;
-+    }
-+
-+    c = (unsigned char)env->gr[26];
-+    qemu_chr_fe_write(serial_backend, &c, sizeof(c));
-+}
-+#endif
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 08d09d50d7..53ec57ee86 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4411,6 +4411,12 @@ static bool trans_diag(DisasContext *ctx, arg_diag *a)
-         gen_helper_diag_btlb(tcg_env);
-         return nullify_end(ctx);
+diff --git a/hw/pci-host/astro.c b/hw/pci-host/astro.c
+index 37d271118c..96d655f5fb 100644
+--- a/hw/pci-host/astro.c
++++ b/hw/pci-host/astro.c
+@@ -122,10 +122,6 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
+     case 0x0800:                /* IOSAPIC_REG_SELECT */
+         val = s->iosapic_reg_select;
+         break;
+-    case 0x0808:
+-        val = UINT64_MAX;            /* XXX: tbc. */
+-        g_assert_not_reached();
+-        break;
+     case 0x0810:                /* IOSAPIC_REG_WINDOW */
+         switch (s->iosapic_reg_select) {
+         case 0x01:              /* IOSAPIC_REG_VERSION */
+@@ -135,15 +131,15 @@ static MemTxResult elroy_chip_read_with_attrs(void *opaque, hwaddr addr,
+             if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
+                 val = s->iosapic_reg[s->iosapic_reg_select];
+             } else {
+-                trace_iosapic_reg_read(s->iosapic_reg_select, size, val);
+-                g_assert_not_reached();
++                val = 0;
++                ret = MEMTX_DECODE_ERROR;
+             }
+         }
+         trace_iosapic_reg_read(s->iosapic_reg_select, size, val);
+         break;
+     default:
+-        trace_elroy_read(addr, size, val);
+-        g_assert_not_reached();
++        val = 0;
++        ret = MEMTX_DECODE_ERROR;
      }
-+    if (a->i == 0x101) {
-+        /* print char in %r26 to first serial console, used by SeaBIOS-hppa */
-+        nullify_over(ctx);
-+        gen_helper_diag_console_output(tcg_env);
-+        return nullify_end(ctx);
-+    }
- #endif
-     qemu_log_mask(LOG_UNIMP, "DIAG opcode 0x%04x ignored\n", a->i);
-     return true;
+     trace_elroy_read(addr, size, val);
+ 
+@@ -191,7 +187,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+         if (s->iosapic_reg_select < ARRAY_SIZE(s->iosapic_reg)) {
+             s->iosapic_reg[s->iosapic_reg_select] = val;
+         } else {
+-            g_assert_not_reached();
++            return MEMTX_DECODE_ERROR;
+         }
+         break;
+     case 0x0840:                /* IOSAPIC_REG_EOI */
+@@ -204,7 +200,7 @@ static MemTxResult elroy_chip_write_with_attrs(void *opaque, hwaddr addr,
+         }
+         break;
+     default:
+-        g_assert_not_reached();
++        return MEMTX_DECODE_ERROR;
+     }
+     return MEMTX_OK;
+ }
+@@ -594,8 +590,8 @@ static MemTxResult astro_chip_read_with_attrs(void *opaque, hwaddr addr,
+ #undef EMPTY_PORT
+ 
+     default:
+-        trace_astro_chip_read(addr, size, val);
+-        g_assert_not_reached();
++        val = 0;
++        ret = MEMTX_DECODE_ERROR;
+     }
+ 
+     /* for 32-bit accesses mask return value */
+@@ -610,6 +606,7 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
+                                               uint64_t val, unsigned size,
+                                               MemTxAttrs attrs)
+ {
++    MemTxResult ret = MEMTX_OK;
+     AstroState *s = opaque;
+ 
+     trace_astro_chip_write(addr, size, val);
+@@ -686,11 +683,9 @@ static MemTxResult astro_chip_write_with_attrs(void *opaque, hwaddr addr,
+ #undef EMPTY_PORT
+ 
+     default:
+-        /* Controlled by astro_chip_mem_valid above.  */
+-        trace_astro_chip_write(addr, size, val);
+-        g_assert_not_reached();
++        ret = MEMTX_DECODE_ERROR;
+     }
+-    return MEMTX_OK;
++    return ret;
+ }
+ 
+ static const MemoryRegionOps astro_chip_ops = {
 -- 
 2.43.0
 
