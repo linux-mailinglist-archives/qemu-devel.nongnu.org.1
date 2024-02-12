@@ -2,69 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BCB851975
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 17:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6280485194D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 17:32:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZZGx-0001pn-Vs; Mon, 12 Feb 2024 11:35:13 -0500
+	id 1rZZDo-000056-Id; Mon, 12 Feb 2024 11:31:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rZZGs-0001oO-61; Mon, 12 Feb 2024 11:35:06 -0500
-Received: from zproxy3.enst.fr ([137.194.2.222])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rZZDk-0008WN-GF
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:31:53 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1rZZGo-0005QE-H1; Mon, 12 Feb 2024 11:35:04 -0500
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id BFA8CA05A3;
- Mon, 12 Feb 2024 17:34:58 +0100 (CET)
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id WgX8N4b8V3_B; Mon, 12 Feb 2024 17:34:58 +0100 (CET)
-Received: from localhost (localhost [IPv6:::1])
- by zproxy3.enst.fr (Postfix) with ESMTP id 475CAA056F;
- Mon, 12 Feb 2024 17:34:58 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 475CAA056F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1707755698;
- bh=tDuvgN94LTs349m7HZdr3iifrkazFs5Y7mCnx8rIHEM=;
- h=From:To:Date:Message-ID:MIME-Version;
- b=1UQXaI3Qi9wXzHTvqSwS7PA9CrfzfO6faiPzZcpruVnZqzFwVOYrqpraVG2JBFcKi
- DHeOkAnGTH8hR66QRgAb88BBvosI3Eb6uI/yTk8jYNYUs0s4zIOCw1Oe9ua/5SvodD
- pF5NkW62MvwnxiFydVgABpQJWFvA8xfPcVYUd/XM=
-X-Virus-Scanned: amavis at enst.fr
-Received: from zproxy3.enst.fr ([IPv6:::1])
- by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id OQacUv1X5wql; Mon, 12 Feb 2024 17:34:58 +0100 (CET)
-Received: from localhost.localdomain (74.0.125.80.rev.sfr.net [80.125.0.74])
- by zproxy3.enst.fr (Postfix) with ESMTPSA id 094FFA0562;
- Mon, 12 Feb 2024 17:34:58 +0100 (CET)
-From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-Subject: [PATCH 2/2] tests/qtest: Check that EXTI fan-in irqs are correctly
- connected
-Date: Mon, 12 Feb 2024 17:31:19 +0100
-Message-ID: <20240212163446.227802-3-ines.varhol@telecom-paris.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240212163446.227802-1-ines.varhol@telecom-paris.fr>
-References: <20240212163446.227802-1-ines.varhol@telecom-paris.fr>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rZZDi-0004y8-7F
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:31:52 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TYVHt0Swxz689sn;
+ Tue, 13 Feb 2024 00:28:10 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 321A5140B73;
+ Tue, 13 Feb 2024 00:31:45 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 12 Feb
+ 2024 16:31:44 +0000
+Date: Mon, 12 Feb 2024 16:31:43 +0000
+To: <linuxarm@huawei.com>, <qemu-devel@nongnu.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, <linux-cxl@vger.kernel.org>
+CC: Mattias Nissler <mnissler@rivosinc.com>
+Subject: Bug: physmem: address_space_read_cached_slow() accesses wrong
+ MemoryRegion on latter part of large reads.
+Message-ID: <20240212163143.0000690a@huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.222;
- envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,143 +65,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit adds a QTest that verifies each input line of a specific
-EXTI OR gate can influence the output line.
+Hi All,
 
-Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
----
- tests/qtest/stm32l4x5_exti-test.c | 97 +++++++++++++++++++++++++++++++
- 1 file changed, 97 insertions(+)
+The continuing saga of a getting CXL emulation to play well with using the
+memory as normal RAM ran into (hopefully) a last issue.
 
-diff --git a/tests/qtest/stm32l4x5_exti-test.c b/tests/qtest/stm32l4x5_ex=
-ti-test.c
-index c390077713..276b7adc7a 100644
---- a/tests/qtest/stm32l4x5_exti-test.c
-+++ b/tests/qtest/stm32l4x5_exti-test.c
-@@ -31,6 +31,11 @@
-=20
- #define EXTI0_IRQ 6
- #define EXTI1_IRQ 7
-+#define EXTI5_IRQ 23
-+#define EXTI6_IRQ 23
-+#define EXTI7_IRQ 23
-+#define EXTI8_IRQ 23
-+#define EXTI9_IRQ 23
- #define EXTI35_IRQ 1
-=20
- static void enable_nvic_irq(unsigned int n)
-@@ -499,6 +504,96 @@ static void test_interrupt(void)
-     g_assert_false(check_nvic_pending(EXTI1_IRQ));
- }
-=20
-+static void test_orred_interrupts(void)
-+{
-+    /*
-+     * For lines EXTI5..9 (fanned-in to NVIC irq 23),
-+     * test that rising the line pends interrupt
-+     * 23 in NVIC.
-+     */
-+    enable_nvic_irq(EXTI5_IRQ);
-+    /* Check that there are no interrupts already pending in PR */
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    /* Check that this specific interrupt isn't pending in NVIC */
-+    g_assert_false(check_nvic_pending(EXTI5_IRQ));
-+
-+    /* Enable interrupt lines EXTI[5..9] */
-+    exti_writel(EXTI_IMR1, (0x1F << 5));
-+
-+    /* Configure interrupt on rising edge */
-+    exti_writel(EXTI_RTSR1, (0x1F << 5));
-+
-+    /* Simulate rising edge from GPIO line 7 */
-+    exti_set_irq(7, 1);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << 7);
-+    g_assert_true(check_nvic_pending(EXTI7_IRQ));
-+
-+    /* Clear the pending bit in PR */
-+    exti_writel(EXTI_PR1, 1 << 7);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    g_assert_true(check_nvic_pending(EXTI7_IRQ));
-+
-+    /* Clean NVIC */
-+    unpend_nvic_irq(EXTI7_IRQ);
-+    g_assert_false(check_nvic_pending(EXTI7_IRQ));
-+
-+    /* Simulate rising edge from GPIO line 6 */
-+    exti_set_irq(6, 1);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << 6);
-+    g_assert_true(check_nvic_pending(EXTI6_IRQ));
-+
-+    /* Clear the pending bit in PR */
-+    exti_writel(EXTI_PR1, 1 << 6);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    g_assert_true(check_nvic_pending(EXTI6_IRQ));
-+
-+    /* Clean NVIC */
-+    unpend_nvic_irq(EXTI6_IRQ);
-+    g_assert_false(check_nvic_pending(EXTI6_IRQ));
-+
-+    /* Simulate rising edge from GPIO line 5 */
-+    exti_set_irq(5, 1);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << 5);
-+    g_assert_true(check_nvic_pending(EXTI5_IRQ));
-+
-+    /* Clear the pending bit in PR */
-+    exti_writel(EXTI_PR1, 1 << 5);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    g_assert_true(check_nvic_pending(EXTI5_IRQ));
-+
-+    /* Clean NVIC */
-+    unpend_nvic_irq(EXTI5_IRQ);
-+    g_assert_false(check_nvic_pending(EXTI5_IRQ));
-+
-+    /* Simulate rising edge from GPIO line 8 */
-+    exti_set_irq(8, 1);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << 8);
-+    g_assert_true(check_nvic_pending(EXTI8_IRQ));
-+
-+    /* Clear the pending bit in PR */
-+    exti_writel(EXTI_PR1, 1 << 8);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    g_assert_true(check_nvic_pending(EXTI8_IRQ));
-+
-+    /* Clean NVIC */
-+    unpend_nvic_irq(EXTI8_IRQ);
-+    g_assert_false(check_nvic_pending(EXTI8_IRQ));
-+
-+    /* Simulate rising edge from GPIO line 9 */
-+    exti_set_irq(9, 1);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 1 << 9);
-+    g_assert_true(check_nvic_pending(EXTI9_IRQ));
-+
-+    /* Clear the pending bit in PR */
-+    exti_writel(EXTI_PR1, 1 << 9);
-+    g_assert_cmpuint(exti_readl(EXTI_PR1), =3D=3D, 0x00000000);
-+    g_assert_true(check_nvic_pending(EXTI9_IRQ));
-+
-+    /* Clean NVIC */
-+    unpend_nvic_irq(EXTI9_IRQ);
-+    g_assert_false(check_nvic_pending(EXTI9_IRQ));
-+}
-+
- int main(int argc, char **argv)
- {
-     int ret;
-@@ -515,6 +610,8 @@ int main(int argc, char **argv)
-     qtest_add_func("stm32l4x5/exti/masked_interrupt", test_masked_interr=
-upt);
-     qtest_add_func("stm32l4x5/exti/interrupt", test_interrupt);
-     qtest_add_func("stm32l4x5/exti/test_edge_selector", test_edge_select=
-or);
-+    qtest_add_func("stm32l4x5/exti/test_orred_interrupts",
-+                   test_orred_interrupts);
-=20
-     qtest_start("-machine b-l475e-iot01a");
-     ret =3D g_test_run();
---=20
-2.43.0
+When running my boot image via virtio-blk-pci and having deliberately forced some
+buffers to end up in the CXL memory via
+$ numactl --membind=1 ls
+then on shut down I was getting a failure to allocate a large enough DMA buffer
+even with Mattias' set to increase the size and an extra patch to apply that to
+the main system memory (as virtio ignores iommu and PCI address space).
+gdb/bt pointed at virtqueue_split_pop() bt pointed later than the actual problem
+as descriptors were loaded but corrupt here:
+https://elixir.bootlin.com/qemu/latest/source/hw/virtio/virtio.c#L1573
+https://elixir.bootlin.com/qemu/latest/source/hw/virtio/virtio.c#L306
 
+After a chase (via a highly suspicious read size of 0xffffffff it turns
+out it was issuing a 16 byte read via address_space_read_cached_slow() and
+getting a very odd answer.
+
+The first 8 bytes was the correct virtio descriptor content the second 8
+were coming from the flash region at physical address 0 onwards on arm-virt.
+
+With those breadcrumbs the problem was (I think) easy to find.
+
+https://elixir.bootlin.com/qemu/latest/source/include/exec/memory.h#L3029
+address_space_read_cached_slow() operates on a MemoryRegionCache with the
+hwaddr being relative to the start of that cached region.
+
+However it calls flatview_read_continue()  That's fine as long as we can
+do the read in one go.
+
+
+For normal memory flatview_read_continue() will deal with splitting a read up
+but on each iteration it loads the mr via
+mr = flatview_translate(fv, addr, &addr1, &l, false, attrs);
+to cope with reads that cross MemoryRegions.
+https://elixir.bootlin.com/qemu/latest/source/system/physmem.c#L2737
+
+Unfortunately the addr passed in here is the one addressing into the
+MemoryRegionCache offset by whatever we already read.
+Which for this bug example that was 0x8 (in the flash memory).
+
+Assuming I have correctly identified the problem.
+One potential fix is to define a new
+
+MemtxResult address_space_read_cached_continue(MemoryRegionCache *cache,
+                                               hwaddr addr, MemTxAttr attrs,
+                                               void *ptr, hwaddr len,
+                                               hwaddr addr1, hwaddr l,
+                                               MemoryRegion *mr)
+
+That is nearly identical to flatview_read_continue() but with the 
+mr = flatview_translate() replaced with
+mr = address_space_translate_cached(cache, addr, &addr1, &l, false, attrs)
+
+That's a bit ugly though given the duplicated code but any other change
+is going to involve some more invasive splitting out of utility functions
+to share all but the outer loop.
+
+I don't currently have a test hitting it but assume
+flatview_write_continue() in address_space_write_cached_slow() has the
+same problem.
+
+Jonathan
+
+p.s. Will tidy this and the rest of my house of cards up then post it.
+I suspect we'll carry on hitting QEMU limitations with the CXL emulation
+but for now I have x86 and ARM setups that work with TCG.
+Hmm. Need to spend some time getting regressions tests in place :(
 
