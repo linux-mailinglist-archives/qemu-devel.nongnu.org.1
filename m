@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EF851EE5
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F35851EE6
 	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 21:51:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZdGH-0005k1-Cz; Mon, 12 Feb 2024 15:50:45 -0500
+	id 1rZdGF-0005jX-KZ; Mon, 12 Feb 2024 15:50:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdGC-0005jU-Jl
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:41 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdGB-0005jK-K8
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:39 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdGA-0003QJ-6J
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:40 -0500
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdG9-0003QG-Vv
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:39 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CKascn017559; Mon, 12 Feb 2024 20:50:34 GMT
+ 41CKbVS9019474; Mon, 12 Feb 2024 20:50:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=pZpk2dJjr4LZe4LQFXB8PlBikKDWfGUnXxvd3qiS1tQ=;
- b=FT9KA9XiRkQdX3cOSZ7fOTe+ncuVH3SvOS1XjHWMHVY2YbKrMmEEFuD3U93BBdK8+++d
- NuJvZHF9lDruOj4ege92UJqaCMc7ElgIqCLHCpzBMmGh7cyxj/9zZBK+qb7YpH5Fzgfv
- dK4f1BpDdhvbTErPesx9hJLx4D8GNQ+JsJSzpgMWn0aRJ3/mcrC/iohHAgSafgvRMyPg
- EKHfscn9jaX2HgCPp28RcDnOsovc3Zf5CZfeVa3AUFCBSrAH5MizuVJ80zmU8a0chIxF
- jdCpTwALZWYI3sqzAl0RmmdlFzqJDNnYE8ysKQ8v5AJBPFHlIfGbtlIV/4Lcm6NHQhn6 JA== 
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7th585yk-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=UiPeJOx0ETDNIXAKYypll/nld8BVuCht7yp3n8HTsl4=;
+ b=QRK4tYgw5vLra5xPEfmX1rWuEGf5OztIS+jvWdjOg56uzk6EkBn9mm+YzIBdfUvw/pVT
+ ZoEitzJXaO4yGZDW4qnU3rXDJQTbnUSBUQll8lFylylHev/smPl3IKjifus2oPz7q8Sh
+ ApPu0YSDcg+JxkequI7O6xpkG+jY7gTpLmvyjN83VuTpQQ9FOavv/3fP6xxG/z6M3O2O
+ Mn3h410TEYGZWi2aJEHn/TDLXrJ318QuTIDI81vZsBldPcTJ6ddcp0QIoYXD1/a/N2gx
+ PKoBs3/W/pfnfQ1iICeZRBlUrT5846mfTInd2LqEg+MxffNK+N1Hzz1dYTzzEaZRjneb 7Q== 
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7the89dn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 12 Feb 2024 20:50:34 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CJdLaQ024762; Mon, 12 Feb 2024 20:50:32 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6mfp3376-1
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41CJfIMH016203; Mon, 12 Feb 2024 20:50:33 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6mymb030-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Feb 2024 20:50:32 +0000
+ Mon, 12 Feb 2024 20:50:33 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41CKoSrY2359950
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41CKoT6v46793146
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 20:50:30 GMT
+ Mon, 12 Feb 2024 20:50:31 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6FFC52004D;
- Mon, 12 Feb 2024 20:50:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 644312004E;
+ Mon, 12 Feb 2024 20:50:29 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 056AC20040;
- Mon, 12 Feb 2024 20:50:28 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 032F02004B;
+ Mon, 12 Feb 2024 20:50:29 +0000 (GMT)
 Received: from heavy.ibm.com (unknown [9.179.4.126])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 12 Feb 2024 20:50:27 +0000 (GMT)
+ Mon, 12 Feb 2024 20:50:28 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 0/2] linux-user: Map low priority rt signals
-Date: Mon, 12 Feb 2024 21:45:41 +0100
-Message-ID: <20240212205022.242968-1-iii@linux.ibm.com>
+Subject: [PATCH v2 1/2] linux-user: Map low priority rt signals
+Date: Mon, 12 Feb 2024 21:45:42 +0100
+Message-ID: <20240212205022.242968-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240212205022.242968-1-iii@linux.ibm.com>
+References: <20240212205022.242968-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Lcu03cPTCa7oJuD0MADA7rDP8y01NWix
-X-Proofpoint-ORIG-GUID: Lcu03cPTCa7oJuD0MADA7rDP8y01NWix
+X-Proofpoint-ORIG-GUID: 3vipn1ZmSg8w-Lf-8TyqpMK9TiaLISW-
+X-Proofpoint-GUID: 3vipn1ZmSg8w-Lf-8TyqpMK9TiaLISW-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-12_16,2024-02-12_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0
- mlxlogscore=639 clxscore=1015 malwarescore=0 mlxscore=0 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1015 spamscore=0
+ mlxlogscore=999 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 mlxscore=0 adultscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402120161
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -103,28 +106,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Some applications want to use low priority realtime signals (e.g.,
+SIGRTMAX). Currently QEMU cannot map all target realtime signals to
+host signals, and chooses to sacrifice the end of the target realtime
+signal range.
 
-There are apps out there that want to use SIGRTMAX, which linux-user
-currently does not map to a host signal. The reason is that with the
-current approach it's not possible to map all target signals, so it
-was decided to sacrifice the end of the range.
+Change this to the middle of that range, hoping that fewer applications
+will need it.
 
-In this series I propose to sacrifice the middle instead. Patch 1 makes
-the change, patch 2 is a test.
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ linux-user/signal.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-Best regards,
-Ilya
-
-Ilya Leoshkevich (2):
-  linux-user: Map low priority rt signals
-  tests/tcg: Add SIGRTMIN/SIGRTMAX test
-
- linux-user/signal.c                           | 18 +++++---
- tests/tcg/multiarch/linux/linux-sigrtminmax.c | 41 +++++++++++++++++++
- 2 files changed, 54 insertions(+), 5 deletions(-)
- create mode 100644 tests/tcg/multiarch/linux/linux-sigrtminmax.c
-
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index d3e62ab030f..a81533b563a 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -511,13 +511,14 @@ static int core_dump_signal(int sig)
+ 
+ static void signal_table_init(void)
+ {
+-    int hsig, tsig, count;
++    int hsig, hsig_count, tsig, tsig_count, tsig_hole, tsig_hole_size, count;
+ 
+     /*
+-     * Signals are supported starting from TARGET_SIGRTMIN and going up
+-     * until we run out of host realtime signals.  Glibc uses the lower 2
+-     * RT signals and (hopefully) nobody uses the upper ones.
+-     * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
++     * Signals are supported starting from TARGET_SIGRTMIN and up to
++     * TARGET_SIGRTMAX, potentially with a hole in the middle of this
++     * range, which, hopefully, nobody uses. Glibc uses the lower 2 RT
++     * signals; this is why SIGRTMIN (34) is generally greater than
++     * __SIGRTMIN (32).
+      * To fix this properly we would need to do manual signal delivery
+      * multiplexed over a single host signal.
+      * Attempts for configure "missing" signals via sigaction will be
+@@ -536,9 +537,16 @@ static void signal_table_init(void)
+     host_to_target_signal_table[SIGABRT] = 0;
+     host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
+ 
++    hsig_count = SIGRTMAX - hsig + 1;
++    tsig_count = TARGET_NSIG - TARGET_SIGRTMIN + 1;
++    tsig_hole_size = tsig_count - MIN(hsig_count, tsig_count);
++    tsig_hole = TARGET_SIGRTMIN + (tsig_count - tsig_hole_size) / 2;
+     for (tsig = TARGET_SIGRTMIN;
+          hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
+          hsig++, tsig++) {
++        if (tsig == tsig_hole) {
++            tsig += tsig_hole_size;
++        }
+         host_to_target_signal_table[hsig] = tsig;
+     }
+ 
 -- 
 2.43.0
 
