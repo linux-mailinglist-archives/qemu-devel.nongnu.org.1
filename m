@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD909851098
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 11:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0782E85109A
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 11:21:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZTQh-0007ox-83; Mon, 12 Feb 2024 05:20:51 -0500
+	id 1rZTQn-0007rs-03; Mon, 12 Feb 2024 05:20:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rZTQX-0007mj-2I
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 05:20:41 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rZTQa-0007nP-FG
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 05:20:46 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rZTQU-0007ai-L6
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 05:20:40 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d934c8f8f7so22649735ad.2
- for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 02:20:37 -0800 (PST)
+ id 1rZTQY-0007bR-KB
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 05:20:43 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1d94323d547so25957365ad.3
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 02:20:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707733236; x=1708338036;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707733241; x=1708338041;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=OIpbMmCo6wr1U0mNh1+A6niiCtk/94EEMEFXygx3QNg=;
- b=Ngg/djGOJhPBk2SOYX2A08B/3IcULeDZVpOG4H3TkeTsd+DWjoifVm7JlcEXjOVBrx
- VUoQKz9IEV3ul9Ef0R+kpRnJozSHuUBojTooejjYyTJwQRlkBtFRqcMEBHC37PnJtpNy
- AK/41yLtkovrYLAjzgwGxjKdxNro8h1v4k0y8xwmTBhRlP487TimDXmP9a2vXCg8Fdso
- ih/9sOvolhrRGs+qtzvk2VJOlaxip4Y2H0thBzRVif798w/lla9vRfyXg4SPEfS+hlO6
- g2qrjqrXnOsbY1DK7xxVN6F9xgf7qelWJlUTIRWoMOZ1YfvESDvcumU7nuKd1xefAmeP
- d12A==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=gSvCLJe3gU02YFH7AP/Kc5zVGA3h47XKCXQKtEcX3Dw=;
+ b=pRphen4M3zCDA/oghS3+vLSOHSVSnz8IWbpt/XbkefcsSeU/bvBRTRYPUipUcOZRvZ
+ VK/jSYTiJK8ik5Tag4sz0TVjqtFbBLlyVfNoItxmcgDnpxuBN+EwuinwcdWn+5TUDb04
+ saiTKypXEi17CpmPgIEnPRMaz9i4jdyq5icxzMvHX8Ifa/fKU+16dep9qHvYi+r1DngA
+ McDwqaj91Wy96L+psSwMr0zZZth/dEePddxm18PFxOuqTEzd8ZPJxBbli6UebkEku6oV
+ prG3N4Fjwn3WPc3Yqmzm+jEH1A+bY8f0s6T1gUUrOfNAbhm6Y6m0TfkYGKxMxIlLyUXt
+ RdwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707733236; x=1708338036;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OIpbMmCo6wr1U0mNh1+A6niiCtk/94EEMEFXygx3QNg=;
- b=jrU9Lt4R/HQC1L/tGLyel+9Aapgd4AlPDFo2C8ZaiDnNhRRj29V8ubpmqbhZslBBmU
- Sukq3b0sPvAJVSdtz/bLHHr6ZtejKJhIl1cqtcjXjhk4hAptGFV179rKkQXzMr0fWsw4
- Vv7W3ViYPPbGg5XFIvumbcnl8Ys5+GLimjJ7H+d5LCAHgYeNxccjBe80qMOMfRYb9DNt
- +Qm/HjXyeM8i3thGw7jTo+kVlSIGYCVGQKNx/F7SSzMQIHsBcxPUpCJC+pzMPO2cYZmf
- FSYP+xWYm6ZtXgJuu4hfb2Cd+ZgyRbLVQi95WrJLCU1BTLs36dHEMVh31CstELb/NmxM
- Oqvg==
-X-Gm-Message-State: AOJu0Yx2wGkkSAXSsn9Ok2WATwKQ7o4CqiOrlM+oe3IlWl3Ph565uohW
- yc3m1rm5Yz4jZvbMYGyScfIqmGxRIoogYQ3ir4bncsfy07ZgrP00WWOCA7fRCJI=
-X-Google-Smtp-Source: AGHT+IEQWutYRRhgHehiRqGcRlD/JP/P8xFMk+0utY132ZAgIzUGUmrdxGymK7oBRJgH4VoDFVo5Vg==
-X-Received: by 2002:a17:902:b688:b0:1d9:c86c:39c2 with SMTP id
- c8-20020a170902b68800b001d9c86c39c2mr5533916pls.14.1707733236553; 
- Mon, 12 Feb 2024 02:20:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707733241; x=1708338041;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gSvCLJe3gU02YFH7AP/Kc5zVGA3h47XKCXQKtEcX3Dw=;
+ b=RlqYfRa3yLgCilyq3plhNig659fe8w3//R292VlONKf+FdUf9DbnI7AacmcLRUWM1O
+ TGDVoRoimOyZfgfHmcVdn9AFxSsetrM61fz82e9T+LGYoJnlMjELastBgQLg4EBRS3xc
+ Zq9EHzZCS0NuMqu9UvfNX1AJ1+pVmC9e8u4k2LvSD1+5XA0nEmboxQ4AmrKiwrb0H8dR
+ 8dvJl7RvmR1dmycIGOzN1n/FgTr1xVI4848Q7BEmn27x9lx6WOOC7P4vPvrF/j+b8MQ0
+ pGgd2n43xY3GOcJGthCj0vTL6SkBpyzVqnvY2g6mcWbs/powfeH4voSdHysBjUrO4E3B
+ KBvQ==
+X-Gm-Message-State: AOJu0YxsnaorqfzIPTV867JdghnrBC8lZAnUlo2L/gP1AQ7/TSKN1JSd
+ PBcx6M7MDMzoLG4v+jTkNXkLkFVldmYlfARVXSWjJxVOkd56Cj1THkuu1806qBU=
+X-Google-Smtp-Source: AGHT+IF329Qld9IgcjTeG6QzYZ0NZQzHxz7cHSatavw6RgIFGZKL6PiS7YKjhOc77vAZs9tfAI7wLA==
+X-Received: by 2002:a17:902:da87:b0:1da:22a0:efba with SMTP id
+ j7-20020a170902da8700b001da22a0efbamr5070742plx.63.1707733241237; 
+ Mon, 12 Feb 2024 02:20:41 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCU05LXOPxrkZRA0QRH1s0ivlJ+jZBxvxBI0AC1/lejZ5V46B3lrq/Nf/RqmiOUQm0lqs+ecMtgN6jmszIR4y4/jSowLbv2sAADEQ6XkNWT7mjDRNeJv8OWIfrFYeohhgEP4LwLpZC8vleolbYWetaZYIAyzCLqzQpupsTqUOOT9oxtZQBrsxCkM81T4KWBT9lt9UYHuzNgEDrE8OOmoiIYQmrGG2QkxZ06RV72HPKIC9r4p2d6rlQYC1d2b4C7mKuDILh0kcyGRPzTy3+27NudkguwgNetwjiQiVHAlJgJoegYHpG/EalsXmWr+i5mtGBG8T2IixfYskpYeAzB6ZFDfo/Qihmx1zB3Dw3rijBoD60q34mz6I0pQOVg+O+M0zeFe68cguApBz57cYYfWoe9tPnSr/xuzkfFjPlvgZ4Hjg/qDqdDngY2UwAOB5wk=
+ AJvYcCWZEa3h+k5bqNqfIx3rub4jyfuoeMPNA9BvAT2aSrny3S2EQ29PhpfsGIsAuqpbMo/8Yyb1/A30iUi9ZIKkrJcecbcr+Jws4kDsmRkpnRap/P7Bs0oKlxtWcQOGz04yJkG872NHZlOvNO647Gi4E/NCnL6TBmrUbvxVRt4MkhYc5O/M1J7F+l5Yv8Ce6f92p0Chm4BRGaLlMyKvPg8BYB0+zN2VB0+6KkG6FAsdzkugsL4M1r/3lpDWjukqDk2ds0XumXY1gA0GbttFYmLJvGxXKe8p4Ng16RVpAkoKYsUN5s1swNvMgsOXzC6U28qpwy5w33GFYWI+eyy5shHCX8Nb/t9pudbqvPBNCxV6kbYUrkQ5whK+M8x12KsCyYr3xB+fm5hwE4szJX6TwNNBad7jqvdiLz3aMh562yHRi8We9cCQzWi/b++HZZa1TN8=
 Received: from localhost ([157.82.207.134])
  by smtp.gmail.com with UTF8SMTPSA id
- f6-20020a17090274c600b001db28ae5d81sm50332plt.159.2024.02.12.02.20.33
+ v2-20020a170903238200b001d8f3c7fb96sm50856plh.166.2024.02.12.02.20.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Feb 2024 02:20:36 -0800 (PST)
+ Mon, 12 Feb 2024 02:20:40 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 0/7] hw/pci: SR-IOV related fixes and improvements
-Date: Mon, 12 Feb 2024 19:20:28 +0900
-Message-Id: <20240212-reuse-v3-0-8017b689ce7f@daynix.com>
+Date: Mon, 12 Feb 2024 19:20:29 +0900
+Subject: [PATCH v3 1/7] hw/pci: Use -1 as a default value for rombar
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOzwyWUC/1WMQQ6CMBBFr0JmbU07LQRccQ/jopRBZiGYVhsI4
- e4W1ESX7+e/t0AgzxTglC3gKXLgcUigDxm43g5XEtwmBpRopMJKeHoGEp21hNgoVWkD6Xv31PG
- 0d86XxD2Hx+jnPRvVtr4LKPWnEJWQIm+odLmjQuuybu088HR04w22RMQfTcmvhklD01i0ucSiw
- j9tXdcXr72FzNIAAAA=
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240212-reuse-v3-1-8017b689ce7f@daynix.com>
+References: <20240212-reuse-v3-0-8017b689ce7f@daynix.com>
+In-Reply-To: <20240212-reuse-v3-0-8017b689ce7f@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  "Michael S. Tsirkin" <mst@redhat.com>, 
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
@@ -83,14 +81,15 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,72 +105,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I submitted a RFC series[1] to add support for SR-IOV emulation to
-virtio-net-pci. During the development of the series, I fixed some
-trivial bugs and made improvements that I think are independently
-useful. This series extracts those fixes and improvements from the RFC
-series. Below is an explanation of the patches:
+Currently there is no way to distinguish the case that rombar is
+explicitly specified as 1 and the case that rombar is not specified.
 
-Patch 1 adds a function to check if ROM BAR is explicitly enabled. It
-is used in the RFC series to report an error if the user requests to
-enable ROM BAR for SR-IOV VF. Patch 2 and 3 use it for vfio to remove
-hacky device option dictionary inspection.
+Set rombar -1 by default to distinguish these cases just as it is done
+for addr and romsize. It was confirmed that changing the default value
+to -1 will not change the behavior by looking at occurences of rom_bar.
 
-Patch 4 adds SR-IOV NumVFs validation to fix potential buffer overflow.
+$ git grep -w rom_bar
+hw/display/qxl.c:328:    QXLRom *rom = memory_region_get_ram_ptr(&d->rom_bar);
+hw/display/qxl.c:431:    qxl_set_dirty(&qxl->rom_bar, 0, qxl->rom_size);
+hw/display/qxl.c:1048:    QXLRom *rom = memory_region_get_ram_ptr(&qxl->rom_bar);
+hw/display/qxl.c:2131:    memory_region_init_rom(&qxl->rom_bar, OBJECT(qxl), "qxl.vrom",
+hw/display/qxl.c:2154: PCI_BASE_ADDRESS_SPACE_MEMORY, &qxl->rom_bar);
+hw/display/qxl.h:101:    MemoryRegion       rom_bar;
+hw/pci/pci.c:74:    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
+hw/pci/pci.c:2329:    if (!pdev->rom_bar) {
+hw/vfio/pci.c:1019:    if (vdev->pdev.romfile || !vdev->pdev.rom_bar) {
+hw/xen/xen_pt_load_rom.c:29:    if (dev->romfile || !dev->rom_bar) {
+include/hw/pci/pci_device.h:150:    uint32_t rom_bar;
 
-Patch 5 changes to realize SR-IOV VFs when the PF is being realized to
-validate VF configuration.
-
-Patch 6 fixes memory leak that occurs if a SR-IOV VF fails to realize.
-
-[1]: https://patchew.org/QEMU/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com/
+rom_bar refers to a different variable in qxl. It is only tested if
+the value is 0 or not in the other places.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v3:
-- Extracted patch "hw/pci: Use -1 as a default value for rombar" from
-  patch "hw/pci: Determine if rombar is explicitly enabled"
-  (Philippe Mathieu-Daudé)
-- Added an audit result of PCIDevice::rom_bar to the message of patch
-  "hw/pci: Use -1 as a default value for rombar"
-  (Philippe Mathieu-Daudé)
-- Link to v2: https://lore.kernel.org/r/20240210-reuse-v2-0-24ba2a502692@daynix.com
+ hw/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v2:
-- Reset after enabling a function so that NVMe VF state gets updated.
-- Link to v1: https://lore.kernel.org/r/20240203-reuse-v1-0-5be8c5ce6338@daynix.com
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 76080af580d7..d08548d8ffe9 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -71,7 +71,7 @@ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+     DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, -1),
+-    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
++    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, -1),
+     DEFINE_PROP_BIT("multifunction", PCIDevice, cap_present,
+                     QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
+     DEFINE_PROP_BIT("x-pcie-lnksta-dllla", PCIDevice, cap_present,
 
----
-Akihiko Odaki (7):
-      hw/pci: Use -1 as a default value for rombar
-      hw/pci: Determine if rombar is explicitly enabled
-      vfio: Avoid inspecting option QDict for rombar
-      hw/qdev: Remove opts member
-      pcie_sriov: Validate NumVFs
-      pcie_sriov: Reuse SR-IOV VF device instances
-      pcie_sriov: Release VFs failed to realize
-
- docs/pcie_sriov.txt         |   8 ++--
- include/hw/pci/pci.h        |   2 +-
- include/hw/pci/pci_device.h |   7 ++-
- include/hw/pci/pcie_sriov.h |   6 +--
- include/hw/qdev-core.h      |   4 --
- hw/core/qdev.c              |   1 -
- hw/net/igb.c                |  13 ++++--
- hw/nvme/ctrl.c              |  24 ++++++----
- hw/pci/pci.c                |  20 +++++----
- hw/pci/pci_host.c           |   4 +-
- hw/pci/pcie.c               |   4 +-
- hw/pci/pcie_sriov.c         | 105 +++++++++++++++++++++-----------------------
- hw/vfio/pci.c               |   3 +-
- system/qdev-monitor.c       |  12 ++---
- 14 files changed, 116 insertions(+), 97 deletions(-)
----
-base-commit: 4a4efae44f19528589204581e9e2fab69c5d39aa
-change-id: 20240129-reuse-faae22b11934
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.43.0
 
 
