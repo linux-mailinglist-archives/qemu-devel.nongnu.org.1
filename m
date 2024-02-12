@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E28850F8A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FD0850F88
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:16:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZSOt-0006PZ-9R; Mon, 12 Feb 2024 04:14:55 -0500
+	id 1rZSP9-0006Re-2G; Mon, 12 Feb 2024 04:15:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOn-0006O0-Cq
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOn-0006Nz-Cq
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOi-0003dm-TF
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOj-0003eH-PF
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707729284;
+ s=mimecast20190719; t=1707729285;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pKcCHWrvMGJkVDUbIoC4Maso9VAlfoMtKzwoss1q1cg=;
- b=W1Bcp9XudvQjUTd6yYIRkvrAJ7MNUzBLsTe+zk50Ef1FahE3X3AlMQj03kjZQJR13Yl5x5
- PrlZJO0mnBBDpx9J0tyrpwQHx/7n4cbMkU2ICPkDyKERZxFROzJlS2FbINpYjPWYKlBhwm
- jXpkejbz6qVrXgsTOf8FvqyHL6vgswc=
+ bh=9Gvj+PCUwyFkiVr1gejK7Uhx1Cr5hTLy7JV9VwhoxRc=;
+ b=JKBN3q48EJVs8I3rXwZFSOYDddf7eLNH+5X/9EleIAwnpx9xF6/egeg7jwFXOXaVDoftVt
+ Z69AZsUud3IMdfs0hxpUfxJwZJOGwaVw/BZgiL562hwAcpRT6cmKJww8pc1/nFbTawpsh/
+ ScI/WtrKtrpymegs2dgvG53G8ntXB1s=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-NDaVM4iYOUqNatZZRmBn3A-1; Mon, 12 Feb 2024 04:14:40 -0500
-X-MC-Unique: NDaVM4iYOUqNatZZRmBn3A-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-192-edu81_rTOtm9OR9-Pel6vw-1; Mon, 12 Feb 2024 04:14:40 -0500
+X-MC-Unique: edu81_rTOtm9OR9-Pel6vw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EA57185A789;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61A3B83101A;
  Mon, 12 Feb 2024 09:14:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3C41E1208F6B;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3D20E20BB064;
  Mon, 12 Feb 2024 09:14:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A4AF621E5A5C; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
+ id A79F421E5A0D; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: [PULL 16/18] qapi/migration: Add missing tls-authz documentation
-Date: Mon, 12 Feb 2024 10:14:34 +0100
-Message-ID: <20240212091436.688598-17-armbru@redhat.com>
+Cc: peter.maydell@linaro.org, Ben Widawsky <ben.widawsky@intel.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Fan Ni <fan.ni@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 17/18] MAINTAINERS: Cover qapi/cxl.json
+Date: Mon, 12 Feb 2024 10:14:35 +0100
+Message-ID: <20240212091436.688598-18-armbru@redhat.com>
 In-Reply-To: <20240212091436.688598-1-armbru@redhat.com>
 References: <20240212091436.688598-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -82,52 +83,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+Commit 415442a1b4a (hw/mem/cxl_type3: Add CXL RAS Error Injection
+Support.) created qapi/cxl.json without adding it to MAINTAINERS.  Fix
+that.
 
-As reported in Markus's recent enforcement series on qapi doc [1], we
-accidentally miss one entry for tls-authz.  Add it.
-
-[1] https://lore.kernel.org/r/20240205074709.3613229-1-armbru@redhat.com
-
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Message-ID: <20240207032836.268183-1-peterx@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Update of qapi/pragma.json squashed in, commit message adjusted]
+Cc: Ben Widawsky <ben.widawsky@intel.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Fan Ni <fan.ni@samsung.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240205084747.3623569-2-armbru@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qapi/migration.json | 4 ++++
- qapi/pragma.json    | 1 -
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 7c8881abda..5a565d9b8d 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -980,6 +980,10 @@
- #     2.9) Previously (since 2.7), this was reported by omitting
- #     tls-hostname instead.
- #
-+# @tls-authz: ID of the 'authz' object subclass that provides access
-+#     control checking of the TLS x509 certificate distinguished name.
-+#     (Since 4.0)
-+#
- # @max-bandwidth: to set maximum speed for migration.  maximum speed
- #     in bytes per second.  (Since 2.8)
- #
-diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 7ac05ccc26..6929ab776e 100644
---- a/qapi/pragma.json
-+++ b/qapi/pragma.json
-@@ -69,7 +69,6 @@
-         'JSONType',
-         'KeyValueKind',
-         'MemoryDeviceInfoKind',
--        'MigrateSetParameters',
-         'NetClientDriver',
-         'ObjectType',
-         'PciMemoryRegion',
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2f9741b898..00ada764a7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2894,6 +2894,7 @@ S: Supported
+ F: hw/cxl/
+ F: hw/mem/cxl_type3.c
+ F: include/hw/cxl/
++F: qapi/cxl.json
+ 
+ Dirty Bitmaps
+ M: Eric Blake <eblake@redhat.com>
 -- 
 2.43.0
 
