@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E65850F23
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 09:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D18CF850F22
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 09:52:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZS2a-000446-QK; Mon, 12 Feb 2024 03:51:52 -0500
+	id 1rZS2a-000447-Qt; Mon, 12 Feb 2024 03:51:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZS2Y-00043e-GO
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZS2Y-00043d-FF
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:51:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZS2W-0007HF-BY
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZS2X-0007HJ-08
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:51:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707727907;
+ s=mimecast20190719; t=1707727908;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cZiYICAEPQEmGjWFcJuqoqXwCObYbxNWa7J9q7/sD8E=;
- b=YJo/C/GhHRtYxTMRoZ8emH71nxOzrPuD23hFyKlbL+8LWsYxNrRnEPnEYhgERpAmm4Mdg4
- KaJ3w/XubgzeQ/vDvAt7v8xmBanWJhEvkxRSvw/2AvYUuYS0ZlrurPBtkOlcWl57ETPJ/R
- TcfxsFUl7A6YSVgQ4XyjwKCdmus+N/o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-448-HUGxzbIpMi6SPIF_AaJh7w-1; Mon,
- 12 Feb 2024 03:51:44 -0500
-X-MC-Unique: HUGxzbIpMi6SPIF_AaJh7w-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=fWTHcmbEky3hiItKDV7M/GZt0ngVYkFRBdrKbOuF4Cc=;
+ b=Ky348BPMcCkp1wvIHedEW6DyX0jXu/DTZdE5wap7ZNlfHpNuGSTR0Y1Mha9gbgcXlgrGDh
+ MiYTvyRk85lbY00QmGLW2nXR+N+T5rceIsdTTt0VcXiiivsT+Xi/PRWChL7oNbRdqbhsCA
+ U+5vIRb1+xs93MB8l4dPPo4DOe/+sT0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-282-NzDiOZ1xOay2SOHOvAGC5w-1; Mon, 12 Feb 2024 03:51:44 -0500
+X-MC-Unique: NzDiOZ1xOay2SOHOvAGC5w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26BFB1C0BA4F;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 259ED85A588;
  Mon, 12 Feb 2024 08:51:44 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 033CC416184B;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0310145384C;
  Mon, 12 Feb 2024 08:51:44 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DA2F121E65EB; Mon, 12 Feb 2024 09:51:42 +0100 (CET)
+ id DD2CF21E65ED; Mon, 12 Feb 2024 09:51:42 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?J=C3=A1n=20Tomko?= <jtomko@redhat.com>,
  Eric Blake <eblake@redhat.com>
-Subject: [PULL 3/4] qapi/char: Make backend types properly conditional
-Date: Mon, 12 Feb 2024 09:51:41 +0100
-Message-ID: <20240212085142.523317-4-armbru@redhat.com>
+Subject: [PULL 4/4] qapi/char: Deprecate backend type "memory"
+Date: Mon, 12 Feb 2024 09:51:42 +0100
+Message-ID: <20240212085142.523317-5-armbru@redhat.com>
 In-Reply-To: <20240212085142.523317-1-armbru@redhat.com>
 References: <20240212085142.523317-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -82,81 +83,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Character backends are actually QOM types.  When a backend's
-compile-time conditional QOM type is not compiled in, creation fails
-with "'FOO' is not a valid char driver name".  Okay, except
-introspecting chardev-add with query-qmp-schema doesn't work then: the
-backend type is there even though the QOM type isn't.
-
-A management application can work around this issue by using
-qom-list-types instead.
-
-Fix the issue anyway: add the conditionals to the QAPI schema.
+It's an alias for "ringbuf" we kept for backward compatibility; see
+commit 3a1da42eb35 (qapi: Rename ChardevBackend member "memory" to
+"ringbuf").  Deprecation is long overdue.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240203080228.2766159-4-armbru@redhat.com>
+Message-ID: <20240203080228.2766159-5-armbru@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Ján Tomko <jtomko@redhat.com>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- qapi/char.json | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ docs/about/deprecated.rst | 8 ++++++++
+ qapi/char.json            | 8 +++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index c7b95e6068..7d9343676c 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -380,6 +380,14 @@ Specifying the iSCSI password in plain text on the command line using the
+ used instead, to refer to a ``--object secret...`` instance that provides
+ a password via a file, or encrypted.
+ 
++Character device options
++''''''''''''''''''''''''
++
++Backend ``memory`` (since 9.0)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++
++``memory`` is a deprecated synonym for ``ringbuf``.
++
+ CPU device properties
+ '''''''''''''''''''''
+ 
 diff --git a/qapi/char.json b/qapi/char.json
-index 6c6ad3b10c..2d74e66746 100644
+index 2d74e66746..75a7e057f0 100644
 --- a/qapi/char.json
 +++ b/qapi/char.json
-@@ -472,8 +472,8 @@
+@@ -468,6 +468,10 @@
+ #
+ # @memory: Since 1.5
+ #
++# Features:
++#
++# @deprecated: Member @memory is deprecated.  Use @ringbuf instead.
++#
+ # Since: 1.4
  ##
  { 'enum': 'ChardevBackendKind',
-   'data': [ 'file',
--            'serial',
--            'parallel',
-+            { 'name': 'serial', 'if': 'HAVE_CHARDEV_SERIAL' },
-+            { 'name': 'parallel', 'if': 'HAVE_CHARDEV_PARALLEL' },
-             'pipe',
-             'socket',
-             'udp',
-@@ -482,10 +482,10 @@
-             'mux',
-             'msmouse',
-             'wctablet',
--            'braille',
-+            { 'name': 'braille', 'if': 'CONFIG_BRLAPI' },
-             'testdev',
-             'stdio',
--            'console',
-+            { 'name': 'console', 'if': 'CONFIG_WIN32' },
-             { 'name': 'spicevmc', 'if': 'CONFIG_SPICE' },
-             { 'name': 'spiceport', 'if': 'CONFIG_SPICE' },
-             { 'name': 'qemu-vdagent', 'if': 'CONFIG_SPICE_PROTOCOL' },
-@@ -614,8 +614,10 @@
-   'base': { 'type': 'ChardevBackendKind' },
-   'discriminator': 'type',
-   'data': { 'file': 'ChardevFileWrapper',
--            'serial': 'ChardevHostdevWrapper',
--            'parallel': 'ChardevHostdevWrapper',
-+            'serial': { 'type': 'ChardevHostdevWrapper',
-+                        'if': 'HAVE_CHARDEV_SERIAL' },
-+            'parallel': { 'type': 'ChardevHostdevWrapper',
-+                          'if': 'HAVE_CHARDEV_PARALLEL' },
-             'pipe': 'ChardevHostdevWrapper',
-             'socket': 'ChardevSocketWrapper',
-             'udp': 'ChardevUdpWrapper',
-@@ -624,10 +626,12 @@
-             'mux': 'ChardevMuxWrapper',
-             'msmouse': 'ChardevCommonWrapper',
-             'wctablet': 'ChardevCommonWrapper',
--            'braille': 'ChardevCommonWrapper',
-+            'braille': { 'type': 'ChardevCommonWrapper',
-+                         'if': 'CONFIG_BRLAPI' },
-             'testdev': 'ChardevCommonWrapper',
-             'stdio': 'ChardevStdioWrapper',
--            'console': 'ChardevCommonWrapper',
-+            'console': { 'type': 'ChardevCommonWrapper',
-+                         'if': 'CONFIG_WIN32' },
-             'spicevmc': { 'type': 'ChardevSpiceChannelWrapper',
-                           'if': 'CONFIG_SPICE' },
-             'spiceport': { 'type': 'ChardevSpicePortWrapper',
+@@ -492,8 +496,7 @@
+             { 'name': 'dbus', 'if': 'CONFIG_DBUS_DISPLAY' },
+             'vc',
+             'ringbuf',
+-            # next one is just for compatibility
+-            'memory' ] }
++            { 'name': 'memory', 'features': [ 'deprecated' ] } ] }
+ 
+ ##
+ # @ChardevFileWrapper:
+@@ -642,7 +645,6 @@
+                       'if': 'CONFIG_DBUS_DISPLAY' },
+             'vc': 'ChardevVCWrapper',
+             'ringbuf': 'ChardevRingbufWrapper',
+-            # next one is just for compatibility
+             'memory': 'ChardevRingbufWrapper' } }
+ 
+ ##
 -- 
 2.43.0
 
