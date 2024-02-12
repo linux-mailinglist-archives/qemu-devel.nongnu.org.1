@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F96C85162D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 14:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E52985162F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 14:59:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZWoo-0006tm-Dm; Mon, 12 Feb 2024 08:57:59 -0500
+	id 1rZWpL-0007ZX-JT; Mon, 12 Feb 2024 08:58:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rZWo9-0006Zc-Fe
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:18 -0500
+ id 1rZWoI-0006fx-5p
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:27 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rZWo5-0007F3-AT
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:15 -0500
+ id 1rZWo7-0007FZ-Dm
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:18 -0500
 Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CD4MPB019025; Mon, 12 Feb 2024 13:57:09 GMT
+ 41CD4PK1019057; Mon, 12 Feb 2024 13:57:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=UgpOaAovTeO1vDAdQ6kfN2u1nHhSjOolyDkJtfp+V2E=;
- b=G6OaRhTe+50IwwAntbWCncwoPaPcCg8ri4N/vNK2aCHAFwHxfluhIBz2xoIXrzCNEGvO
- 6z5fv0zIkZMq6nUKiIEufIBr/bRAtrHYdLmCURHeVJC5gztQE9RD0NcHDrgDIWHEe9Aa
- 1IDTugfc5QsAuDy/7oqY9Np5AlS5c9hvRXgeSBQatuSLgrRQthEM322sVW3YnLEhVQA0
- tWINAnK3yVgUh5111tZ2YYSQBiP5zoeVzU8qVo+Hc2kBDv1KPkc8wYdJ6RSja/tKDOvk
- 44HmHNtvBym8mAzhcOoOq5jUiDDmQsXjatoP4nNrFSDHt62K+BXOTxUiZW7ECDWrK1Oj yA== 
+ bh=8K7Ud06VPXm69TMQsoAjMMYa+HU1h5r5mLzUbjebFGE=;
+ b=LqFxF4YKV4JxprjYcdG8zEztCnaQwMxr7HWHouK33xdcyAro3J5zoPEGX9gyH04M6d2D
+ WMJQ5FBSNZ82/DkMdZoBZQl8sxVB4RjFb/AroIloBnJJPvpUAOrwlslznCGJg/pOyINc
+ HPlZ+PLHxfRVkURXQJU7ieGuFEd5IqDZeKBXwSIF9l2qi1oqSPrZ5j8KTxuPu0ucH9/M
+ wKbLw2SLDqnabkqTx8UrTs8krk1UABtzI2ZjtNDbradn5UnP+gcPiA+f3qTM59Fn4mOG
+ mEjkk1jXLVjcVKmidRlrXucyEVi9LGSG6I1eiJhomvV0hgASQc69wICzZuc8uBh/HpPO XA== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w7kw1g42p-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w7kw1g42w-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 13:57:09 +0000
+ Mon, 12 Feb 2024 13:57:12 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41CDS3JM024776; Mon, 12 Feb 2024 13:57:09 GMT
+ with ESMTP id 41CDB4xI024619; Mon, 12 Feb 2024 13:57:12 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w5ykc2122-1
+ 3w5ykc213q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 13:57:09 +0000
+ Mon, 12 Feb 2024 13:57:12 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CDuqiD026744;
- Mon, 12 Feb 2024 13:57:08 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CDuqiF026744;
+ Mon, 12 Feb 2024 13:57:11 GMT
 Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-27-30.vpn.oracle.com
  [10.175.27.30])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3w5ykc20rs-6; Mon, 12 Feb 2024 13:57:08 +0000
+ 3w5ykc20rs-7; Mon, 12 Feb 2024 13:57:11 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -64,10 +64,9 @@ Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Jason Gunthorpe <jgg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH RFCv2 5/8] vfio/iommufd: Implement
- VFIOIOMMUClass::query_dirty_bitmap support
-Date: Mon, 12 Feb 2024 13:56:40 +0000
-Message-Id: <20240212135643.5858-6-joao.m.martins@oracle.com>
+Subject: [PATCH RFCv2 6/8] backends/iommufd: Add ability to disable hugepages
+Date: Mon, 12 Feb 2024 13:56:41 +0000
+Message-Id: <20240212135643.5858-7-joao.m.martins@oracle.com>
 In-Reply-To: <20240212135643.5858-1-joao.m.martins@oracle.com>
 References: <20240212135643.5858-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -80,8 +79,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402120105
-X-Proofpoint-GUID: ylsCExZkejUxexDwlQQ0CDPDCC0cXTXX
-X-Proofpoint-ORIG-GUID: ylsCExZkejUxexDwlQQ0CDPDCC0cXTXX
+X-Proofpoint-GUID: Kv5VI4NtVXWM-NB-7FgKHEMac4pkcU_X
+X-Proofpoint-ORIG-GUID: Kv5VI4NtVXWM-NB-7FgKHEMac4pkcU_X
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -107,134 +106,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ioctl(iommufd, IOMMU_HWPT_GET_DIRTY_BITMAP, arg) is the UAPI
-that fetches the bitmap that tells what was dirty in an IOVA
-range.
-
-A single bitmap is allocated and used across all the hwpts
-sharing an IOAS which is then used in log_sync() to set Qemu
-global bitmaps.
+Allow disabling hugepages to be dirty track at base page
+granularity in similar vein to vfio_type1_iommu.disable_hugepages
+but per IOAS.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- backends/iommufd.c       | 24 ++++++++++++++++++++++++
+ backends/iommufd.c       | 36 ++++++++++++++++++++++++++++++++++++
  backends/trace-events    |  1 +
- hw/vfio/iommufd.c        | 30 ++++++++++++++++++++++++++++++
- include/sysemu/iommufd.h |  3 +++
- 4 files changed, 58 insertions(+)
+ hw/vfio/iommufd.c        |  4 ++++
+ include/sysemu/iommufd.h |  4 ++++
+ qapi/qom.json            |  2 +-
+ 5 files changed, 46 insertions(+), 1 deletion(-)
 
 diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 954de61c2da0..dd676d493c37 100644
+index dd676d493c37..72fd98a9a50c 100644
 --- a/backends/iommufd.c
 +++ b/backends/iommufd.c
-@@ -259,6 +259,30 @@ int iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
-     return !ret ? 0 : -errno;
+@@ -29,6 +29,7 @@ static void iommufd_backend_init(Object *obj)
+     be->fd = -1;
+     be->users = 0;
+     be->owned = true;
++    be->hugepages = 1;
  }
  
-+int iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint64_t iova, ram_addr_t size,
-+                                     uint64_t page_size, uint64_t *data)
+ static void iommufd_backend_finalize(Object *obj)
+@@ -63,6 +64,14 @@ static bool iommufd_backend_can_be_deleted(UserCreatable *uc)
+     return !be->users;
+ }
+ 
++static void iommufd_backend_set_hugepages(Object *obj, bool enabled,
++                                          Error **errp)
 +{
-+    int ret;
-+    struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap = {
-+        .size = sizeof(get_dirty_bitmap),
-+        .hwpt_id = hwpt_id,
-+        .iova = iova, .length = size,
-+        .page_size = page_size, .data = (uintptr_t)data,
-+    };
++    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
 +
-+    ret = ioctl(be->fd, IOMMU_HWPT_GET_DIRTY_BITMAP, &get_dirty_bitmap);
-+    trace_iommufd_backend_get_dirty_bitmap(be->fd, hwpt_id, iova, size,
-+                                           page_size, ret);
-+    if (ret) {
-+        error_report("IOMMU_HWPT_GET_DIRTY_BITMAP (iova: 0x%"PRIx64
-+                     " size: 0x%"PRIx64") failed: %s", iova,
-+                     size, strerror(errno));
-+    }
-+
-+    return !ret ? 0 : -errno;
++    be->hugepages = enabled;
 +}
 +
- static const TypeInfo iommufd_backend_info = {
-     .name = TYPE_IOMMUFD_BACKEND,
-     .parent = TYPE_OBJECT,
-diff --git a/backends/trace-events b/backends/trace-events
-index feba2baca5f7..11a27cb114b6 100644
---- a/backends/trace-events
-+++ b/backends/trace-events
-@@ -17,3 +17,4 @@ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_
- iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
- iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
- iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%d enable=%d (%d)"
-+iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%d iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 361e659288fd..79b13bd262cc 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -25,6 +25,7 @@
- #include "qemu/cutils.h"
- #include "qemu/chardev_open.h"
- #include "pci.h"
-+#include "exec/ram_addr.h"
- #include "migration/migration.h"
+ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
+ {
+     UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
+@@ -70,6 +79,11 @@ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
+     ucc->can_be_deleted = iommufd_backend_can_be_deleted;
  
- static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-@@ -142,6 +143,34 @@ err:
-     return ret;
+     object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
++
++    object_class_property_add_bool(oc, "hugepages", NULL,
++                                   iommufd_backend_set_hugepages);
++    object_class_property_set_description(oc, "hugepages",
++                                          "Set to 'off' to disable hugepages");
  }
  
-+static int iommufd_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
-+                                      VFIOBitmap *vbmap, uint64_t iova,
-+                                      uint64_t size)
+ int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
+@@ -106,6 +120,28 @@ out:
+     trace_iommufd_backend_disconnect(be->fd, be->users);
+ }
+ 
++int iommufd_backend_set_option(int fd, uint32_t object_id,
++                               uint32_t option_id, uint64_t val64)
 +{
-+    VFIOIOMMUFDContainer *container = container_of(bcontainer,
-+                                                   VFIOIOMMUFDContainer,
-+                                                   bcontainer);
 +    int ret;
-+    VFIOIOASHwpt *hwpt;
-+    unsigned long page_size;
++    struct iommu_option option = {
++        .size = sizeof(option),
++        .option_id = option_id,
++        .op = IOMMU_OPTION_OP_SET,
++        .val64 = val64,
++        .object_id = object_id,
++    };
 +
-+    if (!bcontainer->dirty_pages_supported) {
-+        return 0;
++    ret = ioctl(fd, IOMMU_OPTION, &option);
++    if (ret) {
++        error_report("Failed to set option %x to value %"PRIx64" %m", option_id,
++                     val64);
 +    }
-+
-+    page_size = qemu_real_host_page_size();
-+    QLIST_FOREACH(hwpt, &container->hwpt_list, next) {
-+        ret = iommufd_backend_get_dirty_bitmap(container->be, hwpt->hwpt_id,
-+                                               iova, size, page_size,
-+                                               vbmap->bitmap);
-+        if (ret) {
-+            break;
-+        }
-+    }
++    trace_iommufd_backend_set_option(fd, object_id, option_id, val64, ret);
 +
 +    return ret;
 +}
 +
- static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
+ int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+                                Error **errp)
  {
-     long int ret = -ENOTTY;
-@@ -765,6 +794,7 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
-     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
-     vioc->host_iommu_device_init = vfio_cdev_host_iommu_device_init;
-     vioc->set_dirty_page_tracking = iommufd_set_dirty_page_tracking;
-+    vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
- };
+diff --git a/backends/trace-events b/backends/trace-events
+index 11a27cb114b6..076166552881 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -15,6 +15,7 @@ iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, u
+ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id, uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
+ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
++iommufd_backend_set_option(int iommufd, uint32_t object_id, uint32_t option_id, uint64_t val, int ret) " iommufd=%d object_id=%u option_id=%u val64=0x%"PRIx64" (%d)"
+ iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+ iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int ret) " iommufd=%d hwpt=%d enable=%d (%d)"
+ iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%d iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 79b13bd262cc..697d40841d7f 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -521,6 +521,10 @@ static int iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         goto err_alloc_ioas;
+     }
  
- static const TypeInfo types[] = {
++    if (!vbasedev->iommufd_dev.iommufd->hugepages) {
++        iommufd_backend_set_option(vbasedev->iommufd_dev.iommufd->fd, ioas_id,
++                                   IOMMU_OPTION_HUGE_PAGES, 0);
++    }
+     trace_iommufd_cdev_alloc_ioas(vbasedev->iommufd_dev.iommufd->fd, ioas_id);
+ 
+     container = g_malloc0(sizeof(*container));
 diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index 562c189dd92c..ba19b7ea4c19 100644
+index ba19b7ea4c19..bc6607e3d444 100644
 --- a/include/sysemu/iommufd.h
 +++ b/include/sysemu/iommufd.h
-@@ -55,5 +55,8 @@ int iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id,
-                                void *data_ptr, uint32_t *out_hwpt);
- int iommufd_backend_set_dirty_tracking(IOMMUFDBackend *be, uint32_t hwpt_id,
-                                        bool start);
-+int iommufd_backend_get_dirty_bitmap(IOMMUFDBackend *be, uint32_t hwpt_id,
-+                                     uint64_t iova, ram_addr_t size,
-+                                     uint64_t page_size, uint64_t *data);
+@@ -19,6 +19,7 @@ struct IOMMUFDBackend {
+     /*< protected >*/
+     int fd;            /* /dev/iommu file descriptor */
+     bool owned;        /* is the /dev/iommu opened internally */
++    bool hugepages;    /* are hugepages enabled on the IOAS */
+     uint32_t users;
  
- #endif
+     /*< public >*/
+@@ -30,6 +31,9 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be);
+ int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+                                Error **errp);
+ void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
++int iommufd_backend_set_option(int fd, uint32_t object_id,
++                               uint32_t option_id,
++                               uint64_t val64);
+ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly);
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 84af23fe245d..9ad27e2b939b 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -809,7 +809,7 @@
+ # Since: 9.0
+ ##
+ { 'struct': 'IOMMUFDProperties',
+-  'data': { '*fd': 'str' } }
++  'data': { '*fd': 'str', '*hugepages': 'bool' } }
+ 
+ ##
+ # @RngProperties:
 -- 
 2.39.3
 
