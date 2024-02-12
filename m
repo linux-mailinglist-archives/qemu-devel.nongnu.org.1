@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8981A851ED2
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 21:45:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EF851EE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 21:51:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZd9R-0004CH-0A; Mon, 12 Feb 2024 15:43:41 -0500
+	id 1rZdGH-0005k1-Cz; Mon, 12 Feb 2024 15:50:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZd9O-0004C7-O7
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:43:38 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdGC-0005jU-Jl
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:41 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZd9M-00020z-Q4
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:43:38 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rZdGA-0003QJ-6J
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 15:50:40 -0500
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CKbW1V019491; Mon, 12 Feb 2024 20:43:32 GMT
+ 41CKascn017559; Mon, 12 Feb 2024 20:50:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pp1; bh=LXBXs7t5w751PCFnKTw3LMF1mh1y1ygnIYfXuNN/5Cs=;
- b=E7YkDJnpCOIH2zcvm0fDkaAYCJiZUJ36MlaB43QmvBAnd3WqPttNnNzqfvcTFdtN3muL
- zr8DzEYKSR+Wu0REjBWhKsMOBv4DFRK15SmMjh2ZIa0jFDmHV2RGtPYMMUg8qAo8g4yV
- 20Wt1/v30AGLkO7dJ2+XPZ6Zmc2gX/uZHZOvLuY3nXgsMYZ2uguBMdTKkjnWA9P1ygJr
- lheBy/SZy8wVVg0XgX68DVYIlX6kRN9g2izQnPp+lLhDjp+W8Bv0v6VG3HdABYdR6vTH
- ujgk37TJ2Yn54kTwhTsv5l4sGoaj0PHa3S0Z04qLeVxTa9M0kY4asHog/2U1WNoAxRFu Ig== 
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7the82t7-1
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=pZpk2dJjr4LZe4LQFXB8PlBikKDWfGUnXxvd3qiS1tQ=;
+ b=FT9KA9XiRkQdX3cOSZ7fOTe+ncuVH3SvOS1XjHWMHVY2YbKrMmEEFuD3U93BBdK8+++d
+ NuJvZHF9lDruOj4ege92UJqaCMc7ElgIqCLHCpzBMmGh7cyxj/9zZBK+qb7YpH5Fzgfv
+ dK4f1BpDdhvbTErPesx9hJLx4D8GNQ+JsJSzpgMWn0aRJ3/mcrC/iohHAgSafgvRMyPg
+ EKHfscn9jaX2HgCPp28RcDnOsovc3Zf5CZfeVa3AUFCBSrAH5MizuVJ80zmU8a0chIxF
+ jdCpTwALZWYI3sqzAl0RmmdlFzqJDNnYE8ysKQ8v5AJBPFHlIfGbtlIV/4Lcm6NHQhn6 JA== 
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7th585yk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Feb 2024 20:43:32 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CIZWn0004247; Mon, 12 Feb 2024 20:43:31 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv038t5-1
+ Mon, 12 Feb 2024 20:50:34 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41CJdLaQ024762; Mon, 12 Feb 2024 20:50:32 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6mfp3376-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 Feb 2024 20:43:31 +0000
+ Mon, 12 Feb 2024 20:50:32 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41CKhRjT18743812
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41CKoSrY2359950
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 20:43:29 GMT
+ Mon, 12 Feb 2024 20:50:30 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6670B2004B;
- Mon, 12 Feb 2024 20:43:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 6FFC52004D;
+ Mon, 12 Feb 2024 20:50:28 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1297120040;
- Mon, 12 Feb 2024 20:43:27 +0000 (GMT)
-Received: from heavy (unknown [9.179.4.126])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 12 Feb 2024 20:43:26 +0000 (GMT)
-Date: Mon, 12 Feb 2024 21:43:25 +0100
+ by IMSVA (Postfix) with ESMTP id 056AC20040;
+ Mon, 12 Feb 2024 20:50:28 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.179.4.126])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 12 Feb 2024 20:50:27 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Cc: QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: Re: [PULL 05/13] linux-user: Use walk_memory_regions for
- open_self_maps
-Message-ID: <2no4imvz2zrar5kchz2l3oddqbgpj77jgwcuf7aritkn2ok763@i2mvpcihztho>
-References: <20230901204251.137307-1-richard.henderson@linaro.org>
- <20230901204251.137307-6-richard.henderson@linaro.org>
- <9860cd401db66e6bf10e9e41df148b25ee6c73fd.camel@linuxfoundation.org>
- <c845093f-1fe0-477e-bf5e-db22c985241a@tls.msk.ru>
- <3cc4df1a6fe27b211b29d2c17846812936255d7a.camel@linuxfoundation.org>
- <ca83fc98-219c-47b1-a16b-f281d914e4a0@linaro.org>
- <360135aa106e1925979bc0efd5a5d6fdeed4202d.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <360135aa106e1925979bc0efd5a5d6fdeed4202d.camel@linuxfoundation.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I8fNohOHzjyltZ0frmO5B5D4gvvESc5C
-X-Proofpoint-GUID: I8fNohOHzjyltZ0frmO5B5D4gvvESc5C
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/2] linux-user: Map low priority rt signals
+Date: Mon, 12 Feb 2024 21:45:41 +0100
+Message-ID: <20240212205022.242968-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Lcu03cPTCa7oJuD0MADA7rDP8y01NWix
+X-Proofpoint-ORIG-GUID: Lcu03cPTCa7oJuD0MADA7rDP8y01NWix
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-12_16,2024-02-12_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 spamscore=0
- mlxlogscore=999 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- impostorscore=0 suspectscore=0 mlxscore=0 adultscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402120160
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0
+ mlxlogscore=639 clxscore=1015 malwarescore=0 mlxscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402120161
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -112,69 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Feb 05, 2024 at 11:11:06AM +0000, Richard Purdie wrote:
-> On Mon, 2024-02-05 at 13:05 +1000, Richard Henderson wrote:
-> > On 1/26/24 23:52, Richard Purdie wrote:
-> > > On Fri, 2024-01-26 at 16:33 +0300, Michael Tokarev wrote:
-> > > > 26.01.2024 16:03, Richard Purdie wrote:
-> > > > > I've run into a problem with this change.
-> > > > > 
-> > > > > We (Yocto Project) upgraded to qemu 8.2.0 recently and after that we
-> > > > > started seeing errors cross compiling webkitgtk on x86_64 for x86_64
-> > > > > during the introspection code which runs under user mode qemu.
-> > > > 
-> > > > Besides your observations, please be aware there's quite a few issues in 8.2.0.
-> > > > Please take a look at https://gitlab.com/mjt0k/qemu/-/commits/staging-8.2/
-> > > > (and https://gitlab.com/qemu-project/qemu/-/commits/staging-8.2/ which is updated
-> > > > less often) for fixes already queued up, if you haven't looked there already.
-> > > > 8.2.1 stable/bugfix release is scheduled for the beginning of the next week.
-> > > 
-> > > Thanks.
-> > > 
-> > > I should note that I did test the staging-8.2 branch and nothing there
-> > > helped. The issue was also present with master as of yesterday.
-> > > 
-> > > https://bugzilla.yoctoproject.org/show_bug.cgi?id=15367 is Yocto
-> > > Projects tracking of the issue which has the commits for master and
-> > > staging-8.2 that I tested.
-> > 
-> > The yocto logs referenced here are not helpful for reproducing the problem.
-> 
-> It took me a couple of days I didn't have to workout which commit
-> caused it, which versions showed the issue and how to work around it.
-> 
-> It looks host kernel specific since it doesn't happen on some systems
-> so even with the binaries/command/environment vars, it may not be
-> enough.
-> 
-> I was hoping the indication of the cause might help point to the fix as
-> there is quite a bit of work in trying to extract this into a
-> reproducer. The failure is 20 mins into a webkitgtk compile on a remote
-> CI system which no longer has the context on it.
-> 
-> > Please extract a binary to run, inputs, and command-line.
-> 
-> I wish I could say that to the bug reports I get! :)
-> 
-> I'll do my best but finding the time is going to be a challenge.
-> 
-> Cheers,
-> 
-> Richard
+Hi,
 
-I just ran into a similar crash and could reproduce it with
-5005aed8a7e7 alpha-linux-user as follows:
+There are apps out there that want to use SIGRTMAX, which linux-user
+currently does not map to a host signal. The reason is that with the
+current approach it's not possible to map all target signals, so it
+was decided to sacrifice the end of the range.
 
-#include <fcntl.h>
-#include <sys/shm.h>
+In this series I propose to sacrifice the middle instead. Patch 1 makes
+the change, patch 2 is a test.
 
-int main(void)
-{
-        shmat(shmget(IPC_PRIVATE, 1836016, IPC_CREAT | 0600), (void *)0x20000804000, 0);
-        open("/proc/self/maps", O_RDONLY);
-}
+Best regards,
+Ilya
 
-Apparently an mmap() is missing for shmat() when g>h and shmaddr is
-specified. The mismatch between the host's and the guest's view of the
-mapping's tail appears to be causing the SEGV.
+Ilya Leoshkevich (2):
+  linux-user: Map low priority rt signals
+  tests/tcg: Add SIGRTMIN/SIGRTMAX test
+
+ linux-user/signal.c                           | 18 +++++---
+ tests/tcg/multiarch/linux/linux-sigrtminmax.c | 41 +++++++++++++++++++
+ 2 files changed, 54 insertions(+), 5 deletions(-)
+ create mode 100644 tests/tcg/multiarch/linux/linux-sigrtminmax.c
+
+-- 
+2.43.0
+
 
