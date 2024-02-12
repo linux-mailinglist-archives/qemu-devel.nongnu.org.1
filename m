@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA988522C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3542F8522BF
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1c-0003DG-Cv; Mon, 12 Feb 2024 18:47:48 -0500
+	id 1rZg1c-0003EE-UA; Mon, 12 Feb 2024 18:47:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-0003CO-KU
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-0003CP-NO
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
 Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1X-00008P-4i
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1X-00008u-W6
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:45 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 69DA0CE17E6;
- Mon, 12 Feb 2024 23:47:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADBCC433F1;
- Mon, 12 Feb 2024 23:47:37 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id 2A5E7CE17E7;
+ Mon, 12 Feb 2024 23:47:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BEAC433C7;
+ Mon, 12 Feb 2024 23:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781658;
- bh=vqjS4Tn8JsTETJjKAhscWBmZAWUWeDAIiHK9Uvc1mpY=;
+ s=k20201202; t=1707781660;
+ bh=QEDKIdARto+ZCseIU47VCEGfs+CMVMZ3Lv39zKgePHQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NtPjrtq+hvNwgMVahFvUmUaA4tlGLNc6VAQe9oxFkepfJswZURWRuLstexr5dPHdL
- Gyfs2dIdeUOzuB6sNx8B1wDfChmlzwaCcYhLVu8+IOvhl8GudDfddSvgydvtxtIRiw
- HJwJzs6JWrsPHKYBIZ0f0eg1k3xk5G5hcOpigbxYQXDxTLDwyXv8KS2IbwFCm4Pxku
- YtAWLLwyCm9fAPAuhJyZk2M0MEe5L+RTywZY3w/rNijK9Pg+hb/bMKltRI50ekL/w/
- q9VcvbwxBwpw7lIPiE7smQbcOmy9SW/h9iAQrUXQHnKViTEovBA3f+fpHz2knn1KT+
- FIxDLDRqL84fQ==
+ b=g/Xq8CG+QSRseydqktWIUlAXviVy4BX3/1N/U11esSI5DYPwlCj/NGrJc2D15Nyf2
+ B1Ms25z1CUQB2IRfAknEZnJXr3JByKPsTsUpmwPzPUVJDAL74vx/I4+pSlXnVa7J+1
+ tB6t4YZQk1TrT83wSyIgD/pEe1Ch800wlyQ+z+/gJTE+XkBictZMpET0pjDWCUewku
+ I3qRgHECvTvuy2vd6MfNI2T9WqkHOS+7eKFx0NTciA/0Eq8FFC6XSdJEmvRtLwI9kU
+ 7402YM/xq/PztlQlTQHhTt+WJmgmPBicAGJzxRyKz6GGVfHZ2oGhUq5JDEX9DY3r89
+ Oj09MqD7NvSGg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
  Helge Deller <deller@gmx.de>
-Subject: [PULL 07/12] lasi: Add reset I/O ports for LASI audio and FDC
-Date: Tue, 13 Feb 2024 00:47:18 +0100
-Message-ID: <20240212234723.222847-8-deller@kernel.org>
+Subject: [PULL 08/12] target/hppa: Allow read-access to PSW with rsm 0,
+ reg instruction
+Date: Tue, 13 Feb 2024 00:47:19 +0100
+Message-ID: <20240212234723.222847-9-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
 References: <20240212234723.222847-1-deller@kernel.org>
@@ -70,78 +71,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Linux writes zeroes at bootup into the default ports for LASI audio and
-LASI floppy controller to reset those devices.  Allow writing to those
-registers to avoid HPMCs.
+HP-UX 11 and HP ODE tools use the "rsm 0,%reg" instruction in not priviledged
+code paths to get the current PSW flags. The constant 0 means that no bits of
+the PSW shall be reset, so this is effectively a read-only access to the PSW.
+Allow this read-only access even for not privileged code.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/misc/lasi.c         | 11 +++++++++++
- include/hw/misc/lasi.h |  2 ++
- 2 files changed, 13 insertions(+)
+ target/hppa/translate.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/lasi.c b/hw/misc/lasi.c
-index 9cfa5bb316..970fc98b5c 100644
---- a/hw/misc/lasi.c
-+++ b/hw/misc/lasi.c
-@@ -36,10 +36,13 @@ static bool lasi_chip_mem_valid(void *opaque, hwaddr addr,
-     case LASI_IAR:
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 53ec57ee86..01f3188656 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -2156,10 +2156,16 @@ static bool trans_ldsid(DisasContext *ctx, arg_ldsid *a)
  
-     case LASI_LPT:
-+    case LASI_AUDIO:
-+    case LASI_AUDIO + 4:
-     case LASI_UART:
-     case LASI_LAN:
-     case LASI_LAN + 12: /* LASI LAN MAC */
-     case LASI_RTC:
-+    case LASI_FDC:
+ static bool trans_rsm(DisasContext *ctx, arg_rsm *a)
+ {
++#ifdef CONFIG_USER_ONLY
+     CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
+-#ifndef CONFIG_USER_ONLY
++#else
+     TCGv_i64 tmp;
  
-     case LASI_PCR ... LASI_AMR:
-         ret = true;
-@@ -80,6 +83,7 @@ static MemTxResult lasi_chip_read_with_attrs(void *opaque, hwaddr addr,
-     case LASI_UART:
-     case LASI_LAN:
-     case LASI_LAN + 12:
-+    case LASI_FDC:
-         val = 0;
-         break;
-     case LASI_RTC:
-@@ -145,12 +149,19 @@ static MemTxResult lasi_chip_write_with_attrs(void *opaque, hwaddr addr,
-     case LASI_LPT:
-         /* XXX: reset parallel port */
-         break;
-+    case LASI_AUDIO:
-+    case LASI_AUDIO + 4:
-+        /* XXX: reset audio port */
-+        break;
-     case LASI_UART:
-         /* XXX: reset serial port */
-         break;
-     case LASI_LAN:
-         /* XXX: reset LAN card */
-         break;
-+    case LASI_FDC:
-+        /* XXX: reset Floppy controller */
-+        break;
-     case LASI_RTC:
-         s->rtc_ref = val - time(NULL);
-         break;
-diff --git a/include/hw/misc/lasi.h b/include/hw/misc/lasi.h
-index 0a8c7352be..f01c0f680a 100644
---- a/include/hw/misc/lasi.h
-+++ b/include/hw/misc/lasi.h
-@@ -26,9 +26,11 @@ OBJECT_DECLARE_SIMPLE_TYPE(LasiState, LASI_CHIP)
- #define LASI_IAR        0x10
++    /* HP-UX 11i and HP ODE use rsm for read-access to PSW */
++    if (a->i) {
++        CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
++    }
++
+     nullify_over(ctx);
  
- #define LASI_LPT        0x02000
-+#define LASI_AUDIO      0x04000
- #define LASI_UART       0x05000
- #define LASI_LAN        0x07000
- #define LASI_RTC        0x09000
-+#define LASI_FDC        0x0A000
- 
- #define LASI_PCR        0x0C000 /* LASI Power Control register */
- #define LASI_ERRLOG     0x0C004 /* LASI Error Logging register */
+     tmp = tcg_temp_new_i64();
 -- 
 2.43.0
 
