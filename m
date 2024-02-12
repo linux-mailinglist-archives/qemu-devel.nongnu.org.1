@@ -2,57 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6280485194D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 17:32:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 751B3851982
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 17:36:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZZDo-000056-Id; Mon, 12 Feb 2024 11:31:56 -0500
+	id 1rZZIE-0003pL-Ka; Mon, 12 Feb 2024 11:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rZZDk-0008WN-GF
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:31:53 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rZZI9-0003nL-KR
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:36:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rZZDi-0004y8-7F
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:31:52 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TYVHt0Swxz689sn;
- Tue, 13 Feb 2024 00:28:10 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 321A5140B73;
- Tue, 13 Feb 2024 00:31:45 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 12 Feb
- 2024 16:31:44 +0000
-Date: Mon, 12 Feb 2024 16:31:43 +0000
-To: <linuxarm@huawei.com>, <qemu-devel@nongnu.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
- <david@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, <linux-cxl@vger.kernel.org>
-CC: Mattias Nissler <mnissler@rivosinc.com>
-Subject: Bug: physmem: address_space_read_cached_slow() accesses wrong
- MemoryRegion on latter part of large reads.
-Message-ID: <20240212163143.0000690a@huawei.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rZZI7-0005o4-V8
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:36:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707755782;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=48oA5tRdvShoGmS5n9L33tMrwd5YbVad5gdD5mRpFcc=;
+ b=an4bR7dgHnA1wIUzcigGJcu8zLD4Vxe0kULj0sizIwITfXP0adV/6JDM6UO6PlBABl5u06
+ NJWuUgC/bPMO7Ar7Xjw/1XGbQQkh2VERkCqHGGwYXZ2r4ezInKFi0B0A8cQetfuJDOEClM
+ 1P0QCfSTRTmK/1czfgKn+4t6/Xjvfpw=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-o0IgO1s7NSOKZFTGtfRHxA-1; Mon, 12 Feb 2024 11:36:21 -0500
+X-MC-Unique: o0IgO1s7NSOKZFTGtfRHxA-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3bff4204b94so4261873b6e.0
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 08:36:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707755780; x=1708360580;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=48oA5tRdvShoGmS5n9L33tMrwd5YbVad5gdD5mRpFcc=;
+ b=M4utIDvFo4aV317Kaa1sRipKD0I7Nswp4CNyyIVky0v267h/c5FW48gOtnpD8pfQrC
+ FK58FOwi6hDTKeFvoFkAnSAmlXlLllB1eEMxZ421fDUFEZtrnL+mlTwtkq2r0OnKVvEp
+ 1w5LUkX/3ExTms/DRkn8jpbiiroRIXSLp1ZueAe/tdlhvL20Q1BKKPRoORk6mGcir+y1
+ zJh6Ye9cOGZTCfbnYOaGiJGYLuRFhhPBoz/eq+d/yO49/lbLmPaoOHTpYljJbzjd/77O
+ Y+ViPKa/BmuW4bKXI0KcVoK8NWvckb3gGOkEjNXrk/DJCMhP4EmrTeq0+n9ryT+FUEtB
+ fg0A==
+X-Gm-Message-State: AOJu0YwC4yCa2zjlPaCoEbkeO0cwe/aG/XcJC3Rf78hs8lJ7c+NLEqIa
+ r7jzTXcKxXJWZbZFr+G/ULI9YHWWcdusvBDUFZn6Xt51RbdTGeoOz4dfCwd7UPA8GF8OxCSEXjS
+ NSQM04g89uKP8udROtZq3VPXgjaCDGhO2TvMFCQk0KaxvTJce/+3E
+X-Received: by 2002:a05:6808:398f:b0:3bf:cd51:b8d4 with SMTP id
+ gq15-20020a056808398f00b003bfcd51b8d4mr12588584oib.11.1707755780660; 
+ Mon, 12 Feb 2024 08:36:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHycwl9oFi4PWicP52sx16qqOEkhPusHwJJW4W9Y66PfzdtDTkaqxLjP7u3aN/GBKxUahH+0g==
+X-Received: by 2002:a05:6808:398f:b0:3bf:cd51:b8d4 with SMTP id
+ gq15-20020a056808398f00b003bfcd51b8d4mr12588571oib.11.1707755780460; 
+ Mon, 12 Feb 2024 08:36:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUf7eT5CviPXcWp2xieVbUladSAb2BBenB5SIKQktO1toVzuFzHUVRLXze5kzbyj0iE1xutA3sDBT45wK7e9fHIflmKC7NlVAGdPfLcyxpoJ/+DlF4p7tmuWzd/bIYwytpLj11P7Xaum/NQrAXfjB1Lxjt44HoBbV1GiZh3jmcMMQOd6PmhDleYnds5MxEqrihapF2HY1D39aYKDFi/OfNkIWx2exH3d3uZrOKJR4ibvthegPEvJU2Y2DF7FKUTzZ3cx+7eklJtxPivdI1rSwxCBuGJH+KKVDfaNYsEnTmyYAiF8HGsZzFEzu7TP6DWrR3T/h1NCEYCBXg=
+Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
+ ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
+ by smtp.gmail.com with ESMTPSA id
+ o10-20020a05620a110a00b00783b6da58a9sm2170981qkk.39.2024.02.12.08.36.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Feb 2024 08:36:20 -0800 (PST)
+Message-ID: <9a0c596f-ba81-4f77-96cc-9efb49e04786@redhat.com>
+Date: Mon, 12 Feb 2024 17:36:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/14] memory: Add Error** argument to .log_global*()
+ handlers
+Content-Language: en-US
+To: Avihai Horon <avihaih@nvidia.com>, Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20240207133347.1115903-1-clg@redhat.com>
+ <20240207133347.1115903-4-clg@redhat.com> <ZcRrJIrInupeanqB@x1n>
+ <c9c45081-4874-4c89-b283-1b19d21ee670@redhat.com>
+ <8343df56-d6a4-42e7-9140-9610fd140e9d@nvidia.com>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <8343df56-d6a4-42e7-9140-9610fd140e9d@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_SORBS_WEB=1.5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,79 +109,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi All,
+On 2/12/24 09:43, Avihai Horon wrote:
+> Hi Cedric,
+> 
+> On 09/02/2024 12:14, Cédric Le Goater wrote:
+>> External email: Use caution opening links or attachments
+>>
+>>
+>> On 2/8/24 06:48, Peter Xu wrote:
+>>> On Wed, Feb 07, 2024 at 02:33:36PM +0100, Cédric Le Goater wrote:
+>>>> @@ -2936,14 +2940,14 @@ void memory_global_dirty_log_start(unsigned int flags)
+>>>>       trace_global_dirty_changed(global_dirty_tracking);
+>>>>
+>>>>       if (!old_flags) {
+>>>> -        MEMORY_LISTENER_CALL_GLOBAL(log_global_start, Forward);
+>>>> +        MEMORY_LISTENER_CALL_GLOBAL(log_global_start, Forward, errp);
+>>>>           memory_region_transaction_begin();
+>>>>           memory_region_update_pending = true;
+>>>>           memory_region_transaction_commit();
+>>>>       }
+>>>>   }
+>>>>
+>>>> -static void memory_global_dirty_log_do_stop(unsigned int flags)
+>>>> +static void memory_global_dirty_log_do_stop(unsigned int flags, Error **errp)
+>>>>   {
+>>>>       assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
+>>>>       assert((global_dirty_tracking & flags) == flags);
+>>>> @@ -2955,7 +2959,7 @@ static void memory_global_dirty_log_do_stop(unsigned int flags)
+>>>>           memory_region_transaction_begin();
+>>>>           memory_region_update_pending = true;
+>>>>           memory_region_transaction_commit();
+>>>> -        MEMORY_LISTENER_CALL_GLOBAL(log_global_stop, Reverse);
+>>>> +        MEMORY_LISTENER_CALL_GLOBAL(log_global_stop, Reverse, errp);
+>>>>       }
+>>>>   }
+>>>
+>>> I'm a little bit surprised to see that MEMORY_LISTENER_CALL_GLOBAL()
+>>> already allows >2 args, with the ability to conditionally pass over errp
+>>> with such oneliner change; even if all callers were only using 2 args
+>>> before this patch..
+>> yes. The proposal takes the easy path.
+>>
+>> Should we change all memory listener global handlers :
+>>
+>>   begin
+>>   commit
+>>   log_global_after_sync
+>>   log_global_start
+>>   log_global_stop
+>>
+>> to take an extra Error **errp argument ?
+>>
+>> I think we should distinguish begin + commit handlers from the log_global_*
+>> with a new macro. In which case, we could also change the handler to return
+>> a bool and fail at the first error in MEMORY_LISTENER_CALL_GLOBAL(...).
+> 
+> I think we must fail at first error in any case. Otherwise, if two handlers error and call error_setg() with errp, the second handler will assert IIUC.
 
-The continuing saga of a getting CXL emulation to play well with using the
-memory as normal RAM ran into (hopefully) a last issue.
+Good point. I will respin with a new MEMORY_LISTENER_CALL_GLOBAL_ERR macro
+exiting the loop at first error.
 
-When running my boot image via virtio-blk-pci and having deliberately forced some
-buffers to end up in the CXL memory via
-$ numactl --membind=1 ls
-then on shut down I was getting a failure to allocate a large enough DMA buffer
-even with Mattias' set to increase the size and an extra patch to apply that to
-the main system memory (as virtio ignores iommu and PCI address space).
-gdb/bt pointed at virtqueue_split_pop() bt pointed later than the actual problem
-as descriptors were loaded but corrupt here:
-https://elixir.bootlin.com/qemu/latest/source/hw/virtio/virtio.c#L1573
-https://elixir.bootlin.com/qemu/latest/source/hw/virtio/virtio.c#L306
+Thanks,
 
-After a chase (via a highly suspicious read size of 0xffffffff it turns
-out it was issuing a 16 byte read via address_space_read_cached_slow() and
-getting a very odd answer.
+C.
 
-The first 8 bytes was the correct virtio descriptor content the second 8
-were coming from the flash region at physical address 0 onwards on arm-virt.
-
-With those breadcrumbs the problem was (I think) easy to find.
-
-https://elixir.bootlin.com/qemu/latest/source/include/exec/memory.h#L3029
-address_space_read_cached_slow() operates on a MemoryRegionCache with the
-hwaddr being relative to the start of that cached region.
-
-However it calls flatview_read_continue()  That's fine as long as we can
-do the read in one go.
-
-
-For normal memory flatview_read_continue() will deal with splitting a read up
-but on each iteration it loads the mr via
-mr = flatview_translate(fv, addr, &addr1, &l, false, attrs);
-to cope with reads that cross MemoryRegions.
-https://elixir.bootlin.com/qemu/latest/source/system/physmem.c#L2737
-
-Unfortunately the addr passed in here is the one addressing into the
-MemoryRegionCache offset by whatever we already read.
-Which for this bug example that was 0x8 (in the flash memory).
-
-Assuming I have correctly identified the problem.
-One potential fix is to define a new
-
-MemtxResult address_space_read_cached_continue(MemoryRegionCache *cache,
-                                               hwaddr addr, MemTxAttr attrs,
-                                               void *ptr, hwaddr len,
-                                               hwaddr addr1, hwaddr l,
-                                               MemoryRegion *mr)
-
-That is nearly identical to flatview_read_continue() but with the 
-mr = flatview_translate() replaced with
-mr = address_space_translate_cached(cache, addr, &addr1, &l, false, attrs)
-
-That's a bit ugly though given the duplicated code but any other change
-is going to involve some more invasive splitting out of utility functions
-to share all but the outer loop.
-
-I don't currently have a test hitting it but assume
-flatview_write_continue() in address_space_write_cached_slow() has the
-same problem.
-
-Jonathan
-
-p.s. Will tidy this and the rest of my house of cards up then post it.
-I suspect we'll carry on hitting QEMU limitations with the CXL emulation
-but for now I have x86 and ARM setups that work with TCG.
-Hmm. Need to spend some time getting regressions tests in place :(
 
