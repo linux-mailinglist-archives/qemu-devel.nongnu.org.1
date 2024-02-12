@@ -2,139 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5E7851891
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 16:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E818518A2
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 17:05:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZYgg-0007lY-CR; Mon, 12 Feb 2024 10:57:42 -0500
+	id 1rZYnR-00030Z-Ju; Mon, 12 Feb 2024 11:04:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rZYge-0007lA-64
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 10:57:40 -0500
-Received: from mail-mw2nam12on20601.outbound.protection.outlook.com
- ([2a01:111:f403:200a::601]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rZYnO-00030K-Pk
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:04:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1rZYga-0006vk-IB
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 10:57:39 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U7rC5J9qCwcApvpQXD0gSHBidSszPSCFYXi0SSMZYzOs2bd5TisdRH14adfNzYU28hqxwdgzzgI32cIUyHES+Nw187k1vFf6njbBTuyvFL1Fk0EBh6rsIOVUM5h6H3C4PZUlY7ZqyWn5t/EnjgIl0B8tNP1r0+jaeSviNrLDRB5kAtw4qGxbCbBIhcRIECASJ40PVfDB8MJN3l3yXFPmK7zk4YBPpX+rWs9zLLMvQEIOVUnzAgY4rhUK8b+6iPndhut08QcByt/MQW20XmD6MlG+Gsj+Aydmin588r7wgQUsErtiCeCb5BCCwgXA26Jd7r5/ItPMe1bQn6gQLiVTgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WfILNxu2ncaSsNPIsCnNOd1mtNXpb2LIhlqea3ExNPo=;
- b=HsuvxUgTjrOU9jPcbrXlwzifjZvzwoTgOcGvurzGPa8tLEVM5eVmAcWl2gbSHCMA1IkCrBh+H3oJJ9vG60JT6bgfjyFuKhZqQkmk+NQVku8SACnzBqjVTVoed/dFiJg6W7INsKjvKKmj3Oria4cdc0PXrbykz5kUTI+OUDCevb3eunZxZGrFUW/Bp67n2F+NtnBpp2n5OpBXpjVQ8eVbNB/TQR4akwQr38L777pTkRdn9TKAIihUneUcFVKNeNR9VpxSujpZFRNM1QGBinzke8w8aQDrYDk+2mRucuKlmqK9wpLuMmOze5vPS9yuvLWO3QSj3sZjll07zXLLa42qug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WfILNxu2ncaSsNPIsCnNOd1mtNXpb2LIhlqea3ExNPo=;
- b=KMDDcPEMklPkCuwX5bITBioNbHEnzG/9NvUFLr0gIhT2+LyJC3PGw5WonxgRlpOdxdceBT0zwWYxh4Lcr/V9nrfZlcUUS9YTnO9z5ifmzLENteF/176exgN0OeLPrQ36YzTbdil54oxEyOs2eAYOL+AF7m2mxupsiw30SxXtIFHf7UIe7WA7lRjApleqdsjCutMG/VBvcb9rleW3zvsAqdh7K0AIsPHO4Rf0Vvcqb/9SeMb6D0R/F2J4/tOF5/sGMfOaKS6ds6MCd4yLN4VvgxAKfm7oG2x9T9BbAIbBahTU24z3L/HZPYNNyHrwZSDOb8kj1HsL9Wp7pFPVoXgvfg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by DM6PR12MB4944.namprd12.prod.outlook.com (2603:10b6:5:1ba::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.24; Mon, 12 Feb
- 2024 15:57:30 +0000
-Received: from DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::c444:5cde:d19a:c73e]) by DM6PR12MB5549.namprd12.prod.outlook.com
- ([fe80::c444:5cde:d19a:c73e%7]) with mapi id 15.20.7292.022; Mon, 12 Feb 2024
- 15:57:30 +0000
-Message-ID: <29b592ad-05c8-4552-ab24-99e3a32ba90d@nvidia.com>
-Date: Mon, 12 Feb 2024 17:57:24 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rZYnN-0008AM-2y
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 11:04:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707753875;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I3roUxIEJvzC1gCDtu5pbypgiw8zatYlhLu24vzKOLs=;
+ b=JT/ROWlnjXddwDuuMwZSTIIgGYnEKehS2/cGjqhrq36EnVciiMvI0Yjvlj2K5MdVfXiC2p
+ 2KkoccaKscDTZ2UaFBXwYp00m/t84jAdTgrAvS9qEsHaPWaA+iPTTP3xQOF9750fj/5AD9
+ qBAWhoddQhb2QoFlqY50YkIVspgZTtE=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-XpyOgalVNayopjs4ifSAbg-1; Mon, 12 Feb 2024 11:04:33 -0500
+X-MC-Unique: XpyOgalVNayopjs4ifSAbg-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7830ab8fb5aso414617485a.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 08:04:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707753872; x=1708358672;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I3roUxIEJvzC1gCDtu5pbypgiw8zatYlhLu24vzKOLs=;
+ b=WlnJxhbToiCbAomtWlOtAB7WMBmDAF+wtI5LqzJKFkF+PNFuy0RabInDNWq/1rXrAm
+ MfmqBk6k3WabdAVjUKK4AyfhUSpDdf91IGkyYsrpCHUIh7m56vfVx7A8LqMfcIARQGcy
+ /vFvyiz1pK2IVoIdvUsD91/tXaRhvjO5Mfl0REbhKkBaw8rmhiM+vM/DineJySCtfjQM
+ cRU4Ncm8GtIEJwPt9bCE4AGTN1j6HJ8EhnNmAbDJGx8O8FjC5TloZCUoJmu3yZYfuVL7
+ ZOp5ySF3Ifg1sOI0KWvPgosShj4IEdEZ2GGwd4SuUSlYFB+q472sbVedNMclyQNwYpbR
+ Iy5A==
+X-Gm-Message-State: AOJu0YxFFb76Bi4p6dOVTl0hemWZMz90InF/OJa+DJLz1mb9cKUO7v/6
+ hKyVASM+JVzqLUoXMyOfvASxcjmSUAG+dsX8c/UZtIMKhl0bcYS8kr7e7OhW108BbcTMBmVk02z
+ nmekDWmW1mN1p2vRWc2JAB/G0Co60I/0wFq3Fdl3ItKwcr9qBhT06cE5QP5t1
+X-Received: by 2002:ae9:e715:0:b0:785:ca4d:2a3a with SMTP id
+ m21-20020ae9e715000000b00785ca4d2a3amr6640988qka.77.1707753872115; 
+ Mon, 12 Feb 2024 08:04:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDnYeZyO4bt8izNKVFkNHRNL+YcMEMMAvFqjT5uLHqKJV7NH7Yg/XUL4MYFw+9ePSOoIlOJw==
+X-Received: by 2002:ae9:e715:0:b0:785:ca4d:2a3a with SMTP id
+ m21-20020ae9e715000000b00785ca4d2a3amr6640943qka.77.1707753871555; 
+ Mon, 12 Feb 2024 08:04:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUjS7l8DNKCx+gzwhpwWP47U9dWdl/p9BxiqiczYhw97mlqFqMRGY0jOEj124WumOFlCtZ7a0CedA8A+prRlAaK8VTMOZ76+0yyEOTMOj9U7jgRo4hqplIARqyW+R6KMGiGo+hr6EiE0vKwHC93Gqim
+Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
+ ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
+ by smtp.gmail.com with ESMTPSA id
+ m4-20020a05620a24c400b00785bdc9d08esm2149649qkn.32.2024.02.12.08.04.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Feb 2024 08:04:31 -0800 (PST)
+Message-ID: <da0532c4-818f-4aab-8ad4-46323d85f50d@redhat.com>
+Date: Mon, 12 Feb 2024 17:04:28 +0100
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/14] migration: Add Error** argument to .save_setup()
- handler
+Subject: Re: [RFC PATCH 14/14] migration: Fix return-path thread exit
 Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 References: <20240207133347.1115903-1-clg@redhat.com>
- <20240207133347.1115903-2-clg@redhat.com>
- <5addf455-c0e0-4aa6-8970-c8050a194783@nvidia.com>
- <2052b1e4-608d-4b44-a67c-e1d90e194f81@redhat.com>
-From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <2052b1e4-608d-4b44-a67c-e1d90e194f81@redhat.com>
+ <20240207133347.1115903-15-clg@redhat.com> <ZcRtSdInpBGgWhk0@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <ZcRtSdInpBGgWhk0@x1n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO3P123CA0013.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:ba::18) To DM6PR12MB5549.namprd12.prod.outlook.com
- (2603:10b6:5:209::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DM6PR12MB4944:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12af2f2e-8a66-45df-abc4-08dc2be35117
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: JvOJ3tEDBTDPMkaCABL6sAx0gmtQFOhQ8YGS5WAWZ7AWAL/O4H3TUDFfId4ttmFCO1LjAZ+RA6EihKJwdijt6cB+RVapudWKuMfstly6bBlJxrIsOqUBRfcVbD0YcFf4Dn3aae/0mFwnOPv7GStxRX44uV3hiK7izAVkROOFkPjZ8naBgYC16ByB/xoaaBFucMZ6yJFha/J7Bhx3bt2MkpPzGSUg1tFUjeKamnlSUM6NseBaWBVDAXa2fpjWtW9zXrHNdSjbxFVLA0gkP0NawICGRUEBZ/V+y347Ohp20AmwB/0iLYgOPFIyoNRx8bkJSbQqWuatFisy+3SubbF9I0WYSwTyBmGvouilKGLwXTPUrUei3tuiMR0aDEMIVqR3/B2e+xFRtOnBJp2DUHc9NFwBgJ/sA1WlxnoBqZb0aGuXzIcg0rppfePcSqAciVqWFDWF2RI+QRy9hgQGTI+3itNBVjAqnVaZX4VwbXye+Zra5Sdk9+pE9g8QgCDo6pgyiCvm8Q6uUz6VGikQ4SUvpVuYFilappw3mQZxD3/md9luto4eyhx0IPyG1ePS6wO1
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(376002)(39860400002)(136003)(396003)(366004)(230273577357003)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(83380400001)(31696002)(86362001)(38100700002)(6486002)(316002)(478600001)(54906003)(66476007)(66556008)(66946007)(66574015)(2616005)(6506007)(53546011)(6666004)(6512007)(26005)(36756003)(31686004)(41300700001)(8676002)(4326008)(8936002)(5660300002)(2906002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VkdoWmdCK0preWJwNjV2Ymdscno3TU00d1FXdVpHVTdUMEZiYmltMmZFRjFQ?=
- =?utf-8?B?SlhRUjJGM21kUGl3NWNkU2tDd0w4QnZKVHFDOUZ0dnF4ejlUNjhCblZteWlq?=
- =?utf-8?B?SEZ2NlFxaXY5TTFFZ1FHenlpWnNGdm1iNXYvMWVZQzFKWVp1ODlBNlpZeldC?=
- =?utf-8?B?UStZd3E4ZjJRNTYvd2Z0elk0SDdDdFJaSXk0U2hEc1RxUVBUWE9GM3JTWWdU?=
- =?utf-8?B?MnpvQVVsM3pjdklveDRaelJBMnVBTm5LQXNuNUtxcENOYnVGUjMvNkhFZml4?=
- =?utf-8?B?eHhEc3YrenZHNWpYMmlZVEdPV3ZnamVLRURDTmhEbXdxYXBXaklPMUxudDdL?=
- =?utf-8?B?VHl6ekxKVDZWWjBndHJNZ0U4YVpMK0g2bUh6VEUrUE0rOUJjOUorVTZIbGR1?=
- =?utf-8?B?U3BkUFZnczBrd0lGREVGdXBMVWhyMWh1Nm5zUDR0SmN6OHJRTGJQNGVBTndZ?=
- =?utf-8?B?a2pOZmNUMlpxS2NNS0VGUWp4YzVXY0FTb1JhUkdoZUZHVXF2T0FOTTBOU3V1?=
- =?utf-8?B?WFQyVW5DWlJYVTdKV0pzbUwyMDZPcVpzYzVwR2Qwdlhrb2RCY0plS3FNREVn?=
- =?utf-8?B?NW1vOE56S2ZId2NZS2lwQ09MZ0h5VEl6NG9Nc3oyb3dub3hPS0VDam5wSGNr?=
- =?utf-8?B?UUc0aVVDR2ViZ0RQb29rbm83dUk1Z0RpYnRHUUdmRDEzeHJzL1dhNXNRaDNL?=
- =?utf-8?B?N3pUUzJ6K0d0dEptM1RTeWV0MlVyU2lmbmRxYWFldW5vWk0vSHNoY2UweHJM?=
- =?utf-8?B?SEJodlpKazRxUG1PcGpQM2gvT2pNN3hSV3VZcW1rM1A1aDl6VWNyblZ5MjJx?=
- =?utf-8?B?SnVlWG1iaG9oZnZvYmlNSjNBKzRrZ3JmRU9maTJlalNNRTJGNytSMlBzMHBO?=
- =?utf-8?B?NnYvUlNPOUdlS3BXMmxkZlpKRmpoTlV4amFDTWFyVGVKQnZMVXdMR0phWE9x?=
- =?utf-8?B?WVQ3QnBsSDNra1VqNHlFbksxWXY5dXdOWEtnM2Q4d2VUTm1MQkdiWlpKb00v?=
- =?utf-8?B?b2NQQk1WK1dmMDMxeFYwd2p4SSthN1ZyUEhFeW55dkJVNFFWSklCU1J5Z29H?=
- =?utf-8?B?d0tZcmFSSHdDOVcyREdTZGlSeW91ZHB2bUhmMWhRa2FzMVNGdDl2dkdiQ01q?=
- =?utf-8?B?NTRxNTRKUEFYdnlDcVJWZHRObjhVU1JWZ1VVekg3Rk5icWZ2TVoxL1pNNzZj?=
- =?utf-8?B?dmZZVlVvTVh1RlRFL21rYUxwQksrL3NjcTEwejhFS1dWNEdzZmhNRjVHMFRh?=
- =?utf-8?B?WFA4ZlRMbi85OGJxcXZFd1V1OW9yb0Q0THZsWGVUT0FWRXJCaWQ3ekZIUUhh?=
- =?utf-8?B?WFBLelpJR09nVytyUVh6WTFab2NGdG5SZDcvYWp1ZnVxUmVwWWVZQzNsQWp1?=
- =?utf-8?B?V1ZiZDVnejhqT2xHWktjcEFwMXplSytQM1QxWVZGSGUxc1JVdHgxU3R4Y2U5?=
- =?utf-8?B?elJGMGlRcng5WkNpQjN3MTZ0UVJwMHZPalgvL1RxdURiUzNRYk0zUDFlMGxt?=
- =?utf-8?B?ZlgyVFB2RTVvZ1VGbDB4bldENHpDWElqUVlDUDJXZTNuWlhwZFgzMmNrdkRo?=
- =?utf-8?B?YnpOejJwbWlVMmdPSFl5akt6K2NZVzlVSFRjZ2h5Nmpua1llTkhHRTA5WWcv?=
- =?utf-8?B?K013QmtXV21SNzRGcTErREN1VkNkK3NpbTNzeTdCUFNmeTdKS3N5eWw3L0w5?=
- =?utf-8?B?ZE1SYVRRUndMcnplR1JnVDBFaWZPa3Z4OWl2SS9EYXgwVnFTNEk5T3N6L1NO?=
- =?utf-8?B?WTcxUEJzS1dyNmhTc0M5YnR2aks1M3ZXdGFpWWRnRkZXb0hhZlhUZU5HK3hJ?=
- =?utf-8?B?NGxUaFRXWE1rN0dLMTRZZ1JoNmVWNkZUcWErcHg0dkVxc2pFSC81Y1p2eCs5?=
- =?utf-8?B?QitvazBLSUdGZWhuUG1wK0Y0dUU0dG9pejR2ZmcwbDZQZDU1RWpEaXUyMzZx?=
- =?utf-8?B?T05HYzlvQy9hd3pieEVGV3d2RVdORXY2R1hWcmlWYjN0d25PUVZ2VzNqa0xL?=
- =?utf-8?B?MmcwTzA0ZkNjUGxpNHhZNmhCMC9vYys0YXdSVXg1bXVwdjRqR3VHOFZmejdj?=
- =?utf-8?B?elprRUNzQk1GQnhVZmhQNXBSQXY0S01zOThyYnpZSkxQZzRsNDdvbFpadVVC?=
- =?utf-8?Q?hSS8WJ/Awhbd9Uugtv0n81kz1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12af2f2e-8a66-45df-abc4-08dc2be35117
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2024 15:57:30.0046 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DlekCQNpEWzChq6bTcHZZdNZb8FQOJ0Q9xqiJNpJSweezg5vaVUezAdKknO9FmEk2d0m2gR57tC8AcF7+KzUUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4944
-Received-SPF: softfail client-ip=2a01:111:f403:200a::601;
- envelope-from=avihaih@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
 X-Spam_bar: --
 X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,222 +104,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello Peter
 
-On 12/02/2024 16:49, Cédric Le Goater wrote:
-> External email: Use caution opening links or attachments
->
->
-> On 2/12/24 09:36, Avihai Horon wrote:
->> Hi, Cedric
+On 2/8/24 06:57, Peter Xu wrote:
+> On Wed, Feb 07, 2024 at 02:33:47PM +0100, Cédric Le Goater wrote:
+>> In case of error, close_return_path_on_source() can perform a shutdown
+>> to exit the return-path thread.  However, in migrate_fd_cleanup(),
+>> 'to_dst_file' is closed before calling close_return_path_on_source()
+>> and the shutdown fails, leaving the source and destination waiting for
+>> an event to occur.
 >>
->> On 07/02/2024 15:33, Cédric Le Goater wrote:
->>> External email: Use caution opening links or attachments
->>>
->>>
->>> The purpose is to record a potential error in the migration stream if
->>> qemu_savevm_state_setup() fails. Most of the current .save_setup()
->>> handlers can be modified to use the Error argument instead of managing
->>> their own and calling locally error_report(). The following patches
->>> will introduce such changes for VFIO first.
->>>
->>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->>> ---
->>>   include/migration/register.h   | 2 +-
->>>   hw/ppc/spapr.c                 | 2 +-
->>>   hw/s390x/s390-stattrib.c       | 2 +-
->>>   hw/vfio/migration.c            | 2 +-
->>>   migration/block-dirty-bitmap.c | 2 +-
->>>   migration/block.c              | 2 +-
->>>   migration/ram.c                | 2 +-
->>>   migration/savevm.c             | 4 ++--
->>>   8 files changed, 9 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/include/migration/register.h 
->>> b/include/migration/register.h
->>> index 
->>> 9ab1f79512c605f0c88a45b560c57486fa054441..831600a00eae4efd0464b60925d65de4d9dbcff8 
->>> 100644
->>> --- a/include/migration/register.h
->>> +++ b/include/migration/register.h
->>> @@ -25,7 +25,7 @@ typedef struct SaveVMHandlers {
->>>        * used to perform early checks.
->>>        */
->>>       int (*save_prepare)(void *opaque, Error **errp);
->>> -    int (*save_setup)(QEMUFile *f, void *opaque);
->>> +    int (*save_setup)(QEMUFile *f, void *opaque, Error **errp);
->>>       void (*save_cleanup)(void *opaque);
->>>       int (*save_live_complete_postcopy)(QEMUFile *f, void *opaque);
->>>       int (*save_live_complete_precopy)(QEMUFile *f, void *opaque);
->>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->>> index 
->>> 0d72d286d80f0435122593555f79fae4d90acf81..a1b0aa02582ad2d68a13476c1859b18143da7bb8 
->>> 100644
->>> --- a/hw/ppc/spapr.c
->>> +++ b/hw/ppc/spapr.c
->>> @@ -2142,7 +2142,7 @@ static const VMStateDescription vmstate_spapr = {
->>>       }
->>>   };
->>>
->>> -static int htab_save_setup(QEMUFile *f, void *opaque)
->>> +static int htab_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>>   {
->>>       SpaprMachineState *spapr = opaque;
->>>
->>> diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
->>> index 
->>> c483b62a9b5f71772639fc180bdad15ecb6711cb..c934df424a555d83d2198f5ddfc0cbe0ea98e9ec 
->>> 100644
->>> --- a/hw/s390x/s390-stattrib.c
->>> +++ b/hw/s390x/s390-stattrib.c
->>> @@ -166,7 +166,7 @@ static int cmma_load(QEMUFile *f, void *opaque, 
->>> int version_id)
->>>       return ret;
->>>   }
->>>
->>> -static int cmma_save_setup(QEMUFile *f, void *opaque)
->>> +static int cmma_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>>   {
->>>       S390StAttribState *sas = S390_STATTRIB(opaque);
->>>       S390StAttribClass *sac = S390_STATTRIB_GET_CLASS(sas);
->>> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->>> index 
->>> 70e6b1a709f9b67e4c9eb41033d76347275cac42..8bcb4bc73cd5ba5338e3ffa4d907d0e6bfbb9485 
->>> 100644
->>> --- a/hw/vfio/migration.c
->>> +++ b/hw/vfio/migration.c
->>> @@ -378,7 +378,7 @@ static int vfio_save_prepare(void *opaque, Error 
->>> **errp)
->>>       return 0;
->>>   }
->>>
->>> -static int vfio_save_setup(QEMUFile *f, void *opaque)
->>> +static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>>   {
->>>       VFIODevice *vbasedev = opaque;
->>>       VFIOMigration *migration = vbasedev->migration;
->>> diff --git a/migration/block-dirty-bitmap.c 
->>> b/migration/block-dirty-bitmap.c
->>> index 
->>> 2708abf3d762de774ed294d3fdb8e56690d2974c..16f84e6c57c2403a8c2d6319f4e7b6360dade28c 
->>> 100644
->>> --- a/migration/block-dirty-bitmap.c
->>> +++ b/migration/block-dirty-bitmap.c
->>> @@ -1213,7 +1213,7 @@ fail:
->>>       return ret;
->>>   }
->>>
->>> -static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
->>> +static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque, Error 
->>> **errp)
->>>   {
->>>       DBMSaveState *s = &((DBMState *)opaque)->save;
->>>       SaveBitmapState *dbms = NULL;
->>> diff --git a/migration/block.c b/migration/block.c
->>> index 
->>> 8c6ebafacc1ffe930d1d4f19d968817b14852c69..df15319ceab66201b043f15eac1b0a7d6522b60c 
->>> 100644
->>> --- a/migration/block.c
->>> +++ b/migration/block.c
->>> @@ -708,7 +708,7 @@ static void block_migration_cleanup(void *opaque)
->>>       blk_mig_unlock();
->>>   }
->>>
->>> -static int block_save_setup(QEMUFile *f, void *opaque)
->>> +static int block_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>>   {
->>>       int ret;
->>>
->>> diff --git a/migration/ram.c b/migration/ram.c
->>> index 
->>> d5b7cd5ac2f31aabf4a248b966153401c48912cf..136c237f4079f68d4e578cf1c72eec2efc815bc8 
->>> 100644
->>> --- a/migration/ram.c
->>> +++ b/migration/ram.c
->>> @@ -2931,7 +2931,7 @@ void qemu_guest_free_page_hint(void *addr, 
->>> size_t len)
->>>    * @f: QEMUFile where to send the data
->>>    * @opaque: RAMState pointer
->>>    */
->>> -static int ram_save_setup(QEMUFile *f, void *opaque)
->>> +static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>>   {
->>>       RAMState **rsp = opaque;
->>>       RAMBlock *block;
->>> diff --git a/migration/savevm.c b/migration/savevm.c
->>> index 
->>> d612c8a9020b204d5d078d5df85f0e6449c27645..f2ae799bad13e631bccf733a34c3a8fd22e8dd48 
->>> 100644
->>> --- a/migration/savevm.c
->>> +++ b/migration/savevm.c
->>> @@ -1342,10 +1342,10 @@ void qemu_savevm_state_setup(QEMUFile *f)
->>>           }
->>>           save_section_header(f, se, QEMU_VM_SECTION_START);
->>>
->>> -        ret = se->ops->save_setup(f, se->opaque);
->>> +        ret = se->ops->save_setup(f, se->opaque, &local_err);
->>>           save_section_footer(f, se);
->>>           if (ret < 0) {
->>> -            qemu_file_set_error(f, ret);
->>> +            qemu_file_set_error_obj(f, ret, local_err);
+>> Close the file after calling close_return_path_on_source() so that the
+>> shutdown succeeds and the return-path thread exits.
 >>
->> Should we set local_err = NULL?
->
-> possibly, yes.
->
->> Because it is re-used a few lines after this, by precopy_notify().
->
-> I wonder why is precopy_notify(PRECOPY_NOTIFY_SETUP) even called when
-> there was an error in one of the save_setup() handlers. It probably
-> shouldn't and qemu_savevm_state_setup() should return at the first
-> error in the loop. This is something that could have been overlooked
-> by commit bd2270608fa0 "migration/ram.c: add a notifier chain for
-> precopy" because qemu_savevm_state_setup() does not have a return
-> value. Probably because the callers rely on qemu_file_get_error()
-> to know if something wrong happened.
-
-Yes, I guess here we could return early and skip precopy_notify().
-
->
-> Also, the only user of PRECOPY_NOTIFY_SETUP is virtio-balloon and
-> nothing is done. PrecopyNotifyData has an errp attribute which is
-> unused.
-
-You are right, with current code there won't be any problem, but new 
-code that will make use of the errp can be problematic.
-
->
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
 >>
->> BTW, I think that if we add Error** parameter to functions we must 
->> make sure all their error flows set errp as well.
->> According to Error API:
->> * - On success, the function should not touch *errp.  On failure, it
->> *   should set a new error, e.g. with error_setg(errp, ...), or
->> *   propagate an existing one, e.g. with error_propagate(errp, ...).
+>>   This is an RFC because the correct fix implies reworking the QEMUFile
+>>   construct, built on top of the QEMU I/O channel.
 >>
->> For example, a caller that handles errors by printing them with 
->> error_report_err() would crash when trying to access NULL error 
->> object (if some error path didn't set errp).
->
-> One of the underlying goal is to avoid and remove all error_report_err()
-> calls to propagate the error up the call stack.
+>>   migration/migration.c | 13 ++++++-------
+>>   1 file changed, 6 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 5f55af3d7624750ca416c4177781241b3e291e5d..de329f2c553288935d824748286e79e535929b8b 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -1313,6 +1313,8 @@ void migrate_set_state(int *state, int old_state, int new_state)
+>>   
+>>   static void migrate_fd_cleanup(MigrationState *s)
+>>   {
+>> +    QEMUFile *tmp = NULL;
+>> +
+>>       g_free(s->hostname);
+>>       s->hostname = NULL;
+>>       json_writer_free(s->vmdesc);
+>> @@ -1321,8 +1323,6 @@ static void migrate_fd_cleanup(MigrationState *s)
+>>       qemu_savevm_state_cleanup();
+>>   
+>>       if (s->to_dst_file) {
+>> -        QEMUFile *tmp;
+>> -
+>>           trace_migrate_fd_cleanup();
+>>           bql_unlock();
+>>           if (s->migration_thread_running) {
+>> @@ -1341,15 +1341,14 @@ static void migrate_fd_cleanup(MigrationState *s)
+>>            * critical section won't block for long.
+>>            */
+>>           migration_ioc_unregister_yank_from_file(tmp);
+>> -        qemu_fclose(tmp);
+>>       }
+>>   
+>> -    /*
+>> -     * We already cleaned up to_dst_file, so errors from the return
+>> -     * path might be due to that, ignore them.
+>> -     */
+>>       close_return_path_on_source(s);
+>>   
+>> +    if (tmp) {
+>> +        qemu_fclose(tmp);
+>> +    }
+>> +
+>>       assert(!migration_is_active(s));
+>>   
+>>       if (s->state == MIGRATION_STATUS_CANCELLING) {
+> 
+> I think this is okay to me for a short term plan.  I'll see how others
+> think, also add Dan into the loop.
+> 
+> If so, would you please add a rich comment explaining why tmp needs to be
+> closed later?  Especially, explicit comment on the ordering requirement
+> would be helpful: IMHO here it's an order that qemu_fclose() must happen
+> after close_return_path_on_source().  So when others work on this code we
+> don't easily break it without noticing.
 
-Yes, I just gave an example of how this could go wrong.
-I think the general point here is that a caller that provides a valid 
-Error** errp assumes he will get an Error object from the callee in case 
-of an error, and the caller can operate on it as he wants.
+Sure. I will when we have clarified with Fabiano what is the best
+approach.
 
->
->> If you agree, we should check it throughout the series.
->
-> I do agree and this is a can of worms !
+> Also please feel free to post separately on migration patches if you'd like
+> us to merge the patches when repost.
 
-Indeed.
+This series is a collection of multiple (related) changes :
 
-> I haven't quite found my way
-> around yet.
+* extra Error** parameter to save_setup() migration handlers.
+   This change has consequences on the various callers which are not
+   fully analyzed.
+* similar changes for memory logging handlers. These looks more self
+   contained and I will see if I can send then separately.
+* return-path thread termination
 
-Briefly looking, it seems like .save_setup() / .load_setup() shouldn't 
-be too hard.
-However, memory stuff seem to be more involved.
+and then, in background we have open questions regarding :
+
+* the QEMUfile implementation and its QIOChannel usage for migration
+   streams
+* qemu_file_set_error* vs. migrate_set_error. It is confusing, at least
+   for me. Do we have some documentation on best practices ?
+
+Thanks,
+
+C.
+
 
 
