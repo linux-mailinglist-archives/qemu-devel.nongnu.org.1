@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456E18522C5
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4488522C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 00:49:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZg1e-0003Eg-HU; Mon, 12 Feb 2024 18:47:50 -0500
+	id 1rZg1e-0003EL-MP; Mon, 12 Feb 2024 18:47:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1b-0003DI-AB
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1b-0003DM-DL
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:47 -0500
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-00009B-Hv
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1rZg1Z-00009G-MI
  for qemu-devel@nongnu.org; Mon, 12 Feb 2024 18:47:47 -0500
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id D9F85CE17B9;
+ by dfw.source.kernel.org (Postfix) with ESMTP id 67A646117F;
+ Mon, 12 Feb 2024 23:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96713C433C7;
  Mon, 12 Feb 2024 23:47:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8EBC433F1;
- Mon, 12 Feb 2024 23:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1707781662;
- bh=bMGiugQoc2DhmTSqm+CZs/LiSubHUzCkUMZHroTlcng=;
+ s=k20201202; t=1707781664;
+ bh=WnjkRHA+PxnhJ2hwB5R3kLTKfKDbD/nEu0xgZtuTRoo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=fIpLKn27e3vkTT3s8QIyNGitEgRIQfytmGeQxiRoDTld4daoEBeq3WPKqzQIi0hG9
- a5t/vpA1lcPBUbfujQigHUr8IpcuuyBH285GoHf0wJGVkXoQZFMwNwwY25SiO6Ig00
- HwHw3bAypzHJi3yWD5TL986yr09WPVoTvvT7Hg/9dljyUStvlnL8wQmsr1wmQoGtNH
- SVJTD0ruWMrmbYfzW6SEYsF+bt5INVunajvv5OIVp9hnqyfBXeAfeCQPe7uOPZLozt
- 9j+c0z7M481tAOa4daX9qPVw04xEyuT4wtJ6TazIDJylNzSveqtZRatWaklNNhwvWa
- GxaySBZG/GVLg==
+ b=qK8sptLUwpqCTNq0KQuzt7qTgWluuaAde/dvq2R74mYNtf6cfKXVhTQ8grqrzCabd
+ 42mAGvt/1Iaa3iadQRlxigB2XoPYM9W7qIfJ06IhO5Oo8zwDdeEBl4za1vTEttF4lu
+ pnQzVhJs5yheUr1y++MwxoCIY8C1Z3O7aVkyZNQ0Bc07VQQCV9Q/Vu9b6VxiWw2QF5
+ zLbtgPtsrOZCcieNUu//yAzB+XKaTIcyOwMAGgFYWqEdVpMNIm/lXVrn85XyYKnqbH
+ GDoMQxZnl6yRCbOY0OzgvO/Ns5WXh524gK5BEb8i+3Fji+4KlhwrGxo8ZQecj39pTJ
+ BSK0Z7lt2dJQg==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
- Helge Deller <deller@gmx.de>
-Subject: [PULL 09/12] target/hppa: PDC_BTLB_INFO uses 32-bit ints
-Date: Tue, 13 Feb 2024 00:47:20 +0100
-Message-ID: <20240212234723.222847-10-deller@kernel.org>
+ Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 10/12] hw/net/tulip: add chip status register values
+Date: Tue, 13 Feb 2024 00:47:21 +0100
+Message-ID: <20240212234723.222847-11-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
 References: <20240212234723.222847-1-deller@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=deller@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -78
+X-Spam_score: -7.9
+X-Spam_bar: -------
+X-Spam_report: (-7.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,31 +70,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Sven Schnelle <svens@stackframe.org>
 
-The BTLB helper function stores the BTLB info (four 32-bit ints) into
-the memory of the guest. They are only available when emulating a 32-bit
-CPU in the guest, so use "uint32_t" instead of "target_ulong" here.
+Netbsd isn't able to detect a link on the emulated tulip card. That's
+because netbsd reads the Chip Status Register of the Phy (address
+0x14). The default phy data in the qemu tulip driver is all zero,
+which means no link is established and autonegotation isn't complete.
 
+Therefore set the register to 0x3b40, which means:
+
+Link is up, Autonegotation complete, Full Duplex, 100MBit/s Link
+speed.
+
+Also clear the mask because this register is read only.
+
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/mem_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/tulip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 676c0b3003..66b8fa7d72 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -684,7 +684,7 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
-     case 0:
-         /* return BTLB parameters */
-         qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INFO\n");
--        vaddr = probe_access(env, env->gr[24], 4 * sizeof(target_ulong),
-+        vaddr = probe_access(env, env->gr[24], 4 * sizeof(uint32_t),
-                              MMU_DATA_STORE, mmu_idx, ra);
-         if (vaddr == NULL) {
-             env->gr[28] = -10; /* invalid argument */
+diff --git a/hw/net/tulip.c b/hw/net/tulip.c
+index 6d4fb06dad..1f2ef20977 100644
+--- a/hw/net/tulip.c
++++ b/hw/net/tulip.c
+@@ -421,7 +421,7 @@ static uint16_t tulip_mdi_default[] = {
+     /* MDI Registers 8 - 15 */
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+     /* MDI Registers 16 - 31 */
+-    0x0003, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
++    0x0003, 0x0000, 0x0001, 0x0000, 0x3b40, 0x0000, 0x0000, 0x0000,
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+ };
+ 
+@@ -429,7 +429,7 @@ static uint16_t tulip_mdi_default[] = {
+ static const uint16_t tulip_mdi_mask[] = {
+     0x0000, 0xffff, 0xffff, 0xffff, 0xc01f, 0xffff, 0xffff, 0x0000,
+     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+-    0x0fff, 0x0000, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff,
++    0x0fff, 0x0000, 0xffff, 0xffff, 0x0000, 0xffff, 0xffff, 0xffff,
+     0xffff, 0xffff, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+ };
+ 
 -- 
 2.43.0
 
