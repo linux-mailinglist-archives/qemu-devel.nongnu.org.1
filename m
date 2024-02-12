@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5087D850E9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 09:08:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2959850EA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 09:08:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZRL3-0000qo-GR; Mon, 12 Feb 2024 03:06:53 -0500
+	id 1rZRL5-0000rw-Ir; Mon, 12 Feb 2024 03:06:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1rZRL1-0000q7-Fb
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:06:51 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1rZRL2-0000qn-TY
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:06:52 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1rZRKy-00081P-R4
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:06:51 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6da6b0eb2d4so2074701b3a.1
- for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 00:06:48 -0800 (PST)
+ id 1rZRL1-00081T-0p
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 03:06:52 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d953fa3286so22502745ad.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 00:06:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1707725207; x=1708330007;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1707725208; x=1708330008;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ugWmU+RI6KuJRXphjeFR5kNJeU7Hhqdcf4zIt6LNeaY=;
- b=MjKlGkWsXxtI1+2CDjj1Y4qsactGV+Ed7YmTNuR+rct14aDceHc0e3g3dw6zme7zMZ
- xedW0i1WlWHxY+zK50o2peRy1T/fI3scGCI1lHyhpW3oW2HAredZtv0KsFazWXsHqoB1
- mOqQXm3ui/sxXj6uc67uTCT/ejjVzaTnqQnaTBd8ducyKmz61GBV/uvGpYSN4CgtflLk
- 8ay3HjmMg3CszqNMBMsy20v/hcBc4ec7irBkUDOIdzEr8EU9FDBmN7srdMDgBCLXV/KR
- TUFV1WRFmKuRc6rf9ySo7Q3FFes3qSPtDGfzeToyc6bkAiJKHDe6+2b9+lGPsZujS3jk
- EAPQ==
+ bh=kL8MqPEDgwSmrca9yBLK8PFHw9ilvDpuhB5dlU2hyEI=;
+ b=mRmAyBdd/gqDiA9qZ/xncYYIG0Li2dnI3QW2XcuS7FtAeavCkYKkyDPlRDVB/k5Wws
+ VsY7chaVt4pUrr2k31uyd9LkTzp0jTftVvW/2zoOApTI/H804H3FKg0a3yrn1Q6WWwsO
+ L5os+fXEfQuuuozkxP5AONSCmPJ9FfUfLKqK/SB51yMO2OYOo8ITz+djf3QDJHyqGKCM
+ JxuhLER/aCDvmqnU+gdDvocX0Bq2Q4MxyEUDEkauMnT1/Fe1pH9VrZAwgdukKR87SBfs
+ tqe89FV64jzM+evH6lb6JTOOZOY59G5IaCQwQn40p/KDgjVdUHCx7Uk4C63h3CR6WWpz
+ 5FRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707725207; x=1708330007;
+ d=1e100.net; s=20230601; t=1707725208; x=1708330008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ugWmU+RI6KuJRXphjeFR5kNJeU7Hhqdcf4zIt6LNeaY=;
- b=xBUjNU6uSPqXdbqfnnELBbrXdPMpHcFMsYZSzh5QKmvmwLSr/nDCO4UPsrAMs4dD8i
- AGsoiKKG15/7/78ZtRVLDnuhUmxFDUj02ycq12RQZz4FPg2Bv5dbh6426sAcH2a9SCDz
- 6m6VL4WYKBdPtjpodbXo1Trwv7wqXV8ySacfAIGq6452srIXwT6GgdhdHp54B1VlrXeJ
- qCWAPiaDehkCi3MxzNbxBvMILeGpD77jlEcPdAsb75zBjrve+jhZNrjmjJwpqhmu+nh9
- /wK7VNlWBh1PlBBFm9iSNApAITnelcfK2uWqElIu6mdxZL9CJAHYfMw2taLIMEFROIuW
- BXuw==
-X-Gm-Message-State: AOJu0YzlKSMG7W6yRY2rPGEMnn58ayHX1HgweEtPIF/XnXJ6BnH4lrXI
- Y95MKWC7GsfusVIK0kNvEYkxPu7vahX0yATWPcWxhW6D6RMcYELdIkSt7HxkDMyKcLqqYR4qwdt
- phd0=
-X-Google-Smtp-Source: AGHT+IE8Fw0k90OnImCaWsS190rn3kldMbcpggl5rFVCO57qMjShoh0Pd4WBLwJf0vyMmgLCDV/+OA==
-X-Received: by 2002:a05:6a21:3115:b0:19e:4f91:42b2 with SMTP id
- yz21-20020a056a21311500b0019e4f9142b2mr5438494pzb.18.1707725207234; 
- Mon, 12 Feb 2024 00:06:47 -0800 (PST)
+ bh=kL8MqPEDgwSmrca9yBLK8PFHw9ilvDpuhB5dlU2hyEI=;
+ b=lzznWu75keJ2FDqcKjKwayHEhiyRVg/9K9tk7sNSWpT03QDTdv2FScedXPYDg8Fy6c
+ QAg/ukT8zWDVyYg/gGuQdqmh/pPTP4Cf5+B4aslws1NfJlnNDzLxkkqqqVtxST3xFO4n
+ fMC1w/XMs5lcbSV9cKvEkO2AiOiw/uf6S6Km+weH6EDO8LXW3cbaDDxTQ3DzlUWRpXnF
+ l0ShFowZaYmDpDQaT4V6cn2mVadEZDGIX8C57GKoSuB1sDS0aga7ukS7isE5L446j3a/
+ TcIeYCZTPMHRVZ3wsMmc3GaqKLm3x+IsV+icqBB6kc38RxqaO2xJiCJRzZsK/znGixLw
+ +PwQ==
+X-Gm-Message-State: AOJu0Yy8YDGaOOlvgaTv9++O2ii5Wsty6VFHBcT/kmMWEZzgg+IzVmt7
+ zeFmwitFj1mbRMTnNoACKw13DQONnTlK5hXE8Qg923wz2yxFkW4P0+MGgEnf3ggbnd6IgRBgiSJ
+ Yj7w=
+X-Google-Smtp-Source: AGHT+IEQ6ghUK8Ttxekm7Tlsy1tf0UZcmTohqKyz3vDMnQhJP+RrPAJ5r6jKDxU3L5J4zQHqtiHUhg==
+X-Received: by 2002:a17:902:e5ca:b0:1d9:a5ec:30d2 with SMTP id
+ u10-20020a170902e5ca00b001d9a5ec30d2mr8616706plf.12.1707725208392; 
+ Mon, 12 Feb 2024 00:06:48 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXavTR69cvGmKY2vBV9NxlZAK3aTf+2oIlPcN7+5MzMDYVfWSpppYyuv1tMgOwBeEaP9yQQZrIel/0RtWtpjrSBWTeOOrujf060qRU0sqcW7LOxnMMFBJb1iEuBX3PDwOCzx/e3vpu/W2b4+datwNefRHJVdC/YW3QLRuPcM/sqZF9U3ZfF/qrqdYresXtjW/zNit4ewrf5MJYvxTvdMGHajthcIU/KB9F3xQmp8Jsddbf69H0mdDc7gWnqbITUZhpsxT5di1ZM7l9t7ONSlpfuOLyOM8lZMRop8xY3KJ3XjIrHKlnEZMyCIOFqU3JOhRgi3gHtCc6KZ6A3r37IfykY1cKlJUFkFVuUX9wt6YiedzPmijc2ct1qSFeZffMe/w==
+ AJvYcCUfX3ujxdm4a7OgawnU/UivnTlWxPNOLIjTVyHMmoz+LaTgD939PKaldnzo51JaD6q2jSUiexoq/UpXcgS2Yzb8S8fF7oClUz9/0uqoUWAhr0tW8G1ryTwKhqc9D5yFnYMMhpDjoMA2hCtMmJYbwMot/swXynjMzOhBIzYz/OgQCrdPdWfI+7ySJEy/Kyyu1cMl8JA2UVosdIf0QSeiHSiZ2aIvpriBrlxs3D8G9dXpdFsKGh/fPnnUWzHhzweCBsjnn8nBt1RJz6VfX9MjOTiUW52gtaz9ZfzgvTu3RflQm5VIJN5FER77/tm1Lh4nds/u8ir4GYipSSwwWSTpRdNUDqJHeRWJmt9hvtkSBB9pqpxQAvrA9mJ8CQpIFXltLw==
 Received: from mnissler.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- s13-20020a17090330cd00b001d9fc53514esm5404649plc.66.2024.02.12.00.06.46
+ s13-20020a17090330cd00b001d9fc53514esm5404649plc.66.2024.02.12.00.06.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Feb 2024 00:06:46 -0800 (PST)
+ Mon, 12 Feb 2024 00:06:48 -0800 (PST)
 From: Mattias Nissler <mnissler@rivosinc.com>
 To: qemu-devel@nongnu.org, jag.raman@oracle.com, peterx@redhat.com,
  stefanha@redhat.com
@@ -70,16 +70,16 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH v7 3/5] Update subprojects/libvfio-user
-Date: Mon, 12 Feb 2024 00:06:15 -0800
-Message-Id: <20240212080617.2559498-4-mnissler@rivosinc.com>
+Subject: [PATCH v7 4/5] vfio-user: Message-based DMA support
+Date: Mon, 12 Feb 2024 00:06:16 -0800
+Message-Id: <20240212080617.2559498-5-mnissler@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240212080617.2559498-1-mnissler@rivosinc.com>
 References: <20240212080617.2559498-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,32 +101,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Brings in assorted bug fixes. The following are of particular interest
-with respect to message-based DMA support:
+Wire up support for DMA for the case where the vfio-user client does not
+provide mmap()-able file descriptors, but DMA requests must be performed
+via the VFIO-user protocol. This installs an indirect memory region,
+which already works for pci_dma_{read,write}, and pci_dma_map works
+thanks to the existing DMA bounce buffering support.
 
-* bb308a2 "Fix address calculation for message-based DMA"
-  Corrects a bug in DMA address calculation.
-
-* 1569a37 "Pass server->client command over a separate socket pair"
-  Adds support for separate sockets for either command direction,
-  addressing a bug where libvfio-user gets confused if both client and
-  server send commands concurrently.
+Note that while simple scenarios work with this patch, there's a known
+race condition in libvfio-user that will mess up the communication
+channel. See https://github.com/nutanix/libvfio-user/issues/279 for
+details as well as a proposed fix.
 
 Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 ---
- subprojects/libvfio-user.wrap | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/remote/trace-events    |   2 +
+ hw/remote/vfio-user-obj.c | 100 ++++++++++++++++++++++++++++++++------
+ 2 files changed, 87 insertions(+), 15 deletions(-)
 
-diff --git a/subprojects/libvfio-user.wrap b/subprojects/libvfio-user.wrap
-index 416955ca45..cdf0a7a375 100644
---- a/subprojects/libvfio-user.wrap
-+++ b/subprojects/libvfio-user.wrap
-@@ -1,4 +1,4 @@
- [wrap-git]
- url = https://gitlab.com/qemu-project/libvfio-user.git
--revision = 0b28d205572c80b568a1003db2c8f37ca333e4d7
-+revision = 1569a37a54ecb63bd4008708c76339ccf7d06115
- depth = 1
+diff --git a/hw/remote/trace-events b/hw/remote/trace-events
+index 0d1b7d56a5..358a68fb34 100644
+--- a/hw/remote/trace-events
++++ b/hw/remote/trace-events
+@@ -9,6 +9,8 @@ vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x -> 0x%x"
+ vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x <- 0x%x"
+ vfu_dma_register(uint64_t gpa, size_t len) "vfu: registering GPA 0x%"PRIx64", %zu bytes"
+ vfu_dma_unregister(uint64_t gpa) "vfu: unregistering GPA 0x%"PRIx64""
++vfu_dma_read(uint64_t gpa, size_t len) "vfu: DMA read 0x%"PRIx64", %zu bytes"
++vfu_dma_write(uint64_t gpa, size_t len) "vfu: DMA write 0x%"PRIx64", %zu bytes"
+ vfu_bar_register(int i, uint64_t addr, uint64_t size) "vfu: BAR %d: addr 0x%"PRIx64" size 0x%"PRIx64""
+ vfu_bar_rw_enter(const char *op, uint64_t addr) "vfu: %s request for BAR address 0x%"PRIx64""
+ vfu_bar_rw_exit(const char *op, uint64_t addr) "vfu: Finished %s of BAR address 0x%"PRIx64""
+diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+index d9b879e056..a15e291c9a 100644
+--- a/hw/remote/vfio-user-obj.c
++++ b/hw/remote/vfio-user-obj.c
+@@ -300,6 +300,63 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+     return count;
+ }
+ 
++static MemTxResult vfu_dma_read(void *opaque, hwaddr addr, uint64_t *val,
++                                unsigned size, MemTxAttrs attrs)
++{
++    MemoryRegion *region = opaque;
++    vfu_ctx_t *vfu_ctx = VFU_OBJECT(region->owner)->vfu_ctx;
++    uint8_t buf[sizeof(uint64_t)];
++
++    trace_vfu_dma_read(region->addr + addr, size);
++
++    g_autofree dma_sg_t *sg = g_malloc0(dma_sg_size());
++    vfu_dma_addr_t vfu_addr = (vfu_dma_addr_t)(region->addr + addr);
++    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_READ) < 0 ||
++        vfu_sgl_read(vfu_ctx, sg, 1, buf) != 0) {
++        return MEMTX_ERROR;
++    }
++
++    *val = ldn_he_p(buf, size);
++
++    return MEMTX_OK;
++}
++
++static MemTxResult vfu_dma_write(void *opaque, hwaddr addr, uint64_t val,
++                                 unsigned size, MemTxAttrs attrs)
++{
++    MemoryRegion *region = opaque;
++    vfu_ctx_t *vfu_ctx = VFU_OBJECT(region->owner)->vfu_ctx;
++    uint8_t buf[sizeof(uint64_t)];
++
++    trace_vfu_dma_write(region->addr + addr, size);
++
++    stn_he_p(buf, size, val);
++
++    g_autofree dma_sg_t *sg = g_malloc0(dma_sg_size());
++    vfu_dma_addr_t vfu_addr = (vfu_dma_addr_t)(region->addr + addr);
++    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_WRITE) < 0 ||
++        vfu_sgl_write(vfu_ctx, sg, 1, buf) != 0) {
++        return MEMTX_ERROR;
++    }
++
++    return MEMTX_OK;
++}
++
++static const MemoryRegionOps vfu_dma_ops = {
++    .read_with_attrs = vfu_dma_read,
++    .write_with_attrs = vfu_dma_write,
++    .endianness = DEVICE_HOST_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++        .unaligned = true,
++    },
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++};
++
+ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
+ {
+     VfuObject *o = vfu_get_private(vfu_ctx);
+@@ -308,17 +365,30 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
+     g_autofree char *name = NULL;
+     struct iovec *iov = &info->iova;
+ 
+-    if (!info->vaddr) {
+-        return;
+-    }
+-
+     name = g_strdup_printf("mem-%s-%"PRIx64"", o->device,
+-                           (uint64_t)info->vaddr);
++                           (uint64_t)iov->iov_base);
+ 
+     subregion = g_new0(MemoryRegion, 1);
+ 
+-    memory_region_init_ram_ptr(subregion, NULL, name,
+-                               iov->iov_len, info->vaddr);
++    if (info->vaddr) {
++        memory_region_init_ram_ptr(subregion, OBJECT(o), name,
++                                   iov->iov_len, info->vaddr);
++    } else {
++        /*
++         * Note that I/O regions' MemoryRegionOps handle accesses of at most 8
++         * bytes at a time, and larger accesses are broken down. However,
++         * many/most DMA accesses are larger than 8 bytes and VFIO-user can
++         * handle large DMA accesses just fine, thus this size restriction
++         * unnecessarily hurts performance, in particular given that each
++         * access causes a round trip on the VFIO-user socket.
++         *
++         * TODO: Investigate how to plumb larger accesses through memory
++         * regions, possibly by amending MemoryRegionOps or by creating a new
++         * memory region type.
++         */
++        memory_region_init_io(subregion, OBJECT(o), &vfu_dma_ops, subregion,
++                              name, iov->iov_len);
++    }
+ 
+     dma_as = pci_device_iommu_address_space(o->pci_dev);
+ 
+@@ -330,20 +400,20 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
+ static void dma_unregister(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
+ {
+     VfuObject *o = vfu_get_private(vfu_ctx);
++    MemoryRegionSection mr_section;
+     AddressSpace *dma_as = NULL;
+-    MemoryRegion *mr = NULL;
+-    ram_addr_t offset;
+ 
+-    mr = memory_region_from_host(info->vaddr, &offset);
+-    if (!mr) {
++    dma_as = pci_device_iommu_address_space(o->pci_dev);
++
++    mr_section =
++        memory_region_find(dma_as->root, (hwaddr)info->iova.iov_base, 1);
++    if (!mr_section.mr) {
+         return;
+     }
+ 
+-    dma_as = pci_device_iommu_address_space(o->pci_dev);
+-
+-    memory_region_del_subregion(dma_as->root, mr);
++    memory_region_del_subregion(dma_as->root, mr_section.mr);
+ 
+-    object_unparent((OBJECT(mr)));
++    object_unparent((OBJECT(mr_section.mr)));
+ 
+     trace_vfu_dma_unregister((uint64_t)info->iova.iov_base);
+ }
 -- 
 2.34.1
 
