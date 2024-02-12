@@ -2,96 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46DF851629
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 14:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4C685166A
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 15:05:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZWox-0007BH-3Q; Mon, 12 Feb 2024 08:58:07 -0500
+	id 1rZWuK-0005uq-Li; Mon, 12 Feb 2024 09:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rZWoM-0006mC-DQ
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:32 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rZWoI-0007Gi-Qh
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 08:57:29 -0500
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41CDJNIr031779; Mon, 12 Feb 2024 13:57:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=bbKNI2tWJGb34lA30BIrwS3R/lj2i0DvpPnuPLxdUgY=;
- b=WvY2llUu2pyvC4BOrkkplAmUcXzWtnrdOx4Ys/+jEEyjRbIEZkYJujfwxHZHXREwadzm
- Ub8yoem+IqkWKrXeiEkI52iXiwR3FiTgall1Uqp7PRwg+jnOc37ASeGTI0ElK7+XblOt
- HCkwe6o1IXKmBu46MGUCE+xUqukU9NJ9MNNMMtssaPvhU3laEY/lw4sbP+zSjM54WT/I
- C9mnXvhBBdlWwEzOTl4bZ96t2w/8/foVJ5zgeLW6OJqjNbhlYqijU/syayho7Ni33se4
- iWNfqcpUBAi1Iu67ofj6K8xT1i/SWW97qDa+/gszBSJ/Hu2Mm2UZ1Vv0BaIFKqST9L82 7w== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w7m40g331-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 13:57:18 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41CCGuLL024016; Mon, 12 Feb 2024 13:57:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3w5ykc217k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 Feb 2024 13:57:18 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CDuqiJ026744;
- Mon, 12 Feb 2024 13:57:17 GMT
-Received: from joaomart-mac.nl.oracle.com (dhcp-10-175-27-30.vpn.oracle.com
- [10.175.27.30])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3w5ykc20rs-9; Mon, 12 Feb 2024 13:57:17 +0000
-From: Joao Martins <joao.m.martins@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH RFCv2 8/8] vfio/common: Allow disabling device dirty page
- tracking
-Date: Mon, 12 Feb 2024 13:56:43 +0000
-Message-Id: <20240212135643.5858-9-joao.m.martins@oracle.com>
-In-Reply-To: <20240212135643.5858-1-joao.m.martins@oracle.com>
-References: <20240212135643.5858-1-joao.m.martins@oracle.com>
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rZWuD-0005ow-FF; Mon, 12 Feb 2024 09:03:33 -0500
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rZWuA-0000Yv-C9; Mon, 12 Feb 2024 09:03:33 -0500
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6e0a37751cbso1124846b3a.2; 
+ Mon, 12 Feb 2024 06:03:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1707746608; x=1708351408; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=0fDwCuMc1thS1g21GHEWZZso75s6fwtaIeUP5pf+VOo=;
+ b=VdFz8lzWzP1WciEAcxJD1a+2RFjDUtKXXul5ZZ30X8ePH1aWIzba+l5TQBlP67TsUS
+ 46QN4CXow/YJQbcIYNAimXNuKJYlYNlg/Ey3CR5BxMJn7op7yCZdSCUsXYV4hEZ7Sydv
+ 3TgRbL81KCWN10yrCcanXRAmon6dM4C+vXpuQ0ViBqLz2pP9RBl7FTz1EloABjej1PLy
+ n9OTtvKoYPIS/6J7WHBPy+YFlct5IBwSw6A8FbH010o2SpgLImJxqX2j84OqnaoW/UTa
+ vlRgFlRLIOUr06C2L/f+nqGNiIwtRafWrSpWfQZdq0w3OMHRW5EX81JYuxflFYJQjjFQ
+ zF2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707746608; x=1708351408;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0fDwCuMc1thS1g21GHEWZZso75s6fwtaIeUP5pf+VOo=;
+ b=W6LCRH55nWEW9x8I5XMmXeiuHQ+aw1FJitUebFybNVtZauBCmjKXT1gHNJZgk+iazb
+ 6XZpEcFVBmn5B8n1OIipMTBGDKS53yNE04AdviUvSykmIChR5VJ7yUEJlmd/LuWg//YT
+ edfOIN+2G3yYqRCh4Lq/g94UUZ1+nl0cTt1ooN75IYy60uI3dFKD7ICkGS+8imZg0V6a
+ 9AHvmuJcsLVUmU69Z8tXaZrksAqc2Oj2IjNTjp3uTle/fMCNcXqmlh632EaUceZnG2KE
+ GwfDzZyRU4gpBT43Rc/f6QVdIGw4RWtIJ2vr7cRjH0UYbLpHR2fgIJAYogNdKLFJ2Onn
+ iD8Q==
+X-Gm-Message-State: AOJu0Yx2Y5+5DDLFpjHjpESvLHRt+pvIqzOFeCtOAYCXc4qcE8ajjLhj
+ tXMCYcAyA1nLrst0MrnlvMpLer87XbBz9mgMc6FurUyZdsFq7A2w
+X-Google-Smtp-Source: AGHT+IFH5yijfCYPP5BqvLXP6k5b15kG6LIlrFxBHYNesKn0gmNfcS0GWYwP1kVZVaWeXsp6X2T+3Q==
+X-Received: by 2002:a05:6a00:390e:b0:6db:d2f5:9e28 with SMTP id
+ fh14-20020a056a00390e00b006dbd2f59e28mr6382544pfb.10.1707746608011; 
+ Mon, 12 Feb 2024 06:03:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX2uuTymWBL/rmRsLA+QT7HSE1ByqAajPhKyHxL+XFLnlmXaJzSv5XNc3H9thkm7YzljQ88jKK4vbyU+9pWmrPWSCSp3ECIrTcrOeBgw9I4CddiOWBT1IaY9iYRT8n5+tFd19Nl
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
+ ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ w12-20020a056a0014cc00b006e03c68ae9asm5739807pfu.16.2024.02.12.06.03.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 12 Feb 2024 06:03:27 -0800 (PST)
+Message-ID: <f5a561bf-31b0-4fb9-acaf-efc83d232a9c@roeck-us.net>
+Date: Mon, 12 Feb 2024 06:03:25 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-12_10,2024-02-12_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402120105
-X-Proofpoint-GUID: nihlGWdeBZ5OniBfhGB8I0HvBUYAzDGA
-X-Proofpoint-ORIG-GUID: nihlGWdeBZ5OniBfhGB8I0HvBUYAzDGA
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+Cc: qemu-arm <qemu-arm@nongnu.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=groeck7@gmail.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,89 +143,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The property 'x-pre-copy-dirty-page-tracking' allows disabling the whole
-tracking of VF pre-copy phase of dirty page tracking, though it means
-that it will only be used at the start of the switchover phase.
-
-Add an option that disables the VF dirty page tracking, and fall
-back into container-based dirty page tracking. This also allows to
-use IOMMU dirty tracking even on VFs with their own dirty
-tracker scheme.
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
- hw/vfio/common.c              | 7 +++++++
- hw/vfio/migration.c           | 3 ++-
- hw/vfio/pci.c                 | 3 +++
- include/hw/vfio/vfio-common.h | 1 +
- 4 files changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index a940c0b6ede8..9fe113ea016d 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -213,6 +213,9 @@ bool vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer)
-     VFIODevice *vbasedev;
- 
-     QLIST_FOREACH(vbasedev, &bcontainer->device_list, container_next) {
-+        if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
-+            return false;
-+        }
-         if (!vbasedev->dirty_pages_supported) {
-             return false;
-         }
-@@ -236,6 +239,10 @@ bool vfio_device_dirty_pages_supported(VFIODevice *vbasedev)
-         return false;
-     }
- 
-+    if (vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) {
-+        return false;
-+    }
-+
-     return !vbasedev->dirty_pages_supported;
- }
- 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 674e76b3f3df..09e742fbeb9f 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -938,7 +938,8 @@ bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-         return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
--    if (!vbasedev->dirty_pages_supported &&
-+    if ((!vbasedev->dirty_pages_supported ||
-+         vbasedev->device_dirty_page_tracking == ON_OFF_AUTO_OFF) &&
-         (vbasedev->iommufd_dev.iommufd &&
-          !iommufd_dirty_pages_supported(&vbasedev->iommufd_dev, &err))) {
-         if (vbasedev->enable_migration == ON_OFF_AUTO_AUTO) {
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index dedb64fc080e..d3b516b2e4d3 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3349,6 +3349,9 @@ static Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
-                             vbasedev.pre_copy_dirty_page_tracking,
-                             ON_OFF_AUTO_ON),
-+    DEFINE_PROP_ON_OFF_AUTO("x-device-dirty-page-tracking", VFIOPCIDevice,
-+                            vbasedev.device_dirty_page_tracking,
-+                            ON_OFF_AUTO_ON),
-     DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
-                             display, ON_OFF_AUTO_OFF),
-     DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index a3e691c126c6..e67f5e74cebd 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -136,6 +136,7 @@ typedef struct VFIODevice {
-     VFIOMigration *migration;
-     Error *migration_blocker;
-     OnOffAuto pre_copy_dirty_page_tracking;
-+    OnOffAuto device_dirty_page_tracking;
-     bool dirty_pages_supported;
-     bool dirty_tracking;
-     union {
--- 
-2.39.3
+On 2/12/24 04:32, Peter Maydell wrote:
+> QEMU includes some models of old Arm machine types which are
+> a bit problematic for us because:
+>   * they're written in a very old way that uses numerous APIs that we
+>     would like to get away from (eg they don't use qdev, they use
+>     qemu_system_reset_request(), they use vmstate_register(), etc)
+>   * they've been that way for a decade plus and nobody particularly has
+>     stepped up to try to modernise the code (beyond some occasional
+>     work here and there)
+>   * we often don't have test cases for them, which means that if we
+>     do try to do the necessary refactoring work on them we have no
+>     idea if they even still work at all afterwards
+> 
+> All these machine types are also of hardware that has largely passed
+> away into history and where I would not be surprised to find that
+> e.g. the Linux kernel support was never tested on real hardware
+> any more.
+> 
+> So I would like to explore whether we can deprecate-and-drop
+> some or all of them. This would let us delete the code entirely
+> rather than spending a long time trying to bring it up to scratch
+> for a probably very small to nonexistent userbase. The aim of this
+> email is to see if anybody is still using any of these and would be
+> upset if they went away. Reports of "I tried to use this machine
+> type and it's just broken" are also interesting as they would
+> strongly suggest that the machine has no real users and can be
+> removed.
+> 
+> The machines I have in mind are:
+> 
+> PXA2xx machines:
+> 
+> akita                Sharp SL-C1000 (Akita) PDA (PXA270)
+> borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
+> connex               Gumstix Connex (PXA255)
+> mainstone            Mainstone II (PXA27x)
+> spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
+> terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
+> tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
+> verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
+> z2                   Zipit Z2 (PXA27x)
+> 
+> OMAP1 machines:
+> 
+> cheetah              Palm Tungsten|E aka. Cheetah PDA (OMAP310)
+> sx1                  Siemens SX1 (OMAP310) V2
+> sx1-v1               Siemens SX1 (OMAP310) V1
+> 
+> OMAP2 machines:
+> 
+> n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
+> n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
+> 
+> The one SA1110 machine:
+> 
+> collie               Sharp SL-5500 (Collie) PDA (SA-1110)
+> 
+> Obviously if we can remove all the machines that used a given
+> SoC, that's much more effective than if we just delete one or two.
+> 
+> I don't have any test images for the SA1110 or OMAP1 machines,
+> so those are the ones I am most keen to be able to drop.
+> I do have test images for a few of the pxa2xx and the OMAP2 machines.
+> 
+> thanks
+> -- PMM
 
 
