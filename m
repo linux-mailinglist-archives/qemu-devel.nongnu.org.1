@@ -2,62 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FD0850F88
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC1A850FA8
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 Feb 2024 10:20:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZSP9-0006Re-2G; Mon, 12 Feb 2024 04:15:11 -0500
+	id 1rZSOt-0006Pa-7X; Mon, 12 Feb 2024 04:14:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOn-0006Nz-Cq
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:50 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOl-0006Mk-KL
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:47 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOj-0003eH-PF
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:48 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rZSOi-0003cx-1H
+ for qemu-devel@nongnu.org; Mon, 12 Feb 2024 04:14:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707729285;
+ s=mimecast20190719; t=1707729282;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9Gvj+PCUwyFkiVr1gejK7Uhx1Cr5hTLy7JV9VwhoxRc=;
- b=JKBN3q48EJVs8I3rXwZFSOYDddf7eLNH+5X/9EleIAwnpx9xF6/egeg7jwFXOXaVDoftVt
- Z69AZsUud3IMdfs0hxpUfxJwZJOGwaVw/BZgiL562hwAcpRT6cmKJww8pc1/nFbTawpsh/
- ScI/WtrKtrpymegs2dgvG53G8ntXB1s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-edu81_rTOtm9OR9-Pel6vw-1; Mon, 12 Feb 2024 04:14:40 -0500
-X-MC-Unique: edu81_rTOtm9OR9-Pel6vw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=N3MthQiAl6UXczpC0z5h6U/WxarDgRxOlvv2pmtbrGc=;
+ b=WAgzeoezyNwIZGcROGK2fs+nTHoiX4xC3j3aVsFWdyw7f3gwlhGVFFvupsXjpcXjTIDAZr
+ fXjuTxOC+C4y0JkYoREcBz171uKrqr69zLMzvooJTMB+25gXB5Yvpq7P/CH2rXawRbW0xe
+ nX3S2b4TnFyd8m/RGiL8qNXRipRcqiA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-434-L3JxYk5gPRWjAw4kEKkcVg-1; Mon,
+ 12 Feb 2024 04:14:40 -0500
+X-MC-Unique: L3JxYk5gPRWjAw4kEKkcVg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61A3B83101A;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F98A3813BC4;
  Mon, 12 Feb 2024 09:14:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3D20E20BB064;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3DE645AB9E3;
  Mon, 12 Feb 2024 09:14:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A79F421E5A0D; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
+ id AA5B021E5A0E; Mon, 12 Feb 2024 10:14:36 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Ben Widawsky <ben.widawsky@intel.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>,
+Cc: peter.maydell@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/18] MAINTAINERS: Cover qapi/cxl.json
-Date: Mon, 12 Feb 2024 10:14:35 +0100
-Message-ID: <20240212091436.688598-18-armbru@redhat.com>
+Subject: [PULL 18/18] MAINTAINERS: Cover qapi/stats.json
+Date: Mon, 12 Feb 2024 10:14:36 +0100
+Message-ID: <20240212091436.688598-19-armbru@redhat.com>
 In-Reply-To: <20240212091436.688598-1-armbru@redhat.com>
 References: <20240212091436.688598-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -83,32 +81,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 415442a1b4a (hw/mem/cxl_type3: Add CXL RAS Error Injection
-Support.) created qapi/cxl.json without adding it to MAINTAINERS.  Fix
-that.
+Commit aa09b3d5f8e (stats: Move QMP commands from monitor/ to stats/)
+created section Stats, but neglected to add qapi/stats.json to it.
+Fix that.
 
-Cc: Ben Widawsky <ben.widawsky@intel.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240205084747.3623569-2-armbru@redhat.com>
+Message-ID: <20240205084747.3623569-3-armbru@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2f9741b898..00ada764a7 100644
+index 00ada764a7..9103925585 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2894,6 +2894,7 @@ S: Supported
- F: hw/cxl/
- F: hw/mem/cxl_type3.c
- F: include/hw/cxl/
-+F: qapi/cxl.json
+@@ -3321,6 +3321,7 @@ Stats
+ S: Orphan
+ F: include/sysemu/stats.h
+ F: stats/
++F: qapi/stats.json
  
- Dirty Bitmaps
- M: Eric Blake <eblake@redhat.com>
+ Streams
+ M: Edgar E. Iglesias <edgar.iglesias@gmail.com>
 -- 
 2.43.0
 
