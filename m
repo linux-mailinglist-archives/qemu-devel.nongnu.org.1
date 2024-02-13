@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DD5853536
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFD8853548
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:53:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZv5H-0001EU-MW; Tue, 13 Feb 2024 10:52:35 -0500
+	id 1rZv5N-0001Za-F0; Tue, 13 Feb 2024 10:52:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5F-000187-IP
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:33 -0500
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5K-0001N7-L7
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:38 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5D-0005nG-2x
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:33 -0500
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-411bf7e5c6bso5287985e9.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:52:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5J-0005o9-1h
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:38 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33cda3dfa06so453920f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:52:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707839549; x=1708444349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707839555; x=1708444355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=L085CpBqbUnpyqRxr8xkRM4/gsDgBNq2ejRMwVmcLvc=;
- b=gqfUylW1BlOnHp7REJXELwFpkibfREbnhWI+7NDJqlUUKV442ZM19/Q9yr86+thPZG
- 7rqOP719Dq7wiFe6IF2LNVl+CwJAcFa6tL7beQUoBqAlLoUOWc4ted3axR17a4uaOE2A
- Ij9fwmZLSwuuOd0KZViEVYQowzusFSjjPYMMqg8Wv8mhWNAy5i8vCLxI99dzs+iexCn/
- +vHAPORZdbdwEkUNrFF54iisIDybysL7CqL6NvbWjVgnhwE/4vH/WzqhbtPpuwWWJqNo
- nk+IwdNkRtCa4QC0zsL+V69wOCcFUTi3bZY/KWSoUp8x2y+GzdpVWw/xz6xqY+6FEKbj
- IM1g==
+ bh=5AxD+0YCMVgkroYfQziax4Z5o2Tig0RRdRnoJR3JtkY=;
+ b=WmMbxwwonlhXPXVoekbf0Gz8IYqfGC/hytzH7JhqLkDLtZwPxxrVqDB3ZHv4Ijdb2h
+ qL6NDcDnF7iOW0SuiVqm119vVL4YqbWbbQViZ9qOl/Y0yfn2YQWGMgTxOdGxK7IJIC+b
+ scVJLUh3hdPFdKSnGK4G6d2BBHfeHZGCd177YB7kCpZuN1WuXGp53g4+8vQnOGKBtoyd
+ GCjGqjvs7gQTskKAdEJemk/mCoY6lG2pf1hQSDIDi51ztBeqJfzMS9ZYBEEgb8MBZcvT
+ rNxtqIYq+pOOCcDN6FO5fHYdKNYo/JEotXHYxBMuqmThIhR/tV8hSwyNHTppmvqeoXxi
+ WH+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707839549; x=1708444349;
+ d=1e100.net; s=20230601; t=1707839555; x=1708444355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L085CpBqbUnpyqRxr8xkRM4/gsDgBNq2ejRMwVmcLvc=;
- b=K1G6MRWp41FZ6Yj0J/c6A/Wg/VEl0Lcrmjh6/zAZwL/ilgJRtmzNOPzwRx5VXWHuKw
- LQ4Iylrn397vgmax4auCOm0qV5eGhbyZOWsUvB6RfX8F1uymTgFeqsqP4ZKluWzBUcYJ
- +cFSqX4ec4oIcAU/9Yasi98xDBhx4Oj8FtmnaGUwQagOpYFxPkCJ0n5mfk0/jwUHtHKN
- eUlnJhHJCOTY02jo/qJMAKsY8EAQpGSUr4o2fU6uXUIzN97K/COHf0+vsoAYa/lZuXbc
- stDxgO8QulcchqagfG+OKVyUQRQN0DEHKOdtGMWl3oEVpoHgxx9Aymn9MYhYtm8pMghj
- Ppow==
-X-Gm-Message-State: AOJu0YwL2Eh05kyi7qfaAtgvS8ScwXabnsL3mM7+OGUeq+MaBScp9J+V
- 3WNvSVS/eDM20WWbP5unpjH5gNnOfXNyensWRmPRCh90x87wqwcaCEiPWWZLLOFolhGpunk74W+
- k
-X-Google-Smtp-Source: AGHT+IGzsV8wfwVEjWR9KuE1fz7unSM1UOufwbFay0thLSXsPRgjWxJuy48IdYGI9uulUJ3GutK/lw==
-X-Received: by 2002:adf:e68a:0:b0:33b:68bb:e0d4 with SMTP id
- r10-20020adfe68a000000b0033b68bbe0d4mr7797379wrm.56.1707839549476; 
- Tue, 13 Feb 2024 07:52:29 -0800 (PST)
+ bh=5AxD+0YCMVgkroYfQziax4Z5o2Tig0RRdRnoJR3JtkY=;
+ b=NCFNjUR45yL2pGiBv4HSRoJjnol5AN9ozp8kyknN22ZbKSwf4I1n2/G88VggXhUgPC
+ +rpBk6lRXUNusgYmegM8HrFnRvtwuMgvnHA1TQJpWraFOq2UUijB5sng3ISYmTzIttMi
+ g6qyAwQOm+rfgI8A/cs66ubmiZKQIJD5i/u4R10uZDdDfNgP5ZI4b9vCMZ2PwDrom4RN
+ MAUpshcSdPYqdhlzUEjT3EnKZl9pJbnjbDXlcJAqzRbjwckT2WxBjAsqoWvVOIFFJOqM
+ 91w/iudiNYd8JwbVnbW2uf74oUPWZsPaIpLtjXoUn/J2drUAEUorqksCd7Cfjr440j8F
+ 4iDA==
+X-Gm-Message-State: AOJu0YwpU6KDVQDYD2KodsSq+lZFz8Mm39gcIEDMT4CPSjFPxtNy+eZZ
+ BqWmqKESwoUyc0tSMKds3Tggzk2zNvjf2sq3SVDc/Xej0mUbN6UhJelB0SC0EtowCA79n1bF/1/
+ I
+X-Google-Smtp-Source: AGHT+IHa22S3sJLcemZtEQryKbspcIyw9oRwRWTzoCHKqmgahUGJYvJE8r0ivKuYkMbkkKH/+RkA1Q==
+X-Received: by 2002:adf:f890:0:b0:33a:efe0:5a37 with SMTP id
+ u16-20020adff890000000b0033aefe05a37mr6590934wrp.6.1707839555340; 
+ Tue, 13 Feb 2024 07:52:35 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUw9y43ORycSmZRs6lqlG6429iNGLXvQA6XQLHwb0lbgnL7tN5yeWLsm0rHJkPib5f/eWu5ixgBCx4lWz05Oq3aH7JWmC+D0+w12+i8Vs4guKa5o/BXcMo1jlmK0S4zf+BNhMwYl3pPKcjkoJ/bSoHwVg==
+ AJvYcCXKjmc1SZJV2956P8PE/PBTQFBMsL/I6B51CYt00/z6NkHA8dPuLoMTxxUAlxZ5JadBoGgrTkUki2f4ZOuZGU4GyguZTh8vpyqdlVFG+bhRx9jhJ79t0szDdH4CT+7QuOuwBlQTD+NaGeFMFYrDMygRMw==
 Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- a15-20020adffacf000000b0033b39cba5e4sm9826619wrs.116.2024.02.13.07.52.28
+ q1-20020adfb181000000b0033b68556c38sm10041274wra.70.2024.02.13.07.52.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 07:52:29 -0800 (PST)
+ Tue, 13 Feb 2024 07:52:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/4] hw/arm/stellaris: Convert I2C controller to Resettable
- interface
-Date: Tue, 13 Feb 2024 16:52:12 +0100
-Message-ID: <20240213155214.13619-3-philmd@linaro.org>
+Subject: [PATCH v2 3/4] hw/arm/stellaris: Add missing QOM 'machine' parent
+Date: Tue, 13 Feb 2024 16:52:13 +0100
+Message-ID: <20240213155214.13619-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240213155214.13619-1-philmd@linaro.org>
 References: <20240213155214.13619-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,81 +95,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+QDev objects created with qdev_new() need to manually add
+their parent relationship with object_property_add_child().
+
+This commit plug the devices which aren't part of the SoC;
+they will be plugged into a SoC container in the next one.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/stellaris.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ hw/arm/stellaris.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 4fa857970b..d3a12fe51c 100644
+index d3a12fe51c..d9884286b3 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -462,7 +462,10 @@ static void stellaris_sys_instance_init(Object *obj)
-     s->sysclk = qdev_init_clock_out(DEVICE(s), "SYSCLK");
- }
+@@ -1271,10 +1271,13 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+                                    &error_fatal);
  
--/* I2C controller.  */
-+/*
-+ * I2C controller.
-+ * ??? For now we only implement the master interface.
-+ */
+             ssddev = qdev_new("ssd0323");
++            object_property_add_child(OBJECT(ms), "oled", OBJECT(ssddev));
+             qdev_prop_set_uint8(ssddev, "cs", 1);
+             qdev_realize_and_unref(ssddev, bus, &error_fatal);
  
- #define TYPE_STELLARIS_I2C "stellaris-i2c"
- OBJECT_DECLARE_SIMPLE_TYPE(stellaris_i2c_state, STELLARIS_I2C)
-@@ -607,10 +610,17 @@ static void stellaris_i2c_write(void *opaque, hwaddr offset,
-     stellaris_i2c_update(s);
- }
+             gpio_d_splitter = qdev_new(TYPE_SPLIT_IRQ);
++            object_property_add_child(OBJECT(ms), "splitter",
++                                      OBJECT(gpio_d_splitter));
+             qdev_prop_set_uint32(gpio_d_splitter, "num-lines", 2);
+             qdev_realize_and_unref(gpio_d_splitter, NULL, &error_fatal);
+             qdev_connect_gpio_out(
+@@ -1314,6 +1317,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+         DeviceState *gpad;
  
--static void stellaris_i2c_reset(stellaris_i2c_state *s)
-+static void stellaris_i2c_reset_enter(Object *obj, ResetType type)
- {
-+    stellaris_i2c_state *s = STELLARIS_I2C(obj);
-+
-     if (s->mcs & STELLARIS_I2C_MCS_BUSBSY)
-         i2c_end_transfer(s->bus);
-+}
-+
-+static void stellaris_i2c_reset_hold(Object *obj)
-+{
-+    stellaris_i2c_state *s = STELLARIS_I2C(obj);
- 
-     s->msa = 0;
-     s->mcs = 0;
-@@ -619,6 +629,12 @@ static void stellaris_i2c_reset(stellaris_i2c_state *s)
-     s->mimr = 0;
-     s->mris = 0;
-     s->mcr = 0;
-+}
-+
-+static void stellaris_i2c_reset_exit(Object *obj)
-+{
-+    stellaris_i2c_state *s = STELLARIS_I2C(obj);
-+
-     stellaris_i2c_update(s);
- }
- 
-@@ -658,8 +674,6 @@ static void stellaris_i2c_init(Object *obj)
-     memory_region_init_io(&s->iomem, obj, &stellaris_i2c_ops, s,
-                           "i2c", 0x1000);
-     sysbus_init_mmio(sbd, &s->iomem);
--    /* ??? For now we only implement the master interface.  */
--    stellaris_i2c_reset(s);
- }
- 
- /* Analogue to Digital Converter.  This is only partially implemented,
-@@ -1396,7 +1410,11 @@ type_init(stellaris_machine_init)
- static void stellaris_i2c_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-+    ResettableClass *rc = RESETTABLE_CLASS(klass);
- 
-+    rc->phases.enter = stellaris_i2c_reset_enter;
-+    rc->phases.hold = stellaris_i2c_reset_hold;
-+    rc->phases.exit = stellaris_i2c_reset_exit;
-     dc->vmsd = &vmstate_stellaris_i2c;
- }
- 
+         gpad = qdev_new(TYPE_STELLARIS_GAMEPAD);
++        object_property_add_child(OBJECT(ms), "gamepad", OBJECT(gpad));
+         for (i = 0; i < ARRAY_SIZE(gpad_keycode); i++) {
+             qlist_append_int(gpad_keycode_list, gpad_keycode[i]);
+         }
 -- 
 2.41.0
 
