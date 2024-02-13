@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE29853BF7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED8A853BDD
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:05:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0C-0003se-ML; Tue, 13 Feb 2024 15:03:36 -0500
+	id 1rZyxl-00015P-1z; Tue, 13 Feb 2024 15:01:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzI-0002sG-P5
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:42 -0500
+ id 1rZyxK-0000qY-RY
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:00:39 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzG-00025a-TO
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:40 -0500
+ id 1rZyxI-0001kx-Px
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:00:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AmLOTtmmzpqanLcUed+jgsCYVlRhvb8feYQvHXvDt9A=; b=UReSvDpJIQhQJRmYN7ql4pKDmB
- w0zM0UvtThCXeDuBMhNp4TWGNyyLCy3fyxkvfvJQEOtxRwN8H8z9MNyfxx1AJgUTSqDh3goN270Wj
- JXkovmLthD+uo2L41Ki6HOp6GTfu+0vsY4ONvqF9GARTH7aCfI1viiolQ10fDqNtd871HSGzz+8Oy
- b3Ey4npMdIC9JWslSL8wGRrxB4l0z7vgPXgIXiAZqhkfiGLcg1JQbXHttKi0oqC7W//XVEC/3mQeb
- Qs+Ks2ZiksDucj2cbdQ02v2WF1RbIwxnSbNg41zmb/Qfg5Z8lEaWd2XApEk+9YKYkCMSjtzEFqUGn
- lZ4YnPIFpAe3ipVlW+bZWOKFrY7T9a1lFUN//Pb5vMwJwfHM7JWOk+tM4EbS+VAwj4+YN5NXmUYhU
- WWsgMoYTz683yleYa1K0MHELwFKE4gY5DfMUqV8rpkhaEoo8UUr/mNl4BZRV/oWE5cZeA9GixROBI
- aaFIqVHKlqZzQzwE6x8G8NY+ImjHK1fxdsZ+vWhwWCutB0DBx5FxwC+yajnPOsHfDFXAs85b1aKw8
- vryT2BYRBkk9xykB8BU944aQXmncL5GGP+89mK4jPpRr1Z3D8emRai3QdRV0zYjSanrU/QVstVEme
- r+P8Xb6ucuH1LWRu29B6qMdy36ka8vNJI0oArGaxc=;
+ bh=f1NEFO4A0Vqg4tfIZJi/bQTZ9CGMao8x83kojNhLktk=; b=T1KdvEqQUD6rfsiY0u+o9+CBq1
+ qvXjjqIAiNm7Tmct0gKtztsm+b9i1Ty7Glw/60WEW60ZrpB/1REbajNhmdQVFxyuCKg48kIK7j/Gu
+ Q8eBt78sD4yonEFPCBJaMZZZmczDFGs8oqYKj6aZo3roTJvi+wFb9pkUK0p+cLVmeFh9O4v9k8MH8
+ KC6ExYI5qGCx3F4S7JqF73pW4rGLwkhJoH+i6n25DQ3AoiaslNlAa8gvr73rmd2U7ibXC0f+CBnZT
+ yBz69iUyxWbQ3L0b54LsY5kPaRZ/xah/2eP92J9nY3SlhEZIUohruuSWAMIPrNALKui1FzVhDj9m/
+ s2UAU8FVDjTxS//i3q6j4qDS6T0H6//WhjGnOyP9ec/4l/6VlIFhxhIMPWF+5JLgU1OzE8+I8sUab
+ lQ5ntY6waqSa/sDTzV3Oa8Re3paF2s4fGkv5wk/ndH38JBR6R1eU2tb/SVJivPKp6Avm0t/qJt3Q2
+ bflfPZbpYzK+X4s+7vxBB/ES7PUh3kXVvnhoI7q77qQ7hLNWOBCWBqCsYkxDx78wQ8sCs6pZrVfA7
+ JJ+gHp8aCk5ftFkRSFveEITpK2e/JIZuj9ImE0YSqHCbxlHgKDMGbalJe7tiB3gsNU98EWcaY9C1q
+ 92J1YeoZW6402xoBSv9Oj8LQhtWNKaNaWjv01gjgQ=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyh0-0008m4-SI; Tue, 13 Feb 2024 19:43:47 +0000
+ id 1rZyh1-0008m4-9D; Tue, 13 Feb 2024 19:43:47 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:27 +0000
-Message-Id: <20240213194052.1162753-64-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:28 +0000
+Message-Id: <20240213194052.1162753-65-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 63/88] esp.c: remove unneeded ti_cmd field
+Subject: [PULL 64/88] esp.c: don't raise INTR_BS interrupt in DATA IN phase
+ until TI command issued
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,121 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the datasheet the previous ESP command remains in the ESP_CMD
-register, which caused a problem when consecutive TI commands were issued as
-it becomes impossible for the state machine to know when the first TI
-command finishes.
+In the case where a SCSI command with a DATA IN phase has been issued, the host
+may preload the FIFO with unaligned bytes before issuing the main DMA transfer.
 
-This was the original reason for introducing the ti_cmd field which kept
-track of the last written command for this purpose. However closer reading
-of the datasheet shows that a TI command that terminates due to a change of
-SCSI target phase resets the ESP_CMD register to zero which solves this
-problem.
-
-Now that this has been fixed in the previous commit, remove the unneeded
-ti_cmd field and access the ESP_CMD register directly instead. Bump the
-vmstate_esp version to indicate that the ti_cmd field is no longer included.
+When accumulating data in the FIFO don't raise the INTR_BS interrupt until the
+TI command is issued, otherwise the unexpected interrupt can confuse the host.
+In particular this is needed to prevent the MacOS Disk Utility from failing
+when switching non-DMA transfers to use esp_do_nodma().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-64-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-65-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c         | 19 +++++++++++++------
- include/hw/scsi/esp.h |  3 ++-
- 2 files changed, 15 insertions(+), 7 deletions(-)
+ hw/scsi/esp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index ccb8ad4bae..bcebd00831 100644
+index bcebd00831..dd6bf6f033 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -321,7 +321,6 @@ static void do_command_phase(ESPState *s)
-     fifo8_reset(&s->cmdfifo);
-     s->data_ready = false;
-     if (datalen != 0) {
--        s->ti_cmd = 0;
-         /*
-          * Switch to DATA phase but wait until initial data xfer is
-          * complete before raising the command completion interrupt
-@@ -908,12 +907,12 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-      * async data transfer is delayed then s->dma is set incorrectly.
-      */
+@@ -786,6 +786,11 @@ static void esp_do_nodma(ESPState *s)
+             return;
+         }
  
--    if (s->ti_cmd == (CMD_TI | CMD_DMA)) {
-+    if (s->rregs[ESP_CMD] == (CMD_TI | CMD_DMA)) {
-         /* When the SCSI layer returns more data, raise deferred INTR_BS */
-         esp_dma_ti_check(s);
- 
-         esp_do_dma(s);
--    } else if (s->ti_cmd == CMD_TI) {
-+    } else if (s->rregs[ESP_CMD] == CMD_TI) {
-         esp_do_nodma(s);
-     }
- }
-@@ -927,7 +926,6 @@ static void handle_ti(ESPState *s)
-         return;
-     }
- 
--    s->ti_cmd = s->rregs[ESP_CMD];
-     if (s->dma) {
-         dmalen = esp_get_tc(s);
-         trace_esp_handle_ti(dmalen);
-@@ -1200,6 +1198,14 @@ static bool esp_is_version_6(void *opaque, int version_id)
-     return version_id >= 6;
- }
- 
-+static bool esp_is_between_version_5_and_6(void *opaque, int version_id)
-+{
-+    ESPState *s = ESP(opaque);
++        /* If preloading the FIFO, defer until TI command issued */
++        if (s->rregs[ESP_CMD] != CMD_TI) {
++            return;
++        }
 +
-+    version_id = MIN(version_id, s->mig_version_id);
-+    return version_id >= 5 && version_id <= 6;
-+}
-+
- int esp_pre_save(void *opaque)
- {
-     ESPState *s = ESP(object_resolve_path_component(
-@@ -1237,7 +1243,7 @@ static int esp_post_load(void *opaque, int version_id)
- 
- const VMStateDescription vmstate_esp = {
-     .name = "esp",
--    .version_id = 6,
-+    .version_id = 7,
-     .minimum_version_id = 3,
-     .post_load = esp_post_load,
-     .fields = (const VMStateField[]) {
-@@ -1265,7 +1271,8 @@ const VMStateDescription vmstate_esp = {
-         VMSTATE_UINT8_TEST(cmdfifo_cdb_offset, ESPState, esp_is_version_5),
-         VMSTATE_FIFO8_TEST(fifo, ESPState, esp_is_version_5),
-         VMSTATE_FIFO8_TEST(cmdfifo, ESPState, esp_is_version_5),
--        VMSTATE_UINT8_TEST(ti_cmd, ESPState, esp_is_version_5),
-+        VMSTATE_UINT8_TEST(mig_ti_cmd, ESPState,
-+                           esp_is_between_version_5_and_6),
-         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
-         VMSTATE_END_OF_LIST()
-     },
-diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
-index 1036606943..39b416f538 100644
---- a/include/hw/scsi/esp.h
-+++ b/include/hw/scsi/esp.h
-@@ -41,7 +41,6 @@ struct ESPState {
-     uint32_t do_cmd;
- 
-     bool data_ready;
--    uint8_t ti_cmd;
-     int dma_enabled;
- 
-     uint32_t async_len;
-@@ -62,6 +61,8 @@ struct ESPState {
-     uint8_t mig_ti_buf[ESP_FIFO_SZ];
-     uint8_t mig_cmdbuf[ESP_CMDFIFO_SZ];
-     uint32_t mig_cmdlen;
-+
-+    uint8_t mig_ti_cmd;
- };
- 
- #define TYPE_SYSBUS_ESP "sysbus-esp"
+         s->rregs[ESP_RINTR] |= INTR_BS;
+         esp_raise_irq(s);
+         break;
 -- 
 2.39.2
 
