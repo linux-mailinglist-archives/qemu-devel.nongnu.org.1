@@ -2,96 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082EF853321
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 15:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7740F853346
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 15:36:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZtnH-0005af-FV; Tue, 13 Feb 2024 09:29:55 -0500
+	id 1rZttN-0001wB-JW; Tue, 13 Feb 2024 09:36:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rZtnF-0005Zl-8p
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 09:29:53 -0500
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rZttL-0001vC-9Q; Tue, 13 Feb 2024 09:36:11 -0500
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rZtnC-000684-UH
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 09:29:52 -0500
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5dbf7b74402so2923394a12.0
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 06:29:50 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <groeck7@gmail.com>)
+ id 1rZttG-0007gg-3N; Tue, 13 Feb 2024 09:36:11 -0500
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6de3141f041so779398b3a.0; 
+ Tue, 13 Feb 2024 06:36:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707834589; x=1708439389;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20230601; t=1707834963; x=1708439763; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:sender
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UvCCkOmtAkWGea6c45GpPu60FEovtNyi55urZOLWW/M=;
- b=H5FguyeZNmLo3DMjqLhi3GgKiemhIi7sp2Huhi8x7l+WQ40+PfRftH3uCadXS7qTHJ
- hZQLR47yf5u3YMtxebB0Q+OSel10cRTF+mKGyww+rjBJfokhW8NnCLdTpR2T8wDnLOe4
- Qet5h57wFXry7kFQOIp9FFvbst2vdQB6h/p6ckeBr/lj62DhfnA3tiJwcggvujbGDSOf
- hg4eAFilTlna/WmkUT44RLcoKGAIG8QAOxzTS/1YcSmDdsThmWWriQ3gfKOocWMyEGnq
- uvOyjRhGOcqGhpTPDfTLDzuxSxnM9AjXXMCsVncSLYfDxJb+c/ncpAG48WuhUPvmveKT
- TEFw==
+ bh=7t1dihOXIwRG3FeUSJ2Hdd72z/vSowiOa+3IV49xtMo=;
+ b=LNQ4BI8GKpBMpDxXFRq1vDli/gQcdgtBoJJjJMuYmXcbm9gZmR/ItTtJtNFFKUjKxH
+ rRlvjs5TGKC5dTtDKxMZQGK+MuRYaEEy19L9aFgwIsqvJ/PtksVWe97NaVaweO3ddUg1
+ nY52RUXLB3zBxBx7+Rft8oPydBzwo1Go8Wd/n4EVPnAo4IsjhrEv5VnlXbkdWiVi1pEp
+ U7wReVf0R9IbhW+t6+45nV8VYCzwfG0FOU7/YBwerG03upTIxo7MU3ZK+hs22kxRdQwv
+ 5h7YkmS/l7fk8FPkWNI2++BUQD8E992mIjp74Jt5lbE3TApD/cnkf5PHMV/jGAS3KGVF
+ fbCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707834589; x=1708439389;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1707834963; x=1708439763;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:sender
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UvCCkOmtAkWGea6c45GpPu60FEovtNyi55urZOLWW/M=;
- b=iK1qzJ+0dxuWi9tZ3auXAlqgda6pL4DIpIhYVr5TufCktmxt8uVk3Mbf7jesV/vP3d
- J0iIQ0ZOhuL2jRN3D9PDYDSKPQFMWitdh3CEEXYvB+5v88Lmrz+oog++jFxIMLgSSAKQ
- YGjcI9QpWpzYvVy7CGh1akJ5TfVL6LrQpnJ7e++9vL7nUR4S7W6hUD2leetHhFJOGwrc
- lhbcVYpN30BTkSery7y4Aly8LPuJm7Ao5Q50viGK8EQLco2qBMD8S6NGgBEDrKeDy94G
- 3ufWQzBFSf+IUFGl+24JzZbnN0oJPTjhQz+ybR9/fMPk8aRwi8L00efnWlbJAtDbRUfu
- 1LLA==
-X-Gm-Message-State: AOJu0Yzlx0NxyZHrAg48TlUMUyDAwymD+TLXKPoQ2yV2N7+t3tLS0X+B
- Yd/PZkVPJG9L7j3h+Ravm5iH5FNP81+vFF7fkygwNtzL/id32nzMXSt7X3PJZUM=
-X-Google-Smtp-Source: AGHT+IHPDwU4lmfpji5Qt+EP95MET5l3c+LRgQX8HvtFSJjkNkm5O0ATDbgruYkA12ZKFE5RZB0s3A==
-X-Received: by 2002:a05:6a20:c88a:b0:19e:a6ea:683a with SMTP id
- hb10-20020a056a20c88a00b0019ea6ea683amr8633039pzb.50.1707834589309; 
- Tue, 13 Feb 2024 06:29:49 -0800 (PST)
+ bh=7t1dihOXIwRG3FeUSJ2Hdd72z/vSowiOa+3IV49xtMo=;
+ b=bYhr1aMVaZhkFPR8rV8apItdb6f7fsDY0glTL6aKwJQTNZGk0zCcvUyAGBnU6ySQ+g
+ SadvZqQsVAa6HO8MfPQaFUfogyCZwz1QL3XDVRNmOy6oPR6lqsWXw6b8O1WMbX1XNVvI
+ /pBnuPRhsaI2JPs1jf2dmZK03ljb935W610MQr5yVxZy73qvxLt/nU6E3+rPnKYYTylV
+ Ihw0/6FDnn/fV9slZxtdqeuxZldbM8A1y9cZcJG5vrHnHW0O62XAiNDacq3ZL3qsSSTT
+ OPm2i97Ypgye0Lsvc/ygfI95+Iv3EKIcP5q5gzowl2XU5Qmvu0RvTUoxvIwKoSJY7ua8
+ Kxrw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVU/YKVOKmLR9PclkDD8DIEOXoYK9Rgt+K0XZcWNF0u6QE7mi+P3qpBKPpGeTZp4agW026fsvokVgHUR+WXlaeGA9lI39Ohi8YFfqmGqyDEWa1ofpEo0V3J+j6QnfplLiR1hPIR7cCHXr1Cfo/WnF26v7mQgKOF/wx0vd1FU/CQATcFIMtFbD4Xeq8wC6QbHRKxiaDGR4xik1KFao84nmLcUgO8kAEhHdkyb2rDXPzDDXFAsoHpR/Ry7GA8urSlfdD6tDAO5HLIj86sJSaAON3mRprEwqn8vjFtAigJEVH8lb79L+G9igsMxLGnKkkkiqUmuwMBrShrwXRqftVzpCiXxj3XeehkUfu8lrAtmsWGP2wpgfTLjzr2/Am6GJpFYPWuNvG61m8N6tRznBJTx2wZ2VJJHtCsSRkxSw==
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ AJvYcCU7cEPHNr0YSb2LJIQB+gcT9nWABIreiymnX6oqgVpg0KbE9L7RVJghWpssySFyjhi8doiujnHFdrttXIHtsTGP8rzX1Fo8Hz/uIYR3phASvkQOa2vlI+7YhbI=
+X-Gm-Message-State: AOJu0Yxw3oszCoxqueL8xx+zuBtQl92I8Di0s1+y7gTtsQ1OwJ8D81gJ
+ Mq7JwC0V/Mwx/SEOTEzkYMjAfG4nAkZdSij7Dk5Pyn2+jtoPq2cw
+X-Google-Smtp-Source: AGHT+IGy9hDoYViel8THQI939w4c1rW19XvjAt9mieFFKgDZ6ZznQtt2TMohY7/obWaguvrFEFS8zQ==
+X-Received: by 2002:a05:6a00:26c9:b0:6e0:f287:d744 with SMTP id
+ p9-20020a056a0026c900b006e0f287d744mr2943885pfw.19.1707834962560; 
+ Tue, 13 Feb 2024 06:36:02 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWc0rz2wdReiV0TFaVcz3NbZQxtlYw6HN53RcDrD0Z9HmyWZ5zy5KH1aasgdEfObHbkPJUWyMtnpwaQEfC9wTl0x98m+2YM6kBzZ9CJpIoYO+qIAK5uGYcvOB0=
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
  by smtp.gmail.com with ESMTPSA id
- qc5-20020a17090b288500b00296a686dd17sm425791pjb.56.2024.02.13.06.29.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Feb 2024 06:29:48 -0800 (PST)
-Message-ID: <8e6a48f0-8938-4a18-a74e-25802ef54d50@daynix.com>
-Date: Tue, 13 Feb 2024 23:29:44 +0900
+ g1-20020aa79dc1000000b006e09aa8c50csm7223066pfq.53.2024.02.13.06.36.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Feb 2024 06:36:01 -0800 (PST)
+Date: Tue, 13 Feb 2024 06:36:00 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>, qemu-arm <qemu-arm@nongnu.org>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+Message-ID: <ce858803-84f8-4fc1-96ac-75914da98905@roeck-us.net>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <ede43fd1-9005-4f02-9494-73cfd898e3a0@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] pcie_sriov: Validate NumVFs
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org
-References: <20240212-reuse-v3-0-8017b689ce7f@daynix.com>
- <20240212-reuse-v3-5-8017b689ce7f@daynix.com>
- <20240213055345-mutt-send-email-mst@kernel.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20240213055345-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ede43fd1-9005-4f02-9494-73cfd898e3a0@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=groeck7@gmail.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,39 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/02/13 19:59, Michael S. Tsirkin wrote:
-> On Mon, Feb 12, 2024 at 07:20:33PM +0900, Akihiko Odaki wrote:
->> The guest may write NumVFs greater than TotalVFs and that can lead
->> to buffer overflow in VF implementations.
->>
->> Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->> ---
->>   hw/pci/pcie_sriov.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
->> index a1fe65f5d801..da209b7f47fd 100644
->> --- a/hw/pci/pcie_sriov.c
->> +++ b/hw/pci/pcie_sriov.c
->> @@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
->>   
->>       assert(sriov_cap > 0);
->>       num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
->> +    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
->> +        return;
->> +    }
-> 
-> Indeed:
->       The results are undefined if NumVFs is set to a value greater than TotalVFs.
-> 
-> However I note that hw/nvme/ctrl.c will still poke at NumVFs.
-> 
-> Since it's undefined, I propose a simpler hack and just force it
-> to PCI_SRIOV_TOTAL_VF. This way everyone can just assume it's ok.
+Hi,
 
-It is still not OK to poke at NumVFs as the guest may set a different 
-number anytime though it's undefined if NumVFs is set while VFs are 
-enabled. I think hw/nvme/ctrl.c should be changed to look at 
-exp.sriov_pf.num_vfs, which holds the committed NumVFs value.
+On Tue, Feb 13, 2024 at 02:42:29PM +0100, Marcin Juszkiewicz wrote:
+> 
+> > > The one SA1110 machine:
+> > > 
+> > > collie               Sharp SL-5500 (Collie) PDA (SA-1110)
+> > > 
+> > I do test collie.
+> 
+> Can you share kernel/initrd/config? I wanted to boot something at 20th
+> anniversary of buying one but was unable to build anything bootable on
+> either QEMU/collie or physical one.
+> 
+
+You'll find it at
+	https://github.com/groeck/linux-build-test/tree/master/rootfs/arm
+
+Essentially it is collie_defconfig plus some additional configuration
+options (BLK_DEV_INITRD and EABI are essential), and the rootfs is
+rootfs-sa110.cpio.gz. It boots from initrd. I never managed to get it
+booting from flash.
+
+Guenter
 
