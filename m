@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA609853B67
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:43:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED416853B87
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:47:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZygD-00079f-KP; Tue, 13 Feb 2024 14:42:57 -0500
+	id 1rZygA-00071N-Pz; Tue, 13 Feb 2024 14:42:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyg6-0006yI-Iw
+ id 1rZyg6-0006y3-Fb
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:50 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyg5-0006Pk-0O
+ id 1rZyg5-0006Pm-0S
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
@@ -24,26 +24,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=kibjptY/wMmzUFXbCnZjWuBRPf2BC6ZaxFiieDa/v6k=; b=Q72zMpdeK6U2Vm5n1l8W8ZV07G
- OlOVLIWGhp/9FKlJ4ODCYvWie27zuXuulNs23GD7G1H3ZayYnMA3hlCdHv8DR+bQSgTZBWn31tUPg
- wAOUmEmNhIBLhE7PSSdz73Yrpdwfl+C1Zxz4AO+RyDAlMElEQp/dOOrBfJh1m1iPIX8juPZ9qlTA6
- v6fZGlpwpCKji/QczyBsskFnaNnjzjeSk/ubkLForphtdRd05aQ/gg8z0Te9Db5ZcgSAIDOGzr22s
- CsGiP4FCpaCR9haJyGImJx22Uq/GJkJK8rCwl27fvKMy7qLwtTudOIWutWeuluFZB3dhQQIrs6Q5W
- RWdJxtZ7nxcua3vYGs/AUR8MUWq8rF9RF6c8l1WmKQhNkuVnhsu57UKDt7it0RdwTMSRoXcFybpZt
- qjkuZGs2LxV4nSEoEnOROePfFkUoABriP73fMQBw8Z/pJ3eHOHp2gZFiXMDWRK29N5dJZuS9defIB
- XCSDQA7dv78Tk2uWE6YUuLfkprD9Uq5v89SoZXXyBaRD5waNJ2btaCqPlF4Djd58jhxr4SzRPF6ng
- t+mpTAkY4cm5J2A0Hh8j6NS3t5StSF3nkQTVf9Oa4y0X/EDyKKRmr+hvVsiQr4m8gSCkzV1CJsvzx
- NPHnJuHBR6q4GzUc8GGXux1yVrTN/lsOCpW9C/VBI=;
+ bh=m1ImFGpa7DxWE0DTTuWjbOMbJeHgbQNvbOZuqOrXhag=; b=nWFBzRYJlg3ysCW+PlmnbbmF3o
+ XWw/ho76lNRnFA9jxEsG8lEqJldFUUHzDyexT1qy9HHtWSD1ynOzkLbz1Y3EO8+2QG09w8xj5g9n8
+ 1rlGCdgvBSMlTI4rqpODJ1R+tbboSbxP/Kianex8zH5v/4LS/0lWOnfM0O9qXAgDETmwZP9se7Zsw
+ FlIGJhbrpWMr73LfdKVXDx2z5fkscZQQdPIkb8GRKfGawq5ExFLCk+ZkKkHIwsnjIE+afkilo9g8J
+ 8fzkoU9PkEObHEvgnDKtGxBEYEMw7O1ml+QMNZGrem1K9Ac10bcnx/516H2o/oeE2mvWK6tZmuo/m
+ Bxj28qlipaViiEuRcyaImch1Z4RgLD+JBK5uFhu9G00SShmLhWHmJ4Fh8lGpvtRBMNIzKHsvf/mPy
+ izbf+sM4/qzHUQVK/rqD5gM4iZHfhSXXB1l9tn1Upyja8xokaGQWDnWgEHTlvB6d/44nh8D/6t3tr
+ ag95aTR/IdP0B1696drk/ffnx9uy+tp+KWNrW+1mqxWjL07pN8clWEMbA4OXUh7GjdAuH0ZAKGcOf
+ uuhB/dFG9tvfjmcUbK65248zD59R7swOz4uc/vyQvYtDzis0wTnkmSUQ2rAKx2qgckcY/I1VPrrs6
+ CRO4Rls4CkagZKGD8OjSyOiNIubs40rv88no7X9SU=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfB-0008m4-K3; Tue, 13 Feb 2024 19:41:57 +0000
+ id 1rZyfF-0008m4-N5; Tue, 13 Feb 2024 19:41:57 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:52 +0000
-Message-Id: <20240213194052.1162753-29-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:53 +0000
+Message-Id: <20240213194052.1162753-30-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 28/88] esp.c: consolidate async_len and TC == 0 checks in
- do_dma_pdma_cb() and esp_do_dma()
+Subject: [PULL 29/88] esp.c: fix premature end of phase logic
+ esp_command_complete
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,118 +78,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the async_len checks for requesting data from the SCSI layer and
-the TC == 0 checks to detect the end of the DMA transfer are consistent in both
-do_dma_pdma_cb() and esp_do_dma(). In particular this involves adding the check
-to see if the FIFO is at its low threshold since PDMA and mixed DMA and non-DMA
-requests can leave data remaining in the FIFO.
-
-At the same time update all the comments so that they are also consistent between
-all similar code paths.
+There are two cases here: the first is when the TI command underflows, in which
+case we raise INTR_BS to indicate an early change of phase, and the second is
+when the TI command overflows because the host requested a transfer for more
+data than is available. In the latter case force TC to zero so that the TI
+completion logic executes correctly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-29-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-30-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 44 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+ hw/scsi/esp.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 6b0811d3ce..f20026c3dc 100644
+index f20026c3dc..c6151d306e 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -604,12 +604,13 @@ static void do_dma_pdma_cb(ESPState *s)
-         s->async_len -= n;
-         s->ti_size += n;
- 
--        if (s->async_len == 0) {
-+        if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-+            /* Defer until the scsi layer has completed */
-             scsi_req_continue(s->current_req);
-             return;
+@@ -887,7 +887,6 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+         if (s->ti_size != 0) {
+             trace_esp_command_complete_unexpected();
          }
- 
--        if (esp_get_tc(s) == 0) {
-+        if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-             esp_lower_drq(s);
-             esp_dma_done(s);
-         }
-@@ -706,24 +707,30 @@ static void esp_do_dma(ESPState *s)
-             s->async_len -= len;
-             s->ti_size += len;
- 
--            if (s->async_len == 0) {
-+            if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                /* Defer until the scsi layer has completed */
-                 scsi_req_continue(s->current_req);
--                /*
--                 * If there is still data to be read from the device then
--                 * complete the DMA operation immediately.  Otherwise defer
--                 * until the scsi layer has completed.
--                 */
-                 return;
-             }
- 
--            if (esp_get_tc(s) == 0) {
--                /* Partially filled a scsi buffer. Complete immediately.  */
-+            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-                 esp_dma_done(s);
-                 esp_lower_drq(s);
-             }
-         } else {
-             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
-             esp_raise_drq(s);
-+
-+            if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                /* Defer until the scsi layer has completed */
-+                scsi_req_continue(s->current_req);
-+                return;
-+            }
-+
-+            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                esp_dma_done(s);
-+                esp_lower_drq(s);
-+            }
-         }
-     } else {
-         if (s->dma_memory_write) {
-@@ -734,13 +741,13 @@ static void esp_do_dma(ESPState *s)
-             s->async_len -= len;
-             s->ti_size -= len;
- 
--            if (s->async_len == 0) {
-+            if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                /* Defer until the scsi layer has completed */
-                 scsi_req_continue(s->current_req);
-                 return;
-             }
- 
--            if (esp_get_tc(s) == 0) {
--                /* Partially filled a scsi buffer. Complete immediately.  */
-+            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-                 esp_dma_done(s);
-                 esp_lower_drq(s);
-             }
-@@ -754,6 +761,17 @@ static void esp_do_dma(ESPState *s)
-             esp_set_tc(s, esp_get_tc(s) - len);
-             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
-             esp_raise_drq(s);
-+
-+            if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                /* Defer until the scsi layer has completed */
-+                scsi_req_continue(s->current_req);
-+                return;
-+            }
-+
-+            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
-+                esp_lower_drq(s);
-+                esp_dma_done(s);
-+            }
-         }
+-        s->ti_size = 0;
      }
- }
+ 
+     s->async_len = 0;
+@@ -897,13 +896,26 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+     s->status = req->status;
+ 
+     /*
+-     * If the transfer is finished, switch to status phase. For non-DMA
+-     * transfers from the target the last byte is still in the FIFO
++     * Switch to status phase. For non-DMA transfers from the target the last
++     * byte is still in the FIFO
+      */
++    esp_set_phase(s, STAT_ST);
+     if (s->ti_size == 0) {
+-        esp_set_phase(s, STAT_ST);
++        /*
++         * Transfer complete: force TC to zero just in case a TI command was
++         * requested for more data than the command returns (Solaris 8 does
++         * this)
++         */
++        esp_set_tc(s, 0);
+         esp_dma_done(s);
+-        esp_lower_drq(s);
++    } else {
++        /*
++         * Transfer truncated: raise INTR_BS to indicate early change of
++         * phase
++         */
++        s->rregs[ESP_RINTR] |= INTR_BS;
++        esp_raise_irq(s);
++        s->ti_size = 0;
+     }
+ 
+     if (s->current_req) {
 -- 
 2.39.2
 
