@@ -2,95 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E9C852A9C
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D9F852AF4
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:23:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZnug-0001It-87; Tue, 13 Feb 2024 03:13:10 -0500
+	id 1rZo3r-0000eS-3f; Tue, 13 Feb 2024 03:22:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnud-00016g-Tg
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:13:07 -0500
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnua-0000w6-Up
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:13:07 -0500
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5114fa38434so4465292e87.0
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 00:13:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707811983; x=1708416783; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=l2VfWU0EmMkx2mEhciES4OHFukm6OT4OfeAh7mCbOtI=;
- b=jzuHWtsNdy3fx8Einpv94oVLqTRAbAK2TTJCeByRROFBNr586DkjL9mxcdrh86k+xH
- zQ4NPYvyaunwPK27wUg1TnNpkejk/vyOWHV5t0M5clOHmebBH6V6UJsu5ejCr+RbDI5C
- A31DQDCSjolLgVz8afViRQEvBgs9AYTHIAVqFwWkz9LjL1gCXvcJVcHrphEMeWQNiScn
- yVQTWE77pv1XKkqyXwMjA6pnDLHFA0yHZ4VrBESVFV/K191MypKOncZutLTWhNxPVZkX
- wn2OiCqBbL6YaU0mk3a0IUCB5ji7HlnjVnoyeAwz8BmzFIz/HmbYZmcTcEnFA/kACQXc
- MGwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707811983; x=1708416783;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=l2VfWU0EmMkx2mEhciES4OHFukm6OT4OfeAh7mCbOtI=;
- b=T6dEwDdzYS+ZZhuP8qmgiU6NSTbvPTf5ks5HD78T4zyhZQGxo7LXmAZYTPW9UBBnkV
- e7si0qhzqSFPIzdr/44doNxLynYm0+tyRwiUXyGBlkQ9Wo0gA4jCLXvnFiYK3OmsnfHQ
- JxLngRn+Fa75pSJa3CXFgkfzwg5PfHYal56LeZNGb7cKDbg5q8BwHPZpHTI2G1ZzNHf+
- qWkU6w7q0gHQDGXvQuFa2oXBpZMahdwwBVEBuC2Ve5SZIGxjBkjpF60lrdq1yCjGxUwh
- 2SXMjv6d173wKbxNxDvOjTcj3p3QqHCG9vBXLMU3TEsBfGPzpOELCLpE0cY6UcFGLuCy
- 73+A==
-X-Gm-Message-State: AOJu0Yz78mMGiwyQyG268roXItpMr4tVqImZWHD8D8gceA+dx691uAfH
- lkCsRvl8ed5Hc/LHsfRFRCQwlsmUi/D3OiqdvnsEonGOPrG4rOLj+yRf+ZNtRTz3gasvbyGlhq7
- 1
-X-Google-Smtp-Source: AGHT+IFQSnqMpGGj/2FlHuC3GG129Suyu36ht4RTcUj2oVsjzdoFOGSs07Lkk28croNXqXjZCvvXQw==
-X-Received: by 2002:a05:6512:3c8d:b0:511:9d22:f4bd with SMTP id
- h13-20020a0565123c8d00b005119d22f4bdmr413061lfv.63.1707811983187; 
- Tue, 13 Feb 2024 00:13:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCWi577CshayfwLtIFjxE46jsqtR5FDaYjIGDsT58tJdyJz8QGWPlEWRwWCHoqPKZvRe6y+95Ro2LZwOiIdS6olDsJ9NOuuT9uPkWoxdpPq/i3wmj3mvs1g4m8fMCYNIMefak0V3rRCZBGJr5ty2QJHPBQviC885EHcNSTgty6C5E1mXLuJas0f6F5JGz6nEVhoT+WFTHaHMZGA4APuwJlxRjW9Mj0dc/d/Rs27tBw+Pw7zg+Tv8izJngNTeoZUMIa+tcQN7xnXQjzuLMvnKhfHc0Ywm4olFb6C1n5/uKKmBgS8LUYSt5stoEDLjtjEgb4cH3cCBvsDFLIdr8gsK2Bf8Y0abj+ZDwd59KoWIk1DAxr8ng19hNm+VGzVlYjX7QdqehHWl/pl3egnAgHNmUhymOh66EYxijO7EKW+Gmj/8fYnEhwQhyyZwdxmyj/0qS/aY+WeeGNEH+8R+2ZFPjjy38H/SqO7G28ej0LnKjIej++KbP36XekC5BwZRwGRbH2Vm/Yth7idREEwB4r85tf8pAKCC8PzxcPDgTEU3Dd4EMBtjG9e/hdfuDfxOs3sIp9uXCFw=
-Received: from m1x-phil.lan ([176.176.128.243])
- by smtp.gmail.com with ESMTPSA id
- f13-20020a05600c154d00b0040fb783ad93sm10792039wmg.48.2024.02.13.00.13.00
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 00:13:02 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- John Snow <jsnow@redhat.com>, qemu-arm@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rob Herring <robh@kernel.org>, Peter Maydell <peter.maydell@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Alistair Francis <alistair@alistair23.me>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 9/9] hw/ide/ahci: Move SysBus definitions to 'ahci-sysbus.h'
-Date: Tue, 13 Feb 2024 09:12:00 +0100
-Message-ID: <20240213081201.78951-10-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240213081201.78951-1-philmd@linaro.org>
-References: <20240213081201.78951-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1rZo3p-0000e8-8r; Tue, 13 Feb 2024 03:22:37 -0500
+Received: from mail-bn8nam12on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2418::601]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1rZo3m-0002cR-NH; Tue, 13 Feb 2024 03:22:37 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UyBnv1F2HlVkmcWpLZW3+jIiQy8LmDU7eHWU95e2h/ZhsQN4wDH3NBzB4663fnMUNMeKs5RkXS9bo9+KOmf/o9iFo8gSLjLQjlVU6uAI7XcG3vVhWinaMXc+R2qYz3x0H4vaUHW6vfwmioi8FZsXZcsPH++McWjn261Ki1rErZHWvA4WPmU7B3qhVM7R283HKrW5liCPCd32Brf9XMpO1MnWTBMjqUrqChaUnB10q2dvfPYSYb6tzCJ65zNWZQzt3twym5yMRfV2rIMlxuABlPxtvQRKRbo3TR6myUftc18IGMcJCP/IhPjKJSi2kdfLP+pWUjfk2HlKpXKrK/oL3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hFSF+J+ZYSITdqlDhl9Cfky96JCt+BheB6vpDXKkfNs=;
+ b=TY2k97ZKib0W5Chceyzim/WpNFiwYQmUcGtXQCIzabWcyDJSTmTzrk/RoNxUqkc+6iqc+MpA5ly+hV8e+eCcTdFAYQfmAGKSEnLbgegVS6m58FwJsMNRAKqO9NDCTCvVoGmBuTznCASo1YMtwYwK8ufr0Euo/qyj/CQhrUhxMd+lh1+JYi2ZPvH/hwcVkiW65V/epZVbeYpeuE1R60Bl5lIaDhirQgZ2H6auSCttXHgGfjfDd51YQJKFRW4oSh0L5nilAiSFt7fptF8qU53UtPYRxnAb+frlbawgOLby8i10UV2tYl/9KK0uVkQluGCOWv/Lmfdy1ma2Ow3mwYkf6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hFSF+J+ZYSITdqlDhl9Cfky96JCt+BheB6vpDXKkfNs=;
+ b=EEVLeK6aSKGQuGsmO4/ZzhoR7R5786vRNoaBdkGZG6RCqTRJvo/+zgCp8Hhq6B2MGFgtaaYz3Ph3IJBBE28KRAOTRnyrSWdPTMmZztuNhXblCSyGsmQ2o9HfcFWyDwBaiVb1DFZ7euoAb+fXH95ny3fikvinBqP3GFdE52iiZlE=
+Received: from CH5PR03CA0003.namprd03.prod.outlook.com (2603:10b6:610:1f1::19)
+ by DS0PR12MB8443.namprd12.prod.outlook.com (2603:10b6:8:126::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.25; Tue, 13 Feb
+ 2024 08:22:29 +0000
+Received: from CH1PEPF0000A345.namprd04.prod.outlook.com
+ (2603:10b6:610:1f1:cafe::42) by CH5PR03CA0003.outlook.office365.com
+ (2603:10b6:610:1f1::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39 via Frontend
+ Transport; Tue, 13 Feb 2024 08:22:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CH1PEPF0000A345.mail.protection.outlook.com (10.167.244.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Tue, 13 Feb 2024 08:22:28 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
+ 2024 02:22:28 -0600
+Received: from luc-work-vm.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Tue, 13 Feb 2024 02:22:27 -0600
+From: Luc Michel <luc.michel@amd.com>
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: Luc Michel <luc.michel@amd.com>, Eric Auger <eric.auger@redhat.com>,
+ "Peter Maydell" <peter.maydell@linaro.org>, Francisco Iglesias
+ <francisco.iglesias@amd.com>
+Subject: [PATCH v2] hw/arm/smmuv3: add support for stage 1 access fault
+Date: Tue, 13 Feb 2024 09:22:11 +0100
+Message-ID: <20240213082211.3330400-1-luc.michel@amd.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A345:EE_|DS0PR12MB8443:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94ccec07-03dc-4b7d-b46f-08dc2c6ceadd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QQO3NoxLHZ2D2NuKYd1vasIMCCEgfroN7Gmv41RsQJCL1zuJYVufJ9SljRiVqon+PAxX0XIzOK4qc63ORgdxF5DvoWOA7GRW/koGHU9ikzq8uEBNkQNne3Gdc27nmjp7whRjB7zmWeIeXYrg94DyCKgHi70JHUtER/1muLDHycpMC7K9+khb4bU4yW5Tct24JyoeaktXRxOzRT5Z5DKLZCiL8gM50RYquvFMyDl0IfCnAnFK87g0O5DEqxyp0J+QXPzc8FjIfbFJXWRCa7sp4tZ+5j5QS6AQyd5PT5pDb73ybUPyGa59Kv3904pDoe8tfa8yB4Ka6EfKzNITFLEQcLK3ioC05DVlnoanVKzKiB2W6k4KTsMKDccNwQ+/Mlsjsbg6RWwAZyYaB+bZhekSS2fSg0C8OdIy9kxqtUdCVD/ZlYk5TmxoyPdE3XCs523tNFP/bYoNsK0BxYKeLAglnMoqKhows9kJVpOpd8wDHzBI9Qdkhd/ZtA6jna/imzwRxQHsTe1s9Fcd+hvAmPJxK3WkD3hj/U0zqDt3lwu8pfKoLoLm6UeIIXf8vLK84ttsTPFk8/4cS8PyFmYf2payoeOq2rY9qUd5kAZ5hXJN3fk=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(39860400002)(376002)(396003)(136003)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(82310400011)(46966006)(36840700001)(40470700004)(478600001)(41300700001)(8936002)(8676002)(5660300002)(44832011)(2906002)(4326008)(54906003)(6666004)(110136005)(70206006)(70586007)(316002)(83380400001)(2616005)(336012)(426003)(86362001)(81166007)(356005)(26005)(1076003)(36756003)(82740400003);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 08:22:28.7631 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94ccec07-03dc-4b7d-b46f-08dc2c6ceadd
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000A345.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8443
+Received-SPF: softfail client-ip=2a01:111:f403:2418::601;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,200 +119,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep "hw/ide/ahci.h" AHCI-generic.
+An access fault is raised when the Access Flag is not set in the
+looked-up PTE and the AFFD field is not set in the corresponding context
+descriptor. This was already implemented for stage 2. Implement it for
+stage 1 as well.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Luc Michel <luc.michel@amd.com>
 ---
- include/hw/arm/allwinner-a10.h |  2 +-
- include/hw/arm/allwinner-r40.h |  2 +-
- include/hw/arm/xlnx-zynqmp.h   |  2 +-
- include/hw/ide/ahci-sysbus.h   | 35 ++++++++++++++++++++++++++++++++++
- include/hw/ide/ahci.h          | 29 +---------------------------
- hw/arm/highbank.c              |  2 +-
- hw/arm/sbsa-ref.c              |  1 +
- hw/ide/ahci-allwinner.c        |  3 +--
- hw/ide/ahci.c                  |  1 +
- 9 files changed, 43 insertions(+), 34 deletions(-)
- create mode 100644 include/hw/ide/ahci-sysbus.h
 
-diff --git a/include/hw/arm/allwinner-a10.h b/include/hw/arm/allwinner-a10.h
-index 2eb83a17ea..67a9a17b86 100644
---- a/include/hw/arm/allwinner-a10.h
-+++ b/include/hw/arm/allwinner-a10.h
-@@ -5,7 +5,7 @@
- #include "hw/intc/allwinner-a10-pic.h"
- #include "hw/net/allwinner_emac.h"
- #include "hw/sd/allwinner-sdhost.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "hw/usb/hcd-ohci.h"
- #include "hw/usb/hcd-ehci.h"
- #include "hw/rtc/allwinner-rtc.h"
-diff --git a/include/hw/arm/allwinner-r40.h b/include/hw/arm/allwinner-r40.h
-index 66c38e7d90..614e74b7ed 100644
---- a/include/hw/arm/allwinner-r40.h
-+++ b/include/hw/arm/allwinner-r40.h
-@@ -22,7 +22,7 @@
- 
- #include "qom/object.h"
- #include "hw/timer/allwinner-a10-pit.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "hw/intc/arm_gic.h"
- #include "hw/sd/allwinner-sdhost.h"
- #include "hw/misc/allwinner-r40-ccu.h"
-diff --git a/include/hw/arm/xlnx-zynqmp.h b/include/hw/arm/xlnx-zynqmp.h
-index 96358d51eb..48f7948092 100644
---- a/include/hw/arm/xlnx-zynqmp.h
-+++ b/include/hw/arm/xlnx-zynqmp.h
-@@ -22,7 +22,7 @@
- #include "hw/net/cadence_gem.h"
- #include "hw/char/cadence_uart.h"
- #include "hw/net/xlnx-zynqmp-can.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "hw/sd/sdhci.h"
- #include "hw/ssi/xilinx_spips.h"
- #include "hw/dma/xlnx_dpdma.h"
-diff --git a/include/hw/ide/ahci-sysbus.h b/include/hw/ide/ahci-sysbus.h
-new file mode 100644
-index 0000000000..7ed6cad496
---- /dev/null
-+++ b/include/hw/ide/ahci-sysbus.h
-@@ -0,0 +1,35 @@
-+/*
-+ * QEMU AHCI Emulation (MMIO-mapped devices)
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef HW_IDE_AHCI_SYSBUS_H
-+#define HW_IDE_AHCI_SYSBUS_H
+v2: drop erroneous submodule modification
+
+---
+
+ hw/arm/smmuv3-internal.h     |  1 +
+ include/hw/arm/smmu-common.h |  1 +
+ hw/arm/smmu-common.c         | 10 ++++++++++
+ hw/arm/smmuv3.c              |  1 +
+ 4 files changed, 13 insertions(+)
+
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index e987bc4686b..e4dd11e1e62 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -622,10 +622,11 @@ static inline int pa_range(STE *ste)
+ #define CD_TSZ(x, sel)   extract32((x)->word[0], (16 * (sel)) + 0, 6)
+ #define CD_TG(x, sel)    extract32((x)->word[0], (16 * (sel)) + 6, 2)
+ #define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
+ #define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
+ #define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
++#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
+ #define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
+ #define CD_HD(x)         extract32((x)->word[1], 10 , 1)
+ #define CD_HA(x)         extract32((x)->word[1], 11 , 1)
+ #define CD_S(x)          extract32((x)->word[1], 12, 1)
+ #define CD_R(x)          extract32((x)->word[1], 13, 1)
+diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+index fd8d772da11..5ec2e6c1a43 100644
+--- a/include/hw/arm/smmu-common.h
++++ b/include/hw/arm/smmu-common.h
+@@ -90,10 +90,11 @@ typedef struct SMMUTransCfg {
+     /* Shared fields between stage-1 and stage-2. */
+     int stage;                 /* translation stage */
+     bool disabled;             /* smmu is disabled */
+     bool bypassed;             /* translation is bypassed */
+     bool aborted;              /* translation is aborted */
++    bool affd;                 /* AF fault disable */
+     uint32_t iotlb_hits;       /* counts IOTLB hits */
+     uint32_t iotlb_misses;     /* counts IOTLB misses*/
+     /* Used by stage-1 only. */
+     bool aa64;                 /* arch64 or aarch32 translation table */
+     bool record_faults;        /* record fault events */
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index 9a8ac45431a..09ff72e55f5 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -362,10 +362,20 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
+                                         &block_size);
+             trace_smmu_ptw_block_pte(stage, level, baseaddr,
+                                      pte_addr, pte, iova, gpa,
+                                      block_size >> 20);
+         }
 +
-+#include "qom/object.h"
-+#include "hw/sysbus.h"
-+#include "hw/ide/ahci.h"
++        /*
++         * If AFFD and PTE.AF are 0 => fault. (5.4. Context Descriptor)
++         * An Access fault takes priority over a Permission fault.
++         */
++        if (!PTE_AF(pte) && !cfg->affd) {
++            info->type = SMMU_PTW_ERR_ACCESS;
++            goto error;
++        }
 +
-+#define TYPE_SYSBUS_AHCI "sysbus-ahci"
-+OBJECT_DECLARE_SIMPLE_TYPE(SysbusAHCIState, SYSBUS_AHCI)
-+
-+struct SysbusAHCIState {
-+    SysBusDevice parent_obj;
-+
-+    AHCIState ahci;
-+};
-+
-+#define TYPE_ALLWINNER_AHCI "allwinner-ahci"
-+OBJECT_DECLARE_SIMPLE_TYPE(AllwinnerAHCIState, ALLWINNER_AHCI)
-+
-+#define ALLWINNER_AHCI_MMIO_OFF  0x80
-+#define ALLWINNER_AHCI_MMIO_SIZE 0x80
-+
-+struct AllwinnerAHCIState {
-+    SysbusAHCIState parent_obj;
-+
-+    MemoryRegion mmio;
-+    uint32_t regs[ALLWINNER_AHCI_MMIO_SIZE/4];
-+};
-+
-+#endif
-diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
-index c0b10c2bb4..ba31e75ff9 100644
---- a/include/hw/ide/ahci.h
-+++ b/include/hw/ide/ahci.h
-@@ -24,8 +24,7 @@
- #ifndef HW_IDE_AHCI_H
- #define HW_IDE_AHCI_H
+         ap = PTE_AP(pte);
+         if (is_permission_fault(ap, perm)) {
+             info->type = SMMU_PTW_ERR_PERMISSION;
+             goto error;
+         }
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 68eeef3e1d4..c416b8c0030 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -682,10 +682,11 @@ static int decode_cd(SMMUTransCfg *cfg, CD *cd, SMMUEventInfo *event)
  
--#include "hw/sysbus.h"
--#include "qom/object.h"
-+#include "exec/memory.h"
+     cfg->oas = oas2bits(CD_IPS(cd));
+     cfg->oas = MIN(oas2bits(SMMU_IDR5_OAS), cfg->oas);
+     cfg->tbi = CD_TBI(cd);
+     cfg->asid = CD_ASID(cd);
++    cfg->affd = CD_AFFD(cd);
  
- typedef struct AHCIDevice AHCIDevice;
+     trace_smmuv3_decode_cd(cfg->oas);
  
-@@ -54,30 +53,4 @@ typedef struct AHCIState {
- 
- void ahci_ide_create_devs(AHCIState *ahci, DriveInfo **hd);
- 
--#define TYPE_SYSBUS_AHCI "sysbus-ahci"
--OBJECT_DECLARE_SIMPLE_TYPE(SysbusAHCIState, SYSBUS_AHCI)
--
--struct SysbusAHCIState {
--    /*< private >*/
--    SysBusDevice parent_obj;
--    /*< public >*/
--
--    AHCIState ahci;
--};
--
--#define TYPE_ALLWINNER_AHCI "allwinner-ahci"
--OBJECT_DECLARE_SIMPLE_TYPE(AllwinnerAHCIState, ALLWINNER_AHCI)
--
--#define ALLWINNER_AHCI_MMIO_OFF  0x80
--#define ALLWINNER_AHCI_MMIO_SIZE 0x80
--
--struct AllwinnerAHCIState {
--    /*< private >*/
--    SysbusAHCIState parent_obj;
--    /*< public >*/
--
--    MemoryRegion mmio;
--    uint32_t regs[ALLWINNER_AHCI_MMIO_SIZE/4];
--};
--
- #endif /* HW_IDE_AHCI_H */
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 9fdac1cc81..c71b1a8db3 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -30,7 +30,7 @@
- #include "hw/boards.h"
- #include "qemu/error-report.h"
- #include "hw/char/pl011.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "hw/cpu/a9mpcore.h"
- #include "hw/cpu/a15mpcore.h"
- #include "qemu/log.h"
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index f2adf30337..5d3a574664 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -38,6 +38,7 @@
- #include "hw/boards.h"
- #include "hw/ide/internal.h"
- #include "hw/ide/ahci_internal.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "hw/intc/arm_gicv3_common.h"
- #include "hw/intc/arm_gicv3_its_common.h"
- #include "hw/loader.h"
-diff --git a/hw/ide/ahci-allwinner.c b/hw/ide/ahci-allwinner.c
-index b173121006..9620de8ce8 100644
---- a/hw/ide/ahci-allwinner.c
-+++ b/hw/ide/ahci-allwinner.c
-@@ -19,9 +19,8 @@
- #include "qemu/error-report.h"
- #include "qemu/module.h"
- #include "sysemu/dma.h"
--#include "hw/ide/internal.h"
- #include "migration/vmstate.h"
--#include "ahci_internal.h"
-+#include "hw/ide/ahci-sysbus.h"
- 
- #include "trace.h"
- 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 041cc87c11..54c9685495 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -37,6 +37,7 @@
- #include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "hw/ide/ahci-pci.h"
-+#include "hw/ide/ahci-sysbus.h"
- #include "ahci_internal.h"
- 
- #include "trace.h"
+     /* decode data dependent on TT */
+     for (i = 0; i <= 1; i++) {
 -- 
-2.41.0
+2.39.2
 
 
