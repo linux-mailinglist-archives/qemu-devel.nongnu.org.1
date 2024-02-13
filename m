@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A7C853BFE
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:09:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69334853BD4
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:03:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0G-0003uh-CH; Tue, 13 Feb 2024 15:03:40 -0500
+	id 1rZyzh-0002pD-Bw; Tue, 13 Feb 2024 15:03:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyy4-0001kr-7r
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:34 -0500
+ id 1rZyy1-0001em-Am
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:30 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyy2-0001sa-MO
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:24 -0500
+ id 1rZyxx-0001sI-OE
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DVjGUjdm8pNlCRfHncMDmo1GFwUsywzB/AtKRFCKdSk=; b=vcq6m5vZXrBszbAJvXhDLQAAA2
- wQ16r4kjHFsHMvr1WWZ4Xkmzq3GhncWaQneudH2aohooIogJLccOUCexNAFdrX5E2g58acYEH7+Pt
- dm3Y9m3q1ERpclV2ZzpxxhFgrrJyp/lftR2rGwt6L8gPlgFT/klQMx0Q7mK7U8rsRiOckXTgDQ1+9
- /GAVkp/u63BOMnapEN6hllROVedNOi9Cgo6MIkwq6OIIYBuAXbSM0TO40GrCKCMPq4uSq8Mwh0pZO
- 9Q719erDwPOHN5Ww3QKLVVRpS90T8KPZqV/3dvoyEBf9yt/C27rn1YQJg6Q5Tz4GjiMOB49U/Llia
- EQfUW9Ut58LjDRiRdPZ+ZePWMI+oPf/tOQgdlelBw7kfnAYoVbOYqqRbWfWDUcIM+FPFQM5S/1q8Z
- V7paq1+xDY6icvuCNFkRUtE4qpa54jDVrfNKUqMLUlqTf641xnvb3ZzYcIVnipI2K36KXpg8jqDq7
- o3v3e0i2/rkGpEj5coJhargKYf9Hyt1AWfENrNZiTNbumHl5vnQ7JcJmaBtI2fA5iVCmSY/Oqs5am
- VQn+3xxGMnFxVW7arsK/9EGzIFnu49kMxwnNO+TF+bgoRdq4iKY0kOmplipI+bg0lDqtWjbZqNCWT
- PZz0GW/PcbVIdeVEGCp2noYTA89xd/BtLiUAcR1dk=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=NPacf57cv+s+u41vQHu7kQi06cdjYXiQrL26bSu/Qfs=; b=K9ja7ZNs5XyTu0vHpEj1Kq99Ki
+ fTGTVOzCekqHvbhEb8/qi3amU9FzC0gaPjR02e2SjGvxeVGbKg46CKx1E3XJsZWY9FVgG0ypWp0yh
+ 0OWIeKSW/YFznA3qmYte2SyKTJRR2lBP/ACZa7tVB2go3i7+cjL2lx1STtSRelGUhDhD9EhycvsOS
+ uWpLpc28Cft0DkKQPtTzOQPEAsgkJLv6JjuXwfFNIf1MG8LnPC+LRHIIDCcW3dWBlZ2PFxqToVYiB
+ oRfbaDZRke8OKe1tQcAfTJJGemftTfBB/5OYtZZzGXfqAhfO1Z++8YwdNcr7tcLzGBJ9EdfsTiNCY
+ pU8095ieJgY78y2pWiSewCyjDRysVLSfCi7O6Cr0Pkz3ym38TRIKOL+BKjtFv96ZPlLUd8oeReSgq
+ K2q1+KZZoUfBeNXsEhRcvQxZ4L3XEnQM0elHrtqhDye8b7zir9OIlJ9TjLMg8leHeiwuNICzacovP
+ blQH3wiIzhAsGKrxHyZkyJkQM9tgMbXv5N/c19yaGArNLyTp72QY9rSDum6haFKGnwhRR4MnklRVI
+ 159fraE1UuR1U6sv4HRSGKP6QQvfAm3wpQ4iyybWyNudBQ4f6+aoSJW2l8Gx6+pjOYs8lGKv9XLpX
+ yROX+3RiOomPyg8cduYhrwNawklObgHDa8ofxqMio=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyi2-0008m4-Vb; Tue, 13 Feb 2024 19:44:54 +0000
+ id 1rZyi7-0008m4-2Q; Tue, 13 Feb 2024 19:44:59 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:50 +0000
-Message-Id: <20240213194052.1162753-87-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:51 +0000
+Message-Id: <20240213194052.1162753-88-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 86/88] esp.c: keep track of the DRQ state during DMA
+Subject: [PULL 87/88] esp.c: switch TypeInfo registration to use
+ DEFINE_TYPES() macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,75 +79,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the DRQ IRQ is updated every time DMA data is sent/received which
-is both inefficient and causes excessive logging of the DRQ state. Add a
-new drq_state bool that only updates the DRQ IRQ if its state changes.
-
-This commit adds the new drq_state bool to the migration state: since the
-version number has already been increased earlier in the series, there is
-no need to repeat it again here. The DRQ IRQ is (currently) only used for
-PDMA transfers which already have a migration break in this series so
-there are no problems setting its value post-load.
+The use of the DEFINE_TYPES() macro will soon be recommended over the use of
+calling type_init() directly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-87-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240112125420.514425-88-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c         | 15 +++++++++++----
- include/hw/scsi/esp.h |  1 +
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ hw/scsi/esp.c | 39 +++++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index fb68606f00..04615d8b5f 100644
+index 04615d8b5f..b8762d5ee0 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -62,14 +62,20 @@ static void esp_lower_irq(ESPState *s)
- 
- static void esp_raise_drq(ESPState *s)
- {
--    qemu_irq_raise(s->drq_irq);
--    trace_esp_raise_drq();
-+    if (!(s->drq_state)) {
-+        qemu_irq_raise(s->drq_irq);
-+        trace_esp_raise_drq();
-+        s->drq_state = true;
-+    }
+@@ -1549,14 +1549,6 @@ static void sysbus_esp_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
  }
  
- static void esp_lower_drq(ESPState *s)
+-static const TypeInfo sysbus_esp_info = {
+-    .name          = TYPE_SYSBUS_ESP,
+-    .parent        = TYPE_SYS_BUS_DEVICE,
+-    .instance_init = sysbus_esp_init,
+-    .instance_size = sizeof(SysBusESPState),
+-    .class_init    = sysbus_esp_class_init,
+-};
+-
+ static void esp_finalize(Object *obj)
  {
--    qemu_irq_lower(s->drq_irq);
--    trace_esp_lower_drq();
-+    if (s->drq_state) {
-+        qemu_irq_lower(s->drq_irq);
-+        trace_esp_lower_drq();
-+        s->drq_state = false;
-+    }
+     ESPState *s = ESP(obj);
+@@ -1582,19 +1574,22 @@ static void esp_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
  }
  
- void esp_dma_enable(ESPState *s, int irq, int level)
-@@ -1358,6 +1364,7 @@ const VMStateDescription vmstate_esp = {
-         VMSTATE_UINT8_TEST(mig_ti_cmd, ESPState,
-                            esp_is_between_version_5_and_6),
-         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
-+        VMSTATE_BOOL(drq_state, ESPState),
-         VMSTATE_END_OF_LIST()
-     },
+-static const TypeInfo esp_info = {
+-    .name = TYPE_ESP,
+-    .parent = TYPE_DEVICE,
+-    .instance_init = esp_init,
+-    .instance_finalize = esp_finalize,
+-    .instance_size = sizeof(ESPState),
+-    .class_init = esp_class_init,
++static const TypeInfo esp_info_types[] = {
++    {
++        .name          = TYPE_SYSBUS_ESP,
++        .parent        = TYPE_SYS_BUS_DEVICE,
++        .instance_init = sysbus_esp_init,
++        .instance_size = sizeof(SysBusESPState),
++        .class_init    = sysbus_esp_class_init,
++    },
++    {
++        .name = TYPE_ESP,
++        .parent = TYPE_DEVICE,
++        .instance_init = esp_init,
++        .instance_finalize = esp_finalize,
++        .instance_size = sizeof(ESPState),
++        .class_init = esp_class_init,
++    },
  };
-diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
-index c6e8b64e20..533d856aa3 100644
---- a/include/hw/scsi/esp.h
-+++ b/include/hw/scsi/esp.h
-@@ -26,6 +26,7 @@ struct ESPState {
-     uint8_t wregs[ESP_REGS];
-     qemu_irq irq;
-     qemu_irq drq_irq;
-+    bool drq_state;
-     uint8_t chip_id;
-     bool tchi_written;
-     int32_t ti_size;
+ 
+-static void esp_register_types(void)
+-{
+-    type_register_static(&sysbus_esp_info);
+-    type_register_static(&esp_info);
+-}
+-
+-type_init(esp_register_types)
++DEFINE_TYPES(esp_info_types)
 -- 
 2.39.2
 
