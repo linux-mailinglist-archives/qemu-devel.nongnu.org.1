@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F31B852976
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 07:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D49852998
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 08:17:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZmi4-0005Qe-G9; Tue, 13 Feb 2024 01:56:04 -0500
+	id 1rZn1n-0002JS-1I; Tue, 13 Feb 2024 02:16:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmi1-0005QB-Db
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:56:01 -0500
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZn1i-0002IM-Rv
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 02:16:22 -0500
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmi0-0004Sh-1K
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:56:01 -0500
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-410c59a3e46so14036795e9.3
- for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 22:55:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZn1e-0007tj-8T
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 02:16:20 -0500
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-33b2960ff60so2839640f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 23:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707807358; x=1708412158; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=w10q3LEjjDMmCluZ9uvKydR8XHU1z3VR1YfuKoqyb3A=;
- b=zLo8CKtZr1uWZJtyqjW7gYBhIUDrBh1EV0vMpwLx6P3xUEvhw9XiJqxTY0ysbYEZPG
- ssGoNb9k//pB2lt8+a5JuHl2gOItPR3NjEw6a7zc2hl1MV+V3fkRKbtRWdz5L7/62E6e
- DnRS/YJA+82wcodLUM/iMXsiFsbk0fHxOCs4vtb501834yj3kSPJI4GgwJESvt8vzIoR
- YYEJn5DUN3//hmhj6/yzd6HO6RFjB7mPBJ7BTqIKMkq2VgFF2/0BFhFGmu06Zcef2egD
- lubdi/m7M943do/PAe7/V4SW4rp0fAK94d24wwiFdu/5GBVI2k/70i2WaR2vOqtn5skR
- 7JCA==
+ d=linaro.org; s=google; t=1707808576; x=1708413376; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Cj9qCj9mT2tt5rgoG2stTmiFvC9CmzQUn4FtQx8Dgyg=;
+ b=Nyugot3aKozmEN3Od4aVM4pM7pkounGGNXLkw0W5IVimYeo7vi9p45XlNjOPKcyLb0
+ ucwVi14PwNoqAH587zDLvN/o5As9DxqXHBts89vViw0MNsrA7uEPWssDKS8TjjL+EWvW
+ L2XGrstl/QWtDKZpRqYbpowyGfwJMJpP1XPz+lgx4vGkWs+R7TlMO6OdnOBYo2Nn9qxu
+ T+PvwZrcgmXPQH17j6cwgtfzYzv2IlmxmSXT+m+VxgDAt9zXvlaIQ/z8wyxnCkPUTBeI
+ N06qJQ6lMMbeVcp05CjT1Lb9P0+eNdJ5qoXcKy7w9a/vHY+vGfMV8DoZudZLOL5KCSUq
+ aNVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707807358; x=1708412158;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w10q3LEjjDMmCluZ9uvKydR8XHU1z3VR1YfuKoqyb3A=;
- b=jWGmS2lqU3Dy2wZ+t2kYr4265a/mOoPq+q++hkqlwEsdAEkZoYE8ec4oOviwWq2VHc
- xne3BkQG2zGMlMpUNrAnlEQVqper4Ikov3YJ2j4hciO64b/FULxOB1H3B1Hfp39bOt00
- lIb1YJdiW7pHBjSdGTGCfkwnSLoi31aNKu8XE4JKoXGTI7L/4iVOnSfb/Er5fvl0CBse
- Xcys/dDUDCTy1zV3/mFTe8f7wle20+bp6ouWeVS6ngdYwYADEJElMxc/zyUJGwPI7J1H
- 6hudN1wnaacxu9PvWK5Zkr/W/yue+XNoJz3v3t25cyTcxnhqsFfSd1VnEcN/QvtqpkFA
- 2z+g==
-X-Gm-Message-State: AOJu0Yybe7XnhWfdda9/jYypeMv8CnfT+Zuv6xeSeyB63wjMQgxdDMT3
- HrY7Gw7St2TnvNDgZHTq0OLJRuxPyu90hXH1kcNyQgwwJWMRR98hiY/28CBojqU=
-X-Google-Smtp-Source: AGHT+IEYpmQmmK0nT3pmQXmnH2FY7fv/FL+m2/8RZsiK+3EzB6WG9BM2WHCtorZXhBB2dcFTU+x/FA==
-X-Received: by 2002:a05:600c:4f91:b0:410:eba0:6d9a with SMTP id
- n17-20020a05600c4f9100b00410eba06d9amr2716766wmq.11.1707807358637; 
- Mon, 12 Feb 2024 22:55:58 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707808576; x=1708413376;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Cj9qCj9mT2tt5rgoG2stTmiFvC9CmzQUn4FtQx8Dgyg=;
+ b=CdaLWfkuxQBsspLKp2niqZICOZhG5ECMvpn3D77hXCAMtrf9I4yirRCzBCXgBIfSuD
+ F2uV6wb5B0R+w+d7smVBDxkgwLNylH+UWQdqIQdo/HiH+4S+XJOLSWiNWDwqdGScdXNC
+ yaOM0gE2o9JWXz0tsq+0OWynXzTjzVBz1jpRWtXv+vB28pDK2ItTZqX6n/nTDKtftxpT
+ GlubQC84+cerAJD2hnSxitdnjjpabVtlibPkNJPJYIQTEnDr1NWaDQ6V6NOTmrFj0Sk/
+ PKAZFAyjxxHEUYQf5iGlgQpoEQnS9o8cOWg2qG1NmIB60eVWIWRZwUc4kqSB3NHYvH1V
+ 449A==
+X-Gm-Message-State: AOJu0YybK9yd3Lrq/47RhdjM8RcdyPyIbw/MKtf6xyWcDjHyJQ4OlnLZ
+ 7dhrAIXAj48qieB596/1i7r3cp45wPH5ZQbeh5hHj15CawKg8TADRB4N1qtXpnfGC+ZAL6CDClW
+ w
+X-Google-Smtp-Source: AGHT+IHrTLLFI1tqRrznVpJefkYRpov81hxKrswb+qr8oG1krRE3F60MHN+PzxhK8sZc6q4GGy5DPA==
+X-Received: by 2002:a5d:680a:0:b0:33b:58c7:8281 with SMTP id
+ w10-20020a5d680a000000b0033b58c78281mr1332042wru.10.1707808576417; 
+ Mon, 12 Feb 2024 23:16:16 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUxrVI+EnBUZ/dZBnl1oIl+z6ILmk3n6aoQVUR7itRqFTP0lFKxkKX8OQM7zkT48QG6kchgnE+WT/IbDThoSxhK8EOT2M=
-Received: from [192.168.69.100] ([176.176.128.243])
+ AJvYcCWXMyN4Ms6ScJQQh7dqSy6GHbE06UMgK9JZeeYZ9dG7RPFxdwmu0sY+47koNoHh+ljrad1MOEabRm2rvp9PCAl+NJ8Nd7UUfsfFBbWB4V2mbZNhg2jCeHDCnJqMdbFPnKjt8CD/WqqGG7w9iyiK/JUF2m3CtU2AamnOdVAvdLlrXPBpDdlpYbblD6okSn/zo+kuRXcrite5nUivZiblO/1spB3ldJUanQTHWmwBfAOQWhXGyV1vlGieRg==
+Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- e27-20020a5d595b000000b0033b80a0d002sm5338566wri.57.2024.02.12.22.55.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Feb 2024 22:55:58 -0800 (PST)
-Message-ID: <ab447c2a-eb8e-499b-b943-4b7c5dd9412c@linaro.org>
-Date: Tue, 13 Feb 2024 07:55:57 +0100
+ dv5-20020a0560000d8500b0033b483d1abcsm8709565wrb.53.2024.02.12.23.16.15
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 12 Feb 2024 23:16:16 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] hw/i386/sgx: Use QDev API
+Date: Tue, 13 Feb 2024 08:16:13 +0100
+Message-ID: <20240213071613.72566-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/block/tc58128: Don't emit deprecation warning under
- qtest
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20240206154151.155620-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240206154151.155620-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,16 +94,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/2/24 16:41, Peter Maydell wrote:
-> Suppress the deprecation warning when we're running under qtest,
-> to avoid "make check" including warning messages in its output.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   hw/block/tc58128.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+Prefer the QDev API over the low level QOM one.
+No logical change intended.
 
-Patched queued, thanks.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/sgx.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
+diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
+index 70305547d4..9176040f8f 100644
+--- a/hw/i386/sgx.c
++++ b/hw/i386/sgx.c
+@@ -286,7 +286,6 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
+     SGXEPCState *sgx_epc = &pcms->sgx_epc;
+     X86MachineState *x86ms = X86_MACHINE(pcms);
+     SgxEPCList *list = NULL;
+-    Object *obj;
+ 
+     memset(sgx_epc, 0, sizeof(SGXEPCState));
+     if (!x86ms->sgx_epc_list) {
+@@ -300,16 +299,15 @@ void pc_machine_init_sgx_epc(PCMachineState *pcms)
+                                 &sgx_epc->mr);
+ 
+     for (list = x86ms->sgx_epc_list; list; list = list->next) {
+-        obj = object_new("sgx-epc");
++        DeviceState *dev = qdev_new(TYPE_SGX_EPC);
+ 
+         /* set the memdev link with memory backend */
+-        object_property_parse(obj, SGX_EPC_MEMDEV_PROP, list->value->memdev,
+-                              &error_fatal);
++        object_property_parse(OBJECT(dev), SGX_EPC_MEMDEV_PROP,
++                              list->value->memdev, &error_fatal);
+         /* set the numa node property for sgx epc object */
+-        object_property_set_uint(obj, SGX_EPC_NUMA_NODE_PROP, list->value->node,
+-                             &error_fatal);
+-        object_property_set_bool(obj, "realized", true, &error_fatal);
+-        object_unref(obj);
++        object_property_set_uint(OBJECT(dev), SGX_EPC_NUMA_NODE_PROP,
++                                 list->value->node, &error_fatal);
++        qdev_realize_and_unref(dev, &error_fatal);
+     }
+ 
+     if ((sgx_epc->base + sgx_epc->size) < sgx_epc->base) {
+-- 
+2.41.0
 
 
