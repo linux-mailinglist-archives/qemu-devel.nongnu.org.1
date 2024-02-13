@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5A1853BD9
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:04:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F76853C01
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:09:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyz1-0002MR-CD; Tue, 13 Feb 2024 15:02:25 -0500
+	id 1rZyyX-0001XT-IQ; Tue, 13 Feb 2024 15:01:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyxw-0001Xj-Oz
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:25 -0500
+ id 1rZyxt-0001Rg-A0
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:13 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyxu-0001s2-GE
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:16 -0500
+ id 1rZyxr-0001rs-Na
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lTn4V1T64Cxftxgo+RVGj1lemtFejAQRM/dLtRcBqz0=; b=wmy0mDAPqfLqN/YEN2BO76UMzL
- QLh3JTR25Fa/SmTLrcYrtI+8k/TuHvaQQ7Sbv53HKsZXo57C9PXxcVnnHCnxjub+qC30zUSlrWRIH
- WDLoxIcYEJPJQsk1O4wv8Ce9XSCdJQAzXw6q8GdEELdw04Yz+wx1OEzw0q/xloewMYRrVpe1G3nV7
- nZE/o6WbGAjhsAfWx1zZ1qr1zRA4940tUscB/Hc3dMJcNvZeA3c8g1i7H9a919fNCw5Sy3kMKcvCe
- mZKWkrdyXzbVAy6oZRmpq+q+E+OMed9wzoC9w99W0oJlwWPV0ncGFMIx35ATe1qxxF98yulEy6+cJ
- JpQkBGdPDUS8S9l7yWOCI0WsZv/mDfwX6NMOSvCgAPhfsyQg+/w9CFEyrg/LtZ3SzvwQseQFhH4gG
- XuLyBoG6XM+0/x2Ce8kiz2JgsH6tvjq2uAOH8WYYts/suYkKQ7U64gDP2tPfYjvsM9pRT828sVoUv
- YyAtUiQgo3vRh7Esd0ZI/k7mmk7pLcGL4gKJch9qGt+WiPfi908AhsJXNr9B0kdZ18XQ+KRKhNc/s
- PAWHyr9J0aGh+gykLV550D+MTREnp78q2JP6jElNjBjGL137U4IYy1MrN0TxPS3jOQ+QmINWkGYLj
- lCPG9qUvRpwCNyoHE/dgtRElJ+9Sf49RJcZ9An11E=;
+ bh=c68NltF/sG/5kE0KjHWJUPi/rnJR3fFpkAyJcJORF5A=; b=wpQ4tQHAZpVQ68QkNSO7RzydcU
+ pHBzIvMOj/9bulGnW1JFyHyK397O5paPIfbX1GVYQQzkwYj6z020JtGnYIdFHnc/VfyzMO0SPOJSl
+ R8GCoqu8M4ZoJnwchDiSpFnO97HZ5lKU8fYA0cmOCGUCElhnu1t5ET03nYo1yWSa/AnS5ir5plL+W
+ V+iU2Rgv5M7LBtgejZDGXy3cv8KrrBOpLVa1TBIVaXF0AOc7inlOBlXTeSiyMiUGE373L8haz4B12
+ sozaIxf8ENzbhDtY+wcQGmCTUKZi+LPIKiwsTCUN+LLqvgLNpFkNn50qEoHI5FTUVqhtpAdERml+f
+ KuBgQNix2DHGheJ7kD4vaUmz8ONPOQIU4O2iFvY9libbX01zk201BvH0OZsgMCmT6nggFaSb3V3kI
+ JrQ2BTmQjtkBNwQVpIQ9Ybgi69AknNXNzwhW1W/nKoD0GhgtTJFLKiVVy0BmgYtwzGk8Fug6byI+j
+ zDcg8uv9OjwSpn1PDH0FsnsvCsyUFEnh0EDvITxleu4JmPbqS3bEZtIPHCyxcDJDSZYd8+rTcLsOb
+ k7t8Dp+6ymTHmEj+lTHuH3bTXJBQ2yMZ/RFZq0n8A1lnIaS6tQXP503FcYMzr6ZHVmaNwVO1YciHu
+ z+NJu+2cX9+m5Vsp6N6lOlyK5geZDcatdXNH+AInY=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZygZ-0008m4-HG; Tue, 13 Feb 2024 19:43:23 +0000
+ id 1rZygd-0008m4-3t; Tue, 13 Feb 2024 19:43:23 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:17 +0000
-Message-Id: <20240213194052.1162753-54-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:18 +0000
+Message-Id: <20240213194052.1162753-55-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 53/88] esp.c: replace do_dma_pdma_cb() with esp_do_dma()
+Subject: [PULL 54/88] esp.c: move CMD_ICCS command logic to esp_do_dma()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,181 +77,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the DMA logic is identical between do_dma_pdma_cb() and esp_do_dma()
-we can replace do_dma_pdma_cb() with esp_do_dma().
+The special logic in write_response_pdma_cb() is now no longer required since
+esp_do_dma() can be used as a direct replacement.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-54-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-55-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 138 +-------------------------------------------------
- 1 file changed, 1 insertion(+), 137 deletions(-)
+ hw/scsi/esp.c         | 82 ++++++++++++++++++++++++++++++-------------
+ include/hw/scsi/esp.h |  1 -
+ 2 files changed, 57 insertions(+), 26 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 29e3869173..f69b2709fc 100644
+index f69b2709fc..c6e5ddd537 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -491,141 +491,6 @@ static void esp_dma_ti_check(ESPState *s)
+@@ -446,40 +446,23 @@ static void handle_satn_stop(ESPState *s)
      }
  }
  
--static void do_dma_pdma_cb(ESPState *s)
+-static void write_response_pdma_cb(ESPState *s)
 -{
--    uint8_t buf[ESP_CMDFIFO_SZ];
--    int len;
--    uint32_t n, cmdlen;
--
--    len = esp_get_tc(s);
--
--    switch (esp_get_phase(s)) {
--    case STAT_MO:
--        if (s->dma_memory_read) {
--            len = MIN(len, fifo8_num_free(&s->cmdfifo));
--            s->dma_memory_read(s->dma_opaque, buf, len);
--            fifo8_push_all(&s->cmdfifo, buf, len);
--            esp_set_tc(s, esp_get_tc(s) - len);
--            s->cmdfifo_cdb_offset += len;
--        } else {
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
--            s->cmdfifo_cdb_offset += n;
--        }
--
--        esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
--        esp_raise_drq(s);
--
--        switch (s->rregs[ESP_CMD]) {
--        case CMD_SELATN | CMD_DMA:
--            if (fifo8_num_used(&s->cmdfifo) >= 1) {
--                /* First byte received, switch to command phase */
--                esp_set_phase(s, STAT_CD);
--                s->cmdfifo_cdb_offset = 1;
--
--                if (fifo8_num_used(&s->cmdfifo) > 1) {
--                    /* Process any additional command phase data */
--                    esp_do_dma(s);
--                }
--            }
--            break;
--
--        case CMD_SELATNS | CMD_DMA:
--            if (fifo8_num_used(&s->cmdfifo) == 1) {
--                /* First byte received, stop in message out phase */
--                esp_set_phase(s, STAT_CD);
--                s->cmdfifo_cdb_offset = 1;
--
--                /* Raise command completion interrupt */
--                s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
--                s->rregs[ESP_RSEQ] = SEQ_CD;
--                esp_raise_irq(s);
--            }
--            break;
--
--        case CMD_TI | CMD_DMA:
--            /* ATN remains asserted until TC == 0 */
--            if (esp_get_tc(s) == 0) {
--                esp_set_phase(s, STAT_CD);
--                s->rregs[ESP_RSEQ] = SEQ_CD;
--                s->rregs[ESP_RINTR] |= INTR_BS;
--                esp_raise_irq(s);
--            }
--            break;
--        }
--        break;
--
--    case STAT_CD:
--        cmdlen = fifo8_num_used(&s->cmdfifo);
--        trace_esp_do_dma(cmdlen, len);
--        if (s->dma_memory_read) {
--            len = MIN(len, fifo8_num_free(&s->cmdfifo));
--            s->dma_memory_read(s->dma_opaque, buf, len);
--            fifo8_push_all(&s->cmdfifo, buf, len);
--            esp_set_tc(s, esp_get_tc(s) - len);
--        } else {
--            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
--            n = MIN(fifo8_num_free(&s->cmdfifo), n);
--            fifo8_push_all(&s->cmdfifo, buf, n);
--
--            esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
--            esp_raise_drq(s);
--        }
--        trace_esp_handle_ti_cmd(cmdlen);
--        s->ti_size = 0;
--        if (esp_get_tc(s) == 0) {
--            /* Command has been received */
--            do_cmd(s);
--        }
--        break;
--
--    case STAT_DO:
--        if (!s->current_req) {
--            return;
--        }
--        /* Copy FIFO data to device */
--        len = MIN(s->async_len, ESP_FIFO_SZ);
--        len = MIN(len, fifo8_num_used(&s->fifo));
--        n = esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
--        s->async_buf += n;
--        s->async_len -= n;
--        s->ti_size += n;
--
--        if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
--            /* Defer until the scsi layer has completed */
--            scsi_req_continue(s->current_req);
--            return;
--        }
--
--        esp_dma_ti_check(s);
--        break;
--
--    case STAT_DI:
--        if (!s->current_req) {
--            return;
--        }
--        /* Copy device data to FIFO */
--        len = MIN(s->async_len, esp_get_tc(s));
--        len = MIN(len, fifo8_num_free(&s->fifo));
--        fifo8_push_all(&s->fifo, s->async_buf, len);
--        s->async_buf += len;
--        s->async_len -= len;
--        s->ti_size -= len;
--        esp_set_tc(s, esp_get_tc(s) - len);
--
--        if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
--            /* Defer until the scsi layer has completed */
--            scsi_req_continue(s->current_req);
--            s->data_in_ready = false;
--            return;
--        }
--
--        esp_dma_ti_check(s);
--        break;
--    }
+-    esp_set_phase(s, STAT_ST);
+-    s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
+-    s->rregs[ESP_RSEQ] = SEQ_CD;
+-    esp_raise_irq(s);
 -}
 -
- static void esp_do_dma(ESPState *s)
+ static void write_response(ESPState *s)
  {
-     uint32_t len, cmdlen;
-@@ -669,7 +534,6 @@ static void esp_do_dma(ESPState *s)
-         case CMD_SELATNS | CMD_DMA:
-             if (fifo8_num_used(&s->cmdfifo) == 1) {
-                 /* First byte received, stop in message out phase */
--                esp_set_phase(s, STAT_CD);
-                 s->cmdfifo_cdb_offset = 1;
+     uint8_t buf[2];
  
-                 /* Raise command completion interrupt */
-@@ -913,7 +777,7 @@ static void esp_pdma_cb(ESPState *s)
-         write_response_pdma_cb(s);
-         break;
-     case DO_DMA_PDMA_CB:
--        do_dma_pdma_cb(s);
+     trace_esp_write_response(s->status);
+ 
+-    buf[0] = s->status;
+-    buf[1] = 0;
+-
+     if (s->dma) {
+-        if (s->dma_memory_write) {
+-            s->dma_memory_write(s->dma_opaque, buf, 2);
+-            esp_set_phase(s, STAT_ST);
+-            s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
+-            s->rregs[ESP_RSEQ] = SEQ_CD;
+-        } else {
+-            esp_set_pdma_cb(s, WRITE_RESPONSE_PDMA_CB);
+-            esp_raise_drq(s);
+-            return;
+-        }
 +        esp_do_dma(s);
+     } else {
++        buf[0] = s->status;
++        buf[1] = 0;
++
+         fifo8_reset(&s->fifo);
+         fifo8_push_all(&s->fifo, buf, 2);
+         s->rregs[ESP_RFLAGS] = 2;
++        esp_raise_irq(s);
+     }
+-    esp_raise_irq(s);
+ }
+ 
+ static void esp_dma_ti_check(ESPState *s)
+@@ -673,6 +656,58 @@ static void esp_do_dma(ESPState *s)
+             esp_dma_ti_check(s);
+         }
          break;
-     default:
-         g_assert_not_reached();
++
++    case STAT_ST:
++        switch (s->rregs[ESP_CMD]) {
++        case CMD_ICCS | CMD_DMA:
++            len = MIN(len, 1);
++
++            if (len) {
++                buf[0] = s->status;
++
++                if (s->dma_memory_write) {
++                    s->dma_memory_write(s->dma_opaque, buf, len);
++                    esp_set_tc(s, esp_get_tc(s) - len);
++                } else {
++                    fifo8_push_all(&s->fifo, buf, len);
++                    esp_set_tc(s, esp_get_tc(s) - len);
++                }
++
++                esp_set_phase(s, STAT_MI);
++
++                if (esp_get_tc(s) > 0) {
++                    /* Process any message in phase data */
++                    esp_do_dma(s);
++                }
++            }
++            break;
++        }
++        break;
++
++    case STAT_MI:
++        switch (s->rregs[ESP_CMD]) {
++        case CMD_ICCS | CMD_DMA:
++            len = MIN(len, 1);
++
++            if (len) {
++                buf[0] = 0;
++
++                if (s->dma_memory_write) {
++                    s->dma_memory_write(s->dma_opaque, buf, len);
++                    esp_set_tc(s, esp_get_tc(s) - len);
++                } else {
++                    fifo8_push_all(&s->fifo, buf, len);
++                    esp_set_tc(s, esp_get_tc(s) - len);
++                }
++
++                /* Raise end of command interrupt */
++                s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
++                s->rregs[ESP_RSEQ] = SEQ_CD;
++                esp_raise_irq(s);
++            }
++            break;
++        }
++        break;
+     }
+ }
+ 
+@@ -773,9 +808,6 @@ static void esp_do_nodma(ESPState *s)
+ static void esp_pdma_cb(ESPState *s)
+ {
+     switch (s->pdma_cb) {
+-    case WRITE_RESPONSE_PDMA_CB:
+-        write_response_pdma_cb(s);
+-        break;
+     case DO_DMA_PDMA_CB:
+         esp_do_dma(s);
+         break;
+diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
+index a4b2ed115c..0207fdd7a6 100644
+--- a/include/hw/scsi/esp.h
++++ b/include/hw/scsi/esp.h
+@@ -152,7 +152,6 @@ struct SysBusESPState {
+ 
+ /* PDMA callbacks */
+ enum pdma_cb {
+-    WRITE_RESPONSE_PDMA_CB = 3,
+     DO_DMA_PDMA_CB = 4
+ };
+ 
 -- 
 2.39.2
 
