@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5F6852965
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 07:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1276852975
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 07:56:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZmdK-0004Nl-0U; Tue, 13 Feb 2024 01:51:10 -0500
+	id 1rZmhw-0005Pl-H3; Tue, 13 Feb 2024 01:55:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmdI-0004NO-D0
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:51:08 -0500
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmhu-0005PE-73
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:55:54 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmdF-0003bA-CA
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:51:08 -0500
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-33cda3dfa06so114445f8f.3
- for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 22:51:04 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZmhs-0004S2-Mg
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 01:55:53 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33cdedb40c4so37023f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 22:55:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707807063; x=1708411863; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1707807351; x=1708412151; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Wo3bQjPU2wynG1/Vy9113QM0pV7z0RrwzJfI7wDZ2zo=;
- b=cE6p/W3hd7vl6FGTUpQuhY1S+mzeW8C1P2XKHKXvwRObamDqYFVp2wRTD0dVAKmGPW
- ThJ+I9pIEWOGUCS5s8P4wn/aMywPLOb0uzyRL6rmgoSCpqYyiuBOiHdZiNoff97DuFmh
- 5g9PY97M+VPtVEQT4f8nw4FJrOFUjBpD/fMZDnmErLSIke+8UMUctkmVLgrXPNOSH3bv
- Q3Q2ab/t9HJmlI05V1GvnpJh78zR2j3dQAOz4rC6Uq9wxDy3a2Xp4F5dLoSnjZR/9nFO
- 3IqY+Hx2Phyzas/tnKUCN2bRyhO5eTCR1Y00Kx4AWWQsIKX7mZy+6vb34YrdqJLw2rzf
- isug==
+ bh=qDA115RBNnbaoapaA3ctGFVN7qT4fmp/58Rp9s8Cipo=;
+ b=xiKoTcMsyg690AudgoOrFOGTMzWe7SSvaT/gDxqCq68HDxuVCtdpeX0DIXcTa5Wo7r
+ /ioTGBicgwvbU6VtrjSjoefI2Hu9HK8xzFt+ezwm49heHRaArJsHJOxXjk3zcoBxE9TC
+ MZ8rOnOCRHkOeYuXBUSjSo89kFvDkPklWK1P7mjCrCrJBcw8UkKGeXe093jLnxLuIbs2
+ fQZIRTXFSQHRClPThgJtB52VZd0H23owxz1Vsm+cSa1do+VN/qR1BAL50Gy29jjTZX+1
+ ixsm3lGFR7xvgGD16mwH23vbIQXVw5oJW2NjVok/4nOUbGxQLJLeDb8dldhLtHfv2TVB
+ +9tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707807063; x=1708411863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1707807351; x=1708412151;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wo3bQjPU2wynG1/Vy9113QM0pV7z0RrwzJfI7wDZ2zo=;
- b=pS0Qv4nNFE9PkoS5VoKePVAeulxNlUft5tlELFrcdCI/t2Vdfvcq/PhFyEVZeV7hML
- BIJ15tdWO41XiLYpXuQ9gjl8i1mUaxKqE+HyVJMVP3NM0h1+6rUeoLnm8DLzJDX1BNiR
- po0Ekx8aVxIIXabICKE/OUmjbWYWW8t44z5Vdp1zyG4xu9aviQNLc0yuZ+kgeXKy90Na
- kuppopd6uct7W0lO5ucGCLVNVBYyGycJmX7/rGmEDlLgBdttnKaG/ZtNZNv7WIq7xBU9
- nga5XkW2aZhP/HkjLWi9YUUiDRmzF8QgbEvF6QrRCCvmAO4SphE21dEsPyiQ3noH4RA+
- RHpA==
-X-Gm-Message-State: AOJu0YzR2HYiy0F8FoyPz0qTnEjl5Ag9FpUQR9Uywrkm9kh9Y7HPApDm
- H3Yr1R9n+9Hq1EyaR+gXwmg3RKCBHONhaf+2I7/kzo6KPuCne1xAKUpH32VHAlE=
-X-Google-Smtp-Source: AGHT+IHoOqnyBcv5zvGdoOHUjDU+amJFVZkMJpW882nA4uaxWru8GcBDMMvtkGV3JffVOB3EWtAyBQ==
-X-Received: by 2002:a5d:5f55:0:b0:33b:4d27:6303 with SMTP id
- cm21-20020a5d5f55000000b0033b4d276303mr7330562wrb.12.1707807063528; 
- Mon, 12 Feb 2024 22:51:03 -0800 (PST)
+ bh=qDA115RBNnbaoapaA3ctGFVN7qT4fmp/58Rp9s8Cipo=;
+ b=ZHnyU8ciPEzdaEsDDiikoSkH5y7/N4FJT/p460RMAa2P6b51QU0stBx45mc5eJCn0e
+ mUuh1UCcyJ44Oo0EmuCEkqieVISxZlmJnW93JpoCTYcFAcfo/ukfjRhtc/H3JcCI5vq3
+ Cj8RZ9iSFm3nOy8IRtElqBTlAWMERaU3iY9odBazUSUt6duJNpvHJtoZnzbLwPPjrgJ5
+ Sz8oz7f0a/Nlu87AIuWbxJoZYjnvvA0sfLJ4wzI8gVQpiFkBBcUgGqbzvusYN1epq5X/
+ EgLcGi2eUZMsfdJ9EyUnLppHYxxwl7PlVVmLD1BOF9lEeOIV+BgKRkTQNmlDN6MhKem1
+ gPMA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUcfaYg7TNqpzB6HuF/6liEBNBP9ufhYe2fst0sbQ/KhJUJlHlJ1NLzw67t1/efosrmtzlS1ADyMG27a9sRbeJ4royYyelzym0adw+HeutbD8TW6QCd4OSTeKARcypqoV3xbtQDicatfFrr8LvlMgJRTJOQOe5pENPRSA0HKL/Tm6Lcma/mjT7LyXG+mLEX/8a25tSRv2Pii1B+Mxs6chwvrrwR75VoQSxgJpeET+a6ZsJgGnQ=
+ AJvYcCWOdSvfTFGE5ORHU9JU06Ui1VMg6i+9ig69eNBbK97IOt/kIFITOdV8QWBF3P8NM/zTYcTXkGHsEEzuBEg77ej9OWISZS4=
+X-Gm-Message-State: AOJu0Yw+RHHdOSFcbYbKcjjSXUT4AloRN+cEE/edyAz0+rFUXh0HSxyX
+ +U7fLTzifxx0kLau1b3JoUKHrxEFu2SUjvGNkK1FFQu3UVZkvkUsYNFL90jj6zXrEKI9f3/biZx
+ U
+X-Google-Smtp-Source: AGHT+IGkOiOZsHXLUDz+nAjkXQBDTS55StqrtiSpcY+aed9EzTMCif6T1EEBSZA5wlAs/wISJuWFoQ==
+X-Received: by 2002:adf:f1cf:0:b0:33b:3b00:520d with SMTP id
+ z15-20020adff1cf000000b0033b3b00520dmr5945528wro.51.1707807350893; 
+ Mon, 12 Feb 2024 22:55:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWcM++vrU7h9PoCNUJVkxq29yWM0l02ky1knR6TRU208g/SF/N+Gg2zWqV9X0VK76Qgy8ikfZoE5ZlOxv7v/89+7K3YJr6/FJai1PW1KRUlvNNNcGEYrtDy+/G6elqZ
 Received: from [192.168.69.100] ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- bp9-20020a5d5a89000000b0033b4796641asm8772144wrb.22.2024.02.12.22.51.01
+ e27-20020a5d595b000000b0033b80a0d002sm5338566wri.57.2024.02.12.22.55.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 Feb 2024 22:51:03 -0800 (PST)
-Message-ID: <2afc8b53-5a35-482c-aa89-c61a882cedf0@linaro.org>
-Date: Tue, 13 Feb 2024 07:51:00 +0100
+ Mon, 12 Feb 2024 22:55:50 -0800 (PST)
+Message-ID: <4c4fda8b-2a0d-46c8-b965-49a4e6533634@linaro.org>
+Date: Tue, 13 Feb 2024 07:55:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] linux-user: Map low priority rt signals
+Subject: Re: [PATCH] system: Move memory_ldst.c.inc to system
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Brian Cain <bcain@quicinc.com>,
- "ltaylorsimpson@gmail.com" <ltaylorsimpson@gmail.com>
-References: <20240212205022.242968-1-iii@linux.ibm.com>
- <20240212205022.242968-2-iii@linux.ibm.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+References: <20240209000505.B07D04E6049@zero.eik.bme.hu>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240212205022.242968-2-iii@linux.ibm.com>
+In-Reply-To: <20240209000505.B07D04E6049@zero.eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,62 +96,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc'ing Brian & Taylor
-
-On 12/2/24 21:45, Ilya Leoshkevich wrote:
-> Some applications want to use low priority realtime signals (e.g.,
-> SIGRTMAX). Currently QEMU cannot map all target realtime signals to
-> host signals, and chooses to sacrifice the end of the target realtime
-> signal range.
+On 9/2/24 01:05, BALATON Zoltan wrote:
+> This file is only used by system/physmem.c so move them together.
 > 
-> Change this to the middle of that range, hoping that fewer applications
-> will need it.
-> 
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->   linux-user/signal.c | 18 +++++++++++++-----
->   1 file changed, 13 insertions(+), 5 deletions(-)
+>   memory_ldst.c.inc => system/memory_ldst.c.inc | 0
+>   1 file changed, 0 insertions(+), 0 deletions(-)
+>   rename memory_ldst.c.inc => system/memory_ldst.c.inc (100%)
 > 
-> diff --git a/linux-user/signal.c b/linux-user/signal.c
-> index d3e62ab030f..a81533b563a 100644
-> --- a/linux-user/signal.c
-> +++ b/linux-user/signal.c
-> @@ -511,13 +511,14 @@ static int core_dump_signal(int sig)
->   
->   static void signal_table_init(void)
->   {
-> -    int hsig, tsig, count;
-> +    int hsig, hsig_count, tsig, tsig_count, tsig_hole, tsig_hole_size, count;
->   
->       /*
-> -     * Signals are supported starting from TARGET_SIGRTMIN and going up
-> -     * until we run out of host realtime signals.  Glibc uses the lower 2
-> -     * RT signals and (hopefully) nobody uses the upper ones.
-> -     * This is why SIGRTMIN (34) is generally greater than __SIGRTMIN (32).
-> +     * Signals are supported starting from TARGET_SIGRTMIN and up to
-> +     * TARGET_SIGRTMAX, potentially with a hole in the middle of this
-> +     * range, which, hopefully, nobody uses. Glibc uses the lower 2 RT
-> +     * signals; this is why SIGRTMIN (34) is generally greater than
-> +     * __SIGRTMIN (32).
->        * To fix this properly we would need to do manual signal delivery
->        * multiplexed over a single host signal.
->        * Attempts for configure "missing" signals via sigaction will be
-> @@ -536,9 +537,16 @@ static void signal_table_init(void)
->       host_to_target_signal_table[SIGABRT] = 0;
->       host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
->   
-> +    hsig_count = SIGRTMAX - hsig + 1;
-> +    tsig_count = TARGET_NSIG - TARGET_SIGRTMIN + 1;
-> +    tsig_hole_size = tsig_count - MIN(hsig_count, tsig_count);
-> +    tsig_hole = TARGET_SIGRTMIN + (tsig_count - tsig_hole_size) / 2;
->       for (tsig = TARGET_SIGRTMIN;
->            hsig <= SIGRTMAX && tsig <= TARGET_NSIG;
->            hsig++, tsig++) {
-> +        if (tsig == tsig_hole) {
-> +            tsig += tsig_hole_size;
-> +        }
->           host_to_target_signal_table[hsig] = tsig;
->       }
->   
+> diff --git a/memory_ldst.c.inc b/system/memory_ldst.c.inc
+> similarity index 100%
+> rename from memory_ldst.c.inc
+> rename to system/memory_ldst.c.inc
+
+Patched queued, thanks.
 
 
