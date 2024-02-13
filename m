@@ -2,66 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E58E853BDF
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5841B853BAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:52:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz07-0003qm-Ka; Tue, 13 Feb 2024 15:03:31 -0500
+	id 1rZyp7-0006yW-S4; Tue, 13 Feb 2024 14:52:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzt-0003Yx-Rs
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:18 -0500
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzs-00029Z-7A
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=dIHxPmxBRjAdkbTgjMO6HK+ZBxRAFVh/P8ME+umupjM=; b=Ern9tEG4vaDqFP6HfR1ItMPg6D
- 2YkZE2Il73WN+Lvb9D6EfxD/s0+5cLzyZUE93Fgk96KNIfBVgnpZcrr2ExYAfwkNwnMuyXLFm41qo
- n4RCjtWW9c2Sz8/O//45bjDGabw12eNBwQWBHHKG+Ayh5uaUMdCR+JQe56kWK8rOE1pPtrpR4xcCz
- XVGiZzVKXU0XhhyVtJbpFyxMYDfORJ3UYJQbW9NP6TIzQMHlaf9y1Ug7K4IbJ2epFkjmZC7Ho4Md6
- BZh/3fo4YP11epxZ0X4ciZqEFLCVhAL9F6B5TsgossfkAcNAs8pU1czlGGRtx7Au3sRVj9JQ246i1
- 8XECDtYybB+QpNEZdJOjcGfy/DwWPPdyjnrMcfMmCc48bYopIXNfdwEk0nkxmmaadjgVR49v7wMBL
- K2nbfPWsgV+bncvf9+YJ3wHd6omaeKckSG+CaP2lzHtpuBRTYTCnsCJCpBVVGJELjmLGvhY+jLjJt
- 3tL0fj4VJfLKddudeuDH/zRkdQ6LoxBExCHgOzzi7r1PUNx4vc+IcZVkuNOqAgaa8NUBCQGlH32oI
- I0zGALvhDejdGqcVjZC48yjDagP0R+9GJpXxHoccFPcrn0ISzt8ZLLy1w3mq/iorlSMn+rQLpIyXy
- 9/42hDCWExlSAEg5y20vSvjsOj3ytiq0lSvy6nu1U=;
-Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
- (helo=localhost.localdomain)
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyiB-0008m4-5T; Tue, 13 Feb 2024 19:44:59 +0000
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-To: peter.maydell@linaro.org,
-	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:52 +0000
-Message-Id: <20240213194052.1162753-89-mark.cave-ayland@ilande.co.uk>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
-References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rZyp5-0006y9-O6
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:52:07 -0500
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rZyp3-0008Qw-Hv
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:52:07 -0500
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-59a1896b45eso1924324eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 11:52:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707853924; x=1708458724; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+0JkGZyhnmDg6vZHgvKkEql+8YmPfYmVR2dGbwCzWjE=;
+ b=coDLi8KpdmiKV6VN9gzxAbtRDcpvnfkW7qIYfooXZzCpYW+3eFNlweAe64FaDUrBzE
+ 4cKv5PNkVopQw/piveDmoN+0yW7luWiLrPpcbFykwq9/UItFHoSPt22BB1s/gqAolppB
+ FwJ7SW891m1fyHtUCYE/ZOArBWcGAmgdIQLdoa1xRsSk1nAqupfNn0GmRsjTIm0mIC31
+ jG/yIYdx2c2RRs5gWbtw1e5gKMfyCdsuwhbiv2w/AyBp1hR+ElTP/9G4cB6YDhbp6UZc
+ uDpT+cGXH1uj00YxRyeInHXHazuvZqCQz0j2U8yxEEm9/aY+ULAruDsPPICcegbUqAQ9
+ bRng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707853924; x=1708458724;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+0JkGZyhnmDg6vZHgvKkEql+8YmPfYmVR2dGbwCzWjE=;
+ b=NJVpUjd2qWbFo4hOcw7yt/nxF1ZDeq2km2Ewpqk3RiShQKGzMIBHDMnR03byFxbTZL
+ c5wRQrMHYiywCHFqVAqE/owHqPLEhRZS819T7rdeP3RV1p7vyqTBUWN/VQiz6okruVOC
+ 2Pxsrj2QMdG/AQakj7W1nk2nIdddpiPX1YVLgZHWHHtMN3Ixozufa2m7HC+k0VMrcwlH
+ P2Xw0H7cYTAoBKKAILNDbSP/3tWfKcvUiNVm/0BbTme1WDBdyw/OMuSzw7qDudtwIOwE
+ DXpsek3LfALJvX6DLdWudM9oThdLyzAQ1ENLiD25Pv+I0QCI8R9mr2z5pWa5Yj2yjDah
+ X0vg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXaOhBhrhVyWYotFIomUuWiJ5W3j96l/601ob+f+l3FgDv9mTEhLU6kI+oTL4VP4WFmCDlZhgmZ1d+KnjwTwsohshRa8Yo=
+X-Gm-Message-State: AOJu0YyxSvzqBNelQ+mNVLT4NKUejLfVklhm605LTVYS2gj93W73J5p7
+ WpvvwmNnOd3/rXDuP8Rqhsk/EnIJElkX60YKML2uigY/NM3DDTc1l70SVw1zuzs=
+X-Google-Smtp-Source: AGHT+IGP5U/du8a5ouUQo3lotega7+iC25epOx04LtKS98w9VDTGWUn4d0PIcPm0qI8Yh8+dsA4D/Q==
+X-Received: by 2002:a05:6358:2c8e:b0:179:1f8b:445a with SMTP id
+ l14-20020a0563582c8e00b001791f8b445amr351305rwm.22.1707853924088; 
+ Tue, 13 Feb 2024 11:52:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOFsQVUEi3y9QfCvFnU/VcuFWnVY6wnf4BnOTVQk7Cs44AB3tO8v9R8VT4Slur9CO+1/R2nTVhIO/vZ/megJziRdPP6Dc=
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ w12-20020a056a0014cc00b006e04c3b3b5esm7756420pfu.163.2024.02.13.11.52.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Feb 2024 11:52:03 -0800 (PST)
+Message-ID: <927ab2ee-32f7-4a58-a95c-afdb8fbefb6f@linaro.org>
+Date: Tue, 13 Feb 2024 09:52:00 -1000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 88/88] esp.c: add my copyright to the file
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 21/33] linux-user: Split out mmap_h_eq_g
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
+References: <20240102015808.132373-1-richard.henderson@linaro.org>
+ <20240102015808.132373-22-richard.henderson@linaro.org>
+ <3f75hcwrqjos5mnrm3yknx2c7ae5pvh6bofbpvfsjbxiinrnnq@wmyrvxma4uki>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <3f75hcwrqjos5mnrm3yknx2c7ae5pvh6bofbpvfsjbxiinrnnq@wmyrvxma4uki>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,31 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series has involved rewriting and/or updating a considerable part of the ESP
-emulation so update the copyright in esp.c to reflect this.
+On 1/29/24 05:12, Ilya Leoshkevich wrote:
+> On Tue, Jan 02, 2024 at 12:57:56PM +1100, Richard Henderson wrote:
+>> Move the MAX_FIXED_NOREPLACE check for reserved_va earlier.
+>> Move the computation of host_prot earlier.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   linux-user/mmap.c | 66 +++++++++++++++++++++++++++++++++++++----------
+>>   1 file changed, 53 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+>> index 42eb3eb2b4..00003b8329 100644
+>> --- a/linux-user/mmap.c
+>> +++ b/linux-user/mmap.c
+>> @@ -527,6 +527,31 @@ static abi_long mmap_end(abi_ulong start, abi_ulong last,
+>>       return start;
+>>   }
+>>   
+>> +/*
+>> + * Special case host page size == target page size,
+>> + * where there are no edge conditions.
+>> + */
+>> +static abi_long mmap_h_eq_g(abi_ulong start, abi_ulong len,
+>> +                            int host_prot, int flags, int page_flags,
+>> +                            int fd, off_t offset)
+>> +{
+>> +    void *p, *want_p = g2h_untagged(start);
+>> +    abi_ulong last;
+>> +
+>> +    p = mmap(want_p, len, host_prot, flags, fd, offset);
+>> +    if (p == MAP_FAILED) {
+>> +        return -1;
+>> +    }
+>> +    if ((flags & MAP_FIXED_NOREPLACE) && p != want_p) {
+> 
+> Should we munmap() here?
+> I've seen this situation in some of the previous patches as well, but
+> there we were about to exit, and here the program may continue
+> running.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Tested-by: Helge Deller <deller@gmx.de>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-89-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
----
- hw/scsi/esp.c | 1 +
- 1 file changed, 1 insertion(+)
+Yes, when the host kernel does not support MAP_FIXED_NOREPLACE.
+Which is rare these days, admittedly.  I'll comment as well.
 
-diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index b8762d5ee0..590ff99744 100644
---- a/hw/scsi/esp.c
-+++ b/hw/scsi/esp.c
-@@ -3,6 +3,7 @@
-  *
-  * Copyright (c) 2005-2006 Fabrice Bellard
-  * Copyright (c) 2012 Herve Poussineau
-+ * Copyright (c) 2023 Mark Cave-Ayland
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy
-  * of this software and associated documentation files (the "Software"), to deal
--- 
-2.39.2
+
+r~
 
 
