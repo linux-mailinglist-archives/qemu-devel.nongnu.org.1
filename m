@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287B0853526
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE1085351A
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:51:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZv3k-0002pS-4g; Tue, 13 Feb 2024 10:51:00 -0500
+	id 1rZv3o-0002zw-1l; Tue, 13 Feb 2024 10:51:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv3e-0002gu-6I
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:50:54 -0500
-Received: from mail-qk1-x72e.google.com ([2607:f8b0:4864:20::72e])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rZv3l-0002wr-Jt
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:51:01 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv3Z-0005VG-0E
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:50:52 -0500
-Received: by mail-qk1-x72e.google.com with SMTP id
- af79cd13be357-785d5fa8169so170271485a.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:50:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rZv3j-0005X7-Oj
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:51:01 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-561f5086a1fso926106a12.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:50:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707839443; x=1708444243; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zr3mehn/xZ0OaAXl/DQ0wynxpLmisZ0EuMbAySZB6LE=;
- b=GjtP9ldb8OBP6uej/HY6yf6zvh4rSuSp/l+Ze6R19xL55/yAaaDbyiRpHmc+Xszatr
- HQDC8Ai/6hbjqmPkjVhN4Yo01WJv8yzp4v/HJpsksUtuWyxBsVIntnSKPivDonF7bW3/
- hB0Qcs7xApspJIPU+JkpZE3jiAbpJEKwycK3ONM8JZvoqftF8VWwJU9INYrnMOI8IEHn
- AiQxfIzfsIFpLkb97G56wXfWEubNqPlslsiuLHqDWQZxGGLq/24uDtd4r7CLe15PyM+5
- x1dLHu4XFJGY4qRZGGgY5LjlXeKpjby2EqsR4aOeXOpwJayKAMD8MtpLg69UkbIwZK0T
- ndaQ==
+ d=linaro.org; s=google; t=1707839457; x=1708444257; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=v++f+aX1lTrmT2lq+VRxWggWXpnz3nfrAMvD5brQAlM=;
+ b=MH9LY01tjoo2CCPmU+cvL4w/OrwhhOjmDD/IneerOPIb7KpC1RNicK99SLXH8zfa+4
+ ge7P2bvI6yXXe81CsHgFXun69iezSiat/yo2GZorAXBheCGE9K6f+qVZrfMiUw6H11K0
+ fnHDayHh1xa8/8wEEIdJFmyeAVlYbI3zc4SPLqBfZ/vUmgN1vjgVCaCXO+dMG+xcMykU
+ mthI7jb+XmtXGwi78pJO/hzEqud7awcVsG5JvVE6y67jmRr90xujYWzqjP+FoMkp8ar4
+ 7ID4CnrkL6FrLl/MUeDQe9KMURC93eKWBFEN7zOIa1bHftaPbeZnoZuhGodXxEgemKS9
+ CUcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707839443; x=1708444243;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zr3mehn/xZ0OaAXl/DQ0wynxpLmisZ0EuMbAySZB6LE=;
- b=okFPteRrSNdMyEw/XiWXockA33PzGK+LQlqO8uLdSEcGvmZcRgpgLeI4rqp4sUkokS
- XJhV8GVoTNSmjjK7eGewi8H/Jhtlyo0C9UDNa+ciqasjBlZlKe3k4mnCa+C3QZG9NYil
- NZxc9mVwAs8oU+0/sNj0Cls0wW9S2+Y2ERbTdotGRIQ3RTA5AfuN00eJxxVjJWkY0Sdf
- 3Df1FRcBX+QC/p1cNXiw7M8Wy3PFEba3RQEnuh0Wqmc6gFWQ0wCqI8xTSthc3NesJpAo
- QqqNKkHy5+VxtAXvPFxNY+avL6cfKxCmUpC31M1ndWU0HDTvUpR9UfDMWIQkcNFUW+x5
- Z3QQ==
-X-Gm-Message-State: AOJu0YzNxyotBzLq17kbh30ubITOIRvuMZmqwP0cgRJuj7NYERWgioH5
- BuQkzU3dgJ9As5PBnTIC15aBXOqX7CHFh7ILJDYAeFelkia8B17pL+S7etT7k/4=
-X-Google-Smtp-Source: AGHT+IF6UOZgUGzX72okWIR7sh7LTHdIW6/f0EKYoEKGzQHfAe91/iWMXsqI8Eqi5Kj6pSjbPI5UZw==
-X-Received: by 2002:a05:620a:29d1:b0:785:d69d:ee37 with SMTP id
- s17-20020a05620a29d100b00785d69dee37mr7280962qkp.29.1707839442907; 
- Tue, 13 Feb 2024 07:50:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCU/+2G3j0oDQNyFNmxnxZXAhboCu1hQuAVgyx4cVJcf2kVPi3C2o8ByMJzo3lJmDynPGxBCNOVuHtKM7OqKuWlhAJURtXs4imVqEywBvqz3vgnADyHGlUuQy5bpthIyhICq72PcbTjIGVNspECKe5PftwZRjKyQCSiwDvk7NVZHQGzkN3ZHXmbg/kwkDH64YQRq
-Received: from [192.168.69.100] ([176.176.128.243])
- by smtp.gmail.com with ESMTPSA id
- x11-20020a05620a0ecb00b007840b13c58esm3058425qkm.63.2024.02.13.07.50.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Feb 2024 07:50:42 -0800 (PST)
-Message-ID: <cde94c81-c3bf-42f3-9bc8-e9214ed84d51@linaro.org>
-Date: Tue, 13 Feb 2024 16:50:39 +0100
+ d=1e100.net; s=20230601; t=1707839457; x=1708444257;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=v++f+aX1lTrmT2lq+VRxWggWXpnz3nfrAMvD5brQAlM=;
+ b=mm6c2AAWuvItE1XT1oWaeqgCT82D2cAAjTuiS2iAaM47WXt37SLLxaEU5CNpHPvwb1
+ AoCzZdrvIPctwPhaXT9LR/H+NTH1BTWp65odYxgzWmCYSjABMDZoJ8D0eVGthH2+9KxY
+ lBRi5WhVnzHPefNbIj3TdLLpXxqsPWq3/z+z+ojJT8Fb/hjX//zQe/aG2a9t9/VNrvbJ
+ 0ZYRVEo2CkM2xV54hm3jk3NXAYDvRAjqjpzU3mOCqxxwDlXgaOhI2T3LFa4xjEoIMyo0
+ FPHkVvhuDVmo6Mqm4OAyFZK5UHMHhgRs7GFQXOEOzO/Dx7eWPVFA+KSvghOEuaPk8/Jh
+ 7hew==
+X-Gm-Message-State: AOJu0YwmIwei9p2gvgGgyS0FKjoVY9zq7/kcSJSn41Bbrf7fykocakpl
+ SN2Mtk4CMNAZl1TQl05VQiqc81yVRXZJwGbxLU/bUE5Ln4SW2Y5cWW7RzEyzjVDfXhW0Y8sDJGx
+ k9qU2JYt4KK8FkHrPuylbgMYuTTqiLAgtLJ85PA==
+X-Google-Smtp-Source: AGHT+IF0qBdkSRNjEwS6sKyQjxk+A/DPAd+gsN4bXYFfHl7qrQut7EVm69kPSIf+YFuqwnc8il/9hcRCkmmr3JmUgxE=
+X-Received: by 2002:aa7:c58f:0:b0:561:b28:e61 with SMTP id
+ g15-20020aa7c58f000000b005610b280e61mr34278edq.31.1707839457598; 
+ Tue, 13 Feb 2024 07:50:57 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] hw/arm/stellaris: Convert I2C controller to
- Resettable interface
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org
-References: <20240130190317.25692-1-philmd@linaro.org>
- <20240130190317.25692-3-philmd@linaro.org>
- <CAFEAcA_e3QOvfvJScUgtmjGacKZX1OHyY5a-BWSAhNURyO2Rgg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_e3QOvfvJScUgtmjGacKZX1OHyY5a-BWSAhNURyO2Rgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72e;
- envelope-from=philmd@linaro.org; helo=mail-qk1-x72e.google.com
+References: <20240212234723.222847-1-deller@kernel.org>
+In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 13 Feb 2024 15:50:46 +0000
+Message-ID: <CAFEAcA--wZRZQUS1dJapAmgXG3Q4VvMW4GbyERpKUUa-BaUtjg@mail.gmail.com>
+Subject: Re: [PULL 00/12] Hppa64 patches
+To: deller@kernel.org
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
+ Helge Deller <deller@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,40 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/2/24 17:24, Peter Maydell wrote:
-> On Tue, 30 Jan 2024 at 19:03, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   hw/arm/stellaris.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
+On Mon, 12 Feb 2024 at 23:49, <deller@kernel.org> wrote:
+>
+> From: Helge Deller <deller@gmx.de>
+>
+> The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
+>
+>   Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/hdeller/qemu-hppa.git tags/hppa64-pull-request
+>
+> for you to fetch changes up to a9314795f068515ff5925d0f68adf0a3215f6d2d:
+>
+>   hw/hppa/machine: Load 64-bit firmware on 64-bit machines (2024-02-13 00:44:06 +0100)
+>
+> ----------------------------------------------------------------
+> target/hppa: Enhancements and fixes
+>
+> Some enhancements and fixes for the hppa target.
+>
+> The major change is, that this patchset adds a new SeaBIOS-hppa firmware
+> which is built as 32- and 64-bit firmware.
+> The new 64-bit firmware is necessary to fully support 64-bit operating systems
+> (HP-UX, Linux, NetBSD,...).
+>
 
 
->> @@ -658,8 +661,6 @@ static void stellaris_i2c_init(Object *obj)
->>       memory_region_init_io(&s->iomem, obj, &stellaris_i2c_ops, s,
->>                             "i2c", 0x1000);
->>       sysbus_init_mmio(sbd, &s->iomem);
->> -    /* ??? For now we only implement the master interface.  */
-> 
-> I'm not 100%, but I think this comment is a general one,
-> not reset specific, so it should stay in the init function.
-> 
->> -    stellaris_i2c_reset(s);
->>   }
-> 
-> I think that the i2c_end_transfer() should be in the
-> "enter" phase, and the clearing of the state fields in
-> "hold", and then the stellaris_i2c_update() call in "exit".
+Applied, thanks.
 
-Indeed.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-> Though usually we don't bother to do an update in reset
-> if it's just "device has reset and now its outbound IRQ
-> line is not set", so we could alternatively just delete that.
-
-I'll let that as an possible cleanup on top.
-
-Thanks for the review,
-
-Phil.
+-- PMM
 
