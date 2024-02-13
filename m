@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B329F853001
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 13:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D11853003
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 13:01:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZrSX-0000WU-AH; Tue, 13 Feb 2024 07:00:21 -0500
+	id 1rZrTQ-0002QC-DL; Tue, 13 Feb 2024 07:01:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZrSP-0000V9-PJ
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:00:15 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZrSM-0000TG-Lp
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:00:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707825609;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=50E8y+xfA7HBXn40KtIavaY7lMTLKisuAD0rDa6/Gt8=;
- b=Hfxwr3PwenDrKTDr3yaUs0FbGglBZQdMDJl4TX0oYhr5ubTIE/D8MojOA1u4XX9wacDLvk
- HfPElu3pbZzX8+bz8RvNi33lQwxfL1ACoFtXfJYZIVQy2QyQKyqmflBNpGOEpmZ58t8rpw
- wvU4CyByS8+chzJLzzXTErdxopo+YOk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-SrjODOpcNYWD3xvIFbyVKA-1; Tue, 13 Feb 2024 07:00:07 -0500
-X-MC-Unique: SrjODOpcNYWD3xvIFbyVKA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4102b934ba0so24694095e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 04:00:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rZrTN-0002N0-CE
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:01:13 -0500
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rZrTJ-0000si-0H
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:01:11 -0500
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e0a608a36bso1756553b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 04:01:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707825667; x=1708430467;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8jQxR7K97R6LngnUG8bs1kowV4iKJWFO0PSS/0Vr5uM=;
+ b=bURGLQM/kdn/cOuCpTy6yziFDo/HJHrixg5FUeUGkDichM5NSiIfwSM/m1PIuQ/Srs
+ rA7q86KUPrUrzJxLnhtqhMyNUmotPNktn/mjkmrN24I1YpDZ374GCq3cHuTVNuM41dkM
+ XtmiwDi1vlT0TTZj8ceYjjv0AKrPoDv57jsBkUkagm7Q4Xet4qFInx84b+tfBGNn+7eA
+ 26YlzqoRdUmaO+s7X27Qqf3FRPx43qom6T4dS5DWmmwXDxnOTHBU1TuJi0StPHaGovYH
+ 6trgj5pfHTIqniQmgQE65IKgsuSxvdwfdkRE0NRzk5P+mSoh2O7rOO+KKLAuuB7NGiba
+ CyNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707825606; x=1708430406;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=50E8y+xfA7HBXn40KtIavaY7lMTLKisuAD0rDa6/Gt8=;
- b=Fl+u5IVcbDkHkQ0RajsDROmeA4vJwaf8bpB2ohAcRmF7ohowGoEflaJPlENezOZgLs
- V0n8nj/odMUQhXQnrjDSBylAOyRAjp0ac3+hGU+INQXfXRaxuW4HTRK7maYhnqDVD1M+
- Ft37xn++NDKVmmFbTH3IETg4FPqyt/va6U8b7s+N0sgxo0EPhRAdsUfFUvcpmudoZr7R
- 8jYa62K+OSrBhv0zhJ6VOmoIDGyolWfneFASD1j8ee4UwWqEB0MgQbZduRCIEH/Qn54S
- BUPPQsoN9Gsoo98uResePgRkgal+CHzoi3EUwj+K3Qr/yPu0DfM3qT3RowyRhoku51dy
- eSXw==
-X-Gm-Message-State: AOJu0YzaI0D4a+3JfJTKh6FbH2RXWdmFKIyHyiX1RW9WOCLlT1ujcAmr
- PjKEw1Xd+MQaArL46Wwy7GVZ+KBrEly4TbP+n4isX49gsOqt/MgI7Ay2eMr2U7IksYB6zJo1OOz
- Y29n05trpLcB9QqP0QrUG/c5jL4VSel0qhOHhy6ge+a85Fo2uDrAO
-X-Received: by 2002:a05:600c:5247:b0:410:8db2:d5ec with SMTP id
- fc7-20020a05600c524700b004108db2d5ecmr7468560wmb.38.1707825606832; 
- Tue, 13 Feb 2024 04:00:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEHbxNFl6yUskuFEk2oIjjBwlJPl5gc4P9jUQZCpQFn+e/qCoegyFmK9UhorBHa8JfmLzNZyg==
-X-Received: by 2002:a05:600c:5247:b0:410:8db2:d5ec with SMTP id
- fc7-20020a05600c524700b004108db2d5ecmr7468534wmb.38.1707825606492; 
- Tue, 13 Feb 2024 04:00:06 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707825667; x=1708430467;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8jQxR7K97R6LngnUG8bs1kowV4iKJWFO0PSS/0Vr5uM=;
+ b=KPIWzomiyTWJBngeP80k5DPRVuD7ektoEG8pI72VK2xunex9WGfiJdytCZym5jynKi
+ Ka1KE63f6PO4zeiJTG4QDaBgRCSSLBVhH/nEQai1o1FU7GQA2mo/RXToy/CS5btzD5id
+ hi5Ym9hxmB9awfqcvTwxi35rxrbMjKd3lWpOuXcXmK/4xZ4T5d0sQ6vXUMmiLBiMP581
+ wtbJVWmgeBZFdGWRxgws0k3SuotMfLTem3E6bIJUTchOhcuIIRenbyrfq2y9vB5Sxoxl
+ TaLDLSqymMo6POQd/gi53UCJp3AuSZGpTu3ydDKydlPj8xCzmTMHBI4KtJoYxptu2S+h
+ 3ZHg==
+X-Gm-Message-State: AOJu0Yy+NMNm+XmPQ1vm1MiYqMXDOIVfIoDB8XnU1W9uw8LhD0mdHMTq
+ Fh4BIJwTP7vZrD9LlBLAku3Q52Fk38swp8D7KEhLghzcK+B50vFWAS2kAMoYO1X19Q6EDZS5TgR
+ w
+X-Google-Smtp-Source: AGHT+IFWPUmvrAxoikLOVaKVoZgLtDE2tK5bYT9lH1TLfiJdtFBbigb9Qc4YmNCMjlUaPtdlchopzA==
+X-Received: by 2002:a05:6a00:b4e:b0:6e0:4717:7a0d with SMTP id
+ p14-20020a056a000b4e00b006e047177a0dmr12566718pfo.5.1707825665416; 
+ Tue, 13 Feb 2024 04:01:05 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrxIgBOmS0wv7Cw55XWTtGjEL/W8neFOoe5UmvddeH7xjHYdhEumb8MOd52wG0kpomVXYtbIamcIv0/DuOmXvVpPDLciqxh4f3rXx7dJxFksh4hiYBX5/GLBN88/VQJ7lxqLmjV1s3TmBYRIrkDGPs1eZKZEMJhGih/kT0zBAB/AaNvmU9/N/NuOU0aYwF5cef/0VhTL294/WAwh9NzjtLKffHjXOcVQkI0IXzYrfFRIeIT9ytqCccSesM/h4xamiP3H7kNZ4kYlNt6yZf
-Received: from redhat.com ([2a02:14f:17d:5d88:37b3:ce51:18b:36d9])
- by smtp.gmail.com with ESMTPSA id
- dv5-20020a0560000d8500b0033b483d1abcsm9390789wrb.53.2024.02.13.04.00.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Feb 2024 04:00:06 -0800 (PST)
-Date: Tue, 13 Feb 2024 07:00:01 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- jean-philippe@linaro.org, alex.williamson@redhat.com,
- clg@redhat.com, peter.maydell@linaro.org, Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v2] virtio-iommu: Use qemu_real_host_page_mask as default
- page_size_mask
-Message-ID: <20240213064017-mutt-send-email-mst@kernel.org>
-References: <20240117132039.332273-1-eric.auger@redhat.com>
- <20240213044312-mutt-send-email-mst@kernel.org>
- <6d4b5766-f8e2-4889-827d-01d3509239f7@redhat.com>
- <20240213060731-mutt-send-email-mst@kernel.org>
- <417ea71e-fb45-4e1d-b8e5-9d54d93dba3b@redhat.com>
+ AJvYcCWG3VcipnpAzJOUYxpmQrotKN1wTb35gYDTOF3W047bN1cK55S+i7A6cF0H4cUGscdbpm9ITvI345ojoEIkAKCjguq98o+FyRNxTt6TmovFHtO4I8sNCLUzAAHfD3eLWYCGqPqkB+2uHRz7odGCIrz9dqAskunuetxO3O58L7ZlydkNjr2PBeLaQuC6ckaKQt9VOsbRn67abKU1S2Qqj2aZQbjDFTV8MioLvbZblY+R8hkUg1sm4fIgbX6zbeLi4nTreSuUsYmtLav0
+Received: from localhost ([157.82.207.134])
+ by smtp.gmail.com with UTF8SMTPSA id
+ fd11-20020a056a002e8b00b006dde35245d8sm7170723pfb.58.2024.02.13.04.01.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Feb 2024 04:01:05 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v9 0/6] ui/cocoa: Use NSWindow's ability to resize
+Date: Tue, 13 Feb 2024 21:00:54 +0900
+Message-Id: <20240213-cocoa-v9-0-d5a5e1bf0490@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <417ea71e-fb45-4e1d-b8e5-9d54d93dba3b@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPZZy2UC/2XMTQ6DIBCG4asY1qUBrPx01Xs0XSAMlUXFQEM0x
+ rsXTUxsu/wm87wzShA9JHStZhQh++RDX4Y6Vch0un8C9rZsxAirKaMUm2CCxo3greS1AtVaVH6
+ HCM6PW+f+KLvz6R3itGUzX6+/hcwxxRfl6hYIVdSxm9VT78ezCS+0JrI4MrEzURjXjlFwouGS/
+ DF5ZHJnEhNshdNWEiPA8S+2LMsHwptLwQkBAAA=
+To: Peter Maydell <peter.maydell@linaro.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Rene Engel <ReneEngel80@emailn.de>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,32 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 13, 2024 at 12:24:22PM +0100, Eric Auger wrote:
-> Hi Michael,
-> On 2/13/24 12:09, Michael S. Tsirkin wrote:
-> > On Tue, Feb 13, 2024 at 11:32:13AM +0100, Eric Auger wrote:
-> >> Do you have an other concern?
-> > I also worry a bit about migrating between hosts with different
-> > page sizes. Not with kvm I am guessing but with tcg it does work I think?
-> I have never tried but is it a valid use case? Adding Peter in CC.
-> > Is this just for vfio and vdpa? Can we limit this to these setups
-> > maybe?
-> I am afraid we know the actual use case too later. If the VFIO device is
-> hotplugged we have started working with 4kB granule.
-> 
-> The other way is to introduce a min_granule option as done for aw-bits.
-> But it is heavier.
-> 
-> Thanks
-> 
-> Eric
-> >
+V5 -> V6:
+  Rebased.
 
-Let's say, if you are changing the default then we definitely want
-a way to get the cmpatible behaviour for tcg.
-So the compat machinery should be user-accessible too and documented.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v9:
+- Split patch "ui/cocoa: Use NSWindow's ability to resize" into patches
+  "ui/cocoa: Let the platform toggle fullscreen", "ui/cocoa: Make window
+  resizable", "ui/cocoa: Call console_select() with the BQL".
+- Added patch "ui/cocoa: Scale with NSView instead of Core Graphics".
+- Rebased.
+- Dropped Tested-by: from patch "ui/cocoa: Use NSWindow's ability to
+  resize".
+- Link to v8: https://lore.kernel.org/r/20231218-cocoa-v8-0-d7fad80c7ef6@daynix.com
 
+Changes in v8:
+- Split into three patches. (BALATON Zoltan)
+- Removed negative full-screen conditions. (BALATON Zoltan)
+- Converted a C++-style comment to C style.
+- Link to v7: https://lore.kernel.org/r/20231217-cocoa-v7-1-6af21ef75680@daynix.com
+
+Changes in v7:
+- Fixed zoom-to-fit option. (Marek Glogowski)
+- Link to v6: https://lore.kernel.org/r/20231211-cocoa-v6-1-49f3be0191f2@daynix.com
+
+---
+Akihiko Odaki (6):
+      ui/cocoa: Release specific mouse buttons
+      ui/cocoa: Scale with NSView instead of Core Graphics
+      ui/cocoa: Let the platform toggle fullscreen
+      ui/cocoa: Make window resizable
+      ui/cocoa: Call console_select() with the BQL
+      ui/cocoa: Remove stretch_video flag
+
+ ui/cocoa.m | 533 +++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 250 insertions(+), 283 deletions(-)
+---
+base-commit: 5005aed8a7e728d028efb40e243ecfc2b4f3df3a
+change-id: 20231211-cocoa-576b8639e9bd
+
+Best regards,
 -- 
-MST
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
