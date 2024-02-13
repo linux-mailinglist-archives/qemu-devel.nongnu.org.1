@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D47F853BDB
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:05:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC896853BE9
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:07:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0q-0005CW-M6; Tue, 13 Feb 2024 15:04:16 -0500
+	id 1rZz0U-0004NA-4z; Tue, 13 Feb 2024 15:03:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZz0c-0004mF-Ee
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:04:03 -0500
+ id 1rZyz0-0002b7-BH
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:22 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZz0P-0002DK-Vk
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:04:02 -0500
+ id 1rZyyy-000249-Mv
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=O7NEKvkbj4MXy755AuslcZ73cjKfcA574sHWMKhGl18=; b=MNWsJ5Q3ymM6Sq4CX3NGrv86Mg
- 6CVQUdDd2VwWEVlsQlwiwVod2D/XnryNEcmonnk6JQSqoXdZqmZeR0jJGEvLCq0g7Vvd34UpsMUjP
- Y+9ZaARs33D8L8a83W8EBNZwgaOjubygKXD2xJBu7UfVi+RRTfH2tF4tnIv+38FCfy474o7M/gjoF
- /h4cM7boLGV1mdlGKZCZlVW/S4ow+21fZuf+R3TkzdHgRAI9ze464LHnVdIPEh1JLsyR69shmDc/t
- OltvFSTMmq4g4Lu93zAsaGYZfK7SwFC49nbaVyNfeBauACGk2jsiYCs3ZQ9blIcJpup5XbB7g+DB7
- Jyz/kZxejcKZy5RAKLEcw8mC0yWJo2FDfSnE/J5+wvnLY5r5FOQeqxmbd8LIbXdZ2BdK0ntcr5B8w
- oTAVnqWLfIvz7R42tyFwixbaJH2Dl6gVk1FJH1GGc0HhBrVrcLaUg0d+T9wYlHlldNxXIjHZq/KPZ
- r+1iZ8ACsXP/k08cfovtOSYU8yEFoII73QtFWV4a7PM6Asf8zdcBeXeTjyeyJvTzRJRwjF02oIQg1
- KS+WwZLPPed/zPpAmW7Bs6nevb8GrXOBKe5rC9CGCkfLxX2qRtSpuDZOEVLcAdEO3fy3/FuNyE3Ch
- XRhgzL4dDP9GMj/zVnVDGDHtW88+Qxw3NQjWZQgwE=;
+ bh=aJTWAvOYqywrLnvX1OR2Ngh7aiAwrAzm/3AnJXr6yik=; b=X5Ize7XVLzxFVaXA+kZbjk8qXY
+ FyTDm6wimhNWrmmheUl5gxaWxjmxVAjPut8n+N8eDcxbnvrLaCdr0atRD+N5noLUgVeGNJgE5PAnC
+ FO7uyYHyQHn8GFQWer+4Z23Syq9Bcv/7eYYXD3UWhNW7kuGxgim6u3d7vgtwqqdulqBnD3GyVtpgm
+ 0XpGSNo+XWdKW5QSyE/1nWeea7SkRc41LWF3/RsyY92TtR/hsTUtx3iig6OK2UJnz9/RZgnBTVxwL
+ +9YiOs6EDmXQ/WG7Mad+1m2kFC7oiq89lsCL5fILC8kOmeTICmD3QT+0VMYwPN6zc7PQYoPgZX4BP
+ EfPp1W4e8diS31xyZkivO55o0QciNX6nLEcdG3TW/SPE7TzI+tquUNfDj18ASW/bvSnV10WThTRU2
+ 0LS7Qfjhv8wpIWhqKbsgtFTzArPFI2s0kkDCc/OutmbNhWZ+Lyxx22jECEslyzHEyIxGBf7+iwENB
+ m6b0V3WedK1uZKS4Y8hBZjXHGFExqV3riwO2y8b6FPzAQtctJvf3ycP1yR+t9R9g9lCDBRCCjm3eC
+ bsg1bMmVdcYlqaoatoaxvTvwuyW6VJ809fgnrYR1qp9jBh4GtIfL7vm/0o+P9LYH5VQiHGJPqFdh7
+ w9yiJ5YfltWNzTe5F7YV9oYEjKJzq0UGw/NWAyiM0=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZygn-0008m4-4y; Tue, 13 Feb 2024 19:43:37 +0000
+ id 1rZygr-0008m4-83; Tue, 13 Feb 2024 19:43:41 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:22 +0000
-Message-Id: <20240213194052.1162753-59-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:23 +0000
+Message-Id: <20240213194052.1162753-60-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 58/88] esp.c: separate logic based upon ESP command in
- esp_command_complete()
+Subject: [PULL 59/88] esp.c: separate logic based upon ESP command in
+ esp_transfer_data()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -85,58 +85,56 @@ elsewhere, but that will change soon.
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-59-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-60-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ hw/scsi/esp.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 73c723afcc..75538f5859 100644
+index 75538f5859..b6cf1b43db 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -823,25 +823,27 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
-      * Switch to status phase. For non-DMA transfers from the target the last
-      * byte is still in the FIFO
-      */
--    esp_set_phase(s, STAT_ST);
--    if (s->ti_size == 0) {
+@@ -862,13 +862,33 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+     s->async_buf = scsi_req_get_buf(req);
+ 
+     if (!to_device && !s->data_ready) {
 -        /*
--         * Transfer complete: force TC to zero just in case a TI command was
--         * requested for more data than the command returns (Solaris 8 does
--         * this)
+-         * Initial incoming data xfer is complete so raise command
+-         * completion interrupt
 -         */
--        esp_set_tc(s, 0);
--        esp_dma_ti_check(s);
--    } else {
-+    s->ti_size = 0;
-+
-+    switch (s->rregs[ESP_CMD]) {
-+    case CMD_SEL | CMD_DMA:
-+    case CMD_SEL:
-+    case CMD_SELATN | CMD_DMA:
-+    case CMD_SELATN:
-         /*
--         * Transfer truncated: raise INTR_BS to indicate early change of
--         * phase
-+         * No data phase for sequencer command so raise deferred bus service
-+         * interrupt
-          */
-         s->rregs[ESP_RINTR] |= INTR_BS;
+         s->data_ready = true;
+-        s->rregs[ESP_RINTR] |= INTR_BS;
 -        esp_raise_irq(s);
--        s->ti_size = 0;
-+        break;
++
++        switch (s->rregs[ESP_CMD]) {
++        case CMD_SEL | CMD_DMA:
++        case CMD_SEL:
++        case CMD_SELATN | CMD_DMA:
++        case CMD_SELATN:
++        case CMD_SELATNS | CMD_DMA:
++        case CMD_SELATNS:
++            /*
++             * Initial incoming data xfer is complete so raise command
++             * completion interrupt
++             */
++             s->rregs[ESP_RINTR] |= INTR_BS;
++             esp_raise_irq(s);
++             break;
++
++        case CMD_TI | CMD_DMA:
++        case CMD_TI:
++            /*
++             * Bus service interrupt raised because of initial change to
++             * DATA phase
++             */
++            s->rregs[ESP_RINTR] |= INTR_BS;
++            esp_raise_irq(s);
++            break;
++        }
      }
  
-+    /* Raise bus service interrupt to indicate change to STATUS phase */
-+    esp_set_phase(s, STAT_ST);
-+    s->rregs[ESP_RINTR] |= INTR_BS;
-+    esp_raise_irq(s);
-+    esp_lower_drq(s);
-+
-     if (s->current_req) {
-         scsi_req_unref(s->current_req);
-         s->current_req = NULL;
+     /*
 -- 
 2.39.2
 
