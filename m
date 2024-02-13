@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B0D853C17
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8603F853BEF
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:07:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0P-0004E0-4J; Tue, 13 Feb 2024 15:03:49 -0500
+	id 1rZz0i-0004on-FX; Tue, 13 Feb 2024 15:04:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyyw-0002Ym-Pj
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:21 -0500
+ id 1rZz0B-0003vQ-B5
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:35 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyyv-00023o-AE
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:02:18 -0500
+ id 1rZz09-0002An-NN
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=EA5YnaUP3gDHF5AaE9uZujarI/GD/Dg9Sof51XT/n9E=; b=HlRioVnoEYONPiOoQoc9nRxgJT
- 70Fg7A6wb37KXLbD64BYULEbKAsdmhLIKfwJyjHEwpk7K2cmFTb6OtzdU4Oy1vlpm3abvbURR8cDn
- RwYnKTuZyQo+Q0GsdV3yd4DwW44Zpz2pdVQ1d9/i8yB/sHWPBfYETjJtWwyrU3gLswcNlpp4jyapm
- OHNIR9Jddujp0R5ak3/QCe3T6AuJQwS13hC4r/UEZj1aX57q+bEd3EzNZBZOojVjuISP43VmV7aIr
- /yBxWhOzvHWvC/fddrgFPwL2jmkPK+vUu1W13hhKfMbP2sDWBUiXu0asSfPbAPgnDqITTdmo4e4Wf
- EA+UNpaUPYGExmDnHkRxr68tiSjdX8NC3qjNES87Ymrd0Ua83iYpNy8dG1xxI3PqAsioFLEwfAwKp
- LHcq7xKYHg5yOyBjbeJbFCR79uqVleew++dhvH3vUhRvZd8Y75CcDUnnVexACR2RyVVisg9+4A5TY
- F7701FJ/Hm8IzrJWyzpUjUAmZmKtOABs8n0Dk2Tk9hUnATUP1zkLe/AxpJfmfQd/CcLb0/jM7ZujW
- y7TWHQ8lq5TBG+KHXebNxBZtd5WZMGuwnLO55p+LT2f/ZugeK0N5SO6T+7fZgpdX3L6nrHAeN7fy4
- cNZAufW9D+BCnAq3sB9fSioO4GBw0TaTwdeBWbzK4=;
+ bh=cfhlzrwDQ8CNlxP8yl8X90lb9cN5al37GV4VXNcU3zQ=; b=R+pzdNrFNxUWjp1xxkBCUk0gjl
+ CzIknfmMnFuBuhd/7389yd97398Fz1/Yt2uPxAQu12HBdqa1d7cnRksO0m8OF1BjC04Gyn9J3dXnK
+ ewt26HJjC5/137KZIdbF1gzNqoETQXncxe6g1Tbte0Wpi6iUuKminMX05p1jEIZ8MgadKfFAvzgvo
+ 9hgCaJlYJuEbZSrTiWCxc4IiGfOul1doVNNDSw2N4/fJC2JWJVryRMWWLvEEaudYy36I5I94BGIn/
+ wPnqRJlBf2U6ZuXz+hLtuGHqjXVdWu31aU07+hjF0G6noQ1pBVqDuAOunUWRV2DejezB74yKyMJwY
+ 6wU3fh2IZo//TPbjGAufkjGLCN0cTIkHXrdRL4EUaOc9na+PJST29yiOZH+r8nG8tpVNTV+qzu7fz
+ Bqpk2RIUxJnUYcgfaCI3y4moeyv0kUwYBU6NI+qrSgM7cRMwYOwSv6f5W+dfFqn1pZbA9LcAYA5Px
+ qoke+BzRjiShU9UD9J6l1ltE83ji65MZNzzPBp+ttks41OsyDttC42g3U/zScWEUk+G711drpm9YH
+ bUuEPIsjHBmxifL/w5Sb2NA/39Jezm7FiFUImKhSDFgOOzadpGjUh2XI4rRax+9nRqq3tK9lyKUgg
+ ttN6/xdtf8oiNuL6oqOb2ZpeAkM4s6mxZe30UIq+s=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZygd-0008m4-El; Tue, 13 Feb 2024 19:43:26 +0000
+ id 1rZygh-0008m4-3c; Tue, 13 Feb 2024 19:43:30 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:19 +0000
-Message-Id: <20240213194052.1162753-56-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:20 +0000
+Message-Id: <20240213194052.1162753-57-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 55/88] esp.c: always use esp_do_dma() in pdma_cb()
+Subject: [PULL 56/88] esp.c: remove unused PDMA callback implementation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,37 +77,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is now only a single implementation contained within esp_do_dma() so
-call it directly.
+Note that this is a migration break for the q800 machine because the extra PDMA
+information is no longer included.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-56-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-57-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ hw/scsi/esp.c         | 55 ++++---------------------------------------
+ include/hw/scsi/esp.h |  6 -----
+ 2 files changed, 5 insertions(+), 56 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index c6e5ddd537..bdbdb209f7 100644
+index bdbdb209f7..5061c9d5a1 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -807,13 +807,7 @@ static void esp_do_nodma(ESPState *s)
+@@ -223,11 +223,6 @@ static void esp_pdma_write(ESPState *s, uint8_t val)
+     esp_set_tc(s, dmalen);
+ }
  
- static void esp_pdma_cb(ESPState *s)
+-static void esp_set_pdma_cb(ESPState *s, enum pdma_cb cb)
+-{
+-    s->pdma_cb = cb;
+-}
+-
+ static int esp_select(ESPState *s)
  {
--    switch (s->pdma_cb) {
--    case DO_DMA_PDMA_CB:
--        esp_do_dma(s);
--        break;
--    default:
--        g_assert_not_reached();
+     int target;
+@@ -377,7 +372,7 @@ static void handle_satn(ESPState *s)
+         s->dma_cb = handle_satn;
+         return;
+     }
+-    esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
++
+     if (esp_select(s) < 0) {
+         return;
+     }
+@@ -400,7 +395,7 @@ static void handle_s_without_atn(ESPState *s)
+         s->dma_cb = handle_s_without_atn;
+         return;
+     }
+-    esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
++
+     if (esp_select(s) < 0) {
+         return;
+     }
+@@ -424,7 +419,7 @@ static void handle_satn_stop(ESPState *s)
+         s->dma_cb = handle_satn_stop;
+         return;
+     }
+-    esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
++
+     if (esp_select(s) < 0) {
+         return;
+     }
+@@ -497,7 +492,6 @@ static void esp_do_dma(ESPState *s)
+             s->cmdfifo_cdb_offset += n;
+         }
+ 
+-        esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+         esp_raise_drq(s);
+ 
+         switch (s->rregs[ESP_CMD]) {
+@@ -551,7 +545,6 @@ static void esp_do_dma(ESPState *s)
+             n = MIN(fifo8_num_free(&s->cmdfifo), n);
+             fifo8_push_all(&s->cmdfifo, buf, n);
+ 
+-            esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
+         }
+         trace_esp_handle_ti_cmd(cmdlen);
+@@ -597,7 +590,6 @@ static void esp_do_dma(ESPState *s)
+             s->async_len -= n;
+             s->ti_size += n;
+ 
+-            esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
+ 
+             if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
+@@ -644,7 +636,6 @@ static void esp_do_dma(ESPState *s)
+             s->async_len -= len;
+             s->ti_size -= len;
+             esp_set_tc(s, esp_get_tc(s) - len);
+-            esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
+ 
+             if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
+@@ -805,11 +796,6 @@ static void esp_do_nodma(ESPState *s)
+     }
+ }
+ 
+-static void esp_pdma_cb(ESPState *s)
+-{
+-    esp_do_dma(s);
+-}
+-
+ void esp_command_complete(SCSIRequest *req, size_t resid)
+ {
+     ESPState *s = req->hba_private;
+@@ -1229,33 +1215,6 @@ static int esp_post_load(void *opaque, int version_id)
+     return 0;
+ }
+ 
+-/*
+- * PDMA (or pseudo-DMA) is only used on the Macintosh and requires the
+- * guest CPU to perform the transfers between the SCSI bus and memory
+- * itself. This is indicated by the dma_memory_read and dma_memory_write
+- * functions being NULL (in contrast to the ESP PCI device) whilst
+- * dma_enabled is still set.
+- */
+-
+-static bool esp_pdma_needed(void *opaque)
+-{
+-    ESPState *s = ESP(opaque);
+-
+-    return s->dma_memory_read == NULL && s->dma_memory_write == NULL &&
+-           s->dma_enabled;
+-}
+-
+-static const VMStateDescription vmstate_esp_pdma = {
+-    .name = "esp/pdma",
+-    .version_id = 0,
+-    .minimum_version_id = 0,
+-    .needed = esp_pdma_needed,
+-    .fields = (const VMStateField[]) {
+-        VMSTATE_UINT8(pdma_cb, ESPState),
+-        VMSTATE_END_OF_LIST()
 -    }
+-};
+-
+ const VMStateDescription vmstate_esp = {
+     .name = "esp",
+     .version_id = 6,
+@@ -1290,10 +1249,6 @@ const VMStateDescription vmstate_esp = {
+         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
+         VMSTATE_END_OF_LIST()
+     },
+-    .subsections = (const VMStateDescription * const []) {
+-        &vmstate_esp_pdma,
+-        NULL
+-    }
+ };
+ 
+ static void sysbus_esp_mem_write(void *opaque, hwaddr addr,
+@@ -1342,7 +1297,7 @@ static void sysbus_esp_pdma_write(void *opaque, hwaddr addr,
+         esp_pdma_write(s, val);
+         break;
+     }
+-    esp_pdma_cb(s);
 +    esp_do_dma(s);
  }
  
- void esp_command_complete(SCSIRequest *req, size_t resid)
+ static uint64_t sysbus_esp_pdma_read(void *opaque, hwaddr addr,
+@@ -1363,7 +1318,7 @@ static uint64_t sysbus_esp_pdma_read(void *opaque, hwaddr addr,
+         val = (val << 8) | esp_pdma_read(s);
+         break;
+     }
+-    esp_pdma_cb(s);
++    esp_do_dma(s);
+     return val;
+ }
+ 
+diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
+index 0207fdd7a6..6f942864a6 100644
+--- a/include/hw/scsi/esp.h
++++ b/include/hw/scsi/esp.h
+@@ -51,7 +51,6 @@ struct ESPState {
+     ESPDMAMemoryReadWriteFunc dma_memory_write;
+     void *dma_opaque;
+     void (*dma_cb)(ESPState *s);
+-    uint8_t pdma_cb;
+ 
+     uint8_t mig_version_id;
+ 
+@@ -150,11 +149,6 @@ struct SysBusESPState {
+ #define TCHI_FAS100A 0x4
+ #define TCHI_AM53C974 0x12
+ 
+-/* PDMA callbacks */
+-enum pdma_cb {
+-    DO_DMA_PDMA_CB = 4
+-};
+-
+ void esp_dma_enable(ESPState *s, int irq, int level);
+ void esp_request_cancelled(SCSIRequest *req);
+ void esp_command_complete(SCSIRequest *req, size_t resid);
 -- 
 2.39.2
 
