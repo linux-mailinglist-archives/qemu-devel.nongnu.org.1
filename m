@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE30852A9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:14:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8663A852A9F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:14:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZnuc-0000vE-4p; Tue, 13 Feb 2024 03:13:06 -0500
+	id 1rZnuc-0000w2-Kd; Tue, 13 Feb 2024 03:13:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnuZ-0000uC-Bv
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnuZ-0000uY-TL
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:13:03 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnuO-0000uS-8o
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnuT-0000v2-TH
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:13:03 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33b2960ff60so2867270f8f.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 00:12:50 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4114e0a2936so10243985e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 00:12:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707811969; x=1708416769; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707811976; x=1708416776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3tGBnm3xpKoZJLGDzyHurshmc29aTqyoeNI6UD7GZU8=;
- b=CsjDaSAp9E5pazR+KBsXLlYoc29uzU8c4HU3hkmoRh79x1Nebb1mzWD/BHrWGYfy3D
- Xd+uwTbsZLQdtQ9BUYs/ev3AEOy2ObRcgwj+XrdDux+kvTd7ff4hyoKeyjM+YZh4oxzH
- D0yIAEcgh/8UxQKJDlSv0SiOqm0M+nTdunKduXHR1wGBfgB5Lpyr1L5jUeZdeM8BuShw
- +m1ftiCPvnXmWSWFUDOtFmQH8Yy46vzTJGbuqTebx01t3C+z54gvI/BzcBDH5aG7CUXO
- AzSJISdR032F18nAIP+LGOhti6gll9TT4u763dCQe4IrsWVzUwKj1sDHseC45tnu0NcT
- R/zw==
+ bh=o9Mll3b0jD3+V1gEhLcEmdspqDBWW+gx7Ndf0tUMfZI=;
+ b=ODlbnsDDlVkFrkvHkY1s/g+SmSP+mcpGx4jycFSii2JeolMY9XEOHpRUAH+o7x064s
+ 3lmHjeL6snn149zESBGifQEsXvI/+FnpQNY2q6H0ulqeXm7MvYZRVcNvQ3/tlnmEyMz9
+ PCSQb1wEBQH9nnT47RntBV6/x0vmSfkqK/fSg4BzuQskw3iSoQ25dFyFbNvuc69ETd5S
+ ybe/OcKaaylqiGp1S0pFLRqjtTyblcp+CFoK5JlaQ5OMWysB0WmL61eZ/W6qrburGkB2
+ uYvmA6ACb/7xUQX+VtlALRuVd7Kno5BUBl0BDPBND87lcBHwcAYv40yECQNhiLFT2Szq
+ P9pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707811969; x=1708416769;
+ d=1e100.net; s=20230601; t=1707811976; x=1708416776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3tGBnm3xpKoZJLGDzyHurshmc29aTqyoeNI6UD7GZU8=;
- b=SYDoJ/G3z7YiNXGGXQu5mRPjI1tOhsCKdgyHJYm3q+N/wPtXwYc0xxgsnkGLYNIQl1
- CKWsBjYXKZNVfOQlBB5ixwTRqsz3fWLjX/sSn4DvfFc597/vdbJueVYQGHRbd3tjotrF
- vcUbM/1F6+JLae32UU/98AiyQGPYoLKPCJioYtxhUYEqkHZK1uc+QkB00pW1X43SJsNS
- xIdGXt6pHqlmB8umA1dSiOdbnZ+nAf1xLehyLgeG3oW2Ogba0y8o7Avh2MxP/ifAwnZR
- m6MyLZ06BX7nafiDjbxbqc95LhVnT2EXRVpbA7u1E7NVHHuyBFvsEhn0cl6NMyw6lIbL
- Wlsg==
-X-Gm-Message-State: AOJu0YzpE7008L4TAmb3ioACrBfp972FwO/JyPMkbGzekp2Zex43jKc6
- klPpZHqH/B9buZTKyHPrbB/Gko6Xkwp3Z+OTbl1ExhHbriBUYvxYFBdbUdRq20em4hcdbQ/XOUK
- e
-X-Google-Smtp-Source: AGHT+IHAbjPO3QHRPjiBBcWKK0nCDzc8pkdF8GY8qtKFJR6HBvbG6Vuk5M8pHYFlo4jxz6obYbnDAQ==
-X-Received: by 2002:a5d:4e4a:0:b0:33b:68d2:c5c9 with SMTP id
- r10-20020a5d4e4a000000b0033b68d2c5c9mr1442385wrt.8.1707811969753; 
- Tue, 13 Feb 2024 00:12:49 -0800 (PST)
+ bh=o9Mll3b0jD3+V1gEhLcEmdspqDBWW+gx7Ndf0tUMfZI=;
+ b=TmcxRSsGD/vEbJydXO3I2izYodCFOahmn6xAItWpvIIaNgvYPJap8cBTNlQuZksJfT
+ dzX30UybaIRlrHl3CitQZoCmCxPQPq8hWiVOKhFA8lJNag9JZCt/S3C7SMOcgXs7vsiV
+ tEaMGyWNNkPmDpS9IIlM1qiuKSMqanPv3iLsYlUjirdC8NwHtbnclZS0KNb13RTXrDTJ
+ HGa9pW37qIMyTWSV2E4Q94hnAFUzYy6nOcm5f1EDWSX1b1T3YKnoUiHJD8wNDbnRC67T
+ djWP3zmyAvpnq/11JPYJbb8smn/qtQJtzI8lRwCyy92Da2B72dznY5oy0ecfxT9PCuDq
+ bCeQ==
+X-Gm-Message-State: AOJu0Yw0nt9Ryyq0VNL7/ikJwCRP/sBpeMd3Ox2leyrGlInxUu+d1hM1
+ 73axlXgGIuvjsJm4HJK18N4HBByrzapmDyiD24M5fVpReH7aTacztuAH8VVeZRG2RoBMVfQcQGd
+ n
+X-Google-Smtp-Source: AGHT+IH/pbZ6t9xitqbhnzmLj0xdxZdob8vyzEWpC9pOBffHWOEIpyrCbU2qfu7MmYxqKZFOoCdpiQ==
+X-Received: by 2002:a05:600c:5487:b0:410:cc53:a358 with SMTP id
+ iv7-20020a05600c548700b00410cc53a358mr5102258wmb.16.1707811976001; 
+ Tue, 13 Feb 2024 00:12:56 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUhv7HcJZUaxKepPaqXlfGBs6Jto0eV0QW/c86+/oleUEDjymNxErcchK8KDSHA0b91m/xVsnaFINko6RqeG82c2ixyk9H9WDfvlw9MHB01+N2/h+AyFjRuTYba8pw8FP4vAY8V/r+RPmr0BasoDggJD7gR9yEIEEiGeJSJ/rOiui/dSh/goC7y/E/YvJRlzBzLPhEVfZQeKgj0HS9FaToXQy4rAu7TgSIJ8CONb1oi0yTIMgN/ZGYlk5Z+0Mllmhrt/bOPc9/NU95UDvn+mq+JeSdm5f0=
+ AJvYcCXaF3ktzSm9VNZed+L5sZ6c4prONn+fJw8l4SkEvOb17m90mnfPe+5XmmsYDYWotcewD9rRFWM9+Pmu6eLkzU0kthbmP9mpXvR0+6s8pQHcjfBzs7G4mcNatOq6EH8rTS720Ej7dwRhn3/St9xHVHpvn7McPF9FhDuilFvSWsP7r+5HqXyZ+MUJMHAriJuJHyA97L5oyyBCXlPdm2WiR1/HVGiXPY8vseL4TPb+JWCeEmGH+OyHwRn3bIbDIeRnrk4njCOC59dDzukORHPyHC3G9w3BiRM=
 Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- t24-20020adfa2d8000000b0033b86b38611sm3549752wra.10.2024.02.13.00.12.48
+ e1-20020a5d65c1000000b0033afb963d0dsm8828239wrw.101.2024.02.13.00.12.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 00:12:49 -0800 (PST)
+ Tue, 13 Feb 2024 00:12:55 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -65,18 +65,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 7/9] hw/ide/ahci: Do not pass 'ports' argument to
- ahci_realize()
-Date: Tue, 13 Feb 2024 09:11:58 +0100
-Message-ID: <20240213081201.78951-8-philmd@linaro.org>
+Subject: [PATCH 8/9] hw/ide/ahci: Remove SysbusAHCIState::num_ports field
+Date: Tue, 13 Feb 2024 09:11:59 +0100
+Message-ID: <20240213081201.78951-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240213081201.78951-1-philmd@linaro.org>
 References: <20240213081201.78951-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,73 +98,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Explicitly set AHCIState::ports before calling ahci_realize().
+No need to duplicate AHCIState::ports, directly access it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/ahci_internal.h | 2 +-
- hw/ide/ahci.c          | 9 +++++----
- hw/ide/ich.c           | 3 ++-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ include/hw/ide/ahci.h | 1 -
+ hw/ide/ahci.c         | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci_internal.h
-index 4dc2805d21..4e13329bb2 100644
---- a/hw/ide/ahci_internal.h
-+++ b/hw/ide/ahci_internal.h
-@@ -377,7 +377,7 @@ typedef struct SDBFIS {
-     uint32_t payload;
- } QEMU_PACKED SDBFIS;
+diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
+index 604d3a0994..c0b10c2bb4 100644
+--- a/include/hw/ide/ahci.h
++++ b/include/hw/ide/ahci.h
+@@ -63,7 +63,6 @@ struct SysbusAHCIState {
+     /*< public >*/
  
--void ahci_realize(AHCIState *s, DeviceState *qdev, AddressSpace *as, int ports);
-+void ahci_realize(AHCIState *s, DeviceState *qdev, AddressSpace *as);
- void ahci_init(AHCIState *s, DeviceState *qdev);
- void ahci_uninit(AHCIState *s);
+     AHCIState ahci;
+-    uint32_t num_ports;
+ };
  
+ #define TYPE_ALLWINNER_AHCI "allwinner-ahci"
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 2c3306dae4..33f7e83687 100644
+index 33f7e83687..041cc87c11 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -1614,14 +1614,14 @@ void ahci_init(AHCIState *s, DeviceState *qdev)
-                           "ahci-idp", 32);
- }
- 
--void ahci_realize(AHCIState *s, DeviceState *qdev, AddressSpace *as, int ports)
-+void ahci_realize(AHCIState *s, DeviceState *qdev, AddressSpace *as)
- {
-     qemu_irq *irqs;
-     int i;
- 
-     s->as = as;
--    s->ports = ports;
--    s->dev = g_new0(AHCIDevice, ports);
-+    assert(s->ports > 0);
-+    s->dev = g_new0(AHCIDevice, s->ports);
-     ahci_reg_init(s);
-     irqs = qemu_allocate_irqs(ahci_irq_set, s, s->ports);
-     for (i = 0; i < s->ports; i++) {
-@@ -1862,7 +1862,8 @@ static void sysbus_ahci_realize(DeviceState *dev, Error **errp)
+@@ -1862,12 +1862,11 @@ static void sysbus_ahci_realize(DeviceState *dev, Error **errp)
  {
      SysbusAHCIState *s = SYSBUS_AHCI(dev);
  
--    ahci_realize(&s->ahci, dev, &address_space_memory, s->num_ports);
-+    s->ahci.ports = s->num_ports;
-+    ahci_realize(&s->ahci, dev, &address_space_memory);
+-    s->ahci.ports = s->num_ports;
+     ahci_realize(&s->ahci, dev, &address_space_memory);
  }
  
  static Property sysbus_ahci_properties[] = {
-diff --git a/hw/ide/ich.c b/hw/ide/ich.c
-index d190012a95..122fc7e0ab 100644
---- a/hw/ide/ich.c
-+++ b/hw/ide/ich.c
-@@ -113,7 +113,8 @@ static void pci_ich9_ahci_realize(PCIDevice *dev, Error **errp)
-     d = ICH9_AHCI(dev);
-     int ret;
- 
--    ahci_realize(&d->ahci, DEVICE(dev), pci_get_address_space(dev), 6);
-+    d->ahci.ports = 6;
-+    ahci_realize(&d->ahci, DEVICE(dev), pci_get_address_space(dev));
- 
-     pci_config_set_prog_interface(dev->config, AHCI_PROGMODE_MAJOR_REV_1);
+-    DEFINE_PROP_UINT32("num-ports", SysbusAHCIState, num_ports, 1),
++    DEFINE_PROP_UINT32("num-ports", SysbusAHCIState, ahci.ports, 1),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
 -- 
 2.41.0
