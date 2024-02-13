@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAAE853AB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:18:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F47E853AB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:18:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyHt-0000s0-C1; Tue, 13 Feb 2024 14:17:49 -0500
+	id 1rZyHw-0000tW-97; Tue, 13 Feb 2024 14:17:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rZyHq-0000pz-Qo
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:17:46 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rZyHu-0000su-Dl
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:17:50 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rZyHp-0001od-7z
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:17:46 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d76671e5a4so38829945ad.0
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 11:17:44 -0800 (PST)
+ id 1rZyHs-0001p5-Pp
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:17:50 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1d934c8f8f7so11564285ad.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 11:17:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1707851863; x=1708456663; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=gHIAZI9o1OCE/syn5pPgOS3SyjRfI90qPN8Z11/8n7g=;
- b=cAXxMTf5LimL1DDllbKGnyv/p9RWIhjN6WBfrDxXpJv/JOiRw+QQPy4mEdKZWjft+g
- hI5umoRxjD3NEaMWh2D+HgRKJzonKeI6vWDxEoXgmaWiBm5TwNtE6B9+MoyW1S/R0LTm
- VWTHmmz1Y5A/jA1CVFJRNwhcATXj8GvUNhaRTyWGgrwGJnKrOkI8XkstoT4j76m1+vkz
- oOv1F/+43DOOo4xf/7gDyHsBWNJg2G5p5nSrYAUNCD7XszsPJQTLFTsvAVp9rBQ91gTr
- U/L7laeO0TtRl7OX0o3QRxaUsT5EkzwJlPC3UulHAydGdDQvRdUr1W2MeOBIUve5Lf4v
- jp+Q==
+ d=ventanamicro.com; s=google; t=1707851867; x=1708456667; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vCjGzp0b66K/4g+8NCWC4cfrL5PhW9DiQFJWcv54wVE=;
+ b=NDK6gxxgBPW9NntUsi4EMRqe8EN7iTdovUEB8r0nxKVW6GbBnXdLwDENhZ6FpFnono
+ gelvHexRY9HPcItsp9xuY8GcdIH3triURBEz/Su5JZxLghXJ38fb59lVIVz0+6vxbsZ0
+ 0CDYFGaiuEA/4Q9u5hK3XQAn3OkIEeZxQeEo1siuMShJU4VTLNH9vb5hwmnScwcd+6nj
+ CmYvPMI45uZs6SBg/1VIYiQWKWYhSCcjwgnvrGb690UYKbxO62JHKeiqxCk6TsNJl1XT
+ IEBzLzN8i2RcoZ6ixXDhwbHanOhCk8r6t1Em/tTuTeDOV3Lt/08/4Os8yQ/DvhCUZ5Zn
+ vZMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707851863; x=1708456663;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gHIAZI9o1OCE/syn5pPgOS3SyjRfI90qPN8Z11/8n7g=;
- b=LxfGMiJKYiBLM+HIq+Q8pRe3yfT1DHGvYxhHJtGCAAQIz2QFA16C5KJ4W7rULz31F5
- iJJXL7s16n9jaH+d6iG5YseSNViMOOoLdD5a9hnlvCDUJWKog5s8E+Z1AoQcTJ/DcHj6
- TbBP4a9coVkEebyPST19fGjzewgTJLGB/zV1CuG+RvUAwjGhSrlQBtM1Iq4284JEDjKN
- KKczXyQg0jh4gC9UGF5G3wClxKWcHEQ4ZRt+Oh3FZWN3JhpZMIfCW9qSjUunx1s9QMkU
- rbXFAnqXoW6LbYFBYe8cNveSSlymKl8OocUcUQmgMqF0QCJ74Nm8Wv0zOcRsZphTeGpi
- VEYA==
-X-Gm-Message-State: AOJu0YzZP9lRpmmVpYgObKQmjB6ir8I57gZfjo2mPamBAoigY8YP0y9a
- CaRcI1+nVQsYbNosPNw0NApY+WMZsbhoYF12vs7yzOOQZN9SRSA8uG44h/eLX+X6YjMWM3nMH87
- 6
-X-Google-Smtp-Source: AGHT+IEKBQ+kAL2F+iB+LdmA16ho/2qukqsm6OR+ulOfofv/XiY03gHl6Q4gPDvt0LKVpyd45KknCA==
-X-Received: by 2002:a17:902:f68b:b0:1d9:9f86:3c77 with SMTP id
- l11-20020a170902f68b00b001d99f863c77mr549830plg.14.1707851863127; 
- Tue, 13 Feb 2024 11:17:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707851867; x=1708456667;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vCjGzp0b66K/4g+8NCWC4cfrL5PhW9DiQFJWcv54wVE=;
+ b=ukGADNgCiJ2wSfRMq+egqlEnKaYx4yOOz9iS2aGUS7gu6PiCv7A7KL1r8/Io/aACN/
+ FgpSdvWFsUBaRZsGHMeaIUd9hcE+8H5ibMpzuRvR5hxvWUy+mVuaL0k5IxMhpL1sFmJe
+ LANPbSAFO0XcpgcgK/Ph9sSTWABlO2fdMxDvdJZEOSkhJP42OXwCwkYBttvxtVaFf4gY
+ X87aI72Nbd84Yq5nYhjQ7/oTy2s0L5L7rE4osqz/FZe1XqBMUc0fo04QrHqKSiXor076
+ dhSO45vF7vLluVZfBHGD2kXehMCESKMs3wDnBZSqW93T8iPetUEhggfSngZKkBbLdx9s
+ 4+CQ==
+X-Gm-Message-State: AOJu0YxlDLjQL59p3TFlV/VAtC5Dgh4DiMZbFkN3MGdNIOn/IX0n1eX2
+ niq6u3wcnD75odZ69vz+f8tBZwL8jXSfT5Hyh388FKA+ji7TblL+Y9Y09WvDI+Z/Je6nrBYp7wH
+ L
+X-Google-Smtp-Source: AGHT+IEcvI+DmpKZwcRcSx6dIHGSx+2nIb9XT8gl8NAXDvyJUg6kQxiWP9a5RQ9cT4fHwcFMdomHGA==
+X-Received: by 2002:a17:902:ef89:b0:1d7:3238:b2c6 with SMTP id
+ iz9-20020a170902ef8900b001d73238b2c6mr375965plb.63.1707851867071; 
+ Tue, 13 Feb 2024 11:17:47 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCU26pHfczMl7awKCV8mDW/RWNGtX2FceqidnD5E77EoTMYUlRd5R1AyE44XvUTQMJ/L+QIiqkn9z58539zi/VlmPu1w0JQO2xQ0PiotRIY24fo2QkFtb+60hwmbrZbXSQ6h4TPVs7GBP7F42Y9uz62PWT4hd3CmuJO5PDveO5Jy06Ttf6X3kVhASNEAwTnQLJHODQli7ZxRmkDZuuNu/66cEnBLqjh6vO0XBafzlKuu+Hnqt2Z4duRp6pvQqQBgwNbI4p77zyW/0DDgraF/jsW37R+pDdHxCz4OjGBOJPo7nTv55Hxu7PWJSxSaXVE6m5X0lzKnUxrjxLAwjUVMX1KpuAr8F16VL4kjLf8BiJyCJxfXsBJK8K8it/2WMZdzmb4APSz/8MkKr9Lj
+ AJvYcCXPmdvc+/jYp6dsvmGU008A6WfnUJXRQH8Y+FCwFJmwX32N5po3p0kkRxe/1J06H95Y2PiCWigYtqMgW/miNrk6f2U1/Axz0WQHL8AB89LFSCvvbg9eribAW609xe+1a40V+NacGUB2Jho/uiAX5GCeI+oalUWALy/hENun8cf79DFp1QjmijKPrHMztDOc4d23dOZhatx/aZu2pf+irLZY2Q6gF/izkE63fCaaPz2ccY2J0K2D5KSG/RkthnsQX6J7dQtZHLAnP0kJptKDIhENouYGLO1ySTFnp+Q4dvTVAZhJn2PE67taj7bUbyWFOQThF5s9gJ0ncBXXWFeNvImHjxUa9m3/9Gm/hfjz/UhdKf9R1bTeM89LCO+ElFTMJy4j/54/Yjn6WlGb
 Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
  by smtp.gmail.com with ESMTPSA id
- b5-20020a170902d60500b001d8f81ecea1sm2416335plp.172.2024.02.13.11.17.39
+ b5-20020a170902d60500b001d8f81ecea1sm2416335plp.172.2024.02.13.11.17.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Feb 2024 11:17:42 -0800 (PST)
+ Tue, 13 Feb 2024 11:17:46 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
@@ -65,14 +66,17 @@ Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
  ajones@ventanamicro.com, alex.bennee@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 0/6] libqos, riscv: libqos fixes, add riscv machine
-Date: Tue, 13 Feb 2024 16:17:30 -0300
-Message-ID: <20240213191736.733334-1-dbarboza@ventanamicro.com>
+Subject: [PATCH 1/6] libqos/virtio.c: init all elems in
+ qvring_indirect_desc_setup()
+Date: Tue, 13 Feb 2024 16:17:31 -0300
+Message-ID: <20240213191736.733334-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240213191736.733334-1-dbarboza@ventanamicro.com>
+References: <20240213191736.733334-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,53 +99,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The loop isn't setting the values for the last element. Every other
+element is being initialized with addr = 0, flags = VRING_DESC_F_NEXT
+and next = i + 1. The last elem is never touched.
 
-This series adds a RISC-V 'virt' libqos machine. It's copied from the
-existing ARM machine in arm-virt-machine.c.
+This became a problem when enabling a RISC-V 'virt' libqos machine in
+the 'indirect' test of virti-blk-test.c. The 'flags' for the last
+element will end up being an odd number (since we didn't touch it).
+Being an odd number it will be mistaken by VRING_DESC_F_NEXT, which
+happens to be 1.
 
-Due to the increase of test coverage I found out 2 bugs in the virtio
-layer of libqos. Patch 1 is a bug related to unintialized guest pages
-from guest_alloc() being used, patch 2 is an error in an offset of a
-struct. My educated guess on why other boards don't fail these tests
-is that either their guest pages happens to be zeroed or happens to have
-a certain value that doesn't affect the tests. 
+Deep into hw/virt/virtio.c, in virtqueue_split_pop(), into
+virtqueue_split_read_next_desc(), a check for VRING_DESC_F_NEXT will be
+made to see if we're supposed to chain. The code will keep up chaining
+in the last element because the unintialized value happens to be odd.
+We'll error out right after that because desc->next (which is also
+uninitialized) will be >= max. A VIRTQUEUE_READ_DESC_ERROR will be
+returned, with an error message like this in the stderr:
 
-Patches 3, 4 and 5 are changes in the RISC-V 'virt' machine required to
-make all tests pass.
+qemu-system-riscv64: Desc next is 49391
 
-Patch 6 adds the RISC-V virt machine nodes. As I said, it's a declared
-copy of arm-virt-machine.c with extra steps. One of them is to edit the
-attributes of the generic-pcihost liqos driver to fit RISC-V needs,
-since some of its attributes (ecam, pio_base and so on) are hardcoded to
-the values that the ARM 'virt' machine uses. If desired, we can change
-generic-pcihost to be more flexible and not hardcode any machine/arch
-specific value.
+Since we never returned, w'll end up timing out at qvirtio_wait_used_elem():
+
+ERROR:../tests/qtest/libqos/virtio.c:236:qvirtio_wait_used_elem:
+    assertion failed: (g_get_monotonic_time() - start_time <= timeout_us)
+
+The root cause is using unintialized values from guest_alloc() in
+qvring_indirect_desc_setup(). There's no guarantee that the memory pages
+retrieved will be zeroed, so we can't make assumptions. In fact, commit
+5b4f72f5e8 ("tests/qtest: properly initialise the vring used idx") fixed a
+similar problem stating "It is probably not wise to assume guest memory
+is zeroed anyway". I concur.
+
+Initialize all elems in qvring_indirect_desc_setup().
+
+Fixes: f294b029aa ("libqos: Added indirect descriptor support to virtio implementation")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ tests/qtest/libqos/virtio.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/tests/qtest/libqos/virtio.c b/tests/qtest/libqos/virtio.c
+index 410513225f..4f39124eba 100644
+--- a/tests/qtest/libqos/virtio.c
++++ b/tests/qtest/libqos/virtio.c
+@@ -280,14 +280,27 @@ QVRingIndirectDesc *qvring_indirect_desc_setup(QTestState *qs, QVirtioDevice *d,
+     indirect->elem = elem;
+     indirect->desc = guest_alloc(alloc, sizeof(struct vring_desc) * elem);
  
-
-Alex: I'm CCing you because I noticed that you reviewed bug fixes in
-libqos/virtio in the past, figured you have some expertise to share
-here.
-
-
-Patches based on master.
-
-
-Daniel Henrique Barboza (6):
-  libqos/virtio.c: init all elems in qvring_indirect_desc_setup()
-  libqos/virtio.c: fix 'avail_event' offset in qvring_init()
-  hw/riscv/virt.c: create '/soc/pci@...' fdt node earlier
-  hw/riscv/virt.c: add virtio-iommu-pci hotplug support
-  hw/riscv/virt.c: make aclint compatible with 'qtest' accel
-  tests/libqos: add riscv/virt machine nodes
-
- hw/riscv/virt.c                         |  97 ++++++++++++-----
- tests/qtest/libqos/meson.build          |   1 +
- tests/qtest/libqos/riscv-virt-machine.c | 137 ++++++++++++++++++++++++
- tests/qtest/libqos/virtio.c             |  27 +++--
- 4 files changed, 228 insertions(+), 34 deletions(-)
- create mode 100644 tests/qtest/libqos/riscv-virt-machine.c
-
+-    for (i = 0; i < elem - 1; ++i) {
++    for (i = 0; i < elem; ++i) {
+         /* indirect->desc[i].addr */
+         qvirtio_writeq(d, qs, indirect->desc + (16 * i), 0);
+-        /* indirect->desc[i].flags */
+-        qvirtio_writew(d, qs, indirect->desc + (16 * i) + 12,
+-                       VRING_DESC_F_NEXT);
+-        /* indirect->desc[i].next */
+-        qvirtio_writew(d, qs, indirect->desc + (16 * i) + 14, i + 1);
++
++        /*
++         * If it's not the last element of the ring, set
++         * the chain (VRING_DESC_F_NEXT) flag and
++         * desc->next. Clear the last element - there's
++         * no guarantee that guest_alloc() will do it.
++         */
++        if (i != elem - 1) {
++            /* indirect->desc[i].flags */
++            qvirtio_writew(d, qs, indirect->desc + (16 * i) + 12,
++                           VRING_DESC_F_NEXT);
++
++            /* indirect->desc[i].next */
++            qvirtio_writew(d, qs, indirect->desc + (16 * i) + 14, i + 1);
++        } else {
++            qvirtio_writew(d, qs, indirect->desc + (16 * i) + 12, 0);
++            qvirtio_writew(d, qs, indirect->desc + (16 * i) + 14, 0);
++        }
+     }
+ 
+     return indirect;
 -- 
 2.43.0
 
