@@ -2,57 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1B5853613
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 17:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50676853614
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 17:33:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZvhl-0001td-Dr; Tue, 13 Feb 2024 11:32:21 -0500
+	id 1rZviG-0002FQ-7c; Tue, 13 Feb 2024 11:32:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rZvhi-0001sw-D0
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:18 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rZvhg-0005GK-3D
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:18 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZ6G76J7pz67LyQ;
- Wed, 14 Feb 2024 00:28:47 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id D5C82140B63;
- Wed, 14 Feb 2024 00:32:12 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
- 2024 16:32:12 +0000
-Date: Tue, 13 Feb 2024 16:32:11 +0000
-To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
- <dan.j.williams@intel.com>
-Subject: Re: [RFC PATCH 2/2] hw/cxl/type3: send a GMER while injecting poison
-Message-ID: <20240213163211.000063d5@Huawei.com>
-In-Reply-To: <20240209115417.724638-3-ruansy.fnst@fujitsu.com>
-References: <20240209115417.724638-1-ruansy.fnst@fujitsu.com>
- <20240209115417.724638-3-ruansy.fnst@fujitsu.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZvi4-0002Bf-VR
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:40 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZvi2-0005TV-N7
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:39 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33b66883de9so3189549f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 08:32:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707841957; x=1708446757; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=4cdNstmc8vSbFQqZ+QIlOSp9QrHWOJ1pctG8XOlTt1M=;
+ b=XKd5JiAas9JbLR7hgmU5K38mTTl4O7vg+SPAJLP5+ixB59m6vePYNdgT2Ha3Lb6jbg
+ 2FM6qkflw1FQVkW5euk88wl+8DAxOa2zcTION5l8YfQ4SLH2G0YMcmOA3fktBlsw+TTn
+ Yimj4YiSXw/Q0aj8fbW2mcTOn4kRx4UwQ2bgJLC9K5+AmIM/4mmELsmujoSs6ehKrspc
+ BlFmDvDKNJbugCy9H/bU4o0M33DQ6aS2CL9YyAsuVIMZbN/stsmKNYkYFEf0GKgufFFt
+ TdUcg2Hf2eJc+ZTXD7eGtBSW2RcP0OWxPHm1L18afhZ+QH2McFEApeEqn2P20uuNKgA2
+ ue3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707841957; x=1708446757;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4cdNstmc8vSbFQqZ+QIlOSp9QrHWOJ1pctG8XOlTt1M=;
+ b=th29XE25b3HrIWgXR4j87XwWmzTLv8DoluK6LRKfR2FuBDDiahbOF06jaj705LynK2
+ VGUt/qo+WF8Xs/JCCxrkVtNcgCmQ4f9pSvH3bIqWXg7ENSnBEpW+gOIHmNBdxH7Md9JM
+ r/R0kC/L2he1M3kP2t1jXk5jSLjPIVwsFyyB18lIFfoDNePuUIKZNZYebB6Icfi9h0w+
+ Z1uJvmTxuLroRPlWs0vbcRSxqYmL2Q9zUymszlNxDyDPuE18+GtOLOv2/anyrbHdWvwj
+ 3n/LeqQcFHyjE7I5BpSwbPF3/v1ytd9+NubuTV2a1k9wfNvW1B6owb4+4NLwheD04dL1
+ BINg==
+X-Gm-Message-State: AOJu0YzLzh3Esp5KS1mcjr4P1dJSqOu2GdWb0UK0Zy5fOuj9SA4Supyh
+ /YhDXmRfV/7LqKQTPHriAjttaorZegMTdIpQAQ9U4MhKlWcBr6pLzkpL1xylXzIKKmJCiiZxa0S
+ f
+X-Google-Smtp-Source: AGHT+IGzJ1/QEGjwPGtFmQiWlHGgZgdOsUAUZaF0Of4bbiYIKuhYm7Hf05nfF1uoz3qdlMxs1EW6RQ==
+X-Received: by 2002:adf:a3cb:0:b0:33b:4b08:65d6 with SMTP id
+ m11-20020adfa3cb000000b0033b4b0865d6mr6781637wrb.51.1707841956754; 
+ Tue, 13 Feb 2024 08:32:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWzagmSLT5WKPTB6NZDxzENFZwAKbZhhtt6LbglguXE8Kn/5aELoYFNOwDSQqhA1DtUUAdvAtAL57m5/n3llaMVD+EV/s6edaZmH00/48U7gTx2HXzF/k8t/iqjaOKqsMa4YPRO77U0VXG/7zdeaTZpIYRrEni2D/RReoNs3qYenISoKTHiv8rQjre80NAfYHHFDfPMMtU/xdn7W1c4rwR57MNdrRCIHSVaC/TMhAMadsi3TnxDrT6gJcfsasvPrtOI8+pqX7BKcwEHsO1UCKZsXuoIz05T1WsXjN8WF3xgiqLDhlTGLdP/Zn4jEwSRssYgjZ4=
+Received: from [192.168.69.100] ([176.176.128.243])
+ by smtp.gmail.com with ESMTPSA id
+ o16-20020a5d58d0000000b0033afe816977sm9887821wrf.66.2024.02.13.08.32.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Feb 2024 08:32:36 -0800 (PST)
+Message-ID: <2e230b9f-728c-4c25-b58a-a1a9f8dae62e@linaro.org>
+Date: Tue, 13 Feb 2024 17:32:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/11] target/mips: Remove I6500 CPU definition
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Laurent Vivier <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+References: <20240209090513.9401-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240209090513.9401-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,64 +96,26 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  9 Feb 2024 19:54:12 +0800
-Shiyang Ruan <ruansy.fnst@fujitsu.com> wrote:
-
-> Send a signal to OS to let it able to handle the poison range.
+On 9/2/24 10:05, Philippe Mathieu-Daudé wrote:
+> Alternative to:
+> https://lore.kernel.org/qemu-devel/20240209085347.8446-1-philmd@linaro.org/
+> If the I6500 can not be tested or its support is incomplete,
+> there is no point in wasting energy maintaining it.
 > 
-> TODO: This is an rough draft, will add more parameters for
-> qmp_cxl_inject_poison() to set to GMER.
+> Philippe Mathieu-Daudé (11):
+>    target/mips: Remove helpers accessing SAAR registers
+>    hw/misc/mips: Reduce itc_reconfigure() scope
+>    target/mips: Remove MIPSITUState::itu field
+>    target/mips: Remove CPUMIPSState::saarp field
+>    hw/misc/mips_itu: Remove MIPSITUState::cpu0 field
+>    hw/misc/mips_itu: Remove MIPSITUState::saar field
+>    target/mips: Remove CPUMIPSState::CP0_SAAR[2] field
+>    target/mips: Remove helpers accessing SAARI register
+>    target/mips: Remove CPUMIPSState::CP0_SAARI field
+>    target/mips: Remove the unused DisasContext::saar field
 
-I wonder if that's the best plan or if we should think about
-providing some default memory topology and perhaps a means
-to override it.   Adding more parameters to the injection
-commands works for qmp injection but not for mailbox based
-injection from the host for example.
-
-If we have a DPA to channel, rank, etc default mapping then
-we should be able to fill them all in based on just the DPA
-but allow them to be overridden from the existing GMER
-injection (so other test cases can be poked).
-
-One comment inline.
-
-Jonathan
-
-> 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-> ---
->  hw/mem/cxl_type3.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index d8fb63b1de..813f7f2175 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1116,6 +1116,11 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
->  
->      QLIST_INSERT_HEAD(&ct3d->poison_list, p, node);
->      ct3d->poison_list_cnt++;
-> +
-> +    /* Emit an GMER event, let os handle it */
-> +    qmp_cxl_inject_general_media_event(path, CXL_EVENT_LOG_FAILURE, 0, start,
-> +                                       0, 0, 4, false, 0, false, 0,
-> +                                       false, 0, NULL, errp);
-
-This results in some slightly messy duplication of effort. I'd like to see the
-parts we need factored out of the qmp_cxl_inject_general_media_event()
-so that we don't end up looking up the device twice and similar.
-Pull the code we need in both places out to
-cxl_inject_general_media_event(CXLType3 *ct3d, ...
-
-helper in a precursor patch and reuse that code here.
-
-  }
->  
->  /* For uncorrectable errors include support for multiple header recording */
-
+Patches 1-10 queued (without removing the I6500 CPU).
 
