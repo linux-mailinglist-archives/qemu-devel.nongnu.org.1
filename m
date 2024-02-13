@@ -2,78 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEDF85277F
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 03:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F97485278C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 03:45:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZiQX-0004if-8m; Mon, 12 Feb 2024 21:21:41 -0500
+	id 1rZimZ-0002Gi-Kt; Mon, 12 Feb 2024 21:44:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rZiQV-0004iM-ME
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 21:21:39 -0500
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rZimU-0002GL-BM; Mon, 12 Feb 2024 21:44:23 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rZiQU-0007yZ-6E
- for qemu-devel@nongnu.org; Mon, 12 Feb 2024 21:21:39 -0500
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6e0507eb60cso2461295b3a.3
- for <qemu-devel@nongnu.org>; Mon, 12 Feb 2024 18:21:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rZimP-0003IJ-Gq; Mon, 12 Feb 2024 21:44:22 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d71cb97937so36816785ad.3; 
+ Mon, 12 Feb 2024 18:44:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707790895; x=1708395695; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1707792254; x=1708397054; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BzYkBIWK10dkyqgOm0oclP6Z4Ek0OOCRcVEVAcYHx/A=;
- b=nOuQDXx5nNg+AdATNPPrBAswNVVoolbD1iiPJDFLoiycllK0DtHDV0RWZdFSK8XOkp
- s5HPWn18rSpKBUzG+4nYYQZcikFs/xwNRFSqL8YWmK63um0aqqKGqcnyCE/26ATShTw0
- Nwwgmy4UTsh5iJRuW+0NL5Cts3hArsd0zjiGrBG0/dk2EIdq25OxM7l7Dujde/+/sTYw
- iRBR0HCCpvFR42x4dChQRy+rO4W6FzM48NRQyFhY/iRb8nqaJmOFB2hXjrvWY9SOONIl
- yrMyq9B0l/jqg3dJcs0OwVZTMBVC+6FGCttzWnf6eDL7twfPYF45ptHp8v7qkhI4RNTX
- XyLg==
+ bh=G3F9Gd8U9ywd0P3vrvuvdWncBBtI5b2M3uWXWLuO70I=;
+ b=R0lLcRtpPJS/rlKG2R/BuMBxRLowzm+GcN56QB2afhUZD9xyUMczi5Pl3oKiiUg/pa
+ nReYVWYnrl8mIzEkWGEZyfleA7nb4xTxrfIG4A1Jg6Xwk0LnS0P6GdxfIndtOSbsCZE6
+ Ga8n5j5c/lQtEUOJUkv3lxAoRlzndeo82lkd65/GPtVWYpqVzcv7ScKHC9ujTww4J5FK
+ riuoU/1/01UFz1ZTJnEz53NRWe+GgO5zKHpOD90BelcCiL0RHNnun+20gFpbklNKroja
+ aFC5hV8zqWl6kZAwLEuG9fzukR+K3JOxKcWB8VOdaGZJfAsfxx0ceLHMGTKFNM7xuxvk
+ 2Q4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707790895; x=1708395695;
+ d=1e100.net; s=20230601; t=1707792254; x=1708397054;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=BzYkBIWK10dkyqgOm0oclP6Z4Ek0OOCRcVEVAcYHx/A=;
- b=rzX+qWgZTx0EjCHWAsnBqmwugQqH+uCLCgTx4Tk+NAb2OHF2HHitYsuI2W3VoyXxJF
- EO+x8w3HMoAqrN0WY57l1zsukEU39+k6muJhMy9iWSehZbmpp/uHmZJRAWXDma9zDOU4
- /ebhj1DnrCglG81iK2s6eRd1eQob8xb02gIwBbbVyjP1zZBLQkSFUefBJCUw4B4FEU0Y
- C3+qjEe3ZJx60pCFpO4hQ4zZlKRdoKD2KPeLutSNj+NNySVMoCUL5QUvJrtMm1FBWxPm
- OPVanN3AW1i9Dg8sB3arAiV4b6pvF9hpK1L7EQQJAm19Ewi/yJFQqFHl2UGG3BGnOfPW
- puBQ==
-X-Gm-Message-State: AOJu0YyE1ioL1IpuTFaJqg/asQ50AiFbQj2RVh+p5UdDJZoz9vq2JQcB
- QrEmLrNNw7NY6nhoNmyiGEU5Xa+MhOKOmfVukGSxXh0wPuZ7tHGt/Ix0HgDfcQbIEubX0U1RNRV
- Z
-X-Google-Smtp-Source: AGHT+IGmLu0X+kl8C/TeIx+qrbgLd6j3P+suwU7yXhDsfS6na7RcybVXgoXKM3iRke87F1+Z4ojJoA==
-X-Received: by 2002:a05:6a00:1398:b0:6e0:a3ff:2079 with SMTP id
- t24-20020a056a00139800b006e0a3ff2079mr12848914pfg.20.1707790894698; 
- Mon, 12 Feb 2024 18:21:34 -0800 (PST)
-Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
+ bh=G3F9Gd8U9ywd0P3vrvuvdWncBBtI5b2M3uWXWLuO70I=;
+ b=bcqk0XuGEPmVATfLxG5vb2/9C8j17vYJ8h2kbn3IWP4id3HZG81NTQCflxYsqIvZ04
+ oU2bmmn4fAV3qllnehBL/aKvgFyihm76rV4XTsoc4PSv3ykPiThnqToX0s+o4R+c3b81
+ SrfA6M9GQlmqI+B1IoRsOgSjSVk3OX1RDrlNUmyS8+OngvRoxH/mjgTePzOjALAIs+Ad
+ WO2ZsWuueROOaQd9au/kpZdJNhgOsRz4PAmkT1G4XWTgnWs0rbhEeleqqOje0N1xv9bK
+ TP+PU9GMcDlAXh5m3+63HohAVcdRY0lHJlaOM4KLgZJ6gdmOn4I37mAdF23i0tSGh60p
+ pb3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXTxKqbInNYrZVsXIVjutcK+K7eudcC6hUti4gCQv81NBqsBzzExLMf4zcf8ow4zv0Cyy143adIFSuMCvsFWggT2osWVNrAIVbSXKufBEICwplm0L9HVZymaDmyXg==
+X-Gm-Message-State: AOJu0YyTv1MvjdPCVsJLt64gykYsymCJ00RQqmAKOZpm783lp0voBwPE
+ oqD3RQ3fH/cURg1FPygOrfLDASaW4Nd0qFKkLZoyISh9t27QSqTn
+X-Google-Smtp-Source: AGHT+IH68HQ4kVAk5P1WyvaP1GVFTOjuR8zGLlxpcst8CCWf+ZfNS40sdMvSyNsFVR8xKy0DlbgFKQ==
+X-Received: by 2002:a17:902:cece:b0:1d9:a601:798b with SMTP id
+ d14-20020a170902cece00b001d9a601798bmr10981740plg.54.1707792254319; 
+ Mon, 12 Feb 2024 18:44:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXhiLch5oCS6eHDFoT1MYFElrxinCZwM9m37fgmKzmZ1nZy2VfJzixuTsVXfgdYxqp2BovrX9cX78U0MuZFZIVloZoUyzYW9Lx7W6tP949HNwUPGhY/yAkHxDSQ8TmFcBeU4Za1J2vTCCerN/BLqzcrgEaE8Sh2T2f722h9Rrzj/LaTqEoWT+JH0DzSVgyW/oHfrG8nVuBIXBtkIV77sMGTOsGuu0WrXLjKpppK6z5UBi9xEapAu5ZzVuyQQyOxPDs3H+MVokgUy9pLGK+QunFrGYK+TLOxLNKq69xUkjZ9B6/1fjiuys6FNif5QLrraI/waz2DPbSYCoKn//kSxGCYYz4BaDTQULa650YoNrawMCTYVTPX/+4AeAOcYY9jwcA0Skb4Re/kBBtG7LnGpi5jZkguBxYwbx1re9KNONATFnlJRKJeiOMGr9tcacwUp7x3PNu+
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- e26-20020a63745a000000b005dc26144d96sm1144354pgn.75.2024.02.12.18.21.33
+ h12-20020a170902f2cc00b001da0a698095sm22852plc.282.2024.02.12.18.44.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 Feb 2024 18:21:34 -0800 (PST)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH] tcg: Increase width of temp_subindex
-Date: Mon, 12 Feb 2024 16:21:32 -1000
-Message-Id: <20240213022132.116383-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Mon, 12 Feb 2024 18:44:13 -0800 (PST)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: hchkuo@avery-design.com.tw, kbusch@kernel.org, lukas@wunner.de,
+ Jonathan.Cameron@Huawei.com, its@irrelevant.dk, marcel.apfelbaum@gmail.com,
+ wilfred.mallawa@wdc.com, cbrowy@avery-design.com, mst@redhat.com,
+ qemu-devel@nongnu.org, jiewen.yao@intel.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
+ alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH v4 0/3] Initial support for SPDM Responders
+Date: Tue, 13 Feb 2024 12:44:00 +1000
+Message-ID: <20240213024403.1060188-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x631.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,38 +99,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need values 0-3 for TCG_TYPE_I128 on 32-bit hosts.
+The Security Protocol and Data Model (SPDM) Specification defines
+messages, data objects, and sequences for performing message exchanges
+over a variety of transport and physical media.
+ - https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
 
-Cc: qemu-stable@nongnu.org
-Fixes: 43eef72f4109 ("tcg: Add temp allocation for TCGv_i128")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2159
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
+SPDM currently supports PCIe DOE and MCTP transports, but it can be
+extended to support others in the future. This series adds
+support to QEMU to connect to an external SPDM instance.
 
-I feel certain that I made this change back when I introduced TCGv_i128.
-I imagine that something went wrong with a rebase and it got lost.
-Worse, we don't use temp_subindex often, and we usually handle i128
-this value correctly.  It took a quirk of register allocation ordering
-to make an invalid value in temp_subindex lead to a crash.
+SPDM support can be added to any QEMU device by exposing a
+TCP socket to a SPDM server. The server can then implement the SPDM
+decoding/encoding support, generally using libspdm [1].
 
----
- include/tcg/tcg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is similar to how the current TPM implementation works and means
+that the heavy lifting of setting up certificate chains, capabilities,
+measurements and complex crypto can be done outside QEMU by a well
+supported and tested library.
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index daf2a5bf9e..451f3fec41 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -412,7 +412,7 @@ typedef struct TCGTemp {
-     unsigned int mem_coherent:1;
-     unsigned int mem_allocated:1;
-     unsigned int temp_allocated:1;
--    unsigned int temp_subindex:1;
-+    unsigned int temp_subindex:2;
- 
-     int64_t val;
-     struct TCGTemp *mem_base;
+This series implements socket support and exposes SPDM for a NVMe device.
+
+1: https://github.com/DMTF/libspdm
+
+v4:
+ - Rebase
+v3:
+ - Spelling fixes
+ - Support for SPDM-Utils
+v2:
+ - Add cover letter
+ - A few code fixes based on comments
+ - Document SPDM-Utils
+ - A few tweaks and clarifications to the documentation
+
+Alistair Francis (1):
+  hw/pci: Add all Data Object Types defined in PCIe r6.0
+
+Huai-Cheng Kuo (1):
+  backends: Initial support for SPDM socket support
+
+Wilfred Mallawa (1):
+  hw/nvme: Add SPDM over DOE support
+
+ docs/specs/index.rst         |   1 +
+ docs/specs/spdm.rst          | 122 ++++++++++++++++++++
+ include/hw/pci/pci_device.h  |   5 +
+ include/hw/pci/pcie_doe.h    |   5 +
+ include/sysemu/spdm-socket.h |  44 +++++++
+ backends/spdm-socket.c       | 216 +++++++++++++++++++++++++++++++++++
+ hw/nvme/ctrl.c               |  53 +++++++++
+ backends/Kconfig             |   4 +
+ backends/meson.build         |   2 +
+ 9 files changed, 452 insertions(+)
+ create mode 100644 docs/specs/spdm.rst
+ create mode 100644 include/sysemu/spdm-socket.h
+ create mode 100644 backends/spdm-socket.c
+
 -- 
-2.34.1
+2.43.0
 
 
