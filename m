@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B19E853B85
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E10EB853B82
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:46:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyfp-0004nb-Ko; Tue, 13 Feb 2024 14:42:33 -0500
+	id 1rZyfn-0004TW-95; Tue, 13 Feb 2024 14:42:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfY-0003lo-Vb
+ id 1rZyfa-0003pT-Tg
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:18 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfU-0006LF-N9
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:13 -0500
+ id 1rZyfY-0006Ln-D4
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=SiPqZDoxN/9au4TtZYiE2hyFQvJj4ZHJhzc5lZsATWs=; b=eXPXS7sQMPFZJGLKn4eThDtCTN
- KKVkH5rCv9OHV9X5TTMeTwLFn4C03QI9yAlEPiCi9eKF9oUZZt1dv4/YdKGEGwoQBFAkWJ/FN4tWA
- ElPmHJv8bKiLsCBU2QVIPDl8wE+VZ8uKeb60NkeCNhGLB4297LwRfMlcDRc/z2jQ81bBfcacqgTXG
- N9Jy0Gf7+eO/Ux9jwb3T5JpaAPq8vPu8qJgVZWafNbwiAAw6jIIW8xa5vNu1Rb6dyTd2fQNpXJh4G
- RQqEFA8DBn4jgml6BKa/ZUC9bfn406cpwNCIjfxZg54Asw9YB4vd2rpev+6Ge4/SZNS2LR9I2pAZ7
- 70eBnp7Wl1QnsZZRIZKLsNvEweBynTyaJK5TzEoM+ioYuMxuXvJBLFGVsJaM9C1DZe1Lo3cTs7Sgg
- 9QVQ3s5JhZU3r5O0ScHFsZKq3NPU/OJprDXTjwnOVoI4schpj1Ykn3gGTQa22625D6Z8YmVSKQoxv
- oohC6+GPCXCpw5XL6ThWdi95FWW+njRNV4grHYCfPB/tr4n6E7T++8r8eQK64k+M0ueeBk3PNQzfM
- OFFzMdR73RAyHi5kLRYhD0YznxXVClS0JBppxSQKoBhLVfKeDIV3mQQ3VNdV/HA1jfOKZ2V2LbBNs
- 0y97J3AhMqnHvt57LpJM0hbwk4LyCYGf/z3wELZqM=;
+ bh=6Lwfrh1EvAiWa40uM3VENBzmpRMnletbaa8WGmra4kE=; b=VA0OfjvZ+i+opJQTovzFSdnGmk
+ SBzcYpCDPDvfAkyJOlh9u8C0+5ejIaPrcS/URc4LGu8NFxRD4IQHhbLGentQ9pj6k2FfQ4SfoKXMQ
+ 5ZwgoQEwCiNegtITfnCTbQNKO23Az80al/7+3i2zT3kZDz+dkMe7HDv0wkCJQ2wm0AyyPt02u5Chp
+ H9V0ROjBiqx8V9sP5lwVx2FxPI5lqSS2E4nAC+Zjyb2sBtnYoKM8Es6mwe39+3Um1dW37xJ3J/c11
+ 0q9tWsXmHZ4gry9CDt9ExTdCVsF6XHNaLm5Pb5S5yE95wVpTXcGOCYM0RkAxcNzrkbLmgNTOiZ6s5
+ S+OsU1ialXqXyXDY5tjdV4FuzDkbAJYUHpn5l67pK6wKk5t8RaMR6Fabz850iDFirXKAqfE1+c22I
+ ydw+e4vxc5cDiJCvcvCrPQGW+UnTrdGeNmxuZm16BxT/IxJlO7igxbKIXY0enb/CcWjJZ8elWiOqQ
+ XcLNkcR1snRaDTKX7HfGWn/2/W4GvQVxIa+8sHCbQFK7GSquZsrX31FR/9iVjiVvhwLJwn0bYJNw+
+ CUsHxGrbKTn/eFVO7CYq7UQejpNEUzUi/rjjlPUjxDE1oG5FCoimvijRE7j2uRIcCbZHGjmNXXD6i
+ 14/yQsyzuyFfqkpJVSLVzES1/IvGHaVy0dSMF+pOg=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyec-0008m4-G3; Tue, 13 Feb 2024 19:41:21 +0000
+ id 1rZyeg-0008m4-2e; Tue, 13 Feb 2024 19:41:25 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:41 +0000
-Message-Id: <20240213194052.1162753-18-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:42 +0000
+Message-Id: <20240213194052.1162753-19-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 17/88] esp.c: don't reset the TC and ESP_RSEQ state when
- executing a SCSI command
+Subject: [PULL 18/88] esp.c: don't clear RFLAGS register when DMA is complete
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,33 +77,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no need to manually reset these values as the ESP emulation now
-correctly handles them within its existing logic.
+The internal state of the ESP sequencer is not affected when raising an interrupt
+to indicate the end of a DMA transfer.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-18-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-19-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 3 ---
- 1 file changed, 3 deletions(-)
+ hw/scsi/esp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index f41b2421f9..a4a1f41a40 100644
+index a4a1f41a40..5b9c3f1e5e 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -319,10 +319,7 @@ static void do_command_phase(ESPState *s)
-     s->ti_size = datalen;
-     fifo8_reset(&s->cmdfifo);
-     if (datalen != 0) {
--        s->rregs[ESP_RSTAT] = STAT_TC;
--        s->rregs[ESP_RSEQ] = SEQ_CD;
-         s->ti_cmd = 0;
--        esp_set_tc(s, 0);
-         if (datalen > 0) {
-             /*
-              * Switch to DATA IN phase but wait until initial data xfer is
+@@ -546,7 +546,6 @@ static void write_response(ESPState *s)
+ static void esp_dma_done(ESPState *s)
+ {
+     s->rregs[ESP_RINTR] |= INTR_BS;
+-    s->rregs[ESP_RFLAGS] = 0;
+     esp_raise_irq(s);
+ }
+ 
 -- 
 2.39.2
 
