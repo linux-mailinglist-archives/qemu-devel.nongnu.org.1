@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1322C853B76
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D19853B8F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyfK-00032v-5R; Tue, 13 Feb 2024 14:42:02 -0500
+	id 1rZyfH-00032f-0c; Tue, 13 Feb 2024 14:41:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfI-00032h-ER
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:00 -0500
+ id 1rZyfE-00032B-Au
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:41:56 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyf4-0006IU-Az
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:00 -0500
+ id 1rZyf9-0006K5-Bv
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:41:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Je02mCt9XBjHhIXM7fupKVBJ602KX1m94ilxNmva87w=; b=pOuVa6oOtld+VfaUHapNCxb59z
- 2JQVw6NLMxvzM/j9zqsHcLGqNC1b6++Fb6PLSTMWm+tYWWnBHwkTlUgb8aUtc1KXLDmd/IC7pCJ0P
- 0DaIKLRjE7KAH7jPhry1qilDzmH5fPtt642IilANomknFk3y4eq9/yj2NVeZv1fuh5eIwe+trrqjW
- iivYJ3/WYZfKSt05vLQUP8ZRqykg3fdSRYUGFBZ7JOTo6F9fhM8fK21CN9ArOREgKgKM50T7ITJBp
- fFPpP/HRSqvMrzJqzWYmovv+im4tFg1fd+fMa20V9e/vcT9uH07BL2NiFSYl3s79cPOLy8vhgcPCV
- Dxd/W7sQV2trGsgacvgasRz3uNNdUtk6boGNQaIrZfuXcWYesDSRLYfL92PMeh5HC2627qEjcIgBY
- gZ3f701u89i7pzgDu94scvocp5z7AygVezstWI7xO56H3JOG/vR07SsVKJh5cWCiLJ1CQqiDHoI6A
- EgqHCczt2M4QYYaN0sLs8jOY01XQOchpowSJTNmvgmWi6ADZA649hfT3rtKsh7gHROyrXFiBKJ4Hk
- MPDzclocFN551/E4eWLfXwjTbKEuY7NQmG45ut/2f9B/rf3/+0fd4IyNSmJSzeNN3+gvr78dNGEjZ
- jny2oGichW4glAgFU9RpQGRb0SakWjYTdjrJelGhg=;
+ bh=EShdRQWC7vQ6K4PEVAzQ6/SigFV+JenqAVvUK74MbiI=; b=wo4mQMaNqJONY4tQwVvowgFKeF
+ J4huo0NjdrXm10UNUeGw+kGRcG+jatsrJTrygpxiHeIZWQ9Ffk+as8OF2oxmR7jwPWZwozDuDQdZM
+ 0uAW+2fb+B4yJD2c/XJ71DwkTd7dlm7A2W7P86y3rn4tyDZRSj6bQZk90b86HnFj9CD0TroLezd2K
+ SMFuybHSGGJA278gtUFhU39MQZQz7A/gmhNwr9QDBu9gI4u0qhM9fNBSi0373oNibLadZZ2yGTF6l
+ +xp53G0i0Nh5B4UiTLJ/3T9BjKQnuQUPoHY3aDQBsw3JZIu2tntRY7YdmlQbnc4BFIiTKUASislh1
+ 02UQAo42/BGEOdn8fg3P05uRasxr1nj7w6a4Cn5WhDbwHNi5R3tLGugfcAyp8P+CfzD6kVHTtYIdM
+ 7+y58WPuvvbi9dxv7zXDQPj/BUe8oIqAGEQy+uuZOvpSUuDoI4HXSFsGIggZ3wzeisWVZJdxFuHq6
+ gwLV4x9LQ21qRnMUp0/s8QzD0c4Ao31un4lyyqNrX3BdxE9Keg+k67uCgZZtCbzU+qTjDiBNwTPav
+ 7JpAVoIB4aC8ny2PI3gH1jUsravWCukbQiqcjAcfc0J+GOjcuahI3Iwjq6Z6W862yNHPaWpLgQZv3
+ eV5hsWsSyAXjDK1sMYl6eZy5whPKswpi8c8imey7I=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyeL-0008m4-JM; Tue, 13 Feb 2024 19:41:05 +0000
+ id 1rZyeP-0008m4-MV; Tue, 13 Feb 2024 19:41:09 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:36 +0000
-Message-Id: <20240213194052.1162753-13-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:37 +0000
+Message-Id: <20240213194052.1162753-14-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 12/88] esp.c: don't accumulate directly into cmdfifo
+Subject: [PULL 13/88] esp.c: decrement the TC during MESSAGE OUT and COMMAND
+ phases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,127 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead accumulate in the real FIFO as done in real hardware, and then transfer
-to cmdfifo when we're ready to process the MESSAGE OUT and COMMAND phase data.
+This is to ensure that STAT_TC is triggered during the right parts of the
+transfer when it is controlled exclusively by the TC.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-13-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-14-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 49 ++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 42 insertions(+), 7 deletions(-)
+ hw/scsi/esp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 6191c17f10..9e9bbe8431 100644
+index 9e9bbe8431..f08b816aba 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -199,11 +199,7 @@ static void esp_pdma_write(ESPState *s, uint8_t val)
-         return;
-     }
- 
--    if (s->do_cmd) {
--        esp_fifo_push(&s->cmdfifo, val);
--    } else {
--        esp_fifo_push(&s->fifo, val);
--    }
-+    esp_fifo_push(&s->fifo, val);
- 
-     dmalen--;
-     esp_set_tc(s, dmalen);
-@@ -358,6 +354,14 @@ static void do_cmd(ESPState *s)
- 
- static void satn_pdma_cb(ESPState *s)
- {
-+    uint8_t buf[ESP_FIFO_SZ];
-+    int n;
-+
-+    /* Copy FIFO into cmdfifo */
-+    n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+    n = MIN(fifo8_num_free(&s->cmdfifo), n);
-+    fifo8_push_all(&s->cmdfifo, buf, n);
-+
-     if (!esp_get_tc(s) && !fifo8_is_empty(&s->cmdfifo)) {
-         s->cmdfifo_cdb_offset = 1;
-         s->do_cmd = 0;
-@@ -395,6 +399,14 @@ static void handle_satn(ESPState *s)
- 
- static void s_without_satn_pdma_cb(ESPState *s)
- {
-+    uint8_t buf[ESP_FIFO_SZ];
-+    int n;
-+
-+    /* Copy FIFO into cmdfifo */
-+    n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+    n = MIN(fifo8_num_free(&s->cmdfifo), n);
-+    fifo8_push_all(&s->cmdfifo, buf, n);
-+
-     if (!esp_get_tc(s) && !fifo8_is_empty(&s->cmdfifo)) {
-         s->cmdfifo_cdb_offset = 0;
-         s->do_cmd = 0;
-@@ -432,6 +444,14 @@ static void handle_s_without_atn(ESPState *s)
- 
- static void satn_stop_pdma_cb(ESPState *s)
- {
-+    uint8_t buf[ESP_FIFO_SZ];
-+    int n;
-+
-+    /* Copy FIFO into cmdfifo */
-+    n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+    n = MIN(fifo8_num_free(&s->cmdfifo), n);
-+    fifo8_push_all(&s->cmdfifo, buf, n);
-+
-     if (!esp_get_tc(s) && !fifo8_is_empty(&s->cmdfifo)) {
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
-         s->do_cmd = 1;
-@@ -523,10 +543,16 @@ static void esp_dma_done(ESPState *s)
- static void do_dma_pdma_cb(ESPState *s)
- {
-     int to_device = ((s->rregs[ESP_RSTAT] & 7) == STAT_DO);
-+    uint8_t buf[ESP_CMDFIFO_SZ];
-     int len;
-     uint32_t n;
- 
-     if (s->do_cmd) {
-+        /* Copy FIFO into cmdfifo */
-+        n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+        n = MIN(fifo8_num_free(&s->cmdfifo), n);
-+        fifo8_push_all(&s->cmdfifo, buf, n);
-+
-         /* Ensure we have received complete command after SATN and stop */
-         if (esp_get_tc(s) || fifo8_is_empty(&s->cmdfifo)) {
-             return;
-@@ -754,10 +780,16 @@ static void esp_do_dma(ESPState *s)
- static void esp_do_nodma(ESPState *s)
- {
-     int to_device = ((s->rregs[ESP_RSTAT] & 7) == STAT_DO);
-+    uint8_t buf[ESP_FIFO_SZ];
-     uint32_t cmdlen;
--    int len;
-+    int len, n;
- 
-     if (s->do_cmd) {
-+        /* Copy FIFO into cmdfifo */
-+        n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
-+        n = MIN(fifo8_num_free(&s->cmdfifo), n);
-+        fifo8_push_all(&s->cmdfifo, buf, n);
-+
-         cmdlen = fifo8_num_used(&s->cmdfifo);
-         trace_esp_handle_ti_cmd(cmdlen);
-         s->ti_size = 0;
-@@ -1159,7 +1191,10 @@ void esp_reg_write(ESPState *s, uint32_t saddr, uint64_t val)
-         break;
-     case ESP_FIFO:
-         if (s->do_cmd) {
--            esp_fifo_push(&s->cmdfifo, val);
-+            if (!fifo8_is_full(&s->fifo)) {
-+                esp_fifo_push(&s->fifo, val);
-+                esp_fifo_push(&s->cmdfifo, fifo8_pop(&s->fifo));
-+            }
- 
-             /*
-              * If any unexpected message out/command phase data is
+@@ -259,6 +259,7 @@ static uint32_t get_cmd(ESPState *s, uint32_t maxlen)
+             s->dma_memory_read(s->dma_opaque, buf, dmalen);
+             dmalen = MIN(fifo8_num_free(&s->cmdfifo), dmalen);
+             fifo8_push_all(&s->cmdfifo, buf, dmalen);
++            esp_set_tc(s, esp_get_tc(s) - dmalen);
+         } else {
+             return 0;
+         }
+@@ -657,6 +658,7 @@ static void esp_do_dma(ESPState *s)
+             len = MIN(len, fifo8_num_free(&s->cmdfifo));
+             s->dma_memory_read(s->dma_opaque, buf, len);
+             fifo8_push_all(&s->cmdfifo, buf, len);
++            esp_set_tc(s, esp_get_tc(s) - len);
+         } else {
+             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
 -- 
 2.39.2
 
