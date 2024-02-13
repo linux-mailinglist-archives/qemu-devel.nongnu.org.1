@@ -2,85 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E5A853611
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 17:33:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1B5853613
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 17:33:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZvhd-0001s6-CF; Tue, 13 Feb 2024 11:32:13 -0500
+	id 1rZvhl-0001td-Dr; Tue, 13 Feb 2024 11:32:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rZvhZ-0001rV-BX
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:10 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rZvhX-0005Dp-HK
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:08 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d94323d547so40016365ad.3
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 08:32:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707841925; x=1708446725; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=gExtqSE0IX7pmHVcVUiR1sDsaiOGFEQlINdHMHbjOWo=;
- b=L1nkkh4vKoQ6mUq0uXKJc7gj4tR/9qBUsEKlUR89yaA8/ZEiGo17VH/mT00jwr429U
- P8PRJCBhVYq7+mJXVtErdmku9WF1RoBr9dQycfUZ059QWp0pxSZ9UNZBSrCDtk0Pkl1M
- 8RfxHlZxvAJMbTe7cZPADlShetWKd2Yat6xeKg4Nca0Sur+zxmKvQslRr+7ngb0ZhbhM
- lcadALYqFcbtuoRIXQc5ArrGH6Fisb37Gmuvx7mxF/zq1QDvc93oFfML+aT7LsqZSfl9
- jNfV3+WWFKcONqTplN2vQxLh2n8vKvu8E7y4TIyEMp8VynFyTib5vIW24RK815SIS0bb
- gheQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707841925; x=1708446725;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=gExtqSE0IX7pmHVcVUiR1sDsaiOGFEQlINdHMHbjOWo=;
- b=CdKiz3w9suWyeXJv593PdfNwZwMXGFcQiAihxedyWnBFmBhuXTEX8vVEx3tI4BHcWm
- AJd2JDTxmoabSMHjBIFTCV0AD8CDMP0r16JmHVonelo7DdZnxbul7HUmhmtM+jpv5TLh
- YN6LxJxhcoYzuFy2EpKuJa94k9cI0n2TkgOUI5yjnokCqLOWscFHesxb97iJbii+7/1J
- FzVkWah4zvsng+sky2z88y95WAH1ThtfcpVbuyg+6Z1SctB+OEdJwU/ICwuc5v+xHnXf
- CjKruE/Fn8/o6uucGbfgJ74/x5hbrmSUjwXWyH2xJ1jS5FVZjs5EM8OJEaXGjtbOpWj8
- PwqQ==
-X-Gm-Message-State: AOJu0YxIR6vTV3eZxWBFjGFzp5HxhvdRe+mmd+KNIHKteVamEugujjq8
- DqyAuQ2RDZpws34BilVSxAccRvb5QuFiP5RWbBIScnRb+a651a+5Wg31+UcuSiA=
-X-Google-Smtp-Source: AGHT+IHB63Blk+AATNFfIKmY+pWejI7S0LIQrnUY5YRVxyQpZ6kXG/NiVXxw44n4di9JEbRe6QZtrA==
-X-Received: by 2002:a17:903:2282:b0:1db:4288:f673 with SMTP id
- b2-20020a170903228200b001db4288f673mr29322plh.6.1707841925292; 
- Tue, 13 Feb 2024 08:32:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCUw/RP/2djEDNdQkPmKZPpKtv6SIqOC0WYvicS6CwmfLxZ3FQV0OrPH6nGyaQqMCJ5m/SGqJNFpO1Hlt308Bu530abJkPU=
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- jx4-20020a170903138400b001d741873e4bsm2288247plb.95.2024.02.13.08.32.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Feb 2024 08:32:04 -0800 (PST)
-Message-ID: <be91e350-20e4-4c60-908c-c19b0b663bc6@linaro.org>
-Date: Tue, 13 Feb 2024 06:32:03 -1000
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rZvhi-0001sw-D0
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:18 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rZvhg-0005GK-3D
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 11:32:18 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZ6G76J7pz67LyQ;
+ Wed, 14 Feb 2024 00:28:47 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id D5C82140B63;
+ Wed, 14 Feb 2024 00:32:12 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
+ 2024 16:32:12 +0000
+Date: Tue, 13 Feb 2024 16:32:11 +0000
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
+ <dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 2/2] hw/cxl/type3: send a GMER while injecting poison
+Message-ID: <20240213163211.000063d5@Huawei.com>
+In-Reply-To: <20240209115417.724638-3-ruansy.fnst@fujitsu.com>
+References: <20240209115417.724638-1-ruansy.fnst@fujitsu.com>
+ <20240209115417.724638-3-ruansy.fnst@fujitsu.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] hw/ide/ahci: Rename AHCI PCI function as 'pdev'
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20240213081201.78951-1-philmd@linaro.org>
- <20240213081201.78951-4-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240213081201.78951-4-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,18 +65,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/12/24 22:11, Philippe Mathieu-Daudé wrote:
-> We want to access AHCIPCIState::ahci field. In order to keep
-> the code simple (avoiding &ahci->ahci), rename the current
-> 'ahci' variable as 'pdev'
+On Fri,  9 Feb 2024 19:54:12 +0800
+Shiyang Ruan <ruansy.fnst@fujitsu.com> wrote:
+
+> Send a signal to OS to let it able to handle the poison range.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> TODO: This is an rough draft, will add more parameters for
+> qmp_cxl_inject_poison() to set to GMER.
+
+I wonder if that's the best plan or if we should think about
+providing some default memory topology and perhaps a means
+to override it.   Adding more parameters to the injection
+commands works for qmp injection but not for mailbox based
+injection from the host for example.
+
+If we have a DPA to channel, rank, etc default mapping then
+we should be able to fill them all in based on just the DPA
+but allow them to be overridden from the existing GMER
+injection (so other test cases can be poked).
+
+One comment inline.
+
+Jonathan
+
+> 
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 > ---
->   hw/i386/pc_q35.c | 15 ++++++++-------
->   hw/mips/boston.c | 10 +++++-----
->   2 files changed, 13 insertions(+), 12 deletions(-)
+>  hw/mem/cxl_type3.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index d8fb63b1de..813f7f2175 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1116,6 +1116,11 @@ void qmp_cxl_inject_poison(const char *path, uint64_t start, uint64_t length,
+>  
+>      QLIST_INSERT_HEAD(&ct3d->poison_list, p, node);
+>      ct3d->poison_list_cnt++;
+> +
+> +    /* Emit an GMER event, let os handle it */
+> +    qmp_cxl_inject_general_media_event(path, CXL_EVENT_LOG_FAILURE, 0, start,
+> +                                       0, 0, 4, false, 0, false, 0,
+> +                                       false, 0, NULL, errp);
+
+This results in some slightly messy duplication of effort. I'd like to see the
+parts we need factored out of the qmp_cxl_inject_general_media_event()
+so that we don't end up looking up the device twice and similar.
+Pull the code we need in both places out to
+cxl_inject_general_media_event(CXLType3 *ct3d, ...
+
+helper in a precursor patch and reuse that code here.
+
+  }
+>  
+>  /* For uncorrectable errors include support for multiple header recording */
 
 
