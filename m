@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62045852C94
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 10:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5F5852CC1
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 10:45:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZpIW-0001zk-E6; Tue, 13 Feb 2024 04:41:52 -0500
+	id 1rZpKu-00023F-TK; Tue, 13 Feb 2024 04:44:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rZpIJ-0001xN-Ne
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 04:41:40 -0500
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rZpII-0000JZ-3A
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 04:41:39 -0500
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-51147d0abd1so4661564e87.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 01:41:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707817294; x=1708422094; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9D4k6QS4DbxEf/czoo6ZOLuGzDbZtd2vzfrrW34BdNw=;
- b=HQ2GL0xmS6dpzvNG1zKMXH05NUJyj9M587S0cZqwwnS3bYWaSDCd0Yx8yqhFXTreDE
- PFMCosJBsUjZ+ZCKJUoCOWJrac3jHz4UId6jutSz8OJS+MHlaplPgS5MCkgysw/m+PvB
- 5V9a5+Ps8QgmPNHc0e4ljzcfNNmlaMUhh/cGULomRXJHx641dX4+PH1ToLeXmy2516pf
- NTLCPvWY9HhvzHAs9Cx+N9pk7XwCTedTQON2trXqNSZuWQUwkwI0nwayPAfMvI1mqega
- 1Yc4IrGIJRxZMehYGdti5oI2JcDBVCWPOsq/7TVYalZ1hA2cAJazK9ZoA6cyfkaE4Ei3
- BvyA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZpKh-0001s0-2E
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 04:44:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZpKf-0000k6-48
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 04:44:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707817444;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=9kHVkDwBtC5IG302WkC9sPitZi9ffNJvND+yCp6Ty80=;
+ b=cvCHlIEgpGDhFB+g5CPvrB3C7v9CzrUix7kCSL4Poy9UQB4SUoKmMNjrbFsP3kvU199GMV
+ 9gxvmqp0E53FDMcsVLUTXT18ZqoQjwvK6v51kyONr9FZr5KRaX90n00XP4APam6dFefh+x
+ 1Moja8t6b0RODBbYOi5Hc+oXsHZNjB0=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-k6_2pkoHO_KEQs6uRZJMag-1; Tue, 13 Feb 2024 04:44:02 -0500
+X-MC-Unique: k6_2pkoHO_KEQs6uRZJMag-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-50e91f9d422so2928993e87.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 01:44:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707817294; x=1708422094;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9D4k6QS4DbxEf/czoo6ZOLuGzDbZtd2vzfrrW34BdNw=;
- b=JKILGcEE5gNEArgXfXB2eWfQxA0aOddHUrifDdbV8caDkpwkSxPN94BTUMCg1Rz+3e
- 3REHMLoG5rAmFr/TT7JDIXJ6b1rHqFPCkJDcm9I5r7VRLaisnrJfnEViEde3mnWW7y+0
- FxsmAyLRuG6uhdesH8bme3Qhc6/SxYBflT6N2US5cpj+sWEvQU6oAEo6i03VW0DzsSG9
- CGzr0/L8njWkms2faz+ymAYubFPKRdiFsn/1XJFncotTg/JK0MKJR0qiFhf3ySfKvr7a
- SEwFcoQDdG+y9T4kmfCNnh7HO+VmRl9vsLWlTU0Y3YIUZ4fymVgTuP5CuFBOGl9GVk7f
- n21w==
-X-Gm-Message-State: AOJu0Yw2d5gAZ/EAVpBQ2a0O0pq8LODZP1ffm7lsJYNZNrXLDqRtQus/
- +vBbvSyXdu/u7GG2+7FccKRkc9QdDP7NcvvlICntKS+eStzumqV3aQz38szzN3x+RVBVbvulOSF
- H
-X-Google-Smtp-Source: AGHT+IGmztangyt9STYxskX8baMOTFKn/hsd2AhJhwa6hbruA7Q2KmtYNQmBxTPrHh3LRsiDYkj2uw==
-X-Received: by 2002:ac2:4288:0:b0:510:323d:6402 with SMTP id
- m8-20020ac24288000000b00510323d6402mr5717195lfh.45.1707817294222; 
- Tue, 13 Feb 2024 01:41:34 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707817441; x=1708422241;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9kHVkDwBtC5IG302WkC9sPitZi9ffNJvND+yCp6Ty80=;
+ b=rviyup9MQifmyH6G0o5Z1C41nC9+GOCSpwMIvEaDVRUf30HO6mrfVtiRPNVEZWfdX8
+ fKYjXXWzgzCWA7Tg97gLHcopJvf947gbUpoDFc44Xox4M7Od86cR67q5wTY0/VIFI4fL
+ MANr5KpfhEfc3Y29+LeiYzQi0VwJYUfQc6HhDZZ0S2DvDwOms50WTYsm1fZSRGws8Clf
+ w+nlFju3JmS2019M8G0EaCsUeq9QaDjEPFdR6vPqn07VCKoSagdRVX16qJIpWIbt/CAo
+ RG/p9mtbKb3e0USGozkSMmTEqRSBHHs/63w1PLhL53My2/QZ+u+yMKXXfS1ux3moNC4J
+ wIdg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVfFrIXxKlxXokUE35s03grQlHknVsb6DsagIwUeZbRDNEM3CxNFaKCK52jurF+VdXOulH4H+0vl3FQ8WVFg7e/uuhrYoFUxkF02DKYmtBk7OUloSiPoW+1rVzlKaNlkkU4RbbA4Nb3RRNtmtp/uNiFDsuVJxPNVPtOUS3S0+Em9yNDHGGTsKCNuxAIHomMRR1Rh2tJ1TgtHj/pBAYO5AZzFFXzJX2lSdanPKNvieAmb4RflXVFvjq457WkFEb3vvNZw3GIOgz6VFVJW7LohBAv+22rsEAGPEh52vbQY7r851D0cF/wO5fLUPY2EOmnof7uk2vY3V01wkp2SToZAatld3+XDw==
-Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- cc19-20020a5d5c13000000b0033b728190c1sm8550261wrb.79.2024.02.13.01.41.31
+ AJvYcCXwxBRyzKjhEBwBWSKcbkquamQXGR3WVWR/EJ62LZgg1DA14I1gj9UL6IDnMpVT7IFzF+nUU9qRjzZ5nsRvRefe7aHndlI=
+X-Gm-Message-State: AOJu0Yw52udiU6vrqVJ39UfMIL+fDV3U4Sd3Gu2wtP4tZ+7vIrd8ZuQK
+ VBlFinP/xunQwnyp+eychM8oiZzqZWetMV/ycuLTxKVGjxV546ryVqBwVkWjCy2P04EN92rCdXZ
+ nApQffx+hbVr80CGXB65EzkGlnxPnPz2m7vrMDhcwKt7qVPcPWgx2
+X-Received: by 2002:ac2:410a:0:b0:511:5494:dd53 with SMTP id
+ b10-20020ac2410a000000b005115494dd53mr6032344lfi.19.1707817441405; 
+ Tue, 13 Feb 2024 01:44:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENnVxBeyRI13BAT8jU9chn94+J4HbBs5af/7Md9fZVlFBTAqO3UXqunc4WmPa17LqiBn12MA==
+X-Received: by 2002:ac2:410a:0:b0:511:5494:dd53 with SMTP id
+ b10-20020ac2410a000000b005115494dd53mr6032333lfi.19.1707817441035; 
+ Tue, 13 Feb 2024 01:44:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWMRUtjXopPbZ4JDJ2c4QUq79feUFwhGcnRFmyLQ+wqdlaNyU4MBwp38kSHtdoEqAQ1INt8w07GYv7kNUkAJyA0SIh8ngPZJW7shPUkxluZ0A9zVaFPopb7iQrrtHUZbDZRQXKzvcSRlNB0LWHYpbFIk7KEZYRBHWnb70jpGoihnqp4GAVILkvXZ/oq1fxl93yEXXZktc58oqXO8MbJD8NFFkZZQ728CoTWqBLvS/NcJ0pcDUxLIQ3sp5M=
+Received: from redhat.com ([2.52.146.238]) by smtp.gmail.com with ESMTPSA id
+ i10-20020a056512318a00b005118bbf458fsm833779lfe.143.2024.02.13.01.43.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Feb 2024 01:41:34 -0800 (PST)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 18/18] MAINTAINERS: Add myself as reviewer for TCG Plugins
-Date: Tue, 13 Feb 2024 13:40:08 +0400
-Message-ID: <20240213094009.150349-19-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213094009.150349-1-pierrick.bouvier@linaro.org>
-References: <20240213094009.150349-1-pierrick.bouvier@linaro.org>
+ Tue, 13 Feb 2024 01:44:00 -0800 (PST)
+Date: Tue, 13 Feb 2024 04:43:55 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ jean-philippe@linaro.org, alex.williamson@redhat.com,
+ clg@redhat.com, peter.maydell@linaro.org
+Subject: Re: [PATCH v2] virtio-iommu: Use qemu_real_host_page_mask as default
+ page_size_mask
+Message-ID: <20240213044312-mutt-send-email-mst@kernel.org>
+References: <20240117132039.332273-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240117132039.332273-1-eric.auger@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.774,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,26 +102,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, Jan 17, 2024 at 02:20:39PM +0100, Eric Auger wrote:
+> We used to set default page_size_mask to qemu_target_page_mask() but
+> with VFIO assignment it makes more sense to use the actual host page mask
+> instead.
+> 
+> So from now on qemu_real_host_page_mask() will be used as a default.
+> To be able to migrate older code, we increase the vmstat version_id
+> to 3 and if an older incoming v2 stream is detected we set the previous
+> default value.
+> 
+> The new default is well adapted to configs where host and guest have
+> the same page size. This allows to fix hotplugging VFIO devices on a
+> 64kB guest and a 64kB host. This test case has been failing before
+> and even crashing qemu with hw_error("vfio: DMA mapping failed,
+> unable to continue") in VFIO common). Indeed the hot-attached VFIO
+> device would call memory_region_iommu_set_page_size_mask with 64kB
+> mask whereas after the granule was frozen to 4kB on machine init done.
+> Now this works. However the new default will prevent 4kB guest on
+> 64kB host because the granule will be set to 64kB which would be
+> larger than the guest page size. In that situation, the virtio-iommu
+> driver fails on viommu_domain_finalise() with
+> "granule 0x10000 larger than system page size 0x1000".
+> 
+> The current limitation of global granule in the virtio-iommu
+> should be removed and turned into per domain granule. But
+> until we get this upgraded, this new default is probably
+> better because I don't think anyone is currently interested in
+> running a 4kB page size guest with virtio-iommu on a 64kB host.
+> However supporting 64kB guest on 64kB host with virtio-iommu and
+> VFIO looks a more important feature.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dfaca8323e9..80528d3dc63 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3676,6 +3676,7 @@ TCG Plugins
- M: Alex Bennée <alex.bennee@linaro.org>
- R: Alexandre Iooss <erdnaxe@crans.org>
- R: Mahmoud Mandour <ma.mandourr@gmail.com>
-+R: Pierrick Bouvier <pierrick.bouvier@linaro.org>
- S: Maintained
- F: docs/devel/tcg-plugins.rst
- F: plugins/
--- 
-2.43.0
+What about migration compatibility? In particular, cross-version one?
+Don't we need compat machinery for this?
+
+> ---
+> 
+> v1 -> v2:
+> - fixed 2 typos in the commit msg and added Jean's R-b and T-b
+> ---
+>  hw/virtio/virtio-iommu.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+> index 8a4bd933c6..ec2ba11d1d 100644
+> --- a/hw/virtio/virtio-iommu.c
+> +++ b/hw/virtio/virtio-iommu.c
+> @@ -1313,7 +1313,7 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+>       * in vfio realize
+>       */
+>      s->config.bypass = s->boot_bypass;
+> -    s->config.page_size_mask = qemu_target_page_mask();
+> +    s->config.page_size_mask = qemu_real_host_page_mask();
+>      s->config.input_range.end = UINT64_MAX;
+>      s->config.domain_range.end = UINT32_MAX;
+>      s->config.probe_size = VIOMMU_PROBE_SIZE;
+> @@ -1491,13 +1491,16 @@ static int iommu_post_load(void *opaque, int version_id)
+>       * still correct.
+>       */
+>      virtio_iommu_switch_address_space_all(s);
+> +    if (version_id <= 2) {
+> +        s->config.page_size_mask = qemu_target_page_mask();
+> +    }
+>      return 0;
+>  }
+>  
+>  static const VMStateDescription vmstate_virtio_iommu_device = {
+>      .name = "virtio-iommu-device",
+>      .minimum_version_id = 2,
+> -    .version_id = 2,
+> +    .version_id = 3,
+>      .post_load = iommu_post_load,
+>      .fields = (const VMStateField[]) {
+>          VMSTATE_GTREE_DIRECT_KEY_V(domains, VirtIOIOMMU, 2,
+> -- 
+> 2.41.0
 
 
