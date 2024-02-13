@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FA4853150
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 14:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D00853147
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 14:06:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZsV0-0005NM-4F; Tue, 13 Feb 2024 08:06:58 -0500
+	id 1rZsTx-0002sV-By; Tue, 13 Feb 2024 08:05:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsSv-0002A9-Vp
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:04:53 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsTC-0002OJ-Qi
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:05:15 -0500
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsSt-0006AI-Af
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:04:49 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-411d01eb13cso1266395e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 05:04:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsT1-0006Av-UJ
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:04:57 -0500
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-410ee8ed659so12533055e9.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 05:04:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707829485; x=1708434285; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707829492; x=1708434292; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9EBc8uaZJKAVMJ0YtC4KyzGDaHMLrSoGEeS2FgFf5YI=;
- b=fH8206m8iLuD4hO9dwpbnjx6tMSfQ1i2HD7xCRbERlqPrEfnLEiRLKyCmDmLVlJ5sO
- yghOEgpYrW/7jTgWj0tvN1mXnTfrjQYyy/nCF21rGwkg+gN7/Jr50wRx2QbyKAxG6B7B
- 1qEr4YmP/36CAWCGmNbMtwGwS4RsTN3I2PJzMfP54zVTTRZG2+w6gs+Eir74yLEzkxrW
- t9T9T5qJ7Y7iRzVdP35bQzKwHvqgOUjWB5WGBmdamnp5QdNg4zTjRsNOtfGNdnjqWXUg
- wgqGIhpyOp+wgMFnkfXq+MGJmNTSc8Os6RYfCozzRtPXca0+uNlez2QI6opMz+c+Djhr
- +iaQ==
+ bh=z6tfNfgtwQJ+hKgvVWTuaRcXckGlcPh4xersidzU6i4=;
+ b=YkSPYmbCPqhT1HusDd2pSu8APVMTkTnUMh7kL1qmXsSE7PJ/HRWHFdAThgAc5HVVG8
+ L4cOdrfZzfu55saBA5U/b057SJZh4UOgDQwRhtVQJfYsU2tKWOxH66AogRjkGJdDO48a
+ ZxEr7MzKWJtRHGaOJNAbZ2JGdl+SDs4Pwyo7Q4xH7QLP9AXFSUWKQW7kBLi1x3np5xtb
+ vw3JHLcTE/QYR5pZkD350ZpGfln4cNL6ltv2LUr7b1bBOo2z5xGI/fw56xcyafmQ53d6
+ TTlV1t9lKaq1qPrYtLjO4L5h7fyYNQx/gkGV8BscRF1RxhoPyzoerz0QgOZXQPLEI1cP
+ i+HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707829485; x=1708434285;
+ d=1e100.net; s=20230601; t=1707829492; x=1708434292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9EBc8uaZJKAVMJ0YtC4KyzGDaHMLrSoGEeS2FgFf5YI=;
- b=s9zxtFWTQLzYeMDC3c/2sj1JzMbHHpmSvpfgSEVdejd2fr1JX5w+kF/D7rYp+JvE5j
- U+6aHR5z2UdWDkk6vutllBw6LBmd7JpoEH5GeiJSP16dCzQEo/kvdLZZ6UO8gZ9aBqIL
- NxqTF1VWq7Fh01cLpCov/wmLYHikWX8eldpsr/Dfu49i0OkGFsG2VcwIrg34xNEaL833
- WBn1p2i8mOFknZPKgh6XKuDL5qMWDGTPU1rf2JATLB9dNQJU9iqm6RsLubtGaW7Qe65w
- +kW9ihducYUaDpMueWp8Ix9ElpFUe8Z1CFPepGXW52ulenP7Z+57GE1qFD8hXoGU7lbM
- 57zg==
-X-Gm-Message-State: AOJu0YwNLWY+7ttS8G40FBoKwQSzTgwx2d5eFLxQd676uy0nvHh5FjFM
- 3alWzKMcBxHD+zprCfI3kqDRRd1wOVZFG/Zv3jEKn/AQEpUfD24QTsLG7qGfXcLG9FURRXovFhh
- z
-X-Google-Smtp-Source: AGHT+IFwOiew8TRbbPp78GfrHSHdtr9Mh3ZPSn5mQE0cluQ/J/TOByYxJbzb/cI9R4v3iIqS74XQmQ==
-X-Received: by 2002:a05:600c:4f11:b0:40f:ddbb:73ae with SMTP id
- l17-20020a05600c4f1100b0040fddbb73aemr8528462wmq.27.1707829485359; 
- Tue, 13 Feb 2024 05:04:45 -0800 (PST)
+ bh=z6tfNfgtwQJ+hKgvVWTuaRcXckGlcPh4xersidzU6i4=;
+ b=w4mr0ISSTlpmeBxprOqsbH3JKkL45oVAGRgaWor05FJccqirbMgtYr6mqll4wQvg5q
+ fTF+8j9pYNYrDXg9z3DxnGxHJKr9RsC38tLpH6c7sJLwX/YH7nTsfhkOgP1hhOQgROal
+ F9lIBfumJ5bhiqgXEceXuQiQVEztZ3Rp/6zvG3VoKzdsgoPWASIZgttZeIyA3DTFlUe6
+ +w9tHEFBuEgOUSnK6gJqGDwQhUlVpllXn8Ucp2lxBetSsFtChWhZIQ8V8cWSWczg5G8d
+ 7+jetNQbO60UrAugsp1q91Eu6f3YyIq9pCogBaWQ3Eg1toHcjJvyoaKfgbpKR3rv/A7B
+ w3AA==
+X-Gm-Message-State: AOJu0YyG0HRmbRs6vOTXVfk9wG4kvaNjF0OG01NV0E5otxeNgJu2Hbu+
+ W80KRWslzrgZclM9+t7J/GbU0EhIjBB6UWNwPtude5sp7WbyiASWK7npmkoY4omDfWuna2HNnXI
+ B
+X-Google-Smtp-Source: AGHT+IFbQKAVyIAEu2+IqNRu9PgGtLRbpeavFjec7Z1Rel8r6GygMaq55wVrLbJP3XloYHWUMCkUxA==
+X-Received: by 2002:a5d:4983:0:b0:33b:4197:75dc with SMTP id
+ r3-20020a5d4983000000b0033b419775dcmr7441418wrq.14.1707829492124; 
+ Tue, 13 Feb 2024 05:04:52 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXB4Lp6f8xGZoVGZ979xI98mQcdBsW0FVpGL9G6CGGimOTiIwitn5/ww/VWJ1cVnS3DOTx/ienY2QTK7OSFPIjrmgb8KxQobJS8ZbVHDkTXH0CUOIBTwMt1OxK9X6iMyqpaRAfnAEQpYPE25lBdZduB33hotDMfGjeVrSsfDrBE/5nfRrqY7umc72rVSGliocZIdlcjcS3dR/B9pw7yZCSnPhBTvKcBN7vRQKbt7va1J5knyc4k5EykAcrkR37vd880b4M/y9VTz4Zzr6cCjKWsaH/XHdi+t21HFIu0ZVcj9F4rrWPGlIOX107TjXL9O7C/jUaT46FcNTgNswa3ByjoB8y/Svtskn6j9OWKHlM9NvkP4OYJz9WET8poz51UuldTJVFaVi0XiPP5LMTA6lnPw2JPPeUwmjIKMG40cTaO1rNDova/5lwBMgfXKR2S2vdmeFJl2A==
+ AJvYcCXIy9NiWKWjD7X6rhHNGIGXfQxWWDNj25dx6yV4jHNbJvWHLjJojgRgYlprKIwELly0prPoQL3RkBP+fqsCdfdjK3Q1nDGueh5P/NNRakLV1Qfd4DQG3SzS1DtPbFkMU93l9ylXa2nMc5h7XYQS6mXdp74YCVTafjasKmsvtPeffy6bau70UyDukGX8YIBAivjYU0ZCdd6iW2ZXJom0nWzWu4+V9AfvjmCI47B+FSmYtO5ZxwKc6OOY/LnVCW4rXKrXe2O2l8qkzE9bBTCI38UxOS7hMrWT3gpFhoHs8ORQrfphD5TXHo9AqsfREaXoixGkk3rBf2X/qSShXgrYjVBpzU8aFBzb1CjVQQfnsT2pVPQgnqt+jbUUxHzOY/6FgSda0m4G4KyAIiHcFsGQAy53Jr9CyJFyDVmXU5I=
 Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- z15-20020adff1cf000000b0033b44a349e1sm9507995wro.38.2024.02.13.05.04.43
+ x8-20020a5d6508000000b0033b1b01e4fcsm9553815wru.96.2024.02.13.05.04.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 05:04:45 -0800 (PST)
+ Tue, 13 Feb 2024 05:04:51 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Bernhard Beschow <shentey@gmail.com>,
@@ -66,22 +66,21 @@ Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Bernhard Beschow <shentey@gmail.com>,
  BALATON Zoltan <balaton@eik.bme.hu>, "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
  Fabien Chouteau <chouteau@adacore.com>,
  Frederic Konrad <konrad.frederic@yahoo.fr>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v4 09/12] hw/sparc/leon3: Realize GRLIB IRQ controller before
- accessing it
-Date: Tue, 13 Feb 2024 14:03:38 +0100
-Message-ID: <20240213130341.1793-10-philmd@linaro.org>
+Subject: [PATCH v4 10/12] hw/sparc/leon3: Pass DeviceState opaque argument to
+ leon3_set_pil_in()
+Date: Tue, 13 Feb 2024 14:03:39 +0100
+Message-ID: <20240213130341.1793-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240213130341.1793-1-philmd@linaro.org>
 References: <20240213130341.1793-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,32 +103,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We should not wire IRQs on unrealized device.
+By passing a DeviceState context to a QDev IRQ handler,
+we can simplify and use qdev_init_gpio_in_named() instead
+of qdev_init_gpio_in_named_with_opaque().
 
+Suggested-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/sparc/leon3.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/sparc/leon3.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 2dfb742566..0df5fc949d 100644
+index 0df5fc949d..d2be900988 100644
 --- a/hw/sparc/leon3.c
 +++ b/hw/sparc/leon3.c
-@@ -263,10 +263,10 @@ static void leon3_generic_hw_init(MachineState *machine)
+@@ -175,9 +175,10 @@ static void leon3_irq_ack(CPUSPARCState *env, int intno)
+  */
+ static void leon3_set_pil_in(void *opaque, int n, int level)
+ {
+-    CPUSPARCState *env = opaque;
++    DeviceState *cpu = opaque;
++    CPUState *cs = CPU(cpu);
++    CPUSPARCState *env = cpu_env(cs);
+     uint32_t pil_in = level;
+-    CPUState *cs;
+ 
+     assert(env != NULL);
+ 
+@@ -193,7 +194,6 @@ static void leon3_set_pil_in(void *opaque, int n, int level)
+ 
+                 env->interrupt_index = TT_EXTINT | i;
+                 if (old_interrupt != env->interrupt_index) {
+-                    cs = env_cpu(env);
+                     trace_leon3_set_irq(i);
+                     cpu_interrupt(cs, CPU_INTERRUPT_HARD);
+                 }
+@@ -201,7 +201,6 @@ static void leon3_set_pil_in(void *opaque, int n, int level)
+             }
+         }
+     } else if (!env->pil_in && (env->interrupt_index & ~15) == TT_EXTINT) {
+-        cs = env_cpu(env);
+         trace_leon3_reset_irq(env->interrupt_index & 15);
+         env->interrupt_index = 0;
+         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
+@@ -261,8 +260,7 @@ static void leon3_generic_hw_init(MachineState *machine)
+ 
+     /* Allocate IRQ manager */
      irqmpdev = qdev_new(TYPE_GRLIB_IRQMP);
-     qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_set_pil_in,
-                                         env, "pil", 1);
--    qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", 0,
--                                qdev_get_gpio_in_named(DEVICE(cpu), "pil", 0));
+-    qdev_init_gpio_in_named_with_opaque(DEVICE(cpu), leon3_set_pil_in,
+-                                        env, "pil", 1);
++    qdev_init_gpio_in_named(DEVICE(cpu), leon3_set_pil_in, "pil", 1);
      sysbus_realize_and_unref(SYS_BUS_DEVICE(irqmpdev), &error_fatal);
      sysbus_mmio_map(SYS_BUS_DEVICE(irqmpdev), 0, LEON3_IRQMP_OFFSET);
-+    qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", 0,
-+                                qdev_get_gpio_in_named(DEVICE(cpu), "pil", 0));
-     env->irq_manager = irqmpdev;
-     env->qemu_irq_ack = leon3_irq_manager;
-     grlib_apb_pnp_add_entry(apb_pnp, LEON3_IRQMP_OFFSET, 0xFFF,
+     qdev_connect_gpio_out_named(irqmpdev, "grlib-irq", 0,
 -- 
 2.41.0
 
