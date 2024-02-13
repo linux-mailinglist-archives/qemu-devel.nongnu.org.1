@@ -2,84 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D4C85353D
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8125E853549
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:53:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZv5S-0001mP-Uh; Tue, 13 Feb 2024 10:52:46 -0500
+	id 1rZv6J-000445-LR; Tue, 13 Feb 2024 10:53:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5P-0001jS-Vu
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:44 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv5O-0005qQ-Ee
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:43 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33b86bc4bbaso1017152f8f.0
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:52:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707839561; x=1708444361; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+WO+U/cdRoubxdgTYbsdCfwDQVIWpi3TD0ntR/eAxO0=;
- b=TgQv+149C3sg1m9l4Xc1SGrOORe/CLY65Wo+7bhPpBkjHZtlFgwRYAIwz8fP3E8DpG
- s3qfhNf7/ar1kOHaKguVFJtQhXb94oAXLJ5CNiBHZBv0t64uMvVctpmN5JSofOmg5jqW
- VDObuReY5v17W9Pnhg66JFNgUd33bWfGtyl1YtAVNZaARjcZc7eFYUWRH56fgkt9Pnr+
- VXpOVwAORwUf6iclBXzBQ4KYiHLCFud6KFkSO4ILAXbcvYEtnmjkqIuHn5RCbPZa1rOl
- a6Bm8srRKwEdUadEu8wFXbPnuqO2sq/OTZ/UoDYlBJN9qbgFMdKnulsFXsu1r14HCDmu
- YbRg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZv6C-0003kL-Ad
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:53:33 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rZv6A-0005tY-AI
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:53:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707839609;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jn9Jk80ss7NgoLWEAVLXh3FQCpQPNAFN3Zri98i6GSg=;
+ b=Scpojm3KaCawUoFGaAXhMYkOy1KInlHPp2yeBKlYmXA/K0ou1LaYzs9sV3ISRxXNUJfvry
+ /Amwj9dIEO9deEhBkEdJCXPT6edoBuJAlzqh/w3jwH994fVGM580smvl0OCo8O1/gue4DL
+ 44lKb8RVS/1vqSfgJtbyyScrY5g0T5I=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-hloKNXpcNxayh2cTPOUtAA-1; Tue, 13 Feb 2024 10:53:27 -0500
+X-MC-Unique: hloKNXpcNxayh2cTPOUtAA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33cd8db37bcso397822f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:53:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707839561; x=1708444361;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+WO+U/cdRoubxdgTYbsdCfwDQVIWpi3TD0ntR/eAxO0=;
- b=SCclwq7NnL3BF9jTzUtN2AIrZrPHZRq9vO+XUOpqWBhi+tDCIc6ZtuHcC3N04L3vbB
- fT+l5oNvVi/LhHe7fwftZAMgWqfRDE5BEhCudChy40sWfYjplJ35OT0jagwghOda/64a
- 90j89V7fnPobCVRoh7WzrpzeZYt6iwdPs496gz530R4gEPb/SchWtmxgsbktiyczZEjM
- fpDjP66bkoMr9040Xoa7wqyJ0dJWrjpVDZsk7hQFGIajXisRfykEGazA0HokQ7P+pG/L
- UHoOMIB1L78cf4qQu1stcJlz8kYfQKVg3+iMLdRBjOrb07eup7FmAIELEL5nJoMwcKkX
- JWxg==
-X-Gm-Message-State: AOJu0Yx+yLk6XwJMiN6vz+JU+7vJ5yoH8xQI4DS9QN/twiLyEs7RDzL6
- 58PQiykWT5CRWLydgCp00My0LuIZvxaLezqSgguxCgfyj1ZWdT5W6wwYPYMYr/PggSFGgNnXNB4
- Q
-X-Google-Smtp-Source: AGHT+IEuWorAgD8u1OfBZevz/3icHy8dxdFKo4kx0f13SQP/2Prg0RO10getVMxMsof4ut3WS1UvmQ==
-X-Received: by 2002:a5d:4041:0:b0:33c:e2ff:6c85 with SMTP id
- w1-20020a5d4041000000b0033ce2ff6c85mr404562wrp.49.1707839561003; 
- Tue, 13 Feb 2024 07:52:41 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707839607; x=1708444407;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jn9Jk80ss7NgoLWEAVLXh3FQCpQPNAFN3Zri98i6GSg=;
+ b=tqid3Lx33pFLnakx1YN7rlZz6csY5XTfRcTS/P/tUw6v5OD8cGbIz5EkkqGPiVRMI+
+ Nm05BAd+8cAsgmKD8vrIQLyuKzzf4PcjX0/Fvt82xGEn2m9uH766zbAie0TZRq2Z348f
+ 3SrzszGX6iiR7IN7OoNN9Kx87JeSgZlbkTg3mlP+xbpue+wu7Mfa5YbLw9cKLFTG+8iw
+ HmTFRl5VbKYPeT14LPijKjlHET34wjx/gDjhux1qpe7a0yKyCrZUqqeqUrUHHMKFZXXH
+ Ow+ybh7UMqwSv/GJ1tEnknQhP/LDrnajScbQqXL9M1ldnXhYqCApwVAlTi9jyV1JeDrU
+ LIog==
+X-Gm-Message-State: AOJu0Yx1XJ+Vk2nhALov0uQqvefygj0bXA29Cb0Ol9WrAqL/BUIwbr0F
+ hu4lGfbkWvEbjkU61QADvJl2ztyLFT49xg9DfVHUjO7PctsZPOkZw+GpG7OvGaRJ/l5cVR5qA1G
+ t+zm5KzMAFaltE19B5oAkM9CML1I4spRtiNeSZeY427HYeWEjI1C1
+X-Received: by 2002:adf:b351:0:b0:33c:e310:8e3e with SMTP id
+ k17-20020adfb351000000b0033ce3108e3emr479048wrd.10.1707839606802; 
+ Tue, 13 Feb 2024 07:53:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEEP1ECIp/66q502SVLSNKHFAIvEZi9ezNYOJ3fghul3RliX87auO4arSC2C80ioocnMnuUlQ==
+X-Received: by 2002:adf:b351:0:b0:33c:e310:8e3e with SMTP id
+ k17-20020adfb351000000b0033ce3108e3emr479036wrd.10.1707839606456; 
+ Tue, 13 Feb 2024 07:53:26 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWuhi63JoJf7Hfb60531BHbj9k6yJtyJsKRjX8qXWSp/rOSmT/+PHCgezmXIenmTz+Jt0OZIZ+GxKZOF0aPmt1AMrvdyebU1wKovZMHvuXlbIzuFTsZQXU1dDrtew3Yv6zN3c7oeVphpBR1Z8FP+BT3Rg==
-Received: from m1x-phil.lan ([176.176.128.243])
- by smtp.gmail.com with ESMTPSA id
- i14-20020a5d558e000000b0033929310ae4sm9873011wrv.73.2024.02.13.07.52.39
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 07:52:40 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/4] hw/arm/stellaris: Add missing QOM 'SoC' parent
-Date: Tue, 13 Feb 2024 16:52:14 +0100
-Message-ID: <20240213155214.13619-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240213155214.13619-1-philmd@linaro.org>
-References: <20240213155214.13619-1-philmd@linaro.org>
+ AJvYcCX9USCSZYLuKF5kyH0h1fsYpVo24YXkZfo93zKoQlP6Td+zEv/yx/SGpLPygxnJ9hXY4kICHwgRSe3iSoryxXMp3T2rlbht6pUYKGgBu9bS9fFzElTl0zCRdg==
+Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
+ r17-20020adfe691000000b0033aeb0afa8fsm9910442wrm.39.2024.02.13.07.53.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Feb 2024 07:53:24 -0800 (PST)
+Date: Tue, 13 Feb 2024 10:53:22 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Srujana Challa <schalla@marvell.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Vamsi Krishna Attunuru <vattunuru@marvell.com>,
+ Jerin Jacob <jerinj@marvell.com>
+Subject: Re: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci queue mem
+ multiplier
+Message-ID: <20240213105249-mutt-send-email-mst@kernel.org>
+References: <20240212075233.1507612-1-schalla@marvell.com>
+ <20240213054513-mutt-send-email-mst@kernel.org>
+ <DS0PR18MB5368A9931C4B4E8E8E866066A04F2@DS0PR18MB5368.namprd18.prod.outlook.com>
+ <20240213070100-mutt-send-email-mst@kernel.org>
+ <DS0PR18MB5368152CEB40AAD449E71ECCA04F2@DS0PR18MB5368.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DS0PR18MB5368152CEB40AAD449E71ECCA04F2@DS0PR18MB5368.namprd18.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,89 +103,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QDev objects created with qdev_new() need to manually add
-their parent relationship with object_property_add_child().
+On Tue, Feb 13, 2024 at 12:37:36PM +0000, Srujana Challa wrote:
+> > Subject: Re: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci queue mem
+> > multiplier
+> > 
+> > On Tue, Feb 13, 2024 at 11:50:34AM +0000, Srujana Challa wrote:
+> > > > Subject: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci
+> > > > queue mem multiplier
+> > > >
+> > > > External Email
+> > > >
+> > > > --------------------------------------------------------------------
+> > > > -- On Mon, Feb 12, 2024 at 01:22:33PM +0530, Srujana Challa wrote:
+> > > > > Currently, virtio_pci_queue_mem_mult function returns 4K when
+> > > > > VIRTIO_PCI_FLAG_PAGE_PER_VQ is set. But this is not correct when
+> > > > > host has page size as 64K.
+> > > > > This patch fixes the same.
+> > > > >
+> > > > > Signed-off-by: Srujana Challa <schalla@marvell.com>
+> > > >
+> > > > You can't tweak guest visible values like this without compat
+> > > > machinery. It's also going to consume a ton more phys memory - can this
+> > break any configs?
+> > > > Why is this a problem? Just with vdpa?
+> > >
+> > > We are observing the issue with vdpa when host has page size of 64K.
+> > > We haven't verified any other backends. I think, any backend that uses
+> > > below API would fail if host has page size other than 4K right?
+> > > And also as per VIRTIO_PCI_FLAG_PAGE_PER_VQ, it should be equal to
+> > > page_size right?
+> > >
+> > > static int virtio_pci_set_host_notifier_mr(DeviceState *d, int n,
+> > >                                            MemoryRegion *mr, bool
+> > > assign) {
+> > >     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
+> > >     int offset;
+> > >
+> > >     if (n >= VIRTIO_QUEUE_MAX || !virtio_pci_modern(proxy) ||
+> > >         virtio_pci_queue_mem_mult(proxy) != memory_region_size(mr)) {
+> > >         return -1;
+> > >     }
+> > 
+> > Yes but not everyone uses that right? Plain virtio in software with no tricks
+> > doesn't care?
+> Yes,  any other better ways to address this issue.?
 
-Since we don't model the SoC, just use a QOM container.
+Add a property that vdpa can set?
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/arm/stellaris.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index d9884286b3..a2f998bf9e 100644
---- a/hw/arm/stellaris.c
-+++ b/hw/arm/stellaris.c
-@@ -1031,6 +1031,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-      * 400fe000 system control
-      */
- 
-+    Object *soc_container;
-     DeviceState *gpio_dev[7], *nvic;
-     qemu_irq gpio_in[7][8];
-     qemu_irq gpio_out[7][8];
-@@ -1052,6 +1053,9 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-     flash_size = (((board->dc0 & 0xffff) + 1) << 1) * 1024;
-     sram_size = ((board->dc0 >> 18) + 1) * 1024;
- 
-+    soc_container = object_new("container");
-+    object_property_add_child(OBJECT(ms), "soc", soc_container);
-+
-     /* Flash programming is done via the SCU, so pretend it is ROM.  */
-     memory_region_init_rom(flash, NULL, "stellaris.flash", flash_size,
-                            &error_fatal);
-@@ -1066,6 +1070,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-      * need its sysclk output.
-      */
-     ssys_dev = qdev_new(TYPE_STELLARIS_SYS);
-+    object_property_add_child(soc_container, "sys", OBJECT(ssys_dev));
- 
-     /*
-      * Most devices come preprogrammed with a MAC address in the user data.
-@@ -1092,6 +1097,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(ssys_dev), &error_fatal);
- 
-     nvic = qdev_new(TYPE_ARMV7M);
-+    object_property_add_child(soc_container, "v7m", OBJECT(nvic));
-     qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
-     qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
-     qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
-@@ -1125,6 +1131,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
- 
-             dev = qdev_new(TYPE_STELLARIS_GPTM);
-             sbd = SYS_BUS_DEVICE(dev);
-+            object_property_add_child(soc_container, "gptm[*]", OBJECT(dev));
-             qdev_connect_clock_in(dev, "clk",
-                                   qdev_get_clock_out(ssys_dev, "SYSCLK"));
-             sysbus_realize_and_unref(sbd, &error_fatal);
-@@ -1138,7 +1145,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
- 
-     if (board->dc1 & (1 << 3)) { /* watchdog present */
-         dev = qdev_new(TYPE_LUMINARY_WATCHDOG);
--
-+        object_property_add_child(soc_container, "wdg", OBJECT(dev));
-         qdev_connect_clock_in(dev, "WDOGCLK",
-                               qdev_get_clock_out(ssys_dev, "SYSCLK"));
- 
-@@ -1178,6 +1185,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-             SysBusDevice *sbd;
- 
-             dev = qdev_new("pl011_luminary");
-+            object_property_add_child(soc_container, "uart[*]", OBJECT(dev));
-             sbd = SYS_BUS_DEVICE(dev);
-             qdev_prop_set_chr(dev, "chardev", serial_hd(i));
-             sysbus_realize_and_unref(sbd, &error_fatal);
-@@ -1298,6 +1306,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-         DeviceState *enet;
- 
-         enet = qdev_new("stellaris_enet");
-+        object_property_add_child(soc_container, "enet", OBJECT(enet));
-         if (nd) {
-             qdev_set_nic_properties(enet, nd);
-         } else {
--- 
-2.41.0
+> > 
+> > 
+> > > >
+> > > > > ---
+> > > > >  hw/virtio/virtio-pci.c | 4 +---
+> > > > >  1 file changed, 1 insertion(+), 3 deletions(-)
+> > > > >
+> > > > > diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c index
+> > > > > e433879542..028df99991 100644
+> > > > > --- a/hw/virtio/virtio-pci.c
+> > > > > +++ b/hw/virtio/virtio-pci.c
+> > > > > @@ -316,12 +316,10 @@ static bool
+> > > > virtio_pci_ioeventfd_enabled(DeviceState *d)
+> > > > >      return (proxy->flags & VIRTIO_PCI_FLAG_USE_IOEVENTFD) != 0;
+> > > > > }
+> > > > >
+> > > > > -#define QEMU_VIRTIO_PCI_QUEUE_MEM_MULT 0x1000
+> > > > > -
+> > > > >  static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy
+> > > > > *proxy)  {
+> > > > >      return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
+> > > > > -        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
+> > > > > +        qemu_real_host_page_size()  : 4;
+> > > > >  }
+> > > > >
+> > > > >  static int virtio_pci_ioeventfd_assign(DeviceState *d,
+> > > > > EventNotifier *notifier,
+> > > > > --
+> > > > > 2.25.1
 
 
