@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3368852A99
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDC0852A9A
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:13:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZntk-0000PF-FH; Tue, 13 Feb 2024 03:12:12 -0500
+	id 1rZntp-0000QJ-3Z; Tue, 13 Feb 2024 03:12:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZnth-0000O5-QI
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:12:09 -0500
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZntn-0000Pc-3O
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:12:15 -0500
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZntf-0000hg-20
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:12:09 -0500
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-410c804e933so15073135e9.0
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 00:12:06 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZntk-0000ij-O6
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 03:12:14 -0500
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-411c863c1c6so659165e9.0
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 00:12:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707811925; x=1708416725; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SNdTU2HlcU5s/z0+DB1v8IvSjqtCtnO33Hovm2ZRDRI=;
- b=jrTJd1y0UofU/Cyckn8d6gfeJ9WI3AyZ4531Cyi/cREb/kIvzdv5n5XqYyHx99HBKP
- IW3tKJP0Gg5VEmuDFJf6+m8Vefils3FJZppYWGzg4PCpYEKagIt8WOUxYYolaemBKK+0
- 8E4bLvTHRIws9wR088RXD1cosH/LypSnChcuQLYESmfe1vUCYMCUCH/reMrxbi6YL/0g
- 3RrHQWvV0QZZGBO5njgsn2OLFpRxNevjAkabC7dBJhhBPyw+MvJ/j6qucqfvw2uGGmx3
- ZI7wMwEMQGzdWYbDULkv0JzwaLV4JzpPZOef/yZo8mxrnQJ7dQhP4AqkbDstg3D1AGfM
- 4ojw==
+ d=linaro.org; s=google; t=1707811931; x=1708416731; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=24s0na+x6T/s2HoEAp3AWZgaRuEgOsYG8hssre/glwc=;
+ b=Q/u3Zh66GkrQFROPvonglXEhBYDpcWS0IvRW+qbtXdAPCwuSIkPn5WZto8DHo5AYV9
+ Dr00HH0zHcKp0k600R4w6GHF6z9oDcgU3mlzsh5fOGmdt+GV0esqQIfHYV1pYQsr2nfk
+ kbrmaUrXiltKxbTHjwYwLC60UD10C6t34m1g97nBwtnGbD6EuI7iwzBRhvKzARa4MHYJ
+ k5RIU7/5YugBxrgJSZzS1iZkocEzuAYXtvcEU0fR2jXHG0+gZEgjo1RUYKd/SqsmDBgn
+ ywN/X/NQKXVqaPMcGwyNbwdxFoCTBCwXMdeusv9IMhnDNBqx4uH78aduxCfDsFrO62Hd
+ L26A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707811925; x=1708416725;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SNdTU2HlcU5s/z0+DB1v8IvSjqtCtnO33Hovm2ZRDRI=;
- b=PMp6xmEt0civXq+Fsc/eYCCyIeeGwLOjpphZ11NPSjzeHCn0IkycBSx/v7ucS7k+UG
- 0RHPGYWrY+gBhDa6fWjpPPwGqxHPfD9BafRVLrPKjZZm/e1PD3xj5t0Al3MslxJ+s0qY
- h/XruzWb5MEzEo64ULKgjUiZcxgXVu9Wk88I/GX+y+X/XtT/dyliOAJwi1VBvZLxBocw
- pRdZLWRCZHG8gjerVC6n5xT6caJrGcl8NhiKRE34kybiJK/BbkX+yHHlVk3zkztDZMg1
- Zj5sPUfKZoD5paL4ZP9/2Y9Ju9H9Vlt06QvnMGUjay4MdWNBHVVoqZTR2pLI2x8JAhNa
- AmbA==
-X-Gm-Message-State: AOJu0Yxgpoi4slbsTVfaU4uCJ7A8Frd5QteFuXXtZ1W6ttFCsD/B/Jzv
- B5mZ0oq/m+HAw2aTPnolhDxN10VMbxYdU1oWAgOnXs7d/Q9D8A0/6mJmYnwn7FTCKvtYbq6e8Iz
- o
-X-Google-Smtp-Source: AGHT+IErYvGS/TOlD26uNe6u+vDsFpKpcoqX7Szq0/AlPxktXD6cFutM/M4S/Btgzy7NEELn7Wi2ug==
-X-Received: by 2002:a05:600c:35d6:b0:410:bb99:af83 with SMTP id
- r22-20020a05600c35d600b00410bb99af83mr4869569wmq.23.1707811925007; 
- Tue, 13 Feb 2024 00:12:05 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707811931; x=1708416731;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=24s0na+x6T/s2HoEAp3AWZgaRuEgOsYG8hssre/glwc=;
+ b=wBZMhLwrdue+ZT2SxxkhGf/TRGaWnN1gC9+4lXq1cxUT56GEz0hSXY+fOPNRjpQMEA
+ TSejgldJx3ViJEsva+XqswPYl/kKCmJOImhDjCvYQjzQk0gN93pJo6TK7tq46PydAMlM
+ xMqcMbs+iC4s5lfafQY6uhzPYCyl0F5D+DfneQg6QrSacITc8m6N1/7NFuCh9WsTjCoV
+ +H2sfg05W8fNcD9UzoDTFBsUFW+5BaqfsB1hly3KSv4se5GTX7NwsGRDQlJssi0xMZYe
+ O6Pa0c+yzVt1VcYGFqxBeW2XQqad7dmsZsKvJabWGQQNA9l2ATB2ZUmFWXtD9McoxqWl
+ oxVg==
+X-Gm-Message-State: AOJu0YxTkxVhYCrGqzImeOP42JjgG7FwVgBd+5yxR/mzgtyQRnAKZgAg
+ S12c01e+AnHH+ZDl7uiYr0sBKJ9zosDy2xSRMbRZMdzXQ0ndpUHnDGYzAbi5j6fypNl0OqFH3oZ
+ p
+X-Google-Smtp-Source: AGHT+IEYzWg6goeMSFg3G4W+8HP25eFJpy6VVrt+3OqREf188gRN28/pSbTclfmjQ2DM2P78yq1yog==
+X-Received: by 2002:a05:600c:5204:b0:410:6d23:dd6e with SMTP id
+ fb4-20020a05600c520400b004106d23dd6emr7631551wmb.13.1707811931188; 
+ Tue, 13 Feb 2024 00:12:11 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVjyWtWroj3K6+6Zu0pzKH2TyHoGYRVKhqorsEmjbCZW7clzgCibkXPWOTS8EmzF0xQNv4sgJBWbnBDHB+OAEqIEOS5enI6IZsO/KNpC/HY2NVlFTwiIU/lupgySWWVcEcvOnmJ7ynG28tlHzLJ+F40R9jhBSH1y5UauBEr6BwDXXyZauc2p/iueLMWCD+QCiuc3SZFiNlPXZUGkY3JnPrvyk+E2P75Qxuazzkx7qRdrZFTShMb2BFFhUEt6xmOqjdyTPyZZrbqGbQ+QzEvwPLtrLsWiCo=
+ AJvYcCVZr/ZZeRsWJDXNqVUnG1h8mN8q7pav7jiHUq5Sbzq6SN7ZE6G5TekGAv4tT8asPRzo6QMZkXT1B+5Yg+UDWov94084c8aEZCDqqR67jWd3trdEhurssUi+a4RIDfyr8UpSzffOh35dPcDEk7DoEXTPYxtorIDqWvQPmqALWIgAW8aV4DyqUk9MijO6iMGX6huWbQC4tq7LaGDEdId1Vi5FkdVagchaOiPiDV4BW7SIpo1QQVj2gUS5+afBkiWmyCNsJinyQwvZiwHAaxcXimVavj3ApMg=
 Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- jz15-20020a05600c580f00b004101f27737asm10808681wmb.29.2024.02.13.00.12.03
+ fc9-20020a05600c524900b00410727c315fsm10857739wmb.16.2024.02.13.00.12.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 00:12:04 -0800 (PST)
+ Tue, 13 Feb 2024 00:12:10 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -64,15 +65,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/9] hw/ide/ahci: Housekeeping
-Date: Tue, 13 Feb 2024 09:11:51 +0100
-Message-ID: <20240213081201.78951-1-philmd@linaro.org>
+Subject: [PATCH 1/9] hw/i386/q35: Use DEVICE() cast macro with PCIDevice object
+Date: Tue, 13 Feb 2024 09:11:52 +0100
+Message-ID: <20240213081201.78951-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240213081201.78951-1-philmd@linaro.org>
+References: <20240213081201.78951-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,39 +98,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Split 'ahci.h' as sysbus / pci
-- Inline ahci_get_num_ports()
-- Directly use AHCIState::ports instead of SysbusAHCIState::num_ports
+QDev API provides the DEVICE() macro to access the
+'qdev' parent field of the PCIDevice structure.
 
-Philippe Mathieu-Daudé (9):
-  hw/i386/q35: Use DEVICE() cast macro with PCIDevice object
-  hw/ide/ahci: Expose AHCIPCIState structure
-  hw/ide/ahci: Rename AHCI PCI function as 'pdev'
-  hw/ide/ahci: Inline ahci_get_num_ports()
-  hw/ide/ahci: Pass AHCI context to ahci_ide_create_devs()
-  hw/ide/ahci: Convert AHCIState::ports to unsigned
-  hw/ide/ahci: Do not pass 'ports' argument to ahci_realize()
-  hw/ide/ahci: Remove SysbusAHCIState::num_ports field
-  hw/ide/ahci: Move SysBus definitions to 'ahci-sysbus.h'
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/pc_q35.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- hw/ide/ahci_internal.h         | 10 +--------
- include/hw/arm/allwinner-a10.h |  2 +-
- include/hw/arm/allwinner-r40.h |  2 +-
- include/hw/arm/xlnx-zynqmp.h   |  2 +-
- include/hw/ide/ahci-pci.h      | 22 ++++++++++++++++++++
- include/hw/ide/ahci-sysbus.h   | 35 +++++++++++++++++++++++++++++++
- include/hw/ide/ahci.h          | 38 +++-------------------------------
- hw/arm/highbank.c              |  2 +-
- hw/arm/sbsa-ref.c              |  1 +
- hw/i386/pc_q35.c               | 19 ++++++++++-------
- hw/ide/ahci-allwinner.c        |  3 +--
- hw/ide/ahci.c                  | 29 +++++++++-----------------
- hw/ide/ich.c                   |  4 +++-
- hw/mips/boston.c               | 14 +++++++------
- 14 files changed, 99 insertions(+), 84 deletions(-)
- create mode 100644 include/hw/ide/ahci-pci.h
- create mode 100644 include/hw/ide/ahci-sysbus.h
-
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 7ca3f465e0..33a4413708 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -309,8 +309,8 @@ static void pc_q35_init(MachineState *machine)
+                                                PCI_DEVFN(ICH9_SATA1_DEV,
+                                                          ICH9_SATA1_FUNC),
+                                                "ich9-ahci");
+-        idebus[0] = qdev_get_child_bus(&ahci->qdev, "ide.0");
+-        idebus[1] = qdev_get_child_bus(&ahci->qdev, "ide.1");
++        idebus[0] = qdev_get_child_bus(DEVICE(ahci), "ide.0");
++        idebus[1] = qdev_get_child_bus(DEVICE(ahci), "ide.1");
+         g_assert(MAX_SATA_PORTS == ahci_get_num_ports(ahci));
+         ide_drive_get(hd, ahci_get_num_ports(ahci));
+         ahci_ide_create_devs(ahci, hd);
 -- 
 2.41.0
 
