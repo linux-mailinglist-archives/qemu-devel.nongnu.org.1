@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBC8853C0A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1719853C0F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:12:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyxt-0001Jy-5u; Tue, 13 Feb 2024 15:01:13 -0500
+	id 1rZz0N-00043P-2B; Tue, 13 Feb 2024 15:03:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyxq-00019b-M3
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:10 -0500
+ id 1rZyyW-0002Hq-C1
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:53 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyxl-0001rZ-Ij
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:09 -0500
+ id 1rZyyR-0001uz-IC
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=xIQhiDMF5ShO7draXOu9AcwBlKFxzqVjZOPlxwEsOao=; b=FG8bFFnfmjsMgc1yi6EDYWgWrk
- OUfT18FFbj27BcVbNZIMAtAYwbt1DUdXPAQZfmRUkyzYKWel6qbdvtlMNXrr3Ja6PMZuR8vG+GWIr
- o01f2yS2J/zAz3D0ZWTNiuz7IT/TZ2pJZITI34DqWBZtbsfql/ke1DYfYYrV7mkLyDgQX1nUFNyQe
- ob4tpxfcq0ZpQa0NI39eseJ4DRAV/rhj/FPot0a62qX2fcZVn8uG16z2twYENsOX8CvbnqSYwPFnJ
- 7RKXOAzSbI0FcLkK99S6vjid4N2sbe3GC86J9PBUXVlv6z3MrvKC6t3mC2uuUCn6T/PaB50zC3mBR
- Kb0nMFzk9of5hYJ8Y0PP5ODCIBf2MsBMicAcG6lqQxyy32fW9Gl2zrOVUN9cZAjRU7qHH+arMqkaK
- 8s2V/aUs8O99yougEf/OGFpNytVuOPwOC56bpCZZQOkxRPaWjf6vRnr6vIfN6hotflu2F/Ru+0lcZ
- rGbNIFJNhGVLDpZJsLU4yMewjuWJ50HL26WgXGNDmnpyXs/2WqGo9UZwFyy2PphJLjYjE2cBHtDeJ
- h6BnMRJIZGOzrMJjVn+NDNd8/P0GHUEe4BGmQI/tL+ECNZ1/uLz5+7fiKyRTUeOYCi/FNwpOgynTB
- nWL2CvA4lZ94f7D0CB41e0pnZrP1f5B8Skr+OpEtY=;
+ bh=u/8TH5HgQOszsQHe2cvReXCj23ynFx2AMdVoG5FQJ3c=; b=uX+0cBmw3HPNs219Ee6KosNZ0L
+ UXa0fHd415Fg1w18V3qCznwZp2ylQiUuSYw83y5QP4LNSfJOCdomUw1f+kmFtiHiJqJxQlOh5e58Q
+ HBi+mCisdoBb0hn7crp1lME8DosAhE+15c/US71kdv18imvE7Hu1fpUfB+G5MfnER85pilbF08i69
+ 8KTdZC1euH2TKo92zNcQ2Atumw6ZVYZlacu9SLg1TkNdmP/lKmsUIaHVs44H5mlxy7gIdk+Pbd5mA
+ eKUtrF1QWqQbUuf+9QNR3vBHYq2Tg/q64PPIoi/vWlSutLcoubFb5rYzQJOQxQqcOXGp9ajlcd8WK
+ 23Dl837qvPrYlylrcCkRdwhgxP3gSszYAYEDmQ1NiVL16uHElH0+7AGy5msirrZr9Oor1TD0mkQ/d
+ o0t/FmL4OcpJMITSZPG8yrZ6/mgUQARv6h27aZpDKpQVLweBIKuhjOAYLRSvC01t0AdaR3zriSkXo
+ jdHG35g0hlLr3QlwuJK72OXhadY9WbJ4wT+AQh3KaOQ3iYbUqcAAwKZ+IEYEK8BwPs2VkubZVPWTi
+ pLf/XB65rqMDGjlqCVoGwVGTeTqrY1nhJq3cndVPPdny53aEYtoZGYiFC3qbplaLHBLRnitzHfI2e
+ Et0Hl8+tuUtdCTW6v2q1o/Kr2Xjk1CAbGcRS9+Qyg=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyhS-0008m4-Qn; Tue, 13 Feb 2024 19:44:18 +0000
+ id 1rZyhW-0008m4-DO; Tue, 13 Feb 2024 19:44:21 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:37 +0000
-Message-Id: <20240213194052.1162753-74-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:38 +0000
+Message-Id: <20240213194052.1162753-75-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 73/88] esp.c: remove restriction on FIFO read access when DMA
- memory routines defined
+Subject: [PULL 74/88] esp.c: handle non-DMA FIFO writes used to terminate DMA
+ commands
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,44 +79,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The latest state machines can handle mixing DMA and non-DMA FIFO access for all
-SCSI phases except DATA IN and DATA OUT. For DATA IN and DATA OUT phases, the
-transfer is complete when TC == 0 and the updated logic will now handle TC
-underflow correctly, which makes it just about impossible to manually manipulate
-the FIFO during a DMA transfer.
-
-Remove the restriction on FIFO read access when DMA memory routines are defined
-which also allows the NeXTCube machine to pass its self-test.
+Certain versions of MacOS send the first 5 bytes of the CDB using DMA and then
+send the last byte of the CDB by writing to the FIFO. Update the non-DMA state
+machine to detect the end of the CDB and execute the SCSI command using similar
+logic as that which already exists for transferring the remainder of the CDB
+using the ESP TI command.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-74-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-75-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ hw/scsi/esp.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index a3e18bb3d7..f9d848171f 100644
+index f9d848171f..aa7dec71e3 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -1133,14 +1133,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
+@@ -787,6 +787,16 @@ static void esp_do_nodma(ESPState *s)
+             }
+             break;
  
-     switch (saddr) {
-     case ESP_FIFO:
--        if (s->dma_memory_read && s->dma_memory_write &&
--                (s->rregs[ESP_RSTAT] & STAT_PIO_MASK) == 0) {
--            /* Data out.  */
--            qemu_log_mask(LOG_UNIMP, "esp: PIO data read not implemented\n");
--            s->rregs[ESP_FIFO] = 0;
--        } else {
--            s->rregs[ESP_FIFO] = esp_fifo_pop(&s->fifo);
--        }
-+        s->rregs[ESP_FIFO] = esp_fifo_pop(&s->fifo);
-         val = s->rregs[ESP_FIFO];
-         break;
-     case ESP_RINTR:
++        case CMD_SEL | CMD_DMA:
++        case CMD_SELATN | CMD_DMA:
++            /* Handle when DMA transfer is terminated by non-DMA FIFO write */
++            if (esp_cdb_length(s) && esp_cdb_length(s) ==
++                fifo8_num_used(&s->cmdfifo) - s->cmdfifo_cdb_offset) {
++                    /* Command has been received */
++                    do_cmd(s);
++            }
++            break;
++
+         case CMD_SEL:
+         case CMD_SELATN:
+             /* FIFO already contain entire CDB */
 -- 
 2.39.2
 
