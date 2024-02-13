@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10EB853B82
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:46:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8798C853B5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:42:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyfn-0004TW-95; Tue, 13 Feb 2024 14:42:31 -0500
+	id 1rZyfo-0004et-Rl; Tue, 13 Feb 2024 14:42:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfa-0003pT-Tg
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:18 -0500
+ id 1rZyfe-00049W-Oq
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:22 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfY-0006Ln-D4
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:17 -0500
+ id 1rZyfc-0006MP-AB
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6Lwfrh1EvAiWa40uM3VENBzmpRMnletbaa8WGmra4kE=; b=VA0OfjvZ+i+opJQTovzFSdnGmk
- SBzcYpCDPDvfAkyJOlh9u8C0+5ejIaPrcS/URc4LGu8NFxRD4IQHhbLGentQ9pj6k2FfQ4SfoKXMQ
- 5ZwgoQEwCiNegtITfnCTbQNKO23Az80al/7+3i2zT3kZDz+dkMe7HDv0wkCJQ2wm0AyyPt02u5Chp
- H9V0ROjBiqx8V9sP5lwVx2FxPI5lqSS2E4nAC+Zjyb2sBtnYoKM8Es6mwe39+3Um1dW37xJ3J/c11
- 0q9tWsXmHZ4gry9CDt9ExTdCVsF6XHNaLm5Pb5S5yE95wVpTXcGOCYM0RkAxcNzrkbLmgNTOiZ6s5
- S+OsU1ialXqXyXDY5tjdV4FuzDkbAJYUHpn5l67pK6wKk5t8RaMR6Fabz850iDFirXKAqfE1+c22I
- ydw+e4vxc5cDiJCvcvCrPQGW+UnTrdGeNmxuZm16BxT/IxJlO7igxbKIXY0enb/CcWjJZ8elWiOqQ
- XcLNkcR1snRaDTKX7HfGWn/2/W4GvQVxIa+8sHCbQFK7GSquZsrX31FR/9iVjiVvhwLJwn0bYJNw+
- CUsHxGrbKTn/eFVO7CYq7UQejpNEUzUi/rjjlPUjxDE1oG5FCoimvijRE7j2uRIcCbZHGjmNXXD6i
- 14/yQsyzuyFfqkpJVSLVzES1/IvGHaVy0dSMF+pOg=;
+ bh=taIgXtH5PF98j3TWyQtb+SKAB0L35TLaLRp9AOCoESk=; b=WHTNtzyo2hQpxczWDHlPjME1Ks
+ JD7nQ9ZWVh98uPvA2qbkTgpT3s2Z5xe9F9pDfYupPCNTZvA/Pfact8lAn0D6FS/bx21JmAScY/v8g
+ BtGX4CC6XZkwl4mzd8Gbbf4B4KnK3vbGhLgNJiX2Et9rAXL2UhgAfvhFXD3Bo8v5/uOCBrnqL8FWZ
+ xEY5r3Ldyg1a5tC8HRjimM7/D6uv/bH/l1LaoNwhHzIipLSaaHzPb7+ESRDcbC60J6UCWmYmxvLxv
+ 8mLqtPcU7DcB6aFwHjGY+BKfs68COtSlTwiECe3InL9E+eHHEgqBwHMru0DiBziKkTNKo/FO0FEW8
+ sfFg5k1LlnsY6ElEM/+E5StOZSEvFikwgRf0BGISnTPvinJfljd00MBe8nE4TI4aaDzvuebww2C36
+ MWfRxlHcMoh+ay0ZSo88G53ULZJH7qQ/neyDO6lJNtqDYFHiE6MTtpyWKwRwq1SCID1gf5RsXDDRY
+ /2XVvk75WNW9MHOp1zIcDAAG230U7X0cLRkA+hkgq75W9Y7Y+wHTmMZ6pabcD5KmB50B8o9BdSnwj
+ RMIz/r6E/78gfrqBpIz31mc+ykh5YDZMnn/U+JJLz2mLIEtJtu1tFUSyrk4CryRc3txWlQMY5yVxs
+ lwIq6bXCbid6hpbEdfFc0laKt1kapHU6lkee/cOrU=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyeg-0008m4-2e; Tue, 13 Feb 2024 19:41:25 +0000
+ id 1rZyej-0008m4-LT; Tue, 13 Feb 2024 19:41:29 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:42 +0000
-Message-Id: <20240213194052.1162753-19-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:43 +0000
+Message-Id: <20240213194052.1162753-20-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 18/88] esp.c: don't clear RFLAGS register when DMA is complete
+Subject: [PULL 19/88] esp.c: remove zero transfer size check from esp_do_dma()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,30 +77,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The internal state of the ESP sequencer is not affected when raising an interrupt
-to indicate the end of a DMA transfer.
+The TI end of transfer interrupt only occurs when the TC reaches zero and is
+not related to the SCSI layer transfer.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-19-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-20-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/scsi/esp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index a4a1f41a40..5b9c3f1e5e 100644
+index 5b9c3f1e5e..dc515e6435 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -546,7 +546,6 @@ static void write_response(ESPState *s)
- static void esp_dma_done(ESPState *s)
- {
-     s->rregs[ESP_RINTR] |= INTR_BS;
--    s->rregs[ESP_RFLAGS] = 0;
-     esp_raise_irq(s);
- }
- 
+@@ -748,7 +748,7 @@ static void esp_do_dma(ESPState *s)
+                  * complete the DMA operation immediately.  Otherwise defer
+                  * until the scsi layer has completed.
+                  */
+-                if (esp_get_tc(s) != 0 || s->ti_size == 0) {
++                if (esp_get_tc(s) != 0) {
+                     return;
+                 }
+             }
 -- 
 2.39.2
 
