@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00317852A67
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:03:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3039852A74
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 09:04:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZnkW-0004kV-TR; Tue, 13 Feb 2024 03:02:41 -0500
+	id 1rZnka-0004ny-NS; Tue, 13 Feb 2024 03:02:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rZnkU-0004gr-Qi; Tue, 13 Feb 2024 03:02:38 -0500
+ id 1rZnkX-0004mo-LP; Tue, 13 Feb 2024 03:02:41 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rZnkT-0007CS-EK; Tue, 13 Feb 2024 03:02:38 -0500
+ id 1rZnkW-0007LQ-7r; Tue, 13 Feb 2024 03:02:41 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5D0A94CBD5;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6A6924CBD6;
  Tue, 13 Feb 2024 11:01:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 850D77CF23;
+ by tsrv.corpit.ru (Postfix) with SMTP id 933847CF24;
  Tue, 13 Feb 2024 11:01:52 +0300 (MSK)
-Received: (nullmailer pid 160920 invoked by uid 1000);
+Received: (nullmailer pid 160923 invoked by uid 1000);
  Tue, 13 Feb 2024 08:01:51 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 12/15] qemu-options.hx: Add zoom-to-fit to option summary for
- gtk
-Date: Tue, 13 Feb 2024 11:01:48 +0300
-Message-Id: <20240213080151.160839-13-mjt@tls.msk.ru>
+Subject: [PULL 13/15] system: Move memory_ldst.c.inc to system
+Date: Tue, 13 Feb 2024 11:01:49 +0300
+Message-Id: <20240213080151.160839-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213080151.160839-1-mjt@tls.msk.ru>
 References: <20240213080151.160839-1-mjt@tls.msk.ru>
@@ -62,29 +61,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The detailed help lists zoom-to-fit as valid option but it is missing
-from the short option summary. Add it there too.
+This file is only used by system/physmem.c so move them together.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- qemu-options.hx | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ memory_ldst.c.inc => system/memory_ldst.c.inc | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename memory_ldst.c.inc => system/memory_ldst.c.inc (100%)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index aec2328736..8547254dbf 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -2085,7 +2085,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
- #if defined(CONFIG_GTK)
-     "-display gtk[,full-screen=on|off][,gl=on|off][,grab-on-hover=on|off]\n"
-     "            [,show-tabs=on|off][,show-cursor=on|off][,window-close=on|off]\n"
--    "            [,show-menubar=on|off]\n"
-+    "            [,show-menubar=on|off][,zoom-to-fit=on|off]\n"
- #endif
- #if defined(CONFIG_VNC)
-     "-display vnc=<display>[,<optargs>]\n"
+diff --git a/memory_ldst.c.inc b/system/memory_ldst.c.inc
+similarity index 100%
+rename from memory_ldst.c.inc
+rename to system/memory_ldst.c.inc
 -- 
 2.39.2
 
