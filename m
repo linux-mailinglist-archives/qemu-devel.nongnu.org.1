@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35BD853C16
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A7C853BFE
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:09:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0O-0004E9-RQ; Tue, 13 Feb 2024 15:03:48 -0500
+	id 1rZz0G-0003uh-CH; Tue, 13 Feb 2024 15:03:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzr-0003TC-BG
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:15 -0500
+ id 1rZyy4-0001kr-7r
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:34 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyzn-00029K-VB
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:03:14 -0500
+ id 1rZyy2-0001sa-MO
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:01:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=2jpEwFF0iWK0ipjHESSVnu863cezPVN31mvVo4kKl7k=; b=GHAac6CtGWCrYeiIJJD9PRwrvF
- VNrY6YztYjDxzoCiZgfSHW/MXJhOfhAzwWtKAqZkpFoYEdQ+dAo7RaEb+6CC0F6SjUjiIB6hRN/iu
- 6fmiLBKwtb7aJHasgTn6HdffNXcNfPBVJNvA10xmyyM7MQNr77epjzpueZgdOp3sLKTKqbMb9Juxu
- piS108BY+TA21NMiZnV6WUaEr4amfYErlrV/dirrjWZbv4aPr8LwRadqsZ262GHXFQcQ2IiuzabpY
- neMXQPXkwjWybPuBjYRxZGPQcXNjrUUg8AwFJMMSBvXm/dksev5Zh523vamjVqiw19HmHOG3wLsj1
- Dan9vsHJiBK9pzEfSNgVf39UwE5cOIoGUOQaVyyvcVF5Zfu64S6V7bDeTTlXLfvUdSrr1dgenQrME
- Mjh5eBrRTKKcKGEScpS4+DFk2HxtKJtCYubFXyuMbzxCZOmv5BCSUuW7sz+t1Lf/uOepAQDmyeidN
- O2jTkCafBxe3KPzVaNKgpts4U6wkm2Oxv5GFfZVTqGuTm7babRDkekXRYVQy9S7C9JAWKZdLH6esR
- g88LqOsgqLDi8YyejQ+Jf/ldTChvTn7NWx+CjARGv+U35xfxYnLqeuhdj2gHSUQszhMG8W8ZYGu70
- Z5H/GIQsK6sbdf3p8v1XdFQsQrgJagxe7hW5+3Ay8=;
+ bh=DVjGUjdm8pNlCRfHncMDmo1GFwUsywzB/AtKRFCKdSk=; b=vcq6m5vZXrBszbAJvXhDLQAAA2
+ wQ16r4kjHFsHMvr1WWZ4Xkmzq3GhncWaQneudH2aohooIogJLccOUCexNAFdrX5E2g58acYEH7+Pt
+ dm3Y9m3q1ERpclV2ZzpxxhFgrrJyp/lftR2rGwt6L8gPlgFT/klQMx0Q7mK7U8rsRiOckXTgDQ1+9
+ /GAVkp/u63BOMnapEN6hllROVedNOi9Cgo6MIkwq6OIIYBuAXbSM0TO40GrCKCMPq4uSq8Mwh0pZO
+ 9Q719erDwPOHN5Ww3QKLVVRpS90T8KPZqV/3dvoyEBf9yt/C27rn1YQJg6Q5Tz4GjiMOB49U/Llia
+ EQfUW9Ut58LjDRiRdPZ+ZePWMI+oPf/tOQgdlelBw7kfnAYoVbOYqqRbWfWDUcIM+FPFQM5S/1q8Z
+ V7paq1+xDY6icvuCNFkRUtE4qpa54jDVrfNKUqMLUlqTf641xnvb3ZzYcIVnipI2K36KXpg8jqDq7
+ o3v3e0i2/rkGpEj5coJhargKYf9Hyt1AWfENrNZiTNbumHl5vnQ7JcJmaBtI2fA5iVCmSY/Oqs5am
+ VQn+3xxGMnFxVW7arsK/9EGzIFnu49kMxwnNO+TF+bgoRdq4iKY0kOmplipI+bg0lDqtWjbZqNCWT
+ PZz0GW/PcbVIdeVEGCp2noYTA89xd/BtLiUAcR1dk=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyi2-0008m4-Le; Tue, 13 Feb 2024 19:44:50 +0000
+ id 1rZyi2-0008m4-Vb; Tue, 13 Feb 2024 19:44:54 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:49 +0000
-Message-Id: <20240213194052.1162753-86-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:50 +0000
+Message-Id: <20240213194052.1162753-87-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 85/88] esp.c: rename irq_data IRQ to drq_irq
+Subject: [PULL 86/88] esp.c: keep track of the DRQ state during DMA
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,67 +77,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The IRQ represented by irq_data is actually the DRQ (DMA request) line so rename
-it accordingly.
+Currently the DRQ IRQ is updated every time DMA data is sent/received which
+is both inefficient and causes excessive logging of the DRQ state. Add a
+new drq_state bool that only updates the DRQ IRQ if its state changes.
+
+This commit adds the new drq_state bool to the migration state: since the
+version number has already been increased earlier in the series, there is
+no need to repeat it again here. The DRQ IRQ is (currently) only used for
+PDMA transfers which already have a migration break in this series so
+there are no problems setting its value post-load.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-86-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-87-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c         | 8 ++++----
- include/hw/scsi/esp.h | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ hw/scsi/esp.c         | 15 +++++++++++----
+ include/hw/scsi/esp.h |  1 +
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 5583b3eb56..fb68606f00 100644
+index fb68606f00..04615d8b5f 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -62,13 +62,13 @@ static void esp_lower_irq(ESPState *s)
+@@ -62,14 +62,20 @@ static void esp_lower_irq(ESPState *s)
  
  static void esp_raise_drq(ESPState *s)
  {
--    qemu_irq_raise(s->irq_data);
-+    qemu_irq_raise(s->drq_irq);
-     trace_esp_raise_drq();
+-    qemu_irq_raise(s->drq_irq);
+-    trace_esp_raise_drq();
++    if (!(s->drq_state)) {
++        qemu_irq_raise(s->drq_irq);
++        trace_esp_raise_drq();
++        s->drq_state = true;
++    }
  }
  
  static void esp_lower_drq(ESPState *s)
  {
--    qemu_irq_lower(s->irq_data);
-+    qemu_irq_lower(s->drq_irq);
-     trace_esp_lower_drq();
+-    qemu_irq_lower(s->drq_irq);
+-    trace_esp_lower_drq();
++    if (s->drq_state) {
++        qemu_irq_lower(s->drq_irq);
++        trace_esp_lower_drq();
++        s->drq_state = false;
++    }
  }
  
-@@ -1062,7 +1062,7 @@ void esp_hard_reset(ESPState *s)
- static void esp_soft_reset(ESPState *s)
- {
-     qemu_irq_lower(s->irq);
--    qemu_irq_lower(s->irq_data);
-+    qemu_irq_lower(s->drq_irq);
-     esp_hard_reset(s);
- }
- 
-@@ -1489,7 +1489,7 @@ static void sysbus_esp_realize(DeviceState *dev, Error **errp)
-     }
- 
-     sysbus_init_irq(sbd, &s->irq);
--    sysbus_init_irq(sbd, &s->irq_data);
-+    sysbus_init_irq(sbd, &s->drq_irq);
-     assert(sysbus->it_shift != -1);
- 
-     s->chip_id = TCHI_FAS100A;
+ void esp_dma_enable(ESPState *s, int irq, int level)
+@@ -1358,6 +1364,7 @@ const VMStateDescription vmstate_esp = {
+         VMSTATE_UINT8_TEST(mig_ti_cmd, ESPState,
+                            esp_is_between_version_5_and_6),
+         VMSTATE_UINT8_TEST(lun, ESPState, esp_is_version_6),
++        VMSTATE_BOOL(drq_state, ESPState),
+         VMSTATE_END_OF_LIST()
+     },
+ };
 diff --git a/include/hw/scsi/esp.h b/include/hw/scsi/esp.h
-index 39b416f538..c6e8b64e20 100644
+index c6e8b64e20..533d856aa3 100644
 --- a/include/hw/scsi/esp.h
 +++ b/include/hw/scsi/esp.h
-@@ -25,7 +25,7 @@ struct ESPState {
-     uint8_t rregs[ESP_REGS];
+@@ -26,6 +26,7 @@ struct ESPState {
      uint8_t wregs[ESP_REGS];
      qemu_irq irq;
--    qemu_irq irq_data;
-+    qemu_irq drq_irq;
+     qemu_irq drq_irq;
++    bool drq_state;
      uint8_t chip_id;
      bool tchi_written;
      int32_t ti_size;
