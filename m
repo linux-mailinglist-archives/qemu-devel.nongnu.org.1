@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4560853BFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:09:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DB9853BD6
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 21:04:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZz0p-000572-Uq; Tue, 13 Feb 2024 15:04:16 -0500
+	id 1rZyxk-000115-3t; Tue, 13 Feb 2024 15:01:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZz0e-0004rb-RO
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:04:05 -0500
+ id 1rZyxH-0000l3-HK
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:00:35 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZz0d-0002I8-9I
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:04:04 -0500
+ id 1rZyxG-0001kF-6U
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 15:00:35 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=FH27qHWz11n07C8E0Vgf3CBwLl5tQW+/t0p2tOdInEU=; b=IJYGx0eei5sm9vvjgtk2v6EhwW
- Rabgl+i148UAuHa1U7YK8XkqYJrRToy1aiy4rM6VwAgpqZm3CtKuqXlhUg3Wy75EaxmaKf67IjkzX
- WRGlr0VqbypBHilWPGuzj+Wex7juTHcJ+ZrcuTQViAaLpjT1kEBeRkFnlLLfnbWeu6WP2W0XrBi3/
- mH/Rq/ZF1EpCmhfMI4ie6dycIIxfYo9Qg7uEG5mCHWi5qExYgSpPK5x9snH1gdQ8GkSkc12yS7O/i
- co4O+cq5oksQtD5JX/sxamyao4J6fGyVdn6xZnaTXrpZXlmzte7P2dEe7xC35SBsOh/FziYWEhfzp
- hlNqKQKRjr1E+6qNbnfkELEToKQL0053SwK+zepLaV6AS1sPF+l1KJdHf2m/dTo0OM2o9/se9HUr7
- izOQpM4Y6e0Njnvv0XUMxcT76DIH2gkcIT8L3+Ht23GL5WLFdzANJ06WPpfUN3AAUIn7XFoibh9bk
- /qg9WKwDbAQIaVGK5luhgd9XIxRbD6ZZwJ9eV32n2VpGteK7SaknWsBM9iAqE1Fd0jtzQtMqlvArk
- TjyHcfRoMJNDpaTkWbSlv8bvynefFbnbD7tI+KYyY8f4tLn8bAf/jRZ8rtHsaClJOuq9oe3qMku0P
- OS8Q6PAGxLWGUiBVXB6o6lhFviWxIsfyeMoHBXeko=;
+ bh=U4wFtyvUgxolXpHyM1ojgGUeq66JkAtIYffuiQI5DGM=; b=YuQymqtRV25pn4mWOAeNZlmJCq
+ mx9UwxWimgbAOe+qVspjCQ2/4woEfl6CE7O0D73bP+OR/KkPeetZaKrF2mxvnwcduZ6tcGM3J+XHv
+ 3eeaPRzJqEIkYMVtcg6db71120vr8BxqPGtodTYeTpWY6zVV30KnZJ+fKSIn7Q3507sMIAFbbSUFo
+ AGd2VRDniLa9uBvBUOuWTrZYYLIqjMQRMBictxWh2TlACaI3OhlXv6dbrBeKpr8TmQYxBLpobpLs5
+ DOgTAimhaw0K3A5MrHYxuV3V8gxqQRBb1mKqG41d6lQL1bb6nU2K2ylSfuHvJhgQvzQL+CCmZur+0
+ 8Mnt/ac8+VOJ8yrplbdMfEGXihgww9SRQPmdPAsRZpGph9ibKhln48c3bK7qr1eKT1QeRZ+Afc7tq
+ kpbzqjCGqlkiR+rvCDx9OewKcy+1spy2wA67gaO2BEWe7+KmVOdLaX8QkWglrakB8aePQohiNMnpO
+ oVhIx78FwMaa+0ZJkN+NBFkNI0IkcSIa653krFS1NYxLCq0sDEHvVIbqwYhvcLpVnDt0iVaWpRo2K
+ Esp4y/3xMOJGloZX66bNZSn7HZhzH/tW6W+kS4wbVSic5a0vYEwyjxbFdcY9zTfHk5Dn9xfsDTn3+
+ 9kwf/2QngA5tiluaSZCBiace3Jt8eCHPqV0RAszVw=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyhq-0008m4-5l; Tue, 13 Feb 2024 19:44:42 +0000
+ id 1rZyhu-0008m4-8p; Tue, 13 Feb 2024 19:44:45 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:44 +0000
-Message-Id: <20240213194052.1162753-81-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:45 +0000
+Message-Id: <20240213194052.1162753-82-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 80/88] esp.c: consolidate DMA and PDMA logic in MESSAGE OUT
- phase
+Subject: [PULL 81/88] esp.c: remove redundant n variable in PDMA COMMAND phase
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,46 +77,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows the removal of duplicate logic shared between the two implementations.
-Note that we restrict esp_raise_drq() to PDMA to help reduce the log verbosity
-for normal DMA.
+This variable can be replaced by the existing len variable.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-81-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-82-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ hw/scsi/esp.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 49fc059eaa..ae65c2ef37 100644
+index ae65c2ef37..8ef6d203e0 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -436,17 +436,15 @@ static void esp_do_dma(ESPState *s)
-         if (s->dma_memory_read) {
-             len = MIN(len, fifo8_num_free(&s->cmdfifo));
-             s->dma_memory_read(s->dma_opaque, buf, len);
--            fifo8_push_all(&s->cmdfifo, buf, len);
+@@ -427,7 +427,6 @@ static void esp_do_dma(ESPState *s)
+ {
+     uint32_t len, cmdlen;
+     uint8_t buf[ESP_CMDFIFO_SZ];
+-    int n;
+ 
+     len = esp_get_tc(s);
+ 
+@@ -494,10 +493,9 @@ static void esp_do_dma(ESPState *s)
+             fifo8_push_all(&s->cmdfifo, buf, len);
              esp_set_tc(s, esp_get_tc(s) - len);
--            s->cmdfifo_cdb_offset += len;
          } else {
 -            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
 -            n = MIN(fifo8_num_free(&s->cmdfifo), n);
 -            fifo8_push_all(&s->cmdfifo, buf, n);
--            s->cmdfifo_cdb_offset += n;
+-
 +            len = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
 +            len = MIN(fifo8_num_free(&s->cmdfifo), len);
-+            esp_raise_drq(s);
++            fifo8_push_all(&s->cmdfifo, buf, len);
+             esp_raise_drq(s);
          }
- 
--        esp_raise_drq(s);
-+        fifo8_push_all(&s->cmdfifo, buf, len);
-+        s->cmdfifo_cdb_offset += len;
- 
-         switch (s->rregs[ESP_CMD]) {
-         case CMD_SELATN | CMD_DMA:
+         trace_esp_handle_ti_cmd(cmdlen);
 -- 
 2.39.2
 
