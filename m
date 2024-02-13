@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED416853B87
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:47:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11770853B66
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:43:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZygA-00071N-Pz; Tue, 13 Feb 2024 14:42:55 -0500
+	id 1rZygI-0007ae-Q1; Tue, 13 Feb 2024 14:43:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyg6-0006y3-Fb
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:50 -0500
+ id 1rZygF-0007RO-2h
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:59 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyg5-0006Pm-0S
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:50 -0500
+ id 1rZyg9-0006Q4-Hc
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:58 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=m1ImFGpa7DxWE0DTTuWjbOMbJeHgbQNvbOZuqOrXhag=; b=nWFBzRYJlg3ysCW+PlmnbbmF3o
- XWw/ho76lNRnFA9jxEsG8lEqJldFUUHzDyexT1qy9HHtWSD1ynOzkLbz1Y3EO8+2QG09w8xj5g9n8
- 1rlGCdgvBSMlTI4rqpODJ1R+tbboSbxP/Kianex8zH5v/4LS/0lWOnfM0O9qXAgDETmwZP9se7Zsw
- FlIGJhbrpWMr73LfdKVXDx2z5fkscZQQdPIkb8GRKfGawq5ExFLCk+ZkKkHIwsnjIE+afkilo9g8J
- 8fzkoU9PkEObHEvgnDKtGxBEYEMw7O1ml+QMNZGrem1K9Ac10bcnx/516H2o/oeE2mvWK6tZmuo/m
- Bxj28qlipaViiEuRcyaImch1Z4RgLD+JBK5uFhu9G00SShmLhWHmJ4Fh8lGpvtRBMNIzKHsvf/mPy
- izbf+sM4/qzHUQVK/rqD5gM4iZHfhSXXB1l9tn1Upyja8xokaGQWDnWgEHTlvB6d/44nh8D/6t3tr
- ag95aTR/IdP0B1696drk/ffnx9uy+tp+KWNrW+1mqxWjL07pN8clWEMbA4OXUh7GjdAuH0ZAKGcOf
- uuhB/dFG9tvfjmcUbK65248zD59R7swOz4uc/vyQvYtDzis0wTnkmSUQ2rAKx2qgckcY/I1VPrrs6
- CRO4Rls4CkagZKGD8OjSyOiNIubs40rv88no7X9SU=;
+ bh=A7Ml3OJRuG9i9wCVUKZri2ee9kNdSQpXNdwl+PnHGcw=; b=1ABVLHiY1qs+tqCUxSYyUUf2lF
+ TRfvxHcl7GlSPzFgrwnc9aP5rHQdxP59VM82dcvclcy4idBqOx4R77In8jkOYBJ/5wvvrx6ougndP
+ f4MypvrJcAdUQCH/klZkixQYQ1FoWgmGFNP9Bu+3ifTTieLtq/AN3D0ROwQrYHoFPG0VyagBhUtgR
+ S2OJlUpCS7Ohx2cZvmHt6eG0EdUL++mu7sfRC3E5KGWhs0x6vs450STT3Pw+o8Jowl0PeiqS/5vAe
+ DG7ZTs2dFJdEaH4GX3RK01mojARelp45ROca1PAe0gZ9GK+zpARGT1Epr3OxwfD9gvgbkZFMq5Hlh
+ vSYCeiITyHsYrNaNUBSt7YBI7hHMoXPEtmnHebIrP01TVD8pIghTQJzDu4rmfE2DT5xJsBtArLNkt
+ VryBv8tHIDenSeuSfADw7exxBvGe8nGGYa1WZHWqxYYftMt/jSS0+X7z7QlzA8kAGRXcMSxLm7iBz
+ lZRleR5vX+hIGktcLxoMw3QGwS+HBajZY02V2GnTvMZbdPNhVYVhEHncnFTdAAldIpaEaJs/zX/su
+ WcMbJeoYaK0KnxNqk0v1+LDTV7Uxl/Sj014/hBs54zQ90BjPd41busaV2zEoykhmwbMNHWGY/w2FX
+ zozWL9X3JztyZvMkTzA/QP+YBlWPczxGbQD93J7PA=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfF-0008m4-N5; Tue, 13 Feb 2024 19:41:57 +0000
+ id 1rZyfG-0008m4-0n; Tue, 13 Feb 2024 19:42:01 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:53 +0000
-Message-Id: <20240213194052.1162753-30-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:54 +0000
+Message-Id: <20240213194052.1162753-31-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 29/88] esp.c: fix premature end of phase logic
- esp_command_complete
+Subject: [PULL 30/88] esp.c: move TC and FIFO check logic into esp_dma_done()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,64 +77,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are two cases here: the first is when the TI command underflows, in which
-case we raise INTR_BS to indicate an early change of phase, and the second is
-when the TI command overflows because the host requested a transfer for more
-data than is available. In the latter case force TC to zero so that the TI
-completion logic executes correctly.
+This helps simplify the existing implementation.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-30-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-31-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ hw/scsi/esp.c | 39 +++++++++++----------------------------
+ 1 file changed, 11 insertions(+), 28 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index f20026c3dc..c6151d306e 100644
+index c6151d306e..4d58a49c73 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -887,7 +887,6 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
-         if (s->ti_size != 0) {
-             trace_esp_command_complete_unexpected();
-         }
--        s->ti_size = 0;
-     }
+@@ -545,8 +545,11 @@ static void write_response(ESPState *s)
  
-     s->async_len = 0;
-@@ -897,13 +896,26 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
-     s->status = req->status;
- 
-     /*
--     * If the transfer is finished, switch to status phase. For non-DMA
--     * transfers from the target the last byte is still in the FIFO
-+     * Switch to status phase. For non-DMA transfers from the target the last
-+     * byte is still in the FIFO
-      */
-+    esp_set_phase(s, STAT_ST);
-     if (s->ti_size == 0) {
--        esp_set_phase(s, STAT_ST);
-+        /*
-+         * Transfer complete: force TC to zero just in case a TI command was
-+         * requested for more data than the command returns (Solaris 8 does
-+         * this)
-+         */
-+        esp_set_tc(s, 0);
-         esp_dma_done(s);
--        esp_lower_drq(s);
-+    } else {
-+        /*
-+         * Transfer truncated: raise INTR_BS to indicate early change of
-+         * phase
-+         */
+ static void esp_dma_done(ESPState *s)
+ {
+-    s->rregs[ESP_RINTR] |= INTR_BS;
+-    esp_raise_irq(s);
++    if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
 +        s->rregs[ESP_RINTR] |= INTR_BS;
 +        esp_raise_irq(s);
-+        s->ti_size = 0;
-     }
++        esp_lower_drq(s);
++    }
+ }
  
-     if (s->current_req) {
+ static void do_dma_pdma_cb(ESPState *s)
+@@ -610,12 +613,7 @@ static void do_dma_pdma_cb(ESPState *s)
+             return;
+         }
+ 
+-        if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-            esp_lower_drq(s);
+-            esp_dma_done(s);
+-        }
+-
+-        return;
++        esp_dma_done(s);
+     } else {
+         if (s->async_len == 0 && fifo8_num_used(&s->fifo) < 2) {
+             /* Defer until the scsi layer has completed */
+@@ -624,10 +622,7 @@ static void do_dma_pdma_cb(ESPState *s)
+             return;
+         }
+ 
+-        if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-            esp_lower_drq(s);
+-            esp_dma_done(s);
+-        }
++        esp_dma_done(s);
+ 
+         /* Copy device data to FIFO */
+         len = MIN(s->async_len, esp_get_tc(s));
+@@ -713,10 +708,7 @@ static void esp_do_dma(ESPState *s)
+                 return;
+             }
+ 
+-            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-                esp_dma_done(s);
+-                esp_lower_drq(s);
+-            }
++            esp_dma_done(s);
+         } else {
+             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
+             esp_raise_drq(s);
+@@ -727,10 +719,7 @@ static void esp_do_dma(ESPState *s)
+                 return;
+             }
+ 
+-            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-                esp_dma_done(s);
+-                esp_lower_drq(s);
+-            }
++            esp_dma_done(s);
+         }
+     } else {
+         if (s->dma_memory_write) {
+@@ -747,10 +736,7 @@ static void esp_do_dma(ESPState *s)
+                 return;
+             }
+ 
+-            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-                esp_dma_done(s);
+-                esp_lower_drq(s);
+-            }
++            esp_dma_done(s);
+         } else {
+             /* Copy device data to FIFO */
+             len = MIN(len, fifo8_num_free(&s->fifo));
+@@ -768,10 +754,7 @@ static void esp_do_dma(ESPState *s)
+                 return;
+             }
+ 
+-            if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+-                esp_lower_drq(s);
+-                esp_dma_done(s);
+-            }
++            esp_dma_done(s);
+         }
+     }
+ }
 -- 
 2.39.2
 
