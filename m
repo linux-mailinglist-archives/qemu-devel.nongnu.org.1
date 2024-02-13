@@ -2,107 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8055F85333E
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 15:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C89F985313B
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 14:04:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZtpo-0007Br-Fn; Tue, 13 Feb 2024 09:32:32 -0500
+	id 1rZsSA-0001ZP-Me; Tue, 13 Feb 2024 08:04:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.vnet.ibm.com>)
- id 1rZohX-00086f-RX; Tue, 13 Feb 2024 04:03:39 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rathc@linux.vnet.ibm.com>)
- id 1rZohW-0001ZF-1L; Tue, 13 Feb 2024 04:03:39 -0500
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41D8vbRw001977; Tue, 13 Feb 2024 09:03:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=/ibc3XYO895FcZOAm5aWMkz4jizIqU3yBbWFLxS61cA=;
- b=TpK2inqmkQBKYalbwF5jj4IqKWpbSN5rG29gwKl9cKaj+mcxUKbcuJOJRcjzEqR5kUF9
- nHB7GbdBbN1GsZZait1zebpIm6bDDpfYcVK6atkIvkyz2MTZSJN/ZsFmz9HDDDuwVEA2
- iE1w0dl74tsLBg2hsybJ+Nhwqddm6SuGLnUxr+0MMtjA/qfCTU5MIRbb0/sbt6+KhsxC
- 37dCnl1JcwuzVnfl+a/DcdRIGRyw2bwE9b2QjK7UMdK5+3UnzF8x5gV/TScufABN/zgh
- 28YhgbxLKvyIEpEFPRw2aVuF03HZEN/9qtZ/dvhoGY8tFavKLNMv5dfcxtEeMChPLWot WA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w85car5ce-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Feb 2024 09:03:33 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41D8x8cl004777;
- Tue, 13 Feb 2024 09:03:33 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w85car5bv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Feb 2024 09:03:33 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41D6kMM9009920; Tue, 13 Feb 2024 09:03:32 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6p62nv7h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Feb 2024 09:03:32 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41D93Rh131916512
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Feb 2024 09:03:29 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87D8E2004E;
- Tue, 13 Feb 2024 09:03:27 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EBCB20040;
- Tue, 13 Feb 2024 09:03:26 +0000 (GMT)
-Received: from [9.199.192.140] (unknown [9.199.192.140])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 13 Feb 2024 09:03:25 +0000 (GMT)
-Message-ID: <29d66265-c613-42ef-9a1c-77a295f9bb7c@linux.vnet.ibm.com>
-Date: Tue, 13 Feb 2024 14:33:24 +0530
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsRy-0001Wk-Fl
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:03:50 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZsRv-0005yg-HZ
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 08:03:50 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2d0512f6e32so60826431fa.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 05:03:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1707829425; x=1708434225; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vDDw2/aQZ8ggZU/OmceNEX0ZhQCmGtQNSBSFooIhLVI=;
+ b=EIi0nu4SBHfXo54Wrk8sk+yFdX6mH6YiflCbKxR0wyqEhq+YXNSbqw47Ss91DEoYB0
+ zMq6AnOaXWIeidbXV/a8Nll8bOW47A2pyhV+yod1RLggeKQTmnfJENHkttAUoxcjNLSB
+ z+QxRqGowDbXuBRBMt8WjTUo5aubqDUlyr8XlDlNHisK0gJjUqrfjO2s4lYH0THsaP3j
+ oWk359z5xAnUA94kWuM48vkVgyxMbNZYYAQThpkSqcx4vMiBG2PhPJxdwBZVULdkga0M
+ h9LCXC50EQHpZ9fzZgV6hvUqPrWJ3+E+lWqkYiGCSMIVIpCD4+olzoWTWhZJDtNlLRH9
+ TR7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707829425; x=1708434225;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vDDw2/aQZ8ggZU/OmceNEX0ZhQCmGtQNSBSFooIhLVI=;
+ b=wKzk4zPKY7+3hOq/B1vpufiCdaIeznmbI038EyTu3rUmNnOASZWgli1Cru1qSue+Ym
+ stEF/vAHJ3bzccjbxdkYPIo6aSL0MkyVPf8ufv2VPIpR4KMWlj+1s2T76WPFPcwFDvAO
+ GSDmJ5UrPugywQT9xuSKnWI7kvlq6o39Pl6SOGWucNApX6E4oatS0M6yirA6eMqDuvL4
+ EBzK4N16yiFazRR1I5sjesKVwb6KezVTM5lnG1hyjw9CtqKPPZz+HeBE2uJBEizEQRbV
+ X2CSy37qxc8ntdXkCWNN83kcwJ2oi3xjegWmJ5o/5PUPuIs5gUgoeeUTBfCTOSRLieaZ
+ cBrg==
+X-Gm-Message-State: AOJu0YzjzCPUAOY7GOOUdcCqVZL6NqJYaZDN0Qr7mb8HOLVyfSXfQdFl
+ nR9DLbYQGXxatHI1aYvYc7o6LFHEhCYZjvkExBo+mqvvZ2grx3cSTKwq2PdzC10fhMNXcd+IdG+
+ 4
+X-Google-Smtp-Source: AGHT+IFF9GbNw/cB9detBb+ybLYuuyLXG/5QY5sX4sXInu4qJXQ+F1vEi7Ma7KvHWwV2hOOFR201qg==
+X-Received: by 2002:a2e:3603:0:b0:2d0:f13a:cad2 with SMTP id
+ d3-20020a2e3603000000b002d0f13acad2mr4867450lja.1.1707829425289; 
+ Tue, 13 Feb 2024 05:03:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVy4AuLSY+8kKVLTUSpWQ1K0ajfft860050lgMCPs1/sVHVUsdQHv4hOKTMOrVll4lmwLka2keuzPsH/wv0w9QrS8J/+o2JRWrHz/1W0ZnL914FOgAmsdZytV5oakcUlctjrA06Z4oKOMNo19y1CeFdfLKxR7x43PIX+efQWDmId7xwb4o0FGx1AKXoLLIf9+lV8C5HKgERoOhXSeMZqETTGzXERTVN7q9YxPhqNjSEyeRySAWi7h3R9unabgnKAirDpfyfiGSGbolnsyEjoGNLZ0oblref3z38SExzpTdP08a+FsG7y4WzAo86Mkkc7ke/pQOVBjk=
+Received: from m1x-phil.lan ([176.176.128.243])
+ by smtp.gmail.com with ESMTPSA id
+ bd27-20020a05600c1f1b00b00410d3b8c4c1sm6342803wmb.31.2024.02.13.05.03.43
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 13 Feb 2024 05:03:44 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Bernhard Beschow <shentey@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 00/12] hw: Strengthen SysBus & QBus API
+Date: Tue, 13 Feb 2024 14:03:29 +0100
+Message-ID: <20240213130341.1793-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] target/ppc: Move add and subf type fixed-point
- arithmetic instructions to decodetree
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, npiggin@gmail.com
-Cc: harshpb@linux.ibm.com, sbhat@linux.ibm.com
-References: <20240209113532.580983-1-rathc@linux.ibm.com>
- <f07f918e-d7b4-41bd-88eb-ddb2bd96dd73@linaro.org>
-From: Chinmay Rath <rathc@linux.vnet.ibm.com>
-In-Reply-To: <f07f918e-d7b4-41bd-88eb-ddb2bd96dd73@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: P5xfT9zpdHVmUIKVxBd6LSw53NmVG1kf
-X-Proofpoint-ORIG-GUID: nQvFy593lrQ24Fmda82RCr-5sizXf9yF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-13_04,2024-02-12_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=798 spamscore=0
- clxscore=1011 malwarescore=0 priorityscore=1501 suspectscore=0
- phishscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402130070
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=rathc@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 13 Feb 2024 09:32:27 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,41 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+Missing review: 4, 12
 
-On 2/13/24 03:51, Richard Henderson wrote:
-> On 2/9/24 01:35, Chinmay Rath wrote:
->> +&Z23_tab_cy     rt ra rb cy
->> +@Z23_tab_cy     ...... rt:5 ra:5 rb:5 cy:2 ........ . &Z23_tab_cy
-> ...
->> +ADDEX           011111 ..... ..... ..... .. 10101010 -  @Z23_tab_cy
-> ...
->> +static bool trans_ADDEX(DisasContext *ctx, arg_Z23_tab_cy *a)
->> +{
->> +    gen_op_arith_add(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], 
->> cpu_gpr[a->rb],
->> +                     cpu_ov, cpu_ov32, true, true, false, false);
->> +    return true;
->> +}
->
-> CY != 0 is reserved.
->
-> While you could diagnose this in trans_ADDEX, it seems cleaner to 
-> simply match 00 in the CY field until a future ISA defines something 
-> else.  All that is required is a comment in the decodetree entry.
->
-> # Z23-form, with CY=0; all other values for CY are reserved.
-> # This works out the same as X-form.
-> ADDEX    011111 ..... ..... ..... 00 10101010 -   @X
->
-Thanks for your review comments.
+Since v1:
+- Addressed Zoltan review comments
+- Addressed Mark suggestion
+- Added R-b tags
 
-I shall update as suggested in v2.
+Hi,
 
-Regards,
+This series ensure following is called *before* a
+device is realized:
+- qbus_new()
+- sysbus_init_mmio()
+- qdev_init_gpio_in_named_with_opaque()
 
-Chinmay
+and these are called *after* it is:
+- sysbus_mmio_map()
+- sysbus_connect_irq(),
+- qdev_connect_gpio_out()
+- qdev_connect_gpio_out_named()
 
->
-> r~
+Patches from v2 enforcing these checks will be posted
+in a separate series.
+
+Philippe Mathieu-Daudé (12):
+  hw/ide/ich9: Use AHCIPCIState typedef
+  hw/rx/rx62n: Reduce inclusion of 'qemu/units.h'
+  hw/rx/rx62n: Only call qdev_get_gpio_in() when necessary
+  hw/i386/q35: Realize LPC PCI function before accessing it
+  hw/ppc/prep: Realize ISA bridge before accessing it
+  hw/misc/macio: Realize IDE controller before accessing it
+  hw/sh4/r2d: Realize IDE controller before accessing it
+  hw/sparc/sun4m: Realize DMA controller before accessing it
+  hw/sparc/leon3: Realize GRLIB IRQ controller before accessing it
+  hw/sparc/leon3: Pass DeviceState opaque argument to leon3_set_pil_in()
+  hw/sparc/leon3: Initialize GPIO before realizing CPU devices
+  hw/sparc64/cpu: Initialize GPIO before realizing CPU devices
+
+ include/hw/rx/rx62n.h |  2 --
+ hw/i386/pc_q35.c      |  6 +++---
+ hw/ide/ich.c          |  6 +++---
+ hw/misc/macio/macio.c |  9 ++++++---
+ hw/ppc/prep.c         |  2 +-
+ hw/rx/rx-gdbsim.c     |  1 +
+ hw/rx/rx62n.c         | 17 +++++++++--------
+ hw/sh4/r2d.c          |  2 +-
+ hw/sparc/leon3.c      | 17 ++++++++---------
+ hw/sparc/sun4m.c      |  7 +++++--
+ hw/sparc64/sparc64.c  |  4 +++-
+ 11 files changed, 40 insertions(+), 33 deletions(-)
+
+-- 
+2.41.0
+
 
