@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE1085351A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F35DC85352F
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 16:52:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZv3o-0002zw-1l; Tue, 13 Feb 2024 10:51:04 -0500
+	id 1rZv57-0000uu-1y; Tue, 13 Feb 2024 10:52:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rZv3l-0002wr-Jt
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:51:01 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv53-0000nV-94
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:21 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rZv3j-0005X7-Oj
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:51:01 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-561f5086a1fso926106a12.2
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:50:59 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZv51-0005hP-Cs
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 10:52:21 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-411c2f76308so4879415e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 07:52:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707839457; x=1708444257; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=v++f+aX1lTrmT2lq+VRxWggWXpnz3nfrAMvD5brQAlM=;
- b=MH9LY01tjoo2CCPmU+cvL4w/OrwhhOjmDD/IneerOPIb7KpC1RNicK99SLXH8zfa+4
- ge7P2bvI6yXXe81CsHgFXun69iezSiat/yo2GZorAXBheCGE9K6f+qVZrfMiUw6H11K0
- fnHDayHh1xa8/8wEEIdJFmyeAVlYbI3zc4SPLqBfZ/vUmgN1vjgVCaCXO+dMG+xcMykU
- mthI7jb+XmtXGwi78pJO/hzEqud7awcVsG5JvVE6y67jmRr90xujYWzqjP+FoMkp8ar4
- 7ID4CnrkL6FrLl/MUeDQe9KMURC93eKWBFEN7zOIa1bHftaPbeZnoZuhGodXxEgemKS9
- CUcQ==
+ d=linaro.org; s=google; t=1707839537; x=1708444337; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xSsYQg4U6OTgmMC3iEdz8zOlXRVYqFoVVBPQrIMDRro=;
+ b=tUNaMDNPZsIbcjKrGQqO5Y1qFPeVBf83uqj4zRrjgaCX/gaJun0a3IPduwUcrxAFcn
+ bcQuBowVLOxEbxYHycuP1AHlgLE/UQ7FkmVVgaYGle+nN4rQxNRKtnS2k659XbqZ6sYM
+ L/uloQjoW96XKmZyCu2BidNLUPWjRCybgu8jCZow8A6F53Nxs8mGfJmFhCa8vSBef/0k
+ Nk2GD45PrnlrJSbVFNDgShr/E86nzecPG1eDfGC+57L9cy/0N/P7yXauY8K7pOEZjpDx
+ PltIkFAnOQBzS8judj9RgUWDoJbktM24OSqNRUUCbzMVq9K2jqcvbgJIz04TrOtl58Vv
+ R/YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707839457; x=1708444257;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1707839537; x=1708444337;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=v++f+aX1lTrmT2lq+VRxWggWXpnz3nfrAMvD5brQAlM=;
- b=mm6c2AAWuvItE1XT1oWaeqgCT82D2cAAjTuiS2iAaM47WXt37SLLxaEU5CNpHPvwb1
- AoCzZdrvIPctwPhaXT9LR/H+NTH1BTWp65odYxgzWmCYSjABMDZoJ8D0eVGthH2+9KxY
- lBRi5WhVnzHPefNbIj3TdLLpXxqsPWq3/z+z+ojJT8Fb/hjX//zQe/aG2a9t9/VNrvbJ
- 0ZYRVEo2CkM2xV54hm3jk3NXAYDvRAjqjpzU3mOCqxxwDlXgaOhI2T3LFa4xjEoIMyo0
- FPHkVvhuDVmo6Mqm4OAyFZK5UHMHhgRs7GFQXOEOzO/Dx7eWPVFA+KSvghOEuaPk8/Jh
- 7hew==
-X-Gm-Message-State: AOJu0YwmIwei9p2gvgGgyS0FKjoVY9zq7/kcSJSn41Bbrf7fykocakpl
- SN2Mtk4CMNAZl1TQl05VQiqc81yVRXZJwGbxLU/bUE5Ln4SW2Y5cWW7RzEyzjVDfXhW0Y8sDJGx
- k9qU2JYt4KK8FkHrPuylbgMYuTTqiLAgtLJ85PA==
-X-Google-Smtp-Source: AGHT+IF0qBdkSRNjEwS6sKyQjxk+A/DPAd+gsN4bXYFfHl7qrQut7EVm69kPSIf+YFuqwnc8il/9hcRCkmmr3JmUgxE=
-X-Received: by 2002:aa7:c58f:0:b0:561:b28:e61 with SMTP id
- g15-20020aa7c58f000000b005610b280e61mr34278edq.31.1707839457598; 
- Tue, 13 Feb 2024 07:50:57 -0800 (PST)
+ bh=xSsYQg4U6OTgmMC3iEdz8zOlXRVYqFoVVBPQrIMDRro=;
+ b=BzS6Jr8uOXrXaZ47QlKnQqWy+dDe3FzBonzcUiG8wOeTZUarmD41hXsDXf9AGY9TW5
+ ZD8J7YbtT8imrkkXpCHfEj/cI1pB20uhv2MDAz8EWy+8gGgoM5Oj13lhWmvmjv+M8URt
+ BAyIBD3JtBWfW12c8l8fvj6YkaxaHYcHvaQWsFjbYe2+3gxQwj15qPQrgRucAJQd8hHD
+ RMQhaHEP+fZ3Dx11qmV4YkkZyeQbaTEwJqtJ8nIsUppI/6OWTpQsRYP5MGFGBBvMxkCk
+ 1jRvD5PrdH38SDOW4xH5BvqbdCiRxmsduQUZJUkCP7uQNy8KLIVhTW+iEmXllOfVtgwO
+ yP9g==
+X-Gm-Message-State: AOJu0YxQqfEN7rNuswucsllQyfynrX12DwwMjeBOrNOtCWMyLyEx6QuX
+ 73pmM7ARpS+tqD4RxbS/2lafIb3uLqf9+ZlrgODGH2NYbaoP+LoY6J78NO38yc/+LBc3jNBvlrr
+ z
+X-Google-Smtp-Source: AGHT+IFOE/362rT3tFPkAEif8VQ8x448o5mjliuJFm1o2cKSv0iocQHM2FhKSctOhWPrlTM3n0X6qw==
+X-Received: by 2002:a5d:5988:0:b0:33a:f689:1bf7 with SMTP id
+ n8-20020a5d5988000000b0033af6891bf7mr9251095wri.48.1707839537468; 
+ Tue, 13 Feb 2024 07:52:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXAG/VlkQjB9+ZR9V8U5bDEGjdaOL4GoCAFLfu+3iPA2uZzEGKuBIyg+8+VglZmEfUv6NrBWekiuT9/KOwV/DsugwlbGYOhCUELH5zmHRPlacdt9jfVrLUBpgdXxMdNipxE6iUdpRlTee/kfQapznE61A==
+Received: from m1x-phil.lan ([176.176.128.243])
+ by smtp.gmail.com with ESMTPSA id
+ m41-20020a05600c3b2900b00411d0b58056sm766181wms.5.2024.02.13.07.52.16
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 13 Feb 2024 07:52:17 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Gustavo Romero <gustavo.romero@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/4] hw/arm/stellaris: QOM/QDev cleanups
+Date: Tue, 13 Feb 2024 16:52:10 +0100
+Message-ID: <20240213155214.13619-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20240212234723.222847-1-deller@kernel.org>
-In-Reply-To: <20240212234723.222847-1-deller@kernel.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 13 Feb 2024 15:50:46 +0000
-Message-ID: <CAFEAcA--wZRZQUS1dJapAmgXG3Q4VvMW4GbyERpKUUa-BaUtjg@mail.gmail.com>
-Subject: Re: [PULL 00/12] Hppa64 patches
-To: deller@kernel.org
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Sven Schnelle <svens@stackframe.org>, Jason Wang <jasowang@redhat.com>,
- Helge Deller <deller@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,38 +92,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 12 Feb 2024 at 23:49, <deller@kernel.org> wrote:
->
-> From: Helge Deller <deller@gmx.de>
->
-> The following changes since commit 39a6e4f87e7b75a45b08d6dc8b8b7c2954c87440:
->
->   Merge tag 'pull-qapi-2024-02-03' of https://repo.or.cz/qemu/armbru into staging (2024-02-03 13:31:58 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/hdeller/qemu-hppa.git tags/hppa64-pull-request
->
-> for you to fetch changes up to a9314795f068515ff5925d0f68adf0a3215f6d2d:
->
->   hw/hppa/machine: Load 64-bit firmware on 64-bit machines (2024-02-13 00:44:06 +0100)
->
-> ----------------------------------------------------------------
-> target/hppa: Enhancements and fixes
->
-> Some enhancements and fixes for the hppa target.
->
-> The major change is, that this patchset adds a new SeaBIOS-hppa firmware
-> which is built as 32- and 64-bit firmware.
-> The new 64-bit firmware is necessary to fully support 64-bit operating systems
-> (HP-UX, Linux, NetBSD,...).
->
+Since v1:
+- Rebased
+- Split I2C reset as enter/hold/exit (Peter)
+- Added R-b tags
 
+Gustavo wants to access the QOM path of an input IRQ line
+from the NVIC, but since the device is orphan he ends up
+with this nasty path [*]:
 
-Applied, thanks.
+  -device ivshmem-flat,chardev=ivshmem_flat,x-irq-qompath='/machine/unattached/device[1]/nvic/unnamed-gpio-in[0]',x-bus-qompath='/sysbus'
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
+Add the missing parent so the tree is now:
 
--- PMM
+(qemu) info qom-tree
+/machine (lm3s6965evb-machine)
+  /gamepad (stellaris-gamepad)
+  /oled (ssd0323)
+  /peripheral (container)
+  /peripheral-anon (container)
+  /soc (container)
+    /v7m (armv7m)
+      /cpu (cortex-m3-arm-cpu)
+        /unnamed-gpio-in[0] (irq)
+        /unnamed-gpio-in[1] (irq)
+        /unnamed-gpio-in[2] (irq)
+        /unnamed-gpio-in[3] (irq)
+      /cpuclk (clock)
+      /nvic (armv7m_nvic)
+        /NMI[0] (irq)
+        /nvic_sysregs[0] (memory-region)
+        /systick-trigger[0] (irq)
+        /systick-trigger[1] (irq)
+        /unnamed-gpio-in[0] (irq)
+        ...
+
+[*] https://lore.kernel.org/qemu-devel/20231127052024.435743-1-gustavo.romero@linaro.org/
+
+Philippe Mathieu-Daudé (4):
+  hw/arm/stellaris: Convert ADC controller to Resettable interface
+  hw/arm/stellaris: Convert I2C controller to Resettable interface
+  hw/arm/stellaris: Add missing QOM 'machine' parent
+  hw/arm/stellaris: Add missing QOM 'SoC' parent
+
+ hw/arm/stellaris.c | 47 +++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 7 deletions(-)
+
+-- 
+2.41.0
+
 
