@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9ECD853B62
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:43:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1908853B68
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:44:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyfN-00033K-1t; Tue, 13 Feb 2024 14:42:05 -0500
+	id 1rZyfe-0003u6-W7; Tue, 13 Feb 2024 14:42:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfL-00033C-8w
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:03 -0500
+ id 1rZyfU-0003PE-DZ
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:12 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyfJ-0006K7-Gk
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:03 -0500
+ id 1rZyfN-0006KW-EF
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:42:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=1XhA0oV5S1LQeoJiXw+URVI0N9FdYJbeufHJsP1rm8U=; b=AXisTelhoXFLKBBLDAM7uVd37A
- 5rmlSv8P1P/GN2x2xJR9zzWPPi6v7qsS+kQ7MWMXZRXah29w4ZllxyQ+c+697ybrobSVpOC4v/9Lk
- 9uCFSqm7rlxDi5IM1m59wv+9kh5HMk2WsPMHyHVPyndGlCONdkJvqFybvH+oc7FwFvBC9KIMJLxLA
- 8Yza7vPQrqsX6kdhB+e8rkj1vlMfce1MQ4ddQo9cccxkB8S30zHKRnvS3lW2GAWs6fY9zWehC4SHn
- I73N68UjdDaVk70FDembGsjjZ2UeKVPHMjdgly1KSA+XhpLk7MtvQQo1Ga68qaIawia3i9B6Oh6b8
- Tye17c9/aPK20nLqfuhPkXf+Cr473S1L2WKC2LRF1VdNo1qe2Bbfk/SXolNOox5EyFWWiiz7gb+r/
- OPWNqWrS2b1QHkukjjjnfe3SjjvCXO9XqCDapnjpo4y3NK8FIUVSOFBvB84E+P2aojs7G7lMSt85w
- tUKNefQfQpWYzOD3Jq2qN2WywuURYx/Vrv6HhG0MFSf70TqNko9b7MD3iNgJNGEdtlI9I3mhJqoAQ
- IZxJl9axUJmhuZv3BUTaFPsh6I0hFZqAALfkGrGdvSP0RC14oD5h3NNYb6/Z1i9vqZQRHhAZbhjXA
- V7pLKOuRH/uuqsEpwiLHvyA9qoXm9xj0ohP7lTIxw=;
+ bh=6uG9Tx27iG+4/+h2LAjDcJhD3VB945hLmfnIevydm4A=; b=k4FJG7GJUS+IFXCUpZ4kx8x8km
+ +4AKVcuRdmbR7pahbYjubLx1RF8mga9pTC9uX/7yAx9zY/fhO8sk6xe++5HepfxAK3xte/ULFxYJR
+ kJNjCIPFfF3A7Aj6hBuKZKF6pmqD5nZYl1XNzDBaQEMTgZac+dClt4q/zdebv4NraVjShYANRADQn
+ 7kPwMODIUqAMT0UbZkc3tDJjs5xocQBY0SprMFageu58rC9V3c8S/RR+NDzcp4kSHVMJ/c91bSNiv
+ 4BO7uSJMUpSwp8FF6al3mQZQPdfuXW2v6+bhbcwap058qnMz8oFTv6vdtFfX7yAiuV1I9NY6+x0J7
+ 6wqlkpj5Na9tarFp03NFi+NfqqZKcQsK5oKcb6zAjHiB21S+MzQThpL4Ec9+e3bsoFIQ+IXIerRoC
+ FUtaX+Ofi10pQSYR5OsfLu3scaK2M1JlnLUtcpCxJbqjp+9/UCEi9x3wank7uCSXvqIfPhVn9WZmc
+ yvtxxMBlNdcImbl+elqj50BtJIpJjqiE7BIYNo+YKsveYEa4nFUiCaSHjViOGdJtiHHVgcH1aZaj+
+ 0KrfKNXAz52pvgekl1/ne6npGrVLtcGee83pVxegmmYJ6irXjx3ulIXyWTIJ4q6wFnZ6KSKzPd7wG
+ B7RNQky1fcicbl6W7NDOdex2sqHBY98Zt5qEr/+0U=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyeT-0008m4-Ph; Tue, 13 Feb 2024 19:41:10 +0000
+ id 1rZyeU-0008m4-QK; Tue, 13 Feb 2024 19:41:14 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:39:38 +0000
-Message-Id: <20240213194052.1162753-15-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:39:39 +0000
+Message-Id: <20240213194052.1162753-16-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 14/88] esp.c: introduce esp_set_phase() helper function
+Subject: [PULL 15/88] esp.c: remove another set of manual STAT_TC updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,190 +77,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is used to set the current SCSI bus phase in the ESP_RSTAT register
-without affecting any of flag bits.
+Following on from the recent changes to when the TC is updated, it is now
+possible to remove another set of manual STAT_TC updates so that its state
+is now managed within esp_set_tc().
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-15-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-16-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c        | 51 ++++++++++++++++++++++++++++++--------------
- hw/scsi/trace-events |  1 +
- 2 files changed, 36 insertions(+), 16 deletions(-)
+ hw/scsi/esp.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index f08b816aba..3fc7417d7c 100644
+index 3fc7417d7c..6fd5c8767a 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -183,6 +183,19 @@ static uint32_t esp_get_stc(ESPState *s)
-     return dmalen;
- }
- 
-+static const char *esp_phase_names[8] = {
-+    "DATA OUT", "DATA IN", "COMMAND", "STATUS",
-+    "(reserved)", "(reserved)", "MESSAGE OUT", "MESSAGE IN"
-+};
-+
-+static void esp_set_phase(ESPState *s, uint8_t phase)
-+{
-+    s->rregs[ESP_RSTAT] &= ~7;
-+    s->rregs[ESP_RSTAT] |= phase;
-+
-+    trace_esp_set_phase(esp_phase_names[phase]);
-+}
-+
- static uint8_t esp_pdma_read(ESPState *s)
- {
-     uint8_t val;
-@@ -316,9 +329,9 @@ static void do_command_phase(ESPState *s)
-              * complete before raising the command completion interrupt
-              */
-             s->data_in_ready = false;
--            s->rregs[ESP_RSTAT] |= STAT_DI;
-+            esp_set_phase(s, STAT_DI);
-         } else {
--            s->rregs[ESP_RSTAT] |= STAT_DO;
-+            esp_set_phase(s, STAT_DO);
-             s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-             esp_raise_irq(s);
-             esp_lower_drq(s);
-@@ -394,7 +407,7 @@ static void handle_satn(ESPState *s)
-         s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
--        s->rregs[ESP_RSTAT] = STAT_CD;
-+        esp_set_phase(s, STAT_CD);
-     }
- }
- 
-@@ -439,7 +452,7 @@ static void handle_s_without_atn(ESPState *s)
-         s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
--        s->rregs[ESP_RSTAT] = STAT_CD;
-+        esp_set_phase(s, STAT_CD);
-     }
- }
- 
-@@ -457,7 +470,8 @@ static void satn_stop_pdma_cb(ESPState *s)
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
-         s->do_cmd = 1;
-         s->cmdfifo_cdb_offset = 1;
--        s->rregs[ESP_RSTAT] = STAT_TC | STAT_CD;
-+        esp_set_phase(s, STAT_CD);
-+        s->rregs[ESP_RSTAT] |= STAT_TC;
-         s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-         s->rregs[ESP_RSEQ] = SEQ_CD;
-         esp_raise_irq(s);
-@@ -481,7 +495,7 @@ static void handle_satn_stop(ESPState *s)
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
-         s->do_cmd = 1;
-         s->cmdfifo_cdb_offset = 1;
--        s->rregs[ESP_RSTAT] = STAT_MO;
-+        esp_set_phase(s, STAT_MO);
-         s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-         s->rregs[ESP_RSEQ] = SEQ_MO;
-         esp_raise_irq(s);
-@@ -492,13 +506,14 @@ static void handle_satn_stop(ESPState *s)
-         s->do_cmd = 1;
-         /* Target present, switch to message out phase */
-         s->rregs[ESP_RSEQ] = SEQ_MO;
--        s->rregs[ESP_RSTAT] = STAT_MO;
-+        esp_set_phase(s, STAT_MO);
-     }
- }
- 
+@@ -513,7 +513,6 @@ static void handle_satn_stop(ESPState *s)
  static void write_response_pdma_cb(ESPState *s)
  {
--    s->rregs[ESP_RSTAT] = STAT_TC | STAT_ST;
-+    esp_set_phase(s, STAT_ST);
-+    s->rregs[ESP_RSTAT] |= STAT_TC;
+     esp_set_phase(s, STAT_ST);
+-    s->rregs[ESP_RSTAT] |= STAT_TC;
      s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
      s->rregs[ESP_RSEQ] = SEQ_CD;
      esp_raise_irq(s);
-@@ -516,7 +531,8 @@ static void write_response(ESPState *s)
-     if (s->dma) {
+@@ -532,7 +531,6 @@ static void write_response(ESPState *s)
          if (s->dma_memory_write) {
              s->dma_memory_write(s->dma_opaque, buf, 2);
--            s->rregs[ESP_RSTAT] = STAT_TC | STAT_ST;
-+            esp_set_phase(s, STAT_ST);
-+            s->rregs[ESP_RSTAT] |= STAT_TC;
+             esp_set_phase(s, STAT_ST);
+-            s->rregs[ESP_RSTAT] |= STAT_TC;
              s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
              s->rregs[ESP_RSEQ] = SEQ_CD;
          } else {
-@@ -575,7 +591,8 @@ static void do_dma_pdma_cb(ESPState *s)
-              * and then switch to command phase
+@@ -550,10 +548,8 @@ static void write_response(ESPState *s)
+ 
+ static void esp_dma_done(ESPState *s)
+ {
+-    s->rregs[ESP_RSTAT] |= STAT_TC;
+     s->rregs[ESP_RINTR] |= INTR_BS;
+     s->rregs[ESP_RFLAGS] = 0;
+-    esp_set_tc(s, 0);
+     esp_raise_irq(s);
+ }
+ 
+@@ -592,7 +588,6 @@ static void do_dma_pdma_cb(ESPState *s)
               */
              s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
--            s->rregs[ESP_RSTAT] = STAT_TC | STAT_CD;
-+            esp_set_phase(s, STAT_CD);
-+            s->rregs[ESP_RSTAT] |= STAT_TC;
+             esp_set_phase(s, STAT_CD);
+-            s->rregs[ESP_RSTAT] |= STAT_TC;
              s->rregs[ESP_RSEQ] = SEQ_CD;
              s->rregs[ESP_RINTR] |= INTR_BS;
              esp_raise_irq(s);
-@@ -681,7 +698,8 @@ static void esp_do_dma(ESPState *s)
-              * and then switch to command phase
+@@ -699,7 +694,6 @@ static void esp_do_dma(ESPState *s)
               */
              s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
--            s->rregs[ESP_RSTAT] = STAT_TC | STAT_CD;
-+            esp_set_phase(s, STAT_CD);
-+            s->rregs[ESP_RSTAT] |= STAT_TC;
+             esp_set_phase(s, STAT_CD);
+-            s->rregs[ESP_RSTAT] |= STAT_TC;
              s->rregs[ESP_RSEQ] = SEQ_CD;
              s->rregs[ESP_RINTR] |= INTR_BS;
              esp_raise_irq(s);
-@@ -810,7 +828,8 @@ static void esp_do_nodma(ESPState *s)
-              * and then switch to command phase
+@@ -829,7 +823,6 @@ static void esp_do_nodma(ESPState *s)
               */
              s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
--            s->rregs[ESP_RSTAT] = STAT_TC | STAT_CD;
-+            esp_set_phase(s, STAT_CD);
-+            s->rregs[ESP_RSTAT] |= STAT_TC;
+             esp_set_phase(s, STAT_CD);
+-            s->rregs[ESP_RSTAT] |= STAT_TC;
              s->rregs[ESP_RSEQ] = SEQ_CD;
              s->rregs[ESP_RINTR] |= INTR_BS;
              esp_raise_irq(s);
-@@ -904,8 +923,7 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
-      * transfers from the target the last byte is still in the FIFO
-      */
-     if (s->ti_size == 0) {
--        s->rregs[ESP_RSTAT] &= ~7;
--        s->rregs[ESP_RSTAT] |= STAT_ST;
-+        esp_set_phase(s, STAT_ST);
-         esp_dma_done(s);
-         esp_lower_drq(s);
+@@ -952,7 +945,6 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
+          * completion interrupt
+          */
+         s->data_in_ready = true;
+-        s->rregs[ESP_RSTAT] |= STAT_TC;
+         s->rregs[ESP_RINTR] |= INTR_BS;
+         esp_raise_irq(s);
      }
-@@ -1065,7 +1083,7 @@ static void esp_run_cmd(ESPState *s)
-         trace_esp_mem_writeb_cmd_iccs(cmd);
-         write_response(s);
-         s->rregs[ESP_RINTR] |= INTR_FC;
--        s->rregs[ESP_RSTAT] |= STAT_MI;
-+        esp_set_phase(s, STAT_MI);
-         break;
-     case CMD_MSGACC:
-         trace_esp_mem_writeb_cmd_msgacc(cmd);
-@@ -1133,7 +1151,8 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
-                      * The last byte of a non-DMA transfer has been read out
+@@ -997,7 +989,6 @@ static void handle_ti(ESPState *s)
+     if (s->dma) {
+         dmalen = esp_get_tc(s);
+         trace_esp_handle_ti(dmalen);
+-        s->rregs[ESP_RSTAT] &= ~STAT_TC;
+         esp_do_dma(s);
+     } else {
+         trace_esp_handle_ti(s->ti_size);
+@@ -1152,7 +1143,6 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
                       * of the FIFO so switch to status phase
                       */
--                    s->rregs[ESP_RSTAT] = STAT_TC | STAT_ST;
-+                    esp_set_phase(s, STAT_ST);
-+                    s->rregs[ESP_RSTAT] |= STAT_TC;
+                     esp_set_phase(s, STAT_ST);
+-                    s->rregs[ESP_RSTAT] |= STAT_TC;
                  }
              }
              s->rregs[ESP_FIFO] = esp_fifo_pop(&s->fifo);
-diff --git a/hw/scsi/trace-events b/hw/scsi/trace-events
-index bdd4e2c7c7..d72f741ed8 100644
---- a/hw/scsi/trace-events
-+++ b/hw/scsi/trace-events
-@@ -197,6 +197,7 @@ esp_mem_writeb_cmd_selatns(uint32_t val) "Select with ATN & stop (0x%2.2x)"
- esp_mem_writeb_cmd_ensel(uint32_t val) "Enable selection (0x%2.2x)"
- esp_mem_writeb_cmd_dissel(uint32_t val) "Disable selection (0x%2.2x)"
- esp_mem_writeb_cmd_ti(uint32_t val) "Transfer Information (0x%2.2x)"
-+esp_set_phase(const char *phase) "setting bus phase to %s"
- 
- # esp-pci.c
- esp_pci_error_invalid_dma_direction(void) "invalid DMA transfer direction"
 -- 
 2.39.2
 
