@@ -2,137 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B52C852FD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 12:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4460F853004
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 13:01:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZrJF-0004x1-0J; Tue, 13 Feb 2024 06:50:45 -0500
+	id 1rZrS8-0000MU-Fk; Tue, 13 Feb 2024 06:59:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schalla@marvell.com>)
- id 1rZrJE-0004wm-0B
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 06:50:44 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]
- helo=mx0b-0016f401.pphosted.com)
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1rZrS4-0000M0-Ka
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 06:59:52 -0500
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schalla@marvell.com>)
- id 1rZrJB-00075c-Sh
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 06:50:43 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
- by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 41DAHJFj023388; Tue, 13 Feb 2024 03:50:38 -0800
+ (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
+ id 1rZrS2-0000DM-5Q
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 06:59:52 -0500
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41D9HkN2026936; Tue, 13 Feb 2024 11:59:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=kEPSp0fVNYiXHiIDy4o25Jht13TjGZJpohNAxX9EJwI=;
+ b=HqyVe0gG4fGyHaCsE+NwOdrRY/UOhlnDXXS4Go7hj1gr3cjBlgn1OmuBHbAXuHoM8A3X
+ 0bSlHcZRLpMy5cH6sbLEJ4v0GIvYYg4agFpPhibMOfxnIy+qz31hiycljaB0I+CRCynv
+ ldyOS7yUlxrBzzBEY6Y0L8MZwhhb10SDLvsQlwowGcYDc4uNJwCDE8R8ZdMDPm28f77I
+ l6nLTpWp6Z/dVbFilbhGXniftAHCE8LDoPzF9iCA4Z3oa481X4ydmyCUxZhHp8o4DL2P
+ CpB6Aix7UuN5EqGCWPolT9xwIXkpPE8ZdqP41ewxOD37z6gXYhwI0+yUgi/x7Df3hFyG TA== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w80kvrvt0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Feb 2024 11:59:46 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 41DBLLKN014988; Tue, 13 Feb 2024 11:59:45 GMT
 Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
- by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3w67cpg658-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 13 Feb 2024 03:50:37 -0800 (PST)
+ (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3w5yk6y5bv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Feb 2024 11:59:45 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aeARf1Qk8ZS7lvr4sFYeWrJIGrltJ7B+4IU2gWG5xNAmztXVsEm6QPfRg9ZjhqdLRneFsaqq2DQN9HIkyau/emS4TazVXVn7lx1fKAdDRwsk/AsR/naxkqQzHnoBVLCGZmnqR69OJrQvNRh844LDi3O6POSi+QxxeZYZMbGBlYMULJIo6SsCL2kB52CFJFzUPKCz/cLm7+0QQ5ZjRgsBsvEnjxxj69PMouCS+JIaSCykb+IYPp9LPwFDNCHWN6BE2O/IADVOvsSUJec3Jjh+dznXF2xAfrB7ASBkOWTjAWptjNt8uI8l27pob8vuULfPr74eaexBh4yDCPd1/x7C4g==
+ b=BIIhUO5mt7P6rgOG0fhixOq7N3YAXiTV8yz8COgBhpjsJs8iwzS3cfK8redXq+Ix08VIz+frE3c5yTMYRuWvUhv+yZKgF5PbIOiwO2sxr35m0P3XwdGzugzATysRW+5lC/XuG05wzdVwPkTA8UtRvhJdbUuNnyuUce/U2H4UTI1LemPiONjhyrzahjWxxbhz2VDuly6u7v+73d8hPqLvhXONMq2+VtnMqoubClVAAhe0ilUD9jSpNU8VnTvTScuAm4H7+j7bjiS1/bCY69MSxCUJPYel/YHxabH48I9DFX2svf12/NDv48GAdvvc0agWBA3xyDeK0wUllaVnnIfTQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fkqk8UVtwSuxWmbRaPDF3fVkJt92pfIEi9Mp09OMGCs=;
- b=NWTchXpXRm/z/90pUERAo8BurbXGCL/VVgBHUEw59V83fRxjort+J4Du8o7ZLqwtYyNWd0LyfrRwwQ/qgJd0pblKPjtPIkBu6ui1SIklAq5zQMJmLo7kETRu/1vw0JtyNge+3nn/n//XGeP6cSGsRdbwXQsGz8s9bMX6ia4KyEq+R9Sx5DFeqMHASWE41fxDgmV7jKJbSE6aSd43BB6lveL+dEBwipLu9ic//eE2VwzhkLF0bvNbkyTtzY4x28EwCTVIecyrC//UARiimUxwOHyWSbDP+yOgfKSwAsN1xBr5SkT3sdRhLene15Q/lzqY7iBYfAiqEsxWUmlvQMF+sA==
+ bh=kEPSp0fVNYiXHiIDy4o25Jht13TjGZJpohNAxX9EJwI=;
+ b=Hq4Pqv5/pHEnLQr7n+b1Hv+cJz+y6Ow/63e1qDYiA/S9b4cR7K8V2b8d/gKKDTUiP+jKH9V8giM2PV1ygIpESkCIFa6BzKzfDj5ufzGj9w+D1H654IIGKiQ4g8HH/qJ7qFDou5+A7qUqHWSf25yoj+sPuaBr73hzF+5yXaFBydzv2xpQFc6V88UWZmjr8TtnCpN+4FgXIVkBQ0K9qMHEbzwQXoWBk5RwFx+3yJpjx04/JV98viELSzj9B49PT8WwpkwSsZhq1AjISp02jEbcJ9NX6ogh79YdRTdrAJ4NFPZ5KtrYvkyTmcoGfYt5tZ1GF96XXA5Tp50U9aQ2kdik9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector1-marvell-onmicrosoft-com;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fkqk8UVtwSuxWmbRaPDF3fVkJt92pfIEi9Mp09OMGCs=;
- b=mIvrGRUfzNDfZaKtCn0LhaIpozuTaQGseCviNSqbHjDcUu7KhT8nk+D0QkvalKMdTzvya55L5mxjTyQIJaXe87ccksse3cgDE+/LQXEB2nFiW7vGDqw1Z4uav4f1yRuF5jKVfisqx7qGLIq/7MkfUyRoMM5I/mFKwAR0ktTvQZo=
-Received: from DS0PR18MB5368.namprd18.prod.outlook.com (2603:10b6:8:12f::17)
- by SN7PR18MB3885.namprd18.prod.outlook.com (2603:10b6:806:10d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Tue, 13 Feb
- 2024 11:50:35 +0000
-Received: from DS0PR18MB5368.namprd18.prod.outlook.com
- ([fe80::aa61:cd94:ca26:14af]) by DS0PR18MB5368.namprd18.prod.outlook.com
- ([fe80::aa61:cd94:ca26:14af%7]) with mapi id 15.20.7270.036; Tue, 13 Feb 2024
- 11:50:34 +0000
-From: Srujana Challa <schalla@marvell.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Vamsi Krishna Attunuru
- <vattunuru@marvell.com>, Jerin Jacob <jerinj@marvell.com>
-Subject: RE: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci queue mem
- multiplier
-Thread-Topic: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci queue mem
- multiplier
-Thread-Index: AQHaXYh0jRmGyuikgEmPDkiM/Dgp47EIGPYAgAAIAQA=
-Date: Tue, 13 Feb 2024 11:50:34 +0000
-Message-ID: <DS0PR18MB5368A9931C4B4E8E8E866066A04F2@DS0PR18MB5368.namprd18.prod.outlook.com>
-References: <20240212075233.1507612-1-schalla@marvell.com>
- <20240213054513-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20240213054513-mutt-send-email-mst@kernel.org>
-Accept-Language: en-US
+ bh=kEPSp0fVNYiXHiIDy4o25Jht13TjGZJpohNAxX9EJwI=;
+ b=Bm8S7FdcqDFTs78mxg4mD+tnn++tOIMyNpbBMGK0ZoRYncr0jQb3sxmAgAlF9kR7cX9ylw066g5eAG529PQN5dPi0rby8MgYASiLljfz7anN4Bp/Haz0ycjleNjYciEjfiYoTEfsXvFEbosxJUeQV2lnrHJQhKd97Sc6euvtJNQ=
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
+ by CH2PR10MB4264.namprd10.prod.outlook.com (2603:10b6:610:aa::24)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.40; Tue, 13 Feb
+ 2024 11:59:41 +0000
+Received: from PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::3356:4cc1:701e:dde3]) by PH0PR10MB5893.namprd10.prod.outlook.com
+ ([fe80::3356:4cc1:701e:dde3%4]) with mapi id 15.20.7270.036; Tue, 13 Feb 2024
+ 11:59:41 +0000
+Message-ID: <2540a4d3-c370-407f-8b97-9100615d2920@oracle.com>
+Date: Tue, 13 Feb 2024 11:59:34 +0000
+Subject: Re: [PATCH RFCv2 0/8] vfio/iommufd: IOMMUFD Dirty Tracking
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR18MB5368:EE_|SN7PR18MB3885:EE_
-x-ms-office365-filtering-correlation-id: 46b35429-c4e9-4969-ac94-08dc2c89fd1b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 7b6QtaB9On3/9ZscGLNm9THDQXHKrHYYfCLcMlYwrL+Ba3Sn0yR9ANNcgZa767rm4vT63H3kZ6roe7RYgA+A5dNIenjV4C+zk+5qrLABDEam4iaeWFiN4VmpzbO7o2d97wVnkjeSEGofM5X2LJSS5ZfKJ6TN5VQ8RQre3zHNF1ADXO2HdDpWZ+MJ3mb+dUE5JEzBixrgT+PnMNfj9joS6M7uhxBo9UnLeHfGfBUiWAicD6aEK7kq+MmGMCE7jAdwYfwXFXUXBxvpHJks8A7GBqCfG0gkemdEjsyHoh4pyJjtQB2ZTqIDyEQvwm0b/6AgpX/E8LqOvMYkqA87q+dLxdCnaH66yNzblr+AO1655+NWCydR4z0TPTHlZX/tJDXiV0JIF3SiE0He7rSIDL03ajSwnzyRkMyvRkJWKYBSH0QxSNaKHIIQOCI/pVPP8l2bkT5dZoDDyoDYFIFad2dkL6cZBSm6zWODYCER0+slAgnmFoQhEH/gjH9yFEAin/YGhx6XyqHFzZqssse9+gXkD9RqL1EshyIyCE1jjMahqZRi69Sw+KgjX09ANqDjnb9o9e9h0QpUCjbyRDdb/RzoWLJcq5qPqPEHw1epdtBj1uLFcrLP6g2BI+xw+oqV5PEV
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR18MB5368.namprd18.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39860400002)(366004)(376002)(136003)(396003)(230273577357003)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(6916009)(4326008)(8936002)(66946007)(76116006)(5660300002)(52536014)(66476007)(66446008)(64756008)(66556008)(55016003)(8676002)(2906002)(86362001)(122000001)(33656002)(38070700009)(71200400001)(54906003)(26005)(83380400001)(41300700001)(107886003)(7696005)(9686003)(38100700002)(316002)(6506007)(478600001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+Kvsxpau32rwnU9YAB6zPyvmv/sIk1Veez/jLcQ2N92GvrgYi37kMFmN7+xx?=
- =?us-ascii?Q?O/NNFoxv5Q7EViJb8z2rwNmJAghGbojxlSxMatLwYLt0iuc4GCJjsE+4KHJy?=
- =?us-ascii?Q?F82U8dwmGvNaWTAriVHLXCv3H6o6gpFe0qi+Un08G1SyrxrKEx3bkakLCbkH?=
- =?us-ascii?Q?9YMf1IPILheG4XbIlGmKcY0dq0cbFh+qL4bEgp0FWEdmwbsTenNLg9dXV7XF?=
- =?us-ascii?Q?zTKu5qe+qb7TcTyWhujiRMFY60csI6SmkYtSVOrP0UUjyOHp0BF9i5mYrAxK?=
- =?us-ascii?Q?KbvrEqJEqpGdBSnLbt6BkjFEPudRAu2+lxMqzsIkGj+311H/+tWE44NJyV3l?=
- =?us-ascii?Q?FipL+f5w4tWUc2jUid5OefH2/EXdA9V/HozVYqRcQuRQ6YpU85JmIT7XZoVa?=
- =?us-ascii?Q?klyxLXgMgtzVC7rW4rSvWQld/dRV8ipW7R8Y9HGPjQn/ZGBnTsftgt3nav8L?=
- =?us-ascii?Q?8mlBac+BpU1ajC9Pl1HQBqLqlIrs1S5DSSr1Qd2sIYVy6dMm6gboMEdXAa0z?=
- =?us-ascii?Q?T/xAsz8lO+qF63O0n6cL3GiaX/hj7GDIk9oF8rGwWwxwP6AzpgKhIk5UvkF+?=
- =?us-ascii?Q?NTBHDnFEK9Wgkgb2Jtj1DmhZUO8KGN6yfzcM3TkOdLlmUKIY8R+LlDCKBCTs?=
- =?us-ascii?Q?OHSVHipjXv7z6vGITBDdnfuxpKjrdFcyY7j0kzCD3+esSUkEGmW/v/+nKmVy?=
- =?us-ascii?Q?PntZCRNeV0VpGNCVb6iOQ+yNVxA7qCG2j4Ifc99GN3lhA3imjCRGqlJsGDBz?=
- =?us-ascii?Q?MEmveX0Jnp83a8hy+36ckCd181gr/04XsVgaeIsWq66iHzyNWxuumAPfpo5h?=
- =?us-ascii?Q?krzSRzhgz+htN9yAzXKxZHcUbMYg8g6mPWP2Y3pAXlRfrLUqo3AnnfSZa0Jp?=
- =?us-ascii?Q?ZYy5WXzXTSiV/1S+4cxQM2SjEt2dy8Kyps3VdkBnoQwiJ9Lr53r6BM6UR3Nw?=
- =?us-ascii?Q?u/0o0FTM+D8vbJLS6ypbg2hwoxXD+uxqONtSyOxCtxziSJYwtyimv3vC0P4l?=
- =?us-ascii?Q?BG+QbIh7lXYqhXGfflLLsD5lhPAkxxeFonGGOUiTILYbyQ+LVukRlyCMSy0P?=
- =?us-ascii?Q?8tPO1dQFH9O8xFvaiiv2UMFbVEN+reiFUsGnO92XHF4sxE4HasdHAS55Kkef?=
- =?us-ascii?Q?Rass54sJ5V7/hrfMz+gf9YxRc46KNj3Kscdx7bMpoK606SfUi4Gol4ivViCo?=
- =?us-ascii?Q?kN6PonALleFGby37ZakQd7NeKMsaaDpByrc9IqhZP57Km9uVltfCjeSstR5C?=
- =?us-ascii?Q?kdWq8FP0SfvaAQp8G3DF1g4z/eksvs0UvfaKslj63//SjC0BonW5Anpy0gQK?=
- =?us-ascii?Q?1EMe9B7mM4tGDFT3gO4bZCLZFmgUlpZIJS24QV2U+H1LmrsTHcraHuNVFdPL?=
- =?us-ascii?Q?Edd1MLG+TYIefFwTQgug3PsBxLNSwgcgMJ3bavGlbmU13XE2C26RDfvII+Vs?=
- =?us-ascii?Q?8TCwb4w5KFymSu8SUwZ8FDKXm5ZyxIhIULq7ZKpBMc7k+X9cXurL/LZe3sIi?=
- =?us-ascii?Q?we6n2EwGUfNyjd6l5ngQHd5wo90bUE7JvvYm2w7k+c3cDO0qMi0zrIFwvChf?=
- =?us-ascii?Q?3Vn+SHZQh4o8Mx+QKvo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
+References: <20240212135643.5858-1-joao.m.martins@oracle.com>
+From: Joao Martins <joao.m.martins@oracle.com>
+In-Reply-To: <20240212135643.5858-1-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR10CA0033.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:150::13) To PH0PR10MB5893.namprd10.prod.outlook.com
+ (2603:10b6:510:149::11)
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|CH2PR10MB4264:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a10ba84-bbb7-450d-ec04-08dc2c8b42c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: D2SlAJ5XGc4Lu+eJ/WQVMxodo5pkI248x0pxoq7JXMkPc55KVSn1pV24qxrsFbPd7mVHTZOTA6woT5+j9avO2WPigD7L91ouZ9j876EgJnormIDnJ23ormeKUI9TxdxcGN7j15HQv09sScoBMaQvSSGf7Nd37HWYMTzCMlpbw34De0PZK+BBLoVnnhg6U+dzaW+g2ydrj3zq+twIH78+U62/478lZbkgKrP5NxnBj08Xypb7s5O0XIYFTleNOy6aUQ+UO4tCqvg6d2hGMRWwvjpDr41DOLnZbKmbkSLCUQF51F0H0SqQq11pJFBBzTJjDUBeOZURQ1QNBREcVISBNHRLxynyZnJWFn9YpJmny+XMBBuK2SVe2d2qiUiKx8MpBXbHogsocCC4CbEz2lC65bKsmlYVboTVfSO4VCZ+f3fGhVGQATsT0V6qaQBIYeBT80Uh1ldlm1eBxj1mRHZLicbqC2uiz940ZiQ+Ve+Urer4JSzjqiZGNCzA99BfRdTPPQnwTueXii0M4Jw9wTqu6H9QUjXVEQ4tCjJMbGp8wGk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(376002)(366004)(346002)(136003)(39860400002)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(7416002)(8676002)(8936002)(5660300002)(66556008)(66946007)(66476007)(66899024)(6916009)(4326008)(2906002)(36756003)(31696002)(86362001)(38100700002)(83380400001)(478600001)(6666004)(54906003)(53546011)(6512007)(6506007)(6486002)(966005)(316002)(26005)(2616005)(41300700001)(31686004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NmlHc3AyaU81UUFZeWJnd3VnN0k0V3FsWEVBTUJyRVprTzlEckJQYURKQkd1?=
+ =?utf-8?B?MUZwUW9rL1lkK0dybjRXVVo5MzRFdUdiaDJtNmhuVFFQS3hDSldOa0UyeVox?=
+ =?utf-8?B?em5SZGkxQ3Uyb005My9razdMTlNyaVY4Sk9GWnc4MkpTVmloN0JsUS8xVGs5?=
+ =?utf-8?B?ZVpIR1VvazBQaGMwR042YXp6Vk9XK1pEbTRLZ2N1RXlFVUdnSnkwVkUwZEU3?=
+ =?utf-8?B?TDRIQW1BOUFMOHd6WE5iZGdLNml1blREeFdZNVpGMjJJQVVYa3lXVURVNmdx?=
+ =?utf-8?B?QjNlL0h5NUhiazN2azhWcUhwL0RVVEwvZHo1eSs4TFhsZEVFREl2NXl0SGw1?=
+ =?utf-8?B?cGIrMFZSbzlydHlaa2ppNDBhWGNsMmc3ZkNJUjNVUWhieDlpNzZKaVhpK3hv?=
+ =?utf-8?B?NU5yZmR4VlljQ0hPVlNJSndJMFNjM0VCTjFuMXRQTGtoM1RtTjJXUnNKRFFy?=
+ =?utf-8?B?V1dqY0N5S2JMWlYyUlA4dU5MbDA4Ukl5MUJsUWNSM0VWNUt0dDRmVS9XMksx?=
+ =?utf-8?B?N09pSGRtWTR0a2JWVnB3SUxOS2pMNE5IMjJLV2NXRUt6SC9FRnludzJQVE9R?=
+ =?utf-8?B?eWtIY3V2bmhlNVFaZnlCeElLb0dKOXlxSXp6VlJqNUtQQXF2ai9qL2JqNWVL?=
+ =?utf-8?B?SzZPUHg1Q1FrNmw1MHI2bTFhVHVQR2lzdUUzRi9JckwxUE1NelRLblMvZzYz?=
+ =?utf-8?B?aVVERTdqYm14U3dFY29tckFlK3pLaG9Xb3Fzb3hRQ0U2NS9TUEFhb0hjRWN5?=
+ =?utf-8?B?cVhndmFrOCtEYkVpbDZIRUhZYi9xcHlJa1MvcjBuVUUrYTBlL2pQSUh0YXJ1?=
+ =?utf-8?B?VU1hWTVwMjVoYXJHTWRXMEtzelZDc3d6eWx6OHNhY2s4enVTSnlLMVhVOXZi?=
+ =?utf-8?B?bmVwUXJxRTBiOUdYL1ZVaUJoT1J3MnRRajRqU2wveUJmbkRpRGFSZ1NweTJm?=
+ =?utf-8?B?cVpvM0FZMllaSEtXUzBva08rakt1YTBLS1B1eHJ3Zk04Q084aUJ5NFVpdk1k?=
+ =?utf-8?B?V2IyTzBjNlNHUGVDOXJQcHUzM2RRYzN4K3dYSnpKUmtYN3R1aDlUdGJqYnQ3?=
+ =?utf-8?B?QytaZ2t2QjZCU3F4S0FwYWpKNWhSNk05N2lxa2FVOVljczZSRHZsYzlveTg1?=
+ =?utf-8?B?cjV1QjdxR2ZFRE9pd3NYcDBSWGNMdFpncVVMOG8yM3lDWjZ0WUxZc2NUa0sx?=
+ =?utf-8?B?S3AyUzFBdENJcjhnb3ZiK0VNTnhvSGpEaDVIZmo2RW52aTNVRUVrTXluQkJW?=
+ =?utf-8?B?SStGMDFoc1lMWkhkMG5mWFNCYnpYVUVYbnFnS0JKUlVsU2JCQmdaSVlGRjFj?=
+ =?utf-8?B?YnVWdzhPeGpCSEN5VUlxak51Vm1ZcVZWc0l5NnQrcGFDL1B6RENNL3ZXeVBW?=
+ =?utf-8?B?aERjNEY1VDFKSWVSUHZSeUxKM3ZIdlpVWFZta3Yvb1N5UlQwcUVISlBob0Jo?=
+ =?utf-8?B?L0FJTmRKVmd1VUduNUVZdDduZW5ScVRnRjg1WEU1RUtScGpWVDhoVWR1RnNH?=
+ =?utf-8?B?YytTbFh3YTNuRWg4UHdWcXZibzBwS2YyVXpKSEh1bDlkaXd0d3MrSXpTTGZP?=
+ =?utf-8?B?Q1lEUDdzb1dVTjJIdW1ORGtMVVRKZnBPMWZ6SnBFTHZPSmtUU3JXc0xlcXJB?=
+ =?utf-8?B?bUQwckVkMmlaSkZKNkVURHMrK2Q3OTQ4T0UzU1NSWXh4SlJ5SGNRTlB2VStH?=
+ =?utf-8?B?ODZxTllqOUtqSDRhVHhBa0VGUWFvRWFDc09pbFlvSUFvWWFwTWhyY1pJaktM?=
+ =?utf-8?B?MHYvWk1kTVpvU2tKYkozakFUOFNEMFRCN3lSUTZvTzJScndaa1lRNjQwL0h6?=
+ =?utf-8?B?YWpQOHZpUXNIbVhSUEpmeFdMTmxBdjVzY2R3bjI2R01RQWk1U1NvVTZrbmly?=
+ =?utf-8?B?M2RSSDRxOWczK1F1Q0Vib0NRejgxdVpBSTJRVmo4OWJEZUN6U2FhV2R4SlBQ?=
+ =?utf-8?B?bTY4U0JTTWZyR2g2eHJoMlozcHJWWHB2cmZDdnNFMjExZUdqdngxU1JieERi?=
+ =?utf-8?B?MU9QaWlkeVVyOEtlKzNhZnJ2b285NVZ1dW5NYnhYUDlVM1o1VFNyZStBWTdz?=
+ =?utf-8?B?eU9WM293S1RpY21BandVTG5GandTckx0Vlhuamp0WG9VbGFCS1hEMkFycHVR?=
+ =?utf-8?B?YTJ2c3MxdGpTRUtWUG52YlNIdVV5cEwyWDd3TUk3eVZHb2tibUN5TnFVNU94?=
+ =?utf-8?B?TVE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: CvEnCwBB1vXqbFuCMTg5/ssWWEP88WYtxe2P7g9zuK3pNPIH34/OEC7JsPZE7cfjQoVFv5funtC/wau+qbmxxnOneTKR5/XwUZLT0VMOTyq/7gp08qc75SJDueopXXd6SWxyssH3OV3LWYKpknggWDpoE3YDyprCJtaA06FjgfugTPmejPyA0VIOnoqQ2rHyERf2F/tfhoVgFA7TFih2lcrKBNank+cbTXTk+slBsiPhq9bsniG3aFf0dfaOqHAx/Cn5Y+PaGH2LnUfAkGHjMShGivBMJbgA9wJVhGs13MiqPqz6e9YZimgZe7Ou9kHzh1Sy1aNCDMLeqCkAQ9UyZQNX44b9WVIOPXHKLnYhtnY5geY9cL4EHcRl1N2pWhp/Van4O/9QaUGrXG2wKv8VIeLbg0Q6rozm75oaqII5txHELs8vGdHVV5TltguyhtuzsUi37mVRZx2BhaH1DU2osx67fg6K8hkrI1g4+uuTb5CcF4khzhPP5kwIoMaEH5kxr/voWyL+j/F3h60R6d5IW9sDngaqFtQcSZ80hH+L5qSteDR+5Brh8xcVw1XfRMXgtWQmrhLtS3IUy8flucGtUZv7GMNELrO7QlDiKJKmHic=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a10ba84-bbb7-450d-ec04-08dc2c8b42c0
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR18MB5368.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46b35429-c4e9-4969-ac94-08dc2c89fd1b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Feb 2024 11:50:34.7922 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KyeTgnwG1+++0RTqTXO36ReK18NNbp8iuTS7bLgApaoNjD8PquKtxr2XbqA8Qw2ABC/aTxf6uhYpVPv2SYeqjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR18MB3885
-X-Proofpoint-GUID: PN0iT8SFwl_65nGjajybfTpS-PDi0fWc
-X-Proofpoint-ORIG-GUID: PN0iT8SFwl_65nGjajybfTpS-PDi0fWc
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 11:59:41.4346 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nelTDqN433ltBiM2AZOLbSORShQRmor8F691Ao3WsnI2hfSJpWYUge0IEYWGHKBYtO5c/naeXKQAlAbzfL+0OhOAI5R3gj5IumqPUqZPF4c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4264
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-13_06,2024-02-12_03,2023-05-22_02
-Received-SPF: pass client-ip=67.231.148.174; envelope-from=schalla@marvell.com;
- helo=mx0b-0016f401.pphosted.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0
+ mlxlogscore=999 bulkscore=0 phishscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402130095
+X-Proofpoint-GUID: 1pUL3SLlZzG9neVH0sMDLAVIW5KJpHfk
+X-Proofpoint-ORIG-GUID: 1pUL3SLlZzG9neVH0sMDLAVIW5KJpHfk
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -149,70 +188,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Subject: [EXT] Re: [PATCH] virtio-pci: correctly set virtio pci queue mem
-> multiplier
->=20
-> External Email
->=20
-> ----------------------------------------------------------------------
-> On Mon, Feb 12, 2024 at 01:22:33PM +0530, Srujana Challa wrote:
-> > Currently, virtio_pci_queue_mem_mult function returns 4K when
-> > VIRTIO_PCI_FLAG_PAGE_PER_VQ is set. But this is not correct when host
-> > has page size as 64K.
-> > This patch fixes the same.
-> >
-> > Signed-off-by: Srujana Challa <schalla@marvell.com>
->=20
-> You can't tweak guest visible values like this without compat machinery. =
-It's
-> also going to consume a ton more phys memory - can this break any configs=
-?
-> Why is this a problem? Just with vdpa?
+On 12/02/2024 13:56, Joao Martins wrote:
+> This small series adds support for Dirty Tracking in IOMMUFD backend.
+> The sole reason I still made it RFC is because of the second patch,
+> where we are implementing user-managed auto domains.
+> 
+> In essence it is quite similar to the original IOMMUFD series where we
+> would allocate a HWPT, until we switched later on into a IOAS attach.
+> Patch 2 goes into more detail, but the gist is that there's two modes of
+> using IOMMUFD and by keep using kernel managed auto domains we would end
+> up duplicating the same flags we have in HWPT but into the VFIO IOAS
+> attach. While it is true that just adding a flag is simpler, it also
+> creates duplication and motivates duplicate what hwpt-alloc already has.
+> But there's a chance I have the wrong expectation here, so any feedback
+> welcome.
+> 
+> The series is divided into:
+> 
+> * Patch 1: Adds a simple helper to get device capabilities;
+> 
+> * Patches 2 - 5: IOMMUFD backend support for dirty tracking;
+> 
+> The workflow is relatively simple:
+> 
+> 1) Probe device and allow dirty tracking in the HWPT
+> 2) Toggling dirty tracking on/off
+> 3) Read-and-clear of Dirty IOVAs
+> 
+> The heuristics selected for (1) were to enable it *if* device supports
+> migration but doesn't support VF dirty tracking or IOMMU dirty tracking
+> is supported. The latter is for the hotplug case where we can add a device
+> without a tracker and thus still support migration.
+> 
+> The unmap case is deferred until further vIOMMU support with migration
+> is added[3] which will then introduce the usage of
+> IOMMU_HWPT_GET_DIRTY_BITMAP_NO_CLEAR in GET_DIRTY_BITMAP ioctl in the
+> dma unmap bitmap flow.
+> 
+> * Patches 6-8: Add disabling of hugepages to allow tracking at base
+> page; avoid blocking live migration where there's no VF dirty
+> tracker, considering that we have IOMMU dirty tracking. And allow
+> disabling VF dirty tracker via qemu command line.
+> 
+> This series builds on top of Zhengzhong series[0], but only requires the
+> first 9 patches i.e. up to ("vfio/pci: Initialize host iommu device
+> instance after attachment")[1] that are more generic IOMMUFD device
+> plumbing, and doesn't require the nesting counterpart.
+> 
+I need to add that this series doesn't *need* to be based on Zhengzhong series.
+Though given that he is consolidating how an IOMMUFD device info is represented
+it felt the correct thing to do. For dirty tracking we mainly need the
+dev_id/iommufd available when we are going to attach, that's it.
 
-We are observing the issue with vdpa when host has page size of 64K. We hav=
-en't
-verified any other backends. I think, any backend that uses below API would=
- fail
-if host has page size other than 4K right?
-And also as per VIRTIO_PCI_FLAG_PAGE_PER_VQ, it should be equal to
-page_size right?
+I've pushed this series version that doesn't have such dependency, let me know
+if you want me to pursue this version instead going forward:
 
-static int virtio_pci_set_host_notifier_mr(DeviceState *d, int n,
-                                           MemoryRegion *mr, bool assign)
-{
-    VirtIOPCIProxy *proxy =3D to_virtio_pci_proxy(d);
-    int offset;
+https://github.com/jpemartins/qemu/commits/iommufd-v5.nodeps
 
-    if (n >=3D VIRTIO_QUEUE_MAX || !virtio_pci_modern(proxy) ||
-        virtio_pci_queue_mem_mult(proxy) !=3D memory_region_size(mr)) {
-        return -1;
-    }
-
->=20
-> > ---
-> >  hw/virtio/virtio-pci.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c index
-> > e433879542..028df99991 100644
-> > --- a/hw/virtio/virtio-pci.c
-> > +++ b/hw/virtio/virtio-pci.c
-> > @@ -316,12 +316,10 @@ static bool
-> virtio_pci_ioeventfd_enabled(DeviceState *d)
-> >      return (proxy->flags & VIRTIO_PCI_FLAG_USE_IOEVENTFD) !=3D 0;  }
-> >
-> > -#define QEMU_VIRTIO_PCI_QUEUE_MEM_MULT 0x1000
-> > -
-> >  static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy
-> > *proxy)  {
-> >      return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
-> > -        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
-> > +        qemu_real_host_page_size()  : 4;
-> >  }
-> >
-> >  static int virtio_pci_ioeventfd_assign(DeviceState *d, EventNotifier
-> > *notifier,
-> > --
-> > 2.25.1
+> This is stored on github:
+> https://github.com/jpemartins/qemu/commits/iommufd-v5
+> 
+> Note: While Linux v6.7 has IOMMU dirty tracking feature, I suggest folks
+> use the latest for-rc of iommufd kernel tree as there's some fixes there.
+> 
+> Comments and feedback appreciated.
+> 
+> Cheers,
+>         Joao
+> 
+> Chances since RFCv1[2]:
+> * Remove intel/amd dirty tracking emulation enabling
+> * Remove the dirtyrate improvement for VF/IOMMU dirty tracking
+> [Will pursue these two in separate series]
+> * Introduce auto domains support
+> * Enforce dirty tracking following the IOMMUFD UAPI for this
+> * Add support for toggling hugepages in IOMMUFD
+> * Auto enable support when VF supports migration to use IOMMU
+> when it doesn't have VF dirty tracking
+> * Add a parameter to toggle VF dirty tracking
+> 
+> [0] https://lore.kernel.org/qemu-devel/20240201072818.327930-1-zhenzhong.duan@intel.com/
+> [1] https://lore.kernel.org/qemu-devel/20240201072818.327930-10-zhenzhong.duan@intel.com/
+> [2] https://lore.kernel.org/qemu-devel/20220428211351.3897-1-joao.m.martins@oracle.com/
+> [3] https://lore.kernel.org/qemu-devel/20230622214845.3980-1-joao.m.martins@oracle.com/
+> 
+> Joao Martins (8):
+>   backends/iommufd: Introduce helper function
+>     iommufd_device_get_hw_capabilities()
+>   vfio/iommufd: Introduce auto domain creation
+>   vfio/iommufd: Probe and request hwpt dirty tracking capability
+>   vfio/iommufd: Implement VFIOIOMMUClass::set_dirty_tracking support
+>   vfio/iommufd: Implement VFIOIOMMUClass::query_dirty_bitmap support
+>   backends/iommufd: Add ability to disable hugepages
+>   vfio/migration: Don't block migration device dirty tracking is
+>     unsupported
+>   vfio/common: Allow disabling device dirty page tracking
+> 
+>  backends/iommufd.c            | 133 ++++++++++++++++++++++++++++
+>  backends/trace-events         |   4 +
+>  hw/vfio/common.c              |  32 ++++++-
+>  hw/vfio/iommufd.c             | 162 ++++++++++++++++++++++++++++++++++
+>  hw/vfio/migration.c           |   5 +-
+>  hw/vfio/pci.c                 |   3 +
+>  include/hw/vfio/vfio-common.h |  12 +++
+>  include/sysemu/iommufd.h      |  17 ++++
+>  qapi/qom.json                 |   2 +-
+>  9 files changed, 367 insertions(+), 3 deletions(-)
+> 
 
 
