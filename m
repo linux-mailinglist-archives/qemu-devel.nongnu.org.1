@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C944853B99
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D928D853B71
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 20:45:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZyhM-0002ua-3v; Tue, 13 Feb 2024 14:44:08 -0500
+	id 1rZyhO-0003Zq-VT; Tue, 13 Feb 2024 14:44:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyh1-0001rN-1N
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:43:48 -0500
+ id 1rZyh2-00024C-S8
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:43:49 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZygx-0006XX-W8
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:43:45 -0500
+ id 1rZyh1-0006YG-4E
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 14:43:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6leqQy8il9T0BgowRDTi4peOmLDXSmBsnwCsxoyV74s=; b=sSDiG3lZ5hVUUM33A79WFzrjqs
- WGsrSipasZ8e58J+k/RONQJDWW0uiEXDtF+8c2iy22x+mT+tmY2dfF/TpGj1T/Kdsd5C46PfQ9YI9
- d104tO+HwdkUzpwcEC+XSN5T4yOOAV4LEYiNU4k1pU8XX4bVIBpNQbn5IqWanWCDY60o33NNgcmci
- VCE294afmoy3d5jQj5G7bRI7tMVqdKB9+jCzSZlnZYWPOMqS6yyEpiikXgJv/7tJ6AXTomns7PYYj
- Wt4K03aayvEWBYpe0cq94g77ftKXssOuV3G086x0MicaxofCGTQE3kexYCH5K4XN7uBXdsxpmg4P4
- MFYU8XVOLzyJeQtFMumVe2epQpfd2ZmuI9QpGQWiDFB1Uifes8xzW/nYMRuCwtifSQzK9H/TVhyim
- AHWBjWCIGKKFRun+ZLX+8WeCgd9FLxvjyDSyloHCg4uXCT/xC30B9icZsXIJCTJrlU4jfAaLlS5xl
- lttqlY+No8woUcjyQEfJHC5VCO8KKTTSKDD/Gdsn4zB8Rjlxn766pKP94SC3e1stWNp5o+Ht6WZay
- BOYCqmvTSbqRAh6xD7zIJqxSZiG3YBqICOjBtK4SzoQW9sV8Z8N5sa0DyUyh1wAEh7JBizs/+quYo
- A/1hDZKgByB+HX6/vayK2bpepa1WZxp1uswD0WCmk=;
+ bh=31Pv7/3D3sVU7lCfzBxymFeAjRw7ZoiBrks9lmvWPgo=; b=V1/vUDW0FQVf9fQ6rTAyXDgyFQ
+ LUyen5KQPj2fdSaUqtwkHmrXyoGFXMfEMe6GD9V6RTBqJdfLldJ6LsQ+2bdhinAYbvVHKExM0Uw/S
+ CEazaADs/9R69I5TgTQJyORUp3jSJl1kLccajQjJkQSYxx07yIZOaj/EYOhKknH90PzTPV/xBs1M1
+ K5U9+27KAuE/CmCxnUUAprRN4nujm+HziS80Z2nvwBtBoqbz2qkrn9Rn8tnsFY/e7TyM+i+t7F/59
+ rbVNSrWfGpg6qc1In4HiRc/GvPw47cWobn0r1EPtfcfecXabLCNnJk9Pl27HG6aIlAvo3OKiFZN9b
+ 8dYuwXdEuxmtF79T1doNVcvC4EXrFxu297B4R5hUFsypsmIeOC1ocUvd4YMr8Slc23u56BgH/bLfb
+ 2j7O4t0FMlxaAF+881+YjUA/HmWN9qmWOgUD6wa0HygB+obZ/U/umNv6+jpuS23Qw6oO6bcF+dbpM
+ DTZFJSBC5o8mPo5PWJ5lMdfVxB9hkByMiJJI9YmEh2xUPfXGt/5m9ZT9yDk5UNEI3LJrlFlfM9A9y
+ 3xsNT8PLENFvrT+gE7DXNpxnf4QTWsNlTdYaV4h23ZVwh6nsYRK33j/iBh9qho5SGh98I+rw4wc95
+ kTRAbLA5h1fi75YNOkOSZG4bsXmr0vkh4klj20Nsg=;
 Received: from [2a00:23c4:8bb2:1300:c500:f104:bc51:e670]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rZyg5-0008m4-AU; Tue, 13 Feb 2024 19:42:52 +0000
+ id 1rZyg8-0008m4-TN; Tue, 13 Feb 2024 19:42:56 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Tue, 13 Feb 2024 19:40:09 +0000
-Message-Id: <20240213194052.1162753-46-mark.cave-ayland@ilande.co.uk>
+Date: Tue, 13 Feb 2024 19:40:10 +0000
+Message-Id: <20240213194052.1162753-47-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
 References: <20240213194052.1162753-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:c500:f104:bc51:e670
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 45/88] esp.c: remove do_cmd from ESPState
+Subject: [PULL 46/88] esp.c: untangle MESSAGE OUT and COMMAND phase logic in
+ esp_do_dma()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,122 +78,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the accumulation of the CDB is handled by SCSI phase, there is no need
-for a separate variable to control it.
+This makes it clearer that ATN is asserted until the end of the next TI command
+in the MESSAGE OUT phase.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Tested-by: Helge Deller <deller@gmx.de>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240112125420.514425-46-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240112125420.514425-47-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ hw/scsi/esp.c | 48 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 22 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index e679b1c39b..1f7dff4ca6 100644
+index 1f7dff4ca6..2f54fd1285 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -380,7 +380,6 @@ static void satn_pdma_cb(ESPState *s)
+@@ -629,6 +629,31 @@ static void esp_do_dma(ESPState *s)
  
-     if (!esp_get_tc(s) && !fifo8_is_empty(&s->cmdfifo)) {
-         s->cmdfifo_cdb_offset = 1;
--        s->do_cmd = 0;
-         do_cmd(s);
-     }
- }
-@@ -400,13 +399,11 @@ static void handle_satn(ESPState *s)
-     cmdlen = get_cmd(s, ESP_CMDFIFO_SZ);
-     if (cmdlen > 0) {
-         s->cmdfifo_cdb_offset = 1;
--        s->do_cmd = 0;
-         do_cmd(s);
-     } else if (cmdlen == 0) {
-         if (s->dma) {
+     switch (esp_get_phase(s)) {
+     case STAT_MO:
++        if (s->dma_memory_read) {
++            len = MIN(len, fifo8_num_free(&s->cmdfifo));
++            s->dma_memory_read(s->dma_opaque, buf, len);
++            fifo8_push_all(&s->cmdfifo, buf, len);
++            esp_set_tc(s, esp_get_tc(s) - len);
++            s->cmdfifo_cdb_offset += len;
++        } else {
++            n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
++            n = MIN(fifo8_num_free(&s->cmdfifo), n);
++            fifo8_push_all(&s->cmdfifo, buf, n);
++            s->cmdfifo_cdb_offset += n;
++        }
++
++        esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
++        esp_raise_drq(s);
++
++        /* ATN remains asserted until TC == 0 */
++        if (esp_get_tc(s) == 0) {
++            esp_set_phase(s, STAT_CD);
++            s->rregs[ESP_RSEQ] = SEQ_CD;
++            s->rregs[ESP_RINTR] |= INTR_BS;
++            esp_raise_irq(s);
++        }
++        break;
++
+     case STAT_CD:
+         cmdlen = fifo8_num_used(&s->cmdfifo);
+         trace_esp_do_dma(cmdlen, len);
+@@ -641,36 +666,15 @@ static void esp_do_dma(ESPState *s)
+             n = esp_fifo_pop_buf(&s->fifo, buf, fifo8_num_used(&s->fifo));
+             n = MIN(fifo8_num_free(&s->cmdfifo), n);
+             fifo8_push_all(&s->cmdfifo, buf, n);
+-            esp_set_tc(s, esp_get_tc(s) - n);
+ 
+             esp_set_pdma_cb(s, DO_DMA_PDMA_CB);
              esp_raise_drq(s);
+-
+-            /* Ensure we have received complete command after SATN and stop */
+-            if (esp_get_tc(s) || fifo8_is_empty(&s->cmdfifo)) {
+-                return;
+-            }
          }
--        s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
-         esp_set_phase(s, STAT_CD);
-@@ -428,13 +425,11 @@ static void handle_s_without_atn(ESPState *s)
-     cmdlen = get_cmd(s, ESP_CMDFIFO_SZ);
-     if (cmdlen > 0) {
-         s->cmdfifo_cdb_offset = 0;
--        s->do_cmd = 0;
-         do_cmd(s);
-     } else if (cmdlen == 0) {
-         if (s->dma) {
-             esp_raise_drq(s);
+         trace_esp_handle_ti_cmd(cmdlen);
+         s->ti_size = 0;
+-        if (esp_get_phase(s) == STAT_CD) {
+-            /* No command received */
+-            if (s->cmdfifo_cdb_offset == fifo8_num_used(&s->cmdfifo)) {
+-                return;
+-            }
+-
++        if (esp_get_tc(s) == 0) {
+             /* Command has been received */
+             do_cmd(s);
+-        } else {
+-            /*
+-             * Extra message out bytes received: update cmdfifo_cdb_offset
+-             * and then switch to command phase
+-             */
+-            s->cmdfifo_cdb_offset = fifo8_num_used(&s->cmdfifo);
+-            esp_set_phase(s, STAT_CD);
+-            s->rregs[ESP_RSEQ] = SEQ_CD;
+-            s->rregs[ESP_RINTR] |= INTR_BS;
+-            esp_raise_irq(s);
          }
--        s->do_cmd = 1;
-         /* Target present, but no cmd yet - switch to command phase */
-         s->rregs[ESP_RSEQ] = SEQ_CD;
-         esp_set_phase(s, STAT_CD);
-@@ -453,7 +448,6 @@ static void satn_stop_pdma_cb(ESPState *s)
+         break;
  
-     if (!esp_get_tc(s) && !fifo8_is_empty(&s->cmdfifo)) {
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
--        s->do_cmd = 1;
-         s->cmdfifo_cdb_offset = 1;
-         esp_set_phase(s, STAT_CD);
-         s->rregs[ESP_RSTAT] |= STAT_TC;
-@@ -478,7 +472,6 @@ static void handle_satn_stop(ESPState *s)
-     cmdlen = get_cmd(s, 1);
-     if (cmdlen > 0) {
-         trace_esp_handle_satn_stop(fifo8_num_used(&s->cmdfifo));
--        s->do_cmd = 1;
-         s->cmdfifo_cdb_offset = 1;
-         esp_set_phase(s, STAT_MO);
-         s->rregs[ESP_RINTR] |= INTR_BS | INTR_FC;
-@@ -488,7 +481,6 @@ static void handle_satn_stop(ESPState *s)
-         if (s->dma) {
-             esp_raise_drq(s);
-         }
--        s->do_cmd = 1;
-         /* Target present, switch to message out phase */
-         s->rregs[ESP_RSEQ] = SEQ_MO;
-         esp_set_phase(s, STAT_MO);
-@@ -567,7 +559,6 @@ static void do_dma_pdma_cb(ESPState *s)
-             }
- 
-             /* Command has been received */
--            s->do_cmd = 0;
-             do_cmd(s);
-         } else {
-             /*
-@@ -669,7 +660,6 @@ static void esp_do_dma(ESPState *s)
-             }
- 
-             /* Command has been received */
--            s->do_cmd = 0;
-             do_cmd(s);
-         } else {
-             /*
-@@ -805,7 +795,6 @@ static void esp_do_nodma(ESPState *s)
-             }
- 
-             /* Command has been received */
--            s->do_cmd = 0;
-             do_cmd(s);
-         } else {
-             /*
-@@ -949,7 +938,6 @@ void esp_transfer_data(SCSIRequest *req, uint32_t len)
-     int to_device = (esp_get_phase(s) == STAT_DO);
-     uint32_t dmalen = esp_get_tc(s);
- 
--    assert(!s->do_cmd);
-     trace_esp_transfer_data(dmalen, s->ti_size);
-     s->async_len = len;
-     s->async_buf = scsi_req_get_buf(req);
-@@ -1012,7 +1000,6 @@ void esp_hard_reset(ESPState *s)
-     fifo8_reset(&s->fifo);
-     fifo8_reset(&s->cmdfifo);
-     s->dma = 0;
--    s->do_cmd = 0;
-     s->dma_cb = NULL;
- 
-     s->rregs[ESP_CFG1] = 7;
 -- 
 2.39.2
 
