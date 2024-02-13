@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B05853021
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 13:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7B785302C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 Feb 2024 13:05:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rZrWB-0007hZ-Fn; Tue, 13 Feb 2024 07:04:08 -0500
+	id 1rZrW6-0007PK-66; Tue, 13 Feb 2024 07:04:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZrUt-0005YI-0l
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:02:49 -0500
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZrUh-0005WP-66
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:02:44 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZrUg-00018N-1P
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:02:46 -0500
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-33b4e6972f6so2268602f8f.2
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 04:02:20 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rZrUb-00018y-Ru
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 07:02:33 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-410ed9f8621so13076845e9.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 04:02:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707825739; x=1708430539; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707825745; x=1708430545; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iSiHu0C9dIi1NiXQI0bkwiZLyOTky1dJTMwQJyq+dek=;
- b=ahliYT/rNp0t/q9usd10ezajfH4A+vYglkTzuz0aea03Iz5uoRBiZ+fjYeyLHoQtjh
- mzdh4IrM+eRL16bbTUaoaADsJV8BC3KQ6MU/Q7vOlPxbnrNr4HBkvDMRiHQrug5y8C7A
- vwoQNK/tsqEmsg/Ws1wtmG7aU9Zxx9SyVlyvQEcNUNuE90d5he4hy7j7lcwltFEyLE0Z
- H5l2fomXCrB27dFL+VbyEjqlnTW9kx9C+o0sJN75kWzPmGopwQxryzl5Pe4wql50xtGR
- /D9RhY8SjVo4VtCvKhMSoTBO6fJbzFLby4+smR5C6jtXrlC6E0ObkWbqL/O5YnMDvZtb
- vzTA==
+ bh=Ayrp4O65NFcTDb1yTi4BL/BlCGOiYywukaah937eUcY=;
+ b=HiV6BISjM+zoVA8SKp6gxi8xRAFvar/AkpFSrgnoC3exQpi3nWVyc6Q2SRBiZDfXcd
+ nAqIANlZr+xG1gz92noBInKeUlsuAn3Xr0ohG3txe6vRDz6xgZw4hKMSCHG/46kzNPV1
+ grJ9tLesbiDgTvkHn0v/HxI3PlLIN8JxN97W9Kzy6b3UtKhcjXN+cSt0oe1m0S7uiXgn
+ VMFGSHDiMs4KoZNvy89g/GcMG+aqgFwWA5V60//I7mMQ7l4ILVuy9Wsg6fajCFE8clf0
+ VsQSzhNpoeq4OCG2ZPGOqnPqA6se3W8H2xj56Z5lyElj/Q5Jz/Mq1xBpopK7Bpc5eLeL
+ DI0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707825740; x=1708430540;
+ d=1e100.net; s=20230601; t=1707825745; x=1708430545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iSiHu0C9dIi1NiXQI0bkwiZLyOTky1dJTMwQJyq+dek=;
- b=WajWJqJNeZvfUPYRmOcc8TOgcHVbiSuHMjg5BjnkFExzsf3xeb6NGpHm8ftKnCeZ8m
- fPCcwhoDgekXSqqk4mcldVIi1GBvTe84WMuySpN3UgmwnPGh2/j4KYTX5jx24jZ8JUP6
- eHl/mHCwLA8ExWj0+408QHfJfKZH+s2kwtmI3NBL2k4C2Av/aWNHC4LG8na7SHUUAFRA
- MDHg84kW2d/mKs5HSa7t8fgnY+57s2Jy3SaqLmWXgNbnSQ9vTeS0hpjZfMOpKOuItEW/
- P+Ev9HcwZVD2SSG8CDjqbnCeL0XNJzWm8V93+qTnCEAWDuxj/Zs8vOKF2kqgBVgG0BWf
- inBA==
-X-Gm-Message-State: AOJu0YxZNkMNWoTLo5NyWDKcoBwKksBzG4dos8MTdlm0L2dESe020Bta
- ovb6XNagAtnOuR/hkocRd73cVsIF8xZzctGCniBT7ECrJ+45uax+fSUpUKNwF5LkSHLqVegybiA
- 4
-X-Google-Smtp-Source: AGHT+IGAQCiDsIxeY1VWXFGXt44SCk2WBSDXytr/c1oFpUbBy8hwOMhYnPd951f+JsXeRt0+qDqJvg==
-X-Received: by 2002:a05:6000:1acb:b0:33a:eb5b:f8cd with SMTP id
- i11-20020a0560001acb00b0033aeb5bf8cdmr8971657wry.7.1707825739759; 
- Tue, 13 Feb 2024 04:02:19 -0800 (PST)
+ bh=Ayrp4O65NFcTDb1yTi4BL/BlCGOiYywukaah937eUcY=;
+ b=GZvCYREKYU+3SKLCquNTGl56jrMVxyOsp0q+yw+7hCSPYlS8aSwsDzjUwe24tJFVCw
+ ngtmQBHNGSd5Sfbi0ZHQU624NXS2b8UOui9ggWHE5AGdItKEqD7wtx1K1y5XDOMvo5a/
+ cgUd9PjqapooBjoG+LbyjsKUN5d4eEQBNubAq7r3TpUdGtBj9MttD+XdfS/C5Keuk7Na
+ hYniIqiyrGGsqOqUdN9ocI29SzW9V+QQt5B3DaYlB8t9jI1If2T6EAvjc3KeHUhr58bX
+ 9hYODvVztEzhThOeegvLZuNIfSU71DNOzlaGtgXOzOYI07hRmxO8vR0i4YiNi0mxo8tF
+ iuaA==
+X-Gm-Message-State: AOJu0Yz9hbP8tTOo/PM2mgvFhTN8JoKq401UwD2gHRoklBR+0/WLhe1J
+ UlXmyPif3vIJ49lQawRMmytTW+A2ZivHHlag0aOPTs06jDHNDOlwdf/zaEuA1+kYnGFXxNcWIRr
+ 8
+X-Google-Smtp-Source: AGHT+IEhgXxFSfF5jytNoRCpqYbguZHENlv19t38CTxp68Q/OiCRo3pOp4kKAzjLLdHZodrBuQPPHg==
+X-Received: by 2002:a05:600c:1e29:b0:411:d253:55dd with SMTP id
+ ay41-20020a05600c1e2900b00411d25355ddmr48957wmb.8.1707825745599; 
+ Tue, 13 Feb 2024 04:02:25 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXIpLe52WvVWm13e8JKcSmsu8NeWvHMYrrVrNdWwmz4zloLQ/wedUmFH/AqALXCWvRRkkxHKXrrB6nXXCnv2t2ntTfMXShtBL+D/VEpNHiNZCpf6jwwE8zETAxSC4j1j+Xgobk1cB6AKs8tH90dH3gqHkgz1bNJhHL+sViOOm5HfSlWI05eKDlid7GzTpfUbDDfkB8d/JxzOYX8lGZh0Nd6pv1RVBxDMsLwhet1/G2xyiR7gL7lHxbTpJ8iI2t4QAZ3pnFCIGZOS7o4StFtKyaztW7IPLP4yEsKI0ussmmYenDxmOOdpme9XX0czfLl/W9BxQZl4fc=
+ AJvYcCWvSyhAoTvZy/VW8haaGsPIaOu52Ie3GGnfaR0VW8l/5EuaRxD6uoSfmvQ46/aENAJ4TwJTQG6qB9x5jXpCS/JDB7SazEVUTwoQy/Gssz0tC2tAp0C7QeSjIjjSGotUQu4St0POXPYMplr8b3rqT9JNMrIEyeZpacm/3E6yzKk9laVlj8xmmrZkr/iPEKL4vU2e1IScsi9+0Bjtk97loZNjKa2gCjvi7E197LzutuJnDpT8LhfGLAN+5gC5zrZF6uq9Piymm0cnPBk6pHMuUf4KqLzEKYcw1Z9msDOqS+lZavvUyxbDaR4fbTh0vs5WVkPSGftz2FU=
 Received: from m1x-phil.lan ([176.176.128.243])
  by smtp.gmail.com with ESMTPSA id
- x10-20020adfcc0a000000b0033cd1959681sm1816333wrh.112.2024.02.13.04.02.18
+ jg8-20020a05600ca00800b00410820995dcsm10995292wmb.23.2024.02.13.04.02.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 Feb 2024 04:02:19 -0800 (PST)
+ Tue, 13 Feb 2024 04:02:25 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -67,24 +67,23 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Bernhard Beschow <shentey@gmail.com>, Ani Sinha <anisinha@redhat.com>,
  qemu-trivial@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/7] hw/i386/acpi: Declare pc_madt_cpu_entry() in
- 'acpi-common.h'
-Date: Tue, 13 Feb 2024 13:01:49 +0100
-Message-ID: <20240213120153.90930-5-philmd@linaro.org>
+Subject: [PATCH 5/7] hw/i386/port92: Add missing 'hw/isa/isa.h' header
+Date: Tue, 13 Feb 2024 13:01:50 +0100
+Message-ID: <20240213120153.90930-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240213120153.90930-1-philmd@linaro.org>
 References: <20240213120153.90930-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,67 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since pc_madt_cpu_entry() is only used by:
- - hw/i386/acpi-build.c   // single call
- - hw/i386/acpi-common.c  // definition
-there is no need to expose it outside of hw/i386/.
-Declare it in "acpi-common.h".
-acpi-build.c doesn't need "hw/i386/pc.h" anymore.
+TYPE_PORT92 inherits TYPE_ISA_DEVICE, so need to include
+"hw/isa/isa.h" to get its declarations (currently we
+indirectly include this header via "hw/i386/pc.h").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/acpi-common.h | 3 +++
- include/hw/i386/pc.h  | 4 ----
- hw/i386/acpi-common.c | 1 -
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ hw/i386/port92.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/acpi-common.h b/hw/i386/acpi-common.h
-index b3c56ee014..e305aaac15 100644
---- a/hw/i386/acpi-common.h
-+++ b/hw/i386/acpi-common.h
-@@ -1,12 +1,15 @@
- #ifndef HW_I386_ACPI_COMMON_H
- #define HW_I386_ACPI_COMMON_H
- 
-+#include "hw/boards.h"
- #include "hw/acpi/bios-linker-loader.h"
- #include "hw/i386/x86.h"
- 
- /* Default IOAPIC ID */
- #define ACPI_BUILD_IOAPIC_ID 0x0
- 
-+void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
-+                       GArray *entry, bool force_enabled);
- void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
-                      X86MachineState *x86ms,
-                      const char *oem_id, const char *oem_table_id);
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index f9fc42c2be..ce442372ac 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -199,10 +199,6 @@ bool pc_system_ovmf_table_find(const char *entry, uint8_t **data,
-                                int *data_len);
- void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
- 
--/* hw/i386/acpi-common.c */
--void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
--                       GArray *entry, bool force_enabled);
--
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
- 
-diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
-index 43dc23f7e0..f1a11f833a 100644
---- a/hw/i386/acpi-common.c
-+++ b/hw/i386/acpi-common.c
-@@ -27,7 +27,6 @@
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/aml-build.h"
- #include "hw/acpi/utils.h"
--#include "hw/i386/pc.h"
- #include "target/i386/cpu.h"
- 
- #include "acpi-build.h"
+diff --git a/hw/i386/port92.c b/hw/i386/port92.c
+index 1070bfbf36..b25157f6e4 100644
+--- a/hw/i386/port92.c
++++ b/hw/i386/port92.c
+@@ -10,6 +10,7 @@
+ #include "sysemu/runstate.h"
+ #include "migration/vmstate.h"
+ #include "hw/irq.h"
++#include "hw/isa/isa.h"
+ #include "hw/i386/pc.h"
+ #include "trace.h"
+ #include "qom/object.h"
 -- 
 2.41.0
 
