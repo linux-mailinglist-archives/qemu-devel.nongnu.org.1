@@ -2,142 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E06D8547BE
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D307385481C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:20:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raD5u-0004ax-Lj; Wed, 14 Feb 2024 06:06:26 -0500
+	id 1raDCt-0008Iz-Jf; Wed, 14 Feb 2024 06:13:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raD5k-0004Yd-KW
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:06:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDCo-0008IB-Dz
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:13:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raD5h-0004z7-U7
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:06:16 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDCb-0006gO-VB
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:13:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707908770;
+ s=mimecast20190719; t=1707909200;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uxUshFnM5rHy7Qz/vURLJbCFY+VwWnlR3kFTIxVE0tM=;
- b=cZx0U8mjz9xzhL+17G2+qxtzz6M2jZQx4NZVFjB4mx7I+5d33dTeha6o3Uif6KTZz19cJz
- hmnXSBoeSag/XWTdDDoKMcG/Zljw5zffQxS9TYu2MVTf5ftmJTizEZY/U9RJ7jwT7qysO1
- 3G1RPaPzlClAmwAJAc8IXgX8MeGRC48=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=W1buRe9DWCIUqa0LzfaGTzXQQpyVNJ/rA4myUxzpMds=;
+ b=X3SZdQCLQsz7YXPcSucop7Lor/CJGee1X44fQEOmyHifvO05g6jbjB0ulEX2kxEh2gu08w
+ KdmGM3jdaE2BF/52No1Vp3AxTYxZsmn3o+Skg37iCxBpq4PIh7oMNC9a5ivLKhPRPXwNdg
+ 8BpLPNAVYE9BIzYy8GKlPk8GlTNsN4g=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-pLEf-JHWOYSRkobVmi6esw-1; Wed, 14 Feb 2024 06:06:08 -0500
-X-MC-Unique: pLEf-JHWOYSRkobVmi6esw-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d0ffb02493so24347161fa.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:06:07 -0800 (PST)
+ us-mta-647-3_pZowVGOXuK_7yN6NWxLQ-1; Wed, 14 Feb 2024 06:13:19 -0500
+X-MC-Unique: 3_pZowVGOXuK_7yN6NWxLQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a2bc65005feso378316766b.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:13:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707908766; x=1708513566;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :references:cc:to:content-language:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uxUshFnM5rHy7Qz/vURLJbCFY+VwWnlR3kFTIxVE0tM=;
- b=KlY9JYZBoxODSHQr1+wKnTikktpMwyt0xwsQ341LlESAH+5HCZu5YEaaHDqOF5LtAl
- tdmZhr/q+zvFySqlU6fH6Ye+M4uW1bUHoVEprex9vXZdvLtqMZ0QdHLI5dS+EOEdcLPe
- FhxVIIFCfSuzdeTOCC61Ca7xrr49LMxr/hWc4gjuViHQvDk/c3tTJ+wM+mRqD6xQxXR0
- FI1WD083wlxhYQSRHDbrBXX/6pnvgXEZ/vIf8y/NCTv/KN1IR31cZpvgMDTPkeS9gJNY
- lsPr9j/N5Md+p32S9/EBYURjN9BiurH4RXh0PI79Kma6c0f+S/2IpOmoEstFjmBwonyR
- Huog==
-X-Gm-Message-State: AOJu0YyyU0cmmdcW/WnCnuRU/+HkHV8HVBCE4Y+FRzqv78yDdMl1/45h
- bAMefYDE4LAB5AcHF1nasf7Aror6b64B1JoDZRPnMfJifnfAp25Uh2HLsGlXbJefOC3Q4Wly5su
- W/NukzHDHtFNTjEywW8Mi03mPY+7mZSF4FiuN2PYWOiC3PE2OLcmI
-X-Received: by 2002:a2e:b60e:0:b0:2d1:788:60ff with SMTP id
- r14-20020a2eb60e000000b002d1078860ffmr1736420ljn.16.1707908766732; 
- Wed, 14 Feb 2024 03:06:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEqh9Euu7ReYM7SAFcUcwhSgK09VL0SUCg9s8LNntTZ0DwqsEzNXZtrDXa70FEYA+gH1ZMjQw==
-X-Received: by 2002:a2e:b60e:0:b0:2d1:788:60ff with SMTP id
- r14-20020a2eb60e000000b002d1078860ffmr1736391ljn.16.1707908766154; 
- Wed, 14 Feb 2024 03:06:06 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e?
- (p200300d82f3c3f007177eb0cd3d24b0e.dip0.t-ipconnect.de.
- [2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e])
- by smtp.gmail.com with ESMTPSA id
- g7-20020a7bc4c7000000b0041079d336c7sm1589434wmk.39.2024.02.14.03.06.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Feb 2024 03:06:05 -0800 (PST)
-Message-ID: <49e7475d-59b8-4c6b-9d8b-10803ed792de@redhat.com>
-Date: Wed, 14 Feb 2024 12:06:04 +0100
+ d=1e100.net; s=20230601; t=1707909197; x=1708513997;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=W1buRe9DWCIUqa0LzfaGTzXQQpyVNJ/rA4myUxzpMds=;
+ b=nFfKURurWXVU+v/yOBRCkdO/QWLj3Rh1DRW/6RoejGtQp7We9Ij/TZ62rFZdLDeLoM
+ Q1ocApWFqo7EKjzwDJP+Y/MsFOoDVpxZw2sWMkY1kFmZC9tKbcarL8f7ADGufif0w0AK
+ xzDdU565TKs1ykqD4SUziO1blamUudiqx6Vm7/WD+dVdvM9OrZ//dzttbNEaLe3mKeg0
+ CXNdUZVtJlEmzsjHTx+LNky9YuaV49Mg/+vuRAyBOOBB6XAQIJxBH6oj8z0bSk/nZlzP
+ 5CDU9IN3bEIYQKd8zWRIaW43t9n69v6LseMvXmGcOz1jAXA1rEyyDgG7KUr6foXptBMt
+ PIMA==
+X-Gm-Message-State: AOJu0YwPvE/R036Uc1xIYFxIX8KXpohlj1hF1p9GMU9H0nO8Msf6adkx
+ cTwQEgSGGc1zM9uIEoN32FP7TwdBFbV680GajgZa91mbvbT5X7yLvhjW2twmR2kM0G6Upk3IXNi
+ 7FuaFoxqlVSDqYAw6PWDdKkibQywOf1uB2jD1wFX9BqOkmnF/7GL53CPD4dOS3kDi6I5ma0TTK8
+ BoJWTCPrcsF4Z548S7LaP+a6Wghq9Mjw==
+X-Received: by 2002:a17:906:351a:b0:a3d:24b5:d489 with SMTP id
+ r26-20020a170906351a00b00a3d24b5d489mr1286188eja.29.1707909197078; 
+ Wed, 14 Feb 2024 03:13:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHuOV7nsPNQZg+5H/1aHvhBcJZjma55qffxZHQa3dULGQqE8fcVg4Y61Vin5qwm3YOb/hrkLg==
+X-Received: by 2002:a17:906:351a:b0:a3d:24b5:d489 with SMTP id
+ r26-20020a170906351a00b00a3d24b5d489mr1286165eja.29.1707909196439; 
+ Wed, 14 Feb 2024 03:13:16 -0800 (PST)
+Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
+ mj18-20020a170906af9200b00a3d3fde216dsm555044ejb.217.2024.02.14.03.13.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 Feb 2024 03:13:15 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:13:13 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/60] virtio,pc,pci: features, cleanups, fixes
+Message-ID: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/15] libvhost-user: support more memslots and cleanup
- memslot handling code
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Germano Veit Michel <germano@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>
-References: <20240202215332.118728-1-david@redhat.com>
- <20240213123259-mutt-send-email-mst@kernel.org>
- <35a8c2e1-e20c-4d68-b7b7-0bd488bc3ac9@redhat.com>
- <20240213133708-mutt-send-email-mst@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240213133708-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -155,51 +96,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13.02.24 19:55, Michael S. Tsirkin wrote:
-> On Tue, Feb 13, 2024 at 07:27:44PM +0100, David Hildenbrand wrote:
->> On 13.02.24 18:33, Michael S. Tsirkin wrote:
->>> On Fri, Feb 02, 2024 at 10:53:17PM +0100, David Hildenbrand wrote:
->>>> This series adds support for more memslots (509) to libvhost-user, to
->>>> make it fully compatible with virtio-mem that uses up to 256 memslots
->>>> accross all memory devices in "dynamic-memslot" mode (more details
->>>> in patch #3).
->>>
->>>
->>> Breaks build on some systems. E.g.
->>> https://gitlab.com/mstredhat/qemu/-/jobs/6163591599
->>>
->>>
->>
->> ./subprojects/libvhost-user/libvhost-user.c:369:27: error: comparison of
->> integer expressions of different signedness: ‘long int’ and ‘unsigned int’
->> [-Werror=sign-compare]
->>    369 |     if (!ret && fs.f_type == HUGETLBFS_MAGIC) {
->>        |                           ^~
->>
->> So easy to fix in v2, thanks!
-> 
-> 
-> I think there is another problem around plugins though.
+The following changes since commit df50424b4dcfde823047d3717abd6a61224ea205:
 
-There is a wrong checkpatch error:
+  Merge tag 'pull-riscv-to-apply-20240209' of https://github.com/alistair23/qemu into staging (2024-02-09 16:15:01 +0000)
 
-https://gitlab.com/mstredhat/qemu/-/jobs/6162397277
+are available in the Git repository at:
 
-d96f29518232719b0c444ab93913e8515a6cb5c6:100: ERROR: use 
-qemu_real_host_page_size() instead of getpagesize()
-total: 1 errors, 1 warnings, 81 lines checked
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
 
-qemu_real_host_page_size() is not available in libvhost-user. But I 
-could just change that code to not require getpagesize() at all.
+for you to fetch changes up to 3afdb6d18e9ccd6470be30f151a562cf4537d13f:
 
+  MAINTAINERS: Switch to my Enfabrica email (2024-02-14 06:09:33 -0500)
 
-Apart from that, I don't spot anything libvhost-user related (some qtest 
-timeouts, a "error_setv: Assertion `*errp == NULL' failed."). Did I miss 
-something?
+----------------------------------------------------------------
+virtio,pc,pci: features, cleanups, fixes
 
--- 
-Cheers,
+vhost-user-snd support
+x2APIC mode with TCG support
+CXL update to r3.1
 
-David / dhildenb
+fixes, cleanups all over the place.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Akihiko Odaki (2):
+      hw/smbios: Fix OEM strings table option validation
+      hw/smbios: Fix port connector option validation
+
+Alex Bennée (6):
+      virtio: split into vhost-user-base and vhost-user-device
+      hw/virtio: convert vhost-user-base to async shutdown
+      hw/virtio: derive vhost-user-rng from vhost-user-base
+      hw/virtio: derive vhost-user-gpio from vhost-user-base
+      hw/virtio: derive vhost-user-i2c from vhost-user-base
+      docs/system: add a basic enumeration of vhost-user devices
+
+Andrey Ignatov (1):
+      vhost-user.rst: Fix vring address description
+
+Bernhard Beschow (14):
+      hw/i386/x86: Reverse if statement
+      hw/i386/x86: Fix PIC interrupt handling if APIC is globally disabled
+      target/i386/cpu: Fix typo in comment
+      hw/block/fdc-isa: Move portio_list from FDCtrl to FDCtrlISABus
+      hw/block/fdc-sysbus: Move iomem from FDCtrl to FDCtrlSysBus
+      hw/char/parallel: Move portio_list from ParallelState to ISAParallelState
+      exec/ioport: Resolve redundant .base attribute in struct MemoryRegionPortio
+      exec/ioport: Add portio_list_set_address()
+      exec/ioport: Add portio_list_set_enabled()
+      hw/block/fdc-isa: Implement relocation and enabling/disabling for TYPE_ISA_FDC
+      hw/char/serial-isa: Implement relocation and enabling/disabling for TYPE_ISA_SERIAL
+      hw/char/parallel-isa: Implement relocation and enabling/disabling for TYPE_ISA_PARALLEL
+      hw/ppc/pegasos2: Let pegasos2 machine configure SuperI/O functions
+      hw/isa/vt82c686: Implement relocation and toggling of SuperI/O functions
+
+Bui Quang Minh (7):
+      i386/tcg: implement x2APIC registers MSR access
+      apic: add support for x2APIC mode
+      apic, i386/tcg: add x2apic transitions
+      intel_iommu: allow Extended Interrupt Mode when using userspace APIC
+      test: bios-tables-test: prepare IVRS change in ACPI table
+      amd_iommu: report x2APIC support to the operating system
+      test: bios-tables-test: add IVRS changed binary
+
+Davidlohr Bueso (1):
+      hw/cxl/mbox: Remove dead code
+
+Dmitry Osipenko (1):
+      virtio-gpu: Correct virgl_renderer_resource_get_info() error check
+
+Hyeonggon Yoo (1):
+      hw/cxl/device: read from register values in mdev_reg_read()
+
+Ira Weiny (2):
+      cxl/cdat: Handle cdat table build errors
+      cxl/cdat: Fix header sum value in CDAT checksum
+
+Jonathan Cameron (11):
+      hw/mem/cxl_type3: Drop handling of failure of g_malloc0() and g_malloc()
+      hw/pci-bridge/cxl_upstream: Drop g_malloc() failure handling
+      hw/mem/cxl_type3: Fix potential divide by zero reported by coverity
+      tests/acpi: Allow update of DSDT.cxl
+      hw/i386: Fix _STA return value for ACPI0017
+      tests/acpi: Update DSDT.cxl to reflect change _STA return value.
+      hw/cxl: Update HDM Decoder capability to version 3
+      hw/cxl: Update link register definitions.
+      hw/cxl: Update RAS Capability Definitions for version 3.
+      hw/cxl: Update mailbox status registers.
+      hw/cxl: Standardize all references on CXL r3.1 and minor updates
+
+Leo Yan (4):
+      hw/virtio: Support set_config() callback in vhost-user-base
+      docs/system: Add vhost-user-input documentation
+      hw/virtio: Move vhost-user-input into virtio folder
+      hw/virtio: derive vhost-user-input from vhost-user-base
+
+Li Zhijian (2):
+      hw/cxl: Pass CXLComponentState to cache_mem_ops
+      hw/cxl: Pass NULL for a NULL MemoryRegionOps
+
+Manos Pitsidianakis (4):
+      hw/virtio: add vhost-user-snd and vhost-user-snd-pci devices
+      hw/display/virtio-gpu.c: use reset_bh class method
+      virtio-gpu.c: add resource_destroy class method
+      virtio-gpu-rutabaga.c: override resource_destroy method
+
+Peter Xu (1):
+      MAINTAINERS: Drop myself as VT-d maintainers
+
+Raphael Norwitz (1):
+      MAINTAINERS: Switch to my Enfabrica email
+
+Zhenzhong Duan (2):
+      virtio_iommu: Clear IOMMUPciBus pointer cache when system reset
+      smmu: Clear SMMUPciBus pointer cache when system reset
+
+ hw/block/fdc-internal.h                            |   4 -
+ hw/i386/amd_iommu.h                                |  16 +-
+ include/exec/ioport.h                              |   4 +-
+ include/hw/block/fdc.h                             |   3 +
+ include/hw/char/parallel-isa.h                     |   5 +
+ include/hw/char/parallel.h                         |   2 -
+ include/hw/char/serial.h                           |   2 +
+ include/hw/cxl/cxl_cdat.h                          |  10 +-
+ include/hw/cxl/cxl_component.h                     |  51 ++-
+ include/hw/cxl/cxl_device.h                        |  86 ++--
+ include/hw/cxl/cxl_events.h                        |  18 +-
+ include/hw/cxl/cxl_pci.h                           |  67 ++-
+ include/hw/i386/apic.h                             |   9 +-
+ include/hw/i386/apic_internal.h                    |   9 +-
+ .../{vhost-user-device.h => vhost-user-base.h}     |  21 +-
+ include/hw/virtio/vhost-user-gpio.h                |  25 +-
+ include/hw/virtio/vhost-user-i2c.h                 |  14 +-
+ include/hw/virtio/vhost-user-rng.h                 |  13 +-
+ include/hw/virtio/vhost-user-snd.h                 |  24 ++
+ include/hw/virtio/virtio-gpu.h                     |   3 +
+ include/hw/virtio/virtio-input.h                   |   6 +-
+ target/i386/cpu.h                                  |   9 +
+ contrib/vhost-user-gpu/virgl.c                     |   6 +-
+ hw/arm/smmu-common.c                               |   2 +
+ hw/block/fdc-isa.c                                 |  18 +-
+ hw/block/fdc-sysbus.c                              |   6 +-
+ hw/char/parallel-isa.c                             |  14 +
+ hw/char/parallel.c                                 |   2 +-
+ hw/char/serial-isa.c                               |  14 +
+ hw/cxl/cxl-cdat.c                                  |  11 +-
+ hw/cxl/cxl-component-utils.c                       |  33 +-
+ hw/cxl/cxl-device-utils.c                          |  31 +-
+ hw/cxl/cxl-events.c                                |   2 +-
+ hw/cxl/cxl-mailbox-utils.c                         |  92 ++--
+ hw/display/virtio-gpu-rutabaga.c                   |  47 +-
+ hw/display/virtio-gpu-virgl.c                      |   2 +-
+ hw/display/virtio-gpu.c                            |  27 +-
+ hw/i386/acpi-build.c                               | 109 +++--
+ hw/i386/amd_iommu-stub.c                           |  26 ++
+ hw/i386/amd_iommu.c                                |  29 +-
+ hw/i386/intel_iommu.c                              |   6 +-
+ hw/i386/kvm/apic.c                                 |   3 +-
+ hw/i386/x86.c                                      |  14 +-
+ hw/i386/xen/xen_apic.c                             |   3 +-
+ hw/input/vhost-user-input.c                        | 136 ------
+ hw/intc/apic.c                                     | 473 ++++++++++++++++-----
+ hw/intc/apic_common.c                              |  35 +-
+ hw/isa/vt82c686.c                                  |  65 ++-
+ hw/mem/cxl_type3.c                                 |  67 +--
+ hw/pci-bridge/cxl_downstream.c                     |   4 +-
+ hw/pci-bridge/cxl_root_port.c                      |   4 +-
+ hw/pci-bridge/cxl_upstream.c                       |  10 +-
+ hw/ppc/pegasos2.c                                  |  12 +
+ hw/smbios/smbios.c                                 |  12 +
+ hw/virtio/vhost-user-base.c                        | 371 ++++++++++++++++
+ hw/virtio/vhost-user-device-pci.c                  |  13 +-
+ hw/virtio/vhost-user-device.c                      | 338 +--------------
+ hw/virtio/vhost-user-gpio.c                        | 407 +-----------------
+ hw/virtio/vhost-user-i2c.c                         | 272 +-----------
+ hw/virtio/vhost-user-input-pci.c                   |   3 -
+ hw/virtio/vhost-user-input.c                       |  58 +++
+ hw/virtio/vhost-user-rng.c                         | 294 +------------
+ hw/virtio/vhost-user-snd-pci.c                     |  75 ++++
+ hw/virtio/vhost-user-snd.c                         |  67 +++
+ hw/virtio/virtio-iommu.c                           |   4 +-
+ system/ioport.c                                    |  41 +-
+ target/i386/cpu-sysemu.c                           |  18 +-
+ target/i386/cpu.c                                  |  11 +-
+ target/i386/tcg/sysemu/misc_helper.c               |  41 +-
+ target/i386/whpx/whpx-apic.c                       |   3 +-
+ MAINTAINERS                                        |  19 +-
+ docs/devel/migration/main.rst                      |   6 +-
+ docs/interop/vhost-user.rst                        |   6 +-
+ docs/system/device-emulation.rst                   |   1 +
+ docs/system/devices/cxl.rst                        |   3 +-
+ docs/system/devices/vhost-user-input.rst           |  45 ++
+ docs/system/devices/vhost-user-rng.rst             |   2 +
+ docs/system/devices/vhost-user.rst                 |  72 +++-
+ hw/i386/meson.build                                |   3 +-
+ hw/input/meson.build                               |   1 -
+ hw/intc/trace-events                               |   4 +-
+ hw/virtio/Kconfig                                  |   5 +
+ hw/virtio/meson.build                              |  27 +-
+ tests/data/acpi/q35/DSDT.cxl                       | Bin 9713 -> 9714 bytes
+ tests/data/acpi/q35/IVRS.ivrs                      | Bin 104 -> 176 bytes
+ 85 files changed, 2016 insertions(+), 1910 deletions(-)
+ rename include/hw/virtio/{vhost-user-device.h => vhost-user-base.h} (71%)
+ create mode 100644 include/hw/virtio/vhost-user-snd.h
+ create mode 100644 hw/i386/amd_iommu-stub.c
+ delete mode 100644 hw/input/vhost-user-input.c
+ create mode 100644 hw/virtio/vhost-user-base.c
+ create mode 100644 hw/virtio/vhost-user-input.c
+ create mode 100644 hw/virtio/vhost-user-snd-pci.c
+ create mode 100644 hw/virtio/vhost-user-snd.c
+ create mode 100644 docs/system/devices/vhost-user-input.rst
 
 
