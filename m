@@ -2,73 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E598D854AEA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 15:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBA1854B06
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 15:05:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raFmX-00023T-R6; Wed, 14 Feb 2024 08:58:37 -0500
+	id 1raFro-0003gT-Oh; Wed, 14 Feb 2024 09:04:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1raFmV-00023H-J0; Wed, 14 Feb 2024 08:58:35 -0500
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1raFmS-0005s8-Ou; Wed, 14 Feb 2024 08:58:35 -0500
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CFAFB4D443;
- Wed, 14 Feb 2024 16:58:32 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 681597ED9F;
- Wed, 14 Feb 2024 16:58:25 +0300 (MSK)
-Content-Type: multipart/mixed; boundary="------------M7tiwF4vTLzjnayFGLraha2u"
-Message-ID: <d3c4506f-0dbd-4171-944d-0aeb040153ad@tls.msk.ru>
-Date: Wed, 14 Feb 2024 16:58:25 +0300
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1raFrm-0003gA-Kc
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:04:02 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1raFrk-00078Z-E4
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:04:02 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1db562438e0so6243835ad.3
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 06:03:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1707919438; x=1708524238; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jNalRSGaHJsNSE765tgh6WqrH7Atyyrm9pCjSrrid+0=;
+ b=iaS6On7Iw8RvOry1q/YSGONPhz9iY/uyPJySNuk9urhnydtbD9qN66u9jEZES7E9/q
+ /bI99ZG5qSWcgVNlLxPf5hBYUULa2AdD2DkzojEXzUFfSMhO0tIv1o0UAmgCmFn/mO8f
+ eaeTIcFr9IEg06IhGkdNhBtnXLh0Scjuq6S3hn4/o5hPa3W0wiHpjWjsu0efUDIYY1fs
+ fbzn3VTTVP1W8y14sjA6cFhCMqu+qFq6GCpku1eks5/LJCuRGtU7YVdaS79+BtNUHgTV
+ nd/SLUnjueGynmDWKizsGErVoR0sDOqQd5zdDeln55A8U4GOkmKL3nxGntnPRvrMuI3G
+ lDBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707919438; x=1708524238;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jNalRSGaHJsNSE765tgh6WqrH7Atyyrm9pCjSrrid+0=;
+ b=dszS2AaDo9U/xNK4WFK4wTH29LyQdjL2ldkPIhT0YRmDHoHn2Yr567+zpnb4TcLWx1
+ xufdnu1poodzEFr9LNDSVFXp/M81rtH2aHx75Tmwmt3EZW/7lkQNdrXfkOxksWMnEgyC
+ HqC7M71DoCoJsN9bRPTcN8eCcnfnsbt+3Y+E3XekNJFqJ7Rv9g5WWy2L9yXTBLK+90Kv
+ +lEgL3HuovbRCvDUW+CaLHsHVheX/aVXKHIHCB54lMjpH8IfKNT+hJmk87CB/GS0PAQQ
+ iPsg3VdMQg5Mfhb4t1S1JQEG7dXUNWzqNtWneGhtX0xwXH1MRexHpguOVdgGtOpKqmtX
+ V9bQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV/R+uULwHWw2LllXcNC+PFqxbhkH8Z4kLikF53mePIUJw0Zsb1Uy5mUpUJHstGuvgNQKPi/U8ZUTvTi7W+B6w/lPJlmO4=
+X-Gm-Message-State: AOJu0YyfJ/WkknO7PCxHdsJyHqYgaJh+YSdC7sv8bHajMuECKOusSqi9
+ WE3zUtq9Pqb3DBlS/S5PlbNUGZWYkhHcjjGFZQUKf3XETFYYb+Y1/W8ISj5qoBc=
+X-Google-Smtp-Source: AGHT+IEW3zsP/s38gdQARaH3rtBu1EKqNBuNHOkZlltqzz+eN/2aMWP0/7DJiUH7oBQaSeTktxc3Cg==
+X-Received: by 2002:a17:903:1303:b0:1d9:a91b:778 with SMTP id
+ iy3-20020a170903130300b001d9a91b0778mr2446256plb.30.1707919438298; 
+ Wed, 14 Feb 2024 06:03:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUaxaiATC5MMUWTniVEV7/rYxxyGjcq1iLj/IVUhMCWkDYYA+6+0IoUkz5DiJDGEV75Eyi4kD3RQhCmFaxeTNDcXufHauwU4z+siAYr8QwFy+4i3lZ5Yv2ltcPP95xJ65FMFBt0AF3n+Hcyzusft4a5EcCIBVQWLdr0SRyA52Kv3MmTJNImHFQ4tYtIrUteXA71tZHmJ3iIRFfVQojCFC1rl8YESxBg9fv9u1tpiVd4akF2I983e3lLGGDkyiY0CNl+s0zBZ9RZcytT4P/Cn022yNhEDls=
+Received: from [192.168.68.110] ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ kl8-20020a170903074800b001da32671049sm3775466plb.30.2024.02.14.06.03.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 Feb 2024 06:03:57 -0800 (PST)
+Message-ID: <31d9b8c5-efb1-4a55-8561-647c69fd92f9@ventanamicro.com>
+Date: Wed, 14 Feb 2024 11:03:53 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 26/34] migration/multifd: Join the TLS thread
+Subject: Re: [PATCH v6 3/3] hw/riscv/virt: Add IOPMP support
 Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable <qemu-stable@nongnu.org>
-References: <20240208030528.368214-1-peterx@redhat.com>
- <20240208030528.368214-27-peterx@redhat.com>
- <d60ddc11-b4b4-4fee-b9c0-08bea513f8d3@tls.msk.ru>
- <0e5720f4-63c1-4f71-ab6b-26c07614ba33@tls.msk.ru> <8734tvqipk.fsf@suse.de>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <8734tvqipk.fsf@suse.de>
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+To: Ethan Chen <ethan84@andestech.com>, qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ qemu-riscv@nongnu.org
+References: <20240207093444.249112-1-ethan84@andestech.com>
+ <20240207093444.249112-4-ethan84@andestech.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20240207093444.249112-4-ethan84@andestech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,118 +100,281 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------M7tiwF4vTLzjnayFGLraha2u
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-14.02.2024 16:27, Fabiano Rosas :
-> Michael Tokarev <mjt@tls.msk.ru> writes:
-..>>> This change, which is suggested for -stable, while simple by its own, seems
->>> to depend on the previous changes in this series, which are not for -stable.
->>> In particular, whole "Finally recycle all the threads" loop in multifd_send_terminate_threads()
->>> (to which the join is being added by this change) is moved from elsewhere by
->>> 12808db3b8 "migration/multifd: Cleanup multifd_save_cleanup()" (patch 24 in
->>> this same series).
->>>
->> We can probably add the missing join right into the previous location of this
->> loop (before 12808db3b8).  I did this in the attached variant for 8.2, is
->> this correct?
 
-I forgot to attach the patch.  It just moves the join from multifd_send_terminate_threads()
-back to multifd_save_cleanup.  Attached now.
-
-> It should work. This was originally developed without the rest of the
-> changes on this PR.
+On 2/7/24 06:34, Ethan Chen wrote:
+> If a source device is connected to the IOPMP device, its memory
+> transaction will be checked by the IOPMP rule.
 > 
->> And this does not pass even the basic tests, so it's not that simple :)
+> When using RISC-V virt machine option "iopmp=on", the generic PCIe host
+> bridge connects to IOPMP. The PCI devices on the bridge will connect to
+> IOPMP with default source id(SID) from PCI BDF.
 > 
-> Do you have a log of what failed?
+> - Add 'iopmp=on' option to add an iopmp device. It checks dma
+>    operations from the generic PCIe host bridge. This option is assumed
+>    to be "off"
+> - Add 'iopmp_cascade=on' option to add second iopmp device which is
+>    cascaded by first iopmp device to machine. When iopmp option is "off"
+>    , this option has no effect.
+> 
+> Signed-off-by: Ethan Chen <ethan84@andestech.com>
+> ---
+>   docs/system/riscv/virt.rst |  12 ++++
+>   hw/riscv/Kconfig           |   1 +
+>   hw/riscv/virt.c            | 110 ++++++++++++++++++++++++++++++++++++-
+>   include/hw/riscv/virt.h    |   8 ++-
+>   4 files changed, 128 insertions(+), 3 deletions(-)
+> 
+> diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+> index 9a06f95a34..ffcbe3a562 100644
+> --- a/docs/system/riscv/virt.rst
+> +++ b/docs/system/riscv/virt.rst
+> @@ -116,6 +116,18 @@ The following machine-specific options are supported:
+>     having AIA IMSIC (i.e. "aia=aplic-imsic" selected). When not specified,
+>     the default number of per-HART VS-level AIA IMSIC pages is 0.
+>   
+> +- iopmp=[on|off]
+> +
+> +  When this option is "on", an IOPMP device is added to machine. It checks dma
+> +  operations from the generic PCIe host bridge. This option is assumed to be
+> +  "off".
+> +
+> +- iopmp_cascade=[on|off]
+> +
+> +  When this option is "on", a second IOPMP device which is cascaded by first
+> +  IOPMP device is added to machine. When IOPMP option is "off", this option has
+> +  no effect. This option is assumed to be "off".
+> +
+>   Running Linux kernel
+>   --------------------
+>   
+> diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+> index a50717be87..c207b94747 100644
+> --- a/hw/riscv/Kconfig
+> +++ b/hw/riscv/Kconfig
+> @@ -46,6 +46,7 @@ config RISCV_VIRT
+>       select PLATFORM_BUS
+>       select ACPI
+>       select ACPI_PCI
+> +    select RISCV_IOPMP
+>   
+>   config SHAKTI_C
+>       bool
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index f9fd1341fc..9a3afca8d7 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -52,6 +52,7 @@
+>   #include "hw/display/ramfb.h"
+>   #include "hw/acpi/aml-build.h"
+>   #include "qapi/qapi-visit-common.h"
+> +#include "hw/misc/riscv_iopmp.h"
+>   
+>   /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
+>   static bool virt_use_kvm_aia(RISCVVirtState *s)
+> @@ -74,6 +75,8 @@ static const MemMapEntry virt_memmap[] = {
+>       [VIRT_UART0] =        { 0x10000000,         0x100 },
+>       [VIRT_VIRTIO] =       { 0x10001000,        0x1000 },
+>       [VIRT_FW_CFG] =       { 0x10100000,          0x18 },
+> +    [VIRT_IOPMP] =        { 0x10200000,      0x100000 },
+> +    [VIRT_IOPMP2] =       { 0x10300000,      0x100000 },
+>       [VIRT_FLASH] =        { 0x20000000,     0x4000000 },
+>       [VIRT_IMSIC_M] =      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
+>       [VIRT_IMSIC_S] =      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
+> @@ -1011,6 +1014,42 @@ static void create_fdt_fw_cfg(RISCVVirtState *s, const MemMapEntry *memmap)
+>       g_free(nodename);
+>   }
+>   
+> +static void create_fdt_iopmp(RISCVVirtState *s, const MemMapEntry *memmap,
+> +                             uint32_t irq_mmio_phandle) {
+> +    g_autofree char *name = NULL;
+> +    MachineState *ms = MACHINE(s);
+> +
+> +    name = g_strdup_printf("/soc/iopmp@%lx", (long)memmap[VIRT_IOPMP].base);
+> +    qemu_fdt_add_subnode(ms->fdt, name);
+> +    qemu_fdt_setprop_string(ms->fdt, name, "compatible", "riscv_iopmp");
+> +    qemu_fdt_setprop_cells(ms->fdt, name, "reg", 0x0, memmap[VIRT_IOPMP].base,
+> +        0x0, memmap[VIRT_IOPMP].size);
+> +    qemu_fdt_setprop_cell(ms->fdt, name, "interrupt-parent", irq_mmio_phandle);
+> +    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
+> +        qemu_fdt_setprop_cell(ms->fdt, name, "interrupts", IOPMP_IRQ);
+> +    } else {
+> +        qemu_fdt_setprop_cells(ms->fdt, name, "interrupts", IOPMP_IRQ, 0x4);
+> +    }
+> +}
+> +
+> +static void create_fdt_iopmp2(RISCVVirtState *s, const MemMapEntry *memmap,
+> +                             uint32_t irq_mmio_phandle) {
+> +    g_autofree char *name;
 
-Re-running it again...  I haven't even tried to push it somewhere for CI to run,
-I run local `ninja test', which painted some migration tests in red.  Here:
+I believe we need to always initialize g_autofree variables. Please initialize it with
+'NULL' like you did up there in create_fdt_iopmp().
 
-202/844 qemu:qtest+qtest-aarch64 / qtest-aarch64/migration-test   ERROR   70.26s   killed by signal 6 SIGABRT
-330/844 qemu:qtest+qtest-i386 / qtest-i386/migration-test         ERROR   85.33s   killed by signal 6 SIGABRT
-454/844 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test     ERROR  101.02s   killed by signal 6 SIGABRT
+With this change:
 
-Unfortunately I don't see anything interesting in the log:
 
-# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-463614.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-463614.qmp,id=char0 
--mon chardev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine pc-q35-8.2, -name target,debug-threads=on -m 150M -serial 
-file:/tmp/migration-test-SPJTI2/dest_serial -incoming defer -drive if=none,id=d0,file=/tmp/migration-test-SPJTI2/bootsect,format=raw -device 
-ide-hd,drive=d0,secs=1,cyls=1,heads=1    2>/dev/null -accel qtest
------------------------------------ stderr -----------------------------------
-../../build/qemu/8.2/tests/qtest/libqtest.c:204: kill_qemu() detected QEMU death from signal 6 (Aborted)
-(test program exited with status code -6)
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Without the attached patch it works.
-
-> Anyway, I could prepare a backport on top of 8.2 for you.
-
-Well, that would definitely be helpful, if you think it's worth to
-provide backports for 8.2 for these.   As my attempt apparently isn't
-very successful :)
-
->> The following patch (27/34) is more questionable than this one.
-
-Thank you!
-
-/mjt
-
---------------M7tiwF4vTLzjnayFGLraha2u
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-migration-multifd-Join-the-TLS-thread.patch"
-Content-Disposition: attachment;
- filename="0001-migration-multifd-Join-the-TLS-thread.patch"
-Content-Transfer-Encoding: base64
-
-RnJvbSA2ZDRhYWU4NGEwNmZjN2UyNmRjYjFkOTg2YTRkZTNjNmQ2NWViMDY0IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBGYWJpYW5vIFJvc2FzIDxmYXJvc2FzQHN1c2UuZGU+
-CkRhdGU6IFR1ZSwgNiBGZWIgMjAyNCAxODo1MToxMyAtMDMwMApTdWJqZWN0OiBbUEFUQ0hd
-IG1pZ3JhdGlvbi9tdWx0aWZkOiBKb2luIHRoZSBUTFMgdGhyZWFkCgpXZSdyZSBjdXJyZW50
-bHkgbGVha2luZyB0aGUgcmVzb3VyY2VzIG9mIHRoZSBUTFMgdGhyZWFkIGJ5IG5vdCBqb2lu
-aW5nCml0IGFuZCBhbHNvIG92ZXJ3cml0aW5nIHRoZSBwLT50aHJlYWQgcG9pbnRlciBhbHRv
-Z2V0aGVyLgoKRml4ZXM6IGExYWY2MDViZDUgKCJtaWdyYXRpb24vbXVsdGlmZDogZml4IGhh
-bmd1cCB3aXRoIFRMUy1NdWx0aWZkIGR1ZSB0byBibG9ja2luZyBoYW5kc2hha2UiKQpDYzog
-cWVtdS1zdGFibGUgPHFlbXUtc3RhYmxlQG5vbmdudS5vcmc+ClJldmlld2VkLWJ5OiBQZXRl
-ciBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+ClNpZ25lZC1vZmYtYnk6IEZhYmlhbm8gUm9zYXMg
-PGZhcm9zYXNAc3VzZS5kZT4KTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI0
-MDIwNjIxNTExOC42MTcxLTItZmFyb3Nhc0BzdXNlLmRlClNpZ25lZC1vZmYtYnk6IFBldGVy
-IFh1IDxwZXRlcnhAcmVkaGF0LmNvbT4KKGNoZXJyeSBwaWNrZWQgZnJvbSBjb21taXQgZTE5
-MjFmMTBkOWFmZTY1MWY0ODg3Mjg0ZTg1ZjY3ODliMzdlNjdkMykKU2lnbmVkLW9mZi1ieTog
-TWljaGFlbCBUb2thcmV2IDxtanRAdGxzLm1zay5ydT4KKE1qdDogZml4dXAgZm9yIGJlZm9y
-ZSB2OC4yLjAtMTE0Mi1nMTI4MDhkYjNiOAogIm1pZ3JhdGlvbi9tdWx0aWZkOiBDbGVhbnVw
-IG11bHRpZmRfc2F2ZV9jbGVhbnVwKCkiKQotLS0KIG1pZ3JhdGlvbi9tdWx0aWZkLmMgfCA4
-ICsrKysrKystCiBtaWdyYXRpb24vbXVsdGlmZC5oIHwgMiArKwogMiBmaWxlcyBjaGFuZ2Vk
-LCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9taWdyYXRp
-b24vbXVsdGlmZC5jIGIvbWlncmF0aW9uL211bHRpZmQuYwppbmRleCA0MDk0NjA2ODRmLi4z
-MTgzYWE5ZTgyIDEwMDY0NAotLS0gYS9taWdyYXRpb24vbXVsdGlmZC5jCisrKyBiL21pZ3Jh
-dGlvbi9tdWx0aWZkLmMKQEAgLTUyNSw2ICs1MjUsMTAgQEAgdm9pZCBtdWx0aWZkX3NhdmVf
-Y2xlYW51cCh2b2lkKQogICAgIGZvciAoaSA9IDA7IGkgPCBtaWdyYXRlX211bHRpZmRfY2hh
-bm5lbHMoKTsgaSsrKSB7CiAgICAgICAgIE11bHRpRkRTZW5kUGFyYW1zICpwID0gJm11bHRp
-ZmRfc2VuZF9zdGF0ZS0+cGFyYW1zW2ldOwogCisgICAgICAgIGlmIChwLT50bHNfdGhyZWFk
-X2NyZWF0ZWQpIHsKKyAgICAgICAgICAgIHFlbXVfdGhyZWFkX2pvaW4oJnAtPnRsc190aHJl
-YWQpOworICAgICAgICB9CisKICAgICAgICAgaWYgKHAtPnJ1bm5pbmcpIHsKICAgICAgICAg
-ICAgIHFlbXVfdGhyZWFkX2pvaW4oJnAtPnRocmVhZCk7CiAgICAgICAgIH0KQEAgLTgyNiw3
-ICs4MzAsOSBAQCBzdGF0aWMgYm9vbCBtdWx0aWZkX3Rsc19jaGFubmVsX2Nvbm5lY3QoTXVs
-dGlGRFNlbmRQYXJhbXMgKnAsCiAgICAgdHJhY2VfbXVsdGlmZF90bHNfb3V0Z29pbmdfaGFu
-ZHNoYWtlX3N0YXJ0KGlvYywgdGlvYywgaG9zdG5hbWUpOwogICAgIHFpb19jaGFubmVsX3Nl
-dF9uYW1lKFFJT19DSEFOTkVMKHRpb2MpLCAibXVsdGlmZC10bHMtb3V0Z29pbmciKTsKICAg
-ICBwLT5jID0gUUlPX0NIQU5ORUwodGlvYyk7Ci0gICAgcWVtdV90aHJlYWRfY3JlYXRlKCZw
-LT50aHJlYWQsICJtdWx0aWZkLXRscy1oYW5kc2hha2Utd29ya2VyIiwKKworICAgIHAtPnRs
-c190aHJlYWRfY3JlYXRlZCA9IHRydWU7CisgICAgcWVtdV90aHJlYWRfY3JlYXRlKCZwLT50
-bHNfdGhyZWFkLCAibXVsdGlmZC10bHMtaGFuZHNoYWtlLXdvcmtlciIsCiAgICAgICAgICAg
-ICAgICAgICAgICAgIG11bHRpZmRfdGxzX2hhbmRzaGFrZV90aHJlYWQsIHAsCiAgICAgICAg
-ICAgICAgICAgICAgICAgIFFFTVVfVEhSRUFEX0pPSU5BQkxFKTsKICAgICByZXR1cm4gdHJ1
-ZTsKZGlmZiAtLWdpdCBhL21pZ3JhdGlvbi9tdWx0aWZkLmggYi9taWdyYXRpb24vbXVsdGlm
-ZC5oCmluZGV4IGE4MzU2NDNiNDguLjhmYmZmYmFhNWEgMTAwNjQ0Ci0tLSBhL21pZ3JhdGlv
-bi9tdWx0aWZkLmgKKysrIGIvbWlncmF0aW9uL211bHRpZmQuaApAQCAtNzUsNiArNzUsOCBA
-QCB0eXBlZGVmIHN0cnVjdCB7CiAgICAgY2hhciAqbmFtZTsKICAgICAvKiBjaGFubmVsIHRo
-cmVhZCBpZCAqLwogICAgIFFlbXVUaHJlYWQgdGhyZWFkOworICAgIFFlbXVUaHJlYWQgdGxz
-X3RocmVhZDsKKyAgICBib29sIHRsc190aHJlYWRfY3JlYXRlZDsKICAgICAvKiBjb21tdW5p
-Y2F0aW9uIGNoYW5uZWwgKi8KICAgICBRSU9DaGFubmVsICpjOwogICAgIC8qIGlzIHRoZSB5
-YW5rIGZ1bmN0aW9uIHJlZ2lzdGVyZWQgKi8KLS0gCjIuMzkuMgoK
-
---------------M7tiwF4vTLzjnayFGLraha2u--
+> +    MachineState *ms = MACHINE(s);
+> +
+> +    name = g_strdup_printf("/soc/iopmp2@%lx", (long)memmap[VIRT_IOPMP2].base);
+> +    qemu_fdt_add_subnode(ms->fdt, name);
+> +    qemu_fdt_setprop_string(ms->fdt, name, "compatible", "riscv_iopmp");
+> +    qemu_fdt_setprop_cells(ms->fdt, name, "reg", 0x0, memmap[VIRT_IOPMP2].base,
+> +        0x0, memmap[VIRT_IOPMP2].size);
+> +    qemu_fdt_setprop_cell(ms->fdt, name, "interrupt-parent", irq_mmio_phandle);
+> +    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
+> +        qemu_fdt_setprop_cell(ms->fdt, name, "interrupts", IOPMP2_IRQ);
+> +    } else {
+> +        qemu_fdt_setprop_cells(ms->fdt, name, "interrupts", IOPMP2_IRQ, 0x4);
+> +    }
+> +}
+> +
+>   static void finalize_fdt(RISCVVirtState *s)
+>   {
+>       uint32_t phandle = 1, irq_mmio_phandle = 1, msi_pcie_phandle = 1;
+> @@ -1029,6 +1068,13 @@ static void finalize_fdt(RISCVVirtState *s)
+>       create_fdt_uart(s, virt_memmap, irq_mmio_phandle);
+>   
+>       create_fdt_rtc(s, virt_memmap, irq_mmio_phandle);
+> +
+> +    if (s->have_iopmp) {
+> +        create_fdt_iopmp(s, virt_memmap, irq_mmio_phandle);
+> +        if (s->have_iopmp_cascade) {
+> +            create_fdt_iopmp2(s, virt_memmap, irq_mmio_phandle);
+> +        }
+> +    }
+>   }
+>   
+>   static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
+> @@ -1363,7 +1409,7 @@ static void virt_machine_init(MachineState *machine)
+>       MemoryRegion *system_memory = get_system_memory();
+>       MemoryRegion *mask_rom = g_new(MemoryRegion, 1);
+>       char *soc_name;
+> -    DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip;
+> +    DeviceState *mmio_irqchip, *virtio_irqchip, *pcie_irqchip, *gpex_dev;
+>       int i, base_hartid, hart_count;
+>       int socket_count = riscv_socket_count(machine);
+>   
+> @@ -1531,7 +1577,7 @@ static void virt_machine_init(MachineState *machine)
+>               qdev_get_gpio_in(virtio_irqchip, VIRTIO_IRQ + i));
+>       }
+>   
+> -    gpex_pcie_init(system_memory, pcie_irqchip, s);
+> +    gpex_dev = gpex_pcie_init(system_memory, pcie_irqchip, s);
+>   
+>       create_platform_bus(s, mmio_irqchip);
+>   
+> @@ -1542,6 +1588,23 @@ static void virt_machine_init(MachineState *machine)
+>       sysbus_create_simple("goldfish_rtc", memmap[VIRT_RTC].base,
+>           qdev_get_gpio_in(mmio_irqchip, RTC_IRQ));
+>   
+> +    if (s->have_iopmp) {
+> +        /* IOPMP */
+> +        DeviceState *iopmp_dev = sysbus_create_simple(TYPE_IOPMP,
+> +            memmap[VIRT_IOPMP].base,
+> +            qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP_IRQ));
+> +
+> +        /* PCI with IOPMP */
+> +        iopmp_setup_pci(iopmp_dev, PCI_HOST_BRIDGE(gpex_dev)->bus);
+> +
+> +        if (s->have_iopmp_cascade) {
+> +            DeviceState *iopmp_dev2 = sysbus_create_simple(TYPE_IOPMP,
+> +                memmap[VIRT_IOPMP2].base,
+> +                qdev_get_gpio_in(DEVICE(mmio_irqchip), IOPMP2_IRQ));
+> +            cascade_iopmp(iopmp_dev, iopmp_dev2);
+> +        }
+> +    }
+> +
+>       for (i = 0; i < ARRAY_SIZE(s->flash); i++) {
+>           /* Map legacy -drive if=pflash to machine properties */
+>           pflash_cfi01_legacy_drive(s->flash[i],
+> @@ -1647,6 +1710,35 @@ static void virt_set_aclint(Object *obj, bool value, Error **errp)
+>       s->have_aclint = value;
+>   }
+>   
+> +static bool virt_get_iopmp(Object *obj, Error **errp)
+> +{
+> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
+> +
+> +    return s->have_iopmp;
+> +}
+> +
+> +static void virt_set_iopmp(Object *obj, bool value, Error **errp)
+> +{
+> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
+> +
+> +    s->have_iopmp = value;
+> +}
+> +
+> +static bool virt_get_iopmp_cascade(Object *obj, Error **errp)
+> +{
+> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
+> +
+> +    return s->have_iopmp_cascade;
+> +}
+> +
+> +static void virt_set_iopmp_cascade(Object *obj, bool value, Error **errp)
+> +{
+> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
+> +
+> +    s->have_iopmp_cascade = value;
+> +}
+> +
+> +
+>   bool virt_is_acpi_enabled(RISCVVirtState *s)
+>   {
+>       return s->acpi != ON_OFF_AUTO_OFF;
+> @@ -1749,6 +1841,20 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+>                                 NULL, NULL);
+>       object_class_property_set_description(oc, "acpi",
+>                                             "Enable ACPI");
+> +
+> +    object_class_property_add_bool(oc, "iopmp", virt_get_iopmp,
+> +                                   virt_set_iopmp);
+> +    object_class_property_set_description(oc, "iopmp",
+> +                                          "Set on/off to enable/disable "
+> +                                          "iopmp device");
+> +
+> +    object_class_property_add_bool(oc, "iopmp-cascade",
+> +                                   virt_get_iopmp_cascade,
+> +                                   virt_set_iopmp_cascade);
+> +    object_class_property_set_description(oc, "iopmp-cascade",
+> +                                          "Set on/off to enable/disable "
+> +                                          "iopmp2 device which is cascaded by "
+> +                                          "iopmp1 device");
+>   }
+>   
+>   static const TypeInfo virt_machine_typeinfo = {
+> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+> index f89790fd58..07d95fde61 100644
+> --- a/include/hw/riscv/virt.h
+> +++ b/include/hw/riscv/virt.h
+> @@ -55,6 +55,8 @@ struct RISCVVirtState {
+>   
+>       int fdt_size;
+>       bool have_aclint;
+> +    bool have_iopmp;
+> +    bool have_iopmp_cascade;
+>       RISCVVirtAIAType aia_type;
+>       int aia_guests;
+>       char *oem_id;
+> @@ -84,12 +86,16 @@ enum {
+>       VIRT_PCIE_MMIO,
+>       VIRT_PCIE_PIO,
+>       VIRT_PLATFORM_BUS,
+> -    VIRT_PCIE_ECAM
+> +    VIRT_PCIE_ECAM,
+> +    VIRT_IOPMP,
+> +    VIRT_IOPMP2,
+>   };
+>   
+>   enum {
+>       UART0_IRQ = 10,
+>       RTC_IRQ = 11,
+> +    IOPMP_IRQ = 12,
+> +    IOPMP2_IRQ = 13,
+>       VIRTIO_IRQ = 1, /* 1 to 8 */
+>       VIRTIO_COUNT = 8,
+>       PCIE_IRQ = 0x20, /* 32 to 35 */
 
