@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4187E854823
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA34854806
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:19:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDDa-0000f2-EE; Wed, 14 Feb 2024 06:14:22 -0500
+	id 1raDDb-0000iv-7r; Wed, 14 Feb 2024 06:14:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDU-0000VI-P1
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDU-0000VL-Pz
  for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:16 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDQ-0006o9-9Q
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDR-0006oo-9o
  for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909250;
+ s=mimecast20190719; t=1707909252;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=9iax4fGkbgDG496GWyJLMKtIlIETz7WAUyf3pMF1uss=;
- b=SoCNhsN0aVoGQ31saM03LTxvc6RpqXRAgaTqX8a4cQL2/ORVSW4vnC939Z6Gyc23Rk2Drd
- DwE3kp51PCWf0uNq2peSp2a3U6h4RLvbTyD8Zx3hiMXL/YTcKD573JMnfj9USUWTmgCecx
- XeHiURYmhWARMTxhFXbhn8M/IJcmASY=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BNWmEEc1AFwNYSkngLIcbrXY7t57G8tK4w2tVPlRoEk=;
+ b=Gfu6pyRK2Uh5TUROp3NIvXlhzafjvcoBL/AafcIVZ7W8o5qJgoLKK3LKWzlKIGiRk1fY8k
+ j86GGW3M0+cKTtITKGE/9vOvVgDM7ypZcKZRRldHJLZGbBHfjVtF/cXb5v7ckpNZZ/TZTj
+ x2/N7aCWwJxicU52PDqoU+nhOey/olI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-1j-73DFKOMaZKZf_5Dpjfg-1; Wed, 14 Feb 2024 06:14:08 -0500
-X-MC-Unique: 1j-73DFKOMaZKZf_5Dpjfg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a3d06dd626fso90592966b.1
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:08 -0800 (PST)
+ us-mta-31-MRMpxzFPOdu8est3MnBadw-1; Wed, 14 Feb 2024 06:14:11 -0500
+X-MC-Unique: MRMpxzFPOdu8est3MnBadw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a2bc65005feso378365566b.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909247; x=1708514047;
+ d=1e100.net; s=20230601; t=1707909249; x=1708514049;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9iax4fGkbgDG496GWyJLMKtIlIETz7WAUyf3pMF1uss=;
- b=EbKMWR+WmhPaE+RWDSKcWzRR8wWjDGmaLb4CkgE5ujuX2ZBUeNb49XL/n66aoZQDEv
- M+bmdZ3iUBzaRYC+o9vSFeYL/PSwhW/kvyViFb9a9aV+fyg/OK5e5cMZDNZvdFHdSPaK
- tYras3+FA9QU4g97hD6910vH+AMcU7FbJWbGjzf6iW6icsnHNVDYdsCXIWDsO2Q1H1bB
- 5qOep0eGFEZe668Itzox7fiVv+naRPQWezBDTgR9k+1fp3AnBzA5wraadvZuG+AFqZrU
- bnLuuAfZiuBLgj2db8/1PYTzMUcVrKDJNRp/0fMSuaQOlrK3y67wo/JxwYQklealZAsX
- 61jg==
-X-Gm-Message-State: AOJu0YxgYSk7t6lNocx7Os32/DznBSELHJiKntjQacs/wRdIEu/htL2o
- eSZ+GumzvlNCmh6x/7bHWqbo8WwtjmsZMbs/W6ESX/oEJC5fP2lup8jRDIYiBi4NViKXl4kpoJV
- cDaSXIpKOPHLDWs28C6EuZYxHnFt31fieB8LYuIcSUBUEyYfAc4WzCJec08fSnE5bs+Ig41TwKZ
- fZtYb3aU6k6/KxEtTZgwX8bj+roaIX0A==
-X-Received: by 2002:a17:907:170d:b0:a3d:1170:e6e3 with SMTP id
- le13-20020a170907170d00b00a3d1170e6e3mr1527439ejc.14.1707909246801; 
- Wed, 14 Feb 2024 03:14:06 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGI49NcLQyhOXFsT4Md53NHs0c+SdAhAFi2eKpc8vzrHhHQLFmXDzJAS+L37Rh07ecp476ZiA==
-X-Received: by 2002:a17:907:170d:b0:a3d:1170:e6e3 with SMTP id
- le13-20020a170907170d00b00a3d1170e6e3mr1527417ejc.14.1707909246526; 
- Wed, 14 Feb 2024 03:14:06 -0800 (PST)
+ bh=BNWmEEc1AFwNYSkngLIcbrXY7t57G8tK4w2tVPlRoEk=;
+ b=hDDMS7zxJzHBTe1zAxNhJztu3wmjt2O5Xc1v44cVl4+YKnMmMQxfbQibtjYv3LcGH7
+ JKu8O/Xv8fTphqe2BFN8uy40Smhau3Gyj5QnGT+gEJpefQ29Fl2MyCWq+Vyl1TfWwK9J
+ c6TzQN0AU9zCu9I+dRvX5utY37YokpPsB+2RMpAczDOke9YVkhE9jJNtLcThTEDKHPQs
+ CwJFJyLd9qcSVnwVJg7tu9y3WBfH+e2F8+MaGik3C3BEif7UAtbPB4g3r32x+aYpZiZX
+ Kn1dKR5QShENTQkmg2ZCxhFXI3biKVVdevKL/UWG3johhTeWZ2hRcjPqjJaKIjZYpsTp
+ 0V9Q==
+X-Gm-Message-State: AOJu0YzxWLqVqD6OT4DszStnQZdNSYAhNpj4VCFvv7Ccn8cXxHGSOykd
+ xJBN8TZQ6l9Y4TfuilvWVmu2zDUzEd6xbXCtqzF1qhUIAT4LtDP7kvlQ1EI+VoQAdzraKZJUDbN
+ kSZl9o9BrEAKd1bAUoY8BRFv6IavzGj2xSZF0aQu8ReUUz2bFtNBLWFzTaM0TACJLIab64UvPp+
+ oIBatGq5fP8eS92ho15wg5gS6V8LrRFA==
+X-Received: by 2002:a17:906:6bcd:b0:a38:7171:e832 with SMTP id
+ t13-20020a1709066bcd00b00a387171e832mr1494960ejs.32.1707909249560; 
+ Wed, 14 Feb 2024 03:14:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFcJcIqC2Rx3Amk4km7PEH/Cc9S3s4kSzJDAyLO2TNhWkc9ZBHrpKBncETIiYFtU0eEQT5Zmw==
+X-Received: by 2002:a17:906:6bcd:b0:a38:7171:e832 with SMTP id
+ t13-20020a1709066bcd00b00a387171e832mr1494942ejs.32.1707909249331; 
+ Wed, 14 Feb 2024 03:14:09 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCU67ULHZKtEAw62/YAPtzCrjtvIDaXgeWg3SK7op60uqHWpe/E0cY99jjrG6+5gvY72coW60A/pb0Tfc00twzDj3OFLJWarLTA8RBqO3k6hUxgvmC7L2ku3QI4XykXMNbzYn8EWE9PkjN93/0BWJ1kuIbJ3k6XZgvbIW8JxAN6raBkKz7IqnEeFcEwtmDh4nWFcKQdP4CkNtPJyFBL1tGlkx/Qpmbaf2kcD9h7K4QtT1GGkyTXnei3g6VegLDkJpWmyBr8T0OxNaCrcnL9nQcVOpXPC+cNiYT+/MHOpQK+DU+8LSYy429CrWXOmDGuaXg==
+ AJvYcCW94K8mG1H3qnLzA4JpVm+kEWSUzDLv41ZTHTu2qGtxvblA7C62zwc2sFXkrjbVT/hCdfvIA7XpUknG/NoTImE5gr6XCIta3yVZuMs2naxM4DKBRcQ/QuAHZthICSIG5lZIDCaXI8TxzFq+36i9QP3u/Mw=
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- i24-20020a170906115800b00a3d303f0981sm767429eja.92.2024.02.14.03.14.04
+ vo10-20020a170907a80a00b00a3cfd838f32sm1620231ejc.178.2024.02.14.03.14.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:14:05 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:14:03 -0500
+ Wed, 14 Feb 2024 03:14:08 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:14:06 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bui Quang Minh <minhquangbui99@gmail.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 15/60] intel_iommu: allow Extended Interrupt Mode when using
- userspace APIC
-Message-ID: <2cf16205290bdb6d92bade3590adec6e08fd26c9.1707909001.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 16/60] test: bios-tables-test: prepare IVRS change in ACPI table
+Message-ID: <595cd6fd9dffe51ef3fdb3077979a87ff2947b1f.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -109,36 +103,24 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-As userspace APIC now supports x2APIC, intel interrupt remapping
-hardware can be set to EIM mode when userspace local APIC is used.
+Following the instructions in bios-tables-test, this lists that IVRS.ivrs
+in ACPI table will be changed to add new IVHD type 0x11.
 
-Suggested-by: Joao Martins <joao.m.martins@oracle.com>
-Acked-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Message-Id: <20240111154404.5333-5-minhquangbui99@gmail.com>
+Message-Id: <20240111154404.5333-6-minhquangbui99@gmail.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/intel_iommu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 1a07faddb4..cf933189d3 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -4124,11 +4124,7 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-                                               ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
-     if (s->intr_eim == ON_OFF_AUTO_ON && !s->buggy_eim) {
--        if (!kvm_irqchip_is_split()) {
--            error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split");
--            return false;
--        }
--        if (kvm_enabled() && !kvm_enable_x2apic()) {
-+        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
-             error_setg(errp, "eim=on requires support on the KVM side"
-                              "(X2APIC_API, first shipped in v4.7)");
-             return false;
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..ac420db6b7 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/q35/IVRS.ivrs",
 -- 
 MST
 
