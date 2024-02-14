@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924B785482D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC4C85480F
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:19:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDE0-0002np-IO; Wed, 14 Feb 2024 06:14:48 -0500
+	id 1raDE3-0002sY-RC; Wed, 14 Feb 2024 06:14:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDx-0002OS-TL
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:45 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE1-0002qM-E1
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:49 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDw-0006tr-1U
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:45 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDz-0006uS-Ua
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909283;
+ s=mimecast20190719; t=1707909286;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=smiDBzm8jjockK0zGaO+moTUtAPPy/TrghQrFfeHPcQ=;
- b=LkRJGF//g278S5E2UIu4bDdcsy0BsuV/4XnBm90KFzjY849+819q5FXzy/df0T+md/uZum
- 46aNik42fxXzX4326jn6zIQK48kYS6JBkRA7MWC0mlNl+P4OGy8xVJdp6+4rsqYsb8PAOf
- 1+WYED8TsYPq28tVGhvfbOX7OGhv700=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XM132RQQIUZpLEj5Uac/xI2M4i5v/RWBhoUWLeS7lSc=;
+ b=KEwR46jZosdN4W2qUWK/HVuNssT4VWc4zQuk6EQ6+mCiiybeLy0EbMgXHKWwoJ9UKZpjew
+ o/D3l6pAl1yfS7IxJ1lazoa27/VNUZi7uOoHKloRFWxctyfLcY8FppsW8vgDJAuvldfEZP
+ qPJuhiOnQpJEvKnMAScQh1bN4jowwa0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-13pTl0a-PhaJpbtcXOvQZw-1; Wed, 14 Feb 2024 06:14:41 -0500
-X-MC-Unique: 13pTl0a-PhaJpbtcXOvQZw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a2bc664528fso403710166b.3
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:41 -0800 (PST)
+ us-mta-606-wZ5T-nstNVi4ShS86OcfEA-1; Wed, 14 Feb 2024 06:14:44 -0500
+X-MC-Unique: wZ5T-nstNVi4ShS86OcfEA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-55fee28d93dso3093239a12.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909280; x=1708514080;
+ d=1e100.net; s=20230601; t=1707909283; x=1708514083;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=smiDBzm8jjockK0zGaO+moTUtAPPy/TrghQrFfeHPcQ=;
- b=XSeXYFu5xQkob/sERN6faHhKHwQqKqWf2Z1K1cF6dF4BCUZ3uHuBzMERIi2MTPn0Oz
- ee8i6pjBCP5xMS1yOyBCRsgA/PDj0MpL321Lt2zLJbNYut/Z5PP2z6fk1X/rgFueAGbC
- pjW2e85wOWuTWvpU4OBG08+x8MiZGFROiYidQBLcJYHVWZg+35KDBKQlaJAj6QQjnFsw
- mb5bMputZeT5OmZBBCjkxEz5LbWRlXr1hmNwumb0icU1soxfFGIX3npwh7vgkbOM+oTR
- zqly+Uh4YK4yRWLhItaep069zLkGCpoZPpl5FbCLuX7UkWB7EzJloMJrGVvRyV9699cf
- dXFw==
-X-Gm-Message-State: AOJu0Yy06N1RpQ5KIPm2qURhgNe/uAFZ+wKVgehRVe80hEwkFItKHbC6
- bJgq+lnxbwWDeThlwcuUHii7TqLSbaKmTNKTIZC1PE3TckckTBtkbhf23ykVlftiyIjw+Opqt0q
- lNkrKPmAYDpA2AMIDV5avpO+y4NoHT056qlk0Gw1Xc0rSSlvNIVSWSzmYOCQTKNg66pa3+wCHSA
- SDZp63Yors8cr/nrhaEkk+p+7hBnSzCg==
-X-Received: by 2002:a17:906:6809:b0:a3d:6160:fcca with SMTP id
- k9-20020a170906680900b00a3d6160fccamr463631ejr.69.1707909280212; 
- Wed, 14 Feb 2024 03:14:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHZjsSdR+l4A/AMEj2g0dxGAt+tfDD2oxNPbfCTsR93ojeJ4kt5Ig95/isB/NwkQ7W8CWZU/g==
-X-Received: by 2002:a17:906:6809:b0:a3d:6160:fcca with SMTP id
- k9-20020a170906680900b00a3d6160fccamr463612ejr.69.1707909279962; 
- Wed, 14 Feb 2024 03:14:39 -0800 (PST)
+ bh=XM132RQQIUZpLEj5Uac/xI2M4i5v/RWBhoUWLeS7lSc=;
+ b=jSuREEAeEV4WY3Zdm82SoKa3abl0Q+lJEj0yI3kpo7RY+4q3l6ISrnsYM9GoVnMlqw
+ 6GglZbNVwL/0gpnxEz/AzdqUiFDrGi/ThyLMRZJ7esEzNNz37d0wuhoTFH2xOlOfYaA/
+ pSpaH1pQjwQH+TSSbU5SzrBRZ26op/wGfRrOjbovHcysUD0Hbp/QlUkm0DKa683e8c7h
+ 08ONY1R/b+HFEy7TTNZkwyKaAtyGhxW5BryVTQmVuIg8e1IRRuUpRBszSFjH+m7TUfwd
+ sGktIF0MCF5fxQLD5wzCH+6kOILWoNt6DkIF6GAKJAXXMAHCaM26LCEJPOfkRnGSYw4u
+ X5YA==
+X-Gm-Message-State: AOJu0YzWrR+N1UVqafFxDTERNvBte3PE5L/PCWAp5CeZCzzbwMjDlSKg
+ 58zqVaIiiGIM7Y9HuxlzoH/xA+GFUTeqajTrtTU14Q2AZNyJfD/bArpRofveSV5vZxauwDlVTiY
+ JrJyh05iQ+gjuOH2++uhQyD8ElTx0UDXiQl7ExXf3T9LEkTaZaoOdKF/zP6nsn1mDtTRzv0UDmC
+ E0Hime2HP374wGnMqhtnn5NHnnNWG2YA==
+X-Received: by 2002:a05:6402:8c2:b0:560:5c58:dfc4 with SMTP id
+ d2-20020a05640208c200b005605c58dfc4mr1841048edz.1.1707909283265; 
+ Wed, 14 Feb 2024 03:14:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGa1Q7mLxSy9uqtgQwswxcRerHydiHG9HnmpCMP0DQJqn13jEByxEVRfTeRv+Qd5XvJyydm+Q==
+X-Received: by 2002:a05:6402:8c2:b0:560:5c58:dfc4 with SMTP id
+ d2-20020a05640208c200b005605c58dfc4mr1841029edz.1.1707909282958; 
+ Wed, 14 Feb 2024 03:14:42 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCcIux88zS8EZnjkSw4acOkpebnVTw0Tj1c2ALNA6K7LQXu4YZMmsMvHVsxcQOFK9PqHMc9PFk64IYNLdrXvxN7IrTCcrcVHw+xZybfhiZdpL4luJyy77i+CLdCwY8zGdL3DUO5R2EMG5ZQNKIpL1vBLgjVOS5XZhBTMWWqiIjuKPyZEd+WzIyn+EAc+63
+ AJvYcCVCRUdDL7iWpdLfAd55S/UEUgY4N0w2WkNRxMRJwHwPZCXFGU/NXCO/fuwWWZzg7ZSMf++BcBkUi46Wr22xUOoTeosRO7hWW/CjEowTECN9/KJPllD08r/YHHPCk7MSAUu81tI85W1eECCdxLLS6em4bmoIboobhf/M+ElqiZQvrFlqVVeu4HTxm7ExJbjc
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- x16-20020a170906441000b00a3d44571dd9sm504245ejo.136.2024.02.14.03.14.38
+ l20-20020aa7cad4000000b005638a4f935dsm183952edt.4.2024.02.14.03.14.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:14:39 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:14:37 -0500
+ Wed, 14 Feb 2024 03:14:42 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:14:40 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,8 +70,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 26/60] exec/ioport: Add portio_list_set_address()
-Message-ID: <ad2b652341f4257e2fb7ebf3834724f91173a07a.1707909001.git.mst@redhat.com>
+Subject: [PULL 27/60] exec/ioport: Add portio_list_set_enabled()
+Message-ID: <f165cdf102bb93c255c63b77617ba371d73344e0.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -107,108 +107,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Bernhard Beschow <shentey@gmail.com>
 
 Some SuperI/O devices such as the VIA south bridges or the PC87312 controller
-are able to relocate their SuperI/O functions. Add a convenience function for
-implementing this in the VIA south bridges.
+allow to enable or disable their SuperI/O functions. Add a convenience function
+for implementing this in the VIA south bridges.
 
-This convenience function relies on previous simplifications in exec/ioport
-which avoids some duplicate synchronization of I/O port base addresses. The
-naming of the function is inspired by its memory_region_set_address() pendant.
+The naming of the functions is inspired by its memory_region_set_enabled()
+pendant.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20240114123911.4877-6-shentey@gmail.com>
+Message-Id: <20240114123911.4877-7-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/ioport.h         |  2 ++
- system/ioport.c               | 19 +++++++++++++++++++
- docs/devel/migration/main.rst |  5 +++--
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ include/exec/ioport.h         | 1 +
+ system/ioport.c               | 9 +++++++++
+ docs/devel/migration/main.rst | 1 +
+ 3 files changed, 11 insertions(+)
 
 diff --git a/include/exec/ioport.h b/include/exec/ioport.h
-index 95f1dc30d0..96858e5ac3 100644
+index 96858e5ac3..4397f12f93 100644
 --- a/include/exec/ioport.h
 +++ b/include/exec/ioport.h
-@@ -54,6 +54,7 @@ typedef struct PortioList {
-     const struct MemoryRegionPortio *ports;
-     Object *owner;
-     struct MemoryRegion *address_space;
-+    uint32_t addr;
-     unsigned nr;
-     struct MemoryRegion **regions;
-     void *opaque;
-@@ -70,5 +71,6 @@ void portio_list_add(PortioList *piolist,
+@@ -71,6 +71,7 @@ void portio_list_add(PortioList *piolist,
                       struct MemoryRegion *address_space,
                       uint32_t addr);
  void portio_list_del(PortioList *piolist);
-+void portio_list_set_address(PortioList *piolist, uint32_t addr);
++void portio_list_set_enabled(PortioList *piolist, bool enabled);
+ void portio_list_set_address(PortioList *piolist, uint32_t addr);
  
  #endif /* IOPORT_H */
 diff --git a/system/ioport.c b/system/ioport.c
-index a59e58b716..000e0ee1af 100644
+index 000e0ee1af..fd551d0375 100644
 --- a/system/ioport.c
 +++ b/system/ioport.c
-@@ -133,6 +133,7 @@ void portio_list_init(PortioList *piolist,
-     piolist->nr = 0;
-     piolist->regions = g_new0(MemoryRegion *, n);
-     piolist->address_space = NULL;
-+    piolist->addr = 0;
-     piolist->opaque = opaque;
-     piolist->owner = owner;
-     piolist->name = name;
-@@ -282,6 +283,7 @@ void portio_list_add(PortioList *piolist,
-     unsigned int off_low, off_high, off_last, count;
- 
-     piolist->address_space = address_space;
-+    piolist->addr = start;
- 
-     /* Handle the first entry specially.  */
-     off_last = off_low = pio_start->offset;
-@@ -322,6 +324,23 @@ void portio_list_del(PortioList *piolist)
+@@ -324,6 +324,15 @@ void portio_list_del(PortioList *piolist)
      }
  }
  
-+void portio_list_set_address(PortioList *piolist, uint32_t addr)
++void portio_list_set_enabled(PortioList *piolist, bool enabled)
 +{
-+    MemoryRegionPortioList *mrpio;
-+    unsigned i, j;
++    unsigned i;
 +
 +    for (i = 0; i < piolist->nr; ++i) {
-+        mrpio = container_of(piolist->regions[i], MemoryRegionPortioList, mr);
-+        memory_region_set_address(&mrpio->mr,
-+                                  mrpio->mr.addr - piolist->addr + addr);
-+        for (j = 0; mrpio->ports[j].size; ++j) {
-+            mrpio->ports[j].offset += addr - piolist->addr;
-+        }
++        memory_region_set_enabled(piolist->regions[i], enabled);
 +    }
-+
-+    piolist->addr = addr;
 +}
 +
- static void memory_region_portio_list_finalize(Object *obj)
+ void portio_list_set_address(PortioList *piolist, uint32_t addr)
  {
-     MemoryRegionPortioList *mrpio = MEMORY_REGION_PORTIO_LIST(obj);
+     MemoryRegionPortioList *mrpio;
 diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-index 00b9c3d32f..9439adcf66 100644
+index 9439adcf66..331252a92c 100644
 --- a/docs/devel/migration/main.rst
 +++ b/docs/devel/migration/main.rst
-@@ -431,10 +431,10 @@ data doesn't match the stored device data well; it allows an
- intermediate temporary structure to be populated with migration
- data and then transferred to the main structure.
- 
--If you use memory API functions that update memory layout outside
-+If you use memory or portio_list API functions that update memory layout outside
- initialization (i.e., in response to a guest action), this is a strong
- indication that you need to call these functions in a ``post_load`` callback.
--Examples of such memory API functions are:
-+Examples of such API functions are:
- 
-   - memory_region_add_subregion()
-   - memory_region_del_subregion()
-@@ -443,6 +443,7 @@ Examples of such memory API functions are:
-   - memory_region_set_enabled()
+@@ -444,6 +444,7 @@ Examples of such API functions are:
    - memory_region_set_address()
    - memory_region_set_alias_offset()
-+  - portio_list_set_address()
+   - portio_list_set_address()
++  - portio_list_set_enabled()
  
  Iterative device migration
  --------------------------
