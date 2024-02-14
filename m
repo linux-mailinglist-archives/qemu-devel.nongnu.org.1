@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC4C85480F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11593854802
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:18:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDE3-0002sY-RC; Wed, 14 Feb 2024 06:14:51 -0500
+	id 1raDE6-00033V-Jv; Wed, 14 Feb 2024 06:14:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE1-0002qM-E1
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:49 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE4-0002yC-JA
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:52 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDz-0006uS-Ua
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:49 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE3-0006vH-6g
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909286;
+ s=mimecast20190719; t=1707909290;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=XM132RQQIUZpLEj5Uac/xI2M4i5v/RWBhoUWLeS7lSc=;
- b=KEwR46jZosdN4W2qUWK/HVuNssT4VWc4zQuk6EQ6+mCiiybeLy0EbMgXHKWwoJ9UKZpjew
- o/D3l6pAl1yfS7IxJ1lazoa27/VNUZi7uOoHKloRFWxctyfLcY8FppsW8vgDJAuvldfEZP
- qPJuhiOnQpJEvKnMAScQh1bN4jowwa0=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NQPq2eB8YlzFRo2yi/9ewINIVLnGxrTHAgWJxfM/5SU=;
+ b=BL0sjsmOxNUbLtuNqJZuXFZtaa+qIQmIEEZjENug5V0XRLy0HdEoh4MQJ/gR1zElgGcItD
+ 4BsZSJKZwblCLeDCkny1MJTwh6JgPGJVCEcZADNdIqZtgOcHQDnFPz+mSefwAZCE9Gn3B/
+ YXHdN2Mz+RcIkFVkX0MqpRPX8szS0/I=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-wZ5T-nstNVi4ShS86OcfEA-1; Wed, 14 Feb 2024 06:14:44 -0500
-X-MC-Unique: wZ5T-nstNVi4ShS86OcfEA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-55fee28d93dso3093239a12.2
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:44 -0800 (PST)
+ us-mta-232-youdLG_DOUOfkxdvJJ-OpA-1; Wed, 14 Feb 2024 06:14:48 -0500
+X-MC-Unique: youdLG_DOUOfkxdvJJ-OpA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a3cdd79d960so114091566b.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909283; x=1708514083;
+ d=1e100.net; s=20230601; t=1707909286; x=1708514086;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XM132RQQIUZpLEj5Uac/xI2M4i5v/RWBhoUWLeS7lSc=;
- b=jSuREEAeEV4WY3Zdm82SoKa3abl0Q+lJEj0yI3kpo7RY+4q3l6ISrnsYM9GoVnMlqw
- 6GglZbNVwL/0gpnxEz/AzdqUiFDrGi/ThyLMRZJ7esEzNNz37d0wuhoTFH2xOlOfYaA/
- pSpaH1pQjwQH+TSSbU5SzrBRZ26op/wGfRrOjbovHcysUD0Hbp/QlUkm0DKa683e8c7h
- 08ONY1R/b+HFEy7TTNZkwyKaAtyGhxW5BryVTQmVuIg8e1IRRuUpRBszSFjH+m7TUfwd
- sGktIF0MCF5fxQLD5wzCH+6kOILWoNt6DkIF6GAKJAXXMAHCaM26LCEJPOfkRnGSYw4u
- X5YA==
-X-Gm-Message-State: AOJu0YzWrR+N1UVqafFxDTERNvBte3PE5L/PCWAp5CeZCzzbwMjDlSKg
- 58zqVaIiiGIM7Y9HuxlzoH/xA+GFUTeqajTrtTU14Q2AZNyJfD/bArpRofveSV5vZxauwDlVTiY
- JrJyh05iQ+gjuOH2++uhQyD8ElTx0UDXiQl7ExXf3T9LEkTaZaoOdKF/zP6nsn1mDtTRzv0UDmC
- E0Hime2HP374wGnMqhtnn5NHnnNWG2YA==
-X-Received: by 2002:a05:6402:8c2:b0:560:5c58:dfc4 with SMTP id
- d2-20020a05640208c200b005605c58dfc4mr1841048edz.1.1707909283265; 
- Wed, 14 Feb 2024 03:14:43 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGa1Q7mLxSy9uqtgQwswxcRerHydiHG9HnmpCMP0DQJqn13jEByxEVRfTeRv+Qd5XvJyydm+Q==
-X-Received: by 2002:a05:6402:8c2:b0:560:5c58:dfc4 with SMTP id
- d2-20020a05640208c200b005605c58dfc4mr1841029edz.1.1707909282958; 
- Wed, 14 Feb 2024 03:14:42 -0800 (PST)
+ bh=NQPq2eB8YlzFRo2yi/9ewINIVLnGxrTHAgWJxfM/5SU=;
+ b=kjvkN0/vncArA7FBmILzGyKW8Gg3kFNcQkytIZNBuZLB2nhyPDRiDBb/TAqXItG/OD
+ Kb3hF+NtjUpLhNtRSqvgalADrk7/qmTbfI4KY+xXQjvTYTmeQjl82CZXtpbjY4/Av3ag
+ EleqwsyYfePvCeSNTtfv20j/248KviyzM3nH2PppshsyThzWOU6hCfeHtw7JS+bJiVuY
+ u2FdGfWz1bHQNejbp4ZeRKTqSNNbDl5q9pKQ5jqxeGLln9EFYO8Ip9Eaic9ct59FTtxa
+ Keew0krryBFLtwbLR1MFKNeFn+VY+FphuHUAQSLguhdpNV5F7H0qfL+Xx9NrDXW/zOHQ
+ x/8Q==
+X-Gm-Message-State: AOJu0Yz2lWNjdhiZPyAGGgk7Me3KfiHANmKDhCQSRADVPdY8VYxuX0ru
+ KqGk0bITwDNAl/mlKRIa8quwJUpskul94AZ8xx+uhvC2bzZqEXvbCvcLaSKoHx/si/uBonq1onO
+ JfkIoaPMH8XaAsjn+923vBOh0sw6hvV1/UZo3rybXkweQSTmrJNp4qpM5CpnGrpBXUsQYjpGV8+
+ JqrPDw7tilrXN7VgkgyBLq0HASErhr8g==
+X-Received: by 2002:a17:906:6043:b0:a3c:edc4:4abd with SMTP id
+ p3-20020a170906604300b00a3cedc44abdmr1622496ejj.33.1707909286359; 
+ Wed, 14 Feb 2024 03:14:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFlE5zsOtDbDpmO+I+yuR2yY/6loGor3xrXhWAZTODGea6RjOPtaXWwiR2yMkgWSveo7a0EUA==
+X-Received: by 2002:a17:906:6043:b0:a3c:edc4:4abd with SMTP id
+ p3-20020a170906604300b00a3cedc44abdmr1622482ejj.33.1707909286104; 
+ Wed, 14 Feb 2024 03:14:46 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCRUdDL7iWpdLfAd55S/UEUgY4N0w2WkNRxMRJwHwPZCXFGU/NXCO/fuwWWZzg7ZSMf++BcBkUi46Wr22xUOoTeosRO7hWW/CjEowTECN9/KJPllD08r/YHHPCk7MSAUu81tI85W1eECCdxLLS6em4bmoIboobhf/M+ElqiZQvrFlqVVeu4HTxm7ExJbjc
+ AJvYcCUu1DkKbb3j81+ckBkqyZZl1dUz1gIXrWEqHXS4B16cQpF7w9daVhYssxqEnIai19UNv5kLZU8VMxEJqYiHWJzKmRYfANL3OwSmR5Xi0fZNqnK+KZKd1H7rBBQhb3Q2mwBBBESfoPn7biyCaq0QmDuKp34fX1sxeSmCDQJmZAzq5qeC9j3yibcrT51OEp1SHw==
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- l20-20020aa7cad4000000b005638a4f935dsm183952edt.4.2024.02.14.03.14.41
+ m10-20020a1709060d8a00b00a3cd0c09a05sm2194400eji.180.2024.02.14.03.14.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:14:42 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:14:40 -0500
+ Wed, 14 Feb 2024 03:14:45 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:14:43 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/60] exec/ioport: Add portio_list_set_enabled()
-Message-ID: <f165cdf102bb93c255c63b77617ba371d73344e0.1707909001.git.mst@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, John Snow <jsnow@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: [PULL 28/60] hw/block/fdc-isa: Implement relocation and
+ enabling/disabling for TYPE_ISA_FDC
+Message-ID: <8c4d239139e93268884f9d385a0966ef40db422f.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -88,7 +88,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,67 +106,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Some SuperI/O devices such as the VIA south bridges or the PC87312 controller
-allow to enable or disable their SuperI/O functions. Add a convenience function
-for implementing this in the VIA south bridges.
-
-The naming of the functions is inspired by its memory_region_set_enabled()
-pendant.
+The real SuperI/O chips emulated by QEMU allow for relocating and enabling or
+disabling their SuperI/O functions via software. So far this is not implemented.
+Prepare for that by adding isa_fdc_set_{enabled,iobase}.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20240114123911.4877-7-shentey@gmail.com>
+Message-Id: <20240114123911.4877-8-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/ioport.h         | 1 +
- system/ioport.c               | 9 +++++++++
- docs/devel/migration/main.rst | 1 +
- 3 files changed, 11 insertions(+)
+ include/hw/block/fdc.h |  3 +++
+ hw/block/fdc-isa.c     | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/include/exec/ioport.h b/include/exec/ioport.h
-index 96858e5ac3..4397f12f93 100644
---- a/include/exec/ioport.h
-+++ b/include/exec/ioport.h
-@@ -71,6 +71,7 @@ void portio_list_add(PortioList *piolist,
-                      struct MemoryRegion *address_space,
-                      uint32_t addr);
- void portio_list_del(PortioList *piolist);
-+void portio_list_set_enabled(PortioList *piolist, bool enabled);
- void portio_list_set_address(PortioList *piolist, uint32_t addr);
+diff --git a/include/hw/block/fdc.h b/include/hw/block/fdc.h
+index 35248c0837..c367c5efea 100644
+--- a/include/hw/block/fdc.h
++++ b/include/hw/block/fdc.h
+@@ -14,6 +14,9 @@ void fdctrl_init_sysbus(qemu_irq irq, hwaddr mmio_base, DriveInfo **fds);
+ void sun4m_fdctrl_init(qemu_irq irq, hwaddr io_base,
+                        DriveInfo **fds, qemu_irq *fdc_tc);
  
- #endif /* IOPORT_H */
-diff --git a/system/ioport.c b/system/ioport.c
-index 000e0ee1af..fd551d0375 100644
---- a/system/ioport.c
-+++ b/system/ioport.c
-@@ -324,6 +324,15 @@ void portio_list_del(PortioList *piolist)
-     }
++void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase);
++void isa_fdc_set_enabled(ISADevice *fdc, bool enabled);
++
+ FloppyDriveType isa_fdc_get_drive_type(ISADevice *fdc, int i);
+ int cmos_get_fd_drive_type(FloppyDriveType fd0);
+ 
+diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+index 2d8a98ce7d..e43dc532af 100644
+--- a/hw/block/fdc-isa.c
++++ b/hw/block/fdc-isa.c
+@@ -192,6 +192,20 @@ static Aml *build_fdinfo_aml(int idx, FloppyDriveType type)
+     return dev;
  }
  
-+void portio_list_set_enabled(PortioList *piolist, bool enabled)
++void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase)
 +{
-+    unsigned i;
++    FDCtrlISABus *isa = ISA_FDC(fdc);
 +
-+    for (i = 0; i < piolist->nr; ++i) {
-+        memory_region_set_enabled(piolist->regions[i], enabled);
-+    }
++    fdc->ioport_id = iobase;
++    isa->iobase = iobase;
++    portio_list_set_address(&isa->portio_list, isa->iobase);
 +}
 +
- void portio_list_set_address(PortioList *piolist, uint32_t addr)
++void isa_fdc_set_enabled(ISADevice *fdc, bool enabled)
++{
++    portio_list_set_enabled(&ISA_FDC(fdc)->portio_list, enabled);
++}
++
+ int cmos_get_fd_drive_type(FloppyDriveType fd0)
  {
-     MemoryRegionPortioList *mrpio;
-diff --git a/docs/devel/migration/main.rst b/docs/devel/migration/main.rst
-index 9439adcf66..331252a92c 100644
---- a/docs/devel/migration/main.rst
-+++ b/docs/devel/migration/main.rst
-@@ -444,6 +444,7 @@ Examples of such API functions are:
-   - memory_region_set_address()
-   - memory_region_set_alias_offset()
-   - portio_list_set_address()
-+  - portio_list_set_enabled()
- 
- Iterative device migration
- --------------------------
+     int val;
 -- 
 MST
 
