@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D68854C73
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 16:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E4C854C78
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 16:19:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raH0i-0007gn-0S; Wed, 14 Feb 2024 10:17:20 -0500
+	id 1raH0k-0007hR-72; Wed, 14 Feb 2024 10:17:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0d-0007gb-SO
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:15 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0h-0007gt-9J
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0c-0000Kn-C4
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:15 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0f-0000LD-9W
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707923832;
+ s=mimecast20190719; t=1707923836;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h3vrvrrsqxQRRX1DdJMjzsxwaD3Jnd+isNz0iU98YIk=;
- b=izEa6RMoY7yr6qr99wqGDgzXxsJVi4Zj2lZgr8BwZ2FhYuyEbQ4aXg/9BbqUn+mKl45Pah
- XbmkfShuuzA4KyIWpNFtt4Zq8pY13tYV3sKb1yPmCKKPWGnFpNrSnbzA5lIX3lE+d40mA2
- JKTYt10WqzVzofg6Su/EqPRgJhayiNo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-317-GgdMN97APlyHHNzWgKodqA-1; Wed,
- 14 Feb 2024 10:17:09 -0500
-X-MC-Unique: GgdMN97APlyHHNzWgKodqA-1
+ bh=D5aOVJSEpKei/7ex6EeASiVcKRUD1LDRJrwBUNnZEXU=;
+ b=hIgFVXJ5OecC0ZD3+1e6y9Q2ooUxNrE8zCUUp6XF0Lcs4W9B0gocYWQNSzOU8xsOpGW7d2
+ Ggn+DZCdKS6ec4N4VoFZr+kHsRDq+c5blKTVOnmtYULwNhS6FPzFjYoi77y58Y1Efdqrca
+ YEQFHS8wfd4ETwltkCOXu6k1kFR7Pcg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-lvvM4uYSMBSsSnzfrGQzvg-1; Wed, 14 Feb 2024 10:17:12 -0500
+X-MC-Unique: lvvM4uYSMBSsSnzfrGQzvg-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E67691C05AE3;
- Wed, 14 Feb 2024 15:17:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3626483F265;
+ Wed, 14 Feb 2024 15:17:12 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.194.174])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D04DA1C02ECC;
- Wed, 14 Feb 2024 15:17:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 525771C02ECA;
+ Wed, 14 Feb 2024 15:17:09 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -50,10 +50,10 @@ Cc: David Hildenbrand <david@redhat.com>,
  Germano Veit Michel <germano@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Raphael Norwitz <raphael@enfabrica.net>
-Subject: [PATCH v2 01/14] libvhost-user: Dynamically allocate memory for
- memory slots
-Date: Wed, 14 Feb 2024 16:16:48 +0100
-Message-ID: <20240214151701.29906-2-david@redhat.com>
+Subject: [PATCH v2 02/14] libvhost-user: Bump up VHOST_USER_MAX_RAM_SLOTS to
+ 509
+Date: Wed, 14 Feb 2024 16:16:49 +0100
+Message-ID: <20240214151701.29906-3-david@redhat.com>
 In-Reply-To: <20240214151701.29906-1-david@redhat.com>
 References: <20240214151701.29906-1-david@redhat.com>
 MIME-Version: 1.0
@@ -83,65 +83,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's prepare for increasing VHOST_USER_MAX_RAM_SLOTS by dynamically
-allocating dev->regions. We don't have any ABI guarantees (not
-dynamically linked), so we can simply change the layout of VuDev.
+Let's support up to 509 mem slots, just like vhost in the kernel usually
+does and the rust vhost-user implementation recently [1] started doing.
+This is required to properly support memory hotplug, either using
+multiple DIMMs (ACPI supports up to 256) or using virtio-mem.
 
-Let's zero out the memory, just as we used to do.
+The 509 used to be the KVM limit, it supported 512, but 3 were
+used for internal purposes. Currently, KVM supports more than 512, but
+it usually doesn't make use of more than ~260 (i.e., 256 DIMMs + boot
+memory), except when other memory devices like PCI devices with BARs are
+used. So, 509 seems to work well for vhost in the kernel.
+
+Details can be found in the QEMU change that made virtio-mem consume
+up to 256 mem slots across all virtio-mem devices. [2]
+
+509 mem slots implies 509 VMAs/mappings in the worst case (even though,
+in practice with virtio-mem we won't be seeing more than ~260 in most
+setups).
+
+With max_map_count under Linux defaulting to 64k, 509 mem slots
+still correspond to less than 1% of the maximum number of mappings.
+There are plenty left for the application to consume.
+
+[1] https://github.com/rust-vmm/vhost/pull/224
+[2] https://lore.kernel.org/all/20230926185738.277351-1-david@redhat.com/
 
 Reviewed-by: Raphael Norwitz <raphael@enfabrica.net>
 Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 11 +++++++++++
- subprojects/libvhost-user/libvhost-user.h |  2 +-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ subprojects/libvhost-user/libvhost-user.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index a3b158c671..360c5366d6 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -2171,6 +2171,8 @@ vu_deinit(VuDev *dev)
- 
-     free(dev->vq);
-     dev->vq = NULL;
-+    free(dev->regions);
-+    dev->regions = NULL;
- }
- 
- bool
-@@ -2205,9 +2207,18 @@ vu_init(VuDev *dev,
-     dev->backend_fd = -1;
-     dev->max_queues = max_queues;
- 
-+    dev->regions = malloc(VHOST_USER_MAX_RAM_SLOTS * sizeof(dev->regions[0]));
-+    if (!dev->regions) {
-+        DPRINT("%s: failed to malloc mem regions\n", __func__);
-+        return false;
-+    }
-+    memset(dev->regions, 0, VHOST_USER_MAX_RAM_SLOTS * sizeof(dev->regions[0]));
-+
-     dev->vq = malloc(max_queues * sizeof(dev->vq[0]));
-     if (!dev->vq) {
-         DPRINT("%s: failed to malloc virtqueues\n", __func__);
-+        free(dev->regions);
-+        dev->regions = NULL;
-         return false;
-     }
- 
 diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
-index c2352904f0..c882b4e3a2 100644
+index c882b4e3a2..deb40e77b3 100644
 --- a/subprojects/libvhost-user/libvhost-user.h
 +++ b/subprojects/libvhost-user/libvhost-user.h
-@@ -398,7 +398,7 @@ typedef struct VuDevInflightInfo {
- struct VuDev {
-     int sock;
-     uint32_t nregions;
--    VuDevRegion regions[VHOST_USER_MAX_RAM_SLOTS];
-+    VuDevRegion *regions;
-     VuVirtq *vq;
-     VuDevInflightInfo inflight_info;
-     int log_call_fd;
+@@ -31,10 +31,12 @@
+ #define VHOST_MEMORY_BASELINE_NREGIONS 8
+ 
+ /*
+- * Set a reasonable maximum number of ram slots, which will be supported by
+- * any architecture.
++ * vhost in the kernel usually supports 509 mem slots. 509 used to be the
++ * KVM limit, it supported 512, but 3 were used for internal purposes. This
++ * limit is sufficient to support many DIMMs and virtio-mem in
++ * "dynamic-memslots" mode.
+  */
+-#define VHOST_USER_MAX_RAM_SLOTS 32
++#define VHOST_USER_MAX_RAM_SLOTS 509
+ 
+ #define VHOST_USER_HDR_SIZE offsetof(VhostUserMsg, payload.u64)
+ 
 -- 
 2.43.0
 
