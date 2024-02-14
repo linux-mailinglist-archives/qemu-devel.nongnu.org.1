@@ -2,92 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2074854AA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 14:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E598D854AEA
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 15:00:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raFXH-00074q-VN; Wed, 14 Feb 2024 08:42:51 -0500
+	id 1raFmX-00023T-R6; Wed, 14 Feb 2024 08:58:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1raFXF-00071Q-To
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 08:42:49 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1raFXD-0001oi-RN
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 08:42:49 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d780a392fdso45974825ad.3
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 05:42:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1707918166; x=1708522966; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2auo9oBTkUDUdR/b36sittQ3kuxtvCXUg45SfblRYg4=;
- b=gAgIAacckRj2usQ1VCO9X+9Qt2MUCazcvIoemIOhEWfEEaraTkC1zblKeqryF1hHE0
- Q0IMH+zar2guiSUYNFMaqp5zHXNgq5Xi63CrhNdmTm+Om6LpJJbssEkLyeDBgEVtX2ig
- Fkn57aE7K5z9hWivl3gDbgFE1BxqPxf7mtI91loAu01hrvZzBQcNSlLiYmltcES5PHQS
- 9dkY5KM4Lj/rv4EuoOhfca5OJC3qEJmCmZVBdUYsnLVo309bEkyi6z/22istjAAtPuTW
- bM/qM35rp7dz97M+VCWO58ruVKKCiqONh3JAeTHSYkz7lHbSuPgeVOMOTgss9vosQZqQ
- PP3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707918166; x=1708522966;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2auo9oBTkUDUdR/b36sittQ3kuxtvCXUg45SfblRYg4=;
- b=LeLmmxtht2njIXWTniGQwUchU2sV8RT2vdtXmByy/ekDxRRjFe3TnSeEkzYMFKCSYS
- BeD0nFZJqRRMxLwHjRbgoHUcgYBRFp02aBRArQg9elEdEoc3yY6NAfSO4b5so7duYVAP
- f8g9FKDWaBVmhwx1mkZ+ihOiz3vd7g6U1dZ8tRP9hbZ155Vg35DalXA0A6NtiTUG6UoM
- r8apnDahXJ8FR0NPsnFBfELsCijPes8X/rK9pPAp4X3kmXPK9j3svJdZShk/1rrfrzJu
- s3A/FmUsGw86tj4Uun+Ib4OQGa4x2twD/GIcSNJNkEfXRm0Ue2t9yAl90B8VUonai536
- hM/Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW7a2XEPKT8qngJ/t5DTCDjbY7/yeKtqq4bvcQykIEqP7UAfc8Ix3AQZN3kJCAsUHrvyP7AIsgX1q5tIUmOJEMqNn8BMS4=
-X-Gm-Message-State: AOJu0YxCXZ24wuR1aS6aoTP5T5mziGKorJHBIkqr8EHKy6HFUnkw97JI
- 1/znZQxcufhMLMj1+Ojz+qRSgP6/cKxTat1zWCFKe7lLwzje33UBQKzBeU/AenQ=
-X-Google-Smtp-Source: AGHT+IF3WHcoOJSuXqOyI7rnv0Sfl4qbYKBmJukdStj8+hStVJcRicoaeV5MlwdkNDbn8O437+GjJg==
-X-Received: by 2002:a17:902:ba82:b0:1d8:ae30:eddd with SMTP id
- k2-20020a170902ba8200b001d8ae30edddmr2766077pls.23.1707918166344; 
- Wed, 14 Feb 2024 05:42:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCW8R7v+1VIIeJqFpwFo5V2JNAYQgjRZfEhxWZP3ewg9dQr8WqTmKLgvQ+yIHs/gedzjDyrcMGII8ycfh5Q7kk9T727kGhDMTW6gSJihvZ3j7yMiyITBigeBoz5KKKZnR+SrkzE9A1BPnd6+vxx7jvr9Bd4pHT4kBZ0gaxu/s3GkRhlmIEoJtLJf4oSO6KXKjJ24Z+eGwW106/FvzydABxAIFW/NqFhA05irY2RlnzbOZ7/Vqz3Safo2gHTshACeg48nNVXJ0hS9SH0rJKe1qV9ilUXRBfTEPutftx94
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- c21-20020a170902c1d500b001d9602f3dbesm3718154plc.24.2024.02.14.05.42.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Feb 2024 05:42:45 -0800 (PST)
-Message-ID: <72350b07-acc5-4ece-b5e2-a3c8e41b80a2@ventanamicro.com>
-Date: Wed, 14 Feb 2024 10:42:42 -0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1raFmV-00023H-J0; Wed, 14 Feb 2024 08:58:35 -0500
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1raFmS-0005s8-Ou; Wed, 14 Feb 2024 08:58:35 -0500
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CFAFB4D443;
+ Wed, 14 Feb 2024 16:58:32 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 681597ED9F;
+ Wed, 14 Feb 2024 16:58:25 +0300 (MSK)
+Content-Type: multipart/mixed; boundary="------------M7tiwF4vTLzjnayFGLraha2u"
+Message-ID: <d3c4506f-0dbd-4171-944d-0aeb040153ad@tls.msk.ru>
+Date: Wed, 14 Feb 2024 16:58:25 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] RISC-V: Add Ztso extension
+Subject: Re: [PULL 26/34] migration/multifd: Join the TLS thread
 Content-Language: en-US
-To: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Philipp Tomsich
- <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Andrew Jones <ajones@ventanamicro.com>
-References: <20240207122256.902627-1-christoph.muellner@vrull.eu>
- <3da767e4-26f8-4c92-a241-4111c2befdc2@ventanamicro.com>
- <CAEg0e7jXdfViUSaRc2+6WNtTY37_NhbsuxjPMw4YhQ24-HD3tg@mail.gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAEg0e7jXdfViUSaRc2+6WNtTY37_NhbsuxjPMw4YhQ24-HD3tg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+To: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-stable <qemu-stable@nongnu.org>
+References: <20240208030528.368214-1-peterx@redhat.com>
+ <20240208030528.368214-27-peterx@redhat.com>
+ <d60ddc11-b4b4-4fee-b9c0-08bea513f8d3@tls.msk.ru>
+ <0e5720f4-63c1-4f71-ab6b-26c07614ba33@tls.msk.ru> <8734tvqipk.fsf@suse.de>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <8734tvqipk.fsf@suse.de>
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,92 +85,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a multi-part message in MIME format.
+--------------M7tiwF4vTLzjnayFGLraha2u
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-On 2/14/24 10:38, Christoph Müllner wrote:
-> On Wed, Feb 14, 2024 at 2:35 PM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->>
->>
->> On 2/7/24 09:22, Christoph Müllner wrote:
->>> The first patch of this series picks up an earlier v2 Ztso patch from Palmer,
->>> which can be found here:
->>>     https://patchwork.kernel.org/project/qemu-devel/patch/20220917072635.11616-1-palmer@rivosinc.com/
->>> This patch did not apply cleanly but the necessary changes were trivial.
->>> There was a request to extend the commit message, which is part of the
->>> posted patch of this series.  As this patch was reviewed a year ago,
->>> I believe it could be merged.
+14.02.2024 16:27, Fabiano Rosas :
+> Michael Tokarev <mjt@tls.msk.ru> writes:
+..>>> This change, which is suggested for -stable, while simple by its own, seems
+>>> to depend on the previous changes in this series, which are not for -stable.
+>>> In particular, whole "Finally recycle all the threads" loop in multifd_send_terminate_threads()
+>>> (to which the join is being added by this change) is moved from elsewhere by
+>>> 12808db3b8 "migration/multifd: Cleanup multifd_save_cleanup()" (patch 24 in
+>>> this same series).
 >>>
->>> The second patch simply exposes Ztso via hwprobe.
->>
->> It's also worth mentioning that the second patch relies on:
->>
->> "[PATCH 0/2] linux-user/riscv: Sync hwprobe keys with kernel"
->>
->> To be applied beforehand.
+>> We can probably add the missing join right into the previous location of this
+>> loop (before 12808db3b8).  I did this in the attached variant for 8.2, is
+>> this correct?
+
+I forgot to attach the patch.  It just moves the join from multifd_send_terminate_threads()
+back to multifd_save_cleanup.  Attached now.
+
+> It should work. This was originally developed without the rest of the
+> changes on this PR.
 > 
-> Indeed! Therefore, the end of the cover letter contains the following paragraph:
-> """
-> This series is based on today's riscv-to-apply.next with my other series
-> that adds the new hwprobe keys
-> (https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg01293.html).
-> """
-
-I guess it's also worth mentioning that I didn't pay enough attention to the
-cover letter :skull:
-
-
-
-Thanks,
-
-Daniel
-
+>> And this does not pass even the basic tests, so it's not that simple :)
 > 
-> To ease reviewing and testing for others, I've also created a remote
-> branch on GitHub.
-> 
-> Thanks for reviewing!
-> 
->>
->>
->>
->> Thanks,
->>
->> Daniel
->>
->>
->>>
->>> Relevant in this context might be also, that Richard's patch to improve
->>> TCG's memory barrier selection depending on host and guest memory ordering
->>> landed in June 2023:
->>>     https://lore.kernel.org/all/a313b36b-dcc1-f812-ccbd-afed1cbd523b@linaro.org/T/
->>>
->>> The first patch was already sent as part of an RFC series for Ssdtso:
->>>     https://lists.nongnu.org/archive/html/qemu-devel/2023-11/msg02962.html
->>> Since I don't want to keep this patch until the ratification of Ssdtso,
->>> I would like to get this merged independent of Ssdtso.
->>>
->>> This series is based on today's riscv-to-apply.next with my other series
->>> that adds the new hwprobe keys
->>> (https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg01293.html).
->>>
->>> This series can also be found here:
->>>     https://github.com/cmuellner/qemu/tree/ztso
->>>
->>> Christoph Müllner (1):
->>>     linux-user/riscv: Add Ztso extension to hwprobe
->>>
->>> Palmer Dabbelt (1):
->>>     RISC-V: Add support for Ztso
->>>
->>>    linux-user/syscall.c                    |  3 +++
->>>    target/riscv/cpu.c                      |  2 ++
->>>    target/riscv/cpu_cfg.h                  |  1 +
->>>    target/riscv/insn_trans/trans_rva.c.inc | 11 ++++++++---
->>>    target/riscv/insn_trans/trans_rvi.c.inc | 16 ++++++++++++++--
->>>    target/riscv/insn_trans/trans_rvv.c.inc | 20 ++++++++++++++++++++
->>>    target/riscv/translate.c                |  3 +++
->>>    7 files changed, 51 insertions(+), 5 deletions(-)
->>>
+> Do you have a log of what failed?
+
+Re-running it again...  I haven't even tried to push it somewhere for CI to run,
+I run local `ninja test', which painted some migration tests in red.  Here:
+
+202/844 qemu:qtest+qtest-aarch64 / qtest-aarch64/migration-test   ERROR   70.26s   killed by signal 6 SIGABRT
+330/844 qemu:qtest+qtest-i386 / qtest-i386/migration-test         ERROR   85.33s   killed by signal 6 SIGABRT
+454/844 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test     ERROR  101.02s   killed by signal 6 SIGABRT
+
+Unfortunately I don't see anything interesting in the log:
+
+# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-463614.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-463614.qmp,id=char0 
+-mon chardev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine pc-q35-8.2, -name target,debug-threads=on -m 150M -serial 
+file:/tmp/migration-test-SPJTI2/dest_serial -incoming defer -drive if=none,id=d0,file=/tmp/migration-test-SPJTI2/bootsect,format=raw -device 
+ide-hd,drive=d0,secs=1,cyls=1,heads=1    2>/dev/null -accel qtest
+----------------------------------- stderr -----------------------------------
+../../build/qemu/8.2/tests/qtest/libqtest.c:204: kill_qemu() detected QEMU death from signal 6 (Aborted)
+(test program exited with status code -6)
+
+Without the attached patch it works.
+
+> Anyway, I could prepare a backport on top of 8.2 for you.
+
+Well, that would definitely be helpful, if you think it's worth to
+provide backports for 8.2 for these.   As my attempt apparently isn't
+very successful :)
+
+>> The following patch (27/34) is more questionable than this one.
+
+Thank you!
+
+/mjt
+
+--------------M7tiwF4vTLzjnayFGLraha2u
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-migration-multifd-Join-the-TLS-thread.patch"
+Content-Disposition: attachment;
+ filename="0001-migration-multifd-Join-the-TLS-thread.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA2ZDRhYWU4NGEwNmZjN2UyNmRjYjFkOTg2YTRkZTNjNmQ2NWViMDY0IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBGYWJpYW5vIFJvc2FzIDxmYXJvc2FzQHN1c2UuZGU+
+CkRhdGU6IFR1ZSwgNiBGZWIgMjAyNCAxODo1MToxMyAtMDMwMApTdWJqZWN0OiBbUEFUQ0hd
+IG1pZ3JhdGlvbi9tdWx0aWZkOiBKb2luIHRoZSBUTFMgdGhyZWFkCgpXZSdyZSBjdXJyZW50
+bHkgbGVha2luZyB0aGUgcmVzb3VyY2VzIG9mIHRoZSBUTFMgdGhyZWFkIGJ5IG5vdCBqb2lu
+aW5nCml0IGFuZCBhbHNvIG92ZXJ3cml0aW5nIHRoZSBwLT50aHJlYWQgcG9pbnRlciBhbHRv
+Z2V0aGVyLgoKRml4ZXM6IGExYWY2MDViZDUgKCJtaWdyYXRpb24vbXVsdGlmZDogZml4IGhh
+bmd1cCB3aXRoIFRMUy1NdWx0aWZkIGR1ZSB0byBibG9ja2luZyBoYW5kc2hha2UiKQpDYzog
+cWVtdS1zdGFibGUgPHFlbXUtc3RhYmxlQG5vbmdudS5vcmc+ClJldmlld2VkLWJ5OiBQZXRl
+ciBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+ClNpZ25lZC1vZmYtYnk6IEZhYmlhbm8gUm9zYXMg
+PGZhcm9zYXNAc3VzZS5kZT4KTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDI0
+MDIwNjIxNTExOC42MTcxLTItZmFyb3Nhc0BzdXNlLmRlClNpZ25lZC1vZmYtYnk6IFBldGVy
+IFh1IDxwZXRlcnhAcmVkaGF0LmNvbT4KKGNoZXJyeSBwaWNrZWQgZnJvbSBjb21taXQgZTE5
+MjFmMTBkOWFmZTY1MWY0ODg3Mjg0ZTg1ZjY3ODliMzdlNjdkMykKU2lnbmVkLW9mZi1ieTog
+TWljaGFlbCBUb2thcmV2IDxtanRAdGxzLm1zay5ydT4KKE1qdDogZml4dXAgZm9yIGJlZm9y
+ZSB2OC4yLjAtMTE0Mi1nMTI4MDhkYjNiOAogIm1pZ3JhdGlvbi9tdWx0aWZkOiBDbGVhbnVw
+IG11bHRpZmRfc2F2ZV9jbGVhbnVwKCkiKQotLS0KIG1pZ3JhdGlvbi9tdWx0aWZkLmMgfCA4
+ICsrKysrKystCiBtaWdyYXRpb24vbXVsdGlmZC5oIHwgMiArKwogMiBmaWxlcyBjaGFuZ2Vk
+LCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9taWdyYXRp
+b24vbXVsdGlmZC5jIGIvbWlncmF0aW9uL211bHRpZmQuYwppbmRleCA0MDk0NjA2ODRmLi4z
+MTgzYWE5ZTgyIDEwMDY0NAotLS0gYS9taWdyYXRpb24vbXVsdGlmZC5jCisrKyBiL21pZ3Jh
+dGlvbi9tdWx0aWZkLmMKQEAgLTUyNSw2ICs1MjUsMTAgQEAgdm9pZCBtdWx0aWZkX3NhdmVf
+Y2xlYW51cCh2b2lkKQogICAgIGZvciAoaSA9IDA7IGkgPCBtaWdyYXRlX211bHRpZmRfY2hh
+bm5lbHMoKTsgaSsrKSB7CiAgICAgICAgIE11bHRpRkRTZW5kUGFyYW1zICpwID0gJm11bHRp
+ZmRfc2VuZF9zdGF0ZS0+cGFyYW1zW2ldOwogCisgICAgICAgIGlmIChwLT50bHNfdGhyZWFk
+X2NyZWF0ZWQpIHsKKyAgICAgICAgICAgIHFlbXVfdGhyZWFkX2pvaW4oJnAtPnRsc190aHJl
+YWQpOworICAgICAgICB9CisKICAgICAgICAgaWYgKHAtPnJ1bm5pbmcpIHsKICAgICAgICAg
+ICAgIHFlbXVfdGhyZWFkX2pvaW4oJnAtPnRocmVhZCk7CiAgICAgICAgIH0KQEAgLTgyNiw3
+ICs4MzAsOSBAQCBzdGF0aWMgYm9vbCBtdWx0aWZkX3Rsc19jaGFubmVsX2Nvbm5lY3QoTXVs
+dGlGRFNlbmRQYXJhbXMgKnAsCiAgICAgdHJhY2VfbXVsdGlmZF90bHNfb3V0Z29pbmdfaGFu
+ZHNoYWtlX3N0YXJ0KGlvYywgdGlvYywgaG9zdG5hbWUpOwogICAgIHFpb19jaGFubmVsX3Nl
+dF9uYW1lKFFJT19DSEFOTkVMKHRpb2MpLCAibXVsdGlmZC10bHMtb3V0Z29pbmciKTsKICAg
+ICBwLT5jID0gUUlPX0NIQU5ORUwodGlvYyk7Ci0gICAgcWVtdV90aHJlYWRfY3JlYXRlKCZw
+LT50aHJlYWQsICJtdWx0aWZkLXRscy1oYW5kc2hha2Utd29ya2VyIiwKKworICAgIHAtPnRs
+c190aHJlYWRfY3JlYXRlZCA9IHRydWU7CisgICAgcWVtdV90aHJlYWRfY3JlYXRlKCZwLT50
+bHNfdGhyZWFkLCAibXVsdGlmZC10bHMtaGFuZHNoYWtlLXdvcmtlciIsCiAgICAgICAgICAg
+ICAgICAgICAgICAgIG11bHRpZmRfdGxzX2hhbmRzaGFrZV90aHJlYWQsIHAsCiAgICAgICAg
+ICAgICAgICAgICAgICAgIFFFTVVfVEhSRUFEX0pPSU5BQkxFKTsKICAgICByZXR1cm4gdHJ1
+ZTsKZGlmZiAtLWdpdCBhL21pZ3JhdGlvbi9tdWx0aWZkLmggYi9taWdyYXRpb24vbXVsdGlm
+ZC5oCmluZGV4IGE4MzU2NDNiNDguLjhmYmZmYmFhNWEgMTAwNjQ0Ci0tLSBhL21pZ3JhdGlv
+bi9tdWx0aWZkLmgKKysrIGIvbWlncmF0aW9uL211bHRpZmQuaApAQCAtNzUsNiArNzUsOCBA
+QCB0eXBlZGVmIHN0cnVjdCB7CiAgICAgY2hhciAqbmFtZTsKICAgICAvKiBjaGFubmVsIHRo
+cmVhZCBpZCAqLwogICAgIFFlbXVUaHJlYWQgdGhyZWFkOworICAgIFFlbXVUaHJlYWQgdGxz
+X3RocmVhZDsKKyAgICBib29sIHRsc190aHJlYWRfY3JlYXRlZDsKICAgICAvKiBjb21tdW5p
+Y2F0aW9uIGNoYW5uZWwgKi8KICAgICBRSU9DaGFubmVsICpjOwogICAgIC8qIGlzIHRoZSB5
+YW5rIGZ1bmN0aW9uIHJlZ2lzdGVyZWQgKi8KLS0gCjIuMzkuMgoK
+
+--------------M7tiwF4vTLzjnayFGLraha2u--
 
