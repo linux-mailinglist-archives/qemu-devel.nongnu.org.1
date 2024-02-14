@@ -2,71 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECBC854130
+	by mail.lfdr.de (Postfix) with ESMTPS id F02F9854131
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 02:26:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ra41w-00077Z-Hc; Tue, 13 Feb 2024 20:25:44 -0500
+	id 1ra41v-000778-JR; Tue, 13 Feb 2024 20:25:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ra41t-000769-I3
+ id 1ra41t-00075t-Bl
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 20:25:41 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ra41r-00014R-Te
+ id 1ra41r-00014e-Nj
  for qemu-devel@nongnu.org; Tue, 13 Feb 2024 20:25:41 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e08dd0c7eeso1103288b3a.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 17:25:38 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d93edfa76dso40229865ad.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 17:25:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707873937; x=1708478737; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=SNiGNE3HiEzRvfGUrQ5BOeoRweXB1F60nk9LGsLbXg4=;
- b=nIlUYGqG645Byl26NdJC6Ss6JEsK7YhCagERA+VZTLsZW8/Z2drSQd3Ldwfz5L8PTE
- M8NFsncXkq+djp++xwdKN2ipllRs4nQoy43ITnzvtJNjaGBZZvcVZwZ6OXNdpXLlwZbM
- P6p/JDw7W7vNCPfVFu3/WTqmqlel00eHs6RzYdwsCzsKtb5kmoyrXkwV0cgji7P7FeWK
- e97OHUSTnrLo5y4+t6oV9geqlHweRCqwLEboqDMQoosgUxbFSRw5W8RRS/I6fG02I6Ji
- jkyzSFBmb7p2k7I2bv7B5EApYhF8G1zk6mhzBSjt1mGRqFhb0S1m8mwKdSX+6FhHb7wA
- QYOA==
+ d=linaro.org; s=google; t=1707873938; x=1708478738; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8A+ZdhxnkDzIAc1RYMXIDcGYuypp6UD3QlbP2p+Il38=;
+ b=QH/Poy2MLvsg/8KFEufLR0taJfPu1xQPTUK+cagcWVcxZxmV9ks54/dAvo1ExOKFwz
+ OkcejTfFubXrd2UTgPmH2WSadiGNjGBv9NC/4UYGZMyAdaXqfv2J3/jCzN6xvaVv3fhk
+ Uj6sBZ4hh5l8/eZxXASTbinKzdT3h8k9AS5nWAFY+c0L6SL4U/oxlPZNAkyuR6ZxQGev
+ WVU9fVasIHDVfh8EgGxvfDDTeJYnIJnYyxxZh9efI2//+V+jxR+rtix8epLf7qr7qaSf
+ M8+4yVXqjY2GU0Xi5McO7rFvgI0xkMQ4e0eUlE9oFkyOMDQZUx1AErt0ahFL+pHjWOaf
+ Pv4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707873937; x=1708478737;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SNiGNE3HiEzRvfGUrQ5BOeoRweXB1F60nk9LGsLbXg4=;
- b=GJ5ZByPgmAhIZm5G53UVzMR5NxRH3h8Tw7wtAC6Ed1A7VXE9f9lwVsndgN7oE1QuqQ
- yCjbbNW366w0DMvAnZs6wYSXHQ79b57rDtAwYM/0SrNlqiSzQMNF2RzsDSRKFM5BEJNQ
- JL/TbZksZmOxrLChux4auXt8Gz9cbU0EEaLVPf6UbHxIusKyz5f+ijWPnbqnx842kHOf
- XMsU62/qVM+I2lB+cgJICVgqPSaq70G0vrWogt3P3UAYLrs8Ha9MreOTkMgrWFs6RN6U
- UB6kpnzeixoqbkoqvEzjwAnsZrJuMsxBSohBGz4994migifh0wxqBZ7iDa7v3omhWmQP
- TLEg==
-X-Gm-Message-State: AOJu0Yzl8esSniWsTjnubbC5yQFSZZC2d66xT/C/J0ASkOB/smVCNGeQ
- W96VVcdnRX6JKv/pHSfotHFsAMamYwBDEbvMYDXrjCQLZ4KBy5YSg7uDJ43Sz6O+TmXqJcBxfMw
- t
-X-Google-Smtp-Source: AGHT+IEzsIr0n2lvwCZOl4Os+41ZQIinrQVQsKl9Tr7kPPMG3x3Z25+JTC9D1Sbqcv5gB7lMR4V8DQ==
-X-Received: by 2002:a05:6a20:e68d:b0:19e:a85b:854b with SMTP id
- mz13-20020a056a20e68d00b0019ea85b854bmr682320pzb.48.1707873936620; 
- Tue, 13 Feb 2024 17:25:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707873938; x=1708478738;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8A+ZdhxnkDzIAc1RYMXIDcGYuypp6UD3QlbP2p+Il38=;
+ b=fErBhsdO6IZcufW5bxEBOBXc/SS4CyIgq29Ro+KrYtlyFInJhp6HL2thtXsj7gpn+S
+ D/ADQTxbYuF0FEGLs5mS1172oH5B/e201nGvi4nZx31/AWN622nxUcvZiWMiSHEy1dzM
+ UxEUhCB6ZV5k5a5E+QtkQ1+CW5ehTEv+hOOm8v0lomkOP6D49/8EuX17FRxKfR0RIuR/
+ 6vpEPZrXy8mcRJYc/JtrWSM+zccKvQPdNrWdJvuePqd2L6euORfBGPRtKD9ObOL+AAI4
+ R3KfGXVgYWgh/A2MenmOwy1CzpwqcjscBn5TcThYy79OdHx2lhX3TI9MJlpE+y6Wz340
+ rIBw==
+X-Gm-Message-State: AOJu0YyEPelOukibUEaQe3M/CKtRKoDbkDcX9Qtk7upGo7a9ytb6E6zI
+ 8QsILhiSwgS7z9vbLM2vcacLWSV2K/2+zBvGtOC/thX9MErphqsxGx1Qnd8Xqn81VuK5Mhmf5gu
+ V
+X-Google-Smtp-Source: AGHT+IE03+QtV01WIrZEKraUxmIHoXzL7NdprP/ct5FbZDAZgDsh4OhjwQAEF8Tw42E6m/f88LyoMQ==
+X-Received: by 2002:a17:902:7d84:b0:1d9:7121:170e with SMTP id
+ a4-20020a1709027d8400b001d97121170emr1317239plm.35.1707873938247; 
+ Tue, 13 Feb 2024 17:25:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWFzPvKwNTRMXM69uBjd/faSb0cPVHmZBeyfUTnkY+RpIf9MYFc3+cboZBdjGVBfucPYFBV9GORelr1ZeziPtiamah8dIjrbK5r/EWIO8KhKds=
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d11-20020a170902cecb00b001d961f28b0asm2660333plg.270.2024.02.13.17.25.35
- for <qemu-devel@nongnu.org>
+ d11-20020a170902cecb00b001d961f28b0asm2660333plg.270.2024.02.13.17.25.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Feb 2024 17:25:36 -0800 (PST)
+ Tue, 13 Feb 2024 17:25:37 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/2] tcg patch queue
-Date: Tue, 13 Feb 2024 15:25:31 -1000
-Message-Id: <20240214012533.453511-1-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH 1/2] tcg: Increase width of temp_subindex
+Date: Tue, 13 Feb 2024 15:25:32 -1000
+Message-Id: <20240214012533.453511-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240214012533.453511-1-richard.henderson@linaro.org>
+References: <20240214012533.453511-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,28 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit bc2e8b18fba33f30f25b7c2d74328493c0a2231d:
+We need values 0-3 for TCG_TYPE_I128 on 32-bit hosts.
 
-  Merge tag 'hppa64-pull-request' of https://github.com/hdeller/qemu-hppa into staging (2024-02-13 13:56:46 +0000)
+Cc: qemu-stable@nongnu.org
+Fixes: 43eef72f4109 ("tcg: Add temp allocation for TCGv_i128")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2159
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Tested-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ include/tcg/tcg.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index daf2a5bf9e..451f3fec41 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -412,7 +412,7 @@ typedef struct TCGTemp {
+     unsigned int mem_coherent:1;
+     unsigned int mem_allocated:1;
+     unsigned int temp_allocated:1;
+-    unsigned int temp_subindex:1;
++    unsigned int temp_subindex:2;
+ 
+     int64_t val;
+     struct TCGTemp *mem_base;
+-- 
+2.34.1
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240213
-
-for you to fetch changes up to e41f1825b43796c3508ef309ed0b150ef89acc44:
-
-  tcg/arm: Fix goto_tb for large translation blocks (2024-02-13 07:42:45 -1000)
-
-----------------------------------------------------------------
-tcg: Increase width of temp_subindex
-tcg/arm: Fix goto_tb for large translation blocks
-
-----------------------------------------------------------------
-Richard Henderson (2):
-      tcg: Increase width of temp_subindex
-      tcg/arm: Fix goto_tb for large translation blocks
-
- include/tcg/tcg.h        | 2 +-
- tcg/arm/tcg-target.c.inc | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
 
