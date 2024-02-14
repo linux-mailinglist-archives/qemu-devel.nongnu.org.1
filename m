@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5148547DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C20854805
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:19:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDDe-0000ki-Dw; Wed, 14 Feb 2024 06:14:26 -0500
+	id 1raDDm-0000uH-3D; Wed, 14 Feb 2024 06:14:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDc-0000jl-J4
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:24 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDj-0000rg-TX
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:32 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDb-0006qU-7X
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:24 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDd-0006qo-QN
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909262;
+ s=mimecast20190719; t=1707909265;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+7/1YIgENNn6T5ST2SQ++m3V36j5nIhY7SM7UOSEqks=;
- b=W0RHdvjy6E+xaFVfZ7ovjnGzYA+qCCuQ/pe+F21CURcFGPl5aZX9GuacE8WMd7IBLPrHDc
- uKloMnPaVVkFJB80jx78j8hjqAaUjijlWOwRjfqi7FA91xwbEfAP1u+J1Xgi7vBTEzT4lM
- Vysx4MMr+F+sxFPVMll3maSmYbfEGdM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OxMN2l27ZlNrqzqAChublXV5BVT305BpADMb7E/hjJc=;
+ b=NUWSpy9RD7b6OBKnHhstY0JFklUIAn8MsU9SF9jnmlUXnwcOaUaHPijne9FoD6Zh9sB7by
+ xSqUa8QbxeU/X4wL9grP/DQ7CNrfVX0D03wmLvZFCu7vDWT2pHQwKvKs2PamZPiQXsEyoo
+ kfqmok2vNwL8Px0lj2AvGCjjUnRxhaE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-1ojCe2fGNKqBt0ZrSfiIug-1; Wed, 14 Feb 2024 06:14:20 -0500
-X-MC-Unique: 1ojCe2fGNKqBt0ZrSfiIug-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a3d3e8f1635so32560766b.2
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:20 -0800 (PST)
+ us-mta-592-WmrEfYtgPvKMVSbVe93-Bg-1; Wed, 14 Feb 2024 06:14:23 -0500
+X-MC-Unique: WmrEfYtgPvKMVSbVe93-Bg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-558aafe9bf2so4618068a12.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909258; x=1708514058;
+ d=1e100.net; s=20230601; t=1707909262; x=1708514062;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+7/1YIgENNn6T5ST2SQ++m3V36j5nIhY7SM7UOSEqks=;
- b=bgE/Pcqtg8qiBqEP8CbwMsFY22h/Oia11OVZ0R0NS92rL1L/VwaaZV0eQf/imCm7uH
- HxgWCL1HHIVLE2djTapz6+5Eq3/5efgFRhx+Aq93jW4KGhemtjwM9NnnZG0AUL1MUo3F
- sAyi1ayH/+I9N18aDOzzfay4WHhl/T25CtjSGg8oo+E15ZU9BXVQDezox5LGm4Ml1xxY
- S1s4dgAC2CV8fJDk9Vv16TCKHVUzC2Y6QEx5xScMszAe4B3mebwnV+L5CZpylhlD8/eP
- h8ovkci6sGlwAGxhB/C/6TyIo6HPVHqWGJ6sJhqd3WPr9XMFhfbE2UO0I071FEpMWHbv
- ybTQ==
-X-Gm-Message-State: AOJu0Yzq/qydUNZONY7Jucv1GP/ISRJ0518RHLlSU51cqYERXSpO+o2f
- DEZys6ypYV0zhUuTP/0nGyresmGgemLvp3rtzaIVW80aGkaTcbz2croGHV6nbtc3dozmJGewLUF
- X4nbs3uK+IhorlcA1BCXKUJ5mCqbO3Y2gWxhBJzcw60MZ6Z3Hrscqq9nGLwrLYC0bJuQLeMOGU/
- 6OprDBCVTMlSdxPJRnGXY7fCZeAI5a4w==
-X-Received: by 2002:a17:906:4f0b:b0:a3c:7651:209e with SMTP id
- t11-20020a1709064f0b00b00a3c7651209emr1569141eju.19.1707909258776; 
- Wed, 14 Feb 2024 03:14:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFlUivMwdUfkNOyrB5mJPxZRRZyG5wyqR9v0ySHCB/7gj15CNTVQDJcoglSlDT6Sgn8Yt9bTg==
-X-Received: by 2002:a17:906:4f0b:b0:a3c:7651:209e with SMTP id
- t11-20020a1709064f0b00b00a3c7651209emr1569119eju.19.1707909258415; 
- Wed, 14 Feb 2024 03:14:18 -0800 (PST)
+ bh=OxMN2l27ZlNrqzqAChublXV5BVT305BpADMb7E/hjJc=;
+ b=VGY9hOnPttvGtIzg/qo0Iwfn5H7AS+qYDUSDOCkUsWMnqDsFCLMmMmAmhhuPL6A1gO
+ Z2vSk0Gt+pHbWQ/Ikt10dKMuNbW39r/6yRRjlUTOIHuyMwrn6VVWPzNbzh/l8/lsjXz/
+ CLOsHW+UIh+7Y54S+Rsfqh8wLjC7ltwireuK9yW2tf7KhwjUJyNS8U44ZFW9yfubCyyi
+ ih3mCEfpJu6VRUpNaouLf1lKw+rngrtlrLxu+HUCCwaITFeiY8JipD9OPJbOd1B0iN1i
+ fUSv+uGWPJR2jqqODJO6HmpespzG5HgryHYLhFWkRFRbFzdjvBhg0aWo26xJFLLGibvv
+ hlLg==
+X-Gm-Message-State: AOJu0YylbaSwpiAQGaYO9LT/SAR60/0GPYSM8ChkPAGZTuLXMDT8pdGy
+ wmmkU7k1p/2wVOk6qgFNffzyjp/t68FGPDg+P4GeGxttQ5CU1EU4rRxOQp1PmkcjP6YZuy8Z7dS
+ p0itDjoZ68+siIFXTUUr5z4A1rLH9aAN6JKWFl0fzOQU+14GydcB73WLQP4pc3bE44C0ShkMpBx
+ FxGkgxC1APeQS2J8/us1iZVccQ3DUG3w==
+X-Received: by 2002:aa7:da0e:0:b0:560:d9d5:7af7 with SMTP id
+ r14-20020aa7da0e000000b00560d9d57af7mr1647753eds.10.1707909261942; 
+ Wed, 14 Feb 2024 03:14:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvy8bydbyLBiI7ND00c508SS6NxGZxgMTCL8GQaPbuYIBeKvXYhznHlA/3HnX0rB7B+ZDY/w==
+X-Received: by 2002:aa7:da0e:0:b0:560:d9d5:7af7 with SMTP id
+ r14-20020aa7da0e000000b00560d9d57af7mr1647729eds.10.1707909261625; 
+ Wed, 14 Feb 2024 03:14:21 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUBdWKDM7AE3wIqXkW7Xv5fgLZWtnrmO8/iuLtFveztewupLJv6jyYXWfW8OakQbEjqz0R0huLv1Oh2TW12E6FzkyxEIX8oZRwOPR4lj3wk/uGbGbGQt+Kts1Z7wZw0tY2EU/DmCxLBg6ZE/D3eNVgUckJOXC7pz8ZF4LTCzulZWr8eeJyhF/LYeqEO87LubcDq1W43f6uSa685Jnrf5yWwHfJpcCU=
+ AJvYcCVb6JaBbLgJiw0H6Eh7E7ZQxXPj2vRtYO+DIIJMDAi643t1PQLlK8T/Eykkk3LI2qBFHkWMJ3OmaTlJQXh2+8lqC8sj8RFe5XQSo29+9wNBW6PvDekDblkXiXzcW7ewgyNFIZC/YP30j2lAjlRK06cKexbVJAqgYKn5auZkfwLTBLPj9bXQ+2J5FinQawsVZFaFsJhTpaOTEeTXFwYHXAO8XxgQ8UM=
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- xa7-20020a170907b9c700b00a3d2490799fsm964986ejc.20.2024.02.14.03.14.16
+ i23-20020a50d757000000b005621e66c8ddsm708911edj.17.2024.02.14.03.14.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:14:17 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:14:15 -0500
+ Wed, 14 Feb 2024 03:14:20 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:14:18 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -70,8 +70,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 19/60] hw/i386/x86: Reverse if statement
-Message-ID: <f22f3a92eb728497dcd0f43e31b9148992db99bd.1707909001.git.mst@redhat.com>
+Subject: [PULL 20/60] hw/i386/x86: Fix PIC interrupt handling if APIC is
+ globally disabled
+Message-ID: <c2e6d7d8e7fc270a90c61944ef36574b1549ddcf.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -79,15 +80,16 @@ Content-Disposition: inline
 In-Reply-To: <cover.1707909001.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,36 +107,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The if statement currently uses double negation when executing the else branch.
-So swap the branches and simplify the condition to make the code more
-comprehensible.
+QEMU populates the apic_state attribute of x86 CPUs if supported by real
+hardware or if SMP is active. When handling interrupts, it just checks whether
+apic_state is populated to route the interrupt to the PIC or to the APIC.
+However, chapter 10.4.3 of [1] requires that:
+
+  When IA32_APIC_BASE[11] is 0, the processor is functionally equivalent to an
+  IA-32 processor without an on-chip APIC.
+
+This means that when apic_state is populated, QEMU needs to check for the
+MSR_IA32_APICBASE_ENABLE flag in addition. Implement this which fixes some
+real-world BIOSes.
+
+[1] Intel 64 and IA-32 Architectures Software Developer's Manual, Vol. 3A:
+    System Programming Guide, Part 1
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20240106132546.21248-2-shentey@gmail.com>
+Message-Id: <20240106132546.21248-3-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/x86.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/hw/i386/apic.h |  1 +
+ hw/i386/x86.c          |  4 ++--
+ hw/intc/apic_common.c  | 13 +++++++++++++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
+diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
+index f6e7489f2d..eb606d6076 100644
+--- a/include/hw/i386/apic.h
++++ b/include/hw/i386/apic.h
+@@ -10,6 +10,7 @@ void apic_deliver_nmi(DeviceState *d);
+ int apic_get_interrupt(DeviceState *s);
+ int cpu_set_apic_base(DeviceState *s, uint64_t val);
+ uint64_t cpu_get_apic_base(DeviceState *s);
++bool cpu_is_apic_enabled(DeviceState *s);
+ void cpu_set_apic_tpr(DeviceState *s, uint8_t val);
+ uint8_t cpu_get_apic_tpr(DeviceState *s);
+ void apic_init_reset(DeviceState *s);
 diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 3d1bdd334e..505f64f89c 100644
+index 505f64f89c..684dce90e9 100644
 --- a/hw/i386/x86.c
 +++ b/hw/i386/x86.c
-@@ -520,10 +520,10 @@ static void x86_nmi(NMIState *n, int cpu_index, Error **errp)
+@@ -520,7 +520,7 @@ static void x86_nmi(NMIState *n, int cpu_index, Error **errp)
      CPU_FOREACH(cs) {
          X86CPU *cpu = X86_CPU(cs);
  
--        if (!cpu->apic_state) {
--            cpu_interrupt(cs, CPU_INTERRUPT_NMI);
--        } else {
-+        if (cpu->apic_state) {
+-        if (cpu->apic_state) {
++        if (cpu_is_apic_enabled(cpu->apic_state)) {
              apic_deliver_nmi(cpu->apic_state);
-+        } else {
-+            cpu_interrupt(cs, CPU_INTERRUPT_NMI);
-         }
+         } else {
+             cpu_interrupt(cs, CPU_INTERRUPT_NMI);
+@@ -555,7 +555,7 @@ static void pic_irq_request(void *opaque, int irq, int level)
+     X86CPU *cpu = X86_CPU(cs);
+ 
+     trace_x86_pic_interrupt(irq, level);
+-    if (cpu->apic_state && !kvm_irqchip_in_kernel() &&
++    if (cpu_is_apic_enabled(cpu->apic_state) && !kvm_irqchip_in_kernel() &&
+         !whpx_apic_in_platform()) {
+         CPU_FOREACH(cs) {
+             cpu = X86_CPU(cs);
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 16ab40a35f..d8fc1e2815 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -62,6 +62,19 @@ uint64_t cpu_get_apic_base(DeviceState *dev)
      }
  }
+ 
++bool cpu_is_apic_enabled(DeviceState *dev)
++{
++    APICCommonState *s;
++
++    if (!dev) {
++        return false;
++    }
++
++    s = APIC_COMMON(dev);
++
++    return s->apicbase & MSR_IA32_APICBASE_ENABLE;
++}
++
+ void cpu_set_apic_tpr(DeviceState *dev, uint8_t val)
+ {
+     APICCommonState *s;
 -- 
 MST
 
