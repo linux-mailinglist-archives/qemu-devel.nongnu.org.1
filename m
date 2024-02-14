@@ -2,87 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B43854212
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 05:33:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB02854227
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 05:55:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ra6x0-0002VY-Jr; Tue, 13 Feb 2024 23:32:50 -0500
+	id 1ra7Hq-0001Gq-Kq; Tue, 13 Feb 2024 23:54:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1ra6wu-0002SC-Jp
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:32:44 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ra7Ho-0001Gf-0v
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:54:20 -0500
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1ra6wt-0006Dj-42
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:32:44 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1db562438e0so2892375ad.3
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 20:32:42 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ra7Hm-0003Ix-Fv
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:54:19 -0500
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5d3912c9a83so1194433a12.3
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 20:54:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707885162; x=1708489962;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UAkgWf/eVOSYqx05p8SSBnT0prb7qhT56AlPFl+HP5E=;
- b=uIFrcRnBgQdU3PLp+AgO3HJVYpN1M73SrrV6ddjLEiTK8hVSigCOgSoXdXPaOEPbPh
- N+0ZJOah3S0SfEh8p/S8sCztUZ4P59C1YEDYt9MNtsINCO0h9oWjRHi6sPBLvMM05rbm
- MVgGGmaMpCWofdAnWionn9Z9LxsWLZ0alSfxJfuSiTUX1UkB1prTV0SDpU8yxYIMxM38
- l8W0VEe1XyPnf7pzNhwGAGoAawB0qctWxDbUao0vXQNIGutRju6S069aTgAhex72CUNe
- p/gj1ddeFiL0S/DGmWN/tFlmlxQp9lrwSI0sOQDQVdc6WFIsxwEeD9nq6uDriTpQxjJ4
- eVfw==
+ d=linaro.org; s=google; t=1707886457; x=1708491257; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lIw0HHLdL2NvcxZjQjlv25wKknGxFlW0JytLKiI4Hg4=;
+ b=D2Qh9p+Co/RcTofJ1tTj01Rkymwp390GXOI+esGur0lBaYsL3P9P5EtReMCGAvZ7M4
+ uwPKEy4UVMHn6WLZHe559XQiCMKVzaNk6hPhcL1Du2YQ2jfFKEa6fOOdZG3AiT+vdgmO
+ 76YcHWQCGrf97DYmJbGdyvEdSKAsNZTGtKwIQZJAlJGTE9B2etFsbZARuvYOYwXcK1C3
+ IVjdRsTL5Rw6hMWUA83F1ykQ0Z/waI2dOKCFGqOY2FX1jub2KG2aUaWZBxYO8+pqhGoz
+ rUV8W+hBzc/0piTzryWsqlxmEVYlGNFnK6nTM16AtWS6EV083Pfjx66raEE+Tuw7k7nM
+ Ux7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707885162; x=1708489962;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UAkgWf/eVOSYqx05p8SSBnT0prb7qhT56AlPFl+HP5E=;
- b=TIzI2Ru9hZlzx9KJTjCvnNLn5TXygxKsj0gW0rT1n8L+c6wDxJ94tTDeJt2g3xFW76
- i3ns3mcGiIyy3e445GWhfuQbiR4YuZmuI0pNJC20x3YenT3IJHtQ9CH9/dnOX3chee/U
- 93qPbh5/DtCVKl3N0qvNAftxnGZGDt0h+lXuQOUH0ei3UUrgE1KzQMsVU4XxP+AKiNRT
- hy9bZj7w1ZDtu9sbrQYaRVKZw8YuSV4AbB6SJ19AUhuZe3VVWHpGMJEsijuJ/4VdHE6e
- NEPjFNsAgGgOoxLUzgi6nFkQPFsWzxQgymD/82VYF8B1rszJc2sdpeITkViP1MiDBev5
- zYQw==
-X-Gm-Message-State: AOJu0YxYHiRAp2TvGrUsGAA3CfhoEYqUDey5rUeS6rCESdnlW/9vDXEX
- 2LEPZPSdo6BB9ECMd8ClNk1rv5fN9WHO5Xbcd9v4vmgqg/4IBQKd4ZbJPwd/uKg=
-X-Google-Smtp-Source: AGHT+IFzN09qvkWQ0Vecodybx2TkKMWaTxBDpIOYoQPOBgFfN5ztyB+bgccq65GXVnHY17MaBbRXGw==
-X-Received: by 2002:a17:903:1246:b0:1db:33bb:1757 with SMTP id
- u6-20020a170903124600b001db33bb1757mr1675408plh.57.1707885161949; 
- Tue, 13 Feb 2024 20:32:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXBKKT0H/bPuudypMdFR7c4AHMg4qtUe9bSLb33mlaJJTUj0PpkVXqKGwEqTbRehA7yccJJMJMsIdf8UtjBWZKB2FZDwjYgG/0xtZF7WqyS5Pppt52a8Xv5/UnpX+O2NNxKcn2V7mzUUcDgn4NwfYKbIL0eO6b0lIOTvd7sk7/RF5OUzuE7tcDzmFRt2NDyV9cYBFuyuk5i+sZ82cVu/5d/i5UENFUb1XMLD6AlreM/Ll9pyMt7ki5aWRnBMih2ZlAwKlrR9oxq50e1
-Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with UTF8SMTPSA id
- 12-20020a170902e9cc00b001d8dbb867b1sm2822005plk.179.2024.02.13.20.32.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Feb 2024 20:32:41 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 14 Feb 2024 13:32:06 +0900
-Subject: [PATCH v10 6/6] ui/cocoa: Remove stretch_video flag
+ d=1e100.net; s=20230601; t=1707886457; x=1708491257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lIw0HHLdL2NvcxZjQjlv25wKknGxFlW0JytLKiI4Hg4=;
+ b=AEUkJNzAgCOEbqf2vdGQ/Wuzo7uC9nml8hQvALgUs/eaWanHjJezUMcqQ1oiJ810bY
+ WFtA8xvoRQng20UtaYiM1hg50Eo/RIaSrapTbDIJWGjC24EccNWG0qdB64EIKKhrt/zY
+ r2sJAyphCj5LjGX+QFhvU7JVsZoNRtV4OCMOiGHGSoopWVu9oklIj6MxVG+fruZuYq7m
+ bLny4Vc7bCSIEaE2SKqXoVUlAvIiylXuuN/EJQpZy7boKHL7R+CQJcqSRJ1x7xFsEkCi
+ 03n/PaCmJNH9L4C0Ska7Y/vkeY40YRdZ4MjF5OuNpRz8Eq2zFmSoDJe1YPkE1nso4GyL
+ V6vA==
+X-Gm-Message-State: AOJu0YxGxSsjIRgubV480zbchv05yx7huUVLZiDjrn8I21PFI72bZ3R4
+ +4WeP5SDPrLGFEpI5MZ087/WD3k9LgC6MjheM3ynl5ueQKGIcQjONayramB85m57Yei1TEbmn8i
+ r
+X-Google-Smtp-Source: AGHT+IFKiH70Ks5V98n5229QD/JiBZ4mOP7E1OCdTfLgzIgKWEGB2zICGdCWVK6weKlODPDMaxaRrw==
+X-Received: by 2002:a17:90b:ec7:b0:296:4177:6404 with SMTP id
+ gz7-20020a17090b0ec700b0029641776404mr1483067pjb.11.1707886456687; 
+ Tue, 13 Feb 2024 20:54:16 -0800 (PST)
+Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
+ by smtp.gmail.com with ESMTPSA id
+ jx13-20020a17090b46cd00b00298c5ee3159sm387339pjb.49.2024.02.13.20.54.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Feb 2024 20:54:16 -0800 (PST)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+Subject: [PATCH] linux-user: Remove pgb_dynamic alignment assertion
+Date: Tue, 13 Feb 2024 18:54:13 -1000
+Message-Id: <20240214045413.541677-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240214-cocoa-v10-6-c7ffe5d9f08a@daynix.com>
-References: <20240214-cocoa-v10-0-c7ffe5d9f08a@daynix.com>
-In-Reply-To: <20240214-cocoa-v10-0-c7ffe5d9f08a@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- Rene Engel <ReneEngel80@emailn.de>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,72 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Evaluate [normalWindow styleMask] & NSWindowStyleMaskResizable instead.
+The assertion was never correct, because the alignment is a composite
+of the image alignment and SHMLBA.  Even if the alignment didn't match
+the image an assertion would not be correct -- more appropriate would
+be an error message about an ill formed image.  But the image cannot
+be held to SHMLBA under any circumstances.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Fixes: ee94743034b ("linux-user: completely re-write init_guest_space")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2157
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- ui/cocoa.m | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ linux-user/elfload.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index aeec3c48859c..0ed40cd97d28 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -103,7 +103,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
- static int left_command_key_enabled = 1;
- static bool swap_opt_cmd;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index f3f1ab4f69..d92d66ca1e 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3022,8 +3022,6 @@ static void pgb_dynamic(const char *image_name, uintptr_t guest_loaddr,
+     uintptr_t brk, ret;
+     PGBAddrs ga;
  
--static bool stretch_video;
- static NSTextField *pauseLabel;
- 
- static bool allow_events;
-@@ -533,7 +532,7 @@ - (void) resizeWindow
- {
-     [[self window] setContentAspectRatio:NSMakeSize(screen.width, screen.height)];
- 
--    if (!stretch_video) {
-+    if (!([[self window] styleMask] & NSWindowStyleMaskResizable)) {
-         [[self window] setContentSize:NSMakeSize(screen.width, screen.height)];
-         [[self window] center];
-     } else if ([[self window] styleMask] & NSWindowStyleMaskFullScreen) {
-@@ -1295,7 +1294,7 @@ - (BOOL)windowShouldClose:(id)sender
- 
- - (NSSize) window:(NSWindow *)window willUseFullScreenContentSize:(NSSize)proposedSize
- {
--    if (stretch_video) {
-+    if ([normalWindow styleMask] & NSWindowStyleMaskResizable) {
-         return [cocoaView fixZoomedFullScreenSize:proposedSize];
-     }
- 
-@@ -1376,8 +1375,7 @@ - (void)showQEMUDoc:(id)sender
- /* Stretches video to fit host monitor size */
- - (void)zoomToFit:(id) sender
- {
--    stretch_video = !stretch_video;
--    if (stretch_video == true) {
-+    if (([normalWindow styleMask] & NSWindowStyleMaskResizable) == 0) {
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-         [sender setState: NSControlStateValueOn];
-     } else {
-@@ -1649,7 +1647,7 @@ static void create_initial_menus(void)
-     menu = [[NSMenu alloc] initWithTitle:@"View"];
-     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
--    [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
-+    [menuItem setState: [normalWindow styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
-     [menu addItem: menuItem];
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
-     [menuItem setSubmenu:menu];
-@@ -2035,7 +2033,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
-     }
- 
-     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
--        stretch_video = true;
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-     }
- 
-
+-    assert(QEMU_IS_ALIGNED(guest_loaddr, align));
+-
+     /* Try the identity map first. */
+     if (pgb_addr_set(&ga, guest_loaddr, guest_hiaddr, true)) {
+         brk = (uintptr_t)sbrk(0);
 -- 
-2.43.0
+2.34.1
 
 
