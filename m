@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F31854967
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:40:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C988549F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 14:02:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raEY1-0003Sa-HK; Wed, 14 Feb 2024 07:39:33 -0500
+	id 1raEtM-0003zc-Ml; Wed, 14 Feb 2024 08:01:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXq-0003Oo-4l
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:22 -0500
+ id 1raEt7-0003kM-0g
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 08:01:27 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXn-0002a4-Fx
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:20 -0500
+ id 1raEt4-0007on-Vg
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 08:01:20 -0500
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41EBlbeJ019218; Wed, 14 Feb 2024 12:39:18 GMT
+ 41EBldRE019239; Wed, 14 Feb 2024 13:01:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=MwyvA3gq7GPBR5S7Fs2XooWtR7OGtNIfR+fNtKH8n8U=;
- b=gb/xlPRaElYD7w5jXCUwzc8Xm+oXEE39rh9xvQNMEZ5PAOr0CdeTUCY4fzEwH4GU9Bib
- bcgbAT60vVRPnAXWnlh+2gA/OMLwPYr+VxrRF33TxacENh3Mqu4pgu+KbPUFfLlRNsCZ
- Ir4Bxp8NObpXlowS4sZ8Mnciale0P2IoHjxy0VvULc6kdLX35A6IPeInOX29FmZGOhcp
- JM8/zaeKLs49LAavTAVRk610ScHg/6uU4SoHPexZ1SOQR8GbwvogYqVWuLUmzQ4aD0Qm
- mPnlBu2gjFrDHj3ko2jCVn/yglmJOhewQnHlHzWxeaoxoTOciRCzMepftlxCsHduyFt+ KQ== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8varg5d2-1
+ subject : date : message-id; s=corp-2023-11-20;
+ bh=QujOJQnK38RVKfAYgJUN64pBzB0xoGjuLEIiw2v6vi4=;
+ b=HEbiQGM94oU+stDm2ddC/RM6qy5dKXUEh4SVYKcpaYI7zhAJOHg3MMlEPA+U7Vz8/ZrS
+ gSvD9nxLBbBJTcTHgoBSFCUq/Xq6W7efgBOUFIqkF3MgA2tEOmgRKBCmoDe1f+xFpeL2
+ 88+6HnOFvSif9oCLMO+7xTRLnN5ESShCi2FMsOD59DAAo1mGlV21XSoGZOeBY2iol+MI
+ YbKG1ifcvbr2Dn4jriQk2guoaKYBHPjGU8Uui8I8XnoYF4cebs6rXXtRWeBKFLvb0eme
+ 8ZZrbbJ8rr0JWgXHOVihnezuLpHvwMhUt/L6q57tr8TIZTP4rV7mX9qqIsZAj7rq2K4v OQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8varg701-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Feb 2024 12:39:18 +0000
+ Wed, 14 Feb 2024 13:01:16 +0000
 Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41ECKqpx013766; Wed, 14 Feb 2024 12:39:17 GMT
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 41EBf9ID024633; Wed, 14 Feb 2024 13:01:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3w5ykf6ex5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 Feb 2024 13:01:16 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41ED1FUk027943;
+ Wed, 14 Feb 2024 13:01:15 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3w6apbnn3q-13; Wed, 14 Feb 2024 12:39:17 +0000
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3w5ykf6ewh-1; Wed, 14 Feb 2024 13:01:15 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
-To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
- dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH 12/12] vdpa: fix network breakage after cancelling migration
-Date: Wed, 14 Feb 2024 03:28:02 -0800
-Message-Id: <1707910082-10243-13-git-send-email-si-wei.liu@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, jasowang@redhat.com, joao.m.martins@oracle.com,
+ si-wei.liu@oracle.com
+Subject: [PATCH v2 1/2] vhost: dirty log should be per backend type
+Date: Wed, 14 Feb 2024 03:50:18 -0800
+Message-Id: <1707911419-11758-1-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
-References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-14_05,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- adultscore=0
- suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402140098
-X-Proofpoint-GUID: 7KPI141GI8qmONnyZoY-Wz-43a4XyM8V
-X-Proofpoint-ORIG-GUID: 7KPI141GI8qmONnyZoY-Wz-43a4XyM8V
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402140099
+X-Proofpoint-GUID: kHs5Pss36GsPReAIYY3LJQ8NBz_3uV2o
+X-Proofpoint-ORIG-GUID: kHs5Pss36GsPReAIYY3LJQ8NBz_3uV2o
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -92,45 +95,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix an issue where cancellation of ongoing migration ends up
-with no network connectivity.
+There could be a mix of both vhost-user and vhost-kernel clients
+in the same QEMU process, where separate vhost loggers for the
+specific vhost type have to be used. Make the vhost logger per
+backend type, and have them properly reference counted.
 
-When canceling migration, SVQ will be switched back to the
-passthrough mode, but the right call fd is not programed to
-the device and the svq's own call fd is still used. At the
-point of this transitioning period, the shadow_vqs_enabled
-hadn't been set back to false yet, causing the installation
-of call fd inadvertently bypassed.
-
-Fixes: a8ac88585da1 ("vhost: Add Shadow VirtQueue call forwarding capabilities")
-Cc: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
- hw/virtio/vhost-vdpa.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ hw/virtio/vhost.c | 49 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 12 deletions(-)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 004110f..dfeca8b 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -1468,7 +1468,15 @@ static int vhost_vdpa_set_vring_call(struct vhost_dev *dev,
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 2c9ac79..ef6d9b5 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -43,8 +43,8 @@
+     do { } while (0)
+ #endif
  
-     /* Remember last call fd because we can switch to SVQ anytime. */
-     vhost_svq_set_svq_call_fd(svq, file->fd);
--    if (v->shadow_vqs_enabled) {
-+    /*
-+     * When SVQ is transitioning to off, shadow_vqs_enabled has
-+     * not been set back to false yet, but the underlying call fd
-+     * will have to switch back to the guest notifier to signal the
-+     * passthrough virtqueues. In other situations, SVQ's own call
-+     * fd shall be used to signal the device model.
-+     */
-+    if (v->shadow_vqs_enabled &&
-+        v->shared->svq_switching != SVQ_TSTATE_DISABLING) {
-         return 0;
+-static struct vhost_log *vhost_log;
+-static struct vhost_log *vhost_log_shm;
++static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
++static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
+ 
+ /* Memslots used by backends that support private memslots (without an fd). */
+ static unsigned int used_memslots;
+@@ -287,6 +287,8 @@ static int vhost_set_backend_type(struct vhost_dev *dev,
+         r = -1;
      }
  
++    assert(dev->vhost_ops->backend_type == backend_type || r < 0);
++
+     return r;
+ }
+ 
+@@ -319,16 +321,23 @@ static struct vhost_log *vhost_log_alloc(uint64_t size, bool share)
+     return log;
+ }
+ 
+-static struct vhost_log *vhost_log_get(uint64_t size, bool share)
++static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
++                                       uint64_t size, bool share)
+ {
+-    struct vhost_log *log = share ? vhost_log_shm : vhost_log;
++    struct vhost_log *log;
++
++    if (backend_type == VHOST_BACKEND_TYPE_NONE ||
++        backend_type >= VHOST_BACKEND_TYPE_MAX)
++        return NULL;
++
++    log = share ? vhost_log_shm[backend_type] : vhost_log[backend_type];
+ 
+     if (!log || log->size != size) {
+         log = vhost_log_alloc(size, share);
+         if (share) {
+-            vhost_log_shm = log;
++            vhost_log_shm[backend_type] = log;
+         } else {
+-            vhost_log = log;
++            vhost_log[backend_type] = log;
+         }
+     } else {
+         ++log->refcnt;
+@@ -340,11 +349,20 @@ static struct vhost_log *vhost_log_get(uint64_t size, bool share)
+ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+ {
+     struct vhost_log *log = dev->log;
++    VhostBackendType backend_type;
+ 
+     if (!log) {
+         return;
+     }
+ 
++    assert(dev->vhost_ops);
++    backend_type = dev->vhost_ops->backend_type;
++
++    if (backend_type == VHOST_BACKEND_TYPE_NONE ||
++        backend_type >= VHOST_BACKEND_TYPE_MAX) {
++        return;
++    }
++
+     --log->refcnt;
+     if (log->refcnt == 0) {
+         /* Sync only the range covered by the old log */
+@@ -352,13 +370,13 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+             vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
+         }
+ 
+-        if (vhost_log == log) {
++        if (vhost_log[backend_type] == log) {
+             g_free(log->log);
+-            vhost_log = NULL;
+-        } else if (vhost_log_shm == log) {
++            vhost_log[backend_type] = NULL;
++        } else if (vhost_log_shm[backend_type] == log) {
+             qemu_memfd_free(log->log, log->size * sizeof(*(log->log)),
+                             log->fd);
+-            vhost_log_shm = NULL;
++            vhost_log_shm[backend_type] = NULL;
+         }
+ 
+         g_free(log);
+@@ -376,7 +394,8 @@ static bool vhost_dev_log_is_shared(struct vhost_dev *dev)
+ 
+ static inline void vhost_dev_log_resize(struct vhost_dev *dev, uint64_t size)
+ {
+-    struct vhost_log *log = vhost_log_get(size, vhost_dev_log_is_shared(dev));
++    struct vhost_log *log = vhost_log_get(dev->vhost_ops->backend_type,
++                                          size, vhost_dev_log_is_shared(dev));
+     uint64_t log_base = (uintptr_t)log->log;
+     int r;
+ 
+@@ -2037,8 +2056,14 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+         uint64_t log_base;
+ 
+         hdev->log_size = vhost_get_log_size(hdev);
+-        hdev->log = vhost_log_get(hdev->log_size,
++        hdev->log = vhost_log_get(hdev->vhost_ops->backend_type,
++                                  hdev->log_size,
+                                   vhost_dev_log_is_shared(hdev));
++        if (!hdev->log) {
++            VHOST_OPS_DEBUG(r, "vhost_log_get failed");
++            goto fail_vq;
++        }
++
+         log_base = (uintptr_t)hdev->log->log;
+         r = hdev->vhost_ops->vhost_set_log_base(hdev,
+                                                 hdev->log_size ? log_base : 0,
 -- 
 1.8.3.1
 
