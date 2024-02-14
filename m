@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF7C85496A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E5985496D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:41:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raEXj-0003Ie-BL; Wed, 14 Feb 2024 07:39:15 -0500
+	id 1raEXn-0003LH-NZ; Wed, 14 Feb 2024 07:39:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXd-0003GB-2I
+ id 1raEXd-0003GC-8a
  for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:11 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXb-0002WX-2S
+ id 1raEXb-0002Wj-LD
  for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:08 -0500
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41EBldNM019239; Wed, 14 Feb 2024 12:39:01 GMT
+ 41EC4hno013382; Wed, 14 Feb 2024 12:39:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=sVNGWIN4J9INuJRKmm2Cn2H7XJO9OKuH5ssQ1dIkszA=;
- b=I7DE+q3reghnM4AYFzGSuHskNVZFKbnyjatezi355j0PrfR3TEVmAHCMDENR8oj/mGI3
- cG+xlyzuMO+BL8dTleFVDidNgTYaA+5XP+3jogKO/WjIh31EgO3BITjrZ8HM7rzII9Fm
- PH0zbIfubMqMg5FAxsIxa4xscXIN+Y6CmUP+0o8kgqcUB345Ip24ER5J1inBk7IBbv6H
- PRBRvvkHTmbDYbVVfdz2rCJtuHtvR7hSN4PGXadN+EOauxR1iewG9L/efZEsjP6ujRov
- eTj+r7732r2AQIRaZ64MkQiwHpQZPmlWXbKYs8DikZ0OkJtRCITBm6R0PEL29KKOcwqJ aw== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-11-20;
+ bh=00rhp7sEaBao9fZK25CsubWytfXi59TieXd0DCtSP+Y=;
+ b=HHmKDcZKyreqPuhtgNagUT359M3XnUNUZ1GYOtrMqFcBLFRF7bj7rWecDuGZscnqSsPz
+ Xt8ZcFrjfGOFVOdK/0l1qD7uDlO/SUEZP8ZloJGxeu2tBTETlEstHxUanJ60vFCJnRC5
+ h0EiFDaA3ZvVeSpX6zE8T5E+9/qRUFMSBk7Ikgw/uPZPOEir1D8Rn9Z6I+t4DSFTHtTy
+ h0S7GCsGvFfDLEkDU762KCZEm65QgVMcHSY+zePAg71NQKRMIOSfbGHGRyI89Po5k9aB
+ Ot5QO8V7p9e/C7MXVhGVOyNevE6OgbBjtsPrxRQYxjJJMyIEf1nNCJLjmcrHegT10zPf Cg== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8varg5cn-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8w72g1uh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Feb 2024 12:39:01 +0000
+ Wed, 14 Feb 2024 12:39:02 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41ECKqpd013766; Wed, 14 Feb 2024 12:39:00 GMT
+ with ESMTP id 41ECKqpe013766; Wed, 14 Feb 2024 12:39:01 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3w6apbnn3q-1; Wed, 14 Feb 2024 12:39:00 +0000
+ 3w6apbnn3q-2; Wed, 14 Feb 2024 12:39:01 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 00/12] Preparatory patches for live migration downtime
- improvement
-Date: Wed, 14 Feb 2024 03:27:50 -0800
-Message-Id: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
+Subject: [PATCH 01/12] vdpa: add back vhost_vdpa_net_first_nc_vdpa
+Date: Wed, 14 Feb 2024 03:27:51 -0800
+Message-Id: <1707910082-10243-2-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
+References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,18 +65,17 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402140098
-X-Proofpoint-GUID: kNQ-I7e6VVPeoXj6I_fI376EiWQVdEOk
-X-Proofpoint-ORIG-GUID: kNQ-I7e6VVPeoXj6I_fI376EiWQVdEOk
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Proofpoint-ORIG-GUID: H0f9qVX8WpN2k86BmatKwxOeQF43BlWH
+X-Proofpoint-GUID: H0f9qVX8WpN2k86BmatKwxOeQF43BlWH
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,45 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This small series is a spin-off from [1], where the patches
-already acked from that large patchset may get merged earlier
-without having to wait for those that are still in review.
+Previous commits had it removed. Now adding it back because
+this function will be needed by future patches.
 
-The last 3 patches (10 - 12) are bug fix to an issue where
-cancellation of ongoing migration may lead to busted network.
-These are the only outstanding patches in this patchset with
-no acknowledgement received as yet. Please try to review
-them at the earliest oppotunity. Thanks!
-
-Regards,
--Siwei
-
-[1] [PATCH 00/40] vdpa-net: improve migration downtime through descriptor ASID and persistent IOTLB
-https://lore.kernel.org/qemu-devel/1701970793-6865-1-git-send-email-si-wei.liu@oracle.com/
-
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
+ net/vhost-vdpa.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Si-Wei Liu (12):
-  vdpa: add back vhost_vdpa_net_first_nc_vdpa
-  vdpa: no repeat setting shadow_data
-  vdpa: factor out vhost_vdpa_last_dev
-  vdpa: factor out vhost_vdpa_net_get_nc_vdpa
-  vdpa: add vhost_vdpa_set_address_space_id trace
-  vdpa: add vhost_vdpa_get_vring_base trace for svq mode
-  vdpa: add vhost_vdpa_set_dev_vring_base trace for svq mode
-  vdpa: add trace events for vhost_vdpa_net_load_cmd
-  vdpa: add trace event for vhost_vdpa_net_load_mq
-  vdpa: define SVQ transitioning state for mode switching
-  vdpa: indicate transitional state for SVQ switching
-  vdpa: fix network breakage after cancelling migration
-
- hw/virtio/trace-events         |  4 ++--
- hw/virtio/vhost-vdpa.c         | 27 ++++++++++++++++++++++-----
- include/hw/virtio/vhost-vdpa.h |  9 +++++++++
- net/trace-events               |  6 ++++++
- net/vhost-vdpa.c               | 33 +++++++++++++++++++++++++++++----
- 5 files changed, 68 insertions(+), 11 deletions(-)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 46e350a..4479ffa 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -280,6 +280,16 @@ static ssize_t vhost_vdpa_receive(NetClientState *nc, const uint8_t *buf,
+     return size;
+ }
+ 
++
++/** From any vdpa net client, get the netclient of the first queue pair */
++static VhostVDPAState *vhost_vdpa_net_first_nc_vdpa(VhostVDPAState *s)
++{
++    NICState *nic = qemu_get_nic(s->nc.peer);
++    NetClientState *nc0 = qemu_get_peer(nic->ncs, 0);
++
++    return DO_UPCAST(VhostVDPAState, nc, nc0);
++}
++
+ static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+ {
+     struct vhost_vdpa *v = &s->vhost_vdpa;
+@@ -492,7 +502,7 @@ dma_map_err:
+ 
+ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+ {
+-    VhostVDPAState *s;
++    VhostVDPAState *s, *s0;
+     struct vhost_vdpa *v;
+     int64_t cvq_group;
+     int r;
+@@ -503,7 +513,8 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
+     s = DO_UPCAST(VhostVDPAState, nc, nc);
+     v = &s->vhost_vdpa;
+ 
+-    v->shadow_vqs_enabled = v->shared->shadow_data;
++    s0 = vhost_vdpa_net_first_nc_vdpa(s);
++    v->shadow_vqs_enabled = s0->vhost_vdpa.shadow_vqs_enabled;
+     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
+ 
+     if (v->shared->shadow_data) {
 -- 
 1.8.3.1
 
