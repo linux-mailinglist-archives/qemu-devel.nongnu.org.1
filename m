@@ -2,105 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6688546F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 11:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DF3854971
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:42:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raCIU-0002ln-3X; Wed, 14 Feb 2024 05:15:22 -0500
+	id 1raEZa-0005f6-H3; Wed, 14 Feb 2024 07:41:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
- id 1raCIR-0002lZ-3Q; Wed, 14 Feb 2024 05:15:20 -0500
-Received: from wfhigh6-smtp.messagingengine.com ([64.147.123.157])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
- id 1raCIL-0001Pz-T7; Wed, 14 Feb 2024 05:15:18 -0500
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailfhigh.west.internal (Postfix) with ESMTP id 5D112180007C;
- Wed, 14 Feb 2024 05:15:07 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
- by compute5.internal (MEProxy); Wed, 14 Feb 2024 05:15:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm3; t=1707905706; x=1707992106; bh=9niqc0+7jc
- fr6QpSV2gwMi7IMeSeD3k5oJNJPRgDMYg=; b=kUuVyA1DVgx0CseVFwAQk+hQnq
- 0Ro11/mex1DPr05qJjq9Q4M1CjlpW8orS3dQCv+zS7/HUjOHfBbRtV3IZ79YtBP5
- to+zRDJv0YxifaRuVnFGo0RnppP1ugno6TiHajVl885lBW9u4DVfQ/FFWKgY4TG+
- Rn8JHfMT/mWU/5Zu3lrCezJE1Kqa/DJNX8PkUumjc3kZPJsuzd/dMhG2D7xxHWY2
- gjfNPEFWob90ZDSssBGsx5BZyPrjI7mzYt9jqYrwPKoVt/i+3/Mm4WwNyvx4VovM
- AL+wNe+34JGEEv+8NSSyxuQDmNNRy/HAtrf+XNfAUEBVqnAYQ4qevuiXEIjQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1707905706; x=1707992106; bh=9niqc0+7jcfr6QpSV2gwMi7IMeSe
- D3k5oJNJPRgDMYg=; b=jzxrEYpEo7MDlfdkoE+amVNkU1MBHBdkdty7FY6H1T/O
- rHG6r12j9gdgMVJtPq655H6qLhXjwss7ZZdkY2tRz1Unm03034YZEAqq45ytutGm
- 2CxdjXur4fNgqMMcmuBtG+/Uzto3ugmYK4Oo67r1cFXTW3pAk1v//4wjuJ5duqrX
- X/vyEiE+CNk2tokz1qhXqHBXN8DcR3h55u7OOSOJrY8DoJQ0O9BRRiRLtpvAWhqW
- 4JwkLLcBGn8rNhE3qoqbKm6rdVeUKdgPbUGjZP07iNmYlRmQQSKnnw9G+n5FBzjJ
- s4eDv0YS7yzyPZzSsA6Z2Yzlyipeu/uvs5Ey48e0nA==
-X-ME-Sender: <xms:qpLMZYM2eLrUj4vc6T403X8fYyIaEo-BRf-hA5nBzBndkK12732Shw>
- <xme:qpLMZe8D44gh4elff_N-rDZqnd3QQ7OE9-SiPUM5K69NI6B1byblnFQiwhR6Qn72O
- 3bo5FdFSDEjqP7aEaE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudejgddufecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
- ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
- gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
- ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
- hnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:qpLMZfS-5RdMOF5ujr2db6muCyc2v4pld-c5mJwghU7w--YEY6-Hug>
- <xmx:qpLMZQvyNHzXxUaMaZn_Lqo1AKr1zTDJqpFdugaXRkjgE5AcstiWNw>
- <xmx:qpLMZQe1aFzghPLXipPbr1aJ-mPM0vHA_PA2TpIldC47uHzLMtHLWA>
- <xmx:qpLMZTtKb06vWpgU3Dbrpusv7dDJxFVihcVef0o3GyectOIdqgqSeyHoims>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 0C7CAB6008F; Wed, 14 Feb 2024 05:15:05 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+ (Exim 4.90_1) (envelope-from <daniel@zonque.org>)
+ id 1raBFa-0004Ko-CJ; Wed, 14 Feb 2024 04:08:18 -0500
+Received: from mail.bugwerft.de ([46.23.86.59])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <daniel@zonque.org>)
+ id 1raBFU-0002XS-VU; Wed, 14 Feb 2024 04:08:18 -0500
+Received: from [192.168.178.97] (pd95ef237.dip0.t-ipconnect.de [217.94.242.55])
+ by mail.bugwerft.de (Postfix) with ESMTPSA id A3818281529;
+ Wed, 14 Feb 2024 09:08:06 +0000 (UTC)
+Message-ID: <6e97c51e-44bb-4edb-9dbb-1bbc0524b812@zonque.org>
+Date: Wed, 14 Feb 2024 10:08:05 +0100
 MIME-Version: 1.0
-Message-Id: <7daf3998-0c0c-4e21-bec7-cfb9560deaa9@app.fastmail.com>
-In-Reply-To: <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>, Guenter Roeck <linux@roeck-us.net>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Linux-OMAP <linux-omap@vger.kernel.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Stefan Lehner <stefan-lehner@aon.at>
 References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
  <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
  <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
  <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
  <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
- <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
-Date: Wed, 14 Feb 2024 11:14:44 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Linus Walleij" <linus.walleij@linaro.org>, paul.eggleton@linux.intel.com, 
- "Andrea Adami" <andrea.adami@gmail.com>,
- "Dmitry Baryshkov" <dbaryshkov@gmail.com>
-Cc: "Guenter Roeck" <linux@roeck-us.net>,
- "Peter Maydell" <peter.maydell@linaro.org>,
- "QEMU Developers" <qemu-devel@nongnu.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>,
- "Aaro Koskinen" <aaro.koskinen@iki.fi>,
- "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
- "Tony Lindgren" <tony@atomide.com>, Linux-OMAP <linux-omap@vger.kernel.org>,
- "Daniel Mack" <daniel@zonque.org>, "Robert Jarzmik" <robert.jarzmik@free.fr>, 
- "Haojian Zhuang" <haojian.zhuang@gmail.com>,
- "Stefan Lehner" <stefan-lehner@aon.at>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Content-Type: text/plain
-Received-SPF: pass client-ip=64.147.123.157; envelope-from=arnd@arndb.de;
- helo=wfhigh6-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Daniel Mack <daniel@zonque.org>
+In-Reply-To: <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=46.23.86.59; envelope-from=daniel@zonque.org;
+ helo=mail.bugwerft.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 14 Feb 2024 07:40:58 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,25 +71,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 13, 2024, at 22:21, Linus Walleij wrote:
+On 2/13/24 21:11, Arnd Bergmann wrote:
+> On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote:
+>> On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
+>>> On Mon, 12 Feb 2024 at 14:36, Guenter Roeck <linux@roeck-us.net> wrote:
+>>>> On 2/12/24 04:32, Peter Maydell wrote:
+>>>>> The machines I have in mind are:
+>>>>>
+>>>>> PXA2xx machines:
+>>>>>
+>>>>> akita                Sharp SL-C1000 (Akita) PDA (PXA270)
+>>>>> borzoi               Sharp SL-C3100 (Borzoi) PDA (PXA270)
+>>>>> connex               Gumstix Connex (PXA255)
+>>>>> mainstone            Mainstone II (PXA27x)
+>>>>> spitz                Sharp SL-C3000 (Spitz) PDA (PXA270)
+>>>>> terrier              Sharp SL-C3200 (Terrier) PDA (PXA270)
+>>>>> tosa                 Sharp SL-6000 (Tosa) PDA (PXA255)
+>>>>> verdex               Gumstix Verdex Pro XL6P COMs (PXA270)
+>>>>> z2                   Zipit Z2 (PXA27x)
+>>>>>
+>>>> I test akita, borzoi, spitz, and terrier. Upstream Linux removed support
+>>>> for mainstone, tosa, and z2 from the Linux kernel as of version 6.0, so
+> 
+> It was 6.3 (about one year ago).
+> 
+>>>> I am no longer testing those.
+>>>>
+>>>> I never managed to boot connex or verdex.
+> 
+> I kept specifically the pxa boards that would be sensible to port
+> to devicetree because they had qemu support. gumstix verdex is the
+> one with the most RAM out of those; spitz, sharpsl and their
+> variants are the ones that some of us still have around.
+> 
+> Robert had working devicetree support for some machines out of tree
+> that he has not submitted, and presumably not worked on since.
+> 
+> Unless someone starts working on converting the remaining
+> pxa board files to DT, we can probably remove them after the
+> next LTS kernel a year from now.
 
-> The Collie is popular because it is/was easy to get hold of and
-> easy to hack. PXA was in candybar phones (right?) which
-> are just veritable fortresses and really hard to hack so that is why
-> there is no interest (except for the occasional hyperfocused Harald
-> Welte), so those are a bit like the iPhones: you *can* boot something
-> custom on them, but it won't be easy or quick, and not as fun and
-> rewarding.
+I agree. Once the machines are removed, people who were actively using
+them would be incentivized to work on a DT port. That's not very
+complicated to do when you have the hardware to test, but almost
+impossible if you don't.
 
-The PXA machines that we support in kernel and qemu are either
-industrial/embedded machines or upgraded versions of the SA1100
-PDAs (sharpsl), not phones.
 
-OTOH, these chips came out between 2003 and 2007 so I can
-also see how people at the time had already moved away from
-using pure PDAs to Symbian or Blackberry phones, so there
-might just be fewer PDAs that got sold with PXA than with
-SA1100 before there were smartphones.
+Best regards,
+Daniel
 
-      Arnd
+
 
