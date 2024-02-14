@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CB8854208
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 05:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29090854216
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 05:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ra6ry-0007nc-3P; Tue, 13 Feb 2024 23:27:38 -0500
+	id 1ra6wa-0001tr-Mh; Tue, 13 Feb 2024 23:32:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1ra6rw-0007n7-AZ
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:27:36 -0500
-Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1ra6wY-0001tc-31
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:32:22 -0500
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1ra6ru-0004Pz-OR
- for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:27:36 -0500
-Received: by mail-io1-xd34.google.com with SMTP id
- ca18e2360f4ac-7ba9f1cfe94so12651039f.1
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 20:27:34 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1ra6wW-00063y-CB
+ for qemu-devel@nongnu.org; Tue, 13 Feb 2024 23:32:21 -0500
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so3413023b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 20:32:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707884853; x=1708489653; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xZZzFWXgHBt0MgJ93ILIs6n/MLVvULr7mA7GxBXHlM0=;
- b=B9km8a76j8oAXv0NVA6h5fKL2SM3m09gzGSMLHoiNJ1sdc4h5ub6BKHsi5hRhtbB7H
- F/vKY+GIkZIb+mwkj9bE0EN6K6Uq5MjVIDD0CRcum2IhIf3Aij2eXExHPAlHvTgJvEao
- 5A/twB8jAxDtsk5wgbAVKIIzmUV3VcWZ0dCUfufGGHVFFbKxOHFTIa7Q3BtQOcfu+/+k
- xfcq/3zlec8E0xm1ITYftLLcNp0p8Lu18Hf0Xw5lROLw8xW+KBs5x2rQx1lB55jFdxFm
- x7qBfV1f3o7uvctfJsVu72hcPND9p6RMUVG8fqTXGRpkyUb8GjFTl01A6hAWM2OiLpPb
- rbFg==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707885139; x=1708489939;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wnwjVxqk08D3G/NjJfrMLQ/7aEsC1PfgC3HvxwkiAkE=;
+ b=ijEKGLiqQvb7XuKcmOY1hVhrw2DREItYaccscCedht0/E/dLxlbWgX+VLDx1xbwo3w
+ yDR+xukH/RQhMB5V7XABYuZ42SU3Ph9Rj2BAOBHvM+MjbusR6oNtMB0UmRe9syZ7aee8
+ vcZOuedOkykcsC92Zia2bnUHnJ62d6F+T43sq/gvpcCTUhte7FxCdKnJyEvx70JTam6z
+ AGmCf3KYM0JKNIIbW/o3JcoIOmXVSaEn1SSmRMP3+dR6HEi71ey1qXAMFixVw23/6/hc
+ IjEBDqkZjmRLgXPH0JFO0Wzj9LgBPQymF2zgHXKLsQjsbA1Qw4Nxa29EKPeX5n0xHfjS
+ GP2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707884853; x=1708489653;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xZZzFWXgHBt0MgJ93ILIs6n/MLVvULr7mA7GxBXHlM0=;
- b=SATcKitzUdTQkE7pL4oaAepdZqi3FWUIugY6Y/CYFpGagAwkpvi2joNDOCn+YvwUM8
- ucv9YM18lUslKcCtFZluL1ju66TPROPwAm989qVxqBLmEQbPMsobos4dGWoR5xZms5Sn
- GwHvwwhJPSJ1cGS6NAt6H0q9SeVJq9M1oHiwMHqe1HEO6m28q1zWFfVfPdglOwSu5Q9j
- NXSVGCe3PmgAmNVHi/Zm0wdm4NWdY1dWbczBfPb4XJ6NbKOgyLbGvO95u06Yzw9DCDjq
- nNqIS4sWjW9wMIoi9jYssO1ESC3ujRiRVhAPVaEkkAiKsKvgLbUWjoBkyDw5FSqCThVa
- 69DA==
-X-Gm-Message-State: AOJu0YymkMe+E5rFPFcT8sOZ3c7U0xzrI320Bx5GMknwLDSrhhMdFPM0
- 3e+ipd0IeowWcq3vE1yZBwcvp5RCimf0zyqt+MOAZvdD/iglE8AUWfoF0SD2GQI=
-X-Google-Smtp-Source: AGHT+IGFeqOHIHkTheIcnBwHKsulX3hfMJ2EWX15SCQFDhCFjCpTNihSmSHwQKBFP1y+fRgUX4zixg==
-X-Received: by 2002:a6b:cd0c:0:b0:7c4:89b2:8084 with SMTP id
- d12-20020a6bcd0c000000b007c489b28084mr32174iog.1.1707884852789; 
- Tue, 13 Feb 2024 20:27:32 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707885139; x=1708489939;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wnwjVxqk08D3G/NjJfrMLQ/7aEsC1PfgC3HvxwkiAkE=;
+ b=npCf6R2eiqX49dsKvY7TKZee60VowcGYAaPMSzuCbcQQQ27eNbQ5OnL/mdrDnO2Brh
+ AnSaSavbeNWdj2ul4WYepYh/+4hUJ8U3PTK/OyJqaBccXfI5sN5HvVwKbH02OP1X61Bw
+ KuE03GBomKYJIJb1++tqys7zCSsM2qIa8e6YE8pZT/OcO1GfaMzgKL8MFj906sI8igB2
+ EzejhaIh7+8w1x1LRlctoZDXLlF1TZ7ejHJCVLzgKlBFj1nLgNkqq8DSllHPXMaEYMpZ
+ Q9sCAUiNnTfJba7aFZKYTR/mtkBp2hF2XgXba5SRgjvPyD93zQmdknnNw6m35YgTdavP
+ vtcA==
+X-Gm-Message-State: AOJu0Yw3PKplvCwkzsDPab7YOTcYFunzqZGCHHi1z6zOKDHcTph/MCDI
+ hL5gncOqVP3r/EdAAq5GlW/SwAOwX9FQDyquedpQ36sw+/4mJ02v+0tkT7aoaDU=
+X-Google-Smtp-Source: AGHT+IEZbAwMDMhqJrweLJJi1FeCZ+PTaJEYF+TRLfjAyIVOaqTwJck1+RbiIMZYbgRttzirRCB6KQ==
+X-Received: by 2002:aa7:93a1:0:b0:6e0:3834:6573 with SMTP id
+ x1-20020aa793a1000000b006e038346573mr1306827pff.28.1707885138720; 
+ Tue, 13 Feb 2024 20:32:18 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXgDh9vod6XI6oGBQJMOJEucDm/aoByCnH++SXD23ifVsmUEu5IDkTLI2k1EXiyjTatrZsSrszHgdDrGVMtH+2+Ru75ix7uEvdJMPrqPJ4cvq3w45A8yxb1OqBvB5d7pAh/5p5qT04ui5xnt8fmZsNahUltisaqxU+fKIxzi2ZpG2N2hMmw9gmfXHvMajoFvgi6BQQ0W1wAHdUNlbcuUIbDfFCqFuFjuARzf24Pnb9CSXjDYnc+xaGXP1J130LZ1ibbFIFmUDEnRa0DIhRARBSI9cJogMSoCRCg/HWd
-Received: from taylor-ubuntu.hsd1.co.comcast.net
- (c-73-169-12-54.hsd1.co.comcast.net. [73.169.12.54])
- by smtp.gmail.com with ESMTPSA id
- c2-20020a02c9c2000000b004713170def2sm2312305jap.93.2024.02.13.20.27.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 Feb 2024 20:27:31 -0800 (PST)
-From: Taylor Simpson <ltaylorsimpson@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: bcain@quicinc.com, quic_mathbern@quicinc.com, sidneym@quicinc.com,
- quic_mliebel@quicinc.com, richard.henderson@linaro.org, philmd@linaro.org,
- ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com
-Subject: [PATCH v3 3/3] Hexagon (target/hexagon) Only pass env to generated
- helper when needed
-Date: Tue, 13 Feb 2024 21:27:26 -0700
-Message-Id: <20240214042726.19290-4-ltaylorsimpson@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240214042726.19290-1-ltaylorsimpson@gmail.com>
-References: <20240214042726.19290-1-ltaylorsimpson@gmail.com>
+ AJvYcCU1bemxcRxRzmtOLHh09pQsCabGORqxkAEkbQviCwYCbmtjt6LwJZE0mgLX1MF2IOxO1+BDD4jA8QxgJRySR6AaGJkwPfx5E8NpDuJ/+9SaeEJRDtnKJ3BqfiDN1hIs1WXXhzCVDsLjvQDcbJ0WTQbTRKkTkOrDVpL8hBF+7rLa7AlxuosvyqTSpIRys4/c2jgb0Qx3HR0eBxk0Kbqvzdh+NifKignoRSJJOioEZXCXxI3N0OtssLwTsTfRMgeZIbjHqV/wPvIEiTiq
+Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with UTF8SMTPSA id
+ ff21-20020a056a002f5500b006e0737f2bafsm8203108pfb.45.2024.02.13.20.32.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 Feb 2024 20:32:18 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v10 0/6] ui/cocoa: Use NSWindow's ability to resize
+Date: Wed, 14 Feb 2024 13:32:00 +0900
+Message-Id: <20240214-cocoa-v10-0-c7ffe5d9f08a@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-io1-xd34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEFCzGUC/2XNTQ6CMBAF4KuYrq3pFOiPK+9hXJR2Kl1ITTEEQ
+ ri7hYQEZfle5nszkQ5TwI5cTxNJ2IcuxDYHYOcTsY1pn0iDywXhjBfAAaiNNhpaSVErUWjUtSP
+ 59p3Qh2Eduj9ybkL3iWlcd3uxtP8LvaBAS+2LGhlo8PzmzNiG4WLjiywTvdwzuTGZmTCeA3pZC
+ cUOTO2Z2piijDrpjVPMSvTiwPTGSsah2JheWGUqhNqzUv9+m+f5C3MH1Y1BAQAA
+To: Peter Maydell <peter.maydell@linaro.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
+ Rene Engel <ReneEngel80@emailn.de>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,120 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, we pass env to every generated helper.  When the semantics of
-the instruction only depend on the arguments, this is unnecessary and
-adds extra overhead to the helper call.
+V5 -> V6:
+  Rebased.
 
-We add the TCG_CALL_NO_RWG_SE flag to any non-HVX helpers that don't get
-the ptr to env.
-
-The A2_nop and SA1_setin1 instructions end up with no arguments.  This
-results in a "old-style function definition" error from the compiler, so
-we write overrides for them.
-
-With this change, the number of helpers with env argument is
-    idef-parser enabled:    329 total, 23 with env
-    idef-parser disabled:   1543 total, 550 with env
-
-Signed-off-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Tested-by: Anton Johansson <anjo@rev.ng>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- target/hexagon/gen_tcg.h            |  5 ++++-
- target/hexagon/gen_helper_protos.py | 12 ++++++++++--
- target/hexagon/hex_common.py        | 23 ++++++++++++++++++-----
- 3 files changed, 32 insertions(+), 8 deletions(-)
+Changes in v10:
+- Removed relative mouse input scaling.
+- Link to v9: https://lore.kernel.org/r/20240213-cocoa-v9-0-d5a5e1bf0490@daynix.com
 
-diff --git a/target/hexagon/gen_tcg.h b/target/hexagon/gen_tcg.h
-index 1c4391b415..3fc1f4e281 100644
---- a/target/hexagon/gen_tcg.h
-+++ b/target/hexagon/gen_tcg.h
-@@ -1,5 +1,5 @@
- /*
-- *  Copyright(c) 2019-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+ *  Copyright(c) 2019-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
-  *
-  *  This program is free software; you can redistribute it and/or modify
-  *  it under the terms of the GNU General Public License as published by
-@@ -1369,3 +1369,6 @@
-         gen_helper_raise_exception(tcg_env, excp); \
-     } while (0)
- #endif
-+
-+#define fGEN_TCG_A2_nop(SHORTCODE) do { } while (0)
-+#define fGEN_TCG_SA1_setin1(SHORTCODE) tcg_gen_movi_tl(RdV, -1)
-diff --git a/target/hexagon/gen_helper_protos.py b/target/hexagon/gen_helper_protos.py
-index c82b0f54e4..f8578d5033 100755
---- a/target/hexagon/gen_helper_protos.py
-+++ b/target/hexagon/gen_helper_protos.py
-@@ -1,7 +1,7 @@
- #!/usr/bin/env python3
- 
- ##
--##  Copyright(c) 2019-2023 Qualcomm Innovation Center, Inc. All Rights Reserved.
-+##  Copyright(c) 2019-2024 Qualcomm Innovation Center, Inc. All Rights Reserved.
- ##
- ##  This program is free software; you can redistribute it and/or modify
- ##  it under the terms of the GNU General Public License as published by
-@@ -40,7 +40,15 @@ def gen_helper_prototype(f, tag, tagregs, tagimms):
-         declared.append(arg.proto_arg)
- 
-     arguments = ", ".join(declared)
--    f.write(f"DEF_HELPER_{len(declared) - 1}({tag}, {arguments})\n")
-+
-+    ## Add the TCG_CALL_NO_RWG_SE flag to helpers that don't take the env
-+    ## argument and aren't HVX instructions.  Since HVX instructions take
-+    ## pointers to their arguments, they will have side effects.
-+    if hex_common.need_env(tag) or hex_common.is_hvx_insn(tag):
-+        f.write(f"DEF_HELPER_{len(declared) - 1}({tag}, {arguments})\n")
-+    else:
-+        f.write(f"DEF_HELPER_FLAGS_{len(declared) - 1}({tag}, "
-+                f"TCG_CALL_NO_RWG_SE, {arguments})\n")
- 
- 
- def main():
-diff --git a/target/hexagon/hex_common.py b/target/hexagon/hex_common.py
-index b96f67972d..d3d8560fcf 100755
---- a/target/hexagon/hex_common.py
-+++ b/target/hexagon/hex_common.py
-@@ -206,6 +206,18 @@ def need_sp(tag):
-     return "A_IMPLICIT_READS_SP" in attribdict[tag]
- 
- 
-+def is_hvx_insn(tag):
-+    return "A_CVI" in attribdict[tag]
-+
-+
-+def need_env(tag):
-+    return ("A_STORE" in attribdict[tag] or
-+            "A_LOAD" in attribdict[tag] or
-+            "A_CVI_GATHER" in attribdict[tag] or
-+            "A_CVI_SCATTER" in attribdict[tag] or
-+            "A_IMPLICIT_WRITES_USR" in attribdict[tag])
-+
-+
- def need_slot(tag):
-     if (
-         "A_CVI_SCATTER" not in attribdict[tag]
-@@ -1069,11 +1081,12 @@ def helper_args(tag, regs, imms):
-     args = []
- 
-     ## First argument is the CPU state
--    args.append(HelperArg(
--        "env",
--        "tcg_env",
--        "CPUHexagonState *env"
--    ))
-+    if need_env(tag):
-+        args.append(HelperArg(
-+            "env",
-+            "tcg_env",
-+            "CPUHexagonState *env"
-+        ))
- 
-     ## For predicated instructions, we pass in the destination register
-     if is_predicated(tag):
+Changes in v9:
+- Split patch "ui/cocoa: Use NSWindow's ability to resize" into patches
+  "ui/cocoa: Let the platform toggle fullscreen", "ui/cocoa: Make window
+  resizable", "ui/cocoa: Call console_select() with the BQL".
+- Added patch "ui/cocoa: Scale with NSView instead of Core Graphics".
+- Rebased.
+- Dropped Tested-by: from patch "ui/cocoa: Use NSWindow's ability to
+  resize".
+- Link to v8: https://lore.kernel.org/r/20231218-cocoa-v8-0-d7fad80c7ef6@daynix.com
+
+Changes in v8:
+- Split into three patches. (BALATON Zoltan)
+- Removed negative full-screen conditions. (BALATON Zoltan)
+- Converted a C++-style comment to C style.
+- Link to v7: https://lore.kernel.org/r/20231217-cocoa-v7-1-6af21ef75680@daynix.com
+
+Changes in v7:
+- Fixed zoom-to-fit option. (Marek Glogowski)
+- Link to v6: https://lore.kernel.org/r/20231211-cocoa-v6-1-49f3be0191f2@daynix.com
+
+---
+Akihiko Odaki (6):
+      ui/cocoa: Release specific mouse buttons
+      ui/cocoa: Scale with NSView instead of Core Graphics
+      ui/cocoa: Let the platform toggle fullscreen
+      ui/cocoa: Make window resizable
+      ui/cocoa: Call console_select() with the BQL
+      ui/cocoa: Remove stretch_video flag
+
+ ui/cocoa.m | 532 +++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 249 insertions(+), 283 deletions(-)
+---
+base-commit: 5005aed8a7e728d028efb40e243ecfc2b4f3df3a
+change-id: 20231211-cocoa-576b8639e9bd
+
+Best regards,
 -- 
-2.34.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
