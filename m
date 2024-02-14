@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649CE8555B7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 23:25:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B65855649
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 23:46:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raNfc-000317-EN; Wed, 14 Feb 2024 17:24:00 -0500
+	id 1raO0L-0002rB-Ce; Wed, 14 Feb 2024 17:45:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1raNfX-0002zf-Eg; Wed, 14 Feb 2024 17:23:55 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1raNfV-0004Mn-1d; Wed, 14 Feb 2024 17:23:54 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6e08dd0fa0bso257536b3a.1; 
- Wed, 14 Feb 2024 14:23:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707949431; x=1708554231; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=fkuI8eX5TD1s1j3VvJ6QWefmEmgPFSztzD62i65A9U0=;
- b=XbOPC/o48W4+gKvCbb5SXbwdDivRYY4VIojnZMkAeEJkI5z08Mr+6V4wBOZxVX7OGm
- YNEKyrivKzaAXA0cgx8k3BEJkWw/3RPwoqpnjs4Q1kQs0m7clscDRdrF6SHdaK2vwq5f
- BeL21uUo4FqhUjDQ9pytHV9zGd2PaVsX941TyPoyfO8CdCC3TdVthLP/fdsSfk8l8B1q
- NPZEE9AZvY78+36938IyccxvId1n55Nk1TVWkGRcvfqkjfPQUEWphfOom4qQd3nvsRdV
- AszVaKihPaNJPFFTs+mTPX23oe8r9PD2yGIkdG0DqfeDHulnt0mAc8W/fORkVBo0U+yN
- GVJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707949431; x=1708554231;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fkuI8eX5TD1s1j3VvJ6QWefmEmgPFSztzD62i65A9U0=;
- b=J7Yicz0WFFuyzmJ265roVv8HcT4K8QW3627mvhUlZVSKWe1MczCRtqojK32Q2tzs6s
- scPZCak4jN70oehbW2hZ5UVD98OF9nfw3lca6tWlqhgvzErmKcRA/PAaku9zGJfaNwvM
- IoJctCIWY6j/uud+HP/hTI2JW1yeoeS7vG/wLOx64XgKK2qsi6rPcYeljrLrmlScRRZ0
- Qm75wpmwXMQ5ct8TdI4WTSM/kQmjLlSA+PQLnr/hacfUV8ZKLQavGoFnF/4OajLW16iq
- /UbiLd5iofN+RXSl+QalPbDVRDwgy+uOIu04jnPvYy9mBru7bCZLxvzOq6GdLh9UeVcL
- uKOQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUyPn5kZgBF8j95DdXFWgAAmCV3zwIKmfLciZuneiJ/h2aXQ56GaE5f8H4poVSfVRM8MU8b5rXGZbILm24B1xOeil+Bm+g=
-X-Gm-Message-State: AOJu0YznIdiJqw7BPErlrTKquigQI0ENHEP9jMvzlJIY4AsaHspBRLIg
- qXKl5Gwgf27VwaT1VEhGdfnTkuaWOX4/QVT2VfuNNDGNTrDatPgS
-X-Google-Smtp-Source: AGHT+IEt9YGylY1X3+V/PQnQOznmIF0upJUu2HBf2qNI6cej9h9exfO8Ag4FeF+fJJi5y64HQqdsJw==
-X-Received: by 2002:a05:6a00:3d0c:b0:6e0:8a23:65c with SMTP id
- lo12-20020a056a003d0c00b006e08a23065cmr4852772pfb.13.1707949431201; 
- Wed, 14 Feb 2024 14:23:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXoxNa8pTwbEiOTBvYkfoF+r1E/Y5S9gLVmEQ4QrIx6FFzf5D4gdPK/3MXAQPPdzeO2NP5egA7DxQBWyQE2Pak+2D5SSMt0sARIKzdvzMBT5sg4K9VOhLUe9SgEyrl/IKDRXbswE+M2qrFl0uNeqRvlQnSYncxW1BhZYGDikgF+U5QJWI9p
-Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
- q2-20020aa79822000000b006e118ff3564sm658035pfl.133.2024.02.14.14.23.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 14:23:50 -0800 (PST)
-From: Minwoo Im <minwoo.im.dev@gmail.com>
-To: Keith Busch <kbusch@kernel.org>,
-	Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Minwoo Im <minwoo.im@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH 3/3] hw/nvme: Expand VI/VQ resource to uint32
-Date: Thu, 15 Feb 2024 07:23:37 +0900
-Message-Id: <20240214222337.5699-4-minwoo.im.dev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240214222337.5699-1-minwoo.im.dev@gmail.com>
-References: <20240214222337.5699-1-minwoo.im.dev@gmail.com>
+ (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
+ id 1raO0D-0002k2-VK; Wed, 14 Feb 2024 17:45:20 -0500
+Received: from wfout5-smtp.messagingengine.com ([64.147.123.148])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
+ id 1raO0C-0002Y2-33; Wed, 14 Feb 2024 17:45:17 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailfout.west.internal (Postfix) with ESMTP id 5A20F1C0007F;
+ Wed, 14 Feb 2024 17:45:08 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+ by compute5.internal (MEProxy); Wed, 14 Feb 2024 17:45:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+ :cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1707950707;
+ x=1708037107; bh=5IYsIk7ogLkaGYvbkI8VhBzBfBy+gdVcvU7E21EVjY8=; b=
+ 1Yr7/mbJgRu/HhpfbgOUHOg+uJ5aZcOS01dttWARtkBNr2rVkChrNEqbGxMJIHO3
+ wp55mLtXoq5dRfKgAkEzYd8zzQjIOnpEx5uQuwoeXN9+pdltEYqBRf5pValSpttR
+ j/FMDxJbE5RcSUg9c132/I43bRqMyff0LZ3AVkGhoDn9Tf0PjXneXo2aL4EE19DR
+ e3/a3mnl5ev1C1cOw7NQ5jdkVmyuMFWqzJWG0NykYGPIGpZBHaUlq+FfiwQTxubI
+ ZymJ8IuULP88e7NQq0f7eKKXTuz/7196rNk5w9mGmdE/V+sb3MLP6gV0GALhYTVa
+ mlJj5y/ToOsrBfR4zWpWMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1707950707; x=
+ 1708037107; bh=5IYsIk7ogLkaGYvbkI8VhBzBfBy+gdVcvU7E21EVjY8=; b=m
+ 6mrQt2ntzSE6f6WWVUf0/SLbblYyjVzZzLJkiKFZs8edw9cgmsMRIHRpTcjRwgR7
+ zE5C6CjkM4qrW1H43JehuxzNMJuw1RJTrtIDS9k9LD6J7phGLo5rIAfgUiE1iZQU
+ P9J/RYgM2tvb/lRkTVE6E6Hx3F7ItWrnJNSVJ6E9t1itGDSJj/4kK4LtVhH2c/c5
+ z7o9qWSzLHa9a8V2nkcMIQ2q4ix8DochNgCAb6y7b9n8Trbgc70Pb3NzXypIpsV0
+ k8kkIy6pjGEskTYeU4XPgr6J895lAJvCeDH/umKT3rhd7mROw7tNnkU6NmeELs3l
+ vYJcwI6XYzg4Q/B/XBiow==
+X-ME-Sender: <xms:ckLNZT_JJMaIVEZ2IlCnLR8UcjSc_Opv3Bh_2qtyw8ruP2zx-c9ejA>
+ <xme:ckLNZftlgtrCdx5yAKOA3_9Sk59fRWoubTKnO3IkKzProJBpR-kugdW7aomPvRQ3f
+ EZAqoXsYMuXQsqpv9A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudekucetufdoteggodetrfdotffvucfrrh
+ hofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgenuceurghi
+ lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+ epofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdetrhhnugcu
+ uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+ hnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedtgfejveen
+ ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+ esrghrnhgusgdruggv
+X-ME-Proxy: <xmx:ckLNZRBG6dWjBwQiCIHiHIr1d3OD9dqKGI7cBHYYIogHlOxlTaIl8Q>
+ <xmx:ckLNZfeg6GSk2ouFPnZZXu0aJylnz6EoMxw0-p_7PUEUEvJCwn9tZw>
+ <xmx:ckLNZYM3oslqSs6pvDVxAbUZSmlpwfYYQtk074dm2Eno7XnE9Wm3bw>
+ <xmx:c0LNZdf32ndN---QbdHBYSTIIdalud5LQRU3CRDRhLOnd0ueQCbTw9vlqxs>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id C74C9B60089; Wed, 14 Feb 2024 17:45:06 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=minwoo.im.dev@gmail.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Message-Id: <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
+In-Reply-To: <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+ <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+ <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
+ <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
+Date: Wed, 14 Feb 2024 23:42:58 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dmitry Baryshkov" <dbaryshkov@gmail.com>,
+ "Linus Walleij" <linus.walleij@linaro.org>
+Cc: paul.eggleton@linux.intel.com, "Andrea Adami" <andrea.adami@gmail.com>,
+ "Guenter Roeck" <linux@roeck-us.net>,
+ "Peter Maydell" <peter.maydell@linaro.org>,
+ "QEMU Developers" <qemu-devel@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>,
+ "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+ "Tony Lindgren" <tony@atomide.com>, Linux-OMAP <linux-omap@vger.kernel.org>,
+ "Daniel Mack" <daniel@zonque.org>, "Robert Jarzmik" <robert.jarzmik@free.fr>, 
+ "Haojian Zhuang" <haojian.zhuang@gmail.com>,
+ "Stefan Lehner" <stefan-lehner@aon.at>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=64.147.123.148; envelope-from=arnd@arndb.de;
+ helo=wfout5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,66 +119,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Minwoo Im <minwoo.im@samsung.com>
+On Wed, Feb 14, 2024, at 13:26, Dmitry Baryshkov wrote:
+> On Tue, 13 Feb 2024 at 23:22, Linus Walleij <linus.walleij@linaro.org>=
+ wrote:
+>> On Tue, Feb 13, 2024 at 9:12=E2=80=AFPM Arnd Bergmann <arnd@arndb.de>=
+ wrote:
+>> > On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote:
+>> > > On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:
+>>
+>> Andrea Adami and Dmitry Eremin-Solenikov did the work in 2017 to
+>> modernize it a bit, and Russell helped out. I was under the impression
+>> that they only used real hardware though!
+>
+> I used both Qemu and actual hardware (having collie, poodle, tosa and
+> c860 that was easy).
+>
+> The biggest issue with Zaurus PDAs was that supporting interesting
+> parts of the platform (PCMCIA, companion chips) required almost
+> rebootstrapping of the corresponding drivers.
+> E.g. I had a separate driver for the LoCoMo chip which worked properly
+> with the DT systems.
+> PCMCIA was a huuuge trouble and it didn't play well at all. The driver
+> must be rewritten to use the component framework.
 
-VI and VQ resources cover queue resources in each VFs in SR-IOV.
-Current maximum I/O queue pair size is 0xffff, we can expand them to
-cover the full number of I/O queue pairs.
+If we want to actually go there, I think the best option for PCMCIA
+support is likely to replace the entire "soc_common" pcmcia driver
+with a simple drivers/pata/ storage driver and no support for
+other cards. There was a driver until commit 38943cbd25a2
+("ata: remove palmld pata driver") that could serve as an
+template.
 
-This patch also fixed Identify Secondary Controller List overflow due to
-expand of number of secondary controllers.
-
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 10 +++++-----
- hw/nvme/nvme.h |  4 ++--
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8198fd2d8e46..6f3fd96f7572 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -5486,7 +5486,7 @@ static uint16_t nvme_identify_sec_ctrl_list(NvmeCtrl *n, NvmeRequest *req)
- 
-     for (i = 0; i < num_sec_ctrl; i++) {
-         if (n->sec_ctrl_list.sec[i].scid >= min_id) {
--            list.numcntl = num_sec_ctrl - i;
-+            list.numcntl = (num_sec_ctrl - i > 127) ? 127 : num_sec_ctrl - i;
-             memcpy(&list.sec, n->sec_ctrl_list.sec + i,
-                    list.numcntl * sizeof(NvmeSecCtrlEntry));
-             break;
-@@ -8430,10 +8430,10 @@ static Property nvme_props[] = {
-                        params.sriov_vq_flexible, 0),
-     DEFINE_PROP_UINT16("sriov_vi_flexible", NvmeCtrl,
-                        params.sriov_vi_flexible, 0),
--    DEFINE_PROP_UINT8("sriov_max_vi_per_vf", NvmeCtrl,
--                      params.sriov_max_vi_per_vf, 0),
--    DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
--                      params.sriov_max_vq_per_vf, 0),
-+    DEFINE_PROP_UINT32("sriov_max_vi_per_vf", NvmeCtrl,
-+                       params.sriov_max_vi_per_vf, 0),
-+    DEFINE_PROP_UINT32("sriov_max_vq_per_vf", NvmeCtrl,
-+                       params.sriov_max_vq_per_vf, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index db2cda098ebd..d0f4c6c9b7af 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -520,8 +520,8 @@ typedef struct NvmeParams {
-     uint16_t  sriov_max_vfs;
-     uint16_t sriov_vq_flexible;
-     uint16_t sriov_vi_flexible;
--    uint8_t  sriov_max_vq_per_vf;
--    uint8_t  sriov_max_vi_per_vf;
-+    uint32_t  sriov_max_vq_per_vf;
-+    uint32_t  sriov_max_vi_per_vf;
- } NvmeParams;
- 
- typedef struct NvmeCtrl {
--- 
-2.34.1
-
+      Arnd
 
