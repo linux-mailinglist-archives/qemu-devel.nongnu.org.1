@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE2A85482A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E848547F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:17:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDFd-00060q-RS; Wed, 14 Feb 2024 06:16:29 -0500
+	id 1raDFQ-0005e4-SG; Wed, 14 Feb 2024 06:16:16 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF2-00058n-Db
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:56 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF4-0005A2-T8
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:57 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF0-0007Iz-Ae
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:52 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF3-0007Jh-IV
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909349;
+ s=mimecast20190719; t=1707909353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fN72J8WFo/Zhfl2CffZ0fQwcDGfJHksFH3RcOtTuZe8=;
- b=UqN0QEHUOTDIVq3+XsGQ/5P2qXNzRquUPdqcKBvB7QKUyGWGCBa52NGWM6nRsilpTjuGdB
- FNS45o6NU9168d28aogvkfDf8eJWoTkIhcxAFmWlBpGM32uFYpH6Rr1tSG2lHd17nhTbZX
- BPljTqKa8dEEWlZuMavOpdiTwgmxUYc=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=K17K/uN0886Kn47U734ewDBEWNLSENKFpu38B+iNS80=;
+ b=YVx+55WJWmrRsvt8TXZZikCC7XyvetD9aQxaVPv1wFBpQt1rLlwm9Mi9rWZFQVEyCtwQBB
+ 2lOVzBg/xlMsaVOvcrE7dDDszB8lkLfZqB4CPjOG+pbTrC9nR6E/oTb1CKMuVQ67DVPLhl
+ mf8QrBTita1bcg3Fk/f+wi/q5AzK+lU=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-D0D05RZFPVWLauXp_ikMYg-1; Wed, 14 Feb 2024 06:15:48 -0500
-X-MC-Unique: D0D05RZFPVWLauXp_ikMYg-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5621c809a3bso452539a12.2
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:48 -0800 (PST)
+ us-mta-508-nycbCbexNlOHydhJBBFjhA-1; Wed, 14 Feb 2024 06:15:51 -0500
+X-MC-Unique: nycbCbexNlOHydhJBBFjhA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a2cb0d70d6cso340244066b.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909347; x=1708514147;
+ d=1e100.net; s=20230601; t=1707909350; x=1708514150;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fN72J8WFo/Zhfl2CffZ0fQwcDGfJHksFH3RcOtTuZe8=;
- b=uQKTRiuu7tcsVhnOvwYux30w+78Q6+LkawNpaZkQQxIHrBGBItKyXnfUpS8C1xnFyf
- bJEe3rLyxZLxnphvdSd+5iLCcLALOYx2eBHA6eNby8RtxJL9iHcfbNXV+RDtY4hPaDGN
- LI/y7/2tvD3jgcjh6byQX//ug743UHm2Qc41tpSJ2fP+U52vmilORA1rW1uW+nVoQpwj
- wuSrhR+9zOH6GBjMb2mshwFZTIItHLwfU7sxOWEUxABA6V0ieG/ZpeNB7XsaoDYs1cYC
- /ajrfBs/SuxfyFBxPa0MZHhJrrxEhqkvEUQCljvYxrCqpuF4zmngn2f05WZCKnelJyzA
- GjNQ==
-X-Gm-Message-State: AOJu0YyB5M4l2XeZhVyVx17rFVRTdMdZNG3t8jR9YFiMoZawjoVW6kjF
- 0PzF9NAKbQS5a5r0ml9cowhT+hnQfAKixgt2Rp6kdXp7hDj2HSg8u80s3wGQT5FlBusem23qxuo
- cGuCIuvJiEIWH4xYqraEZFmNfj+NIDEEUy3LzWRw/sdypEHAFUtgTe+IhIV1EDy0b3J4Lxu520p
- 3lj5rGjIJwOTHPwUOx9IweIGiriq+1Sw==
-X-Received: by 2002:a05:6402:6d7:b0:563:906f:4171 with SMTP id
- n23-20020a05640206d700b00563906f4171mr48809edy.18.1707909346985; 
- Wed, 14 Feb 2024 03:15:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG2inKnnQZXSTc38j06fXNv/Qm5ehexs4T0dLjIipcBJlyOy4+oa0xYf608qMCASnFXkw+DQA==
-X-Received: by 2002:a05:6402:6d7:b0:563:906f:4171 with SMTP id
- n23-20020a05640206d700b00563906f4171mr48788edy.18.1707909346640; 
- Wed, 14 Feb 2024 03:15:46 -0800 (PST)
+ bh=K17K/uN0886Kn47U734ewDBEWNLSENKFpu38B+iNS80=;
+ b=H3f+SHIvWeCcYIuL4dh493qrNz84M6kC8sVXXQXbCTUtzohWpDK8BRzqifRhJzmvIH
+ FMVxTS1MqAKPQjn/qzvWoF1n2YHcog/blhhs5TMNNvF7lmdBNo6eewut5Fa8p6+iXFg2
+ xFt7wl2Erd1W/0agrIZiFspnCLslwv45eotuKbmY+/qhcHsBGOIpT6hOZytvhwR9zdDA
+ Lk7mLzcu442Z7oDiawFihWMpvqEMNohwFv9BbDi+30NdHfED7SGyc55FtLQVj3cYk43g
+ rSQhW44GzZMyNCR1bVIB14/k7US7pzlrtsJ2NVyjIIU25Be/eMxALM3fj/B5Yd89aEcy
+ 53Gw==
+X-Gm-Message-State: AOJu0YxWZQAmVUydBeKKr1339VPpbR1/PJM3b3oqeUi0Nb9pIo+ysxfb
+ BO1Ef/mHshcjczmvIR0DcMqyHe0ou1JWZPc4LL3joYubSFT9yeNI2pKzMGE5IyU9AQ2HBFN9WmG
+ EGCCJkPn0Yt45F2zBIansKeSA7el1/S9lnttlcDUVnY25/mE3tmXGBNzHliO69hh9LOHy55rwEu
+ avbRXTX5Kt81NFDCgMntVsva5yQ2O0fg==
+X-Received: by 2002:a17:906:a2c9:b0:a3c:8299:9c5f with SMTP id
+ by9-20020a170906a2c900b00a3c82999c5fmr1524904ejb.75.1707909350167; 
+ Wed, 14 Feb 2024 03:15:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE9ro8RzYCRQT3ChPXndgElsvWkD4U4e0zmV+QarAOpok0ZrKscCzCutBzJNvgO0dc7TqTYFQ==
+X-Received: by 2002:a17:906:a2c9:b0:a3c:8299:9c5f with SMTP id
+ by9-20020a170906a2c900b00a3c82999c5fmr1524882ejb.75.1707909349757; 
+ Wed, 14 Feb 2024 03:15:49 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLqZBjidmXq5/6GbRdJN3FwsNBUZBvo+5WavW6BjtG2mn8jO5BpcZ+0HeMxLZAVJ0myX8bCA+D1mg1ni4a7cZC79wTOi4EKeK0Oc+umUmEfAhshXZsg29kES4qOWsUKVynnCc34josebIC5Z6G1iJmHCfnL/mYQ7IKL0VPwa/n0op1LR4zK9LVitudZcqZFqWFcC2PhJs7gcgUygil1Yj9DdqfZnaG33BcrZ1GZ3xlzRpYNNDDnIvgq+HpmbBzDW+u0pdAQ+VqCXky2XthKvWrCeCFjpOUDC6z
+ AJvYcCWcX+cy8xzEBOYB9PvKS3QeNB7mqfN3Jy1g9t23D6ICCt4iHIS88MR+WnmWv/H4jDkapfoDTvz8NE7YZcnjvgxgQ2qP5V2agaYw9jClKL027arCX9E0CJM5XCygInKgi50gROFtHLROwG2/aZ6ke3DqJ7voIHo=
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- p5-20020a056402074500b005638caeff4bsm121063edy.22.2024.02.14.03.15.44
+ ll5-20020a170907190500b00a3d120e311asm1316390ejc.117.2024.02.14.03.15.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:15:46 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:15:43 -0500
+ Wed, 14 Feb 2024 03:15:49 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:15:47 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 47/60] hw/i386: Fix _STA return value for ACPI0017
-Message-ID: <d9ae5802f656f6fb53b788747ba557a826b6e740.1707909001.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 48/60] tests/acpi: Update DSDT.cxl to reflect change _STA
+ return value.
+Message-ID: <b24a981b9f1c4767aaea815e504a2c7aeb405d72.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -108,42 +105,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Found whilst testing a series for the linux kernel that actually
-bothers to check if enabled is set. 0xB is the option used
-for vast majority of DSDT entries in QEMU.
-It is a little odd for a device that doesn't really exist and
-is simply a hook to tell the OS there is a CEDT table but 0xB
-seems a reasonable choice and avoids need to special case
-this device in the OS.
-
-Means:
-* Device present.
-* Device enabled and decoding it's resources.
-* Not shown in UI
-* Functioning properly
-* No battery (on this device!)
+_STA will now return 0xB (in common with most other devices)
+rather than not setting the bits to indicate this fake device
+has not been enabled, and self tests haven't passed.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240126120132.24248-12-Jonathan.Cameron@huawei.com>
+Message-Id: <20240126120132.24248-13-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/acpi-build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+ tests/data/acpi/q35/DSDT.cxl                | Bin 9713 -> 9714 bytes
+ 2 files changed, 1 deletion(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index d5c6c94474..d3ce96dd9f 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1415,7 +1415,7 @@ static void build_acpi0017(Aml *table)
-     aml_append(dev, aml_name_decl("_HID", aml_string("ACPI0017")));
- 
-     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
--    aml_append(method, aml_return(aml_int(0x01)));
-+    aml_append(method, aml_return(aml_int(0x0B)));
-     aml_append(dev, method);
-     build_cxl_dsm_method(dev);
- 
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 9ce0f596cc..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/q35/DSDT.cxl",
+diff --git a/tests/data/acpi/q35/DSDT.cxl b/tests/data/acpi/q35/DSDT.cxl
+index 145301c52af9a17242bb306c210f8a7e0f01b827..afcdc0d0ba8e41bb70ac20a78dcc8562ca0cb74b 100644
+GIT binary patch
+delta 64
+zcmez9{mGllCD<k8lPUuP<Nb|X6BX6{S>uD9;-j0~S)C(%d^zGhJY9GlodY}#3=GW~
+UL^$JvLmU~FaB*)wsA#|f0Fwq1RsaA1
+
+delta 63
+zcmez5{n4AtCD<k8qbdUf<M)kR6BX6`SmT48;-j0~Se+w$d^zGhJY9GlodY}#3=GW~
+TL^$GuLmU~FFm67iXutvhh3yhn
+
 -- 
 MST
 
