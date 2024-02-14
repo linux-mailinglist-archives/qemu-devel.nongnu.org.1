@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21708547F5
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09942854824
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:21:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDDb-0000jC-QY; Wed, 14 Feb 2024 06:14:23 -0500
+	id 1raDDT-0000IP-4k; Wed, 14 Feb 2024 06:14:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDQ-0000E4-Id
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:14 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDM-0000Ax-3N
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:12 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDA-0006m5-Ns
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:09 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDDD-0006mR-7y
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909234;
+ s=mimecast20190719; t=1707909238;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CjRo4fIPTfHOrRBaGJPDLNZ8uI+Q6cMsNY8ttQOPSos=;
- b=KzExtXAVoRQepG9VSqD0/1HLAluiB4POKTxfXEgkKNKms0aoZTw9EAs8YcYyfPhnF8O1BB
- ATHR7Zc9R4KtN4yMQuHu81AeDMr8B6zXbrtwkB44CDdjBHWEaMfVoHN5M7J0GstZgaw2yV
- CYuZ7Ag0Le+vOu/Ny/HfcmliqEukP7s=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pNWPNdaeH/gm2+Fuc6t0CFL+yHMh3buRTqg9OHqLxYg=;
+ b=LIza2OzcMqIPC4lL1k0LgdnZ+EepkGNFs/dhR6EUvlIIT/ETu41K/QU3RIKirTRzZZG5sj
+ 1Z91VLWyu0RQZXgYOyvzmyJ8ZIWvSX5gKmNnQ2k11x6WrhaPJ4uk2AjeXVxaVkdLASHqR3
+ 6u2Div7+xMae5hNDQMeph1s9S123jrE=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-vScGgLX9OLqG54Ra7JKCdQ-1; Wed, 14 Feb 2024 06:13:53 -0500
-X-MC-Unique: vScGgLX9OLqG54Ra7JKCdQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3d38947c35so39110066b.3
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:13:53 -0800 (PST)
+ us-mta-321-VX0J20qoMLmm4FTcaIUzPg-1; Wed, 14 Feb 2024 06:13:57 -0500
+X-MC-Unique: VX0J20qoMLmm4FTcaIUzPg-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-5114f2a1e81so1843829e87.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:13:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909231; x=1708514031;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CjRo4fIPTfHOrRBaGJPDLNZ8uI+Q6cMsNY8ttQOPSos=;
- b=i8edT1TLm6K7EG83xZb1DaF+D0Dl5OtMXy8+aSZQlpDZTHq5PtMnPImi3mbmoB4zCr
- oqttw0TKJ81QJYw/CUpQytxODv42kOQ5w6TkF0uRfLd4gH+QnuEizAeiT6vc8PSeJjxw
- nDXPHwMM2C9UaS1meWw31MXPnhwiRNV97NMvLPs0/LLTIXvvnYEDMn0nXTU/t2c4VTyG
- 2v3v/nMGnirW7HAAVXpXz66DecgmZNUMHiH/taeKkef3HA3w/znkKxBGlpmao+COttU0
- Kn+iY2Z+Y1d41WfzI185MzQVfUOPy1+kP9NMfAUJEIRG2YzjouGMnMKZ0oaP3o7WTRfJ
- xVhw==
-X-Gm-Message-State: AOJu0YwwyjJ6R4puz+STDOSVEgJFC9paSYYekwKW2T9PO6b+89Hzt57i
- CndsITmPpg74irKo1IW3BXq8mzv9l6Yuiwz0iWIKzbLexQ2H4eOq/VjYqS+RESgCExI9bgh/fpE
- +OX4wdgllY4D8ECvQTwz03IWIclkgMVr9vXQr01AbeTg+XhUHK1Uzhw6Xe8TEmZMafil4UVsrdy
- dLKxsq6zq8sjVGyBWLwKqykHweR2gwNQ==
-X-Received: by 2002:a17:906:495:b0:a3d:1a89:7054 with SMTP id
- f21-20020a170906049500b00a3d1a897054mr1658783eja.39.1707909231350; 
- Wed, 14 Feb 2024 03:13:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHoT6C3Mm5gxupyXuYSncNRUGtqkZuZjVzeO/mpb99YEvPkG3UBltpCyf+nqXWbbECXeia8mA==
-X-Received: by 2002:a17:906:495:b0:a3d:1a89:7054 with SMTP id
- f21-20020a170906049500b00a3d1a897054mr1658767eja.39.1707909231010; 
- Wed, 14 Feb 2024 03:13:51 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707909235; x=1708514035;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pNWPNdaeH/gm2+Fuc6t0CFL+yHMh3buRTqg9OHqLxYg=;
+ b=JNQIPUrOHKwfhINv48NBjTlrG5kfeUoAuHDsg2hqZiyghSiq8yg/x5k2/NtuAJNJRo
+ N96LfawRc8D7KZBPgbicajYDq1l9CyIsWz6hRnTwQBvOCFAhHqAQjt0B9DAmAe2OovUT
+ 8SW6biJ4UE3w+YAPGc2lxVRer/RtK3pMCG7IZ7DoftD2dB5JlqsBkAKN1zYH17qb5u/d
+ qCtlU/esI90DnfAg38B8lYb4coxrKORjofxQrh0AmonjbTNMhKZJu0tLEYpF6cKF+eoR
+ Kmn4VQV29fqOqR0Q+Bgk2O3uYPQ6CzNaSIrqY4H8MLodaOC5E4cZXJuFbUjiEyH9ekov
+ 9KTg==
+X-Gm-Message-State: AOJu0YxMw4Wd3etzzTERR+567rtF4BoQGv9PzNG7UGm9+wxtSsAey0vx
+ UUQh4KUE7sExp6F4Tw0F4ir8iUybvvelgSUWo2sVnNIIrna6GxFQECWi3ean49jPXohOdZfLd0S
+ VNRnUMBNpx8Ze2wiRyrw+X3QUfdaF41iyJwQD045mghgFYczKm/vmJnzsa7SsV65/ipV/pbxzfG
+ GvqhrKYWQAey0SYLk6jJFCc6dMiRiyRQ==
+X-Received: by 2002:ac2:483c:0:b0:511:8b33:6c72 with SMTP id
+ 28-20020ac2483c000000b005118b336c72mr1559614lft.47.1707909234979; 
+ Wed, 14 Feb 2024 03:13:54 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHi3EkOzzfe+qbA14LdRGgIHwn+PpD7zGPn8bFLmlyMv/AYtKcMbYZ8mCcEEsrVg7GNH42bAA==
+X-Received: by 2002:ac2:483c:0:b0:511:8b33:6c72 with SMTP id
+ 28-20020ac2483c000000b005118b336c72mr1559603lft.47.1707909234598; 
+ Wed, 14 Feb 2024 03:13:54 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCXlGC/LtYf/uBYgXMnS3iNHh3O6U/wbqPmc/UWX+AW9oJD7DM3lMySCmtF+sG+brY205s9GSoB2KSeaqKlXLxzR0LRIykaHi2I+46XMtEYQopzc66H39cvutazhfokwgYXVPg2Z3OOgtHAhwrdYMafi3GQDUrSDz3/rZ1k6l7ciw97R8GfZVq777X4BtUY=
+ AJvYcCUlfO48icVbYx/2bL46+VoxP/+vh/tCWiXAjqg88ei4dKkXm1N3Eur0KSCSQ7CIzALMkZpOPPNJhvE+7S7vCyMJFLmejnqdXmuly07TRPzPUiSU8ksmp/d8rSzk1ye0/WTD8Au+6B6wB/rcM24761Enxr+cWfl3TmmvIgmKsRSmw/dCgxl7dkMxYuRb8mLyphOvJ7vLRGo8TNQTNKvMt4AdRkypav9TmcZUpsVS
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- vo9-20020a170907a80900b00a3ce268c015sm2037811ejc.48.2024.02.14.03.13.49
+ fi27-20020a056402551b00b0055edfb81384sm4496217edb.60.2024.02.14.03.13.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:13:50 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:13:48 -0500
+ Wed, 14 Feb 2024 03:13:53 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:13:51 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Leo Yan <leo.yan@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 11/60] hw/virtio: derive vhost-user-input from vhost-user-base
-Message-ID: <bad38726e9dc52d840d151a1ba38b5614b521feb.1707909001.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Bui Quang Minh <minhquangbui99@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 12/60] i386/tcg: implement x2APIC registers MSR access
+Message-ID: <b2101358e591c9f0a93739dd3aee72935a79af80.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1707909001.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -87,8 +87,8 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,214 +104,307 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leo Yan <leo.yan@linaro.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-This patch derives vhost-user-input from vhost-user-base class, so make
-the input stub as a simpler boilerplate wrapper.
+This commit creates apic_register_read/write which are used by both
+apic_mem_read/write for MMIO access and apic_msr_read/write for MSR access.
 
-With the refactoring, vhost-user-input adds the property 'chardev', this
-leads to conflict with the vhost-user-input-pci adds the same property.
-To resolve the error, remove the duplicate property from
-vhost-user-input-pci.
+The apic_msr_read/write returns -1 on error, accelerator can use this to
+raise the appropriate exception.
 
-Signed-off-by: Leo Yan <leo.yan@linaro.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <20231120043721.50555-5-leo.yan@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240104210945.1223134-12-alex.bennee@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Message-Id: <20240111154404.5333-2-minhquangbui99@gmail.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio-input.h |   6 +-
- hw/virtio/vhost-user-input-pci.c |   3 -
- hw/virtio/vhost-user-input.c     | 114 +++++--------------------------
- 3 files changed, 21 insertions(+), 102 deletions(-)
+ include/hw/i386/apic.h               |   3 +
+ target/i386/cpu.h                    |   3 +
+ hw/intc/apic.c                       | 122 ++++++++++++++++++++-------
+ target/i386/tcg/sysemu/misc_helper.c |  27 ++++++
+ hw/intc/trace-events                 |   4 +-
+ 5 files changed, 127 insertions(+), 32 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-input.h b/include/hw/virtio/virtio-input.h
-index a6c9703644..e69c0aeca3 100644
---- a/include/hw/virtio/virtio-input.h
-+++ b/include/hw/virtio/virtio-input.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_VIRTIO_INPUT_H
- #define QEMU_VIRTIO_INPUT_H
+diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
+index bdc15a7a73..ddea4213db 100644
+--- a/include/hw/i386/apic.h
++++ b/include/hw/i386/apic.h
+@@ -18,6 +18,9 @@ void apic_sipi(DeviceState *s);
+ void apic_poll_irq(DeviceState *d);
+ void apic_designate_bsp(DeviceState *d, bool bsp);
+ int apic_get_highest_priority_irr(DeviceState *dev);
++int apic_msr_read(int index, uint64_t *val);
++int apic_msr_write(int index, uint64_t val);
++bool is_x2apic_mode(DeviceState *d);
  
-+#include "hw/virtio/vhost-user.h"
-+#include "hw/virtio/vhost-user-base.h"
- #include "ui/input.h"
- #include "sysemu/vhost-user-backend.h"
+ /* pc.c */
+ DeviceState *cpu_get_current_apic(void);
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 6a5b180ccb..afabdeab75 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -545,6 +545,9 @@ typedef enum X86Seg {
+ #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
+ #define MSR_IA32_VMX_VMFUNC             0x00000491
  
-@@ -97,9 +99,7 @@ struct VirtIOInputHost {
- };
- 
- struct VHostUserInput {
--    VirtIOInput                       parent_obj;
--
--    VhostUserBackend                  *vhost;
-+    VHostUserBase parent_obj;
- };
- 
- void virtio_input_send(VirtIOInput *vinput, virtio_input_event *event);
-diff --git a/hw/virtio/vhost-user-input-pci.c b/hw/virtio/vhost-user-input-pci.c
-index b858898a36..3f4761ce88 100644
---- a/hw/virtio/vhost-user-input-pci.c
-+++ b/hw/virtio/vhost-user-input-pci.c
-@@ -30,9 +30,6 @@ static void vhost_user_input_pci_instance_init(Object *obj)
- 
-     virtio_instance_init_common(obj, &dev->vhi, sizeof(dev->vhi),
-                                 TYPE_VHOST_USER_INPUT);
--
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(&dev->vhi), "chardev");
++#define MSR_APIC_START                  0x00000800
++#define MSR_APIC_END                    0x000008ff
++
+ #define XSTATE_FP_BIT                   0
+ #define XSTATE_SSE_BIT                  1
+ #define XSTATE_YMM_BIT                  2
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index ac3d47d231..7a349c0723 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -288,6 +288,13 @@ void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
+     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
  }
  
- static const VirtioPCIDeviceTypeInfo vhost_user_input_pci_info = {
-diff --git a/hw/virtio/vhost-user-input.c b/hw/virtio/vhost-user-input.c
-index 4ee3542106..bedec0468c 100644
---- a/hw/virtio/vhost-user-input.c
-+++ b/hw/virtio/vhost-user-input.c
-@@ -5,83 +5,25 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/error-report.h"
--#include "qapi/error.h"
--
- #include "hw/virtio/virtio-input.h"
- 
--static int vhost_input_config_change(struct vhost_dev *dev)
--{
--    error_report("vhost-user-input: unhandled backend config change");
--    return -1;
--}
--
--static const VhostDevConfigOps config_ops = {
--    .vhost_dev_config_notifier = vhost_input_config_change,
-+static Property vinput_properties[] = {
-+    DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
-+    DEFINE_PROP_END_OF_LIST(),
- };
- 
--static void vhost_input_realize(DeviceState *dev, Error **errp)
-+static void vinput_realize(DeviceState *dev, Error **errp)
++bool is_x2apic_mode(DeviceState *dev)
++{
++    APICCommonState *s = APIC(dev);
++
++    return s->apicbase & MSR_IA32_APICBASE_EXTD;
++}
++
+ static void apic_set_base(APICCommonState *s, uint64_t val)
  {
--    VHostUserInput *vhi = VHOST_USER_INPUT(dev);
--    VirtIOInput *vinput = VIRTIO_INPUT(dev);
--    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-+    VHostUserBase *vub = VHOST_USER_BASE(dev);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_GET_CLASS(dev);
- 
--    vhost_dev_set_config_notifier(&vhi->vhost->dev, &config_ops);
--    vinput->cfg_size = sizeof_field(virtio_input_config, u);
--    if (vhost_user_backend_dev_init(vhi->vhost, vdev, 2, errp) == -1) {
--        return;
--    }
--}
-+    /* Fixed for input device */
-+    vub->virtio_id = VIRTIO_ID_INPUT;
-+    vub->num_vqs = 2;
-+    vub->vq_size = 4;
-+    vub->config_size = sizeof(virtio_input_config);
- 
--static void vhost_input_change_active(VirtIOInput *vinput)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vinput);
--
--    if (vinput->active) {
--        vhost_user_backend_start(vhi->vhost);
--    } else {
--        vhost_user_backend_stop(vhi->vhost);
--    }
--}
--
--static void vhost_input_get_config(VirtIODevice *vdev, uint8_t *config_data)
--{
--    VirtIOInput *vinput = VIRTIO_INPUT(vdev);
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    Error *local_err = NULL;
--    int ret;
--
--    memset(config_data, 0, vinput->cfg_size);
--
--    ret = vhost_dev_get_config(&vhi->vhost->dev, config_data, vinput->cfg_size,
--                               &local_err);
--    if (ret) {
--        error_report_err(local_err);
--        return;
--    }
--}
--
--static void vhost_input_set_config(VirtIODevice *vdev,
--                                   const uint8_t *config_data)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    int ret;
--
--    ret = vhost_dev_set_config(&vhi->vhost->dev, config_data,
--                               0, sizeof(virtio_input_config),
--                               VHOST_SET_CONFIG_TYPE_FRONTEND);
--    if (ret) {
--        error_report("vhost-user-input: set device config space failed");
--        return;
--    }
--
--    virtio_notify_config(vdev);
--}
--
--static struct vhost_dev *vhost_input_get_vhost(VirtIODevice *vdev)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(vdev);
--    return &vhi->vhost->dev;
-+    vubc->parent_realize(dev, errp);
+     s->apicbase = (val & 0xfffff000) |
+@@ -636,24 +643,19 @@ static void apic_timer(void *opaque)
+     apic_timer_update(s, s->next_time);
  }
  
- static const VMStateDescription vmstate_vhost_input = {
-@@ -91,40 +33,20 @@ static const VMStateDescription vmstate_vhost_input = {
- 
- static void vhost_input_class_init(ObjectClass *klass, void *data)
+-static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
++static int apic_register_read(int index, uint64_t *value)
  {
--    VirtIOInputClass *vic = VIRTIO_INPUT_CLASS(klass);
--    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
-+    VHostUserBaseClass *vubc = VHOST_USER_BASE_CLASS(klass);
-     DeviceClass *dc = DEVICE_CLASS(klass);
+     DeviceState *dev;
+     APICCommonState *s;
+     uint32_t val;
+-    int index;
+-
+-    if (size < 4) {
+-        return 0;
+-    }
++    int ret = 0;
  
-     dc->vmsd = &vmstate_vhost_input;
--    vdc->get_config = vhost_input_get_config;
--    vdc->set_config = vhost_input_set_config;
--    vdc->get_vhost = vhost_input_get_vhost;
--    vic->realize = vhost_input_realize;
--    vic->change_active = vhost_input_change_active;
--}
--
--static void vhost_input_init(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    vhi->vhost = VHOST_USER_BACKEND(object_new(TYPE_VHOST_USER_BACKEND));
--    object_property_add_alias(obj, "chardev",
--                              OBJECT(vhi->vhost), "chardev");
--}
--
--static void vhost_input_finalize(Object *obj)
--{
--    VHostUserInput *vhi = VHOST_USER_INPUT(obj);
--
--    object_unref(OBJECT(vhi->vhost));
-+    device_class_set_props(dc, vinput_properties);
-+    device_class_set_parent_realize(dc, vinput_realize,
-+                                    &vubc->parent_realize);
-+    set_bit(DEVICE_CATEGORY_INPUT, dc->categories);
+     dev = cpu_get_current_apic();
+     if (!dev) {
+-        return 0;
++        return -1;
+     }
+     s = APIC(dev);
+ 
+-    index = (addr >> 4) & 0xff;
+     switch(index) {
+     case 0x02: /* id */
+         val = s->id << 24;
+@@ -718,12 +720,46 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+     default:
+         s->esr |= APIC_ESR_ILLEGAL_ADDRESS;
+         val = 0;
++        ret = -1;
+         break;
+     }
+-    trace_apic_mem_readl(addr, val);
++
++    trace_apic_register_read(index, val);
++    *value = val;
++    return ret;
++}
++
++static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
++{
++    uint64_t val;
++    int index;
++
++    if (size < 4) {
++        return 0;
++    }
++
++    index = (addr >> 4) & 0xff;
++    apic_register_read(index, &val);
++
+     return val;
  }
  
- static const TypeInfo vhost_input_info = {
-     .name          = TYPE_VHOST_USER_INPUT,
--    .parent        = TYPE_VIRTIO_INPUT,
-+    .parent        = TYPE_VHOST_USER_BASE,
-     .instance_size = sizeof(VHostUserInput),
--    .instance_init = vhost_input_init,
--    .instance_finalize = vhost_input_finalize,
-     .class_init    = vhost_input_class_init,
- };
++int apic_msr_read(int index, uint64_t *val)
++{
++    DeviceState *dev;
++
++    dev = cpu_get_current_apic();
++    if (!dev) {
++        return -1;
++    }
++
++    if (!is_x2apic_mode(dev)) {
++        return -1;
++    }
++
++    return apic_register_read(index, val);
++}
++
+ static void apic_send_msi(MSIMessage *msi)
+ {
+     uint64_t addr = msi->address;
+@@ -737,35 +773,18 @@ static void apic_send_msi(MSIMessage *msi)
+     apic_deliver_irq(dest, dest_mode, delivery, vector, trigger_mode);
+ }
  
+-static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+-                           unsigned size)
++static int apic_register_write(int index, uint64_t val)
+ {
+     DeviceState *dev;
+     APICCommonState *s;
+-    int index = (addr >> 4) & 0xff;
+-
+-    if (size < 4) {
+-        return;
+-    }
+-
+-    if (addr > 0xfff || !index) {
+-        /* MSI and MMIO APIC are at the same memory location,
+-         * but actually not on the global bus: MSI is on PCI bus
+-         * APIC is connected directly to the CPU.
+-         * Mapping them on the global bus happens to work because
+-         * MSI registers are reserved in APIC MMIO and vice versa. */
+-        MSIMessage msi = { .address = addr, .data = val };
+-        apic_send_msi(&msi);
+-        return;
+-    }
+ 
+     dev = cpu_get_current_apic();
+     if (!dev) {
+-        return;
++        return -1;
+     }
+     s = APIC(dev);
+ 
+-    trace_apic_mem_writel(addr, val);
++    trace_apic_register_write(index, val);
+ 
+     switch(index) {
+     case 0x02:
+@@ -839,8 +858,51 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+         break;
+     default:
+         s->esr |= APIC_ESR_ILLEGAL_ADDRESS;
+-        break;
++        return -1;
+     }
++
++    return 0;
++}
++
++static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
++                           unsigned size)
++{
++    int index = (addr >> 4) & 0xff;
++
++    if (size < 4) {
++        return;
++    }
++
++    if (addr > 0xfff || !index) {
++        /*
++         * MSI and MMIO APIC are at the same memory location,
++         * but actually not on the global bus: MSI is on PCI bus
++         * APIC is connected directly to the CPU.
++         * Mapping them on the global bus happens to work because
++         * MSI registers are reserved in APIC MMIO and vice versa.
++         */
++        MSIMessage msi = { .address = addr, .data = val };
++        apic_send_msi(&msi);
++        return;
++    }
++
++    apic_register_write(index, val);
++}
++
++int apic_msr_write(int index, uint64_t val)
++{
++    DeviceState *dev;
++
++    dev = cpu_get_current_apic();
++    if (!dev) {
++        return -1;
++    }
++
++    if (!is_x2apic_mode(dev)) {
++        return -1;
++    }
++
++    return apic_register_write(index, val);
+ }
+ 
+ static void apic_pre_save(APICCommonState *s)
+diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
+index 1ddfc9fe09..1c43a9f4f7 100644
+--- a/target/i386/tcg/sysemu/misc_helper.c
++++ b/target/i386/tcg/sysemu/misc_helper.c
+@@ -25,6 +25,7 @@
+ #include "exec/address-spaces.h"
+ #include "exec/exec-all.h"
+ #include "tcg/helper-tcg.h"
++#include "hw/i386/apic.h"
+ 
+ void helper_outb(CPUX86State *env, uint32_t port, uint32_t data)
+ {
+@@ -289,6 +290,19 @@ void helper_wrmsr(CPUX86State *env)
+         env->msr_bndcfgs = val;
+         cpu_sync_bndcs_hflags(env);
+         break;
++    case MSR_APIC_START ... MSR_APIC_END: {
++        int ret;
++        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
++
++        bql_lock();
++        ret = apic_msr_write(index, val);
++        bql_unlock();
++        if (ret < 0) {
++            goto error;
++        }
++
++        break;
++    }
+     default:
+         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
+             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
+@@ -455,6 +469,19 @@ void helper_rdmsr(CPUX86State *env)
+         val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
+         break;
+     }
++    case MSR_APIC_START ... MSR_APIC_END: {
++        int ret;
++        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
++
++        bql_lock();
++        ret = apic_msr_read(index, &val);
++        bql_unlock();
++        if (ret < 0) {
++            raise_exception_err_ra(env, EXCP0D_GPF, 0, GETPC());
++        }
++
++        break;
++    }
+     default:
+         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
+             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
+diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+index 36ff71f947..1ef29d0256 100644
+--- a/hw/intc/trace-events
++++ b/hw/intc/trace-events
+@@ -14,8 +14,8 @@ cpu_get_apic_base(uint64_t val) "0x%016"PRIx64
+ # apic.c
+ apic_local_deliver(int vector, uint32_t lvt) "vector %d delivery mode %d"
+ apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode, uint8_t vector_num, uint8_t trigger_mode) "dest %d dest_mode %d delivery_mode %d vector %d trigger_mode %d"
+-apic_mem_readl(uint64_t addr, uint32_t val)  "0x%"PRIx64" = 0x%08x"
+-apic_mem_writel(uint64_t addr, uint32_t val) "0x%"PRIx64" = 0x%08x"
++apic_register_read(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
++apic_register_write(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
+ 
+ # ioapic.c
+ ioapic_set_remote_irr(int n) "set remote irr for pin %d"
 -- 
 MST
 
