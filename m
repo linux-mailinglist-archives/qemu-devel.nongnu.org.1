@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333CE8547D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:14:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533128547DC
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:14:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDDB-0008TL-Sc; Wed, 14 Feb 2024 06:13:57 -0500
+	id 1raDD9-0008Q1-6E; Wed, 14 Feb 2024 06:13:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDD2-0008Ku-Cw
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDD3-0008NF-VN
  for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:13:50 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDCz-0006jJ-Mg
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:13:47 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDD2-0006jb-5h
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:13:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909225;
+ s=mimecast20190719; t=1707909227;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aMCWbZMbJsUeDBMcr0PznqZivp4BA1aEeZXrL0J0rpk=;
- b=fBDegLE/eGV3aZ0V0cur1zXSP5/yQmDzQ90OAI7Z8J11UrtQwRfvgNsC27IKSjm/bG2owI
- bhxH0cHhE6Fg4B+kE9z2WEV+k87G8wT+Hn49xL6KfkxQcFVE6PX34YKnheieFl4mnNXlKM
- jXoZXYJ1qd1oNpsEIPdPX8z+XShbj30=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gPFXPFy/mnGFMSxq5GRTraSFwMu/Y3VYl/4w4KYs38Y=;
+ b=NsJNnWiOWEd8Cmfv08R0FbFwhbB/371p7NQjfsfdwBvnIWO3DONL+8I/4QybyV7n/6MuHh
+ atLNrh+Gy6sGCcHAUGvy0YnptgD1yp1jK22471Z9lbt7x+OGMmgWUnGnHWtawjoqkfTkhM
+ l/JrarxfhEOb/8sVvTofOua/sV/vYqA=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-t9W0Ej0UNEq64xZ6IZ859g-1; Wed, 14 Feb 2024 06:13:43 -0500
-X-MC-Unique: t9W0Ej0UNEq64xZ6IZ859g-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-51151b8de86so5087003e87.1
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:13:42 -0800 (PST)
+ us-mta-182-q7oERDwdOE65AIFbH8GNGg-1; Wed, 14 Feb 2024 06:13:46 -0500
+X-MC-Unique: q7oERDwdOE65AIFbH8GNGg-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-51151b8de86so5087045e87.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:13:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909220; x=1708514020;
+ d=1e100.net; s=20230601; t=1707909224; x=1708514024;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aMCWbZMbJsUeDBMcr0PznqZivp4BA1aEeZXrL0J0rpk=;
- b=AePr8Z2BdROTfXxjen227ItDp/xskZZUdbzPVmJih4kID9gY7McbaSeockjPwuEKB1
- qlMNXjBu/3JQvsarWHPPKb4AzWZuRV7zMFQy0FEfiUgzaZQHa16Fmb/VCGr9fGYYf7j+
- n+3O+lfE/Y7P92ubAqLOt2w9c9PRcXj0MnkHVTB4O78leXbC8tN/iWgG4WefMGSv90Y4
- 1EwogK/2pdavgFv7dJc2rvUaTuCIuwRkjIEFiPk4VnL0jYdwMd+T2FWnXhGP86B3mU0U
- xeM0JCKSsrQ7Uhz84isyXEXXeYC7L8f4Bxg1ksmO9jbbAw0FFbSQo+yyvrjC73ThAHp/
- JP0A==
-X-Gm-Message-State: AOJu0YwLKo457HPbLNWncad4Hh2/EqJLfVglWcO81ukYqp0EuPlfXEtQ
- xnGBVfy6oXH52yJ+DXUTGsXulUfTmXp+k3PG6psXnPLgcPr35uUPGbZFp3+JgvFyOyDJUtZGymL
- hdWsa1RSkmGLISDvDy/cZIGkAIH5hRswS1wV5GJ4dodU8s8foDe9Hx1J5kXLWn7pcMu3JTEjGfd
- 2+/Al8RzjqJRNVSUVF6pC8/i8+TBuB0g==
-X-Received: by 2002:ac2:4c81:0:b0:511:8d37:4b60 with SMTP id
- d1-20020ac24c81000000b005118d374b60mr1591085lfl.6.1707909220703; 
- Wed, 14 Feb 2024 03:13:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFcOoL9frDXTu3cZC84nECDCMtgnu8Wt+YvatVp4G7jnVQAfH/np6ZxHTMHajMMDE7K9yKHBw==
-X-Received: by 2002:ac2:4c81:0:b0:511:8d37:4b60 with SMTP id
- d1-20020ac24c81000000b005118d374b60mr1591071lfl.6.1707909220438; 
- Wed, 14 Feb 2024 03:13:40 -0800 (PST)
+ bh=gPFXPFy/mnGFMSxq5GRTraSFwMu/Y3VYl/4w4KYs38Y=;
+ b=lfVDmd25k0kHlNi/274sNLXGPp8IGfWYJKOgJCSLQPTeFPaqQyLLfeHsfRqmu1llv+
+ MGIF2CnvR59onp3i5X3bVKZSN+YChfBvon5EdjlnH7cZCll3ivoQxXqYq/I1GG/G+UKF
+ xUsm7zFug2JNJOciuo3eo5AMTRDx2dvkPksGQt99oAP/5CtyMF3oueE63taps5v1ZZDV
+ U11K6wgHC4y4SnTFP4hAQkkrd+An/LdybtRQTsGb+w4Vgtx+2qmb22BmbQZCs/mWFvka
+ U6FG3CfU/1M4Dauw9Vhs5/QKrokFYm+R9HaDo/jLI5TygUJt3dlEFj9rDNOAD+gZNYO0
+ 95KA==
+X-Gm-Message-State: AOJu0YzAB65KEgvwNFtM+p/wBlW139CADRlrSSWyxbHv1rxkzXn8eaYc
+ xpSRqWwC8QvmdOPgo9HvR/ektRZJxpehHBNVtQ437DnkgVKG2aRjqDAgcGjp5O6OqZm6wRQgfkL
+ BDca9xa6HVaZ37ZCIu1P6zYg94prFu/kAtUWSjKHC+1jQSz54j4TdWM7J1zcZfN/iyKINjXUjHO
+ MVbBkYPrFhxFtzlhRZzpzNmqeJxjEBBQ==
+X-Received: by 2002:ac2:4c02:0:b0:511:5314:1762 with SMTP id
+ t2-20020ac24c02000000b0051153141762mr1509677lfq.44.1707909223850; 
+ Wed, 14 Feb 2024 03:13:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQwsL9VzwPPQNpQdcQwvWYthUtJDDzJLDJD1r4h5fUxNFVRgCoPTY3ZUFMxjLQphf8oKB0qQ==
+X-Received: by 2002:ac2:4c02:0:b0:511:5314:1762 with SMTP id
+ t2-20020ac24c02000000b0051153141762mr1509664lfq.44.1707909223438; 
+ Wed, 14 Feb 2024 03:13:43 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5gMbGpldpCBiTkSEZMuJhDuOPsH0HWn0WWLfmTrIDv7zIfo6NQA9MCwvbYvGB7JneBEcVMYqvQSDz6GExaTDtotnNWDuCN1T0s4vAylyzt26YLyIUngJJyDKlNkN9ukEV8W7DvgQ+9gUj7w2nfngTEaksIRdxxQ==
+ AJvYcCVWG68j22UBZyG3Y/MP8+57fE7YZ+QNtYcHKP4qw+AxkSR2QtastNpGVzm/6FYvihicsok3tTl9Djvrqz9/iOZ8MJLERukfez6JnLuSLuxKVsHTKZfYSYkqvRlyvDASixLekff1VRWGsXchUonc
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- y21-20020a170906559500b00a34d0a865ecsm2169280ejp.163.2024.02.14.03.13.39
+ en14-20020a056402528e00b0055fef53460bsm4592878edb.0.2024.02.14.03.13.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:13:39 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:13:37 -0500
+ Wed, 14 Feb 2024 03:13:42 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:13:40 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Leo Yan <leo.yan@linaro.org>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 08/60] hw/virtio: Support set_config() callback in
- vhost-user-base
-Message-ID: <a26105dd56a11d5aec618fc5429ae7932d3221c5.1707909001.git.mst@redhat.com>
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 09/60] docs/system: Add vhost-user-input documentation
+Message-ID: <887d5775863b8804bacba6fe1a860ed3ea5cfdd9.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -107,57 +106,118 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Leo Yan <leo.yan@linaro.org>
 
-The Virtio input device invokes set_config() callback for retrieving
-the event configuration info, but the callback is not supported in
-vhost-user-base.
-
-This patch adds support set_config() callback in vhost-user-base.
+This adds basic documentation for vhost-user-input.
 
 Signed-off-by: Leo Yan <leo.yan@linaro.org>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20231120043721.50555-2-leo.yan@linaro.org>
+Message-Id: <20231120043721.50555-3-leo.yan@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20240104210945.1223134-9-alex.bennee@linaro.org>
+Message-Id: <20240104210945.1223134-10-alex.bennee@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-user-base.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ MAINTAINERS                              |  1 +
+ docs/system/device-emulation.rst         |  1 +
+ docs/system/devices/vhost-user-input.rst | 45 ++++++++++++++++++++++++
+ docs/system/devices/vhost-user.rst       |  4 ++-
+ 4 files changed, 50 insertions(+), 1 deletion(-)
+ create mode 100644 docs/system/devices/vhost-user-input.rst
 
-diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
-index 78cfa9a5bb..a83167191e 100644
---- a/hw/virtio/vhost-user-base.c
-+++ b/hw/virtio/vhost-user-base.c
-@@ -140,6 +140,22 @@ static void vub_get_config(VirtIODevice *vdev, uint8_t *config)
-     }
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aff5342cb4..66c9e81c55 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2289,6 +2289,7 @@ L: virtio-fs@lists.linux.dev
+ virtio-input
+ M: Gerd Hoffmann <kraxel@redhat.com>
+ S: Odd Fixes
++F: docs/system/devices/vhost-user-input.rst
+ F: hw/input/vhost-user-input.c
+ F: hw/input/virtio-input*.c
+ F: include/hw/virtio/virtio-input.h
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index d1f3277cb0..f19777411c 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -94,6 +94,7 @@ Emulated Devices
+    devices/virtio-gpu.rst
+    devices/virtio-pmem.rst
+    devices/virtio-snd.rst
++   devices/vhost-user-input.rst
+    devices/vhost-user-rng.rst
+    devices/canokey.rst
+    devices/usb-u2f.rst
+diff --git a/docs/system/devices/vhost-user-input.rst b/docs/system/devices/vhost-user-input.rst
+new file mode 100644
+index 0000000000..118eb78101
+--- /dev/null
++++ b/docs/system/devices/vhost-user-input.rst
+@@ -0,0 +1,45 @@
++.. _vhost_user_input:
++
++QEMU vhost-user-input - Input emulation
++=======================================
++
++This document describes the setup and usage of the Virtio input device.
++The Virtio input device is a paravirtualized device for input events.
++
++Description
++-----------
++
++The vhost-user-input device implementation was designed to work with a daemon
++polling on input devices and passes input events to the guest.
++
++QEMU provides a backend implementation in contrib/vhost-user-input.
++
++Linux kernel support
++--------------------
++
++Virtio input requires a guest Linux kernel built with the
++``CONFIG_VIRTIO_INPUT`` option.
++
++Examples
++--------
++
++The backend daemon should be started first:
++
++::
++
++  host# vhost-user-input --socket-path=input.sock	\
++      --evdev-path=/dev/input/event17
++
++The QEMU invocation needs to create a chardev socket to communicate with the
++backend daemon and access the VirtIO queues with the guest over the
++:ref:`shared memory <shared_memory_object>`.
++
++::
++
++  host# qemu-system								\
++      -chardev socket,path=/tmp/input.sock,id=mouse0				\
++      -device vhost-user-input-pci,chardev=mouse0				\
++      -m 4096 									\
++      -object memory-backend-file,id=mem,size=4G,mem-path=/dev/shm,share=on	\
++      -numa node,memdev=mem							\
++      ...
+diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+index c6afc4836f..9b2da106ce 100644
+--- a/docs/system/devices/vhost-user.rst
++++ b/docs/system/devices/vhost-user.rst
+@@ -42,7 +42,7 @@ platform details for what sort of virtio bus to use.
+     - See https://github.com/rust-vmm/vhost-device
+   * - vhost-user-input
+     - Generic input driver
+-    - See contrib/vhost-user-input
++    - :ref:`vhost_user_input`
+   * - vhost-user-rng
+     - Entropy driver
+     - :ref:`vhost_user_rng`
+@@ -91,6 +91,8 @@ following the :ref:`vhost_user_proto`. There are a number of daemons
+ that can be built when enabled by the project although any daemon that
+ meets the specification for a given device can be used.
  
-+static void vub_set_config(VirtIODevice *vdev, const uint8_t *config_data)
-+{
-+    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-+    int ret;
++.. _shared_memory_object:
 +
-+    g_assert(vub->config_size && vub->vhost_user.supports_config == true);
-+
-+    ret = vhost_dev_set_config(&vub->vhost_dev, config_data,
-+                               0, vub->config_size,
-+                               VHOST_SET_CONFIG_TYPE_FRONTEND);
-+    if (ret) {
-+        error_report("vhost guest set device config space failed: %d", ret);
-+        return;
-+    }
-+}
-+
- /*
-  * When the daemon signals an update to the config we just need to
-  * signal the guest as we re-read the config on demand above.
-@@ -337,6 +353,7 @@ static void vub_class_init(ObjectClass *klass, void *data)
-     vdc->unrealize = vub_device_unrealize;
-     vdc->get_features = vub_get_features;
-     vdc->get_config = vub_get_config;
-+    vdc->set_config = vub_set_config;
-     vdc->set_status = vub_set_status;
- }
+ Shared memory object
+ ====================
  
 -- 
 MST
