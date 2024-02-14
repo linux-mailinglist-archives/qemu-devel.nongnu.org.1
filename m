@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7795385496B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E77185497B
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:46:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raEZJ-00058B-Hy; Wed, 14 Feb 2024 07:40:54 -0500
+	id 1raEdy-00082z-5n; Wed, 14 Feb 2024 07:45:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1raEZC-0004xs-80; Wed, 14 Feb 2024 07:40:46 -0500
+ id 1raEdr-00082U-5E; Wed, 14 Feb 2024 07:45:35 -0500
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1raEZA-00039J-Il; Wed, 14 Feb 2024 07:40:45 -0500
+ id 1raEdp-0004JP-1R; Wed, 14 Feb 2024 07:45:34 -0500
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8D65D4D3C9;
- Wed, 14 Feb 2024 15:40:48 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 04CF44D3DE;
+ Wed, 14 Feb 2024 15:45:38 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 425D17EBEA;
- Wed, 14 Feb 2024 15:40:41 +0300 (MSK)
-Message-ID: <6fc585bb-f733-4268-a742-a4f82686617e@tls.msk.ru>
-Date: Wed, 14 Feb 2024 15:40:41 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7A3E37EC55;
+ Wed, 14 Feb 2024 15:45:30 +0300 (MSK)
+Message-ID: <ee7a6521-eaf3-45fe-a9e2-b5f582dc37ca@tls.msk.ru>
+Date: Wed, 14 Feb 2024 15:45:30 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/i386/kvm/ioapic: Replace magic '24' value by proper
- definition
+Subject: Re: [PATCH 0/7] hw/i386: Cleanups around 'hw/i386/pc.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+Cc: Eduardo Habkost <eduardo@habkost.net>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
-References: <20240209190110.27413-1-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-trivial@nongnu.org
+References: <20240213120153.90930-1-philmd@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -61,7 +63,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240209190110.27413-1-philmd@linaro.org>
+In-Reply-To: <20240213120153.90930-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -87,32 +89,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-09.02.2024 22:01, Philippe Mathieu-Daudé:
-> Replace '24' -> KVM_IOAPIC_NUM_PINS.
+13.02.2024 15:01, Philippe Mathieu-Daudé wrote:
+> Trivial patches removing uses of "hw/i386/pc.h".
+> 
+> Philippe Mathieu-Daudé (7):
+>    target/i386/monitor: Remove unused 'hw/i386/pc.h' header
+>    hw/timer: Move HPET_INTCAP definition to "hpet.h"
+>    hw/isa/lpc_ich9: Remove unused 'hw/i386/pc.h'
+>    hw/i386/acpi: Declare pc_madt_cpu_entry() in 'acpi-common.h'
+>    hw/i386/port92: Add missing 'hw/isa/isa.h' header
+>    hw/acpi/cpu_hotplug: Include 'pci_device.h' instead of 'pci.h'
+>    hw/acpi/cpu_hotplug: Include 'x86.h' instead of 'pc.h'
+> 
+>   hw/i386/acpi-common.h   | 3 +++
+>   include/hw/i386/pc.h    | 6 ------
+>   include/hw/timer/hpet.h | 2 ++
+>   hw/acpi/cpu_hotplug.c   | 4 ++--
+>   hw/i386/acpi-common.c   | 1 -
+>   hw/i386/port92.c        | 1 +
+>   hw/isa/lpc_ich9.c       | 1 -
+>   hw/timer/hpet.c         | 1 -
+>   target/i386/monitor.c   | 1 -
+>   9 files changed, 8 insertions(+), 12 deletions(-)
 
-Picked up for trivial-patches. Not exactly a trivial thing but heck :)
+For the series:
+
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+and picked up for trivial-patches.
 
 Thanks,
 
 /mjt
-
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   hw/i386/kvm/ioapic.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/i386/kvm/ioapic.c b/hw/i386/kvm/ioapic.c
-> index 409d0c8c76..b96fe84eed 100644
-> --- a/hw/i386/kvm/ioapic.c
-> +++ b/hw/i386/kvm/ioapic.c
-> @@ -35,7 +35,7 @@ void kvm_pc_setup_irq_routing(bool pci_enabled)
->           kvm_irqchip_add_irq_route(s, i, KVM_IRQCHIP_PIC_SLAVE, i - 8);
->       }
->       if (pci_enabled) {
-> -        for (i = 0; i < 24; ++i) {
-> +        for (i = 0; i < KVM_IOAPIC_NUM_PINS; ++i) {
->               if (i == 0) {
->                   kvm_irqchip_add_irq_route(s, i, KVM_IRQCHIP_IOAPIC, 2);
->               } else if (i != 2) {
 
 
