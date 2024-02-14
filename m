@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6E0854811
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:19:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B47854816
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:20:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDFA-0004Pj-Um; Wed, 14 Feb 2024 06:16:01 -0500
+	id 1raDF7-0004I9-0F; Wed, 14 Feb 2024 06:15:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDEb-00049B-KZ
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:28 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDET-000424-FX
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:19 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDEM-000714-Fb
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:25 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDEN-0007BF-T2
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:14 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909308;
+ s=mimecast20190719; t=1707909310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l/GevgLgj9voaDnNnKRlj9zSBAyk98vBx5fEOilPhZE=;
- b=cSMiMTNLv6PBnfOmoWwJ6OQQb4oMnQvteB/l7oN0M9kunPu8IUdXw6irWvax/d0WsG6gHB
- PqnWgkpXUkqyCdfEeHrtMlEu8EE1wENva7PXe/MkTlJpRrmpwIpoCfM3/RufR5ufRJRHYM
- vrxtvID76ngfLg1BSaPsNwlZD9wDihE=
+ bh=V4zjwwSJtTmpywd9ngatCTbsjan0GSdeS1bW++CNE5c=;
+ b=Ten86G9uQyJJWl+qSWsgZly9mUOSMTRpjaPw0uih5D7T6e2SPryK22VcClCGWzoJdWuS8O
+ v4b4hv/Zu73riE2wiM9XfXgh3/QpOha+VQJg6r8TIZYER4u3DSoiZQ3wc9pUpRZarWLLFg
+ MYBKbSYNAqdW7IHIAa8L4P+00hexrdU=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-FXBcN5RgMUqEVZLNi2AXLA-1; Wed, 14 Feb 2024 06:15:06 -0500
-X-MC-Unique: FXBcN5RgMUqEVZLNi2AXLA-1
+ us-mta-214-aMhTW5HAMz-c5XFm5mradA-1; Wed, 14 Feb 2024 06:15:09 -0500
+X-MC-Unique: aMhTW5HAMz-c5XFm5mradA-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3cdd79d960so114110466b.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:05 -0800 (PST)
+ a640c23a62f3a-a2f71c9f5d2so388493466b.2
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:08 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909304; x=1708514104;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=l/GevgLgj9voaDnNnKRlj9zSBAyk98vBx5fEOilPhZE=;
- b=gd+99YZ4PFigqqgn8pOGC6wIfauibDM76aKPkTg9zHGoxjXkCpUU4TfAF0MWmrOaX/
- m3v1+joR8r+Xciu7WjdE2/L8MVm499xoFOBjQY4bK6TtOrUHu9uGA9+W9pUTnmp848tH
- LZ33Kng8LqJy7p/J/jhDR4TJHmrxEpsBUMbIX3mx58MVxUfPIPBeErECjV+tJVCBOTai
- QsgKSKv4QUKOWdjBteeQkfeshxbqt+ntauipCnppCImjxoZ+7xLZwz/e/WKxqiAUZ27j
- lOzuKpjw6bH9KmkoTLfJh5APiBz1RcS8tpQWjYLMjqyRpzekB2TjLMbPJXiqbxEebRY0
- r3fg==
-X-Gm-Message-State: AOJu0Ywo65g9Quj8ZTsbuFa0lbcR6HjANfioCz9yK7fTkHmRPF9a7YpZ
- NpFLai/1oPK9kehm9YAsbUrmmf/WfsDbfRTUUrr7KAZ5Q6UWbDtWs3kC/xuHQqRKyCEDz7xvuJH
- yt88fuQMG5YIC6DxciKrJsewvHcNUJB6qvizfkPP6rFrIMsTA5zmx7XqwXzVFoSatA8kePPZP4P
- /D3Qfa4RM3V5cmM9+/D03hC99k+Ue6XQ==
-X-Received: by 2002:a17:907:104a:b0:a38:8ed4:fc82 with SMTP id
- oy10-20020a170907104a00b00a388ed4fc82mr1396621ejb.15.1707909304478; 
- Wed, 14 Feb 2024 03:15:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGnhcqC8taT79QS6qLJuk+vLqToWhB/bIZ4y45pBYTwyb5z5c8753J+Z/LOlK1ZbAxjMsWunQ==
-X-Received: by 2002:a17:907:104a:b0:a38:8ed4:fc82 with SMTP id
- oy10-20020a170907104a00b00a388ed4fc82mr1396598ejb.15.1707909304005; 
- Wed, 14 Feb 2024 03:15:04 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707909307; x=1708514107;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=V4zjwwSJtTmpywd9ngatCTbsjan0GSdeS1bW++CNE5c=;
+ b=FQVVC873SrCNR+lVLyz4x381AiAbG/sByY2UbrdFFk8yiKy61WAtxOBREp7ALH7dsM
+ loLRGg03gFXrEQCIdKBAItG9iMp28MC8zjG1P/69qWN41IpkEpXmIiUNgk53pT9FCDY9
+ N+Y89QXykbmoOHCuHY41KRfhGLLjgZDa3oo5rwgDyCc65DSZreJVVzVvOxKULN19scio
+ 89b6DHs71Zb/Oqe9lN45jI6cwdB4i6P3tOXRjemIOXdeiJHPuPMiQgHCwS7ngGbElHRk
+ qLJVNyGqwJWpwxNuNawgL1eoTev6StRthrabajNc3VaIcf/7j3PzM4L4ODhpU3uWJiCi
+ Srxg==
+X-Gm-Message-State: AOJu0YweGL5PRm6yH9kKpd563+VNOBS0Is9k/3ZTwEN20stWQrdibE/O
+ aJVEH5o0FunCExETBzIILgQVP34dGX2+7TxkucuCrebw90y6/H6pgQI7zo17CwPSj2WHqSc6Jfn
+ A1I5kR/hx8Twuv/NOTxasHjiPpDdedc/bMyoIAs4mpwWoTmhpy4IWB+m+gbL5ZukZaJxIaqXNeG
+ ERAt13gig9orYOIUV5aOT2gX5q+39Saw==
+X-Received: by 2002:a17:906:b7c4:b0:a3d:1df3:4a55 with SMTP id
+ fy4-20020a170906b7c400b00a3d1df34a55mr1657573ejb.9.1707909307364; 
+ Wed, 14 Feb 2024 03:15:07 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdajZjxZDO0KZl9LnRp/+jR0soc2A0a+dtsNhxSadlg4yfXqj9h4e62j+ydLWisJYUmQQ7Eg==
+X-Received: by 2002:a17:906:b7c4:b0:a3d:1df3:4a55 with SMTP id
+ fy4-20020a170906b7c400b00a3d1df34a55mr1657553ejb.9.1707909307029; 
+ Wed, 14 Feb 2024 03:15:07 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWr2E1LeWwcIDTJquGh0IR7JfFSYxQ7zC1c/rzMOciSHMkdbtblhrGMgLkOpQCuwPh0+/rUrTZvUOo2puNvavQjY6zNcFhsDdLa3fhisyUguCwAfVkUCJ8pZMzMg1q2e6+hS1ITWG4dY2LWac7c2vJFc5pS94UcJzbuekf/dHY4feipLwp6b1y9T8kG528AEpisM1sbtLGhzdCwPaUBwtD7nA==
+ AJvYcCUfGDiMmsd17kQpRV0SD6bRTu6Qn49KjQQNRIIcnAaRvVZI8OOw7RY911ySteoYLh8TNnIU3pE+l/UjUfvO/ieh8mFqMgVG6+ycH2R4Htyozt40OzcPCkW5GGLmPSTUAg==
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- mm19-20020a1709077a9300b00a3d4d78a769sm404919ejc.1.2024.02.14.03.15.01
+ s8-20020a1709066c8800b00a3be8b717dasm2199419ejr.58.2024.02.14.03.15.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:15:03 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:15:00 -0500
+ Wed, 14 Feb 2024 03:15:06 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:15:04 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 34/60] MAINTAINERS: Drop myself as VT-d maintainers
-Message-ID: <e8058c6d65252d920abf0bee027c455e8ffe41ff.1707909001.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 35/60] virtio_iommu: Clear IOMMUPciBus pointer cache when
+ system reset
+Message-ID: <9a457383ce9d309d4679b079fafb51f0a2d949aa.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1707909001.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -89,8 +85,9 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,43 +103,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Due to my own limitation on bandwidth, I noticed that unfortunately I won't
-have time to review VT-d patches at least in the near future.  Meanwhile I
-expect a lot of possibilities could actually happen in this area in the
-near future.
+s->iommu_pcibus_by_bus_num is a IOMMUPciBus pointer cache indexed
+by bus number, bus number may not always be a fixed value,
+i.e., guest reboot to different kernel which set bus number with
+different algorithm.
 
-To reflect that reality, I decided to drop myself from the VT-d role.  It
-shouldn't affect much since we still have Jason around like usual, and
-Michael on top.  But I assume it'll always be good if anyone would like to
-fill this role up.
+This could lead to endpoint binding to wrong iommu MR in
+virtio_iommu_get_endpoint(), then vfio device setup wrong
+mapping from other device.
 
-I'll still work on QEMU.  So I suppose anyone can still copy me if one
-thinks essential.
+Remove the memset in virtio_iommu_device_realize() to avoid
+redundancy with memset in system reset.
 
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20240118091035.48178-1-peterx@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Message-Id: <20240125073706.339369-2-zhenzhong.duan@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+ hw/virtio/virtio-iommu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 89f2d31f70..7a1afb40ac 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3630,7 +3630,6 @@ F: tests/uefi-test-tools/
+diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
+index 8a4bd933c6..86623d55a5 100644
+--- a/hw/virtio/virtio-iommu.c
++++ b/hw/virtio/virtio-iommu.c
+@@ -1264,6 +1264,8 @@ static void virtio_iommu_system_reset(void *opaque)
  
- VT-d Emulation
- M: Michael S. Tsirkin <mst@redhat.com>
--M: Peter Xu <peterx@redhat.com>
- R: Jason Wang <jasowang@redhat.com>
- S: Supported
- F: hw/i386/intel_iommu.c
+     trace_virtio_iommu_system_reset();
+ 
++    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
++
+     /*
+      * config.bypass is sticky across device reset, but should be restored on
+      * system reset
+@@ -1302,8 +1304,6 @@ static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
+ 
+     virtio_init(vdev, VIRTIO_ID_IOMMU, sizeof(struct virtio_iommu_config));
+ 
+-    memset(s->iommu_pcibus_by_bus_num, 0, sizeof(s->iommu_pcibus_by_bus_num));
+-
+     s->req_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE,
+                              virtio_iommu_handle_command);
+     s->event_vq = virtio_add_queue(vdev, VIOMMU_DEFAULT_QUEUE_SIZE, NULL);
 -- 
 MST
 
