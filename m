@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E93854969
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF9A854964
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:40:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raEXp-0003MM-TR; Wed, 14 Feb 2024 07:39:21 -0500
+	id 1raEXy-0003RY-An; Wed, 14 Feb 2024 07:39:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXm-0003L3-36
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:18 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1raEXo-0003ME-Eg
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:20 -0500
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXk-0002ZJ-LJ
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:17 -0500
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ id 1raEXm-0002Zq-PE
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:20 -0500
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41EC4jPH014805; Wed, 14 Feb 2024 12:39:15 GMT
+ 41E8iJjQ005670; Wed, 14 Feb 2024 12:39:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=3xeTxtjKUb5SEHPCBIFhkDleWoAGmOSUnREYOzQeEvM=;
- b=ZW+vrp3ytO8j4grH1w3DGCre3dqa6ePWhflrvCBWltW21QO59BBuVrr4veph9YHYK2Wc
- kzuPulm14xbvMZTPFOyQE2N+8wZ4J7WIK1mBQGOoTElCU23qFAEJqC9mkyThI7mdWYFh
- IkstjzlyUjvxI/goHr5+3kkkA76fKW3jXyBI1JlG2fIzF5u0FqPNCl+BHjJRP9xvmZKN
- DPf1a5/K37IBnmDPS+G9hzQwgs4YhKKAMRXoGuOdV6tENUemrjfxdHWdtqf7BMfuq4qj
- Wi+DzfwUfmcSvXJjSaQBIXZQMGtOWhB9EAK2fza4FgRIv+yz3r/jY9f3AjV80QwCDL0n Hg== 
+ bh=2adgzyL/ZKsQMs8r1z/tF72kUJSLbwoHGCLGlTudDRg=;
+ b=Txc0aioTg5Blv/wXUZecfHi1R2twu8/+w4EoVlUQtHHMiYoAJ2JYyUmYoHkzJYe5+hGJ
+ GCQGf0eznvd3hrmeI1QnF+RzhfZeY6C+ZEY2ixf0RA0MmkNPH+xiMTbj1wfVoJEAh+8w
+ 0qxI+ChpeqiIdcKutMi/wy8Cgk4a4sPMuV7doKKJeCwQWSK8kV13/zGGQ+pvc3k/bD7l
+ lKBMCJPrhXWMc1pR5nNcqeI+82/5THd4endVx2dpDYJG0DV0ymaWZHOnemLHttum+pdK
+ xZkmVPE3TrhvRcnqdGNLQ+9MLvDzBRYp5zeS7fAtYAnklp9p3ipM54JwPtupHqTWV77f 8w== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8w6v81sv-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8rtcgqq4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Feb 2024 12:39:15 +0000
+ Wed, 14 Feb 2024 12:39:16 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41ECKqpv013766; Wed, 14 Feb 2024 12:39:14 GMT
+ with ESMTP id 41ECKqpw013766; Wed, 14 Feb 2024 12:39:16 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3w6apbnn3q-11; Wed, 14 Feb 2024 12:39:14 +0000
+ 3w6apbnn3q-12; Wed, 14 Feb 2024 12:39:15 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 10/12] vdpa: define SVQ transitioning state for mode switching
-Date: Wed, 14 Feb 2024 03:28:00 -0800
-Message-Id: <1707910082-10243-11-git-send-email-si-wei.liu@oracle.com>
+Subject: [PATCH 11/12] vdpa: indicate transitional state for SVQ switching
+Date: Wed, 14 Feb 2024 03:28:01 -0800
+Message-Id: <1707910082-10243-12-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
 References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
@@ -61,18 +61,17 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402140098
-X-Proofpoint-GUID: _XqDrtbt38swt3tho6ZMiugWxM-gSCkL
-X-Proofpoint-ORIG-GUID: _XqDrtbt38swt3tho6ZMiugWxM-gSCkL
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Proofpoint-ORIG-GUID: _mZnw-PCz9yxBI3y1JVJnwX2pg5kGXjU
+X-Proofpoint-GUID: _mZnw-PCz9yxBI3y1JVJnwX2pg5kGXjU
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,47 +87,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Will be used in following patches.
-
-DISABLING(-1) means SVQ is being switched off to passthrough
-mode.
-
-ENABLING(1) means passthrough VQs are being switched to SVQ.
-
-DONE(0) means SVQ switching is completed.
+svq_switching indicates the transitional state whether
+or not SVQ mode switching is in progress, and towards
+which direction. Add the neccessary state around where
+the switching would take place.
 
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
- include/hw/virtio/vhost-vdpa.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/vhost-vdpa.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index ad754eb..449bf5c 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -30,6 +30,12 @@ typedef struct VhostVDPAHostNotifier {
-     void *addr;
- } VhostVDPAHostNotifier;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 9f25221..96d95b9 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -317,6 +317,8 @@ static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+     data_queue_pairs = n->multiqueue ? n->max_queue_pairs : 1;
+     cvq = virtio_vdev_has_feature(vdev, VIRTIO_NET_F_CTRL_VQ) ?
+                                   n->max_ncs - n->max_queue_pairs : 0;
++    v->shared->svq_switching = enable ?
++        SVQ_TSTATE_ENABLING : SVQ_TSTATE_DISABLING;
+     /*
+      * TODO: vhost_net_stop does suspend, get_base and reset. We can be smarter
+      * in the future and resume the device if read-only operations between
+@@ -329,6 +331,7 @@ static void vhost_vdpa_net_log_global_enable(VhostVDPAState *s, bool enable)
+     if (unlikely(r < 0)) {
+         error_report("unable to start vhost net: %s(%d)", g_strerror(-r), -r);
+     }
++    v->shared->svq_switching = SVQ_TSTATE_DONE;
+ }
  
-+typedef enum SVQTransitionState {
-+    SVQ_TSTATE_DISABLING = -1,
-+    SVQ_TSTATE_DONE,
-+    SVQ_TSTATE_ENABLING
-+} SVQTransitionState;
-+
- /* Info shared by all vhost_vdpa device models */
- typedef struct vhost_vdpa_shared {
-     int device_fd;
-@@ -67,6 +73,9 @@ typedef struct vhost_vdpa_shared {
- 
-     /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
-     bool shadow_data;
-+
-+    /* SVQ switching is in progress, or already completed? */
-+    SVQTransitionState svq_switching;
- } VhostVDPAShared;
- 
- typedef struct vhost_vdpa {
+ static void vdpa_net_migration_state_notifier(Notifier *notifier, void *data)
 -- 
 1.8.3.1
 
