@@ -2,61 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59981854973
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E93854969
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 13:41:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raEXo-0003M2-K5; Wed, 14 Feb 2024 07:39:20 -0500
+	id 1raEXp-0003MM-TR; Wed, 14 Feb 2024 07:39:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXk-0003Jr-TG
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:16 -0500
+ id 1raEXm-0003L3-36
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:18 -0500
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1raEXj-0002Yr-B1
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:16 -0500
+ id 1raEXk-0002ZJ-LJ
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 07:39:17 -0500
 Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41EC4oAf015187; Wed, 14 Feb 2024 12:39:14 GMT
+ 41EC4jPH014805; Wed, 14 Feb 2024 12:39:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=LhggrbhTSpwx+U8ydNJSvY5ohKf6sTAgmyti4QtJjOM=;
- b=KzlY/8dbuIPuJS59xQ7DwCK+FcxYjly4+YWuRoBrckroeaj7QK0BoTK7IfITKG3b/SB9
- KteWd40FlL5l58ORtvucyhxeyXMA7ffbhBW7HDa16gHDej4LfHBN2/sWP7s6F916IrMZ
- IVi2jlKMx77O9aN6/uoO7dz9kBqL+AmwclrlWczDg9VHLqcp8SNAzG8ebQd64M6FcMSZ
- ROQCqDqLJvFHWQ7ydTO+AHXkzLwSrxE4jTx3SEdzfndejK38HaGLbnYzL3k6uLOCmw30
- wUT1Np/vAM8SWEcWQXoqrkZNbNuf6LjnIf6UdTwcfMBkb+LUkY3k9dN7nSm5XvxlgUoP YQ== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
+ bh=3xeTxtjKUb5SEHPCBIFhkDleWoAGmOSUnREYOzQeEvM=;
+ b=ZW+vrp3ytO8j4grH1w3DGCre3dqa6ePWhflrvCBWltW21QO59BBuVrr4veph9YHYK2Wc
+ kzuPulm14xbvMZTPFOyQE2N+8wZ4J7WIK1mBQGOoTElCU23qFAEJqC9mkyThI7mdWYFh
+ IkstjzlyUjvxI/goHr5+3kkkA76fKW3jXyBI1JlG2fIzF5u0FqPNCl+BHjJRP9xvmZKN
+ DPf1a5/K37IBnmDPS+G9hzQwgs4YhKKAMRXoGuOdV6tENUemrjfxdHWdtqf7BMfuq4qj
+ Wi+DzfwUfmcSvXJjSaQBIXZQMGtOWhB9EAK2fza4FgRIv+yz3r/jY9f3AjV80QwCDL0n Hg== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8w6v81st-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w8w6v81sv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 Feb 2024 12:39:14 +0000
+ Wed, 14 Feb 2024 12:39:15 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41ECKqpu013766; Wed, 14 Feb 2024 12:39:13 GMT
+ with ESMTP id 41ECKqpv013766; Wed, 14 Feb 2024 12:39:14 GMT
 Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
  [10.153.73.24])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3w6apbnn3q-10; Wed, 14 Feb 2024 12:39:13 +0000
+ 3w6apbnn3q-11; Wed, 14 Feb 2024 12:39:14 +0000
 From: Si-Wei Liu <si-wei.liu@oracle.com>
 To: eperezma@redhat.com, jasowang@redhat.com, mst@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 09/12] vdpa: add trace event for vhost_vdpa_net_load_mq
-Date: Wed, 14 Feb 2024 03:27:59 -0800
-Message-Id: <1707910082-10243-10-git-send-email-si-wei.liu@oracle.com>
+Subject: [PATCH 10/12] vdpa: define SVQ transitioning state for mode switching
+Date: Wed, 14 Feb 2024 03:28:00 -0800
+Message-Id: <1707910082-10243-11-git-send-email-si-wei.liu@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
 References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-14_05,2024-02-14_01,2023-05-22_02
@@ -65,8 +61,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402140098
-X-Proofpoint-GUID: MDhoXV4Q47J354QYpSXwruf1gvYaZt8W
-X-Proofpoint-ORIG-GUID: MDhoXV4Q47J354QYpSXwruf1gvYaZt8W
+X-Proofpoint-GUID: _XqDrtbt38swt3tho6ZMiugWxM-gSCkL
+X-Proofpoint-ORIG-GUID: _XqDrtbt38swt3tho6ZMiugWxM-gSCkL
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -92,37 +88,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For better debuggability and observability.
+Will be used in following patches.
 
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+DISABLING(-1) means SVQ is being switched off to passthrough
+mode.
+
+ENABLING(1) means passthrough VQs are being switched to SVQ.
+
+DONE(0) means SVQ switching is completed.
+
 Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 ---
- net/trace-events | 1 +
- net/vhost-vdpa.c | 2 ++
- 2 files changed, 3 insertions(+)
+ include/hw/virtio/vhost-vdpa.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/trace-events b/net/trace-events
-index 88f56f2..cda960f 100644
---- a/net/trace-events
-+++ b/net/trace-events
-@@ -28,3 +28,4 @@ colo_filter_rewriter_conn_offset(uint32_t offset) ": offset=%u"
- vhost_vdpa_set_address_space_id(void *v, unsigned vq_group, unsigned asid_num) "vhost_vdpa: %p vq_group: %u asid: %u"
- vhost_vdpa_net_load_cmd(void *s, uint8_t class, uint8_t cmd, int data_num, int data_size) "vdpa state: %p class: %u cmd: %u sg_num: %d size: %d"
- vhost_vdpa_net_load_cmd_retval(void *s, uint8_t class, uint8_t cmd, int r) "vdpa state: %p class: %u cmd: %u retval: %d"
-+vhost_vdpa_net_load_mq(void *s, int ncurqps) "vdpa state: %p current_qpairs: %d"
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 6ee438f..9f25221 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -901,6 +901,8 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         return 0;
-     }
+diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
+index ad754eb..449bf5c 100644
+--- a/include/hw/virtio/vhost-vdpa.h
++++ b/include/hw/virtio/vhost-vdpa.h
+@@ -30,6 +30,12 @@ typedef struct VhostVDPAHostNotifier {
+     void *addr;
+ } VhostVDPAHostNotifier;
  
-+    trace_vhost_vdpa_net_load_mq(s, n->curr_queue_pairs);
++typedef enum SVQTransitionState {
++    SVQ_TSTATE_DISABLING = -1,
++    SVQ_TSTATE_DONE,
++    SVQ_TSTATE_ENABLING
++} SVQTransitionState;
 +
-     mq.virtqueue_pairs = cpu_to_le16(n->curr_queue_pairs);
-     const struct iovec data = {
-         .iov_base = &mq,
+ /* Info shared by all vhost_vdpa device models */
+ typedef struct vhost_vdpa_shared {
+     int device_fd;
+@@ -67,6 +73,9 @@ typedef struct vhost_vdpa_shared {
+ 
+     /* Vdpa must send shadow addresses as IOTLB key for data queues, not GPA */
+     bool shadow_data;
++
++    /* SVQ switching is in progress, or already completed? */
++    SVQTransitionState svq_switching;
+ } VhostVDPAShared;
+ 
+ typedef struct vhost_vdpa {
 -- 
 1.8.3.1
 
