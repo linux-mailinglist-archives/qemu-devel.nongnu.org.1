@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11593854802
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EB98547E9
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:15:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDE6-00033V-Jv; Wed, 14 Feb 2024 06:14:54 -0500
+	id 1raDE9-0003Fn-ED; Wed, 14 Feb 2024 06:14:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE4-0002yC-JA
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:52 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE6-00033l-NV
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE3-0006vH-6g
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:52 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDE5-0006vu-8x
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:14:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909290;
+ s=mimecast20190719; t=1707909292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NQPq2eB8YlzFRo2yi/9ewINIVLnGxrTHAgWJxfM/5SU=;
- b=BL0sjsmOxNUbLtuNqJZuXFZtaa+qIQmIEEZjENug5V0XRLy0HdEoh4MQJ/gR1zElgGcItD
- 4BsZSJKZwblCLeDCkny1MJTwh6JgPGJVCEcZADNdIqZtgOcHQDnFPz+mSefwAZCE9Gn3B/
- YXHdN2Mz+RcIkFVkX0MqpRPX8szS0/I=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MRWTVErun+rCrNj/knFfh+bLyvrCH3Pht/W9/VrpypY=;
+ b=MrffwFmip9RcdKKgHB+QKdW3jq7Z2kNZQNsw4ePo9Z46m23K4VmJ4XB3cfwGaNwn7rtb+m
+ l9wPrq+61/sRDVFNcSrhDJudjg/qncWDx5jHbGNwfGQEcChtIQLYl7zM2YlScSKCB3NpSY
+ 0e5M80jq0HQMuztJ8fPFsAALqdSZ5mY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-youdLG_DOUOfkxdvJJ-OpA-1; Wed, 14 Feb 2024 06:14:48 -0500
-X-MC-Unique: youdLG_DOUOfkxdvJJ-OpA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a3cdd79d960so114091566b.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:48 -0800 (PST)
+ us-mta-489-Qi6APLYqOv6X0vS4UyPzMA-1; Wed, 14 Feb 2024 06:14:51 -0500
+X-MC-Unique: Qi6APLYqOv6X0vS4UyPzMA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a2c4e9cb449so364357366b.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:14:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909286; x=1708514086;
+ d=1e100.net; s=20230601; t=1707909289; x=1708514089;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NQPq2eB8YlzFRo2yi/9ewINIVLnGxrTHAgWJxfM/5SU=;
- b=kjvkN0/vncArA7FBmILzGyKW8Gg3kFNcQkytIZNBuZLB2nhyPDRiDBb/TAqXItG/OD
- Kb3hF+NtjUpLhNtRSqvgalADrk7/qmTbfI4KY+xXQjvTYTmeQjl82CZXtpbjY4/Av3ag
- EleqwsyYfePvCeSNTtfv20j/248KviyzM3nH2PppshsyThzWOU6hCfeHtw7JS+bJiVuY
- u2FdGfWz1bHQNejbp4ZeRKTqSNNbDl5q9pKQ5jqxeGLln9EFYO8Ip9Eaic9ct59FTtxa
- Keew0krryBFLtwbLR1MFKNeFn+VY+FphuHUAQSLguhdpNV5F7H0qfL+Xx9NrDXW/zOHQ
- x/8Q==
-X-Gm-Message-State: AOJu0Yz2lWNjdhiZPyAGGgk7Me3KfiHANmKDhCQSRADVPdY8VYxuX0ru
- KqGk0bITwDNAl/mlKRIa8quwJUpskul94AZ8xx+uhvC2bzZqEXvbCvcLaSKoHx/si/uBonq1onO
- JfkIoaPMH8XaAsjn+923vBOh0sw6hvV1/UZo3rybXkweQSTmrJNp4qpM5CpnGrpBXUsQYjpGV8+
- JqrPDw7tilrXN7VgkgyBLq0HASErhr8g==
-X-Received: by 2002:a17:906:6043:b0:a3c:edc4:4abd with SMTP id
- p3-20020a170906604300b00a3cedc44abdmr1622496ejj.33.1707909286359; 
- Wed, 14 Feb 2024 03:14:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFlE5zsOtDbDpmO+I+yuR2yY/6loGor3xrXhWAZTODGea6RjOPtaXWwiR2yMkgWSveo7a0EUA==
-X-Received: by 2002:a17:906:6043:b0:a3c:edc4:4abd with SMTP id
- p3-20020a170906604300b00a3cedc44abdmr1622482ejj.33.1707909286104; 
- Wed, 14 Feb 2024 03:14:46 -0800 (PST)
+ bh=MRWTVErun+rCrNj/knFfh+bLyvrCH3Pht/W9/VrpypY=;
+ b=FBaLpfvXdCHfvlCSu5sKCgMk9pTfeh07JIUHHOPJIbUg0Rqz313smHTdIizp0wnW+6
+ vakfTLMQ9ePJFBN8l2y9aFxqBIzonhQXmKKzl83MU07IlTd387sMD7ukn/W0xYwA94WS
+ YuxGqPVsE9G8QvFZbM/roe2OjyEoDUpS7NazjdijK+IuVUm+RAV5b+C62Yz0k616n5Iv
+ 6noO8Ca4FN27LBtKW0+8QTwL8YDWVakRZa4yHb1itbdNAHaHHJ6+Dopl8oSkuO2AcrS4
+ C92TN1LwFQ5jOcSlQNPpyrlBHkwaTlTqdG428eO7YH/yfzHuqk+pU6r67NbpoRDrT2qY
+ 1mrw==
+X-Gm-Message-State: AOJu0YzvfNcSBLqu75ffIlUCh46Jht7MG6KY7ZwMG4uAd04CqG5xSwI+
+ 3+RQ7nCw82ejsmcRHw1wL1o1BB4UrudkF7f63fpBPLnaymzKIAfGGPEeU5OMDTISrVHO/xWYiBJ
+ HWAZ/6v0M1gGDpKsai8/v58sm6lVZzItLbv0YOUgksdpW9lcVzf6xjouL5q33e5oWWiUhyF0PmD
+ VvjvDgyLIC7lVe0BKVsjAWespEBCzJBQ==
+X-Received: by 2002:a17:906:3591:b0:a3c:ed94:7672 with SMTP id
+ o17-20020a170906359100b00a3ced947672mr1643146ejb.64.1707909289428; 
+ Wed, 14 Feb 2024 03:14:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFfbWgdbIr7LA7h+6ZHBrUSSCOOU2nCxfE29VU3mbL40DK9LPkbmZ6R4HMBOgWV9uJSZcel2w==
+X-Received: by 2002:a17:906:3591:b0:a3c:ed94:7672 with SMTP id
+ o17-20020a170906359100b00a3ced947672mr1643128ejb.64.1707909289101; 
+ Wed, 14 Feb 2024 03:14:49 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUu1DkKbb3j81+ckBkqyZZl1dUz1gIXrWEqHXS4B16cQpF7w9daVhYssxqEnIai19UNv5kLZU8VMxEJqYiHWJzKmRYfANL3OwSmR5Xi0fZNqnK+KZKd1H7rBBQhb3Q2mwBBBESfoPn7biyCaq0QmDuKp34fX1sxeSmCDQJmZAzq5qeC9j3yibcrT51OEp1SHw==
+ AJvYcCX2XO0sv708t8NJXtk5CCWXGRYHfOjjvQx41rLKPpYbPqkmg8Tu/t+55vQKErgkOTJVnSCB6PScPjTpqIN7iv922spauKlL4fHtLI69Iu1XuaxmFvQk9xkf/seQ83fc9SATL7/l4YpKTKSPtw2TydKimiUU
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- m10-20020a1709060d8a00b00a3cd0c09a05sm2194400eji.180.2024.02.14.03.14.44
+ qo12-20020a170907874c00b00a3d061514a6sm1489319ejc.201.2024.02.14.03.14.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:14:45 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:14:43 -0500
+ Wed, 14 Feb 2024 03:14:48 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:14:46 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>, John Snow <jsnow@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 28/60] hw/block/fdc-isa: Implement relocation and
- enabling/disabling for TYPE_ISA_FDC
-Message-ID: <8c4d239139e93268884f9d385a0966ef40db422f.1707909001.git.mst@redhat.com>
+ Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: [PULL 29/60] hw/char/serial-isa: Implement relocation and
+ enabling/disabling for TYPE_ISA_SERIAL
+Message-ID: <7812dbc54c72f71df2644d0cec52a1e8d6b19584.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -79,16 +78,15 @@ Content-Disposition: inline
 In-Reply-To: <cover.1707909001.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,56 +106,51 @@ From: Bernhard Beschow <shentey@gmail.com>
 
 The real SuperI/O chips emulated by QEMU allow for relocating and enabling or
 disabling their SuperI/O functions via software. So far this is not implemented.
-Prepare for that by adding isa_fdc_set_{enabled,iobase}.
+Prepare for that by adding isa_serial_set_{enabled,iobase}.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20240114123911.4877-8-shentey@gmail.com>
+Message-Id: <20240114123911.4877-9-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/block/fdc.h |  3 +++
- hw/block/fdc-isa.c     | 14 ++++++++++++++
- 2 files changed, 17 insertions(+)
+ include/hw/char/serial.h |  2 ++
+ hw/char/serial-isa.c     | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/include/hw/block/fdc.h b/include/hw/block/fdc.h
-index 35248c0837..c367c5efea 100644
---- a/include/hw/block/fdc.h
-+++ b/include/hw/block/fdc.h
-@@ -14,6 +14,9 @@ void fdctrl_init_sysbus(qemu_irq irq, hwaddr mmio_base, DriveInfo **fds);
- void sun4m_fdctrl_init(qemu_irq irq, hwaddr io_base,
-                        DriveInfo **fds, qemu_irq *fdc_tc);
+diff --git a/include/hw/char/serial.h b/include/hw/char/serial.h
+index 8ba7eca3d6..6e14099ee7 100644
+--- a/include/hw/char/serial.h
++++ b/include/hw/char/serial.h
+@@ -112,5 +112,7 @@ SerialMM *serial_mm_init(MemoryRegion *address_space,
  
-+void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase);
-+void isa_fdc_set_enabled(ISADevice *fdc, bool enabled);
-+
- FloppyDriveType isa_fdc_get_drive_type(ISADevice *fdc, int i);
- int cmos_get_fd_drive_type(FloppyDriveType fd0);
+ #define TYPE_ISA_SERIAL "isa-serial"
+ void serial_hds_isa_init(ISABus *bus, int from, int to);
++void isa_serial_set_iobase(ISADevice *serial, hwaddr iobase);
++void isa_serial_set_enabled(ISADevice *serial, bool enabled);
  
-diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-index 2d8a98ce7d..e43dc532af 100644
---- a/hw/block/fdc-isa.c
-+++ b/hw/block/fdc-isa.c
-@@ -192,6 +192,20 @@ static Aml *build_fdinfo_aml(int idx, FloppyDriveType type)
-     return dev;
+ #endif
+diff --git a/hw/char/serial-isa.c b/hw/char/serial-isa.c
+index 1c793b20f7..329b352b9a 100644
+--- a/hw/char/serial-isa.c
++++ b/hw/char/serial-isa.c
+@@ -184,3 +184,17 @@ void serial_hds_isa_init(ISABus *bus, int from, int to)
+         }
+     }
  }
- 
-+void isa_fdc_set_iobase(ISADevice *fdc, hwaddr iobase)
-+{
-+    FDCtrlISABus *isa = ISA_FDC(fdc);
 +
-+    fdc->ioport_id = iobase;
-+    isa->iobase = iobase;
-+    portio_list_set_address(&isa->portio_list, isa->iobase);
++void isa_serial_set_iobase(ISADevice *serial, hwaddr iobase)
++{
++    ISASerialState *s = ISA_SERIAL(serial);
++
++    serial->ioport_id = iobase;
++    s->iobase = iobase;
++    memory_region_set_address(&s->state.io, s->iobase);
 +}
 +
-+void isa_fdc_set_enabled(ISADevice *fdc, bool enabled)
++void isa_serial_set_enabled(ISADevice *serial, bool enabled)
 +{
-+    portio_list_set_enabled(&ISA_FDC(fdc)->portio_list, enabled);
++    memory_region_set_enabled(&ISA_SERIAL(serial)->state.io, enabled);
 +}
-+
- int cmos_get_fd_drive_type(FloppyDriveType fd0)
- {
-     int val;
 -- 
 MST
 
