@@ -2,85 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3606B8543A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 08:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82948543AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 08:55:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raA16-00087v-TH; Wed, 14 Feb 2024 02:49:16 -0500
+	id 1raA6k-00013i-3v; Wed, 14 Feb 2024 02:55:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raA14-00087L-UN
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 02:49:14 -0500
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raA11-0000Uu-LI
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 02:49:14 -0500
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2d109e82bd0so20169971fa.3
- for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 23:49:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707896949; x=1708501749; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BQ6+HEUrpsiIOObbu51RsCVLPpL/i6+IPJ70mWBq6cg=;
- b=WLtQyNEWtDIsHYwZxuHCpJ+PVNdvhIswnPZhr7r7MdpCou/HThJc1cEYe87cjl6Fy1
- BNNpYHYJNE7jfN79w/BqVzTSH6o2iup3hzJXnG9a/xPNoKB2uEk7RegpuYwjnOdfAVuh
- 6W86h9kD25a3FPphv5aasyukxdPeNLpowqZ1UO56Nqhg6h9YxS1Atpzzrnc3UXf/2CMQ
- UiIz+/W/RWdHBzZySJJDYuH+HpjfQgAC2qi123TGmTLhzrmvuipaNmJYRgZttFA9wB+o
- lDN9TN7UqVBR4Uws2kvlrh+5waE7acMma0W6b1P5u5JT6N6PcE+0+w359k4Wdfp7b0iN
- WmTA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raA6P-00013C-02
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 02:54:45 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raA6J-0001Zj-Hl
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 02:54:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1707897278;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g26i70Cw5l11KRZfWA9cqNcuwZP5U8uBLkA4dbsUtP4=;
+ b=MnD3Yosz65j5+jwoXQGDdmlBzj1qxwboLn6Kx72PJxQkcWQZ9mqrcKJ2Hpy7jC6YROMfBX
+ wZTmBxtNDk+35W4B7RzK4EjWCCgBvK1yXN1m8/qT/MiiubBMItqDay4G6FqbBCXjXfs8Gc
+ 8uj1T0i2BBeCZPHjfi7FfWpAorx33IM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-7LJReeN-NKmsat5wk5j7qA-1; Wed, 14 Feb 2024 02:54:37 -0500
+X-MC-Unique: 7LJReeN-NKmsat5wk5j7qA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-33cf207a087so15282f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 13 Feb 2024 23:54:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707896949; x=1708501749;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BQ6+HEUrpsiIOObbu51RsCVLPpL/i6+IPJ70mWBq6cg=;
- b=Vkk1Ei8WXmMPpUUTQrDmFNo8YDAlyYBKQRFknuOGIdcYMuK5q+Yheu8PpQ/XkqEQWJ
- QUv8JwC6wOjyorzKDhKIG6r+J/UgvibiadMElxx7qlkIu5Jb3ipyzZkg2m1yADl5ybwK
- rb46mZgRzHOtf4pK8IuFTj4n5gBajvR3KC4UtIiJ+Og82770HUcWzMjIasRqArWz7n1u
- MYQwfi0HJ6/QJuzzLQMP+cR5fC+2jMcslCqJRaP2iU2vuCgkxlXZzcheeFx2GuO1lM3V
- qTjqPqL+r9f5jDxoRuf7hDRt4vViKr1PKGrysr8SwYSu2HJAXnvGec96ymk+RBvkITIv
- 2HpA==
+ d=1e100.net; s=20230601; t=1707897256; x=1708502056;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g26i70Cw5l11KRZfWA9cqNcuwZP5U8uBLkA4dbsUtP4=;
+ b=sfLbfYoD+Ujz0VX47mGqhas89TLu4NK5c9u8R9NT8meACgENrFphch4Qx/F1LNk3CO
+ q9VqN0mGjjZFePWUgkdXF5zMJqulxUZNBBy4zZ54XrRzfBBtop1tgKJ/szH6qg1zUMC8
+ G8zB51091AIhPNhsp0kiYd9+o6pGEYxs6BOr0/imy/FXMFvMQKit0orDaaYsLJWt9ahp
+ udbS3WOR64SvsKqBQcfabTyJoqf1DI08NbNmVLfPd8V4+d6sW7kYt4felzSwztPzJSj4
+ Pe0aWAfGYTqdjGa1NlM76cXGmhmwbjd/8vNy9HknyiqmTSi1BBTCbKgA4lMbznh8wfs+
+ uHHw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUXeZGU02Sa7nmBijbq0BfLHkVwQD395/j8DuXFqcE4htbwXTcRKeAIASF6T3qgjkOh21esYz70VW8STrLpBvDLVqWJ3ZY=
-X-Gm-Message-State: AOJu0YwwLCkfP4lPtzG4kuO47iac1LXgLI/q23iegunoO9JjJf7dhiYq
- Hdd9u94KHZ0nMeomzTN7OuSAXII7MeG2rwsUGd5jI7eK86BLb4P/hIm8NI3kHnI=
-X-Google-Smtp-Source: AGHT+IEjCvQUmL5G0tqj47n0ESO3PT4ZLqamv6ALrWkpPxGxjfcp9wbHHN0hKAcYwC8jfJJFyju8Jg==
-X-Received: by 2002:a2e:94d7:0:b0:2d0:e5cc:5795 with SMTP id
- r23-20020a2e94d7000000b002d0e5cc5795mr1258690ljh.0.1707896949149; 
- Tue, 13 Feb 2024 23:49:09 -0800 (PST)
-Received: from [192.168.69.100] (mau49-h01-176-184-41-88.dsl.sta.abo.bbox.fr.
- [176.184.41.88]) by smtp.gmail.com with ESMTPSA id
- o4-20020a05600c510400b0040ef95e1c78sm1104675wms.3.2024.02.13.23.49.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 Feb 2024 23:49:08 -0800 (PST)
-Message-ID: <f95fec4c-a520-4476-b63c-5387b0948ac4@linaro.org>
-Date: Wed, 14 Feb 2024 08:49:06 +0100
+ AJvYcCUbP9tg1di8TsikeWXdEZPPuzv7yXLPDaCK65foc06+s7O4E15Ma3isgiqvMq/daLBdjp+746G6nET7SYGgp4ZE1tJCxjI=
+X-Gm-Message-State: AOJu0Yxt8ogY1zdxkigaYH1Xd/qrYj89YvbZTakVhD1GZGf/WQ7az2Wg
+ HJqoMnQUjlOANJOTMH0IL8ytuRaqfrhTin1JfAV2dyO8ZBFYpHAHO/rDYkkGWzgQkagFsrO2mlL
+ p8o9kvJ4x84domdgcSJuLXbSFER3SmDvZNiHbqQUYK417WevW5LR5
+X-Received: by 2002:a5d:4fc1:0:b0:33b:376b:8127 with SMTP id
+ h1-20020a5d4fc1000000b0033b376b8127mr1059245wrw.54.1707897256264; 
+ Tue, 13 Feb 2024 23:54:16 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFxy8EK9+nmP0HfrR2FPwS5w0w/mJLbnCLbk6OIJfVuE5IkonnOWU/YSUVbMgdWpfxG3/uS2Q==
+X-Received: by 2002:a5d:4fc1:0:b0:33b:376b:8127 with SMTP id
+ h1-20020a5d4fc1000000b0033b376b8127mr1059234wrw.54.1707897255845; 
+ Tue, 13 Feb 2024 23:54:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtou2doYFovdqK3DV1lXTMbxgiohW30O7Ys/ACX7POwicIveZzVpCuM4aPY6BltaVg+ahTSzyx7uk+iLcLTkto0Dxgb6ltlgXk17EsrqaH9an4EMh+apq2fl8Eoc3Lza+/5gezdoYalXnj8dcZv5yKezfCR4gB2ODKoe4o2RJv4dsyt8yoQrBc5bqlasCpQzS9UpBvPEcLkk3SQHNCRLQEOciZxSi2Fjq0uxqChdac3H7YyZEs3bFW5+OnyZWgqq+zUiyUUehWFgz4SVELz7fWoJlD4cE0yAxSMUUHiRviSEcd1lVRxSUVdsj6rsvAzHjNZ9IvS8w6Pc23MeBUOWUadt+a7wPui1UmVsl0PZKoqnkJM/U85/Bc1ii8/JC0cdq6KXbJQ81pfQW2zAWBEmjwlLLRwd/KxWZJtQ==
+Received: from redhat.com ([2a02:14f:1f0:720f:e338:175b:c44e:aa92])
+ by smtp.gmail.com with ESMTPSA id
+ v5-20020a5d59c5000000b0033b74a3dcf9sm10554862wry.27.2024.02.13.23.54.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 Feb 2024 23:54:15 -0800 (PST)
+Date: Wed, 14 Feb 2024 02:54:10 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH v4 6/9] pcie_sriov: Reuse SR-IOV VF device instances
+Message-ID: <20240214024239-mutt-send-email-mst@kernel.org>
+References: <20240214-reuse-v4-0-89ad093a07f4@daynix.com>
+ <20240214-reuse-v4-6-89ad093a07f4@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-Cc: qemu-arm <qemu-arm@nongnu.org>, Guenter Roeck <linux@roeck-us.net>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <1003f634-f13d-4a9e-af7a-34edc26e22a4@linaro.org>
-In-Reply-To: <1003f634-f13d-4a9e-af7a-34edc26e22a4@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214-reuse-v4-6-89ad093a07f4@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,468 +111,461 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/2/24 08:37, Philippe Mathieu-Daudé wrote:
-> On 12/2/24 13:32, Peter Maydell wrote:
+On Wed, Feb 14, 2024 at 02:13:44PM +0900, Akihiko Odaki wrote:
+> Disable SR-IOV VF devices by reusing code to power down PCI devices
+> instead of removing them when the guest requests to disable VFs. This
+> allows to realize devices and report VF realization errors at PF
+> realization time.
 > 
->> So I would like to explore whether we can deprecate-and-drop
->> some or all of them. This would let us delete the code entirely
->> rather than spending a long time trying to bring it up to scratch
->> for a probably very small to nonexistent userbase. The aim of this
->> email is to see if anybody is still using any of these and would be
->> upset if they went away. Reports of "I tried to use this machine
->> type and it's just broken" are also interesting as they would
->> strongly suggest that the machine has no real users and can be
->> removed.
->>
->> The machines I have in mind are:
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
+This patch does much more than what commit log says.
+This really needs to be split up with each change you make
+documented.
 
->> OMAP2 machines:
->>
->> n800                 Nokia N800 tablet aka. RX-34 (OMAP2420)
->> n810                 Nokia N810 tablet aka. RX-44 (OMAP2420)
+> ---
+>  docs/pcie_sriov.txt         |   8 ++--
+>  include/hw/pci/pci.h        |   2 +-
+>  include/hw/pci/pci_device.h |   2 +-
+>  include/hw/pci/pcie_sriov.h |   6 +--
+>  hw/net/igb.c                |  13 ++++--
+>  hw/nvme/ctrl.c              |  24 +++++++----
+>  hw/pci/pci.c                |  18 ++++----
+>  hw/pci/pci_host.c           |   4 +-
+>  hw/pci/pcie.c               |   4 +-
+>  hw/pci/pcie_sriov.c         | 100 ++++++++++++++++++++------------------------
+>  10 files changed, 97 insertions(+), 84 deletions(-)
 > 
-> For me these are broken since 2020 (commit 7998beb9c2 "arm/nseries:
-> use memdev for RAM"), this was discussed in
-> https://lore.kernel.org/qemu-devel/f2f276a9-a6ad-a2f8-2fbc-f1aca5423f79@amsat.org/
-> but there was no clear consensus so I gave up testing them.
+> diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
+> index a47aad0bfab0..ab2142807f79 100644
+> --- a/docs/pcie_sriov.txt
+> +++ b/docs/pcie_sriov.txt
+> @@ -52,9 +52,11 @@ setting up a BAR for a VF.
+>        ...
+>  
+>        /* Add and initialize the SR/IOV capability */
+> -      pcie_sriov_pf_init(d, 0x200, "your_virtual_dev",
+> -                       vf_devid, initial_vfs, total_vfs,
+> -                       fun_offset, stride);
+> +      if (!pcie_sriov_pf_init(d, 0x200, "your_virtual_dev",
+> +                              vf_devid, initial_vfs, total_vfs,
+> +                              fun_offset, stride, errp)) {
+> +         return;
+> +      }
+>  
+>        /* Set up individual VF BARs (parameters as for normal BARs) */
+>        pcie_sriov_pf_init_vf_bar( ... )
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index eaa3fc99d884..442017b4865d 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -642,6 +642,6 @@ static inline void pci_irq_pulse(PCIDevice *pci_dev)
+>  }
+>  
+>  MSIMessage pci_get_msi_message(PCIDevice *dev, int vector);
+> -void pci_set_power(PCIDevice *pci_dev, bool state);
+> +void pci_set_enabled(PCIDevice *pci_dev, bool state);
 
-Eh good news the tests work again:
+Not a good name. Does this set enabled state? Test whether
+some kind of set is enabled?
 
-$ make check-avocado AVOCADO_TAGS='machine:n800 machine:n810' 
-AVOCADO_ALLOW_UNTRUSTED_CODE=1 QEMU_TEST_FLAKY_TESTS=1 
-AVOCADO_SHOW=app,console
-   AVOCADO tests/avocado
-JOB ID     : e089badc8daeae0882eb48e452164d00e8e19c18
-JOB LOG    : job-2024-02-14T07.44-e089bad/job.log
-  (1/2) tests/avocado/machine_arm_n8x0.py:N8x0Machine.test_n800: \
-console: [    0.000000] Linux version 2.6.35~rc4-129.1-n8x0 
-(abuild@build08) (gcc version 4.4.2 20091027 (MeeGo 4.4.2-7) (GCC) ) #1 
-PREEMPT Mon Jul 12 15:04:46 UTC 2010
-console: [    0.000000] CPU: ARMv6-compatible processor [4107b362] 
-revision 2 (ARMv6TEJ), cr=00c5387f
-console: [    0.000000] CPU: VIPT aliasing data cache, VIPT aliasing 
-instruction cache
-console: [    0.000000] Machine: Nokia N800
-console: [    0.000000] Memory policy: ECC disabled, Data cache writeback
-console: [    0.000000] OMAP2420
-console: [    0.000000]
-console: [    0.000000] SRAM: Mapped pa 0x40200000 to va 0xfe400000 
-size: 0x100000
-console: [    0.000000] Built 1 zonelists in Zone order, mobility 
-grouping on.  Total pages: 32512
-console: [    0.000000] Kernel command line: printk.time=0 console=ttyS1
-console: PID hash table entries: 512 (order: -1, 2048 bytes)
-console: Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
-console: Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
-console: Memory: 128MB = 128MB total
-console: Memory: 124008k/124008k available, 7064k reserved, 0K highmem
-console: Virtual kernel memory layout:
-console: vector  : 0xffff0000 - 0xffff1000   (   4 kB)
-console: fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
-console: DMA     : 0xffc00000 - 0xffe00000   (   2 MB)
-console: vmalloc : 0xc8800000 - 0xf8000000   ( 760 MB)
-console: lowmem  : 0xc0000000 - 0xc8000000   ( 128 MB)
-console: modules : 0xbf000000 - 0xc0000000   (  16 MB)
-console: .init : 0xc0008000 - 0xc0029000   ( 132 kB)
-console: .text : 0xc0029000 - 0xc0379000   (3392 kB)
-console: .data : 0xc038e000 - 0xc03ba2e0   ( 177 kB)
-console: SLUB: Genslabs=11, HWalign=32, Order=0-3, MinObjects=0, CPUs=1, 
-Nodes=1
-console: Hierarchical RCU implementation.
-console: RCU-based detection of stalled CPUs is disabled.
-console: Verbose stalled-CPUs detection is disabled.
-console: NR_IRQS:368
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock iva1_ifck parent core_ck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1c ]---
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock dsp_fck parent core_ck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1d ]---
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock dsp_irate_ick parent 
-dsp_fck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1e ]---
-console: Clocking rate (Crystal/DPLL/MPU): 19.2/658/329 MHz
-console: omap_hwmod: l3_hwmod: cannot be enabled (3)
-console: omap_hwmod: l4_core_hwmod: cannot be enabled (3)
-console: omap_hwmod: l4_wkup_hwmod: cannot be enabled (3)
-console: GPMC revision 2.0
-console: IRQ: Found an INTC at 0xfa0fe000 (revision 2.1) with 96 interrupts
-console: Total of 96 interrupts on 1 active controller
-console: OMAP GPIO hardware version 1.8
-console: OMAP clockevent source: GPTIMER1 at 32000 Hz
-console: Console: colour dummy device 80x30
-console: Calibrating delay loop... 897.01 BogoMIPS (lpj=3506176)
-console: pid_max: default: 32768 minimum: 301
-console: Mount-cache hash table entries: 512
-console: CPU: Testing write buffer coherency: ok
-console: devtmpfs: initialized
-console: NET: Registered protocol family 16
-console: MUX: setup L15_24XX_I2C1_SDA (0xfa000112): 0x0018 -> 0x0000
-console: MUX: setup M19_24XX_I2C1_SCL (0xfa000111): 0x0018 -> 0x0000
-console: MUX: setup H19_24XX_I2C2_SDA (0xfa000114): 0x001f -> 0x0000
-console: MUX: setup J15_24XX_I2C2_SCL (0xfa000113): 0x001f -> 0x0010
-console: N8x0 MIPID config loaded
-console: N8x0 Blizzard initialized
-console: MUX: setup H18_24XX_MMC_CMD (0xfa0000f4): 0x001f -> 0x0000
-console: MUX: setup H15_24XX_MMC_CLKI (0xfa0000fe): 0x001f -> 0x0000
-console: MUX: setup G19_24XX_MMC_CLKO (0xfa0000f3): 0x000f -> 0x0000
-console: MUX: setup F20_24XX_MMC_DAT0 (0xfa0000f5): 0x000f -> 0x0000
-console: MUX: setup F19_24XX_MMC_DAT_DIR0 (0xfa0000f9): 0x000f -> 0x0000
-console: MUX: setup G18_24XX_MMC_CMD_DIR (0xfa0000fd): 0x000f -> 0x0000
-console: MUX: setup H14_24XX_MMC_DAT1 (0xfa0000f6): 0x001f -> 0x0000
-console: MUX: setup E19_24XX_MMC_DAT2 (0xfa0000f7): 0x000f -> 0x0000
-console: MUX: setup D19_24XX_MMC_DAT3 (0xfa0000f8): 0x000f -> 0x0000
-console: MUX: setup E20_24XX_MMC_DAT_DIR1 (0xfa0000fa): 0x000f -> 0x0000
-console: MUX: setup F18_24XX_MMC_DAT_DIR2 (0xfa0000fb): 0x000f -> 0x0000
-console: MUX: setup E18_24XX_MMC_DAT_DIR3 (0xfa0000fc): 0x001f -> 0x0000
-console: MUX: setup AA10_242X_DMAREQ0 (0xfa0000e5): 0x001f -> 0x0002
-console: MUX: setup AA6_242X_DMAREQ1 (0xfa0000e6): 0x000f -> 0x0002
-console: MUX: setup E4_242X_DMAREQ2 (0xfa000074): 0x0018 -> 0x0002
-console: MUX: setup G4_242X_DMAREQ3 (0xfa000073): 0x0018 -> 0x0002
-console: MUX: setup D3_242X_DMAREQ4 (0xfa000072): 0x0018 -> 0x0002
-console: MUX: setup E3_242X_DMAREQ5 (0xfa000071): 0x0018 -> 0x0002
-console: TUSB 6010
-console: OMAP DMA hardware revision 4.0
-console: bio: create slab <bio-0> at 0
-console: SCSI subsystem initialized
-console: i2c_omap i2c_omap.1: bus 1 rev3.4 at 400 kHz
-console: i2c_omap i2c_omap.2: bus 2 rev3.4 at 400 kHz
-console: Tahvo/Betty driver initialising
-console: Betty v2.1 found
-console: Retu/Vilma driver initialising
-console: Vilma v1.5 found
-console: Bluetooth: Core ver 2.15
-console: NET: Registered protocol family 31
-console: Bluetooth: HCI device and connection manager initialized
-console: Bluetooth: HCI socket layer initialized
-console: Switching to clocksource 32k_counter
-console: musb_hdrc: version 6.0, tusb-omap-dma, peripheral, debug=0
-console: tusb: Unable to detect TUSB6010
-console: Could not start tusb6010 (-19)
-console: musb_hdrc musb_hdrc: musb_init_controller failed with status -19
-console: NET: Registered protocol family 2
-console: IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
-console: TCP established hash table entries: 4096 (order: 3, 32768 bytes)
-console: TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
-console: TCP: Hash tables configured (established 4096 bind 4096)
-console: TCP reno registered
-console: UDP hash table entries: 256 (order: 0, 4096 bytes)
-console: UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
-console: NET: Registered protocol family 1
-console: PMU: registered new PMU device of type 0
-console: NetWinder Floating Point Emulator V0.97 (double precision)
-console: squashfs: version 4.0 (2009/01/31) Phillip Lougher
-console: JFFS2 version 2.2. (NAND) (SUMMARY)  © 2001-2006 Red Hat, Inc.
-console: fuse init (API version 7.14)
-console: msgmni has been set to 242
-console: alg: No test for stdrng (krng)
-console: io scheduler noop registered
-console: io scheduler cfq registered (default)
-console: omapfb: ls041y3 rev 8f LCD detected, 24 data lines
-console: omapfb: configured for panel ls041y3
-console: omapfb: DISPC version 2.0 initialized
-console: omapfb: RFBI version 1.0 initialized
-console: omapfb: s1d13745 LCD controller rev 1 initialized (CNF pins 3)
-console: omapfb omapfb: s1d1374x: setting update mode to auto
-console: Console: switching to colour frame buffer device 100x30
-console: omapfb: Framebuffer initialized. Total vram 770048 planes 1
-console: omapfb: Pixclock 21940 kHz hfreq 24.9 kHz vfreq 51.0 Hz
-console: omap_rng omap_rng: OMAP Random Number Generator ver. 00
-console: Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-console: serial8250.0: ttyS0 at MMIO 0x4806a000 (irq = 72) is a 16550A
-console: serial8250.1: ttyS1 at MMIO 0x4806c000 (irq = 73) is a 16550A
-console: console [ttyS1] enabled
-console: serial8250.2: ttyS2 at MMIO 0x4806e000 (irq = 74) is a 16550A
-console: brd: module loaded
-console: loop: module loaded
-console: Menelaus rev 2.2
-console: OneNAND driver initializing
-console: omap2-onenand omap2-onenand: initializing on CS0, phys base 
-0x04000000, virtual base c8880000
-console: Muxed OneNAND(DDP) 256MB 1.8V 16-bit (0x48)
-console: OneNAND version = 0x0000
-console: Scanning device for bad blocks
-console: Creating 5 MTD partitions on "omap2-onenand":
-console: 0x000000000000-0x000000020000 : "bootloader"
-console: 0x000000020000-0x000000080000 : "config"
-console: 0x000000080000-0x000000280000 : "kernel"
-console: 0x000000280000-0x000000680000 : "initfs"
-console: 0x000000680000-0x000010000000 : "rootfs"
-console: PPP generic driver version 2.4.2
-console: PPP Deflate Compression module registered
-console: PPP BSD Compression module registered
-console: tun: Universal TUN/TAP device driver, 1.6
-console: tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
-console: mice: PS/2 mouse device common for all mice
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sending read cmd 0x82 failed
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 3 bytes of -121 total
-console: lm8323 2-0045: sent 3 bytes of -121 total
-console: lm8323 2-0045: sending read cmd 0x80 failed
-console: lm8323 2-0045: device not found
-console: TSC2005 driver initializing
-PASS (2.61 s)
-  (2/2) tests/avocado/machine_arm_n8x0.py:N8x0Machine.test_n810: /
-console: [    0.000000] Linux version 2.6.35~rc4-129.1-n8x0 
-(abuild@build08) (gcc version 4.4.2 20091027 (MeeGo 4.4.2-7) (GCC) ) #1 
-PREEMPT Mon Jul 12 15:04:46 UTC 2010
-console: [    0.000000] CPU: ARMv6-compatible processor [4107b362] 
-revision 2 (ARMv6TEJ), cr=00c5387f
-console: [    0.000000] CPU: VIPT aliasing data cache, VIPT aliasing 
-instruction cache
-console: [    0.000000] Machine: Nokia N810
-console: [    0.000000] Memory policy: ECC disabled, Data cache writeback
-console: [    0.000000] OMAP2420
-console: [    0.000000]
-console: [    0.000000] SRAM: Mapped pa 0x40200000 to va 0xfe400000 
-size: 0x100000
-console: [    0.000000] Built 1 zonelists in Zone order, mobility 
-grouping on.  Total pages: 32512
-console: [    0.000000] Kernel command line: printk.time=0 console=ttyS1
-console: PID hash table entries: 512 (order: -1, 2048 bytes)
-console: Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
-console: Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
-console: Memory: 128MB = 128MB total
-console: Memory: 124008k/124008k available, 7064k reserved, 0K highmem
-console: Virtual kernel memory layout:
-console: vector  : 0xffff0000 - 0xffff1000   (   4 kB)
-console: fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
-console: DMA     : 0xffc00000 - 0xffe00000   (   2 MB)
-console: vmalloc : 0xc8800000 - 0xf8000000   ( 760 MB)
-console: lowmem  : 0xc0000000 - 0xc8000000   ( 128 MB)
-console: modules : 0xbf000000 - 0xc0000000   (  16 MB)
-console: .init : 0xc0008000 - 0xc0029000   ( 132 kB)
-console: .text : 0xc0029000 - 0xc0379000   (3392 kB)
-console: .data : 0xc038e000 - 0xc03ba2e0   ( 177 kB)
-console: SLUB: Genslabs=11, HWalign=32, Order=0-3, MinObjects=0, CPUs=1, 
-Nodes=1
-console: Hierarchical RCU implementation.
-console: RCU-based detection of stalled CPUs is disabled.
-console: Verbose stalled-CPUs detection is disabled.
-console: NR_IRQS:368
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock iva1_ifck parent core_ck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1c ]---
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock dsp_fck parent core_ck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1d ]---
-console: ------------[ cut here ]------------
-console: WARNING: at arch/arm/mach-omap2/clkt_clksel.c:194 
-omap2_clksel_recalc+0xcc/0xe0()
-console: clock: Could not find fieldval 0 for clock dsp_irate_ick parent 
-dsp_fck
-console: Modules linked in:
-console: [<c002fa1c>] (unwind_backtrace+0x0/0xf0) from [<c0053850>] 
-(warn_slowpath_common+0x4c/0x64)
-console: [<c0053850>] (warn_slowpath_common+0x4c/0x64) from [<c00538e8>] 
-(warn_slowpath_fmt+0x2c/0x3c)
-console: [<c00538e8>] (warn_slowpath_fmt+0x2c/0x3c) from [<c00388b4>] 
-(omap2_clksel_recalc+0xcc/0xe0)
-console: [<c00388b4>] (omap2_clksel_recalc+0xcc/0xe0) from [<c003a91c>] 
-(propagate_rate+0x20/0x50)
-console: [<c003a91c>] (propagate_rate+0x20/0x50) from [<c003a928>] 
-(propagate_rate+0x2c/0x50)
-console: ---[ end trace 1b75b31a2719ed1e ]---
-console: Clocking rate (Crystal/DPLL/MPU): 19.2/658/329 MHz
-console: omap_hwmod: l3_hwmod: cannot be enabled (3)
-console: omap_hwmod: l4_core_hwmod: cannot be enabled (3)
-console: omap_hwmod: l4_wkup_hwmod: cannot be enabled (3)
-console: GPMC revision 2.0
-console: IRQ: Found an INTC at 0xfa0fe000 (revision 2.1) with 96 interrupts
-console: Total of 96 interrupts on 1 active controller
-console: OMAP GPIO hardware version 1.8
-console: OMAP clockevent source: GPTIMER1 at 32000 Hz
-console: Console: colour dummy device 80x30
-console: Calibrating delay loop... 803.49 BogoMIPS (lpj=3137536)
-console: pid_max: default: 32768 minimum: 301
-console: Mount-cache hash table entries: 512
-console: CPU: Testing write buffer coherency: ok
-console: devtmpfs: initialized
-console: NET: Registered protocol family 16
-console: MUX: setup L15_24XX_I2C1_SDA (0xfa000112): 0x0018 -> 0x0000
-console: MUX: setup M19_24XX_I2C1_SCL (0xfa000111): 0x0018 -> 0x0000
-console: MUX: setup H19_24XX_I2C2_SDA (0xfa000114): 0x001f -> 0x0000
-console: MUX: setup J15_24XX_I2C2_SCL (0xfa000113): 0x001f -> 0x0010
-console: N8x0 MIPID config loaded
-console: N8x0 Blizzard initialized
-console: MUX: setup H18_24XX_MMC_CMD (0xfa0000f4): 0x001f -> 0x0000
-console: MUX: setup H15_24XX_MMC_CLKI (0xfa0000fe): 0x001f -> 0x0000
-console: MUX: setup G19_24XX_MMC_CLKO (0xfa0000f3): 0x000f -> 0x0000
-console: MUX: setup F20_24XX_MMC_DAT0 (0xfa0000f5): 0x000f -> 0x0000
-console: MUX: setup F19_24XX_MMC_DAT_DIR0 (0xfa0000f9): 0x000f -> 0x0000
-console: MUX: setup G18_24XX_MMC_CMD_DIR (0xfa0000fd): 0x000f -> 0x0000
-console: MUX: setup H14_24XX_MMC_DAT1 (0xfa0000f6): 0x001f -> 0x0000
-console: MUX: setup E19_24XX_MMC_DAT2 (0xfa0000f7): 0x000f -> 0x0000
-console: MUX: setup D19_24XX_MMC_DAT3 (0xfa0000f8): 0x000f -> 0x0000
-console: MUX: setup E20_24XX_MMC_DAT_DIR1 (0xfa0000fa): 0x000f -> 0x0000
-console: MUX: setup F18_24XX_MMC_DAT_DIR2 (0xfa0000fb): 0x000f -> 0x0000
-console: MUX: setup E18_24XX_MMC_DAT_DIR3 (0xfa0000fc): 0x001f -> 0x0000
-console: MUX: setup AA10_242X_DMAREQ0 (0xfa0000e5): 0x001f -> 0x0002
-console: MUX: setup AA6_242X_DMAREQ1 (0xfa0000e6): 0x000f -> 0x0002
-console: MUX: setup E4_242X_DMAREQ2 (0xfa000074): 0x0018 -> 0x0002
-console: MUX: setup G4_242X_DMAREQ3 (0xfa000073): 0x0018 -> 0x0002
-console: MUX: setup D3_242X_DMAREQ4 (0xfa000072): 0x0018 -> 0x0002
-console: MUX: setup E3_242X_DMAREQ5 (0xfa000071): 0x0018 -> 0x0002
-console: TUSB 6010
-console: OMAP DMA hardware revision 4.0
-console: bio: create slab <bio-0> at 0
-console: SCSI subsystem initialized
-console: i2c_omap i2c_omap.1: bus 1 rev3.4 at 400 kHz
-console: i2c_omap i2c_omap.2: bus 2 rev3.4 at 400 kHz
-console: Tahvo/Betty driver initialising
-console: Betty v2.1 found
-console: Retu/Vilma driver initialising
-console: Vilma v1.5 found
-console: Bluetooth: Core ver 2.15
-console: NET: Registered protocol family 31
-console: Bluetooth: HCI device and connection manager initialized
-console: Bluetooth: HCI socket layer initialized
-console: Switching to clocksource 32k_counter
-console: musb_hdrc: version 6.0, tusb-omap-dma, peripheral, debug=0
-console: tusb: Unable to detect TUSB6010
-console: Could not start tusb6010 (-19)
-console: musb_hdrc musb_hdrc: musb_init_controller failed with status -19
-console: NET: Registered protocol family 2
-console: IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
-console: TCP established hash table entries: 4096 (order: 3, 32768 bytes)
-console: TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
-console: TCP: Hash tables configured (established 4096 bind 4096)
-console: TCP reno registered
-console: UDP hash table entries: 256 (order: 0, 4096 bytes)
-console: UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
-console: NET: Registered protocol family 1
-console: PMU: registered new PMU device of type 0
-console: NetWinder Floating Point Emulator V0.97 (double precision)
-console: squashfs: version 4.0 (2009/01/31) Phillip Lougher
-console: JFFS2 version 2.2. (NAND) (SUMMARY)  © 2001-2006 Red Hat, Inc.
-console: fuse init (API version 7.14)
-console: msgmni has been set to 242
-console: alg: No test for stdrng (krng)
-console: io scheduler noop registered
-console: io scheduler cfq registered (default)
-console: omapfb: ls041y3 rev 8f LCD detected, 24 data lines
-console: omapfb: configured for panel ls041y3
-console: omapfb: DISPC version 2.0 initialized
-console: omapfb: RFBI version 1.0 initialized
-console: omapfb: s1d13745 LCD controller rev 1 initialized (CNF pins 3)
-console: omapfb omapfb: s1d1374x: setting update mode to auto
-console: Console: switching to colour frame buffer device 100x30
-console: omapfb: Framebuffer initialized. Total vram 770048 planes 1
-console: omapfb: Pixclock 21940 kHz hfreq 24.9 kHz vfreq 51.0 Hz
-console: omap_rng omap_rng: OMAP Random Number Generator ver. 00
-console: Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-console: serial8250.0: ttyS0 at MMIO 0x4806a000 (irq = 72) is a 16550A
-console: serial8250.1: ttyS1 at MMIO 0x4806c000 (irq = 73) is a 16550A
-console: console [ttyS1] enabled
-console: serial8250.2: ttyS2 at MMIO 0x4806e000 (irq = 74) is a 16550A
-console: brd: module loaded
-console: loop: module loaded
--console: Menelaus rev 2.2
-console: OneNAND driver initializing
-console: omap2-onenand omap2-onenand: initializing on CS0, phys base 
-0x04000000, virtual base c8880000
-console: Muxed OneNAND(DDP) 256MB 1.8V 16-bit (0x48)
-console: OneNAND version = 0x0000
-console: Scanning device for bad blocks
-console: Creating 5 MTD partitions on "omap2-onenand":
-console: 0x000000000000-0x000000020000 : "bootloader"
-console: 0x000000020000-0x000000080000 : "config"
-console: 0x000000080000-0x000000280000 : "kernel"
-console: 0x000000280000-0x000000680000 : "initfs"
-console: 0x000000680000-0x000010000000 : "rootfs"
-console: PPP generic driver version 2.4.2
-console: PPP Deflate Compression module registered
-console: PPP BSD Compression module registered
-console: tun: Universal TUN/TAP device driver, 1.6
-console: tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
-console: mice: PS/2 mouse device common for all mice
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sending read cmd 0x82 failed
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 2 bytes of -121 total
-console: lm8323 2-0045: sent 3 bytes of -121 total
-console: lm8323 2-0045: sent 3 bytes of -121 total
-console: lm8323 2-0045: sending read cmd 0x80 failed
-console: lm8323 2-0045: device not found
-console: TSC2005 driver initializing
-PASS (2.30 s)
-RESULTS    : PASS 2 | ERROR 0 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0 | 
-CANCEL 0
-JOB TIME   : 5.49 s
+>  
+>  #endif
+> diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+> index 54fa0676abf1..f5aba8ae2675 100644
+> --- a/include/hw/pci/pci_device.h
+> +++ b/include/hw/pci/pci_device.h
+> @@ -56,7 +56,7 @@ typedef struct PCIReqIDCache PCIReqIDCache;
+>  struct PCIDevice {
+>      DeviceState qdev;
+>      bool partially_hotplugged;
+> -    bool has_power;
+> +    bool is_enabled;
+>  
+>      /* PCI config space */
+>      uint8_t *config;
+> diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
+> index 095fb0c9edf9..d9a39daccac4 100644
+> --- a/include/hw/pci/pcie_sriov.h
+> +++ b/include/hw/pci/pcie_sriov.h
+> @@ -18,7 +18,6 @@
+>  struct PCIESriovPF {
+>      uint16_t num_vfs;   /* Number of virtual functions created */
+>      uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
+> -    const char *vfname; /* Reference to the device type used for the VFs */
+>      PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
+>  };
+>  
+> @@ -27,10 +26,11 @@ struct PCIESriovVF {
+>      uint16_t vf_number; /* Logical VF number of this function */
+>  };
+>  
+> -void pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+> +bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                          const char *vfname, uint16_t vf_dev_id,
+>                          uint16_t init_vfs, uint16_t total_vfs,
+> -                        uint16_t vf_offset, uint16_t vf_stride);
+> +                        uint16_t vf_offset, uint16_t vf_stride,
+> +                        Error **errp);
+
+Returning false to indicate an error is a bad idea -
+most APIs we have return 0 on success, < 0 on error.
+Or just use errp.
+
+
+>  void pcie_sriov_pf_exit(PCIDevice *dev);
+>  
+>  /* Set up a VF bar in the SR/IOV bar area */
+> diff --git a/hw/net/igb.c b/hw/net/igb.c
+> index 0b5c31a58bba..1079a33d4000 100644
+> --- a/hw/net/igb.c
+> +++ b/hw/net/igb.c
+> @@ -447,9 +447,16 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
+>  
+>      pcie_ari_init(pci_dev, 0x150);
+>  
+> -    pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
+> -        IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
+> -        IGB_VF_OFFSET, IGB_VF_STRIDE);
+> +    if (!pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET,
+> +                            TYPE_IGBVF, IGB_82576_VF_DEV_ID,
+> +                            IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
+> +                            IGB_VF_OFFSET, IGB_VF_STRIDE,
+> +                            errp)) {
+> +        pcie_cap_exit(pci_dev);
+> +        igb_cleanup_msix(s);
+> +        msi_uninit(pci_dev);
+> +        return;
+> +    }
+>  
+>      pcie_sriov_pf_init_vf_bar(pci_dev, IGBVF_MMIO_BAR_IDX,
+>          PCI_BASE_ADDRESS_MEM_TYPE_64 | PCI_BASE_ADDRESS_MEM_PREFETCH,
+> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> index f026245d1e9e..f8df622fe590 100644
+> --- a/hw/nvme/ctrl.c
+> +++ b/hw/nvme/ctrl.c
+> @@ -8031,7 +8031,8 @@ static uint64_t nvme_bar_size(unsigned total_queues, unsigned total_irqs,
+>      return bar_size;
+>  }
+>  
+> -static void nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset)
+> +static bool nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset,
+> +                            Error **errp)
+>  {
+>      uint16_t vf_dev_id = n->params.use_intel_id ?
+>                           PCI_DEVICE_ID_INTEL_NVME : PCI_DEVICE_ID_REDHAT_NVME;
+> @@ -8040,12 +8041,17 @@ static void nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset)
+>                                        le16_to_cpu(cap->vifrsm),
+>                                        NULL, NULL);
+>  
+> -    pcie_sriov_pf_init(pci_dev, offset, "nvme", vf_dev_id,
+> -                       n->params.sriov_max_vfs, n->params.sriov_max_vfs,
+> -                       NVME_VF_OFFSET, NVME_VF_STRIDE);
+> +    if (!pcie_sriov_pf_init(pci_dev, offset, "nvme", vf_dev_id,
+> +                            n->params.sriov_max_vfs, n->params.sriov_max_vfs,
+> +                            NVME_VF_OFFSET, NVME_VF_STRIDE,
+> +                            errp)) {
+> +        return false;
+> +    }
+>  
+>      pcie_sriov_pf_init_vf_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY |
+>                                PCI_BASE_ADDRESS_MEM_TYPE_64, bar_size);
+> +
+> +    return true;
+>  }
+>  
+>  static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
+> @@ -8124,6 +8130,12 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+>          return false;
+>      }
+>  
+> +    if (!pci_is_vf(pci_dev) && n->params.sriov_max_vfs &&
+> +        !nvme_init_sriov(n, pci_dev, 0x120, errp)) {
+> +        msix_uninit(pci_dev, &n->bar0, &n->bar0);
+> +        return false;
+> +    }
+> +
+>      nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
+>  
+>      if (n->params.cmb_size_mb) {
+> @@ -8134,10 +8146,6 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+>          nvme_init_pmr(n, pci_dev);
+>      }
+>  
+> -    if (!pci_is_vf(pci_dev) && n->params.sriov_max_vfs) {
+> -        nvme_init_sriov(n, pci_dev, 0x120);
+> -    }
+> -
+>      return true;
+>  }
+
+why this change?
+
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 47f38375bb09..838c261c21f0 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -1524,7 +1524,7 @@ static void pci_update_mappings(PCIDevice *d)
+>              continue;
+>  
+>          new_addr = pci_bar_address(d, i, r->type, r->size);
+> -        if (!d->has_power) {
+> +        if (!d->is_enabled) {
+>              new_addr = PCI_BAR_UNMAPPED;
+>          }
+>  
+> @@ -1612,7 +1612,7 @@ void pci_default_write_config(PCIDevice *d, uint32_t addr, uint32_t val_in, int
+>          pci_update_irq_disabled(d, was_irq_disabled);
+>          memory_region_set_enabled(&d->bus_master_enable_region,
+>                                    (pci_get_word(d->config + PCI_COMMAND)
+> -                                   & PCI_COMMAND_MASTER) && d->has_power);
+> +                                   & PCI_COMMAND_MASTER) && d->is_enabled);
+>      }
+>  
+>      msi_write_config(d, addr, val_in, l);
+> @@ -2154,7 +2154,9 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+>          return;
+>      }
+>  
+> -    pci_set_power(pci_dev, true);
+> +    if (!pci_is_vf(pci_dev)) {
+> +        pci_set_enabled(pci_dev, true);
+> +    }
+
+why are you not enabling vfs specifically? seems confusing. you also
+duplicate this logic in a couple more places. needs a
+comment at least. Or better, add sane APIs that do this correctly.
+E.g. keep pci_set_power around?
+
+>  
+>      pci_dev->msi_trigger = pci_msi_trigger;
+>  }
+> @@ -2810,18 +2812,18 @@ MSIMessage pci_get_msi_message(PCIDevice *dev, int vector)
+>      return msg;
+>  }
+>  
+> -void pci_set_power(PCIDevice *d, bool state)
+> +void pci_set_enabled(PCIDevice *d, bool state)
+>  {
+> -    if (d->has_power == state) {
+> +    if (d->is_enabled == state) {
+>          return;
+>      }
+>  
+> -    d->has_power = state;
+> +    d->is_enabled = state;
+>      pci_update_mappings(d);
+>      memory_region_set_enabled(&d->bus_master_enable_region,
+>                                (pci_get_word(d->config + PCI_COMMAND)
+> -                               & PCI_COMMAND_MASTER) && d->has_power);
+> -    if (!d->has_power) {
+> +                               & PCI_COMMAND_MASTER) && d->is_enabled);
+> +    if (d->qdev.realized) {
+>          pci_device_reset(d);
+>      }
+>  }
+> diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
+> index dfe6fe618401..d7e13d72ce07 100644
+> --- a/hw/pci/pci_host.c
+> +++ b/hw/pci/pci_host.c
+> @@ -86,7 +86,7 @@ void pci_host_config_write_common(PCIDevice *pci_dev, uint32_t addr,
+>       * allowing direct removal of unexposed functions.
+>       */
+>      if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+> -        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+> +        !pci_dev->is_enabled || is_pci_dev_ejected(pci_dev)) {
+>          return;
+>      }
+>  
+> @@ -111,7 +111,7 @@ uint32_t pci_host_config_read_common(PCIDevice *pci_dev, uint32_t addr,
+>       * allowing direct removal of unexposed functions.
+>       */
+>      if ((pci_dev->qdev.hotplugged && !pci_get_function_0(pci_dev)) ||
+> -        !pci_dev->has_power || is_pci_dev_ejected(pci_dev)) {
+> +        !pci_dev->is_enabled || is_pci_dev_ejected(pci_dev)) {
+>          return ~0x0;
+>      }
+>  
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index 6db0cf69cd8a..f34c157e1fd3 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -394,7 +394,9 @@ static void pcie_set_power_device(PCIBus *bus, PCIDevice *dev, void *opaque)
+>  {
+>      bool *power = opaque;
+>  
+> -    pci_set_power(dev, *power);
+> +    if (!pci_is_vf(dev)) {
+> +        pci_set_enabled(dev, *power);
+> +    }
+>  }
+>  
+>  static void pcie_cap_update_power(PCIDevice *hotplug_dev)
+> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+> index da209b7f47fd..9ba34cf8f8ed 100644
+> --- a/hw/pci/pcie_sriov.c
+> +++ b/hw/pci/pcie_sriov.c
+> @@ -20,15 +20,29 @@
+>  #include "qapi/error.h"
+>  #include "trace.h"
+>  
+> -static PCIDevice *register_vf(PCIDevice *pf, int devfn,
+> -                              const char *name, uint16_t vf_num);
+> -static void unregister_vfs(PCIDevice *dev);
+> +static void unrealize_vfs(PCIDevice *dev, uint16_t total_vfs)
+> +{
+> +    for (uint16_t i = 0; i < total_vfs; i++) {
+> +        Error *err = NULL;
+> +        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+> +        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
+> +            error_reportf_err(err, "Failed to unplug: ");
+> +        }
+> +        object_unparent(OBJECT(vf));
+> +        object_unref(OBJECT(vf));
+> +    }
+> +    g_free(dev->exp.sriov_pf.vf);
+> +    dev->exp.sriov_pf.vf = NULL;
+> +}
+>  
+> -void pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+> +bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                          const char *vfname, uint16_t vf_dev_id,
+>                          uint16_t init_vfs, uint16_t total_vfs,
+> -                        uint16_t vf_offset, uint16_t vf_stride)
+> +                        uint16_t vf_offset, uint16_t vf_stride,
+> +                        Error **errp)
+>  {
+> +    BusState *bus = qdev_get_parent_bus(&dev->qdev);
+> +    int32_t devfn = dev->devfn + vf_offset;
+>      uint8_t *cfg = dev->config + offset;
+>      uint8_t *wmask;
+>  
+> @@ -36,7 +50,6 @@ void pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>                          offset, PCI_EXT_CAP_SRIOV_SIZEOF);
+>      dev->exp.sriov_cap = offset;
+>      dev->exp.sriov_pf.num_vfs = 0;
+> -    dev->exp.sriov_pf.vfname = g_strdup(vfname);
+>      dev->exp.sriov_pf.vf = NULL;
+>  
+>      pci_set_word(cfg + PCI_SRIOV_VF_OFFSET, vf_offset);
+> @@ -69,13 +82,35 @@ void pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+>      pci_set_word(wmask + PCI_SRIOV_SYS_PGSIZE, 0x553);
+>  
+>      qdev_prop_set_bit(&dev->qdev, "multifunction", true);
+> +
+> +    dev->exp.sriov_pf.vf = g_new(PCIDevice *, total_vfs);
+> +
+> +    for (uint16_t i = 0; i < total_vfs; i++) {
+> +        PCIDevice *vf = pci_new(devfn, vfname);
+> +        vf->exp.sriov_vf.pf = dev;
+> +        vf->exp.sriov_vf.vf_number = i;
+> +
+> +        if (!qdev_realize(&vf->qdev, bus, errp)) {
+> +            unrealize_vfs(dev, i);
+> +            return false;
+> +        }
+> +
+> +        /* set vid/did according to sr/iov spec - they are not used */
+> +        pci_config_set_vendor_id(vf->config, 0xffff);
+> +        pci_config_set_device_id(vf->config, 0xffff);
+> +
+> +        dev->exp.sriov_pf.vf[i] = vf;
+> +        devfn += vf_stride;
+> +    }
+> +
+> +    return true;
+>  }
+>  
+>  void pcie_sriov_pf_exit(PCIDevice *dev)
+>  {
+> -    unregister_vfs(dev);
+> -    g_free((char *)dev->exp.sriov_pf.vfname);
+> -    dev->exp.sriov_pf.vfname = NULL;
+> +    uint8_t *cfg = dev->config + dev->exp.sriov_cap;
+> +
+> +    unrealize_vfs(dev, pci_get_word(cfg + PCI_SRIOV_TOTAL_VF));
+>  }
+>  
+>  void pcie_sriov_pf_init_vf_bar(PCIDevice *dev, int region_num,
+> @@ -141,38 +176,11 @@ void pcie_sriov_vf_register_bar(PCIDevice *dev, int region_num,
+>      }
+>  }
+>  
+> -static PCIDevice *register_vf(PCIDevice *pf, int devfn, const char *name,
+> -                              uint16_t vf_num)
+> -{
+> -    PCIDevice *dev = pci_new(devfn, name);
+> -    dev->exp.sriov_vf.pf = pf;
+> -    dev->exp.sriov_vf.vf_number = vf_num;
+> -    PCIBus *bus = pci_get_bus(pf);
+> -    Error *local_err = NULL;
+> -
+> -    qdev_realize(&dev->qdev, &bus->qbus, &local_err);
+> -    if (local_err) {
+> -        error_report_err(local_err);
+> -        return NULL;
+> -    }
+> -
+> -    /* set vid/did according to sr/iov spec - they are not used */
+> -    pci_config_set_vendor_id(dev->config, 0xffff);
+> -    pci_config_set_device_id(dev->config, 0xffff);
+> -
+> -    return dev;
+> -}
+> -
+>  static void register_vfs(PCIDevice *dev)
+>  {
+>      uint16_t num_vfs;
+>      uint16_t i;
+>      uint16_t sriov_cap = dev->exp.sriov_cap;
+> -    uint16_t vf_offset =
+> -        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_OFFSET);
+> -    uint16_t vf_stride =
+> -        pci_get_word(dev->config + sriov_cap + PCI_SRIOV_VF_STRIDE);
+> -    int32_t devfn = dev->devfn + vf_offset;
+>  
+>      assert(sriov_cap > 0);
+>      num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
+> @@ -180,18 +188,10 @@ static void register_vfs(PCIDevice *dev)
+>          return;
+>      }
+>  
+> -    dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
+> -
+>      trace_sriov_register_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                               PCI_FUNC(dev->devfn), num_vfs);
+>      for (i = 0; i < num_vfs; i++) {
+> -        dev->exp.sriov_pf.vf[i] = register_vf(dev, devfn,
+> -                                              dev->exp.sriov_pf.vfname, i);
+> -        if (!dev->exp.sriov_pf.vf[i]) {
+> -            num_vfs = i;
+> -            break;
+> -        }
+> -        devfn += vf_stride;
+> +        pci_set_enabled(dev->exp.sriov_pf.vf[i], true);
+>      }
+>      dev->exp.sriov_pf.num_vfs = num_vfs;
+>  }
+> @@ -204,16 +204,8 @@ static void unregister_vfs(PCIDevice *dev)
+>      trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                                 PCI_FUNC(dev->devfn), num_vfs);
+>      for (i = 0; i < num_vfs; i++) {
+> -        Error *err = NULL;
+> -        PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+> -        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
+> -            error_reportf_err(err, "Failed to unplug: ");
+> -        }
+> -        object_unparent(OBJECT(vf));
+> -        object_unref(OBJECT(vf));
+> +        pci_set_enabled(dev->exp.sriov_pf.vf[i], false);
+>      }
+> -    g_free(dev->exp.sriov_pf.vf);
+> -    dev->exp.sriov_pf.vf = NULL;
+>      dev->exp.sriov_pf.num_vfs = 0;
+>      pci_set_word(dev->config + dev->exp.sriov_cap + PCI_SRIOV_NUM_VF, 0);
+>  }
+> 
+> -- 
+> 2.43.0
 
 
