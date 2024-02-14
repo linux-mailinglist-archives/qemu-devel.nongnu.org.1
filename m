@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8B4854C6E
+	by mail.lfdr.de (Postfix) with ESMTPS id 95866854C6F
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 16:18:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raH0t-0007o1-5X; Wed, 14 Feb 2024 10:17:31 -0500
+	id 1raH0y-0007pZ-L9; Wed, 14 Feb 2024 10:17:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0q-0007nh-U8
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0v-0007od-Op
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:34 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0p-0000NU-K9
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:28 -0500
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1raH0u-0000OA-DH
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 10:17:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707923846;
+ s=mimecast20190719; t=1707923851;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VPHqjxQpRiRtRDIIggbdguev1zt3QIU4HlnJgsRz948=;
- b=ApdS0P+S8AzNPNIIWxx9JHjE/mAfzViHwg9pSzaVuD7dlTMwm7X5R/cgPLgvAxtEHjrCbO
- 3WFQSZKLeFVG7RKpi6jdWIRUDExRJvnYLbZQsAcrwF5Bj2s8uLlE+j+M/O+LBS+k6B7wdz
- V+lae3UGUfvdV3Re+K6/RmsFMoXlhbA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693--8MLhHEdOGallgqmNQH38g-1; Wed, 14 Feb 2024 10:17:25 -0500
-X-MC-Unique: -8MLhHEdOGallgqmNQH38g-1
+ bh=One4X5o0fH7+3UMZ+ay4SRtGvmXlCFeNr2ddU55pqks=;
+ b=Lbh369pFgThH7GSOaTDgpVaXVOpZ7j5ttmppd/veG5BUXzrNC9urKlO53wQ6zrcBA5PsmB
+ /id98hVP1gCDIvtgSri7Vxh1y69KpLJJf9yw1tpZGvSeKetooZxH6RcFCz0G0S0VC80R3D
+ dkSAFKm+aFFSu6esYKUM/IfgeOwMt4U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-SdXVBWUDPMCn2hpTJ9VRlA-1; Wed,
+ 14 Feb 2024 10:17:28 -0500
+X-MC-Unique: SdXVBWUDPMCn2hpTJ9VRlA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD57985A588;
- Wed, 14 Feb 2024 15:17:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0DAD1C06915;
+ Wed, 14 Feb 2024 15:17:27 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.194.174])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0A1111C060B1;
- Wed, 14 Feb 2024 15:17:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 19A531C02ECA;
+ Wed, 14 Feb 2024 15:17:24 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -50,24 +50,25 @@ Cc: David Hildenbrand <david@redhat.com>,
  Germano Veit Michel <germano@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
  Raphael Norwitz <raphael@enfabrica.net>
-Subject: [PATCH v2 06/14] libvhost-user: No need to check for NULL when
- unmapping
-Date: Wed, 14 Feb 2024 16:16:53 +0100
-Message-ID: <20240214151701.29906-7-david@redhat.com>
+Subject: [PATCH v2 07/14] libvhost-user: Don't zero out memory for memory
+ regions
+Date: Wed, 14 Feb 2024 16:16:54 +0100
+Message-ID: <20240214151701.29906-8-david@redhat.com>
 In-Reply-To: <20240214151701.29906-1-david@redhat.com>
 References: <20240214151701.29906-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.531,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,46 +84,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We never add a memory region if mmap() failed. Therefore, no need to check
-for NULL.
+dev->nregions always covers only valid entries. Stop zeroing out other
+array elements that are unused.
 
 Reviewed-by: Raphael Norwitz <raphael@enfabrica.net>
 Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ subprojects/libvhost-user/libvhost-user.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index f43b5096d0..225283f764 100644
+index 225283f764..2e8b611385 100644
 --- a/subprojects/libvhost-user/libvhost-user.c
 +++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -247,11 +247,8 @@ vu_remove_all_mem_regs(VuDev *dev)
+@@ -888,13 +888,9 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
  
-     for (i = 0; i < dev->nregions; i++) {
-         VuDevRegion *r = &dev->regions[i];
--        void *ma = (void *)(uintptr_t)r->mmap_addr;
+             munmap((void *)(uintptr_t)r->mmap_addr, r->size + r->mmap_offset);
  
--        if (ma) {
--            munmap(ma, r->size + r->mmap_offset);
--        }
-+        munmap((void *)(uintptr_t)r->mmap_addr, r->size + r->mmap_offset);
+-            /*
+-             * Shift all affected entries by 1 to close the hole at index i and
+-             * zero out the last entry.
+-             */
++            /* Shift all affected entries by 1 to close the hole at index. */
+             memmove(dev->regions + i, dev->regions + i + 1,
+                     sizeof(VuDevRegion) * (dev->nregions - i - 1));
+-            memset(dev->regions + dev->nregions - 1, 0, sizeof(VuDevRegion));
+             DPRINT("Successfully removed a region\n");
+             dev->nregions--;
+             i--;
+@@ -2119,7 +2115,6 @@ vu_init(VuDev *dev,
+         DPRINT("%s: failed to malloc mem regions\n", __func__);
+         return false;
      }
-     dev->nregions = 0;
- }
-@@ -888,11 +885,8 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
-     for (i = 0; i < dev->nregions; i++) {
-         if (reg_equal(&dev->regions[i], msg_region)) {
-             VuDevRegion *r = &dev->regions[i];
--            void *ma = (void *) (uintptr_t) r->mmap_addr;
+-    memset(dev->regions, 0, VHOST_USER_MAX_RAM_SLOTS * sizeof(dev->regions[0]));
  
--            if (ma) {
--                munmap(ma, r->size + r->mmap_offset);
--            }
-+            munmap((void *)(uintptr_t)r->mmap_addr, r->size + r->mmap_offset);
- 
-             /*
-              * Shift all affected entries by 1 to close the hole at index i and
+     dev->vq = malloc(max_queues * sizeof(dev->vq[0]));
+     if (!dev->vq) {
 -- 
 2.43.0
 
