@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4877E854B08
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 15:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB47854B26
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 15:11:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raFsI-0003oT-Cu; Wed, 14 Feb 2024 09:04:34 -0500
+	id 1raFxX-00009m-FR; Wed, 14 Feb 2024 09:09:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1raFs8-0003nf-UF
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:04:27 -0500
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1raFxV-00009U-HZ
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:09:57 -0500
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1raFs2-0007CG-B9
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:04:24 -0500
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6de3141f041so1719230b3a.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 06:04:17 -0800 (PST)
+ id 1raFxT-0008To-RN
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 09:09:57 -0500
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e11596b2e7so193925b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 06:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707919457; x=1708524257;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1707919794; x=1708524594;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zTwetz9LHqH+clEG8ppyvOGMcGi8TXZ9ML9fD984fr0=;
- b=ZcSyKRmBiteyuw5kbsJoF7JGrexGXZcyWmQQ04ELh6UYxwJRl4bnfAYOgakqZ2OT2l
- g5tuw+MNrJszthYOLyxd/W4QpbtdtaoOJMbk335rFspwz5AWJJ7FzOvN8IWukkLeC9XM
- HqXDKKL+HzevhC9/7flXAlFyAuFvZ1xqBoGXfGN6lQd9FqmLHtevIoZQXE7HQipP+30x
- iWtO/eLAiwzqkXtBXpQIJb2fs1FnFxauByvMdozTRT6aVwav+Yl4DIoZ0vOdfh3QvnfH
- 1T808knPR5JeEd6kTEWCmzfxyixqL7sxQbsaUi5pvrXEXhkeHKpH/Mp4pB0D/VGBIzF5
- IRRA==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cMBeqTwCC6IF4gbuPZ/OHy0dN2ULPv5y8QaQs6X4vaw=;
+ b=fsDVbJpbuv7Hz7M5xUguhfepOd/Ga+gJ6yOasAGO+Z8RNysgwDbe5keAAOM2mQDd+Q
+ xm8y+z7Ub4NDZdyPGa6xRhOE8fGX6jSq0hpjC6XTDQ8Mtb+tFEoqjfcocPXEsc7/dPRJ
+ ybyFexCxQl59iE/6IPib6P5Lf45KrR11mOiOIKkIGCDqMqCtjD6P5FZWFjaPfznVSPfg
+ ngvOJX3pEqTqYGtKYgmYp5Txh4zuZlzCmnhK03327/hh/O4bKH0y2tUaK7VKmgpv8FgU
+ NUVfiByKmcG7cX5lcjkgDjshmQMM/d1b1qcZBYrblCPXd30+VAK0HGJ9r4GYlaFBg1Sd
+ +rZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707919457; x=1708524257;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zTwetz9LHqH+clEG8ppyvOGMcGi8TXZ9ML9fD984fr0=;
- b=LXs6eC2BCfzKUUb3deYbgCbASlJJ3ERd3OZkV3EXMburKvWWesZjJ/adEBqLCvTdc7
- tniriQoLF0/DEP7HyrLkhgWTCvtTJ6FKDpZydL5eEokF0wsKnYx72Xqj1ZfCLx7ZpyR6
- YZZ2k6e/JwUDZaJCl13PH2Hu6MsCgl+Ep7wFMkubzQl/r+VwmN1dNTnmp21v/tdmk0+9
- Lq5NTyG4yDNk+eyDujnK7MF+TfV+XTIOO0ziE2JHqScwY5OIKp+mdPwdhLXSCVGNVYnM
- SQUy8AukU5QxAP8RvvG+d/PVegS+eHI1gi6b2WFNcEcqwf3SBWR+3QhmQllxOvuRVLuF
- 0BsA==
-X-Gm-Message-State: AOJu0YyDGjna8lKeEJMHgUrfSUcSgGcPbi8ehS05WvnXaiM59IR1s2mz
- ep9l/ObsOKkm6BpNKDsTWEK9sA/hhu347bG/5Es1xTp2oX4FYLxFTeooEqjkBVU=
-X-Google-Smtp-Source: AGHT+IGltqgmv/6WrDiHDRyL4EaJ3d6G/FAlIVqnlC7gofryD/2xUUAtobPdq6snArUnPUojapYE5g==
-X-Received: by 2002:a05:6a21:1706:b0:19e:c7d8:6246 with SMTP id
- nv6-20020a056a21170600b0019ec7d86246mr3299268pzb.13.1707919456990; 
- Wed, 14 Feb 2024 06:04:16 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707919794; x=1708524594;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cMBeqTwCC6IF4gbuPZ/OHy0dN2ULPv5y8QaQs6X4vaw=;
+ b=UFSlhqvXSy+suCKob0kv33/GBZSd0xPcGMrtp8YvUNO9fgeCKcN21sl+/17o5y52hh
+ 4yVQQ+5FnRxIalgAt6irHxHwTdvKG/mUFxxoTve7eKlgWtSoc9jQxNM//wMn5fGDa/Jq
+ 6kZiP8HO7Jdhewd2wnvlo5e6nsnoZIAUqAe69Wbqf6w1rs6lK93lH/OxvzNMdp6LauT5
+ tFSHzTp3gaK8Xcy5C2q29QxDg3w7zK6SXx87d6Mop6OIiCvqfWBh3OWShXWAXoj/1a2q
+ ZXyCpEfAuZLtV57pK1ZIZOfhX7btjqZ1/Y5MJwVUWIWAEpql8Y20hssDzYioeIL7cwzG
+ q7lA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX9eMy8wc/+IfbzF1jTkM3Y0JnL5kXqTpIqGRTy888y2vsT8r7TtstrL6zvvAuGee6UTb6RnWALdTDtcZ8VZv87Yuow3ZftDI+8mLB13BHfDZHWwPhfmc9wG3at+ymuvu/JgukoNCnQfsJVi93bnmMfwWcyP4XyX4hqr4zRkCIfZwdrtTtiEh+1XGFj020+Btv/YIv3OLFgG0buzxP71YQ+nP99pR9gajNawD1LNNeNZ1pZMZYEvVysJB+eZFwJ
-Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with UTF8SMTPSA id
- i66-20020a62c145000000b006e04f2a438bsm9722572pfg.105.2024.02.14.06.04.14
+ AJvYcCUg8OHHIZJVmSnU/ffk4u6hf91PvXEhLzSfkyjJabX7evCIZCjglISHmBM4R+7JYybGY8dAPz3kdA9thz9xJPdAfaeZQao=
+X-Gm-Message-State: AOJu0YzdR6Kzlra0C60d4NMCBp7TRgNiiEFE3cObtiRFydvMzlx5UPNU
+ eRJElJqd54qTtLU3JaURPPrLZFuVjMIATum7wt5KplgJvOmhXqdtfbMbdH9b7BE=
+X-Google-Smtp-Source: AGHT+IECDc/sbmAZQeCQvIKuYnf73AleB3PHAFBrG8cN9iDrH4plb9MrjzgaFBp9/Hd1apehD0Exvg==
+X-Received: by 2002:a05:6a00:420e:b0:6e1:158c:3f9a with SMTP id
+ cd14-20020a056a00420e00b006e1158c3f9amr775269pfb.3.1707919794138; 
+ Wed, 14 Feb 2024 06:09:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUGHESNdK8gOlGKenJ5BOyp9ZJByZmCeTwK8fCis3ilsxlEV71fDDc+b2OAfVzcO+bdQSJgcMrgrXCqqGWkhRosFNimBCWuIhiNwZ7LOicjYe31QA00SuKKbKLnz34t+oBnanFMemeOsjQDw81NXlF5AMUkfYjLy3ZASlihzNXQzuVq8nMT07vtKx77CO9r12YHNz/4nsueOg1HhBRtDwes3FGuBiEQkGDyR5ZgHgR14h+JRp8il6cn2czTuc9N8EydEjhp0W7KqOnZlbywcsv+D6I2dpSssiyO0j29zOKBTTXgDWoFCbkEhg3Y5XeruXxF17sowjYGLUSZOIOnF3rAi1ZZ322KnYY0adhD/5JxY69Vw+IKHN0bescqKDVE5SghvZRcNCq31AwwGK4XukkpUlRQrk4hrpwh5g==
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with ESMTPSA id
+ b18-20020aa78712000000b006dfbecb5027sm9575103pfo.171.2024.02.14.06.09.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Feb 2024 06:04:16 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 14 Feb 2024 23:03:58 +0900
-Subject: [PATCH v7 3/3] tests/qtest: Depend on dbus_display1_dep
+ Wed, 14 Feb 2024 06:09:53 -0800 (PST)
+Message-ID: <c7369ada-96b1-41ad-b141-ff7f1e1dc291@daynix.com>
+Date: Wed, 14 Feb 2024 23:09:50 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240214-dbus-v7-3-7eff29f04c34@daynix.com>
-References: <20240214-dbus-v7-0-7eff29f04c34@daynix.com>
-In-Reply-To: <20240214-dbus-v7-0-7eff29f04c34@daynix.com>
-To: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 9/9] hw/nvme: Refer to dev->exp.sriov_pf.num_vfs
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org
+References: <20240214-reuse-v4-0-89ad093a07f4@daynix.com>
+ <20240214-reuse-v4-9-89ad093a07f4@daynix.com>
+ <20240214015457-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240214015457-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,29 +109,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It ensures dbus-display1.c will not be recompiled.
+On 2024/02/14 16:07, Michael S. Tsirkin wrote:
+> On Wed, Feb 14, 2024 at 02:13:47PM +0900, Akihiko Odaki wrote:
+>> NumVFs may not equal to the current effective number of VFs because VF
+>> Enable is cleared, NumVFs is set after VF Enable is set, or NumVFs is
+>> greater than TotalVFs.
+>>
+>> Fixes: 11871f53ef8e ("hw/nvme: Add support for the Virtualization Management command")
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> 
+> I don't get what this is saying about VF enable.
+> This code will not trigger on numVFs write when VF enable is set.
+> Generally this commit makes no sense on its own, squash it with
+> the pci core change pls.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- tests/qtest/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This code is meant to run when it is clearing VF Enable, and its 
+functionality is to change the state of VFs currently enabled so that we 
+can disable them.
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 39557d5ecbb0..eb075fcda283 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -344,7 +344,7 @@ if vnc.found()
- endif
- 
- if dbus_display
--  qtests += {'dbus-display-test': [dbus_display1, gio]}
-+  qtests += {'dbus-display-test': [dbus_display1_dep, gio]}
- endif
- 
- qtest_executables = {}
+However, NumVFs does not necessarily represent VFs currently being 
+enabled, and have a different value in the case described above. Such 
+cases exist even before the earlier patches and this fix is 
+independently meaningful.
 
--- 
-2.43.0
-
+> 
+>> ---
+>>   hw/nvme/ctrl.c | 5 ++---
+>>   1 file changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+>> index f8df622fe590..daedda5d326f 100644
+>> --- a/hw/nvme/ctrl.c
+>> +++ b/hw/nvme/ctrl.c
+>> @@ -8481,7 +8481,7 @@ static void nvme_sriov_pre_write_ctrl(PCIDevice *dev, uint32_t address,
+>>       NvmeSecCtrlEntry *sctrl;
+>>       uint16_t sriov_cap = dev->exp.sriov_cap;
+>>       uint32_t off = address - sriov_cap;
+>> -    int i, num_vfs;
+>> +    int i;
+>>   
+>>       if (!sriov_cap) {
+>>           return;
+>> @@ -8489,8 +8489,7 @@ static void nvme_sriov_pre_write_ctrl(PCIDevice *dev, uint32_t address,
+>>   
+>>       if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
+>>           if (!(val & PCI_SRIOV_CTRL_VFE)) {
+>> -            num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
+>> -            for (i = 0; i < num_vfs; i++) {
+>> +            for (i = 0; i < dev->exp.sriov_pf.num_vfs; i++) {
+>>                   sctrl = &n->sec_ctrl_list.sec[i];
+>>                   nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
+>>               }
+>>
+>> -- 
+>> 2.43.0
+> 
 
