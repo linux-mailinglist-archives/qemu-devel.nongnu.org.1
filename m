@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E848547F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:17:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 385AA854830
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 Feb 2024 12:23:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raDFQ-0005e4-SG; Wed, 14 Feb 2024 06:16:16 -0500
+	id 1raDFZ-0005rV-6G; Wed, 14 Feb 2024 06:16:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF4-0005A2-T8
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:57 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF9-0005DW-IE
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:16:00 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF3-0007Jh-IV
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:54 -0500
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1raDF8-0007Lq-0X
+ for qemu-devel@nongnu.org; Wed, 14 Feb 2024 06:15:59 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1707909353;
+ s=mimecast20190719; t=1707909356;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=K17K/uN0886Kn47U734ewDBEWNLSENKFpu38B+iNS80=;
- b=YVx+55WJWmrRsvt8TXZZikCC7XyvetD9aQxaVPv1wFBpQt1rLlwm9Mi9rWZFQVEyCtwQBB
- 2lOVzBg/xlMsaVOvcrE7dDDszB8lkLfZqB4CPjOG+pbTrC9nR6E/oTb1CKMuVQ67DVPLhl
- mf8QrBTita1bcg3Fk/f+wi/q5AzK+lU=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/ggdbY/LPAEpu4bQnWL4QSYX6TO+5Q3+mttO5tostwE=;
+ b=TTQeaM2V+B0NsPn9GYY/Yz+P0SMtjoijn0Cy9BbeUo3RKo1ZX2VJHMnOgUSZgFD23FrbmA
+ VJ0ekf9vq5Mt6wiQnd0+tfh5/GWPz6O0tTENiZDP/yEPDm7O5TNlJSuyBlfyvudo3XQesS
+ G6joYvDQ0ZEAqVO59+AFRZ9q8+nrEz4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-508-nycbCbexNlOHydhJBBFjhA-1; Wed, 14 Feb 2024 06:15:51 -0500
-X-MC-Unique: nycbCbexNlOHydhJBBFjhA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a2cb0d70d6cso340244066b.2
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:51 -0800 (PST)
+ us-mta-18-3h9edssKPGmvznQtXsHYIA-1; Wed, 14 Feb 2024 06:15:54 -0500
+X-MC-Unique: 3h9edssKPGmvznQtXsHYIA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a3d481c7d8cso27693366b.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 03:15:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707909350; x=1708514150;
+ d=1e100.net; s=20230601; t=1707909353; x=1708514153;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K17K/uN0886Kn47U734ewDBEWNLSENKFpu38B+iNS80=;
- b=H3f+SHIvWeCcYIuL4dh493qrNz84M6kC8sVXXQXbCTUtzohWpDK8BRzqifRhJzmvIH
- FMVxTS1MqAKPQjn/qzvWoF1n2YHcog/blhhs5TMNNvF7lmdBNo6eewut5Fa8p6+iXFg2
- xFt7wl2Erd1W/0agrIZiFspnCLslwv45eotuKbmY+/qhcHsBGOIpT6hOZytvhwR9zdDA
- Lk7mLzcu442Z7oDiawFihWMpvqEMNohwFv9BbDi+30NdHfED7SGyc55FtLQVj3cYk43g
- rSQhW44GzZMyNCR1bVIB14/k7US7pzlrtsJ2NVyjIIU25Be/eMxALM3fj/B5Yd89aEcy
- 53Gw==
-X-Gm-Message-State: AOJu0YxWZQAmVUydBeKKr1339VPpbR1/PJM3b3oqeUi0Nb9pIo+ysxfb
- BO1Ef/mHshcjczmvIR0DcMqyHe0ou1JWZPc4LL3joYubSFT9yeNI2pKzMGE5IyU9AQ2HBFN9WmG
- EGCCJkPn0Yt45F2zBIansKeSA7el1/S9lnttlcDUVnY25/mE3tmXGBNzHliO69hh9LOHy55rwEu
- avbRXTX5Kt81NFDCgMntVsva5yQ2O0fg==
-X-Received: by 2002:a17:906:a2c9:b0:a3c:8299:9c5f with SMTP id
- by9-20020a170906a2c900b00a3c82999c5fmr1524904ejb.75.1707909350167; 
- Wed, 14 Feb 2024 03:15:50 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE9ro8RzYCRQT3ChPXndgElsvWkD4U4e0zmV+QarAOpok0ZrKscCzCutBzJNvgO0dc7TqTYFQ==
-X-Received: by 2002:a17:906:a2c9:b0:a3c:8299:9c5f with SMTP id
- by9-20020a170906a2c900b00a3c82999c5fmr1524882ejb.75.1707909349757; 
- Wed, 14 Feb 2024 03:15:49 -0800 (PST)
+ bh=/ggdbY/LPAEpu4bQnWL4QSYX6TO+5Q3+mttO5tostwE=;
+ b=j+VEyasWnrBVupl9oDFliFQYCYElwOiUbAdL1j277ZI665D/8kjxhaBdjcIOvWvy8r
+ HBuicnisGyu0AC9fLgHr7hSWbir96YAmY02BRmtAUC91ODoZJFKOlW2ENS01ki1ob3JM
+ icD3HIEYHgLeXwQXribYTi4yb7xvRh3UwjIaGXWuCVe5ZHG/GbmDEBpv7WjDxPDE/24S
+ XEysGusLXeMxz3RG6jZcewMbQ9KujFRRpMRQiKQPBheJnEwp3Sdu9mxpevjzuOAsKGSR
+ qCB4jBb7rFtC/J4r3gy+UmNQxVjb37aWN4EcPPzvpXu2qKVW/Nc69IPhQrCJzU2nYdZD
+ VV1g==
+X-Gm-Message-State: AOJu0YyaZj+mdVaeTqyrKc1BIbV8BPzM3+5mqWzhvQ+9Maw5KTkPSxeN
+ fzHDlT+5OwnTTkVk6eMARKWohQ/8txnwbaDCd3hKUN2SNcztKmfbL9/8wyVoMxr1cKgSBmzInSW
+ u8fcrFcmo8xWwF/KwHM3TVfW5d0yfKz2Rt8WOdn1XLwMmQx6GIAS9C4bVySBGQSULMXetQ95Ibl
+ +PymU2rbhzmjw9KsQuZT9F3BFWANfsTA==
+X-Received: by 2002:a17:906:bc59:b0:a38:916e:a4fe with SMTP id
+ s25-20020a170906bc5900b00a38916ea4femr1588437ejv.39.1707909352960; 
+ Wed, 14 Feb 2024 03:15:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFBmqSqXj6AOCkWo4acFUHX1+O3Rkj5lOUDH2bVtG17TnOg1qkrOKN/t3AYiKdcX7Nbo/Y2/g==
+X-Received: by 2002:a17:906:bc59:b0:a38:916e:a4fe with SMTP id
+ s25-20020a170906bc5900b00a38916ea4femr1588424ejv.39.1707909352540; 
+ Wed, 14 Feb 2024 03:15:52 -0800 (PST)
 X-Forwarded-Encrypted: i=1;
- AJvYcCWcX+cy8xzEBOYB9PvKS3QeNB7mqfN3Jy1g9t23D6ICCt4iHIS88MR+WnmWv/H4jDkapfoDTvz8NE7YZcnjvgxgQ2qP5V2agaYw9jClKL027arCX9E0CJM5XCygInKgi50gROFtHLROwG2/aZ6ke3DqJ7voIHo=
+ AJvYcCXStH8YTHn0bmCotcCK7lny7JbxAa/yARMP94HDxG5eHJIciRZJp6IlytLC4L6Pws+GQjGPfUOhwG9v7jauvDhGClJyMLuBNcPiDMCB7QI+vVbvOPt2e+wgCZRI0s3uUA==
 Received: from redhat.com ([2.52.26.67]) by smtp.gmail.com with ESMTPSA id
- ll5-20020a170907190500b00a3d120e311asm1316390ejc.117.2024.02.14.03.15.48
+ lj8-20020a170907188800b00a3d2e685ff2sm805230ejc.78.2024.02.14.03.15.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 03:15:49 -0800 (PST)
-Date: Wed, 14 Feb 2024 06:15:47 -0500
+ Wed, 14 Feb 2024 03:15:52 -0800 (PST)
+Date: Wed, 14 Feb 2024 06:15:50 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 48/60] tests/acpi: Update DSDT.cxl to reflect change _STA
- return value.
-Message-ID: <b24a981b9f1c4767aaea815e504a2c7aeb405d72.1707909001.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
+Subject: [PULL 49/60] hw/cxl: Update HDM Decoder capability to version 3
+Message-ID: <ae243dbfc45eb6d91b34d0ecb73b104a9ee0d058.1707909001.git.mst@redhat.com>
 References: <cover.1707909001.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -86,8 +84,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.504,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UPPERCASE_50_75=0.008 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,37 +103,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-_STA will now return 0xB (in common with most other devices)
-rather than not setting the bits to indicate this fake device
-has not been enabled, and self tests haven't passed.
+Part of standardizing the QEMU code on CXL r3.1.
+No fuctional changes as everything added is optional and
+it is set as not implemented.
 
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240126120132.24248-13-Jonathan.Cameron@huawei.com>
+Message-Id: <20240126121636.24611-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/q35/DSDT.cxl                | Bin 9713 -> 9714 bytes
- 2 files changed, 1 deletion(-)
+ include/hw/cxl/cxl_component.h | 16 ++++++++++++++--
+ hw/cxl/cxl-component-utils.c   | 10 +++++++++-
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 9ce0f596cc..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/DSDT.cxl",
-diff --git a/tests/data/acpi/q35/DSDT.cxl b/tests/data/acpi/q35/DSDT.cxl
-index 145301c52af9a17242bb306c210f8a7e0f01b827..afcdc0d0ba8e41bb70ac20a78dcc8562ca0cb74b 100644
-GIT binary patch
-delta 64
-zcmez9{mGllCD<k8lPUuP<Nb|X6BX6{S>uD9;-j0~S)C(%d^zGhJY9GlodY}#3=GW~
-UL^$JvLmU~FaB*)wsA#|f0Fwq1RsaA1
-
-delta 63
-zcmez5{n4AtCD<k8qbdUf<M)kR6BX6`SmT48;-j0~Se+w$d^zGhJY9GlodY}#3=GW~
-TL^$GuLmU~FFm67iXutvhh3yhn
-
+diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+index 5227a8e833..7d3edef1bf 100644
+--- a/include/hw/cxl/cxl_component.h
++++ b/include/hw/cxl/cxl_component.h
+@@ -109,8 +109,9 @@ REG32(CXL_RAS_ERR_HEADER0, CXL_RAS_REGISTERS_OFFSET + 0x18)
+     (CXL_SEC_REGISTERS_OFFSET + CXL_SEC_REGISTERS_SIZE)
+ #define CXL_LINK_REGISTERS_SIZE   0x38
+ 
+-/* 8.2.5.12 - CXL HDM Decoder Capability Structure */
+-#define HDM_DECODE_MAX 10 /* 8.2.5.12.1 */
++/* CXL r3.1 Section 8.2.4.20: CXL HDM Decoder Capability Structure */
++#define HDM_DECODE_MAX 10 /* Maximum decoders for Devices */
++#define CXL_HDM_CAPABILITY_VERSION 3
+ #define CXL_HDM_REGISTERS_OFFSET \
+     (CXL_LINK_REGISTERS_OFFSET + CXL_LINK_REGISTERS_SIZE)
+ #define CXL_HDM_REGISTERS_SIZE (0x10 + 0x20 * HDM_DECODE_MAX)
+@@ -133,6 +134,11 @@ REG32(CXL_RAS_ERR_HEADER0, CXL_RAS_REGISTERS_OFFSET + 0x18)
+             FIELD(CXL_HDM_DECODER##n##_CTRL, COMMITTED, 10, 1)                 \
+             FIELD(CXL_HDM_DECODER##n##_CTRL, ERR, 11, 1)                       \
+             FIELD(CXL_HDM_DECODER##n##_CTRL, TYPE, 12, 1)                      \
++            FIELD(CXL_HDM_DECODER##n##_CTRL, BI, 13, 1)                        \
++            FIELD(CXL_HDM_DECODER##n##_CTRL, UIO, 14, 1)                       \
++            FIELD(CXL_HDM_DECODER##n##_CTRL, UIG, 16, 4)                       \
++            FIELD(CXL_HDM_DECODER##n##_CTRL, UIW, 20, 4)                       \
++            FIELD(CXL_HDM_DECODER##n##_CTRL, ISP, 24, 4)                       \
+   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_LO,                                   \
+         CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                          \
+   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_HI,                                   \
+@@ -148,6 +154,12 @@ REG32(CXL_HDM_DECODER_CAPABILITY, CXL_HDM_REGISTERS_OFFSET)
+     FIELD(CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_256B, 8, 1)
+     FIELD(CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_4K, 9, 1)
+     FIELD(CXL_HDM_DECODER_CAPABILITY, POISON_ON_ERR_CAP, 10, 1)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, 3_6_12_WAY, 11, 1)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, 16_WAY, 12, 1)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, UIO, 13, 1)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, UIO_DECODER_COUNT, 16, 4)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, MEMDATA_NXM_CAP, 20, 1)
++    FIELD(CXL_HDM_DECODER_CAPABILITY, SUPPORTED_COHERENCY_MODEL, 21, 2)
+ REG32(CXL_HDM_DECODER_GLOBAL_CONTROL, CXL_HDM_REGISTERS_OFFSET + 4)
+     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, POISON_ON_ERR_EN, 0, 1)
+     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, HDM_DECODER_ENABLE, 1, 1)
+diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+index 5ddd47ed8d..a55cf5a036 100644
+--- a/hw/cxl/cxl-component-utils.c
++++ b/hw/cxl/cxl-component-utils.c
+@@ -243,6 +243,14 @@ static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
+     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, INTERLEAVE_4K, 1);
+     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
+                      POISON_ON_ERR_CAP, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 3_6_12_WAY, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, 16_WAY, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, UIO, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
++                     UIO_DECODER_COUNT, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY, MEMDATA_NXM_CAP, 0);
++    ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_CAPABILITY,
++                     SUPPORTED_COHERENCY_MODEL, 0); /* Unknown */
+     ARRAY_FIELD_DP32(reg_state, CXL_HDM_DECODER_GLOBAL_CONTROL,
+                      HDM_DECODER_ENABLE, 0);
+     write_msk[R_CXL_HDM_DECODER_GLOBAL_CONTROL] = 0x3;
+@@ -326,7 +334,7 @@ void cxl_component_register_init_common(uint32_t *reg_state,
+         return;
+     }
+ 
+-    init_cap_reg(HDM, 5, 1);
++    init_cap_reg(HDM, 5, CXL_HDM_CAPABILITY_VERSION);
+     hdm_init_common(reg_state, write_msk, type);
+ 
+     if (caps < 5) {
 -- 
 MST
 
