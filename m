@@ -2,86 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94380856E62
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 21:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8A3856DFD
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 20:44:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rai7h-0003aT-OS; Thu, 15 Feb 2024 15:14:21 -0500
+	id 1rahdD-0002Z0-3Q; Thu, 15 Feb 2024 14:42:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rai7f-0003a9-S0; Thu, 15 Feb 2024 15:14:19 -0500
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rahdB-0002YT-Ec
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 14:42:49 -0500
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rai7d-0004zv-Ro; Thu, 15 Feb 2024 15:14:19 -0500
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-51178bbb5d9so10523e87.2; 
- Thu, 15 Feb 2024 12:14:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rahdA-0007cX-0N
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 14:42:49 -0500
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1d7881b1843so11316515ad.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 11:42:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708028055; x=1708632855; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QxExqKLIxTmaSxNlYnPZSVjMIQEFl7DX9ZXUow+7Z+k=;
- b=gqzMCev8+kkr8cj4ffIifoDB28YbIUJeK2Ab1eo9H8ZnlMBTgkPmaMfbgSopGTww71
- Zh1XXBGgbAw3fhnDe1LFqmOfaEeW+3YrZFWNecjq+IiNkfKsgOPcp3sC9vKg4xNw/Dam
- B0QbuSPrIFgKJ40I5t7iBhWzqhtm3fBDiUxjfV4F9r5Fnt8OKti86R+7u4nNuuNlZ4Vc
- e32J27Fg9bmUHkmEL1I/PWxatyaBCTrogEEWMbjMz6VaycyFqkWd1SwJDHO4K0uQlwoc
- 9yzn3NVMxR3Pm5F40SpTVmbZ+GLVsU0hEyAuvDyHr9XktnIF+zHKQtOUd16IlpjZjsvk
- XOzg==
+ d=linaro.org; s=google; t=1708026166; x=1708630966; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3IzWdaKbNL5WPD1wSa/h4NlUNQr+Rrw8XqB/TKkg/Gw=;
+ b=w/xGqfaleYOBxF8jQjOBNioXP313DhL0/z+7xpinke8xyOvStrYnBzmc51QulSmraX
+ eUWJ6rD7iv0unoIswRsKhmhvZI7eJVPdiuYIys3KYKigJG5LLhJwYg5uPM11JjOdWJVh
+ vOnIDnutxkRSTE/zTCVOydm25HackxyEEmTeiGNetIqfwXJCHM445zk/bR6Zg0hWpaR4
+ AQ9nKJfYqN6JVQk+rfHLPXNNf60xKQSwLmZeWA8fYyFsoo6+1ZUoJyTZp+BzSaAmc4Jz
+ Qexqma5r5nf2qd/2bnTWdCteOhAJrLTzFCuPDRXpJ/Sz/m4d/IjmNLNufroHyOnwFYZo
+ HC1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708028055; x=1708632855;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QxExqKLIxTmaSxNlYnPZSVjMIQEFl7DX9ZXUow+7Z+k=;
- b=pyU+Ztdkhq6CdvZDQBkBuDLpr/aKEvn69CUTfYt1glMh8GbzyNt/psU52hBfjR99Io
- e0YnMWg7cYsZLoYgGja4r7WqiQes/UPcBUVfsNekel6pfKnThfdBlFEav3Z6Ugcdmx7G
- zP5YPC3u+woNBeoB+PxkYh75VZnzhwm81RVJ4ndgTgjGP8tTdMZAa1lvMIkPGkEgGeXD
- rbpjSc6JG94beGSoh8HtNtdQ8S0qwFQvrT6DiGYk8U/cpqNHuMt8EqFD6jUeBEmpzMEy
- Chq3Ygf6EKe+uetORCGeyioxJg9eSHCa5FkFyyrZ0r1g17kh7HPo1OrypLTrZjS02o52
- ieyg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWURABa2S75x4o7RUIigd5kclaLHt8ecCjw8ZSeKSqSRYxKZ8QdIr3uP69046ftv5EAs7AAiRdwWTKuuPwriV8dalCK+4E9vw==
-X-Gm-Message-State: AOJu0YzpYZm3mzLUJk7hLxWrxETDL1pxwcDK2xIOmIp/gD3B3iTVUAV3
- dYDz9mpmifxiHf7DvkzgqfdnTlUxVrkKrjhSWLp8eVTarrN66XpN
-X-Google-Smtp-Source: AGHT+IG/alztCjVZa71muav968s8Nhey35mxuOJ4g1qtmfCw7F6InTON0hKCBMwV0P+bVDFNFNViiA==
-X-Received: by 2002:a05:6512:401c:b0:511:6268:e66e with SMTP id
- br28-20020a056512401c00b005116268e66emr3135907lfb.38.1708028054905; 
- Thu, 15 Feb 2024 12:14:14 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-077-191-153-037.77.191.pool.telefonica.de.
- [77.191.153.37]) by smtp.gmail.com with ESMTPSA id
- v14-20020a056402174e00b0055ff9299f71sm855754edx.46.2024.02.15.12.14.14
+ d=1e100.net; s=20230601; t=1708026166; x=1708630966;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3IzWdaKbNL5WPD1wSa/h4NlUNQr+Rrw8XqB/TKkg/Gw=;
+ b=q5QojEV9+3A7/0DMCNYhplcJoMlEH7g/FNYMqZygo6CNZFl1TTPoDu+50ru0LZnqQF
+ LCUuor9FHeXBLsN5zoD/hOMjMomWqf456pKZTdmR7yJHAw6CEnQVU+z8zWN3em4G9Hft
+ GS2A9VC86AMOKEystmc9L+0RMXX0oyg2xguklkNbQErbFrv2L6PsHMqhkE83/7SCCEg+
+ t6gunjD4OP8gWjXq+Hw3bfObEaily1ZIeOpYkyug3WO7kQBzo4Ca7mxdCvZimTuADc+X
+ ztu+Hb9+3nU6iu+YWKWDkqGpYUb/mIjhYjFjP6Y30oMJ1YX3nNU3BemaGaRID5uw6l99
+ d3EQ==
+X-Gm-Message-State: AOJu0YyMorgdVfedY/OujkEAuk+sEWQwfnxOoDF/B6Lvg+yWvBHmG4S6
+ fVvgs45ohWuuFt2aMvI6APMZaDOcp864fNIXdSTpgKHboYueGbO4ueAie44OKNc=
+X-Google-Smtp-Source: AGHT+IGRLxVYc11uR3Es8c+pfKzqFZadQXwNxcK0bg782/NNJx+y8gUuvyE1q8lpYIpY6Ris3Ylupg==
+X-Received: by 2002:a17:90a:c394:b0:299:2cba:7588 with SMTP id
+ h20-20020a17090ac39400b002992cba7588mr696265pjt.1.1708026166523; 
+ Thu, 15 Feb 2024 11:42:46 -0800 (PST)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ qc16-20020a17090b289000b002992ba5b9a3sm375403pjb.45.2024.02.15.11.42.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Feb 2024 12:14:14 -0800 (PST)
-Date: Thu, 15 Feb 2024 19:33:43 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-CC: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-trivial@nongnu.org
-Subject: Re: [PATCH 0/7] hw/i386: Cleanups around 'hw/i386/pc.h'
-In-Reply-To: <5e872a94-d4ab-4fe4-afe1-ffc952be8116@linaro.org>
-References: <20240213120153.90930-1-philmd@linaro.org>
- <20240213105455-mutt-send-email-mst@kernel.org>
- <5e872a94-d4ab-4fe4-afe1-ffc952be8116@linaro.org>
-Message-ID: <86BE0D60-FDEF-4552-8B9D-34CE03630043@gmail.com>
+ Thu, 15 Feb 2024 11:42:46 -0800 (PST)
+Message-ID: <eed2094c-32f9-400d-951a-120c06bb58f9@linaro.org>
+Date: Thu, 15 Feb 2024 09:42:43 -1000
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x12e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/ppc: BHRB avoid using host pointer in translated
+ code
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Glenn Miles <milesg@linux.vnet.ibm.com>
+References: <20240215171512.800892-1-npiggin@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240215171512.800892-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,51 +94,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 2/15/24 07:15, Nicholas Piggin wrote:
+> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+> index 731dd8df35..3541cd83cd 100644
+> --- a/target/ppc/machine.c
+> +++ b/target/ppc/machine.c
+> @@ -724,7 +724,7 @@ static const VMStateDescription vmstate_bhrb = {
+>       .minimum_version_id = 1,
+>       .needed = bhrb_needed,
+>       .fields = (VMStateField[]) {
+> -        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
+> +        VMSTATE_UINT32(env.bhrb_offset, PowerPCCPU),
+
+This requires a version bump.
+
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index 81afc892de..05f0f1ac52 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4167,21 +4167,24 @@ static void gen_rvwinkle(DisasContext *ctx)
+>   #endif /* defined(CONFIG_USER_ONLY) */
+>   }
+>   
+> -static inline TCGv gen_write_bhrb(TCGv base, TCGv offset, TCGv mask, TCGv value)
+> +static TCGv_i32 gen_write_bhrb(TCGv_i32 offset, TCGv_i32 mask, TCGv_i64 value)
+>   {
+> -    TCGv tmp = tcg_temp_new();
+> +    TCGv_ptr ptr = tcg_temp_new_ptr();
+> +    TCGv_i32 tmp = tcg_temp_new_i32();
+>   
+> -    /* add base and offset to get address of bhrb entry */
+> -    tcg_gen_add_tl(tmp, base, offset);
+> +    /* add base and offset to tcg_env to get address of bhrb entry */
+> +    tcg_gen_addi_i32(tmp, offset, offsetof(CPUPPCState, bhrb));
+> +    tcg_gen_ext_i32_ptr(ptr, tmp);
+> +    tcg_gen_add_ptr(ptr, ptr, tcg_env);
+>   
+>       /* store value into bhrb at bhrb_offset */
+> -    tcg_gen_st_i64(value, (TCGv_ptr)tmp, 0);
+> +    tcg_gen_st_i64(value, ptr, 0);
+
+Better to add the constant with the store offset.
+
+   tcg_gen_ext_i32_ptr(ptr, offset);
+   tcg_gen_add_ptr(ptr, ptr, tcg_env);
+   tcg_gen_st_i64(value, ptr, offsetof(bhrb));
 
 
-Am 13=2E Februar 2024 16:00:26 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->On 13/2/24 16:55, Michael S=2E Tsirkin wrote:
->> On Tue, Feb 13, 2024 at 01:01:45PM +0100, Philippe Mathieu-Daud=C3=A9 w=
-rote:
->>> Trivial patches removing uses of "hw/i386/pc=2Eh"=2E
->>=20
->> How did you test that it's indeed unused?
->
->I put and #error in hw/i386/pc=2Eh and built :)
->(I'm trying to remove the PC dependency on generic devices=2E)
->
->The few generic devices left are not as trivial=2E
->
->>> Philippe Mathieu-Daud=C3=A9 (7):
->>>    target/i386/monitor: Remove unused 'hw/i386/pc=2Eh' header
->>>    hw/timer: Move HPET_INTCAP definition to "hpet=2Eh"
->>>    hw/isa/lpc_ich9: Remove unused 'hw/i386/pc=2Eh'
->>>    hw/i386/acpi: Declare pc_madt_cpu_entry() in 'acpi-common=2Eh'
->>>    hw/i386/port92: Add missing 'hw/isa/isa=2Eh' header
->>>    hw/acpi/cpu_hotplug: Include 'pci_device=2Eh' instead of 'pci=2Eh'
->>>    hw/acpi/cpu_hotplug: Include 'x86=2Eh' instead of 'pc=2Eh'
->>>=20
->>>   hw/i386/acpi-common=2Eh   | 3 +++
->>>   include/hw/i386/pc=2Eh    | 6 ------
->>>   include/hw/timer/hpet=2Eh | 2 ++
->>>   hw/acpi/cpu_hotplug=2Ec   | 4 ++--
->>>   hw/i386/acpi-common=2Ec   | 1 -
->>>   hw/i386/port92=2Ec        | 1 +
+r~
 
-I'd take care of port92 and make it part of all our three south bridge fam=
-ilies (which models the real hardware more closely)=2E
-
-Best regards,
-Bernhard
-
->>>   hw/isa/lpc_ich9=2Ec       | 1 -
->>>   hw/timer/hpet=2Ec         | 1 -
->>>   target/i386/monitor=2Ec   | 1 -
->>>   9 files changed, 8 insertions(+), 12 deletions(-)
->>>=20
->>> --=20
->>> 2=2E41=2E0
->>=20
->
 
