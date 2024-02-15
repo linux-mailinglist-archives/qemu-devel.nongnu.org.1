@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD482856BE4
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 021BA856BCC
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:59:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag0W-0002Nx-ES; Thu, 15 Feb 2024 12:58:48 -0500
+	id 1rag0e-0002la-1Z; Thu, 15 Feb 2024 12:58:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0T-0002Gh-IW
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:45 -0500
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0a-0002Ul-8J
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:52 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0R-0001aU-GZ
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:45 -0500
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2d1094b549cso16234121fa.3
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0X-0001cJ-BN
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:51 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41205e19660so8277415e9.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019921; x=1708624721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019927; x=1708624727; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g8Q7JMG8zjBMQCOseTC/pxZZVdCkiwcgzQoWO2YHIuA=;
- b=iLO5hOgoUCOpbTwFk1j/T5TF48CUbqBz1hEGjSNTN1CAQi0WbqRsOiL98u+4nZq2EA
- EpFeZH7ZJ1tnI7wgk4J/DmPGI5bHzd/yWJQLZc/ED6MYuaMK6tHg2stVZDumIYF4Lpb0
- zZfdXm2oadS6mEBHuQyjuAAOKaOI0e6ijcCyYvPfi7auhRHfndxwiBt41ZqVB5sXODGP
- Yrw0iT3qH7PY3Ufy4Lqv5407Dl4wgAc4ed9UxUjm0dH5PWuiumB0Kkci7W9vth9SvbpC
- syNZVEcaJfLvehkZdsqUxC7SLG+JmOhwPD45m6VoGlEBhe7fXMXJN7hIu+og8gglDWKK
- ChRQ==
+ bh=dqF/h4b+bAkBGCkEQ2mmapUdtDBHzstE/FcKUqg3JE0=;
+ b=VWB0F8qP7WsXDHhyNPZLICbOchqETj//++eQAdxI4EGlOhonU4Uq2PQDBzYBIm+xJZ
+ PXbg7gO7VV6QtxRlAQ9WfG3/myANVVhyDurwo56v2AUYl43YfgZJFyPCn640Gqbkc/9H
+ Mg4uLWI6lA34ElGdKIhYgAK0IZeSqqbjLzjWDbzgcSab3XXnpRtH9ZFtON/NuXpRItMh
+ wOtL1RpfA23hoXNcuKTgyIaRl2DpeJCNQTkuaXbxrVEDqLLHiZWE93ygevYKNkbW9D0/
+ TaDQOtCK0MrIB8eyKgOvqu3HgaFZtKtgKBEWNlqWjdTvhRLipDFXEGYKdMsSI0MvfWXE
+ YZuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019921; x=1708624721;
+ d=1e100.net; s=20230601; t=1708019927; x=1708624727;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g8Q7JMG8zjBMQCOseTC/pxZZVdCkiwcgzQoWO2YHIuA=;
- b=PbZSFFFe95FgbQfRhU+YMeiUG4JXWxsTLboUApjgMJ2dWujHlB+Z5wws5YmwizNvzk
- XKiXri+rMr6ovpbH1OOhRKn1j5EahV4NjpdVG8hvuK9jYIWwK8QqcihscCrbOIWWX2dc
- 91xvpqHpjRDTHbo/Y2jyTfuWrCyo6XZdXAyaih6akhxJcMlPKQZKdJ5SXEzJV2Fn5Rvy
- 1zIOPKXGxBcCjo3fYUpZUXb1ir/J8mekSwIIUzZKROb5Z7YFs7LlGHl5mKo9VMWk3Mrl
- lAjqhmewVyhxhzKFBeUa8JNYyQtmv6900zWxKThYMUVl5b8v05N5XguMb+NWfyPRXJtU
- laBQ==
-X-Gm-Message-State: AOJu0YyF56RdiFm6aJsPj+qI1K9Bct6u8R7+fg0mDHBgSB0kCB0mr73W
- o79hISJX92KKqwoD1uwPY2wGgwITcrgOioO3TRPSYpuy1KnC6hHRrcqh5JFzKEGlC8ovbo6g9uS
- o2UY=
-X-Google-Smtp-Source: AGHT+IE3r1xqVuIZgf9E8S42MgxdjYuv9KqdxDYlvvbwJC5je2S/DZixu6yWDGi+pnO8gKs2YFSHtw==
-X-Received: by 2002:a2e:9dc5:0:b0:2d1:788:60ff with SMTP id
- x5-20020a2e9dc5000000b002d1078860ffmr1968176ljj.16.1708019921454; 
- Thu, 15 Feb 2024 09:58:41 -0800 (PST)
+ bh=dqF/h4b+bAkBGCkEQ2mmapUdtDBHzstE/FcKUqg3JE0=;
+ b=oDdKJJzZzUNwxcbqxhAeFFjyf8iY6Y6/GLFq8l0DQISVkAmCMmgcQlX63Iq3kB+o4N
+ fcaOeFZQQittNj1+oXGeJfNBghiFoGZSMKOYuBcAoXEburlQtTfam1k4IXNLzJOCmnKN
+ zn+5A32D+lU3oJ2CtVW3IAqzqSi7uCT2SAJs195b2Hcs1XckF1F4mYiUaidaIaPWqVY+
+ uzhGNoAH99tgYxqPTiINDZ6PMB0eY9h/xwToEBpf5h+ugnwqKIw3rSDssy4cMYc1wA4j
+ lapryin+0MmG036DfKVbgywNtIqEff034dlX0PZdaJtB5KoAGI5/ZTOEnzOd77Ztp3f2
+ 2T2w==
+X-Gm-Message-State: AOJu0Yzjbrl6Yo33VIDTfyk9M0xvL3s0ZlTejx/hauW+2Hwr6a7vobXl
+ 1vNx7DAbzYXTA3gf8t08zW88RhNellSCTdTQ2gwqs7fn2QWTFdUJw6YWIP7AIK9p8WgLD5BKN7y
+ f5K0=
+X-Google-Smtp-Source: AGHT+IExfnI6+rVD834cR9ju0rId2T6+/FMoTmnHKaBBt8vbdiq/feBvFxVPHujh7aLtHcD22yb6XA==
+X-Received: by 2002:adf:fd4e:0:b0:33b:4838:a23 with SMTP id
+ h14-20020adffd4e000000b0033b48380a23mr1761902wrs.29.1708019927683; 
+ Thu, 15 Feb 2024 09:58:47 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- j12-20020a05600c190c00b00410bca333b7sm5913132wmq.27.2024.02.15.09.58.39
+ bh8-20020a05600005c800b0033b888a0a63sm2640261wrb.0.2024.02.15.09.58.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:58:41 -0800 (PST)
+ Thu, 15 Feb 2024 09:58:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 07/56] target/mips: Remove CPUMIPSState::saarp field
-Date: Thu, 15 Feb 2024 18:57:01 +0100
-Message-ID: <20240215175752.82828-8-philmd@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 08/56] hw/misc/mips_itu: Remove MIPSITUState::cpu0 field
+Date: Thu, 15 Feb 2024 18:57:02 +0100
+Message-ID: <20240215175752.82828-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,51 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This field is never set, so remove the unreachable code.
+Since previous commit the MIPSITUState::cpu0 field is not
+used anymore. Remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240209090513.9401-5-philmd@linaro.org>
+Message-Id: <20240209090513.9401-6-philmd@linaro.org>
 ---
- target/mips/cpu.h  | 1 -
- hw/misc/mips_itu.c | 6 ------
- 2 files changed, 7 deletions(-)
+ include/hw/misc/mips_itu.h | 1 -
+ hw/mips/cps.c              | 2 --
+ hw/misc/mips_itu.c         | 5 -----
+ 3 files changed, 8 deletions(-)
 
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index d54e9a4a1c..ef1d9f279c 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -1174,7 +1174,6 @@ typedef struct CPUArchState {
-     uint32_t CP0_Status_rw_bitmask; /* Read/write bits in CP0_Status */
-     uint32_t CP0_TCStatus_rw_bitmask; /* Read/write bits in CP0_TCStatus */
-     uint64_t insn_flags; /* Supported instruction set */
--    int saarp;
+diff --git a/include/hw/misc/mips_itu.h b/include/hw/misc/mips_itu.h
+index 3a7330ac07..de7400c1fe 100644
+--- a/include/hw/misc/mips_itu.h
++++ b/include/hw/misc/mips_itu.h
+@@ -73,7 +73,6 @@ struct MIPSITUState {
  
-     /* Fields up to this point are cleared by a CPU reset */
-     struct {} end_reset_fields;
+     /* SAAR */
+     uint64_t *saar;
+-    ArchCPU *cpu0;
+ };
+ 
+ /* Get ITC Configuration Tag memory region. */
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 988ceaa0b9..07b73b0a1f 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -103,8 +103,6 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+     /* Inter-Thread Communication Unit */
+     if (itu_present) {
+         object_initialize_child(OBJECT(dev), "itu", &s->itu, TYPE_MIPS_ITU);
+-        object_property_set_link(OBJECT(&s->itu), "cpu[0]",
+-                                 OBJECT(first_cpu), &error_abort);
+         object_property_set_uint(OBJECT(&s->itu), "num-fifo", 16,
+                                 &error_abort);
+         object_property_set_uint(OBJECT(&s->itu), "num-semaphores", 16,
 diff --git a/hw/misc/mips_itu.c b/hw/misc/mips_itu.c
-index db1220f8e0..d259a88d22 100644
+index d259a88d22..9705efeafe 100644
 --- a/hw/misc/mips_itu.c
 +++ b/hw/misc/mips_itu.c
-@@ -516,7 +516,6 @@ static void mips_itu_init(Object *obj)
- static void mips_itu_realize(DeviceState *dev, Error **errp)
- {
-     MIPSITUState *s = MIPS_ITU(dev);
--    CPUMIPSState *env;
- 
-     if (s->num_fifo > ITC_FIFO_NUM_MAX) {
-         error_setg(errp, "Exceed maximum number of FIFO cells: %d",
-@@ -533,11 +532,6 @@ static void mips_itu_realize(DeviceState *dev, Error **errp)
+@@ -527,10 +527,6 @@ static void mips_itu_realize(DeviceState *dev, Error **errp)
+                    s->num_semaphores);
          return;
      }
- 
--    env = &MIPS_CPU(s->cpu0)->env;
--    if (env->saarp) {
--        s->saar = env->CP0_SAAR;
+-    if (!s->cpu0) {
+-        error_setg(errp, "Missing 'cpu[0]' property");
+-        return;
 -    }
--
+ 
      s->cell = g_new(ITCStorageCell, get_num_cells(s));
  }
+@@ -558,7 +554,6 @@ static Property mips_itu_properties[] = {
+                       ITC_FIFO_NUM_MAX),
+     DEFINE_PROP_UINT32("num-semaphores", MIPSITUState, num_semaphores,
+                       ITC_SEMAPH_NUM_MAX),
+-    DEFINE_PROP_LINK("cpu[0]", MIPSITUState, cpu0, TYPE_MIPS_CPU, ArchCPU *),
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
 -- 
 2.41.0
