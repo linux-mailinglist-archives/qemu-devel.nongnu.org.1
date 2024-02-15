@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD9C856B4D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAEA856B21
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:37:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafex-0000XT-EH; Thu, 15 Feb 2024 12:36:31 -0500
+	id 1rafem-0008HV-GP; Thu, 15 Feb 2024 12:36:21 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeO-00082N-LT
+ id 1rafeO-00082M-KF
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:56 -0500
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeI-0003zZ-Vv
+ id 1rafeJ-0003zm-8b
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:56 -0500
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-411fc50e4e9so8887515e9.0
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33aea66a31cso641302f8f.1
  for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018549; x=1708623349; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708018550; x=1708623350; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=a87RueZW0PDoF8ZbDKzC++JXSZcqUh/P88llxuBUZWg=;
- b=Ozuj3CX/NQEyoDK4hhAPjRQjIZFNr0I9tHnbQOYCJ7xh0x9FmUqCwR0b/ji6bn09Zv
- TuX6bZ5dQOHGwnPjX8HIxawKDV5oxQ0tgrtfeTW++bNai31x5judqVeIxOdvaJrDL1vp
- Zmuqg8fUYHFJt7c5gyR+Wwjn0J2n7qUjjel3z5iXRKoVgu68y681VJWX+I8GVkM352h6
- 27CSUDcHGH913UeThciNOsU5P2D/Q2JQv0KqbGTeBlqB3E1Vnjh1p02zgATxHrNeb3J/
- ZrwPkaT2lJwaHwjKVaC1GlC9ez6SfNxqrXjG9wf8gUs1Ocr8gQcWWkftQPMpu+GWgAdr
- onSw==
+ :reply-to; bh=pKs+G+6C/JfE8C7mwxRiU1ycw8HBab5TyuPtSYaZWAw=;
+ b=sE3lygMXznrwX1W/fNZNxaLits7Ez4ZVpGkDrQ/ZWtH7whYrmMYKbqoNSPat28Vjgh
+ J4nYOuCCeVdiXKe9JO3T0E5TH9r+q6eZw7NfH3YfzTqa+eKKwElar3c87N7Z1ukv40w7
+ a+WiA8h8U+xjEyMTAIDfL/xMQbpwj2KKjGzSh7kdD8yzC7/HPuFF2fcbnKS6TAR3JM00
+ WQvz4/Rf6ZiVKhpkioLaC1Yl3oaDliRV+FL/aNuW9LgS4HL7DVCscoqi3+a8vT0IEnBJ
+ HJ5Rv/v/rPRhLtJmtGOtdRbX1x1Gd4YS1qUHGAR8CKgdZBhD1qPpkLzdYKMNVAwB6igN
+ zfiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018549; x=1708623349;
+ d=1e100.net; s=20230601; t=1708018550; x=1708623350;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a87RueZW0PDoF8ZbDKzC++JXSZcqUh/P88llxuBUZWg=;
- b=N23GGUI8ci2qyTPW6GJdQClf9sEj/A2QkhK7gmSqTya17czGVQk6gXjOVGRBMwem2v
- tvVnmUoHeM0rxf4U/CjLuAPzWzUo+1TGdbEcLQlMugWkgRs2Qg0ydQniJ7BA+j2lcPua
- 3LtX57duMzcxGn0P1ljQDZkbrT7Pha5+Klw7KNJn5j9seXIDtOKhXtU85lttS6X6lRpq
- rXMqEJAlk8SB+EbBg3RKzXgWK/ar2Y27Dc5JQ6eh2i1WsybgyLejiS8IDoS0SmXO84Gk
- jf02VJUGuuQUCQfGjmyntDUn3Rja+v8X5OGjMDF2/gFU0ovo0X+flhtSTReHLi3TokKK
- VTkQ==
-X-Gm-Message-State: AOJu0Yy47C+hpP1PrOpBfAdxBiazdsTIetHOmGQiZh0pIxnpjvxa0LAS
- Gv//LfI/TPaF6x7cdumTWLP8J8JpCV3J12tTrm4WI58QFSCxEtl8jdzmbhiorx/UWCWRQ3Q3pIN
- Q
-X-Google-Smtp-Source: AGHT+IGaUwTDUB1EG2Mol3h5UT+GjVEURwpApjEDKLk8AmmhymCJdr9albgVSXIJCSXak1ivLRBeXA==
-X-Received: by 2002:a05:600c:198e:b0:412:adb:504b with SMTP id
- t14-20020a05600c198e00b004120adb504bmr2343067wmq.11.1708018549583; 
- Thu, 15 Feb 2024 09:35:49 -0800 (PST)
+ bh=pKs+G+6C/JfE8C7mwxRiU1ycw8HBab5TyuPtSYaZWAw=;
+ b=Q9eb8IS15YncdvQxvuvo93XLzEDtCEu7+7OmYCsY/z9qxjNbMjecsQhKD9oMD/giUH
+ JqgYyMX7ag6qgNOnsmpBflfyNiu+JsShXxvNVVF80pFljJsKCGvZXlkUYPXdrZufDKvP
+ Mt2rnqvKyhrQpTnkcmxADFLPty8PNSfhOL+8P9EHE16sjbnxy3+CCHHhgyfJv0aysKCO
+ ajNAzWUUCV41gZxsVf8CgLXW6SyvlGN61iKBxwDkKlwV+KjMrj0/ejx29h0PAMy5bQqM
+ CGVEy05FNQFnj+eHmrOrAH9ZK28GpQBKnaF1ilUBPbuFuhtUHuUULUaFckV6jCJFTmdQ
+ U30w==
+X-Gm-Message-State: AOJu0YwKQS4rQ5ygUW+7kPnykhujW+KENMU2Wn5tqw0GKhVkwNs5CbPW
+ mJ5GV6Y0wgi5Dd/JFwHuPTsh16ACjNj7D7Jdyezo4waJZpGO2sSiz/Xuv+Y0CkOUuhcF5r+7UY0
+ /
+X-Google-Smtp-Source: AGHT+IHG5iYCS7aeyTXlu25SMFksRivQYLLuQCzt07sTCj31RhrkIslZDAw/4zFPsUXSW+oWK6pELQ==
+X-Received: by 2002:adf:e6c3:0:b0:33c:dd33:90cb with SMTP id
+ y3-20020adfe6c3000000b0033cdd3390cbmr1886736wrm.14.1708018550014; 
+ Thu, 15 Feb 2024 09:35:50 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.49
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 15 Feb 2024 09:35:49 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/35] target/arm: Use new CBAR encoding for all v8 CPUs,
- not all aarch64 CPUs
-Date: Thu, 15 Feb 2024 17:35:26 +0000
-Message-Id: <20240215173538.2430599-24-peter.maydell@linaro.org>
+Subject: [PULL 24/35] target/arm: The Cortex-R52 has a read-only CBAR
+Date: Thu, 15 Feb 2024 17:35:27 +0000
+Message-Id: <20240215173538.2430599-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,57 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We support two different encodings for the AArch32 IMPDEF
-CBAR register -- older cores like the Cortex A9, A7, A15
-have this at 4, c15, c0, 0; newer cores like the
-Cortex A35, A53, A57 and A72 have it at 1 c15 c0 0.
-
-When we implemented this we picked which encoding to
-use based on whether the CPU set ARM_FEATURE_AARCH64.
-However this isn't right for three cases:
- * the qemu-system-arm 'max' CPU, which is supposed to be
-   a variant on a Cortex-A57; it ought to use the same
-   encoding the A57 does and which the AArch64 'max'
-   exposes to AArch32 guest code
- * the Cortex-R52, which is AArch32-only but has the CBAR
-   at the newer encoding (and where we incorrectly are
-   not yet setting ARM_FEATURE_CBAR_RO anyway)
- * any possible future support for other v8 AArch32
-   only CPUs, or for supporting "boot the CPU into
-   AArch32 mode" on our existing cores like the A57 etc
-
-Make the decision of the encoding be based on whether
-the CPU implements the ARM_FEATURE_V8 flag instead.
-
-This changes the behaviour only for the qemu-system-arm
-'-cpu max'. We don't expect anybody to be relying on the
-old behaviour because:
- * it's not what the real hardware Cortex-A57 does
-   (and that's what our ID register claims we are)
- * we don't implement the memory-mapped GICv3 support
-   which is the only thing that exists at the peripheral
-   base address pointed to by the register
+The Cortex-R52 implements the Configuration Base Address Register
+(CBAR), as a read-only register.  Add ARM_FEATURE_CBAR_RO to this CPU
+type, so that our implementation provides the register and the
+associated qdev property.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240206132931.38376-2-peter.maydell@linaro.org
+Message-id: 20240206132931.38376-3-peter.maydell@linaro.org
 ---
- target/arm/helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/cpu32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 7c531ee9cff..90c4fb72ce4 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -9528,7 +9528,7 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-          * AArch64 cores we might need to add a specific feature flag
-          * to indicate cores with "flavour 2" CBAR.
-          */
--        if (arm_feature(env, ARM_FEATURE_AARCH64)) {
-+        if (arm_feature(env, ARM_FEATURE_V8)) {
-             /* 32 bit view is [31:18] 0...0 [43:32]. */
-             uint32_t cbar32 = (extract64(cpu->reset_cbar, 18, 14) << 18)
-                 | extract64(cpu->reset_cbar, 32, 12);
+diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
+index 11253051156..311d654cdce 100644
+--- a/target/arm/tcg/cpu32.c
++++ b/target/arm/tcg/cpu32.c
+@@ -809,6 +809,7 @@ static void cortex_r52_initfn(Object *obj)
+     set_feature(&cpu->env, ARM_FEATURE_PMSA);
+     set_feature(&cpu->env, ARM_FEATURE_NEON);
+     set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
++    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
+     cpu->midr = 0x411fd133; /* r1p3 */
+     cpu->revidr = 0x00000000;
+     cpu->reset_fpsid = 0x41034023;
 -- 
 2.34.1
 
