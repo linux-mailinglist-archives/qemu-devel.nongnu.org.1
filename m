@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B53856B54
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FF8856B25
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:37:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raffG-0001rE-BE; Thu, 15 Feb 2024 12:36:50 -0500
+	id 1raff6-0001J5-4J; Thu, 15 Feb 2024 12:36:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeU-00085s-M6
+ id 1rafeU-00085w-Mp
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:36:05 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeM-00042F-QH
+ id 1rafeN-00042b-GC
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:36:02 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-411d715c401so9130975e9.1
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33d153254b7so134994f8f.0
  for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018553; x=1708623353; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708018554; x=1708623354; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=LCg3WUjl9XChO4n77k4Rpa/1Bkv8CUgvWkFZbFL8dFw=;
- b=SFTE9MRZIhmTTy33tCJcHDEdE/a+eSzR4ZMyhKpCcuPmuSmoyxpNxshVa+TzrcxYtq
- siVnj4OfabkT7GVV6dMT4j9xCOZ8qkgKtkzHJlRPR+TkUbn/ijpd4/KAPAChrAZWrNao
- HXJii0S5NvKNQk7BVEQfpsH4vSOKqY6nTkU8Huiv/XoLldSczU7LpXpvxQc6nAsPvU84
- L6fPwDPFbHTIrB/yuzHWVmtIINCap0KKp40LpWBi3L6tb6Ymfd7b+6E1K8bOHqibz/h3
- P3ZoVygZ/xq2WhQynFNxLIkSqYwAq6n4iavIyCyYX4+tlnVmdQXkRg0r6z1act358/mU
- AiFA==
+ :reply-to; bh=/eCmN8a4S9HTnFw9WmZzJZdl0Pjm5LLPh17D1FzvRNI=;
+ b=YJzmBahEf4kVq//luuQImdnuRSNPijggQVgTobi7y07rsyrYkw31RjPt7bY0h+7CVx
+ NPyTikq/GF0/XqMAjdG7j36xWRkZj4cAth3F8cEdmd3FNfNcg2RJm4/DIQ9fnAsKUELB
+ Ey6zyXfbLXdIYjqUDCoqcsLbKFs/B2eB29MvlF/6m6QNuDy+O0bpj5/1avCgd4KLOiKW
+ DejsOqqfwjG9l6sra4FGq1kSXIMarTzWH+xY2qEqUyWmSbw0Ezy0e/rZPKMyyntGS+10
+ /B4yIoxH/wwFlTK3bibubGEfD9UqoGXnsnvu9+UeNJ7tCDt6E4nyojqnk1l7ZRy+kv8Y
+ Y3zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018553; x=1708623353;
+ d=1e100.net; s=20230601; t=1708018554; x=1708623354;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LCg3WUjl9XChO4n77k4Rpa/1Bkv8CUgvWkFZbFL8dFw=;
- b=aJ3jrp/9+8t3K5EGlcpH+YAI0QfHDeytBtd7bj0PpfawI5K3UQK4Izr0IzByKDwr3/
- j/G7r7/xjSadzgKGTs/pDTmotpboBt7pHKO7m5u/f3BZ8w9l/sqBG8h5UDAuazK0pPHz
- ZsdZSd88CwffKsdBv0hmA3WldGgAmO2RLT6mmrPBHBOlaebVDQxt/zw+jEfHaEGg1N6w
- 2g3R2d3G47/MR5OrBl9a6HcCt8/mofxk8P/JNvzSQ7zJ/xWD4zdJFYrRCvex1pduuqSz
- hZG9iL+s45j0dL3+RfiOdCgZLiaqtRX0GwxctRgRRVVYty9+Ba4XEvPgMGTEYwKS5jeV
- LCVg==
-X-Gm-Message-State: AOJu0YwcNUKHR1o0ZVPFqhCn0msVi2eyWJmWfOL7vyA0/oiZCaiOCq6d
- tdqqDfChPqSiEN0OZaNO/GriFZ620AZtlz0N+T6ae/kf2v5kPGvq+iC2L/z5kxauZff9V0cl6Ns
- K
-X-Google-Smtp-Source: AGHT+IHSxbWSxskXBCYhWEj6Iha1jG4jVfrf9QOlM8khvFsJX08hdAhQ1X4pmAt4QOymI1zh4GaNTA==
-X-Received: by 2002:a5d:6dad:0:b0:33b:15fc:22bc with SMTP id
- u13-20020a5d6dad000000b0033b15fc22bcmr2322750wrs.52.1708018553441; 
+ bh=/eCmN8a4S9HTnFw9WmZzJZdl0Pjm5LLPh17D1FzvRNI=;
+ b=UmAJa1yZjiHlC/R5PxobE//t3YLXmsAEEY4fJxHGYa5xAjOJKmX7ZDLcNLKo2ASyR2
+ 6G0a6WPUGbO/bu56JGMbdTRou9+mcWQ0QVqJu//9dF/Q2VAI+nXRPDhFSWAeJTMxu9Em
+ aI9GNFwUbk1L5LQjDNzv9STyziA3ef2Y7BC/0CteR+t5la2ep8p6Jhac0aTY1hI3Wyh1
+ UktT5TWJfRKDMciTV8oqnZCCFSPvzWeSf6xj5I0DZfiIcx+nsUaPoWVEnUmJ/NMFAVOu
+ gzEkir0X2bKVK3xYR4L+hwufWbyRR8SyQTd9osvxnoSiwArnkFsm99aIQL9wjZ3gtf7N
+ CNug==
+X-Gm-Message-State: AOJu0YxsQAqzwrFCOaniItxUiMsScdJBTu1LUYI9nL7R116tW7bATZuQ
+ GsdVTjcgEL55Naia/HTuju87DyWyhNAgSyG8TJP3qpV5NvcAhmn7G3M1ehnMOcRUvfMXN07VImp
+ j
+X-Google-Smtp-Source: AGHT+IHAV2cgv8znpktj56Ts8LDKb0WgA5XALjOHAGtu71dV2Gts22WAhkVh7NQTLZrhnomefvB30A==
+X-Received: by 2002:adf:ef46:0:b0:33a:edaf:13ec with SMTP id
+ c6-20020adfef46000000b0033aedaf13ecmr1791117wrp.14.1708018553804; 
  Thu, 15 Feb 2024 09:35:53 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 15 Feb 2024 09:35:53 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/35] hw/arm/mps3r: Add UARTs
-Date: Thu, 15 Feb 2024 17:35:35 +0000
-Message-Id: <20240215173538.2430599-33-peter.maydell@linaro.org>
+Subject: [PULL 33/35] hw/arm/mps3r: Add GPIO, watchdog, dual-timer, I2C devices
+Date: Thu, 15 Feb 2024 17:35:36 +0000
+Message-Id: <20240215173538.2430599-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,171 +92,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This board has a lot of UARTs: there is one UART per CPU in the
-per-CPU peripheral part of the address map, whose interrupts are
-connected as per-CPU interrupt lines.  Then there are 4 UARTs in the
-normal part of the peripheral space, whose interrupts are shared
-peripheral interrupts.
-
-Connect and wire them all up; this involves some OR gates where
-multiple overflow interrupts are wired into one GIC input.
+Add the GPIO, watchdog, dual-timer and I2C devices to the mps3-an536
+board.  These are all simple devices that just need to be created and
+wired up.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240206132931.38376-11-peter.maydell@linaro.org
+Message-id: 20240206132931.38376-12-peter.maydell@linaro.org
 ---
- hw/arm/mps3r.c | 94 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ hw/arm/mps3r.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
 diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
-index 6473f62d677..8c790313790 100644
+index 8c790313790..803ed0ffb5c 100644
 --- a/hw/arm/mps3r.c
 +++ b/hw/arm/mps3r.c
-@@ -30,10 +30,13 @@
- #include "qapi/qmp/qlist.h"
- #include "exec/address-spaces.h"
- #include "cpu.h"
-+#include "sysemu/sysemu.h"
+@@ -33,11 +33,16 @@
+ #include "sysemu/sysemu.h"
  #include "hw/boards.h"
-+#include "hw/or-irq.h"
+ #include "hw/or-irq.h"
++#include "hw/qdev-clock.h"
  #include "hw/qdev-properties.h"
  #include "hw/arm/boot.h"
  #include "hw/arm/bsa.h"
-+#include "hw/char/cmsdk-apb-uart.h"
+ #include "hw/char/cmsdk-apb-uart.h"
++#include "hw/i2c/arm_sbcon_i2c.h"
  #include "hw/intc/arm_gicv3.h"
++#include "hw/misc/unimp.h"
++#include "hw/timer/cmsdk-apb-dualtimer.h"
++#include "hw/watchdog/cmsdk-apb-watchdog.h"
  
  /* Define the layout of RAM and ROM in a board */
-@@ -65,6 +68,7 @@ typedef struct RAMInfo {
- 
- #define MPS3R_RAM_MAX 9
- #define MPS3R_CPU_MAX 2
-+#define MPS3R_UART_MAX 4 /* shared UART count */
- 
- #define PERIPHBASE 0xf0000000
- #define NUM_SPIS 96
-@@ -89,6 +93,10 @@ struct MPS3RMachineState {
-     MemoryRegion sysmem_alias[MPS3R_CPU_MAX];
-     MemoryRegion cpu_ram[MPS3R_CPU_MAX];
-     GICv3State gic;
-+    /* per-CPU UARTs followed by the shared UARTs */
-+    CMSDKAPBUART uart[MPS3R_CPU_MAX + MPS3R_UART_MAX];
-+    OrIRQState cpu_uart_oflow[MPS3R_CPU_MAX];
-+    OrIRQState uart_oflow;
+ typedef struct RAMInfo {
+@@ -97,6 +102,10 @@ struct MPS3RMachineState {
+     CMSDKAPBUART uart[MPS3R_CPU_MAX + MPS3R_UART_MAX];
+     OrIRQState cpu_uart_oflow[MPS3R_CPU_MAX];
+     OrIRQState uart_oflow;
++    CMSDKAPBWatchdog watchdog;
++    CMSDKAPBDualTimer dualtimer;
++    ArmSbconI2CState i2c[5];
++    Clock *clk;
  };
  
  #define TYPE_MPS3R_MACHINE "mps3r"
-@@ -96,6 +104,13 @@ struct MPS3RMachineState {
- 
- OBJECT_DECLARE_TYPE(MPS3RMachineState, MPS3RMachineClass, MPS3R_MACHINE)
- 
-+/*
-+ * Main clock frequency CLK in Hz (50MHz). In the image there are also
-+ * ACLK, MCLK, GPUCLK and PERIPHCLK at the same frequency; for our
-+ * model we just roll them all into one.
-+ */
-+#define CLK_FRQ 50000000
-+
- static const RAMInfo an536_raminfo[] = {
-     {
-         .name = "ATCM",
-@@ -279,11 +294,40 @@ static void create_gic(MPS3RMachineState *mms, MemoryRegion *sysmem)
-     }
- }
- 
-+/*
-+ * Create UART uartno, and map it into the MemoryRegion mem at address baseaddr.
-+ * The qemu_irq arguments are where we connect the various IRQs from the UART.
-+ */
-+static void create_uart(MPS3RMachineState *mms, int uartno, MemoryRegion *mem,
-+                        hwaddr baseaddr, qemu_irq txirq, qemu_irq rxirq,
-+                        qemu_irq txoverirq, qemu_irq rxoverirq,
-+                        qemu_irq combirq)
-+{
-+    g_autofree char *s = g_strdup_printf("uart%d", uartno);
-+    SysBusDevice *sbd;
-+
-+    assert(uartno < ARRAY_SIZE(mms->uart));
-+    object_initialize_child(OBJECT(mms), s, &mms->uart[uartno],
-+                            TYPE_CMSDK_APB_UART);
-+    qdev_prop_set_uint32(DEVICE(&mms->uart[uartno]), "pclk-frq", CLK_FRQ);
-+    qdev_prop_set_chr(DEVICE(&mms->uart[uartno]), "chardev", serial_hd(uartno));
-+    sbd = SYS_BUS_DEVICE(&mms->uart[uartno]);
-+    sysbus_realize(sbd, &error_fatal);
-+    memory_region_add_subregion(mem, baseaddr,
-+                                sysbus_mmio_get_region(sbd, 0));
-+    sysbus_connect_irq(sbd, 0, txirq);
-+    sysbus_connect_irq(sbd, 1, rxirq);
-+    sysbus_connect_irq(sbd, 2, txoverirq);
-+    sysbus_connect_irq(sbd, 3, rxoverirq);
-+    sysbus_connect_irq(sbd, 4, combirq);
-+}
-+
- static void mps3r_common_init(MachineState *machine)
- {
-     MPS3RMachineState *mms = MPS3R_MACHINE(machine);
-     MPS3RMachineClass *mmc = MPS3R_MACHINE_GET_CLASS(mms);
+@@ -329,6 +338,9 @@ static void mps3r_common_init(MachineState *machine)
      MemoryRegion *sysmem = get_system_memory();
-+    DeviceState *gicdev;
+     DeviceState *gicdev;
  
++    mms->clk = clock_new(OBJECT(machine), "CLK");
++    clock_set_hz(mms->clk, CLK_FRQ);
++
      for (const RAMInfo *ri = mmc->raminfo; ri->name; ri++) {
          MemoryRegion *mr = mr_for_raminfo(mms, ri);
-@@ -326,6 +370,56 @@ static void mps3r_common_init(MachineState *machine)
+         memory_region_add_subregion(sysmem, ri->base, mr);
+@@ -421,6 +433,53 @@ static void mps3r_common_init(MachineState *machine)
+                     qdev_get_gpio_in(gicdev, combirq));
      }
  
-     create_gic(mms, sysmem);
-+    gicdev = DEVICE(&mms->gic);
-+
-+    /*
-+     * UARTs 0 and 1 are per-CPU; their interrupts are wired to
-+     * the relevant CPU's PPI 0..3, aka INTID 16..19
-+     */
-+    for (int i = 0; i < machine->smp.cpus; i++) {
-+        int intidbase = NUM_SPIS + i * GIC_INTERNAL;
-+        g_autofree char *s = g_strdup_printf("cpu-uart-oflow-orgate%d", i);
-+        DeviceState *orgate;
-+
-+        /* The two overflow IRQs from the UART are ORed together into PPI 3 */
-+        object_initialize_child(OBJECT(mms), s, &mms->cpu_uart_oflow[i],
-+                                TYPE_OR_IRQ);
-+        orgate = DEVICE(&mms->cpu_uart_oflow[i]);
-+        qdev_prop_set_uint32(orgate, "num-lines", 2);
-+        qdev_realize(orgate, NULL, &error_fatal);
-+        qdev_connect_gpio_out(orgate, 0,
-+                              qdev_get_gpio_in(gicdev, intidbase + 19));
-+
-+        create_uart(mms, i, &mms->cpu_sysmem[i], 0xe7c00000,
-+                    qdev_get_gpio_in(gicdev, intidbase + 17), /* tx */
-+                    qdev_get_gpio_in(gicdev, intidbase + 16), /* rx */
-+                    qdev_get_gpio_in(orgate, 0), /* txover */
-+                    qdev_get_gpio_in(orgate, 1), /* rxover */
-+                    qdev_get_gpio_in(gicdev, intidbase + 18) /* combined */);
++    for (int i = 0; i < 4; i++) {
++        /* CMSDK GPIO controllers */
++        g_autofree char *s = g_strdup_printf("gpio%d", i);
++        create_unimplemented_device(s, 0xe0000000 + i * 0x1000, 0x1000);
 +    }
-+    /*
-+     * UARTs 2 to 5 are whole-system; all overflow IRQs are ORed
-+     * together into IRQ 17
-+     */
-+    object_initialize_child(OBJECT(mms), "uart-oflow-orgate",
-+                            &mms->uart_oflow, TYPE_OR_IRQ);
-+    qdev_prop_set_uint32(DEVICE(&mms->uart_oflow), "num-lines",
-+                         MPS3R_UART_MAX * 2);
-+    qdev_realize(DEVICE(&mms->uart_oflow), NULL, &error_fatal);
-+    qdev_connect_gpio_out(DEVICE(&mms->uart_oflow), 0,
-+                          qdev_get_gpio_in(gicdev, 17));
 +
-+    for (int i = 0; i < MPS3R_UART_MAX; i++) {
-+        hwaddr baseaddr = 0xe0205000 + i * 0x1000;
-+        int rxirq = 5 + i * 2, txirq = 6 + i * 2, combirq = 13 + i;
++    object_initialize_child(OBJECT(mms), "watchdog", &mms->watchdog,
++                            TYPE_CMSDK_APB_WATCHDOG);
++    qdev_connect_clock_in(DEVICE(&mms->watchdog), "WDOGCLK", mms->clk);
++    sysbus_realize(SYS_BUS_DEVICE(&mms->watchdog), &error_fatal);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->watchdog), 0,
++                       qdev_get_gpio_in(gicdev, 0));
++    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->watchdog), 0, 0xe0100000);
 +
-+        create_uart(mms, i + MPS3R_CPU_MAX, sysmem, baseaddr,
-+                    qdev_get_gpio_in(gicdev, txirq),
-+                    qdev_get_gpio_in(gicdev, rxirq),
-+                    qdev_get_gpio_in(DEVICE(&mms->uart_oflow), i * 2),
-+                    qdev_get_gpio_in(DEVICE(&mms->uart_oflow), i * 2 + 1),
-+                    qdev_get_gpio_in(gicdev, combirq));
++    object_initialize_child(OBJECT(mms), "dualtimer", &mms->dualtimer,
++                            TYPE_CMSDK_APB_DUALTIMER);
++    qdev_connect_clock_in(DEVICE(&mms->dualtimer), "TIMCLK", mms->clk);
++    sysbus_realize(SYS_BUS_DEVICE(&mms->dualtimer), &error_fatal);
++    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 0,
++                       qdev_get_gpio_in(gicdev, 3));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 1,
++                       qdev_get_gpio_in(gicdev, 1));
++    sysbus_connect_irq(SYS_BUS_DEVICE(&mms->dualtimer), 2,
++                       qdev_get_gpio_in(gicdev, 2));
++    sysbus_mmio_map(SYS_BUS_DEVICE(&mms->dualtimer), 0, 0xe0101000);
++
++    for (int i = 0; i < ARRAY_SIZE(mms->i2c); i++) {
++        static const hwaddr i2cbase[] = {0xe0102000,    /* Touch */
++                                         0xe0103000,    /* Audio */
++                                         0xe0107000,    /* Shield0 */
++                                         0xe0108000,    /* Shield1 */
++                                         0xe0109000};   /* DDR4 EEPROM */
++        g_autofree char *s = g_strdup_printf("i2c%d", i);
++
++        object_initialize_child(OBJECT(mms), s, &mms->i2c[i],
++                                TYPE_ARM_SBCON_I2C);
++        sysbus_realize(SYS_BUS_DEVICE(&mms->i2c[i]), &error_fatal);
++        sysbus_mmio_map(SYS_BUS_DEVICE(&mms->i2c[i]), 0, i2cbase[i]);
++        if (i != 2 && i != 3) {
++            /*
++             * internal-only bus: mark it full to avoid user-created
++             * i2c devices being plugged into it.
++             */
++            qbus_mark_full(qdev_get_child_bus(DEVICE(&mms->i2c[i]), "i2c"));
++        }
 +    }
- 
++
      mms->bootinfo.ram_size = machine->ram_size;
      mms->bootinfo.board_id = -1;
+     mms->bootinfo.loader_start = mmc->loader_start;
 -- 
 2.34.1
 
