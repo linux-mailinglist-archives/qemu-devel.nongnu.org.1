@@ -2,88 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BC1856956
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 17:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DCD8569A6
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 17:34:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raePc-0002Dp-Gz; Thu, 15 Feb 2024 11:16:36 -0500
+	id 1raeh7-0006i3-QQ; Thu, 15 Feb 2024 11:34:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1raePa-00026Z-B9
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:16:34 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1raeh6-0006hn-9s; Thu, 15 Feb 2024 11:34:40 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1raePY-0005Pq-NF
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:16:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708013791;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yEYPwmwW4lDvZVjJAc525Jg6AdN67kQgs6vAKprzUsY=;
- b=CLGPkHG/Km8wo3PL+wRECnzvMbBD8LXbI08HhktprOaMD5Zjkh8b9jfDtj3QGG+Vgb1PBL
- Ijb+4wb488rK8jjnyHBvD+gUVa4mK3e7Llnp5wDe6GVv5qaHLMuhET1pEH89pEzNKQNN0o
- Vaz7CV5ayj5Cs/OSBrYFRiep6qUCUws=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-600-NBpcWFd1M7O9NbaFWgZJEg-1; Thu, 15 Feb 2024 11:16:29 -0500
-X-MC-Unique: NBpcWFd1M7O9NbaFWgZJEg-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-607df0c12abso7523267b3.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 08:16:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708013789; x=1708618589;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yEYPwmwW4lDvZVjJAc525Jg6AdN67kQgs6vAKprzUsY=;
- b=BzyvxMu+J3Gr+Bn3PGauDKK5zc6UNt0Zx1tRjEmxOFW8OfN3Kd4OGfSuW4F48lFlgn
- IAycPeJi2t+fOQMNYoI409z9YSIcwm6MWVvBGwXKrinckCKSvrZR6YBGO1akceyJ8sbE
- jhVC1TjL8EE8C8p/ArOQ5GVSSfJBQ5UIvE3czlXrhBDbH3AnMLjCi42OenrxiHPLSoWp
- 3iQqZR+biVLePEj/L+Sw+38Whz7FSnKW+K2zS6kudaIps//brYroCiYxZTmuaMiEOoHK
- pbI2KLkc0uWdGc3nZM19NyCHV/6lrL45Czqqklbm3wyC+teUw6qyO/qoeAgUtzg02GkU
- B2Rw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV37jgSPifflj+IEu8StZ/T6vn/f9yGCv9WfqrgVXFtaZh8UjGmSpF/80fD7JikYA8cZuJ9vfATPzWf+Un30I82PgYfjwg=
-X-Gm-Message-State: AOJu0Yy4S+e7xYXbdvfP7UqtPN40PD0KoSWXVqjLVF53+Y1orgx2AR1H
- CqGhs5pxpyw0eM/bRha74ZnksbzlI2VKk91Rb4J0plSWsjF0CGroRYd30EUU11teDwQXmBKojIL
- T21aAKYnt4IzmtxZLQBFZqavfeE76Y/QBdeqlE+l0Csq46KGO17L+nk8x+DmM+3JVsUbBI5u8Hl
- SR2S/YIk0U2npBMgFp3KSQYAticnw=
-X-Received: by 2002:a0d:d5c4:0:b0:5f7:1006:3f54 with SMTP id
- x187-20020a0dd5c4000000b005f710063f54mr2160112ywd.15.1708013789265; 
- Thu, 15 Feb 2024 08:16:29 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF9LTwdyiFVUNunwBjh9ZFEvDRT0AN6MMtFldIJ+V1Ls0p9Qst74tvLrwV+javqMi7FOMxZkjf6pixZYaaqwIM=
-X-Received: by 2002:a0d:d5c4:0:b0:5f7:1006:3f54 with SMTP id
- x187-20020a0dd5c4000000b005f710063f54mr2160103ywd.15.1708013788998; Thu, 15
- Feb 2024 08:16:28 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1raeh4-0000u3-ED; Thu, 15 Feb 2024 11:34:40 -0500
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id AD77761351;
+ Thu, 15 Feb 2024 16:34:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA93C433F1;
+ Thu, 15 Feb 2024 16:34:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1708014876;
+ bh=byeTgDdq1/a+n5XW0NesRfgbMgGQVHNLPJin4IqxtnA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=IBaDD9DLVggZ6k/GohQAAf41SeylBZmaX/IcmAcSq/RtEPwgSDF2uYnWDW+H5Vze7
+ cb5EaHjKxYDUsMh+JVUYTArJj5gaDHL7ZZiNgc34yQiX8yRGD//xEp7iOhAvvX15f6
+ clxJRUXlcp+P/YlTT0y1v+7SRgpxU21WMAYDFF3Hjc09u1td602MCUm4g/8Bq0vn4P
+ fBb5Vtxw9ylHoGO+XnwqShJ+hf7VJ4D+he2KivavB6pGZVQUctR27UXqr4EnumL1NT
+ v/FlMcGkxLxkgrw2gwIIXtg3vDM7/KKdMQ1EZvlbn9zYksBSVXIKu6AN1HXyZu2vqJ
+ WlqgIoMca7e0Q==
+Date: Thu, 15 Feb 2024 16:34:32 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ alistair.francis@wdc.com, bmeng@tinylab.org, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH v3 3/6] target/riscv: add remaining named features
+Message-ID: <20240215-overhear-paycheck-8c70c17bd151@spud>
+References: <20240202152154.773253-1-dbarboza@ventanamicro.com>
+ <20240202152154.773253-4-dbarboza@ventanamicro.com>
+ <20240215-alkaline-saturday-275cd8e3aa39@spud>
+ <20240215-55440212b4d6cde9feab5d94@orel>
 MIME-Version: 1.0
-References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
- <1707910082-10243-13-git-send-email-si-wei.liu@oracle.com>
-In-Reply-To: <1707910082-10243-13-git-send-email-si-wei.liu@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 15 Feb 2024 17:15:52 +0100
-Message-ID: <CAJaqyWe9t=jkW2ZQvv5Z6+4x9R2DQhSKbqVNDUN1b2WXfiSVfQ@mail.gmail.com>
-Subject: Re: [PATCH 12/12] vdpa: fix network breakage after cancelling
- migration
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: jasowang@redhat.com, mst@redhat.com, dtatulea@nvidia.com, 
- leiyang@redhat.com, yin31149@gmail.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.772,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="aumy3XeCt8vTEnU+"
+Content-Disposition: inline
+In-Reply-To: <20240215-55440212b4d6cde9feab5d94@orel>
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -78
+X-Spam_score: -7.9
+X-Spam_bar: -------
+X-Spam_report: (-7.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.772,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,62 +73,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 14, 2024 at 1:39=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> =
-wrote:
->
-> Fix an issue where cancellation of ongoing migration ends up
-> with no network connectivity.
->
-> When canceling migration, SVQ will be switched back to the
-> passthrough mode, but the right call fd is not programed to
-> the device and the svq's own call fd is still used. At the
-> point of this transitioning period, the shadow_vqs_enabled
-> hadn't been set back to false yet, causing the installation
-> of call fd inadvertently bypassed.
->
-> Fixes: a8ac88585da1 ("vhost: Add Shadow VirtQueue call forwarding capabil=
-ities")
-> Cc: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> Acked-by: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->  hw/virtio/vhost-vdpa.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 004110f..dfeca8b 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -1468,7 +1468,15 @@ static int vhost_vdpa_set_vring_call(struct vhost_=
-dev *dev,
->
->      /* Remember last call fd because we can switch to SVQ anytime. */
->      vhost_svq_set_svq_call_fd(svq, file->fd);
-> -    if (v->shadow_vqs_enabled) {
-> +    /*
-> +     * When SVQ is transitioning to off, shadow_vqs_enabled has
-> +     * not been set back to false yet, but the underlying call fd
-> +     * will have to switch back to the guest notifier to signal the
-> +     * passthrough virtqueues. In other situations, SVQ's own call
-> +     * fd shall be used to signal the device model.
-> +     */
-> +    if (v->shadow_vqs_enabled &&
-> +        v->shared->svq_switching !=3D SVQ_TSTATE_DISABLING) {
 
-I think it would be great to not need to add more status variables to
-vhost_vdpa (or any struct).
+--aumy3XeCt8vTEnU+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-What if we recover the call file descriptor at vhost_vdpa_svqs_stop?
-This way everything is more symmetrical as kick and call are set by
-vhost_vdpa_svqs_start.
+On Thu, Feb 15, 2024 at 03:26:18PM +0100, Andrew Jones wrote:
+> On Thu, Feb 15, 2024 at 01:33:47PM +0000, Conor Dooley wrote:
+> > On Fri, Feb 02, 2024 at 12:21:51PM -0300, Daniel Henrique Barboza wrote:
+> > > The RVA22U64 and RVA22S64 profiles mandates certain extensions that,
+> > > until now, we were implying that they were available.
+> > >=20
+> > > We can't do this anymore since named features also has a riscv,isa
+> > > entry. Let's add them to riscv_cpu_named_features[].
+> > >=20
+> > > Instead of adding one bool for each named feature that we'll always
+> > > implement, i.e. can't be turned off, add a 'ext_always_enabled' bool =
+in
+> > > cpu->cfg. This bool will be set to 'true' in TCG accel init, and all
+> > > named features will point to it. This also means that KVM won't see
+> > > these features as always enable, which is our intention.
+> > >=20
+> > > If any accelerator adds support to disable one of these features, we'=
+ll
+> > > have to promote them to regular extensions and allow users to disable=
+ it
+> > > via command line.
+> > >=20
+> > > After this patch, here's the riscv,isa from a buildroot using the
+> > > 'rva22s64' CPU:
+> >=20
+> > Why does an "rva22s64" cpu have "zicclsm" in it? Isn't zicclsm only
+> > present in "u" profiles?
+>=20
+> "s" profiles mandate all the "u" profile mandatory extensions. For example
+> 6.2.2 says
+>=20
+> """
+> The RVA22S64 mandatory unprivileged extensions include all the mandatory =
+unprivileged
+> extensions in RVA22U64.
+> """
 
-Thanks!
+Doesn't that rule out emulating misaligned access in s-mode if you want
+to be profile compliant?
 
->          return 0;
->      }
->
-> --
-> 1.8.3.1
->
+> > >  # cat /proc/device-tree/cpus/cpu@0/riscv,isa
+> > > rv64imafdc_zic64b_zicbom_zicbop_zicboz_ziccamoa_ziccif_zicclsm_ziccrs=
+e_
+> > > zicntr_zicsr_zifencei_zihintpause_zihpm_za64rs_zfhmin_zca_zcd_zba_zbb_
+> > > zbs_zkt_ssccptr_sscounterenw_sstvala_sstvecd_svade_svinval_svpbmt#
+> >=20
+> > I want to raise my frustration with the crock we've been given here by
+> > RVI. Any "named feature" that just creates a name for something that
+> > already is assumed is completely useless, and DT property that is used
+> > to communicate it's presence cannot be used - instead the property needs
+> > to be inverted - indicating the absence of that named feature.
+> >=20
+> > Without the inversion, software that parses "riscv,isa" cannot make any
+> > determination based on the absence of the property - it could be parsing
+> > an old DT that does not have the property or it could be parsing the DT
+> > of a system that does not support the extension.
+>=20
+> I'm guessing any platform which wants to advertise that it's compliant
+> with a profile will update its hardware descriptions to ensure all the
+> profile's mandatory extensions are presented. But, I think I understand
+> your concern. If somebody is parsing the ISA string as way to determine
+> if the platform is compliant with a profile, then they may get a false
+> negative due to the ISA string missing a newly named feature.
 
+Nah, you misunderstand me. I don't care at all about profiles or
+checking for compliance with one. I'm only interested in how my software
+can check that some feature is (or is not) supported. This creating a name
+for something implicit business is not a problem in and of itself, but
+putting then into "riscv,isa" is a pointless activity as it communicates
+nothing.
+
+> I'm not
+> sure how much of a problem that will be in practice, though, since testing
+> for profile compliance, just for the sake of it, doesn't seem very useful.
+> Software really only needs to know which extensions are available and if
+> it's an old feature that got newly named, then software likely already
+> has another way of detecting it.
+
+Right. That part is fine, but creating extensions for these things we
+previously assumed present gives me the impression that creating systems
+that do not support these features is valid. IFF that does happen,
+removing the string from "riscv,isa" isn't going to be able to
+communicate that the feature is unsupported. The commit message here
+says:
+> > > If any accelerator adds support to disable one of these features, we'=
+ll
+> > > have to promote them to regular extensions and allow users to disable=
+ it
+> > > via command line.
+
+Which is part of what prompted me here, since they cannot be handled in
+the same way that "regular extensions" are.
+
+> > This is part of why I deprecated `riscv,isa`. It's the same problem as
+> > with "zifencei" et al - does a system with `riscv,isa =3D "rv64imac"`
+> > support fence.i?
+>=20
+> Yes, there's a handful of these messy things and the first profiles
+> expose them since they're trying to define them. Fingers crossed that
+> the next profiles won't have to name old features. FWIW, I at least
+> don't see any "This is a new extension name for this feature" notes in
+> the RVA23 profile.
+>=20
+> Thanks,
+> drew
+
+--aumy3XeCt8vTEnU+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZc49FAAKCRB4tDGHoIJi
+0nAYAQCmUaLBp8TI0UwxQnX37P/aVNDgTgcMxz579Hkv9r0G2QD8DSttPpndorMm
+Tzd7s6wwhRXg1KEAbFe/5evwQO3YYQ0=
+=nH1U
+-----END PGP SIGNATURE-----
+
+--aumy3XeCt8vTEnU+--
 
