@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E595855BB8
+	by mail.lfdr.de (Postfix) with ESMTPS id 64945855BBA
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 08:35:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raWFo-0006bx-0p; Thu, 15 Feb 2024 02:33:56 -0500
+	id 1raWGa-000748-Ei; Thu, 15 Feb 2024 02:34:45 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1raWFY-0006Qg-Dh
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:33:40 -0500
+ id 1raWGW-00071z-0I; Thu, 15 Feb 2024 02:34:40 -0500
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1raWFW-0000V2-Pf
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:33:40 -0500
-Received: from TWMBX02.aspeed.com (192.168.0.25) by TWMBX02.aspeed.com
+ id 1raWGU-0000h6-Ef; Thu, 15 Feb 2024 02:34:39 -0500
+Received: from TWMBX03.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
  (192.168.0.25) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Feb
- 2024 15:33:32 +0800
+ 2024 15:34:36 +0800
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Feb
+ 2024 15:35:22 +0800
 Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 15 Feb 2024 15:33:31 +0800
-To: "open list:All patches CC here" <qemu-devel@nongnu.org>
+ Transport; Thu, 15 Feb 2024 15:34:36 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
 Subject: [PATCH v3 2/2] aspeed: fix hardcode boot address 0
-Date: Thu, 15 Feb 2024 15:33:30 +0800
-Message-ID: <20240215073330.2401960-3-jamin_lin@aspeedtech.com>
+Date: Thu, 15 Feb 2024 15:34:34 +0800
+Message-ID: <20240215073434.2406775-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240215073330.2401960-1-jamin_lin@aspeedtech.com>
-References: <20240215073330.2401960-1-jamin_lin@aspeedtech.com>
+In-Reply-To: <20240215073434.2406775-1-jamin_lin@aspeedtech.com>
+References: <20240215073434.2406775-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: Fail (TWMBX02.aspeed.com: domain of jamin_lin@aspeedtech.com
- does not designate 192.168.10.10 as permitted sender)
- receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
- helo=twmbx02.aspeed.com;
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX02.aspeed.com
 X-Spam_score_int: -18
