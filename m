@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8280856C1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3807856C19
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:07:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag51-0000il-Rx; Thu, 15 Feb 2024 13:03:27 -0500
+	id 1rag56-0000x6-Ey; Thu, 15 Feb 2024 13:03:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag4m-0008Vv-6b
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:15 -0500
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag4v-0000MT-UA
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:25 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag4h-00032Z-Tw
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:09 -0500
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a29c4bbb2f4so154154066b.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:07 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag4r-000355-Ei
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:20 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-55ad2a47b7aso1692610a12.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020186; x=1708624986; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020192; x=1708624992; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0uuVnrOUAIUZkKyymxTIXoVEwsBVaCFKYc2xJo7UVoM=;
- b=WE9D0xRRC0KpZU8AqRW7qCx4D3ffLDDLCcekHkLKVkftVfsZB9fryy0OGFKIUFS6oF
- ssFLWMSkmCFV5ht6SToCTvcUlzY9Tqd0M45g3iwEnxwh9mPjc6e713P9UB4gxwHWMtq9
- TMLPoOTu7czN9Chl1XFAA6mvkrfri4AqsMcu7cOHbP21kl/YqBeaX4Q1RTabVqhIDMUU
- usNGyDKI2BgfzKhmAhXvg1H3upqeMIfDEwrHK/Ic7f230II836p39ftOGlLgqKSrqL4H
- Ug2HXmQNTIapKAx2TLJEZ9OJH4AAlQ2eEz+3N+lhxGY0xxbMi9oN5WvMD6YV1j3KAWfh
- u6Jw==
+ bh=ZOtZS61qj6Uu8AsLWZl4xcqn7jsQ1ZPqcbyAMS2h3AA=;
+ b=zx6whR2BVHp1qJALYdthlMg7rsB3hlnSfCiE2PzXKdqQaK1Px8QnvsNvCg5XK7y2nn
+ ZLCgJJ1xUtKvj6zSMX9z08rtjM+UQznPI1lRmEEXnF5F04c3TfkIRDFYviO5B0ARjt4t
+ +CQNvYH3vfHqPeL96u4XinQpinnp8sKJv89+2YuPDII3PfBh+Jsp8sSAC2o5dm9D9HXq
+ ujb27bbT9Bl6hKKv6AMYl0Z9XlpTObbrlzm+yJ1C8wsc2OYlqMXsF9s0w9OTlh7nQj+j
+ 1Ta8+BTxJZ4EgS+XellaRxrEDe573FViUO6uUdMBsZ0dpFhDbFgaQR41gTVxYpPGIduZ
+ GvHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020186; x=1708624986;
+ d=1e100.net; s=20230601; t=1708020192; x=1708624992;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0uuVnrOUAIUZkKyymxTIXoVEwsBVaCFKYc2xJo7UVoM=;
- b=gJdGM15guaKMoOeOidJVtbSy2hsf/7JVOD84+ZjVZgKKHdouVaj/RksWHMGxpwKblU
- rEsrYIZaMCuKG9PpmiTL2tfPRarILnGbvfbljQldJ6qMhw+NH/slYCE9tlWepFqFIlUn
- LqXJHyJs1TVU7GWidLSngCJNZCBxfXDiBrR3IYdlMW4quSZh9rShFV/Az+9Ba+x1UWWN
- 8U87RYVeGyzR58GQB2gqlSCZ8D4OeMyxW8QxL/5Lh55i37nLw5esIBvzj9a2d0BgTD+1
- VBCYDhGOMU1ISWB6lVQUDWydCjf3c23DUYe9wcilI+pI9iMxdpNX/mjOcLOPVsh6F4lm
- vIzA==
-X-Gm-Message-State: AOJu0Yyz3lXo9Ta59eQX7D+kAs5eZcBqrDkgsch9KPSdk61B44t4pCWU
- XLErvhSxkBegc514zqmH6YCg5XI4CCyyPWZArVsAJ7VJRlUH2kVVJsPuQYkUuxV+CP8gebAzFS5
- v9LQ=
-X-Google-Smtp-Source: AGHT+IFzNrAFpkhgI9AAEfrM70+Id1w8APsRyVcqFaRC29cQ06DcEs1n65KD1wenLMnXCHTH8bDjhA==
-X-Received: by 2002:a17:906:bc5a:b0:a3c:875b:f378 with SMTP id
- s26-20020a170906bc5a00b00a3c875bf378mr1375359ejv.36.1708020185956; 
- Thu, 15 Feb 2024 10:03:05 -0800 (PST)
+ bh=ZOtZS61qj6Uu8AsLWZl4xcqn7jsQ1ZPqcbyAMS2h3AA=;
+ b=oQ0fff9Qa+rLpcUIymP7VWD/AV6GcrbIbhwKkSTSn8jDyc0A9mqiMAHUMm71ivdxC4
+ hvJgpn15IvuvCPdW+WGkfEjZxjNMTAhzQnIA5GEuv3Ek/Z1yUxksErXx9BRGCzxQ3Faz
+ 7tnF931rpjpgBovOGyAqvKitUBlfAO/AbUAxBywHKlK+LSB43M45rZLAgfjDbqFTSeQr
+ G+7SyeehdPmy7voQsGKMPNwsHYaKmCNMdJWcY1qTp36YBb7WgvD3ojVbMVv4QBNspXLm
+ JgmmiMXHGobsXRRhm1Om+zIqHNMvNkTwPqk+l94Q3qvnXNtpVEDYjjBOd2Oli/2zSUTt
+ z9QQ==
+X-Gm-Message-State: AOJu0YxhzQzGq3XuuTHhKZrf1Vavk8DLQzeXxy8yfG+82V8Vm3TbcR1W
+ Gegh6HgLrL0jKnTi9dZuATjjpZYTSdNe7u5/W7YuBchtOmcK1HxwqH5j9IISn5CM4omT9VRe4oq
+ 4wEU=
+X-Google-Smtp-Source: AGHT+IGwPSdP9G7q11Rjtw1v43RsDS6mKzGXwDo68m8lg0K8jolfufk2AP/Iru3f6qpVX09hJikWVQ==
+X-Received: by 2002:aa7:c49a:0:b0:561:ec1a:95d1 with SMTP id
+ m26-20020aa7c49a000000b00561ec1a95d1mr1903454edq.37.1708020192233; 
+ Thu, 15 Feb 2024 10:03:12 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- l22-20020a170906079600b00a3d4b488970sm788570ejc.45.2024.02.15.10.03.04
+ cb18-20020a0564020b7200b0056289a2bee1sm770404edb.47.2024.02.15.10.03.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:03:05 -0800 (PST)
+ Thu, 15 Feb 2024 10:03:11 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 46/56] hw/i386/q35: Simplify pc_q35_init() since PCI is always
- enabled
-Date: Thu, 15 Feb 2024 18:57:40 +0100
-Message-ID: <20240215175752.82828-47-philmd@linaro.org>
+Subject: [PULL 47/56] hw/i386/q35: Use DEVICE() cast macro with PCIDevice
+ object
+Date: Thu, 15 Feb 2024 18:57:41 +0100
+Message-ID: <20240215175752.82828-48-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,96 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can not create the Q35 machine without PCI, so simplify
-pc_q35_init() removing pointless checks.
+QDev API provides the DEVICE() macro to access the
+'qdev' parent field of the PCIDevice structure.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213041952.58840-1-philmd@linaro.org>
+Message-Id: <20240213081201.78951-2-philmd@linaro.org>
 ---
- hw/i386/pc_q35.c | 32 ++++++++++----------------------
- 1 file changed, 10 insertions(+), 22 deletions(-)
+ hw/i386/pc_q35.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index b7c69d55d6..a785bf7366 100644
+index a785bf7366..a81c86b255 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -130,8 +130,7 @@ static void pc_q35_init(MachineState *machine)
-     ISADevice *rtc_state;
-     MemoryRegion *system_memory = get_system_memory();
-     MemoryRegion *system_io = get_system_io();
--    MemoryRegion *pci_memory;
--    MemoryRegion *rom_memory;
-+    MemoryRegion *pci_memory = g_new(MemoryRegion, 1);
-     GSIState *gsi_state;
-     ISABus *isa_bus;
-     int i;
-@@ -143,6 +142,8 @@ static void pc_q35_init(MachineState *machine)
-     bool keep_pci_slot_hpc;
-     uint64_t pci_hole64_size = 0;
- 
-+    assert(pcmc->pci_enabled);
-+
-     /* Check whether RAM fits below 4G (leaving 1/2 GByte for IO memory
-      * and 256 Mbytes for PCI Express Enhanced Configuration Access Mapping
-      * also known as MMCFG).
-@@ -189,16 +190,6 @@ static void pc_q35_init(MachineState *machine)
-         kvmclock_create(pcmc->kvmclock_create_always);
-     }
- 
--    /* pci enabled */
--    if (pcmc->pci_enabled) {
--        pci_memory = g_new(MemoryRegion, 1);
--        memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
--        rom_memory = pci_memory;
--    } else {
--        pci_memory = NULL;
--        rom_memory = system_memory;
--    }
--
-     pc_guest_info_init(pcms);
- 
-     if (pcmc->smbios_defaults) {
-@@ -212,14 +203,13 @@ static void pc_q35_init(MachineState *machine)
-     /* create pci host bus */
-     phb = OBJECT(qdev_new(TYPE_Q35_HOST_DEVICE));
- 
--    if (pcmc->pci_enabled) {
--        pci_hole64_size = object_property_get_uint(phb,
--                                                   PCI_HOST_PROP_PCI_HOLE64_SIZE,
--                                                   &error_abort);
--    }
-+    pci_hole64_size = object_property_get_uint(phb,
-+                                               PCI_HOST_PROP_PCI_HOLE64_SIZE,
-+                                               &error_abort);
- 
-     /* allocate ram and load rom/bios */
--    pc_memory_init(pcms, system_memory, rom_memory, pci_hole64_size);
-+    memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-+    pc_memory_init(pcms, system_memory, pci_memory, pci_hole64_size);
- 
-     object_property_add_child(OBJECT(machine), "q35", phb);
-     object_property_set_link(phb, PCI_HOST_PROP_RAM_MEM,
-@@ -243,7 +233,7 @@ static void pc_q35_init(MachineState *machine)
-     pcms->bus = host_bus;
- 
-     /* irq lines */
--    gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
-+    gsi_state = pc_gsi_create(&x86ms->gsi, true);
- 
-     /* create ISA bus */
-     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
-@@ -286,9 +276,7 @@ static void pc_q35_init(MachineState *machine)
-         pc_i8259_create(isa_bus, gsi_state->i8259_irq);
-     }
- 
--    if (pcmc->pci_enabled) {
--        ioapic_init_gsi(gsi_state, "q35");
--    }
-+    ioapic_init_gsi(gsi_state, "q35");
- 
-     if (tcg_enabled()) {
-         x86_register_ferr_irq(x86ms->gsi[13]);
+@@ -297,8 +297,8 @@ static void pc_q35_init(MachineState *machine)
+                                                PCI_DEVFN(ICH9_SATA1_DEV,
+                                                          ICH9_SATA1_FUNC),
+                                                "ich9-ahci");
+-        idebus[0] = qdev_get_child_bus(&ahci->qdev, "ide.0");
+-        idebus[1] = qdev_get_child_bus(&ahci->qdev, "ide.1");
++        idebus[0] = qdev_get_child_bus(DEVICE(ahci), "ide.0");
++        idebus[1] = qdev_get_child_bus(DEVICE(ahci), "ide.1");
+         g_assert(MAX_SATA_PORTS == ahci_get_num_ports(ahci));
+         ide_drive_get(hd, ahci_get_num_ports(ahci));
+         ahci_ide_create_devs(ahci, hd);
 -- 
 2.41.0
 
