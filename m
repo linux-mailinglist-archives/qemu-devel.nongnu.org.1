@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B7E856C16
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC9A856C0B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:05:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag6H-0005FV-RL; Thu, 15 Feb 2024 13:04:45 -0500
+	id 1rag5W-0002O7-ED; Thu, 15 Feb 2024 13:03:58 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag5I-0001w1-6s
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:47 -0500
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag5L-0001wn-Ho
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:48 -0500
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag5E-0003BE-OP
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:43 -0500
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-563bb51c36eso921822a12.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag5J-0003CR-3C
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:47 -0500
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a3d6ea28d46so263027966b.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020217; x=1708625017; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020223; x=1708625023; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OBV5qUeSmxg7d8YWWooFsnTAz7bZYxgfHwu1fmOUlCU=;
- b=mX6wJTbPzF1p33zih82b2xr+rvHG/p8upbcp2+etksbCBn124LuDniBoYQ3U+qzaq6
- 0fsgDqUvpiwWxIbCeVzq2O4wDWnZQjIYaE8cuXIxHNbP2KkDsHDEAhuH0K6MuSp8mfCl
- DlaYV/cQ4Z77TarIYiYu8Pby2msS6QjWd54gbWSjB+is8xOLuh3lvsYPW1qMM0cL/XXf
- eaX66Y94yhrzQ9hfs8rtym1cqWaAv2RkEaRzbeGuu2XPfyrTR+u5/mBgUWXxe/4AuPDe
- WBxQBJn9MTydZMKD/8iMGtF5Twwz0pkyk4CLlUnZp0XuQFeGi5QH5U+iCiZC4R7oTo8V
- ydig==
+ bh=xfCkJEQkL13uYlKC8WYjGFkI0aspDHRkh5m4W/eac1U=;
+ b=DdTLLq3zRc2SElnLLqfSZBeBKHVyNTskJqyIQQ6LEIeMyycTPQIlvPtefsgXEuhS29
+ 2wKkEPp7fh85sxwNsGDYtTveoxUGw1oU72d9Q2LuVU2smoUKLNKXNB+yMKNsLX9Zjln0
+ mk1TCdx/hSG/ppzdSiOv5nY35d2Ujf+lKwj+Miw7dZy0Xrucz8NDc/IenvZlRr1a1q2U
+ ASfVkJgHAZ4+Nj9fJ3vuTeblqJkrej2W926ovZWO9n2onrVxhBdGuPKiybeFcK+9PUFl
+ oJIuRBh+ERNFjWcRf6+prwjs4HxPbtXAhFr86SA2md4kuQmOoiTt0gpvsiEzt+w3/OcC
+ qRSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020217; x=1708625017;
+ d=1e100.net; s=20230601; t=1708020223; x=1708625023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OBV5qUeSmxg7d8YWWooFsnTAz7bZYxgfHwu1fmOUlCU=;
- b=DHgQKG51Z7bYTMx80p1cjQRhQ4OMi8crZNSTk5HrnZGXduyDs7D44KuoalUdaqyVli
- M/ZSMr8nk444yBweBgxRDzxUZtu1GeHH26W2UzYg+drvHnYEXGanc/h1iObC8SDhdNEP
- +Q5oEM3rdWu21YSvxymVCBA1brjBbBPViYwV++VOi8RizE3BBHal5rU/0d+vE2TGgbqF
- Ct40TDQ1TSR7jgWOkjEqB2t4ORx+SMO5VJ7bU78jiPEhWPvMQOmbOk/MIHFqJkTTo9Fe
- oDx0QK2ZsuFcrgQ7+P4lqJnM+T9bS8pu5oZEOlKk4VYqgejr9gqkWPq1nt0Eb4K+zXVd
- wsbg==
-X-Gm-Message-State: AOJu0YyDj3yEDNDR+5qVEwh0YJLopu41wtIwGWtNkprB0k02XA7aDH3b
- 7AHAAAspNsP7CQaKBzzD8Dx+z5aZtgJiy860ZiJIGqjZhpi4lYp1T7s87848D5a85zxuW5FKpT5
- Pv0k=
-X-Google-Smtp-Source: AGHT+IEQr/ETKSHifJM4NvzDnH6nB8W920pjx4hXnPS8saZH6joZvwJ+mEFURnJ24x7+S2CN5qIBJA==
-X-Received: by 2002:a17:906:c415:b0:a3d:7d6b:2dc3 with SMTP id
- u21-20020a170906c41500b00a3d7d6b2dc3mr1755304ejz.73.1708020217134; 
- Thu, 15 Feb 2024 10:03:37 -0800 (PST)
+ bh=xfCkJEQkL13uYlKC8WYjGFkI0aspDHRkh5m4W/eac1U=;
+ b=bf3NyEyr8jCDHscCxwr6CzMj2W/CHL62LwrR45XHP3svFG7DdS+oK7CfgYZx0hrHUi
+ 2bm5HKhUWUaUoHS+ZOTIO0EwK52etjGRxxqDEsrKhzS/Wzbc6E8moPtl82vDRfuJTjmH
+ yhauTnpqucNRYGlURjmRB1F6U0rdJXmgOGsYVp5uzKl62PHuTofD9UUIXdXm7XqZTwCj
+ si+gElDB18NFLSmn22oqSA6vEQWRQfyNNHGGWPksvrnKjIORAAba1Z7J7IXFD72t6cn8
+ diI06V+BuV7rARibCJI/RGLJ9/MkkDga4m+PvEc/mbbh2pHNaPALHXEOzCGH97hXZ9Jb
+ YMMg==
+X-Gm-Message-State: AOJu0YyoC4sIytJWr7ADlLDxI+llrGy8I35Mivc7vtjhqkHk5VuD9oR+
+ u8DP3arGxEQXkwDXI/NEEsvucRS1EZ9O6r6PLLVg+zp/dkIubHQq3aTJtnapbJovzfXJIXH36dm
+ aRS4=
+X-Google-Smtp-Source: AGHT+IHmkJone5BX9dptvxAsjufks1nCpyTu6Mehz/epzlEnOmQptFkz7jJim/WyCtDZAVtMML28pA==
+X-Received: by 2002:a17:906:bc4e:b0:a3c:a545:5fd8 with SMTP id
+ s14-20020a170906bc4e00b00a3ca5455fd8mr2480206ejv.26.1708020223279; 
+ Thu, 15 Feb 2024 10:03:43 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- t22-20020a1709063e5600b00a3c091ead20sm784624eji.222.2024.02.15.10.03.35
+ s13-20020a1709066c8d00b00a38936aa08dsm791978ejr.32.2024.02.15.10.03.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:03:36 -0800 (PST)
+ Thu, 15 Feb 2024 10:03:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- John Snow <jsnow@redhat.com>, Paul Burton <paulburton@kernel.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 51/56] hw/ide/ahci: Pass AHCI context to ahci_ide_create_devs()
-Date: Thu, 15 Feb 2024 18:57:45 +0100
-Message-ID: <20240215175752.82828-52-philmd@linaro.org>
+ John Snow <jsnow@redhat.com>
+Subject: [PULL 52/56] hw/ide/ahci: Convert AHCIState::ports to unsigned
+Date: Thu, 15 Feb 2024 18:57:46 +0100
+Message-ID: <20240215175752.82828-53-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,81 +95,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since ahci_ide_create_devs() is not PCI specific, pass
-it an AHCIState argument instead of PCIDevice.
+AHCIState::ports should be unsigned. Besides, we never
+check it for negative value. It is unlikely it was ever
+used with more than INT32_MAX ports, so it is safe to
+convert it to unsigned.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213081201.78951-6-philmd@linaro.org>
+Message-Id: <20240213081201.78951-7-philmd@linaro.org>
 ---
  include/hw/ide/ahci.h | 2 +-
- hw/i386/pc_q35.c      | 2 +-
- hw/ide/ahci.c         | 5 +----
- hw/mips/boston.c      | 2 +-
- 4 files changed, 4 insertions(+), 7 deletions(-)
+ hw/ide/ahci.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
-index dbef377f3d..8cd55b1333 100644
+index 8cd55b1333..604d3a0994 100644
 --- a/include/hw/ide/ahci.h
 +++ b/include/hw/ide/ahci.h
-@@ -52,7 +52,7 @@ typedef struct AHCIState {
+@@ -46,7 +46,7 @@ typedef struct AHCIState {
+     MemoryRegion idp;       /* Index-Data Pair I/O port space */
+     unsigned idp_offset;    /* Offset of index in I/O port space */
+     uint32_t idp_index;     /* Current IDP index */
+-    int32_t ports;
++    uint32_t ports;
+     qemu_irq irq;
+     AddressSpace *as;
  } AHCIState;
- 
- 
--void ahci_ide_create_devs(PCIDevice *dev, DriveInfo **hd);
-+void ahci_ide_create_devs(AHCIState *ahci, DriveInfo **hd);
- 
- #define TYPE_SYSBUS_AHCI "sysbus-ahci"
- OBJECT_DECLARE_SIMPLE_TYPE(SysbusAHCIState, SYSBUS_AHCI)
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 09e12418f9..d346fa3b1d 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -304,7 +304,7 @@ static void pc_q35_init(MachineState *machine)
-         idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
-         g_assert(MAX_SATA_PORTS == ich9->ahci.ports);
-         ide_drive_get(hd, ich9->ahci.ports);
--        ahci_ide_create_devs(pdev, hd);
-+        ahci_ide_create_devs(&ich9->ahci, hd);
-     } else {
-         idebus[0] = idebus[1] = NULL;
-     }
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 8b97c6b0e7..bac1871a31 100644
+index bac1871a31..2c3306dae4 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -1896,10 +1896,8 @@ static void sysbus_ahci_register_types(void)
- 
- type_init(sysbus_ahci_register_types)
- 
--void ahci_ide_create_devs(PCIDevice *dev, DriveInfo **hd)
-+void ahci_ide_create_devs(AHCIState *ahci, DriveInfo **hd)
- {
--    AHCIPCIState *d = ICH9_AHCI(dev);
--    AHCIState *ahci = &d->ahci;
-     int i;
- 
-     for (i = 0; i < ahci->ports; i++) {
-@@ -1908,5 +1906,4 @@ void ahci_ide_create_devs(PCIDevice *dev, DriveInfo **hd)
-         }
-         ide_bus_create_drive(&ahci->dev[i].port, 0, hd[i]);
-     }
--
- }
-diff --git a/hw/mips/boston.c b/hw/mips/boston.c
-index a6c7bc18ff..1b44fb354c 100644
---- a/hw/mips/boston.c
-+++ b/hw/mips/boston.c
-@@ -775,7 +775,7 @@ static void boston_mach_init(MachineState *machine)
-     ich9 = ICH9_AHCI(pdev);
-     g_assert(ARRAY_SIZE(hd) == ich9->ahci.ports);
-     ide_drive_get(hd, ich9->ahci.ports);
--    ahci_ide_create_devs(pdev, hd);
-+    ahci_ide_create_devs(&ich9->ahci, hd);
- 
-     if (machine->firmware) {
-         fw_size = load_image_targphys(machine->firmware,
+@@ -1819,7 +1819,7 @@ const VMStateDescription vmstate_ahci = {
+     .version_id = 1,
+     .post_load = ahci_state_post_load,
+     .fields = (const VMStateField[]) {
+-        VMSTATE_STRUCT_VARRAY_POINTER_INT32(dev, AHCIState, ports,
++        VMSTATE_STRUCT_VARRAY_POINTER_UINT32(dev, AHCIState, ports,
+                                      vmstate_ahci_device, AHCIDevice),
+         VMSTATE_UINT32(control_regs.cap, AHCIState),
+         VMSTATE_UINT32(control_regs.ghc, AHCIState),
+@@ -1827,7 +1827,7 @@ const VMStateDescription vmstate_ahci = {
+         VMSTATE_UINT32(control_regs.impl, AHCIState),
+         VMSTATE_UINT32(control_regs.version, AHCIState),
+         VMSTATE_UINT32(idp_index, AHCIState),
+-        VMSTATE_INT32_EQUAL(ports, AHCIState, NULL),
++        VMSTATE_UINT32_EQUAL(ports, AHCIState, NULL),
+         VMSTATE_END_OF_LIST()
+     },
+ };
 -- 
 2.41.0
 
