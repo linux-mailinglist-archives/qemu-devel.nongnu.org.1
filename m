@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E027855A65
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:25:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C246A855A5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:23:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raV7L-0002WL-TQ; Thu, 15 Feb 2024 01:21:07 -0500
+	id 1raV7N-0002jO-4m; Thu, 15 Feb 2024 01:21:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV7G-0002SA-SQ
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:02 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1raV7J-0002aB-FP
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:05 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV7F-0005Zk-64
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:02 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e0aa4bb62fso311220b3a.1
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:21:00 -0800 (PST)
+ id 1raV7H-0005aE-4q
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:04 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1d91397bd22so3785535ad.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:21:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707978060; x=1708582860; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707978062; x=1708582862; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e2NESTxnz6150SuLytNvY5Gmn2U5RKg4GfRtueQZH4I=;
- b=jocrHhZXXPVXVOKXM8tf6O7U7e4f8XwGD5NfISYkl7L+JBquBlR8OOPE0Veo0DIpzg
- EQsMO4OmhDSyfiV+8V0u2f6SzEbmSR0A0qo5jKImc5xC7GHNdpp7nWgbrZOo1oQM3//8
- PFUYGWBZkMdUJjuKyuZdunF1cBI/z2lBOUCFyHPPmsRZWJzsLCOlX5qc0Ie/MnM/KPtA
- BoYhEXbWf31pYkzlMtx0l2hO94xTjjODg2YkFz9ZtVIR66xQsl9bXnPeaavHvheVFXf6
- wlw3FK8ZheX1K71wwbViAidcRh3zszGfxs7DSuPAerevO6CLffmI1IsUEkrZ2IYJsmuO
- 5DYQ==
+ bh=n/bmjjPgt+4cAZDZblP4w6A7Xhw+0ftgWcgfLTUC2AM=;
+ b=iAVlYPA3IK6ae7rQCI5dUhoCxdHv87BIiZR6rzuLU0BCkBApD2gktnpMnHlyol+P3U
+ C9tMWKRcpHto4GSN81BqvnMPjrEAwHU5lxMYP8ulg+w33Hy+Fe394w49BWsUPzrs2eP/
+ Picgqp6If7zZ3yUqMDgYKySdb5mt+oFk9ngduUf/fAEn3acHudRx9RLjTDTlopoTySxW
+ ApdibbJHEtLzUTTTIoFN5bH4Crgt45+qyGk24TvdVRmk/Xypp3yN1ycTSa7L+9hi4jVP
+ 4TmZG6MyztUD3vAzcoBDbXeoo7qWZDV0HjQjKVyKk9i+WYC7WnEWA90knuIGt7AXxGte
+ r/XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707978060; x=1708582860;
+ d=1e100.net; s=20230601; t=1707978062; x=1708582862;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e2NESTxnz6150SuLytNvY5Gmn2U5RKg4GfRtueQZH4I=;
- b=a8rTCODNJRUTZ8d/40bxX11mNR55kQbO4LHOAIgkDeBhlg84fPlHOWnVaIC93gdNrp
- ekGWZ+UaBCWqkROKX99H5bn26at2Q1VOzduBLnzAZhR0zCdWIBLfkrjuuTpkUwqwS9+f
- ThIlqw68ruqapOPiFntxr+Dz4MUBTfw5ySDDVz1jHMmj7+zy8BoMa7cdUK4U5pO1kDyV
- 6qDJ8dA62/Q4Ut09ISgzSvWTW/jhJOU/fwtjGJJI9dhqTyZxDVWtk0hus7E2m4yYC4nB
- ho9YX40JpOzNQbp8+vZL6ttMXHFtp4M3LXSrhJkH1DNJVSNiIyVaINqmwTqR1XTczpEs
- 92JQ==
-X-Gm-Message-State: AOJu0YxpbaE8yIQ9lYfAv14tC9vsOPnqM5/jbaz6Qlnorom5vli5bsqs
- WwWE/4enEcuti39YyZxHHD9/CqIw17uxdeiew0BzZYRZJ/0tHZSVXSZvFU9lDIagmWIBuZMhucb
- 5
-X-Google-Smtp-Source: AGHT+IFJ9sDjEXtUETUm3ReyUQZDUaqmowhrRS8qjEoX1WAOvwlmCisk/xV50ygaQVkQUzzfnDWLMQ==
-X-Received: by 2002:a17:903:445:b0:1db:917f:5a42 with SMTP id
- iw5-20020a170903044500b001db917f5a42mr75351plb.3.1707978059832; 
- Wed, 14 Feb 2024 22:20:59 -0800 (PST)
+ bh=n/bmjjPgt+4cAZDZblP4w6A7Xhw+0ftgWcgfLTUC2AM=;
+ b=w7VeyvVbyGcbd9RNk88qTTPzRHu2sXTG4PeO0GiS//v9OL02mG5V4XNwXT7p9Ykata
+ x2fqR/JNluKcot89bEOSfMQYhoY/yviDdJogedCNFINoIFAtvUz/6+fyYce4Czpg9CtP
+ APxoKjT6LYCdvOPTiAeJ08EHB8Rsb5ROL1m6EHtYOCbDCb5I4OUyMx4L1DQ9lO2xow1B
+ 9GTJRI5xLN+zkAXZ/IFkmfAsgWjiSJiKKpq7G7+ZuNNjrTDjLUtYU4Vaix3rgWA3BMOH
+ cj9YvPJrsbaw1VbB+XMD9YihoGj5VwaxnfJYkVaA7JW2HpTi7Y9uY7zGkDt0zEWWh4Ld
+ pVoA==
+X-Gm-Message-State: AOJu0YyBPZCoGx61tHmwhtAIeIwY7GyL7/L8ZbLWpY/EKqYWG/ORT9OG
+ /LVQx4ZJx1Q1EzEdMKbQ0VKuizQFsrFWcdAykEXYzM6uizNboI7L5xTfyxsLS97jNmf5JScSXA6
+ 9
+X-Google-Smtp-Source: AGHT+IFtt8DndZ0a6o9UnlIWG+rcYFPDVaMRlnbct6yM6wrlh/eav1cW1IdrVFH6ugdaYp27kSmA7Q==
+X-Received: by 2002:a17:902:b686:b0:1d9:8f6e:86e8 with SMTP id
+ c6-20020a170902b68600b001d98f6e86e8mr729039pls.69.1707978061977; 
+ Wed, 14 Feb 2024 22:21:01 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.58
+ d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.21.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 22:20:59 -0800 (PST)
+ Wed, 14 Feb 2024 22:21:00 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PATCH v4 27/36] tests/tcg: Extend file in linux-madvise.c
-Date: Wed, 14 Feb 2024 20:20:09 -1000
-Message-Id: <20240215062018.795056-28-richard.henderson@linaro.org>
+Cc: Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v4 28/36] *-user: Deprecate and disable -p pagesize
+Date: Wed, 14 Feb 2024 20:20:10 -1000
+Message-Id: <20240215062018.795056-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215062018.795056-1-richard.henderson@linaro.org>
 References: <20240215062018.795056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,34 +95,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When guest page size > host page size, this test can fail
-due to the SIGBUS protection hack.  Avoid this by making
-sure that the file size is at least one guest page.
+This option controls the host page size.  From the mis-usage in
+our own testsuite, this is easily confused with guest page size.
 
-Visible with alpha guest on x86_64 host.
+The only thing that occurs when changing the host page size is
+that stuff breaks, because one cannot actually change the host
+page size.  Therefore reject all but the no-op setting as part
+of the deprecation process.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-26-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-27-richard.henderson@linaro.org>
 ---
- tests/tcg/multiarch/linux/linux-madvise.c | 2 ++
- 1 file changed, 2 insertions(+)
+ docs/about/deprecated.rst | 10 ++++++++++
+ docs/user/main.rst        |  3 ---
+ bsd-user/main.c           | 10 +++++-----
+ linux-user/main.c         | 12 ++++++------
+ 4 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/tests/tcg/multiarch/linux/linux-madvise.c b/tests/tcg/multiarch/linux/linux-madvise.c
-index 29d0997e68..539fb3b772 100644
---- a/tests/tcg/multiarch/linux/linux-madvise.c
-+++ b/tests/tcg/multiarch/linux/linux-madvise.c
-@@ -42,6 +42,8 @@ static void test_file(void)
-     assert(ret == 0);
-     written = write(fd, &c, sizeof(c));
-     assert(written == sizeof(c));
-+    ret = ftruncate(fd, pagesize);
-+    assert(ret == 0);
-     page = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE, fd, 0);
-     assert(page != MAP_FAILED);
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 5a2305ccd6..3074303b9c 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -63,6 +63,16 @@ as short-form boolean values, and passed to plugins as ``arg_name=on``.
+ However, short-form booleans are deprecated and full explicit ``arg_name=on``
+ form is preferred.
  
++User-mode emulator command line arguments
++-----------------------------------------
++
++``-p`` (since 9.0)
++''''''''''''''''''
++
++The ``-p`` option pretends to control the host page size.  However,
++it is not possible to change the host page size, and using the
++option only causes failures.
++
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
+diff --git a/docs/user/main.rst b/docs/user/main.rst
+index 7e7ad07409..d5fbb78d3c 100644
+--- a/docs/user/main.rst
++++ b/docs/user/main.rst
+@@ -87,9 +87,6 @@ Debug options:
+    Activate logging of the specified items (use '-d help' for a list of
+    log items)
+ 
+-``-p pagesize``
+-   Act as if the host page size was 'pagesize' bytes
+-
+ ``-g port``
+    Wait gdb connection to port
+ 
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index e5efb7b845..521b58b880 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -364,11 +364,11 @@ int main(int argc, char **argv)
+         } else if (!strcmp(r, "L")) {
+             interp_prefix = argv[optind++];
+         } else if (!strcmp(r, "p")) {
+-            qemu_host_page_size = atoi(argv[optind++]);
+-            if (qemu_host_page_size == 0 ||
+-                (qemu_host_page_size & (qemu_host_page_size - 1)) != 0) {
+-                fprintf(stderr, "page size must be a power of two\n");
+-                exit(1);
++            unsigned size, want = qemu_real_host_page_size();
++
++            if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
++                warn_report("Deprecated page size option cannot "
++                            "change host page size (%u)", want);
+             }
+         } else if (!strcmp(r, "g")) {
+             gdbstub = g_strdup(argv[optind++]);
+diff --git a/linux-user/main.c b/linux-user/main.c
+index e540acb84a..bad03f06d3 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -332,11 +332,11 @@ static void handle_arg_ld_prefix(const char *arg)
+ 
+ static void handle_arg_pagesize(const char *arg)
+ {
+-    qemu_host_page_size = atoi(arg);
+-    if (qemu_host_page_size == 0 ||
+-        (qemu_host_page_size & (qemu_host_page_size - 1)) != 0) {
+-        fprintf(stderr, "page size must be a power of two\n");
+-        exit(EXIT_FAILURE);
++    unsigned size, want = qemu_real_host_page_size();
++
++    if (qemu_strtoui(arg, NULL, 10, &size) || size != want) {
++        warn_report("Deprecated page size option cannot "
++                    "change host page size (%u)", want);
+     }
+ }
+ 
+@@ -496,7 +496,7 @@ static const struct qemu_argument arg_table[] = {
+     {"D",          "QEMU_LOG_FILENAME", true, handle_arg_log_filename,
+      "logfile",     "write logs to 'logfile' (default stderr)"},
+     {"p",          "QEMU_PAGESIZE",    true,  handle_arg_pagesize,
+-     "pagesize",   "set the host page size to 'pagesize'"},
++     "pagesize",   "deprecated change to host page size"},
+     {"one-insn-per-tb",
+                    "QEMU_ONE_INSN_PER_TB",  false, handle_arg_one_insn_per_tb,
+      "",           "run with one guest instruction per emulated TB"},
 -- 
 2.34.1
 
