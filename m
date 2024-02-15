@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D326E855A72
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1D5855A73
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:26:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raV75-0002NH-R4; Thu, 15 Feb 2024 01:20:51 -0500
+	id 1raV77-0002Nd-Ry; Thu, 15 Feb 2024 01:20:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV6x-0002KX-VU
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:44 -0500
+ id 1raV6z-0002L7-Ay
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:45 -0500
 Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV6w-0005UT-CK
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:43 -0500
+ id 1raV6x-0005Uy-N3
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:45 -0500
 Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1db5212e2f6so3915055ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:41 -0800 (PST)
+ d9443c01a7336-1d93edfa76dso4049355ad.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707978041; x=1708582841; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707978042; x=1708582842; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xf7vdSAvh/ZeTBRvXJBUTE4ih7Lx/NEC7LNkf984wzI=;
- b=b5/s+50jnCvU47HaumMDOWrixy55mYqUwuR/6/oF8ZQh98ljwurwbGyaUJpWEeBiQI
- zJezHEtpBOsPxXYxLtr+vX4OOvMok2YfDATUmCLrdm0OBK4frbaQlykTQuBlRjWSweu2
- 9ZR3U82t7EJkjTadc+hfBFjOr9b+20MMPwMTqQ3HROvo8MYClsIZVFOaIKYFUCQiE4CI
- yPKJ7JMENxmklh6Hm5IhJaypXHHMMPphmCWGx58g5DP4+QrrsUruxOkOB1nFOgpYm/bn
- c26MCpjMBQ0wX3NAKttexun9VrCuldaixBOYQ9l8tttNS1Fyn8TcXTAzqyNehQFaV4yU
- JqBg==
+ bh=MJwI7j8qAfDRGrC+KBy3NdL40EXjR4qHacqKh2GDQwg=;
+ b=b6PaTaZmEC5BKo0TzRJqcR8Cp5VsAbyS39upUhfg2IimeDdId6ntz1ONy+W1OVqAvW
+ 3gzaurdQmMLKMf6tMPIoOktjX7rYtWSqngNSY0kVAZA/xgo6ufJ9RZOj1FcuVzF9i1Rl
+ 0GSPo68/qUGiawA3VcgOE4sZc+vFWAM55qFX4E2CDaJJp0ObEeO7Jy6UW3kGiZMzAc8e
+ hua+R/A7Ilu7HGjRHokL5PuUtkclONNp/0JMV7I0sCebwzFhcauVtgDIXw1coRGaHSOt
+ fea6B+qUT1cuv8iRTHTszmGcIJCotkAiPzi9r1h4QafFR7VA8IZykOV7De1QKeni9un8
+ JUGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707978041; x=1708582841;
+ d=1e100.net; s=20230601; t=1707978042; x=1708582842;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xf7vdSAvh/ZeTBRvXJBUTE4ih7Lx/NEC7LNkf984wzI=;
- b=NQB30TGLvCnykAgZOXOpmMrURX03AFVn0M2KfIdbH/J9t1Bv1EPp3ebvOnj+ZW+59H
- wj3Csa55aycXYbpj5KSXIachBABKlY/RXywxWNiK/0gWCoE4+AsXHFW2JrxnnB+KgC0G
- nccYHmT4LXQNlxj26HGgfPl7wua7/tjy3N3B606kIXjeAR6Lyk+FkN+t1ZBtlGqmeOxA
- Iqu8EXhumNFOksD5lX33MkkDTPIEn6tXYq86amRHeILJ+74PPcVzloSJ2WlB2qZMLWJZ
- 0bbO/OWC5U4XIhB4c3ZDN7vIk37bUguh7fKRiBn2TrXgJWFAAH5p9h9Q1IUaPG2GBg8c
- c4gA==
-X-Gm-Message-State: AOJu0Yx8XCyOQrIo991lrBuLB+es6dG/cgo1gLuktYXNVSPxXMb5Q8T6
- HNHJWiCySRqQOn6GGsHBRzeIP1k0xyg2Q9lnwMwUXDMrJTExKxguaSbF+0kfUKkSd4Sw2x7ZK+u
- G
-X-Google-Smtp-Source: AGHT+IEdH6d01RJl0y/+qBoK/94nPayho6ADeqOQKWLhTi3fS0C5Ud+YeaSabt8VQzwESczyTzbiTQ==
-X-Received: by 2002:a17:902:d2d2:b0:1da:2128:eb3b with SMTP id
- n18-20020a170902d2d200b001da2128eb3bmr6822345plc.28.1707978041161; 
- Wed, 14 Feb 2024 22:20:41 -0800 (PST)
+ bh=MJwI7j8qAfDRGrC+KBy3NdL40EXjR4qHacqKh2GDQwg=;
+ b=urk8PXqZzKAygUPbyDKYkiXuxU0cpMQKFItCo+AHeWQiBh8P0nVAtknDFlpUm7i1M7
+ iDWLEQ8fpzYanItaEzRgV2xvRsDNGelRPf0ZSeFwccMqQUVXhrmHKlkDPkOBES4+bv3M
+ 5fG5omYsal2KFntuS15Jqyp+LKu3xXWu59AXRZnuHbAjsYFNzrQyCG9oWAU5ChfOBAFa
+ +OFOFYfFwibZIEA8CvnwMW+3GI5Q/HN/DG9g1oHGtjAmk10j55wjx/cb7R/RUep6kmDg
+ /CVGlbwvr8gg9K2tuRI8siNo1ZYzHDtGkK3oPknGF3FkDXr4fce+nk/veSKCiMKRantL
+ xXaQ==
+X-Gm-Message-State: AOJu0YwDVFh1qDe6msU13dGubEqBlMK/pT5mNxnpQQxuLsqQO6taLky6
+ KWlFX+IXCllgeT5FQx1isR6bhvqRhWBtoDgCVaiOrY0uEdXPgQMcokJqqPS5lrfZcfE8p7Vf1Fl
+ T
+X-Google-Smtp-Source: AGHT+IHL09jobZaOXWynFqV8jUYEXLonUZWHHv8Atf7B2fptXqs6SYacy0N1dna0cLGBrerePXmakw==
+X-Received: by 2002:a17:902:6502:b0:1db:65a3:e17f with SMTP id
+ b2-20020a170902650200b001db65a3e17fmr698708plk.6.1707978042587; 
+ Wed, 14 Feb 2024 22:20:42 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.40
+ d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 22:20:40 -0800 (PST)
+ Wed, 14 Feb 2024 22:20:42 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH v4 14/36] softmmu/physmem: Remove HOST_PAGE_ALIGN
-Date: Wed, 14 Feb 2024 20:19:56 -1000
-Message-Id: <20240215062018.795056-15-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
+Subject: [PATCH v4 15/36] linux-user: Remove qemu_host_page_size from main
+Date: Wed, 14 Feb 2024 20:19:57 -1000
+Message-Id: <20240215062018.795056-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215062018.795056-1-richard.henderson@linaro.org>
 References: <20240215062018.795056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
  envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
@@ -94,62 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Align allocation sizes to the maximum of host and target page sizes.
+Use qemu_real_host_page_size() instead.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-15-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-16-richard.henderson@linaro.org>
 ---
- system/physmem.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ linux-user/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index 508dcb7494..6b7c5747da 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1680,7 +1680,8 @@ int qemu_ram_resize(RAMBlock *block, ram_addr_t newsize, Error **errp)
- 
-     assert(block);
- 
--    newsize = HOST_PAGE_ALIGN(newsize);
-+    newsize = TARGET_PAGE_ALIGN(newsize);
-+    newsize = REAL_HOST_PAGE_ALIGN(newsize);
- 
-     if (block->used_length == newsize) {
-         /*
-@@ -1916,7 +1917,9 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
-         return NULL;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 74b2fbb393..e540acb84a 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -781,7 +781,7 @@ int main(int argc, char **argv, char **envp)
      }
+     cpu_type = parse_cpu_option(cpu_model);
  
--    size = HOST_PAGE_ALIGN(size);
-+    size = TARGET_PAGE_ALIGN(size);
-+    size = REAL_HOST_PAGE_ALIGN(size);
+-    /* init tcg before creating CPUs and to get qemu_host_page_size */
++    /* init tcg before creating CPUs */
+     {
+         AccelState *accel = current_accel();
+         AccelClass *ac = ACCEL_GET_CLASS(accel);
+@@ -804,8 +804,10 @@ int main(int argc, char **argv, char **envp)
+      */
+     max_reserved_va = MAX_RESERVED_VA(cpu);
+     if (reserved_va != 0) {
+-        if ((reserved_va + 1) % qemu_host_page_size) {
+-            char *s = size_to_str(qemu_host_page_size);
++        int host_page_size = qemu_real_host_page_size();
 +
-     file_size = get_file_size(fd);
-     if (file_size > offset && file_size < (offset + size)) {
-         error_setg(errp, "backing store size 0x%" PRIx64
-@@ -2014,13 +2017,17 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
- {
-     RAMBlock *new_block;
-     Error *local_err = NULL;
-+    int align;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
-                           RAM_NORESERVE)) == 0);
-     assert(!host ^ (ram_flags & RAM_PREALLOC));
- 
--    size = HOST_PAGE_ALIGN(size);
--    max_size = HOST_PAGE_ALIGN(max_size);
-+    align = qemu_real_host_page_size();
-+    align = MAX(align, TARGET_PAGE_SIZE);
-+    size = ROUND_UP(size, align);
-+    max_size = ROUND_UP(max_size, align);
-+
-     new_block = g_malloc0(sizeof(*new_block));
-     new_block->mr = mr;
-     new_block->resized = resized;
++        if ((reserved_va + 1) % host_page_size) {
++            char *s = size_to_str(host_page_size);
+             fprintf(stderr, "Reserved virtual address not aligned mod %s\n", s);
+             g_free(s);
+             exit(EXIT_FAILURE);
+@@ -902,7 +904,7 @@ int main(int argc, char **argv, char **envp)
+      * If we're in a chroot with no /proc, fall back to 1 page.
+      */
+     if (mmap_min_addr == 0) {
+-        mmap_min_addr = qemu_host_page_size;
++        mmap_min_addr = qemu_real_host_page_size();
+         qemu_log_mask(CPU_LOG_PAGE,
+                       "host mmap_min_addr=0x%lx (fallback)\n",
+                       mmap_min_addr);
 -- 
 2.34.1
 
