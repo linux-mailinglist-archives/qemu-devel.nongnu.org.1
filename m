@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F696855C16
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BE1855C22
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:17:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raWuB-0007kI-Ps; Thu, 15 Feb 2024 03:15:39 -0500
+	id 1raWu8-0007cZ-S5; Thu, 15 Feb 2024 03:15:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raWtd-0007Cy-Dw
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:06 -0500
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1raWte-0007DT-Rs
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:08 -0500
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raWtb-0001QN-MG
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:05 -0500
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-290da27f597so466759a91.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 00:15:03 -0800 (PST)
+ id 1raWtc-0001aA-Vn
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:06 -0500
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-5d8ddbac4fbso512868a12.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 00:15:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707984902; x=1708589702; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707984903; x=1708589703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GT2gVjPR6SgaNO/ooCzaomL/QLce0sgZc8b20aaRw0g=;
- b=H+gbamLFlmM9NNvGzN2OwVWi3rlwwOWLdtjbkxG3rf/w2aJi26BM0tr/uNz6AWpt6U
- nhKXY79JVXI+li093NB6VSQngNLpJCDxQ+2V4B+4dCsKmzIxevUb8/hR9Ts2h/tF4NXU
- qCr6ItTWiKxCe4l5qejFJ9Dq+Iz3mmoFuSQwdMD3xRuP9ixzpE82VpLCYnsOCbNA7t2m
- 0Xy/p1MdS41vH6/v+sqz5mJiZ55/EVmbl0L5tujA+ZWgNcAcfhfcddUa/4Vkal1k1WrZ
- Ih0v+aBCdEM/erSNBHHT6vKy50lccG9FHNwlE5nkwr7Ay2TNX/M69oBEBkneHS2fEL+P
- 2cEQ==
+ bh=LcHS8hoi1egiJUTZk4E4y/djhNgaSWqSASRO2zuVQnQ=;
+ b=nl58qaCR9J7WIXMixV12jPnvQKM3Ubuh2eMGbMGT/qbvYSFqvSmUaW6C6/PsL92jN1
+ 2/nOgMfihxlLLu/0XWjrn4tioz46du1BqfXhV0tfRDkoEtBjD3HJlxQFVcu9sGsHPeAJ
+ Q+/6mbybfb0TiYQUI6tS/MuK2w6sgOxLkwHOct4OcyDHVHOsR23ZBDNk5Nzal2Hw36Jo
+ C2IeuRCXa82RnrHmBxnArO0wQll713nBcu/4iOy3+gKDZ/lXm1KAcurQJHox3fOiSJlM
+ xyPLjSBDuUBIDGxeCy2dcKqOePiGVL7Cjy8sDE47Zx8Rs7aM4DNnjnR+lLHynww7ukhK
+ ZfSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707984902; x=1708589702;
+ d=1e100.net; s=20230601; t=1707984903; x=1708589703;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GT2gVjPR6SgaNO/ooCzaomL/QLce0sgZc8b20aaRw0g=;
- b=vB+CrLX21LwR9Kukz8gPN2kL0eJczYxbQessVT2ZUE4uY89yxl3pIIxcQEyvMnZU3H
- KPp4GcIzcFu+iKBsgDT2kycfKgzSNOj8qfXqH/y9PzWdQ29jQA7I3zX8rVNbuEPs2Ht/
- m9hIi2+3Fn52YGt3Uz8heikkEkyHcasaeIZy0jtmr7jIYv2YpJzfsjh+guHt+ZJF5d0y
- tRLT0mc+QftGvOecp5jL2sV/nLMXUNj3JexULX2Y141waS60R/qCP+GE+lDrmQCRCUdz
- W4dfhkBWhKbko4wiabPRHBIvkTOXNLQkNsjGassoCVh7ba5Ft8CuAsWsQyKhplvpAlxb
- GZVQ==
-X-Gm-Message-State: AOJu0YzromjsVXG/W8EvVtMjBPOJ+pqmE0qZcTa8QR+mZyFvh1Y/8qYW
- omaxvgeGzegkvGGXRpzyyuY7BL3t9qLBa5JDrvo7VDMOJdmujzIU27kKt7BUuCRYqoW3HISKZNN
- U
-X-Google-Smtp-Source: AGHT+IEFgp/lcu2AAGdZFAR7JBo2Wf+vbs81VYylavDSIm699qxyozPRLot3mcOks9CPBJKa7XFjTQ==
-X-Received: by 2002:a17:90b:1642:b0:299:165:b429 with SMTP id
- il2-20020a17090b164200b002990165b429mr963156pjb.23.1707984902259; 
- Thu, 15 Feb 2024 00:15:02 -0800 (PST)
+ bh=LcHS8hoi1egiJUTZk4E4y/djhNgaSWqSASRO2zuVQnQ=;
+ b=JdneTIrRGPLb/nkv/nEChhFPJbf6jBdbqt5AFpu98qvrSNq/MuVfesGM0oj3c1Yulf
+ O78a5RXg4MS3B4Zne88CpFSZB9duONmekHtlVuVTcrMXHQ9HAaRZa243moOtckjEX8RL
+ MVZ7hJwu2002HqHop19kJOdLOT22IRDz6e/y+dsfXRRoAAV5RoesPXQLJFQa/TOOEa9M
+ 3w9UwYAVBBtL2agYXWDp6Y+fHRoM5lPd7nlppMrYJStpOZDrBk5TmShmFS5Qs9qk43jG
+ LClWyK2+rT4Y37Q+KJFZUJUAcgJM7BldgrX2BlrXkW9T5pebfGV7WbhHSGeDQ5qpfDi7
+ sJSQ==
+X-Gm-Message-State: AOJu0YzueWXD0mN1QoKtG6ezbmBA8OMIWyPlbfilDn59MtQcb58yXlgk
+ wlpPZF0En3kAlmM5IrDrP80wWGI4BuaHPSjqJ9JGq5eF9GZ442dbxZEfJ5J6Z/d4QO8BJsbWpou
+ i
+X-Google-Smtp-Source: AGHT+IFu6R4mEqQO92Y8u5pn3OeNLkZw1YBCa/57uEnzHK4ZYR1rdiPHxiZQXAeKvZTOWoOmQzrSMw==
+X-Received: by 2002:a17:90a:c587:b0:298:c2a8:4ade with SMTP id
+ l7-20020a17090ac58700b00298c2a84ademr953288pjt.28.1707984903549; 
+ Thu, 15 Feb 2024 00:15:03 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- qc14-20020a17090b288e00b0029900404e11sm807755pjb.27.2024.02.15.00.15.01
+ qc14-20020a17090b288e00b0029900404e11sm807755pjb.27.2024.02.15.00.15.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 00:15:01 -0800 (PST)
+ Thu, 15 Feb 2024 00:15:03 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: amonakov@ispras.ru,
 	mmromanov@ispras.ru
-Subject: [PATCH v4 08/10] util/bufferiszero: Simplify
- test_buffer_is_zero_next_accel
-Date: Wed, 14 Feb 2024 22:14:47 -1000
-Message-Id: <20240215081449.848220-9-richard.henderson@linaro.org>
+Subject: [PATCH v4 09/10] util/bufferiszero: Add simd acceleration for aarch64
+Date: Wed, 14 Feb 2024 22:14:48 -1000
+Message-Id: <20240215081449.848220-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215081449.848220-1-richard.henderson@linaro.org>
 References: <20240215081449.848220-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,93 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because the three alternatives are monotonic, we don't
-need to keep a couple of bitmasks, just identify the
-strongest alternative at startup.
+Because non-embedded aarch64 is expected to have AdvSIMD enabled, merely
+double-check with the compiler flags for __ARM_NEON and don't bother with
+a runtime check.  Otherwise, model the loop after the x86 SSE2 function,
+and use VADDV to reduce the four vector comparisons.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 56 ++++++++++++++++++---------------------------
- 1 file changed, 22 insertions(+), 34 deletions(-)
+ util/bufferiszero.c | 74 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index ce80713071..4eef6d47bc 100644
+index 4eef6d47bc..2809b09225 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -180,51 +180,39 @@ buffer_zero_avx2(const void *buf, size_t len)
+@@ -214,7 +214,81 @@ bool test_buffer_is_zero_next_accel(void)
+     }
+     return false;
  }
- #endif /* CONFIG_AVX2_OPT */
- 
--
--
--static unsigned __attribute__((noinline))
--select_accel_cpuinfo(unsigned info)
--{
--    /* Array is sorted in order of algorithm preference. */
--    static const struct {
--        unsigned bit;
--        biz_accel_fn fn;
--    } all[] = {
++
++#elif defined(__aarch64__) && defined(__ARM_NEON)
++#include <arm_neon.h>
++
++#define REASSOC_BARRIER(vec0, vec1) asm("" : "+w"(vec0), "+w"(vec1))
++
++static bool buffer_is_zero_simd(const void *buf, size_t len)
++{
++    uint32x4_t t0, t1, t2, t3;
++
++    /* Align head/tail to 16-byte boundaries.  */
++    const uint32x4_t *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
++    const uint32x4_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
++
++    /* Unaligned loads at head/tail.  */
++    t0 = vld1q_u32(buf) | vld1q_u32(buf + len - 16);
++
++    /* Collect a partial block at tail end.  */
++    t1 = e[-7] | e[-6];
++    t2 = e[-5] | e[-4];
++    t3 = e[-3] | e[-2];
++    t0 |= e[-1];
++    REASSOC_BARRIER(t0, t1);
++    REASSOC_BARRIER(t2, t3);
++    t0 |= t1;
++    t2 |= t3;
++    REASSOC_BARRIER(t0, t2);
++    t0 |= t2;
++
++    /*
++     * Loop over complete 128-byte blocks.
++     * With the head and tail removed, e - p >= 14, so the loop
++     * must iterate at least once.
++     */
++    do {
++        /* Each comparison is [-1,0], so reduction is in [-4..0]. */
++        if (unlikely(vaddvq_u32(vceqzq_u32(t0)) != -4)) {
++            return false;
++        }
++
++        t0 = p[0] | p[1];
++        t1 = p[2] | p[3];
++        t2 = p[4] | p[5];
++        t3 = p[6] | p[7];
++        REASSOC_BARRIER(t0, t1);
++        REASSOC_BARRIER(t2, t3);
++        t0 |= t1;
++        t2 |= t3;
++        REASSOC_BARRIER(t0, t2);
++        t0 |= t2;
++        p += 8;
++    } while (p < e - 7);
++
++    return vaddvq_u32(vceqzq_u32(t0)) == -4;
++}
++
 +static biz_accel_fn const accel_table[] = {
 +    buffer_is_zero_int_ge256,
-+    buffer_zero_sse2,
- #ifdef CONFIG_AVX2_OPT
--        { CPUINFO_AVX2,    buffer_zero_avx2 },
-+    buffer_zero_avx2,
- #endif
--        { CPUINFO_SSE2,    buffer_zero_sse2 },
--        { CPUINFO_ALWAYS,  buffer_is_zero_int_ge256 },
--    };
--
--    for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
--        if (info & all[i].bit) {
--            buffer_is_zero_accel = all[i].fn;
--            return all[i].bit;
--        }
--    }
--    return 0;
--}
--
--static unsigned used_accel;
++    buffer_is_zero_simd,
 +};
-+static unsigned accel_index;
- 
- static void __attribute__((constructor)) init_accel(void)
- {
--    used_accel = select_accel_cpuinfo(cpuinfo_init());
-+    unsigned info = cpuinfo_init();
-+    unsigned index = (info & CPUINFO_SSE2 ? 1 : 0);
 +
-+#ifdef CONFIG_AVX2_OPT
-+    if (info & CPUINFO_AVX2) {
-+        index = 2;
-+    }
-+#endif
++static unsigned accel_index = 1;
++#define INIT_ACCEL buffer_is_zero_simd
 +
-+    accel_index = index;
-+    buffer_is_zero_accel = accel_table[index];
- }
- 
- #define INIT_ACCEL NULL
- 
- bool test_buffer_is_zero_next_accel(void)
- {
--    /*
--     * Accumulate the accelerators that we've already tested, and
--     * remove them from the set to test this round.  We'll get back
--     * a zero from select_accel_cpuinfo when there are no more.
--     */
--    unsigned used = select_accel_cpuinfo(cpuinfo & ~used_accel);
--    used_accel |= used;
--    return used;
++bool test_buffer_is_zero_next_accel(void)
++{
 +    if (accel_index != 0) {
 +        buffer_is_zero_accel = accel_table[--accel_index];
 +        return true;
 +    }
 +    return false;
- }
++}
++
  #else
++
  bool test_buffer_is_zero_next_accel(void)
+ {
+     return false;
 -- 
 2.34.1
 
