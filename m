@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA253855994
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 04:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D2485597E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 04:28:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raStY-0001sP-9T; Wed, 14 Feb 2024 22:58:44 -0500
+	id 1raSP7-0000hW-Ku; Wed, 14 Feb 2024 22:27:17 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lstockner@genesiscloud.com>)
- id 1raQTs-0003mx-Fh
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 20:24:04 -0500
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1raSP6-0000hF-Cq; Wed, 14 Feb 2024 22:27:16 -0500
+Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <lstockner@genesiscloud.com>)
- id 1raQTq-0001tw-Ls
- for qemu-devel@nongnu.org; Wed, 14 Feb 2024 20:24:04 -0500
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33adec41b55so136219f8f.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 17:24:01 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1raSP4-0000V6-Du; Wed, 14 Feb 2024 22:27:16 -0500
+Received: by mail-ua1-x930.google.com with SMTP id
+ a1e0cc1a2514c-7ce3c7566e0so195075241.1; 
+ Wed, 14 Feb 2024 19:27:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=genesiscloud.com; s=genesiscloud.com; t=1707960239; x=1708565039;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=vLN1S5fCgtbK/2TYTBccFlszjQjGRK+vg+aNvIu+AmU=;
- b=hqGYlxGjS+Xmz+znDOxjq57hXLfmEyPZ1HGHPALXYulq8whwWpTMQndZzUhlTvurYQ
- MjrSfzd10GNf/RJUiipCWil6S++wUEsioTKNYHcCS30WuSGgEggHB0HI/6tAL4TzxDBD
- 2CTrGQti0N1sGe+cgA+xcZC9HQT/+xswyT63L+3a5lzPtLZluYWJH/uaIUojLJiOeQM1
- xkpx6YhM1pnxGFOa3X6Klqo8j08ySu7my8pui8yqkaFKs7b53dOxq+tk1PuLDRAUq8XP
- jqvp2Kevif0epg7adAoVI7DKQy5ioixyMXoT14Qs1qwnTcePKmDPmQoBNbRdF6Bm5m2m
- 3vFg==
+ d=gmail.com; s=20230601; t=1707967632; x=1708572432; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=++BCDDwEfyWHf7sv3j/2aFDaF6Kf25MAYwqOLnXTzeQ=;
+ b=X9Z+Cm94B4PknaXLZKKY7QEIdjcd9aX9mkHCPOfTow/Eenrv7MUK4zFORYw97k3NK/
+ +cTiZTlVTh+ZxGHAFEhfILOb3IDKA2A1HhPOS9JLsDc1uR87CD39pF2sbM5+ZD+T+3V2
+ rC/v/abCgFfoahdtgbkurxCS19UYvM27+TLz3RXUdQshiKbrSP1/hn4Etkxhh9QeOq7s
+ zrtLYqu3Udj+gA24WIGW/s+leNGpygWENj+av+NQjAjzaROD1RzEdqcKuR3wfc19HKfZ
+ FDhIKQV0562ERBjkqx/YbJR3elWkIYKMTxkqFLymjQDRm4kYsJJSyK0tanKmngpYroGq
+ Om1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707960239; x=1708565039;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vLN1S5fCgtbK/2TYTBccFlszjQjGRK+vg+aNvIu+AmU=;
- b=U9CStfZPBpLaVq/n5aKbzCh7mhZHX0dLWsrZd9i21cpAJ62a/ykgHRnX6xSsyUcoHY
- LtOesLInAtD1CgTaes4uvuDWPLtDwfp82HFVTIq+h4VYIlM+gpfWwwhKRwCgISWqxz4n
- +RvsF2A52pJZ13YV5cargyKxlcSJU7A1uBox6F493tt0PZHW1CuFtSmtnawSVVIQSyA0
- FyH3wtI7jryLypfkIxh5xJhMHjYWHKI9s+YQYBmN33wFBTHhxeCNmuqWnp82Y13duDpJ
- UCAt/j0bF/AP2kgAQ58i0A4CU3OEdYZkYPO2+Fpl0tRAymLLAY8b+R3DmwR8jBXVjoeS
- jQhQ==
-X-Gm-Message-State: AOJu0Ywj4L8VSehFQ+GcsgMaJiI0QKads0fn9GGH3sKWSHcNRfvoM063
- btYyl99LoZGtxh1SPjtd1wAjGIKXS2MWGjg8Hwl9ozP8kXV2tz1cVJgVEmCo2y0Qcluto1LPrYJ
- iC8f0CDpanYs7FyC/WPObKnu2VWWl6KLTmIklJrCwLhZnwQPpLWTB4c3BwQYk3djcf3ctpkzq7E
- lEeVl5m0alwv9oodBv5S1qFgIQAEf5GkuQjeGfeiBAKdHp
-X-Google-Smtp-Source: AGHT+IFPLUmC5VsmK4t7kGUUiEcbunk1VqF5L/Yy+7jgHvTykQZSMLbl2vOD2ZcFt9hjtBxmJ6fd+w==
-X-Received: by 2002:adf:f5c2:0:b0:33b:7b5a:49c with SMTP id
- k2-20020adff5c2000000b0033b7b5a049cmr171293wrp.40.1707960238562; 
- Wed, 14 Feb 2024 17:23:58 -0800 (PST)
-Received: from localhost.localdomain (p5087a006.dip0.t-ipconnect.de.
- [80.135.160.6]) by smtp.gmail.com with ESMTPSA id
- m13-20020a5d6a0d000000b0033cf637eea2sm157689wru.29.2024.02.14.17.23.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 17:23:57 -0800 (PST)
-From: Lukas Stockner <lstockner@genesiscloud.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Lukas Stockner <lstockner@genesiscloud.com>
-Subject: [PATCH] pcie: Support PCIe Gen5/Gen6 link speeds
-Date: Thu, 15 Feb 2024 02:23:26 +0100
-Message-ID: <20240215012326.3272366-1-lstockner@genesiscloud.com>
-X-Mailer: git-send-email 2.43.1
+ d=1e100.net; s=20230601; t=1707967632; x=1708572432;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=++BCDDwEfyWHf7sv3j/2aFDaF6Kf25MAYwqOLnXTzeQ=;
+ b=IkzGBPcYT/fFwBuAnMO7KPJP/xQe85JbSFIw4MqpDB0EFs8ZbGDak+Pj+Uo9x47VLf
+ NH8gibqSbgXj4AzDvbKt6b6B8B1brG8ITyf32iW7U8sMnMyo6B2ma2YnNsnpKltZuvUH
+ Fy2L7q9b/GhiGiuuM+uIGtlsXhvi9LKMkJtciIWChJxjPy+OEz9oKC8P+5eINlwXhurR
+ 9X6c1TXuAWJPjWa7HePq4XSnIKBlXNDZhjRf86/C1RreC7XNFGGknKNCi6FMDS+iVM+b
+ hEh09Vhufso4X1eWDGAbiv1EzyL/BRWDJvL1BtN+45dwEuriBTyEmNDRfhuLtYJfC2IF
+ F7pg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXjcN4R7YoYkVSijz2HvNowvwPTHXwAdHkXMbN1TwsJVGWodr662pDGkkt/MSbGAKjHOaausq1EdIGcD7u1m/cjxjSyydjnny48rsH/BTsj9Arm87oGQwDVgEoD0w==
+X-Gm-Message-State: AOJu0YwkIs/8zKBsxvqPHlIm4mgQZRM0ifocZHYEV4Zs3oBAt1fOK5uh
+ +4NAAH6KSmpr9bv8nwQGkJS4StQp0fx69kr97M2g+5pHTzJ6auKyyPkavZkNd1EepuUrMoJK2ms
+ PECUPlQrW7U0zQTHwE6v4WrOSTso=
+X-Google-Smtp-Source: AGHT+IGhebV/4yruRR+566QSiczBw0rNk39MAuOxOc9KfmDL3RxxGdWt7b2IuCLp+S7jSpS8zhIg4URFcdwTDZ3T6tk=
+X-Received: by 2002:a1f:d784:0:b0:4c0:2bdc:250f with SMTP id
+ o126-20020a1fd784000000b004c02bdc250fmr353799vkg.7.1707967632347; Wed, 14 Feb
+ 2024 19:27:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=lstockner@genesiscloud.com; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240116010930.43433-1-jeeheng.sia@starfivetech.com>
+ <20240116010930.43433-2-jeeheng.sia@starfivetech.com>
+In-Reply-To: <20240116010930.43433-2-jeeheng.sia@starfivetech.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 15 Feb 2024 13:26:45 +1000
+Message-ID: <CAKmqyKP6YNhXaOU=4-y7NbwMnXAfqW7KRMatiGOK2zjiYAqmqw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] hw/arm/virt-acpi-build.c: Migrate SPCR creation to
+ common location
+To: Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com, 
+ peter.maydell@linaro.org, shannon.zhaosl@gmail.com, sunilvl@ventanamicro.com, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liwei1518@gmail.com, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x930.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 14 Feb 2024 22:58:39 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,120 +94,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch extends the PCIe link speed option so that slots can be
-configured as supporting 32GT/s (Gen5) or 64GT/s (Gen5) speeds.
-This is as simple as setting the appropriate bit in LnkCap2 and
-the appropriate value in LnkCap and LnkCtl2.
+On Tue, Jan 16, 2024 at 11:11=E2=80=AFAM Sia Jee Heng
+<jeeheng.sia@starfivetech.com> wrote:
+>
+> RISC-V should also generate the SPCR in a manner similar to ARM.
+> Therefore, instead of replicating the code, relocate this function
+> to the common AML build.
+>
+> Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-Signed-off-by: Lukas Stockner <lstockner@genesiscloud.com>
----
- hw/core/qdev-properties-system.c | 16 ++++++++++++++--
- hw/pci/pcie.c                    |  8 ++++++++
- include/hw/pci/pcie_regs.h       |  2 ++
- qapi/common.json                 |  6 +++++-
- 4 files changed, 29 insertions(+), 3 deletions(-)
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 1a396521d5..106a31c233 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -941,7 +941,7 @@ const PropertyInfo qdev_prop_off_auto_pcibar = {
-     .set_default_value = qdev_propinfo_set_default_value_enum,
- };
- 
--/* --- PCIELinkSpeed 2_5/5/8/16 -- */
-+/* --- PCIELinkSpeed 2_5/5/8/16/32/64 -- */
- 
- static void get_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
-                                    void *opaque, Error **errp)
-@@ -963,6 +963,12 @@ static void get_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
-     case QEMU_PCI_EXP_LNK_16GT:
-         speed = PCIE_LINK_SPEED_16;
-         break;
-+    case QEMU_PCI_EXP_LNK_32GT:
-+        speed = PCIE_LINK_SPEED_32;
-+        break;
-+    case QEMU_PCI_EXP_LNK_64GT:
-+        speed = PCIE_LINK_SPEED_64;
-+        break;
-     default:
-         /* Unreachable */
-         abort();
-@@ -996,6 +1002,12 @@ static void set_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
-     case PCIE_LINK_SPEED_16:
-         *p = QEMU_PCI_EXP_LNK_16GT;
-         break;
-+    case PCIE_LINK_SPEED_32:
-+        *p = QEMU_PCI_EXP_LNK_32GT;
-+        break;
-+    case PCIE_LINK_SPEED_64:
-+        *p = QEMU_PCI_EXP_LNK_64GT;
-+        break;
-     default:
-         /* Unreachable */
-         abort();
-@@ -1004,7 +1016,7 @@ static void set_prop_pcielinkspeed(Object *obj, Visitor *v, const char *name,
- 
- const PropertyInfo qdev_prop_pcie_link_speed = {
-     .name = "PCIELinkSpeed",
--    .description = "2_5/5/8/16",
-+    .description = "2_5/5/8/16/32/64",
-     .enum_table = &PCIELinkSpeed_lookup,
-     .get = get_prop_pcielinkspeed,
-     .set = set_prop_pcielinkspeed,
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 6db0cf69cd..0b4817e144 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -153,6 +153,14 @@ static void pcie_cap_fill_slot_lnk(PCIDevice *dev)
-             pci_long_test_and_set_mask(exp_cap + PCI_EXP_LNKCAP2,
-                                        PCI_EXP_LNKCAP2_SLS_16_0GB);
-         }
-+        if (s->speed > QEMU_PCI_EXP_LNK_16GT) {
-+            pci_long_test_and_set_mask(exp_cap + PCI_EXP_LNKCAP2,
-+                                       PCI_EXP_LNKCAP2_SLS_32_0GB);
-+        }
-+        if (s->speed > QEMU_PCI_EXP_LNK_32GT) {
-+            pci_long_test_and_set_mask(exp_cap + PCI_EXP_LNKCAP2,
-+                                       PCI_EXP_LNKCAP2_SLS_64_0GB);
-+        }
-     }
- }
- 
-diff --git a/include/hw/pci/pcie_regs.h b/include/hw/pci/pcie_regs.h
-index 4972106c42..9d3b6868dc 100644
---- a/include/hw/pci/pcie_regs.h
-+++ b/include/hw/pci/pcie_regs.h
-@@ -39,6 +39,8 @@ typedef enum PCIExpLinkSpeed {
-     QEMU_PCI_EXP_LNK_5GT,
-     QEMU_PCI_EXP_LNK_8GT,
-     QEMU_PCI_EXP_LNK_16GT,
-+    QEMU_PCI_EXP_LNK_32GT,
-+    QEMU_PCI_EXP_LNK_64GT,
- } PCIExpLinkSpeed;
- 
- #define QEMU_PCI_EXP_LNKCAP_MLS(speed)  (speed)
-diff --git a/qapi/common.json b/qapi/common.json
-index f1bb841951..867a9ad9b0 100644
---- a/qapi/common.json
-+++ b/qapi/common.json
-@@ -107,10 +107,14 @@
- #
- # @16: 16.0GT/s
- #
-+# @32: 32.0GT/s
-+#
-+# @64: 64.0GT/s
-+#
- # Since: 4.0
- ##
- { 'enum': 'PCIELinkSpeed',
--  'data': [ '2_5', '5', '8', '16' ] }
-+  'data': [ '2_5', '5', '8', '16', '32', '64' ] }
- 
- ##
- # @PCIELinkWidth:
--- 
-2.43.1
+Alistair
 
+> ---
+>  hw/acpi/aml-build.c         | 51 ++++++++++++++++++++++++++++
+>  hw/arm/virt-acpi-build.c    | 68 +++++++++++++++----------------------
+>  include/hw/acpi/acpi-defs.h | 33 ++++++++++++++++++
+>  include/hw/acpi/aml-build.h |  4 +++
+>  4 files changed, 115 insertions(+), 41 deletions(-)
+>
+> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
+> index af66bde0f5..f3904650e4 100644
+> --- a/hw/acpi/aml-build.c
+> +++ b/hw/acpi/aml-build.c
+> @@ -1994,6 +1994,57 @@ static void build_processor_hierarchy_node(GArray =
+*tbl, uint32_t flags,
+>      }
+>  }
+>
+> +void build_spcr(GArray *table_data, BIOSLinker *linker,
+> +                const AcpiSpcrData *f, const uint8_t rev,
+> +                const char *oem_id, const char *oem_table_id)
+> +{
+> +    AcpiTable table =3D { .sig =3D "SPCR", .rev =3D rev, .oem_id =3D oem=
+_id,
+> +                        .oem_table_id =3D oem_table_id };
+> +
+> +    acpi_table_begin(&table, table_data);
+> +    /* Interface type */
+> +    build_append_int_noprefix(table_data, f->interface_type, 1);
+> +    /* Reserved */
+> +    build_append_int_noprefix(table_data, 0, 3);
+> +    /* Base Address */
+> +    build_append_gas(table_data, f->base_addr.id, f->base_addr.width,
+> +                     f->base_addr.offset, f->base_addr.size,
+> +                     f->base_addr.addr);
+> +    /* Interrupt type */
+> +    build_append_int_noprefix(table_data, f->interrupt_type, 1);
+> +    /* IRQ */
+> +    build_append_int_noprefix(table_data, f->pc_interrupt, 1);
+> +    /* Global System Interrupt */
+> +    build_append_int_noprefix(table_data, f->interrupt, 4);
+> +    /* Baud Rate */
+> +    build_append_int_noprefix(table_data, f->baud_rate, 1);
+> +    /* Parity */
+> +    build_append_int_noprefix(table_data, f->parity, 1);
+> +    /* Stop Bits */
+> +    build_append_int_noprefix(table_data, f->stop_bits, 1);
+> +    /* Flow Control */
+> +    build_append_int_noprefix(table_data, f->flow_control, 1);
+> +    /* Terminal Type */
+> +    build_append_int_noprefix(table_data, f->terminal_type, 1);
+> +    /* PCI Device ID  */
+> +    build_append_int_noprefix(table_data, f->pci_device_id, 2);
+> +    /* PCI Vendor ID */
+> +    build_append_int_noprefix(table_data, f->pci_vendor_id, 2);
+> +    /* PCI Bus Number */
+> +    build_append_int_noprefix(table_data, f->pci_bus, 1);
+> +    /* PCI Device Number */
+> +    build_append_int_noprefix(table_data, f->pci_device, 1);
+> +    /* PCI Function Number */
+> +    build_append_int_noprefix(table_data, f->pci_function, 1);
+> +    /* PCI Flags */
+> +    build_append_int_noprefix(table_data, f->pci_flags, 4);
+> +    /* PCI Segment */
+> +    build_append_int_noprefix(table_data, f->pci_segment, 1);
+> +    /* Reserved */
+> +    build_append_int_noprefix(table_data, 0, 4);
+> +
+> +    acpi_table_end(linker, &table);
+> +}
+>  /*
+>   * ACPI spec, Revision 6.3
+>   * 5.2.29 Processor Properties Topology Table (PPTT)
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index a22a2f43a5..195767c0f0 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -431,48 +431,34 @@ build_iort(GArray *table_data, BIOSLinker *linker, =
+VirtMachineState *vms)
+>   * Rev: 1.07
+>   */
+>  static void
+> -build_spcr(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms=
+)
+> +spcr_setup(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms=
+)
+>  {
+> -    AcpiTable table =3D { .sig =3D "SPCR", .rev =3D 2, .oem_id =3D vms->=
+oem_id,
+> -                        .oem_table_id =3D vms->oem_table_id };
+> -
+> -    acpi_table_begin(&table, table_data);
+> -
+> -    /* Interface Type */
+> -    build_append_int_noprefix(table_data, 3, 1); /* ARM PL011 UART */
+> -    build_append_int_noprefix(table_data, 0, 3); /* Reserved */
+> -    /* Base Address */
+> -    build_append_gas(table_data, AML_AS_SYSTEM_MEMORY, 32, 0, 3,
+> -                     vms->memmap[VIRT_UART].base);
+> -    /* Interrupt Type */
+> -    build_append_int_noprefix(table_data,
+> -        (1 << 3) /* Bit[3] ARMH GIC interrupt */, 1);
+> -    build_append_int_noprefix(table_data, 0, 1); /* IRQ */
+> -    /* Global System Interrupt */
+> -    build_append_int_noprefix(table_data,
+> -                              vms->irqmap[VIRT_UART] + ARM_SPI_BASE, 4);
+> -    build_append_int_noprefix(table_data, 3 /* 9600 */, 1); /* Baud Rate=
+ */
+> -    build_append_int_noprefix(table_data, 0 /* No Parity */, 1); /* Pari=
+ty */
+> -    /* Stop Bits */
+> -    build_append_int_noprefix(table_data, 1 /* 1 Stop bit */, 1);
+> -    /* Flow Control */
+> -    build_append_int_noprefix(table_data,
+> -        (1 << 1) /* RTS/CTS hardware flow control */, 1);
+> -    /* Terminal Type */
+> -    build_append_int_noprefix(table_data, 0 /* VT100 */, 1);
+> -    build_append_int_noprefix(table_data, 0, 1); /* Language */
+> -    /* PCI Device ID  */
+> -    build_append_int_noprefix(table_data, 0xffff /* not a PCI device*/, =
+2);
+> -    /* PCI Vendor ID */
+> -    build_append_int_noprefix(table_data, 0xffff /* not a PCI device*/, =
+2);
+> -    build_append_int_noprefix(table_data, 0, 1); /* PCI Bus Number */
+> -    build_append_int_noprefix(table_data, 0, 1); /* PCI Device Number */
+> -    build_append_int_noprefix(table_data, 0, 1); /* PCI Function Number =
+*/
+> -    build_append_int_noprefix(table_data, 0, 4); /* PCI Flags */
+> -    build_append_int_noprefix(table_data, 0, 1); /* PCI Segment */
+> -    build_append_int_noprefix(table_data, 0, 4); /* Reserved */
+> +    AcpiSpcrData serial =3D {
+> +        .interface_type =3D 3,       /* ARM PL011 UART */
+> +        .base_addr.id =3D AML_AS_SYSTEM_MEMORY,
+> +        .base_addr.width =3D 32,
+> +        .base_addr.offset =3D 0,
+> +        .base_addr.size =3D 3,
+> +        .base_addr.addr =3D vms->memmap[VIRT_UART].base,
+> +        .interrupt_type =3D (1 << 3),/* Bit[3] ARMH GIC interrupt*/
+> +        .pc_interrupt =3D 0,         /* IRQ */
+> +        .interrupt =3D (vms->irqmap[VIRT_UART] + ARM_SPI_BASE),
+> +        .baud_rate =3D 3,            /* 9600 */
+> +        .parity =3D 0,               /* No Parity */
+> +        .stop_bits =3D 1,            /* 1 Stop bit */
+> +        .flow_control =3D 1 << 1,    /* RTS/CTS hardware flow control */
+> +        .terminal_type =3D 0,        /* VT100 */
+> +        .language =3D 0,             /* Language */
+> +        .pci_device_id =3D 0xffff,   /* not a PCI device*/
+> +        .pci_vendor_id =3D 0xffff,   /* not a PCI device*/
+> +        .pci_bus =3D 0,
+> +        .pci_device =3D 0,
+> +        .pci_function =3D 0,
+> +        .pci_flags =3D 0,
+> +        .pci_segment =3D 0,
+> +    };
+>
+> -    acpi_table_end(linker, &table);
+> +    build_spcr(table_data, linker, &serial, 2, vms->oem_id, vms->oem_tab=
+le_id);
+>  }
+>
+>  /*
+> @@ -930,7 +916,7 @@ void virt_acpi_build(VirtMachineState *vms, AcpiBuild=
+Tables *tables)
+>      }
+>
+>      acpi_add_table(table_offsets, tables_blob);
+> -    build_spcr(tables_blob, tables->linker, vms);
+> +    spcr_setup(tables_blob, tables->linker, vms);
+>
+>      acpi_add_table(table_offsets, tables_blob);
+>      build_dbg2(tables_blob, tables->linker, vms);
+> diff --git a/include/hw/acpi/acpi-defs.h b/include/hw/acpi/acpi-defs.h
+> index 2b42e4192b..0e6e82b339 100644
+> --- a/include/hw/acpi/acpi-defs.h
+> +++ b/include/hw/acpi/acpi-defs.h
+> @@ -90,6 +90,39 @@ typedef struct AcpiFadtData {
+>      unsigned *xdsdt_tbl_offset;
+>  } AcpiFadtData;
+>
+> +typedef struct AcpiGas {
+> +    uint8_t id;                /* Address space ID */
+> +    uint8_t width;             /* Register bit width */
+> +    uint8_t offset;            /* Register bit offset */
+> +    uint8_t size;              /* Access size */
+> +    uint64_t addr;             /* Address */
+> +} AcpiGas;
+> +
+> +/* SPCR (Serial Port Console Redirection table) */
+> +typedef struct AcpiSpcrData {
+> +    uint8_t interface_type;
+> +    uint8_t reserved[3];
+> +    struct AcpiGas base_addr;
+> +    uint8_t interrupt_type;
+> +    uint8_t pc_interrupt;
+> +    uint32_t interrupt;        /* Global system interrupt */
+> +    uint8_t baud_rate;
+> +    uint8_t parity;
+> +    uint8_t stop_bits;
+> +    uint8_t flow_control;
+> +    uint8_t terminal_type;
+> +    uint8_t language;
+> +    uint8_t reserved1;
+> +    uint16_t pci_device_id;    /* Must be 0xffff if not PCI device */
+> +    uint16_t pci_vendor_id;    /* Must be 0xffff if not PCI device */
+> +    uint8_t pci_bus;
+> +    uint8_t pci_device;
+> +    uint8_t pci_function;
+> +    uint32_t pci_flags;
+> +    uint8_t pci_segment;
+> +    uint32_t reserved2;
+> +} AcpiSpcrData;
+> +
+>  #define ACPI_FADT_ARM_PSCI_COMPLIANT  (1 << 0)
+>  #define ACPI_FADT_ARM_PSCI_USE_HVC    (1 << 1)
+>
+> diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
+> index ff2a310270..a3784155cb 100644
+> --- a/include/hw/acpi/aml-build.h
+> +++ b/include/hw/acpi/aml-build.h
+> @@ -497,4 +497,8 @@ void build_fadt(GArray *tbl, BIOSLinker *linker, cons=
+t AcpiFadtData *f,
+>
+>  void build_tpm2(GArray *table_data, BIOSLinker *linker, GArray *tcpalog,
+>                  const char *oem_id, const char *oem_table_id);
+> +
+> +void build_spcr(GArray *table_data, BIOSLinker *linker,
+> +                const AcpiSpcrData *f, const uint8_t rev,
+> +                const char *oem_id, const char *oem_table_id);
+>  #endif
+> --
+> 2.34.1
+>
+>
 
