@@ -2,107 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8D6856445
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE92856462
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:29:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rabjc-0001Qp-CS; Thu, 15 Feb 2024 08:25:04 -0500
+	id 1rabn0-0004Ns-6N; Thu, 15 Feb 2024 08:28:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1rabjZ-0001QI-PX; Thu, 15 Feb 2024 08:25:01 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rabmy-0004In-G1
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 08:28:32 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1rabjX-0003zP-LL; Thu, 15 Feb 2024 08:25:01 -0500
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1D9B01F8A6;
- Thu, 15 Feb 2024 13:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708003496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=754ylKOy9LqrfRzkjNwD2BUHi8CIJ5iSOcp341b24C4=;
- b=JOwdmDjY8JH5NKGyhEX6HSw2eO1O1MY6Wu8eHb5XRJ+yfyTigfbwpgXfFbcTST7epDQZFr
- Lv7nKLrEEy3vECYboR3saSINjGOVCVGSKJ8HMIUMNEez4BVOhN7Sp4BXA1QkiTS9oZ+ShR
- b7dEVQNME+/Rrif1g5dE8AKk2ahLRjs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708003496;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=754ylKOy9LqrfRzkjNwD2BUHi8CIJ5iSOcp341b24C4=;
- b=K48lE6eU/tIJ7pV58a3U9vY+I2x39RCNWRREPvu8pPW7l9RZ7bkPKOTo1vf3bsLYRTZkus
- 7clfh8WoxrQpS5BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708003496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=754ylKOy9LqrfRzkjNwD2BUHi8CIJ5iSOcp341b24C4=;
- b=JOwdmDjY8JH5NKGyhEX6HSw2eO1O1MY6Wu8eHb5XRJ+yfyTigfbwpgXfFbcTST7epDQZFr
- Lv7nKLrEEy3vECYboR3saSINjGOVCVGSKJ8HMIUMNEez4BVOhN7Sp4BXA1QkiTS9oZ+ShR
- b7dEVQNME+/Rrif1g5dE8AKk2ahLRjs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708003496;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=754ylKOy9LqrfRzkjNwD2BUHi8CIJ5iSOcp341b24C4=;
- b=K48lE6eU/tIJ7pV58a3U9vY+I2x39RCNWRREPvu8pPW7l9RZ7bkPKOTo1vf3bsLYRTZkus
- 7clfh8WoxrQpS5BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9A57013A53;
- Thu, 15 Feb 2024 13:24:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id wpuEGKcQzmVKVQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 15 Feb 2024 13:24:55 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Michael Tokarev <mjt@tls.msk.ru>, peterx@redhat.com, Peter Maydell
- <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Subject: Re: [PULL 26/34] migration/multifd: Join the TLS thread
-In-Reply-To: <d3c4506f-0dbd-4171-944d-0aeb040153ad@tls.msk.ru>
-References: <20240208030528.368214-1-peterx@redhat.com>
- <20240208030528.368214-27-peterx@redhat.com>
- <d60ddc11-b4b4-4fee-b9c0-08bea513f8d3@tls.msk.ru>
- <0e5720f4-63c1-4f71-ab6b-26c07614ba33@tls.msk.ru> <8734tvqipk.fsf@suse.de>
- <d3c4506f-0dbd-4171-944d-0aeb040153ad@tls.msk.ru>
-Date: Thu, 15 Feb 2024 10:24:53 -0300
-Message-ID: <878r3lsvve.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rabmw-0004mc-Lc
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 08:28:32 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-55c2cf644f3so1003509a12.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 05:28:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708003708; x=1708608508; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=igEHQnAv346IZm7Tdu46vcLhm+Op4iNJOlIOq4u/X0s=;
+ b=eTMZlKnc4AQ36w+aYWqUzHprC4eSz3eACN6qOuyiPhit3upre7DsmtG69GOWEjR5Fe
+ XYU86T2Hkow12X6AUNMKa8TohIdxbSJ+9RXN0be2n3bl8EIpVFU6PExWDITNkzHYkGyt
+ YKCAPZtqbI0AV0EreRcY/90UjYPBC31kcaiuj6DDDsrqdoltuTpeiVNNIuFtGNXxMxlb
+ U1zM3ehjQcY6R9Q88NabYmXeiX29m8PnxygnewNOxS5l9B9O4xrzDNB1B1cAd3p+PuPo
+ 6JRfHRPdHcmMpt1Umm0IWagyAjUlbp7AVBGrDQEnfWgwc8/HNw1FPqmco5f9Pjilr5sc
+ cckA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708003708; x=1708608508;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=igEHQnAv346IZm7Tdu46vcLhm+Op4iNJOlIOq4u/X0s=;
+ b=G4g8IPQojD/jlK6UYo8w9bzfntx6so8Dw1R54dBvR1j6+omkLywW0j5+yxFK9PsIAF
+ J3oZQhSaTqgNDhbppMj2g6SasLH7yOTvEJahcm+ntqJBr3Iz3YLSfHvJJziusrC5LDfu
+ FcNBpuwjo91IdK3MSu1ttRA/ziRBUOlIZuLE/XPPwqYro99UlUOq6hvfGeZgeYx911/D
+ txmEin/ouLCRhIUy3XVngPw34QDC/4a5vqCOKt9dJNaP8G9TADtLnHc/kjsDSvM7jjUP
+ lt7r93jI3kbWz+X0W4NzFmAenmpjtnkcd+e8D9qzXmZydqzmPQSDFpzXQxUUXPXRSwO/
+ /8cw==
+X-Gm-Message-State: AOJu0YwLm52cRbDYgQVLZtVu9Ky0MjGeB5Dkw5ChlD2Fp9KNiWsICB/z
+ eQWk1w2fBWeLnK9VMzLn7uOzFSUNdsuc0XLK76HYAE/1S0X3FhWGadYWUuIvjJkYJYl+fM/4FRc
+ ckis=
+X-Google-Smtp-Source: AGHT+IEzhPVoqDc9Q/t9OGcFbIymUj3ZOYlPw0O9NHyu5IbU80obK8cxFaP0280UajBLW/urtjxJbw==
+X-Received: by 2002:a17:906:5905:b0:a3d:481c:7d45 with SMTP id
+ h5-20020a170906590500b00a3d481c7d45mr1260498ejq.16.1708003707789; 
+ Thu, 15 Feb 2024 05:28:27 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.193.50])
+ by smtp.gmail.com with ESMTPSA id
+ sn24-20020a170906629800b00a3db46018a4sm107162ejc.71.2024.02.15.05.28.26
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 15 Feb 2024 05:28:27 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Artyom Tarasenko <atar4qemu@gmail.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
+ =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ qemu-trivial@nongnu.org, Fabien Chouteau <chouteau@adacore.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/2] hw/sparc/leon3: Trivial cleanups around write_bootloader()
+Date: Thu, 15 Feb 2024 14:28:22 +0100
+Message-ID: <20240215132824.67363-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.10 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.10
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,72 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Michael Tokarev <mjt@tls.msk.ru> writes:
+Have write_bootloader() take a void* and remove unused 'env' arg.
 
-> 14.02.2024 16:27, Fabiano Rosas :
->> Michael Tokarev <mjt@tls.msk.ru> writes:
-> ..>>> This change, which is suggested for -stable, while simple by its ow=
-n, seems
->>>> to depend on the previous changes in this series, which are not for -s=
-table.
->>>> In particular, whole "Finally recycle all the threads" loop in multifd=
-_send_terminate_threads()
->>>> (to which the join is being added by this change) is moved from elsewh=
-ere by
->>>> 12808db3b8 "migration/multifd: Cleanup multifd_save_cleanup()" (patch =
-24 in
->>>> this same series).
->>>>
->>> We can probably add the missing join right into the previous location o=
-f this
->>> loop (before 12808db3b8).=C2=A0 I did this in the attached variant for =
-8.2, is
->>> this correct?
->
-> I forgot to attach the patch.  It just moves the join from multifd_send_t=
-erminate_threads()
-> back to multifd_save_cleanup.  Attached now.
->
->> It should work. This was originally developed without the rest of the
->> changes on this PR.
->>=20
->>> And this does not pass even the basic tests, so it's not that simple :)
->>=20
->> Do you have a log of what failed?
->
-> Re-running it again...  I haven't even tried to push it somewhere for CI =
-to run,
-> I run local `ninja test', which painted some migration tests in red.  Her=
-e:
->
-> 202/844 qemu:qtest+qtest-aarch64 / qtest-aarch64/migration-test   ERROR  =
- 70.26s   killed by signal 6 SIGABRT
-> 330/844 qemu:qtest+qtest-i386 / qtest-i386/migration-test         ERROR  =
- 85.33s   killed by signal 6 SIGABRT
-> 454/844 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test     ERROR  =
-101.02s   killed by signal 6 SIGABRT
->
-> Unfortunately I don't see anything interesting in the log:
->
-> # starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-463614.=
-sock -qtest-log /dev/null -chardev socket,path=3D/tmp/qtest-463614.qmp,id=
-=3Dchar0=20
-> -mon chardev=3Dchar0,mode=3Dcontrol -display none -audio none -accel kvm =
--accel tcg -machine pc-q35-8.2, -name target,debug-threads=3Don -m 150M -se=
-rial=20
-> file:/tmp/migration-test-SPJTI2/dest_serial -incoming defer -drive if=3Dn=
-one,id=3Dd0,file=3D/tmp/migration-test-SPJTI2/bootsect,format=3Draw -device=
-=20
-> ide-hd,drive=3Dd0,secs=3D1,cyls=3D1,heads=3D1    2>/dev/null -accel qtest
-> ----------------------------------- stderr ------------------------------=
------
-> ../../build/qemu/8.2/tests/qtest/libqtest.c:204: kill_qemu() detected QEM=
-U death from signal 6 (Aborted)
-> (test program exited with status code -6)
->
-> Without the attached patch it works.
+Philippe Mathieu-Daudé (2):
+  hw/sparc/leon3: Remove unused 'env' argument of write_bootloader()
+  hw/sparc/leon3: Have write_bootloader() take a void pointer argument
 
-Ah ok, this is hitting the bug fixed by patch 31. Let's leave patches
-26, 27 and 31 out of stable, it would be too risky to backport.
+ hw/sparc/leon3.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+-- 
+2.41.0
 
 
