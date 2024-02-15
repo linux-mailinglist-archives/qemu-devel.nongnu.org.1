@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17407855A5F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957A7855A56
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:22:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raV7G-0002Rh-7M; Thu, 15 Feb 2024 01:21:02 -0500
+	id 1raV7I-0002SN-2e; Thu, 15 Feb 2024 01:21:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV7E-0002RQ-H3
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:00 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1raV7F-0002Rj-Rh
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:01 -0500
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV7C-0005Z7-9W
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:00 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e0fc87fc2dso319093b3a.3
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:57 -0800 (PST)
+ id 1raV7D-0005ZR-JG
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:21:01 -0500
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1d8ef977f1eso4471555ad.0
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707978057; x=1708582857; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707978058; x=1708582858; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MfmBcNvAQcjDLvj9qNkCIuvVr8sl09md9gL9eOBPbro=;
- b=ggR8pGkjR1B6vTGOEjtUQ1fs05e+g8EIgIIplPv9FCbddxZiGNsrEzUYMY8kuL/+ML
- 5LL9va3wiD4LWDn+hbW35nl4qF2Y8cOE4t2ZvbAYwWVPSsGtB7p2TE4yiy+Bp2fDnkN0
- heLhYzstlQHDdeMiOisk7iiY08JjPs0o7CZs7GTrhhEPNiLnX3rHvV1ai0dJLrJuzTtU
- BwWj0kl2omui1vxA0+dABMJUeWAWQIn5gfPG51jLw8s0k69GKNlR8fyHLkHCD9f1WqXD
- dZbkaUHQGOIMiUL7Gjdiem3hm8BSsxgp+qZ9XKCMQ7WuPcOFdhNFcWikliFRi8z38cL/
- WNgw==
+ bh=2NxBdbDmPXvqTBcYichP7qzlXUZvSD7xiNQMCyXrUoI=;
+ b=NWxi5h2SJG9ja0acmKfI8WNKcewDyTPIvLjtCE9piJ85++m9uOjyOW6z+hcZmy9doZ
+ wBPlf5ARZ30lfWayfT/Dqn8MxhukVY18ARinrjLTLTOy++6Vae5+DtztQcrQ1iwvZ2/7
+ 6FjFWHyI4fF9rKT99gX/fccGeJnZrJXtreaniDsrwdQ0U85j4mrAQEdJ2cev4eljrXwx
+ Sph8VNLgtLdCjDrAAiRju2T0tKd3o9qcEJNGOQYD0aeeTBaNTSRz93uc7pW8hhV52B8u
+ dD58eMGIsNjH52f+HvgRX8Zp5PJT3Zw2z0mt3zQSxpnTi8ytV4aXqPA24SsWton2ZP0p
+ jTJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707978057; x=1708582857;
+ d=1e100.net; s=20230601; t=1707978058; x=1708582858;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MfmBcNvAQcjDLvj9qNkCIuvVr8sl09md9gL9eOBPbro=;
- b=w+XKtyOBqXFGWTBe69UdAm3sTqN7mtwLfc1Rur/1gCHV8gYiq5Hl23smz8v4u65SxK
- uAxqLr3bo+eFFzTQSztaLaR3M4zMVCPN0jf28pCEGiI0VvMNx/SqfKIZU04zObT175Mh
- 40VEyElqDhAQJWsO611n2lQf5Qgcw/bgAy0ddObNk6JVmVFqmXTyEVvkP8TBz9D65LTw
- VAdDSwT58X9T7BDvqG6S7nQHqTu4hRy4qa7Rw4H4hv0HGpGxczeUAYggvmttMI2pk2it
- qxhnRWIUG5xoS9vjlMPRDCq4Wf1+4QxFUXfJYFmqRATyM5K6iZeJVJVzM1egxUBfp6/2
- XBnA==
-X-Gm-Message-State: AOJu0Yw8+VW3OmblKRu6YeASpr6cDzIraP+p7OwjkO36h3dhr33QNOOi
- 2m+QcL8RuVlEasMeYxB9a6eKf6yrD0xiw1WmpjlRn0v16p7Eu9MoAeSw5vx1PQmu9m/NVzNFwG+
- f
-X-Google-Smtp-Source: AGHT+IHO/Easv/KPDu4T3OXgYV7j2wBNvuiaHuol3jLdhaKNBWHAMjHIjbkE2wlVuf90fEzBY1DBYg==
-X-Received: by 2002:a17:903:22c6:b0:1db:35dc:e24d with SMTP id
- y6-20020a17090322c600b001db35dce24dmr1093620plg.10.1707978056954; 
- Wed, 14 Feb 2024 22:20:56 -0800 (PST)
+ bh=2NxBdbDmPXvqTBcYichP7qzlXUZvSD7xiNQMCyXrUoI=;
+ b=MKB0b2HAs0sIV8PdptHmQ5P1jsg1GRNEVfmsxyJIDXLu7Oc7c1dRIY/y51dGYaJjGt
+ eM6vkJgkUQzl7qgBPyK08/XpXdXgjdYl4HWllg+oWXw8FrA9vCsDjTH8WioNLRA/lA9q
+ 8GvF7Zb2sCJk1ootR7gUBXcID7faYJDct6jxhvXwAMLenXIdjU9n5UHSsR+9J1Fih9sq
+ jElmfTMcZkLCdey+iuYfCtwSW5tlZlUFGzJP+AMshi/D3tGsPcy3UlMPbfdJg/fzTqQv
+ LwMwguuVJb3X6CwbWQzFDZ0e+QzpqZ7kOXgRuGjMUkUB/KbPu5vUjXr0gdss+C/HI/Gz
+ 7c8A==
+X-Gm-Message-State: AOJu0YyCgymHJVzs/odHxsEc45fzX1u/mnaezgGzT1qsNQ4TXqxNi9Iv
+ ZC2N5y7lJdZAcbWVAKArSyrTzvah4uyANeqPZ9Oz+F+kB81IQo4e+DN9+YbGXdjjYIct1Hl+Zp4
+ j
+X-Google-Smtp-Source: AGHT+IEVY8wh6IeEDXaqHj1gTyVwI56b/8r645nNk4qaLCzH0KwrkXXl9msVe+dIOonAg7g2jeWYqA==
+X-Received: by 2002:a17:902:ce82:b0:1d9:63a3:e962 with SMTP id
+ f2-20020a170902ce8200b001d963a3e962mr1007444plg.6.1707978058361; 
+ Wed, 14 Feb 2024 22:20:58 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.55
+ d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 22:20:56 -0800 (PST)
+ Wed, 14 Feb 2024 22:20:58 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH v4 25/36] linux-user: Split out mmap_h_gt_g
-Date: Wed, 14 Feb 2024 20:20:07 -1000
-Message-Id: <20240215062018.795056-26-richard.henderson@linaro.org>
+ Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
+Subject: [PATCH v4 26/36] tests/tcg: Remove run-test-mmap-*
+Date: Wed, 14 Feb 2024 20:20:08 -1000
+Message-Id: <20240215062018.795056-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215062018.795056-1-richard.henderson@linaro.org>
 References: <20240215062018.795056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,343 +93,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These tests are confused, because -p does not change
+the guest page size, but the host page size.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-24-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-25-richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 288 ++++++++++++++++++++++------------------------
- 1 file changed, 139 insertions(+), 149 deletions(-)
+ tests/tcg/alpha/Makefile.target     |  3 ---
+ tests/tcg/arm/Makefile.target       |  3 ---
+ tests/tcg/hppa/Makefile.target      |  3 ---
+ tests/tcg/i386/Makefile.target      |  3 ---
+ tests/tcg/m68k/Makefile.target      |  3 ---
+ tests/tcg/multiarch/Makefile.target |  9 ---------
+ tests/tcg/ppc/Makefile.target       | 12 ------------
+ tests/tcg/sh4/Makefile.target       |  3 ---
+ tests/tcg/sparc64/Makefile.target   |  6 ------
+ 9 files changed, 45 deletions(-)
+ delete mode 100644 tests/tcg/ppc/Makefile.target
+ delete mode 100644 tests/tcg/sparc64/Makefile.target
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index ff8f9f7ed0..82f4026283 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -282,7 +282,16 @@ static int do_munmap(void *addr, size_t len)
-     return munmap(addr, len);
- }
+diff --git a/tests/tcg/alpha/Makefile.target b/tests/tcg/alpha/Makefile.target
+index b94500a7d9..fdd7ddf64e 100644
+--- a/tests/tcg/alpha/Makefile.target
++++ b/tests/tcg/alpha/Makefile.target
+@@ -13,6 +13,3 @@ test-cmov: test-cond.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
  
--/* map an incomplete host page */
-+/*
-+ * Map an incomplete host page.
-+ *
-+ * Here be dragons.  This case will not work if there is an existing
-+ * overlapping host page, which is file mapped, and for which the mapping
-+ * is beyond the end of the file.  In that case, we will see SIGBUS when
-+ * trying to write a portion of this page.
-+ *
-+ * FIXME: Work around this with a temporary signal handler and longjmp.
-+ */
- static bool mmap_frag(abi_ulong real_start, abi_ulong start, abi_ulong last,
-                       int prot, int flags, int fd, off_t offset)
- {
-@@ -719,19 +728,138 @@ static abi_long mmap_h_lt_g(abi_ulong start, abi_ulong len, int host_prot,
-     return mmap_end(start, last, start, pass_last, mmap_flags, page_flags);
- }
+ run-test-cmov: test-cmov
+-
+-# On Alpha Linux only supports 8k pages
+-EXTRA_RUNS+=run-test-mmap-8192
+diff --git a/tests/tcg/arm/Makefile.target b/tests/tcg/arm/Makefile.target
+index 3473f4619e..0a1965fce7 100644
+--- a/tests/tcg/arm/Makefile.target
++++ b/tests/tcg/arm/Makefile.target
+@@ -79,6 +79,3 @@ sha512-vector: sha512.c
+ ARM_TESTS += sha512-vector
  
-+/*
-+ * Special case host page size > target page size.
-+ *
-+ * The two special cases are address and file offsets that are valid
-+ * for the guest that cannot be directly represented by the host.
-+ */
-+static abi_long mmap_h_gt_g(abi_ulong start, abi_ulong len,
-+                            int target_prot, int host_prot,
-+                            int flags, int page_flags, int fd,
-+                            off_t offset, int host_page_size)
-+{
-+    void *p, *want_p = g2h_untagged(start);
-+    off_t host_offset = offset & -host_page_size;
-+    abi_ulong last, real_start, real_last;
-+    bool misaligned_offset = false;
-+    size_t host_len;
-+
-+    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-+        /*
-+         * Adjust the offset to something representable on the host.
-+         */
-+        host_len = len + offset - host_offset;
-+        p = mmap(want_p, host_len, host_prot, flags, fd, host_offset);
-+        if (p == MAP_FAILED) {
-+            return -1;
-+        }
-+
-+        /* Update start to the file position at offset. */
-+        p += offset - host_offset;
-+
-+        start = h2g(p);
-+        last = start + len - 1;
-+        return mmap_end(start, last, start, last, flags, page_flags);
-+    }
-+
-+    if (!(flags & MAP_ANONYMOUS)) {
-+        misaligned_offset = (start ^ offset) & (host_page_size - 1);
-+
-+        /*
-+         * The fallback for misalignment is a private mapping + read.
-+         * This carries none of semantics required of MAP_SHARED.
-+         */
-+        if (misaligned_offset && (flags & MAP_TYPE) != MAP_PRIVATE) {
-+            errno = EINVAL;
-+            return -1;
-+        }
-+    }
-+
-+    last = start + len - 1;
-+    real_start = start & -host_page_size;
-+    real_last = ROUND_UP(last, host_page_size) - 1;
-+
-+    /*
-+     * Handle the start and end of the mapping.
-+     */
-+    if (real_start < start) {
-+        abi_ulong real_page_last = real_start + host_page_size - 1;
-+        if (last <= real_page_last) {
-+            /* Entire allocation a subset of one host page. */
-+            if (!mmap_frag(real_start, start, last, target_prot,
-+                           flags, fd, offset)) {
-+                return -1;
-+            }
-+            return mmap_end(start, last, -1, 0, flags, page_flags);
-+        }
-+
-+        if (!mmap_frag(real_start, start, real_page_last, target_prot,
-+                       flags, fd, offset)) {
-+            return -1;
-+        }
-+        real_start = real_page_last + 1;
-+    }
-+
-+    if (last < real_last) {
-+        abi_ulong real_page_start = real_last - host_page_size + 1;
-+        if (!mmap_frag(real_page_start, real_page_start, last,
-+                       target_prot, flags, fd,
-+                       offset + real_page_start - start)) {
-+            return -1;
-+        }
-+        real_last = real_page_start - 1;
-+    }
-+
-+    if (real_start > real_last) {
-+        return mmap_end(start, last, -1, 0, flags, page_flags);
-+    }
-+
-+    /*
-+     * Handle the middle of the mapping.
-+     */
-+
-+    host_len = real_last - real_start + 1;
-+    want_p += real_start - start;
-+
-+    if (flags & MAP_ANONYMOUS) {
-+        p = mmap(want_p, host_len, host_prot, flags, -1, 0);
-+    } else if (!misaligned_offset) {
-+        p = mmap(want_p, host_len, host_prot, flags, fd,
-+                 offset + real_start - start);
-+    } else {
-+        p = mmap(want_p, host_len, host_prot | PROT_WRITE,
-+                 flags | MAP_ANONYMOUS, -1, 0);
-+    }
-+    if (p != want_p) {
-+        if (p != MAP_FAILED) {
-+            do_munmap(p, host_len);
-+            errno = EEXIST;
-+        }
-+        return -1;
-+    }
-+
-+    if (misaligned_offset) {
-+        /* TODO: The read could be short. */
-+        if (pread(fd, p, host_len, offset + real_start - start) != host_len) {
-+            do_munmap(p, host_len);
-+            return -1;
-+        }
-+        if (!(host_prot & PROT_WRITE)) {
-+            mprotect(p, host_len, host_prot);
-+        }
-+    }
-+
-+    return mmap_end(start, last, -1, 0, flags, page_flags);
-+}
-+
- static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-                                     int target_prot, int flags, int page_flags,
-                                     int fd, off_t offset)
- {
-     int host_page_size = qemu_real_host_page_size();
--    abi_ulong ret, last, real_start, real_last, retaddr, host_len;
--    abi_ulong passthrough_start = -1, passthrough_last = 0;
--    off_t host_offset;
-     int host_prot;
+ TESTS += $(ARM_TESTS)
+-
+-# On ARM Linux only supports 4k pages
+-EXTRA_RUNS+=run-test-mmap-4096
+diff --git a/tests/tcg/hppa/Makefile.target b/tests/tcg/hppa/Makefile.target
+index cdd0d572a7..ea5ae2186d 100644
+--- a/tests/tcg/hppa/Makefile.target
++++ b/tests/tcg/hppa/Makefile.target
+@@ -2,9 +2,6 @@
+ #
+ # HPPA specific tweaks - specifically masking out broken tests
  
--    real_start = start & -host_page_size;
--    host_offset = offset & -host_page_size;
+-# On parisc Linux supports 4K/16K/64K (but currently only 4k works)
+-EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-16384 run-test-mmap-65536
 -
-     /*
-      * For reserved_va, we are in full control of the allocation.
-      * Find a suitable hole and convert to MAP_FIXED.
-@@ -745,6 +873,8 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-             }
-             flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
-         } else if (!(flags & MAP_FIXED)) {
-+            abi_ulong real_start = start & -host_page_size;
-+            off_t host_offset = offset & -host_page_size;
-             size_t real_len = len + offset - host_offset;
-             abi_ulong align = MAX(host_page_size, TARGET_PAGE_SIZE);
+ # This triggers failures for hppa-linux about 1% of the time
+ # HPPA is the odd target that can't use the sigtramp page;
+ # it requires the full vdso with dwarf2 unwind info.
+diff --git a/tests/tcg/i386/Makefile.target b/tests/tcg/i386/Makefile.target
+index 9906f9e116..bbe2c44b2a 100644
+--- a/tests/tcg/i386/Makefile.target
++++ b/tests/tcg/i386/Makefile.target
+@@ -71,9 +71,6 @@ endif
+ I386_TESTS:=$(filter-out $(SKIP_I386_TESTS), $(ALL_X86_TESTS))
+ TESTS=$(MULTIARCH_TESTS) $(I386_TESTS)
  
-@@ -766,150 +896,10 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-     } else if (host_page_size < TARGET_PAGE_SIZE) {
-         return mmap_h_lt_g(start, len, host_prot, flags,
-                            page_flags, fd, offset, host_page_size);
--    }
+-# On i386 and x86_64 Linux only supports 4k pages (large pages are a different hack)
+-EXTRA_RUNS+=run-test-mmap-4096
 -
--    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
--        uintptr_t host_start;
--        void *p;
--
--        host_len = len + offset - host_offset;
--        host_len = ROUND_UP(host_len, host_page_size);
--
--        /* Note: we prefer to control the mapping address. */
--        p = mmap(g2h_untagged(start), host_len, host_prot,
--                 flags | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
--        if (p == MAP_FAILED) {
--            return -1;
--        }
--        /* update start so that it points to the file position at 'offset' */
--        host_start = (uintptr_t)p;
--        if (!(flags & MAP_ANONYMOUS)) {
--            p = mmap(g2h_untagged(start), len, host_prot,
--                     flags | MAP_FIXED, fd, host_offset);
--            if (p == MAP_FAILED) {
--                do_munmap(g2h_untagged(start), host_len);
--                return -1;
--            }
--            host_start += offset - host_offset;
--        }
--        start = h2g(host_start);
--        last = start + len - 1;
--        passthrough_start = start;
--        passthrough_last = last;
-     } else {
--        last = start + len - 1;
--        real_last = ROUND_UP(last, host_page_size) - 1;
--
--        if (flags & MAP_FIXED_NOREPLACE) {
--            /* Validate that the chosen range is empty. */
--            if (!page_check_range_empty(start, last)) {
--                errno = EEXIST;
--                return -1;
--            }
--
--            /*
--             * With reserved_va, the entire address space is mmaped in the
--             * host to ensure it isn't accidentally used for something else.
--             * We have just checked that the guest address is not mapped
--             * within the guest, but need to replace the host reservation.
--             *
--             * Without reserved_va, despite the guest address check above,
--             * keep MAP_FIXED_NOREPLACE so that the guest does not overwrite
--             * any host address mappings.
--             */
--            if (reserved_va) {
--                flags = (flags & ~MAP_FIXED_NOREPLACE) | MAP_FIXED;
--            }
--        }
--
--        /*
--         * worst case: we cannot map the file because the offset is not
--         * aligned, so we read it
--         */
--        if (!(flags & MAP_ANONYMOUS) &&
--            (offset & (host_page_size - 1)) != (start & (host_page_size - 1))) {
--            /*
--             * msync() won't work here, so we return an error if write is
--             * possible while it is a shared mapping
--             */
--            if ((flags & MAP_TYPE) == MAP_SHARED
--                && (target_prot & PROT_WRITE)) {
--                errno = EINVAL;
--                return -1;
--            }
--            retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
--                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
--                                  | MAP_PRIVATE | MAP_ANONYMOUS,
--                                  -1, 0);
--            if (retaddr == -1) {
--                return -1;
--            }
--            if (pread(fd, g2h_untagged(start), len, offset) == -1) {
--                return -1;
--            }
--            if (!(target_prot & PROT_WRITE)) {
--                ret = target_mprotect(start, len, target_prot);
--                assert(ret == 0);
--            }
--            return mmap_end(start, last, -1, 0, flags, page_flags);
--        }
--
--        /* handle the start of the mapping */
--        if (start > real_start) {
--            if (real_last == real_start + host_page_size - 1) {
--                /* one single host page */
--                if (!mmap_frag(real_start, start, last,
--                               target_prot, flags, fd, offset)) {
--                    return -1;
--                }
--                return mmap_end(start, last, -1, 0, flags, page_flags);
--            }
--            if (!mmap_frag(real_start, start,
--                           real_start + host_page_size - 1,
--                           target_prot, flags, fd, offset)) {
--                return -1;
--            }
--            real_start += host_page_size;
--        }
--        /* handle the end of the mapping */
--        if (last < real_last) {
--            abi_ulong real_page = real_last - host_page_size + 1;
--            if (!mmap_frag(real_page, real_page, last,
--                           target_prot, flags, fd,
--                           offset + real_page - start)) {
--                return -1;
--            }
--            real_last -= host_page_size;
--        }
--
--        /* map the middle (easier) */
--        if (real_start < real_last) {
--            void *p, *want_p;
--            off_t offset1;
--            size_t len1;
--
--            if (flags & MAP_ANONYMOUS) {
--                offset1 = 0;
--            } else {
--                offset1 = offset + real_start - start;
--            }
--            len1 = real_last - real_start + 1;
--            want_p = g2h_untagged(real_start);
--
--            p = mmap(want_p, len1, host_prot, flags, fd, offset1);
--            if (p != want_p) {
--                if (p != MAP_FAILED) {
--                    do_munmap(p, len1);
--                    errno = EEXIST;
--                }
--                return -1;
--            }
--            passthrough_start = real_start;
--            passthrough_last = real_last;
--        }
-+        return mmap_h_gt_g(start, len, target_prot, host_prot, flags,
-+                           page_flags, fd, offset, host_page_size);
-     }
--    return mmap_end(start, last, passthrough_start, passthrough_last,
--                    flags, page_flags);
- }
+ sha512-sse: CFLAGS=-msse4.1 -O3
+ sha512-sse: sha512.c
+ 	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(LDFLAGS)
+diff --git a/tests/tcg/m68k/Makefile.target b/tests/tcg/m68k/Makefile.target
+index 6ff214e60a..33f7b1b127 100644
+--- a/tests/tcg/m68k/Makefile.target
++++ b/tests/tcg/m68k/Makefile.target
+@@ -5,6 +5,3 @@
  
- /* NOTE: all the constants are the HOST ones */
+ VPATH += $(SRC_PATH)/tests/tcg/m68k
+ TESTS += trap denormal
+-
+-# On m68k Linux supports 4k and 8k pages (but 8k is currently broken)
+-EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-8192
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index e10951a801..f11f3b084d 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -51,18 +51,9 @@ run-plugin-vma-pthread-with-%: vma-pthread
+ 	$(call skip-test, $<, "flaky on CI?")
+ endif
+ 
+-# We define the runner for test-mmap after the individual
+-# architectures have defined their supported pages sizes. If no
+-# additional page sizes are defined we only run the default test.
+-
+-# default case (host page size)
+ run-test-mmap: test-mmap
+ 	$(call run-test, test-mmap, $(QEMU) $<, $< (default))
+ 
+-# additional page sizes (defined by each architecture adding to EXTRA_RUNS)
+-run-test-mmap-%: test-mmap
+-	$(call run-test, test-mmap-$*, $(QEMU) -p $* $<, $< ($* byte pages))
+-
+ ifneq ($(GDB),)
+ GDB_SCRIPT=$(SRC_PATH)/tests/guest-debug/run-test.py
+ 
+diff --git a/tests/tcg/ppc/Makefile.target b/tests/tcg/ppc/Makefile.target
+deleted file mode 100644
+index f5e08c7376..0000000000
+--- a/tests/tcg/ppc/Makefile.target
++++ /dev/null
+@@ -1,12 +0,0 @@
+-# -*- Mode: makefile -*-
+-#
+-# PPC - included from tests/tcg/Makefile
+-#
+-
+-ifneq (,$(findstring 64,$(TARGET_NAME)))
+-# On PPC64 Linux can be configured with 4k (default) or 64k pages (currently broken)
+-EXTRA_RUNS+=run-test-mmap-4096 #run-test-mmap-65536
+-else
+-# On PPC32 Linux supports 4K/16K/64K/256K (but currently only 4k works)
+-EXTRA_RUNS+=run-test-mmap-4096 #run-test-mmap-16384 run-test-mmap-65536 run-test-mmap-262144
+-endif
+diff --git a/tests/tcg/sh4/Makefile.target b/tests/tcg/sh4/Makefile.target
+index 47c39a44b6..16eaa850a8 100644
+--- a/tests/tcg/sh4/Makefile.target
++++ b/tests/tcg/sh4/Makefile.target
+@@ -3,9 +3,6 @@
+ # SuperH specific tweaks
+ #
+ 
+-# On sh Linux supports 4k, 8k, 16k and 64k pages (but only 4k currently works)
+-EXTRA_RUNS+=run-test-mmap-4096 # run-test-mmap-8192 run-test-mmap-16384 run-test-mmap-65536
+-
+ # This triggers failures for sh4-linux about 10% of the time.
+ # Random SIGSEGV at unpredictable guest address, cause unknown.
+ run-signals: signals
+diff --git a/tests/tcg/sparc64/Makefile.target b/tests/tcg/sparc64/Makefile.target
+deleted file mode 100644
+index 408dace783..0000000000
+--- a/tests/tcg/sparc64/Makefile.target
++++ /dev/null
+@@ -1,6 +0,0 @@
+-# -*- Mode: makefile -*-
+-#
+-# sparc specific tweaks
+-
+-# On Sparc64 Linux support 8k pages
+-EXTRA_RUNS+=run-test-mmap-8192
 -- 
 2.34.1
 
