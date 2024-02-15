@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4A08565EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 15:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB8C8565F6
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 15:29:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raci2-0002fM-Vb; Thu, 15 Feb 2024 09:27:31 -0500
+	id 1racjL-0003IT-Tv; Thu, 15 Feb 2024 09:28:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rachw-0002f4-W9
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 09:27:25 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1racjG-0003I7-1t
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 09:28:47 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rachu-0001W2-QS
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 09:27:24 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 889344E602F;
- Thu, 15 Feb 2024 15:27:18 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 4invbTU6KD2j; Thu, 15 Feb 2024 15:27:16 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 977C04E6013; Thu, 15 Feb 2024 15:27:16 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 944CC7456B4;
- Thu, 15 Feb 2024 15:27:16 +0100 (CET)
-Date: Thu, 15 Feb 2024 15:27:16 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, 
- shentey@gmail.com
-Subject: Re: [PATCH v3 8/9] mips/loongson3_virt: do not require CONFIG_USB
-In-Reply-To: <47a999a8-a0e0-4995-8f8c-8d18f564c30b@linaro.org>
-Message-ID: <d02bde71-c4b8-4b07-bc40-3b74d37b0738@eik.bme.hu>
-References: <20240213155005.109954-1-pbonzini@redhat.com>
- <20240213155005.109954-9-pbonzini@redhat.com>
- <47a999a8-a0e0-4995-8f8c-8d18f564c30b@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1raciy-0001hr-MZ
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 09:28:32 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TbHQ95f2Sz6K8xj;
+ Thu, 15 Feb 2024 22:24:49 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 8ABB31400CD;
+ Thu, 15 Feb 2024 22:28:17 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 15 Feb 2024 14:28:17 +0000
+To: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, David
+ Hildenbrand <david@redhat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, <qemu-devel@nongnu.org>
+CC: <linuxarm@huawei.com>
+Subject: [PATCH 0/3] physmem: Fix MemoryRegion for second access to cached
+ MMIO Address Space 
+Date: Thu, 15 Feb 2024 14:28:14 +0000
+Message-ID: <20240215142817.1904-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1810300859-1708007236=:15691"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,76 +63,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Issue seen testing virtio-blk-pci with CXL emulated interleave memory.
+Tests were done on arm64, but the issue isn't architecture specific.
+Note that some additional fixes are needed to TCG to be able to run far
+enough to hit this on arm64 or x86. They are issues so I'll post separate
+series shortly.
 
---3866299591-1810300859-1708007236=:15691
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+The address_space_read_cached_slow() and address_space_write_cached_slow()
+functions query the MemoryRegion for the cached address space correctly
+using address_space_translate_cached() but then call into
+flatview_read_continue() / flatview_write_continue()
+If the access is to a MMIO MemoryRegion and is bigger than the MemoryRegion
+supports, the loop will query the MemoryRegion for the next access to use.
+That query uses flatview_translate() but the address passed is suitable
+for the cache, not the flatview. On my test setup that mean the second
+8 bytes and onwards of the virtio descriptor was read from flash memory
+at the beginning of the system address map, not the CXL emulated memory
+where the descriptor was found.  Result happened to be all fs so easy to
+spot.
 
-On Thu, 15 Feb 2024, Philippe Mathieu-Daudé wrote:
-> On 13/2/24 16:50, Paolo Bonzini wrote:
->> Once the Kconfig for hw/mips is cleaned up, it will be possible to build a
->> binary that does not include any USB host controller and therefore that
->> does not include the code guarded by CONFIG_USB.  While the simpler
->> creation functions such as usb_create_simple can be inlined, this is not
->> true of usb_bus_find().  Remove it, replacing it with a search of the
->> single USB bus created by loongson3_virt_devices_init().
->> 
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->>   hw/mips/loongson3_virt.c | 5 +++--
->>   1 file changed, 3 insertions(+), 2 deletions(-)
->> 
->> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
->> index caedde2df00..bedd3d496bd 100644
->> --- a/hw/mips/loongson3_virt.c
->> +++ b/hw/mips/loongson3_virt.c
->> @@ -447,8 +447,9 @@ static inline void 
->> loongson3_virt_devices_init(MachineState *machine,
->>         if (defaults_enabled() && object_class_by_name("pci-ohci")) {
->>           pci_create_simple(pci_bus, -1, "pci-ohci");
->> -        usb_create_simple(usb_bus_find(-1), "usb-kbd");
->> -        usb_create_simple(usb_bus_find(-1), "usb-tablet");
->> +        Object *usb_bus = object_resolve_path_type("", TYPE_USB_BUS, 
->> NULL);
->> +        usb_create_simple(USB_BUS(usb_bus), "usb-kbd");
->> +        usb_create_simple(USB_BUS(usb_bus), "usb-tablet");
->>       }
->>         pci_init_nic_devices(pci_bus, mc->default_nic);
->
-> Can we remove usb_bus_find() completely instead?
->
-> $ git grep -w usb_bus_find
-> hw/hppa/machine.c:401:        usb_create_simple(usb_bus_find(-1), "usb-kbd");
-> hw/hppa/machine.c:402:        usb_create_simple(usb_bus_find(-1), 
-> "usb-mouse");
-> hw/mips/loongson3_virt.c:450:        usb_create_simple(usb_bus_find(-1), 
-> "usb-kbd");
-> hw/mips/loongson3_virt.c:451:        usb_create_simple(usb_bus_find(-1), 
-> "usb-tablet");
-> hw/ppc/mac_newworld.c:434:            USBBus *usb_bus = usb_bus_find(-1);
-> hw/ppc/sam460ex.c:423:    usb_create_simple(usb_bus_find(-1), "usb-kbd");
-> hw/ppc/sam460ex.c:424:    usb_create_simple(usb_bus_find(-1), "usb-mouse");
-> hw/ppc/spapr.c:3027:            USBBus *usb_bus = usb_bus_find(-1);
-> hw/sh4/r2d.c:315:    usb_create_simple(usb_bus_find(-1), "usb-kbd");
-> hw/usb/bus.c:103:USBBus *usb_bus_find(int busnr)
-> hw/usb/bus.c:669:    USBBus *bus = usb_bus_find(-1 /* any */);
-> include/hw/usb.h:500:USBBus *usb_bus_find(int busnr);
+Changes these calls to use address_space_translate_cached() to get the
+correct MemoryRegion for the cache. To avoid duplicating most of the
+code, the first 2 patches factor out the common parts of
+flatview_read_continue() and flatview_write_continue() so they can
+be reused.
 
-These are all the machines that add devices to a USB bus, there's no other 
-example to do it in a different way currently. We could change this to get 
-the usb bus in a different way but how? We could either peek into the 
-object that owns the usb_bus or try using qdev_get_child_bus() but that 
-needs the name of the bus which might change if other usb hosts are added 
-so neither of these options seem better than this function. What would it 
-bring to remove this function other than more complex or uglier code? I 
-don't mind if you remove it just don't see the benefit in that.
+Write path has not been tested but it so similar to the read path I've
+included it here.
 
-Regards,
-BALATON Zoltan
---3866299591-1810300859-1708007236=:15691--
+Jonathan Cameron (3):
+  physmem: Reduce local variable scope in flatview_read/write_continue()
+  physmem: Factor out body of flatview_read/write_continue() loop
+  physmem: Fix wrong MR in large address_space_read/write_cached_slow()
+
+ system/physmem.c | 245 ++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 170 insertions(+), 75 deletions(-)
+
+-- 
+2.39.2
+
 
