@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B54E856BC8
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C658856BC4
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:58:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafzs-0001CJ-DO; Thu, 15 Feb 2024 12:58:08 -0500
+	id 1rag03-0001R8-FN; Thu, 15 Feb 2024 12:58:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rafzq-0001AJ-J4
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:06 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rafzy-0001Kj-Py
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:15 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rafzo-0001Pq-Sw
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:06 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41223e0777dso5675385e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rafzw-0001U4-3r
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:14 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d109e7bed2so15220381fa.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019882; x=1708624682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019889; x=1708624689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H+IRUZ5jWxcqPuMBnPz4ZPr8dlbjAv9aNyQYimjXdkc=;
- b=WUxqx0ZFvEEJ3erOLv7hFlEQMe6iGuRr1JjHhULd1hD64AyCifWg5fC8uvFO8er7b9
- oHza77w0dL92X57JPMALYVhIpBHSzQ/4CmCNQqahEemaJKhhKxuM+6HN8TqFn2sMmglh
- MKUfPrGq+nIx1koUY3Cdq2cnWDRd/lJ1r7N9z0BB58RM/dZOf1WBs4oMOsF7iBf6ZWX7
- OluZb6ucg+hnZX6/tMEOiEDbr14fW3L+hM7QCACmghjlPH6sCOwGg5NuHNyOe5GemdjO
- CrfvNZzegHwETp27HIXefOWYuuOpRZO22lPjo3+rqo/C0CMkJm8e8ENBIi4FHfdE1gFf
- d44A==
+ bh=CUafXRAhN727LPu8aV7JxhjZQNzC7SOPem4FLXSz2oI=;
+ b=L8T7thl9epGi8oF1MWrVN2UTh7SuL01GqbFe61kdJ5xegyPRcUFpO2iCM0AaMvW6aR
+ IpJkvBI2PjNJ59VPMadvaZKDd4l3Mob18cxzCogqmM/LZ+7xR93vfSfauLp+8w23w9nJ
+ UDokqFe+y5Jp/o8u1CcuY23XAJerzSWwVkYUeqOLhm7y8JKjkf/5J+Gqi7M0a38VqFmM
+ eOZoltQXMoGfPmx9j0C10BIxELvvgyk58aLraJumT395JvMe2INrp3AH6iFIFz+Liqyt
+ EeFc6ILXk9mOV+hWLMtt8SoYjfF61k4DCH0Sks6r4l66R2JIJLRl+xzp9QfsjKaAC2eF
+ VJOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019882; x=1708624682;
+ d=1e100.net; s=20230601; t=1708019889; x=1708624689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H+IRUZ5jWxcqPuMBnPz4ZPr8dlbjAv9aNyQYimjXdkc=;
- b=R4WeXUeWpNjzlvuFtxKuflcE7d/T4//WHgScLkxpEcLfIbz4Ad5LwJVTuUqY4+kJ1Q
- EMnlKXJki3zykIFV1jtyw1R0Jd+AAONEFXovBdkR+pc6hLY+YKKHbNqXR0sObdX7liUV
- sNz4/Oq0s1JS7bqRCPdixtgL50A6e/p5Cz8tAaKwAe63FhdggU46qZ3h9GkAws1okTOw
- CIZzTSfbOLQUkJJT1cOIjxHol2IrRrnks7KdAZlYXCzUzwmFni4lWeb1M3ar7GCStzAy
- uZcbO2+UW4mvBkf/mvLJ2D4dQ2H0kfJWbgsVG/bLUKNjHqDKxUU0rzBIJ5e+q5Eob6gC
- oNgQ==
-X-Gm-Message-State: AOJu0YxqApgfqANE3paCgY+X+F1dGAuhXGJMmw4GjbhtX9QBNKYcc1ch
- xWLCScTNL+VtrgYKTuhsAxjg3we7NMsv94g6zy2UYTmp/gucrW5CLtEB2gNJPAgFCMlpsd0m8Pw
- TZRc=
-X-Google-Smtp-Source: AGHT+IEo/r7nzbH8BmIlhi5mTe+NeSsVhJI7MNENkuol/wgiPkkgeQ1r1Wc4mvp14QTgpAze7VRk8A==
-X-Received: by 2002:a05:600c:45c8:b0:412:2b7a:67fa with SMTP id
- s8-20020a05600c45c800b004122b7a67famr968825wmo.0.1708019882504; 
- Thu, 15 Feb 2024 09:58:02 -0800 (PST)
+ bh=CUafXRAhN727LPu8aV7JxhjZQNzC7SOPem4FLXSz2oI=;
+ b=hr0jEiGU7Olc5XfJ0w5YO1cNcwrJTDkNTCcvPCpICITaLgbVkxiblnxnvjrY1CeoAQ
+ Vqi/U4T4cWTKj6Qlw+VAIZvQzg1RVx9FJy5XW3mkIPQ7Eq6bGJAQUPpmQpCLj9/ZOkW+
+ ShuNrUMaEWuY7tGoDCt0+CXEVXETfDGew36Q5zzNe76G32R1zHXv94G//JsDqTAGsFpu
+ egs6NGn8yx6azXcQCYSQT8QPy6sx7RpCQ2kDcuvspo0dwqJMM8rkq79lmEvrMUCHVp3q
+ DhyuEGNr7gv34lHIqGpXdNJPzhf1xhihEM8avWbOVTyLJGwN3qwqEH3/TBf8UzNAXyrd
+ HkUg==
+X-Gm-Message-State: AOJu0Yxf8dYafAI95V48O4cahYb9snzMFQeaWobQoW0HFlwCxM77L6um
+ x2gxk+AwvETM1MbtYJXBIDiE0JthUpBetc4FMyOj9CyGQeyFe6IDNKRIl04p/9byRLkMZRAGRzX
+ QWNE=
+X-Google-Smtp-Source: AGHT+IElwG4sbsQuHtf8X8jvD18iJYtxlYg3dBQaZnA7a0iAKfwkO8sMLmwjIAXsTUhRce+MufLJQg==
+X-Received: by 2002:a2e:331a:0:b0:2d0:e2aa:24d4 with SMTP id
+ d26-20020a2e331a000000b002d0e2aa24d4mr1745440ljc.9.1708019888851; 
+ Thu, 15 Feb 2024 09:58:08 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- z11-20020a1c4c0b000000b0040d5ae2906esm5644695wmf.30.2024.02.15.09.58.00
+ ba3-20020a0560001c0300b0033b406bc689sm2495039wrb.75.2024.02.15.09.58.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:58:02 -0800 (PST)
+ Thu, 15 Feb 2024 09:58:08 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PULL 01/56] hw/block/tc58128: Don't emit deprecation warning under
- qtest
-Date: Thu, 15 Feb 2024 18:56:55 +0100
-Message-ID: <20240215175752.82828-2-philmd@linaro.org>
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PULL 02/56] hw/mips: remove unnecessary "select PTIMER"
+Date: Thu, 15 Feb 2024 18:56:56 +0100
+Message-ID: <20240215175752.82828-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +94,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-Suppress the deprecation warning when we're running under qtest,
-to avoid "make check" including warning messages in its output.
+There is no use of ptimer functions in mips_cps.c or any other related
+code.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240206154151.155620-1-peter.maydell@linaro.org>
+Message-ID: <20240129115811.1039965-1-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/tc58128.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/mips/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/block/tc58128.c b/hw/block/tc58128.c
-index 6944cf58fa..0984e37417 100644
---- a/hw/block/tc58128.c
-+++ b/hw/block/tc58128.c
-@@ -202,7 +202,9 @@ static sh7750_io_device tc58128 = {
+diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
+index 505381a0bb..ab61af209a 100644
+--- a/hw/mips/Kconfig
++++ b/hw/mips/Kconfig
+@@ -50,7 +50,6 @@ config LOONGSON3V
  
- int tc58128_init(struct SH7750State *s, const char *zone1, const char *zone2)
- {
--    warn_report_once("The TC58128 flash device is deprecated");
-+    if (!qtest_enabled()) {
-+        warn_report_once("The TC58128 flash device is deprecated");
-+    }
-     init_dev(&tc58128_devs[0], zone1);
-     init_dev(&tc58128_devs[1], zone2);
-     return sh7750_register_io_device(s, &tc58128);
+ config MIPS_CPS
+     bool
+-    select PTIMER
+     select MIPS_ITU
+ 
+ config MIPS_BOSTON
 -- 
 2.41.0
 
