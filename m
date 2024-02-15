@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C704F856C25
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD6D856BDB
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:01:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag2X-0001Xh-Jh; Thu, 15 Feb 2024 13:00:55 -0500
+	id 1rag2T-0000x2-3T; Thu, 15 Feb 2024 13:00:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag2N-0000NS-Fq
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:43 -0500
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag2K-00007t-PP
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:41 -0500
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag28-0002GS-9K
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:42 -0500
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-55ee686b5d5so1531361a12.0
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:00:27 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag2F-0002IQ-Vi
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:39 -0500
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5600c43caddso1403496a12.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:00:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020026; x=1708624826; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020034; x=1708624834; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xZUd6/1kYGen5lB4knuCMVyKmswwesM/uAr4O9mJTQg=;
- b=SA8G65Y56wRAXmO8A3ICXug6xEnHY33sCFEVViJl38c0ble3TU4JxypZw23y6zocIX
- 4WIttb148q42pR/nJ+J4Vmi11lLEqdDU++ZypVvkpMdb0IC6qWrRXNALRnJOsTjLVrUH
- sMxTDw0XPkTYOOGt9KHlhrxf+jgZQk15wqZ5ojyuf3x0v39EzlL7fqkPv2Lps8FABWRS
- 1slz8/7wxgZXXf0fw/qSUe+0q85d9Y5NDM8TnA+r9BzXRElOcsKgRLrJ0UYO7rmm6Kwj
- YYN3vz0xpSEykW2rc77yTGiiBuEFgbARdNHP5Mc9M15yC/7wWmDMFWf9PifAmfAegSmo
- hb+w==
+ bh=BXfzEOj0hY/4x5MiiqGGaWqtsIu6euoUBioh29pYX9I=;
+ b=xHbrDOkqODeWueV0VkFu97pTrV6wGWnI+WNPWo64qHXEcDBlG8mxeTKsixoglCKYld
+ IIYLiaQAgXwSRYIrWLNHdtEaTTcyjlN/ZYEaMzC5dh7LCJEBn5csR3gULM9o00K5cB9B
+ wcp1OlyACoAwOj3MUS54PZUhUzzMLYIJUnCADp8hdPq4cc1Wb3Ag4X3/6pNYpSDHIbm+
+ lnGCfKSP+pZBOhfP7KnWy5RfOc5DhLJt43Z1MuM8X8Jmfx16OrlC8X6o5s//9/l4aoGv
+ paoprbcHKLiX+sfC8g0o34r/AszSCv4ZUdEv0lKIwBU7EddD5U1b985PphsSq0DXmEma
+ FFWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020026; x=1708624826;
+ d=1e100.net; s=20230601; t=1708020034; x=1708624834;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xZUd6/1kYGen5lB4knuCMVyKmswwesM/uAr4O9mJTQg=;
- b=kL/JYaC2CScRyercQZsYf8GMQlC7Rtna2YjsQvxCVPFM7bRjJMpFAjttdo8gaJoEZv
- y6to4ny5+ZLc3pWCZ3Q1bfCiRyeOmLaiEWZNTvJkOvuoGLd3hZbLYS1mh+Ftv+O2py65
- uEbdT4BeM10HLPFfEWrOe7fVH3/vJkXz6ZtBsQ1sXrKVHmI+FuWQ+K1mrtUZ1F1qB8Fj
- IlQE7PPYF65u0Chhb80sEdIqPdzJoJ6lFpvTWRwK4zR1ApiKguHM7jYv6xvptMz1Jfxy
- WlGVt6DiChjPgMdoz52dMsdoor3ScW8wx68QWVRrnEFIvg5Bsiaz7ctOPCZVhq7zafXE
- 7P5g==
-X-Gm-Message-State: AOJu0YyumqnziS/iEP4PbIJTUrive/F5MBVHmhnnMloF65uztgEVLTW2
- esYXHE8TAvpkiuJUotHuBCaj+eR17kJVEndvSAdhyfEtsJWO9bD5TkOecd22Q4ObePEOR04PrLt
- 4L8k=
-X-Google-Smtp-Source: AGHT+IFYgT+vDDL+L1xB5c0sCQGa2OQVdXXtbXz5kplU+491xWn7Mej0G4LpglrEhInReehmQEU2Eg==
-X-Received: by 2002:a17:906:eb4a:b0:a3d:302e:268 with SMTP id
- mc10-20020a170906eb4a00b00a3d302e0268mr2001781ejb.45.1708020026223; 
- Thu, 15 Feb 2024 10:00:26 -0800 (PST)
+ bh=BXfzEOj0hY/4x5MiiqGGaWqtsIu6euoUBioh29pYX9I=;
+ b=KzCV8eVGp9tmAMAAKt/zKbCzkbe0lzwA3EAE1KEmImxbhK5JJeH+e6qGeCDWl7Vd9N
+ KEnTfQ9lAnNx3kQbTealCuHIv5bVUPZ8v/o9Blrv/cuVlbQCMHDEHrZDQRDICYwFUKsC
+ 6h8pfy1F11wfLyEZxGAK9liceCegpEpOKcS9MnFEtXOnA0OvyEL8o5mivYyVH47ktq9r
+ n/3I6Qu7Fi8zdXDgML8GO87Z5+ztkuCklgcuXSEMdW9rUJqdUmWOj2NoHrTHvGRfi/7m
+ iTEfoEJpejyl+RQJ635sIHTxfYPnGn8fGNYZYz/ydVV9QmMwuQgIizgfaDrEaWgOo+sH
+ fdyQ==
+X-Gm-Message-State: AOJu0YylHqkVFgCKSo66sbFHFPYK0g3lFMQEocdxxu7OOxPsBY1jDbFy
+ lm6eGOX8IwFgsa4xz0xjgvBh1c7cu+vlEK3zNufvgLIl2LV0rdjaGAxKJPep5w7GHMq05ugJsH/
+ pda8=
+X-Google-Smtp-Source: AGHT+IEmZriUbrMzuMUn5LRrLeqtXigt31ovYC1bHeAUNfxOATbg3ZOAe9WNcd9RRATdMUwVie99JQ==
+X-Received: by 2002:a17:906:b0d9:b0:a3d:2243:29da with SMTP id
+ bk25-20020a170906b0d900b00a3d224329damr1812382ejb.36.1708020033980; 
+ Thu, 15 Feb 2024 10:00:33 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- t21-20020a1709060c5500b00a3d29f0afeasm782742ejf.2.2024.02.15.10.00.23
+ a7-20020a170906670700b00a3d2d81daafsm791088ejp.172.2024.02.15.10.00.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:00:25 -0800 (PST)
+ Thu, 15 Feb 2024 10:00:32 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
-Subject: [PULL 23/56] hw/ppc/prep: Realize ISA bridge before accessing it
-Date: Thu, 15 Feb 2024 18:57:17 +0100
-Message-ID: <20240215175752.82828-24-philmd@linaro.org>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 24/56] hw/misc/macio: Realize IDE controller before accessing it
+Date: Thu, 15 Feb 2024 18:57:18 +0100
+Message-ID: <20240215175752.82828-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,29 +98,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 We should not wire IRQs on unrealized device.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213130341.1793-6-philmd@linaro.org>
+Message-Id: <20240213130341.1793-7-philmd@linaro.org>
 ---
- hw/ppc/prep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/misc/macio/macio.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 1a6cd05c61..4eb5477069 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -278,9 +278,9 @@ static void ibm_40p_init(MachineState *machine)
+diff --git a/hw/misc/macio/macio.c b/hw/misc/macio/macio.c
+index c9f22f8515..3f449f91c0 100644
+--- a/hw/misc/macio/macio.c
++++ b/hw/misc/macio/macio.c
+@@ -123,14 +123,17 @@ static bool macio_realize_ide(MacIOState *s, MACIOIDEState *ide,
+ {
+     SysBusDevice *sbd = SYS_BUS_DEVICE(ide);
  
-     /* PCI -> ISA bridge */
-     i82378_dev = DEVICE(pci_new(PCI_DEVFN(11, 0), "i82378"));
-+    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
-     qdev_connect_gpio_out(i82378_dev, 0,
-                           qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
--    qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
+-    sysbus_connect_irq(sbd, 0, irq0);
+-    sysbus_connect_irq(sbd, 1, irq1);
+     qdev_prop_set_uint32(DEVICE(ide), "channel", dmaid);
+     object_property_set_link(OBJECT(ide), "dbdma", OBJECT(&s->dbdma),
+                              &error_abort);
+     macio_ide_register_dma(ide);
++    if (!qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp)) {
++        return false;
++    }
++    sysbus_connect_irq(sbd, 0, irq0);
++    sysbus_connect_irq(sbd, 1, irq1);
  
-     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
-     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
+-    return qdev_realize(DEVICE(ide), BUS(&s->macio_bus), errp);
++    return true;
+ }
+ 
+ static void macio_oldworld_realize(PCIDevice *d, Error **errp)
 -- 
 2.41.0
 
