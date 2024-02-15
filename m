@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416B7856B30
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD89856B22
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:37:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafez-0000n6-ON; Thu, 15 Feb 2024 12:36:33 -0500
+	id 1raff6-0001JR-4F; Thu, 15 Feb 2024 12:36:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeM-0007zE-GL
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:55 -0500
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rafeN-00082F-Ba
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:56 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeH-0003yN-9B
+ id 1rafeH-0003yZ-Sa
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:54 -0500
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-33934567777so663778f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:48 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33d066f8239so454849f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018547; x=1708623347; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708018548; x=1708623348; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=zrPXjJVkURtLVPskkolIG/BC8kmZaryoEfEKDL7oHWs=;
- b=hAb6csiC/YNfrMelLXU0KsKIYvWu4YWrhyZaDu7IlaHQk3jyVGCrIqobkIGSScuoID
- 4Xaiac5V5LloW32QdWsRAuxOLOeF9sDb6lDNFN7gVoMCovNuYmkkYRnbB1YBacFjf334
- BJmWIIepmdPj+6Z1n0PabByehB3XTWY8ltO/hdDwMHymLnopWCs9ONNuhTSmAq+GkONd
- Qp7Oac0q2x1sS+4J5FBTId6HZxpfWxY/H1ctU8lKZDLX9IZfkTRhFGHxbouos4KBz8XL
- DQcrwQKux2B5MEODQyNtkiW9VKX3Lagl4q4CyLVincrli2u6jXey3NeSq3/oywkm6HKq
- qWZA==
+ :reply-to; bh=o3y6YUYAQdESHng1mrtNwKZAA53wIJnmasw8N4/0cpA=;
+ b=pv+KMq3Kf5KlN70FTlTUDShhmpJRNZzLEgjurfVECZ63zH/Q8iNt0HD9gGkc/RN82J
+ zFjC/kfWWC2XnyFV1fV3ZbFIWYUKSVm2ZK5jElevkmBwPgzgWvY2SCp085YjZtottgBf
+ Oin/sEleWF0qXvgqW/Li6U0mt6Y/qtzG30A3GjWbNb2J6VVsOKMaDz3sRlWstBBcdqUb
+ ryAYLiNrIfDFQPWo0GhyQXQ6N1lipxaWfUqpSpUScVI2yCFj0kSZtYCV0pZgulJh4PF8
+ xcEwN4G2zcPVCihoISNCM22Id5vYh8pxdmMYjWzJR2btJoO9mzOdK0ZMLzqI9w1AvNuo
+ QQhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018547; x=1708623347;
+ d=1e100.net; s=20230601; t=1708018548; x=1708623348;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zrPXjJVkURtLVPskkolIG/BC8kmZaryoEfEKDL7oHWs=;
- b=eCkYXymX6v+ii2yLkZ9B0j3vOETZZhsSEhgQbAzm1AUN2yQkD6CGrWTwxUp5Ct8TD+
- yFiV+j9CyAmP44tJFCbDA3Gw0aRgQNJe282HmW6pXMPPi9UK8RufVyrHanoTEtYuGLY7
- +qhDZr47y2mbHT5JjBHAZBNWu5DIKS4AC3u9/XVQpSqLeKgxgB2tgKtZ43zaQ+hpcNPD
- h7OIkwBbfeXTJYOrNHc3xfXxdk4Yg22hzTZKsuFpKmCNyMJQJj3FmMjjAgbo0xr/vV5k
- ZkJZDvODIwKgRaJejI8jLKbeTAIJo+WWOwQd65ioiKQsoAkivcDAQ73DlFhZnRwb7gDH
- LwbQ==
-X-Gm-Message-State: AOJu0YyWA4vRTMbUbspjUmYiXxFh9dyMQttdeMcMZyPHvcClHO+3OIZS
- EJLnfsswuvV8ksneG8BJpwuzjSLkwU6Uh6Zike1S64gbT7dZjhXvnC6FGPCk1LFeE8LWdfEobzI
- J
-X-Google-Smtp-Source: AGHT+IH+4z7KfvA4+Rp8ovdIGsmL4BTmfh4RI5M+vOJUnqPXuNm1QWwIBn3Wr9AFL96uLWgUL1LHwg==
-X-Received: by 2002:a5d:4fc1:0:b0:33b:d225:3640 with SMTP id
- h1-20020a5d4fc1000000b0033bd2253640mr1929210wrw.59.1708018547825; 
- Thu, 15 Feb 2024 09:35:47 -0800 (PST)
+ bh=o3y6YUYAQdESHng1mrtNwKZAA53wIJnmasw8N4/0cpA=;
+ b=bcPWS0Ggp4io+86w1vLTXdBYJzNnmF1uW8tVaxec41zFVKe3yIjSCBuSXnNo/lImCE
+ LA38coPvTKXpTIos64XYN4QOeuvnyWfzGIDa6wKEmmx9HHEzpkoFRxTKuQTSKLa4D94m
+ uxBd3C5y7tU+7O9QnSBCRwCjUvM6ju8U23nc5ntnO/OHy60iFbE2Sw1yCD0T/g2kJTon
+ DAvrzoqYkgpN85KSkGbTvlMzcWHtNsx7LT/b7uuMfdiKrPnf3xdlvr92XROG5CzQkRx3
+ MknZtRn1zFAiKiKShiEG2bkmcTIigNHDaBUrCSd8huKSfDdcNBTEttOdQ5i6fafgxy1L
+ bF4w==
+X-Gm-Message-State: AOJu0YyFyeNGUr3ZzDUSMagY3A96kClVlXhnVN8PDb8OYf12hDunot66
+ ppUjtk/DbPhXlYmsxo9KNgpoV6MFJJa3rp8Aj5vuddhFdke0plbnW78LdEbSbEq+OP8Ug5ro6sw
+ Q
+X-Google-Smtp-Source: AGHT+IHmf9i/hmJIbWn3eIIQ3st1bW3jb2ap5ahb1tuEVvOLY2ZQL3EX5BhjkDiDoxMBdcsNrsULHA==
+X-Received: by 2002:a5d:5106:0:b0:33c:f574:3706 with SMTP id
+ s6-20020a5d5106000000b0033cf5743706mr1864803wrt.63.1708018548354; 
+ Thu, 15 Feb 2024 09:35:48 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 09:35:47 -0800 (PST)
+ Thu, 15 Feb 2024 09:35:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/35] hw/arm/stellaris: Convert ADC controller to Resettable
+Subject: [PULL 20/35] hw/arm/stellaris: Convert I2C controller to Resettable
  interface
-Date: Thu, 15 Feb 2024 17:35:22 +0000
-Message-Id: <20240215173538.2430599-20-peter.maydell@linaro.org>
+Date: Thu, 15 Feb 2024 17:35:23 +0000
+Message-Id: <20240215173538.2430599-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,45 +95,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240213155214.13619-3-philmd@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240213155214.13619-2-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/stellaris.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ hw/arm/stellaris.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index 34c5a86ac2e..4fa857970b4 100644
+index 4fa857970b4..d3a12fe51c5 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -773,8 +773,9 @@ static void stellaris_adc_trigger(void *opaque, int irq, int level)
-     }
+@@ -462,7 +462,10 @@ static void stellaris_sys_instance_init(Object *obj)
+     s->sysclk = qdev_init_clock_out(DEVICE(s), "SYSCLK");
  }
  
--static void stellaris_adc_reset(StellarisADCState *s)
-+static void stellaris_adc_reset_hold(Object *obj)
+-/* I2C controller.  */
++/*
++ * I2C controller.
++ * ??? For now we only implement the master interface.
++ */
+ 
+ #define TYPE_STELLARIS_I2C "stellaris-i2c"
+ OBJECT_DECLARE_SIMPLE_TYPE(stellaris_i2c_state, STELLARIS_I2C)
+@@ -607,10 +610,17 @@ static void stellaris_i2c_write(void *opaque, hwaddr offset,
+     stellaris_i2c_update(s);
+ }
+ 
+-static void stellaris_i2c_reset(stellaris_i2c_state *s)
++static void stellaris_i2c_reset_enter(Object *obj, ResetType type)
  {
-+    StellarisADCState *s = STELLARIS_ADC(obj);
-     int n;
++    stellaris_i2c_state *s = STELLARIS_I2C(obj);
++
+     if (s->mcs & STELLARIS_I2C_MCS_BUSBSY)
+         i2c_end_transfer(s->bus);
++}
++
++static void stellaris_i2c_reset_hold(Object *obj)
++{
++    stellaris_i2c_state *s = STELLARIS_I2C(obj);
  
-     for (n = 0; n < 4; n++) {
-@@ -946,7 +947,6 @@ static void stellaris_adc_init(Object *obj)
-     memory_region_init_io(&s->iomem, obj, &stellaris_adc_ops, s,
-                           "adc", 0x1000);
-     sysbus_init_mmio(sbd, &s->iomem);
--    stellaris_adc_reset(s);
-     qdev_init_gpio_in(dev, stellaris_adc_trigger, 1);
+     s->msa = 0;
+     s->mcs = 0;
+@@ -619,6 +629,12 @@ static void stellaris_i2c_reset(stellaris_i2c_state *s)
+     s->mimr = 0;
+     s->mris = 0;
+     s->mcr = 0;
++}
++
++static void stellaris_i2c_reset_exit(Object *obj)
++{
++    stellaris_i2c_state *s = STELLARIS_I2C(obj);
++
+     stellaris_i2c_update(s);
  }
  
-@@ -1411,7 +1411,9 @@ static const TypeInfo stellaris_i2c_info = {
- static void stellaris_adc_class_init(ObjectClass *klass, void *data)
+@@ -658,8 +674,6 @@ static void stellaris_i2c_init(Object *obj)
+     memory_region_init_io(&s->iomem, obj, &stellaris_i2c_ops, s,
+                           "i2c", 0x1000);
+     sysbus_init_mmio(sbd, &s->iomem);
+-    /* ??? For now we only implement the master interface.  */
+-    stellaris_i2c_reset(s);
+ }
+ 
+ /* Analogue to Digital Converter.  This is only partially implemented,
+@@ -1396,7 +1410,11 @@ type_init(stellaris_machine_init)
+ static void stellaris_i2c_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
 +    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
-+    rc->phases.hold = stellaris_adc_reset_hold;
-     dc->vmsd = &vmstate_stellaris_adc;
++    rc->phases.enter = stellaris_i2c_reset_enter;
++    rc->phases.hold = stellaris_i2c_reset_hold;
++    rc->phases.exit = stellaris_i2c_reset_exit;
+     dc->vmsd = &vmstate_stellaris_i2c;
  }
  
 -- 
