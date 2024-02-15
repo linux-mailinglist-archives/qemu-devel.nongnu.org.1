@@ -2,65 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12590855CBD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 152E4855CC9
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:45:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raXLN-00018O-5V; Thu, 15 Feb 2024 03:43:46 -0500
+	id 1raXNE-0004yc-CN; Thu, 15 Feb 2024 03:45:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1raXLB-00013w-Db
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:43:34 -0500
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
+ id 1raXNC-0004yK-6T; Thu, 15 Feb 2024 03:45:38 -0500
+Received: from fout6-smtp.messagingengine.com ([103.168.172.149])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1raXL7-000168-SD
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:43:32 -0500
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:36ad:0:640:5aad:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id DA744618B5;
- Thu, 15 Feb 2024 11:43:25 +0300 (MSK)
-Received: from rkhapov-nux.yandex.net (unknown
- [2a02:6b8:82:604:e806:5ea2:b505:d402])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id OhkPjR5IiKo0-AtGKAhQQ; Thu, 15 Feb 2024 11:43:24 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1707986604;
- bh=BO/mv5C6yvXXAB+zZEM52PqUHZ9pC8DMMequyOZtvus=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=CR+hJPO5EteGb9coiV6x2W9FvaCee6zkjxWYYL0jOpYpfBU0Bjp3tHjgUN9B9W/ce
- t8r+6KjwvbSgE7s5JmE9RDAgdp/fp4vCGlRrZ8LDeFt9tiEVxXKjzWbPk9M5g3p/TC
- AZoYgbtS8opf9S/bXej0Rfs4sbYCpS/MdrMCCwwg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Roman Khapov <rkhapov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- yc-core@yandex-team.ru, Roman Khapov <rkhapov@yandex-team.ru>
-Subject: [PATCH 2/2] migration: add error reason for failed MIGRATION events
-Date: Thu, 15 Feb 2024 13:43:22 +0500
-Message-Id: <20240215084322.1384090-1-rkhapov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <arnd@arndb.de>)
+ id 1raXN8-00024k-NP; Thu, 15 Feb 2024 03:45:37 -0500
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailfout.nyi.internal (Postfix) with ESMTP id 8FBFE13800BC;
+ Thu, 15 Feb 2024 03:45:32 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+ by compute5.internal (MEProxy); Thu, 15 Feb 2024 03:45:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+ :cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm3; t=1707986732;
+ x=1708073132; bh=nK32Yno8wiK67485X68quq4Ct0mngu1clT9OWAjEztc=; b=
+ NA9DyMATG05xs/5vihPTc7l4PiLOWVoc2WYSWY1ob/wtSO7ixGB9/pzS0kfz0QCP
+ d+JVVtot/8XsVSyIbTXjaBd3LdbqzK/t2V7y+7c7cSea9Lkdmlxiw+W9+tqGI/dW
+ kiIUChyKJA7TBPdrCZLC0j/pNn+MxchBuN6qRoYGEz5S0SncQqm5JKkoLE7/O/Hn
+ bFYScGsuRaUNcSXKNu0h4Td9Od+rAyzaC4upyU7JAbpTlKn1RT/FHCqDrtb/odrD
+ AwGXlUykPvAgIo9JHWs6qHEdXc/PhNBGJIgXEgcfI1pX7gtr3nOgJh8eFyBak+/p
+ xPjzH1MLV7ZgV8JuSOBfhQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1707986732; x=
+ 1708073132; bh=nK32Yno8wiK67485X68quq4Ct0mngu1clT9OWAjEztc=; b=d
+ hJRth0H5m64CnfNsYW3XX/JqpZ0U4m/8Z/Ck/bR4Oe5iW+dD54hgWBunyxpfDaBC
+ ELwlog7u+Dp6FlF4qmFyhlBmOoMo7NlGLROv4rX3jeTZtP0TWWS2A8T0h3Eo3cdx
+ RyYMhmZKR3A3faMgZUxY7/ISP/1Ko+leLLauZGznMyHW1F84wdi6UQrdagBL5sVe
+ ydWegVKnHhlUQSJ+kCplPa8p6puTLdEKlve84t7zH2epD+vx3XQ/Y6ZAP7NVBfC4
+ SYUm3qxjwyVdBHfyKSBtKRHfN1VT+WUxbSVAS1XH+nHDM9lBwi4LhEluD1wLIYoo
+ A0+tqcTiFieM8x801XeYg==
+X-ME-Sender: <xms:LM_NZYWw57-MfAm4xXakmYXVoFCdc7Q5gI3TFVsaMmK1H5PAajtBqw>
+ <xme:LM_NZcnCzzao1pQuXLS5tcklX_MolRXKMSOyNrYUmt6BD7P-8MS12Cn22G8AaetHX
+ gKeGi23u_5P2WqFLRM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudelgdeilecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+ nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+ htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
+ jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+ hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:LM_NZcbdItZ1hOn4TBfE5O4HTBpj7owzsHmhTK2kZEVKkI7jfsN94A>
+ <xmx:LM_NZXW9g-u2bIGqw2xYmT_ArIHNAJTjoiUgGO1JX0egRvC0PE2CFw>
+ <xmx:LM_NZSmNbv2-dSO1kAK4B5uUwEYakB3PfGQ6-ZfYSyItikwtRskoIg>
+ <xmx:LM_NZRq4m2kWszPQBriIoM0__WXuSFYQfbeFjzHR8k5t4BXmqlDC4A>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id 0876CB6008D; Thu, 15 Feb 2024 03:45:31 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=rkhapov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Message-Id: <7c8a5c5b-a94a-4b87-a043-f1e398b55872@app.fastmail.com>
+In-Reply-To: <20240215093113.5c58cabe@aktux>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+ <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+ <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
+ <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
+ <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
+ <20240215093113.5c58cabe@aktux>
+Date: Thu, 15 Feb 2024 09:45:11 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andreas Kemnade" <andreas@kemnade.info>
+Cc: "Dmitry Baryshkov" <dbaryshkov@gmail.com>,
+ "Linus Walleij" <linus.walleij@linaro.org>, paul.eggleton@linux.intel.com,
+ "Andrea Adami" <andrea.adami@gmail.com>,
+ "Guenter Roeck" <linux@roeck-us.net>,
+ "Peter Maydell" <peter.maydell@linaro.org>,
+ "QEMU Developers" <qemu-devel@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>,
+ "Aaro Koskinen" <aaro.koskinen@iki.fi>,
+ "Janusz Krzysztofik" <jmkrzyszt@gmail.com>,
+ "Tony Lindgren" <tony@atomide.com>, Linux-OMAP <linux-omap@vger.kernel.org>,
+ "Daniel Mack" <daniel@zonque.org>, "Robert Jarzmik" <robert.jarzmik@free.fr>, 
+ "Haojian Zhuang" <haojian.zhuang@gmail.com>,
+ "Stefan Lehner" <stefan-lehner@aon.at>
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=103.168.172.149; envelope-from=arnd@arndb.de;
+ helo=fout6-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,333 +122,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds error description as reason for event MIGRATION in every
-place that generates MIGRATION_STATE_FAILED
+On Thu, Feb 15, 2024, at 09:31, Andreas Kemnade wrote:
+> On Wed, 14 Feb 2024 23:42:58 +0100
+> "Arnd Bergmann" <arnd@arndb.de> wrote:
+>> On Wed, Feb 14, 2024, at 13:26, Dmitry Baryshkov wrote:
+>> > On Tue, 13 Feb 2024 at 23:22, Linus Walleij <linus.walleij@linaro.o=
+rg> wrote: =20
+>> >> On Tue, Feb 13, 2024 at 9:12=E2=80=AFPM Arnd Bergmann <arnd@arndb.=
+de> wrote: =20
+>> >> > On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote: =20
+>> >> > > On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote:=
+ =20
+>> >>
+>> >> Andrea Adami and Dmitry Eremin-Solenikov did the work in 2017 to
+>> >> modernize it a bit, and Russell helped out. I was under the impres=
+sion
+>> >> that they only used real hardware though! =20
+>> >
+>> > I used both Qemu and actual hardware (having collie, poodle, tosa a=
+nd
+>> > c860 that was easy).
+>> >
+>> > The biggest issue with Zaurus PDAs was that supporting interesting
+>> > parts of the platform (PCMCIA, companion chips) required almost
+>> > rebootstrapping of the corresponding drivers.
+>> > E.g. I had a separate driver for the LoCoMo chip which worked prope=
+rly
+>> > with the DT systems.
+>> > PCMCIA was a huuuge trouble and it didn't play well at all. The dri=
+ver
+>> > must be rewritten to use the component framework. =20
+>>=20
+>> If we want to actually go there, I think the best option for PCMCIA
+>> support is likely to replace the entire "soc_common" pcmcia driver
+>> with a simple drivers/pata/ storage driver and no support for
+>> other cards. There was a driver until commit 38943cbd25a2
+>> ("ata: remove palmld pata driver") that could serve as an
+>> template.
+>>=20
+> hmm, main usage for PCMCIA/CF in those devices was often something els=
+e,
+> not storage, at least on the IPAQ h2200. Wondering wether that road is
+> actually good. When I was mainly using those devices, I was not good in
+> mainlining things.
 
-Signed-off-by: Roman Khapov <rkhapov@yandex-team.ru>
----
- migration/migration.c | 62 ++++++++++++++++++++++++++++++-------------
- migration/multifd.c   |  8 +++---
- migration/savevm.c    | 12 ++++-----
- 3 files changed, 54 insertions(+), 28 deletions(-)
+Do we still support any non-storage CF devices that someone might
+actually use? Do you have a specific example in mind? These are
+the currently supported devices that I see:
 
-diff --git a/migration/migration.c b/migration/migration.c
-index d28885a55b..0af16d5fa9 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -702,11 +702,14 @@ process_incoming_migration_co(void *opaque)
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     PostcopyState ps;
-     int ret;
-+    g_autofree char *fail_reason = NULL;
- 
-     assert(mis->from_src_file);
- 
-     if (compress_threads_load_setup(mis->from_src_file)) {
--        error_report("Failed to setup decompress threads");
-+        fail_reason = g_strdup("Failed to setup decompress threads");
-+        /* wrap with %s to silence compiler warning of non-literal in format */
-+        error_report("%s", fail_reason);
-         goto fail;
-     }
- 
-@@ -750,11 +753,15 @@ process_incoming_migration_co(void *opaque)
-                 error_report_err(s->error);
-             }
-         }
--        error_report("load of migration failed: %s", strerror(-ret));
-+        fail_reason = g_strdup_printf("load of migration failed: %s",
-+                                      strerror(-ret));
-+        /* wrap with %s to silence compiler warning of non-literal in format */
-+        error_report("%s", fail_reason);
-         goto fail;
-     }
- 
-     if (colo_incoming_co() < 0) {
-+        fail_reason = g_strdup("colo_incoming failed");
-         goto fail;
-     }
- 
-@@ -762,7 +769,7 @@ process_incoming_migration_co(void *opaque)
-     return;
- fail:
-     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
--                      MIGRATION_STATUS_FAILED, NULL);
-+                      MIGRATION_STATUS_FAILED, fail_reason);
-     qemu_fclose(mis->from_src_file);
- 
-     multifd_recv_cleanup();
-@@ -1417,8 +1424,8 @@ static void migrate_fd_error(MigrationState *s, const Error *error)
- {
-     trace_migrate_fd_error(error_get_pretty(error));
-     assert(s->to_dst_file == NULL);
--    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                      MIGRATION_STATUS_FAILED, NULL);
-+    migrate_set_state_err_reason(&s->state, MIGRATION_STATUS_SETUP,
-+                                 MIGRATION_STATUS_FAILED, error);
-     migrate_set_error(s, error);
- }
- 
-@@ -1968,6 +1975,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-                  bool has_inc, bool inc, bool has_detach, bool detach,
-                  bool has_resume, bool resume, Error **errp)
- {
-+    ERRP_GUARD();
-     bool resume_requested;
-     Error *local_err = NULL;
-     MigrationState *s = migrate_get_current();
-@@ -2037,8 +2045,8 @@ void qmp_migrate(const char *uri, bool has_channels,
-     } else {
-         error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
-                    "a valid migration protocol");
--        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                          MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&s->state, MIGRATION_STATUS_SETUP,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-         block_cleanup_parameters();
-     }
- 
-@@ -2426,6 +2434,7 @@ migration_wait_main_channel(MigrationState *ms)
-  */
- static int postcopy_start(MigrationState *ms, Error **errp)
- {
-+    ERRP_GUARD();
-     int ret;
-     QIOChannelBuffer *bioc;
-     QEMUFile *fb;
-@@ -2436,8 +2445,10 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     if (migrate_postcopy_preempt()) {
-         migration_wait_main_channel(ms);
-         if (postcopy_preempt_establish_channel(ms)) {
--            migrate_set_state(&ms->state, ms->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            error_setg(errp,
-+                       "postcopy_start: establishing channel failed");
-+            migrate_set_state_err_reason(&ms->state, ms->state,
-+                                         MIGRATION_STATUS_FAILED, *errp);
-             return -1;
-         }
-     }
-@@ -2456,17 +2467,21 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     global_state_store();
-     ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
-     if (ret < 0) {
-+        error_setg(errp, "postcopy_start: vm stop failed");
-         goto fail;
-     }
- 
-     ret = migration_maybe_pause(ms, &cur_state,
-                                 MIGRATION_STATUS_POSTCOPY_ACTIVE);
-     if (ret < 0) {
-+        error_setg(errp, "postcopy_start: migratoin pause failed");
-         goto fail;
-     }
- 
-     ret = bdrv_inactivate_all();
-     if (ret < 0) {
-+        error_setg(errp,
-+                   "postcopy_start: making block drivers inactive failed");
-         goto fail;
-     }
-     restart_block = true;
-@@ -2543,6 +2558,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     /* Now send that blob */
-     if (qemu_savevm_send_packaged(ms->to_dst_file, bioc->data, bioc->usage)) {
-+        error_setg(errp, "postcopy_start: blob sending failed");
-         goto fail_closefb;
-     }
-     qemu_fclose(fb);
-@@ -2573,8 +2589,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     ret = qemu_file_get_error(ms->to_dst_file);
-     if (ret) {
-         error_setg(errp, "postcopy_start: Migration stream errored");
--        migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
--                          MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&ms->state,
-+                                     MIGRATION_STATUS_POSTCOPY_ACTIVE,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-     }
- 
-     trace_postcopy_preempt_enabled(migrate_postcopy_preempt());
-@@ -2584,8 +2601,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- fail_closefb:
-     qemu_fclose(fb);
- fail:
--    migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
--                      MIGRATION_STATUS_FAILED, NULL);
-+    migrate_set_state_err_reason(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
-+                                 MIGRATION_STATUS_FAILED, *errp);
-     if (restart_block) {
-         /* A failure happened early enough that we know the destination hasn't
-          * accessed block devices, so we're safe to recover.
-@@ -2700,7 +2717,8 @@ static void migration_completion_postcopy(MigrationState *s)
- }
- 
- static void migration_completion_failed(MigrationState *s,
--                                        int current_active_state)
-+                                        int current_active_state,
-+                                        const char *fail_reason)
- {
-     if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
-                               s->state == MIGRATION_STATUS_DEVICE)) {
-@@ -2721,7 +2739,7 @@ static void migration_completion_failed(MigrationState *s,
-     }
- 
-     migrate_set_state(&s->state, current_active_state,
--                      MIGRATION_STATUS_FAILED, NULL);
-+                      MIGRATION_STATUS_FAILED, fail_reason);
- }
- 
- /**
-@@ -2733,6 +2751,7 @@ static void migration_completion_failed(MigrationState *s,
- static void migration_completion(MigrationState *s)
- {
-     int ret = 0;
-+    const char *fail_reason = NULL;
-     int current_active_state = s->state;
- 
-     if (s->state == MIGRATION_STATUS_ACTIVE) {
-@@ -2740,6 +2759,7 @@ static void migration_completion(MigrationState *s)
-     } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-         migration_completion_postcopy(s);
-     } else {
-+        fail_reason = "migration completion: unexpected migration state";
-         ret = -1;
-     }
- 
-@@ -2748,6 +2768,7 @@ static void migration_completion(MigrationState *s)
-     }
- 
-     if (close_return_path_on_source(s)) {
-+        fail_reason = "migration completion: return path thread close failed";
-         goto fail;
-     }
- 
-@@ -2768,7 +2789,7 @@ static void migration_completion(MigrationState *s)
-     return;
- 
- fail:
--    migration_completion_failed(s, current_active_state);
-+    migration_completion_failed(s, current_active_state, fail_reason);
- }
- 
- /**
-@@ -2994,7 +3015,8 @@ static MigThrError migration_detect_error(MigrationState *s)
-          * For precopy (or postcopy with error outside IO), we fail
-          * with no time.
-          */
--        migrate_set_state(&s->state, state, MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&s->state, state,
-+                                     MIGRATION_STATUS_FAILED, s->error);
-         trace_migration_thread_file_err();
- 
-         /* Time to stop the migration, now. */
-@@ -3458,6 +3480,7 @@ static void *bg_migration_thread(void *opaque)
-     MigThrError thr_error;
-     QEMUFile *fb;
-     bool early_fail = true;
-+    const char *fail_reason = NULL;
- 
-     rcu_register_thread();
-     object_ref(OBJECT(s));
-@@ -3509,6 +3532,7 @@ static void *bg_migration_thread(void *opaque)
-     global_state_store();
-     /* Forcibly stop VM before saving state of vCPUs and devices */
-     if (migration_stop_vm(RUN_STATE_PAUSED)) {
-+        fail_reason = "stopping vm failed";
-         goto fail;
-     }
-     /*
-@@ -3517,6 +3541,7 @@ static void *bg_migration_thread(void *opaque)
-      */
-     cpu_synchronize_all_states();
-     if (qemu_savevm_state_complete_precopy_non_iterable(fb, false, false)) {
-+        fail_reason = "savevm state failed";
-         goto fail;
-     }
-     /*
-@@ -3527,6 +3552,7 @@ static void *bg_migration_thread(void *opaque)
- 
-     /* Now initialize UFFD context and start tracking RAM writes */
-     if (ram_write_tracking_start()) {
-+        fail_reason = "starting UFFD-WP memory tracking failed";
-         goto fail;
-     }
-     early_fail = false;
-@@ -3566,7 +3592,7 @@ static void *bg_migration_thread(void *opaque)
- fail:
-     if (early_fail) {
-         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
--                          MIGRATION_STATUS_FAILED, NULL);
-+                          MIGRATION_STATUS_FAILED, fail_reason);
-         bql_unlock();
-     }
- 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index da3d397642..cb52ebc062 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -594,8 +594,8 @@ static void multifd_send_set_error(Error *err)
-             s->state == MIGRATION_STATUS_PRE_SWITCHOVER ||
-             s->state == MIGRATION_STATUS_DEVICE ||
-             s->state == MIGRATION_STATUS_ACTIVE) {
--            migrate_set_state(&s->state, s->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            migrate_set_state_err_reason(&s->state, s->state,
-+                                         MIGRATION_STATUS_FAILED, err);
-         }
-     }
- }
-@@ -1086,8 +1086,8 @@ static void multifd_recv_terminate_threads(Error *err)
-         migrate_set_error(s, err);
-         if (s->state == MIGRATION_STATUS_SETUP ||
-             s->state == MIGRATION_STATUS_ACTIVE) {
--            migrate_set_state(&s->state, s->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            migrate_set_state_err_reason(&s->state, s->state,
-+                                         MIGRATION_STATUS_FAILED, err);
-         }
-     }
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index be6cce8a51..52fd3e37db 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1700,9 +1700,9 @@ void qemu_savevm_state_cleanup(void)
- 
- static int qemu_savevm_state(QEMUFile *f, Error **errp)
- {
-+    ERRP_GUARD();
-     int ret;
-     MigrationState *ms = migrate_get_current();
--    MigrationStatus status;
- 
-     if (migration_is_running(ms->state)) {
-         error_setg(errp, QERR_MIGRATION_ACTIVE);
-@@ -1735,16 +1735,16 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
-         ret = qemu_file_get_error(f);
-     }
-     qemu_savevm_state_cleanup();
-+
-     if (ret != 0) {
-         error_setg_errno(errp, -ret, "Error while writing VM state");
--    }
- 
--    if (ret != 0) {
--        status = MIGRATION_STATUS_FAILED;
-+        migrate_set_state_err_reason(&ms->state, MIGRATION_STATUS_SETUP,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-     } else {
--        status = MIGRATION_STATUS_COMPLETED;
-+        migrate_set_state(&ms->state, MIGRATION_STATUS_SETUP,
-+                          MIGRATION_STATUS_COMPLETED, NULL);
-     }
--    migrate_set_state(&ms->state, MIGRATION_STATUS_SETUP, status, NULL);
- 
-     /* f is outer parameter, it should not stay in global migration state after
-      * this function finished */
--- 
-2.34.1
+git grep -B4 -w depends.*PCMCIA | grep "Kconfig-\(config\|menuconfig\)" =
+| grep -v ^drivers/pcmcia
+drivers/ata/Kconfig-config PATA_PCMCIA
+drivers/bluetooth/Kconfig-config BT_HCIDTL1
+drivers/bluetooth/Kconfig-config BT_HCIBT3C
+drivers/bluetooth/Kconfig-config BT_HCIBLUECARD
+drivers/comedi/Kconfig-menuconfig COMEDI_PCMCIA_DRIVERS
+drivers/mmc/host/Kconfig-config MMC_SDRICOH_CS
+drivers/mtd/maps/Kconfig-config MTD_PCMCIA
+drivers/mtd/maps/Kconfig-config MTD_PCMCIA_ANONYMOUS
+drivers/net/arcnet/Kconfig-menuconfig ARCNET
+drivers/net/arcnet/Kconfig-config ARCNET_COM20020_CS
+drivers/net/can/sja1000/Kconfig-config CAN_EMS_PCMCIA
+drivers/net/can/sja1000/Kconfig-config CAN_PEAK_PCMCIA
+drivers/net/can/softing/Kconfig-config CAN_SOFTING_CS
+drivers/net/ethernet/3com/Kconfig-config NET_VENDOR_3COM
+drivers/net/ethernet/3com/Kconfig-config PCMCIA_3C574
+drivers/net/ethernet/3com/Kconfig-config PCMCIA_3C589
+drivers/net/ethernet/8390/Kconfig-config PCMCIA_AXNET
+drivers/net/ethernet/8390/Kconfig-config APNE
+drivers/net/ethernet/8390/Kconfig-config PCMCIA_PCNET
+drivers/net/ethernet/amd/Kconfig-config PCMCIA_NMCLAN
+drivers/net/ethernet/fujitsu/Kconfig-config NET_VENDOR_FUJITSU
+drivers/net/ethernet/fujitsu/Kconfig-config PCMCIA_FMVJ18X
+drivers/net/ethernet/smsc/Kconfig-config PCMCIA_SMC91C92
+drivers/net/ethernet/xircom/Kconfig-config NET_VENDOR_XIRCOM
+drivers/net/ethernet/xircom/Kconfig-config PCMCIA_XIRC2PS
+drivers/parport/Kconfig-config PARPORT_PC_PCMCIA
+drivers/scsi/pcmcia/Kconfig-menuconfig SCSI_LOWLEVEL_PCMCIA
+drivers/ssb/Kconfig-config SSB_PCMCIAHOST_POSSIBLE
+drivers/tty/Kconfig-config IPWIRELESS
+drivers/tty/serial/8250/Kconfig-config SERIAL_8250_CS
+drivers/usb/host/Kconfig-config USB_SL811_CS
+sound/pcmcia/Kconfig-menuconfig SND_PCMCIA
 
+     Arnd
 
