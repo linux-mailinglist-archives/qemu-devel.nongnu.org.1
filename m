@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707F9856BE2
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:02:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0731856BD1
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:00:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag1f-00064r-Bb; Thu, 15 Feb 2024 12:59:59 -0500
+	id 1rag1h-0006ZH-5D; Thu, 15 Feb 2024 13:00:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1P-0004tx-VB
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:44 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1X-0005mp-9d
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:51 -0500
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1N-0001ou-NG
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:43 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2d0e5212559so14438451fa.0
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1U-0001rJ-DK
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:50 -0500
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-411d231ea71so9176725e9.1
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019979; x=1708624779; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019986; x=1708624786; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+yletPVGxCa3h+9fKZJUuwx/+JgKNE8xagr9A+vDkAQ=;
- b=nXcj+rQMG6vw+E98opsk+Hg+m0ph7Y5vJ78Z88k50ciCUvb3ckWc8bgYIQYGeInMg1
- 8sJgMYPM+1I2mTviW0A19IRVSXnGynd8CmN7pWVmUlaINhyGkJz7GnMjERNCZfeePLkb
- iA/6BpqjdJ8o/LEQaPnjW+/LNKRNy3n+Ud9jFWAREWKmfCmakaquvsFWvM9zYzQzSyxu
- ka6wyQtn4BXFB3D5UPtPAm2WSxRJi2PycXhJMJV8nGffX4DYsFrrHeb6ceH+X9dvgdJI
- ikY4E6f3zwDiQuHaFppf8PZsc9No30OUelFpltwPicGzRoSgIwUSel5z/76UycGxjpP7
- OrIg==
+ bh=nD0xGIx0jqih+wWIcjwEtsdSIF+Dav0OUaDGYWjSMEc=;
+ b=wmG7tInvbLWeQWiGXclknJ8uGy7wGrv+C0Rog8fq208kPEDbR73c10QDA1/CQ/PLo5
+ 6byUI8IoeJTC0lyq4Vg8zNlwqWq9yRLCrlq5guaxNzLHV1Rh6v0D0MKXqMz2Kluuz+c4
+ 2aXYqtDm5cjXBZGSHddORzt3kEu9+3ZHRmuYX3tO2pjI6dPqDhs+4JeqTWQ/u+rtbHqw
+ cFfibHIWAc0b1E6T5YrvvFO7ZYfsJQrFaGnQIhUg+4ZnrQUR5Pt7YQcyPFexibK/NI/Z
+ FoUSGqHP1EVohod9Hu6V0w5QMrzGmCCQpG1aXP7QuwQaG5mYrmLpihzXPZT5OoS9E5Xz
+ nmrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019979; x=1708624779;
+ d=1e100.net; s=20230601; t=1708019986; x=1708624786;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+yletPVGxCa3h+9fKZJUuwx/+JgKNE8xagr9A+vDkAQ=;
- b=uUYj2rIUSw2YHI39EN5PuTd6LhVasdPknQRE8pU/4Gja0ngbsWe0EdLABUobKSnQtW
- TDYo5WTId1DdLjybqHzL/Gscr/ZowZBSSr6Hvg7F4XNja5dbK0VawUAZWd0NWoAhr9M4
- F2JF+qRj5ILmaq4n4g0TuM954VwQnNFxef6UG3OJFgF6BJnOYhGH47HRdkp/tNLHxBs9
- Er79WCaoYmGQ40eF+oneuP80wPCgbcHjucJDhumI+vLQLwbl/Te0RW5pUbZ3e6kzkrpK
- DH+5Uos6R/YiJEEt0x0f5fJqzj/fBDely8oUwHWkSmwRS9hxprb2KGuxw+ytoRoXoX2d
- 3lkw==
-X-Gm-Message-State: AOJu0YyRUQTppSlwLxR1Wm9Y2d5wxU+NxAPNvUXesdqzCOZDPXUJvwGL
- Wr3DuMKIZNKqb/ZS6ZDJDpwmBf3vk20jsY/xCd7C6K9NeYusfrcynGgqdQ9AMHsKasYRMgLg5/U
- NIDM=
-X-Google-Smtp-Source: AGHT+IF66rV3aU3g4fgzulsr7GiHI4mOnV3F/89y5fF2Iq1ZQG9pE1UIZefq13qOMjYnmsnK1ivRBw==
-X-Received: by 2002:a2e:7e0e:0:b0:2d0:9902:16 with SMTP id
- z14-20020a2e7e0e000000b002d099020016mr1744614ljc.17.1708019979263; 
- Thu, 15 Feb 2024 09:59:39 -0800 (PST)
+ bh=nD0xGIx0jqih+wWIcjwEtsdSIF+Dav0OUaDGYWjSMEc=;
+ b=cudACjo3rkbF5S0dywgN7J/UTQK2PzHTdekEmMjBjVYXkgi0TkIavnQ5nzxMl5ifBc
+ 5GtSfhXpOWMMgr+pQ8XSzIowZSjjZrV9y2cbjluWU/9A+RYcS5++rQuFJ23kYLJU+jWC
+ AM5ls5xfZOKa27jADQmEJK37lLqJ8Czjv4KRvbpTiMntg9AYqmsdvm+nbbVS4MBtJgfW
+ dVMoQZmpOgYjckiUKdVMi4v9nG4np6F+97LF49o3JJMgKXVhYLbQzet+AxCLuMBeqR5S
+ KxJXkEvi1kFDc3CDcep1dYKTwR/cPjJxYtd8Shggq3opJz/B5vZjMw9yOV1v0lbj5Yxv
+ OxOQ==
+X-Gm-Message-State: AOJu0YzcdfVpR2nz4WlVvS+hTGpNI+vSJZu48Uk9M24P7u8hAiA9HTXy
+ yhCKyFxm3x/aGnfobHKHx0doJOPWQfEl8TI50dUywgBgx/+d6BJmpYfbBlJ1to+gFgRd4vsgs3t
+ XAOQ=
+X-Google-Smtp-Source: AGHT+IEJHA5bEKhM2Q4FpPLroCzVyxgL2EOjG9iCokVLBYfaRvKIDx1dbKDK6M1lIFLA/tmfaVYcJQ==
+X-Received: by 2002:a05:600c:5586:b0:411:ba7c:99a with SMTP id
+ jp6-20020a05600c558600b00411ba7c099amr2126769wmb.38.1708019986191; 
+ Thu, 15 Feb 2024 09:59:46 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- b20-20020a05600c4e1400b00411a595d56bsm2868021wmq.14.2024.02.15.09.59.37
+ fa25-20020a05600c519900b0041228b2e179sm1436839wmb.39.2024.02.15.09.59.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:59:38 -0800 (PST)
+ Thu, 15 Feb 2024 09:59:45 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 16/56] hw/mips/Kconfig: Remove ISA dependencies from MIPSsim
- board
-Date: Thu, 15 Feb 2024 18:57:10 +0100
-Message-ID: <20240215175752.82828-17-philmd@linaro.org>
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 17/56] hw/isa: fix ISA_SUPERIO dependencies
+Date: Thu, 15 Feb 2024 18:57:11 +0100
+Message-ID: <20240215175752.82828-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,61 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-The board doesn't have a working ISA bus, only some I/O space.
-Selecting ISA_BUS and including hw/isa/isa.h is not necessary.
+ISA_SUPERIO does not provide an ISA bus, so it should not select the symbol:
+instead it requires one.  Among its users, VT82C686 is the only one that
+is a PCI-ISA bridge and does not already select ISA_BUS.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20230109204124.102592-3-shentey@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240213155005.109954-4-pbonzini@redhat.com>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20240213155005.109954-5-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/mipssim.c | 7 +++++--
- hw/mips/Kconfig   | 3 +--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ hw/isa/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
-index 16af31648e..a12427b6c8 100644
---- a/hw/mips/mipssim.c
-+++ b/hw/mips/mipssim.c
-@@ -31,7 +31,6 @@
- #include "hw/clock.h"
- #include "hw/mips/mips.h"
- #include "hw/char/serial.h"
--#include "hw/isa/isa.h"
- #include "net/net.h"
- #include "sysemu/sysemu.h"
- #include "hw/boards.h"
-@@ -206,7 +205,11 @@ mips_mipssim_init(MachineState *machine)
-     cpu_mips_irq_init_cpu(cpu);
-     cpu_mips_clock_init(cpu);
+diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
+index 7884179d08..5df3c09cd5 100644
+--- a/hw/isa/Kconfig
++++ b/hw/isa/Kconfig
+@@ -15,7 +15,7 @@ config I82378
  
--    /* Register 64 KB of ISA IO space at 0x1fd00000. */
-+    /*
-+     * Register 64 KB of ISA IO space at 0x1fd00000.  But without interrupts
-+     * (except for the hardcoded serial port interrupt) -device cannot work,
-+     * so do not expose the ISA bus to the user.
-+     */
-     memory_region_init_alias(isa, NULL, "isa_mmio",
-                              get_system_io(), 0, 0x00010000);
-     memory_region_add_subregion(get_system_memory(), 0x1fd00000, isa);
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index ab61af209a..afcfb2b8ec 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -6,8 +6,7 @@ config MALTA
- 
- config MIPSSIM
+ config ISA_SUPERIO
      bool
 -    select ISA_BUS
--    select SERIAL_ISA
-+    select SERIAL
-     select MIPSNET
++    depends on ISA_BUS
+     select PCKBD
+     select PARALLEL
+     select SERIAL_ISA
+@@ -47,6 +47,7 @@ config PIIX
  
- config JAZZ
+ config VT82C686
+     bool
++    select ISA_BUS
+     select ISA_SUPERIO
+     select ACPI
+     select ACPI_SMBUS
 -- 
 2.41.0
 
