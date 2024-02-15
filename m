@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2B2856C07
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03A2856C12
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:06:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag63-0003Zn-67; Thu, 15 Feb 2024 13:04:32 -0500
+	id 1rag5Q-0001wE-Rw; Thu, 15 Feb 2024 13:03:53 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag50-0000bY-19
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:26 -0500
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag54-00017X-Bn
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:30 -0500
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag4v-00036Y-GI
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:24 -0500
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a34c5ca2537so143203766b.0
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:19 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag50-000385-4s
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:03:28 -0500
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a3d6d160529so142999066b.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:03:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020198; x=1708624998; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020204; x=1708625004; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Zv0rwoijSdDo8xIDgkkDnlRfaEZ/bLwEpbnDkMeyuSU=;
- b=w5pvYt96CON05tBbhV+mBu1jCQVTvHsuLrNahQcc3PFchz+4XMbAnjFBnJby2xJj/I
- pcM6/99+Gpdtshho/EjJcHNnREIVh3Oc2cRpDUOXTXILOPZfblCSyaY1Y9RABXX6LbKL
- sepO7B1F38mAtCRl44qCo3uM3b/1i/OCjl33AnELcC0K3GQdV+fcskez90JjLNiWL3mB
- cfw6TexiP6kjCezpms0umHVv9s0nPN+zH9B2flxbA5gYXDkDtoVYezWLCFq/2QvS2Can
- 7sTcfA3HEe9+e8XuAQfWwR9jyo5C1aFi9qJfTHvUmd2aNbytwobGXKzyoNSm4OioNYKr
- 3uCw==
+ bh=Lw97jjpNW0qnluWLs9FH7pp1lrQFlkFyUFYsFWqMU1o=;
+ b=v28xvI8EPp4Cg5DXIfPVVTDliY50wUlIWSRMVitpklKSyP3vShtfYSs4KEZL5VGjQt
+ HoYjvJk2zYibKyw0qh/6MOX3TnbkVd7rBtZZC52aSASvG4MeI11sC4eqKLXmbP1TH3+W
+ b+GB0sC1mtRzg0M6Lt12Zh+ELdIFY59nV2CGLoJe0/+L35qcSMEzt4KYfs/0/TiPXYpG
+ 6qGeMcqKTf7/XapkEcZc44vKGBAsepXd8yARdH0DYSft7+HEgzvHcSSwg5gZDDFbg+Nk
+ kgX7dSM1fqJeOLsNakbC8hjZ6/yKOc7jLp0Mz9nMaEL8irUyhHNq3Zxkk0vjTvVFZbBA
+ Z75w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020198; x=1708624998;
+ d=1e100.net; s=20230601; t=1708020204; x=1708625004;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Zv0rwoijSdDo8xIDgkkDnlRfaEZ/bLwEpbnDkMeyuSU=;
- b=lP7FAB8T0EX+BiKc7ARdti3MQL84KvdrqXsuA0RDzxpB8zO5zVaBme4A1dHrb//Dqg
- LMV8TsZnpaGGarh9CkwGmxB5qmAtZxXM1b8jyHpa+J1OKOG0kCxHBDM/TBDx+CjY/M5U
- 3/SlGMJ/r2IMpZyp+jxB/zuVd2DALe1ydXVaEgLTLm/4g2/AUpysFreDS92BcP8lqGsm
- QE/F/zz1upPrY7iYo6KEQ5lDR0w6xAAdxDGNOuXikgLp7eFhPrickATu5y8MuXXL63Vi
- 7A2anOoYult4B/xmGBTwTRtnkAjkUqt3nYBVu0Ojb0HIukF5+q1IE/p2qUmog0aES0Pf
- a/tg==
-X-Gm-Message-State: AOJu0YxNLv8VNnyv/VZFFXfu5gjskQhQ3r5EENFyvAs8ZiFe0doXpo2F
- ZdMoYhs0pNfTuhyhuhFXjiI5ptBHMnDwgTRB2PI7BFI8DAQ/KrLbVSYnYUgt4pOWya9fESNpQrQ
- F+WI=
-X-Google-Smtp-Source: AGHT+IEiI7lxr4JeVw2hsBMeVDu8TkR+CvLr/LWJj+beQC1JsUhXkkvmeHjcuqP7bK/nljgHOsdgPA==
-X-Received: by 2002:a17:906:ad5:b0:a3d:b3a7:b8ce with SMTP id
- z21-20020a1709060ad500b00a3db3a7b8cemr991576ejf.0.1708020198368; 
- Thu, 15 Feb 2024 10:03:18 -0800 (PST)
+ bh=Lw97jjpNW0qnluWLs9FH7pp1lrQFlkFyUFYsFWqMU1o=;
+ b=EQPCqEspk4HoUlLOJXq6kLsUbkMbtAH4MsNKKzJ3ewQGpdScX4QOsRzS67xyIq+kDU
+ Vcj5EUmKXwMcH8eElMjmiGw9DJc4iSmcYEIJ0MPO52SOsOcXsqkPxg/F010UTsWtNrj1
+ l2+2hNLH4m7rWT+2zYBBZGrbHoT1i8/ecfwiPr7mFSwNgTPs6P7n8E3tNyJFw8gDU7WR
+ pZXXJtN19bIdTzgE3kHLPmXMNdnlLWaFM1heQihpCymQ7WlaEBhIB2/UHBkvV0rpgTlJ
+ /N9Dfn+MhAzk0U21Fq/QS53NmFyCoo6hbneA3KYfd1kjf8qo3uxIET+AvSGUy77LJ2Q/
+ RAQA==
+X-Gm-Message-State: AOJu0YwM3LTTH7flnRdRF8RZUtwU75zF3E31sifhaC7W5NZbyu3Lv7dr
+ jeA2iPYxyjL2CQykSyTYo5Z2ZF2d1qtNSg8yGjSYNvdLo6flnvjFj+rRNkhFcXJLFCNnS3TMFNV
+ zUPU=
+X-Google-Smtp-Source: AGHT+IHrQTGzT5Q2yLfxw0/N1DuaO5KF5vuH1Pg27dbrD110GbehTuIHU8+EMIE6K3LG4y4gfPeSfQ==
+X-Received: by 2002:a17:906:494e:b0:a3d:88be:94d7 with SMTP id
+ f14-20020a170906494e00b00a3d88be94d7mr1603043ejt.70.1708020204492; 
+ Thu, 15 Feb 2024 10:03:24 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- j7-20020a170906278700b00a3d76518122sm783781ejc.9.2024.02.15.10.03.16
+ wb13-20020a170907d50d00b00a3d28aa375bsm771690ejc.151.2024.02.15.10.03.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:03:17 -0800 (PST)
+ Thu, 15 Feb 2024 10:03:24 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- John Snow <jsnow@redhat.com>, Paul Burton <paulburton@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paul Burton <paulburton@kernel.org>,
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 48/56] hw/ide/ahci: Expose AHCIPCIState structure
-Date: Thu, 15 Feb 2024 18:57:42 +0100
-Message-ID: <20240215175752.82828-49-philmd@linaro.org>
+Subject: [PULL 49/56] hw/ide/ahci: Rename AHCI PCI function as 'pdev'
+Date: Thu, 15 Feb 2024 18:57:43 +0100
+Message-ID: <20240215175752.82828-50-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,136 +98,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In order to be able to QOM-embed a structure, we need
-its full definition. Move it from "ahci_internal.h"
-to the new "hw/ide/ahci-pci.h" header.
+We want to access AHCIPCIState::ahci field. In order to keep
+the code simple (avoiding &ahci->ahci), rename the current
+'ahci' variable as 'pdev'
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213081201.78951-3-philmd@linaro.org>
+Message-Id: <20240213081201.78951-4-philmd@linaro.org>
 ---
- hw/ide/ahci_internal.h    |  8 --------
- include/hw/ide/ahci-pci.h | 22 ++++++++++++++++++++++
- include/hw/ide/ahci.h     |  3 ---
- hw/i386/pc_q35.c          |  2 +-
- hw/ide/ahci.c             |  1 +
- hw/ide/ich.c              |  1 +
- hw/mips/boston.c          |  2 +-
- 7 files changed, 26 insertions(+), 13 deletions(-)
- create mode 100644 include/hw/ide/ahci-pci.h
+ hw/i386/pc_q35.c | 15 ++++++++-------
+ hw/mips/boston.c | 10 +++++-----
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/hw/ide/ahci_internal.h b/hw/ide/ahci_internal.h
-index c244bbd8be..4dc2805d21 100644
---- a/hw/ide/ahci_internal.h
-+++ b/hw/ide/ahci_internal.h
-@@ -324,14 +324,6 @@ struct AHCIDevice {
-     MemReentrancyGuard mem_reentrancy_guard;
- };
- 
--struct AHCIPCIState {
--    /*< private >*/
--    PCIDevice parent_obj;
--    /*< public >*/
--
--    AHCIState ahci;
--};
--
- extern const VMStateDescription vmstate_ahci;
- 
- #define VMSTATE_AHCI(_field, _state) {                               \
-diff --git a/include/hw/ide/ahci-pci.h b/include/hw/ide/ahci-pci.h
-new file mode 100644
-index 0000000000..c2ee616962
---- /dev/null
-+++ b/include/hw/ide/ahci-pci.h
-@@ -0,0 +1,22 @@
-+/*
-+ * QEMU AHCI Emulation (PCI devices)
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef HW_IDE_AHCI_PCI_H
-+#define HW_IDE_AHCI_PCI_H
-+
-+#include "qom/object.h"
-+#include "hw/ide/ahci.h"
-+#include "hw/pci/pci_device.h"
-+
-+#define TYPE_ICH9_AHCI "ich9-ahci"
-+OBJECT_DECLARE_SIMPLE_TYPE(AHCIPCIState, ICH9_AHCI)
-+
-+struct AHCIPCIState {
-+    PCIDevice parent_obj;
-+
-+    AHCIState ahci;
-+};
-+
-+#endif
-diff --git a/include/hw/ide/ahci.h b/include/hw/ide/ahci.h
-index 210e5e734c..6818d02063 100644
---- a/include/hw/ide/ahci.h
-+++ b/include/hw/ide/ahci.h
-@@ -52,9 +52,6 @@ typedef struct AHCIState {
- } AHCIState;
- 
- 
--#define TYPE_ICH9_AHCI "ich9-ahci"
--OBJECT_DECLARE_SIMPLE_TYPE(AHCIPCIState, ICH9_AHCI)
--
- int32_t ahci_get_num_ports(PCIDevice *dev);
- void ahci_ide_create_devs(PCIDevice *dev, DriveInfo **hd);
- 
 diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index a81c86b255..76b3b6032b 100644
+index 76b3b6032b..a89f900c4c 100644
 --- a/hw/i386/pc_q35.c
 +++ b/hw/i386/pc_q35.c
-@@ -47,7 +47,7 @@
- #include "hw/display/ramfb.h"
- #include "hw/firmware/smbios.h"
- #include "hw/ide/pci.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-pci.h"
- #include "hw/intc/ioapic.h"
- #include "hw/southbridge/ich9.h"
- #include "hw/usb.h"
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 0eb83a6d46..aa9381a7b2 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -36,6 +36,7 @@
- #include "sysemu/dma.h"
- #include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
-+#include "hw/ide/ahci-pci.h"
- #include "ahci_internal.h"
+@@ -134,7 +134,6 @@ static void pc_q35_init(MachineState *machine)
+     GSIState *gsi_state;
+     ISABus *isa_bus;
+     int i;
+-    PCIDevice *ahci;
+     ram_addr_t lowmem;
+     DriveInfo *hd[MAX_SATA_PORTS];
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+@@ -292,16 +291,18 @@ static void pc_q35_init(MachineState *machine)
+                          0xff0104);
  
- #include "trace.h"
-diff --git a/hw/ide/ich.c b/hw/ide/ich.c
-index 49f8eb8a7d..d190012a95 100644
---- a/hw/ide/ich.c
-+++ b/hw/ide/ich.c
-@@ -69,6 +69,7 @@
- #include "hw/isa/isa.h"
- #include "sysemu/dma.h"
- #include "hw/ide/pci.h"
-+#include "hw/ide/ahci-pci.h"
- #include "ahci_internal.h"
- 
- #define ICH9_MSI_CAP_OFFSET     0x80
+     if (pcms->sata_enabled) {
++        PCIDevice *pdev;
++
+         /* ahci and SATA device, for q35 1 ahci controller is built-in */
+-        ahci = pci_create_simple_multifunction(host_bus,
++        pdev = pci_create_simple_multifunction(host_bus,
+                                                PCI_DEVFN(ICH9_SATA1_DEV,
+                                                          ICH9_SATA1_FUNC),
+                                                "ich9-ahci");
+-        idebus[0] = qdev_get_child_bus(DEVICE(ahci), "ide.0");
+-        idebus[1] = qdev_get_child_bus(DEVICE(ahci), "ide.1");
+-        g_assert(MAX_SATA_PORTS == ahci_get_num_ports(ahci));
+-        ide_drive_get(hd, ahci_get_num_ports(ahci));
+-        ahci_ide_create_devs(ahci, hd);
++        idebus[0] = qdev_get_child_bus(DEVICE(pdev), "ide.0");
++        idebus[1] = qdev_get_child_bus(DEVICE(pdev), "ide.1");
++        g_assert(MAX_SATA_PORTS == ahci_get_num_ports(pdev));
++        ide_drive_get(hd, ahci_get_num_ports(pdev));
++        ahci_ide_create_devs(pdev, hd);
+     } else {
+         idebus[0] = idebus[1] = NULL;
+     }
 diff --git a/hw/mips/boston.c b/hw/mips/boston.c
-index 4e11ff6cd6..cbcefdd693 100644
+index cbcefdd693..0ec0b98066 100644
 --- a/hw/mips/boston.c
 +++ b/hw/mips/boston.c
-@@ -24,7 +24,7 @@
- #include "hw/boards.h"
- #include "hw/char/serial.h"
- #include "hw/ide/pci.h"
--#include "hw/ide/ahci.h"
-+#include "hw/ide/ahci-pci.h"
- #include "hw/loader.h"
- #include "hw/loader-fit.h"
- #include "hw/mips/bootloader.h"
+@@ -677,7 +677,7 @@ static void boston_mach_init(MachineState *machine)
+     MemoryRegion *flash, *ddr_low_alias, *lcd, *platreg;
+     MemoryRegion *sys_mem = get_system_memory();
+     XilinxPCIEHost *pcie2;
+-    PCIDevice *ahci;
++    PCIDevice *pdev;
+     DriveInfo *hd[6];
+     Chardev *chr;
+     int fw_size, fit_err;
+@@ -769,11 +769,11 @@ static void boston_mach_init(MachineState *machine)
+     qemu_chr_fe_set_handlers(&s->lcd_display, NULL, NULL,
+                              boston_lcd_event, NULL, s, NULL, true);
+ 
+-    ahci = pci_create_simple_multifunction(&PCI_BRIDGE(&pcie2->root)->sec_bus,
++    pdev = pci_create_simple_multifunction(&PCI_BRIDGE(&pcie2->root)->sec_bus,
+                                            PCI_DEVFN(0, 0), TYPE_ICH9_AHCI);
+-    g_assert(ARRAY_SIZE(hd) == ahci_get_num_ports(ahci));
+-    ide_drive_get(hd, ahci_get_num_ports(ahci));
+-    ahci_ide_create_devs(ahci, hd);
++    g_assert(ARRAY_SIZE(hd) == ahci_get_num_ports(pdev));
++    ide_drive_get(hd, ahci_get_num_ports(pdev));
++    ahci_ide_create_devs(pdev, hd);
+ 
+     if (machine->firmware) {
+         fw_size = load_image_targphys(machine->firmware,
 -- 
 2.41.0
 
