@@ -2,90 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33FC855B8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 08:23:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EB7855BB9
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 08:35:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raW5d-0003zG-MI; Thu, 15 Feb 2024 02:23:26 -0500
+	id 1raWFl-0006Xd-UK; Thu, 15 Feb 2024 02:33:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raW5Z-0003yc-GM
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:23:23 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raW5X-0006tK-9m
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:23:20 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d7431e702dso4557175ad.1
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 23:23:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707981797; x=1708586597; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HaLcyOZi7VLTHOLpBSDx9OmhlMu9oQQHLmdwc9b9A3U=;
- b=t9lUpb/7KKTkjxJPdw1Nsy5XQWgfZt6nvAELtm3FAvm8VIg3A/1jQxGdoWAlWMZQBm
- 1EGZaPjGqTD9/dDcA/SwJ4h/4WYGp0ggp6pxVKBZbOoAeYbRKouVZzcodTwxjczfJhn3
- ws1ACAyjH7lkV5UYhXKA3GWH16BQeLrjYv/mIiwZOTF7TUYICv3nZrCVrIKdlkzn9U47
- uHkfYrford0mp//oCSAL/UB08/Gi/IEnIHoXANnBTCMRbBVFUpzV9oql6uwBEXdHqigr
- rfJop/07Dj61GWHdIPQd1Qpru7ornc+YNaJbK9ueX1cuksH6gu62vtwrgTBwsqQn+Kdx
- sDhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707981797; x=1708586597;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HaLcyOZi7VLTHOLpBSDx9OmhlMu9oQQHLmdwc9b9A3U=;
- b=I7BWAt0k+pnIQv179AVQXZs3svYJVQz1bh3sZdOm5uRqsEYXwvvQUqW8wLewAPnJ5A
- hplvYRhGKcgmCoAs14OgKF4C7xtq31JiaoUEILM47ZpoaLTJWZ1gUhnihCOqzOnAso9h
- wP/LbqymjU2yxg/jE2tytQtpmEEhYaBo1/p+C9yru3eWTGJJKS5+xhpi2AylHAd4mtC0
- 8sQKbHRKeUuIM02ElEKc+Spwhjhcgsux6unlep2Pau9L/50046F7xdJyE+4O3Tg4gxME
- 6Z4SAv9O1xgxcz1rgzWwiWv/tezBJVHVfZmbRCtMraP7+hZh6dzs5PwTDzNqRVrFIXZ/
- 8Qfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCjJ0+TfUrNhTjjAahoM7hiTpIoOcFX+N+ZBzllULbVj+H1l/YA75dGGSbZRks0CknSuJM6bPBbePwkg92F/3w2yOEGbg=
-X-Gm-Message-State: AOJu0YxHsqXgjZyEOqEvW2hqjwYpn42eDL16x8+xfY+UivHA2cJS0609
- ueyus+6n+PGwg+Fn/9vvVxpTH7F06K1yN31wwChjKOGdrSOHkpszAmGY61sXg80uNX4zU87vpYo
- u
-X-Google-Smtp-Source: AGHT+IE+AD7LnaPvRe/BTfcMP5VO8OCAgPC9K8Pew4N5lQJdRJFYAXHCw0O28AycCKFGdGxvpyu/MA==
-X-Received: by 2002:a17:903:1103:b0:1db:4245:454b with SMTP id
- n3-20020a170903110300b001db4245454bmr1149706plh.57.1707981797469; 
- Wed, 14 Feb 2024 23:23:17 -0800 (PST)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- k5-20020a170902f28500b001db37da684bsm598753plc.71.2024.02.14.23.23.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 Feb 2024 23:23:17 -0800 (PST)
-Message-ID: <1165d690-b272-4e59-84de-50a53c5abefa@linaro.org>
-Date: Wed, 14 Feb 2024 21:23:14 -1000
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1raWFW-0006Ms-AF
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:33:38 -0500
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX02.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1raWFT-0000V2-J7
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 02:33:38 -0500
+Received: from TWMBX03.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
+ (192.168.0.25) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Feb
+ 2024 15:33:31 +0800
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 15 Feb
+ 2024 15:34:17 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Thu, 15 Feb 2024 15:33:31 +0800
+To: "open list:All patches CC here" <qemu-devel@nongnu.org>
+CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 0/2] UART0 device name and fix hardcode boot address 0
+Date: Thu, 15 Feb 2024 15:33:28 +0800
+Message-ID: <20240215073330.2401960-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 36/36] linux-user: Remove pgb_dynamic alignment
- assertion
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alexey Sheplyakov <asheplyakov@yandex.ru>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-References: <20240215062018.795056-1-richard.henderson@linaro.org>
- <20240215062018.795056-37-richard.henderson@linaro.org>
- <2854a908-bc6f-4c18-bcf7-632efdd070eb@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <2854a908-bc6f-4c18-bcf7-632efdd070eb@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX02.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_FAIL=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,47 +55,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/14/24 21:07, Philippe Mathieu-Daudé wrote:
-> On 15/2/24 07:20, Richard Henderson wrote:
->> The assertion was never correct, because the alignment is a composite
->> of the image alignment and SHMLBA.  Even if the alignment didn't match
->> the image an assertion would not be correct -- more appropriate would
->> be an error message about an ill formed image.  But the image cannot
->> be held to SHMLBA under any circumstances.
->>
->> Fixes: ee94743034b ("linux-user: completely re-write init_guest_space")
->> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2157
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   linux-user/elfload.c | 2 --
->>   1 file changed, 2 deletions(-)
->>
->> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
->> index f3f1ab4f69..d92d66ca1e 100644
->> --- a/linux-user/elfload.c
->> +++ b/linux-user/elfload.c
->> @@ -3022,8 +3022,6 @@ static void pgb_dynamic(const char *image_name, uintptr_t 
->> guest_loaddr,
->>       uintptr_t brk, ret;
->>       PGBAddrs ga;
->> -    assert(QEMU_IS_ALIGNED(guest_loaddr, align));
->> -
->>       /* Try the identity map first. */
->>       if (pgb_addr_set(&ga, guest_loaddr, guest_hiaddr, true)) {
->>           brk = (uintptr_t)sbrk(0);
-> 
-> I suppose this isn't part of this series since posted as
-> https://lore.kernel.org/qemu-devel/20240214045413.541677-1-richard.henderson@linaro.org/
-> 
-> Still:
-> Reported-by: Alexey Sheplyakov <asheplyakov@yandex.ru>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+v1:
+1. support uart controller both 0 and 1 base
+2. fix hardcode boot address 0
 
-Whoops, no.  But I did need it for testing on ppc64 64k page host.
+v2:
+1. introduce a new UART0 device name
+2. remove ASPEED_SOC_SPI_BOOT_ADDR marco
 
+v3:
+1. add uart helper functions to get the index, start and last.
+2. add more description in commit log
 
-r~
+Jamin Lin (2):
+  aspeed: introduce a new UART0 device name
+  aspeed: fix hardcode boot address 0
+
+ hw/arm/aspeed.c             | 17 +++++++++++------
+ hw/arm/aspeed_ast10x0.c     |  1 +
+ hw/arm/aspeed_ast2400.c     |  6 ++++--
+ hw/arm/aspeed_ast2600.c     |  3 ++-
+ hw/arm/aspeed_soc_common.c  | 10 ++++++----
+ include/hw/arm/aspeed_soc.h | 19 +++++++++++++++++--
+ 6 files changed, 41 insertions(+), 15 deletions(-)
+
+-- 
+2.25.1
+
 
