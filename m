@@ -2,73 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDD48569B2
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 17:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C547856A2E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 17:55:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raela-0002I3-4q; Thu, 15 Feb 2024 11:39:18 -0500
+	id 1raezS-0006Td-DF; Thu, 15 Feb 2024 11:53:38 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1raelY-0002Hv-DJ
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:39:16 -0500
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1raezQ-0006TP-6A
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:53:36 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1raelW-00021b-LT
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:39:16 -0500
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5639c8cc449so1429712a12.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 08:39:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708015153; x=1708619953; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rIX6r8WyzbgEUQEDEK0M/W77NMvKPGfg2MfrjWJ7KkY=;
- b=XV0h6vfvkzVQ1dmR34HBqau0yYuNsB7/5ptTLvuJl/YhqHwcI8vBTX/x4K3fqT+jKN
- e10rwsY8Cfq1LE6f3i4d9EYU7GDjHCAGe69YBIalUCzxzgdxC9C+GR47C/BPgzBNa8nb
- Q77cDiTT/ICqbcgBfrFrFVrwMCyAkeD8zJDTsdylcp/pZPkdnNmzFp//MNffCfxUYqpj
- pdv88vnuAm6JrpXwMqLwX4e0tK0CYzMGysaSFL86YhbJWWCcWWUkw/UCOZN1Wb0cMCi2
- TBTnbOkPJRresS/12sb3L5H6LUs1gP5HJjhZgAfsZG/OOaakp4WApg82pemg79MMrmps
- /4sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708015153; x=1708619953;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rIX6r8WyzbgEUQEDEK0M/W77NMvKPGfg2MfrjWJ7KkY=;
- b=onzc+tuO9HUyVMTGz6HH5/lRCHR3qQCuXkWkwA8bIonclCrGJ86zA6100QCBMi/rWl
- c4Cz47mmwNDbeWE/WYhYgAkRdAd7oBGFskVbjGFzxsTsBWEkysvGQSRE6iaADdEh7vX5
- 03EcStghsAekydTV3L4SYyRQFyI5PNzXR0pzebPO8pmi4BsDstEWew3thdCNQgM7iX5t
- ZnUlh8x/bUb/T7a4sLPf+FnHxDQ68RImY48EhE7BCXeiPQFx7aY20jbsVsNVZiUnf5jg
- 3qPmvyxRJlnAAVHHl2NXMUfUZyeMoOm5elDQ6oAHfjpa5iUAr+uZIUmOCnIcndQZ9rgP
- 3c9g==
-X-Gm-Message-State: AOJu0YwqHl9JSdxwAz5q1o4TqqjlnX7tTQP0D7RL+s7KSnSiSZHVPRog
- 7Xi0Okg15Z4TwrhORO9izv+1r87HTm0lSh/gIndtFFIO5uNfCO74pTNP8ybqdYPi0fXjUpF/Bng
- wUZ56vfY0TgDYgI8mWbGttNH5tlrHvEcq+m+hqw==
-X-Google-Smtp-Source: AGHT+IEd0V36sKOcrSCfmM4iPWqIm/mNbu0ueUvCXZAtoRbZL25HHj0EH/6Q7oBWovPo4iRRtFXd0RLsyCKdLgOd7S4=
-X-Received: by 2002:aa7:d4d9:0:b0:560:be95:aa64 with SMTP id
- t25-20020aa7d4d9000000b00560be95aa64mr1784852edr.37.1708015152889; Thu, 15
- Feb 2024 08:39:12 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1raezO-0005ou-B4
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 11:53:35 -0500
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 800982222D;
+ Thu, 15 Feb 2024 16:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708016009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JKA3XuZgeuWKkDBDniSCib2DmiM7CNBysAwz9GmmmBM=;
+ b=0GSV/2x6JwHaR2iaKAh9E649uAwlMwtDJRi8cVgDyARwQnCzA1H7nu/YeTQs4pm22LF7le
+ h6J6sN55kiwWSzLU0u9aNQOaOShCL6vDiWQn9ryY8Fdb5dvIHLCBdO+VJUtex8pLwDKj4e
+ 5ZC2HW+g18mJoSi4BjdTaD8PyTil6Yg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708016009;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JKA3XuZgeuWKkDBDniSCib2DmiM7CNBysAwz9GmmmBM=;
+ b=8cCiw58uAW3vVFESczX3FjgGLeVJoFe/IZ1m2egxqaeWzaJil62bxhGzqUdmblfTKW2xC9
+ z3aQdKl84LsvNcDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1708016009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JKA3XuZgeuWKkDBDniSCib2DmiM7CNBysAwz9GmmmBM=;
+ b=0GSV/2x6JwHaR2iaKAh9E649uAwlMwtDJRi8cVgDyARwQnCzA1H7nu/YeTQs4pm22LF7le
+ h6J6sN55kiwWSzLU0u9aNQOaOShCL6vDiWQn9ryY8Fdb5dvIHLCBdO+VJUtex8pLwDKj4e
+ 5ZC2HW+g18mJoSi4BjdTaD8PyTil6Yg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1708016009;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=JKA3XuZgeuWKkDBDniSCib2DmiM7CNBysAwz9GmmmBM=;
+ b=8cCiw58uAW3vVFESczX3FjgGLeVJoFe/IZ1m2egxqaeWzaJil62bxhGzqUdmblfTKW2xC9
+ z3aQdKl84LsvNcDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D1A713A53;
+ Thu, 15 Feb 2024 16:53:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id ap50MYhBzmXtCwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 15 Feb 2024 16:53:28 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Peter Xu <peterx@redhat.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: migration-test random intermittent failure, openbsd VM
+In-Reply-To: <CAFEAcA_cLRruqwz+3muBE-RfyV5RQgyrFgz4beeVo3TtGaoPXw@mail.gmail.com>
+References: <CAFEAcA8p9BKCrn9EfFXTpHE+5w-_8zhtE_52SpZLuS-+zpF5Gg@mail.gmail.com>
+ <87plx6bzo8.fsf@suse.de>
+ <CAFEAcA_cLRruqwz+3muBE-RfyV5RQgyrFgz4beeVo3TtGaoPXw@mail.gmail.com>
+Date: Thu, 15 Feb 2024 13:53:26 -0300
+Message-ID: <875xypsm7t.fsf@suse.de>
 MIME-Version: 1.0
-References: <CAOpGCnKC7YE8DV8eCi4zA5LtqdiL5So+ceNV63udDXmRJxeFFw@mail.gmail.com>
-In-Reply-To: <CAOpGCnKC7YE8DV8eCi4zA5LtqdiL5So+ceNV63udDXmRJxeFFw@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 15 Feb 2024 16:39:01 +0000
-Message-ID: <CAFEAcA-OXC-z+ZAvfkVer0ZRSOz-tcuZiZFKihYVSE2DTODELw@mail.gmail.com>
-Subject: Re: Qemu network connectivity issue
-To: Faiq Ali Sayed <faiqueali.109@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[99.99%];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_DN_ALL(0.00)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linaro.org:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,45 +114,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 15 Feb 2024 at 16:32, Faiq Ali Sayed <faiqueali.109@gmail.com> wrote:
->
-> Hi my name is Faiq Ali Sayed
-> Currently, I am trading to create a Qemu VM with the command below and getting an error and the terminal hangs after that
->
-> Command:
->
-> qemu-system-aarch64 -M xlnx-zcu102 -m 16G -serial mon:stdio -display none
-> -device loader,file=QNX-IFS,addr=0x00100000,cpu-num=0
-> -net nic,model=cadence_gem -net nic,model=cadence_gem -net nic,model=cadence_gem -net nic,model=cadence_gem,netdev=xzynq0 -netdev user,id=xzynq0,tftp=/tftpboot
-> -nographic -global xlnx,zynqmp-boot.cpu-num=0 -global 'xlnx,zynqmp-boot.use-pmufw=true'
->
->
-> Error:
-> qemu-system-aarch64: warning: hub 0 is not connected to host network
->
-> any help in this regard is highly appreciated.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-That message is not an error; it is only a warning. It is telling
-you that you have some ethernet devices which aren't connected
-anywhere. That is, you have one NIC which you've connected to your
-user netdev backend (using the netdev=xzynq0 suboption), but the
-other three NICs are not connected to anything (as if you hadn't
-plugged a network cable into the back of them). If you're OK
-with those network devices not being connected, you can ignore
-the warning.
+> On Thu, 8 Feb 2024 at 18:04, Fabiano Rosas <farosas@suse.de> wrote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> +cc Daniel.
+>>
+>> > Random intermittent in migration-test when running the tests
+>> > in the openbsd VM (i.e. what you get from 'make -C build vm-build-openbsd')
+>> > Any ideas?
+>>
+>> Where's your HEAD at?
+>
+> 03e4bc0bc02 in this case.
+>
+> thanks
+> -- PMM
 
-The warning is not going to be related to the reason why you
-see no output. That is almost certainly going to be because
-your guest binary has crashed before it sent any output to
-the serial port. To find out the exact details, you should
-debug what your guest is doing, either with QEMU's gdb stub
-or with some of the logging available via the '-d' option.
+I spent some time on this today, it reproduces inconsistently and I
+couldn't find much.
 
-A good first check is "is this guest binary built to run on
-the machine type I'm using" (in your case xlnx-zcu102).
-You can't in general run a guest that was built for one Arm
-machine on a model of a different machine.
-
-thanks
--- PMM
+The only thing I noticed so far is that when the tests fail, netstat
+shows several ports at TIME_WAIT TCP state, including the one that just
+got rejected. Maybe some issue with how we're closing these sockets
+vs. the openbsd network stack implementation. But that's a long shot
+without more investigation.
 
