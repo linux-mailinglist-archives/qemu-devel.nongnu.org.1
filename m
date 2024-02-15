@@ -2,69 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A5E855F82
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 11:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3176885602E
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 11:52:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raZ8B-0006jW-3q; Thu, 15 Feb 2024 05:38:15 -0500
+	id 1raZK1-0001qb-Pw; Thu, 15 Feb 2024 05:50:29 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1raZ88-0006iV-FX
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 05:38:12 -0500
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raZJy-0001q9-NN
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 05:50:26 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1raZ86-0004MU-OI
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 05:38:11 -0500
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-55f0b2c79cdso1109694a12.3
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 02:38:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raZJu-0007Sg-S3
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 05:50:25 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a3c2efff32aso82370266b.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 02:50:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707993489; x=1708598289; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uAgLWWhpsYnuKcbs+qV32uEp/+I9i315cGj5ltW31Zc=;
- b=ySFL6RI6QnncEGvfkC/IQmSsvdsSGZm+5aqq++TNl6Niq/gwmXUZhBt5IRShCGMVOJ
- f97cDZwNZJ7PBDXcDTB7w6a1JdoZo42Xk6PdnF8TJVhpKJGmb0xmEG++Wq3IZzFlpeGU
- A6GSyi+TY8N4GMgyYZ0nTk5iV0+/WIb0atpo6XKp/gaOIpxdCAF0tdK76AZM2ziePc5e
- 4r7OWyLPXlMzzWMfhgaYKYe8dUpEBIcwXAekeE25Ds8UPw5JHqITZnv8RHAQXiu9ipAN
- vA1ntCoR6Sj3EXMq+XzFaC0X8Dn6+Z0f2cl6QMmZ0SEJ8ykcdGLDQEtz3HeMYE9JkbdU
- KKyg==
+ d=linaro.org; s=google; t=1707994221; x=1708599021; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BAH3pRl8NdjwsLsFeBrWu9AhqGGOoFB4lYhbe8BInAI=;
+ b=YLCjYjUKlJkqwvVM0nI7yOpBSci0AIlA9tyZRpk9b3zEg09hnWva5lsWGzcOyP6S75
+ wMFj9ZRsL844YzvHEPOXR0k3pgZ4SKCfFr1JAotG9rPHpKmVXk4d6XUsbsPhTnjF7TG7
+ I7mxFfUYYCkQFXSZ6HqjsbTuuRVeyeSqzhIQExwTfyXQ0f3TWwJroQ1zaHX9x78P/Y1o
+ GRLshUXkDak6Lo/gb/TFfVWuOEEzTUSFVUpSmgigkXiPqGjEeygDTj6d7mTwey7w/TPJ
+ lSRH+YbI2Q1pqhn6swdRW0aOOltTZz22MQxOFupS2mX+qq+KmXq5I9Vnbh77t3U4TNWq
+ nR+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707993489; x=1708598289;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uAgLWWhpsYnuKcbs+qV32uEp/+I9i315cGj5ltW31Zc=;
- b=IvDGdvAD2BbvPyCfzqc1Fad98CGsRHg2YWkTm6M+VpJDgWVIQNVfrJW9Yu+AA3dya8
- weN+uhKf7itHWLavpIvWnnePT6lFbIMv7RLoHDLbTAJGgLx84CUdISRh297OHIL2rles
- jk+4uinBVCpU15h3nrwtcv2xdLpCRNpPTE/UFVLYcjUlcM/JSSM+fuqSZy0BByETGYBy
- h36n2HKwj0GsQA7qHQIEfLqLyIPxgz8loXNseGcrriNNCrrzLz5+x2kK2GeP0Q4MytDf
- KDgsGd1cpNJskdDRJhMDQ3vzMrVautFxaq++Wh9T9P7d7omyFasFBlDryvqlcADBsDd0
- UP/A==
-X-Gm-Message-State: AOJu0Yxgg/ptFrk/XVKhogyAE+MuyABPa5LzYu3E9TtgP5g8HJyXSwTJ
- hI5rMOR69Akf08X/VeHC9VtopFvZbRuOvHbaTCzJ2t/l1Wf1I2Ai+cXLAlwDixGbPwEHOn52/gj
- 5jATILYNtQj5fmndylSKBjxBR5RdQnaOwBb3mKzrY3DSxm6EL
-X-Google-Smtp-Source: AGHT+IGuZLN3ynu/eR2qMLnqgbf8EBBm3Q3I5G9nBLIVKxfwwelYQEu/d4dSUbkQ1Wb6KpPsJXQnHJxJrUBVYFUaGyM=
-X-Received: by 2002:a05:6402:148d:b0:561:dd88:efde with SMTP id
- e13-20020a056402148d00b00561dd88efdemr1079519edv.27.1707993489235; Thu, 15
- Feb 2024 02:38:09 -0800 (PST)
+ d=1e100.net; s=20230601; t=1707994221; x=1708599021;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BAH3pRl8NdjwsLsFeBrWu9AhqGGOoFB4lYhbe8BInAI=;
+ b=uJsKewwiwwx4pQMtK2GmzC7syD78pf/vVvgtivSOSbM6pZOo3p0D70Xw27nP5R06S6
+ Gh1lrxBtTB81fYD4iF5pLAZ+TlODwjX43EThoOTH06xvUuCSCJtOKZloT+6HgcEuQUJ4
+ O0+h9/aXuHNbZti8qWQEIi1SvYq4oRuf5L9dM/mgT6srgd1TW8pSFnGIdR1JJd/fXuEO
+ 8paUnBUql2Q6fFoyIKdu7NDzdc9NUhu7w4DHU2MmTcRA4OCfDXBeQ7cDZULTsPfMcZwo
+ 15LDN4gCqoEWUKkV09ISLdEzuGU2IFrHdQwXSubTc62aK3SMVkB7Px6yXJsWw9maMZ7m
+ EJZQ==
+X-Gm-Message-State: AOJu0Yy3QOq3zOrykZia6AZY3exEvoJ7Z7XNiqWe1EVcvu88Qcqgr7QG
+ tFJrrgKL1sBVlALDo1hbKXdkod5HZeXQbvJUbk7qC5BYR+hsIMQ+ZclDyCJrEvtezOGfPSMiHJt
+ HdD8=
+X-Google-Smtp-Source: AGHT+IGo3mVC5AUGj9OMwwe/0k7vY9hdYLeBd+4cRFceRHR5xGSjSgTdirVgsZFrbE+Rz65eiYla9g==
+X-Received: by 2002:a17:906:2a97:b0:a3d:83e2:bc9 with SMTP id
+ l23-20020a1709062a9700b00a3d83e20bc9mr1146673eje.50.1707994220715; 
+ Thu, 15 Feb 2024 02:50:20 -0800 (PST)
+Received: from localhost.localdomain ([92.88.170.215])
+ by smtp.gmail.com with ESMTPSA id
+ fj10-20020a1709069c8a00b00a3d7cf59a55sm421280ejc.149.2024.02.15.02.50.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 15 Feb 2024 02:50:20 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 0/4] hw/pci-host: Build ppc4xx_pci.c/ppc440_pcix.c once
+Date: Thu, 15 Feb 2024 11:50:12 +0100
+Message-ID: <20240215105017.57748-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <tencent_29796A8EF3E655396E27566AC5CE1103A509@qq.com>
-In-Reply-To: <tencent_29796A8EF3E655396E27566AC5CE1103A509@qq.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 15 Feb 2024 10:37:57 +0000
-Message-ID: <CAFEAcA8grC+Mi9LcNPPXqJUCVNp1a6PcEWX0nUDsOe14ARgwbw@mail.gmail.com>
-Subject: Re: Assessment of the difficulty in porting CPU architecture for qemu
-To: =?UTF-8?B?5pa5?= <1584389042@qq.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,27 +93,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 17 Nov 2023 at 07:35, =E6=96=B9 <1584389042@qq.com> wrote:
->
->  Hello everyone! I am working on implementing a tool to assess the comple=
-xity of CPU architecture porting. It primarily focuses on RISC-V architectu=
-re porting. In fact, the tool may have an average estimate of various archi=
-tecture porting efforts.My focus is on the overall workload and difficulty =
-of transplantation in the past and future,even if a project has already bee=
-n ported.As part of my dataset, I have collected the **qemu** project. **I =
-would like to gather community opinions to support my assessment. I appreci=
-ate your help and response!** Based on scanning tools, the porting complexi=
-ty is determined to be high, with a significant amount of code related to t=
-he CPU architecture in the project.
+v3:
+- PPC440_PCI -> PPC440_PCIX (Zoltan)
+- MIT -> GPLv2 (Zoltan)
 
-You should be careful here to distinguish the code in QEMU
-which is related to handling RISC-V as a *guest* architecture
-(i.e. one which QEMU emulates) from the code which is related
-to handling RISC-V as a *host* architecture. For purposes of
-"porting QEMU to a RISC-V host", only the latter complexity counts.
-The former we would have to do anyway, even if QEMU only ever
-ran on x86-64 machines. You should check whether your scanner
-has correctly figured this out.
+v2:
+- Squashed 2 patches (Zoltan)
 
--- PMM
+v1:
+- Move ppc4xx_pci.c/ppc440_pcix.c from hw/ppc/ to hw/pci-host/
+- Build them once for all targets
+
+If it is convenient for PPC maintainers I can queue
+this via my misc-hw tree.
+
+Thanks,
+
+Phil.
+
+Philippe Mathieu-Daudé (4):
+  hw/ppc/ppc4xx_pci: Remove unused "hw/ppc/ppc.h" header
+  hw/ppc/ppc4xx_pci: Extract PCI host definitions to
+    hw/pci-host/ppc4xx.h
+  hw/ppc/ppc4xx_pci: Move ppc4xx_pci.c to hw/pci-host/
+  hw/ppc/ppc440_pcix: Move ppc440_pcix.c to hw/pci-host/
+
+ MAINTAINERS                        |  4 +++-
+ include/hw/pci-host/ppc4xx.h       | 17 +++++++++++++++++
+ include/hw/ppc/ppc4xx.h            |  5 -----
+ hw/{ppc => pci-host}/ppc440_pcix.c |  3 +--
+ hw/{ppc => pci-host}/ppc4xx_pci.c  |  3 +--
+ hw/pci-host/ppce500.c              |  2 +-
+ hw/ppc/ppc440_bamboo.c             |  1 +
+ hw/ppc/ppc440_uc.c                 |  1 +
+ hw/ppc/sam460ex.c                  |  1 +
+ hw/pci-host/Kconfig                |  8 ++++++++
+ hw/pci-host/meson.build            |  2 ++
+ hw/pci-host/trace-events           | 12 ++++++++++++
+ hw/ppc/Kconfig                     |  3 ++-
+ hw/ppc/meson.build                 |  3 +--
+ hw/ppc/trace-events                | 12 ------------
+ 15 files changed, 51 insertions(+), 26 deletions(-)
+ create mode 100644 include/hw/pci-host/ppc4xx.h
+ rename hw/{ppc => pci-host}/ppc440_pcix.c (99%)
+ rename hw/{ppc => pci-host}/ppc4xx_pci.c (99%)
+
+-- 
+2.41.0
+
 
