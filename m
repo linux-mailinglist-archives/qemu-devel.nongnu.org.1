@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514BA855A6D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8961F855A6B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 07:25:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raV77-0002Nc-S0; Thu, 15 Feb 2024 01:20:53 -0500
+	id 1raV78-0002Oa-OF; Thu, 15 Feb 2024 01:20:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV74-0002Mt-76
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:50 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1raV75-0002NK-W5
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:52 -0500
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raV72-0005W8-G4
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:49 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1d8aadc624dso4185245ad.0
- for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:48 -0800 (PST)
+ id 1raV74-0005WV-0o
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 01:20:51 -0500
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-517ab9a4a13so472684a12.1
+ for <qemu-devel@nongnu.org>; Wed, 14 Feb 2024 22:20:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707978047; x=1708582847; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707978049; x=1708582849; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aJy5WaQ99ApNqzP+t8EteVWeLJYZZHFF49xziucGjOo=;
- b=pIQjbg2ctySqn2luCY29UoF3D7Eo0f3GZnKh47ONb5ajptfCAX7GADqWJcT+nFbldb
- 0crTD6fhIFkzDJZA9mwS8se2u1WpMVBtf+fTmjUyk9ymF1zXm3l+neUZvKH9J6BKVSqr
- OP0K0Js++tKj5zyDokjBgbfFmSDezIJjQ28n29guvxLTZn90ZOTkBABGM0K4qbGX9TF3
- UMtwZjagFinRnYP9cl8YclzysmXN+DrusY+dpm8PV6LCUjdZMaL4rWG4rH1n7aXunYXy
- 6aSIU0i4R1VmCY7h/B2TNxjxHRM7LdjE4bLuzn6loHwvZVf6elMi/C3+1qohCpvdErLM
- fEzA==
+ bh=t1OILcn76v2zPwlGFZzc7UG2ju3QgEVusg1rS5CPk58=;
+ b=YLx2hBbNTAcc2lkKvVj7S/7psvZupK5l5Idvj8nUz1B6eK6uS3jg33zMykD9YxPIlS
+ O7RWo69eldz6OBG0A+/8/U1Me9lOxVe7ehFNnK/I8tATvIkAVfjJKJVW0zBE4IvqWoE8
+ fFrz8objzloX6GHOQF13dK9UCh/kPiBGPCCKHdS360X9+9pAdaoRAl6H42NDCZsapk5y
+ 6qjTIqD76VyjEnCkVdrn+RIk7YYUNV0VW60+grOgL3uVgUp08icXnIi/I9wFF5g4dGak
+ aeheE6zLB0vWefsLY3EQHgIxOmFTlOD5/aS7mmMrkv/uz1R+GehIKVhQFsV+NUR59kSO
+ dW7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707978047; x=1708582847;
+ d=1e100.net; s=20230601; t=1707978049; x=1708582849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aJy5WaQ99ApNqzP+t8EteVWeLJYZZHFF49xziucGjOo=;
- b=bSZreLYcJM8gcaSfZPApJVS3Cd+2Wxjm6KUMmjkIRiPze5Rg14/F3jkflf3c1ii+sb
- UzLB7tIReJmKOZWeqxAmSn8vgcYQZmlWA/sHAeW8WPbDrmvWuXEUtuiKjQKoQBaZhjyE
- rfjWhdauJHUC168E0IYP3dAA9cfe9pHDOlwYWyRAekQpEVwesszI60JNC58vu0ISKHek
- tJA583lBZAizcauWlPDY4qQqa0+qinKa7uy234OdGLvRNoLkVog3O3u5BWZcLpsJRaEa
- 1UfNF7E6O/1EP+4b0lT0Yr8aonD7n7Ss06z5aBOBVpij67NZGMVItKrB5myx5WW73W4C
- gZ2w==
-X-Gm-Message-State: AOJu0YwH8fUNNmWFBaOV6Oqpt0umoQGFbET0kJerO6r9wpYTmN/0PMmI
- UQqm1MKFnNvKZifPWlSB9xel+OW5qEELdE5KZvSwdWuKOQ+7YvIwWm6P53q3FneYo6HAL6SRIt+
- V
-X-Google-Smtp-Source: AGHT+IEvApMhR6A9DVyuj4fJEOTS0xAlLmNddoWGME5ULu9c3FFoZR9Jnq4EaWXJTaGB5ArQAaNZOA==
-X-Received: by 2002:a17:902:d2c9:b0:1da:2a2c:90da with SMTP id
- n9-20020a170902d2c900b001da2a2c90damr894717plc.12.1707978047312; 
- Wed, 14 Feb 2024 22:20:47 -0800 (PST)
+ bh=t1OILcn76v2zPwlGFZzc7UG2ju3QgEVusg1rS5CPk58=;
+ b=ZZaEFlPgDcscVFOpJ/46zdSxJHdmFj1+mR/S0YKkYGKVFhjAKlZz+uDYUPAqCDx4F6
+ 9UfXQnoI6A3fIpf7a5V0NrAbyyaRms/WU2tOggsz9FJMvztiu+SEwIm/501oYctNBuJ4
+ TjIKaWTNwAAwoZNl0azxhQNAQDTZo1C2LvRm4473l9w7aFJfL87MHaHvBHD7YYxn/EvM
+ DHcRFR7GGMC9/fLFODKTSd/Cv8ZAjWfBz0sZAAZYwuXBafS4qCoF5oIoFthpiF2lUHt4
+ Mr8JRo3CM+zdx3p8KGN8FTIE+oznlDu59K4IZeuSnjxhzwq2yoQtokkF2vS8x5dfsOaw
+ H3DA==
+X-Gm-Message-State: AOJu0YyifhHRhWgmNRT1UYwjbx2c3of8WQOJFb17n7HVYqQMqZ68+nI9
+ G0+AK0eWT0m66eBHDazhlv4WCvqeI0VXoiFDRSoeaa0UOwyQgrgeh8Ij1ltLgvlLb4uGmVKvZ9n
+ c
+X-Google-Smtp-Source: AGHT+IGhxIMzeR1o5Qi3VF56p8ZnWYRSxcy6xFjU+t23KSi2u1iWJdkwHoZ0iIiOzGCGEJlHGgRkgQ==
+X-Received: by 2002:a17:90a:d301:b0:296:2afe:25e with SMTP id
+ p1-20020a17090ad30100b002962afe025emr892906pju.32.1707978048754; 
+ Wed, 14 Feb 2024 22:20:48 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.46
+ d5-20020a170902b70500b001d6f29c12f7sm464418pls.135.2024.02.14.22.20.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Feb 2024 22:20:46 -0800 (PST)
+ Wed, 14 Feb 2024 22:20:48 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Helge Deller <deller@gmx.de>
-Subject: [PATCH v4 18/36] linux-user: Fix sub-host-page mmap
-Date: Wed, 14 Feb 2024 20:20:00 -1000
-Message-Id: <20240215062018.795056-19-richard.henderson@linaro.org>
+Subject: [PATCH v4 19/36] linux-user: Split out mmap_end
+Date: Wed, 14 Feb 2024 20:20:01 -1000
+Message-Id: <20240215062018.795056-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215062018.795056-1-richard.henderson@linaro.org>
 References: <20240215062018.795056-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,49 +94,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We cannot skip over the_end1 to the_end, because we fail to
-record the validity of the guest page with the interval tree.
-Remove "the_end" and rename "the_end1" to "the_end".
+Use a subroutine instead of a goto within target_mmap__locked.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Acked-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240102015808.132373-19-richard.henderson@linaro.org>
+Message-Id: <20240102015808.132373-20-richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ linux-user/mmap.c | 71 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 41 insertions(+), 30 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index fbaea832c5..48fcdd4a32 100644
+index 48fcdd4a32..cc983bedbd 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -643,7 +643,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+@@ -490,6 +490,43 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+     }
+ }
+ 
++/*
++ * Record a successful mmap within the user-exec interval tree.
++ */
++static abi_long mmap_end(abi_ulong start, abi_ulong last,
++                         abi_ulong passthrough_start,
++                         abi_ulong passthrough_last,
++                         int flags, int page_flags)
++{
++    if (flags & MAP_ANONYMOUS) {
++        page_flags |= PAGE_ANON;
++    }
++    page_flags |= PAGE_RESET;
++    if (passthrough_start > passthrough_last) {
++        page_set_flags(start, last, page_flags);
++    } else {
++        if (start < passthrough_start) {
++            page_set_flags(start, passthrough_start - 1, page_flags);
++        }
++        page_set_flags(passthrough_start, passthrough_last,
++                       page_flags | PAGE_PASSTHROUGH);
++        if (passthrough_last < last) {
++            page_set_flags(passthrough_last + 1, last, page_flags);
++        }
++    }
++    shm_region_rm_complete(start, last);
++    trace_target_mmap_complete(start);
++    if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
++        FILE *f = qemu_log_trylock();
++        if (f) {
++            fprintf(f, "page layout changed following mmap\n");
++            page_dump(f);
++            qemu_log_unlock(f);
++        }
++    }
++    return start;
++}
++
+ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+                                     int target_prot, int flags, int page_flags,
+                                     int fd, off_t offset)
+@@ -632,7 +669,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+                 ret = target_mprotect(start, len, target_prot);
+                 assert(ret == 0);
+             }
+-            goto the_end;
++            return mmap_end(start, last, -1, 0, flags, page_flags);
+         }
+ 
+         /* handle the start of the mapping */
+@@ -643,7 +680,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
                                 target_prot, flags, fd, offset)) {
                      return -1;
                  }
--                goto the_end1;
-+                goto the_end;
+-                goto the_end;
++                return mmap_end(start, last, -1, 0, flags, page_flags);
              }
              if (!mmap_frag(real_start, start,
                             real_start + host_page_size - 1,
-@@ -690,7 +690,7 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
+@@ -690,34 +727,8 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
              passthrough_last = real_last;
          }
      }
-- the_end1:
-+ the_end:
-     if (flags & MAP_ANONYMOUS) {
-         page_flags |= PAGE_ANON;
-     }
-@@ -708,7 +708,6 @@ static abi_long target_mmap__locked(abi_ulong start, abi_ulong len,
-         }
-     }
-     shm_region_rm_complete(start, last);
 - the_end:
-     trace_target_mmap_complete(start);
-     if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
-         FILE *f = qemu_log_trylock();
+-    if (flags & MAP_ANONYMOUS) {
+-        page_flags |= PAGE_ANON;
+-    }
+-    page_flags |= PAGE_RESET;
+-    if (passthrough_start > passthrough_last) {
+-        page_set_flags(start, last, page_flags);
+-    } else {
+-        if (start < passthrough_start) {
+-            page_set_flags(start, passthrough_start - 1, page_flags);
+-        }
+-        page_set_flags(passthrough_start, passthrough_last,
+-                       page_flags | PAGE_PASSTHROUGH);
+-        if (passthrough_last < last) {
+-            page_set_flags(passthrough_last + 1, last, page_flags);
+-        }
+-    }
+-    shm_region_rm_complete(start, last);
+-    trace_target_mmap_complete(start);
+-    if (qemu_loglevel_mask(CPU_LOG_PAGE)) {
+-        FILE *f = qemu_log_trylock();
+-        if (f) {
+-            fprintf(f, "page layout changed following mmap\n");
+-            page_dump(f);
+-            qemu_log_unlock(f);
+-        }
+-    }
+-    return start;
++    return mmap_end(start, last, passthrough_start, passthrough_last,
++                    flags, page_flags);
+ }
+ 
+ /* NOTE: all the constants are the HOST ones */
 -- 
 2.34.1
 
