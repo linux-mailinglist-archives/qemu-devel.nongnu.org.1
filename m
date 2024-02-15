@@ -2,78 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA436856B28
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B86A856B4F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:41:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raffH-00021K-Ie; Thu, 15 Feb 2024 12:36:52 -0500
+	id 1rafhL-0002lY-SX; Thu, 15 Feb 2024 12:38:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raff0-0000xk-8B
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:36:34 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rafhJ-0002YY-LS
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:38:57 -0500
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rafey-0004N8-Al
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:36:33 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-410e820a4feso12932615e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:36:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rafhH-00058j-Tu
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:38:57 -0500
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-55a035669d5so1680840a12.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:38:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018591; x=1708623391; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=nVyl/58rQCis4JK+W1os3aYgimBCMkxnzrgucGCz82Q=;
- b=gZzwvrjp/+M9Mswrqv9I5l3P3SbtffO+JDg0KyOaGlEeFUlzI7B/G50nNwZShhVaAp
- XcbCT14G9fFVdfUMuYxAYyAucuG5TBitYh95SLP1lnKeiSxubnHUusi5oQfDhXJLr0bc
- qcVHBk0Nt4yStdSwwih4E/gyi/Ru5k/kuMJxunHd92Ms53rmML7BE43nB81+KUbnm3l9
- fJAq8PViRKgCZU/Cu7C/4B41F14BSGWksVsOCZA+bIcyngN7zJAiCp0WnnMWJyVDkEcy
- X9oId8VxiFcLaIyVCKfF1CkEOiHx+zjiJ/GqaENgSBQ0CE5oEVVDeRz8yUVUDjM4Hf57
- hY2A==
+ d=linaro.org; s=google; t=1708018734; x=1708623534; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=y6pkeu6jZ6ZmZgRlPDpAqR9EIFF0QvDO6fF2xj7P6ZM=;
+ b=OR25d1etD5qYxZXxfqUtFByVFZy8nF5OpedgBY11dZTwYW7/lyqEgcwdAz/9d4i+d3
+ BisTWDjlqQvTbopjn47r/pFHw7+PfB4D2YP84u1evf9oL5FRDmfIMin5Mc/NUx5my89F
+ ukkr8ISuLkVAz0BGcZDNhkRzA2PnnteaWe9WSdgoao3w2bdLmb9G/NHCAFSkb5MboElx
+ 06o9LuFVTAKpzCHZlGZZ3o2g8eAZwcnlf4CoZe4VS1XJKlJiob4ZmUGwyqhciXhKsGeE
+ rC1MzJCioOk0LMcKt4ogpnXJUhpdF5rKWcytjVXdO+VybQLgyBAgP0f2zAf5STPPbcD7
+ FAEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018591; x=1708623391;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=nVyl/58rQCis4JK+W1os3aYgimBCMkxnzrgucGCz82Q=;
- b=o6oiNXiQC5Eg/I3Kuu+p5CxetEJsks5Sp3uKHu2R5iIpIqM0FLtD8edWlSZs4771tX
- ADRJLXv90Mi27jEWlb52F/j32ZCzmb86IEh7yViWXlI5qCuzuxTr6gX5NStEKNzUqtUH
- bDhnDiMBCIwTQZIG0lE0wozNfUIuUvZyfmvCWiRaFEmL3S8tGjIlvIhDEQbUtKplTblz
- sLamRrk0BUjMDIAnjqZkqPF/nTeskmAdvbUjKqcOQNAGBNA1SeqXnCJrAt6kKkpu+wtk
- N/ZtNTdUZESUZ/LqaTYywrlI9+xIm6j7xM9wR4XZHg9hrlrZ9khQoAKJuBYvUujyoplu
- TQ4w==
+ d=1e100.net; s=20230601; t=1708018734; x=1708623534;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=y6pkeu6jZ6ZmZgRlPDpAqR9EIFF0QvDO6fF2xj7P6ZM=;
+ b=nY3K3SV7tRW09XfbxN8OU28Rm6AqETh66nqVJouPi1ooJulw4UoDW1KyK0XVYVLYUF
+ 60MQs6oKDlCOPsaa4mU5Vl0o1mjuw1MlFDL64C3E08+uirrC+nkWacd70z7lkX4t6yAX
+ OkafD/QlU+ngMLe122WZbHD60eedTmo8PCIwKK3aY3UmJ54E0oiX8zIYb4JRsbf4aNbM
+ ITj5ump6Bypi2pIOG6IntRz79t42/Lh2tel7/0OWUKCEl1YVgIHSzqyt9WRcBDwF9r6H
+ mOAt67ns4dTiIFGSsZkyQGNTCIJsUMCfbZjkHefmx+S8FhKFg/nc8jFvWI19fdmtrnde
+ XrpQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXCiBv/3W+EmmG6EIqmGQ4VH4Oq9aBIFdLJ6WHMnNGHIDsgTdyoRkNmUgOydVqs+SynT2RQrjNRjHowGx0JDrttRcQDqhs=
-X-Gm-Message-State: AOJu0Yyc5sT83fD+y6JxgbJ/3jmKUEATaAhPeH2jePUFEYTqgYzuVGNz
- g6ocEjutxJ4xZlWxNMNzCTVVjYyUV3SZQcsYyx3X6GuRLt70/GVICVuD88SqIck=
-X-Google-Smtp-Source: AGHT+IGryKHGkQnS/d6VBpGqJkXdY4gxyERKQg+bXNkeXJqHhqwXjEgNqILKdBajrMgVhiLcvfykHw==
-X-Received: by 2002:a5d:5046:0:b0:33c:f677:a637 with SMTP id
- h6-20020a5d5046000000b0033cf677a637mr2368460wrt.18.1708018590912; 
- Thu, 15 Feb 2024 09:36:30 -0800 (PST)
-Received: from [192.168.69.100] ([176.187.193.50])
- by smtp.gmail.com with ESMTPSA id
- bo24-20020a056000069800b0033b4796641asm2542149wrb.22.2024.02.15.09.36.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 Feb 2024 09:36:30 -0800 (PST)
-Message-ID: <9bca7833-66d4-4e5e-9913-94b9ed9734a2@linaro.org>
-Date: Thu, 15 Feb 2024 18:36:28 +0100
+ AJvYcCVYwI4nrlvyr53V3VFW7JGJZHuPzs8gi/LFPjFXJ+lRNcYRIlqR/RhoK6rF7SsT1Qsr1kZAysC+KBT+amNg8GoN/aaEShg=
+X-Gm-Message-State: AOJu0YxPvo3Fne6sK5pyb6bQdSzDd6zPfyjugJl3U7LFMZccLzsuuTKx
+ M4uPdIvShpiKETIUp9qnOAzQ+mfLSpj0MP9/hVx5mIGI1nq88MU+Bk9N3yz/AqJtLrlslVIR5mU
+ KpIgoHGdFy2Cq7cYxgFZgEe4JiFAwitMmalZQ3A==
+X-Google-Smtp-Source: AGHT+IFfjXB1ixHiZHQzDjM2sltSYywaCagw0slZjFwOIQ97z7bkIksMVWDafkhHxhr3zO8Y5I79EAKJ5UyWaE2gxko=
+X-Received: by 2002:a05:6402:2151:b0:563:bd60:5809 with SMTP id
+ bq17-20020a056402215100b00563bd605809mr1431081edb.31.1708018734452; Thu, 15
+ Feb 2024 09:38:54 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] .gitlab-ci/windows.yml: Don't install libusb or spice
- packages on 32-bit
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yonggang Luo <luoyonggang@gmail.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-References: <20240215155009.2422335-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240215155009.2422335-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+References: <20240209173103.239994-1-kwolf@redhat.com>
+ <20240212152005.GA879395@fedora>
+In-Reply-To: <20240212152005.GA879395@fedora>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 15 Feb 2024 17:38:43 +0000
+Message-ID: <CAFEAcA_sY5o3yzrWGw5JepTdYOzrfPEHuxDVuXvC+4wDcTizDQ@mail.gmail.com>
+Subject: Re: [PATCH] iotests: Make 144 deterministic again
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, hreitz@redhat.com, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,31 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/2/24 16:50, Peter Maydell wrote:
-> When msys2 updated their libusb packages to libusb 1.0.27, they
-> dropped support for building them for mingw32, leaving only mingw64
-> packages.  This broke our CI job, as the 'pacman' package install now
-> fails with:
-> 
-> error: target not found: mingw-w64-i686-libusb
-> error: target not found: mingw-w64-i686-usbredir
-> 
-> (both these binary packages are from the libusb source package).
-> 
-> Similarly, spice is now 64-bit only:
-> error: target not found: mingw-w64-i686-spice
-> 
-> Fix this by dropping these packages from the list we install for our
-> msys2-32bit build.  We do this with a simple mechanism for the
-> msys2-64bit and msys2-32bit jobs to specify a list of extra packages
-> to install on top of the common ones we install for both jobs.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2160
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   .gitlab-ci.d/windows.yml | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
+On Mon, 12 Feb 2024 at 15:20, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>
+> On Fri, Feb 09, 2024 at 06:31:03PM +0100, Kevin Wolf wrote:
+> > Since commit effd60c8 changed how QMP commands are processed, the order
+> > of the block-commit return value and job events in iotests 144 wasn't
+> > fixed and more and caused the test to fail intermittently.
+> >
+> > Change the test to cache events first and then print them in a
+> > predefined order.
+> >
+> > Waiting three times for JOB_STATUS_CHANGE is a bit uglier than just
+> > waiting for the JOB_STATUS_CHANGE that has "status": "ready", but the
+> > tooling we have doesn't seem to allow the latter easily.
+> >
+> > Fixes: effd60c878176bcaf97fa7ce2b12d04bb8ead6f7
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2126
+> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > ---
+> >  tests/qemu-iotests/144     | 12 +++++++++++-
+> >  tests/qemu-iotests/144.out |  2 +-
+> >  2 files changed, 12 insertions(+), 2 deletions(-)
+>
+> Thank you!
+>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks; I'm applying this directly as a CI fix.
+
+-- PMM
 
