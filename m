@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319EF856461
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C47B856459
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:28:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rabmb-0003gP-Ud; Thu, 15 Feb 2024 08:28:09 -0500
+	id 1rabmc-0003hp-KP; Thu, 15 Feb 2024 08:28:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andreas@kemnade.info>)
- id 1raX9V-0002E7-UG; Thu, 15 Feb 2024 03:31:30 -0500
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andreas@kemnade.info>)
- id 1raX9U-0005lr-Af; Thu, 15 Feb 2024 03:31:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=mdYToYuDmh6OlwRD6Ej97k/1spumBy4m+atUuj+qy98=; b=vKwC6cNZjEDmW0ViWp1hf3tqE9
- yo6U1M34Lj0sObd4osD1B7ykNVCDPgSw1bBmtIYRWlZcAhsxD4pgW/Mdf+p2vb6oEGb/7UwNj7sqs
- AJ2n6XTA7bPq164DfJpODrHHMuLwi4gwJaYLOLMAENs9TCTIxo08ySygVsDKeeZ26XxlaKo1UJmID
- NYtVT5GjUemWScsjCzCyfwUN7WdVg/ftxexJiFvP2tA2K9UBAWBRkoIpz0nx/gb5KXXrZkBUBmEKM
- B1ag33DesNwkdZse+VTfAZzwKerIhD46b22JpcIdkDlrmt8NErdiz4twj2s2CaOu+sLSBl+LGPF/D
- V5YG4V8g==;
-Received: from p2003010777002c001a3da2fffebfd33a.dip0.t-ipconnect.de
- ([2003:107:7700:2c00:1a3d:a2ff:febf:d33a] helo=aktux)
- by mail.andi.de1.cc with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <andreas@kemnade.info>)
- id 1raX9I-009SKj-Ee; Thu, 15 Feb 2024 09:31:16 +0100
-Date: Thu, 15 Feb 2024 09:31:13 +0100
-From: Andreas Kemnade <andreas@kemnade.info>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Dmitry Baryshkov" <dbaryshkov@gmail.com>, "Linus Walleij"
- <linus.walleij@linaro.org>, paul.eggleton@linux.intel.com, "Andrea Adami"
- <andrea.adami@gmail.com>, "Guenter Roeck" <linux@roeck-us.net>, "Peter
- Maydell" <peter.maydell@linaro.org>, "QEMU Developers"
- <qemu-devel@nongnu.org>, "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
- "Marcin Juszkiewicz" <marcin.juszkiewicz@linaro.org>, "Aaro Koskinen"
- <aaro.koskinen@iki.fi>, "Janusz Krzysztofik" <jmkrzyszt@gmail.com>, "Tony
- Lindgren" <tony@atomide.com>, Linux-OMAP <linux-omap@vger.kernel.org>,
- "Daniel Mack" <daniel@zonque.org>, "Robert Jarzmik"
- <robert.jarzmik@free.fr>, "Haojian Zhuang" <haojian.zhuang@gmail.com>,
- "Stefan Lehner" <stefan-lehner@aon.at>
-Subject: Re: possible deprecation and removal of some old QEMU Arm machine
- types (pxa2xx, omap, sa1110)
-Message-ID: <20240215093113.5c58cabe@aktux>
-In-Reply-To: <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
-References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
- <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
- <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
- <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
- <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
- <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
- <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
- <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+ (Exim 4.90_1) (envelope-from <ziqiaokong@gmail.com>)
+ id 1raY3f-0004L5-J9; Thu, 15 Feb 2024 04:29:31 -0500
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ziqiaokong@gmail.com>)
+ id 1raY3d-0004GX-OU; Thu, 15 Feb 2024 04:29:31 -0500
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3bd4e6a7cb0so484949b6e.3; 
+ Thu, 15 Feb 2024 01:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1707989367; x=1708594167; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dxETrzZs6v6x2GkrIM8h7gsGJ6oZgwCCQ3ysSkDrvgA=;
+ b=bQJSJXh0gJeIwd44ShKTNpwe13mjWOudcWYtufTdZXMIJpwhyKVAXdufS5/AhRXZgE
+ YdGfs+dRz9mJdnLN9novQPOrF/dzCxF394O2vhnQtgrrG7DCaUBbwHp2FGWBK5CdvQ+O
+ YZ1Psa8aSOKkuUru+YMAOu2O1ACLNBgMMeLYmjwE7Bi9htSX0PHOpzLeVeBItLGX6Ez7
+ +R0v5oupxQRlbCOCUyxVKCWzUgC+oII/SLTxtx7PPIVIdJQeg6xBNMNkSZlM4jOEy9PG
+ HxyqqUFNHrG3PK+p7g/Pq475AsKrny6HI+ahL1uL2IFGnTlVhk6+I8c1qTUXyva6gEeR
+ 8mfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1707989367; x=1708594167;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dxETrzZs6v6x2GkrIM8h7gsGJ6oZgwCCQ3ysSkDrvgA=;
+ b=DU2uRJ91LdlBsPmrElNbee3sECgR93OgATdRBILBQamsdrfRu3FMlKnnrJ1km5sbpo
+ NrMF/X3lQAA5HU3LZBbd87aIYsoIZ0ZLOjcActYXIZVcxEE7KecUOob8pdASEC7kqnPt
+ 1M4QYVOsSpITK8/DE6Qxh1PyOufh6hj2lRvu0IO+Zzy5Tq26vjswc3qIWx/z9PwPgVjD
+ b0gO0RdK9ea2lUYv+6gagiJRYQ6SQZNBjtkbKPJ58LI0l/XOiO45w4tPa8cXjlrPKRCl
+ bjcRguK0W7TmG5irKTw90fifhyHVp//1+avpwiVigy2lZaLU8YGrCPJ66KTsvjZFdT/w
+ dBnA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGYI1rSuOj+dFjD5EjTiNg0/f4tRv6PT+ELqm/Xh1Xf7La9R48z7M2c1ok47QwWzmqw+vLbI/FlUPlW5lgCVLW1ufj2hnyag==
+X-Gm-Message-State: AOJu0YxMU3EZyElA7AZbZF4Y9zkKwIrFXIIbBicSwf3wHWOeZiOddgNA
+ qGr28QiFUffYTTFY8lExaMKRWHmwXD41N49dSAt4dCv5K+W4pmq5wVdfb9qxOGU=
+X-Google-Smtp-Source: AGHT+IE40YY8qrqqlV0YwaSSw5C8EYB0c0bXjWuiHRjbMYIvgHd1alENPr5yMMZM2IjgpDI4R4EfbQ==
+X-Received: by 2002:a05:6808:1156:b0:3c0:3f3f:16e9 with SMTP id
+ u22-20020a056808115600b003c03f3f16e9mr1714490oiu.12.1707989367198; 
+ Thu, 15 Feb 2024 01:29:27 -0800 (PST)
+Received: from station.lan ([155.69.190.63]) by smtp.gmail.com with ESMTPSA id
+ j8-20020aa78d08000000b006e04b47e17asm856838pfe.214.2024.02.15.01.29.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Feb 2024 01:29:26 -0800 (PST)
+From: Ziqiao Kong <ziqiaokong@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Ziqiao Kong <ziqiaokong@gmail.com>, qemu-trivial@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/1] Fix tcg assert when decoding "lock cmp"
+Date: Thu, 15 Feb 2024 17:29:08 +0800
+Message-Id: <20240215092908.569947-1-ziqiaokong@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a02:c205:3004:2154::1;
- envelope-from=andreas@kemnade.info; helo=mail.andi.de1.cc
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=ziqiaokong@gmail.com; helo=mail-oi1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Thu, 15 Feb 2024 08:28:07 -0500
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,45 +89,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 14 Feb 2024 23:42:58 +0100
-"Arnd Bergmann" <arnd@arndb.de> wrote:
+(Resending this series since it looks like being ignored by the list)
 
-> On Wed, Feb 14, 2024, at 13:26, Dmitry Baryshkov wrote:
-> > On Tue, 13 Feb 2024 at 23:22, Linus Walleij <linus.walleij@linaro.org> =
-wrote: =20
-> >> On Tue, Feb 13, 2024 at 9:12=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> =
-wrote: =20
-> >> > On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote: =20
-> >> > > On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote: =20
-> >>
-> >> Andrea Adami and Dmitry Eremin-Solenikov did the work in 2017 to
-> >> modernize it a bit, and Russell helped out. I was under the impression
-> >> that they only used real hardware though! =20
-> >
-> > I used both Qemu and actual hardware (having collie, poodle, tosa and
-> > c860 that was easy).
-> >
-> > The biggest issue with Zaurus PDAs was that supporting interesting
-> > parts of the platform (PCMCIA, companion chips) required almost
-> > rebootstrapping of the corresponding drivers.
-> > E.g. I had a separate driver for the LoCoMo chip which worked properly
-> > with the DT systems.
-> > PCMCIA was a huuuge trouble and it didn't play well at all. The driver
-> > must be rewritten to use the component framework. =20
->=20
-> If we want to actually go there, I think the best option for PCMCIA
-> support is likely to replace the entire "soc_common" pcmcia driver
-> with a simple drivers/pata/ storage driver and no support for
-> other cards. There was a driver until commit 38943cbd25a2
-> ("ata: remove palmld pata driver") that could serve as an
-> template.
->=20
-hmm, main usage for PCMCIA/CF in those devices was often something else,
-not storage, at least on the IPAQ h2200. Wondering wether that road is
-actually good. When I was mainly using those devices, I was not good in
-mainlining things.
-I loved that daylight-visible display.
+Hello QEMU Developers! I'm from the downstream project Unicorn
+Engine (https://github.com/unicorn-engine/unicorn). I identified a simple
+bug that triggers a tcg assertion in QEMU. Although I used a usermode
+usecase to illustrate the bug, it shall also affect system emulation.
 
-Regards,
-Andreas=20
+Assume a binary looks like:
+
+```
+08049845 <main>:
+ 8049845:	55                   	push   %ebp
+ 8049846:	89 e5                	mov    %esp,%ebp
+ 8049848:	e8 0e 00 00 00       	call   804985b <__x86.get_pc_thunk.ax>
+ 804984d:	90                   	nop
+ 804984e:	90                   	nop
+ 804984f:	90                   	nop
+ 8049850:	90                   	nop
+ 8049851:	90                   	nop
+ 8049852:	f0 38 b8 00 00 00 00 	lock cmp %bh,0x0(%eax)
+ 8049859:	5d                   	pop    %ebp
+ 804985a:	c3                   	ret
+```
+
+Executing this with
+
+```
+./i386-linux-user/qemu-i386 -d op,op_opt ./tt 2>&1 | tail -100
+```
+
+gives:
+
+```
+OP:
+...
+...
+ ---- 0000000008049852 0000000000000000
+ mov_i32 loc2,eax
+ extract_i32 loc1,ebx,$0x8,$0x8
+ mov_i32 cc_src,loc1
+ mov_i32 loc8,loc0 // loc0 undefined!
+...
+...
+OP after optimization and liveness analysis:
+...
+...
+ ---- 0000000008049852 0000000000000000
+ extract_i32 tmp1,ebx,$0x8,$0x8           dead: 1  pref=0xffff
+ mov_i32 cc_src,tmp1                      sync: 0  dead: 1  pref=0xffff
+ sub_i32 cc_dst,tmp0,cc_src               sync: 0  dead: 0 1 2  pref=0xffff // so does tmp0!
+...
+...
+ERROR:../tcg/tcg.c:4446:temp_load: code should not be reached
+Bail out! ERROR:../tcg/tcg.c:4446:temp_load: code should not be reached
+```
+
+This results an assertion error because when decoding "lock cmp %bh,0x0(%eax)",
+s->T0 is not properly initialized in gen_op. However, the root cause is that
+this instruction is illegal refering to the Intel manual. Therefore, I add
+and extra check to generate corresponding illegal opcode exception.
+
+Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
+
+Ziqiao Kong (1):
+  Generate an illegal opcode exception on cmp instructions with lock
+    prefix
+
+ target/i386/tcg/translate.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+-- 
+2.40.1
+
 
