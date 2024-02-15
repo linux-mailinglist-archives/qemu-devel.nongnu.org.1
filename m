@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D232856C22
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 909D0856BEE
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:03:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag45-0004aC-D1; Thu, 15 Feb 2024 13:02:29 -0500
+	id 1rag48-0005Bz-DQ; Thu, 15 Feb 2024 13:02:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag3q-0003le-00
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:02:15 -0500
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag3x-00048F-06
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:02:22 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag3j-0002h2-JK
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:02:12 -0500
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-411d715c401so9345115e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:02:05 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag3n-0002jV-J4
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:02:20 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2d11d17dddeso13848171fa.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:02:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020123; x=1708624923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020130; x=1708624930; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RoJzuCIrsH01JQMu3l4P7H0/BC0QIRTQUaRRKiYrvbM=;
- b=fqs7eixhayUIsPWPvQepdXb4+b3Q/AKm0bqu4nUJF88Wunnu/VmZ7knY0hzfTtZ/jf
- I2K6potT9qLPHozHAuRfsGztBuPO44CXC0zHZ4WMBPtCQ1atr3BaIPk70H79SysylFv3
- pfT6AKbffZkTwn0oV8R2Qq3TnE1EDgh8LAgawfJS9/3PRM0CpRwkeOYbxLZTtRK8p8TT
- c+1rP0d8JJokwJEi/cc9ExEMNWoBX9T2oYwd6digUxGYlO5zPp5bZ3W+1HVGlhfRkyrz
- jS7tV5+w0TfrY7wDmg39Gbv9WDY3QYqGHAqp4o4OZHIAsnSSa0gcagfEfk6a6QcbMM3Z
- mfRA==
+ bh=3Ln9r8XNhJVHTgj0Hz40GMoWqZy7m2Vo8THZL+0Jl3w=;
+ b=pE9DYsibGvT54p/Xfu7wHXKfOu2lttBIO+Z00OIqVsxYuFgNQJ/sXukfN8mssJ5Rf8
+ RrUZ6/n5SK+ZH2YB6Hut54Cn8fQ6azoEFl8EG96I0OWG+b7YfBBj9NCG9HM9l9J8dcx2
+ M8NBFG66bhgepIAaHC4f7Yjx+jQebyfOi/w0dmGb02dl9R/ZsHI+oKczGpsHV96AF7Hm
+ zvvEb+yDlMZNkPPffyfEYFpsJwjlrl0Df0Fd5cwa/CDDMC2Xhqkh6J6F7K6CCASLBJKG
+ vwMMUrM6r3OArjlQNrnPyumBJAtcDdW/5PO3fkQue7/axISiNytLKXB0L9+nJCiZm8hn
+ JiRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020123; x=1708624923;
+ d=1e100.net; s=20230601; t=1708020130; x=1708624930;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RoJzuCIrsH01JQMu3l4P7H0/BC0QIRTQUaRRKiYrvbM=;
- b=lnKnpuCW6vtCJ6PqRa14mugFQsMag/dkqudEEswfVy6DXC4W12DtUnEo6Fn81O3tty
- cHyDkutTH2B8SDAXPMxzMTweEwu53JyL7wPbJmlScWbC/S/JBjOFYd82ad/1uRllroON
- cNfipkuzpNmFz6cwvHq2E922k2/s9NYZF0co7vTegl/TEp7+eIihbzNe/992j9Ch8MPb
- QQAHAJ2pICG6EFOK0Kpry+MlffOU+8jWOdf4xRZJGZ5QbyFO9W6tx5JAsdCNcX+IttvQ
- pccBMbnBrQSpnmyQkmv+JkXyWEspfLnvkKHj9XXRjkQzTHN7akCEY6F6rJktzJ3XL4/d
- BbAA==
-X-Gm-Message-State: AOJu0YwR/ANuo/j/I2PwOTuhRaJLLSxJkKhmhGMMGgLQ/nbn+K7/ayad
- S5c/t3JQ0BK5BAhd4AWwEu2j35vJeblA2/6UG98TZtSCvbvFlfKCH/ckzMNi4zT9yFuRHdbIXzY
- RCCk=
-X-Google-Smtp-Source: AGHT+IFY9hGG2vljf22mvOtE0ougi1cbCRUSfU0FuBG5sFnmty9l0k3qlq1C7jdZ9QvgUyz7/mu/+Q==
-X-Received: by 2002:a05:600c:198f:b0:40f:ddc8:f804 with SMTP id
- t15-20020a05600c198f00b0040fddc8f804mr1666036wmq.17.1708020122980; 
- Thu, 15 Feb 2024 10:02:02 -0800 (PST)
+ bh=3Ln9r8XNhJVHTgj0Hz40GMoWqZy7m2Vo8THZL+0Jl3w=;
+ b=jUNcQnQbMvrRADBlpS2gIOaG29H/QGDfc1X2cNo4CKlPc7me+mvRF1M+XNAvOvYSSa
+ EnKPOJAMC/AsvBrQguiv2ee0cXSEN4TkbhW+qQxQT627uiAskPTNMt5x8JVV1xtA/kLW
+ GokfoJdeRCIv+wrkZp9TyPKf2kYSKKBAQ/XzmVJrbDK/oxkIveNNVeLAoTDoXqTqdTv1
+ aJxx/blRPjNi3rDrwYubVyyWxbCNX0lZmj2l6LKi00BuEoORXsYuR2mvQronIik94A3L
+ Mex4n8VVe5oiTdOMOcEESa7IjeLR1NcJmq+I3DAZvSbpR03hKEIv8CsBCP3H9Pze7szD
+ SMUw==
+X-Gm-Message-State: AOJu0Yyp1houKtHUblKfO1wR8XZUT/osPxf/q/nPB79/C/+Or45Z/teh
+ SiYY7sg1XJ2v7v4ypZamQ1YuGKK0o1ucD04NRAOeelQroGwjq9oCLl5baQxbO5KD4HCX+UODZia
+ 11es=
+X-Google-Smtp-Source: AGHT+IH0vukX2dyPJHI8/1Z4ZPBEvNvDJ95q6cywCGSBiWFQObBYAkj2nutyMFGV9YjmcSOXUFubDw==
+X-Received: by 2002:a2e:b8c8:0:b0:2d0:c77c:b1ca with SMTP id
+ s8-20020a2eb8c8000000b002d0c77cb1camr2205587ljp.49.1708020129688; 
+ Thu, 15 Feb 2024 10:02:09 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- i7-20020a05600c290700b00410add3af79sm5649214wmd.23.2024.02.15.10.02.01
+ o4-20020a05600c4fc400b00411d0b58056sm2900310wmq.5.2024.02.15.10.02.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:02:02 -0800 (PST)
+ Thu, 15 Feb 2024 10:02:09 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Frederic Konrad <konrad.frederic@yahoo.fr>,
- Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Frederic Konrad <konrad.frederic@yahoo.fr>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 37/56] target/sparc: implement asr17 feature for smp
-Date: Thu, 15 Feb 2024 18:57:31 +0100
-Message-ID: <20240215175752.82828-38-philmd@linaro.org>
+Subject: [PULL 38/56] hw/sparc/leon3: remove SP initialization
+Date: Thu, 15 Feb 2024 18:57:32 +0100
+Message-ID: <20240215175752.82828-39-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,88 +98,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clément Chigot <chigot@adacore.com>
 
-This allows the guest program to know its cpu id.
+According to the doc (see §4.2.15 in [1]), the reset operation should
+not impact %SP.
 
-Co-developed-by: Frederic Konrad <konrad.frederic@yahoo.fr>
+[1] https://gaisler.com/doc/gr712rc-usermanual.pdf
+
 Signed-off-by: Clément Chigot <chigot@adacore.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240131085047.18458-6-chigot@adacore.com>
+Message-ID: <20240131085047.18458-7-chigot@adacore.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/helper.h    |  1 +
- target/sparc/helper.c    | 16 ++++++++++++++++
- target/sparc/translate.c | 13 +++----------
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ hw/sparc/leon3.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index 6a42ba4e9e..e55fad5b8c 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -2,6 +2,7 @@
- DEF_HELPER_1(rett, void, env)
- DEF_HELPER_2(wrpsr, void, env, tl)
- DEF_HELPER_1(rdpsr, tl, env)
-+DEF_HELPER_1(rdasr17, tl, env)
- DEF_HELPER_1(power_down, void, env)
- #else
- DEF_HELPER_FLAGS_2(wrpil, TCG_CALL_NO_RWG, void, env, tl)
-diff --git a/target/sparc/helper.c b/target/sparc/helper.c
-index bd10b60e4b..2247e243b5 100644
---- a/target/sparc/helper.c
-+++ b/target/sparc/helper.c
-@@ -212,4 +212,20 @@ void helper_power_down(CPUSPARCState *env)
-     env->npc = env->pc + 4;
-     cpu_loop_exit(cs);
- }
-+
-+target_ulong helper_rdasr17(CPUSPARCState *env)
-+{
-+    CPUState *cs = env_cpu(env);
-+    target_ulong val;
-+
-+    /*
-+     * TODO: There are many more fields to be filled,
-+     * some of which are writable.
-+     */
-+    val = env->def.nwindows - 1;    /* [4:0]   NWIN   */
-+    val |= 1 << 8;                  /* [8]      V8    */
-+    val |= (cs->cpu_index) << 28;   /* [31:28] INDEX  */
-+
-+    return val;
-+}
- #endif
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index d9304a5bc4..692ce0b010 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -37,6 +37,7 @@
+diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
+index 3f86b74ba4..46fc1e783a 100644
+--- a/hw/sparc/leon3.c
++++ b/hw/sparc/leon3.c
+@@ -69,7 +69,6 @@
+ typedef struct ResetData {
+     SPARCCPU *cpu;
+     uint32_t  entry;            /* save kernel entry in case of reset */
+-    target_ulong sp;            /* initial stack pointer */
+ } ResetData;
  
- #ifdef TARGET_SPARC64
- # define gen_helper_rdpsr(D, E)                 qemu_build_not_reached()
-+# define gen_helper_rdasr17(D, E)               qemu_build_not_reached()
- # define gen_helper_rett(E)                     qemu_build_not_reached()
- # define gen_helper_power_down(E)               qemu_build_not_reached()
- # define gen_helper_wrpsr(E, S)                 qemu_build_not_reached()
-@@ -2382,16 +2383,8 @@ static bool trans_RDY(DisasContext *dc, arg_RDY *a)
- 
- static TCGv do_rd_leon3_config(DisasContext *dc, TCGv dst)
- {
--    uint32_t val;
--
--    /*
--     * TODO: There are many more fields to be filled,
--     * some of which are writable.
--     */
--    val = dc->def->nwindows - 1;   /* [4:0] NWIN */
--    val |= 1 << 8;                 /* [8]   V8   */
--
--    return tcg_constant_tl(val);
-+    gen_helper_rdasr17(dst, tcg_env);
-+    return dst;
+ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
+@@ -135,7 +134,6 @@ static void main_cpu_reset(void *opaque)
+     cpu->halted = 0;
+     env->pc     = s->entry;
+     env->npc    = s->entry + 4;
+-    env->regbase[6] = s->sp;
  }
  
- TRANS(RDASR17, ASR17, do_rd_special, true, a->rd, do_rd_leon3_config)
+ static void leon3_cache_control_int(CPUSPARCState *env)
+@@ -246,7 +244,6 @@ static void leon3_generic_hw_init(MachineState *machine)
+     /* Reset data */
+     reset_info        = g_new0(ResetData, 1);
+     reset_info->cpu   = cpu;
+-    reset_info->sp    = LEON3_RAM_OFFSET + ram_size;
+     qemu_register_reset(main_cpu_reset, reset_info);
+ 
+     ahb_pnp = GRLIB_AHB_PNP(qdev_new(TYPE_GRLIB_AHB_PNP));
 -- 
 2.41.0
 
