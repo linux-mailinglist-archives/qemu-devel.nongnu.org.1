@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA350856BC9
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7BB856BE5
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:02:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag0P-00026F-Hk; Thu, 15 Feb 2024 12:58:41 -0500
+	id 1rag0V-0002Jm-Mf; Thu, 15 Feb 2024 12:58:47 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0H-0001pf-Ep
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:33 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0R-0002Dc-JT
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:44 -0500
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0D-0001Xm-Sk
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:32 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-411a5b8765bso7195585e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0L-0001ZG-MW
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:58:43 -0500
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-411de7c6b3dso9091535e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:58:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019908; x=1708624708; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019914; x=1708624714; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q3zPvVIMcLhE7BLwqgmHZIk2g3tz5ma+i24zz6Qyo/c=;
- b=W4QhkEQxiPRlxEH5qhQ11n83Bcx417vXOO6suJ9noFNTocaJDAFJCQhhEJGiwoHlJh
- FV6dEfVf7kJCPZnapToNKBD4AKuhmuLsZ+roBexUB1KACZXvnug74YLphH9UYENgU4oy
- Pj9Ma8YvJiFXN0Aadt50LrPKokXw3VHRblbj7czalpZki0RUGR2rzCMYviao3oBbIKv0
- R9p4HNZbps4BhkJhsldt+FF/aqnlGFvCYmGjMuQj5NpR8UkCX8WFR5wjiZ7tS89qsXtx
- 9W/vV6JK0MSznGpv14WQ1LhJVtNnm4NcVeo68LqW/TdTiQ+Txmod2igldmtEDnKjgnM0
- ozYg==
+ bh=i5xwpltx5l7qD+BagWyDh/IKXIed1E1E2CgPvP162Y0=;
+ b=OmHmB1Pk3FatWh83WmWD2/UXfGP1uXw52nNZBzOOT8HmWx3biWJcx5vgzMUaKezvAy
+ guTrvaDwkBSCq4Yln8IJLSy+AXjoK3K1qS2gkNG6UH8iSLSYO/B0jwVapbtO7CuUH9fH
+ o5nXBEb4PxrRuM93ElDWDKMUP9p9YW2y5lBdHcmKNkoR3zsaBCYFCNmkBSqSmf2cTqXB
+ KMnoklHB1zLwJ7B+loEijEYFzrNHFRE26bF4SwVpraNRiG/CyWgnYSdOmv7PC4B0336/
+ n4MgIZFeK0v5LiHIaZQGDj31Xaz03OA0vXtleLEahhNcUXgKftACx4QIngFvHEAoKkF9
+ k6Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019908; x=1708624708;
+ d=1e100.net; s=20230601; t=1708019914; x=1708624714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q3zPvVIMcLhE7BLwqgmHZIk2g3tz5ma+i24zz6Qyo/c=;
- b=CsDWW0zLP3SahxjwFRVdmt6IyPpBOBChBLUJgDjoQPVm7EMkW3z1wWVCFCHckm8qo5
- HScOvzpxQboWn22ay9nYrF7OSJyb6T8LVWyvePZGsEX0LZ5IuHkXpv8YSgOGGmJQpdT8
- gsbU1/Z4cn8dj9Er90osGNYVamExI8ti3zuY9Xasxxx4fw75f8Tt94iiWEMUrCDasALD
- 6ijRlB3wPlbH3uO/GkNS/YAlIozBApBvOa0jKZHLhWLYHjfgo7ll35EEws7frVIDyNZA
- A96ZL3v1BkUIMq/Xw8hVl4BwiIZerp8YMD3fhYo+l1TN8Hr1PTDNIIxOt+LLD38CXUue
- 51Ew==
-X-Gm-Message-State: AOJu0YyRQzI3B+CYAvoq8QSASjVqp4HRixEle+gYOMVspNOCpVGnhLOh
- WPxPyI1rS+j42WWByFhs8qk5hFXpZb4aPBJBjg2zxlSXLv6FrGY9yl36KXhCJFQtzAqYZ2Y9JkT
- Yoko=
-X-Google-Smtp-Source: AGHT+IGL2MjT2Uac/p5rMCkh0KMIc1OnH5CgBsztWPpWb+qXOWq2gxBqVqGeFvdNTomW3Y6hVW/Gwg==
-X-Received: by 2002:a05:600c:358c:b0:411:e0cd:9916 with SMTP id
- p12-20020a05600c358c00b00411e0cd9916mr5451880wmq.0.1708019907978; 
- Thu, 15 Feb 2024 09:58:27 -0800 (PST)
+ bh=i5xwpltx5l7qD+BagWyDh/IKXIed1E1E2CgPvP162Y0=;
+ b=invfnKFGrOLDpQLOQT6tMw7C8/+hIqiwovRO1HrKMSC0SE6aLLzgwBWSbujVbuoRmo
+ BgCKgFx55cpgJHlb1hma5T/zSX2Gismqx8/bz/YA+dirueNLKcAN2XvQSBmrHgYTwFqh
+ chZvAZeOFBSVTK08eOOYGW1eLnqWHpydNDwj4aAQZ4PPLs2JeS3R8WPiG6BheOiNZpY9
+ ZZr9RbIqI9VL541fgBsO00VpA+VZ7zuN48Qc5fuA2l1NYPt0gYa+dSdYNSFIKfcHqNV6
+ 0864YoG+H/bZsSpG79B3fuJlguv63Iad4lv7TWuwTdqELw8xBZ44wqB0LURJQo2GXYbt
+ zWtw==
+X-Gm-Message-State: AOJu0YxAl+3JAAnyBnuqPVTFlaAu1da23277qa29hp/gjoXsmWvvajJn
+ EstJ0jIivlwL1973ryoDYg219K4MEYeC1s9Ky8O6VY2KsBwIdzWGTOiBbBS6TgGQn1CLTYuMZYY
+ gbbY=
+X-Google-Smtp-Source: AGHT+IHkyVHwpZXIvzvyuVFe6aodfto5yrGn0YoADHjZYcPwTEoyDB2vlAMqXkFypGQ946BRLc5txw==
+X-Received: by 2002:a05:600c:3ca6:b0:40f:c404:e2d1 with SMTP id
+ bg38-20020a05600c3ca600b0040fc404e2d1mr2735850wmb.19.1708019914626; 
+ Thu, 15 Feb 2024 09:58:34 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- y5-20020a7bcd85000000b00410ab50f70fsm5602288wmj.15.2024.02.15.09.58.26
+ a1-20020a05600c224100b00412260889d9sm1614375wmm.1.2024.02.15.09.58.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:58:27 -0800 (PST)
+ Thu, 15 Feb 2024 09:58:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 05/56] hw/misc/mips: Reduce itc_reconfigure() scope
-Date: Thu, 15 Feb 2024 18:56:59 +0100
-Message-ID: <20240215175752.82828-6-philmd@linaro.org>
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PULL 06/56] target/mips: Remove MIPSITUState::itu field
+Date: Thu, 15 Feb 2024 18:57:00 +0100
+Message-ID: <20240215175752.82828-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,42 +96,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Previous commit removed the MT*C0(SAAR) helpers which
-were the only calls to itc_reconfigure() out of hw/,
-we can reduce its scope and declare it statically.
+Previous commits removed the MT*C0(SAAR) helpers which
+were using CPUMIPSState::itu, we can now remove it too.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240209090513.9401-3-philmd@linaro.org>
+Message-Id: <20240209090513.9401-4-philmd@linaro.org>
 ---
- include/hw/misc/mips_itu.h | 2 --
- hw/misc/mips_itu.c         | 2 +-
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ target/mips/cpu.h | 1 -
+ hw/mips/cps.c     | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/include/hw/misc/mips_itu.h b/include/hw/misc/mips_itu.h
-index 5caed6cc36..3a7330ac07 100644
---- a/include/hw/misc/mips_itu.h
-+++ b/include/hw/misc/mips_itu.h
-@@ -79,6 +79,4 @@ struct MIPSITUState {
- /* Get ITC Configuration Tag memory region. */
- MemoryRegion *mips_itu_get_tag_region(MIPSITUState *itu);
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index b4788e1af2..d54e9a4a1c 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -1184,7 +1184,6 @@ typedef struct CPUArchState {
+ #if !defined(CONFIG_USER_ONLY)
+     CPUMIPSTLBContext *tlb;
+     qemu_irq irq[8];
+-    struct MIPSITUState *itu;
+     MemoryRegion *itc_tag; /* ITC Configuration Tags */
  
--void itc_reconfigure(struct MIPSITUState *tag);
--
- #endif /* MIPS_ITU_H */
-diff --git a/hw/misc/mips_itu.c b/hw/misc/mips_itu.c
-index 37aea0e737..db1220f8e0 100644
---- a/hw/misc/mips_itu.c
-+++ b/hw/misc/mips_itu.c
-@@ -86,7 +86,7 @@ static uint64_t itc_tag_read(void *opaque, hwaddr addr, unsigned size)
-     return tag->ITCAddressMap[index];
- }
- 
--void itc_reconfigure(MIPSITUState *tag)
-+static void itc_reconfigure(MIPSITUState *tag)
- {
-     uint64_t *am = &tag->ITCAddressMap[0];
-     MemoryRegion *mr = &tag->storage_io;
+     /* Loongson IOCSR memory */
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 4f12e23ab5..988ceaa0b9 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -96,7 +96,6 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+             itu_present = true;
+             /* Attach ITC Tag to the VP */
+             env->itc_tag = mips_itu_get_tag_region(&s->itu);
+-            env->itu = &s->itu;
+         }
+         qemu_register_reset(main_cpu_reset, cpu);
+     }
 -- 
 2.41.0
 
