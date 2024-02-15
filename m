@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58660856B3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:39:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98548856B51
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:41:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafes-0000Oa-L9; Thu, 15 Feb 2024 12:36:29 -0500
+	id 1rafep-0008T9-MG; Thu, 15 Feb 2024 12:36:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeN-00082J-OV
+ id 1rafeO-00082K-1w
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:56 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeI-0003yp-3G
+ id 1rafeI-0003z9-EZ
  for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:55 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33cda3dfa06so828312f8f.3
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:49 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40fb3b5893eso8871175e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018548; x=1708623348; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708018549; x=1708623349; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aGjNKILVOkz6T4RapcEJAgZAcxiKva6dOv/kPtf4wlc=;
- b=B+O0kX3x84M/OIOMm6NL4YKDsp5pr8XmX7nrnBobO3FSk6sfuVlJdLCy5E9R62cNAz
- KLOAgzA70l/xQowrpBuWWNO+oER4dGw+Zb8Uomx5tWSTpdfeZjhbel7vQlRcZYGVghLb
- NtrALyzrTZQ7I5D+qYbnEN1XBBF0zi/ajFswFEtqlqf1J11sNPkoadP4KbgCLWlvIGG+
- LwExEgMR0ZOl1xtMHEX7a0RXWJf543MLZ3pNl8eRAoKg6QLQ74kfpjojzQ5jHRDwrpq5
- RfYUmupy8nEP3zb1P46b9UVzBc2OZmT60xQJPzdR8igDOVbHwzgZa/895puQM7YUW3S2
- yhbQ==
+ :reply-to; bh=1HuGvjbyaFuNkELSJgH9k4dc4RWkJylBVt2syMO9HNA=;
+ b=PDbfHrFkJ2cEGpX65nMmQCxH9kPbXlMy0hV1e7CZEfHJ9fs++4OV1aw1lJzPVbF52s
+ XYnqA57EI5F5ZCmk9y6xa7zgftcQmCTXIPN6gkxfMsWQsdtwx1zXkBVQmdUswC1k6JBU
+ FFRCtWPlHsgDJ4rwbDEzzEP8RpU8I1LHgtk0SEKffcB34ehE8ERntjl9ncIyz7G0cYrH
+ FlX9J7VHKDQlmLv2e+4SkhPeLIXLldHjitth83uvZ3lVITSQVzCLU9upnlkwK+qRvqPd
+ VxTx9Yw++bw5kPtKcGY+3vkqbFYarVO7M0QBd4CWUssRJxmJUmdt/mvxSjZwnN7D4N3N
+ 9Ouw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018548; x=1708623348;
+ d=1e100.net; s=20230601; t=1708018549; x=1708623349;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aGjNKILVOkz6T4RapcEJAgZAcxiKva6dOv/kPtf4wlc=;
- b=omncS17kb7dfmzW6o5s3DakESBom5DcqDeh5+9bVjMMPeDSt5tAIqPw39MZiwm/I9+
- jKxUJkyiVHqd0ah2++FHnxhShMnTkyJ++6CQF/XOSg9Sb4Wz0fR7wPyvXKYmnz1R7QFV
- 7SlJ6yhrVjua2H4tl0b3p7CCvc7ULOzqaWz/yvMSy3MdSEoUkxv2/aYoDT+VQS8A8vPC
- byWLdxgMhsn/9753qvIwcWxkjLE3AFylgk5ZMDqkASlaHlwx7N6WO3/MTK+6tp56Lz0n
- CSmyOTstndkbJrLsVsp4mDnGSkwpkVNiblUra0Y7v6E6++FUwrt5SDSxwBFjQ/IYuNhs
- iNDw==
-X-Gm-Message-State: AOJu0YxEHv5wWdnNjJt0seFH9fEbNdvP8pcUhgxCBV+S2sDWoHGSH4JU
- Rtjt1BuBdzxVkC/xjKGgPSV3d6Pobo+8PHuDUzfXUBENSs5fqPbDrTtbs/VDqtMtDB7bVxyJkh5
- f
-X-Google-Smtp-Source: AGHT+IHp7ZA2m4b5U6KXXRMdpAHUr9UItU2EGsiomUfuB8yLmdPgDDZqKd0qRyBM5UN0Lalq31tUcg==
-X-Received: by 2002:adf:e80c:0:b0:33b:49da:22e5 with SMTP id
- o12-20020adfe80c000000b0033b49da22e5mr1754741wrm.9.1708018548771; 
- Thu, 15 Feb 2024 09:35:48 -0800 (PST)
+ bh=1HuGvjbyaFuNkELSJgH9k4dc4RWkJylBVt2syMO9HNA=;
+ b=ZLMGG43UtxtVAJ1tfuBsJdeJyqhWu9uCEDXSzWKJY8WtUf5mrWZizxTX8BUPpiylXm
+ f/KpTnfbBac2qpeP4QB6r+23cG3u7pSGzavmUc1GeQNTBGwCKiZgW7Oi3dzbPXsnsgAR
+ ywKI1LwbV+ZgA4WP2ZjvmY681gPv+tdDHILVEnOev+iA8V4gYX0AM+TvoQYerabcNttm
+ LOOHT5jYrlEdFC9XLpXlgFvtgkpkoF4qH/F9+38wN0ZmNg1ltDfK9Xg/a/f/D9koWDC2
+ VrUMlFhMrjB+XlgLUDtA+dSWIyj4eYy5BTXrUQR/ndjLF5pRNuXDKcL/HLhEcnP65uAj
+ 5ZLA==
+X-Gm-Message-State: AOJu0Yzb35MEFHPkXh3h7H7BlLXf+keYbSng78x/veybiYAfGIm+2eZQ
+ GOqYKfIkp561MsbTaqQpzeLTYSU51Glyg+Dv7Zo2biqmuXHO3b0d3R1evBTf1pWA/JU6Xw9LBkO
+ D
+X-Google-Smtp-Source: AGHT+IGnCL3zf4yfj9MWcjS4RHlMwxe7DO/pDnPS//5SGQcUyuo+1FSZ+Do/XpimeYfuQaycfbD5dw==
+X-Received: by 2002:adf:f187:0:b0:33d:82a:14af with SMTP id
+ h7-20020adff187000000b0033d082a14afmr1302685wro.64.1708018549159; 
+ Thu, 15 Feb 2024 09:35:49 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.48
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 15 Feb 2024 09:35:48 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/35] hw/arm/stellaris: Add missing QOM 'machine' parent
-Date: Thu, 15 Feb 2024 17:35:24 +0000
-Message-Id: <20240215173538.2430599-22-peter.maydell@linaro.org>
+Subject: [PULL 22/35] hw/arm/stellaris: Add missing QOM 'SoC' parent
+Date: Thu, 15 Feb 2024 17:35:25 +0000
+Message-Id: <20240215173538.2430599-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,43 +97,87 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 QDev objects created with qdev_new() need to manually add
 their parent relationship with object_property_add_child().
 
-This commit plug the devices which aren't part of the SoC;
-they will be plugged into a SoC container in the next one.
+Since we don't model the SoC, just use a QOM container.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240213155214.13619-4-philmd@linaro.org
+Message-id: 20240213155214.13619-5-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/stellaris.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/arm/stellaris.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/hw/arm/stellaris.c b/hw/arm/stellaris.c
-index d3a12fe51c5..d9884286b3f 100644
+index d9884286b3f..a2f998bf9e2 100644
 --- a/hw/arm/stellaris.c
 +++ b/hw/arm/stellaris.c
-@@ -1271,10 +1271,13 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-                                    &error_fatal);
+@@ -1031,6 +1031,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+      * 400fe000 system control
+      */
  
-             ssddev = qdev_new("ssd0323");
-+            object_property_add_child(OBJECT(ms), "oled", OBJECT(ssddev));
-             qdev_prop_set_uint8(ssddev, "cs", 1);
-             qdev_realize_and_unref(ssddev, bus, &error_fatal);
++    Object *soc_container;
+     DeviceState *gpio_dev[7], *nvic;
+     qemu_irq gpio_in[7][8];
+     qemu_irq gpio_out[7][8];
+@@ -1052,6 +1053,9 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     flash_size = (((board->dc0 & 0xffff) + 1) << 1) * 1024;
+     sram_size = ((board->dc0 >> 18) + 1) * 1024;
  
-             gpio_d_splitter = qdev_new(TYPE_SPLIT_IRQ);
-+            object_property_add_child(OBJECT(ms), "splitter",
-+                                      OBJECT(gpio_d_splitter));
-             qdev_prop_set_uint32(gpio_d_splitter, "num-lines", 2);
-             qdev_realize_and_unref(gpio_d_splitter, NULL, &error_fatal);
-             qdev_connect_gpio_out(
-@@ -1314,6 +1317,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
-         DeviceState *gpad;
++    soc_container = object_new("container");
++    object_property_add_child(OBJECT(ms), "soc", soc_container);
++
+     /* Flash programming is done via the SCU, so pretend it is ROM.  */
+     memory_region_init_rom(flash, NULL, "stellaris.flash", flash_size,
+                            &error_fatal);
+@@ -1066,6 +1070,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+      * need its sysclk output.
+      */
+     ssys_dev = qdev_new(TYPE_STELLARIS_SYS);
++    object_property_add_child(soc_container, "sys", OBJECT(ssys_dev));
  
-         gpad = qdev_new(TYPE_STELLARIS_GAMEPAD);
-+        object_property_add_child(OBJECT(ms), "gamepad", OBJECT(gpad));
-         for (i = 0; i < ARRAY_SIZE(gpad_keycode); i++) {
-             qlist_append_int(gpad_keycode_list, gpad_keycode[i]);
-         }
+     /*
+      * Most devices come preprogrammed with a MAC address in the user data.
+@@ -1092,6 +1097,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(ssys_dev), &error_fatal);
+ 
+     nvic = qdev_new(TYPE_ARMV7M);
++    object_property_add_child(soc_container, "v7m", OBJECT(nvic));
+     qdev_prop_set_uint32(nvic, "num-irq", NUM_IRQ_LINES);
+     qdev_prop_set_uint8(nvic, "num-prio-bits", NUM_PRIO_BITS);
+     qdev_prop_set_string(nvic, "cpu-type", ms->cpu_type);
+@@ -1125,6 +1131,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+ 
+             dev = qdev_new(TYPE_STELLARIS_GPTM);
+             sbd = SYS_BUS_DEVICE(dev);
++            object_property_add_child(soc_container, "gptm[*]", OBJECT(dev));
+             qdev_connect_clock_in(dev, "clk",
+                                   qdev_get_clock_out(ssys_dev, "SYSCLK"));
+             sysbus_realize_and_unref(sbd, &error_fatal);
+@@ -1138,7 +1145,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+ 
+     if (board->dc1 & (1 << 3)) { /* watchdog present */
+         dev = qdev_new(TYPE_LUMINARY_WATCHDOG);
+-
++        object_property_add_child(soc_container, "wdg", OBJECT(dev));
+         qdev_connect_clock_in(dev, "WDOGCLK",
+                               qdev_get_clock_out(ssys_dev, "SYSCLK"));
+ 
+@@ -1178,6 +1185,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+             SysBusDevice *sbd;
+ 
+             dev = qdev_new("pl011_luminary");
++            object_property_add_child(soc_container, "uart[*]", OBJECT(dev));
+             sbd = SYS_BUS_DEVICE(dev);
+             qdev_prop_set_chr(dev, "chardev", serial_hd(i));
+             sysbus_realize_and_unref(sbd, &error_fatal);
+@@ -1298,6 +1306,7 @@ static void stellaris_init(MachineState *ms, stellaris_board_info *board)
+         DeviceState *enet;
+ 
+         enet = qdev_new("stellaris_enet");
++        object_property_add_child(soc_container, "enet", OBJECT(enet));
+         if (nd) {
+             qdev_set_nic_properties(enet, nd);
+         } else {
 -- 
 2.34.1
 
