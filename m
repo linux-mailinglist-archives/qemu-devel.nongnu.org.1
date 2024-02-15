@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F86856B24
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA7F856B3F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafee-00082t-DY; Thu, 15 Feb 2024 12:36:14 -0500
+	id 1rafey-0000eH-Iq; Thu, 15 Feb 2024 12:36:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeI-0007xj-KM
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:50 -0500
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1rafeL-0007z9-UF
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:54 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeF-0003ws-8q
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:50 -0500
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-411fc50e4e9so8886985e9.0
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:46 -0800 (PST)
+ id 1rafeG-0003xN-Lk
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:53 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d0cdbd67f0so15801341fa.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708018545; x=1708623345; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708018546; x=1708623346; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pnWE++gx7MRP5kpOVN2tye4nGgQTNdzxPucfDmj9R2E=;
- b=ftyh7a5nU7N46CiArvyJfR2PB2okYBUCs9GQ6GsGHaotF4n730MEt1+bumJVPzRBJk
- 0vGlcsBATOzINyH/PMSpd6z6mlWjwnfJRbQ5fwlttqD+FokAlHp/jMfPL3jrbB5YCe1h
- Rbdtqs53uyLKUT7Fe/FGo8kjDP2PhyMkP6ASntiLFzo4Jz30yfXDMYsXubftUPfUV9f6
- sjlgfRRjaaMGZzpPww61BKl/af4xi1pZglsiGasOp4sE8cTscDA2vGZUej3O96WPXH6j
- Le/zw1fWAloxh/Vln2+Qqoh0ipRQ59hTKkPtJU1iygjhxtkOB5/2vEfJZ1S+6ie78Wg3
- rkgw==
+ :reply-to; bh=t74q4lHJfmRE6xLpC3azh8koFmuAF2w+Csg2/m3aH1I=;
+ b=yyUzQUMdy9t8P7Go1WZnnq1xpJsG78l+1A+zRn/vpsuTvbfOYNSLqT60EMJ9wlNhbI
+ GuSE0CC78xckj4xY7ZeSob1QnVLbXRbAGuoTD0uTT2KjBPETfLDfAjT20nldWHWxz3w7
+ TLUmHMKCPk4KB4XQx1foUp88gaEHnYwCkiO6QvPvWCtZHqXEVyohDzCErFgwsrIJtHN6
+ 2fWcrkVyoGklPi3Sc4QC4ovlZV5NNxuec5hxVz2QrnhX754tsazkBbt5l7iy9W1Sr+tC
+ baTwBg/f4YaPvyGrlhwGqB/65YcM/ND6AdMVK1yvRoUjxHCnqr7YRIRFlUy/ZjxegHsN
+ 5zEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708018545; x=1708623345;
+ d=1e100.net; s=20230601; t=1708018546; x=1708623346;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pnWE++gx7MRP5kpOVN2tye4nGgQTNdzxPucfDmj9R2E=;
- b=i8f3s47TL0eNRMiGeiSg74lNIUJR1E17Cf9WLRcpKFWL3WYTJCiwqIXLEmxhV7W7ix
- Qyp427LvbcmsAA1lCfPSiVcvxBy1Fw6MlxPoFxNRlW3AhYAWGZP/KY8gB+kUqVUscVtr
- qP1MnMYm5qGGRi0pl/F8cvSPjBuejUWWDf23o7mqOfHZMBKwyal5ivsqwxUIQCFwQJkv
- Mrdda43u0H2FtCuw+P7qTQK06FzrV+tDRczbxVn2GXH/ibpNKT6xjhnUFfw15VUMjKIX
- cIgHgs2QvfGBAQQADE2F6klURjMqrXy9mc/Oz7c/Tggaj25gJvS1RMEpa5OonwrCDLPy
- hZ1A==
-X-Gm-Message-State: AOJu0YzXJVhHcEXTkrB0l3mxSVTW4Asj3+invAcYckV0rsF3/6SQHuzG
- ZhzcBQuUab/nlUi3kyC1unq9g8ADl+qzjgfpJfzuu7TvH1P14upOkXDddEuDzTMz+EpWoxfW1XJ
- O
-X-Google-Smtp-Source: AGHT+IFwisWHUbExawEftRMoNavhVo0j+o5jjmweFDb76UKsg9esbdVflLX9sNMQYJ4YX09lFpgPKQ==
-X-Received: by 2002:adf:e741:0:b0:336:6a76:40cd with SMTP id
- c1-20020adfe741000000b003366a7640cdmr2071789wrn.62.1708018545593; 
- Thu, 15 Feb 2024 09:35:45 -0800 (PST)
+ bh=t74q4lHJfmRE6xLpC3azh8koFmuAF2w+Csg2/m3aH1I=;
+ b=SoHSXZssf9uxNHL5DJooWLd4zjoa3zAiaKGGs5kx86ovNDRGvIVXA/H+SvSg3aujVI
+ GjIvyywlxdTxZiBMLgnwy3KJZvdbhd36acI0Irp1ytnA2jI1FuD9sZ0fNEKwe8vSZCVB
+ WLrIW4L6cwP/yTFrFlfqdTpAg/wAr/FOsTInTf5MtfFQgfRyc/3JvmWLWEcS1XV8JNLI
+ YU4r5TgGhARXEBtzR2keWiuUQQPWK+6M2YeQaVrx1cSK8oQvChibFF+UQNB6nVxAUCdM
+ mwlNwKCyYNVoYhIxRSvhwIZUHX61HoU+MDKxPl8zMQfCy5bS7CkmNap7I+0XiwPasHE7
+ MaKA==
+X-Gm-Message-State: AOJu0YyWZY2c/XwATRJRYQ0et1iot3LsrbXXuZf9RlO2XjzZfwOJVfGb
+ RT3vkY9pP+cAWlcGPpWKAgK1DYRIejuu+wRThY7qBNMeyXA/mAph6eO3Ukwpl+vws/BfYZFNWTT
+ 9
+X-Google-Smtp-Source: AGHT+IETiigBd7kSnUWzNet5IAI2ZE5oDfzOIv1Vl0JLgqQifCrW5vpaq8NElj19/fphbm96yaUCyw==
+X-Received: by 2002:a2e:80da:0:b0:2d0:9fb2:2c79 with SMTP id
+ r26-20020a2e80da000000b002d09fb22c79mr2135678ljg.3.1708018546072; 
+ Thu, 15 Feb 2024 09:35:46 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.45
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 15 Feb 2024 09:35:45 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/35] hw/arm/npcm7xx: Call qemu_configure_nic_device() for
- GMAC modules
-Date: Thu, 15 Feb 2024 17:35:17 +0000
-Message-Id: <20240215173538.2430599-15-peter.maydell@linaro.org>
+Subject: [PULL 15/35] tests/qtest/npcm7xx_emc-test: Connect all NICs to a
+ backend
+Date: Thu, 15 Feb 2024 17:35:18 +0000
+Message-Id: <20240215173538.2430599-16-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +92,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The patchset adding the GMAC ethernet to this SoC crossed in the
-mail with the patchset cleaning up the NIC handling. When we
-create the GMAC modules we must call qemu_configure_nic_device()
-so that the user has the opportunity to use the -nic commandline
-option to create a network backend and connect it to the GMACs.
+Currently QEMU will warn if there is a NIC on the board that
+is not connected to a backend. By default the '-nic user' will
+get used for all NICs, but if you manually connect a specific
+NIC to a specific backend, then the other NICs on the board
+have no backend and will be warned about:
 
-Add the missing call.
+qemu-system-arm: warning: nic npcm7xx-emc.1 has no peer
+qemu-system-arm: warning: nic npcm-gmac.0 has no peer
+qemu-system-arm: warning: nic npcm-gmac.1 has no peer
 
-Fixes: 21e5326a7c ("hw/arm: Add GMAC devices to NPCM7XX SoC")
+So suppress those warnings by manually connecting every NIC
+on the board to some backend.
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-id: 20240206171231.396392-2-peter.maydell@linaro.org
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-id: 20240206171231.396392-3-peter.maydell@linaro.org
 ---
- hw/arm/npcm7xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/npcm7xx_emc-test.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index ff3ecde9043..cc68b5d8f12 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -710,6 +710,7 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
-     for (i = 0; i < ARRAY_SIZE(s->gmac); i++) {
-         SysBusDevice *sbd = SYS_BUS_DEVICE(&s->gmac[i]);
+diff --git a/tests/qtest/npcm7xx_emc-test.c b/tests/qtest/npcm7xx_emc-test.c
+index f7646fae2c9..63f6cadb5cc 100644
+--- a/tests/qtest/npcm7xx_emc-test.c
++++ b/tests/qtest/npcm7xx_emc-test.c
+@@ -228,7 +228,10 @@ static int *packet_test_init(int module_num, GString *cmd_line)
+      * KISS and use -nic. The driver accepts 'emc0' and 'emc1' as aliases
+      * in the 'model' field to specify the device to match.
+      */
+-    g_string_append_printf(cmd_line, " -nic socket,fd=%d,model=emc%d ",
++    g_string_append_printf(cmd_line, " -nic socket,fd=%d,model=emc%d "
++                           "-nic user,model=npcm7xx-emc "
++                           "-nic user,model=npcm-gmac "
++                           "-nic user,model=npcm-gmac",
+                            test_sockets[1], module_num);
  
-+        qemu_configure_nic_device(DEVICE(sbd), false, NULL);
-         /*
-          * The device exists regardless of whether it's connected to a QEMU
-          * netdev backend. So always instantiate it even if there is no
+     g_test_queue_destroy(packet_test_clear, test_sockets);
 -- 
 2.34.1
 
