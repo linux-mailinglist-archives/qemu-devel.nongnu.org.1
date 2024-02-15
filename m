@@ -2,80 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF1B856464
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:29:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7307856458
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 14:28:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rabmc-0003i0-Nt; Thu, 15 Feb 2024 08:28:10 -0500
+	id 1rabmb-0003dK-3d; Thu, 15 Feb 2024 08:28:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ziqiaokong@gmail.com>)
- id 1raY7Q-0006BV-Kk; Thu, 15 Feb 2024 04:33:24 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ziqiaokong@gmail.com>)
- id 1raY7O-00059M-PW; Thu, 15 Feb 2024 04:33:24 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1db6e0996ceso5359115ad.2; 
- Thu, 15 Feb 2024 01:33:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1707989600; x=1708594400; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tv3PHmgqVfkG8uzr9jgyQ4R6Dv3vpujqMroYjdaFpA4=;
- b=kaf89E5dCTboMfiDCbvXWe7qwOwA25Bu/5UJlBADHWXQEABnhM7AK0RUa+3UxWeT4h
- FncN/aaStCQzzxhmu15XUE1O+BwX/QzdnzBNmtCWqGJ6XBwIWTfCDaTgpCYTnOfug2vb
- JHWZOXShIVhMGufDFRpe4QCSKgNMAveAT6bLwXwlDk1jg5gmlOrrHSV2G8a4KNjqOErx
- e7A0MN1Jc9qPtBMXRzexLf3xz20aMJoNzereC2IdDJAcwuTayeWPRuGGuT5VG+xmWJA3
- mynhKKHloWodMqmfdyf5ZIch/5ZPIpkbyczuop4YJQR6/z6wBLEQb7tfa5MUk18pPcHf
- F5dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707989600; x=1708594400;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tv3PHmgqVfkG8uzr9jgyQ4R6Dv3vpujqMroYjdaFpA4=;
- b=S23gxJ9skcxGntTPDLr4pI5Y3PZzDeGsylNLh41UcJCJE1+wZwpWp0GnHknIiQIS0Y
- EnlEW2669hQtiTNzq0nY1UieRsRks1wL7vT6TkLK/6tYmUL1niHXsnbTvcTyLiI822T+
- s9PpkVlmoi+CW5j2eOjmVB32El/sWzDx8947AYvFlpWxXuQx969Doo2o8bodJeSBozl0
- iFwlpZZItcjb4QEtVq+BGtIKxRr/SsiyCoDhppkLLZfwRK7pJbXwKg/qRr2Wuetdex4c
- UlB42B9YDiQ9gXNa7m1bj+i3i3oPJMEwx82MeVVHUDDwpJM7OPWTqX8CRsN7PSfR4/OK
- seyA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXrCMdyAg70bfzpNQPGI0wrX6p1CXuyyhG7PZtpskwrfG5DSueWugLItdOxA1fBiukrbxGZp8bxUzMkek3fKa/NbL/1v2SWPA==
-X-Gm-Message-State: AOJu0YzgbdIJLCRNx/eMJ6quQJ4ex77yBxaaxixj632B0GzTjSo1dI6g
- 6Ck+blmduXYL97nWHwBDer98M52/nkWapglvWQx0XU2DKU6zCgSfo1BMvru/f3Q=
-X-Google-Smtp-Source: AGHT+IGmGWm5jLDgBO4WN6v9j4eQY18Jn8o/gD92rvgUAIlcFUHEPpeljDJsr4OXsfcbdN9Mea4EJQ==
-X-Received: by 2002:a17:902:ecc1:b0:1d9:bf01:165d with SMTP id
- a1-20020a170902ecc100b001d9bf01165dmr1443962plh.10.1707989600466; 
- Thu, 15 Feb 2024 01:33:20 -0800 (PST)
-Received: from station.lan ([155.69.190.63]) by smtp.gmail.com with ESMTPSA id
- l21-20020a170902d35500b001da105ddf65sm843936plk.232.2024.02.15.01.33.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 01:33:20 -0800 (PST)
-From: Ziqiao Kong <ziqiaokong@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Ziqiao Kong <ziqiaokong@gmail.com>, qemu-trivial@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 1/1] target/i386: Generate an illegal opcode exception on cmp
- instructions with lock prefix
-Date: Thu, 15 Feb 2024 17:33:00 +0800
-Message-Id: <20240215093300.570141-1-ziqiaokong@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240215092908.569947-1-ziqiaokong@gmail.com>
-References: <20240215092908.569947-1-ziqiaokong@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=ziqiaokong@gmail.com; helo=mail-pl1-x633.google.com
+ (Exim 4.90_1) (envelope-from <hns@goldelico.com>)
+ id 1raZyR-0001sC-9d; Thu, 15 Feb 2024 06:32:15 -0500
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hns@goldelico.com>)
+ id 1raZyK-0002GH-VJ; Thu, 15 Feb 2024 06:32:14 -0500
+ARC-Seal: i=1; a=rsa-sha256; t=1707996686; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=c3VQEsPMq3q2V3jBVlpEJMCwmm5bzCDbbu9hGzrS+FTVW/1ld8poJb/XER4TENNHJ/
+ w0Y4CbKYodbhTItYVbXAQZ+lkf0I+hC8dDFBych/AXyXzI8rOiie0C4lRIccBcuFC+br
+ Y36ALabQ8KSfu5GQzcVAv+Hhx+OqgFYcNe3Rrv03ZK/DRo8eK2c7GmWWDhOILg8OCut2
+ DKjU0/o22Aou07FKnwNFS++e4ShfKxxMY6lRPs57/bL6GbAleYgeQd28mp3hxM7Qcixu
+ C4ug2zF7dauCZdWZM8JGx8yLpCCJCcg55VliJphxRa3k6NxC7+Rk7vAykEoLz3tJeJR6
+ Zsbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1707996686;
+ s=strato-dkim-0002; d=strato.com;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=a4mzxkEyzudwkHg8/Q5jsJVAmdLVIouP56wdNlx5Klk=;
+ b=mPraINUrMWmxdml54QQuPIeKFvYew36uKGGMKfFemUK1Xcq0guXJNsr6RWhZ1RX9x2
+ 7qhEZZ1TRITZM1NC/iCn9RmGQM9Ribu4BFA/3pwOQEfXf2Ukh9XvQfAlr9bTxhMp3g99
+ 2sMJsAUAVjqaHV9m8esPviRYWzhwGaZivqyVrYx7r/hd2yBeSn1uzhHTySco3OhnxPp7
+ WNU3aBCa9D1sFmNlyilQEmTcAdjxTGS6akN6ot8DOIxfbFWh0HeX4SbcKpOWHPYF6pu8
+ cGnP5qLy1BblhFfe/3KQcsYw1xrpgx0yp8pmNXzYIcMndZGBYi9K+aXP2yfop5ECaRrf
+ WfhA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1707996686;
+ s=strato-dkim-0002; d=goldelico.com;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=a4mzxkEyzudwkHg8/Q5jsJVAmdLVIouP56wdNlx5Klk=;
+ b=s/Bn9hov0Chy9Cze5Qc8SbV/U/KJHbSWGp1V7d4/R6BwvwHFqKRVUzTR7Xq2lWp17O
+ iNpLA+yZC3thSSbW5AkcE7pmCJu93InvIIFfWa6wjhB7vOcpdUEv3JtV+lnHQ3+AowKV
+ Uzyf7bNYElYUJfPoB+T1oInAgQb81IpQ7Q/vTjftUuJLuMO+WpJCqPUII6tJWpzOGw25
+ trvodr48HM0PgxFFKrx/naXpQYU7OhVivrIHXHdaXbHVx29XmWbphS5alMGGk6IlaPue
+ qdPRDR5Ddr6u1whdIRVYIRzoz5sZMTZCf9E1LKeheR3RpjX1eyNRfamdS9u2UwbDbch9
+ kKYQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1707996686;
+ s=strato-dkim-0003; d=goldelico.com;
+ h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+ From:Subject:Sender;
+ bh=a4mzxkEyzudwkHg8/Q5jsJVAmdLVIouP56wdNlx5Klk=;
+ b=7/ucvTxnf39LJF99iPUhyiY8bbAZfU3SP4Gt9NuDvfXYjThK2jbU/MbwqdQ/NAPoYu
+ TQgr7JuMoPgKCs1PKqAA==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMgPgp8VKxflSZ1P34KBp5hRw/qviAxtjc3+iDRKYXYiBKB+t+xHWJ5dYFU7T2iPf8ad6Lg=="
+Received: from smtpclient.apple by smtp.strato.de (RZmta 49.11.2 AUTH)
+ with ESMTPSA id z5997c01FBVO8Hg
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1
+ with 256 ECDH bits, eq. 3072 bits RSA))
+ (Client did not present a certificate);
+ Thu, 15 Feb 2024 12:31:24 +0100 (CET)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: possible deprecation and removal of some old QEMU Arm machine
+ types (pxa2xx, omap, sa1110)
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+In-Reply-To: <20240215093113.5c58cabe@aktux>
+Date: Thu, 15 Feb 2024 12:31:13 +0100
+Cc: Arnd Bergmann <arnd@arndb.de>, Dmitry Baryshkov <dbaryshkov@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, paul.eggleton@linux.intel.com,
+ Andrea Adami <andrea.adami@gmail.com>, Guenter Roeck <linux@roeck-us.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Janusz Krzysztofik <jmkrzyszt@gmail.com>, Tony Lindgren <tony@atomide.com>,
+ Linux-OMAP <linux-omap@vger.kernel.org>, Daniel Mack <daniel@zonque.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Stefan Lehner <stefan-lehner@aon.at>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <313D5846-3F4E-485C-AD93-172CCD1F48F5@goldelico.com>
+References: <CAFEAcA88UGhjh8-iBvhxx6GdWg74dinYouiguTcz=qEe51L7Ag@mail.gmail.com>
+ <fe5476c7-82e0-4353-a943-7f39b14e1b5b@roeck-us.net>
+ <CAFEAcA-bqOM4Ptws-tsEwo2HDZ6YSX1Y+xGkR0WueRD_dUd0+Q@mail.gmail.com>
+ <7bd858a2-9983-4ddf-8749-09c9b2e261f9@roeck-us.net>
+ <fbab8e59-6d2d-4193-a5ca-9fea3c524229@app.fastmail.com>
+ <CACRpkdbmJe8ZE7N0p_utWucyw+3mp1Qrb0bQEKcJPmwNFtVA_g@mail.gmail.com>
+ <CALT56yOT_U9jVkhTP=zZu-32B4pta5zaJocn9695N7ari4cFyQ@mail.gmail.com>
+ <be4038e1-a578-4439-a9bf-e936484c64cc@app.fastmail.com>
+ <20240215093113.5c58cabe@aktux>
+To: Andreas Kemnade <andreas@kemnade.info>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=85.215.255.50; envelope-from=hns@goldelico.com;
+ helo=mo4-p01-ob.smtp.rzone.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Thu, 15 Feb 2024 08:28:07 -0500
@@ -93,39 +123,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-target/i386: As specified by Intel Manual Vol2 3-180, cmp instructions
-are not allowed to have lock prefix and a `UD` should be raised. Without
-this patch, s1->T0 will be uninitialized and used in the case OP_CMPL.
 
-Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
----
- target/i386/tcg/translate.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 10cba16256..07f642dc9e 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1507,12 +1507,13 @@ static bool check_iopl(DisasContext *s)
- /* if d == OR_TMP0, it means memory operand (address in A0) */
- static void gen_op(DisasContext *s1, int op, MemOp ot, int d)
- {
-+    /* Invalid lock prefix when destination is not memory or OP_CMPL. */
-+    if ((d != OR_TMP0 || op == OP_CMPL) && s1->prefix & PREFIX_LOCK) {
-+        gen_illegal_opcode(s1);
-+        return;
-+    }
-+
-     if (d != OR_TMP0) {
--        if (s1->prefix & PREFIX_LOCK) {
--            /* Lock prefix when destination is not memory.  */
--            gen_illegal_opcode(s1);
--            return;
--        }
-         gen_op_mov_v_reg(s1, ot, s1->T0, d);
-     } else if (!(s1->prefix & PREFIX_LOCK)) {
-         gen_op_ld_v(s1, ot, s1->T0, s1->A0);
--- 
-2.40.1
+> Am 15.02.2024 um 09:31 schrieb Andreas Kemnade <andreas@kemnade.info>:
+>=20
+> On Wed, 14 Feb 2024 23:42:58 +0100
+> "Arnd Bergmann" <arnd@arndb.de> wrote:
+>=20
+>> On Wed, Feb 14, 2024, at 13:26, Dmitry Baryshkov wrote:
+>>> On Tue, 13 Feb 2024 at 23:22, Linus Walleij =
+<linus.walleij@linaro.org> wrote: =20
+>>>> On Tue, Feb 13, 2024 at 9:12=E2=80=AFPM Arnd Bergmann =
+<arnd@arndb.de> wrote: =20
+>>>>> On Tue, Feb 13, 2024, at 16:36, Guenter Roeck wrote: =20
+>>>>>> On Tue, Feb 13, 2024 at 03:14:21PM +0000, Peter Maydell wrote: =20=
+
+>>>>=20
+>>>> Andrea Adami and Dmitry Eremin-Solenikov did the work in 2017 to
+>>>> modernize it a bit, and Russell helped out. I was under the =
+impression
+>>>> that they only used real hardware though! =20
+>>>=20
+>>> I used both Qemu and actual hardware (having collie, poodle, tosa =
+and
+>>> c860 that was easy).
+>>>=20
+>>> The biggest issue with Zaurus PDAs was that supporting interesting
+>>> parts of the platform (PCMCIA, companion chips) required almost
+>>> rebootstrapping of the corresponding drivers.
+>>> E.g. I had a separate driver for the LoCoMo chip which worked =
+properly
+>>> with the DT systems.
+>>> PCMCIA was a huuuge trouble and it didn't play well at all. The =
+driver
+>>> must be rewritten to use the component framework. =20
+>>=20
+>> If we want to actually go there, I think the best option for PCMCIA
+>> support is likely to replace the entire "soc_common" pcmcia driver
+>> with a simple drivers/pata/ storage driver and no support for
+>> other cards. There was a driver until commit 38943cbd25a2
+>> ("ata: remove palmld pata driver") that could serve as an
+>> template.
+>>=20
+> hmm, main usage for PCMCIA/CF in those devices was often something =
+else,
+> not storage, at least on the IPAQ h2200. Wondering wether that road is
+
+There was a WiFi CF card for the Zaurus devices and I remember having
+donated one to someone who could make the drivers work.
+
+Unfortunately my devices are collecting dust and the batteries may be
+bad now.
+
+> actually good. When I was mainly using those devices, I was not good =
+in
+> mainlining things.
+
+Same for me...
+
+BR,
+Nikolaus
+
 
 
