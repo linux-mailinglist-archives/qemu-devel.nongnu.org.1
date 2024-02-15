@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0731856BD1
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E45A856BE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:03:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag1h-0006ZH-5D; Thu, 15 Feb 2024 13:00:01 -0500
+	id 1rag1n-00079Y-Vz; Thu, 15 Feb 2024 13:00:08 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1X-0005mp-9d
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:51 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1i-0006pZ-Cx
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:02 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1U-0001rJ-DK
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:50 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-411d231ea71so9176725e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1e-0001tC-Gm
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:00:01 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-412345cca4eso1641045e9.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019986; x=1708624786; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019992; x=1708624792; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nD0xGIx0jqih+wWIcjwEtsdSIF+Dav0OUaDGYWjSMEc=;
- b=wmG7tInvbLWeQWiGXclknJ8uGy7wGrv+C0Rog8fq208kPEDbR73c10QDA1/CQ/PLo5
- 6byUI8IoeJTC0lyq4Vg8zNlwqWq9yRLCrlq5guaxNzLHV1Rh6v0D0MKXqMz2Kluuz+c4
- 2aXYqtDm5cjXBZGSHddORzt3kEu9+3ZHRmuYX3tO2pjI6dPqDhs+4JeqTWQ/u+rtbHqw
- cFfibHIWAc0b1E6T5YrvvFO7ZYfsJQrFaGnQIhUg+4ZnrQUR5Pt7YQcyPFexibK/NI/Z
- FoUSGqHP1EVohod9Hu6V0w5QMrzGmCCQpG1aXP7QuwQaG5mYrmLpihzXPZT5OoS9E5Xz
- nmrw==
+ bh=KrDWAyGRgS7V1HXGadIwipz2b43fHU+C3C1ocsMbGSU=;
+ b=eSLdhUi4QXO3Q4APHbiB67wLcgis0wcTKvILLJ6Aw1XL43jad83bipoBhnWZaakNxK
+ InhpHO0sXjpyZIAMIPcNbX3dQxzitCiveCWYq/96L1aHH3N/rwkUbvwEavL13a8P+Y5q
+ bxBDw4Tvw05plZ0t+vfnPbx7lm1XfWS+qFxYBLy4ARdO1Q8yRLtE3ZaVJwTSX8156sk9
+ AHXJjXWkashzsb5nsjSVvCqdxjsqA0ePxiD5hXORPJZjGoDoMlT2G371BoRzI3jbAbaX
+ GpkPeNRvAM5LGvIC9x+FPCbskY+pxFmuzEwHzkt4rZiiyGK411jXS5lmei5Bp4tal3Hp
+ +RDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019986; x=1708624786;
+ d=1e100.net; s=20230601; t=1708019992; x=1708624792;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nD0xGIx0jqih+wWIcjwEtsdSIF+Dav0OUaDGYWjSMEc=;
- b=cudACjo3rkbF5S0dywgN7J/UTQK2PzHTdekEmMjBjVYXkgi0TkIavnQ5nzxMl5ifBc
- 5GtSfhXpOWMMgr+pQ8XSzIowZSjjZrV9y2cbjluWU/9A+RYcS5++rQuFJ23kYLJU+jWC
- AM5ls5xfZOKa27jADQmEJK37lLqJ8Czjv4KRvbpTiMntg9AYqmsdvm+nbbVS4MBtJgfW
- dVMoQZmpOgYjckiUKdVMi4v9nG4np6F+97LF49o3JJMgKXVhYLbQzet+AxCLuMBeqR5S
- KxJXkEvi1kFDc3CDcep1dYKTwR/cPjJxYtd8Shggq3opJz/B5vZjMw9yOV1v0lbj5Yxv
- OxOQ==
-X-Gm-Message-State: AOJu0YzcdfVpR2nz4WlVvS+hTGpNI+vSJZu48Uk9M24P7u8hAiA9HTXy
- yhCKyFxm3x/aGnfobHKHx0doJOPWQfEl8TI50dUywgBgx/+d6BJmpYfbBlJ1to+gFgRd4vsgs3t
- XAOQ=
-X-Google-Smtp-Source: AGHT+IEJHA5bEKhM2Q4FpPLroCzVyxgL2EOjG9iCokVLBYfaRvKIDx1dbKDK6M1lIFLA/tmfaVYcJQ==
-X-Received: by 2002:a05:600c:5586:b0:411:ba7c:99a with SMTP id
- jp6-20020a05600c558600b00411ba7c099amr2126769wmb.38.1708019986191; 
- Thu, 15 Feb 2024 09:59:46 -0800 (PST)
+ bh=KrDWAyGRgS7V1HXGadIwipz2b43fHU+C3C1ocsMbGSU=;
+ b=r6M+HJSUDcKxlvpAreGwXyssoEvhsMAqlpJLAS5H5pcFMYAPc1CczkP585ddc6gWdV
+ sR0l0p2DpnQjTbn0QvVvJKq51kOec3VWUQ6lUHKif2CRP4NKJ7ytW3a/nbrWElsYEI5M
+ ZT0BaZ8vVaf+gt6eJ7r/LzPm0/+i8UUBL09EJZzW4M3FUqxiH02V5q9RoBFINix7Trf5
+ YGZAQuGvC3McFDF97kDjh5B5rGzp+5vUeQmKnpGAn3DANtTatfWFYvZPOxc2UjfIObm7
+ 4u9NNNMppLd5jubVlXtn7IzlhYUgDJQNT+fnsIWBROvj7j7ceSSliod0NJhx7yRHYD6Y
+ NqYw==
+X-Gm-Message-State: AOJu0Yw0RMAU2cFx3eLEu/PFY1L8vS+2eNu5vI4iyzwex2LZ7wSz/uQG
+ KgU3tQR+fGh+WuSqTib9BD9HGL8uet5Vz8Rw5X0rJ+Yso5A2QPCZ+Pf20zC7BG2G5/i6Cs3yLCn
+ B3BA=
+X-Google-Smtp-Source: AGHT+IEge+7N7R5Dv+aWhleCePe/xXWie3Ax8OjFhYHUQVNaLC46zf2vna8295JbBHhsrvOyp0WM+A==
+X-Received: by 2002:a05:600c:91a:b0:40e:f46d:ad35 with SMTP id
+ m26-20020a05600c091a00b0040ef46dad35mr2161791wmp.36.1708019992628; 
+ Thu, 15 Feb 2024 09:59:52 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- fa25-20020a05600c519900b0041228b2e179sm1436839wmb.39.2024.02.15.09.59.44
+ z11-20020a7bc7cb000000b00411b7c91470sm5630301wmk.12.2024.02.15.09.59.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:59:45 -0800 (PST)
+ Thu, 15 Feb 2024 09:59:52 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, BALATON Zoltan <balaton@eik.bme.hu>,
+ Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PULL 17/56] hw/isa: fix ISA_SUPERIO dependencies
-Date: Thu, 15 Feb 2024 18:57:11 +0100
-Message-ID: <20240215175752.82828-18-philmd@linaro.org>
+ Bernhard Beschow <shentey@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 18/56] hw/isa: specify instance_size in isa_superio_type_info
+Date: Thu, 15 Feb 2024 18:57:12 +0100
+Message-ID: <20240215175752.82828-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,41 +98,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-ISA_SUPERIO does not provide an ISA bus, so it should not select the symbol:
-instead it requires one.  Among its users, VT82C686 is the only one that
-is a PCI-ISA bridge and does not already select ISA_BUS.
+Right now all subclasses of TYPE_ISA_SUPERIO have to specify an instance_size,
+because the ISASuperIODevice struct adds fields to ISADevice but the type does
+not include the increased instance size.  Failure to do so results in an access
+past the bounds of struct ISADevice as soon as isa_superio_realize is called.
+Fix this by specifying the instance_size already in the superclass.
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Fixes: 4c3119a6e3 ("hw/isa/superio: Factor out the parallel code from pc87312.c")
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240213155005.109954-5-pbonzini@redhat.com>
+Message-ID: <20240213155005.109954-6-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/isa/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/isa/isa-superio.c       | 2 +-
+ hw/isa/smc37c669-superio.c | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
-index 7884179d08..5df3c09cd5 100644
---- a/hw/isa/Kconfig
-+++ b/hw/isa/Kconfig
-@@ -15,7 +15,7 @@ config I82378
+diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
+index 7dbfc374da..d85f22db1a 100644
+--- a/hw/isa/isa-superio.c
++++ b/hw/isa/isa-superio.c
+@@ -185,6 +185,7 @@ static const TypeInfo isa_superio_type_info = {
+     .abstract = true,
+     .class_size = sizeof(ISASuperIOClass),
+     .class_init = isa_superio_class_init,
++    .instance_size = sizeof(ISASuperIODevice),
+ };
  
- config ISA_SUPERIO
-     bool
--    select ISA_BUS
-+    depends on ISA_BUS
-     select PCKBD
-     select PARALLEL
-     select SERIAL_ISA
-@@ -47,6 +47,7 @@ config PIIX
+ /* SMS FDC37M817 Super I/O */
+@@ -201,7 +202,6 @@ static void fdc37m81x_class_init(ObjectClass *klass, void *data)
+ static const TypeInfo fdc37m81x_type_info = {
+     .name          = TYPE_FDC37M81X_SUPERIO,
+     .parent        = TYPE_ISA_SUPERIO,
+-    .instance_size = sizeof(ISASuperIODevice),
+     .class_init    = fdc37m81x_class_init,
+ };
  
- config VT82C686
-     bool
-+    select ISA_BUS
-     select ISA_SUPERIO
-     select ACPI
-     select ACPI_SMBUS
+diff --git a/hw/isa/smc37c669-superio.c b/hw/isa/smc37c669-superio.c
+index 18287741cb..9e59dc1603 100644
+--- a/hw/isa/smc37c669-superio.c
++++ b/hw/isa/smc37c669-superio.c
+@@ -103,7 +103,6 @@ static void smc37c669_class_init(ObjectClass *klass, void *data)
+ static const TypeInfo smc37c669_type_info = {
+     .name          = TYPE_SMC37C669_SUPERIO,
+     .parent        = TYPE_ISA_SUPERIO,
+-    .instance_size = sizeof(ISASuperIODevice),
+     .class_size    = sizeof(ISASuperIOClass),
+     .class_init    = smc37c669_class_init,
+ };
 -- 
 2.41.0
 
