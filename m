@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1B9856BCE
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:00:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957E0856C26
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:08:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag1S-0004yH-PG; Thu, 15 Feb 2024 12:59:46 -0500
+	id 1rag1X-0005fH-JB; Thu, 15 Feb 2024 12:59:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag14-0004Wv-Hz
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:23 -0500
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag1J-0004lj-9S
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:40 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag0w-0001jy-Mt
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:22 -0500
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2d0fd07ba8bso13657991fa.1
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag13-0001lD-4V
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:59:23 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-411fc61a03dso9909935e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:59:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708019952; x=1708624752; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708019959; x=1708624759; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8KRNAN7J6jVrW+a5YkWZvl2JIbNfjxd3JGHRrNe6AUc=;
- b=XwckSceFGVkZ5LLhJ+dnl+6hw9goj7dHawTxXt8MhWaOJ/0EVV/R7XCVpeRzEja8+D
- uMVxDtGZooeYAR71+3Mj13ETEbwG9eRyEGs5byjkJGV7x8XS5X5H9kT8W0YOR79GFMdS
- ZdQ+bOAm3bzA82my1ye1Ov8jq7TM8aJve9QhDtqnRmlKU1iqHlhmJ594aQw0Ye1+XbXn
- viVA2/P6s0T0SIzftbff8Oyj0aomOn2i8QmHjA5IcK4hpqVV6rL8x3Q+runs1FIJmWk1
- ezwElO45+IcNVzm8hbaddoAUkJYs8+drb9BWcqNchvGzscf3mkuztvJ96HXPqDvx0i5N
- 2sWQ==
+ bh=sZSw2YzJ/MkCqct1l1ey2O6+43vCJeEZUqJNCv27UXQ=;
+ b=qZ+2VOCFyAL6TebQt2/Cq8snCNo1d5stp7M2EkQofuXexC4QQNx5biV7jWG+1kK/Zr
+ bTxqYqj0vHRkhiBWKcIQa0NjoRQbgteHH7tKohkA8eoowGEdSINAihe5JynFKFkOpPTN
+ 2aOo3gFVTXE22Lfr2xeaSZOtjT68SSOVNIo4Ygla4cRFFd+gvLDuBMu/3/Hhxf3lS3s0
+ I6MHK36hJYTyjKnbErSUuDGOGJzta6Mwmf65aDsIwQx0NkXPDb6RCwhWiFFsZcDM9GwD
+ kSKEMNbqQLB2HOJOsEh7EbSCkIPcCBS7M7zYqrFD6bfH/WS7b8YfNUl/P7H+vvRTALR9
+ NqNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708019952; x=1708624752;
+ d=1e100.net; s=20230601; t=1708019959; x=1708624759;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8KRNAN7J6jVrW+a5YkWZvl2JIbNfjxd3JGHRrNe6AUc=;
- b=u48TqCNgALL9didzSrLo0JAZo/sEH5FUhffdLUINWPoGm6ylXqZZNH55TuK0JLA8fS
- Xn71FH03/mKaPnezD9+o/ZsAzgnibf4m4IhJD9QbWp1CnGHMj+pqpsvwf8/EKxBkE04w
- HPPzoxoWdJcX054nbvQVJC/97HttSyavlrhSaJop01XhQ0Ag78vikelw5KnV4NbODgcZ
- Hx5p3x8qRrYtWEbMhZmENbwsJTMVBjREo1F4CzOE/5xmhVgknod5v9W36JH5KglHTqvE
- dMHLtfhPs4+FmVcoc4yLzguqa1wNZYUyaycOLNrsJe02EV/jDKykdf48Dd0R7dLdTnXD
- F7wQ==
-X-Gm-Message-State: AOJu0YxoxoJCQvZOtei5GDN8lLVjgGJekiFUJO40f1nS2pb4IxnwgJdf
- HGMi0MX/CcANlnJ2dsB/Kk4zLLq/s3H6PvoUEw5c7DXRtdyaM5lSUVO0TcU4wTeVH8N+vhwsv7x
- 3nVU=
-X-Google-Smtp-Source: AGHT+IH3/9vfy51nEfjPBJcvZnTjuHpLd3xnzU+bNsH4pJmDzZXEZv1HebGRW9cW2tNttpIwoFOlqw==
-X-Received: by 2002:a2e:8018:0:b0:2d0:d3ec:a545 with SMTP id
- j24-20020a2e8018000000b002d0d3eca545mr1850052ljg.50.1708019952746; 
- Thu, 15 Feb 2024 09:59:12 -0800 (PST)
+ bh=sZSw2YzJ/MkCqct1l1ey2O6+43vCJeEZUqJNCv27UXQ=;
+ b=hOp6dUBrlnRPZj0UgA7uCC3WwTlpzcHBuKLWSSA1lErv4W6DP4KfuREH9bxln+XKTo
+ 412KosNVoOzcg0Uo6WCMLDHuyB+PUdDDVNSjytkY/H7elyHZLPIY4ce7GpN4/MK62mmN
+ Zu7bvvF2aNhNq55E3iPbNPfUjo3DBveYM4sDB1ngQZYFy9DWrhcebDoodCBRmGlEXeep
+ bYhgKD+IfGqtRIFhkg6u+LMdmi0mNQQlD+ZJ03EcezOu1g/P4wpypdbHqPg4Uu5eJUNm
+ HeXwKZn5sKxRGDQb+MgcI8DGU5QWuESkIJzIKhpALC2bTZrqtY48F/+g3s0z9T4uk1Np
+ zloA==
+X-Gm-Message-State: AOJu0YwD7tL52xFQbG87lpy4Jc0oDNOicz89P+icOh/vPyPoNESse/3n
+ x38OF67EfgI3+1LNuUdgdOwQO9IWIaNdQFmrCiFZI32lVQY8UiKS/xglk2bztcK2HrOsvuDqzcj
+ Bz2g=
+X-Google-Smtp-Source: AGHT+IGKkWrh1EfmpN5uflxPZiFBU+H+iWmUq/ar7QJRtpFMHotjF78s0XNRF/8UGGLjMsZOEdOW/A==
+X-Received: by 2002:a5d:644b:0:b0:33c:e392:14c3 with SMTP id
+ d11-20020a5d644b000000b0033ce39214c3mr1887111wrw.47.1708019959294; 
+ Thu, 15 Feb 2024 09:59:19 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- y5-20020a7bcd85000000b00410ab50f70fsm5604008wmj.15.2024.02.15.09.59.11
+ az7-20020adfe187000000b0033d01fe1f04sm2519246wrb.55.2024.02.15.09.59.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 09:59:12 -0800 (PST)
+ Thu, 15 Feb 2024 09:59:18 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -62,18 +62,19 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PULL 12/56] target/mips: Remove helpers accessing SAARI register
-Date: Thu, 15 Feb 2024 18:57:06 +0100
-Message-ID: <20240215175752.82828-13-philmd@linaro.org>
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Huacai Chen <chenhuacai@kernel.org>
+Subject: [PULL 13/56] target/mips: Remove CPUMIPSState::CP0_SAARI field
+Date: Thu, 15 Feb 2024 18:57:07 +0100
+Message-ID: <20240215175752.82828-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,101 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DisasContext::saar boolean is never set, so this code
-is not reachable. Remove it.
+Remove the unused CP0_SAARI register.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240209090513.9401-9-philmd@linaro.org>
+Message-Id: <20240209090513.9401-10-philmd@linaro.org>
 ---
- target/mips/tcg/sysemu_helper.h.inc |  1 -
- target/mips/tcg/sysemu/cp0_helper.c |  8 --------
- target/mips/tcg/translate.c         | 20 --------------------
- 3 files changed, 29 deletions(-)
+ target/mips/cpu.h            | 1 -
+ target/mips/sysemu/machine.c | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/mips/tcg/sysemu_helper.h.inc b/target/mips/tcg/sysemu_helper.h.inc
-index 78f7272208..1861d538de 100644
---- a/target/mips/tcg/sysemu_helper.h.inc
-+++ b/target/mips/tcg/sysemu_helper.h.inc
-@@ -100,7 +100,6 @@ DEF_HELPER_2(mtc0_srsconf4, void, env, tl)
- DEF_HELPER_2(mtc0_hwrena, void, env, tl)
- DEF_HELPER_2(mtc0_pwctl, void, env, tl)
- DEF_HELPER_2(mtc0_count, void, env, tl)
--DEF_HELPER_2(mtc0_saari, void, env, tl)
- DEF_HELPER_2(mtc0_entryhi, void, env, tl)
- DEF_HELPER_2(mttc0_entryhi, void, env, tl)
- DEF_HELPER_2(mtc0_compare, void, env, tl)
-diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
-index f8883a3515..ded6c78e9a 100644
---- a/target/mips/tcg/sysemu/cp0_helper.c
-+++ b/target/mips/tcg/sysemu/cp0_helper.c
-@@ -1077,14 +1077,6 @@ void helper_mtc0_count(CPUMIPSState *env, target_ulong arg1)
-     cpu_mips_store_count(env, arg1);
- }
- 
--void helper_mtc0_saari(CPUMIPSState *env, target_ulong arg1)
--{
--    uint32_t target = arg1 & 0x3f;
--    if (target <= 1) {
--        env->CP0_SAARI = target;
--    }
--}
--
- void helper_mtc0_entryhi(CPUMIPSState *env, target_ulong arg1)
- {
-     target_ulong old, val, mask;
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 173b19a090..3ba2101647 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -5653,11 +5653,6 @@ static void gen_mfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             ctx->base.is_jmp = DISAS_EXIT;
-             register_name = "Count";
-             break;
--        case CP0_REG09__SAARI:
--            CP0_CHECK(ctx->saar);
--            gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_SAARI));
--            register_name = "SAARI";
--            break;
-         default:
-             goto cp0_unimplemented;
-         }
-@@ -6374,11 +6369,6 @@ static void gen_mtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             gen_helper_mtc0_count(tcg_env, arg);
-             register_name = "Count";
-             break;
--        case CP0_REG09__SAARI:
--            CP0_CHECK(ctx->saar);
--            gen_helper_mtc0_saari(tcg_env, arg);
--            register_name = "SAARI";
--            break;
-         default:
-             goto cp0_unimplemented;
-         }
-@@ -7143,11 +7133,6 @@ static void gen_dmfc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             ctx->base.is_jmp = DISAS_EXIT;
-             register_name = "Count";
-             break;
--        case CP0_REG09__SAARI:
--            CP0_CHECK(ctx->saar);
--            gen_mfc0_load32(arg, offsetof(CPUMIPSState, CP0_SAARI));
--            register_name = "SAARI";
--            break;
-         default:
-             goto cp0_unimplemented;
-         }
-@@ -7850,11 +7835,6 @@ static void gen_dmtc0(DisasContext *ctx, TCGv arg, int reg, int sel)
-             gen_helper_mtc0_count(tcg_env, arg);
-             register_name = "Count";
-             break;
--        case CP0_REG09__SAARI:
--            CP0_CHECK(ctx->saar);
--            gen_helper_mtc0_saari(tcg_env, arg);
--            register_name = "SAARI";
--            break;
-         default:
-             goto cp0_unimplemented;
-         }
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 5e97b5b422..7329226d39 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -747,7 +747,6 @@ typedef struct CPUArchState {
+  * CP0 Register 9
+  */
+     int32_t CP0_Count;
+-    uint32_t CP0_SAARI;
+ #define CP0SAARI_TARGET 0    /*  5..0  */
+ #define CP0SAAR_BASE    12   /* 43..12 */
+ #define CP0SAAR_SIZE    1    /*  5..1  */
+diff --git a/target/mips/sysemu/machine.c b/target/mips/sysemu/machine.c
+index 6d1299a89e..213fd637fc 100644
+--- a/target/mips/sysemu/machine.c
++++ b/target/mips/sysemu/machine.c
+@@ -281,7 +281,7 @@ const VMStateDescription vmstate_mips_cpu = {
+         VMSTATE_UINT32(env.CP0_BadInstrP, MIPSCPU),
+         VMSTATE_UINT32(env.CP0_BadInstrX, MIPSCPU),
+         VMSTATE_INT32(env.CP0_Count, MIPSCPU),
+-        VMSTATE_UINT32(env.CP0_SAARI, MIPSCPU),
++        VMSTATE_UNUSED(sizeof(uint32_t)), /* was CP0_SAARI */
+         VMSTATE_UNUSED(2 * sizeof(uint64_t)), /* was CP0_SAAR[2] */
+         VMSTATE_UINTTL(env.CP0_EntryHi, MIPSCPU),
+         VMSTATE_INT32(env.CP0_Compare, MIPSCPU),
 -- 
 2.41.0
 
