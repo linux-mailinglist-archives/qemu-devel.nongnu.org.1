@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BE1855C22
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01AC855C1B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 09:16:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raWu8-0007cZ-S5; Thu, 15 Feb 2024 03:15:36 -0500
+	id 1raWuC-0007lG-BS; Thu, 15 Feb 2024 03:15:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raWte-0007DT-Rs
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:08 -0500
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1raWth-0007Dz-8B
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:10 -0500
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1raWtc-0001aA-Vn
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:06 -0500
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-5d8ddbac4fbso512868a12.0
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 00:15:04 -0800 (PST)
+ id 1raWte-0001bl-5n
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 03:15:08 -0500
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5ce942efda5so490502a12.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 00:15:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1707984903; x=1708589703; darn=nongnu.org;
+ d=linaro.org; s=google; t=1707984905; x=1708589705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LcHS8hoi1egiJUTZk4E4y/djhNgaSWqSASRO2zuVQnQ=;
- b=nl58qaCR9J7WIXMixV12jPnvQKM3Ubuh2eMGbMGT/qbvYSFqvSmUaW6C6/PsL92jN1
- 2/nOgMfihxlLLu/0XWjrn4tioz46du1BqfXhV0tfRDkoEtBjD3HJlxQFVcu9sGsHPeAJ
- Q+/6mbybfb0TiYQUI6tS/MuK2w6sgOxLkwHOct4OcyDHVHOsR23ZBDNk5Nzal2Hw36Jo
- C2IeuRCXa82RnrHmBxnArO0wQll713nBcu/4iOy3+gKDZ/lXm1KAcurQJHox3fOiSJlM
- xyPLjSBDuUBIDGxeCy2dcKqOePiGVL7Cjy8sDE47Zx8Rs7aM4DNnjnR+lLHynww7ukhK
- ZfSg==
+ bh=rKwcsoqbJERmdkOS9kUB6SrPLVGyNwfg2Re2n5hH/Bw=;
+ b=tRUrP5e6NdYPo3/srRcWW+J33mNgrgP5pH11LQoIQ7QHX6XqK5T2Q9cMbTPR7Ozyha
+ bJpHHXWshDE3kfxcq0PAdFl6SRlSwxs19PXqUjNocxTaES6sZQQ2Pv2FySCfyi7AouZv
+ 6JDwcncYI2DpmGOdO8/w3U8orXdOLfGS2g63bMNX5vSgVt7vo72SfsPANrwdOAl+Cf20
+ M3SVJtq4V7LEbdbVLmE+48kx10CJO3H7m5ySvkC/el1+9NizhhFj8Wq02TdUvrc+LIYn
+ jeZsbBZRdJBEjagNc56siuWU1KzhaBc1Pb4szEQ4PCgas6FR7NSlGrndkXrDx3FAC3tX
+ Fhtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1707984903; x=1708589703;
+ d=1e100.net; s=20230601; t=1707984905; x=1708589705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LcHS8hoi1egiJUTZk4E4y/djhNgaSWqSASRO2zuVQnQ=;
- b=JdneTIrRGPLb/nkv/nEChhFPJbf6jBdbqt5AFpu98qvrSNq/MuVfesGM0oj3c1Yulf
- O78a5RXg4MS3B4Zne88CpFSZB9duONmekHtlVuVTcrMXHQ9HAaRZa243moOtckjEX8RL
- MVZ7hJwu2002HqHop19kJOdLOT22IRDz6e/y+dsfXRRoAAV5RoesPXQLJFQa/TOOEa9M
- 3w9UwYAVBBtL2agYXWDp6Y+fHRoM5lPd7nlppMrYJStpOZDrBk5TmShmFS5Qs9qk43jG
- LClWyK2+rT4Y37Q+KJFZUJUAcgJM7BldgrX2BlrXkW9T5pebfGV7WbhHSGeDQ5qpfDi7
- sJSQ==
-X-Gm-Message-State: AOJu0YzueWXD0mN1QoKtG6ezbmBA8OMIWyPlbfilDn59MtQcb58yXlgk
- wlpPZF0En3kAlmM5IrDrP80wWGI4BuaHPSjqJ9JGq5eF9GZ442dbxZEfJ5J6Z/d4QO8BJsbWpou
- i
-X-Google-Smtp-Source: AGHT+IFu6R4mEqQO92Y8u5pn3OeNLkZw1YBCa/57uEnzHK4ZYR1rdiPHxiZQXAeKvZTOWoOmQzrSMw==
-X-Received: by 2002:a17:90a:c587:b0:298:c2a8:4ade with SMTP id
- l7-20020a17090ac58700b00298c2a84ademr953288pjt.28.1707984903549; 
- Thu, 15 Feb 2024 00:15:03 -0800 (PST)
+ bh=rKwcsoqbJERmdkOS9kUB6SrPLVGyNwfg2Re2n5hH/Bw=;
+ b=QJyHzbCWZ9SnN7D2cawUk4qIinJ7cIzfdZ2jVraXf4bMLenclf3Nrawhv/xxJgCP/m
+ bfd//hzOgR+lIBFmrIO3GKbl3U7L6XrYS12McwXvwmh4rnKq6MAVFwsmVzEgtacNdLiW
+ l2STdQoSWjr6b9yhL95iPto4eBQnIYJoS4YnjqPAc86kSM3tONYTxQjkoqpljSIM/rhj
+ tLsE4LZGYpZhFDBYt7eVljRPz33134u5gEdfbbzyI8NJyzOFem+YuWS/z4kxu8sKtKEs
+ HckWPhVu3jQNNzQX6XQMVOWoUEfrl5sQluytEqERFR2MWvL4GTahEKrmxed3H9qsZa2s
+ Q/hg==
+X-Gm-Message-State: AOJu0YwUkt/W635hKlA1lWQbf6dZ7pJeuZ9y1Y4U7laC3a1WZWNAYXDA
+ lz+/VSdBf7cNgsU6d0xzp00iTb8je2P/j/uBcKVCU44fBuZQPpCrl3aKpm93XC7MDTobAJeeMVV
+ D
+X-Google-Smtp-Source: AGHT+IFm67fZWp8xIQeGNOkUQuYe3WQy07lgADg/ZqQ4rqGUdTAOiDD9rBMQTZ9RUo2nno/QZPzVxw==
+X-Received: by 2002:a05:6a20:20c1:b0:19e:b534:1bcb with SMTP id
+ t1-20020a056a2020c100b0019eb5341bcbmr1028640pza.23.1707984904797; 
+ Thu, 15 Feb 2024 00:15:04 -0800 (PST)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- qc14-20020a17090b288e00b0029900404e11sm807755pjb.27.2024.02.15.00.15.02
+ qc14-20020a17090b288e00b0029900404e11sm807755pjb.27.2024.02.15.00.15.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 00:15:03 -0800 (PST)
+ Thu, 15 Feb 2024 00:15:04 -0800 (PST)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: amonakov@ispras.ru,
 	mmromanov@ispras.ru
-Subject: [PATCH v4 09/10] util/bufferiszero: Add simd acceleration for aarch64
-Date: Wed, 14 Feb 2024 22:14:48 -1000
-Message-Id: <20240215081449.848220-10-richard.henderson@linaro.org>
+Subject: [RFC PATCH v4 10/10] util/bufferiszero: Add sve acceleration for
+ aarch64
+Date: Wed, 14 Feb 2024 22:14:49 -1000
+Message-Id: <20240215081449.848220-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215081449.848220-1-richard.henderson@linaro.org>
 References: <20240215081449.848220-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,102 +94,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because non-embedded aarch64 is expected to have AdvSIMD enabled, merely
-double-check with the compiler flags for __ARM_NEON and don't bother with
-a runtime check.  Otherwise, model the loop after the x86 SSE2 function,
-and use VADDV to reduce the four vector comparisons.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 74 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
 
+RFC because I've not benchmarked this on real hw, only run it
+through qemu for validation.
+
+---
+ host/include/aarch64/host/cpuinfo.h |  1 +
+ util/bufferiszero.c                 | 49 +++++++++++++++++++++++++++++
+ util/cpuinfo-aarch64.c              |  1 +
+ meson.build                         | 13 ++++++++
+ 4 files changed, 64 insertions(+)
+
+diff --git a/host/include/aarch64/host/cpuinfo.h b/host/include/aarch64/host/cpuinfo.h
+index fe671534e4..b4b816cd07 100644
+--- a/host/include/aarch64/host/cpuinfo.h
++++ b/host/include/aarch64/host/cpuinfo.h
+@@ -12,6 +12,7 @@
+ #define CPUINFO_AES             (1u << 3)
+ #define CPUINFO_PMULL           (1u << 4)
+ #define CPUINFO_BTI             (1u << 5)
++#define CPUINFO_SVE             (1u << 6)
+ 
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 4eef6d47bc..2809b09225 100644
+index 2809b09225..af64c9c224 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -214,7 +214,81 @@ bool test_buffer_is_zero_next_accel(void)
-     }
-     return false;
+@@ -270,13 +270,62 @@ static bool buffer_is_zero_simd(const void *buf, size_t len)
+     return vaddvq_u32(vceqzq_u32(t0)) == -4;
  }
+ 
++#ifdef CONFIG_SVE_OPT
++#include <arm_sve.h>
 +
-+#elif defined(__aarch64__) && defined(__ARM_NEON)
-+#include <arm_neon.h>
-+
-+#define REASSOC_BARRIER(vec0, vec1) asm("" : "+w"(vec0), "+w"(vec1))
-+
-+static bool buffer_is_zero_simd(const void *buf, size_t len)
++#ifndef __ARM_FEATURE_SVE
++__attribute__((target("+sve")))
++#endif
++static bool buffer_is_zero_sve(const void *buf, size_t len)
 +{
-+    uint32x4_t t0, t1, t2, t3;
-+
-+    /* Align head/tail to 16-byte boundaries.  */
-+    const uint32x4_t *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
-+    const uint32x4_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
-+
-+    /* Unaligned loads at head/tail.  */
-+    t0 = vld1q_u32(buf) | vld1q_u32(buf + len - 16);
-+
-+    /* Collect a partial block at tail end.  */
-+    t1 = e[-7] | e[-6];
-+    t2 = e[-5] | e[-4];
-+    t3 = e[-3] | e[-2];
-+    t0 |= e[-1];
-+    REASSOC_BARRIER(t0, t1);
-+    REASSOC_BARRIER(t2, t3);
-+    t0 |= t1;
-+    t2 |= t3;
-+    REASSOC_BARRIER(t0, t2);
-+    t0 |= t2;
++    svbool_t p, t = svptrue_b8();
++    size_t i, n;
 +
 +    /*
-+     * Loop over complete 128-byte blocks.
-+     * With the head and tail removed, e - p >= 14, so the loop
-+     * must iterate at least once.
++     * For the first vector, align to 16 -- reading 1 to 256 bytes.
++     * Note this routine is only called with len >= 256, which is the
++     * architectural maximum vector length: the first vector always fits.
 +     */
++    i = 0;
++    n = QEMU_ALIGN_PTR_DOWN(buf + svcntb(), 16) - buf;
++    p = svwhilelt_b8(i, n);
++
 +    do {
-+        /* Each comparison is [-1,0], so reduction is in [-4..0]. */
-+        if (unlikely(vaddvq_u32(vceqzq_u32(t0)) != -4)) {
++        svuint8_t d = svld1_u8(p, buf + i);
++
++        p = svcmpne_n_u8(t, d, 0);
++        if (unlikely(svptest_any(t, p))) {
 +            return false;
 +        }
++        i += n;
++        n = svcntb();
++        p = svwhilelt_b8(i, len);
++    } while (svptest_any(t, p));
 +
-+        t0 = p[0] | p[1];
-+        t1 = p[2] | p[3];
-+        t2 = p[4] | p[5];
-+        t3 = p[6] | p[7];
-+        REASSOC_BARRIER(t0, t1);
-+        REASSOC_BARRIER(t2, t3);
-+        t0 |= t1;
-+        t2 |= t3;
-+        REASSOC_BARRIER(t0, t2);
-+        t0 |= t2;
-+        p += 8;
-+    } while (p < e - 7);
-+
-+    return vaddvq_u32(vceqzq_u32(t0)) == -4;
++    return true;
 +}
++#endif /* CONFIG_SVE_OPT */
 +
-+static biz_accel_fn const accel_table[] = {
-+    buffer_is_zero_int_ge256,
-+    buffer_is_zero_simd,
-+};
-+
-+static unsigned accel_index = 1;
-+#define INIT_ACCEL buffer_is_zero_simd
-+
-+bool test_buffer_is_zero_next_accel(void)
+ static biz_accel_fn const accel_table[] = {
+     buffer_is_zero_int_ge256,
+     buffer_is_zero_simd,
++#ifdef CONFIG_SVE_OPT
++    buffer_is_zero_sve,
++#endif
+ };
+ 
++#ifdef CONFIG_SVE_OPT
++static unsigned accel_index;
++static void __attribute__((constructor)) init_accel(void)
 +{
-+    if (accel_index != 0) {
-+        buffer_is_zero_accel = accel_table[--accel_index];
-+        return true;
-+    }
-+    return false;
++    accel_index = (cpuinfo & CPUINFO_SVE ? 2 : 1);
++    buffer_is_zero_accel = accel_table[accel_index];
 +}
-+
- #else
-+
++#define INIT_ACCEL NULL
++#else
+ static unsigned accel_index = 1;
+ #define INIT_ACCEL buffer_is_zero_simd
++#endif /* CONFIG_SVE_OPT */
+ 
  bool test_buffer_is_zero_next_accel(void)
  {
-     return false;
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index 4c8a005715..a1e22ea66e 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -61,6 +61,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+     info |= (hwcap & HWCAP_AES ? CPUINFO_AES : 0);
+     info |= (hwcap & HWCAP_PMULL ? CPUINFO_PMULL : 0);
++    info |= (hwcap & HWCAP_SVE ? CPUINFO_SVE : 0);
+ 
+     unsigned long hwcap2 = qemu_getauxval(AT_HWCAP2);
+     info |= (hwcap2 & HWCAP2_BTI ? CPUINFO_BTI : 0);
+diff --git a/meson.build b/meson.build
+index c1dc83e4c0..89a8241bc0 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2822,6 +2822,18 @@ config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
+     void foo(uint8x16_t *p) { *p = vaesmcq_u8(*p); }
+   '''))
+ 
++config_host_data.set('CONFIG_SVE_OPT', cc.compiles('''
++    #include <arm_sve.h>
++    #ifndef __ARM_FEATURE_SVE
++    __attribute__((target("+sve")))
++    #endif
++    void foo(void *p) {
++        svbool_t t = svptrue_b8();
++        svuint8_t d = svld1_u8(t, p);
++        svptest_any(t, svcmpne_n_u8(t, d, 0));
++    }
++  '''))
++
+ have_pvrdma = get_option('pvrdma') \
+   .require(rdma.found(), error_message: 'PVRDMA requires OpenFabrics libraries') \
+   .require(cc.compiles(gnu_source_prefix + '''
+@@ -4232,6 +4244,7 @@ summary_info += {'memory allocator':  get_option('malloc')}
+ summary_info += {'avx2 optimization': config_host_data.get('CONFIG_AVX2_OPT')}
+ summary_info += {'avx512bw optimization': config_host_data.get('CONFIG_AVX512BW_OPT')}
+ summary_info += {'avx512f optimization': config_host_data.get('CONFIG_AVX512F_OPT')}
++summary_info += {'sve optimization': config_host_data.get('CONFIG_SVE_OPT')}
+ summary_info += {'gcov':              get_option('b_coverage')}
+ summary_info += {'thread sanitizer':  get_option('tsan')}
+ summary_info += {'CFI support':       get_option('cfi')}
 -- 
 2.34.1
 
