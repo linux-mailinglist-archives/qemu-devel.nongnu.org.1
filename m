@@ -2,67 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E756585631F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 13:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A80856351
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 13:36:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raaqg-0004pS-QN; Thu, 15 Feb 2024 07:28:18 -0500
+	id 1raaxZ-0008F7-AO; Thu, 15 Feb 2024 07:35:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1raaqb-0004oL-J6
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 07:28:13 -0500
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkhapov@yandex-team.ru>)
- id 1raaqY-0007a7-Uz
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 07:28:13 -0500
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:378d:0:640:d5c4:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 6C53761199;
- Thu, 15 Feb 2024 15:28:07 +0300 (MSK)
-Received: from rkhapov-nux.yandex.net (unknown
- [2a02:6b8:82:604:e806:5ea2:b505:d402])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 2Sofch4IeOs0-xYySL6TH; Thu, 15 Feb 2024 15:28:06 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1708000086;
- bh=BO/mv5C6yvXXAB+zZEM52PqUHZ9pC8DMMequyOZtvus=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=oqZti/KZ0nFTr137N7SoXKLs1OzhvYCwc5o7dqmrpZGgitb8znHiiD7zmSW/aTB/m
- mDhczE1YtFO78Ox3CfvChf6KWZXIgFJlX/mH0oMX6s2La/we9CzIbJ1STsULKHzFZr
- e+M5miiFo+O65acVGtIbJdOR4gWDqQxvCfjxlJ8c=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Roman Khapov <rkhapov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- yc-core@yandex-team.ru, Roman Khapov <rkhapov@yandex-team.ru>
-Subject: [PATCH v2 2/2] migration: add error reason for failed MIGRATION events
-Date: Thu, 15 Feb 2024 17:27:59 +0500
-Message-Id: <20240215122759.1438581-3-rkhapov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
-References: <20240215122759.1438581-1-rkhapov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <m_o_bz@163.com>)
+ id 1raaxS-0008Ec-RE; Thu, 15 Feb 2024 07:35:19 -0500
+Received: from m16.mail.163.com ([220.197.31.2])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <m_o_bz@163.com>)
+ id 1raaxN-0000gw-Mv; Thu, 15 Feb 2024 07:35:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=Date:Subject:Message-ID:From:MIME-Version:
+ Content-Type; bh=H0WeqezjgFQFbDDwf8Yk/vW9a8NXWpe8xqC3ZAT9LSo=;
+ b=AHhxqfchN9qygebuD6La0rwy69wD50L33DEXkHKWXLHwhvxFM8CuFC8Orc8bZd
+ kLVd6OmLHJotikul9YcPEQVEPU1nE1evP1m3AoVSnw9Sm02yzL9drJn8yI0c6nIl
+ goMlvgduO936izmEC59Wq4VRuArRb7VHAWi79WX++URtk=
+Received: from [10.208.28.133] (unknown [140.243.150.78])
+ by gzga-smtp-mta-g1-4 (Coremail) with SMTP id _____wDnF2jfBM5lPOuSCQ--.45883S2;
+ Thu, 15 Feb 2024 20:34:40 +0800 (CST)
+Date: Thu, 15 Feb 2024 20:34:38 +0800
+Subject: Re: double free or corruption (out) in iscsi virtual machine
+Message-ID: <1mmaslugo8633964p2gq1di8.1708000054427@email.android.com>
+From: m_o_bz <m_o_bz@163.com>
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-block <qemu-block@nongnu.org>
+Cc: "deepa.srinivasan" <deepa.srinivasan@oracle.com>, qemu-devel
+ <qemu-devel@nongnu.org>, ronniesahlberg <ronniesahlberg@gmail.com>,
+ pbonzini <pbonzini@redhat.com>, pl <pl@kamp.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=rkhapov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Content-Type: multipart/alternative;
+ boundary="--_com.android.email_1013616003729930"
+X-CM-TRANSID: _____wDnF2jfBM5lPOuSCQ--.45883S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jw4UtFWftF4rXF4rZr13Arb_yoWkKwb_Ca
+ 4rta45CrWj9r40qanrJFnavry0k3W0gF4UJw1UGrsFv34fJr4xXrsY9r97Zw15Gw1xu3y3
+ Z3W8ta1Ig3sxujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+ 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjJUU7UUUUU==
+X-Originating-IP: [140.243.150.78]
+X-CM-SenderInfo: ppbrsur26rljoofrz/1tbisgKF9WVOB29BbAAAsu
+Received-SPF: pass client-ip=220.197.31.2; envelope-from=m_o_bz@163.com;
+ helo=m16.mail.163.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,333 +67,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds error description as reason for event MIGRATION in every
-place that generates MIGRATION_STATE_FAILED
+----_com.android.email_1013616003729930
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Roman Khapov <rkhapov@yandex-team.ru>
----
- migration/migration.c | 62 ++++++++++++++++++++++++++++++-------------
- migration/multifd.c   |  8 +++---
- migration/savevm.c    | 12 ++++-----
- 3 files changed, 54 insertions(+), 28 deletions(-)
+PGRpdj55ZXDvvIxJIGZvdW5kIHRoaXMgY29tbWl0IHRvbywmbmJzcDsgYWxyZWFkeSBwYXRjaCB0
+aGlzIGNvbW1pdCBhbmQgdGVzdCBpdCwgdGhlIGJ1ZyBjYW4gbm90IHJlcHJvZHVjZSBhbnkgbW9y
+ZTwvZGl2PjxiciBpZD0ibXpEaXZpZGVyIj48YnI+PGJyPi0tLS0tLS0tIOWOn+Wni+mCruS7tiAt
+LS0tLS0tLTxicj7lj5Hku7bkurrvvJpGaW9uYSBFYm5lciAmbHQ7Zi5lYm5lckBwcm94bW94LmNv
+bSZndDs8YnI+5pe26Ze077yaMjAyNOW5tDLmnIgxNeaXpSAxODoyOTxicj7mlLbku7bkurrvvJpN
+X09fQnogJmx0O21fb19iekAxNjMuY29tJmd0OyxxZW11LWJsb2NrICZsdDtxZW11LWJsb2NrQG5v
+bmdudS5vcmcmZ3Q7PGJyPuaKhOmAge+8miZxdW90O2RlZXBhLnNyaW5pdmFzYW4mcXVvdDsgJmx0
+O2RlZXBhLnNyaW5pdmFzYW5Ab3JhY2xlLmNvbSZndDsscWVtdS1kZXZlbCAmbHQ7cWVtdS1kZXZl
+bEBub25nbnUub3JnJmd0Oyxyb25uaWVzYWhsYmVyZyAmbHQ7cm9ubmllc2FobGJlcmdAZ21haWwu
+Y29tJmd0OyxwYm9uemluaSAmbHQ7cGJvbnppbmlAcmVkaGF0LmNvbSZndDsscGwgJmx0O3BsQGth
+bXAuZGUmZ3Q7PGJyPuS4u+mimO+8mlJlOiBkb3VibGUgZnJlZSBvciBjb3JydXB0aW9uIChvdXQp
+IGluIGlzY3NpIHZpcnR1YWwgbWFjaGluZTxicj48YnI+QW0gMTcuMDEuMjQgdW0gMDg6MjMgc2No
+cmllYiBNX09fQno6PGJyPiZndDsgQmFzaWMgSW5mbzo8YnI+Jmd0OyAxLiBJc3N1ZTogSSBnb3Qg
+YSAiIGRvdWJsZSBmcmVlIG9yIGNvcnJ1cHRpb24gKG91dCkiLCBoZWFkIGZvcjxicj4mZ3Q7IGF0
+dGFjaG1lbnQgZGVidWcubG9nIGZvciBkZXRhaWxzLCB0aGUgZGVidWcubG9nIHByaW50IHRoZSBi
+YWNrdHJhY2Ugb2Y8YnI+Jmd0OyBvbmUgdmlydHVhbCBtYWNoaW5lPGJyPiZndDsgMi4gUmVwcm9k
+dWNlOiBjdXJyZW50bHkgSSBjYW5uJ3QgZGVzdHJpYmUgaG93IHRvIHJlcHJvZHVjZSB0aGlzIGJ1
+Zyw8YnI+Jmd0OyBiZWNhdXNlIGl0J3MgaW4gbXkgcHJvZHVjdGl2ZSBlbnZpcm9tZW50IHdoaWNo
+IGluY2x1ZGUgc29tZSBzcGVjaWFsIHN0dWZmczxicj4mZ3Q7IDMuIHFlbXUgdmVyc2lvbjrCoCBJ
+J20gdXNpbmcgaXMgcWVtdS02LjAuMTxicj4mZ3Q7IDQuIHFlbXUgY2NtZGxpbmUgaW4gc2hvcnQ6
+KGNoZWNrb3V0IGRldGFpbCBpbiB0aGUgdmlydHVhbCBtYWNoaW5lIGxvZzxicj4mZ3Q7IG1lc3Nh
+Z2UpPGJyPjxicj5IaSw8YnI+c291bmRzIGxpa2UgaXQgbWlnaHQgYmUgdGhlIGlzc3VlIGZpeGVk
+IGJ5Ojxicj48YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vcWVtdS9xZW11L2NvbW1pdC81MDgw
+MTUyZTJlZjZjZGU3YWE2OTJlMjk4ODBjNjJiZDU0YWNiNzUwIj5odHRwczovL2dpdGh1Yi5jb20v
+cWVtdS9xZW11L2NvbW1pdC81MDgwMTUyZTJlZjZjZGU3YWE2OTJlMjk4ODBjNjJiZDU0YWNiNzUw
+PC9hPjxicj48YnI+QmVzdCBSZWdhcmRzLDxicj5GaW9uYTxicj4=
+----_com.android.email_1013616003729930
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-diff --git a/migration/migration.c b/migration/migration.c
-index d28885a55b..0af16d5fa9 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -702,11 +702,14 @@ process_incoming_migration_co(void *opaque)
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     PostcopyState ps;
-     int ret;
-+    g_autofree char *fail_reason = NULL;
- 
-     assert(mis->from_src_file);
- 
-     if (compress_threads_load_setup(mis->from_src_file)) {
--        error_report("Failed to setup decompress threads");
-+        fail_reason = g_strdup("Failed to setup decompress threads");
-+        /* wrap with %s to silence compiler warning of non-literal in format */
-+        error_report("%s", fail_reason);
-         goto fail;
-     }
- 
-@@ -750,11 +753,15 @@ process_incoming_migration_co(void *opaque)
-                 error_report_err(s->error);
-             }
-         }
--        error_report("load of migration failed: %s", strerror(-ret));
-+        fail_reason = g_strdup_printf("load of migration failed: %s",
-+                                      strerror(-ret));
-+        /* wrap with %s to silence compiler warning of non-literal in format */
-+        error_report("%s", fail_reason);
-         goto fail;
-     }
- 
-     if (colo_incoming_co() < 0) {
-+        fail_reason = g_strdup("colo_incoming failed");
-         goto fail;
-     }
- 
-@@ -762,7 +769,7 @@ process_incoming_migration_co(void *opaque)
-     return;
- fail:
-     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
--                      MIGRATION_STATUS_FAILED, NULL);
-+                      MIGRATION_STATUS_FAILED, fail_reason);
-     qemu_fclose(mis->from_src_file);
- 
-     multifd_recv_cleanup();
-@@ -1417,8 +1424,8 @@ static void migrate_fd_error(MigrationState *s, const Error *error)
- {
-     trace_migrate_fd_error(error_get_pretty(error));
-     assert(s->to_dst_file == NULL);
--    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                      MIGRATION_STATUS_FAILED, NULL);
-+    migrate_set_state_err_reason(&s->state, MIGRATION_STATUS_SETUP,
-+                                 MIGRATION_STATUS_FAILED, error);
-     migrate_set_error(s, error);
- }
- 
-@@ -1968,6 +1975,7 @@ void qmp_migrate(const char *uri, bool has_channels,
-                  bool has_inc, bool inc, bool has_detach, bool detach,
-                  bool has_resume, bool resume, Error **errp)
- {
-+    ERRP_GUARD();
-     bool resume_requested;
-     Error *local_err = NULL;
-     MigrationState *s = migrate_get_current();
-@@ -2037,8 +2045,8 @@ void qmp_migrate(const char *uri, bool has_channels,
-     } else {
-         error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
-                    "a valid migration protocol");
--        migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
--                          MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&s->state, MIGRATION_STATUS_SETUP,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-         block_cleanup_parameters();
-     }
- 
-@@ -2426,6 +2434,7 @@ migration_wait_main_channel(MigrationState *ms)
-  */
- static int postcopy_start(MigrationState *ms, Error **errp)
- {
-+    ERRP_GUARD();
-     int ret;
-     QIOChannelBuffer *bioc;
-     QEMUFile *fb;
-@@ -2436,8 +2445,10 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     if (migrate_postcopy_preempt()) {
-         migration_wait_main_channel(ms);
-         if (postcopy_preempt_establish_channel(ms)) {
--            migrate_set_state(&ms->state, ms->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            error_setg(errp,
-+                       "postcopy_start: establishing channel failed");
-+            migrate_set_state_err_reason(&ms->state, ms->state,
-+                                         MIGRATION_STATUS_FAILED, *errp);
-             return -1;
-         }
-     }
-@@ -2456,17 +2467,21 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     global_state_store();
-     ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
-     if (ret < 0) {
-+        error_setg(errp, "postcopy_start: vm stop failed");
-         goto fail;
-     }
- 
-     ret = migration_maybe_pause(ms, &cur_state,
-                                 MIGRATION_STATUS_POSTCOPY_ACTIVE);
-     if (ret < 0) {
-+        error_setg(errp, "postcopy_start: migratoin pause failed");
-         goto fail;
-     }
- 
-     ret = bdrv_inactivate_all();
-     if (ret < 0) {
-+        error_setg(errp,
-+                   "postcopy_start: making block drivers inactive failed");
-         goto fail;
-     }
-     restart_block = true;
-@@ -2543,6 +2558,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     /* Now send that blob */
-     if (qemu_savevm_send_packaged(ms->to_dst_file, bioc->data, bioc->usage)) {
-+        error_setg(errp, "postcopy_start: blob sending failed");
-         goto fail_closefb;
-     }
-     qemu_fclose(fb);
-@@ -2573,8 +2589,9 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     ret = qemu_file_get_error(ms->to_dst_file);
-     if (ret) {
-         error_setg(errp, "postcopy_start: Migration stream errored");
--        migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
--                          MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&ms->state,
-+                                     MIGRATION_STATUS_POSTCOPY_ACTIVE,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-     }
- 
-     trace_postcopy_preempt_enabled(migrate_postcopy_preempt());
-@@ -2584,8 +2601,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- fail_closefb:
-     qemu_fclose(fb);
- fail:
--    migrate_set_state(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
--                      MIGRATION_STATUS_FAILED, NULL);
-+    migrate_set_state_err_reason(&ms->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
-+                                 MIGRATION_STATUS_FAILED, *errp);
-     if (restart_block) {
-         /* A failure happened early enough that we know the destination hasn't
-          * accessed block devices, so we're safe to recover.
-@@ -2700,7 +2717,8 @@ static void migration_completion_postcopy(MigrationState *s)
- }
- 
- static void migration_completion_failed(MigrationState *s,
--                                        int current_active_state)
-+                                        int current_active_state,
-+                                        const char *fail_reason)
- {
-     if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
-                               s->state == MIGRATION_STATUS_DEVICE)) {
-@@ -2721,7 +2739,7 @@ static void migration_completion_failed(MigrationState *s,
-     }
- 
-     migrate_set_state(&s->state, current_active_state,
--                      MIGRATION_STATUS_FAILED, NULL);
-+                      MIGRATION_STATUS_FAILED, fail_reason);
- }
- 
- /**
-@@ -2733,6 +2751,7 @@ static void migration_completion_failed(MigrationState *s,
- static void migration_completion(MigrationState *s)
- {
-     int ret = 0;
-+    const char *fail_reason = NULL;
-     int current_active_state = s->state;
- 
-     if (s->state == MIGRATION_STATUS_ACTIVE) {
-@@ -2740,6 +2759,7 @@ static void migration_completion(MigrationState *s)
-     } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-         migration_completion_postcopy(s);
-     } else {
-+        fail_reason = "migration completion: unexpected migration state";
-         ret = -1;
-     }
- 
-@@ -2748,6 +2768,7 @@ static void migration_completion(MigrationState *s)
-     }
- 
-     if (close_return_path_on_source(s)) {
-+        fail_reason = "migration completion: return path thread close failed";
-         goto fail;
-     }
- 
-@@ -2768,7 +2789,7 @@ static void migration_completion(MigrationState *s)
-     return;
- 
- fail:
--    migration_completion_failed(s, current_active_state);
-+    migration_completion_failed(s, current_active_state, fail_reason);
- }
- 
- /**
-@@ -2994,7 +3015,8 @@ static MigThrError migration_detect_error(MigrationState *s)
-          * For precopy (or postcopy with error outside IO), we fail
-          * with no time.
-          */
--        migrate_set_state(&s->state, state, MIGRATION_STATUS_FAILED, NULL);
-+        migrate_set_state_err_reason(&s->state, state,
-+                                     MIGRATION_STATUS_FAILED, s->error);
-         trace_migration_thread_file_err();
- 
-         /* Time to stop the migration, now. */
-@@ -3458,6 +3480,7 @@ static void *bg_migration_thread(void *opaque)
-     MigThrError thr_error;
-     QEMUFile *fb;
-     bool early_fail = true;
-+    const char *fail_reason = NULL;
- 
-     rcu_register_thread();
-     object_ref(OBJECT(s));
-@@ -3509,6 +3532,7 @@ static void *bg_migration_thread(void *opaque)
-     global_state_store();
-     /* Forcibly stop VM before saving state of vCPUs and devices */
-     if (migration_stop_vm(RUN_STATE_PAUSED)) {
-+        fail_reason = "stopping vm failed";
-         goto fail;
-     }
-     /*
-@@ -3517,6 +3541,7 @@ static void *bg_migration_thread(void *opaque)
-      */
-     cpu_synchronize_all_states();
-     if (qemu_savevm_state_complete_precopy_non_iterable(fb, false, false)) {
-+        fail_reason = "savevm state failed";
-         goto fail;
-     }
-     /*
-@@ -3527,6 +3552,7 @@ static void *bg_migration_thread(void *opaque)
- 
-     /* Now initialize UFFD context and start tracking RAM writes */
-     if (ram_write_tracking_start()) {
-+        fail_reason = "starting UFFD-WP memory tracking failed";
-         goto fail;
-     }
-     early_fail = false;
-@@ -3566,7 +3592,7 @@ static void *bg_migration_thread(void *opaque)
- fail:
-     if (early_fail) {
-         migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
--                          MIGRATION_STATUS_FAILED, NULL);
-+                          MIGRATION_STATUS_FAILED, fail_reason);
-         bql_unlock();
-     }
- 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index da3d397642..cb52ebc062 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -594,8 +594,8 @@ static void multifd_send_set_error(Error *err)
-             s->state == MIGRATION_STATUS_PRE_SWITCHOVER ||
-             s->state == MIGRATION_STATUS_DEVICE ||
-             s->state == MIGRATION_STATUS_ACTIVE) {
--            migrate_set_state(&s->state, s->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            migrate_set_state_err_reason(&s->state, s->state,
-+                                         MIGRATION_STATUS_FAILED, err);
-         }
-     }
- }
-@@ -1086,8 +1086,8 @@ static void multifd_recv_terminate_threads(Error *err)
-         migrate_set_error(s, err);
-         if (s->state == MIGRATION_STATUS_SETUP ||
-             s->state == MIGRATION_STATUS_ACTIVE) {
--            migrate_set_state(&s->state, s->state,
--                              MIGRATION_STATUS_FAILED, NULL);
-+            migrate_set_state_err_reason(&s->state, s->state,
-+                                         MIGRATION_STATUS_FAILED, err);
-         }
-     }
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index be6cce8a51..52fd3e37db 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1700,9 +1700,9 @@ void qemu_savevm_state_cleanup(void)
- 
- static int qemu_savevm_state(QEMUFile *f, Error **errp)
- {
-+    ERRP_GUARD();
-     int ret;
-     MigrationState *ms = migrate_get_current();
--    MigrationStatus status;
- 
-     if (migration_is_running(ms->state)) {
-         error_setg(errp, QERR_MIGRATION_ACTIVE);
-@@ -1735,16 +1735,16 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
-         ret = qemu_file_get_error(f);
-     }
-     qemu_savevm_state_cleanup();
-+
-     if (ret != 0) {
-         error_setg_errno(errp, -ret, "Error while writing VM state");
--    }
- 
--    if (ret != 0) {
--        status = MIGRATION_STATUS_FAILED;
-+        migrate_set_state_err_reason(&ms->state, MIGRATION_STATUS_SETUP,
-+                                     MIGRATION_STATUS_FAILED, *errp);
-     } else {
--        status = MIGRATION_STATUS_COMPLETED;
-+        migrate_set_state(&ms->state, MIGRATION_STATUS_SETUP,
-+                          MIGRATION_STATUS_COMPLETED, NULL);
-     }
--    migrate_set_state(&ms->state, MIGRATION_STATUS_SETUP, status, NULL);
- 
-     /* f is outer parameter, it should not stay in global migration state after
-      * this function finished */
--- 
-2.34.1
+eWVw77yMSSBmb3VuZCB0aGlzIGNvbW1pdCB0b28sICBhbHJlYWR5IHBhdGNoIHRoaXMgY29tbWl0
+IGFuZCB0ZXN0IGl0LCB0aGUgYnVnIGNhbiBub3QgcmVwcm9kdWNlIGFueSBtb3JlCgoKCgotLS0t
+LS0tLSDljp/lp4vpgq7ku7YgLS0tLS0tLS0K5Y+R5Lu25Lq677yaRmlvbmEgRWJuZXIgPGYuZWJu
+ZXJAcHJveG1veC5jb20+CuaXtumXtO+8mjIwMjTlubQy5pyIMTXml6UgMTg6MjkK5pS25Lu25Lq6
+77yaTV9PX0J6IDxtX29fYnpAMTYzLmNvbT4scWVtdS1ibG9jayA8cWVtdS1ibG9ja0Bub25nbnUu
+b3JnPgrmioTpgIHvvJoiZGVlcGEuc3Jpbml2YXNhbiIgPGRlZXBhLnNyaW5pdmFzYW5Ab3JhY2xl
+LmNvbT4scWVtdS1kZXZlbCA8cWVtdS1kZXZlbEBub25nbnUub3JnPixyb25uaWVzYWhsYmVyZyA8
+cm9ubmllc2FobGJlcmdAZ21haWwuY29tPixwYm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT4s
+cGwgPHBsQGthbXAuZGU+CuS4u+mimO+8mlJlOiBkb3VibGUgZnJlZSBvciBjb3JydXB0aW9uIChv
+dXQpIGluIGlzY3NpIHZpcnR1YWwgbWFjaGluZQoKPkFtIDE3LjAxLjI0IHVtIDA4OjIzIHNjaHJp
+ZWIgTV9PX0J6Ogo+PiBCYXNpYyBJbmZvOgo+PiAxLiBJc3N1ZTogSSBnb3QgYSAiIGRvdWJsZSBm
+cmVlIG9yIGNvcnJ1cHRpb24gKG91dCkiLCBoZWFkIGZvcgo+PiBhdHRhY2htZW50IGRlYnVnLmxv
+ZyBmb3IgZGV0YWlscywgdGhlIGRlYnVnLmxvZyBwcmludCB0aGUgYmFja3RyYWNlIG9mCj4+IG9u
+ZSB2aXJ0dWFsIG1hY2hpbmUKPj4gMi4gUmVwcm9kdWNlOiBjdXJyZW50bHkgSSBjYW5uJ3QgZGVz
+dHJpYmUgaG93IHRvIHJlcHJvZHVjZSB0aGlzIGJ1ZywKPj4gYmVjYXVzZSBpdCdzIGluIG15IHBy
+b2R1Y3RpdmUgZW52aXJvbWVudCB3aGljaCBpbmNsdWRlIHNvbWUgc3BlY2lhbCBzdHVmZnMKPj4g
+My4gcWVtdSB2ZXJzaW9uOsKgIEknbSB1c2luZyBpcyBxZW11LTYuMC4xCj4+IDQuIHFlbXUgY2Nt
+ZGxpbmUgaW4gc2hvcnQ6KGNoZWNrb3V0IGRldGFpbCBpbiB0aGUgdmlydHVhbCBtYWNoaW5lIGxv
+Zwo+PiBtZXNzYWdlKQo+Cj5IaSwKPnNvdW5kcyBsaWtlIGl0IG1pZ2h0IGJlIHRoZSBpc3N1ZSBm
+aXhlZCBieToKPmh0dHBzOi8vZ2l0aHViLmNvbS9xZW11L3FlbXUvY29tbWl0LzUwODAxNTJlMmVm
+NmNkZTdhYTY5MmUyOTg4MGM2MmJkNTRhY2I3NTAKPgo+QmVzdCBSZWdhcmRzLAo+RmlvbmEK
+----_com.android.email_1013616003729930--
 
 
