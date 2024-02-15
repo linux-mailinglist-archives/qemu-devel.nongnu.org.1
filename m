@@ -2,63 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408B1856B1C
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEEC1856B3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:39:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafdO-0007KO-8y; Thu, 15 Feb 2024 12:34:54 -0500
+	id 1rafeE-0007uw-1D; Thu, 15 Feb 2024 12:35:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rafdG-0007Hc-7j
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:34:47 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rafdA-0003MR-GQ
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:34:45 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TbMXT0fknz6J9bQ;
- Fri, 16 Feb 2024 01:30:33 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 028C1140682;
- Fri, 16 Feb 2024 01:34:36 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 15 Feb
- 2024 17:34:35 +0000
-Date: Thu, 15 Feb 2024 17:34:34 +0000
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <qemu-devel@nongnu.org>, Gregory Price <gregory.price@memverge.com>, Alex
- =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>, Sajjan Rao
- <sajjanr@gmail.com>, Dimitrios Palyvos <dimitrios.palyvos@zptcorp.com>,
- <richard.henderson@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Eduardo
- Habkost" <eduardo@habkost.net>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH 3/3] tcg: Avoid double lock if page tables happen to be
- in mmio memory.
-Message-ID: <20240215173434.00004882@Huawei.com>
-In-Reply-To: <CAFEAcA-rHZe2xF9anKxYFm0zHYc6gV=g9JiXxeZ4E_LoQ7DhSA@mail.gmail.com>
-References: <20240215150133.2088-1-Jonathan.Cameron@huawei.com>
- <20240215150133.2088-4-Jonathan.Cameron@huawei.com>
- <CAFEAcA-rHZe2xF9anKxYFm0zHYc6gV=g9JiXxeZ4E_LoQ7DhSA@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rafeB-0007uP-Rn
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:43 -0500
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rafe9-0003tW-OQ
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:43 -0500
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-410ca9e851bso9059285e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708018540; x=1708623340; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RexkiDntXUclc+ODrTpB8ETswJdghZou3AXsBu6yv+A=;
+ b=juKtWhss0E+MPglTS7xfkMH4jaHQ+oINFDIIcZHhzRLcMvKipHKr/djLwNRbnuMzjm
+ BYA8iJj28bKX++n8wknZqwgVc5KJai/EE2hpsAj+stp0ecnma8omkyuzw6L4BJT2BXuY
+ 3IWOLSlujno06TMv9tb43LfOIRA9m444QfYfYvfSP+hg/vozBzX1eMs9qnVPiLhDlFd4
+ q8iZJ5ZiFL2p885o6wNsILMzh5Ea5gpeTNuXawbpeyOmwzDi7UoKi1wi5YscS8iDZZ8d
+ 9mYNsbFYJWFbDb9VeC3Av6cM7MtLRRtDnGGKJ+LJq8tcEg3cs8+Vq1589IwasadV/3SF
+ yUEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708018540; x=1708623340;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RexkiDntXUclc+ODrTpB8ETswJdghZou3AXsBu6yv+A=;
+ b=PBim1nJa+0+HQE8yGMe+96dtSG3Hq9TkR1MtlU6Uj4MJkWV4bDmlljtTC+gAu/0lHe
+ 1hliI9RaNgGqq3teCnBKwrV7EGy7ZMw/+jn2gG8tAI8glBonxOUD5vWc3EBYYhHu8OtD
+ gl8xv0RqZB+SGBtw06D5Uk/4ayT/JhRyH4NLZdLlC+2W7MpkcB7D7vfJCnWp1WYpSVOi
+ UQgVd+bJkSKQTfwjL+6uVKKLZ4EhPX5wsuVs25DJkclE2ZdRnBU9zvWx/+DN62xV80Oe
+ 68QBEigG8gTcwiSk9agPb3EF9eeIS7mocLypgmPbg7EDP0YRo6cCb4qecE9Vw4WzNOEf
+ qH3A==
+X-Gm-Message-State: AOJu0YzCHwZGCr3u3uuO/s/fmI6rEpfLIBxAsnxEX+4Fz0KpuhRxZp6m
+ ke53I7smK6pnezHBJ+UapQqBeI6H7gU1jbTpxCq5QqZAkXISW37WMd5R0mLXQzdSPWYUI+h5XKO
+ Y
+X-Google-Smtp-Source: AGHT+IG3XLhD27PtOby3FDTkllCT7qAJfM1gWyq4jPgQaStNlfmYailMVsFjVG+XCqhhCCfVerBJSA==
+X-Received: by 2002:a5d:40d2:0:b0:33b:7353:b632 with SMTP id
+ b18-20020a5d40d2000000b0033b7353b632mr1984551wrq.50.1708018539848; 
+ Thu, 15 Feb 2024 09:35:39 -0800 (PST)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.39
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Feb 2024 09:35:39 -0800 (PST)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/35] target-arm queue
+Date: Thu, 15 Feb 2024 17:35:03 +0000
+Message-Id: <20240215173538.2430599-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,111 +86,121 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 15 Feb 2024 16:11:26 +0000
-Peter Maydell <peter.maydell@linaro.org> wrote:
+The following changes since commit 5767815218efd3cbfd409505ed824d5f356044ae:
 
-> On Thu, 15 Feb 2024 at 15:03, Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On i386, after fixing the page walking code to work with pages in
-> > MMIO memory (specifically CXL emulated interleaved memory),
-> > a crash was seen in an interrupt handling path.
-> >
-> > Useful part of bt  
-> 
-> Did you intend to put in a backtrace here?
-ah. Indeed.
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2024-02-14 15:45:52 +0000)
 
-Forgot that the # at start of a bt is a comment in a git message
-oops.
+are available in the Git repository at:
 
-I'll put those back in (hash removed) for v2.
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240215
 
-7  0x0000555555ab1929 in bql_lock_impl (file=0x555556049122 "../../accel/tcg/cputlb.c", line=2033) at ../../system/cpus.c:524
-8  bql_lock_impl (file=file@entry=0x555556049122 "../../accel/tcg/cputlb.c", line=line@entry=2033) at ../../system/cpus.c:520
-9  0x0000555555c9f7d6 in do_ld_mmio_beN (cpu=0x5555578e0cb0, full=0x7ffe88012950, ret_be=ret_be@entry=0, addr=19595792376, size=size@entry=8, mmu_idx=4, type=MMU_DATA_LOAD, ra=0) at ../../accel/tcg/cputlb.c:2033
-10 0x0000555555ca0fbd in do_ld_8 (cpu=cpu@entry=0x5555578e0cb0, p=p@entry=0x7ffff4efd1d0, mmu_idx=<optimized out>, type=type@entry=MMU_DATA_LOAD, memop=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:2356
-11 0x0000555555ca341f in do_ld8_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=19595792376, oi=oi@entry=52, ra=0, ra@entry=52, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2439
-12 0x0000555555ca5f59 in cpu_ldq_mmu (ra=52, oi=52, addr=19595792376, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:169
-13 cpu_ldq_le_mmuidx_ra (env=0x5555578e3470, addr=19595792376, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:301
-14 0x0000555555b4b5fc in ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:98
-15 ptw_ldq (ra=0, in=0x7ffff4efd320) at ../../target/i386/tcg/sysemu/excp_helper.c:93
-16 mmu_translate (env=env@entry=0x5555578e3470, in=0x7ffff4efd3e0, out=0x7ffff4efd3b0, err=err@entry=0x7ffff4efd3c0, ra=ra@entry=0) at ../../target/i386/tcg/sysemu/excp_helper.c:174
-17 0x0000555555b4c4b3 in get_physical_address (ra=0, err=0x7ffff4efd3c0, out=0x7ffff4efd3b0, mmu_idx=0, access_type=MMU_DATA_LOAD, addr=18446741874686299840, env=0x5555578e3470) at ../../target/i386/tcg/sysemu/excp_helper.c:580
-18 x86_cpu_tlb_fill (cs=0x5555578e0cb0, addr=18446741874686299840, size=<optimized out>, access_type=MMU_DATA_LOAD, mmu_idx=0, probe=<optimized out>, retaddr=0) at ../../target/i386/tcg/sysemu/excp_helper.c:606
-19 0x0000555555ca0ee9 in tlb_fill (retaddr=0, mmu_idx=0, access_type=MMU_DATA_LOAD, size=<optimized out>, addr=18446741874686299840, cpu=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1315
-20 mmu_lookup1 (cpu=cpu@entry=0x5555578e0cb0, data=data@entry=0x7ffff4efd540, mmu_idx=0, access_type=access_type@entry=MMU_DATA_LOAD, ra=ra@entry=0) at ../../accel/tcg/cputlb.c:1713
-21 0x0000555555ca2c61 in mmu_lookup (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, type=type@entry=MMU_DATA_LOAD, l=l@entry=0x7ffff4efd540) at ../../accel/tcg/cputlb.c:1803
-22 0x0000555555ca3165 in do_ld4_mmu (cpu=cpu@entry=0x5555578e0cb0, addr=addr@entry=18446741874686299840, oi=oi@entry=32, ra=ra@entry=0, access_type=access_type@entry=MMU_DATA_LOAD) at ../../accel/tcg/cputlb.c:2416
-23 0x0000555555ca5ef9 in cpu_ldl_mmu (ra=0, oi=32, addr=18446741874686299840, env=0x5555578e3470) at ../../accel/tcg/ldst_common.c.inc:158
-24 cpu_ldl_le_mmuidx_ra (env=env@entry=0x5555578e3470, addr=addr@entry=18446741874686299840, mmu_idx=<optimized out>, ra=ra@entry=0) at ../../accel/tcg/ldst_common.c.inc:294
-25 0x0000555555bb6cdd in do_interrupt64 (is_hw=1, next_eip=18446744072399775809, error_code=0, is_int=0, intno=236, env=0x5555578e3470) at ../../target/i386/tcg/seg_helper.c:889
-26 do_interrupt_all (cpu=cpu@entry=0x5555578e0cb0, intno=236, is_int=is_int@entry=0, error_code=error_code@entry=0, next_eip=next_eip@entry=0, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1130
-27 0x0000555555bb87da in do_interrupt_x86_hardirq (env=env@entry=0x5555578e3470, intno=<optimized out>, is_hw=is_hw@entry=1) at ../../target/i386/tcg/seg_helper.c:1162
-28 0x0000555555b5039c in x86_cpu_exec_interrupt (cs=0x5555578e0cb0, interrupt_request=<optimized out>) at ../../target/i386/tcg/sysemu/seg_helper.c:197
-29 0x0000555555c94480 in cpu_handle_interrupt (last_tb=<synthetic pointer>, cpu=0x5555578e0cb0) at ../../accel/tcg/cpu-exec.c:844
-> 
-> >
-> > Peter identified this as being due to the BQL already being
-> > held when the page table walker encounters MMIO memory and attempts
-> > to take the lock again.  There are other examples of similar paths
-> > TCG, so this follows the approach taken in those of simply checking
-> > if the lock is already held and if it is, don't take it again.
-> >
-> > Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  accel/tcg/cputlb.c | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> > index 047cd2cc0a..3b8d178707 100644
-> > --- a/accel/tcg/cputlb.c
-> > +++ b/accel/tcg/cputlb.c
-> > @@ -2019,6 +2019,7 @@ static uint64_t do_ld_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-> >                                 int mmu_idx, MMUAccessType type, uintptr_t ra)
-> >  {
-> >      MemoryRegionSection *section;
-> > +    bool locked = bql_locked();
-> >      MemoryRegion *mr;
-> >      hwaddr mr_offset;
-> >      MemTxAttrs attrs;
-> > @@ -2030,10 +2031,14 @@ static uint64_t do_ld_mmio_beN(CPUState *cpu, CPUTLBEntryFull *full,
-> >      section = io_prepare(&mr_offset, cpu, full->xlat_section, attrs, addr, ra);
-> >      mr = section->mr;
-> >
-> > -    bql_lock();
-> > +    if (!locked) {
-> > +        bql_lock();
-> > +    }
-> >      ret = int_ld_mmio_beN(cpu, full, ret_be, addr, size, mmu_idx,
-> >                            type, ra, mr, mr_offset);
-> > -    bql_unlock();
-> > +    if (!locked) {
-> > +        bql_unlock();
-> > +    }
-> >
-> >      return ret;
-> >  }  
-> 
-> Can we do this consistently across all four functions
-> do_ld_mmio_beN, do_ld16_mmio_beN, do_st_mmio_leN,
-> do_st16_mmio_leN, please ? It happens that your workload
-> only needs to do an 8-byte load but conceptually the same
-> thing applies in all these cases.
+for you to fetch changes up to f780e63fe731b058fe52d43653600d8729a1b5f2:
 
-Sure,
+  docs: Add documentation for the mps3-an536 board (2024-02-15 14:32:39 +0000)
 
-Jonathan
+----------------------------------------------------------------
+target-arm queue:
+ * hw/arm/xilinx_zynq: Wire FIQ between CPU <> GIC
+ * linux-user/aarch64: Choose SYNC as the preferred MTE mode
+ * Fix some errors in SVE/SME handling of MTE tags
+ * hw/pci-host/raven.c: Mark raven_io_ops as implementing unaligned accesses
+ * hw/block/tc58128: Don't emit deprecation warning under qtest
+ * tests/qtest: Fix handling of npcm7xx and GMAC tests
+ * hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
+ * tests/qtest/npcm7xx_emc-test: Connect all NICs to a backend
+ * Don't assert on vmload/vmsave of M-profile CPUs
+ * hw/arm/smmuv3: add support for stage 1 access fault
+ * hw/arm/stellaris: QOM cleanups
+ * Use new CBAR encoding for all v8 CPUs, not all aarch64 CPUs
+ * Improve Cortex_R52 IMPDEF sysreg modelling
+ * Allow access to SPSR_hyp from hyp mode
+ * New board model mps3-an536 (Cortex-R52)
 
+----------------------------------------------------------------
+Luc Michel (1):
+      hw/arm/smmuv3: add support for stage 1 access fault
 
-> 
-> thanks
-> -- PMM
+Nabih Estefan (1):
+      tests/qtest: Fix GMAC test to run on a machine in upstream QEMU
 
+Peter Maydell (22):
+      hw/pci-host/raven.c: Mark raven_io_ops as implementing unaligned accesses
+      hw/block/tc58128: Don't emit deprecation warning under qtest
+      tests/qtest/meson.build: Don't include qtests_npcm7xx in qtests_aarch64
+      tests/qtest/bios-tables-test: Allow changes to virt GTDT
+      hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
+      tests/qtest/bios-tables-tests: Update virt golden reference
+      hw/arm/npcm7xx: Call qemu_configure_nic_device() for GMAC modules
+      tests/qtest/npcm7xx_emc-test: Connect all NICs to a backend
+      target/arm: Don't get MDCR_EL2 in pmu_counter_enabled() before checking ARM_FEATURE_PMU
+      target/arm: Use new CBAR encoding for all v8 CPUs, not all aarch64 CPUs
+      target/arm: The Cortex-R52 has a read-only CBAR
+      target/arm: Add Cortex-R52 IMPDEF sysregs
+      target/arm: Allow access to SPSR_hyp from hyp mode
+      hw/misc/mps2-scc: Fix condition for CFG3 register
+      hw/misc/mps2-scc: Factor out which-board conditionals
+      hw/misc/mps2-scc: Make changes needed for AN536 FPGA image
+      hw/arm/mps3r: Initial skeleton for mps3-an536 board
+      hw/arm/mps3r: Add CPUs, GIC, and per-CPU RAM
+      hw/arm/mps3r: Add UARTs
+      hw/arm/mps3r: Add GPIO, watchdog, dual-timer, I2C devices
+      hw/arm/mps3r: Add remaining devices
+      docs: Add documentation for the mps3-an536 board
+
+Philippe Mathieu-Daudé (5):
+      hw/arm/xilinx_zynq: Wire FIQ between CPU <> GIC
+      hw/arm/stellaris: Convert ADC controller to Resettable interface
+      hw/arm/stellaris: Convert I2C controller to Resettable interface
+      hw/arm/stellaris: Add missing QOM 'machine' parent
+      hw/arm/stellaris: Add missing QOM 'SoC' parent
+
+Richard Henderson (6):
+      linux-user/aarch64: Choose SYNC as the preferred MTE mode
+      target/arm: Fix nregs computation in do_{ld,st}_zpa
+      target/arm: Adjust and validate mtedesc sizem1
+      target/arm: Split out make_svemte_desc
+      target/arm: Handle mte in do_ldrq, do_ldro
+      target/arm: Fix SVE/SME gross MTE suppression checks
+
+ MAINTAINERS                             |   3 +-
+ docs/system/arm/mps2.rst                |  37 +-
+ configs/devices/arm-softmmu/default.mak |   1 +
+ hw/arm/smmuv3-internal.h                |   1 +
+ include/hw/arm/smmu-common.h            |   1 +
+ include/hw/arm/virt.h                   |   2 +
+ include/hw/misc/mps2-scc.h              |   1 +
+ linux-user/aarch64/target_prctl.h       |  29 +-
+ target/arm/internals.h                  |   2 +-
+ target/arm/tcg/translate-a64.h          |   2 +
+ hw/arm/mps3r.c                          | 640 ++++++++++++++++++++++++++++++++
+ hw/arm/npcm7xx.c                        |   1 +
+ hw/arm/smmu-common.c                    |  11 +
+ hw/arm/smmuv3.c                         |   1 +
+ hw/arm/stellaris.c                      |  47 ++-
+ hw/arm/virt-acpi-build.c                |  20 +-
+ hw/arm/virt.c                           |  60 ++-
+ hw/arm/xilinx_zynq.c                    |   2 +
+ hw/block/tc58128.c                      |   4 +-
+ hw/misc/mps2-scc.c                      | 138 ++++++-
+ hw/pci-host/raven.c                     |   1 +
+ target/arm/helper.c                     |  14 +-
+ target/arm/tcg/cpu32.c                  | 109 ++++++
+ target/arm/tcg/op_helper.c              |  43 ++-
+ target/arm/tcg/sme_helper.c             |   8 +-
+ target/arm/tcg/sve_helper.c             |  12 +-
+ target/arm/tcg/translate-sme.c          |  15 +-
+ target/arm/tcg/translate-sve.c          |  83 +++--
+ target/arm/tcg/translate.c              |  19 +-
+ tests/qtest/npcm7xx_emc-test.c          |   5 +-
+ tests/qtest/npcm_gmac-test.c            |  84 +----
+ hw/arm/Kconfig                          |   5 +
+ hw/arm/meson.build                      |   1 +
+ tests/data/acpi/virt/FACP               | Bin 276 -> 276 bytes
+ tests/data/acpi/virt/GTDT               | Bin 96 -> 104 bytes
+ tests/qtest/meson.build                 |   4 +-
+ 36 files changed, 1184 insertions(+), 222 deletions(-)
+ create mode 100644 hw/arm/mps3r.c
 
