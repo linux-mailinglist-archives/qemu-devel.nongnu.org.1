@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77BE856BFD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:04:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1D0856C15
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 19:07:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rag3i-0003Bw-Kb; Thu, 15 Feb 2024 13:02:07 -0500
+	id 1rag3U-0002zT-DH; Thu, 15 Feb 2024 13:01:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag37-0002mc-Fc
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:01:29 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag3A-0002qB-Sg
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:01:33 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag31-0002UH-To
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:01:29 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a3db14a0a31so70192766b.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:01:23 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rag38-0002VQ-Ds
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 13:01:32 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a26fa294e56so175743266b.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 10:01:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708020082; x=1708624882; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708020088; x=1708624888; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x8DtNZazjY5IpYdmI7kgwXTFn+YMMPBGcaBqANiU/rg=;
- b=A4iDdR0AZqavcocK+XBa1dccCdUvfCY4Fjix7zXQA/wuAs8NBpstEzV152Eti13x6j
- IiaK9WlweafEQ3HLPViH1Vltl5W7+JSf5KqH0Bmzwj0NoVJaAJwTScNPMsGyDUF2EQ8X
- snZI2QBy2z3vn3fKX/0XfQXbBtLoViRifZXxpNltPGYUhNNDzpDRpSYxK7z43XrIREzx
- min6+MXJo7JNilXmF6RB95fE/ojwtDnqH54vPI9Cz0tlVYgUyurtGqvacpLIcE6qUuw7
- vzkYW49a1UMqhpddQJvy4qH3QO11OEWcU5liqzbWS45NyGITKRKGRLxgB92xUUELHIsx
- +oWA==
+ bh=VB2HvOhj++MQuV2OC6cpVOGxVaetf77tz8Ps5+PnfHo=;
+ b=JzyX1D1EIt4/krNzw6j5g5htFeR7YEbAUgRfXQFfnIMzInSPy7ugN5doIIMhsGWdsT
+ evNocsCn1mumw/ZCBni3xhgOz2f9vNwTMStbfzGqHWD5eq+AtruZ99crTtJlAzjH8fpt
+ YeIOxEVu+slVEec8OccYEH5J1FIiWjjKENhtqtHj8oWGFF6ZIw8Xg0Po/Skm2teBoza2
+ bMMICcHW+Bh+P2HVkJaC3ZI7B+YaKcSh1OmfOPk8iN3E51EU+RGqrZb2DjEFB4vnXLfN
+ fOEPW4XDnLDJPlxDOiETONJfXzilYlTrRZIrml9L7RpLIrelibV1SjeXPaU8cfniET+A
+ zzbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708020082; x=1708624882;
+ d=1e100.net; s=20230601; t=1708020088; x=1708624888;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x8DtNZazjY5IpYdmI7kgwXTFn+YMMPBGcaBqANiU/rg=;
- b=FioX4BFLOLnvjtNXSDpIusXuVCdH+wGtyYvx2hTN++8AOTw44bcd67dKV/smCPeIfF
- wRAarBVoT7CG6yz0/xtT6157vyNrH+SWeMfWjJbuIsqhX8EP6cPHsarFh3LeCE4LD7mn
- Q2uuQf3rzsieowfQwsclTsjMGgHuPzr5r2JEjbtWB+DigUdkcwcazJa/DNQtdaDlpRcx
- BnJeZ5tPPgdyglTrGPfwTkty+w7CiR2n33f2QRif/5vAVrbKu//eCEPeBwunU4QQX+pp
- 8MHdYV/oZ0mubwK0Uhh6i+/7NU0ICTZmtFjapnYw+huV/SCcu1P9QmcDh8eeYfjU1WQ5
- Ob9A==
-X-Gm-Message-State: AOJu0YxKVZQgQAEYoHtavsaXPmgS1g44ftek1bOm0m85FAmEH24deGZ1
- KOJ9K/xFmR5CNIFp/gGr8mBaTrAOCrQIRZLbUHMtFZodQFewzI7UAI6q87fxvMQePB0pCTHy3sR
- cN5k=
-X-Google-Smtp-Source: AGHT+IH4o+hX2Uqe62DEYCjaqzI550ika7eRSrmTOUJd/jv3WN4Pr33G3vTHkB7vuKG9/TqA6pjwag==
-X-Received: by 2002:a17:907:382:b0:a3d:7d05:21ac with SMTP id
- ss2-20020a170907038200b00a3d7d0521acmr1934804ejb.53.1708020081957; 
- Thu, 15 Feb 2024 10:01:21 -0800 (PST)
+ bh=VB2HvOhj++MQuV2OC6cpVOGxVaetf77tz8Ps5+PnfHo=;
+ b=fJboswfgtjWKR6+ssyqEstcTcMI3UuvkiRWE2j2arP59YWTqjW3Szq/A/6kN73av0A
+ BFtVhftggSXvc1Yxftsbj8Rs0IZ2AA+arARZtiH3uD5PecSt2/PYSaKHP4EHQXtGbdzY
+ 5aBdH3srb5TGJ3PehSOvcS75tUHDcBD5lZSfyZwDgewYk6BsYN/RXXoZgPZM+gawzinj
+ byXfkKycCt/8aC/0gzTFOU5fADzPIwJJZq9wbZMMbG2UzHZLX5ON3GRSfXgbiBzLVUGM
+ lEdRGEv0bXjlbRRXRqV18JAIV7VhNBvNcck/nmE86QELOvylEyLDibGO4fhylQNfHdVz
+ 32wA==
+X-Gm-Message-State: AOJu0YylpNU1oMt60E4WI5A6GIOGCA3DIsfPyUi8VoPe+jo5cwF0xEMN
+ MA+uGl3wXJxqIwxpyCfCMxSQNYOsIVJPC11wUTm1SQlrswyW4DNqr5Kiutk5zprieK0tVm+95+3
+ 6Pvk=
+X-Google-Smtp-Source: AGHT+IGLjYXXn47agCKkDasZ8sqbAnzvkM+d+mq/LLVoEFmWhes1gzf4+LC/PgvosYBszWeMDN4qqw==
+X-Received: by 2002:a17:906:2b55:b0:a3d:624d:3e7 with SMTP id
+ b21-20020a1709062b5500b00a3d624d03e7mr2042719ejg.45.1708020088563; 
+ Thu, 15 Feb 2024 10:01:28 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.193.50])
  by smtp.gmail.com with ESMTPSA id
- wb4-20020a170907d50400b00a3cf4e8fdf5sm788702ejc.150.2024.02.15.10.01.19
+ kt22-20020a170906aad600b00a3d07f3ac61sm789679ejb.101.2024.02.15.10.01.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 15 Feb 2024 10:01:21 -0800 (PST)
+ Thu, 15 Feb 2024 10:01:28 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
@@ -64,25 +64,25 @@ Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  Frederic Konrad <konrad.frederic@yahoo.fr>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 31/56] hw/sparc/leon3: Remove unused 'env' argument of
- write_bootloader()
-Date: Thu, 15 Feb 2024 18:57:25 +0100
-Message-ID: <20240215175752.82828-32-philmd@linaro.org>
+Subject: [PULL 32/56] hw/sparc/leon3: Have write_bootloader() take a void
+ pointer argument
+Date: Thu, 15 Feb 2024 18:57:26 +0100
+Message-ID: <20240215175752.82828-33-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
 References: <20240215175752.82828-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,35 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'CPUSPARCState *env' argument is unused, remove it.
+Directly use the void pointer argument returned
+by memory_region_get_ram_ptr().
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240215132824.67363-2-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240215132824.67363-3-philmd@linaro.org>
 ---
- hw/sparc/leon3.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ hw/sparc/leon3.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/hw/sparc/leon3.c b/hw/sparc/leon3.c
-index 1ae9a37583..5c670b92db 100644
+index 5c670b92db..fa4fbe4b30 100644
 --- a/hw/sparc/leon3.c
 +++ b/hw/sparc/leon3.c
-@@ -94,8 +94,7 @@ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
+@@ -94,9 +94,9 @@ static uint32_t *gen_store_u32(uint32_t *code, hwaddr addr, uint32_t val)
   * state (eg: initialized by the bootloader). This little code reproduces
   * this behavior.
   */
--static void write_bootloader(CPUSPARCState *env, uint8_t *base,
--                             hwaddr kernel_addr)
-+static void write_bootloader(uint8_t *base, hwaddr kernel_addr)
+-static void write_bootloader(uint8_t *base, hwaddr kernel_addr)
++static void write_bootloader(void *ptr, hwaddr kernel_addr)
  {
-     uint32_t *p = (uint32_t *) base;
+-    uint32_t *p = (uint32_t *) base;
++    uint32_t *p = ptr;
  
-@@ -342,7 +341,7 @@ static void leon3_generic_hw_init(MachineState *machine)
-             uint8_t *bootloader_entry;
- 
-             bootloader_entry = memory_region_get_ram_ptr(prom);
--            write_bootloader(env, bootloader_entry, entry);
-+            write_bootloader(bootloader_entry, entry);
+     /* Initialize the UARTs                                        */
+     /* *UART_CONTROL = UART_RECEIVE_ENABLE | UART_TRANSMIT_ENABLE; */
+@@ -338,10 +338,7 @@ static void leon3_generic_hw_init(MachineState *machine)
+              * the machine in an initialized state through a little
+              * bootloader.
+              */
+-            uint8_t *bootloader_entry;
+-
+-            bootloader_entry = memory_region_get_ram_ptr(prom);
+-            write_bootloader(bootloader_entry, entry);
++            write_bootloader(memory_region_get_ram_ptr(prom), entry);
              reset_info->entry = LEON3_PROM_OFFSET;
          }
      }
