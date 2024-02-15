@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4634856B2E
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6106F856B36
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 Feb 2024 18:38:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rafer-0000HG-35; Thu, 15 Feb 2024 12:36:25 -0500
+	id 1rafew-0000Pu-4L; Thu, 15 Feb 2024 12:36:30 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeL-0007z8-Q2
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:54 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1rafeN-00082D-AW
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:56 -0500
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rafeG-0003xt-MH
- for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:53 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3392b045e0aso687071f8f.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:47 -0800 (PST)
+ id 1rafeH-0003yH-9F
+ for qemu-devel@nongnu.org; Thu, 15 Feb 2024 12:35:54 -0500
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3392b12dd21so593277f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 09:35:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1708018547; x=1708623347; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=OMq3Oiu8MVXVSj6SjndbT1ne8mFYQDhWUWbGPd/yiL0=;
- b=Tm8XQY5f7N/aFnaCXBxs2O/TBaTCRHcTOg5CAd3ebM4G8FX8kIeV5jUAy2nUw3HKdx
- rO/msKlvMK543R9CWzyRXEnC/YB7UR6Gd3SxBHtItPHn+i9vEtyNEcbeaQqXk5gazyVu
- Zhm+iWMIJ8P4aYhnU2y4bh2D0ahvD2TIIBsP5FWzOSohd2aTVq6+y1U4iFeNJhC3cQBO
- Tx9SOmtK0T8Cz8OBTUEiuZfyxm3T3ybaF6810jsY/BGmE70AASi1gn6VpITmWuyrtV4N
- K7Ek1xR2UhZYfonh3uyeVIR0455pz+PGovx3NcH32XjXHOUomIBRsSpgGqnFT81DkG6b
- 0glQ==
+ :reply-to; bh=Puvpk4TVJiO9xUni4lYr0u8G/jHoFixJ5pd80hsW78E=;
+ b=Lsg3j2hXjTJtafdmjN28q+xxBgcZKK4yL2E0SH5+i8mt9rzf31IVIbfkymhKM9L2Re
+ 5j+3AHehw96FhZoCRfPyg46hkYNNBHTW4JW9+tZx2kaYs5c3extwbt/Ep4zHFicrT5jb
+ 8t7ZT4bgIXvx50FAayUS+7Nr0dgs/zzeppWibktVA+BjOVrzCH7o9bqT+ZeTzq4zz1pf
+ dhh9Xr5BwubVrF7mRxSe0C69dMaLjLiNRiUXcPYVnuO8v1HJC05CxYSOwerXclFYPsjY
+ vZrlqJZAWEezvIOlt7b8uibaPYtFeLsa7+kUlHQbEW1+IPXSrUwnIEr38CrKnlPKyQ8x
+ oh+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1708018547; x=1708623347;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OMq3Oiu8MVXVSj6SjndbT1ne8mFYQDhWUWbGPd/yiL0=;
- b=tec5j2cVItsC1bEMDN4v5kRXIZjRlA4qLpU/pt5CJryqbJ9Tfe5j8XWOIPpTcpBWXx
- UNSyRPZloUitD3OxuLaDbSUdHqnYhs32obKuMwGcdmM9hS6vuw6tFpn2t/aIMruH0Dz9
- Dq3caFgDencthIxac8xLRB9wk/CEJ7lt1kCq11fQhWWPj//LtHEiTRhrny6LtuUPQJGk
- wVHdlzSj7u5oUVZ8xGeX25qCdIQA6zi9NtxmMsw+HYjd/y0HmmmRBw2sKgOveY9EzQ9k
- ZRqol8iFAkNZMBih0Cow3Z8XBFViGQwewk6RAIEnlH58hnCvo+4iCNlaUV/hwtH6b6Of
- Owbw==
-X-Gm-Message-State: AOJu0Ywr7WjaP07pFKzxqnmvmc8q9xtMa8HeZ7XaMc0aWVtZMS0GQAf9
- 1oKLfuOk7fNnVDb1h9UCtpybzhb7gSU/UjGD1GVh/I/Cc7qtNwU2gP0QjZvVv7i30BrXV/NRZjh
- I
-X-Google-Smtp-Source: AGHT+IH7ya+ABd33GHOoGjQi+HxEwa5NcrXNUllADO+BrQr3K0rj16xnE6JZeNQ88NBN73FIcMUOFQ==
-X-Received: by 2002:adf:cc86:0:b0:33b:26d7:e6dd with SMTP id
- p6-20020adfcc86000000b0033b26d7e6ddmr2037072wrj.48.1708018546972; 
- Thu, 15 Feb 2024 09:35:46 -0800 (PST)
+ bh=Puvpk4TVJiO9xUni4lYr0u8G/jHoFixJ5pd80hsW78E=;
+ b=FrXGSLOsBn1aWp5wgU64MoEWx1qA7B99Y7X/x7WIxnHOBUKRYv8tVZ8q7DYhIj9oXD
+ HS6HzNNocH45/7YZSw92zhJhMBbB6xPnI1V+MQR+u9eDkksq8BlLE8gTxiNsu0Ld681a
+ EclrQq3Hql+2wh3gM59Fn8+P1xB8TbY2u94pfPadzDJd7PgS0AmvxrMsbiVeQG5ebJgP
+ WliO3KLSUUqmVP3AED9tULvH/aWNM1m7UouMBQAcHYzomYD/hZD24G1MPXV5HCTtr96u
+ TzCAdMwhGkW5UCa235oLqkaoFmKhyMTJkV5UnJ/AOld1Q1cSdA9XH/fDi4zEKKI1yDX+
+ hG5Q==
+X-Gm-Message-State: AOJu0Yy7HXj4IQv4KPUrOaNDvgTPqYcj1JgRVx7ZdG4zTcYx8XjpkPdg
+ HgWGEeXBVzxlTA0XZ44BeLSudGkd2DZ27v4hMS9/sUI9OQeJF5Iuf8hhatvKQB2BtVvx4QcRuc/
+ P
+X-Google-Smtp-Source: AGHT+IGPN0VZ/f1ksdsC5RdZabcSKVr8/1/D8+rKfW1xS2MkdorSutz9f45Jo4j3cFotV/MrirENMQ==
+X-Received: by 2002:a5d:4b50:0:b0:33b:607a:ba29 with SMTP id
+ w16-20020a5d4b50000000b0033b607aba29mr1877161wrs.53.1708018547414; 
+ Thu, 15 Feb 2024 09:35:47 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.46
+ q16-20020adfea10000000b0033cfa00e497sm2384129wrm.64.2024.02.15.09.35.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 09:35:46 -0800 (PST)
+ Thu, 15 Feb 2024 09:35:47 -0800 (PST)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/35] tests/qtest: Fix GMAC test to run on a machine in
- upstream QEMU
-Date: Thu, 15 Feb 2024 17:35:20 +0000
-Message-Id: <20240215173538.2430599-18-peter.maydell@linaro.org>
+Subject: [PULL 18/35] hw/arm/smmuv3: add support for stage 1 access fault
+Date: Thu, 15 Feb 2024 17:35:21 +0000
+Message-Id: <20240215173538.2430599-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240215173538.2430599-1-peter.maydell@linaro.org>
 References: <20240215173538.2430599-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,164 +91,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nabih Estefan <nabihestefan@google.com>
+From: Luc Michel <luc.michel@amd.com>
 
-Fix the nocm_gmac-test.c file to run on a nuvoton 7xx machine instead
-of 8xx. Also fix comments referencing this and values expecting 8xx.
+An access fault is raised when the Access Flag is not set in the
+looked-up PTE and the AFFD field is not set in the corresponding context
+descriptor. This was already implemented for stage 2. Implement it for
+stage 1 as well.
 
-Change-Id: Iabd0fba14910c3f1e883c4a9521350f3db9ffab8
-Signed-Off-By: Nabih Estefan <nabihestefan@google.com>
-Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
-Message-id: 20240208194759.2858582-2-nabihestefan@google.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: commit message tweaks]
+Signed-off-by: Luc Michel <luc.michel@amd.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Message-id: 20240213082211.3330400-1-luc.michel@amd.com
+[PMM: tweaked comment text]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/npcm_gmac-test.c | 84 +-----------------------------------
- tests/qtest/meson.build      |  3 +-
- 2 files changed, 4 insertions(+), 83 deletions(-)
+ hw/arm/smmuv3-internal.h     |  1 +
+ include/hw/arm/smmu-common.h |  1 +
+ hw/arm/smmu-common.c         | 11 +++++++++++
+ hw/arm/smmuv3.c              |  1 +
+ 4 files changed, 14 insertions(+)
 
-diff --git a/tests/qtest/npcm_gmac-test.c b/tests/qtest/npcm_gmac-test.c
-index 9e58b15ca1c..c28b471ab20 100644
---- a/tests/qtest/npcm_gmac-test.c
-+++ b/tests/qtest/npcm_gmac-test.c
-@@ -36,7 +36,7 @@ typedef struct TestData {
-     const GMACModule *module;
- } TestData;
+diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
+index e987bc4686b..e4dd11e1e62 100644
+--- a/hw/arm/smmuv3-internal.h
++++ b/hw/arm/smmuv3-internal.h
+@@ -624,6 +624,7 @@ static inline int pa_range(STE *ste)
+ #define CD_EPD(x, sel)   extract32((x)->word[0], (16 * (sel)) + 14, 1)
+ #define CD_ENDI(x)       extract32((x)->word[0], 15, 1)
+ #define CD_IPS(x)        extract32((x)->word[1], 0 , 3)
++#define CD_AFFD(x)       extract32((x)->word[1], 3 , 1)
+ #define CD_TBI(x)        extract32((x)->word[1], 6 , 2)
+ #define CD_HD(x)         extract32((x)->word[1], 10 , 1)
+ #define CD_HA(x)         extract32((x)->word[1], 11 , 1)
+diff --git a/include/hw/arm/smmu-common.h b/include/hw/arm/smmu-common.h
+index fd8d772da11..5ec2e6c1a43 100644
+--- a/include/hw/arm/smmu-common.h
++++ b/include/hw/arm/smmu-common.h
+@@ -92,6 +92,7 @@ typedef struct SMMUTransCfg {
+     bool disabled;             /* smmu is disabled */
+     bool bypassed;             /* translation is bypassed */
+     bool aborted;              /* translation is aborted */
++    bool affd;                 /* AF fault disable */
+     uint32_t iotlb_hits;       /* counts IOTLB hits */
+     uint32_t iotlb_misses;     /* counts IOTLB misses*/
+     /* Used by stage-1 only. */
+diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+index f58261bb81e..4caedb49983 100644
+--- a/hw/arm/smmu-common.c
++++ b/hw/arm/smmu-common.c
+@@ -364,6 +364,17 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
+                                      pte_addr, pte, iova, gpa,
+                                      block_size >> 20);
+         }
++
++        /*
++         * QEMU does not currently implement HTTU, so if AFFD and PTE.AF
++         * are 0 we take an Access flag fault. (5.4. Context Descriptor)
++         * An Access flag fault takes priority over a Permission fault.
++         */
++        if (!PTE_AF(pte) && !cfg->affd) {
++            info->type = SMMU_PTW_ERR_ACCESS;
++            goto error;
++        }
++
+         ap = PTE_AP(pte);
+         if (is_permission_fault(ap, perm)) {
+             info->type = SMMU_PTW_ERR_PERMISSION;
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index b3d8642a499..9eb56a70f39 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -684,6 +684,7 @@ static int decode_cd(SMMUTransCfg *cfg, CD *cd, SMMUEventInfo *event)
+     cfg->oas = MIN(oas2bits(SMMU_IDR5_OAS), cfg->oas);
+     cfg->tbi = CD_TBI(cd);
+     cfg->asid = CD_ASID(cd);
++    cfg->affd = CD_AFFD(cd);
  
--/* Values extracted from hw/arm/npcm8xx.c */
-+/* Values extracted from hw/arm/npcm7xx.c */
- static const GMACModule gmac_module_list[] = {
-     {
-         .irq        = 14,
-@@ -46,14 +46,6 @@ static const GMACModule gmac_module_list[] = {
-         .irq        = 15,
-         .base_addr  = 0xf0804000
-     },
--    {
--        .irq        = 16,
--        .base_addr  = 0xf0806000
--    },
--    {
--        .irq        = 17,
--        .base_addr  = 0xf0808000
--    }
- };
+     trace_smmuv3_decode_cd(cfg->oas);
  
- /* Returns the index of the GMAC module. */
-@@ -182,32 +174,18 @@ static uint32_t gmac_read(QTestState *qts, const GMACModule *mod,
-     return qtest_readl(qts, mod->base_addr + regno);
- }
- 
--static uint16_t pcs_read(QTestState *qts, const GMACModule *mod,
--                          NPCMRegister regno)
--{
--    uint32_t write_value = (regno & 0x3ffe00) >> 9;
--    qtest_writel(qts, PCS_BASE_ADDRESS + NPCM_PCS_IND_AC_BA, write_value);
--    uint32_t read_offset = regno & 0x1ff;
--    return qtest_readl(qts, PCS_BASE_ADDRESS + read_offset);
--}
--
- /* Check that GMAC registers are reset to default value */
- static void test_init(gconstpointer test_data)
- {
-     const TestData *td = test_data;
-     const GMACModule *mod = td->module;
--    QTestState *qts = qtest_init("-machine npcm845-evb");
-+    QTestState *qts = qtest_init("-machine npcm750-evb");
- 
- #define CHECK_REG32(regno, value) \
-     do { \
-         g_assert_cmphex(gmac_read(qts, mod, (regno)), ==, (value)); \
-     } while (0)
- 
--#define CHECK_REG_PCS(regno, value) \
--    do { \
--        g_assert_cmphex(pcs_read(qts, mod, (regno)), ==, (value)); \
--    } while (0)
--
-     CHECK_REG32(NPCM_DMA_BUS_MODE, 0x00020100);
-     CHECK_REG32(NPCM_DMA_XMT_POLL_DEMAND, 0);
-     CHECK_REG32(NPCM_DMA_RCV_POLL_DEMAND, 0);
-@@ -257,64 +235,6 @@ static void test_init(gconstpointer test_data)
-     CHECK_REG32(NPCM_GMAC_PTP_TAR, 0);
-     CHECK_REG32(NPCM_GMAC_PTP_TTSR, 0);
- 
--    /* TODO Add registers PCS */
--    if (mod->base_addr == 0xf0802000) {
--        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID1, 0x699e);
--        CHECK_REG_PCS(NPCM_PCS_SR_CTL_ID2, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_CTL_STS, 0x8000);
--
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_CTRL, 0x1140);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_STS, 0x0109);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID1, 0x699e);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_DEV_ID2, 0x0ced0);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_ADV, 0x0020);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_LP_BABL, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_AN_EXPN, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_MII_EXT_STS, 0xc000);
--
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_ABL, 0x0003);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_LWR, 0x0038);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MAX_DLY_UPR, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_LWR, 0x0038);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_TX_MIN_DLY_UPR, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_LWR, 0x0058);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MAX_DLY_UPR, 0);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_LWR, 0x0048);
--        CHECK_REG_PCS(NPCM_PCS_SR_TIM_SYNC_RX_MIN_DLY_UPR, 0);
--
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MMD_DIG_CTRL1, 0x2400);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_CTRL, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_AN_INTR_STS, 0x000a);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_TC, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_DBG_CTRL, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL0, 0x899c);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_TXTIMER, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_RXTIMER, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_LINK_TIMER_CTRL, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_EEE_MCTRL1, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_STS, 0x0010);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_ICG_ERRCNT1, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MISC_STS, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_RX_LSTS, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_BSTCTRL0, 0x00a);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_LVLCTRL0, 0x007f);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL0, 0x0001);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_GENCTRL1, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_TX_STS, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL0, 0x0100);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_GENCTRL1, 0x1100);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_RX_LOS_CTRL0, 0x000e);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL0, 0x0100);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_CTRL1, 0x0032);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MPLL_STS, 0x0001);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL2, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_LVL_CTRL, 0x0019);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL0, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_MP_MISC_CTRL1, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_CTRL2, 0);
--        CHECK_REG_PCS(NPCM_PCS_VR_MII_DIG_ERRCNT_SEL, 0);
--    }
--
-     qtest_quit(qts);
- }
- 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 663338ae124..2b89e8634be 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -192,7 +192,8 @@ qtests_npcm7xx = \
-    'npcm7xx_sdhci-test',
-    'npcm7xx_smbus-test',
-    'npcm7xx_timer-test',
--   'npcm7xx_watchdog_timer-test'] + \
-+   'npcm7xx_watchdog_timer-test',
-+   'npcm_gmac-test'] + \
-    (slirp.found() ? ['npcm7xx_emc-test'] : [])
- qtests_aspeed = \
-   ['aspeed_hace-test',
 -- 
 2.34.1
 
