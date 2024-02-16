@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DF8857D41
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98300857D40
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:09:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raxxE-0008AK-Qb; Fri, 16 Feb 2024 08:08:37 -0500
+	id 1raxxC-00089E-FT; Fri, 16 Feb 2024 08:08:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxxB-00089C-BB
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:33 -0500
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxxA-000894-TU
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:32 -0500
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxx8-0001OF-Rj
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:33 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxx8-0001OD-Rv
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:32 -0500
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41GC3NhD013559; Fri, 16 Feb 2024 13:08:26 GMT
+ 41GC86Lo011331; Fri, 16 Feb 2024 13:08:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=OLSjPd7J/cyxl3WgYmfRtuKVnGb4JgkUncQXyXMKBW0=;
- b=TdoFVSwPPeKxHC0a99Y//w0gr12mR2lt3eIa8Sux50EkC/N8hvwk2uF/C9g7XsxOa9T4
- sGBhGIcKuf/+QhvcfCgDu5MAXPF2kEKDH1aKUeAX7kb4KER/0PXHwjrh+2XJ2xQTbxkE
- nj0f6vR81YXyzs4MlbsPfPXKIhPbFyBzDb5DrR5TZQHazM0vLtE7SPDTFkSD7fedAiiK
- 8r8U44GoP7I5HrzWJXgMIN+NH+8WG+UPTk4o3GZkJhuwRPtx3TpSSQpuTLvs4p8iuyH/
- 1ugQTqQQb1+Ej3dSnySxjspxOhy1gsqcfHDAG5dP8ytV1+tkcqzs6r9bCtnULQJYpq7k eA== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wa5cuup9b-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=zhs9QxDvGtIFjJ8pNr0Qfm2V7gj69ngviyLnvjqtTgE=;
+ b=JUNWnLXG5F1rfOYcL5uAVcuxivRF+LTf97Ha3FM1ilIxnOj4aXkTH38C35U3vn8t5vb1
+ MYEBVOxW5Vg7dnE5vVxtiQx3ekiIECJaQfyqxtSTBqMW8Sz2fo4SdMJoJc8hwPyugMvK
+ OOhhKOFbAMzeHqmIZ8Dqo6lnT+0VS8tgSy97KenCv5iODT1zugzP3tno8hK6JJ1KjTfi
+ tC+YEMGVbe/axPtu7Gjb5nNRNMEuunj83mq0cNlSptURq0HeAP4KdOxJ2tMKzQD3FkTf
+ cJ1DNuiO1sT83SvlWBdogTA+LbwDexHTBon9KSb6C/m/CEUXj1Z1ION7ABMZbA0C9mRp 9A== 
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wa7eh9afd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Feb 2024 13:08:27 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41GBoRLq004258; Fri, 16 Feb 2024 13:08:27 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv0uk9c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 16 Feb 2024 13:08:26 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41GAf7f3010060; Fri, 16 Feb 2024 13:08:25 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6npmb0hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 16 Feb 2024 13:08:25 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41GD8LlW43123132
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41GD8NQH42205792
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 16 Feb 2024 13:08:23 GMT
+ Fri, 16 Feb 2024 13:08:25 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9BFB52004B;
- Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id ED8E02004F;
+ Fri, 16 Feb 2024 13:08:22 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5F68420043;
- Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B40A020043;
+ Fri, 16 Feb 2024 13:08:22 +0000 (GMT)
 Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+ Fri, 16 Feb 2024 13:08:22 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>
 Cc: Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 00/11] gdbstub: Implement follow-fork-mode child
-Date: Fri, 16 Feb 2024 14:05:27 +0100
-Message-ID: <20240216130817.369377-1-iii@linux.ibm.com>
+Subject: [PATCH v3 01/11] gdbstub: Support disablement in a multi-threaded
+ process
+Date: Fri, 16 Feb 2024 14:05:28 +0100
+Message-ID: <20240216130817.369377-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZiDrSVa8I7R1cIqdrsLWJdAfPqZW8N-Q
-X-Proofpoint-ORIG-GUID: ZiDrSVa8I7R1cIqdrsLWJdAfPqZW8N-Q
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240216130817.369377-1-iii@linux.ibm.com>
+References: <20240216130817.369377-1-iii@linux.ibm.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WZnNZt47bqsTSWCabh-4N8g4WpR5ZYKT
+X-Proofpoint-GUID: WZnNZt47bqsTSWCabh-4N8g4WpR5ZYKT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-16_11,2024-02-16_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
- impostorscore=0 clxscore=1015 mlxlogscore=908 lowpriorityscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ malwarescore=0 clxscore=1015
+ spamscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ adultscore=0 bulkscore=0 mlxscore=0 suspectscore=0 mlxlogscore=999
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2402160106
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -104,61 +107,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00810.html
-v2 -> v3: Rebase on top of master.
-          Fix a typo in the 01/11 commit message.
+The upcoming follow-fork-mode child support will require disabling
+gdbstub in the parent process, which may have multiple threads (which
+are represented as CPUs).
 
-v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06646.html
-v1 -> v2: Factor out a number of prep patches;
-          Add a state transition diagram comment (Alex).
-          Improve a few comments;
-          Extend the ts_tid fix to bsd.
+Loop over all CPUs in order to remove breakpoints and disable
+single-step. Move the respective code into a separate function.
 
-Hi,
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ gdbstub/user.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-I needed to debug a linux-user crash between fork() and exec() [1] and
-realized that gdbstub does not allow this. This series lifts this
-restriction (one still cannot debug past exec() though). Patches 1-9
-are preliminary refactorings, patch 10 is the implementation, and patch
-11 is the test.
-
-[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06424.html
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (11):
-  gdbstub: Support disablement in a multi-threaded process
-  {linux,bsd}-user: Update ts_tid after fork()
-  gdbstub: Introduce gdbserver_fork_start()
-  {linux,bsd}-user: Pass pid to fork_end()
-  {linux,bsd}-user: Pass pid to gdbserver_fork()
-  gdbstub: Call gdbserver_fork() both in parent and in child
-  gdbstub: Introduce gdb_handle_query_supported_user()
-  gdbstub: Introduce gdb_handle_set_thread_user()
-  gdbstub: Introduce gdb_handle_detach_user()
-  gdbstub: Implement follow-fork-mode child
-  tests/tcg: Add two follow-fork-mode tests
-
- bsd-user/freebsd/os-proc.h                    |   6 +-
- bsd-user/main.c                               |   9 +-
- bsd-user/qemu.h                               |   2 +-
- gdbstub/gdbstub.c                             |  29 ++-
- gdbstub/internals.h                           |   3 +
- gdbstub/user.c                                | 244 +++++++++++++++++-
- include/gdbstub/user.h                        |  11 +-
- linux-user/main.c                             |   8 +-
- linux-user/syscall.c                          |   6 +-
- linux-user/user-internals.h                   |   2 +-
- tests/tcg/multiarch/Makefile.target           |  17 +-
- tests/tcg/multiarch/follow-fork-mode.c        |  56 ++++
- .../gdbstub/follow-fork-mode-child.py         |  40 +++
- .../gdbstub/follow-fork-mode-parent.py        |  16 ++
- 14 files changed, 424 insertions(+), 25 deletions(-)
- create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-
+diff --git a/gdbstub/user.c b/gdbstub/user.c
+index 14918d1a217..e17f7ece908 100644
+--- a/gdbstub/user.c
++++ b/gdbstub/user.c
+@@ -356,16 +356,27 @@ int gdbserver_start(const char *port_or_path)
+     return -1;
+ }
+ 
++static void disable_gdbstub(void)
++{
++    CPUState *cpu;
++
++    close(gdbserver_user_state.fd);
++    gdbserver_user_state.fd = -1;
++    CPU_FOREACH(cpu) {
++        cpu_breakpoint_remove_all(cpu, BP_GDB);
++        /* no cpu_watchpoint_remove_all for user-mode */
++        cpu_single_step(cpu, 0);
++        tb_flush(cpu);
++    }
++}
++
+ /* Disable gdb stub for child processes.  */
+ void gdbserver_fork(CPUState *cpu)
+ {
+     if (!gdbserver_state.init || gdbserver_user_state.fd < 0) {
+         return;
+     }
+-    close(gdbserver_user_state.fd);
+-    gdbserver_user_state.fd = -1;
+-    cpu_breakpoint_remove_all(cpu, BP_GDB);
+-    /* no cpu_watchpoint_remove_all for user-mode */
++    disable_gdbstub();
+ }
+ 
+ /*
 -- 
 2.43.0
 
