@@ -2,51 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF588586A5
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 21:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A14348587A8
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 22:08:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb4hO-0007hA-3d; Fri, 16 Feb 2024 15:20:42 -0500
+	id 1rb5QM-000662-35; Fri, 16 Feb 2024 16:07:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rb4hL-0007gg-8T
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 15:20:39 -0500
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amonakov@ispras.ru>)
- id 1rb4hI-000543-Qe
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 15:20:38 -0500
-Received: from [10.10.3.121] (unknown [10.10.3.121])
- by mail.ispras.ru (Postfix) with ESMTPS id C4C4140F1DE1;
- Fri, 16 Feb 2024 20:20:09 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C4C4140F1DE1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1708114809;
- bh=NdlHK3QKBrOKG8bIgGv6bPB7b63BEMoorK+8HWg0Tfk=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=H9tAhN//uhP00ZMzOVB5bvEZgadQ9iReR2U2sfXQxr1OWB+CFp5QXo/n1kFMWgSt2
- mgQ+aAylE9akyGjRLOnqCNmKygmlDMTwq5T5PBUZVR164sepe0XT66v3arn7ViLvtH
- P0brYf1mw/GDbp5hocJPoEZmEEDXv7alQ9W41HTE=
-Date: Fri, 16 Feb 2024 23:20:09 +0300 (MSK)
-From: Alexander Monakov <amonakov@ispras.ru>
-To: Richard Henderson <richard.henderson@linaro.org>
-cc: qemu-devel@nongnu.org, mmromanov@ispras.ru
-Subject: Re: [PATCH v4 00/10] Optimize buffer_is_zero
-In-Reply-To: <08ce9292-75a0-4092-a12e-9a12826847b0@linaro.org>
-Message-ID: <b313b1e3-a8c7-a409-5a9f-ab9ce3853e40@ispras.ru>
-References: <20240215081449.848220-1-richard.henderson@linaro.org>
- <e1260284-cd5d-7a92-d8fc-21c0aface21c@ispras.ru>
- <72d0e01e-ca54-4fc1-805c-b8de7175d64f@linaro.org>
- <fa83e6cb-7270-0bf0-99f4-68d21dbdaa1c@ispras.ru>
- <2d211317-873e-43c6-a246-bd8bf84f048b@linaro.org>
- <aa9996fb-a5f8-25aa-96dd-48e4797967e1@ispras.ru>
- <08ce9292-75a0-4092-a12e-9a12826847b0@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rb5QJ-00062p-Tm
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:07 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rb5Q5-0005KD-U6
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=pKaNgALqkqV+wgYpjhPtk/rIkMycQM15hKr9oR9g1qk=; b=QNwgnCG0TKugjqwoVZFXwCt7J4
+ PJnNm/5GbfQNcHxJG68RNfxS7OjHtpaiPEC2e715LodEsNnPwF5EGp8YAnzFsmBa/yUB93rlBKqCs
+ 1Qw0IU7zPtjJye8Vw+F8UHm0om7uAAeW8HxHfUteYf8KNljxxwIwNjHEwNaV3Tla33rEfjBpzp1cm
+ Z/N+kOcUOmHq1tAqtr2OUsOMeR0VxEbeKhG32GTQbd6lEgMfndI5Q4DJigfXJbC21+pymwC3V+2YP
+ aXnn6Nw3VEj5t2Fq/pFsaqZNvEYcgdvhcwbjABx5eOd5UVajLhJnMB4ZCMtaY42A1TiDuP0n5wi79
+ yrZG3yD6XJD/YpnCVu7ZISHKcYB1G4XhzOJXTulVOjyQa5/jORv8KQ/iuS3YVVe5udyJc1fAnVzU7
+ jAhxF0u8ZeVH4zbEO1meV+lkjveTieR5SuQP3iOZpdeMQ0sjXVZ1zeMn2s2vYdqhY2RVSLMM+Nk2G
+ B8DWG75te6YFANSnbB2J5qADg1ObRJdWWw99VPyPyng0Kx2GrRC3kQp/I0uLyUatahqvLmFbpkuMC
+ QyyhmJWhFMUWcmAAKgdVJ5CGqSyHd0m1HjEhGom1IMZ0Cd8pHMEeyGpbBTxXGc270/DYSXUmekmZC
+ jFFymH8KEEhnVCUXbkKJSCOMca03seXSBrszIHT8I=;
+Received: from [2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f]
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rb5PE-0000vT-1F; Fri, 16 Feb 2024 21:06:04 +0000
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+Date: Fri, 16 Feb 2024 21:06:20 +0000
+Message-Id: <20240216210633.1376066-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=83.149.199.84; envelope-from=amonakov@ispras.ru;
- helo=mail.ispras.ru
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH 00/13] esp: avoid explicit setting of DRQ within ESP state
+ machine
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -68,92 +76,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The ESP device has a DRQ (DMA request) signal that is used to handle flow control
+during DMA transfers. At the moment the DRQ signal is explicitly raised and
+lowered at various points in the ESP state machine as required, rather than
+implementing the logic described in the datasheet:
 
-On Thu, 15 Feb 2024, Richard Henderson wrote:
+"DREQ will remain true as long as either the FIFO contains at least one word (or
+one byte if 8-bit mode) to send to memory during DMA read, or has room for one more
+word (or byte if 8-bit mode) in the FIFO during DMA write."
 
-> On 2/15/24 13:37, Alexander Monakov wrote:
-> > Ah, I guess you might be running at low perf_event_paranoid setting that
-> > allows unprivileged sampling of kernel events? In our submissions the
-> > percentage was for perf_event_paranoid=2, i.e. relative to Qemu only,
-> > excluding kernel time under syscalls.
-> 
-> Ok.  Eliminating kernel samples makes things easier to see.
-> But I still do not see a 40% reduction in runtime.
+This series updates the ESP device to use the same logic as described above which
+also fixes a couple of outstanding GitLab issues related to recovery handling
+during FIFO overflow on 68k Macs using PDMA.
 
-I suspect Mikhail's image was less sparse, so the impact from inlining
-was greater.
+Patches 1-3 update existing users of esp_fifo_pop_buf() and esp_fifo_pop() with
+the internal cmdfifo to use the underlying Fifo8 device directly. The aim is
+to ensure that all the esp_fifo_*() functions only operate on the ESP's hardware
+FIFO.
 
-> With this, I see virtually all of the runtime in libz.so.
-> Therefore I converted this to raw first, to focus on the issue.
+Patches 4-5 update esp_fifo_push() and esp_fifo_pop() to take ESPState directly
+as a parameter to prevent any usage that doesn't reference the ESP hardware
+FIFO.
 
-Ah, apologies for that. I built with --disable-default-features and
-did not notice my qemu-img lacked support for vmdk and treated it
-as a raw image instead. I was assuming it was similar to what Mikhail
-used, but obviously it's not due to the compression.
+Patch 6 ensures that any usage of fifo8_push() for the ESP hardware FIFO is
+updated to use esp_fifo_push() instead.
 
-> For avoidance of doubt:
-> 
-> $ ls -lsh test.raw && sha256sum test.raw
->  12G -rw-r--r--  1 rth  rth   40G Feb 15 21:14 test.raw
-> 3b056d839952538fed42fa898c6063646f4fda1bf7ea0180fbb5f29d21fe8e80  test.raw
-> 
-> Host: 11th Gen Intel(R) Core(TM) i7-1195G7 @ 2.90GHz
-> Compiler: gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04)
-> 
-> master:
->   57.48%  qemu-img-m  [.] buffer_zero_avx2
->    3.60%  qemu-img-m  [.] is_allocated_sectors.part.0
->    2.61%  qemu-img-m  [.] buffer_is_zero
->   63.69%  -- total
-> 
-> v3:
->   48.86%  qemu-img-v3  [.] is_allocated_sectors.part.0
->   3.79%  qemu-img-v3  [.] buffer_zero_avx2
->   52.65%  -- total
->     -17%  -- reduction from master
-> 
-> v4:
->   54.60%  qemu-img-v4  [.] buffer_is_zero_ge256
->    3.30%  qemu-img-v4  [.] buffer_zero_avx2
->    3.17%  qemu-img-v4  [.] is_allocated_sectors.part.0
->   61.07%  -- total
->      -4%  -- reduction from master
-> 
-> v4+:
->   46.65%  qemu-img  [.] is_allocated_sectors.part.0
->    3.49%  qemu-img  [.] buffer_zero_avx2
->    0.05%  qemu-img  [.] buffer_is_zero_ge256
->   50.19%  -- total
->     -21%  -- reduction from master
+Patch 7 updates esp_fifo_pop_buf() to take ESPState directly as a parameter
+to prevent any usage that doesn't reference the ESP hardware FIFO.
 
-Any ideas where the -21% vs v3's -17% difference comes from?
+Patch 8 introduces the esp_fifo_push_buf() function for pushing multiple bytes
+to the ESP hardware FIFO, and updates callers to use it accordingly.
 
-FWIW, in situations like these I always recommend to run perf with fixed
-sampling rate, i.e. 'perf record -e cycles:P -c 100000' or 'perf record -e
-cycles/period=100000/P' to make sample counts between runs of different
-duration directly comparable (displayed with 'perf report -n').
+Patch 9 is just code movement which avoids the use of a forward declaration whilst
+also making it easier to locate the mapping between ESP SCSI phases and their
+names.
 
-> The v4+ puts the 3 byte test back inline, like in your v3.
-> 
-> Importantly, it must be as 3 short-circuting tests, where my v4 "simplified"
-> this to (s | m | e) != 0, on the assumption that the reduced number of
-> branches would help.
+Patches 10-11 introduce a new esp_update_drq() function that implements the above
+DRQ logic which is called by both esp_fifo_{push,pop}_buf().
 
-Yes, we also noticed that when preparing our patch. We also tried mixed
-variants like (s | e) != 0 || m != 0, but they did not turn out faster.
+Patch 11 updates esp_fifo_push() and esp_fifo_pop() to use the new esp_update_drq()
+function. At this point all reads/writes to the ESP FIFO use the esp_fifo_*()
+functions and will set DRQ correctly.
 
-> With that settled, I guess we need to talk about how much the out-of-line
-> implementation matters at all.  I'm thinking about writing a
-> test/bench/bufferiszero, with all-zero buffers of various sizes and
-> alignments.  With that it would be easier to talk about whether any given
-> implementation is is an improvement for that final 4% not eliminated by the
-> three bytes.
+Patch 12 is a small update to the logic in esp_pdma_write() to ensure that
+esp_fifo_push() is always called for PDMA writes to the FIFO, thereby ensuring
+that esp_update_drq() remains correct even in the case of FIFO overflow.
 
-Yeah, initially I suggested this task to Mikhail as a practice exercise
-outside of Qemu, and we had a benchmark that measures buffer_is_zero via
-perf_event_open. This allows to see exactly how close the implementation
-runs to the performance ceiling given by max L1 fetch rate (two loads
-per cycle on x86).
+Finally patch 13 removes all manual calls to esp_raise_drq() and esp_lower_drq()
+since the DRQ signal is now updated correctly upon each FIFO read/write access.
 
-Alexander
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+
+Mark Cave-Ayland (13):
+  esp.c: replace cmdfifo use of esp_fifo_pop_buf() in do_command_phase()
+  esp.c: replace cmdfifo use of esp_fifo_pop_buf() in do_message_phase()
+  esp.c: replace cmdfifo use of esp_fifo_pop() in do_message_phase()
+  esp.c: change esp_fifo_push() to take ESPState
+  esp.c: change esp_fifo_pop() to take ESPState
+  esp.c: use esp_fifo_push() instead of fifo8_push()
+  esp.c: change esp_fifo_pop_buf() to take ESPState
+  esp.c: introduce esp_fifo_push_buf() function for pushing to the FIFO
+  esp.c: move esp_set_phase() and esp_get_phase() towards the beginning
+    of the file
+  esp.c: introduce esp_update_drq() and update esp_fifo_{push,pop}_buf()
+    to use it
+  esp.c: update esp_fifo_{push,pop}() to call esp_update_drq()
+  esp.c: ensure esp_pdma_write() always calls esp_fifo_push()
+  esp.c: remove explicit setting of DRQ within ESP state machine
+
+ hw/scsi/esp.c | 189 ++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 120 insertions(+), 69 deletions(-)
+
+-- 
+2.39.2
+
 
