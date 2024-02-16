@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3964A857DB7
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB07857DBA
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rayKb-00084R-6P; Fri, 16 Feb 2024 08:32:47 -0500
+	id 1rayKf-0008BZ-R4; Fri, 16 Feb 2024 08:32:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rayJl-00080v-6z
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:31:54 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rayJj-00069V-9X
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:31:52 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-55a5e7fa471so924923a12.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:31:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708090309; x=1708695109; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PzJgKTk6oQCLti81wrouZx7gcFOfV6hihKb+qQVWWns=;
- b=t8gB6k65uxKSg1UmjlNl8z1WYysQF/lv+6W2AAvxBZVPaX+NdLa/o2+gt8Y5hZZRAG
- Xhs223KhZVKe8a2rUJASklvpJc0NVYMp0cEmfNTzyk5QQy1PJOOOcsHQSrb1UvOzqBZN
- DuJ98rnX8z0fSF5mxtYnODbpgyj5e/IbMIh7JOgC9KBE0N8buM9VrbtE3oo86cyd/KUs
- PIX5exuwzwdEXBjomoDQaFGB+jYIBYRkQP9aDIbK2fqYlYW6V217gfI1rFOYM9ZZDOc2
- zYBDg/zf811ThDhoHA/QJAtPkecTRs9aYfyT4W2W2A1MVcPGDGNa2IDM+dAfk+kSaop5
- 0t7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708090309; x=1708695109;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PzJgKTk6oQCLti81wrouZx7gcFOfV6hihKb+qQVWWns=;
- b=dUNvYhez4MaUzSP+ILemPkN025UEcZ/35C6wnca1sdE3VK3YUmIcImqDELubLb2yeV
- EC5lJ9Nv8sdPxUEZNW1Z1Mai22SIDD606fjLeQZOxeWxK+q/6tSvFs0VHmd434OgRHwf
- WxiRDEReEuAfDb73WB9jfRgjZPpK66NoHyUn6+bphH9KPSrhudo7sOZkbiNlOTgKGL+W
- ej9laCrGszTSdWd/ySsDfaeWD+ib+m5NYxbn8evc3W5Tzud7/YKb9UUCnD6vBYG3wn2L
- EIDbx8y9oxE0cDTftp5/CbIgKYvrH1l0MApIwv67RKgcM1uf/j7HAmMvoXEpmWMniRj9
- Gfog==
-X-Gm-Message-State: AOJu0YxiKYTNiq4vbXi8bmer2Da31od/Z5jaYcb5n1scZlGog/496d6Q
- MeKJ+8Wb9/GN9GYEeL0rh3cftKLMdp0JsdoOFQ7rcYDj27F48pnsu+J1K8kos++GvXqr+lCV5Hv
- Ik77SBJkbJLkABKD1mdJqWbqqmtKw5K5TVVHS/g==
-X-Google-Smtp-Source: AGHT+IH224gIditz6iA+Gso6SAKHkSIjDARGiJbB62RkAK2P9G+rLvWtutNVvYPP2ar9xOeXOdyag4JTdrqe/8ZFYvs=
-X-Received: by 2002:a05:6402:2812:b0:563:c54e:ee with SMTP id
- h18-20020a056402281200b00563c54e00eemr4336911ede.2.1708090309554; Fri, 16 Feb
- 2024 05:31:49 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1rayKE-00084w-GD
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:32:28 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1rayKD-0006Ml-2p
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:32:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708090339;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=j+PGkftYRQLJedntQHLiPAkKi0Q7ccoEaGbQ//pNECY=;
+ b=LyquYHTT08ahMRUN8IHHyHkBkXr9oo2risObPRrAtce9yzBpglM8K0hn3iG/6wkPiiymYA
+ 55ICLVt9C6Rw5NJLDYdJabPGfrTwDLgYaiJyVGD3S/1ruwIfFDLNzU0JMg17Fr4qQmQ4V9
+ sbD1I+dGoqFftwnjpIVUe8F+1CDkkAg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-5BS_OfqrOU6IKTeGEVJP0w-1; Fri, 16 Feb 2024 08:32:17 -0500
+X-MC-Unique: 5BS_OfqrOU6IKTeGEVJP0w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40E14185A781;
+ Fri, 16 Feb 2024 13:32:17 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.8])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3DC18C1596E;
+ Fri, 16 Feb 2024 13:32:14 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, peter.maydell@linaro.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 6/7] meson: Explicitly specify dbus-display1.h dependency
+Date: Fri, 16 Feb 2024 17:31:39 +0400
+Message-ID: <20240216133140.3611100-7-marcandre.lureau@redhat.com>
+In-Reply-To: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
+References: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-References: <20240215175752.82828-1-philmd@linaro.org>
-In-Reply-To: <20240215175752.82828-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 16 Feb 2024 13:31:38 +0000
-Message-ID: <CAFEAcA_UUiJkpkBfxJhWPfM+WecX3cU-md22pXCjeeb9aPeaDA@mail.gmail.com>
-Subject: Re: [PULL 00/56] Misc HW patches for 2024-02-15
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
- qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.364,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,39 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 15 Feb 2024 at 17:58, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> The following changes since commit 5767815218efd3cbfd409505ed824d5f356044=
-ae:
->
->   Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst=
-/qemu into staging (2024-02-14 15:45:52 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/philmd/qemu.git tags/hw-misc-20240215
->
-> for you to fetch changes up to 9a4b35f57eefbfc6977ed47d1f19d839e9e4784d:
->
->   hw/ide/ich9: Use AHCIPCIState typedef (2024-02-15 16:58:47 +0100)
->
-> ----------------------------------------------------------------
-> Misc HW patch queue
->
-> - Remove unused MIPS SAAR* registers (Phil)
-> - Remove warning when testing the TC58128 NAND EEPROM (Peter)
-> - KConfig cleanups around ISA SuperI/O and MIPS (Paolo)
-> - QDev API uses sanitization (Philippe)
-> - Split AHCI model as PCI / SysBus (Philippe)
-> - Add SMP support to SPARC Leon3 board (Cl=C3=A9ment)
->
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
+Explicitly specify dbus-display1.h as a dependency so that files
+depending on it will not get compiled too early.
 
-Applied, thanks.
+Fixes: 1222070e7728 ("meson: ensure dbus-display generated code is built before other units")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20240214-dbus-v7-2-7eff29f04c34@daynix.com>
+---
+ ui/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
+diff --git a/ui/meson.build b/ui/meson.build
+index 376e0d771b..0b7e2b6f6b 100644
+--- a/ui/meson.build
++++ b/ui/meson.build
+@@ -91,7 +91,7 @@ if dbus_display
+                                           '--c-namespace', 'QemuDBus',
+                                           '--generate-c-code', '@BASENAME@'])
+   dbus_display1_lib = static_library('dbus-display1', dbus_display1, dependencies: gio)
+-  dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, include_directories: include_directories('.'))
++  dbus_display1_dep = declare_dependency(link_with: dbus_display1_lib, sources: dbus_display1[0])
+   dbus_ss.add(when: [gio, dbus_display1_dep],
+               if_true: [files(
+                 'dbus-chardev.c',
+-- 
+2.43.1
 
--- PMM
 
