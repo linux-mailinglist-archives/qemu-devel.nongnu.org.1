@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F1E8575E3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 07:15:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 823118575E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 07:15:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rarUe-0001Qh-8E; Fri, 16 Feb 2024 01:14:40 -0500
+	id 1rarUh-0001SN-Pj; Fri, 16 Feb 2024 01:14:43 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1rarUc-0001P3-3Y
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 01:14:38 -0500
+ id 1rarUg-0001Ry-AB
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 01:14:42 -0500
 Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
  helo=Atcsqr.andestech.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1rarUa-0006N6-8h
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 01:14:37 -0500
+ id 1rarUe-0006Ns-EC
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 01:14:42 -0500
 Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 41G6EIQA007749;
- Fri, 16 Feb 2024 14:14:18 +0800 (+08)
+ by Atcsqr.andestech.com with ESMTP id 41G6EN7B007773;
+ Fri, 16 Feb 2024 14:14:23 +0800 (+08)
  (envelope-from alvinga@andestech.com)
 Received: from alvinga-VirtualBox.andestech.com (10.0.13.68) by
  ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Fri, 16 Feb 2024 14:14:15 +0800
+ Fri, 16 Feb 2024 14:14:20 +0800
 To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
  <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>,
  <zhiwei_liu@linux.alibaba.com>, Alvin Chang <alvinga@andestech.com>
-Subject: [PATCH 3/4] target/riscv: Set the value of CSR tcontrol when trapping
- to M-mode
-Date: Fri, 16 Feb 2024 14:13:31 +0800
-Message-ID: <20240216061332.50229-4-alvinga@andestech.com>
+Subject: [PATCH 4/4] target/riscv: Set the value of CSR tcontrol when mret is
+ executed
+Date: Fri, 16 Feb 2024 14:13:32 +0800
+Message-ID: <20240216061332.50229-5-alvinga@andestech.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240216061332.50229-1-alvinga@andestech.com>
 References: <20240216061332.50229-1-alvinga@andestech.com>
@@ -43,7 +43,7 @@ Content-Type: text/plain
 X-Originating-IP: [10.0.13.68]
 X-DNSRBL: 
 X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 41G6EIQA007749
+X-MAIL: Atcsqr.andestech.com 41G6EN7B007773
 Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
  helo=Atcsqr.andestech.com
 X-Spam_score_int: -8
@@ -69,36 +69,39 @@ From:  Alvin Chang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From the RISC-V debug specification, it defines the following operations
-for CSR tcontrol when any trap into M-mode is taken:
-1. tcontrol.MPTE is set to the value of tcontrol.MTE
-2. tcontrol.MTE is set to 0
+The RISC-V debug specification defines the following operation for CSR
+tcontrol when "mret" is executed:
+- tcontrol.MTE is set to the value of tcontrol.MPTE
 
-This commit implements the above operations into
-riscv_cpu_do_interrupt().
+This commit implements the above operation into helper_mret().
+
+Note that from tech-debug mailing list:
+https://lists.riscv.org/g/tech-debug/topic/102702615#1461
+The debug specification does not mention the operation to tcontrol.MPTE
+when "mret" is executed. Therefore, we just keep its current value.
 
 Signed-off-by: Alvin Chang <alvinga@andestech.com>
 ---
- target/riscv/cpu_helper.c | 6 ++++++
+ target/riscv/op_helper.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index d462d95ee1..037ae21062 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1806,6 +1806,12 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-             riscv_cpu_set_virt_enabled(env, 0);
-         }
- 
-+        /* Trapping to M-mode. Set tcontrol CSR in debug Sdtrig extension. */
-+        s = env->tcontrol;
-+        s = set_field(s, TCONTROL_MPTE, get_field(s, TCONTROL_MTE));
-+        s = set_field(s, TCONTROL_MTE, 0);
-+        env->tcontrol = s;
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index f414aaebdb..12822b3afa 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -347,6 +347,12 @@ target_ulong helper_mret(CPURISCVState *env)
+         mstatus = set_field(mstatus, MSTATUS_MPRV, 0);
+     }
+     env->mstatus = mstatus;
 +
-         s = env->mstatus;
-         s = set_field(s, MSTATUS_MPIE, get_field(s, MSTATUS_MIE));
-         s = set_field(s, MSTATUS_MPP, env->priv);
++    uint64_t tcontrol = env->tcontrol;
++    tcontrol = set_field(tcontrol, TCONTROL_MTE,
++                         get_field(tcontrol, TCONTROL_MPTE));
++    env->tcontrol = tcontrol;
++
+     riscv_cpu_set_mode(env, prev_priv);
+ 
+     if (riscv_has_ext(env, RVH)) {
 -- 
 2.34.1
 
