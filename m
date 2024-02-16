@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41300857B37
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:10:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C18857B39
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:11:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw0W-0006RL-NI; Fri, 16 Feb 2024 06:03:52 -0500
+	id 1raw0V-0006Q4-Nq; Fri, 16 Feb 2024 06:03:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0S-0006Nk-Pe
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0T-0006O1-Qr
  for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:50 -0500
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0J-0000pv-D2
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:48 -0500
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33d01faf711so571675f8f.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0O-0000ra-SB
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:49 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4121a8635a2so12177345e9.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081416; x=1708686216; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081422; x=1708686222; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jnkIS3AaHEP065b9a1SZ9IcaJ8jPciqvA+XhsfUsiWs=;
- b=Xwk2xuO8gUd5m24pdtCIK+51HtqI0K8DX6rY4qrU8Oh6w/gcQV50/ngb/AZe4bg9op
- oBGmuZE5FVtE56VBWhjNE7YGqWErOzN26YnTMUGbNK8nfeWCOJ5waOKdsNhpX46YGk9i
- Ap8jO/vr8kqza8kGnIAcg+iTVgpDKVrKZIGQlCMIpk0+06OxC4k+AxHzg/MOLVfBh8Ws
- SiJr5mH3+XUmq8+H80MySpDDzokzqoSiBUvXLkZ75v7N/jROevb06vxxPVMAp+kIuo4m
- vp8gznQuv7V/eBCNbhENNuVz7c68oBcoDgu1gHFhj/rMWvOJ5RMGL8zrPI1/v/wrb6f2
- nAMw==
+ bh=kkGLYDX+GSE+ZJ9BSh+2Q16g0HNqBL3+uba9nDXc65E=;
+ b=Qnm1dp3sycbUkM+tBK1UduQ6hTzF0RbdoXxMESGYgym/1Aa2naOY1aL2YYD32XicXv
+ hOmC0FtBDCr42KliVaKivFtoIaMa53uaG+y3Q+TtpdublYzgKaSkfebOGAtZJV/Pt8gl
+ DNIinS7b/JGDKlw9PEqXmbYyYFri5td98f97rS2wxzOMVrG2aDIVyVNLKahBVbe7R8Jo
+ PJMHoAs5dSCCgTdy+53XsNRir+cE9BNuo5nR6dF0/LUGKKPuQDlCbD88ssBwmsiH9iTT
+ acKTyG7g6zyMc1ShyhpeClrdUAUvtEpgA0Uvj4cDzsNuXrk1F3eGz94r79+7FGUqWjnw
+ olgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081416; x=1708686216;
+ d=1e100.net; s=20230601; t=1708081422; x=1708686222;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jnkIS3AaHEP065b9a1SZ9IcaJ8jPciqvA+XhsfUsiWs=;
- b=uEOE2DqwipAXw5hm9+PfDsErJh/nntv2EILfd21EFmfszjzWCjiZSLcgSfp9iQtHL1
- s3+5i1UMGc0+kkEdhUDCFjflQCLQ4gLgulT0dqU6UCdtn1zesIbds/YAi1ZKh0+d408H
- mWn1y6Hqw0z3IiFvo1WvpicJJOdUo8RpncqajZk/RH+rIsA9d+WQZyRCaO3tl+wpinJp
- /clgXsPYjpVGyEHiiEr882oBo0zmueJvrvHt+K0+eP8yXafGouyJPik6QHPxxI7Oa+4P
- DA6DapO47ZxCqN3eoOhqgiVHrNOy4Wm1Z53BaEKWP3YZXicw73Bq3eyNM0IZEKGK/iLN
- sJ2A==
-X-Gm-Message-State: AOJu0YwI2cKFwE7+MNs4A1m6jlBHxD+bNoU1h75WWeoPNlFqU7h6Nq4M
- s1QNAJtzitUunRaCuKvCIp+HDpTEGCzsT83v90oLTMWYG1EkYZTJRSk595+WXOf6DE+1ancgt0n
- G
-X-Google-Smtp-Source: AGHT+IHX94RGubUwK9zNha0Z7Tr05UGN79hCY5mMek9sIxtt8PGwvMF3xUnkwUzNuyMV2GQiYyBSHA==
-X-Received: by 2002:adf:f4d1:0:b0:33c:e3da:923a with SMTP id
- h17-20020adff4d1000000b0033ce3da923amr3667425wrp.12.1708081416026; 
- Fri, 16 Feb 2024 03:03:36 -0800 (PST)
+ bh=kkGLYDX+GSE+ZJ9BSh+2Q16g0HNqBL3+uba9nDXc65E=;
+ b=nh6VAnCSnKXPHKt6EvJHkDaHpzzkADzg975nQDZUkq1dYBqx/wJRWRWW19NwPVQF9a
+ LyZmveQhXa1f92jEuMjLibmNDFRGpxxro/2cafICUuNHIgHHu3r0Rk+xp7dVo406TWb0
+ jQJcE/ByU4jF8baItAtYxS+gv+vRNd7oousoVnBa/+s5xCguebLssr8VDWwDj56F8bzF
+ paj1F8/D/lDntHU0dqPyWK+E4MPWKmwijnLjE7De2tjK8ewMkrvVe8NhQ06c529VwOeP
+ gZmBDlyMi6QVj/FmNvFrSUbLonRVY52DYcEzUodxrJjT+TRO2X3v196TmBR+SbyXsLFm
+ omTA==
+X-Gm-Message-State: AOJu0YyhIwW3bdqDhhKHc1TyifzVJ1SKczl4cVuyyZrLl2s//4bA2wLG
+ KZkN10hScS7Rbtfr7FChAABAuLgfFpy50k7ee4j8Ootk6kovM0w4z34ItSEvMGMl5JhcxCf4EHc
+ V
+X-Google-Smtp-Source: AGHT+IEZtXhf8DnUedrxCBZXX4R63+iEsHeBn/ZvgaRaXofB08nnvTVWshhe5uqwoszWqRVn4xPqEA==
+X-Received: by 2002:a05:600c:1c9d:b0:412:3c20:5c67 with SMTP id
+ k29-20020a05600c1c9d00b004123c205c67mr1395904wms.39.1708081422054; 
+ Fri, 16 Feb 2024 03:03:42 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- r8-20020adfe688000000b0033cf5094fcesm1863549wrm.36.2024.02.16.03.03.34
+ jn4-20020a05600c6b0400b00411b7c91470sm1942118wmb.12.2024.02.16.03.03.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:03:35 -0800 (PST)
+ Fri, 16 Feb 2024 03:03:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PATCH 03/21] hw/ppc/spapr_cpu: Use qdev_is_realized() instead of QOM
- API
-Date: Fri, 16 Feb 2024 12:02:54 +0100
-Message-ID: <20240216110313.17039-4-philmd@linaro.org>
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 04/21] hw/tricore/testboard: Use qdev_new() instead of QOM
+ basic API
+Date: Fri, 16 Feb 2024 12:02:55 +0100
+Message-ID: <20240216110313.17039-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,23 +99,42 @@ Prefer QDev API for QDev objects, avoid the underlying QOM layer.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_cpu_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/hw/tricore/tricore_testdevice.h | 3 ---
+ hw/tricore/tricore_testboard.c          | 4 +---
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index 0c0fb3f1b0..40b7c52f7f 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -245,8 +245,7 @@ static void spapr_cpu_core_unrealize(DeviceState *dev)
-              * spapr_cpu_core_realize(), make sure we only unrealize
-              * vCPUs that have already been realized.
-              */
--            if (object_property_get_bool(OBJECT(sc->threads[i]), "realized",
--                                         &error_abort)) {
-+            if (qdev_is_realized(DEVICE(sc->threads[i]))) {
-                 spapr_unrealize_vcpu(sc->threads[i], sc);
-             }
-             spapr_delete_vcpu(sc->threads[i]);
+diff --git a/include/hw/tricore/tricore_testdevice.h b/include/hw/tricore/tricore_testdevice.h
+index 8b4fe15f24..2c57b62f22 100644
+--- a/include/hw/tricore/tricore_testdevice.h
++++ b/include/hw/tricore/tricore_testdevice.h
+@@ -25,12 +25,9 @@
+     OBJECT_CHECK(TriCoreTestDeviceState, (obj), TYPE_TRICORE_TESTDEVICE)
+ 
+ typedef struct {
+-    /* <private> */
+     SysBusDevice parent_obj;
+ 
+-    /* <public> */
+     MemoryRegion iomem;
+-
+ } TriCoreTestDeviceState;
+ 
+ #endif
+diff --git a/hw/tricore/tricore_testboard.c b/hw/tricore/tricore_testboard.c
+index b6810e3be0..c29db8b451 100644
+--- a/hw/tricore/tricore_testboard.c
++++ b/hw/tricore/tricore_testboard.c
+@@ -89,9 +89,7 @@ static void tricore_testboard_init(MachineState *machine, int board_id)
+     memory_region_add_subregion(sysmem, 0xf0050000, pcp_data);
+     memory_region_add_subregion(sysmem, 0xf0060000, pcp_text);
+ 
+-    test_dev = g_new(TriCoreTestDeviceState, 1);
+-    object_initialize(test_dev, sizeof(TriCoreTestDeviceState),
+-                      TYPE_TRICORE_TESTDEVICE);
++    test_dev = TRICORE_TESTDEVICE(qdev_new(TYPE_TRICORE_TESTDEVICE));
+     memory_region_add_subregion(sysmem, 0xf0000000, &test_dev->iomem);
+ 
+ 
 -- 
 2.41.0
 
