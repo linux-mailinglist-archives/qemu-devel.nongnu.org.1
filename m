@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60555857B06
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC291857B38
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:10:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw1K-0007vz-EQ; Fri, 16 Feb 2024 06:04:42 -0500
+	id 1raw1Q-0008Gz-3s; Fri, 16 Feb 2024 06:04:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1I-0007ob-3R
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:40 -0500
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1N-0008AD-GH
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:45 -0500
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1F-00015c-3m
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:39 -0500
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2d10d2da73dso24658561fa.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:36 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1L-00017G-Qq
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:45 -0500
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d094bc2244so24396151fa.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081475; x=1708686275; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081481; x=1708686281; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lSddd7wgwT+Aw6mIanqA0vHkbVR0NSdWvof0YaVRHNk=;
- b=WbTSvauYQUvypxaPw7bit1QwCQNsVWwbnLkc3pLQ68kU9yiuZL51QGjnbMpjGQgW/C
- ziDpm3zbxWJdm/MB1GDpF7+r6//ZHSuOvioOGfhD626hWVbYXbBQczQm7paG7LWidfVU
- zcWMU418X6f6M9AYr37k6OAcK+7gcUDFOqjWVHD7p5U4Can6PBstIius9Z5OcUbtV4Ar
- aVzZL2kIN32tUZqF9TncJ6EtMFOtw3wIQMy8C5g/IVxgTUbvnEiqa0BgTCmFXHdBvwly
- zmMfizwkmlqej5VHWsqe1U8xmd6pUurRXbrATufityGMy+RS30LWkOeXilgea0EWponF
- lRYQ==
+ bh=SDE/2ozeILt8icMDCEMhs9DK4Gx3Yb4arama1t6dDAI=;
+ b=zRnddEaPVtVB3ljS8L4qwXg3FSFcOSNQNEZmwKN+dQ3hu6DVbC5oYtHoQ7atunkP+F
+ sCmlXBhPEQPVjb4C2C+w/cGV8tO1aABftXwSMnQM0F3h7ky9mts1rzkmT6yRkepX2G1B
+ jmHzrYz1ZREiP+ondn179HOmhdU+5xcPoZmxEUopslBQLVF1fdwbBQCy5Udtl6vLkfZx
+ v3KOZq+F2/sni8rmSkKlGtfhb+l0fVyH2CmFNWDbUR9hH7G78+GxDbIf6tyP1T2A13rA
+ d6DfZ1J3Z6l+/hjzZ1YG77ymj5pdx2XEE1O8t20ph21h1/x/LcELMWx+lnnJ6HiV29bo
+ qLZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081475; x=1708686275;
+ d=1e100.net; s=20230601; t=1708081481; x=1708686281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lSddd7wgwT+Aw6mIanqA0vHkbVR0NSdWvof0YaVRHNk=;
- b=jGfMPCuY0Ix4gWJkApVq0mzmHlSRVetQnaYEn7k6YMUOg9ixRVXOoB+wfo2XYy2JqS
- A+i1kcjAoGmhBj8iE+Ea0adtBdOih3HYNqOxThR60BjYSnNVg0wpMXjqzM4LwXjQM/Yc
- 7f2rv+0wSZERWBwWF2hnBFDvoOebVHs621cjyhdPz7OXkcHl+UzfkfaInlsKeNwnO6f8
- Uwi/C6Hf1x8sXjIeI2/qm5C+nj3SOu7DPfh+4nOw6Ce6rk6W+Oc0kq7iF5esyW0qUCQP
- Tg5gkaSnMNxfdt1lWkgv6ycqiKvQ1m0e8chjJdUOdvEGdoy5lrpByglBSpAxWlaqrn+j
- vwvw==
-X-Gm-Message-State: AOJu0Yze2d0ptQVrz331EovXJQBZER48r6EAziVtewcTkHKgK7QhwdGb
- u4BzJNQ/D9CHHvphsvHKdXl7Ib1QWtZ4lMrbVbhAwhs5CreJZXfI4430CMsAv6lac7X2LE20C7g
- O
-X-Google-Smtp-Source: AGHT+IGyXkQ0ouvPr+qbHCSb1OxQsk2lwXY11CCMwzwoOEGTC5K/SkLtqlf3Mj1gPHh6dxJSBguLZQ==
-X-Received: by 2002:a2e:9247:0:b0:2d1:1e31:c178 with SMTP id
- v7-20020a2e9247000000b002d11e31c178mr3333201ljg.17.1708081475351; 
- Fri, 16 Feb 2024 03:04:35 -0800 (PST)
+ bh=SDE/2ozeILt8icMDCEMhs9DK4Gx3Yb4arama1t6dDAI=;
+ b=vVbn84gZ+ZiJ1CMVHKQKWnlZ9MdLrZHK4vqGg+nuo9hJ1T1PeQMxaB35M8QDajovd7
+ 4RghIaTff6HMS2VGD4deqpcLtIdJpvUxVGRK7NwYX60aXZBPvt8pTCAw9lwVc1SLCtw/
+ kJNW2/FUKTRxhpQT0KH8hLdJeBsCCNvMMVRAqsfaR40CiOvFGbDLz4nTANbsXkmIzHB+
+ 8V2L9i3pLdUd3gdyvo2cSzeHRIyRxoww0ORcCJZldIG2cZSkmUGcPp8LyKA/DUTzfmtE
+ 3Z3xL2Z6LJw2vbMoMN1f+uePnw1DU3xjC6BbNbkz+AanQoDkNDAfz8n5kTyA9YmzDghn
+ eWrw==
+X-Gm-Message-State: AOJu0Yzmh4i490FQJp/R6D3XeHGDDUjHmUzizrd7wsogDiwVG52exuGZ
+ qU1uLnVxtcEIf0Cxuujadl69tR45ki8cvDmQLZ7lfSpZjjztFY2Bwb+isN1MQUHdYz7mJMeigbt
+ 2
+X-Google-Smtp-Source: AGHT+IFZNkHzLFZsRRmZmy29Ui82mj7wZIEzSZ0XA/O/0xcGEFo6EopzBMSekmatFRBZBkq2tUbraA==
+X-Received: by 2002:a2e:8950:0:b0:2d1:26f0:8167 with SMTP id
+ b16-20020a2e8950000000b002d126f08167mr3170282ljk.35.1708081481655; 
+ Fri, 16 Feb 2024 03:04:41 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- iv6-20020a05600c548600b004103e15441dsm2036535wmb.6.2024.02.16.03.04.33
+ p18-20020a7bcc92000000b00411a0477755sm1963807wma.9.2024.02.16.03.04.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:04:34 -0800 (PST)
+ Fri, 16 Feb 2024 03:04:41 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 12/21] hw/pci-host/q35: Update q35_host_props[] comment
-Date: Fri, 16 Feb 2024 12:03:03 +0100
-Message-ID: <20240216110313.17039-13-philmd@linaro.org>
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
+Subject: [PATCH 13/21] hw/pci-host/raven: Embedded OrIRQ in PRePPCIState
+Date: Fri, 16 Feb 2024 12:03:04 +0100
+Message-ID: <20240216110313.17039-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,41 +94,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit aff39be0ed ("hw/pci-host: Use object_initialize_child for
-correct reference counting") replaced object_initialize() by
-object_initialize_child(), update the comment.
+Since we know the size of the OrIRQ object, we can initialize
+it directly in place with object_initialize_child(). Doing so
+we also set the QOM parent <-> child relationship.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-host/q35.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/pci-host/raven.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
-index 0d7d4e3f08..0eb1c7034d 100644
---- a/hw/pci-host/q35.c
-+++ b/hw/pci-host/q35.c
-@@ -165,10 +165,10 @@ static void q35_host_get_pci_hole64_end(Object *obj, Visitor *v,
- /*
-  * NOTE: setting defaults for the mch.* fields in this table
-  * doesn't work, because mch is a separate QOM object that is
-- * zeroed by the object_initialize(&s->mch, ...) call inside
-+ * zeroed by the object_initialize_child(..., &s->mch, ...) call inside
-  * q35_host_initfn().  The default values for those
-  * properties need to be initialized manually by
-- * q35_host_initfn() after the object_initialize() call.
-+ * q35_host_initfn() after the object_initialize_child() call.
-  */
- static Property q35_host_props[] = {
-     DEFINE_PROP_UINT64(PCIE_HOST_MCFG_BASE, Q35PCIHost, parent_obj.base_addr,
-@@ -211,7 +211,7 @@ static void q35_host_initfn(Object *obj)
-     object_initialize_child(OBJECT(s), "mch", &s->mch, TYPE_MCH_PCI_DEVICE);
-     qdev_prop_set_int32(DEVICE(&s->mch), "addr", PCI_DEVFN(0, 0));
-     qdev_prop_set_bit(DEVICE(&s->mch), "multifunction", false);
--    /* mch's object_initialize resets the default value, set it again */
-+    /* mch's object_initialize_child resets the default value, set it again */
-     qdev_prop_set_uint64(DEVICE(s), PCI_HOST_PROP_PCI_HOLE64_SIZE,
-                          Q35_PCI_HOST_HOLE64_SIZE_DEFAULT);
-     object_property_add(obj, PCI_HOST_PROP_PCI_HOLE_START, "uint32",
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index c7a0a2878a..9e47caebc5 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -60,7 +60,7 @@ DECLARE_INSTANCE_CHECKER(PREPPCIState, RAVEN_PCI_HOST_BRIDGE,
+ struct PRePPCIState {
+     PCIHostState parent_obj;
+ 
+-    OrIRQState *or_irq;
++    OrIRQState or_irq;
+     qemu_irq pci_irqs[PCI_NUM_PINS];
+     PCIBus pci_bus;
+     AddressSpace pci_io_as;
+@@ -249,14 +249,14 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+     } else {
+         /* According to PReP specification section 6.1.6 "System Interrupt
+          * Assignments", all PCI interrupts are routed via IRQ 15 */
+-        s->or_irq = OR_IRQ(object_new(TYPE_OR_IRQ));
+-        object_property_set_int(OBJECT(s->or_irq), "num-lines", PCI_NUM_PINS,
++        object_initialize_child(OBJECT(dev), "or-irq", &s->or_irq, TYPE_OR_IRQ);
++        object_property_set_int(OBJECT(&s->or_irq), "num-lines", PCI_NUM_PINS,
+                                 &error_fatal);
+-        qdev_realize(DEVICE(s->or_irq), NULL, &error_fatal);
+-        sysbus_init_irq(dev, &s->or_irq->out_irq);
++        qdev_realize(DEVICE(&s->or_irq), NULL, &error_fatal);
++        sysbus_init_irq(dev, &s->or_irq.out_irq);
+ 
+         for (i = 0; i < PCI_NUM_PINS; i++) {
+-            s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(s->or_irq), i);
++            s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(&s->or_irq), i);
+         }
+     }
+ 
 -- 
 2.41.0
 
