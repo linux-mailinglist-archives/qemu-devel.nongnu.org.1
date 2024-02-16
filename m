@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D50A857D7A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:15:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DF8857D41
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:09:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ray37-0000KZ-A7; Fri, 16 Feb 2024 08:14:41 -0500
+	id 1raxxE-0008AK-Qb; Fri, 16 Feb 2024 08:08:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <charlie@rivosinc.com>)
- id 1rarFW-0003pg-Lg
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 00:59:02 -0500
-Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <charlie@rivosinc.com>)
- id 1rarFU-0002Sf-Oq
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 00:59:02 -0500
-Received: by mail-yw1-x1130.google.com with SMTP id
- 00721157ae682-607d9c4fa90so13432367b3.2
- for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 21:58:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708063138; x=1708667938;
- darn=nongnu.org; 
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=qkt6gzG86HYBPO5PBKdyksyrZ9wuJF9yjWjHm8/bdzM=;
- b=i6HFdH8QGao2zMYLndDRIBJpfoEMxhBvNMXTj1DP/CzqiGDf3shKDjeksC4C8g+j19
- nsjQu1sxfdSdqX+Eb4MNe0Eeb138KdG3EeFx3ohs+VlCE6PO/gCm3lqkCacNyG6NE+Jd
- O796okjjDe7dLzrUhowhgiLNyuf8QZ0MbDre60Ytb3SlsaczqhcYoofIR3JS2EXqYDzV
- eT4jP+E0vAf0ejErgCbsEDDlEAflQWO8fFpA6ZcZckuU2Dc4VLFOS38YkswLIElm5deL
- rDIyj9LTmlmMCbt9a6iTYK0+yiFGfVGfcy+TOAHUDlgWvM7kKxEIBAb1EYjGratkXYJH
- VFhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708063138; x=1708667938;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qkt6gzG86HYBPO5PBKdyksyrZ9wuJF9yjWjHm8/bdzM=;
- b=BuDJhGEPHkdrK6n/7ctO8eBLuHlVFU4n18q1PwXzYLm+gysA4y8FQ0uOHYTIA+r4XB
- lXf4hIScA6x13rx2yzrtCwZ8TflYH9cZf+6DO4occFFM+uU7qCKmHE5yU9NvCGBwDwUX
- dwknSmR6LnEo5hA+vTgsZALr9czzFwUwd/4zQ6ymepRpp75vzGnNpuCLQXrh4tUpsz0q
- 1ZxsG0eLyu36fmwsXtC9Od9EKuRlu/FWV8oULB7AShaGnOr48OCRo9Z7OLzk5oHLJSUi
- bzjifsb91ZroYsduG8kBtcU8GRvOExbnHn7VwlbyFSTI7DKSxMCENdogU8JzEV1z3NOG
- EB5Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWu2XNpDZRkIL8u2T5MQ31wmDXwjyh3cPAzgswPWLL6z9M3+vADaYWG2Q+j+BG7umDNtlfg70WVGCzfp8eePmbT3qTujIg=
-X-Gm-Message-State: AOJu0YyMSUEh9DkbRjBFyinXEXZ5rOoiSZHUaN679KPTYiZ8DsaShX6J
- 8TAjascOw7WEleh5A6/+ru20qq8yXTOv2XpQ06CzaVVng79k+1wQyjz8ljbNtK0=
-X-Google-Smtp-Source: AGHT+IG0YQeP3a55UeL2dPLivTEtmwPUZxTwga0rFX7vur+O1AF9hPkrFxutjRNb2b9SOk6reFrQDw==
-X-Received: by 2002:a81:4c41:0:b0:607:a085:b434 with SMTP id
- z62-20020a814c41000000b00607a085b434mr3801690ywa.8.1708063138659; 
- Thu, 15 Feb 2024 21:58:58 -0800 (PST)
-Received: from ghost ([50.146.0.2]) by smtp.gmail.com with ESMTPSA id
- p202-20020a0de6d3000000b00607fc1e4fe6sm113000ywe.30.2024.02.15.21.58.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 Feb 2024 21:58:57 -0800 (PST)
-Date: Fri, 16 Feb 2024 00:58:56 -0500
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH] target: hppa: Fix unaligned double word accesses for
- hppa64
-Message-ID: <Zc75oNNSPx5n2ODr@ghost>
-References: <20240216053415.2163286-1-linux@roeck-us.net>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxxB-00089C-BB
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:33 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1raxx8-0001OF-Rj
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:08:33 -0500
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41GC3NhD013559; Fri, 16 Feb 2024 13:08:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=OLSjPd7J/cyxl3WgYmfRtuKVnGb4JgkUncQXyXMKBW0=;
+ b=TdoFVSwPPeKxHC0a99Y//w0gr12mR2lt3eIa8Sux50EkC/N8hvwk2uF/C9g7XsxOa9T4
+ sGBhGIcKuf/+QhvcfCgDu5MAXPF2kEKDH1aKUeAX7kb4KER/0PXHwjrh+2XJ2xQTbxkE
+ nj0f6vR81YXyzs4MlbsPfPXKIhPbFyBzDb5DrR5TZQHazM0vLtE7SPDTFkSD7fedAiiK
+ 8r8U44GoP7I5HrzWJXgMIN+NH+8WG+UPTk4o3GZkJhuwRPtx3TpSSQpuTLvs4p8iuyH/
+ 1ugQTqQQb1+Ej3dSnySxjspxOhy1gsqcfHDAG5dP8ytV1+tkcqzs6r9bCtnULQJYpq7k eA== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wa5cuup9b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Feb 2024 13:08:26 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41GAf7f3010060; Fri, 16 Feb 2024 13:08:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6npmb0hh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 16 Feb 2024 13:08:25 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41GD8LlW43123132
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Feb 2024 13:08:23 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BFB52004B;
+ Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F68420043;
+ Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 16 Feb 2024 13:08:21 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>
+Cc: Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v3 00/11] gdbstub: Implement follow-fork-mode child
+Date: Fri, 16 Feb 2024 14:05:27 +0100
+Message-ID: <20240216130817.369377-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZiDrSVa8I7R1cIqdrsLWJdAfPqZW8N-Q
+X-Proofpoint-ORIG-GUID: ZiDrSVa8I7R1cIqdrsLWJdAfPqZW8N-Q
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216053415.2163286-1-linux@roeck-us.net>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
- envelope-from=charlie@rivosinc.com; helo=mail-yw1-x1130.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-16_11,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 clxscore=1015 mlxlogscore=908 lowpriorityscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402160106
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 16 Feb 2024 08:14:33 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,52 +104,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 15, 2024 at 09:34:15PM -0800, Guenter Roeck wrote:
-> Unaligned 64-bit accesses were found in Linux to clobber carry bits,
-> resulting in bad results if an arithmetic operation involving a
-> carry bit was executed after an unaligned 64-bit operation.
-> 
-> hppa 2.0 defines additional carry bits in PSW register bits 32..39.
-> When restoring PSW after executing an unaligned instruction trap,
-> those bits were not cleared and ended up to be active all the time.
-> Clearing bit 32..39 in psw prior to restoring it solves the problem.
-> 
-> Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Charlie Jenkins <charlie@rivosinc.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> ---
->  target/hppa/helper.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-> index 859644c47a..7b798d1227 100644
-> --- a/target/hppa/helper.c
-> +++ b/target/hppa/helper.c
-> @@ -76,7 +76,12 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
->      }
->      psw &= ~reserved;
->  
-> -    env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
-> +    if (hppa_is_pa20(env)) {
-> +        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB | 0xff00000000ull);
+v2: https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00810.html
+v2 -> v3: Rebase on top of master.
+          Fix a typo in the 01/11 commit message.
 
-I thought there was something fishy in this function but was slow on the
-uptake...
+v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06646.html
+v1 -> v2: Factor out a number of prep patches;
+          Add a state transition diagram comment (Alex).
+          Improve a few comments;
+          Extend the ts_tid fix to bsd.
 
-How about defining a new macro (PSW_CB_HIGH) to hold this value?
+Hi,
 
-- Charlie
+I needed to debug a linux-user crash between fork() and exec() [1] and
+realized that gdbstub does not allow this. This series lifts this
+restriction (one still cannot debug past exec() though). Patches 1-9
+are preliminary refactorings, patch 10 is the implementation, and patch
+11 is the test.
 
-> +    } else {
-> +        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
-> +    }
-> +
->      env->psw_n = (psw / PSW_N) & 1;
->      env->psw_v = -((psw / PSW_V) & 1);
->  
-> -- 
-> 2.39.2
-> 
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06424.html
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (11):
+  gdbstub: Support disablement in a multi-threaded process
+  {linux,bsd}-user: Update ts_tid after fork()
+  gdbstub: Introduce gdbserver_fork_start()
+  {linux,bsd}-user: Pass pid to fork_end()
+  {linux,bsd}-user: Pass pid to gdbserver_fork()
+  gdbstub: Call gdbserver_fork() both in parent and in child
+  gdbstub: Introduce gdb_handle_query_supported_user()
+  gdbstub: Introduce gdb_handle_set_thread_user()
+  gdbstub: Introduce gdb_handle_detach_user()
+  gdbstub: Implement follow-fork-mode child
+  tests/tcg: Add two follow-fork-mode tests
+
+ bsd-user/freebsd/os-proc.h                    |   6 +-
+ bsd-user/main.c                               |   9 +-
+ bsd-user/qemu.h                               |   2 +-
+ gdbstub/gdbstub.c                             |  29 ++-
+ gdbstub/internals.h                           |   3 +
+ gdbstub/user.c                                | 244 +++++++++++++++++-
+ include/gdbstub/user.h                        |  11 +-
+ linux-user/main.c                             |   8 +-
+ linux-user/syscall.c                          |   6 +-
+ linux-user/user-internals.h                   |   2 +-
+ tests/tcg/multiarch/Makefile.target           |  17 +-
+ tests/tcg/multiarch/follow-fork-mode.c        |  56 ++++
+ .../gdbstub/follow-fork-mode-child.py         |  40 +++
+ .../gdbstub/follow-fork-mode-parent.py        |  16 ++
+ 14 files changed, 424 insertions(+), 25 deletions(-)
+ create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
+ create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
+
+-- 
+2.43.0
+
 
