@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07134857B0D
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41300857B37
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:10:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw0K-0006Jy-Jo; Fri, 16 Feb 2024 06:03:40 -0500
+	id 1raw0W-0006RL-NI; Fri, 16 Feb 2024 06:03:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0H-0006JE-Mq
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:37 -0500
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0S-0006Nk-Pe
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:50 -0500
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0D-0000oV-Ia
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:36 -0500
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-33d14a711efso681052f8f.2
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:31 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0J-0000pv-D2
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:48 -0500
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33d01faf711so571675f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081409; x=1708686209; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081416; x=1708686216; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=11uvKBQ22hdk4Lseo0ZUQbLGXppus19b55fkM12lrfA=;
- b=VVtEuRONg16xx1oOe+nOWr24BGDYupjedUe7m/Ujf6aVZ+6pexCN+uWLFWnvv6/die
- f0p5imiKaKkivgTp0MnTNlr2Xvra4oKuMAKBKsNCGmky56UcgLPxTSbGVeIA7/qUmts1
- hd8JyMbK6VxjKivF4ClO3HOjxZ6DXyTYaRKR/pAf0ei7zKtKY3RtciPy8DQTwKH0O0mV
- PVUSfPxkL7VgsbizmdK9JWuw7bN5bzjwwdPbwgd6To7jkWDMgWn6WGmBNy85sAuq2WFw
- ReVQmnsYNRJuTvqgeU2ZhqCVZfMShzvN+mXHUSnP7xeSMjG6JH7Xd1Z+UHpwTVQCgv1e
- fmAA==
+ bh=jnkIS3AaHEP065b9a1SZ9IcaJ8jPciqvA+XhsfUsiWs=;
+ b=Xwk2xuO8gUd5m24pdtCIK+51HtqI0K8DX6rY4qrU8Oh6w/gcQV50/ngb/AZe4bg9op
+ oBGmuZE5FVtE56VBWhjNE7YGqWErOzN26YnTMUGbNK8nfeWCOJ5waOKdsNhpX46YGk9i
+ Ap8jO/vr8kqza8kGnIAcg+iTVgpDKVrKZIGQlCMIpk0+06OxC4k+AxHzg/MOLVfBh8Ws
+ SiJr5mH3+XUmq8+H80MySpDDzokzqoSiBUvXLkZ75v7N/jROevb06vxxPVMAp+kIuo4m
+ vp8gznQuv7V/eBCNbhENNuVz7c68oBcoDgu1gHFhj/rMWvOJ5RMGL8zrPI1/v/wrb6f2
+ nAMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081409; x=1708686209;
+ d=1e100.net; s=20230601; t=1708081416; x=1708686216;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=11uvKBQ22hdk4Lseo0ZUQbLGXppus19b55fkM12lrfA=;
- b=P7LMImfzuersiKzc/KF0cXreZa50DDJUzlHICS/l8bnSiE3OVBmmQ9Onu0AhdMm0xu
- WbwP91Y7vDbrbe7722+nfvWmGBDFpSCXkYM3kwCv2AiKGCQ14F/qiSv/1mt38CPfl3wo
- ZabAxp6xFsCzK4mhfvLgooymdqd2O05OgCMEHfHwuO3PFzGy1AolUzl88FUN3F/7QKDJ
- K25+0W5/NnT9T25uowshkzrGysAH/CbstLW2VsAf2VsVzGLkCzbznmAendixsZ0TiFaH
- zt3UO+PVxFcMzucuP4Db8YHx3kH36SMe87+mVeHKvfGsKRrd5r4fWf2uYLDchODkFDda
- 81Sg==
-X-Gm-Message-State: AOJu0Yz1NyKC1+SkmLc6vuZ8+u1psoXTHQiLQ8BeL55Gsy/I6eFvZrap
- E62uJ5Uhu51RlHuabSeKZvNusKkkZPaNsBXrlpSYcPKstG/4yivQKg4+yP4L4ZjOlYpGVKAS+Js
- n
-X-Google-Smtp-Source: AGHT+IFEGlWLlINId8jkLQ8/GP9ml2ND63LfgQ5zuvLNh4i2admrWyka8hFD5GkfVv0excP++UzanQ==
-X-Received: by 2002:a5d:408b:0:b0:33a:fafa:8cdc with SMTP id
- o11-20020a5d408b000000b0033afafa8cdcmr3540983wrp.32.1708081409620; 
- Fri, 16 Feb 2024 03:03:29 -0800 (PST)
+ bh=jnkIS3AaHEP065b9a1SZ9IcaJ8jPciqvA+XhsfUsiWs=;
+ b=uEOE2DqwipAXw5hm9+PfDsErJh/nntv2EILfd21EFmfszjzWCjiZSLcgSfp9iQtHL1
+ s3+5i1UMGc0+kkEdhUDCFjflQCLQ4gLgulT0dqU6UCdtn1zesIbds/YAi1ZKh0+d408H
+ mWn1y6Hqw0z3IiFvo1WvpicJJOdUo8RpncqajZk/RH+rIsA9d+WQZyRCaO3tl+wpinJp
+ /clgXsPYjpVGyEHiiEr882oBo0zmueJvrvHt+K0+eP8yXafGouyJPik6QHPxxI7Oa+4P
+ DA6DapO47ZxCqN3eoOhqgiVHrNOy4Wm1Z53BaEKWP3YZXicw73Bq3eyNM0IZEKGK/iLN
+ sJ2A==
+X-Gm-Message-State: AOJu0YwI2cKFwE7+MNs4A1m6jlBHxD+bNoU1h75WWeoPNlFqU7h6Nq4M
+ s1QNAJtzitUunRaCuKvCIp+HDpTEGCzsT83v90oLTMWYG1EkYZTJRSk595+WXOf6DE+1ancgt0n
+ G
+X-Google-Smtp-Source: AGHT+IHX94RGubUwK9zNha0Z7Tr05UGN79hCY5mMek9sIxtt8PGwvMF3xUnkwUzNuyMV2GQiYyBSHA==
+X-Received: by 2002:adf:f4d1:0:b0:33c:e3da:923a with SMTP id
+ h17-20020adff4d1000000b0033ce3da923amr3667425wrp.12.1708081416026; 
+ Fri, 16 Feb 2024 03:03:36 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- ay3-20020a5d6f03000000b0033d1b760125sm1780146wrb.92.2024.02.16.03.03.27
+ r8-20020adfe688000000b0033cf5094fcesm1863549wrm.36.2024.02.16.03.03.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:03:29 -0800 (PST)
+ Fri, 16 Feb 2024 03:03:35 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 02/21] hw/i386/pc_sysfw: Use qdev_is_realized() instead of QOM
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH 03/21] hw/ppc/spapr_cpu: Use qdev_is_realized() instead of QOM
  API
-Date: Fri, 16 Feb 2024 12:02:53 +0100
-Message-ID: <20240216110313.17039-3-philmd@linaro.org>
+Date: Fri, 16 Feb 2024 12:02:54 +0100
+Message-ID: <20240216110313.17039-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,33 +103,23 @@ Prefer QDev API for QDev objects, avoid the underlying QOM layer.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_sysfw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ hw/ppc/spapr_cpu_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index c8d9e71b88..3efabbbab2 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -107,17 +107,15 @@ void pc_system_flash_cleanup_unused(PCMachineState *pcms)
- {
-     char *prop_name;
-     int i;
--    Object *dev_obj;
- 
-     assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
- 
-     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
--        dev_obj = OBJECT(pcms->flash[i]);
--        if (!object_property_get_bool(dev_obj, "realized", &error_abort)) {
-+        if (!qdev_is_realized(DEVICE(pcms->flash[i]))) {
-             prop_name = g_strdup_printf("pflash%d", i);
-             object_property_del(OBJECT(pcms), prop_name);
-             g_free(prop_name);
--            object_unparent(dev_obj);
-+            object_unparent(OBJECT(pcms->flash[i]));
-             pcms->flash[i] = NULL;
-         }
-     }
+diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+index 0c0fb3f1b0..40b7c52f7f 100644
+--- a/hw/ppc/spapr_cpu_core.c
++++ b/hw/ppc/spapr_cpu_core.c
+@@ -245,8 +245,7 @@ static void spapr_cpu_core_unrealize(DeviceState *dev)
+              * spapr_cpu_core_realize(), make sure we only unrealize
+              * vCPUs that have already been realized.
+              */
+-            if (object_property_get_bool(OBJECT(sc->threads[i]), "realized",
+-                                         &error_abort)) {
++            if (qdev_is_realized(DEVICE(sc->threads[i]))) {
+                 spapr_unrealize_vcpu(sc->threads[i], sc);
+             }
+             spapr_delete_vcpu(sc->threads[i]);
 -- 
 2.41.0
 
