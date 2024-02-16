@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CE8857E41
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDC4857E47
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:59:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rayhr-00055C-KF; Fri, 16 Feb 2024 08:56:47 -0500
+	id 1rayj2-0006XY-GM; Fri, 16 Feb 2024 08:58:00 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayhp-00054h-8B
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:56:45 -0500
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rayii-0006KK-TE
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:41 -0500
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayhn-0003Zd-FR
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:56:44 -0500
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6e0f4e3bc59so450219b3a.0
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:56:43 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rayia-0003e5-Ts
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:39 -0500
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1dba94f9201so5564645ad.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:57:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708091801; x=1708696601; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4PElm9I154heYaeu6k8uGuG3u5y2sEE2oCYC2BoRDtc=;
- b=I27y+pgn8h+B9wXCq9TKWdSweYf3igCfbM9Fm+JBb3nCeoawbgKSrGcQKCK50BYl3q
- 0ve/qR/vVCtfY3lue4U3rkQr1HcwiGGnhE2dgfTk6nIdobFYsDF+Ebbx+FGBYGiAA9nb
- 7P8gJCwNZ6t1ANAw0LMyKkPZry91MLVFpCBPWSXzS5cQ/EERLA5P1G5M1wCxmVCD85/4
- 25/+I/qdX67lbThU9jKvkUKe+GiW/GV0t2vAi6gbBAG/kBIt9+LI6h8Wgx7nkV0Jpofy
- vUD+ZN6j9W4wmQEvdnyK0ioxEZQvaAAMfFQEkvx7gS6f5PaGAfcsvrg2pgXJRTHs2HSS
- 9Neg==
+ d=ventanamicro.com; s=google; t=1708091848; x=1708696648; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VuWkQa5G3p5yKcEgQcwfaDUggnii8C6Urb6dECN5vgg=;
+ b=iKaRhSja1v+icyhlAiIn5fVVCqfVj4q7cFWvz4BpeK+UXJ/qnR6sT8WogFxt1xL+H3
+ Nj7unUXMZZE0br86+k1DfHJaBUJ74SvsmsFpd+0vnqJDqh+T6derP6Czu8FxtX22vF+c
+ RWohzAS1PIk0AOc9tkL8QR0ueZmGVWDtDHksaUWhQkBoI8NC+7uL7fPJWZ7IqW3hIEiR
+ ErqRtWvb8695OkQCIvA8q/4M18KHmHzNQkcy/Eu8ycUiGQr5qkGMkM753JKVgWM0rH72
+ Rf1P7YBQaJaq/vGGxMv9loA9xj0D500EXAxLVc/7w9MtfLW75xj2bKFNg4+8GvRJK26Z
+ 7Dhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708091801; x=1708696601;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4PElm9I154heYaeu6k8uGuG3u5y2sEE2oCYC2BoRDtc=;
- b=CnCVuVEuCb+UT6u5oMTz4V4d+cGTXHalaF9PNT4t1YXmzsSu1ZaVkt8Mwy7rbOrWMh
- 6cyGy2WaZaWbu6tWqf3gHJwqMUkmwnJZCPOfxoiImBtUmP7yxD+gL10j5U7nl4gvlZCs
- mewC2TnJ9KUaPqHP9sQCHaWP9ZgMSMwxM0+9fnO3T0yC3OjleAq65EYdRHeHGwANnsKb
- GH+NJRY5ab6vYuv3TkSXyHKbDgWkbm4suFVW77HgcdepdHWVzhc1EWyeCPVzG7KQ1JJi
- 9q4rrSZxaPoBh+tEzO++lf6G2ZAPxcGbeNfNS/SjwoUNnXtyzRpiBL39RYYNUTqbrSg9
- I+8A==
-X-Gm-Message-State: AOJu0YxdN3kdkAyIQcbPp9yxIytrHr1ZZsHI2qbZ28C6Sh5V1UsbFA03
- gP7a+T/xj1V2+b0H9k7Ke7iEw5bJFeQ68qlCRNZKlVFVoGWH3KXxkloUDWYroMo=
-X-Google-Smtp-Source: AGHT+IGO4c8orlI/qXB7F+HSitkKKs7sw5g/P6j5EemsKkbTtmAThWiEI1mXt6Rup6LTSYX3vvjPEw==
-X-Received: by 2002:a05:6a20:d38f:b0:1a0:6856:d1a9 with SMTP id
- iq15-20020a056a20d38f00b001a06856d1a9mr5820110pzb.10.1708091801032; 
- Fri, 16 Feb 2024 05:56:41 -0800 (PST)
-Received: from iuseotherswifi.notpua ([14.139.82.6])
- by smtp.gmail.com with ESMTPSA id
- gv8-20020a17090b11c800b00296e2434e7esm3382844pjb.53.2024.02.16.05.56.38
+ d=1e100.net; s=20230601; t=1708091848; x=1708696648;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VuWkQa5G3p5yKcEgQcwfaDUggnii8C6Urb6dECN5vgg=;
+ b=pLt78oK6RKOK15wB9bfllQOOBHolzrphVTC75hu9bzXobpgk9juFRJdUMPrFODAbNZ
+ h15nVKhQ8gPglplGMoSvfG9lMvgxKymHsK9REZkaB68i3voTiOoBAHyd4aLXpswsNxok
+ Z0UWVNFEr0+Wgr0uKSOVKf/SSqTVFbsBV1UjK4aqMF8jlAOsYY9ts5rnIuFmdhKh1gi+
+ 2Qq1XqcpnH5GLzx3kzQGUJRczK4Fl3l7AGPZaVnlb3l6/4XdU1L3GbEGR0OZO6LbBy6c
+ b8t+ZKBP7gBPtU1sk+5ZzDdc1+YOpWd05mhkoEqeobwJq+did2BeSO/r11b2oohGDKQw
+ wyAg==
+X-Gm-Message-State: AOJu0Yziek/u6+mMgqvULXgmIrVcExqLIfqn8BQwFKG1mrQ6dBraWxCr
+ xMyto9WCNjIXkD5k8HhJOGh3avW7kvX/eaq2bVZLiwAjGDBbtkF6nwm/Yyza1EZ6yV/pEnDQ6xi
+ N
+X-Google-Smtp-Source: AGHT+IE42nMyBwRxjJSJdUiWWeLqUWVcfkEYgj7zrKrEN5ydlSHUjd/9H8JZEz3Ue3CLrQSyaU2QXg==
+X-Received: by 2002:a17:903:230b:b0:1d9:bdbc:388b with SMTP id
+ d11-20020a170903230b00b001d9bdbc388bmr6356837plh.45.1708091848164; 
+ Fri, 16 Feb 2024 05:57:28 -0800 (PST)
+Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
+ j18-20020a170902c3d200b001dbb06b6138sm889606plj.252.2024.02.16.05.57.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 05:56:40 -0800 (PST)
-From: Abhiram Tilak <atp.exp@gmail.com>
+ Fri, 16 Feb 2024 05:57:27 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, clg@kaod.org, david@gibson.dropbear.id.au,
- harshpb@linux.ibm.com, Abhiram Tilak <atp.exp@gmail.com>
-Subject: [PATCH 3/3] misc: ppc/spapr: replace qemu_system_reset_request()
- calls with watchdog_perform_action()
-Date: Fri, 16 Feb 2024 19:21:39 +0530
-Message-ID: <20240216135137.8668-6-atp.exp@gmail.com>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20240216135137.8668-3-atp.exp@gmail.com>
-References: <20240216135137.8668-3-atp.exp@gmail.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, max.chou@sifive.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/3] riscv: set vstart_eq_zero on mark_vs_dirty 
+Date: Fri, 16 Feb 2024 10:57:16 -0300
+Message-ID: <20240216135719.1034289-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=atp.exp@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,43 +91,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A few watchdog devices use qemu_system_reset_request(). This is not ideal since
-behaviour of watchdog-expiry can't be changed by QMP using `watchdog_action`.
-As stated in BiteSizedTasks wiki page, instead of using qemu_system_reset_request()
-to reset when a watchdog timer expires, let watchdog_perform_action() decide
-what to do.
+Hi,
 
-I am unsure about the changes in `spapr_watchdog.c` in patch 3, it would be great
-if any of the maintainers review it.
+This second version is based on feedback gave on the Gitlab bug [1] by
+Vladimir Isaev. For this approach to work the 'vstart_eq_zero' flag
+must be updated regardless of 'mstatus_vs' being marked as DIRTY or
+not - there's no guarantee that we'll clean mstatus_vs after each change
+in 'vstart'.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2124
-Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
----
- hw/watchdog/spapr_watchdog.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Patches based on alistair/riscv-to-apply.next.
 
-diff --git a/hw/watchdog/spapr_watchdog.c b/hw/watchdog/spapr_watchdog.c
-index 2bb1d3c532..9751b19506 100644
---- a/hw/watchdog/spapr_watchdog.c
-+++ b/hw/watchdog/spapr_watchdog.c
-@@ -18,6 +18,7 @@
- #include "target/ppc/cpu.h"
- #include "migration/vmstate.h"
- #include "trace.h"
-+#include "sysemu/watchdog.h"
- 
- #include "hw/ppc/spapr.h"
- 
-@@ -114,7 +115,7 @@ static void watchdog_expired(void *pw)
-         qemu_system_vmstop_request(RUN_STATE_SHUTDOWN);
-         break;
-     case PSERIES_WDTF_ACTION_HARD_RESTART:
--        qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
-+        watchdog_perform_action();
-         break;
-     case PSERIES_WDTF_ACTION_DUMP_RESTART:
-         CPU_FOREACH(cs) {
+
+[1] https://gitlab.com/qemu-project/qemu/-/issues/1976
+
+Changes from v1:
+- patch 3:
+  - always update vstart_eq_zero, not only if "mstatus_vs !=
+    EXT_STATUS_DIRTY"
+- v1 link: https://lore.kernel.org/qemu-riscv/20240216112806.997948-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (3):
+  trans_rvv.c.inc: write CSRs must call mark_vs_dirty() too
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+  target/riscv/translate.c: set vstart_eq_zero in mark_vs_dirty()
+
+ target/riscv/insn_trans/trans_rvv.c.inc | 28 +++++++------------------
+ target/riscv/translate.c                | 20 ++++++++++++++++++
+ 2 files changed, 27 insertions(+), 21 deletions(-)
+
 -- 
-2.42.1
+2.43.0
 
 
