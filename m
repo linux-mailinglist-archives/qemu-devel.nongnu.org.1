@@ -2,85 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8BE857B2C
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BACA857B3E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:11:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw2M-0003Au-Sv; Fri, 16 Feb 2024 06:05:47 -0500
+	id 1raw53-0001pq-Bt; Fri, 16 Feb 2024 06:08:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1raw27-0001wv-NM
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:32 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1raw23-0001Id-EX
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:31 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4124d8f9915so2091025e9.2
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:05:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081525; x=1708686325; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VuH9hqTqNDDFmXccRjofPIgFAMpQ8zGYoJVwZaguqNQ=;
- b=NW71z4t08zst/w+yEksGXPB2RCAIHfAsqgWEywICqLtDvPGXHX/kRMURewo35vKwQ2
- OTtaijcTkBbcM4mg+W9kxoE25n1glqGDK/ByE3u3kZrHp5dpRKqY3++o8mzfX0fgnmK1
- ETI9W5ue+2aYWPXwCRQDrOzR7zYyIG6ZEsIgl/qfiYt7en2QWjIV+Q3mpP0mxjQjuZD4
- 1llkHj8fVXdEpDtk+67cmLsIy3PY1fcWjdIsMbUMg9USCNER5CSBPRH1izI16/gDAuMG
- t5If/a51csUbu3QvVKNq4sxAiHNXcjj1NwVyc0Hj+f59ELPrUWzREXx6WwGxBbvsNQbd
- cdRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081525; x=1708686325;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=VuH9hqTqNDDFmXccRjofPIgFAMpQ8zGYoJVwZaguqNQ=;
- b=rNgfWiv51O5FEGkYugQYQI0e7xef0rwlCyCW8WSNfu71+uOoBd7BVARjy0xdr23o2l
- FILTqv0v5bRGBM+fQDNqZtlOleuPYY56fEOb8L4YFo+M0RZZmYrjH/nEeyjcABDm5ooB
- 7K1mwGYsG32F55rSXZf7LrGBBsu9V0jbJrV2MW6ejVYRdymFWwyJRqvRzsWPdg6SH5Ic
- NInt/3k/7W+vIe/8lH0q4izHT3oIJv2oL39EpXSOA95GZHwTLJi1ZKmsHUzDEY9Sx+d0
- YRZ1pvgIiwkn8lbtoIP/iOeO/gMRJze1k+E9Wgtp7OMFMQpwHqPs8RvVuZyKylM1wla5
- cyVw==
-X-Gm-Message-State: AOJu0Ywd9hKZSOcGyJU74cdzh3yUKlY03rPijTD2BCRVqMLnrpivTD1V
- 7jkGS74pRrI+imCBdsvJ6zzrFQvRol0l0Ilw/ja5jd9uuOQ3UyteIU43kQflKZk=
-X-Google-Smtp-Source: AGHT+IFUTiVmn+hgnh5vt4fHQ7e8VGyF1snmLvQgURFSHojA2uIGQrJcn7hcu/LA6AKGbVcihYwGhg==
-X-Received: by 2002:a05:600c:a15:b0:411:fc83:b10 with SMTP id
- z21-20020a05600c0a1500b00411fc830b10mr3339609wmp.34.1708081525459; 
- Fri, 16 Feb 2024 03:05:25 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- h5-20020a05600c350500b004124219a8c9sm1647110wmq.32.2024.02.16.03.05.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 03:05:24 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5CBFD5F7B1;
- Fri, 16 Feb 2024 11:05:24 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  amonakov@ispras.ru,  mmromanov@ispras.ru
-Subject: Re: [RFC PATCH v4 10/10] util/bufferiszero: Add sve acceleration
- for aarch64
-In-Reply-To: <20240215081449.848220-11-richard.henderson@linaro.org> (Richard
- Henderson's message of "Wed, 14 Feb 2024 22:14:49 -1000")
-References: <20240215081449.848220-1-richard.henderson@linaro.org>
- <20240215081449.848220-11-richard.henderson@linaro.org>
-User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Fri, 16 Feb 2024 11:05:24 +0000
-Message-ID: <87a5o06557.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=8DrN=JZ=kaod.org=clg@ozlabs.org>)
+ id 1raw50-0001jv-D9; Fri, 16 Feb 2024 06:08:30 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=8DrN=JZ=kaod.org=clg@ozlabs.org>)
+ id 1raw4y-0002Cn-EK; Fri, 16 Feb 2024 06:08:30 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tbq111sLvz4wcv;
+ Fri, 16 Feb 2024 22:08:21 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tbq0x3FDhz4wcl;
+ Fri, 16 Feb 2024 22:08:17 +1100 (AEDT)
+Message-ID: <6ffab72b-c790-48c1-93cc-fffeb067dd5e@kaod.org>
+Date: Fri, 16 Feb 2024 12:08:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/21] hw/ppc/pnv_bmc: Use qdev_new() instead of QOM API
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-block@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20240216110313.17039-1-philmd@linaro.org>
+ <20240216110313.17039-6-philmd@linaro.org>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240216110313.17039-6-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=8DrN=JZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,45 +68,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+On 2/16/24 12:02, Philippe Mathieu-Daudé wrote:
+> Prefer QDev API for QDev objects, avoid the underlying QOM layer.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
 > ---
->
-> RFC because I've not benchmarked this on real hw, only run it
-> through qemu for validation.
->
-<snip>
->=20=20
-> +#ifdef CONFIG_SVE_OPT
-> +static unsigned accel_index;
-> +static void __attribute__((constructor)) init_accel(void)
-> +{
-> +    accel_index =3D (cpuinfo & CPUINFO_SVE ? 2 : 1);
-> +    buffer_is_zero_accel =3D accel_table[accel_index];
-> +}
+>   hw/ppc/pnv_bmc.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/ppc/pnv_bmc.c b/hw/ppc/pnv_bmc.c
+> index 99f1e8d7f9..0c1274df21 100644
+> --- a/hw/ppc/pnv_bmc.c
+> +++ b/hw/ppc/pnv_bmc.c
+> @@ -269,13 +269,13 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor)
+>    */
+>   IPMIBmc *pnv_bmc_create(PnvPnor *pnor)
+>   {
+> -    Object *obj;
+> +    DeviceState *dev;
+>   
+> -    obj = object_new(TYPE_IPMI_BMC_SIMULATOR);
+> -    qdev_realize(DEVICE(obj), NULL, &error_fatal);
+> -    pnv_bmc_set_pnor(IPMI_BMC(obj), pnor);
+> +    dev = qdev_new(TYPE_IPMI_BMC_SIMULATOR);
+> +    qdev_realize(dev, NULL, &error_fatal);
+> +    pnv_bmc_set_pnor(IPMI_BMC(dev), pnor);
+>   
+> -    return IPMI_BMC(obj);
+> +    return IPMI_BMC(dev);
+>   }
+>   
+>   typedef struct ForeachArgs {
 
-This really needs to be:
-
-  -    accel_index =3D (cpuinfo & CPUINFO_SVE ? 2 : 1);
-  +    unsigned info =3D cpuinfo_init();
-  +    accel_index =3D (info & CPUINFO_SVE ? 2 : 1);
-
-because otherwise you are relying on constructor initialisation order
-and on the Graviton 3 I built on it wasn't detecting the SVE. With that I
-get this from "perf record ./tests/unit/test-bufferiszero -m thorough"
-
-  51.17%  test-bufferisze  test-bufferiszero      [.] buffer_is_zero_sve
-  18.92%  test-bufferisze  test-bufferiszero      [.] buffer_is_zero_simd
-  18.02%  test-bufferisze  test-bufferiszero      [.] buffer_is_zero_int_ge=
-256
-   7.67%  test-bufferisze  test-bufferiszero      [.] buffer_is_zero_ool
-   4.09%  test-bufferisze  test-bufferiszero      [.] test_1
-
-but as I mentioned before it would be nice to have a proper benchmark
-for the buffer utils as I'm sure the unit test would be prone to noise.
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
