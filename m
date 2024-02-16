@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA0F858143
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:36:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF0285814E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:37:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb0Fs-0004GI-SY; Fri, 16 Feb 2024 10:36:00 -0500
+	id 1rb0Fu-0004I6-Fx; Fri, 16 Feb 2024 10:36:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rb0Fi-0004AJ-J0
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:35:54 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rb0Fp-0004DI-8H
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:35:58 -0500
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rb0Ff-0008Im-Li
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:35:50 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-55a8fd60af0so3193124a12.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 07:35:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rb0Fk-0008Ju-Gw
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:35:54 -0500
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-511ac32fe38so3199942e87.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 07:35:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708097745; x=1708702545; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708097750; x=1708702550; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6ztXjxwe8IKbXpGPRKa7UqA3qhxM54O9HdB2Bhpwj8c=;
- b=OHbhCNXn0vnVsM5RG9SuZuIctabUQbGfbSYJtKURuTuvdJrs+JGCCQqgFNT5r+aZdg
- r1OCYf0/ro7oFmtLQWz8061n4f5qIJs6UKMdVffDoCeN1LM2mCZj/qBhlQjzGHQBz4FM
- bacWMeQvkffmzh5BDVCp7LLzGDaxa55LFp8e13xbN9Bp9Lpp59bhH/vlc2O5lNkUnG2k
- H47gffriNLc1u/GoMNoKMa0VvA+BMKp07abfufSPnZUmo2poQhGyCtG3qwX7AEY5TtZL
- UkFMD6ZMzFoCleJiSR0zRVZMumLjbm5yJeVcxP6SoRxkD2gfJcXAslAWbiMKp/CuGWz0
- DWHg==
+ bh=6fLBBhh1GSx7gD4Lvttkm3NNOOv+Jojp8q0UUHVCrGQ=;
+ b=zpab49GdHR407PIxh5Gd0ldme4YocbRxvc/IrE1JsLfO29RoA+en4LtQ/YGwzhEk77
+ 52+E4OE0qrGgKBtDIdbnbLwLiD5rsGXzEdqwe79M/iLoF0KfmWSdDbaIQJMj43l8+Mv+
+ P77mzyX8JiZC29066OSSQQDdNY+3dcpr454PAC6buUD+PTdYkF9E3JH2uhet8om/BkJ/
+ mPNG9QKNG+R8E/VLcU6yrlfKifhnvgUxtBCPoanApzWEwrocshA6Pwt2G6GeajKtG6P/
+ PO4BqHdgN2qgK9N5/VLBW9/eODa1rZIFyCTNd6nrEj7+qhi9DZJfzJk2oj2T17hwYO5f
+ LypA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708097745; x=1708702545;
+ d=1e100.net; s=20230601; t=1708097750; x=1708702550;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6ztXjxwe8IKbXpGPRKa7UqA3qhxM54O9HdB2Bhpwj8c=;
- b=NZ8Stf+axABhOTSqm5EDXnfA5jZ26VBp1iy9TS+HIqG70C9gYn7PTxcK/vVh0FDGg1
- z/gBMoYu3u7FpdwtSK8B7S6YTjDc95b+em4Wqw/mqD7uTgzq+0BiEWYfYRTSZdhUSHtM
- 6PhEhYBfv81qL6SXXPT1FDgwlf/uUpUlZwWQYxycT1CTwJhyuDPHw42IFj0HLdILodnw
- tZ6puKUxTIc1aCdVd2qUrdn63M5K7tl88BdN4ShaAZJx6Pt28uoAqSJoNZE0R06Hurww
- S57XaEhUKxC5i/CSVDnhdxwodpnudCyfm/VkQHW9UnM2kRUbTpKE4cYCGUmB32XwHArV
- C/eg==
-X-Gm-Message-State: AOJu0YzcXLagCUTMtnClX8EpxGfndTBxveRlOaieQbRwKCWcsTAPV5m7
- m02LT9J9hXX4rnMXY3TLYkFjbKR5HhAzuJ7QOE2RGx4l/FLeUdNUcNXapKkLd62XqIR7hvZH0ql
- P
-X-Google-Smtp-Source: AGHT+IGAFxEntDsPXEoYg04THRPSQ35FumBk18CuWooi3xaKjvMlW2W8e2Rd87e9wlVE4krtOGb7/g==
-X-Received: by 2002:a05:6402:793:b0:564:1c0:bf4b with SMTP id
- d19-20020a056402079300b0056401c0bf4bmr836119edy.40.1708097744750; 
- Fri, 16 Feb 2024 07:35:44 -0800 (PST)
+ bh=6fLBBhh1GSx7gD4Lvttkm3NNOOv+Jojp8q0UUHVCrGQ=;
+ b=tQYTmlJb4ZfOPB8sRBGD1mEcINwltGyAIzPxheib/tIZGNeBWx/tR/Xbud/6NtWLZl
+ 1Wj0/jO9BmSImjPLkmgrIuP2j2AvOfj/L3uSus+dNknvoQLKbh7VeKRuhk+ItVV+wvw/
+ 1Ki4RZhDBJngkwmGWyMdqlZJ/8BzM/HVZ9D/DCc/m03f6QP1MY8L7vpkH4LsUxi+qM4H
+ Xcvlt6ncid6H+fwfgmJtA+o4kfLmoyft8GcXoSwez1T9etuVa/XiMHzFRuBRGliL4P8V
+ 82uy6EO5pUZCiddtUmkofTBuJsfDYDHu+rhaRqTuvwg0I3EW2GSXnHI+CPADtLN1waLX
+ QfXw==
+X-Gm-Message-State: AOJu0YxZgJrL3hjW+P1KMews6AruVJ2E+08W+BQlGcLoYs++D8pUSoqy
+ vwOphpAAIQR5H/LNNgCjD5IrsjFaJukRCq7jgnhjeIAIyU7vHv8OxOiGhntIT1DQ5uR1LywCN75
+ 4
+X-Google-Smtp-Source: AGHT+IGNHeZhgcGo12jNmOStEDC3hBsbxmtv6u/9HX9Me13ycUZT94SzgrmFQ42EJFSWhVNwe4Qrpw==
+X-Received: by 2002:a05:6512:224d:b0:512:99ad:d465 with SMTP id
+ i13-20020a056512224d00b0051299add465mr995055lfu.16.1708097750674; 
+ Fri, 16 Feb 2024 07:35:50 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- df13-20020a05640230ad00b005621a9b09fbsm83681edb.41.2024.02.16.07.35.43
+ e1-20020aa7d7c1000000b005621b45daffsm85225eds.28.2024.02.16.07.35.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 07:35:44 -0800 (PST)
+ Fri, 16 Feb 2024 07:35:50 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -66,25 +66,24 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/6] hw/display/exynos4210_fimd: Pass frame buffer memory
- region as link
-Date: Fri, 16 Feb 2024 16:35:15 +0100
-Message-ID: <20240216153517.49422-5-philmd@linaro.org>
+Subject: [PATCH 5/6] hw/i386/kvmvapic: Inline sysbus_address_space()
+Date: Fri, 16 Feb 2024 16:35:16 +0100
+Message-ID: <20240216153517.49422-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216153517.49422-1-philmd@linaro.org>
 References: <20240216153517.49422-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,94 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the Exynos4210fimdState::'framebuffer-memory' property. Have
-the board set it. We don't need to call sysbus_address_space()
-anymore.
+sysbus_address_space(...) is a simple wrapper to
+get_system_memory(). Use it in place, since KVM
+VAPIC doesn't distinct address spaces.
+
+Rename the 'as' variable as 'mr' since it is a
+MemoryRegion type, not an AddressSpace one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/display/exynos4210_fimd.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ hw/i386/kvmvapic.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/display/exynos4210_fimd.c b/hw/display/exynos4210_fimd.c
-index 84687527d5..5712558e13 100644
---- a/hw/display/exynos4210_fimd.c
-+++ b/hw/display/exynos4210_fimd.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/qdev-properties.h"
- #include "hw/hw.h"
- #include "hw/irq.h"
+diff --git a/hw/i386/kvmvapic.c b/hw/i386/kvmvapic.c
+index f2b0aff479..25321d4f66 100644
+--- a/hw/i386/kvmvapic.c
++++ b/hw/i386/kvmvapic.c
+@@ -16,6 +16,7 @@
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/runstate.h"
++#include "exec/address-spaces.h"
+ #include "hw/i386/apic_internal.h"
  #include "hw/sysbus.h"
-@@ -32,6 +33,7 @@
- #include "qemu/bswap.h"
- #include "qemu/module.h"
- #include "qemu/log.h"
-+#include "qapi/error.h"
- #include "qom/object.h"
+ #include "hw/boards.h"
+@@ -57,6 +58,7 @@ typedef struct GuestROMState {
  
- /* Debug messages configuration */
-@@ -302,6 +304,7 @@ struct Exynos4210fimdState {
-     MemoryRegion iomem;
-     QemuConsole *console;
-     qemu_irq irq[3];
-+    MemoryRegion *fbmem;
- 
-     uint32_t vidcon[4];     /* Video main control registers 0-3 */
-     uint32_t vidtcon[4];    /* Video time control registers 0-3 */
-@@ -1119,7 +1122,6 @@ static void exynos4210_fimd_invalidate(void *opaque)
-  * VIDOSDA, VIDOSDB, VIDWADDx and SHADOWCON registers */
- static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
+ struct VAPICROMState {
+     SysBusDevice busdev;
++
+     MemoryRegion io;
+     MemoryRegion rom;
+     uint32_t state;
+@@ -580,19 +582,17 @@ static int vapic_map_rom_writable(VAPICROMState *s)
  {
--    SysBusDevice *sbd = SYS_BUS_DEVICE(s);
-     Exynos4210fimdWindow *w = &s->window[win];
-     hwaddr fb_start_addr, fb_mapped_len;
+     hwaddr rom_paddr = s->rom_state_paddr & ROM_BLOCK_MASK;
+     MemoryRegionSection section;
+-    MemoryRegion *as;
++    MemoryRegion *mr = get_system_memory();
+     size_t rom_size;
+     uint8_t *ram;
  
-@@ -1147,8 +1149,7 @@ static void fimd_update_memory_section(Exynos4210fimdState *s, unsigned win)
-         memory_region_unref(w->mem_section.mr);
+-    as = sysbus_address_space(&s->busdev);
+-
+     if (s->rom_mapped_writable) {
+-        memory_region_del_subregion(as, &s->rom);
++        memory_region_del_subregion(mr, &s->rom);
+         object_unparent(OBJECT(&s->rom));
      }
  
--    w->mem_section = memory_region_find(sysbus_address_space(sbd),
--                                        fb_start_addr, w->fb_len);
-+    w->mem_section = memory_region_find(s->fbmem, fb_start_addr, w->fb_len);
-     assert(w->mem_section.mr);
-     assert(w->mem_section.offset_within_address_space == fb_start_addr);
-     DPRINT_TRACE("Window %u framebuffer changed: address=0x%08x, len=0x%x\n",
-@@ -1924,6 +1925,12 @@ static const GraphicHwOps exynos4210_fimd_ops = {
-     .gfx_update  = exynos4210_fimd_update,
- };
+     /* grab RAM memory region (region @rom_paddr may still be pc.rom) */
+-    section = memory_region_find(as, 0, 1);
++    section = memory_region_find(mr, 0, 1);
  
-+static Property exynos4210_fimd_properties[] = {
-+    DEFINE_PROP_LINK("framebuffer-memory", Exynos4210fimdState, fbmem,
-+                     TYPE_MEMORY_REGION, MemoryRegion *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void exynos4210_fimd_init(Object *obj)
- {
-     Exynos4210fimdState *s = EXYNOS4210_FIMD(obj);
-@@ -1944,6 +1951,11 @@ static void exynos4210_fimd_realize(DeviceState *dev, Error **errp)
- {
-     Exynos4210fimdState *s = EXYNOS4210_FIMD(dev);
+     /* read ROM size from RAM region */
+     if (rom_paddr + 2 >= memory_region_size(section.mr)) {
+@@ -613,7 +613,7 @@ static int vapic_map_rom_writable(VAPICROMState *s)
  
-+    if (!s->fbmem) {
-+        error_setg(errp, "'framebuffer-memory' property was not set");
-+        return;
-+    }
-+
-     s->console = graphic_console_init(dev, 0, &exynos4210_fimd_ops, s);
- }
+     memory_region_init_alias(&s->rom, OBJECT(s), "kvmvapic-rom", section.mr,
+                              rom_paddr, rom_size);
+-    memory_region_add_subregion_overlap(as, rom_paddr, &s->rom, 1000);
++    memory_region_add_subregion_overlap(mr, rom_paddr, &s->rom, 1000);
+     s->rom_mapped_writable = true;
+     memory_region_unref(section.mr);
  
-@@ -1954,6 +1966,7 @@ static void exynos4210_fimd_class_init(ObjectClass *klass, void *data)
-     dc->vmsd = &exynos4210_fimd_vmstate;
-     dc->reset = exynos4210_fimd_reset;
-     dc->realize = exynos4210_fimd_realize;
-+    device_class_set_props(dc, exynos4210_fimd_properties);
- }
- 
- static const TypeInfo exynos4210_fimd_info = {
 -- 
 2.41.0
 
