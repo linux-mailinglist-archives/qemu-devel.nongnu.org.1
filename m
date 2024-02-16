@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00CC857B36
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06BE857B13
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:06:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw21-0001Cx-Ci; Fri, 16 Feb 2024 06:05:25 -0500
+	id 1raw2C-00023L-Sq; Fri, 16 Feb 2024 06:05:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1x-00013D-CC
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:21 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw23-0001ZY-VR
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:28 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1m-0001DP-OA
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:20 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33b4e6972f6so912362f8f.2
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:05:10 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1s-0001FM-Hx
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:05:27 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33934567777so1057476f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:05:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081508; x=1708686308; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081514; x=1708686314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wIiFm5Lc76s4egbopN+QwAc3v81IfNt4gHe1mB8rI9U=;
- b=JKl4ls6s30yDphvgFJqbet/DnKLO6hOugNHjlqBQM4MmoyrzpXxtYqCz9RU9iLq0Bb
- wxxWr8TuJ1s8kz+aRFHPxFmQZxg0Ewv7/J62aaaKGksrO7Bw9nUxL4N/1Yr/UVXRI3QP
- x7ksVuHBMJ0mmXYDvgx8bvDKgmNuCV5Bwk/ZM6bUpVcOIBKW4LFvKa7sDsdwraNHeELm
- 6vQysFkGoTrl+vurBUP5AA/THKiAx5FV8H5+qXIjp67ku1fqcXuuAOqwSbIbaNqR0BKO
- gnfb+qp45ne7y6GJLh6sOVYD1u37dTiEK/KJinW9BO3E7eVT+wN/AQG1LgJlET73ckth
- SPZA==
+ bh=ELKUbUBr744bWbi9HHUFUd98mluSMaEj1sworCQzpug=;
+ b=Hx/8fgPXQq5hg4OPgOcSzsfgVa+ySPBuLbXb6XoE6MpS5Qt3zWfpoMP4G9rBhVzLf3
+ holnO1KCNPid2zQheWFV+d3TSmLDlTkdoeX6tNHhk8LfMWXfNC2pmLOhKoxiSefimFcE
+ DOXXH9E1XEz638rO60CAgUaIafpoVcPMWF697jVf7wRXNvjGteM8ouE1RYJChM0ibVy3
+ 5waXu1msyJM4lwfvnAgMrtVWtwFv9oAFqWfq1JRPreIGSRklGvw664q5HRLogkYebKIW
+ /v+VcW695zUrGewdh9BAtwEFFizcD86om7VEfTNNxwxEivGpBgTGwfqFa+UytEQ0c+hL
+ ZRDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081508; x=1708686308;
+ d=1e100.net; s=20230601; t=1708081514; x=1708686314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wIiFm5Lc76s4egbopN+QwAc3v81IfNt4gHe1mB8rI9U=;
- b=mpFVVbJ5OpWlHQCTGbaDRg/jiqYARxSTGKzLefcTLs0h/+e2CXEmV5Sj75oKVfwriF
- feajiZQYa9Uju8ZdgG7ez8BTEiASt7WsvyVlFb1F6u/Xe2iT+FgVZRAt0I0uE9BLlpA1
- Nw1OieR6ApcM+fimhW7UCxZhKC7X+Qn7+tWfMWLdRZrKtaJV8qfOdO4Nn39JbQ2IDszQ
- 1A1b+ueAjMShlVw//Vbt/lvMvEgdVwPNmna+qud7/uaSNwn8AHmLiawCxn0jO60FvmUo
- bnl1n2MwX9YCeUWULZx9HDL/7qtkqtXNoj73KqeYUvibaIRlt8ZauApi+XIqWP+YJDWO
- 5e0w==
-X-Gm-Message-State: AOJu0YxE31UApwz0VXytNQvtnedpAy+rUddYU92U4tnDwaXDEfiY5Iox
- eT8GFhCP1EKRCdC6Ym3sPu7TVTiZxD7zSe2upzh+6adIheDzCiyuz6/LUecV+TEg7WRF3Ubpb30
- r
-X-Google-Smtp-Source: AGHT+IG6XP4dbGm68hmsfizv3Pfjes9DvZbgcYeGu9WzGNH+dZXsKbuIq1Wy3vt36rJT7bBRfGZByg==
-X-Received: by 2002:a5d:664d:0:b0:33d:157d:a7ad with SMTP id
- f13-20020a5d664d000000b0033d157da7admr1642262wrw.40.1708081507912; 
- Fri, 16 Feb 2024 03:05:07 -0800 (PST)
+ bh=ELKUbUBr744bWbi9HHUFUd98mluSMaEj1sworCQzpug=;
+ b=EZOKFfryG9YKIZFW0pu1Y+F5jJ6Q0h25MI29GOUBs0pQp2eQqDx3EE4/2jdo3NKJMM
+ WXiwBdW0FQ5VjQ6hBN8PylXZ1Y4aWIquA8jwzcyf74i+CqERqe4qhLX7xygMx5RXIEif
+ OamxmroLsy8TpvaiYGXjVRL2fm4KDPOQ2QqMr4EXcyc4/H5oNFxjDIFnPK2wzRKca9Ii
+ TDS02b1O0xoajW5ch5Uz3E/LIMnaiXJCZYJEqbNk5S/mJX0dGKarIGVSpMIiQCjHA9Lp
+ niBHNhzLurVgJDo1TLPXI7KWU27vnGjCFO8f7JLMKQXOA/Gz2fUZRqgYEWjPXrBBu7VG
+ R/Yg==
+X-Gm-Message-State: AOJu0Yw4/kwi0akbgR1mUtLQBMKl3IXV1qiQqoedQYRWFynnsqyED0vl
+ B0yYPTRzHH6i8TWrBsB8rem0Xubcz62otwD2+Jy0Y0YiCIYXcSiLCFpQUscxJdrFdPRgZHT1NSn
+ S
+X-Google-Smtp-Source: AGHT+IHLOkpd1E3B//Qhh6skOFM859/0GFEnyy22LpH6nRR/jpLF34pA2atSRcEoUH04EYIRGJGmiw==
+X-Received: by 2002:a5d:4a4f:0:b0:33b:5087:c913 with SMTP id
+ v15-20020a5d4a4f000000b0033b5087c913mr3438284wrs.54.1708081514666; 
+ Fri, 16 Feb 2024 03:05:14 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- b10-20020a5d40ca000000b0033ceca3a3dbsm1898621wrq.2.2024.02.16.03.05.05
+ x6-20020adff0c6000000b0033cfc035940sm1889460wro.34.2024.02.16.03.05.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:05:07 -0800 (PST)
+ Fri, 16 Feb 2024 03:05:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 17/21] hw/i386/iommu: Prefer object_initialize_child over
- object_initialize
-Date: Fri, 16 Feb 2024 12:03:08 +0100
-Message-ID: <20240216110313.17039-18-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 18/21] hw/pci-host/versatile: Replace object_initialize() ->
+ _child()
+Date: Fri, 16 Feb 2024 12:03:09 +0100
+Message-ID: <20240216110313.17039-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,33 +98,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 When the QOM parent is available, prefer object_initialize_child()
 over object_initialize(), since it create the parent relationship.
 
-Rename the 'klass' variable as 'obj' since the argument holds a
-reference to an instance object and not a class one.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/amd_iommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/pci-host/versatile.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 7329553ad3..c3afbc4130 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1616,11 +1616,11 @@ static const VMStateDescription vmstate_amdvi_sysbus = {
-     .unmigratable = 1
- };
+diff --git a/hw/pci-host/versatile.c b/hw/pci-host/versatile.c
+index 0e65deb3f9..5d1f9cc96d 100644
+--- a/hw/pci-host/versatile.c
++++ b/hw/pci-host/versatile.c
+@@ -410,7 +410,8 @@ static void pci_vpb_realize(DeviceState *dev, Error **errp)
+                       PCI_DEVFN(11, 0), TYPE_PCI_BUS);
+     h->bus = &s->pci_bus;
  
--static void amdvi_sysbus_instance_init(Object *klass)
-+static void amdvi_sysbus_instance_init(Object *obj)
- {
--    AMDVIState *s = AMD_IOMMU_DEVICE(klass);
-+    AMDVIState *s = AMD_IOMMU_DEVICE(obj);
+-    object_initialize(&s->pci_dev, sizeof(s->pci_dev), TYPE_VERSATILE_PCI_HOST);
++    object_initialize_child(OBJECT(dev), "pci-func0",
++                            &s->pci_dev, TYPE_VERSATILE_PCI_HOST);
  
--    object_initialize(&s->pci, sizeof(s->pci), TYPE_AMD_IOMMU_PCI);
-+    object_initialize_child(obj, "iommu", &s->pci, TYPE_AMD_IOMMU_PCI);
- }
- 
- static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
+     for (i = 0; i < 4; i++) {
+         sysbus_init_irq(sbd, &s->irq[i]);
 -- 
 2.41.0
 
