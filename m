@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56748578AC
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 10:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBC18578BA
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 10:21:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rauKh-0007jq-G2; Fri, 16 Feb 2024 04:16:35 -0500
+	id 1rauP2-00019w-Si; Fri, 16 Feb 2024 04:21:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rauKf-0007jO-Un
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 04:16:33 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1rauOz-00019V-EO
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 04:21:01 -0500
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rauKd-0005o0-Ob
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 04:16:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708074988;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=tqqDW39l+V/yPFeZxBUCWNqogR2/wN8JjWZ2Hv5ILfE=;
- b=Uapsw7OoYPTulDRoZzs2ts6OvBo2sBhPBnhEROWvSJuZ5UKzBQa62BmgYYOlaExJHHzC0A
- cCC35fp58PpcG2zIeNgn0maNTqk3fTvtyGtxU0cfLRDoeSonV9jXC9AuGrB8QGsPc4/oBH
- w+YyvV6kiLw8BUh1+WoaNZmAbTo7FQs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-iz1mgji0NimqQd_C8psgnw-1; Fri, 16 Feb 2024 04:16:24 -0500
-X-MC-Unique: iz1mgji0NimqQd_C8psgnw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77E72837234;
- Fri, 16 Feb 2024 09:16:24 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.46])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A0E10AC07;
- Fri, 16 Feb 2024 09:16:22 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	qemu-trivial@nongnu.org
-Subject: [PATCH v2] hw/hppa/Kconfig: Fix building with "configure
- --without-default-devices"
-Date: Fri, 16 Feb 2024 10:16:21 +0100
-Message-ID: <20240216091621.32989-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <shiju.jose@huawei.com>)
+ id 1rauOw-0006gy-1m
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 04:21:00 -0500
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TbmXy48Dtz6K7G7;
+ Fri, 16 Feb 2024 17:17:22 +0800 (CST)
+Received: from lhrpeml500002.china.huawei.com (unknown [7.191.160.78])
+ by mail.maildlp.com (Postfix) with ESMTPS id 70CA4140B63;
+ Fri, 16 Feb 2024 17:20:51 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
+ lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 16 Feb 2024 09:20:51 +0000
+Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
+ lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035; 
+ Fri, 16 Feb 2024 09:20:51 +0000
+To: fan <nifan.cxl@gmail.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, tanxiaofei <tanxiaofei@huawei.com>, "Zengtao
+ (B)" <prime.zeng@hisilicon.com>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v2 1/3] hw/cxl/cxl-mailbox-utils: Add support for feature
+ commands (8.2.9.6)
+Thread-Topic: [PATCH v2 1/3] hw/cxl/cxl-mailbox-utils: Add support for feature
+ commands (8.2.9.6)
+Thread-Index: AQHaHt2k9HtibX8fzEeC6ibsAHGqnrEMNWYAgAD/BkA=
+Date: Fri, 16 Feb 2024 09:20:50 +0000
+Message-ID: <e773c12ca6ca40a1aa582d3a8a4043d9@huawei.com>
+References: <20231124135338.1191-1-shiju.jose@huawei.com>
+ <20231124135338.1191-2-shiju.jose@huawei.com> <Zc5SbEn1J-Bk0tYg@debian>
+In-Reply-To: <Zc5SbEn1J-Bk0tYg@debian>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.195.246.99]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.772,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=185.176.79.56; envelope-from=shiju.jose@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,50 +74,254 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shiju Jose <shiju.jose@huawei.com>
+From:  Shiju Jose via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running "configure" with "--without-default-devices", building
-of qemu-system-hppa currently fails with:
+Hi Fan,
 
- /usr/bin/ld: libqemu-hppa-softmmu.fa.p/hw_hppa_machine.c.o: in function `machine_HP_common_init_tail':
- hw/hppa/machine.c:399: undefined reference to `usb_bus_find'
- /usr/bin/ld: hw/hppa/machine.c:399: undefined reference to `usb_create_simple'
- /usr/bin/ld: hw/hppa/machine.c:400: undefined reference to `usb_bus_find'
- /usr/bin/ld: hw/hppa/machine.c:400: undefined reference to `usb_create_simple'
- collect2: error: ld returned 1 exit status
- ninja: build stopped: subcommand failed.
- make: *** [Makefile:162: run-ninja] Error 1
+Thanks for the feedbacks.
 
-And after fixing this, the qemu-system-hppa binary refuses to run
-due to the missing 'pci-ohci' and 'pci-serial' devices. Let's add
-the right config switches to fix these problems.
+>-----Original Message-----
+>From: fan <nifan.cxl@gmail.com>
+>Sent: 15 February 2024 18:06
+>To: Shiju Jose <shiju.jose@huawei.com>
+>Cc: qemu-devel@nongnu.org; linux-cxl@vger.kernel.org; Jonathan Cameron
+><jonathan.cameron@huawei.com>; tanxiaofei <tanxiaofei@huawei.com>;
+>Zengtao (B) <prime.zeng@hisilicon.com>; Linuxarm <linuxarm@huawei.com>
+>Subject: Re: [PATCH v2 1/3] hw/cxl/cxl-mailbox-utils: Add support for feat=
+ure
+>commands (8.2.9.6)
+>
+>On Fri, Nov 24, 2023 at 09:53:35PM +0800, shiju.jose@huawei.com wrote:
+>> From: Shiju Jose <shiju.jose@huawei.com>
+>>
+>> CXL spec 3.0 section 8.2.9.6 describes optional device specific features=
+.
+>> CXL devices supports features with changeable attributes.
+>> Get Supported Features retrieves the list of supported device specific
+>> features. The settings of a feature can be retrieved using Get Feature
+>> and optionally modified using Set Feature.
+>>
+>> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+>> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+>> ---
+>
+>Updated the references to align with cxl spec r3.1, other than that looks =
+good to
+>me.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- v2: Keep "select SERIAL" instead of replacing it
+I had posted v3 of this series updated for spec r3.1. Please find here,
+https://lore.kernel.org/qemu-devel/20240215110146.1444-1-shiju.jose@huawei.=
+com/T/#t
 
- hw/hppa/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+>
+>Fan
+>
+>>  hw/cxl/cxl-mailbox-utils.c | 167
+>> +++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 167 insertions(+)
+>>
+>> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+>> index 6184f44339..1bbc9a48a6 100644
+>> --- a/hw/cxl/cxl-mailbox-utils.c
+>> +++ b/hw/cxl/cxl-mailbox-utils.c
+>> @@ -66,6 +66,10 @@ enum {
+>>      LOGS        =3D 0x04,
+>>          #define GET_SUPPORTED 0x0
+>>          #define GET_LOG       0x1
+>> +    FEATURES    =3D 0x05,
+>> +        #define GET_SUPPORTED 0x0
+>> +        #define GET_FEATURE   0x1
+>> +        #define SET_FEATURE   0x2
+>>      IDENTIFY    =3D 0x40,
+>>          #define MEMORY_DEVICE 0x0
+>>      CCLS        =3D 0x41,
+>> @@ -785,6 +789,157 @@ static CXLRetCode cmd_logs_get_log(const struct
+>cxl_cmd *cmd,
+>>      return CXL_MBOX_SUCCESS;
+>>  }
+>>
+>> +/* CXL r3.0 section 8.2.9.6: Features */ typedef struct
+>> +CXLSupportedFeatureHeader {
+>> +    uint16_t entries;
+>> +    uint16_t nsuppfeats_dev;
+>> +    uint32_t reserved;
+>> +} QEMU_PACKED CXLSupportedFeatureHeader;
+>> +
+>> +typedef struct CXLSupportedFeatureEntry {
+>> +    QemuUUID uuid;
+>> +    uint16_t feat_index;
+>> +    uint16_t get_feat_size;
+>> +    uint16_t set_feat_size;
+>> +    uint32_t attrb_flags;
+>> +    uint8_t get_feat_version;
+>> +    uint8_t set_feat_version;
+>> +    uint16_t set_feat_effects;
+>> +    uint8_t rsvd[18];
+>> +} QEMU_PACKED CXLSupportedFeatureEntry;
+>> +
+>> +enum CXL_SUPPORTED_FEATURES_LIST {
+>> +    CXL_FEATURE_MAX
+>> +};
+>> +
+>> +/* Get Feature CXL 3.0 Spec 8.2.9.6.2 */
+>> +/*
+>> + * Get Feature input payload
+>> + * CXL rev 3.0 section 8.2.9.6.2; Table 8-79  */
+>> +/* Get Feature : Payload in selection */ enum
+>> +CXL_GET_FEATURE_SELECTION {
+>> +    CXL_GET_FEATURE_SEL_CURRENT_VALUE =3D 0x0,
+>> +    CXL_GET_FEATURE_SEL_DEFAULT_VALUE =3D 0x1,
+>> +    CXL_GET_FEATURE_SEL_SAVED_VALUE =3D 0x2,
+>> +    CXL_GET_FEATURE_SEL_MAX
+>> +};
+>> +
+>> +/* Set Feature CXL 3.0 Spec 8.2.9.6.3 */
+>> +/*
+>> + * Set Feature input payload
+>> + * CXL rev 3.0 section 8.2.9.6.3; Table 8-81  */ typedef struct
+>> +CXLSetFeatureInHeader {
+>> +        QemuUUID uuid;
+>> +        uint32_t flags;
+>> +        uint16_t offset;
+>> +        uint8_t version;
+>> +        uint8_t rsvd[9];
+>> +} QEMU_PACKED QEMU_ALIGNED(16) CXLSetFeatureInHeader;
+>> +
+>> +/* Set Feature : Payload in flags */
+>> +#define CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MASK   0x7
+>> +enum CXL_SET_FEATURE_FLAG_DATA_TRANSFER {
+>> +    CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER =3D 0x0,
+>> +    CXL_SET_FEATURE_FLAG_INITIATE_DATA_TRANSFER =3D 0x1,
+>> +    CXL_SET_FEATURE_FLAG_CONTINUE_DATA_TRANSFER =3D 0x2,
+>> +    CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER =3D 0x3,
+>> +    CXL_SET_FEATURE_FLAG_ABORT_DATA_TRANSFER =3D 0x4,
+>> +    CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MAX
+>> +};
+>> +
+>> +/* CXL r3.0 section 8.2.9.6.1: Get Supported Features (Opcode 0500h)
+>> +*/ static CXLRetCode cmd_features_get_supported(const struct cxl_cmd
+>*cmd,
+>> +                                             uint8_t *payload_in,
+>> +                                             size_t len_in,
+>> +                                             uint8_t *payload_out,
+>> +                                             size_t *len_out,
+>> +                                             CXLCCI *cci) {
+>> +    struct {
+>> +        uint32_t count;
+>> +        uint16_t start_index;
+>> +        uint16_t reserved;
+>> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_in =3D (void
+>> +*)payload_in;
+>> +
+>> +    struct {
+>> +        CXLSupportedFeatureHeader hdr;
+>> +        CXLSupportedFeatureEntry feat_entries[];
+>> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_out =3D (void
+>*)payload_out;
+>> +    uint16_t index;
+>> +    uint16_t entry, req_entries;
+>> +    uint16_t feat_entries =3D 0;
+>> +
+>> +    if (get_feats_in->count < sizeof(CXLSupportedFeatureHeader) ||
+>> +        get_feats_in->start_index > CXL_FEATURE_MAX) {
+>> +        return CXL_MBOX_INVALID_INPUT;
+>> +    }
+>> +    req_entries =3D (get_feats_in->count -
+>> +                   sizeof(CXLSupportedFeatureHeader)) /
+>> +                   sizeof(CXLSupportedFeatureEntry);
+>> +    req_entries =3D MIN(req_entries, CXL_FEATURE_MAX);
+>> +    index =3D get_feats_in->start_index;
+>> +
+>> +    entry =3D 0;
+>> +    while (entry < req_entries) {
+>> +        switch (index) {
+>> +        default:
+>> +            break;
+>> +        }
+>> +        index++;
+>> +        entry++;
+>> +    }
+>> +
+>> +    get_feats_out->hdr.nsuppfeats_dev =3D CXL_FEATURE_MAX;
+>> +    get_feats_out->hdr.entries =3D feat_entries;
+>> +    *len_out =3D sizeof(CXLSupportedFeatureHeader) +
+>> +                      feat_entries *
+>> + sizeof(CXLSupportedFeatureEntry);
+>> +
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>> +/* CXL r3.0 section 8.2.9.6.2: Get Feature (Opcode 0501h) */ static
+>> +CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
+>> +                                           uint8_t *payload_in,
+>> +                                           size_t len_in,
+>> +                                           uint8_t *payload_out,
+>> +                                           size_t *len_out,
+>> +                                           CXLCCI *cci) {
+>> +    struct {
+>> +        QemuUUID uuid;
+>> +        uint16_t offset;
+>> +        uint16_t count;
+>> +        uint8_t selection;
+>> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feature;
+>> +    uint16_t bytes_to_copy =3D 0;
+>> +
+>> +    get_feature =3D (void *)payload_in;
+>> +
+>> +    if (get_feature->selection !=3D CXL_GET_FEATURE_SEL_CURRENT_VALUE) =
+{
+>> +        return CXL_MBOX_UNSUPPORTED;
+>> +    }
+>> +    if (get_feature->offset + get_feature->count > cci->payload_max) {
+>> +        return CXL_MBOX_INVALID_INPUT;
+>> +    }
+>> +
+>> +    *len_out =3D bytes_to_copy;
+>> +
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>> +/* CXL r3.0 section 8.2.9.6.3: Set Feature (Opcode 0502h) */ static
+>> +CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
+>> +                                           uint8_t *payload_in,
+>> +                                           size_t len_in,
+>> +                                           uint8_t *payload_out,
+>> +                                           size_t *len_out,
+>> +                                           CXLCCI *cci) {
+>> +    return CXL_MBOX_SUCCESS;
+>> +}
+>> +
+>>  /* 8.2.9.5.1.1 */
+>>  static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+>>                                               uint8_t *payload_in, @@
+>> -1954,6 +2109,18 @@ static const struct cxl_cmd cxl_cmd_set[256][256] =
+=3D {
+>>      [LOGS][GET_SUPPORTED] =3D { "LOGS_GET_SUPPORTED",
+>cmd_logs_get_supported,
+>>                                0, 0 },
+>>      [LOGS][GET_LOG] =3D { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+>> +    [FEATURES][GET_SUPPORTED] =3D { "FEATURES_GET_SUPPORTED",
+>> +                                  cmd_features_get_supported, 0x8, 0 },
+>> +    [FEATURES][GET_FEATURE] =3D { "FEATURES_GET_FEATURE",
+>> +                                cmd_features_get_feature, 0x15, 0 },
+>> +    [FEATURES][SET_FEATURE] =3D { "FEATURES_SET_FEATURE",
+>> +                                cmd_features_set_feature,
+>> +                                ~0,
+>> +                                (CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
+>> +                                 CXL_MBOX_IMMEDIATE_DATA_CHANGE |
+>> +                                 CXL_MBOX_IMMEDIATE_POLICY_CHANGE |
+>> +                                 CXL_MBOX_IMMEDIATE_LOG_CHANGE |
+>> +                                 CXL_MBOX_SECURITY_STATE_CHANGE)},
+>>      [IDENTIFY][MEMORY_DEVICE] =3D { "IDENTIFY_MEMORY_DEVICE",
+>>          cmd_identify_memory_device, 0, 0 },
+>>      [CCLS][GET_PARTITION_INFO] =3D { "CCLS_GET_PARTITION_INFO",
+>> --
+>> 2.34.1
+>>
 
-diff --git a/hw/hppa/Kconfig b/hw/hppa/Kconfig
-index ff8528aaa8..dff5df7f72 100644
---- a/hw/hppa/Kconfig
-+++ b/hw/hppa/Kconfig
-@@ -7,6 +7,7 @@ config HPPA_B160L
-     select DINO
-     select LASI
-     select SERIAL
-+    select SERIAL_PCI
-     select ISA_BUS
-     select I8259
-     select IDE_CMD646
-@@ -16,3 +17,4 @@ config HPPA_B160L
-     select LASIPS2
-     select PARALLEL
-     select ARTIST
-+    select USB_OHCI_PCI
--- 
-2.43.0
-
+Thanks,
+Shiju
 
