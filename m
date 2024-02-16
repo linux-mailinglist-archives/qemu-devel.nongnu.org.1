@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8473C857B3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF9C857B22
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:08:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw0u-0006p3-67; Fri, 16 Feb 2024 06:04:19 -0500
+	id 1raw12-00070D-5h; Fri, 16 Feb 2024 06:04:24 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0o-0006hA-57
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:10 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0x-0006qt-F4
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:21 -0500
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0i-0000z3-14
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:06 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-411d231ea71so14663285e9.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:03 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0q-00010T-7z
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:17 -0500
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4124c3a7a75so2534895e9.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081441; x=1708686241; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081448; x=1708686248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+4cWnhsBShzzzFHqb9EuQ4ogMglB6l+e/nMze0glgi0=;
- b=loa2CLhH2eVGucz+5u/ZHrF/tVm3Kb1XtkZaChSqNZYVLfUMD0wrsLSiUCIX1v+ZZ2
- jnXz5aRtVP6cTU3+P5FB0lxpBp84TcD4B/ZpIHLL0UwDR370wc10Ayzy/MMmX50KDTzZ
- z/Xk/1TgaS3HGA1tZzbOYyJ5yMj5iqUmsvFOtz/mMibvVNmyGoDg6pE7J3ywZfZoyJM+
- rP5QIqhDB64AJm+QA0C/hkCE5WkVITAfkMzFpGjp46DbKKpYv+z9A4zHOKszin2d1q8w
- vxNA667jv1R8UcE5ccNyourlTN6BHYxI41xFsKfuTAlNPqFyqEWYIVrJQHdFX1xTtkID
- EDSg==
+ bh=xmVGPYBQPq46VUwxkc77izpk+jGAawySTXLarOn7Kps=;
+ b=Gm+E4p3yblgCXSJ42IVeSIMR18y1d+Lb6ZpMjvT+QCmcvRshvJmEhOoo/o4pDsY1wn
+ r5yyv16wHznHhFfrLrYAYL9QXyGuJbnAN1m4MC8ErvoN1W3niZyV8HZoyUrg/QAFABwV
+ SIrsJDUuNLIH2Mf8QAqzjAqiqPHZXxUG7iUUkDBojPXOeTBn5Qf4eJMDv8QcTiPGj158
+ u7ASomjPDNp0vGuHBf+c5yRutxzp6T3JkznIHTJ9pR1L7XjYk3EafMkG9SazH7020DXH
+ NFxId7bTp9RAvrslOlmaV/pYOGIm/RozmERAU/P074z03TTUeg2NGPEpsmuNK9ScK+KI
+ J8Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081441; x=1708686241;
+ d=1e100.net; s=20230601; t=1708081448; x=1708686248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+4cWnhsBShzzzFHqb9EuQ4ogMglB6l+e/nMze0glgi0=;
- b=n6Ra7KPfjdWCSeLc8zqX07pITiqtJjuBClbelXjOXHtatzyy9cpS99/Tu0B0cphHSR
- 1EuX8u4rm9I6whvRPG0QDs9aqMFX77sVMcjGyvmpqaFRT7qABWDaN4oPLDIE9/dAKlu4
- Q1ebiNDhmOZ7JszZCp556hoOg5kQUHMAsnvulOhV8Ui7uyPCC+RtbfZSzVs3D30OFSjw
- KNnRxmJ30w0HLS0/NLzDDaFVluPZZpMPY6IpIT6ceoKkWhBzYaTOfYuQsDcQdhDQkQRU
- 6CmxiGErBA5iBh8jtH6+D6Fj4cKFbGMpFvXBMa9VaeZi5miHjucGoFiH+6P0wqA75kDg
- +2wA==
-X-Gm-Message-State: AOJu0YxDDg/XgyxyF4antVqefTlGQ+Lv0P+6ZRTEGp++iwUJjr2UhAHJ
- XqgaBHbmFp5IBOcfQst/ARoKOmb/l9yRrkZlQITIV548fZRnpbNo6cjcTOhsqD1eS9T0hkwK7jU
- q
-X-Google-Smtp-Source: AGHT+IFJ0tgORZjuv+Xo1BE69NDOJYJ5Z6N8Ug5++1Pn0E/2AFdYFRNsQvRUPzDxGqWA0u8rp4Hd/Q==
-X-Received: by 2002:a5d:6143:0:b0:33d:2437:e739 with SMTP id
- y3-20020a5d6143000000b0033d2437e739mr252251wrt.54.1708081441727; 
- Fri, 16 Feb 2024 03:04:01 -0800 (PST)
+ bh=xmVGPYBQPq46VUwxkc77izpk+jGAawySTXLarOn7Kps=;
+ b=ZLZk0NDrINRpk+jgeGIVGcGG398U2Cj5QtP3mEqhn8af/mNYSrAUmubAze2Rkxbk7T
+ maw48PddTW2xAVwtKXTOMfecQUt1xcR5yvl0bhnnNme9R6r0X3GktE8GYW2EZ5X7U7BY
+ GZ1rzCPOhN2fbD7HU9j+TbgU56hgCzrY3XH42wfA+DT+9bbZEZYx/Lb0GSfFPwmtjhzp
+ jh1EhTfW7YQTYyE3BpC4wQQCG+0393AUEpss7IiW6odmDg7DIDTyPgIqUSZrMl3NAIXy
+ twWrOnL9jF2zrgo+lF+oM29vGxFw7n+SGunXiCWEpFGqJsv1gGFvBu9erA+ZdKtGb97D
+ ax+w==
+X-Gm-Message-State: AOJu0YzUwVHnZ0dXxGpfiBNbFqaEazxALQLmYWj1J87+OuOkODVZAMNC
+ IXL/I67shsYHnonbk81/ufdohzMu539lE9UgiVhzlzEWa46glOPhRbQspgBqs4QfLt440hEbfOO
+ 7
+X-Google-Smtp-Source: AGHT+IFYc/i1Ir9pKLSmlGbNdjfSEBRBEzSq0hh1UBG+3WXRxLK5PeNmhQ2gadtoi1VjBbeun9m3xQ==
+X-Received: by 2002:a05:600c:3ca6:b0:40f:c404:e2d1 with SMTP id
+ bg38-20020a05600c3ca600b0040fc404e2d1mr3937401wmb.19.1708081448655; 
+ Fri, 16 Feb 2024 03:04:08 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- x11-20020adff64b000000b0033d157bb26esm1880818wrp.32.2024.02.16.03.03.59
+ s1-20020adff801000000b0033d01fe1f04sm1881745wrp.55.2024.02.16.03.04.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:04:01 -0800 (PST)
+ Fri, 16 Feb 2024 03:04:07 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 07/21] target: Replace DEVICE(object_new) -> qdev_new()
-Date: Fri, 16 Feb 2024 12:02:58 +0100
-Message-ID: <20240216110313.17039-8-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 08/21] hw/isa: Inline isa_try_new()
+Date: Fri, 16 Feb 2024 12:02:59 +0100
+Message-ID: <20240216110313.17039-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,40 +98,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer QDev API for QDev objects, avoid the underlying QOM layer.
+Inline the 2 single uses of isa_try_new().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.c   | 2 +-
- target/xtensa/cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/hw/isa/isa.h        | 1 -
+ include/hw/net/ne2000-isa.h | 2 +-
+ hw/i386/pc.c                | 2 +-
+ hw/isa/isa-bus.c            | 5 -----
+ 4 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index d644adbc77..6b3909ee08 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -649,7 +649,7 @@ MIPSCPU *mips_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
+diff --git a/include/hw/isa/isa.h b/include/hw/isa/isa.h
+index 40d6224a4e..8475120849 100644
+--- a/include/hw/isa/isa.h
++++ b/include/hw/isa/isa.h
+@@ -81,7 +81,6 @@ IsaDma *isa_bus_get_dma(ISABus *bus, int nchan);
+  */
+ qemu_irq isa_bus_get_irq(ISABus *bus, unsigned irqnum);
+ ISADevice *isa_new(const char *name);
+-ISADevice *isa_try_new(const char *name);
+ bool isa_realize_and_unref(ISADevice *dev, ISABus *bus, Error **errp);
+ ISADevice *isa_create_simple(ISABus *bus, const char *name);
+ 
+diff --git a/include/hw/net/ne2000-isa.h b/include/hw/net/ne2000-isa.h
+index 73bae10ad1..2440ac8621 100644
+--- a/include/hw/net/ne2000-isa.h
++++ b/include/hw/net/ne2000-isa.h
+@@ -22,7 +22,7 @@ static inline ISADevice *isa_ne2000_init(ISABus *bus, int base, int irq,
  {
-     DeviceState *cpu;
+     ISADevice *d;
  
--    cpu = DEVICE(object_new(cpu_type));
-+    cpu = qdev_new(cpu_type);
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-     qdev_realize(cpu, NULL, &error_abort);
+-    d = isa_try_new(TYPE_ISA_NE2000);
++    d = ISA_DEVICE(qdev_try_new(TYPE_ISA_NE2000));
+     if (d) {
+         DeviceState *dev = DEVICE(d);
  
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 79f91819df..4f9408e1a0 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -205,7 +205,7 @@ XtensaCPU *xtensa_cpu_create_with_clock(const char *cpu_type, Clock *cpu_refclk)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 3c00a87317..e8130774ad 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1183,7 +1183,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+     i8042 = isa_create_simple(isa_bus, TYPE_I8042);
+     if (!no_vmport) {
+         isa_create_simple(isa_bus, TYPE_VMPORT);
+-        vmmouse = isa_try_new("vmmouse");
++        vmmouse = ISA_DEVICE(qdev_try_new("vmmouse"));
+     } else {
+         vmmouse = NULL;
+     }
+diff --git a/hw/isa/isa-bus.c b/hw/isa/isa-bus.c
+index f1e0f14007..8aaf44a3ef 100644
+--- a/hw/isa/isa-bus.c
++++ b/hw/isa/isa-bus.c
+@@ -158,11 +158,6 @@ ISADevice *isa_new(const char *name)
+     return ISA_DEVICE(qdev_new(name));
+ }
+ 
+-ISADevice *isa_try_new(const char *name)
+-{
+-    return ISA_DEVICE(qdev_try_new(name));
+-}
+-
+ ISADevice *isa_create_simple(ISABus *bus, const char *name)
  {
-     DeviceState *cpu;
- 
--    cpu = DEVICE(object_new(cpu_type));
-+    cpu = qdev_new(cpu_type);
-     qdev_connect_clock_in(cpu, "clk-in", cpu_refclk);
-     qdev_realize(cpu, NULL, &error_abort);
- 
+     ISADevice *dev;
 -- 
 2.41.0
 
