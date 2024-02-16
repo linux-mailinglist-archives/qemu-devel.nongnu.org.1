@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A72858904
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 23:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37795858906
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 23:42:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb6tR-00057D-2F; Fri, 16 Feb 2024 17:41:17 -0500
+	id 1rb6tT-0005Du-Jp; Fri, 16 Feb 2024 17:41:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rb6tP-000513-Fm
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 17:41:15 -0500
-Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ id 1rb6tR-0005Bh-Aa
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 17:41:17 -0500
+Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hao.xiang@bytedance.com>)
- id 1rb6tN-0007KU-MW
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 17:41:15 -0500
-Received: by mail-vk1-xa2c.google.com with SMTP id
- 71dfb90a1353d-4c01a5e85e8so699104e0c.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 14:41:13 -0800 (PST)
+ id 1rb6tP-0007Kq-S9
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 17:41:17 -0500
+Received: by mail-ua1-x92c.google.com with SMTP id
+ a1e0cc1a2514c-7d5c25267deso1110262241.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 14:41:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1708123273; x=1708728073; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1708123275; x=1708728075; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r/OfLhO0CA6m0WDBPYJTqQUVPYsQDRD36SN09xd28yU=;
- b=NozMc7+GQFb5iur7RwiYsaYUX9fUhMml3ZhOLnmK72zUDcitP+MEKTsrkCLaIRKU+s
- DfJfTQDwFYqw+vTAbrdS7DP3A7s+YiyclzvlQJhPQATl2hkMQ1U+5TmWPg1M+Q1mEeEi
- +F/6yeXDxvDg5Vqo7lZou940kF9e2cu6ZiUqG1SpIAzp6fl4FiOuMYLG6I4GWU5LQhZ2
- C54MXPiBY2S8uQgjYpkehL4kMGmjwxbpzdvRSwxUM5XaWBXmJKOhehNOvtba0yhzEi8P
- vPonJIPzW/kagce2RLWLjl0IDL2jsPiRlRqSikJuO4OalVmEPlENl4jxSGrMIs71XKMI
- HW8Q==
+ bh=PsYydAOoJWHHnnEKgrZhgm6MgPanWUyFgyt4kohdSeI=;
+ b=kTFONq3bwhvjHSUD6H3GHAy8Z4BOVew8VTkAVbr/18MMVv9MQsiXpas12WbjLaSpwh
+ u6nQvuPds0KJbFnIQaNjPCuC4d6Xc5q9hlS6mCSNZZenkltk4tXGJlkE4CNCJIzNfHOL
+ GupzOHQvRhPr/hz4/+EGcsqfTixoRuCY9SXG/r6Xe+k2TkelWDON+Nh5AZP6Lu2woag9
+ sKwOiTDehWd3HbpZX5SRhg5/6ado0dOvv+e6KGg0vnOVgG2wnXpnWXtyLmMWE+uqy6w5
+ T5GF6PTQxEAS6xghBmDXl9GqPKOs7m92MJL3u73LuNhyCRuyvch63R5MBUtcQSIvgDI0
+ F3GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708123273; x=1708728073;
+ d=1e100.net; s=20230601; t=1708123275; x=1708728075;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r/OfLhO0CA6m0WDBPYJTqQUVPYsQDRD36SN09xd28yU=;
- b=fOk27XMUzWzO5zPYh38+ijjAQmhrYiUYw2CowV8AK3HiWZrUa+B8rkWc8NYzSvBTXs
- dYOLxWKZVOhwi098JK5dmPKk57vUZDh7576ylsasc1es4+HnybcfugirFFLEecjEFnGr
- 7gElokSjoxWjRS8Jg9gnXJXTouZLyir2WmCEEKudrciGsg0MFnpWRKc/EFdQGpKu6p7C
- 8VkeWgHFoDPbOvY4f63jNUnKvrkWDUVthoZ4DMMEY41PNA19e8PhI3B/d7pditko3g6D
- B1GLffnvgdpzGaGKXGiwZOCPg4pvXjJEPdhAy+7uk6NmHClxyal2Pbar/WagcREh6Wf6
- hFNA==
+ bh=PsYydAOoJWHHnnEKgrZhgm6MgPanWUyFgyt4kohdSeI=;
+ b=jTi2CliFt6KF/UusBK5f9rU7olZuHRGrcwZjhhyJMRREvK1yZ4s8bPpWfVk1FvJZat
+ 2UAnLtEZ76/myQt8/neX0ZO6NLMmVZZqwm88anUJTW/hdbf5hWd8pGDQ/vtentP3IjVb
+ Xm40PtHL8r+MFhSMhZTYT4qHdt0BstwJF7sw7h3CNk5e/EzNlx4G+qV51ipn0vJx/GAy
+ WE6bcaUprX9xHYrlFWxn78DTlZ5uFhgOf4ezbq/YF3NqdDQG8sWbDl/gRS68i9MjIJtq
+ k8eawoRY0TMxP3Ps6VGpZCHe4s0ZpiQz+K/wsRpP7LFPWlh62dNh+rfIH2NOgGJZZZh+
+ 6BKQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDz45my7b2kjETxkalusXA6NpqqubETVMRuYQEEZ5txg/5kDyvlI1YNeuKZQ+36Vwqlguc+jfDkABeop1L0p1Yhhtqjao=
-X-Gm-Message-State: AOJu0YzCm8LmgiDxSUPjdSYmNnuUoXZ3FPH44D+2yKmy6/sATUQCpARl
- 8NqVsP9m0dVCgo1H8YB898+VacaSS/tm1uigzg4CB1uauoDnArn3j7mXK4GysMw=
-X-Google-Smtp-Source: AGHT+IH2r+7Tp4EotXB4AUc4JLvq9c/++hrwcItqmtZKi1Kc2tpGnm+BH+MP+zmM6aDFJ2/fVLAdng==
-X-Received: by 2002:a1f:eb03:0:b0:4b6:cc19:42dc with SMTP id
- j3-20020a1feb03000000b004b6cc1942dcmr6329585vkh.11.1708123272767; 
- Fri, 16 Feb 2024 14:41:12 -0800 (PST)
+ AJvYcCVPw/p9qP1/D/IpJAfq8nQqoKA6xyKEuRdq+7tMLGMwkwYJzZe1DEFlX93tyh7CNrMc0kG8Fq9vtccw9Fmudw4/cJk0/pw=
+X-Gm-Message-State: AOJu0YyKGKqfKXxeHbn4REVOQ+akfOOJ581NtM+fGC6c2VqlCXexmIyP
+ tyKQWNIuzysUQJGJarc3aDej62KD+Qfv4VnmIqJx8YikMAJpr678osn0fIateos=
+X-Google-Smtp-Source: AGHT+IFgQ4dxzpTeD9lxmwHvMchPMHL0MhqGhTVtdiUJSghu6+bQTyXTvylsMCb5cxdCcvaULTyKxA==
+X-Received: by 2002:a1f:ec83:0:b0:4c0:2cff:9d7a with SMTP id
+ k125-20020a1fec83000000b004c02cff9d7amr6631435vkh.5.1708123274843; 
+ Fri, 16 Feb 2024 14:41:14 -0800 (PST)
 Received: from n231-230-216.byted.org ([130.44.212.104])
  by smtp.gmail.com with ESMTPSA id
- cz18-20020a056122449200b004c0a12c4d53sm120991vkb.51.2024.02.16.14.41.11
+ cz18-20020a056122449200b004c0a12c4d53sm120991vkb.51.2024.02.16.14.41.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 14:41:12 -0800 (PST)
+ Fri, 16 Feb 2024 14:41:14 -0800 (PST)
 From: Hao Xiang <hao.xiang@bytedance.com>
 To: pbonzini@redhat.com, berrange@redhat.com, eduardo@habkost.net,
  peterx@redhat.com, farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
  thuth@redhat.com, lvivier@redhat.com, qemu-devel@nongnu.org,
  jdenemar@redhat.com
 Cc: Hao Xiang <hao.xiang@bytedance.com>
-Subject: [PATCH v2 6/7] migration/multifd: Add zero pages and zero bytes
- counter to migration status interface.
-Date: Fri, 16 Feb 2024 22:40:01 +0000
-Message-Id: <20240216224002.1476890-7-hao.xiang@bytedance.com>
+Subject: [PATCH v2 7/7] Update maintainer contact for migration multifd zero
+ page checking acceleration.
+Date: Fri, 16 Feb 2024 22:40:02 +0000
+Message-Id: <20240216224002.1476890-8-hao.xiang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240216224002.1476890-1-hao.xiang@bytedance.com>
 References: <20240216224002.1476890-1-hao.xiang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
- envelope-from=hao.xiang@bytedance.com; helo=mail-vk1-xa2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
+ envelope-from=hao.xiang@bytedance.com; helo=mail-ua1-x92c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,119 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change extends the MigrationStatus interface to track zero pages
-and zero bytes counter.
+Add myself to maintain multifd zero page checking acceleration function.
 
 Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
 ---
- migration/migration-hmp-cmds.c      |  4 ++++
- migration/migration.c               |  2 ++
- qapi/migration.json                 | 15 ++++++++++++++-
- tests/migration/guestperf/engine.py |  2 ++
- 4 files changed, 22 insertions(+), 1 deletion(-)
+ MAINTAINERS | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 7e96ae6ffd..abe035c9f2 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -111,6 +111,10 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
-                        info->ram->normal);
-         monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
-                        info->ram->normal_bytes >> 10);
-+        monitor_printf(mon, "zero: %" PRIu64 " pages\n",
-+                       info->ram->zero);
-+        monitor_printf(mon, "zero bytes: %" PRIu64 " kbytes\n",
-+                       info->ram->zero_bytes >> 10);
-         monitor_printf(mon, "dirty sync count: %" PRIu64 "\n",
-                        info->ram->dirty_sync_count);
-         monitor_printf(mon, "page size: %" PRIu64 " kbytes\n",
-diff --git a/migration/migration.c b/migration/migration.c
-index ab21de2cad..1968ea7075 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1112,6 +1112,8 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
-     info->ram->skipped = 0;
-     info->ram->normal = stat64_get(&mig_stats.normal_pages);
-     info->ram->normal_bytes = info->ram->normal * page_size;
-+    info->ram->zero = stat64_get(&mig_stats.zero_pages);
-+    info->ram->zero_bytes = info->ram->zero * page_size;
-     info->ram->mbps = s->mbps;
-     info->ram->dirty_sync_count =
-         stat64_get(&mig_stats.dirty_sync_count);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index e2450b92d4..892875da18 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -63,6 +63,10 @@
- #     between 0 and @dirty-sync-count * @multifd-channels.  (since
- #     7.1)
- #
-+# @zero: number of zero pages (since 9.0)
-+#
-+# @zero-bytes: number of zero bytes sent (since 9.0)
-+#
- # Features:
- #
- # @deprecated: Member @skipped is always zero since 1.5.3
-@@ -81,7 +85,8 @@
-            'multifd-bytes': 'uint64', 'pages-per-second': 'uint64',
-            'precopy-bytes': 'uint64', 'downtime-bytes': 'uint64',
-            'postcopy-bytes': 'uint64',
--           'dirty-sync-missed-zero-copy': 'uint64' } }
-+           'dirty-sync-missed-zero-copy': 'uint64',
-+           'zero': 'int', 'zero-bytes': 'int' } }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a24c2b51b6..3ca407cb58 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3403,6 +3403,11 @@ F: tests/migration/
+ F: util/userfaultfd.c
+ X: migration/rdma*
  
- ##
- # @XBZRLECacheStats:
-@@ -332,6 +337,8 @@
- #           "duplicate":123,
- #           "normal":123,
- #           "normal-bytes":123456,
-+#           "zero":123,
-+#           "zero-bytes":123456,
- #           "dirty-sync-count":15
- #         }
- #      }
-@@ -358,6 +365,8 @@
- #             "duplicate":123,
- #             "normal":123,
- #             "normal-bytes":123456,
-+#             "zero":123,
-+#             "zero-bytes":123456,
- #             "dirty-sync-count":15
- #          }
- #       }
-@@ -379,6 +388,8 @@
- #             "duplicate":123,
- #             "normal":123,
- #             "normal-bytes":123456,
-+#             "zero":123,
-+#             "zero-bytes":123456,
- #             "dirty-sync-count":15
- #          },
- #          "disk":{
-@@ -405,6 +416,8 @@
- #             "duplicate":10,
- #             "normal":3333,
- #             "normal-bytes":3412992,
-+#             "zero":3333,
-+#             "zero-bytes":3412992,
- #             "dirty-sync-count":15
- #          },
- #          "xbzrle-cache":{
-diff --git a/tests/migration/guestperf/engine.py b/tests/migration/guestperf/engine.py
-index 608d7270f6..75315b99b7 100644
---- a/tests/migration/guestperf/engine.py
-+++ b/tests/migration/guestperf/engine.py
-@@ -92,6 +92,8 @@ def _migrate_progress(self, vm):
-                 info["ram"].get("skipped", 0),
-                 info["ram"].get("normal", 0),
-                 info["ram"].get("normal-bytes", 0),
-+                info["ram"].get("zero", 0);
-+                info["ram"].get("zero-bytes", 0);
-                 info["ram"].get("dirty-pages-rate", 0),
-                 info["ram"].get("mbps", 0),
-                 info["ram"].get("dirty-sync-count", 0)
++Migration multifd zero page checking acceleration
++M: Hao Xiang <hao.xiang@bytedance.com>
++S: Maintained
++F: migration/multifd-zero-page.c
++
+ RDMA Migration
+ R: Li Zhijian <lizhijian@fujitsu.com>
+ R: Peter Xu <peterx@redhat.com>
 -- 
 2.30.2
 
