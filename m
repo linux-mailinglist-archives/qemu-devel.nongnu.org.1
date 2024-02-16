@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C372C857E22
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:55:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B213857E3E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:57:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rayep-0003tC-1N; Fri, 16 Feb 2024 08:53:39 -0500
+	id 1rayhj-0004yS-80; Fri, 16 Feb 2024 08:56:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayei-0003se-R1
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:53:32 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayhh-0004yI-JZ
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:56:37 -0500
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayeh-0002Wz-9l
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:53:32 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d95d67ff45so16667635ad.2
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:53:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rayhf-0003Yo-Mo
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:56:37 -0500
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-290ec261a61so1324361a91.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708091607; x=1708696407; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eGTFgthADuFEDGsVToLpWo8eIP+mMwNuJhAAehV1sFk=;
- b=UN+HmB5lQNKjkziWQ2cU/o6KNaQ52lZgb5Ji8j1rY5V5rtHgaI0abF19NA9clwZZJX
- 3bN6RHJlrQY6eHMCGwPpKbN2OiOJjK/8LqNBDG8TzMslmb0ZEhfqmJ8vdefkvD26+s4L
- VSF5bQpTJOtoVGe3Dl85Eqpt5LFeRdoOjF+6gGWXSAx9XR4G7UF2zYj77QVxur2rx3fQ
- sn8wqbhRxdN+dhk6u2YPn8a3syx/lI0/6qBLBT1JAJu1nYCo16Kv0kSoXyZ7URWR2xt5
- zfD/R7+zimgpNPljCn3lXHPrir7tSKcvO0rTwmbQ2R6GqGo478Cbpi1CdzP2rmTnW0rc
- 6GxQ==
+ d=gmail.com; s=20230601; t=1708091793; x=1708696593; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=POgfkVVu83Vm75+SuvVmDFMZzSx8Ahq22ouOJhX3uno=;
+ b=mWNXA0HgB+847rhzh+P1qum3fZaTzBa6N3ny4htBVED/SdEt1fdDG2fUCBZ/4DHzdc
+ NRvvJc2pFmhv3V8/hIR8Vvhbz9vJXzXCysG7oABjx+x/GwO4Htqy+VZC4Mpsj60Yg73N
+ w+o2el1RMO+o1WSxJHHzF5hxM7sWeiPjJhca2MAXPV8FFhJrOEJNRQwkH9OGKVOAezRW
+ D7vruPOHMMCJhdcOD+mO+Wl6i6CHrKDS+gq1H/FZoK6DSb4H3TLboBDp3phZ3H0YHBg6
+ Sf1NEes2lCp0VmtS05pldIDHt6wvbaJLcppnA3ma+dR01xmRne9AmzfBRPlCXT9O75f7
+ NRlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708091607; x=1708696407;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eGTFgthADuFEDGsVToLpWo8eIP+mMwNuJhAAehV1sFk=;
- b=uKFt3SHlWOsvW7JI8OCXTFzNMyOaiwd0MKC5P3w5dUWT+QtviE6XB4QDZz14gCwsXD
- EOGOA5C4+ACcMhV9ubPb6AtoFKtFK9dEevz6bE6xy0Dy5/Pm3dxl1qfat84WYL1rtZC+
- AtW7kjGnL7AaGp+6mWlapHyjxEES+GzBvHD9/1kBl/mpwhEWsM6n46X9Aopgd1pC0VWu
- aixp33VKq2CiQpiVRelT3sr6A77Ijy+L4g8Z8RMCxdJpepCeLNxUA9BPJvRlGh2BZu2q
- UxLlkrC7CBwES+eqTUo6JXtBQrBV82EJEb6aEY04fua0AE7bMk9rCf5sR75sZgyp6gub
- g4GQ==
-X-Gm-Message-State: AOJu0YxBVvlAdC1/yVGc7NjEM5JZO4QNAQgs7WD6BtkyH9GEwzAQsrO3
- RndwfmkC2sqO6/BkQWy2l5gF2QeTwxc4zh9rxcT1VE4L3f3b0cN2PKr9BVNQYpE=
-X-Google-Smtp-Source: AGHT+IE81uTDiFqfZ0vyYoVX4LPKP2aUA05lhftfFqzGQeC6DKQGl3ngWKUmYAmf5d8rvoyg7QpS6w==
-X-Received: by 2002:a17:90a:f40d:b0:298:a0a5:d9bb with SMTP id
- ch13-20020a17090af40d00b00298a0a5d9bbmr5036723pjb.18.1708091606709; 
- Fri, 16 Feb 2024 05:53:26 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708091793; x=1708696593;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=POgfkVVu83Vm75+SuvVmDFMZzSx8Ahq22ouOJhX3uno=;
+ b=JULqUG4nJb16o1WZzivKVIkN2cHRjStctrOmNd1VNdwQwWVjSHqtEWJVwS0c12kVoS
+ 9jkuAdBDo/sSleI8G/yHyX4OJfOyKlxSwACDsnmV8YQQ93Oxo4O3WFQyeLUXs/EKChf4
+ 5f3LB9qec4CMlk5swaI7luWukbqDv3kGhFqnfJnK0uSj8DIjE9kMJpjxsu3xqFuJMwg7
+ QPLYeNWMuy54GRpdyUWk/0kQ1jPDwBfc92MUD7sRuaq20bh+Rf8x2KgkL28iXPjf/F4g
+ 8rMKhh6StzjuQwfReVB2HWiVy+x52ERFRFee/mHclSk3Hjj+AU7+RhKLVBeM0a7WKcpW
+ esOg==
+X-Gm-Message-State: AOJu0Yx2EYyT9za8dhO5RA+dHiEEygAoTlqxeKn6Ds+M91oOWYTs84Ag
+ TM/5ELg78upxKaduV4a7iPnwPKrAw8lhz0qwecza0z2eYCIJ2xUFDZvHdS4hjTE=
+X-Google-Smtp-Source: AGHT+IGpbjDgJ90TwkfIlZmijpSkQXLOwcQiUKWD1Rbo9DnCXs7EKrQhu9GyiS+FDx7FNjFwe+MMtQ==
+X-Received: by 2002:a17:90a:f597:b0:299:2a8:55b0 with SMTP id
+ ct23-20020a17090af59700b0029902a855b0mr5471604pjb.23.1708091793151; 
+ Fri, 16 Feb 2024 05:56:33 -0800 (PST)
 Received: from iuseotherswifi.notpua ([14.139.82.6])
  by smtp.gmail.com with ESMTPSA id
- gv8-20020a17090b11c800b00296e2434e7esm3382844pjb.53.2024.02.16.05.53.19
+ gv8-20020a17090b11c800b00296e2434e7esm3382844pjb.53.2024.02.16.05.56.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 05:53:26 -0800 (PST)
+ Fri, 16 Feb 2024 05:56:32 -0800 (PST)
 From: Abhiram Tilak <atp.exp@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, clg@kaod.org, david@gibson.dropbear.id.au,
  harshpb@linux.ibm.com, Abhiram Tilak <atp.exp@gmail.com>
-Subject: [PATCH 0/3] Misc: Make watchdog devices using
- qemu_system_reset_request() use watchdog_perfom_action()
-Date: Fri, 16 Feb 2024 19:21:36 +0530
-Message-ID: <20240216135137.8668-3-atp.exp@gmail.com>
+Subject: [PATCH 1/3] misc: m48t59: replace qemu_system_reset_request() call
+ with watchdog_perform_action()
+Date: Fri, 16 Feb 2024 19:21:37 +0530
+Message-ID: <20240216135137.8668-4-atp.exp@gmail.com>
 X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20240216135137.8668-3-atp.exp@gmail.com>
+References: <20240216135137.8668-3-atp.exp@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=atp.exp@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=atp.exp@gmail.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,22 +97,35 @@ As stated in BiteSizedTasks wiki page, instead of using qemu_system_reset_reques
 to reset when a watchdog timer expires, let watchdog_perform_action() decide
 what to do.
 
-I am unsure about the changes in `spapr_watchdog.c` in patch 3, it would be great
-if any of the maintainers review it.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2124
+Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
+---
+ hw/rtc/m48t59.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Abhiram Tilak (3):
-  misc: m48t59: replace qemu_system_reset_request() call with
-    watchdog_perform_action()
-  misc: pxa2xx_timer: replace qemu_system_reset_request() call with
-    watchdog_perform_action()
-  misc: ppc/spapr: replace qemu_system_reset_request() calls with
-    watchdog_perform_action()
-
- hw/rtc/m48t59.c              | 4 ++--
- hw/timer/pxa2xx_timer.c      | 3 ++-
- hw/watchdog/spapr_watchdog.c | 3 ++-
- 3 files changed, 6 insertions(+), 4 deletions(-)
-
---
+diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
+index aa44c4b20c..ebda084478 100644
+--- a/hw/rtc/m48t59.c
++++ b/hw/rtc/m48t59.c
+@@ -36,6 +36,7 @@
+ #include "qemu/bcd.h"
+ #include "qemu/module.h"
+ #include "trace.h"
++#include "sysemu/watchdog.h"
+ 
+ #include "m48t59-internal.h"
+ #include "migration/vmstate.h"
+@@ -163,8 +164,7 @@ static void watchdog_cb (void *opaque)
+     if (NVRAM->buffer[0x1FF7] & 0x80) {
+         NVRAM->buffer[0x1FF7] = 0x00;
+         NVRAM->buffer[0x1FFC] &= ~0x40;
+-        /* May it be a hw CPU Reset instead ? */
+-        qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
++        watchdog_perform_action(); /* watchdog-expired action */
+     } else {
+         qemu_set_irq(NVRAM->IRQ, 1);
+         qemu_set_irq(NVRAM->IRQ, 0);
+-- 
 2.42.1
+
 
