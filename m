@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4276857FF4
+	by mail.lfdr.de (Postfix) with ESMTPS id 8422A857FF2
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:00:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1razg4-0005w4-OL; Fri, 16 Feb 2024 09:59:00 -0500
+	id 1razfz-0005pK-NC; Fri, 16 Feb 2024 09:58:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfx-0005ky-24
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfx-0005mP-Iy
  for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfu-000800-S8
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:52 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfv-00080X-C8
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708095529;
+ s=mimecast20190719; t=1708095530;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IF7JxkVNUntYDGAKBfbnah3OG7b1sydltmlm+PpIuks=;
- b=ItBwwk9kF3p4fDxw0RSD26SGJlIlSvt7J9gdtcDei7lu3KBIjHW8vShCR6fdDwxwZr+PK0
- mMQDJbk8fc1x0p8Q+xLvmL0PtG6c/lKB05n0eI6DyvH0VuZSKaWJgN1jJj/TsGGYRvsWBQ
- cC4Nc15cwsvV2lz7w/68YihTPtE02PE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-lgoka0ZjOy6FjcD6RWELJw-1; Fri, 16 Feb 2024 09:58:48 -0500
-X-MC-Unique: lgoka0ZjOy6FjcD6RWELJw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=6tNRKUNho/1O8+BTXmn2tLzwQuHbvRuTb8/Cr5aCx2k=;
+ b=OImy++eWmXai7HScsDilar2rRQ2rGk1/H/mOCYyJ1g4EiR8lVXrvam9+/FiWrlp0Jk63fA
+ E7g9wOqI1Ne4s6BjOVXd7k23Y4gieRtM+o4s4a8ERxSlilMjL9Q6JURJa/efrU+TXM5ujD
+ Nl0/DIjHPKpwBHcPPuEeDL8iu2jNHXs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-ww_Vvdt9PxK_7hPdebAOsA-1; Fri,
+ 16 Feb 2024 09:58:47 -0500
+X-MC-Unique: ww_Vvdt9PxK_7hPdebAOsA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1946A101A52A;
- Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CE1B3C0BE2D;
+ Fri, 16 Feb 2024 14:58:47 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EAA50492BC6;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A75C112131D;
  Fri, 16 Feb 2024 14:58:47 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1425B21E65EB; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
+ id 1743921E65ED; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
  peter.maydell@linaro.org
-Subject: [PATCH 03/16] tests/qapi-schema: Cover 'Features:' not followed by
- descriptions
-Date: Fri, 16 Feb 2024 15:58:27 +0100
-Message-ID: <20240216145841.2099240-4-armbru@redhat.com>
+Subject: [PATCH 04/16] sphinx/qapidoc: Drop code to generate doc for simple
+ union branch
+Date: Fri, 16 Feb 2024 15:58:28 +0100
+Message-ID: <20240216145841.2099240-5-armbru@redhat.com>
 In-Reply-To: <20240216145841.2099240-1-armbru@redhat.com>
 References: <20240216145841.2099240-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -82,77 +82,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A 'Features:' line without any features is useless, but not an error
-now.  However, a later commit will make it one, because that makes
-rejecting duplicate 'Features:' easier.
+Commit 4e99f4b12c0 (qapi: Drop simple unions) eliminated implicitly
+defined union branch types, except for the empty object type
+'q_empty'.  QAPISchemaGenRSTVisitor._nodes_for_members() still has
+code to generate documentation for implicitly defined union branch
+types.  It does nothing for 'q_empty'.  Simplify.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- tests/qapi-schema/doc-empty-features.err  |  0
- tests/qapi-schema/doc-empty-features.json | 10 ++++++++++
- tests/qapi-schema/doc-empty-features.out  | 19 +++++++++++++++++++
- tests/qapi-schema/meson.build             |  1 +
- 4 files changed, 30 insertions(+)
- create mode 100644 tests/qapi-schema/doc-empty-features.err
- create mode 100644 tests/qapi-schema/doc-empty-features.json
- create mode 100644 tests/qapi-schema/doc-empty-features.out
+ docs/sphinx/qapidoc.py | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/tests/qapi-schema/doc-empty-features.err b/tests/qapi-schema/doc-empty-features.err
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/tests/qapi-schema/doc-empty-features.json b/tests/qapi-schema/doc-empty-features.json
-new file mode 100644
-index 0000000000..06f814e45d
---- /dev/null
-+++ b/tests/qapi-schema/doc-empty-features.json
-@@ -0,0 +1,10 @@
-+# 'Features:' line not followed by feature descriptions
-+
-+##
-+# @foo:
-+#
-+# Features:
-+#
-+# not a description
-+##
-+{ 'command': 'foo' }
-diff --git a/tests/qapi-schema/doc-empty-features.out b/tests/qapi-schema/doc-empty-features.out
-new file mode 100644
-index 0000000000..0f85623dde
---- /dev/null
-+++ b/tests/qapi-schema/doc-empty-features.out
-@@ -0,0 +1,19 @@
-+module ./builtin
-+object q_empty
-+enum QType
-+    prefix QTYPE
-+    member none
-+    member qnull
-+    member qnum
-+    member qstring
-+    member qdict
-+    member qlist
-+    member qbool
-+module doc-empty-features.json
-+command foo None -> None
-+    gen=True success_response=True boxed=False oob=False preconfig=False
-+doc symbol=foo
-+    body=
-+
-+    section=None
-+not a description
-diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
-index 4c714c792f..4b8329d070 100644
---- a/tests/qapi-schema/meson.build
-+++ b/tests/qapi-schema/meson.build
-@@ -71,6 +71,7 @@ schemas = [
-   'doc-duplicated-return.json',
-   'doc-duplicated-since.json',
-   'doc-empty-arg.json',
-+  'doc-empty-features.json',
-   'doc-empty-section.json',
-   'doc-empty-symbol.json',
-   'doc-good.json',
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 05b809af27..488de23d72 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -180,17 +180,13 @@ def _nodes_for_members(self, doc, what, base=None, variants=None):
+ 
+         if variants:
+             for v in variants.variants:
+-                if v.type.is_implicit():
+-                    assert not v.type.base and not v.type.variants
+-                    for m in v.type.local_members:
+-                        term = self._nodes_for_one_member(m)
+-                        term.extend(self._nodes_for_variant_when(variants, v))
+-                        dlnode += self._make_dlitem(term, None)
+-                else:
+-                    term = [nodes.Text('The members of '),
+-                            nodes.literal('', v.type.doc_type())]
+-                    term.extend(self._nodes_for_variant_when(variants, v))
+-                    dlnode += self._make_dlitem(term, None)
++                if v.type.name == 'q_empty':
++                    continue
++                assert not v.type.is_implicit()
++                term = [nodes.Text('The members of '),
++                        nodes.literal('', v.type.doc_type())]
++                term.extend(self._nodes_for_variant_when(variants, v))
++                dlnode += self._make_dlitem(term, None)
+ 
+         if not dlnode.children:
+             return []
 -- 
 2.43.0
 
