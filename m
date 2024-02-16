@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A308858006
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 672E9857FFC
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:01:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1razg5-0005wq-E5; Fri, 16 Feb 2024 09:59:01 -0500
+	id 1razg3-0005uL-0p; Fri, 16 Feb 2024 09:58:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfy-0005ox-Ne
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:54 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razg0-0005s9-89
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:56 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfw-00080b-AX
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:54 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfw-000821-U1
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708095530;
+ s=mimecast20190719; t=1708095532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HIK8NVXLFq86OC3EM3YnOVdedAOyiByskqw7B4pBzug=;
- b=N/zfxhrOJl159dqABE4UbDQ5imW2YeFqZRj1ak0hwdHOVD3PEccFtMwH+OAtq1v+Y79M5+
- d5oM/VJahjVk9roxNZqe9JSQgoxcL74ZR83CZ6fnzt3+DpN/DWGkSwbDb07swoHH6t3cTo
- cHF9mHEHeX20zXTXrG+hR3yTBjZXxO4=
+ bh=36uNUQPM62FYtbRXZ7En4OCYfIBDFWswM6LRFVUxF6Y=;
+ b=NKCRF5PRDTzo4vOnbO1CE2BDAH5mCU5SNFbQo/E54BWWsxw+vyEBUrUbccoMDqcQTJNs6A
+ RcVKGOde148iAXh/uxktgLVmjbog/UgyBRHMHW2AU+2jVWg5ucoS+KhZpOw5z8PMiNrK2V
+ MLZIxun25vSH1LaLLz+B39FcLIrO4TQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-eZrQl_wEPAmS2TcRj4eo7w-1; Fri,
- 16 Feb 2024 09:58:49 -0500
-X-MC-Unique: eZrQl_wEPAmS2TcRj4eo7w-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-SIt4i5bkNOKHSk4WKLQsxQ-1; Fri,
+ 16 Feb 2024 09:58:48 -0500
+X-MC-Unique: SIt4i5bkNOKHSk4WKLQsxQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62CC01C04339;
- Fri, 16 Feb 2024 14:58:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 636972812FEB;
+ Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 23450AC0C;
- Fri, 16 Feb 2024 14:58:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3FFC61C060B1;
+ Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1A8BC21E657E; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
+ id 1D89121E60DD; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
  peter.maydell@linaro.org
-Subject: [PATCH 05/16] qapi: Improve error position for bogus argument
- descriptions
-Date: Fri, 16 Feb 2024 15:58:29 +0100
-Message-ID: <20240216145841.2099240-6-armbru@redhat.com>
+Subject: [PATCH 06/16] qapi: Improve error position for bogus invalid
+ "Returns" section
+Date: Fri, 16 Feb 2024 15:58:30 +0100
+Message-ID: <20240216145841.2099240-7-armbru@redhat.com>
 In-Reply-To: <20240216145841.2099240-1-armbru@redhat.com>
 References: <20240216145841.2099240-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -81,93 +81,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When documented arguments don't exist, the error message points to the
-beginning of the definition comment.  Point to the first bogus
-argument description instead.
+When something other than a command has a "Returns" section, the error
+message points to the beginning of the definition comment.  Point to
+the "Returns" section instead.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/parser.py                          | 4 +++-
- tests/qapi-schema/doc-bad-alternate-member.err  | 2 +-
- tests/qapi-schema/doc-bad-boxed-command-arg.err | 2 +-
- tests/qapi-schema/doc-bad-command-arg.err       | 2 +-
- tests/qapi-schema/doc-bad-enum-member.err       | 2 +-
- tests/qapi-schema/doc-bad-event-arg.err         | 2 +-
- tests/qapi-schema/doc-bad-feature.err           | 2 +-
- tests/qapi-schema/doc-bad-union-member.err      | 2 +-
- 8 files changed, 10 insertions(+), 8 deletions(-)
+ scripts/qapi/parser.py                   | 10 +++++++---
+ tests/qapi-schema/doc-invalid-return.err |  2 +-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 88221b3c64..82db595dcf 100644
+index 82db595dcf..a771013959 100644
 --- a/scripts/qapi/parser.py
 +++ b/scripts/qapi/parser.py
-@@ -472,6 +472,8 @@ class Section:
-         # pylint: disable=too-few-public-methods
-         def __init__(self, parser: QAPISchemaParser,
-                      name: Optional[str] = None):
-+            # section source info, i.e. where it begins
-+            self.info = parser.info
-             # parser, for error messages about indentation
-             self._parser = parser
-             # optional section name (argument/member or section name)
-@@ -770,7 +772,7 @@ def check_args_section(
-                      if not section.member]
-             if bogus:
-                 raise QAPISemError(
--                    self.info,
-+                    args[bogus[0]].info,
-                     "documented %s%s '%s' %s not exist" % (
-                         what,
-                         "s" if len(bogus) > 1 else "",
-diff --git a/tests/qapi-schema/doc-bad-alternate-member.err b/tests/qapi-schema/doc-bad-alternate-member.err
-index d7286bb57c..1f6b7d2fe4 100644
---- a/tests/qapi-schema/doc-bad-alternate-member.err
-+++ b/tests/qapi-schema/doc-bad-alternate-member.err
+@@ -759,9 +759,13 @@ def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
+         self.features[feature.name].connect(feature)
+ 
+     def check_expr(self, expr: QAPIExpression) -> None:
+-        if self.has_section('Returns') and 'command' not in expr:
+-            raise QAPISemError(self.info,
+-                               "'Returns:' is only valid for commands")
++        if 'command' not in expr:
++            sec = next((sec for sec in self.sections
++                        if sec.name == 'Returns'),
++                       None)
++            if sec:
++                raise QAPISemError(sec.info,
++                                   "'Returns:' is only valid for commands")
+ 
+     def check(self) -> None:
+ 
+diff --git a/tests/qapi-schema/doc-invalid-return.err b/tests/qapi-schema/doc-invalid-return.err
+index 2ad89c5941..bc5826de20 100644
+--- a/tests/qapi-schema/doc-invalid-return.err
++++ b/tests/qapi-schema/doc-invalid-return.err
 @@ -1 +1 @@
--doc-bad-alternate-member.json:3: documented members 'aa', 'bb' do not exist
-+doc-bad-alternate-member.json:7: documented members 'aa', 'bb' do not exist
-diff --git a/tests/qapi-schema/doc-bad-boxed-command-arg.err b/tests/qapi-schema/doc-bad-boxed-command-arg.err
-index 7137af3ec9..d6793e7fd8 100644
---- a/tests/qapi-schema/doc-bad-boxed-command-arg.err
-+++ b/tests/qapi-schema/doc-bad-boxed-command-arg.err
-@@ -1 +1 @@
--doc-bad-boxed-command-arg.json:9: documented member 'a' does not exist
-+doc-bad-boxed-command-arg.json:11: documented member 'a' does not exist
-diff --git a/tests/qapi-schema/doc-bad-command-arg.err b/tests/qapi-schema/doc-bad-command-arg.err
-index 18ed076cef..b76167ec60 100644
---- a/tests/qapi-schema/doc-bad-command-arg.err
-+++ b/tests/qapi-schema/doc-bad-command-arg.err
-@@ -1 +1 @@
--doc-bad-command-arg.json:3: documented member 'b' does not exist
-+doc-bad-command-arg.json:6: documented member 'b' does not exist
-diff --git a/tests/qapi-schema/doc-bad-enum-member.err b/tests/qapi-schema/doc-bad-enum-member.err
-index 7efeb47363..0aa8d8e8e2 100644
---- a/tests/qapi-schema/doc-bad-enum-member.err
-+++ b/tests/qapi-schema/doc-bad-enum-member.err
-@@ -1 +1 @@
--doc-bad-enum-member.json:3: documented member 'a' does not exist
-+doc-bad-enum-member.json:5: documented member 'a' does not exist
-diff --git a/tests/qapi-schema/doc-bad-event-arg.err b/tests/qapi-schema/doc-bad-event-arg.err
-index d13cacf21f..90527d5f82 100644
---- a/tests/qapi-schema/doc-bad-event-arg.err
-+++ b/tests/qapi-schema/doc-bad-event-arg.err
-@@ -1 +1 @@
--doc-bad-event-arg.json:3: documented member 'a' does not exist
-+doc-bad-event-arg.json:5: documented member 'a' does not exist
-diff --git a/tests/qapi-schema/doc-bad-feature.err b/tests/qapi-schema/doc-bad-feature.err
-index 49d1746c3d..3166c6a305 100644
---- a/tests/qapi-schema/doc-bad-feature.err
-+++ b/tests/qapi-schema/doc-bad-feature.err
-@@ -1 +1 @@
--doc-bad-feature.json:3: documented feature 'a' does not exist
-+doc-bad-feature.json:7: documented feature 'a' does not exist
-diff --git a/tests/qapi-schema/doc-bad-union-member.err b/tests/qapi-schema/doc-bad-union-member.err
-index 6dd2726a65..cdf1225cab 100644
---- a/tests/qapi-schema/doc-bad-union-member.err
-+++ b/tests/qapi-schema/doc-bad-union-member.err
-@@ -1 +1 @@
--doc-bad-union-member.json:3: documented members 'a', 'b' do not exist
-+doc-bad-union-member.json:5: documented members 'a', 'b' do not exist
+-doc-invalid-return.json:3: 'Returns:' is only valid for commands
++doc-invalid-return.json:5: 'Returns:' is only valid for commands
 -- 
 2.43.0
 
