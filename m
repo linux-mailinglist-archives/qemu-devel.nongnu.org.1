@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13390858019
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7A285801E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:05:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1razg6-0005xe-4b; Fri, 16 Feb 2024 09:59:02 -0500
+	id 1razlm-0008J4-9x; Fri, 16 Feb 2024 10:04:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razg1-0005u0-Lx
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:57 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfy-00083X-1u
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708095533;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ayzqrCGnN+bTkvGcJo2VWUwPmuqrj02rJlUdNWCYIX0=;
- b=QtN2CUp2RSRLJjb7ou/gqpYGRygtSfBd/av//AWGlM1kXuuNF+69AQhAeUt8RZmhs3K2da
- 7feP5lV/ThyzVtKQHvnEtfWIVxYrtdiXl0BrqtdiTCyxTeTnXgEUXt7zr/tQ7c2lGtkMb1
- UJrnD3VsaDeiU8H7nAcDnOKRTUUTrJo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-KiwaqQI2P9KEwcUpoa_TQw-1; Fri,
- 16 Feb 2024 09:58:50 -0500
-X-MC-Unique: KiwaqQI2P9KEwcUpoa_TQw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C17AB1C04333;
- Fri, 16 Feb 2024 14:58:49 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 819822166AE5;
- Fri, 16 Feb 2024 14:58:49 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3F5C421E5A5C; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1razli-0008BI-9v
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:04:50 -0500
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1razlg-0000pf-49
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 10:04:49 -0500
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a3c1a6c10bbso277535766b.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 07:04:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708095886; x=1708700686; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IgMGnwDJJp9CianhhLKV4Wm1OtNzAWG/gtuYlfJ5Kdg=;
+ b=YL6Anxr91WU+LuAWZkckGwvH2UzRTvoOeBT+jFTmkJAxHyJVq3z7Yyfh9JR8f/2i3G
+ fl0d0vLjmLkqcCV6d+Z5PRSwH7TFUEmNkpVroWexIw2rrFnjckuFdLyhYNmGqMyRS7SI
+ lD+4UmHpSf1tVX1PW9SsXqD9D3jfGB39gxNLPP4FWsciWFn82qFo5rdS+WUkTfOZxUAg
+ REtvmbvo8Z9sAJ+4mTNA6uy9KP2sZKzPD0+zI1GM2wCXx5MIkApGC6uzVQp1nAsTjqJQ
+ lLa0P+LW2SYkhtl8s9I0fRNDcDxvds+u1O+L1oAYmVBaNoQt4esz7nhMVxTQvIrmkFfK
+ xDaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708095886; x=1708700686;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IgMGnwDJJp9CianhhLKV4Wm1OtNzAWG/gtuYlfJ5Kdg=;
+ b=E/Xg8AxbWinJD2qUedQEGY/q1EdL7oFw/BD1d6n9t/QYozl9fWbXDFZBG0BrEIBXGx
+ RTQND0HT0M6nt6mMeeLI9lso7YBuf8UW6Oa5mzbg/KYlK8T/2G7bZ+Ngr9FkzXVJLiWP
+ 1gdnMtbKlVrvETflEghtfC0Eag/17bcpZozMBrU2Q9j+95OFdAfa8dhavqIJIwN1sY6A
+ 0XZN9U9w+pxFPNonCQn6MaoPPjQy/AUWt50TeJ5zT5M++i5qPKMgRHhpkvQY8LOJVy++
+ /tjGGFrdZur1PA8itP1TaSxa6JvTd8waR9aFaHVxH50NUelc7uBGT9N4snzokryx+fJ6
+ x7+Q==
+X-Gm-Message-State: AOJu0YzF7TEiNcPA3Vqr6VvSUko+B7DibMj2wGRaiLwKUrI4PUeYMk28
+ ggVRaF0+ps6opni5U/bQSxS74jt87FtpjGQ5AiZdb4FgblynLYVnXiECW+ZLO9jOPsPGuBfDo0n
+ k
+X-Google-Smtp-Source: AGHT+IEyR9s9gmGSVwo9B83uKFpZp+AMJ+H9XSuex4SN4sutNHsSVLGhT4D3PECIl4DYIV6TzmZwdw==
+X-Received: by 2002:a17:906:a881:b0:a3d:8466:d355 with SMTP id
+ ha1-20020a170906a88100b00a3d8466d355mr3635489ejb.19.1708095885825; 
+ Fri, 16 Feb 2024 07:04:45 -0800 (PST)
+Received: from m1x-phil.lan ([176.187.210.246])
+ by smtp.gmail.com with ESMTPSA id
+ qw13-20020a1709066a0d00b00a3df2b849a5sm14099ejc.155.2024.02.16.07.04.43
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 16 Feb 2024 07:04:45 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
- peter.maydell@linaro.org
-Subject: [PATCH 16/16] qapi: Divorce QAPIDoc from QAPIParseError
-Date: Fri, 16 Feb 2024 15:58:40 +0100
-Message-ID: <20240216145841.2099240-17-armbru@redhat.com>
-In-Reply-To: <20240216145841.2099240-1-armbru@redhat.com>
-References: <20240216145841.2099240-1-armbru@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, kvm@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PATCH] hw/sysbus: Inline and remove sysbus_add_io()
+Date: Fri, 16 Feb 2024 16:04:41 +0100
+Message-ID: <20240216150441.45681-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.364,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,229 +96,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPIDoc stores a reference to QAPIParser just to pass it to
-QAPIParseError.  The resulting error position depends on the state of
-the parser.  It happens to be the current comment line.  Servicable,
-but action at a distance.
+sysbus_add_io(...) is a simple wrapper to
+memory_region_add_subregion(get_system_io(), ...).
+It is used in 3 places; inline it directly.
 
-The commit before previous moved most uses of QAPIParseError from
-QAPIDoc to QAPIParser.  There are just three left.  Convert them to
-QAPISemError.  This involves passing info to a few methods.  Then drop
-the reference to QAPIParser.
-
-The three errors lose the column number.  Not really interesting here:
-it's the comment line's indentation.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/qapi/parser.py                      | 66 +++++++++------------
- tests/qapi-schema/doc-duplicated-arg.err    |  2 +-
- tests/qapi-schema/doc-duplicated-return.err |  2 +-
- tests/qapi-schema/doc-duplicated-since.err  |  2 +-
- tests/qapi-schema/doc-empty-arg.err         |  2 +-
- 5 files changed, 32 insertions(+), 42 deletions(-)
+ include/hw/sysbus.h | 2 --
+ hw/core/sysbus.c    | 6 ------
+ hw/i386/kvmvapic.c  | 2 +-
+ hw/mips/mipssim.c   | 2 +-
+ hw/nvram/fw_cfg.c   | 5 +++--
+ 5 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 3d8c62b412..11707418fb 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -494,7 +494,7 @@ def get_doc(self) -> 'QAPIDoc':
-             symbol = line[1:-1]
-             if not symbol:
-                 raise QAPIParseError(self, "name required after '@'")
--            doc = QAPIDoc(self, info, symbol)
-+            doc = QAPIDoc(info, symbol)
-             self.accept(False)
-             line = self.get_doc_line()
-             no_more_args = False
-@@ -518,7 +518,7 @@ def get_doc(self) -> 'QAPIDoc':
-                         line = self.get_doc_line()
-                     while (line is not None
-                            and (match := self._match_at_name_colon(line))):
--                        doc.new_feature(match.group(1))
-+                        doc.new_feature(self.info, match.group(1))
-                         text = line[match.end():]
-                         if text:
-                             doc.append_line(text)
-@@ -536,7 +536,7 @@ def get_doc(self) -> 'QAPIDoc':
-                             % match.group(1))
-                     while (line is not None
-                            and (match := self._match_at_name_colon(line))):
--                        doc.new_argument(match.group(1))
-+                        doc.new_argument(self.info, match.group(1))
-                         text = line[match.end():]
-                         if text:
-                             doc.append_line(text)
-@@ -546,7 +546,7 @@ def get_doc(self) -> 'QAPIDoc':
-                         r'(Returns|Since|Notes?|Examples?|TODO): *',
-                         line):
-                     # tagged section
--                    doc.new_tagged_section(match.group(1))
-+                    doc.new_tagged_section(self.info, match.group(1))
-                     text = line[match.end():]
-                     if text:
-                         doc.append_line(text)
-@@ -558,13 +558,13 @@ def get_doc(self) -> 'QAPIDoc':
-                         "unexpected '=' markup in definition documentation")
-                 else:
-                     # tag-less paragraph
--                    doc.ensure_untagged_section()
-+                    doc.ensure_untagged_section(self.info)
-                     doc.append_line(line)
-                     line = self.get_doc_paragraph(doc)
-         else:
-             # Free-form documentation
--            doc = QAPIDoc(self, info)
--            doc.ensure_untagged_section()
-+            doc = QAPIDoc(info)
-+            doc.ensure_untagged_section(self.info)
-             first = True
-             while line is not None:
-                 if match := self._match_at_name_colon(line):
-@@ -607,12 +607,10 @@ class QAPIDoc:
-     """
+diff --git a/include/hw/sysbus.h b/include/hw/sysbus.h
+index 3564b7b6a2..14dbc22d0c 100644
+--- a/include/hw/sysbus.h
++++ b/include/hw/sysbus.h
+@@ -83,8 +83,6 @@ void sysbus_mmio_map(SysBusDevice *dev, int n, hwaddr addr);
+ void sysbus_mmio_map_overlap(SysBusDevice *dev, int n, hwaddr addr,
+                              int priority);
+ void sysbus_mmio_unmap(SysBusDevice *dev, int n);
+-void sysbus_add_io(SysBusDevice *dev, hwaddr addr,
+-                   MemoryRegion *mem);
+ MemoryRegion *sysbus_address_space(SysBusDevice *dev);
  
-     class Section:
--        def __init__(self, parser: QAPISchemaParser,
-+        def __init__(self, info: QAPISourceInfo,
-                      tag: Optional[str] = None):
-             # section source info, i.e. where it begins
--            self.info = parser.info
--            # parser, for error messages about indentation
--            self._parser = parser
-+            self.info = info
-             # section tag, if any ('Returns', '@name', ...)
-             self.tag = tag
-             # section text without tag
-@@ -622,27 +620,20 @@ def append_line(self, line: str) -> None:
-             self.text += line + '\n'
+ bool sysbus_realize(SysBusDevice *dev, Error **errp);
+diff --git a/hw/core/sysbus.c b/hw/core/sysbus.c
+index 35f902b582..9f1d5b2d6d 100644
+--- a/hw/core/sysbus.c
++++ b/hw/core/sysbus.c
+@@ -298,12 +298,6 @@ static char *sysbus_get_fw_dev_path(DeviceState *dev)
+     return g_strdup(qdev_fw_name(dev));
+ }
  
-     class ArgSection(Section):
--        def __init__(self, parser: QAPISchemaParser,
--                     tag: str):
--            super().__init__(parser, tag)
-+        def __init__(self, info: QAPISourceInfo, tag: str):
-+            super().__init__(info, tag)
-             self.member: Optional['QAPISchemaMember'] = None
+-void sysbus_add_io(SysBusDevice *dev, hwaddr addr,
+-                       MemoryRegion *mem)
+-{
+-    memory_region_add_subregion(get_system_io(), addr, mem);
+-}
+-
+ MemoryRegion *sysbus_address_space(SysBusDevice *dev)
+ {
+     return get_system_memory();
+diff --git a/hw/i386/kvmvapic.c b/hw/i386/kvmvapic.c
+index f2b0aff479..3be64fba3b 100644
+--- a/hw/i386/kvmvapic.c
++++ b/hw/i386/kvmvapic.c
+@@ -727,7 +727,7 @@ static void vapic_realize(DeviceState *dev, Error **errp)
+     VAPICROMState *s = VAPIC(dev);
  
-         def connect(self, member: 'QAPISchemaMember') -> None:
-             self.member = member
+     memory_region_init_io(&s->io, OBJECT(s), &vapic_ops, s, "kvmvapic", 2);
+-    sysbus_add_io(sbd, VAPIC_IO_PORT, &s->io);
++    memory_region_add_subregion(get_system_io(), VAPIC_IO_PORT, &s->io);
+     sysbus_init_ioports(sbd, VAPIC_IO_PORT, 2);
  
--    def __init__(self, parser: QAPISchemaParser, info: QAPISourceInfo,
--                 symbol: Optional[str] = None):
--        # self._parser is used to report errors with QAPIParseError.  The
--        # resulting error position depends on the state of the parser.
--        # It happens to be the beginning of the comment.  More or less
--        # servicable, but action at a distance.
--        self._parser = parser
-+    def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
-         # info points to the doc comment block's first line
-         self.info = info
-         # definition doc's symbol, None for free-form doc
-         self.symbol: Optional[str] = symbol
-         # the sections in textual order
--        self.all_sections: List[QAPIDoc.Section] = [QAPIDoc.Section(parser)]
-+        self.all_sections: List[QAPIDoc.Section] = [QAPIDoc.Section(info)]
-         # the body section
-         self.body: Optional[QAPIDoc.Section] = self.all_sections[0]
-         # dicts mapping parameter/feature names to their description
-@@ -658,44 +649,43 @@ def end(self) -> None:
-                 raise QAPISemError(
-                     section.info, "text required after '%s:'" % section.tag)
+     option_rom[nb_option_roms].name = "kvmvapic.bin";
+diff --git a/hw/mips/mipssim.c b/hw/mips/mipssim.c
+index a12427b6c8..57c8c33e2b 100644
+--- a/hw/mips/mipssim.c
++++ b/hw/mips/mipssim.c
+@@ -226,7 +226,7 @@ mips_mipssim_init(MachineState *machine)
+         qdev_prop_set_uint8(dev, "endianness", DEVICE_LITTLE_ENDIAN);
+         sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+         sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, env->irq[4]);
+-        sysbus_add_io(SYS_BUS_DEVICE(dev), 0x3f8,
++        memory_region_add_subregion(get_system_io(), 0x3f8,
+                       sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 0));
+     }
  
--    def ensure_untagged_section(self) -> None:
-+    def ensure_untagged_section(self, info: QAPISourceInfo) -> None:
-         if self.all_sections and not self.all_sections[-1].tag:
-             # extend current section
-             self.all_sections[-1].text += '\n'
-             return
-         # start new section
--        section = self.Section(self._parser)
-+        section = self.Section(info)
-         self.sections.append(section)
-         self.all_sections.append(section)
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index e85493d513..6d6b17462d 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -1142,6 +1142,7 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+     SysBusDevice *sbd;
+     FWCfgIoState *ios;
+     FWCfgState *s;
++    MemoryRegion *iomem = get_system_io();
+     bool dma_requested = dma_iobase && dma_as;
  
--    def new_tagged_section(self, tag: str) -> None:
-+    def new_tagged_section(self, info: QAPISourceInfo, tag: str) -> None:
-         if tag in ('Returns', 'Since'):
-             for section in self.all_sections:
-                 if isinstance(section, self.ArgSection):
-                     continue
-                 if section.tag == tag:
--                    raise QAPIParseError(
--                        self._parser, "duplicated '%s' section" % tag)
--        section = self.Section(self._parser, tag)
-+                    raise QAPISemError(
-+                        info, "duplicated '%s' section" % tag)
-+        section = self.Section(info, tag)
-         self.sections.append(section)
-         self.all_sections.append(section)
+     dev = qdev_new(TYPE_FW_CFG_IO);
+@@ -1155,7 +1156,7 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+     sbd = SYS_BUS_DEVICE(dev);
+     sysbus_realize_and_unref(sbd, &error_fatal);
+     ios = FW_CFG_IO(dev);
+-    sysbus_add_io(sbd, iobase, &ios->comb_iomem);
++    memory_region_add_subregion(iomem, iobase, &ios->comb_iomem);
  
--    def _new_description(self, name: str,
-+    def _new_description(self, info: QAPISourceInfo, name: str,
-                          desc: Dict[str, ArgSection]) -> None:
-         if not name:
--            raise QAPIParseError(self._parser, "invalid parameter name")
-+            raise QAPISemError(info, "invalid parameter name")
-         if name in desc:
--            raise QAPIParseError(self._parser,
--                                 "'%s' parameter name duplicated" % name)
--        section = self.ArgSection(self._parser, '@' + name)
-+            raise QAPISemError(info, "'%s' parameter name duplicated" % name)
-+        section = self.ArgSection(info, '@' + name)
-         self.all_sections.append(section)
-         desc[name] = section
+     s = FW_CFG(dev);
  
--    def new_argument(self, name: str) -> None:
--        self._new_description(name, self.args)
-+    def new_argument(self, info: QAPISourceInfo, name: str) -> None:
-+        self._new_description(info, name, self.args)
+@@ -1163,7 +1164,7 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+         /* 64 bits for the address field */
+         s->dma_as = dma_as;
+         s->dma_addr = 0;
+-        sysbus_add_io(sbd, dma_iobase, &s->dma_iomem);
++        memory_region_add_subregion(iomem, dma_iobase, &s->dma_iomem);
+     }
  
--    def new_feature(self, name: str) -> None:
--        self._new_description(name, self.features)
-+    def new_feature(self, info: QAPISourceInfo, name: str) -> None:
-+        self._new_description(info, name, self.features)
- 
-     def append_line(self, line: str) -> None:
-         self.all_sections[-1].append_line(line)
-@@ -707,7 +697,7 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
-                                    "%s '%s' lacks documentation"
-                                    % (member.role, member.name))
-             self.args[member.name] = QAPIDoc.ArgSection(
--                self._parser, '@' + member.name)
-+                self.info, '@' + member.name)
-         self.args[member.name].connect(member)
- 
-     def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
-diff --git a/tests/qapi-schema/doc-duplicated-arg.err b/tests/qapi-schema/doc-duplicated-arg.err
-index 0d0d777a1f..d876312734 100644
---- a/tests/qapi-schema/doc-duplicated-arg.err
-+++ b/tests/qapi-schema/doc-duplicated-arg.err
-@@ -1 +1 @@
--doc-duplicated-arg.json:6:1: 'a' parameter name duplicated
-+doc-duplicated-arg.json:6: 'a' parameter name duplicated
-diff --git a/tests/qapi-schema/doc-duplicated-return.err b/tests/qapi-schema/doc-duplicated-return.err
-index f19a2b8ec4..503b916b25 100644
---- a/tests/qapi-schema/doc-duplicated-return.err
-+++ b/tests/qapi-schema/doc-duplicated-return.err
-@@ -1 +1 @@
--doc-duplicated-return.json:8:1: duplicated 'Returns' section
-+doc-duplicated-return.json:8: duplicated 'Returns' section
-diff --git a/tests/qapi-schema/doc-duplicated-since.err b/tests/qapi-schema/doc-duplicated-since.err
-index 565b753b6a..a9b60c0c3d 100644
---- a/tests/qapi-schema/doc-duplicated-since.err
-+++ b/tests/qapi-schema/doc-duplicated-since.err
-@@ -1 +1 @@
--doc-duplicated-since.json:8:1: duplicated 'Since' section
-+doc-duplicated-since.json:8: duplicated 'Since' section
-diff --git a/tests/qapi-schema/doc-empty-arg.err b/tests/qapi-schema/doc-empty-arg.err
-index 2d0f35f310..83f4fc66d5 100644
---- a/tests/qapi-schema/doc-empty-arg.err
-+++ b/tests/qapi-schema/doc-empty-arg.err
-@@ -1 +1 @@
--doc-empty-arg.json:5:1: invalid parameter name
-+doc-empty-arg.json:5: invalid parameter name
+     return s;
 -- 
-2.43.0
+2.41.0
 
 
