@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F0B8582BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CEB8582B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:38:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb1Dn-0001UC-BQ; Fri, 16 Feb 2024 11:37:55 -0500
+	id 1rb1Dk-0001PQ-AW; Fri, 16 Feb 2024 11:37:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb1Dl-0001SR-Lv
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:53 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1rb1Di-0001MY-He
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:50 -0500
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb1DY-000462-1U
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:53 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33d07ee22eeso619313f8f.0
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:37:39 -0800 (PST)
+ id 1rb1DX-00045h-GL
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:50 -0500
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2d10ad265d5so12905841fa.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:37:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1708101458; x=1708706258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
- b=AkNDxkuIHxHQFNZUp/7MrvxkivggZjgRSvuOUTGJhOAIq6+wi/S/I1TwQQGYMu6QUL
- GvPveafpCl7b4n5aiYD9Vt6bDEF2h2WDLiEZXk2fZX1lprTfLjyXit2EBmLjEr9imY5o
- dWJ9wgKEIS82uewDUz/y0dJQ/nj0w1jmwjbtZ88SMd9wHmp3qM6Di67uj75qxT5klDLu
- yZdIMqFLqr6igdtNDDA2kuIS8gjJYI0ToGv4dWq8ih33DelKMJFqfkTfmCYjWuDoYD7y
- jQd/8iL7gE/vRe44kR1xcAloD8Yo60JmwmT/f/qbb8oNRVi969SFIM0sml4QKU9bsXNy
- MCLA==
+ bh=LY87PsqI5CseL6bunSV/a+wwJBYv7wofoTM3s0oA7jk=;
+ b=bm5u2WkxjWABIl4Qi9ppMd0tfyhyPJKZ5C4f1IyNzLW/OaW/Vq1CVPFV/6UEhIjYC1
+ +feNHv7SWHbr2wR/4k32fpLeQWPozHBPQRVs+Nn55q/3gvjfDxkrfftRC6VOv7vq2ozR
+ 8kVClczcl2ccSCYszYyquIXzCpQEcrszjaz2no2vbroFu2JGe89iOLjg66ZdeWdtowSR
+ vHtv0y7j2YVaOZSlStq8M2CvkybrtIiiCPjmulWkbEdSPDFhzTJSYhmj2MsHJlG7+Giq
+ +k577WuwH2J7a756Ze/QlNcedikQJdjPDrmTynVK4DgKC8koicOuihXDPqftOKdt1xTA
+ VtNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1708101458; x=1708706258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
- b=ZP4lzVReTSoU/72y42o0mxdB7cddigcvh+17hx6/+NHZp2l8GwTVsvY1gRGji/v7lg
- S7CQB87X5pXU+FKO6yISk03LUC0Qcq5FPsfo4cM73up58SBfDfkJJ2GAKxYx6xnFx/iW
- vkAbQ/pduVwrj6RPXrvKE+Z2w+pjLflg2gURzXaz4jkzD29zP7KvXdZc5oizHPFZSLCF
- MAIjaqrfD7iSFIr8Mr7oq/6ceOKjmHXBtIe7ra3NbKDlTQ+Vi/MqM+0DYQgTwOG9I7g2
- sOZyfygCBHAiYUNxGhQVZrxTMgBCixtCenshAlkRCcO4qI/EUzBOQyvbYZRV2W13TyAz
- a/Mw==
-X-Gm-Message-State: AOJu0YyfojKleMjFrDplb0UCOiOpOZuVvWypJHgkWH9UcjXcK5CcNS9Q
- b9Y1B5bCY8xgQQuhAmrUr3OKdlKrC5NzH+aRT3rBWfnNOTTonXtm+DmYEhikeHA=
-X-Google-Smtp-Source: AGHT+IF+azCIgmKTLCdw0EDUXddFCfFLrJsvyIrp67MlYlm7BX/FXDp3hmA3dwjC+AJ82R4hvc78vQ==
-X-Received: by 2002:adf:f50e:0:b0:33b:304d:36b7 with SMTP id
- q14-20020adff50e000000b0033b304d36b7mr4393268wro.56.1708101458266; 
- Fri, 16 Feb 2024 08:37:38 -0800 (PST)
+ bh=LY87PsqI5CseL6bunSV/a+wwJBYv7wofoTM3s0oA7jk=;
+ b=jlf7SyF7g7hoQ2jG2qF9nMz2CXYArGQmSO82vvO09Cs2RSnFKtz35lnxFGMNHQ8SaS
+ mwnQ8NmxatU6zfjn7mMUG//VlwBaZyy292xE0q+7eNw24WkTuT7yIO/MR4tJPmeKctxP
+ PNg18p0XaobjjRWSgjaA6gT/jdD8Es9Zo/67K1upgG95bHJvoEgM2aOIQyg4jJsDVWN6
+ 8tBLUbzApFZpVnTtk400CfzEtUsLK92SrhvggtNVrTWM643gg6r7jeI97pAwvRz9r85H
+ G+u6WdPdpghiJ4ZI2fEDxv+u0h0x3Ix67IIxKpiQRf9ZVfmSc7mthzDyFUkcHVi5bZL/
+ 1cbA==
+X-Gm-Message-State: AOJu0YzGa/d6tmaTCBQyzqsWxg22dk+alEstxVp4z1JGCFrWRYcbQB7N
+ eAyNbfcvej3Y7qC5iXEqsbKNTB3JxfbvkyUN7GmLNpAuQFPJgBM7xFRK+sGv3gM=
+X-Google-Smtp-Source: AGHT+IE8pPyveV8Vlvza90Z4Lj4siM18NVcQPXJ9rGlAiKbbc7Qdjn+CleszgmQwhp7VrHZJgm577g==
+X-Received: by 2002:a2e:9607:0:b0:2d2:1107:3a3 with SMTP id
+ v7-20020a2e9607000000b002d2110703a3mr3184316ljh.10.1708101457868; 
+ Fri, 16 Feb 2024 08:37:37 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o11-20020adfcf0b000000b0033b4dae972asm2631828wrj.37.2024.02.16.08.37.33
+ m4-20020a05600c280400b0040fe308ff25sm2733004wmb.24.2024.02.16.08.37.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 16 Feb 2024 08:37:35 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id AE4365F9E0;
+ by draig.lan (Postfix) with ESMTP id C73195F9E1;
  Fri, 16 Feb 2024 16:30:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,24 +85,24 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
  Eduardo Habkost <eduardo@habkost.net>,
  Alistair Francis <alistair.francis@wdc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 14/23] plugins: fix order of init/idle/resume callback
-Date: Fri, 16 Feb 2024 16:30:16 +0000
-Message-Id: <20240216163025.424857-15-alex.bennee@linaro.org>
+Subject: [PATCH 15/23] cpu: call plugin init hook asynchronously
+Date: Fri, 16 Feb 2024 16:30:17 +0000
+Message-Id: <20240216163025.424857-16-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216163025.424857-1-alex.bennee@linaro.org>
 References: <20240216163025.424857-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,48 +120,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We found that vcpu_init_hook was called *after* idle callback.
-vcpu_init is called from cpu_realize_fn, while idle/resume cb are called
-from qemu_wait_io_event (in vcpu thread).
+This ensures we run during a cpu_exec, which allows to call start/end
+exclusive from this init hook (needed for new scoreboard API introduced
+later).
 
-This change ensures we only call idle and resume cb only once a plugin
-was init for a given vcpu.
+async work is run before any tb is translated/executed, so we can
+guarantee plugin init will be called before any other hook.
 
-Next change in the series will run vcpu_init asynchronously, which will
-make it run *after* resume callback as well. So we fix this now.
+The previous change made sure that any idle/resume cb call will not be
+done before initializing plugin for a given vcpu.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240213094009.150349-4-pierrick.bouvier@linaro.org>
+Message-Id: <20240213094009.150349-5-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- plugins/core.c | 9 +++++++--
+ hw/core/cpu-common.c | 9 +++++++--
  1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index caa66311351..2392bbb8889 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -391,12 +391,17 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
- 
- void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
- {
--    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
-+    /* idle and resume cb may be called before init, ignore in this case */
-+    if (cpu->cpu_index < plugin.num_vcpus) {
-+        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
-+    }
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index fe16d0d9df8..68786360ea5 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -194,6 +194,11 @@ static void cpu_common_parse_features(const char *typename, char *features,
+     }
  }
  
- void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
++static void qemu_plugin_vcpu_init__async(CPUState *cpu, run_on_cpu_data unused)
++{
++    qemu_plugin_vcpu_init_hook(cpu);
++}
++
+ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
  {
--    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
-+    if (cpu->cpu_index < plugin.num_vcpus) {
-+        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
-+    }
- }
+     CPUState *cpu = CPU(dev);
+@@ -217,9 +222,9 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
+         cpu_resume(cpu);
+     }
  
- void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
+-    /* Plugin initialization must wait until the cpu is fully realized. */
++    /* Plugin initialization must wait until the cpu start executing code */
+     if (tcg_enabled()) {
+-        qemu_plugin_vcpu_init_hook(cpu);
++        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
+     }
+ 
+     /* NOTE: latest generic point where the cpu is fully realized */
 -- 
 2.39.2
 
