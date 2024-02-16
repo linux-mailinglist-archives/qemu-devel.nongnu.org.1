@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDC4857E47
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52920857E4E
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:59:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rayj2-0006XY-GM; Fri, 16 Feb 2024 08:58:00 -0500
+	id 1rayj0-0006Xa-Es; Fri, 16 Feb 2024 08:57:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rayii-0006KK-TE
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:41 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rayig-0006GB-Bz
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:39 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rayia-0003e5-Ts
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:39 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1dba94f9201so5564645ad.0
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:57:30 -0800 (PST)
+ id 1rayib-0003eL-Tm
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:57:36 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d746856d85so6769795ad.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 05:57:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708091848; x=1708696648; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VuWkQa5G3p5yKcEgQcwfaDUggnii8C6Urb6dECN5vgg=;
- b=iKaRhSja1v+icyhlAiIn5fVVCqfVj4q7cFWvz4BpeK+UXJ/qnR6sT8WogFxt1xL+H3
- Nj7unUXMZZE0br86+k1DfHJaBUJ74SvsmsFpd+0vnqJDqh+T6derP6Czu8FxtX22vF+c
- RWohzAS1PIk0AOc9tkL8QR0ueZmGVWDtDHksaUWhQkBoI8NC+7uL7fPJWZ7IqW3hIEiR
- ErqRtWvb8695OkQCIvA8q/4M18KHmHzNQkcy/Eu8ycUiGQr5qkGMkM753JKVgWM0rH72
- Rf1P7YBQaJaq/vGGxMv9loA9xj0D500EXAxLVc/7w9MtfLW75xj2bKFNg4+8GvRJK26Z
- 7Dhw==
+ d=ventanamicro.com; s=google; t=1708091851; x=1708696651; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1pILAc4QGfEWQVoqeGm6TwPW8gXNmDL3KNUvGgdYo3Y=;
+ b=D8t+XLv1MjkVJ81CFq343dAtMU3B6LNhYMm+RfGrVl7FeWtfukd2mGDmEM6z2gVrPo
+ IOO9KkJsbiFTdN4CkOiG6aEL/V1MAP0wvIQBVNp5IOo3N5jB5tE+luuUlWhjFCEaMFRX
+ OiuOdfO+XDg1OguL3zKnDxiPVeK8DWZIuNCLOWGdGvwF3EbnLuBKsxMBNcWfMthDxOaj
+ jkgdUpC2QNE9LHX1hr8jQ1PXMPwZ/wJ4xd/Y53sxOdC35zUVtTtuExZUrrgNtyJq4q1E
+ NIUh9zq2+Y97I5UL0YHFMu7nElXDPb1GIKa98YEfQtBKFBbXYngnhW30UEiPHyVRBUQH
+ t/Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708091848; x=1708696648;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VuWkQa5G3p5yKcEgQcwfaDUggnii8C6Urb6dECN5vgg=;
- b=pLt78oK6RKOK15wB9bfllQOOBHolzrphVTC75hu9bzXobpgk9juFRJdUMPrFODAbNZ
- h15nVKhQ8gPglplGMoSvfG9lMvgxKymHsK9REZkaB68i3voTiOoBAHyd4aLXpswsNxok
- Z0UWVNFEr0+Wgr0uKSOVKf/SSqTVFbsBV1UjK4aqMF8jlAOsYY9ts5rnIuFmdhKh1gi+
- 2Qq1XqcpnH5GLzx3kzQGUJRczK4Fl3l7AGPZaVnlb3l6/4XdU1L3GbEGR0OZO6LbBy6c
- b8t+ZKBP7gBPtU1sk+5ZzDdc1+YOpWd05mhkoEqeobwJq+did2BeSO/r11b2oohGDKQw
- wyAg==
-X-Gm-Message-State: AOJu0Yziek/u6+mMgqvULXgmIrVcExqLIfqn8BQwFKG1mrQ6dBraWxCr
- xMyto9WCNjIXkD5k8HhJOGh3avW7kvX/eaq2bVZLiwAjGDBbtkF6nwm/Yyza1EZ6yV/pEnDQ6xi
- N
-X-Google-Smtp-Source: AGHT+IE42nMyBwRxjJSJdUiWWeLqUWVcfkEYgj7zrKrEN5ydlSHUjd/9H8JZEz3Ue3CLrQSyaU2QXg==
-X-Received: by 2002:a17:903:230b:b0:1d9:bdbc:388b with SMTP id
- d11-20020a170903230b00b001d9bdbc388bmr6356837plh.45.1708091848164; 
- Fri, 16 Feb 2024 05:57:28 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708091851; x=1708696651;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1pILAc4QGfEWQVoqeGm6TwPW8gXNmDL3KNUvGgdYo3Y=;
+ b=f/Jr3+gbFpEz9+alDlqLGNpcDJV/+ftUCKZ/sCzOVxqzwAGER+jeF7K5jW1pmnA/I4
+ AiFt19cj74h0SEJUXUBGvwwHEoQlofkwQ6hDnwNWHCaDUetZkCaydVHiXOZQlvHKCLKM
+ NCTSCQZDUsVep4Es9IbVndoR2HPMLboMN/urPbV1opwnGhWLy1QKMODhJZQxw08iOCIV
+ ug85H6it4YSEHZbRH95/EXr0zmI61UeHhVqzt8BQeC3Ef/knSweYs5k6I0yhpkdp3fSP
+ 5aXIBOZaVPQmlYmnL1YqbQtwAhW+XgPXMxwCoZAwH5KH7gOCE/qZnSi2SENP/d6IPaPL
+ IKCg==
+X-Gm-Message-State: AOJu0YzNqT0jNmtFGS2UgAtbJQWoC/9vRdPlJywqVYUyhn//CBMY8Vcy
+ f4cfiAhrOF8Ls5r7vmAP1+bqBLINUmKomaYKDEO5Cs6G6lbgO8bQyGP5vouwYzwdQwcWQLWR4x6
+ Y
+X-Google-Smtp-Source: AGHT+IFp9m72nD3whodcQWSNQXB1YZ6oZB0wyflG0dNdFBFA/5lFZkTT+/5Qy1oYjVIBYg78blyo4w==
+X-Received: by 2002:a17:903:244e:b0:1da:20c4:5110 with SMTP id
+ l14-20020a170903244e00b001da20c45110mr6161282pls.16.1708091851596; 
+ Fri, 16 Feb 2024 05:57:31 -0800 (PST)
 Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- j18-20020a170902c3d200b001dbb06b6138sm889606plj.252.2024.02.16.05.57.25
+ j18-20020a170902c3d200b001dbb06b6138sm889606plj.252.2024.02.16.05.57.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 05:57:27 -0800 (PST)
+ Fri, 16 Feb 2024 05:57:31 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  richard.henderson@linaro.org, max.chou@sifive.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 0/3] riscv: set vstart_eq_zero on mark_vs_dirty 
-Date: Fri, 16 Feb 2024 10:57:16 -0300
-Message-ID: <20240216135719.1034289-1-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 1/3] trans_rvv.c.inc: write CSRs must call mark_vs_dirty()
+ too
+Date: Fri, 16 Feb 2024 10:57:17 -0300
+Message-ID: <20240216135719.1034289-2-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240216135719.1034289-1-dbarboza@ventanamicro.com>
+References: <20240216135719.1034289-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,34 +95,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In the Vector spec section 3.2 [1]:
 
-This second version is based on feedback gave on the Gitlab bug [1] by
-Vladimir Isaev. For this approach to work the 'vstart_eq_zero' flag
-must be updated regardless of 'mstatus_vs' being marked as DIRTY or
-not - there's no guarantee that we'll clean mstatus_vs after each change
-in 'vstart'.
+"When mstatus.VS is set to Initial or Clean, executing any instruction
+ that changes vector state, including the vector CSRs, will change
+ mstatus.VS to Dirty."
 
-Patches based on alistair/riscv-to-apply.next.
+ldst_us_trans(), ldst_stride_trans(), ldst_index_trans() and
+ldst_whole_trans() will change vector state regardless of being a store
+op or not. Stores will set env->vstart to zero after execution (see
+vext_ldst_us() in vector_helper.c), and this is vector CSR state change.
 
+[1] https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc#vector-start-index-csr-vstart
 
-[1] https://gitlab.com/qemu-project/qemu/-/issues/1976
+Fixes: 8e1ee1fb57 ("target/riscv: rvv-1.0: add translation-time vector context status")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/insn_trans/trans_rvv.c.inc | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-Changes from v1:
-- patch 3:
-  - always update vstart_eq_zero, not only if "mstatus_vs !=
-    EXT_STATUS_DIRTY"
-- v1 link: https://lore.kernel.org/qemu-riscv/20240216112806.997948-1-dbarboza@ventanamicro.com/
-
-Daniel Henrique Barboza (3):
-  trans_rvv.c.inc: write CSRs must call mark_vs_dirty() too
-  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
-  target/riscv/translate.c: set vstart_eq_zero in mark_vs_dirty()
-
- target/riscv/insn_trans/trans_rvv.c.inc | 28 +++++++------------------
- target/riscv/translate.c                | 20 ++++++++++++++++++
- 2 files changed, 27 insertions(+), 21 deletions(-)
-
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 9e101ab434..044c9c903e 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -638,10 +638,7 @@ static bool ldst_us_trans(uint32_t vd, uint32_t rs1, uint32_t data,
+ 
+     fn(dest, mask, base, tcg_env, desc);
+ 
+-    if (!is_store) {
+-        mark_vs_dirty(s);
+-    }
+-
++    mark_vs_dirty(s);
+     gen_set_label(over);
+     return true;
+ }
+@@ -799,10 +796,7 @@ static bool ldst_stride_trans(uint32_t vd, uint32_t rs1, uint32_t rs2,
+ 
+     fn(dest, mask, base, stride, tcg_env, desc);
+ 
+-    if (!is_store) {
+-        mark_vs_dirty(s);
+-    }
+-
++    mark_vs_dirty(s);
+     gen_set_label(over);
+     return true;
+ }
+@@ -906,10 +900,7 @@ static bool ldst_index_trans(uint32_t vd, uint32_t rs1, uint32_t vs2,
+ 
+     fn(dest, mask, base, index, tcg_env, desc);
+ 
+-    if (!is_store) {
+-        mark_vs_dirty(s);
+-    }
+-
++    mark_vs_dirty(s);
+     gen_set_label(over);
+     return true;
+ }
+@@ -1104,9 +1095,7 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+ 
+     fn(dest, base, tcg_env, desc);
+ 
+-    if (!is_store) {
+-        mark_vs_dirty(s);
+-    }
++    mark_vs_dirty(s);
+     gen_set_label(over);
+ 
+     return true;
 -- 
 2.43.0
 
