@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA8E857B19
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60555857B06
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:05:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw1F-0007bb-MP; Fri, 16 Feb 2024 06:04:37 -0500
+	id 1raw1K-0007vz-EQ; Fri, 16 Feb 2024 06:04:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1A-0007RT-Vz
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:33 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1I-0007ob-3R
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:40 -0500
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw18-00014R-MF
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:32 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4125295ff94so1409265e9.3
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:30 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw1F-00015c-3m
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:04:39 -0500
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2d10d2da73dso24658561fa.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:04:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081468; x=1708686268; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081475; x=1708686275; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T0y1oWRnInhsHqZm+cg/tsMm+PW5dK4fpoLCbcPyN88=;
- b=JH5nC58YOAe6murAf8Ji9d+hD94A2GIfXNBxOprWtySIRQH8TD+apJkRM61FcK4xiv
- 2PPZRvf7jkRlKW6op+KHRV6P0DCURkaM2CxVv67gi1z77zTUxdaz3lRv8y8NpWjwnBEy
- OKRbliYrXFW6jn+cU7/cgP4lEwe5DthLSuWMNUqoZHep72E9s34ysVjmuIsB6DwqiBGp
- EV1hk/b+mzPemEYZrp+OVejzOGF/rA7WBSa3hozafzPkMUlq6mI1ADoo6lAt/Vh5ORJP
- Kg093cEsMn7UsxNkyV8GbQPNWcnUNg+XE92W9Yg5a0boHXoYwJ2bUgCPz8H3BODx1u+t
- lNGA==
+ bh=lSddd7wgwT+Aw6mIanqA0vHkbVR0NSdWvof0YaVRHNk=;
+ b=WbTSvauYQUvypxaPw7bit1QwCQNsVWwbnLkc3pLQ68kU9yiuZL51QGjnbMpjGQgW/C
+ ziDpm3zbxWJdm/MB1GDpF7+r6//ZHSuOvioOGfhD626hWVbYXbBQczQm7paG7LWidfVU
+ zcWMU418X6f6M9AYr37k6OAcK+7gcUDFOqjWVHD7p5U4Can6PBstIius9Z5OcUbtV4Ar
+ aVzZL2kIN32tUZqF9TncJ6EtMFOtw3wIQMy8C5g/IVxgTUbvnEiqa0BgTCmFXHdBvwly
+ zmMfizwkmlqej5VHWsqe1U8xmd6pUurRXbrATufityGMy+RS30LWkOeXilgea0EWponF
+ lRYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081468; x=1708686268;
+ d=1e100.net; s=20230601; t=1708081475; x=1708686275;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T0y1oWRnInhsHqZm+cg/tsMm+PW5dK4fpoLCbcPyN88=;
- b=JTiIjHkVeECqLPR6nZIvsGzfvds+O9VcByZf42ZcWkqWE5iW7LNwQ0WPqXG0WjoQz4
- a0JyTzPRdZMbhYB8J2jEcMB1ZahNOfPuoMrWQas6AzAsiB8DqauQ7WdKTPWmb0BqMmsV
- wjv27j5hCl96bRmhTDJqvtrbA6euT0hQMwULJhhIF0VR4WQ+t+TDa5VGLKlNC0Sv4R9u
- 4HRwyMFcceOX/02qUKA0//NGU686q3oc0FdG49Yv2S0qTBOJxCc1VNcbk2qcPQl9ec8O
- b5q6CPWoeB0fLng5J13GZWLiaHB17IG8oDJKCmT5pcfitkrl53AnQuvOZEnmKcqoteEm
- /ZbA==
-X-Gm-Message-State: AOJu0YwqS7vlSY+Qisdb1WvCjIF5DTDm0i5JT5+wcU7TMb6fWnIckLbt
- awtJw4SFfrB8qACedkMQ2EjHiWHI1azZZMroWMoPkaEY37Ld9BV5EjkQilYZvy4e6mTkRCVDpOm
- P
-X-Google-Smtp-Source: AGHT+IEV7SRh/XSnpo0zVpNk9x/dmBVF+PARN86d6zGPb4KFkBuHxKPmsNTU3xJItSyiBnpe0MiDIg==
-X-Received: by 2002:a5d:428c:0:b0:33d:2156:6da1 with SMTP id
- k12-20020a5d428c000000b0033d21566da1mr553594wrq.61.1708081468667; 
- Fri, 16 Feb 2024 03:04:28 -0800 (PST)
+ bh=lSddd7wgwT+Aw6mIanqA0vHkbVR0NSdWvof0YaVRHNk=;
+ b=jGfMPCuY0Ix4gWJkApVq0mzmHlSRVetQnaYEn7k6YMUOg9ixRVXOoB+wfo2XYy2JqS
+ A+i1kcjAoGmhBj8iE+Ea0adtBdOih3HYNqOxThR60BjYSnNVg0wpMXjqzM4LwXjQM/Yc
+ 7f2rv+0wSZERWBwWF2hnBFDvoOebVHs621cjyhdPz7OXkcHl+UzfkfaInlsKeNwnO6f8
+ Uwi/C6Hf1x8sXjIeI2/qm5C+nj3SOu7DPfh+4nOw6Ce6rk6W+Oc0kq7iF5esyW0qUCQP
+ Tg5gkaSnMNxfdt1lWkgv6ycqiKvQ1m0e8chjJdUOdvEGdoy5lrpByglBSpAxWlaqrn+j
+ vwvw==
+X-Gm-Message-State: AOJu0Yze2d0ptQVrz331EovXJQBZER48r6EAziVtewcTkHKgK7QhwdGb
+ u4BzJNQ/D9CHHvphsvHKdXl7Ib1QWtZ4lMrbVbhAwhs5CreJZXfI4430CMsAv6lac7X2LE20C7g
+ O
+X-Google-Smtp-Source: AGHT+IGyXkQ0ouvPr+qbHCSb1OxQsk2lwXY11CCMwzwoOEGTC5K/SkLtqlf3Mj1gPHh6dxJSBguLZQ==
+X-Received: by 2002:a2e:9247:0:b0:2d1:1e31:c178 with SMTP id
+ v7-20020a2e9247000000b002d11e31c178mr3333201ljg.17.1708081475351; 
+ Fri, 16 Feb 2024 03:04:35 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- az9-20020adfe189000000b0033b7a2136a4sm1911276wrb.97.2024.02.16.03.04.26
+ iv6-20020a05600c548600b004103e15441dsm2036535wmb.6.2024.02.16.03.04.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:04:27 -0800 (PST)
+ Fri, 16 Feb 2024 03:04:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 11/21] hw/usb: Add QOM parentship relation with hub devices
-Date: Fri, 16 Feb 2024 12:03:02 +0100
-Message-ID: <20240216110313.17039-12-philmd@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 12/21] hw/pci-host/q35: Update q35_host_props[] comment
+Date: Fri, 16 Feb 2024 12:03:03 +0100
+Message-ID: <20240216110313.17039-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,26 +95,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QDev objects created with qdev_*new() need to manually add
-their parent relationship with object_property_add_child().
+Commit aff39be0ed ("hw/pci-host: Use object_initialize_child for
+correct reference counting") replaced object_initialize() by
+object_initialize_child(), update the comment.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/pci-host/q35.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/usb/bus.c b/hw/usb/bus.c
-index a599e2552b..baad04f466 100644
---- a/hw/usb/bus.c
-+++ b/hw/usb/bus.c
-@@ -439,6 +439,7 @@ void usb_claim_port(USBDevice *dev, Error **errp)
-             /* Create a new hub and chain it on */
-             hub = USB_DEVICE(qdev_try_new("usb-hub"));
-             if (hub) {
-+                object_property_add_child(OBJECT(dev), "hub", OBJECT(hub));
-                 usb_realize_and_unref(hub, bus, NULL);
-             }
-         }
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 0d7d4e3f08..0eb1c7034d 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -165,10 +165,10 @@ static void q35_host_get_pci_hole64_end(Object *obj, Visitor *v,
+ /*
+  * NOTE: setting defaults for the mch.* fields in this table
+  * doesn't work, because mch is a separate QOM object that is
+- * zeroed by the object_initialize(&s->mch, ...) call inside
++ * zeroed by the object_initialize_child(..., &s->mch, ...) call inside
+  * q35_host_initfn().  The default values for those
+  * properties need to be initialized manually by
+- * q35_host_initfn() after the object_initialize() call.
++ * q35_host_initfn() after the object_initialize_child() call.
+  */
+ static Property q35_host_props[] = {
+     DEFINE_PROP_UINT64(PCIE_HOST_MCFG_BASE, Q35PCIHost, parent_obj.base_addr,
+@@ -211,7 +211,7 @@ static void q35_host_initfn(Object *obj)
+     object_initialize_child(OBJECT(s), "mch", &s->mch, TYPE_MCH_PCI_DEVICE);
+     qdev_prop_set_int32(DEVICE(&s->mch), "addr", PCI_DEVFN(0, 0));
+     qdev_prop_set_bit(DEVICE(&s->mch), "multifunction", false);
+-    /* mch's object_initialize resets the default value, set it again */
++    /* mch's object_initialize_child resets the default value, set it again */
+     qdev_prop_set_uint64(DEVICE(s), PCI_HOST_PROP_PCI_HOLE64_SIZE,
+                          Q35_PCI_HOST_HOLE64_SIZE_DEFAULT);
+     object_property_add(obj, PCI_HOST_PROP_PCI_HOLE_START, "uint32",
 -- 
 2.41.0
 
