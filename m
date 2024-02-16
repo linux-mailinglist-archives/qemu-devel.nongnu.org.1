@@ -2,56 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9645857D14
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D50A857D7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:15:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raxoy-0003Tk-9X; Fri, 16 Feb 2024 08:00:06 -0500
+	id 1ray37-0000KZ-A7; Fri, 16 Feb 2024 08:14:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1raxot-0003Sx-0X; Fri, 16 Feb 2024 07:59:59 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1raxop-0007QO-UZ; Fri, 16 Feb 2024 07:59:58 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 86F404E602F;
- Fri, 16 Feb 2024 13:59:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id fq1IyR_PI0y4; Fri, 16 Feb 2024 13:59:50 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4CE974E602D; Fri, 16 Feb 2024 13:59:50 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4A7287456FE;
- Fri, 16 Feb 2024 13:59:50 +0100 (CET)
-Date: Fri, 16 Feb 2024 13:59:50 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Thomas Huth <thuth@redhat.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Bernhard Beschow <shentey@gmail.com>, clg@kaod.org
-Subject: Re: [PATCH] docs/system/ppc: Document running Linux on AmigaNG
- machines
-In-Reply-To: <09ec9481-3f80-4625-8a2a-7db3a6947344@redhat.com>
-Message-ID: <1938a5dd-08c9-70e6-bba8-8a5dd0c87318@eik.bme.hu>
-References: <20240216001019.69A524E601F@zero.eik.bme.hu>
- <09ec9481-3f80-4625-8a2a-7db3a6947344@redhat.com>
+ (Exim 4.90_1) (envelope-from <charlie@rivosinc.com>)
+ id 1rarFW-0003pg-Lg
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 00:59:02 -0500
+Received: from mail-yw1-x1130.google.com ([2607:f8b0:4864:20::1130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <charlie@rivosinc.com>)
+ id 1rarFU-0002Sf-Oq
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 00:59:02 -0500
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-607d9c4fa90so13432367b3.2
+ for <qemu-devel@nongnu.org>; Thu, 15 Feb 2024 21:58:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708063138; x=1708667938;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=qkt6gzG86HYBPO5PBKdyksyrZ9wuJF9yjWjHm8/bdzM=;
+ b=i6HFdH8QGao2zMYLndDRIBJpfoEMxhBvNMXTj1DP/CzqiGDf3shKDjeksC4C8g+j19
+ nsjQu1sxfdSdqX+Eb4MNe0Eeb138KdG3EeFx3ohs+VlCE6PO/gCm3lqkCacNyG6NE+Jd
+ O796okjjDe7dLzrUhowhgiLNyuf8QZ0MbDre60Ytb3SlsaczqhcYoofIR3JS2EXqYDzV
+ eT4jP+E0vAf0ejErgCbsEDDlEAflQWO8fFpA6ZcZckuU2Dc4VLFOS38YkswLIElm5deL
+ rDIyj9LTmlmMCbt9a6iTYK0+yiFGfVGfcy+TOAHUDlgWvM7kKxEIBAb1EYjGratkXYJH
+ VFhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708063138; x=1708667938;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qkt6gzG86HYBPO5PBKdyksyrZ9wuJF9yjWjHm8/bdzM=;
+ b=BuDJhGEPHkdrK6n/7ctO8eBLuHlVFU4n18q1PwXzYLm+gysA4y8FQ0uOHYTIA+r4XB
+ lXf4hIScA6x13rx2yzrtCwZ8TflYH9cZf+6DO4occFFM+uU7qCKmHE5yU9NvCGBwDwUX
+ dwknSmR6LnEo5hA+vTgsZALr9czzFwUwd/4zQ6ymepRpp75vzGnNpuCLQXrh4tUpsz0q
+ 1ZxsG0eLyu36fmwsXtC9Od9EKuRlu/FWV8oULB7AShaGnOr48OCRo9Z7OLzk5oHLJSUi
+ bzjifsb91ZroYsduG8kBtcU8GRvOExbnHn7VwlbyFSTI7DKSxMCENdogU8JzEV1z3NOG
+ EB5Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWu2XNpDZRkIL8u2T5MQ31wmDXwjyh3cPAzgswPWLL6z9M3+vADaYWG2Q+j+BG7umDNtlfg70WVGCzfp8eePmbT3qTujIg=
+X-Gm-Message-State: AOJu0YyMSUEh9DkbRjBFyinXEXZ5rOoiSZHUaN679KPTYiZ8DsaShX6J
+ 8TAjascOw7WEleh5A6/+ru20qq8yXTOv2XpQ06CzaVVng79k+1wQyjz8ljbNtK0=
+X-Google-Smtp-Source: AGHT+IG0YQeP3a55UeL2dPLivTEtmwPUZxTwga0rFX7vur+O1AF9hPkrFxutjRNb2b9SOk6reFrQDw==
+X-Received: by 2002:a81:4c41:0:b0:607:a085:b434 with SMTP id
+ z62-20020a814c41000000b00607a085b434mr3801690ywa.8.1708063138659; 
+ Thu, 15 Feb 2024 21:58:58 -0800 (PST)
+Received: from ghost ([50.146.0.2]) by smtp.gmail.com with ESMTPSA id
+ p202-20020a0de6d3000000b00607fc1e4fe6sm113000ywe.30.2024.02.15.21.58.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 15 Feb 2024 21:58:57 -0800 (PST)
+Date: Fri, 16 Feb 2024 00:58:56 -0500
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] target: hppa: Fix unaligned double word accesses for
+ hppa64
+Message-ID: <Zc75oNNSPx5n2ODr@ghost>
+References: <20240216053415.2163286-1-linux@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1361030856-1708088390=:76485"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240216053415.2163286-1-linux@roeck-us.net>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1130;
+ envelope-from=charlie@rivosinc.com; helo=mail-yw1-x1130.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 16 Feb 2024 08:14:33 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,135 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, Feb 15, 2024 at 09:34:15PM -0800, Guenter Roeck wrote:
+> Unaligned 64-bit accesses were found in Linux to clobber carry bits,
+> resulting in bad results if an arithmetic operation involving a
+> carry bit was executed after an unaligned 64-bit operation.
+> 
+> hppa 2.0 defines additional carry bits in PSW register bits 32..39.
+> When restoring PSW after executing an unaligned instruction trap,
+> those bits were not cleared and ended up to be active all the time.
+> Clearing bit 32..39 in psw prior to restoring it solves the problem.
+> 
+> Fixes: 931adff31478 ("target/hppa: Update cpu_hppa_get/put_psw for hppa64")
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Charlie Jenkins <charlie@rivosinc.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+>  target/hppa/helper.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+> index 859644c47a..7b798d1227 100644
+> --- a/target/hppa/helper.c
+> +++ b/target/hppa/helper.c
+> @@ -76,7 +76,12 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+>      }
+>      psw &= ~reserved;
+>  
+> -    env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
+> +    if (hppa_is_pa20(env)) {
+> +        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB | 0xff00000000ull);
 
---3866299591-1361030856-1708088390=:76485
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+I thought there was something fishy in this function but was slow on the
+uptake...
 
-On Fri, 16 Feb 2024, Thomas Huth wrote:
-> On 16/02/2024 01.10, BALATON Zoltan wrote:
->> Documentation on how to run Linux on the amigaone, pegasos2 and
->> sam460ex machines is currently burried in the depths of the qemu-devel
->
-> s/burried/buried/
->
->> mailing list and in the source code. Let's collect the information in
->> the QEMU handbook for a one stop solution.
->> 
->> Co-authored-by: Bernhard Beschow <shentey@gmail.com>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->> Supersedes: <20231216123013.67978-1-shentey@gmail.com>
->>
->>   MAINTAINERS                 |   1 +
->>   docs/system/ppc/amigang.rst | 160 ++++++++++++++++++++++++++++++++++++
->>   docs/system/target-ppc.rst  |   1 +
->>   3 files changed, 162 insertions(+)
->>   create mode 100644 docs/system/ppc/amigang.rst
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index a24c2b51b6..8e5b47e7b4 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -1560,6 +1560,7 @@ F: hw/rtc/m41t80.c
->>   F: pc-bios/canyonlands.dt[sb]
->>   F: pc-bios/u-boot-sam460ex-20100605.bin
->>   F: roms/u-boot-sam460ex
->> +F: docs/system/ppc/amigang.rst
->>     pegasos2
->>   M: BALATON Zoltan <balaton@eik.bme.hu>
->> diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
->> new file mode 100644
->> index 0000000000..c03a7e0d66
->> --- /dev/null
->> +++ b/docs/system/ppc/amigang.rst
->> @@ -0,0 +1,160 @@
->> +AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
->> +=========================================================
->> +
->> +These PowerPC machines emulate boards that are primarily used for
->> +running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
->> +also run Linux which is what this section documents.
->> +
->> +Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
->> +===============================================
->
-> Wouldn't it be better to use a subsection here (i.e. "----" instead of 
-> "====") ? And also adjust the subsections below to subsubsections?
+How about defining a new macro (PSW_CB_HIGH) to hold this value?
 
-This used to be the top but I've added another paragraph and forgot to 
-change the headings. I'll check how other docs are organised and send 
-another version after waiting for some time to see if anobody else spots 
-some typos.
+- Charlie
 
-Thanks,
-BALATON Zoltan
-
->> +
->> +The ``amigaone`` machine emulates an AmigaOne XE mainboard by Eyetech
->> +which is a rebranded Mai Logic Teron board with modified U-Boot
->> +firmware to support AmigaOS 4.
->> +
->> +Emulated devices
->> +----------------
->> +
->> + * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750gx``)
->> + * Articia S north bridge
->> + * VIA VT82C686B south bridge
->> + * PCI VGA compatible card (guests may need other card instead)
->> + * PS/2 keyboard and mouse
->> +
->> +Firmware
->> +--------
->> +
->> +A firmware binary is necessary for the boot process. It is a modified
->> +U-Boot under GPL but its source is lost so it cannot be included in
->> +QEMU. A binary is available at
->> +https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28.
->> +The ROM image is in the last 512kB which can be extracted with the
->> +following command:
->> +
->> +.. code-block:: bash
->> +
->> +  $ tail -c 524288 updater.image > u-boot-amigaone.bin
->> +
->> +The BIOS emulator in the firmware is unable to run QEMU‘s standard
->> +vgabios so ``VGABIOS-lgpl-latest.bin`` is needed instead which can be
->> +downloaded from http://www.nongnu.org/vgabios.
->> +
->> +Running Linux
->> +-------------
->> +
->> +There are some Linux images under the following link that work on the
->> +``amigaone`` machine:
->> +https://sourceforge.net/projects/amigaone-linux/files/debian-installer/.
->> +To boot the system run:
->> +
->> +.. code-block:: bash
->> +
->> +  $ qemu-system-ppc -machine amigaone -bios u-boot-amigaone.bin \
->> +                    -cdrom "A1 Linux Net Installer.iso" \
->> +                    -device 
->> ati-vga,model=rv100,romfile=VGABIOS-lgpl-latest.bin
->> +
->> +From the firmware menu that appears select ``Boot sequence`` →
->> +``Amiga Multiboot Options`` and set ``Boot device 1`` to
->> +``Onboard VIA IDE CDROM``. Then hit escape until the main screen appears 
->> again,
->> +hit escape once more and from the exit menu that appears select either
->> +``Save settings and exit`` or ``Use settings for this session only``. It 
->> may
->> +take a long time loading the kernel into memory but eventually it boots 
->> and the
->> +installer becomes visible. The ``ati-vga`` RV100 emulation is not
->> +complete yet so only frame buffer works, DRM and 3D is not available.
-> ...
->
-> Thomas
->
->
->
---3866299591-1361030856-1708088390=:76485--
+> +    } else {
+> +        env->psw = psw & ~(PSW_N | PSW_V | PSW_CB);
+> +    }
+> +
+>      env->psw_n = (psw / PSW_N) & 1;
+>      env->psw_v = -((psw / PSW_V) & 1);
+>  
+> -- 
+> 2.39.2
+> 
 
