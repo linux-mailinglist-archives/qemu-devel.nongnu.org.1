@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7E18587A5
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 22:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E6F8587AF
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 22:08:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb5QN-00066o-Gu; Fri, 16 Feb 2024 16:07:11 -0500
+	id 1rb5QP-00068X-8I; Fri, 16 Feb 2024 16:07:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5QL-000658-26
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:09 -0500
+ id 1rb5QN-00067a-Jj
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:11 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5QI-0005LW-Uz
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:08 -0500
+ id 1rb5QM-0005Mw-3u
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:11 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=u58i1+LLPuxvI3guGDd39J9e/skbnTykrkeX11/aaS4=; b=zM9CedDtpp6gLarlzLPv2/IgbF
- dfVrNfs2rufXOPeiJpNuZx70O0BzRsNLjcZ9Y2Op6VFR4E01a/GSfEc5f3sCIx52DkMoYaliCwtUo
- Xy+DkojzlhQZ2klIrJ3UY89Lm+FImp/GTpJDF/imROx9I35z+nX6WNmATSnzEbIwPQS96lCyelM8/
- 9ONrZSQZ0lXiOysXea/7yZCIMj6+9e91nqBGMOo+X6JKQHMspR3ppKQqiSvcbOvGtH27igzDKlQyX
- lRsT4nafYmICgneXvqzCV+lYXZGoAmDhirD6D9Ds43NxEBu0BCs0QsqV85S8ZNfrzRze2BPbtcXVr
- 01slea9afQ8Vji1C4alCI38zNfVNuYJ3qmiEdS4p//qFoHbcMigfqdlb8YZKsogDwK8ARSi9HF/EX
- O/8QRv/KfioUU7NVISKCTtHBHrYWoTP6kAKZXbjcfnHyvqnvt2g5HNE2lDtPAEkMan77ongkLqvj1
- 6OYx5rE94KRy1N5OoE4GLD1p6vSzUUKi1vOr47oZbKXixCdn+2meqD++uYn8q0EiMxq+VqVHnLIVo
- +YVjcCTksaK9KcfS/rBRM1n1cK0PwOMwn1vuSLp4rWnPkIRkldaDENISDAQAGrfsGw87bOr/mvth5
- Pm6WhfWc6iVVNmUykdmGEbbPSPW394bpj5gBzeQcs=;
+ bh=PjRSzKrKLRaHnmivNuI06sMUXSnVympUdAmF8DrmVSs=; b=IJdmAaHZX50+eSGO906mmbdTxW
+ Mljo5Z7Za3pP1wXQgNARFylLcsyAoJ9vYzCnDmzeHOezwJJI9Z9TPehuzZtJYyud9mu2a+8/8fK/a
+ S2SFD7SZvD5LwQOpVVzk8b2ngkfNssfjJ8xfj0ZdH6bOtuy5wjYgAXE/Ag5txPaD23cu0mfLUTLx/
+ pzV4Czhns9sWUjVOjydjhx7YDoKw3cLX/4/XCxC6jTnelSGBMSZ2YYYkWhIygqxRPxkGIzaQUFINc
+ JbXKXfdxPImy8FSs0psQNkB2GS+yUODNzkSEOH2GQyukSc8JWBCCb95DrkJ3v8FWNcRZXaZRROe0P
+ CczebfaRBUBqcc2KvOPyvC/Nv1VKo3RGpOzqphqoig+UJXKIDPbuCHXC1xaKBtv4+u8SpxgmgQt8J
+ Ez2mpfcx2HVNRUZ7KXD/1yeClSvlAu+/IRRL77DFhuDCi92NH9f9lmEJ0I0bVJ3HzfDtianVeUuMF
+ JhZ/5hOVkHQp5hVoil5lewpOWARk4m7xS/MFD8kYWrrrmvM2b1F53me34DSkFlR/m1SypRhNx4OdU
+ eIQ4GYwv6c5J7C5PVlp5erWV2zJUov95QwCIyZfE4GQbwNAFK0AXU/+MjJ3NFiHpmPU4q0osYpa8b
+ RXm1Mv/xBOBgVRXUedJeF0x9fwzD1VYIA7Xg2aaCA=;
 Received: from [2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5PU-0000vT-T3; Fri, 16 Feb 2024 21:06:20 +0000
+ id 1rb5PZ-0000vT-3B; Fri, 16 Feb 2024 21:06:25 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu,
  qemu-devel@nongnu.org
-Date: Fri, 16 Feb 2024 21:06:24 +0000
-Message-Id: <20240216210633.1376066-5-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 16 Feb 2024 21:06:25 +0000
+Message-Id: <20240216210633.1376066-6-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216210633.1376066-1-mark.cave-ayland@ilande.co.uk>
 References: <20240216210633.1376066-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 04/13] esp.c: change esp_fifo_push() to take ESPState
+Subject: [PATCH 05/13] esp.c: change esp_fifo_pop() to take ESPState
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,7 +77,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all users of esp_fifo_push() operate on the main FIFO there is no need
+Now that all users of esp_fifo_pop() operate on the main FIFO there is no need
 to pass the FIFO explicitly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
@@ -86,45 +86,44 @@ Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 7a24515bb9..b898e43e2b 100644
+index b898e43e2b..0e42ff50e7 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -106,14 +106,14 @@ void esp_request_cancelled(SCSIRequest *req)
-     }
+@@ -116,13 +116,13 @@ static void esp_fifo_push(ESPState *s, uint8_t val)
+     fifo8_push(&s->fifo, val);
  }
  
--static void esp_fifo_push(Fifo8 *fifo, uint8_t val)
-+static void esp_fifo_push(ESPState *s, uint8_t val)
+-static uint8_t esp_fifo_pop(Fifo8 *fifo)
++static uint8_t esp_fifo_pop(ESPState *s)
  {
--    if (fifo8_num_used(fifo) == fifo->capacity) {
-+    if (fifo8_num_used(&s->fifo) == s->fifo.capacity) {
-         trace_esp_error_fifo_overrun();
-         return;
+-    if (fifo8_is_empty(fifo)) {
++    if (fifo8_is_empty(&s->fifo)) {
+         return 0;
      }
  
--    fifo8_push(fifo, val);
-+    fifo8_push(&s->fifo, val);
+-    return fifo8_pop(fifo);
++    return fifo8_pop(&s->fifo);
  }
  
- static uint8_t esp_fifo_pop(Fifo8 *fifo)
-@@ -224,7 +224,7 @@ static void esp_pdma_write(ESPState *s, uint8_t val)
-         return;
-     }
+ static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
+@@ -212,7 +212,7 @@ static uint8_t esp_pdma_read(ESPState *s)
+ {
+     uint8_t val;
  
--    esp_fifo_push(&s->fifo, val);
-+    esp_fifo_push(s, val);
+-    val = esp_fifo_pop(&s->fifo);
++    val = esp_fifo_pop(s);
+     return val;
+ }
  
-     dmalen--;
-     esp_set_tc(s, dmalen);
-@@ -1240,7 +1240,7 @@ void esp_reg_write(ESPState *s, uint32_t saddr, uint64_t val)
-         break;
+@@ -1184,7 +1184,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
+ 
+     switch (saddr) {
      case ESP_FIFO:
-         if (!fifo8_is_full(&s->fifo)) {
--            esp_fifo_push(&s->fifo, val);
-+            esp_fifo_push(s, val);
-         }
-         esp_do_nodma(s);
+-        s->rregs[ESP_FIFO] = esp_fifo_pop(&s->fifo);
++        s->rregs[ESP_FIFO] = esp_fifo_pop(s);
+         val = s->rregs[ESP_FIFO];
          break;
+     case ESP_RINTR:
 -- 
 2.39.2
 
