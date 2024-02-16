@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1F6857DC1
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF6E857DBB
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 14:33:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rayKh-0008Cz-Bf; Fri, 16 Feb 2024 08:32:51 -0500
+	id 1rayKi-0008DI-1t; Fri, 16 Feb 2024 08:32:52 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rayK6-000848-NQ
+ id 1rayK6-00084A-OI
  for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:32:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rayK3-0006Dp-61
+ id 1rayK4-0006Ih-E2
  for qemu-devel@nongnu.org; Fri, 16 Feb 2024 08:32:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708090325;
+ s=mimecast20190719; t=1708090331;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7J3LwHjvXfp/0gMoISOYuYCZbcxJhpKjc71h88Jg4vI=;
- b=MQnwbEymR17QT27voZHRGqvr48IpgfvWqKnaKik9mUpVV9t56OreuIqN4tt0oyWPC15fBl
- a61H8WMKsihFMwqWO0HzqRlyvnUXjiKKG0QBZEYDxFDZ6cOtBYptREBEliF07ab+0ZTsDn
- Q8oW/j0phIoA4y8UjFWkCM3dR3SKCDM=
+ bh=DRNiS6fnueophqvRUGy0xrlqhBIJRqicWKHni30WPZk=;
+ b=VswOKIdOceAgy+0cj4eAQq4nSpidxxsM7HYXcz+Wozd+0drfzAN7Cdnq3H6Q9zUPLa0+z1
+ vEBtvfff9C5X294SCYDhZtX6tKvOyK2KjjRG0VYdwsQ3qKMQVBF1hy8hbWfnOerF1bdYIx
+ PbV233m0g0woCBXiBmMgi1HMyadd4w0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-267-LpyI-bqLP5GW-Z7hkEJ_mQ-1; Fri,
- 16 Feb 2024 08:32:02 -0500
-X-MC-Unique: LpyI-bqLP5GW-Z7hkEJ_mQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-pZsJlJfaNzCpQc4cYOV4rg-1; Fri,
+ 16 Feb 2024 08:32:07 -0500
+X-MC-Unique: pZsJlJfaNzCpQc4cYOV4rg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA9D41C05AFB;
- Fri, 16 Feb 2024 13:32:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AD5F380406F;
+ Fri, 16 Feb 2024 13:32:07 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 82AD314F0;
- Fri, 16 Feb 2024 13:31:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 439EA2166B4F;
+ Fri, 16 Feb 2024 13:32:04 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, peter.maydell@linaro.org,
- Fiona Ebner <f.ebner@proxmox.com>,
+ Tianlan Zhou <bobby825@126.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 3/7] ui/clipboard: add asserts for update and request
-Date: Fri, 16 Feb 2024 17:31:36 +0400
-Message-ID: <20240216133140.3611100-4-marcandre.lureau@redhat.com>
+Subject: [PULL 4/7] ui/console: Fix console resize with placeholder surface
+Date: Fri, 16 Feb 2024 17:31:37 +0400
+Message-ID: <20240216133140.3611100-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
 References: <20240216133140.3611100-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -65,8 +65,9 @@ X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.364,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,57 +83,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Tianlan Zhou <bobby825@126.com>
 
-Should an issue like CVE-2023-6683 ever appear again in the future,
-it will be more obvious which assumption was violated.
+In `qemu_console_resize()`, the old surface of the console is keeped if the new
+console size is the same as the old one. If the old surface is a placeholder,
+and the new size of console is the same as the placeholder surface (640*480),
+the surface won't be replace.
+In this situation, the surface's `QEMU_PLACEHOLDER_FLAG` flag is still set, so
+the console won't be displayed in SDL display mode.
+This patch fixes this problem by forcing a new surface if the old one is a
+placeholder.
 
-Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Signed-off-by: Tianlan Zhou <bobby825@126.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20240124105749.204610-2-f.ebner@proxmox.com>
+Message-ID: <20240207172024.8-1-bobby825@126.com>
 ---
- ui/clipboard.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ ui/console.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ui/clipboard.c b/ui/clipboard.c
-index b3f6fa3c9e..4264884a6c 100644
---- a/ui/clipboard.c
-+++ b/ui/clipboard.c
-@@ -65,12 +65,24 @@ bool qemu_clipboard_check_serial(QemuClipboardInfo *info, bool client)
+diff --git a/ui/console.c b/ui/console.c
+index 7db921e3b7..832055675c 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1577,7 +1577,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
+     assert(QEMU_IS_GRAPHIC_CONSOLE(s));
  
- void qemu_clipboard_update(QemuClipboardInfo *info)
- {
-+    uint32_t type;
-     QemuClipboardNotify notify = {
-         .type = QEMU_CLIPBOARD_UPDATE_INFO,
-         .info = info,
-     };
-     assert(info->selection < QEMU_CLIPBOARD_SELECTION__COUNT);
- 
-+    for (type = 0; type < QEMU_CLIPBOARD_TYPE__COUNT; type++) {
-+        /*
-+         * If data is missing, the clipboard owner's 'request' callback needs to
-+         * be set. Otherwise, there is no way to get the clipboard data and
-+         * qemu_clipboard_request() cannot be called.
-+         */
-+        if (info->types[type].available && !info->types[type].data) {
-+            assert(info->owner && info->owner->request);
-+        }
-+    }
-+
-     notifier_list_notify(&clipboard_notifiers, &notify);
- 
-     if (cbinfo[info->selection] != info) {
-@@ -132,6 +144,8 @@ void qemu_clipboard_request(QemuClipboardInfo *info,
-         !info->owner)
+     if ((s->scanout.kind != SCANOUT_SURFACE ||
+-         (surface && surface->flags & QEMU_ALLOCATED_FLAG)) &&
++         (surface && !is_buffer_shared(surface) && !is_placeholder(surface))) &&
+         qemu_console_get_width(s, -1) == width &&
+         qemu_console_get_height(s, -1) == height) {
          return;
- 
-+    assert(info->owner->request);
-+
-     info->types[type].requested = true;
-     info->owner->request(info, type);
- }
 -- 
 2.43.1
 
