@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C18857B39
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06801857AFD
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 12:04:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1raw0V-0006Q4-Nq; Fri, 16 Feb 2024 06:03:51 -0500
+	id 1raw0Y-0006TQ-5W; Fri, 16 Feb 2024 06:03:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0T-0006O1-Qr
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:50 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0W-0006RK-5J
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:52 -0500
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0O-0000ra-SB
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:49 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4121a8635a2so12177345e9.3
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:44 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1raw0U-0000tB-2g
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 06:03:51 -0500
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-412345cca4eso7136985e9.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 03:03:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708081422; x=1708686222; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708081428; x=1708686228; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kkGLYDX+GSE+ZJ9BSh+2Q16g0HNqBL3+uba9nDXc65E=;
- b=Qnm1dp3sycbUkM+tBK1UduQ6hTzF0RbdoXxMESGYgym/1Aa2naOY1aL2YYD32XicXv
- hOmC0FtBDCr42KliVaKivFtoIaMa53uaG+y3Q+TtpdublYzgKaSkfebOGAtZJV/Pt8gl
- DNIinS7b/JGDKlw9PEqXmbYyYFri5td98f97rS2wxzOMVrG2aDIVyVNLKahBVbe7R8Jo
- PJMHoAs5dSCCgTdy+53XsNRir+cE9BNuo5nR6dF0/LUGKKPuQDlCbD88ssBwmsiH9iTT
- acKTyG7g6zyMc1ShyhpeClrdUAUvtEpgA0Uvj4cDzsNuXrk1F3eGz94r79+7FGUqWjnw
- olgQ==
+ bh=NuItVagnX21LnnaFpIrCDiEh6nnybH9GKoEtwiotckg=;
+ b=zNIr7y0EqNB2slVEoVD7JE/EWg79kDhOfze+vjPAGjuJ35R1MMLkDxzeIG9MuY2uTc
+ teic7TqLhD7U17NYex5MxbWWKRrFY7mLll2gs18eQ5pdqS7v0IZjK4k8TuExWAyN1WYP
+ ETooz96kVf67wAqZhv05YpAwLvvO3m8mRkWsXrb1Fll6N4/ISmgIsINOmYod0EHbmJvJ
+ NI2JTpSHqi7DDFPc1+hnuylXIkr1dBEv3bqdc9IybqRfoMtGwKjIQcLII3Qo5Dy6hvih
+ +jqIQAzq3wnKZkwCzefgEewZxjgxR2LZfedaGU/EDu+x52xWs9m8iPkpXEM/UqNteDio
+ lEBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708081422; x=1708686222;
+ d=1e100.net; s=20230601; t=1708081428; x=1708686228;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kkGLYDX+GSE+ZJ9BSh+2Q16g0HNqBL3+uba9nDXc65E=;
- b=nh6VAnCSnKXPHKt6EvJHkDaHpzzkADzg975nQDZUkq1dYBqx/wJRWRWW19NwPVQF9a
- LyZmveQhXa1f92jEuMjLibmNDFRGpxxro/2cafICUuNHIgHHu3r0Rk+xp7dVo406TWb0
- jQJcE/ByU4jF8baItAtYxS+gv+vRNd7oousoVnBa/+s5xCguebLssr8VDWwDj56F8bzF
- paj1F8/D/lDntHU0dqPyWK+E4MPWKmwijnLjE7De2tjK8ewMkrvVe8NhQ06c529VwOeP
- gZmBDlyMi6QVj/FmNvFrSUbLonRVY52DYcEzUodxrJjT+TRO2X3v196TmBR+SbyXsLFm
- omTA==
-X-Gm-Message-State: AOJu0YyhIwW3bdqDhhKHc1TyifzVJ1SKczl4cVuyyZrLl2s//4bA2wLG
- KZkN10hScS7Rbtfr7FChAABAuLgfFpy50k7ee4j8Ootk6kovM0w4z34ItSEvMGMl5JhcxCf4EHc
- V
-X-Google-Smtp-Source: AGHT+IEZtXhf8DnUedrxCBZXX4R63+iEsHeBn/ZvgaRaXofB08nnvTVWshhe5uqwoszWqRVn4xPqEA==
-X-Received: by 2002:a05:600c:1c9d:b0:412:3c20:5c67 with SMTP id
- k29-20020a05600c1c9d00b004123c205c67mr1395904wms.39.1708081422054; 
- Fri, 16 Feb 2024 03:03:42 -0800 (PST)
+ bh=NuItVagnX21LnnaFpIrCDiEh6nnybH9GKoEtwiotckg=;
+ b=iF11jaQZNJSJKJtP/V8da8L8guObVERNqzDfnKf950D29Kj4L2EUz8ThzTRT8Fz+XW
+ /OThyhT+QVYEKuVEQYmtZjcCdW99aPE7dWqbIH+xxldCKiH2I7cS1AeF5ihAw7A7MU46
+ 52zRuZIL2sYReVKEYJc8w9Vu04pEqHTR9RuGCIC5j2GhZweUNlv5te5+VGeCPpqBE8qh
+ CJvRZiWVXk6mWyaP05yRsd4Gtcltg5tq+gQSTB92/2w1SWfud0tOsZhT1mYphWZo49Pr
+ aQsLbx7yNwsHkv33Zne8W03QMw8AWBAhWTgSAI3zmlDoOQQetd7qxlErS5pI4LdaQsoH
+ vIrQ==
+X-Gm-Message-State: AOJu0YwQTJhp+6qZJBnJn1I+0OTiyoBmfgV/T2ARK67rZvggMABUEOt4
+ SXwmyX+1x5jefWNiqLFq/9/Q2fDmLqmQ+MlOGzmpoGP6jzyH0ZPxzciVhrzVOPJM0HKJBvL6zKb
+ Y
+X-Google-Smtp-Source: AGHT+IF1rjUpQD9NjyQ+iWSd2ftr2L4Qc5BBAPfLtU5QmVd9bHlSq1HNudg1PtEIdKHsOlgDeHuqIw==
+X-Received: by 2002:adf:f34b:0:b0:33c:e1fc:65c5 with SMTP id
+ e11-20020adff34b000000b0033ce1fc65c5mr3642680wrp.69.1708081428352; 
+ Fri, 16 Feb 2024 03:03:48 -0800 (PST)
 Received: from m1x-phil.lan ([176.187.210.246])
  by smtp.gmail.com with ESMTPSA id
- jn4-20020a05600c6b0400b00411b7c91470sm1942118wmb.12.2024.02.16.03.03.40
+ k4-20020a5d5184000000b0033b4f82b301sm1942603wrv.3.2024.02.16.03.03.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 16 Feb 2024 03:03:41 -0800 (PST)
+ Fri, 16 Feb 2024 03:03:47 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Subject: [PATCH 04/21] hw/tricore/testboard: Use qdev_new() instead of QOM
- basic API
-Date: Fri, 16 Feb 2024 12:02:55 +0100
-Message-ID: <20240216110313.17039-5-philmd@linaro.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Subject: [PATCH 05/21] hw/ppc/pnv_bmc: Use qdev_new() instead of QOM API
+Date: Fri, 16 Feb 2024 12:02:56 +0100
+Message-ID: <20240216110313.17039-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240216110313.17039-1-philmd@linaro.org>
 References: <20240216110313.17039-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,42 +100,32 @@ Prefer QDev API for QDev objects, avoid the underlying QOM layer.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/tricore/tricore_testdevice.h | 3 ---
- hw/tricore/tricore_testboard.c          | 4 +---
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ hw/ppc/pnv_bmc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/tricore/tricore_testdevice.h b/include/hw/tricore/tricore_testdevice.h
-index 8b4fe15f24..2c57b62f22 100644
---- a/include/hw/tricore/tricore_testdevice.h
-+++ b/include/hw/tricore/tricore_testdevice.h
-@@ -25,12 +25,9 @@
-     OBJECT_CHECK(TriCoreTestDeviceState, (obj), TYPE_TRICORE_TESTDEVICE)
+diff --git a/hw/ppc/pnv_bmc.c b/hw/ppc/pnv_bmc.c
+index 99f1e8d7f9..0c1274df21 100644
+--- a/hw/ppc/pnv_bmc.c
++++ b/hw/ppc/pnv_bmc.c
+@@ -269,13 +269,13 @@ void pnv_bmc_set_pnor(IPMIBmc *bmc, PnvPnor *pnor)
+  */
+ IPMIBmc *pnv_bmc_create(PnvPnor *pnor)
+ {
+-    Object *obj;
++    DeviceState *dev;
  
- typedef struct {
--    /* <private> */
-     SysBusDevice parent_obj;
+-    obj = object_new(TYPE_IPMI_BMC_SIMULATOR);
+-    qdev_realize(DEVICE(obj), NULL, &error_fatal);
+-    pnv_bmc_set_pnor(IPMI_BMC(obj), pnor);
++    dev = qdev_new(TYPE_IPMI_BMC_SIMULATOR);
++    qdev_realize(dev, NULL, &error_fatal);
++    pnv_bmc_set_pnor(IPMI_BMC(dev), pnor);
  
--    /* <public> */
-     MemoryRegion iomem;
--
- } TriCoreTestDeviceState;
+-    return IPMI_BMC(obj);
++    return IPMI_BMC(dev);
+ }
  
- #endif
-diff --git a/hw/tricore/tricore_testboard.c b/hw/tricore/tricore_testboard.c
-index b6810e3be0..c29db8b451 100644
---- a/hw/tricore/tricore_testboard.c
-+++ b/hw/tricore/tricore_testboard.c
-@@ -89,9 +89,7 @@ static void tricore_testboard_init(MachineState *machine, int board_id)
-     memory_region_add_subregion(sysmem, 0xf0050000, pcp_data);
-     memory_region_add_subregion(sysmem, 0xf0060000, pcp_text);
- 
--    test_dev = g_new(TriCoreTestDeviceState, 1);
--    object_initialize(test_dev, sizeof(TriCoreTestDeviceState),
--                      TYPE_TRICORE_TESTDEVICE);
-+    test_dev = TRICORE_TESTDEVICE(qdev_new(TYPE_TRICORE_TESTDEVICE));
-     memory_region_add_subregion(sysmem, 0xf0000000, &test_dev->iomem);
- 
- 
+ typedef struct ForeachArgs {
 -- 
 2.41.0
 
