@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882A1857FF3
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5FE85800F
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:04:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1razfz-0005o8-CB; Fri, 16 Feb 2024 09:58:55 -0500
+	id 1razg6-0005xj-RA; Fri, 16 Feb 2024 09:59:02 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfx-0005km-09
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:53 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfy-0005pY-Ut
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:54 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfv-000806-21
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:52 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfw-000812-8l
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708095530;
+ s=mimecast20190719; t=1708095531;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mVnnZkzjfW0NMjCisUfqMat6dv7WNb4sTkV4lCYJqxU=;
- b=ePO0u4Z97LF5vGVV/BmjKSAUvQbuKY49XlhM149abs4lPyecQZbGK9LyMbMTEPGlXq0V9Q
- cVfucsPtf+6g7Ei67byTTtR4yjfSLKArMporrZ9B7S+917r9BNvJLe3oYk0OfpvdF2NcAY
- Tmw4fSw80jKXcyMLX/k61UD9AQ9Zz68=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-VHrGXRg8Nz2cSs_fXIdxeQ-1; Fri,
- 16 Feb 2024 09:58:48 -0500
-X-MC-Unique: VHrGXRg8Nz2cSs_fXIdxeQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=VtYZ9yR3LFtdnwyWTSNpW8hNmvBYuIyc0uLR9iSZ41w=;
+ b=YQinrXhZGPW6BYatG5IlswHxiWGy2iNtt2rU+srdvVl/evOCGcK/uk3dsDyHauH68ffA1h
+ tqEZOHr5MgYPRDcZJ8p5xJuFuzgzkpjUkxmW3A+od8/uWiMoJPNmUcCj6FqyGKEgnGFIHb
+ wjqrmMAyI4aEIeBjK4yjIOPsXf+CjCk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-452-Mx8LTE6iOeuY0vzkUbqfMw-1; Fri, 16 Feb 2024 09:58:49 -0500
+X-MC-Unique: Mx8LTE6iOeuY0vzkUbqfMw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 62AA43C0BE2D;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E4C0185A782;
  Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3FECD40166A5;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C9A2492BE4;
  Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2093421E60F3; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
+ id 2396B21E60F4; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
  peter.maydell@linaro.org
-Subject: [PATCH 07/16] qapi: Improve error message for empty doc sections
-Date: Fri, 16 Feb 2024 15:58:31 +0100
-Message-ID: <20240216145841.2099240-8-armbru@redhat.com>
+Subject: [PATCH 08/16] qapi: Rename QAPIDoc.Section.name to .tag
+Date: Fri, 16 Feb 2024 15:58:32 +0100
+Message-ID: <20240216145841.2099240-9-armbru@redhat.com>
 In-Reply-To: <20240216145841.2099240-1-armbru@redhat.com>
 References: <20240216145841.2099240-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -81,101 +81,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve the message for an empty tagged section from
-
-    empty doc section 'Note'
-
-to
-
-    text required after 'Note:'
-
-and the message for an empty argument or feature description from
-
-    empty doc section 'foo'
-
-to
-
-    text required after '@foo:'
-
-Improve the error position to refer to the beginning of the empty
-section instead of its end.
+Since the previous commit, QAPIDoc.Section.name is either
+None (untagged section) or the section's tag string ('Returns',
+'@name', ...).  Rename it to .tag.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapidoc.py                  |  4 ++--
- scripts/qapi/parser.py                  | 14 +++++++-------
- tests/qapi-schema/doc-empty-section.err |  2 +-
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ docs/sphinx/qapidoc.py         |  6 +++---
+ scripts/qapi/parser.py         | 30 +++++++++++++++---------------
+ tests/qapi-schema/test-qapi.py |  2 +-
+ 3 files changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 488de23d72..1e8b4a70a1 100644
+index 1e8b4a70a1..8d428c64b0 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -239,8 +239,8 @@ def _nodes_for_features(self, doc):
-         seen_item = False
-         dlnode = nodes.definition_list()
-         for section in doc.features.values():
--            dlnode += self._make_dlitem([nodes.literal('', section.name)],
--                                        section.text)
-+            dlnode += self._make_dlitem(
-+                [nodes.literal('', section.member.name)], section.text)
-             seen_item = True
- 
-         if not seen_item:
+@@ -258,11 +258,11 @@ def _nodes_for_sections(self, doc):
+         """Return list of doctree nodes for additional sections"""
+         nodelist = []
+         for section in doc.sections:
+-            if section.name and section.name == 'TODO':
++            if section.tag and section.tag == 'TODO':
+                 # Hide TODO: sections
+                 continue
+-            snode = self._make_section(section.name)
+-            if section.name and section.name.startswith('Example'):
++            snode = self._make_section(section.tag)
++            if section.tag and section.tag.startswith('Example'):
+                 snode += self._nodes_for_example(section.text)
+             else:
+                 self._parse_text_into_node(section.text, snode)
 diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index a771013959..43daf55860 100644
+index 43daf55860..cc69f4f770 100644
 --- a/scripts/qapi/parser.py
 +++ b/scripts/qapi/parser.py
-@@ -476,9 +476,9 @@ def __init__(self, parser: QAPISchemaParser,
+@@ -471,17 +471,17 @@ class QAPIDoc:
+     class Section:
+         # pylint: disable=too-few-public-methods
+         def __init__(self, parser: QAPISchemaParser,
+-                     name: Optional[str] = None):
++                     tag: Optional[str] = None):
+             # section source info, i.e. where it begins
              self.info = parser.info
              # parser, for error messages about indentation
              self._parser = parser
--            # optional section name (argument/member or section name)
-+            # section tag, if any ('Returns', '@name', ...)
-             self.name = name
--            # section text without section name
-+            # section text without tag
+             # section tag, if any ('Returns', '@name', ...)
+-            self.name = name
++            self.tag = tag
+             # section text without tag
              self.text = ''
              # indentation to strip (None means indeterminate)
-             self._indent = None if self.name else 0
-@@ -700,7 +700,7 @@ def _start_symbol_section(
-             raise QAPIParseError(self._parser,
-                                  "'%s' parameter name duplicated" % name)
-         assert not self.sections
--        new_section = QAPIDoc.ArgSection(self._parser, name)
-+        new_section = QAPIDoc.ArgSection(self._parser, '@' + name)
-         self._switch_section(new_section)
-         symbols_dict[name] = new_section
+-            self._indent = None if self.name else 0
++            self._indent = None if self.tag else 0
  
-@@ -727,9 +727,9 @@ def _switch_section(self, new_section: 'QAPIDoc.Section') -> None:
+         def append(self, line: str) -> None:
+             line = line.rstrip()
+@@ -504,8 +504,8 @@ def append(self, line: str) -> None:
+ 
+     class ArgSection(Section):
+         def __init__(self, parser: QAPISchemaParser,
+-                     name: str):
+-            super().__init__(parser, name)
++                     tag: str):
++            super().__init__(parser, tag)
+             self.member: Optional['QAPISchemaMember'] = None
+ 
+         def connect(self, member: 'QAPISchemaMember') -> None:
+@@ -536,10 +536,10 @@ def __init__(self, parser: QAPISchemaParser, info: QAPISourceInfo):
+         self._section = self.body
+         self._append_line = self._append_body_line
+ 
+-    def has_section(self, name: str) -> bool:
+-        """Return True if we have a section with this name."""
++    def has_section(self, tag: str) -> bool:
++        """Return True if we have a section with this tag."""
+         for i in self.sections:
+-            if i.name == name:
++            if i.tag == tag:
+                 return True
+         return False
+ 
+@@ -710,11 +710,11 @@ def _start_args_section(self, name: str) -> None:
+     def _start_features_section(self, name: str) -> None:
+         self._start_symbol_section(self.features, name)
+ 
+-    def _start_section(self, name: Optional[str] = None) -> None:
+-        if name in ('Returns', 'Since') and self.has_section(name):
++    def _start_section(self, tag: Optional[str] = None) -> None:
++        if tag in ('Returns', 'Since') and self.has_section(tag):
+             raise QAPIParseError(self._parser,
+-                                 "duplicated '%s' section" % name)
+-        new_section = QAPIDoc.Section(self._parser, name)
++                                 "duplicated '%s' section" % tag)
++        new_section = QAPIDoc.Section(self._parser, tag)
+         self._switch_section(new_section)
+         self.sections.append(new_section)
+ 
+@@ -726,10 +726,10 @@ def _switch_section(self, new_section: 'QAPIDoc.Section') -> None:
+         if self._section != self.body and not text:
              # We do not create anonymous sections unless there is
              # something to put in them; this is a parser bug.
-             assert self._section.name
--            raise QAPIParseError(
--                self._parser,
--                "empty doc section '%s'" % self._section.name)
-+            raise QAPISemError(
-+                self._section.info,
-+                "text required after '%s:'" % self._section.name)
+-            assert self._section.name
++            assert self._section.tag
+             raise QAPISemError(
+                 self._section.info,
+-                "text required after '%s:'" % self._section.name)
++                "text required after '%s:'" % self._section.tag)
  
          self._section = new_section
  
-@@ -748,7 +748,7 @@ def connect_member(self, member: 'QAPISchemaMember') -> None:
-                                    "%s '%s' lacks documentation"
-                                    % (member.role, member.name))
-             self.args[member.name] = QAPIDoc.ArgSection(self._parser,
--                                                        member.name)
-+                                                        '@' + member.name)
-         self.args[member.name].connect(member)
+@@ -761,7 +761,7 @@ def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
+     def check_expr(self, expr: QAPIExpression) -> None:
+         if 'command' not in expr:
+             sec = next((sec for sec in self.sections
+-                        if sec.name == 'Returns'),
++                        if sec.tag == 'Returns'),
+                        None)
+             if sec:
+                 raise QAPISemError(sec.info,
+diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
+index 14f7b62a44..40095431ae 100755
+--- a/tests/qapi-schema/test-qapi.py
++++ b/tests/qapi-schema/test-qapi.py
+@@ -130,7 +130,7 @@ def test_frontend(fname):
+         for feat, section in doc.features.items():
+             print('    feature=%s\n%s' % (feat, section.text))
+         for section in doc.sections:
+-            print('    section=%s\n%s' % (section.name, section.text))
++            print('    section=%s\n%s' % (section.tag, section.text))
  
-     def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
-diff --git a/tests/qapi-schema/doc-empty-section.err b/tests/qapi-schema/doc-empty-section.err
-index ba7ba70125..5f03a6d733 100644
---- a/tests/qapi-schema/doc-empty-section.err
-+++ b/tests/qapi-schema/doc-empty-section.err
-@@ -1 +1 @@
--doc-empty-section.json:7:1: empty doc section 'Note'
-+doc-empty-section.json:6: text required after 'Note:'
+ 
+ def open_test_result(dir_name, file_name, update):
 -- 
 2.43.0
 
