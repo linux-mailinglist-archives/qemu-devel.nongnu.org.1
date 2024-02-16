@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40E48582A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B77E8582AC
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:35:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb177-0004kt-1l; Fri, 16 Feb 2024 11:31:03 -0500
+	id 1rb17I-00050Y-8o; Fri, 16 Feb 2024 11:31:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb16v-0004gf-F9
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:49 -0500
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1rb173-0004mL-Dw
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:58 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb16i-0002DK-09
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:49 -0500
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-33cddf4b4b5so1662953f8f.0
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:30:35 -0800 (PST)
+ id 1rb16k-0002Ek-Ik
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:57 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33d146737e6so1011496f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:30:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708101034; x=1708705834; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708101037; x=1708705837; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BKaOfkzsaddgrw5PBxNyKChRzqPSwV94abl+cum6jxg=;
- b=BeitgTnOh6e/ytPs1T2q/0WhPrZvp5f9YER3NlBaiwettLIk5rmYuUdX4z/86p1O25
- b0pioA8D/FozBmi3GSqxG8mQqNK09ugqIFkzsUG2LXGHnhUz3wA5dhavyBV7g/LXI5t2
- YihWc9nOXVglg8V2623rRhPTH9U4CZtWpWw6OwlC1qJzASejYVtHFuAURpQtK5mtWlxD
- ay1ZCLj9RGDb1o27dCTtNSesIZ0fNkWFXNmWmgxVDhDoOvwJLhUoUoh9BjqnVVgfhlVb
- 11nkdBZFlu2RMRNkxG5h20tPjbAslii2m4ooPsJXiqENw+PrjouQnE0lrhVZtaEXrVFS
- 65Dw==
+ bh=8VoWfZh+ZjeHnIZS/0T0SSPiqruErjk06xElhK1rNbU=;
+ b=T+x9amNKbnj/T9EiFvykb6xbm7/0Dy+bexMQASLrbxYfOEAN7KspTRK5XgnZFye95C
+ CJn7f6q642r8Xvi7ABiJrv0m0fUtm+i0391IoQSAbMvzs/52P/809+SDwdslUhcTKRg2
+ wG0Mr9PGR8PbImUC48irY57nuzfX1zzhtNdICpzAAfuh+UnRlfAOUDql3Ilu3OzdkbQT
+ C+iDSsaGYX5spVF6wg2CN6dc47tzykcb/s67e6F23NLbcKvPUfPjWaNkzSrGyPKM2cH3
+ vrEJjWhnGiCsAecjY4Sut4YoquzGJHCwoZyc/yBWJ6nTfCffQi5P2Hzw2xUFg6vPhJmh
+ gNUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708101034; x=1708705834;
+ d=1e100.net; s=20230601; t=1708101037; x=1708705837;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BKaOfkzsaddgrw5PBxNyKChRzqPSwV94abl+cum6jxg=;
- b=Hv1owHvVzWftz0IePzlSTGmgM6Ryjh0QEpaoXFgJBoD3VavQWHUAe1iI2XKZxlUlGF
- slzw1nSIDfRoRicYx22OQ9yo3CUpjvzFRPcLNSLC1RD4tuZ8glsi2BcJP/JOnkMLDXvo
- dP14Z/q1jRa6llqhs/ySZpvrxTmPFu8kr6M7yHs3il9Etj85Nuhqb2WQLFu1T3nlSMIh
- 5q5zxlSJoU9EdTAgZhN+SS2VpJKUhg3jCCGgEyd9KXZoNCEhlcjegeB6M4+f9GATV+Fz
- 7q7o6qGbgTEOx0ABWid/+VCklR9FaxvIwu0ZrYPN/V4XJ5Fv4iMCyMVhrEnDMFt+bBfV
- vhNA==
-X-Gm-Message-State: AOJu0YwIcgydZ5qa37xOeZPKWAjbFySw4IIVDbE6XKMNyncTZgdBYRXW
- s5yB3HL6C6AV28F9FWq/S5B17e79hApzeE5rmNpEdexGjqV77mz+8jBURh3vdqs=
-X-Google-Smtp-Source: AGHT+IGOIk+YV0fxf9F4FLPZQbi2ADxG7wnAe4F3nvf1kh6gw7Ut9A4y49iXABNa8nY6bqfTlNwWZQ==
-X-Received: by 2002:adf:fa8f:0:b0:33d:19f9:996e with SMTP id
- h15-20020adffa8f000000b0033d19f9996emr1940684wrr.16.1708101034336; 
- Fri, 16 Feb 2024 08:30:34 -0800 (PST)
+ bh=8VoWfZh+ZjeHnIZS/0T0SSPiqruErjk06xElhK1rNbU=;
+ b=FfRQVutdyU2q8sjOG0nG/mBfIRwFMLRpCzNwfYX+bnlu6BmuarHiHYse499MJbW9gK
+ dOJUHdMekngsQxieZeqD8E+QWA9Xzlw5BwC355npSWWepnMpFI7g2y9N1n4lnEGA4hxG
+ Hb5nBY25LcCCUIHsTErQ2OqZyLqZZaSz9EEF5SdJ3b4fyBOUDHaD/zN5A6DxnjKJ/0Sy
+ yJ+0DX96Im0vU7IRM8poGODy6TUWGNdNPzSHLa6j+DHHdMvEoJNB73P0ibF4QdmpgxbG
+ Qmdw5PHSLPrzeMTS+C5wMtORq16LRoRoeOPe4FIoN7NtILJooRmOYdN+nIquCjIrp9EM
+ wMgg==
+X-Gm-Message-State: AOJu0Yw10WXLaHDh3ImlcAv9f9I1EDafw5WeqNGAhFoNKSKJz1GcmjiU
+ DnTDkKDF7pEvS9GxNhjuwS8mumjFzTEwj9SZm8oEEsMPpnSZBDNZf0qVPNvhrrs=
+X-Google-Smtp-Source: AGHT+IGmn5JWcOL+/P9/Hqn1h0jylEiBMGvGzf8oTZDihPM4Xo1gGti2gBrmKlG5uN2CJrTCucpPeA==
+X-Received: by 2002:a5d:54c9:0:b0:33b:4e6d:1020 with SMTP id
+ x9-20020a5d54c9000000b0033b4e6d1020mr4050050wrv.34.1708101036858; 
+ Fri, 16 Feb 2024 08:30:36 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ay5-20020a5d6f05000000b0033d1ef15821sm2073483wrb.25.2024.02.16.08.30.29
+ n15-20020a5d660f000000b0033b1b1da2adsm2586478wru.99.2024.02.16.08.30.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 16 Feb 2024 08:30:32 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 63ED45F91D;
+ by draig.lan (Postfix) with ESMTP id 7E2845F9DE;
  Fri, 16 Feb 2024 16:30:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -84,26 +84,25 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Alistair Francis <alistair.francis@wdc.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 11/23] gdbstub: Add members to identify registers to GDBFeature
-Date: Fri, 16 Feb 2024 16:30:13 +0000
-Message-Id: <20240216163025.424857-12-alex.bennee@linaro.org>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH 12/23] plugins: remove previous n_vcpus functions from API
+Date: Fri, 16 Feb 2024 16:30:14 +0000
+Message-Id: <20240216163025.424857-13-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216163025.424857-1-alex.bennee@linaro.org>
 References: <20240216163025.424857-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,140 +118,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-These members will be used to help plugins to identify registers.
-The added members in instances of GDBFeature dynamically generated by
-CPUs will be filled in later changes.
+This information is already accessible using qemu_info_t during plugin
+install.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240103173349.398526-36-alex.bennee@linaro.org>
-Message-Id: <20231213-gdb-v17-10-777047380591@daynix.com>
+We will introduce another function (qemu_plugin_num_vcpus) which
+represent how many cpus were enabled, by tracking new cpu indexes.
+
+It's a breaking change, so we bump API version.
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240213094009.150349-2-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/exec/gdbstub.h  |  3 +++
- gdbstub/gdbstub.c       | 12 +++++++++---
- target/riscv/gdbstub.c  |  4 +---
- scripts/feature_to_c.py | 14 +++++++++++++-
- 4 files changed, 26 insertions(+), 7 deletions(-)
+ include/qemu/qemu-plugin.h   | 10 +++-------
+ plugins/plugin.h             |  2 +-
+ contrib/plugins/cache.c      |  2 +-
+ plugins/api.c                | 30 ------------------------------
+ plugins/qemu-plugins.symbols |  2 --
+ 5 files changed, 5 insertions(+), 41 deletions(-)
 
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 82a8afa237f..da9ddfe54c5 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -13,12 +13,15 @@
- typedef struct GDBFeature {
-     const char *xmlname;
-     const char *xml;
-+    const char *name;
-+    const char * const *regs;
-     int num_regs;
- } GDBFeature;
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 4daab6efd29..e45181c793c 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -50,11 +50,13 @@ typedef uint64_t qemu_plugin_id_t;
+  *
+  * The plugins export the API they were built against by exposing the
+  * symbol qemu_plugin_version which can be checked.
++ *
++ * version 2: removed qemu_plugin_n_vcpus and qemu_plugin_n_max_vcpus
+  */
  
- typedef struct GDBFeatureBuilder {
-     GDBFeature *feature;
-     GPtrArray *xml;
-+    GPtrArray *regs;
-     int base_reg;
- } GDBFeatureBuilder;
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
  
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index f766ee277a0..a55b5e6581a 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -419,9 +419,10 @@ void gdb_feature_builder_init(GDBFeatureBuilder *builder, GDBFeature *feature,
-     builder->feature = feature;
-     builder->xml = g_ptr_array_new();
-     g_ptr_array_add(builder->xml, header);
-+    builder->regs = g_ptr_array_new();
-     builder->base_reg = base_reg;
-     feature->xmlname = xmlname;
--    feature->num_regs = 0;
-+    feature->name = name;
+-#define QEMU_PLUGIN_VERSION 1
++#define QEMU_PLUGIN_VERSION 2
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
+@@ -643,12 +645,6 @@ QEMU_PLUGIN_API
+ void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
+                                     qemu_plugin_udata_cb_t cb, void *userdata);
+ 
+-/* returns -1 in user-mode */
+-int qemu_plugin_n_vcpus(void);
+-
+-/* returns -1 in user-mode */
+-int qemu_plugin_n_max_vcpus(void);
+-
+ /**
+  * qemu_plugin_outs() - output string via QEMU's logging system
+  * @string: a string
+diff --git a/plugins/plugin.h b/plugins/plugin.h
+index 5eb2fdbc85e..90f3f324ab6 100644
+--- a/plugins/plugin.h
++++ b/plugins/plugin.h
+@@ -15,7 +15,7 @@
+ #include <gmodule.h>
+ #include "qemu/qht.h"
+ 
+-#define QEMU_PLUGIN_MIN_VERSION 0
++#define QEMU_PLUGIN_MIN_VERSION 2
+ 
+ /* global state */
+ struct qemu_plugin_state {
+diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
+index 9e7ade3b374..c5c8ac75a9c 100644
+--- a/contrib/plugins/cache.c
++++ b/contrib/plugins/cache.c
+@@ -767,7 +767,7 @@ int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
+ 
+     policy = LRU;
+ 
+-    cores = sys ? qemu_plugin_n_vcpus() : 1;
++    cores = sys ? info->system.smp_vcpus : 1;
+ 
+     for (i = 0; i < argc; i++) {
+         char *opt = argv[i];
+diff --git a/plugins/api.c b/plugins/api.c
+index 5521b0ad36c..2926b1961a8 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -342,36 +342,6 @@ const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
+ #endif
  }
  
- void gdb_feature_builder_append_tag(const GDBFeatureBuilder *builder,
-@@ -440,10 +441,12 @@ void gdb_feature_builder_append_reg(const GDBFeatureBuilder *builder,
-                                     const char *type,
-                                     const char *group)
- {
--    if (builder->feature->num_regs < regnum) {
--        builder->feature->num_regs = regnum;
-+    if (builder->regs->len <= regnum) {
-+        g_ptr_array_set_size(builder->regs, regnum + 1);
-     }
- 
-+    builder->regs->pdata[regnum] = (gpointer *)name;
-+
-     if (group) {
-         gdb_feature_builder_append_tag(
-             builder,
-@@ -469,6 +472,9 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder)
-     }
- 
-     g_ptr_array_free(builder->xml, TRUE);
-+
-+    builder->feature->num_regs = builder->regs->len;
-+    builder->feature->regs = (void *)g_ptr_array_free(builder->regs, FALSE);
- }
- 
- const GDBFeature *gdb_find_static_feature(const char *xmlname)
-diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-index 546e8692d17..be7a02cd903 100644
---- a/target/riscv/gdbstub.c
-+++ b/target/riscv/gdbstub.c
-@@ -266,11 +266,9 @@ static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs, int base_reg)
-         }
-         predicate = csr_ops[i].predicate;
-         if (predicate && (predicate(env, i) == RISCV_EXCP_NONE)) {
--            g_autofree char *dynamic_name = NULL;
-             name = csr_ops[i].name;
-             if (!name) {
--                dynamic_name = g_strdup_printf("csr%03x", i);
--                name = dynamic_name;
-+                name = g_strdup_printf("csr%03x", i);
-             }
- 
-             gdb_feature_builder_append_reg(&builder, name, bitsize, i,
-diff --git a/scripts/feature_to_c.py b/scripts/feature_to_c.py
-index e04d6b2df7f..807af0e685c 100644
---- a/scripts/feature_to_c.py
-+++ b/scripts/feature_to_c.py
-@@ -50,7 +50,9 @@ def writeliteral(indent, bytes):
-         sys.stderr.write(f'unexpected start tag: {element.tag}\n')
-         exit(1)
- 
-+    feature_name = element.attrib['name']
-     regnum = 0
-+    regnames = []
-     regnums = []
-     tags = ['feature']
-     for event, element in events:
-@@ -67,6 +69,7 @@ def writeliteral(indent, bytes):
-                 if 'regnum' in element.attrib:
-                     regnum = int(element.attrib['regnum'])
- 
-+                regnames.append(element.attrib['name'])
-                 regnums.append(regnum)
-                 regnum += 1
- 
-@@ -85,6 +88,15 @@ def writeliteral(indent, bytes):
-     writeliteral(8, bytes(os.path.basename(input), 'utf-8'))
-     sys.stdout.write(',\n')
-     writeliteral(8, read)
--    sys.stdout.write(f',\n        {num_regs},\n    }},\n')
-+    sys.stdout.write(',\n')
-+    writeliteral(8, bytes(feature_name, 'utf-8'))
-+    sys.stdout.write(',\n        (const char * const []) {\n')
-+
-+    for index, regname in enumerate(regnames):
-+        sys.stdout.write(f'            [{regnums[index] - base_reg}] =\n')
-+        writeliteral(16, bytes(regname, 'utf-8'))
-+        sys.stdout.write(',\n')
-+
-+    sys.stdout.write(f'        }},\n        {num_regs},\n    }},\n')
- 
- sys.stdout.write('    { NULL }\n};\n')
+-/*
+- * Queries to the number and potential maximum number of vCPUs there
+- * will be. This helps the plugin dimension per-vcpu arrays.
+- */
+-
+-#ifndef CONFIG_USER_ONLY
+-static MachineState * get_ms(void)
+-{
+-    return MACHINE(qdev_get_machine());
+-}
+-#endif
+-
+-int qemu_plugin_n_vcpus(void)
+-{
+-#ifdef CONFIG_USER_ONLY
+-    return -1;
+-#else
+-    return get_ms()->smp.cpus;
+-#endif
+-}
+-
+-int qemu_plugin_n_max_vcpus(void)
+-{
+-#ifdef CONFIG_USER_ONLY
+-    return -1;
+-#else
+-    return get_ms()->smp.max_cpus;
+-#endif
+-}
+-
+ /*
+  * Plugin output
+  */
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index 71f6c90549d..ca806000d54 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -16,8 +16,6 @@
+   qemu_plugin_mem_is_sign_extended;
+   qemu_plugin_mem_is_store;
+   qemu_plugin_mem_size_shift;
+-  qemu_plugin_n_max_vcpus;
+-  qemu_plugin_n_vcpus;
+   qemu_plugin_outs;
+   qemu_plugin_path_to_binary;
+   qemu_plugin_register_atexit_cb;
 -- 
 2.39.2
 
