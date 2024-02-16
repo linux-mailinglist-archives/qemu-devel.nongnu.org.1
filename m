@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BE88582AD
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9A5858286
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:32:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb17I-0004xi-A3; Fri, 16 Feb 2024 11:31:12 -0500
+	id 1rb16w-0004hg-QM; Fri, 16 Feb 2024 11:30:50 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb16x-0004jV-82
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:51 -0500
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1rb16s-0004e3-8G
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:46 -0500
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb16h-0002CS-Gr
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:50 -0500
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33d18931a94so657912f8f.1
+ id 1rb16h-0002Cm-9s
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:30:45 -0500
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-33934567777so1277530f8f.1
  for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:30:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708101033; x=1708705833; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708101034; x=1708705834; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EvAZYPRVUfBj5BCId8yzd0u+oaREkOPhafJbZPqpF0g=;
- b=Hsdx/nd9DUonlsyfBn682jinWeSMJy+OLKmktqzodWvW5+lbt/+GuGEY1cFURbXzMu
- OKT5LeVNl2339hqz/PmbyepW+HQjzjYRd8/h3CQ9Jt6sQyM6E51KnGPx2vVM6AMBvoxP
- CB//FLG4uTTGseUcogiky5T32EaxqaqD0ptRB4P6nND17ssyHgp0LCs26L+uRnHXrN6u
- j5axEruYa8otyOMOi2TvKeFX0mK/E5x7AKePgb+c+2hZjE50Tme8hI4IB384uWYaLTK4
- xTT0ORUtLOsNGe2VDpfkie1FKSuVrrHns43lXoFsNXQSfNaqbZugufOd/I2jwMZMzXre
- XM9A==
+ bh=PkWscpUBEbejdbKoRiw5OKwSCiJv7PSi//p/ON6oGIg=;
+ b=KDPLqvF3jzkLwuzIHfDzkY4HxlxJ+3a6tozqdvyA+G/NHYMlNq3gjnjpqiG518vWdW
+ dcjiyPJsYnVZp4sdZHfrSlJPRgWCIVAalsBlW7z+uSGi3nK1PIqM0uwPZDCXjLjmrVl5
+ TFyMpiHqlcy+nXfVVXc1IHGj2QAtPlJv4WvLcfiqIiAEY/7Vi5fbrXzJL9bIJrTmQ7R5
+ Fcl0Yfjkwl8QWAgkfN4YwEWYs/2lj/Y20sL1AiS67h/uqW2gTqmjpE3hwmxbg+8bC+R0
+ nweddPh20JA13AIy/5hg7cjnNeQOHPJ3GQOqLMBkO7uhyJYaZAs6wyLaQgnVd57+YHJt
+ 8H2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708101033; x=1708705833;
+ d=1e100.net; s=20230601; t=1708101034; x=1708705834;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EvAZYPRVUfBj5BCId8yzd0u+oaREkOPhafJbZPqpF0g=;
- b=S38daqp8bFkSTxWiIA+zKqWpR5U9ffuWADebn8FqIJ9drqea2/fv8trA/gFbSYNOfh
- xV+FjsqM9/Nskh48sNPi8aOkjbwmqJJTXvL1ywDD0p5DuPIYLg3d2fLIiw4bcMew5FtN
- bb1tPmg6xjywBaOHPL/ENny61rgqY+q22T6DKDfgoQWDmU2U2yWmw4FDyZbVksumHw0u
- UL2747s7gPp226VjYPNhQDg01iSAvwJiKXCH5n1beU9eyMAeqkhmFVmCiz4Pl0JCejn6
- 5A1TgjZNph1+ZQGVlHvrru2vtDb7PkvV07daLmCObTpdJ+t2PbAymZJlg0YwpWzvZelh
- /1YQ==
-X-Gm-Message-State: AOJu0Ywfe74PnpHXljP2/1viA+re0+0LoyNdCZwZ9MjH/uGwMUZnhfRu
- DTFeJbHTM+3MF+pOgVSBMzI5RIzArojF2VYmFee/g3rhPBY6NgdRCrYuVVbwOeE=
-X-Google-Smtp-Source: AGHT+IG2PH9Lxr/ZTgJJA9FSzVO1gaQTBkHZrQcb6tBZUylECs+GLp1xQKAWYWdGyMjKO5Jd8S5KzQ==
-X-Received: by 2002:a5d:5f4e:0:b0:33d:27d1:59a0 with SMTP id
- cm14-20020a5d5f4e000000b0033d27d159a0mr128777wrb.18.1708101033479; 
+ bh=PkWscpUBEbejdbKoRiw5OKwSCiJv7PSi//p/ON6oGIg=;
+ b=Dn0DYXP7pWDrfxMd+Xt9Nze1SOoYmqovC3pe4TQ1CmoUAT4OicTSx7oKIx3j5G7LQt
+ 9bUfiNfHDQHaFca6PUbbBhSjARE6T04IXxsBi1i1ge5J9dQ/dH3GUSpN+B1xUgJ9+HMQ
+ ivKMziAMXjZRnKEpYmDN9BXwQkyyDRvCkkOlC3J7+QO/Y40hTK2lu+1/c6lhz50C+xt6
+ Ra22kp2/Ocmfok+f51B+szKM4J9RhyREBV+YmCEp7NWgqhRIscmfHqARlEaaLNOPSYk4
+ /vqTh8YV3zPLOuIER/qLNrQfvL0soMwDI5V8ixvo3WjNZyI/uvU+9XXxKeXoM8jG/jep
+ 3qSQ==
+X-Gm-Message-State: AOJu0YzCllDlLy0WK+OadnlEpCkoLn18Pf0GXozzZb/WVGROwo2no7id
+ qp24DnNR6o73TGpAgRyMOCcllrStOBgl8czmKYoWsZZ0cFJ7N1NXXCJEgzpr20s=
+X-Google-Smtp-Source: AGHT+IHzhduoiWidWq9/btcWTLjA5Ndf8n5grCIKgyh9t8BZ5ZAuVmoJCi0mBr8CZeIrymFwQoHYsg==
+X-Received: by 2002:a5d:43d0:0:b0:33c:d9fb:2277 with SMTP id
+ v16-20020a5d43d0000000b0033cd9fb2277mr4257470wrr.40.1708101033788; 
  Fri, 16 Feb 2024 08:30:33 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- o18-20020adfcf12000000b0033b87c2725csm2605910wrj.104.2024.02.16.08.30.27
+ b17-20020a05600010d100b0033ce1ef4e7asm2603636wrx.13.2024.02.16.08.30.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 16 Feb 2024 08:30:32 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 282565F8AF;
+ by draig.lan (Postfix) with ESMTP id 4A82E5F9DD;
  Fri, 16 Feb 2024 16:30:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -86,24 +86,24 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
  Alistair Francis <alistair.francis@wdc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 09/23] gdbstub: Infer number of core registers from XML
-Date: Fri, 16 Feb 2024 16:30:11 +0000
-Message-Id: <20240216163025.424857-10-alex.bennee@linaro.org>
+Subject: [PATCH 10/23] hw/core/cpu: Remove gdb_get_dynamic_xml member
+Date: Fri, 16 Feb 2024 16:30:12 +0000
+Message-Id: <20240216163025.424857-11-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216163025.424857-1-alex.bennee@linaro.org>
 References: <20240216163025.424857-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,218 +121,183 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-GDBFeature has the num_regs member so use it where applicable to
-remove magic numbers.
+This function is no longer used.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240103173349.398526-34-alex.bennee@linaro.org>
-Message-Id: <20231213-gdb-v17-8-777047380591@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240103173349.398526-35-alex.bennee@linaro.org>
+Message-Id: <20231213-gdb-v17-9-777047380591@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/core/cpu.h   | 3 ++-
- target/s390x/cpu.h      | 2 --
- gdbstub/gdbstub.c       | 5 ++++-
- target/arm/cpu.c        | 1 -
- target/arm/cpu64.c      | 1 -
- target/avr/cpu.c        | 1 -
- target/hexagon/cpu.c    | 1 -
- target/i386/cpu.c       | 2 --
- target/loongarch/cpu.c  | 2 --
- target/m68k/cpu.c       | 1 -
- target/microblaze/cpu.c | 1 -
- target/riscv/cpu.c      | 1 -
- target/rx/cpu.c         | 1 -
- target/s390x/cpu.c      | 1 -
- 14 files changed, 6 insertions(+), 17 deletions(-)
+ include/hw/core/cpu.h |  4 ----
+ target/arm/cpu.h      |  6 ------
+ target/ppc/cpu.h      |  1 -
+ target/arm/cpu.c      |  1 -
+ target/arm/gdbstub.c  | 18 ------------------
+ target/ppc/cpu_init.c |  3 ---
+ target/ppc/gdbstub.c  | 10 ----------
+ target/riscv/cpu.c    | 14 --------------
+ 8 files changed, 57 deletions(-)
 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 4385ce54c99..1bbf21b2201 100644
+index 1bbf21b2201..4b659799b00 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -126,7 +126,8 @@ struct SysemuCPUOps;
-  * @gdb_adjust_breakpoint: Callback for adjusting the address of a
-  *       breakpoint.  Used by AVR to handle a gdb mis-feature with
-  *       its Harvard architecture split code and data.
-- * @gdb_num_core_regs: Number of core registers accessible to GDB.
-+ * @gdb_num_core_regs: Number of core registers accessible to GDB or 0 to infer
-+ *                     from @gdb_core_xml_file.
-  * @gdb_core_xml_file: File name for core registers GDB XML description.
-  * @gdb_stop_before_watchpoint: Indicates whether GDB expects the CPU to stop
+@@ -133,9 +133,6 @@ struct SysemuCPUOps;
   *           before the insn which triggers a watchpoint rather than after it.
-diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-index d37a49b4d92..43a46a5a068 100644
---- a/target/s390x/cpu.h
-+++ b/target/s390x/cpu.h
-@@ -491,8 +491,6 @@ static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
- #define S390_R13_REGNUM 15
- #define S390_R14_REGNUM 16
- #define S390_R15_REGNUM 17
--/* Total Core Registers. */
--#define S390_NUM_CORE_REGS 18
+  * @gdb_arch_name: Optional callback that returns the architecture name known
+  * to GDB. The caller must free the returned string with g_free.
+- * @gdb_get_dynamic_xml: Callback to return dynamically generated XML for the
+- *   gdb stub. Returns a pointer to the XML contents for the specified XML file
+- *   or NULL if the CPU doesn't have a dynamically generated content for it.
+  * @disas_set_info: Setup architecture specific components of disassembly info
+  * @adjust_watchpoint_address: Perform a target-specific adjustment to an
+  * address before attempting to match it against watchpoints.
+@@ -167,7 +164,6 @@ struct CPUClass {
  
- static inline void setcc(S390CPU *cpu, uint64_t cc)
- {
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index d573f808d2e..f766ee277a0 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -546,9 +546,12 @@ void gdb_init_cpu(CPUState *cpu)
-         gdb_register_feature(cpu, 0,
-                              cc->gdb_read_register, cc->gdb_write_register,
-                              feature);
-+        cpu->gdb_num_regs = cpu->gdb_num_g_regs = feature->num_regs;
-     }
+     const char *gdb_core_xml_file;
+     const gchar * (*gdb_arch_name)(CPUState *cpu);
+-    const char * (*gdb_get_dynamic_xml)(CPUState *cpu, const char *xmlname);
  
--    cpu->gdb_num_regs = cpu->gdb_num_g_regs = cc->gdb_num_core_regs;
-+    if (cc->gdb_num_core_regs) {
-+        cpu->gdb_num_regs = cpu->gdb_num_g_regs = cc->gdb_num_core_regs;
-+    }
- }
+     void (*disas_set_info)(CPUState *cpu, disassemble_info *info);
  
- void gdb_register_coprocessor(CPUState *cpu,
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 508a9c1e0d6..a5b3d8f7da7 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1159,12 +1159,6 @@ hwaddr arm_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
+ int arm_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int arm_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ 
+-/* Returns the dynamically generated XML for the gdb stub.
+- * Returns a pointer to the XML contents for the specified XML file or NULL
+- * if the XML name doesn't match the predefined one.
+- */
+-const char *arm_gdb_get_dynamic_xml(CPUState *cpu, const char *xmlname);
+-
+ int arm_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+                              int cpuid, DumpState *s);
+ int arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 200652e2c87..a15e7c38faf 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1524,7 +1524,6 @@ int ppc_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ int ppc_cpu_gdb_write_register_apple(CPUState *cpu, uint8_t *buf, int reg);
+ #ifndef CONFIG_USER_ONLY
+ hwaddr ppc_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
+-const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name);
+ #endif
+ int ppc64_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+                                int cpuid, DumpState *s);
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 5fa86bc8d55..84887084d95 100644
+index 84887084d95..b2ea5d65132 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -2515,7 +2515,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
- #ifndef CONFIG_USER_ONLY
+@@ -2516,7 +2516,6 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
      cc->sysemu_ops = &arm_sysemu_ops;
  #endif
--    cc->gdb_num_core_regs = 26;
      cc->gdb_arch_name = arm_gdb_arch_name;
-     cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
+-    cc->gdb_get_dynamic_xml = arm_gdb_get_dynamic_xml;
      cc->gdb_stop_before_watchpoint = true;
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 8e30a7993ea..869d8dd24ee 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -793,7 +793,6 @@ static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
+     cc->disas_set_info = arm_disas_set_info;
  
-     cc->gdb_read_register = aarch64_cpu_gdb_read_register;
-     cc->gdb_write_register = aarch64_cpu_gdb_write_register;
--    cc->gdb_num_core_regs = 34;
-     cc->gdb_core_xml_file = "aarch64-core.xml";
-     cc->gdb_arch_name = aarch64_gdb_arch_name;
- 
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index a40f445af21..a50170bc69a 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -251,7 +251,6 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
-     cc->gdb_read_register = avr_cpu_gdb_read_register;
-     cc->gdb_write_register = avr_cpu_gdb_write_register;
-     cc->gdb_adjust_breakpoint = avr_cpu_gdb_adjust_breakpoint;
--    cc->gdb_num_core_regs = 35;
-     cc->gdb_core_xml_file = "avr-cpu.xml";
-     cc->tcg_ops = &avr_tcg_ops;
- }
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index ebe804e2931..a10d87b8220 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -362,7 +362,6 @@ static void hexagon_cpu_class_init(ObjectClass *c, void *data)
-     cc->get_pc = hexagon_cpu_get_pc;
-     cc->gdb_read_register = hexagon_gdb_read_register;
-     cc->gdb_write_register = hexagon_gdb_write_register;
--    cc->gdb_num_core_regs = TOTAL_PER_THREAD_REGS;
-     cc->gdb_stop_before_watchpoint = true;
-     cc->gdb_core_xml_file = "hexagon-core.xml";
-     cc->disas_set_info = hexagon_cpu_disas_set_info;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0cd32a6fce3..71c14a6d3c8 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7979,10 +7979,8 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
-     cc->gdb_arch_name = x86_gdb_arch_name;
- #ifdef TARGET_X86_64
-     cc->gdb_core_xml_file = "i386-64bit.xml";
--    cc->gdb_num_core_regs = 66;
- #else
-     cc->gdb_core_xml_file = "i386-32bit.xml";
--    cc->gdb_num_core_regs = 50;
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 059d84f98e5..a3bb73cfa7c 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -474,24 +474,6 @@ static GDBFeature *arm_gen_dynamic_m_secextreg_feature(CPUState *cs,
  #endif
-     cc->disas_set_info = x86_disas_set_info;
+ #endif /* CONFIG_TCG */
  
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index 7dc50bf35fc..bc2684179f2 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -815,7 +815,6 @@ static void loongarch32_cpu_class_init(ObjectClass *c, void *data)
+-const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
+-{
+-    ARMCPU *cpu = ARM_CPU(cs);
+-
+-    if (strcmp(xmlname, "system-registers.xml") == 0) {
+-        return cpu->dyn_sysreg_feature.desc.xml;
+-    } else if (strcmp(xmlname, "sve-registers.xml") == 0) {
+-        return cpu->dyn_svereg_feature.desc.xml;
+-    } else if (strcmp(xmlname, "arm-m-system.xml") == 0) {
+-        return cpu->dyn_m_systemreg_feature.desc.xml;
+-#ifndef CONFIG_USER_ONLY
+-    } else if (strcmp(xmlname, "arm-m-secext.xml") == 0) {
+-        return cpu->dyn_m_secextreg_feature.desc.xml;
+-#endif
+-    }
+-    return NULL;
+-}
+-
+ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
  {
-     CPUClass *cc = CPU_CLASS(c);
- 
--    cc->gdb_num_core_regs = 35;
-     cc->gdb_core_xml_file = "loongarch-base32.xml";
-     cc->gdb_arch_name = loongarch32_gdb_arch_name;
- }
-@@ -829,7 +828,6 @@ static void loongarch64_cpu_class_init(ObjectClass *c, void *data)
- {
-     CPUClass *cc = CPU_CLASS(c);
- 
--    cc->gdb_num_core_regs = 35;
-     cc->gdb_core_xml_file = "loongarch-base64.xml";
-     cc->gdb_arch_name = loongarch64_gdb_arch_name;
- }
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 8a8392e6945..e228a0b18b2 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -568,7 +568,6 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
+     CPUState *cs = CPU(cpu);
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 4f6903d3f16..9aae02115bf 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7385,9 +7385,6 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
  #endif
-     cc->disas_set_info = m68k_cpu_disas_set_info;
  
--    cc->gdb_num_core_regs = 18;
-     cc->tcg_ops = &m68k_tcg_ops;
+     cc->gdb_num_core_regs = 71;
+-#ifndef CONFIG_USER_ONLY
+-    cc->gdb_get_dynamic_xml = ppc_gdb_get_dynamic_xml;
+-#endif
+ #ifdef USE_APPLE_GDB
+     cc->gdb_read_register = ppc_cpu_gdb_read_register_apple;
+     cc->gdb_write_register = ppc_cpu_gdb_write_register_apple;
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 8ca37b6bf95..f47878a67bd 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -342,16 +342,6 @@ static void gdb_gen_spr_feature(CPUState *cs)
+ 
+     gdb_feature_builder_end(&builder);
  }
- 
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 2c62cf048c2..e533e7a95ec 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -444,7 +444,6 @@ static void mb_cpu_class_init(ObjectClass *oc, void *data)
-     cc->sysemu_ops = &mb_sysemu_ops;
+-
+-const char *ppc_gdb_get_dynamic_xml(CPUState *cs, const char *xml_name)
+-{
+-    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cs);
+-
+-    if (strcmp(xml_name, "power-spr.xml") == 0) {
+-        return pcc->gdb_spr.xml;
+-    }
+-    return NULL;
+-}
  #endif
-     device_class_set_props(dc, mb_properties);
--    cc->gdb_num_core_regs = 32 + 25;
-     cc->gdb_core_xml_file = "microblaze-core.xml";
  
-     cc->disas_set_info = mb_disas_set_info;
+ #if !defined(CONFIG_USER_ONLY)
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 1b62e269b90..dd8a0e94897 100644
+index dd8a0e94897..5ff0192c527 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -2352,7 +2352,6 @@ static void riscv_cpu_common_class_init(ObjectClass *c, void *data)
-     cc->get_pc = riscv_cpu_get_pc;
-     cc->gdb_read_register = riscv_cpu_gdb_read_register;
-     cc->gdb_write_register = riscv_cpu_gdb_write_register;
--    cc->gdb_num_core_regs = 33;
-     cc->gdb_stop_before_watchpoint = true;
-     cc->disas_set_info = riscv_cpu_disas_set_info;
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 5205167da17..2f878d08d6d 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -221,7 +221,6 @@ static void rx_cpu_class_init(ObjectClass *klass, void *data)
-     cc->gdb_write_register = rx_cpu_gdb_write_register;
-     cc->disas_set_info = rx_cpu_disas_set_info;
- 
--    cc->gdb_num_core_regs = 26;
-     cc->gdb_core_xml_file = "rx-core.xml";
-     cc->tcg_ops = &rx_tcg_ops;
+@@ -2300,19 +2300,6 @@ static const gchar *riscv_gdb_arch_name(CPUState *cs)
+     }
  }
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 49a2341accf..f7194534aeb 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -368,7 +368,6 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
-     s390_cpu_class_init_sysemu(cc);
- #endif
-     cc->disas_set_info = s390_cpu_disas_set_info;
--    cc->gdb_num_core_regs = S390_NUM_CORE_REGS;
-     cc->gdb_core_xml_file = "s390x-core64.xml";
-     cc->gdb_arch_name = s390_gdb_arch_name;
  
+-static const char *riscv_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
+-{
+-    RISCVCPU *cpu = RISCV_CPU(cs);
+-
+-    if (strcmp(xmlname, "riscv-csr.xml") == 0) {
+-        return cpu->dyn_csr_feature.xml;
+-    } else if (strcmp(xmlname, "riscv-vector.xml") == 0) {
+-        return cpu->dyn_vreg_feature.xml;
+-    }
+-
+-    return NULL;
+-}
+-
+ #ifndef CONFIG_USER_ONLY
+ static int64_t riscv_get_arch_id(CPUState *cs)
+ {
+@@ -2359,7 +2346,6 @@ static void riscv_cpu_common_class_init(ObjectClass *c, void *data)
+     cc->get_arch_id = riscv_get_arch_id;
+ #endif
+     cc->gdb_arch_name = riscv_gdb_arch_name;
+-    cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
+ 
+     device_class_set_props(dc, riscv_cpu_properties);
+ }
 -- 
 2.39.2
 
