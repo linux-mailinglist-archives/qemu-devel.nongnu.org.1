@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1BC8582A9
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F0B8582BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 17:39:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb17K-000538-9W; Fri, 16 Feb 2024 11:31:14 -0500
+	id 1rb1Dn-0001UC-BQ; Fri, 16 Feb 2024 11:37:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb178-0004rw-2t
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:31:04 -0500
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1rb1Dl-0001SR-Lv
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:53 -0500
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rb16m-0002G8-DJ
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:31:01 -0500
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41244cc3d67so6044545e9.2
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:30:39 -0800 (PST)
+ id 1rb1DY-000462-1U
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 11:37:53 -0500
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-33d07ee22eeso619313f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 08:37:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708101039; x=1708705839; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708101458; x=1708706258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O9WREwsMrt85roF9DpcRAV7U4Bq5TV/wSmpsUdovSGg=;
- b=l4+Y5CZloaevBoepk4VwH/cDgOY0nWHE0k9EmTIrmNjhfUJXAb+ZwC+RXZE18bUOWA
- Fc54PZgp7R79d2L5xsbNnj4n7ewE2+F8hWaSnJAzXVndiSgnZgXX/f4Fx2btQtaxqdpT
- o74paxbqKo8AM6EdBT+eHfmoW8883gzf9kFgpcmkZ4k70Ajukaew6oNs8NdRsXsS++fZ
- e3nVl4QyD/vnL5Zu2uwnXNK7dKVYA9QijSyoqueIkf1J/VE6MJLCJLKngVOfCYEIfGE/
- qs+KlOJdBzfMVAvHnkFMpSTheaxLCht88byKo6cTv4ajshqMbZj2aKZDhZ8hzAdCBZRT
- 0i5w==
+ bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
+ b=AkNDxkuIHxHQFNZUp/7MrvxkivggZjgRSvuOUTGJhOAIq6+wi/S/I1TwQQGYMu6QUL
+ GvPveafpCl7b4n5aiYD9Vt6bDEF2h2WDLiEZXk2fZX1lprTfLjyXit2EBmLjEr9imY5o
+ dWJ9wgKEIS82uewDUz/y0dJQ/nj0w1jmwjbtZ88SMd9wHmp3qM6Di67uj75qxT5klDLu
+ yZdIMqFLqr6igdtNDDA2kuIS8gjJYI0ToGv4dWq8ih33DelKMJFqfkTfmCYjWuDoYD7y
+ jQd/8iL7gE/vRe44kR1xcAloD8Yo60JmwmT/f/qbb8oNRVi969SFIM0sml4QKU9bsXNy
+ MCLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708101039; x=1708705839;
+ d=1e100.net; s=20230601; t=1708101458; x=1708706258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O9WREwsMrt85roF9DpcRAV7U4Bq5TV/wSmpsUdovSGg=;
- b=DDpFT58BU6s2PNmtasgIeKpIZ8P3l5zcP8a6akS+pHzJtATtoqhCP6q2KdhBHkJ+Ll
- vtsJLnG/PmaJmzGmNUycPren/Uvmz6uiF1z7OomdXOuSi7QVXyWuzqUWs6NEALsB7asB
- KM2O7q2uQt6RSDaGA0emnbIabDSYFFkf2fsPR2JBEJWqQB+97i/S21JDbbbUBqToszBS
- +20+84rCYIaN4G8ahd3vsqey7gifpXWFJLHORcsW9eYVJLz3sW2mGwALmclGbiECn5Ep
- uUWaN28CezHNrKfP9oIwW0yNgpnoupG0W4SRat7qDhaGXyfCdlv9xGGxYgydMtQ52b0+
- k0Cg==
-X-Gm-Message-State: AOJu0YxWp2sYMnFvjEsD+ZObHFPvF2dMR3Jzk7erd3P2llrTQZxC2T85
- aTUiY48rDws1JDVV3zx9bXloKZ+bN1DEXjbFHG7bzmWtj0KI/P4kCI3SS0VqMPA=
-X-Google-Smtp-Source: AGHT+IFLIbtAa0c9RNa/u/6gGY87Xq8Y0z3xpX0SDTf4Ogo77+0XcqOZxX9qWtU5mITWFkzmTyq8Ag==
-X-Received: by 2002:adf:ee8b:0:b0:33d:174b:6a3c with SMTP id
- b11-20020adfee8b000000b0033d174b6a3cmr1734119wro.59.1708101039019; 
- Fri, 16 Feb 2024 08:30:39 -0800 (PST)
+ bh=Xq3bg3O489fduJkQRD4v3a7EWyBdeXHXm96vjazL+zo=;
+ b=ZP4lzVReTSoU/72y42o0mxdB7cddigcvh+17hx6/+NHZp2l8GwTVsvY1gRGji/v7lg
+ S7CQB87X5pXU+FKO6yISk03LUC0Qcq5FPsfo4cM73up58SBfDfkJJ2GAKxYx6xnFx/iW
+ vkAbQ/pduVwrj6RPXrvKE+Z2w+pjLflg2gURzXaz4jkzD29zP7KvXdZc5oizHPFZSLCF
+ MAIjaqrfD7iSFIr8Mr7oq/6ceOKjmHXBtIe7ra3NbKDlTQ+Vi/MqM+0DYQgTwOG9I7g2
+ sOZyfygCBHAiYUNxGhQVZrxTMgBCixtCenshAlkRCcO4qI/EUzBOQyvbYZRV2W13TyAz
+ a/Mw==
+X-Gm-Message-State: AOJu0YyfojKleMjFrDplb0UCOiOpOZuVvWypJHgkWH9UcjXcK5CcNS9Q
+ b9Y1B5bCY8xgQQuhAmrUr3OKdlKrC5NzH+aRT3rBWfnNOTTonXtm+DmYEhikeHA=
+X-Google-Smtp-Source: AGHT+IF+azCIgmKTLCdw0EDUXddFCfFLrJsvyIrp67MlYlm7BX/FXDp3hmA3dwjC+AJ82R4hvc78vQ==
+X-Received: by 2002:adf:f50e:0:b0:33b:304d:36b7 with SMTP id
+ q14-20020adff50e000000b0033b304d36b7mr4393268wro.56.1708101458266; 
+ Fri, 16 Feb 2024 08:37:38 -0800 (PST)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- n14-20020a5d420e000000b0033d282c7537sm18879wrq.23.2024.02.16.08.30.30
+ o11-20020adfcf0b000000b0033b4dae972asm2631828wrj.37.2024.02.16.08.37.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 08:30:32 -0800 (PST)
+ Fri, 16 Feb 2024 08:37:35 -0800 (PST)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 972985F9DF;
+ by draig.lan (Postfix) with ESMTP id AE4365F9E0;
  Fri, 16 Feb 2024 16:30:27 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -85,17 +85,17 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
  Eduardo Habkost <eduardo@habkost.net>,
  Alistair Francis <alistair.francis@wdc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 13/23] plugins: add qemu_plugin_num_vcpus function
-Date: Fri, 16 Feb 2024 16:30:15 +0000
-Message-Id: <20240216163025.424857-14-alex.bennee@linaro.org>
+Subject: [PATCH 14/23] plugins: fix order of init/idle/resume callback
+Date: Fri, 16 Feb 2024 16:30:16 +0000
+Message-Id: <20240216163025.424857-15-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216163025.424857-1-alex.bennee@linaro.org>
 References: <20240216163025.424857-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,105 +120,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-We now keep track of how many vcpus were started. This way, a plugin can
-easily query number of any vcpus at any point of execution, which
-unifies user and system mode workflows.
+We found that vcpu_init_hook was called *after* idle callback.
+vcpu_init is called from cpu_realize_fn, while idle/resume cb are called
+from qemu_wait_io_event (in vcpu thread).
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+This change ensures we only call idle and resume cb only once a plugin
+was init for a given vcpu.
+
+Next change in the series will run vcpu_init asynchronously, which will
+make it run *after* resume callback as well. So we fix this now.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240213094009.150349-3-pierrick.bouvier@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-Id: <20240213094009.150349-4-pierrick.bouvier@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/qemu/qemu-plugin.h   | 3 +++
- plugins/plugin.h             | 4 ++++
- plugins/api.c                | 5 +++++
- plugins/core.c               | 6 ++++++
- plugins/qemu-plugins.symbols | 1 +
- 5 files changed, 19 insertions(+)
+ plugins/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-index e45181c793c..93981f8f89f 100644
---- a/include/qemu/qemu-plugin.h
-+++ b/include/qemu/qemu-plugin.h
-@@ -645,6 +645,9 @@ QEMU_PLUGIN_API
- void qemu_plugin_register_atexit_cb(qemu_plugin_id_t id,
-                                     qemu_plugin_udata_cb_t cb, void *userdata);
- 
-+/* returns how many vcpus were started at this point */
-+int qemu_plugin_num_vcpus(void);
-+
- /**
-  * qemu_plugin_outs() - output string via QEMU's logging system
-  * @string: a string
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 90f3f324ab6..00b3509f708 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -44,6 +44,8 @@ struct qemu_plugin_state {
-      * the code cache is flushed.
-      */
-     struct qht dyn_cb_arr_ht;
-+    /* How many vcpus were started */
-+    int num_vcpus;
- };
- 
- 
-@@ -97,4 +99,6 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
- 
- void exec_inline_op(struct qemu_plugin_dyn_cb *cb);
- 
-+int plugin_num_vcpus(void);
-+
- #endif /* PLUGIN_H */
-diff --git a/plugins/api.c b/plugins/api.c
-index 2926b1961a8..116b8bd603c 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -342,6 +342,11 @@ const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
- #endif
- }
- 
-+int qemu_plugin_num_vcpus(void)
-+{
-+    return plugin_num_vcpus();
-+}
-+
- /*
-  * Plugin output
-  */
 diff --git a/plugins/core.c b/plugins/core.c
-index ee2fa41af9e..caa66311351 100644
+index caa66311351..2392bbb8889 100644
 --- a/plugins/core.c
 +++ b/plugins/core.c
-@@ -213,6 +213,7 @@ void qemu_plugin_vcpu_init_hook(CPUState *cpu)
-     bool success;
+@@ -391,12 +391,17 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
  
-     qemu_rec_mutex_lock(&plugin.lock);
-+    plugin.num_vcpus = MAX(plugin.num_vcpus, cpu->cpu_index + 1);
-     plugin_cpu_update__locked(&cpu->cpu_index, NULL, NULL);
-     success = g_hash_table_insert(plugin.cpu_ht, &cpu->cpu_index,
-                                   &cpu->cpu_index);
-@@ -570,3 +571,8 @@ static void __attribute__((__constructor__)) plugin_init(void)
-              QHT_MODE_AUTO_RESIZE);
-     atexit(qemu_plugin_atexit_cb);
+ void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
+ {
+-    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
++    /* idle and resume cb may be called before init, ignore in this case */
++    if (cpu->cpu_index < plugin.num_vcpus) {
++        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_IDLE);
++    }
  }
-+
-+int plugin_num_vcpus(void)
-+{
-+    return plugin.num_vcpus;
-+}
-diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
-index ca806000d54..adb67608598 100644
---- a/plugins/qemu-plugins.symbols
-+++ b/plugins/qemu-plugins.symbols
-@@ -16,6 +16,7 @@
-   qemu_plugin_mem_is_sign_extended;
-   qemu_plugin_mem_is_store;
-   qemu_plugin_mem_size_shift;
-+  qemu_plugin_num_vcpus;
-   qemu_plugin_outs;
-   qemu_plugin_path_to_binary;
-   qemu_plugin_register_atexit_cb;
+ 
+ void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
+ {
+-    plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
++    if (cpu->cpu_index < plugin.num_vcpus) {
++        plugin_vcpu_cb__simple(cpu, QEMU_PLUGIN_EV_VCPU_RESUME);
++    }
+ }
+ 
+ void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
 -- 
 2.39.2
 
