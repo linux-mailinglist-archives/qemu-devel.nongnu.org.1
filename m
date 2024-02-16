@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD3F8587AA
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 22:08:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1334C8587B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 22:09:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb5Qw-0006Ok-9g; Fri, 16 Feb 2024 16:07:47 -0500
+	id 1rb5Qx-0006hY-W2; Fri, 16 Feb 2024 16:07:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5Qn-0006Eg-2A
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:37 -0500
+ id 1rb5Qo-0006Eq-Cy
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:39 -0500
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5Qd-0005QA-05
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:28 -0500
+ id 1rb5Qm-0005Qp-Pt
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 16:07:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=uvd6nXwhTYTsEf+BMYvVSp2xRCX7/yZoN//4EaZsgTM=; b=iOD8e87U9cKfkYr/gHE7xhFMPQ
- qi6bhM7rgeXLaV+6n5xOspvoxX5z5XETi7ZpY553UbjLptPhFwB0wsw83LpaIEiVe7FImsb+1BOrN
- Br8Hp5Y1BVYHroTJ28DlDJuYojgECg1pO3zzE2ZjrDx5tuSgQeRwu1Zd4YgDhEV5BBisxoh0JtHbU
- LqJCMJxZE75HNx85oq4d6Iz97pdaPWjQsiz7UniXcnKDLCIIiGxUaA4JxyZPbPwY+Lz/7guTyGkG1
- Tdre+bQwH2CQo+sO1SNTwoIwueWhVm5SBop+MWk5fmwVa/zxEBTzNnZJynnd3d4QN+LsXXvoOsH/7
- PMwkMGR/t4oECkYOkrKwfFsDFBBHDRg4R+V5QetYbX1+BhdjPg43OaNpMA0SZH+kpLg/7PINpW9qP
- DrGQLOztIQRhI/Y7v+SpcY8l6NQXNBOHMQMCZ7Uw0z0+Z+7LA29DZWBypwQeOFk4lcdhf1EjeUWcS
- WT9IY9uPKkkodsy0uwuMOQmee69lq9krwY7DLw3YB/3U/cmbVZNkUPsAYZ9wate99ZasidKvNeCpT
- 8gKvhecQWI871HRL9aH/dPHCOFOQF5QzZ6USyus5qO4255sRIplEOrIH1/XSu42gvDTjKvCW7khjz
- 5NrvJEepKHvG8XYjCy7HicJ9iLjVQuO2pxp99j6Tc=;
+ bh=TndlSOqHn8wvYTLw9S+LlH2H/zQCMiOOADBR2HO3ZwI=; b=vlaqvMaHUwUn6PaOLHfHk7a/Ag
+ 0se9z/ZA3HExjdnvRggnT6qL9cM+7ONfldUWxWbD/KwOnufgrmsDdsyYW9Y7VWMdmAtTJqAHOsyiw
+ bKBkOZRF8b3RXeaFSqVfZmN1MIfgO9mlr8+22CzbRoBdgUcFenuduAWfRCS3lliQeAhvhV1vE/w3S
+ rtISiOP9ZPEZvBFReApKJ0nLTL7rC06gO79IOT3A6VkGsYOUmZSvOg8z9DYdNlBAz4RlEJjFGXcbD
+ ZV2vi4swJjpbqO+44aRK39uJEq+XNLqOoyKmS+NwphOMy1XWuw5qNsHTWc9+DguVH2IMWz8MdGBgd
+ 0nWUUymdvTZlgR1KeAp3eAdJUkLxKNzJZTjGF0jZgpYzppY392xPv+RtmMxxuXhMT4PEgmi7OrS3y
+ 7Plq3Hzopg9Nmv0ps3Xaak7sLYGnovQ2PqOgOcy/tthjeIHYS8lu4+iDG+nLznsOnGxjtE8om0OqS
+ eZ+J9OGzDCkrGSA7uJq547lNbF47h7OtO5KNcpPsbK3YgUuWnO2IAJQDSnibwSbVGvPl1Zpitg9IP
+ xHwP0A0yGlLC19YFX1Yales7TwNrMiIm++wQbrj4nztje11Hmu97U1PUIMGSBv94+rO4ZjeH4eS1W
+ M3JbgjbKZ+9ySstyU2OVvkAyHxfZI3BWLqeetcJVk=;
 Received: from [2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rb5Pr-0000vT-3v; Fri, 16 Feb 2024 21:06:43 +0000
+ id 1rb5Pv-0000vT-AM; Fri, 16 Feb 2024 21:06:47 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu,
  qemu-devel@nongnu.org
-Date: Fri, 16 Feb 2024 21:06:32 +0000
-Message-Id: <20240216210633.1376066-13-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 16 Feb 2024 21:06:33 +0000
+Message-Id: <20240216210633.1376066-14-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240216210633.1376066-1-mark.cave-ayland@ilande.co.uk>
 References: <20240216210633.1376066-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb2:1300:b76e:9764:d1ca:4e3f
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 12/13] esp.c: ensure esp_pdma_write() always calls
- esp_fifo_push()
+Subject: [PATCH 13/13] esp.c: remove explicit setting of DRQ within ESP state
+ machine
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,37 +78,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This ensures that esp_update_drq() is called via esp_fifo_push() whenever the
-host uses PDMA to transfer data to a SCSI device.
+Now the esp_update_drq() is called for all reads/writes to the FIFO, there is
+no need to manually raise and lower the DRQ signal.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/611
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1831
 ---
- hw/scsi/esp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ hw/scsi/esp.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 2150cd457b..a147509885 100644
+index a147509885..2f45bae940 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -276,14 +276,12 @@ static void esp_pdma_write(ESPState *s, uint8_t val)
- {
-     uint32_t dmalen = esp_get_tc(s);
- 
--    if (dmalen == 0) {
--        return;
--    }
--
-     esp_fifo_push(s, val);
- 
--    dmalen--;
--    esp_set_tc(s, dmalen);
-+    if (dmalen && s->drq_state) {
-+        dmalen--;
-+        esp_set_tc(s, dmalen);
-+    }
+@@ -495,7 +495,6 @@ static void esp_dma_ti_check(ESPState *s)
+     if (esp_get_tc(s) == 0 && fifo8_num_used(&s->fifo) < 2) {
+         s->rregs[ESP_RINTR] |= INTR_BS;
+         esp_raise_irq(s);
+-        esp_lower_drq(s);
+     }
  }
  
- static int esp_select(ESPState *s)
+@@ -515,7 +514,6 @@ static void esp_do_dma(ESPState *s)
+         } else {
+             len = esp_fifo_pop_buf(s, buf, fifo8_num_used(&s->fifo));
+             len = MIN(fifo8_num_free(&s->cmdfifo), len);
+-            esp_raise_drq(s);
+         }
+ 
+         fifo8_push_all(&s->cmdfifo, buf, len);
+@@ -572,7 +570,6 @@ static void esp_do_dma(ESPState *s)
+             len = esp_fifo_pop_buf(s, buf, fifo8_num_used(&s->fifo));
+             len = MIN(fifo8_num_free(&s->cmdfifo), len);
+             fifo8_push_all(&s->cmdfifo, buf, len);
+-            esp_raise_drq(s);
+         }
+         trace_esp_handle_ti_cmd(cmdlen);
+         s->ti_size = 0;
+@@ -604,7 +601,6 @@ static void esp_do_dma(ESPState *s)
+                 len = MIN(s->async_len, ESP_FIFO_SZ);
+                 len = MIN(len, fifo8_num_used(&s->fifo));
+                 len = esp_fifo_pop_buf(s, s->async_buf, len);
+-                esp_raise_drq(s);
+             }
+ 
+             s->async_buf += len;
+@@ -656,7 +652,6 @@ static void esp_do_dma(ESPState *s)
+                 /* Copy device data to FIFO */
+                 len = MIN(len, fifo8_num_free(&s->fifo));
+                 esp_fifo_push_buf(s, s->async_buf, len);
+-                esp_raise_drq(s);
+             }
+ 
+             s->async_buf += len;
+@@ -722,7 +717,6 @@ static void esp_do_dma(ESPState *s)
+             if (fifo8_num_used(&s->fifo) < 2) {
+                 s->rregs[ESP_RINTR] |= INTR_BS;
+                 esp_raise_irq(s);
+-                esp_lower_drq(s);
+             }
+             break;
+         }
+@@ -1011,9 +1005,6 @@ void esp_command_complete(SCSIRequest *req, size_t resid)
+     s->rregs[ESP_RINTR] |= INTR_BS;
+     esp_raise_irq(s);
+ 
+-    /* Ensure DRQ is set correctly for TC underflow or normal completion */
+-    esp_dma_ti_check(s);
+-
+     if (s->current_req) {
+         scsi_req_unref(s->current_req);
+         s->current_req = NULL;
 -- 
 2.39.2
 
