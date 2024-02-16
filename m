@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD2F858008
+	by mail.lfdr.de (Postfix) with ESMTPS id C20EC858009
 	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 16:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1razg4-0005w1-BW; Fri, 16 Feb 2024 09:59:00 -0500
+	id 1razg5-0005xE-JE; Fri, 16 Feb 2024 09:59:01 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfy-0005ng-5v
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:54 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfz-0005re-UB
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:55 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfw-00080c-1h
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:53 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1razfw-00081h-LO
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 09:58:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708095530;
+ s=mimecast20190719; t=1708095531;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iKJuLnd1KADEdCkTYo6pt2VmMrtk06c3t+hzTZxHNgc=;
- b=h8vPSrZObhnffGkXkDaQwVljnXGAXPQ5X6uwwsGxHPMX+eM6BcTr5gUwUuA4q17ltKbHFQ
- ZDx6/z18bHKuPOkLIeGMT256TRdo39GONXwkjSHA0uAkdCpJ1TqErGs8IVjUmXoWOI3n9D
- hVyurjpUJJQJavOe21EOFB6D9WTdaJg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-x2SnygqoPsyAUi95Af9fgg-1; Fri,
- 16 Feb 2024 09:58:47 -0500
-X-MC-Unique: x2SnygqoPsyAUi95Af9fgg-1
+ bh=5MMrqr/SNoKBeu/Om0WtMCcuxdsDjLuibMSkHjALTVA=;
+ b=NseMHHnngm3dkBdPBy7uMQ8n/zhJE8RGTrjLVLFnO5jW2VRX7rxAhx56CQFytW0Jl0WNeL
+ cqZiZBabFXJPtvgel9xHoXFuAIaOWCmu0bdtnq09xENJhXYHD4WlBu4pSQNQxK4MplRRkp
+ 0suZwgyCIIDHD1vBJSV7D8l6Smo4oyc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-K1zHkioiNESKfrQFZoe0ag-1; Fri, 16 Feb 2024 09:58:48 -0500
+X-MC-Unique: K1zHkioiNESKfrQFZoe0ag-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2AAB33C000A2;
- Fri, 16 Feb 2024 14:58:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65EFA88D187;
+ Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 07F8C20110C4;
- Fri, 16 Feb 2024 14:58:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 438382026D06;
+ Fri, 16 Feb 2024 14:58:48 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0E39D21E668C; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
+ id 10F8921E669D; Fri, 16 Feb 2024 15:58:41 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, jsnow@redhat.com, eblake@redhat.com,
  peter.maydell@linaro.org
-Subject: [PATCH 01/16] tests/qapi-schema: Fix test 'QAPI rST doc'
-Date: Fri, 16 Feb 2024 15:58:25 +0100
-Message-ID: <20240216145841.2099240-2-armbru@redhat.com>
+Subject: [PATCH 02/16] tests/qapi-schema: Cover duplicate 'Features:' line
+Date: Fri, 16 Feb 2024 15:58:26 +0100
+Message-ID: <20240216145841.2099240-3-armbru@redhat.com>
 In-Reply-To: <20240216145841.2099240-1-armbru@redhat.com>
 References: <20240216145841.2099240-1-armbru@redhat.com>
 MIME-Version: 1.0
@@ -80,115 +80,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test compares Sphinx plain-text output against a golden reference.
-To work on Windows hosts, it filters out carriage returns in both
-files.  Unfortunately, the filter doesn't work: it creates an empty
-file.  Comparing empty files always succeeds.
+We don't actually recognize the second 'Features:' line.  Instead, we
+treat it as an untagged section.
 
-Fix the filter, and update the golden reference to current Sphinx
-output.
+If it was followed by feature description, we'd reject that like
+"description of '@feat2:' follows a section".  Less than clear.
+
+To be improved shortly.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- tests/qapi-schema/doc-good.txt | 21 +++++++++------------
- tests/qapi-schema/meson.build  | 10 ++++++----
- 2 files changed, 15 insertions(+), 16 deletions(-)
+ tests/qapi-schema/doc-duplicate-features.err  |  0
+ tests/qapi-schema/doc-duplicate-features.json | 11 ++++++++++
+ tests/qapi-schema/doc-duplicate-features.out  | 22 +++++++++++++++++++
+ tests/qapi-schema/meson.build                 |  1 +
+ 4 files changed, 34 insertions(+)
+ create mode 100644 tests/qapi-schema/doc-duplicate-features.err
+ create mode 100644 tests/qapi-schema/doc-duplicate-features.json
+ create mode 100644 tests/qapi-schema/doc-duplicate-features.out
 
-diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
-index b3b76bd43f..879f6ff50a 100644
---- a/tests/qapi-schema/doc-good.txt
-+++ b/tests/qapi-schema/doc-good.txt
-@@ -44,7 +44,7 @@ Values
- ~~~~~~
- 
- "one" (**If: **"IFONE")
--   The _one_ {and only}
-+   The _one_ {and only}, description on the same line
- 
- "two"
-    Not documented
-@@ -76,7 +76,7 @@ Members
- ~~~~~~~
- 
- "base1": "Enum"
--   the first member
-+   description starts on a new line, minimally indented
- 
- 
- If
-@@ -90,7 +90,9 @@ If
- 
- A paragraph
- 
--Another paragraph (but no "var": line)
-+Another paragraph
+diff --git a/tests/qapi-schema/doc-duplicate-features.err b/tests/qapi-schema/doc-duplicate-features.err
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/tests/qapi-schema/doc-duplicate-features.json b/tests/qapi-schema/doc-duplicate-features.json
+new file mode 100644
+index 0000000000..a4d559e740
+--- /dev/null
++++ b/tests/qapi-schema/doc-duplicate-features.json
+@@ -0,0 +1,11 @@
++# Duplicate 'Features:' line
 +
-+"var1" is undocumented
- 
- 
- Members
-@@ -141,7 +143,8 @@ Members
- ~~~~~~~
- 
- "i": "int"
--   an integer "b" is undocumented
-+   description starts on the same line remainder indented the same "b"
-+   is undocumented
- 
- "b": "boolean"
-    Not documented
-@@ -172,10 +175,10 @@ Arguments
- ~~~~~~~~~
- 
- "arg1": "int"
--   the first argument
-+   description starts on a new line, indented
- 
- "arg2": "string" (optional)
--   the second argument
-+   description starts on the same line remainder indented differently
- 
- "arg3": "boolean"
-    Not documented
-@@ -203,12 +206,6 @@ Returns
- "Object"
- 
- 
--TODO
--~~~~
--
--frobnicate
--
--
- Notes
- ~~~~~
- 
++##
++# @foo:
++#
++# Features:
++# @feat: mumble
++#
++# Features:
++##
++{ 'command': 'foo', 'features': ['feat'] }
+diff --git a/tests/qapi-schema/doc-duplicate-features.out b/tests/qapi-schema/doc-duplicate-features.out
+new file mode 100644
+index 0000000000..43bfe1034b
+--- /dev/null
++++ b/tests/qapi-schema/doc-duplicate-features.out
+@@ -0,0 +1,22 @@
++module ./builtin
++object q_empty
++enum QType
++    prefix QTYPE
++    member none
++    member qnull
++    member qnum
++    member qstring
++    member qdict
++    member qlist
++    member qbool
++module doc-duplicate-features.json
++command foo None -> None
++    gen=True success_response=True boxed=False oob=False preconfig=False
++    feature feat
++doc symbol=foo
++    body=
++
++    feature=feat
++mumble
++    section=None
++Features:
 diff --git a/tests/qapi-schema/meson.build b/tests/qapi-schema/meson.build
-index af085f745d..44a9385563 100644
+index 44a9385563..4c714c792f 100644
 --- a/tests/qapi-schema/meson.build
 +++ b/tests/qapi-schema/meson.build
-@@ -273,15 +273,17 @@ if build_docs
-                                     output: ['doc-good.txt.nocr'],
-                                     input: qapi_doc_out[0],
-                                     build_by_default: true,
--                                    command: [remove_cr, '@INPUT@'],
--                                    capture: true)
-+                                    command: [remove_cr],
-+                                    capture: true,
-+                                    feed: true)
- 
-   qapi_doc_ref_nocr = custom_target('QAPI rST doc reference newline-sanitized',
-                                     output: ['doc-good.ref.nocr'],
-                                     input: files('doc-good.txt'),
-                                     build_by_default: true,
--                                    command: [remove_cr, '@INPUT@'],
--                                    capture: true)
-+                                    command: [remove_cr],
-+                                    capture: true,
-+                                    feed: true)
- 
-   test('QAPI rST doc', diff, args: ['-u', qapi_doc_ref_nocr[0], qapi_doc_out_nocr[0]],
-        suite: ['qapi-schema', 'qapi-doc'])
+@@ -66,6 +66,7 @@ schemas = [
+   'doc-bad-union-member.json',
+   'doc-before-include.json',
+   'doc-before-pragma.json',
++  'doc-duplicate-features.json',
+   'doc-duplicated-arg.json',
+   'doc-duplicated-return.json',
+   'doc-duplicated-since.json',
 -- 
 2.43.0
 
