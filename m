@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED7A858509
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 19:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E59858529
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 Feb 2024 19:29:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb2rK-0007fB-OC; Fri, 16 Feb 2024 13:22:50 -0500
+	id 1rb2wj-0001MW-Nn; Fri, 16 Feb 2024 13:28:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rb2rI-0007eu-VJ
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 13:22:48 -0500
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rb2wh-0001M9-Mm
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 13:28:23 -0500
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rb2rH-0007Xr-6n
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 13:22:48 -0500
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6e10e50179bso1761802b3a.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 10:22:46 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atp.exp@gmail.com>) id 1rb2wf-0000Ca-C5
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 13:28:23 -0500
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-561587ce966so4608127a12.1
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 10:28:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708107765; x=1708712565; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mA+oIB66oyv0PhDsgns6Ewek9FofOXKVahYSdpTmAD4=;
- b=nacuMwkZ5AiIPrWGbIgqmOxYDS5D6h5nFlCm12nhCKVxQe6KT4Aue+ihtJDOYZuF6x
- v+VJWprp5dG7opuQQ2pYnUOVhq/Kf3jsSxahBEcfevP92pXpnm/rt2dOL9/F1TDvl0xm
- YYDCLfgSDOod7kUz8FgcY3OTFSfxXL5hXN/6L8KG12AXxobdmtE6aypQ+3GtuigUiiPa
- pEnjklbhr3X6gZA8mc8dPBIdjuvYFWJK2d3OlPX/yzlaV/t9jW1LMOPda4x1Zx6timRl
- YUzXrv0nrxvaLOrXP7orV+kalfKkc/y+m2HtqrKXWn5Eld6iyIoXBKf+U0/VXDP/+TG2
- h8ew==
+ d=gmail.com; s=20230601; t=1708108100; x=1708712900; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=DJ0t8fvwnXYArPF6SETHJu24qQTbp+OjjRffsTqS8fY=;
+ b=UaXWGfgACYrnX8Px1y5y6bAhDq/neBJw5hJnOkfWDaODxamvxmj7KFmyqYo/UOfkXc
+ L3+ouZVR49GKJhsMtw4OO7RjJ98BFUgYSeze0+WKAK/X0VYeUuXqMVFyowiVfwGD50gM
+ ng5ViBOaPF0U+71bgikWUA+CnCpQyxblKozwCgnUNd1Mr3Pbvb6HlG4DJL+GVxuW63X4
+ LB4nACL0mHaJSPRv5ZcaoXLf0BYjz82AyFqaREnEb/2uiuu5Oakd9W+/IxD5WeSAOj41
+ fX/xtqoe98n7IbxQtuOyzzBuGFgMzmcJ/r1WErWwpQL9clfcs3bjeGflT26ajFVgYvI6
+ mU9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708107765; x=1708712565;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mA+oIB66oyv0PhDsgns6Ewek9FofOXKVahYSdpTmAD4=;
- b=hxq4l+Oi70e/d2dKI1HGIKNvYVLLr+VZNqr1IQse7VBndFJjcGIbe9gnIJXO0kHjwA
- qul/L+1ua9xP8tCwAt9TlHZI1inzr6mCu9CMzAeCYbiUldBzmc1wiiiyaXu8EOIeUAJR
- ij0+GYq0+KmIkXh9a4M7MaUdoAIqC1TQtAhQPtUUx67F8ipmrYlCEUqNW+UHwjV0EwhK
- HMd3oLwCkfBmxui33euGjqEppLQSuN4PKgotze37TCQtLgJ9Q8GLMV9M7KCDn5b0Gd7X
- Bgm9ab4YfpqW/P5HxSpKwwnfufKvJYMxvZMcJqkU7BDs5vtt7G37SvguKvbk5tPMi/js
- 8BRA==
-X-Gm-Message-State: AOJu0Yzc/2B1+576YlmuCNrb+eWgYDVxvyMji5j8diiWqWSXg7U6yYWR
- 9YiTpU2EOOSxBaJ9ezzZp1QJiJl9L0/57asNkcOkDTIZoKaNY0br
-X-Google-Smtp-Source: AGHT+IF7ItT+UiwAjNJo2gcUy85doJ0IrevLpgL3TAKMOoBw1svivBRBtexkTsAiJhBpIKEEV2kzZQ==
-X-Received: by 2002:a05:6a20:9396:b0:19e:9f2d:9825 with SMTP id
- x22-20020a056a20939600b0019e9f2d9825mr7650393pzh.49.1708107765432; 
- Fri, 16 Feb 2024 10:22:45 -0800 (PST)
-Received: from debian ([2601:641:300:14de:f1a:387c:5c5c:3099])
- by smtp.gmail.com with ESMTPSA id
- v17-20020aa799d1000000b006e09ec69d7dsm259455pfi.98.2024.02.16.10.22.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 10:22:45 -0800 (PST)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Fri, 16 Feb 2024 10:22:32 -0800
-To: shiju.jose@huawei.com
-Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
- jonathan.cameron@huawei.com, tanxiaofei@huawei.com,
- prime.zeng@hisilicon.com, linuxarm@huawei.com, fan.ni@samsung.com
-Subject: Re: [PATCH v3 1/3] hw/cxl/cxl-mailbox-utils: Add support for feature
- commands (8.2.9.6)
-Message-ID: <Zc-n6EBBPRaEFlDC@debian>
-References: <20240215110146.1444-1-shiju.jose@huawei.com>
- <20240215110146.1444-2-shiju.jose@huawei.com>
+ d=1e100.net; s=20230601; t=1708108100; x=1708712900;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DJ0t8fvwnXYArPF6SETHJu24qQTbp+OjjRffsTqS8fY=;
+ b=vspCDGGKtVyMiYffYW5Ue2BhoyhXuI72t0qDQ4VUOxHWhPzgprLYsUSPUMUIg2pZRN
+ siH4AkpjFF2UumyY1i8gDRQx2HqPsuLQRTZK7klTKApHFFXinLg2C7FfCBRrykEbd0cX
+ wiauWK2jjQUj+spCF0tL3bLxoy9TvqbkEp4mFTUQdlpcBZN57aJr0jnCSDJNq1FyG13W
+ sQG5VFRAG+V0LPG7P3ovqMOQ/lMvIBIIDTaPxsVPz0NO6wEfE9NmGysmrU7Ll+VPgywm
+ znvAVohF1zwUshqIFsTu13j2v8Z77Cje163n4JGam/B1SBDCCu2EDzgWAwNgGgpqKPot
+ eDUQ==
+X-Gm-Message-State: AOJu0YzFDR4IcT4o0E2EsfaZlOW9Q+T1iX/Kl68avroho4l4BszoZxCx
+ x+B548bqXhJBIHZcHbMgxR/gmqmYtCqnrOUUntf6EmfLbl/LlDCCZjHfJXrfsfjKORqYWO5vI/4
+ YjX/2a5xVQI33weCeokX+sOCdKt4=
+X-Google-Smtp-Source: AGHT+IHcXeLEn3AwWoDH51T+I8OLardWiSzdgwIMoz3G1gLL2xNZL2pcdVZfXo5B/5w+aTnfxUYSFl+TZGqdUckajiQ=
+X-Received: by 2002:aa7:c49a:0:b0:563:3f38:ddc7 with SMTP id
+ m26-20020aa7c49a000000b005633f38ddc7mr4991634edq.14.1708108099645; Fri, 16
+ Feb 2024 10:28:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240215110146.1444-2-shiju.jose@huawei.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x435.google.com
+References: <20240216135137.8668-3-atp.exp@gmail.com>
+ <20240216135137.8668-4-atp.exp@gmail.com>
+ <CAFEAcA_D+rJys-YP3W3UkGM+RFkv+GsrXymqUDGEgOdSu+KKMg@mail.gmail.com>
+In-Reply-To: <CAFEAcA_D+rJys-YP3W3UkGM+RFkv+GsrXymqUDGEgOdSu+KKMg@mail.gmail.com>
+From: atp exp <atp.exp@gmail.com>
+Date: Fri, 16 Feb 2024 23:57:12 +0530
+Message-ID: <CAFgBtdGLFZZhD4XaNsKew+k667Dtpfv8y__B5aAfON8ifBntSg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] misc: m48t59: replace qemu_system_reset_request()
+ call with watchdog_perform_action()
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, clg@kaod.org, david@gibson.dropbear.id.au, 
+ harshpb@linux.ibm.com
+Content-Type: multipart/alternative; boundary="0000000000008473c4061183e883"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=atp.exp@gmail.com; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,225 +87,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 15, 2024 at 07:01:44PM +0800, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
-> CXL devices supports features with changeable attributes.
-> Get Supported Features retrieves the list of supported device specific
-> features. The settings of a feature can be retrieved using Get Feature and
-> optionally modified using Set Feature.
-> 
-> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+--0000000000008473c4061183e883
+Content-Type: text/plain; charset="UTF-8"
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+I agree, comment here is redundant, i will fix
+it in the next patch.
 
-> ---
->  hw/cxl/cxl-mailbox-utils.c | 175 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 175 insertions(+)
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 80a80f1ec2..f761ac49b5 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -66,6 +66,10 @@ enum {
->      LOGS        = 0x04,
->          #define GET_SUPPORTED 0x0
->          #define GET_LOG       0x1
-> +    FEATURES    = 0x05,
-> +        #define GET_SUPPORTED 0x0
-> +        #define GET_FEATURE   0x1
-> +        #define SET_FEATURE   0x2
->      IDENTIFY    = 0x40,
->          #define MEMORY_DEVICE 0x0
->      CCLS        = 0x41,
-> @@ -965,6 +969,165 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
->  }
->  
-> +/* CXL r3.1 section 8.2.9.6: Features */
-> +/*
-> + * Get Supported Features output payload
-> + * CXL r3.1 section 8.2.9.6.1 Table 8-96
-> + */
-> +typedef struct CXLSupportedFeatureHeader {
-> +    uint16_t entries;
-> +    uint16_t nsuppfeats_dev;
-> +    uint32_t reserved;
-> +} QEMU_PACKED CXLSupportedFeatureHeader;
-> +
-> +/*
-> + * Get Supported Features Supported Feature Entry
-> + * CXL r3.1 section 8.2.9.6.1 Table 8-97
-> + */
-> +typedef struct CXLSupportedFeatureEntry {
-> +    QemuUUID uuid;
-> +    uint16_t feat_index;
-> +    uint16_t get_feat_size;
-> +    uint16_t set_feat_size;
-> +    uint32_t attrb_flags;
-> +    uint8_t get_feat_version;
-> +    uint8_t set_feat_version;
-> +    uint16_t set_feat_effects;
-> +    uint8_t rsvd[18];
-> +} QEMU_PACKED CXLSupportedFeatureEntry;
-> +
-> +enum CXL_SUPPORTED_FEATURES_LIST {
-> +    CXL_FEATURE_MAX
-> +};
-> +
-> +/* Get Feature CXL 3.1 Spec 8.2.9.6.2 */
-> +/*
-> + * Get Feature input payload
-> + * CXL r3.1 section 8.2.9.6.2 Table 8-99
-> + */
-> +/* Get Feature : Payload in selection */
-> +enum CXL_GET_FEATURE_SELECTION {
-> +    CXL_GET_FEATURE_SEL_CURRENT_VALUE,
-> +    CXL_GET_FEATURE_SEL_DEFAULT_VALUE,
-> +    CXL_GET_FEATURE_SEL_SAVED_VALUE,
-> +    CXL_GET_FEATURE_SEL_MAX
-> +};
-> +
-> +/* Set Feature CXL 3.1 Spec 8.2.9.6.3 */
-> +/*
-> + * Set Feature input payload
-> + * CXL r3.1 section 8.2.9.6.3 Table 8-101
-> + */
-> +typedef struct CXLSetFeatureInHeader {
-> +        QemuUUID uuid;
-> +        uint32_t flags;
-> +        uint16_t offset;
-> +        uint8_t version;
-> +        uint8_t rsvd[9];
-> +} QEMU_PACKED QEMU_ALIGNED(16) CXLSetFeatureInHeader;
-> +
-> +/* Set Feature : Payload in flags */
-> +#define CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MASK   0x7
-> +enum CXL_SET_FEATURE_FLAG_DATA_TRANSFER {
-> +    CXL_SET_FEATURE_FLAG_FULL_DATA_TRANSFER,
-> +    CXL_SET_FEATURE_FLAG_INITIATE_DATA_TRANSFER,
-> +    CXL_SET_FEATURE_FLAG_CONTINUE_DATA_TRANSFER,
-> +    CXL_SET_FEATURE_FLAG_FINISH_DATA_TRANSFER,
-> +    CXL_SET_FEATURE_FLAG_ABORT_DATA_TRANSFER,
-> +    CXL_SET_FEATURE_FLAG_DATA_TRANSFER_MAX
-> +};
-> +
-> +/* CXL r3.1 section 8.2.9.6.1: Get Supported Features (Opcode 0500h) */
-> +static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-> +                                             uint8_t *payload_in,
-> +                                             size_t len_in,
-> +                                             uint8_t *payload_out,
-> +                                             size_t *len_out,
-> +                                             CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint32_t count;
-> +        uint16_t start_index;
-> +        uint16_t reserved;
-> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_in = (void *)payload_in;
-> +
-> +    struct {
-> +        CXLSupportedFeatureHeader hdr;
-> +        CXLSupportedFeatureEntry feat_entries[];
-> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_out = (void *)payload_out;
-> +    uint16_t index;
-> +    uint16_t entry, req_entries;
-> +    uint16_t feat_entries = 0;
-> +
-> +    if (get_feats_in->count < sizeof(CXLSupportedFeatureHeader) ||
-> +        get_feats_in->start_index > CXL_FEATURE_MAX) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +    req_entries = (get_feats_in->count -
-> +                   sizeof(CXLSupportedFeatureHeader)) /
-> +                   sizeof(CXLSupportedFeatureEntry);
-> +    req_entries = MIN(req_entries, CXL_FEATURE_MAX);
-> +    index = get_feats_in->start_index;
-> +
-> +    entry = 0;
-> +    while (entry < req_entries) {
-> +        switch (index) {
-> +        default:
-> +            break;
-> +        }
-> +        index++;
-> +        entry++;
-> +    }
-> +
-> +    get_feats_out->hdr.nsuppfeats_dev = CXL_FEATURE_MAX;
-> +    get_feats_out->hdr.entries = feat_entries;
-> +    *len_out = sizeof(CXLSupportedFeatureHeader) +
-> +                      feat_entries * sizeof(CXLSupportedFeatureEntry);
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
-> +/* CXL r3.1 section 8.2.9.6.2: Get Feature (Opcode 0501h) */
-> +static CXLRetCode cmd_features_get_feature(const struct cxl_cmd *cmd,
-> +                                           uint8_t *payload_in,
-> +                                           size_t len_in,
-> +                                           uint8_t *payload_out,
-> +                                           size_t *len_out,
-> +                                           CXLCCI *cci)
-> +{
-> +    struct {
-> +        QemuUUID uuid;
-> +        uint16_t offset;
-> +        uint16_t count;
-> +        uint8_t selection;
-> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feature;
-> +    uint16_t bytes_to_copy = 0;
-> +
-> +    get_feature = (void *)payload_in;
-> +
-> +    if (get_feature->selection != CXL_GET_FEATURE_SEL_CURRENT_VALUE) {
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +    if (get_feature->offset + get_feature->count > cci->payload_max) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    *len_out = bytes_to_copy;
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
-> +/* CXL r3.1 section 8.2.9.6.3: Set Feature (Opcode 0502h) */
-> +static CXLRetCode cmd_features_set_feature(const struct cxl_cmd *cmd,
-> +                                           uint8_t *payload_in,
-> +                                           size_t len_in,
-> +                                           uint8_t *payload_out,
-> +                                           size_t *len_out,
-> +                                           CXLCCI *cci)
-> +{
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  /* CXL r3.1 Section 8.2.9.9.1.1: Identify Memory Device (Opcode 4000h) */
->  static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
->                                               uint8_t *payload_in,
-> @@ -2166,6 +2329,18 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
->      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
->                                0, 0 },
->      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-> +    [FEATURES][GET_SUPPORTED] = { "FEATURES_GET_SUPPORTED",
-> +                                  cmd_features_get_supported, 0x8, 0 },
-> +    [FEATURES][GET_FEATURE] = { "FEATURES_GET_FEATURE",
-> +                                cmd_features_get_feature, 0x15, 0 },
-> +    [FEATURES][SET_FEATURE] = { "FEATURES_SET_FEATURE",
-> +                                cmd_features_set_feature,
-> +                                ~0,
-> +                                (CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> +                                 CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-> +                                 CXL_MBOX_IMMEDIATE_POLICY_CHANGE |
-> +                                 CXL_MBOX_IMMEDIATE_LOG_CHANGE |
-> +                                 CXL_MBOX_SECURITY_STATE_CHANGE)},
->      [IDENTIFY][MEMORY_DEVICE] = { "IDENTIFY_MEMORY_DEVICE",
->          cmd_identify_memory_device, 0, 0 },
->      [CCLS][GET_PARTITION_INFO] = { "CCLS_GET_PARTITION_INFO",
-> -- 
-> 2.34.1
-> 
+Abhiram
+
+On Fri, 16 Feb 2024 at 20:19, Peter Maydell <peter.maydell@linaro.org>
+wrote:
+
+> On Fri, 16 Feb 2024 at 13:56, Abhiram Tilak <atp.exp@gmail.com> wrote:
+> >
+> > A few watchdog devices use qemu_system_reset_request(). This is not
+> ideal since
+> > behaviour of watchdog-expiry can't be changed by QMP using
+> `watchdog_action`.
+> > As stated in BiteSizedTasks wiki page, instead of using
+> qemu_system_reset_request()
+> > to reset when a watchdog timer expires, let watchdog_perform_action()
+> decide
+> > what to do.
+> >
+> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2124
+> > Signed-off-by: Abhiram Tilak <atp.exp@gmail.com>
+> > ---
+> >  hw/rtc/m48t59.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
+> > index aa44c4b20c..ebda084478 100644
+> > --- a/hw/rtc/m48t59.c
+> > +++ b/hw/rtc/m48t59.c
+> > @@ -36,6 +36,7 @@
+> >  #include "qemu/bcd.h"
+> >  #include "qemu/module.h"
+> >  #include "trace.h"
+> > +#include "sysemu/watchdog.h"
+> >
+> >  #include "m48t59-internal.h"
+> >  #include "migration/vmstate.h"
+> > @@ -163,8 +164,7 @@ static void watchdog_cb (void *opaque)
+> >      if (NVRAM->buffer[0x1FF7] & 0x80) {
+> >          NVRAM->buffer[0x1FF7] = 0x00;
+> >          NVRAM->buffer[0x1FFC] &= ~0x40;
+> > -        /* May it be a hw CPU Reset instead ? */
+> > -        qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+> > +        watchdog_perform_action(); /* watchdog-expired action */
+> >      } else {
+>
+> I don't think we need the comment, it's clear enough from the
+> name of the function.
+>
+> Otherwise
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+>
+> thanks
+> -- PMM
+>
+
+--0000000000008473c4061183e883
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">I agree, comment here is redundant, i will fix<div>it in t=
+he next patch.</div><div><br></div><div>Abhiram</div></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 16 Feb 2024 =
+at 20:19, Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">pet=
+er.maydell@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
+4);padding-left:1ex">On Fri, 16 Feb 2024 at 13:56, Abhiram Tilak &lt;<a hre=
+f=3D"mailto:atp.exp@gmail.com" target=3D"_blank">atp.exp@gmail.com</a>&gt; =
+wrote:<br>
+&gt;<br>
+&gt; A few watchdog devices use qemu_system_reset_request(). This is not id=
+eal since<br>
+&gt; behaviour of watchdog-expiry can&#39;t be changed by QMP using `watchd=
+og_action`.<br>
+&gt; As stated in BiteSizedTasks wiki page, instead of using qemu_system_re=
+set_request()<br>
+&gt; to reset when a watchdog timer expires, let watchdog_perform_action() =
+decide<br>
+&gt; what to do.<br>
+&gt;<br>
+&gt; Resolves: <a href=3D"https://gitlab.com/qemu-project/qemu/-/issues/212=
+4" rel=3D"noreferrer" target=3D"_blank">https://gitlab.com/qemu-project/qem=
+u/-/issues/2124</a><br>
+&gt; Signed-off-by: Abhiram Tilak &lt;<a href=3D"mailto:atp.exp@gmail.com" =
+target=3D"_blank">atp.exp@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 hw/rtc/m48t59.c | 4 ++--<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c<br>
+&gt; index aa44c4b20c..ebda084478 100644<br>
+&gt; --- a/hw/rtc/m48t59.c<br>
+&gt; +++ b/hw/rtc/m48t59.c<br>
+&gt; @@ -36,6 +36,7 @@<br>
+&gt;=C2=A0 #include &quot;qemu/bcd.h&quot;<br>
+&gt;=C2=A0 #include &quot;qemu/module.h&quot;<br>
+&gt;=C2=A0 #include &quot;trace.h&quot;<br>
+&gt; +#include &quot;sysemu/watchdog.h&quot;<br>
+&gt;<br>
+&gt;=C2=A0 #include &quot;m48t59-internal.h&quot;<br>
+&gt;=C2=A0 #include &quot;migration/vmstate.h&quot;<br>
+&gt; @@ -163,8 +164,7 @@ static void watchdog_cb (void *opaque)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 if (NVRAM-&gt;buffer[0x1FF7] &amp; 0x80) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 NVRAM-&gt;buffer[0x1FF7] =3D 0x00;<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 NVRAM-&gt;buffer[0x1FFC] &amp;=3D ~0=
+x40;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* May it be a hw CPU Reset instead ? */<=
+br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_system_reset_request(SHUTDOWN_CAUSE_=
+GUEST_RESET);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 watchdog_perform_action(); /* watchdog-ex=
+pired action */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 } else {<br>
+<br>
+I don&#39;t think we need the comment, it&#39;s clear enough from the<br>
+name of the function.<br>
+<br>
+Otherwise<br>
+Reviewed-by: Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org" =
+target=3D"_blank">peter.maydell@linaro.org</a>&gt;<br>
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div>
+
+--0000000000008473c4061183e883--
 
