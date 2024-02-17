@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE977858F08
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 12:20:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC081858F18
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 12:33:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbIjC-0007Wj-10; Sat, 17 Feb 2024 06:19:30 -0500
+	id 1rbIvt-00052z-S6; Sat, 17 Feb 2024 06:32:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbIj3-0007Uk-On
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:22 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rbIvr-00052K-CD
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:32:35 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbIj1-0002h4-Hy
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:21 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1dba94f9201so13161295ad.0
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 03:19:19 -0800 (PST)
+ id 1rbIvp-0005OO-Li
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:32:35 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6e141a24ba1so797530b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 03:32:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708168758; x=1708773558;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708169552; x=1708774352;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Rh6E8zcXhleUApU9zQlOU01Crb6mmE2x6guB2DANNRU=;
- b=VJWFjK2obYlqpLRU6QCuL+4eIp9Qv+Xggml9aaN2/YjB92A3ETco82OTcj8vBAdJ/7
- DfATdrz0dxekXPRn1DPCegmFL2ie6YjJKSTZqKLrIj0xbthNfaCRFaeJ31RwiCOgRvR7
- QuoX/rqlfURI7aap/y2lMbvI6cnyY5EO0auxP/2LfYSrfy2kWfQN9+k9hNaB13YDhxBw
- 7BmtISpMpmCUqFvl12zVsUg2q2xScnOG/5a+53NECXlxEydvyIjpPtx3ir9HXKDh1qNP
- feMBIdIE2bxZtq1qGQCNnJdIx4PxnTl+Yi+Hr2EbH/7CRwu2YIZpR00NdkFP5+CksU8c
- loJA==
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WTP5WYoW38VAJ2M4rCrKOAagIbZy5xjZ6LLGHfBB8io=;
+ b=SM7rG1DcsG9c32SNvuUlChxjhdCge4NqBaO5CrxOV5Vvy4Dnnq7n0xUPsp9SlxwsPN
+ I793/FvVs9Za/NDT/qVy7hm5oxLOtiYjXsZnkq6lt3Q21djKRDWqzs3HzFyegKmN85mN
+ eR3LyPktZxHRTZiEXeroSIs4JSfWHFcys5gKh4197tFoGuE5z6sRG8QDgKAlWnpd3rj7
+ Ng536IeuSK9JWzbkKMwwEKxtBRacZXsnU2tTORgs/O2wkEOROaY+70w+v+Ho5AOIEBvM
+ F1QnopYG8jqEdYbp5HPVjqqWyCnCIRZ4lRuWylh5kTVHlK0uO0Ca7uEPcKil5TmhDDZd
+ bRFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708168758; x=1708773558;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Rh6E8zcXhleUApU9zQlOU01Crb6mmE2x6guB2DANNRU=;
- b=jqEe8ssHTI+hJf/76sNWdssE2pPuuzhHfS3ZOhATY4DeaZrP4M2oTG5mpd7V3+pTnY
- CH3/5T2zN5uSGYd4ekkwXUelQA0C8bJvaGMq+l8Apdgb8nEdohkTH6k6L2a4aDXaCnfc
- xelYJYcY5TxMFRY0Y4ch2Kj0BYKrbF99q3LorCllmGbt0OFF9hbj34/2imoEkhaPYbbl
- 8DUI3C2kLQkcOCrxCdGsXN5mST63aB/jxTSADJrYfkxoNINJqXOf0njYkaki7/e6U8fX
- gFwh0A+lSYwVQBCJN+ZzsoIKiOxp5LofMWMDbw5Hamiqubzt5M14WRx73pzOU8sb5wyy
- 6H6g==
-X-Gm-Message-State: AOJu0Yy9aWVqp/BUHNucp2TTyLQdgcRWHEke7BU9AzizyghCtIC30sM1
- gJp6lCyalNd+B9rvD0NKabc8B4ikvi2dsEBAbmUvfa3Oyjd6NDU/leC8aP7nbQY=
-X-Google-Smtp-Source: AGHT+IG5H0/MxAv32L/7aiqrpAU3y92JItd0nir3z896HPdvjyiO+V5cv0BQZh4i1BgVGLsdZryKTA==
-X-Received: by 2002:a17:902:ccc8:b0:1db:aef3:ac06 with SMTP id
- z8-20020a170902ccc800b001dbaef3ac06mr4666484ple.4.1708168758419; 
- Sat, 17 Feb 2024 03:19:18 -0800 (PST)
-Received: from localhost ([157.82.200.138])
- by smtp.gmail.com with UTF8SMTPSA id
- jw6-20020a170903278600b001d9620dd3fdsm1242592plb.206.2024.02.17.03.19.16
+ d=1e100.net; s=20230601; t=1708169552; x=1708774352;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WTP5WYoW38VAJ2M4rCrKOAagIbZy5xjZ6LLGHfBB8io=;
+ b=DhPzoCk6PNtgRJo+xGtNd7GAhgtLohXKqA/z6gZndYvd55NYRQPe0GhnYju6jwrsvq
+ qPy9iDxr1OPyx7upBztEwGP7B+C8McFRjZw4Y5k9cPb17MlTZTB3DnDhivlCrkc8MePC
+ 8RxNEUn0Vd4W+ml8tOWPkCFkQdReVezq9IjVX+Fu2SW0L+SSPmPVnBydfBTTTViVzSj8
+ H847xLWO5sJkF+Ds9Pphgk2YrwvZJkuQ+ebzoFUFqFKSgQGAGXRvCqKQlDdR9JfKxvQi
+ BeWep4adQ1pOvfbqNp34yVEq34QiMetGKxp1VTFrncrya2TLnJcRBS6/vEnRbR+JFDuN
+ oqfA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWIBt9WZdfIewPBZfZWN7kXuXVXqlwAqdzaKWHMrNHTQyfR2ggoe2DYPqMn19kTYSPB/LkVbRYsa2bqa7u3aIwHxp0DDJ4=
+X-Gm-Message-State: AOJu0YyqEbZ1mH/oRD/jrHaHu1EC+X1jd6hk8LzkHaYkRwJ8vxLqwgjq
+ elf1YROypNszmU2fxqZ+W6t4JfaoQ22NVwbwrtVz0+G4WeitT676bvKN33LUMn0=
+X-Google-Smtp-Source: AGHT+IG07X4pF+sFVVdjTHPAQaWI2uTPLIJIWWV8KWddAZbeRZtxQ6sGqFpzZrYC6V986ZVsQLUyuw==
+X-Received: by 2002:a05:6a21:150a:b0:19e:9885:1077 with SMTP id
+ nq10-20020a056a21150a00b0019e98851077mr7634259pzb.43.1708169552292; 
+ Sat, 17 Feb 2024 03:32:32 -0800 (PST)
+Received: from [157.82.200.138] ([157.82.200.138])
+ by smtp.gmail.com with ESMTPSA id
+ by41-20020a056a0205a900b005dc4ce8d2a4sm1203985pgb.58.2024.02.17.03.32.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Feb 2024 03:19:18 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 17 Feb 2024 20:18:52 +0900
-Subject: [PATCH v11 6/6] ui/cocoa: Remove stretch_video flag
+ Sat, 17 Feb 2024 03:32:32 -0800 (PST)
+Message-ID: <795247c3-f79b-4385-8bea-0de9c9a8d554@daynix.com>
+Date: Sat, 17 Feb 2024 20:32:27 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/9] pcie_sriov: Validate NumVFs
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20240214-reuse-v4-0-89ad093a07f4@daynix.com>
+ <20240214-reuse-v4-5-89ad093a07f4@daynix.com>
+ <bd6328d1-6568-4ac1-9be4-293bccc722e3@tls.msk.ru>
+ <56e83476-f607-482e-a9f2-e473148de839@daynix.com>
+ <0282c0e6-1e1b-4960-ad74-3e186062b4d7@tls.msk.ru>
+ <20240214105534-mutt-send-email-mst@kernel.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240214105534-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240217-cocoa-v11-6-0a17a7e534d4@daynix.com>
-References: <20240217-cocoa-v11-0-0a17a7e534d4@daynix.com>
-In-Reply-To: <20240217-cocoa-v11-0-0a17a7e534d4@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Marek Glogowski <smarkusg@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>, 
- Rene Engel <ReneEngel80@emailn.de>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,72 +109,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Evaluate [normalWindow styleMask] & NSWindowStyleMaskResizable instead.
+On 2024/02/15 0:55, Michael S. Tsirkin wrote:
+> On Wed, Feb 14, 2024 at 06:53:43PM +0300, Michael Tokarev wrote:
+>> Nope, I don't remember how to request a CVE ;)
+> 
+> https://www.qemu.org/contribute/security-process/
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- ui/cocoa.m | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+Thanks, I requested CVEs with the form.
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 81de8d92669b..401ed0c3f1f5 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -103,7 +103,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
- static int left_command_key_enabled = 1;
- static bool swap_opt_cmd;
- 
--static bool stretch_video;
- static NSTextField *pauseLabel;
- 
- static bool allow_events;
-@@ -533,7 +532,7 @@ - (void) resizeWindow
- {
-     [[self window] setContentAspectRatio:NSMakeSize(screen.width, screen.height)];
- 
--    if (!stretch_video) {
-+    if (!([[self window] styleMask] & NSWindowStyleMaskResizable)) {
-         [[self window] setContentSize:NSMakeSize(screen.width, screen.height)];
-         [[self window] center];
-     } else if ([[self window] styleMask] & NSWindowStyleMaskFullScreen) {
-@@ -1296,7 +1295,7 @@ - (BOOL)windowShouldClose:(id)sender
- 
- - (NSSize) window:(NSWindow *)window willUseFullScreenContentSize:(NSSize)proposedSize
- {
--    if (stretch_video) {
-+    if ([normalWindow styleMask] & NSWindowStyleMaskResizable) {
-         return [cocoaView fixZoomedFullScreenSize:proposedSize];
-     }
- 
-@@ -1377,8 +1376,7 @@ - (void)showQEMUDoc:(id)sender
- /* Stretches video to fit host monitor size */
- - (void)zoomToFit:(id) sender
- {
--    stretch_video = !stretch_video;
--    if (stretch_video == true) {
-+    if (([normalWindow styleMask] & NSWindowStyleMaskResizable) == 0) {
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-         [sender setState: NSControlStateValueOn];
-     } else {
-@@ -1650,7 +1648,7 @@ static void create_initial_menus(void)
-     menu = [[NSMenu alloc] initWithTitle:@"View"];
-     [menu addItem: [[[NSMenuItem alloc] initWithTitle:@"Enter Fullscreen" action:@selector(doToggleFullScreen:) keyEquivalent:@"f"] autorelease]]; // Fullscreen
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom To Fit" action:@selector(zoomToFit:) keyEquivalent:@""] autorelease];
--    [menuItem setState: stretch_video ? NSControlStateValueOn : NSControlStateValueOff];
-+    [menuItem setState: [normalWindow styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
-     [menu addItem: menuItem];
-     menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
-     [menuItem setSubmenu:menu];
-@@ -2036,7 +2034,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
-     }
- 
-     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
--        stretch_video = true;
-         [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-     }
- 
+QEMU doesn't have any list of features without security guarantee so I 
+think it's "kind" to have CVEs for any features though I would certainly 
+add igb and NVMe's SR-IOV feature to such a list if there is.
 
--- 
-2.43.1
-
+It should be harmless to have extra CVEs at least. Well, some may think 
+all CVEs serious but that's not my fault.
 
