@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F10858A44
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 00:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8C7858A76
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 01:03:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb7pn-0000Gq-Ev; Fri, 16 Feb 2024 18:41:35 -0500
+	id 1rb89S-0003LI-8x; Fri, 16 Feb 2024 19:01:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rb7pl-0000GQ-1N
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 18:41:33 -0500
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rb89M-0003K1-KM
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:01:48 -0500
+Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rb7pi-00039r-1n
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 18:41:32 -0500
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1d932f6ccfaso23222775ad.1
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 15:41:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1rb89K-0007uj-ON
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:01:48 -0500
+Received: by mail-il1-x130.google.com with SMTP id
+ e9e14a558f8ab-364f791a428so8029455ab.3
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 16:01:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708126888; x=1708731688; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jwJliLzzSPsuR5Z0D9JOXgOfg9pAXkc03kqnwYAdu+4=;
- b=s/cA3y4yDw4jGoNgHZ3tv9KaQK7of+meQetX5lKhrL5BErLPOeTUE3ARG2+lVIW4ze
- 3EBPdKj2zi66pHJPQzi4Uqa7GJ2OVu+fu7DPp/El/LBhQE6O/bh8OQIYhztVR0AFjYBk
- mujXlf0ym/nBrpgFy5849uyPf5qBEDhYZvlV85MGH8kajZ7yuS/1pmRHT4SqHxrWRdnc
- +MgzQOsVDXOM2jtvYjh2njAFQMtENqvLDQ/YFvRjnx+gmyBEyWHP+QhjTrAR6qO3y+D0
- 3wswqcDPASrevEoh7kfVo5P7k84BqIgyocpGsibV081N701IWjsqhzdl+xkQtAnz08j1
- Gs8w==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708128104; x=1708732904;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RmJP/XsKmdBCkZjvOUwE5P+Vu/3VBxfi41f/YMPCv3k=;
+ b=cXsq7+Arz3+BVbCRjr4rJxDwtx1ljdkgsxQFDEJmJdFkUcD+INEiDbRXaRt6Hnq3yE
+ MOTo4oVozozubAXjoefiPWr/ZuCgt7HdmJCm+Mx+lIz+hxmwKVvB9VQrlTWAWRniQEUi
+ FuAwkk/2+xuOTywXEFiAhRYmz1aZ+GISRR1i/pcWmktkfR1a4Dy8fVB2+HSrPfyhgihv
+ asLe1xVC5fFmrG3J+ptJhg7nNPhcL1LApxGSOvv4suVsPkcI/D+8JI978MEUV5RBh+S2
+ 0nXR3H0WkdeYnuXND67xSg5JnvAd4oKlhtbQ6O48l7cPX9PeOyamNpVcp3BwJ4t6UQze
+ NTJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708126888; x=1708731688;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jwJliLzzSPsuR5Z0D9JOXgOfg9pAXkc03kqnwYAdu+4=;
- b=dcEZxF3evxLU4Dfq0eB+Q7y1tEHDr65E2xJv1ZfE9m4C2n9kXXw17Kt8B51msWjlyK
- X/RvPTfwuI0TiBHp6K9j7x9MdBM1KbeMbo2ZxLTHwIZQO1fg/zGszhY1qPfb+kd/ylGm
- ghFRTYfsiz9S2D4cLj11OVN4BnaQS8bZaOE9BlBzf+ppLMsT/jaEIAaIjYTgt/m11BN7
- ZiKXLuDw+m//+iRV0ipvQqubUE13AA/DxUV/JBjAEO0orcBNO6sFfKnFX/XlDE9pNohF
- iXiCc8R8A1t2kLdICtS/heL0Du53SdSH2ToX2cng+JUQwxD7WkNwYAdAGvuPcnqpLrgH
- Dpfw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVANaki8BsKAbkBoZo8xVj0wKwb8uPf7qcUrWmUWs5lVkDTsnqlcj7bpG0IsGpIOSEIsBVyW/xQ1vU7rUt2bdfWmu4tWoo=
-X-Gm-Message-State: AOJu0YzeIeCFlgsHOdDEPJsjYUlgtlN6/Mv30tDQxMDij9Npa7DqMZYP
- jwIvt8ErEolIuLIiqCe+FeoXnkDE9hH71fpEv/TB9i0xDrl/6AcUgLg2wkmQEVM=
-X-Google-Smtp-Source: AGHT+IGrYUxxYGAz4FemdT2uQ8TF9/BNUNqDwcCdtVZncY32t0yYCGRuX67O5BfMpqPixe1KJ2HkyA==
-X-Received: by 2002:a17:902:d349:b0:1d9:8ac8:d79d with SMTP id
- l9-20020a170902d34900b001d98ac8d79dmr6571710plk.19.1708126888267; 
- Fri, 16 Feb 2024 15:41:28 -0800 (PST)
-Received: from [192.168.20.227] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- c24-20020a170902d91800b001db68d6c4d7sm374638plz.287.2024.02.16.15.41.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 16 Feb 2024 15:41:27 -0800 (PST)
-Message-ID: <59b52f47-43a3-4f67-97e8-86e31db8746c@linaro.org>
-Date: Fri, 16 Feb 2024 13:41:21 -1000
+ d=1e100.net; s=20230601; t=1708128104; x=1708732904;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RmJP/XsKmdBCkZjvOUwE5P+Vu/3VBxfi41f/YMPCv3k=;
+ b=mpmY+93MU0NeW7ThFXqS8fHIYacujXkeazDwmqxg5Vy093elT8tDj0ObcamwnwSJJk
+ CLPzv9+bslMWwY7M3vEV9NUEnMsFkUFq1pEITcu6JaqrHPSFuMGyAQGhoN1nc0iUb0Nh
+ KgN4XUqbq3VxpoxFp/F6SzXsG7w9cG+qm+a3jneENbZ6z0tBG3AKq0mE/wrJ6G5jxLM8
+ rgoGNbZW/zQPA2VTym+kJKokaC37GYv2CNYgCRDtyBROHC0xC185UI5hdidOFBwZJEgf
+ wfAlDjvRtJqbcZbKOZmJOtzhh+M6G0QI/RJ3LWC9Y7ZX3Nujb/4tpkVokyx+O9eyj1pP
+ he3w==
+X-Gm-Message-State: AOJu0YwH+SzxZwZKOw1sEVd/VJXsC6VZF5VSFyDjicsjAlLKyalGTBsN
+ NwZm+dE6E4P3cn8ugCodLSJMUXj4rS70kAEUqkSbE/LFZ/eGbytYDuT/rRzpa9FMFfNTFVB95LO
+ z
+X-Google-Smtp-Source: AGHT+IFpDVPqtLOzLzaW0v+WcbEo8qx69oThBxtXGiDdQ6GxUTUzdgMfzhCs9X8OX/MYi3AqJzBanA==
+X-Received: by 2002:a92:c006:0:b0:363:b1e7:ed18 with SMTP id
+ q6-20020a92c006000000b00363b1e7ed18mr6199987ild.16.1708128104288; 
+ Fri, 16 Feb 2024 16:01:44 -0800 (PST)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ p13-20020a635b0d000000b005d66caee3d0sm464015pgb.22.2024.02.16.16.01.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 16 Feb 2024 16:01:43 -0800 (PST)
+From: Atish Patra <atishp@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, kaiwenxue1@gmail.com
+Subject: [PATCH RFC 0/8] Add Counter delegation ISA extension support 
+Date: Fri, 16 Feb 2024 16:01:26 -0800
+Message-Id: <20240217000134.3634191-1-atishp@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] target/riscv/translate.c: set vstart_eq_zero in
- mark_vs_dirty()
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com, Ivan Klokov <ivan.klokov@syntacore.com>
-References: <20240216135719.1034289-1-dbarboza@ventanamicro.com>
- <20240216135719.1034289-4-dbarboza@ventanamicro.com>
- <16087154-b3d2-4cab-938f-4a04fc8dd166@linaro.org>
- <04a3c3d3-fc2f-4b1e-9845-f5345e062c7b@ventanamicro.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <04a3c3d3-fc2f-4b1e-9845-f5345e062c7b@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
+ envelope-from=atishp@rivosinc.com; helo=mail-il1-x130.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,73 +95,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/16/24 12:40, Daniel Henrique Barboza wrote:
-> After reading the reviews of patches 1 and 3 what I'm considering here is:
-> 
-> 1 - drop patch 1;
+This series adds the counter delegation extension support. The counter
+delegation ISA extension(Smcdeleg/Ssccfg) actually depends on multiple ISA
+extensions.
 
-Ok.
+1. S[m|s]csrind : The indirect CSR extension[1] which defines additional
+   5 ([M|S|VS]IREG2-[M|S|VS]IREG6) register to address size limitation of
+   RISC-V CSR address space.
+2. Smstateen: The stateen bit[60] controls the access to the registers
+   indirectly via the above indirect registers.
+3. Smcdeleg/Ssccfg: The counter delegation extensions[2]
 
-> 2 - there's a patch from Ivan Klokov sent 2 months ago:
-> 
-> "[PATCH 1/1] target/riscv: Clear vstart_qe_zero flag"
-> https://lore.kernel.org/qemu-riscv/20231214111851.142532-1-ivan.klokov@syntacore.com/
-> 
-> His patch is closer to what you suggested than mine. He already renamed mark_vs_dirty()
-> to finalize_rvv_inst() and made it set start_eq_zero unconditionally. It needs a
-> little work (i.e. remove the ifds from the function) that I'll do myself.
-> 
-> 3 - I'll keep patch 2 to reduce the redundant calls to the now finalize_rvv_inst();
+The counter delegation extension allows Supervisor mode to program the
+hpmevent and hpmcounters directly without needing the assistance from the
+M-mode via SBI calls. This results in a faster perf profiling and very
+few traps. This extension also introduces a scountinhibit CSR which allows
+to stop/start any counter directly from the S-mode. As the counter
+delegation extension potentially can have more than 100 CSRs, the specificaiton
+leverages the indirect CSR extension to save the precious CSR address range.
 
-Ok.
+Due to the dependancy of these extensions, the following extensions must be
+enabled to use the counter delegation feature in S-mode.
 
-> 4 - Add another patch to through all "gen_set_label(over)" cond branches and set
-> vstart = 0 && vstart_eq_zero manually when we're doing the jump.
-> 
-> In fact, shouldn't we return earlier if we're not taking the branch? Otherwise
-> we'll set vstart twice in case we didn't get the branch. E.g:
-> 
->        TCGLabel *over = gen_new_label();
->        tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
->        (...)
->        finalize_rvv_insn();
->        return true;
-> 
->        gen_set_label(over);
->        /* some TCG ops to set cpu_vstart to zero. Perhaps a helper?  */
->        s->vstart_eq_zero = true;
->        return true;
+"smstateen=true,sscofpmf=true,ssccfg=true,smcdeleg=true,smcsrind=true,sscsrind=true"
 
-That will break, of course, because you wouldn't emit 'over'.
-You really need to get translation-time and run-time separate in your head.
+This makes the qemu command line quite tedious. In stead of that, I think we
+can enable these features by default if there is no objection.
 
-That said, I think these brcond(vstart >= vl) are a mistake.
-The loops within the helpers are generally of the form
+The first 2 patches decouple the indirect CSR usage from AIA implementation
+while patch3 adds stateen bits validation for AIA.
+The PATCH4 implements indirect CSR extensions while remaining patches
+implement the counter delegation extensions.
 
-     for (i = env->vstart; i < evl; i++, env->vstart++) {
+The Qemu patches can be found here:
+https://github.com/atishp04/qemu/tree/counter_delegation_rfc
 
-which will operate just fine with vstart >= vl, iterating zero times.
-We will then fall through to the post-insn cleanup,
+The opensbi patch can be found here:
+https://github.com/atishp04/opensbi/tree/counter_delegation_v1
 
-     env->vstart = 0;
-     vext_set_tail_elems_1s(evl, vd, desc, nf, esz, max_elems);
+The Linux kernel patches can be found here:
+https://github.com/atishp04/linux/tree/counter_delegation_rfc
 
-or whatever.
+[1] https://github.com/riscv/riscv-indirect-csr-access
+[2] https://github.com/riscv/riscv-smcdeleg-ssccfg
 
-I would expect the condition vstart >= vl to never happen in practice.  I believe the only 
-way to induce it is an explicit write to vstart.  Therefore I think you should not attempt 
-to "optimize away" the call to the helper.
+Atish Patra (1):
+target/riscv: Enable S*stateen bits for AIA
 
-Of course you will want to double-check all of the loop iterations in the associated 
-helpers when removing the branches.
+Kaiwen Xue (7):
+target/riscv: Add properties for Indirect CSR Access extension
+target/riscv: Decouple AIA processing from xiselect and xireg
+target/riscv: Support generic CSR indirect access
+target/riscv: Add smcdeleg/ssccfg properties
+target/riscv: Add counter delegation definitions
+target/riscv: Add select value range check for counter delegation
+target/riscv: Add counter delegation/configuration support
 
+target/riscv/cpu.c      |   8 +
+target/riscv/cpu.h      |   1 +
+target/riscv/cpu_bits.h |  34 +-
+target/riscv/cpu_cfg.h  |   4 +
+target/riscv/csr.c      | 713 +++++++++++++++++++++++++++++++++++++---
+target/riscv/machine.c  |   1 +
+6 files changed, 722 insertions(+), 39 deletions(-)
 
-r~
+--
+2.34.1
 
-
-PS: I believe a better form for the ldst loops is
-
-     for (i = env->vstart; i < evl; env->vstart = ++i)
-
-to avoid re-reading from vstart each iteration.
 
