@@ -2,78 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD75859208
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 20:22:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D936485920C
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 20:27:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbQGE-0000dn-A7; Sat, 17 Feb 2024 14:22:06 -0500
+	id 1rbQKM-0001iz-77; Sat, 17 Feb 2024 14:26:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rbQG9-0000dR-7G
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:22:02 -0500
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rbQKI-0001iS-QM
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:19 -0500
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rbQG4-0003qs-FI
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:22:00 -0500
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e09493eb8eso3266063b3a.1
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 11:21:55 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rbQKH-0004Mh-6B
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:18 -0500
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dba6b9b060so11572565ad.1
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 11:26:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708197714; x=1708802514; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eczxQgv+wMObP9nnFw7Pxw9/NkNNXGOMAeQZ/VT3Rk0=;
- b=TlJr29cyVyuo9h9O7ydgWIxTk+qO2vIxoeSOeIHZM+8wR+Bk/4AnEuehLmUhkRQL9Y
- aRWtaE+4cdgx9Hgo33SP/n5hekaI9fZMY82Jy/uROFLqAdK2u7iJv+RgMr0498828bqt
- AhW2gkWy7E0aPQgHBaeqSlt+DJkBts2lYKSIuoJ5dvX0fIAI2K8bDiTy1B3jmmKS+p25
- KLx/w40hj4AfvgFAXuCm7B9tl/CGUUbHHOcLoekHhrWYNr+p+V8az0DN5dBMsNZDIQzO
- wlAxuQx8656UTp5eqrNzrO6zbx03TuPOAlemgiSsiAwSEl5QBnNtjZIiwZjhMx1y+n13
- nv8Q==
+ d=ventanamicro.com; s=google; t=1708197974; x=1708802774; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AK/24FGUB+ScKMfTMHjDwhW82/kkOGAu43XiMr4h06A=;
+ b=Ay7xbQcBgzcOX5oHu2VjrgjjTW0SifZ4r2n9XKaEn2poOZoYcCeQjG8Z+1M8JQnmzh
+ clgO36zRCWCNzUDYGh5D66YHSOq6kP4fYRZR6wAQqbPVTI/uz5tgLPgCxOHRze2nGGSL
+ MIHva79hJnxSEqX4FmdnJJO5C+L1foTAv7UXYb7DsE7gb+0211fMDT3U5AVj5q+OrBCQ
+ 3RcUCkp5/T+kBA6aqhOy7E2iuDkIZV+RLaSqRK9vU3PhlrTUOgvGiDOWSNFIycRwmeEA
+ GDE40Q2THcrjpq3zNQh2kE7aAFWR2ub+8yAeX66vDB8lIUz/4bZiHidhjbnv8/zc354R
+ FFJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708197714; x=1708802514;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eczxQgv+wMObP9nnFw7Pxw9/NkNNXGOMAeQZ/VT3Rk0=;
- b=dGmK+f/fJeeO4RNSd9VADtEFjNHHXb6wh+quYEPVa+C+zyBdaFBlB8+WojDUzzsw5q
- rdtI6+rRJYCATVdxs2zT0PBvBS6HBZZ7u6TicnSF7KVMlcGgTzuRKZbjaaQjQwHOk/Ne
- hHkGwJr56aRSnrAoioI+ojkpy3jcD6g3S3sbpgBditD4tD3LZeKb0rRsKOXkMz3cn7og
- l2jAmyWcWFh4LlOjOeYO3hFiL0u1+rgeiCy+8P6IuqtDev4XHLLP38L1SIF1EyvQxdWT
- MOAElx+HqGpni/ANg3yeIdx8ye+mEu5y10OUADXBM3HHQdhZbLtp1Z2uAbS7eW5bVnib
- /ckg==
-X-Gm-Message-State: AOJu0YxkHGTB+Jbt0m3/KvUPEje+TxTDC9RQ5DuWq5rwtdgCGSb1ljlY
- EtyahzgpPOCTZmqFxKHkFJC5iAMQHxvmEzY0rmMmhsuWJyghYmSE6FNznnAy1gvpkKYFDfXsgfA
- R
-X-Google-Smtp-Source: AGHT+IGYwT8gE9Pj4nAfgEJ3e/hAtzSXIGjFurWTt7QFey6s0FwABy4cJJLe9gjuF3yW+XmJfORXYg==
-X-Received: by 2002:a05:6a20:9592:b0:19e:5e0c:3bb8 with SMTP id
- iu18-20020a056a20959200b0019e5e0c3bb8mr12141028pzb.7.1708197714198; 
- Sat, 17 Feb 2024 11:21:54 -0800 (PST)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- b9-20020aa78109000000b006e08da9c29csm1998147pfi.54.2024.02.17.11.21.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Feb 2024 11:21:53 -0800 (PST)
-Message-ID: <ba0548c4-d47c-4bf0-8f27-1f753b41b603@linaro.org>
-Date: Sat, 17 Feb 2024 09:21:50 -1000
+ d=1e100.net; s=20230601; t=1708197974; x=1708802774;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AK/24FGUB+ScKMfTMHjDwhW82/kkOGAu43XiMr4h06A=;
+ b=IsOJPs7F3+6RRb0rqHHH/QY31Zkoj96hJqKuIrvSygW6wnaEgu6UtwamneSkHGxIxd
+ bSQdlovCXdUNKrN9XHSXxXT84gff9YaKh5rhZsaK/0M4IPmh77L/Sp1rkbO/2RYoHhy6
+ rdR1KDCN6nnKtMEtUgjeYDzlgSWn2qVFrtso+oza4zOIfLalsCUB/CE4hh368pTmtdKt
+ vxZToEgOkiIjvuH8H0YAyx3DspqX0WImtMuq/jkJI8qP1d8ju1RcXfMWPwRGt+2AdpE1
+ 7j3KKkwggAx4JdhQwTtOkfPF4oCSCfjL3gEEDRZ5qzAnwF7b9clc3jjYHyd1EXCwYppr
+ ShwQ==
+X-Gm-Message-State: AOJu0YzgOPAWLhP5BC2PbNcqu7gvdKUCPS4l/xCTqFTF3w/laudkw9jh
+ IpTzfEslY0Al/a4pa+lbgDPHzIGUbUWqaJ30Vg6HTGEXql1jqd5bGLX9Eji8AaX/Z5b7yMz3L9b
+ Z
+X-Google-Smtp-Source: AGHT+IEs2BNjDAgr9BOp6RiezfPoKHEuerje7UL4SFX36MWazFQOrP55DzmGVSjNNvgdrGQaBkxHNg==
+X-Received: by 2002:a17:903:2291:b0:1db:cb54:5e71 with SMTP id
+ b17-20020a170903229100b001dbcb545e71mr2077297plh.31.1708197973981; 
+ Sat, 17 Feb 2024 11:26:13 -0800 (PST)
+Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
+ p3-20020a170902c70300b001db86c48221sm1770927plp.22.2024.02.17.11.26.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 17 Feb 2024 11:26:13 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/6] libqos, riscv: libqos fixes, add riscv machine
+Date: Sat, 17 Feb 2024 16:26:01 -0300
+Message-ID: <20240217192607.32565-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/10] tests/bench: Add bufferiszero-bench
-Content-Language: en-US
-To: Alexander Monakov <amonakov@ispras.ru>
-Cc: qemu-devel@nongnu.org, mmromanov@ispras.ru
-References: <20240217003918.52229-1-richard.henderson@linaro.org>
- <20240217003918.52229-11-richard.henderson@linaro.org>
- <2abd887c-c99c-437c-f0bc-e06f3a13fd33@ispras.ru>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <2abd887c-c99c-437c-f0bc-e06f3a13fd33@ispras.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +91,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/16/24 23:49, Alexander Monakov wrote:
-> 
-> On Fri, 16 Feb 2024, Richard Henderson wrote:
-> 
->> Benchmark each acceleration function vs an aligned buffer of zeros.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->> +
->> +static void test(const void *opaque)
->> +{
->> +    size_t len = 64 * KiB;
-> 
-> This exceeds L1 cache capacity, so the performance ceiling of L2 cache
-> throughput is easier to hit with a suboptimal implementation. It also
-> seems to vastly exceed typical buffer sizes in Qemu.
-> 
-> When preparing the patch we mostly tested at 8 KiB. The size decides
-> whether the branch exiting the loop becomes perfectly predictable in
-> the microbenchmark, e.g. at 128 bytes per iteration it exits on the
-> 63'rd iteration, which Intel predictors cannot track, so we get
-> one mispredict per call.
-> 
-> (so perhaps smaller sizes like 2 or 4 KiB are better)
+Hi,
 
-Fair.  I've adjusted to loop over 1, 4, 16, 64 KiB.
+This second version was rebased with current
+alistair/riscv.to.apply-next and has typo fixes in patch 1. No other
+changes were made.
 
-# Start of bufferiszero tests
-# buffer_is_zero #0: 1KB 49227.29 MB/sec
-# buffer_is_zero #0: 4KB 137461.28 MB/sec
-# buffer_is_zero #0: 16KB 224220.41 MB/sec
-# buffer_is_zero #0: 64KB 142461.00 MB/sec
-# buffer_is_zero #1: 1KB 45423.59 MB/sec
-# buffer_is_zero #1: 4KB 91409.69 MB/sec
-# buffer_is_zero #1: 16KB 123819.94 MB/sec
-# buffer_is_zero #1: 64KB 71173.75 MB/sec
-# buffer_is_zero #2: 1KB 35465.03 MB/sec
-# buffer_is_zero #2: 4KB 56110.46 MB/sec
-# buffer_is_zero #2: 16KB 68852.28 MB/sec
-# buffer_is_zero #2: 64KB 39043.80 MB/sec
+All patches reviewed/acked.
 
+Changes from v1:
+- patch 1: typos in the commit message fixed
+- v1 link: https://lore.kernel.org/qemu-riscv/20240213191736.733334-1-dbarboza@ventanamicro.com/
 
-r~
+Daniel Henrique Barboza (6):
+  libqos/virtio.c: init all elems in qvring_indirect_desc_setup()
+  libqos/virtio.c: fix 'avail_event' offset in qvring_init()
+  hw/riscv/virt.c: create '/soc/pci@...' fdt node earlier
+  hw/riscv/virt.c: add virtio-iommu-pci hotplug support
+  hw/riscv/virt.c: make aclint compatible with 'qtest' accel
+  tests/libqos: add riscv/virt machine nodes
+
+ hw/riscv/virt.c                         |  97 ++++++++++++-----
+ tests/qtest/libqos/meson.build          |   1 +
+ tests/qtest/libqos/riscv-virt-machine.c | 137 ++++++++++++++++++++++++
+ tests/qtest/libqos/virtio.c             |  27 +++--
+ 4 files changed, 228 insertions(+), 34 deletions(-)
+ create mode 100644 tests/qtest/libqos/riscv-virt-machine.c
+
+-- 
+2.43.2
+
 
