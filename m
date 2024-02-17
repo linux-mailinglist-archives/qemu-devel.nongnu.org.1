@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F26E85920F
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 20:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E6C859210
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 20:27:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbQKT-0001lb-MN; Sat, 17 Feb 2024 14:26:29 -0500
+	id 1rbQKX-0001mn-9S; Sat, 17 Feb 2024 14:26:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rbQKR-0001lB-Qs
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:27 -0500
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1rbQKV-0001mO-Qv
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:31 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rbQKQ-0004O8-Ec
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:27 -0500
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5e152c757a5so161844a12.2
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 11:26:26 -0800 (PST)
+ id 1rbQKU-0004Qa-Ak
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 14:26:31 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1d71cb97937so31954615ad.3
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 11:26:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708197984; x=1708802784; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1708197988; x=1708802788; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=O+D1+0YQa8IFtBkx/EjqXOpu3pS63aF1bu256H6yh6U=;
- b=kUjYl57JamiobgCVzgZLaSOFCdydS69iIj0zHZpCrYAvG1q3pRLTK2LMznA2u7kzXS
- tamrFVZvMmHjBmBKdj//uXItVWJj8MUEznmfU2MSnKfXgfzahL0WSZ5qDosdvbQ31RI1
- xePtE/M60CL4QsuFY1LyG4gN6ZdgIztlpgCtRW1bIxFdkYno7CMzv47H2hLnweEqneMg
- kIdn39XumaFDkF9E9jTmQg/BnUiS/XNuudW2VT0QP2wSVbLbDS9SAN2Ya2JRbtUYgrdo
- QMpcdZmVhLEZBUpDiRopXlAB3sx2qF6QFK4siUu1PI06vbjzDZJt0jOf/0wg6gB3d/Pw
- eHHQ==
+ bh=Uz3CofM05BSE21m08IOk5vQLqDk13O/XdOJBk/QRHeo=;
+ b=L/X4zXwTObTkcuYI9QVXWjzlW+OFiUZxC7MSPYvQPk780A042h+Csv1Lfr2u4PS+Ez
+ QuVYsMUQZfF74p3cN3D33biPuB/reDQnxN2R+MftzYAO615YS5c7KYWcim8/rozXe2LN
+ OVcqNTMfhoYWC0DP16PhrBfcUVitrfoUnjO/9buFPhK9tWXniHD7A/3f9ZdEn1VXVF2/
+ gNVZePsgdZIRhDQNrM8WarZt4SyeIbiS1rpm0/u/nwTcmgH3dfmO/5++FqAUcMIEke/Y
+ sw4J8b5FJuYqz05rpADIgPxUxZ9FSOXNMlGSshz2+2kjqfzCedzC/U94d54rLRpt28lZ
+ VOMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708197984; x=1708802784;
+ d=1e100.net; s=20230601; t=1708197988; x=1708802788;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=O+D1+0YQa8IFtBkx/EjqXOpu3pS63aF1bu256H6yh6U=;
- b=g/kk2DAXzDZ5IQ2kTJNK3xWdkQjxt7MilgaiUImaj71bZNtnXozfun9ilJa0tlJfuw
- Wa4ufr0SkqsWwiDKKyfusBm8UWcc2JDwqRFBSJLNzzNZa94F094MdPF5sKDvEMmJmbXz
- jrhyQlyq2Ub6hy4MJoRtCnP+7QhvzzyUA0k7zrAzzSaHvH/qerjl9NlzcUcWmkAVcB16
- fQMKE7mhZsv8AmUrp9CdrrTMoyaYXD5kOHnD0gxhBXRe/yEOQ4rNMyCxcuGkHN/4ghFP
- vAgglTytoLjSG1v7TaP83q/dbdVQSsXryNtSsZ8jfCo3Xxq5nCJjoGu9+ABkB/RmJ70e
- pCjw==
-X-Gm-Message-State: AOJu0Yyeerl7JQlSviQ5mobVB35i7xdsJApH6jBEzOxhThZ/SgrisyzJ
- Ge2wkOmI2TMZuuP7Pgu2B04WtKW4OOmAo0JUe4G/oJ554lQjp1MDydfABhTPGLqzi9wkmp7uTof
- z
-X-Google-Smtp-Source: AGHT+IEkzhMqMSd5Js0N5VOzJAprD52NUKG+H3naaK3yOseG2PDfeG5YEoFITSF3Ay2KU6GPiPgB4Q==
-X-Received: by 2002:a05:6a21:3a47:b0:19e:4f38:d8b8 with SMTP id
- zu7-20020a056a213a4700b0019e4f38d8b8mr9590905pzb.49.1708197984428; 
- Sat, 17 Feb 2024 11:26:24 -0800 (PST)
+ bh=Uz3CofM05BSE21m08IOk5vQLqDk13O/XdOJBk/QRHeo=;
+ b=iZcu72XI0O5aHyTmOlzcnd8b9gNN/szv8Hj6gWOX5l15/cBo5RdaXmtGLlbsaIwcPR
+ Q8YPl6UUzedtX6toUjyN4+fCXlpfnJmtsyyvuL96hHp2dYkiJ6PU1uC2eHGFRm9fBk1h
+ Q5aq8CM2CelT0r1xScdTmIsdbvBvOQxzFUmkvew+7T7ZKE6wuQaRDqglDjb7B+ReHXGq
+ zQ9otrQuuuY2GJfQh5v4sO31K9S5GWyxkxGFddU6dhFgvWwHTdaYU72wbl4YMdKnG8PG
+ FTpnFW67tWyekYP3XiwHz0juUYsmSthg8cY1FeI7tPME4cvBMvg6SfCWuUOIEQBr/U7s
+ 4MxQ==
+X-Gm-Message-State: AOJu0YwB4/IXy9qCfB4QrDqFYNHX5hKFJbdK/0VGC2IImltG8IEkQvgA
+ 0+TgO8H8DCuHB7RALPNV1hoOs2Lt1tc+WUV/hfMkz/1PwTLUJl3JQYF7IbOXnpdwkID442ZZF/W
+ D
+X-Google-Smtp-Source: AGHT+IERfmhacNIJXbxXhGTimw6Ng50QduZO98lWsXsDEUw0Dt4jnF9GIjDod1rICY4bSxVA5h2TNw==
+X-Received: by 2002:a17:902:b686:b0:1d9:8f6e:86e8 with SMTP id
+ c6-20020a170902b68600b001d98f6e86e8mr7395064pls.69.1708197988009; 
+ Sat, 17 Feb 2024 11:26:28 -0800 (PST)
 Received: from grind.. ([177.94.15.159]) by smtp.gmail.com with ESMTPSA id
- p3-20020a170902c70300b001db86c48221sm1770927plp.22.2024.02.17.11.26.21
+ p3-20020a170902c70300b001db86c48221sm1770927plp.22.2024.02.17.11.26.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 17 Feb 2024 11:26:24 -0800 (PST)
+ Sat, 17 Feb 2024 11:26:27 -0800 (PST)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 3/6] hw/riscv/virt.c: create '/soc/pci@...' fdt node earlier
-Date: Sat, 17 Feb 2024 16:26:04 -0300
-Message-ID: <20240217192607.32565-4-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 4/6] hw/riscv/virt.c: add virtio-iommu-pci hotplug support
+Date: Sat, 17 Feb 2024 16:26:05 -0300
+Message-ID: <20240217192607.32565-5-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240217192607.32565-1-dbarboza@ventanamicro.com>
 References: <20240217192607.32565-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,52 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hotplugged FDT nodes will attempt to write this node that, at this
-moment, is being created only in create_fdt_pcie() during
-finalize_fdt().
+We want to add a RISC-V 'virt' libqos machine to increase our test
+coverage. Some of the tests will try to plug a virtio-iommu-pci
+device into the board and do some tests with it.
 
-Create it earlier.
+Enable virtio-iommu-pci in the 'virt' machine.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ hw/riscv/virt.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index fd35c74781..b540f4d3da 100644
+index b540f4d3da..54ad809b44 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -826,7 +826,6 @@ static void create_fdt_pcie(RISCVVirtState *s, const MemMapEntry *memmap,
+@@ -53,6 +53,7 @@
+ #include "hw/display/ramfb.h"
+ #include "hw/acpi/aml-build.h"
+ #include "qapi/qapi-visit-common.h"
++#include "hw/virtio/virtio-iommu.h"
  
-     name = g_strdup_printf("/soc/pci@%lx",
-         (long) memmap[VIRT_PCIE_ECAM].base);
--    qemu_fdt_add_subnode(ms->fdt, name);
-     qemu_fdt_setprop_cell(ms->fdt, name, "#address-cells",
-         FDT_PCI_ADDR_CELLS);
-     qemu_fdt_setprop_cell(ms->fdt, name, "#interrupt-cells",
-@@ -996,6 +995,7 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
- {
-     MachineState *ms = MACHINE(s);
-     uint8_t rng_seed[32];
-+    g_autofree char *name = NULL;
+ /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
+ static bool virt_use_kvm_aia(RISCVVirtState *s)
+@@ -971,6 +972,34 @@ static void create_fdt_fw_cfg(RISCVVirtState *s, const MemMapEntry *memmap)
+     qemu_fdt_setprop(ms->fdt, nodename, "dma-coherent", NULL, 0);
+ }
  
-     ms->fdt = create_device_tree(&s->fdt_size);
-     if (!ms->fdt) {
-@@ -1014,6 +1014,13 @@ static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-     qemu_fdt_setprop_cell(ms->fdt, "/soc", "#size-cells", 0x2);
-     qemu_fdt_setprop_cell(ms->fdt, "/soc", "#address-cells", 0x2);
- 
-+    /*
-+     * The "/soc/pci@..." node is needed for PCIE hotplugs
-+     * that might happen before finalize_fdt().
-+     */
-+    name = g_strdup_printf("/soc/pci@%lx", (long) memmap[VIRT_PCIE_ECAM].base);
-+    qemu_fdt_add_subnode(ms->fdt, name);
++static void create_fdt_virtio_iommu(RISCVVirtState *s, uint16_t bdf)
++{
++    const char compat[] = "virtio,pci-iommu\0pci1af4,1057";
++    void *fdt = MACHINE(s)->fdt;
++    uint32_t iommu_phandle;
++    g_autofree char *iommu_node = NULL;
++    g_autofree char *pci_node = NULL;
 +
-     qemu_fdt_add_subnode(ms->fdt, "/chosen");
++    pci_node = g_strdup_printf("/soc/pci@%lx",
++                               (long) virt_memmap[VIRT_PCIE_ECAM].base);
++    iommu_node = g_strdup_printf("%s/virtio_iommu@%x,%x", pci_node,
++                                 PCI_SLOT(bdf), PCI_FUNC(bdf));
++    iommu_phandle = qemu_fdt_alloc_phandle(fdt);
++
++    qemu_fdt_add_subnode(fdt, iommu_node);
++
++    qemu_fdt_setprop(fdt, iommu_node, "compatible", compat, sizeof(compat));
++    qemu_fdt_setprop_sized_cells(fdt, iommu_node, "reg",
++                                 1, bdf << 8, 1, 0, 1, 0,
++                                 1, 0, 1, 0);
++    qemu_fdt_setprop_cell(fdt, iommu_node, "#iommu-cells", 1);
++    qemu_fdt_setprop_cell(fdt, iommu_node, "phandle", iommu_phandle);
++
++    qemu_fdt_setprop_cells(fdt, pci_node, "iommu-map",
++                           0, iommu_phandle, 0, bdf,
++                           bdf + 1, iommu_phandle, bdf + 1, 0xffff - bdf);
++}
++
+ static void finalize_fdt(RISCVVirtState *s)
+ {
+     uint32_t phandle = 1, irq_mmio_phandle = 1, msi_pcie_phandle = 1;
+@@ -1680,7 +1709,8 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
  
-     /* Pass seed to RNG */
+-    if (device_is_dynamic_sysbus(mc, dev)) {
++    if (device_is_dynamic_sysbus(mc, dev) ||
++        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
+         return HOTPLUG_HANDLER(machine);
+     }
+     return NULL;
+@@ -1699,6 +1729,10 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+                                      SYS_BUS_DEVICE(dev));
+         }
+     }
++
++    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
++        create_fdt_virtio_iommu(s, pci_get_bdf(PCI_DEVICE(dev)));
++    }
+ }
+ 
+ static void virt_machine_class_init(ObjectClass *oc, void *data)
 -- 
 2.43.2
 
