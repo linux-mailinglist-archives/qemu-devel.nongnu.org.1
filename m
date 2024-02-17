@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9110A858F04
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2CF858F03
 	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 12:20:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbIiy-0007TU-Nj; Sat, 17 Feb 2024 06:19:16 -0500
+	id 1rbIj4-0007UT-Ot; Sat, 17 Feb 2024 06:19:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbIiv-0007TG-1g
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:13 -0500
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rbIiz-0007Tk-V8
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:17 -0500
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbIit-0002gJ-JE
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:12 -0500
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1d72f71f222so12185285ad.1
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 03:19:11 -0800 (PST)
+ id 1rbIix-0002gm-Gs
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 06:19:16 -0500
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-29026523507so2205143a91.0
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 03:19:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708168750; x=1708773550;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708168754; x=1708773554;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DO8YZPx6QrrKSNDeG/X3kChJmZWSkpzHJ3UAX5RJjfg=;
- b=1B4IJk/wojUGS1K4+2dhsjv6K50nOXXg0ZwwEnEzyaMkpccISUsJN9p0fYHhcdIKEm
- xgAMNy8bhvZL/P4Yb4Q6517UXtvQCIXQiKtM/VG6uMbr7OWmp0Vxgu4mnej5VOsgeldO
- g/jo8GqKfsDlpk+8mTvRBz6ALkTEFPbGD00ihGgg8U+32Q3nQ1AdxYUvEIBWo5GWd7jq
- KbuqGp7jEtjIhTkfn74nm4iC+RhJVDWWoe2x0meOiWfomYfj8JHxXBRpHc2o0zlBs+LI
- F0Ht0NBnjqqP9hri78nvRA3JS/Eyy8Ba5syXahmqxKaL/DP/y2NIMsLi7+2SB+5dp+KL
- iRPg==
+ :reply-to; bh=cQV0Uu2y+Oze5LMvp7CVg9JHrPQPcJX0lu2SgQQmfr0=;
+ b=MQxVjXMYhNaSGsEhPPGc+VZMf1eF5rojo7CCFxFBH5dcqVQowCqFQ9yDDzB3xCldS6
+ LVcyInc1u89M1Kvlmiku74Y0i6CVUOUem+la7RsrTTEeYdkP7w0+i2GpyekfqRt+Xis/
+ 5uS6vGpk2Mz+irOqv9+muryvNDnqi3la9iLp+jV03pRYPrUBbXDWWCqVvZ+jp5gLUwpk
+ 8sQp2EbmKP6NFHVEc4T4x/8ce90St1arbJuctR6X0BxvckA4lnWF4Thz8QvSoybKjBmP
+ 8aRDGRRbUadNmBqdBH1JxzH0vmBq9/6EmHJM30HCVMYB7CY14f6oHdwskScqzGJKRznt
+ AWTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708168750; x=1708773550;
+ d=1e100.net; s=20230601; t=1708168754; x=1708773554;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DO8YZPx6QrrKSNDeG/X3kChJmZWSkpzHJ3UAX5RJjfg=;
- b=AwJRTU9VzMZAPr/94pUriW3pL3WAGt7AjDRaGjl+KbO15qAkSp5eeFk0Rto0T1ly9i
- hsvTG0N26Oqa3BGYiRipEKNeCeKA4MnbOPAcdtY1KclwGmffAPqN431Kc3oByrBfBCL4
- U13mZE2R1dFi4N0ikNvIcEwAA9lnf7L/j+/f1+UN7L9GyGm+pM2VPoYCwaq+s1ni3ETx
- Cf6KJJRw9/sMPb3t9C3jm1N/FwQW9rWE8pSFz9D+w5Hg8d1PBMGER0aBznateUQIpFzd
- gWu4uFzv9MV7+7klPFW/YdMMxcmPf/KtBSCr06cs0qiQ0cyrDkWsRvu4O82RkOvBR5CX
- 43Qg==
-X-Gm-Message-State: AOJu0Yxg+4GXtEckYtTo7+3fgF0uxqwSbZTyOYlxkZxyIXKYo1MtaHc5
- PU9S0V4XVR7CCW1w9WMfa4Z+0FkDYasOxPWpLhCDDMeTLDtNU8MnuKmCTeIrOdc=
-X-Google-Smtp-Source: AGHT+IEbAAC0ZrJ9krUDnZ8sltdpmoIrCjN6VBn1RqJXaLoogugpnsrnB58hAHjVlMN6JMMMbY3Fyw==
-X-Received: by 2002:a17:902:da87:b0:1db:28c4:b757 with SMTP id
- j7-20020a170902da8700b001db28c4b757mr8454048plx.0.1708168750434; 
- Sat, 17 Feb 2024 03:19:10 -0800 (PST)
+ bh=cQV0Uu2y+Oze5LMvp7CVg9JHrPQPcJX0lu2SgQQmfr0=;
+ b=jOj9QOs+O5LSx3zqdj2sRxvBPtDlVDWngHzqOaoTotJlX+2arwGvObYB0ptSZJ4uLB
+ NJIoJjdYf091pmdmqn3TD+SGISxBdETJcZbiztlnqxb4gNyWaYP9goK7azLoJmi+uDwa
+ K8D2jM1M7mwO2T1xu06Ux6zcM2AK2eAXGjCyRO9Pm413Cfl5nT2Q5cmCln5LhxIHqH1R
+ pX96tjkWiqc1fxtNpr5k/WG1I6N43gcVvexDs/rtGZ1BoCKVAc/I1STLZy5aVznoMv/h
+ eTF+LlCMiBWuC+Lh48Ns1psxu5N10LEm71YNH/5a2+tNWl2bVNcs9BLNn6PWloLX/r1f
+ 5fVg==
+X-Gm-Message-State: AOJu0YyqOCF1JoMfjvnvnzqsXVh9uURv62xR7bLHnqA6c1Y5mMJ11uCM
+ T8jcmZxJMQk4qTkww5xKiTprRbdwtwTwjZVuzV3ceBnH8R+0pFODgn0FClkugu4=
+X-Google-Smtp-Source: AGHT+IG9eTn8rFlHd9xyVziFMfKVuG60Ok6JELkQibygCWt+xFKiapf8lIj7HCx04NLczNRAauX2RA==
+X-Received: by 2002:a17:90b:e8c:b0:299:3497:40d4 with SMTP id
+ fv12-20020a17090b0e8c00b00299349740d4mr3617308pjb.35.1708168754176; 
+ Sat, 17 Feb 2024 03:19:14 -0800 (PST)
 Received: from localhost ([157.82.200.138])
  by smtp.gmail.com with UTF8SMTPSA id
- e21-20020a17090ac21500b00298dd684b8csm1586463pjt.32.2024.02.17.03.19.08
+ w6-20020a17090a1b8600b002966a13f2e9sm1505548pjc.37.2024.02.17.03.19.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Feb 2024 03:19:10 -0800 (PST)
+ Sat, 17 Feb 2024 03:19:13 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 17 Feb 2024 20:18:50 +0900
-Subject: [PATCH v11 4/6] ui/cocoa: Make window resizable
+Date: Sat, 17 Feb 2024 20:18:51 +0900
+Subject: [PATCH v11 5/6] ui/cocoa: Call console_select() with the BQL
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240217-cocoa-v11-4-0a17a7e534d4@daynix.com>
+Message-Id: <20240217-cocoa-v11-5-0a17a7e534d4@daynix.com>
 References: <20240217-cocoa-v11-0-0a17a7e534d4@daynix.com>
 In-Reply-To: <20240217-cocoa-v11-0-0a17a7e534d4@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -73,8 +73,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
  Rene Engel <ReneEngel80@emailn.de>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::632;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,36 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The window will be resizable when zoom-to-fit is on.
+console_select() can be called anytime so explicitly take the BQL.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- ui/cocoa.m | 3 +++
- 1 file changed, 3 insertions(+)
+ ui/cocoa.m | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 0ebe0f326373..17f290987563 100644
+index 17f290987563..81de8d92669b 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
-@@ -1379,8 +1379,10 @@ - (void)zoomToFit:(id) sender
+@@ -1391,7 +1391,9 @@ - (void)zoomToFit:(id) sender
+ /* Displays the console on the screen */
+ - (void)displayConsole:(id)sender
  {
-     stretch_video = !stretch_video;
-     if (stretch_video == true) {
-+        [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-         [sender setState: NSControlStateValueOn];
-     } else {
-+        [normalWindow setStyleMask:[normalWindow styleMask] & ~NSWindowStyleMaskResizable];
-         [cocoaView resizeWindow];
-         [sender setState: NSControlStateValueOff];
-     }
-@@ -2033,6 +2035,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+-    console_select([sender tag]);
++    with_bql(^{
++        console_select([sender tag]);
++    });
+ }
  
-     if (opts->u.cocoa.has_zoom_to_fit && opts->u.cocoa.zoom_to_fit) {
-         stretch_video = true;
-+        [normalWindow setStyleMask:[normalWindow styleMask] | NSWindowStyleMaskResizable];
-     }
- 
-     create_initial_menus();
+ /* Pause the guest */
 
 -- 
 2.43.1
