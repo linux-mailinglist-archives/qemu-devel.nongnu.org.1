@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17A3858A7C
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 01:03:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AF8858A7A
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 Feb 2024 01:03:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rb89j-0003RM-JK; Fri, 16 Feb 2024 19:02:11 -0500
+	id 1rb89l-0003TD-Am; Fri, 16 Feb 2024 19:02:13 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rb89f-0003PV-S2
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:02:08 -0500
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rb89h-0003QW-Gd
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:02:10 -0500
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1rb89R-0007wS-R3
- for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:02:07 -0500
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6da9c834646so2380045b3a.3
- for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 16:01:53 -0800 (PST)
+ id 1rb89T-0007wc-30
+ for qemu-devel@nongnu.org; Fri, 16 Feb 2024 19:02:09 -0500
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5ce942efda5so1048428a12.2
+ for <qemu-devel@nongnu.org>; Fri, 16 Feb 2024 16:01:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708128111; x=1708732911;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708128113; x=1708732913;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v6zQL2CTLDv8SMjYyqrJ65mcDbZjwYbAqZ3AZWMYm0I=;
- b=iMVSkC4Z+Y86c5LO3L7DmJ9+wcvLVillD/22X9vi/x/9b5etEa9yays+UMrbUQqvIN
- +OkjyNpU8ZKgHSN5O4DZ8UFFjWL5ASSBTASXVGivw58GA8wbcAcAn1PNrDfGGQ05aCkY
- gOVKAcTKdRNfy0XLYBft21FBH919PV1dHoUJnUULt2hkObpnJLGR2J8hjJ0VvhrV3Y0a
- TM7hAHsTnNCzkwnSaV2D/QuXO/Ihv+yozGrEBc2mWfmvcec1NYa+6Br8LaZR5ZIsYjbO
- ABGoCZT8cylDq8/WFRPR3KwzJ8zs5p4hPWRuFEe1nj4P7kYMmt1khAsXFdQgVUyVSex+
- pHGw==
+ bh=0oxyEiqQDEFal+EA6ojT4NXNxxDrwI+eq54mzrdFIs8=;
+ b=twkgfs19OUSXCwkXN0HzqkZOXD68K14Y8H9NAZtsr8ZRcz2c/C2+D6hqdLfGoFE16k
+ j7kuLx6YlukoeJYAh9BtmhdSuJNOHLMm2eYCJJeT4aHOnLwBaegiWbR8OcrvJWlWvtL9
+ TcsChVBMV7MTYqGM3wLPrUIJRXBKwET8dtNEZKRVEWje6Lj85Etv8Qrhm12Vgpiegg8A
+ 1nZZCnrpa46g4FWgIxjUD6Wdq9iEVS+0UTUtJPUmYbN7lhGDTaY1IuYOc7Q/T5h8gXHf
+ EHRa02Cf/nShT4l59kEXAoXfyIcV9AGrxklRYclrwHRzm9v9rHqHmWm0GzSCfcSuxBED
+ XvEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708128111; x=1708732911;
+ d=1e100.net; s=20230601; t=1708128113; x=1708732913;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v6zQL2CTLDv8SMjYyqrJ65mcDbZjwYbAqZ3AZWMYm0I=;
- b=ED85vli3rXbXvdLNR/z0rAA1+epTbb9KU0ft0Cu0RpoZcbNgSnZJ9IZFVdhe7vLQpG
- 7WOUdgpOzP3wjGhwxMnBbtSKUgm5cBihBriqspxzTF6xxpO2Le0BMMVKCCDmVRW7AvOw
- PbTIM5PmPnl1SguTzWYnIUfmne8KV6lSQtSpdE9Rodk4lp5NvTqcGXwrnuJ6QQhUacMu
- ACTuZBorjcn6nWSLhizu7bvlXt3O9Nxf6NETgVB5F8WjXbcuOsbMUqxq5G9VwP1Z/l7T
- Ub/Wp9OToqXqmDA691esWRsbrFojslkdienmWPDfZLZa2abQP8yL7omLEbYkCazDcOrF
- yXwg==
-X-Gm-Message-State: AOJu0Yza9B+MYQe2vRR75RKcEzZo2JeSsDuiTnv+q13oZJow/ZuX3i+E
- vWkxc8SbprW3XB+1SBKzMK1esiSW4lKH4xX2BcE0wy4T1IUa6e3NwU9SJnKDNyI1Qu1tbUMrhgM
- c
-X-Google-Smtp-Source: AGHT+IFAdH143+J+/qP1H9D5UdgM1UyRrOXMNcjxe/AllWBLHaXFalFchRrbPEwA3PXtIsBUMovneg==
-X-Received: by 2002:a05:6a00:2e24:b0:6e1:4836:629c with SMTP id
- fc36-20020a056a002e2400b006e14836629cmr2333672pfb.11.1708128111556; 
- Fri, 16 Feb 2024 16:01:51 -0800 (PST)
+ bh=0oxyEiqQDEFal+EA6ojT4NXNxxDrwI+eq54mzrdFIs8=;
+ b=HOPZ9Ym1GVXpoPzgzTmYAoOTjO60OgL+iUIdHJBAwKC/gn0PYahtpY6Edo5ZedfgRX
+ jGhA8/evSWFk8NihkHFK8IEEWTbTNYNa2F5rzYNGi7cMpcNjc0lgpv9sF9hWxERWR+Q+
+ 9mKIg4SXP3En++P0GMjTXox1iT8TOazjSRuTjzljMdRBBc6Jr3LYPG2YpQ4PtlzYGWC4
+ vdqdpLsDiVtdgUBGBix2qSbKR9mTHdGIgYE/s3IojB/FlAY1x+isqfy7FKZAabBB+pIA
+ Czwb/dh/tSWZOnlm8jhegVbwuqG8q6ouBhvx+eQB7tsdvMS8Ervkp2ll/eHbf2UTM6YK
+ /C6Q==
+X-Gm-Message-State: AOJu0YxELBNN4jHItijHy5p0ATVvmgoGttwfAx9NB0SbM5etHKYBEgrB
+ K7eCgK/4wB8kdQl4ECpN0LKZnHzN9Y26c3L3X4DSIpxoz+16j4MRt0hlSXSiyliRkwgJqTZt3IE
+ S
+X-Google-Smtp-Source: AGHT+IFkoGYMRX0Fh7GdRCDrZsnJmE9IsfPpw90nt9RCPLqHbXHSaF4p193Ud4u4lAv41bH74tIxuw==
+X-Received: by 2002:a17:90b:1b08:b0:299:3511:1554 with SMTP id
+ nu8-20020a17090b1b0800b0029935111554mr2844270pjb.40.1708128113023; 
+ Fri, 16 Feb 2024 16:01:53 -0800 (PST)
 Received: from atishp.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- p13-20020a635b0d000000b005d66caee3d0sm464015pgb.22.2024.02.16.16.01.50
+ p13-20020a635b0d000000b005d66caee3d0sm464015pgb.22.2024.02.16.16.01.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 16 Feb 2024 16:01:50 -0800 (PST)
+ Fri, 16 Feb 2024 16:01:52 -0800 (PST)
 From: Atish Patra <atishp@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -67,22 +67,23 @@ Cc: Atish Patra <atishp@rivosinc.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, qemu-riscv@nongnu.org,
  Weiwei Li <liwei1518@gmail.com>, kaiwenxue1@gmail.com
-Subject: [PATCH RFC 5/8] target/riscv: Add smcdeleg/ssccfg properties
-Date: Fri, 16 Feb 2024 16:01:31 -0800
-Message-Id: <20240217000134.3634191-6-atishp@rivosinc.com>
+Subject: [PATCH RFC 6/8] target/riscv: Add counter delegation definitions
+Date: Fri, 16 Feb 2024 16:01:32 -0800
+Message-Id: <20240217000134.3634191-7-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240217000134.3634191-1-atishp@rivosinc.com>
 References: <20240217000134.3634191-1-atishp@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=atishp@rivosinc.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=atishp@rivosinc.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,56 +101,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kaiwen Xue <kaiwenx@rivosinc.com>
 
-This adds the properties of smcdeleg/ssccfg. Implementation will be in
-future patches.
+This adds definitions for counter delegation, including the new
+scountinhibit register and the mstateen.CD bit.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
 ---
- target/riscv/cpu.c     | 4 ++++
- target/riscv/cpu_cfg.h | 2 ++
- 2 files changed, 6 insertions(+)
+ target/riscv/cpu.h      | 1 +
+ target/riscv/cpu_bits.h | 8 +++++++-
+ target/riscv/machine.c  | 1 +
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index ff7c6c7c380e..c5ec203fb8fd 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -151,11 +151,13 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-+    ISA_EXT_DATA_ENTRY(smcdeleg, PRIV_VERSION_1_12_0, ext_smcdeleg),
-     ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
-     ISA_EXT_DATA_ENTRY(smcsrind, PRIV_VERSION_1_12_0, ext_smcsrind),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
-+    ISA_EXT_DATA_ENTRY(ssccfg, PRIV_VERSION_1_12_0, ext_ssccfg),
-     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
-     ISA_EXT_DATA_ENTRY(sscsrind, PRIV_VERSION_1_12_0, ext_sscsrind),
-     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
-@@ -1352,6 +1354,8 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("smcntrpmf", ext_smcntrpmf, false),
-     MULTI_EXT_CFG_BOOL("smcsrind", ext_smcsrind, false),
-     MULTI_EXT_CFG_BOOL("sscsrind", ext_sscsrind, false),
-+    MULTI_EXT_CFG_BOOL("smcdeleg", ext_smcdeleg, false),
-+    MULTI_EXT_CFG_BOOL("ssccfg", ext_ssccfg, false),
-     MULTI_EXT_CFG_BOOL("zifencei", ext_zifencei, true),
-     MULTI_EXT_CFG_BOOL("zicsr", ext_zicsr, true),
-     MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index b9086464752e..a3be34c88ef0 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -76,6 +76,8 @@ struct RISCVCPUConfig {
-     bool ext_smcntrpmf;
-     bool ext_smcsrind;
-     bool ext_sscsrind;
-+    bool ext_smcdeleg;
-+    bool ext_ssccfg;
-     bool ext_svadu;
-     bool ext_svinval;
-     bool ext_svnapot;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 85afde48fade..d7dcfdb0e5e0 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -342,6 +342,7 @@ struct CPUArchState {
+     target_ulong scounteren;
+     target_ulong mcounteren;
+ 
++    target_ulong scountinhibit;
+     target_ulong mcountinhibit;
+ 
+     /* PMU cycle & instret privilege mode filtering */
+diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
+index 3a66f83009b5..0bffec3476ab 100644
+--- a/target/riscv/cpu_bits.h
++++ b/target/riscv/cpu_bits.h
+@@ -213,6 +213,9 @@
+ #define CSR_SSTATEEN2       0x10E
+ #define CSR_SSTATEEN3       0x10F
+ 
++/* Supervisor Counter Delegation */
++#define CSR_SCOUNTINHIBIT   0x120
++
+ /* Supervisor Trap Handling */
+ #define CSR_SSCRATCH        0x140
+ #define CSR_SEPC            0x141
+@@ -779,6 +782,7 @@ typedef enum RISCVException {
+ #define MENVCFG_CBIE                       (3UL << 4)
+ #define MENVCFG_CBCFE                      BIT(6)
+ #define MENVCFG_CBZE                       BIT(7)
++#define MENVCFG_CDE                        (1ULL << 60)
+ #define MENVCFG_ADUE                       (1ULL << 61)
+ #define MENVCFG_PBMTE                      (1ULL << 62)
+ #define MENVCFG_STCE                       (1ULL << 63)
+@@ -870,7 +874,9 @@ typedef enum RISCVException {
+ #define ISELECT_IMSIC_LAST                 ISELECT_IMSIC_EIE63
+ #define ISELECT_MASK_AIA                   0x1ff
+ 
+-/* MISELECT, SISELECT, and VSISELECT bits (AIA) */
++/* [M|S|VS]SELCT value for Indirect CSR Access Extension */
++#define ISELECT_CD_FIRST                   0x40
++#define ISELECT_CD_LAST                    0x5f
+ #define ISELECT_MASK_SXCSRIND              0xfff
+ 
+ /* Dummy [M|S|VS]ISELECT value for emulating [M|S|VS]TOPEI CSRs */
+diff --git a/target/riscv/machine.c b/target/riscv/machine.c
+index 72fe2374dc2a..d26742f99ed7 100644
+--- a/target/riscv/machine.c
++++ b/target/riscv/machine.c
+@@ -400,6 +400,7 @@ const VMStateDescription vmstate_riscv_cpu = {
+         VMSTATE_UINTTL(env.siselect, RISCVCPU),
+         VMSTATE_UINTTL(env.scounteren, RISCVCPU),
+         VMSTATE_UINTTL(env.mcounteren, RISCVCPU),
++        VMSTATE_UINTTL(env.scountinhibit, RISCVCPU),
+         VMSTATE_UINTTL(env.mcountinhibit, RISCVCPU),
+         VMSTATE_STRUCT_ARRAY(env.pmu_ctrs, RISCVCPU, RV_MAX_MHPMCOUNTERS, 0,
+                              vmstate_pmu_ctr_state, PMUCTRState),
 -- 
 2.34.1
 
