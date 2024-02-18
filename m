@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DCE8594B2
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 05:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D16BB8594B9
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 05:59:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbZEg-0001RV-Hi; Sat, 17 Feb 2024 23:57:06 -0500
+	id 1rbZEo-0001V1-Tj; Sat, 17 Feb 2024 23:57:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbZEf-0001RF-Eb
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:57:05 -0500
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+ id 1rbZEn-0001UY-0i
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:57:13 -0500
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbZEe-00048C-3A
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:57:05 -0500
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-59f80e1e259so1923729eaf.0
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 20:57:03 -0800 (PST)
+ id 1rbZEl-0004A9-G2
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:57:12 -0500
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6ddf26eba3cso2512836a34.0
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 20:57:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708232222; x=1708837022;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708232229; x=1708837029;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uKib9lFhkqfQp/XBira3ThQ631U3FRHMXLPB53AQUH4=;
- b=txQcel8inuVnfcDcdkjzSmqHT1X2w2ws9BnIXQtHIh2cl6cdHXXGSpV+dA5xo5E2Df
- vYAU7/xRsvUCFfU5PrWP4WMLO3s82a3wmvO4vayHeKmMQix874HuYjUJYraAgLs+PjFU
- +Ip1JcsOAweHJ+KJgCymkHZHyI+Or0DvKQreth3/OWU1XJaJ765SXSFtW5osPS+EXOHv
- cr7s0uuWuGmXPt72s+90naTORSy1Fqi+EGxjyTmrYrnhM8ELrOQoQX6aGW1vNjuOfR+S
- gRa84js9Ox9+egRv7FQcYhnk2nrxIe2rBpWw6wRgQY+upDefPFitU0FjOwhg5gAJP0GW
- V/7A==
+ :reply-to; bh=UlKagWgW/Suhx5XrwPdfnlsQ3+kK6LLiHW7W/dUMHaY=;
+ b=PjiJa9CI192izjrgVvuydFDbzVhhqxv3gJ9s5UW0tWdElOkA0dt7GS4lskw2mCBfLT
+ dUbcB/xNp6fnIhpWXlsFRyXWWTnymGkT6lLgE+xfSOdw5aZHTjHx5T637J0a0+sG0Cpz
+ ypGbY+BEWFNhZFEnszeCqGf/Q+Mn6HQHUvH2ZpphfW6RljiibZCqwTrGfVBf1l7q59vn
+ ykCvQmmb33EEpaTG/h5YI25IJ2RmUyHlLadumHEaE76c2e1xy7fANwcI5vbKN2d6vR4H
+ 9L4piWQTULj0impJ0OmOJDs2F0+xZeAYU+8Va5FoAN+vMLrk8j99zc49k/QxMgiWRU+Q
+ wBwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708232222; x=1708837022;
+ d=1e100.net; s=20230601; t=1708232229; x=1708837029;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uKib9lFhkqfQp/XBira3ThQ631U3FRHMXLPB53AQUH4=;
- b=DBfRoppXuUGokhl96vmc3HgGCLEqPCn78cP/tjv3x37fXdsAiDRehfUCdE+GF+Dx3c
- H1GLdqFT6f3cCr9+woYV3DjgT4GegPSRJPqMnU1XG4R4MGHQjggGaSn00N1SbmQ8Erf9
- V3vqWboZq+fIjDKabNixR9scM75yrXAj3tlAqclDkSc0Fk5B0L4KRofoI2aBwLQ8yQVG
- gy5eIYDjM3jcuO4FU8dbZ5jMv6fJUygjZtyOhS+NDmIUZn+C7Z011LNrEBFnbjVnuahW
- M2AK8SZuc12SyCDzqp/Ezvts8D1C/D0jrNl9y+hh1zqbqT7uEYZy7cAotfJK2i+nVoRp
- sDlg==
-X-Gm-Message-State: AOJu0Yzv8iAOeVfna2yzdGGxI8iBT1+Wy2DxDYkhlaMbqOXFrWNDKtvY
- 27w3y/t2htiQ/UcZC9KCAy7JWxfP1c9Hy/wDY9AYem2CHGdevsTHs7xUpumzK7A=
-X-Google-Smtp-Source: AGHT+IH3hS81efNMSBzGDSJTewpcA5P2VXLEL3H7qUlbG4dFnsPTF3SVpuPP5McdG8eOWw3vt4gZYw==
-X-Received: by 2002:a05:6358:6f90:b0:17a:ebb9:d26a with SMTP id
- s16-20020a0563586f9000b0017aebb9d26amr9422483rwn.31.1708232222645; 
- Sat, 17 Feb 2024 20:57:02 -0800 (PST)
+ bh=UlKagWgW/Suhx5XrwPdfnlsQ3+kK6LLiHW7W/dUMHaY=;
+ b=Ep+KWsJiYul7X4YJ6mdROYJa3HuX2DE7GoQ8S5b7uEetBFOpaKGXt5t+r8xPPkr/M+
+ Q1sDQVWmTTEiM7uYWIJCvwb8hq33GBjfJE+lTAw+d9RBaBa7w7ZZir3jPYoGqsjDxJeM
+ F6B0tmtCsldx43iH9XF/7VfuDrjRhAa8VSmOfsQ8v9KEqY1f7Qn4ftCSVdbecedcMPKb
+ LOL4ouVmdEFF/Bj9vQehORU26jgI2W37SXlTKPG+2ZY8XzHe5KIe9Is1amlLGkZWpAtr
+ dkXRSKwFug3cEWK0MDmqZl9t1fCn+vr/5OeateBBDN08+nxh51g0OeFg6CV105umLite
+ 86tw==
+X-Gm-Message-State: AOJu0YwRE/15eM+3ZRZVUuTZsVByIAG/xhf31xN7W4vBiHHa8fAo9dkw
+ h2wkxVCl5TK0D5uK91g6XzmLame6QQ4JDTmVjFhA4NH63P3CG2kacIJOVPxwSZ8=
+X-Google-Smtp-Source: AGHT+IHkTm8oqPb/qgb6fxbhdLnsVZpqodL1oivOPOqqDJqnyatdJeOLma8/csN6u7qUHExtswb/XA==
+X-Received: by 2002:a05:6830:1153:b0:6e0:ba7c:4203 with SMTP id
+ x19-20020a056830115300b006e0ba7c4203mr8645400otq.1.1708232229329; 
+ Sat, 17 Feb 2024 20:57:09 -0800 (PST)
 Received: from localhost ([157.82.200.138])
  by smtp.gmail.com with UTF8SMTPSA id
- sg15-20020a17090b520f00b002993e862145sm2699470pjb.15.2024.02.17.20.56.58
+ e13-20020a056a0000cd00b006e35c1acedcsm1682100pfj.211.2024.02.17.20.57.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Feb 2024 20:57:02 -0800 (PST)
+ Sat, 17 Feb 2024 20:57:09 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 18 Feb 2024 13:56:10 +0900
-Subject: [PATCH v5 05/11] vfio: Avoid inspecting option QDict for rombar
+Date: Sun, 18 Feb 2024 13:56:11 +0900
+Subject: [PATCH v5 06/11] hw/qdev: Remove opts member
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240218-reuse-v5-5-e4fc1c19b5a9@daynix.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240218-reuse-v5-6-e4fc1c19b5a9@daynix.com>
 References: <20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com>
 In-Reply-To: <20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -79,15 +79,14 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,35 +102,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use pci_rom_bar_explicitly_enabled() to determine if rombar is explicitly
-enabled.
+It is no longer used.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/vfio/pci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/hw/qdev-core.h |  4 ----
+ hw/core/qdev.c         |  1 -
+ system/qdev-monitor.c  | 12 +++++++-----
+ 3 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 4fa387f0430d..647f15b2a060 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -1012,7 +1012,6 @@ static void vfio_pci_size_rom(VFIOPCIDevice *vdev)
- {
-     uint32_t orig, size = cpu_to_le32((uint32_t)PCI_ROM_ADDRESS_MASK);
-     off_t offset = vdev->config_offset + PCI_ROM_ADDRESS;
--    DeviceState *dev = DEVICE(vdev);
-     char *name;
-     int fd = vdev->vbasedev.fd;
- 
-@@ -1046,7 +1045,7 @@ static void vfio_pci_size_rom(VFIOPCIDevice *vdev)
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 9228e96c87e9..5954404dcbfe 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -237,10 +237,6 @@ struct DeviceState {
+      * @pending_deleted_expires_ms: optional timeout for deletion events
+      */
+     int64_t pending_deleted_expires_ms;
+-    /**
+-     * @opts: QDict of options for the device
+-     */
+-    QDict *opts;
+     /**
+      * @hotplugged: was device added after PHASE_MACHINE_READY?
+      */
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index c68d0f7c512f..7349c9a86be8 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -706,7 +706,6 @@ static void device_finalize(Object *obj)
+         dev->canonical_path = NULL;
      }
  
-     if (vfio_opt_rom_in_denylist(vdev)) {
--        if (dev->opts && qdict_haskey(dev->opts, "rombar")) {
-+        if (pci_rom_bar_explicitly_enabled(&vdev->pdev)) {
-             warn_report("Device at %s is known to cause system instability"
-                         " issues during option rom execution",
-                         vdev->vbasedev.name);
+-    qobject_unref(dev->opts);
+     g_free(dev->id);
+ }
+ 
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index a13db763e5dd..71c00f62ee38 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -625,6 +625,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+     char *id;
+     DeviceState *dev = NULL;
+     BusState *bus = NULL;
++    QDict *properties;
+ 
+     driver = qdict_get_try_str(opts, "driver");
+     if (!driver) {
+@@ -705,13 +706,14 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+     }
+ 
+     /* set properties */
+-    dev->opts = qdict_clone_shallow(opts);
+-    qdict_del(dev->opts, "driver");
+-    qdict_del(dev->opts, "bus");
+-    qdict_del(dev->opts, "id");
++    properties = qdict_clone_shallow(opts);
++    qdict_del(properties, "driver");
++    qdict_del(properties, "bus");
++    qdict_del(properties, "id");
+ 
+-    object_set_properties_from_keyval(&dev->parent_obj, dev->opts, from_json,
++    object_set_properties_from_keyval(&dev->parent_obj, properties, from_json,
+                                       errp);
++    qobject_unref(properties);
+     if (*errp) {
+         goto err_del_dev;
+     }
 
 -- 
 2.43.1
