@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5660E8595A6
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 09:34:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA40B8595AE
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 09:35:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbccb-000359-3n; Sun, 18 Feb 2024 03:34:01 -0500
+	id 1rbccd-00036F-HQ; Sun, 18 Feb 2024 03:34:03 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1rbccY-00034u-1Y; Sun, 18 Feb 2024 03:33:58 -0500
-Received: from mailout02.t-online.de ([194.25.134.17])
+ id 1rbcca-00035R-Lv; Sun, 18 Feb 2024 03:34:00 -0500
+Received: from mailout07.t-online.de ([194.25.134.83])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1rbccW-0006JX-G1; Sun, 18 Feb 2024 03:33:57 -0500
-Received: from fwd84.aul.t-online.de (fwd84.aul.t-online.de [10.223.144.110])
- by mailout02.t-online.de (Postfix) with SMTP id B104A89FD;
- Sun, 18 Feb 2024 09:33:52 +0100 (CET)
-Received: from linpower.localnet ([79.208.24.6]) by fwd84.t-online.de
+ id 1rbccY-0006Jb-2j; Sun, 18 Feb 2024 03:34:00 -0500
+Received: from fwd76.aul.t-online.de (fwd76.aul.t-online.de [10.223.144.102])
+ by mailout07.t-online.de (Postfix) with SMTP id B457A23889;
+ Sun, 18 Feb 2024 09:33:55 +0100 (CET)
+Received: from linpower.localnet ([79.208.24.6]) by fwd76.t-online.de
  with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1rbccR-0er8XB0; Sun, 18 Feb 2024 09:33:51 +0100
+ esmtp id 1rbccU-39unNx0; Sun, 18 Feb 2024 09:33:54 +0100
 Received: by linpower.localnet (Postfix, from userid 1000)
- id 61D1F2001C6; Sun, 18 Feb 2024 09:33:51 +0100 (CET)
+ id 642D8200364; Sun, 18 Feb 2024 09:33:51 +0100 (CET)
 From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
 To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
@@ -31,27 +31,26 @@ To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	qemu-stable@nongnu.org
-Subject: [PATCH v2 01/11] hw/audio/virtio-sound: return correct command
- response size
-Date: Sun, 18 Feb 2024 09:33:41 +0100
-Message-Id: <20240218083351.8524-1-vr_qemu@t-online.de>
+Subject: [PATCH v2 02/11] hw/audio/virtio-sound: fix segmentation fault in
+ tx/rx xfer handler
+Date: Sun, 18 Feb 2024 09:33:42 +0100
+Message-Id: <20240218083351.8524-2-vr_qemu@t-online.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <a289a081-9a61-4bcb-b693-bf6cd7768c0e@t-online.de>
 References: <a289a081-9a61-4bcb-b693-bf6cd7768c0e@t-online.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1708245231-2FFFC9FB-24B1E8BB/0/0 CLEAN NORMAL
-X-TOI-MSGID: d18c995b-3b24-4e30-bb46-fb1d3023e65a
-Received-SPF: pass client-ip=194.25.134.17;
- envelope-from=volker.ruemelin@t-online.de; helo=mailout02.t-online.de
+X-TOI-EXPURGATEID: 150726::1708245234-FAFFA94C-D533C803/0/0 CLEAN NORMAL
+X-TOI-MSGID: 77aa13fe-39a7-4215-acfd-50955ce197b4
+Received-SPF: pass client-ip=194.25.134.83;
+ envelope-from=volker.ruemelin@t-online.de; helo=mailout07.t-online.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,70 +66,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The payload size returned by command VIRTIO_SND_R_PCM_INFO is
-wrong. The code in process_cmd() assumes that all commands
-return only a virtio_snd_hdr payload, but some commands like
-VIRTIO_SND_R_PCM_INFO may return an additional payload.
+A malicious guest may trigger a segmentation fault in the tx/rx xfer
+handlers. On handler entry the stream variable is initialized with
+NULL. If the first element of the virtio queue has an invalid size
+or an invalid stream id, the error handling code dereferences the
+stream variable NULL pointer.
 
-Add a zero initialized payload_size variable to struct
-virtio_snd_ctrl_command to allow for additional payloads.
+Don't try to handle the invalid virtio queue element with a stream
+queue. Instead, push the invalid queue element back to the guest
+immediately.
 
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
 ---
- hw/audio/virtio-snd.c         | 7 +++++--
- include/hw/audio/virtio-snd.h | 1 +
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ hw/audio/virtio-snd.c         | 100 ++++++++++------------------------
+ include/hw/audio/virtio-snd.h |   1 -
+ 2 files changed, 29 insertions(+), 72 deletions(-)
 
 diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index ea2aeaef14..e604d8f30c 100644
+index e604d8f30c..b87653daf4 100644
 --- a/hw/audio/virtio-snd.c
 +++ b/hw/audio/virtio-snd.c
-@@ -243,12 +243,13 @@ static void virtio_snd_handle_pcm_info(VirtIOSound *s,
-         memset(&pcm_info[i].padding, 0, 5);
-     }
+@@ -456,7 +456,6 @@ static uint32_t virtio_snd_pcm_prepare(VirtIOSound *s, uint32_t stream_id)
+         stream->s = s;
+         qemu_mutex_init(&stream->queue_mutex);
+         QSIMPLEQ_INIT(&stream->queue);
+-        QSIMPLEQ_INIT(&stream->invalid);
  
-+    cmd->payload_size = sizeof(virtio_snd_pcm_info) * count;
-     cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
-     iov_from_buf(cmd->elem->in_sg,
-                  cmd->elem->in_num,
-                  sizeof(virtio_snd_hdr),
-                  pcm_info,
--                 sizeof(virtio_snd_pcm_info) * count);
-+                 cmd->payload_size);
+         /*
+          * stream_id >= s->snd_conf.streams was checked before so this is
+@@ -611,9 +610,6 @@ static size_t virtio_snd_pcm_get_io_msgs_count(VirtIOSoundPCMStream *stream)
+         QSIMPLEQ_FOREACH_SAFE(buffer, &stream->queue, entry, next) {
+             count += 1;
+         }
+-        QSIMPLEQ_FOREACH_SAFE(buffer, &stream->invalid, entry, next) {
+-            count += 1;
+-        }
+     }
+     return count;
+ }
+@@ -831,47 +827,19 @@ static void virtio_snd_handle_event(VirtIODevice *vdev, VirtQueue *vq)
+     trace_virtio_snd_handle_event();
+ }
+ 
+-static inline void empty_invalid_queue(VirtIODevice *vdev, VirtQueue *vq)
++static void push_bad_msg_resp(VirtQueue *vq, VirtQueueElement *elem)
+ {
+-    VirtIOSoundPCMBuffer *buffer = NULL;
+-    VirtIOSoundPCMStream *stream = NULL;
+     virtio_snd_pcm_status resp = { 0 };
+-    VirtIOSound *vsnd = VIRTIO_SND(vdev);
+-    bool any = false;
+-
+-    for (uint32_t i = 0; i < vsnd->snd_conf.streams; i++) {
+-        stream = vsnd->pcm->streams[i];
+-        if (stream) {
+-            any = false;
+-            WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
+-                while (!QSIMPLEQ_EMPTY(&stream->invalid)) {
+-                    buffer = QSIMPLEQ_FIRST(&stream->invalid);
+-                    if (buffer->vq != vq) {
+-                        break;
+-                    }
+-                    any = true;
+-                    resp.status = cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
+-                    iov_from_buf(buffer->elem->in_sg,
+-                                 buffer->elem->in_num,
+-                                 0,
+-                                 &resp,
+-                                 sizeof(virtio_snd_pcm_status));
+-                    virtqueue_push(vq,
+-                                   buffer->elem,
+-                                   sizeof(virtio_snd_pcm_status));
+-                    QSIMPLEQ_REMOVE_HEAD(&stream->invalid, entry);
+-                    virtio_snd_pcm_buffer_free(buffer);
+-                }
+-                if (any) {
+-                    /*
+-                     * Notify vq about virtio_snd_pcm_status responses.
+-                     * Buffer responses must be notified separately later.
+-                     */
+-                    virtio_notify(vdev, vq);
+-                }
+-            }
+-        }
+-    }
++    size_t msg_sz;
++
++    resp.status = cpu_to_le32(VIRTIO_SND_S_BAD_MSG);
++    msg_sz = iov_from_buf(elem->in_sg,
++                          elem->in_num,
++                          0,
++                          &resp,
++                          sizeof(virtio_snd_pcm_status));
++    virtqueue_push(vq, elem, msg_sz);
++    g_free(elem);
  }
  
  /*
-@@ -749,7 +750,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
-                  0,
-                  &cmd->resp,
-                  sizeof(virtio_snd_hdr));
--    virtqueue_push(cmd->vq, cmd->elem, sizeof(virtio_snd_hdr));
-+    virtqueue_push(cmd->vq, cmd->elem,
-+                   sizeof(virtio_snd_hdr) + cmd->payload_size);
-     virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
+@@ -890,11 +858,7 @@ static void virtio_snd_handle_tx_xfer(VirtIODevice *vdev, VirtQueue *vq)
+     size_t msg_sz, size;
+     virtio_snd_pcm_xfer hdr;
+     uint32_t stream_id;
+-    /*
+-     * If any of the I/O messages are invalid, put them in stream->invalid and
+-     * return them after the for loop.
+-     */
+-    bool must_empty_invalid_queue = false;
++    bool notify = false;
+ 
+     if (!virtio_queue_ready(vq)) {
+         return;
+@@ -942,17 +906,16 @@ static void virtio_snd_handle_tx_xfer(VirtIODevice *vdev, VirtQueue *vq)
+         continue;
+ 
+ tx_err:
+-        WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
+-            must_empty_invalid_queue = true;
+-            buffer = g_malloc0(sizeof(VirtIOSoundPCMBuffer));
+-            buffer->elem = elem;
+-            buffer->vq = vq;
+-            QSIMPLEQ_INSERT_TAIL(&stream->invalid, buffer, entry);
+-        }
++        push_bad_msg_resp(vq, elem);
++        notify = true;
+     }
+ 
+-    if (must_empty_invalid_queue) {
+-        empty_invalid_queue(vdev, vq);
++    if (notify) {
++        /*
++         * Notify vq about virtio_snd_pcm_status responses.
++         * Buffer responses must be notified separately later.
++         */
++         virtio_notify(vdev, vq);
+     }
  }
  
-@@ -808,6 +810,7 @@ static void virtio_snd_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
-         cmd->elem = elem;
-         cmd->vq = vq;
-         cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
-+        /* implicit cmd->payload_size = 0; */
-         QTAILQ_INSERT_TAIL(&s->cmdq, cmd, next);
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
+@@ -972,11 +935,7 @@ static void virtio_snd_handle_rx_xfer(VirtIODevice *vdev, VirtQueue *vq)
+     size_t msg_sz, size;
+     virtio_snd_pcm_xfer hdr;
+     uint32_t stream_id;
+-    /*
+-     * if any of the I/O messages are invalid, put them in stream->invalid and
+-     * return them after the for loop.
+-     */
+-    bool must_empty_invalid_queue = false;
++    bool notify = false;
+ 
+     if (!virtio_queue_ready(vq)) {
+         return;
+@@ -1021,17 +980,16 @@ static void virtio_snd_handle_rx_xfer(VirtIODevice *vdev, VirtQueue *vq)
+         continue;
+ 
+ rx_err:
+-        WITH_QEMU_LOCK_GUARD(&stream->queue_mutex) {
+-            must_empty_invalid_queue = true;
+-            buffer = g_malloc0(sizeof(VirtIOSoundPCMBuffer));
+-            buffer->elem = elem;
+-            buffer->vq = vq;
+-            QSIMPLEQ_INSERT_TAIL(&stream->invalid, buffer, entry);
+-        }
++        push_bad_msg_resp(vq, elem);
++        notify = true;
      }
+ 
+-    if (must_empty_invalid_queue) {
+-        empty_invalid_queue(vdev, vq);
++    if (notify) {
++        /*
++         * Notify vq about virtio_snd_pcm_status responses.
++         * Buffer responses must be notified separately later.
++         */
++         virtio_notify(vdev, vq);
+     }
+ }
+ 
 diff --git a/include/hw/audio/virtio-snd.h b/include/hw/audio/virtio-snd.h
-index c3767f442b..3d79181364 100644
+index 3d79181364..1209b122b9 100644
 --- a/include/hw/audio/virtio-snd.h
 +++ b/include/hw/audio/virtio-snd.h
-@@ -230,6 +230,7 @@ struct virtio_snd_ctrl_command {
-     VirtQueue *vq;
-     virtio_snd_hdr ctrl;
-     virtio_snd_hdr resp;
-+    size_t payload_size;
-     QTAILQ_ENTRY(virtio_snd_ctrl_command) next;
+@@ -151,7 +151,6 @@ struct VirtIOSoundPCMStream {
+     QemuMutex queue_mutex;
+     bool active;
+     QSIMPLEQ_HEAD(, VirtIOSoundPCMBuffer) queue;
+-    QSIMPLEQ_HEAD(, VirtIOSoundPCMBuffer) invalid;
  };
- #endif
+ 
+ /*
 -- 
 2.35.3
 
