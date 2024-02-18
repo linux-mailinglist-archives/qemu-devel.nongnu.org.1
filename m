@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1438594B0
+	by mail.lfdr.de (Postfix) with ESMTPS id 948BC8594AE
 	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 05:58:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbZEM-0001KM-FI; Sat, 17 Feb 2024 23:56:46 -0500
+	id 1rbZEU-0001MD-0x; Sat, 17 Feb 2024 23:56:54 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbZEK-0001Jy-Hq
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:56:44 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rbZES-0001LY-4C
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:56:52 -0500
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rbZEJ-00040P-6V
- for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:56:44 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1db5212e2f6so24000775ad.1
- for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 20:56:42 -0800 (PST)
+ id 1rbZEQ-00041m-Hg
+ for qemu-devel@nongnu.org; Sat, 17 Feb 2024 23:56:51 -0500
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-59fd6693ac1so18862eaf.0
+ for <qemu-devel@nongnu.org>; Sat, 17 Feb 2024 20:56:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708232202; x=1708837002;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1708232209; x=1708837009;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uPDCa/8BciEuyUw+U03/RaoojU4wDhAm6Ya631m6yG4=;
- b=jsCsGQTrr+pcwcsUpakS7dIeHnlBJi2SPim053Li4NP63wagipOmgG0MwvVsS/JaEc
- FLubcIKzxRwT+F85p6XdpeSCo2sII6fhjg1YZ4VkY39MvBo2JqnmdMHToSULFucqMYmb
- GG8ozmeZo1A+WgvhPCZ9OkjCGF0QT5e5ojJMp4KsfMXhRY9zE12md4B+JAdVZ6xEY4Ca
- aX/G3SOPWhMkhtKt/sHSg23GS/EuXY+iZUlhNbO7B6pHL8e9bGPJlBR8LOvy2v6F1G3g
- Wbi1Zc18Jhm0p/YZh63QfmEeO9j0Nh/xJm8LimEgDl9HKdcU8oWG3AxAp0adVYV8hhrw
- on0Q==
+ :reply-to; bh=BaCmMEn+CDQfp2DNhTw9K7jZZQfvGGVZ+DKaMJUxrD4=;
+ b=QUQdLIidnjdLp3N7oxI+b/k+BQQKnk7z0slhzlVnNAVm3sGgalfI8M9EykpqhIIo92
+ ESgt4RU7Ck9p/B4/ZlLY6Zrc81JceqBx4q6e/CxIAFKeFQMNKwrlip9ksPpxBcViQr/r
+ EyJXgCNac6cbVpyyp1Zsa+vG8M2rLCuiO4OtWrIYCJiBH4NzSIlDZZU9Q+Al0smYCiYJ
+ rl1LS6fdnoluOB6JR4wDCsZBB3ZeIh4aCrbvtoTDLVpMgK7JRROqdNO5q8q6qWu4sxrw
+ NLLYwLzawHtQQqE1/sbONQJXAS+zRqWJl3NrVEFSn/O2k6WKUEFzd7greURWTwtRfG4s
+ AOTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708232202; x=1708837002;
+ d=1e100.net; s=20230601; t=1708232209; x=1708837009;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uPDCa/8BciEuyUw+U03/RaoojU4wDhAm6Ya631m6yG4=;
- b=TQbCtyyoiAjotp0n5x396N4tXZE91b9wkpW/EfMzdHjyGpcEB1W/NXJWCSnGRdLnOe
- 0H8c3UlzwwZUKM0L6L9RNdv0Oj8I51UgA/DbLTqb4Q8CScgQxyYveD/q1QclEIKKwHHO
- A1yDP77QPaEbQ0qdTJ5+3JGf24x3BdYcEf7rhL3P1l1A+0EZERFXeGgxrr17bTumIG8H
- in2CDogjrtOhIHbQrMewLzf2GiOQUY7BBSrPDKEJ/5JFLZkoaI6qHGqU+OuBz9FX0Y+2
- ByAHOVS8JvNMt3Ju/OByPfTAo6+4YO6WxJKigYdl0Q4kmpzxBmI1uhB9O9+uwj8AobQI
- IPmw==
-X-Gm-Message-State: AOJu0YxEBLaH6w7S0DDrlZUWxxjBEFRLxQDtNUL1Aw/jW6ExWDX2FktM
- ngQR0cWnYvyzOA10ifeGqelOZR5eH3lvI3MwbtZ/cpjYIb8BySpFOOmlHecaAxQ=
-X-Google-Smtp-Source: AGHT+IGsAvgtZd8rEkv4R1pP1pRp31NKRZ3Mq8LeLF9MymshddwSC9LC9NUTG0ZYeb5QtnQFP6blDg==
-X-Received: by 2002:a17:902:ec8f:b0:1db:cc11:8530 with SMTP id
- x15-20020a170902ec8f00b001dbcc118530mr3288132plg.25.1708232201950; 
- Sat, 17 Feb 2024 20:56:41 -0800 (PST)
+ bh=BaCmMEn+CDQfp2DNhTw9K7jZZQfvGGVZ+DKaMJUxrD4=;
+ b=mhWySZ2IPMUZF+FZch974FpbaGPJPdcgakancPEuEWE1OaPqC+gndUkeTEQzfvxbku
+ R6PLMsQ5VSBXQOt1EDJpMNOC/fjWXWHAeyMjuLRDrApSeGqjqFVRC1iDarxJZB2DxkOf
+ giL2SBS14/U7Wv4ST77t8/AZdKjlvagofJCj7PSzN7mwwr5+opwTAkANiOkitHhIORHN
+ uE9fR7GeZpoxkNk5HJ6edYxEDZ3F/8sbe3X/mwFXeWSj4XOrRjKpTjs1GPM43ih8oDJd
+ NJTxavCo855Xc6cUvdH7xWNZSCUC9H+aSrjZA2GfYcO1zX0YNVV5yYA5oRB9J4kebRgm
+ uaSw==
+X-Gm-Message-State: AOJu0YyvbFPEnwm4e8CayywiY2sLjvjoh2D7DCwDh9G0nSt7N/fFCKrT
+ 5aAmkS3AMlrAxF2Sh0VVW0AqjxEhyldsvm4RmwevyMTebWW7A+TG6+VvU5T8ugY=
+X-Google-Smtp-Source: AGHT+IHDlGvYAmrrsax7qRZ/bNJU5MjCoAKtoH3OwUpUDvYTGXKlnxCAjdAQUV9bZmds6UREDPd/lQ==
+X-Received: by 2002:a05:6358:724:b0:17b:3369:ef32 with SMTP id
+ e36-20020a056358072400b0017b3369ef32mr2389749rwj.27.1708232209192; 
+ Sat, 17 Feb 2024 20:56:49 -0800 (PST)
 Received: from localhost ([157.82.200.138])
  by smtp.gmail.com with UTF8SMTPSA id
- u2-20020a17090282c200b001dbcf653017sm1533250plz.289.2024.02.17.20.56.37
+ u4-20020a17090ac88400b00296f3401cabsm2621911pjt.41.2024.02.17.20.56.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 17 Feb 2024 20:56:41 -0800 (PST)
+ Sat, 17 Feb 2024 20:56:48 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 18 Feb 2024 13:56:07 +0900
-Subject: [PATCH v5 02/11] pcie_sriov: Validate NumVFs
+Date: Sun, 18 Feb 2024 13:56:08 +0900
+Subject: [PATCH v5 03/11] hw/pci: Use -1 as a default value for rombar
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240218-reuse-v5-2-e4fc1c19b5a9@daynix.com>
+Message-Id: <20240218-reuse-v5-3-e4fc1c19b5a9@daynix.com>
 References: <20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com>
 In-Reply-To: <20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
@@ -77,17 +77,16 @@ To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>, 
  Klaus Jensen <its@irrelevant.dk>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org
+ Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::631;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x631.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,30 +102,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The guest may write NumVFs greater than TotalVFs and that can lead
-to buffer overflow in VF implementations.
+Currently there is no way to distinguish the case that rombar is
+explicitly specified as 1 and the case that rombar is not specified.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
+Set rombar -1 by default to distinguish these cases just as it is done
+for addr and romsize. It was confirmed that changing the default value
+to -1 will not change the behavior by looking at occurences of rom_bar.
+
+$ git grep -w rom_bar
+hw/display/qxl.c:328:    QXLRom *rom = memory_region_get_ram_ptr(&d->rom_bar);
+hw/display/qxl.c:431:    qxl_set_dirty(&qxl->rom_bar, 0, qxl->rom_size);
+hw/display/qxl.c:1048:    QXLRom *rom = memory_region_get_ram_ptr(&qxl->rom_bar);
+hw/display/qxl.c:2131:    memory_region_init_rom(&qxl->rom_bar, OBJECT(qxl), "qxl.vrom",
+hw/display/qxl.c:2154: PCI_BASE_ADDRESS_SPACE_MEMORY, &qxl->rom_bar);
+hw/display/qxl.h:101:    MemoryRegion       rom_bar;
+hw/pci/pci.c:74:    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
+hw/pci/pci.c:2329:    if (!pdev->rom_bar) {
+hw/vfio/pci.c:1019:    if (vdev->pdev.romfile || !vdev->pdev.rom_bar) {
+hw/xen/xen_pt_load_rom.c:29:    if (dev->romfile || !dev->rom_bar) {
+include/hw/pci/pci_device.h:150:    uint32_t rom_bar;
+
+rom_bar refers to a different variable in qxl. It is only tested if
+the value is 0 or not in the other places.
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/pci/pcie_sriov.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index a1fe65f5d801..da209b7f47fd 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
- 
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-+    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
-+        return;
-+    }
- 
-     dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
- 
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index 6496d027ca61..47f38375bb09 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -71,7 +71,7 @@ static Property pci_props[] = {
+     DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+     DEFINE_PROP_STRING("romfile", PCIDevice, romfile),
+     DEFINE_PROP_UINT32("romsize", PCIDevice, romsize, -1),
+-    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, 1),
++    DEFINE_PROP_UINT32("rombar",  PCIDevice, rom_bar, -1),
+     DEFINE_PROP_BIT("multifunction", PCIDevice, cap_present,
+                     QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
+     DEFINE_PROP_BIT("x-pcie-lnksta-dllla", PCIDevice, cap_present,
 
 -- 
 2.43.1
