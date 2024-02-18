@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1104B85971E
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 14:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094B785971D
+	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 14:18:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbh2n-0004Ar-Kz; Sun, 18 Feb 2024 08:17:21 -0500
+	id 1rbh2r-0004C7-6t; Sun, 18 Feb 2024 08:17:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rbh2m-0004Ag-0d
- for qemu-devel@nongnu.org; Sun, 18 Feb 2024 08:17:20 -0500
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rbh2p-0004Ba-AY
+ for qemu-devel@nongnu.org; Sun, 18 Feb 2024 08:17:23 -0500
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rbh2k-0007uR-HS
- for qemu-devel@nongnu.org; Sun, 18 Feb 2024 08:17:19 -0500
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a3e82664d53so23830666b.3
- for <qemu-devel@nongnu.org>; Sun, 18 Feb 2024 05:17:18 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rbh2n-0007vM-LZ
+ for qemu-devel@nongnu.org; Sun, 18 Feb 2024 08:17:22 -0500
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-55f50cf2021so4711287a12.1
+ for <qemu-devel@nongnu.org>; Sun, 18 Feb 2024 05:17:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708262236; x=1708867036; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708262238; x=1708867038; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ErOmGoohTQuuPRxQOH0NLqSeW4DnDgzvtYzR7cck4q4=;
- b=bjJZeBfcsciIyaqWmqLiaQUKd2ugrhgIE5vgjvx6xUn9mjcVsYy2YkIUnIg31eKi0+
- 6nPWVfitoQ6accJhL9q1N8daVVWzIBdOnLIdEwR/NMx78UYKiujjzgCxjLT7zWsxRWQe
- x7T1e6R7GPN8yf+RencRhvatHnCDykQo5Ew/8hFp19gI8j6K5JxsVg+tt/aDKNSGutOq
- O3IExXe6/dVqLxiFfzeKBrJAijzDOnK6nOhyMvJkGdR0hHB25GccVg+b4QB06yYV/Be6
- 67EmkQ1qL4CYzU7pQj+rK3qdK5ZOALhpZvp+6A44T2KkVk7ev+KWNzjtTAKHohC0CnAN
- ClZw==
+ bh=8Bh5JWkARm7F+KGgyKASEzzRgeCfrtjvyMyrKpxULIs=;
+ b=cCPzFhYUn2ji+UZFgvG5Ol2aCKiDKT0Zs0ZreHeTmhqYOae+J7zOamEe/R7TVtbjfm
+ KZcavXAzxLLsq+X0+sZwD9scMmgiA4r/Tr07yeCK7CcON3zZjAcLfcq7SZGH9L0mbKou
+ n1h/mdcKMtduea0rMeTC7kUwqvSlQHLJBaX3gSKArT+xWEojbyVPySu8IHvKAGn4cyl4
+ BoV5943+Ilr77NaEF4Zm+rXsACGVQiwxBosWlt8QKwrPX/NEQ5E+pQ2GSGd/72gqMGLt
+ pV+0/32dsY8ExDcrRoPQUIIJNq9NW7aQAMmCREs8UGY8PD5A3sP9N8He0B90GWRKnE03
+ p6JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708262236; x=1708867036;
+ d=1e100.net; s=20230601; t=1708262238; x=1708867038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ErOmGoohTQuuPRxQOH0NLqSeW4DnDgzvtYzR7cck4q4=;
- b=Pg3VdXvhm9Rj2O0pus9pSNKS0wrUPEBaWqJs19R9IQJjWY0fWI3v/ZeulQqjyICFVF
- zF/5Jw/5/LGgtdfW2ABWKSnJUq2TzKBkxlVfdAOUQ1zfwKG9lFvEZmusC/ks3S1bhyw0
- EH599jQrB/o69n6rGGksz2SHjBRln7phBzc5Vbye/phU0kGvBKC77VDuDudm4XpNEFdV
- trZjDo1REms5SSyrZuH6aOryABoHziizeCToqDRQdejraYIaxB9BlYqeacdORFVxuHBD
- yQUvpGhqvsgUrU52+ZO5vXUWov95UESPEmKaULnGdL+dfZ7aRZ+bxRCAYWkU7YtinPkM
- fh3w==
-X-Gm-Message-State: AOJu0Yz2kzhXERJrTYtm1w50ZB7HLoK3sSHzJ47HVTBeiVVUBtbzHUHH
- WXS/CQmUYi7RsFOPoJfJUonW53bmFPxgYrXw8n5VnVNyj/7zSzSrr3M9kq16
-X-Google-Smtp-Source: AGHT+IFyGBbJw7pW3Wr2y9cLFQ1+v+pGP3uordXBEyDvB5i2qu0VG7QD0yQ8KD+bxXhfh6VwOyzZhA==
-X-Received: by 2002:a17:906:f745:b0:a3e:422d:a27d with SMTP id
- jp5-20020a170906f74500b00a3e422da27dmr1961534ejb.47.1708262236156; 
- Sun, 18 Feb 2024 05:17:16 -0800 (PST)
+ bh=8Bh5JWkARm7F+KGgyKASEzzRgeCfrtjvyMyrKpxULIs=;
+ b=XKQGH+0W7linAQ4Bv2xRQMbVeZWo0Fh/n3d0MwVxvlnjNhqcN9A55Eh2+a+Dyrtl2J
+ LFvhODDMwA6GMwRzuIlPhFbE11EXmP/8zsuB7YEGK6XaPLRcq5QbkLcTNtpAz7llMomt
+ jFFO33zxuB8bzfera1z/0U9tp2JuO4I0k233K6ZvJioNBo1kPziV3X3G2n5op2CFZXe9
+ pUo6GRzGLs8AgD3deRQP8ePGjlqLXiQhv8nmr/dAC0ALU6Z+cXOdoNO8IZBiq0ju+6Tv
+ MSHrDUgGfccNTy27pW/IZkpaX0CJDf+efWHocn+OviM5t+jQfLzFhxuISKwinamCPqYk
+ b1xA==
+X-Gm-Message-State: AOJu0YwgJqalEIUqEw+ZiRs1PnFvMPpBRC1bQe1czBmsA6U6YX0KoRzI
+ w1zvIv4kunTdMmrTX7cEDuwxLH2x/p2EHHf3PB+4y5qPmROTeyE4g2ZCb+Wf
+X-Google-Smtp-Source: AGHT+IHjIT/sxjPqS6XoxCBwzhl8QSw0QbQ/KlmVNcTUYkn1HbwNmk7XMys0hhpqyNkYVXWOlYPT3Q==
+X-Received: by 2002:a17:906:b0c:b0:a3e:5b7f:6d31 with SMTP id
+ u12-20020a1709060b0c00b00a3e5b7f6d31mr1247018ejg.5.1708262237854; 
+ Sun, 18 Feb 2024 05:17:17 -0800 (PST)
 Received: from archlinux.. (dynamic-078-054-149-080.78.54.pool.telefonica.de.
  [78.54.149.80]) by smtp.gmail.com with ESMTPSA id
- jw15-20020a170906e94f00b00a3e86a9c55asm255088ejb.146.2024.02.18.05.17.15
+ jw15-20020a170906e94f00b00a3e86a9c55asm255088ejb.146.2024.02.18.05.17.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Feb 2024 05:17:15 -0800 (PST)
+ Sun, 18 Feb 2024 05:17:16 -0800 (PST)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -65,16 +65,16 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 4/5] hw/i386/pc: Inline i8042_setup_a20_line() and remove it
-Date: Sun, 18 Feb 2024 14:17:00 +0100
-Message-ID: <20240218131701.91132-5-shentey@gmail.com>
+Subject: [PATCH 5/5] hw/isa/vt82c686: Embed TYPE_PORT92
+Date: Sun, 18 Feb 2024 14:17:01 +0100
+Message-ID: <20240218131701.91132-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240218131701.91132-1-shentey@gmail.com>
 References: <20240218131701.91132-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,57 +97,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is used once in the pc machines. Remove it since it contains one
-line only.
+Port 92 is an integral part of the south bridge, so instantiate it there.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/input/i8042.h | 1 -
- hw/i386/pc.c             | 2 +-
- hw/input/pckbd.c         | 5 -----
- 3 files changed, 1 insertion(+), 7 deletions(-)
+ hw/isa/vt82c686.c | 7 +++++++
+ hw/isa/Kconfig    | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/include/hw/input/i8042.h b/include/hw/input/i8042.h
-index 9fb3f8d787..e90f008b66 100644
---- a/include/hw/input/i8042.h
-+++ b/include/hw/input/i8042.h
-@@ -89,7 +89,6 @@ struct MMIOKBDState {
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index aa91942745..c7b96b3133 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -22,6 +22,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/ide/pci.h"
+ #include "hw/isa/isa.h"
++#include "hw/isa/port92.h"
+ #include "hw/isa/superio.h"
+ #include "hw/intc/i8259.h"
+ #include "hw/irq.h"
+@@ -597,6 +598,7 @@ struct ViaISAState {
+     uint16_t irq_state[ISA_NUM_IRQS];
+     ViaSuperIOState via_sio;
+     MC146818RtcState rtc;
++    Port92State port92;
+     PCIIDEState ide;
+     UHCIState uhci[2];
+     ViaPMState pm;
+@@ -619,6 +621,7 @@ static void via_isa_init(Object *obj)
+     ViaISAState *s = VIA_ISA(obj);
  
- 
- void i8042_isa_mouse_fake_event(ISAKBDState *isa);
--void i8042_setup_a20_line(ISADevice *dev, qemu_irq a20_out);
- 
- static inline bool i8042_present(void)
- {
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 8b601ea6cf..1b2077dc32 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1195,7 +1195,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
++    object_initialize_child(obj, "port92", &s->port92, TYPE_PORT92);
+     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+     object_initialize_child(obj, "uhci1", &s->uhci[0], TYPE_VT82C686B_USB_UHCI);
+     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+@@ -740,6 +743,10 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
      }
+     isa_connect_gpio_out(ISA_DEVICE(&s->rtc), 0, s->rtc.isairq);
  
-     a20_line = qemu_allocate_irqs(handle_a20_line_change, first_cpu, 1);
--    i8042_setup_a20_line(i8042, a20_line[0]);
-+    qdev_connect_gpio_out_named(DEVICE(i8042), I8042_A20_LINE, 0, a20_line[0]);
-     g_free(a20_line);
- }
++    if (!qdev_realize(DEVICE(&s->port92), BUS(isa_bus), errp)) {
++        return;
++    }
++
+     for (i = 0; i < PCI_CONFIG_HEADER_SIZE; i++) {
+         if (i < PCI_COMMAND || i >= PCI_REVISION_ID) {
+             d->wmask[i] = 0;
+diff --git a/hw/isa/Kconfig b/hw/isa/Kconfig
+index f42a087c07..d94f58a2c1 100644
+--- a/hw/isa/Kconfig
++++ b/hw/isa/Kconfig
+@@ -66,6 +66,7 @@ config VT82C686
+     select I8259
+     select IDE_VIA
+     select MC146818RTC
++    select PORT92
  
-diff --git a/hw/input/pckbd.c b/hw/input/pckbd.c
-index 90a4d9eb40..74f10b640f 100644
---- a/hw/input/pckbd.c
-+++ b/hw/input/pckbd.c
-@@ -777,11 +777,6 @@ void i8042_isa_mouse_fake_event(ISAKBDState *isa)
-     ps2_mouse_fake_event(&s->ps2mouse);
- }
- 
--void i8042_setup_a20_line(ISADevice *dev, qemu_irq a20_out)
--{
--    qdev_connect_gpio_out_named(DEVICE(dev), I8042_A20_LINE, 0, a20_out);
--}
--
- static const VMStateDescription vmstate_kbd_isa = {
-     .name = "pckbd",
-     .version_id = 3,
+ config SMC37C669
+     bool
 -- 
 2.43.2
 
