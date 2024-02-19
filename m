@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782FE85A920
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E3585A92A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:41:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6g1-0001Tv-Tl; Mon, 19 Feb 2024 11:39:33 -0500
+	id 1rc6g7-0001YJ-80; Mon, 19 Feb 2024 11:39:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fz-0001TV-JU
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:31 -0500
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6g6-0001Vm-0N
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:38 -0500
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fx-0002xF-O3
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:31 -0500
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-412698cdd77so4570605e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6g4-0002y5-Dg
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:37 -0500
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-33aeb088324so2384253f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708360768; x=1708965568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708360774; x=1708965574; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MHN0WwPF0EH6RoLWLYyydVS2IwI6/kKCgvu+Hk831E8=;
- b=Lwz6hbkWFbh8LMKWvjqaqdYZBj64xMBkroarhToBzNh7jTVIyZ5+MrCfFfdWFCbWdG
- CjairSSNxN0Ps9QJDLIyPXKlE8WOW2Gs1FFDtkKIGpbJlGqu0o0HbsyWDp2J1xlihmLh
- SRDg5H9oPZbw3XpPAal1lRHcn+S1PQwsXXy8bQ8TvrLNiP8lMprXQbvb8KnoJPQYW313
- CgQSqxYLuJXBf6clPyXtbPJKGC/InrQDrFYwVPjx9OqtcsY0kKjJ3Vdk1D1VrYMlTMdY
- mE4LuZKs3EWIMTH9B9LxSIBOnqtA18Apy7ZRRsk+eHaBSJ0BYCbx8YK04p1s31eFZbTV
- jR8w==
+ bh=teclhIdRp9DBtUYfsv1Nj0vfraIqiRBxDKPN1DGCTw4=;
+ b=Z0946+W8T0GVl3pUl/1DR4QtwMAFKiJxmmUHrvs9pZOaBsj8N9T4lteRrjvrU94xm/
+ Y81slROxwNxkET+6eL6lb/1uVzapRxs3ddfACSeg+ai6MA496VddafzhAWmgwJU8/Sfs
+ /4fwaQuvpxaWFEMLytevb3ig+u2JPN0exV1ak0eVs1dUuAxMPs4wN0DKc/U4HW+r2YZX
+ 73hH0j3fja51or7svAXp/7weqNon83+kfMvF06tZRAaBVlHV4OPkafL1Gx+ykIl7Wik1
+ fJyeIhfJ0dz6Qoe13dvrOXm6LxpBRZ+OcCrGPuEHopx08jVL4txM5RQTBIctc4UbN8sY
+ mm3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708360768; x=1708965568;
+ d=1e100.net; s=20230601; t=1708360774; x=1708965574;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MHN0WwPF0EH6RoLWLYyydVS2IwI6/kKCgvu+Hk831E8=;
- b=gsnk5sn3HcuXrkaxpOhjzTJaYEU/WXF+MwNq6e/qhBkYWckmQA9rrbEA14zkONGURX
- u7csgOxFabRS5rKK5Gg0JUgRs7FHB/lbQWibDP95p0zn4tjncmaen3xyztyiud8aY0wl
- 06oXOvRVmtMv54e466UyCLAwy3LB9MKqaG6W0nMWlImkVMGY5cEhxAIsoCXhn+gwxFOi
- KJHisTECtTbyLFnZlpHbOUvi0o/wHB5RzHYna6Ix610NdBMn111CS1zSo+70cFXp0iDM
- 7k4a+gJ8bK9y3agZWS7EUctWE94phhsf8sJ7uMQ8+Ud8u4CHhYiV+uvL1yJcsFFIquUe
- jtGw==
-X-Gm-Message-State: AOJu0YxI0p9Lfe2nghDZEb+0UyL0gVUNHakbPaA6IXEjQzHgia/qLdwd
- l6BNnVveFiCZuyjP8kfbBxpoq2IaXA0jYaUQ5JsF4U8cXVKe1BOPEaeySTKDGHcmJD7QpWaP1SO
- J
-X-Google-Smtp-Source: AGHT+IEoHJLzHVLTyvEwbEyxFoRPNZDGp+cW+mz77MnRgCdXqHj3vgP1XNARDqQ9ooduA0YUS1oasw==
-X-Received: by 2002:a05:600c:154f:b0:411:de5c:8023 with SMTP id
- f15-20020a05600c154f00b00411de5c8023mr11101835wmg.4.1708360767825; 
- Mon, 19 Feb 2024 08:39:27 -0800 (PST)
+ bh=teclhIdRp9DBtUYfsv1Nj0vfraIqiRBxDKPN1DGCTw4=;
+ b=RPe7fUm9D7kOf2KyTZPDzpkgPMfY+4ew01A8ZNwsJ6hhzZ1jVG4UZtFdYK2C7Uz1Pq
+ 19Is+8we2WieqX5tq1W5xSkqLPpMaIsjrIPFizvdBD9C0HSH++gy0tA/a7g4EYDbcs5K
+ PlMWxqx0FxKaQtyVe0tqFNWml526UKew15woAyRnAOCJmcCM2gEcPAmFafZM/YPZLo58
+ HAoEK7JXgB3ZWbbEMLEwHn26n0W7On0TpKn2pUmsnTrIGj1DG4Yo5A2QVWgr6m+CvgKJ
+ D0q3TuqxBjywwe4xt/bhU0ulVy0345uMt1g6DeCqgd06IEDmh4heX2feFyxp+sx6WmFW
+ vFQw==
+X-Gm-Message-State: AOJu0YyLWNwLGJGK+4rxyr8EAdmubt3PtckPhY4YVToMYALdg1CkhVAV
+ tn0On+rrBgMRI+J5kqDYsldxgArkg5nK33DHeD0Spbo+Ef/kOh7fK4NDDbybjfPnyVPQS1CJpXj
+ 3
+X-Google-Smtp-Source: AGHT+IGi8R34udasU67z3s9kYOt7Ya2ymAiPIfqO4AcqkX/hMc2iN+ZrvRgtJ3yyBludnc5EaP+Fpw==
+X-Received: by 2002:a05:6000:1864:b0:33d:6334:e14 with SMTP id
+ d4-20020a056000186400b0033d63340e14mr373508wri.11.1708360774545; 
+ Mon, 19 Feb 2024 08:39:34 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- o1-20020a05600c378100b004125f34fd7csm7131030wmr.31.2024.02.19.08.39.25
+ ay3-20020a5d6f03000000b0033d1b760125sm11129469wrb.92.2024.02.19.08.39.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 08:39:27 -0800 (PST)
+ Mon, 19 Feb 2024 08:39:34 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Bernhard Beschow <shentey@gmail.com>
@@ -67,17 +67,18 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/14] hw/acpi/ich9_tco: Include 'ich9' in names
-Date: Mon, 19 Feb 2024 17:38:44 +0100
-Message-ID: <20240219163855.87326-5-philmd@linaro.org>
+Subject: [PATCH 05/14] hw/acpi/ich9_tco: Restrict ich9_generate_smi()
+ declaration
+Date: Mon, 19 Feb 2024 17:38:45 +0100
+Message-ID: <20240219163855.87326-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240219163855.87326-1-philmd@linaro.org>
 References: <20240219163855.87326-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,77 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make it explicit the following are ICH9 specific:
-  acpi_pm_tco_init()  -> ich9_acpi_pm_tco_init()
-  vmstate_tco_io_sts  -> vmstate_ich9_sm_tco.
+Only files including "hw/acpi/ich9_tco.h" require
+the ich9_generate_smi() declaration.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/acpi/ich9_tco.h | 5 ++---
- hw/acpi/ich9.c             | 4 ++--
- hw/acpi/ich9_tco.c         | 4 ++--
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ include/hw/acpi/ich9_tco.h    | 1 +
+ include/hw/southbridge/ich9.h | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/include/hw/acpi/ich9_tco.h b/include/hw/acpi/ich9_tco.h
-index 2562a7cf39..1c99781a79 100644
+index 1c99781a79..68ee64942f 100644
 --- a/include/hw/acpi/ich9_tco.h
 +++ b/include/hw/acpi/ich9_tco.h
-@@ -75,9 +75,8 @@ typedef struct TCOIORegs {
-     MemoryRegion io;
+@@ -76,6 +76,7 @@ typedef struct TCOIORegs {
  } TCOIORegs;
  
--/* tco.c */
--void acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent);
-+void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent);
+ void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent);
++void ich9_generate_smi(void);
  
--extern const VMStateDescription vmstate_tco_io_sts;
-+extern const VMStateDescription vmstate_ich9_sm_tco;
+ extern const VMStateDescription vmstate_ich9_sm_tco;
  
- #endif /* HW_ACPI_TCO_H */
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 228ebc9a1e..660fa6a082 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -186,7 +186,7 @@ static const VMStateDescription vmstate_tco_io_state = {
-     .minimum_version_id = 1,
-     .needed = vmstate_test_use_tco,
-     .fields = (const VMStateField[]) {
--        VMSTATE_STRUCT(tco_regs, ICH9LPCPMRegs, 1, vmstate_tco_io_sts,
-+        VMSTATE_STRUCT(tco_regs, ICH9LPCPMRegs, 1, vmstate_ich9_sm_tco,
-                        TCOIORegs),
-         VMSTATE_END_OF_LIST()
-     }
-@@ -317,7 +317,7 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
-     memory_region_add_subregion(&pm->io, ICH9_PMIO_SMI_EN, &pm->io_smi);
+diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
+index 1ac4238f7e..bee522a4cf 100644
+--- a/include/hw/southbridge/ich9.h
++++ b/include/hw/southbridge/ich9.h
+@@ -11,8 +11,6 @@
+ #include "qemu/notify.h"
+ #include "qom/object.h"
  
-     if (pm->enable_tco) {
--        acpi_pm_tco_init(&pm->tco_regs, &pm->io);
-+        ich9_acpi_pm_tco_init(&pm->tco_regs, &pm->io);
-     }
+-void ich9_generate_smi(void);
+-
+ #define ICH9_CC_SIZE (16 * 1024) /* 16KB. Chipset configuration registers */
  
-     if (pm->acpi_pci_hotplug.use_acpi_hotplug_bridge) {
-diff --git a/hw/acpi/ich9_tco.c b/hw/acpi/ich9_tco.c
-index 81606219f7..dd4aff82e0 100644
---- a/hw/acpi/ich9_tco.c
-+++ b/hw/acpi/ich9_tco.c
-@@ -224,7 +224,7 @@ static const MemoryRegionOps tco_io_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--void acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent)
-+void ich9_acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent)
- {
-     *tr = (TCOIORegs) {
-         .tco = {
-@@ -250,7 +250,7 @@ void acpi_pm_tco_init(TCOIORegs *tr, MemoryRegion *parent)
-     memory_region_add_subregion(parent, ICH9_PMIO_TCO_RLD, &tr->io);
- }
- 
--const VMStateDescription vmstate_tco_io_sts = {
-+const VMStateDescription vmstate_ich9_sm_tco = {
-     .name = "tco io device status",
-     .version_id = 1,
-     .minimum_version_id = 1,
+ #define TYPE_ICH9_LPC_DEVICE "ICH9-LPC"
 -- 
 2.41.0
 
