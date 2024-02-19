@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9258C859E5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA13859E40
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:31:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz3L-0000oo-4P; Mon, 19 Feb 2024 03:31:07 -0500
+	id 1rbz3f-00012q-FB; Mon, 19 Feb 2024 03:31:27 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3I-0000f2-JJ; Mon, 19 Feb 2024 03:31:04 -0500
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rbz3L-0000tb-O4; Mon, 19 Feb 2024 03:31:07 -0500
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3G-0002I4-EG; Mon, 19 Feb 2024 03:31:04 -0500
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1d7881b1843so34361745ad.3; 
- Mon, 19 Feb 2024 00:31:01 -0800 (PST)
+ id 1rbz3K-0002IO-7y; Mon, 19 Feb 2024 03:31:07 -0500
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1dc09556599so405325ad.1; 
+ Mon, 19 Feb 2024 00:31:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331460; x=1708936260; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331464; x=1708936264; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=p/uWlpyLjbwpL//Tp94l/d17ZDvOpZ1Q/CQ+bpb2Coc=;
- b=UxHLBKPoNiCMNkIahUPVG5YDuXnq98rXNI1mkMcvk2F1vsD0Ia5yTTMGqVCrJouVDv
- PcI0SjA/tjVz3OP09h8Yo0/Ve+QPgUs8noDc/R919nm54JVHZ42AlVZNMVxkFKx1Gmnw
- YCa/zhSNtwkbIbeLqOzUpkXgatHMJKrn2BGMDVtGPlV1SNl7Oa94nERaTGX+Lvi6Pxce
- iannIkzkCWzcGcBP/8AHroN3pq3zqj+qrbD9vHILUDEgOEurh5Rp3vHjCnddf8I0RHn6
- wwAdfN0o4oBd0v21pjEdw8/jz3JeQ7qjPzK+Z5L1zbruVUidj6D7LfdxLQOYaUgVHWOP
- mvfA==
+ bh=BO+f3hPKeL5HSk7HpmCD/7SFZU9TBIYTsIyIXJfwhsQ=;
+ b=UOpU48J2e2eMrjC4iqWff/63sFPhbGlYhSJomsk/rKLNmcAEjRxKmJ1hne/OpOIKTh
+ f+I+SQppJ+bEwpzyoxPsLKqhbfhtnHei0JCSDJRMgL7QP3+5CvR8AImAl2lDN7WS9T2q
+ CUryTPZTfwBhubq9c8mh+8SmrZ/KhqUFnGJzCDWymyYwMEZLU66KJrrHUhvVsvuGRx0B
+ Q2FHutjr90nW4tbtOlij6vc2mGdtaYH5Uz0oeZe8HyziAuMcfvMGoFPe5IOTDUxW0cCV
+ AlZR5Co8K92RfTr52JORorKDQY6oMJD78ZDmlPKJLoKtmJHSeJCTj3Z0OhOTOaM+70Wu
+ BLXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331460; x=1708936260;
+ d=1e100.net; s=20230601; t=1708331464; x=1708936264;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=p/uWlpyLjbwpL//Tp94l/d17ZDvOpZ1Q/CQ+bpb2Coc=;
- b=w1QUG4SwSEkomn9hi5b1IjFcsUoKy9jL5vPZ2rzlxdxDMD9LRkB1vu1tWFco8lQ1ic
- Ns5bqpRHIw+uj5cYAANW+47UE3OlQslUOwcdeayYW7At0ypmiBBu4+KiUoD2Voz0Y32j
- 2438X3ZFt00viT+seQLnTPoELDL4+HKE6TiwRS2cxVR41W5gCCK33lGso2wWDsLezsme
- AEZkSG980M61Y8BL+BlZwj4i59QR8/TRBvjP/oCssimVvVVv1h2XDS+xvPz7CFlDrXb8
- IoqxXJpjWEcfc16wbD1s/Stylm2akezBMiS4h74rZRwDi8RbiO1g6oJF91ZPfT62Ed7V
- vnQA==
+ bh=BO+f3hPKeL5HSk7HpmCD/7SFZU9TBIYTsIyIXJfwhsQ=;
+ b=Jq30zKGXtqXdfxDWjUOm6ljThKl7w1l9tKAG3MjAj7mRqh7HxfLjaIJBIsP1RYNs0A
+ +jXMiIckFhip6E6uhqik1IXR1GkbuNhRrDGNEAhS5A2Gi80+4c8RtQBzSul9l8l93F86
+ Pqa8fWAkFXB53lGJ7IKLdaO1QgfCO/nMLOtLhF8tnysKUBRExi7wwr68lTng0EcBqQTH
+ 0xJud0vjBTgwrtanwNCsW+gUq4R/UuAGdLeMbe1GspieFMG09CwNTgnXqpNnrynXFsAy
+ WrEga0yHgmt4+meQuef1jKzR/PYJs86LwUxpvZ6kLOxEemFwllV8DPEZSCuZth2eZW7N
+ jsaA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU0l9L+SYWXdXvgEOmpkvWE3ECNTuow7PA99+MyjpC71s0j6cq+x+/4jzh5eLuEmIQwRTn+2hLh+4wyuJ/CYh0AFn0C
-X-Gm-Message-State: AOJu0YyHiUoqjuUUyzjzMqAYdLH8e2g56Lr3V6uwNy/cZVzUX1CuCEJz
- W7kuJVKxt8aRTERXUL+kLgiRPGC0LVxHcdaB0lzKtmJcl1ZWlMCCL9vKe1zF
-X-Google-Smtp-Source: AGHT+IGZLyRyanmlFnSd38S3hVTI4WiH/IUaTylEbqNM2pFHeEI46KY3/ExzKoiWvrdUdwmQMuwhAw==
-X-Received: by 2002:a17:902:db0e:b0:1d9:b9da:ea8f with SMTP id
- m14-20020a170902db0e00b001d9b9daea8fmr16265356plx.2.1708331460007; 
- Mon, 19 Feb 2024 00:31:00 -0800 (PST)
+ AJvYcCVFJuJ//jNGJgJ0O8GB/x17hYihWI4V3q9K25QUkuvtQzMwGbY6381DH2uJGNR/kSldLH87hhvV1UsWusKRND10p6yY
+X-Gm-Message-State: AOJu0YxFSLlbocDhA8Xne4vZLeCp3chQ9nNN7dlz5ZlD7d8X07mjWStN
+ rwrNRofB1VNAapSqGzNKwRbAzSDB3On+/KgRNVJihVUtX/bBa4zTaXiItDfu
+X-Google-Smtp-Source: AGHT+IEuUTilaMo2EhR80TXiGo8DEE2+vRLrWeInssa3XSVf5ZwgWPokXBKDdb2mZilXnG1jC0TCRg==
+X-Received: by 2002:a17:902:e809:b0:1db:de93:464e with SMTP id
+ u9-20020a170902e80900b001dbde93464emr5959121plg.10.1708331464474; 
+ Mon, 19 Feb 2024 00:31:04 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.30.56
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:30:59 -0800 (PST)
+ Mon, 19 Feb 2024 00:31:04 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,17 +63,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/49] hw/ppc/spapr: Add missing license
-Date: Mon, 19 Feb 2024 18:29:02 +1000
-Message-ID: <20240219082938.238302-14-npiggin@gmail.com>
+Subject: [PULL 14/49] hw/ppc/spapr_hcall: Allow elision of
+ softmmu_resize_hpt_prep
+Date: Mon, 19 Feb 2024 18:29:03 +1000
+Message-ID: <20240219082938.238302-15-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +99,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit 9fdf0c2995 ("Start implementing pSeries logical partition
-machine") added hw/ppc/spapr_hcall.c, then commit 962104f044
-("hw/ppc: moved hcalls that depend on softmmu") extracted the
-system code to hw/ppc/spapr_softmmu.c. Take the license and
-copyrights from the original spapr_hcall.c at commit 9fdf0c2995.
+Check tcg_enabled() before calling softmmu_resize_hpt_prepare()
+and softmmu_resize_hpt_commit() to allow the compiler to elide
+their calls. The stubs are then unnecessary, remove them.
 
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[npiggin: Update file description.]
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_softmmu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/ppc/spapr_hcall.c  | 12 ++++++++----
+ target/ppc/tcg-stub.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/hw/ppc/spapr_softmmu.c b/hw/ppc/spapr_softmmu.c
-index fc1bbc0b61..2fade94029 100644
---- a/hw/ppc/spapr_softmmu.c
-+++ b/hw/ppc/spapr_softmmu.c
-@@ -1,3 +1,12 @@
-+/*
-+ * MMU hypercalls for the sPAPR (pseries) vHyp hypervisor that is used by TCG
-+ *
-+ * Copyright (c) 2004-2007 Fabrice Bellard
-+ * Copyright (c) 2007 Jocelyn Mayer
-+ * Copyright (c) 2010 David Gibson, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: MIT
-+ */
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
- #include "qemu/memalign.h"
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index fcefd1d1c7..0d7d523e6d 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -123,9 +123,11 @@ static target_ulong h_resize_hpt_prepare(PowerPCCPU *cpu,
+ 
+     if (kvm_enabled()) {
+         return H_HARDWARE;
++    } else if (tcg_enabled()) {
++        return softmmu_resize_hpt_prepare(cpu, spapr, shift);
++    } else {
++        g_assert_not_reached();
+     }
+-
+-    return softmmu_resize_hpt_prepare(cpu, spapr, shift);
+ }
+ 
+ static void do_push_sregs_to_kvm_pr(CPUState *cs, run_on_cpu_data data)
+@@ -191,9 +193,11 @@ static target_ulong h_resize_hpt_commit(PowerPCCPU *cpu,
+ 
+     if (kvm_enabled()) {
+         return H_HARDWARE;
++    } else if (tcg_enabled()) {
++        return softmmu_resize_hpt_commit(cpu, spapr, flags, shift);
++    } else {
++        g_assert_not_reached();
+     }
+-
+-    return softmmu_resize_hpt_commit(cpu, spapr, flags, shift);
+ }
+ 
+ 
+diff --git a/target/ppc/tcg-stub.c b/target/ppc/tcg-stub.c
+index aadcf59d26..740d796b98 100644
+--- a/target/ppc/tcg-stub.c
++++ b/target/ppc/tcg-stub.c
+@@ -28,18 +28,3 @@ void create_ppc_opcodes(PowerPCCPU *cpu, Error **errp)
+ void destroy_ppc_opcodes(PowerPCCPU *cpu)
+ {
+ }
+-
+-target_ulong softmmu_resize_hpt_prepare(PowerPCCPU *cpu,
+-                                        SpaprMachineState *spapr,
+-                                        target_ulong shift)
+-{
+-    g_assert_not_reached();
+-}
+-
+-target_ulong softmmu_resize_hpt_commit(PowerPCCPU *cpu,
+-                                       SpaprMachineState *spapr,
+-                                       target_ulong flags,
+-                                       target_ulong shift)
+-{
+-    g_assert_not_reached();
+-}
 -- 
 2.42.0
 
