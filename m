@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEFD859E3E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9258C859E5F
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz3J-0000Za-87; Mon, 19 Feb 2024 03:31:05 -0500
+	id 1rbz3L-0000oo-4P; Mon, 19 Feb 2024 03:31:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3E-0000Ra-7c; Mon, 19 Feb 2024 03:31:00 -0500
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rbz3I-0000f2-JJ; Mon, 19 Feb 2024 03:31:04 -0500
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3C-0002Hm-DW; Mon, 19 Feb 2024 03:30:59 -0500
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e45bd5014dso65946b3a.1; 
- Mon, 19 Feb 2024 00:30:57 -0800 (PST)
+ id 1rbz3G-0002I4-EG; Mon, 19 Feb 2024 03:31:04 -0500
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1d7881b1843so34361745ad.3; 
+ Mon, 19 Feb 2024 00:31:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331456; x=1708936256; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331460; x=1708936260; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DpJTcCEBaucSP+9TveiDuIoWZzeK5xPgEMIfuzilfqU=;
- b=S6DQSo0A/Y3j2de7Fn10zDEsqdKC2u4uQEjHGkn1LQ+56sAGJZlVybmlQN+jjgDqYC
- x8rTAJM8qxo6JqFTbGGCUdO2MDTeMVABvRGzCsgLq5zD8ViaZYd95geuWLrSLEHc3poj
- DtPQqp4aYCNE73TvsRrM9zEJquSXv+wE0xGCA+0bxmyUu7VF/84PRPFoeOuS8acg2Hl1
- pNZ6Bo0kDzt4O3SMY5xcfgHO/JjniPlN9L8BDkV5adaMz9TJvZQcAaClhQhgRiA1/3zc
- IE+tYJe8eaa7r7m5qugA6Ala2T9Tt8DrvPM8L0KE60+xD1y+vsc9ujPhlbLU10NrR7qy
- k8aA==
+ bh=p/uWlpyLjbwpL//Tp94l/d17ZDvOpZ1Q/CQ+bpb2Coc=;
+ b=UxHLBKPoNiCMNkIahUPVG5YDuXnq98rXNI1mkMcvk2F1vsD0Ia5yTTMGqVCrJouVDv
+ PcI0SjA/tjVz3OP09h8Yo0/Ve+QPgUs8noDc/R919nm54JVHZ42AlVZNMVxkFKx1Gmnw
+ YCa/zhSNtwkbIbeLqOzUpkXgatHMJKrn2BGMDVtGPlV1SNl7Oa94nERaTGX+Lvi6Pxce
+ iannIkzkCWzcGcBP/8AHroN3pq3zqj+qrbD9vHILUDEgOEurh5Rp3vHjCnddf8I0RHn6
+ wwAdfN0o4oBd0v21pjEdw8/jz3JeQ7qjPzK+Z5L1zbruVUidj6D7LfdxLQOYaUgVHWOP
+ mvfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331456; x=1708936256;
+ d=1e100.net; s=20230601; t=1708331460; x=1708936260;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DpJTcCEBaucSP+9TveiDuIoWZzeK5xPgEMIfuzilfqU=;
- b=G2Z8SqKTuAVWObl8WfRmyPTC0afzRM7oKXNgVRDfNsTRGfxmx18eOEqF2GVKfvD/qe
- cexSDtnFu7N2WVZFhjM9iEazJYcL6r19i2022ZCbDO5oiQ3YeE4c5jKqkIAg3ue0v+Ef
- q9/jmBBguiTVWBBqlMLlaGdbIfXQ2oZsytRP2Y6I+qDxNDkmHI5G79K3paSeMfRhmGxI
- H6N1C5x6NiTA3gZQ9faezp6f6q32JB3WAldI2xyYfrooyzsQS6x+dF/sX4kIikTLGpPo
- QZUupjumk8jhlQu6qcl6qKHvhDjQBuhSkz+vrSVP+NDbFzduLBC146iX6E0GK/wySSN2
- J90g==
+ bh=p/uWlpyLjbwpL//Tp94l/d17ZDvOpZ1Q/CQ+bpb2Coc=;
+ b=w1QUG4SwSEkomn9hi5b1IjFcsUoKy9jL5vPZ2rzlxdxDMD9LRkB1vu1tWFco8lQ1ic
+ Ns5bqpRHIw+uj5cYAANW+47UE3OlQslUOwcdeayYW7At0ypmiBBu4+KiUoD2Voz0Y32j
+ 2438X3ZFt00viT+seQLnTPoELDL4+HKE6TiwRS2cxVR41W5gCCK33lGso2wWDsLezsme
+ AEZkSG980M61Y8BL+BlZwj4i59QR8/TRBvjP/oCssimVvVVv1h2XDS+xvPz7CFlDrXb8
+ IoqxXJpjWEcfc16wbD1s/Stylm2akezBMiS4h74rZRwDi8RbiO1g6oJF91ZPfT62Ed7V
+ vnQA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWu1r3eWJ4jS1L6vdHpfhZ8VbGE4i2vcjiEy37sOFCiQroTZwiDmEwFM+RCes/V5hQvkkQzMm6y5Ssd/xt2QSM5a2pe
-X-Gm-Message-State: AOJu0YxCtQoVyxs9KwQjiVeo4yjzhNT0PUIcNIkZot8cqOKrwXwBHsOI
- paz+ukQwjOTF4mecmMCi6CDAIv7OU9HF2kqkM+AAQEpWg0NdiwdTQhqxZYvY
-X-Google-Smtp-Source: AGHT+IHk9J2elGgP8PTZMwNj9mavhaXu7zU2nbGgMkSzQwPb6o6YQ38BfLrhpsMIUC5AsRVav7C7jw==
-X-Received: by 2002:a17:902:6b05:b0:1db:a2bc:22c8 with SMTP id
- o5-20020a1709026b0500b001dba2bc22c8mr7784496plk.58.1708331455944; 
- Mon, 19 Feb 2024 00:30:55 -0800 (PST)
+ AJvYcCU0l9L+SYWXdXvgEOmpkvWE3ECNTuow7PA99+MyjpC71s0j6cq+x+/4jzh5eLuEmIQwRTn+2hLh+4wyuJ/CYh0AFn0C
+X-Gm-Message-State: AOJu0YyHiUoqjuUUyzjzMqAYdLH8e2g56Lr3V6uwNy/cZVzUX1CuCEJz
+ W7kuJVKxt8aRTERXUL+kLgiRPGC0LVxHcdaB0lzKtmJcl1ZWlMCCL9vKe1zF
+X-Google-Smtp-Source: AGHT+IGZLyRyanmlFnSd38S3hVTI4WiH/IUaTylEbqNM2pFHeEI46KY3/ExzKoiWvrdUdwmQMuwhAw==
+X-Received: by 2002:a17:902:db0e:b0:1d9:b9da:ea8f with SMTP id
+ m14-20020a170902db0e00b001d9b9daea8fmr16265356plx.2.1708331460007; 
+ Mon, 19 Feb 2024 00:31:00 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.30.52
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.30.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:30:55 -0800 (PST)
+ Mon, 19 Feb 2024 00:30:59 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 12/49] target/ppc: Rename registers to match ISA
-Date: Mon, 19 Feb 2024 18:29:01 +1000
-Message-ID: <20240219082938.238302-13-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 13/49] hw/ppc/spapr: Add missing license
+Date: Mon, 19 Feb 2024 18:29:02 +1000
+Message-ID: <20240219082938.238302-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,127 +96,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Several registers have names that don't match the ISA (or convention
-with other QEMU PPC registers), making them unintuitive to use with
-GDB.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Fortunately most of these registers are obscure and/or have not been
-correctly implemented in the gdb server (e.g., DEC, TB, CFAR), so risk
-of breaking users should be low.
+Commit 9fdf0c2995 ("Start implementing pSeries logical partition
+machine") added hw/ppc/spapr_hcall.c, then commit 962104f044
+("hw/ppc: moved hcalls that depend on softmmu") extracted the
+system code to hw/ppc/spapr_softmmu.c. Take the license and
+copyrights from the original spapr_hcall.c at commit 9fdf0c2995.
 
-QEMU should follow the ISA for register name convention (where there is
-no established GDB name).
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[npiggin: Update file description.]
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c    | 20 ++++++++++----------
- target/ppc/helper_regs.c |  2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ hw/ppc/spapr_softmmu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9931372a08..9bccddb350 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5062,7 +5062,7 @@ static void register_970_hid_sprs(CPUPPCState *env)
- 
- static void register_970_hior_sprs(CPUPPCState *env)
- {
--    spr_register(env, SPR_HIOR, "SPR_HIOR",
-+    spr_register(env, SPR_HIOR, "HIOR",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_hior, &spr_write_hior,
-                  0x00000000);
-@@ -5070,11 +5070,11 @@ static void register_970_hior_sprs(CPUPPCState *env)
- 
- static void register_book3s_ctrl_sprs(CPUPPCState *env)
- {
--    spr_register(env, SPR_CTRL, "SPR_CTRL",
-+    spr_register(env, SPR_CTRL, "CTRL",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  SPR_NOACCESS, &spr_write_CTRL,
-                  0x00000000);
--    spr_register(env, SPR_UCTRL, "SPR_UCTRL",
-+    spr_register(env, SPR_UCTRL, "UCTRL",
-                  &spr_read_ureg, SPR_NOACCESS,
-                  &spr_read_ureg, SPR_NOACCESS,
-                  0x00000000);
-@@ -5465,7 +5465,7 @@ static void register_book3s_purr_sprs(CPUPPCState *env)
- static void register_power6_dbg_sprs(CPUPPCState *env)
- {
- #if !defined(CONFIG_USER_ONLY)
--    spr_register(env, SPR_CFAR, "SPR_CFAR",
-+    spr_register(env, SPR_CFAR, "CFAR",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_cfar, &spr_write_cfar,
-                  0x00000000);
-@@ -5483,7 +5483,7 @@ static void register_power5p_common_sprs(CPUPPCState *env)
- static void register_power6_common_sprs(CPUPPCState *env)
- {
- #if !defined(CONFIG_USER_ONLY)
--    spr_register_kvm(env, SPR_DSCR, "SPR_DSCR",
-+    spr_register_kvm(env, SPR_DSCR, "DSCR",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_DSCR, 0x00000000);
-@@ -5695,7 +5695,7 @@ static void register_power8_book4_sprs(CPUPPCState *env)
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_ACOP, 0);
-     /* PID is only in BookE in ISA v2.07 */
--    spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-+    spr_register_kvm(env, SPR_BOOKS_PID, "PIDR",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_pidr,
-                      KVM_REG_PPC_PID, 0);
-@@ -5716,7 +5716,7 @@ static void register_power7_book4_sprs(CPUPPCState *env)
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_ACOP, 0);
-     /* PID is only in BookE in ISA v2.06 */
--    spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-+    spr_register_kvm(env, SPR_BOOKS_PID, "PIDR",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_generic32,
-                      KVM_REG_PPC_PID, 0);
-@@ -5750,7 +5750,7 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
-                     &spr_read_generic, &spr_write_generic,
-                     0x0000000000000000);
-     /* PID is part of the BookS ISA from v3.0 */
--    spr_register_kvm(env, SPR_BOOKS_PID, "PID",
-+    spr_register_kvm(env, SPR_BOOKS_PID, "PIDR",
-                      SPR_NOACCESS, SPR_NOACCESS,
-                      &spr_read_generic, &spr_write_pidr,
-                      KVM_REG_PPC_PID, 0);
-@@ -5791,7 +5791,7 @@ static void register_power10_dexcr_sprs(CPUPPCState *env)
-             &spr_read_generic, &spr_write_generic32,
-             0);
- 
--    spr_register(env, SPR_UDEXCR, "DEXCR",
-+    spr_register(env, SPR_UDEXCR, "UDEXCR",
-             &spr_read_dexcr_ureg, SPR_NOACCESS,
-             &spr_read_dexcr_ureg, SPR_NOACCESS,
-             0);
-@@ -5802,7 +5802,7 @@ static void register_power10_dexcr_sprs(CPUPPCState *env)
-             &spr_read_generic, &spr_write_generic32,
-             0);
- 
--    spr_register(env, SPR_UHDEXCR, "HDEXCR",
-+    spr_register(env, SPR_UHDEXCR, "UHDEXCR",
-             &spr_read_dexcr_ureg, SPR_NOACCESS,
-             &spr_read_dexcr_ureg, SPR_NOACCESS,
-             0);
-diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index e0b2dcd02e..8324ff22db 100644
---- a/target/ppc/helper_regs.c
-+++ b/target/ppc/helper_regs.c
-@@ -490,7 +490,7 @@ void register_non_embedded_sprs(CPUPPCState *env)
-                      &spr_read_generic, &spr_write_generic,
-                      KVM_REG_PPC_DAR, 0x00000000);
-     /* Timer */
--    spr_register(env, SPR_DECR, "DECR",
-+    spr_register(env, SPR_DECR, "DEC",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_decr, &spr_write_decr,
-                  0x00000000);
+diff --git a/hw/ppc/spapr_softmmu.c b/hw/ppc/spapr_softmmu.c
+index fc1bbc0b61..2fade94029 100644
+--- a/hw/ppc/spapr_softmmu.c
++++ b/hw/ppc/spapr_softmmu.c
+@@ -1,3 +1,12 @@
++/*
++ * MMU hypercalls for the sPAPR (pseries) vHyp hypervisor that is used by TCG
++ *
++ * Copyright (c) 2004-2007 Fabrice Bellard
++ * Copyright (c) 2007 Jocelyn Mayer
++ * Copyright (c) 2010 David Gibson, IBM Corporation.
++ *
++ * SPDX-License-Identifier: MIT
++ */
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "qemu/memalign.h"
 -- 
 2.42.0
 
