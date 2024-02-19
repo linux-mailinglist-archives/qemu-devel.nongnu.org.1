@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825F3859E53
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:34:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F857859E59
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz45-0002x6-Ei; Mon, 19 Feb 2024 03:31:53 -0500
+	id 1rbz3w-0002dH-34; Mon, 19 Feb 2024 03:31:44 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz43-0002uL-LR; Mon, 19 Feb 2024 03:31:51 -0500
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1rbz3u-0002ZU-7L; Mon, 19 Feb 2024 03:31:42 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3o-0002NR-KK; Mon, 19 Feb 2024 03:31:51 -0500
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1db5212e2f6so28788975ad.1; 
- Mon, 19 Feb 2024 00:31:35 -0800 (PST)
+ id 1rbz3s-0002PJ-EB; Mon, 19 Feb 2024 03:31:41 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dbb47852cdso14302865ad.1; 
+ Mon, 19 Feb 2024 00:31:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331494; x=1708936294; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331498; x=1708936298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZX8n0tNdAmuLPTHJh8fiQt/+xqsTkEf/Jf+VNbC4LxM=;
- b=GoDnr7VP0iWaEuk7QEdA6zbMr6wj6sGD4zXrbJlxBxWEDZ0kw8lNHn+f5YaqSNEab3
- nT6f5mwPNM2gm1h81xyNR2gMa9kJAU1thEnOjV470XEM5sjNZkFW/jo4rLwLdr6ngT7m
- Epl8aemcYMKGebNkLduR5oFvElKQu0tNuugDvLVyuG/1vgyPPOkpEmhZghzXy35nJQ5x
- IhlzFzS3JPNsfu/zpecNboaniNIc4gSIBE/j2QSOtmpGMePk4AhW0s2647GSpfpMD1GK
- d3FN5kdqEGYPt88hcz6Ug2b2GF4mFWoZclkGk8DIB12DVPCktAgQS1dnMriS7cC3P4db
- YxGw==
+ bh=zHwhu9dJxHLhSujxZEC6wtH94N4t8n8wFK7D5wdRkDo=;
+ b=j7nJM7BbRSXL0ZLGXbxKHNsZMYuxQ+ng+uk8Qy+RFrruWThfp0SDQPxrr2aurY/U3T
+ DTYYafEkRqrCKF6JbB7MStQ9Z433mijnU/DF/AwAtuPeOGCnXXFxN5JcWdMyChOEyRhN
+ PY7DTixOmhB5rCvplUQwZeTvclZxgiR+ZuGmWynY9naApYGO+v85uUAU81H7PVBNGf5K
+ fAyrb7xNx7riNHYqaXjKy8bffzUNxtgkh+9o3x9Q0EjTU6ypIAeYePNVlxk1QRveDFsq
+ VKa/aJ6IcjbcGx8IvgKORvvlx0G+G1Zy6Bg+hSxA7CnAWtrv4wNpg/54O5odPcIM4N2W
+ F2Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331494; x=1708936294;
+ d=1e100.net; s=20230601; t=1708331498; x=1708936298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZX8n0tNdAmuLPTHJh8fiQt/+xqsTkEf/Jf+VNbC4LxM=;
- b=g7eF6dkRL/fI7WAd3qB9yCg6JBek8xOXLIhjbdGC5qgewFjxpEgrDIaUwzGl+qAUMz
- Lk8sTTOkeHIv5JDi/0PwYytyOqnksrUyynitSQb98xZ6pSK48BSeAJO2IcRKwz5ZGzEb
- TRL1he7j45suxHmnGMZ/LQtGyX+SwAxgZFAmR5Lyxex1FpiP6bMPBpdLPYkEBLZFjirC
- NhdiX8aQFe7pEDEztL4rldFkkkp0cpdPQBgcvexZQUvfPDi378ABLUz3sLBN/VjDNmm8
- GKU4klxucCUYd+AFhwCvplHDvLtVml/an9JQOEDuPJ1Qzcwc5PaEt3C8v+U5As5Hb4+Y
- ZLug==
+ bh=zHwhu9dJxHLhSujxZEC6wtH94N4t8n8wFK7D5wdRkDo=;
+ b=EioLAjwVWX9+o9AwVtsdCcha66YD/R5ab5w18ZSnW/40cYzw4lQ6xUetIvc+wdoaR1
+ xHawmmkV750ItGntuKNBU+s42dr+2OhHWqrwhPhuz6xUTOgLP+chgaHdQVE9Uqb41QEJ
+ jfyG8WSV062jDeTjpb7PRGSsDI1WGRLll7/DngViTGnbKdS9MmKtwJfdTWCE0MqZyzdu
+ bdOD0S8R3ZMvnThtokxX/9L+AX+uO+NZM5EJJmaJfb5v7Hdgy3uVv96FAkdzwiiqXniU
+ DyeKHc/tF0v7k09Achn+Fiib5SBeFwJEnNHMg9YYKOlsP0WFIXVcTtHjvI2aUGiAVJBL
+ 2aLg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVdxV28iUmEkkrh4Ry4I8aGPOVZLlwq7oKUnePUueOhnbx6UFQ+WogGy7lvDeJ2rj2WEzGTEw+xJ5v8CZsnAKLj0kYl
-X-Gm-Message-State: AOJu0YwqhyjPF/uIOfS+WP9e1hzGieiWQgAJ1P9XU0JfT2lf1GKC35we
- iYVA7x+GcjFPDUqIMLP+6+mUXnVc6bXasahE5SBTqFO+AkoeA1e9v7h/uOIY
-X-Google-Smtp-Source: AGHT+IHhG4w6wtSICGk2xBFznHuo9IcZb+O5mrFh30CMfljz2xslfq8ER8szmeRJxw3b7x1K8u6zJg==
-X-Received: by 2002:a17:902:ecd2:b0:1dc:26f:813a with SMTP id
- a18-20020a170902ecd200b001dc026f813amr961031plh.6.1708331494573; 
- Mon, 19 Feb 2024 00:31:34 -0800 (PST)
+ AJvYcCUk97IiUvwsul+Gvm9XRwFYRcAUnpwqPhoTwjJgvcZVpf/z8rV0IAz51KEBWyJlj+oxgYRELwsUfXMUHs7e8T7+ePBg
+X-Gm-Message-State: AOJu0YzNHwbWNUSOfJKVH+U7WYIBVMGT1aDOywlDC0fwHE8tnb5MrdCS
+ o9B3D5um+SF0T6YPuM7qBxqgOLtQbm3UdjFeuwoQDDXByjyEFIsTULn513Hs
+X-Google-Smtp-Source: AGHT+IHoQO07VvYJtNhLX41aKUzjCXfdWfbwHdSnIkVsLoIX1v7/mEbesjMWU/hj4e945zR51pU37A==
+X-Received: by 2002:a17:902:a3ce:b0:1db:a94f:903d with SMTP id
+ q14-20020a170902a3ce00b001dba94f903dmr6850219plb.36.1708331498668; 
+ Mon, 19 Feb 2024 00:31:38 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.30
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:31:34 -0800 (PST)
+ Mon, 19 Feb 2024 00:31:38 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 21/49] ppc/pnv: Change powernv default to powernv10
-Date: Mon, 19 Feb 2024 18:29:10 +1000
-Message-ID: <20240219082938.238302-22-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 22/49] hw/pci-host/raven.c: Mark raven_io_ops as implementing
+ unaligned accesses
+Date: Mon, 19 Feb 2024 18:29:11 +1000
+Message-ID: <20240219082938.238302-23-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,39 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER10 is the latest IBM Power machine. Although it is not offered in
-"OPAL mode" (i.e., powernv configuration), so there is a case that it
-should remain at powernv9, most of the development work is going into
-powernv10 at the moment.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The raven_io_ops MemoryRegionOps is the only one in the source tree
+which sets .valid.unaligned to indicate that it should support
+unaligned accesses and which does not also set .impl.unaligned to
+indicate that its read and write functions can do the unaligned
+handling themselves.  This is a problem, because at the moment the
+core memory system does not implement the support for handling
+unaligned accesses by doing a series of aligned accesses and
+combining them (system/memory.c:access_with_adjusted_size() has a
+TODO comment noting this).
+
+Fortunately raven_io_read() and raven_io_write() will correctly deal
+with the case of being passed an unaligned address, so we can fix the
+missing unaligned access support by setting .impl.unaligned in the
+MemoryRegionOps struct.
+
+Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Tested-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- hw/ppc/pnv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 0297871bdd..b949398689 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -2242,8 +2242,6 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
- 
-     xfc->match_nvt = pnv_match_nvt;
- 
--    mc->alias = "powernv";
--
-     pmc->compat = compat;
-     pmc->compat_size = sizeof(compat);
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
-@@ -2267,6 +2265,8 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
- 
-+    mc->alias = "powernv";
-+
-     pmc->compat = compat;
-     pmc->compat_size = sizeof(compat);
-     pmc->dt_power_mgt = pnv_dt_power_mgt;
 -- 
 2.42.0
 
