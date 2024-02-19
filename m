@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6492685A927
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9901285A931
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:44:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6hM-0006Rm-KT; Mon, 19 Feb 2024 11:40:56 -0500
+	id 1rc6kT-0005Bl-8w; Mon, 19 Feb 2024 11:44:09 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rc6hK-0006EU-8P
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:54 -0500
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6kM-0005B1-O7
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:44:04 -0500
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rc6hH-0003Rf-W5
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:53 -0500
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-51181d8f52fso5867043e87.3
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:40:51 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6kK-0003xR-1a
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:44:01 -0500
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-55a5e7fa471so4358404a12.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:43:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708360850; x=1708965650; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TUdQ7xp7QgHpCDmJh85ReBiVVfoP254Zxjtyb8OjtGA=;
- b=BhtbTdoVI1+QYZjUGcTCHhnUaGf6usweS53AQ5HtUunJKQjqYVAFITDWeJtb1T/3ql
- lbDBFQb1ETknDJ0GtyPZiSeRzTi3BN7rlI03U8ID3g1MQmmObWktDhRCtmJkYjM5DaW0
- dtNQ9EqHgMkvcMCLJ/00I8dd6bmZqllbwNlN08z+CxwtozOp1QwXZck6F2+YerLfCjuB
- JgGpBZzF9oqZz8ZHEWjf0BDzM69NHYIiySUGXYA4DnX4jVzvTMp4rIUDHF/A1mWwcsQk
- 4BI4zISQZ52WDmOhPzoOCz71rbkUbvXwAHB4Tj4YVAZ5vxtJNMIVa2MH8nykoJ3N4HVy
- AH8Q==
+ d=linaro.org; s=google; t=1708361038; x=1708965838; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HoOwFA01d1oaTXxGVdRi4h2xMn4Onl1GnuoBnHC95UA=;
+ b=TvjT3jUhMJVWeODu/rNA1pq+NqVklBv7NYGwv+2B6KAp2oPYim97wKCQew5s9x5ze6
+ 49ChzPkbjbZ7BKhDsn7yKzQ2RLfYq0FyLmZ/YE9M/CgxBlCvm0JoAkyaRqNCsHpbTuIv
+ wk5J/9Tsaa1O1EEVdwJvGz/ke2FFMyjg2RrOt6c3PIeeTGvQ8Mm1vX53BgZ0G4EFTLGQ
+ vFT7f6cWqUVHR5WiLF2UAytrUvfsyCdL/PGqujIL4TJ3401NcFap7ULRS3O2Kec7gL5K
+ nszOYc+PnGCP5S/+gh8uPFOzw6dBUwvhBIGueRKg0XAfQYRXEhzFtgyKtCHLLdvP+M39
+ trWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708360850; x=1708965650;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TUdQ7xp7QgHpCDmJh85ReBiVVfoP254Zxjtyb8OjtGA=;
- b=OiGhjtPNJxk33iSZdJyQ2jkx6QCllk4r3luXDD7Rs7PyzfOst7cp/xcBWaJ/XXmeo/
- PiqZQt6DBK+F69GJszeZuqctX2X3/EisVmxtNXGvV2bzysw6qF5Gwk929IN1Vi2Qj968
- J4q1D6keRIYpNEEBUDKLz0dU0r7WYNkzJdR2Vrxld95BMiFjjD6LI+NAxZkZ+fYcDJTs
- qLp4n1yeEJxOih9EidGNhamuPMx2TlgWZob+/c9Af7QiPr42jt38cUI1zE9uPHK5obow
- ZWMV5LocZXLePjmKqHckdx0ddHnusDGAizA/2XxRjPz7aTGSpxlJS9g5V6oNH3PF8Uwu
- NwIw==
+ d=1e100.net; s=20230601; t=1708361038; x=1708965838;
+ h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HoOwFA01d1oaTXxGVdRi4h2xMn4Onl1GnuoBnHC95UA=;
+ b=jjKVR2ZY04T7RFTokl97FtIj8/F5vbaU0R2CZVxFKdECn5AHPB1CoBLb5F7nudU71b
+ UkKdXXHu9EaJ/ijBLU9AsTsuzxDuhQ+SkIrFro3t+bR1RmE8dCSiv6wxCkFaKsp5f/DE
+ NB6cuEkJsp85JkNWJtTxRIsm4V4RkT6ErlBElvSy9DNMFLQzZNipto2lnrDk2dgHnexB
+ GNVFKsqG4JdwewG1F4csSWZiXeyRiu1uFWM9ULEJykhqIfbiAFnTvyxetF5NJQRl0q0l
+ k/z5wggCnnQfNq6AdM2lVYnfOf7uEHIffkyGIlMs43xBksKcYLADb5+EE2t/eoMdK4hV
+ 5S4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU52fJYVzHJvQ1LksjldU7jQjG4GGtfqXDFjm2O9QJourJT9KGmh86a1JjU3MAFCN5rZ7VC77BEDIjWspi9q1JtCkovRio=
-X-Gm-Message-State: AOJu0Yye9u/182CweBlH50lTxy46O/IgERUsvcI/k7ukUc+uOtS3UuJ9
- 7fZqOuMxGbPMT8dHD8awtSF5PIIUcFGD3imRi9PQ0mDkzBo0tvLXP0Uatu1Ix9TGXNWfRpnBSPx
- l5GVRr/BDtZfpHDgswQPiFnZUw5unr7BNrcMLI2/zVva95J5D
-X-Google-Smtp-Source: AGHT+IGkNaYSRXydzl/uTppbLpkghrUVV/RnR1pVsOY2p2VO5+bf0Mjw4HDM6am9tnXBSflB0zb66sCnuA+I0OKufYU=
-X-Received: by 2002:a05:6512:34c9:b0:512:be5a:e33a with SMTP id
- w9-20020a05651234c900b00512be5ae33amr805984lfr.48.1708360850062; Mon, 19 Feb
- 2024 08:40:50 -0800 (PST)
+ AJvYcCWbj6yW47xdCt2aplW6jD7+aYXUiXb7igcdN2rAgf2mKOHMqH9AdmMLS6EBQxsV47ASFg8/GnkTBtX027wZmYxgrGwrQgE=
+X-Gm-Message-State: AOJu0YxaF0Id4VbVyEu9gbfblSQ+At+g0Qddje/Jl9t1vYPFeFBfj+1+
+ VTw94buCe5phH258zTkMMJV+/VqPgoFkKtaOuRu1iamGdKe8lBct8gyDM2XyEmU=
+X-Google-Smtp-Source: AGHT+IE0qm9istRnCjMA8+y6rFFLWbWkP0Hv1wrqs71OB/mUJlx5ph/Y8/qrN4Yegw7O+xwyuEDwQQ==
+X-Received: by 2002:a17:906:fc05:b0:a3e:c245:9a6d with SMTP id
+ ov5-20020a170906fc0500b00a3ec2459a6dmr1616630ejb.46.1708361038302; 
+ Mon, 19 Feb 2024 08:43:58 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.181.220])
+ by smtp.gmail.com with ESMTPSA id
+ vw15-20020a170907a70f00b00a3cf7711d40sm3126886ejc.131.2024.02.19.08.43.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Feb 2024 08:43:57 -0800 (PST)
+Message-ID: <6960207f-eaaa-4cfd-a4e3-3118da697ef7@linaro.org>
+Date: Mon, 19 Feb 2024 17:43:56 +0100
 MIME-Version: 1.0
-References: <CAFEAcA_BB5-eieVGuqqXn3aS-Vmc7OcTFmv5e=i5HgNw3Kp2FQ@mail.gmail.com>
- <ZdN5cbaqnJMTK5ts@redhat.com>
- <0a084faf-3685-4134-aecc-5edf13111d89@redhat.com>
-In-Reply-To: <0a084faf-3685-4134-aecc-5edf13111d89@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 19 Feb 2024 16:40:38 +0000
-Message-ID: <CAFEAcA9zkCZVHR21mfSiz4PQG_A2n7GEG9X4SBq4B_ARPkNW2g@mail.gmail.com>
-Subject: Re: dropping 32-bit Windows host support
-To: Thomas Huth <thuth@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- QEMU Developers <qemu-devel@nongnu.org>, Stefan Weil <sw@weilnetz.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: fix ACPI MCFG table
+Content-Language: en-US
+To: X512 <danger_mail@list.ru>, qemu-devel@nongnu.org
+References: <180d236d-c8e4-411a-b4d2-632eb82092fa@list.ru>
+Cc: qemu-riscv <qemu-riscv@nongnu.org>, Sunil V L <sunilvl@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <180d236d-c8e4-411a-b4d2-632eb82092fa@list.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,66 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 at 16:26, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 19/02/2024 16.53, Daniel P. Berrang=C3=A9 wrote:
-> > On Mon, Feb 19, 2024 at 03:37:31PM +0000, Peter Maydell wrote:
-> >> Our msys2 32-bit Windows host CI job has been failing recently
-> >> because upstream MSYS2 are starting to phase out 32-bit windows
-> >> host support and are steadily removing i686 versions of packages.
-> >> The latest is dtc:
-> >> https://gitlab.com/qemu-project/qemu/-/issues/2177
-> >>
-> >> The writing is clearly on the wall for their 32-bit support, judging
-> >> from the "2023-12-13 - Starting to drop some 32-bit Packages" news
-> >> item at https://www.msys2.org/news/ and associated discussion at
-> >> https://github.com/msys2/MINGW-packages/discussions/19326 .
-> >>
-> >> QEMU on a 32-bit host is not likely to be a great experience, and I
-> >> suspect we don't have many users using 32-bit Windows who couldn't
-> >> use the 64-bit version instead. Our Download page points users at
-> >> MSYS2's packages, and they have already dropped the 32-bit QEMU
-> >> package build. Stefan Weil's binaries page, which is the other thing
-> >> we link to from Download, has no 32-bit version newer than 7.2.0.
-> >> So anybody using 32-bit Windows QEMU must be building it themselves.
-> >> Plus, we've already deprecated system emulation on 32-bit x86 hosts,
-> >> so the only remaining "supported" config is with the NVMM or WHPX
-> >> accelerators.
-> >
-> > The other data point is that Win11 is 64-bit only, and IIUC,
-> > Win10 was 64-bit only for new OEM installs too, only upgrades
-> > or end user installs could choose 32-bit.
->
-> Yes, and considering that there will likely be a Windows 12 at one point =
-in
-> time, we'll drop support for Win10 and thus 32-bit support anyway.
->
-> >> I suggest that we should:
-> >>
-> >>   * remove the msys2-32bit CI job entirely (we will still have at leas=
-t
-> >>     compile-time coverage via the cross-win32-system job)
-> >>   * document that the 32-bit Windows support is deprecated in
-> >>     docs/about/build-platforms.rst and deprecated.rst
-> >>   * update our Download page to remove mention of 32-bit Windows
-> >>
-> >> Any objections?
-> >
-> > I think that's sane.
->
-> Sounds good to me, too.
->
-> Note that we already have an entry for "System emulation on 32-bit x86
-> hosts" in the deprecation list ... so IMHO we could also justify to drop =
-the
-> 32-bit Windows support immediately, since that's a subset of that entry.
+On 19/2/24 17:09, X512 via wrote:
+> MCFG segments should point to PCI configuration range, not BAR MMIO.
+> 
 
-Mmm. I had initially misread that as only applying to TCG,
-but it's more general than that. So I think I agree that we
-should go ahead and mark 32-bit Windows support as definitively
-dropped.
+Fixes: 55ecd83b36 ("hw/riscv/virt-acpi-build.c: Add IO controllers and 
+devices")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I'll put together some patches at some point.
+> Signed-off-by: Ilya Chugin <danger_mail@list.ru>
+> ---
+>   hw/riscv/virt-acpi-build.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index fb8baf64f6..fe01b626ea 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -558,8 +558,8 @@ static void virt_acpi_build(RISCVVirtState *s, 
+> AcpiBuildTables *tables)
+>       acpi_add_table(table_offsets, tables_blob);
+>       {
+>           AcpiMcfgInfo mcfg = {
+> -           .base = s->memmap[VIRT_PCIE_MMIO].base,
+> -           .size = s->memmap[VIRT_PCIE_MMIO].size,
+> +           .base = s->memmap[VIRT_PCIE_ECAM].base,
+> +           .size = s->memmap[VIRT_PCIE_ECAM].size,
+>           };
+>           build_mcfg(tables_blob, tables->linker, &mcfg, s->oem_id,
+>                      s->oem_table_id);
 
--- PMM
 
