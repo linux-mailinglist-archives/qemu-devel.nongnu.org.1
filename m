@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182C5859E75
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5193D859E91
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:39:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz5y-0000jg-HA; Mon, 19 Feb 2024 03:33:50 -0500
+	id 1rbzBH-0007Z9-JW; Mon, 19 Feb 2024 03:39:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz5l-0000Np-RK; Mon, 19 Feb 2024 03:33:39 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rbzBF-0007Yk-Nb
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 03:39:17 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz5k-0002nK-CP; Mon, 19 Feb 2024 03:33:37 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d94b222a3aso38610685ad.2; 
- Mon, 19 Feb 2024 00:33:35 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rbzBD-0003r8-81
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 03:39:17 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-412698cdd77so1020355e9.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 00:39:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331615; x=1708936415; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2A2Aje2N0w6l4FxwC4XiZoj+oYgoAy7mHRX7fG8IQzM=;
- b=CI4FdbYLupcFY7JfYmqZemkuFBHObcOg+wFAmlR8Cfw6qVRWVV9WXIsAAakj75xAqk
- b/sK5fl5DtA9/GpPqS9VSf+8t+PEafNzV8EzrUSLKoiZcnRHk5gk47J3Xp1s1+1tzf8Q
- CczB0E6Yk2Eyoh6T+1Vg3Xtgn6Powal9VA34umuu3O9u5GpzOhRDNImIZjeChdXwPY+a
- cOUKl/bsFHhPP4JpgM2fdfV7EkpYolVt3FIZJ2ynZrDMYE5lWzwPTbgqXnMheNQueKf/
- JpAGJLyyQLKaVuRxOvnMswxAy4/6fwT8Z/EyjVlJiDaTK84UeaR8D+WpncbS2s/Fz4A4
- ViaA==
+ d=linaro.org; s=google; t=1708331953; x=1708936753; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=CYXFroxxpCnwAYN1gM2WM91eHQq25PtJZrWxJ2nunuU=;
+ b=GyvDvVFFcciTQP0s89o3HN6W6Wkmijx/pWfguldRGLe6UD5SJtERJUN9qTRRBG1aSp
+ U3dJdZbZpk1IU4qCjrKDKweI/STTb6cS5YKOzzHR6yCvXqFVUS2gb89qF9wORvgAvqQz
+ t9wohjI5nQ0Vwyj6YwVZ8sQ23cDZgQn6+pno1In4TsOGIVHUkZL79fy+rAFIJH0ymbG1
+ +9WAvp8bUxsxRaC17plmN63bwMVgPiWt/xTtJX/0dwxQ+dYNpqOHNQE3VcZbBVv6WeOA
+ fpkNI85dHgYnXLCChRBHT47+B3usJZcpOcIOTYIxzeBUvfOJb9AXu3+hOje7y3dU5P0L
+ Tbrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331615; x=1708936415;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2A2Aje2N0w6l4FxwC4XiZoj+oYgoAy7mHRX7fG8IQzM=;
- b=ZB8Udb2MvCMw7Qyr8sG0wEeCnCWk3SyxanwyTHHKt+WQFjsODSrfzjE8nOjbI95uNs
- pwX2GGE+Ky7E4c6aMqu15QP3L+gjk3qUzSefDORKuMkicLJtyxjZly1Tc4u7N7BFW2VW
- +LHHs2SbTzVk8ICCnEOZh+bsnE0YxOEdII9sSIUrNh9BxfLhg3cgxpJmSK2QYFp8poVo
- Mh5G7hciHe5rbEITfDmfjrFyURuKji3T6jQYhO0LtXobL7556TifzoF0A3JadJUk+NoO
- GGEUEDGvy1uOBn6scQkSH8wQROgxONbLl2eJzrV2xTb5EKQ7Qjyt6/wyBkuK1czU1Os4
- WGbA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWA6q6IhVxEXLnJWHIfR8V/FJm36lXHIwILjoyqh9Xo8uJ9ygkWyDUWsw06LzOZbmAthsaAPb82Y+ul4vkugBhL8WEp
-X-Gm-Message-State: AOJu0YyTgz/Zx9xaFGnAV+rf6G+c11Gc20DRp+YEdg+lVE58mZ/8QcV+
- evFSxV4jD+hL3IYdnLJq54rY+r32xTwswPOnyyIlMLg+wD5/qWBG1n66CmnG
-X-Google-Smtp-Source: AGHT+IEHH6rzA6wGyuyTkPCwLVnBQ+025EnnDhxY191gf6RQu2lMpEAswQ7314pGZoFJr+owxbSfWA==
-X-Received: by 2002:a17:902:64d0:b0:1db:8ca0:2699 with SMTP id
- y16-20020a17090264d000b001db8ca02699mr11522914pli.24.1708331614710; 
- Mon, 19 Feb 2024 00:33:34 -0800 (PST)
-Received: from wheely.local0.net ([1.146.38.93])
+ d=1e100.net; s=20230601; t=1708331953; x=1708936753;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CYXFroxxpCnwAYN1gM2WM91eHQq25PtJZrWxJ2nunuU=;
+ b=OJJOXS1MsKwo1HosoXcKn7S0YnXTCIu4MQkGppyHwGyu+FFxOQwfwI1hPJjRfyKBkL
+ OBbol/MWiTvg4qDn/JVvarB41n3N2mX5PqxxdoZwZ0CO4nSEonJBGrWPNlAvEETsoi5M
+ a2wSIfyiYGfQNZ2mkgSD5ufXL8h6aKtO76W5Ntd3pPGalNJdiusCsbjCWJB2wYevTNUg
+ 5eZ7qDgSlRRpSYev6zldTz3Dhcm7ASDBpGUtSn1/XaiLMCGrLo6f97cDo7BC0ea5DWJJ
+ wb9O4v2g0ahPMAybCnt7wUE2uWoqPgEHZBTnw+Ggr7Vl9ZiZNDQ8+IuF7iyuqVViE6dy
+ KjiQ==
+X-Gm-Message-State: AOJu0Ywykvo3SmZ3oaXgj/4sef6v0XA3EIE4aIEsW/M/kFz4JwHdEPd7
+ cCcSChJUWrlP713f/X9nr/jPs6uN0rNMsBoyUonnbcalFwU0k2Z+SomCk4nGgls=
+X-Google-Smtp-Source: AGHT+IHHZHE2hxZImjTjtz52BTCa19x73B+ifItIOGXblR1mvSpW7ADOmJuk9lMf8fB3r9j7LKBDzQ==
+X-Received: by 2002:a05:600c:3591:b0:412:41:bb3d with SMTP id
+ p17-20020a05600c359100b004120041bb3dmr9611111wmq.3.1708331952833; 
+ Mon, 19 Feb 2024 00:39:12 -0800 (PST)
+Received: from [192.168.69.100] ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.33.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:33:34 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 49/49] target/ppc: optimise ppcemb_tlb_t flushing
-Date: Mon, 19 Feb 2024 18:29:38 +1000
-Message-ID: <20240219082938.238302-50-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
-References: <20240219082938.238302-1-npiggin@gmail.com>
+ w3-20020a05600c014300b0040fccf7e8easm10567009wmm.36.2024.02.19.00.39.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Feb 2024 00:39:12 -0800 (PST)
+Message-ID: <b40fd79f-4d41-4e04-90c1-6f4b2fde811d@linaro.org>
+Date: Mon, 19 Feb 2024 09:39:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] hw/arm: Inline sysbus_create_simple(PL110 / PL111)
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+References: <20240216153517.49422-1-philmd@linaro.org>
+ <20240216153517.49422-2-philmd@linaro.org>
+ <bcfd3f9d-04e3-79c9-c15f-c3c8d7669bdb@eik.bme.hu>
+ <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
+In-Reply-To: <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,108 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Filter TLB flushing by PID and mmuidx.
+On 16/2/24 20:54, Philippe Mathieu-Daudé wrote:
+> On 16/2/24 18:14, BALATON Zoltan wrote:
+>> On Fri, 16 Feb 2024, Philippe Mathieu-Daudé wrote:
+>>> We want to set another qdev property (a link) for the pl110
+>>> and pl111 devices, we can not use sysbus_create_simple() which
+>>> only passes sysbus base address and IRQs as arguments. Inline
+>>> it so we can set the link property in the next commit.
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>> hw/arm/realview.c    |  5 ++++-
+>>> hw/arm/versatilepb.c |  6 +++++-
+>>> hw/arm/vexpress.c    | 10 ++++++++--
+>>> 3 files changed, 17 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/hw/arm/realview.c b/hw/arm/realview.c
+>>> index 9058f5b414..77300e92e5 100644
+>>> --- a/hw/arm/realview.c
+>>> +++ b/hw/arm/realview.c
+>>> @@ -238,7 +238,10 @@ static void realview_init(MachineState *machine,
+>>>     sysbus_create_simple("pl061", 0x10014000, pic[7]);
+>>>     gpio2 = sysbus_create_simple("pl061", 0x10015000, pic[8]);
+>>>
+>>> -    sysbus_create_simple("pl111", 0x10020000, pic[23]);
+>>> +    dev = qdev_new("pl111");
+>>> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>>> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, 0x10020000);
+>>> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, pic[23]);
+>>
+>> Not directly related to this patch but this blows up 1 line into 4 
+>> just to allow setting a property. Maybe just to keep some simplicity 
+>> we'd rather need either a sysbus_realize_simple function that takes a 
+>> sysbus device instead of the name and does not create the device 
+>> itself or some way to pass properties to sysbus create simple (but the 
+>> latter may not be easy to do in a generic way so not sure about that). 
+>> What do you think?
+> 
+> Unfortunately sysbus doesn't scale in heterogeneous setup.
 
-Zoltan reports that, together with the previous TLB flush changes,
-performance of a sam460ex machine running 'lame' to convert a wav to
-mp3 is improved nearly 10%:
+Regarding the HW modelling API complexity you are pointing at, we'd
+like to move from the current imperative programming paradigm to a
+declarative one, likely DSL driven. Meanwhile it is being investigated
+(as part of "Dynamic Machine"), I'm trying to get the HW APIs right
+for heterogeneous emulation. Current price to pay is a verbose
+imperative QDev API, hoping we'll get later a trivial declarative one
+(like this single sysbus_create_simple call), where we shouldn't worry
+about the order of low level calls, whether to use link or not, etc.
 
-                  CPU time    TLB partial flushes  TLB elided flushes
-Before            37s         508238               7680722
-After             34s             73                  1143
-
-Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
-Acked-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/mmu_helper.c | 43 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 37 insertions(+), 6 deletions(-)
-
-diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index ba965f1779..c071b4d5e2 100644
---- a/target/ppc/mmu_helper.c
-+++ b/target/ppc/mmu_helper.c
-@@ -751,11 +751,20 @@ target_ulong helper_4xx_tlbre_lo(CPUPPCState *env, target_ulong entry)
- 
- static void ppcemb_tlb_flush(CPUState *cs, ppcemb_tlb_t *tlb)
- {
--    target_ulong ea;
-+    unsigned mmu_idx = 0;
- 
--    for (ea = tlb->EPN; ea < tlb->EPN + tlb->size; ea += TARGET_PAGE_SIZE) {
--        tlb_flush_page(cs, ea);
-+    if (tlb->prot & 0xf) {
-+        mmu_idx |= 0x1;
-     }
-+    if ((tlb->prot >> 4) & 0xf) {
-+        mmu_idx |= 0x2;
-+    }
-+    if (tlb->attr & 1) {
-+        mmu_idx <<= 2;
-+    }
-+
-+    tlb_flush_range_by_mmuidx(cs, tlb->EPN, tlb->size, mmu_idx,
-+                              TARGET_LONG_BITS);
- }
- 
- void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
-@@ -770,7 +779,7 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
-     entry &= PPC4XX_TLB_ENTRY_MASK;
-     tlb = &env->tlb.tlbe[entry];
-     /* Invalidate previous TLB (if it's valid) */
--    if (tlb->prot & PAGE_VALID) {
-+    if ((tlb->prot & PAGE_VALID) && tlb->PID == env->spr[SPR_40x_PID]) {
-         qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
-                       TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
-                       (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-@@ -821,7 +830,7 @@ void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
-     entry &= PPC4XX_TLB_ENTRY_MASK;
-     tlb = &env->tlb.tlbe[entry];
-     /* Invalidate previous TLB (if it's valid) */
--    if (tlb->prot & PAGE_VALID) {
-+    if ((tlb->prot & PAGE_VALID) && tlb->PID == env->spr[SPR_40x_PID]) {
-         qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
-                       TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
-                       (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-@@ -851,6 +860,25 @@ target_ulong helper_4xx_tlbsx(CPUPPCState *env, target_ulong address)
-     return ppcemb_tlb_search(env, address, env->spr[SPR_40x_PID]);
- }
- 
-+static bool mmubooke_pid_match(CPUPPCState *env, ppcemb_tlb_t *tlb)
-+{
-+    if (tlb->PID == env->spr[SPR_BOOKE_PID]) {
-+        return true;
-+    }
-+    if (!env->nb_pids) {
-+        return false;
-+    }
-+
-+    if (env->spr[SPR_BOOKE_PID1] && tlb->PID == env->spr[SPR_BOOKE_PID1]) {
-+        return true;
-+    }
-+    if (env->spr[SPR_BOOKE_PID2] && tlb->PID == env->spr[SPR_BOOKE_PID2]) {
-+        return true;
-+    }
-+
-+    return false;
-+}
-+
- /* PowerPC 440 TLB management */
- void helper_440_tlbwe(CPUPPCState *env, uint32_t word, target_ulong entry,
-                       target_ulong value)
-@@ -863,7 +891,10 @@ void helper_440_tlbwe(CPUPPCState *env, uint32_t word, target_ulong entry,
-     tlb = &env->tlb.tlbe[entry];
- 
-     /* Invalidate previous TLB (if it's valid) */
--    if (tlb->prot & PAGE_VALID) {
-+    if ((tlb->prot & PAGE_VALID) && mmubooke_pid_match(env, tlb)) {
-+        qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
-+                      TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
-+                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
-         ppcemb_tlb_flush(env_cpu(env), tlb);
-     }
- 
--- 
-2.42.0
-
+For the big list of issues we are trying to improve, see:
+https://lore.kernel.org/qemu-devel/87o7d1i7ky.fsf@pond.sub.org/
 
