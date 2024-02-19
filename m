@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C553A859E73
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BFE859E55
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:34:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz4A-0003ME-28; Mon, 19 Feb 2024 03:31:58 -0500
+	id 1rbz4G-00042X-LU; Mon, 19 Feb 2024 03:32:04 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz47-0003Fv-OP; Mon, 19 Feb 2024 03:31:55 -0500
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rbz4B-0003hK-Vj; Mon, 19 Feb 2024 03:32:00 -0500
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz45-0002WE-Uq; Mon, 19 Feb 2024 03:31:55 -0500
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1d746856d85so21987955ad.0; 
- Mon, 19 Feb 2024 00:31:53 -0800 (PST)
+ id 1rbz4A-0002Wu-5k; Mon, 19 Feb 2024 03:31:59 -0500
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1d918008b99so32901735ad.3; 
+ Mon, 19 Feb 2024 00:31:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331512; x=1708936312; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331516; x=1708936316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DNu7LbnPyEXqAmNz1J8vUk98CtltlRUnNqB1Qw24DM8=;
- b=jEw1K5gkxMkWOYIOFYqIG+BaTWn6vqv7KAx5NOUKlHdg+dFWY21Fk5Lgvtj4EEYtyI
- WESukXYkB5ZbM1DXDCnsKMwIhd4F6Gho/yuZtX8ZZAcmvn57GXh7J4qiSgCMzfkO5+77
- ogjRQAhQo5bq/OAvhzak1IruXfYzhHJxC94ZvctvVDCh/J7nBR35lTlcdjuUlXEVPr9m
- YtWgJM4keTxgYFVhTQTqX9AbHtwZcR1sQD2Yt63AmtN5PwR7U7EjatZvsOab7RzS4HEe
- gDhBTlpTEdok/9aR2YRU0p4eTGNEvQuuOTMa/RusZSfhdzf5c+H8/Vo1W+cgNPBXycq7
- 5Nxg==
+ bh=EQv5sl7Jj/zQtu24J/5XkzVO6uC8Momtwp64DIN703Y=;
+ b=k73787A8FBfEsYEylKUttRzDfncdRqIvEVXJfV9kvRmtXCiLlTQmXf56CA3w2+3osn
+ z3N88nEo3+rm3eSD1LTu5jXA+nHG3dP79zs4zz5t2arU+4JTKFQ/2OoFBHtgHKP59yDC
+ UhuuxwZI+8DfyfuGL/VdXTqGeUIGik2RvfOESCZy2ljzZYZYatbIgoCxA+qV3VSBzT85
+ 3hqIfCp/PYJM77bwTEn9Z2wDsrNbbYS4eeuJQqDRZ6gHgcgYAGMWFBdGwmT4uRvlb1DL
+ K/irGJ8SE9VoumSwmw9InTK8UMmUM/NWH3Bvq0wycYov+1gaS1WLaoSmL98usbGFLGR5
+ rHKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331512; x=1708936312;
+ d=1e100.net; s=20230601; t=1708331516; x=1708936316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DNu7LbnPyEXqAmNz1J8vUk98CtltlRUnNqB1Qw24DM8=;
- b=lX4ADHQEYO4nyqfD7cNRTZVF1onB57AdptaJ+S820h83alQAVAovAmVi45eBDJAxTM
- gZSQWm7Pt5K6KRA5hLv3NazQqoChO+2t6xkRe74ZYU80P0q0t2U6kc36tWB1nJlQJBCQ
- EhVuvhyMLQUaECYmj1tMtD+OdqFJzHkNfvc+Mej8NiIbiQwpgI4rvwSbgj7XSpMcltpr
- OoDjfiqHIA/9EjH6GgnMqw41JZzXdGN0HD2eRgKOvt5tb1g8ImSgOdO1bRIVFNSsrJs1
- YJL6Tuumx59DvINoVUC1FR7CLNGXFeD4roDXdTLZc9z68dotjUNGJmemfl8Pe8z85ipV
- G/Lw==
+ bh=EQv5sl7Jj/zQtu24J/5XkzVO6uC8Momtwp64DIN703Y=;
+ b=q7Q1+8Iar0D04+d/W1gtzxyfivmobGo3zPBsuI871bfSfC2Rsn0k0Zq9bW4yRMzn/W
+ if/Ez6MhxIX7/1x+x7jEXAepVITNvxrnVH/9Y+6NwzqJv1kWgRUtfyLjXAd2NBTCeJI0
+ dNuZ12fTTrncggp74syVSJUhTxKeM7MwYk8bkV/nNOEatNV0R5nxvvdYAq5zsCe9oG/7
+ rVvzyVn5JOrvt7toU4zaPKq+AW7i8P2SpD5aoXMPO/ovXrHnBUiQ90VkYfMCvTapu968
+ anLfX/26X4jzGYO4b4arCg/SteVZkQmHfzxlbjcJOefN/WM6iPyVQX5d/z32DHnlo4A+
+ S06g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWZRuIbtahYGfXRa203bQIjeimKlDFubsrpAvtnOu0Pfoh+qOmZ0AQZfTL94HRx4g+BtLsmE6MqICx3YVZhPCfo9VQI
-X-Gm-Message-State: AOJu0Yz83MenesIwc97tqq1ZSqEuagDELtLSleQohZN3bnvZBrBrucwn
- DMES8iZE0Fm8Tp8jOm67Nek7m9trGlSN+YvpBs2dytjDXa6gFc9j9LsPReup
-X-Google-Smtp-Source: AGHT+IGTO6HdLL18/EkKkbKJh/xmlhRDy63SA/5w8nzzGj2GWTPT7UMJxji3H7UhQx03OovpAMdqEg==
-X-Received: by 2002:a17:902:7286:b0:1db:cf57:7bad with SMTP id
- d6-20020a170902728600b001dbcf577badmr4321017pll.22.1708331512297; 
- Mon, 19 Feb 2024 00:31:52 -0800 (PST)
+ AJvYcCW3hBa4I9Gr+sOSBtoVr/EsKOEQ7WQ7c250HVZFPRjyiKhlTjISFc5d6LZJNJYtGNLpNje5Q8n7qBjKOANBEccV9BkZ
+X-Gm-Message-State: AOJu0YwmhMtbabmPgpYTEJ27bRamwiy7af+/h4Wi97O3Nw4piKLeZyzu
+ 7i5AAKR8SnBkcg5uylY++G3eip7VLxt8Q6xvegFF4hIZwoQQ5vIk/ySUrxQt
+X-Google-Smtp-Source: AGHT+IGW42UStl6xWWUg7SCXzg290e9hKzSH5qaIk5JucX6kxcerXi3Z7N3IPOgYATfGrY0AbrIKCw==
+X-Received: by 2002:a17:902:f64b:b0:1db:aa13:b678 with SMTP id
+ m11-20020a170902f64b00b001dbaa13b678mr6043627plg.0.1708331516390; 
+ Mon, 19 Feb 2024 00:31:56 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.48
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:31:52 -0800 (PST)
+ Mon, 19 Feb 2024 00:31:56 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,17 +63,18 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PULL 25/49] ppc/pnv: New powernv10-rainier machine type
-Date: Mon, 19 Feb 2024 18:29:14 +1000
-Message-ID: <20240219082938.238302-26-npiggin@gmail.com>
+Subject: [PULL 26/49] ppc/pnv: Add pca9552 to powernv10-rainier for PCIe
+ hotplug power control
+Date: Mon, 19 Feb 2024 18:29:15 +1000
+Message-ID: <20240219082938.238302-27-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,72 +99,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Create a new powernv machine type, powernv10-rainier, that
-will contain rainier-specific devices.
+The Power Hypervisor code expects to see a pca9552 device connected
+to the 3rd PNV I2C engine on port 1 at I2C address 0x63 (or left-
+justified address of 0xC6).  This is used by hypervisor code to
+control PCIe slot power during hotplug events.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ hw/ppc/Kconfig       |  1 +
+ hw/ppc/pnv.c         | 25 +++++++++++++++++++++++++
+ include/hw/ppc/pnv.h |  1 +
+ 3 files changed, 27 insertions(+)
 
+diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
+index 44263a58c4..8e592e4307 100644
+--- a/hw/ppc/Kconfig
++++ b/hw/ppc/Kconfig
+@@ -32,6 +32,7 @@ config POWERNV
+     select XIVE
+     select FDT_PPC
+     select PCI_POWERNV
++    select PCA9552
+ 
+ config PPC405
+     bool
 diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index b949398689..33b905f854 100644
+index 33b905f854..78f5c6262a 100644
 --- a/hw/ppc/pnv.c
 +++ b/hw/ppc/pnv.c
-@@ -2249,7 +2249,7 @@ static void pnv_machine_power9_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+@@ -790,6 +790,7 @@ static void pnv_init(MachineState *machine)
+     const char *bios_name = machine->firmware ?: FW_FILE_NAME;
+     PnvMachineState *pnv = PNV_MACHINE(machine);
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
++    PnvMachineClass *pmc = PNV_MACHINE_GET_CLASS(machine);
+     char *fw_filename;
+     long fw_size;
+     uint64_t chip_ram_start = 0;
+@@ -979,6 +980,13 @@ static void pnv_init(MachineState *machine)
+      */
+     pnv->powerdown_notifier.notify = pnv_powerdown_notify;
+     qemu_register_powerdown_notifier(&pnv->powerdown_notifier);
++
++    /*
++     * Create/Connect any machine-specific I2C devices
++     */
++    if (pmc->i2c_init) {
++        pmc->i2c_init(pnv);
++    }
  }
  
--static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-+static void pnv_machine_p10_common_class_init(ObjectClass *oc, void *data)
+ /*
+@@ -1879,6 +1887,21 @@ static void pnv_chip_power10_realize(DeviceState *dev, Error **errp)
+                               qdev_get_gpio_in(DEVICE(&chip10->psi),
+                                                PSIHB9_IRQ_SBE_I2C));
+     }
++
++}
++
++static void pnv_rainier_i2c_init(PnvMachineState *pnv)
++{
++    int i;
++    for (i = 0; i < pnv->num_chips; i++) {
++        Pnv10Chip *chip10 = PNV10_CHIP(pnv->chips[i]);
++
++        /*
++         * Add a PCA9552 I2C device for PCIe hotplug control
++         * to engine 2, bus 1, address 0x63
++         */
++        i2c_slave_create_simple(chip10->i2c[2].busses[1], "pca9552", 0x63);
++    }
+ }
+ 
+ static uint32_t pnv_chip_power10_xscom_pcba(PnvChip *chip, uint64_t addr)
+@@ -2286,9 +2309,11 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
+ static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
  {
      MachineClass *mc = MACHINE_CLASS(oc);
-     PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
-@@ -2261,7 +2261,6 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-         { TYPE_PNV_PHB_ROOT_PORT, "version", "5" },
-     };
++    PnvMachineClass *pmc = PNV_MACHINE_CLASS(oc);
  
--    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
-     compat_props_add(mc->compat_props, phb_compat, G_N_ELEMENTS(phb_compat));
- 
-@@ -2276,6 +2275,22 @@ static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_PNV_PHB);
+     pnv_machine_p10_common_class_init(oc, data);
+     mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 Rainier";
++    pmc->i2c_init = pnv_rainier_i2c_init;
  }
  
-+static void pnv_machine_power10_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    pnv_machine_p10_common_class_init(oc, data);
-+    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10";
-+}
-+
-+static void pnv_machine_p10_rainier_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-+    pnv_machine_p10_common_class_init(oc, data);
-+    mc->desc = "IBM PowerNV (Non-Virtualized) POWER10 Rainier";
-+}
-+
  static bool pnv_machine_get_hb(Object *obj, Error **errp)
- {
-     PnvMachineState *pnv = PNV_MACHINE(obj);
-@@ -2381,6 +2396,11 @@ static void pnv_machine_class_init(ObjectClass *oc, void *data)
-     }
+diff --git a/include/hw/ppc/pnv.h b/include/hw/ppc/pnv.h
+index 7e5fef7c43..110ac9aace 100644
+--- a/include/hw/ppc/pnv.h
++++ b/include/hw/ppc/pnv.h
+@@ -76,6 +76,7 @@ struct PnvMachineClass {
+     int compat_size;
  
- static const TypeInfo types[] = {
-+    {
-+        .name          = MACHINE_TYPE_NAME("powernv10-rainier"),
-+        .parent        = MACHINE_TYPE_NAME("powernv10"),
-+        .class_init    = pnv_machine_p10_rainier_class_init,
-+    },
-     {
-         .name          = MACHINE_TYPE_NAME("powernv10"),
-         .parent        = TYPE_PNV_MACHINE,
+     void (*dt_power_mgt)(PnvMachineState *pnv, void *fdt);
++    void (*i2c_init)(PnvMachineState *pnv);
+ };
+ 
+ struct PnvMachineState {
 -- 
 2.42.0
 
