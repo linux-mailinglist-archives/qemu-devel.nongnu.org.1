@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FEE85AC95
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 20:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A219385ACCB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 21:10:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc9lC-0004EL-Qc; Mon, 19 Feb 2024 14:57:06 -0500
+	id 1rc9xJ-0001rX-CG; Mon, 19 Feb 2024 15:09:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rc9ky-0004AX-DE; Mon, 19 Feb 2024 14:56:52 -0500
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rc9kw-0000Ri-KW; Mon, 19 Feb 2024 14:56:52 -0500
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a28a6cef709so509530766b.1; 
- Mon, 19 Feb 2024 11:56:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708372609; x=1708977409; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mh7xKayhuMpicZ4P4S8X7GkBT3vbv91ixnx6ZkfnruM=;
- b=HiHk6Dh7xa4qDXemPjqLxAeK+sQFKZx+PuFQeBpuu4aHB6oBJFOM3qdyFODgepRJaK
- qtsSkzVrnKi9Gb92t5xzIS3mXY+z1Aa89Vli1cB8lYPGc8ugy7DWSpaCtWc0kVNTrZKU
- IkGii5KAxh+Nl3e2FoslE7kxS4J2UXFwFfl/x52wvWVN9VeSwgCauGKS+ENexBYmHo2l
- WQ1joaJypB+ybnbyyQ/r6IwhLR0b0Z3ogV1PMuRc7Z3uMAyiqZTcagX1ovA4CBvUbc5E
- +/WSFD9kfYGrHhb1Wt4HpnqSXUVhJLyM/XKnJHHC8MEZhuYH8jzagLjutAbx267UfjiN
- c2DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708372609; x=1708977409;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mh7xKayhuMpicZ4P4S8X7GkBT3vbv91ixnx6ZkfnruM=;
- b=ZrkgFk54LaVeCZgSGu6tF0FGqUZ8MVcjpGbeEZfIDGFKU1dBQ0A0Eh7BOxfbP4/Gog
- nOl3ErajuDK7Ji30mmi1rrbjoF1iEv+B7MCmeiaoG0OFu37Wpn/WD6D9SF9486HKK0m7
- u8hPYzwXodX/BICf7YbX0G19ZWWxYxv19amyrc7V1sLAOXhU8vn5Ciqxq3b7Zt6vaZGS
- upgEITHzWcSd94o97BHZYQkk/TN0d0rMTLSQqlJRJ0WhcHCGPFHNBvUSlRQGAL+nZRgg
- h4pDiEjUJaKKTQ1uVjmcAdPysS4d5C+DLRSkL4eSxS49OiJenTMGO8FEbeVPJNXNjCuj
- Il7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXiiwvNHZyLxey3c7QyfpAYI/V5bUmQ8fdSwll6DNLkaUmQkgFMNVnDw2CI6pSDzk0iOO+C6q+4V48XoHMq0F4XQvCq
-X-Gm-Message-State: AOJu0YxpGIbDG2Ul3aSbIkC9fkvoG4yaHMyEuJ6hqnubHlt7uxJdokqW
- +HocU02AISj3gDauhfweieh6+3WvDqF+ASJU18UD/xTlRwnUpu3Yy/gaonwL9AM=
-X-Google-Smtp-Source: AGHT+IF8X/Y2ckAN1VY1tzCXCxTIYwh27WRp4axXMud3f/K3X9gYspjPkXIcoINhXVVgcJ/oaoHemQ==
-X-Received: by 2002:a17:906:af09:b0:a3e:d515:cdf3 with SMTP id
- lx9-20020a170906af0900b00a3ed515cdf3mr1338524ejb.27.1708372608476; 
- Mon, 19 Feb 2024 11:56:48 -0800 (PST)
-Received: from localhost.localdomain ([37.186.51.232])
- by smtp.gmail.com with ESMTPSA id
- q19-20020a170906a09300b00a3daa068f76sm3255911ejy.65.2024.02.19.11.56.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 11:56:48 -0800 (PST)
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rc9x7-0001qS-Ip; Mon, 19 Feb 2024 15:09:27 -0500
+Received: from zproxy2.enst.fr ([2001:660:330f:2::dd])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <arnaud.minier@telecom-paris.fr>)
+ id 1rc9x5-0003tw-9V; Mon, 19 Feb 2024 15:09:25 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 73F8A80568;
+ Mon, 19 Feb 2024 21:09:17 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id gHJrlFgdR64H; Mon, 19 Feb 2024 21:09:17 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id E57A38057F;
+ Mon, 19 Feb 2024 21:09:16 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr E57A38057F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1708373357;
+ bh=LLInqYBXUK/ndsBExIh0DrigNLIsd8wz64iKo5Pe5/A=;
+ h=From:To:Date:Message-Id:MIME-Version;
+ b=bCVSx4wqULQmxRmDrNIC+6ai2VKQpOobsJeaH6TwpRuOb+m5BaOhtqLIa00FHlkoe
+ L5TWy8es5MinZXlgBTXc5Vy2tBGqJRpCMqeUgZdZSqMbA5HSOi9wiRxpxmrK50Eplg
+ KOZKKxgi4BDvw3YVRb7fHVacHYzorrxWcBut4nKY=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id AqysWEr4dGJQ; Mon, 19 Feb 2024 21:09:16 +0100 (CET)
+Received: from AM-Inspiron-3585.. (cust-west-par-46-193-4-103.cust.wifirst.net
+ [46.193.4.103])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 4AA8780568;
+ Mon, 19 Feb 2024 21:09:16 +0100 (CET)
+From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, pbonzini@redhat.com,
- qemu-arm@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH 3/3] tests/qtest: Add testcase for BCM2835 BSC
-Date: Mon, 19 Feb 2024 22:51:33 +0300
-Message-Id: <20240219195133.2304668-4-rayhan.faizel@gmail.com>
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, qemu-arm@nongnu.org,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Subject: [PATCH v5 0/8] Add device STM32L4x5 RCC
+Date: Mon, 19 Feb 2024 21:09:00 +0100
+Message-Id: <20240219200908.49551-1-arnaud.minier@telecom-paris.fr>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240219195133.2304668-1-rayhan.faizel@gmail.com>
-References: <20240219195133.2304668-1-rayhan.faizel@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x633.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::dd;
+ envelope-from=arnaud.minier@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,142 +80,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simple testcase for validating proper operation of read and write for all
-three BSC controllers.
+This patch adds the STM32L4x5 RCC (Reset and Clock Control) device and is=
+ part
+of a series implementing the STM32L4x5 with a few peripherals.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/481
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
----
- tests/qtest/bcm2835-i2c-test.c | 105 +++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |   2 +-
- 2 files changed, 106 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/bcm2835-i2c-test.c
+Due to the high number of lines, I tried to split the patch into several =
+independent commits.
+Each commit compiles on its own but I had to add temporary workarounds in=
+ intermediary commits to allow them to compile even if some functions are=
+ not used. However, they have been removed once the functions were used. =
+Tell me if this is ok or if I should remove them.
 
-diff --git a/tests/qtest/bcm2835-i2c-test.c b/tests/qtest/bcm2835-i2c-test.c
-new file mode 100644
-index 0000000000..6ec15b8976
---- /dev/null
-+++ b/tests/qtest/bcm2835-i2c-test.c
-@@ -0,0 +1,105 @@
-+/*
-+ * QTest testcase for Broadcom Serial Controller (BSC)
-+ *
-+ * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+
-+#include "hw/i2c/bcm2835_i2c.h"
-+#include "hw/sensor/tmp105_regs.h"
-+
-+static const uint32_t bsc_base_addrs[] = {
-+    0x3f205000,                         /* I2C0 */
-+    0x3f804000,                         /* I2C1 */
-+    0x3f805000,                         /* I2C2 */
-+};
-+
-+static void bcm2835_i2c_init_transfer(uint32_t base_addr, bool read)
-+{
-+    /* read flag is bit 0 so we can write it directly */
-+    int interrupt = read ? BCM2835_I2C_C_INTR : BCM2835_I2C_C_INTT;
-+
-+    writel(base_addr + BCM2835_I2C_C,
-+           BCM2835_I2C_C_I2CEN | BCM2835_I2C_C_INTD |
-+           BCM2835_I2C_C_ST | BCM2835_I2C_C_CLEAR | interrupt | read);
-+}
-+
-+static void test_i2c_read_write(gconstpointer data)
-+{
-+    uint32_t i2cdata;
-+    intptr_t index = (intptr_t) data;
-+    uint32_t base_addr = bsc_base_addrs[index];
-+
-+    /* Write to TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 3);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xde);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xad);
-+
-+
-+    /* Read from TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 1);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+
-+    writel(base_addr + BCM2835_I2C_DLEN, 2);
-+    bcm2835_i2c_init_transfer(base_addr, 1);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xde);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xad);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    int i;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    for (i = 0; i < 3; i++) {
-+        g_autofree char *test_name =
-+        g_strdup_printf("/bcm2835/bcm2835-i2c%d/read_write", i);
-+        qtest_add_data_func(test_name, (void *)(intptr_t) i,
-+                            test_i2c_read_write);
-+    }
-+
-+    /* Run I2C tests with TMP105 slaves on all three buses */
-+    qtest_start("-M raspi3b "
-+                "-device tmp105,address=0x50,bus=i2c-bus.0 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.1 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.2");
-+    ret = g_test_run();
-+    qtest_end();
-+
-+    return ret;
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 39557d5ecb..8fe303160e 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -228,7 +228,7 @@ qtests_aarch64 = \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test', 'xlnx-versal-trng-test'] : []) + \
--  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-+  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test', 'bcm2835-i2c-test'] : []) +  \
-   (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
--- 
+Also, the tests are not very exhaustive for the moment. I have not found =
+a way to test the clocks' frequency from the qtests, which limits severel=
+y the exhaustiveness of the tests.
+
+Thanks to Philippe Mathieu-Daud=C3=A9 and Luc Michel for guiding me towar=
+d the hw/misc/bcm2835_cprman.c implementation and answering my questions =
+about clock emulation in qemu !
+
+Changes from v1 to v2:
+- Removed a mention in the tests
+- Added an early return to prevent a clang compilation error in rcc_updat=
+e_pllsaixcfgr()
+
+Changes from v2 to v3:
+- Changed the timeout method used in the tests
+- Added a real value for ICSR register
+- Replaced some TODOs with correct error handling
+- Added a commit that implements correct write protections for the CR reg=
+ister
+
+Changes from v3 to v4:
+- Rebased on top of current master
+- Implemented reset functions for the multiplexers and the PLLs
+- Added explanatory messages to every commit
+- Addded logs for unimplemented registers
+- Completed the VMState for the multiplexers and the PLLs
+
+Changes from v4 to v5:
+- Abort when trying to set an out-of-bound pll vco multiplier
+
+Arnaud Minier (8):
+  Implement STM32L4x5_RCC skeleton
+  Add an internal clock multiplexer object
+  Add an internal PLL Clock object
+  Add initialization information for PLLs and clock multiplexers
+  RCC: Handle Register Updates
+  Add write protections to CR register
+  STM32L4x5: Use the RCC Sysclk
+  Add tests for the STM32L4x5_RCC
+
+ MAINTAINERS                               |    5 +-
+ docs/system/arm/b-l475e-iot01a.rst        |    2 +-
+ hw/arm/Kconfig                            |    1 +
+ hw/arm/b-l475e-iot01a.c                   |   10 +-
+ hw/arm/stm32l4x5_soc.c                    |   45 +-
+ hw/misc/Kconfig                           |    3 +
+ hw/misc/meson.build                       |    1 +
+ hw/misc/stm32l4x5_rcc.c                   | 1416 +++++++++++++++++++++
+ hw/misc/trace-events                      |   14 +
+ include/hw/arm/stm32l4x5_soc.h            |    5 +-
+ include/hw/misc/stm32l4x5_rcc.h           |  239 ++++
+ include/hw/misc/stm32l4x5_rcc_internals.h | 1042 +++++++++++++++
+ tests/qtest/meson.build                   |    3 +-
+ tests/qtest/stm32l4x5_rcc-test.c          |  207 +++
+ 14 files changed, 2948 insertions(+), 45 deletions(-)
+ create mode 100644 hw/misc/stm32l4x5_rcc.c
+ create mode 100644 include/hw/misc/stm32l4x5_rcc.h
+ create mode 100644 include/hw/misc/stm32l4x5_rcc_internals.h
+ create mode 100644 tests/qtest/stm32l4x5_rcc-test.c
+
+--=20
 2.34.1
 
 
