@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F857859E59
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BDE859E6F
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:36:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz3w-0002dH-34; Mon, 19 Feb 2024 03:31:44 -0500
+	id 1rbz41-0002qp-LW; Mon, 19 Feb 2024 03:31:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3u-0002ZU-7L; Mon, 19 Feb 2024 03:31:42 -0500
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1rbz3z-0002p1-66; Mon, 19 Feb 2024 03:31:47 -0500
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3s-0002PJ-EB; Mon, 19 Feb 2024 03:31:41 -0500
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1dbb47852cdso14302865ad.1; 
- Mon, 19 Feb 2024 00:31:39 -0800 (PST)
+ id 1rbz3x-0002Sl-GC; Mon, 19 Feb 2024 03:31:46 -0500
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6e0a479a6cbso1965146b3a.0; 
+ Mon, 19 Feb 2024 00:31:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331498; x=1708936298; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331503; x=1708936303; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zHwhu9dJxHLhSujxZEC6wtH94N4t8n8wFK7D5wdRkDo=;
- b=j7nJM7BbRSXL0ZLGXbxKHNsZMYuxQ+ng+uk8Qy+RFrruWThfp0SDQPxrr2aurY/U3T
- DTYYafEkRqrCKF6JbB7MStQ9Z433mijnU/DF/AwAtuPeOGCnXXFxN5JcWdMyChOEyRhN
- PY7DTixOmhB5rCvplUQwZeTvclZxgiR+ZuGmWynY9naApYGO+v85uUAU81H7PVBNGf5K
- fAyrb7xNx7riNHYqaXjKy8bffzUNxtgkh+9o3x9Q0EjTU6ypIAeYePNVlxk1QRveDFsq
- VKa/aJ6IcjbcGx8IvgKORvvlx0G+G1Zy6Bg+hSxA7CnAWtrv4wNpg/54O5odPcIM4N2W
- F2Qw==
+ bh=sDOAPyy/p7ldU2KSryWFNhizVqq3Tur5f2N+VyCj+Jk=;
+ b=I/nA/IToSiVWixf75+dOf9gtQbQjsOB4WAGuWAbKCokl1aRG2CHQjNUqECUB37Snbs
+ 2c3YIGEauhhpdNaE5Dy9cFWTG+n+RE18wUs5j8Ly4i26rG9OCpXB0KyNA7q/iW+GlmGp
+ Y9YL+zzvoi/ewhFspqSLgJR5OUNjd8882boOVXdv2ILUgS3ZzlvOSVpdlT+gOXrgMovK
+ ddO2DrmSrZj0HRPWM1tquHSuKFMrcFfyIl/EYPH7C8p6TDKNC6OKEjTOdVF3e34bvKA6
+ PNUVnetQQ+bnnfTb2wENufdJtGvE8gfCw4tGrohp9aaBEOtE7RZBUKDqf43EFyDxQsie
+ mikw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331498; x=1708936298;
+ d=1e100.net; s=20230601; t=1708331503; x=1708936303;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zHwhu9dJxHLhSujxZEC6wtH94N4t8n8wFK7D5wdRkDo=;
- b=EioLAjwVWX9+o9AwVtsdCcha66YD/R5ab5w18ZSnW/40cYzw4lQ6xUetIvc+wdoaR1
- xHawmmkV750ItGntuKNBU+s42dr+2OhHWqrwhPhuz6xUTOgLP+chgaHdQVE9Uqb41QEJ
- jfyG8WSV062jDeTjpb7PRGSsDI1WGRLll7/DngViTGnbKdS9MmKtwJfdTWCE0MqZyzdu
- bdOD0S8R3ZMvnThtokxX/9L+AX+uO+NZM5EJJmaJfb5v7Hdgy3uVv96FAkdzwiiqXniU
- DyeKHc/tF0v7k09Achn+Fiib5SBeFwJEnNHMg9YYKOlsP0WFIXVcTtHjvI2aUGiAVJBL
- 2aLg==
+ bh=sDOAPyy/p7ldU2KSryWFNhizVqq3Tur5f2N+VyCj+Jk=;
+ b=ZGgIRXn/LO2oJ5i3pTYG87wKgemDoYARcSlimJFWE14WG8X1tI4bAnvZQGL6uDODyt
+ 9xOJ9yFgl3Y1r0Lgi9TSM+mbBaFLBlRPKy13clDfELEbwDg5dCnkdQzbWkz4N3FeK+fk
+ iBoP3gD2Q03vtVUP1s8mqpstjWyoCNOcpaLunmalvgzL9q/bEXfdQw/bsJsFaGH9G9tX
+ MeDzKTbKMDQmF2gvk3sO3hljl2VSb1AxHoBZ4QD6tjZCAdPSUiGTowSRraREYqKhzhxS
+ alPJkokdi+KpPqqQWq1nRQt14lh5+0CkwVe7xzng6wwQ4Eu7yK+rdNwyrRzhIBHsFtOu
+ DUEg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUk97IiUvwsul+Gvm9XRwFYRcAUnpwqPhoTwjJgvcZVpf/z8rV0IAz51KEBWyJlj+oxgYRELwsUfXMUHs7e8T7+ePBg
-X-Gm-Message-State: AOJu0YzNHwbWNUSOfJKVH+U7WYIBVMGT1aDOywlDC0fwHE8tnb5MrdCS
- o9B3D5um+SF0T6YPuM7qBxqgOLtQbm3UdjFeuwoQDDXByjyEFIsTULn513Hs
-X-Google-Smtp-Source: AGHT+IHoQO07VvYJtNhLX41aKUzjCXfdWfbwHdSnIkVsLoIX1v7/mEbesjMWU/hj4e945zR51pU37A==
-X-Received: by 2002:a17:902:a3ce:b0:1db:a94f:903d with SMTP id
- q14-20020a170902a3ce00b001dba94f903dmr6850219plb.36.1708331498668; 
- Mon, 19 Feb 2024 00:31:38 -0800 (PST)
+ AJvYcCWp4rAWOkojbYIeI4NOFwTfz35iHl2+w77DmqCYC8bL6i5aDfzObaDwi9vaI0Rmn1P+je3R5SOnsXqkv0X2q8Ik9GAZ
+X-Gm-Message-State: AOJu0YzXkb4b5Rm6K+mqf16t13DTfVjYbs+ZTzJTszqqPUYRWwKvm0sU
+ qMD9nOtaFIMb4FOm8f7g/EN3W4pTg1ARg4EiFowfjv2p7w558nEW+kMgi+P0
+X-Google-Smtp-Source: AGHT+IEFSqVxeU7otzcrYd+EsN8sdfE+xDPIubDp2REcfr5M+Ioqj5AUswQ1MT1ceQaovXgMFZvCKA==
+X-Received: by 2002:a05:6a20:a88f:b0:19e:3cbf:b311 with SMTP id
+ ca15-20020a056a20a88f00b0019e3cbfb311mr7919030pzb.35.1708331503378; 
+ Mon, 19 Feb 2024 00:31:43 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.35
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:31:38 -0800 (PST)
+ Mon, 19 Feb 2024 00:31:43 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 22/49] hw/pci-host/raven.c: Mark raven_io_ops as implementing
- unaligned accesses
-Date: Mon, 19 Feb 2024 18:29:11 +1000
-Message-ID: <20240219082938.238302-23-npiggin@gmail.com>
+ Glenn Miles <milesg@linux.vnet.ibm.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PULL 23/49] misc/pca9552: Fix inverted input status
+Date: Mon, 19 Feb 2024 18:29:12 +1000
+Message-ID: <20240219082938.238302-24-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,28 +96,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-The raven_io_ops MemoryRegionOps is the only one in the source tree
-which sets .valid.unaligned to indicate that it should support
-unaligned accesses and which does not also set .impl.unaligned to
-indicate that its read and write functions can do the unaligned
-handling themselves.  This is a problem, because at the moment the
-core memory system does not implement the support for handling
-unaligned accesses by doing a series of aligned accesses and
-combining them (system/memory.c:access_with_adjusted_size() has a
-TODO comment noting this).
+The pca9552 INPUT0 and INPUT1 registers are supposed to
+hold the logical values of the LED pins.  A logical 0
+should be seen in the INPUT0/1 registers for a pin when
+its corresponding LSn bits are set to 0, which is also
+the state needed for turning on an LED in a typical
+usage scenario.  Existing code was doing the opposite
+and setting INPUT0/1 bit to a 1 when the LSn bit was
+set to 0, so this commit fixes that.
 
-Fortunately raven_io_read() and raven_io_write() will correctly deal
-with the case of being passed an unaligned address, so we can fix the
-missing unaligned access support by setting .impl.unaligned in the
-MemoryRegionOps struct.
-
-Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ hw/misc/pca9552.c          | 18 +++++++++++++-----
+ tests/qtest/pca9552-test.c |  6 +++---
+ 2 files changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+index 72b653463f..f00a149d61 100644
+--- a/hw/misc/pca9552.c
++++ b/hw/misc/pca9552.c
+@@ -36,7 +36,10 @@ typedef struct PCA955xClass PCA955xClass;
+ 
+ DECLARE_CLASS_CHECKERS(PCA955xClass, PCA955X,
+                        TYPE_PCA955X)
+-
++/*
++ * Note:  The LED_ON and LED_OFF configuration values for the PCA955X
++ *        chips are the reverse of the PCA953X family of chips.
++ */
+ #define PCA9552_LED_ON   0x0
+ #define PCA9552_LED_OFF  0x1
+ #define PCA9552_LED_PWM0 0x2
+@@ -112,13 +115,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
+ 
+         switch (config) {
+         case PCA9552_LED_ON:
+-            qemu_set_irq(s->gpio[i], 1);
+-            s->regs[input_reg] |= 1 << input_shift;
+-            break;
+-        case PCA9552_LED_OFF:
++            /* Pin is set to 0V to turn on LED */
+             qemu_set_irq(s->gpio[i], 0);
+             s->regs[input_reg] &= ~(1 << input_shift);
+             break;
++        case PCA9552_LED_OFF:
++            /*
++             * Pin is set to Hi-Z to turn off LED and
++             * pullup sets it to a logical 1.
++             */
++            qemu_set_irq(s->gpio[i], 1);
++            s->regs[input_reg] |= 1 << input_shift;
++            break;
+         case PCA9552_LED_PWM0:
+         case PCA9552_LED_PWM1:
+             /* TODO */
+diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
+index d80ed93cd3..ccca2b3d91 100644
+--- a/tests/qtest/pca9552-test.c
++++ b/tests/qtest/pca9552-test.c
+@@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x55);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x0);
++    g_assert_cmphex(value, ==, 0xFF);
+ 
+     pca9552_init(i2cdev);
+ 
+@@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x01);
++    g_assert_cmphex(value, ==, 0xFE);
+ 
+     value = i2c_get8(i2cdev, PCA9552_LS3);
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT1);
+-    g_assert_cmphex(value, ==, 0x10);
++    g_assert_cmphex(value, ==, 0xEF);
+ }
+ 
+ static void pca9552_register_nodes(void)
 -- 
 2.42.0
 
