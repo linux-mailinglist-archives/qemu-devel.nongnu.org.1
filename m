@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852E9859A78
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55201859A6E
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:22:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbsIG-0003IW-UG; Sun, 18 Feb 2024 20:18:04 -0500
+	id 1rbsIH-0003Ie-6X; Sun, 18 Feb 2024 20:18:05 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIC-0003Fh-IT; Sun, 18 Feb 2024 20:18:00 -0500
-Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
+ id 1rbsID-0003GG-In; Sun, 18 Feb 2024 20:18:01 -0500
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIA-0004F2-QZ; Sun, 18 Feb 2024 20:18:00 -0500
-Received: by mail-yw1-x112b.google.com with SMTP id
- 00721157ae682-6083cabc2f9so2533827b3.1; 
- Sun, 18 Feb 2024 17:17:58 -0800 (PST)
+ id 1rbsIB-0004FI-Uv; Sun, 18 Feb 2024 20:18:01 -0500
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-60843233278so305507b3.3; 
+ Sun, 18 Feb 2024 17:17:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708305477; x=1708910277; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708305478; x=1708910278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gTWny3BHhQYhPthgOP80axxW+6kBcEUK8Ghc8bz95h0=;
- b=gKoOb2jYjVuYBbY0pFA12GqKV8Nq8XRy17rv+TIJM1OTLZLATf0b9xCJ8ynWJQZrtd
- RaKIrE9Q8mJRxaYHBLIQKlF7cZWH5CqWFtaD83jZIlGCvaPL27MBr2/WToAuDKjivzMD
- QCn1tX5v6GJs6eNDBbcY0xkpcuFuDSi3Q9O+R56nSb7aoK1YXBFq4a9RQMbWVVRkBvIX
- 3UsiEKwYg4d+XTjDVVzhq9Pd1NQO4Oiap6cLxiAJjBWgyW9YNqBV1XuuyfSYv5pvlLD2
- 5PomuozzSYSexap6yCay5BSHrMdWvIqIDYEl2hegmR9Lqbh9dp4VW5JaIb460V5bzUmr
- pT7w==
+ bh=jCuXLoF/jYrUq9wGAd2LL4H1wbrYwKDhVdG2Nb+bSXk=;
+ b=INWoe6BTS+zNuCFkg4lbi7H5ch1uSmTj0U4gU7RfYxp3h1Nb40qj8cxa8tw5ew/BUq
+ iuxtABLJhZpUqU9WLyzbo79JKFwJBzHGo1SW53fLTnsVoHATpu8ZTlXoZGMsmZ/ei4UM
+ UKPDD01IDybcILYDM8YDSodBuBCLt+3PmskClzpmILsHjBfznske8l7imRKUJSenIdCj
+ QEaCl99lNurhXYK/ezPzqczxGz/yFSFdCKDPPsEsMYcMBfwC820jreHgdBZlIAw0Az6t
+ o/tZBHPG7Fyg4o2gW46izYHaesZSmu8dE/cadfmHQD2a+GT6LrIzn+4b4xt4Yuw/BEy9
+ HXaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708305477; x=1708910277;
+ d=1e100.net; s=20230601; t=1708305478; x=1708910278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gTWny3BHhQYhPthgOP80axxW+6kBcEUK8Ghc8bz95h0=;
- b=hc4fPwFpxh2sEUxnWVqHzsAUv3B9OQmN7h1xwLZWtujKrBsZSAK7lemON+g9SBqFbO
- nRFSGeW0e3jvoiTsu8nseOUq0XszXbHuEFBlqYKffH7kUA1nh+F+G8z3kqEZtFIoJcKj
- mhCPhlh2fFq/1YMiEBpvwFuNbdZ7srXiKPI3N/5avgUnJDogE6t0sbGfX7UX7KbPVD5D
- smMy2983xPjaXga5cVO+Y1V5hB8Khu/aCsINc+b+v1l1ghUKIhJKyZt9NGuovFxj7bf2
- OoZNzpaf2dldQeBodxls7seeKjZWdfcHjTOE+fVeOv4a7DoqM+OqKZhLLmrRe5PIsjws
- I1eQ==
-X-Gm-Message-State: AOJu0Yzgq6lp8VoWWYI/7i72ZR/+KhWlwonOY4WZiY2mL8aS7q3ScB7A
- cAZVFM6t9+gBoUnDaEMRXS7E4K8MeltQkXdeF2QWcx7+e5u397uwmkY8l5XFF3w=
-X-Google-Smtp-Source: AGHT+IF2TQkHCXpGhv2E1y5DU44SZR1dHApMv5qwIICbJoYgzbhoMDqve+MqN46wWfahVYdEUy4JDA==
-X-Received: by 2002:a81:4143:0:b0:5ff:bb43:2a69 with SMTP id
- f3-20020a814143000000b005ffbb432a69mr9458486ywk.40.1708305477352; 
- Sun, 18 Feb 2024 17:17:57 -0800 (PST)
+ bh=jCuXLoF/jYrUq9wGAd2LL4H1wbrYwKDhVdG2Nb+bSXk=;
+ b=vVhMR+TM1TsTMb8wf/c8HGXA+9fQJcpJwiszah2b/7qbQJ5Qv829UIGsnD5o89xky4
+ RJ3LsBc/ypJoPx0qzHL6G6gFHIe0OdTZVhFLYo4mPUZtfAEMTixUCYWGnkoukwxsnqdz
+ ay9rV4VJMqbuvjFSLlrBBDqGwqieub0pdz/VmUnRmToQiRSca8igZmqJmIFEy3S63g/S
+ UkEOpKhKzWfkDZtlwaUNOhgdZp25oPVTmkDM2BUYW484s5XF2YzsW6PExmEaAK2Uu121
+ YnEweATmQYuWT29i2Hh/cqRrl2xAG1vpxZnRR2LVqqcJgm0D+3lPSwhoeUcPuEJxdajg
+ k0hQ==
+X-Gm-Message-State: AOJu0YxOKtD5//eJAQiubgi4KEt6H/a7TRpuAczSGCJ5f5ZquGKSCaMJ
+ eKH2GlPf9yqqa++h7s312klKtZWYlo6ERTgllyB56GYl7jFQg94LJBmueUxb2ig=
+X-Google-Smtp-Source: AGHT+IF1aXXJHctNEOkVt324+yFBxoU8SsN6k0H+hbZy1oYbR2KJwJL40+SLboo0y515cRoOeiRtoQ==
+X-Received: by 2002:a81:c252:0:b0:607:9e4b:f0e9 with SMTP id
+ t18-20020a81c252000000b006079e4bf0e9mr11644068ywg.31.1708305478342; 
+ Sun, 18 Feb 2024 17:17:58 -0800 (PST)
 Received: from localhost.localdomain ([201.203.117.224])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.17.56
+ m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.17.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Feb 2024 17:17:57 -0800 (PST)
+ Sun, 18 Feb 2024 17:17:58 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v5 07/41] Implement BCM2838 GPIO functionality
-Date: Sun, 18 Feb 2024 19:17:05 -0600
-Message-Id: <20240219011739.2316619-8-sergey.kambalin@auriga.com>
+Subject: [PATCH v5 08/41] Connect SD controller to BCM2838 GPIO
+Date: Sun, 18 Feb 2024 19:17:06 -0600
+Message-Id: <20240219011739.2316619-9-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
 References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,240 +93,131 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- hw/gpio/bcm2838_gpio.c | 193 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 190 insertions(+), 3 deletions(-)
+ hw/gpio/bcm2838_gpio.c         | 52 +++++++++++++++++++++++++++++++++-
+ include/hw/gpio/bcm2838_gpio.h |  5 ++++
+ 2 files changed, 56 insertions(+), 1 deletion(-)
 
 diff --git a/hw/gpio/bcm2838_gpio.c b/hw/gpio/bcm2838_gpio.c
-index a312490bbd..69d15dbb49 100644
+index 69d15dbb49..2ddf62f695 100644
 --- a/hw/gpio/bcm2838_gpio.c
 +++ b/hw/gpio/bcm2838_gpio.c
-@@ -18,6 +18,7 @@
+@@ -17,6 +17,7 @@
+ #include "qapi/error.h"
  #include "hw/sysbus.h"
  #include "migration/vmstate.h"
++#include "hw/sd/sd.h"
  #include "hw/gpio/bcm2838_gpio.h"
-+#include "hw/irq.h"
+ #include "hw/irq.h"
  
- #define GPFSEL0   0x00
- #define GPFSEL1   0x04
-@@ -56,14 +57,139 @@
- #define RESET_VAL_CNTRL_REG2 0x50AAA95A
- #define RESET_VAL_CNTRL_REG3 0x00055555
+@@ -63,6 +64,16 @@
  
-+#define NUM_FSELN_IN_GPFSELN 10
-+#define NUM_BITS_FSELN       3
-+#define MASK_FSELN           0x7
-+
  #define BYTES_IN_WORD        4
  
-+static uint32_t gpfsel_get(BCM2838GpioState *s, uint8_t reg)
-+{
-+    int i;
-+    uint32_t value = 0;
-+    for (i = 0; i < NUM_FSELN_IN_GPFSELN; i++) {
-+        uint32_t index = NUM_FSELN_IN_GPFSELN * reg + i;
-+        if (index < sizeof(s->fsel)) {
-+            value |= (s->fsel[index] & MASK_FSELN) << (NUM_BITS_FSELN * i);
-+        }
-+    }
-+    return value;
-+}
++/* bcm,function property */
++#define BCM2838_FSEL_GPIO_IN    0
++#define BCM2838_FSEL_GPIO_OUT   1
++#define BCM2838_FSEL_ALT5       2
++#define BCM2838_FSEL_ALT4       3
++#define BCM2838_FSEL_ALT0       4
++#define BCM2838_FSEL_ALT1       5
++#define BCM2838_FSEL_ALT2       6
++#define BCM2838_FSEL_ALT3       7
 +
-+static void gpfsel_set(BCM2838GpioState *s, uint8_t reg, uint32_t value)
-+{
-+    int i;
-+    for (i = 0; i < NUM_FSELN_IN_GPFSELN; i++) {
-+        uint32_t index = NUM_FSELN_IN_GPFSELN * reg + i;
-+        if (index < sizeof(s->fsel)) {
-+            int fsel = (value >> (NUM_BITS_FSELN * i)) & MASK_FSELN;
-+            s->fsel[index] = fsel;
-+        }
-+    }
-+}
-+
-+static int gpfsel_is_out(BCM2838GpioState *s, int index)
-+{
-+    if (index >= 0 && index < BCM2838_GPIO_NUM) {
-+        return s->fsel[index] == 1;
-+    }
-+    return 0;
-+}
-+
-+static void gpset(BCM2838GpioState *s, uint32_t val, uint8_t start,
-+                  uint8_t count, uint32_t *lev)
-+{
-+    uint32_t changes = val & ~*lev;
-+    uint32_t cur = 1;
-+
-+    int i;
-+    for (i = 0; i < count; i++) {
-+        if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
-+            qemu_set_irq(s->out[start + i], 1);
-+        }
-+        cur <<= 1;
-+    }
-+
-+    *lev |= val;
-+}
-+
-+static void gpclr(BCM2838GpioState *s, uint32_t val, uint8_t start,
-+                  uint8_t count, uint32_t *lev)
-+{
-+    uint32_t changes = val & *lev;
-+    uint32_t cur = 1;
-+
-+    int i;
-+    for (i = 0; i < count; i++) {
-+        if ((changes & cur) && (gpfsel_is_out(s, start + i))) {
-+            qemu_set_irq(s->out[start + i], 0);
-+        }
-+        cur <<= 1;
-+    }
-+
-+    *lev &= ~val;
-+}
-+
- static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
+ static uint32_t gpfsel_get(BCM2838GpioState *s, uint8_t reg)
  {
-+    BCM2838GpioState *s = (BCM2838GpioState *)opaque;
-     uint64_t value = 0;
- 
--    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
--                  TYPE_BCM2838_GPIO, __func__, offset);
-+    switch (offset) {
-+    case GPFSEL0:
-+    case GPFSEL1:
-+    case GPFSEL2:
-+    case GPFSEL3:
-+    case GPFSEL4:
-+    case GPFSEL5:
-+        value = gpfsel_get(s, offset / BYTES_IN_WORD);
-+        break;
-+    case GPSET0:
-+    case GPSET1:
-+    case GPCLR0:
-+    case GPCLR1:
-+        /* Write Only */
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: Attempt reading from write only"
-+                      " register. 0x%"PRIx64" will be returned."
-+                      " Address 0x%"HWADDR_PRIx", size %u\n",
-+                      TYPE_BCM2838_GPIO, __func__, value, offset, size);
-+        break;
-+    case GPLEV0:
-+        value = s->lev0;
-+        break;
-+    case GPLEV1:
-+        value = s->lev1;
-+        break;
-+    case GPEDS0:
-+    case GPEDS1:
-+    case GPREN0:
-+    case GPREN1:
-+    case GPFEN0:
-+    case GPFEN1:
-+    case GPHEN0:
-+    case GPHEN1:
-+    case GPLEN0:
-+    case GPLEN1:
-+    case GPAREN0:
-+    case GPAREN1:
-+    case GPAFEN0:
-+    case GPAFEN1:
-+        /* Not implemented */
-+        qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
-+                      TYPE_BCM2838_GPIO, __func__, offset);
-+        break;
-+    case GPIO_PUP_PDN_CNTRL_REG0:
-+    case GPIO_PUP_PDN_CNTRL_REG1:
-+    case GPIO_PUP_PDN_CNTRL_REG2:
-+    case GPIO_PUP_PDN_CNTRL_REG3:
-+        value = s->pup_cntrl_reg[(offset - GPIO_PUP_PDN_CNTRL_REG0)
-+                                 / sizeof(s->pup_cntrl_reg[0])];
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: bad offset %"HWADDR_PRIx"\n",
-+                      TYPE_BCM2838_GPIO, __func__, offset);
-+        break;
-+    }
- 
-     return value;
- }
-@@ -71,14 +197,75 @@ static uint64_t bcm2838_gpio_read(void *opaque, hwaddr offset, unsigned size)
- static void bcm2838_gpio_write(void *opaque, hwaddr offset, uint64_t value,
-                                unsigned size)
- {
--    qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
-+    BCM2838GpioState *s = (BCM2838GpioState *)opaque;
+     int i;
+@@ -86,6 +97,31 @@ static void gpfsel_set(BCM2838GpioState *s, uint8_t reg, uint32_t value)
+             s->fsel[index] = fsel;
+         }
+     }
 +
-+    switch (offset) {
-+    case GPFSEL0:
-+    case GPFSEL1:
-+    case GPFSEL2:
-+    case GPFSEL3:
-+    case GPFSEL4:
-+    case GPFSEL5:
-+        gpfsel_set(s, offset / BYTES_IN_WORD, value);
-+        break;
-+    case GPSET0:
-+        gpset(s, value, 0, 32, &s->lev0);
-+        break;
-+    case GPSET1:
-+        gpset(s, value, 32, 22, &s->lev1);
-+        break;
-+    case GPCLR0:
-+        gpclr(s, value, 0, 32, &s->lev0);
-+        break;
-+    case GPCLR1:
-+        gpclr(s, value, 32, 22, &s->lev1);
-+        break;
-+    case GPLEV0:
-+    case GPLEV1:
-+        /* Read Only */
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: Attempt writing 0x%"PRIx64""
-+                      " to read only register. Ignored."
-+                      " Address 0x%"HWADDR_PRIx", size %u\n",
-+                      TYPE_BCM2838_GPIO, __func__, value, offset, size);
-+        break;
-+    case GPEDS0:
-+    case GPEDS1:
-+    case GPREN0:
-+    case GPREN1:
-+    case GPFEN0:
-+    case GPFEN1:
-+    case GPHEN0:
-+    case GPHEN1:
-+    case GPLEN0:
-+    case GPLEN1:
-+    case GPAREN0:
-+    case GPAREN1:
-+    case GPAFEN0:
-+    case GPAFEN1:
-+        /* Not implemented */
-+        qemu_log_mask(LOG_UNIMP, "%s: %s: not implemented for %"HWADDR_PRIx"\n",
-+                      TYPE_BCM2838_GPIO, __func__, offset);
-+        break;
-+    case GPIO_PUP_PDN_CNTRL_REG0:
-+    case GPIO_PUP_PDN_CNTRL_REG1:
-+    case GPIO_PUP_PDN_CNTRL_REG2:
-+    case GPIO_PUP_PDN_CNTRL_REG3:
-+        s->pup_cntrl_reg[(offset - GPIO_PUP_PDN_CNTRL_REG0)
-+                         / sizeof(s->pup_cntrl_reg[0])] = value;
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: %s: bad offset %"HWADDR_PRIx"\n",
-                   TYPE_BCM2838_GPIO, __func__, offset);
++    /* SD controller selection (48-53) */
++    if (s->sd_fsel != BCM2838_FSEL_GPIO_IN
++        && (s->fsel[48] == BCM2838_FSEL_GPIO_IN)
++        && (s->fsel[49] == BCM2838_FSEL_GPIO_IN)
++        && (s->fsel[50] == BCM2838_FSEL_GPIO_IN)
++        && (s->fsel[51] == BCM2838_FSEL_GPIO_IN)
++        && (s->fsel[52] == BCM2838_FSEL_GPIO_IN)
++        && (s->fsel[53] == BCM2838_FSEL_GPIO_IN)
++       ) {
++        /* SDHCI controller selected */
++        sdbus_reparent_card(s->sdbus_sdhost, s->sdbus_sdhci);
++        s->sd_fsel = BCM2838_FSEL_GPIO_IN;
++    } else if (s->sd_fsel != BCM2838_FSEL_ALT0
++               && (s->fsel[48] == BCM2838_FSEL_ALT0) /* SD_CLK_R */
++               && (s->fsel[49] == BCM2838_FSEL_ALT0) /* SD_CMD_R */
++               && (s->fsel[50] == BCM2838_FSEL_ALT0) /* SD_DATA0_R */
++               && (s->fsel[51] == BCM2838_FSEL_ALT0) /* SD_DATA1_R */
++               && (s->fsel[52] == BCM2838_FSEL_ALT0) /* SD_DATA2_R */
++               && (s->fsel[53] == BCM2838_FSEL_ALT0) /* SD_DATA3_R */
++              ) {
++        /* SDHost controller selected */
++        sdbus_reparent_card(s->sdbus_sdhci, s->sdbus_sdhost);
++        s->sd_fsel = BCM2838_FSEL_ALT0;
 +    }
-+    return;
  }
  
- static void bcm2838_gpio_reset(DeviceState *dev)
- {
-     BCM2838GpioState *s = BCM2838_GPIO(dev);
+ static int gpfsel_is_out(BCM2838GpioState *s, int index)
+@@ -266,6 +302,11 @@ static void bcm2838_gpio_reset(DeviceState *dev)
  
-+    memset(s->fsel, 0, sizeof(s->fsel));
+     memset(s->fsel, 0, sizeof(s->fsel));
+ 
++    s->sd_fsel = 0;
++
++    /* SDHCI is selected by default */
++    sdbus_reparent_card(&s->sdbus, s->sdbus_sdhci);
 +
      s->lev0 = 0;
      s->lev1 = 0;
  
+@@ -304,6 +345,8 @@ static void bcm2838_gpio_init(Object *obj)
+     DeviceState *dev = DEVICE(obj);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
+ 
++    qbus_init(&s->sdbus, sizeof(s->sdbus), TYPE_SD_BUS, DEVICE(s), "sd-bus");
++
+     memory_region_init_io(&s->iomem, obj, &bcm2838_gpio_ops, s,
+                           "bcm2838_gpio", BCM2838_GPIO_REGS_SIZE);
+     sysbus_init_mmio(sbd, &s->iomem);
+@@ -312,7 +355,14 @@ static void bcm2838_gpio_init(Object *obj)
+ 
+ static void bcm2838_gpio_realize(DeviceState *dev, Error **errp)
+ {
+-    /* Temporary stub. Do nothing */
++    BCM2838GpioState *s = BCM2838_GPIO(dev);
++    Object *obj;
++
++    obj = object_property_get_link(OBJECT(dev), "sdbus-sdhci", &error_abort);
++    s->sdbus_sdhci = SD_BUS(obj);
++
++    obj = object_property_get_link(OBJECT(dev), "sdbus-sdhost", &error_abort);
++    s->sdbus_sdhost = SD_BUS(obj);
+ }
+ 
+ static void bcm2838_gpio_class_init(ObjectClass *klass, void *data)
+diff --git a/include/hw/gpio/bcm2838_gpio.h b/include/hw/gpio/bcm2838_gpio.h
+index 06d48e0c19..f2a57a697f 100644
+--- a/include/hw/gpio/bcm2838_gpio.h
++++ b/include/hw/gpio/bcm2838_gpio.h
+@@ -14,6 +14,7 @@
+ #ifndef BCM2838_GPIO_H
+ #define BCM2838_GPIO_H
+ 
++#include "hw/sd/sd.h"
+ #include "hw/sysbus.h"
+ #include "qom/object.h"
+ 
+@@ -29,6 +30,10 @@ struct BCM2838GpioState {
+ 
+     MemoryRegion iomem;
+ 
++    /* SDBus selector */
++    SDBus sdbus;
++    SDBus *sdbus_sdhci;
++    SDBus *sdbus_sdhost;
+ 
+     uint8_t fsel[BCM2838_GPIO_NUM];
+     uint32_t lev0, lev1;
 -- 
 2.34.1
 
