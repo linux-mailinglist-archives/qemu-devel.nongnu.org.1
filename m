@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E4885A926
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:41:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4537885A925
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:41:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6gi-0003Qf-FN; Mon, 19 Feb 2024 11:40:16 -0500
+	id 1rc6gp-0004B5-5x; Mon, 19 Feb 2024 11:40:23 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6ge-0003AX-H9
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:12 -0500
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6gm-00040z-RI
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:20 -0500
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6gc-0003Hk-KF
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:12 -0500
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40fd72f7125so37727045e9.1
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:40:09 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6gk-0003Ig-Lz
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:40:20 -0500
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3394b892691so2544684f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:40:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708360809; x=1708965609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708360816; x=1708965616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G3uRtm+UhgX23rdC9bJKVvQF8N8ZLI8dwwAO65r+PJ0=;
- b=EbljZkA/eq6Md6EybymS3SA/+562WW6Nrc1XEuDk0qxJ5ah+5/0WqcuXKUjflQ7lZb
- XHoQ32qg/0TVN975oh7pXAH5RZ1DJzp0tT6GGI9QXh/YpRVL5zwRnPPo+JwHP95JLQOq
- uS40kT1U66RTGKi/WaGfm7Vhk8OfzkAnPBwEY167R8BsBTuYmpoYY6IDe7ahSBueUtFm
- AKom226KEziCQC6muTTQ4RzX3DVu35TDtDuP3WjTs1UE9rNUtRCcPatJ+iVTX9Gyqhok
- zd+UzvjuoTjaDm7t/AqWPRbSspLS7h8CknNSQ9bzQw+2tLesFa/Hic1PYvSG+5rlA0V0
- YjlA==
+ bh=wnW3NrES6EgGgUSsi0TQE7HA63k49t1HjgMoJkFxvYI=;
+ b=ISXE2Xv1Hg75yvYpo70bPxGahWsoJyl4n0DUW2AxV/4Ve2uxMTsvLdKE7VXorxITHk
+ eGVhPLYo7irB+p/qmeMFdLJwIr2vHWa7/cf8ynuRhLk/fcWCvlwHYrPHPWrZHhXpnc0K
+ rCx+YcLsFzmjc3btf0FbH/ZO7HCue9nlfdwfd8ArvWCPH+UEVS6nEDf577093cjjsJTE
+ Ks4T5URfHnAkN+sVqEYAW/yEKbixeVgcFnzbogQOemwQ8ao5aWz/+cqNJkWAZRk4lPf7
+ YQ1fxW3iaTFm3L4vhNO3ARIxOqNynfE4qrvFBIUgLBykVnKgA/IX03d/bS69QIlHr80u
+ 8yzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708360809; x=1708965609;
+ d=1e100.net; s=20230601; t=1708360816; x=1708965616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G3uRtm+UhgX23rdC9bJKVvQF8N8ZLI8dwwAO65r+PJ0=;
- b=HvDUFuHsBAuDT19ofG+S45nu7su35N/qwXuPfBGgF5ogIFzXiSq578POzobVDn6kVB
- agrLA80sv3c5m1zKcaWn3JFKndU1xDORQRxdzIS4g0CyIW50gc2ORsxzSd9eu/NG9gem
- MANoVDpJ33opFqvwG4k1deELgU0zdhdIXs51JOHhmIEBtysp6P9ENBljqbNvK+vJBch9
- occ/vTlj/ZaEAS6tQ5QQJpzDVvMZJU5ta9jDv1XAdibT+rnRawWoADi0Vpng00JqIxp8
- ObayoXONg8zC2szEImbVOw6wHkWUbm62ZzFl2L5oqdwMMIYG44902sxnYGDZW+df16Iy
- u0hw==
-X-Gm-Message-State: AOJu0YyM0BqRADoEozt8XW8ulECEEvb2eDdFWHxlDLeiXAENr6vgDSRE
- KkFZyleTFD9YjKv7Q3HlruqSpdp5cCQHAEwusxMIxUNKJZLLtNg7XeEoUFU3YGmSy83WS7gKUSI
- u
-X-Google-Smtp-Source: AGHT+IFgrOLKLNhDnObcbHz3HuhLySJlS12CZ4KOq2ceG+xaCxZ+ZJKWQYOoNsGHPrWnHuFr5jnmjw==
-X-Received: by 2002:a5d:5f47:0:b0:33d:5d4f:a45a with SMTP id
- cm7-20020a5d5f47000000b0033d5d4fa45amr1881140wrb.22.1708360808807; 
- Mon, 19 Feb 2024 08:40:08 -0800 (PST)
+ bh=wnW3NrES6EgGgUSsi0TQE7HA63k49t1HjgMoJkFxvYI=;
+ b=nBCis1vkGLc8t1H9md+ZpWLCdczYIjvd50p/wSs9brbonNpNN0c4Q2dg03VeevXExG
+ IH/36dP0A1WtOwnFu6wCTpbp1K8x6O9qQpuSEGJNPLtyjotwranKW2H01HAJhAywTEhm
+ ASvJl4DziFtS3Zjg1gefdHhWone3BM3UhzxK9SUlaTulo+xJYAq3eR7Mztia7CJBdO9w
+ gM7As/uZ25qL4gRPFuVOY+Rs3YBKicQVIpT1O+ZEbttcqFig36zQ6f7qCqGm7N4vNK0q
+ IvglH3gS/YcavHqjPljsoyOyBORamlPL26BEZOAON2mOYSkfkumFl41RnZDLINbnh6G0
+ 1llQ==
+X-Gm-Message-State: AOJu0Yx6aIB+6+ljzF7jZH6QcAA5X6sVztyYKO7+TTq6FJQDiyU6eoCk
+ 5RPIzLaP/SURA2OlDy8WgarLCZyGPnMt78bmL07b0/E/9P0WpRUhNpkw4m5ea37D84hT/BK/aAi
+ A
+X-Google-Smtp-Source: AGHT+IHCd78u5vNHxFbZZpyHmzY/bzCTE6z370dgmODaQK35zZ4eymo1EclQWaGqn0upKmcW+G9AZg==
+X-Received: by 2002:adf:ec4e:0:b0:33d:5472:5751 with SMTP id
+ w14-20020adfec4e000000b0033d54725751mr2195354wrn.10.1708360816209; 
+ Mon, 19 Feb 2024 08:40:16 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- i5-20020a05600011c500b0033cf095b9a2sm10827520wrx.78.2024.02.19.08.40.06
+ bw2-20020a0560001f8200b003392206c808sm4803778wrb.105.2024.02.19.08.40.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 08:40:08 -0800 (PST)
+ Mon, 19 Feb 2024 08:40:15 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Bernhard Beschow <shentey@gmail.com>
@@ -67,18 +67,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/14] hw/i2c/smbus: Extract QOM ICH9 definitions to
- 'smbus_ich9.h'
-Date: Mon, 19 Feb 2024 17:38:50 +0100
-Message-ID: <20240219163855.87326-11-philmd@linaro.org>
+Subject: [PATCH 11/14] hw/southbridge/ich9: Add the SMBus function
+Date: Mon, 19 Feb 2024 17:38:51 +0100
+Message-ID: <20240219163855.87326-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240219163855.87326-1-philmd@linaro.org>
 References: <20240219163855.87326-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,98 +100,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose TYPE_ICH9_SMB_DEVICE to the new "hw/i2c/smbus_ich9.h"
-header.
+Instantiate TYPE_ICH9_SMB_DEVICE in TYPE_ICH9_SOUTHBRIDGE.
+
+Since the PC machines can disable SMBus (see the
+PC_MACHINE_SMBUS dynamic property), add the 'smbus-enabled'
+property to disable it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS                 |  1 +
- include/hw/i2c/smbus_ich9.h | 25 +++++++++++++++++++++++++
- hw/i2c/smbus_ich9.c         | 15 ++-------------
- 3 files changed, 28 insertions(+), 13 deletions(-)
- create mode 100644 include/hw/i2c/smbus_ich9.h
+ include/hw/southbridge/ich9.h | 32 --------------------------------
+ hw/i2c/smbus_ich9.c           | 29 ++++++++++++++++++++++++++++-
+ hw/i386/pc_q35.c              | 10 ++--------
+ hw/southbridge/ich9.c         | 21 +++++++++++++++++++++
+ hw/southbridge/Kconfig        |  1 +
+ 5 files changed, 52 insertions(+), 41 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 937ebb5c96..b896d953af 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2611,6 +2611,7 @@ F: hw/ide/ich.c
- F: hw/isa/lpc_ich9.c
- F: hw/southbridge/ich9.c
- F: include/hw/acpi/ich9*.h
-+F: include/hw/i2c/smbus_ich9.h
- F: include/hw/ide/ahci-pci.h
- F: include/hw/pci-bridge/ich_dmi_pci.h
- F: include/hw/southbridge/ich9.h
-diff --git a/include/hw/i2c/smbus_ich9.h b/include/hw/i2c/smbus_ich9.h
-new file mode 100644
-index 0000000000..d716cbca33
---- /dev/null
-+++ b/include/hw/i2c/smbus_ich9.h
-@@ -0,0 +1,25 @@
-+/*
-+ * QEMU ICH9 SMBus emulation
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef HW_I2C_SMBUS_ICH9_H
-+#define HW_I2C_SMBUS_ICH9_H
-+
-+#include "qom/object.h"
-+#include "hw/pci/pci_device.h"
-+#include "hw/i2c/pm_smbus.h"
-+
-+#define TYPE_ICH9_SMB_DEVICE "ICH9-SMB"
-+
-+OBJECT_DECLARE_SIMPLE_TYPE(ICH9SMBState, ICH9_SMB_DEVICE)
-+
-+struct ICH9SMBState {
-+    PCIDevice dev;
-+
-+    bool irq_enabled;
-+
-+    PMSMBus smb;
-+};
-+
-+#endif
+diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
+index ac7f9f4ff5..d4b299bf3c 100644
+--- a/include/hw/southbridge/ich9.h
++++ b/include/hw/southbridge/ich9.h
+@@ -173,38 +173,6 @@ struct ICH9LPCState {
+ #define ICH9_APM_ACPI_ENABLE                    0x2
+ #define ICH9_APM_ACPI_DISABLE                   0x3
+ 
+-
+-/* D31:F3 SMBus controller */
+-#define TYPE_ICH9_SMB_DEVICE "ICH9-SMB"
+-
+-#define ICH9_A2_SMB_REVISION                    0x02
+-#define ICH9_SMB_PI                             0x00
+-
+-#define ICH9_SMB_SMBMBAR0                       0x10
+-#define ICH9_SMB_SMBMBAR1                       0x14
+-#define ICH9_SMB_SMBM_BAR                       0
+-#define ICH9_SMB_SMBM_SIZE                      (1 << 8)
+-#define ICH9_SMB_SMB_BASE                       0x20
+-#define ICH9_SMB_SMB_BASE_BAR                   4
+-#define ICH9_SMB_SMB_BASE_SIZE                  (1 << 5)
+-#define ICH9_SMB_HOSTC                          0x40
+-#define ICH9_SMB_HOSTC_SSRESET                  ((uint8_t)(1 << 3))
+-#define ICH9_SMB_HOSTC_I2C_EN                   ((uint8_t)(1 << 2))
+-#define ICH9_SMB_HOSTC_SMB_SMI_EN               ((uint8_t)(1 << 1))
+-#define ICH9_SMB_HOSTC_HST_EN                   ((uint8_t)(1 << 0))
+-
+-/* D31:F3 SMBus I/O and memory mapped I/O registers */
+-#define ICH9_SMB_DEV                            31
+-#define ICH9_SMB_FUNC                           3
+-
+-#define ICH9_SMB_HST_STS                        0x00
+-#define ICH9_SMB_HST_CNT                        0x02
+-#define ICH9_SMB_HST_CMD                        0x03
+-#define ICH9_SMB_XMIT_SLVA                      0x04
+-#define ICH9_SMB_HST_D0                         0x05
+-#define ICH9_SMB_HST_D1                         0x06
+-#define ICH9_SMB_HOST_BLOCK_DB                  0x07
+-
+ #define ICH9_LPC_SMI_NEGOTIATED_FEAT_PROP "x-smi-negotiated-features"
+ 
+ /* bit positions used in fw_cfg SMI feature negotiation */
 diff --git a/hw/i2c/smbus_ich9.c b/hw/i2c/smbus_ich9.c
-index 208f263ac5..3980bca4c5 100644
+index 3980bca4c5..2c18278090 100644
 --- a/hw/i2c/smbus_ich9.c
 +++ b/hw/i2c/smbus_ich9.c
-@@ -1,5 +1,5 @@
- /*
-- * ACPI implementation
-+ * QEMU ICH9 SMBus emulation
-  *
-  * Copyright (c) 2006 Fabrice Bellard
-  * Copyright (c) 2009 Isaku Yamahata <yamahata at valinux co jp>
-@@ -22,8 +22,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/range.h"
--#include "hw/i2c/pm_smbus.h"
--#include "hw/pci/pci.h"
-+#include "hw/i2c/smbus_ich9.h"
+@@ -26,10 +26,37 @@
  #include "migration/vmstate.h"
  #include "qemu/module.h"
  
-@@ -31,16 +30,6 @@
+-#include "hw/southbridge/ich9.h"
  #include "qom/object.h"
  #include "hw/acpi/acpi_aml_interface.h"
  
--OBJECT_DECLARE_SIMPLE_TYPE(ICH9SMBState, ICH9_SMB_DEVICE)
--
--struct ICH9SMBState {
--    PCIDevice dev;
--
--    bool irq_enabled;
--
--    PMSMBus smb;
--};
--
++/* D31:F3 SMBus controller */
++
++#define ICH9_A2_SMB_REVISION                    0x02
++#define ICH9_SMB_PI                             0x00
++
++#define ICH9_SMB_SMBMBAR0                       0x10
++#define ICH9_SMB_SMBMBAR1                       0x14
++#define ICH9_SMB_SMBM_BAR                       0
++#define ICH9_SMB_SMBM_SIZE                      (1 << 8)
++#define ICH9_SMB_SMB_BASE                       0x20
++#define ICH9_SMB_SMB_BASE_BAR                   4
++#define ICH9_SMB_SMB_BASE_SIZE                  (1 << 5)
++#define ICH9_SMB_HOSTC                          0x40
++#define ICH9_SMB_HOSTC_SSRESET                  ((uint8_t)(1 << 3))
++#define ICH9_SMB_HOSTC_I2C_EN                   ((uint8_t)(1 << 2))
++#define ICH9_SMB_HOSTC_SMB_SMI_EN               ((uint8_t)(1 << 1))
++#define ICH9_SMB_HOSTC_HST_EN                   ((uint8_t)(1 << 0))
++
++/* D31:F3 SMBus I/O and memory mapped I/O registers */
++
++#define ICH9_SMB_HST_STS                        0x00
++#define ICH9_SMB_HST_CNT                        0x02
++#define ICH9_SMB_HST_CMD                        0x03
++#define ICH9_SMB_XMIT_SLVA                      0x04
++#define ICH9_SMB_HST_D0                         0x05
++#define ICH9_SMB_HST_D1                         0x06
++#define ICH9_SMB_HOST_BLOCK_DB                  0x07
++
  static bool ich9_vmstate_need_smbus(void *opaque, int version_id)
  {
      return pm_smbus_vmstate_needed();
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 060358d449..7f6ced8a6e 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -236,6 +236,7 @@ static void pc_q35_init(MachineState *machine)
+                              OBJECT(host_bus), &error_abort);
+     qdev_prop_set_bit(ich9, "d2p-enabled", false);
+     qdev_prop_set_bit(ich9, "sata-enabled", pcms->sata_enabled);
++    qdev_prop_set_bit(ich9, "smbus-enabled", pcms->smbus_enabled);
+     qdev_realize_and_unref(ich9, NULL, &error_fatal);
+ 
+     /* irq lines */
+@@ -309,15 +310,8 @@ static void pc_q35_init(MachineState *machine)
+     }
+ 
+     if (pcms->smbus_enabled) {
+-        PCIDevice *smb;
+-
++        pcms->smbus = I2C_BUS(qdev_get_child_bus(ich9, "i2c"));
+         /* TODO: Populate SPD eeprom data.  */
+-        smb = pci_create_simple_multifunction(host_bus,
+-                                              PCI_DEVFN(ICH9_SMB_DEV,
+-                                                        ICH9_SMB_FUNC),
+-                                              TYPE_ICH9_SMB_DEVICE);
+-        pcms->smbus = I2C_BUS(qdev_get_child_bus(DEVICE(smb), "i2c"));
+-
+         smbus_eeprom_init(pcms->smbus, 8, NULL, 0);
+     }
+ 
+diff --git a/hw/southbridge/ich9.c b/hw/southbridge/ich9.c
+index 233dc1c5d7..4d2c298666 100644
+--- a/hw/southbridge/ich9.c
++++ b/hw/southbridge/ich9.c
+@@ -15,9 +15,11 @@
+ #include "hw/pci-bridge/ich_dmi_pci.h"
+ #include "hw/ide/ahci-pci.h"
+ #include "hw/ide.h"
++#include "hw/i2c/smbus_ich9.h"
+ 
+ #define ICH9_D2P_DEVFN          PCI_DEVFN(30, 0)
+ #define ICH9_SATA1_DEVFN        PCI_DEVFN(31, 2)
++#define ICH9_SMB_DEVFN          PCI_DEVFN(31, 3)
+ 
+ #define SATA_PORTS              6
+ 
+@@ -26,10 +28,12 @@ struct ICH9State {
+ 
+     I82801b11Bridge d2p;
+     AHCIPCIState sata0;
++    ICH9SMBState smb;
+ 
+     PCIBus *pci_bus;
+     bool d2p_enabled;
+     bool sata_enabled;
++    bool smbus_enabled;
+ };
+ 
+ static Property ich9_props[] = {
+@@ -37,6 +41,7 @@ static Property ich9_props[] = {
+                      TYPE_PCIE_BUS, PCIBus *),
+     DEFINE_PROP_BOOL("d2p-enabled", ICH9State, d2p_enabled, true),
+     DEFINE_PROP_BOOL("sata-enabled", ICH9State, sata_enabled, true),
++    DEFINE_PROP_BOOL("smbus-enabled", ICH9State, smbus_enabled, true),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+@@ -79,6 +84,18 @@ static bool ich9_realize_sata(ICH9State *s, Error **errp)
+     return true;
+ }
+ 
++static bool ich9_realize_smbus(ICH9State *s, Error **errp)
++{
++    object_initialize_child(OBJECT(s), "smb", &s->smb, TYPE_ICH9_SMB_DEVICE);
++    qdev_prop_set_int32(DEVICE(&s->smb), "addr", ICH9_SMB_DEVFN);
++    if (!qdev_realize(DEVICE(&s->smb), BUS(s->pci_bus), errp)) {
++        return false;
++    }
++    object_property_add_alias(OBJECT(s), "i2c", OBJECT(&s->smb), "i2c");
++
++    return true;
++}
++
+ static void ich9_init(Object *obj)
+ {
+ }
+@@ -99,6 +116,10 @@ static void ich9_realize(DeviceState *dev, Error **errp)
+     if (s->sata_enabled && !ich9_realize_sata(s, errp)) {
+         return;
+     }
++
++    if (s->smbus_enabled && !ich9_realize_smbus(s, errp)) {
++        return;
++    }
+ }
+ 
+ static void ich9_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/southbridge/Kconfig b/hw/southbridge/Kconfig
+index f806033d48..03e89a55d1 100644
+--- a/hw/southbridge/Kconfig
++++ b/hw/southbridge/Kconfig
+@@ -5,3 +5,4 @@ config ICH9
+     depends on PCI_EXPRESS
+     imply I82801B11
+     select AHCI_ICH9
++    select ACPI_ICH9
 -- 
 2.41.0
 
