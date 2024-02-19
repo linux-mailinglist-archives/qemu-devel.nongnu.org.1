@@ -2,86 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7129285A591
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FAD85A5CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:22:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4Q1-0003fm-2m; Mon, 19 Feb 2024 09:14:53 -0500
+	id 1rc4Wt-0007Ft-2D; Mon, 19 Feb 2024 09:21:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pz-0003ej-8N
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:51 -0500
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pw-0008Sm-2G
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:50 -0500
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2d10ad265d5so44735411fa.0
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 06:14:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708352085; x=1708956885; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=daMydCoKKjW/BM3LMOveVy0d9uKVycJYmVQBhTRBuqo=;
- b=LORgC9+N5hXmGsDhZ7T3uVN+cbwxJCT3tMewfvov5Te5q0EXACBqGg+XlGS+4QPTxJ
- 7IpKo+UntF0Fhl6hx/2qmBoJH9rvCn9QP4iOtdD49rqO/SXNM7NFwIYBSwhGcw5szi5K
- bHe09ERo2ZOlE0uNbaXPy3KtqHrDHsf+q+IaSnUIbHDQP9AlrIc6pI9hfmuNjSYq9Fqa
- 0E7fZg7fnL2MfXGk3HzYktT0ya/Np/11KmKSPNM4ZSik0IyLuj+d4BvnGvHd0AgUnXgl
- Xw1+snYUdTapNhHH0NJYC5fqwp0lg8nUNwsVwbKz/5d8RVimeL/W82Rf3ErjHCjrPsqz
- 5bPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708352085; x=1708956885;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=daMydCoKKjW/BM3LMOveVy0d9uKVycJYmVQBhTRBuqo=;
- b=K0VL0dRkSDCgN+60rQbQXxHAzkBrCO7nDWxt43thDoe1a2UODhHTbZsXFpegllCPjE
- BPoF4kk9kDmdE3RPV60Ji6PJPdlwP4rRzBwEjdpKfdv4hW7tTZwviNTdIT4dw/fPvmpd
- DyhI2E5yKo1cyizBYahfRKr96vrAmi5UlYv+Af/PDueojdNvTS615GwJVhqKwvY2pIkU
- 28DBtP0DdGyT8Cz5Jw5KFGyDe/HXLL8MJQJxMG3nVrSO9OANoIfA7NbA0LzPROwMe9Bi
- NP8QL0FyFmZt/HHzlG6Z+Nwhn0YCTknXoi3LPBAZPXoWTprCB1UDd8hvguC7FscmqkVa
- RSJg==
-X-Gm-Message-State: AOJu0YzEnLmu7g7Xqplthgrn6B5bcDgY1WGi5eh8Zu3YlvWAr6q21zff
- S/GCYINgitjLocb/ldSNHf7dglhFdFKNSRh0j+iIfJa4sdAfHtBxBnOqoQvyPlQ/6ezKC0TMgDb
- F
-X-Google-Smtp-Source: AGHT+IFAilRjevCe6058c9xDUe1XJi/5FzlEXXDLcFbJHJ8YA+aJL7lvfR89+XQEahFnGOMsKmwffg==
-X-Received: by 2002:a05:6512:e8f:b0:512:be57:6dcf with SMTP id
- bi15-20020a0565120e8f00b00512be576dcfmr820919lfb.8.1708352085061; 
- Mon, 19 Feb 2024 06:14:45 -0800 (PST)
-Received: from m1x-phil.lan ([176.176.181.220])
- by smtp.gmail.com with ESMTPSA id
- cx1-20020a170907168100b00a3c456b0c0esm2974171ejd.108.2024.02.19.06.14.43
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 06:14:44 -0800 (PST)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4Wr-0007FD-HE
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:21:57 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4Wp-0001YX-Sl
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:21:57 -0500
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41JDm2xF013563; Mon, 19 Feb 2024 14:21:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=wZiWpuKxoJTJGQ8MEG+Gyeo10ajYjpSZrt+Au4q38Jk=;
+ b=tVOv5STLjwEfED9N22BaMaUYjnoH8Xlds/yXiZuOW+euWIELemUYXDupjhkkH2q5rXen
+ Ut6zGChdj7RQuPWGFeo7NntIFKlCcMHsDyqWQTspt3NCw0710NoILYGPsZjCPfhVkezd
+ 1fak3BSz7KSPTDonQ6odgxGapu5Dfw/pW1cgDQxjeKMsyJnhmnAMumIZdI5AdRYpJ6bN
+ 7k2QvftWJsdFeCjZtLJPkmqWaEb00KTCW6XehQmEvbSgKD8k3ZUMGElantqhQqb72BoJ
+ OE5N+upvVynraFbH2jAiuVOEW479qlT/57BvwnRK20m86vsO+9x7iPKjJqmdGh4FLmHF cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc86jh0ye-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Feb 2024 14:21:47 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41JELdjE022695;
+ Mon, 19 Feb 2024 14:21:39 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc86jgxtq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Feb 2024 14:21:38 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41JDPLju013532; Mon, 19 Feb 2024 14:16:46 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb7h01w68-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 19 Feb 2024 14:16:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 41JEGgsH11928116
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 19 Feb 2024 14:16:44 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25A0F20040;
+ Mon, 19 Feb 2024 14:16:42 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1230920043;
+ Mon, 19 Feb 2024 14:16:39 +0000 (GMT)
+Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Feb 2024 14:16:39 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/5] hw/i386/q35: Include missing 'hw/acpi/acpi.h' header
-Date: Mon, 19 Feb 2024 15:14:11 +0100
-Message-ID: <20240219141412.71418-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240219141412.71418-1-philmd@linaro.org>
-References: <20240219141412.71418-1-philmd@linaro.org>
-MIME-Version: 1.0
+ Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>
+Cc: Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v4 00/12] gdbstub: Implement follow-fork-mode child
+Date: Mon, 19 Feb 2024 15:15:48 +0100
+Message-ID: <20240219141628.246823-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.43.2
 Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UaEPhbOulORkqKL9iYEFBHx0MHNpkdTb
+X-Proofpoint-GUID: VDupl8xReepigIkq0qBmWi-_F1hnKq2X
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-19_10,2024-02-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=800
+ clxscore=1015 impostorscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402190107
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,31 +117,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"hw/acpi/acpi.h" is implicitly included. Included it
-explicitly to avoid when refactoring headers:
+v3: https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg03142.html
+v3 -> v4: Address the review comments, add R-bs.
+          Add the get_task_state() refactoring.
+          Keep passing CPUState to gdbserver_fork_end() for tb_flush().
+          Patches that need review: 02/12, 09/12-12/12.
 
-hw/i386/pc_q35.c:209:43: error: use of undeclared identifier 'ACPI_PM_PROP_ACPI_PCIHP_BRIDGE'
-                              ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
-                              ^
+v2: https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00810.html
+v2 -> v3: Rebase on top of master.
+          Fix a typo in the 01/11 commit message.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/i386/pc_q35.c | 1 +
- 1 file changed, 1 insertion(+)
+v1: https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06646.html
+v1 -> v2: Factor out a number of prep patches;
+          Add a state transition diagram comment (Alex).
+          Improve a few comments;
+          Extend the ts_tid fix to bsd.
 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index d346fa3b1d..a91f414922 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -58,6 +58,7 @@
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
- #include "hw/i386/acpi-build.h"
-+#include "hw/acpi/acpi.h"
- #include "target/i386/cpu.h"
- 
- /* ICH9 AHCI has 6 ports */
+Hi,
+
+I needed to debug a linux-user crash between fork() and exec() [1] and
+realized that gdbstub does not allow this. This series lifts this
+restriction (one still cannot debug past exec() though). Patches 1-10
+are preliminary refactorings, patch 11 is the implementation, and patch
+12 is the test.
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg06424.html
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (12):
+  gdbstub: Support disablement in a multi-threaded process
+  {linux,bsd}-user: Introduce get_task_state()
+  {linux,bsd}-user: Update ts_tid after fork()
+  gdbstub: Introduce gdbserver_fork_start()
+  {linux,bsd}-user: Pass pid to fork_end()
+  {linux,bsd}-user: Pass pid to gdbserver_fork()
+  gdbstub: Call gdbserver_fork() both in parent and in child
+  gdbstub: Introduce gdb_handle_query_supported_user()
+  gdbstub: Introduce gdb_handle_set_thread_user()
+  gdbstub: Introduce gdb_handle_detach_user()
+  gdbstub: Implement follow-fork-mode child
+  tests/tcg: Add two follow-fork-mode tests
+
+ bsd-user/bsd-file.h                           |   2 +-
+ bsd-user/freebsd/os-proc.h                    |   6 +-
+ bsd-user/main.c                               |   9 +-
+ bsd-user/qemu.h                               |   7 +-
+ bsd-user/signal.c                             |  20 +-
+ gdbstub/gdbstub.c                             |  29 ++-
+ gdbstub/internals.h                           |   3 +
+ gdbstub/user-target.c                         |   4 +-
+ gdbstub/user.c                                | 244 +++++++++++++++++-
+ include/gdbstub/user.h                        |  10 +-
+ include/user/safe-syscall.h                   |   2 +-
+ linux-user/aarch64/cpu_loop.c                 |   2 +-
+ linux-user/arm/cpu_loop.c                     |   4 +-
+ linux-user/arm/signal.c                       |   2 +-
+ linux-user/cris/cpu_loop.c                    |   2 +-
+ linux-user/elfload.c                          |   6 +-
+ linux-user/hppa/signal.c                      |   2 +-
+ linux-user/linuxload.c                        |   2 +-
+ linux-user/m68k/cpu_loop.c                    |   2 +-
+ linux-user/m68k/target_cpu.h                  |   2 +-
+ linux-user/main.c                             |   8 +-
+ linux-user/mips/cpu_loop.c                    |   2 +-
+ linux-user/ppc/signal.c                       |   4 +-
+ linux-user/qemu.h                             |   5 +
+ linux-user/riscv/cpu_loop.c                   |   2 +-
+ linux-user/signal-common.h                    |   2 +-
+ linux-user/signal.c                           |  30 +--
+ linux-user/syscall.c                          |  32 +--
+ linux-user/user-internals.h                   |   2 +-
+ linux-user/vm86.c                             |  18 +-
+ linux-user/xtensa/signal.c                    |   2 +-
+ plugins/api.c                                 |   8 +-
+ semihosting/arm-compat-semi.c                 |   8 +-
+ tests/tcg/multiarch/Makefile.target           |  17 +-
+ tests/tcg/multiarch/follow-fork-mode.c        |  56 ++++
+ .../gdbstub/follow-fork-mode-child.py         |  40 +++
+ .../gdbstub/follow-fork-mode-parent.py        |  16 ++
+ 37 files changed, 511 insertions(+), 101 deletions(-)
+ create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
+ create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
+ create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
+
 -- 
-2.41.0
+2.43.2
 
 
