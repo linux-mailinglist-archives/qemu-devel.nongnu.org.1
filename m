@@ -2,52 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2455485A65F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC84785A65D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:50:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4xU-0000ol-Ga; Mon, 19 Feb 2024 09:49:28 -0500
+	id 1rc4xg-000165-5e; Mon, 19 Feb 2024 09:49:40 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rc4xJ-0000mW-TK; Mon, 19 Feb 2024 09:49:18 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rc4xc-00011A-T1
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:49:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rc4xH-00079W-1h; Mon, 19 Feb 2024 09:49:17 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id ABFEC4E6013;
- Mon, 19 Feb 2024 15:49:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id cgYGtKlT2F1E; Mon, 19 Feb 2024 15:49:08 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6321A4E6026; Mon, 19 Feb 2024 15:49:08 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 616297456FE;
- Mon, 19 Feb 2024 15:49:08 +0100 (CET)
-Date: Mon, 19 Feb 2024 15:49:08 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Warner Losh <imp@bsdimp.com>
-Subject: Re: [PULL 09/49] tests/avocado: Add FreeBSD distro boot tests for ppc
-In-Reply-To: <20240219082938.238302-10-npiggin@gmail.com>
-Message-ID: <dda9aa91-8673-4698-b97a-5c43dae0b0f2@eik.bme.hu>
-References: <20240219082938.238302-1-npiggin@gmail.com>
- <20240219082938.238302-10-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rc4xb-0007DN-7p
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:49:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708354174;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=tjljuslueTB7O/5XSeViH6pZWOtq5BVt1ivYUU8EcB0=;
+ b=XCeSmFS8YqyMHh+IOO2T63uvFAH/vp7Dp9G52hiVKh6/Inz3g2llho/fYSmr6oAH2nRHHe
+ TGkzushpARzrLPJvd9VbedRS9YyznoaQagmGfHKJT+xAhADJJDhChjn3fCs7ucSM37qZJs
+ 3ohEZMq6VINmnWBRscT/LXdJYQJMh18=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-505-4WrsDdgxObWzO_A0zdLEpQ-1; Mon, 19 Feb 2024 09:49:33 -0500
+X-MC-Unique: 4WrsDdgxObWzO_A0zdLEpQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C752688D016;
+ Mon, 19 Feb 2024 14:49:32 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A49F41121306;
+ Mon, 19 Feb 2024 14:49:32 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7C5C421E66D0; Mon, 19 Feb 2024 15:49:30 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: yong.huang@smartx.com
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Kevin Wolf
+ <kwolf@redhat.com>
+Subject: Re: [PATCH v4 4/7] block: Support detached LUKS header creation
+ using blockdev-create
+In-Reply-To: <87v86kjzwb.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Mon, 19 Feb 2024 15:24:04 +0100")
+References: <cover.1706586786.git.yong.huang@smartx.com>
+ <9e35e621f12478822072e5c740ed65beb77f1238.1706586786.git.yong.huang@smartx.com>
+ <87v86kjzwb.fsf@pond.sub.org>
+Date: Mon, 19 Feb 2024 15:49:30 +0100
+Message-ID: <87ttm4ik5h.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,211 +85,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024, Nicholas Piggin wrote:
-> FreeBSD project provides qcow2 images that work well for testing QEMU.
-> Add pseries tests for HPT and Radix, KVM and TCG. This uses a short
-> term VM image, because FreeBSD has not set up long term builds for
-> ppc64 at present.
->
-> Other architectures could be added so this does not get a ppc_ prefix
-> but is instead named similarly to boot_linux.
->
-> Reviewed-by: Warner Losh <imp@bsdimp.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+One more thing...
 
-Didn't you mean to put this below ---?
+Markus Armbruster <armbru@redhat.com> writes:
 
-Regards,
-BALATON Zoltan
+> yong.huang@smartx.com writes:
+>
+>> From: Hyman Huang <yong.huang@smartx.com>
+>>
+>> Firstly, enable the ability to choose the block device containing
+>> a detachable LUKS header by adding the 'header' parameter to
+>> BlockdevCreateOptionsLUKS.
+>>
+>> Secondly, when formatting the LUKS volume with a detachable header,
+>> truncate the payload volume to length without a header size.
+>>
+>> Using the qmp blockdev command, create the LUKS volume with a
+>> detachable header as follows:
+>>
+>> 1. add the secret to lock/unlock the cipher stored in the
+>>    detached LUKS header
+>> $ virsh qemu-monitor-command vm '{"execute":"object-add",
+>>> "arguments":{"qom-type": "secret", "id": "sec0", "data": "foo"}}'
+>>
+>> 2. create a header img with 0 size
+>> $ virsh qemu-monitor-command vm '{"execute":"blockdev-create",
+>>> "arguments":{"job-id":"job0", "options":{"driver":"file",
+>>> "filename":"/path/to/detached_luks_header.img", "size":0 }}}'
+>>
+>> 3. add protocol blockdev node for header
+>> $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+>>> "arguments": {"driver":"file", "filename":
+>>> "/path/to/detached_luks_header.img", "node-name":
+>>> "detached-luks-header-storage"}}'
+>>
+>> 4. create a payload img with 0 size
+>> $ virsh qemu-monitor-command vm '{"execute":"blockdev-create",
+>>> "arguments":{"job-id":"job1", "options":{"driver":"file",
+>>> "filename":"/path/to/detached_luks_payload_raw.img", "size":0}}}'
+>>
+>> 5. add protocol blockdev node for payload
+>> $ virsh qemu-monitor-command vm '{"execute":"blockdev-add",
+>>> "arguments": {"driver":"file", "filename":
+>>> "/path/to/detached_luks_payload_raw.img", "node-name":
+>>> "luks-payload-raw-storage"}}'
+>>
+>> 6. do the formatting with 128M size
+>> $ virsh qemu-monitor-command c81_node1 '{"execute":"blockdev-create",
+>>> "arguments":{"job-id":"job2", "options":{"driver":"luks", "header":
+>>> "detached-luks-header-storage", "file":"luks-payload-raw-storage",
+>>> "size":134217728, "preallocation":"full", "key-secret":"sec0" }}}'
+>>
+>> Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>> ---
+>
+> [...]
+>
+>> diff --git a/qapi/block-core.json b/qapi/block-core.json
+>> index 69a88d613d..eab15d7dd9 100644
+>> --- a/qapi/block-core.json
+>> +++ b/qapi/block-core.json
+>> @@ -4960,6 +4960,8 @@
+>>  # @file: Node to create the image format on, mandatory except when
+>>  #        'preallocation' is not requested
+>>  #
+>> +# @header: Block device holding a detached LUKS header. (since 9.0)
+>> +#
+>
+> Behavior when @header is present vs. behavior when it's absent?
 
-> Unfortunately the latest stable (14.0) x86-64 VM image does not seem to
-> output to console by default and I've not been able to find a reliable
-> way to edit the filesystem to change the boot loader options, or use
-> console input in the test case to change it on the fly.
-> ---
-> tests/avocado/boot_freebsd.py | 174 ++++++++++++++++++++++++++++++++++
-> 1 file changed, 174 insertions(+)
-> create mode 100644 tests/avocado/boot_freebsd.py
->
-> diff --git a/tests/avocado/boot_freebsd.py b/tests/avocado/boot_freebsd.py
-> new file mode 100644
-> index 0000000000..c01cd06cca
-> --- /dev/null
-> +++ b/tests/avocado/boot_freebsd.py
-> @@ -0,0 +1,174 @@
-> +# Functional tests that boot FreeBSD in various configurations
-> +#
-> +# Copyright (c) 2023 IBM Corporation
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or
-> +# later. See the COPYING file in the top-level directory.
-> +
-> +import os
-> +import subprocess
-> +
-> +from avocado import skipUnless
-> +from avocado_qemu import QemuSystemTest
-> +from avocado_qemu import wait_for_console_pattern
-> +from avocado_qemu import exec_command
-> +from avocado.utils import archive
-> +from avocado.utils import process
-> +from avocado.utils.path import find_command
-> +
-> +@skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
-> +@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
-> +class BootFreeBSDPPC64(QemuSystemTest):
-> +    """
-> +    :avocado: tags=arch:ppc64
-> +    """
-> +
-> +    timeout = 360
-> +
-> +    def setUp(self):
-> +        super().setUp()
-> +
-> +        # We need zstd for all the tests
-> +        # See https://github.com/avocado-framework/avocado/issues/5609
-> +        zstd = find_command('zstd', False)
-> +        if zstd is False:
-> +            self.cancel('Could not find "zstd", which is required to '
-> +                        'decompress rootfs')
-> +        tar = find_command('tar', False)
-> +        if tar is False:
-> +            self.cancel('Could not find "tar", which is required to '
-> +                        'decompress rootfs')
-> +
-> +        drive_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/disk.qcow2.zst')
-> +        drive_hash = '95d863dbbc4b60f4899d1ef21d6489fca05bf03d'
-> +        drive_path_zstd = self.fetch_asset(drive_url, asset_hash=drive_hash)
-> +        self.drive_path = os.path.join(self.workdir, 'disk.qcow2')
-> +
-> +        cmd = f"{zstd} -d {drive_path_zstd} -o {self.drive_path}"
-> +        process.run(cmd)
-> +
-> +        kernel_url = ('https://artifact.ci.freebsd.org/snapshot/15.0-CURRENT/8a735ffdf04936c6785ac4fa31486639262dd416/powerpc/powerpc64le/kernel.txz')
-> +        kernel_hash = '31d14c2dc658858830a7acab5128a5b91ea548cf'
-> +        kernel_path_txz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-> +        self.kernel_path = os.path.join(self.workdir, 'kernel')
-> +
-> +        with open(self.kernel_path, "w") as outfile:
-> +            cmd = f"{tar} OJxf {kernel_path_txz} ./boot/kernel/kernel"
-> +            subprocess.run(cmd.split(), stdout=outfile)
-> +
-> +    def set_pseries_devices(self):
-> +        self.vm.add_args('-drive', f"file={self.drive_path},format=qcow2,if=virtio")
-> +        self.vm.add_args('-net', 'nic,model=virtio')
-> +
-> +    def set_powernv_devices(self):
-> +        self.vm.add_args('-device', 'nvme,bus=pcie.2,addr=0x0,serial=1234,drive=drive0',
-> +                         '-device', 'e1000e,netdev=net0,mac=C0:FF:EE:00:00:02,bus=pcie.0,addr=0x0',
-> +                         '-netdev', 'user,id=net0,hostfwd=::20022-:22,hostname=freebsd')
-> +        self.vm.add_args("-drive", f"file={self.drive_path},format=qcow2,if=none,id=drive0")
-> +        self.vm.add_args("-kernel", self.kernel_path)
-> +
-> +    def run_pseries_test(self, force_HPT=False):
-> +        if force_HPT:
-> +            self.vm.add_args('-m', '4g')
-> +        else:
-> +            self.vm.add_args('-m', '1g')
-> +        self.vm.add_args('-smp', '4')
-> +        self.set_pseries_devices()
-> +        self.vm.set_console()
-> +        self.vm.launch()
-> +
-> +        wait_for_console_pattern(self, 'Hit [Enter] to boot immediately, or any other key for command prompt.')
-> +        if force_HPT:
-> +            exec_command(self, 'x')
-> +            wait_for_console_pattern(self, 'OK')
-> +            exec_command(self, 'set radix_mmu=0')
-> +            exec_command(self, 'boot')
-> +            wait_for_console_pattern(self, 'cas: selected hash MMU', 'panic:')
-> +        else:
-> +            exec_command(self, '')
-> +            wait_for_console_pattern(self, 'cas: selected radix MMU', 'panic:')
-> +
-> +        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
-> +        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
-> +        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
-> +        exec_command(self, 'root')
-> +        wait_for_console_pattern(self, 'resizewin: timeout reading from terminal')
-> +        exec_command(self, 'poweroff')
-> +        wait_for_console_pattern(self, 'Uptime:', 'panic:')
-> +        self.vm.wait()
-> +
-> +    # powernv does not have a bootloader so must load the kernel directly
-> +    # and work around manual specification of the root device. Also can't
-> +    # specify options like radix_mmu the same way (todo: work out how it
-> +    # is done, and add HPT test).
-> +    def run_powernv_test(self, force_HPT=False):
-> +        self.vm.add_args('-m', '8g')
-> +        self.vm.add_args('-smp', '4')
-> +        self.set_powernv_devices()
-> +        self.vm.set_console()
-> +        self.vm.launch()
-> +
-> +        wait_for_console_pattern(self, 'FreeBSD 15.0-CURRENT', 'panic:')
-> +        wait_for_console_pattern(self, 'FreeBSD/SMP: Multiprocessor System Detected: 4 CPUs', 'panic:')
-> +        wait_for_console_pattern(self, '<empty line>    Abort manual input')
-> +        exec_command(self, 'ufs:diskid/DISK-1234s3')
-> +
-> +        wait_for_console_pattern(self, 'FreeBSD/powerpc (Amnesiac) (ttyu0)', 'panic:')
-> +        exec_command(self, 'root')
-> +        wait_for_console_pattern(self, 'resizewin: timeout reading from terminal')
-> +        exec_command(self, 'poweroff')
-> +        wait_for_console_pattern(self, 'Uptime:', 'panic:')
-> +        wait_for_console_pattern(self, 'OPAL: Shutdown request', 'panic:')
-> +        self.vm.wait()
-> +
-> +    def test_pseries_tcg(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:pseries
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        self.require_accelerator("tcg")
-> +        self.vm.add_args("-cpu", "power10")
-> +        self.vm.add_args("-accel", "tcg,thread=multi")
-> +        self.run_pseries_test()
-> +
-> +    def test_pseries_hpt_tcg(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:pseries
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        self.require_accelerator("tcg")
-> +        self.vm.add_args("-accel", "tcg,thread=multi")
-> +        self.run_pseries_test(force_HPT=True)
-> +
-> +    def test_pseries_kvm(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:pseries
-> +        :avocado: tags=accel:kvm
-> +        """
-> +        self.require_accelerator("kvm")
-> +        self.vm.add_args("-accel", "kvm")
-> +        self.run_pseries_test()
-> +
-> +    def test_pseries_hpt_kvm(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:pseries
-> +        :avocado: tags=accel:kvm
-> +        """
-> +        self.require_accelerator("kvm")
-> +        self.vm.add_args("-accel", "kvm")
-> +        self.run_pseries_test(force_HPT=True)
-> +
-> +    # powernv9 works, powernv10 fails
-> +    def test_powernv(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv9
-> +        :avocado: tags=accel:tcg
-> +        """
-> +        self.require_accelerator("tcg")
-> +        self.vm.add_args("-accel", "tcg,thread=multi")
-> +        self.run_powernv_test()
->
+The next patch adds a member to QCryptoBlockCreateOptionsLUKS, with a
+similar description, but a different name:
+
+    # @detached-header: create a detached LUKS header. (since 9.0)
+
+Should we name the one added here @detached-header, too?
+
+>>  # @size: Size of the virtual disk in bytes
+>>  #
+>>  # @preallocation: Preallocation mode for the new image (since: 4.2)
+>> @@ -4970,6 +4972,7 @@
+>>  { 'struct': 'BlockdevCreateOptionsLUKS',
+>>    'base': 'QCryptoBlockCreateOptionsLUKS',
+>>    'data': { '*file':            'BlockdevRef',
+>> +            '*header':          'BlockdevRef',
+>>              'size':             'size',
+>>              '*preallocation':   'PreallocMode' } }
+
 
