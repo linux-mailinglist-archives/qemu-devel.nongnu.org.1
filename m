@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C32E859E5A
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9118859E50
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz5v-0000Ez-DR; Mon, 19 Feb 2024 03:33:47 -0500
+	id 1rbz5w-0000X2-80; Mon, 19 Feb 2024 03:33:48 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz5Z-0000B5-Bl; Mon, 19 Feb 2024 03:33:25 -0500
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rbz5d-0000Lv-HO; Mon, 19 Feb 2024 03:33:34 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz5X-0002m8-Rx; Mon, 19 Feb 2024 03:33:25 -0500
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6e466a679bfso123271b3a.1; 
- Mon, 19 Feb 2024 00:33:23 -0800 (PST)
+ id 1rbz5c-0002mU-11; Mon, 19 Feb 2024 03:33:29 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1d71cb97937so39765055ad.3; 
+ Mon, 19 Feb 2024 00:33:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331601; x=1708936401; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331606; x=1708936406; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DrRZ61wOnwt9hhs6OE9xukgw6eXlMPtoB/Awq7rJA7I=;
- b=ced6m7Z1pNWJLWf50VDaIzNFpjMiy0IyLz3lb6kpXN2BN/gJwWkK4VX+9vpeZo/ktw
- 7KjTdIhSwpYvqvQMwTD6Y2eZLRnqnIvOOWOycudgdOzauxgm/t411mpgwXkAlcDHq58S
- mkdMo3wjOhZ40TkIR9Lm9ginkgT6m1krEDD6Y9RKlSQEWyYdLTip+ApLzf2K1WcM65Vr
- m1x25S0uG0cdQbELNiOO5BTpccAUkqSoc/k06wuwyzDRaoL90BpxBDgzh/I2/fYhEbIj
- h5p/XrU/AdZDHrjOg/sYQI0DEBzMvVo4Q7s7WXyluB587yOpbH0xNurKnlfJnwaKn/gg
- rttA==
+ bh=1m7BhFt0ST6ChSL1LESi22LcAsHCg1BKFvnmGi1yDfU=;
+ b=QxAEFqNOkOxMqZbCOU9lWRYnxiNPWBAqOrEmo08rbZGdbqo9cMMYO0ygimxTEggOl1
+ DViaZEnNx5H5BBVsPLXdt1qq0dhxtWDxRwiXypNf+677eJdM3DpzZTvFxDv7YgLUXIzy
+ YhFWj9eNj5+noqf+cIpWAap2eLieGkPjhIxBeNo3lqOc60PKeq8tekEJve/RmrehIqyZ
+ uVC+KB1PAir6q/ATT/KnDqU0WLKvyS2CFiqjo6AAevGMYyaadRb6288fokb3h9Jq7YLh
+ OAYDouJ5Xe2iD1C+2ksyK1KXqB7vrJEs/pVZtRfJjaBWW1G74/QL6NKW7BFusWL/yt4K
+ 5N/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331601; x=1708936401;
+ d=1e100.net; s=20230601; t=1708331606; x=1708936406;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DrRZ61wOnwt9hhs6OE9xukgw6eXlMPtoB/Awq7rJA7I=;
- b=gZzG9xZXDGMetQWk1/R71krz7ROxb9ZH7d1eIC+i5VwzpAla+aBL2glGn7A0JkjtSD
- 17fUxXFtmd1X1sJ6XmoclJYOlQm01ztE1dhhF6QHU4yXytCMBWfm7+0ntTpkFMtPZeuB
- Wv0H1Ze72XwWnQiQkL60EYCDtGXNSwBnAOXVc9rY11cO4HUFx7hxG4Ood1XyDiSlAXbj
- 6MNdlpPrXkVB4QKsGE6feKY93OPSz7IKqmGcHDatTrIFly6udQ/T2eD1BSlPlnJLGT2/
- M5I41BUtE8yt8PJPw5iEYp1vkHYZK9/oh3mr4NoxCw0SOKAvXOTH8/EOe6hmViZH6A4w
- 0sZQ==
+ bh=1m7BhFt0ST6ChSL1LESi22LcAsHCg1BKFvnmGi1yDfU=;
+ b=l2hQgKMILU6aqY2h46Z7WW0Rz7NAfDp9LzgyAJjG6dIfqpmkUaQDtnQaMqLimTQWTJ
+ K22ivNx4lp13m4/NM9L4HCjQrIllx24ifYHyYN/JZsex/G+Xva++x2sKHNGzSHzfZEXm
+ Fvy2x3vNtYN0C/tDtrX7oZmKv8QEzI7emcuaxJuUGxx5+vns2YZEwHZyaw2Hgrq3FjyG
+ j9JV24Y0wCDAUoEWkv3fZjxIjB6ERF72LQM0Nq43pPWC86CXjpGMmnFbns09oNpqkKjR
+ cfgmtxF30H3m0/z7AZ89Fn3T10J7wdDvtH/aCC8uxUa+mUy69yGJQZzj68sqPpKwHryh
+ kCpQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVq3Jb3XPqGT0UyOog6MdLPaBCha1Od4q16D1ORylEYSWoUH4LErsQNj/AyFqDIaSaC5fP5HAKNaVr8Xm0uhWUtJvUc
-X-Gm-Message-State: AOJu0YxqAm+YTo/PjI0w+v1ckC5vzUDfnJtcuyhCAW+SvJv16j2GTgEr
- tv0l8TmM7qSI9Op2rZT6bkKFGRgNMpPL9ofhztuacZYW6QLCcC7zrbwEmhG3
-X-Google-Smtp-Source: AGHT+IG83Fk7HNG7A97VFE/7OPUylJDHfsrD+QSzNWVEjViG2JLYI++sqkA5sRh+S46aBpP2KHrcVQ==
-X-Received: by 2002:a05:6a20:4e08:b0:19e:a1a1:5360 with SMTP id
- gk8-20020a056a204e0800b0019ea1a15360mr7776578pzb.23.1708331601712; 
- Mon, 19 Feb 2024 00:33:21 -0800 (PST)
+ AJvYcCXduvEMi+Zb3xucSXtDbFQNUhPCE3AOrsC7Xb15oLOK9cJlTDbX5SrFxSMwauVmrXvkSdyx2O/WN980nQzr9/2GwYzT
+X-Gm-Message-State: AOJu0Yx7bYBV1oTDLWXdbrKtEtUQYtqi1/QJB9UpzBExC616fWTNaVFe
+ OJrcM84KblArX0ln4H51LeCfkVzfLi+BPuHjUFhRky6IlHu1qrg+QQTb9moJ
+X-Google-Smtp-Source: AGHT+IH2lOBwqUJKJ7knmwBkxpKOuThGZYuTaRNYatvbdcuZVyJH9P51XmdACaHdDJE1OqyuxYv4+g==
+X-Received: by 2002:a17:903:2442:b0:1db:fc18:2db9 with SMTP id
+ l2-20020a170903244200b001dbfc182db9mr1249715pls.64.1708331606189; 
+ Mon, 19 Feb 2024 00:33:26 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.33.17
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.33.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:33:21 -0800 (PST)
+ Mon, 19 Feb 2024 00:33:25 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
@@ -63,18 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 46/49] target/ppc: 4xx don't flush TLB for a newly written
- software TLB entry
-Date: Mon, 19 Feb 2024 18:29:35 +1000
-Message-ID: <20240219082938.238302-47-npiggin@gmail.com>
+Subject: [PULL 47/49] target/ppc: 4xx optimise tlbwe_lo TLB flushing
+Date: Mon, 19 Feb 2024 18:29:36 +1000
+Message-ID: <20240219082938.238302-48-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,41 +96,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BookE software TLB is implemented by flushing old translations from the
-relevant TCG TLB whenever software TLB entries change. This means a new
-software TLB entry should not have any corresponding cached TCG TLB
-translations, so there is nothing to flush. The exception is multiple
-software TLBs that cover the same address and address space, but that is
-a programming error and results in undefined behaviour, and flushing
-does not give an obviously better outcome in that case either.
-
-Remove the unnecessary flush of a newly written software TLB entry.
+Rather than tlbwe_lo always flushing all TCG TLBs, have it flush just
+those corresponding to the old software TLB, and only if it was valid.
 
 Tested-by: BALATON Zoltan <balaton@eik.bme.hu>
 Acked-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_helper.c | 7 -------
- 1 file changed, 7 deletions(-)
+ target/ppc/mmu_helper.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index 949ae87f4f..68632bf54e 100644
+index 68632bf54e..923779d052 100644
 --- a/target/ppc/mmu_helper.c
 +++ b/target/ppc/mmu_helper.c
-@@ -808,13 +808,6 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
+@@ -813,12 +813,20 @@ void helper_4xx_tlbwe_hi(CPUPPCState *env, target_ulong entry,
+ void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
+                          target_ulong val)
+ {
++    CPUState *cs = env_cpu(env);
+     ppcemb_tlb_t *tlb;
+ 
+     qemu_log_mask(CPU_LOG_MMU, "%s entry %i val " TARGET_FMT_lx "\n",
+                   __func__, (int)entry, val);
+     entry &= PPC4XX_TLB_ENTRY_MASK;
+     tlb = &env->tlb.tlbe[entry];
++    /* Invalidate previous TLB (if it's valid) */
++    if (tlb->prot & PAGE_VALID) {
++        qemu_log_mask(CPU_LOG_MMU, "%s: invalidate old TLB %d start "
++                      TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
++                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
++        ppcemb_tlb_flush(cs, tlb);
++    }
+     tlb->attr = val & PPC4XX_TLBLO_ATTR_MASK;
+     tlb->RPN = val & PPC4XX_TLBLO_RPN_MASK;
+     tlb->prot = PAGE_READ;
+@@ -836,8 +844,6 @@ void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
                    tlb->prot & PAGE_WRITE ? 'w' : '-',
                    tlb->prot & PAGE_EXEC ? 'x' : '-',
                    tlb->prot & PAGE_VALID ? 'v' : '-', (int)tlb->PID);
--    /* Invalidate new TLB (if valid) */
--    if (tlb->prot & PAGE_VALID) {
--        qemu_log_mask(CPU_LOG_MMU, "%s: invalidate TLB %d start "
--                      TARGET_FMT_lx " end " TARGET_FMT_lx "\n", __func__,
--                      (int)entry, tlb->EPN, tlb->EPN + tlb->size);
--        ppcemb_tlb_flush(cs, tlb);
--    }
+-
+-    env->tlb_need_flush |= TLB_NEED_LOCAL_FLUSH;
  }
  
- void helper_4xx_tlbwe_lo(CPUPPCState *env, target_ulong entry,
+ target_ulong helper_4xx_tlbsx(CPUPPCState *env, target_ulong address)
 -- 
 2.42.0
 
