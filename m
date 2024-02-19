@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF60859A75
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:23:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AF3859A85
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:26:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbsJg-0005pd-3v; Sun, 18 Feb 2024 20:19:32 -0500
+	id 1rbsJO-0004ne-S3; Sun, 18 Feb 2024 20:19:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIe-0003YD-LS; Sun, 18 Feb 2024 20:18:29 -0500
-Received: from mail-yw1-x112d.google.com ([2607:f8b0:4864:20::112d])
+ id 1rbsIh-0003Zk-1J; Sun, 18 Feb 2024 20:18:33 -0500
+Received: from mail-yw1-x112b.google.com ([2607:f8b0:4864:20::112b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIY-0004Ju-SY; Sun, 18 Feb 2024 20:18:26 -0500
-Received: by mail-yw1-x112d.google.com with SMTP id
- 00721157ae682-607dec82853so31897677b3.3; 
- Sun, 18 Feb 2024 17:18:20 -0800 (PST)
+ id 1rbsIe-0004K0-NX; Sun, 18 Feb 2024 20:18:30 -0500
+Received: by mail-yw1-x112b.google.com with SMTP id
+ 00721157ae682-607f8482b88so22613817b3.0; 
+ Sun, 18 Feb 2024 17:18:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708305499; x=1708910299; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708305500; x=1708910300; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U0WySoIw/pOlRD+fj8Dh9muIWANrpWCJPovF4vt3VaI=;
- b=OWdPx73ey10iTZjMBTdaQ96o+CQXSGQVwTHIKKVzTvHbgkxuoP2QYrN+jB6d7GsAov
- qBa/QCETH3HhE/i3xMnjAErw3YFdzeqJN4N4qyDbOz53rYh/ecK2qxhJBTYbaYiM09mR
- J5ECtICdK/PU00hmRIOZ28eJQt5wYFnvDG40Rb3aSz9XBC8dqovqAmiGdQZhekzUYluu
- cZ/0lzY34AH1aR9fM7JL0OP1QoKPd7id7tA1mrQDzO6j2qA87U9NR48MH4decEHy3XwU
- QMg35jL9slerMW6P6qd/Nem/xD3Kzd4SUT+4Kx0y33OuPeECa91VHZ8Cd5PNRar6diEZ
- 3tYA==
+ bh=N5v3rqQLdf3b5YXiRwBfIAauAiypwurxDmQ+q45Unrk=;
+ b=Da0qadC1+XK2LK2Ek0Hvbn5xMY7NWaGHDqmIDwVgLucW8reDhplGxbEbpICtGCs1Z8
+ IVo5q2Jkr93Mv+L7SYfaNlazsWdVD1bdbCSYRHcTnYJdHkPZCWCXO3hoLbabWvdNRHWm
+ +f5DEkqQc9Brb10KwmsXTMh9fRo/sBUJ8BOk+xly19WL6qx/sOgxEVatMjMFDuSubReG
+ yzZY9+1dlwEeDFK/CkIZasn8chUAGlHssmruaeHvNr/0FZs/mxzhY/1XMbQ6w31wi5DU
+ wXkRX5ufykzUDvcpzwIC5La8wDov+LLy0xMGA7GM5ZRQZQmy93WgglblpEnDd09Kqa8m
+ CzpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708305499; x=1708910299;
+ d=1e100.net; s=20230601; t=1708305500; x=1708910300;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U0WySoIw/pOlRD+fj8Dh9muIWANrpWCJPovF4vt3VaI=;
- b=X7rLkqXAnB/yMo8oSWTz1t3RhymSuorgSYh/fd7oPi3AXCgOv5ajZnE8ocYrd3Xxqd
- mo7ujExxkLtOGoDL+WKegxfmnN1+bpwoBJC4Gtv89HzoNAyzPa+hyhrVm7dUOVP5QL+y
- kEtGBrqanVCfL6jWU/k33G5zmdZxq9F0BmhzTI3RyEbC42OEoSF7i9vKtmXlkszmCgvH
- A+HBn6cJtfUu0pF/Qli0//LfQxF5+MRRMy9850RGi96oGkj4f7wFeGrdw98kdXdDfGxA
- 7g4NQvEcBmzdA4YWGn7o8O9J4tpAqGDWsIlg3bDQo+KY/yE9wBbXyhEjT0hZykO24sU9
- tqiw==
-X-Gm-Message-State: AOJu0Yy6wWjB8BElVyawKCzZDBPe6C9i45N3xL4EuMyHMwEyUyP5HubB
- +E7hEVzJqLMHolbTbxHuCcEgllyC857ag7/RmLpDGF+eJOy6OgIgcOuoV3uFN7E=
-X-Google-Smtp-Source: AGHT+IEu5cz+w7gtfoebQjIT+hXEC4xa1nZs9C4xs18W3vEyjchbMQ5Scsll8Q2EXpbUePbAd9X7aQ==
-X-Received: by 2002:a05:690c:3682:b0:608:2d21:7193 with SMTP id
- fu2-20020a05690c368200b006082d217193mr1741240ywb.44.1708305499435; 
- Sun, 18 Feb 2024 17:18:19 -0800 (PST)
+ bh=N5v3rqQLdf3b5YXiRwBfIAauAiypwurxDmQ+q45Unrk=;
+ b=OPjk04YVnZi+6NlImO6DIrYIhdx1u/0vBtflc3RW8eBzc4qDqntCbR+7VfoEhm4qr1
+ WPzmQ7VQugx+QJJMFRznSTqbTwkFAWDGJYz6sT6KDMf7xqaqPRgnWqkoEJeq66Y0YX8N
+ oAJioJZZFTmVbGNFTcYtdBYnMZvTQaRsSQ485UyIBziRxAQJfx/XPfwtKGvO7Bk/sokG
+ jKaoGDQnCV8ICKdQU4ES4QEKq7Dfg6QG84Mi5Ka/GoufHSLcgSxPB+WXFi9KKamko+VY
+ vBSUAuDgwzT+vSLMQvO2WJBOPEUQy0LBoW3ZH/1r8opX7K3HugZF8I7ElibCuQl68Wbo
+ Yngg==
+X-Gm-Message-State: AOJu0YwOqrnyMBcgzb0XB6LVr+vRAy1qnCKv5uATPRmLNBkxokQiB6yZ
+ v5gOBekIuLg6r0PvVX7bNG5TglIcqZnhJQJ0eQF7tysmMFQZqvJ3wztZfiH5S4w=
+X-Google-Smtp-Source: AGHT+IERAAycGtxT0XzUfeYTnv1aCRvsFzBdRBRGUcXH+7mcRFRL/hRET40GqP9lno7vmr3MACIjHQ==
+X-Received: by 2002:a0d:e816:0:b0:608:21a0:229c with SMTP id
+ r22-20020a0de816000000b0060821a0229cmr2754743ywe.35.1708305500342; 
+ Sun, 18 Feb 2024 17:18:20 -0800 (PST)
 Received: from localhost.localdomain ([201.203.117.224])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.18.18
+ m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.18.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Feb 2024 17:18:19 -0800 (PST)
+ Sun, 18 Feb 2024 17:18:20 -0800 (PST)
 From: Sergey Kambalin <serg.oker@gmail.com>
 X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org,
 	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v5 30/41] Add Rpi4b boot tests
-Date: Sun, 18 Feb 2024 19:17:28 -0600
-Message-Id: <20240219011739.2316619-31-sergey.kambalin@auriga.com>
+Subject: [PATCH v5 31/41] Add mailbox test stub
+Date: Sun, 18 Feb 2024 19:17:29 -0600
+Message-Id: <20240219011739.2316619-32-sergey.kambalin@auriga.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
 References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112d;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112b;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x112b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,112 +93,134 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
 ---
- tests/avocado/boot_linux_console.py | 92 +++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ tests/qtest/bcm2838-mailbox.c | 60 +++++++++++++++++++++++++++++++++++
+ tests/qtest/bcm2838-mailbox.h | 37 +++++++++++++++++++++
+ tests/qtest/meson.build       |  1 +
+ 3 files changed, 98 insertions(+)
+ create mode 100644 tests/qtest/bcm2838-mailbox.c
+ create mode 100644 tests/qtest/bcm2838-mailbox.h
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 3f0180e1f8..40e4aa86e1 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -501,6 +501,98 @@ def test_arm_raspi2_initrd(self):
-         # Wait for VM to shut down gracefully
-         self.vm.wait()
+diff --git a/tests/qtest/bcm2838-mailbox.c b/tests/qtest/bcm2838-mailbox.c
+new file mode 100644
+index 0000000000..0928a3dff8
+--- /dev/null
++++ b/tests/qtest/bcm2838-mailbox.c
+@@ -0,0 +1,60 @@
++/*
++ * Helper functions to work with BCM2838 mailbox via qtest interface.
++ *
++ * Copyright (c) 2023 Auriga LLC
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/registerfields.h"
++#include "libqtest-single.h"
++#include "bcm2838-mailbox.h"
++
++REG32(MBOX_EXCHNG_REG,          0)
++FIELD(MBOX_EXCHNG_REG, CHANNEL, 0, 4)
++FIELD(MBOX_EXCHNG_REG, DATA,    4, 28)
++
++static uint32_t qtest_mbox0_read_reg32(QTestState *s, uint32_t offset)
++{
++    return qtest_readl(s, MBOX0_BASE + offset);
++}
++
++static void qtest_mbox1_write_reg32(QTestState *s, uint32_t offset, uint32_t value)
++{
++    return qtest_writel(s, MBOX1_BASE + offset, value);
++}
++
++static void qtest_mbox1_write(QTestState *s, uint8_t channel, uint32_t data)
++{
++    uint32_t mbox_reg = 0;
++
++    mbox_reg = FIELD_DP32(mbox_reg, MBOX_EXCHNG_REG, CHANNEL, channel);
++    mbox_reg = FIELD_DP32(mbox_reg, MBOX_EXCHNG_REG, DATA, data);
++    qtest_mbox1_write_reg32(s, MBOX_REG_WRITE, mbox_reg);
++}
++
++int qtest_mbox0_has_data(QTestState *s) {
++    return !(qtest_mbox0_read_reg32(s, MBOX_REG_STATUS) & MBOX_READ_EMPTY);
++}
++
++void qtest_mbox0_read_message(QTestState *s,
++                              uint8_t channel,
++                              void *msgbuf,
++                              size_t msgbuf_size)
++{
++    uint32_t mbox_reg;
++    uint32_t msgaddr;
++
++    g_assert(qtest_mbox0_has_data(s));
++    mbox_reg = qtest_mbox0_read_reg32(s, MBOX_REG_READ);
++    g_assert_cmphex(FIELD_EX32(mbox_reg, MBOX_EXCHNG_REG, CHANNEL), ==, channel);
++    msgaddr = FIELD_EX32(mbox_reg, MBOX_EXCHNG_REG, DATA) << 4;
++    qtest_memread(s, msgaddr, msgbuf, msgbuf_size);
++}
++
++void qtest_mbox1_write_message(QTestState *s, uint8_t channel, uint32_t msg_addr)
++{
++    qtest_mbox1_write(s, channel, msg_addr >> 4);
++}
+diff --git a/tests/qtest/bcm2838-mailbox.h b/tests/qtest/bcm2838-mailbox.h
+new file mode 100644
+index 0000000000..e9e1f53bc9
+--- /dev/null
++++ b/tests/qtest/bcm2838-mailbox.h
+@@ -0,0 +1,37 @@
++/*
++ * Declarations for BCM2838 mailbox test.
++ *
++ * Copyright (c) 2023 Auriga LLC
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++typedef struct {
++    uint32_t size;
++    uint32_t req_resp_code;
++} MboxBufHeader;
++
++#define DECLARE_TAG_TYPE(TypeName, RequestValueType, ResponseValueType) \
++typedef struct {                                                        \
++    uint32_t id;                                                        \
++    uint32_t value_buffer_size;                                         \
++    union {                                                             \
++        struct {                                                        \
++            uint32_t zero;                                              \
++            RequestValueType value;                                     \
++        } request;                                                      \
++        struct {                                                        \
++            uint32_t size_stat;                                         \
++            ResponseValueType value;                                    \
++        } response;                                                     \
++    };                                                                  \
++} TypeName
++
++
++int mbox0_has_data(void);
++void mbox0_read_message(uint8_t channel, void *msgbuf, size_t msgbuf_size);
++void mbox1_write_message(uint8_t channel, uint32_t msg_addr);
++int qtest_mbox0_has_data(QTestState *s);
++void qtest_mbox0_read_message(QTestState *s, uint8_t channel, void *msgbuf, size_t msgbuf_size);
++void qtest_mbox1_write_message(QTestState *s, uint8_t channel, uint32_t msg_addr);
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 2b89e8634b..e312634963 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -333,6 +333,7 @@ qtests = {
+   'virtio-net-failover': files('migration-helpers.c'),
+   'vmgenid-test': files('boot-sector.c', 'acpi-utils.c'),
+   'netdev-socket': files('netdev-socket.c', '../unit/socket-helpers.c'),
++  'bcm2838-mbox-property-test' : files('bcm2838-mailbox.c'),
+ }
  
-+    def test_arm_raspi4(self):
-+        """
-+        :avocado: tags=arch:aarch64
-+        :avocado: tags=machine:raspi4b-2g
-+        :avocado: tags=device:pl011
-+        :avocado: tags=accel:tcg
-+        :avocado: tags=rpi4b
-+
-+        The kernel can be rebuilt using the kernel source referenced
-+        and following the instructions on the on:
-+        https://www.raspberrypi.org/documentation/linux/kernel/building.md
-+        """
-+
-+        deb_url = ('http://archive.raspberrypi.org/debian/'
-+            'pool/main/r/raspberrypi-firmware/'
-+            'raspberrypi-kernel_1.20230106-1_arm64.deb')
-+        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
-+        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'earlycon=pl011,mmio32,0xfe201000 ' +
-+                               'console=ttyAMA0,115200 ' +
-+                               'root=/dev/mmcblk1p2 rootwait ' +
-+                               'dwc_otg.fiq_fsm_enable=0')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-append', kernel_command_line,
-+                         '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
-+                         '-device', 'usb-kbd,bus=xhci.0')
-+        self.vm.launch()
-+        console_pattern = 'Kernel command line: %s' % kernel_command_line
-+        self.wait_for_console_pattern(console_pattern)
-+        console_pattern = 'Product: QEMU USB Keyboard'
-+        self.wait_for_console_pattern(console_pattern)
-+
-+
-+    def test_arm_raspi4_initrd(self):
-+        """
-+        :avocado: tags=arch:aarch64
-+        :avocado: tags=machine:raspi4b-2g
-+        :avocado: tags=device:pl011
-+        :avocado: tags=accel:tcg
-+        :avocado: tags=rpi4b
-+
-+        The kernel can be rebuilt using the kernel source referenced
-+        and following the instructions on the on:
-+        https://www.raspberrypi.org/documentation/linux/kernel/building.md
-+        """
-+        deb_url = ('http://archive.raspberrypi.org/debian/'
-+            'pool/main/r/raspberrypi-firmware/'
-+            'raspberrypi-kernel_1.20230106-1_arm64.deb')
-+        deb_hash = '08dc55696535b18a6d4fe6fa10d4c0d905cbb2ed'
-+        deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-+        kernel_path = self.extract_from_deb(deb_path, '/boot/kernel8.img')
-+        dtb_path = self.extract_from_deb(deb_path, '/boot/bcm2711-rpi-4-b.dtb')
-+
-+        initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-+                      '86b2be1384d41c8c388e63078a847f1e1c4cb1de/rootfs/'
-+                      'arm64/rootfs.cpio.gz')
-+        initrd_hash = 'f3d4f9fa92a49aa542f1b44d34be77bbf8ca5b9d'
-+        initrd_path_gz = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
-+        initrd_path = os.path.join(self.workdir, 'rootfs.cpio')
-+        archive.gzip_uncompress(initrd_path_gz, initrd_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
-+                               'earlycon=pl011,mmio32,0xfe201000 ' +
-+                               'console=ttyAMA0,115200 ' +
-+                               'panic=-1 noreboot ' +
-+                               'dwc_otg.fiq_fsm_enable=0')
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-dtb', dtb_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line,
-+                         '-device', 'qemu-xhci,bus=pcie.1,id=xhci',
-+                         '-device', 'usb-kbd,bus=xhci.0',
-+                         '-no-reboot')
-+        self.vm.launch()
-+        self.wait_for_console_pattern('Boot successful.')
-+
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/cpuinfo',
-+                                                'BCM2835')
-+        exec_command_and_wait_for_pattern(self, 'cat /proc/iomem',
-+                                                'cprman@7e101000')
-+        exec_command_and_wait_for_pattern(self, 'halt', 'reboot: System halted')
-+        # TODO: Raspberry Pi4 doesn't shut down properly with recent kernels
-+        # Wait for VM to shut down gracefully
-+        #self.vm.wait()
-+
-     def test_arm_exynos4210_initrd(self):
-         """
-         :avocado: tags=arch:arm
+ if vnc.found()
 -- 
 2.34.1
 
