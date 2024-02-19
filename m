@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2669F85A58F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:15:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B1485A597
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:15:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4Pi-0003RA-NH; Mon, 19 Feb 2024 09:14:34 -0500
+	id 1rc4Pn-0003XM-1B; Mon, 19 Feb 2024 09:14:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pf-0003MS-Ht
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:32 -0500
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pl-0003WP-5e
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:37 -0500
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pd-0008Pi-MJ
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:31 -0500
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-563fe793e1cso3629288a12.3
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 06:14:29 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc4Pj-0008Rl-He
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:14:36 -0500
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-563e6131140so3715311a12.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 06:14:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708352068; x=1708956868; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708352073; x=1708956873; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=11KfkGQwT3DyJXfReiuxEKgaxGdeCZY+EPPlA79U4tU=;
- b=pTOXppyCCNnSKTiAvd73zmqstq3gnxuwl8txhpgdj1sonk/iAFmRQdPmqr2SV2npsq
- li+QMdS5IG+3ScnhuhzHNN5f6YvWk24ch+thKLTWf0aFouTHD3Lp9InjCuwCqkB+tubv
- dWvPFEh6zAIIUxnJEqH4mLWwhLvFi8eR/2JF+HoZEWtsvDHgpA3B6rl327eCe8BP0tyt
- XlGgqOHUej/oOs/pZLFayXFmWPSOdLjxHFOHsyD4jox4PmxTfUwk/GLGH59AW0Uzbycp
- RoC/fwpKb+XEDB/m2gXIbO7NIur9hyzYAf6VPH2IYi2F/R9iZJkAepvoabBhOtKZq8BZ
- 85AA==
+ bh=9J7bsYDfP840rvlPB/SKF671rHZmvSXNYnENubFOAY4=;
+ b=fRlQMj6i5Xc5IPuTDGuslNsMhS1juNA1ayD4DuAhNmZUqHqo8TXKz+EKfnfGFD1d+I
+ cQAYvFHDVUPcjmYPxv+1rApUA+TUZvkjdUpRquSR4d5oPqnhuDtTkk+Tc6AuKcje7+Yj
+ 8OWw0xeGZ2rWW1WKav6/6zLhkfiWHvNI+3dnCFeJ8HR0z4nYgpUmvyQJjjiQ1KOTl0iY
+ FD2iRTt1MvPVCM4AzTJ/lugkZ0iTVYJHkmB76XQf8sy5pDPPvzwtoyQ03CzhRLuXKnW3
+ UwRVUTS5BxpPwd9PhkPd7BIqF6g4MO2z6AGbHAH+MLl1XWI4Ho+iYdx1uUpIQV+Dl1tL
+ 1V8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708352068; x=1708956868;
+ d=1e100.net; s=20230601; t=1708352073; x=1708956873;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=11KfkGQwT3DyJXfReiuxEKgaxGdeCZY+EPPlA79U4tU=;
- b=u67isUKEt/Al2tegIKgVGDp69ol8x6LB4qWIGXhqhCCJpNGbHgBgt/nQBRgKd9RtvF
- Cv/tH4Qsl1lR/OMQBGTI3z8dUMSIjc31ad7Fm5STY+0tSfEO5SoXhWsPrOLBkzcsNd1U
- oNwckDK3oLgLxNaxS2LRq3UMs9MrnTIQ616V+Jrs1M7Lwkc1177dBQT+2YvPqkUQjnkT
- MYQjGGlnH/9gkDyr4CMhs032Z7UcI27X9X0zuMRcE/jwjkEYj/sZjeXo2mm9wn7e4o6g
- eAEoH5XIMxjgUyfZ9+/BUbvewQe+6jQw+Y0TdUjIEg8rYMMaHefmBsEGGNg9cUr0pWzM
- Iajw==
-X-Gm-Message-State: AOJu0YwV7PpipVQR2ljGGViu8hjxXQ7fUVifTDLWanfyPQw1dd25pO8O
- SjlfEqAO4nzu8LG5zQF3S5io30oO9Sl28OwIAOBqpJaPHE+0oDuoUJwKmftI2P/Ljnwt3mc75z2
+ bh=9J7bsYDfP840rvlPB/SKF671rHZmvSXNYnENubFOAY4=;
+ b=DPlVvCFsVR072V4WkZ5iqj7cIAL4N/dXUdLHKfsbTEMF7iKB9WAUBuB8geFWifCg+S
+ fFD31h1cCI3l2XmevrHHPaQp/XXiUZ45vNi+Oz0joe8u5T58RmbwxvqrIiYeC9G2QI/2
+ Uode7I37CrReMyMou//2G+LDjBXybMybdIN0s+no3kNGUy6aiMlh6BP/HwxrqkzG1kwV
+ v0ysEYmT3cfV5+fktwIRxn80HdATxpMZ/Q6DS8Ot4Vta9I72wz1YBw5bTm1kB7iNIWsh
+ MQsPQG7LY3BBpjfn2a2fEbaF3Hwq6KgLH2ZbobKUsGEiSBlrPt1QQSj0UnC65c8ttZ5V
+ LyRA==
+X-Gm-Message-State: AOJu0YzvjeLhbx24qENMMPd2G6WgxfvZIeooEKPbi/tPOi/WXEo3fhSf
+ I8r+6KI6VNv4Uyg9d5teoBx7DQkjMs+1DWD6Z6vZk4TadUia1WVrrudhRuRdKcqsBBtKTvQl64H
  p
-X-Google-Smtp-Source: AGHT+IETYCEFpXzchz+BXlbjc5WCW+gYz2Guo3B1Sp9JkNHPWyqH7eULSPVQfml2IdnQ7YdjWl+ypw==
-X-Received: by 2002:a17:906:a89:b0:a3e:a8bf:4c22 with SMTP id
- y9-20020a1709060a8900b00a3ea8bf4c22mr1345883ejf.9.1708352067862; 
- Mon, 19 Feb 2024 06:14:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE6UJQIsC4IsRblShoHibR+R93GSQrrGr2LTmzPwYMdSVTU1ZedLSCQMIqjFbeCMUXdSOJlxg==
+X-Received: by 2002:a05:6402:1801:b0:564:7007:e14c with SMTP id
+ g1-20020a056402180100b005647007e14cmr2272437edy.22.1708352073683; 
+ Mon, 19 Feb 2024 06:14:33 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- vi17-20020a170907d41100b00a3d47ee62c7sm2983185ejc.124.2024.02.19.06.14.25
+ fg11-20020a056402548b00b00564168e6674sm2569850edb.51.2024.02.19.06.14.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 06:14:27 -0800 (PST)
+ Mon, 19 Feb 2024 06:14:33 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -63,26 +63,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Ani Sinha <anisinha@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
  Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/5] hw/acpi/cpu: Use CPUState typedef
-Date: Mon, 19 Feb 2024 15:14:08 +0100
-Message-ID: <20240219141412.71418-3-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 3/5] hw/acpi/ich9: Include missing headers
+Date: Mon, 19 Feb 2024 15:14:09 +0100
+Message-ID: <20240219141412.71418-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240219141412.71418-1-philmd@linaro.org>
 References: <20240219141412.71418-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,29 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU coding style recommend using structure typedefs:
-https://www.qemu.org/docs/master/devel/style.html#typedefs
+The ICH9LPCPMRegs structure has MemoryRegion and
+Notifier fields, so requires the "qemu/notify.h"
+and "exec/memory.h" headers.
+
+However nothing from "hw/acpi/acpi_dev_interface.h"
+is required, so reduce its inclusion to hw/acpi/ich9.c
+source file where it is used.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/acpi/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/hw/acpi/ich9.h | 3 ++-
+ hw/acpi/ich9.c         | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index e011d01adf..e6e1a9ef59 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -20,7 +20,7 @@
- #include "hw/hotplug.h"
+diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
+index 2faf7f0cae..215de3c91f 100644
+--- a/include/hw/acpi/ich9.h
++++ b/include/hw/acpi/ich9.h
+@@ -21,12 +21,13 @@
+ #ifndef HW_ACPI_ICH9_H
+ #define HW_ACPI_ICH9_H
  
- typedef struct AcpiCpuStatus {
--    struct CPUState *cpu;
-+    CPUState *cpu;
-     uint64_t arch_id;
-     bool is_inserting;
-     bool is_removing;
++#include "qemu/notify.h"
++#include "exec/memory.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/cpu_hotplug.h"
+ #include "hw/acpi/cpu.h"
+ #include "hw/acpi/pcihp.h"
+ #include "hw/acpi/memory_hotplug.h"
+-#include "hw/acpi/acpi_dev_interface.h"
+ #include "hw/acpi/ich9_tco.h"
+ 
+ #define ACPI_PCIHP_ADDR_ICH9 0x0cc0
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 573d032e8e..be375a8b9d 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -35,7 +35,7 @@
+ #include "sysemu/runstate.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ich9_tco.h"
+-
++#include "hw/acpi/acpi_dev_interface.h"
+ #include "hw/southbridge/ich9.h"
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
 -- 
 2.41.0
 
