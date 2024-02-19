@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AEF85A91D
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C8E85A91F
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6fw-0001SN-Jj; Mon, 19 Feb 2024 11:39:28 -0500
+	id 1rc6fu-0001Si-VP; Mon, 19 Feb 2024 11:39:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fs-0001RB-BK
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:24 -0500
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6ft-0001Rt-US
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:25 -0500
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fl-0002vv-Ve
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:23 -0500
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-33d38c9ca5bso898234f8f.2
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:16 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fs-0002wJ-8x
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:25 -0500
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4125eabb8f4so16788645e9.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708360754; x=1708965554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708360761; x=1708965561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g4FCzhBMxBMDZoobHoXe86blnQI4iLx/WEkq5NXhKrY=;
- b=JnyXsnuICmP5Jg8a/zmDVDVxQazwzX3Tv6u/RZpiIfm7eok2hFnOo5Q1kWJW0y6hxI
- TtjCSNJmnvfPNPTQqIk4UZvEkj6DqFoBM3AtIH+4e1rr2YUqbmJa5pO3HSsVEmwz107K
- oZZOuES1zVdRn2Gg5i9g7lHnY/GRy9i3b8Y8TFR0VDIHjbTNAAGLXydEkSqXUB2fuCUA
- jyAhuBskbiks4mOWPFmUA4W/8Ui/XAjhDem2eIo2YN0XZcSit0OWQT5OWcdAw8t4O6GL
- 30r9lZaOVSgoxicf+guv6jEOUg5Zsn0h79WzcKLjOVhZtMDuk1nTZnrIDqAQg1EsCQ+l
- ET/Q==
+ bh=CzsFl96TqsANx0Bu/9mPtcZl7XwvdqWDGq2/cLicoFE=;
+ b=vFS4/IPXvaSfFTS+xWdLBrfxLQlwE8h4CaELCeC2+j/j2WmBkrZqY5V15fQt1fCeZ3
+ kLKaJas1OXmMbSVPZ7F3klZTvF90QLSFf4T1ZTJumWq3sYKx6SqYxr1gt5eQrzbDdROm
+ /C60DouBYD4m0QkRCrEE52aSPJ0SO6qVvKoY7TLWApaMM529xHj7MZUuG9E6UNHZJBsC
+ 6k1BthiGYdFXyj/EUASUWsG9vJnXEW8gy4saMlJf/B3Yy6QZ7tcWhFv18W0fJyKY98K4
+ 4apan46gc26vo6rOfCBty8jRYsxVLyDgTOyw65AwNULQu8sMY4O1KYoqWlADHT+JmwHj
+ Sl/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708360754; x=1708965554;
+ d=1e100.net; s=20230601; t=1708360761; x=1708965561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g4FCzhBMxBMDZoobHoXe86blnQI4iLx/WEkq5NXhKrY=;
- b=rfM8Z7Har5IB2BG3hgKwzjH6JiMgt/SEJHumyRtT3c6fwbPIuj6YhfjVk4huVtsc1v
- x+cVwWtH9wnD8U4BdZkfHPr0qJm2sKDItGu0kwwhq9vwsOG5pYOqaKXNvYg0gbhrdt8d
- gOyThxvUp9r3YMSYQmpS1prQcxwsbvdPCODxP6uo2J1lf2OebXd2ZQwtk/AhhOBrZZuN
- dZp7NbCPyjjXVx94GrAvYP2Q45QLINeG+xp1rXh2RoXfttDXLZTpOAOkodP2DjtXaQaL
- pw87ZEhMScNUo3QcnrUYAe0DoQghcUjgxapUonrN1bptRF49+vLu2T9JzJOYFT1cdsMl
- bCCg==
-X-Gm-Message-State: AOJu0YzSTU5wJ7I0mZwLWT/mCqvHxH0jgivpQS+3tCRvSsPowXFv21Pi
- bTLDterpUmCFIIRNIPDZtNxqoa8sT0EcD1+O1Xka98ksmy4fLM1xW6QXJHYtvjQ+vhZz2p2R5X/
- M
-X-Google-Smtp-Source: AGHT+IFgBDkCLPS0L77lmL6b9/TMgs59h2x46S4M3Nc73nGqBRnmVDdlyQYzcd5a26zgtAyJ+Mv7qw==
-X-Received: by 2002:a5d:5248:0:b0:33d:36e0:b9eb with SMTP id
- k8-20020a5d5248000000b0033d36e0b9ebmr3278810wrc.50.1708360754075; 
- Mon, 19 Feb 2024 08:39:14 -0800 (PST)
+ bh=CzsFl96TqsANx0Bu/9mPtcZl7XwvdqWDGq2/cLicoFE=;
+ b=xTGXwaaULvCzRZ6dlTt9PB/uvEtm8wIccD7ylZdkoDNH3DGazAGYp4SuVzaw2VDrja
+ pltb/ecvgz9J+N9L2eYbykUJd9BznABcjC0iHoJilN3Ze7cg3hipWUDukh3y+dj0/59u
+ AwBdjcNYdBBtts2WO6khWsUnlIb+m9EmQQ9c5HTm+3C1CU0H+N2gs/WK8eSsxdJlXnj/
+ odSSHA6l59XqnVttFCfMpH3hoBz6IS8LFFICLChiO2PeaHbDn/yWi0hCbolmciQBEgC3
+ qcC3q3CDFjoeYCCr05z+Lsy4EQFuDze2BwMda5oR2vxzXwp+FdvtbnzjQZK/B07nmkhE
+ WTHw==
+X-Gm-Message-State: AOJu0YxiAq+S9kb//2GStXC8vTLwoOrhZoCyXco0FJMLgHKxY+LKrLo1
+ R6Pphh1wlACikQbHdBGa7n8qGOw/2oNK63aI724H4lH93AeDos37Dxoxi3sv/7ea/gRkh2zKngj
+ e
+X-Google-Smtp-Source: AGHT+IETcHxSVZu5bybRHQpnjteNlCXM0zm/8cCcn7BYNRUNS6bB8xvOn1ZSmX3U+OVzafmhbfOkRg==
+X-Received: by 2002:a05:600c:34c4:b0:412:6cb2:e1db with SMTP id
+ d4-20020a05600c34c400b004126cb2e1dbmr132672wmq.0.1708360760860; 
+ Mon, 19 Feb 2024 08:39:20 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- i13-20020a5d55cd000000b0033b198efbedsm10733258wrw.15.2024.02.19.08.39.11
+ d2-20020adfef82000000b0033b75b39aebsm10845231wro.11.2024.02.19.08.39.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 08:39:13 -0800 (PST)
+ Mon, 19 Feb 2024 08:39:20 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Bernhard Beschow <shentey@gmail.com>
@@ -67,17 +67,18 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/14] hw/i386/q35: Add local 'lpc_obj' variable
-Date: Mon, 19 Feb 2024 17:38:42 +0100
-Message-ID: <20240219163855.87326-3-philmd@linaro.org>
+Subject: [PATCH 03/14] hw/acpi/ich9: Restrict definitions from
+ 'hw/southbridge/ich9.h'
+Date: Mon, 19 Feb 2024 17:38:43 +0100
+Message-ID: <20240219163855.87326-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240219163855.87326-1-philmd@linaro.org>
 References: <20240219163855.87326-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,60 +101,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of casting OBJECT(lpc) multiple times,
-do it once in the new 'lpc_obj' variable.
+Restrict ACPI definitions from "hw/southbridge/ich9.h"
+to the ACPI files where they are used.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_q35.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/hw/acpi/ich9.h        | 15 +++++++++++++++
+ include/hw/southbridge/ich9.h | 18 ------------------
+ hw/acpi/ich9.c                |  4 ++++
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index a91f414922..621661a738 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -126,6 +126,7 @@ static void pc_q35_init(MachineState *machine)
-     Object *phb;
-     PCIBus *host_bus;
-     PCIDevice *lpc;
-+    Object *lpc_obj;
-     DeviceState *lpc_dev;
-     BusState *idebus[MAX_SATA_PORTS];
-     ISADevice *rtc_state;
-@@ -238,6 +239,7 @@ static void pc_q35_init(MachineState *machine)
-     /* create ISA bus */
-     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
-                                 TYPE_ICH9_LPC_DEVICE);
-+    lpc_obj = OBJECT(lpc);
-     lpc_dev = DEVICE(lpc);
-     qdev_prop_set_bit(lpc_dev, "smm-enabled",
-                       x86_machine_is_smm_enabled(x86ms));
-@@ -246,7 +248,7 @@ static void pc_q35_init(MachineState *machine)
-         qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
-     }
+diff --git a/include/hw/acpi/ich9.h b/include/hw/acpi/ich9.h
+index 215de3c91f..3587a35c9f 100644
+--- a/include/hw/acpi/ich9.h
++++ b/include/hw/acpi/ich9.h
+@@ -91,4 +91,19 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+ bool ich9_pm_is_hotpluggable_bus(HotplugHandler *hotplug_dev, BusState *bus);
  
--    rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
-+    rtc_state = ISA_DEVICE(object_resolve_path_component(lpc_obj, "rtc"));
+ void ich9_pm_ospm_status(AcpiDeviceIf *adev, ACPIOSTInfoList ***list);
++
++#define ICH9_PMIO_PM1_STS                       0x00
++#define ICH9_PMIO_PM1_EN                        0x02
++#define ICH9_PMIO_PM1_CNT                       0x04
++#define ICH9_PMIO_PM1_TMR                       0x08
++#define ICH9_PMIO_GPE0_STS                      0x20
++#define ICH9_PMIO_GPE0_EN                       0x28
++#define ICH9_PMIO_GPE0_LEN                      16
++#define ICH9_PMIO_SMI_EN                        0x30
++#define ICH9_PMIO_SMI_EN_APMC_EN                (1 << 5)
++#define ICH9_PMIO_SMI_EN_TCO_EN                 (1 << 13)
++#define ICH9_PMIO_SMI_STS                       0x34
++#define ICH9_PMIO_TCO_RLD                       0x60
++#define ICH9_PMIO_TCO_LEN                       32
++
+ #endif /* HW_ACPI_ICH9_H */
+diff --git a/include/hw/southbridge/ich9.h b/include/hw/southbridge/ich9.h
+index fd01649d04..1ac4238f7e 100644
+--- a/include/hw/southbridge/ich9.h
++++ b/include/hw/southbridge/ich9.h
+@@ -183,24 +183,6 @@ struct ICH9LPCState {
+ /* D31:F0 power management I/O registers
+    offset from the address ICH9_LPC_PMBASE */
  
-     object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
-                              TYPE_HOTPLUG_HANDLER,
-@@ -254,13 +256,13 @@ static void pc_q35_init(MachineState *machine)
-                              object_property_allow_set_link,
-                              OBJ_PROP_LINK_STRONG);
-     object_property_set_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
--                             OBJECT(lpc), &error_abort);
-+                             lpc_obj, &error_abort);
+-/* ICH9 LPC PM I/O registers are 128 ports and 128-aligned */
+-#define ICH9_PMIO_SIZE                          128
+-#define ICH9_PMIO_MASK                          (ICH9_PMIO_SIZE - 1)
+-
+-#define ICH9_PMIO_PM1_STS                       0x00
+-#define ICH9_PMIO_PM1_EN                        0x02
+-#define ICH9_PMIO_PM1_CNT                       0x04
+-#define ICH9_PMIO_PM1_TMR                       0x08
+-#define ICH9_PMIO_GPE0_STS                      0x20
+-#define ICH9_PMIO_GPE0_EN                       0x28
+-#define ICH9_PMIO_GPE0_LEN                      16
+-#define ICH9_PMIO_SMI_EN                        0x30
+-#define ICH9_PMIO_SMI_EN_APMC_EN                (1 << 5)
+-#define ICH9_PMIO_SMI_EN_TCO_EN                 (1 << 13)
+-#define ICH9_PMIO_SMI_STS                       0x34
+-#define ICH9_PMIO_TCO_RLD                       0x60
+-#define ICH9_PMIO_TCO_LEN                       32
+-
+ /* FADT ACPI_ENABLE/ACPI_DISABLE */
+ #define ICH9_APM_ACPI_ENABLE                    0x2
+ #define ICH9_APM_ACPI_DISABLE                   0x3
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index be375a8b9d..228ebc9a1e 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -49,6 +49,10 @@ do { printf("%s "fmt, __func__, ## __VA_ARGS__); } while (0)
+ #define ICH9_DEBUG(fmt, ...)    do { } while (0)
+ #endif
  
--    acpi_pcihp = object_property_get_bool(OBJECT(lpc),
-+    acpi_pcihp = object_property_get_bool(lpc_obj,
-                                           ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
-                                           NULL);
- 
--    keep_pci_slot_hpc = object_property_get_bool(OBJECT(lpc),
-+    keep_pci_slot_hpc = object_property_get_bool(lpc_obj,
-                                                  "x-keep-pci-slot-hpc",
-                                                  NULL);
- 
++/* ICH9 LPC PM I/O registers are 128 ports and 128-aligned */
++#define ICH9_PMIO_SIZE                          128
++#define ICH9_PMIO_MASK                          (ICH9_PMIO_SIZE - 1)
++
+ static void ich9_pm_update_sci_fn(ACPIREGS *regs)
+ {
+     ICH9LPCPMRegs *pm = container_of(regs, ICH9LPCPMRegs, acpi_regs);
 -- 
 2.41.0
 
