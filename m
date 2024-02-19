@@ -2,57 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F250A85A663
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:50:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0461785A691
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:55:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4xr-0001Mf-Fa; Mon, 19 Feb 2024 09:49:51 -0500
+	id 1rc51p-0005Gg-Ho; Mon, 19 Feb 2024 09:53:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rc4xm-0001Ds-4w; Mon, 19 Feb 2024 09:49:46 -0500
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <SRS0=xJN9=J4=kaod.org=clg@ozlabs.org>)
+ id 1rc51n-0005GC-4Z; Mon, 19 Feb 2024 09:53:55 -0500
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rc4xk-0007Dw-JM; Mon, 19 Feb 2024 09:49:45 -0500
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 26E394E6012;
- Mon, 19 Feb 2024 15:49:43 +0100 (CET)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id rLp9AcV-9rvg; Mon, 19 Feb 2024 15:49:41 +0100 (CET)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2E84A4E602D; Mon, 19 Feb 2024 15:49:41 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2CA577456B4;
- Mon, 19 Feb 2024 15:49:41 +0100 (CET)
-Date: Mon, 19 Feb 2024 15:49:41 +0100 (CET)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Peter Maydell <peter.maydell@linaro.org>, 
- =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <SRS0=xJN9=J4=kaod.org=clg@ozlabs.org>)
+ id 1rc51l-00081i-1V; Mon, 19 Feb 2024 09:53:54 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Tdlsf2QNJz4wcM;
+ Tue, 20 Feb 2024 01:53:42 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Tdlsb6Gwpz4wc9;
+ Tue, 20 Feb 2024 01:53:39 +1100 (AEDT)
+Message-ID: <b2820e70-9e58-4087-b072-5049dda7023a@kaod.org>
+Date: Mon, 19 Feb 2024 15:53:32 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PULL 22/49] hw/pci-host/raven.c: Mark raven_io_ops as
  implementing unaligned accesses
-In-Reply-To: <20240219082938.238302-23-npiggin@gmail.com>
-Message-ID: <754804d1-8bde-b23b-d136-e93d6d967987@eik.bme.hu>
+Content-Language: en-US, fr
+To: BALATON Zoltan <balaton@eik.bme.hu>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@redhat.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
  <20240219082938.238302-23-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-885738078-1708354181=:77986"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ <754804d1-8bde-b23b-d136-e93d6d967987@eik.bme.hu>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <754804d1-8bde-b23b-d136-e93d6d967987@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=xJN9=J4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,40 +71,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 2/19/24 15:49, BALATON Zoltan wrote:
+> On Mon, 19 Feb 2024, Nicholas Piggin wrote:
+>> From: Peter Maydell <peter.maydell@linaro.org>
+>>
+>> The raven_io_ops MemoryRegionOps is the only one in the source tree
+>> which sets .valid.unaligned to indicate that it should support
+>> unaligned accesses and which does not also set .impl.unaligned to
+>> indicate that its read and write functions can do the unaligned
+>> handling themselves.  This is a problem, because at the moment the
+>> core memory system does not implement the support for handling
+>> unaligned accesses by doing a series of aligned accesses and
+>> combining them (system/memory.c:access_with_adjusted_size() has a
+>> TODO comment noting this).
+>>
+>> Fortunately raven_io_read() and raven_io_write() will correctly deal
+>> with the case of being passed an unaligned address, so we can fix the
+>> missing unaligned access support by setting .impl.unaligned in the
+>> MemoryRegionOps struct.
+>>
+>> Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
+>> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+>> Tested-by: Cédric Le Goater <clg@redhat.com>
+>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> 
+> Hm, this seems to be missing the actual patch.
 
---3866299591-885738078-1708354181=:77986
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+It's merged already and git knows how to handle this.
 
-On Mon, 19 Feb 2024, Nicholas Piggin wrote:
-> From: Peter Maydell <peter.maydell@linaro.org>
->
-> The raven_io_ops MemoryRegionOps is the only one in the source tree
-> which sets .valid.unaligned to indicate that it should support
-> unaligned accesses and which does not also set .impl.unaligned to
-> indicate that its read and write functions can do the unaligned
-> handling themselves.  This is a problem, because at the moment the
-> core memory system does not implement the support for handling
-> unaligned accesses by doing a series of aligned accesses and
-> combining them (system/memory.c:access_with_adjusted_size() has a
-> TODO comment noting this).
->
-> Fortunately raven_io_read() and raven_io_write() will correctly deal
-> with the case of being passed an unaligned address, so we can fix the
-> missing unaligned access support by setting .impl.unaligned in the
-> MemoryRegionOps struct.
->
-> Fixes: 9a1839164c9c8f06 ("raven: Implement non-contiguous I/O region")
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> Tested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Thanks,
 
-Hm, this seems to be missing the actual patch.
+C.
 
-Regards,
-BALATON Zoltan
---3866299591-885738078-1708354181=:77986--
+
 
