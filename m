@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7793859A66
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A65859AA9
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 03:17:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbsJa-0005Us-PP; Sun, 18 Feb 2024 20:19:26 -0500
+	id 1rbtCu-0007d0-1c; Sun, 18 Feb 2024 21:16:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIj-0003bd-Tw; Sun, 18 Feb 2024 20:18:34 -0500
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
- id 1rbsIh-0004MA-5c; Sun, 18 Feb 2024 20:18:32 -0500
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-607a84acf6aso15163117b3.2; 
- Sun, 18 Feb 2024 17:18:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708305509; x=1708910309; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=v1gR/KAa53/oE2iH7GhO3G8Sk5ViFxF2SsXmdhHxpKI=;
- b=NU9YpyK3tfgX2zqgtbJwGxfU/dB2PvzuvwE1m3aIWboU4lQB2jtt0eExpCF0PLLvkQ
- CTMG6G9CKjfDe5LS/83p+ptoV9EKerGmtC+yGluAqIpl6I90pk0EuE7x931tp5mQmJGu
- bGnUKATnCP+8F7IENIOMchuFMo1zZpi6wXgqiPfNl8SHeUoZ64dEC82dNN2nvccb78qd
- YAMX/m3g4RLqh7RXrcNRRt0DzzjiV+sa+5v3oqXJFMNRa389M1yNEtm4r+UQjzAean4x
- +MLOi2/z2eGEJjS+dUjvn14JVOfHkvzq/V9omiQXP/0rV6U51TEsB/6OHtT4QWivSuVJ
- WI+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708305509; x=1708910309;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=v1gR/KAa53/oE2iH7GhO3G8Sk5ViFxF2SsXmdhHxpKI=;
- b=IoaNCkLWuZgiQkKhidEWeM96CkVKzgeBT8w8nhpvQmAu/27Y3eVRmcS14nIkORgHdT
- BY9baredxgqYIDScsr14yCkwsvfqKffZwTPruX4O18QXnIpuIx/hW+dFPJfB5BszZ4D+
- IZAJ6sWTbI8LnNkO3R1fvME+xvIHaFsHqHezmuaiDJi5L/dWt0ys2NQ4fnAum1om8tQr
- zSw+FRUKflHnkhv4nc5/6gwyW5WKvJV4qvsBthg4RBU6+YfZ/rkA1hz2Zu4n2LCl9DPL
- 8fryxhY/u2lqNRxbKjEHakzorK2sqvzm9aFciJBtfNtsO+Y+xdeG1mNNXrmO4Xg5NGnx
- 3mNQ==
-X-Gm-Message-State: AOJu0YxEUvNK6lnIQiQEk7TLYw0TTIhTuTq9CWzmF6boQPB8PJuyhc4i
- fCflzdpVVzZOg5cQjRsjyQuSwQ9zcBr584qj2EnQ69AQGLOoRyiANJEWZEFHOgk=
-X-Google-Smtp-Source: AGHT+IE9HW5BVHh0c8TUwgNZ7Q1Etp6GBtU33LTRVXwS53DWi4TMHY3DNjYkgqoI6b/yzQujz+GklA==
-X-Received: by 2002:a81:ac4a:0:b0:607:fe2f:34af with SMTP id
- z10-20020a81ac4a000000b00607fe2f34afmr4563996ywj.2.1708305509574; 
- Sun, 18 Feb 2024 17:18:29 -0800 (PST)
-Received: from localhost.localdomain ([201.203.117.224])
- by smtp.gmail.com with ESMTPSA id
- m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.18.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Feb 2024 17:18:29 -0800 (PST)
-From: Sergey Kambalin <serg.oker@gmail.com>
-X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
-To: qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org,
-	Sergey Kambalin <sergey.kambalin@auriga.com>
-Subject: [PATCH v5 41/41] Add RPi4B to paspi.rst
-Date: Sun, 18 Feb 2024 19:17:39 -0600
-Message-Id: <20240219011739.2316619-42-sergey.kambalin@auriga.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
-References: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1rbtCr-0007cp-1f
+ for qemu-devel@nongnu.org; Sun, 18 Feb 2024 21:16:33 -0500
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1rbtCm-0005rK-Nb
+ for qemu-devel@nongnu.org; Sun, 18 Feb 2024 21:16:32 -0500
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8DxJ+jwudJlHzAOAA--.18255S3;
+ Mon, 19 Feb 2024 10:16:17 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bx3xPtudJlK7g7AA--.1860S2; 
+ Mon, 19 Feb 2024 10:16:14 +0800 (CST)
+Subject: Re: [PATCH V2] loongarch: Change the UEFI loading mode to loongarch
+To: Andrea Bolognani <abologna@redhat.com>
+Cc: qemu-devel@nongnu.org, maobibo@loongson.cn,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, zhaotianrui@loongson.cn
+References: <20240206021002.208805-1-lixianglai@loongson.cn>
+ <CABJz62MEUeWw2pL9TYKxD8E2qWOrzPegCbRVaAd0P+0=5_46mQ@mail.gmail.com>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <4dd0752f-b5ba-2fbb-6c2f-40c8b638f414@loongson.cn>
+Date: Mon, 19 Feb 2024 10:16:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <CABJz62MEUeWw2pL9TYKxD8E2qWOrzPegCbRVaAd0P+0=5_46mQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Bx3xPtudJlK7g7AA--.1860S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7trW3Ar4DJFyUGFWUuFW3Jwc_yoW8uF1Upr
+ WSy3WY9r4DJrZxJwnxZayxW39Iyr93KF9xXF1Svry0k398J3W8Xr1rKr1kXF9rJw1xJF1j
+ v3y0k3s8WFW5ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1QVy3UU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.002,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,49 +83,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Sergey Kambalin <sergey.kambalin@auriga.com>
----
- docs/system/arm/raspi.rst | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Hi Andrea:
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index d0a6f08b2b..c21b27744e 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -1,5 +1,5 @@
--Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``)
--======================================================================================
-+Raspberry Pi boards (``raspi0``, ``raspi1ap``, ``raspi2b``, ``raspi3ap``, ``raspi3b``, ``raspi4b-2g``)
-+======================================================================================================
- 
- 
- QEMU provides models of the following Raspberry Pi boards:
-@@ -12,12 +12,13 @@ QEMU provides models of the following Raspberry Pi boards:
-   Cortex-A53 (4 cores), 512 MiB of RAM
- ``raspi3b``
-   Cortex-A53 (4 cores), 1 GiB of RAM
--
-+``raspi4b-2g``
-+  Cortex-A72 (4 cores), 2 GiB of RAM
- 
- Implemented devices
- -------------------
- 
-- * ARM1176JZF-S, Cortex-A7 or Cortex-A53 CPU
-+ * ARM1176JZF-S, Cortex-A7, Cortex-A53 or Cortex-A72 CPU
-  * Interrupt controller
-  * DMA controller
-  * Clock and reset controller (CPRMAN)
-@@ -34,6 +35,8 @@ Implemented devices
-  * MailBox controller (MBOX)
-  * VideoCore firmware (property)
-  * Peripheral SPI controller (SPI)
-+ * PCIE Root Port (raspi4b-2g)
-+ * GENET Ethernet Controller (raspi4b-2g)
- 
- 
- Missing devices
--- 
-2.34.1
+I'm very sorry for the late reply.
+
+I just had the Spring Festival holiday,
+
+so I replied the email as soon as I saw it.
+
+
+> On Tue, Feb 06, 2024 at 10:10:02AM +0800, Xianglai Li wrote:
+>> The UEFI loading mode in loongarch is very different
+>> from that in other architectures:loongarch's UEFI code
+>> is in rom, while other architectures' UEFI code is in flash.
+>>
+>> loongarch UEFI can be loaded as follows:
+>> -machine virt,pflash=pflash0-format
+>> -bios ./QEMU_EFI.fd
+>>
+>> Other architectures load UEFI using the following methods:
+>> -machine virt,pflash0=pflash0-format,pflash1=pflash1-format
+>>
+>> loongarch's UEFI loading method makes qemu and libvirt incompatible
+>> when using NVRAM, and the cost of loongarch's current loading method
+>> far outweighs the benefits, so we decided to use the same UEFI loading
+>> scheme as other architectures.
+>>
+>> Cc: Andrea Bolognani <abologna@redhat.com>
+>> Cc: maobibo@loongson.cn
+>> Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Cc: Song Gao <gaosong@loongson.cn>
+>> Cc: zhaotianrui@loongson.cn
+>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>> ---
+>>   hw/loongarch/acpi-build.c   |  29 +++++++++--
+>>   hw/loongarch/virt.c         | 101 ++++++++++++++++++++++++++----------
+>>   include/hw/loongarch/virt.h |  10 ++--
+>>   3 files changed, 107 insertions(+), 33 deletions(-)
+> For future reference, it's usually good practice to keep track of
+> changes between subsequent versions of the same patchset.
+
+OK! Since there is only one patch, I did not add a cover letter.
+
+I saw that you replied test-by later,
+
+so I plan to resend patch V2 and bring the cover letter with change log 
+and your test-by label.
+
+>
+> Can you please confirm that the build of edk2 added with [1] is
+> intended to work with a version of QEMU that contains these changes?
+> I'd like to test things out as soon as I get a moment.
+
+Yes! [1] Works well with qemu with the current patch.
+
+Thanks.
+
+Xianglai.
+
+>
+> Thanks.
+>
+>
+> [1] https://github.com/lixianglai/LoongarchVirtFirmware/commit/985ce19438d9544968c7e921c6acf2c74fd4713e
 
 
