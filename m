@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709EE859E65
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D051E859E4C
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:33:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz3k-0001qY-SE; Mon, 19 Feb 2024 03:31:32 -0500
+	id 1rbz3l-0001rV-0S; Mon, 19 Feb 2024 03:31:33 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3i-0001YZ-4y; Mon, 19 Feb 2024 03:31:30 -0500
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rbz3i-0001Ya-5H; Mon, 19 Feb 2024 03:31:30 -0500
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz3e-0002LU-5W; Mon, 19 Feb 2024 03:31:28 -0500
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1d7881b1843so34365225ad.3; 
- Mon, 19 Feb 2024 00:31:23 -0800 (PST)
+ id 1rbz3g-0002Lu-KK; Mon, 19 Feb 2024 03:31:29 -0500
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1da0cd9c0e5so37034685ad.0; 
+ Mon, 19 Feb 2024 00:31:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331482; x=1708936282; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331486; x=1708936286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pBzaOnIszF4oJ7jbud6LzrAGJBdBmoK8UT2ZMh/vfDg=;
- b=jCGTfnaU5dlkEttZjr44upsAHFcibAkTUBHSjQ4iG8IqCeyTAopZMgOlK1fZxy1+mi
- ur7RRGcKVXkMf7chNhRNlDiEIsgi/GoOaU2Iofietp3EJdxAkKlN1oL7z6YbB865EO00
- UoSoTLxtYnaVZKp5IJZ+EQs80cw692R3h546AKzx7kYAy0AYZ+uXarok6DGszUisD5aQ
- hzCHCYm5YofoJohU36BYhIIxLd+V+BJAJvdmhNABRBUZKE2EqW1JxHws+3tSFYNOzFKY
- yz140wltPWDN9GXsJWw5RidAJvCo/CR4vkY9pZVoLW61kY/ZEz9CNDUKFcneXlfmAvwi
- eL7A==
+ bh=TNkOh3VPNtlgospyMybpdwKaxmKzTmiXNUjVZD0tHkg=;
+ b=J0y0tVndEy00dEKNYWfog+85/L04ueKhX5h+kKYWq3y04bqfCvcmn5spawyEwBUVVu
+ Me9MdhCj2e7IcgTgTWldwNEX2pz8HiJWcxRsUj9hvfTTT6KrpzcGV03ZWcV6jazn3XBS
+ Hb/b9J3CFPqtbRPHIIvJ1rp6nf/fKwOoGiq1j1r42iENlFfyHOmcrGT2QbrBeHVbEbne
+ 9dzjjTu8vuQqD2n2B/NTu+48B9WoG8Qk5gI+YwILjWN2slvLccUHQM/cRYED9HJPwpOr
+ nFmJWNKuxRvBwqfA2Q7E/Wms+YEHvwAYXe4tNPpgxgIV1A1BuplY5jx1pht8NYzfCT42
+ ujSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331482; x=1708936282;
+ d=1e100.net; s=20230601; t=1708331486; x=1708936286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pBzaOnIszF4oJ7jbud6LzrAGJBdBmoK8UT2ZMh/vfDg=;
- b=GKDGQq2hOCKXryVldU6Z9VD+q0K3wYX+me25FFFltKCSWh5CeEP7u2N5GhJiDkJxUH
- SpLH1XxjEpLn18w4wupaWil611TgAYZ45LVX/xnSLJayLYapBClftagK03OE5SHQqWwF
- 2dP1/M7d/PUAGrKsdw2d54WV2w2Pm6XRyMZJfO7nbmIwloIuJUHhChnzMj6+zHPFAgF2
- ELIR//F7isEA8z/+IV6NxdR768U9jRWHCIDrHdgEuDg6nOcGzciVKIK/z2XjNnGN7rfw
- 7GrBK/KKEBfhRp/a6emQ8qxDCVOIiF49aCupmNKpQxnidL7Og303BPG0h0evGp3tSeNI
- BlJQ==
+ bh=TNkOh3VPNtlgospyMybpdwKaxmKzTmiXNUjVZD0tHkg=;
+ b=e59hhDcWSO/+231YORc6wdLlk+y4kmp3hqs1REgQyxl1ZX6TqbWlqwNjY1BoRU+h7i
+ EyHqrboNNaDxg65xtgW3TXGZlK9bXF8EyKail2sW38HG4yaZpguLVmCt+yglmXrN6yph
+ sh8tzCKKAINrriPWrmPXaBXXOReEpJmVIb/qEFL5OWbe7xGACbw0KWUf4XzYoz9W1DDq
+ h1c/rsv3l1BtTJJTy/FUCFOTGELMRpzj6b7/6v7wEPeUvq/dLqOG+foUnxvhmID76Os9
+ sQUky86pW9ecQI7syHRpjrjMOqC3QIIR4wP5fkNf5O7b5SN6ChSZUOylUiEQnLTRuH63
+ MMvA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUEL2vYF9yfsV5mnr7J3QWQmteGJ7qPgy3yonb9tCSsgYitfFK3eHIIlxwrM6rBoDPhGHg+l3feUfWjLHBu0myagKGL
-X-Gm-Message-State: AOJu0Ywrr/HbpjLOlvpQFpnFc0tHvVbUgOFmcV0/oiCxImGH8UYgXVDo
- Q03w7ztwoPcY6bq3hr5SBEo0c8s5lipV277is3DFisC8ZKmBo/1P+Ih6JaW6
-X-Google-Smtp-Source: AGHT+IGjE4Aaf9vlw8Xwe93jMOvdXyOwJsOrCHDRw5mchS0jw0X70KQnNixe0e8mzlOKfE8ywNtqlA==
-X-Received: by 2002:a17:902:b705:b0:1d9:7729:2a6f with SMTP id
- d5-20020a170902b70500b001d977292a6fmr11572302pls.61.1708331482311; 
- Mon, 19 Feb 2024 00:31:22 -0800 (PST)
+ AJvYcCUXq0oKaXnXVFQtRRFFv1JAJ+CbbfUjRwLegNcP+BK/BZKfG3t7mkTCXuLIO5EyHPq/rJfySwNmkNicztQ5UGxGR+Nq
+X-Gm-Message-State: AOJu0Ywpy5Ob/GXlkMCXgEtvcaaadMAGIQutDU/XTldLjkiMWBxL8OjO
+ z9aUWNQ4xFzBJIO69HdaAgOPa6pa6ifCcLBpFnJOmvz/Hz6AF/w7i8njhMdk
+X-Google-Smtp-Source: AGHT+IEKw5+57KmnK40iYFImqxbNwg5k7IHpuUePsV0Tim2BpyyzsilmvRp2AEqnYMn5zJ06ILAvKg==
+X-Received: by 2002:a17:902:7c8c:b0:1db:47bb:671b with SMTP id
+ y12-20020a1709027c8c00b001db47bb671bmr15850399pll.19.1708331486159; 
+ Mon, 19 Feb 2024 00:31:26 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.18
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.31.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:31:22 -0800 (PST)
+ Mon, 19 Feb 2024 00:31:25 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 18/49] ppc/spapr: Initialize max_cpus limit to
- SPAPR_IRQ_NR_IPIS.
-Date: Mon, 19 Feb 2024 18:29:07 +1000
-Message-ID: <20240219082938.238302-19-npiggin@gmail.com>
+Subject: [PULL 19/49] ppc/spapr: change pseries machine default to POWER10 CPU
+Date: Mon, 19 Feb 2024 18:29:08 +1000
+Message-ID: <20240219082938.238302-20-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,72 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+POWER10 is the latest pseries CPU.
 
-Initialize the machine specific max_cpus limit as per the maximum range
-of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
-free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
-assert in tcg_region_init or spapr_xive_claim_irq.
-
-Logs:
-
-Without patch fix:
-
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: IRQ 4096 is not free
-[root@host build]#
-
-On LPAR:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-**
-ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Aborted (core dumped)
-[root@host build]#
-
-On x86:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
-Assertion `lisn < xive->nr_irqs' failed.
-Aborted (core dumped)
-[root@host build]#
-
-With patch fix:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
-machine 'pseries-8.2' is 4096
-[root@host build]#
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ hw/ppc/spapr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 0d72d286d8..0028ce0b67 100644
+index 0028ce0b67..b442d18317 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -4639,13 +4639,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_SCSI;
+@@ -4664,7 +4664,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
  
-     /*
--     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
--     * should be limited by the host capability instead of hardcoded.
--     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
--     * guests are welcome to have as many CPUs as the host are capable
--     * of emulate.
-+     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
-+     * In TCG the limit is restricted by the range of CPU IPIs available.
-      */
--    mc->max_cpus = INT32_MAX;
-+    mc->max_cpus = SPAPR_IRQ_NR_IPIS;
- 
-     mc->no_parallel = 1;
-     mc->default_boot_order = "";
+     smc->dr_lmb_enabled = true;
+     smc->update_dt_enabled = true;
+-    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power9_v2.2");
++    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("power10_v2.0");
+     mc->has_hotpluggable_cpus = true;
+     mc->nvdimm_supported = true;
+     smc->resize_hpt_default = SPAPR_RESIZE_HPT_ENABLED;
 -- 
 2.42.0
 
