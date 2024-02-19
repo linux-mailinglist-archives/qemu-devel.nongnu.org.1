@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506B185A165
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 11:51:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746B785A163
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 11:51:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc1DZ-00043H-GK; Mon, 19 Feb 2024 05:49:49 -0500
+	id 1rc1DZ-00042B-6X; Mon, 19 Feb 2024 05:49:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rc1DG-0003td-IC
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 05:49:30 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rc1DG-0003uA-Pw
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 05:49:32 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rc1DC-00017c-0w
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rc1DF-00018M-77
  for qemu-devel@nongnu.org; Mon, 19 Feb 2024 05:49:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708339765;
+ s=mimecast20190719; t=1708339768;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=46MJKVG4lFfi48pM2XpmZOL9TnrnKkQoRvC4jQU7qcw=;
- b=Eyd1sKmjKGDZASEG1RhN83fjerbAPl8sK1TfdOI57sz5qXfx7Frc3ewzSOx6JvsVOP6Oi8
- BG1xGTXj4HOHLMAxT+IIJ35YGND7AB/EhuYIGJ6FR2h62escsLtOv+v/M9kjTHZPla6jp9
- JFlYbIT6PwqDwh17cMFpn/nQN4tMafA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-670-4p7HGZLJNm6gWd1ERnJxyw-1; Mon,
- 19 Feb 2024 05:49:23 -0500
-X-MC-Unique: 4p7HGZLJNm6gWd1ERnJxyw-1
+ bh=b4hgN8u5AfvKHOm7gKyk98vXq08LrzvUSx2gRkPZ6vE=;
+ b=Lau1fhzzSPLRUXiljN6RkD9TLmMvsdBkzS29ypFE9zTdLDlk9T3bwnKSQ8ize4YhN0ZQjt
+ A1p3RmYRrcGZLz0f6LXUQ06RHqwnIBlnr8+omvgnI5ugLRpUV5Rirf5bSludPthPrYsb5u
+ Mp4zp5oTWDlzMDKMh+sToK1y6+OttpY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-502-kklzypBpOAiWfL-4mTUKgA-1; Mon, 19 Feb 2024 05:49:25 -0500
+X-MC-Unique: kklzypBpOAiWfL-4mTUKgA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 173D81C41A03;
- Mon, 19 Feb 2024 10:49:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1630885A588;
+ Mon, 19 Feb 2024 10:49:25 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.115])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A522D1C060BC;
- Mon, 19 Feb 2024 10:49:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 64F371C060B3;
+ Mon, 19 Feb 2024 10:49:23 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: John Snow <jsnow@redhat.com>,
 	qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org
-Subject: [PATCH 4/7] hw/ide: Move IDE bus related definitions to a new header
- ide-bus.h
-Date: Mon, 19 Feb 2024 11:49:09 +0100
-Message-ID: <20240219104912.378211-5-thuth@redhat.com>
+Subject: [PATCH 5/7] hw/ide: Move IDE DMA related definitions to a separate
+ header ide-dma.h
+Date: Mon, 19 Feb 2024 11:49:10 +0100
+Message-ID: <20240219104912.378211-6-thuth@redhat.com>
 In-Reply-To: <20240219104912.378211-1-thuth@redhat.com>
 References: <20240219104912.378211-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -64,8 +64,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.077,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,131 +81,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's consolidate the public IDE bus related functions in a separate
-header.
+These definitions are required outside of the hw/ide/ code, too,
+so lets's move them from internal.h to a new header called ide-dma.h.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/ide/ide-bus.h  | 41 +++++++++++++++++++++++++++++++++++++++
- include/hw/ide/internal.h | 38 +-----------------------------------
- 2 files changed, 42 insertions(+), 37 deletions(-)
- create mode 100644 include/hw/ide/ide-bus.h
+ include/hw/ide/ide-dma.h  | 30 ++++++++++++++++++++++++++++++
+ include/hw/ide/internal.h | 27 +--------------------------
+ 2 files changed, 31 insertions(+), 26 deletions(-)
+ create mode 100644 include/hw/ide/ide-dma.h
 
-diff --git a/include/hw/ide/ide-bus.h b/include/hw/ide/ide-bus.h
+diff --git a/include/hw/ide/ide-dma.h b/include/hw/ide/ide-dma.h
 new file mode 100644
-index 0000000000..e0460700ed
+index 0000000000..fb82966bdd
 --- /dev/null
-+++ b/include/hw/ide/ide-bus.h
-@@ -0,0 +1,41 @@
-+#ifndef HW_IDE_BUS_H
-+#define HW_IDE_BUS_H
++++ b/include/hw/ide/ide-dma.h
+@@ -0,0 +1,30 @@
++#ifndef HW_IDE_DMA_H
++#define HW_IDE_DMA_H
 +
-+#include "exec/ioport.h"
-+#include "hw/ide/ide-dev.h"
++typedef void DMAStartFunc(const IDEDMA *, IDEState *, BlockCompletionFunc *);
++typedef void DMAVoidFunc(const IDEDMA *);
++typedef int DMAIntFunc(const IDEDMA *, bool);
++typedef int32_t DMAInt32Func(const IDEDMA *, int32_t len);
++typedef void DMAu32Func(const IDEDMA *, uint32_t);
++typedef void DMAStopFunc(const IDEDMA *, bool);
 +
-+struct IDEBus {
-+    BusState qbus;
-+    IDEDevice *master;
-+    IDEDevice *slave;
-+    IDEState ifs[2];
-+    QEMUBH *bh;
-+
-+    int bus_id;
-+    int max_units;
-+    IDEDMA *dma;
-+    uint8_t unit;
-+    uint8_t cmd;
-+    qemu_irq irq; /* bus output */
-+
-+    int error_status;
-+    uint8_t retry_unit;
-+    int64_t retry_sector_num;
-+    uint32_t retry_nsector;
-+    PortioList portio_list;
-+    PortioList portio2_list;
-+    VMChangeStateEntry *vmstate;
++struct IDEDMAOps {
++    DMAStartFunc *start_dma;
++    DMAVoidFunc *pio_transfer;
++    DMAInt32Func *prepare_buf;
++    DMAu32Func *commit_buf;
++    DMAIntFunc *rw_buf;
++    DMAVoidFunc *restart;
++    DMAVoidFunc *restart_dma;
++    DMAStopFunc *set_inactive;
++    DMAVoidFunc *cmd_done;
++    DMAVoidFunc *reset;
 +};
 +
-+#define TYPE_IDE_BUS "IDE"
-+OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
-+
-+void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
-+                  int bus_id, int max_units);
-+IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
-+
-+int ide_get_geometry(BusState *bus, int unit,
-+                     int16_t *cyls, int8_t *heads, int8_t *secs);
-+int ide_get_bios_chs_trans(BusState *bus, int unit);
++struct IDEDMA {
++    const struct IDEDMAOps *ops;
++    QEMUIOVector qiov;
++    BlockAIOCB *aiocb;
++};
 +
 +#endif
 diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
-index 5cc109fe82..642bd1a979 100644
+index 642bd1a979..d1d3fcd23a 100644
 --- a/include/hw/ide/internal.h
 +++ b/include/hw/ide/internal.h
-@@ -8,16 +8,12 @@
-  */
+@@ -9,6 +9,7 @@
  
  #include "hw/ide.h"
--#include "exec/ioport.h"
--#include "hw/ide/ide-dev.h"
-+#include "hw/ide/ide-bus.h"
+ #include "hw/ide/ide-bus.h"
++#include "hw/ide/ide-dma.h"
  
  /* debug IDE devices */
  #define USE_DMA_CDROM
- #include "qom/object.h"
+@@ -316,13 +317,6 @@
+ #define SMART_DISABLE         0xd9
+ #define SMART_STATUS          0xda
  
--#define TYPE_IDE_BUS "IDE"
--OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
+-typedef void DMAStartFunc(const IDEDMA *, IDEState *, BlockCompletionFunc *);
+-typedef void DMAVoidFunc(const IDEDMA *);
+-typedef int DMAIntFunc(const IDEDMA *, bool);
+-typedef int32_t DMAInt32Func(const IDEDMA *, int32_t len);
+-typedef void DMAu32Func(const IDEDMA *, uint32_t);
+-typedef void DMAStopFunc(const IDEDMA *, bool);
 -
- /* Device/Head ("select") Register */
- #define ATA_DEV_SELECT          0x10
- /* ATA1,3: Defined as '1'.
-@@ -363,29 +359,6 @@ struct IDEDMA {
-     BlockAIOCB *aiocb;
- };
+ extern const char *IDE_DMA_CMD_lookup[IDE_DMA__COUNT];
  
--struct IDEBus {
--    BusState qbus;
--    IDEDevice *master;
--    IDEDevice *slave;
--    IDEState ifs[2];
--    QEMUBH *bh;
+ extern const MemoryRegionPortio ide_portio_list[];
+@@ -340,25 +334,6 @@ typedef struct IDEBufferedRequest {
+     bool orphaned;
+ } IDEBufferedRequest;
+ 
+-struct IDEDMAOps {
+-    DMAStartFunc *start_dma;
+-    DMAVoidFunc *pio_transfer;
+-    DMAInt32Func *prepare_buf;
+-    DMAu32Func *commit_buf;
+-    DMAIntFunc *rw_buf;
+-    DMAVoidFunc *restart;
+-    DMAVoidFunc *restart_dma;
+-    DMAStopFunc *set_inactive;
+-    DMAVoidFunc *cmd_done;
+-    DMAVoidFunc *reset;
+-};
 -
--    int bus_id;
--    int max_units;
--    IDEDMA *dma;
--    uint8_t unit;
--    uint8_t cmd;
--    qemu_irq irq; /* bus output */
--
--    int error_status;
--    uint8_t retry_unit;
--    int64_t retry_sector_num;
--    uint32_t retry_nsector;
--    PortioList portio_list;
--    PortioList portio2_list;
--    VMChangeStateEntry *vmstate;
+-struct IDEDMA {
+-    const struct IDEDMAOps *ops;
+-    QEMUIOVector qiov;
+-    BlockAIOCB *aiocb;
 -};
 -
  /* These are used for the error_status field of IDEBus */
  #define IDE_RETRY_MASK 0xf8
  #define IDE_RETRY_DMA  0x08
-@@ -502,15 +475,6 @@ void ide_cancel_dma_sync(IDEState *s);
- void ide_atapi_cmd(IDEState *s);
- void ide_atapi_cmd_reply_end(IDEState *s);
- 
--/* hw/ide/qdev.c */
--void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
--                  int bus_id, int max_units);
--IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
--
--int ide_get_geometry(BusState *bus, int unit,
--                     int16_t *cyls, int8_t *heads, int8_t *secs);
--int ide_get_bios_chs_trans(BusState *bus, int unit);
--
- int ide_handle_rw_error(IDEState *s, int error, int op);
- 
- #endif /* HW_IDE_INTERNAL_H */
 -- 
 2.43.2
 
