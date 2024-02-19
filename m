@@ -2,58 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E5D85A918
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCCB85A92D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:41:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6fH-00018C-P5; Mon, 19 Feb 2024 11:38:47 -0500
+	id 1rc6fa-0001HA-Bk; Mon, 19 Feb 2024 11:39:06 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rc6fF-00017T-H9
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:38:45 -0500
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rc6fC-0002qi-QC
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:38:44 -0500
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tdp670819z6K60P;
- Tue, 20 Feb 2024 00:34:39 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id EA95C140F2F;
- Tue, 20 Feb 2024 00:38:35 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
- 2024 16:38:35 +0000
-Date: Mon, 19 Feb 2024 16:38:34 +0000
-To: <shiju.jose@huawei.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
- <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v4 1/3] hw/cxl/cxl-mailbox-utils: Add support for
- feature commands (8.2.9.6)
-Message-ID: <20240219163834.00005d6e@Huawei.com>
-In-Reply-To: <20240219150025.1531-2-shiju.jose@huawei.com>
-References: <20240219150025.1531-1-shiju.jose@huawei.com>
- <20240219150025.1531-2-shiju.jose@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fY-0001G6-Bq
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:04 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fW-0002u4-EU
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:04 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4125df90568so15055675e9.3
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708360739; x=1708965539; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kTU8ttLQ0Q/QZTFMRvnUDY5Q7E85B92+i/v0dSrq/0k=;
+ b=zZZIskw5aOq8cUd5eelBruas0cx90VuNe1fcGag/9y4DhL2CxbRAc2YbvndFqgYlvr
+ Pu6DoKE036pK9ea4A07e+jxy7F404V5St1rFVYV4xkxgLnn9NlVnbBXpPYbTHonBhcau
+ G4nW9NoOo3qIGGqYxiN9/Xkq3wnIwIjiS4U6qucn0z4w6XD59Ke02UAquc/vc4ZS20ys
+ EHPqXcui+67GHWirvzo1QRrZ8ba4RcpnfMnVa3HEqBAYuGzPQ/1vhwXxriONx9A3tdr5
+ sxtH+5VzNG75cRzckxlIoFsWHe9WlK4eta8YORkZn2hze9cjViAC9Ax4fVhmrfMfp+1d
+ 8aqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708360739; x=1708965539;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kTU8ttLQ0Q/QZTFMRvnUDY5Q7E85B92+i/v0dSrq/0k=;
+ b=vkSEYD1+NXE0pGrInPxsTP3zWT0VXzIh9FCoJ4ac0xLTQXUldjeCdFjM+CaRWgtV5c
+ NkMLwjtOh/UyTEEfUXvinx4Twa5J5Nm/6a8RiuPQHuZysJRFvPUv8y9ULeXeh97Adqj7
+ ADpU0oQfVm0iLscG3wLJc0CCosGJPEtZU3dcWQO1+8ph8E/4GZI/FhPqpkvmkXySjLzY
+ BIJ1IHL585iE8yy2SVV6CtTttK9ak0eCpMb0s2yl9l65un2yQGZKMa4PCvIRBkC+oCCz
+ xMuWYUBH/xwfvH/ESmMHUhjOoFqEZ1fGinqA6tm8V+/bIlK2NZsnVWYQ4nneRBztQHZU
+ kiOA==
+X-Gm-Message-State: AOJu0Yx0ZllRVLRfFeICDvxcl8dnoyM7QF0l4PL1l31M2/E7yo69jI9r
+ cdgzkreptTGDYnk+sf5mHj8kKAFUOEb5abnSCKfW1ioeiqiWRUoH+ff5tPAmrYiYlg1nxtlvNR1
+ S
+X-Google-Smtp-Source: AGHT+IH7dcTn8XhdCeP8hGMxlC0FveKf6g0dovZdSVYZjKswOqkfFldbX2Z7rkCwNY/kknNacyapaQ==
+X-Received: by 2002:a5d:66d2:0:b0:33d:13ea:cf39 with SMTP id
+ k18-20020a5d66d2000000b0033d13eacf39mr6614537wrw.36.1708360739474; 
+ Mon, 19 Feb 2024 08:38:59 -0800 (PST)
+Received: from m1x-phil.lan ([176.176.181.220])
+ by smtp.gmail.com with ESMTPSA id
+ r10-20020adfda4a000000b0033d3b8820f8sm5722396wrl.109.2024.02.19.08.38.57
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 19 Feb 2024 08:38:58 -0800 (PST)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Bernhard Beschow <shentey@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/14] hw/southbridge: Extract ICH9 QOM container model
+Date: Mon, 19 Feb 2024 17:38:40 +0100
+Message-ID: <20240219163855.87326-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,105 +94,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 Feb 2024 23:00:23 +0800
-<shiju.jose@huawei.com> wrote:
+Hi,
 
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
-> CXL devices supports features with changeable attributes.
-> Get Supported Features retrieves the list of supported device specific
-> features. The settings of a feature can be retrieved using Get Feature and
-> optionally modified using Set Feature.
-> 
-> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+I have a long standing southbridge QOM rework branches. Since
+Bernhard is actively working on the PIIX, I'll try to refresh
+and post. This is also motivated by the Dynamic Machine work
+where we are trying to figure the ideal DSL for QEMU, so having
+complex models well designed help.
 
-Hi Shiju,
+Here we introduce the ICH9 'southbridge' as a QOM container.
+Since the chipset comes as a whole, we shouldn't instantiate
+its components separately. However in order to maintain old
+code we expose some properties to configure the container and
+not introduce any change for the Q35 machine. There is no
+migration change, only QOM objects moved around.
 
-Sorry I've taken so long to get to this!
+More work remain in the LPC function (more code to remove from
+Q35). Maybe worth doing in parallel with the PIIX to clean both
+PC machines.
 
-Looks good. One small comment inline.
+Also we'd need to decouple the cpu_interrupt() calls between hw/
+and target/.
 
-Jonathan
+Note that GSI is currently broken [1]. Once the LPC/ISA part is
+done, it might be easier to fix it.
 
-> +
-> +/* CXL r3.1 section 8.2.9.6.1: Get Supported Features (Opcode 0500h) */
-> +static CXLRetCode cmd_features_get_supported(const struct cxl_cmd *cmd,
-> +                                             uint8_t *payload_in,
-> +                                             size_t len_in,
-> +                                             uint8_t *payload_out,
-> +                                             size_t *len_out,
-> +                                             CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint32_t count;
-> +        uint16_t start_index;
-> +        uint16_t reserved;
-> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_in = (void *)payload_in;
-> +
-> +    struct {
-> +        CXLSupportedFeatureHeader hdr;
-> +        CXLSupportedFeatureEntry feat_entries[];
-> +    } QEMU_PACKED QEMU_ALIGNED(16) * get_feats_out = (void *)payload_out;
-> +    uint16_t index;
-> +    uint16_t entry, req_entries;
-> +    uint16_t feat_entries = 0;
-> +
-> +    if (get_feats_in->count < sizeof(CXLSupportedFeatureHeader) ||
-> +        get_feats_in->start_index > CXL_FEATURE_MAX) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +    req_entries = (get_feats_in->count -
-> +                   sizeof(CXLSupportedFeatureHeader)) /
-> +                   sizeof(CXLSupportedFeatureEntry);
+Based-on: <20240213043859.61019-1-philmd@linaro.org> [2]
+Based-on: <20240219141412.71418-1-philmd@linaro.org> [3]
 
-I'm struggling a bit with the Specification text.
-I says that count is
-"Count in bytes of the supported Feature data to return in the
-output payload."
+[1] https://lore.kernel.org/qemu-devel/cd0e13c6-c03d-411f-83a5-1d4d28ea4345@linaro.org/
+[2] https://lore.kernel.org/qemu-devel/20240213043859.61019-1-philmd@linaro.org/ (USB)
+[3] https://lore.kernel.org/qemu-devel/20240219141412.71418-1-philmd@linaro.org/ (AHCI)
 
-I suppose that includes the header but it's not entirely clear
-to me. Let's go with what we have here unless we get a spec
-clarification.
+Philippe Mathieu-Daudé (14):
+  MAINTAINERS: Add 'ICH9 South Bridge' section
+  hw/i386/q35: Add local 'lpc_obj' variable
+  hw/acpi/ich9: Restrict definitions from 'hw/southbridge/ich9.h'
+  hw/acpi/ich9_tco: Include 'ich9' in names
+  hw/acpi/ich9_tco: Restrict ich9_generate_smi() declaration
+  hw/pci-bridge: Extract QOM ICH definitions to 'ich_dmi_pci.h'
+  hw/southbridge/ich9: Introduce TYPE_ICH9_SOUTHBRIDGE stub
+  hw/southbridge/ich9: Add the DMI-to-PCI bridge
+  hw/southbridge/ich9: Add a AHCI function
+  hw/i2c/smbus: Extract QOM ICH9 definitions to 'smbus_ich9.h'
+  hw/southbridge/ich9: Add the SMBus function
+  hw/southbridge/ich9: Add the USB EHCI/UHCI functions
+  hw/southbridge/ich9: Extract LPC definitions to 'hw/isa/ich9_lpc.h'
+  hw/southbridge/ich9: Add the LPC / ISA bridge function
 
-> +    req_entries = MIN(req_entries, CXL_FEATURE_MAX);
-> +    index = get_feats_in->start_index;
-> +
-> +    entry = 0;
-> +    while (entry < req_entries) {
+ MAINTAINERS                         |  21 ++-
+ include/hw/acpi/ich9.h              |  15 ++
+ include/hw/acpi/ich9_tco.h          |   6 +-
+ include/hw/i2c/smbus_ich9.h         |  25 +++
+ include/hw/isa/ich9_lpc.h           | 166 ++++++++++++++++++++
+ include/hw/pci-bridge/ich_dmi_pci.h |  20 +++
+ include/hw/southbridge/ich9.h       | 235 +---------------------------
+ hw/acpi/ich9.c                      |   9 +-
+ hw/acpi/ich9_tco.c                  |   5 +-
+ hw/i2c/smbus_ich9.c                 |  36 +++--
+ hw/i386/acpi-build.c                |   1 +
+ hw/i386/pc_q35.c                    | 124 +++------------
+ hw/isa/lpc_ich9.c                   |  37 ++++-
+ hw/pci-bridge/i82801b11.c           |  11 +-
+ hw/southbridge/ich9.c               | 212 +++++++++++++++++++++++++
+ tests/qtest/tco-test.c              |   2 +-
+ hw/Kconfig                          |   1 +
+ hw/i386/Kconfig                     |   3 +-
+ hw/meson.build                      |   1 +
+ hw/southbridge/Kconfig              |  11 ++
+ hw/southbridge/meson.build          |   3 +
+ 21 files changed, 581 insertions(+), 363 deletions(-)
+ create mode 100644 include/hw/i2c/smbus_ich9.h
+ create mode 100644 include/hw/isa/ich9_lpc.h
+ create mode 100644 include/hw/pci-bridge/ich_dmi_pci.h
+ create mode 100644 hw/southbridge/ich9.c
+ create mode 100644 hw/southbridge/Kconfig
+ create mode 100644 hw/southbridge/meson.build
 
-Given it's a known set of bounds a for loops should be
-easier to read.
-
-       for (index = get_feats_in->start_index;
-	    index < req_entries;
-	    index++) {
-           switch (index) {
-	   default:
-		__builtin_unreachable();
-           }
-       }  
-> +        switch (index) {
-> +        default:
-> +            break;
-> +        }
-> +        index++;
-> +        entry++;
-> +    }
-> +
-> +    get_feats_out->hdr.nsuppfeats_dev = CXL_FEATURE_MAX;
-> +    get_feats_out->hdr.entries = feat_entries;
-> +    *len_out = sizeof(CXLSupportedFeatureHeader) +
-> +                      feat_entries * sizeof(CXLSupportedFeatureEntry);
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
+-- 
+2.41.0
 
 
