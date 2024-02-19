@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B822A85A919
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AEF85A91D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 17:40:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc6fg-0001Hw-7T; Mon, 19 Feb 2024 11:39:12 -0500
+	id 1rc6fw-0001SN-Jj; Mon, 19 Feb 2024 11:39:28 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fe-0001Hb-CW
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:10 -0500
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fs-0001RB-BK
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:24 -0500
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fc-0002v4-PK
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:10 -0500
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-41261233e61so8603045e9.0
- for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:08 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rc6fl-0002vv-Ve
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 11:39:23 -0500
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-33d38c9ca5bso898234f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 08:39:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708360747; x=1708965547; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708360754; x=1708965554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7g5vOQ8eZi29yIHTGoT9HD5BPvRL3ou+PdzCGqII3v4=;
- b=hsZFgLCoKCha+7NLdqzfzboAIKu1uU3YjkXWtKEKoW3f6NtLi4vT+318mEqcQoxdsH
- RihQlZXdYwmrQi1+rPrEjVHGpS2YocHcGF/IBo1N/bIZ5k0Voa60EJG43kctXMCuNvyG
- f1Y0u2D9nGbmNTWRekWTwEgOtbZIwbAZaVoMx9bva3XQJuuVR5Zw5KhvIYLokTZ1+9DA
- EVIJBVnjCB1bozfgD+Tu68oDIAWnvBttvUkVXq+TbxHSxFU1x7kva4Rcs3xgvfMx7YBZ
- aKWDjCPgi3v5x6b89IxRiP77IWofVpxliJo8ZgfzmA1388bZAFdLUpMpfEFG7JMrcZiv
- WZsA==
+ bh=g4FCzhBMxBMDZoobHoXe86blnQI4iLx/WEkq5NXhKrY=;
+ b=JnyXsnuICmP5Jg8a/zmDVDVxQazwzX3Tv6u/RZpiIfm7eok2hFnOo5Q1kWJW0y6hxI
+ TtjCSNJmnvfPNPTQqIk4UZvEkj6DqFoBM3AtIH+4e1rr2YUqbmJa5pO3HSsVEmwz107K
+ oZZOuES1zVdRn2Gg5i9g7lHnY/GRy9i3b8Y8TFR0VDIHjbTNAAGLXydEkSqXUB2fuCUA
+ jyAhuBskbiks4mOWPFmUA4W/8Ui/XAjhDem2eIo2YN0XZcSit0OWQT5OWcdAw8t4O6GL
+ 30r9lZaOVSgoxicf+guv6jEOUg5Zsn0h79WzcKLjOVhZtMDuk1nTZnrIDqAQg1EsCQ+l
+ ET/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708360747; x=1708965547;
+ d=1e100.net; s=20230601; t=1708360754; x=1708965554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7g5vOQ8eZi29yIHTGoT9HD5BPvRL3ou+PdzCGqII3v4=;
- b=j7V1hHCTJLtNbzNkK7oI4rOvdxo10PmFKkHvmBqcI27wt07YXfDRH2I3bU3fPLTTZ5
- I287YdpURCG5PZ5BPAadK0grGI4kNlUCkc13C+8Y9VN0uAdipkJL7vWS9I+2ynVHRdNw
- PmI+voYF325CDiEh4LzU6I/LwMbwSbTFp5GnMPuazqqFmZTEYHNa93hj4R3HzzXfcRWZ
- VyiiK1wLCGUbs+YULdf9wXq8gD2IrOMMC/Fh5uI2JVmor+rCvtDW2WGgKy3cVumy5VpX
- /oomGbPleXG0VpBJY6Ais93wDev8n9EK9CXEyuEQhEMaxsxdPAzX7ytsM3DfIQXZ9WH3
- u6dA==
-X-Gm-Message-State: AOJu0YzWuTwDZyE2dRHVGvkJz20G0zrg/t9QFsK7Olt6moOrp3q1dsq7
- WH2bgvoMQDF37AsnjJPzxGz8Bt7CXJjmIvao5tbqFQrVCl3qSHHv8chOsKxm97UlMf2EUVUBa5d
- D
-X-Google-Smtp-Source: AGHT+IFEHVbo0ZTve0Om+MWqi2oyIteATw2Q/vh5PwapV6cPIM6DzJ215BvljaGRr5vahVLIl2XPnQ==
-X-Received: by 2002:a05:600c:19c7:b0:412:5296:9737 with SMTP id
- u7-20020a05600c19c700b0041252969737mr8340793wmq.12.1708360746815; 
- Mon, 19 Feb 2024 08:39:06 -0800 (PST)
+ bh=g4FCzhBMxBMDZoobHoXe86blnQI4iLx/WEkq5NXhKrY=;
+ b=rfM8Z7Har5IB2BG3hgKwzjH6JiMgt/SEJHumyRtT3c6fwbPIuj6YhfjVk4huVtsc1v
+ x+cVwWtH9wnD8U4BdZkfHPr0qJm2sKDItGu0kwwhq9vwsOG5pYOqaKXNvYg0gbhrdt8d
+ gOyThxvUp9r3YMSYQmpS1prQcxwsbvdPCODxP6uo2J1lf2OebXd2ZQwtk/AhhOBrZZuN
+ dZp7NbCPyjjXVx94GrAvYP2Q45QLINeG+xp1rXh2RoXfttDXLZTpOAOkodP2DjtXaQaL
+ pw87ZEhMScNUo3QcnrUYAe0DoQghcUjgxapUonrN1bptRF49+vLu2T9JzJOYFT1cdsMl
+ bCCg==
+X-Gm-Message-State: AOJu0YzSTU5wJ7I0mZwLWT/mCqvHxH0jgivpQS+3tCRvSsPowXFv21Pi
+ bTLDterpUmCFIIRNIPDZtNxqoa8sT0EcD1+O1Xka98ksmy4fLM1xW6QXJHYtvjQ+vhZz2p2R5X/
+ M
+X-Google-Smtp-Source: AGHT+IFgBDkCLPS0L77lmL6b9/TMgs59h2x46S4M3Nc73nGqBRnmVDdlyQYzcd5a26zgtAyJ+Mv7qw==
+X-Received: by 2002:a5d:5248:0:b0:33d:36e0:b9eb with SMTP id
+ k8-20020a5d5248000000b0033d36e0b9ebmr3278810wrc.50.1708360754075; 
+ Mon, 19 Feb 2024 08:39:14 -0800 (PST)
 Received: from m1x-phil.lan ([176.176.181.220])
  by smtp.gmail.com with ESMTPSA id
- s6-20020a05600c45c600b00412696bd7d9sm1956339wmo.41.2024.02.19.08.39.04
+ i13-20020a5d55cd000000b0033b198efbedsm10733258wrw.15.2024.02.19.08.39.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 19 Feb 2024 08:39:06 -0800 (PST)
+ Mon, 19 Feb 2024 08:39:13 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Bernhard Beschow <shentey@gmail.com>
@@ -67,17 +67,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/14] MAINTAINERS: Add 'ICH9 South Bridge' section
-Date: Mon, 19 Feb 2024 17:38:41 +0100
-Message-ID: <20240219163855.87326-2-philmd@linaro.org>
+Subject: [PATCH 02/14] hw/i386/q35: Add local 'lpc_obj' variable
+Date: Mon, 19 Feb 2024 17:38:42 +0100
+Message-ID: <20240219163855.87326-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240219163855.87326-1-philmd@linaro.org>
 References: <20240219163855.87326-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,47 +100,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract 'ICH9 South Bridge' from the 'PC' section.
+Instead of casting OBJECT(lpc) multiple times,
+do it once in the new 'lpc_obj' variable.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ hw/i386/pc_q35.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7d61fb9319..1b210c5cc1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1808,12 +1808,7 @@ F: include/hw/pci-host/i440fx.h
- F: include/hw/pci-host/q35.h
- F: include/hw/pci-host/pam.h
- F: hw/isa/piix.c
--F: hw/isa/lpc_ich9.c
--F: hw/i2c/smbus_ich9.c
- F: hw/acpi/piix4.c
--F: hw/acpi/ich9*.c
--F: include/hw/acpi/ich9*.h
--F: include/hw/southbridge/ich9.h
- F: include/hw/southbridge/piix.h
- F: hw/isa/apm.c
- F: include/hw/isa/apm.h
-@@ -2606,6 +2601,16 @@ F: hw/display/edid*
- F: include/hw/display/edid.h
- F: qemu-edid.c
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index a91f414922..621661a738 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -126,6 +126,7 @@ static void pc_q35_init(MachineState *machine)
+     Object *phb;
+     PCIBus *host_bus;
+     PCIDevice *lpc;
++    Object *lpc_obj;
+     DeviceState *lpc_dev;
+     BusState *idebus[MAX_SATA_PORTS];
+     ISADevice *rtc_state;
+@@ -238,6 +239,7 @@ static void pc_q35_init(MachineState *machine)
+     /* create ISA bus */
+     lpc = pci_new_multifunction(PCI_DEVFN(ICH9_LPC_DEV, ICH9_LPC_FUNC),
+                                 TYPE_ICH9_LPC_DEVICE);
++    lpc_obj = OBJECT(lpc);
+     lpc_dev = DEVICE(lpc);
+     qdev_prop_set_bit(lpc_dev, "smm-enabled",
+                       x86_machine_is_smm_enabled(x86ms));
+@@ -246,7 +248,7 @@ static void pc_q35_init(MachineState *machine)
+         qdev_connect_gpio_out_named(lpc_dev, ICH9_GPIO_GSI, i, x86ms->gsi[i]);
+     }
  
-+ICH9 South Bridge (82801i)
-+M: Michael S. Tsirkin <mst@redhat.com>
-+M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-+S: Supported
-+F: hw/acpi/ich9*.c
-+F: hw/i2c/smbus_ich9.c
-+F: hw/isa/lpc_ich9.c
-+F: include/hw/acpi/ich9*.h
-+F: include/hw/southbridge/ich9.h
-+
- PIIX4 South Bridge (i82371AB)
- M: Hervé Poussineau <hpoussin@reactos.org>
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
+-    rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(lpc), "rtc"));
++    rtc_state = ISA_DEVICE(object_resolve_path_component(lpc_obj, "rtc"));
+ 
+     object_property_add_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
+                              TYPE_HOTPLUG_HANDLER,
+@@ -254,13 +256,13 @@ static void pc_q35_init(MachineState *machine)
+                              object_property_allow_set_link,
+                              OBJ_PROP_LINK_STRONG);
+     object_property_set_link(OBJECT(machine), PC_MACHINE_ACPI_DEVICE_PROP,
+-                             OBJECT(lpc), &error_abort);
++                             lpc_obj, &error_abort);
+ 
+-    acpi_pcihp = object_property_get_bool(OBJECT(lpc),
++    acpi_pcihp = object_property_get_bool(lpc_obj,
+                                           ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,
+                                           NULL);
+ 
+-    keep_pci_slot_hpc = object_property_get_bool(OBJECT(lpc),
++    keep_pci_slot_hpc = object_property_get_bool(lpc_obj,
+                                                  "x-keep-pci-slot-hpc",
+                                                  NULL);
+ 
 -- 
 2.41.0
 
