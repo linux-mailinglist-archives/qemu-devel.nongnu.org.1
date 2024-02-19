@@ -2,127 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA3585A57E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460DB85A4B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 14:34:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4LU-0006qy-MO; Mon, 19 Feb 2024 09:10:13 -0500
+	id 1rc3lq-00088H-5c; Mon, 19 Feb 2024 08:33:22 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jakob.breu@mercedes-benz.com>)
- id 1rc3WK-0002r4-V3
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 08:17:21 -0500
-Received: from mail-out.emea.daimler.com ([141.113.1.132])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rc3ln-00087J-Iy; Mon, 19 Feb 2024 08:33:19 -0500
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jakob.breu@mercedes-benz.com>)
- id 1rc3WF-00053P-5N
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 08:17:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=mercedes-benz.com; i=@mercedes-benz.com; q=dns/txt;
- s=s1-20210420-DAI; t=1708348635;
- h=from:to:subject:date:message-id:content-type: mime-version;
- bh=Chf4FIlIiTHTSWeJFRLy7YZumkVhwuCmH+Y7Wg6LKMo=;
- b=q+U0+AJgjXgosGK71pAsbKI8LFagSDmxU7qMFf6GUXzH3cYpA4qE7NcM
- sbKNuK45dALO8+Fg4rPbNkSSIfME1SJZEiqDh/leKI2cU+4jx9Y7RgcQ3
- e25DmhydgcCwc+83si0R1JIXdYAYVCewZcQaCcrUqxfzlEjex94hPtdUs
- cAZm+bHJE2alfJJNeEVxZ0C5G66L0T1LGfTiuanFWpJrzneL6bHa+DT71
- 5lLg5+8AfA5lhkxcOuvVzj38qlfBLYSBrrmHB01Jd+wf9h7YzrFGIX30P
- zudTTjm+dIWGlADTO+HFDAeNpkiu34b5tfjniqs/08/xxKxCruHIRQmBz w==;
-From: <jakob.breu@mercedes-benz.com>
-To: <qemu-devel@nongnu.org>
-Subject: Sponsorship via Github
-Thread-Topic: Sponsorship via Github
-Thread-Index: AdpjNTls9OoVtLKOR9SBkKQyuY7Ftg==
-Date: Mon, 19 Feb 2024 13:16:56 +0000
-Message-ID: <DB9PR07MB92726E235941C78516CE617EC6512@DB9PR07MB9272.eurprd07.prod.outlook.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mercedes-benz.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB9PR07MB9272:EE_|DBBPR07MB7611:EE_
-x-ms-office365-filtering-correlation-id: 710f56db-b3bd-4d47-7d70-08dc314d0c56
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: r4y9B2cwRbLLZgQDaeUY54Y5LvN454t/B/nM22rf40Z9NPKA8iicLxzL4TFvLksEgpk7zR/Y3APkQYw+yQPGXMNIY41g6FWzW3ndbXcvPv8G57lAac2p826z7fkULXg7BEd7DRbgoosNAUwXr2nb8yYCYQa8VlmQW9iwpI8iEbvY+OQ8XbWwaMLOIubi+tog3DNl5Sj5ik9fwNUEgAOFm0mA0poq4camLsqiEnTIKOnGDzYqn70NVX0IYjTnW24hWESQGAQefTzOP+1bziawX6ClD2bFppIAl/tgmgKEMXeHjzQVgh51zHV+cwo7DKmh6EaJwmQwplK7G6l8ke3Zozw1a7M0kGA45hhc2cOP10lVt8ST7LTn7pKlQxpd13fjTgaaUGF3nhqxcSjTKGIuXa74f2dY8o2ENutyLstREw1EivDlfv+9KUiZxkyRn32jtT/qpzaKhAP5SUVvUVUvJ3Ad9bqDTVKwNOr7TL7BKNC0olZeGMuCrxVufoDnEK0EVHIlSsm7AFygHh4uh4C6S2dAOW6/uc9ue683EJWknXyQBwgjhhmIZwiVtxbSjluuGppXHpJhReoG2dO/xBOWD9VjLb2kHe2gXaufZ2JOlsb32te3BEuzZnJpNzLdkRNv
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DB9PR07MB9272.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?4BGKQbTxAjG9j7WjRR5uM97n14zPqnws16tIciAnTe4mMH0zvSDygQAI+m?=
- =?iso-8859-1?Q?I71lSb5vyULbKdqNmy9fFoXO3R3npF3A412H9VQ2nLfSDgRwVxHb9Jiy6n?=
- =?iso-8859-1?Q?OuNM/MKchKCebm56cToc+OZOGjfndyjryaXpocLW7EFZHepck88K24cni3?=
- =?iso-8859-1?Q?v6QswF5uTIsw0S8aoiKaI8723jSYcvHLfbydhJdcJoNySlA07CotvQZ7dr?=
- =?iso-8859-1?Q?hfLeFx1f7qT0viUBInKee+K3CQg0rHLZYRSzS++wgf5d+GQEltsDFCgf2h?=
- =?iso-8859-1?Q?HNVyeQCAfazqiCMSU1JOVGzBzUNMbDV2alm9Ftq2J8yvPqX/pihmjbncXL?=
- =?iso-8859-1?Q?yQMkIiCR0doaaig2KHFbVxyVxovwYJ3+ByqFpK7RG59yz+b0Z9AdMzicHJ?=
- =?iso-8859-1?Q?rX/8krRBV7kNYwi5HIwUzykrQYxjxKmHpX+IQLaf5HZCqPVQk8x84U1YAW?=
- =?iso-8859-1?Q?lDB/zAe6Ue93kYBSoc597ctzBTAKyVgMXa9MNqcuijJFN7jQSy4IzSiZT2?=
- =?iso-8859-1?Q?yBIsPt30IejkvGaOavR0UWnnHVm6bCOVRe6RZQjTComzkdlNI9RoELxSRl?=
- =?iso-8859-1?Q?+LIS0S0Sku3qJryZ5NmBznvIHgMeQj1pes5bIZPXFN3sjQpSWpTzXIK3EN?=
- =?iso-8859-1?Q?cNOMTRzYVa/kIdhw3tqpsoF6Tl5qsvNNyvYiBGsDb8cQOS663eQZTkxKLb?=
- =?iso-8859-1?Q?P8SJT5oHM//q7q/dVjP3eb5yt5tGIa4jV2PY77FDXkZbVBbkX+JmC1qorW?=
- =?iso-8859-1?Q?bRjGcg8jIIrB0tqnq6Ux0DmZUxVO/BL93MZsKUwCA/pBojaIOn+JutJ2rG?=
- =?iso-8859-1?Q?ES0zUSgcHw2HPz2t72haGCmr+VhOGgNG2uFKz/c5oA4ohCa0opNzirODwz?=
- =?iso-8859-1?Q?8poVZ6+yl15THC9FZcsGea/JXjS/kufn1BDokuBzmz+Mm+AY/L5jn2sjZ6?=
- =?iso-8859-1?Q?UWIT2+x19Iwx6emFRbUIHrAS9btV5RgoOY7Q4q5w70yoL4NUpFW4JnlPji?=
- =?iso-8859-1?Q?UH0bZx4wR6p1r5rW4rXQ9JWUkDb6S2uPCMWBM5E88s0GuJM46SHQ/Iuh6T?=
- =?iso-8859-1?Q?rB7uSZaPUBFV62NoUAlvFBlqzX4koT+VyChePhBCP/5W85FNzrnIrrf+17?=
- =?iso-8859-1?Q?fimISdzJ+39cd6QkPv2zLgzSgfpxotsu6UxvAH4CeUH3xRu3JquTF9WOoR?=
- =?iso-8859-1?Q?suZd6L2ZvKS7PNH+/ZZwtH9vosB1zPev0Wg1tVqn9Li91c6dvVtsADmyCk?=
- =?iso-8859-1?Q?2eZniH5MX4LSRjR0CkBU+u0RD7YlwqvmMPH9ThPp5VHTLoryQOeR5iwbge?=
- =?iso-8859-1?Q?tXvGfuyjMZDI1j35UvJQh2hOYVKwl9Bdnkx8WWyhULrJDOEAzaNt5k28sW?=
- =?iso-8859-1?Q?BZDWFBpC45tIv6e8tOwxZHGg3sHC+0daEFUCjfU5lCT1GS3FGDqJxT5cR4?=
- =?iso-8859-1?Q?Z5v8//3a5tH3mL7mbg+tH+HiNsO9C//2qhST5bqfAvQCXnCaX63lNVOqb3?=
- =?iso-8859-1?Q?dSSnRl3LyFquGG88CSq7AxVAVstsXmfgTIGfrLshPW5QNT3/+YzMiF3rOm?=
- =?iso-8859-1?Q?AWq5iCmVmlQ6qhC2imq3J63MKAXPBalxAHGdrdZiIeq92KKgk9St91euTn?=
- =?iso-8859-1?Q?0qv8rg3q+cPSJwDgQUV2p5V21JoOItg8US5jnSX60gN73W36Rv7Pt1iS9V?=
- =?iso-8859-1?Q?PiT1zG1CSyimwNjtc+nFXgy4HD63zi+Th5rR5mo5qD4omXYQiSxBZhN5U+?=
- =?iso-8859-1?Q?8X9w=3D=3D?=
-arc-seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UXYzLU6fn+xrAZzc6rxR8b4MaoFem3lglJQ51Cjc1SNITNLFOpXDq5PTN/Er5V0IIDNcSxncD697hnaskT7C19hFmGsgRGv3gq59kkyMbet1uc3UV/5RgYGzUEBq0ofgc/Q3jA5b9prH/KMaHjXV+Lj2ErVBRRk/B5oKbn6EVUpuKvJUmTjXQtTc9vf/kUSxhSprBoGgqGVPX2eLKAS04LX2h0oK+7rrITYlpChjuFCMbKbZJ6FBE2humnAL3Qaq1q0qA1M+rGdLXpKl0VHpBzdkLINqzmOmipSZTCQ9JgJ07AO8+rdmld1CQ20bsIA5ZV9dztN+NhxJW6FGqmK89g==
-arc-message-signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VPQhfY+53c6Bm0s3FMdTOXeVEqtfTmkSxST96OHt3o8=;
- b=iGZw/o/aQoG72qXNhIP6efaUpzkPp9RN4O9HbWBigKCd4Jk9+koNUFd6CYUZQHujMHvvzu0Iao803TrPHM9Vo0iomomHPiOWkxLIpyamxhPI+L9zWn05zi14EwIj2FT194Umq3LcRt7Zp/cif6AcMO9cRcZ9YImvbPHm6tw9FaPNFFnu2/ZnrHRdG523y4WhvfljEfP3lJUDGYmJV4/3ifS5TfnyYmgBwGu2kVAZ6kQ2AnQuYPqzPTpu+vlqScWqOxGBvKS+mKTGa27qkdeDSJIaKJH93+HAWY92c0d873UifBQhMzuRohykcZNbytPUodaiIyBf9XTBMxc9UVLFPg==
-arc-authentication-results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mercedes-benz.com; dmarc=pass action=none
- header.from=mercedes-benz.com; dkim=pass header.d=mercedes-benz.com; arc=none
-dkim-signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corpdir.onmicrosoft.com; s=selector2-corpdir-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VPQhfY+53c6Bm0s3FMdTOXeVEqtfTmkSxST96OHt3o8=;
- b=P2ZWay1/m9lfTnLMAYztzvY31X5lXrULscsIlg8g+tHQYfS/TWnjS3cNzyObiAWLRBGBiDsnozFQsI8tWUQ2NR1lXbOSDnQUyRc+81wmWVXlc2hRArDZRO0646CTgb6Tyw54dlqcO+lsQ7jKdbiGwIhVHGJTSzQCTvbDgLKJamU=
-x-ms-exchange-crosstenant-authas: Internal
-x-ms-exchange-crosstenant-authsource: DB9PR07MB9272.eurprd07.prod.outlook.com
-x-ms-exchange-crosstenant-network-message-id: 710f56db-b3bd-4d47-7d70-08dc314d0c56
-x-ms-exchange-crosstenant-originalarrivaltime: 19 Feb 2024 13:16:56.8464 (UTC)
-x-ms-exchange-crosstenant-fromentityheader: Hosted
-x-ms-exchange-crosstenant-id: 9652d7c2-1ccf-4940-8151-4a92bd474ed0
-x-ms-exchange-crosstenant-mailboxtype: HOSTED
-x-ms-exchange-crosstenant-userprincipalname: qCZV8g761nyKxzOghwHNu7V7yeGKHIY6A4tOL+z/qLuSW84bZ5xtCY5rfb+TKf+zYLSzDhKaS94DL2jWMAGhtKcvnUsiaQiU9HpgfKdQwyI=
-x-ms-exchange-transport-crosstenantheadersstamped: DBBPR07MB7611
-x-originatororg: mercedes-benz.com
-Content-Type: multipart/alternative;
- boundary="_000_DB9PR07MB92726E235941C78516CE617EC6512DB9PR07MB9272eurp_"
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rc3ll-0008Gm-VC; Mon, 19 Feb 2024 08:33:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=0aWvBboA8K47AQKs99Fn8KvQP7kMoe34ZGTLUs9F1jU=; b=bVQOebX+bpNkOVyKV3kfDY52Cy
+ BfMEjEaf3wXjq0mHVuOQSnl9+TOUPwgRw2Vr4vALO+JsAP60Vc0QKTY9KdWi+A5wdPBzDlGGJwwhd
+ 4Dp6KkDG5t7mY8OI0ib/q1Jnbc2usmMfn1fZxgQCErnwyKz7Z1OKH+F36rR6m7gZtFv4SsdcxfvIQ
+ IdMLJwJCFZL5YUjuoScVfF1uFMLCpigwv4Qp85GNA4DS0jpr+0sLsmPFYNd8jwhkaTx5nreOSQnPZ
+ 1L6fqSgscXyO9SDlkpxChr1U5WiyaBWggdaBvIzGmNSKTMN8hGbHf+IJjsb4uUi5VVbWG+i6YlK4Y
+ 7/ZeIkFLSi7S7QuObHfSKPNCKniCy5/UL+flmctsyqvHaD0LohD8YEFNE/7PEHHsGjJMjGMX6oDnB
+ pyhvofGnKqRsUbM43MR+tsNnhbgRja5bBC+khaNU2W0JXF1krI69rKboZxbczSfbU9ReJtrzcKZJH
+ RuQMSKLUgKrI075CWmP9bu8fsg8hwYKPJZfIWz571/pVL6wU7zVsH5Hi0AmKS6rllYTyf8zXG2q0j
+ Uu6LuUugHzOi9Dcm+3fZG8GAcKPJrQcugmGqQHDrTRckcEnO/LlZ7Q1q3leJI3RDrGRGi2i2fRClT
+ MYn214SepJMv0E3Uj7fBs9cM3ZeajaDXKR/uMhoks=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rc3ky-0002PU-Jb; Mon, 19 Feb 2024 13:32:32 +0000
+Message-ID: <0a31f410-415d-474b-bcea-9cb18f41aeb2@ilande.co.uk>
+Date: Mon, 19 Feb 2024 13:33:08 +0000
 MIME-Version: 1.0
-Received-SPF: pass client-ip=141.113.1.132;
- envelope-from=jakob.breu@mercedes-benz.com; helo=mail-out.emea.daimler.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ Igor Mitsyanko <i.mitsyanko@gmail.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+References: <20240216153517.49422-1-philmd@linaro.org>
+ <20240216153517.49422-2-philmd@linaro.org>
+ <bcfd3f9d-04e3-79c9-c15f-c3c8d7669bdb@eik.bme.hu>
+ <2f8ec2e2-c4c7-48c3-9c3d-3e20bc3d6b9b@linaro.org>
+ <b40fd79f-4d41-4e04-90c1-6f4b2fde811d@linaro.org>
+ <00e2b898-3c5f-d19c-fddc-e657306e071f@eik.bme.hu>
+ <2b9ea923-c4f9-4ee4-8ed2-ba9f62c15579@linaro.org>
+ <6b5758d6-f464-2461-f9dd-71d2e15b610a@eik.bme.hu>
+ <bc5929e4-1782-4719-8231-fe04a9719c40@ilande.co.uk>
+ <CAFEAcA-Mvd4NVY2yDgNEdjZ_YPrN93PDZRyfCi7JyCjmPs4gAQ@mail.gmail.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <CAFEAcA-Mvd4NVY2yDgNEdjZ_YPrN93PDZRyfCi7JyCjmPs4gAQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 1/6] hw/arm: Inline sysbus_create_simple(PL110 / PL111)
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 19 Feb 2024 09:10:00 -0500
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,133 +119,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_DB9PR07MB92726E235941C78516CE617EC6512DB9PR07MB9272eurp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+On 19/02/2024 13:05, Peter Maydell wrote:
 
-Hallo qemu developers,
+> On Mon, 19 Feb 2024 at 12:49, Mark Cave-Ayland
+> <mark.cave-ayland@ilande.co.uk> wrote:
+>>
+>> On 19/02/2024 12:00, BALATON Zoltan wrote:
+>>> For new people trying to contribute to QEMU QDev is overwhelming so having some way
+>>> to need less of it to do simple things would help them to get started.
+>>
+>> It depends what how you define "simple": for QEMU developers most people search for
+>> similar examples in the codebase and copy/paste them. I'd much rather have a slightly
+>> longer, but consistent API for setting properties rather than coming up with many
+>> special case wrappers that need to be maintained just to keep the line count down for
+>> "simplicity".
+>>
+>> I think that Phil's approach here is the best one for now, particularly given that it
+>> allows us to take another step towards heterogeneous machines. As the work in this
+>> area matures it might be that we can consider other approaches, but that's not a
+>> decision that can be made right now and so shouldn't be a reason to block this change.
+> 
+> Mmm. It's unfortunate that we're working with C, so we're a bit limited
+> in what tools we have to try to make a better and lower-boilerplate
+> interface for the "create, configure, realize and wire up devices" task.
+> (I think you could do much better in a higher level language...)
+> sysbus_create_simple() was handy at the time, but it doesn't work so
+> well for more complicated SoC-based boards. It's noticeable that
+> if you look at the code that uses it, it's almost entirely the older
+> and less maintained board models, especially those which don't actually
+> model an SoC and just have the board code create all the devices.
 
-my company, Mercedes-Benz, has a FOSS sponsorship program for which employe=
-es can suggest projects. As we are using qemu pretty widely I proposed to s=
-ponsor qemu. Unfortunately, our program is only supporting Github sponsors =
-due to organizational restrictions. So I wondered, if there is any possibil=
-ity that the qemu project adopts the Github sponsors program anytime soon. =
-My colleagues from the sponsorship program told me that our ask already let=
- to some projects adopt Github sponsors, which also led to some other peopl=
-e giving money.
-
-Best regards,
-
-Jakob
+Yeah I was thinking that you'd use the DSL (e.g. YAML templates or similar) to 
+provide some of the boilerplating around common actions, rather than the C API 
+itself. Even better, once everything has been moved to use a DSL then the C API 
+shouldn't really matter so much as it is no longer directly exposed to the user.
 
 
-Dr. Jakob Breu | Manager ADAS Platform Software Integration & CI/CD | RD/AS=
-A | Mercedes-Benz AG
+ATB,
 
-Mercedes-Benz Group AG, Stuttgart, Germany | Sitz und Registergericht/Domic=
-ile and Court of Registry: Stuttgart, HRB - Nr./Commercial Register No.: 76=
-2873 | Vorstand/Board of Management: Ola K=E4llenius, Vorsitzender/Chairman=
-; J=F6rg Burzer, Renata Jungo Br=FCngger, Sabine Kohleisen, Harald Wilhelm,=
- Markus Sch=E4fer, Britta Seeger
+Mark.
 
-
-If you are not the addressee, please inform us immediately that you have re=
-ceived this e-mail by mistake, and delete it. We thank you for your support=
-.
-
-
---_000_DB9PR07MB92726E235941C78516CE617EC6512DB9PR07MB9272eurp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
-osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
-//www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;
-	mso-fareast-language:EN-US;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-family:"Calibri",sans-serif;
-	mso-fareast-language:EN-US;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:70.85pt 70.85pt 2.0cm 70.85pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext=3D"edit">
-<o:idmap v:ext=3D"edit" data=3D"1" />
-</o:shapelayout></xml><![endif]-->
-</head>
-<body lang=3D"DE" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:bre=
-ak-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal">Hallo qemu developers,<o:p></o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">my company, Mercedes-Benz, has =
-a FOSS sponsorship program for which employees can suggest projects. As we =
-are using qemu pretty widely I proposed to sponsor qemu. Unfortunately, our=
- program is only supporting Github sponsors
- due to organizational restrictions. So I wondered, if there is any possibi=
-lity that the qemu project adopts the Github sponsors program anytime soon.=
- My colleagues from the sponsorship program told me that our ask already le=
-t to some projects adopt Github
- sponsors, which also led to some other people giving money.<o:p></o:p></sp=
-an></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Best regards,<o:p></o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US">Jakob<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"EN-US"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:8.0pt;color:#002060;mso-far=
-east-language:DE">Dr. Jakob Breu | Manager ADAS Platform Software Integrati=
-on &amp; CI/CD | RD/ASA | Mercedes-Benz AG</span><span style=3D"font-size:8=
-.0pt;color:black;mso-fareast-language:DE"><o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:4.0pt;color:black;mso-farea=
-st-language:DE"><o:p>&nbsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span lang=3D"FR" style=3D"font-size:5.0pt;color:#00=
-2060;mso-fareast-language:DE">Mercedes-Benz Group AG, Stuttgart, Germany | =
-Sitz und Registergericht/Domicile and Court of Registry: Stuttgart, HRB - N=
-r./Commercial Register No.: 762873 | Vorstand/Board
- of Management: Ola K=E4llenius, Vorsitzender/Chairman; J=F6rg Burzer, Rena=
-ta Jungo Br=FCngger, Sabine Kohleisen, Harald Wilhelm, Markus Sch=E4fer, Br=
-itta Seeger</span><span lang=3D"EN-US" style=3D"font-size:5.0pt;color:#0020=
-60;mso-fareast-language:DE"><o:p></o:p></span></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//DE">
-<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
-<font face=3D"sans-serif, Arial, Helvetica" size=3D"-1" color=3D"#808080"><=
-br>
-If you are not the addressee, please inform us immediately that you have re=
-ceived this e-mail by mistake, and delete it. We thank you for your support=
-.<br>
-<br>
-</font>
-</table>
-</body>
-</html>
-
---_000_DB9PR07MB92726E235941C78516CE617EC6512DB9PR07MB9272eurp_--
 
