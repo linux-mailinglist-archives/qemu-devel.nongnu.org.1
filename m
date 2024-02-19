@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E7D859E62
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81258859E52
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 09:34:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbz5U-0007ms-Lu; Mon, 19 Feb 2024 03:33:20 -0500
+	id 1rbz5M-0006ta-8r; Mon, 19 Feb 2024 03:33:12 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz50-0006Fd-OM; Mon, 19 Feb 2024 03:32:52 -0500
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rbz52-0006Fi-2p; Mon, 19 Feb 2024 03:32:52 -0500
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rbz4w-0002gZ-Fv; Mon, 19 Feb 2024 03:32:49 -0500
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1d94323d547so25675735ad.3; 
- Mon, 19 Feb 2024 00:32:39 -0800 (PST)
+ id 1rbz50-0002gj-16; Mon, 19 Feb 2024 03:32:51 -0500
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1db562438e0so31308495ad.3; 
+ Mon, 19 Feb 2024 00:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708331559; x=1708936359; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1708331563; x=1708936363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AqJcwEYF2slviNbCC3uKHS3/EJsPd3jqqt+Z7W2Nd+A=;
- b=BsxffeYOExNDVekFB7jMRCe5r9g1ZoM/VTE2qtM4W+1dYcPP+62zdP1HtwiTxhkwjj
- kHJZrIu8ahu/CD7sIKRGJM60C+UaDOoUv2cBoUipRhjJ9HAw4LX6la1G7jEFszs3CPNr
- CWhZRXnl8Q2uDA40Vb0gCDwYfTp1s58vvEr25mCEpgfPIDOIK2BUFkZFZIQxyT7bhrU5
- SZQMYD2p4Y+ICCoKY8nGdUCplvS6G1Fv17M6sq//CBNL3aJHo128ACp8fLz92XJWpjMC
- QyFL2mvReHE2zAr5unH/k6gl57jIMC/isuk9wiOo8Xc4x1W+B4/X4z60Us9J1ZH6Uelw
- aMuw==
+ bh=G9dQsFszCC0E9Sl3E2+C8E6JRrg7A7/jy0wn4Bw7w60=;
+ b=lg1Giwb4YNf9JIIHZOnzHhj2wUK7GSvBhKvP8M5EN0Rfz0NOfGLOJspPL4cnppTykL
+ 6GtPnD+yx9m077gZzA8Wzw+8gEf1y6/+DL3fXxoraIzc3YFmWsKT5C7L6/I8Sf+SxtHt
+ k8YmXLSosWgW2n5PPyUHokXDSGZ0HxCVbThQbu37EJMbdYTfYdQysZ+h86zpGg7xfNF2
+ /eJYSw4jvAUbLitXopk8kV7OzsrfWIQbEgP0tmYN7JZScc/6ULPcQCwLAWigxCA8mdwT
+ 4DIZ+4cTEdI3Gy+FXstQYxa9hScm2UTDmKoiRX/JjbWApiXa/Kc+VhF7/7XaezljslN1
+ iZGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708331559; x=1708936359;
+ d=1e100.net; s=20230601; t=1708331563; x=1708936363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AqJcwEYF2slviNbCC3uKHS3/EJsPd3jqqt+Z7W2Nd+A=;
- b=fLHFMNeIRpsslx2It2k2OmfD762B+xjg/+E3xz9THMDRcezVlFzWtAhnWAHS0dQKw3
- aH66F8AXsXL+L3TQ30Q5zoCklUYYIcGLQTGhZU/G7NLbivlckA9utgHj/E1SOPsaFvUB
- Dlma76+wzTLvHFARhxzJ08lfLjtD0LRCuTBqw8JH7TRnPI4Pvqd/dnrTV3cJwBYnMV1A
- U3vlHBgwHeBxJhT/aql8CWcBJ2HrwgAA851XQTHdPjx0OzPubRHJYHWJL2pD456PKqTf
- XT5Uuxtp4WRnQ586l9NZW/3PUZoKsbpNatRr3qyHQowKBxx8YoqTXhvkb8bj/14k0kFE
- wK4w==
+ bh=G9dQsFszCC0E9Sl3E2+C8E6JRrg7A7/jy0wn4Bw7w60=;
+ b=rW5im9pGmDUXbyWdEdepETdAACZGjQreiuYc+4nNlplWPkW5qOt9C2ZJ2a8FhtraaQ
+ utn3gvqbZy5Ix+V2uibN/QkynpbN79R2TVpLWy3PVzI64aHK3RA9Tf2yumXxI0Wk39jY
+ 0HmUsUg83CPuwWTnCg+eSjo30vEHgF3/xrawKJ4koojT3vHmi9BfSlpRKqHn1gqNQdMg
+ mEc0sI9z5FP23BqPq73lpBbH5jFI/Kjl6F+Z+Ds6DvFYO0ww6Aj6VDrnxl66fop4H93E
+ sle+iXI3HsFBdFHizXV8DjNxFqYaWC6vlNGlvqck2neaXx545/RoKO/LtNvK+tGuD4/R
+ NSJg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXst7Fitgz6pnT5WtxT3N+tmHboibdf5QsIZ4ZGkmGraAdjzChVYLdGcyiKaEs156F40mObOmVFG9yJmY0KCjLN6y51
-X-Gm-Message-State: AOJu0YwQKucsyeDEnz0QwMxTh2B5LuqnnFVsiQINg5V2ISclPpCUa8DP
- 2v0DnUTpch/U5qdUwoG97sCQSCgnoszghSD5jeZ+Ocj7PR3w7pmDKEC5CerM
-X-Google-Smtp-Source: AGHT+IGi/sjWnmIp1HcP2V7dHwa/DYivLnSSFyDKn4Ur2ATUnBwsdeRjQXxn4dNrul1GdE+E9elgJw==
-X-Received: by 2002:a17:902:654a:b0:1d4:e0e6:693 with SMTP id
- d10-20020a170902654a00b001d4e0e60693mr10648989pln.35.1708331558890; 
- Mon, 19 Feb 2024 00:32:38 -0800 (PST)
+ AJvYcCUCK/OcHqkwhC+GIyphLJKu8AJkPJJXJAklg8eWVCFSVFbxQLvX0kYQRu4uy3eukhr/tdG+JSHpGYRd5XTb4YE0JXK4
+X-Gm-Message-State: AOJu0YxuSfjfbL6vh2bc6N5R7voh9cmTFPK0J280gPr1P1cwwRkFE1xw
+ t2EuQqwBsKdd0r+V/QXAFrTT0xotFwMbN+S1/3wO89F01hLCxhIN8ev4GsyL
+X-Google-Smtp-Source: AGHT+IFNOfi0CS1XVQrmgymTIJySWTCb7D+Gs8Q0b9A8pTX0nx1fJd968qQBaoAMNIeUf85EZWgGwg==
+X-Received: by 2002:a17:903:40ca:b0:1dc:1ef:aeb4 with SMTP id
+ t10-20020a17090340ca00b001dc01efaeb4mr875443pld.35.1708331563119; 
+ Mon, 19 Feb 2024 00:32:43 -0800 (PST)
 Received: from wheely.local0.net ([1.146.38.93])
  by smtp.gmail.com with ESMTPSA id
- mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.32.35
+ mo7-20020a1709030a8700b001db5ecd115bsm3838348plb.276.2024.02.19.00.32.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 00:32:38 -0800 (PST)
+ Mon, 19 Feb 2024 00:32:42 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 36/49] target/ppc: Rename TBL to TB on 64-bit
-Date: Mon, 19 Feb 2024 18:29:25 +1000
-Message-ID: <20240219082938.238302-37-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 37/49] target/ppc: Improve timebase register defines naming
+Date: Mon, 19 Feb 2024 18:29:26 +1000
+Message-ID: <20240219082938.238302-38-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240219082938.238302-1-npiggin@gmail.com>
 References: <20240219082938.238302-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,53 +95,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From the earliest PowerPC ISA, TBR (later SPR) 268 has been called TB
-and accessed with mftb instruction. The problem is that TB is the name
-of the 64-bit register, and 32-bit implementations can only read the
-lower half with one instruction, so 268 has also been called TBL and
-it does only read TBL on 32-bit.
+The timebase in ppc started out with the mftb instruction which is like
+mfspr but addressed timebase registers (TBRs) rather than SPRs. These
+instructions could be used to read TB and TBU at 268 and 269. Timebase
+could be written via the TBL and TBU SPRs at 284 and 285.
 
-Change SPR 268 to be called TB on 64-bit implementations.
+The ISA changed around v2.03 to bring TB and TBU reads into the SPR
+space at 268 and 269 (access via mftb TBR-space is still supported
+but will be phased out). Later, VTB was added which is an entirely
+different register.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+The SPR number defines in QEMU are understandably inconsistently named.
+Change SPR 268, 269, 284, 285 to TBL, TBU, WR_TBL, WR_TBU, respectively.
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/helper_regs.c  | 4 ++++
- target/ppc/ppc-qmp-cmds.c | 4 ++++
- 2 files changed, 8 insertions(+)
+ target/ppc/cpu.h         |  8 ++++----
+ target/ppc/helper_regs.c | 10 +++++-----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index a44de22ca4..16baea609c 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1750,8 +1750,8 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_USPRG5            (0x105)
+ #define SPR_USPRG6            (0x106)
+ #define SPR_USPRG7            (0x107)
+-#define SPR_VTBL              (0x10C)
+-#define SPR_VTBU              (0x10D)
++#define SPR_TBL               (0x10C)
++#define SPR_TBU               (0x10D)
+ #define SPR_SPRG0             (0x110)
+ #define SPR_SPRG1             (0x111)
+ #define SPR_SPRG2             (0x112)
+@@ -1764,8 +1764,8 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_SPRG7             (0x117)
+ #define SPR_ASR               (0x118)
+ #define SPR_EAR               (0x11A)
+-#define SPR_TBL               (0x11C)
+-#define SPR_TBU               (0x11D)
++#define SPR_WR_TBL            (0x11C)
++#define SPR_WR_TBU            (0x11D)
+ #define SPR_TBU40             (0x11E)
+ #define SPR_SVR               (0x11E)
+ #define SPR_BOOKE_PIR         (0x11E)
 diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 8324ff22db..8f5bd1536e 100644
+index 8f5bd1536e..94c9a5a5c1 100644
 --- a/target/ppc/helper_regs.c
 +++ b/target/ppc/helper_regs.c
-@@ -460,7 +460,11 @@ void register_generic_sprs(PowerPCCPU *cpu)
-     }
+@@ -461,22 +461,22 @@ void register_generic_sprs(PowerPCCPU *cpu)
  
      /* Time base */
-+#if defined(TARGET_PPC64)
-+    spr_register(env, SPR_VTBL,  "TB",
-+#else
-     spr_register(env, SPR_VTBL,  "TBL",
-+#endif
+ #if defined(TARGET_PPC64)
+-    spr_register(env, SPR_VTBL,  "TB",
++    spr_register(env, SPR_TBL, "TB",
+ #else
+-    spr_register(env, SPR_VTBL,  "TBL",
++    spr_register(env, SPR_TBL, "TBL",
+ #endif
                   &spr_read_tbl, SPR_NOACCESS,
                   &spr_read_tbl, SPR_NOACCESS,
                   0x00000000);
-diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
-index c0c137d9d7..ee0b99fce7 100644
---- a/target/ppc/ppc-qmp-cmds.c
-+++ b/target/ppc/ppc-qmp-cmds.c
-@@ -103,7 +103,11 @@ const MonitorDef monitor_defs[] = {
-     { "xer", 0, &monitor_get_xer },
-     { "msr", offsetof(CPUPPCState, msr) },
-     { "tbu", 0, &monitor_get_tbu, },
-+#if defined(TARGET_PPC64)
-+    { "tb", 0, &monitor_get_tbl, },
-+#else
-     { "tbl", 0, &monitor_get_tbl, },
-+#endif
-     { NULL },
- };
- 
+-    spr_register(env, SPR_TBL,   "TBL",
++    spr_register(env, SPR_WR_TBL, "TBL",
+                  &spr_read_tbl, SPR_NOACCESS,
+                  &spr_read_tbl, &spr_write_tbl,
+                  0x00000000);
+-    spr_register(env, SPR_VTBU,  "TBU",
++    spr_register(env, SPR_TBU, "TBU",
+                  &spr_read_tbu, SPR_NOACCESS,
+                  &spr_read_tbu, SPR_NOACCESS,
+                  0x00000000);
+-    spr_register(env, SPR_TBU,   "TBU",
++    spr_register(env, SPR_WR_TBU, "TBU",
+                  &spr_read_tbu, SPR_NOACCESS,
+                  &spr_read_tbu, &spr_write_tbu,
+                  0x00000000);
 -- 
 2.42.0
 
