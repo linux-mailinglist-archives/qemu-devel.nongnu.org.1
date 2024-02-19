@@ -2,100 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DC385A5AC
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A749385A5B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 15:18:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rc4Sg-0007jf-QH; Mon, 19 Feb 2024 09:17:38 -0500
+	id 1rc4Td-0002qb-8V; Mon, 19 Feb 2024 09:18:37 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4SU-0007ce-VY
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:17:30 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4TZ-0002eJ-K4
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:18:33 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4SS-0000bG-RL
- for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:17:26 -0500
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1rc4TX-0000kX-Si
+ for qemu-devel@nongnu.org; Mon, 19 Feb 2024 09:18:33 -0500
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41JDNAoN016544; Mon, 19 Feb 2024 14:17:06 GMT
+ 41JDUi1W018363; Mon, 19 Feb 2024 14:18:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=oMfA3x9SvcDcnZaM7jMdOCs+kp+lWpjXVTF9brY0EZc=;
- b=l8IeWpWX3SOl9VNA50gIlKNP0iAEXN1xf2NMD+sV6IunMSZa26esNeLMIYh4Nu40ReuD
- 9SaeMwEkG7GCm75XmosIXv2eZ5U+mD06tYnKBmc70KsPY+vVtPy1ID9mRm6m4BOu1NC7
- 5lWyqpwamU29AgLOPXTkMbKoKpmHNXTRLaOFTcpe/sAgpAtWWoM73Ct9htJ1AIqSgpY8
- cTpkW5cUX/NZPqIMEJfOEuMASKF2MJ5/fAkyLmO6CLP0zt9JhPJUJpbxdpB31KCjTj8a
- AbmcQ1jfHvWzA5F6iEWiBe+n6+bXLaWuT3CZp6COlIgmZIa5NMbVb9TNPBxvJlaB34Rr bA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc7tt1tah-1
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=V/X1VdaAZnwuIDkS7fDmFg+mfXcj4D+XnX9LNiX6Wlw=;
+ b=OdlUQlJJCWRsw9qSKAtmWMTyuc827lY7eu4UOfDNHwyI3rquC8uRCwT8gGsUDF5Gpp0n
+ gMtvR+XA3DbAf3xH1trDZKpSlvX5lQDz+jMR5/idRW1WsJEcmbQGSW4UHWJwgA6iDJG3
+ rcD/8xuJZwA7AlVgo0an2yUl9ZhYzC2RmiqLtx3fGA5FQRMImIBm0eJSDUOGT6qirvuU
+ oziSmK3CnjjOv3rVfADpfOb3vpujR0PjezMAwfGqN1BTHGWdhu49uG9QVK7oyawnrk9G
+ PJMBMAyQmEJ8p8nsZyhdoLOG3pXJERj41DOo0rkZKMuSghvAupNDk8EPAERT1vA/VtPo 6w== 
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wb2p8kkds-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Feb 2024 14:17:05 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41JECMqP003987;
- Mon, 19 Feb 2024 14:17:05 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc7tt1t9w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Feb 2024 14:17:05 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41JDGDZD014406; Mon, 19 Feb 2024 14:17:04 GMT
+ Mon, 19 Feb 2024 14:18:26 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 41JEGsfZ009551; Mon, 19 Feb 2024 14:18:25 GMT
 Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wb9u29430-1
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84p1n8h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Feb 2024 14:17:04 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
+ Mon, 19 Feb 2024 14:18:25 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
  by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 41JEH0xj45417124
+ 41JEILGY41353720
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Feb 2024 14:17:02 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 832362004D;
- Mon, 19 Feb 2024 14:17:00 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48BB02006A;
- Mon, 19 Feb 2024 14:17:00 +0000 (GMT)
-Received: from black.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 19 Feb 2024 14:17:00 +0000 (GMT)
+ Mon, 19 Feb 2024 14:18:23 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8EA632004D;
+ Mon, 19 Feb 2024 14:18:21 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4CD4B2004B;
+ Mon, 19 Feb 2024 14:18:21 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 19 Feb 2024 14:18:21 +0000 (GMT)
+Message-ID: <471ebba0055db993c8a3c57a290ce092358eb88b.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 01/11] gdbstub: Support disablement in a
+ multi-threaded process
 From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Riku Voipio <riku.voipio@iki.fi>, Laurent Vivier <laurent@vivier.eu>
-Cc: Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v4 12/12] tests/tcg: Add two follow-fork-mode tests
-Date: Mon, 19 Feb 2024 15:16:00 +0100
-Message-ID: <20240219141628.246823-13-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240219141628.246823-1-iii@linux.ibm.com>
-References: <20240219141628.246823-1-iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, Alex
+ =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Warner Losh <imp@bsdimp.com>
+Cc: Kyle Evans <kevans@freebsd.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Date: Mon, 19 Feb 2024 15:18:21 +0100
+In-Reply-To: <2310cfb390c130baf709ac18328556ac0b713146.camel@linux.ibm.com>
+References: <20240216130817.369377-1-iii@linux.ibm.com>
+ <20240216130817.369377-2-iii@linux.ibm.com>
+ <8e3732d9-129c-4514-bb7a-d4c5bdca90dd@linaro.org>
+ <2310cfb390c130baf709ac18328556ac0b713146.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0-YVqNladi6WzIVFEsrWarlyXXP5waua
-X-Proofpoint-ORIG-GUID: th3vVCwN0noaYFtknlaCOvaIHD4FDqaw
+X-Proofpoint-ORIG-GUID: rJNP-vUHH2DqEk1CTXc43GTUzqnoOlJa
+X-Proofpoint-GUID: rJNP-vUHH2DqEk1CTXc43GTUzqnoOlJa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-19_09,2024-02-19_01,2023-05-22_02
+ definitions=2024-02-19_10,2024-02-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 mlxscore=0
- bulkscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402190105
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ mlxlogscore=999 adultscore=0 mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 phishscore=0 clxscore=1015 bulkscore=0 impostorscore=0
+ spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402190107
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -118,187 +111,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add follow-fork-mode child and and follow-fork-mode parent tests.
-Check for the obvious pitfalls, such as lingering breakpoints,
-catchpoints, and single-step mode.
+On Mon, 2024-02-19 at 14:05 +0100, Ilya Leoshkevich wrote:
+> On Sat, 2024-02-17 at 10:21 -1000, Richard Henderson wrote:
+> > On 2/16/24 03:05, Ilya Leoshkevich wrote:
+> > > The upcoming follow-fork-mode child support will require
+> > > disabling
+> > > gdbstub in the parent process, which may have multiple threads
+> > > (which
+> > > are represented as CPUs).
+> > >=20
+> > > Loop over all CPUs in order to remove breakpoints and disable
+> > > single-step. Move the respective code into a separate function.
+> > >=20
+> > > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > > ---
+> > > =C2=A0 gdbstub/user.c | 19 +++++++++++++++----
+> > > =C2=A0 1 file changed, 15 insertions(+), 4 deletions(-)
+> > >=20
+> > > diff --git a/gdbstub/user.c b/gdbstub/user.c
+> > > index 14918d1a217..e17f7ece908 100644
+> > > --- a/gdbstub/user.c
+> > > +++ b/gdbstub/user.c
+> > > @@ -356,16 +356,27 @@ int gdbserver_start(const char
+> > > *port_or_path)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -1;
+> > > =C2=A0 }
+> > > =C2=A0=20
+> > > +static void disable_gdbstub(void)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0 CPUState *cpu;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 close(gdbserver_user_state.fd);
+> > > +=C2=A0=C2=A0=C2=A0 gdbserver_user_state.fd =3D -1;
+> > > +=C2=A0=C2=A0=C2=A0 CPU_FOREACH(cpu) {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_breakpoint_remove_all=
+(cpu, BP_GDB);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* no cpu_watchpoint_remo=
+ve_all for user-mode */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu_single_step(cpu, 0);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tb_flush(cpu);
+> >=20
+> > You only need to flush once.=C2=A0 The cpu argument is used to determin=
+e
+> > if we can perform the=20
+> > flush immediately or need to queue it.
+>=20
+> I thought we needed to flush jump caches on all CPUs, but I see now
+> that do_tb_flush() already does this, so this loop is unnecessarily
+> quadratic.
+>=20
+> Btw, shouldn't do_tb_flush() have cpu as a local variable, and not as
+> a parameter?
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/multiarch/Makefile.target           | 17 +++++-
- tests/tcg/multiarch/follow-fork-mode.c        | 56 +++++++++++++++++++
- .../gdbstub/follow-fork-mode-child.py         | 40 +++++++++++++
- .../gdbstub/follow-fork-mode-parent.py        | 16 ++++++
- 4 files changed, 128 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/multiarch/follow-fork-mode.c
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
- create mode 100644 tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
+Never mind, the dummy parameter is needed for usage with
+async_safe_run_on_cpu().
 
-diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
-index e10951a8016..b8b70c81860 100644
---- a/tests/tcg/multiarch/Makefile.target
-+++ b/tests/tcg/multiarch/Makefile.target
-@@ -115,6 +115,20 @@ run-gdbstub-catch-syscalls: catch-syscalls
- 		--bin $< --test $(MULTIARCH_SRC)/gdbstub/catch-syscalls.py, \
- 	hitting a syscall catchpoint)
- 
-+run-gdbstub-follow-fork-mode-child: follow-fork-mode
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-child.py, \
-+	following children on fork)
-+
-+run-gdbstub-follow-fork-mode-parent: follow-fork-mode
-+	$(call run-test, $@, $(GDB_SCRIPT) \
-+		--gdb $(GDB) \
-+		--qemu $(QEMU) --qargs "$(QEMU_OPTS)" \
-+		--bin $< --test $(MULTIARCH_SRC)/gdbstub/follow-fork-mode-parent.py, \
-+	following parents on fork)
-+
- else
- run-gdbstub-%:
- 	$(call skip-test, "gdbstub test $*", "need working gdb with $(patsubst -%,,$(TARGET_NAME)) support")
-@@ -122,7 +136,8 @@ endif
- EXTRA_RUNS += run-gdbstub-sha1 run-gdbstub-qxfer-auxv-read \
- 	      run-gdbstub-proc-mappings run-gdbstub-thread-breakpoint \
- 	      run-gdbstub-registers run-gdbstub-prot-none \
--	      run-gdbstub-catch-syscalls
-+	      run-gdbstub-catch-syscalls run-gdbstub-follow-fork-mode-child \
-+	      run-gdbstub-follow-fork-mode-parent
- 
- # ARM Compatible Semi Hosting Tests
- #
-diff --git a/tests/tcg/multiarch/follow-fork-mode.c b/tests/tcg/multiarch/follow-fork-mode.c
-new file mode 100644
-index 00000000000..cb6b032b388
---- /dev/null
-+++ b/tests/tcg/multiarch/follow-fork-mode.c
-@@ -0,0 +1,56 @@
-+/*
-+ * Test GDB's follow-fork-mode.
-+ *
-+ * fork() a chain of processes.
-+ * Parents sends one byte to their children, and children return their
-+ * position in the chain, in order to prove that they survived GDB's fork()
-+ * handling.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+void break_after_fork(void)
-+{
-+}
-+
-+int main(void)
-+{
-+    int depth = 42, err, i, fd[2], status;
-+    pid_t child, pid;
-+    ssize_t n;
-+    char b;
-+
-+    for (i = 0; i < depth; i++) {
-+        err = pipe(fd);
-+        assert(err == 0);
-+        child = fork();
-+        break_after_fork();
-+        assert(child != -1);
-+        if (child == 0) {
-+            close(fd[1]);
-+
-+            n = read(fd[0], &b, 1);
-+            close(fd[0]);
-+            assert(n == 1);
-+            assert(b == (char)i);
-+        } else {
-+            close(fd[0]);
-+
-+            b = (char)i;
-+            n = write(fd[1], &b, 1);
-+            close(fd[1]);
-+            assert(n == 1);
-+
-+            pid = waitpid(child, &status, 0);
-+            assert(pid == child);
-+            assert(WIFEXITED(status));
-+            return WEXITSTATUS(status) - 1;
-+        }
-+    }
-+
-+    return depth;
-+}
-diff --git a/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py b/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
-new file mode 100644
-index 00000000000..72a6e440c08
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/follow-fork-mode-child.py
-@@ -0,0 +1,40 @@
-+"""Test GDB's follow-fork-mode child.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.execute("set follow-fork-mode child")
-+    # Check that the parent breakpoints are unset.
-+    gdb.execute("break break_after_fork")
-+    # Check that the parent syscall catchpoints are unset.
-+    # Skip this check on the architectures that don't have them.
-+    have_fork_syscall = False
-+    for fork_syscall in ("fork", "clone", "clone2", "clone3"):
-+        try:
-+            gdb.execute("catch syscall {}".format(fork_syscall))
-+        except gdb.error:
-+            pass
-+        else:
-+            have_fork_syscall = True
-+    gdb.execute("continue")
-+    for i in range(42):
-+        if have_fork_syscall:
-+            # syscall entry.
-+            if i % 2 == 0:
-+                # Check that the parent single-stepping is turned off.
-+                gdb.execute("si")
-+            else:
-+                gdb.execute("continue")
-+            # syscall exit.
-+            gdb.execute("continue")
-+        # break_after_fork()
-+        gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 42, "{} == 42".format(exitcode))
-+
-+
-+main(run_test)
-diff --git a/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py b/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-new file mode 100644
-index 00000000000..5c2fe722088
---- /dev/null
-+++ b/tests/tcg/multiarch/gdbstub/follow-fork-mode-parent.py
-@@ -0,0 +1,16 @@
-+"""Test GDB's follow-fork-mode parent.
-+
-+SPDX-License-Identifier: GPL-2.0-or-later
-+"""
-+from test_gdbstub import main, report
-+
-+
-+def run_test():
-+    """Run through the tests one by one"""
-+    gdb.execute("set follow-fork-mode parent")
-+    gdb.execute("continue")
-+    exitcode = int(gdb.parse_and_eval("$_exitcode"))
-+    report(exitcode == 0, "{} == 0".format(exitcode))
-+
-+
-+main(run_test)
--- 
-2.43.2
 
+[...]
 
