@@ -2,96 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE70859837
-	for <lists+qemu-devel@lfdr.de>; Sun, 18 Feb 2024 18:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9746B859A60
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 Feb 2024 02:19:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rbl5v-0005YU-Kx; Sun, 18 Feb 2024 12:36:51 -0500
+	id 1rbsIB-0003EG-Te; Sun, 18 Feb 2024 20:17:59 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rbl5n-0005Vm-Nq
- for qemu-devel@nongnu.org; Sun, 18 Feb 2024 12:36:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rbl5l-0002b9-Ew
- for qemu-devel@nongnu.org; Sun, 18 Feb 2024 12:36:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708277799;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=20eW7RVW9fifRSYoy+aQFRMy+M+OLoaDuDZmP5yn9cM=;
- b=RRBUGRIbGUJpu4uYdx8riXLuO/CuaglP3i5KIRrKQd2I58pDlnfhb559jJRn9h/iZfDmu9
- ZQ09yOehPaSNzqnYFgPYc+IKcySp58iJLQJYWSWQjc92Hq2jfY5GozOsQTr5JgqyOT3QAo
- amxsScuoU1HRKkuXNtGSuRZknOfYI7k=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-537-nYbflYREOlWLef2nQY8G5g-1; Sun, 18 Feb 2024 12:36:37 -0500
-X-MC-Unique: nYbflYREOlWLef2nQY8G5g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-410422e8cd1so13074215e9.3
- for <qemu-devel@nongnu.org>; Sun, 18 Feb 2024 09:36:37 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
+ id 1rbsI7-00039W-Gr; Sun, 18 Feb 2024 20:17:55 -0500
+Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <serg.oker@gmail.com>)
+ id 1rbsI5-0004BR-Nc; Sun, 18 Feb 2024 20:17:55 -0500
+Received: by mail-yw1-x1131.google.com with SMTP id
+ 00721157ae682-607cd210962so31415267b3.2; 
+ Sun, 18 Feb 2024 17:17:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1708305471; x=1708910271; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ypoNV7TDihhDE//3EFwZgzopV8EXsfG6IzmC2Wab+H8=;
+ b=HJAf87flRuCQPtZTcuRkSSt1wIAuGzSDNG8ZZvJR2ZkNp7KiCL+Zo7yndEMf+RLOvL
+ B4eEgd4CsCVzlBGr8ypfMVeH+1TxhUNeQHoxlzauYYUD5P7LRYNL6Wrr0xwWglelNe1a
+ MxjvSiYJ8A6Nxag3KeB2bU98igYNIKSdmrjO1lM9Ay+rt3geyFWXlQJ66REd50otxqMa
+ G1wlu8GblK4cTdUtR8Y+FjZHndPT8FacFi8hoy+I3FAhmQXQuxnp3NZnyv31imOXxofY
+ H8d+ShGAf4gJSm3IFMIlV14d+jB/pEhNWn12T77bchDvqSNXXQVeC6sZik7/r+TgAiJ1
+ rv5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708277796; x=1708882596;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=20eW7RVW9fifRSYoy+aQFRMy+M+OLoaDuDZmP5yn9cM=;
- b=Fs+p+Or7iDevrPyJgrVUNYp24pPoPNz/Z2cMu3rfE+ijhqrsLVWlp51Btb0BbAdj4J
- g2h8Q5qXcVpzqNjEONctpsWyJZnaXNAviXlwOSgRsKq23cp/aELYf8edtl2AiwoieHcg
- tTqcSvWQO+akXlatsRx3aSbvLEQ8QFArzUnXvFqVXmsUG72HojXIQbTuCq/O7cwX7iw4
- LajDNg2ol0/m45pFMjdYRGV6VPte7HbeB7Iruf1xGXeyPMpv59Zk8Ci+8XtIgPXuwLrJ
- k12Gvs0mWyoa5nO8T91i4Cy9qCUAZERnqJTRz7jnFf/JYBHgPuvnTxkNIONVbNCnMvoS
- LWRQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVYqRHDQFUHcwYd07DSOme4m4n2r+TnGM3G6wPqdR3fvsPhWOk/h3twTdr3qCo27qyJeEq/9Db8pjoEc8jKhpFAvjufF9g=
-X-Gm-Message-State: AOJu0Yw7NLSkl9PEX0WPiDam7qUcS83fQ9KMpRL+x8xOr3plkLltSZfl
- hi9avjwi2ot3o6WAl76L3ecqunUBxJDtb8yue5D+j7jHOmr2A7EbAjMOnmiLdYtRaU0FG9nlrxK
- yhVu5KBk7yTx/awExAkltIRtXZZkprirmkOig+qMt1dfD5SAoVlJIDSuzDT7E
-X-Received: by 2002:a05:600c:314c:b0:412:65e0:cce5 with SMTP id
- h12-20020a05600c314c00b0041265e0cce5mr381135wmo.24.1708277796005; 
- Sun, 18 Feb 2024 09:36:36 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHIYWtajbKxsI7BMSRhyM91nZhIY1VYvJiGWojr4QdST/5CqNyc+vuEjfwhIHzuOeyEFQ6AIQ==
-X-Received: by 2002:a05:600c:314c:b0:412:65e0:cce5 with SMTP id
- h12-20020a05600c314c00b0041265e0cce5mr381120wmo.24.1708277795657; 
- Sun, 18 Feb 2024 09:36:35 -0800 (PST)
-Received: from redhat.com ([2.52.19.211]) by smtp.gmail.com with ESMTPSA id
- iv6-20020a05600c548600b004103e15441dsm8875132wmb.6.2024.02.18.09.36.33
+ d=1e100.net; s=20230601; t=1708305471; x=1708910271;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ypoNV7TDihhDE//3EFwZgzopV8EXsfG6IzmC2Wab+H8=;
+ b=icb4+beEM8NNpQP1KnfXf44CiPn4bL/IfRBgYhCp9RPfvQRQ/nkZmmJlN4NgmUywLj
+ PpAkIRQso7R3Z9zBh54kZ9jU9BLJFgfxmfNRHQeLCj6qW/9Xd/PRluTYVO3fjTNRropN
+ +QcgbUT74ZKEq1PdCcwgyDz298Pkco2qHNZFOkBA3xcuDjrHNXMli1sTx6TUDk7ylEqa
+ /J0CZ/oWVZgAp3+ngSaZfwARF9W0rGGzGrZJnJarIO3tGJ8rJF+noizXFzzksJv1XrBk
+ 5WlfueqnjQxEn/2eEiNtuiR0yKujLmBee6Zm1jT8DLSySazVYsL/qs3WgGVufS7Xs2tu
+ imGA==
+X-Gm-Message-State: AOJu0YyuaAyqjxc/iVokTksj5WH9EP3Nq/PJqIcvlzSuMAEauWgbmx2c
+ lPMj1noEFotP3D7ydGu1iNtqDxy4BVeGtrYmPkVqhlAZugCk/b7gLRqH0N6Hqe4=
+X-Google-Smtp-Source: AGHT+IGQBFCXoknodC2B+dFh0z8Tpr6QnTanJi4vkPS8Y+nB2reaqfIP/WYqrh2hO7jxi1XrOK1ULg==
+X-Received: by 2002:a0d:eb94:0:b0:607:df61:5811 with SMTP id
+ u142-20020a0deb94000000b00607df615811mr10338418ywe.13.1708305470572; 
+ Sun, 18 Feb 2024 17:17:50 -0800 (PST)
+Received: from localhost.localdomain ([201.203.117.224])
+ by smtp.gmail.com with ESMTPSA id
+ m12-20020a819e0c000000b00607ff905ed3sm1204704ywj.58.2024.02.18.17.17.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 Feb 2024 09:36:34 -0800 (PST)
-Date: Sun, 18 Feb 2024 12:36:31 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [PATCH v5 02/11] pcie_sriov: Validate NumVFs
-Message-ID: <20240218123556-mutt-send-email-mst@kernel.org>
-References: <20240218-reuse-v5-0-e4fc1c19b5a9@daynix.com>
- <20240218-reuse-v5-2-e4fc1c19b5a9@daynix.com>
+ Sun, 18 Feb 2024 17:17:50 -0800 (PST)
+From: Sergey Kambalin <serg.oker@gmail.com>
+X-Google-Original-From: Sergey Kambalin <sergey.kambalin@auriga.com>
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org,
+	Sergey Kambalin <sergey.kambalin@auriga.com>
+Subject: [PATCH v5 00/41] Raspberry Pi 4B machine
+Date: Sun, 18 Feb 2024 19:16:58 -0600
+Message-Id: <20240219011739.2316619-1-sergey.kambalin@auriga.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240218-reuse-v5-2-e4fc1c19b5a9@daynix.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
+ envelope-from=serg.oker@gmail.com; helo=mail-yw1-x1131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.077,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,37 +88,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Feb 18, 2024 at 01:56:07PM +0900, Akihiko Odaki wrote:
-> The guest may write NumVFs greater than TotalVFs and that can lead
-> to buffer overflow in VF implementations.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  hw/pci/pcie_sriov.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-> index a1fe65f5d801..da209b7f47fd 100644
-> --- a/hw/pci/pcie_sriov.c
-> +++ b/hw/pci/pcie_sriov.c
-> @@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
->  
->      assert(sriov_cap > 0);
->      num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-> +    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
-> +        return;
-> +    }
->  
->      dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
+Introducing Raspberry Pi 4B model.
+It contains new BCM2838 SoC, PCIE subsystem,
+RNG200, Thermal sensor and Genet network controller.
+
+It can work with recent linux kernels 6.x.x.
+Two avocado tests was added to check that.
+
+Unit tests has been made as read/write operations
+via mailbox properties.
+
+Genet integration test is under development.
+
+Every single commit
+1) builds without errors
+2) passes regression tests
+3) passes style check*
+*the only exception is bcm2838-mbox-property-test.c file
+containing heavy macros usage which cause a lot of
+false-positives of checkpatch.pl.
+
+I did my best to keep the commits less than 200 changes,
+but had to make some of them a bit more in order to
+keep their integrity.
+
+This is v5 patchset with the most of v1..v4 comments fixed.
 
 
-This reminds me: how is this num_vfs value set on migration?
+Sergey Kambalin (41):
+  Split out common part of BCM283X classes
+  Split out common part of peripherals
+  Split out raspi machine common part
+  Introduce BCM2838 SoC
+  Add GIC-400 to BCM2838 SoC
+  Add BCM2838 GPIO stub
+  Implement BCM2838 GPIO functionality
+  Connect SD controller to BCM2838 GPIO
+  Add GPIO and SD to BCM2838 periph
+  Introduce Raspberry PI 4 machine
+  Temporarily disable unimplemented rpi4b devices
+  Add memory region for BCM2837 RPiVid ASB
+  Add BCM2838 PCIE Root Complex
+  Add BCM2838 PCIE host
+  Enable BCM2838 PCIE
+  Add RPi4 RNG200
+  Implement BCM2838 thermal sensor
+  Add clock_isp stub
+  Add GENET stub
+  Add GENET register structs. Part 1
+  Add GENET register structs. Part 2
+  Add GENET register structs. Part 3
+  Add GENET register structs. Part 4
+  Add GENET register access macros
+  Implement GENET register ops
+  Implement GENET MDIO
+  Implement GENET TX path
+  Implement GENET RX path
+  Enable BCM2838 GENET controller
+  Add Rpi4b boot tests
+  Add mailbox test stub
+  Add mailbox test constants
+  Add mailbox tests tags. Part 1
+  Add mailbox tests tags. Part 2
+  Add mailbox tests tags. Part 3
+  Add mailbox property tests. Part 1
+  Add mailbox property tests. Part 2
+  Add mailbox property tests. Part 3
+  Add missed BCM2835 properties
+  Append added properties to mailbox test
+  Add RPi4B to paspi.rst
 
+ docs/system/arm/raspi.rst                |   11 +-
+ hw/arm/bcm2835_peripherals.c             |  215 +++--
+ hw/arm/bcm2836.c                         |  117 ++-
+ hw/arm/bcm2838.c                         |  282 ++++++
+ hw/arm/bcm2838_pcie.c                    |  295 ++++++
+ hw/arm/bcm2838_peripherals.c             |  287 ++++++
+ hw/arm/meson.build                       |    8 +-
+ hw/arm/raspi.c                           |  130 +--
+ hw/arm/raspi4b.c                         |  111 +++
+ hw/arm/trace-events                      |    7 +
+ hw/gpio/bcm2838_gpio.c                   |  390 ++++++++
+ hw/gpio/meson.build                      |    5 +-
+ hw/misc/bcm2835_property.c               |   21 +
+ hw/misc/bcm2838_rng200.c                 |  405 ++++++++
+ hw/misc/bcm2838_thermal.c                |   98 ++
+ hw/misc/meson.build                      |    2 +
+ hw/misc/trace-events                     |    9 +
+ hw/net/bcm2838_genet.c                   | 1088 ++++++++++++++++++++++
+ hw/net/meson.build                       |    2 +
+ hw/net/trace-events                      |   16 +
+ include/hw/arm/bcm2835_peripherals.h     |   29 +-
+ include/hw/arm/bcm2836.h                 |   27 +-
+ include/hw/arm/bcm2838.h                 |   31 +
+ include/hw/arm/bcm2838_pcie.h            |   75 ++
+ include/hw/arm/bcm2838_peripherals.h     |   94 ++
+ include/hw/arm/raspberrypi-fw-defs.h     |   11 +
+ include/hw/arm/raspi_platform.h          |   38 +-
+ include/hw/display/bcm2835_fb.h          |    2 +
+ include/hw/gpio/bcm2838_gpio.h           |   45 +
+ include/hw/misc/bcm2838_rng200.h         |   43 +
+ include/hw/misc/bcm2838_thermal.h        |   24 +
+ include/hw/net/bcm2838_genet.h           |  426 +++++++++
+ tests/avocado/boot_linux_console.py      |   92 ++
+ tests/qtest/bcm2838-mailbox.c            |   60 ++
+ tests/qtest/bcm2838-mailbox.h            |  532 +++++++++++
+ tests/qtest/bcm2838-mbox-property-test.c |  631 +++++++++++++
+ tests/qtest/meson.build                  |    3 +-
+ 37 files changed, 5457 insertions(+), 205 deletions(-)
+ create mode 100644 hw/arm/bcm2838.c
+ create mode 100644 hw/arm/bcm2838_pcie.c
+ create mode 100644 hw/arm/bcm2838_peripherals.c
+ create mode 100644 hw/arm/raspi4b.c
+ create mode 100644 hw/gpio/bcm2838_gpio.c
+ create mode 100644 hw/misc/bcm2838_rng200.c
+ create mode 100644 hw/misc/bcm2838_thermal.c
+ create mode 100644 hw/net/bcm2838_genet.c
+ create mode 100644 include/hw/arm/bcm2838.h
+ create mode 100644 include/hw/arm/bcm2838_pcie.h
+ create mode 100644 include/hw/arm/bcm2838_peripherals.h
+ create mode 100644 include/hw/gpio/bcm2838_gpio.h
+ create mode 100644 include/hw/misc/bcm2838_rng200.h
+ create mode 100644 include/hw/misc/bcm2838_thermal.h
+ create mode 100644 include/hw/net/bcm2838_genet.h
+ create mode 100644 tests/qtest/bcm2838-mailbox.c
+ create mode 100644 tests/qtest/bcm2838-mailbox.h
+ create mode 100644 tests/qtest/bcm2838-mbox-property-test.c
 
-> 
-> -- 
-> 2.43.1
+-- 
+2.34.1
 
 
