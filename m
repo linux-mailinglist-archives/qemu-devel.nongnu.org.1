@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B585CA9D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB3B85CAB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:27:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcYVH-0001aC-FH; Tue, 20 Feb 2024 17:22:19 -0500
+	id 1rcYZ8-0002UV-R6; Tue, 20 Feb 2024 17:26:20 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
- id 1rcYVF-0001a1-Mm
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:22:17 -0500
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rcYYL-0002Ot-AJ
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:25:30 -0500
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
- id 1rcYVE-0002xL-0x
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:22:17 -0500
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-563d32ee33aso6597969a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 14:22:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rcYYB-0003T8-UF
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:25:27 -0500
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1d731314e67so42911725ad.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 14:25:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708467732; x=1709072532; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EoXgfZWN8hEQdPIbTxIIUtmVyGshj4bWDRnk2KYh35U=;
- b=CE3izgB+UpDNS1Fv7uh5KaQ7PLTYYyq5ZwAqjy1xDIa/FQ2lffY4OrbKNmop0OTVNl
- xuCcAiK9LSzreMywWD+DEzbxasx3Yy63KKd8YGkbk3J9om0rFrB6/y0z5J3yMoc+vgFm
- 5VRqADAb/rCuN5LWpnUFo854U4g9OMKq7EF1Auw+Txt93LlhuIYP993CWygf6JSH0XnU
- kgCRaSlqynnWYYM60Uc5MDomDL3NIHbmwq8ZNwoUuxLmTIDY6dQj6aH6SkzOLaG/tHxy
- X8oF6pPcHclpIIu19Qe4FO6KJ9a202SXo9tnTybGqp2plH+xQfTRHKnRSLAS9uQXD4WJ
- jHxQ==
+ d=ventanamicro.com; s=google; t=1708467917; x=1709072717; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SpkN0ilkIdZABSfxaQ1WQMJCJ39fGGQfiBR1AGMRMMM=;
+ b=RggGo0JP90qYWj6HKQKcA2xJdc5gZjBXKPLL/Snrk+cUNj+sD1S95n3wULByN/m7Pv
+ ut74vzFb73ADO0iWxFZRMvdkg2nQ+ONaRRynAulaxrWJnB1qh/vUc8VswQ+H/6Brchx3
+ HQyXSNsQQ0hCdNEq78vb3RSfEMFT+hV/1sXql0CWNvXJH/z+uSPT1uoHtoYt7hq4vzIT
+ MM2+0RdOohMHQxn0fq3DXL03XcW4Ft/Ti5fkUojlJ1jC/dWE1jYcoOVUnq9nQVd3UPHZ
+ s789+za3eOG36/F1RcThX/ZMKOCYdMe9eiQzxJ0ZvHVJjMpiIF8nSWktbdzN0/3IGXA+
+ J/zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708467732; x=1709072532;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1708467917; x=1709072717;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EoXgfZWN8hEQdPIbTxIIUtmVyGshj4bWDRnk2KYh35U=;
- b=dTiFEiMCGNzRBvxMFxdz/m3OtLsLL7CQZrQImc/UU1rta2COi/SVw48empsp7mC3Rm
- k/jBw8d4RYHhFarCOIDzYIaE36xwo5fEq8mTa7isPqpSI9QyC8PeDrngEIZAfOiZd7gb
- /vXzx534c5Yj/W1/5y5FcJ79opbLXTtW2TYgpLD6n2Yl0zrNo9WMKudNDEE30jIZwf5u
- FDmng/Vwmm1KqjoxKVG1m2jWr5Bx/5/Yf8YZuOUrFQbWrZwHueNlMHa2bOT27dq/UQny
- HGoJTjuqEzUScuoQsGGd3p6U0/575xjlXfAOgO3m16tEVR2LOfChRVUroQHcVIZ/gpaU
- kTPQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUXocJELszCZxcMF20sP2pdvWn9tW8DaxlTRwLW1xAMF6vL5Y1nPG3lBRCg2i6kMURk7H5xBpwG3Id17/TS5q4a8tvrV3U=
-X-Gm-Message-State: AOJu0Yz+vufQ/fVscJHYs/RrOpDX5CiD6I8lZfYSg0EhPo2QzqfRxk5j
- /NbKlfoqPg43QkTcKX4L75UsW3+TwE0vwCvnhqDi+kbpHcNR1XoYZo1Ikoa/bxpCJHuUMwVRfD7
- GSZM62W2d8octKDT6kaFbehh6twg+z9YDzfA=
-X-Google-Smtp-Source: AGHT+IF+l+b7ncTy27X+mUyIVu1gn7WTsNGhIYEc2R9vG7m3qm6reL486AfBASSplUlOXKZCfYri5OtAdZclDWSvGj8=
-X-Received: by 2002:a05:6402:31f6:b0:564:dd13:56e9 with SMTP id
- dy22-20020a05640231f600b00564dd1356e9mr1277953edb.29.1708467732155; Tue, 20
- Feb 2024 14:22:12 -0800 (PST)
+ bh=SpkN0ilkIdZABSfxaQ1WQMJCJ39fGGQfiBR1AGMRMMM=;
+ b=nBNR6QgZnWKPIPrtN71faHbZ5GqfgMSyDxvF3KkGBj+dS/ThQBH4CzxEoBeHbNxq/e
+ 8PBo5NEeMEDj+ZL2CJkIcYJiDwTO9Cb+ELJALQQ46B/qwVZibP25Z/L1jGcTvwkmdIPf
+ 9b6nV43yno4Q4tBCvQA3s9NZO8ld7s19xKx64pdTeusECpXJGXHZivW2Y/jLeseR0sh4
+ k2RCOymolKBQjdMn+EyMMeQrNi8IPGo+3W0Qrlt7YdA5QkOEechsMCxmOMGFTFw0zIf1
+ iPlY5mIR6Y6llCKVV1SIOcEKZLMkovvEgv0XJ3rIGMXvhIZr55qpKduJpS5sqJt0F6fz
+ PpRw==
+X-Gm-Message-State: AOJu0YwLmJMefIhkZiimBVzO7nFxrzHJr/sz/b0/KuJGElyNVIioPTb0
+ zg15TCcbMcoDDTMPdWRon97NHjJzNbVnt8ZJos6Ce1BwctDyChvAkrjFZiLEnkHZ5KomnzFEiWe
+ p
+X-Google-Smtp-Source: AGHT+IFdVKTBKq0Xy4kIAQ0xipS1se2tW1pzFseFawjHx8qIFiIl+wSk7mVcDwS3O5Zyp/RCh39bsg==
+X-Received: by 2002:a17:902:e952:b0:1db:cf8c:d462 with SMTP id
+ b18-20020a170902e95200b001dbcf8cd462mr10395944pll.63.1708467917667; 
+ Tue, 20 Feb 2024 14:25:17 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ iw20-20020a170903045400b001dbb86b88e5sm6761044plb.124.2024.02.20.14.25.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Feb 2024 14:25:17 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, max.chou@sifive.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v4 0/6] riscv: set vstart_eq_zero on mark_vs_dirty
+Date: Tue, 20 Feb 2024 19:25:04 -0300
+Message-ID: <20240220222510.209448-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-References: <CAOpGCn+KdhjnXRHup6GXVbkoZkUBc7f-2urNzmvLjK1To_pp0A@mail.gmail.com>
- <87a5nvci5n.fsf@draig.linaro.org>
- <CAOpGCnLxVGhbJuAq+K+DNZBESEGGkSr8Sa0_cHsfMR7S-_ahkQ@mail.gmail.com>
- <87y1bfawik.fsf@draig.linaro.org>
- <CAOpGCn+_=5Uxi9mt-C1V3pguNT0OUJura-H3SwBOsJnW5tyJ4g@mail.gmail.com>
- <CAFEAcA-03JYx9szd3FrQ_786gaRLWCJVHeMgjBxxvgH85f-78A@mail.gmail.com>
-In-Reply-To: <CAFEAcA-03JYx9szd3FrQ_786gaRLWCJVHeMgjBxxvgH85f-78A@mail.gmail.com>
-From: Faiq Ali Sayed <faiqueali.109@gmail.com>
-Date: Tue, 20 Feb 2024 23:22:01 +0100
-Message-ID: <CAOpGCn+vQ7wupMqeH8ZLarT0c4gD85R6cgRqBMhVeAXtZ1F_Mg@mail.gmail.com>
-Subject: Re: QNX VM hang on Qemu
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000004911c80611d7a49c"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=faiqueali.109@gmail.com; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,128 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000004911c80611d7a49c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-The real hardware ( xlnx-zcu102 ) is being used for our software. The
-software is in the development phase, and for that, I need to create a VM
-for simulation purposes.
-Qemu has a machine type (-M xlnx-zcu102) which is supported with the
-board/hardware.
+In this v4 we changed patch 1 to do mark_vs_dirty() after both loads and
+stores, not just stores.
 
-I have two more images for the same hardware and I can create a VM using
-these two images, but in the VM some basic binaries are missing like mkdir
-and virtual disk etc.
+A new patch, patch 2, was added to clean-up the now unused 'is_store'
+argument from these functions. 
 
-Now, the image for which I want to create a VM is currently working on
-board and everything is working fine on real hardware.
-I am not sure whether I can use this image for Qemu because this is created
-particularly for hardware.
-and giving a try to create a VM.
+All other patches unchanged. 
 
-Your valuable suggestions in this regard will be appreciated and mean a lot
-to me :)
+Patches missing reviews/acks: patches 1 and 2.
 
+Changes from v3:
+- patch 1: do mark_vs_dirty() for both loads and stores
+- patch 2 (new): remove the now unused 'is_store' arg from load/store
+  functions
+- v3 link: https://lore.kernel.org/qemu-riscv/20240220192607.141880-1-dbarboza@ventanamicro.com/
 
-br!
-Faiq
+Daniel Henrique Barboza (5):
+  trans_rvv.c.inc: mark_vs_dirty() before loads and stores
+  trans_rvv.c.inc: remove 'is_store' bool from load/store fns
+  target/riscv: remove 'over' brconds from vector trans
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
 
+Ivan Klokov (1):
+  target/riscv: Clear vstart_qe_zero flag
 
+ target/riscv/insn_trans/trans_rvbf16.c.inc |   6 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 292 ++++++---------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +--
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vector_helper.c               |   1 +
+ 5 files changed, 99 insertions(+), 236 deletions(-)
 
-On Tue, Feb 20, 2024 at 10:24=E2=80=AFPM Peter Maydell <peter.maydell@linar=
-o.org>
-wrote:
+-- 
+2.43.2
 
-> On Tue, 20 Feb 2024 at 20:56, Faiq Ali Sayed <faiqueali.109@gmail.com>
-> wrote:
-> >
-> > The image I am using is currently in use for real hardware, and
-> > I received it from a third party/vendor.
->
-> OK, so what exactly is the real hardware it's for?
->
-> > Could you please suggest to me what I can do now?
->
-> If QEMU has a model of the hardware the image is for:
->  - use that QEMU machine type (and issues with getting it running
->    will be related to making sure you're loading it at the right
->    address and starting it the way it wants to be started)
-> If QEMU does not have a model of the hardware the image is for:
->  - ask your vendor for a build that targets some machine QEMU
->    does have a model of
->
-> Unfortunately in general in the Arm world guest OSes are
-> not "runs on anything", but only "runs on the hardware
-> they were built to run on". This remains true under emulation.
->
-> thanks
-> -- PMM
->
-
-
---=20
-Kind Regard-
-Faiq Ali Sayed
-
---0000000000004911c80611d7a49c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">The real hardware (
-
-xlnx-zcu102 ) is being used for our software. The software is in the develo=
-pment phase, and for that, I need to create a VM for simulation purposes.<d=
-iv>Qemu has a machine type (-M xlnx-zcu102) which is supported with the boa=
-rd/hardware.</div><div><br></div><div>I have two more images for the same h=
-ardware and I can create a VM using these two images,=C2=A0but in the VM so=
-me basic binaries are missing like mkdir and virtual disk etc.</div><div><b=
-r></div><div>Now, the image for which I want to create a VM is currently wo=
-rking on board and everything is working fine on real hardware.</div><div>I=
- am not sure whether I can use this image for Qemu because this is created =
-particularly for hardware.</div><div>and giving a try to create a VM.</div>=
-<div><br></div><div>Your valuable=C2=A0suggestions in this regard will be=
-=C2=A0appreciated and mean a lot to=C2=A0me :)</div><div><br></div><div><br=
-></div><div>br!</div><div>Faiq</div><div><br></div><div><br></div></div><br=
-><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, F=
-eb 20, 2024 at 10:24=E2=80=AFPM Peter Maydell &lt;<a href=3D"mailto:peter.m=
-aydell@linaro.org">peter.maydell@linaro.org</a>&gt; wrote:<br></div><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1p=
-x solid rgb(204,204,204);padding-left:1ex">On Tue, 20 Feb 2024 at 20:56, Fa=
-iq Ali Sayed &lt;<a href=3D"mailto:faiqueali.109@gmail.com" target=3D"_blan=
-k">faiqueali.109@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The image I am using is currently in use for real hardware, and<br>
-&gt; I received it from a third party/vendor.<br>
-<br>
-OK, so what exactly is the real hardware it&#39;s for?<br>
-<br>
-&gt; Could you please suggest to me what I can do now?<br>
-<br>
-If QEMU has a model of the hardware the image is for:<br>
-=C2=A0- use that QEMU machine type (and issues with getting it running<br>
-=C2=A0 =C2=A0will be related to making sure you&#39;re loading it at the ri=
-ght<br>
-=C2=A0 =C2=A0address and starting it the way it wants to be started)<br>
-If QEMU does not have a model of the hardware the image is for:<br>
-=C2=A0- ask your vendor for a build that targets some machine QEMU<br>
-=C2=A0 =C2=A0does have a model of<br>
-<br>
-Unfortunately in general in the Arm world guest OSes are<br>
-not &quot;runs on anything&quot;, but only &quot;runs on the hardware<br>
-they were built to run on&quot;. This remains true under emulation.<br>
-<br>
-thanks<br>
--- PMM<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><div dir=3D"ltr">
-<div><span style=3D"color:rgb(34,34,34)">Kind Regard-</span><br style=3D"co=
-lor:rgb(34,34,34)"><div dir=3D"ltr" style=3D"color:rgb(34,34,34)"><div dir=
-=3D"ltr"><div dir=3D"ltr"><font color=3D"#073763">Faiq Ali Sayed</font></di=
-v></div></div></div>
-<div><font style=3D"background-color:rgb(255,255,255)" size=3D"1"><br></fon=
-t></div><br></div></div></div>
-
---0000000000004911c80611d7a49c--
 
