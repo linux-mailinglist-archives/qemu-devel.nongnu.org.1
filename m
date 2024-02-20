@@ -2,92 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7606585B640
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E51C685B64E
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLwk-0004zJ-4b; Tue, 20 Feb 2024 03:57:50 -0500
+	id 1rcLxJ-0008JQ-Rx; Tue, 20 Feb 2024 03:58:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rcLwh-0004kQ-5V
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:57:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1rcLwf-0000gv-0d
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:57:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708419464;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jPuMJB1qDzwfABF4hSASK17xcfZK5cZ0zXA5XkAwEsw=;
- b=Ck3QQG/gaeX1jaguhXtWN+2rDGlU4v+hc8fo1GiaV3a+gBru5JTRYv8H4Hz4VKnMu14eHK
- X1v51yD9KxPTIGRFqD1Bs2EbonKZm/pVDCxPHWI5fzQB00LE5ovNr0khQHuHzhVTc7hbyr
- xZtmSEYVQk/oLgFd6c+gCtXlixqcwr8=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-mH6eCZphObOI8wjWxcVbYg-1; Tue, 20 Feb 2024 03:57:42 -0500
-X-MC-Unique: mH6eCZphObOI8wjWxcVbYg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d05e887307so32884381fa.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:57:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419461; x=1709024261;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jPuMJB1qDzwfABF4hSASK17xcfZK5cZ0zXA5XkAwEsw=;
- b=TgwVPfaGYP8H/S9P7hdX8ZW1mEX+e+oX6wTM9s11wgNGc71YnOrm/0NLJ2+DaVCpA9
- 9MZzYpGUydzeAvXM/0lA3tVSNnK1wSgvLuY8pkOtMlg9wyW7VlZI6DmIR4MWg+D8G5/x
- Rtv50iOBIFYvFwCgLTs5uhWgUMEvjL9HQqYW+PPd64Ap91r1rbki9bt3hBbX/fqrVXkK
- 3grQSxc1vI6wBY+2yGbelFlTAV4EYBA8NDDju9pKrs80juhD6cPpn03byQfheFOJaHta
- gJ9MU6ObZFGlzDIIqpAVC8k2KYsNXMmJ9zzlD3wt1B55J1vDSHEyaR2iCWrgz7/HiD8s
- u99w==
-X-Gm-Message-State: AOJu0YyQxGZWXAIWMxwf+HppInVwf/yCW8IOUxgM2dgvsmUqiHdqICoH
- gPVx/ZnLiSA4fcMfKis6pwh4Sdq2tBicAgUJBmFaCQgHh69AVq53tL9RDtAiXM3izD40KiiaV8j
- sI40jJB13W1LRTBLvn5xiQXGYKew2Oj8iLpWfWLxgfEVt5MjyV3AfnrS6mVh5LNfeMLd6Gav3lC
- Bx9qZpOlw0TZnpMFGywa4EC7I7MUw=
-X-Received: by 2002:a2e:4601:0:b0:2d2:35f0:5dd9 with SMTP id
- t1-20020a2e4601000000b002d235f05dd9mr2062798lja.11.1708419461056; 
- Tue, 20 Feb 2024 00:57:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGv5dOpShXYr3oqfIe8MMg7MRF/WWMsd5VhoAmDqP3xbhDTxkSSXuMQgmJ3Lyi5ZUjXqXdN/BK4QyAKiKFTqgY=
-X-Received: by 2002:a2e:4601:0:b0:2d2:35f0:5dd9 with SMTP id
- t1-20020a2e4601000000b002d235f05dd9mr2062788lja.11.1708419460720; Tue, 20 Feb
- 2024 00:57:40 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rcLxD-0007z3-Qd; Tue, 20 Feb 2024 03:58:20 -0500
+Received: from mail.ispras.ru ([83.149.199.84])
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
+ id 1rcLxA-0000he-IU; Tue, 20 Feb 2024 03:58:19 -0500
+Received: from [10.12.102.111] (unknown [85.142.117.226])
+ by mail.ispras.ru (Postfix) with ESMTPSA id B3EAE40737C5;
+ Tue, 20 Feb 2024 08:57:50 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B3EAE40737C5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+ s=default; t=1708419470;
+ bh=elkSpOAmlNJJ3p1ebAxvciRm89hULlvZlNqyvN3LONE=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=fK1nnW6+w2QSND08LkPuBWYDr26+T0CzQuXDMYtIuY8GXBEW7jZI3b7Nb90PSa5e8
+ mpVWxpIxf+8wSCC2AQGi5IyDbqtHhnoUrwXv8BRCBQS9HtvJs89vsrtZBYGxgx4VJ6
+ buPggvMn29XNfI5Gs7GUvQKooRv3eBg6thGHnWGc=
+Message-ID: <26a43eca-4bf3-4b35-a00b-b2b085c8ea8b@ispras.ru>
+Date: Tue, 20 Feb 2024 11:57:50 +0300
 MIME-Version: 1.0
-References: <20240205074709.3613229-1-armbru@redhat.com>
- <20240205074709.3613229-9-armbru@redhat.com>
-In-Reply-To: <20240205074709.3613229-9-armbru@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Tue, 20 Feb 2024 10:57:29 +0200
-Message-ID: <CAPMcbCpWG3cM086x95JuuJ9yzOr=7iEdmGcegiqueYGSsWXwXA@mail.gmail.com>
-Subject: Re: [PATCH 08/15] qga/qapi-schema: Clean up documentation of
- guest-set-vcpus
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, arei.gonglei@huawei.com, berrange@redhat.com, 
- eblake@redhat.com, eduardo@habkost.net, fan.ni@samsung.com, farosas@suse.de, 
- hreitz@redhat.com, jasowang@redhat.com, jiri@resnulli.us, 
- jonathan.cameron@huawei.com, kraxel@redhat.com, kwolf@redhat.com, 
- lukasstraub2@web.de, marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com, 
- michael.roth@amd.com, mst@redhat.com, pbonzini@redhat.com, 
- peter.maydell@linaro.org, peterx@redhat.com, philmd@linaro.org, 
- pizhenwei@bytedance.com, qemu-block@nongnu.org, stefanb@linux.ibm.com, 
- wangyanan55@huawei.com
-Content-Type: multipart/alternative; boundary="0000000000001597e90611cc67b9"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/21] tests: correct typos
+Content-Language: en-US
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-trivial@nongnu.org
+Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
+ <723e7a4b522cebce583e924fbd965f110cbc2af4.1708419115.git.manos.pitsidianakis@linaro.org>
+From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+In-Reply-To: <723e7a4b522cebce583e924fbd965f110cbc2af4.1708419115.git.manos.pitsidianakis@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=83.149.199.84;
+ envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,141 +69,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001597e90611cc67b9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-
-On Mon, Feb 5, 2024 at 9:47=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
-> wrote:
-
-> The command's doc comment describes the argument, but it's not marked
-> up as such.  Easy enough to fix.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+On 20.02.2024 11:52, Manos Pitsidianakis wrote:
+> Correct typos automatically found with the `typos` tool
+> <https://crates.io/crates/typos>
+> 
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 > ---
->  qga/qapi-schema.json | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-> index 35bde36a1f..f3d168d542 100644
-> --- a/qga/qapi-schema.json
-> +++ b/qga/qapi-schema.json
-> @@ -42,8 +42,7 @@
->          'GuestDeviceType',
->          'GuestDiskSmart',
->          'GuestDiskStatsInfo',
-> -        'GuestNVMeSmart',
-> -        'guest-set-vcpus' ] } }
-> +        'GuestNVMeSmart' ] } }
->
->  ##
->  # @guest-sync-delimited:
-> @@ -786,14 +785,15 @@
->  # Attempt to reconfigure (currently: enable/disable) logical
->  # processors inside the guest.
->  #
-> -# The input list is processed node by node in order.  In each node
-> -# @logical-id is used to look up the guest VCPU, for which @online
-> -# specifies the requested state.  The set of distinct @logical-id's is
-> -# only required to be a subset of the guest-supported identifiers.
-> -# There's no restriction on list length or on repeating the same
-> -# @logical-id (with possibly different @online field). Preferably the
-> -# input list should describe a modified subset of @guest-get-vcpus'
-> -# return value.
-> +# @vcpus: The logical processors to be reconfigured.  This list is
-> +#     processed node by node in order.  In each node @logical-id is
-> +#     used to look up the guest VCPU, for which @online specifies the
-> +#     requested state.  The set of distinct @logical-id's is only
-> +#     required to be a subset of the guest-supported identifiers.
-> +#     There's no restriction on list length or on repeating the same
-> +#     @logical-id (with possibly different @online field).  Preferably
-> +#     the input list should describe a modified subset of
-> +#     @guest-get-vcpus' return value.
->  #
->  # Returns: The length of the initial sublist that has been
->  #     successfully processed.  The guest agent maximizes this value.
-> --
-> 2.43.0
->
->
-
---0000000000001597e90611cc67b9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
-tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
-v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Feb 5=
-, 2024 at 9:47=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@re=
-dhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">The command&#39;s doc comment describes the argu=
-ment, but it&#39;s not marked<br>
-up as such.=C2=A0 Easy enough to fix.<br>
-<br>
-Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
-arget=3D"_blank">armbru@redhat.com</a>&gt;<br>
----<br>
-=C2=A0qga/qapi-schema.json | 20 ++++++++++----------<br>
-=C2=A01 file changed, 10 insertions(+), 10 deletions(-)<br>
-<br>
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
-index 35bde36a1f..f3d168d542 100644<br>
---- a/qga/qapi-schema.json<br>
-+++ b/qga/qapi-schema.json<br>
-@@ -42,8 +42,7 @@<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestDeviceType&#39;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestDiskSmart&#39;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;GuestDiskStatsInfo&#39;,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;GuestNVMeSmart&#39;,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;guest-set-vcpus&#39; ] } }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 &#39;GuestNVMeSmart&#39; ] } }<br>
-<br>
-=C2=A0##<br>
-=C2=A0# @guest-sync-delimited:<br>
-@@ -786,14 +785,15 @@<br>
-=C2=A0# Attempt to reconfigure (currently: enable/disable) logical<br>
-=C2=A0# processors inside the guest.<br>
-=C2=A0#<br>
--# The input list is processed node by node in order.=C2=A0 In each node<br=
->
--# @logical-id is used to look up the guest VCPU, for which @online<br>
--# specifies the requested state.=C2=A0 The set of distinct @logical-id&#39=
-;s is<br>
--# only required to be a subset of the guest-supported identifiers.<br>
--# There&#39;s no restriction on list length or on repeating the same<br>
--# @logical-id (with possibly different @online field). Preferably the<br>
--# input list should describe a modified subset of @guest-get-vcpus&#39;<br=
->
--# return value.<br>
-+# @vcpus: The logical processors to be reconfigured.=C2=A0 This list is<br=
->
-+#=C2=A0 =C2=A0 =C2=A0processed node by node in order.=C2=A0 In each node @=
-logical-id is<br>
-+#=C2=A0 =C2=A0 =C2=A0used to look up the guest VCPU, for which @online spe=
-cifies the<br>
-+#=C2=A0 =C2=A0 =C2=A0requested state.=C2=A0 The set of distinct @logical-i=
-d&#39;s is only<br>
-+#=C2=A0 =C2=A0 =C2=A0required to be a subset of the guest-supported identi=
-fiers.<br>
-+#=C2=A0 =C2=A0 =C2=A0There&#39;s no restriction on list length or on repea=
-ting the same<br>
-+#=C2=A0 =C2=A0 =C2=A0@logical-id (with possibly different @online field).=
-=C2=A0 Preferably<br>
-+#=C2=A0 =C2=A0 =C2=A0the input list should describe a modified subset of<b=
-r>
-+#=C2=A0 =C2=A0 =C2=A0@guest-get-vcpus&#39; return value.<br>
-=C2=A0#<br>
-=C2=A0# Returns: The length of the initial sublist that has been<br>
-=C2=A0#=C2=A0 =C2=A0 =C2=A0successfully processed.=C2=A0 The guest agent ma=
-ximizes this value.<br>
--- <br>
-2.43.0<br>
-<br>
-</blockquote></div>
-
---0000000000001597e90611cc67b9--
+>   tests/avocado/acpi-bits/bits-tests/smbios.py2 | 2 +-
+>   tests/avocado/mem-addr-space-check.py         | 6 +++---
+>   tests/avocado/reverse_debugging.py            | 2 +-
+>   3 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/avocado/acpi-bits/bits-tests/smbios.py2 b/tests/avocado/acpi-bits/bits-tests/smbios.py2
+> index fc623de072..5868a7137a 100644
+> --- a/tests/avocado/acpi-bits/bits-tests/smbios.py2
+> +++ b/tests/avocado/acpi-bits/bits-tests/smbios.py2
+> @@ -1060,7 +1060,7 @@ class EventLogDescriptor(unpack.Struct):
+>               0x16: 'Log Area Reset/Cleared',
+>               0x17: 'System boot',
+>               xrange(0x18, 0x7F): 'Unused, available for assignment',
+> -            xrange(0x80, 0xFE): 'Availalbe for system- and OEM-specific assignments',
+> +            xrange(0x80, 0xFE): 'Available for system- and OEM-specific assignments',
+>               0xFF: 'End of log'
+>           }
+>           yield 'log_type', u.unpack_one('B'), unpack.format_table("{}", _event_log_type_descriptors)
+> diff --git a/tests/avocado/mem-addr-space-check.py b/tests/avocado/mem-addr-space-check.py
+> index 363c3f12a6..af019969c0 100644
+> --- a/tests/avocado/mem-addr-space-check.py
+> +++ b/tests/avocado/mem-addr-space-check.py
+> @@ -165,7 +165,7 @@ def test_phybits_low_tcg_q35_70_amd(self):
+>           For q35-7.0 machines, "above 4G" memory starts are 4G.
+>           pci64_hole size is 32 GiB. Since TCG_PHYS_ADDR_BITS is defined to
+>           be 40, TCG emulated CPUs have maximum of 1 TiB (1024 GiB) of
+> -        directly addressible memory.
+> +        directly addressable memory.
+>           Hence, maxmem value at most can be
+>           1024 GiB - 4 GiB - 1 GiB per slot for alignment - 32 GiB + 0.5 GiB
+>           which is equal to 987.5 GiB. Setting the value to 988 GiB should
+> @@ -190,7 +190,7 @@ def test_phybits_low_tcg_q35_71_amd(self):
+>           AMD_HT_START is defined to be at 1012 GiB. So for q35 machines
+>           version > 7.0 and AMD cpus, instead of 1024 GiB limit for 40 bit
+>           processor address space, it has to be 1012 GiB , that is 12 GiB
+> -        less than the case above in order to accomodate HT hole.
+> +        less than the case above in order to accommodate HT hole.
+>           Make sure QEMU fails when maxmem size is 976 GiB (12 GiB less
+>           than 988 GiB).
+>           """
+> @@ -297,7 +297,7 @@ def test_phybits_ok_tcg_q35_71_amd_41bits(self):
+>           :avocado: tags=arch:x86_64
+>   
+>           AMD processor with 41 bits. Max cpu hw address = 2 TiB.
+> -        Same as above but by setting maxram beween 976 GiB and 992 Gib,
+> +        Same as above but by setting maxram between 976 GiB and 992 Gib,
+>           QEMU should start fine.
+>           """
+>           self.vm.add_args('-S', '-cpu', 'EPYC-v4,phys-bits=41',
+> diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
+> index 4cce5a5598..92855a02a5 100644
+> --- a/tests/avocado/reverse_debugging.py
+> +++ b/tests/avocado/reverse_debugging.py
+> @@ -191,7 +191,7 @@ def reverse_debugging(self, shift=7, args=None):
+>           self.check_pc(g, steps[-1])
+>           logger.info('successfully reached %x' % steps[-1])
+>   
+> -        logger.info('exitting gdb and qemu')
+> +        logger.info('exiting gdb and qemu')
+>           vm.shutdown()
+>   
+>   class ReverseDebugging_X86_64(ReverseDebugging):
 
 
