@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C02585BD74
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 14:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D764385BDFF
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 15:02:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcQOF-0007to-2A; Tue, 20 Feb 2024 08:42:31 -0500
+	id 1rcQgk-0005DY-Es; Tue, 20 Feb 2024 09:01:39 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rcQOC-0007t7-Gz; Tue, 20 Feb 2024 08:42:28 -0500
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rcQOA-0004EA-MH; Tue, 20 Feb 2024 08:42:28 -0500
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a28a6cef709so618088066b.1; 
- Tue, 20 Feb 2024 05:42:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708436544; x=1709041344; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jhfq92Ac1Csn+Nw/u2MeCXPpb7cdlLgcWS/VQidUjmo=;
- b=AOrtoOfjLCVYp/vJkeKAEKcPAaa2h19+xSV/HYtrV8tu0dzXbJy9Db6309zMky0Fvo
- a4MJP/xdgMQsFxmkwlWFSXEcf8n+k8lfgq0UFFEVLnZzkQCFh79ntMW1hTtYSMl/r9VY
- E0wmhaEMylekaHNJsmSN0xDiKYQbnh4/857F80EyxX0KbDRjCvGC0OaS+NiCUc63LyaP
- Pi9zXr4xWdjl7xP0ZrJkYSDPj/8SB8yomrA/w6Iqlx6moha0KAmx3vy8vE2a/gEY9BA+
- h7Nk8saQzVjk4pw403NEfQNTqTBZy9KS1bkx8apOh005sqs81cbhcRE03tAkuxN5NxUz
- DJZw==
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rcQgG-0005D5-2Q
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 09:01:08 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1rcQgC-00082M-Tj
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 09:01:07 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708437663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SNQOrREmmc7fW4KUko02bOVeoRrX7si9lnTdwGFk91g=;
+ b=VQbYa8raW739CRLwyP0PcLKJ/Y9fwNJWgEMoNIsR3Eq9bNcsMGM165JMGwoS872bHm94O1
+ hRtE87jzv8bimqa/wA8tEbKVcD/HlcUTR6TBVbZdKRUivgftW+OMJzh7ivfYlZmfL8LqO5
+ tNqSerkW2i72vTZuyCTVP+qPFBl6bOk=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-384-sKwuGdmgPBacPzPnLHRZpQ-1; Tue, 20 Feb 2024 09:01:01 -0500
+X-MC-Unique: sKwuGdmgPBacPzPnLHRZpQ-1
+Received: by mail-il1-f199.google.com with SMTP id
+ e9e14a558f8ab-36516d55c5fso26610055ab.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 06:01:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708436544; x=1709041344;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jhfq92Ac1Csn+Nw/u2MeCXPpb7cdlLgcWS/VQidUjmo=;
- b=eTQ6SAZuQoB3v91hop9Mvdr0X2MwWtmBcF8qXYcbl2k7C4QzrVd0Lmfm5hE5Ak0ef8
- RNBDjzjXr7D4R5hsrV3E7MQYB5V1SRUHwFwCunhe02Cvpvdj+lvbMghsfa3EJb3oylVo
- bnxF8bZQTNSKJsKANbK/aEl+mCMNHibwA0sOg5wQEbkdGi6kWJKNgF+2Cb9tFHmbgI8V
- e+Z9M5V6OYyg1E8QwPvxe7UPVCwYeGTFyRa6acxnHvKESRAAT1hIfAzQBDQO3xdSMgAA
- tID/EkleiQl23hbXhIBFxuI5ZBQcJkyL0xLvA5T80p/JFJ9FcaCd6jXPzJz/nqwo6BnQ
- lagg==
+ d=1e100.net; s=20230601; t=1708437660; x=1709042460;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=SNQOrREmmc7fW4KUko02bOVeoRrX7si9lnTdwGFk91g=;
+ b=O9f34ITAEHdCXkE6KV218w3t03V45YHkyPehWohQB3CeK5Q3qVSXidVxMc0vY787SF
+ hFIGZuCiO2gl4uYFe3jUN1sCR5qlW9Qf1e5Ra9A0wTJeVdAQR5W8WCkli9taGoLv51U5
+ juB+qa6Pr6PvEzhijwx9f5OaUfGzeHyPGZPBrH8TaxO5QE6CEAT+J1FJsq4DPonl/BAi
+ pTCPBiCQW4Nttp/KPw23Hs8ZGnd8578T1Ke7f/mH1Cf0r/lKSBO/Z63c/MKfKI17HzZE
+ D3F3BXS9OIUPSiVrGgOXSjQ0rAxuEwdV73fKIVAgmpRJaejco9E6inz7R8iJKxntFm5x
+ Jfew==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUiJHISPVyxJK6IEVIFbjtN3+rHaSefuW2eTh/h6+TyNCqRXSTIijLUujeoPAeBq5oXmTFYvN7WCu9Z9iRaBLFue8qT
-X-Gm-Message-State: AOJu0YyQLrBU6qN8YYDksITK5Vo+gypHDlKjWrvJDHOTMjPQnCHfYgTy
- LkQ9D0b9h81tYzFMvm8iLXtIw4S7a/+dwt8EwMOEJWX6eauUBJ+uNuQM6ecoLQc=
-X-Google-Smtp-Source: AGHT+IHFq7iDn9AhObcnzL6KA9d6/W4MVq6lH/BMGepeAEer0omiYzLr9XNoXIMM4kWKnv3uO5S0AA==
-X-Received: by 2002:a17:906:60f:b0:a3e:b8ac:288f with SMTP id
- s15-20020a170906060f00b00a3eb8ac288fmr2974844ejb.4.1708436544356; 
- Tue, 20 Feb 2024 05:42:24 -0800 (PST)
-Received: from localhost.localdomain ([37.186.51.232])
+ AJvYcCViUgi5chOHEWoBtRmhBcDpGy2yWZF+q61NKQw7fa3yDDACjGYL3Oz1t7NUo3aeX3225/x9RvsqMWQOflcZb0fS/+fsYAk=
+X-Gm-Message-State: AOJu0Yw7DqHxCHynX5C7uopB8DkcphQabAQaqgrZkA9jpo87O9f+uHfB
+ t2vGbzWCqFlOIqZBNQ2RBr92BmghFXS7PrmibdGubb5PZ9oj40MMoWBAv01dNXLqgBWbNQcP/93
+ 7NBhAgLo2VV45z0uPD3pak4ArSGlNRhYeDio9OcbkfV9aiVxhQtry
+X-Received: by 2002:a05:6e02:1206:b0:365:1d36:91d7 with SMTP id
+ a6-20020a056e02120600b003651d3691d7mr7359760ilq.27.1708437659825; 
+ Tue, 20 Feb 2024 06:00:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWEfLjlT68vft3NEd96QXnHLiIeJqMUYv5G0C/jbBvCzvdlq74unJ68dDtGQiB61l+3Hze5w==
+X-Received: by 2002:a05:6e02:1206:b0:365:1d36:91d7 with SMTP id
+ a6-20020a056e02120600b003651d3691d7mr7359717ilq.27.1708437659381; 
+ Tue, 20 Feb 2024 06:00:59 -0800 (PST)
+Received: from localhost ([2a01:e0a:a9a:c460:2827:8723:3c60:c84a])
  by smtp.gmail.com with ESMTPSA id
- h23-20020a170906591700b00a3ef17464b1sm728449ejq.9.2024.02.20.05.42.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 05:42:24 -0800 (PST)
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org, pbonzini@redhat.com,
- qemu-arm@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: [PATCH v3 3/3] tests/qtest: Add testcase for BCM2835 BSC
-Date: Tue, 20 Feb 2024 19:11:20 +0530
-Message-Id: <20240220134120.2961059-4-rayhan.faizel@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240220134120.2961059-1-rayhan.faizel@gmail.com>
-References: <20240220134120.2961059-1-rayhan.faizel@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ f16-20020a02cad0000000b004742452a382sm1259870jap.45.2024.02.20.06.00.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Feb 2024 06:00:58 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Feb 2024 15:00:56 +0100
+Message-Id: <CZ9YLSITF57Y.2WGV9XEFH7755@fedora>
+Cc: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <qemu-devel@nongnu.org>,
+ <vchundur@redhat.com>
+Subject: Re: [PATCH v3 3/3] Add support for RAPL MSRs in KVM/Qemu
+From: "Anthony Harivel" <aharivel@redhat.com>
+To: =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+X-Mailer: aerc/0.15.2-111-g39195000e213
+References: <20240125072214.318382-1-aharivel@redhat.com>
+ <20240125072214.318382-4-aharivel@redhat.com> <Zbf8hradcHeeEXae@redhat.com>
+In-Reply-To: <Zbf8hradcHeeEXae@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aharivel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,143 +104,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simple testcase for validating proper operation of read and write for all
-three BSC controllers.
+Daniel P. Berrang=C3=A9, Jan 29, 2024 at 20:29:
+> On Thu, Jan 25, 2024 at 08:22:14AM +0100, Anthony Harivel wrote:
+> > diff --git a/docs/specs/rapl-msr.rst b/docs/specs/rapl-msr.rst
+> > new file mode 100644
+> > index 000000000000..04d27c198fc0
+> > --- /dev/null
+> > +++ b/docs/specs/rapl-msr.rst
+> > @@ -0,0 +1,133 @@
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +RAPL MSR support
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> > +
+> > +Current Limitations
+> > +-------------------
+> > +
+> > +- Works only on Intel host CPUs because AMD CPUs are using different M=
+SR
+> > +  addresses.
+>
+> The privileged helper program is validating an allow list of MSRs.
+>
+> If those MSRs are only correct on Intel hosts, then the validation
+> is incomplete, and it could be allowing unprivileged processes on
+> AMD hosts to access forbidden MSRS whose address happen to clash
+> with the Intel RAPL MSRs.
+>
+> IOW, the privileged helper needs to call cpuid() and validate that
+> the current host vendor is Intel.
+>
+> I suspect we also need a feature check of some kind to validate
+> that the intel processor supports this features, since old ones
+> definitely didn't, and we shouldn't assume all future ones will
+> either.
+>
 
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
----
- tests/qtest/bcm2835-i2c-test.c | 107 +++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |   2 +-
- 2 files changed, 108 insertions(+), 1 deletion(-)
- create mode 100644 tests/qtest/bcm2835-i2c-test.c
+To validate that the processor supports the RAPL feature I propose
+to check this on the Host:
 
-diff --git a/tests/qtest/bcm2835-i2c-test.c b/tests/qtest/bcm2835-i2c-test.c
-new file mode 100644
-index 0000000000..70817202dc
---- /dev/null
-+++ b/tests/qtest/bcm2835-i2c-test.c
-@@ -0,0 +1,107 @@
-+/*
-+ * QTest testcase for Broadcom Serial Controller (BSC)
-+ *
-+ * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-+ *
-+ * SPDX-License-Identifier: MIT
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+
-+#include "hw/i2c/bcm2835_i2c.h"
-+#include "hw/sensor/tmp105_regs.h"
-+
-+static const uint32_t bsc_base_addrs[] = {
-+    0x3f205000,                         /* I2C0 */
-+    0x3f804000,                         /* I2C1 */
-+    0x3f805000,                         /* I2C2 */
-+};
-+
-+static void bcm2835_i2c_init_transfer(uint32_t base_addr, bool read)
-+{
-+    /* read flag is bit 0 so we can write it directly */
-+    int interrupt = read ? BCM2835_I2C_C_INTR : BCM2835_I2C_C_INTT;
-+
-+    writel(base_addr + BCM2835_I2C_C,
-+           BCM2835_I2C_C_I2CEN | BCM2835_I2C_C_INTD |
-+           BCM2835_I2C_C_ST | BCM2835_I2C_C_CLEAR | interrupt | read);
-+}
-+
-+static void test_i2c_read_write(gconstpointer data)
-+{
-+    uint32_t i2cdata;
-+    intptr_t index = (intptr_t) data;
-+    uint32_t base_addr = bsc_base_addrs[index];
-+
-+    /* Write to TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 3);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xde);
-+    writel(base_addr + BCM2835_I2C_FIFO, 0xad);
-+
-+
-+    /* Read from TMP105 register */
-+    writel(base_addr + BCM2835_I2C_A, 0x50);
-+    writel(base_addr + BCM2835_I2C_DLEN, 1);
-+
-+    bcm2835_i2c_init_transfer(base_addr, 0);
-+
-+    writel(base_addr + BCM2835_I2C_FIFO, TMP105_REG_T_HIGH);
-+
-+    writel(base_addr + BCM2835_I2C_DLEN, 2);
-+    bcm2835_i2c_init_transfer(base_addr, 1);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xde);
-+
-+    i2cdata = readl(base_addr + BCM2835_I2C_FIFO);
-+    g_assert_cmpint(i2cdata, ==, 0xad);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    int ret;
-+    int i;
-+
-+    g_test_init(&argc, &argv, NULL);
-+
-+    for (i = 0; i < 3; i++) {
-+        g_autofree char *test_name =
-+        g_strdup_printf("/bcm2835/bcm2835-i2c%d/read_write", i);
-+        qtest_add_data_func(test_name, (void *)(intptr_t) i,
-+                            test_i2c_read_write);
-+    }
-+
-+    /* Run I2C tests with TMP105 slaves on all three buses */
-+    qtest_start("-M raspi3b "
-+                "-device tmp105,address=0x50,bus=i2c-bus.0 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.1 "
-+                "-device tmp105,address=0x50,bus=i2c-bus.2");
-+    ret = g_test_run();
-+    qtest_end();
-+
-+    return ret;
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 39557d5ecb..8fe303160e 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -228,7 +228,7 @@ qtests_aarch64 = \
-     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
-   (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test', 'xlnx-versal-trng-test'] : []) + \
--  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
-+  (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test', 'bcm2835-i2c-test'] : []) +  \
-   (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_NPCM7XX') ? qtests_npcm7xx : []) + \
--- 
-2.34.1
+$ cat /sys/class/powercap/intel-rapl/enabled
+1
+
+
+The only down side is that INTEL RAPL drivers needs to be
+mounted then. We don't need it because we directly read the MSRs.
+
+Regards,
+Anthony
 
 
