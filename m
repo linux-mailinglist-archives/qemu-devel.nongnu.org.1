@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6AC85C578
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 21:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F287985C4C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 20:27:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcWNE-0003P6-Kp; Tue, 20 Feb 2024 15:05:52 -0500
+	id 1rcVlI-0006SR-7T; Tue, 20 Feb 2024 14:26:41 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcWNC-0003MK-2o
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 15:05:50 -0500
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rcVkz-0006OV-Gk
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:26:21 -0500
+Received: from mail-io1-xd2c.google.com ([2607:f8b0:4864:20::d2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rcWNA-0005U5-AH
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 15:05:49 -0500
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a3e4765c86eso395219866b.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 12:05:47 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rcVkt-0006Th-Qo
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 14:26:19 -0500
+Received: by mail-io1-xd2c.google.com with SMTP id
+ ca18e2360f4ac-7c745af8f1cso117593839f.1
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 11:26:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708459547; x=1709064347; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=r98N5zsHeg7bpGOE7jvPIcOtsan2X5N4hBuZ3wvt2Cw=;
- b=f4M6uCJzhPKPk+8P6vKuT7irs+EGQ2RQodcOEBD3zzyLc0mAvV/o2fJvLDiXqYiTTN
- nRtoKs1hqnTvQZJn14tjn5jeE/oFRM8goBh+Mxm9osCnODPadHBbSQurU9TUzxWr1AuM
- T4cKeygh4vjYkmH1rk2juXuBuiFXxpWAJueDpzA7ZNXiP0h42UdeMJGodHnkDgs24nZW
- S3fTwLK/UY7bJ/tTvRBa8JnAXKzS+mBtfTf+bSrSq3PtJlQvAOeixhiTxoSuN/ocAkAf
- +MKuh7fYElWOexerZpGfIufvMl68VzS8uEkeIeJWHswjcfv2xmcN477ajicHkSuwf31L
- JpYA==
+ d=ventanamicro.com; s=google; t=1708457174; x=1709061974; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KH6FwagXPISB5V5N/gfnHCV4noWWen5LvAfwzlCmLdM=;
+ b=ijlbBgokLvaFJ5y78vi0gCJI75eLJuEwX54tCN/sI+c/nHeMeC+RyhrJywWlXRSk2R
+ m/IhsZnYAI12hGQq0x/BrZgMcHR9LTroGSzw916Kveo7Skr98nR+4DhP9+C3hPhIOKBt
+ Awl48J/o/ExaCN4WWkzNE2RgYukrS9WDMIuX8cUWi/OQJfAICpFTsWDl4Gdf22J5eciP
+ ygi0b7kpzqzRIeyyt8j73HcRaC5cDpUI+nvqwfpSKyfBk64894UhA/u3dMd17VvVTwew
+ 0p0oCKKBj7la4pcjAQYmPxbvflZa53Ielqj5bCJKqBn7FUS/xVyAXfk1iHOpN7EiAcER
+ flmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708459547; x=1709064347;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=r98N5zsHeg7bpGOE7jvPIcOtsan2X5N4hBuZ3wvt2Cw=;
- b=j3okV9MpFdavqGc4B+xCG59sLh/LhVl6sBJTIWvZ7c2iguiI0DSHAh7y2yEUaWep+w
- mdv5PydVm6Q0p0uPsB5BNjJknYAQBtB2H9z1VUJDRqdk+5iO9A9bHtW1rgxFXouu2YGC
- rISaSrhXAPkAeOu9zZLd8YplgFuqGb/wAR0Sb9ziyReVxVf1+KpInszmyVDrF9Ln7+uW
- s5AyiCgdSMfkgCkxmzuQ87Crb9hKShXjvF9/kq+jJCIoFaIZzFN/YwyV4ErOVGGZIQk2
- /X+xKhYZ3JYSaHmlsXj6NDvbY9RlZp/Lscog89u8MEpsGwPuG398pch2ZZLDlUSp3rJG
- p4RA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTAxJNsZ+SrktPOkd4KlOdl6s9YppMNhyzAmzK9hcQy3aa6SByOCquqsenso3oAjAVyxZJgHtvmMzCa++vTyMpABUGcEA=
-X-Gm-Message-State: AOJu0Yyo8ghjNMWaTbQMoJY6si9polJTEWFv7cxmhvYkmPgL6IOM2Mh0
- /V+CTJ95Q2C0ELkUQni1p3d8FsQwzPXmtx3imMJ+MdgFuA1Jld1j
-X-Google-Smtp-Source: AGHT+IHvSIlqRGSKV+/GjfZCrCrj7GNtmuo0nADpjG/8Fj1w5iNMvvtBt36XXr8W/otv6331NFbjKQ==
-X-Received: by 2002:a17:906:6686:b0:a3e:9709:4b67 with SMTP id
- z6-20020a170906668600b00a3e97094b67mr4848079ejo.22.1708459546685; 
- Tue, 20 Feb 2024 12:05:46 -0800 (PST)
-Received: from [127.0.0.1] (dynamic-089-014-092-079.89.14.pool.telefonica.de.
- [89.14.92.79]) by smtp.gmail.com with ESMTPSA id
- k9-20020a1709063fc900b00a3cfd838f32sm4328214ejj.178.2024.02.20.12.05.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 12:05:46 -0800 (PST)
-Date: Tue, 20 Feb 2024 19:25:27 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_06/14=5D_hw/pci-bridge=3A_Extrac?=
- =?US-ASCII?Q?t_QOM_ICH_definitions_to_=27ich=5Fdmi=5Fpci=2Eh=27?=
-In-Reply-To: <20240219163855.87326-7-philmd@linaro.org>
-References: <20240219163855.87326-1-philmd@linaro.org>
- <20240219163855.87326-7-philmd@linaro.org>
-Message-ID: <C977DC8F-8731-4ED4-8FFC-85241ABED160@gmail.com>
+ d=1e100.net; s=20230601; t=1708457174; x=1709061974;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KH6FwagXPISB5V5N/gfnHCV4noWWen5LvAfwzlCmLdM=;
+ b=ZglwS5OzVXpWViFCxKJmJbW7d5FGqBpNMz7Ocwcrlahj8jsZWp/OfU1wVlSA6WV/gj
+ X31AoRSC03qftF9JEQmjPHXozvQgebVrRBEQ8MPJsAoxan8qnbkDf51doZIRvnp0axMS
+ b4ROGYPPql5BbaM+3TnXx+wpO7VT+aIdFS74g2gi7AL16fCaapvoQeU8/LeD+3/GFOzV
+ JF/GC+XTZ3ExdR1Y4K57h8HJtMdmLXQd/mT38/VERpjUzh1GCxUG08/AjkUPsxWscAJC
+ TAugfN/ncHwOXV0rhymUpcF+tjploE6tnMkA9O35+EMvZbw7QiJ7JagYvoKc3KEkPWVq
+ y8jw==
+X-Gm-Message-State: AOJu0YzElWXcouxBUJRrgWXn+iHLHmnqoqjJSVrr/PJ8pI6oj7KnfgDt
+ g627RBdLMby8Ljt2sWOpS+rio4zBZZQmv4f4gu+JE/1sB5d1/xaR7KsqDILe3qzleDPYcymV/5U
+ Y
+X-Google-Smtp-Source: AGHT+IG9RGtEO0wcMKxnhVfiU842/235wgZqlM+NbTTko1+lE/d/dhTOx31FFTd2n7p1QUaGIvjWgQ==
+X-Received: by 2002:a05:6e02:1d8f:b0:365:858:d6d1 with SMTP id
+ h15-20020a056e021d8f00b003650858d6d1mr19938040ila.1.1708457173950; 
+ Tue, 20 Feb 2024 11:26:13 -0800 (PST)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ i73-20020a636d4c000000b005b458aa0541sm6943005pgc.15.2024.02.20.11.26.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Feb 2024 11:26:13 -0800 (PST)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, max.chou@sifive.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/5] riscv: set vstart_eq_zero on mark_vs_dirty
+Date: Tue, 20 Feb 2024 16:26:02 -0300
+Message-ID: <20240220192607.141880-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-io1-xd2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,115 +92,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+In this new version I decided to scrap patch 3 from v2 and added a patch
+that Ivan Klokov sent back in December [1]. In that patch Ivan was
+already doing things that Richard suggested to be done in patch 3 of v2.
+This is done in patch 5.
 
-Am 19=2E Februar 2024 16:38:46 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->Expose TYPE_ICH_DMI_PCI_BRIDGE to the new
->"hw/pci-bridge/ich_dmi_pci=2Eh" header=2E
->
->Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->---
-> MAINTAINERS                         |  1 +
-> include/hw/pci-bridge/ich_dmi_pci=2Eh | 20 ++++++++++++++++++++
-> include/hw/southbridge/ich9=2Eh       |  2 --
-> hw/pci-bridge/i82801b11=2Ec           | 11 ++++-------
-> 4 files changed, 25 insertions(+), 9 deletions(-)
-> create mode 100644 include/hw/pci-bridge/ich_dmi_pci=2Eh
->
->diff --git a/MAINTAINERS b/MAINTAINERS
->index 1b210c5cc1=2E=2E50507c3dd6 100644
->--- a/MAINTAINERS
->+++ b/MAINTAINERS
->@@ -2609,6 +2609,7 @@ F: hw/acpi/ich9*=2Ec
-> F: hw/i2c/smbus_ich9=2Ec
-> F: hw/isa/lpc_ich9=2Ec
-> F: include/hw/acpi/ich9*=2Eh
->+F: include/hw/pci-bridge/ich_dmi_pci=2Eh
-> F: include/hw/southbridge/ich9=2Eh
->=20
-> PIIX4 South Bridge (i82371AB)
->diff --git a/include/hw/pci-bridge/ich_dmi_pci=2Eh b/include/hw/pci-bridg=
-e/ich_dmi_pci=2Eh
->new file mode 100644
->index 0000000000=2E=2E7623b32b8e
->--- /dev/null
->+++ b/include/hw/pci-bridge/ich_dmi_pci=2Eh
+Patches 1 and 2 were suggestions from Richard that I'm adding as
+cleanup. Patch 2 in particular helped to clean up quite a bit of code.
 
-Shouldn't we name the new header like its source file, i=2Ee=2E i82801b11=
-=2Eh?
+Patch 3 is a fix in GEN_VEXT_VSLIDEUP_VX() that I caught while doing
+code inspection to assert that all helpers were setting env->vstart = 0
+in the end.
 
->@@ -0,0 +1,20 @@
->+/*
->+ * QEMU ICH4 i82801b11 dmi-to-pci Bridge Emulation
->+ *
->+ * SPDX-License-Identifier: GPL-2=2E0-or-later
->+ */
->+
->+#ifndef HW_PCI_BRIDGE_ICH_D2P_H
->+#define HW_PCI_BRIDGE_ICH_D2P_H
->+
->+#include "qom/object=2Eh"
->+#include "hw/pci/pci_bridge=2Eh"
->+
->+#define TYPE_ICH_DMI_PCI_BRIDGE "i82801b11-bridge"
->+OBJECT_DECLARE_SIMPLE_TYPE(I82801b11Bridge, ICH_DMI_PCI_BRIDGE)
->+
->+struct I82801b11Bridge {
->+    PCIBridge parent_obj;
->+};
->+
->+#endif
->diff --git a/include/hw/southbridge/ich9=2Eh b/include/hw/southbridge/ich=
-9=2Eh
->index bee522a4cf=2E=2Eb2abf483e0 100644
->--- a/include/hw/southbridge/ich9=2Eh
->+++ b/include/hw/southbridge/ich9=2Eh
->@@ -114,8 +114,6 @@ struct ICH9LPCState {
->=20
-> #define ICH9_D2P_SECONDARY_DEFAULT              (256 - 8)
->=20
->-#define ICH9_D2P_A2_REVISION                    0x92
->-
-> /* D31:F0 LPC Processor Interface */
-> #define ICH9_RST_CNT_IOPORT                     0xCF9
->=20
->diff --git a/hw/pci-bridge/i82801b11=2Ec b/hw/pci-bridge/i82801b11=2Ec
->index c140919cbc=2E=2Edd17e35b0a 100644
->--- a/hw/pci-bridge/i82801b11=2Ec
->+++ b/hw/pci-bridge/i82801b11=2Ec
->@@ -45,7 +45,7 @@
-> #include "hw/pci/pci_bridge=2Eh"
-> #include "migration/vmstate=2Eh"
-> #include "qemu/module=2Eh"
->-#include "hw/southbridge/ich9=2Eh"
->+#include "hw/pci-bridge/ich_dmi_pci=2Eh"
->=20
-> /***********************************************************************=
-******/
-> /* ICH9 DMI-to-PCI bridge */
->@@ -53,11 +53,8 @@
-> #define I82801ba_SSVID_SVID     0
-> #define I82801ba_SSVID_SSID     0
->=20
->-typedef struct I82801b11Bridge {
->-    /*< private >*/
->-    PCIBridge parent_obj;
->-    /*< public >*/
->-} I82801b11Bridge;
->+
->+#define ICH9_D2P_A2_REVISION                    0x92
->=20
-> static void i82801b11_bridge_realize(PCIDevice *d, Error **errp)
-> {
->@@ -103,7 +100,7 @@ static void i82801b11_bridge_class_init(ObjectClass *=
-klass, void *data)
-> }
->=20
-> static const TypeInfo i82801b11_bridge_info =3D {
->-    =2Ename          =3D "i82801b11-bridge",
->+    =2Ename          =3D TYPE_ICH_DMI_PCI_BRIDGE,
->     =2Eparent        =3D TYPE_PCI_BRIDGE,
->     =2Einstance_size =3D sizeof(I82801b11Bridge),
->     =2Eclass_init    =3D i82801b11_bridge_class_init,
+Patch 4 is patch 2 from v2 without any changes.
+
+Patches based on alistair/riscv-to-apply.next.
+
+Changes from v2:
+- patches 1 and 3 from v2 were dropped, patch 2 from v2 is now patch 4
+- patch 1: new
+  - dirty vs state before stores
+- patch 2: new
+  - remove redundant conditionals
+- patch 3: new
+  - assign env->vstart = 0 in GEN_VEXT_VSLIDEUP_VX() 
+- patch 5: taken from [1] with the following changes:
+  - fixed conflicts with alistair/riscv-to-apply.next
+  - changed "finalize_rrv_inst" instances to "finalize_rvv_inst" to fix
+    trans_rvvk.c.inc build
+  - set_vstart_eq_zero() removed; finalize_rvv_inst() will do a direct
+    ctx->vstart_eq_zero = true instead;
+  - finalize_rvv_inst() is removed from the #ifdef block since it's now
+    relevant to linux-user
+- v2 link: https://lore.kernel.org/qemu-riscv/20240216135719.1034289-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (4):
+  trans_rvv.c.inc: mark_vs_dirty() before stores
+  target/riscv: remove 'over' brconds from vector trans
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+
+Ivan Klokov (1):
+  target/riscv: Clear vstart_qe_zero flag
+
+ target/riscv/insn_trans/trans_rvbf16.c.inc |   6 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 224 +++++----------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +--
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vector_helper.c               |   1 +
+ 5 files changed, 70 insertions(+), 197 deletions(-)
+
+-- 
+2.43.2
+
 
