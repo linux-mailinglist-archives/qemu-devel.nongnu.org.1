@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBBB85C754
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 22:11:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 365BF85C756
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 22:11:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcXNo-0003Vq-L0; Tue, 20 Feb 2024 16:10:33 -0500
+	id 1rcXOv-00042n-GA; Tue, 20 Feb 2024 16:11:42 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcXNj-0003V5-En
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 16:10:27 -0500
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from
+ <3fRXVZQcKCjIYcaZcRWUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--komlodi.bounces.google.com>)
+ id 1rcXOo-0003yp-Hd
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 16:11:34 -0500
+Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rcXNX-0008M6-RM
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 16:10:27 -0500
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1d51ba18e1bso60005135ad.0
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 13:10:14 -0800 (PST)
+ (Exim 4.90_1) (envelope-from
+ <3fRXVZQcKCjIYcaZcRWUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--komlodi.bounces.google.com>)
+ id 1rcXOh-0008Q8-8k
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 16:11:33 -0500
+Received: by mail-yw1-x114a.google.com with SMTP id
+ 00721157ae682-60853aafd93so30134527b3.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 13:11:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1708463413; x=1709068213; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hrYafVmPknXj6OBu45DwwkQ8cyY3M2/gxdad8UKpldU=;
- b=LtBoh11iNxKaPDbewQvuUOjiHgWRjAO0y6CKQP+FGfoiiAuiGGKWj4zOWD2lYA2/5H
- kXYWeFkSWpAiYshKSYtRl+CQUTVLuCIS12kiySFRHVT+FhqdB3o/Y9CLXJYlkiecG1z7
- 4/BnNrz9SWyPSUMuarf/34p2sP2rsMANkrXvavmWl92Ywwdbbw9+ycCjbEgXkuiy/n+6
- 6GFgNHCfNt2fg4HMUhsChyIpQxxpwQOWb3rOt5BG22vfQMHQMsAROh+z8z7kP5PXX/XN
- EpAe9lIxuF5teAvJX7TUjZQ41on4SHytno4lfXCxNet558n7rBYoIZFGQsve66wYT3W6
- tu4g==
+ d=google.com; s=20230601; t=1708463486; x=1709068286; darn=nongnu.org;
+ h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=TML7Jy3/d5bJB/Cd6AIs7tWz+tZ5nfzfNhH5YHq9Da8=;
+ b=znCDrIPFVxYegOAz1wDAAKEVSA/HvM+jdOV07nTaIVrgR7oBwIZgaOqpI/LNQQ2e49
+ GpROOTWbFn5DfJrNq4baToSAB/3wlG5debOb0YA+NVLSn6BKJXzOs039MM36aLz+qtWq
+ C9flALSBu8RFcP+/vMWQ23X7XYNRWSZ3I1YZzLB2WJRlYvLvjq4QolLrtZacN7pCYZWO
+ ASDHHGyuhDyQNyXWqz73vUezNsD6T3TGLGIQa8tn/BlV2e/ctGNQgTcsQWDFrD3bYmsx
+ pMIKOKvlFSsnk4yKCvo5RN72+W5tAD2eGTv2MuNimpmGqvK+Nz5PwmmFOaTmVvWEkVej
+ dKHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708463413; x=1709068213;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hrYafVmPknXj6OBu45DwwkQ8cyY3M2/gxdad8UKpldU=;
- b=A121032ipMzHBhHodafCzcoDMM263slpjkV6GgN+L+0hikv45H/Wl23wPZQ4v+sd5y
- x1g6TNEozZKceJ7Dy/50jja9kqL7LBIOjnHY0BbPmXr9YixISKAcbM7zUIyll2s1W4gh
- pbz0HY722DO+FD5FRDNF5k8S2B9Xjd7qylLSbV1gyNcbJZd/KBAwvDmdF2VZN3tDeUmc
- ob5QZ/aOoAmmRb8L2Xy4jyZGpyDO0+Ek0H/Lf07zt/guA2mCb60ExeqjupRvNKx8TvJj
- ZNOIoML0AAkLeVNGFfn2rLLWPLWjmFMVRvcQWyFtTJt3bShHEoHW5FBy83M0Vn8aDmf2
- gG7g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWSfNr7861yWLVaf29IMJZbQPmqTd6ta1J90/WVoskqV2bEaUCxl391XLiGAfhf/S3U8O6w66m7Rz45o/TySQd3lc3ZdNw=
-X-Gm-Message-State: AOJu0YxKTA+ZLRuwbMm3trIr7bu19FxoYlZhANewa2K5z0K//RLp2/fB
- R8wcJJPln8u0cKvDXE8iVCIWEYGFwO55D/j02XDgnanuSSh9DlAamAgqj4/8q1g=
-X-Google-Smtp-Source: AGHT+IHRyCetltwcDJCkO1OoMegCcPaLDBoyLyGML8zd3rnNQtDskxvwirMX1wxF7V+etVxkR4LR/g==
-X-Received: by 2002:a17:903:41ce:b0:1db:dd57:d56 with SMTP id
- u14-20020a17090341ce00b001dbdd570d56mr14112090ple.23.1708463413162; 
- Tue, 20 Feb 2024 13:10:13 -0800 (PST)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- j6-20020a17090276c600b001da1ecb05f9sm6643377plt.240.2024.02.20.13.10.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 Feb 2024 13:10:12 -0800 (PST)
-Message-ID: <ad667881-f55c-468e-b6a1-8138147f71ef@ventanamicro.com>
-Date: Tue, 20 Feb 2024 18:10:08 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] trans_rvv.c.inc: mark_vs_dirty() before stores
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- max.chou@sifive.com
-References: <20240220192607.141880-1-dbarboza@ventanamicro.com>
- <20240220192607.141880-2-dbarboza@ventanamicro.com>
- <32df58bf-cf71-4825-8b56-67108c81944d@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <32df58bf-cf71-4825-8b56-67108c81944d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ d=1e100.net; s=20230601; t=1708463486; x=1709068286;
+ h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TML7Jy3/d5bJB/Cd6AIs7tWz+tZ5nfzfNhH5YHq9Da8=;
+ b=rPJ8hwCHVXHYhltA/L/vy9R+iSLxv4G0Ktn1OV7x0laloaRY1NGE+mJNNCZHb5C6cW
+ CvFR9KnQgdeVum9R7yJ56aw71oVsAiBDFMcFMhhOZeMFl+g3f0h3luBYowTTZgLpYuBA
+ SRIhyGaydE8CWhu9eesrAkbdtxF8g4MVbplYBxNdMoJDGJulb9jL3bw5mSURl/FWyS+U
+ scLsnpTP3i6FSPIwcIj+32Euwop0fobY6tDY2wM/6jpgjpzz58SBUVqxjFJnyLQVwHKh
+ +VDK7WQdVkuIBd7eYY2Ouexh0jz/oYgkBswkqIDe90rjXGvsun7+EU7yHV4IZpPJiwm+
+ V9pA==
+X-Gm-Message-State: AOJu0YzYarF1jhr/As5uypYWmCurCy+GfAbBqg2Bc++Ysuj3dFYndWqZ
+ dINmBJlCTWs1B+bunnDnfUqK3U/558Cvp3t7vco6P+/PMsx68V4Z62xj8KOLFuqrWMm+vO43Lf4
+ IhejGCMLXLbuje3hJdTZZ9sI6CXbHHy1sIrJ1Krh7U6o/KB1oz73lQqJtG9XpFIjG9vMVoYY08L
+ dvf+3DmeVU5cO7E0LgGrb0xiu2akiK2CnFeAdV
+X-Google-Smtp-Source: AGHT+IGQuCj1kr9h/8hWPu1jC0cbn3plK5nKoOAinU/SB20UCVOrHPa8CKGaLQPE4eWt8JTxEarUAWwSavK4
+X-Received: from komlodi.c.googlers.com
+ ([fda3:e722:ac3:cc00:7f:e700:c0a8:35ee])
+ (user=komlodi job=sendgmr) by 2002:a25:ab6b:0:b0:dcd:5e5d:458b with SMTP id
+ u98-20020a25ab6b000000b00dcd5e5d458bmr4407537ybi.3.1708463485651; Tue, 20 Feb
+ 2024 13:11:25 -0800 (PST)
+Date: Tue, 20 Feb 2024 21:11:20 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240220211123.2664977-1-komlodi@google.com>
+Subject: [PATCH v4 0/3] hw/i2c: smbus: Reset fixes
+From: Joe Komlodi <komlodi@google.com>
+To: qemu-devel@nongnu.org
+Cc: komlodi@google.com, venture@google.com, minyard@acm.org, 
+ peter.maydell@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
+ envelope-from=3fRXVZQcKCjIYcaZcRWUccUZS.QcaeSai-RSjSZbcbUbi.cfU@flex--komlodi.bounces.google.com;
+ helo=mail-yw1-x114a.google.com
+X-Spam_score_int: -95
+X-Spam_score: -9.6
+X-Spam_bar: ---------
+X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,76 +91,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Changelog:
 
+v3 -> v4
 
-On 2/20/24 17:17, Richard Henderson wrote:
-> On 2/20/24 09:26, Daniel Henrique Barboza wrote:
->> While discussing a problem with how we're (not) setting vstart_eq_zero
->> Richard had the following to say w.r.t the conditional mark_vs_dirty()
->> calls on load/store functions [1]:
->>
->> "I think it's required to have stores set dirty unconditionally, before
->> the operation.
->>
->> Consider a store that traps on the 2nd element, leaving vstart = 2, and
->> exiting to the main loop via exception. The exception enters the kernel
->> page fault handler. The kernel may need to fault in the page for the
->> process, and in the meantime task switch.
->>
->> If vs dirty is not already set, the kernel won't know to save vector
->> state on task switch."
->>
->> Do a mark_vs_dirty() before store operations. Keep the mark_vs_dirty()
->> call at the end for loads - the function is a no-op if mstatus_vs is
->> already set to EXT_STATUS_DIRTY so there's no hurt in store functions
->> calling it twice.
->>
->> [1] https://lore.kernel.org/qemu-riscv/72c7503b-0f43-44b8-aa82-fbafed2aac0c@linaro.org/
->>
->> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/insn_trans/trans_rvv.c.inc | 29 +++++++++++++++----------
->>   1 file changed, 17 insertions(+), 12 deletions(-)
->>
->> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
->> index 9e101ab434..2065e9064e 100644
->> --- a/target/riscv/insn_trans/trans_rvv.c.inc
->> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
->> @@ -636,12 +636,13 @@ static bool ldst_us_trans(uint32_t vd, uint32_t rs1, uint32_t data,
->>       tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
->>       tcg_gen_addi_ptr(mask, tcg_env, vreg_ofs(s, 0));
->> -    fn(dest, mask, base, tcg_env, desc);
->> -
->> -    if (!is_store) {
->> +    if (is_store) {
->>           mark_vs_dirty(s);
->>       }
->> +    fn(dest, mask, base, tcg_env, desc);
->> +
->> +    mark_vs_dirty(s);
-> 
-> You misunderstood here, I think.
-> Both loads and stores need to set dirty early, before any exit via exception path.
-> 
-> I see that I did say only stores in the quoted mail, but I believe that was merely in reference to stores not setting dirty *at all* beforehand.
+Patch 1
+- Removed the rest of the I3CBus class definition that I forgot to
+  remove in v3
 
-hmmm it made sense when I read your reply to set just for stores because I thought
-that loads wouldn't trigger page context switches in the kernel. TBH I got too
-caught up by the existing "if (!is_store)" in the code, trying to figure it out
-why it was there.
+v2 -> v3
+Patch 1
+- Removed I3CBus class definition, since it was unneeded.
+- whitespace fixes
+- Changed enter_reset to hold_reset
 
-In another read in the spec there's nothing that indicates that stores needs
-additional handling, which means that we can treat both equally in this regard.
+Patch 2
+- Moved pointer returned by object_get_canonical_path outside of printf
+  so it can be freed
 
+Patch 3
+- Changed enter_reset to hold_reset
 
-I'll change it for v4. Thanks,
+v1 -> v2
+- Dropped 4th patch "hw/i2c: smbus: mux: Reset SMBusDevice state
+on reset". After more testing and Corey's comment, I realized it
+wasn't needed.
 
+Original message:
 
-Daniel
+Hi all,
 
+This series adds some resets for SMBus and for the I2C core. Along with
+it, we make SMBus slave error printing a little more helpful.
 
-> 
-> 
-> r~
+These reset issues were very infrequent, they would maybe occur in 1 out
+of hundreds of resets in our testing, but the way they happen is pretty
+straightforward.
+
+Basically as long as a reset happens in the middle of a transaction, the
+state of the old transaction would still partially be there after the
+reset. Once a new transaction comes in, the partial stale state can
+cause the new transaction to incorrectly fail.
+
+Thanks,
+Joe
+
+Joe Komlodi (3):
+  hw/i2c: core: Add reset
+  hw/i2c/smbus_slave: Add object path on error prints
+  hw/i2c: smbus_slave: Reset state on reset
+
+ hw/i2c/core.c        | 19 +++++++++++++++++++
+ hw/i2c/smbus_slave.c | 17 +++++++++++++++--
+ 2 files changed, 34 insertions(+), 2 deletions(-)
+
+-- 
+2.44.0.rc0.258.g7320e95886-goog
+
 
