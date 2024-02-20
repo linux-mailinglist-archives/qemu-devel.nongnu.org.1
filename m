@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8468585B626
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6968285B64D
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLvF-00085G-3A; Tue, 20 Feb 2024 03:56:17 -0500
+	id 1rcLup-0007LD-FG; Tue, 20 Feb 2024 03:55:51 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuf-0007IP-Gn
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:42 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuS-0006r0-5r
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:29 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuO-0000Gf-To
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:35 -0500
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuQ-0000H8-5u
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708419324;
+ s=mimecast20190719; t=1708419325;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HM6U0LU35a+2Z/yPJC0ehYwMCB1ei2vXBUN8XgWAe2Y=;
- b=YSCb7lq5kA4FWUlsbAdmdcU2OTPzgWG403h2X4eIfa8oyKOlIDrfSdR0Po347+BXRoiYO2
- xK6gJB9a+qP6+puFzS+ZOxxEJlvO0vedYnIVBuLSPAll1duJMp4K8zAeRh/dRi6CQmgmja
- JrYEz/N8vxRFdf6aNEzBU9RPlFbiRw8=
+ bh=9vkV3sEnLSykwaV3Bl8KUF+agsW/xGneNvBODKpFcVU=;
+ b=fCWRyOVAFQhAF0J1253IkLNx3XGGQdTVPnl8wQOw3HFsP07uJpvdZhC2TKbfO4stXFL4jX
+ AnnrOBzyvkCmKs/p5O9vkESNUFgob+ibcRpE6w3Dd2ynRJNSsA61jRLOdhxbmKLxpB/pZR
+ EHlqeseEGgG83VJjJUbbzcRxgGBBbIM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328--D1aPyTCOFK__AlX410bMg-1; Tue, 20 Feb 2024 03:55:19 -0500
-X-MC-Unique: -D1aPyTCOFK__AlX410bMg-1
+ us-mta-418-GSvnlPXlPv2XjIxCp_aYGg-1; Tue, 20 Feb 2024 03:55:21 -0500
+X-MC-Unique: GSvnlPXlPv2XjIxCp_aYGg-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69205867948;
- Tue, 20 Feb 2024 08:55:19 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D39185A58F;
+ Tue, 20 Feb 2024 08:55:21 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1E625492BE2;
- Tue, 20 Feb 2024 08:55:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CDB29492BE3;
+ Tue, 20 Feb 2024 08:55:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: John Snow <jsnow@redhat.com>,
 	qemu-devel@nongnu.org
 Cc: BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org
-Subject: [PATCH v2 5/7] hw/ide: Move IDE bus related definitions to a new
- header ide-bus.h
-Date: Tue, 20 Feb 2024 09:55:03 +0100
-Message-ID: <20240220085505.30255-6-thuth@redhat.com>
+Subject: [PATCH v2 6/7] hw/ide: Remove the include/hw/ide.h legacy file
+Date: Tue, 20 Feb 2024 09:55:04 +0100
+Message-ID: <20240220085505.30255-7-thuth@redhat.com>
 In-Reply-To: <20240220085505.30255-1-thuth@redhat.com>
 References: <20240220085505.30255-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -65,7 +65,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,132 +81,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's consolidate the public IDE bus related functions in a separate
-header.
+There was only one prototype left in this legacy file. Move it to
+ide-dev.h to finally get rid of it.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/ide/ide-bus.h  | 42 +++++++++++++++++++++++++++++++++++++++
- include/hw/ide/internal.h | 40 +------------------------------------
- 2 files changed, 43 insertions(+), 39 deletions(-)
- create mode 100644 include/hw/ide/ide-bus.h
+ MAINTAINERS               | 1 -
+ include/hw/ide.h          | 9 ---------
+ include/hw/ide/ide-dev.h  | 2 ++
+ include/hw/ide/internal.h | 3 +--
+ 4 files changed, 3 insertions(+), 12 deletions(-)
+ delete mode 100644 include/hw/ide.h
 
-diff --git a/include/hw/ide/ide-bus.h b/include/hw/ide/ide-bus.h
-new file mode 100644
-index 0000000000..4841a7dcd6
---- /dev/null
-+++ b/include/hw/ide/ide-bus.h
-@@ -0,0 +1,42 @@
-+#ifndef HW_IDE_BUS_H
-+#define HW_IDE_BUS_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7d61fb9319..f3cbfb8818 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1936,7 +1936,6 @@ IDE
+ M: John Snow <jsnow@redhat.com>
+ L: qemu-block@nongnu.org
+ S: Odd Fixes
+-F: include/hw/ide.h
+ F: include/hw/ide/
+ F: hw/ide/
+ F: hw/block/block.c
+diff --git a/include/hw/ide.h b/include/hw/ide.h
+deleted file mode 100644
+index db963bdb77..0000000000
+--- a/include/hw/ide.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-#ifndef HW_IDE_H
+-#define HW_IDE_H
+-
+-#include "exec/memory.h"
+-
+-/* ide/core.c */
+-void ide_drive_get(DriveInfo **hd, int max_bus);
+-
+-#endif /* HW_IDE_H */
+diff --git a/include/hw/ide/ide-dev.h b/include/hw/ide/ide-dev.h
+index 1f62e58ebc..708cc0fda3 100644
+--- a/include/hw/ide/ide-dev.h
++++ b/include/hw/ide/ide-dev.h
+@@ -179,4 +179,6 @@ typedef struct IDEDrive {
+ 
+ void ide_dev_initfn(IDEDevice *dev, IDEDriveKind kind, Error **errp);
+ 
++void ide_drive_get(DriveInfo **hd, int max_bus);
 +
-+#include "exec/ioport.h"
-+#include "hw/ide/ide-dev.h"
-+#include "hw/ide/ide-dma.h"
-+
-+struct IDEBus {
-+    BusState qbus;
-+    IDEDevice *master;
-+    IDEDevice *slave;
-+    IDEState ifs[2];
-+    QEMUBH *bh;
-+
-+    int bus_id;
-+    int max_units;
-+    IDEDMA *dma;
-+    uint8_t unit;
-+    uint8_t cmd;
-+    qemu_irq irq; /* bus output */
-+
-+    int error_status;
-+    uint8_t retry_unit;
-+    int64_t retry_sector_num;
-+    uint32_t retry_nsector;
-+    PortioList portio_list;
-+    PortioList portio2_list;
-+    VMChangeStateEntry *vmstate;
-+};
-+
-+#define TYPE_IDE_BUS "IDE"
-+OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
-+
-+void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
-+                  int bus_id, int max_units);
-+IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
-+
-+int ide_get_geometry(BusState *bus, int unit,
-+                     int16_t *cyls, int8_t *heads, int8_t *secs);
-+int ide_get_bios_chs_trans(BusState *bus, int unit);
-+
-+#endif
+ #endif
 diff --git a/include/hw/ide/internal.h b/include/hw/ide/internal.h
-index 1aab89b27b..d3ec16a945 100644
+index d3ec16a945..20dde37f45 100644
 --- a/include/hw/ide/internal.h
 +++ b/include/hw/ide/internal.h
-@@ -8,16 +8,10 @@
+@@ -4,10 +4,9 @@
+ /*
+  * QEMU IDE Emulation -- internal header file
+  * only files in hw/ide/ are supposed to include this file.
+- * non-internal declarations are in hw/ide.h
++ * non-internal declarations are in hw/include/ide-*.h
   */
  
- #include "hw/ide.h"
--#include "exec/ioport.h"
--#include "hw/ide/ide-dma.h"
--#include "hw/ide/ide-dev.h"
-+#include "hw/ide/ide-bus.h"
+-#include "hw/ide.h"
+ #include "hw/ide/ide-bus.h"
  
  /* debug IDE devices */
- #define USE_DMA_CDROM
--#include "qom/object.h"
--
--#define TYPE_IDE_BUS "IDE"
--OBJECT_DECLARE_SIMPLE_TYPE(IDEBus, IDE_BUS)
- 
- /* Device/Head ("select") Register */
- #define ATA_DEV_SELECT          0x10
-@@ -338,29 +332,6 @@ typedef struct IDEBufferedRequest {
-     bool orphaned;
- } IDEBufferedRequest;
- 
--struct IDEBus {
--    BusState qbus;
--    IDEDevice *master;
--    IDEDevice *slave;
--    IDEState ifs[2];
--    QEMUBH *bh;
--
--    int bus_id;
--    int max_units;
--    IDEDMA *dma;
--    uint8_t unit;
--    uint8_t cmd;
--    qemu_irq irq; /* bus output */
--
--    int error_status;
--    uint8_t retry_unit;
--    int64_t retry_sector_num;
--    uint32_t retry_nsector;
--    PortioList portio_list;
--    PortioList portio2_list;
--    VMChangeStateEntry *vmstate;
--};
--
- /* These are used for the error_status field of IDEBus */
- #define IDE_RETRY_MASK 0xf8
- #define IDE_RETRY_DMA  0x08
-@@ -477,15 +448,6 @@ void ide_cancel_dma_sync(IDEState *s);
- void ide_atapi_cmd(IDEState *s);
- void ide_atapi_cmd_reply_end(IDEState *s);
- 
--/* hw/ide/qdev.c */
--void ide_bus_init(IDEBus *idebus, size_t idebus_size, DeviceState *dev,
--                  int bus_id, int max_units);
--IDEDevice *ide_bus_create_drive(IDEBus *bus, int unit, DriveInfo *drive);
--
--int ide_get_geometry(BusState *bus, int unit,
--                     int16_t *cyls, int8_t *heads, int8_t *secs);
--int ide_get_bios_chs_trans(BusState *bus, int unit);
--
- int ide_handle_rw_error(IDEState *s, int error, int op);
- 
- #endif /* HW_IDE_INTERNAL_H */
 -- 
 2.43.2
 
