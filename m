@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D315385B1E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 05:20:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440D685B1ED
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 05:25:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcHbi-0001gF-Pa; Mon, 19 Feb 2024 23:19:50 -0500
+	id 1rcHgt-0004mE-Sh; Mon, 19 Feb 2024 23:25:11 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rcHbh-0001fz-1i; Mon, 19 Feb 2024 23:19:49 -0500
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1rcHgr-0004lm-IS; Mon, 19 Feb 2024 23:25:09 -0500
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rcHbe-0006HU-Tv; Mon, 19 Feb 2024 23:19:48 -0500
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-299c5a23f40so783712a91.3; 
- Mon, 19 Feb 2024 20:19:46 -0800 (PST)
+ id 1rcHgp-0007Kl-0e; Mon, 19 Feb 2024 23:25:09 -0500
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-295c8b795e2so2749589a91.0; 
+ Mon, 19 Feb 2024 20:25:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708402785; x=1709007585; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1708403105; x=1709007905; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VI3mZsuAcYBxmb29DQFvybJDPmtONoM1V8I3PUnaIk4=;
- b=FloeIvI4qVhsNGd6Dg+NW6OeEu8pPvxhNE3gj0bqhLUqnzjhzRHsnsL5Zp5lb2GhC+
- G348vICS5h6LuaNE9rsidUgwMeNlbHECufJcI7miStVaP7MyfjTE/YuPedFclc5WwPUg
- 49MiIlWhvhZPyP59yceNuNQLxfvoHhGiKSGZcY+LYo9/UFn2K5GLKtYfn3gflQTmeK64
- jRYMKLdyiISWQzzll777/zIj8HHxvKUUMc2hrgq7QEtUwrwT2KytbIC/86VcUyiP2Eej
- x7VP2VjwdGzkKWDatoiewKNDii/HNaw6kIqiCDq2GJMo+43/OZJNxJwYhjhAX375Yw6R
- GMWg==
+ bh=nGGEiOfgwwsWJwQ5Ybjh0uzMa/9ot07KfPohoRv5J48=;
+ b=OF0Maoi9E5FuDq9PGkyxOmSThvHqfZnQY2WNY0oFS0n0E4oM8dX4lBjXs7j4bEr+KV
+ sbhnjRvus+3QAGcUpWhgj2OsSkNC/4Hi+CLkXdMWpK9zD0ltt5M5EIMYyTW2dBRpofHO
+ ynLAEeqihNIju4i0xPqcX1dj/Rk30sCTY4R+tQhN5aALKGUeq1InXcjeXUPckCMpFh4L
+ hqUCntPYm61QE6aHIGensZdROvk4SNv6dPhR50SELAX552hLfQD0H/E+kFW6zgOTW3ac
+ Lt0Y2J2wWWc9sRK/NhcF14oMqfGEz56Zu/OcY4PvmXu0qNZTxaaQBmrKDOF8SCaf8sfR
+ /jOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708402785; x=1709007585;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VI3mZsuAcYBxmb29DQFvybJDPmtONoM1V8I3PUnaIk4=;
- b=GZJPnTfRgsf4fhXbr4dCN4haxHvXLgoOOQc4AWx3oDlpYni9//n93Vw96Z4/rh54Dz
- FPcqnA0mCXdV4NlLYYgUJHL16Hmfo19qtdofK54yBXCB6lM/fDug6LEs0ai7w4sOph97
- HtzZ9997hQfJCrCtd2irh7Y/pwLmnFNP1T4AO0UjE2ICL2SHJ2u+khLsmN3I2B8rhajd
- MHC8MgE5Qfxlwz5DXGoa5/qhWb2Rs9+vaN90xTNc3N9oonWYMs3ofsGlT1sz8Kdnw8A8
- zLhKaJ+pOW8iOskLNV+IHU4h7k8dDucFVLcb8zyZaRnGbMRG5ZYW8kYbuv2sONIf1CxZ
- G5SQ==
+ d=1e100.net; s=20230601; t=1708403105; x=1709007905;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=nGGEiOfgwwsWJwQ5Ybjh0uzMa/9ot07KfPohoRv5J48=;
+ b=sLM+ThsknI7LFQ4EPnN24Gr06yiEN9ue8cFbh7r+b8mOTVXMKsWWowGKQydA63DeMF
+ 49pp2UjkqyHWbh/LDn4mlqEMbjy3+LCQ7O9oipDQlrRANO02U9KfRL93NZ9ya6qXTzSm
+ SMRSBkt16jM53B4i4fRGZN/9JBzVDrt+n0P1Fw3qKQIl38yckuwpCaWFGfHqmd8/5ex7
+ d65ayAg9tQ0hH3TJWclrB8mLeppZDnkZxs65ydwDUCoY0295JkDSRXu/3Ht1/tFr1AZd
+ 18EwK2mKA2KdzfuC9hE1UEpnCyE9q5WC3yXrCFtge8PH6aLHAVngloD6dBxxmQD5DKCS
+ vZCA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUCpVA7r58hTdDNch2/qQH9u7tMFtAeWJjTBuzrBorJcSBCIR9IA/bjlRRTUt8e3s4GlvdZ5zqmUr5cMPWqw8zRHaca3dE=
-X-Gm-Message-State: AOJu0YyUBep99agpg2T9F76DkbhI/axccSIdn2x9Qz4JtLVdg1NgsLbe
- Wf6e1ME0tED/ZF9UFi6OCrvGRmU8HEqeXLEMN4h8+jY5kOWBmjcwCVHlbEPe
-X-Google-Smtp-Source: AGHT+IGfgMoTY6FGpctUejyNDl+lPM+ltp5B+xkwCrkpChOXpwQKQM6HMAi72oJnRhFPIPApjLGtvQ==
-X-Received: by 2002:a17:90a:7883:b0:298:b08e:ec35 with SMTP id
- x3-20020a17090a788300b00298b08eec35mr9343098pjk.47.1708402780735; 
- Mon, 19 Feb 2024 20:19:40 -0800 (PST)
-Received: from wheely.local0.net (123-243-155-241.static.tpgi.com.au.
+ AJvYcCW6XraOLXPo1/MbSyS4lrF8Js0PkI4cLT1H2PpZgNp6wO2qrrMrpTjlKRs775EQTj3Shz5V93xxq4V/7kY+/GUJHAR12KhrfcjsMMRBQj06SeOuRW1eVQqP2LE=
+X-Gm-Message-State: AOJu0Yxo/r9jcjngTCQtKa7QlBkpZzt/Ql4YfiBrkqnXCOKWQZkTlm42
+ QqYQlNz2F/zRIRg3ZhmR5lCrxE9HgE9WleIfG1j/Y1/qdZh4uAIY
+X-Google-Smtp-Source: AGHT+IGdvf8Ch3gZlBbLuk11ZgVGqoDWJ+BJH86RcI+LfeDKAVbcZTGd7LUHsG76DQgRUQunGlh3yg==
+X-Received: by 2002:a17:90a:f284:b0:299:5fe5:5ec2 with SMTP id
+ fs4-20020a17090af28400b002995fe55ec2mr4425249pjb.17.1708403105100; 
+ Mon, 19 Feb 2024 20:25:05 -0800 (PST)
+Received: from localhost (123-243-155-241.static.tpgi.com.au.
  [123.243.155.241]) by smtp.gmail.com with ESMTPSA id
- pl6-20020a17090b268600b00297138f0496sm6232621pjb.31.2024.02.19.20.19.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 Feb 2024 20:19:40 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH 3/3] target/ppc: Implement reservation protection for
- larx/stcx
-Date: Tue, 20 Feb 2024 14:19:22 +1000
-Message-ID: <20240220041922.373029-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240220041922.373029-1-npiggin@gmail.com>
-References: <20240220041922.373029-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1033.google.com
+ n17-20020a17090ade9100b0029937256b91sm6183982pjv.7.2024.02.19.20.25.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Feb 2024 20:25:04 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 Feb 2024 14:24:59 +1000
+Message-Id: <CZ9MCTFAU5C0.2FPZF0G932N6O@wheely>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, "Bernhard Beschow"
+ <shentey@gmail.com>, <clg@kaod.org>
+Subject: Re: [PATCH v2] docs/system/ppc: Document running Linux on AmigaNG
+ machines
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20240219203006.8AF8F4E6003@zero.eik.bme.hu>
+In-Reply-To: <20240219203006.8AF8F4E6003@zero.eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,435 +95,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the generic llsc protection feature to implement real reservation
-protection for larx/stcx.
+On Tue Feb 20, 2024 at 6:30 AM AEST, BALATON Zoltan wrote:
+> Documentation on how to run Linux on the amigaone, pegasos2 and
+> sam460ex machines is currently buried in the depths of the qemu-devel
+> mailing list and in the source code. Let's collect the information in
+> the QEMU handbook for a one stop solution.
+>
+> Co-authored-by: Bernhard Beschow <shentey@gmail.com>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 
-This is more complicated and quite a bit slower than the cmpxchg
-pseudo-reservation, so it's questionable whether it should be merged
-or ever made the default.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-It could possibly be sped up more by tuning heuristics for managing
-the dirty bitmap -- being a bit more lazy about that could reduce
-the heavyweight bitmap cleaning and dirtying operations.
-
-Not sure if there are other better approaches to this. One thing I
-have tried to implement the reservation-granule (i.e., stcx. to
-succeed for an address that differs from the one that established
-the reservation) is to first fail the stcx. if it detects an
-address mismatch, but then set a flag to say try the mismatched
-mode next time. Next larx encountered will load and save memory
-contents for the entire reservation granule, then stcx. verifies
-the granule. This works to some degree with better performance
-on code that doesn't behave this way, but it still misses things,
-not only ABA but also stores that modify values not subject to the
-stcx. on the first pass in case that stcx. address *does* match
-larx. So I consider that even more of a hack and not really suitable
-for upstream.
-
-At the very least, this seems to have flushed out another bug in
-the cpu memory dirty bitmap code, since it hammers it much harder
-than typical users and simple test cases can be constructed that
-make failures obvious (lost updates, lost mutual exclusion, etc).
-so it hasn't been all for nothing even if it is a bad design :)
----
- target/ppc/cpu-param.h  |   4 ++
- target/ppc/helper.h     |   2 +
- target/ppc/cpu_init.c   |   4 ++
- target/ppc/mem_helper.c | 132 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/translate.c  | 128 ++++++++------------------------------
- 5 files changed, 168 insertions(+), 102 deletions(-)
-
-diff --git a/target/ppc/cpu-param.h b/target/ppc/cpu-param.h
-index 0a0416e0a8..355b4e2fdd 100644
---- a/target/ppc/cpu-param.h
-+++ b/target/ppc/cpu-param.h
-@@ -8,6 +8,10 @@
- #ifndef PPC_CPU_PARAM_H
- #define PPC_CPU_PARAM_H
- 
-+#ifndef TARGET_HAS_LLSC_PROT /* XXX: hack */
-+#define TARGET_HAS_LLSC_PROT 1
-+#endif
-+
- #ifdef TARGET_PPC64
- # define TARGET_LONG_BITS 64
- /*
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 86f97ee1e7..e996b9f530 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -818,4 +818,6 @@ DEF_HELPER_4(DSCLI, void, env, fprp, fprp, i32)
- DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
- 
- DEF_HELPER_1(tbegin, void, env)
-+DEF_HELPER_4(larx, void, env, tl, tl, tl)
-+DEF_HELPER_4(stcx, void, env, tl, tl, tl)
- DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9931372a08..5fc14830ab 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6831,6 +6831,10 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
-         goto unrealize;
-     }
-     init_ppc_proc(cpu);
-+    if (tcg_enabled()) {
-+        cs->llsc_prot_block_size = env->dcache_line_size;
-+        printf("Reservation granule size %d\n", cs->llsc_prot_block_size);
-+    }
- 
-     ppc_gdb_init(cs, pcc);
-     qemu_init_vcpu(cs);
-diff --git a/target/ppc/mem_helper.c b/target/ppc/mem_helper.c
-index ea7e8443a8..fe2c7576c8 100644
---- a/target/ppc/mem_helper.c
-+++ b/target/ppc/mem_helper.c
-@@ -24,11 +24,21 @@
- #include "exec/helper-proto.h"
- #include "helper_regs.h"
- #include "exec/cpu_ldst.h"
-+#include "exec/cputlb.h"
- #include "internal.h"
- #include "qemu/atomic128.h"
- 
- /* #define DEBUG_OP */
- 
-+static inline int DEF_MEMOP(const CPUPPCState *env, int op)
-+{
-+    if (FIELD_EX64(env->msr, MSR, LE)) {
-+        return op | MO_LE;
-+    } else {
-+        return op | MO_BE;
-+    }
-+}
-+
- static inline bool needs_byteswap(const CPUPPCState *env)
- {
- #if TARGET_BIG_ENDIAN
-@@ -528,3 +538,125 @@ void helper_tbegin(CPUPPCState *env)
-     env->spr[SPR_TFHAR] = env->nip + 4;
-     env->crf[0] = 0xB; /* 0b1010 = transaction failure */
- }
-+
-+void helper_larx(CPUPPCState *env, target_ulong addr, target_ulong size,
-+                 target_ulong reg)
-+{
-+    CPUState *cs = env_cpu(env);
-+    uintptr_t raddr = GETPC();
-+    int mmu_idx = cpu_mmu_index(cs, false);
-+    uint64_t val;
-+    void *host;
-+
-+    if (addr & (size - 1)) {
-+	ppc_cpu_do_unaligned_access(cs, addr, MMU_DATA_LOAD, mmu_idx, raddr);
-+    }
-+
-+    env->access_type = ACCESS_RES;
-+    host = probe_access(env, addr, size, MMU_DATA_LOAD, mmu_idx, raddr);
-+    if (host) {
-+        cpu_set_llsc_prot(cs, qemu_ram_addr_from_host_nofail(host));
-+    } else {
-+        /* XXX: fault? */
-+        g_assert_not_reached();
-+    }
-+
-+    if (unlikely(size == 16)) {
-+        Int128 val16;
-+        val16 = cpu_ld16_mmu(env, addr,
-+                     make_memop_idx(DEF_MEMOP(env, MO_128 | MO_ALIGN), mmu_idx),
-+                     raddr);
-+        env->gpr[reg] = int128_gethi(val16);
-+        env->gpr[reg + 1] = int128_getlo(val16);
-+        return;
-+    }
-+
-+    switch (size) {
-+    case 1:
-+        val = ldub_p(host);
-+        break;
-+    case 2:
-+        val = FIELD_EX64(env->msr, MSR, LE) ? lduw_le_p(host) : lduw_be_p(host);
-+        break;
-+    case 4:
-+        val = FIELD_EX64(env->msr, MSR, LE) ? ldl_le_p(host) : ldl_be_p(host);
-+        break;
-+    case 8:
-+        val = FIELD_EX64(env->msr, MSR, LE) ? ldq_le_p(host) : ldq_be_p(host);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    env->gpr[reg] = val;
-+}
-+
-+void helper_stcx(CPUPPCState *env, target_ulong addr, target_ulong size,
-+                 target_ulong reg)
-+{
-+    CPUState *cs = env_cpu(env);
-+    uintptr_t raddr = GETPC();
-+    int mmu_idx = cpu_mmu_index(cs, false);
-+    uint64_t val;
-+    void *host;
-+    CPUTLBEntryFull *full;
-+    int flags;
-+
-+    if (addr & (size - 1)) {
-+	ppc_cpu_do_unaligned_access(cs, addr, MMU_DATA_STORE, mmu_idx, raddr);
-+    }
-+
-+    env->access_type = ACCESS_RES;
-+
-+again:
-+    if (!cpu_resolve_llsc_begin(cs)) {
-+        goto fail;
-+    }
-+
-+    flags = probe_access_full(env, addr, size, MMU_DATA_STORE,
-+                              mmu_idx, true, &host, &full, raddr);
-+    if (unlikely(flags & TLB_INVALID_MASK)) {
-+        cpu_resolve_llsc_abort(cs);
-+        host = probe_access(env, addr, size, MMU_DATA_STORE, mmu_idx, raddr);
-+        g_assert(host);
-+        goto again;
-+    }
-+
-+    if (!cpu_resolve_llsc_check(cs, qemu_ram_addr_from_host_nofail(host))) {
-+        goto fail;
-+    }
-+
-+    if (unlikely(size == 16)) {
-+        Int128 val16 = int128_make128(env->gpr[reg + 1], env->gpr[reg]);
-+        cpu_st16_mmu(env, addr, val16,
-+                    make_memop_idx(DEF_MEMOP(env, MO_128 | MO_ALIGN), mmu_idx),
-+                    raddr);
-+	goto success;
-+    }
-+
-+    val = env->gpr[reg];
-+    switch (size) {
-+    case 1:
-+        stb_p(host, val);
-+        break;
-+    case 2:
-+        FIELD_EX64(env->msr, MSR, LE) ? stw_le_p(host, val) : stw_be_p(host, val);
-+        break;
-+    case 4:
-+        FIELD_EX64(env->msr, MSR, LE) ? stl_le_p(host, val) : stl_be_p(host, val);
-+        break;
-+    case 8:
-+        FIELD_EX64(env->msr, MSR, LE) ? stq_le_p(host, val) : stq_be_p(host, val);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+success:
-+    cpu_resolve_llsc_success(cs);
-+
-+    env->crf[0] = xer_so | CRF_EQ; /* stcx pass */
-+    return;
-+
-+fail:
-+    env->crf[0] = xer_so; /* stcx fail */
-+}
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 049f636927..a2d002eb89 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -3570,31 +3570,27 @@ static void gen_isync(DisasContext *ctx)
-     ctx->base.is_jmp = DISAS_EXIT_UPDATE;
- }
- 
--#define MEMOP_GET_SIZE(x)  (1 << ((x) & MO_SIZE))
--
--static void gen_load_locked(DisasContext *ctx, MemOp memop)
-+static void gen_load_locked(DisasContext *ctx, int size)
- {
--    TCGv gpr = cpu_gpr[rD(ctx->opcode)];
--    TCGv t0 = tcg_temp_new();
-+    int rd = rD(ctx->opcode);
-+    TCGv EA = tcg_temp_new();
- 
--    gen_set_access_type(ctx, ACCESS_RES);
--    gen_addr_reg_index(ctx, t0);
--    tcg_gen_qemu_ld_tl(gpr, t0, ctx->mem_idx, memop | MO_ALIGN);
--    tcg_gen_mov_tl(cpu_reserve, t0);
--    tcg_gen_movi_tl(cpu_reserve_length, memop_size(memop));
--    tcg_gen_mov_tl(cpu_reserve_val, gpr);
-+    gen_addr_reg_index(ctx, EA);
-+    gen_helper_larx(tcg_env, EA, tcg_constant_tl(size), tcg_constant_tl(rd));
- }
- 
--#define LARX(name, memop)                  \
-+#define LARX(name, size)                   \
- static void gen_##name(DisasContext *ctx)  \
- {                                          \
--    gen_load_locked(ctx, memop);           \
-+    gen_load_locked(ctx, size);            \
- }
- 
- /* lwarx */
--LARX(lbarx, DEF_MEMOP(MO_UB))
--LARX(lharx, DEF_MEMOP(MO_UW))
--LARX(lwarx, DEF_MEMOP(MO_UL))
-+LARX(lbarx, 1)
-+LARX(lharx, 2)
-+LARX(lwarx, 4)
-+
-+#define MEMOP_GET_SIZE(x)  (1 << ((x) & MO_SIZE))
- 
- static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
-                                       TCGv EA, TCGCond cond, int addend)
-@@ -3802,59 +3798,36 @@ static void gen_stdat(DisasContext *ctx)
- }
- #endif
- 
--static void gen_conditional_store(DisasContext *ctx, MemOp memop)
-+static void gen_conditional_store(DisasContext *ctx, int size)
- {
--    TCGLabel *lfail;
--    TCGv EA;
--    TCGv cr0;
--    TCGv t0;
-     int rs = rS(ctx->opcode);
-+    TCGv EA = tcg_temp_new();
- 
--    lfail = gen_new_label();
--    EA = tcg_temp_new();
--    cr0 = tcg_temp_new();
--    t0 = tcg_temp_new();
--
--    tcg_gen_mov_tl(cr0, cpu_so);
--    gen_set_access_type(ctx, ACCESS_RES);
-     gen_addr_reg_index(ctx, EA);
--    tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lfail);
--    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_length, memop_size(memop), lfail);
--
--    tcg_gen_atomic_cmpxchg_tl(t0, cpu_reserve, cpu_reserve_val,
--                              cpu_gpr[rs], ctx->mem_idx,
--                              DEF_MEMOP(memop) | MO_ALIGN);
--    tcg_gen_setcond_tl(TCG_COND_EQ, t0, t0, cpu_reserve_val);
--    tcg_gen_shli_tl(t0, t0, CRF_EQ_BIT);
--    tcg_gen_or_tl(cr0, cr0, t0);
--
--    gen_set_label(lfail);
--    tcg_gen_trunc_tl_i32(cpu_crf[0], cr0);
--    tcg_gen_movi_tl(cpu_reserve, -1);
-+    gen_helper_stcx(tcg_env, EA, tcg_constant_tl(size), tcg_constant_tl(rs));
- }
- 
--#define STCX(name, memop)                  \
-+#define STCX(name, size)                   \
- static void gen_##name(DisasContext *ctx)  \
- {                                          \
--    gen_conditional_store(ctx, memop);     \
-+    gen_conditional_store(ctx, size);      \
- }
- 
--STCX(stbcx_, DEF_MEMOP(MO_UB))
--STCX(sthcx_, DEF_MEMOP(MO_UW))
--STCX(stwcx_, DEF_MEMOP(MO_UL))
-+STCX(stbcx_, 1)
-+STCX(sthcx_, 2)
-+STCX(stwcx_, 4)
- 
- #if defined(TARGET_PPC64)
- /* ldarx */
--LARX(ldarx, DEF_MEMOP(MO_UQ))
-+LARX(ldarx, 8)
- /* stdcx. */
--STCX(stdcx_, DEF_MEMOP(MO_UQ))
-+STCX(stdcx_, 8)
- 
- /* lqarx */
- static void gen_lqarx(DisasContext *ctx)
- {
-     int rd = rD(ctx->opcode);
--    TCGv EA, hi, lo;
--    TCGv_i128 t16;
-+    TCGv EA;
- 
-     if (unlikely((rd & 1) || (rd == rA(ctx->opcode)) ||
-                  (rd == rB(ctx->opcode)))) {
-@@ -3862,74 +3835,25 @@ static void gen_lqarx(DisasContext *ctx)
-         return;
-     }
- 
--    gen_set_access_type(ctx, ACCESS_RES);
-     EA = tcg_temp_new();
-     gen_addr_reg_index(ctx, EA);
--
--    /* Note that the low part is always in RD+1, even in LE mode.  */
--    lo = cpu_gpr[rd + 1];
--    hi = cpu_gpr[rd];
--
--    t16 = tcg_temp_new_i128();
--    tcg_gen_qemu_ld_i128(t16, EA, ctx->mem_idx, DEF_MEMOP(MO_128 | MO_ALIGN));
--    tcg_gen_extr_i128_i64(lo, hi, t16);
--
--    tcg_gen_mov_tl(cpu_reserve, EA);
--    tcg_gen_movi_tl(cpu_reserve_length, 16);
--    tcg_gen_st_tl(hi, tcg_env, offsetof(CPUPPCState, reserve_val));
--    tcg_gen_st_tl(lo, tcg_env, offsetof(CPUPPCState, reserve_val2));
-+    gen_helper_larx(tcg_env, EA, tcg_constant_tl(16), tcg_constant_tl(rd));
- }
- 
- /* stqcx. */
- static void gen_stqcx_(DisasContext *ctx)
- {
--    TCGLabel *lfail;
--    TCGv EA, t0, t1;
--    TCGv cr0;
--    TCGv_i128 cmp, val;
-     int rs = rS(ctx->opcode);
-+    TCGv EA;
- 
-     if (unlikely(rs & 1)) {
-         gen_inval_exception(ctx, POWERPC_EXCP_INVAL_INVAL);
-         return;
-     }
- 
--    lfail = gen_new_label();
-     EA = tcg_temp_new();
--    cr0 = tcg_temp_new();
--
--    tcg_gen_mov_tl(cr0, cpu_so);
--    gen_set_access_type(ctx, ACCESS_RES);
-     gen_addr_reg_index(ctx, EA);
--    tcg_gen_brcond_tl(TCG_COND_NE, EA, cpu_reserve, lfail);
--    tcg_gen_brcondi_tl(TCG_COND_NE, cpu_reserve_length, 16, lfail);
--
--    cmp = tcg_temp_new_i128();
--    val = tcg_temp_new_i128();
--
--    tcg_gen_concat_i64_i128(cmp, cpu_reserve_val2, cpu_reserve_val);
--
--    /* Note that the low part is always in RS+1, even in LE mode.  */
--    tcg_gen_concat_i64_i128(val, cpu_gpr[rs + 1], cpu_gpr[rs]);
--
--    tcg_gen_atomic_cmpxchg_i128(val, cpu_reserve, cmp, val, ctx->mem_idx,
--                                DEF_MEMOP(MO_128 | MO_ALIGN));
--
--    t0 = tcg_temp_new();
--    t1 = tcg_temp_new();
--    tcg_gen_extr_i128_i64(t1, t0, val);
--
--    tcg_gen_xor_tl(t1, t1, cpu_reserve_val2);
--    tcg_gen_xor_tl(t0, t0, cpu_reserve_val);
--    tcg_gen_or_tl(t0, t0, t1);
--
--    tcg_gen_setcondi_tl(TCG_COND_EQ, t0, t0, 0);
--    tcg_gen_shli_tl(t0, t0, CRF_EQ_BIT);
--    tcg_gen_or_tl(cr0, cr0, t0);
--
--    gen_set_label(lfail);
--    tcg_gen_trunc_tl_i32(cpu_crf[0], cr0);
--    tcg_gen_movi_tl(cpu_reserve, -1);
-+    gen_helper_stcx(tcg_env, EA, tcg_constant_tl(16), tcg_constant_tl(rs));
- }
- #endif /* defined(TARGET_PPC64) */
- 
--- 
-2.42.0
+> ---
+> v2:
+> Move top level title one level up so subsections will be below it in TOC
+>
+>  MAINTAINERS                 |   1 +
+>  docs/system/ppc/amigang.rst | 161 ++++++++++++++++++++++++++++++++++++
+>  docs/system/target-ppc.rst  |   1 +
+>  3 files changed, 163 insertions(+)
+>  create mode 100644 docs/system/ppc/amigang.rst
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7d61fb9319..0aef8cb2a6 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1562,6 +1562,7 @@ F: hw/rtc/m41t80.c
+>  F: pc-bios/canyonlands.dt[sb]
+>  F: pc-bios/u-boot-sam460ex-20100605.bin
+>  F: roms/u-boot-sam460ex
+> +F: docs/system/ppc/amigang.rst
+> =20
+>  pegasos2
+>  M: BALATON Zoltan <balaton@eik.bme.hu>
+> diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
+> new file mode 100644
+> index 0000000000..738decd0c5
+> --- /dev/null
+> +++ b/docs/system/ppc/amigang.rst
+> @@ -0,0 +1,161 @@
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> +AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +These PowerPC machines emulate boards that are primarily used for
+> +running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
+> +also run Linux which is what this section documents.
+> +
+> +Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The ``amigaone`` machine emulates an AmigaOne XE mainboard by Eyetech
+> +which is a rebranded Mai Logic Teron board with modified U-Boot
+> +firmware to support AmigaOS 4.
+> +
+> +Emulated devices
+> +----------------
+> +
+> + * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750gx``=
+)
+> + * Articia S north bridge
+> + * VIA VT82C686B south bridge
+> + * PCI VGA compatible card (guests may need other card instead)
+> + * PS/2 keyboard and mouse
+> +
+> +Firmware
+> +--------
+> +
+> +A firmware binary is necessary for the boot process. It is a modified
+> +U-Boot under GPL but its source is lost so it cannot be included in
+> +QEMU. A binary is available at
+> +https://www.hyperion-entertainment.com/index.php/downloads?view=3Dfiles&=
+parent=3D28.
+> +The ROM image is in the last 512kB which can be extracted with the
+> +following command:
+> +
+> +.. code-block:: bash
+> +
+> +  $ tail -c 524288 updater.image > u-boot-amigaone.bin
+> +
+> +The BIOS emulator in the firmware is unable to run QEMU=E2=80=98s standa=
+rd
+> +vgabios so ``VGABIOS-lgpl-latest.bin`` is needed instead which can be
+> +downloaded from http://www.nongnu.org/vgabios.
+> +
+> +Running Linux
+> +-------------
+> +
+> +There are some Linux images under the following link that work on the
+> +``amigaone`` machine:
+> +https://sourceforge.net/projects/amigaone-linux/files/debian-installer/.
+> +To boot the system run:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-ppc -machine amigaone -bios u-boot-amigaone.bin \
+> +                    -cdrom "A1 Linux Net Installer.iso" \
+> +                    -device ati-vga,model=3Drv100,romfile=3DVGABIOS-lgpl=
+-latest.bin
+> +
+> +From the firmware menu that appears select ``Boot sequence`` =E2=86=92
+> +``Amiga Multiboot Options`` and set ``Boot device 1`` to
+> +``Onboard VIA IDE CDROM``. Then hit escape until the main screen appears=
+ again,
+> +hit escape once more and from the exit menu that appears select either
+> +``Save settings and exit`` or ``Use settings for this session only``. It=
+ may
+> +take a long time loading the kernel into memory but eventually it boots =
+and the
+> +installer becomes visible. The ``ati-vga`` RV100 emulation is not
+> +complete yet so only frame buffer works, DRM and 3D is not available.
+> +
+> +Genesi/bPlan Pegasos II (``pegasos2``)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The ``pegasos2`` machine emulates the Pegasos II sold by Genesi and
+> +designed by bPlan. Its schematics are available at
+> +https://www.powerdeveloper.org/platforms/pegasos/schematics
+> +
+> +Emulated devices
+> +----------------
+> +
+> + * PowerPC 7457 CPU (can also use``-cpu g3`` or ``750cxe``)
+> + * Marvell MV64361 Discovery II north bridge
+> + * VIA VT8231 south bridge
+> + * PCI VGA compatible card (guests may need other card instead)
+> + * PS/2 keyboard and mouse
+> +
+> +Firmware
+> +--------
+> +
+> +The Pegasos II board has an Open Firmware compliant ROM based on
+> +SmartFirmware but it has some changes that are not open sourced
+> +therefore the ROM binary cannot be included in QEMU. An updater was
+> +available from bPlan, it can be found here:
+> +http://web.archive.org/web/20071021223056/http://www.bplan-gmbh.de/up050=
+404/up050404
+> +The ROM image can be extracted from it with the following command:
+> +
+> +.. code-block:: bash
+> +
+> +  $ tail -c +85581 up050404 | head -c 524288 > pegasos2.rom
+> +
+> +Running Linux
+> +-------------
+> +
+> +The PowerPC version of Debian 8.11 supported Pegasos II. The BIOS
+> +emulator in the firmware binary is unable to run QEMU=E2=80=98s standard
+> +vgabios so it needs to be disabled. To boot the system run:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-ppc -machine pegasos2 -bios pegasos2.rom \
+> +                    -cdrom debian-8.11.0-powerpc-netinst.iso \
+> +                    -device VGA,romfile=3D"" -serial stdio
+> +
+> +At the firmware ``ok`` prompt enter ``boot cd install/pegasos``.
+> +
+> +Alternatively it is possible to boot the kernel directly without
+> +firmware ROM using the QEMU built in minimal Virtual Open Firmware
+> +(VOF) emulation which is also supported on ``pegasos2``. For this,
+> +extract the kernel ``install/powerpc/vmlinuz-chrp.initrd`` from the CD
+> +image then run:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-ppc -machine pegasos2 -serial stdio \
+> +                    -kernel vmlinuz-chrp.initrd -append "---" \
+> +                    -cdrom debian-8.11.0-powerpc-netinst.iso
+> +
+> +aCube Sam460ex (``sam460ex``)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+> +
+> +The ``sam460ex`` machine emulates the Sam460ex board by aCube which is
+> +based on the AMCC PowerPC 460EX SoC (that despite its name has a
+> +PPC440 CPU core).
+> +
+> +Firmware
+> +--------
+> +
+> +The board has a firmware based on an older U-Boot version with
+> +modifications to support booting AmigaOS 4. The firmware ROM is
+> +included with QEMU.
+> +
+> +Emulated devices
+> +----------------
+> +
+> + * PowerPC 460EX SoC
+> + * M41T80 serial RTC chip
+> + * Silicon Motion SM501 display parts (identical to SM502 on real board)
+> + * Silicon Image SiI3112 2 port SATA controller
+> + * USB keyboard and mouse
+> +
+> +Running Linux
+> +-------------
+> +
+> +The only Linux distro that supported Sam460ex out of box was CruxPPC
+> +2.x. It can be booted by running:
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-ppc -machine sam460ex -serial stdio \
+> +                    -drive if=3Dnone,id=3Dcd,format=3Draw,file=3Dcrux-pp=
+c-2.7a.iso \
+> +                    -device ide-cd,drive=3Dcd,bus=3Dide.1
+> +
+> +There are some other kernels and instructions for booting other
+> +distros on aCube's product page at
+> +https://www.acube-systems.biz/index.php?page=3Dhardware&pid=3D5
+> +but those are untested.
+> diff --git a/docs/system/target-ppc.rst b/docs/system/target-ppc.rst
+> index 4f6eb93b17..87bf412ce5 100644
+> --- a/docs/system/target-ppc.rst
+> +++ b/docs/system/target-ppc.rst
+> @@ -17,6 +17,7 @@ help``.
+>  .. toctree::
+>     :maxdepth: 1
+> =20
+> +   ppc/amigang
+>     ppc/embedded
+>     ppc/powermac
+>     ppc/powernv
 
 
