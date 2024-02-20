@@ -2,177 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF1E85B9D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 12:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C4285BAE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 12:47:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcNsS-0005wS-Mh; Tue, 20 Feb 2024 06:01:32 -0500
+	id 1rcOaZ-00031x-SF; Tue, 20 Feb 2024 06:47:07 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rcNsN-0005vY-0b
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 06:01:27 -0500
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1rcNsK-0005cM-VP
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 06:01:26 -0500
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 41K8xAG2015125; Tue, 20 Feb 2024 11:01:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=Ki4KR/k7RzgyxWQCNue6fVlrRZzGEWlML0FFRYGD3NI=;
- b=BGV58q6DCzM7yyGgyF3mFaPY9kw606qNGJfXqXT35DCoN4EnOLco8kln1ntVf/xfYA+4
- 6u2MJjyCkFCE7tAEb+49PEXgpBFpWhuC3ifgi8Xw+ZJ3GotQtCnFPq81hQhr1juyDUGa
- z6oHz+dQZ9MvWFFSNrV1+ZyXRgSdoUmQsEwkzgprSP7LQWFc5OkeuiqCXXV/TUdj8bih
- EZst8m1OYXSh7vQP4WrwfMnopQ9V/ABzNao7SDv6HeKcH97Z7TrupHeByzor1OHvhB1j
- D+GEiHDBRq+Yl6IrspGAIyEG+/LNtUTsyVS7Fpo/Mndc/5xoOIr/VRV+H2bNhYJOHgLC Zw== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wak7eec7g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Feb 2024 11:01:21 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 41KA8Anh038067; Tue, 20 Feb 2024 11:01:20 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2169.outbound.protection.outlook.com [104.47.59.169])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wak872h86-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 20 Feb 2024 11:01:20 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GLBRebcxVpTasyXVAYee/RlyVs4a+WKDPPnIKsesEwG0aeo2eWtHm4/geZ5sPeJshyCvChDi49Fji8WzumJaMcTnjcXYl81zN5xTYbke7L5VLWZdQty6LjSM6CRKRARWRTBqPRbqNXuoOkvjY6WtsL1V1GdZASqMrR8snpNucKD76p0PMeFSUiN2JRWTWWRq5eiqYjscW+OouUD9UKEe+rVP7qKvkrDt+g6Ndgpx+ay79Or08fGNMmOrJ0EuZecLBC1prff+uzvTS9Pq+XnBePk9N/FKiY+Aj0h/s0UPszrRuotqUVc5XJkuF/3s0CCHkhBU26G+Ma0e5oAuRm7blQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ki4KR/k7RzgyxWQCNue6fVlrRZzGEWlML0FFRYGD3NI=;
- b=ikiCYQ0H/CQVBRJQQvZvyZ1w9xHfrz5qWMZbgYUvaoFjs4pLFIxxr1fkQlAuA8v8O2QralttOoc/NV0blhcodPaio1KQ+U3RaXLPWhYS79IHmvLTcgqlh9EDKXmIBW9xMnqzfptweE9NkkusoowuHo+yYtA2JkORHaSMdL9EOzfukeaWCCNV1XGok8o6P4HH1OOqbbFVG/DR3oeiCfj5bc3Abq0CgKAomjuxV96X4JYROQ71OXlwpcT1JsMwNIObPIAfx01PKW+PZyKPuozs7aEik3WoMNEWJ9zTrxVkU9JOUjvO3p88pkcXpI1OgO8aWctdatK6CFUtnoV/kuY8ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rcOaV-00031K-VL; Tue, 20 Feb 2024 06:47:03 -0500
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rcOaR-0005oz-3C; Tue, 20 Feb 2024 06:47:03 -0500
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a3cc2f9621aso572882366b.1; 
+ Tue, 20 Feb 2024 03:46:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ki4KR/k7RzgyxWQCNue6fVlrRZzGEWlML0FFRYGD3NI=;
- b=Wxyn+sbbOasqt0ZM77IWnuNxLidOzlX6IeqvAH1STItorQP4Xydynsq5Xn2L61dCsWSj73Mj7SkNIdO5AiVThI4yCQAzmNf11tDkLUoXrcYQ+g2kk2k08DqSSyVOh42WRz3KZP0ODXGelx/qD+3xLeU3vcm9tHAf/jS7gHTPDEo=
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com (2603:10b6:510:149::11)
- by PH7PR10MB7056.namprd10.prod.outlook.com (2603:10b6:510:275::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
- 2024 11:01:18 +0000
-Received: from PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::3356:4cc1:701e:dde3]) by PH0PR10MB5893.namprd10.prod.outlook.com
- ([fe80::3356:4cc1:701e:dde3%4]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
- 11:01:18 +0000
-Message-ID: <d17c7d2a-4572-431c-b6a5-379cea19d166@oracle.com>
-Date: Tue, 20 Feb 2024 11:01:14 +0000
-Subject: Re: [PATCH RFCv2 6/8] backends/iommufd: Add ability to disable
- hugepages
-Content-Language: en-US
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P . Berrange" <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>
-References: <20240212135643.5858-1-joao.m.martins@oracle.com>
- <20240212135643.5858-7-joao.m.martins@oracle.com>
- <a44e354e-f157-49db-9e60-5014afc605a5@nvidia.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <a44e354e-f157-49db-9e60-5014afc605a5@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO2P265CA0388.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:f::16) To PH0PR10MB5893.namprd10.prod.outlook.com
- (2603:10b6:510:149::11)
+ d=gmail.com; s=20230601; t=1708429616; x=1709034416; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=piA06gM8ElnMTsROizaJ4zu+/hmtfqgqIbTNa0mq+Yc=;
+ b=NQNIKO1emL3xxUjH8N9in1LuGLAGH8N66D3JQ4sn6Y/z8kBuE3ykHxkTFRn+yhXrDz
+ ZAnCTpSBVaEK7nLc6QHkQmhE6d7lm88GiTrsLcfZ1kQJc/Gok+A3ffr2TnJhijBV7p8L
+ KC60eecCdDNXqj5ELvQnjiNCSRPCCNrc/8H9PQoMiikUZLruMgaYwr2LpHryHaVbPbaV
+ WCmbpJMYkHKkigDuoBVnNLZ9MkuLCnIqPw8RYFDQyWns87egIWQc98TPMlIHjHVNXsxs
+ JAOy1wHEGNZc/9/rH66a7jiPC584y6q2kLbTZygxPsx8E5reaUcxg1iWQ+YYRtpGyOx0
+ LC5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708429616; x=1709034416;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=piA06gM8ElnMTsROizaJ4zu+/hmtfqgqIbTNa0mq+Yc=;
+ b=oI/0L2+/s7//Pj3sOTJynd2y2iRpySv2aal4Rx+wAbJ4OFVabgVajmwSDE553sA2VJ
+ jpfpO5eBlsHr8khqjen298fvQ6NuptcZT9R2iaL6c9O+b9N6eEfO7PKwzKeE41HtmLnx
+ P3z/RHiKSEvtqWKs4QLUKPPKwhH4ONmbdVAklJIdscbf8ZBhAXAsXfhg/x07pgUy2zGb
+ +Fhxet0G+F++zIXGCpIj8zbh/R3gYPvZzlOUqwA0LQfvB3Uw35h9dL6oTSKvWyjZBUcV
+ DAu5XvnVIAmCNN/GvsTY4Vy547VKNxlYWsMh749Sux1sPHVk99Tm079IArHYENqndUy2
+ Ijrw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX8u4xV8Cz/KtHsMZwlMlygSZ+V2xk9d2bfeQ6Nfu3kDJGTV2qiMWsF5AunoPYqfz53cLGmOvKPfteEJ8NeVpq+03LZHjSUjLZUQypxPlg9dbTDWz47ayPE+gs=
+X-Gm-Message-State: AOJu0YxRDX+ajSMjyoANgGi+ET/prB0zK2ubl+Kmvh//dDL1OxjskSz/
+ 5LudhvsFBkZ1QizKgI5Gk1Buwx2YqBvbRBhlfv1T9cZd77h5s8Wc
+X-Google-Smtp-Source: AGHT+IF8gE88OI/vsw/YwWzJMNY4mybgOrkDi+wYbfDieMf8oF4XZSiW6MPCZ5NsCOlIlc7A9zIJHg==
+X-Received: by 2002:a17:906:5917:b0:a3e:c738:afa2 with SMTP id
+ h23-20020a170906591700b00a3ec738afa2mr2909256ejq.76.1708429615937; 
+ Tue, 20 Feb 2024 03:46:55 -0800 (PST)
+Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
+ [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ vg8-20020a170907d30800b00a3d2fe84ff9sm3887167ejc.36.2024.02.20.03.46.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 Feb 2024 03:46:55 -0800 (PST)
+Date: Tue, 20 Feb 2024 09:27:13 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+CC: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_docs/system/ppc=3A_Docum?=
+ =?US-ASCII?Q?ent_running_Linux_on_AmigaNG_machines?=
+In-Reply-To: <20240219203006.8AF8F4E6003@zero.eik.bme.hu>
+References: <20240219203006.8AF8F4E6003@zero.eik.bme.hu>
+Message-ID: <DCDFFE97-403A-4B18-81AF-1CBE77E4EBFA@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5893:EE_|PH7PR10MB7056:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b49a95b-225b-4a3d-1695-08dc32034363
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZE4QYsktzY6n879kKMuDLOCz+M5ZmhurnV32T+aDNcG8GBKC9IwoAu3GOvl2kk9h5AkapsMEOpgSkotSWDrQUCogusV0pa+lHNc0XSwNYuIjC3xzr15d1s+r1Jlpska6z2GDVZyz/5/IayijZpHREWKkSwMeoVdAm4OlBrQIJTFHJqFPKvXTCPFOvaJWt3PskmBGU+sKolHEeWIkmyfeZ5NllZJ26n3g6MqGQjtzB0vprm5hLkbdJ4dSxZWg1NPX8XELe7e60x/hf2t9K6lCDiJRLrg5uq69GoKjLjgu+O+LuUU2ASheID+gBsGeypS2bBtv6mVPyx1nEKU9XWxlgXmjnsQD6bP2iZJUnL02PeWNhiuO/l8zVXrCT9ufkDJX/mtEw2YZ6xFmKf3kaiMOFRhk01GHuR3Fh+Z7ZQKjcqeBxCBrh+w4c4bdf830gm4NRFHaAH62XyItaEF1ib1wmtH5PmNr5AAAvIr8f4GXhurlta7LB7VaXaFYRkO2FRGwHJs0OMMQsXmsrtM/iayPJtkU2hj198VOtucCGXIFS4BZT+GrlTVxD5909/UcMsAz
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR10MB5893.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(230273577357003); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEJKY0Nud3ZsYkVpT244N0VTL2x2ZnBoV25XbjZjMHE0L094NFBNRXdYb3A5?=
- =?utf-8?B?S0Q0MkhRUms4ZzBiWnNOU3dyY0h0SlVTbHNnV0xiaE0vV1pEOXVlZ2FBa0ZF?=
- =?utf-8?B?ZGtxMnJhbTB0dmlVNitLb3J6NW9GVmMvYmJyVTNFNDA0UkxSOXA2blZZYXFk?=
- =?utf-8?B?Zkw1dWxlYU1hZDhHNi9KOWt4WTcvL0EvZnQ2STJsOUswSkVoRXJHZ3hnQ0Zn?=
- =?utf-8?B?aTk0U05nMEp4N0hVNVd1aCtLN0FwV25wdk1jMm1mWFQzdk5sSk9yNmZ0QnBQ?=
- =?utf-8?B?ZklvSmFpSGpaWVBJRFFvdXM1cmxzTHJvbU5tV09TQnB0SzBOUGVIVEVoL2Nt?=
- =?utf-8?B?NlVOOE1LMFVZTTRiZGIyaGkvUlZmUFdsQkVXc3cwYjNFenZrd3k3Y2tLbFB5?=
- =?utf-8?B?ZkpGUlZsT0xiNVBjK1o5NHB3QmNoVkpvYWxKd3dtaHM1VEVGMlphcmt1RE9V?=
- =?utf-8?B?U1lRUkJjOHIwc0xyL3RDTDlkVXBicm5oTzRvVjRTWkJRdGxPTFNDZDhUQk9v?=
- =?utf-8?B?alF6amM1eGl1MGd0QnBYR2JIREVtUU5rNm1GcG5PejJVK1lBMXhESWRzbTYw?=
- =?utf-8?B?Z0hvbnM5OE8wMFF0allNV3R1UmlXL2ZVc0RydENpV3ZlUlRCWXJXcjU2bnht?=
- =?utf-8?B?SFZGV3MyWUFwSlJZbXlIUjBReTJmd3ZOeEdMU25RczNXME03WHNzWVkrMytJ?=
- =?utf-8?B?ZnBYMHlZRlBRQzlTaVo1bHhyeUNlVjZQL1lyY1dOdjcrNFBrT3llc1dvT1FF?=
- =?utf-8?B?bkhVNUozc0t1RmtKWTVOYzdQK01OODlJbmRuNjR4KzV6LzdRa0tuYzBLREh3?=
- =?utf-8?B?Sm93U2tZQzl2TjE3QVRTRzFhTUtZd1dhUUNRUm1TVHJzVWpTRXI1b0FldXQ1?=
- =?utf-8?B?WVkwcWk5WXlKcUM4QTVJQjdYWmtOSWMxcjVVdDdvM3VyVzE0V1NjSWNUTkN0?=
- =?utf-8?B?YlJwMkdsQVM0M1FuTk1aMi9id0Q4aGRQZkowREhRR0x5dWhwV2JnT0dPbmk3?=
- =?utf-8?B?Z3ZNNmQwcW5zVWpvbG5Uajlza25wQ1ppSFRiNkJsTDkxZUdPazJ5YjdhWENS?=
- =?utf-8?B?SnRIUmd1TDZkNGpmZ1ZQNEY0aWVubHBMYVFwS0VLbWtZTGRsSy83dmk1c1pH?=
- =?utf-8?B?aFNVRlpyUEZucDNYMlloWUlPWlBvalA1R3Bqak5ZdEJDaDQwUUwvUVdvd2hz?=
- =?utf-8?B?THZrOFRtZkx6Tm5zVFVEbkFUeDBsaFl6eGQzaitJNFZ3T1FPL0laODJYZmdi?=
- =?utf-8?B?bW4xank1aGFFNEJ1RG5kcDVBbTZTclNQbkJ3N1ZsbnlUVDFleXU4MGlBM0dQ?=
- =?utf-8?B?end1VXN1dmNYdFVJUlkrSzdiYlpsUDcyKy9kdXBaWlk5UFFUYmVnVkVjclJJ?=
- =?utf-8?B?emFqTWZ3cDJlTXR5aVpVeDlYQXNNbytnZ2R4Yzh0UWszRmhwWnBwN01OUElZ?=
- =?utf-8?B?aEZCcmJlOU5oV0RHZ2doSExiWXlDNXk2SytmMEVLZFE1SGxoY2xZVk1KUElQ?=
- =?utf-8?B?N0VUSHRGdGFtU1JTRWY1UUo5a24yeERGbnZGUWkrMjhkZVVUckZNOGNRMzBi?=
- =?utf-8?B?TktqODF3RmRBdDRlZVROVmFFNlVQL0MyYXcyMTVIOFE3WC8rWC9KYlF4SUR1?=
- =?utf-8?B?NWsyVUtFb0EyVmJRVUdrYU45ZUQ4czA1bU5KdmFHRzYrT3N6VGZKLzBLeUQy?=
- =?utf-8?B?UXpyNUxCSFIyOEo0RThyVCs4dU5obHY4V1I4dlJ2N0piUXVWY29lK084ZXBI?=
- =?utf-8?B?QVcwTGl4NE1TaWFtdUFmeGk4S0wwckd3ZFZlQXJGQVI2ZCt3MGxxNFV1alg1?=
- =?utf-8?B?ZnZYMDFPNmlzT3Jpam5YTE9NRUtNa0hRQUZMT2I2SzBkZWNFM01TNU5mTVBR?=
- =?utf-8?B?TmEremNMczkraVNGamhlQWt6MnU1T2dHeGNqMTdlY1JOc0dmZ2hlNDFXUHJX?=
- =?utf-8?B?WGVTanl5Tk5TNDcrUTk3RTZvMFFXa3Z2a2NLT0xjSEVNTXRSYmg4aU1Pbndu?=
- =?utf-8?B?QUFvZXFaTVRQQWgrVUl1ZmYyeTEzZVRSMm9KN3Y0ajBlWWNJNGtCUzFSckRz?=
- =?utf-8?B?a2JSQ1V3UUhGSS9uRG4xbGZjL1FUYkk3VVhteGx4VlBYTkJOU2lMckdyWlJ4?=
- =?utf-8?B?T08reVlWVTduL09ud2xadFplazNiOU5aS2dXSkdSY3ZQUWJQNjVJVlMvZnlv?=
- =?utf-8?B?SUE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: VfEVdRu2kMi8MwHTgg4oRcBepNCncKNMjNBhY3OoEtSHXU+kWciUHFIG3DWobiZGgfA0giNMhIJR9Jmk/SfWsDez2xj+YaZy8Qh+Bu8ngeMZojmri3zkRX4rKMiye8G/7El81PDYu29TfYEnUoMdkVP7RGYtgwMeKPeZ4VYv3lgQ5/gPQFYZLxaFTmHUdEIkByxbKmSjT/wpS3HSmdKALg7f/Q60mZspruGLxLfPpk6NhPn6VHTjkWPaOqwhpFu+0XcM+nK0RPhuyoY5ioymPJhw/NPw19nc08TwDBIbgTinhZkevzeKk3tp6VAhacOUWiJeEQV1By2GawvUoNpUN5OJ9EKKmNplE5nSkKVRICrAhGn5dZ/4QRJKGwVDeyvSvo2EPxKBmSxBXIoCvbaFUCDVL6tizuYuzVGHbaFeOoqPMibt8Bszum9lhbMwk8RfXcMM8Bm18ins8DMmi1G+xOx35g35bUiD/q9x29IsmnlL72oOSFk5rwt0cvrToMXxptxxHtVP7LHQfvRAPFpgP/vY1IrdLx+RRYDjLvC8LwkZOkuvKB8XfswaFuMGOol5INW4qO6kiKpmiT7kloXS34tDFbV0eycEBlku/B5XVlM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b49a95b-225b-4a3d-1695-08dc32034363
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5893.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 11:01:17.9087 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AE+KNtNKTrwK738hUxp8pUtIJgMzCPy+86Im6O35tCQkHnSIv9XkHvueUa+i30ASifWGk6eqoFsD0M/dveXz02n0WacOub4hQrCvejJVQaA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7056
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- phishscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402200078
-X-Proofpoint-GUID: beEmYUjhK4NN1bVILptiNk5ig6G8wxKT
-X-Proofpoint-ORIG-GUID: beEmYUjhK4NN1bVILptiNk5ig6G8wxKT
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -189,135 +95,260 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/02/2024 10:05, Avihai Horon wrote:
-> Hi Joao,
-> 
-> On 12/02/2024 15:56, Joao Martins wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> Allow disabling hugepages to be dirty track at base page
->> granularity in similar vein to vfio_type1_iommu.disable_hugepages
->> but per IOAS.
->>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->> ---
->>   backends/iommufd.c       | 36 ++++++++++++++++++++++++++++++++++++
->>   backends/trace-events    |  1 +
->>   hw/vfio/iommufd.c        |  4 ++++
->>   include/sysemu/iommufd.h |  4 ++++
->>   qapi/qom.json            |  2 +-
->>   5 files changed, 46 insertions(+), 1 deletion(-)
->>
->> diff --git a/backends/iommufd.c b/backends/iommufd.c
->> index dd676d493c37..72fd98a9a50c 100644
->> --- a/backends/iommufd.c
->> +++ b/backends/iommufd.c
->> @@ -29,6 +29,7 @@ static void iommufd_backend_init(Object *obj)
->>       be->fd = -1;
->>       be->users = 0;
->>       be->owned = true;
->> +    be->hugepages = 1;
->>   }
->>
->>   static void iommufd_backend_finalize(Object *obj)
->> @@ -63,6 +64,14 @@ static bool iommufd_backend_can_be_deleted(UserCreatable *uc)
->>       return !be->users;
->>   }
->>
->> +static void iommufd_backend_set_hugepages(Object *obj, bool enabled,
->> +                                          Error **errp)
->> +{
->> +    IOMMUFDBackend *be = IOMMUFD_BACKEND(obj);
->> +
->> +    be->hugepages = enabled;
->> +}
->> +
->>   static void iommufd_backend_class_init(ObjectClass *oc, void *data)
->>   {
->>       UserCreatableClass *ucc = USER_CREATABLE_CLASS(oc);
->> @@ -70,6 +79,11 @@ static void iommufd_backend_class_init(ObjectClass *oc,
->> void *data)
->>       ucc->can_be_deleted = iommufd_backend_can_be_deleted;
->>
->>       object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
->> +
->> +    object_class_property_add_bool(oc, "hugepages", NULL,
->> +                                   iommufd_backend_set_hugepages);
->> +    object_class_property_set_description(oc, "hugepages",
->> +                                          "Set to 'off' to disable hugepages");
->>   }
->>
->>   int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
->> @@ -106,6 +120,28 @@ out:
->>       trace_iommufd_backend_disconnect(be->fd, be->users);
->>   }
->>
->> +int iommufd_backend_set_option(int fd, uint32_t object_id,
->> +                               uint32_t option_id, uint64_t val64)
->> +{
->> +    int ret;
->> +    struct iommu_option option = {
->> +        .size = sizeof(option),
->> +        .option_id = option_id,
->> +        .op = IOMMU_OPTION_OP_SET,
->> +        .val64 = val64,
->> +        .object_id = object_id,
->> +    };
->> +
->> +    ret = ioctl(fd, IOMMU_OPTION, &option);
->> +    if (ret) {
->> +        error_report("Failed to set option %x to value %"PRIx64" %m", option_id,
->> +                     val64);
->> +    }
->> +    trace_iommufd_backend_set_option(fd, object_id, option_id, val64, ret);
->> +
->> +    return ret;
->> +}
->> +
->>   int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
->>                                  Error **errp)
->>   {
->> diff --git a/backends/trace-events b/backends/trace-events
->> index 11a27cb114b6..076166552881 100644
->> --- a/backends/trace-events
->> +++ b/backends/trace-events
->> @@ -15,6 +15,7 @@ iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t
->> ioas, uint64_t iova, u
->>   iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova,
->> uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64"
->> (%d)"
->>   iommufd_backend_alloc_hwpt(int iommufd, uint32_t dev_id, uint32_t pt_id,
->> uint32_t flags, uint32_t hwpt_type, uint32_t len, uint64_t data_ptr, uint32_t
->> out_hwpt_id, int ret) " iommufd=%d dev_id=%u pt_id=%u flags=0x%x hwpt_type=%u
->> len=%u data_ptr=0x%"PRIx64" out_hwpt=%u (%d)"
->>   iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d
->> ioas=%d (%d)"
->> +iommufd_backend_set_option(int iommufd, uint32_t object_id, uint32_t
->> option_id, uint64_t val, int ret) " iommufd=%d object_id=%u option_id=%u
->> val64=0x%"PRIx64" (%d)"
->>   iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d
->> id=%d (%d)"
->>   iommufd_backend_set_dirty(int iommufd, uint32_t hwpt_id, bool start, int
->> ret) " iommufd=%d hwpt=%d enable=%d (%d)"
->>   iommufd_backend_get_dirty_bitmap(int iommufd, uint32_t hwpt_id, uint64_t
->> iova, uint64_t size, uint64_t page_size, int ret) " iommufd=%d hwpt=%d
->> iova=0x%"PRIx64" size=0x%"PRIx64" page_size=0x%"PRIx64" (%d)"
->> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
->> index 79b13bd262cc..697d40841d7f 100644
->> --- a/hw/vfio/iommufd.c
->> +++ b/hw/vfio/iommufd.c
->> @@ -521,6 +521,10 @@ static int iommufd_cdev_attach(const char *name,
->> VFIODevice *vbasedev,
->>           goto err_alloc_ioas;
->>       }
->>
->> +    if (!vbasedev->iommufd_dev.iommufd->hugepages) {
->> +        iommufd_backend_set_option(vbasedev->iommufd_dev.iommufd->fd, ioas_id,
->> +                                   IOMMU_OPTION_HUGE_PAGES, 0);
-> 
-> Shouldn't we fail device attach if iommufd_backend_set_option() fails?
-> 
 
-Let handle error correctly and fail the attach.
+
+Am 19=2E Februar 2024 20:30:06 UTC schrieb BALATON Zoltan <balaton@eik=2Eb=
+me=2Ehu>:
+>Documentation on how to run Linux on the amigaone, pegasos2 and
+>sam460ex machines is currently buried in the depths of the qemu-devel
+>mailing list and in the source code=2E Let's collect the information in
+>the QEMU handbook for a one stop solution=2E
+>
+>Co-authored-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>Signed-off-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
+>---
+>v2:
+>Move top level title one level up so subsections will be below it in TOC
+>
+> MAINTAINERS                 |   1 +
+> docs/system/ppc/amigang=2Erst | 161 ++++++++++++++++++++++++++++++++++++
+> docs/system/target-ppc=2Erst  |   1 +
+> 3 files changed, 163 insertions(+)
+> create mode 100644 docs/system/ppc/amigang=2Erst
+>
+>diff --git a/MAINTAINERS b/MAINTAINERS
+>index 7d61fb9319=2E=2E0aef8cb2a6 100644
+>--- a/MAINTAINERS
+>+++ b/MAINTAINERS
+>@@ -1562,6 +1562,7 @@ F: hw/rtc/m41t80=2Ec
+> F: pc-bios/canyonlands=2Edt[sb]
+> F: pc-bios/u-boot-sam460ex-20100605=2Ebin
+> F: roms/u-boot-sam460ex
+>+F: docs/system/ppc/amigang=2Erst
+>=20
+> pegasos2
+> M: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
+>diff --git a/docs/system/ppc/amigang=2Erst b/docs/system/ppc/amigang=2Ers=
+t
+>new file mode 100644
+>index 0000000000=2E=2E738decd0c5
+>--- /dev/null
+>+++ b/docs/system/ppc/amigang=2Erst
+>@@ -0,0 +1,161 @@
+>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>+AmigaNG boards (``amigaone``, ``pegasos2``, ``sam460ex``)
+>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>+
+>+These PowerPC machines emulate boards that are primarily used for
+>+running Amiga like OSes (AmigaOS 4, MorphOS and AROS) but these can
+>+also run Linux which is what this section documents=2E
+>+
+>+Eyetech AmigaOne/Mai Logic Teron (``amigaone``)
+>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>+
+>+The ``amigaone`` machine emulates an AmigaOne XE mainboard by Eyetech
+>+which is a rebranded Mai Logic Teron board with modified U-Boot
+>+firmware to support AmigaOS 4=2E
+>+
+>+Emulated devices
+>+----------------
+>+
+>+ * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750gx``=
+)
+>+ * Articia S north bridge
+>+ * VIA VT82C686B south bridge
+>+ * PCI VGA compatible card (guests may need other card instead)
+>+ * PS/2 keyboard and mouse
+>+
+>+Firmware
+>+--------
+>+
+>+A firmware binary is necessary for the boot process=2E It is a modified
+>+U-Boot under GPL but its source is lost so it cannot be included in
+>+QEMU=2E A binary is available at
+>+https://www=2Ehyperion-entertainment=2Ecom/index=2Ephp/downloads?view=3D=
+files&parent=3D28=2E
+>+The ROM image is in the last 512kB which can be extracted with the
+>+following command:
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ tail -c 524288 updater=2Eimage > u-boot-amigaone=2Ebin
+>+
+>+The BIOS emulator in the firmware is unable to run QEMU=E2=80=98s standa=
+rd
+>+vgabios so ``VGABIOS-lgpl-latest=2Ebin`` is needed instead which can be
+>+downloaded from http://www=2Enongnu=2Eorg/vgabios=2E
+>+
+>+Running Linux
+>+-------------
+>+
+>+There are some Linux images under the following link that work on the
+>+``amigaone`` machine:
+>+https://sourceforge=2Enet/projects/amigaone-linux/files/debian-installer=
+/=2E
+>+To boot the system run:
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ qemu-system-ppc -machine amigaone -bios u-boot-amigaone=2Ebin \
+>+                    -cdrom "A1 Linux Net Installer=2Eiso" \
+>+                    -device ati-vga,model=3Drv100,romfile=3DVGABIOS-lgpl=
+-latest=2Ebin
+>+
+>+From the firmware menu that appears select ``Boot sequence`` =E2=86=92
+>+``Amiga Multiboot Options`` and set ``Boot device 1`` to
+>+``Onboard VIA IDE CDROM``=2E Then hit escape until the main screen appea=
+rs again,
+>+hit escape once more and from the exit menu that appears select either
+>+``Save settings and exit`` or ``Use settings for this session only``=2E =
+It may
+>+take a long time loading the kernel into memory but eventually it boots =
+and the
+>+installer becomes visible=2E The ``ati-vga`` RV100 emulation is not
+>+complete yet so only frame buffer works, DRM and 3D is not available=2E
+>+
+>+Genesi/bPlan Pegasos II (``pegasos2``)
+>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>+
+>+The ``pegasos2`` machine emulates the Pegasos II sold by Genesi and
+>+designed by bPlan=2E Its schematics are available at
+>+https://www=2Epowerdeveloper=2Eorg/platforms/pegasos/schematics
+
+Period missing at end of sentence=2E
+
+>+
+>+Emulated devices
+>+----------------
+>+
+>+ * PowerPC 7457 CPU (can also use``-cpu g3`` or ``750cxe``)
+>+ * Marvell MV64361 Discovery II north bridge
+>+ * VIA VT8231 south bridge
+>+ * PCI VGA compatible card (guests may need other card instead)
+>+ * PS/2 keyboard and mouse
+>+
+>+Firmware
+>+--------
+>+
+>+The Pegasos II board has an Open Firmware compliant ROM based on
+>+SmartFirmware but it has some changes that are not open sourced
+
+s/but it has/with/ ?
+
+s/open sourced/open-sourced/
+
+I'd add a comma after "open-sourced"=2E
+
+>+therefore the ROM binary cannot be included in QEMU=2E An updater was
+>+available from bPlan, it can be found here:
+>+http://web=2Earchive=2Eorg/web/20071021223056/http://www=2Ebplan-gmbh=2E=
+de/up050404/up050404
+
+Period missing at end of sentence=2E
+
+>+The ROM image can be extracted from it with the following command:
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ tail -c +85581 up050404 | head -c 524288 > pegasos2=2Erom
+>+
+>+Running Linux
+>+-------------
+>+
+>+The PowerPC version of Debian 8=2E11 supported Pegasos II=2E The BIOS
+>+emulator in the firmware binary is unable to run QEMU=E2=80=98s standard
+>+vgabios so it needs to be disabled=2E To boot the system run:
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ qemu-system-ppc -machine pegasos2 -bios pegasos2=2Erom \
+>+                    -cdrom debian-8=2E11=2E0-powerpc-netinst=2Eiso \
+>+                    -device VGA,romfile=3D"" -serial stdio
+>+
+>+At the firmware ``ok`` prompt enter ``boot cd install/pegasos``=2E
+>+
+>+Alternatively it is possible to boot the kernel directly without
+
+I'd add a comma after "Alternatively"=2E
+
+>+firmware ROM using the QEMU built in minimal Virtual Open Firmware
+
+s/built in/built-in/
+
+>+(VOF) emulation which is also supported on ``pegasos2``=2E For this,
+>+extract the kernel ``install/powerpc/vmlinuz-chrp=2Einitrd`` from the CD
+>+image then run:
+
+I'd put a comma before "then run"=2E
+
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ qemu-system-ppc -machine pegasos2 -serial stdio \
+>+                    -kernel vmlinuz-chrp=2Einitrd -append "---" \
+>+                    -cdrom debian-8=2E11=2E0-powerpc-netinst=2Eiso
+>+
+>+aCube Sam460ex (``sam460ex``)
+>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+>+
+>+The ``sam460ex`` machine emulates the Sam460ex board by aCube which is
+>+based on the AMCC PowerPC 460EX SoC (that despite its name has a
+>+PPC440 CPU core)=2E
+>+
+>+Firmware
+>+--------
+>+
+>+The board has a firmware based on an older U-Boot version with
+>+modifications to support booting AmigaOS 4=2E The firmware ROM is
+>+included with QEMU=2E
+>+
+>+Emulated devices
+>+----------------
+>+
+>+ * PowerPC 460EX SoC
+>+ * M41T80 serial RTC chip
+>+ * Silicon Motion SM501 display parts (identical to SM502 on real board)
+>+ * Silicon Image SiI3112 2 port SATA controller
+>+ * USB keyboard and mouse
+>+
+>+Running Linux
+>+-------------
+>+
+>+The only Linux distro that supported Sam460ex out of box was CruxPPC
+>+2=2Ex=2E It can be booted by running:
+>+
+>+=2E=2E code-block:: bash
+>+
+>+  $ qemu-system-ppc -machine sam460ex -serial stdio \
+>+                    -drive if=3Dnone,id=3Dcd,format=3Draw,file=3Dcrux-pp=
+c-2=2E7a=2Eiso \
+>+                    -device ide-cd,drive=3Dcd,bus=3Dide=2E1
+>+
+>+There are some other kernels and instructions for booting other
+>+distros on aCube's product page at
+>+https://www=2Eacube-systems=2Ebiz/index=2Ephp?page=3Dhardware&pid=3D5
+>+but those are untested=2E
+>diff --git a/docs/system/target-ppc=2Erst b/docs/system/target-ppc=2Erst
+>index 4f6eb93b17=2E=2E87bf412ce5 100644
+>--- a/docs/system/target-ppc=2Erst
+>+++ b/docs/system/target-ppc=2Erst
+>@@ -17,6 +17,7 @@ help``=2E
+> =2E=2E toctree::
+>    :maxdepth: 1
+>=20
+>+   ppc/amigang
+>    ppc/embedded
+>    ppc/powermac
+>    ppc/powernv
+
+For amigaone + pegasos2:
+Tested-by: Bernhard Beschow <shentey@gmail=2Ecom>
+
 
