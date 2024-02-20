@@ -2,110 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443CE85CB02
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE2F85CAF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:43:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcYoj-0003KW-6E; Tue, 20 Feb 2024 17:42:25 -0500
+	id 1rcYok-0003L6-1p; Tue, 20 Feb 2024 17:42:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYoe-0003KI-UG
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:21 -0500
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYoh-0003KZ-BQ
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:23 -0500
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYod-0006Ld-Bs
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:20 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYof-0006Lq-G2
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:23 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 192BB1FB40;
- Tue, 20 Feb 2024 22:42:18 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2ED6F22260;
+ Tue, 20 Feb 2024 22:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LSbiTWWDbTpy9l2roNT+qTSBnWkmKZrMhXNYrciFAWY=;
- b=DA3bnF1ti6pMi8KGBvh9f3g9/sScVWcj8PfMEl+K6BrbWsKvduERYdsxMKoe11XMPOHKkx
- YLErO7nI2fZKYQU6O1tzAviaglAXx3Vwygqcgr+iUoOMAt9gFsk6MownC545yD1SAb4Tdr
- 3xVhaZKS40N3jwgxTG7N8pRlpWvlMwo=
+ bh=JgoMAKXxfuxsoYEwezCWyudDOGjW1OZjXZ8SKMknqd8=;
+ b=jnR4v8XMs/qsvULFV8K3FmVrS2+SRyIRr0mG7ukGTLPB10PfjqSSW62pn6irPv3AncTLw+
+ nIwfjW7AtxMHDtETCWKXVyg32jMg50rIgTn22of9g6pwhuQzBOeg0qyljul1qR7iCSOHA5
+ K0VZID5ARv1dhyydxdr8gvw9OLWdZIs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468938;
+ s=susede2_ed25519; t=1708468940;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LSbiTWWDbTpy9l2roNT+qTSBnWkmKZrMhXNYrciFAWY=;
- b=L/C2xDhkZGOg+NtseWDv7hqPrGKCJ0Te4Th0oKgCN1A7Vk3oROr3p9HG9Tl30hb5mCPQwa
- yS1kATYT+84GD7CQ==
+ bh=JgoMAKXxfuxsoYEwezCWyudDOGjW1OZjXZ8SKMknqd8=;
+ b=i4bBQz1kvdlNiER0B98oa/p+ouQc60Uih4AKJevBVFm8X7eOz/ClisqCGHEkwyYSSoFXsF
+ Lb6GDwCaUDZv5lDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468938; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468940; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LSbiTWWDbTpy9l2roNT+qTSBnWkmKZrMhXNYrciFAWY=;
- b=DA3bnF1ti6pMi8KGBvh9f3g9/sScVWcj8PfMEl+K6BrbWsKvduERYdsxMKoe11XMPOHKkx
- YLErO7nI2fZKYQU6O1tzAviaglAXx3Vwygqcgr+iUoOMAt9gFsk6MownC545yD1SAb4Tdr
- 3xVhaZKS40N3jwgxTG7N8pRlpWvlMwo=
+ bh=JgoMAKXxfuxsoYEwezCWyudDOGjW1OZjXZ8SKMknqd8=;
+ b=jnR4v8XMs/qsvULFV8K3FmVrS2+SRyIRr0mG7ukGTLPB10PfjqSSW62pn6irPv3AncTLw+
+ nIwfjW7AtxMHDtETCWKXVyg32jMg50rIgTn22of9g6pwhuQzBOeg0qyljul1qR7iCSOHA5
+ K0VZID5ARv1dhyydxdr8gvw9OLWdZIs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468938;
+ s=susede2_ed25519; t=1708468940;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LSbiTWWDbTpy9l2roNT+qTSBnWkmKZrMhXNYrciFAWY=;
- b=L/C2xDhkZGOg+NtseWDv7hqPrGKCJ0Te4Th0oKgCN1A7Vk3oROr3p9HG9Tl30hb5mCPQwa
- yS1kATYT+84GD7CQ==
+ bh=JgoMAKXxfuxsoYEwezCWyudDOGjW1OZjXZ8SKMknqd8=;
+ b=i4bBQz1kvdlNiER0B98oa/p+ouQc60Uih4AKJevBVFm8X7eOz/ClisqCGHEkwyYSSoFXsF
+ Lb6GDwCaUDZv5lDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C403F139D0;
- Tue, 20 Feb 2024 22:42:15 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8C707139D0;
+ Tue, 20 Feb 2024 22:42:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id YAtoIscq1WUlKwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:15 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id YIv6FMoq1WUlKwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:18 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 15/34] tests/qtest/migration: Add tests for fixed-ram
- file-based migration
-Date: Tue, 20 Feb 2024 19:41:19 -0300
-Message-Id: <20240220224138.24759-16-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>
+Subject: [PATCH v4 16/34] migration/multifd: Rename
+ MultiFDSend|RecvParams::data to compress_data
+Date: Tue, 20 Feb 2024 19:41:20 -0300
+Message-Id: <20240220224138.24759-17-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240220224138.24759-1-farosas@suse.de>
 References: <20240220224138.24759-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: /
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DA3bnF1t;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="L/C2xDhk"
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jnR4v8XM;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=i4bBQz1k
+X-Spamd-Result: default: False [1.69 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
+ MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: 192BB1FB40
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: 1.69
+X-Rspamd-Queue-Id: 2ED6F22260
+X-Spamd-Bar: +
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -128,117 +127,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use a more specific name for the compression data so we can use the
+generic for the multifd core code.
+
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 59 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ migration/multifd-zlib.c | 20 ++++++++++----------
+ migration/multifd-zstd.c | 20 ++++++++++----------
+ migration/multifd.h      |  4 ++--
+ 3 files changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 83512bce85..d61f93b151 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2200,6 +2200,14 @@ static void *test_mode_reboot_start(QTestState *from, QTestState *to)
-     return NULL;
- }
- 
-+static void *migrate_fixed_ram_start(QTestState *from, QTestState *to)
-+{
-+    migrate_set_capability(from, "fixed-ram", true);
-+    migrate_set_capability(to, "fixed-ram", true);
-+
-+    return NULL;
-+}
-+
- static void test_mode_reboot(void)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -2214,6 +2222,32 @@ static void test_mode_reboot(void)
-     test_file_common(&args, true);
- }
- 
-+static void test_precopy_file_fixed_ram_live(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_fixed_ram_start,
-+    };
-+
-+    test_file_common(&args, false);
-+}
-+
-+static void test_precopy_file_fixed_ram(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_fixed_ram_start,
-+    };
-+
-+    test_file_common(&args, true);
-+}
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -2462,6 +2496,13 @@ static void *migrate_precopy_fd_file_start(QTestState *from, QTestState *to)
-     return NULL;
- }
- 
-+static void *migrate_fd_file_fixed_ram_start(QTestState *from, QTestState *to)
-+{
-+    migrate_fixed_ram_start(from, to);
-+
-+    return migrate_precopy_fd_file_start(from, to);
-+}
-+
- static void test_migrate_precopy_fd_file(void)
- {
-     MigrateCommon args = {
-@@ -2472,6 +2513,17 @@ static void test_migrate_precopy_fd_file(void)
-     };
-     test_file_common(&args, true);
- }
-+
-+static void test_migrate_precopy_fd_file_fixed_ram(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .connect_uri = "fd:fd-mig",
-+        .start_hook = migrate_fd_file_fixed_ram_start,
-+        .finish_hook = test_migrate_fd_finish_hook
-+    };
-+    test_file_common(&args, true);
-+}
- #endif /* _WIN32 */
- 
- static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-@@ -3509,6 +3561,11 @@ int main(int argc, char **argv)
-         migration_test_add("/migration/mode/reboot", test_mode_reboot);
+diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
+index 012e3bdea1..2a8f5fc9a6 100644
+--- a/migration/multifd-zlib.c
++++ b/migration/multifd-zlib.c
+@@ -69,7 +69,7 @@ static int zlib_send_setup(MultiFDSendParams *p, Error **errp)
+         err_msg = "out of memory for buf";
+         goto err_free_zbuff;
      }
+-    p->data = z;
++    p->compress_data = z;
+     return 0;
  
-+    migration_test_add("/migration/precopy/file/fixed-ram",
-+                       test_precopy_file_fixed_ram);
-+    migration_test_add("/migration/precopy/file/fixed-ram/live",
-+                       test_precopy_file_fixed_ram_live);
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
-@@ -3570,6 +3627,8 @@ int main(int argc, char **argv)
-                        test_migrate_precopy_fd_socket);
-     migration_test_add("/migration/precopy/fd/file",
-                        test_migrate_precopy_fd_file);
-+    migration_test_add("/migration/precopy/fd/file/fixed-ram",
-+                       test_migrate_precopy_fd_file_fixed_ram);
- #endif
-     migration_test_add("/migration/validate_uuid", test_validate_uuid);
-     migration_test_add("/migration/validate_uuid_error",
+ err_free_zbuff:
+@@ -92,15 +92,15 @@ err_free_z:
+  */
+ static void zlib_send_cleanup(MultiFDSendParams *p, Error **errp)
+ {
+-    struct zlib_data *z = p->data;
++    struct zlib_data *z = p->compress_data;
+ 
+     deflateEnd(&z->zs);
+     g_free(z->zbuff);
+     z->zbuff = NULL;
+     g_free(z->buf);
+     z->buf = NULL;
+-    g_free(p->data);
+-    p->data = NULL;
++    g_free(p->compress_data);
++    p->compress_data = NULL;
+ }
+ 
+ /**
+@@ -117,7 +117,7 @@ static void zlib_send_cleanup(MultiFDSendParams *p, Error **errp)
+ static int zlib_send_prepare(MultiFDSendParams *p, Error **errp)
+ {
+     MultiFDPages_t *pages = p->pages;
+-    struct zlib_data *z = p->data;
++    struct zlib_data *z = p->compress_data;
+     z_stream *zs = &z->zs;
+     uint32_t out_size = 0;
+     int ret;
+@@ -194,7 +194,7 @@ static int zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
+     struct zlib_data *z = g_new0(struct zlib_data, 1);
+     z_stream *zs = &z->zs;
+ 
+-    p->data = z;
++    p->compress_data = z;
+     zs->zalloc = Z_NULL;
+     zs->zfree = Z_NULL;
+     zs->opaque = Z_NULL;
+@@ -224,13 +224,13 @@ static int zlib_recv_setup(MultiFDRecvParams *p, Error **errp)
+  */
+ static void zlib_recv_cleanup(MultiFDRecvParams *p)
+ {
+-    struct zlib_data *z = p->data;
++    struct zlib_data *z = p->compress_data;
+ 
+     inflateEnd(&z->zs);
+     g_free(z->zbuff);
+     z->zbuff = NULL;
+-    g_free(p->data);
+-    p->data = NULL;
++    g_free(p->compress_data);
++    p->compress_data = NULL;
+ }
+ 
+ /**
+@@ -246,7 +246,7 @@ static void zlib_recv_cleanup(MultiFDRecvParams *p)
+  */
+ static int zlib_recv_pages(MultiFDRecvParams *p, Error **errp)
+ {
+-    struct zlib_data *z = p->data;
++    struct zlib_data *z = p->compress_data;
+     z_stream *zs = &z->zs;
+     uint32_t in_size = p->next_packet_size;
+     /* we measure the change of total_out */
+diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
+index dc8fe43e94..593cf290ad 100644
+--- a/migration/multifd-zstd.c
++++ b/migration/multifd-zstd.c
+@@ -52,7 +52,7 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
+     struct zstd_data *z = g_new0(struct zstd_data, 1);
+     int res;
+ 
+-    p->data = z;
++    p->compress_data = z;
+     z->zcs = ZSTD_createCStream();
+     if (!z->zcs) {
+         g_free(z);
+@@ -90,14 +90,14 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
+  */
+ static void zstd_send_cleanup(MultiFDSendParams *p, Error **errp)
+ {
+-    struct zstd_data *z = p->data;
++    struct zstd_data *z = p->compress_data;
+ 
+     ZSTD_freeCStream(z->zcs);
+     z->zcs = NULL;
+     g_free(z->zbuff);
+     z->zbuff = NULL;
+-    g_free(p->data);
+-    p->data = NULL;
++    g_free(p->compress_data);
++    p->compress_data = NULL;
+ }
+ 
+ /**
+@@ -114,7 +114,7 @@ static void zstd_send_cleanup(MultiFDSendParams *p, Error **errp)
+ static int zstd_send_prepare(MultiFDSendParams *p, Error **errp)
+ {
+     MultiFDPages_t *pages = p->pages;
+-    struct zstd_data *z = p->data;
++    struct zstd_data *z = p->compress_data;
+     int ret;
+     uint32_t i;
+ 
+@@ -183,7 +183,7 @@ static int zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
+     struct zstd_data *z = g_new0(struct zstd_data, 1);
+     int ret;
+ 
+-    p->data = z;
++    p->compress_data = z;
+     z->zds = ZSTD_createDStream();
+     if (!z->zds) {
+         g_free(z);
+@@ -221,14 +221,14 @@ static int zstd_recv_setup(MultiFDRecvParams *p, Error **errp)
+  */
+ static void zstd_recv_cleanup(MultiFDRecvParams *p)
+ {
+-    struct zstd_data *z = p->data;
++    struct zstd_data *z = p->compress_data;
+ 
+     ZSTD_freeDStream(z->zds);
+     z->zds = NULL;
+     g_free(z->zbuff);
+     z->zbuff = NULL;
+-    g_free(p->data);
+-    p->data = NULL;
++    g_free(p->compress_data);
++    p->compress_data = NULL;
+ }
+ 
+ /**
+@@ -248,7 +248,7 @@ static int zstd_recv_pages(MultiFDRecvParams *p, Error **errp)
+     uint32_t out_size = 0;
+     uint32_t expected_size = p->normal_num * p->page_size;
+     uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
+-    struct zstd_data *z = p->data;
++    struct zstd_data *z = p->compress_data;
+     int ret;
+     int i;
+ 
+diff --git a/migration/multifd.h b/migration/multifd.h
+index 8a1cad0996..6c18732827 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -129,7 +129,7 @@ typedef struct {
+     /* number of iovs used */
+     uint32_t iovs_num;
+     /* used for compression methods */
+-    void *data;
++    void *compress_data;
+ }  MultiFDSendParams;
+ 
+ typedef struct {
+@@ -185,7 +185,7 @@ typedef struct {
+     /* num of non zero pages */
+     uint32_t normal_num;
+     /* used for de-compression methods */
+-    void *data;
++    void *compress_data;
+ } MultiFDRecvParams;
+ 
+ typedef struct {
 -- 
 2.35.3
 
