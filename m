@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1C685B48A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4145885B482
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:07:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLAB-0004tm-HC; Tue, 20 Feb 2024 03:07:39 -0500
+	id 1rcLAI-00051S-FY; Tue, 20 Feb 2024 03:07:46 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLA5-0004k5-6W
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:34 -0500
+ id 1rcLAD-0004zh-MB
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:41 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLA2-0000Vi-MT
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:32 -0500
+ id 1rcLAB-0000WL-O8
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708416450;
+ s=mimecast20190719; t=1708416459;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lH54QBenIkKz2SFD32IDe+ZcrIDsRVoxMKqUbplF1dY=;
- b=VZLpyVAJf7Rz3EUTqOGBdrZETtb//LD/S2RD/QKLZ3jwmSr6vbin17J6OS+aqA9FMOwiAK
- V+x96Wiq3pCcafbEsg1hBWyHcpJkL9g11mOvZZyoCTH+hm5IVuo2pfVi7+j7ggDD/wFLoT
- dD1CKMhsJqiJdBG4HNq7qR0+K7amTVc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0gMIIZtbr1VC+ByGiOX54Iv2fvudEImt7S0oZ9/WbL4=;
+ b=B6P2Yfh28LK8vEmLnqfBNyGee4N5x7fSGPNDz71LOF9eQLXjvLT5tsMorXwtAlXzFjF+it
+ /pEgOEQnP6g1ucCtnrlFHAUhv83jKJ+sIegTDgCpfyiajSh8N9Dq804zLx4/LWEUWVRlPk
+ ArSBmYEiR1895k0OHNgXXTDNR0grjN4=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-1A9-aKY4OgW0MHofkDgoHg-1; Tue, 20 Feb 2024 03:07:28 -0500
-X-MC-Unique: 1A9-aKY4OgW0MHofkDgoHg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a2f71c83b7eso433140966b.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:07:28 -0800 (PST)
+ us-mta-593-8xLyHdwpMfiWH9f28zsStQ-1; Tue, 20 Feb 2024 03:07:37 -0500
+X-MC-Unique: 8xLyHdwpMfiWH9f28zsStQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-563e6dd8d64so2093926a12.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:07:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708416446; x=1709021246;
+ d=1e100.net; s=20230601; t=1708416455; x=1709021255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lH54QBenIkKz2SFD32IDe+ZcrIDsRVoxMKqUbplF1dY=;
- b=aafNGaVHAPLXPq3NTxqpNh35FF637jDWwY6m2emSky+Cqn83B15GHnVFJiykP3xZMH
- FL7c7dQoxsVl2OjIM4KGE1G+BL0QlXGESFbz/8j9c36E+PIEIKNiPJ0bxQAUR/zILmXt
- Un2zRn7nN3M9UYYmer5z3WoxK8IAKmJYdwF9ipJW3kGFrfOanq5VrtYHaed16lMm1yBD
- e3w3BHipuYPApiAsMV4rLnjrYcuyrxbfunHn5HHmljOakLkXD9h0qxZbunJZrF0tiBfl
- Odh+c5KGGNZekiepimRgg/Kazv+0BZ+2KIP1+G2HCt+HXjFGwt2SZGmyXLNttc0GYlnI
- 0PJg==
-X-Gm-Message-State: AOJu0YxtmBeI2cuO+noIoSy9NnbIMHkCx9YThj9Wivfulb0LqQfbpno1
- wRAXKsGU7i7hnVGnqwUdDN/ahmPRSwalGNH3/ScS3ym/ZYWt/XV6oNmfjKwR4rX36U14dh91kRe
- oJQshFNsAqeY6ZpvXN3h/G4GPndryuu3ruXqtvz2A4F1ajCYEPVi/O8txj3dBUrVOJjuAjtSM4m
- 9b+ZD+ZTalrVhy8UqpTI4YI5VH7QtJhU5MUV64
-X-Received: by 2002:a17:906:2a90:b0:a3e:1ab9:b6a1 with SMTP id
- l16-20020a1709062a9000b00a3e1ab9b6a1mr4653227eje.21.1708416446473; 
- Tue, 20 Feb 2024 00:07:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbPw3FRx0k4nx/xLvqu9ORI17smIoYM0SdzGQgHXGAg2LiAxFbDjOh10jwv530fAQCYLD2FQ==
-X-Received: by 2002:a17:906:2a90:b0:a3e:1ab9:b6a1 with SMTP id
- l16-20020a1709062a9000b00a3e1ab9b6a1mr4653212eje.21.1708416446137; 
- Tue, 20 Feb 2024 00:07:26 -0800 (PST)
+ bh=0gMIIZtbr1VC+ByGiOX54Iv2fvudEImt7S0oZ9/WbL4=;
+ b=P4xry9HgW/L2/aPuOnwr7RIW06amLfOHhhIMeI78zfKxGf/hKyXxHwy1XIn2OnUXwK
+ FCd8Y6HVap7+4+eyG1ImAfi3LHl+o+dsvR/1d5mXcfVA2TBE2SkE4AH/YK0bvQhFACeQ
+ lMlNJTAwIba0CFyzzt8rGJK/bwuZbMHbANZo+COKe7jfSYW5isqHk3LDMb6V0aWOof/V
+ 8N36XNOeNM5IXZNZLnpxZhTIgAvtY5LWaK98ZH8l5ozzF9dDJSsXBQVIoswr6bIZlQdr
+ ec3upZIkB1SVLA9r0Rc/d+sg3S54FePr23+0WBlig1AuRGoHqgmmx0v1ezwc/ErexLSj
+ 32vA==
+X-Gm-Message-State: AOJu0YycEhACbnn9sYdXQFjx0j3p/LWAIJncWvuiLn9ZG1qg9QFrIBQY
+ 2ZarX4Q5pQ3Px/zSZ3XwVViXqiWYa5W6bI/xSWq8hiqyYy7y8LBUXLseVexoghevDAAJtRNajwB
+ WNz5fMk+HeCB3yLtSyvuwr1DdkSKa+utjs99C6gP3Xdw/7H79zOdh7GhtsPJBMlNIbRs6Wqqeh4
+ 6NrsijxOvxypamudAz6NWVdOJkB+NR5lVshSHm
+X-Received: by 2002:aa7:c646:0:b0:563:f889:24bd with SMTP id
+ z6-20020aa7c646000000b00563f88924bdmr6426380edr.8.1708416455504; 
+ Tue, 20 Feb 2024 00:07:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGIQ39Hd1LapZCqpukh9LegPgsMbU8l9vBFK84/XMbGLkIiD1/eCWLEmpMmPqq3z5XbYKn/nQ==
+X-Received: by 2002:aa7:c646:0:b0:563:f889:24bd with SMTP id
+ z6-20020aa7c646000000b00563f88924bdmr6426369edr.8.1708416455168; 
+ Tue, 20 Feb 2024 00:07:35 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- fj21-20020a1709069c9500b00a3e5adf11c7sm2596010ejc.157.2024.02.20.00.07.17
+ u20-20020aa7d894000000b00564648bb01csm2056702edq.22.2024.02.20.00.07.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:07:25 -0800 (PST)
+ Tue, 20 Feb 2024 00:07:34 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/17] mips: remove unnecessary "select PTIMER"
-Date: Tue, 20 Feb 2024 09:05:50 +0100
-Message-ID: <20240220080558.365903-10-pbonzini@redhat.com>
+Subject: [PULL 10/17] isa-superio: validate floppy.count value
+Date: Tue, 20 Feb 2024 09:05:51 +0100
+Message-ID: <20240220080558.365903-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240220080558.365903-1-pbonzini@redhat.com>
 References: <20240220080558.365903-1-pbonzini@redhat.com>
@@ -101,27 +101,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no use of ptimer functions in mips_cps.c or any other related
-code.
+Ensure that the value is valid; it can only be zero or one.
+And never create a floppy disk controller if it is zero.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ hw/isa/isa-superio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 505381a0bba..ab61af209a0 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -50,7 +50,6 @@ config LOONGSON3V
+diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
+index 7dbfc374da3..e06a548c682 100644
+--- a/hw/isa/isa-superio.c
++++ b/hw/isa/isa-superio.c
+@@ -116,7 +116,9 @@ static void isa_superio_realize(DeviceState *dev, Error **errp)
+     }
  
- config MIPS_CPS
-     bool
--    select PTIMER
-     select MIPS_ITU
- 
- config MIPS_BOSTON
+     /* Floppy disc */
+-    if (!k->floppy.is_enabled || k->floppy.is_enabled(sio, 0)) {
++    assert(k->floppy.count <= 1);
++    if (k->floppy.count &&
++        (!k->floppy.is_enabled || k->floppy.is_enabled(sio, 0))) {
+         isa = isa_new(TYPE_ISA_FDC);
+         d = DEVICE(isa);
+         if (k->floppy.get_iobase) {
 -- 
 2.43.0
 
