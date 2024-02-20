@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB6A85B920
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167E285B940
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:39:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcNP0-00077R-H6; Tue, 20 Feb 2024 05:31:06 -0500
+	id 1rcNWr-0003Gt-Mg; Tue, 20 Feb 2024 05:39:14 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rcNOh-00075d-HV; Tue, 20 Feb 2024 05:30:47 -0500
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNWh-0003GS-0u
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:39:04 -0500
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1rcNOf-0000Is-Mk; Tue, 20 Feb 2024 05:30:47 -0500
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-21e2673a206so3401431fac.2; 
- Tue, 20 Feb 2024 02:30:45 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNWe-0001Vp-Vz
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:39:02 -0500
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-55a179f5fa1so7114319a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:39:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708425044; x=1709029844; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=fyzB5YCU69e9aRpVkB+NNMXTDYsdgwjqpgK8fMoXVPc=;
- b=JxJpRSxmLh3RfqM5iSOb+AJ4t6VV4J7uWHKFYt3nvNOMO3694pOTFO/FdbAqiCFzj9
- FxpbSiVUaNwyGweYNeu8D4ChCK9Zjirr6bGL5vN50/D9WmTW+DkcUYmXNa3TTW7I9AiF
- eR2IP+AnCMc7fpsQHVXegVL7iqOmfnC5dm0kNE1WSWOwuvmGq/fEPZXZR3GoRGZC5N/C
- qZORJkx2p//DKL7Ct9wI8mmGWLgU8oId6c2QCBKIG2wxti7G6+XJUgQTOtULcfOK2emO
- 3J9u0iXyC2xyqltyyR8sjHAwqAfHV5vpOlF8s6+4Vrg8zTmAcXLlG+OiTcCpYRQ810Hf
- EHfg==
+ d=linaro.org; s=google; t=1708425539; x=1709030339; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=yHbuyEyEJLUqB1osHk3CLStsTygliiUGTdo9t+U7hG8=;
+ b=ab0zQAxjy/H30rQegnvf8NHyFwqvs8d15lQeBc3O8FmR6Rtnq7DRaY6z3m6Fvw9TxX
+ 2+Q7zIkYFxanGIun3Wn5wJJzN5aXrmQVix41WEIOuTVONTJ3Y3ZnSfSOQOOrrl7xhm++
+ rOqYPxtiNszelSrFvjU0Gql1j1Crjh7/qqNkOxsX27dtpkTLeZ4/ODXUkZ6pMubwHHLw
+ SMayGqgcXdW9YyeaBxbFfJ1s8MDpxSaaP1g/s1OlVGwXysZy89u78s5rUqjJIBS0o0KK
+ ydKQXqQeELJ/0k8BXc3LpUqWH8/tkKmVRmoUx4keEnjYfbk9WWZnZiL/ZUJSiw19VSVu
+ oyFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708425044; x=1709029844;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fyzB5YCU69e9aRpVkB+NNMXTDYsdgwjqpgK8fMoXVPc=;
- b=e38h9jBzN0tV3M7X2Yffui9ygHF/xbqtD2V4Rz9Uo60dDBTKXwSiqdgzp3afQ6JrtL
- msq+THbHJdViT5Mu5nKJ4s2XtIAjlf47O6bHir+zJ6ZRF3c0OrfaZYJTu+f5bPzgg1xO
- IQKfhZ5OAQlY3O++en2LnvMU82x6GnHlVAwj1vx3KKELNCvBS09Yndem7LXU65JvK2Ob
- jb0tauFcK3ndZDBD/UIgPfgN5LkzCyYwkKBvsexlrvJI5iVkOwRqYb0HEhgpL8v5kXxw
- Cz1PwrcI+3ewQY6+A/dBecFBqCFpn4ru2Z7X5WGpG57rJ9TCsEJ51f8IcqlbFpgQb6uV
- zwlw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUg0ZrW39tobUSI6pxaCcvmZRng94tOK6U+wNUJwyyg5bAnGMnUosnN+MH2Rc7+CwwKADVzJmfKlus/6awAV20Zmvxb
-X-Gm-Message-State: AOJu0YwxY9cZyK7jEBuztEmKP5Bs7IcNmldSXLviHJAyjj5GgzHjSiay
- 4Hj0WesshCB/D7xfyUKBBLKWvx+sfpVhaStAlVIoksbfHZ+hLdAeU4gTQE7XxJFFjm8cxVoat81
- oJMQ7mNjF5YdtcDx8uiFKedD0uDo=
-X-Google-Smtp-Source: AGHT+IHU9/uDjmtOfNMpct8BNY3FHX01ErvKxYUVL1Iun08M+evIO5AYLAuUWfZS9ubIDrGc+IXaHtJMojXNX6o7UYc=
-X-Received: by 2002:a05:6871:411:b0:21e:7fa5:c58a with SMTP id
- d17-20020a056871041100b0021e7fa5c58amr11677523oag.30.1708425043958; Tue, 20
- Feb 2024 02:30:43 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708425539; x=1709030339;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yHbuyEyEJLUqB1osHk3CLStsTygliiUGTdo9t+U7hG8=;
+ b=RjCguJThPv/PW+3s9nC5q8uA3crkh4RLM8oPL7wy4BSfPqcm6eiwLZdIuHk7XrALDU
+ m5jCY0ZO0f/sDm6bc5ZD25Qa9zCY1CoDeXnX/eJnjE2tO9VNi6VkdiDES8U/65NXCfoe
+ OReLMq1/prK5I7oKcAK+hkZh8gzf5BwdOnGiW0Nvk4WkKB9WKifd5UcFXmSk7gmq3R2t
+ lrlS97j99i2LxR7C5980UHz6DbMDBzAYRnvQ+05frmhgrgUN4ty0ROmfjF1sb2rpOhOa
+ mxx/SkPcNdXqwTVj2hLWalse3nGELptzMj0EtDcqbVUx+u8hHTXeEDDnCcG4eqUBDRV5
+ rr1w==
+X-Gm-Message-State: AOJu0YzKArp8m9D+xHZ5bgO158ITMPWjsWk8HTymvbDAeX4yUoQFXbRB
+ abMQoz4ehpLTgRcGqu0eVz6y61xMRKDmB4aYxIJlayKSGbdBTwgM5dYtSFQzUagcIwcl6G0hzoS
+ hDaM=
+X-Google-Smtp-Source: AGHT+IE3Avt11g7AjuhKZ6jPWo/vLWxPKoJwX0esyG907SV3CEsFNezF15OAMIbmDwoTll2LY//04w==
+X-Received: by 2002:aa7:d74c:0:b0:564:20f5:6926 with SMTP id
+ a12-20020aa7d74c000000b0056420f56926mr5940699eds.14.1708425539060; 
+ Tue, 20 Feb 2024 02:38:59 -0800 (PST)
+Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
+ by smtp.gmail.com with ESMTPSA id
+ j24-20020aa7ca58000000b00564a2d7da28sm1151476edt.41.2024.02.20.02.38.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Feb 2024 02:38:58 -0800 (PST)
+Date: Tue, 20 Feb 2024 12:34:38 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Albert Esteve <aesteve@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, stefanha@gmail.com,
+ alex.bennee@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@gmail.com, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH v4 3/5] hw/virtio: change dmabuf mutex to QemuMutex
+User-Agent: meli 0.8.5-rc.3
+References: <20240219143423.272012-1-aesteve@redhat.com>
+ <20240219143423.272012-4-aesteve@redhat.com>
+In-Reply-To: <20240219143423.272012-4-aesteve@redhat.com>
+Message-ID: <95hkw.qzghj1yo7yd4@linaro.org>
 MIME-Version: 1.0
-References: <20240219225958.2421873-1-rayhan.faizel@gmail.com>
- <20240219225958.2421873-4-rayhan.faizel@gmail.com>
- <e61e02ee-e181-4ea3-b079-638b50889742@redhat.com>
-In-Reply-To: <e61e02ee-e181-4ea3-b079-638b50889742@redhat.com>
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
-Date: Tue, 20 Feb 2024 13:30:33 +0300
-Message-ID: <CAKUh+Qf5=kgUC3H9uWy6fAxB=76Tai28D6hPQ=qMwxc92YpNyA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] tests/qtest: Add testcase for BCM2835 BSC
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, philmd@linaro.org, 
- pbonzini@redhat.com, qemu-arm@nongnu.org, Laurent Vivier <lvivier@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000dee10c0611cdb38c"
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-oa1-x35.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,169 +96,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000dee10c0611cdb38c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hello Albert,
 
-Hi Thomas,
+This is a point of confusion for me; Volker recently pointed out in a 
+patch for virtio-snd that all its code runs under the BQL. Is this code
+ever called without BQL, for example do the backend read/write functions 
+from vhost-user.c run without the BQL?
 
-Do you want me to add an SPDX line to the other two commits or will just
-this one suffice?
-
-On Tue, Feb 20, 2024 at 9:45=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrot=
-e:
-
-> On 19/02/2024 23.59, Rayhan Faizel wrote:
-> > Simple testcase for validating proper operation of read and write for a=
-ll
-> > three BSC controllers.
-> >
-> > Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
-> > ---
-> >   tests/qtest/bcm2835-i2c-test.c | 105 ++++++++++++++++++++++++++++++++=
-+
-> >   tests/qtest/meson.build        |   2 +-
-> >   2 files changed, 106 insertions(+), 1 deletion(-)
-> >   create mode 100644 tests/qtest/bcm2835-i2c-test.c
-> >
-> > diff --git a/tests/qtest/bcm2835-i2c-test.c
-> b/tests/qtest/bcm2835-i2c-test.c
-> > new file mode 100644
-> > index 0000000000..6ec15b8976
-> > --- /dev/null
-> > +++ b/tests/qtest/bcm2835-i2c-test.c
-> > @@ -0,0 +1,105 @@
-> > +/*
-> > + * QTest testcase for Broadcom Serial Controller (BSC)
-> > + *
-> > + * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-> > + *
-> > + * Permission is hereby granted, free of charge, to any person
-> obtaining a copy
-> > + * of this software and associated documentation files (the
-> "Software"), to deal
-> > + * in the Software without restriction, including without limitation
-> the rights
-> > + * to use, copy, modify, merge, publish, distribute, sublicense, and/o=
-r
-> sell
-> > + * copies of the Software, and to permit persons to whom the Software =
-is
-> > + * furnished to do so, subject to the following conditions:
-> > + *
-> > + * The above copyright notice and this permission notice shall be
-> included in
-> > + * all copies or substantial portions of the Software.
-> > + *
-> > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> EXPRESS OR
-> > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> MERCHANTABILITY,
-> > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-> SHALL
-> > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES O=
-R
-> OTHER
-> > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> ARISING FROM,
-> > + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-> DEALINGS IN
-> > + * THE SOFTWARE.
-> > + */
+On Mon, 19 Feb 2024 16:34, Albert Esteve <aesteve@redhat.com> wrote:
+>Change GMutex by QemuMutex to be able to use
+>lock contexts with `WITH_QEMU_LOCK_GUARD`.
 >
-> Could you maybe also add a SPDX license line, so that it is more obvious
-> at
-> a quick glance what license this is?
+>As the lock needs to be initialised and there
+>is no central point for initialisation, add
+>an init public function and call it from
+>virtio.c, each time a new backend structure
+>is initialised.
 >
-> Anyway,
-> Acked-by: Thomas Huth <thuth@redhat.com>
+>Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>---
+> hw/display/virtio-dmabuf.c        | 55 +++++++++++++++++--------------
+> hw/virtio/virtio.c                |  3 ++
+> include/hw/virtio/virtio-dmabuf.h |  5 +++
+> tests/unit/test-virtio-dmabuf.c   |  5 +++
+> 4 files changed, 43 insertions(+), 25 deletions(-)
+>
+>diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+>index 497cb6fa7c..961094a561 100644
+>--- a/hw/display/virtio-dmabuf.c
+>+++ b/hw/display/virtio-dmabuf.c
+>@@ -11,11 +11,12 @@
+>  */
+> 
+> #include "qemu/osdep.h"
+>+#include "include/qemu/lockable.h"
+> 
+> #include "hw/virtio/virtio-dmabuf.h"
+> 
+> 
+>-static GMutex lock;
+>+static QemuMutex lock;
+> static GHashTable *resource_uuids;
+> 
+> /*
+>@@ -27,23 +28,27 @@ static int uuid_equal_func(const void *lhv, const void *rhv)
+>     return qemu_uuid_is_equal(lhv, rhv);
+> }
+> 
+>+void virtio_dmabuf_init(void) {
+>+    qemu_mutex_init(&lock);
+>+}
+>+
+> static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
+> {
+>     bool result = true;
+> 
+>-    g_mutex_lock(&lock);
+>-    if (resource_uuids == NULL) {
+>-        resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
+>-                                               uuid_equal_func,
+>-                                               NULL,
+>-                                               g_free);
+>-    }
+>-    if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
+>-        g_hash_table_insert(resource_uuids, uuid, value);
+>-    } else {
+>-        result = false;
+>+    WITH_QEMU_LOCK_GUARD(&lock) {
+>+        if (resource_uuids == NULL) {
+>+            resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
+>+                                                uuid_equal_func,
+>+                                                NULL,
+>+                                                g_free);
+>+        }
+>+        if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
+>+            g_hash_table_insert(resource_uuids, uuid, value);
+>+        } else {
+>+            result = false;
+>+        }
+>     }
+>-    g_mutex_unlock(&lock);
+> 
+>     return result;
+> }
+>@@ -87,9 +92,9 @@ bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
+> bool virtio_remove_resource(const QemuUUID *uuid)
+> {
+>     bool result;
+>-    g_mutex_lock(&lock);
+>-    result = g_hash_table_remove(resource_uuids, uuid);
+>-    g_mutex_unlock(&lock);
+>+    WITH_QEMU_LOCK_GUARD(&lock) {
+>+        result = g_hash_table_remove(resource_uuids, uuid);
+>+    }
+> 
+>     return result;
+> }
+>@@ -98,11 +103,11 @@ static VirtioSharedObject *get_shared_object(const QemuUUID *uuid)
+> {
+>     gpointer lookup_res = NULL;
+> 
+>-    g_mutex_lock(&lock);
+>-    if (resource_uuids != NULL) {
+>-        lookup_res = g_hash_table_lookup(resource_uuids, uuid);
+>+    WITH_QEMU_LOCK_GUARD(&lock) {
+>+        if (resource_uuids != NULL) {
+>+            lookup_res = g_hash_table_lookup(resource_uuids, uuid);
+>+        }
+>     }
+>-    g_mutex_unlock(&lock);
+> 
+>     return (VirtioSharedObject *) lookup_res;
+> }
+>@@ -138,9 +143,9 @@ SharedObjectType virtio_object_type(const QemuUUID *uuid)
+> 
+> void virtio_free_resources(void)
+> {
+>-    g_mutex_lock(&lock);
+>-    g_hash_table_destroy(resource_uuids);
+>-    /* Reference count shall be 0 after the implicit unref on destroy */
+>-    resource_uuids = NULL;
+>-    g_mutex_unlock(&lock);
+>+    WITH_QEMU_LOCK_GUARD(&lock) {
+>+        g_hash_table_destroy(resource_uuids);
+>+        /* Reference count shall be 0 after the implicit unref on destroy */
+>+        resource_uuids = NULL;
+>+    }
+> }
+>diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+>index d229755eae..88189e7178 100644
+>--- a/hw/virtio/virtio.c
+>+++ b/hw/virtio/virtio.c
+>@@ -29,6 +29,7 @@
+> #include "hw/virtio/virtio-bus.h"
+> #include "hw/qdev-properties.h"
+> #include "hw/virtio/virtio-access.h"
+>+#include "hw/virtio/virtio-dmabuf.h"
+> #include "sysemu/dma.h"
+> #include "sysemu/runstate.h"
+> #include "virtio-qmp.h"
+>@@ -3221,6 +3222,8 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size)
+>     int i;
+>     int nvectors = k->query_nvectors ? k->query_nvectors(qbus->parent) : 0;
+> 
+>+    // Ensure virtio dmabuf table is initialised.
+>+    virtio_dmabuf_init();
+>     if (nvectors) {
+>         vdev->vector_queues =
+>             g_malloc0(sizeof(*vdev->vector_queues) * nvectors);
+>diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
+>index 891a43162d..627d84dce9 100644
+>--- a/include/hw/virtio/virtio-dmabuf.h
+>+++ b/include/hw/virtio/virtio-dmabuf.h
+>@@ -50,6 +50,11 @@ typedef struct VirtioSharedObject {
+>     } value;
+> } VirtioSharedObject;
+> 
+>+/**
+>+ * virtio_dmabuf_init() - Initialise virtio dmabuf internal structures.
+>+ */
+>+void virtio_dmabuf_init(void);
+>+
+> /**
+>  * virtio_add_dmabuf() - Add a new dma-buf resource to the lookup table
+>  * @uuid: new resource's UUID
+>diff --git a/tests/unit/test-virtio-dmabuf.c b/tests/unit/test-virtio-dmabuf.c
+>index a45ec52f42..20213455ee 100644
+>--- a/tests/unit/test-virtio-dmabuf.c
+>+++ b/tests/unit/test-virtio-dmabuf.c
+>@@ -27,6 +27,7 @@ static void test_add_remove_resources(void)
+>     QemuUUID uuid;
+>     int i, dmabuf_fd;
+> 
+>+    virtio_dmabuf_init();
+>     for (i = 0; i < 100; ++i) {
+>         qemu_uuid_generate(&uuid);
+>         dmabuf_fd = g_random_int_range(3, 500);
+>@@ -46,6 +47,7 @@ static void test_add_remove_dev(void)
+>     struct vhost_dev *dev = g_new0(struct vhost_dev, 1);
+>     int i;
+> 
+>+    virtio_dmabuf_init();
+>     for (i = 0; i < 100; ++i) {
+>         qemu_uuid_generate(&uuid);
+>         virtio_add_vhost_device(&uuid, dev);
+>@@ -64,6 +66,7 @@ static void test_remove_invalid_resource(void)
+>     QemuUUID uuid;
+>     int i;
+> 
+>+    virtio_dmabuf_init();
+>     for (i = 0; i < 20; ++i) {
+>         qemu_uuid_generate(&uuid);
+>         g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
+>@@ -78,6 +81,7 @@ static void test_add_invalid_resource(void)
+>     struct vhost_dev *dev = NULL;
+>     int i, dmabuf_fd = -2, alt_dmabuf = 2;
+> 
+>+    virtio_dmabuf_init();
+>     for (i = 0; i < 20; ++i) {
+>         qemu_uuid_generate(&uuid);
+>         /* Add a new resource with invalid (negative) resource fd */
+>@@ -108,6 +112,7 @@ static void test_free_resources(void)
+>     QemuUUID uuids[20];
+>     int i, dmabuf_fd;
+> 
+>+    virtio_dmabuf_init();
+>     for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
+>         qemu_uuid_generate(&uuids[i]);
+>         dmabuf_fd = g_random_int_range(3, 500);
+>-- 
+>2.43.1
 >
 >
-
---=20
-Rayhan Faizel
-
---000000000000dee10c0611cdb38c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Thomas,<div><br></div><div>Do you want me to add an SPD=
-X line to the other two commits or will just this one suffice?</div></div><=
-br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue,=
- Feb 20, 2024 at 9:45=E2=80=AFAM Thomas Huth &lt;<a href=3D"mailto:thuth@re=
-dhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-le=
-ft-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">On 19/0=
-2/2024 23.59, Rayhan Faizel wrote:<br>
-&gt; Simple testcase for validating proper operation of read and write for =
-all<br>
-&gt; three BSC controllers.<br>
-&gt; <br>
-&gt; Signed-off-by: Rayhan Faizel &lt;<a href=3D"mailto:rayhan.faizel@gmail=
-.com" target=3D"_blank">rayhan.faizel@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0tests/qtest/bcm2835-i2c-test.c | 105 +++++++++++++++++++++=
-++++++++++++<br>
-&gt;=C2=A0 =C2=A0tests/qtest/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0=
- =C2=A02 +-<br>
-&gt;=C2=A0 =C2=A02 files changed, 106 insertions(+), 1 deletion(-)<br>
-&gt;=C2=A0 =C2=A0create mode 100644 tests/qtest/bcm2835-i2c-test.c<br>
-&gt; <br>
-&gt; diff --git a/tests/qtest/bcm2835-i2c-test.c b/tests/qtest/bcm2835-i2c-=
-test.c<br>
-&gt; new file mode 100644<br>
-&gt; index 0000000000..6ec15b8976<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/tests/qtest/bcm2835-i2c-test.c<br>
-&gt; @@ -0,0 +1,105 @@<br>
-&gt; +/*<br>
-&gt; + * QTest testcase for Broadcom Serial Controller (BSC)<br>
-&gt; + *<br>
-&gt; + * Copyright (c) 2024 Rayhan Faizel &lt;<a href=3D"mailto:rayhan.faiz=
-el@gmail.com" target=3D"_blank">rayhan.faizel@gmail.com</a>&gt;<br>
-&gt; + *<br>
-&gt; + * Permission is hereby granted, free of charge, to any person obtain=
-ing a copy<br>
-&gt; + * of this software and associated documentation files (the &quot;Sof=
-tware&quot;), to deal<br>
-&gt; + * in the Software without restriction, including without limitation =
-the rights<br>
-&gt; + * to use, copy, modify, merge, publish, distribute, sublicense, and/=
-or sell<br>
-&gt; + * copies of the Software, and to permit persons to whom the Software=
- is<br>
-&gt; + * furnished to do so, subject to the following conditions:<br>
-&gt; + *<br>
-&gt; + * The above copyright notice and this permission notice shall be inc=
-luded in<br>
-&gt; + * all copies or substantial portions of the Software.<br>
-&gt; + *<br>
-&gt; + * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF AN=
-Y KIND, EXPRESS OR<br>
-&gt; + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTAB=
-ILITY,<br>
-&gt; + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT =
-SHALL<br>
-&gt; + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES =
-OR OTHER<br>
-&gt; + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, AR=
-ISING FROM,<br>
-&gt; + * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL=
-INGS IN<br>
-&gt; + * THE SOFTWARE.<br>
-&gt; + */<br>
-<br>
-Could you maybe also add a SPDX license line, so that it is more obvious at=
- <br>
-a quick glance what license this is?<br>
-<br>
-Anyway,<br>
-Acked-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=3D"_bl=
-ank">thuth@redhat.com</a>&gt;<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Ra=
-yhan Faizel<br></div>
-
---000000000000dee10c0611cdb38c--
 
