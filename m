@@ -2,77 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4751B85BE5F
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F74785BE61
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 15:14:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcQsK-00027z-Ba; Tue, 20 Feb 2024 09:13:37 -0500
+	id 1rcQsF-00027C-Kd; Tue, 20 Feb 2024 09:13:31 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael.vogt@gmail.com>)
- id 1rcNp8-0004k1-C7
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:58:06 -0500
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <michael.vogt@gmail.com>)
- id 1rcNp6-0004zw-Uh
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:58:06 -0500
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-412698cdd77so8973055e9.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:58:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708426683; x=1709031483; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=uNCdCIQzg/12W/RrXAVFQ1Isw/BMjvNQW4Y14ZuF5vg=;
- b=RpoJCcYQ8E1W13J5p9kAqIghAIyM0xgwJBCGmtbbeaeItd4bcerqY2EQg56fkUZCv5
- HXfRtKPXDq2UAodTGJCrt0JkOdRlU4eqfkkbxL9fpU5rPH+fLOC8Kp8d6H81ri5MbynZ
- 7WrLSEr+QUR3mD3uw0iFrh54gVCIyEiAMjOEldoznK/Auieomp7jmV5Z4ZAaCPeDtjpP
- czw3rvXg5DXdMTFmTy4xW/mJA0quMAk2ky37mwTqyNMUDRdGDQbr6V/ZjFjMwPDquauq
- 7G8PRus3KErqlAqLhNoqL0VICILp9oa5YGqSiA8Cu98vNvbdNkcf89mtE4rr80vwImh9
- rMrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708426683; x=1709031483;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uNCdCIQzg/12W/RrXAVFQ1Isw/BMjvNQW4Y14ZuF5vg=;
- b=anLCtG+2+69Viw2YFg93vXg3ZBx/82tUVKrUPKG0+3CgiM2BmSukRsME1L+upQkYAV
- Llc9ODBvHts9RRZU1MeybdSSRMnAHrXrIJ6HZP30K1cHOxyXB7DOp27hCfOelFBBffpM
- IVwjaKn+XnJ95IUMwMrhZ2T5Mcicw8tbRkCyDQwqrIpfpGWpOEq2HkEbe9T6z143sCBZ
- XYDpDvFRQauxu+SUoVeQjDxt1gm0XHFzwdGH/QjQ/2YDwkkB/yUtlaDHgXafwnzwow/8
- uHvdTZ9neIWDCUHEiHqRg9tHudOy1VhxH6T4jxzakzyTEit+mh2qB05/Yg2brj+hBo1u
- SaDg==
-X-Gm-Message-State: AOJu0YxyvxpfZhEbdDWqHqfThgFNUwkmqMXvDaxwAQH7HqdpGm5oVEbJ
- rzstVAif1eTUKOE4NOnCiMyJ9q/vEtd63Er7imeDi7lVutB0bby6fZFsj8mI
-X-Google-Smtp-Source: AGHT+IE2hKFMh+QD9lqo4/l/cbseDYiavURJ+upMLFKaU0m0xEke2RTe4jcFKHw/Btg16XyIu0kMxQ==
-X-Received: by 2002:a05:600c:4f43:b0:411:e86d:85a3 with SMTP id
- m3-20020a05600c4f4300b00411e86d85a3mr16304898wmq.16.1708426682414; 
- Tue, 20 Feb 2024 02:58:02 -0800 (PST)
-Received: from top.fritz.box (p5dd94bc2.dip0.t-ipconnect.de. [93.217.75.194])
- by smtp.gmail.com with ESMTPSA id
- co18-20020a0560000a1200b0033d4c3b0beesm7032427wrb.19.2024.02.20.02.58.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 02:58:02 -0800 (PST)
-From: Michael Vogt <michael.vogt@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Michael Vogt <michael.vogt@gmail.com>
-Subject: [PATCH] linux-user: Add FIFREEZE and FITHAW ioctls
-Date: Tue, 20 Feb 2024 11:57:21 +0100
-Message-ID: <20240220105726.8852-1-michael.vogt@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rcP5d-0008R0-BI; Tue, 20 Feb 2024 07:19:13 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rcP5Z-0004ME-Mj; Tue, 20 Feb 2024 07:19:13 -0500
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TfJH35gcFz1FL86;
+ Tue, 20 Feb 2024 20:14:07 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 7CAE8140118;
+ Tue, 20 Feb 2024 20:18:58 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
+ 2024 20:18:57 +0800
+To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH 0/3] target/arm: Implement FEAT_NMI and FEAT_GICv3_NMI
+Date: Tue, 20 Feb 2024 12:17:49 +0000
+Message-ID: <20240220121752.490665-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=michael.vogt@gmail.com; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.191;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Tue, 20 Feb 2024 09:13:26 -0500
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,49 +61,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add missing FIFREEZE and FITHAW ioctls.
+This patch set implements FEAT_NMI and FEAT_GICv3_NMI for armv8. These
+introduce support for a new category of interrupts in the architecture
+which we can use to provide NMI like functionality.
 
-Signed-off-by: Michael Vogt <michael.vogt@gmail.com>
----
- linux-user/ioctls.h       | 6 ++++++
- linux-user/syscall_defs.h | 3 +++
- 2 files changed, 9 insertions(+)
+There are two modes for using this FEAT_NMI. When PSTATE.ALLINT or
+PSTATE.SP & SCTLR_ELx.SCTLR_SPINTMASK is set, any entry to ELx causes all
+interrupts including those with superpriority to be masked on entry to ELn
+until the mask is explicitly removed by software or hardware. PSTATE.ALLINT
+can be managed by software using the new register control ALLINT.ALLINT.
+Independent controls are provided for this feature at each EL, usage at EL1
+should not disrupt EL2 or EL3.
 
-diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
-index 071f7ca253..1aec9d5836 100644
---- a/linux-user/ioctls.h
-+++ b/linux-user/ioctls.h
-@@ -134,6 +134,12 @@
-      IOCTL(FICLONE, IOC_W, TYPE_INT)
-      IOCTL(FICLONERANGE, IOC_W, MK_PTR(MK_STRUCT(STRUCT_file_clone_range)))
- #endif
-+#ifdef FIFREEZE
-+     IOCTL(FIFREEZE, IOC_W | IOC_R, TYPE_INT)
-+#endif
-+#ifdef FITHAW
-+     IOCTL(FITHAW, IOC_W | IOC_R, TYPE_INT)
-+#endif
- 
-      IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
- #ifdef CONFIG_FIEMAP
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 77ba343c85..744fda599e 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -943,6 +943,9 @@ struct target_rtc_pll_info {
- #define TARGET_FICLONE    TARGET_IOW(0x94, 9, abi_int)
- #define TARGET_FICLONERANGE TARGET_IOW(0x94, 13, struct file_clone_range)
- 
-+#define TARGET_FIFREEZE    TARGET_IOWR('X', 119, abi_int)
-+#define TARGET_FITHAW    TARGET_IOWR('X', 120, abi_int)
-+
- /*
-  * Note that the ioctl numbers for FS_IOC_<GET|SET><FLAGS|VERSION>
-  * claim type "long" but the actual type used by the kernel is "int".
+I have tested it with the following linux patches which try to support
+FEAT_NMI in linux kernel:
+
+>-------https://lore.kernel.org/linux-arm-kernel/Y4sH5qX5bK9xfEBp@lpieralisi/T/#mb4ba4a2c045bf72c10c2202c1dd1b82d3240dc88
+
+In the test, SGI, PPI and SPI interrupts can all be set to have super priority
+to be converted to a hardware NMI interrupt. The SGI is tested with kernel
+IPI as NMI framework, and the PPI interrupt is tested with "perf top" command
+with hardware NMI enabled, and the PPI interrupt is tested with a custom
+test module, in which NMI interrupts can be received and transmitted normally.
+
+Jinjie Ruan (3):
+  target/arm: Implement FEAT_NMI to support Non-maskable Interrupt
+  target/arm: Add NMI exception and handle PSTATE.ALLINT on taking an
+    exception
+  hw/intc/arm_gicv3: Implement FEAT_GICv3_NMI feature to support
+    FEAT_NMI
+
+ hw/arm/virt.c                      |  2 +
+ hw/intc/arm_gicv3.c                | 61 ++++++++++++++++++++++++++----
+ hw/intc/arm_gicv3_common.c         |  4 ++
+ hw/intc/arm_gicv3_cpuif.c          | 57 ++++++++++++++++++++++++++--
+ hw/intc/arm_gicv3_dist.c           | 39 +++++++++++++++++++
+ hw/intc/arm_gicv3_redist.c         | 23 +++++++++++
+ hw/intc/gicv3_internal.h           |  5 +++
+ include/hw/core/cpu.h              |  1 +
+ include/hw/intc/arm_gic_common.h   |  1 +
+ include/hw/intc/arm_gicv3_common.h |  6 +++
+ target/arm/cpu-features.h          |  5 +++
+ target/arm/cpu-qom.h               |  1 +
+ target/arm/cpu.c                   | 43 ++++++++++++++++++---
+ target/arm/cpu.h                   | 12 +++++-
+ target/arm/cpu64.c                 | 31 +++++++++++++++
+ target/arm/helper.c                | 58 ++++++++++++++++++++++++++++
+ target/arm/internals.h             |  4 ++
+ target/arm/tcg/a64.decode          |  1 +
+ target/arm/tcg/cpu64.c             | 11 ++++++
+ target/arm/tcg/helper-a64.c        | 25 ++++++++++++
+ target/arm/tcg/helper-a64.h        |  1 +
+ target/arm/tcg/translate-a64.c     | 10 +++++
+ 22 files changed, 383 insertions(+), 18 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
 
