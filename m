@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6318785B6E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B427F85B6E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:14:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcMAr-0000vC-RN; Tue, 20 Feb 2024 04:12:25 -0500
+	id 1rcMAr-0000sb-F6; Tue, 20 Feb 2024 04:12:25 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcMAj-0000pV-P8; Tue, 20 Feb 2024 04:12:17 -0500
+ id 1rcMAn-0000rT-5y; Tue, 20 Feb 2024 04:12:22 -0500
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcMAg-0003Nd-R0; Tue, 20 Feb 2024 04:12:16 -0500
+ id 1rcMAl-0003Nd-Ay; Tue, 20 Feb 2024 04:12:20 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708420335; x=1739956335;
+ t=1708420339; x=1739956339;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nmSGxPZR9yko6kQTreGOACQxkbHYm1OXOe8DkqwHjxw=;
- b=XKaqLwq0ko/Oio7cv+9iZA8MGZEw0IJYsvE5kVu1t8nRLtgAGctNyJKX
- Sjve9UHWglmFsvjKxJp8loYY9DDz07KXWRhVfn14TWivz6t0eiWS/Ea81
- HYQdN1QLGAYwsE1Flczpaub4sFwxS+mzS8Am/D1WF7MMUVjYUAus056Sq
- QWSKPiDB6y5UxQMz2rj67CY89XtPHEXUB1S/cyo3ieypUGQdypbSlxTBT
- LHkwbo1BSStaxWCbyJkUg4c/xrxBCyy7DAdxWXdik7Q8OhvPsDS3vay90
- vPeQz57tjszZqcd9LfHu1t4Mqc7NTINVtJFhkxJtQSt3mbNQWgAceO57w Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2375008"
+ bh=sh2QkQ5wss3HOjZ8fhY8YalRgTw6t25jX5kKa/RtD7I=;
+ b=BgM+jP6b0g3VoqDecxvtYsczNbqZ2Ev/g3KHu+9ioOkwlhyVugh6/TjP
+ g9QmMH04g+JICvPWE6Xh0vpzZyzCUoIHlyrToxHNIrl3z9NJOT8AX0DTt
+ ghHFfMBzgC/o3EjodkoJEqLLKav+9tB8+uHIcWygw3vKGDAOQuo+KIloh
+ 4FuYRvl/owqBosg5t7z6VIw2MWxVnf2ZRcztBIav7oVC0wACLGhttSi3h
+ /gitxlMQnR86yhuB2Mgw9cqMFisRfSm185EL4wtOVfyCXV13yJV3tB+Jk
+ triCOQ+dqY31oUgvWlzcLTIvRJROFF9IrqTkON5M99CuOkFEtTUmQLkh5 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2375017"
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="2375008"
+   d="scan'208";a="2375017"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 01:12:12 -0800
+ 20 Feb 2024 01:12:17 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="5013025"
+   d="scan'208";a="5013057"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 20 Feb 2024 01:12:06 -0800
+ by orviesa007.jf.intel.com with ESMTP; 20 Feb 2024 01:12:11 -0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -58,9 +58,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 5/8] i386/cpu: Support thread and module level cache topology
-Date: Tue, 20 Feb 2024 17:25:01 +0800
-Message-Id: <20240220092504.726064-6-zhao1.liu@linux.intel.com>
+Subject: [RFC 6/8] i386/cpu: Update cache topology with machine's configuration
+Date: Tue, 20 Feb 2024 17:25:02 +0800
+Message-Id: <20240220092504.726064-7-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
 References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
@@ -91,45 +91,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Allows cache to be defined at the thread and module level. This
-increases flexibility for x86 users to customize their cache topology.
+User will configure SMP cache topology via -smp.
+
+For this case, update the x86 CPUs' cache topology with user's
+configuration in MachineState.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/cpu.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ target/i386/cpu.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 725d7e70182d..d7cb0f1e49b4 100644
+index d7cb0f1e49b4..4b5c551fe7f0 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -241,9 +241,15 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-     uint32_t num_ids = 0;
+@@ -7582,6 +7582,27 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
  
-     switch (share_level) {
-+    case CPU_TOPO_LEVEL_THREAD:
-+        num_ids = 1;
-+        break;
-     case CPU_TOPO_LEVEL_CORE:
-         num_ids = 1 << apicid_core_offset(topo_info);
-         break;
-+    case CPU_TOPO_LEVEL_MODULE:
-+        num_ids = 1 << apicid_module_offset(topo_info);
-+        break;
-     case CPU_TOPO_LEVEL_DIE:
-         num_ids = 1 << apicid_die_offset(topo_info);
-         break;
-@@ -251,10 +257,6 @@ static uint32_t max_thread_ids_for_cache(X86CPUTopoInfo *topo_info,
-         num_ids = 1 << apicid_pkg_offset(topo_info);
-         break;
-     default:
--        /*
--         * Currently there is no use case for SMT and MODULE, so use
--         * assert directly to facilitate debugging.
--         */
-         g_assert_not_reached();
-     }
+ #ifndef CONFIG_USER_ONLY
+     MachineState *ms = MACHINE(qdev_get_machine());
++
++    if (ms->smp_cache.l1d != CPU_TOPO_LEVEL_INVALID) {
++        env->cache_info_cpuid4.l1d_cache->share_level = ms->smp_cache.l1d;
++        env->cache_info_amd.l1d_cache->share_level = ms->smp_cache.l1d;
++    }
++
++    if (ms->smp_cache.l1i != CPU_TOPO_LEVEL_INVALID) {
++        env->cache_info_cpuid4.l1i_cache->share_level = ms->smp_cache.l1i;
++        env->cache_info_amd.l1i_cache->share_level = ms->smp_cache.l1i;
++    }
++
++    if (ms->smp_cache.l2 != CPU_TOPO_LEVEL_INVALID) {
++        env->cache_info_cpuid4.l2_cache->share_level = ms->smp_cache.l2;
++        env->cache_info_amd.l2_cache->share_level = ms->smp_cache.l2;
++    }
++
++    if (ms->smp_cache.l3 != CPU_TOPO_LEVEL_INVALID) {
++        env->cache_info_cpuid4.l3_cache->share_level = ms->smp_cache.l3;
++        env->cache_info_amd.l3_cache->share_level = ms->smp_cache.l3;
++    }
++
+     qemu_register_reset(x86_cpu_machine_reset_cb, cpu);
  
+     if (cpu->env.features[FEAT_1_EDX] & CPUID_APIC || ms->smp.cpus > 1) {
 -- 
 2.34.1
 
