@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF78E85BF7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:09:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 796E385BF7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 16:09:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcRje-0004Hq-Gm; Tue, 20 Feb 2024 10:08:42 -0500
+	id 1rcRjl-0004LK-97; Tue, 20 Feb 2024 10:08:49 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcRjc-0004HG-E9
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:08:40 -0500
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcRjj-0004KX-5r
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:08:47 -0500
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcRja-0003le-Qs
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:08:40 -0500
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-33d01faf711so3354164f8f.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 07:08:38 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcRjh-0003mS-Iy
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 10:08:46 -0500
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-412698ac6f9so10493695e9.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 07:08:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708441716; x=1709046516; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=v8206/ozsFyG9qNvJzTDFGK4jzPQfnBC7XG0nswkrMc=;
- b=fPbIWhBy9Fc9ElsYmNut/BkMxFvI6yhGL++2Y/jk1VGBBcWSOTWFZk5YwFUVhj3uw5
- K718kYliqS3GexNoIKWnH9ARArXbQVQr0nL2G80VvOySDAgUH17Lwb5o0jy0iKCSJvuN
- HLvEo38zXlG49jx6LPN839vqYYgF7JGHyB4yZArw8hH8v2u/0CT9QI05A41DHl+PzM+U
- Pzl71QLdOODJlrWEu6KZBiRSEL/NTljVsl22Tp5WZSm6acQ5CMP4ha1DCWwGs0MOuCv/
- 1lxc32YV4izXbGLXwo6m1REaCQKbUAjGq8ZTihPjRe/CTIdyijnyw4u3fn04PKMUY++N
- VrYQ==
+ d=linaro.org; s=google; t=1708441723; x=1709046523; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DoQEZxzYJVlRUc/fG+BPKnGGJWFI0zTUpD/ARH6eLL4=;
+ b=KP0m2D4Ed2bg28mqz31xflJtUHaMQ5c6BRiduFN3AP8h+K4g3w+GKRvfpIVcEZkEuk
+ k4cAw+lYv4Zvrhe44+BQk+/hiv/2BwODXh/6TyE0wh6Xx7+Ba2O+Vb0c4eMGWCTRbrQa
+ cw9jKW+JhoCo7PQ6HUFvX9kVodkQu9p9M3Vmssw7LXOQQZzLrFY4zqGDVistZfirk25y
+ JfO1SngW8E9F76ySZROqgAHn5ki6hetr0q/5Rkew1WTjAROwTtyc4TpQgEvwrIq9eiyP
+ c0VKg5UbVr5fbN+CRglqRCUU9ZkDVufBq6QWTumVewRxrma3KyPUUsw0kwKEFAzcq7xg
+ hmGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708441716; x=1709046516;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=v8206/ozsFyG9qNvJzTDFGK4jzPQfnBC7XG0nswkrMc=;
- b=czsZJxCX+FSQx8iQCCvlDnFPrT2izVSLUV5e4q9JFbk2dLLjr/3wf6rVckdqa3Fgul
- Mcu/QUoTGC8auy9O/BZUrTezbrbwJEYScI5NHuDLhnD2/AIJ7Ur+Xkzemt5wULSelZcw
- gfPC+m3JphuG7mzErXbcYFZImzi/JdwRP7RzQgIivDq4ZRdq4IdYlOtBGOiF80t4kaZ4
- bISZUOXrvpLw2Z1vkN87qp4iDlNcFWqCp5mVTPj9na6Qw+yw8BX+66iNO3hCxPDY6TdI
- FGreaWXsDUorLPdS2aOBTmqrahFHpJZfAEA2Kcq9mZA/VwOXNf9OOk725FeZtgbCffTM
- dBTQ==
-X-Gm-Message-State: AOJu0YxP4YGtLRrs1SOgGyh6MBBgIA4Ji1Phz3ZCNJ+r+8PFGBlbp/uG
- r/1miauFSrt7psQcjCDIK14dLvL4OkGRejM/XTWjysysOfXte7UXVnOhoawu0am1H17onnza0U7
- G
-X-Google-Smtp-Source: AGHT+IEaODo2P3ht6IKHfOVC86erR2JVp7PnIEBIFlgShMPbnk+vhDLUz6DN0fy8RooU3vhB2I4ycw==
-X-Received: by 2002:adf:e10f:0:b0:33d:509c:5692 with SMTP id
- t15-20020adfe10f000000b0033d509c5692mr4461999wrz.31.1708441716626; 
- Tue, 20 Feb 2024 07:08:36 -0800 (PST)
+ d=1e100.net; s=20230601; t=1708441723; x=1709046523;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DoQEZxzYJVlRUc/fG+BPKnGGJWFI0zTUpD/ARH6eLL4=;
+ b=bKGCgADiOqLO2XJDAV74r71ibSShljbWTifVMXCC8V5EJ3eagmtb7gpGd8RazvfTWJ
+ EePn0IfPFLqiQOESVmRy1daNIGrP7uTsF+PMU9HJ3BxELtMej2nCiQt4MAXzuBcmiZ5n
+ 5JWFQa+rXXEsvhYWhfgOVFAZjFRKo+S1RY3AiR4x27X8tbIyNEqJF0GSUWPQWhOXJS9p
+ S70u0fVj5DGMeld8vThX0exHJeC/CktN/C9kYEG7L/+QEzKjzZBBIRuyRkjnPtZpZ5vG
+ YVq37HyhGGfgHR+bepvsaJ9V3+kgCkdbyygKZUm5bieJYpA78/xOOM/UA4jcBHwZ8rdW
+ /c/A==
+X-Gm-Message-State: AOJu0Yw1t8eubmeEVZYkX85bcw4FgSXKUZ/M9SzHDedPM52JVCsmn1WX
+ /OA8ImrOdfkAylmZypzjlUm6/z7m86wpZaLAlzihntv0A88l3O09EWZgScEJXduY8K15kinkAdN
+ V
+X-Google-Smtp-Source: AGHT+IFRgFHA7ibg2iRgyjF2izbBJs5D33IFOcLFWt4tqEfyIBON1t7f/Mq3qYZjvAa+TLMTqVKcBA==
+X-Received: by 2002:a05:600c:3513:b0:412:5f5f:1729 with SMTP id
+ h19-20020a05600c351300b004125f5f1729mr6633567wmq.20.1708441722947; 
+ Tue, 20 Feb 2024 07:08:42 -0800 (PST)
 Received: from m1x-phil.lan (mek33-h02-176-184-23-7.dsl.sta.abo.bbox.fr.
  [176.184.23.7]) by smtp.gmail.com with ESMTPSA id
- ay5-20020a5d6f05000000b0033d1ef15821sm13635071wrb.25.2024.02.20.07.08.35
+ s10-20020a05600c044a00b004122fbf9253sm14710257wmb.39.2024.02.20.07.08.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 20 Feb 2024 07:08:35 -0800 (PST)
+ Tue, 20 Feb 2024 07:08:42 -0800 (PST)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/4] hw/nmi: Remove @cpu_index argument
-Date: Tue, 20 Feb 2024 16:08:29 +0100
-Message-ID: <20240220150833.13674-1-philmd@linaro.org>
+Subject: [PATCH 1/4] hw/nmi: Use object_child_foreach_recursive() in
+ nmi_children()
+Date: Tue, 20 Feb 2024 16:08:30 +0100
+Message-ID: <20240220150833.13674-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240220150833.13674-1-philmd@linaro.org>
+References: <20240220150833.13674-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,33 +95,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have s390x always deliver NMI to the first CPU,
-remove the @cpu_index argument from handler,
-rename API as nmi_trigger() (not monitor specific).
+Replace object_child_foreach() and recursion by a single
+object_child_foreach_recursive() call.
+Propagate the returned value so callers can check it.
 
-Philippe Mathieu-Daudé (4):
-  hw/nmi: Use object_child_foreach_recursive() in nmi_children()
-  hw/s390x/virtio-ccw: Always deliver NMI to first CPU
-  hw/nmi: Remove @cpu_index argument from NMIClass::nmi_handler()
-  hw/nmi: Remove @cpu_index argument from nmi_trigger()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/core/nmi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
- qapi/run-state.json        |  5 +++--
- include/hw/nmi.h           | 24 ++++++++++++++++++++++--
- hw/core/nmi.c              | 24 +++++++++---------------
- hw/hppa/machine.c          |  8 +++++---
- hw/i386/x86.c              |  7 ++++---
- hw/intc/m68k_irqc.c        |  6 ++++--
- hw/ipmi/ipmi.c             |  3 +--
- hw/m68k/q800-glue.c        |  6 ++++--
- hw/misc/macio/gpio.c       |  6 ++++--
- hw/ppc/pnv.c               |  6 ++++--
- hw/ppc/spapr.c             |  6 ++++--
- hw/s390x/s390-virtio-ccw.c |  8 ++++----
- hw/watchdog/watchdog.c     |  2 +-
- system/cpus.c              |  2 +-
- hmp-commands.hx            |  2 +-
- 15 files changed, 71 insertions(+), 44 deletions(-)
-
+diff --git a/hw/core/nmi.c b/hw/core/nmi.c
+index a7bce8a04a..f5220111c1 100644
+--- a/hw/core/nmi.c
++++ b/hw/core/nmi.c
+@@ -31,8 +31,6 @@ struct do_nmi_s {
+     bool handled;
+ };
+ 
+-static void nmi_children(Object *o, struct do_nmi_s *ns);
+-
+ static int do_nmi(Object *o, void *opaque)
+ {
+     struct do_nmi_s *ns = opaque;
+@@ -47,14 +45,13 @@ static int do_nmi(Object *o, void *opaque)
+             return -1;
+         }
+     }
+-    nmi_children(o, ns);
+ 
+     return 0;
+ }
+ 
+-static void nmi_children(Object *o, struct do_nmi_s *ns)
++static int nmi_children(Object *o, struct do_nmi_s *ns)
+ {
+-    object_child_foreach(o, do_nmi, ns);
++    return object_child_foreach_recursive(o, do_nmi, ns);
+ }
+ 
+ void nmi_monitor_handle(int cpu_index, Error **errp)
+@@ -65,10 +62,9 @@ void nmi_monitor_handle(int cpu_index, Error **errp)
+         .handled = false
+     };
+ 
+-    nmi_children(object_get_root(), &ns);
+-    if (ns.handled) {
++    if (nmi_children(object_get_root(), &ns)) {
+         error_propagate(errp, ns.err);
+-    } else {
++    } else if (!ns.handled) {
+         error_setg(errp, "machine does not provide NMIs");
+     }
+ }
 -- 
 2.41.0
 
