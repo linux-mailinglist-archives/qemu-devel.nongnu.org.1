@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A29D85B8D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945D285B922
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 11:34:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcNCb-0003ZU-6w; Tue, 20 Feb 2024 05:18:17 -0500
+	id 1rcNRy-0000S1-La; Tue, 20 Feb 2024 05:34:10 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rcNCa-0003Z6-9T
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:18:16 -0500
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNRw-0000Rh-AD
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:34:08 -0500
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rcNCX-0006NJ-IB
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:18:16 -0500
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4126dd40a54so4615145e9.3
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:18:13 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rcNRu-0000kC-It
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 05:34:08 -0500
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a3122b70439so640555566b.3
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 02:34:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708424292; x=1709029092; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4dD47USlRE9SCSskFlIhsE3baFMZgQDtxOJr+pWEYaM=;
- b=Cr5bo1/UolsQMniaWoKy/NXWlYFRRK4G8kCEWjr70wpvd7p8w3L7F1+sC+dbwCvGfT
- 1+W+fx1NbXqEKfvo7Wbm/zvYGvzEZGvBXwtIFciIUl/3X0f8jUUHArzYxKJUTfqbcKB0
- sgnYK4EO2V1w5QI0E+VqISh88aVFs+z68xOArDI0gzODCp1ARaqpLq34Q+c011GH2C99
- SVREfLeNIUWj+n4J4ZZ67RakU5PiM8Rp+tRvzmrRjMpmfCeYwU9LddEhrJU1Lgx96x4x
- xMlQxLTlBSCvOZdb/UlZgy6AkdYTtbRD/oFIpgfI2nyjuHwlvr5itBc46+RGWDCJbMhm
- HdRA==
+ d=linaro.org; s=google; t=1708425244; x=1709030044; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=t4RdxejK1ghaAdX89a7x+8iJQMT/HxQf89rCE/iqR8I=;
+ b=M78WYKtypGnreJsaEG2PKrdRPEbGGqYGfc5/Jh7n8jC0TQXXO1BKWmqJsscqsaqZQ5
+ VT3g0WB8uvonamyOFx9x6u1dfdGB/U9Fm/TFln/7QWNS1qgFMuxdJ51GVayskWmPoNHS
+ TACM+tA0bLG0WHjA9z3qzskBugo0h1QqecDH95DQEN1VHNfwzdIKuRZaeoIJYDq0nWmx
+ qMk4Y6iKqMgUB76R3BG36eE6vWIPtzlZfz6f7cDjXb1frCpQ03EWWC1qqat+kLbBn4IC
+ WxaFrvvin69fPcdEw6jCXkL5T1r+jC2zhwUcFGea3VXC3ElJfJEUeY3dhytSAmspRMRS
+ 0JLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708424292; x=1709029092;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=4dD47USlRE9SCSskFlIhsE3baFMZgQDtxOJr+pWEYaM=;
- b=cIACpp9nXfKGn4Sm7KAswG/VOXQnEr4r3Mw64Ak2ZHnqZm/1v0iLtv6kRINMPBqAdE
- w2PoFDpxisjEQGAWEmk5QZ0pxX/PMqMJCzfAuy9oANq9rjFLLyrkTOqs8rX7FxZjyhNF
- fQGntYV0/mnENFrld6c4cGM14GLg0jFvc7M+A/eZKQGOOQUQ6XMytnQXHFsTyHX+eO21
- nvrfjLfRrCfUM/H/pHukVyLHoIiHSWAN6GWazI9tH3U1OdTQeAfIlgv5TFBynaXKWNyb
- ITAg32wxaRn+RcvBurz+xYWQrS428JRXPs4yCFkNmHCQgvzrrMH75ubUvTKhGayUWxtm
- lPzw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWeiXFjXeX4vdIy9xOpIGyFdoksToPMEC+okWL9mBKaxXaagJfRkmF5vXrenSvDRN3W2ZeDL0pGWyPF3aUdubXWF9ARWYI=
-X-Gm-Message-State: AOJu0YxrrzrsvB6sznU8F9ZcG38p0fOwhVxpJR89sOq/tbgOzNNX0h28
- ODLyqQY/Ymb/q2Pu68C+uzfhGEULD2kDz7ufMzGDwKYPZ/zJA7cLDN2x1AMFHt8=
-X-Google-Smtp-Source: AGHT+IFKeje4En4OJW0yyKAkVrq/QTe/033HqKNOi+PNLpD5PN72yNamk4OxsBeHP0hmze2uQyTUGw==
-X-Received: by 2002:a05:600c:1c1e:b0:412:1615:7343 with SMTP id
- j30-20020a05600c1c1e00b0041216157343mr13535031wms.5.1708424292077; 
- Tue, 20 Feb 2024 02:18:12 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- f2-20020adfe902000000b0033cf24700e5sm12898016wrm.39.2024.02.20.02.18.11
+ d=1e100.net; s=20230601; t=1708425244; x=1709030044;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=t4RdxejK1ghaAdX89a7x+8iJQMT/HxQf89rCE/iqR8I=;
+ b=UaXTyk1gFfWulZ4zq4i60NqRduN2Nb/LS43ziiM59wLPBvFr+F4gxQo/KFcSLuIhDF
+ 0VSTfJwB9ZpI0w8QxcFdpg9VPUybW61RJvP38wRLIFvfe8HXyEDE+uAL2aasMv/VjlLy
+ whyPHdLNcxmK3cN1AHkUHJCBsmUguGY/5atLaJOHlOer4HqZlNql1XBae5iRmeXDHw+X
+ QA0PPNcGaptg/3fYy+wUNPT7Ub8Ad91LAvBajcJkhc19l2KrfiI9Fs1OFHvM7vgTRI4A
+ dsMalN2dFTH2cogsH7CIJUyQcOKCyxcT4baX0hKtTMTSOLGc0FRoAjctdRXX5Jhc5wrM
+ ntMw==
+X-Gm-Message-State: AOJu0YwMbD8IN79uYbsOcYOhomI/dvwmIWHQRWokRXWpYc/HUsZ1xqI0
+ p6CMeu/KHSYaTh8JpPItugzq0tYa9Y54l9PgfOJ/KtP4QnSe1m1FsreCxS60Zf8pEMkHTCHTnq/
+ +d7g=
+X-Google-Smtp-Source: AGHT+IGMAbl4kuL/2VxZguxEHWR+qJVUGBbwmPkJ0s+Qq9d9cRI803ko8pRj9jECIrjg/nahqvZeBQ==
+X-Received: by 2002:a17:906:e98:b0:a3e:8b5d:cd27 with SMTP id
+ p24-20020a1709060e9800b00a3e8b5dcd27mr4145075ejf.13.1708425244282; 
+ Tue, 20 Feb 2024 02:34:04 -0800 (PST)
+Received: from meli.delivery (adsl-101.37.6.0.tellas.gr. [37.6.0.101])
+ by smtp.gmail.com with ESMTPSA id
+ ae2-20020a17090725c200b00a3e643e61e1sm2566334ejc.214.2024.02.20.02.34.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 02:18:11 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 6B8B85F8B9;
- Tue, 20 Feb 2024 10:18:11 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-trivial@nongnu.org,  qemu-devel@nongnu.org,  Michael Tokarev
- <mjt@tls.msk.ru>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Thomas
- Huth <thuth@redhat.com>,  Wainer dos Santos Moschetta
- <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
- "Hongren (Zenithal) Zheng" <i@zenithal.me>,  "Canokeys.org"
- <contact@canokeys.org>
-Subject: Re: [PATCH v1 01/21] docs: correct typos
-In-Reply-To: <135bbfcb6dd09377cfd39fb73c862cd0fb66bb20.1708419115.git.manos.pitsidianakis@linaro.org>
- (Manos Pitsidianakis's message of "Tue, 20 Feb 2024 10:52:08 +0200")
-References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
- <135bbfcb6dd09377cfd39fb73c862cd0fb66bb20.1708419115.git.manos.pitsidianakis@linaro.org>
-User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Tue, 20 Feb 2024 10:18:11 +0000
-Message-ID: <875xyje8ws.fsf@draig.linaro.org>
+ Tue, 20 Feb 2024 02:34:04 -0800 (PST)
+Date: Tue, 20 Feb 2024 12:28:48 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: qemu-devel@nongnu.org, Albert Esteve <aesteve@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, stefanha@gmail.com,
+ alex.bennee@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@gmail.com, Albert Esteve <aesteve@redhat.com>
+Subject: Re: [PATCH v4 2/5] hw/virtio: document SharedObject structures
+User-Agent: meli 0.8.5-rc.3
+References: <20240219143423.272012-1-aesteve@redhat.com>
+ <20240219143423.272012-3-aesteve@redhat.com>
+In-Reply-To: <20240219143423.272012-3-aesteve@redhat.com>
+Message-ID: <95hcp.21l4vcaudvyq@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,16 +96,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-
-> Correct typos automatically found with the `typos` tool
-> <https://crates.io/crates/typos>
+On Mon, 19 Feb 2024 16:34, Albert Esteve <aesteve@redhat.com> wrote:
+>Change VirtioSharedObject value type from
+>a generic pointer to a union storing the different
+>supported underlying types, which makes naming
+>less confusing.
 >
-> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+>With the update, use the chance to add kdoc
+>to both the SharedObjectType enum and
+>VirtioSharedObject struct.
+>
+>Signed-off-by: Albert Esteve <aesteve@redhat.com>
+>---
+> hw/display/virtio-dmabuf.c        |  8 ++++----
+> include/hw/virtio/virtio-dmabuf.h | 25 ++++++++++++++++++++++++-
+> 2 files changed, 28 insertions(+), 5 deletions(-)
+>
+>diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
+>index 3dba4577ca..497cb6fa7c 100644
+>--- a/hw/display/virtio-dmabuf.c
+>+++ b/hw/display/virtio-dmabuf.c
+>@@ -57,7 +57,7 @@ bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
+>     }
+>     vso = g_new(VirtioSharedObject, 1);
+>     vso->type = TYPE_DMABUF;
+>-    vso->value = GINT_TO_POINTER(udmabuf_fd);
+>+    vso->value.udma_buf = udmabuf_fd;
+>     result = virtio_add_resource(uuid, vso);
+>     if (!result) {
+>         g_free(vso);
+>@@ -75,7 +75,7 @@ bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
+>     }
+>     vso = g_new(VirtioSharedObject, 1);
+>     vso->type = TYPE_VHOST_DEV;
+>-    vso->value = dev;
+>+    vso->value.dev = dev;
+>     result = virtio_add_resource(uuid, vso);
+>     if (!result) {
+>         g_free(vso);
+>@@ -114,7 +114,7 @@ int virtio_lookup_dmabuf(const QemuUUID *uuid)
+>         return -1;
+>     }
+>     assert(vso->type == TYPE_DMABUF);
+>-    return GPOINTER_TO_INT(vso->value);
+>+    return vso->value.udma_buf;
+> }
+> 
+> struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid)
+>@@ -124,7 +124,7 @@ struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid)
+>         return NULL;
+>     }
+>     assert(vso->type == TYPE_VHOST_DEV);
+>-    return (struct vhost_dev *) vso->value;
+>+    return (struct vhost_dev *) vso->value.dev;
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Is the casting still required?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+
+> }
+> 
+> SharedObjectType virtio_object_type(const QemuUUID *uuid)
+>diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
+>index 627c3b6db7..891a43162d 100644
+>--- a/include/hw/virtio/virtio-dmabuf.h
+>+++ b/include/hw/virtio/virtio-dmabuf.h
+>@@ -16,15 +16,38 @@
+> #include "qemu/uuid.h"
+> #include "vhost.h"
+> 
+>+/**
+>+ * SharedObjectType:
+>+ *
+>+ * Identifies the type of the underlying type that the current lookup
+>+ * table entry is holding.
+>+ * 
+>+ * TYPE_INVALID: Invalid entry
+>+ * TYPE_DMABUF: Entry is a dmabuf file descriptor that can be directly
+>+ *              shared with the requestor
+>+ * TYPE_VHOST_DEV: Entry is a pointer to a vhost device that is holding
+>+ *                 the shared object.
+
+
+nit:
+
++ * TYPE_INVALID:   Invalid entry.
++ * TYPE_DMABUF:    Entry is a dmabuf file descriptor that can be
++ *                 directly shared with the requestor.
++ * TYPE_VHOST_DEV: Entry is a pointer to a vhost device that is holding
++ *                 the shared object.
+
+
+>+ */
+> typedef enum SharedObjectType {
+>     TYPE_INVALID = 0,
+>     TYPE_DMABUF,
+>     TYPE_VHOST_DEV,
+> } SharedObjectType;
+> 
+>+/**
+>+ * VirtioSharedObject:
+>+ * @type: Shared object type identifier
+>+ * @value: Union containing to the underlying type
+>+ * 
+>+ * The VirtioSharedObject object provides a way to distinguish,
+>+ * store, and handle the different types supported by the lookup table.
+>+ */
+> typedef struct VirtioSharedObject {
+>     SharedObjectType type;
+>-    gpointer value;
+>+    union {
+>+        struct vhost_dev *dev;  /* TYPE_VHOST_DEV */
+>+        int udma_buf;           /* TYPE_DMABUF */
+>+    } value;
+> } VirtioSharedObject;
+> 
+> /**
+>-- 
+>2.43.1
+>
+>
 
