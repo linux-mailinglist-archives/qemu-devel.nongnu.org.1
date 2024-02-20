@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1F285BD3C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 14:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F22DC85BD75
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 14:44:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcQEO-000390-PH; Tue, 20 Feb 2024 08:32:20 -0500
+	id 1rcQOI-0007ua-3G; Tue, 20 Feb 2024 08:42:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
- id 1rcQED-00038P-2R
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 08:32:09 -0500
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rcQOG-0007uA-47; Tue, 20 Feb 2024 08:42:32 -0500
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faiqueali.109@gmail.com>)
- id 1rcQE3-0001mW-4e
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 08:32:08 -0500
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-563cb3ba9daso5439151a12.3
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 05:31:58 -0800 (PST)
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1rcQO4-0004Bg-AP; Tue, 20 Feb 2024 08:42:31 -0500
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a3d484a58f6so720905266b.3; 
+ Tue, 20 Feb 2024 05:42:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1708435917; x=1709040717; darn=nongnu.org;
- h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=BAJGdYtpYyL/Q1kNF26aw0+oXulhkKJp6xrIWjfrmSo=;
- b=XAd1hWmChmDS/VS8VhW+iTo+0KE9fUHDA820lfkJRJ5SgRX5D6mrrFBPpxP/GVMDHD
- eRsz6pRlojT0IUW0wZhod9IUQgJNH1kCnMSqMNHBMKezB5O+B0eeLMJOiEuKmEiXl+v/
- 8MK+m5Ol38N9qBd4n4viYOXFR6zF+pjaJv8c+kX7stxpvuAmqa514dPszVWDYjLRERn8
- 9QTUhX879Qz2YoNKdMaVlp7CAejX8YF8fBQeB7d7qjkqG90Cqkc3GdCRfKEeliwb7YN2
- r2jjuf/Lyk+OZorfGz/KrJp7skAZGYGop+YCUOgQmLR6R98EVegQ8LiE06HFnFgGj7/F
- tc/A==
+ d=gmail.com; s=20230601; t=1708436538; x=1709041338; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yzJTQOoc+BFQ9VReGpVoE36YvrjBFqEn7yvCGMeFGIg=;
+ b=ZlPTHLc6uaGi+wy3a3NpP1GorO9tyoCcyJ0HotArddXlU9r//PmF5gcd6+x0Dh6xSj
+ A8SGsclm64TtLK0xtyxcKWuG4NNL6ofgwWQ0QN/v6G3amx9ssCRjOA3rhIff4CU9Jnoc
+ x8ncpnvpeSOd5QqV5zgBMrxD6Dp/npj03I+pkUk4sAoeBtdd19N/Q85yqDh/tYNS/IzJ
+ W4HDpVOBMFf65pNlN2eHGuaeg9OkqdcKo4+kh50z/7EZLK8YWi1EwmxLxC40mRPgkYHj
+ 9EUExZIpMYK0GFs/pgMwMOWgJA/hLOhM83J1B9YRq0lLuNdiXh4svsBm0rAbX5gz11IA
+ jZ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708435917; x=1709040717;
- h=to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BAJGdYtpYyL/Q1kNF26aw0+oXulhkKJp6xrIWjfrmSo=;
- b=Hkcf6Y/eHzKZji2rY/8gR0K2mo0dGFVL8a4N6t6LIy0dsUWyym+cmbH45C8Bcj/vOw
- 5Oexsa9BSaIQsPJCa0jvMxNq5Neqgnj9betCeCMJTKgh1VFJ6tvjIlO7oB9ZqV/sfY4r
- RflmJCQYBQTu7B8dbgohZkt7T0cagw94nSlr6S44aka0O5I5nK8QP6T5Pjqep4TIagjh
- miX5MSHVQ5uBkxtv2tsIAZt9Gdyt+RWlg4UgHXio1i6gHHrwcgP1v6vdWx7dUYwcmRsa
- 8nBMNieWud42xja1Xp3QnA2cN2EhoCGVUqGdfyClwFotDhUNByOQJa49DiQ0fho1A1Wd
- C06w==
-X-Gm-Message-State: AOJu0YzDpqTR2fMqipDIormjy/IdlGSj0cUMih7dgAK47K2b2meCb4j9
- rDGAb58/q8FBIh/Px/b/sf6f0mE6kv81Dw5Qd7r9aEg5XKorsuxFvME7N51y0D4368EGTuIEMku
- uIFnLW9I2OTakwYC4wLdLom+MMSVEwfLG0A4=
-X-Google-Smtp-Source: AGHT+IFWTShOIGmjQqc36ujn7nmHcUMw4pVHlwVHCoyZ2wzSnytJ3UqWEp2tiBykhOZ4k0htmRq9/FME2cOhysNoiZA=
-X-Received: by 2002:a05:6402:38a:b0:563:dd8f:996d with SMTP id
- o10-20020a056402038a00b00563dd8f996dmr8321029edv.9.1708435917083; Tue, 20 Feb
- 2024 05:31:57 -0800 (PST)
-MIME-Version: 1.0
-From: Faiq Ali Sayed <faiqueali.109@gmail.com>
-Date: Tue, 20 Feb 2024 14:31:46 +0100
-Message-ID: <CAOpGCn+KdhjnXRHup6GXVbkoZkUBc7f-2urNzmvLjK1To_pp0A@mail.gmail.com>
-Subject: QNX VM hang on Qemu
+ d=1e100.net; s=20230601; t=1708436538; x=1709041338;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yzJTQOoc+BFQ9VReGpVoE36YvrjBFqEn7yvCGMeFGIg=;
+ b=V4zuyqomHwUhKFCaQYlCV9IhQtJoAke99q7cwZgpXUCQaBQ4hKQD5WSST9OsmckJL+
+ DLRi8BnDLaq0Y0egAh2bm5cKJ3xyDTwAATjGVdRIiPLnm1Xt8mH3yRshRg12uz0VkkHX
+ yhRYnrRBxQh6UGjmyJhW3Dvnvx0RcrFuyhpFfLP0gb/hXf426UCwjEG3bSEXoMeHr74/
+ gG/rZ6ZpouH4HYMUISXr6lQpV8CXWW+UrXEatAWJ5NZagzk3bmF7h/K9DEzBr73Lojz0
+ wzHqpb44gJMCb7QLVbkJuK+wMli6RpEeaJPyykFVduAPa6gwKvm3xZWBAqG8GVAnUO8f
+ oNtw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVlmpbM9eKwLpiPK+ESccqV9fFgNvBL9SH/u0259aa+0rG6/5jZU06Dnra8sSEc2ST0noufy+wlthNj6Ov6hH4TF174
+X-Gm-Message-State: AOJu0YwLZc9GuJo5+v8jw3GWvEVO7/jr5cAup30YIsNbJ+0J8aB054Qd
+ TQWtx0rcOZi+KDKgMZFeVRtDerd6rexm0T/R1wq20HZAa3nYTuuna7v3mMo/
+X-Google-Smtp-Source: AGHT+IGl781uNGn4FsyRy9nKJiXiRQg6bgzfYpbEsRh4RP7cdoZcUfwnVOn/V5wfdwTU9YGZo9HGfw==
+X-Received: by 2002:a17:906:dce:b0:a3e:63bd:3ae1 with SMTP id
+ p14-20020a1709060dce00b00a3e63bd3ae1mr4597371eji.9.1708436537674; 
+ Tue, 20 Feb 2024 05:42:17 -0800 (PST)
+Received: from localhost.localdomain ([37.186.51.232])
+ by smtp.gmail.com with ESMTPSA id
+ h23-20020a170906591700b00a3ef17464b1sm728449ejq.9.2024.02.20.05.42.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 Feb 2024 05:42:17 -0800 (PST)
+From: Rayhan Faizel <rayhan.faizel@gmail.com>
 To: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000f59aae0611d03bd4"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=faiqueali.109@gmail.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Cc: peter.maydell@linaro.org, philmd@linaro.org, pbonzini@redhat.com,
+ qemu-arm@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>
+Subject: [PATCH v3 0/3] Add support for I2C in BCM2835 boards
+Date: Tue, 20 Feb 2024 19:11:17 +0530
+Message-Id: <20240220134120.2961059-1-rayhan.faizel@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,78 +89,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000f59aae0611d03bd4
-Content-Type: text/plain; charset="UTF-8"
+This patch series implements support for the Broadcom Serial Controller used
+by BCM2835 based boards for I2C.
 
-Hi everyone,
-I am facing an issue during booting QNX VM using Qemu,
-I have an image to Boot the VM. and when I trigger a Qemu command to create
-a VM it is stuck.
-I also used a debugger to investigate but I can not see any result by GDB.
+[Changes in v3]
 
-Here is the output of first windows
+- Add SPDX license identifiers.
+- Fix a few minor whitespace issues.
 
-qemu-system-aarch64 -M xlnx-zcu102 -m 16G -serial mon:stdio -display none
--device loader,file=QNX-IFS,addr=0x00100000,cpu-num=0 -drive
-file=/home/faiq/Downloads/install/BootSD/qemu-boot_sd.img,if=sd,format=raw,index=1
--boot mode=5 -net nic,model=cadence_gem -net nic,model=cadence_gem -net
-nic,model=cadence_gem -net nic,model=cadence_gem,netdev=xzynq0 -netdev
-user,id=xzynq0,tftp=/tftpboot  -nographic -global
-xlnx,zynqmp-boot.cpu-num=0 -global 'xlnx,zynqmp-boot.use-pmufw=true' -s -S
+[Changes in v2]
 
-qemu-system-aarch64: warning: hub 0 is not connected to host network
+- Fixed and simplified writing to status register
 
-on the other hand, here is the output of GDB:
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/481
+Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
 
-(gdb) target remote :1234
-Remote debugging using :1234
-warning: No executable has been specified and target does not support
-determining executable automatically.  Try using the "file" command.
-0x0000000000100000 in ?? ()
-(gdb) c
-Continuing.
+Rayhan Faizel (3):
+  hw/i2c: Implement Broadcom Serial Controller (BSC)
+  hw/arm: Connect BSC to BCM2835 board as I2C0, I2C1 and I2C2
+  tests/qtest: Add testcase for BCM2835 BSC
+
+ docs/system/arm/raspi.rst            |   1 +
+ hw/arm/Kconfig                       |   1 +
+ hw/arm/bcm2835_peripherals.c         |  32 ++-
+ hw/i2c/Kconfig                       |   4 +
+ hw/i2c/bcm2835_i2c.c                 | 278 +++++++++++++++++++++++++++
+ hw/i2c/meson.build                   |   1 +
+ include/hw/arm/bcm2835_peripherals.h |   3 +-
+ include/hw/i2c/bcm2835_i2c.h         |  80 ++++++++
+ tests/qtest/bcm2835-i2c-test.c       | 107 +++++++++++
+ tests/qtest/meson.build              |   2 +-
+ 10 files changed, 504 insertions(+), 5 deletions(-)
+ create mode 100644 hw/i2c/bcm2835_i2c.c
+ create mode 100644 include/hw/i2c/bcm2835_i2c.h
+ create mode 100644 tests/qtest/bcm2835-i2c-test.c
 
 -- 
-Kind Regard-
-Faiq Ali Sayed
+2.34.1
 
---000000000000f59aae0611d03bd4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hi everyone, <br></div><div>I am facing an issue duri=
-ng booting QNX VM using Qemu,</div><div>I have an image to Boot the VM. and=
- when I trigger a Qemu command to create a VM it is stuck.</div><div>I also=
- used a debugger to investigate but I can not see any result by GDB.</div><=
-div><br></div><div>Here is the output of first windows</div><div><br></div>=
-<div><div><span style=3D"background-color:rgb(238,238,238)">qemu-system-aar=
-ch64 -M xlnx-zcu102 -m 16G -serial mon:stdio -display none -device loader,f=
-ile=3DQNX-IFS,addr=3D0x00100000,cpu-num=3D0 -drive file=3D/home/faiq/Downlo=
-ads/install/BootSD/qemu-boot_sd.img,if=3Dsd,format=3Draw,index=3D1
- -boot mode=3D5 -net nic,model=3Dcadence_gem -net nic,model=3Dcadence_gem -=
-net
- nic,model=3Dcadence_gem -net nic,model=3Dcadence_gem,netdev=3Dxzynq0 -netd=
-ev user,id=3Dxzynq0,tftp=3D/tftpboot =C2=A0-nographic -global xlnx,zynqmp-b=
-oot.cpu-num=3D0 -global &#39;xlnx,zynqmp-boot.use-pmufw=3Dtrue&#39; -s -S</=
-span></div><span class=3D"gmail-im"><div><span style=3D"background-color:rg=
-b(238,238,238)"><br></span></div><div><span style=3D"background-color:rgb(2=
-38,238,238)">qemu-system-aarch64: warning: hub 0 is not connected to host n=
-etwork</span><br></div><div><br></div></span><div>on the other hand, here i=
-s the output of GDB:</div><div><span style=3D"background-color:rgb(204,204,=
-204)"><br></span></div><div><span style=3D"background-color:rgb(238,238,238=
-)">(gdb) target remote :1234<br>Remote debugging using :1234<br>warning: No=
- executable has been specified and target does not support<br>determining e=
-xecutable automatically.=C2=A0 Try using the &quot;file&quot; command.<br>0=
-x0000000000100000 in ?? ()<br>(gdb) c<br>Continuing.</span></div></div><div=
-><br><span class=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" =
-class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div dir=3D"lt=
-r"><div dir=3D"ltr">
-<div><span style=3D"color:rgb(34,34,34)">Kind Regard-</span><br style=3D"co=
-lor:rgb(34,34,34)"><div dir=3D"ltr" style=3D"color:rgb(34,34,34)"><div dir=
-=3D"ltr"><div dir=3D"ltr"><font color=3D"#073763">Faiq Ali Sayed</font></di=
-v></div></div></div>
-<div><font style=3D"background-color:#ffffff" size=3D"1"><br></font></div><=
-br></div></div></div></div></div>
-
---000000000000f59aae0611d03bd4--
 
