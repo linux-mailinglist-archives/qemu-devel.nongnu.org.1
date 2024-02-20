@@ -2,61 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DB185B624
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBEA385B651
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLuy-0007cD-Rs; Tue, 20 Feb 2024 03:56:01 -0500
+	id 1rcLvH-0000PS-HW; Tue, 20 Feb 2024 03:56:19 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuW-00071N-2m
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:35 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcLvF-0000Ci-2r
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:56:17 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rcLuT-0000I9-Nd
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:55:31 -0500
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcLv1-0000S8-Ga
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:56:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708419329;
+ s=mimecast20190719; t=1708419360;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FoQZCrHn76kQ0L24PKpIrZS3dfIntbhV5HgfKWI89iE=;
- b=WNMeNVisv66m5JpxcM7WNVc6xIEzqb4DXAH6X18ex9cYXdAgUfTn55Lo7OPLuSSI8M0OPl
- YPmb87brz9gytD4hhyTcKefoGwaC0iTLoeBSzIBvrU18GOtr2BZQqA1cWOTp7w6SNYTwsM
- 4QnCIRL4BuvoAA405DCqWFfk/+6yz8U=
+ bh=Gxt5ZYw2h95J0F7OawIZiKr2hLJwNBBaXxLoUe7n10w=;
+ b=EuZVfJWyn7D4uzRVjYMhYXPUj9I/c38mc2KGx+8ykbP4CbJAraSO/zZ0zWHitjQPRrh2tX
+ aI2WXq9JDI2kXs16fhmY+Y7VPGDz6+XSbI3eIQyijr8uiKQs3J4uOIpRH4rz383IZl96e4
+ CyYU/34DbnqMlZCxzd8eEpHkIjy7eRk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-TQqePnNKN1Gp1LtlU8P8RQ-1; Tue, 20 Feb 2024 03:55:24 -0500
-X-MC-Unique: TQqePnNKN1Gp1LtlU8P8RQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-44-r12Rug4zM1i7AU-5g2OCtw-1; Tue, 20 Feb 2024 03:55:56 -0500
+X-MC-Unique: r12Rug4zM1i7AU-5g2OCtw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C1FC210201ED;
- Tue, 20 Feb 2024 08:55:23 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.168])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F2B55492BE2;
- Tue, 20 Feb 2024 08:55:21 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: John Snow <jsnow@redhat.com>,
-	qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-block@nongnu.org
-Subject: [PATCH v2 7/7] hw/ide: Stop exposing internal.h to non-IDE files
-Date: Tue, 20 Feb 2024 09:55:05 +0100
-Message-ID: <20240220085505.30255-8-thuth@redhat.com>
-In-Reply-To: <20240220085505.30255-1-thuth@redhat.com>
-References: <20240220085505.30255-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73BC5185A786;
+ Tue, 20 Feb 2024 08:55:56 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 125CC107CCE0;
+ Tue, 20 Feb 2024 08:55:56 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B8AED21E66D5; Tue, 20 Feb 2024 09:55:54 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  Kevin Wolf
+ <kwolf@redhat.com>
+Subject: Re: [PATCH v4 2/7] qapi: Make parameter 'file' optional for
+ BlockdevCreateOptionsLUKS
+In-Reply-To: <CAK9dgmY0rExYg+hfTY_okNvTTArZdn60jsWjCABgbbAG6XZiDw@mail.gmail.com>
+ (Yong Huang's message of "Tue, 20 Feb 2024 15:31:54 +0800")
+References: <cover.1706586786.git.yong.huang@smartx.com>
+ <af7253711254128efbc37b25fb5c47b851367ce7.1706586786.git.yong.huang@smartx.com>
+ <87zfvwjzzd.fsf@pond.sub.org>
+ <CAK9dgmY0rExYg+hfTY_okNvTTArZdn60jsWjCABgbbAG6XZiDw@mail.gmail.com>
+Date: Tue, 20 Feb 2024 09:55:54 +0100
+Message-ID: <87wmqzcy5h.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -65,7 +73,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,110 +89,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-include/hw/ide/internal.h is currently included by include/hw/ide/pci.h
-and thus exposed to a lot of files that are not part of the IDE subsystem.
-Stop including internal.h there and use the appropriate new headers
-ide-bus.h and ide-dma.h instead.
+Yong Huang <yong.huang@smartx.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/hw/ide/pci.h | 2 +-
- hw/i386/pc.c         | 2 +-
- hw/ide/cmd646.c      | 1 +
- hw/ide/pci.c         | 1 +
- hw/ide/piix.c        | 1 +
- hw/ide/sii3112.c     | 1 +
- hw/ide/via.c         | 1 +
- 7 files changed, 7 insertions(+), 2 deletions(-)
+> On Tue, Feb 20, 2024 at 2:31=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> yong.huang@smartx.com writes:
+>>
+>> > From: Hyman Huang <yong.huang@smartx.com>
+>> >
+>> > To support detached LUKS header creation, make the existing 'file'
+>> > field in BlockdevCreateOptionsLUKS optional.
+>> >
+>> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>> > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>>
+>> [...]
+>>
+>> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+>> > index ae604c6019..69a88d613d 100644
+>> > --- a/qapi/block-core.json
+>> > +++ b/qapi/block-core.json
+>> > @@ -4957,7 +4957,8 @@
+>> >  #
+>> >  # Driver specific image creation options for LUKS.
+>> >  #
+>> > -# @file: Node to create the image format on
+>> > +# @file: Node to create the image format on, mandatory except when
+>> > +#        'preallocation' is not requested
+>>
+>> You mean when @preallocation is "off"?
+>>
+>> Cases:
+>>
+>> 1. @file is mandatory
+>>
+>
+> When @preallocation is specified to PREALLOC_MODE_ON, file
+> is mandatory because preallocation aims to act on payload data that
+> @file holds.
+>
+>
+>> 2. @file is optional and present
+>>
+>
+> When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+> @file if optional.
+> If @file present=EF=BC=8Cthere are two cases:
+> 1. @header is absent,  the creation process degenerate to the origin acti=
+on.
+> 2. @header is present,  the creation process would trunk the payload data
+> image that @file holds and do the LUKS formatting on the image that
+> @header refers;
+>
+>
+>>
+>> 3. @file is optional and absent
+>>
+>
+> When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+> @file if optional.
+> If @file is absent, do the LUKS formatting only.
+> Note that Either the parameter 'header' or 'file' must be specified.
+>
+> Here's my interpretation; do let me know if any of the points are off or
+> need to be refactored.
+>
+>
+>>
+>> Ignorant question: behavior in each case?
 
-diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
-index a814a0a7c3..ef03764caa 100644
---- a/include/hw/ide/pci.h
-+++ b/include/hw/ide/pci.h
-@@ -1,7 +1,7 @@
- #ifndef HW_IDE_PCI_H
- #define HW_IDE_PCI_H
- 
--#include "hw/ide/internal.h"
-+#include "hw/ide/ide-bus.h"
- #include "hw/pci/pci_device.h"
- #include "qom/object.h"
- 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 196827531a..22d0c29575 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -31,7 +31,7 @@
- #include "hw/i386/fw_cfg.h"
- #include "hw/i386/vmport.h"
- #include "sysemu/cpus.h"
--#include "hw/ide/internal.h"
-+#include "hw/ide/ide-bus.h"
- #include "hw/timer/hpet.h"
- #include "hw/loader.h"
- #include "hw/rtc/mc146818rtc.h"
-diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index c0bcfa4414..23d213ff01 100644
---- a/hw/ide/cmd646.c
-+++ b/hw/ide/cmd646.c
-@@ -33,6 +33,7 @@
- #include "sysemu/reset.h"
- 
- #include "hw/ide/pci.h"
-+#include "hw/ide/internal.h"
- #include "trace.h"
- 
- /* CMD646 specific */
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index ca85d8474c..73efeec7f4 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -30,6 +30,7 @@
- #include "sysemu/dma.h"
- #include "qemu/error-report.h"
- #include "qemu/module.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "trace.h"
- 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 4e5e12935f..1773a068c3 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -30,6 +30,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/pci/pci.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/piix.h"
- #include "hw/ide/pci.h"
- #include "trace.h"
-diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-index 63dc4a0494..321b9e46a1 100644
---- a/hw/ide/sii3112.c
-+++ b/hw/ide/sii3112.c
-@@ -13,6 +13,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/ide/internal.h"
- #include "hw/ide/pci.h"
- #include "qemu/module.h"
- #include "trace.h"
-diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 3f3c484253..cf151e70ec 100644
---- a/hw/ide/via.c
-+++ b/hw/ide/via.c
-@@ -25,6 +25,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/ide/internal.h"
- #include "hw/pci/pci.h"
- #include "migration/vmstate.h"
- #include "qemu/module.h"
--- 
-2.43.2
+Thanks!  Would it make sense to work the above into the documentation?
+
+[...]
 
 
