@@ -2,81 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6746B85BB4C
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C51A085BB94
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:14:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcOnK-0007Mh-1N; Tue, 20 Feb 2024 07:00:18 -0500
+	id 1rcOzY-0003Ev-E7; Tue, 20 Feb 2024 07:12:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rcOnH-0007MQ-SW
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:00:16 -0500
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rcOnG-0008WD-1M
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:00:15 -0500
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41270cbef8eso1693605e9.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 04:00:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708430411; x=1709035211; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=6XEXRsswOYgDdQr4i7Bva1/OwHDXGzyO8UfoMj/465k=;
- b=wMgOgOkM0Xk/GI3bw2E5u7ih08nME4KQqe0vDnB1SBNnbCACdG2YkBd8esgGXd6cLa
- f1MQ4ZsdVGttnzAzxyRucdm9IWsfBnjeXliR6WHvhVmknYn915+H2l46TEn8WOPZ8MoL
- 2uZihzvK1joyLe/msbOEjh58pL7/9v0KOJNzVp5GnxYTB5TSl1RvwECdKpPMJ6QNIWYu
- H9d6rz+ay+BEvbTnEAuSpEqIYhkckPgNVbn8zjcrwTB2Z1TEnKw+Ey96eJMuC3RUXqe3
- rdNNQ3LUNXIhUBON1oD0PzLCuGn1bWDZQ3PJ6+CVxqXwalGQ6iP86Z6mokl4A+5l6equ
- 1ZAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708430411; x=1709035211;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :subject:to:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6XEXRsswOYgDdQr4i7Bva1/OwHDXGzyO8UfoMj/465k=;
- b=u1feBmknwDG6npxJT2mZZuMlWoovmjVFrMTeOY4BNFX3q/cbUfDR63bz4M1YWKZPD/
- i90+zkWL/inDRxv5lQ6EVFxAlb3slD3Ib7zsq3QjYcKE8J1Gk2UvGTvOoWQdiE+FMh7s
- x5WBIvHg9+qQqWG6Cm2W0jFQI7/MummlVHwKCyEaEDaSz8bNgKBMPr0Hr9QpZA5lKXwn
- 92V3X+uBolCOzk62VjFe2AA73XGWzA1tWleK9yYFZhSYGUjxAEyCQ0+s1PJqNhKCH5+p
- 7rrgEuw3ci/1XsUcndMuBG13dhBjVlxjXGXW+HO+NGQq8f7bq6pmNjiKCIECMsMPRrSb
- MYpg==
-X-Gm-Message-State: AOJu0YxwIODDTwWo8Qj4EfQUMsX64Ib9GZE7dB9+QUFqk3aMceQ1tLbH
- QA3lQM9Ws4NPdVCQbeG14VEiWuc93UX+VcTCBoUBXthNhyckxQ/HXHjoh/oImGhXbzoBuZhuoJb
- b
-X-Google-Smtp-Source: AGHT+IHsmO9VBu9FFZIVekfxSggJzVznO/f25GhdgwwvoGC6oYR7/uEzl56dLIamnMbsgJO4dnvjNA==
-X-Received: by 2002:a05:600c:4503:b0:411:ae8e:5945 with SMTP id
- t3-20020a05600c450300b00411ae8e5945mr10709089wmo.36.1708430411236; 
- Tue, 20 Feb 2024 04:00:11 -0800 (PST)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- k35-20020a05600c1ca300b00412393ddac2sm14830475wms.6.2024.02.20.04.00.10
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 04:00:11 -0800 (PST)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A06B35F8B9
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 12:00:10 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel <qemu-devel@nongnu.org>
-Subject: KVM/QEMU Community Call 20th Feb Agenda Items
-User-Agent: mu4e 1.11.28; emacs 29.1
-Date: Tue, 20 Feb 2024 12:00:10 +0000
-Message-ID: <87ttm3cpmd.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rcOzU-0003E7-Ej; Tue, 20 Feb 2024 07:12:52 -0500
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1rcOzS-000302-2y; Tue, 20 Feb 2024 07:12:52 -0500
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C3A124E6005;
+ Tue, 20 Feb 2024 13:12:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id ihrLosSy3V1K; Tue, 20 Feb 2024 13:12:39 +0100 (CET)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8C1E94E6013; Tue, 20 Feb 2024 13:12:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 89A1C7456FE;
+ Tue, 20 Feb 2024 13:12:39 +0100 (CET)
+Date: Tue, 20 Feb 2024 13:12:39 +0100 (CET)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+cc: qemu-trivial@nongnu.org, qemu-devel@nongnu.org, 
+ Michael Tokarev <mjt@tls.msk.ru>, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org
+Subject: Re: [PATCH v1 06/21] ppc: correct typos
+In-Reply-To: <95ffc19d9c3877052a1a6dabf91e139fda183427.1708419115.git.manos.pitsidianakis@linaro.org>
+Message-ID: <237221f1-8c57-5535-8ca1-0a1205ac2854@eik.bme.hu>
+References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
+ <95ffc19d9c3877052a1a6dabf91e139fda183427.1708419115.git.manos.pitsidianakis@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,26 +64,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 20 Feb 2024, Manos Pitsidianakis wrote:
+> Correct typos automatically found with the `typos` tool
+> <https://crates.io/crates/typos>
+>
+> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> ---
+> include/hw/ppc/ppc4xx.h             | 2 +-
+> hw/ppc/ppc405.h                     | 2 +-
+> target/ppc/translate/vmx-impl.c.inc | 2 +-
+> 3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
+> index ea7740239b..c4ecb1652f 100644
+> --- a/include/hw/ppc/ppc4xx.h
+> +++ b/include/hw/ppc/ppc4xx.h
+> @@ -75,7 +75,7 @@ struct Ppc4xxMalState {
+>     uint8_t  rxcnum;
+> };
+>
+> -/* Peripheral local bus arbitrer */
+> +/* Peripheral local bus arbiter */
+> #define TYPE_PPC4xx_PLB "ppc4xx-plb"
+> OBJECT_DECLARE_SIMPLE_TYPE(Ppc4xxPlbState, PPC4xx_PLB);
+> struct Ppc4xxPlbState {
+> diff --git a/hw/ppc/ppc405.h b/hw/ppc/ppc405.h
+> index 9a4312691e..a39f0caea1 100644
+> --- a/hw/ppc/ppc405.h
+> +++ b/hw/ppc/ppc405.h
+> @@ -41,7 +41,7 @@ struct Ppc405PobState {
+>     uint32_t besr1;
+> };
+>
+> -/* OPB arbitrer */
+> +/* OPB arbiter */
 
-The KVM/QEMU community call is at:
+These two aren't actually typos. The PPC docs call it that. Somebody tried 
+to fix these before but this spelling is also valid and what is used in 
+the docs.
 
-  https://meet.jit.si/kvmcallmeeting
-  @
-  20/2/2024 14:00 UTC
+> #define TYPE_PPC405_OPBA "ppc405-opba"
+> OBJECT_DECLARE_SIMPLE_TYPE(Ppc405OpbaState, PPC405_OPBA);
+> struct Ppc405OpbaState {
+> diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+> index 4b91c3489d..b56e615c24 100644
+> --- a/target/ppc/translate/vmx-impl.c.inc
+> +++ b/target/ppc/translate/vmx-impl.c.inc
+> @@ -1183,7 +1183,7 @@ static void glue(gen_, name)(DisasContext *ctx)                         \
+>
+> /*
+>  * Support for Altivec instructions that use bit 31 (Rc) as an opcode
+> - * bit but also use bit 21 as an actual Rc bit.  In general, thse pairs
+> + * bit but also use bit 21 as an actual Rc bit.  In general, these pairs
 
-Are there any agenda items for the sync-up?
+This one is a typo.
 
-I maintain the invite on our Linaro project calendar here:
+Regards,
+BALATON Zoltan
 
-  https://calendar.google.com/calendar/event?action=3DTEMPLATE&tmeid=3DMWd2=
-dWI5NDM1bzdocnJlbTBhMHJhbG5sNWlfMjAyNDAyMjBUMTQwMDAwWiBjX2s1cDJscGd2YnB0ZGl=
-ya3U1c2kwMWJsbW5rQGc&tmsrc=3Dc_k5p2lpgvbptdirku5si01blmnk%40group.calendar.=
-google.com&scp=3DALL
-
-If you want to be added to the invite list let me know and you can get
-spammed by your calendar app as well ;-)
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+>  * come from different versions of the ISA, so we must also support a
+>  * pair of flags for each instruction.
+>  */
+>
 
