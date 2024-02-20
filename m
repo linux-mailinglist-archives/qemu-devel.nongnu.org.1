@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD6B85B652
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:58:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CDC85B3AA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 08:11:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLxI-00084q-6u; Tue, 20 Feb 2024 03:58:24 -0500
+	id 1rcKFw-00081n-CR; Tue, 20 Feb 2024 02:09:32 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcLxB-0007vc-6b
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:58:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcLx9-0000p6-Fa
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:58:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708419494;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:resent-to:
- resent-from:resent-message-id:in-reply-to:in-reply-to:  references:references; 
- bh=PywWiBmxcb8yvjCgJbUBCRZXDUktOG9Db5gcFJ2aPrA=;
- b=QVZ2Dl1emhjW42jaP6U8foAiShEgbUwswtTUhdndO86uw7HFkF/tQx4GGyfzAtM3qskH/p
- mo784GwzpftEj3TvQhah0WEDuvAnP3VIWYhNBZjXDOwaoq9D52RPsneGtKyty9xuntuOwo
- CFFE+BMdVv2mF34IxaH24g9+wnirm1w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-Dzio1G3aNh62As3DZMy7aw-1; Tue, 20 Feb 2024 03:58:11 -0500
-X-MC-Unique: Dzio1G3aNh62As3DZMy7aw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF03E10651F0;
- Tue, 20 Feb 2024 08:58:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A5A12166AEA;
- Tue, 20 Feb 2024 08:58:10 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A09F121E66D0; Tue, 20 Feb 2024 09:58:09 +0100 (CET)
-Resent-To: michael.roth@amd.com, isaku.yamahata@gmail.com,
- marcel.apfelbaum@gmail.com, seanjc@google.com, chenyi.qiang@intel.com,
- xiaoyao.li@intel.com, philmd@linaro.org, richard.henderson@linaro.org,
- qemu-devel@nongnu.org, cfontana@suse.de, kvm@vger.kernel.org
-Resent-From: Markus Armbruster <armbru@redhat.com>
-Resent-Date: Tue, 20 Feb 2024 09:58:09 +0100
-Resent-Message-ID: <87ttm3cy1q.fsf@pond.sub.org>
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  "Michael S . Tsirkin" <mst@redhat.com>,  Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Peter Xu <peterx@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Cornelia Huck
- <cohuck@redhat.com>,
- Eric Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-devel@nongnu.org,  kvm@vger.kernel.org,  Michael Roth
- <michael.roth@amd.com>,  Sean Christopherson <seanjc@google.com>,  Claudio
- Fontana <cfontana@suse.de>,  Gerd Hoffmann <kraxel@redhat.com>,  Isaku
- Yamahata <isaku.yamahata@gmail.com>,  Chenyi Qiang <chenyi.qiang@intel.com>
-Subject: Re: [PATCH v4 50/66] i386/tdx: handle TDG.VP.VMCALL<GetQuote>
-In-Reply-To: <ZdNPpcNiGcY4Jefi@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Mon, 19 Feb 2024 12:55:01 +0000")
-References: <20240125032328.2522472-1-xiaoyao.li@intel.com>
- <20240125032328.2522472-51-xiaoyao.li@intel.com>
- <87zfvwehyz.fsf@pond.sub.org> <ZdNPpcNiGcY4Jefi@redhat.com>
-Date: Mon, 19 Feb 2024 15:41:49 +0100
-Message-ID: <8734tojz2q.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcKFu-00080N-9C
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:09:30 -0500
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rcKFp-0007yc-RI
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 02:09:29 -0500
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a3ea7616097so200605566b.1
+ for <qemu-devel@nongnu.org>; Mon, 19 Feb 2024 23:09:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1708412964; x=1709017764; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=A2ti6MU64ste7HF3pHVEAvtgCFlRo8bHIyKHvxSphvo=;
+ b=zKLJJ626snowECQbCC/lwGUOUrUUq3a27AfDmJqrsJUl5m8EMY5A0zk1dMqvZl6em2
+ qyvQJHjFjnTWkAa1bT1qLid6M8dQ81XMPyykWBOT81d9gik2igUbz/ZnRmIZwsJ5wMSr
+ XIxhTlorFN6bOjYdlRGkGkzAdbY0QlVpsx65ygz4clZ9xiiedr66ncKIuvB8PbNkszMl
+ nPGmJufUV+ZiSsA84n1tXTpAnw5bZiQKsjM1ARzNvV2hfHrmgIbZvvzPSn9d5t/CCoBQ
+ xX1VSX+LtGiIwOwBEHBvWgYDCBPs9qdzr7MWKw4fmeOVHCbc4n+oQ/+ol5rx4SZGcwin
+ iqmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1708412964; x=1709017764;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A2ti6MU64ste7HF3pHVEAvtgCFlRo8bHIyKHvxSphvo=;
+ b=oEgsPylDo/UyUT3LhfW5mVLkBZulYY0KQo2BSAwZeBipNQ79rQieJpW4XW3NyQNXfl
+ S2jufqs/WwTD4UV+37QVEQkqxZNiCjC9IhFnpWMpCap6T46fcwRCiMbMp7RLCGPx0OMf
+ XoMjmpVjAaUc1t1xhMDz65N5KtHnAs5V6qgTrPhZ44ghhklSEb4YPj/OjhFZob4mPAiF
+ 0sA963R90Em8JmFPNNyYr9GDPJ1jpXrFJJ6TPjPPBg+97H/iob1No9uQP4qUFaffEn1m
+ snZ770uNk3h3364RXMZY3aiQTkUFNlRLmjomOwH/Mhg1SpYneDnfQkAHYXV5D2ooXRGW
+ QQ2w==
+X-Gm-Message-State: AOJu0YzDqpMMv7PpDZAUsTQ6wRwOD2nbdm37uq9lMybU6rOS7Q4Z8Xdm
+ R35M4iOS1r5EaYJnC1zokMVQ1/AlJmZjLJLpFdH4MEdUKxQQ6XMTKXaL+e428DE=
+X-Google-Smtp-Source: AGHT+IGZsoVfd+CQZp+MzSF0QWw06ZL275/DQLuJNvdn6cdf/Y3MgayB45QiMchgRpvrByf76yLRqg==
+X-Received: by 2002:a17:906:b154:b0:a3e:cbba:fd86 with SMTP id
+ bt20-20020a170906b15400b00a3ecbbafd86mr1969169ejb.11.1708412963799; 
+ Mon, 19 Feb 2024 23:09:23 -0800 (PST)
+Received: from [192.168.69.100] (mek33-h02-176-184-23-7.dsl.sta.abo.bbox.fr.
+ [176.184.23.7]) by smtp.gmail.com with ESMTPSA id
+ qw23-20020a170906fcb700b00a3e426149a1sm2878011ejb.50.2024.02.19.23.09.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 Feb 2024 23:09:23 -0800 (PST)
+Message-ID: <ef49ed81-fa4c-4f77-b5d8-53d62bae3524@linaro.org>
+Date: Tue, 20 Feb 2024 08:09:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Lines: 106
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] hw/acpi/ich9: Include missing headers
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Bernhard Beschow <shentey@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240219141412.71418-1-philmd@linaro.org>
+ <20240219141412.71418-4-philmd@linaro.org> <ZdQPhcB28MsDdFfu@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZdQPhcB28MsDdFfu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,111 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On 20/2/24 03:33, Zhao Liu wrote:
+> Hi Philippe,
+> 
+> On Mon, Feb 19, 2024 at 03:14:09PM +0100, Philippe Mathieu-Daudé wrote:
+>> Date: Mon, 19 Feb 2024 15:14:09 +0100
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Subject: [PATCH 3/5] hw/acpi/ich9: Include missing headers
+>> X-Mailer: git-send-email 2.41.0
+>>
+>> The ICH9LPCPMRegs structure has MemoryRegion and
+>> Notifier fields, so requires the "qemu/notify.h"
+>> and "exec/memory.h" headers.
+>>
+>> However nothing from "hw/acpi/acpi_dev_interface.h"
+>> is required, so reduce its inclusion to hw/acpi/ich9.c
+>> source file where it is used.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/hw/acpi/ich9.h | 3 ++-
+>>   hw/acpi/ich9.c         | 2 +-
+>>   2 files changed, 3 insertions(+), 2 deletions(-)
 
-> On Mon, Feb 19, 2024 at 01:50:12PM +0100, Markus Armbruster wrote:
->> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>=20
->> > From: Isaku Yamahata <isaku.yamahata@intel.com>
->> >
->> > Add property "quote-generation-socket" to tdx-guest, which is a proper=
-ty
->> > of type SocketAddress to specify Quote Generation Service(QGS).
->> >
->> > On request of GetQuote, it connects to the QGS socket, read request
->> > data from shared guest memory, send the request data to the QGS,
->> > and store the response into shared guest memory, at last notify
->> > TD guest by interrupt.
->> >
->> > command line example:
->> >   qemu-system-x86_64 \
->> >     -object '{"qom-type":"tdx-guest","id":"tdx0","quote-generation-soc=
-ket":{"type": "vsock", "cid":"1","port":"1234"}}' \
->> >     -machine confidential-guest-support=3Dtdx0
->> >
->> > Note, above example uses vsock type socket because the QGS we used
->> > implements the vsock socket. It can be other types, like UNIX socket,
->> > which depends on the implementation of QGS.
->> >
->> > To avoid no response from QGS server, setup a timer for the transactio=
-n.
->> > If timeout, make it an error and interrupt guest. Define the threshold=
- of
->> > time to 30s at present, maybe change to other value if not appropriate.
->> >
->> > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->> > Codeveloped-by: Chenyi Qiang <chenyi.qiang@intel.com>
->> > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
->> > Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> > ---
->> > Changes in v4:
->> > - merge next patch "i386/tdx: setup a timer for the qio channel";
->> >
->> > Changes in v3:
->> > - rename property "quote-generation-service" to "quote-generation-sock=
-et";
->> > - change the type of "quote-generation-socket" from str to
->> >   SocketAddress;
->> > - squash next patch into this one;
->> > ---
->> >  qapi/qom.json                         |   6 +-
->> >  target/i386/kvm/meson.build           |   2 +-
->> >  target/i386/kvm/tdx-quote-generator.c | 170 ++++++++++++++++++++
->> >  target/i386/kvm/tdx-quote-generator.h |  95 +++++++++++
->> >  target/i386/kvm/tdx.c                 | 216 ++++++++++++++++++++++++++
->> >  target/i386/kvm/tdx.h                 |   6 +
->> >  6 files changed, 493 insertions(+), 2 deletions(-)
->> >  create mode 100644 target/i386/kvm/tdx-quote-generator.c
->> >  create mode 100644 target/i386/kvm/tdx-quote-generator.h
->> >
->> > diff --git a/qapi/qom.json b/qapi/qom.json
->> > index 15445f9e41fc..c60fb5710961 100644
->> > --- a/qapi/qom.json
->> > +++ b/qapi/qom.json
->> > @@ -914,13 +914,17 @@
->> >  #     e.g., specific to the workload rather than the run-time or OS.
->> >  #     base64 encoded SHA384 digest.
->> >  #
->> > +# @quote-generation-socket: socket address for Quote Generation
->> > +#     Service(QGS)
->>=20
->> Space between "Service" and "(QGS)", please.
->>=20
->> The description feels too terse.  What is the "Quote Generation
->> Service", and why should I care?
->
-> The "Quote Generation Service" is a daemon running on the host.
-> The reference implementation is at
->
->   https://github.com/intel/SGXDataCenterAttestationPrimitives/tree/master=
-/QuoteGeneration/quote_wrapper/qgs
->
-> If you don't provide this, then quests won't bet able to generate
-> quotes needed for attestation. So although this is technically
-> optional, in practice for a sane deployment, an admin should always
-> provide this
 
-Thanks.  Care to work some of this information into the doc comment?
+>> diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+>> index 573d032e8e..be375a8b9d 100644
+>> --- a/hw/acpi/ich9.c
+>> +++ b/hw/acpi/ich9.c
+>> @@ -35,7 +35,7 @@
+>>   #include "sysemu/runstate.h"
+>>   #include "hw/acpi/acpi.h"
+>>   #include "hw/acpi/ich9_tco.h"
+>> -
+>> +#include "hw/acpi/acpi_dev_interface.h"
+> 
+> Do we have the requirement for included header ordering?
 
->> > +#
->> >  # Since: 9.0
->> >  ##
->> >  { 'struct': 'TdxGuestProperties',
->> >    'data': { '*sept-ve-disable': 'bool',
->> >              '*mrconfigid': 'str',
->> >              '*mrowner': 'str',
->> > -            '*mrownerconfig': 'str' } }
->> > +            '*mrownerconfig': 'str',
->> > +            '*quote-generation-socket': 'SocketAddress' } }
->> >=20=20
->> >  ##
->> >  # @ThreadContextProperties:
->>=20
->> [...]
->>=20
->
-> With regards,
-> Daniel
+We don't. If headers were properly including requisites and
+self-contained, order shouldn't matter, and we could sort them
+alphabetically to enforce a common style.
+
+> If so, it would be better to put it before "hw/acpi/ich9_tco.h".
+
+Sure, no problem.
+
+> 
+> -Zhao
+> 
+>>   #include "hw/southbridge/ich9.h"
+>>   #include "hw/mem/pc-dimm.h"
+>>   #include "hw/mem/nvdimm.h"
+>> -- 
+>> 2.41.0
+>>
+>>
 
 
