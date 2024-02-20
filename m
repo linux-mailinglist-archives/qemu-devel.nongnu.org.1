@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01A985B615
+	by mail.lfdr.de (Postfix) with ESMTPS id 6796185B614
 	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:55:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLse-0000bC-R7; Tue, 20 Feb 2024 03:53:36 -0500
+	id 1rcLsc-0000VF-Es; Tue, 20 Feb 2024 03:53:34 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsb-0000VR-Kc
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:33 -0500
+ id 1rcLsa-0000Ra-8L
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:32 -0500
 Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1rcLsX-0008F8-9d
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:33 -0500
+ id 1rcLsX-0008FL-7z
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:53:31 -0500
 Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a3cc2f9621aso548708166b.1
+ a640c23a62f3a-a3eafbcb1c5so178888466b.0
  for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708419207; x=1709024007; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708419208; x=1709024008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iVGSDDuh83CPH0ZtXdDBtmjkmYoWaBhCuelQOBGBJXM=;
- b=r4brvH6HJ/GfZN3mMe2U2ZhGV8FSuZPNeHNWOqVQLi873SInP4UmJ3gqWRKK/iv3NC
- oubYY67Pmd9kPcaOYUbVJMW8xbEHTmn5Id/OUISQWWD3YLr/oe22ryWA7ReJMn2ItLIR
- HCR3piTowuMkSqTz1yD4pi3RiD2KXMF6Vm52/ROUSNrSvhNvSCRUa/Y6pM7HpYx+Pwtz
- hhAjzqBdhecIm5agHgpIWBi5+fixR4uEmcCSKQjVVZM71mg2YqRy2ai/5gWRc3CTXf4X
- hUaInymicWdSQ9XJCpyw3xuWRFJCrFz5wBIxqWrw2idDGiZlUKiGVhIlwrn8M60ZLtkm
- qkVQ==
+ bh=p2ZZZfT2mvh9TPWu1HLXXLptGZNuBkeMEgEXTk5vuuQ=;
+ b=fBykam33pGzxcYHGA9CQh2lwzHmohd/zv66axXoM7ENs4qgYV9Vm0bkIV3MKJuuqZC
+ tv633u9h0AMVtMZQMb6FdQ1/SyVENQFN7h7cv7Rkau9/ZYYA7Q+ac8X6FaLFWeGxlYtN
+ sgRHL+Om23dl7aIi+xhdEfeqgOZD8pZ/Us7PTOD6jNYfqAE7o3J7MHIlytRvRCtTazqb
+ IpFcHjiQs43x+j1BerhYNLsdg3sD2TDtzVRhWxEIvDI2slwyUi8j9IofQCxfRa/bHgt2
+ zRSMYyVzVD7rjCoNbb+kNUisuhcNXLYthSIo5p7idWt+cLD7k3EUhnQ0b8ZHes/Ik/bA
+ i+3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708419207; x=1709024007;
+ d=1e100.net; s=20230601; t=1708419208; x=1709024008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iVGSDDuh83CPH0ZtXdDBtmjkmYoWaBhCuelQOBGBJXM=;
- b=AFZo4kXxfg8SHN8bf8VxGAo2NvnJmmp5RvcHrgfPAkc4GGr6sw/XOwD30Wm4zvFUSV
- 9dKej+rBlgh0U6qtyK0U63CCY+QCUBY0iFXJfh56+lSM4CG+0+H9kt7vdS4TF8jWV+Jw
- RBapziRli60PSwvnKKpugC6JYJJb2jLw7M06YtbwviBc4zcMGNXf1ZLOj42JGNjus3IG
- RCSRF27Eb2bBus+Ni6m+e7/LwUybr/Rn8j6QxNmcS/MOX3/QJvzMx/SgJXVSqYrm2lM3
- j+OhsCC0gU4s6rqhwLAR2dTGgNnhvSrDCUDE4WqAVi7r7KViS1xpGBmGn+jPOQ4YRhIr
- NY7A==
-X-Gm-Message-State: AOJu0YzEP04VrRBspVnSG7MVWfbBW9JjkhWRgISy9vbfKJEMVoY8RmAP
- GJatVhUcZ8f56yhopOhEk86WOvoMCilyXrcAXAEVxZ9iUCpa0X8SvgLlU5hRrUpFpZdBohj6b0U
- FC4Y=
-X-Google-Smtp-Source: AGHT+IHE6LTWqTn4TCP9TiKtgZGQ3JJ/Tt0dG5+iRdrHh49z7Am7MlQk6hJZ4pYios2ZDJ/NaMIrvw==
-X-Received: by 2002:a17:906:2785:b0:a3e:b523:6c8 with SMTP id
- j5-20020a170906278500b00a3eb52306c8mr2124297ejc.67.1708419206913; 
- Tue, 20 Feb 2024 00:53:26 -0800 (PST)
+ bh=p2ZZZfT2mvh9TPWu1HLXXLptGZNuBkeMEgEXTk5vuuQ=;
+ b=SFAhjSC6FBS6ELVSi+jLjH0LcXI0hbmreFVALBXhkCWQEgfyT9xSVIcwcSiFKirKis
+ Ab3FiwKMTjtBJWXUICz6L2kn7Wqqol+K5gVgGDXKBF1A2GIpG8/tH61qT19pPCnU8H0G
+ udabd80+bbAP4cpzBej79w6c+H/oUd3f0LZ40qVdRsmUxxbl7JT1bwxEhDE2qJcL4ZEV
+ 3qQPFTLR5cFTc7ZnspPOKXl4USRQr2oI9btcQHSAFv+ufVfargAB41ZrokUy3FpzqvDy
+ 4f3GqnIVMHX/AfPcOv+o6lDtjVVS6zxdKxa57TNwj/DvgysUmmYwFIYdMrOkaoMCp0WY
+ D52g==
+X-Gm-Message-State: AOJu0YxgHWF754s7i2IVmYK32g/kKO+HusC2yINen7Ro+pdyx4hwd0TO
+ 66CRgQ6e6WwwExoJ5zID9VifmUY9glteKNaS77RhyaXyL2GwL2EG3jgKXiAvjz71w5MGBzh/gB+
+ lQ1c=
+X-Google-Smtp-Source: AGHT+IEStIKtmT5AaMveWofLskvajnkJhh3rrgvT0Ejf+dFSKdpwnsFRJUaDAJEB4tg11nulmDpEIA==
+X-Received: by 2002:a17:906:154e:b0:a3f:2c1:9887 with SMTP id
+ c14-20020a170906154e00b00a3f02c19887mr686091ejd.21.1708419207994; 
+ Tue, 20 Feb 2024 00:53:27 -0800 (PST)
 Received: from localhost.localdomain (adsl-245.37.6.163.tellas.gr.
  [37.6.163.245]) by smtp.gmail.com with ESMTPSA id
- cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.25
+ cu3-20020a170906ba8300b00a3d014fa12esm3747876ejd.196.2024.02.20.00.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:53:26 -0800 (PST)
+ Tue, 20 Feb 2024 00:53:27 -0800 (PST)
 From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 To: qemu-trivial@nongnu.org
-Cc: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v1 15/21] qapi/ui: correct typos
-Date: Tue, 20 Feb 2024 10:52:22 +0200
-Message-Id: <2b12236539211bfa887364cf7b621586addbb42e.1708419115.git.manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v1 16/21] qemu-options.hx: correct typos
+Date: Tue, 20 Feb 2024 10:52:23 +0200
+Message-Id: <be8b852de8adb887472d04016eec876264ea5a91.1708419115.git.manos.pitsidianakis@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
 References: <cover.1708419115.git.manos.pitsidianakis@linaro.org>
@@ -101,31 +99,31 @@ Correct typos automatically found with the `typos` tool
 
 Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- qapi/ui.json | 4 ++--
+ qemu-options.hx | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qapi/ui.json b/qapi/ui.json
-index b6d7e142b7..1448eaca73 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -63,7 +63,7 @@
- ##
- # @SetPasswordOptionsVnc:
- #
--# Options for set_password specific to the VNC procotol.
-+# Options for set_password specific to the VNC protocol.
- #
- # @display: The id of the display where the password should be
- #     changed.  Defaults to the first.
-@@ -125,7 +125,7 @@
- ##
- # @ExpirePasswordOptionsVnc:
- #
--# Options for expire_password specific to the VNC procotol.
-+# Options for expire_password specific to the VNC protocol.
- #
- # @display: The id of the display where the expiration should be
- #     changed.  Defaults to the first.
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 8547254dbf..9be1e5817c 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2468,7 +2468,7 @@ SRST
+ 
+     ``to=L``
+         With this option, QEMU will try next available VNC displays,
+-        until the number L, if the origianlly defined "-vnc display" is
++        until the number L, if the originally defined "-vnc display" is
+         not available, e.g. port 5900+display is already used by another
+         application. By default, to=0.
+ 
+@@ -5511,7 +5511,7 @@ SRST
+             -object filter-redirector,netdev=hn0,id=redire0,queue=rx,indev=compare_out
+             -object filter-redirector,netdev=hn0,id=redire1,queue=rx,outdev=compare0
+             -object iothread,id=iothread1
+-            -object colo-compare,id=comp0,primary_in=compare0-0,secondary_in=compare1,outdev=compare_out0,notify_dev=nofity_way,iothread=iothread1
++            -object colo-compare,id=comp0,primary_in=compare0-0,secondary_in=compare1,outdev=compare_out0,notify_dev=notify_way,iothread=iothread1
+ 
+             secondary:
+             -netdev tap,id=hn0,vhost=off
 -- 
 γαῖα πυρί μιχθήτω
 
