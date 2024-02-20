@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D636285CAED
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2B585CB0A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:45:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcYpN-0005RQ-Ar; Tue, 20 Feb 2024 17:43:08 -0500
+	id 1rcYpV-0005X3-Aw; Tue, 20 Feb 2024 17:43:15 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpE-0005FZ-6c
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:56 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpG-0005Rr-44
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:58 -0500
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpC-0006QF-Er
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:55 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpE-0006QY-JD
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:57 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 373EC1FB53;
- Tue, 20 Feb 2024 22:42:53 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 3D4C11FB40;
+ Tue, 20 Feb 2024 22:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468973; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=lioPgZc2SveRk9lJJQs/PtMN88/CCwcQdhgZnQwsOqLaiCwZZlufaJ4j1+Bu0XnFmMMgez
- IELq/YtI5DoIYpBRJKD58qvfTxMCBQEDlqlVSG25DR90vvIKF2Q8A4dlT6YZFPrbGgX47Q
- zD+BZ6OMMeZkdECYpv+kT+TKLmeYbmI=
+ bh=SZVp1Kh9ePdTIP4PY9Va+CuAtPIW5XqjAK0WxIkPuas=;
+ b=POIH8eOQwPNWwTz31GTJxLqNRG6MVwjcyau7weBBpESlEu+bBg0Qv34g1Q2uCheG6rxa9F
+ U4ed+o4aj8xUJ5MIf6d3gU1Ylzx6AZTVdS77Bc5s0tkHuUxtAgjmml/otGXU/8nIRPl9il
+ kJlrD17KvYao0RQTMy/n7vWUz9RzpeI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468973;
+ s=susede2_ed25519; t=1708468975;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=f3RQxj+6waEXUXldKCMWYf9erv+zuT+MH/74b8essjunEb36CS31uXfRrrvGh9rE+JFTeK
- uAFjngFm7lD7AyDg==
+ bh=SZVp1Kh9ePdTIP4PY9Va+CuAtPIW5XqjAK0WxIkPuas=;
+ b=8pX3M0tcQnRNFaWt5BcyYr77OulewM9BsInN0kb4zc0Vgl0Gd9rc0lrg7cwxcUuUOzQwtZ
+ vORSl0NIqtOn1xDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468973; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=lioPgZc2SveRk9lJJQs/PtMN88/CCwcQdhgZnQwsOqLaiCwZZlufaJ4j1+Bu0XnFmMMgez
- IELq/YtI5DoIYpBRJKD58qvfTxMCBQEDlqlVSG25DR90vvIKF2Q8A4dlT6YZFPrbGgX47Q
- zD+BZ6OMMeZkdECYpv+kT+TKLmeYbmI=
+ bh=SZVp1Kh9ePdTIP4PY9Va+CuAtPIW5XqjAK0WxIkPuas=;
+ b=POIH8eOQwPNWwTz31GTJxLqNRG6MVwjcyau7weBBpESlEu+bBg0Qv34g1Q2uCheG6rxa9F
+ U4ed+o4aj8xUJ5MIf6d3gU1Ylzx6AZTVdS77Bc5s0tkHuUxtAgjmml/otGXU/8nIRPl9il
+ kJlrD17KvYao0RQTMy/n7vWUz9RzpeI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468973;
+ s=susede2_ed25519; t=1708468975;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=teigS40Z9XH923OGo7nijlRjRuL+JJjtabkdVm33NUY=;
- b=f3RQxj+6waEXUXldKCMWYf9erv+zuT+MH/74b8essjunEb36CS31uXfRrrvGh9rE+JFTeK
- uAFjngFm7lD7AyDg==
+ bh=SZVp1Kh9ePdTIP4PY9Va+CuAtPIW5XqjAK0WxIkPuas=;
+ b=8pX3M0tcQnRNFaWt5BcyYr77OulewM9BsInN0kb4zc0Vgl0Gd9rc0lrg7cwxcUuUOzQwtZ
+ vORSl0NIqtOn1xDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B0D1139D0;
- Tue, 20 Feb 2024 22:42:51 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9CF78139D0;
+ Tue, 20 Feb 2024 22:42:53 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id MNqGFOsq1WUlKwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:51 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8EnpGO0q1WUlKwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:53 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>
-Subject: [PATCH v4 31/34] monitor: Extract fdset fd flags comparison into a
- function
-Date: Tue, 20 Feb 2024 19:41:35 -0300
-Message-Id: <20240220224138.24759-32-farosas@suse.de>
+Subject: [PATCH v4 32/34] monitor: fdset: Match against O_DIRECT
+Date: Tue, 20 Feb 2024 19:41:36 -0300
+Message-Id: <20240220224138.24759-33-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240220224138.24759-1-farosas@suse.de>
 References: <20240220224138.24759-1-farosas@suse.de>
@@ -94,7 +93,7 @@ X-Spamd-Result: default: False [3.70 / 50.00]; ARC_NA(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-0.00)[41.00%]
+ BAYES_HAM(-0.00)[39.01%]
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -119,48 +118,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to add one more condition to the flags comparison that
-requires an ifdef. Move the code into a separate function now to make
-it cleaner after the next patch.
+We're about to enable the use of O_DIRECT in the migration code and
+due to the alignment restrictions imposed by filesystems we need to
+make sure the flag is only used when doing aligned IO.
+
+The migration will do parallel IO to different regions of a file, so
+we need to use more than one file descriptor. Those cannot be obtained
+by duplicating (dup()) since duplicated file descriptors share the
+file status flags, including O_DIRECT. If one migration channel does
+unaligned IO while another sets O_DIRECT to do aligned IO, the
+filesystem would fail the unaligned operation.
+
+The add-fd QMP command along with the fdset code are specifically
+designed to allow the user to pass a set of file descriptors with
+different access flags into QEMU to be later fetched by code that
+needs to alternate between those flags when doing IO.
+
+Extend the fdset matching function to behave the same with the
+O_DIRECT flag.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- monitor/fds.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ monitor/fds.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/monitor/fds.c b/monitor/fds.c
-index 4ec3b7eea9..9a28e4b72b 100644
+index 9a28e4b72b..42bf3eb982 100644
 --- a/monitor/fds.c
 +++ b/monitor/fds.c
-@@ -406,6 +406,19 @@ AddfdInfo *monitor_fdset_add_fd(int fd, bool has_fdset_id, int64_t fdset_id,
-     return fdinfo;
- }
+@@ -413,6 +413,12 @@ static bool monitor_fdset_flags_match(int flags, int fd_flags)
  
-+#ifndef _WIN32
-+static bool monitor_fdset_flags_match(int flags, int fd_flags)
-+{
-+    bool match = false;
+     if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
+         match = true;
 +
-+    if ((flags & O_ACCMODE) == (fd_flags & O_ACCMODE)) {
-+        match = true;
-+    }
-+
-+    return match;
-+}
++#ifdef O_DIRECT
++        if ((flags & O_DIRECT) != (fd_flags & O_DIRECT)) {
++            match = false;
++        }
 +#endif
-+
- int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
- {
- #ifdef _WIN32
-@@ -431,7 +444,7 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
-                 return -1;
-             }
+     }
  
--            if ((flags & O_ACCMODE) == (mon_fd_flags & O_ACCMODE)) {
-+            if (monitor_fdset_flags_match(flags, mon_fd_flags)) {
-                 fd = mon_fdset_fd->fd;
-                 break;
-             }
+     return match;
 -- 
 2.35.3
 
