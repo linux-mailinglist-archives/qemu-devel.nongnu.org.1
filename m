@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A83085C0C3
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1315B85C0B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 17:06:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcSdd-00026k-2I; Tue, 20 Feb 2024 11:06:33 -0500
+	id 1rcSdg-00029R-Ul; Tue, 20 Feb 2024 11:06:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdb-00024v-5N
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:31 -0500
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ id 1rcSdc-00027B-I1
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:32 -0500
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rcSdZ-0005F5-8c
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:30 -0500
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2d247c31e1aso11086971fa.1
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 08:06:28 -0800 (PST)
+ id 1rcSda-0005FJ-FP
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 11:06:32 -0500
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-512cba0f953so583809e87.2
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 08:06:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1708445187; x=1709049987; darn=nongnu.org;
+ d=linaro.org; s=google; t=1708445188; x=1709049988; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6eEhRf5RLTQy0GPZo/ROl5SoGHEpglCPsB5KIAdpHko=;
- b=iUJQQq00zo4oqxdp9VrlBNa2jQvbD0wkbfzIXNUCYCqLre5TuGcdM15+cPBoUMUmuY
- A8gYeMyc2bixHOD4CjttYCEhdA/OIEhXqqacWD3hR4y7IqhGz3LGnXBHY/cdVUtgXZ0R
- U0OVCSB7edOQP82oZEzhkGVW/JNyz5OjWq60xbGf3/wcgHv3G4HUeDH5mv8YfaCdHtkE
- jPv/Ja82Sb07dTHSwcqS158nVA7nma10kIx4FbHmNvrRpfHB2DEGvOdoU2XzcaGP9MIz
- ZS/AK91oUMDdjzqRBD5i5xiW0arVknT/MBXZsIBiRUHEygX41npUG8N0a+XatlW7AshJ
- 9BIA==
+ bh=ddKtqyWJkcgxhf/BG7mdQTStu44ETF+Ta3q791Jg39I=;
+ b=i7ki35Gg07AFoxj5eJLneHeWqWUoWsDZJiCRzLkRUH4vVKEiF5MYXkAfSuUzPjhc7B
+ S9hPqfn+gUU2LcSQy8RilnMl+poszhMEYeiIgdi7xWS7m/6hOVKRNqPElL/e7eLCAxS7
+ HT/KIs7P0/kKi5AtLJdm2He/9gxo37m/0aF5UOjyKCD/8dD0VR0u3ncjSO/yxC7TzHSv
+ +N5UTOr3E++V8EmprvcFD5S3fnjc9J5+7Wie2UTDJKxZ14eHkIp9z6yXA06TbKyVh5Hz
+ Q/0wldsUqAiUQLtGTyW0rlQo1j2iXr4laY0EMVPyeDjBMZLpY1mbtfmXLXpZv+ItAnGF
+ 3WZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708445187; x=1709049987;
+ d=1e100.net; s=20230601; t=1708445188; x=1709049988;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6eEhRf5RLTQy0GPZo/ROl5SoGHEpglCPsB5KIAdpHko=;
- b=iQoPBCYGU8V8f7Y88qBj4pDbz1qKZqoWDKzi0HtIROiBPXUpT+CFX3a9nstZ5DjWU6
- jdQvC+xnIRA0lD4Xb4Op5m6bU943SO0u6klneQhjUtobNymKIuj3Wof5xSKKp75w4yhF
- qaw+L/Jv9CnzNJ/CObrS9R9TO9PRwCrQl+DEh4qo3P2V9LMsT+6/eK8XcEV0rUDyXmvx
- ElTdkEfQoN9OinYnOmnC2nUbpRdpJGsegdhH8DNNPHW/wU8B27GD20EhY8R4YtiWz4aj
- zvtB48gGy1brjXXQXD2nA2AfjDjKPC/u4LC3FqCMqbRU2hwQt9vC8WL+1NMYP/I5mDmt
- /5Rg==
-X-Gm-Message-State: AOJu0YxRKzkzwS6dar3O2/ENstQljRSoEKmDNU0Gd53rbcKdC/eElfwh
- xdNmVkXWZeq37fp97ASKQjGppdt9FNAtV9YzuppNB6dMRYob2YgsLQLLz4hUSX/aEpTvJynI2de
- M
-X-Google-Smtp-Source: AGHT+IHwbQ9Hn11Sq+J07tdJD8fw914RMFtsVXd5msWZGyp8lT7DUIy6GIm0djo5y9A6PIT6m5j+EQ==
-X-Received: by 2002:a2e:b165:0:b0:2d2:3ec0:29dd with SMTP id
- a5-20020a2eb165000000b002d23ec029ddmr3254741ljm.39.1708445187580; 
- Tue, 20 Feb 2024 08:06:27 -0800 (PST)
+ bh=ddKtqyWJkcgxhf/BG7mdQTStu44ETF+Ta3q791Jg39I=;
+ b=iUHm+3/nGvNum6QLQd3sJr85kraKvU0x8uUbtYQSLd71qmS+8CXSYy8cyXwzWRyQmB
+ 85fmc1CJHZfkRmAjfWYgubHPDaFBJGDphhiaASMYRC69M6VMlQMftVybEbaf2EmPN67d
+ YyC0IUmongU+3QXhRBqsUpFs5k2y/G/iViEGDIMhtOWZQmMdC2RKcgX7g4X2apyo6lim
+ w9UuF3IBLmu8ZyK1p7ZRW4K6/XAi3Bnio+7rLWLD087LZ0zn0iCSSik4i5P+TsUCemCV
+ SbV3+BphP0yyzvGnHL7BZCMkNmXM5MP/1vTsMGAXq/2ancmQtNO48wkmXZoMRSoJuHLO
+ O/Ng==
+X-Gm-Message-State: AOJu0YxtYnFchQN8Bpb8CJQsmPh+d+85mCUK4rELvJ9mdztgU5jDYr8y
+ phoAOkrUx11vZKdzdgODClBl4374YNfdIyBGdUzXh4YS+eW+66yOulydmnv93an0/JEHS6H3ApV
+ n
+X-Google-Smtp-Source: AGHT+IErMCe2fH02jbYeG2pO/xVhKdENQOdZQ8KAKyjjSXf7QXft1BX3kKRnDdY85G4R4Bw6+R286w==
+X-Received: by 2002:ac2:446d:0:b0:512:bf09:5ea9 with SMTP id
+ y13-20020ac2446d000000b00512bf095ea9mr2607364lfl.63.1708445188220; 
+ Tue, 20 Feb 2024 08:06:28 -0800 (PST)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  f8-20020a05600c4e8800b0040f0219c371sm15299927wmq.19.2024.02.20.08.06.27
@@ -66,17 +66,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PATCH 05/10] hw/core: Add documentation and license comments to
- reset.h
-Date: Tue, 20 Feb 2024 16:06:17 +0000
-Message-Id: <20240220160622.114437-6-peter.maydell@linaro.org>
+Subject: [PATCH 06/10] hw/core: Add ResetContainer which holds objects
+ implementing Resettable
+Date: Tue, 20 Feb 2024 16:06:18 +0000
+Message-Id: <20240220160622.114437-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240220160622.114437-1-peter.maydell@linaro.org>
 References: <20240220160622.114437-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,111 +99,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the usual boilerplate license/copyright comment to reset.h (using
-the text from reset.c), and document the existing functions.
+Implement a ResetContainer.  This is a subclass of Object, and it
+implements the Resettable interface.  The container holds a list of
+arbitrary other objects which implement Resettable, and when the
+container is reset, all the objects it contains are also reset.
+
+This will allow us to have a 3-phase-reset equivalent of the old
+qemu_register_reset() API: we will have a single "simulation reset"
+top level ResetContainer, and objects in it are the equivalent of the
+old QEMUResetHandler functions.
+
+The qemu_register_reset() API manages its list of callbacks using a
+QTAILQ, but here we use a GPtrArray for our list of Resettable
+children: we expect the "remove" operation (which will need to do an
+iteration through the list) to be fairly uncommon, and we get simpler
+code with fewer memory allocations.
+
+Since there is currently no listed owner in MAINTAINERS for the
+existing reset-related source files, create a new section for
+them, and add these new files there also.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/sysemu/reset.h | 79 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ MAINTAINERS                      | 10 +++++
+ include/hw/core/resetcontainer.h | 48 ++++++++++++++++++++
+ hw/core/resetcontainer.c         | 76 ++++++++++++++++++++++++++++++++
+ hw/core/meson.build              |  1 +
+ 4 files changed, 135 insertions(+)
+ create mode 100644 include/hw/core/resetcontainer.h
+ create mode 100644 hw/core/resetcontainer.c
 
-diff --git a/include/sysemu/reset.h b/include/sysemu/reset.h
-index 609e4d50c26..6aa11846a69 100644
---- a/include/sysemu/reset.h
-+++ b/include/sysemu/reset.h
-@@ -1,3 +1,29 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7d61fb93194..df8a526905b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3667,6 +3667,16 @@ F: hw/core/clock-vmstate.c
+ F: hw/core/qdev-clock.c
+ F: docs/devel/clocks.rst
+ 
++Reset framework
++M: Peter Maydell <peter.maydell@linaro.org>
++S: Maintained
++F: include/hw/resettable.h
++F: include/hw/core/resetcontainer.h
++F: include/sysemu/reset.h
++F: hw/core/reset.c
++F: hw/core/resettable.c
++F: hw/core/resetcontainer.c
++
+ Usermode Emulation
+ ------------------
+ Overall usermode emulation
+diff --git a/include/hw/core/resetcontainer.h b/include/hw/core/resetcontainer.h
+new file mode 100644
+index 00000000000..23db0c7a880
+--- /dev/null
++++ b/include/hw/core/resetcontainer.h
+@@ -0,0 +1,48 @@
 +/*
-+ *  Reset handlers.
++ * Reset container
 + *
-+ * Copyright (c) 2003-2008 Fabrice Bellard
-+ * Copyright (c) 2016 Red Hat, Inc.
-+ * Copyright (c) 2024 Linaro, Ltd.
++ * Copyright (c) 2024 Linaro, Ltd
 + *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
 +
- #ifndef QEMU_SYSEMU_RESET_H
- #define QEMU_SYSEMU_RESET_H
- 
-@@ -5,9 +31,62 @@
- 
- typedef void QEMUResetHandler(void *opaque);
- 
-+/**
-+ * qemu_register_reset: Register a callback for system reset
-+ * @func: function to call
-+ * @opaque: opaque data to pass to @func
-+ *
-+ * Register @func on the list of functions which are called when the
-+ * entire system is reset. The functions are called in the order in
-+ * which they are registered.
-+ *
-+ * In general this function should not be used in new code where possible;
-+ * for instance device model reset is better accomplished using the
-+ * methods on DeviceState.
-+ *
-+ * It is not permitted to register or unregister reset functions from
-+ * within the @func callback.
-+ *
-+ * We assume that the caller holds the BQL.
++#ifndef HW_RESETCONTAINER_H
++#define HW_RESETCONTAINER_H
++
++/*
++ * The "reset container" is an object which implements the Resettable
++ * interface. It contains a list of arbitrary other objects which also
++ * implement Resettable. Resetting the reset container resets all the
++ * objects in it.
 + */
- void qemu_register_reset(QEMUResetHandler *func, void *opaque);
++
++#include "qom/object.h"
++
++#define TYPE_RESETTABLE_CONTAINER "resettable-container"
++OBJECT_DECLARE_TYPE(ResettableContainer, ResettableContainerClass, RESETTABLE_CONTAINER)
 +
 +/**
-+ * qemu_register_reset_nosnapshotload: Register a callback for system reset
-+ * @func: function to call
-+ * @opaque: opaque data to pass to @func
++ * resettable_container_add: Add a resettable object to the container
++ * @rc: container
++ * @obj: object to add to the container
 + *
-+ * This is the same as qemu_register_reset(), except that @func is
-+ * not called if the reason that the system is being reset is to
-+ * put it into a clean state prior to loading a snapshot (i.e. for
-+ * SHUTDOWN_CAUSE_SNAPSHOT_LOAD).
++ * Add @obj to the ResettableContainer @rc. @obj must implement the
++ * Resettable interface.
++ *
++ * When @rc is reset, it will reset every object that has been added
++ * to it, in the order they were added.
 + */
- void qemu_register_reset_nosnapshotload(QEMUResetHandler *func, void *opaque);
++void resettable_container_add(ResettableContainer *rc, Object *obj);
 +
 +/**
-+ * qemu_unregister_reset: Unregister a system reset callback
-+ * @func: function registered with qemu_register_reset()
-+ * @opaque: the same opaque data that was passed to qemu_register_reset()
++ * resettable_container_remove: Remove an object from the container
++ * @rc: container
++ * @obj: object to remove from the container
 + *
-+ * Undo the effects of a qemu_register_reset(). The @func and @opaque
-+ * must both match the arguments originally used with qemu_register_reset().
-+ *
-+ * We assume that the caller holds the BQL.
++ * Remove @obj from the ResettableContainer @rc. @obj must have been
++ * previously added to this container.
 + */
- void qemu_unregister_reset(QEMUResetHandler *func, void *opaque);
++void resettable_container_remove(ResettableContainer *rc, Object *obj);
 +
-+/**
-+ * qemu_devices_reset: Perform a complete system reset
-+ * @reason: reason for the reset
++#endif
+diff --git a/hw/core/resetcontainer.c b/hw/core/resetcontainer.c
+new file mode 100644
+index 00000000000..cd627f16f0e
+--- /dev/null
++++ b/hw/core/resetcontainer.c
+@@ -0,0 +1,76 @@
++/*
++ * Reset container
 + *
-+ * This function performs the low-level work needed to do a complete reset
-+ * of the system (calling all the callbacks registered with
-+ * qemu_register_reset()). It should only be called by the code in a
-+ * MachineClass reset method.
++ * Copyright (c) 2024 Linaro, Ltd
 + *
-+ * If you want to trigger a system reset from, for instance, a device
-+ * model, don't use this function. Use qemu_system_reset_request().
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
- void qemu_devices_reset(ShutdownCause reason);
- 
- #endif
++
++/*
++ * The "reset container" is an object which implements the Resettable
++ * interface. It contains a list of arbitrary other objects which also
++ * implement Resettable. Resetting the reset container resets all the
++ * objects in it.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/resettable.h"
++#include "hw/core/resetcontainer.h"
++
++struct ResettableContainer {
++    Object parent;
++    ResettableState reset_state;
++    GPtrArray *children;
++};
++
++OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(ResettableContainer, resettable_container, RESETTABLE_CONTAINER, OBJECT, { TYPE_RESETTABLE_INTERFACE }, { })
++
++void resettable_container_add(ResettableContainer *rc, Object *obj)
++{
++    g_ptr_array_add(rc->children, obj);
++}
++
++void resettable_container_remove(ResettableContainer *rc, Object *obj)
++{
++    g_ptr_array_remove(rc->children, obj);
++}
++
++static ResettableState *resettable_container_get_state(Object *obj)
++{
++    ResettableContainer *rc = RESETTABLE_CONTAINER(obj);
++    return &rc->reset_state;
++}
++
++static void resettable_container_child_foreach(Object *obj,
++                                               ResettableChildCallback cb,
++                                               void *opaque, ResetType type)
++{
++    ResettableContainer *rc = RESETTABLE_CONTAINER(obj);
++    unsigned int len = rc->children->len;
++
++    for (unsigned int i = 0; i < len; i++) {
++        cb(g_ptr_array_index(rc->children, i), opaque, type);
++        /* Detect callbacks trying to unregister themselves */
++        assert(len == rc->children->len);
++    }
++}
++
++static void resettable_container_init(Object *obj)
++{
++    ResettableContainer *rc = RESETTABLE_CONTAINER(obj);
++
++    rc->children = g_ptr_array_new();
++}
++
++static void resettable_container_finalize(Object *obj)
++{
++}
++
++static void resettable_container_class_init(ObjectClass *klass, void *data)
++{
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
++
++    rc->get_state = resettable_container_get_state;
++    rc->child_foreach = resettable_container_child_foreach;
++}
+diff --git a/hw/core/meson.build b/hw/core/meson.build
+index 67dad04de55..e26f2e088c3 100644
+--- a/hw/core/meson.build
++++ b/hw/core/meson.build
+@@ -4,6 +4,7 @@ hwcore_ss.add(files(
+   'qdev-properties.c',
+   'qdev.c',
+   'reset.c',
++  'resetcontainer.c',
+   'resettable.c',
+   'vmstate-if.c',
+   # irq.c needed for qdev GPIO handling:
 -- 
 2.34.1
 
