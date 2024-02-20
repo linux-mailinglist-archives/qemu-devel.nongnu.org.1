@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DADA85C3AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 19:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEEC85C3CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 19:43:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcUw9-00044P-7m; Tue, 20 Feb 2024 13:33:49 -0500
+	id 1rcV4R-0007yo-Q2; Tue, 20 Feb 2024 13:42:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcUw5-00044D-UI
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:33:47 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rcV46-0007rG-8r; Tue, 20 Feb 2024 13:42:05 -0500
+Received: from zproxy2.enst.fr ([137.194.2.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rcUvy-0005pH-6S
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 13:33:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708454016;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/u485ogU776dTmFvZSmjGLSWjFMJACwlNhctLMIDDTs=;
- b=XgKuEXFIaTssGkUyDi9Ih1eG789hAV9TC+bGzkK8Tse2zh5gqclHOu2XO/abvFfncimS33
- 4JFqNPeKOTWMAzT9ki0l8mBj6UwCuLGKo+b1Gyz2EiDAaGc4MfADVc/+HfeBd4pdMQjvzg
- LYaV+Lb21h2E1b1KnMkYMssAnXXke2M=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-Hu-gbxsGNYywFCPfQDzJsg-1; Tue,
- 20 Feb 2024 13:33:35 -0500
-X-MC-Unique: Hu-gbxsGNYywFCPfQDzJsg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C826F28C9819;
- Tue, 20 Feb 2024 18:33:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3144040C94A7;
- Tue, 20 Feb 2024 18:33:34 +0000 (UTC)
-Date: Tue, 20 Feb 2024 18:33:32 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH qemu-web] _download/windows.md: Drop 32-bit Windows support
-Message-ID: <ZdTwfP2zqIpQNWPz@redhat.com>
-References: <20240220180618.158100-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rcV44-0007IK-AG; Tue, 20 Feb 2024 13:42:02 -0500
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id 6873E80603;
+ Tue, 20 Feb 2024 19:41:54 +0100 (CET)
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id W41KJoo3gUJq; Tue, 20 Feb 2024 19:41:54 +0100 (CET)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy2.enst.fr (Postfix) with ESMTP id E716980662;
+ Tue, 20 Feb 2024 19:41:53 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy2.enst.fr E716980662
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1708454514;
+ bh=OTbBZYmQUWM13WJNxLCM/jwplynIgnpCD8rkYnjcGe0=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=8Hrylc5ssyoUTBoP/Aziit2/O32AMB9vy/N1Yogtd5e8FFeUbzJEYK+8W8DbrpPE1
+ YGdW53l/PQphgehNRPQ3vztz5DKFweeX72RA051iXRneIVc1z/ykPXrLunneIRmTMs
+ R99/E5k+GBzUSUseXTmsRcDm5sWQEvzoQ8BeTKbA=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy2.enst.fr ([IPv6:::1])
+ by localhost (zproxy2.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id SpndP6v43cjW; Tue, 20 Feb 2024 19:41:53 +0100 (CET)
+Received: from inesv-Inspiron-3501.lan (unknown
+ [IPv6:2001:861:4680:b1b0:6f1f:d69d:dd9c:e973])
+ by zproxy2.enst.fr (Postfix) with ESMTPSA id 52CA8805FE;
+ Tue, 20 Feb 2024 19:41:53 +0100 (CET)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+Subject: [PATCH v2 0/2] hw/arm: Fix STM32L4x5 EXTI to CPU irq fan-in
+ connections
+Date: Tue, 20 Feb 2024 19:34:34 +0100
+Message-ID: <20240220184145.106107-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240220180618.158100-1-peter.maydell@linaro.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=137.194.2.221;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy2.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,31 +80,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Feb 20, 2024 at 06:06:18PM +0000, Peter Maydell wrote:
-> 32-bit Windows is no longer a supported platform for QEMU, and both
-> MSYS2 and Stefan Weil have stopped building 32-bit packages of it.
-> Remove the no-longer-working i686 pacman rune, and state explicitly
-> that 32 bit Windows isn't supported.
-> 
-> Fix a grammar nit in the page while we're here.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  _download/windows.md | 10 +++-------
->  1 file changed, 3 insertions(+), 7 deletions(-)
+The original code was connecting several outbounds qemu_irqs to the
+same qemu_irq without using a TYPE_OR_IRQ.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+This patch fixes the issue by using OR gates when necessary (1st commit).
 
+I attempted to check that the problem is fixed by using a QTest (2nd comm=
+it)
+but actually the test is passing even before the fix :
+when any fan-in input line is raised, the output is raised too.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Changes from v1 :
+- using SoC State fields for EXTI OR gates
+- correcting length of array `exti_or_gates_num_lines_in`
+- using a for loop in the test for more clarity
+- correcting typo in test comment
+
+Fixes: 52671f69f7a4 ("[PATCH v8 0/3] Add device STM32L4x5 EXTI")
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+
+In=C3=A8s Varhol (2):
+  hw/arm: Use TYPE_OR_IRQ when connecting STM32L4x5 EXTI fan-in IRQs
+  tests/qtest: Check that EXTI fan-in irqs are correctly connected
+
+ include/hw/arm/stm32l4x5_soc.h    |  4 ++
+ hw/arm/stm32l4x5_soc.c            | 80 +++++++++++++++++++++++++++----
+ tests/qtest/stm32l4x5_exti-test.c | 37 ++++++++++++++
+ 3 files changed, 111 insertions(+), 10 deletions(-)
+
+--=20
+2.43.2
 
 
