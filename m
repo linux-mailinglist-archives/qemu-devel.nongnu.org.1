@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E85A85B6E0
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C669085B7D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:42:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcMB1-0001Dh-Up; Tue, 20 Feb 2024 04:12:37 -0500
+	id 1rcMcw-0000Ew-6o; Tue, 20 Feb 2024 04:41:26 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcMAy-00012Z-2d; Tue, 20 Feb 2024 04:12:32 -0500
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcMcu-0000Dx-BP
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 04:41:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rcMAw-0003Tv-0l; Tue, 20 Feb 2024 04:12:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1708420350; x=1739956350;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=L0AbdOq+EtfWgzb7EW1UTRtjP/6zXcB3r698FBuEvgE=;
- b=GotJBlCOWiDbORUrFW9FJJP0MFSK+B1f7F/ibCay2WDFrsCEYfL7Lu5Q
- Se71/DNobx7db5OmZ4L0NsuLWLnY4VFS13qRPSd7cNZ6MSn+QhfoGAnbD
- MXm8Je/oAlVQuC6zHwsKn43f+y1c8syzoXjAEnbx65JU/GWMx8Dg3ygRx
- lgdj8WuCplKH+7UXhD8PhWiyXy0A26GZeyOgkdfSL/oYx5TXcO2WP+XjA
- ca87IWVT/J7yFJH22wkwuSonvWg3z0wjd+d5EzCIAmHkkV/hLpHj/aQ5z
- QdCxAx6DWBH7zcQKoyS0t5dlRcsjaYbWR1AeE94/eVgOtPHf6vvVaPVBl A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2375048"
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="2375048"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2024 01:12:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="5013156"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa007.jf.intel.com with ESMTP; 20 Feb 2024 01:12:23 -0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 8/8] qemu-options: Add the cache topology description of -smp
-Date: Tue, 20 Feb 2024 17:25:04 +0800
-Message-Id: <20240220092504.726064-9-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
-References: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rcMcs-0008Bd-Ay
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 04:41:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1708422081;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GoYgYdgWWT/rJFB3aEn2jIfS+g6huycDtVnCpwKHaBM=;
+ b=T4VEsJ07eWU6GfiLdrV4k5QTUPZdH/uR6E6FvvOpakWNfZhGhRmd78jc+QenCqiuG0/cY4
+ bobV6hTJ/zsTiq1+nQySeG0hmYf3caH6/BBUQl/8FY70RwQi/KcD+rNiQs1v+kkJ4EUrva
+ kxfoH/3C5oyPw6Ad+as9P9cb3VFKFUQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-k1K37WYkM8mAbxHQHLAf5w-1; Tue,
+ 20 Feb 2024 04:41:17 -0500
+X-MC-Unique: k1K37WYkM8mAbxHQHLAf5w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0EB6285F985;
+ Tue, 20 Feb 2024 09:41:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8E42E1C060AF;
+ Tue, 20 Feb 2024 09:41:16 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 79A2521E66C8; Tue, 20 Feb 2024 10:41:15 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: Markus Armbruster <armbru@redhat.com>,  qemu-devel@nongnu.org,  Daniel P
+ . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Hanna
+ Reitz <hreitz@redhat.com>,  Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH v4 2/7] qapi: Make parameter 'file' optional for
+ BlockdevCreateOptionsLUKS
+In-Reply-To: <CAK9dgmaD_3vbOvv9cFzPq-BzQ7xejB-McaD8C9v4Wt_0xnF9kw@mail.gmail.com>
+ (Yong Huang's message of "Tue, 20 Feb 2024 17:13:46 +0800")
+References: <cover.1706586786.git.yong.huang@smartx.com>
+ <af7253711254128efbc37b25fb5c47b851367ce7.1706586786.git.yong.huang@smartx.com>
+ <87zfvwjzzd.fsf@pond.sub.org>
+ <CAK9dgmY0rExYg+hfTY_okNvTTArZdn60jsWjCABgbbAG6XZiDw@mail.gmail.com>
+ <87wmqzcy5h.fsf@pond.sub.org>
+ <CAK9dgmaD_3vbOvv9cFzPq-BzQ7xejB-McaD8C9v4Wt_0xnF9kw@mail.gmail.com>
+Date: Tue, 20 Feb 2024 10:41:15 +0100
+Message-ID: <87edd7cw1w.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.17;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,114 +90,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Yong Huang <yong.huang@smartx.com> writes:
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- qemu-options.hx | 54 ++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 47 insertions(+), 7 deletions(-)
+> On Tue, Feb 20, 2024 at 4:56=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> Yong Huang <yong.huang@smartx.com> writes:
+>>
+>> > On Tue, Feb 20, 2024 at 2:31=E2=80=AFPM Markus Armbruster <armbru@redh=
+at.com>
+>> wrote:
+>> >
+>> >> yong.huang@smartx.com writes:
+>> >>
+>> >> > From: Hyman Huang <yong.huang@smartx.com>
+>> >> >
+>> >> > To support detached LUKS header creation, make the existing 'file'
+>> >> > field in BlockdevCreateOptionsLUKS optional.
+>> >> >
+>> >> > Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+>> >> > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> >>
+>> >> [...]
+>> >>
+>> >> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+>> >> > index ae604c6019..69a88d613d 100644
+>> >> > --- a/qapi/block-core.json
+>> >> > +++ b/qapi/block-core.json
+>> >> > @@ -4957,7 +4957,8 @@
+>> >> >  #
+>> >> >  # Driver specific image creation options for LUKS.
+>> >> >  #
+>> >> > -# @file: Node to create the image format on
+>> >> > +# @file: Node to create the image format on, mandatory except when
+>> >> > +#        'preallocation' is not requested
+>> >>
+>> >> You mean when @preallocation is "off"?
+>> >>
+>> >> Cases:
+>> >>
+>> >> 1. @file is mandatory
+>> >>
+>> >
+>> > When @preallocation is specified to PREALLOC_MODE_ON, file
+>> > is mandatory because preallocation aims to act on payload data that
+>> > @file holds.
+>> >
+>> >
+>> >> 2. @file is optional and present
+>> >>
+>> >
+>> > When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+>> > @file if optional.
+>> > If @file present=EF=BC=8Cthere are two cases:
+>> > 1. @header is absent,  the creation process degenerate to the origin a=
+ction.
+>> > 2. @header is present,  the creation process would trunk the payload d=
+ata
+>> > image that @file holds and do the LUKS formatting on the image that
+>> > @header refers;
+>> >
+>> >
+>> >>
+>> >> 3. @file is optional and absent
+>> >>
+>> >
+>> > When @preallocation is not specified or equals to PREALLOC_MODE_OFF,
+>> > @file if optional.
+>> > If @file is absent, do the LUKS formatting only.
+>> > Note that Either the parameter 'header' or 'file' must be specified.
+>> >
+>> > Here's my interpretation; do let me know if any of the points are off =
+or
+>> > need to be refactored.
+>> >
+>> >
+>> >>
+>> >> Ignorant question: behavior in each case?
+>>
+>> Thanks!  Would it make sense to work the above into the documentation?
+>>
+>
+> You mean adding the above interpretation to the following patch?
+>
+> https://patchew.org/QEMU/c2049499aa05758b4cf18dcec942694ed454a980.1708358=
+310.git.yong.huang@smartx.com/
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 70eaf3256685..85c78c99a3b0 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -281,7 +281,9 @@ ERST
- 
- DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
--    "               [,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]\n"
-+    "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
-+    "               [,threads=threads][,l1d-cache=level][,l1i-cache=level][,l2-cache=level]\n"
-+    "               [,l3-cache=level]\n"
-     "                set the number of initial CPUs to 'n' [default=1]\n"
-     "                maxcpus= maximum number of total CPUs, including\n"
-     "                offline CPUs for hotplug, etc\n"
-@@ -290,9 +292,14 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "                sockets= number of sockets in one book\n"
-     "                dies= number of dies in one socket\n"
-     "                clusters= number of clusters in one die\n"
--    "                cores= number of cores in one cluster\n"
-+    "                modules= number of modules in one cluster\n"
-+    "                cores= number of cores in one module\n"
-     "                threads= number of threads in one core\n"
--    "Note: Different machines may have different subsets of the CPU topology\n"
-+    "                l1d-cache= topology level of L1 D-cache\n"
-+    "                l1i-cache= topology level of L1 I-cache\n"
-+    "                l2-cache= topology level of L2 cache\n"
-+    "                l3-cache= topology level of L3 cache\n"
-+    "Note: Different machines may have different subsets of the CPU and cache topology\n"
-     "      parameters supported, so the actual meaning of the supported parameters\n"
-     "      will vary accordingly. For example, for a machine type that supports a\n"
-     "      three-level CPU hierarchy of sockets/cores/threads, the parameters will\n"
-@@ -306,7 +313,7 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "      must be set as 1 in the purpose of correct parsing.\n",
-     QEMU_ARCH_ALL)
- SRST
--``-smp [[cpus=]n][,maxcpus=maxcpus][,sockets=sockets][,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]``
-+``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads][,l1d-cache=level][,l1i-cache=level][,l2-cache=level][,l3-cache=level]``
-     Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
-     the machine type board. On boards supporting CPU hotplug, the optional
-     '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
-@@ -320,15 +327,34 @@ SRST
-     Both parameters are subject to an upper limit that is determined by
-     the specific machine type chosen.
- 
-+    CPU topology parameters include '\ ``drawers``\ ', '\ ``books``\ ',
-+    '\ ``sockets``\ ', '\ ``dies``\ ', '\ ``clusters``\ ', '\ ``modules``\ ',
-+    '\ ``cores``\ ' and '\ ``threads``\ '. These CPU parameters accept only
-+    integers and are used to specify the number of specific topology domains
-+    under the corresponding topology level.
-+
-     To control reporting of CPU topology information, values of the topology
-     parameters can be specified. Machines may only support a subset of the
--    parameters and different machines may have different subsets supported
--    which vary depending on capacity of the corresponding CPU targets. So
--    for a particular machine type board, an expected topology hierarchy can
-+    CPU topology parameters and different machines may have different subsets
-+    supported which vary depending on capacity of the corresponding CPU targets.
-+    So for a particular machine type board, an expected topology hierarchy can
-     be defined through the supported sub-option. Unsupported parameters can
-     also be provided in addition to the sub-option, but their values must be
-     set as 1 in the purpose of correct parsing.
- 
-+    Cache topology parameters include '\ ``l1d-cache``\ ', '\ ``l1i-cache``\ ',
-+    '\ ``l2-cache``\ ' and '\ ``l3-cache``\ '. These cache topology parameters
-+    accept the strings of CPU topology levels (such as '\ ``drawer``\ ', '\ ``book``\ ',
-+    '\ ``socket``\ ', '\ ``die``\ ', '\ ``cluster``\ ', '\ ``module``\ ',
-+    '\ ``core``\ ' or '\ ``thread``\ '). Exactly which topology level strings
-+    could be accepted as the parameter depends on the machine's support for the
-+    corresponding CPU topology level.
-+
-+    Machines may also only support a subset of the cache topology parameters.
-+    Unsupported cache topology parameters will be omitted, and correspondingly,
-+    the target CPU's cache topology will use the its default cache topology
-+    setting.
-+
-     Either the initial CPU count, or at least one of the topology parameters
-     must be specified. The specified parameters must be greater than zero,
-     explicit configuration like "cpus=0" is not allowed. Values for any
-@@ -354,6 +380,20 @@ SRST
- 
-         -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32
- 
-+    The following sub-option defines a CPU topology hierarchy (2 sockets
-+    totally on the machine, 2 dies per socket, 2 modules per die, 2 cores per
-+    module, 2 threads per core) with 3-level cache topology hierarchy (L1
-+    D-cache per core, L1 I-cache per core, L2 cache per core and L3 cache per
-+    die) for PC machines which support sockets/dies/modules/cores/threads.
-+    Some members of the CPU topology option can be omitted but their values
-+    will be automatically computed. Some members of the cache topology
-+    option can also be omitted and target CPU will use the default topology.:
-+
-+    ::
-+
-+        -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
-+             l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
-+
-     The following sub-option defines a CPU topology hierarchy (2 sockets
-     totally on the machine, 2 clusters per socket, 2 cores per cluster,
-     2 threads per core) for ARM virt machines which support sockets/clusters
--- 
-2.34.1
+To the doc comments.
+
+The doc comments are the source code for the "QEMU QMP Reference
+Manual".  That manual should fully explain what the QMP commands do.
+
+Information on how to best use the commands, or an introduction to
+concepts behind the commands can also be useful, but is often a bad fit
+for a *reference* manual.  We can put it elsewhere then.
+
+Makes sense?
 
 
