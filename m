@@ -2,110 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAA685CAFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB685CAEB
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 23:43:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcYpD-000574-Bi; Tue, 20 Feb 2024 17:42:55 -0500
+	id 1rcYpE-0005Ar-P3; Tue, 20 Feb 2024 17:42:56 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYp9-000542-R3
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:51 -0500
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpB-000548-Ib
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:53 -0500
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYp8-0006Pu-5T
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:51 -0500
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rcYpA-0006Q3-5y
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 17:42:53 -0500
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 0ABED1FB53;
- Tue, 20 Feb 2024 22:42:49 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 19EC522260;
+ Tue, 20 Feb 2024 22:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468971; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dPAHdaGFdW4w3s6ID5VjcrLWEBT0QNsGCvQOEWygsr8=;
- b=EohtdBrNfX22UTaKaOUXeSRcDvcyIGPfkzRhaJfCRKzInAjtHfvXHPNJURR0dlM0hYS6r7
- DGULqossVw4dPWEt/dwt3UV+wAHwc+W/8xBCT+kQoWyANHBDgWp61SsAszfsMv9QSJ31uE
- SBis7WDsPrn0ifIYF8hGkV9lbLrbDLQ=
+ bh=/G6ThC3N+nnfX7FJ2t0KT5ydaj0Xe0MiFJ+bC9uw3Bk=;
+ b=nM1y/GoKo65bryCqtQ78BdeRrjgDM7nCc2rTqHH/Dnns3M/pwC4njLRnkbf2Cqe51ZdlPA
+ KrXC4yF6Rl3fDCQKg5U8hyvB5gFvoIVSVEemyra4iDfTCDKJKv8HDgwOXCxZrpYyYxJ4PZ
+ LsCBHsDZJBXpos8KFxuIWEHCYEcCn70=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468969;
+ s=susede2_ed25519; t=1708468971;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dPAHdaGFdW4w3s6ID5VjcrLWEBT0QNsGCvQOEWygsr8=;
- b=uWSty5EDLufWHyzEMmpHNH4PFOXVaQlFg/N8xq4g30+oRC12PkarJujD8pCopaiQcLntaZ
- qq8MUIurfK460PDw==
+ bh=/G6ThC3N+nnfX7FJ2t0KT5ydaj0Xe0MiFJ+bC9uw3Bk=;
+ b=wTaoonG7gCrkU4Fsbog2NmlIf7YjBIKW709owkqiOCBlmq6nrbT1nB83leT274yB8DlPVg
+ JoppppUBaLGY6oAA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1708468969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1708468971; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dPAHdaGFdW4w3s6ID5VjcrLWEBT0QNsGCvQOEWygsr8=;
- b=EohtdBrNfX22UTaKaOUXeSRcDvcyIGPfkzRhaJfCRKzInAjtHfvXHPNJURR0dlM0hYS6r7
- DGULqossVw4dPWEt/dwt3UV+wAHwc+W/8xBCT+kQoWyANHBDgWp61SsAszfsMv9QSJ31uE
- SBis7WDsPrn0ifIYF8hGkV9lbLrbDLQ=
+ bh=/G6ThC3N+nnfX7FJ2t0KT5ydaj0Xe0MiFJ+bC9uw3Bk=;
+ b=nM1y/GoKo65bryCqtQ78BdeRrjgDM7nCc2rTqHH/Dnns3M/pwC4njLRnkbf2Cqe51ZdlPA
+ KrXC4yF6Rl3fDCQKg5U8hyvB5gFvoIVSVEemyra4iDfTCDKJKv8HDgwOXCxZrpYyYxJ4PZ
+ LsCBHsDZJBXpos8KFxuIWEHCYEcCn70=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1708468969;
+ s=susede2_ed25519; t=1708468971;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dPAHdaGFdW4w3s6ID5VjcrLWEBT0QNsGCvQOEWygsr8=;
- b=uWSty5EDLufWHyzEMmpHNH4PFOXVaQlFg/N8xq4g30+oRC12PkarJujD8pCopaiQcLntaZ
- qq8MUIurfK460PDw==
+ bh=/G6ThC3N+nnfX7FJ2t0KT5ydaj0Xe0MiFJ+bC9uw3Bk=;
+ b=wTaoonG7gCrkU4Fsbog2NmlIf7YjBIKW709owkqiOCBlmq6nrbT1nB83leT274yB8DlPVg
+ JoppppUBaLGY6oAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6800139D0;
- Tue, 20 Feb 2024 22:42:46 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7AF99139D0;
+ Tue, 20 Feb 2024 22:42:49 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id gK9CH+Yq1WUlKwAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:46 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EKOvEOkq1WUlKwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 20 Feb 2024 22:42:49 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 29/34] tests/qtest/migration: Add tests for file migration
- with direct-io
-Date: Tue, 20 Feb 2024 19:41:33 -0300
-Message-Id: <20240220224138.24759-30-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>
+Subject: [PATCH v4 30/34] monitor: Honor QMP request for fd removal immediately
+Date: Tue, 20 Feb 2024 19:41:34 -0300
+Message-Id: <20240220224138.24759-31-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240220224138.24759-1-farosas@suse.de>
 References: <20240220224138.24759-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: /
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EohtdBrN;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uWSty5ED
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="nM1y/GoK";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wTaoonG7
+X-Spamd-Result: default: False [4.39 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
+ RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- RCPT_COUNT_SEVEN(0.00)[8]; MID_CONTAINS_FROM(1.00)[];
+ MID_CONTAINS_FROM(1.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: 0ABED1FB53
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-0.30)[75.09%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: 4.39
+X-Rspamd-Queue-Id: 19EC522260
+X-Spamd-Bar: ++++
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -128,134 +126,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The tests are only allowed to run in systems that know and in
-filesystems which support O_DIRECT.
+We're currently only removing an fd from the fdset if the VM is
+running. This causes a QMP call to "remove-fd" to not actually remove
+the fd if the VM happens to be stopped.
+
+While the fd would eventually be removed when monitor_fdset_cleanup()
+is called again, the user request should be honored and the fd
+actually removed. Calling remove-fd + query-fdset shows a recently
+removed fd still present.
+
+The runstate_is_running() check was introduced by commit ebe52b592d
+("monitor: Prevent removing fd from set during init"), which by the
+shortlog indicates that they were trying to avoid removing an
+yet-unduplicated fd too early.
+
+I don't see why an fd explicitly removed with qmp_remove_fd() should
+be under runstate_is_running(). I'm assuming this was a mistake when
+adding the parenthesis around the expression.
+
+Move the runstate_is_running() check to apply only to the
+QLIST_EMPTY(dup_fds) side of the expression and ignore it when
+mon_fdset_fd->removed has been explicitly set.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-helpers.c | 39 ++++++++++++++++++++++++++++++
- tests/qtest/migration-helpers.h |  1 +
- tests/qtest/migration-test.c    | 42 +++++++++++++++++++++++++++++++++
- 3 files changed, 82 insertions(+)
+ monitor/fds.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index e451dbdbed..4ae43db1ca 100644
---- a/tests/qtest/migration-helpers.c
-+++ b/tests/qtest/migration-helpers.c
-@@ -323,3 +323,42 @@ void migration_test_add(const char *path, void (*fn)(void))
-     qtest_add_data_func_full(path, test, migration_test_wrapper,
-                              migration_test_destroy);
- }
-+
-+#ifdef O_DIRECT
-+/*
-+ * Probe for O_DIRECT support on the filesystem. Since this is used
-+ * for tests, be conservative, if anything fails, assume it's
-+ * unsupported.
-+ */
-+bool probe_o_direct_support(const char *tmpfs)
-+{
-+    g_autofree char *filename = g_strdup_printf("%s/probe-o-direct", tmpfs);
-+    int fd, flags = O_CREAT | O_RDWR | O_DIRECT;
-+    void *buf;
-+    ssize_t ret, len;
-+    uint64_t offset;
-+
-+    fd = open(filename, flags, 0660);
-+    if (fd < 0) {
-+        unlink(filename);
-+        return false;
-+    }
-+
-+    /*
-+     * Assuming 4k should be enough to satisfy O_DIRECT alignment
-+     * requirements. The migration code uses 1M to be conservative.
-+     */
-+    len = 0x100000;
-+    offset = 0x100000;
-+
-+    buf = g_malloc0(len);
-+    ret = pwrite(fd, buf, len, offset);
-+    unlink(filename);
-+
-+    if (ret < 0) {
-+        return false;
-+    }
-+
-+    return true;
-+}
-+#endif
-diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-index 3bf7ded1b9..d4d641899a 100644
---- a/tests/qtest/migration-helpers.h
-+++ b/tests/qtest/migration-helpers.h
-@@ -52,5 +52,6 @@ char *find_common_machine_version(const char *mtype, const char *var1,
-                                   const char *var2);
- char *resolve_machine_version(const char *alias, const char *var1,
-                               const char *var2);
-+bool probe_o_direct_support(const char *tmpfs);
- void migration_test_add(const char *path, void (*fn)(void));
- #endif /* MIGRATION_HELPERS_H */
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index cb9f16f78e..0931ba18df 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2287,6 +2287,43 @@ static void test_multifd_file_fixed_ram(void)
-     test_file_common(&args, true);
- }
+diff --git a/monitor/fds.c b/monitor/fds.c
+index d86c2c674c..4ec3b7eea9 100644
+--- a/monitor/fds.c
++++ b/monitor/fds.c
+@@ -173,9 +173,9 @@ static void monitor_fdset_cleanup(MonFdset *mon_fdset)
+     MonFdsetFd *mon_fdset_fd_next;
  
-+#ifdef O_DIRECT
-+static void *migrate_fixed_ram_dio_start(QTestState *from,
-+                                                 QTestState *to)
-+{
-+    migrate_fixed_ram_start(from, to);
-+    migrate_set_parameter_bool(from, "direct-io", true);
-+    migrate_set_parameter_bool(to, "direct-io", true);
-+
-+    return NULL;
-+}
-+
-+static void *migrate_multifd_fixed_ram_dio_start(QTestState *from,
-+                                                 QTestState *to)
-+{
-+    migrate_multifd_fixed_ram_start(from, to);
-+    return migrate_fixed_ram_dio_start(from, to);
-+}
-+
-+static void test_multifd_file_fixed_ram_dio(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-+                                           FILE_TEST_FILENAME);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_fixed_ram_dio_start,
-+    };
-+
-+    if (!probe_o_direct_support(tmpfs)) {
-+        g_test_skip("Filesystem does not support O_DIRECT");
-+        return;
-+    }
-+
-+    test_file_common(&args, true);
-+}
-+
-+#endif /* O_DIRECT */
- 
- static void test_precopy_tcp_plain(void)
- {
-@@ -3634,6 +3671,11 @@ int main(int argc, char **argv)
-                        test_multifd_fd_fixed_ram);
- #endif
- 
-+#ifdef O_DIRECT
-+    migration_test_add("/migration/multifd/file/fixed-ram/dio",
-+                       test_multifd_file_fixed_ram_dio);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
+     QLIST_FOREACH_SAFE(mon_fdset_fd, &mon_fdset->fds, next, mon_fdset_fd_next) {
+-        if ((mon_fdset_fd->removed ||
+-                (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount == 0)) &&
+-                runstate_is_running()) {
++        if (mon_fdset_fd->removed ||
++            (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount == 0 &&
++             runstate_is_running())) {
+             close(mon_fdset_fd->fd);
+             g_free(mon_fdset_fd->opaque);
+             QLIST_REMOVE(mon_fdset_fd, next);
 -- 
 2.35.3
 
