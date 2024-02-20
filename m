@@ -2,66 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E929885BC6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 553D585BC9A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 13:52:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcPRR-0003BR-Oa; Tue, 20 Feb 2024 07:41:45 -0500
+	id 1rcPax-0008PC-QC; Tue, 20 Feb 2024 07:51:36 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1rcPRO-0003AC-RQ
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:41:42 -0500
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1rcPRH-0000DT-Dc
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:41:42 -0500
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxdfH5ndRlRD8PAA--.40156S3;
- Tue, 20 Feb 2024 20:41:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxPs_3ndRl5MM8AA--.25558S7; 
- Tue, 20 Feb 2024 20:41:28 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH 5/5] tests: Add migration test for loongarch64
-Date: Tue, 20 Feb 2024 20:41:26 +0800
-Message-Id: <20240220124126.1164081-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240220124126.1164081-1-maobibo@loongson.cn>
-References: <20240220124126.1164081-1-maobibo@loongson.cn>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rcPaj-0008Ou-GA
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:51:22 -0500
+Received: from mail-dm6nam10on2045.outbound.protection.outlook.com
+ ([40.107.93.45] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rcPad-00028F-Pm
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 07:51:20 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lHiRNPeaHLkZKrUjcgX4lYw25usMtDEbhZ48g+icfplVBXFEYmL3V/v0yb9nGiKifvBBNR269xli0Qo/xF5rMhFqzmonM4zgjcGXXSDvD3wkAa47eqDRjXckOgZNNxGD8CjdnyJFrgyghEGg91P+WcyxAhHNnAI5QHfdF9d04kj80Zr4UghxahAKzMMjfisOxNS3uWBTeTTT6jD//m/wIcQFF1P+lBlPDEQQE30KmP/WbwenA+YvCRZzcOrD137hlj5/avSWy032dykQMKqD6J82IULBN/LaDpfLc0bmGsS1IpBNzvspEBhtD6QODX3mu22BqOrYlRYgkgqI7Rf+mQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jcEjjYNRUa75wjgeU5uL/jTJjDV9QQHgm/b6dvZE3IE=;
+ b=HIDDkjk62GujmavNIfaxoIsRxVqvGN9dEuTSkTPuiiPvucixZ/CNc3js/DlWMYhT4KsxZ0IrukdNbWXwtjggjEsGAz/T04EEwGJvLWHaRJY3ZReRp49sz7ggSx36g0MugdC8FbLOM0XQv4MkJwV8lpbHkL34jJlQqquQNdpHwTLX2/jwP4Ihiemz8af5v1VKzunlSHYHEjaG0xbOBoZS72fjlAo9Qj35oeKydTT1dNrDy9MtE8fd3GWw/56Rk8zkdz7bMYE2uxr2XIUBOtc6duKiLrM0Nmsjru2Su//QQDoh9C17RAExIOfikkWH7fKlG9FYYlBcex7h7jRjklKiZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jcEjjYNRUa75wjgeU5uL/jTJjDV9QQHgm/b6dvZE3IE=;
+ b=eTSp+s3SYGaZT2SVU0C3MlgTU0i1iVqa1OIA/sDe3Uh2ZxMNgJJcb5Tnq5jXmwa8w8DpvhXqoyt9T6oL7VKQK4NzYa7xq5v8eA76liNk+KfJUQlmz3/naJoXJKjgJ58zfNgM0Ebq8Y7PzCHZ3g12/2TEAaxH4eWxRS/OWVRoXY+bzZsIhmWHWyVtnEVKAHRHSkDgiyVsQTABMPGieNtZzEfk5tK8HEgfvlLyiIwEcwvgH2BtibcN4SamL/1v9oldslb47g53uPkyafGoS/n+dGu5/P/o8GSUGAihk9JMGXgME4vlSOPbQ8V8vMbCs/rnKzibhrUuBriACbzvHpVKhg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB5544.namprd12.prod.outlook.com (2603:10b6:a03:1d9::22)
+ by BN9PR12MB5116.namprd12.prod.outlook.com (2603:10b6:408:119::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.20; Tue, 20 Feb
+ 2024 12:46:09 +0000
+Received: from BY5PR12MB5544.namprd12.prod.outlook.com
+ ([fe80::2bc1:5563:c496:8076]) by BY5PR12MB5544.namprd12.prod.outlook.com
+ ([fe80::2bc1:5563:c496:8076%4]) with mapi id 15.20.7316.018; Tue, 20 Feb 2024
+ 12:46:09 +0000
+Message-ID: <e9a7bc7b-bc19-4a3a-92f2-7db9ee697baf@nvidia.com>
+Date: Tue, 20 Feb 2024 14:46:00 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFCv2 3/8] vfio/iommufd: Probe and request hwpt dirty
+ tracking capability
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Yi Liu <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20240212135643.5858-1-joao.m.martins@oracle.com>
+ <20240212135643.5858-4-joao.m.martins@oracle.com>
+ <341dc4a0-cf9c-4b4f-a520-b47f24ea8e12@nvidia.com>
+ <95fe7e5c-cbe8-4c8a-b503-8b32df321941@oracle.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <95fe7e5c-cbe8-4c8a-b503-8b32df321941@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxPs_3ndRl5MM8AA--.25558S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar1ftFW8ZF13uF1DKFyfAFc_yoWxAFyDpw
- 18Cw1Ikan7GF17t3WfWryj9F1fAw1xCr1aga97Jr40yrZYyFy8Aw1Ygry2qFn3X3yjgF4S
- vwn5tr17K3WDAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUk2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
- 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
- Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
- 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0x
- vE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
- 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6x
- kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2F4iUUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+X-ClientProxiedBy: FR4P281CA0329.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:eb::12) To BY5PR12MB5544.namprd12.prod.outlook.com
+ (2603:10b6:a03:1d9::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB5544:EE_|BN9PR12MB5116:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17dab550-38cc-4cf1-cef9-08dc3211e9b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: R+3VD35wBxBLG0TRbtKJeBXMtxZ8GawpQP2dgijDwitzlj26C/vzUcFicqeAA5nITKGy1n2x5qq0L8FH6/fT9XGbJmE1FW57ZMua60Cl3KfudaI6nHb07K0Ybq3KvwBleCJpn8oT7Reh7SS//u4GZfYX8JTh5FM6of95OZXAd9twt3iqttnl9MN3b4CXickZg0vdKNmNYHpXhMtsJK+IZtyr2WOr2pDGHVccq5wHkJ0+qt76ol4WAnMTuOb/mXYpBOmjr9r51ISwSrDmf/pp7BdJWtaXJrt3gt6/ZKhuukPXmim+YWe1dpYEzk0j/xZNizny4BX3evVtlGUs8bQCkQaIg7SSyCr5CFDdEGwtQLEudzWOmkNO6gDOgiG5cPwrPhHYqMQIhL+dqSBoa+SJ3Z2Q3kApuIk4Ne9vGaWVaHn3fN/Swdn44ydIGFvwEXFM0s9YG1Wym0dcmCuV3uiDnCry7R1hQdKKSH+QK7smXTX+HHEY66rmdNbdUlDdtdRRC3++T2BS2QJaAh0/BMFn1Hg7GkVeaxBGSD/oN7eAG78PWDxFNbyKboeZtbQf7miW
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR12MB5544.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(230273577357003); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WllXOGkzNmQyWmpmYk45dFBmdkh1ZnQybEJOSmYwdkRSdThGb2JPYzVwdHBX?=
+ =?utf-8?B?eTNkV3JXeVFQeTNRbDNNMG52Qk5mWi9KUEZpek5PR0RueU0vSnR5YnN5N0V3?=
+ =?utf-8?B?VVh3bUhzVDVuYkhxOWliYlB5by9FMHFic1orZVEyRS9RMXJDeWxZeXZiTzJM?=
+ =?utf-8?B?UFVIOEdnQ1ZSeGJkSGlJWklmWnJmNTVseE9aSXA3clRBSzYrWWhMOWlsQWZo?=
+ =?utf-8?B?RWg4Q3cwbzJKSGJzZlBadWdiWnhycXdaUzZHTEJJN0dOK0MvMnhSSzViaktV?=
+ =?utf-8?B?VW83SlBUellJVmlGRlViY3Boeis0dUplMzk0OHVrY2hjNUpIeEtVV2J6WTg3?=
+ =?utf-8?B?dFBvUG82OHp1SDRJdE0wdTYzTUdsR0xva0FDNlpDWmo3TkFKc1BLQ1I1N1A5?=
+ =?utf-8?B?SkZwRHdOMlc1TlF2MTQybUQrdXJuZlhTQldBOGJkdlFJVDIxUVppdHVvZ3ht?=
+ =?utf-8?B?Z2lYcHppUW5ZaEd2eHZBUUt5WjJmaUhzcUxobzd5Sm5uRCs3d1h3clA4VkRr?=
+ =?utf-8?B?ZlV3TjlsL3o5SG5JTEVLOFkra0ZmV0ZMZXFJbHNySzFMcUYybTBVaW9obGxR?=
+ =?utf-8?B?SXRRSHVXQXM1RUxqc2xjaWpSaUNaRTRCL2wwL0VkMGRyVmdQaTVCdEhXWjhH?=
+ =?utf-8?B?YXZ4eHhyeW9NMG9LazVzUWFGTEt3alBhbTZKZWE5ampYdnF3MUxmTGJFQTFH?=
+ =?utf-8?B?SVVBREJxdEQzNlZNTmJSZmlXQkJ3cWJJNmQ1ZFQxaE5JSHNlcHZFSjBhTUcz?=
+ =?utf-8?B?KzdINzdYNVZnTnk3akZ5ckxaekFTdloxVmhpZXE5OExTNDZPZGFpTGZPT20v?=
+ =?utf-8?B?QTArYmM1NXVQOEdiYVFTUHh0dEJ5a1c4T2cyOXRYOCtGUEtla1I2Y1o4RHVk?=
+ =?utf-8?B?ZkNHaUVUSGw5LzhLODNZSklzUFBFTThRM1ZtZGY1VTdHdkoxK2dxM2c3NWFN?=
+ =?utf-8?B?VHU5YXppaTZydWJTcVk3VGdQczhPK0hTRXlTSG82VkpnTmJKQlJwbG5iNHFV?=
+ =?utf-8?B?U3pGaG44Ym5HeHJlQlYyeWZlMUd5SWZ2Q2FFWDZuVFpLVk0rcjdMUmVNcGIz?=
+ =?utf-8?B?WWtRalpac0JtVVlSak5jaXVFbFRMNnNDVnI0TnJlTW5hQTFNZ3lJTkNqRDcz?=
+ =?utf-8?B?cFUrNGd2NkQ3Tlp4UlhySFUvUkgvb3dSci9HWDF5OFFpYlhwbDA2YkxwYjB6?=
+ =?utf-8?B?VXBaMEtBNS9DNnd5Tkd6OTQ0S080cEZLRGc4dS9jK3dHUnp1T2U5SzBtaG84?=
+ =?utf-8?B?L01pLzNwT1ZOdzdsZzhiT1NvNkkvaHZVYXBKemtvb2laVnBkUlhqQ2lDdGxF?=
+ =?utf-8?B?OEZvbTRwalp1d21lSlk1dWJpNnJ1ang5QTVGZThOWXhwQ0ZNRlZYY2dyd2Nl?=
+ =?utf-8?B?Wlk0dndHTk9yYnJWRzFkRk1Cc2VOb1RJVFNuQUNTWDh1d01sTXRiTDhNN1lF?=
+ =?utf-8?B?eERTZGVkSE83RkxRNnUwN24xSVg0L0xjUE5rU1diU3RJZExhQVpxS2d0bERE?=
+ =?utf-8?B?TDJNYWtrdnFRWkh0UjRqNHpuUkJHeXBtTDJzNk5uSFZzR1QvaFJ2enNNSTV3?=
+ =?utf-8?B?L3lrdDRGTC9UZ25LaU0xWGxmbk50K3dDRUE2ZUpBblB6MWF4Y0hvY1RhSEs1?=
+ =?utf-8?B?c0ZCMWU1dGJ3NGpTMTlvRWpQS0FURStHbkwva2M1MlQvUXV6WlhJdytnd3FS?=
+ =?utf-8?B?eUd2TzVFNjFUdjNRc1ZFRHdBNmhXSjBLWHg0TEtYWlk4NG1iem90RDdqUzlL?=
+ =?utf-8?B?VWQ2Q2d0YUlWcStkeFhEaW1PRzM0SkxNTW9rZHB5b3BaL2N1MDFyTWRscWR2?=
+ =?utf-8?B?WjB1eWkxWDlxZ1F2OGJkSk5vdmNHNFNIamMvbHQwelJWZ1dJMmVpT1BKTnRh?=
+ =?utf-8?B?c0luWDZURk80RWFyM2dCa2VSb0tBQ01KZ2swdmwvQnRvUkF1THBVSko2bDBB?=
+ =?utf-8?B?bHVEbi9MZDVHaXpDRXdEeC90dWc4Q3V3ekI5QUREQmw1R2Fkd2szR211bXRX?=
+ =?utf-8?B?cWlDNCtVb3d3SDM3bkJ6ZWFEM0tKbHBsMUdBL1JkanV6WXJCZ242ZmRsREVL?=
+ =?utf-8?B?bGpSbzdFVFRsZm9RQ2dDZEZRQ2xFa2szM0JPa0JZWEZHSWZCQUd1T0FrL3lj?=
+ =?utf-8?Q?8ZQBA758OFf4jtzVZvLfY9EL/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17dab550-38cc-4cf1-cef9-08dc3211e9b5
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB5544.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 12:46:09.7594 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: go9alVI56G1A/swMBW0/jAuLLKQ32IhghGL3T0DaG+oMiYYo9pPb5q9FGGb09fXmkOWFyKLHaCfhJs/AnDxJLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5116
+Received-SPF: softfail client-ip=40.107.93.45; envelope-from=avihaih@nvidia.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.05,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FORGED_SPF_HELO=1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,199 +153,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds migration test support for loongarch64. The test code
-comes from aarch64 mostly, only that it it booted as bios in qemu since
-kernel requires elf format and bios uses binary format.
 
-In addition to providing the binary, this patch also includes the source
-code and the build script in tests/migration/loongarch64. So users can
-change the source and/or re-compile the binary as they wish.
+On 20/02/2024 12:51, Joao Martins wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> On 19/02/2024 09:03, Avihai Horon wrote:
+>> Hi Joao,
+>>
+>> On 12/02/2024 15:56, Joao Martins wrote:
+>>> External email: Use caution opening links or attachments
+>>>
+>>>
+>>> Probe hardware dirty tracking support by querying device hw capabilities
+>>> via IOMMUFD_GET_HW_INFO.
+>>>
+>>> In preparation to using the dirty tracking UAPI, request dirty tracking in
+>>> the HWPT flags when the device doesn't support dirty page tracking or has
+>>> it disabled; or when support when the VF backing IOMMU supports dirty
+>>> tracking. The latter is in the possibility of a device being attached
+>>> that doesn't have a dirty tracker.
+>>>
+>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+>>> ---
+>>>    hw/vfio/common.c              | 18 ++++++++++++++++++
+>>>    hw/vfio/iommufd.c             | 25 ++++++++++++++++++++++++-
+>>>    include/hw/vfio/vfio-common.h |  2 ++
+>>>    3 files changed, 44 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>>> index f7f85160be88..d8fc7077f839 100644
+>>> --- a/hw/vfio/common.c
+>>> +++ b/hw/vfio/common.c
+>>> @@ -216,6 +216,24 @@ bool vfio_devices_all_device_dirty_tracking(const
+>>> VFIOContainerBase *bcontainer)
+>>>        return true;
+>>>    }
+>>>
+>>> +bool vfio_device_migration_supported(VFIODevice *vbasedev)
+>>> +{
+>>> +    if (!vbasedev->migration) {
+>>> +        return false;
+>>> +    }
+>>> +
+>>> +    return vbasedev->migration->mig_flags & VFIO_MIGRATION_STOP_COPY;
+>> I think this is redundant, as (vbasedev->migration != NULL) implies
+>> (vbasedev->migration->mig_flags & VFIO_MIGRATION_STOP_COPY) == true.
+>>
+> The check was there to prevent a null-deref in case the device didn't support
+> migration.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- tests/migration/Makefile                 |  2 +-
- tests/migration/loongarch64/Makefile     | 18 ++++++++++
- tests/migration/loongarch64/a-b-kernel.S | 46 ++++++++++++++++++++++++
- tests/migration/loongarch64/a-b-kernel.h | 13 +++++++
- tests/migration/migration-test.h         |  3 ++
- tests/qtest/meson.build                  |  4 +++
- tests/qtest/migration-test.c             | 10 ++++++
- 7 files changed, 95 insertions(+), 1 deletion(-)
- create mode 100644 tests/migration/loongarch64/Makefile
- create mode 100644 tests/migration/loongarch64/a-b-kernel.S
- create mode 100644 tests/migration/loongarch64/a-b-kernel.h
+I meant that "vbasedev->migration->mig_flags & VFIO_MIGRATION_STOP_COPY" 
+check is redundant because if vbasedev->migration != NULL then 
+VFIO_MIGRATION_STOP_COPY is supported (it's already checked in 
+vfio_migration_init()).
 
-diff --git a/tests/migration/Makefile b/tests/migration/Makefile
-index 13e99b1692..cfebfe23f8 100644
---- a/tests/migration/Makefile
-+++ b/tests/migration/Makefile
-@@ -5,7 +5,7 @@
- # See the COPYING file in the top-level directory.
- #
- 
--TARGET_LIST = i386 aarch64 s390x
-+TARGET_LIST = i386 aarch64 s390x loongarch64
- 
- SRC_PATH = ../..
- 
-diff --git a/tests/migration/loongarch64/Makefile b/tests/migration/loongarch64/Makefile
-new file mode 100644
-index 0000000000..5d8719205f
---- /dev/null
-+++ b/tests/migration/loongarch64/Makefile
-@@ -0,0 +1,18 @@
-+# To specify cross compiler prefix, use CROSS_PREFIX=
-+#   $ make CROSS_PREFIX=loongarch64-linux-gnu-
-+
-+.PHONY: all clean
-+all: a-b-kernel.h
-+
-+a-b-kernel.h: loongarch64.kernel
-+	echo "$$__note" > $@
-+	xxd -i $< | sed -e 's/.*int.*//' >> $@
-+
-+loongarch64.kernel: loongarch64.elf
-+	$(CROSS_PREFIX)objcopy -j .text -O binary $< $@
-+
-+loongarch64.elf: a-b-kernel.S
-+	$(CROSS_PREFIX)gcc -o $@ -nostdlib -Wl,--build-id=none $<
-+
-+clean:
-+	$(RM) *.kernel *.elf
-diff --git a/tests/migration/loongarch64/a-b-kernel.S b/tests/migration/loongarch64/a-b-kernel.S
-new file mode 100644
-index 0000000000..078f91b306
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.S
-@@ -0,0 +1,46 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2024 Loongson Technology Corporation Limited
-+ */
-+#include "../migration-test.h"
-+
-+#define LOONGARCH_CSR_CRMD          0
-+#define LOONGARCH_VIRT_UART         0x1FE001E0
-+.section .text
-+
-+        .globl  _start
-+_start:
-+        /* output char 'A' to UART16550 */
-+        li.d    $t0, LOONGARCH_VIRT_UART
-+        li.w    $t1, 'A'
-+        st.b    $t1, $t0, 0
-+
-+        /* traverse test memory region */
-+	li.d    $t0, LOONGARCH_TEST_MEM_START
-+        li.d    $t1, LOONGARCH_TEST_MEM_END
-+        li.d    $t2, TEST_MEM_PAGE_SIZE
-+
-+clean:
-+        st.b    $zero, $t0, 0
-+        add.d   $t0,   $t0, $t2
-+        bne     $t0,   $t1, clean
-+
-+mainloop:
-+        li.d    $t0, LOONGARCH_TEST_MEM_START
-+        li.d    $t1, LOONGARCH_TEST_MEM_END
-+        li.d    $t2, TEST_MEM_PAGE_SIZE
-+
-+        li.d    $t4, LOONGARCH_VIRT_UART
-+        li.w    $t5, 'B'
-+
-+innerloop:
-+        ld.bu   $t3, $t0, 0
-+        addi.w  $t3, $t3, 1
-+        ext.w.b $t3, $t3
-+        st.b    $t3, $t0, 0
-+        add.d   $t0, $t0, $t2
-+        bne     $t0, $t1, innerloop
-+
-+        st.b    $t5, $t4, 0
-+        b       mainloop
-+        nop
-diff --git a/tests/migration/loongarch64/a-b-kernel.h b/tests/migration/loongarch64/a-b-kernel.h
-new file mode 100644
-index 0000000000..6019450229
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.h
-@@ -0,0 +1,13 @@
-+
-+unsigned char loongarch64_kernel[] = {
-+  0x0c, 0xc0, 0x3f, 0x14, 0x8c, 0x81, 0x87, 0x03, 0x0d, 0x04, 0x81, 0x03,
-+  0x8d, 0x01, 0x00, 0x29, 0x0c, 0x00, 0x01, 0x14, 0x0d, 0x80, 0x0c, 0x14,
-+  0x2e, 0x00, 0x00, 0x14, 0x80, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00,
-+  0x8d, 0xf9, 0xff, 0x5f, 0x0c, 0x00, 0x01, 0x14, 0x0d, 0x80, 0x0c, 0x14,
-+  0x2e, 0x00, 0x00, 0x14, 0x10, 0xc0, 0x3f, 0x14, 0x10, 0x82, 0x87, 0x03,
-+  0x11, 0x08, 0x81, 0x03, 0x8f, 0x01, 0x00, 0x2a, 0xef, 0x05, 0x80, 0x02,
-+  0xef, 0x5d, 0x00, 0x00, 0x8f, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00,
-+  0x8d, 0xed, 0xff, 0x5f, 0x11, 0x02, 0x00, 0x29, 0xff, 0xcf, 0xff, 0x53,
-+  0x00, 0x00, 0x40, 0x03
-+};
-+
-diff --git a/tests/migration/migration-test.h b/tests/migration/migration-test.h
-index 68512c0b1b..b6e9914f9c 100644
---- a/tests/migration/migration-test.h
-+++ b/tests/migration/migration-test.h
-@@ -32,4 +32,7 @@
-  */
- #define ARM_TEST_MAX_KERNEL_SIZE (512 * 1024)
- 
-+/* LoongArch64 */
-+#define LOONGARCH_TEST_MEM_START (8 * 1024 * 1024)
-+#define LOONGARCH_TEST_MEM_END   (100 * 1024 * 1024)
- #endif /* MIGRATION_TEST_H */
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 2b89e8634b..b634587b0a 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -249,6 +249,10 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
- 
-+qtests_loongarch64 = \
-+  qtests_filter + \
-+  ['migration-test']
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 8a5bb1752e..8a25edfa77 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -132,6 +132,7 @@ static char *bootpath;
- #include "tests/migration/i386/a-b-bootblock.h"
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
-+#include "tests/migration/loongarch64/a-b-kernel.h"
- 
- static void bootfile_create(char *dir, bool suspend_me)
- {
-@@ -158,6 +159,9 @@ static void bootfile_create(char *dir, bool suspend_me)
-         content = aarch64_kernel;
-         len = sizeof(aarch64_kernel);
-         g_assert(sizeof(aarch64_kernel) <= ARM_TEST_MAX_KERNEL_SIZE);
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        content = loongarch64_kernel;
-+        len = sizeof(loongarch64_kernel);
-     } else {
-         g_assert_not_reached();
-     }
-@@ -823,6 +827,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        memory_size = "256M";
-+        machine_alias = "virt";
-+        arch_opts = g_strdup_printf("-cpu max -bios %s", bootpath);
-+        start_address = LOONGARCH_TEST_MEM_START;
-+        end_address = LOONGARCH_TEST_MEM_END;
-     } else {
-         g_assert_not_reached();
-     }
--- 
-2.39.3
+But never mind, given what you wrote below.
 
+>
+>>> +}
+>>> +
+>>> +bool vfio_device_dirty_pages_supported(VFIODevice *vbasedev)
+>>> +{
+>>> +    if (vbasedev->pre_copy_dirty_page_tracking == ON_OFF_AUTO_OFF) {
+>>> +        return false;
+>>> +    }
+>>> +
+>>> +    return !vbasedev->dirty_pages_supported;
+>>> +}
+>>> +
+>>>    /*
+>>>     * Check if all VFIO devices are running and migration is active, which is
+>>>     * essentially equivalent to the migration being in pre-copy phase.
+>>> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+>>> index ca7ec45e725c..edacb6d72748 100644
+>>> --- a/hw/vfio/iommufd.c
+>>> +++ b/hw/vfio/iommufd.c
+>>> @@ -219,11 +219,26 @@ static int iommufd_cdev_detach_ioas_hwpt(VFIODevice
+>>> *vbasedev, Error **errp)
+>>>        return ret;
+>>>    }
+>>>
+>>> +static bool iommufd_dirty_pages_supported(IOMMUFDDevice *iommufd_dev,
+>>> +                                          Error **errp)
+>>> +{
+>>> +    uint64_t caps;
+>>> +    int r;
+>>> +
+>>> +    r = iommufd_device_get_hw_capabilities(iommufd_dev, &caps, errp);
+>>> +    if (r) {
+>>> +        return false;
+>>> +    }
+>>> +
+>>> +    return caps & IOMMU_HW_CAP_DIRTY_TRACKING;
+>> The false return value of this function is overloaded, it can indicate both
+>> error and lack of DPT support.
+>> Should we fail iommufd_cdev_autodomains_get() if iommufd_dirty_pages_supported()
+>> fails?
+> Definitely not.
+>
+>> Otherwise, errp argument of iommufd_dirty_pages_supported() is redundant and we
+>> can handle iommufd_device_get_hw_capabilities() error locally.
+>>
+> I'll handle locally.
+>
+>>> +}
+>>> +
+>>>    static int iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+>>>                                            VFIOIOMMUFDContainer *container,
+>>>                                            Error **errp)
+>>>    {
+>>>        int iommufd = vbasedev->iommufd_dev.iommufd->fd;
+>>> +    uint32_t flags = 0;
+>>>        VFIOIOASHwpt *hwpt;
+>>>        Error *err = NULL;
+>>>        int ret = -EINVAL;
+>>> @@ -245,9 +260,15 @@ static int iommufd_cdev_autodomains_get(VFIODevice
+>>> *vbasedev,
+>>>            }
+>>>        }
+>>>
+>>> +    if ((vfio_device_migration_supported(vbasedev) &&
+>>> +         !vfio_device_dirty_pages_supported(vbasedev)) ||
+>>> +        iommufd_dirty_pages_supported(&vbasedev->iommufd_dev, &err)) {
+>> I think it's too early to check vfio_device_migration_supported() and
+>> vfio_device_dirty_pages_supported() here, as vfio_migration_init() hasn't been
+>> called yet so vbasedev->migration and vbasedev->dirty_pages_supported are not
+>> initialized.
+> I should replace with its own vfio device probing but the next point invalidates
+> this
+>
+>> Why do we need to check this? Can't we simply request IOMMUFD DPT if it's
+>> supported?
+>>
+> There's no point in force requesting dpt in the domain if the device doesn't do
+> migration that was my thinking here; but otoh as past hotplug bug fixes have
+> shown it needs to proof against a new device getting add up that supports
+> migration while and the unsupported one be removed. So I guess we might not have
+> another option but to always ask for it if supported.
+>
+>> Thanks.
+>>
+>>> +        flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
+>>> +    }
+>>> +
+>>>        ret = iommufd_backend_alloc_hwpt(iommufd,
+>>>                                         vbasedev->iommufd_dev.devid,
+>>> -                                     container->ioas_id, 0, 0, 0,
+>>> +                                     container->ioas_id, flags, 0, 0,
+>>>                                         NULL, &hwpt_id);
+>>>        if (ret) {
+>>>            error_append_hint(&err,
+>>> @@ -271,6 +292,8 @@ static int iommufd_cdev_autodomains_get(VFIODevice *vbasedev,
+>>>        vbasedev->hwpt = hwpt;
+>>>        QLIST_INSERT_HEAD(&hwpt->device_list, vbasedev, hwpt_next);
+>>>        QLIST_INSERT_HEAD(&container->hwpt_list, hwpt, next);
+>>> +    container->bcontainer.dirty_pages_supported =
+>>> +                              (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING);
+>>>        return 0;
+>>>    }
+>>>
+>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+>>> index 7f7d823221e2..a3e691c126c6 100644
+>>> --- a/include/hw/vfio/vfio-common.h
+>>> +++ b/include/hw/vfio/vfio-common.h
+>>> @@ -271,6 +271,8 @@ bool
+>>>    vfio_devices_all_running_and_mig_active(const VFIOContainerBase *bcontainer);
+>>>    bool
+>>>    vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
+>>> +bool vfio_device_migration_supported(VFIODevice *vbasedev);
+>>> +bool vfio_device_dirty_pages_supported(VFIODevice *vbasedev);
+>>>    int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>>>                                        VFIOBitmap *vbmap, hwaddr iova,
+>>>                                        hwaddr size);
+>>> --
+>>> 2.39.3
+>>>
 
