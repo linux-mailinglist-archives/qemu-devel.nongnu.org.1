@@ -2,110 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCC385B710
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 861F585B6E1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 10:14:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcMG0-0001VV-5g; Tue, 20 Feb 2024 04:17:44 -0500
+	id 1rcMAN-0000f2-Dj; Tue, 20 Feb 2024 04:11:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1rcMFx-0001Uo-R3; Tue, 20 Feb 2024 04:17:41 -0500
-Received: from mail-bn7nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2009::601]
- helo=NAM10-BN7-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rcMAK-0000dg-KX; Tue, 20 Feb 2024 04:11:52 -0500
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sai.pavan.boddu@amd.com>)
- id 1rcMFv-0004M0-Qw; Tue, 20 Feb 2024 04:17:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Pc7UD9uJBfufNftCmwnZM84t2g1MTjnyQCBZjU9eqrkvR6dIKVVL43zaFjnBC+ucM/ehdhBBxyV6MwgoXp2n7p5M0buMCtf3cdBbBI4oh0lhjVu4ebV/3GcRtqQ6bfX5siOazzIDuVrnO5Q9rfV+o3PllE3iJsglYunjQZzlcO331uIVgbohw3yosZQkSBnGDeo2M4/EJbI57XXZe+s2ZXCdtN2tqnFllxl0pF3Bbv5JqpoipDSknNmg0zuv6mHAkzfjzFijsyk/v/QhgyCOknxaNYR5KNah4YDd16LhXDnU/2o1HarCFCEzeZ1xix29axGIWk6cRsS0QpFknnG9ZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2vJKcaJkKs4tEOhv8zStBTduiifpunVPf6JP9nL+yhs=;
- b=Y06lYu32aiQKK3n23/kUyta1SwJLAuXq0FaCXEMweCMTr1/PvSCQnuNVTuKChOrf4KFwWKLUHpIbQmD/ABhcOt9lL3tYLLyzHaBRXZWG2geOz8K2aQsNI+aKAR6CwaSOyNc3nGSaE3jTvuyELnKvcbLFdvYoWbUmV09cL/cUEr3m1nl37q2eujgw40yAyQKxUpEAHOc7kouYeV9hZrCAK2cFWw/CgfI8NLAuCKklCwu1ijKUk/R9RKMpblxyIPK8nJ2e0kcK1umjXuLA2iD2OGOnnsgD9A10CiOdJgcdTyI9anfw2TefXpQKCN9meCz4EE1XQyBNZTOdqacRlyX0yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2vJKcaJkKs4tEOhv8zStBTduiifpunVPf6JP9nL+yhs=;
- b=yOZOzpRSugRsQF+hSnu0SN714KzsdXNfj40p7xbF6HFxk4F2GN3hGV4ERMICudyu8cpZdl+FgnIp0yqtWMz0WeI9vV6QTCk/1QRdcmkJLPYd9PFpK9ettm7/fuSZeIls2Pg5DxA31Zhcq1WaQi8WmL1vyqhvM9YEOTfkJ34ckrw=
-Received: from DM6PR02CA0045.namprd02.prod.outlook.com (2603:10b6:5:177::22)
- by PH7PR12MB6956.namprd12.prod.outlook.com (2603:10b6:510:1b9::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Tue, 20 Feb
- 2024 09:17:35 +0000
-Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
- (2603:10b6:5:177:cafe::6) by DM6PR02CA0045.outlook.office365.com
- (2603:10b6:5:177::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39 via Frontend
- Transport; Tue, 20 Feb 2024 09:17:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.77) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 09:17:35 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 03:17:34 -0600
-Received: from xhdvaralaxm41-docker.xilinx.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35
- via Frontend Transport; Tue, 20 Feb 2024 03:17:31 -0600
-From: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>
-CC: Peter Maydell <peter.maydell@linaro.org>, Alistair Francis
- <alistair@alistair23.me>, "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Francisco Iglesias
- <frasse.iglesias@gmail.com>, <sai.pavan.boddu@amd.com>
-Subject: [PATCH v2 2/2] arm: xlnx-versal-virt: Add machine property ospi-flash
-Date: Tue, 20 Feb 2024 09:17:21 +0000
-Message-ID: <20240220091721.82954-3-sai.pavan.boddu@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240220091721.82954-1-sai.pavan.boddu@amd.com>
-References: <20240220091721.82954-1-sai.pavan.boddu@amd.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rcMAI-0003KK-2X; Tue, 20 Feb 2024 04:11:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1708420310; x=1739956310;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=brs8Wc8MtqC+jD4fj4w5YcCZt8grPE7rypv1O7XbwgM=;
+ b=GUR+g9nNMyEcu/XVQeJp29b0SyBiRuRqQXpHZ9BsMmmBjEtVT7wSSZja
+ O7nbUIylGAIOhL49sIGjhCkgiZ8C/lpwTf6XRojT8P7zopQx/A0H4tFrQ
+ GxXZcaMmPytXhPks9TQYXHUVAQKNwRwNxL4qORu/wYlFM5UuwISI2qmtJ
+ +fQ8tkRIaNiRGJsB+4cL5GQChJfzkDLZdYvQLMM/30Q1UexSD3s12uChF
+ QHOEJialtmFduUK0RUu3e5uHtdc1eJWhIWStQltFFNnuzX01gSAOrtnsW
+ 31+RdYoGt3o2AZ+6xf9MOT2QdZ23sj6P2j8lOMos36R1P5xRVoDPBnBH9 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2374953"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="2374953"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2024 01:11:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="5012799"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orviesa007.jf.intel.com with ESMTP; 20 Feb 2024 01:11:39 -0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [RFC 0/8] Introduce SMP Cache Topology
+Date: Tue, 20 Feb 2024 17:24:56 +0800
+Message-Id: <20240220092504.726064-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|PH7PR12MB6956:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73fc1f09-322b-4d0e-5146-08dc31f4c67b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +oSNFgeqUX6rYy9SQGlBceQXjCsM6hsBuPccVDxgZwzziyZEI2qupUCrwvktN4a9W6P9IrnQFWkYmsKy0XHnMKAq+OO024WNTmihWLSdYMfjTE/ADc9i6AsKlK2Fh0pTT6QNpFReS2JJARLNbSFUVsS1oppfdeUDIXiqGwLOIj6fbiw6gjWcCUlRO5iuQriTBtU+neTp6hUPNYp0YhCs99a5MhxdA5kDcnlA2J8k+BdLI7VidrYPx7hHJwUBKx4CL0J8D2eAn5Ioviitr8oxwE/LBqQRDztLsakx2QFk36ltjvzWPAs9hWy8BL6MG/HWiHE1oju3B9KGExZ4s37TNWnjlXH6ZM5/10NwT0cHhG1b1/bpwlGaM2y9jyvi70r1Wm8UyZjD+C/011D2+2h8Zcomnu3wLOCkq4Oud8+sntuNjCPOEHB115CG7Myw+MT5sy9GBTiI0JxOaYe8d2iAthkGDArZFptxrgDz6iRXxj0Xjf5ryroRHer38Rf93q4pt69D1aCfH7BA34/JoOG36RqX2xIq0miGQw1kiGnkNraCfzV4YdPVP9BErFyjZ+psTMLHvOfr/t05T8lM0Gxf2nInQuLkc8T6hSkbzDXjcEP1EWaVKQk3vXrcJG5gqsbZ3HUniaMG3iSIzYZiFVj81WIBsTtT+B7KTBvmpQZvNNU=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(36860700004)(46966006)(40470700004); DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 09:17:35.0582 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73fc1f09-322b-4d0e-5146-08dc31f4c67b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6956
-Received-SPF: softfail client-ip=2a01:111:f403:2009::601;
- envelope-from=sai.pavan.boddu@amd.com;
- helo=NAM10-BN7-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: none client-ip=192.198.163.17;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.072,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,112 +87,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This property allows users to change flash model on command line as
-below.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-   ex: "-M xlnx-versal-virt,ospi-flash=mt35xu02gbba"
+Hi list,
 
-Signed-off-by: Sai Pavan Boddu <sai.pavan.boddu@amd.com>
+This's our proposal for supporting (SMP) cache topology in -smp as
+the following example:
+
+-smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
+     l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
+
+With the new cache topology options ("l1d-cache", "l1i-cache",
+"l2-cache" and "l3-cache"), we could adjust the cache topology via -smp.
+
+This patch set is rebased on our i386 module series:
+https://lore.kernel.org/qemu-devel/20240131101350.109512-1-zhao1.liu@linux.intel.com/
+
+Since the ARM [1] and RISC-V [2] folks have similar needs for the cache
+topology, I also cc'd the ARM and RISC-V folks and lists.
+
+
+Welcome your feedback!
+
+
+Introduction
+============
+
+Background
+----------
+
+Intel client platforms (ADL/RPL/MTL) and E core server platforms (SRF)
+share the L2 cache domain among multiple E cores (in the same module).
+
+Thus we need a way to adjust the cache topology so that users could
+create the cache topology for Guest that is nearly identical to Host.
+
+This is necessary in cases where there are bound vCPUs, especially
+considering that Guest scheduling often takes into account the cache
+topology as well (e.g. Linux cluster aware scheduling, i.e. L2 cache
+scheduling).
+
+Previously, we introduced a x86 specific option to adjust the cache
+topology:
+
+-cpu x-l2-cache-topo=[core|module] [3]
+
+However, considering the needs of other arches, we re-implemented the
+generic cache topology (aslo in response to Michael's [4] and Daniel's
+comment [5]) in this series.
+
+
+Cache Topology Representation
+-----------------------------
+
+We consider to define the cache topology based on CPU topology level for
+two reasons:
+
+1. In practice, a cache will always be bound to the CPU container -
+   "CPU container" indicates to a set of CPUs that refer to a certain
+   level of CPU topology - where the cache is either private in that
+   CPU container or shared among multiple containers.
+
+2. The x86's cache-related CPUIDs encode cache topology based on APIC
+   ID's CPU topology layout. And the ACPI PPTT table that ARM/RISCV
+   relies on also requires CPU containers (CPU topology) to help
+   indicate the private shared hierarchy of the cache.
+
+Therefore, for SMP systems, it is natural to use the CPU topology
+hierarchy directly in QEMU to define the cache topology.
+
+And currently, separated L1 cache (L1 data cache and L1 instruction
+cache) with unified higher-level caches (e.g., unified L2 and L3
+caches), is the most common cache architectures.
+
+Thus, we define the topology for L1 D-cache, L1 I-cache, L2 cache and L3
+cache in MachineState as the basic cache topology support:
+
+typedef struct CacheTopology {
+    CPUTopoLevel l1d;
+    CPUTopoLevel l1i;
+    CPUTopoLevel l2;
+    CPUTopoLevel l3;
+} CacheTopology;
+
+Machines may also only support a subset of the cache topology
+to be configured in -smp by setting the SMP property of MachineClass:
+
+typedef struct {
+    ...
+    bool l1_separated_cache_supported;
+    bool l2_unified_cache_supported;
+    bool l3_unified_cache_supported;
+} SMPCompatProps;
+
+
+Cache Topology Configuration in -smp
+------------------------------------
+
+Further, we add new parameters to -smp:
+* l1d-cache=level
+* l1i-cache=level
+* l2-cache=level
+* l3-cache=level
+
+These cache topology parameters accept the strings of CPU topology
+levels (such as "drawer", "book", "socket", "die", "cluster", "module",
+"core" or "thread"). Exactly which topology level strings could be
+accepted as the parameter depends on the machine's support for the
+corresponding CPU topology level.
+
+Unsupported cache topology parameters will be omitted, and
+correspondingly, the target CPU's cache topology will use the its
+default cache topology setting.
+
+In this series, we add the cache topology support in -smp for x86 PC
+machine.
+
+The following example defines a 3-level cache topology hierarchy (L1
+D-cache per core, L1 I-cache per core, L2 cache per core and L3 cache per
+die) for PC machine.
+
+-smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
+     l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
+
+
+Reference
+---------
+
+[1]: [ARM] Jonathan's proposal to adjust cache topology:
+     https://lore.kernel.org/qemu-devel/20230808115713.2613-2-Jonathan.Cameron@huawei.com/
+[2]: [RISC-V] Discussion between JeeHeng and Jonathan about cache
+     topology:
+     https://lore.kernel.org/qemu-devel/20240131155336.000068d1@Huawei.com/
+[3]: Previous x86 specific cache topology option:
+     https://lore.kernel.org/qemu-devel/20230914072159.1177582-22-zhao1.liu@linux.intel.com/
+[4]: Michael's comment about generic cache topology support:
+     https://lore.kernel.org/qemu-devel/20231003085516-mutt-send-email-mst@kernel.org/
+[5]: Daniel's question about how x86 support L2 cache domain (cluster)
+     configuration:
+     https://lore.kernel.org/qemu-devel/ZcUG0Uc8KylEQhUW@redhat.com/
+
+Thanks and Best Regards,
+Zhao
+
 ---
- hw/arm/xlnx-versal-virt.c | 44 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+Zhao Liu (8):
+  hw/core: Rename CpuTopology to CPUTopology
+  hw/core: Move CPU topology enumeration into arch-agnostic file
+  hw/core: Define cache topology for machine
+  hw/core: Add cache topology options in -smp
+  i386/cpu: Support thread and module level cache topology
+  i386/cpu: Update cache topology with machine's configuration
+  i386/pc: Support cache topology in -smp for PC machine
+  qemu-options: Add the cache topology description of -smp
 
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index 94942c55df..bfaed1aebf 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -49,6 +49,7 @@ struct VersalVirt {
-     struct {
-         bool secure;
-     } cfg;
-+    char *ospi_model;
- };
- 
- static void fdt_create(VersalVirt *s)
-@@ -638,6 +639,22 @@ static void sd_plugin_card(SDHCIState *sd, DriveInfo *di)
-                            &error_fatal);
- }
- 
-+static char *versal_get_ospi_model(Object *obj, Error **errp)
-+{
-+    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
-+
-+    return g_strdup(s->ospi_model);
-+}
-+
-+static void versal_set_ospi_model(Object *obj, const char *value, Error **errp)
-+{
-+    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
-+
-+    g_free(s->ospi_model);
-+    s->ospi_model = g_strdup(value);
-+}
-+
-+
- static void versal_virt_init(MachineState *machine)
- {
-     VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(machine);
-@@ -732,12 +749,25 @@ static void versal_virt_init(MachineState *machine)
-     for (i = 0; i < XLNX_VERSAL_NUM_OSPI_FLASH; i++) {
-         BusState *spi_bus;
-         DeviceState *flash_dev;
-+        ObjectClass *flash_klass;
-         qemu_irq cs_line;
-         DriveInfo *dinfo = drive_get(IF_MTD, 0, i);
- 
-         spi_bus = qdev_get_child_bus(DEVICE(&s->soc.pmc.iou.ospi), "spi0");
- 
--        flash_dev = qdev_new("mt35xu01g");
-+        if (s->ospi_model) {
-+            flash_klass = object_class_by_name(s->ospi_model);
-+            if (!flash_klass ||
-+                object_class_is_abstract(flash_klass) ||
-+                !object_class_dynamic_cast(flash_klass, "m25p80-generic")) {
-+                error_setg(&error_fatal, "'%s' is either abstract or"
-+                       " not a subtype of m25p80", s->ospi_model);
-+                return;
-+            }
-+        }
-+
-+        flash_dev = qdev_new(s->ospi_model ? s->ospi_model : "mt35xu01g");
-+
-         if (dinfo) {
-             qdev_prop_set_drive_err(flash_dev, "drive",
-                                     blk_by_legacy_dinfo(dinfo), &error_fatal);
-@@ -770,6 +800,13 @@ static void versal_virt_machine_instance_init(Object *obj)
-                              0);
- }
- 
-+static void versal_virt_machine_finalize(Object *obj)
-+{
-+    VersalVirt *s = XLNX_VERSAL_VIRT_MACHINE(obj);
-+
-+    g_free(s->ospi_model);
-+}
-+
- static void versal_virt_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-@@ -781,6 +818,10 @@ static void versal_virt_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_cpus = XLNX_VERSAL_NR_ACPUS + XLNX_VERSAL_NR_RCPUS;
-     mc->no_cdrom = true;
-     mc->default_ram_id = "ddr";
-+    object_class_property_add_str(oc, "ospi-flash", versal_get_ospi_model,
-+                                   versal_set_ospi_model);
-+    object_class_property_set_description(oc, "ospi-flash",
-+                                          "Change the OSPI Flash model");
- }
- 
- static const TypeInfo versal_virt_machine_init_typeinfo = {
-@@ -789,6 +830,7 @@ static const TypeInfo versal_virt_machine_init_typeinfo = {
-     .class_init = versal_virt_machine_class_init,
-     .instance_init = versal_virt_machine_instance_init,
-     .instance_size = sizeof(VersalVirt),
-+    .instance_finalize = versal_virt_machine_finalize,
- };
- 
- static void versal_virt_machine_init_register_types(void)
+ MAINTAINERS                     |   2 +
+ hw/core/cpu-topology.c          |  56 ++++++++++++++
+ hw/core/machine-smp.c           | 128 ++++++++++++++++++++++++++++++++
+ hw/core/machine.c               |   9 +++
+ hw/core/meson.build             |   1 +
+ hw/i386/pc.c                    |   3 +
+ hw/s390x/cpu-topology.c         |   6 +-
+ include/hw/boards.h             |  33 +++++++-
+ include/hw/core/cpu-topology.h  |  40 ++++++++++
+ include/hw/i386/topology.h      |  18 +----
+ include/hw/s390x/cpu-topology.h |   6 +-
+ qapi/machine.json               |  14 +++-
+ qemu-options.hx                 |  54 ++++++++++++--
+ system/vl.c                     |  15 ++++
+ target/i386/cpu.c               |  55 ++++++++++----
+ target/i386/cpu.h               |   2 +-
+ tests/unit/meson.build          |   3 +-
+ tests/unit/test-smp-parse.c     |  14 ++--
+ 18 files changed, 399 insertions(+), 60 deletions(-)
+ create mode 100644 hw/core/cpu-topology.c
+ create mode 100644 include/hw/core/cpu-topology.h
+
 -- 
-2.25.1
+2.34.1
 
 
