@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4145885B482
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC63185B485
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 Feb 2024 09:08:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rcLAI-00051S-FY; Tue, 20 Feb 2024 03:07:46 -0500
+	id 1rcLAR-00060f-A1; Tue, 20 Feb 2024 03:07:55 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLAD-0004zh-MB
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:41 -0500
+ id 1rcLAP-0005m7-33
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:53 -0500
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rcLAB-0000WL-O8
- for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:41 -0500
+ id 1rcLAN-0000ac-Fy
+ for qemu-devel@nongnu.org; Tue, 20 Feb 2024 03:07:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1708416459;
+ s=mimecast20190719; t=1708416470;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0gMIIZtbr1VC+ByGiOX54Iv2fvudEImt7S0oZ9/WbL4=;
- b=B6P2Yfh28LK8vEmLnqfBNyGee4N5x7fSGPNDz71LOF9eQLXjvLT5tsMorXwtAlXzFjF+it
- /pEgOEQnP6g1ucCtnrlFHAUhv83jKJ+sIegTDgCpfyiajSh8N9Dq804zLx4/LWEUWVRlPk
- ArSBmYEiR1895k0OHNgXXTDNR0grjN4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g73OzMwU0CCIScO+4S6Qdh+LHTOWNxgg7pWe0LAuiOs=;
+ b=f/ViD/yrYNJ60S0c0UH5NbtJX6HHtaU6xuzpccNhfTMlwPzpDenMwUD5EZ0kJu7Cd9CRCB
+ YFOI4QJlkP+aucqhsPnmm7kt7mWsGJiMH06edQExhYW5paMaeulS/hO0n+IZbtUDfq0jFa
+ P5WEoAbKSlF+iGO58KxBZa5oZYoHjWQ=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-8xLyHdwpMfiWH9f28zsStQ-1; Tue, 20 Feb 2024 03:07:37 -0500
-X-MC-Unique: 8xLyHdwpMfiWH9f28zsStQ-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-563e6dd8d64so2093926a12.2
- for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:07:37 -0800 (PST)
+ us-mta-653-xtKDLGmeM7OqnAzmlVx2sA-1; Tue, 20 Feb 2024 03:07:49 -0500
+X-MC-Unique: xtKDLGmeM7OqnAzmlVx2sA-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-564cb5b2bc5so183383a12.0
+ for <qemu-devel@nongnu.org>; Tue, 20 Feb 2024 00:07:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1708416455; x=1709021255;
+ d=1e100.net; s=20230601; t=1708416467; x=1709021267;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0gMIIZtbr1VC+ByGiOX54Iv2fvudEImt7S0oZ9/WbL4=;
- b=P4xry9HgW/L2/aPuOnwr7RIW06amLfOHhhIMeI78zfKxGf/hKyXxHwy1XIn2OnUXwK
- FCd8Y6HVap7+4+eyG1ImAfi3LHl+o+dsvR/1d5mXcfVA2TBE2SkE4AH/YK0bvQhFACeQ
- lMlNJTAwIba0CFyzzt8rGJK/bwuZbMHbANZo+COKe7jfSYW5isqHk3LDMb6V0aWOof/V
- 8N36XNOeNM5IXZNZLnpxZhTIgAvtY5LWaK98ZH8l5ozzF9dDJSsXBQVIoswr6bIZlQdr
- ec3upZIkB1SVLA9r0Rc/d+sg3S54FePr23+0WBlig1AuRGoHqgmmx0v1ezwc/ErexLSj
- 32vA==
-X-Gm-Message-State: AOJu0YycEhACbnn9sYdXQFjx0j3p/LWAIJncWvuiLn9ZG1qg9QFrIBQY
- 2ZarX4Q5pQ3Px/zSZ3XwVViXqiWYa5W6bI/xSWq8hiqyYy7y8LBUXLseVexoghevDAAJtRNajwB
- WNz5fMk+HeCB3yLtSyvuwr1DdkSKa+utjs99C6gP3Xdw/7H79zOdh7GhtsPJBMlNIbRs6Wqqeh4
- 6NrsijxOvxypamudAz6NWVdOJkB+NR5lVshSHm
-X-Received: by 2002:aa7:c646:0:b0:563:f889:24bd with SMTP id
- z6-20020aa7c646000000b00563f88924bdmr6426380edr.8.1708416455504; 
- Tue, 20 Feb 2024 00:07:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGIQ39Hd1LapZCqpukh9LegPgsMbU8l9vBFK84/XMbGLkIiD1/eCWLEmpMmPqq3z5XbYKn/nQ==
-X-Received: by 2002:aa7:c646:0:b0:563:f889:24bd with SMTP id
- z6-20020aa7c646000000b00563f88924bdmr6426369edr.8.1708416455168; 
- Tue, 20 Feb 2024 00:07:35 -0800 (PST)
+ bh=g73OzMwU0CCIScO+4S6Qdh+LHTOWNxgg7pWe0LAuiOs=;
+ b=uuX2Z1Ofc0XEz89Li/Zt9eA+DYdpR+dhOsRX/0AV1BRo4K5ubYqUSIS5OnRkwjP6av
+ h+dSeiPlKXzNMSV12nSYrUxbrbOF0idaj/OoMawqSbESqaLRNLsD2NKc014a6w2nf0be
+ GfDm97J6QfRo2ZlobNpG5pZJb7PJxfEvxGWLhWMFX7cO3keLQa7mDeFzdtDtCQGsBSg2
+ q1Qb/PMVbc2peqHD1GfFZnT2fBS3BoKtnhRktDHD/IRMeNUmAc+d2rhcIhHSzpFnZkCQ
+ 1ddzEoio7t70Gvz3jXbQVCb4VeYTNcIaz4L83yoxK360LKHjgwyJBmwzgfYrffvn4wcl
+ yWJA==
+X-Gm-Message-State: AOJu0Yw9B5JhZ7w8wxGVITNuUUxQ4w0kk5eWhLHtADNfgq5dNr0WhXlJ
+ 4Tyf0NqrchmeCjh6mdA1uP2hRfdLlHxgTOUbnZzinbOMh86XtuAeSSp1AIlq5wPRziMqQlx8zxK
+ hRkZ7HYikJPHnZm5MCeDLF9+oaE9Dl24KlUohlFeKl6gsu4x5gZGqbSa3ipzw8yMWu1Xo68ujq8
+ 3CoFdeNfmRiTAq94ippue50k76R0yiPpOVudse
+X-Received: by 2002:a17:906:bc45:b0:a3e:71eb:c54c with SMTP id
+ s5-20020a170906bc4500b00a3e71ebc54cmr4775007ejv.49.1708416467227; 
+ Tue, 20 Feb 2024 00:07:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEn6xRmQYWH+PkgaWzzGQit0KqY8UyddgUIje8BKpTV5RxmVZKm4yUzdKs8gb6M95XuvsgolA==
+X-Received: by 2002:a17:906:bc45:b0:a3e:71eb:c54c with SMTP id
+ s5-20020a170906bc4500b00a3e71ebc54cmr4774976ejv.49.1708416466759; 
+ Tue, 20 Feb 2024 00:07:46 -0800 (PST)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- u20-20020aa7d894000000b00564648bb01csm2056702edq.22.2024.02.20.00.07.31
+ vg8-20020a170907d30800b00a3d2fe84ff9sm3707394ejc.36.2024.02.20.00.07.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 Feb 2024 00:07:34 -0800 (PST)
+ Tue, 20 Feb 2024 00:07:46 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/17] isa-superio: validate floppy.count value
-Date: Tue, 20 Feb 2024 09:05:51 +0100
-Message-ID: <20240220080558.365903-11-pbonzini@redhat.com>
+Cc: Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 11/17] smc37c669: remove useless is_enabled functions
+Date: Tue, 20 Feb 2024 09:05:52 +0100
+Message-ID: <20240220080558.365903-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240220080558.365903-1-pbonzini@redhat.com>
 References: <20240220080558.365903-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -101,30 +100,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ensure that the value is valid; it can only be zero or one.
-And never create a floppy disk controller if it is zero.
+Calls to is_enabled are bounded to indices that actually exist in
+the SuperIO device.  Therefore, the is_enabled functions in
+smc37c669 are not doing anything and they can be removed.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Bernhard Beschow <shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/isa/isa-superio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ hw/isa/smc37c669-superio.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/hw/isa/isa-superio.c b/hw/isa/isa-superio.c
-index 7dbfc374da3..e06a548c682 100644
---- a/hw/isa/isa-superio.c
-+++ b/hw/isa/isa-superio.c
-@@ -116,7 +116,9 @@ static void isa_superio_realize(DeviceState *dev, Error **errp)
-     }
+diff --git a/hw/isa/smc37c669-superio.c b/hw/isa/smc37c669-superio.c
+index 18287741cb4..388e2ed9371 100644
+--- a/hw/isa/smc37c669-superio.c
++++ b/hw/isa/smc37c669-superio.c
+@@ -14,11 +14,6 @@
  
-     /* Floppy disc */
--    if (!k->floppy.is_enabled || k->floppy.is_enabled(sio, 0)) {
-+    assert(k->floppy.count <= 1);
-+    if (k->floppy.count &&
-+        (!k->floppy.is_enabled || k->floppy.is_enabled(sio, 0))) {
-         isa = isa_new(TYPE_ISA_FDC);
-         d = DEVICE(isa);
-         if (k->floppy.get_iobase) {
+ /* UARTs (compatible with NS16450 or PC16550) */
+ 
+-static bool is_serial_enabled(ISASuperIODevice *sio, uint8_t index)
+-{
+-    return index < 2;
+-}
+-
+ static uint16_t get_serial_iobase(ISASuperIODevice *sio, uint8_t index)
+ {
+     return index ? 0x2f8 : 0x3f8;
+@@ -31,11 +26,6 @@ static unsigned int get_serial_irq(ISASuperIODevice *sio, uint8_t index)
+ 
+ /* Parallel port */
+ 
+-static bool is_parallel_enabled(ISASuperIODevice *sio, uint8_t index)
+-{
+-    return index < 1;
+-}
+-
+ static uint16_t get_parallel_iobase(ISASuperIODevice *sio, uint8_t index)
+ {
+     return 0x378;
+@@ -53,11 +43,6 @@ static unsigned int get_parallel_dma(ISASuperIODevice *sio, uint8_t index)
+ 
+ /* Diskette controller (Software compatible with the Intel PC8477) */
+ 
+-static bool is_fdc_enabled(ISASuperIODevice *sio, uint8_t index)
+-{
+-    return index < 1;
+-}
+-
+ static uint16_t get_fdc_iobase(ISASuperIODevice *sio, uint8_t index)
+ {
+     return 0x3f0;
+@@ -79,20 +64,17 @@ static void smc37c669_class_init(ObjectClass *klass, void *data)
+ 
+     sc->parallel = (ISASuperIOFuncs){
+         .count = 1,
+-        .is_enabled = is_parallel_enabled,
+         .get_iobase = get_parallel_iobase,
+         .get_irq    = get_parallel_irq,
+         .get_dma    = get_parallel_dma,
+     };
+     sc->serial = (ISASuperIOFuncs){
+         .count = 2,
+-        .is_enabled = is_serial_enabled,
+         .get_iobase = get_serial_iobase,
+         .get_irq    = get_serial_irq,
+     };
+     sc->floppy = (ISASuperIOFuncs){
+         .count = 1,
+-        .is_enabled = is_fdc_enabled,
+         .get_iobase = get_fdc_iobase,
+         .get_irq    = get_fdc_irq,
+         .get_dma    = get_fdc_dma,
 -- 
 2.43.0
 
